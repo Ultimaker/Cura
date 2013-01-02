@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import threading
 import re
 import subprocess
+import multiprocessing
 import sys
 import time
 import platform
@@ -28,11 +29,11 @@ def printFile(filename):
 	printWindowMonitorHandle.loadFile(filename)
 
 
-def startPrintInterface(filename):
-	#startPrintInterface is called from the main script when we want the printer interface to run in a seperate process.
-	# It needs to run in a seperate process, as any running python code blocks the GCode sender pyton code (http://wiki.python.org/moin/GlobalInterpreterLock).
+def startPrintInterface(filename, queue):
+	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.
+	# It needs to run in a separate process, as any running python code blocks the GCode sender python code (http://wiki.python.org/moin/GlobalInterpreterLock).
 	app = wx.App(False)
-	printWindowHandle = printWindow()
+	printWindowHandle = printWindow(queue)
 	printWindowHandle.Show(True)
 	printWindowHandle.Raise()
 	printWindowHandle.OnConnect(None)
@@ -41,40 +42,19 @@ def startPrintInterface(filename):
 	t.start()
 	app.MainLoop()
 
-
 class printProcessMonitor():
 	def __init__(self):
 		self.handle = None
+		self.queue = multiprocessing.Queue()
 
 	def loadFile(self, filename):
-		if self.handle is None:
-			if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
-				cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura')] 
-			else:
-				cmdList = [sys.executable, '-m', 'Cura.cura']
-			cmdList.append('-r')
-			cmdList.append(filename)
-			if platform.system() == "Darwin":
-				if platform.machine() == 'i386':
-					cmdList.insert(0, 'arch')
-					cmdList.insert(1, '-i386')
-			self.handle = subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-				stderr=subprocess.PIPE)
-			self.thread = threading.Thread(target=self.Monitor)
-			self.thread.start()
+		if self.handle is None or not self.handle.is_alive():
+			if self.handle is not None:
+				self.handle.join()
+			self.handle = multiprocessing.Process(target=startPrintInterface, args=(filename, self.queue))
+			self.handle.start()
 		else:
-			self.handle.stdin.write(filename + '\n')
-
-	def Monitor(self):
-		p = self.handle
-		line = p.stdout.readline()
-		while len(line) > 0:
-			print line.rstrip()
-			line = p.stdout.readline()
-		p.communicate()
-		self.handle = None
-		self.thread = None
-
+			self.queue.put(filename)
 
 class PrintCommandButton(buttons.GenBitmapButton):
 	def __init__(self, parent, commandList, bitmapFilename, size=(20, 20)):
@@ -100,7 +80,7 @@ class PrintCommandButton(buttons.GenBitmapButton):
 class printWindow(wx.Frame):
 	"Main user interface window"
 
-	def __init__(self):
+	def __init__(self, queue):
 		super(printWindow, self).__init__(None, -1, title='Printing')
 		self.machineCom = None
 		self.gcode = None
@@ -117,6 +97,7 @@ class printWindow(wx.Frame):
 		self.pause = False
 		self.termHistory = []
 		self.termHistoryIdx = 0
+		self.filenameQueue = queue
 
 		self.cam = None
 		if webcam.hasWebcamSupport():
@@ -281,7 +262,7 @@ class printWindow(wx.Frame):
 
 		nb.AddPage(self.termPanel, 'Term')
 
-		if self.cam != None:
+		if self.cam is not None:
 			self.camPage = wx.Panel(nb)
 			sizer = wx.GridBagSizer(2, 2)
 			self.camPage.SetSizer(sizer)
@@ -339,12 +320,23 @@ class printWindow(wx.Frame):
 
 		self.UpdateButtonStates()
 
-	#self.UpdateProgress()
+		t = threading.Thread(target=self._readQueue)
+		t.daemon = True
+		t.start()
+
+	def _readQueue(self):
+		while True:
+			print 'get'
+			filename = self.filenameQueue.get()
+			print filename
+			while self.machineCom is not None and self.machineCom.isPrinting():
+				time.sleep(1)
+			self.LoadGCodeFile(filename)
 
 	def OnCameraTimer(self, e):
 		if not self.campreviewEnable.GetValue():
 			return
-		if self.machineCom != None and self.machineCom.isPrinting():
+		if self.machineCom is not None and self.machineCom.isPrinting():
 			return
 		self.cam.takeNewImage()
 		self.camPreview.Refresh()
@@ -356,7 +348,7 @@ class printWindow(wx.Frame):
 			rect = self.GetUpdateRegion().GetBox()
 			dc.SetClippingRect(rect)
 		dc.SetBackground(wx.Brush(self.camPreview.GetBackgroundColour(), wx.SOLID))
-		if self.cam.getLastImage() != None:
+		if self.cam.getLastImage() is not None:
 			self.camPreview.SetMinSize((self.cam.getLastImage().GetWidth(), self.cam.getLastImage().GetHeight()))
 			self.camPage.Fit()
 			dc.DrawBitmap(self.cam.getLastImage(), 0, 0)
@@ -367,9 +359,9 @@ class printWindow(wx.Frame):
 		self.cam.openPropertyPage(e.GetEventObject().index)
 
 	def UpdateButtonStates(self):
-		self.connectButton.Enable(self.machineCom == None or self.machineCom.isClosedOrError())
+		self.connectButton.Enable(self.machineCom is None or self.machineCom.isClosedOrError())
 		#self.loadButton.Enable(self.machineCom == None or not (self.machineCom.isPrinting() or self.machineCom.isPaused()))
-		self.printButton.Enable(self.machineCom != None and self.machineCom.isOperational() and not (
+		self.printButton.Enable(self.machineCom is not None and self.machineCom.isOperational() and not (
 		self.machineCom.isPrinting() or self.machineCom.isPaused()))
 		self.pauseButton.Enable(
 			self.machineCom != None and (self.machineCom.isPrinting() or self.machineCom.isPaused()))
@@ -378,15 +370,15 @@ class printWindow(wx.Frame):
 		else:
 			self.pauseButton.SetLabel('Pause')
 		self.cancelButton.Enable(
-			self.machineCom != None and (self.machineCom.isPrinting() or self.machineCom.isPaused()))
-		self.temperatureSelect.Enable(self.machineCom != None and self.machineCom.isOperational())
-		self.bedTemperatureSelect.Enable(self.machineCom != None and self.machineCom.isOperational())
+			self.machineCom is not None and (self.machineCom.isPrinting() or self.machineCom.isPaused()))
+		self.temperatureSelect.Enable(self.machineCom is not None and self.machineCom.isOperational())
+		self.bedTemperatureSelect.Enable(self.machineCom is not None and self.machineCom.isOperational())
 		self.directControlPanel.Enable(
-			self.machineCom != None and self.machineCom.isOperational() and not self.machineCom.isPrinting())
-		self.machineLogButton.Show(self.machineCom != None and self.machineCom.isClosedOrError())
+			self.machineCom is not None and self.machineCom.isOperational() and not self.machineCom.isPrinting())
+		self.machineLogButton.Show(self.machineCom is not None and self.machineCom.isClosedOrError())
 		if self.cam != None:
 			for button in self.cam.buttons:
-				button.Enable(self.machineCom == None or not self.machineCom.isPrinting())
+				button.Enable(self.machineCom is None or not self.machineCom.isPrinting())
 
 	def UpdateProgress(self):
 		status = ""
@@ -400,9 +392,9 @@ class printWindow(wx.Frame):
 				status += "Filament cost: %s\n" % (cost)
 			status += "Estimated print time: %02d:%02d\n" % (
 			int(self.gcode.totalMoveTimeMinute / 60), int(self.gcode.totalMoveTimeMinute % 60))
-		if self.machineCom == None or not self.machineCom.isPrinting():
+		if self.machineCom is None or not self.machineCom.isPrinting():
 			self.progress.SetValue(0)
-			if self.gcodeList != None:
+			if self.gcodeList is not None:
 				status += 'Line: -/%d\n' % (len(self.gcodeList))
 		else:
 			printTime = self.machineCom.getPrintTime() / 60
@@ -431,7 +423,7 @@ class printWindow(wx.Frame):
 		self.statsText.SetLabel(status.strip())
 
 	def OnConnect(self, e):
-		if self.machineCom != None:
+		if self.machineCom is not None:
 			self.machineCom.close()
 		self.machineCom = machineCom.MachineCom(callbackObject=self)
 		self.UpdateButtonStates()
@@ -441,14 +433,14 @@ class printWindow(wx.Frame):
 		pass
 
 	def OnPrint(self, e):
-		if self.machineCom == None or not self.machineCom.isOperational():
+		if self.machineCom is None or not self.machineCom.isOperational():
 			return
-		if self.gcodeList == None:
+		if self.gcodeList is None:
 			return
 		if self.machineCom.isPrinting():
 			return
 		self.currentZ = -1
-		if self.cam != None and self.timelapsEnable.GetValue():
+		if self.cam is not None and self.timelapsEnable.GetValue():
 			self.cam.startTimelapse(self.filename[: self.filename.rfind('.')] + ".mpg")
 		self.machineCom.printGCode(self.gcodeList)
 		self.UpdateButtonStates()
@@ -482,7 +474,7 @@ class printWindow(wx.Frame):
 		self.machineCom.sendCommand("M140 S%d" % (self.bedTemperatureSelect.GetValue()))
 
 	def OnSpeedChange(self, e):
-		if self.machineCom == None:
+		if self.machineCom is None:
 			return
 		self.machineCom.setFeedrateModifier('WALL-OUTER', self.outerWallSpeedSelect.GetValue() / 100.0)
 		self.machineCom.setFeedrateModifier('WALL-INNER', self.innerWallSpeedSelect.GetValue() / 100.0)
@@ -530,7 +522,7 @@ class printWindow(wx.Frame):
 			self.Layout()
 
 	def LoadGCodeFile(self, filename):
-		if self.machineCom != None and self.machineCom.isPrinting():
+		if self.machineCom is not None and self.machineCom.isPrinting():
 			return
 		#Send an initial M110 to reset the line counter to zero.
 		prevLineType = lineType = 'CUSTOM'
@@ -589,8 +581,8 @@ class printWindow(wx.Frame):
 #			wx.CallAfter(self.bedTemperatureSelect.SetValue, bedTargetTemp)
 
 	def mcStateChange(self, state):
-		if self.machineCom != None:
-			if state == self.machineCom.STATE_OPERATIONAL and self.cam != None:
+		if self.machineCom is not None:
+			if state == self.machineCom.STATE_OPERATIONAL and self.cam is not None:
 				self.cam.endTimelapse()
 			if state == self.machineCom.STATE_OPERATIONAL:
 				taskbar.setBusy(self, False)
@@ -609,7 +601,7 @@ class printWindow(wx.Frame):
 
 	def mcZChange(self, newZ):
 		self.currentZ = newZ
-		if self.cam != None:
+		if self.cam is not None:
 			wx.CallAfter(self.cam.takeNewImage)
 			wx.CallAfter(self.camPreview.Refresh)
 
