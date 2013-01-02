@@ -326,9 +326,7 @@ class printWindow(wx.Frame):
 
 	def _readQueue(self):
 		while True:
-			print 'get'
 			filename = self.filenameQueue.get()
-			print filename
 			while self.machineCom is not None and self.machineCom.isPrinting():
 				time.sleep(1)
 			self.LoadGCodeFile(filename)
