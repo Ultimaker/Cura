@@ -4,7 +4,6 @@ from __future__ import absolute_import
 import threading
 import re
 import subprocess
-import multiprocessing
 import sys
 import time
 import platform
@@ -29,11 +28,11 @@ def printFile(filename):
 	printWindowMonitorHandle.loadFile(filename)
 
 
-def startPrintInterface(filename, queue):
-	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.
-	# It needs to run in a separate process, as any running python code blocks the GCode sender python code (http://wiki.python.org/moin/GlobalInterpreterLock).
+def startPrintInterface(filename):
+	#startPrintInterface is called from the main script when we want the printer interface to run in a seperate process.
+	# It needs to run in a seperate process, as any running python code blocks the GCode sender pyton code (http://wiki.python.org/moin/GlobalInterpreterLock).
 	app = wx.App(False)
-	printWindowHandle = printWindow(queue)
+	printWindowHandle = printWindow()
 	printWindowHandle.Show(True)
 	printWindowHandle.Raise()
 	printWindowHandle.OnConnect(None)
@@ -45,16 +44,36 @@ def startPrintInterface(filename, queue):
 class printProcessMonitor():
 	def __init__(self):
 		self.handle = None
-		self.queue = multiprocessing.Queue()
 
 	def loadFile(self, filename):
-		if self.handle is None or not self.handle.is_alive():
-			if self.handle is not None:
-				self.handle.join()
-			self.handle = multiprocessing.Process(target=startPrintInterface, args=(filename, self.queue))
-			self.handle.start()
+		if self.handle is None:
+			if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
+				cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura')] 
+			else:
+				cmdList = [sys.executable, '-m', 'Cura.cura']
+			cmdList.append('-r')
+			cmdList.append(filename)
+			if platform.system() == "Darwin":
+				if platform.machine() == 'i386':
+					cmdList.insert(0, 'arch')
+					cmdList.insert(1, '-i386')
+			self.handle = subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+				stderr=subprocess.PIPE)
+			self.thread = threading.Thread(target=self.Monitor)
+			self.thread.start()
 		else:
-			self.queue.put(filename)
+			self.handle.stdin.write(filename + '\n')
+
+	def Monitor(self):
+		p = self.handle
+		line = p.stdout.readline()
+		while len(line) > 0:
+			print line.rstrip()
+			line = p.stdout.readline()
+		p.communicate()
+		self.handle = None
+		self.thread = None
+
 
 class PrintCommandButton(buttons.GenBitmapButton):
 	def __init__(self, parent, commandList, bitmapFilename, size=(20, 20)):
@@ -80,7 +99,7 @@ class PrintCommandButton(buttons.GenBitmapButton):
 class printWindow(wx.Frame):
 	"Main user interface window"
 
-	def __init__(self, queue):
+	def __init__(self):
 		super(printWindow, self).__init__(None, -1, title='Printing')
 		self.machineCom = None
 		self.gcode = None
@@ -97,7 +116,6 @@ class printWindow(wx.Frame):
 		self.pause = False
 		self.termHistory = []
 		self.termHistoryIdx = 0
-		self.filenameQueue = queue
 
 		self.cam = None
 		if webcam.hasWebcamSupport():
@@ -320,16 +338,7 @@ class printWindow(wx.Frame):
 
 		self.UpdateButtonStates()
 
-		t = threading.Thread(target=self._readQueue)
-		t.daemon = True
-		t.start()
-
-	def _readQueue(self):
-		while True:
-			filename = self.filenameQueue.get()
-			while self.machineCom is not None and self.machineCom.isPrinting():
-				time.sleep(1)
-			self.LoadGCodeFile(filename)
+	#self.UpdateProgress()
 
 	def OnCameraTimer(self, e):
 		if not self.campreviewEnable.GetValue():
