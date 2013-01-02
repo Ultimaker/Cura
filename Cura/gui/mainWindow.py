@@ -2,10 +2,7 @@ from __future__ import absolute_import
 
 import wx
 import os
-import platform
 import webbrowser
-import shutil
-import glob
 
 from Cura.gui import configBase
 from Cura.gui import expertConfig
@@ -19,9 +16,10 @@ from Cura.gui import firmwareInstall
 from Cura.gui import printWindow
 from Cura.gui import simpleMode
 from Cura.gui import projectPlanner
-from Cura.gui import batchRun
+from Cura.gui.tools import batchRun
 from Cura.gui import flatSlicerWindow
 from Cura.gui.util import dropTarget
+from Cura.gui.tools import minecraftImport
 from Cura.util import validators
 from Cura.util import profile
 from Cura.util import version
@@ -86,6 +84,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnProjectPlanner, i)
 		#		i = toolsMenu.Append(-1, 'Open SVG (2D) slicer...')
 		#		self.Bind(wx.EVT_MENU, self.OnSVGSlicerOpen, i)
+		i = toolsMenu.Append(-1, 'Minecraft import...')
+		self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
 		self.menubar.Append(toolsMenu, 'Tools')
 
 		expertMenu = wx.Menu()
@@ -397,6 +397,11 @@ class mainWindow(wx.Frame):
 		pp = projectPlanner.projectPlanner()
 		pp.Centre()
 		pp.Show(True)
+
+	def OnMinecraftImport(self, e):
+		mi = minecraftImport.minecraftImportWindow(self)
+		mi.Centre()
+		mi.Show(True)
 
 	def OnSVGSlicerOpen(self, e):
 		svgSlicer = flatSlicerWindow.flatSlicerWindow()

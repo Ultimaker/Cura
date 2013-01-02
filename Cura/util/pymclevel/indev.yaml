@@ -1,0 +1,415 @@
+
+blocks:
+
+  - id: 1
+    name: Stone
+    mapcolor: [120, 120, 120]
+    tex: [1, 0]
+
+  - id: 2
+    name: Grass
+    mapcolor: [117, 176, 73]
+    tex: [0, 0]
+    tex_direction:
+      FORWARD: [3, 0]
+      SIDES: [3, 0]
+      BACKWARD: [3, 0]
+      BOTTOM: [2, 0]
+
+  - id: 3
+    name: Dirt
+    mapcolor: [134, 96, 67]
+    tex: [2, 0]
+
+  - id: 4
+    name: Cobblestone
+    mapcolor: [115, 115, 115]
+    tex: [0, 1]
+
+  - id: 5
+    name: Wood Planks
+    mapcolor: [157, 128, 79]
+    tex: [4, 0]
+
+  - id: 6
+    name: Sapling
+    mapcolor: [120, 120, 120]
+    tex: [15, 0]
+    type: DECORATION_CROSS
+    opacity: 0
+
+  - id: 7
+    name: Bedrock
+    aka: Adminium
+    mapcolor: [84, 84, 84]
+    tex: [1, 1]
+
+  - id: 8
+    name: Water (active)
+    mapcolor: [38, 92, 255]
+    type: WATER
+    tex: [15, 12]
+    opacity: 3
+
+  - id: 9
+    name: Water
+    mapcolor: [38, 92, 255]
+    type: WATER
+    tex: [15, 12]
+    opacity: 3
+
+  - id: 10
+    name: Lava (active)
+    mapcolor: [255, 90, 0]
+    tex: [15, 14]
+    type: SEMISOLID
+
+  - id: 11
+    name: Lava
+    mapcolor: [255, 90, 0]
+    tex: [15, 14]
+    type: SEMISOLID
+
+  - id: 12
+    name: Sand
+    mapcolor: [218, 210, 158]
+    tex: [2, 1]
+
+  - id: 13
+    name: Gravel
+    mapcolor: [136, 126, 126]
+    tex: [3, 1]
+
+  - id: 14
+    name: Gold Ore
+    mapcolor: [143, 140, 125]
+    tex: [0, 2]
+
+  - id: 15
+    name: Iron Ore
+    mapcolor: [136, 130, 127]
+    tex: [1, 2]
+
+  - id: 16
+    name: Coal Ore
+    mapcolor: [115, 115, 115]
+    tex: [2, 2]
+
+  - id: 17
+    name: Wood
+    mapcolor: [102, 81, 51]
+    tex: [4, 1]
+    tex_direction:
+      TOP: [5, 1]
+      BOTTOM: [5, 1]
+
+  - id: 18
+    name: Leaves
+    mapcolor: [60, 192, 41]
+    tex: [5, 3]
+
+  - id: 19
+    name: Sponge
+    mapcolor: [193, 193, 57]
+    tex: [0, 3]
+
+  - id: 20
+    name: Glass
+    mapcolor: [255, 255, 255]
+    tex: [1, 3]
+    type: GLASS
+    opacity: 0
+
+  - id: 21
+    name: Red Wool
+    tex: [0, 4]
+    mapcolor: [164, 45, 41]
+
+  - id: 22
+    name: Orange Wool
+    tex: [1, 4]
+    mapcolor: [234, 127, 55]
+
+  - id: 23
+    name: Yellow Wool
+    tex: [2, 4]
+    mapcolor: [104, 139, 212]
+
+  - id: 24
+    name: Lime Wool
+    tex: [3, 4]
+    mapcolor: [59, 189, 48]
+
+  - id: 25
+    name: Green Wool
+    tex: [4, 4]
+    mapcolor: [56, 77, 24]
+
+  - id: 26
+    name: Aqua Wool
+    tex: [5, 4]
+    mapcolor: [104, 139, 212]
+
+  - id: 27
+    name: Cyan Wool
+    tex: [6, 4]
+    mapcolor: [39, 117, 149]
+
+  - id: 28
+    name: Blue Wool
+    tex: [7, 4]
+    mapcolor: [39, 51, 161]
+
+  - id: 29
+    name: Purple Wool
+    tex: [8, 4]
+    mapcolor: [88, 54, 122]
+
+  - id: 30
+    name: Indigo Wool
+    tex: [9, 4]
+
+  - id: 31
+    name: Violet Wool
+    tex: [10, 4]
+    mapcolor: [129, 54, 196]
+
+  - id: 32
+    name: Magenta Wool
+    tex: [11, 4]
+    mapcolor: [191, 75, 201]
+
+  - id: 33
+    name: Pink Wool
+    tex: [12, 4]
+    mapcolor: [217, 131, 155]
+
+  - id: 34
+    name: Black Wool
+    tex: [13, 4]
+    mapcolor: [0, 0, 0]
+
+  - id: 35
+    name: Gray Wool
+    tex: [14, 4]
+    mapcolor: [66, 66, 66]
+
+  - id: 36
+    name: White Wool
+    tex: [15, 4]
+    mapcolor: [222, 222, 222]
+
+  - id: 37
+    name: Flower
+    mapcolor: [255, 255, 0]
+    tex: [13, 0]
+    type: DECORATION_CROSS
+    opacity: 0
+
+  - id: 38
+    name: Rose
+    mapcolor: [255, 0, 0]
+    tex: [12, 0]
+    type: DECORATION_CROSS
+    opacity: 0
+
+  - id: 39
+    name: Brown Mushroom
+    mapcolor: [145, 109, 85]
+    tex: [13, 1]
+    type: DECORATION_CROSS
+    opacity: 0
+
+  - id: 40
+    name: Red Mushroom
+    mapcolor: [226, 18, 18]
+    tex: [12, 1]
+    type: DECORATION_CROSS
+    opacity: 0
+
+  - id: 41
+    name: Block of Gold
+    mapcolor: [231, 165, 45]
+    tex: [7, 1]
+
+  - id: 42
+    name: Block of Iron
+    mapcolor: [191, 191, 191]
+    tex: [6, 1]
+
+  - id: 43
+    name: Double Stone Slab
+    aka: Step
+    mapcolor: [200, 200, 200]
+    tex: [5, 0]
+    tex_direction:
+      TOP: [6, 0]
+      BOTTOM: [6, 0]
+      FORWARD: [5, 0]
+      BACKWARD: [5, 0]
+      SIDES: [5, 0]
+
+
+  - id: 44
+    name: Stone Slab
+    aka: Single Half Step
+    mapcolor: [200, 200, 200]
+    tex: [6, 0]
+    tex_direction:
+      TOP: [6, 0]
+      BOTTOM: [6, 0]
+      FORWARD: [5, 0]
+      BACKWARD: [5, 0]
+      SIDES: [5, 0]
+
+
+  - id: 45
+    name: Brick
+    mapcolor: [170, 86, 62]
+    tex: [7, 0]
+
+  - id: 46
+    name: TNT
+    mapcolor: [160, 83, 65]
+    tex: [8, 0]
+    tex_direction:
+      TOP: [9, 0]
+      BOTTOM: [10, 0]
+
+  - id: 47
+    name: Bookshelf
+    mapcolor: [188, 152, 98]
+    tex: [3, 2]
+    tex_direction:
+      TOP: [4, 0]
+      BOTTOM: [4, 0]
+
+  - id: 48
+    name: Moss Stone
+    aka: Mossy Cobblestone
+    mapcolor: [115, 169, 115]
+    tex: [4, 2]
+
+  - id: 49
+    name: Obsidian
+    mapcolor: [26, 11, 43]
+    tex: [5, 2]
+
+  - id: 50
+    name: Torch
+    mapcolor: [245, 220, 50]
+    tex: [0, 5]
+    type: TORCH
+    opacity: 0
+    brightness: 14
+
+  - id: 51
+    name: Fire
+    mapcolor: [255, 170, 30]
+    type: SEMISOLID
+    tex: [15, 1]
+    opacity: 0
+    brightness: 15
+
+  - id: 52
+    name: Infinite water source
+    mapcolor: [38, 92, 255]
+    tex: [1, 4]
+    type: SEMISOLID
+    opacity: 0
+
+  - id: 53
+    name: Infinite lava source
+    mapcolor: [255, 90, 0]
+    tex: [4, 0]
+    type: SEMISOLID
+    brightness: 15
+
+  - id: 54
+    name: Chest
+    mapcolor: [125, 91, 38]
+    tex: [11, 1]
+    type: CHEST
+    tex_extra:
+      side_small: [10, 1]
+      top: [9, 1]
+      front_big_left: [9, 2]
+      front_big_right: [10, 2]
+      back_big_left: [9, 3]
+      back_big_right: [10, 3]
+
+  - id: 55
+    name: Cog
+    tex: [15, 3]
+
+  - id: 56
+    name: Diamond Ore
+    mapcolor: [129, 140, 143]
+    tex: [2, 3]
+
+  - id: 57
+    name: Block of Diamond
+    mapcolor: [45, 166, 152]
+    tex: [8, 1]
+
+  - id: 58
+    name: Crafting Table
+    aka: Workbench
+    mapcolor: [114, 88, 56]
+    tex: [12, 3]
+    tex_direction:
+      SIDES: [11, 3]
+      TOP: [11, 2]
+      BOTTOM: [4, 0]
+
+  - id: 59
+    name: Crops
+    aka: Wheat
+    mapcolor: [146, 192, 0]
+    tex: [15, 5]
+    type: CROPS
+    tex_extra:
+      smaller_1: [14, 5]
+      smaller_2: [13, 5]
+      smaller_3: [12, 5]
+      smaller_4: [11, 5]
+      smaller_5: [10, 5]
+      smaller_6: [9, 5]
+      smaller_7: [8, 5]
+    opacity: 0
+
+  - id: 60
+    name: Farmland
+    aka: Soil
+    mapcolor: [95, 58, 30]
+    tex: [6, 5]
+    tex_direction:
+      FORWARD: [2, 0]
+      SIDES: [2, 0]
+      BACKWARD: [2, 0]
+      BOTTOM: [2, 0]
+
+  - id: 61
+    name: Furnace
+    mapcolor: [96, 96, 96]
+    tex: [12, 2]
+    tex_direction:
+      FORWARD: [12, 2]
+      SIDES: [13, 2]
+      BACKWARD: [13, 2]
+      TOP: [1, 0]
+      BOTTOM: [1, 0]
+    tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
+
+  - id: 62
+    name: Lit Furnace
+    mapcolor: [96, 96, 96]
+    tex: [13, 3]
+    tex_direction:
+      FORWARD: [13, 3]
+      SIDES: [13, 2]
+      BACKWARD: [13, 2]
+      TOP: [1, 0]
+      BOTTOM: [1, 0]
+    tex_direction_data: {2: NORTH, 3: SOUTH, 4: WEST, 5: EAST}
+    brightness: 14
