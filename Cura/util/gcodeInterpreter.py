@@ -60,6 +60,7 @@ class gcode(object):
 		currentExtruder = 0
 		extrudeAmountMultiply = 1.0
 		totalMoveTimeMinute = 0.0
+		absoluteE = True
 		scale = 1.0
 		posAbs = True
 		feedRate = 3600
@@ -140,6 +141,8 @@ class gcode(object):
 						totalMoveTimeMinute += (oldPos - pos).vsize() / feedRate
 					moveType = 'move'
 					if e is not None:
+						if not absoluteE:
+							e += currentE
 						if posAbs:
 							if e > currentE:
 								moveType = 'extrude'
@@ -217,6 +220,10 @@ class gcode(object):
 						pass
 					elif M == 81:	#Suicide/disable power supply
 						pass
+					elif M == 82:   #Absolute E
+						absoluteE = True
+					elif M == 83:   #Relative E
+						absoluteE = False
 					elif M == 84:	#Disable step drivers
 						pass
 					elif M == 92:	#Set steps per unit
