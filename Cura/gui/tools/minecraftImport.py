@@ -9,6 +9,9 @@ from Cura.util import mesh
 from Cura.util import stl
 from Cura.util.pymclevel import mclevel
 
+def hasMinecraft():
+	return os.path.isdir(mclevel.saveFileDir)
+
 class minecraftImportWindow(wx.Frame):
 	def __init__(self, parent):
 		super(minecraftImportWindow, self).__init__(parent, title='Cura - Minecraft import')

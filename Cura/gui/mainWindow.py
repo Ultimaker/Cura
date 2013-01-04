@@ -84,8 +84,9 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnProjectPlanner, i)
 		#		i = toolsMenu.Append(-1, 'Open SVG (2D) slicer...')
 		#		self.Bind(wx.EVT_MENU, self.OnSVGSlicerOpen, i)
-		i = toolsMenu.Append(-1, 'Minecraft import...')
-		self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
+		if minecraftImport.hasMinecraft():
+			i = toolsMenu.Append(-1, 'Minecraft import...')
+			self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
 		self.menubar.Append(toolsMenu, 'Tools')
 
 		expertMenu = wx.Menu()
