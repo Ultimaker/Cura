@@ -168,7 +168,7 @@ class AlterationSkein(object):
 
 	def addFromUpperLowerFile(self, fileName):
 		"Add lines of text from the fileName or the lowercase fileName, if there is no file by the original fileName in the directory."
-		alterationFileLines = map(lambda l: l.replace('?filename?', self.fileName), settings.getAlterationFileLines(fileName))
+		alterationFileLines = map(lambda l: l.replace('?filename?', self.fileName.encode('ascii', 'replace')), settings.getAlterationFileLines(fileName))
 		self.distanceFeedRate.addLinesSetAbsoluteDistanceMode(alterationFileLines)
 
 	def getCraftedGcode(self, gcodeText, repository, fileName):

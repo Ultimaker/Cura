@@ -11,7 +11,7 @@ import types
 import math
 
 from Cura.util import profile
-from Cura.cura_sf.fabmetheus_utilities import archive
+from Cura.slice.cura_sf.fabmetheus_utilities import archive
 
 def DEFSET(setting):
 	return setting.value
@@ -386,7 +386,7 @@ def getProfileInformation():
 			'Retraction_Distance_millimeters': lambda setting: profile.getProfileSettingFloat('retraction_amount') if profile.getProfileSetting('retraction_enable') == 'True' else 0,
 			'Restart_Extra_Distance_millimeters': storedSettingFloat('retraction_extra'),
 		},'alteration': {
-			'Activate_Alteration': storedSetting('add_start_end_gcode'),
+			'Activate_Alteration': "False",
 			'Name_of_End_File': "end.gcode",
 			'Name_of_Start_File': "start.gcode",
 			'Remove_Redundant_Mcode': "True",

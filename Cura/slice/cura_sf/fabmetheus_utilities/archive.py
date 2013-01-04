@@ -397,9 +397,6 @@ def writeFileMessageEnd(end, fileName, fileText, message):
 
 def writeFileText(fileName, fileText, writeMode='w+'):
 	'Write a text to a file.'
-	try:
-		file = open(fileName, writeMode)
-		file.write(fileText)
-		file.close()
-	except IOError:
-		print('The file ' + fileName + ' can not be written to.')
+	file = open(fileName, writeMode)
+	file.write(fileText)
+	file.close()

@@ -88,8 +88,9 @@ class batchRunWindow(wx.Frame):
 
 	def OnSlice(self, e):
 		sliceCmdList = []
+		center = profile.getMachineCenterCoords()
 		for filename in self.list:
-			sliceCmdList.append(sliceRun.getSliceCommand(filename))
+			sliceCmdList.append(sliceRun.getSliceCommand(sliceRun.getExportFilename(filename), [filename], [center]))
 		bspw = BatchSliceProgressWindow(self.list[:], sliceCmdList)
 		bspw.Centre()
 		bspw.Show(True)

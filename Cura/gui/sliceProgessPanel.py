@@ -44,21 +44,8 @@ class sliceProgessPanel(wx.Panel):
 		self.startTime = time.time()
 		if profile.getPreference('save_profile') == 'True':
 			profile.saveGlobalProfile(self.filelist[0][: self.filelist[0].rfind('.')] + "_profile.ini")
-		cmdList = []
-		for filename in self.filelist:
-			idx = self.filelist.index(filename)
-			#print filename, idx
-			if idx > 0:
-				profile.setTempOverride('fan_enabled', 'False')
-				profile.setTempOverride('skirt_line_count', '0')
-				profile.setTempOverride('object_center_x', profile.getPreferenceFloat('machine_width') / 2 - profile.getPreferenceFloat('extruder_offset_x%d' % (idx)))
-				profile.setTempOverride('object_center_y', profile.getPreferenceFloat('machine_depth') / 2 - profile.getPreferenceFloat('extruder_offset_y%d' % (idx)))
-				profile.setTempOverride('alternative_center', self.filelist[0])
-			if len(self.filelist) > 1:
-				profile.setTempOverride('add_start_end_gcode', 'False')
-				profile.setTempOverride('gcode_extension', 'multi_extrude_tmp')
-			cmdList.append(sliceRun.getSliceCommand(filename))
-		profile.resetTempOverride()
+		center = profile.getMachineCenterCoords()
+		cmdList = [sliceRun.getSliceCommand(sliceRun.getExportFilename(self.filelist[0]), ['|'.join(self.filelist)], [center])]
 		self.thread = WorkerThread(self, filelist, cmdList)
 	
 	def OnAbort(self, e):
@@ -173,7 +160,8 @@ class WorkerThread(threading.Thread):
 		line = p.stdout.readline()
 		self.progressLog = []
 		maxValue = 1
-		while(len(line) > 0):
+		starttime = time.time()
+		while len(line) > 0:
 			line = line.rstrip()
 			if line[0:9] == "Progress[" and line[-1:] == "]":
 				progress = line[9:-1].split(":")
@@ -181,7 +169,7 @@ class WorkerThread(threading.Thread):
 					maxValue = int(progress[2])
 				wx.CallAfter(self.notifyWindow.SetProgress, progress[0], int(progress[1]), maxValue)
 			else:
-				self.progressLog.append(line)
+				self.progressLog.append("%0.2f: %s" % (time.time() - starttime, line))
 				wx.CallAfter(self.notifyWindow.statusText.SetLabel, line)
 			if self.notifyWindow.abort:
 				p.terminate()
@@ -189,79 +177,25 @@ class WorkerThread(threading.Thread):
 				return
 			line = p.stdout.readline()
 		line = p.stderr.readline()
-		while(len(line) > 0):
+		while len(line) > 0:
 			line = line.rstrip()
 			self.progressLog.append(line)
 			line = p.stderr.readline()
 		self.returnCode = p.wait()
 		self.fileIdx += 1
 		if self.fileIdx == len(self.cmdList):
-			if len(self.filelist) > 1:
-				self._stitchMultiExtruder()
 			gcodeFilename = sliceRun.getExportFilename(self.filelist[0])
 			gcodefile = open(gcodeFilename, "a")
 			for logLine in self.progressLog:
 				if logLine.startswith('Model error('):
 					gcodefile.write(';%s\n' % (logLine))
 			gcodefile.close()
-			wx.CallAfter(self.notifyWindow.statusText.SetLabel, "Running plugins")
-			ret = profile.runPostProcessingPlugins(gcodeFilename)
-			if ret != None:
-				self.progressLog.append(ret)
 			self.gcode = gcodeInterpreter.gcode()
 			self.gcode.load(gcodeFilename)
 			profile.replaceGCodeTags(gcodeFilename, self.gcode)
 			wx.CallAfter(self.notifyWindow.OnSliceDone, self)
 		else:
 			self.run()
-	
-	def _stitchMultiExtruder(self):
-		files = []
-		resultFile = open(sliceRun.getExportFilename(self.filelist[0]), "w")
-		resultFile.write(';TYPE:CUSTOM\n')
-		resultFile.write(profile.getAlterationFileContents('start.gcode'))
-		for filename in self.filelist:
-			if os.path.isfile(sliceRun.getExportFilename(filename, 'multi_extrude_tmp')):
-				files.append(open(sliceRun.getExportFilename(filename, 'multi_extrude_tmp'), "r"))
-			else:
-				return
-		
-		currentExtruder = 0
-		resultFile.write('T%d\n' % (currentExtruder))
-		layerNr = -1
-		hasLine = True
-		filesOrder = files[:]
-		while hasLine:
-			hasLine = False
-			filesOrder.reverse()
-			for f in filesOrder:
-				layerHasLine = False
-				for line in f:
-					hasLine = True
-					if line.startswith(';LAYER:'):
-						break
-					if 'Z' in line:
-						lastZ = float(re.search('Z([^\s]+)', line).group(1))
-					if not layerHasLine:
-						nextExtruder = files.index(f)
-						resultFile.write(';LAYER:%d\n' % (layerNr))
-						resultFile.write(';EXTRUDER:%d\n' % (nextExtruder))
-						if nextExtruder != currentExtruder:
-							resultFile.write(';TYPE:CUSTOM\n')
-							profile.setTempOverride('extruder', nextExtruder)
-							resultFile.write(profile.getAlterationFileContents('switchExtruder.gcode') + '\n')
-							profile.resetTempOverride()
-							currentExtruder = nextExtruder
-						layerHasLine = True
-					resultFile.write(line)
-			layerNr += 1
-		for f in files:
-			f.close()
-		for filename in self.filelist:
-			os.remove(sliceRun.getExportFilename(filename, 'multi_extrude_tmp'))
-		resultFile.write(';TYPE:CUSTOM\n')
-		resultFile.write(profile.getAlterationFileContents('end.gcode'))
-		resultFile.close()
 
 class LogWindow(wx.Frame):
 	def __init__(self, logText):

@@ -256,7 +256,7 @@ def sendOutputTo(outputTo, text):
 		return
 	archive.writeFileText(outputTo, text)
 
-def writeOutput(fileName, shouldAnalyze=True):
+def getOutput(fileName):
 	'Export a gcode linear move file.'
 	if fileName == '':
 		return None
@@ -264,51 +264,33 @@ def writeOutput(fileName, shouldAnalyze=True):
 	settings.getReadRepository(repository)
 	startTime = time.time()
 	print('File ' + archive.getSummarizedFileName(fileName.encode('ascii', 'replace')) + ' is being chain exported.')
-	fileNameSuffix = fileName[: fileName.rfind('.')]
-	if repository.addExportSuffix.value:
-		fileNameSuffix += '_export'
 	gcodeText = gcodec.getGcodeFileText(fileName, '')
 	procedures = skeinforge_craft.getProcedures('export', gcodeText)
 	gcodeText = skeinforge_craft.getChainTextFromProcedures(fileName, procedures[: -1], gcodeText)
 	if gcodeText == '':
 		return None
-	if repository.addProfileExtension.value:
-		fileNameSuffix += '.' + getFirstValue(gcodeText, '(<profileName>')
-	if repository.addDescriptiveExtension.value:
-		fileNameSuffix += getDescriptiveExtension(gcodeText)
-	if repository.addTimestampExtension.value:
-		fileNameSuffix += '.' + getFirstValue(gcodeText, '(<timeStampPreface>')
-	fileNameSuffix += '.' + repository.fileExtension.value
 	fileNamePenultimate = fileName[: fileName.rfind('.')] + '_penultimate.gcode'
-	filePenultimateWritten = False
 	if repository.savePenultimateGcode.value:
 		archive.writeFileText(fileNamePenultimate, gcodeText)
-		filePenultimateWritten = True
 		print('The penultimate file is saved as ' + archive.getSummarizedFileName(fileNamePenultimate))
 	exportGcode = getCraftedTextFromText(gcodeText, repository)
-	window = None
-	if shouldAnalyze and repository.analyzeGcode.value:
-		window = skeinforge_analyze.writeOutput(fileName, fileNamePenultimate, fileNameSuffix, filePenultimateWritten, gcodeText)
 	replaceableExportGcode = None
 	selectedPluginModule = getSelectedPluginModule(repository.exportPlugins)
-	if selectedPluginModule == None:
+	if selectedPluginModule is None:
 		replaceableExportGcode = exportGcode
 	else:
 		if selectedPluginModule.globalIsReplaceable:
 			replaceableExportGcode = selectedPluginModule.getOutput(exportGcode)
-		else:
-			selectedPluginModule.writeOutput(fileNameSuffix, exportGcode)
-	if replaceableExportGcode != None:
+		#else:
+		#	selectedPluginModule.writeOutput(outputFilename, exportGcode)
+	if replaceableExportGcode is not None:
 		replaceableExportGcode = getReplaceableExportGcode(repository.nameOfReplaceFile.value, replaceableExportGcode)
-		archive.writeFileText( fileNameSuffix, replaceableExportGcode )
-		print('The exported file is saved as ' + archive.getSummarizedFileName(fileNameSuffix))
 	if repository.alsoSendOutputTo.value != '':
 		if replaceableExportGcode == None:
 			replaceableExportGcode = selectedPluginModule.getOutput(exportGcode)
 		sendOutputTo(repository.alsoSendOutputTo.value, replaceableExportGcode)
 	print('It took %s to export the file.' % euclidean.getDurationString(time.time() - startTime))
-	return window
-
+	return replaceableExportGcode
 
 class ExportRepository(object):
 	'A class to handle the export settings.'
@@ -318,10 +300,6 @@ class ExportRepository(object):
 		self.fileNameInput = settings.FileNameInput().getFromFileName( fabmetheus_interpret.getGNUTranslatorGcodeFileTypeTuples(), 'Open File for Export', self, '')
 		self.openWikiManualHelpPage = settings.HelpPage().getOpenFromAbsolute('http://fabmetheus.crsndoo.com/wiki/index.php/Skeinforge_Export')
 		self.activateExport = settings.BooleanSetting().getFromValue('Activate Export', self, True)
-		self.addDescriptiveExtension = settings.BooleanSetting().getFromValue('Add Descriptive Extension', self, False)
-		self.addExportSuffix = settings.BooleanSetting().getFromValue('Add Export Suffix', self, True)
-		self.addProfileExtension = settings.BooleanSetting().getFromValue('Add Profile Extension', self, False)
-		self.addTimestampExtension = settings.BooleanSetting().getFromValue('Add Timestamp Extension', self, False)
 		self.alsoSendOutputTo = settings.StringSetting().getFromValue('Also Send Output To:', self, '')
 		self.analyzeGcode = settings.BooleanSetting().getFromValue('Analyze Gcode', self, True)
 		self.commentChoice = settings.MenuButtonDisplay().getFromName('Comment Choice:', self)

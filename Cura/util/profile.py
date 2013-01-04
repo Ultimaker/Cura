@@ -76,7 +76,6 @@ profileDefaultSettings = {
 	'object_center_x': '-1',
 	'object_center_y': '-1',
 	
-	'add_start_end_gcode': 'True',
 	'gcode_extension': 'gcode',
 	'alternative_center': '',
 	'clear_z': '0.0',
@@ -423,6 +422,9 @@ def calculateSolidLayerCount():
 	solidThickness = getProfileSettingFloat('solid_layer_thickness')
 	return int(math.ceil(solidThickness / layerHeight - 0.0001))
 
+def getMachineCenterCoords():
+	return (getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2)
+
 #########################################################
 ## Alteration file functions
 #########################################################
@@ -536,7 +538,7 @@ def getAlterationFileContents(filename):
 			clearTempOverride('extruder')
 		else:
 			alterationContents = ''
-	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8')
+	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
 
 ###### PLUGIN #####
 
