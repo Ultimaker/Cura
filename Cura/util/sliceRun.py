@@ -75,7 +75,7 @@ def getSliceCommand(outputfilename, filenames, positions):
 	for idx in xrange(0, len(filenames)):
 		filename = filenames[idx]
 		position = positions[idx]
-		cmd.append("%f,%f" % (position[0], position[1]))
+		cmd.append(','.join(map(str, position)))
 		try:
 			cmd.append(str(filename))
 		except UnicodeEncodeError:

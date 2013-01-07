@@ -4,6 +4,7 @@ import time
 import math
 
 import numpy
+numpy.seterr(all='ignore')
 
 from Cura.util import util3d
 
@@ -65,6 +66,7 @@ class mesh(object):
 			mat = numpy.array([mat[2],mat[1],mat[0]], numpy.float32)
 		if swapYZ:
 			mat = numpy.array([mat[0],mat[2],mat[1]], numpy.float32)
+		self.matrix = mat
 		self.vertexes = (numpy.matrix(self.origonalVertexes, copy = False) * numpy.matrix(mat)).getA()
 		
 		#Calculate the boundery box of the object

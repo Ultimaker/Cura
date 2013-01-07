@@ -170,15 +170,9 @@ class CarveRepository(object):
 		settings.LabelSeparator().getFromRepository(self)
 		self.executeTitle = 'Carve'
 
-		self.flipX = settings.BooleanSetting().getFromValue('FlipX', self, False)
-		self.flipY = settings.BooleanSetting().getFromValue('FlipY', self, False)
-		self.flipZ = settings.BooleanSetting().getFromValue('FlipZ', self, False)
-		self.swapXZ = settings.BooleanSetting().getFromValue('SwapXZ', self, False)
-		self.swapYZ = settings.BooleanSetting().getFromValue('SwapYZ', self, False)
-		self.centerX = settings.FloatSpin().getFromValue(0.0, 'CenterX', self, 1000.0, 0.0)
-		self.centerY = settings.FloatSpin().getFromValue(0.0, 'CenterY', self, 1000.0, 0.0)
-		self.scale = settings.FloatSpin().getFromValue( 0.1, 'Scale', self, 10.0, 1.0 )
-		self.rotate = settings.FloatSpin().getFromValue( -180.0, 'Rotate', self, 180.0, 0.0 )
+		self.centerX = settings.FloatSpin().getFromValue(0.0, 'CenterX', self, 1000.0, 0.0);
+		self.centerY = settings.FloatSpin().getFromValue(0.0, 'CenterY', self, 1000.0, 0.0);
+		self.matrix = settings.StringSetting().getFromValue('ObjectMatrix', self, '1,0,0,0,1,0,0,0,1')
 		self.alternativeCenter = settings.StringSetting().getFromValue('AlternativeCenterFile', self, '')
 
 
@@ -194,36 +188,17 @@ class CarveSkein(object):
 	def getCarvedSVG(self, carving, fileName, repository):
 		"Parse gnu triangulated surface text and store the carved gcode."
 
-		scale = repository.scale.value
-		rotate = repository.rotate.value / 180 * math.pi
-		scaleX = scale
-		scaleY = scale
-		scaleZ = scale
-		if repository.flipX.value == True:
-			scaleX = -scaleX
-		if repository.flipY.value == True:
-			scaleY = -scaleY
-		if repository.flipZ.value == True:
-			scaleZ = -scaleZ
-		swapXZ = repository.swapXZ.value
-		swapYZ = repository.swapYZ.value
-		mat00 = math.cos(rotate) * scaleX
-		mat01 =-math.sin(rotate) * scaleY
-		mat10 = math.sin(rotate) * scaleX
-		mat11 = math.cos(rotate) * scaleY
+		matrix = map(float, repository.matrix.value.split(','))
+		print matrix
 
 		for i in xrange(0, len(carving.vertexes)):
 			x = carving.vertexes[i].x
 			y = carving.vertexes[i].y
 			z = carving.vertexes[i].z
-			if swapXZ:
-				x, z = z, x
-			if swapYZ:
-				y, z = z, y
 			carving.vertexes[i] = Vector3(
-				x * mat00 + y * mat01,
-				x * mat10 + y * mat11,
-				z * scaleZ)
+				x * matrix[0] + y * matrix[3] + z * matrix[6],
+				x * matrix[1] + y * matrix[4] + z * matrix[7],
+				x * matrix[2] + y * matrix[5] + z * matrix[8])
 
 		if repository.alternativeCenter.value != '':
 			carving2 = svg_writer.getCarving(repository.alternativeCenter.value)
@@ -231,14 +206,10 @@ class CarveSkein(object):
 				x = carving2.vertexes[i].x
 				y = carving2.vertexes[i].y
 				z = carving2.vertexes[i].z
-				if swapXZ:
-					x, z = z, x
-				if swapYZ:
-					y, z = z, y
 				carving2.vertexes[i] = Vector3(
-					x * mat00 + y * mat01,
-					x * mat10 + y * mat11,
-					z * scaleZ)
+					x * matrix[0] + y * matrix[3] + z * matrix[6],
+					x * matrix[1] + y * matrix[4] + z * matrix[7],
+					x * matrix[2] + y * matrix[5] + z * matrix[8])
 			minZ = carving2.getMinimumZ()
 			minSize = carving2.getCarveCornerMinimum()
 			maxSize = carving2.getCarveCornerMaximum()

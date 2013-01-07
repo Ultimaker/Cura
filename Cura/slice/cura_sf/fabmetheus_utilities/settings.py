@@ -96,7 +96,7 @@ def calcLayerSkip(setting):
 def getProfileInformation():
 	return {
 		'carve': {
-			'Add_Layer_Template_to_SVG': DEFSET,
+			'Add_Layer_Template_to_SVG': 'False',
 			'Edge_Width_mm': calculateEdgeWidth,
 			'Extra_Decimal_Places_float': DEFSET,
 			'Import_Coarseness_ratio': DEFSET,
@@ -106,13 +106,7 @@ def getProfileInformation():
 			'Correct_Mesh': DEFSET,
 			'Unproven_Mesh': DEFSET,
 			'SVG_Viewer': DEFSET,
-			'FlipX': storedSetting("flip_x"),
-			'FlipY': storedSetting("flip_y"),
-			'FlipZ': storedSetting("flip_z"),
-			'SwapXZ': storedSetting("swap_xz"),
-			'SwapYZ': storedSetting("swap_yz"),
-			'Scale': storedSettingFloat("model_scale"),
-			'Rotate': storedSettingFloat("model_rotate_base"),
+			'ObjectMatrix': storedSetting("object_matrix"),
 			'CenterX': lambda setting: profile.getProfileSettingFloat('object_center_x') if profile.getProfileSettingFloat('object_center_x') > 0 else profile.getPreferenceFloat("machine_width") / 2,
 			'CenterY': lambda setting: profile.getProfileSettingFloat('object_center_y') if profile.getProfileSettingFloat('object_center_y') > 0 else profile.getPreferenceFloat("machine_depth") / 2,
 			'AlternativeCenterFile': storedSetting("alternative_center"),

@@ -44,7 +44,7 @@ class sliceProgessPanel(wx.Panel):
 		self.startTime = time.time()
 		if profile.getPreference('save_profile') == 'True':
 			profile.saveGlobalProfile(self.filelist[0][: self.filelist[0].rfind('.')] + "_profile.ini")
-		center = profile.getMachineCenterCoords()
+		center = profile.getMachineCenterCoords() + profile.getObjectMatrix()
 		cmdList = [sliceRun.getSliceCommand(sliceRun.getExportFilename(self.filelist[0]), ['|'.join(self.filelist)], [center])]
 		self.thread = WorkerThread(self, filelist, cmdList)
 	

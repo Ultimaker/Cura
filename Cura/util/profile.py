@@ -423,7 +423,31 @@ def calculateSolidLayerCount():
 	return int(math.ceil(solidThickness / layerHeight - 0.0001))
 
 def getMachineCenterCoords():
-	return (getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2)
+	return [getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2]
+
+def getObjectMatrix():
+	rotate = getProfileSettingFloat('model_rotate_base')
+	rotate = rotate / 180.0 * math.pi
+	scaleX = 1.0
+	scaleY = 1.0
+	scaleZ = 1.0
+	if getProfileSetting('flipX') == 'True':
+		scaleX = -scaleX
+	if getProfileSetting('flipY') == 'True':
+		scaleY = -scaleY
+	if getProfileSetting('flipZ') == 'True':
+		scaleZ = -scaleZ
+	mat00 = math.cos(rotate) * scaleX
+	mat01 =-math.sin(rotate) * scaleY
+	mat10 = math.sin(rotate) * scaleX
+	mat11 = math.cos(rotate) * scaleY
+
+	mat = [mat00,mat10,0, mat01,mat11,0, 0,0,scaleZ]
+	if getProfileSetting('swap_xz') == 'True':
+		mat = mat[6:9] + mat[3:6] + mat[0:3]
+	if getProfileSetting('swap_yz') == 'True':
+		mat = mat[0:3] + mat[6:9] + mat[3:6]
+	return mat
 
 #########################################################
 ## Alteration file functions

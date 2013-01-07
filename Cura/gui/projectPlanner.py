@@ -596,7 +596,7 @@ class projectPlanner(wx.Frame):
 			clearZ = 0
 			actionList = []
 			for item in self.list:
-				if item.profile != None and os.path.isfile(item.profile):
+				if item.profile is not None and os.path.isfile(item.profile):
 					profile.loadGlobalProfile(item.profile)
 				put('object_center_x', item.centerX - self.extruderOffset[item.extruder][0])
 				put('object_center_y', item.centerY - self.extruderOffset[item.extruder][1])
@@ -625,7 +625,7 @@ class projectPlanner(wx.Frame):
 					actionList[-2].leaveResultForNextSlice = True
 					actionList[-1].usePreviousSlice = True
 
-				if item.profile != None:
+				if item.profile is not None:
 					profile.loadGlobalProfileFromString(oldProfile)
 			
 		else:
@@ -640,9 +640,9 @@ class projectPlanner(wx.Frame):
 			actionList = []
 			
 			action = Action()
-			action.sliceCmd = sliceRun.getSliceCommand(resultFilename + "_temp_.stl")
-			action.centerX = profile.getPreferenceFloat('machine_width') / 2
-			action.centerY = profile.getPreferenceFloat('machine_depth') / 2
+			action.sliceCmd = sliceRun.getSliceCommand(resultFilename, [resultFilename + "_temp_.stl"], [profile.getMachineCenterCoords()])
+			action.centerX = profile.getMachineCenterCoords()[0]
+			action.centerY = profile.getMachineCenterCoords()[1]
 			action.temperature = profile.getProfileSettingFloat('print_temperature')
 			action.extruder = 0
 			action.filename = resultFilename + "_temp_.stl"
