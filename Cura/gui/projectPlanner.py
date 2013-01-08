@@ -529,8 +529,9 @@ class projectPlanner(wx.Frame):
 				bestAllowedSize = i
 				bestArea = area
 		self._doAutoPlace(bestAllowedSize)
-		for item in self.list:
-			item.clampXY()
+		if not self.alwaysAutoPlace:
+			for item in self.list:
+				item.clampXY()
 		self.preview.Refresh()
 	
 	def _doAutoPlace(self, allowedSizeY):
@@ -825,6 +826,10 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 			item = self.parent.list[idx1]
 			iMin1 = (item.getMinimum() * item.scale) + numpy.array([item.centerX, item.centerY, 0]) - extraSizeMin - self.parent.extruderOffset[item.extruder]
 			iMax1 = (item.getMaximum() * item.scale) + numpy.array([item.centerX, item.centerY, 0]) + extraSizeMax - self.parent.extruderOffset[item.extruder]
+			if iMin1[0] < -self.parent.headSizeMin[0] or iMin1[1] < -self.parent.headSizeMin[1]:
+				item.validPlacement = False
+			if iMax1[0] > machineSize[0] + self.parent.headSizeMax[0] or iMax1[1] > machineSize[1] + self.parent.headSizeMax[1]:
+				item.validPlacement = False
 			for idx2 in xrange(0, idx1):
 				item2 = self.parent.list[idx2]
 				iMin2 = (item2.getMinimum() * item2.scale) + numpy.array([item2.centerX, item2.centerY, 0])

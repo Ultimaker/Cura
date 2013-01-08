@@ -26,7 +26,6 @@ def main():
 		profile.loadGlobalProfileFromString(options.profile)
 	options.output = fixUTF8(options.output)
 
-	print args
 	resultFile = open(options.output, "w")
 	for idx in xrange(0, len(args), 2):
 		position = map(float, args[0].split(','))
