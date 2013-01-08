@@ -176,11 +176,11 @@ preferencesDefaultSettings = {
 	'sdpath': '',
 	'sdshortnames': 'True',
 	
-	'extruder_head_size_min_x': '70.0',
+	'extruder_head_size_min_x': '75.0',
 	'extruder_head_size_min_y': '18.0',
 	'extruder_head_size_max_x': '18.0',
 	'extruder_head_size_max_y': '35.0',
-	'extruder_head_size_height': '80.0',
+	'extruder_head_size_height': '60.0',
 	
 	'model_colour': '#72CB30',
 	'model_colour2': '#CB3030',
@@ -428,9 +428,9 @@ def getMachineCenterCoords():
 def getObjectMatrix():
 	rotate = getProfileSettingFloat('model_rotate_base')
 	rotate = rotate / 180.0 * math.pi
-	scaleX = 1.0
-	scaleY = 1.0
-	scaleZ = 1.0
+	scaleX = getProfileSettingFloat('model_scale')
+	scaleY = getProfileSettingFloat('model_scale')
+	scaleZ = getProfileSettingFloat('model_scale')
 	if getProfileSetting('flipX') == 'True':
 		scaleX = -scaleX
 	if getProfileSetting('flipY') == 'True':

@@ -173,7 +173,7 @@ class WorkerThread(threading.Thread):
 				wx.CallAfter(self.notifyWindow.statusText.SetLabel, line)
 			if self.notifyWindow.abort:
 				p.terminate()
-				wx.CallAfter(self.notifyWindow.statusText.SetLabel, "Aborted by user.")
+				wx.CallAfter(self.notifyWindow.mainWindow.removeSliceProgress, self.notifyWindow)
 				return
 			line = p.stdout.readline()
 		line = p.stderr.readline()
