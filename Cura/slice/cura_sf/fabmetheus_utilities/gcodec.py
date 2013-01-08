@@ -238,7 +238,7 @@ class BoundingRectangle(object):
 
 	def isPointInside(self, point):
 		'Determine if the point is inside the bounding rectangle.'
-		return point.imag >= self.cornerMinimum.imag and point.imag <= self.cornerMaximum.imag and point.real >= self.cornerMinimum.real and point.real <= self.cornerMaximum.real
+		return self.cornerMinimum.imag <= point.imag <= self.cornerMaximum.imag and self.cornerMinimum.real <= point.real <= self.cornerMaximum.real
 
 	def parseCorner(self, line):
 		'Parse a gcode line and use the location to update the bounding corners.'

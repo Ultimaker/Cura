@@ -322,7 +322,7 @@ def getVerticalEndpoints(horizontalSegmentsTable, horizontalStep, verticalOverha
 
 def setExtendedPoint( lineSegmentEnd, pointOriginal, x ):
 	'Set the point in the extended line segment.'
-	if x > min( lineSegmentEnd.point.real, pointOriginal.real ) and x < max( lineSegmentEnd.point.real, pointOriginal.real ):
+	if min( lineSegmentEnd.point.real, pointOriginal.real ) < x < max( lineSegmentEnd.point.real, pointOriginal.real ):
 		lineSegmentEnd.point = complex( x, pointOriginal.imag )
 
 def writeOutput(fileName, shouldAnalyze=True):

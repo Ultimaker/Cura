@@ -563,7 +563,7 @@ def insertGridPointPairWithLinePath( gridPoint, gridPointInsetX, gridPoints, isJ
 
 def isAddedPointOnPathFree( path, pixelTable, point, pointIndex, width ):
 	'Determine if the point added to a path is intersecting the pixel table or the path.'
-	if pointIndex > 0 and pointIndex < len(path):
+	if 0 < pointIndex < len(path):
 		if isSharpCorner( ( path[pointIndex - 1] ), point, ( path[pointIndex] ) ):
 			return False
 	pointIndexMinusOne = pointIndex - 1
@@ -1232,7 +1232,7 @@ class FillSkein(object):
 			if isSegmentCompletelyInAnIntersection(lineSegment, surroundingXIntersections ):
 				xFirst = lineSegment[0].point.real
 				xSecond = lineSegment[1].point.real
-				if gridPoint.real > min(xFirst, xSecond) and gridPoint.real < max(xFirst, xSecond):
+				if min(xFirst, xSecond) < gridPoint.real < max(xFirst, xSecond):
 					return True
 		return False
 

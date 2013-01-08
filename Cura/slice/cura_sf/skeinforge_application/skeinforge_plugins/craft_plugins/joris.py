@@ -155,13 +155,13 @@ class JorisSkein(object):
 		
 	def addJorisedPerimeter(self):
 		'Add jorised perimeter.'
-		if self.perimeter == None:
+		if self.perimeter is None:
 			return
 		#Calculate the total length of the perimeter.
 		p = self.oldLocation.dropAxis()
-		perimeterLength = 0;
+		perimeterLength = 0
 		for point in self.perimeter:
-			perimeterLength += abs( point - p );
+			perimeterLength += abs( point - p )
 			p = point
 		
 		#Build the perimeter with an increasing Z over the length.

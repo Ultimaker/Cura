@@ -531,7 +531,7 @@ class MenuButtonDisplay(object):
 		valueFound = False
 		for radio in self.radioList:
 			if radio.name == value:
-				valueFound = True;
+				valueFound = True
 		if valueFound:
 			self.value = value
 			for radio in self.radioList:

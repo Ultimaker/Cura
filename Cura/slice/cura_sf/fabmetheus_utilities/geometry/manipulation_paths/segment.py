@@ -36,7 +36,7 @@ def getManipulatedPaths(close, elementNode, loop, prefix, sideLength):
 	segmentLoop = []
 	startEnd = StartEnd(elementNode, len(loop), prefix)
 	for pointIndex in xrange(len(loop)):
-		if pointIndex >= startEnd.start and pointIndex < startEnd.end:
+		if startEnd.start <= pointIndex < startEnd.end:
 			segmentLoop += getSegmentPath(derivation.center, loop, path, pointIndex)
 		else:
 			segmentLoop.append(loop[pointIndex])

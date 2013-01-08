@@ -241,7 +241,7 @@ class ThreadSection(object):
 				rateMultiplier = self.dwindlePortionEnd * alongBetween + self.dwindlePortionBegin * (1.0 - alongBetween)
 				self.addGcodeMovementByRate(distanceFeedRate, endRateMultiplier, location, rateMultiplier, slowdownFlowRateMultiplier)
 			return
-		if self.dwindlePortionBegin > 1.0 and self.dwindlePortionEnd < 1.0:
+		if self.dwindlePortionBegin > 1.0 > self.dwindlePortionEnd:
 			alongDwindle = 0.0
 			if self.dwindlePortionBegin > 1.0 + halfOverSteps:
 				alongDwindle = (self.dwindlePortionBegin - 1.0) / dwindleDifference

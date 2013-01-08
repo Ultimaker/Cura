@@ -16,18 +16,18 @@ def getProfileName(craftTypeName):
 	return 'Cura profile:' + craftTypeName
 
 def addListsToCraftTypeRepository(fileNameHelp, repository):
-    #print('addListsToCraftTypeRepository:', fileNameHelp, repository)
-    repository.name = fileNameHelp.split('.')[-2]
-    repository.preferences = []
+	#print('addListsToCraftTypeRepository:', fileNameHelp, repository)
+	repository.name = fileNameHelp.split('.')[-2]
+	repository.preferences = []
 
 def getCraftTypePluginModule( craftTypeName = ''):
-    "Get the craft type plugin module"
-    if craftTypeName == '':
-        craftTypeName = getCraftTypeName()
-    profilePluginsDirectoryPath = getPluginsDirectoryPath()
-    return archive.getModuleWithDirectoryPath( profilePluginsDirectoryPath, craftTypeName )
+	"Get the craft type plugin module"
+	if craftTypeName == '':
+		craftTypeName = getCraftTypeName()
+	profilePluginsDirectoryPath = getPluginsDirectoryPath()
+	return archive.getModuleWithDirectoryPath( profilePluginsDirectoryPath, craftTypeName )
 
 def getPluginsDirectoryPath():
-    "Get the plugins directory path."
-    return archive.getSkeinforgePluginsPath('profile_plugins')
+	"Get the plugins directory path."
+	return archive.getSkeinforgePluginsPath('profile_plugins')
 

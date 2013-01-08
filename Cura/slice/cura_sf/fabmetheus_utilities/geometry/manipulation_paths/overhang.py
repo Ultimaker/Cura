@@ -328,8 +328,8 @@ class OverhangWiddershinsLeft(object):
 			beginComplex = rotatedLoop[pointIndex]
 			endComplex = rotatedLoop[ (pointIndex + 1) % len( rotatedLoop ) ]
 			xIntersection = euclidean.getXIntersectionIfExists( beginComplex, endComplex, rotatedPointComplex.imag )
-			if xIntersection != None:
-				if xIntersection >= beginX and xIntersection < endX:
+			if xIntersection is not None:
+				if beginX <= xIntersection < endX:
 					xIntersectionIndexList.append( euclidean.XIntersectionIndex( pointIndex, xIntersection ) )
 		self.closestXDistance = 987654321.0
 		self.closestXIntersectionIndex = None

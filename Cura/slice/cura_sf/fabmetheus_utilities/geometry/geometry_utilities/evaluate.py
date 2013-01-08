@@ -1159,7 +1159,7 @@ class Evaluator(object):
 		'Determine if the keyIndex is in range.'
 		if keyIndex == None:
 			return False
-		return keyIndex >= -len(self.value) and keyIndex < len(self.value)
+		return -len(self.value) <= keyIndex < len(self.value)
 
 
 class EvaluatorAddition(Evaluator):

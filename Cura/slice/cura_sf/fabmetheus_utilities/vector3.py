@@ -35,7 +35,7 @@ __date__ = '$Date: 2008/21/04 $'
 __license__ = 'GNU Affero General Public License http://www.gnu.org/licenses/agpl.html'
 
 
-class Vector3:
+class Vector3(object):
 	'A three dimensional vector class.'
 	__slots__ = ['x', 'y', 'z']
 

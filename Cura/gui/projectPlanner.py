@@ -468,7 +468,7 @@ class projectPlanner(wx.Frame):
 		self.preview.Refresh()
 
 	def OnMoveDown(self, e):
-		if self.selection == None:
+		if self.selection is None:
 			return
 		i = self.listbox.GetSelection()
 		if i == len(self.list) - 1:
@@ -479,7 +479,7 @@ class projectPlanner(wx.Frame):
 		self.preview.Refresh()
 	
 	def OnCopy(self, e):
-		if self.selection == None:
+		if self.selection is None:
 			return
 		
 		item = self.selection.clone()
@@ -490,7 +490,7 @@ class projectPlanner(wx.Frame):
 		self.preview.Refresh()
 	
 	def OnSetCustomProfile(self, e):
-		if self.selection == None:
+		if self.selection is None:
 			return
 
 		dlg=wx.FileDialog(self, "Select profile", os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)

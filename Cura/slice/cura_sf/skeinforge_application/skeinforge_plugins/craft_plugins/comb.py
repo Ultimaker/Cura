@@ -278,7 +278,7 @@ class CombSkein(object):
 		maximumX = max(beginRotated.real, endRotated.real)
 		minimumX = min(beginRotated.real, endRotated.real)
 		for xIntersection in switchX:
-			if xIntersection.x > minimumX and xIntersection.x < maximumX:
+			if minimumX < xIntersection.x < maximumX:
 				point = segment * complex(xIntersection.x, y)
 				points.append(point)
 				boundaryIndexes.append(xIntersection.index)

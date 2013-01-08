@@ -71,17 +71,17 @@ def addElementToPixelListFromPoint( element, pixelDictionary, point ):
 
 def addHorizontallyBoundedPoint(begin, center, end, horizontalBegin, horizontalEnd, path):
 	'Add point if it is within the horizontal bounds.'
-	if center.real >= horizontalEnd and center.real <= horizontalBegin:
+	if horizontalEnd <= center.real <= horizontalBegin:
 		path.append(center)
 		return
 	if end != None:
-		if center.real > horizontalBegin and end.real <= horizontalBegin:
+		if center.real > horizontalBegin >= end.real:
 			centerMinusEnd = center - end
 			along = (center.real - horizontalBegin) / centerMinusEnd.real
 			path.append(center - along * centerMinusEnd)
 			return
 	if begin != None:
-		if center.real < horizontalEnd and begin.real >= horizontalEnd:
+		if center.real < horizontalEnd <= begin.real:
 			centerMinusBegin = center - begin
 			along = (center.real - horizontalEnd) / centerMinusBegin.real
 			path.append(center - along * centerMinusBegin)
