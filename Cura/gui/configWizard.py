@@ -303,8 +303,12 @@ class SelectParts(InfoPage):
 		profile.putPreference('has_heated_bed', str(self.heatedBed.GetValue()))
 		if self.dualExtrusion.GetValue():
 			profile.putPreference('extruder_amount', '2')
+		else:
+			profile.putPreference('extruder_amount', '1')
 		if profile.getPreference('ultimaker_extruder_upgrade') == 'True':
 			profile.putProfileSetting('retraction_enable', 'True')
+		else:
+			profile.putProfileSetting('retraction_enable', 'False')
 
 
 class FirmwareUpgradePage(InfoPage):
