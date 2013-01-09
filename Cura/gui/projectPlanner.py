@@ -155,7 +155,7 @@ class projectPlanner(wx.Frame):
 		self.list = []
 		self.selection = None
 		self.printMode = 0
-		self.alwaysAutoPlace = True
+		self.alwaysAutoPlace = profile.getPreference('planner_always_autoplace') == 'True'
 
 		self.machineSize = numpy.array([profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')])
 		self.headSizeMin = numpy.array([profile.getPreferenceFloat('extruder_head_size_min_x'), profile.getPreferenceFloat('extruder_head_size_min_y'),0])
@@ -424,9 +424,7 @@ class projectPlanner(wx.Frame):
 		self.scaleCtrl.SetValue(str(self.selection.scale))
 		self.rotateCtrl.SetValue(int(self.selection.rotate))
 		if int(profile.getPreference('extruder_amount')) > 1:
-
 			self.extruderCtrl.SetValue(str(self.selection.extruder+1))
-
 		self.mirrorX.SetValue(self.selection.flipX)
 		self.mirrorY.SetValue(self.selection.flipY)
 		self.mirrorZ.SetValue(self.selection.flipZ)
@@ -450,14 +448,14 @@ class projectPlanner(wx.Frame):
 		dlg.Destroy()
 	
 	def OnRemModel(self, e):
-		if self.selection == None:
+		if self.selection is None:
 			return
 		self.list.remove(self.selection)
 		self._updateListbox()
 		self.preview.Refresh()
 	
 	def OnMoveUp(self, e):
-		if self.selection == None:
+		if self.selection is None:
 			return
 		i = self.listbox.GetSelection()
 		if i == 0:
@@ -505,7 +503,7 @@ class projectPlanner(wx.Frame):
 	def _updateListbox(self):
 		self.listbox.Clear()
 		for item in self.list:
-			if item.profile != None:
+			if item.profile is not None:
 				self.listbox.AppendAndEnsureVisible(os.path.split(item.filename)[1] + " *")
 			else:
 				self.listbox.AppendAndEnsureVisible(os.path.split(item.filename)[1])
@@ -682,13 +680,13 @@ class projectPlanner(wx.Frame):
 		self.preview.Refresh()
 
 	def OnExtruderChange(self, e):
-		if self.selection == None:
+		if self.selection is None:
 			return
 		self.selection.extruder = int(self.extruderCtrl.GetValue()) - 1
 		self.preview.Refresh()
 		
 	def OnMirrorChange(self):
-		if self.selection == None:
+		if self.selection is None:
 			return
 		self.selection.flipX = self.mirrorX.GetValue()
 		self.selection.flipY = self.mirrorY.GetValue()
@@ -749,11 +747,18 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 	def OnMouseLeftDown(self,e):
 		self.allowDrag = True
 		if not self.parent.alwaysAutoPlace and not self.view3D:
-			#TODO: Translate mouse X/Y to 3D X/Y/Z
+			p0 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport))
+			p1 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport))
+			cursorZ0 = p0 - (p1 - p0) * (p0[2] / (p1[2] - p0[2]))
+
 			for item in self.parent.list:
 				iMin = (item.getMinimum() * item.scale) + numpy.array([item.centerX, item.centerY, 0]) - self.parent.extruderOffset[item.extruder]
 				iMax = (item.getMaximum() * item.scale) + numpy.array([item.centerX, item.centerY, 0]) - self.parent.extruderOffset[item.extruder]
-		
+				if iMin[0] <= cursorZ0[0] <= iMax[0] and iMin[1] <= cursorZ0[1] <= iMax[1]:
+					self.parent.selection = item
+					self.parent._updateListbox()
+					self.parent.OnListSelect(None)
+
 	def OnMouseMotion(self,e):
 		if self.allowDrag and e.Dragging() and e.LeftIsDown():
 			if self.view3D:
@@ -765,7 +770,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 					self.pitch = 10
 			elif not self.parent.alwaysAutoPlace:
 				item = self.parent.selection
-				if item != None:
+				if item is not None:
 					item.centerX += float(e.GetX() - self.oldX) * self.zoom / self.GetSize().GetHeight() * 2
 					item.centerY -= float(e.GetY() - self.oldY) * self.zoom / self.GetSize().GetHeight() * 2
 					item.clampXY()
@@ -810,6 +815,10 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		else:
 			glTranslate(self.offsetX, self.offsetY, 0.0)
 		glTranslate(-self.parent.machineSize[0]/2, -self.parent.machineSize[1]/2, 0)
+
+		self.viewport = glGetIntegerv(GL_VIEWPORT);
+		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX);
+		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX);
 
 		self.OnDraw()
 		self.SwapBuffers()
@@ -1122,6 +1131,8 @@ class preferencesDialog(wx.Frame):
 		extruderAmount = int(profile.getPreference('extruder_amount'))
 		
 		left, right, main = self.panel.CreateConfigPanel(self)
+		configBase.TitleRow(left, 'User interface settings')
+		c = configBase.SettingRow(left, 'Always auto place objects in planner', 'planner_always_autoplace', True, 'Disable this to allow manual placement in the project planner (requires restart).', type = 'preference')
 		configBase.TitleRow(left, 'Machine head size')
 		c = configBase.SettingRow(left, 'Head size - X towards home (mm)', 'extruder_head_size_min_x', '0', 'Size of your printer head in the X direction, on the Ultimaker your fan is in this direction.', type = 'preference')
 		validators.validFloat(c, 0.1)

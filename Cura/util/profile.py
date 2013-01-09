@@ -175,7 +175,8 @@ preferencesDefaultSettings = {
 	'filament_cost_meter': '0',
 	'sdpath': '',
 	'sdshortnames': 'True',
-	
+
+	'planner_always_autoplace': 'True',
 	'extruder_head_size_min_x': '75.0',
 	'extruder_head_size_min_y': '18.0',
 	'extruder_head_size_max_x': '18.0',
