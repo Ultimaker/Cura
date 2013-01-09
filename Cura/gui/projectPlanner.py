@@ -842,7 +842,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		for item in self.parent.list:
 			if item == self.parent.selection:
 				seenSelected = True
-			if item.modelDisplayList == None:
+			if item.modelDisplayList is None:
 				item.modelDisplayList = glGenLists(1);
 			if item.modelDirty:
 				item.modelDirty = False

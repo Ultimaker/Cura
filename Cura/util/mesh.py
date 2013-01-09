@@ -106,7 +106,7 @@ class mesh(object):
 				tree.insert(e)
 			else:
 				removeDict[idx] = q[0].idx
-			if callback != None and (idx % 100) == 0:
+			if callback is not None and (idx % 100) == 0:
 				callback(idx)
 		#print "%f: " % (time.time() - t0), "Marked %d duplicate vertexes for removal." % (len(removeDict))
 

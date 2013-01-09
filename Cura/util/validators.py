@@ -20,7 +20,7 @@ class validFloat(object):
 	def validate(self):
 		try:
 			f = float(eval(self.setting.GetValue().replace(',','.'), {}, {}))
-			if self.minValue != None and f < self.minValue:
+			if self.minValue is not None and f < self.minValue:
 				return ERROR, 'This setting should not be below ' + str(self.minValue)
 			if self.maxValue != None and f > self.maxValue:
 				return ERROR, 'This setting should not be above ' + str(self.maxValue)

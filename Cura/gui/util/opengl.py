@@ -66,7 +66,7 @@ def DrawMachine(machineSize):
 		glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR)
 
 		global platformMesh
-		if platformMesh == None:
+		if platformMesh is None:
 			platformMesh = meshLoader.loadMesh(getPathForMesh('ultimaker_platform.stl'))
 			platformMesh.setRotateMirror(0, False, False, False, False, False)
 
@@ -456,7 +456,7 @@ def DrawGCodeLayer(layer):
 				glVertex3f(vv3.x, vv3.y, vv3.z - zOffset)
 				glVertex3f(vv2.x, vv2.y, vv2.z - zOffset)
 				glEnd()
-				if prevNormal != None:
+				if prevNormal is not None:
 					n = (normal + prevNormal)
 					n.normalize()
 					vv4 = v0 + n * lineWidth

@@ -14,7 +14,7 @@ def getValue(line, key, default = None):
 		return default
 	subPart = line[line.find(key) + 1:]
 	m = re.search('^[0-9]+\.?[0-9]*', subPart)
-	if m == None:
+	if m is None:
 		return default
 	try:
 		return float(m.group(0))

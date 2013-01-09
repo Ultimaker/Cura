@@ -344,7 +344,7 @@ def getPreference(name):
 	if name in tempOverride:
 		return unicode(tempOverride[name])
 	global globalPreferenceParser
-	if globalPreferenceParser == None:
+	if globalPreferenceParser is None:
 		globalPreferenceParser = ConfigParser.ConfigParser()
 		globalPreferenceParser.read(getPreferencePath())
 	if not globalPreferenceParser.has_option('preference', name):
