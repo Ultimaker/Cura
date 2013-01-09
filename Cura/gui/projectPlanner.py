@@ -604,68 +604,6 @@ class projectPlanner(wx.Frame):
 		pspw.Centre()
 		pspw.Show(True)
 
-#			clearZ = 0
-#			actionList = []
-#			for item in self.list:
-#				if item.profile is not None and os.path.isfile(item.profile):
-#					profile.loadGlobalProfile(item.profile)
-#				put('object_center_x', item.centerX - self.extruderOffset[item.extruder][0])
-#				put('object_center_y', item.centerY - self.extruderOffset[item.extruder][1])
-#				put('model_scale', item.scale)
-#				put('flip_x', item.flipX)
-#				put('flip_y', item.flipY)
-#				put('flip_z', item.flipZ)
-#				put('model_rotate_base', item.rotate)
-#				put('swap_xz', item.swapXZ)
-#				put('swap_yz', item.swapYZ)
-#
-#				action = Action()
-#				action.sliceCmd = sliceRun.getSliceCommand(item.filename)
-#				action.centerX = item.centerX
-#				action.centerY = item.centerY
-#				action.temperature = profile.getProfileSettingFloat('print_temperature')
-#				action.extruder = item.extruder
-#				action.filename = item.filename
-#				clearZ = max(clearZ, item.getSize()[2] * item.scale + 5.0)
-#				action.clearZ = clearZ
-#				action.leaveResultForNextSlice = False
-#				action.usePreviousSlice = False
-#				actionList.append(action)
-#
-#				if self.list.index(item) > 0 and item.isSameExceptForPosition(self.list[self.list.index(item)-1]):
-#					actionList[-2].leaveResultForNextSlice = True
-#					actionList[-1].usePreviousSlice = True
-#
-#				if item.profile is not None:
-#					profile.loadGlobalProfileFromString(oldProfile)
-#
-#		else:
-#			self._saveCombinedSTL(resultFilename + "_temp_.stl")
-#			put('model_scale', 1.0)
-#			put('flip_x', False)
-#			put('flip_y', False)
-#			put('flip_z', False)
-#			put('model_rotate_base', 0)
-#			put('swap_xz', False)
-#			put('swap_yz', False)
-#			actionList = []
-#
-#			action = Action()
-#			action.sliceCmd = sliceRun.getSliceCommand(resultFilename, [resultFilename + "_temp_.stl"], [profile.getMachineCenterCoords()])
-#			action.centerX = profile.getMachineCenterCoords()[0]
-#			action.centerY = profile.getMachineCenterCoords()[1]
-#			action.temperature = profile.getProfileSettingFloat('print_temperature')
-#			action.extruder = 0
-#			action.filename = resultFilename + "_temp_.stl"
-#			action.clearZ = 0
-#			action.leaveResultForNextSlice = False
-#			action.usePreviousSlice = False
-#
-#			actionList.append(action)
-#
-#		#Restore the old profile.
-#		profile.resetTempOverride()
-
 	def OnScaleChange(self, e):
 		if self.selection is None:
 			return
