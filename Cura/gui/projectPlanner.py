@@ -947,6 +947,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 		self.progressGauge.SetRange(10000)
 		self.progressGauge2 = wx.Gauge(self, -1)
 		self.progressGauge2.SetRange(self.fileCount)
+		self.progressGauge2.SetValue(-1)
 		self.abortButton = wx.Button(self, -1, "Abort")
 		self.sizer.Add(self.statusText, (0,0), span=(1,5))
 		self.sizer.Add(self.progressGauge, (1, 0), span=(1,5), flag=wx.EXPAND)
@@ -972,6 +973,9 @@ class ProjectSliceProgressWindow(wx.Frame):
 
 	def SetProgress(self, stepName, layer, maxLayer):
 		if self.prevStep != stepName:
+			if stepName == 'slice':
+				self.progressGauge2.SetValue(self.progressGauge2.GetValue() + 1)
+				self.totalDoneFactor = 0
 			self.totalDoneFactor += sliceRun.sliceStepTimeFactor[self.prevStep]
 			newTime = time.time()
 			#print "#####" + str(newTime-self.startTime) + " " + self.prevStep + " -> " + stepName
@@ -1094,7 +1098,8 @@ class ProjectSliceProgressWindow(wx.Frame):
 #			resultFile.write('G1 Z%f F%f\n' % (self.actionList[-1].clearZ, profile.getProfileSettingFloat('max_z_speed') * 60))
 #		resultFile.write(profile.getAlterationFileContents('end.gcode'))
 #		resultFile.close()
-		
+		self.progressGauge2.SetValue(self.fileCount)
+
 		gcode = gcodeInterpreter.gcode()
 		gcode.load(self.resultFilename)
 		
