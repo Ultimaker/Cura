@@ -48,7 +48,7 @@ class gcode(object):
 			return "%.2f" % (self.calculateWeight() * cost_kg)
 		elif cost_meter > 0.0:
 			return "%.2f" % (self.extrusionAmount / 1000 * cost_meter)
-		return False
+		return None
 	
 	def _load(self, gcodeFile):
 		filePos = 0

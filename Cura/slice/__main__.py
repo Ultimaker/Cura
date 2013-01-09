@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from optparse import OptionParser
 import sys
 import re
+import os
 
 from Cura.util import profile
 from Cura.slice.cura_sf.skeinforge_application.skeinforge_plugins.craft_plugins import export
@@ -26,9 +27,10 @@ def main():
 		profile.loadGlobalProfileFromString(options.profile)
 	options.output = fixUTF8(options.output)
 
+	clearZ = 0
 	resultFile = open(options.output, "w")
 	for idx in xrange(0, len(args), 2):
-		position = map(float, args[0].split(','))
+		position = map(float, args[idx].split(','))
 		if len(position) < 9 + 2:
 			position = position[0:2]
 			position += [1,0,0]
@@ -41,6 +43,11 @@ def main():
 			resultFile.write(profile.getAlterationFileContents('start.gcode').replace('?filename?', ' '.join(filenames).encode('ascii', 'replace')))
 		else:
 			resultFile.write(';TYPE:CUSTOM\n')
+			n = output[-1].rfind('Z')+1
+			zString = output[-1][n:n+20]
+			zString = zString[0:zString.find(' ')]
+			clearZ = max(clearZ, float(zString) + 10)
+			profile.setTempOverride('clear_z', clearZ)
 			resultFile.write(profile.getAlterationFileContents('nextobject.gcode').replace('?filename?', ' '.join(filenames).encode('ascii', 'replace')))
 
 		output = []
@@ -58,6 +65,7 @@ def main():
 				profile.setTempOverride('object_center_y', position[1])
 			profile.setTempOverride('object_matrix', ','.join(map(str, position[2:11])))
 			output.append(export.getOutput(filename))
+			profile.resetTempOverride()
 		if len(output) == 1:
 			resultFile.write(output[0])
 		else:
@@ -70,6 +78,7 @@ def main():
 	ret = profile.runPostProcessingPlugins(options.output)
 	if ret is not None:
 		print ret
+	print "Finalizing %s" % (os.path.basename(options.output))
 
 
 def stitchMultiExtruder(outputList, resultFile):

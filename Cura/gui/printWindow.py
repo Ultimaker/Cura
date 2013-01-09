@@ -395,7 +395,7 @@ class printWindow(wx.Frame):
 			status += "Filament: %.2fm %.2fg\n" % (
 			self.gcode.extrusionAmount / 1000, self.gcode.calculateWeight() * 1000)
 			cost = self.gcode.calculateCost()
-			if cost != False:
+			if cost is not None:
 				status += "Filament cost: %s\n" % (cost)
 			status += "Estimated print time: %02d:%02d\n" % (
 			int(self.gcode.totalMoveTimeMinute / 60), int(self.gcode.totalMoveTimeMinute % 60))

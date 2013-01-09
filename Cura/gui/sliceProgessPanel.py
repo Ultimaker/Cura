@@ -109,7 +109,7 @@ class sliceProgessPanel(wx.Panel):
 			status = "Ready: Filament: %.2fm %.2fg" % (result.gcode.extrusionAmount / 1000, result.gcode.calculateWeight() * 1000)
 			status += " Print time: %02d:%02d" % (int(result.gcode.totalMoveTimeMinute / 60), int(result.gcode.totalMoveTimeMinute % 60))
 			cost = result.gcode.calculateCost()
-			if cost != False:
+			if cost is not None:
 				status += " Cost: %s" % (cost)
 			self.statusText.SetLabel(status)
 			if exporer.hasExporer():

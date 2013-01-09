@@ -489,7 +489,7 @@ def replaceGCodeTags(filename, gcodeInt):
 	data = data.replace('#F_AMNT#', ('%8.2f' % (gcodeInt.extrusionAmount / 1000))[-8:])
 	data = data.replace('#F_WGHT#', ('%8.2f' % (gcodeInt.calculateWeight() * 1000))[-8:])
 	cost = gcodeInt.calculateCost()
-	if cost == False:
+	if cost is None:
 		cost = 'Unknown'
 	data = data.replace('#F_COST#', ('%8s' % (cost.split(' ')[0]))[-8:])
 	f.seek(0)

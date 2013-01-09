@@ -189,7 +189,6 @@ class CarveSkein(object):
 		"Parse gnu triangulated surface text and store the carved gcode."
 
 		matrix = map(float, repository.matrix.value.split(','))
-		print matrix
 
 		for i in xrange(0, len(carving.vertexes)):
 			x = carving.vertexes[i].x

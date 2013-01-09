@@ -589,76 +589,83 @@ class projectPlanner(wx.Frame):
 		put = profile.setTempOverride
 		oldProfile = profile.getGlobalProfileString()
 		
-		put('add_start_end_gcode', 'False')
-		put('gcode_extension', 'project_tmp')
 		if self.printMode == 0:
-			clearZ = 0
-			actionList = []
+			fileList = []
+			positionList = []
 			for item in self.list:
-				if item.profile is not None and os.path.isfile(item.profile):
-					profile.loadGlobalProfile(item.profile)
-				put('object_center_x', item.centerX - self.extruderOffset[item.extruder][0])
-				put('object_center_y', item.centerY - self.extruderOffset[item.extruder][1])
-				put('model_scale', item.scale)
-				put('flip_x', item.flipX)
-				put('flip_y', item.flipY)
-				put('flip_z', item.flipZ)
-				put('model_rotate_base', item.rotate)
-				put('swap_xz', item.swapXZ)
-				put('swap_yz', item.swapYZ)
-				
-				action = Action()
-				action.sliceCmd = sliceRun.getSliceCommand(item.filename)
-				action.centerX = item.centerX
-				action.centerY = item.centerY
-				action.temperature = profile.getProfileSettingFloat('print_temperature')
-				action.extruder = item.extruder
-				action.filename = item.filename
-				clearZ = max(clearZ, item.getSize()[2] * item.scale + 5.0)
-				action.clearZ = clearZ
-				action.leaveResultForNextSlice = False
-				action.usePreviousSlice = False
-				actionList.append(action)
-
-				if self.list.index(item) > 0 and item.isSameExceptForPosition(self.list[self.list.index(item)-1]):
-					actionList[-2].leaveResultForNextSlice = True
-					actionList[-1].usePreviousSlice = True
-
-				if item.profile is not None:
-					profile.loadGlobalProfileFromString(oldProfile)
-			
+				fileList.append(item.filename)
+				positionList.append([item.centerX, item.centerY] + (item.mesh.matrix * item.scale).reshape((9,)).tolist())
+			sliceCommand = sliceRun.getSliceCommand(resultFilename, fileList, positionList)
 		else:
 			self._saveCombinedSTL(resultFilename + "_temp_.stl")
-			put('model_scale', 1.0)
-			put('flip_x', False)
-			put('flip_y', False)
-			put('flip_z', False)
-			put('model_rotate_base', 0)
-			put('swap_xz', False)
-			put('swap_yz', False)
-			actionList = []
-			
-			action = Action()
-			action.sliceCmd = sliceRun.getSliceCommand(resultFilename, [resultFilename + "_temp_.stl"], [profile.getMachineCenterCoords()])
-			action.centerX = profile.getMachineCenterCoords()[0]
-			action.centerY = profile.getMachineCenterCoords()[1]
-			action.temperature = profile.getProfileSettingFloat('print_temperature')
-			action.extruder = 0
-			action.filename = resultFilename + "_temp_.stl"
-			action.clearZ = 0
-			action.leaveResultForNextSlice = False
-			action.usePreviousSlice = False
+			sliceCommand = sliceRun.getSliceCommand(resultFilename, [resultFilename + "_temp_.stl"], [profile.getMachineCenterCoords()])
 
-			actionList.append(action)
-		
-		#Restore the old profile.
-		profile.resetTempOverride()
-		
-		pspw = ProjectSliceProgressWindow(actionList, resultFilename)
-		pspw.extruderOffset = self.extruderOffset
+		pspw = ProjectSliceProgressWindow(sliceCommand, resultFilename, len(self.list))
 		pspw.Centre()
 		pspw.Show(True)
-	
+
+#			clearZ = 0
+#			actionList = []
+#			for item in self.list:
+#				if item.profile is not None and os.path.isfile(item.profile):
+#					profile.loadGlobalProfile(item.profile)
+#				put('object_center_x', item.centerX - self.extruderOffset[item.extruder][0])
+#				put('object_center_y', item.centerY - self.extruderOffset[item.extruder][1])
+#				put('model_scale', item.scale)
+#				put('flip_x', item.flipX)
+#				put('flip_y', item.flipY)
+#				put('flip_z', item.flipZ)
+#				put('model_rotate_base', item.rotate)
+#				put('swap_xz', item.swapXZ)
+#				put('swap_yz', item.swapYZ)
+#
+#				action = Action()
+#				action.sliceCmd = sliceRun.getSliceCommand(item.filename)
+#				action.centerX = item.centerX
+#				action.centerY = item.centerY
+#				action.temperature = profile.getProfileSettingFloat('print_temperature')
+#				action.extruder = item.extruder
+#				action.filename = item.filename
+#				clearZ = max(clearZ, item.getSize()[2] * item.scale + 5.0)
+#				action.clearZ = clearZ
+#				action.leaveResultForNextSlice = False
+#				action.usePreviousSlice = False
+#				actionList.append(action)
+#
+#				if self.list.index(item) > 0 and item.isSameExceptForPosition(self.list[self.list.index(item)-1]):
+#					actionList[-2].leaveResultForNextSlice = True
+#					actionList[-1].usePreviousSlice = True
+#
+#				if item.profile is not None:
+#					profile.loadGlobalProfileFromString(oldProfile)
+#
+#		else:
+#			self._saveCombinedSTL(resultFilename + "_temp_.stl")
+#			put('model_scale', 1.0)
+#			put('flip_x', False)
+#			put('flip_y', False)
+#			put('flip_z', False)
+#			put('model_rotate_base', 0)
+#			put('swap_xz', False)
+#			put('swap_yz', False)
+#			actionList = []
+#
+#			action = Action()
+#			action.sliceCmd = sliceRun.getSliceCommand(resultFilename, [resultFilename + "_temp_.stl"], [profile.getMachineCenterCoords()])
+#			action.centerX = profile.getMachineCenterCoords()[0]
+#			action.centerY = profile.getMachineCenterCoords()[1]
+#			action.temperature = profile.getProfileSettingFloat('print_temperature')
+#			action.extruder = 0
+#			action.filename = resultFilename + "_temp_.stl"
+#			action.clearZ = 0
+#			action.leaveResultForNextSlice = False
+#			action.usePreviousSlice = False
+#
+#			actionList.append(action)
+#
+#		#Restore the old profile.
+#		profile.resetTempOverride()
+
 	def OnScaleChange(self, e):
 		if self.selection is None:
 			return
@@ -921,12 +928,13 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		glFlush()
 
 class ProjectSliceProgressWindow(wx.Frame):
-	def __init__(self, actionList, resultFilename):
+	def __init__(self, sliceCommand, resultFilename, fileCount):
 		super(ProjectSliceProgressWindow, self).__init__(None, title='Cura')
 		self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 		
-		self.actionList = actionList
+		self.sliceCommand = sliceCommand
 		self.resultFilename = resultFilename
+		self.fileCount = fileCount
 		self.abort = False
 		self.prevStep = 'start'
 		self.totalDoneFactor = 0.0
@@ -938,7 +946,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 		self.progressGauge = wx.Gauge(self, -1)
 		self.progressGauge.SetRange(10000)
 		self.progressGauge2 = wx.Gauge(self, -1)
-		self.progressGauge2.SetRange(len(self.actionList))
+		self.progressGauge2.SetRange(self.fileCount)
 		self.abortButton = wx.Button(self, -1, "Abort")
 		self.sizer.Add(self.statusText, (0,0), span=(1,5))
 		self.sizer.Add(self.progressGauge, (1, 0), span=(1,5), flag=wx.EXPAND)
@@ -973,94 +981,119 @@ class ProjectSliceProgressWindow(wx.Frame):
 		progresValue = ((self.totalDoneFactor + sliceRun.sliceStepTimeFactor[stepName] * layer / maxLayer) / sliceRun.totalRunTimeFactor) * 10000
 		self.progressGauge.SetValue(int(progresValue))
 		self.statusText.SetLabel(stepName + " [" + str(layer) + "/" + str(maxLayer) + "]")
-		taskbar.setProgress(self, 10000 * self.progressGauge2.GetValue() + int(progresValue), 10000 * len(self.actionList))
+		taskbar.setProgress(self, 10000 * self.progressGauge2.GetValue() + int(progresValue), 10000 * self.fileCount)
 	
 	def OnRun(self):
-		resultFile = open(self.resultFilename, "w")
-		put = profile.setTempOverride
 		self.progressLog = []
-		for action in self.actionList:
-			wx.CallAfter(self.SetTitle, "Building: [%d/%d]"  % (self.actionList.index(action) + 1, len(self.actionList)))
-			if not action.usePreviousSlice:
-				p = sliceRun.startSliceCommandProcess(action.sliceCmd)
-				line = p.stdout.readline()
-		
-				maxValue = 1
-				while(len(line) > 0):
-					line = line.rstrip()
-					if line[0:9] == "Progress[" and line[-1:] == "]":
-						progress = line[9:-1].split(":")
-						if len(progress) > 2:
-							maxValue = int(progress[2])
-						wx.CallAfter(self.SetProgress, progress[0], int(progress[1]), maxValue)
-					else:
-						self.progressLog.append(line)
-						wx.CallAfter(self.statusText.SetLabel, line)
-					if self.abort:
-						p.terminate()
-						wx.CallAfter(self.statusText.SetLabel, "Aborted by user.")
-						resultFile.close()
-						return
-					line = p.stdout.readline()
-				self.returnCode = p.wait()
-			
-			put('object_center_x', action.centerX - self.extruderOffset[action.extruder][0])
-			put('object_center_y', action.centerY - self.extruderOffset[action.extruder][1])
-			put('clear_z', action.clearZ)
-			put('extruder', action.extruder)
-			put('print_temperature', action.temperature)
-			
-			if action == self.actionList[0]:
-				resultFile.write(';TYPE:CUSTOM\n')
-				resultFile.write('T%d\n' % (action.extruder))
-				currentExtruder = action.extruder
-				prevTemp = action.temperature
-				startGCode = profile.getAlterationFileContents('start.gcode')
-				startGCode = startGCode.replace('?filename?', 'Multiple files')
-				resultFile.write(startGCode)
+		p = sliceRun.startSliceCommandProcess(self.sliceCommand)
+		line = p.stdout.readline()
+		while(len(line) > 0):
+			line = line.rstrip()
+			if line[0:9] == "Progress[" and line[-1:] == "]":
+				progress = line[9:-1].split(":")
+				if len(progress) > 2:
+					maxValue = int(progress[2])
+				wx.CallAfter(self.SetProgress, progress[0], int(progress[1]), maxValue)
 			else:
-				#reset the extrusion length, and move to the next object center.
-				resultFile.write(';TYPE:CUSTOM\n')
-				if prevTemp != action.temperature and action.temperature > 0:
-					resultFile.write('M104 S%d\n' % (int(action.temperature)))
-					prevTemp = action.temperature
-				resultFile.write(profile.getAlterationFileContents('nextobject.gcode'))
-			resultFile.write(';PRINTNR:%d\n' % self.actionList.index(action))
-			profile.resetTempOverride()
-			
-			if not action.usePreviousSlice:
-				f = open(sliceRun.getExportFilename(action.filename, "project_tmp"), "r")
-				data = f.read(4096)
-				while data != '':
-					resultFile.write(data)
-					data = f.read(4096)
-				f.close()
-				savedCenterX = action.centerX
-				savedCenterY = action.centerY
-			else:
-				f = open(sliceRun.getExportFilename(action.filename, "project_tmp"), "r")
-				for line in f:
-					if line[0] != ';':
-						if 'X' in line:
-							line = self._adjustNumberInLine(line, 'X', action.centerX - savedCenterX)
-						if 'Y' in line:
-							line = self._adjustNumberInLine(line, 'Y', action.centerY - savedCenterY)
-					resultFile.write(line)
-				f.close()
+				self.progressLog.append(line)
+				wx.CallAfter(self.statusText.SetLabel, line)
+			if self.abort:
+				p.terminate()
+				wx.CallAfter(self.statusText.SetLabel, "Aborted by user.")
+				return
+			line = p.stdout.readline()
+		line = p.stderr.readline()
+		while len(line) > 0:
+			line = line.rstrip()
+			self.progressLog.append(line)
+			line = p.stderr.readline()
+		self.returnCode = p.wait()
 
-			if not action.leaveResultForNextSlice:
-				os.remove(sliceRun.getExportFilename(action.filename, "project_tmp"))
-			
-			wx.CallAfter(self.progressGauge.SetValue, 10000)
-			self.totalDoneFactor = 0.0
-			wx.CallAfter(self.progressGauge2.SetValue, self.actionList.index(action) + 1)
-		
-		resultFile.write(';TYPE:CUSTOM\n')
-		if len(self.actionList) > 1 and self.actionList[-1].clearZ > 1:
-			#only move to higher Z if we have sliced more then 1 object. This solves the "move into print after printing" problem with the print-all-at-once option.
-			resultFile.write('G1 Z%f F%f\n' % (self.actionList[-1].clearZ, profile.getProfileSettingFloat('max_z_speed') * 60))
-		resultFile.write(profile.getAlterationFileContents('end.gcode'))
-		resultFile.close()
+#		resultFile = open(self.resultFilename, "w")
+#		put = profile.setTempOverride
+#		self.progressLog = []
+#		for action in self.actionList:
+#			wx.CallAfter(self.SetTitle, "Building: [%d/%d]"  % (self.actionList.index(action) + 1, len(self.actionList)))
+#			if not action.usePreviousSlice:
+#				p = sliceRun.startSliceCommandProcess(action.sliceCmd)
+#				line = p.stdout.readline()
+#
+#				maxValue = 1
+#				while(len(line) > 0):
+#					line = line.rstrip()
+#					if line[0:9] == "Progress[" and line[-1:] == "]":
+#						progress = line[9:-1].split(":")
+#						if len(progress) > 2:
+#							maxValue = int(progress[2])
+#						wx.CallAfter(self.SetProgress, progress[0], int(progress[1]), maxValue)
+#					else:
+#						self.progressLog.append(line)
+#						wx.CallAfter(self.statusText.SetLabel, line)
+#					if self.abort:
+#						p.terminate()
+#						wx.CallAfter(self.statusText.SetLabel, "Aborted by user.")
+#						resultFile.close()
+#						return
+#					line = p.stdout.readline()
+#				self.returnCode = p.wait()
+#
+#			put('object_center_x', action.centerX - self.extruderOffset[action.extruder][0])
+#			put('object_center_y', action.centerY - self.extruderOffset[action.extruder][1])
+#			put('clear_z', action.clearZ)
+#			put('extruder', action.extruder)
+#			put('print_temperature', action.temperature)
+#
+#			if action == self.actionList[0]:
+#				resultFile.write(';TYPE:CUSTOM\n')
+#				resultFile.write('T%d\n' % (action.extruder))
+#				currentExtruder = action.extruder
+#				prevTemp = action.temperature
+#				startGCode = profile.getAlterationFileContents('start.gcode')
+#				startGCode = startGCode.replace('?filename?', 'Multiple files')
+#				resultFile.write(startGCode)
+#			else:
+#				#reset the extrusion length, and move to the next object center.
+#				resultFile.write(';TYPE:CUSTOM\n')
+#				if prevTemp != action.temperature and action.temperature > 0:
+#					resultFile.write('M104 S%d\n' % (int(action.temperature)))
+#					prevTemp = action.temperature
+#				resultFile.write(profile.getAlterationFileContents('nextobject.gcode'))
+#			resultFile.write(';PRINTNR:%d\n' % self.actionList.index(action))
+#			profile.resetTempOverride()
+#
+#			if not action.usePreviousSlice:
+#				f = open(sliceRun.getExportFilename(action.filename, "project_tmp"), "r")
+#				data = f.read(4096)
+#				while data != '':
+#					resultFile.write(data)
+#					data = f.read(4096)
+#				f.close()
+#				savedCenterX = action.centerX
+#				savedCenterY = action.centerY
+#			else:
+#				f = open(sliceRun.getExportFilename(action.filename, "project_tmp"), "r")
+#				for line in f:
+#					if line[0] != ';':
+#						if 'X' in line:
+#							line = self._adjustNumberInLine(line, 'X', action.centerX - savedCenterX)
+#						if 'Y' in line:
+#							line = self._adjustNumberInLine(line, 'Y', action.centerY - savedCenterY)
+#					resultFile.write(line)
+#				f.close()
+#
+#			if not action.leaveResultForNextSlice:
+#				os.remove(sliceRun.getExportFilename(action.filename, "project_tmp"))
+#
+#			wx.CallAfter(self.progressGauge.SetValue, 10000)
+#			self.totalDoneFactor = 0.0
+#			wx.CallAfter(self.progressGauge2.SetValue, self.actionList.index(action) + 1)
+#
+#		resultFile.write(';TYPE:CUSTOM\n')
+#		if len(self.actionList) > 1 and self.actionList[-1].clearZ > 1:
+#			#only move to higher Z if we have sliced more then 1 object. This solves the "move into print after printing" problem with the print-all-at-once option.
+#			resultFile.write('G1 Z%f F%f\n' % (self.actionList[-1].clearZ, profile.getProfileSettingFloat('max_z_speed') * 60))
+#		resultFile.write(profile.getAlterationFileContents('end.gcode'))
+#		resultFile.close()
 		
 		gcode = gcodeInterpreter.gcode()
 		gcode.load(self.resultFilename)
@@ -1072,7 +1105,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 		status += "\nFilament: %.2fm %.2fg" % (gcode.extrusionAmount / 1000, gcode.calculateWeight() * 1000)
 		status += "\nPrint time: %02d:%02d" % (int(gcode.totalMoveTimeMinute / 60), int(gcode.totalMoveTimeMinute % 60))
 		cost = gcode.calculateCost()
-		if cost != False:
+		if cost is not None:
 			status += "\nCost: %s" % (cost)
 		profile.replaceGCodeTags(self.resultFilename, gcode)
 		wx.CallAfter(self.statusText.SetLabel, status)
