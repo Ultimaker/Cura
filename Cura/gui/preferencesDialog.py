@@ -66,6 +66,9 @@ class preferencesDialog(wx.Frame):
 			c = configBase.SettingRow(right, 'SD card path', 'sdpath', '', 'Location of your SD card, when using the copy to SD feature.', type = 'preference')
 		c = configBase.SettingRow(right, 'Copy to SD with 8.3 names', 'sdshortnames', False, 'Save the gcode files in short filenames, so they are properly shown on the UltiController', type = 'preference')
 
+		configBase.TitleRow(right, 'Cura settings')
+		c = configBase.SettingRow(right, 'Check for updates', 'check_for_updates', True, 'Check for newer versions of Cura on startup', type = 'preference')
+
 		self.okButton = wx.Button(right, -1, 'Ok')
 		right.GetSizer().Add(self.okButton, (right.GetSizer().GetRows(), 0), flag=wx.BOTTOM, border=5)
 		self.okButton.Bind(wx.EVT_BUTTON, self.OnClose)

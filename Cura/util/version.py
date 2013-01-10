@@ -2,6 +2,10 @@ from __future__ import absolute_import
 
 import os
 import sys
+import urllib2
+import platform
+from xml.etree import ElementTree
+
 from Cura.util import resources
 
 def getVersion(getGitVersion = True):
@@ -28,6 +32,29 @@ def isDevVersion():
 	gitPath = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../../.git"))
 	return os.path.exists(gitPath)
 
+def checkForNewerVersion():
+	if isDevVersion():
+		return None
+	try:
+		updateBaseURL = 'http://software.ultimaker.com'
+		localVersion = map(int, getVersion(False).split('.'))
+		while len(localVersion) < 3:
+			localVersion += [1]
+		latestFile = urllib2.urlopen("%s/latest.xml" % (updateBaseURL))
+		latestXml = latestFile.read()
+		latestFile.close()
+		xmlTree = ElementTree.fromstring(latestXml)
+		for release in xmlTree.iter('release'):
+			os = str(release.attrib['os'])
+			version = [int(release.attrib['major']), int(release.attrib['minor']), int(release.attrib['revision'])]
+			filename = release.find("filename").text
+			if platform.system() == os:
+				if version > localVersion:
+					return "%s/current/%s" % (updateBaseURL, filename)
+	except:
+		print sys.exc_info()
+		return None
+	return None
+
 if __name__ == '__main__':
 	print(getVersion())
-
