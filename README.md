@@ -19,67 +19,123 @@ The "package.sh" script generates a final release package. You should not need i
 
 Mac OS X
 --------
-The following section describes how to prepare environment for developing and packaing for Mac OS X.
+The following section describes how to prepare working environment for developing and packaing for Mac OS X.
+The working environment consist of build of Python, build of wxPython and all required Python packages.
 
-###Python
-You'll need non-system, framework-based, universal with min deployment target set to 10.6 build of Python 2.7
+We assume you already have Apple hardware with [64bit processor](http://support.apple.com/kb/HT3696) and you are familiar with tools like [virtualenv](http://pypi.python.org/pypi/virtualenv), [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) and [pip](http://www.pip-installer.org/en/latest/). Also ensure you have modern compiler installed.
 
-**non-system**: it was not bundeled with distribution of Mac OS X. You can check this by `python -c "import sys; print sys.prefix"`. Output should *not* start with *"/System/Library/Frameworks/Python.framework/"*
 
-**framework-based**: Output of `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"` should be non-empty string
+###Install Python
+You'll need **non-system**, **framework-based**, **universal** with **deployment target set to 10.6** build of Python 2.7
 
-**universal**: output of ``lipo -info `which python` `` include both i386 and x86_64. E.g *"Architectures in the fat file: /usr/local/bin/python are: i386 x86_64"*
+**non-system**: Python is not bundeled with distribution of Mac OS X. Output of  
+`python -c "import sys; print sys.prefix"`  
+Output should *not* start with *"/System/Library/Frameworks/Python.framework/"*.
 
-**deployment target set to 10.6**: Output of ``otool -l `which python` `` should contain *"cmd LC_VERSION_MIN_MACOSX ... version 10.6"*
+**framework-based**: Output of  
+`python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`  
+should be non-empty string.
 
-The easiest way to install it is via [Homebrew](http://mxcl.github.com/homebrew/): `brew install --fresh https://github.com/downloads/GreatFruitOmsk/Cura/python.rb --universal`. Note you'll need to uninstall Python if you already have it installed via Homebrew.
+**universal**: Output of  
+``lipo -info `which python` ``  
+should include both i386 and x86_64. E.g *"Architectures in the fat file: /usr/local/bin/python are: i386 x86_64"*.
 
-###Virtualenv
-You may skip this step if you don't bother to use [virtualenv](http://pypi.python.org/pypi/virtualenv). It's not a requirement.
+**deployment target set to 10.6**: Output of  
+``otool -l `which python` ``  
+should contain *"cmd LC_VERSION_MIN_MACOSX ... version 10.6"*.
 
-The main problem with virtualenv is that wxWidgets cannot be installed via pip. We'll have to build it manually from source by specifing prefix to our virtualenv.
+The easiest way to install it is via [Homebrew](http://mxcl.github.com/homebrew/) using the formula from Cura's repo:  
+`brew install --fresh Cura/scripts/darwin/python.rb --universal`  
+Note if you already have Python installed via Homebrew, you have to uninstall it first.
 
-Assuming you have virtualenv at *~/.virtualenvs/Cura*:
 
-1. Download [wxPython sources](http://sourceforge.net/projects/wxpython/files/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2)
-2. Configure project with the following flags: `./configure --prefix=$HOME/.virtualenvs/Cura/ --enable-optimise --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=builtin --with-zlib=builtin --enable-monolithic --with-macosx-version-min=10.6 --disable-debug --enable-unicode --enable-std_string --enable-display --with-opengl --with-osx_cocoa --enable-dnd --enable-clipboard --enable-webkit --enable-svg --with-expat --enable-universal_binary=i386,x86_64`
-3. `make install`
-4. cd into the *wxPython* directory
-5. Build wxPython modules: `python setup.py build_ext WXPORT=osx_cocoa WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config UNICODE=1 INSTALL_MULTIVERSION=0 BUILD_GLCANVAS=1 BUILD_GIZMOS=1 BUILD_STC=1` (Note that python is the python of your virtualenv)
-6. Install wxPython and modules: `python setup.py install --prefix=$HOME/.virtualenvs/Cura/ WXPORT=osx_cocoa WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config UNICODE=1 INSTALL_MULTIVERSION=0 BUILD_GLCANVAS=1 BUILD_GIZMOS=1 BUILD_STC=1` (Note that python is the python of your virtualenv)
+###Configure Virtualenv
+Create new virtualenv. If you have [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) installed:  
+`mkvirtualenv Cura`
 
-Another problem is that python in virtualenv is not suitable for running GUI code. Mac OS X requires python to be inside the bundle. To workaround this issue, we will add the following script to the ~/.virtualenvs/Cura/bin:
+wxPython cannot be installed via pip, we have to build it from source by specifing prefix to our virtualenv.
 
-    #!/bin/bash
-    ENV=`python -c "import sys; print sys.prefix"`
-    PYTHON=`python -c "import sys; print sys.real_prefix"`/bin/python
-    export PYTHONHOME=$ENV
-    exec $PYTHON "$@"
+Assuming you have virtualenv at *~/.virtualenvs/Cura/* and [wxPython sources](http://sourceforge.net/projects/wxpython/files/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2) at *~/Downloads/wxPython-src-2.9.4.0/*:
 
-I typically name this script `pythonw`.
+1. `cd` into *~/Downloads/wxPython-src-2.9.4.0/* and configure the sources:
 
-At this point virtualenv is configured for wxPython development. Remember to use `python` to pacakge the app and `pythonw` to run app without packaging (e.g. for debugging).
+        ./configure \
+        --disable-debug \
+        --enable-clipboard \
+        --enable-display \
+        --enable-dnd \
+        --enable-monolithic \
+        --enable-optimise \
+        --enable-std_string \
+        --enable-svg \
+        --enable-unicode \
+        --enable-universal_binary=i386,x86_64 \
+        --enable-webkit \
+        --prefix=$HOME/.virtualenvs/Cura/ \
+        --with-expat
+        --with-libjpeg=builtin \
+        --with-libpng=builtin \
+        --with-libtiff=builtin \
+        --with-macosx-version-min=10.6 \
+        --with-opengl \
+        --with-osx_cocoa \
+        --with-zlib=builtin
 
-###Requirements
-Following packages are required for development:
+2. `make install`  
+    Note to speedup the process I recommend you to enable multicore build by adding the -j*cores* flag:  
+    `make -j4 install`
+3. `cd` into *~/Downloads/wxPython-src-2.9.4.0/wxPython/*
+4. Build wxPython (Note `python` is the python of your virtualenv):
 
-    PyOpenGL>=3.0.2
-    numpy>=1.6.2
-    pyserial>=2.6
-    pyobjc>=2.5
+        python setup.py build_ext \
+        BUILD_GIZMOS=1 \
+        BUILD_GLCANVAS=1 \
+        BUILD_STC=1 \
+        INSTALL_MULTIVERSION=0 \
+        UNICODE=1 \
+        WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config \
+        WXPORT=osx_cocoa
 
-Following packages are required for packaging Cura into app:
+5. Install wxPython (Note `python` is the python of your virtualenv):
 
-    py2app>=0.7.2
+        python setup.py install \
+        --prefix=$HOME/.virtualenvs/Cura \
+        BUILD_GIZMOS=1 \
+        BUILD_GLCANVAS=1 \
+        BUILD_STC=1 \
+        INSTALL_MULTIVERSION=0 \
+        UNICODE=1 \
+        WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config \
+        WXPORT=osx_cocoa
 
-The easiest way to install all this packages is to use virtualenv's pip: `pip install -r requirements_darwin.txt`
+6. Create file *~/.virtualenvs/Cura/bin/pythonw* with the following content:
 
-####PyObjC
-At time of writing, pyobjc 2.5 is not available at pypi. You have to clone repo and install it manually:
+        #!/bin/bash
+        ENV=`python -c "import sys; print sys.prefix"`
+        PYTHON=`python -c "import sys; print sys.real_prefix"`/bin/python
+        export PYTHONHOME=$ENV
+        exec $PYTHON "$@"
 
-    hg clone https://bitbucket.org/ronaldoussoren/pyobjc
-    hg checkout c42c98d6e941 # last tested commit
-    python install.py
+At this point virtualenv is configured for wxPython development.  
+Remember to use `python` for pacakging and `pythonw` to run app for debugging.
 
-###Packaging
-To package Cura into application bundle simply do `python setup.py py2app`. Resulting bundle is self-contained -- it includes Python and all needed packages.
+
+###Install Python Packages
+Required python packages are specified in *requirements.txt* and *requirements_darwin.txt*  
+If you use virtualenv, installing requirements as easy as `pip install -r requirements_darwin.txt`
+
+At time of writing PyObjC 2.5 is not available via pip, so you have to install it manually (Note `python` is the python of your virtualenv):
+
+1. Download [PyObjC 2.5](https://bitbucket.org/ronaldoussoren/pyobjc/get/pyobjc-2.5.zip)
+2. Extract the archive and `cd` into the directory
+3. `python install.py`  
+    If build fails, try the same command one more time. It's known issue.
+
+
+###Package Cure into application
+Ensure that virtualenv is activated, so `python` points to the python of your virtualenv (e.g. ~/.virtualenvs/Cura/bin/python).Use package.sh to build Cura:  
+`./package.sh darwin`
+
+Note that application is only guaranteed to work on Mac OS X version used to build and higher, but may not support lower versions.
+E.g. Cura built on 10.8 will work on 10.8 and 10.7, but not on 10.6. In other hand, Cura built on 10.6 will work on 10.6, 10.7 and 10.8.
+
