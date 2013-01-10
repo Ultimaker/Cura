@@ -44,8 +44,8 @@ should include both i386 and x86_64. E.g *"Architectures in the fat file: /usr/l
 ``otool -l `which python` ``  
 should contain *"cmd LC_VERSION_MIN_MACOSX ... version 10.6"*.
 
-The easiest way to install it is via [Homebrew](http://mxcl.github.com/homebrew/):  
-`brew install --fresh https://github.com/downloads/GreatFruitOmsk/Cura/python.rb --universal`  
+The easiest way to install it is via [Homebrew](http://mxcl.github.com/homebrew/) using the formula from Cura's repo:  
+`brew install --fresh Cura/scripts/darwin/python.rb --universal`  
 Note if you already have Python installed via Homebrew, you have to uninstall it first.
 
 
@@ -59,26 +59,27 @@ Assuming you have virtualenv at *~/.virtualenvs/Cura/* and [wxPython sources](ht
 
 1. `cd` into *~/Downloads/wxPython-src-2.9.4.0/* and configure the sources:
 
-        ./configure --enable-universal_binary=i386,x86_64 \
-        --prefix=$HOME/.virtualenvs/Cura/ \
+        ./configure \
+        --disable-debug \
+        --enable-clipboard \
+        --enable-display \
+        --enable-dnd \
+        --enable-monolithic \
         --enable-optimise \
+        --enable-std_string \
+        --enable-svg \
+        --enable-unicode \
+        --enable-universal_binary=i386,x86_64 \
+        --enable-webkit \
+        --prefix=$HOME/.virtualenvs/Cura/ \
+        --with-expat
         --with-libjpeg=builtin \
         --with-libpng=builtin \
         --with-libtiff=builtin \
-        --with-zlib=builtin \
-        --enable-monolithic \
         --with-macosx-version-min=10.6 \
-        --disable-debug \
-        --enable-unicode \
-        --enable-std_string \
-        --enable-display \
         --with-opengl \
         --with-osx_cocoa \
-        --enable-dnd \
-        --enable-clipboard \
-        --enable-webkit \
-        --enable-svg \
-        --with-expat
+        --with-zlib=builtin
 
 2. `make install`  
     Note to speedup the process I recommend you to enable multicore build by adding the -j*cores* flag:  
@@ -87,25 +88,25 @@ Assuming you have virtualenv at *~/.virtualenvs/Cura/* and [wxPython sources](ht
 4. Build wxPython (Note `python` is the python of your virtualenv):
 
         python setup.py build_ext \
-        WXPORT=osx_cocoa \
-        WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config \
-        UNICODE=1 \
-        INSTALL_MULTIVERSION=0 \
-        BUILD_GLCANVAS=1 \
         BUILD_GIZMOS=1 \
-        BUILD_STC=1
+        BUILD_GLCANVAS=1 \
+        BUILD_STC=1 \
+        INSTALL_MULTIVERSION=0 \
+        UNICODE=1 \
+        WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config \
+        WXPORT=osx_cocoa
 
 5. Install wxPython (Note `python` is the python of your virtualenv):
 
         python setup.py install \
-        --prefix=$HOME/.virtualenvs/Cura/ \
-        WXPORT=osx_cocoa \
-        WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config \
-        UNICODE=1 \
-        INSTALL_MULTIVERSION=0 \
-        BUILD_GLCANVAS=1 \
+        --prefix=$HOME/.virtualenvs/Cura \
         BUILD_GIZMOS=1 \
-        BUILD_STC=1
+        BUILD_GLCANVAS=1 \
+        BUILD_STC=1 \
+        INSTALL_MULTIVERSION=0 \
+        UNICODE=1 \
+        WX_CONFIG=$HOME/.virtualenvs/Cura/bin/wx-config \
+        WXPORT=osx_cocoa
 
 6. Create file *~/.virtualenvs/Cura/bin/pythonw* with the following content:
 
@@ -128,42 +129,13 @@ At time of writing PyObjC 2.5 is not available via pip, so you have to install i
 1. Download [PyObjC 2.5](https://bitbucket.org/ronaldoussoren/pyobjc/get/pyobjc-2.5.zip)
 2. Extract the archive and `cd` into the directory
 3. `python install.py`  
-    If build fails, try to use clang: `CC=/usr/bin/clang python install.py`
+    If build fails, try the same command one more time. It's known issue.
 
 
 ###Package Cure into application
-Ensure that `package.sh` build target (see the very top of the file) is:
+Ensure that virtualenv is activated, so `python` points to the python of your virtualenv (e.g. ~/.virtualenvs/Cura/bin/python).Use package.sh to build Cura:  
+`./package.sh darwin`
 
-    #BUILD_TARGET=${1:-all}
-    #BUILD_TARGET=win32
-    #BUILD_TARGET=linux
-    BUILD_TARGET=darwin
+Note that application is only guaranteed to work on Mac OS X version used to build and higher, but may not support lower versions.
+E.g. Cura built on 10.8 will work on 10.8 and 10.7, but not on 10.6. In other hand, Cura built on 10.6 will work on 10.6, 10.7 and 10.8.
 
-Also ensure that virtualenv is activated, so `python` points to the python of your virtualenv (e.g. ~/.virtualenvs/Cura/bin/python).
-
-
-###Tests
-Cura was built (and each build was tested) on the following platforms:
-
-- 10.6.8
-- 10.7.3
-- 10.8.2
-- 10.8.3 (Jan 8 Seed)
-
-With following tools, libs and python pacakges:
-
-- Python 2.7.3 (installed via [Homebrew](http://mxcl.github.com/homebrew/) by using custom [formula](https://github.com/downloads/GreatFruitOmsk/Cura/python.rb) with *--universal* option)
-- [wxPython 2.9.4.0](http://sourceforge.net/projects/wxpython/files/wxPython/2.9.4.0/wxPython-src-2.9.4.0.tar.bz2)
-- virtualenvwrapper 3.6
-- vritualenv 1.8.4
-- llvm-gcc 4.2 (/usr/bin/cc == /usr/bin/llvm-gcc-4.2)
-- clang 2.1, 3.0 (PyObjC 2.5 failed to build with llvm-gcc)
-- [PyObjC 2.5](https://bitbucket.org/ronaldoussoren/pyobjc/get/pyobjc-2.5.zip)
-- PyOpenGL 3.0.2
-- altgraph 0.10.1
-- macholib 1.5
-- modulegraph 0.10.2
-- numpy 1.6.2
-- py2app 0.7.2
-- pyserial 2.6
-- wsgiref 0.1.2
