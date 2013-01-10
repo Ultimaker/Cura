@@ -12,14 +12,19 @@ from Cura.util import resources
 
 def getDefaultFirmware():
 	if profile.getPreference('machine_type') == 'ultimaker':
-		if profile.getPreferenceFloat('extruder_amount') > 1:
-			return None
 		if profile.getPreference('has_heated_bed') == 'True':
 			return None
+		if profile.getPreferenceFloat('extruder_amount') > 2:
+			return None
+		if profile.getPreferenceFloat('extruder_amount') > 1:
+			if sys.platform.startswith('linux'):
+				return resources.getPathForFirmware("MarlinUltimaker-115200-dual.hex")
+			else:
+				return resources.getPathForFirmware("MarlinUltimaker-250000-dual.hex")
 		if sys.platform.startswith('linux'):
-			return resources.getPathForFirmware("ultimaker_115200.hex")
+			return resources.getPathForFirmware("MarlinUltimaker-115200.hex")
 		else:
-			return resources.getPathForFirmware("ultimaker_250000.hex")
+			return resources.getPathForFirmware("MarlinUltimaker-250000.hex")
 	return None
 
 class InstallFirmware(wx.Dialog):
