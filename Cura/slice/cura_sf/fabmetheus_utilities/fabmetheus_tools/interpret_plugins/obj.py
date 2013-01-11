@@ -43,7 +43,7 @@ def addFacesGivenText( objText, triangleMesh ):
 		if firstWord == 'v':
 			triangleMesh.vertexes.append( getVertexGivenLine(line) )
 		elif firstWord == 'f':
-			triangleMesh.faces.append( getFaceGivenLine( line, triangleMesh ) )
+			addFacesGivenLine( triangleMesh.faces, line )
 
 def getCarving(fileName=''):
 	"Get the triangle mesh for the obj file."
@@ -56,18 +56,16 @@ def getCarving(fileName=''):
 	addFacesGivenText(objText, triangleMesh)
 	return triangleMesh
 
-def getFaceGivenLine( line, triangleMesh ):
+def addFacesGivenLine( faces, line ):
 	"Add face given line index and lines."
-	faceGivenLine = face.Face()
-	faceGivenLine.index = len( triangleMesh.faces )
-	splitLine = line.split()
-	for vertexStringIndex in xrange( 1, 4 ):
-		vertexString = splitLine[ vertexStringIndex ]
-		vertexStringWithSpaces = vertexString.replace('/', ' ')
-		vertexStringSplit = vertexStringWithSpaces.split()
-		vertexIndex = int( vertexStringSplit[0] ) - 1
-		faceGivenLine.vertexIndexes.append(vertexIndex)
-	return faceGivenLine
+	parts = map(lambda p: p.split('/')[0], line.split())
+	for idx in xrange(1, len(parts)-2):
+		addface = face.Face()
+		addface.index = len( faces )
+		addface.vertexIndexes.append(int(parts[1]) - 1)
+		addface.vertexIndexes.append(int(parts[idx+1]) - 1)
+		addface.vertexIndexes.append(int(parts[idx+2]) - 1)
+		faces.append(addface)
 
 def getVertexGivenLine(line):
 	"Get vertex given obj vertex line."

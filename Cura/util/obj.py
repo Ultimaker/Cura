@@ -18,10 +18,9 @@ class objModel(mesh.mesh):
 			if parts[0] == 'v':
 				vertexList.append([float(parts[1]), float(parts[2]), float(parts[3])])
 			if parts[0] == 'f':
-				parts[1] = parts[1].split('/')[0]
-				parts[2] = parts[2].split('/')[0]
-				parts[3] = parts[3].split('/')[0]
-				faceList.append([int(parts[1]), int(parts[2]), int(parts[3])])
+				parts = map(lambda p: p.split('/')[0], parts)
+				for idx in xrange(1, len(parts)-2):
+					faceList.append([int(parts[1]), int(parts[idx+1]), int(parts[idx+2])])
 		f.close()
 		
 		self._prepareVertexCount(len(faceList) * 3)
