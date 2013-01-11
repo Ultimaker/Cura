@@ -154,6 +154,7 @@ preferencesDefaultSettings = {
 	'machine_depth': '205',
 	'machine_height': '200',
 	'machine_type': 'unknown',
+	'machine_center_is_zero': 'False',
 	'ultimaker_extruder_upgrade': 'False',
 	'has_heated_bed': 'False',
 	'extruder_amount': '1',
@@ -425,6 +426,8 @@ def calculateSolidLayerCount():
 	return int(math.ceil(solidThickness / layerHeight - 0.0001))
 
 def getMachineCenterCoords():
+	if getPreference('machine_center_is_zero') == 'True':
+		return [0, 0]
 	return [getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2]
 
 def getObjectMatrix():

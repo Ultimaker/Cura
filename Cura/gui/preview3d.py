@@ -657,7 +657,10 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		
 		glPopMatrix()
 		
-		if self.parent.gcode != None and (self.viewMode == "GCode" or self.viewMode == "Mixed"):
+		if self.parent.gcode is not None and (self.viewMode == "GCode" or self.viewMode == "Mixed"):
+			glPushMatrix()
+			if profile.getPreference('machine_center_is_zero') == 'True':
+				glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
 			glEnable(GL_COLOR_MATERIAL)
 			glEnable(GL_LIGHTING)
 			drawUpToLayer = min(self.gcodeDisplayListMade, self.parent.layerSpin.GetValue() + 1)
@@ -680,6 +683,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 			glDisable(GL_COLOR_MATERIAL)
 			glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, [0.2, 0.2, 0.2, 1.0]);
 			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0]);
+			glPopMatrix()
 
 		glColor3f(1.0,1.0,1.0)
 		glPushMatrix()

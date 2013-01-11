@@ -594,7 +594,11 @@ class projectPlanner(wx.Frame):
 			positionList = []
 			for item in self.list:
 				fileList.append(item.filename)
-				positionList.append([item.centerX, item.centerY] + (item.mesh.matrix * item.scale).reshape((9,)).tolist())
+				if profile.getPreference('machine_center_is_zero') == 'True':
+					pos = [item.centerX - self.machineSize[0] / 2, item.centerY - self.machineSize[1] / 2]
+				else:
+					pos = [item.centerX, item.centerY]
+				positionList.append(pos + (item.mesh.matrix * item.scale).reshape((9,)).tolist())
 			sliceCommand = sliceRun.getSliceCommand(resultFilename, fileList, positionList)
 		else:
 			self._saveCombinedSTL(resultFilename + "_temp_.stl")

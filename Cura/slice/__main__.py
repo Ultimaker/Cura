@@ -38,6 +38,8 @@ def main():
 			position += [0,0,1]
 		filenames = fixUTF8(args[idx + 1]).split('|')
 
+		profile.setTempOverride('object_center_x', position[0])
+		profile.setTempOverride('object_center_y', position[1])
 		if idx == 0:
 			resultFile.write(';TYPE:CUSTOM\n')
 			resultFile.write(profile.getAlterationFileContents('start.gcode').replace('?filename?', ' '.join(filenames).encode('ascii', 'replace')))

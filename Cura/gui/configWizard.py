@@ -241,6 +241,7 @@ class RepRapInfoPage(InfoPage):
 		self.machineHeight = self.AddLabelTextCtrl('Machine height (mm)', '60')
 		self.nozzleSize = self.AddLabelTextCtrl('Nozzle size (mm)', '0.5')
 		self.heatedBed = self.AddCheckbox('Heated bed')
+		self.HomeAtCenter = self.AddCheckbox('Bed center is 0,0,0 (RoStock)')
 
 	def StoreData(self):
 		profile.putPreference('machine_width', self.machineWidth.GetValue())
@@ -249,6 +250,7 @@ class RepRapInfoPage(InfoPage):
 		profile.putProfileSetting('nozzle_size', self.nozzleSize.GetValue())
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSettingFloat('nozzle_size')) * 2)
 		profile.putPreference('has_heated_bed', str(self.heatedBed.GetValue()))
+		profile.putPreference('machine_center_is_zero', str(self.HomeAtCenter.GetValue()))
 
 
 class MachineSelectPage(InfoPage):
@@ -274,6 +276,7 @@ class MachineSelectPage(InfoPage):
 			profile.putPreference('machine_depth', '205')
 			profile.putPreference('machine_height', '200')
 			profile.putPreference('machine_type', 'ultimaker')
+			profile.putPreference('machine_center_is_zero', 'False')
 			profile.putProfileSetting('nozzle_size', '0.4')
 		else:
 			profile.putPreference('machine_width', '80')

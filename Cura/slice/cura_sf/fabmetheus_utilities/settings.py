@@ -107,8 +107,8 @@ def getProfileInformation():
 			'Unproven_Mesh': DEFSET,
 			'SVG_Viewer': DEFSET,
 			'ObjectMatrix': storedSetting("object_matrix"),
-			'CenterX': lambda setting: profile.getProfileSettingFloat('object_center_x') if profile.getProfileSettingFloat('object_center_x') > 0 else profile.getPreferenceFloat("machine_width") / 2,
-			'CenterY': lambda setting: profile.getProfileSettingFloat('object_center_y') if profile.getProfileSettingFloat('object_center_y') > 0 else profile.getPreferenceFloat("machine_depth") / 2,
+			'CenterX': lambda setting: profile.getProfileSettingFloat('object_center_x'),
+			'CenterY': lambda setting: profile.getProfileSettingFloat('object_center_y'),
 			'AlternativeCenterFile': storedSetting("alternative_center"),
 		},'scale': {
 			'Activate_Scale': "False",
