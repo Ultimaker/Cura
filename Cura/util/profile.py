@@ -436,11 +436,11 @@ def getObjectMatrix():
 	scaleX = getProfileSettingFloat('model_scale')
 	scaleY = getProfileSettingFloat('model_scale')
 	scaleZ = getProfileSettingFloat('model_scale')
-	if getProfileSetting('flipX') == 'True':
+	if getProfileSetting('flip_x') == 'True':
 		scaleX = -scaleX
-	if getProfileSetting('flipY') == 'True':
+	if getProfileSetting('flip_y') == 'True':
 		scaleY = -scaleY
-	if getProfileSetting('flipZ') == 'True':
+	if getProfileSetting('flip_z') == 'True':
 		scaleZ = -scaleZ
 	mat00 = math.cos(rotate) * scaleX
 	mat01 =-math.sin(rotate) * scaleY
