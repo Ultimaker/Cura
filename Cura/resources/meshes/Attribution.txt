@@ -1,0 +1,2 @@
+* ultimaker_platform.stl: 3D platform from the Ultimaker. Derivative from Ultimaker lasercut drawings. CC BY-NC 3.0 license (http://creativecommons.org/licenses/by-nc/3.0/)
+  http://www.thingiverse.com/thing:13571

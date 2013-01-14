@@ -1,0 +1,1 @@
+All files in the Resources directories are GPLv3, unless otherwise specified by the Attribution file.
