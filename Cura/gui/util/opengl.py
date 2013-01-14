@@ -67,10 +67,14 @@ def DrawMachine(machineSize):
 
 		global platformMesh
 		if platformMesh is None:
-			platformMesh = meshLoader.loadMesh(getPathForMesh('ultimaker_platform.stl'))
-			platformMesh.setRotateMirror(0, False, False, False, False, False)
+			try:
+				platformMesh = meshLoader.loadMesh(getPathForMesh('ultimaker_platform.stl'))
+				platformMesh.setRotateMirror(0, False, False, False, False, False)
+			except:
+				platformMesh = False
 
-		DrawMesh(platformMesh)
+		if platformMesh:
+			DrawMesh(platformMesh)
 		glPopMatrix()
 
 	glDisable(GL_LIGHTING)
