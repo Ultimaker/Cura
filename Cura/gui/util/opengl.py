@@ -212,7 +212,8 @@ def DrawMachine(machineSize):
 	glPushMatrix()
 	glTranslate(23, 0, 0)
 	noZ = ResetMatrixRotationAndScale()
-	glRasterPos2f(-2,-2)
+	glRasterPos2f(0,0)
+	glBitmap(0,0,0,0, -5, -5, None)
 	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord('X'))
 	glPopMatrix()
 
@@ -220,8 +221,8 @@ def DrawMachine(machineSize):
 	glColor3f(0, 1, 0)
 	glPushMatrix()
 	glTranslate(0, 23, 0)
-	ResetMatrixRotationAndScale()
-	glRasterPos2f(-2,-2)
+	glRasterPos2f(0,0)
+	glBitmap(0,0,0,0, -5, -5, None)
 	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord('Y'))
 	glPopMatrix()
 
@@ -230,8 +231,8 @@ def DrawMachine(machineSize):
 		glColor3f(0, 0, 1)
 		glPushMatrix()
 		glTranslate(0, 0, 23)
-		ResetMatrixRotationAndScale()
-		glRasterPos2f(-2,-2)
+		glRasterPos2f(0,0)
+		glBitmap(0,0,0,0, -5, -5, None)
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord('Z'))
 		glPopMatrix()
 
