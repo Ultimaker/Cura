@@ -38,6 +38,21 @@ class mainWindow(wx.Frame):
 
 		self.normalModeOnlyItems = []
 
+		mruFile = os.path.join(profile.getBasePath(), 'mru_filelist.ini')
+		self.config = wx.FileConfig(appName="Cura", 
+						localFilename=mruFile,
+						style=wx.CONFIG_USE_LOCAL_FILE)
+						
+		self.ID_MRU_MODEL1, self.ID_MRU_MODEL2, self.ID_MRU_MODEL3, self.ID_MRU_MODEL4, self.ID_MRU_MODEL5, self.ID_MRU_MODEL6, self.ID_MRU_MODEL7, self.ID_MRU_MODEL8, self.ID_MRU_MODEL9, self.ID_MRU_MODEL10 = [wx.NewId() for line in xrange(10)]
+		self.modelFileHistory = wx.FileHistory(10, self.ID_MRU_MODEL1)
+		self.config.SetPath("/ModelMRU")
+		self.modelFileHistory.Load(self.config)
+
+		self.ID_MRU_PROFILE1, self.ID_MRU_PROFILE2, self.ID_MRU_PROFILE3, self.ID_MRU_PROFILE4, self.ID_MRU_PROFILE5, self.ID_MRU_PROFILE6, self.ID_MRU_PROFILE7, self.ID_MRU_PROFILE8, self.ID_MRU_PROFILE9, self.ID_MRU_PROFILE10 = [wx.NewId() for line in xrange(10)]
+		self.profileFileHistory = wx.FileHistory(10, self.ID_MRU_PROFILE1)
+		self.config.SetPath("/ProfileMRU")
+		self.profileFileHistory.Load(self.config)
+
 		self.menubar = wx.MenuBar()
 		self.fileMenu = wx.Menu()
 		i = self.fileMenu.Append(-1, 'Load model file...\tCTRL+L')
@@ -65,6 +80,22 @@ class mainWindow(wx.Frame):
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, 'Preferences...\tCTRL+,')
 		self.Bind(wx.EVT_MENU, self.OnPreferences, i)
+		self.fileMenu.AppendSeparator()
+
+		# Model MRU list
+		modelHistoryMenu = wx.Menu()
+		self.fileMenu.AppendMenu(wx.NewId(), "&Recent Model Files", modelHistoryMenu)
+		self.modelFileHistory.UseMenu(modelHistoryMenu)
+		self.modelFileHistory.AddFilesToMenu()
+		self.Bind(wx.EVT_MENU_RANGE, self.OnModelMRU, id=self.ID_MRU_MODEL1, id2=self.ID_MRU_MODEL10)
+
+		# Profle MRU list
+		profileHistoryMenu = wx.Menu()
+		self.fileMenu.AppendMenu(wx.NewId(), "&Recent Profile Files", profileHistoryMenu)
+		self.profileFileHistory.UseMenu(profileHistoryMenu)
+		self.profileFileHistory.AddFilesToMenu()
+		self.Bind(wx.EVT_MENU_RANGE, self.OnProfileMRU, id=self.ID_MRU_PROFILE1, id2=self.ID_MRU_PROFILE10)
+		
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(wx.ID_EXIT, 'Quit')
 		self.Bind(wx.EVT_MENU, self.OnQuit, i)
@@ -245,6 +276,12 @@ class mainWindow(wx.Frame):
 		profile.putPreference('lastFile', ';'.join(self.filelist))
 		self.preview3d.loadModelFiles(self.filelist, True)
 		self.preview3d.setViewMode("Normal")
+		# Update the Model MRU
+		for idx in xrange(0, len(self.filelist)):
+			self.modelFileHistory.AddFileToHistory(self.filelist[idx])
+		self.config.SetPath("/ModelMRU")
+		self.modelFileHistory.Save(self.config)
+		self.config.Flush()
 
 	def OnDropFiles(self, files):
 		self._loadModels(files)
@@ -291,6 +328,30 @@ class mainWindow(wx.Frame):
 			return
 		printWindow.printFile(sliceRun.getExportFilename(self.filelist[0]))
 
+	def OnModelMRU(self, e):
+		fileNum = e.GetId() - self.ID_MRU_MODEL1
+		path = self.modelFileHistory.GetHistoryFile(fileNum)
+		# Update Model MRU
+		self.modelFileHistory.AddFileToHistory(path)  # move up the list
+		self.config.SetPath("/ModelMRU")
+		self.modelFileHistory.Save(self.config)
+		self.config.Flush()
+		# Load Model
+		filelist = [ path ]
+		self._loadModels(filelist)
+
+	def OnProfileMRU(self, e):
+		fileNum = e.GetId() - self.ID_MRU_PROFILE1
+		path = self.profileFileHistory.GetHistoryFile(fileNum)
+		# Update Profile MRU
+		self.profileFileHistory.AddFileToHistory(path)  # move up the list
+		self.config.SetPath("/ProfileMRU")
+		self.profileFileHistory.Save(self.config)
+		self.config.Flush()
+		# Load Profile	
+		profile.loadGlobalProfile(path)
+		self.updateProfileToControls()
+
 	def removeSliceProgress(self, spp):
 		self.progressPanelList.remove(spp)
 		newSize = self.GetSize()
@@ -319,6 +380,12 @@ class mainWindow(wx.Frame):
 			profileFile = dlg.GetPath()
 			profile.loadGlobalProfile(profileFile)
 			self.updateProfileToControls()
+
+			# Update the Profile MRU
+			self.profileFileHistory.AddFileToHistory(profileFile)
+			self.config.SetPath("/ProfileMRU")
+			self.profileFileHistory.Save(self.config)
+			self.config.Flush()			
 		dlg.Destroy()
 
 	def OnLoadProfileFromGcode(self, e):

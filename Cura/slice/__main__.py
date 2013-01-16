@@ -5,6 +5,11 @@ import sys
 import re
 import os
 
+if not hasattr(sys, 'frozen'):
+	cura_sf_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "./cura_sf/"))
+	if cura_sf_path not in sys.path:
+		sys.path.append(cura_sf_path)
+
 from Cura.util import profile
 from Cura.slice.cura_sf.skeinforge_application.skeinforge_plugins.craft_plugins import export
 
