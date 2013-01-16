@@ -322,9 +322,6 @@ class previewPanel(wx.Panel):
 		self.layerSpin = wx.SpinCtrl(self.toolbar, -1, '', size=(21*4,21), style=wx.SP_ARROW_KEYS)
 		self.toolbar.AddControl(self.layerSpin)
 		self.Bind(wx.EVT_SPINCTRL, self.OnLayerNrChange, self.layerSpin)
-		self.toolbar.AddSeparator()
-		self.toolbarInfo = wx.TextCtrl(self.toolbar, -1, '', style=wx.TE_READONLY)
-		self.toolbar.AddControl(self.toolbarInfo)
 
 		self.toolbar2 = toolbarUtil.Toolbar(self)
 
@@ -412,9 +409,6 @@ class previewPanel(wx.Panel):
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
 			self.setViewMode('Normal')
 		self.glCanvas.Refresh()
-
-		if self.objectsMaxV is not None:
-			self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (self.objectsSize[0], self.objectsSize[1], self.objectsSize[2]))
 
 	def OnScaleMax(self, e = None, onlyScaleDown = False):
 		if self.objectsMinV is None:
@@ -569,7 +563,6 @@ class previewPanel(wx.Panel):
 				obj.dirty = True
 				self.updateModelTransform()
 				self.OnScaleMax(None, True)
-				self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (self.objectsSize[0], self.objectsSize[1], self.objectsSize[2]))
 				self.glCanvas.zoom = numpy.max(self.objectsSize) * 3.5
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
@@ -682,8 +675,6 @@ class previewPanel(wx.Panel):
 		self.objectsMinV = minV
 		self.objectsSize = self.objectsMaxV - self.objectsMinV
 		self.objectsBoundaryCircleSize = objectsBoundaryCircleSize
-
-		self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (self.objectsSize[0], self.objectsSize[1], self.objectsSize[2]))
 
 		self.glCanvas.Refresh()
 	
