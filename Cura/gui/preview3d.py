@@ -36,10 +36,66 @@ class previewObject():
 		self.displayList = None
 		self.dirty = False
 
+class toolInfo(object):
+	def __init__(self, parent):
+		self.parent = parent
+
+	def OnMouseMove(self, p0, p1):
+		pass
+
+	def OnDragStart(self, p0, p1):
+		return False
+
+	def OnDrag(self, p0, p1):
+		pass
+
+	def OnDragEnd(self):
+		pass
+
+	def OnDraw(self):
+		glDisable(GL_LIGHTING)
+		glDisable(GL_BLEND)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+		glColor3ub(0,0,0)
+		size = self.parent.getObjectSize()
+		radius = self.parent.getObjectBoundaryCircle()
+		glPushMatrix()
+		glTranslate(0,0,size[2]/2 + 5)
+		glRotate(-self.parent.yaw, 0,0,1)
+		if self.parent.pitch < 80:
+			glTranslate(0, radius + 5,0)
+		elif self.parent.pitch < 100:
+			glTranslate(0, (radius + 5) * (90 - self.parent.pitch) / 10,0)
+		else:
+			glTranslate(0,-(radius + 5),0)
+		opengl.glDrawStringCenter("%dx%dx%d" % (size[0], size[1], size[2]))
+		glPopMatrix()
+
+		glColor(255,255,255)
+		size = size / 2
+		glBegin(GL_LINES)
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0], size[1], size[2]/4*3)
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0], size[1]/4*3, size[2])
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0]/4*3, size[1], size[2])
+
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0], -size[1], -size[2]/4*3)
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0], -size[1]/4*3, -size[2])
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0]/4*3, -size[1], -size[2])
+		glEnd()
+
 class toolRotate(object):
 	def __init__(self, parent):
 		self.parent = parent
 		self.rotateRingDist = 1.5
+		self.dragPlane = None
+		self.dragStartAngle = None
+		self.dragEndAngle = None
 
 	def _ProjectToPlanes(self, p0, p1):
 		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
@@ -55,10 +111,22 @@ class toolRotate(object):
 	def OnMouseMove(self, p0, p1):
 		radius = self.parent.getObjectBoundaryCircle()
 		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
+		oldDragPlane = self.dragPlane
 		if radius * (self.rotateRingDist - 0.1) <= cursorXY <= radius * (self.rotateRingDist + 0.1) or radius * (self.rotateRingDist - 0.1) <= cursorYZ <= radius * (self.rotateRingDist + 0.1) or radius * (self.rotateRingDist - 0.1) <= cursorXZ <= radius * (self.rotateRingDist + 0.1):
 			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+			if self.dragStartAngle is None:
+				if radius * (self.rotateRingDist - 0.1) <= cursorXY <= radius * (self.rotateRingDist + 0.1):
+					self.dragPlane = 'XY'
+				elif radius * (self.rotateRingDist - 0.1) <= cursorXZ <= radius * (self.rotateRingDist + 0.1):
+					self.dragPlane = 'XZ'
+				else:
+					self.dragPlane = 'YZ'
 		else:
+			if self.dragStartAngle is None:
+				self.dragPlane = ''
 			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
+		if self.dragPlane != oldDragPlane:
+			self.parent.Refresh()
 
 	def OnDragStart(self, p0, p1):
 		radius = self.parent.getObjectBoundaryCircle()
@@ -85,8 +153,16 @@ class toolRotate(object):
 		else:
 			angle = math.atan2(cursorX0[2], cursorX0[1]) * 180 / math.pi
 		diff = angle - self.dragStartAngle
-		diff = round(diff / 5) * 5
+		if wx.GetKeyState(wx.WXK_SHIFT):
+			diff = round(diff / 1) * 1
+		else:
+			diff = round(diff / 15) * 15
+		if diff > 180:
+			diff -= 360
+		if diff < -180:
+			diff += 360
 		rad = diff / 180.0 * math.pi
+		self.dragEndAngle = self.dragStartAngle + diff
 		if self.dragPlane == 'XY':
 			self.parent.tempMatrix = numpy.matrix([[math.cos(rad), math.sin(rad), 0], [-math.sin(rad), math.cos(rad), 0], [0,0,1]], numpy.float64)
 		elif self.dragPlane == 'XZ':
@@ -94,25 +170,95 @@ class toolRotate(object):
 		else:
 			self.parent.tempMatrix = numpy.matrix([[1,0,0], [0, math.cos(rad), math.sin(rad)], [0, -math.sin(rad), math.cos(rad)]], numpy.float64)
 
+	def OnDragEnd(self):
+		self.dragStartAngle = None
+
 	def OnDraw(self):
 		glDisable(GL_LIGHTING)
 		glDisable(GL_BLEND)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 		radius = self.parent.getObjectBoundaryCircle()
-		glScalef(radius, radius, radius)
-		glColor4ub(255,0,0,255)
+		glScalef(self.rotateRingDist * radius, self.rotateRingDist * radius, self.rotateRingDist * radius)
+		if self.dragPlane == 'XY':
+			glColor4ub(255,64,64,255)
+			if self.dragStartAngle is not None:
+				glPushMatrix()
+				glRotate(self.dragStartAngle, 0,0,1)
+				glBegin(GL_LINES)
+				glVertex3f(0,0,0)
+				glVertex3f(1,0,0)
+				glEnd()
+				glPopMatrix()
+				glPushMatrix()
+				glRotate(self.dragEndAngle, 0,0,1)
+				glBegin(GL_LINES)
+				glVertex3f(0,0,0)
+				glVertex3f(1,0,0)
+				glEnd()
+				glTranslatef(1.1,0,0)
+				glColor4ub(0,0,0,255)
+				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle)))
+				glColor4ub(255,64,64,255)
+				glPopMatrix()
+		else:
+			glColor4ub(128,0,0,255)
 		glBegin(GL_LINE_LOOP)
 		for i in xrange(0, 64):
-			glVertex3f(self.rotateRingDist * math.cos(i/32.0*math.pi), self.rotateRingDist * math.sin(i/32.0*math.pi),0)
+			glVertex3f(math.cos(i/32.0*math.pi), math.sin(i/32.0*math.pi),0)
 		glEnd()
-		glColor4ub(0,255,0,255)
+		if self.dragPlane == 'YZ':
+			glColor4ub(64,255,64,255)
+			if self.dragStartAngle is not None:
+				glPushMatrix()
+				glRotate(self.dragStartAngle, 1,0,0)
+				glBegin(GL_LINES)
+				glVertex3f(0,0,0)
+				glVertex3f(0,1,0)
+				glEnd()
+				glPopMatrix()
+				glPushMatrix()
+				glRotate(self.dragEndAngle, 1,0,0)
+				glBegin(GL_LINES)
+				glVertex3f(0,0,0)
+				glVertex3f(0,1,0)
+				glEnd()
+				glTranslatef(0,1.1,0)
+				glColor4ub(0,0,0,255)
+				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle)))
+				glColor4ub(64,255,64,255)
+				glPopMatrix()
+		else:
+			glColor4ub(0,128,0,255)
 		glBegin(GL_LINE_LOOP)
 		for i in xrange(0, 64):
-			glVertex3f(0, self.rotateRingDist * math.cos(i/32.0*math.pi), self.rotateRingDist * math.sin(i/32.0*math.pi))
+			glVertex3f(0, math.cos(i/32.0*math.pi), math.sin(i/32.0*math.pi))
 		glEnd()
-		glColor4ub(0,0,255,255)
+		if self.dragPlane == 'XZ':
+			glColor4ub(255,255,0,255)
+			if self.dragStartAngle is not None:
+				glPushMatrix()
+				glRotate(self.dragStartAngle, 0,-1,0)
+				glBegin(GL_LINES)
+				glVertex3f(0,0,0)
+				glVertex3f(1,0,0)
+				glEnd()
+				glPopMatrix()
+				glPushMatrix()
+				glRotate(self.dragEndAngle, 0,-1,0)
+				glBegin(GL_LINES)
+				glVertex3f(0,0,0)
+				glVertex3f(1,0,0)
+				glEnd()
+				glTranslatef(1.1,0,0)
+				glColor4ub(0,0,0,255)
+				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle)))
+				glColor4ub(255,255,0,255)
+				glPopMatrix()
+		else:
+			glColor4ub(128,128,0,255)
 		glBegin(GL_LINE_LOOP)
 		for i in xrange(0, 64):
-			glVertex3f(self.rotateRingDist * math.cos(i/32.0*math.pi), 0, self.rotateRingDist * math.sin(i/32.0*math.pi))
+			glVertex3f(math.cos(i/32.0*math.pi), 0, math.sin(i/32.0*math.pi))
 		glEnd()
 
 class previewPanel(wx.Panel):
@@ -183,9 +329,10 @@ class previewPanel(wx.Panel):
 		self.toolbar2 = toolbarUtil.Toolbar(self)
 
 		group = []
-		self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object')
-		self.rotateToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Rotate object')
-		self.scaleToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-scale.png', 'object-scale.png', 'Scale object')
+		self.infoToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Object info', callback=self.OnToolChange)
+		self.rotateToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Rotate object', callback=self.OnToolChange)
+		self.scaleToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-scale.png', 'object-scale.png', 'Scale object', callback=self.OnToolChange)
+		self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object', callback=self.OnToolChange)
 		self.toolbar2.AddSeparator()
 		# Mirror
 		self.mirrorX = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorX, 'object-mirror-x-on.png', 'Mirror X')
@@ -220,12 +367,19 @@ class previewPanel(wx.Panel):
 		self.checkReloadFileTimer.Start(1000)
 
 		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
-		self.tool = toolRotate(self.glCanvas)
+		self.tool = toolInfo(self.glCanvas)
 	
 	def returnToModelViewAndUpdateModel(self):
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
 			self.setViewMode('Normal')
 		self.updateModelTransform()
+
+	def OnToolChange(self):
+		if self.infoToolButton.GetValue():
+			self.tool = toolInfo(self.glCanvas)
+		if self.rotateToolButton.GetValue():
+			self.tool = toolRotate(self.glCanvas)
+		self.returnToModelViewAndUpdateModel()
 
 	def OnMirrorX(self, e):
 		self.matrix *= numpy.matrix([[-1,0,0],[0,1,0],[0,0,1]], numpy.float64)
@@ -415,9 +569,8 @@ class previewPanel(wx.Panel):
 				obj.dirty = True
 				self.updateModelTransform()
 				self.OnScaleMax(None, True)
-				scale = profile.getProfileSettingFloat('model_scale')
 				self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (self.objectsSize[0], self.objectsSize[1], self.objectsSize[2]))
-				self.glCanvas.zoom = numpy.max(self.objectsSize) * 2.5
+				self.glCanvas.zoom = numpy.max(self.objectsSize) * 3.5
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
 				wx.CallAfter(self.glCanvas.Refresh)
@@ -606,10 +759,13 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 			self.SetSize((size[0], size[1]))
 			self.Refresh()
 		else:
-			if self.tempMatrix is not None:
-				self.parent.matrix *= self.tempMatrix
-				self.parent.updateModelTransform()
-				self.tempMatrix = None
+			if self.dragType != '':
+				if self.tempMatrix is not None:
+					self.parent.matrix *= self.tempMatrix
+					self.parent.updateModelTransform()
+					self.tempMatrix = None
+				self.parent.tool.OnDragEnd()
+				self.dragType = ''
 
 			self.dragType = ''
 		if e.Dragging() and e.RightIsDown():

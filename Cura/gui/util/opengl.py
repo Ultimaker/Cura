@@ -210,35 +210,37 @@ def DrawMachine(machineSize):
 	#X
 	glColor3f(1, 0, 0)
 	glPushMatrix()
-	glTranslate(23, 0, 0)
+	glTranslate(20, 0, 0)
 	noZ = ResetMatrixRotationAndScale()
-	glRasterPos2f(0,0)
-	glBitmap(0,0,0,0, -5, -5, None)
-	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord('X'))
+	glDrawStringCenter("X")
 	glPopMatrix()
 
 	#Y
 	glColor3f(0, 1, 0)
 	glPushMatrix()
-	glTranslate(0, 23, 0)
-	glRasterPos2f(0,0)
-	glBitmap(0,0,0,0, -5, -5, None)
-	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord('Y'))
+	glTranslate(0, 20, 0)
+	glDrawStringCenter("Y")
 	glPopMatrix()
 
 	#Z
 	if not noZ:
 		glColor3f(0, 0, 1)
 		glPushMatrix()
-		glTranslate(0, 0, 23)
-		glRasterPos2f(0,0)
-		glBitmap(0,0,0,0, -5, -5, None)
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord('Z'))
+		glTranslate(0, 0, 20)
+		glDrawStringCenter("Z")
 		glPopMatrix()
 
 	glPopMatrix()
 	glEnable(GL_DEPTH_TEST)
 
+def glDrawStringCenter(s):
+	glRasterPos2f(0, 0)
+	width = 0
+	for c in s:
+		width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_18, ord(c))
+	glBitmap(0,0,0,0, -width/2, 0, None)
+	for c in s:
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord(c))
 
 def ResetMatrixRotationAndScale():
 	matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
