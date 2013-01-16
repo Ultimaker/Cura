@@ -44,15 +44,7 @@ profileDefaultSettings = {
 	'fan_layer': '1',
 	'fan_speed': '100',
 	'fan_speed_max': '100',
-	'model_scale': '1.0',
-	'flip_x': 'False',
-	'flip_y': 'False',
-	'flip_z': 'False',
-	'swap_xz': 'False',
-	'swap_yz': 'False',
-	'model_rotate_base': '0',
-	'model_multiply_x': '1',
-	'model_multiply_y': '1',
+	'model_matrix': '1,0,0,0,1,0,0,0,1',
 	'extra_base_wall_thickness': '0.0',
 	'sequence': 'Loops > Perimeter > Infill',
 	'force_first_layer_sequence': 'True',
@@ -431,28 +423,8 @@ def getMachineCenterCoords():
 	return [getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2]
 
 def getObjectMatrix():
-	rotate = getProfileSettingFloat('model_rotate_base')
-	rotate = rotate / 180.0 * math.pi
-	scaleX = getProfileSettingFloat('model_scale')
-	scaleY = getProfileSettingFloat('model_scale')
-	scaleZ = getProfileSettingFloat('model_scale')
-	if getProfileSetting('flip_x') == 'True':
-		scaleX = -scaleX
-	if getProfileSetting('flip_y') == 'True':
-		scaleY = -scaleY
-	if getProfileSetting('flip_z') == 'True':
-		scaleZ = -scaleZ
-	mat00 = math.cos(rotate) * scaleX
-	mat01 =-math.sin(rotate) * scaleY
-	mat10 = math.sin(rotate) * scaleX
-	mat11 = math.cos(rotate) * scaleY
-
-	mat = [mat00,mat10,0, mat01,mat11,0, 0,0,scaleZ]
-	if getProfileSetting('swap_xz') == 'True':
-		mat = mat[6:9] + mat[3:6] + mat[0:3]
-	if getProfileSetting('swap_yz') == 'True':
-		mat = mat[0:3] + mat[6:9] + mat[3:6]
-	return mat
+	scale = getProfileSettingFloat('model_scale')
+	return map(lambda x: float(x) * scale, getProfileSetting('model_matrix').split(','))
 
 #########################################################
 ## Alteration file functions

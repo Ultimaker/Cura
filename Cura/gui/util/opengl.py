@@ -12,6 +12,7 @@ try:
 	import OpenGL
 
 	OpenGL.ERROR_CHECKING = False
+	from OpenGL.GLUT import *
 	from OpenGL.GLU import *
 	from OpenGL.GL import *
 
@@ -69,7 +70,6 @@ def DrawMachine(machineSize):
 		if platformMesh is None:
 			try:
 				platformMesh = meshLoader.loadMesh(getPathForMesh('ultimaker_platform.stl'))
-				platformMesh.setRotateMirror(0, False, False, False, False, False)
 			except:
 				platformMesh = False
 
@@ -247,6 +247,8 @@ def DrawMachine(machineSize):
 		glVertex3f(-0.8, -1, 0)
 		glVertex3f(0.8, -1, 0)
 		glEnd()
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, 64)
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, 64)
 		glPopMatrix()
 
 	glPopMatrix()

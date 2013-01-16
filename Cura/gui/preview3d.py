@@ -36,6 +36,85 @@ class previewObject():
 		self.displayList = None
 		self.dirty = False
 
+class toolRotate(object):
+	def __init__(self, parent):
+		self.parent = parent
+		self.rotateRingDist = 1.5
+
+	def _ProjectToPlanes(self, p0, p1):
+		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
+		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
+		cursorX0 = pp0 - (pp1 - pp0) * (pp0[0] / (pp1[0] - pp0[0]))
+		cursorY0 = pp0 - (pp1 - pp0) * (pp0[1] / (pp1[1] - pp0[1]))
+		cursorZ0 = pp0 - (pp1 - pp0) * (pp0[2] / (pp1[2] - pp0[2]))
+		cursorYZ = math.sqrt((cursorX0[1] * cursorX0[1]) + (cursorX0[2] * cursorX0[2]))
+		cursorXZ = math.sqrt((cursorY0[0] * cursorY0[0]) + (cursorY0[2] * cursorY0[2]))
+		cursorXY = math.sqrt((cursorZ0[0] * cursorZ0[0]) + (cursorZ0[1] * cursorZ0[1]))
+		return cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY
+
+	def OnMouseMove(self, p0, p1):
+		radius = self.parent.getObjectBoundaryCircle()
+		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
+		if radius * (self.rotateRingDist - 0.1) <= cursorXY <= radius * (self.rotateRingDist + 0.1) or radius * (self.rotateRingDist - 0.1) <= cursorYZ <= radius * (self.rotateRingDist + 0.1) or radius * (self.rotateRingDist - 0.1) <= cursorXZ <= radius * (self.rotateRingDist + 0.1):
+			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+		else:
+			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
+
+	def OnDragStart(self, p0, p1):
+		radius = self.parent.getObjectBoundaryCircle()
+		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
+		if radius * (self.rotateRingDist - 0.1) <= cursorXY <= radius * (self.rotateRingDist + 0.1) or radius * (self.rotateRingDist - 0.1) <= cursorYZ <= radius * (self.rotateRingDist + 0.1) or radius * (self.rotateRingDist - 0.1) <= cursorXZ <= radius * (self.rotateRingDist + 0.1):
+			if radius * (self.rotateRingDist - 0.1) <= cursorXY <= radius * (self.rotateRingDist + 0.1):
+				self.dragPlane = 'XY'
+				self.dragStartAngle = math.atan2(cursorZ0[1], cursorZ0[0]) * 180 / math.pi
+			elif radius * (self.rotateRingDist - 0.1) <= cursorXZ <= radius * (self.rotateRingDist + 0.1):
+				self.dragPlane = 'XZ'
+				self.dragStartAngle = math.atan2(cursorY0[2], cursorY0[0]) * 180 / math.pi
+			else:
+				self.dragPlane = 'YZ'
+				self.dragStartAngle = math.atan2(cursorX0[2], cursorX0[1]) * 180 / math.pi
+			return True
+		return False
+
+	def OnDrag(self, p0, p1):
+		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
+		if self.dragPlane == 'XY':
+			angle = math.atan2(cursorZ0[1], cursorZ0[0]) * 180 / math.pi
+		elif self.dragPlane == 'XZ':
+			angle = math.atan2(cursorY0[2], cursorY0[0]) * 180 / math.pi
+		else:
+			angle = math.atan2(cursorX0[2], cursorX0[1]) * 180 / math.pi
+		diff = angle - self.dragStartAngle
+		diff = round(diff / 5) * 5
+		rad = diff / 180.0 * math.pi
+		if self.dragPlane == 'XY':
+			self.parent.tempMatrix = numpy.matrix([[math.cos(rad), math.sin(rad), 0], [-math.sin(rad), math.cos(rad), 0], [0,0,1]], numpy.float64)
+		elif self.dragPlane == 'XZ':
+			self.parent.tempMatrix = numpy.matrix([[math.cos(rad), 0, math.sin(rad)], [0,1,0], [-math.sin(rad), 0, math.cos(rad)]], numpy.float64)
+		else:
+			self.parent.tempMatrix = numpy.matrix([[1,0,0], [0, math.cos(rad), math.sin(rad)], [0, -math.sin(rad), math.cos(rad)]], numpy.float64)
+
+	def OnDraw(self):
+		glDisable(GL_LIGHTING)
+		glDisable(GL_BLEND)
+		radius = self.parent.getObjectBoundaryCircle()
+		glScalef(radius, radius, radius)
+		glColor4ub(255,0,0,255)
+		glBegin(GL_LINE_LOOP)
+		for i in xrange(0, 64):
+			glVertex3f(self.rotateRingDist * math.cos(i/32.0*math.pi), self.rotateRingDist * math.sin(i/32.0*math.pi),0)
+		glEnd()
+		glColor4ub(0,255,0,255)
+		glBegin(GL_LINE_LOOP)
+		for i in xrange(0, 64):
+			glVertex3f(0, self.rotateRingDist * math.cos(i/32.0*math.pi), self.rotateRingDist * math.sin(i/32.0*math.pi))
+		glEnd()
+		glColor4ub(0,0,255,255)
+		glBegin(GL_LINE_LOOP)
+		for i in xrange(0, 64):
+			glVertex3f(self.rotateRingDist * math.cos(i/32.0*math.pi), 0, self.rotateRingDist * math.sin(i/32.0*math.pi))
+		glEnd()
+
 class previewPanel(wx.Panel):
 	def __init__(self, parent):
 		super(previewPanel, self).__init__(parent,-1)
@@ -48,7 +127,7 @@ class previewPanel(wx.Panel):
 		self.gcode = None
 		self.objectsMinV = None
 		self.objectsMaxV = None
-		self.objectsBounderyCircleSize = None
+		self.objectsBoundaryCircleSize = None
 		self.loadThread = None
 		self.machineSize = util3d.Vector3(profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height'))
 		self.machineCenter = util3d.Vector3(self.machineSize.x / 2, self.machineSize.y / 2, 0)
@@ -103,15 +182,15 @@ class previewPanel(wx.Panel):
 
 		self.toolbar2 = toolbarUtil.Toolbar(self)
 
-		# Mirror
-		self.mirrorX = toolbarUtil.ToggleButton(self.toolbar2, 'flip_x', 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror X', callback=self.returnToModelViewAndUpdateModel)
-		self.mirrorY = toolbarUtil.ToggleButton(self.toolbar2, 'flip_y', 'object-mirror-y-on.png', 'object-mirror-y-off.png', 'Mirror Y', callback=self.returnToModelViewAndUpdateModel)
-		self.mirrorZ = toolbarUtil.ToggleButton(self.toolbar2, 'flip_z', 'object-mirror-z-on.png', 'object-mirror-z-off.png', 'Mirror Z', callback=self.returnToModelViewAndUpdateModel)
+		group = []
+		self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object')
+		self.rotateToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Rotate object')
+		self.scaleToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-scale.png', 'object-scale.png', 'Scale object')
 		self.toolbar2.AddSeparator()
-
-		# Swap
-		self.swapXZ = toolbarUtil.ToggleButton(self.toolbar2, 'swap_xz', 'object-swap-xz-on.png', 'object-swap-xz-off.png', 'Swap XZ', callback=self.returnToModelViewAndUpdateModel)
-		self.swapYZ = toolbarUtil.ToggleButton(self.toolbar2, 'swap_yz', 'object-swap-yz-on.png', 'object-swap-yz-off.png', 'Swap YZ', callback=self.returnToModelViewAndUpdateModel)
+		# Mirror
+		self.mirrorX = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorX, 'object-mirror-x-on.png', 'Mirror X')
+		self.mirrorY = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorY, 'object-mirror-y-on.png', 'Mirror Y')
+		self.mirrorZ = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorZ, 'object-mirror-z-on.png', 'Mirror Z')
 		self.toolbar2.AddSeparator()
 
 		# Scale
@@ -123,19 +202,9 @@ class previewPanel(wx.Panel):
 
 		self.toolbar2.AddSeparator()
 
-		# Multiply
-		#self.mulXadd = toolbarUtil.NormalButton(self.toolbar2, self.OnMulXAddClick, 'object-mul-x-add.png', 'Increase number of models on X axis')
-		#self.mulXsub = toolbarUtil.NormalButton(self.toolbar2, self.OnMulXSubClick, 'object-mul-x-sub.png', 'Decrease number of models on X axis')
-		#self.mulYadd = toolbarUtil.NormalButton(self.toolbar2, self.OnMulYAddClick, 'object-mul-y-add.png', 'Increase number of models on Y axis')
-		#self.mulYsub = toolbarUtil.NormalButton(self.toolbar2, self.OnMulYSubClick, 'object-mul-y-sub.png', 'Decrease number of models on Y axis')
-		#self.toolbar2.AddSeparator()
-
 		# Rotate
 		self.rotateReset = toolbarUtil.NormalButton(self.toolbar2, self.OnRotateReset, 'object-rotate.png', 'Reset model rotation')
-		self.rotate = wx.SpinCtrl(self.toolbar2, -1, profile.getProfileSetting('model_rotate_base'), size=(21*3,21), style=wx.SP_WRAP|wx.SP_ARROW_KEYS)
-		self.rotate.SetRange(0, 360)
-		self.rotate.Bind(wx.EVT_TEXT, self.OnRotate)
-		self.toolbar2.AddControl(self.rotate)
+		self.layFlat = toolbarUtil.NormalButton(self.toolbar2, self.OnLayFlat, 'object-rotate.png', 'Lay flat')
 
 		self.toolbar2.Realize()
 		self.OnViewChange()
@@ -149,34 +218,33 @@ class previewPanel(wx.Panel):
 		self.checkReloadFileTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self.OnCheckReloadFile, self.checkReloadFileTimer)
 		self.checkReloadFileTimer.Start(1000)
+
+		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
+		self.tool = toolRotate(self.glCanvas)
 	
 	def returnToModelViewAndUpdateModel(self):
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
 			self.setViewMode('Normal')
 		self.updateModelTransform()
-	
+
+	def OnMirrorX(self, e):
+		self.matrix *= numpy.matrix([[-1,0,0],[0,1,0],[0,0,1]], numpy.float64)
+		self.returnToModelViewAndUpdateModel()
+
+	def OnMirrorY(self, e):
+		self.matrix *= numpy.matrix([[1,0,0],[0,-1,0],[0,0,1]], numpy.float64)
+		self.returnToModelViewAndUpdateModel()
+
+	def OnMirrorZ(self, e):
+		self.matrix *= numpy.matrix([[1,0,0],[0,1,0],[0,0,-1]], numpy.float64)
+		self.returnToModelViewAndUpdateModel()
+
 	def OnMove(self, e = None):
-		if e != None:
+		if e is not None:
 			e.Skip()
 		x, y = self.glCanvas.ClientToScreenXY(0, 0)
 		sx, sy = self.glCanvas.GetClientSizeTuple()
 		self.warningPopup.SetPosition((x, y+sy-self.warningPopup.GetSize().height))
-	
-	def OnMulXAddClick(self, e):
-		profile.putProfileSetting('model_multiply_x', str(max(1, int(profile.getProfileSetting('model_multiply_x'))+1)))
-		self.glCanvas.Refresh()
-
-	def OnMulXSubClick(self, e):
-		profile.putProfileSetting('model_multiply_x', str(max(1, int(profile.getProfileSetting('model_multiply_x'))-1)))
-		self.glCanvas.Refresh()
-
-	def OnMulYAddClick(self, e):
-		profile.putProfileSetting('model_multiply_y', str(max(1, int(profile.getProfileSetting('model_multiply_y'))+1)))
-		self.glCanvas.Refresh()
-
-	def OnMulYSubClick(self, e):
-		profile.putProfileSetting('model_multiply_y', str(max(1, int(profile.getProfileSetting('model_multiply_y'))-1)))
-		self.glCanvas.Refresh()
 
 	def OnScaleReset(self, e):
 		self.scale.SetValue('1.0')
@@ -191,12 +259,11 @@ class previewPanel(wx.Panel):
 			self.setViewMode('Normal')
 		self.glCanvas.Refresh()
 
-		if self.objectsMaxV != None:
-			size = (self.objectsMaxV - self.objectsMinV) * float(scale)
-			self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (size[0], size[1], size[2]))
+		if self.objectsMaxV is not None:
+			self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (self.objectsSize[0], self.objectsSize[1], self.objectsSize[2]))
 
 	def OnScaleMax(self, e = None, onlyScaleDown = False):
-		if self.objectsMinV == None:
+		if self.objectsMinV is None:
 			return
 		vMin = self.objectsMinV
 		vMax = self.objectsMaxV
@@ -218,12 +285,53 @@ class previewPanel(wx.Panel):
 		self.glCanvas.Refresh()
 
 	def OnRotateReset(self, e):
-		self.rotate.SetValue(0)
-		self.OnRotate(None)
+		self.matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
+		self.updateModelTransform()
 
-	def OnRotate(self, e):
-		profile.putProfileSetting('model_rotate_base', self.rotate.GetValue())
-		self.returnToModelViewAndUpdateModel()
+	def OnLayFlat(self, e):
+		transformedVertexes = (numpy.matrix(self.objectList[0].mesh.vertexes, copy = False) * self.matrix).getA()
+		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
+		dotMin = 1.0
+		dotV = None
+		for v in transformedVertexes:
+			diff = v - minZvertex
+			len = math.sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2])
+			if len < 5:
+				continue
+			dot = (diff[2] / len)
+			if dotMin > dot:
+				dotMin = dot
+				dotV = diff
+		if dotV is None:
+			return
+		rad = -math.atan2(dotV[1], dotV[0])
+		self.matrix *= numpy.matrix([[math.cos(rad), math.sin(rad), 0], [-math.sin(rad), math.cos(rad), 0], [0,0,1]], numpy.float64)
+		rad = -math.asin(dotMin)
+		self.matrix *= numpy.matrix([[math.cos(rad), 0, math.sin(rad)], [0,1,0], [-math.sin(rad), 0, math.cos(rad)]], numpy.float64)
+
+
+		transformedVertexes = (numpy.matrix(self.objectList[0].mesh.vertexes, copy = False) * self.matrix).getA()
+		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
+		dotMin = 1.0
+		dotV = None
+		for v in transformedVertexes:
+			diff = v - minZvertex
+			len = math.sqrt(diff[1] * diff[1] + diff[2] * diff[2])
+			if len < 5:
+				continue
+			dot = (diff[2] / len)
+			if dotMin > dot:
+				dotMin = dot
+				dotV = diff
+		if dotV is None:
+			return
+		if dotV[1] < 0:
+			rad = math.asin(dotMin)
+		else:
+			rad = -math.asin(dotMin)
+		self.matrix *= numpy.matrix([[1,0,0], [0, math.cos(rad), math.sin(rad)], [0, -math.sin(rad), math.cos(rad)]], numpy.float64)
+
+		self.updateModelTransform()
 
 	def On3DClick(self):
 		self.glCanvas.yaw = 30
@@ -266,14 +374,14 @@ class previewPanel(wx.Panel):
 		
 		self.gcodeFilename = sliceRun.getExportFilename(filelist[0])
 		#Do the STL file loading in a background thread so we don't block the UI.
-		if self.loadThread != None and self.loadThread.isAlive():
+		if self.loadThread is not None and self.loadThread.isAlive():
 			self.loadThread.join()
 		self.loadThread = threading.Thread(target=self.doFileLoadThread)
 		self.loadThread.daemon = True
 		self.loadThread.start()
 		
 		if showWarning:
-			if profile.getProfileSettingFloat('model_scale') != 1.0 or profile.getProfileSettingFloat('model_rotate_base') != 0 or profile.getProfileSetting('flip_x') != 'False' or profile.getProfileSetting('flip_y') != 'False' or profile.getProfileSetting('flip_z') != 'False' or profile.getProfileSetting('swap_xz') != 'False' or profile.getProfileSetting('swap_yz') != 'False' or len(profile.getPluginConfig()) > 0:
+			if (self.matrix - numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)).any() or len(profile.getPluginConfig()) > 0:
 				self.ShowWarningPopup('Reset scale, rotation, mirror and plugins?', self.OnResetAll)
 	
 	def OnCheckReloadFile(self, e):
@@ -281,7 +389,7 @@ class previewPanel(wx.Panel):
 		if self.GetParent().FindFocus() is None:
 			return
 		for obj in self.objectList:
-			if obj.filename != None and os.path.isfile(obj.filename) and obj.fileTime != os.stat(obj.filename).st_mtime:
+			if obj.filename is not None and os.path.isfile(obj.filename) and obj.fileTime != os.stat(obj.filename).st_mtime:
 				self.checkReloadFileTimer.Stop()
 				self.ShowWarningPopup('File changed, reload?', self.reloadModelFiles)
 	
@@ -300,17 +408,16 @@ class previewPanel(wx.Panel):
 	
 	def doFileLoadThread(self):
 		for obj in self.objectList:
-			if obj.filename != None and os.path.isfile(obj.filename) and obj.fileTime != os.stat(obj.filename).st_mtime:
+			if obj.filename is not None and os.path.isfile(obj.filename) and obj.fileTime != os.stat(obj.filename).st_mtime:
 				obj.fileTime = os.stat(obj.filename).st_mtime
 				mesh = meshLoader.loadMesh(obj.filename)
-				obj.dirty = False
 				obj.mesh = mesh
+				obj.dirty = True
 				self.updateModelTransform()
 				self.OnScaleMax(None, True)
 				scale = profile.getProfileSettingFloat('model_scale')
-				size = (self.objectsMaxV - self.objectsMinV) * scale
-				self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (size[0], size[1], size[2]))
-				self.glCanvas.zoom = numpy.max(size) * 2.5
+				self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (self.objectsSize[0], self.objectsSize[1], self.objectsSize[2]))
+				self.glCanvas.zoom = numpy.max(self.objectsSize) * 2.5
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
 				wx.CallAfter(self.glCanvas.Refresh)
@@ -327,7 +434,7 @@ class previewPanel(wx.Panel):
 			errorList = []
 			for line in open(self.gcodeFilename, "rt"):
 				res = re.search(';Model error\(([a-z ]*)\): \(([0-9\.\-e]*), ([0-9\.\-e]*), ([0-9\.\-e]*)\) \(([0-9\.\-e]*), ([0-9\.\-e]*), ([0-9\.\-e]*)\)', line)
-				if res != None:
+				if res is not None:
 					v1 = util3d.Vector3(float(res.group(2)), float(res.group(3)), float(res.group(4)))
 					v2 = util3d.Vector3(float(res.group(5)), float(res.group(6)), float(res.group(7)))
 					errorList.append([v1, v2])
@@ -343,13 +450,7 @@ class previewPanel(wx.Panel):
 		pass
 
 	def OnResetAll(self, e = None):
-		profile.putProfileSetting('model_scale', '1.0')
-		profile.putProfileSetting('model_rotate_base', '0')
-		profile.putProfileSetting('flip_x', 'False')
-		profile.putProfileSetting('flip_y', 'False')
-		profile.putProfileSetting('flip_z', 'False')
-		profile.putProfileSetting('swap_xz', 'False')
-		profile.putProfileSetting('swap_yz', 'False')
+		profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
 		profile.setPluginConfig([])
 		self.GetParent().updateProfileToControls()
 
@@ -403,62 +504,38 @@ class previewPanel(wx.Panel):
 		self.glCanvas.Refresh()
 	
 	def updateModelTransform(self, f=0):
-		if len(self.objectList) < 1 or self.objectList[0].mesh == None:
+		if len(self.objectList) < 1 or self.objectList[0].mesh is None:
 			return
-		
-		rotate = profile.getProfileSettingFloat('model_rotate_base')
-		mirrorX = profile.getProfileSetting('flip_x') == 'True'
-		mirrorY = profile.getProfileSetting('flip_y') == 'True'
-		mirrorZ = profile.getProfileSetting('flip_z') == 'True'
-		swapXZ = profile.getProfileSetting('swap_xz') == 'True'
-		swapYZ = profile.getProfileSetting('swap_yz') == 'True'
 
+		profile.putProfileSetting('model_matrix', ','.join(map(str, list(self.matrix.getA().flatten()))))
 		for obj in self.objectList:
-			if obj.mesh == None:
+			if obj.mesh is None:
 				continue
-			obj.mesh.setRotateMirror(rotate, mirrorX, mirrorY, mirrorZ, swapXZ, swapYZ)
-		
+			obj.mesh.matrix = self.matrix
+			obj.mesh.processMatrix()
+
 		minV = self.objectList[0].mesh.getMinimum()
 		maxV = self.objectList[0].mesh.getMaximum()
-		objectsBounderyCircleSize = self.objectList[0].mesh.bounderyCircleSize
+		objectsBoundaryCircleSize = self.objectList[0].mesh.bounderyCircleSize
 		for obj in self.objectList:
-			if obj.mesh == None:
+			if obj.mesh is None:
 				continue
 
-			obj.mesh.getMinimumZ()
 			minV = numpy.minimum(minV, obj.mesh.getMinimum())
 			maxV = numpy.maximum(maxV, obj.mesh.getMaximum())
-			objectsBounderyCircleSize = max(objectsBounderyCircleSize, obj.mesh.bounderyCircleSize)
+			objectsBoundaryCircleSize = max(objectsBoundaryCircleSize, obj.mesh.bounderyCircleSize)
 
 		self.objectsMaxV = maxV
 		self.objectsMinV = minV
-		self.objectsBounderyCircleSize = objectsBounderyCircleSize
-		for obj in self.objectList:
-			if obj.mesh == None:
-				continue
+		self.objectsSize = self.objectsMaxV - self.objectsMinV
+		self.objectsBoundaryCircleSize = objectsBoundaryCircleSize
 
-			obj.mesh.vertexes -= numpy.array([minV[0] + (maxV[0] - minV[0]) / 2, minV[1] + (maxV[1] - minV[1]) / 2, minV[2]])
-			#for v in obj.mesh.vertexes:
-			#	v[2] -= minV[2]
-			#	v[0] -= minV[0] + (maxV[0] - minV[0]) / 2
-			#	v[1] -= minV[1] + (maxV[1] - minV[1]) / 2
-			obj.mesh.getMinimumZ()
-			obj.dirty = True
-
-		scale = profile.getProfileSettingFloat('model_scale')
-		size = (self.objectsMaxV - self.objectsMinV) * scale
-		self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (size[0], size[1], size[2]))
+		self.toolbarInfo.SetValue('%0.1f %0.1f %0.1f' % (self.objectsSize[0], self.objectsSize[1], self.objectsSize[2]))
 
 		self.glCanvas.Refresh()
 	
 	def updateProfileToControls(self):
-		self.scale.SetValue(profile.getProfileSetting('model_scale'))
-		self.rotate.SetValue(profile.getProfileSettingFloat('model_rotate_base'))
-		self.mirrorX.SetValue(profile.getProfileSetting('flip_x') == 'True')
-		self.mirrorY.SetValue(profile.getProfileSetting('flip_y') == 'True')
-		self.mirrorZ.SetValue(profile.getProfileSetting('flip_z') == 'True')
-		self.swapXZ.SetValue(profile.getProfileSetting('swap_xz') == 'True')
-		self.swapYZ.SetValue(profile.getProfileSetting('swap_yz') == 'True')
+		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
 		self.updateModelTransform()
 		self.glCanvas.updateProfileToControls()
 
@@ -486,9 +563,9 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		self.oldX = 0
 		self.oldY = 0
 		self.dragType = ''
-		self.tempRotate = 0
+		self.tempMatrix = None
 		self.viewport = None
-	
+
 	def updateProfileToControls(self):
 		self.objColor[0] = profile.getPreferenceColour('model_colour')
 		self.objColor[1] = profile.getPreferenceColour('model_colour2')
@@ -496,29 +573,19 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		self.objColor[3] = profile.getPreferenceColour('model_colour4')
 
 	def OnMouseMotion(self,e):
-		cursorXY = 100000
-		radius = 0
-		if self.parent.objectsMaxV is not None and self.viewport is not None:
-			radius = self.parent.objectsBounderyCircleSize * profile.getProfileSettingFloat('model_scale')
-			
+		if self.parent.objectsMaxV is not None and self.viewport is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
 			p0 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport))
 			p1 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport))
-			cursorZ0 = p0 - (p1 - p0) * (p0[2] / (p1[2] - p0[2]))
-			cursorXY = math.sqrt((cursorZ0[0] * cursorZ0[0]) + (cursorZ0[1] * cursorZ0[1]))
-			if radius * 1.1 <= cursorXY <= radius * 1.3:
-				self.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
-			else:
-				self.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
+			self.parent.tool.OnMouseMove(p0, p1)
 
 		if e.Dragging() and e.LeftIsDown():
 			if self.dragType == '':
 				#Define the drag type depending on the cursor position.
-				if radius * 1.1 <= cursorXY <= radius * 1.3 and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
-					self.dragType = 'modelRotate'
-					self.dragStart = math.atan2(cursorZ0[0], cursorZ0[1])
-				else:
-					self.dragType = 'viewRotate'
-				
+				self.dragType = 'viewRotate'
+				if self.viewMode != 'GCode' and self.viewMode != 'Mixed':
+					if self.parent.tool.OnDragStart(p0, p1):
+						self.dragType = 'tool'
+
 			if self.dragType == 'viewRotate':
 				if self.view3D:
 					self.yaw += e.GetX() - self.oldX
@@ -530,29 +597,20 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				else:
 					self.offsetX += float(e.GetX() - self.oldX) * self.zoom / self.GetSize().GetHeight() * 2
 					self.offsetY -= float(e.GetY() - self.oldY) * self.zoom / self.GetSize().GetHeight() * 2
-			elif self.dragType == 'modelRotate':
-				angle = math.atan2(cursorZ0[0], cursorZ0[1])
-				diff = self.dragStart - angle
-				self.tempRotate = diff * 180 / math.pi
-				rot = profile.getProfileSettingFloat('model_rotate_base')
-				self.tempRotate = round((self.tempRotate + rot) / 15) * 15 - rot
+			elif self.dragType == 'tool':
+				self.parent.tool.OnDrag(p0, p1)
+
 			#Workaround for buggy ATI cards.
 			size = self.GetSizeTuple()
 			self.SetSize((size[0]+1, size[1]))
 			self.SetSize((size[0], size[1]))
 			self.Refresh()
 		else:
-			if self.tempRotate != 0:
-				newRotation = profile.getProfileSettingFloat('model_rotate_base') + self.tempRotate
-				while newRotation >= 360:
-					newRotation -= 360
-				while newRotation < 0:
-					newRotation += 360
-				profile.putProfileSetting('model_rotate_base', newRotation)
-				self.parent.rotate.SetValue(newRotation)
+			if self.tempMatrix is not None:
+				self.parent.matrix *= self.tempMatrix
 				self.parent.updateModelTransform()
-				self.tempRotate = 0
-				
+				self.tempMatrix = None
+
 			self.dragType = ''
 		if e.Dragging() and e.RightIsDown():
 			self.zoom += e.GetY() - self.oldY
@@ -565,8 +623,13 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		self.oldY = e.GetY()
 
 		#self.Refresh()
-		
-	
+
+	def getObjectBoundaryCircle(self):
+		return self.parent.objectsBoundaryCircleSize
+
+	def getObjectSize(self):
+		return self.parent.objectsSize
+
 	def OnMouseWheel(self,e):
 		self.zoom *= 1.0 - float(e.GetWheelRotation() / e.GetWheelDelta()) / 10.0
 		if self.zoom < 1.0:
@@ -595,17 +658,17 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 			glRotate(-self.pitch, 1,0,0)
 			glRotate(self.yaw, 0,0,1)
 			if self.viewMode == "GCode" or self.viewMode == "Mixed":
-				if self.parent.gcode != None and len(self.parent.gcode.layerList) > self.parent.layerSpin.GetValue() and len(self.parent.gcode.layerList[self.parent.layerSpin.GetValue()]) > 0:
+				if self.parent.gcode is not None and len(self.parent.gcode.layerList) > self.parent.layerSpin.GetValue() and len(self.parent.gcode.layerList[self.parent.layerSpin.GetValue()]) > 0:
 					glTranslate(0,0,-self.parent.gcode.layerList[self.parent.layerSpin.GetValue()][0].list[-1].z)
 			else:
-				if self.parent.objectsMaxV != None:
-					glTranslate(0,0,-(self.parent.objectsMaxV[2]-self.parent.objectsMinV[2]) * profile.getProfileSettingFloat('model_scale') / 2)
+				if self.parent.objectsMaxV is not None:
+					glTranslate(0,0,-self.parent.objectsSize[2] / 2)
 		else:
 			glTranslate(self.offsetX, self.offsetY, 0)
 
-		self.viewport = glGetIntegerv(GL_VIEWPORT);
-		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX);
-		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX);
+		self.viewport = glGetIntegerv(GL_VIEWPORT)
+		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX)
+		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
 
 		glTranslate(-self.parent.machineCenter.x, -self.parent.machineCenter.y, 0)
 
@@ -615,16 +678,16 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 	def OnDraw(self):
 		machineSize = self.parent.machineSize
 
-		if self.parent.gcode != None and self.parent.gcodeDirty:
+		if self.parent.gcode is not None and self.parent.gcodeDirty:
 			if self.gcodeDisplayListCount < len(self.parent.gcode.layerList) or self.gcodeDisplayList == None:
-				if self.gcodeDisplayList != None:
+				if self.gcodeDisplayList is not None:
 					glDeleteLists(self.gcodeDisplayList, self.gcodeDisplayListCount)
-				self.gcodeDisplayList = glGenLists(len(self.parent.gcode.layerList));
+				self.gcodeDisplayList = glGenLists(len(self.parent.gcode.layerList))
 				self.gcodeDisplayListCount = len(self.parent.gcode.layerList)
 			self.parent.gcodeDirty = False
 			self.gcodeDisplayListMade = 0
 		
-		if self.parent.gcode != None and self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
+		if self.parent.gcode is not None and self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
 			glNewList(self.gcodeDisplayList + self.gcodeDisplayListMade, GL_COMPILE)
 			opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeDisplayListMade])
 			glEndList()
@@ -689,9 +752,9 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		glPushMatrix()
 		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
 		for obj in self.parent.objectList:
-			if obj.mesh == None:
+			if obj.mesh is None:
 				continue
-			
+
 			if self.viewMode == "Transparent" or self.viewMode == "Mixed":
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, map(lambda x: x / 2, self.objColor[self.parent.objectList.index(obj)]))
 				glLightfv(GL_LIGHT0, GL_AMBIENT, map(lambda x: x / 10, self.objColor[self.parent.objectList.index(obj)]))
@@ -782,65 +845,46 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				glPopMatrix()
 		
 		glPopMatrix()	
-		if self.viewMode == "Normal" or self.viewMode == "Transparent" or self.viewMode == "X-Ray":
-			glDisable(GL_LIGHTING)
-			glDisable(GL_DEPTH_TEST)
-			glDisable(GL_BLEND)
-			glColor3f(1,0,0)
-			glBegin(GL_LINES)
-			for err in self.parent.errorList:
-				glVertex3f(err[0].x, err[0].y, err[0].z)
-				glVertex3f(err[1].x, err[1].y, err[1].z)
-			glEnd()
-			glEnable(GL_DEPTH_TEST)
+		#if self.viewMode == "Normal" or self.viewMode == "Transparent" or self.viewMode == "X-Ray":
+		#	glDisable(GL_LIGHTING)
+		#	glDisable(GL_DEPTH_TEST)
+		#	glDisable(GL_BLEND)
+		#	glColor3f(1,0,0)
+		#	glBegin(GL_LINES)
+		#	for err in self.parent.errorList:
+		#		glVertex3f(err[0].x, err[0].y, err[0].z)
+		#		glVertex3f(err[1].x, err[1].y, err[1].z)
+		#	glEnd()
+		#	glEnable(GL_DEPTH_TEST)
 
-		glPushMatrix()
-		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
-		
-		#Draw the rotate circle
+		#Draw the current selected tool
 		if self.parent.objectsMaxV is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
-			glDisable(GL_LIGHTING)
-			glDisable(GL_CULL_FACE)
-			glEnable(GL_BLEND)
-			glRotate(self.tempRotate + profile.getProfileSettingFloat('model_rotate_base'), 0, 0, 1)
-			radius = self.parent.objectsBounderyCircleSize * profile.getProfileSettingFloat('model_scale')
-			glScalef(radius, radius, 1)
-			glBegin(GL_TRIANGLE_STRIP)
-			for i in xrange(0, 64+1):
-				f = i if i < 64/2 else 64 - i
-				glColor4ub(255,int(f*255/(64/2)),0,255)
-				glVertex3f(1.1 * math.cos(i/32.0*math.pi), 1.1 * math.sin(i/32.0*math.pi),0.1)
-				glColor4ub(  0,128,0,255)
-				glVertex3f(1.3 * math.cos(i/32.0*math.pi), 1.3 * math.sin(i/32.0*math.pi),0.1)
-			glEnd()
-			glBegin(GL_TRIANGLES)
-			glColor4ub(0,0,0,192)
-			glVertex3f(1, 0.1,0.15)
-			glVertex3f(1,-0.1,0.15)
-			glVertex3f(1.4,0,0.15)
-			glEnd()
-			glEnable(GL_CULL_FACE)
-		
-		glPopMatrix()
+			glPushMatrix()
+			glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, self.parent.objectsSize[2]/2)
+			self.parent.tool.OnDraw()
+			glPopMatrix()
 
 		opengl.DrawMachine(machineSize)
 		
 		glFlush()
-	
-	def drawModel(self, obj):
-		multiX = 1 #int(profile.getProfileSetting('model_multiply_x'))
-		multiY = 1 #int(profile.getProfileSetting('model_multiply_y'))
-		modelScale = profile.getProfileSettingFloat('model_scale')
-		modelSize = (obj.mesh.getMaximum() - obj.mesh.getMinimum()) * modelScale
-		glPushMatrix()
-		glRotate(self.tempRotate, 0, 0, 1)
-		glTranslate(-(modelSize[0]+10)*(multiX-1)/2,-(modelSize[1]+10)*(multiY-1)/2, 0)
-		for mx in xrange(0, multiX):
-			for my in xrange(0, multiY):
-				glPushMatrix()
-				glTranslate((modelSize[0]+10)*mx,(modelSize[1]+10)*my, 0)
-				glScalef(modelScale, modelScale, modelScale)
-				glCallList(obj.displayList)
-				glPopMatrix()
-		glPopMatrix()
 
+	def convert3x3MatrixTo4x4(self, matrix):
+		return list(matrix.getA()[0]) + [0] + list(matrix.getA()[1]) + [0] + list(matrix.getA()[2]) + [0, 0,0,0,1]
+
+	def drawModel(self, obj):
+		vMin = self.parent.objectsMinV
+		vMax = self.parent.objectsMaxV
+		offset = - vMin - (vMax - vMin) / 2
+
+		matrix = self.convert3x3MatrixTo4x4(obj.mesh.matrix)
+
+		glPushMatrix()
+		glTranslate(0, 0, self.parent.objectsSize[2]/2)
+		if self.tempMatrix is not None:
+			tempMatrix = self.convert3x3MatrixTo4x4(self.tempMatrix)
+			glMultMatrixf(tempMatrix)
+		glTranslate(0, 0, -self.parent.objectsSize[2]/2)
+		glTranslate(offset[0], offset[1], -vMin[2])
+		glMultMatrixf(matrix)
+		glCallList(obj.displayList)
+		glPopMatrix()
