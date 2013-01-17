@@ -28,13 +28,13 @@ We assume you already have Apple hardware with [64bit processor](http://support.
 ###Install Python
 You'll need **non-system**, **framework-based**, **universal** with **deployment target set to 10.6** build of Python 2.7
 
-**non-system**: Python is not bundeled with distribution of Mac OS X. Output of  
+**non-system**: Output of  
 `python -c "import sys; print sys.prefix"`  
-Output should *not* start with *"/System/Library/Frameworks/Python.framework/"*.
+should *not* start with *"/System/Library/Frameworks/Python.framework/"*.
 
 **framework-based**: Output of  
 `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`  
-should be non-empty string.
+should be non-empty string. E.g. *Python*.
 
 **universal**: Output of  
 ``lipo -info `which python` ``  
@@ -128,11 +128,11 @@ At time of writing PyObjC 2.5 is not available via pip, so you have to install i
 
 1. Download [PyObjC 2.5](https://bitbucket.org/ronaldoussoren/pyobjc/get/pyobjc-2.5.zip)
 2. Extract the archive and `cd` into the directory
-3. `python install.py`  
+3. `python install.py` (Note `python` is the python of your virtualenv):
     If build fails, try the same command one more time. It's known issue.
 
 
-###Package Cure into application
+###Package Cura into application
 Ensure that virtualenv is activated, so `python` points to the python of your virtualenv (e.g. ~/.virtualenvs/Cura/bin/python).Use package.sh to build Cura:  
 `./package.sh darwin`
 
