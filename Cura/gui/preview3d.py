@@ -290,6 +290,7 @@ class toolScale(object):
 	def __init__(self, parent):
 		self.parent = parent
 		self.node = None
+		self.scale = None
 
 	def _pointDist(self, p0, p1, p2):
 		return numpy.linalg.norm(numpy.cross((p0 - p1), (p0 - p2))) / numpy.linalg.norm(p2 - p1)
@@ -298,15 +299,31 @@ class toolScale(object):
 		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
 		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
 		s = self._nodeSize()
-		if self._pointDist(numpy.array([0,0,0]), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([0,0,0],numpy.float32), pp0, pp1) < s * 2:
 			return 1
-		if self._pointDist(numpy.array([s*15,0,0]), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([s*15,0,0],numpy.float32), pp0, pp1) < s * 2:
 			return 2
-		if self._pointDist(numpy.array([0,s*15,0]), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([0,s*15,0],numpy.float32), pp0, pp1) < s * 2:
 			return 3
-		if self._pointDist(numpy.array([0,0,s*15]), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([0,0,s*15],numpy.float32), pp0, pp1) < s * 2:
 			return 4
 		return None
+
+	def _lineLineCrossingDistOnLine(self, s0, e0, s1, e1):
+		d0 = e0 - s0
+		d1 = e1 - s1
+		a = numpy.dot(d0, d0)
+		b = numpy.dot(d0, d1)
+		e = numpy.dot(d1, d1)
+		d = a*e - b*b
+
+		r = s0 - s1
+		c = numpy.dot(d0, r)
+		f = numpy.dot(d1, r)
+
+		s = (b*f - c*e) / d
+		t = (a*f - b*c) / d
+		return t
 
 	def _nodeSize(self):
 		return self.parent.zoom / self.parent.GetSize().GetWidth() * 6
@@ -318,16 +335,59 @@ class toolScale(object):
 			self.parent.Refresh()
 
 	def OnDragStart(self, p0, p1):
-		pass
+		if self.node is None:
+			return False
+		return True
 
 	def OnDrag(self, p0, p1):
-		pass
+		s = self._nodeSize()
+		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
+		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
+		endPoint = [1,1,1]
+		if self.node == 2:
+			endPoint = [1,0,0]
+		elif self.node == 3:
+			endPoint = [0,1,0]
+		elif self.node == 4:
+			endPoint = [0,0,1]
+		scale = self._lineLineCrossingDistOnLine(pp0, pp1, numpy.array([0,0,0], numpy.float32), numpy.array(endPoint, numpy.float32)) / 15.0 / s
+		if not wx.GetKeyState(wx.WXK_SHIFT):
+			scale = round(scale * 10) / 10
+		if scale < 0:
+			scale = -scale
+		if scale < 0.1:
+			scale = 0.1
+		self.scale = scale
+		if self.node == 1 or not wx.GetKeyState(wx.WXK_CONTROL):
+			self.parent.tempMatrix = numpy.matrix([[scale,0,0], [0, scale, 0], [0, 0, scale]], numpy.float64)
+		elif self.node == 2:
+			self.parent.tempMatrix = numpy.matrix([[scale,0,0], [0, 1, 0], [0, 0, 1]], numpy.float64)
+		elif self.node == 3:
+			self.parent.tempMatrix = numpy.matrix([[1,0,0], [0, scale, 0], [0, 0, 1]], numpy.float64)
+		elif self.node == 4:
+			self.parent.tempMatrix = numpy.matrix([[1,0,0], [0, 1, 0], [0, 0, scale]], numpy.float64)
 
 	def OnDragEnd(self):
-		pass
+		self.scale = None
 
 	def OnDraw(self):
 		s = self._nodeSize()
+		sx = s*15
+		sy = s*15
+		sz = s*15
+		if self.node == 2 and self.scale is not None:
+			sx *= self.scale
+		if self.node == 3 and self.scale is not None:
+			sy *= self.scale
+		if self.node == 4 and self.scale is not None:
+			sz *= self.scale
+		scaleX = numpy.linalg.norm(self.parent.parent.matrix[0].getA().flatten())
+		scaleY = numpy.linalg.norm(self.parent.parent.matrix[1].getA().flatten())
+		scaleZ = numpy.linalg.norm(self.parent.parent.matrix[2].getA().flatten())
+		if self.scale is not None:
+			scaleX *= self.scale
+			scaleY *= self.scale
+			scaleZ *= self.scale
 
 		glDisable(GL_LIGHTING)
 		glDisable(GL_DEPTH_TEST)
@@ -338,13 +398,13 @@ class toolScale(object):
 		glBegin(GL_LINES)
 		glColor3ub(128,0,0)
 		glVertex3f(0, 0, 0)
-		glVertex3f(s*15, 0, 0)
+		glVertex3f(sx, 0, 0)
 		glColor3ub(128,128,0)
 		glVertex3f(0, 0, 0)
-		glVertex3f(0, s*15, 0)
+		glVertex3f(0, sy, 0)
 		glColor3ub(0,128,0)
 		glVertex3f(0, 0, 0)
-		glVertex3f(0, 0, s*15)
+		glVertex3f(0, 0, sz)
 		glEnd()
 
 		glLineWidth(2)
@@ -353,30 +413,42 @@ class toolScale(object):
 		else:
 			glColor3ub(192,192,192)
 		opengl.DrawBox([-s,-s,-s], [s,s,s])
+		if self.node == 1:
+			glColor3ub(0,0,0)
+			opengl.glDrawStringCenter("%0.2f" % ((scaleX + scaleY + scaleZ) / 3.0))
 
 		if self.node == 2:
 			glColor3ub(255,64,64)
 		else:
 			glColor3ub(128,0,0)
 		glPushMatrix()
-		glTranslatef(s*15,0,0)
+		glTranslatef(sx,0,0)
 		opengl.DrawBox([-s,-s,-s], [s,s,s])
+		if self.node == 2:
+			glColor3ub(0,0,0)
+			opengl.glDrawStringCenter("%0.2f" % (scaleX))
 		glPopMatrix()
 		if self.node == 3:
 			glColor3ub(255,255,0)
 		else:
 			glColor3ub(128,128,0)
 		glPushMatrix()
-		glTranslatef(0,s*15,0)
+		glTranslatef(0,sy,0)
 		opengl.DrawBox([-s,-s,-s], [s,s,s])
+		if self.node == 3:
+			glColor3ub(0,0,0)
+			opengl.glDrawStringCenter("%0.2f" % (scaleY))
 		glPopMatrix()
 		if self.node == 4:
 			glColor3ub(64,255,64)
 		else:
 			glColor3ub(0,128,0)
 		glPushMatrix()
-		glTranslatef(0,0,s*15)
+		glTranslatef(0,0,sz)
 		opengl.DrawBox([-s,-s,-s], [s,s,s])
+		if self.node == 4:
+			glColor3ub(0,0,0)
+			opengl.glDrawStringCenter("%0.2f" % (scaleZ))
 		glPopMatrix()
 
 		glEnable(GL_DEPTH_TEST)
@@ -458,10 +530,6 @@ class previewPanel(wx.Panel):
 		self.toolbar2.AddSeparator()
 
 		# Scale
-		self.scaleReset = toolbarUtil.NormalButton(self.toolbar2, self.OnScaleReset, 'object-scale.png', 'Reset model scale')
-		self.scale = wx.TextCtrl(self.toolbar2, -1, profile.getProfileSetting('model_scale'), size=(21*2,21))
-		self.toolbar2.AddControl(self.scale)
-		self.scale.Bind(wx.EVT_TEXT, self.OnScale)
 		self.scaleMax = toolbarUtil.NormalButton(self.toolbar2, self.OnScaleMax, 'object-max-size.png', 'Scale object to fit machine size')
 
 		self.toolbar2.AddSeparator()
@@ -519,19 +587,6 @@ class previewPanel(wx.Panel):
 		sx, sy = self.glCanvas.GetClientSizeTuple()
 		self.warningPopup.SetPosition((x, y+sy-self.warningPopup.GetSize().height))
 
-	def OnScaleReset(self, e):
-		self.scale.SetValue('1.0')
-		self.OnScale(None)
-
-	def OnScale(self, e):
-		scale = 1.0
-		if self.scale.GetValue() != '':
-			scale = self.scale.GetValue()
-		profile.putProfileSetting('model_scale', scale)
-		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
-			self.setViewMode('Normal')
-		self.glCanvas.Refresh()
-
 	def OnScaleMax(self, e = None, onlyScaleDown = False):
 		if self.objectsMinV is None:
 			return
@@ -548,8 +603,6 @@ class previewPanel(wx.Panel):
 		scale = min(scaleX1, scaleY1, scaleX2, scaleY2, scaleZ)
 		if scale > 1.0 and onlyScaleDown:
 			return
-		self.scale.SetValue(str(scale))
-		profile.putProfileSetting('model_scale', self.scale.GetValue())
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
 			self.setViewMode('Normal')
 		self.glCanvas.Refresh()
@@ -842,7 +895,8 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		if self.parent.objectsMaxV is not None and self.viewport is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
 			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
 			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
-			self.parent.tool.OnMouseMove(p0, p1)
+			if not e.Dragging() or self.dragType != 'tool':
+				self.parent.tool.OnMouseMove(p0, p1)
 
 		if e.Dragging() and e.LeftIsDown():
 			if self.dragType == '':
@@ -1099,8 +1153,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				glDisable(GL_LIGHTING)
 				glColor3f(1,1,1)
 				glPushMatrix()
-				modelScale = profile.getProfileSettingFloat('model_scale')
-				glScalef(modelScale, modelScale, modelScale)
 				opengl.DrawMeshOutline(obj.mesh)
 				glPopMatrix()
 			
@@ -1108,8 +1160,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				glDisable(GL_LIGHTING)
 				glColor3f(1,1,1)
 				glPushMatrix()
-				modelScale = profile.getProfileSettingFloat('model_scale')
-				glScalef(modelScale, modelScale, modelScale)
 				glCallList(obj.steepDisplayList)
 				glPopMatrix()
 		
