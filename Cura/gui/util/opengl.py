@@ -22,6 +22,8 @@ except:
 	print "Failed to find PyOpenGL: http://pyopengl.sourceforge.net/"
 	hasOpenGLlibs = False
 
+import numpy
+
 def InitGL(window, view3D, zoom):
 	# set viewing projection
 	glMatrixMode(GL_MODELVIEW)
@@ -242,6 +244,18 @@ def glDrawStringCenter(s):
 	glBitmap(0,0,0,0, -width/2, 0, None)
 	for c in s:
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord(c))
+
+def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
+	npModelMatrix = numpy.matrix(numpy.array(modelMatrix, numpy.float64).reshape((4,4)))
+	npProjMatrix = numpy.matrix(numpy.array(projMatrix, numpy.float64).reshape((4,4)))
+	finalMatrix = npModelMatrix * npProjMatrix
+	finalMatrix = numpy.linalg.inv(finalMatrix)
+
+	viewport = map(float, viewport)
+	vector = numpy.array([(winx - viewport[0]) / viewport[2] * 2.0 - 1.0, (winy - viewport[1]) / viewport[3] * 2.0 - 1.0, winz * 2.0 - 1.0, 1]).reshape((1,4))
+	vector = (numpy.matrix(vector) * finalMatrix).getA().flatten()
+	ret = list(vector)[0:3] / vector[3]
+	return ret
 
 def ResetMatrixRotationAndScale():
 	matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
