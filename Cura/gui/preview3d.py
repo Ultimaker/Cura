@@ -81,12 +81,26 @@ class toolInfo(object):
 		glVertex3f(size[0], size[1], size[2])
 		glVertex3f(size[0]/4*3, size[1], size[2])
 
-		glVertex3f(-size[0], -size[1], -size[2])
-		glVertex3f(-size[0], -size[1], -size[2]/4*3)
-		glVertex3f(-size[0], -size[1], -size[2])
-		glVertex3f(-size[0], -size[1]/4*3, -size[2])
-		glVertex3f(-size[0], -size[1], -size[2])
-		glVertex3f(-size[0]/4*3, -size[1], -size[2])
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0], -size[1], size[2]/4*3)
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0], -size[1]/4*3, size[2])
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0]/4*3, -size[1], size[2])
+
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0], -size[1], -size[2]/4*3)
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0], -size[1]/4*3, -size[2])
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0]/4*3, -size[1], -size[2])
+
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1], -size[2]/4*3)
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1]/4*3, -size[2])
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0]/4*3, size[1], -size[2])
 		glEnd()
 
 class toolRotate(object):
