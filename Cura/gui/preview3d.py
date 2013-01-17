@@ -261,6 +261,27 @@ class toolRotate(object):
 			glVertex3f(math.cos(i/32.0*math.pi), 0, math.sin(i/32.0*math.pi))
 		glEnd()
 
+class toolScale(object):
+	def __init__(self, parent):
+		self.parent = parent
+
+	def OnMouseMove(self, p0, p1):
+		pass
+
+	def OnDragStart(self, p0, p1):
+		pass
+
+	def OnDrag(self, p0, p1):
+		pass
+
+	def OnDragEnd(self):
+		pass
+
+	def OnDraw(self):
+		glDisable(GL_LIGHTING)
+		size = self.parent.getObjectSize() / 2
+		opengl.DrawBox(-size, size)
+
 class previewPanel(wx.Panel):
 	def __init__(self, parent):
 		super(previewPanel, self).__init__(parent,-1)
@@ -376,6 +397,8 @@ class previewPanel(wx.Panel):
 			self.tool = toolInfo(self.glCanvas)
 		if self.rotateToolButton.GetValue():
 			self.tool = toolRotate(self.glCanvas)
+		if self.scaleToolButton.GetValue():
+			self.tool = toolScale(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnMirrorX(self, e):
