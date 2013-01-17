@@ -741,8 +741,8 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 
 	def OnMouseMotion(self,e):
 		if self.parent.objectsMaxV is not None and self.viewport is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
-			p0 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport))
-			p1 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport))
+			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
+			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
 			self.parent.tool.OnMouseMove(p0, p1)
 
 		if e.Dragging() and e.LeftIsDown():
