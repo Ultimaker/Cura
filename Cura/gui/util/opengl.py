@@ -257,6 +257,9 @@ def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
 	ret = list(vector)[0:3] / vector[3]
 	return ret
 
+def convert3x3MatrixTo4x4(matrix):
+	return list(matrix.getA()[0]) + [0] + list(matrix.getA()[1]) + [0] + list(matrix.getA()[2]) + [0, 0,0,0,1]
+
 def ResetMatrixRotationAndScale():
 	matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
 	noZ = False
