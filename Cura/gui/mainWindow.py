@@ -142,6 +142,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('http://daid.github.com/Cura'), i)
 		i = helpMenu.Append(-1, 'Report a problem...')
 		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('https://github.com/daid/Cura/issues'), i)
+		i = helpMenu.Append(-1, 'Check for update...')
+		self.Bind(wx.EVT_MENU, self.OnCheckForUpdate, i)
 		self.menubar.Append(helpMenu, 'Help')
 		self.SetMenuBar(self.menubar)
 
@@ -482,6 +484,14 @@ class mainWindow(wx.Frame):
 		svgSlicer = flatSlicerWindow.flatSlicerWindow()
 		svgSlicer.Centre()
 		svgSlicer.Show(True)
+
+	def OnCheckForUpdate(self, e):
+		newVersion = version.checkForNewerVersion()
+		if newVersion is not None:
+			if wx.MessageBox('A new version of Cura is available, would you like to download?', 'New version available', wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
+				webbrowser.open(newVersion)
+		else:
+			wx.MessageBox('You are running the latest version of Cura!', 'Awesome!', wx.ICON_INFORMATION)
 
 	def OnClose(self, e):
 		profile.saveGlobalProfile(profile.getDefaultProfilePath())
