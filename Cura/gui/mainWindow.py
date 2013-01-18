@@ -142,6 +142,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('http://daid.github.com/Cura'), i)
 		i = helpMenu.Append(-1, 'Report a problem...')
 		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('https://github.com/daid/Cura/issues'), i)
+		i = helpMenu.Append(-1, 'Check for update...')
+		self.Bind(wx.EVT_MENU, self.OnCheckForUpdate, i)
 		self.menubar.Append(helpMenu, 'Help')
 		self.SetMenuBar(self.menubar)
 
@@ -208,17 +210,25 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel.Show(False)
 		self.updateSliceMode()
 
-		if wx.Display().GetClientArea().GetWidth() < self.GetSize().GetWidth():
-			f = self.GetSize().GetWidth() - wx.Display().GetClientArea().GetWidth()
-			self.preview3d.SetMinSize(self.preview3d.GetMinSize().DecBy(f, 0))
-			self.Fit()
-		self.preview3d.Fit()
-		#self.SetMinSize(self.GetSize())
-
+		# Set default window size & position
+		self.SetSize((wx.Display().GetClientArea().GetWidth()/2,wx.Display().GetClientArea().GetHeight()/2))
 		self.Centre()
+
+		# Restore the window position, size & state from the preferences file
+		try:
+			if profile.getPreference('window_maximized') == 'True':
+				self.Maximize(True)
+			else:
+				posx = int(profile.getPreference('window_pos_x'))
+				posy = int(profile.getPreference('window_pos_y'))
+				width = int(profile.getPreference('window_width'))
+				height = int(profile.getPreference('window_height'))
+				self.SetPosition((posx,posy))
+				self.SetSize((width,height))
+		except:
+			pass
+			
 		self.Show(True)
-
-		self.Centre()
 
 	def updateSliceMode(self):
 		isSimple = profile.getPreference('startMode') == 'Simple'
@@ -241,7 +251,6 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel.Layout()
 		self.simpleSettingsPanel.Layout()
 		self.GetSizer().Layout()
-		self.Fit()
 		self.Refresh()
 
 	def OnPreferences(self, e):
@@ -476,8 +485,27 @@ class mainWindow(wx.Frame):
 		svgSlicer.Centre()
 		svgSlicer.Show(True)
 
+	def OnCheckForUpdate(self, e):
+		newVersion = version.checkForNewerVersion()
+		if newVersion is not None:
+			if wx.MessageBox('A new version of Cura is available, would you like to download?', 'New version available', wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
+				webbrowser.open(newVersion)
+		else:
+			wx.MessageBox('You are running the latest version of Cura!', 'Awesome!', wx.ICON_INFORMATION)
+
 	def OnClose(self, e):
 		profile.saveGlobalProfile(profile.getDefaultProfilePath())
+
+		# Save the window position, size & state from the preferences file
+		profile.putPreference('window_maximized', self.IsMaximized())
+		if not self.IsMaximized():
+			(posx, posy) = self.GetPosition()
+			profile.putPreference('window_pos_x', posx)
+			profile.putPreference('window_pos_y', posy)
+			(width, height) = self.GetSize()
+			profile.putPreference('window_width', width)
+			profile.putPreference('window_height', height)
+			
 		self.Destroy()
 
 	def OnQuit(self, e):
