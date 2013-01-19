@@ -12,6 +12,7 @@ Printrun
 .DS_Store
 Cura/current_profile.ini
 Cura/preferences.ini
+Cura/mru_filelist.ini
 cura.sh
 pypy
 python
@@ -25,3 +26,5 @@ scripts/darwin/build/*
 scripts/darwin/Cura.dmg.sparseimage
 scripts/win32/dist/*
 log.txt
+output.txt
+*.bak
