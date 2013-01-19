@@ -509,7 +509,7 @@ class mainWindow(wx.Frame):
 
 		# Save the window position, size & state from the preferences file
 		profile.putPreference('window_maximized', self.IsMaximized())
-		if not self.IsMaximized():
+		if not self.IsMaximized() and not self.IsIconized():
 			(posx, posy) = self.GetPosition()
 			profile.putPreference('window_pos_x', posx)
 			profile.putPreference('window_pos_y', posy)
