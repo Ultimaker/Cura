@@ -202,6 +202,10 @@ class mainWindow(wx.Frame):
 		if len(self.filelist) > 0:
 			self.preview3d.loadModelFiles(self.filelist)
 
+			# Update the Model MRU
+			for idx in xrange(0, len(self.filelist)):
+				self.addToModelMRU(self.filelist[idx])
+
 		self.updateProfileToControls()
 
 		self.SetBackgroundColour(self.normalSettingsPanel.GetBackgroundColour())
@@ -285,12 +289,10 @@ class mainWindow(wx.Frame):
 		profile.putPreference('lastFile', ';'.join(self.filelist))
 		self.preview3d.loadModelFiles(self.filelist, True)
 		self.preview3d.setViewMode("Normal")
+		
 		# Update the Model MRU
 		for idx in xrange(0, len(self.filelist)):
-			self.modelFileHistory.AddFileToHistory(self.filelist[idx])
-		self.config.SetPath("/ModelMRU")
-		self.modelFileHistory.Save(self.config)
-		self.config.Flush()
+			self.addToModelMRU(self.filelist[idx])
 
 	def OnDropFiles(self, files):
 		self._loadModels(files)
@@ -349,6 +351,12 @@ class mainWindow(wx.Frame):
 		filelist = [ path ]
 		self._loadModels(filelist)
 
+	def addToModelMRU(self, file):
+		self.modelFileHistory.AddFileToHistory(file)
+		self.config.SetPath("/ModelMRU")
+		self.modelFileHistory.Save(self.config)
+		self.config.Flush()
+	
 	def OnProfileMRU(self, e):
 		fileNum = e.GetId() - self.ID_MRU_PROFILE1
 		path = self.profileFileHistory.GetHistoryFile(fileNum)
@@ -360,6 +368,12 @@ class mainWindow(wx.Frame):
 		# Load Profile	
 		profile.loadGlobalProfile(path)
 		self.updateProfileToControls()
+
+	def addToProfileMRU(self, file):
+		self.profileFileHistory.AddFileToHistory(file)
+		self.config.SetPath("/ProfileMRU")
+		self.profileFileHistory.Save(self.config)
+		self.config.Flush()			
 
 	def removeSliceProgress(self, spp):
 		self.progressPanelList.remove(spp)
@@ -391,10 +405,7 @@ class mainWindow(wx.Frame):
 			self.updateProfileToControls()
 
 			# Update the Profile MRU
-			self.profileFileHistory.AddFileToHistory(profileFile)
-			self.config.SetPath("/ProfileMRU")
-			self.profileFileHistory.Save(self.config)
-			self.config.Flush()			
+			self.addToProfileMRU(profileFile)
 		dlg.Destroy()
 
 	def OnLoadProfileFromGcode(self, e):
