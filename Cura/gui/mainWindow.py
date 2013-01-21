@@ -154,29 +154,38 @@ class mainWindow(wx.Frame):
 			self.filelist = []
 		self.progressPanelList = []
 
-		##Gui components##
-		self.simpleSettingsPanel = simpleMode.simpleModePanel(self)
-		self.normalSettingsPanel = normalSettingsPanel(self)
+		self.splitter = wx.SplitterWindow(self, style = wx.SP_3D | wx.SP_LIVE_UPDATE)
+		self.leftPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
+		self.rightPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
 
+		##Gui components##
+		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane)
+		self.normalSettingsPanel = normalSettingsPanel(self.leftPane)
+
+		self.leftSizer = wx.BoxSizer(wx.VERTICAL)
+		self.leftSizer.Add(self.simpleSettingsPanel)
+		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
+		self.leftPane.SetSizer(self.leftSizer)
+		
 		#Preview window
-		self.preview3d = preview3d.previewPanel(self)
+		self.preview3d = preview3d.previewPanel(self.rightPane)
 
 		# load and slice buttons.
-		loadButton = wx.Button(self, -1, '&Load model')
-		sliceButton = wx.Button(self, -1, 'P&repare print')
-		printButton = wx.Button(self, -1, '&Print')
+		loadButton = wx.Button(self.rightPane, -1, '&Load model')
+		sliceButton = wx.Button(self.rightPane, -1, 'P&repare print')
+		printButton = wx.Button(self.rightPane, -1, '&Print')
 		self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(1), loadButton)
 		self.Bind(wx.EVT_BUTTON, self.OnSlice, sliceButton)
 		self.Bind(wx.EVT_BUTTON, self.OnPrint, printButton)
 
 		if self.extruderCount > 1:
-			loadButton2 = wx.Button(self, -1, 'Load Dual')
+			loadButton2 = wx.Button(self.rightPane, -1, 'Load Dual')
 			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(2), loadButton2)
 		if self.extruderCount > 2:
-			loadButton3 = wx.Button(self, -1, 'Load Triple')
+			loadButton3 = wx.Button(self.rightPane, -1, 'Load Triple')
 			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(3), loadButton3)
 		if self.extruderCount > 3:
-			loadButton4 = wx.Button(self, -1, 'Load Quad')
+			loadButton4 = wx.Button(self.rightPane, -1, 'Load Quad')
 			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(4), loadButton4)
 
 		#Also bind double clicking the 3D preview to load an STL file.
@@ -184,7 +193,7 @@ class mainWindow(wx.Frame):
 
 		#Main sizer, to position the preview window, buttons and tab control
 		sizer = wx.GridBagSizer()
-		self.SetSizer(sizer)
+		self.rightPane.SetSizer(sizer)
 		sizer.Add(self.preview3d, (0,1), span=(1,2+self.extruderCount), flag=wx.EXPAND)
 		sizer.AddGrowableCol(2 + self.extruderCount)
 		sizer.AddGrowableRow(0)
@@ -212,24 +221,33 @@ class mainWindow(wx.Frame):
 
 		self.simpleSettingsPanel.Show(False)
 		self.normalSettingsPanel.Show(False)
-		self.updateSliceMode()
 
 		# Set default window size & position
 		self.SetSize((wx.Display().GetClientArea().GetWidth()/2,wx.Display().GetClientArea().GetHeight()/2))
 		self.Centre()
 
 		# Restore the window position, size & state from the preferences file
-		if profile.getPreference('window_maximized') == 'True':
-			self.Maximize(True)
-		else:
-			posx = int(profile.getPreference('window_pos_x'))
-			posy = int(profile.getPreference('window_pos_y'))
-			width = int(profile.getPreference('window_width'))
-			height = int(profile.getPreference('window_height'))
+		self.normalSashPos = 320
+		try:
+			if profile.getPreference('window_maximized') == 'True':
+				self.Maximize(True)
+			else:
+				posx = int(profile.getPreference('window_pos_x'))
+				posy = int(profile.getPreference('window_pos_y'))
+				width = int(profile.getPreference('window_width'))
+				height = int(profile.getPreference('window_height'))
 			if posx > 0 or posy > 0:
 				self.SetPosition((posx,posy))
 			if width > 0 and height > 0:
 				self.SetSize((width,height))
+				
+			self.normalSashPos = int(profile.getPreference('window_normal_sash'))
+		except:
+			pass
+
+		self.splitter.SplitVertically(self.leftPane, self.rightPane, self.normalSashPos)
+
+		self.updateSliceMode()
 
 		self.Show(True)
 
@@ -239,23 +257,32 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel.Show(not isSimple)
 		self.simpleSettingsPanel.Show(isSimple)
 
-		self.GetSizer().Detach(self.simpleSettingsPanel)
-		self.GetSizer().Detach(self.normalSettingsPanel)
-		if isSimple:
-			self.GetSizer().Add(self.simpleSettingsPanel, (0,0), span=(1,1), flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=6)
-		else:
-			self.GetSizer().Add(self.normalSettingsPanel, (0,0), span=(1,1), flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=6)
-
 		for i in self.normalModeOnlyItems:
 			i.Enable(not isSimple)
 		self.switchToQuickprintMenuItem.Enable(not isSimple)
 		self.switchToNormalMenuItem.Enable(isSimple)
 
 		self.normalSettingsPanel.Layout()
-		self.simpleSettingsPanel.Layout()
-		self.GetSizer().Layout()
-		self.Refresh()
+		self.simpleSettingsPanel.Layout()		
+		self.leftPane.GetSizer().Layout()
+		
+		# Set splitter sash position & size
+		if isSimple:
+			# Save normal mode sash
+			self.normalSashPos = self.splitter.GetSashPosition()
+			
+			# Change location of sash to width of quick mode pane 
+			(width, height) = self.simpleSettingsPanel.GetSizer().GetSize() 
+			self.splitter.SetSashPosition(width, True)
+			
+			# Disable sash
+			self.splitter.SetSashSize(0)
+		else:
+			self.splitter.SetSashPosition(self.normalSashPos, True)
 
+			# Enabled sash
+			self.splitter.SetSashSize(4)
+			
 	def OnPreferences(self, e):
 		prefDialog = preferencesDialog.preferencesDialog(self)
 		prefDialog.Centre()
@@ -514,7 +541,13 @@ class mainWindow(wx.Frame):
 			profile.putPreference('window_pos_y', posy)
 			(width, height) = self.GetSize()
 			profile.putPreference('window_width', width)
-			profile.putPreference('window_height', height)
+			profile.putPreference('window_height', height)			
+			
+			# Save normal sash position.  If in normal mode (!simple mode), get last position of sash before saving it...
+			isSimple = profile.getPreference('startMode') == 'Simple'
+			if not isSimple:
+				self.normalSashPos = self.splitter.GetSashPosition()
+			profile.putPreference('window_normal_sash', self.normalSashPos)
 			
 		self.Destroy()
 
@@ -529,9 +562,10 @@ class normalSettingsPanel(configBase.configPanelBase):
 		#Main tabs
 		nb = wx.Notebook(self)
 		self.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		self.GetSizer().Add(nb, 1)
+		self.GetSizer().Add(nb, 1, wx.EXPAND)
 
-		(left, right) = self.CreateConfigTab(nb, 'Print config')
+		(left) = self.CreateSimpleConfigTab(nb, 'Print config')
+		right = left
 
 		configBase.TitleRow(left, "Quality")
 		c = configBase.SettingRow(left, "Layer height (mm)", 'layer_height', '0.2', 'Layer height in millimeters.\n0.2 is a good value for quick prints.\n0.1 gives high quality prints.')
@@ -575,8 +609,9 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Packing Density", 'filament_density', '1.00', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
 		validators.validFloat(c, 0.5, 1.5)
 
-		(left, right) = self.CreateConfigTab(nb, 'Advanced config')
-
+		(left) = self.CreateSimpleConfigTab(nb, 'Advanced config')
+		right = left
+		
 		configBase.TitleRow(left, "Machine size")
 		c = configBase.SettingRow(left, "Nozzle size (mm)", 'nozzle_size', '0.4', 'The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings.')
 		validators.validFloat(c, 0.1, 10.0)

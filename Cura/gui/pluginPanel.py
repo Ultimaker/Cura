@@ -24,7 +24,7 @@ class pluginPanel(wx.Panel):
 		title = wx.StaticText(self, -1, "Plugins:")
 		title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		helpButton = wx.Button(self, -1, '?', style=wx.BU_EXACTFIT)
-		addButton = wx.Button(self, -1, '>', style=wx.BU_EXACTFIT)
+		addButton = wx.Button(self, -1, 'V', style=wx.BU_EXACTFIT)
 		openPluginLocationButton = wx.Button(self, -1, 'Open plugin location')
 		sb = wx.StaticBox(self, label="Enabled plugins")
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
@@ -34,14 +34,16 @@ class pluginPanel(wx.Panel):
 		sizer.Add(title, (0,0), border=10, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.TOP)
 		sizer.Add(helpButton, (0,1), border=10, flag=wx.ALIGN_RIGHT|wx.RIGHT|wx.TOP)
 		sizer.Add(self.listbox, (1,0), span=(2,2), border=10, flag=wx.EXPAND|wx.LEFT|wx.RIGHT)
-		sizer.Add(addButton, (1,2), border=5, flag=wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_BOTTOM)
-		sizer.Add(boxsizer, (1,3), span=(2,1), border=10, flag=wx.EXPAND|wx.LEFT|wx.RIGHT)
-		sizer.Add(openPluginLocationButton, (3, 0), span=(1,2), border=10, flag=wx.LEFT|wx.BOTTOM)
+		sizer.Add(addButton, (3,0), span=(1,2), border=5, flag=wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_BOTTOM)
+		sizer.Add(boxsizer, (4,0), span=(4,2), border=10, flag=wx.EXPAND|wx.LEFT|wx.RIGHT)
+		sizer.Add(openPluginLocationButton, (8, 0), border=10, flag=wx.LEFT|wx.BOTTOM)
 		boxsizer.Add(self.pluginEnabledPanel, 1, flag=wx.EXPAND)
 		
-		sizer.AddGrowableCol(3)
-		sizer.AddGrowableRow(1)
-		sizer.AddGrowableRow(2)
+		sizer.AddGrowableCol(0)
+		sizer.AddGrowableRow(1) # Plugins list box
+		sizer.AddGrowableRow(4) # Enabled plugins
+		sizer.AddGrowableRow(5) # Enabled plugins
+		sizer.AddGrowableRow(6) # Enabled plugins
 		
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		self.pluginEnabledPanel.SetSizer(sizer)
