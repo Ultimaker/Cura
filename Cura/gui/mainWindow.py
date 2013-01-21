@@ -219,19 +219,18 @@ class mainWindow(wx.Frame):
 		self.Centre()
 
 		# Restore the window position, size & state from the preferences file
-		try:
-			if profile.getPreference('window_maximized') == 'True':
-				self.Maximize(True)
-			else:
-				posx = int(profile.getPreference('window_pos_x'))
-				posy = int(profile.getPreference('window_pos_y'))
-				width = int(profile.getPreference('window_width'))
-				height = int(profile.getPreference('window_height'))
+		if profile.getPreference('window_maximized') == 'True':
+			self.Maximize(True)
+		else:
+			posx = int(profile.getPreference('window_pos_x'))
+			posy = int(profile.getPreference('window_pos_y'))
+			width = int(profile.getPreference('window_width'))
+			height = int(profile.getPreference('window_height'))
+			if posx > 0 or posy > 0:
 				self.SetPosition((posx,posy))
+			if width > 0 and height > 0:
 				self.SetSize((width,height))
-		except:
-			pass
-			
+
 		self.Show(True)
 
 	def updateSliceMode(self):
