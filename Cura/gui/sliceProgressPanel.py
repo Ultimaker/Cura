@@ -12,7 +12,7 @@ from Cura.gui import preferencesDialog
 from Cura.gui.util import taskbar
 from Cura.util import profile
 from Cura.util import sliceRun
-from Cura.util import exporer
+from Cura.util import explorer
 from Cura.util import gcodeInterpreter
 
 class sliceProgressPanel(wx.Panel):
@@ -62,7 +62,7 @@ class sliceProgressPanel(wx.Panel):
 		LogWindow('\n'.join(self.progressLog))
 	
 	def OnOpenFileLocation(self, e):
-		exporer.openExporer(sliceRun.getExportFilename(self.filelist[0]))
+		explorer.openExplorer(sliceRun.getExportFilename(self.filelist[0]))
 	
 	def OnCopyToSD(self, e):
 		if profile.getPreference('sdpath') == '':
@@ -112,7 +112,7 @@ class sliceProgressPanel(wx.Panel):
 			if cost is not None:
 				status += " Cost: %s" % (cost)
 			self.statusText.SetLabel(status)
-			if exporer.hasExporer():
+			if explorer.hasExplorer():
 				self.openFileLocationButton = wx.Button(self, -1, "Open file location")
 				self.Bind(wx.EVT_BUTTON, self.OnOpenFileLocation, self.openFileLocationButton)
 				self.sizer.Add(self.openFileLocationButton, 0)

@@ -5,7 +5,7 @@ import webbrowser
 from wx.lib import scrolledpanel
 
 from Cura.util import profile
-from Cura.util import exporer
+from Cura.util import explorer
 
 class pluginPanel(wx.Panel):
 	def __init__(self, parent):
@@ -168,4 +168,4 @@ class pluginPanel(wx.Panel):
 		webbrowser.open('http://wiki.ultimaker.com/Category:CuraPlugin')
 	
 	def OnOpenPluginLocation(self, e):
-		exporer.openExporerPath(profile.getPluginBasePaths()[0])
+		explorer.openExplorerPath(profile.getPluginBasePaths()[0])

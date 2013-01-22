@@ -4,7 +4,7 @@ import sys
 import os
 import subprocess
 
-def hasExporer():
+def hasExplorer():
 	if sys.platform == 'win32' or sys.platform == 'cygwin' or sys.platform == 'darwin':
 		return True
 	if sys.platform == 'linux2':
@@ -14,7 +14,7 @@ def hasExporer():
 			return True
 	return False
 
-def openExporer(filename):
+def openExplorer(filename):
 	if sys.platform == 'win32' or sys.platform == 'cygwin':
 		subprocess.Popen(r'explorer /select,"%s"' % (filename))
 	if sys.platform == 'darwin':
@@ -25,7 +25,7 @@ def openExporer(filename):
 		elif os.path.isfile('/usr/bin/dolphin'):
 			subprocess.Popen(['/usr/bin/dolphin', os.path.split(filename)[0]])
 
-def openExporerPath(filename):
+def openExplorerPath(filename):
 	if sys.platform == 'win32' or sys.platform == 'cygwin':
 		subprocess.Popen(r'explorer "%s"' % (filename))
 	if sys.platform == 'darwin':
