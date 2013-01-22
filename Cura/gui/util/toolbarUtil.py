@@ -116,11 +116,11 @@ class ToggleButton(buttons.GenBitmapToggleButton):
 
 class RadioButton(buttons.GenBitmapButton):
 	def __init__(self, parent, group, bitmapFilenameOn, bitmapFilenameOff,
-	             helpText='', id=-1, callback=None, size=(20, 20)):
+	             helpText='', id=-1, callback=None):
 		self.bitmapOn = wx.Bitmap(getPathForImage(bitmapFilenameOn))
 		self.bitmapOff = wx.Bitmap(getPathForImage(bitmapFilenameOff))
 
-		super(RadioButton, self).__init__(parent, id, self.bitmapOff, size=size)
+		super(RadioButton, self).__init__(parent, id, self.bitmapOff, size=self.bitmapOn.GetSize() + (4, 4))
 
 		self.group = group
 		group.append(self)
@@ -151,7 +151,7 @@ class RadioButton(buttons.GenBitmapButton):
 	def SetValue(self, boolValue):
 		self._value = boolValue
 		self.SetBitmap(self.GetValue())
-		if boolValue == True:
+		if boolValue:
 			for other in self.group:
 				if other != self:
 					other.SetValue(False)

@@ -518,16 +518,12 @@ class previewPanel(wx.Panel):
 		self.toolbar2 = toolbarUtil.Toolbar(self)
 
 		group = []
-		self.infoToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Object info', callback=self.OnToolChange)
+		self.infoToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'info-on.png', 'info-off.png', 'Object info', callback=self.OnToolChange)
 		self.rotateToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Rotate object', callback=self.OnToolChange)
 		self.scaleToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-scale.png', 'object-scale.png', 'Scale object', callback=self.OnToolChange)
-		self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object', callback=self.OnToolChange)
+		#self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object', callback=self.OnToolChange)
 		self.toolbar2.AddSeparator()
 		# Mirror
-		self.mirrorX = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorX, 'object-mirror-x-on.png', 'Mirror X')
-		self.mirrorY = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorY, 'object-mirror-y-on.png', 'Mirror Y')
-		self.mirrorZ = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorZ, 'object-mirror-z-on.png', 'Mirror Z')
-		self.toolbar2.AddSeparator()
 
 		# Scale
 		self.scaleMax = toolbarUtil.NormalButton(self.toolbar2, self.OnScaleMax, 'object-max-size.png', 'Scale object to fit machine size')
@@ -566,18 +562,6 @@ class previewPanel(wx.Panel):
 			self.tool = toolRotate(self.glCanvas)
 		if self.scaleToolButton.GetValue():
 			self.tool = toolScale(self.glCanvas)
-		self.returnToModelViewAndUpdateModel()
-
-	def OnMirrorX(self, e):
-		self.matrix *= numpy.matrix([[-1,0,0],[0,1,0],[0,0,1]], numpy.float64)
-		self.returnToModelViewAndUpdateModel()
-
-	def OnMirrorY(self, e):
-		self.matrix *= numpy.matrix([[1,0,0],[0,-1,0],[0,0,1]], numpy.float64)
-		self.returnToModelViewAndUpdateModel()
-
-	def OnMirrorZ(self, e):
-		self.matrix *= numpy.matrix([[1,0,0],[0,1,0],[0,0,-1]], numpy.float64)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnMove(self, e = None):
@@ -1020,11 +1004,12 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		glPushMatrix()
 		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
 		for obj in self.parent.objectList:
-			if obj.mesh == None:
+			if obj.mesh is None:
 				continue
-			if obj.displayList == None:
+			if obj.displayList is None:
 				obj.displayList = glGenLists(1)
 				obj.steepDisplayList = glGenLists(1)
+				obj.outlineDisplayList = glGenLists(1)
 			if obj.dirty:
 				obj.dirty = False
 				glNewList(obj.displayList, GL_COMPILE)
@@ -1033,11 +1018,14 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				glNewList(obj.steepDisplayList, GL_COMPILE)
 				opengl.DrawMeshSteep(obj.mesh, 60)
 				glEndList()
+				glNewList(obj.outlineDisplayList, GL_COMPILE)
+				opengl.DrawMeshOutline(obj.mesh)
+				glEndList()
 			
 			if self.viewMode == "Mixed":
 				glDisable(GL_BLEND)
 				glColor3f(0.0,0.0,0.0)
-				self.drawModel(obj)
+				self.drawModel(obj.displayList)
 				glColor3f(1.0,1.0,1.0)
 				glClear(GL_DEPTH_BUFFER_BIT)
 		
@@ -1085,7 +1073,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				if self.viewMode != "Mixed":
 					glDisable(GL_BLEND)
 					glColor3f(0.0,0.0,0.0)
-					self.drawModel(obj)
+					self.drawModel(obj.displayList)
 					glColor3f(1.0,1.0,1.0)
 				#After the black model is rendered, render the model again but now with lighting and no depth testing.
 				glDisable(GL_DEPTH_TEST)
@@ -1093,7 +1081,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				glEnable(GL_BLEND)
 				glBlendFunc(GL_ONE, GL_ONE)
 				glEnable(GL_LIGHTING)
-				self.drawModel(obj)
+				self.drawModel(obj.displayList)
 				glEnable(GL_DEPTH_TEST)
 			elif self.viewMode == "X-Ray":
 				glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
@@ -1102,16 +1090,16 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				glEnable(GL_STENCIL_TEST)
 				glStencilFunc(GL_ALWAYS, 1, 1)
 				glStencilOp(GL_INCR, GL_INCR, GL_INCR)
-				self.drawModel(obj)
+				self.drawModel(obj.displayList)
 				glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
 				
 				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
 				glStencilFunc(GL_EQUAL, 0, 1)
 				glColor(1, 1, 1)
-				self.drawModel(obj)
+				self.drawModel(obj.displayList)
 				glStencilFunc(GL_EQUAL, 1, 1)
 				glColor(1, 0, 0)
-				self.drawModel(obj)
+				self.drawModel(obj.displayList)
 
 				glPushMatrix()
 				glLoadIdentity()
@@ -1140,29 +1128,25 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				
 				#Fix the depth buffer
 				glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
-				self.drawModel(obj)
+				self.drawModel(obj.displayList)
 				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
 			elif self.viewMode == "Normal":
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, self.objColor[self.parent.objectList.index(obj)])
 				glLightfv(GL_LIGHT0, GL_AMBIENT, map(lambda x: x * 0.4, self.objColor[self.parent.objectList.index(obj)]))
 				glEnable(GL_LIGHTING)
-				self.drawModel(obj)
+				self.drawModel(obj.displayList)
 
 			if self.drawBorders and (self.viewMode == "Normal" or self.viewMode == "Transparent" or self.viewMode == "X-Ray"):
 				glEnable(GL_DEPTH_TEST)
 				glDisable(GL_LIGHTING)
 				glColor3f(1,1,1)
-				glPushMatrix()
-				opengl.DrawMeshOutline(obj.mesh)
-				glPopMatrix()
-			
+				self.drawModel(obj.outlineDisplayList)
+
 			if self.drawSteepOverhang:
 				glDisable(GL_LIGHTING)
 				glColor3f(1,1,1)
-				glPushMatrix()
-				glCallList(obj.steepDisplayList)
-				glPopMatrix()
-		
+				self.drawModel(obj.steepDisplayList)
+
 		glPopMatrix()	
 		#if self.viewMode == "Normal" or self.viewMode == "Transparent" or self.viewMode == "X-Ray":
 		#	glDisable(GL_LIGHTING)
@@ -1187,12 +1171,12 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 
 		glFlush()
 
-	def drawModel(self, obj):
+	def drawModel(self, displayList):
 		vMin = self.parent.objectsMinV
 		vMax = self.parent.objectsMaxV
 		offset = - vMin - (vMax - vMin) / 2
 
-		matrix = opengl.convert3x3MatrixTo4x4(obj.mesh.matrix)
+		matrix = opengl.convert3x3MatrixTo4x4(self.parent.matrix)
 
 		glPushMatrix()
 		glTranslate(0, 0, self.parent.objectsSize[2]/2)
@@ -1202,5 +1186,5 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		glTranslate(0, 0, -self.parent.objectsSize[2]/2)
 		glTranslate(offset[0], offset[1], -vMin[2])
 		glMultMatrixf(matrix)
-		glCallList(obj.displayList)
+		glCallList(displayList)
 		glPopMatrix()
