@@ -15,7 +15,7 @@ from Cura.util import sliceRun
 from Cura.util import exporer
 from Cura.util import gcodeInterpreter
 
-class sliceProgessPanel(wx.Panel):
+class sliceProgressPanel(wx.Panel):
 	def __init__(self, mainWindow, parent, filelist):
 		wx.Panel.__init__(self, parent, -1)
 		self.mainWindow = mainWindow
