@@ -111,8 +111,10 @@ class mainWindow(wx.Frame):
 		toolsMenu.AppendSeparator()
 		i = toolsMenu.Append(-1, 'Batch run...')
 		self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
+		self.normalModeOnlyItems.append(i)
 		i = toolsMenu.Append(-1, 'Project planner...')
 		self.Bind(wx.EVT_MENU, self.OnProjectPlanner, i)
+		self.normalModeOnlyItems.append(i)
 		#		i = toolsMenu.Append(-1, 'Open SVG (2D) slicer...')
 		#		self.Bind(wx.EVT_MENU, self.OnSVGSlicerOpen, i)
 		if minecraftImport.hasMinecraft():
