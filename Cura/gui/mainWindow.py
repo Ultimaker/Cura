@@ -205,7 +205,13 @@ class mainWindow(wx.Frame):
 		if self.extruderCount > 3:
 			sizer.Add(loadButton4, (1,4), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
 		sizer.Add(sliceButton, (1,1+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		sizer.Add(printButton, (1,2+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
+		sizer.Add(printButton, (1,2+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)		
+		
+		# Main window sizer
+		sizer = wx.BoxSizer(wx.VERTICAL)
+		self.SetSizer(sizer)
+		sizer.Add(self.splitter, 1, wx.EXPAND)
+		sizer.Layout()
 		self.sizer = sizer
 
 		if len(self.filelist) > 0:
@@ -346,7 +352,7 @@ class mainWindow(wx.Frame):
 			self.simpleSettingsPanel.setupSlice()
 		#Create a progress panel and add it to the window. The progress panel will start the Skein operation.
 		spp = sliceProgessPanel.sliceProgessPanel(self, self, self.filelist)
-		self.sizer.Add(spp, (len(self.progressPanelList)+2,0), span=(1, 3 + self.extruderCount), flag=wx.EXPAND)
+		self.sizer.Add(spp, 0, flag=wx.EXPAND)
 		self.sizer.Layout()
 		newSize = self.GetSize()
 		newSize.IncBy(0, spp.GetSize().GetHeight())
@@ -409,12 +415,6 @@ class mainWindow(wx.Frame):
 			self.SetSize(newSize)
 		spp.Show(False)
 		self.sizer.Detach(spp)
-		for spp in self.progressPanelList:
-			self.sizer.Detach(spp)
-		i = 2
-		for spp in self.progressPanelList:
-			self.sizer.Add(spp, (i,0), span=(1,3 + self.extruderCount), flag=wx.EXPAND)
-			i += 1
 		self.sizer.Layout()
 
 	def updateProfileToControls(self):
