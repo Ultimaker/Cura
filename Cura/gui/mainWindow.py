@@ -251,7 +251,7 @@ class mainWindow(wx.Frame):
 				
 			self.normalSashPos = int(profile.getPreference('window_normal_sash'))
 		except:
-			pass
+			self.Maximize(True)
 
 		self.splitter.SplitVertically(self.leftPane, self.rightPane, self.normalSashPos)
 

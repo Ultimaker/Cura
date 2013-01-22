@@ -521,13 +521,9 @@ class previewPanel(wx.Panel):
 		self.infoToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'info-on.png', 'info-off.png', 'Object info', callback=self.OnToolChange)
 		self.rotateToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Rotate object', callback=self.OnToolChange)
 		self.scaleToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-scale.png', 'object-scale.png', 'Scale object', callback=self.OnToolChange)
-		self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object', callback=self.OnToolChange)
+		#self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object', callback=self.OnToolChange)
 		self.toolbar2.AddSeparator()
 		# Mirror
-		self.mirrorX = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorX, 'object-mirror-x-on.png', 'Mirror X')
-		self.mirrorY = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorY, 'object-mirror-y-on.png', 'Mirror Y')
-		self.mirrorZ = toolbarUtil.NormalButton(self.toolbar2, self.OnMirrorZ, 'object-mirror-z-on.png', 'Mirror Z')
-		self.toolbar2.AddSeparator()
 
 		# Scale
 		self.scaleMax = toolbarUtil.NormalButton(self.toolbar2, self.OnScaleMax, 'object-max-size.png', 'Scale object to fit machine size')
@@ -566,18 +562,6 @@ class previewPanel(wx.Panel):
 			self.tool = toolRotate(self.glCanvas)
 		if self.scaleToolButton.GetValue():
 			self.tool = toolScale(self.glCanvas)
-		self.returnToModelViewAndUpdateModel()
-
-	def OnMirrorX(self, e):
-		self.matrix *= numpy.matrix([[-1,0,0],[0,1,0],[0,0,1]], numpy.float64)
-		self.returnToModelViewAndUpdateModel()
-
-	def OnMirrorY(self, e):
-		self.matrix *= numpy.matrix([[1,0,0],[0,-1,0],[0,0,1]], numpy.float64)
-		self.returnToModelViewAndUpdateModel()
-
-	def OnMirrorZ(self, e):
-		self.matrix *= numpy.matrix([[1,0,0],[0,1,0],[0,0,-1]], numpy.float64)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnMove(self, e = None):
