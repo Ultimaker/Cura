@@ -169,12 +169,12 @@ def getProfileInformation():
 			'Thread_Sequence_Choice': storedSetting('sequence'),
 		},'multiply': {
 			'Activate_Multiply': "False",
-			'Center_X_mm': lambda setting: profile.getProfileSettingFloat('object_center_x') if profile.getProfileSettingFloat('object_center_x') > 0 else profile.getPreferenceFloat("machine_width") / 2,
-			'Center_Y_mm': lambda setting: profile.getProfileSettingFloat('object_center_y') if profile.getProfileSettingFloat('object_center_y') > 0 else profile.getPreferenceFloat("machine_depth") / 2,
-			'Number_of_Columns_integer': storedSetting('model_multiply_x'),
-			'Number_of_Rows_integer': storedSetting('model_multiply_y'),
+			'Center_X_mm': DEFSET,
+			'Center_Y_mm': DEFSET,
+			'Number_of_Columns_integer': DEFSET,
+			'Number_of_Rows_integer': DEFSET,
 			'Reverse_Sequence_every_Odd_Layer': DEFSET,
-			'Separation_over_Perimeter_Width_ratio': calculateMultiplyDistance,
+			'Separation_over_Perimeter_Width_ratio': DEFSET,
 		},'speed': {
 			'Activate_Speed': "True",
 			'Add_Flow_Rate': "True",
