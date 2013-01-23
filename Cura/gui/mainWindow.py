@@ -7,7 +7,7 @@ import webbrowser
 from Cura.gui import configBase
 from Cura.gui import expertConfig
 from Cura.gui import preview3d
-from Cura.gui import sliceProgessPanel
+from Cura.gui import sliceProgressPanel
 from Cura.gui import alterationPanel
 from Cura.gui import pluginPanel
 from Cura.gui import preferencesDialog
@@ -353,7 +353,7 @@ class mainWindow(wx.Frame):
 			oldProfile = profile.getGlobalProfileString()
 			self.simpleSettingsPanel.setupSlice()
 		#Create a progress panel and add it to the window. The progress panel will start the Skein operation.
-		spp = sliceProgessPanel.sliceProgessPanel(self, self, self.filelist)
+		spp = sliceProgressPanel.sliceProgressPanel(self, self, self.filelist)
 		self.sizer.Add(spp, 0, flag=wx.EXPAND)
 		self.sizer.Layout()
 		newSize = self.GetSize()

@@ -34,7 +34,7 @@ from Cura.util import stl
 from Cura.util import mesh
 from Cura.util import sliceRun
 from Cura.util import gcodeInterpreter
-from Cura.util import exporer
+from Cura.util import explorer
 
 class Action(object):
 	pass
@@ -984,7 +984,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 		self.sizer.Add(self.closeButton, (3,0), span=(1,1))
 		self.sizer.Add(self.printButton, (3,1), span=(1,1))
 		self.sizer.Add(self.logButton, (3,2), span=(1,1))
-		if exporer.hasExporer():
+		if explorer.hasExplorer():
 			self.openFileLocationButton = wx.Button(self, -1, "Open file location")
 			self.Bind(wx.EVT_BUTTON, self.OnOpenFileLocation, self.openFileLocationButton)
 			self.sizer.Add(self.openFileLocationButton, (3,3), span=(1,1))
@@ -1006,7 +1006,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 		shutil.copy(self.resultFilename, os.path.join(profile.getPreference('sdpath'), filename))
 	
 	def OnOpenFileLocation(self, e):
-		exporer.openExporer(self.resultFilename)
+		explorer.openExplorer(self.resultFilename)
 	
 	def OnPrint(self, e):
 		printWindow.printFile(self.resultFilename)
