@@ -10,18 +10,10 @@ import numpy
 
 from wx import glcanvas
 import wx
-try:
-	import OpenGL
-	OpenGL.ERROR_CHECKING = False
-	from OpenGL.GLU import *
-	from OpenGL.GL import *
-	hasOpenGLlibs = True
-except:
-	print "Failed to find PyOpenGL: http://pyopengl.sourceforge.net/"
-	hasOpenGLlibs = False
-
-from Cura.gui.util import opengl
-from Cura.gui.util import toolbarUtil
+import OpenGL
+OpenGL.ERROR_CHECKING = False
+from OpenGL.GLU import *
+from OpenGL.GL import *
 
 from Cura.util import profile
 from Cura.util import gcodeInterpreter
@@ -29,493 +21,17 @@ from Cura.util import meshLoader
 from Cura.util import util3d
 from Cura.util import sliceRun
 
+from Cura.gui.util import opengl
+from Cura.gui.util import toolbarUtil
+from Cura.gui.util import previewTools
+from Cura.gui.util import openglGui
+
 class previewObject():
 	def __init__(self):
 		self.mesh = None
 		self.filename = None
 		self.displayList = None
 		self.dirty = False
-
-class toolInfo(object):
-	def __init__(self, parent):
-		self.parent = parent
-
-	def OnMouseMove(self, p0, p1):
-		pass
-
-	def OnDragStart(self, p0, p1):
-		return False
-
-	def OnDrag(self, p0, p1):
-		pass
-
-	def OnDragEnd(self):
-		pass
-
-	def OnDraw(self):
-		glDisable(GL_LIGHTING)
-		glDisable(GL_BLEND)
-		glDisable(GL_DEPTH_TEST)
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-		glColor3ub(0,0,0)
-		size = self.parent.getObjectSize()
-		radius = self.parent.getObjectBoundaryCircle()
-		glPushMatrix()
-		glTranslate(0,0,size[2]/2 + 5)
-		glRotate(-self.parent.yaw, 0,0,1)
-		if self.parent.pitch < 80:
-			glTranslate(0, radius + 5,0)
-		elif self.parent.pitch < 100:
-			glTranslate(0, (radius + 5) * (90 - self.parent.pitch) / 10,0)
-		else:
-			glTranslate(0,-(radius + 5),0)
-		opengl.glDrawStringCenter("%dx%dx%d" % (size[0], size[1], size[2]))
-		glPopMatrix()
-
-		glColor(255,255,255)
-		size = size / 2
-		glLineWidth(1)
-		glBegin(GL_LINES)
-		glVertex3f(size[0], size[1], size[2])
-		glVertex3f(size[0], size[1], size[2]/4*3)
-		glVertex3f(size[0], size[1], size[2])
-		glVertex3f(size[0], size[1]/4*3, size[2])
-		glVertex3f(size[0], size[1], size[2])
-		glVertex3f(size[0]/4*3, size[1], size[2])
-
-		glVertex3f(-size[0], -size[1], size[2])
-		glVertex3f(-size[0], -size[1], size[2]/4*3)
-		glVertex3f(-size[0], -size[1], size[2])
-		glVertex3f(-size[0], -size[1]/4*3, size[2])
-		glVertex3f(-size[0], -size[1], size[2])
-		glVertex3f(-size[0]/4*3, -size[1], size[2])
-
-		glVertex3f(size[0], -size[1], -size[2])
-		glVertex3f(size[0], -size[1], -size[2]/4*3)
-		glVertex3f(size[0], -size[1], -size[2])
-		glVertex3f(size[0], -size[1]/4*3, -size[2])
-		glVertex3f(size[0], -size[1], -size[2])
-		glVertex3f(size[0]/4*3, -size[1], -size[2])
-
-		glVertex3f(-size[0], size[1], -size[2])
-		glVertex3f(-size[0], size[1], -size[2]/4*3)
-		glVertex3f(-size[0], size[1], -size[2])
-		glVertex3f(-size[0], size[1]/4*3, -size[2])
-		glVertex3f(-size[0], size[1], -size[2])
-		glVertex3f(-size[0]/4*3, size[1], -size[2])
-		glEnd()
-
-class toolRotate(object):
-	def __init__(self, parent):
-		self.parent = parent
-		self.rotateRingDist = 1.5
-		self.rotateRingDistMin = 1.3
-		self.rotateRingDistMax = 1.7
-		self.dragPlane = None
-		self.dragStartAngle = None
-		self.dragEndAngle = None
-
-	def _ProjectToPlanes(self, p0, p1):
-		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
-		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
-		cursorX0 = pp0 - (pp1 - pp0) * (pp0[0] / (pp1[0] - pp0[0]))
-		cursorY0 = pp0 - (pp1 - pp0) * (pp0[1] / (pp1[1] - pp0[1]))
-		cursorZ0 = pp0 - (pp1 - pp0) * (pp0[2] / (pp1[2] - pp0[2]))
-		cursorYZ = math.sqrt((cursorX0[1] * cursorX0[1]) + (cursorX0[2] * cursorX0[2]))
-		cursorXZ = math.sqrt((cursorY0[0] * cursorY0[0]) + (cursorY0[2] * cursorY0[2]))
-		cursorXY = math.sqrt((cursorZ0[0] * cursorZ0[0]) + (cursorZ0[1] * cursorZ0[1]))
-		return cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY
-
-	def OnMouseMove(self, p0, p1):
-		radius = self.parent.getObjectBoundaryCircle()
-		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
-		oldDragPlane = self.dragPlane
-		if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorYZ <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorXZ <= radius * self.rotateRingDistMax:
-			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
-			if self.dragStartAngle is None:
-				if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax:
-					self.dragPlane = 'XY'
-				elif radius * self.rotateRingDistMin <= cursorXZ <= radius * self.rotateRingDistMax:
-					self.dragPlane = 'XZ'
-				else:
-					self.dragPlane = 'YZ'
-		else:
-			if self.dragStartAngle is None:
-				self.dragPlane = ''
-			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
-
-	def OnDragStart(self, p0, p1):
-		radius = self.parent.getObjectBoundaryCircle()
-		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
-		if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorYZ <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorXZ <= radius * self.rotateRingDistMax:
-			if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax:
-				self.dragPlane = 'XY'
-				self.dragStartAngle = math.atan2(cursorZ0[1], cursorZ0[0]) * 180 / math.pi
-			elif radius * self.rotateRingDistMin <= cursorXZ <= radius * self.rotateRingDistMax:
-				self.dragPlane = 'XZ'
-				self.dragStartAngle = math.atan2(cursorY0[2], cursorY0[0]) * 180 / math.pi
-			else:
-				self.dragPlane = 'YZ'
-				self.dragStartAngle = math.atan2(cursorX0[2], cursorX0[1]) * 180 / math.pi
-			return True
-		return False
-
-	def OnDrag(self, p0, p1):
-		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
-		if self.dragPlane == 'XY':
-			angle = math.atan2(cursorZ0[1], cursorZ0[0]) * 180 / math.pi
-		elif self.dragPlane == 'XZ':
-			angle = math.atan2(cursorY0[2], cursorY0[0]) * 180 / math.pi
-		else:
-			angle = math.atan2(cursorX0[2], cursorX0[1]) * 180 / math.pi
-		diff = angle - self.dragStartAngle
-		if wx.GetKeyState(wx.WXK_SHIFT):
-			diff = round(diff / 1) * 1
-		else:
-			diff = round(diff / 15) * 15
-		if diff > 180:
-			diff -= 360
-		if diff < -180:
-			diff += 360
-		rad = diff / 180.0 * math.pi
-		self.dragEndAngle = self.dragStartAngle + diff
-		if self.dragPlane == 'XY':
-			self.parent.tempMatrix = numpy.matrix([[math.cos(rad), math.sin(rad), 0], [-math.sin(rad), math.cos(rad), 0], [0,0,1]], numpy.float64)
-		elif self.dragPlane == 'XZ':
-			self.parent.tempMatrix = numpy.matrix([[math.cos(rad), 0, math.sin(rad)], [0,1,0], [-math.sin(rad), 0, math.cos(rad)]], numpy.float64)
-		else:
-			self.parent.tempMatrix = numpy.matrix([[1,0,0], [0, math.cos(rad), math.sin(rad)], [0, -math.sin(rad), math.cos(rad)]], numpy.float64)
-
-	def OnDragEnd(self):
-		self.dragStartAngle = None
-
-	def OnDraw(self):
-		glDisable(GL_LIGHTING)
-		glDisable(GL_BLEND)
-		glDisable(GL_DEPTH_TEST)
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-		radius = self.parent.getObjectBoundaryCircle()
-		glScalef(self.rotateRingDist * radius, self.rotateRingDist * radius, self.rotateRingDist * radius)
-		if self.dragPlane == 'XY':
-			glLineWidth(3)
-			glColor4ub(255,64,64,255)
-			if self.dragStartAngle is not None:
-				glPushMatrix()
-				glRotate(self.dragStartAngle, 0,0,1)
-				glBegin(GL_LINES)
-				glVertex3f(0,0,0)
-				glVertex3f(1,0,0)
-				glEnd()
-				glPopMatrix()
-				glPushMatrix()
-				glRotate(self.dragEndAngle, 0,0,1)
-				glBegin(GL_LINES)
-				glVertex3f(0,0,0)
-				glVertex3f(1,0,0)
-				glEnd()
-				glTranslatef(1.1,0,0)
-				glColor4ub(0,0,0,255)
-				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle)))
-				glColor4ub(255,64,64,255)
-				glPopMatrix()
-		else:
-			glLineWidth(1)
-			glColor4ub(128,0,0,255)
-		glBegin(GL_LINE_LOOP)
-		for i in xrange(0, 64):
-			glVertex3f(math.cos(i/32.0*math.pi), math.sin(i/32.0*math.pi),0)
-		glEnd()
-		if self.dragPlane == 'YZ':
-			glColor4ub(64,255,64,255)
-			glLineWidth(3)
-			if self.dragStartAngle is not None:
-				glPushMatrix()
-				glRotate(self.dragStartAngle, 1,0,0)
-				glBegin(GL_LINES)
-				glVertex3f(0,0,0)
-				glVertex3f(0,1,0)
-				glEnd()
-				glPopMatrix()
-				glPushMatrix()
-				glRotate(self.dragEndAngle, 1,0,0)
-				glBegin(GL_LINES)
-				glVertex3f(0,0,0)
-				glVertex3f(0,1,0)
-				glEnd()
-				glTranslatef(0,1.1,0)
-				glColor4ub(0,0,0,255)
-				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle)))
-				glColor4ub(64,255,64,255)
-				glPopMatrix()
-		else:
-			glColor4ub(0,128,0,255)
-			glLineWidth(1)
-		glBegin(GL_LINE_LOOP)
-		for i in xrange(0, 64):
-			glVertex3f(0, math.cos(i/32.0*math.pi), math.sin(i/32.0*math.pi))
-		glEnd()
-		if self.dragPlane == 'XZ':
-			glLineWidth(3)
-			glColor4ub(255,255,0,255)
-			if self.dragStartAngle is not None:
-				glPushMatrix()
-				glRotate(self.dragStartAngle, 0,-1,0)
-				glBegin(GL_LINES)
-				glVertex3f(0,0,0)
-				glVertex3f(1,0,0)
-				glEnd()
-				glPopMatrix()
-				glPushMatrix()
-				glRotate(self.dragEndAngle, 0,-1,0)
-				glBegin(GL_LINES)
-				glVertex3f(0,0,0)
-				glVertex3f(1,0,0)
-				glEnd()
-				glTranslatef(1.1,0,0)
-				glColor4ub(0,0,0,255)
-				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle)))
-				glColor4ub(255,255,0,255)
-				glPopMatrix()
-		else:
-			glColor4ub(128,128,0,255)
-			glLineWidth(1)
-		glBegin(GL_LINE_LOOP)
-		for i in xrange(0, 64):
-			glVertex3f(math.cos(i/32.0*math.pi), 0, math.sin(i/32.0*math.pi))
-		glEnd()
-		glEnable(GL_DEPTH_TEST)
-
-class toolScale(object):
-	def __init__(self, parent):
-		self.parent = parent
-		self.node = None
-		self.scale = None
-
-	def _pointDist(self, p0, p1, p2):
-		return numpy.linalg.norm(numpy.cross((p0 - p1), (p0 - p2))) / numpy.linalg.norm(p2 - p1)
-
-	def _traceNodes(self, p0, p1):
-		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
-		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
-		s = self._nodeSize()
-		if self._pointDist(numpy.array([0,0,0],numpy.float32), pp0, pp1) < s * 2:
-			return 1
-		if self._pointDist(numpy.array([s*15,0,0],numpy.float32), pp0, pp1) < s * 2:
-			return 2
-		if self._pointDist(numpy.array([0,s*15,0],numpy.float32), pp0, pp1) < s * 2:
-			return 3
-		if self._pointDist(numpy.array([0,0,s*15],numpy.float32), pp0, pp1) < s * 2:
-			return 4
-		return None
-
-	def _lineLineCrossingDistOnLine(self, s0, e0, s1, e1):
-		d0 = e0 - s0
-		d1 = e1 - s1
-		a = numpy.dot(d0, d0)
-		b = numpy.dot(d0, d1)
-		e = numpy.dot(d1, d1)
-		d = a*e - b*b
-
-		r = s0 - s1
-		c = numpy.dot(d0, r)
-		f = numpy.dot(d1, r)
-
-		s = (b*f - c*e) / d
-		t = (a*f - b*c) / d
-		return t
-
-	def _nodeSize(self):
-		return self.parent.zoom / self.parent.GetSize().GetWidth() * 6
-
-	def OnMouseMove(self, p0, p1):
-		self.node = self._traceNodes(p0, p1)
-
-	def OnDragStart(self, p0, p1):
-		if self.node is None:
-			return False
-		return True
-
-	def OnDrag(self, p0, p1):
-		s = self._nodeSize()
-		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
-		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
-		endPoint = [1,1,1]
-		if self.node == 2:
-			endPoint = [1,0,0]
-		elif self.node == 3:
-			endPoint = [0,1,0]
-		elif self.node == 4:
-			endPoint = [0,0,1]
-		scale = self._lineLineCrossingDistOnLine(pp0, pp1, numpy.array([0,0,0], numpy.float32), numpy.array(endPoint, numpy.float32)) / 15.0 / s
-		if not wx.GetKeyState(wx.WXK_SHIFT):
-			scale = round(scale * 10) / 10
-		if scale < 0:
-			scale = -scale
-		if scale < 0.1:
-			scale = 0.1
-		self.scale = scale
-		if self.node == 1 or not wx.GetKeyState(wx.WXK_CONTROL):
-			self.parent.tempMatrix = numpy.matrix([[scale,0,0], [0, scale, 0], [0, 0, scale]], numpy.float64)
-		elif self.node == 2:
-			self.parent.tempMatrix = numpy.matrix([[scale,0,0], [0, 1, 0], [0, 0, 1]], numpy.float64)
-		elif self.node == 3:
-			self.parent.tempMatrix = numpy.matrix([[1,0,0], [0, scale, 0], [0, 0, 1]], numpy.float64)
-		elif self.node == 4:
-			self.parent.tempMatrix = numpy.matrix([[1,0,0], [0, 1, 0], [0, 0, scale]], numpy.float64)
-
-	def OnDragEnd(self):
-		self.scale = None
-
-	def OnDraw(self):
-		s = self._nodeSize()
-		sx = s*15
-		sy = s*15
-		sz = s*15
-		if self.node == 2 and self.scale is not None:
-			sx *= self.scale
-		if self.node == 3 and self.scale is not None:
-			sy *= self.scale
-		if self.node == 4 and self.scale is not None:
-			sz *= self.scale
-		scaleX = numpy.linalg.norm(self.parent.parent.matrix[0].getA().flatten())
-		scaleY = numpy.linalg.norm(self.parent.parent.matrix[1].getA().flatten())
-		scaleZ = numpy.linalg.norm(self.parent.parent.matrix[2].getA().flatten())
-		if self.scale is not None:
-			scaleX *= self.scale
-			scaleY *= self.scale
-			scaleZ *= self.scale
-
-		glDisable(GL_LIGHTING)
-		glDisable(GL_DEPTH_TEST)
-		glEnable(GL_BLEND)
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-
-		glLineWidth(1)
-		glBegin(GL_LINES)
-		glColor3ub(128,0,0)
-		glVertex3f(0, 0, 0)
-		glVertex3f(sx, 0, 0)
-		glColor3ub(128,128,0)
-		glVertex3f(0, 0, 0)
-		glVertex3f(0, sy, 0)
-		glColor3ub(0,128,0)
-		glVertex3f(0, 0, 0)
-		glVertex3f(0, 0, sz)
-		glEnd()
-
-		glLineWidth(2)
-		if self.node == 1:
-			glColor3ub(255,255,255)
-		else:
-			glColor3ub(192,192,192)
-		opengl.DrawBox([-s,-s,-s], [s,s,s])
-		if self.node == 1:
-			glColor3ub(0,0,0)
-			opengl.glDrawStringCenter("%0.2f" % ((scaleX + scaleY + scaleZ) / 3.0))
-
-		if self.node == 2:
-			glColor3ub(255,64,64)
-		else:
-			glColor3ub(128,0,0)
-		glPushMatrix()
-		glTranslatef(sx,0,0)
-		opengl.DrawBox([-s,-s,-s], [s,s,s])
-		if self.node == 2:
-			glColor3ub(0,0,0)
-			opengl.glDrawStringCenter("%0.2f" % (scaleX))
-		glPopMatrix()
-		if self.node == 3:
-			glColor3ub(255,255,0)
-		else:
-			glColor3ub(128,128,0)
-		glPushMatrix()
-		glTranslatef(0,sy,0)
-		opengl.DrawBox([-s,-s,-s], [s,s,s])
-		if self.node == 3:
-			glColor3ub(0,0,0)
-			opengl.glDrawStringCenter("%0.2f" % (scaleY))
-		glPopMatrix()
-		if self.node == 4:
-			glColor3ub(64,255,64)
-		else:
-			glColor3ub(0,128,0)
-		glPushMatrix()
-		glTranslatef(0,0,sz)
-		opengl.DrawBox([-s,-s,-s], [s,s,s])
-		if self.node == 4:
-			glColor3ub(0,0,0)
-			opengl.glDrawStringCenter("%0.2f" % (scaleZ))
-		glPopMatrix()
-
-		glEnable(GL_DEPTH_TEST)
-
-class glButton(object):
-	def __init__(self, parent, imageID, x, y, callback):
-		self._parent = parent
-		self._imageID = imageID
-		self._x = x
-		self._y = y
-		self._callback = callback
-		self._parent.glButtonList.append(self)
-		self._selected = False
-		self._focus = False
-		self._hidden = False
-
-	def setSelected(self, value):
-		self._selected = value
-
-	def setHidden(self, value):
-		self._hidden = value
-
-	def getSelected(self):
-		return self._selected
-
-	def draw(self):
-		if self._hidden:
-			return
-		cx = (self._imageID % 4) / 4
-		cy = int(self._imageID / 4) / 4
-		bs = self._parent.buttonSize
-
-		glPushMatrix()
-		glTranslatef(self._x * bs * 1.3 + bs * 0.8, self._y * bs * 1.3 + bs * 0.8, 0)
-		glBindTexture(GL_TEXTURE_2D, self._parent.glCanvas.glButtonsTexture)
-		glEnable(GL_TEXTURE_2D)
-		scale = 0.8
-		if self._selected:
-			scale = 1.0
-		elif self._focus:
-			scale = 0.9
-		glScalef(bs * scale, bs * scale, bs * scale)
-		glBegin(GL_QUADS)
-		glTexCoord2f(cx+0.25, cy)
-		glVertex2f( 0.5,-0.5)
-		glTexCoord2f(cx, cy)
-		glVertex2f(-0.5,-0.5)
-		glTexCoord2f(cx, cy+0.25)
-		glVertex2f(-0.5, 0.5)
-		glTexCoord2f(cx+0.25, cy+0.25)
-		glVertex2f( 0.5, 0.5)
-		glEnd()
-		glDisable(GL_TEXTURE_2D)
-		glPopMatrix()
-
-	def _checkHit(self, x, y):
-		if self._hidden:
-			return False
-		bs = self._parent.buttonSize
-		return -bs * 0.5 <= x - (self._x * bs * 1.3 + bs * 0.8) <= bs * 0.5 and -bs * 0.5 <= y - (self._y * bs * 1.3 + bs * 0.8) <= bs * 0.5
-
-	def OnMouseMotion(self, x, y):
-		if self._checkHit(x, y):
-			self._focus = True
-			return True
-		self._focus = False
-		return False
-
-	def OnMouseDown(self, x, y):
-		if self._checkHit(x, y):
-			self._callback()
 
 class previewPanel(wx.Panel):
 	def __init__(self, parent):
@@ -592,21 +108,21 @@ class previewPanel(wx.Panel):
 		self.Bind(wx.EVT_TIMER, self.OnCheckReloadFile, self.checkReloadFileTimer)
 		self.checkReloadFileTimer.Start(1000)
 
-		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
-		self.tool = toolInfo(self.glCanvas)
+		self.infoToolButton   = openglGui.glButton(self, 0, 0,0, self.OnInfoSelect)
+		self.rotateToolButton = openglGui.glButton(self, 1, 0,1, self.OnRotateSelect)
+		self.scaleToolButton  = openglGui.glButton(self, 2, 0,2, self.OnScaleSelect)
 
-		self.infoToolButton   = glButton(self, 0, 0,0, self.OnInfoSelect)
-		self.rotateToolButton = glButton(self, 1, 0,1, self.OnRotateSelect)
-		self.scaleToolButton  = glButton(self, 2, 0,2, self.OnScaleSelect)
+		self.resetRotationButton = openglGui.glButton(self, 4, 1,0, self.OnRotateReset)
+		self.layFlatButton = openglGui.glButton(self, 5, 2,0, self.OnLayFlat)
 
-		self.resetRotationButton = glButton(self, 4, 1,0, self.OnRotateReset)
-		self.layFlatButton = glButton(self, 5, 2,0, self.OnLayFlat)
-
-		self.resetScaleButton = glButton(self, 8, 1,0, self.OnScaleReset)
-		self.scaleMaxButton = glButton(self, 9, 2,0, self.OnScaleMax)
+		self.resetScaleButton = openglGui.glButton(self, 8, 1,0, self.OnScaleReset)
+		self.scaleMaxButton = openglGui.glButton(self, 9, 2,0, self.OnScaleMax)
 
 		self.infoToolButton.setSelected(True)
 		self.returnToModelViewAndUpdateModel()
+
+		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
+		self.tool = previewTools.toolInfo(self.glCanvas)
 
 	def returnToModelViewAndUpdateModel(self):
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
@@ -621,21 +137,21 @@ class previewPanel(wx.Panel):
 		self.infoToolButton.setSelected(True)
 		self.rotateToolButton.setSelected(False)
 		self.scaleToolButton.setSelected(False)
-		self.tool = toolInfo(self.glCanvas)
+		self.tool = previewTools.toolInfo(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnRotateSelect(self):
 		self.infoToolButton.setSelected(False)
 		self.rotateToolButton.setSelected(True)
 		self.scaleToolButton.setSelected(False)
-		self.tool = toolRotate(self.glCanvas)
+		self.tool = previewTools.toolRotate(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnScaleSelect(self):
 		self.infoToolButton.setSelected(False)
 		self.rotateToolButton.setSelected(False)
 		self.scaleToolButton.setSelected(True)
-		self.tool = toolScale(self.glCanvas)
+		self.tool = previewTools.toolScale(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnMove(self, e = None):
@@ -954,7 +470,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		self.dragType = ''
 		self.tempMatrix = None
 		self.viewport = None
-		self.glButtonsTexture = None
 
 	def updateProfileToControls(self):
 		self.objColor[0] = profile.getPreferenceColour('model_colour')
@@ -1048,10 +563,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 
 	def OnPaint(self,e):
 		dc = wx.PaintDC(self)
-		if not hasOpenGLlibs:
-			dc.Clear()
-			dc.DrawText("No PyOpenGL installation found.\nNo preview window available.", 10, 10)
-			return
 		self.SetCurrent(self.context)
 		opengl.InitGL(self, self.view3D, self.zoom)
 		if self.view3D:
@@ -1078,9 +589,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 
 	def OnDraw(self):
 		machineSize = self.parent.machineSize
-
-		if self.glButtonsTexture is None:
-			self.glButtonsTexture = opengl.loadGLTexture('glButtons.png')
 
 		if self.parent.gcode is not None and self.parent.gcodeDirty:
 			if self.gcodeDisplayListCount < len(self.parent.gcode.layerList) or self.gcodeDisplayList is None:

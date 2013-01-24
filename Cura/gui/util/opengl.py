@@ -10,19 +10,13 @@ from Cura.util import util3d
 from Cura.util import profile
 from Cura.util.resources import getPathForMesh, getPathForImage
 
-try:
-	import OpenGL
+import OpenGL
 
-	OpenGL.ERROR_CHECKING = False
-	from OpenGL.GLUT import *
-	from OpenGL.GLU import *
-	from OpenGL.GL import *
-	glutInit()
-
-	hasOpenGLlibs = True
-except:
-	print "Failed to find PyOpenGL: http://pyopengl.sourceforge.net/"
-	hasOpenGLlibs = False
+OpenGL.ERROR_CHECKING = False
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
+from OpenGL.GL import *
+glutInit()
 
 def InitGL(window, view3D, zoom):
 	# set viewing projection

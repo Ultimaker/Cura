@@ -5,15 +5,10 @@ import os
 
 from wx import glcanvas
 
-try:
-	import OpenGL
-	OpenGL.ERROR_CHECKING = False
-	from OpenGL.GLU import *
-	from OpenGL.GL import *
-	hasOpenGLlibs = True
-except:
-	print "Failed to find PyOpenGL: http://pyopengl.sourceforge.net/"
-	hasOpenGLlibs = False
+import OpenGL
+OpenGL.ERROR_CHECKING = False
+from OpenGL.GLU import *
+from OpenGL.GL import *
 
 from Cura.gui.util import toolbarUtil
 from Cura.gui.util import opengl
@@ -153,10 +148,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 
 	def OnPaint(self,event):
 		dc = wx.PaintDC(self)
-		if not hasOpenGLlibs:
-			dc.Clear()
-			dc.DrawText("No PyOpenGL installation found.\nNo preview window available.", 10, 10)
-			return
 		self.SetCurrent(self.context)
 		opengl.InitGL(self, self.view3D, self.zoom)
 		if self.view3D:
