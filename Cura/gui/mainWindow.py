@@ -159,6 +159,7 @@ class mainWindow(wx.Frame):
 		self.splitter = wx.SplitterWindow(self, style = wx.SP_3D | wx.SP_LIVE_UPDATE)
 		self.leftPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
 		self.rightPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
+		self.splitter.Bind(wx.EVT_SPLITTER_DCLICK, lambda evt: evt.Veto())
 
 		##Gui components##
 		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane)

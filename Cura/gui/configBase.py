@@ -48,7 +48,7 @@ class configPanelBase(wx.Panel):
 		return leftConfigPanel
 	
 	def CreateSimpleConfigPanel(self, parent):
-		configPanel = wx.Panel(parent);
+		configPanel = wx.lib.scrolledpanel.ScrolledPanel(parent)
 		leftConfigPanel = wx.Panel(configPanel)
 		
 		sizer = wx.GridBagSizer(2, 2)
@@ -58,6 +58,9 @@ class configPanelBase(wx.Panel):
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		configPanel.SetSizer(sizer)
 		sizer.Add(leftConfigPanel, 1, wx.EXPAND)
+
+		configPanel.SetAutoLayout(1)
+		configPanel.SetupScrolling()
 
 		leftConfigPanel.main = self
 		return leftConfigPanel, configPanel
