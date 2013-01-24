@@ -2,11 +2,13 @@
 from __future__ import absolute_import
 
 import math
+import numpy
+import wx
 
 from Cura.util import meshLoader
 from Cura.util import util3d
 from Cura.util import profile
-from Cura.util.resources import getPathForMesh
+from Cura.util.resources import getPathForMesh, getPathForImage
 
 try:
 	import OpenGL
@@ -21,8 +23,6 @@ try:
 except:
 	print "Failed to find PyOpenGL: http://pyopengl.sourceforge.net/"
 	hasOpenGLlibs = False
-
-import numpy
 
 def InitGL(window, view3D, zoom):
 	# set viewing projection
@@ -259,6 +259,25 @@ def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
 
 def convert3x3MatrixTo4x4(matrix):
 	return list(matrix.getA()[0]) + [0] + list(matrix.getA()[1]) + [0] + list(matrix.getA()[2]) + [0, 0,0,0,1]
+
+def loadGLTexture(filename):
+	tex = glGenTextures(1)
+	glBindTexture(GL_TEXTURE_2D, tex)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+	img = wx.ImageFromBitmap(wx.Bitmap(getPathForImage(filename)))
+	rgbData = img.GetData()
+	alphaData = img.GetAlphaData()
+	if alphaData != None:
+		data = ''
+		for i in xrange(0, len(alphaData)):
+			data += rgbData[i*3:i*3+3] + alphaData[i]
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.GetWidth(), img.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data)
+	else:
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.GetWidth(), img.GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, rgbData)
+	return tex
 
 def ResetMatrixRotationAndScale():
 	matrix = glGetFloatv(GL_MODELVIEW_MATRIX)

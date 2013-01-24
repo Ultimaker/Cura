@@ -55,6 +55,7 @@ class toolInfo(object):
 	def OnDraw(self):
 		glDisable(GL_LIGHTING)
 		glDisable(GL_BLEND)
+		glDisable(GL_DEPTH_TEST)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 		glColor3ub(0,0,0)
 		size = self.parent.getObjectSize()
@@ -142,8 +143,6 @@ class toolRotate(object):
 			if self.dragStartAngle is None:
 				self.dragPlane = ''
 			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
-		if self.dragPlane != oldDragPlane:
-			self.parent.Refresh()
 
 	def OnDragStart(self, p0, p1):
 		radius = self.parent.getObjectBoundaryCircle()
@@ -329,10 +328,7 @@ class toolScale(object):
 		return self.parent.zoom / self.parent.GetSize().GetWidth() * 6
 
 	def OnMouseMove(self, p0, p1):
-		oldNode = self.node
 		self.node = self._traceNodes(p0, p1)
-		if oldNode != self.node:
-			self.parent.Refresh()
 
 	def OnDragStart(self, p0, p1):
 		if self.node is None:
@@ -453,13 +449,83 @@ class toolScale(object):
 
 		glEnable(GL_DEPTH_TEST)
 
+class glButton(object):
+	def __init__(self, parent, imageID, x, y, callback):
+		self._parent = parent
+		self._imageID = imageID
+		self._x = x
+		self._y = y
+		self._callback = callback
+		self._parent.glButtonList.append(self)
+		self._selected = False
+		self._focus = False
+		self._hidden = False
+
+	def setSelected(self, value):
+		self._selected = value
+
+	def setHidden(self, value):
+		self._hidden = value
+
+	def getSelected(self):
+		return self._selected
+
+	def draw(self):
+		if self._hidden:
+			return
+		cx = (self._imageID % 4) / 4
+		cy = int(self._imageID / 4) / 4
+		bs = self._parent.buttonSize
+
+		glPushMatrix()
+		glTranslatef(self._x * bs * 1.3 + bs * 0.8, self._y * bs * 1.3 + bs * 0.8, 0)
+		glBindTexture(GL_TEXTURE_2D, self._parent.glCanvas.glButtonsTexture)
+		glEnable(GL_TEXTURE_2D)
+		scale = 0.8
+		if self._selected:
+			scale = 1.0
+		elif self._focus:
+			scale = 0.9
+		glScalef(bs * scale, bs * scale, bs * scale)
+		glBegin(GL_QUADS)
+		glTexCoord2f(cx+0.25, cy)
+		glVertex2f( 0.5,-0.5)
+		glTexCoord2f(cx, cy)
+		glVertex2f(-0.5,-0.5)
+		glTexCoord2f(cx, cy+0.25)
+		glVertex2f(-0.5, 0.5)
+		glTexCoord2f(cx+0.25, cy+0.25)
+		glVertex2f( 0.5, 0.5)
+		glEnd()
+		glDisable(GL_TEXTURE_2D)
+		glPopMatrix()
+
+	def _checkHit(self, x, y):
+		if self._hidden:
+			return False
+		bs = self._parent.buttonSize
+		return -bs * 0.5 <= x - (self._x * bs * 1.3 + bs * 0.8) <= bs * 0.5 and -bs * 0.5 <= y - (self._y * bs * 1.3 + bs * 0.8) <= bs * 0.5
+
+	def OnMouseMotion(self, x, y):
+		if self._checkHit(x, y):
+			self._focus = True
+			return True
+		self._focus = False
+		return False
+
+	def OnMouseDown(self, x, y):
+		if self._checkHit(x, y):
+			self._callback()
+
 class previewPanel(wx.Panel):
 	def __init__(self, parent):
 		super(previewPanel, self).__init__(parent,-1)
 		
 		self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DDKSHADOW))
 		self.SetMinSize((440,320))
-		
+
+		self.buttonSize = 64
+		self.glButtonList = []
 		self.objectList = []
 		self.errorList = []
 		self.gcode = None
@@ -515,32 +581,11 @@ class previewPanel(wx.Panel):
 		self.toolbar.AddControl(self.layerSpin)
 		self.Bind(wx.EVT_SPINCTRL, self.OnLayerNrChange, self.layerSpin)
 
-		self.toolbar2 = toolbarUtil.Toolbar(self)
-
-		group = []
-		self.infoToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'info-on.png', 'info-off.png', 'Object info', callback=self.OnToolChange)
-		self.rotateToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-rotate.png', 'object-rotate.png', 'Rotate object', callback=self.OnToolChange)
-		self.scaleToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-scale.png', 'object-scale.png', 'Scale object', callback=self.OnToolChange)
-		#self.mirrorToolButton = toolbarUtil.RadioButton(self.toolbar2, group, 'object-mirror-x-on.png', 'object-mirror-x-off.png', 'Mirror object', callback=self.OnToolChange)
-		self.toolbar2.AddSeparator()
-		# Mirror
-
-		# Scale
-		self.scaleMax = toolbarUtil.NormalButton(self.toolbar2, self.OnScaleMax, 'object-max-size.png', 'Scale object to fit machine size')
-
-		self.toolbar2.AddSeparator()
-
-		# Rotate
-		self.rotateReset = toolbarUtil.NormalButton(self.toolbar2, self.OnRotateReset, 'object-rotate.png', 'Reset model rotation')
-		self.layFlat = toolbarUtil.NormalButton(self.toolbar2, self.OnLayFlat, 'object-rotate.png', 'Lay flat')
-
-		self.toolbar2.Realize()
 		self.OnViewChange()
 		
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		sizer.Add(self.toolbar, 0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=1)
 		sizer.Add(self.glCanvas, 1, flag=wx.EXPAND)
-		sizer.Add(self.toolbar2, 0, flag=wx.EXPAND|wx.BOTTOM|wx.LEFT|wx.RIGHT, border=1)
 		self.SetSizer(sizer)
 		
 		self.checkReloadFileTimer = wx.Timer(self)
@@ -549,19 +594,48 @@ class previewPanel(wx.Panel):
 
 		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
 		self.tool = toolInfo(self.glCanvas)
-	
+
+		self.infoToolButton   = glButton(self, 0, 0,0, self.OnInfoSelect)
+		self.rotateToolButton = glButton(self, 1, 0,1, self.OnRotateSelect)
+		self.scaleToolButton  = glButton(self, 2, 0,2, self.OnScaleSelect)
+
+		self.resetRotationButton = glButton(self, 4, 1,0, self.OnRotateReset)
+		self.layFlatButton = glButton(self, 5, 2,0, self.OnLayFlat)
+
+		self.resetScaleButton = glButton(self, 8, 1,0, self.OnScaleReset)
+		self.scaleMaxButton = glButton(self, 9, 2,0, self.OnScaleMax)
+
+		self.infoToolButton.setSelected(True)
+		self.returnToModelViewAndUpdateModel()
+
 	def returnToModelViewAndUpdateModel(self):
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
 			self.setViewMode('Normal')
+		self.resetRotationButton.setHidden(not self.rotateToolButton.getSelected())
+		self.layFlatButton.setHidden(not self.rotateToolButton.getSelected())
+		self.resetScaleButton.setHidden(not self.scaleToolButton.getSelected())
+		self.scaleMaxButton.setHidden(not self.scaleToolButton.getSelected())
 		self.updateModelTransform()
 
-	def OnToolChange(self):
-		if self.infoToolButton.GetValue():
-			self.tool = toolInfo(self.glCanvas)
-		if self.rotateToolButton.GetValue():
-			self.tool = toolRotate(self.glCanvas)
-		if self.scaleToolButton.GetValue():
-			self.tool = toolScale(self.glCanvas)
+	def OnInfoSelect(self):
+		self.infoToolButton.setSelected(True)
+		self.rotateToolButton.setSelected(False)
+		self.scaleToolButton.setSelected(False)
+		self.tool = toolInfo(self.glCanvas)
+		self.returnToModelViewAndUpdateModel()
+
+	def OnRotateSelect(self):
+		self.infoToolButton.setSelected(False)
+		self.rotateToolButton.setSelected(True)
+		self.scaleToolButton.setSelected(False)
+		self.tool = toolRotate(self.glCanvas)
+		self.returnToModelViewAndUpdateModel()
+
+	def OnScaleSelect(self):
+		self.infoToolButton.setSelected(False)
+		self.rotateToolButton.setSelected(False)
+		self.scaleToolButton.setSelected(True)
+		self.tool = toolScale(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnMove(self, e = None):
@@ -571,7 +645,7 @@ class previewPanel(wx.Panel):
 		sx, sy = self.glCanvas.GetClientSizeTuple()
 		self.warningPopup.SetPosition((x, y+sy-self.warningPopup.GetSize().height))
 
-	def OnScaleMax(self, e = None, onlyScaleDown = False):
+	def OnScaleMax(self, onlyScaleDown = False):
 		if self.objectsMinV is None:
 			return
 		vMin = self.objectsMinV
@@ -587,15 +661,26 @@ class previewPanel(wx.Panel):
 		scale = min(scaleX1, scaleY1, scaleX2, scaleY2, scaleZ)
 		if scale > 1.0 and onlyScaleDown:
 			return
+		self.matrix *= numpy.matrix([[scale,0,0],[0,scale,0],[0,0,scale]], numpy.float64)
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
 			self.setViewMode('Normal')
-		self.glCanvas.Refresh()
-
-	def OnRotateReset(self, e):
-		self.matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
 		self.updateModelTransform()
 
-	def OnLayFlat(self, e):
+	def OnRotateReset(self):
+		x = numpy.linalg.norm(self.matrix[0].getA().flatten())
+		y = numpy.linalg.norm(self.matrix[1].getA().flatten())
+		z = numpy.linalg.norm(self.matrix[2].getA().flatten())
+		self.matrix = numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
+		self.updateModelTransform()
+
+	def OnScaleReset(self):
+		x = 1/numpy.linalg.norm(self.matrix[0].getA().flatten())
+		y = 1/numpy.linalg.norm(self.matrix[1].getA().flatten())
+		z = 1/numpy.linalg.norm(self.matrix[2].getA().flatten())
+		self.matrix *= numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
+		self.updateModelTransform()
+
+	def OnLayFlat(self):
 		transformedVertexes = (numpy.matrix(self.objectList[0].mesh.vertexes, copy = False) * self.matrix).getA()
 		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
 		dotMin = 1.0
@@ -721,7 +806,7 @@ class previewPanel(wx.Panel):
 				obj.mesh = mesh
 				obj.dirty = True
 				self.updateModelTransform()
-				self.OnScaleMax(None, True)
+				self.OnScaleMax(True)
 				self.glCanvas.zoom = numpy.max(self.objectsSize) * 3.5
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
@@ -757,12 +842,12 @@ class previewPanel(wx.Panel):
 	def OnResetAll(self, e = None):
 		profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
 		profile.setPluginConfig([])
-		self.GetParent().updateProfileToControls()
+		self.updateProfileToControls()
 
 	def ShowWarningPopup(self, text, callback = None):
 		self.warningPopup.text.SetLabel(text)
 		self.warningPopup.callback = callback
-		if callback == None:
+		if callback is None:
 			self.warningPopup.yesButton.Show(False)
 			self.warningPopup.noButton.SetLabel('ok')
 		else:
@@ -851,6 +936,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		wx.EVT_PAINT(self, self.OnPaint)
 		wx.EVT_SIZE(self, self.OnSize)
 		wx.EVT_ERASE_BACKGROUND(self, self.OnEraseBackground)
+		wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
 		wx.EVT_MOTION(self, self.OnMouseMotion)
 		wx.EVT_MOUSEWHEEL(self, self.OnMouseWheel)
 		self.yaw = 30
@@ -868,6 +954,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		self.dragType = ''
 		self.tempMatrix = None
 		self.viewport = None
+		self.glButtonsTexture = None
 
 	def updateProfileToControls(self):
 		self.objColor[0] = profile.getPreferenceColour('model_colour')
@@ -875,7 +962,17 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		self.objColor[2] = profile.getPreferenceColour('model_colour3')
 		self.objColor[3] = profile.getPreferenceColour('model_colour4')
 
+	def OnMouseEvents(self,e):
+		if e.ButtonDown() and e.LeftIsDown():
+			for ctrl in self.parent.glButtonList:
+				if ctrl.OnMouseDown(e.GetX(), e.GetY()):
+					return
+
 	def OnMouseMotion(self,e):
+		self.Refresh()
+		for ctrl in self.parent.glButtonList:
+			if ctrl.OnMouseMotion(e.GetX(), e.GetY()):
+				return
 		if self.parent.objectsMaxV is not None and self.viewport is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
 			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
 			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
@@ -925,11 +1022,8 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 				self.zoom = 1
 			if self.zoom > 500:
 				self.zoom = 500
-			self.Refresh()
 		self.oldX = e.GetX()
 		self.oldY = e.GetY()
-
-		#self.Refresh()
 
 	def getObjectBoundaryCircle(self):
 		return self.parent.objectsBoundaryCircleSize
@@ -985,8 +1079,11 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 	def OnDraw(self):
 		machineSize = self.parent.machineSize
 
+		if self.glButtonsTexture is None:
+			self.glButtonsTexture = opengl.loadGLTexture('glButtons.png')
+
 		if self.parent.gcode is not None and self.parent.gcodeDirty:
-			if self.gcodeDisplayListCount < len(self.parent.gcode.layerList) or self.gcodeDisplayList == None:
+			if self.gcodeDisplayListCount < len(self.parent.gcode.layerList) or self.gcodeDisplayList is None:
 				if self.gcodeDisplayList is not None:
 					glDeleteLists(self.gcodeDisplayList, self.gcodeDisplayListCount)
 				self.gcodeDisplayList = glGenLists(len(self.parent.gcode.layerList))
@@ -1169,7 +1266,25 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 			self.parent.tool.OnDraw()
 			glPopMatrix()
 
+		self.drawGui()
+
 		glFlush()
+
+	def drawGui(self):
+		glDisable(GL_DEPTH_TEST)
+		glEnable(GL_BLEND)
+		glDisable(GL_LIGHTING)
+		glColor4ub(255,255,255,255)
+
+		glMatrixMode(GL_PROJECTION)
+		glLoadIdentity()
+		size = self.GetSize()
+		glOrtho(0, size.GetWidth()-1, size.GetHeight()-1, 0, -1000.0, 1000.0)
+		glMatrixMode(GL_MODELVIEW)
+		glLoadIdentity()
+
+		for glButton in self.parent.glButtonList:
+			glButton.draw()
 
 	def drawModel(self, displayList):
 		vMin = self.parent.objectsMinV
