@@ -72,7 +72,7 @@ Assuming you have virtualenv at *~/.virtualenvs/Cura/* and [wxPython sources](ht
         --enable-universal_binary=i386,x86_64 \
         --enable-webkit \
         --prefix=$HOME/.virtualenvs/Cura/ \
-        --with-expat
+        --with-expat \
         --with-libjpeg=builtin \
         --with-libpng=builtin \
         --with-libtiff=builtin \
