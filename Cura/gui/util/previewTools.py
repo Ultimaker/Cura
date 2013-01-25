@@ -365,6 +365,21 @@ class toolScale(object):
 		glEnable(GL_BLEND)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
+		glColor3ub(0,0,0)
+		size = self.parent.getObjectSize()
+		radius = self.parent.getObjectBoundaryCircle() * max(scaleX, scaleY, scaleZ)
+		glPushMatrix()
+		glTranslate(0,0,size[2]/2 + 5)
+		glRotate(-self.parent.yaw, 0,0,1)
+		if self.parent.pitch < 80:
+			glTranslate(0, radius + 5,0)
+		elif self.parent.pitch < 100:
+			glTranslate(0, (radius + 5) * (90 - self.parent.pitch) / 10,0)
+		else:
+			glTranslate(0,-(radius + 5),0)
+		opengl.glDrawStringCenter("%dx%dx%d" % (size[0] * scaleX, size[1] * scaleY, size[2] * scaleZ))
+		glPopMatrix()
+
 		glLineWidth(1)
 		glBegin(GL_LINES)
 		glColor3ub(128,0,0)

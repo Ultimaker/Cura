@@ -43,26 +43,15 @@ class ProjectObject(object):
 
 		self.parent = parent
 		self.filename = filename
-		self.scale = 1.0
-		self.rotate = 0.0
-		self.flipX = False
-		self.flipY = False
-		self.flipZ = False
-		self.swapXZ = False
-		self.swapYZ = False
-		self.extruder = 0
-		self.profile = None
+		self.matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
 		
 		self.modelDisplayList = None
-		self.modelDirty = False
+		self.modelDirty = True
 
-		self.centerX = -self.getMinimum()[0] + 5
-		self.centerY = -self.getMinimum()[1] + 5
-		
+		self.centerX = -self.getSize()[0]/2 + 5
+		self.centerY = -self.getSize()[1]/2 + 5
+
 		self.updateModelTransform()
-
-		self.centerX = -self.getMinimum()[0] + 5
-		self.centerY = -self.getMinimum()[1] + 5
 
 	def isSameExceptForPosition(self, other):
 		if self.filename != other.filename:
@@ -88,14 +77,8 @@ class ProjectObject(object):
 		return True
 
 	def updateModelTransform(self):
-		self.mesh.setRotateMirror(self.rotate, self.flipX, self.flipY, self.flipZ, self.swapXZ, self.swapYZ)
-		minZ = self.mesh.getMinimumZ()
-		minV = self.getMinimum()
-		maxV = self.getMaximum()
-		self.mesh.vertexes -= numpy.array([minV[0] + (maxV[0] - minV[0]) / 2, minV[1] + (maxV[1] - minV[1]) / 2, minZ])
-		minZ = self.mesh.getMinimumZ()
-		self.modelDirty = True
-	
+		self.mesh.processMatrix()
+
 	def getMinimum(self):
 		return self.mesh.getMinimum()
 	def getMaximum(self):

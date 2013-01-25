@@ -40,8 +40,6 @@ class previewPanel(wx.Panel):
 		self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_3DDKSHADOW))
 		self.SetMinSize((440,320))
 
-		self.buttonSize = 64
-		self.glButtonList = []
 		self.objectList = []
 		self.errorList = []
 		self.gcode = None
@@ -108,15 +106,15 @@ class previewPanel(wx.Panel):
 		self.Bind(wx.EVT_TIMER, self.OnCheckReloadFile, self.checkReloadFileTimer)
 		self.checkReloadFileTimer.Start(1000)
 
-		self.infoToolButton   = openglGui.glButton(self, 0, 0,0, self.OnInfoSelect)
-		self.rotateToolButton = openglGui.glButton(self, 1, 0,1, self.OnRotateSelect)
-		self.scaleToolButton  = openglGui.glButton(self, 2, 0,2, self.OnScaleSelect)
+		self.infoToolButton   = openglGui.glButton(self.glCanvas, 0, 'Info', 0,0, self.OnInfoSelect)
+		self.rotateToolButton = openglGui.glButton(self.glCanvas, 1, 'Rotate', 0,1, self.OnRotateSelect)
+		self.scaleToolButton  = openglGui.glButton(self.glCanvas, 2, 'Scale', 0,2, self.OnScaleSelect)
 
-		self.resetRotationButton = openglGui.glButton(self, 4, 1,0, self.OnRotateReset)
-		self.layFlatButton = openglGui.glButton(self, 5, 2,0, self.OnLayFlat)
+		self.resetRotationButton = openglGui.glButton(self.glCanvas, 4, 'Reset rotation', 1,0, self.OnRotateReset)
+		self.layFlatButton = openglGui.glButton(self.glCanvas, 5, 'Lay flat', 2,0, self.OnLayFlat)
 
-		self.resetScaleButton = openglGui.glButton(self, 8, 1,0, self.OnScaleReset)
-		self.scaleMaxButton = openglGui.glButton(self, 9, 2,0, self.OnScaleMax)
+		self.resetScaleButton = openglGui.glButton(self.glCanvas, 8, 'Scale reset', 1,0, self.OnScaleReset)
+		self.scaleMaxButton = openglGui.glButton(self.glCanvas, 9, 'Scale to machine size', 2,0, self.OnScaleMax)
 
 		self.infoToolButton.setSelected(True)
 		self.returnToModelViewAndUpdateModel()
@@ -443,18 +441,11 @@ class previewPanel(wx.Panel):
 		self.updateModelTransform()
 		self.glCanvas.updateProfileToControls()
 
-class PreviewGLCanvas(glcanvas.GLCanvas):
+class PreviewGLCanvas(openglGui.glGuiPanel):
 	def __init__(self, parent):
-		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 24, glcanvas.WX_GL_STENCIL_SIZE, 8)
-		glcanvas.GLCanvas.__init__(self, parent, attribList = attribList)
-		self.parent = parent
-		self.context = glcanvas.GLContext(self)
-		wx.EVT_PAINT(self, self.OnPaint)
-		wx.EVT_SIZE(self, self.OnSize)
-		wx.EVT_ERASE_BACKGROUND(self, self.OnEraseBackground)
-		wx.EVT_MOUSE_EVENTS(self, self.OnMouseEvents)
-		wx.EVT_MOTION(self, self.OnMouseMotion)
+		super(PreviewGLCanvas, self).__init__(parent)
 		wx.EVT_MOUSEWHEEL(self, self.OnMouseWheel)
+		self.parent = parent
 		self.yaw = 30
 		self.pitch = 60
 		self.zoom = 300
@@ -477,17 +468,7 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		self.objColor[2] = profile.getPreferenceColour('model_colour3')
 		self.objColor[3] = profile.getPreferenceColour('model_colour4')
 
-	def OnMouseEvents(self,e):
-		if e.ButtonDown() and e.LeftIsDown():
-			for ctrl in self.parent.glButtonList:
-				if ctrl.OnMouseDown(e.GetX(), e.GetY()):
-					return
-
 	def OnMouseMotion(self,e):
-		self.Refresh()
-		for ctrl in self.parent.glButtonList:
-			if ctrl.OnMouseMotion(e.GetX(), e.GetY()):
-				return
 		if self.parent.objectsMaxV is not None and self.viewport is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
 			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
 			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
@@ -553,17 +534,8 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		if self.zoom > 500:
 			self.zoom = 500
 		self.Refresh()
-	
-	def OnEraseBackground(self,event):
-		#Workaround for windows background redraw flicker.
-		pass
-	
-	def OnSize(self,e):
-		self.Refresh()
 
 	def OnPaint(self,e):
-		dc = wx.PaintDC(self)
-		self.SetCurrent(self.context)
 		opengl.InitGL(self, self.view3D, self.zoom)
 		if self.view3D:
 			glTranslate(0,0,-self.zoom)
@@ -585,7 +557,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 		glTranslate(-self.parent.machineCenter.x, -self.parent.machineCenter.y, 0)
 
 		self.OnDraw()
-		self.SwapBuffers()
 
 	def OnDraw(self):
 		machineSize = self.parent.machineSize
@@ -773,26 +744,6 @@ class PreviewGLCanvas(glcanvas.GLCanvas):
 			glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, self.parent.objectsSize[2]/2)
 			self.parent.tool.OnDraw()
 			glPopMatrix()
-
-		self.drawGui()
-
-		glFlush()
-
-	def drawGui(self):
-		glDisable(GL_DEPTH_TEST)
-		glEnable(GL_BLEND)
-		glDisable(GL_LIGHTING)
-		glColor4ub(255,255,255,255)
-
-		glMatrixMode(GL_PROJECTION)
-		glLoadIdentity()
-		size = self.GetSize()
-		glOrtho(0, size.GetWidth()-1, size.GetHeight()-1, 0, -1000.0, 1000.0)
-		glMatrixMode(GL_MODELVIEW)
-		glLoadIdentity()
-
-		for glButton in self.parent.glButtonList:
-			glButton.draw()
 
 	def drawModel(self, displayList):
 		vMin = self.parent.objectsMinV

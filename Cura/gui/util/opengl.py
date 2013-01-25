@@ -54,10 +54,40 @@ def InitGL(window, view3D, zoom):
 platformMesh = None
 
 def DrawMachine(machineSize):
+	glDisable(GL_LIGHTING)
+	glDisable(GL_CULL_FACE)
+	glEnable(GL_BLEND)
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+	sx = machineSize.x
+	sy = machineSize.y
+	for x in xrange(-int(sx/20)-1, int(sx / 20) + 1):
+		for y in xrange(-int(sx/20)-1, int(sy / 20) + 1):
+			x1 = sx/2+x * 10
+			x2 = x1 + 10
+			y1 = sx/2+y * 10
+			y2 = y1 + 10
+			x1 = max(min(x1, sx), 0)
+			y1 = max(min(y1, sy), 0)
+			x2 = max(min(x2, sx), 0)
+			y2 = max(min(y2, sy), 0)
+			if (x & 1) == (y & 1):
+				glColor4ub(5, 171, 231, 127)
+			else:
+				glColor4ub(5 * 8 / 10, 171 * 8 / 10, 231 * 8 / 10, 128)
+			glBegin(GL_QUADS)
+			glVertex3f(x1, y1, -0.02)
+			glVertex3f(x2, y1, -0.02)
+			glVertex3f(x2, y2, -0.02)
+			glVertex3f(x1, y2, -0.02)
+			glEnd()
+
+	glEnable(GL_CULL_FACE)
+
 	if profile.getPreference('machine_type') == 'ultimaker':
 		glPushMatrix()
 		glEnable(GL_LIGHTING)
-		glTranslate(100, 200, -5)
+		glTranslate(100, 200, -1)
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8])
 		glLightfv(GL_LIGHT0, GL_AMBIENT, [0.5, 0.5, 0.5])
 		glEnable(GL_BLEND)
@@ -73,117 +103,46 @@ def DrawMachine(machineSize):
 		if platformMesh:
 			DrawMesh(platformMesh)
 		glPopMatrix()
-
-	glDisable(GL_LIGHTING)
-	if False:
-		glColor3f(0.7, 0.7, 0.7)
-		glLineWidth(2)
-		glBegin(GL_LINES)
-		for i in xrange(0, int(machineSize.x), 10):
-			glVertex3f(i, 0, 0)
-			glVertex3f(i, machineSize.y, 0)
-		for i in xrange(0, int(machineSize.y), 10):
-			glVertex3f(0, i, 0)
-			glVertex3f(machineSize.x, i, 0)
-		glEnd()
-
-		glEnable(GL_LINE_SMOOTH)
-		glEnable(GL_BLEND)
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-		glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
-
-		glColor3f(0.0, 0.0, 0.0)
-		glLineWidth(4)
-		glBegin(GL_LINE_LOOP)
-		glVertex3f(0, 0, 0)
-		glVertex3f(machineSize.x, 0, 0)
-		glVertex3f(machineSize.x, machineSize.y, 0)
-		glVertex3f(0, machineSize.y, 0)
-		glEnd()
-
-		glLineWidth(2)
-		glBegin(GL_LINE_LOOP)
-		glVertex3f(0, 0, machineSize.z)
-		glVertex3f(machineSize.x, 0, machineSize.z)
-		glVertex3f(machineSize.x, machineSize.y, machineSize.z)
-		glVertex3f(0, machineSize.y, machineSize.z)
-		glEnd()
-		glBegin(GL_LINES)
-		glVertex3f(0, 0, 0)
-		glVertex3f(0, 0, machineSize.z)
-		glVertex3f(machineSize.x, 0, 0)
-		glVertex3f(machineSize.x, 0, machineSize.z)
-		glVertex3f(machineSize.x, machineSize.y, 0)
-		glVertex3f(machineSize.x, machineSize.y, machineSize.z)
-		glVertex3f(0, machineSize.y, 0)
-		glVertex3f(0, machineSize.y, machineSize.z)
-		glEnd()
-	else:
-		glDisable(GL_CULL_FACE)
-		glEnable(GL_BLEND)
+		glDisable(GL_LIGHTING)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
-		sx = machineSize.x
-		sy = machineSize.y
-		for x in xrange(-int(sx/20)-1, int(sx / 20) + 1):
-			for y in xrange(-int(sx/20)-1, int(sy / 20) + 1):
-				x1 = sx/2+x * 10
-				x2 = x1 + 10
-				y1 = sx/2+y * 10
-				y2 = y1 + 10
-				x1 = max(min(x1, sx), 0)
-				y1 = max(min(y1, sy), 0)
-				x2 = max(min(x2, sx), 0)
-				y2 = max(min(y2, sy), 0)
-				if (x & 1) == (y & 1):
-					glColor4ub(5, 171, 231, 127)
-				else:
-					glColor4ub(5 * 8 / 10, 171 * 8 / 10, 231 * 8 / 10, 128)
-				glBegin(GL_QUADS)
-				glVertex3f(x1, y1, -0.01)
-				glVertex3f(x2, y1, -0.01)
-				glVertex3f(x2, y2, -0.01)
-				glVertex3f(x1, y2, -0.01)
-				glEnd()
+	glColor4ub(5, 171, 231, 64)
+	glBegin(GL_QUADS)
+	glVertex3f(0, 0, machineSize.z)
+	glVertex3f(0, machineSize.y, machineSize.z)
+	glVertex3f(machineSize.x, machineSize.y, machineSize.z)
+	glVertex3f(machineSize.x, 0, machineSize.z)
+	glEnd()
 
-		glEnable(GL_CULL_FACE)
+	glColor4ub(5, 171, 231, 96)
+	glBegin(GL_QUADS)
+	glVertex3f(0, 0, 0)
+	glVertex3f(0, 0, machineSize.z)
+	glVertex3f(machineSize.x, 0, machineSize.z)
+	glVertex3f(machineSize.x, 0, 0)
 
-		glColor4ub(5, 171, 231, 64)
-		glBegin(GL_QUADS)
-		glVertex3f(0, 0, machineSize.z)
-		glVertex3f(0, machineSize.y, machineSize.z)
-		glVertex3f(machineSize.x, machineSize.y, machineSize.z)
-		glVertex3f(machineSize.x, 0, machineSize.z)
-		glEnd()
+	glVertex3f(0, machineSize.y, machineSize.z)
+	glVertex3f(0, machineSize.y, 0)
+	glVertex3f(machineSize.x, machineSize.y, 0)
+	glVertex3f(machineSize.x, machineSize.y, machineSize.z)
+	glEnd()
 
-		glColor4ub(5, 171, 231, 96)
-		glBegin(GL_QUADS)
-		glVertex3f(0, 0, 0)
-		glVertex3f(0, 0, machineSize.z)
-		glVertex3f(machineSize.x, 0, machineSize.z)
-		glVertex3f(machineSize.x, 0, 0)
+	glColor4ub(5, 171, 231, 128)
+	glBegin(GL_QUADS)
+	glVertex3f(0, 0, machineSize.z)
+	glVertex3f(0, 0, 0)
+	glVertex3f(0, machineSize.y, 0)
+	glVertex3f(0, machineSize.y, machineSize.z)
 
-		glVertex3f(0, machineSize.y, machineSize.z)
-		glVertex3f(0, machineSize.y, 0)
-		glVertex3f(machineSize.x, machineSize.y, 0)
-		glVertex3f(machineSize.x, machineSize.y, machineSize.z)
-		glEnd()
+	glVertex3f(machineSize.x, 0, 0)
+	glVertex3f(machineSize.x, 0, machineSize.z)
+	glVertex3f(machineSize.x, machineSize.y, machineSize.z)
+	glVertex3f(machineSize.x, machineSize.y, 0)
+	glEnd()
 
-		glColor4ub(5, 171, 231, 128)
-		glBegin(GL_QUADS)
-		glVertex3f(0, 0, machineSize.z)
-		glVertex3f(0, 0, 0)
-		glVertex3f(0, machineSize.y, 0)
-		glVertex3f(0, machineSize.y, machineSize.z)
+	glDisable(GL_BLEND)
 
-		glVertex3f(machineSize.x, 0, 0)
-		glVertex3f(machineSize.x, 0, machineSize.z)
-		glVertex3f(machineSize.x, machineSize.y, machineSize.z)
-		glVertex3f(machineSize.x, machineSize.y, 0)
-		glEnd()
-
-		glDisable(GL_BLEND)
-
+	#Draw the X/Y/Z indicator
 	glPushMatrix()
 	glTranslate(5, 5, 2)
 	glLineWidth(2)
@@ -234,10 +193,10 @@ def glDrawStringCenter(s):
 	glRasterPos2f(0, 0)
 	width = 0
 	for c in s:
-		width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_18, ord(c))
+		width += glutBitmapWidth(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
 	glBitmap(0,0,0,0, -width/2, 0, None)
 	for c in s:
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ord(c))
+		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
 
 def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
 	npModelMatrix = numpy.matrix(numpy.array(modelMatrix, numpy.float64).reshape((4,4)))
