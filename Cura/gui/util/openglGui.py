@@ -19,6 +19,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self._context = glcanvas.GLContext(self)
 		self._glGuiControlList = []
 		self._buttonSize = 64
+		self._allowDrag = False
 
 		wx.EVT_PAINT(self, self._OnGuiPaint)
 		wx.EVT_SIZE(self, self._OnSize)
@@ -27,10 +28,17 @@ class glGuiPanel(glcanvas.GLCanvas):
 		wx.EVT_MOTION(self, self._OnGuiMouseMotion)
 
 	def _OnGuiMouseEvents(self,e):
-		if e.ButtonDown() and e.LeftIsDown():
-			for ctrl in self._glGuiControlList:
-				if ctrl.OnMouseDown(e.GetX(), e.GetY()):
-					return
+		if e.ButtonDown():
+			if e.LeftIsDown():
+				for ctrl in self._glGuiControlList:
+					if ctrl.OnMouseDown(e.GetX(), e.GetY()):
+						return
+			self._allowDrag = True
+			print 1
+		if e.ButtonUp():
+			if not e.LeftIsDown() and not e.RightIsDown():
+				self._allowDrag = False
+				print 0
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
@@ -100,6 +108,17 @@ class glButton(object):
 	def getSelected(self):
 		return self._selected
 
+	def _getSize(self):
+		return self._parent._buttonSize
+
+	def _getPixelPos(self):
+		bs = self._getSize()
+		x = self._x * bs * 1.3 + bs * 0.8
+		y = self._y * bs * 1.3 + bs * 0.8
+		if self._x < 0:
+			x = self._parent.GetSize().GetWidth() + x - bs * 0.2
+		return x, y
+
 	def draw(self):
 		global glButtonsTexture
 		if self._hidden:
@@ -110,9 +129,10 @@ class glButton(object):
 		cx = (self._imageID % 4) / 4
 		cy = int(self._imageID / 4) / 4
 		bs = self._parent._buttonSize
+		pos = self._getPixelPos()
 
 		glPushMatrix()
-		glTranslatef(self._x * bs * 1.3 + bs * 0.8, self._y * bs * 1.3 + bs * 0.8, 0)
+		glTranslatef(pos[0], pos[1], 0)
 		glBindTexture(GL_TEXTURE_2D, glButtonsTexture)
 		glEnable(GL_TEXTURE_2D)
 		scale = 0.8
@@ -142,8 +162,9 @@ class glButton(object):
 	def _checkHit(self, x, y):
 		if self._hidden:
 			return False
-		bs = self._parent._buttonSize
-		return -bs * 0.5 <= x - (self._x * bs * 1.3 + bs * 0.8) <= bs * 0.5 and -bs * 0.5 <= y - (self._y * bs * 1.3 + bs * 0.8) <= bs * 0.5
+		bs = self._getSize()
+		pos = self._getPixelPos()
+		return -bs * 0.5 <= x - pos[0] <= bs * 0.5 and -bs * 0.5 <= y - pos[1] <= bs * 0.5
 
 	def OnMouseMotion(self, x, y):
 		if self._checkHit(x, y):
@@ -155,3 +176,5 @@ class glButton(object):
 	def OnMouseDown(self, x, y):
 		if self._checkHit(x, y):
 			self._callback()
+			return True
+		return False

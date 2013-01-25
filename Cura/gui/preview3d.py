@@ -111,10 +111,12 @@ class previewPanel(wx.Panel):
 		self.scaleToolButton  = openglGui.glButton(self.glCanvas, 2, 'Scale', 0,2, self.OnScaleSelect)
 
 		self.resetRotationButton = openglGui.glButton(self.glCanvas, 4, 'Reset rotation', 1,0, self.OnRotateReset)
-		self.layFlatButton = openglGui.glButton(self.glCanvas, 5, 'Lay flat', 2,0, self.OnLayFlat)
+		self.layFlatButton       = openglGui.glButton(self.glCanvas, 5, 'Lay flat', 2,0, self.OnLayFlat)
 
-		self.resetScaleButton = openglGui.glButton(self.glCanvas, 8, 'Scale reset', 1,0, self.OnScaleReset)
-		self.scaleMaxButton = openglGui.glButton(self.glCanvas, 9, 'Scale to machine size', 2,0, self.OnScaleMax)
+		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 8, 'Scale reset', 1,0, self.OnScaleReset)
+		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 9, 'Scale to machine size', 2,0, self.OnScaleMax)
+
+		self.openFileButton      = openglGui.glButton(self.glCanvas, 3, 'Load file', -1,0, lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
 
 		self.infoToolButton.setSelected(True)
 		self.returnToModelViewAndUpdateModel()
