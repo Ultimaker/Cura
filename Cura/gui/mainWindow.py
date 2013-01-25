@@ -209,7 +209,7 @@ class mainWindow(wx.Frame):
 			sizer.Add(loadButton4, (1,4), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
 		sizer.Add(sliceButton, (1,1+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
 		sizer.Add(printButton, (1,2+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)		
-		
+
 		# Main window sizer
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		self.SetSizer(sizer)
@@ -265,16 +265,13 @@ class mainWindow(wx.Frame):
 
 		self.normalSettingsPanel.Show(not isSimple)
 		self.simpleSettingsPanel.Show(isSimple)
+		self.leftPane.Layout()
 
 		for i in self.normalModeOnlyItems:
 			i.Enable(not isSimple)
 		self.switchToQuickprintMenuItem.Enable(not isSimple)
 		self.switchToNormalMenuItem.Enable(isSimple)
 
-		self.normalSettingsPanel.Layout()
-		self.simpleSettingsPanel.Layout()		
-		self.leftPane.GetSizer().Layout()
-		
 		# Set splitter sash position & size
 		if isSimple:
 			# Save normal mode sash
@@ -291,7 +288,7 @@ class mainWindow(wx.Frame):
 
 			# Enabled sash
 			self.splitter.SetSashSize(4)
-			
+								
 	def OnPreferences(self, e):
 		prefDialog = preferencesDialog.preferencesDialog(self)
 		prefDialog.Centre()
@@ -563,12 +560,11 @@ class normalSettingsPanel(configBase.configPanelBase):
 		super(normalSettingsPanel, self).__init__(parent)
 
 		#Main tabs
-		nb = wx.Notebook(self)
-		self.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		self.GetSizer().Add(nb, 1, wx.EXPAND)
+		self.nb = wx.Notebook(self)
+		self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
+		self.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
-		(left) = self.CreateSimpleConfigTab(nb, 'Print config')
-		right = left
+		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Print config')
 
 		configBase.TitleRow(left, "Quality")
 		c = configBase.SettingRow(left, "Layer height (mm)", 'layer_height', '0.2', 'Layer height in millimeters.\n0.2 is a good value for quick prints.\n0.1 gives high quality prints.')
@@ -612,8 +608,13 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Packing Density", 'filament_density', '1.00', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
 		validators.validFloat(c, 0.5, 1.5)
 
-		(left) = self.CreateSimpleConfigTab(nb, 'Advanced config')
-		right = left
+		leftWidth = self.getLabelColumnWidth(left)
+		rightWidth = self.getLabelColumnWidth(right)
+		maxWidth = max(leftWidth, rightWidth)
+		self.setLabelColumnWidth(left, maxWidth)
+		self.setLabelColumnWidth(right, maxWidth)
+		
+		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced config')
 		
 		configBase.TitleRow(left, "Machine size")
 		c = configBase.SettingRow(left, "Nozzle size (mm)", 'nozzle_size', '0.4', 'The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings.')
@@ -656,16 +657,73 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
 
 		#Plugin page
-		self.pluginPanel = pluginPanel.pluginPanel(nb)
+		self.pluginPanel = pluginPanel.pluginPanel(self.nb)
 		if len(self.pluginPanel.pluginList) > 0:
-			nb.AddPage(self.pluginPanel, "Plugins")
+			self.nb.AddPage(self.pluginPanel, "Plugins")
 		else:
 			self.pluginPanel.Show(False)
 
 		#Alteration page
-		self.alterationPanel = alterationPanel.alterationPanel(nb)
-		nb.AddPage(self.alterationPanel, "Start/End-GCode")
+		self.alterationPanel = alterationPanel.alterationPanel(self.nb)
+		self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
 
+		self.Bind(wx.EVT_SIZE, self.OnSize)
+
+	def OnSize(self, e):
+		# Make the size of the Notebook control the same size as this control
+		self.nb.SetSize(self.GetSize())
+		
+		# Propegate the OnSize() event (just in case)
+		e.Skip()
+		
+		# Perform out resize magic
+		self.UpdateSize(self.printPanel)
+		self.UpdateSize(self.advancedPanel)
+	
+	def UpdateSize(self, configPanel):
+		sizer = configPanel.GetSizer()
+		
+		# Pseudocde
+		# if horizontal:
+		#     if width(col1) < best_width(col1) || width(col2) < best_width(col2):
+		#         switch to vertical
+		# else:
+		#     if width(col1) > (best_width(col1) + best_width(col1)):
+		#         switch to horizontal
+		#
+				
+		col1 = configPanel.Children[0]
+		colSize1 = col1.GetSize()
+		colBestSize1 = col1.GetBestSize()
+		col2 = configPanel.Children[1]
+		colSize2 = col2.GetSize()
+		colBestSize2 = col2.GetBestSize()
+
+		orientation = sizer.GetOrientation()
+		
+		if orientation == wx.HORIZONTAL:
+			if (colSize1[0] <= colBestSize1[0]) or (colSize2[0] <= colBestSize2[0]):
+				configPanel.Freeze()
+				sizer = wx.BoxSizer(wx.VERTICAL)
+				sizer.Add(configPanel.Children[0], flag=wx.EXPAND)
+				sizer.Add(configPanel.Children[1], flag=wx.EXPAND)
+				configPanel.SetSizer(sizer)
+				#sizer.Layout()
+				configPanel.Layout()
+				self.Layout()
+				configPanel.Thaw()
+		else:
+			if colSize1[0] > (colBestSize1[0] + colBestSize2[0]):
+				configPanel.Freeze()
+				sizer = wx.BoxSizer(wx.HORIZONTAL)
+				sizer.Add(configPanel.Children[0], proportion=1, border=35, flag=wx.EXPAND)
+				sizer.Add(configPanel.Children[1], proportion=1, flag=wx.EXPAND)
+				configPanel.SetSizer(sizer)
+				#sizer.Layout()
+				configPanel.Layout()
+				self.Layout()
+				configPanel.Thaw()
+				
 	def updateProfileToControls(self):
 		super(normalSettingsPanel, self).updateProfileToControls()
 		self.alterationPanel.updateProfileToControls()

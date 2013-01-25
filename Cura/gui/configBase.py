@@ -30,10 +30,12 @@ class configPanelBase(wx.Panel):
 		configPanel = wx.Panel(parent);
 		leftConfigPanel = wx.Panel(configPanel)
 		rightConfigPanel = wx.Panel(configPanel)
+
 		sizer = wx.GridBagSizer(2, 2)
 		leftConfigPanel.SetSizer(sizer)
 		sizer = wx.GridBagSizer(2, 2)
 		rightConfigPanel.SetSizer(sizer)
+
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		configPanel.SetSizer(sizer)
 		sizer.Add(leftConfigPanel, border=35, flag=wx.RIGHT)
@@ -42,28 +44,34 @@ class configPanelBase(wx.Panel):
 		rightConfigPanel.main = self
 		return leftConfigPanel, rightConfigPanel, configPanel
 
-	def CreateSimpleConfigTab(self, nb, name):
-		leftConfigPanel, configPanel = self.CreateSimpleConfigPanel(nb)
-		nb.AddPage(configPanel, name)
-		return leftConfigPanel
-	
-	def CreateSimpleConfigPanel(self, parent):
-		configPanel = wx.lib.scrolledpanel.ScrolledPanel(parent)
+	def CreateDynamicConfigTab(self, nb, name):
+		configPanel = wx.lib.scrolledpanel.ScrolledPanel(nb)	
+		#configPanel = wx.Panel(nb);
 		leftConfigPanel = wx.Panel(configPanel)
-		
+		rightConfigPanel = wx.Panel(configPanel)
+
 		sizer = wx.GridBagSizer(2, 2)
 		leftConfigPanel.SetSizer(sizer)
 		sizer.AddGrowableCol(1)
 
+		sizer = wx.GridBagSizer(2, 2)
+		rightConfigPanel.SetSizer(sizer)
+		sizer.AddGrowableCol(1)
+
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
+		sizer.Add(leftConfigPanel, proportion=1, border=35, flag=wx.EXPAND)
+		sizer.Add(rightConfigPanel, proportion=1, flag=wx.EXPAND)
 		configPanel.SetSizer(sizer)
-		sizer.Add(leftConfigPanel, 1, wx.EXPAND)
 
 		configPanel.SetAutoLayout(1)
-		configPanel.SetupScrolling()
+		configPanel.SetupScrolling(scroll_x=False, scroll_y=True)
 
 		leftConfigPanel.main = self
-		return leftConfigPanel, configPanel
+		rightConfigPanel.main = self
+
+		nb.AddPage(configPanel, name)
+
+		return leftConfigPanel, rightConfigPanel, configPanel
 
 	def OnPopupDisplay(self, setting):
 		self.popup.setting = setting
@@ -99,6 +107,32 @@ class configPanelBase(wx.Panel):
 				setting.SetValue(profile.getPreference(setting.configName))
 		self.Update()
 
+	def XXXgetLabelColumnWidth(self):
+		maxWidth = 0
+		for setting in self.settingControlList:
+			maxWidth = max(maxWidth, setting.label.GetWidth())
+
+	def XXXsetLabelColumnWidth(self, newWidth):
+		for setting in self.settingControlList:
+			setting.label.SetWidth(newWidth)			
+
+	def getLabelColumnWidth(self, panel):
+		maxWidth = 0
+		for child in panel.GetChildren():
+			if isinstance(child, wx.lib.stattext.GenStaticText):
+				maxWidth = max(maxWidth, child.GetSize()[0])
+		return maxWidth
+	
+	def setLabelColumnWidth(self, panel, width):
+		for child in panel.GetChildren():
+			if isinstance(child, wx.lib.stattext.GenStaticText):
+				size = child.GetSize()
+				size[0] = width
+				#child.SetSize(size)
+				child.SetBestSize(size)
+				#child.GetContainingSizer().Layout()
+				#child.SetBackgroundColour('Green')
+	
 class TitleRow():
 	def __init__(self, panel, name):
 		"Add a title row to the configuration panel"
@@ -150,6 +184,11 @@ class SettingRow():
 			self.ctrl.Bind(wx.EVT_LEFT_DOWN, self.OnMouseExit)
 			flag = wx.EXPAND
 
+		# Set the minimum size of control to something other than the humungous default
+		minSize = self.ctrl.GetMinSize()
+		minSize[0] = 50
+		self.ctrl.SetMinSize(minSize)
+		
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
 		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_BOTTOM|flag)
 		sizer.SetRows(x+1)
