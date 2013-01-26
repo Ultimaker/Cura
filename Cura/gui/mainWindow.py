@@ -692,10 +692,10 @@ class normalSettingsPanel(configBase.configPanelBase):
 		#         switch to horizontal
 		#
 				
-		col1 = configPanel.Children[0]
+		col1 = configPanel.leftPanel
 		colSize1 = col1.GetSize()
 		colBestSize1 = col1.GetBestSize()
-		col2 = configPanel.Children[1]
+		col2 = configPanel.rightPanel
 		colSize2 = col2.GetSize()
 		colBestSize2 = col2.GetBestSize()
 
@@ -705,8 +705,8 @@ class normalSettingsPanel(configBase.configPanelBase):
 			if (colSize1[0] <= colBestSize1[0]) or (colSize2[0] <= colBestSize2[0]):
 				configPanel.Freeze()
 				sizer = wx.BoxSizer(wx.VERTICAL)
-				sizer.Add(configPanel.Children[0], flag=wx.EXPAND)
-				sizer.Add(configPanel.Children[1], flag=wx.EXPAND)
+				sizer.Add(configPanel.leftPanel, flag=wx.EXPAND)
+				sizer.Add(configPanel.rightPanel, flag=wx.EXPAND)
 				configPanel.SetSizer(sizer)
 				#sizer.Layout()
 				configPanel.Layout()
@@ -716,8 +716,8 @@ class normalSettingsPanel(configBase.configPanelBase):
 			if colSize1[0] > (colBestSize1[0] + colBestSize2[0]):
 				configPanel.Freeze()
 				sizer = wx.BoxSizer(wx.HORIZONTAL)
-				sizer.Add(configPanel.Children[0], proportion=1, border=35, flag=wx.EXPAND)
-				sizer.Add(configPanel.Children[1], proportion=1, flag=wx.EXPAND)
+				sizer.Add(configPanel.leftPanel, proportion=1, border=35, flag=wx.EXPAND)
+				sizer.Add(configPanel.rightPanel, proportion=1, flag=wx.EXPAND)
 				configPanel.SetSizer(sizer)
 				#sizer.Layout()
 				configPanel.Layout()

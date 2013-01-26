@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import platform
 import wx, wx.lib.stattext, types
 
 from Cura.util import validators
@@ -69,6 +70,9 @@ class configPanelBase(wx.Panel):
 		leftConfigPanel.main = self
 		rightConfigPanel.main = self
 
+		configPanel.leftPanel = leftConfigPanel
+		configPanel.rightPanel = rightConfigPanel
+
 		nb.AddPage(configPanel, name)
 
 		return leftConfigPanel, rightConfigPanel, configPanel
@@ -107,15 +111,6 @@ class configPanelBase(wx.Panel):
 				setting.SetValue(profile.getPreference(setting.configName))
 		self.Update()
 
-	def XXXgetLabelColumnWidth(self):
-		maxWidth = 0
-		for setting in self.settingControlList:
-			maxWidth = max(maxWidth, setting.label.GetWidth())
-
-	def XXXsetLabelColumnWidth(self, newWidth):
-		for setting in self.settingControlList:
-			setting.label.SetWidth(newWidth)			
-
 	def getLabelColumnWidth(self, panel):
 		maxWidth = 0
 		for child in panel.GetChildren():
@@ -128,10 +123,7 @@ class configPanelBase(wx.Panel):
 			if isinstance(child, wx.lib.stattext.GenStaticText):
 				size = child.GetSize()
 				size[0] = width
-				#child.SetSize(size)
 				child.SetBestSize(size)
-				#child.GetContainingSizer().Layout()
-				#child.SetBackgroundColour('Green')
 	
 class TitleRow():
 	def __init__(self, panel, name):
@@ -186,7 +178,12 @@ class SettingRow():
 
 		# Set the minimum size of control to something other than the humungous default
 		minSize = self.ctrl.GetMinSize()
-		minSize[0] = 50
+		
+		if platform.system() == "Darwin":		
+			# Under MacOS, it appears that the minSize is used for the actual size...
+			minSize[0] = 150
+		else:
+			minSize[0] = 50
 		self.ctrl.SetMinSize(minSize)
 		
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
