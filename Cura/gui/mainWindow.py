@@ -608,11 +608,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Packing Density", 'filament_density', '1.00', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
 		validators.validFloat(c, 0.5, 1.5)
 
-		leftWidth = self.getLabelColumnWidth(left)
-		rightWidth = self.getLabelColumnWidth(right)
-		maxWidth = max(leftWidth, rightWidth)
-		self.setLabelColumnWidth(left, maxWidth)
-		self.setLabelColumnWidth(right, maxWidth)
+		self.SizeLabelWidths(left, right)
 		
 		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced config')
 		
@@ -656,6 +652,8 @@ class normalSettingsPanel(configBase.configPanelBase):
 		validators.warningAbove(c, lambda : (float(profile.getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
 		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
 
+		self.SizeLabelWidths(left, right)
+
 		#Plugin page
 		self.pluginPanel = pluginPanel.pluginPanel(self.nb)
 		if len(self.pluginPanel.pluginList) > 0:
@@ -668,6 +666,13 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
+
+	def SizeLabelWidths(self, left, right):
+		leftWidth = self.getLabelColumnWidth(left)
+		rightWidth = self.getLabelColumnWidth(right)
+		maxWidth = max(leftWidth, rightWidth)
+		self.setLabelColumnWidth(left, maxWidth)
+		self.setLabelColumnWidth(right, maxWidth)
 
 	def OnSize(self, e):
 		# Make the size of the Notebook control the same size as this control

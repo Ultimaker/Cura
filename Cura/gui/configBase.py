@@ -179,8 +179,8 @@ class SettingRow():
 		# Set the minimum size of control to something other than the humungous default
 		minSize = self.ctrl.GetMinSize()
 		
-		if platform.system() == "Darwin":		
-			# Under MacOS, it appears that the minSize is used for the actual size...
+		if platform.system() == "Darwin":
+			# Under MacOS, it appears that the minSize is used for the actual size, so give the field a bit more room...
 			minSize[0] = 150
 		else:
 			minSize[0] = 50
