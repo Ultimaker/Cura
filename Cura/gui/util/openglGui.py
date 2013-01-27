@@ -18,27 +18,20 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self._parent = parent
 		self._context = glcanvas.GLContext(self)
 		self._glGuiControlList = []
+		self._glButtonsTexture = None
 		self._buttonSize = 64
-		self._allowDrag = False
 
 		wx.EVT_PAINT(self, self._OnGuiPaint)
 		wx.EVT_SIZE(self, self._OnSize)
 		wx.EVT_ERASE_BACKGROUND(self, self._OnEraseBackground)
-		wx.EVT_MOUSE_EVENTS(self, self._OnGuiMouseEvents)
+		wx.EVT_LEFT_DOWN(self, self._OnGuiMouseLeftDown)
 		wx.EVT_MOTION(self, self._OnGuiMouseMotion)
 
-	def _OnGuiMouseEvents(self,e):
-		if e.ButtonDown():
-			if e.LeftIsDown():
-				for ctrl in self._glGuiControlList:
-					if ctrl.OnMouseDown(e.GetX(), e.GetY()):
-						return
-			self._allowDrag = True
-			print 1
-		if e.ButtonUp():
-			if not e.LeftIsDown() and not e.RightIsDown():
-				self._allowDrag = False
-				print 0
+	def _OnGuiMouseLeftDown(self,e):
+		for ctrl in self._glGuiControlList:
+			if ctrl.OnMouseDown(e.GetX(), e.GetY()):
+				return
+		self.OnMouseLeftDown(e)
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
@@ -78,9 +71,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 	def _OnSize(self,e):
 		self.Refresh()
 
-	def OnMouseEvents(self,e):
+	def OnMouseLeftDown(self,e):
 		pass
-
 	def OnMouseMotion(self, e):
 		pass
 	def OnPaint(self, e):
@@ -120,11 +112,10 @@ class glButton(object):
 		return x, y
 
 	def draw(self):
-		global glButtonsTexture
 		if self._hidden:
 			return
-		if glButtonsTexture is None:
-			glButtonsTexture = opengl.loadGLTexture('glButtons.png')
+		if self._parent._glButtonsTexture is None:
+			self._parent._glButtonsTexture = opengl.loadGLTexture('glButtons.png')
 
 		cx = (self._imageID % 4) / 4
 		cy = int(self._imageID / 4) / 4
@@ -133,7 +124,7 @@ class glButton(object):
 
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
-		glBindTexture(GL_TEXTURE_2D, glButtonsTexture)
+		glBindTexture(GL_TEXTURE_2D, self._parent._glButtonsTexture)
 		glEnable(GL_TEXTURE_2D)
 		scale = 0.8
 		if self._selected:

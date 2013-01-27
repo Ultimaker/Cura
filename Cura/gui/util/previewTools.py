@@ -352,9 +352,10 @@ class toolScale(object):
 			sy *= self.scale
 		if self.node == 4 and self.scale is not None:
 			sz *= self.scale
-		scaleX = numpy.linalg.norm(self.parent.parent.matrix[0].getA().flatten())
-		scaleY = numpy.linalg.norm(self.parent.parent.matrix[1].getA().flatten())
-		scaleZ = numpy.linalg.norm(self.parent.parent.matrix[2].getA().flatten())
+		objMatrix = self.parent.getObjectMatrix()
+		scaleX = numpy.linalg.norm(objMatrix[0].getA().flatten())
+		scaleY = numpy.linalg.norm(objMatrix[1].getA().flatten())
+		scaleZ = numpy.linalg.norm(objMatrix[2].getA().flatten())
 		if self.scale is not None:
 			scaleX *= self.scale
 			scaleY *= self.scale

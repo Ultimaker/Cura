@@ -218,12 +218,10 @@ def loadGLTexture(filename):
 	glBindTexture(GL_TEXTURE_2D, tex)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 	img = wx.ImageFromBitmap(wx.Bitmap(getPathForImage(filename)))
 	rgbData = img.GetData()
 	alphaData = img.GetAlphaData()
-	if alphaData != None:
+	if alphaData is not None:
 		data = ''
 		for i in xrange(0, len(alphaData)):
 			data += rgbData[i*3:i*3+3] + alphaData[i]

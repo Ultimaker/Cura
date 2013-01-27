@@ -512,8 +512,6 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 					self.tempMatrix = None
 				self.parent.tool.OnDragEnd()
 				self.dragType = ''
-
-			self.dragType = ''
 		if e.Dragging() and e.RightIsDown():
 			self.zoom += e.GetY() - self.oldY
 			if self.zoom < 1:
@@ -528,6 +526,9 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 
 	def getObjectSize(self):
 		return self.parent.objectsSize
+
+	def getObjectMatrix(self):
+		return self.parent.matrix
 
 	def OnMouseWheel(self,e):
 		self.zoom *= 1.0 - float(e.GetWheelRotation() / e.GetWheelDelta()) / 10.0
