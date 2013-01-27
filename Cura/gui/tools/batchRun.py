@@ -5,6 +5,7 @@ import wx, os, multiprocessing, threading, time, shutil
 from Cura.util import profile
 from Cura.util import sliceRun
 from Cura.util import meshLoader
+from Cura.util import gcodeInterpreter
 from Cura.gui.util import dropTarget
 
 class batchRunWindow(wx.Frame):
@@ -88,19 +89,23 @@ class batchRunWindow(wx.Frame):
 
 	def OnSlice(self, e):
 		sliceCmdList = []
+		outputFilenameList = []
 		center = profile.getMachineCenterCoords()
 		for filename in self.list:
-			sliceCmdList.append(sliceRun.getSliceCommand(sliceRun.getExportFilename(filename), [filename], [center]))
-		bspw = BatchSliceProgressWindow(self.list[:], sliceCmdList)
+			outputFilename = sliceRun.getExportFilename(filename)
+			outputFilenameList.append(outputFilename)
+			sliceCmdList.append(sliceRun.getSliceCommand(outputFilename, [filename], [center]))
+		bspw = BatchSliceProgressWindow(self.list[:], outputFilenameList, sliceCmdList)
 		bspw.Centre()
 		bspw.Show(True)
 	
 class BatchSliceProgressWindow(wx.Frame):
-	def __init__(self, filenameList, sliceCmdList):
+	def __init__(self, filenameList, outputFilenameList, sliceCmdList):
 		super(BatchSliceProgressWindow, self).__init__(None, title='Cura')
 		self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
 		
 		self.filenameList = filenameList
+		self.outputFilenameList = outputFilenameList
 		self.sliceCmdList = sliceCmdList
 		self.abort = False
 		self.sliceStartTime = time.time()
@@ -186,8 +191,9 @@ class BatchSliceProgressWindow(wx.Frame):
 	
 	def OnRun(self, index):
 		while self.cmdIndex < len(self.sliceCmdList):
-			action = self.sliceCmdList[self.cmdIndex]
-			self.cmdIndex += 1
+			index = self.cmdIndex;
+			self.cmdIndex += 1			
+			action = self.sliceCmdList[index]
 			wx.CallAfter(self.SetTitle, "Building: [%d/%d]"  % (self.sliceCmdList.index(action) + 1, len(self.sliceCmdList)))
 
 			p = sliceRun.startSliceCommandProcess(action)
@@ -208,6 +214,13 @@ class BatchSliceProgressWindow(wx.Frame):
 					return
 				line = p.stdout.readline()
 			self.returnCode = p.wait()
+
+			# Update output gocde file...
+			# Warning: the user could have changed the profile between the slcer run and this code.  We might be using old information.
+			gcodeFilename = self.outputFilenameList[index]
+			gcode = gcodeInterpreter.gcode()
+			gcode.load(gcodeFilename)
+			profile.replaceGCodeTags(gcodeFilename, gcode)
 			
 			wx.CallAfter(self.progressGauge[index].SetValue, 10000)
 			self.totalDoneFactor[index] = 0.0
