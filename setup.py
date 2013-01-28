@@ -9,10 +9,10 @@ if sys.platform.startswith('darwin'):
     DATA_FILES = ['Cura/LICENSE', 'Cura/resources/images', 'Cura/resources/meshes', 'Cura/resources/example', 'Cura/resources/firmware']
     PLIST = {
         u'CFBundleName': u'Cura',
-        u'CFBundleShortVersionString': u'12.12',
-        u'CFBundleVersion': u'12.12',
+        u'CFBundleShortVersionString': u'13.01',
+        u'CFBundleVersion': u'13.01',
         u'CFBundleIdentifier': u'com.ultimaker.Cura',
-        u'LSMinimumSystemVersion': u'10.6',
+        u'LSMinimumSystemVersion': u'10.7',
         u'LSApplicationCategoryType': u'public.app-category.graphics-design',
         u'CFBundleDocumentTypes': [
             {
