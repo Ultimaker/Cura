@@ -57,9 +57,9 @@ def saveAsSTL(mesh, filename):
 	#Next follow 4 binary bytes containing the amount of faces, and then the face information.
 	f.write(struct.pack("<I", int(mesh.vertexCount / 3)))
 	for idx in xrange(0, mesh.vertexCount, 3):
-		v1 = mesh.origonalVertexes[idx]
-		v2 = mesh.origonalVertexes[idx+1]
-		v3 = mesh.origonalVertexes[idx+2]
+		v1 = mesh.vertexes[idx]
+		v2 = mesh.vertexes[idx+1]
+		v3 = mesh.vertexes[idx+2]
 		f.write(struct.pack("<fff", 0.0, 0.0, 0.0))
 		f.write(struct.pack("<fff", v1[0], v1[1], v1[2]))
 		f.write(struct.pack("<fff", v2[0], v2[1], v2[2]))

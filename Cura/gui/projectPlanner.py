@@ -49,8 +49,8 @@ class ProjectObject(object):
 		self.modelDisplayList = None
 		self.modelDirty = True
 
-		self.centerX = -self.getSize()[0]/2 + 5
-		self.centerY = -self.getSize()[1]/2 + 5
+		self.centerX = self.getSize()[0]/2 + 5
+		self.centerY = self.getSize()[1]/2 + 5
 
 		self.updateMatrix()
 
@@ -292,10 +292,13 @@ class projectPlanner(wx.Frame):
 		output = mesh.mesh()
 		output._prepareVertexCount(totalCount)
 		for item in self.list:
-			offset = numpy.array([item.centerX, item.centerY, 0])
-			for v in item.mesh.vertexes:
-				v0 = v * item.scale + offset
-				output.addVertex(v0[0], v0[1], v0[2])
+			vMin = item.getMinimum()
+			vMax = item.getMaximum()
+			offset = - vMin - (vMax - vMin) / 2
+			offset += numpy.array([item.centerX, item.centerY, 0])
+			vertexes = (item.mesh.vertexes * item.matrix).getA() + offset
+			for v in vertexes:
+				output.addVertex(v[0], v[1], v[2])
 		stl.saveAsSTL(output, filename)
 	
 	def OnSaveProject(self, e):
@@ -546,7 +549,8 @@ class projectPlanner(wx.Frame):
 					pos = [item.centerX - self.machineSize[0] / 2, item.centerY - self.machineSize[1] / 2]
 				else:
 					pos = [item.centerX, item.centerY]
-				positionList.append(pos + (item.mesh.matrix * item.scale).reshape((9,)).tolist())
+				positionList.append(pos + item.matrix.getA().flatten().tolist())
+			print positionList
 			sliceCommand = sliceRun.getSliceCommand(resultFilename, fileList, positionList)
 		else:
 			self._saveCombinedSTL(resultFilename + "_temp_.stl")
@@ -751,7 +755,6 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			
 			glEnable(GL_LIGHTING)
 			glTranslate(item.centerX, item.centerY, 0)
-			glPushMatrix()
 			vMin = item.getMinimum()
 			vMax = item.getMaximum()
 			offset = - vMin - (vMax - vMin) / 2
