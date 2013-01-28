@@ -4,7 +4,10 @@ import os
 import sys
 import urllib2
 import platform
-from xml.etree import ElementTree
+try:
+	from xml.etree import cElementTree as ElementTree
+except:
+	from xml.etree import ElementTree
 
 from Cura.util import resources
 

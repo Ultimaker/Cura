@@ -26,7 +26,7 @@ from Cura.util import validators
 from Cura.util import profile
 from Cura.util import util3d
 from Cura.util import meshLoader
-from Cura.util import stl
+from Cura.util.meshLoaders import stl
 from Cura.util import mesh
 from Cura.util import sliceRun
 from Cura.util import gcodeInterpreter

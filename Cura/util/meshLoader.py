@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 
-from Cura.util import stl
-from Cura.util import obj
-from Cura.util import dae
+from Cura.util.meshLoaders import stl
+from Cura.util.meshLoaders import obj
+from Cura.util.meshLoaders import dae
+from Cura.util.meshLoaders import amf
 
 def supportedExtensions():
-	return ['.stl', '.obj', '.dae']
+	return ['.stl', '.obj', '.dae', '.amf']
 
 def wildcardFilter():
 	wildcardList = ';'.join(map(lambda s: '*' + s, supportedExtensions()))
@@ -19,6 +20,8 @@ def loadMesh(filename):
 		return obj.objModel().load(filename)
 	if ext == '.dae':
 		return dae.daeModel().load(filename)
+	if ext == '.amf':
+		return amf.amfModel().load(filename)
 	print 'Error: Unknown model extension: %s' % (ext)
 	return None
 

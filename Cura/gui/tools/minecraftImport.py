@@ -6,7 +6,7 @@ import os
 import numpy
 
 from Cura.util import mesh
-from Cura.util import stl
+from Cura.util.meshLoaders import stl
 from Cura.util.pymclevel import mclevel
 
 def hasMinecraft():
