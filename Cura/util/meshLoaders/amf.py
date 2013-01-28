@@ -67,8 +67,9 @@ class amfModel(mesh.mesh):
 				for volume in mesh.iter('volume'):
 					for triangle in volume.iter('triangle'):
 						for t in triangle:
-							v = vertexList[int(t.text)]
-							self.addVertex(v[0], v[1], v[2])
+							if t.tag == 'v1' or t.tag == 'v2' or t.tag == 'v3':
+								v = vertexList[int(t.text)]
+								self.addVertex(v[0], v[1], v[2])
 
 		self.vertexes *= scale
 		self._postProcessAfterLoad()
