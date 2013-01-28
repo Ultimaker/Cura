@@ -45,7 +45,7 @@ def getChainTextFromProcedures(fileName, procedures, text):
 				print(fileName)
 				return ''
 			if gcodec.isProcedureDone( text, procedure ):
-				print('%s procedure took %s.' % (procedure.capitalize(), euclidean.getDurationString(time.time() - lastProcedureTime)))
+				print('%s procedure took %s (%d).' % (procedure.capitalize(), euclidean.getDurationString(time.time() - lastProcedureTime)), len(text))
 				lastProcedureTime = time.time()
 	return text
 

@@ -9,8 +9,6 @@ import shutil
 import ConfigParser
 import numpy
 
-from wx import glcanvas
-
 import OpenGL
 OpenGL.ERROR_CHECKING = False
 from OpenGL.GLU import *
@@ -93,14 +91,15 @@ class ProjectObject(object):
 		return p
 	
 	def clampXY(self):
-		if self.centerX < -self.getMinimum()[0] * self.scale + self.parent.extruderOffset[self.extruder][0]:
-			self.centerX = -self.getMinimum()[0] * self.scale + self.parent.extruderOffset[self.extruder][0]
-		if self.centerY < -self.getMinimum()[1] * self.scale + self.parent.extruderOffset[self.extruder][1]:
-			self.centerY = -self.getMinimum()[1] * self.scale + self.parent.extruderOffset[self.extruder][1]
-		if self.centerX > self.parent.machineSize[0] + self.parent.extruderOffset[self.extruder][0] - self.getMaximum()[0] * self.scale:
-			self.centerX = self.parent.machineSize[0] + self.parent.extruderOffset[self.extruder][0] - self.getMaximum()[0] * self.scale
-		if self.centerY > self.parent.machineSize[1] + self.parent.extruderOffset[self.extruder][1] - self.getMaximum()[1] * self.scale:
-			self.centerY = self.parent.machineSize[1] + self.parent.extruderOffset[self.extruder][1] - self.getMaximum()[1] * self.scale
+		size = self.getSize()
+		if self.centerX < size[0] / 2:
+			self.centerX = size[0] / 2
+		if self.centerY < size[1] / 2:
+			self.centerY = size[1] / 2
+		if self.centerX > self.parent.machineSize[0] - size[0] / 2:
+			self.centerX = self.parent.machineSize[0] - size[0] / 2
+		if self.centerY > self.parent.machineSize[1] - size[1] / 2:
+			self.centerY = self.parent.machineSize[1] - size[1] / 2
 
 class projectPlanner(wx.Frame):
 	"Main user interface window"
@@ -498,16 +497,16 @@ class projectPlanner(wx.Frame):
 		maxX = 0
 		maxY = 0
 		for item in self.list:
-			item.centerX = posX + item.getMaximum()[0] * dirX
-			item.centerY = posY + item.getMaximum()[1] * dirY
+			item.centerX = posX + item.getSize()[0] / 2 * dirX
+			item.centerY = posY + item.getSize()[1] / 2 * dirY
 			if item.centerY + item.getSize()[1] >= allowedSizeY:
 				if dirX < 0:
 					posX = minX - extraSizeMax[0] - 1
 				else:
 					posX = maxX + extraSizeMin[0] + 1
 				posY = 0
-				item.centerX = posX + item.getMaximum()[0] * dirX
-				item.centerY = posY + item.getMaximum()[1] * dirY
+				item.centerX = posX + item.getSize()[0] / 2 * dirX
+				item.centerY = posY + item.getSize()[1] / 2 * dirY
 			posY += item.getSize()[1]  * dirY + extraSizeMin[1] + 1
 			minX = min(minX, item.centerX - item.getSize()[0] / 2)
 			minY = min(minY, item.centerY - item.getSize()[1] / 2)
@@ -593,6 +592,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		else:
 			self.zoom = self.parent.machineSize[0] / 2 + 10
 		self.dragType = ''
+		self.viewport = None
 		self.allowDrag = False
 		self.tempMatrix = None
 
@@ -601,13 +601,13 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 	def OnMouseLeftDown(self,e):
 		self.allowDrag = True
 		if not self.parent.alwaysAutoPlace and not self.view3D:
-			p0 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport))
-			p1 = numpy.array(gluUnProject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport))
+			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
+			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
 			cursorZ0 = p0 - (p1 - p0) * (p0[2] / (p1[2] - p0[2]))
 
 			for item in self.parent.list:
-				iMin = (item.getMinimum() * item.scale) + numpy.array([item.centerX, item.centerY, 0]) - self.parent.extruderOffset[item.extruder]
-				iMax = (item.getMaximum() * item.scale) + numpy.array([item.centerX, item.centerY, 0]) - self.parent.extruderOffset[item.extruder]
+				iMin =-item.getSize() / 2 + numpy.array([item.centerX, item.centerY, 0])
+				iMax = item.getSize() / 2 + numpy.array([item.centerX, item.centerY, 0])
 				if iMin[0] <= cursorZ0[0] <= iMax[0] and iMin[1] <= cursorZ0[1] <= iMax[1]:
 					self.parent.selection = item
 					self.parent._updateListbox()
@@ -681,11 +681,12 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glRotate(self.yaw, 0,0,1)
 		else:
 			glTranslate(self.offsetX, self.offsetY, 0.0)
-		glTranslate(-self.parent.machineSize[0]/2, -self.parent.machineSize[1]/2, 0)
 
-		self.viewport = glGetIntegerv(GL_VIEWPORT);
-		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX);
-		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX);
+		self.viewport = glGetIntegerv(GL_VIEWPORT)
+		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX)
+		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
+
+		glTranslate(-self.parent.machineSize[0]/2, -self.parent.machineSize[1]/2, 0)
 
 		self.OnDraw()
 
@@ -699,16 +700,16 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		
 		for idx1 in xrange(0, len(self.parent.list)):
 			item = self.parent.list[idx1]
-			iMin1 = item.getMinimum() + numpy.array([item.centerX, item.centerY, 0]) - extraSizeMin #- self.parent.extruderOffset[item.extruder]
-			iMax1 = item.getMaximum() + numpy.array([item.centerX, item.centerY, 0]) + extraSizeMax #- self.parent.extruderOffset[item.extruder]
+			iMin1 =-item.getSize() / 2 + numpy.array([item.centerX, item.centerY, 0]) - extraSizeMin #- self.parent.extruderOffset[item.extruder]
+			iMax1 = item.getSize() / 2 + numpy.array([item.centerX, item.centerY, 0]) + extraSizeMax #- self.parent.extruderOffset[item.extruder]
 			if iMin1[0] < -self.parent.headSizeMin[0] or iMin1[1] < -self.parent.headSizeMin[1]:
 				item.validPlacement = False
 			if iMax1[0] > machineSize[0] + self.parent.headSizeMax[0] or iMax1[1] > machineSize[1] + self.parent.headSizeMax[1]:
 				item.validPlacement = False
 			for idx2 in xrange(0, idx1):
 				item2 = self.parent.list[idx2]
-				iMin2 = item2.getMinimum() + numpy.array([item2.centerX, item2.centerY, 0])
-				iMax2 = item2.getMaximum() + numpy.array([item2.centerX, item2.centerY, 0])
+				iMin2 =-item2.getSize() / 2 + numpy.array([item2.centerX, item2.centerY, 0])
+				iMax2 = item2.getSize() / 2 + numpy.array([item2.centerX, item2.centerY, 0])
 				if item != item2 and iMax1[0] >= iMin2[0] and iMin1[0] <= iMax2[0] and iMax1[1] >= iMin2[1] and iMin1[1] <= iMax2[1]:
 					item.validPlacement = False
 					item2.gotHit = True
@@ -750,7 +751,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			matrix = opengl.convert3x3MatrixTo4x4(item.matrix)
 			glPushMatrix()
 			glTranslate(0, 0, item.getSize()[2]/2)
-			if self.tempMatrix is not None:
+			if self.tempMatrix is not None and item == self.parent.selection:
 				tempMatrix = opengl.convert3x3MatrixTo4x4(self.tempMatrix)
 				glMultMatrixf(tempMatrix)
 			glTranslate(0, 0, -item.getSize()[2]/2)
@@ -759,8 +760,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glCallList(item.modelDisplayList)
 			glPopMatrix()
 
-			vMin = item.getMinimum()
-			vMax = item.getMaximum()
+			vMin =-item.getSize() / 2
+			vMax = item.getSize() / 2
+			vMax[2] -= vMin[2]
+			vMin[2] = 0
 			vMinHead = vMin - extraSizeMin# - self.parent.extruderOffset[item.extruder]
 			vMaxHead = vMax + extraSizeMax# - self.parent.extruderOffset[item.extruder]
 

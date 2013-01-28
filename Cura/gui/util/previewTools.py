@@ -300,7 +300,7 @@ class toolScale(object):
 		return t
 
 	def _nodeSize(self):
-		return self.parent.zoom / self.parent.GetSize().GetWidth() * 6
+		return float(self.parent.zoom) / float(self.parent.GetSize().GetWidth()) * 6.0
 
 	def OnMouseMove(self, p0, p1):
 		self.node = self._traceNodes(p0, p1)
