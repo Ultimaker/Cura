@@ -91,11 +91,9 @@ class toolRotate(object):
 		self.dragEndAngle = None
 
 	def _ProjectToPlanes(self, p0, p1):
-		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
-		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
-		cursorX0 = pp0 - (pp1 - pp0) * (pp0[0] / (pp1[0] - pp0[0]))
-		cursorY0 = pp0 - (pp1 - pp0) * (pp0[1] / (pp1[1] - pp0[1]))
-		cursorZ0 = pp0 - (pp1 - pp0) * (pp0[2] / (pp1[2] - pp0[2]))
+		cursorX0 = p0 - (p1 - p0) * (p0[0] / (p1[0] - p0[0]))
+		cursorY0 = p0 - (p1 - p0) * (p0[1] / (p1[1] - p0[1]))
+		cursorZ0 = p0 - (p1 - p0) * (p0[2] / (p1[2] - p0[2]))
 		cursorYZ = math.sqrt((cursorX0[1] * cursorX0[1]) + (cursorX0[2] * cursorX0[2]))
 		cursorXZ = math.sqrt((cursorY0[0] * cursorY0[0]) + (cursorY0[2] * cursorY0[2]))
 		cursorXY = math.sqrt((cursorZ0[0] * cursorZ0[0]) + (cursorZ0[1] * cursorZ0[1]))
@@ -270,16 +268,14 @@ class toolScale(object):
 		return numpy.linalg.norm(numpy.cross((p0 - p1), (p0 - p2))) / numpy.linalg.norm(p2 - p1)
 
 	def _traceNodes(self, p0, p1):
-		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
-		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
 		s = self._nodeSize()
-		if self._pointDist(numpy.array([0,0,0],numpy.float32), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([0,0,0],numpy.float32), p0, p1) < s * 2:
 			return 1
-		if self._pointDist(numpy.array([s*15,0,0],numpy.float32), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([s*15,0,0],numpy.float32), p0, p1) < s * 2:
 			return 2
-		if self._pointDist(numpy.array([0,s*15,0],numpy.float32), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([0,s*15,0],numpy.float32), p0, p1) < s * 2:
 			return 3
-		if self._pointDist(numpy.array([0,0,s*15],numpy.float32), pp0, pp1) < s * 2:
+		if self._pointDist(numpy.array([0,0,s*15],numpy.float32), p0, p1) < s * 2:
 			return 4
 		return None
 
@@ -312,8 +308,6 @@ class toolScale(object):
 
 	def OnDrag(self, p0, p1):
 		s = self._nodeSize()
-		pp0 = p0 - [0,0,self.parent.getObjectSize()[2]/2]
-		pp1 = p1 - [0,0,self.parent.getObjectSize()[2]/2]
 		endPoint = [1,1,1]
 		if self.node == 2:
 			endPoint = [1,0,0]
@@ -321,7 +315,7 @@ class toolScale(object):
 			endPoint = [0,1,0]
 		elif self.node == 4:
 			endPoint = [0,0,1]
-		scale = self._lineLineCrossingDistOnLine(pp0, pp1, numpy.array([0,0,0], numpy.float32), numpy.array(endPoint, numpy.float32)) / 15.0 / s
+		scale = self._lineLineCrossingDistOnLine(p0, p1, numpy.array([0,0,0], numpy.float32), numpy.array(endPoint, numpy.float32)) / 15.0 / s
 		if not wx.GetKeyState(wx.WXK_SHIFT):
 			scale = round(scale * 10) / 10
 		if scale < 0:

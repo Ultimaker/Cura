@@ -39,7 +39,7 @@ class mesh(object):
 
 		#Calculate the boundery circle
 		center = self.transformedMin + self.transformedSize / 2.0
-		self.bounderyCircleSize = round(math.sqrt(numpy.max(((transformedVertexes[::,0] - center[0]) * (transformedVertexes[::,0] - center[0])) + ((transformedVertexes[::,1] - center[1]) * (transformedVertexes[::,1] - center[1])))), 3)
+		self.bounderyCircleSize = round(math.sqrt(numpy.max(((transformedVertexes[::,0] - center[0]) * (transformedVertexes[::,0] - center[0])) + ((transformedVertexes[::,1] - center[1]) * (transformedVertexes[::,1] - center[1])) + ((transformedVertexes[::,2] - center[2]) * (transformedVertexes[::,2] - center[2])))), 3)
 
 	def getMaximum(self):
 		return self.transformedMax

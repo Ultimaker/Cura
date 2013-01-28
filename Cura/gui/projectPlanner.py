@@ -603,6 +603,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		if not self.parent.alwaysAutoPlace and not self.view3D:
 			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
 			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
+			p0 -= self.viewTarget
+			p1 -= self.viewTarget
+			p0 -= self.getObjectCenterPos() - self.viewTarget
+			p1 -= self.getObjectCenterPos() - self.viewTarget
 			cursorZ0 = p0 - (p1 - p0) * (p0[2] / (p1[2] - p0[2]))
 
 			for item in self.parent.list:
@@ -617,6 +621,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		if self.viewport is not None:
 			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
 			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
+			p0 -= self.viewTarget
+			p1 -= self.viewTarget
+			p0 -= self.getObjectCenterPos() - self.viewTarget
+			p1 -= self.getObjectCenterPos() - self.viewTarget
 			if not e.Dragging() or self.dragType != 'tool':
 				self.parent.tool.OnMouseMove(p0, p1)
 		if self.allowDrag and e.Dragging() and e.LeftIsDown():
@@ -679,14 +687,13 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glTranslate(0,0,-self.zoom)
 			glRotate(-self.pitch, 1,0,0)
 			glRotate(self.yaw, 0,0,1)
-		else:
-			glTranslate(self.offsetX, self.offsetY, 0.0)
+		self.viewTarget = self.parent.machineSize / 2
+		self.viewTarget[2] = 0
+		glTranslate(-self.viewTarget[0], -self.viewTarget[1], -self.viewTarget[2])
 
 		self.viewport = glGetIntegerv(GL_VIEWPORT)
 		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX)
 		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
-
-		glTranslate(-self.parent.machineSize[0]/2, -self.parent.machineSize[1]/2, 0)
 
 		self.OnDraw()
 
@@ -770,6 +777,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glDisable(GL_LIGHTING)
 
 			if not self.parent.alwaysAutoPlace:
+				glLineWidth(1)
 				if self.parent.selection == item:
 					if item.gotHit:
 						glColor3f(1.0,0.0,0.3)
@@ -800,8 +808,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 
 		if self.parent.selection is not None:
 			glPushMatrix()
-			#glTranslate(self.parent.selection.centerY, self.parent.selection.centerX, self.parent.selection.getSize()[2]/2)
-			glTranslate(205/2, 205/2, self.parent.selection.getSize()[2]/2)
+			glTranslate(self.parent.selection.centerX, self.parent.selection.centerY, self.parent.selection.getSize()[2]/2)
 			self.parent.tool.OnDraw()
 			glPopMatrix()
 
@@ -815,6 +822,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		return 0.0
 	def getObjectMatrix(self):
 		return self.parent.selection.matrix
+	def getObjectCenterPos(self):
+		if self.parent.selection is None:
+			return [0,0,0]
+		return [self.parent.selection.centerX, self.parent.selection.centerY, self.getObjectSize()[2] / 2]
 
 class ProjectSliceProgressWindow(wx.Frame):
 	def __init__(self, sliceCommand, resultFilename, fileCount):

@@ -451,8 +451,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		self.yaw = 30
 		self.pitch = 60
 		self.zoom = 300
-		self.offsetX = 0
-		self.offsetY = 0
+		self.viewTarget = [parent.machineCenter.x, parent.machineCenter.y, 0.0]
 		self.view3D = True
 		self.gcodeDisplayList = None
 		self.gcodeDisplayListMade = None
@@ -474,6 +473,8 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		if self.parent.objectsMaxV is not None and self.viewport is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
 			p0 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
 			p1 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
+			p0 -= self.viewTarget
+			p1 -= self.viewTarget
 			if not e.Dragging() or self.dragType != 'tool':
 				self.parent.tool.OnMouseMove(p0, p1)
 
@@ -494,8 +495,8 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 					if self.pitch < 10:
 						self.pitch = 10
 				else:
-					self.offsetX += float(e.GetX() - self.oldX) * self.zoom / self.GetSize().GetHeight() * 2
-					self.offsetY -= float(e.GetY() - self.oldY) * self.zoom / self.GetSize().GetHeight() * 2
+					self.viewTarget[0] -= float(e.GetX() - self.oldX) * self.zoom / self.GetSize().GetHeight() * 2
+					self.viewTarget[1] += float(e.GetY() - self.oldY) * self.zoom / self.GetSize().GetHeight() * 2
 			elif self.dragType == 'tool':
 				self.parent.tool.OnDrag(p0, p1)
 
@@ -530,6 +531,9 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 	def getObjectMatrix(self):
 		return self.parent.matrix
 
+	def getObjectCenterPos(self):
+		return [self.parent.machineCenter.x, self.parent.machineCenter.y, self.parent.objectsSize[2] / 2]
+
 	def OnMouseWheel(self,e):
 		self.zoom *= 1.0 - float(e.GetWheelRotation() / e.GetWheelDelta()) / 10.0
 		if self.zoom < 1.0:
@@ -544,20 +548,18 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glTranslate(0,0,-self.zoom)
 			glRotate(-self.pitch, 1,0,0)
 			glRotate(self.yaw, 0,0,1)
+
 			if self.viewMode == "GCode" or self.viewMode == "Mixed":
 				if self.parent.gcode is not None and len(self.parent.gcode.layerList) > self.parent.layerSpin.GetValue() and len(self.parent.gcode.layerList[self.parent.layerSpin.GetValue()]) > 0:
-					glTranslate(0,0,-self.parent.gcode.layerList[self.parent.layerSpin.GetValue()][0].list[-1].z)
+					self.viewTarget[2] = self.parent.gcode.layerList[self.parent.layerSpin.GetValue()][0].list[-1].z
 			else:
 				if self.parent.objectsMaxV is not None:
-					glTranslate(0,0,-self.parent.objectsSize[2] / 2)
-		else:
-			glTranslate(self.offsetX, self.offsetY, 0)
+					self.viewTarget = self.getObjectCenterPos()
+		glTranslate(-self.viewTarget[0], -self.viewTarget[1], -self.viewTarget[2])
 
 		self.viewport = glGetIntegerv(GL_VIEWPORT)
 		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX)
 		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
-
-		glTranslate(-self.parent.machineCenter.x, -self.parent.machineCenter.y, 0)
 
 		self.OnDraw()
 
