@@ -263,7 +263,7 @@ class CoolSkein(object):
 	def getCoolMove(self, line, location, splitLine):
 		'Get cool line according to time spent on layer.'
 		self.feedRateMinute = gcodec.getFeedRateMinute(self.feedRateMinute, splitLine)
-		return self.distanceFeedRate.getLineWithFeedRate(max(self.minFeedrate, self.multiplier * self.feedRateMinute), line, splitLine)
+		return self.distanceFeedRate.getLineWithFeedRate(self.multiplier * self.feedRateMinute, line, splitLine)
 
 	def getCraftedGcode(self, gcodeText, repository):
 		'Parse gcode text and store the cool gcode.'
@@ -420,6 +420,8 @@ class CoolSkein(object):
 		layerTimeActive = self.getLayerTimeActive()
 		if remainingOrbitTime + layerTimeActive > 0.00001:
 			self.multiplier = min(1.0, layerTimeActive / (remainingOrbitTime + layerTimeActive))
+			if self.feedRateMinute * self.multiplier < self.minFeedrate:
+				self.multiplier = self.minFeedrate / self.feedRateMinute
 		else:
 			self.multiplier = 1.0
 

@@ -389,7 +389,7 @@ class previewPanel(wx.Panel):
 		self.gcodeViewButton.Show(self.gcode != None)
 		self.mixedViewButton.Show(self.gcode != None)
 		self.layerSpin.Show(self.glCanvas.viewMode == "GCode" or self.glCanvas.viewMode == "Mixed")
-		if self.gcode != None:
+		if self.gcode is not None:
 			self.layerSpin.SetRange(1, len(self.gcode.layerList) - 1)
 		self.toolbar.Realize()
 		self.Update()
@@ -402,6 +402,7 @@ class previewPanel(wx.Panel):
 		elif self.xrayViewButton.GetValue():
 			self.glCanvas.viewMode = "X-Ray"
 		elif self.gcodeViewButton.GetValue():
+			self.layerSpin.SetValue(self.layerSpin.GetMax())
 			self.glCanvas.viewMode = "GCode"
 		elif self.mixedViewButton.GetValue():
 			self.glCanvas.viewMode = "Mixed"
@@ -478,6 +479,9 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			p1 -= self.viewTarget
 			if not e.Dragging() or self.dragType != 'tool':
 				self.parent.tool.OnMouseMove(p0, p1)
+		else:
+			p0 = [0,0,0]
+			p1 = [1,0,0]
 
 		if e.Dragging() and e.LeftIsDown():
 			if self.dragType == '':
@@ -569,21 +573,22 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 	def OnDraw(self):
 		machineSize = self.parent.machineSize
 
-		if self.parent.gcode is not None and self.parent.gcodeDirty:
-			if self.gcodeDisplayListCount < len(self.parent.gcode.layerList) or self.gcodeDisplayList is None:
-				if self.gcodeDisplayList is not None:
-					glDeleteLists(self.gcodeDisplayList, self.gcodeDisplayListCount)
-				self.gcodeDisplayList = glGenLists(len(self.parent.gcode.layerList))
-				self.gcodeDisplayListCount = len(self.parent.gcode.layerList)
-			self.parent.gcodeDirty = False
-			self.gcodeDisplayListMade = 0
-		
-		if self.parent.gcode is not None and self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
-			glNewList(self.gcodeDisplayList + self.gcodeDisplayListMade, GL_COMPILE)
-			opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeDisplayListMade])
-			glEndList()
-			self.gcodeDisplayListMade += 1
-			wx.CallAfter(self.Refresh)
+		if self.parent.gcode is not None and (self.viewMode == "GCode" or self.viewMode == "Mixed"):
+			if self.parent.gcodeDirty:
+				if self.gcodeDisplayListCount < len(self.parent.gcode.layerList) or self.gcodeDisplayList is None:
+					if self.gcodeDisplayList is not None:
+						glDeleteLists(self.gcodeDisplayList, self.gcodeDisplayListCount)
+					self.gcodeDisplayList = glGenLists(len(self.parent.gcode.layerList))
+					self.gcodeDisplayListCount = len(self.parent.gcode.layerList)
+				self.parent.gcodeDirty = False
+				self.gcodeDisplayListMade = 0
+
+			if self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
+				glNewList(self.gcodeDisplayList + self.gcodeDisplayListMade, GL_COMPILE)
+				opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeDisplayListMade])
+				glEndList()
+				self.gcodeDisplayListMade += 1
+				wx.CallAfter(self.Refresh)
 		
 		glPushMatrix()
 		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)

@@ -35,10 +35,12 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
+		handled = False
 		for ctrl in self._glGuiControlList:
 			if ctrl.OnMouseMotion(e.GetX(), e.GetY()):
-				return
-		self.OnMouseMotion(e)
+				handled = True
+		if not handled:
+			self.OnMouseMotion(e)
 
 	def _OnGuiPaint(self, e):
 		h = self.GetSize().GetHeight()

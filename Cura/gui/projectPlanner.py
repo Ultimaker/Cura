@@ -631,6 +631,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			p1 -= self.getObjectCenterPos() - self.viewTarget
 			if not e.Dragging() or self.dragType != 'tool':
 				self.parent.tool.OnMouseMove(p0, p1)
+		else:
+			p0 = [0,0,0]
+			p1 = [1,0,0]
+
 		if self.allowDrag and e.Dragging() and e.LeftIsDown():
 			if self.dragType == '':
 				#Define the drag type depending on the cursor position.
