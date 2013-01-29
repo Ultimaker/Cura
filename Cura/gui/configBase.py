@@ -180,12 +180,12 @@ class SettingRow():
 		# Set the minimum size of control to something other than the humungous default
 		minSize = self.ctrl.GetMinSize()
 		
-		if platform.system() == "Darwin":
-			# Under MacOS, it appears that the minSize is used for the actual size, so give the field a bit more room...
-			minSize[0] = 150
-		else:
-			minSize[0] = 50
-		self.ctrl.SetMinSize(minSize)
+		##if platform.system() == "Darwin":
+		##	# Under MacOS, it appears that the minSize is used for the actual size, so give the field a bit more room...
+		##	minSize[0] = 150
+		##else:
+		##	minSize[0] = 50
+		##self.ctrl.SetMinSize(minSize)
 		
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
 		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_BOTTOM|flag)
