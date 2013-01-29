@@ -321,6 +321,7 @@ class previewPanel(wx.Panel):
 				mesh = meshLoader.loadMesh(obj.filename)
 				obj.mesh = mesh
 				obj.dirty = True
+				obj.steepDirty = True
 				self.updateModelTransform()
 				self.OnScaleMax(True)
 				self.glCanvas.zoom = numpy.max(self.objectsSize) * 3.5
@@ -511,6 +512,8 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 					self.parent.matrix *= self.tempMatrix
 					self.parent.updateModelTransform()
 					self.tempMatrix = None
+					for obj in self.parent.objectList:
+						obj.steepDirty = True
 				self.parent.tool.OnDragEnd()
 				self.dragType = ''
 		if e.Dragging() and e.RightIsDown():
@@ -596,13 +599,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				glNewList(obj.displayList, GL_COMPILE)
 				opengl.DrawMesh(obj.mesh)
 				glEndList()
-				glNewList(obj.steepDisplayList, GL_COMPILE)
-				opengl.DrawMeshSteep(obj.mesh, 60)
-				glEndList()
 				glNewList(obj.outlineDisplayList, GL_COMPILE)
 				opengl.DrawMeshOutline(obj.mesh)
 				glEndList()
-			
+
 			if self.viewMode == "Mixed":
 				glDisable(GL_BLEND)
 				glColor3f(0.0,0.0,0.0)
@@ -724,6 +724,11 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				self.drawModel(obj.outlineDisplayList)
 
 			if self.drawSteepOverhang:
+				if obj.steepDirty:
+					obj.steepDirty = False
+					glNewList(obj.steepDisplayList, GL_COMPILE)
+					opengl.DrawMeshSteep(obj.mesh, self.parent.matrix, 60)
+					glEndList()
 				glDisable(GL_LIGHTING)
 				glColor3f(1,1,1)
 				self.drawModel(obj.steepDisplayList)

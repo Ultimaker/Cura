@@ -332,12 +332,13 @@ def DrawMesh(mesh):
 	glDisableClientState(GL_NORMAL_ARRAY);
 
 
-def DrawMeshSteep(mesh, angle):
+def DrawMeshSteep(mesh, matrix, angle):
 	cosAngle = math.sin(angle / 180.0 * math.pi)
 	glDisable(GL_LIGHTING)
 	glDepthFunc(GL_EQUAL)
+	normals = (numpy.matrix(mesh.normal, copy = False) * matrix).getA()
 	for i in xrange(0, int(mesh.vertexCount), 3):
-		if mesh.normal[i][2] < -0.999999:
+		if normals[i][2] < -0.999999:
 			if mesh.vertexes[i + 0][2] > 0.01:
 				glColor3f(0.5, 0, 0)
 				glBegin(GL_TRIANGLES)
@@ -345,14 +346,14 @@ def DrawMeshSteep(mesh, angle):
 				glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
 				glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
 				glEnd()
-		elif mesh.normal[i][2] < -cosAngle:
-			glColor3f(-mesh.normal[i][2], 0, 0)
+		elif normals[i][2] < -cosAngle:
+			glColor3f(-normals[i][2], 0, 0)
 			glBegin(GL_TRIANGLES)
 			glVertex3f(mesh.vertexes[i + 0][0], mesh.vertexes[i + 0][1], mesh.vertexes[i + 0][2])
 			glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
 			glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
 			glEnd()
-		elif mesh.normal[i][2] > 0.999999:
+		elif normals[i][2] > 0.999999:
 			if mesh.vertexes[i + 0][2] > 0.01:
 				glColor3f(0.5, 0, 0)
 				glBegin(GL_TRIANGLES)
@@ -360,8 +361,8 @@ def DrawMeshSteep(mesh, angle):
 				glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
 				glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
 				glEnd()
-		elif mesh.normal[i][2] > cosAngle:
-			glColor3f(mesh.normal[i][2], 0, 0)
+		elif normals[i][2] > cosAngle:
+			glColor3f(normals[i][2], 0, 0)
 			glBegin(GL_TRIANGLES)
 			glVertex3f(mesh.vertexes[i + 0][0], mesh.vertexes[i + 0][1], mesh.vertexes[i + 0][2])
 			glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
