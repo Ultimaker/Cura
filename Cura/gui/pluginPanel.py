@@ -69,7 +69,7 @@ class pluginPanel(wx.Panel):
 		for pluginTest in self.pluginList:
 			if pluginTest['filename'] == pluginConfig['filename']:
 				plugin = pluginTest
-		if plugin == None:
+		if plugin is None:
 			return False
 		
 		pluginPanel = wx.Panel(self.pluginEnabledPanel)
@@ -127,6 +127,7 @@ class pluginPanel(wx.Panel):
 	
 	def OnAdd(self, e):
 		if self.listbox.GetSelection() < 0:
+			wx.MessageBox('You need to select a plugin before you can add anything.', 'Error: no plugin selected', wx.OK | wx.ICON_INFORMATION)
 			return
 		plugin = self.pluginList[self.listbox.GetSelection()]
 		newConfig = {'filename': plugin['filename'], 'params': {}}

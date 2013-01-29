@@ -41,6 +41,19 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self.OnMouseMotion(e)
 
 	def _OnGuiPaint(self, e):
+		h = self.GetSize().GetHeight()
+		w = self.GetSize().GetWidth()
+		if h / 3 > w / 4:
+			w = h * 4 / 3
+		if w < 64 * 10:
+			self._buttonSize = 48
+		elif w < 64 * 15:
+			self._buttonSize = 64
+		elif w < 64 * 20:
+			self._buttonSize = 80
+		else:
+			self._buttonSize = 96
+
 		dc = wx.PaintDC(self)
 		self.SetCurrent(self._context)
 		self.OnPaint(e)

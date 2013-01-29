@@ -90,6 +90,8 @@ fi
 #############################
 
 if [ "$BUILD_TARGET" = "darwin" ]; then
+    TARGET_DIR=Cura-${BUILD_NAME}-MacOS
+
 	rm -rf scripts/darwin/build
 	rm -rf scripts/darwin/dist
 

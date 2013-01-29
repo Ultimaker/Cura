@@ -294,11 +294,11 @@ class SelectParts(InfoPage):
 		self.AddText('To assist you in having better default settings for your Ultimaker\nCura would like to know which upgrades you have in your machine.')
 		self.AddSeperator()
 		self.springExtruder = self.AddCheckbox('Extruder drive upgrade')
-		self.heatedBed = self.AddCheckbox('Heated printer bed (self build)')
+		self.heatedBed = self.AddCheckbox('Heated printer bed (self built)')
 		self.dualExtrusion = self.AddCheckbox('Dual extrusion (experimental)')
 		self.AddSeperator()
-		self.AddText('If you have an Ultimaker bought after october 2012 you will have the\nExtruder drive upgrade. If you do not have this upgrade,\nit is highly recommended to improve reliablity.')
-		self.AddText('This upgrade can be bought from the Ultimaker webshop shop\nor found on thingiverse as thing:26094')
+		self.AddText('If you have an Ultimaker bought after october 2012 you will have the\nExtruder drive upgrade. If you do not have this upgrade,\nit is highly recommended to improve reliability.')
+		self.AddText('This upgrade can be bought from the Ultimaker webshop\nor found on thingiverse as thing:26094')
 		self.springExtruder.SetValue(True)
 
 	def StoreData(self):
@@ -859,6 +859,7 @@ class bedLevelWizardMain(InfoPage):
 		if self.comm.isOperational():
 			if self._wizardState == 0:
 				wx.CallAfter(self.infoBox.SetInfo, 'Homing printer...')
+				self.comm.sendCommand('M105')
 				self.comm.sendCommand('G28')
 				self._wizardState = 1
 			elif self._wizardState == 10 and not self.comm.isPrinting():
