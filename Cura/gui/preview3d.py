@@ -187,6 +187,8 @@ class previewPanel(wx.Panel):
 		y = numpy.linalg.norm(self.matrix[1].getA().flatten())
 		z = numpy.linalg.norm(self.matrix[2].getA().flatten())
 		self.matrix = numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
+		for obj in self.objectList:
+			obj.steepDirty = True
 		self.updateModelTransform()
 
 	def OnScaleReset(self):
@@ -194,6 +196,8 @@ class previewPanel(wx.Panel):
 		y = 1/numpy.linalg.norm(self.matrix[1].getA().flatten())
 		z = 1/numpy.linalg.norm(self.matrix[2].getA().flatten())
 		self.matrix *= numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
+		for obj in self.objectList:
+			obj.steepDirty = True
 		self.updateModelTransform()
 
 	def OnLayFlat(self):
@@ -239,6 +243,8 @@ class previewPanel(wx.Panel):
 			rad = -math.asin(dotMin)
 		self.matrix *= numpy.matrix([[1,0,0], [0, math.cos(rad), math.sin(rad)], [0, -math.sin(rad), math.cos(rad)]], numpy.float64)
 
+		for obj in self.objectList:
+			obj.steepDirty = True
 		self.updateModelTransform()
 
 	def On3DClick(self):
@@ -386,8 +392,8 @@ class previewPanel(wx.Panel):
 		self.warningPopup.timer.Stop()
 
 	def updateToolbar(self):
-		self.gcodeViewButton.Show(self.gcode != None)
-		self.mixedViewButton.Show(self.gcode != None)
+		self.gcodeViewButton.Show(self.gcode is not None)
+		self.mixedViewButton.Show(self.gcode is not None)
 		self.layerSpin.Show(self.glCanvas.viewMode == "GCode" or self.glCanvas.viewMode == "Mixed")
 		if self.gcode is not None:
 			self.layerSpin.SetRange(1, len(self.gcode.layerList) - 1)
@@ -443,6 +449,8 @@ class previewPanel(wx.Panel):
 	def updateProfileToControls(self):
 		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
 		self.updateModelTransform()
+		for obj in self.objectList:
+			obj.steepDirty = True
 		self.glCanvas.updateProfileToControls()
 
 class PreviewGLCanvas(openglGui.glGuiPanel):
