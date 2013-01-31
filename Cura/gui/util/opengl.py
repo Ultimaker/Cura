@@ -377,13 +377,13 @@ def DrawGCodeLayer(layer):
 	lineWidth = profile.getProfileSettingFloat('nozzle_size') / 2 / 10
 
 	fillCycle = 0
-	fillColorCycle = [[0.5, 0.5, 0.0], [0.0, 0.5, 0.5], [0.5, 0.0, 0.5]]
-	moveColor = [0, 0, 1]
-	retractColor = [1, 0, 0.5]
-	supportColor = [0, 1, 1]
-	extrudeColor = [1, 0, 0]
-	innerWallColor = [0, 1, 0]
-	skirtColor = [0, 0.5, 0.5]
+	fillColorCycle = [[0.5, 0.5, 0.0, 1], [0.0, 0.5, 0.5, 1], [0.5, 0.0, 0.5, 1]]
+	moveColor = [0, 0, 1, 0.5]
+	retractColor = [1, 0, 0.5, 0.5]
+	supportColor = [0, 1, 1, 1]
+	extrudeColor = [1, 0, 0, 1]
+	innerWallColor = [0, 1, 0, 1]
+	skirtColor = [0, 0.5, 0.5, 1]
 	prevPathWasRetract = False
 
 	glDisable(GL_CULL_FACE)
@@ -408,7 +408,7 @@ def DrawGCodeLayer(layer):
 			else:
 				c = extrudeColor
 		if path.type == 'retract':
-			c = [0, 1, 1]
+			c = retractColor
 		if path.type == 'extrude':
 			drawLength = 0.0
 			prevNormal = None
@@ -432,7 +432,7 @@ def DrawGCodeLayer(layer):
 				vv1 = v1 - normal * lineWidth
 
 				glBegin(GL_QUADS)
-				glColor3fv(c)
+				glColor4fv(c)
 				glVertex3f(vv0.x, vv0.y, vv0.z - zOffset)
 				glVertex3f(vv1.x, vv1.y, vv1.z - zOffset)
 				glVertex3f(vv3.x, vv3.y, vv3.z - zOffset)
@@ -444,7 +444,7 @@ def DrawGCodeLayer(layer):
 					vv4 = v0 + n * lineWidth
 					vv5 = v0 - n * lineWidth
 					glBegin(GL_QUADS)
-					glColor3fv(c)
+					glColor4fv(c)
 					glVertex3f(vv2.x, vv2.y, vv2.z - zOffset)
 					glVertex3f(vv4.x, vv4.y, vv4.z - zOffset)
 					glVertex3f(prevVv3.x, prevVv3.y, prevVv3.z - zOffset)
@@ -461,7 +461,7 @@ def DrawGCodeLayer(layer):
 				prevVv3 = vv3
 		else:
 			glBegin(GL_LINE_STRIP)
-			glColor3fv(c)
+			glColor4fv(c)
 			for v in path.list:
 				glVertex3f(v.x, v.y, v.z)
 			glEnd()

@@ -11,6 +11,25 @@ from OpenGL.GL import *
 
 from Cura.gui.util import opengl
 
+class toolNone(object):
+	def __init__(self, parent):
+		self.parent = parent
+
+	def OnMouseMove(self, p0, p1):
+		pass
+
+	def OnDragStart(self, p0, p1):
+		return False
+
+	def OnDrag(self, p0, p1):
+		pass
+
+	def OnDragEnd(self):
+		pass
+
+	def OnDraw(self):
+		pass
+
 class toolInfo(object):
 	def __init__(self, parent):
 		self.parent = parent
@@ -372,7 +391,7 @@ class toolScale(object):
 			glTranslate(0, (radius + 5) * (90 - self.parent.pitch) / 10,0)
 		else:
 			glTranslate(0,-(radius + 5),0)
-		opengl.glDrawStringCenter("%dx%dx%d" % (size[0] * scaleX, size[1] * scaleY, size[2] * scaleZ))
+		opengl.glDrawStringCenter("%dx%dx%d" % (size[0], size[1], size[2]))
 		glPopMatrix()
 
 		glLineWidth(1)

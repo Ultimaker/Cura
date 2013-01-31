@@ -761,7 +761,7 @@ class bedLevelWizardMain(InfoPage):
 		self._wizardState = 0
 
 	def AllowNext(self):
-		return False
+		return True
 
 	def OnResume(self, e):
 		feedZ = profile.getProfileSettingFloat('max_z_speed') * 60

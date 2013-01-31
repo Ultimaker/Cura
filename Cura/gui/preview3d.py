@@ -118,11 +118,10 @@ class previewPanel(wx.Panel):
 
 		self.openFileButton      = openglGui.glButton(self.glCanvas, 3, 'Load file', -1,0, lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
 
-		self.infoToolButton.setSelected(True)
 		self.returnToModelViewAndUpdateModel()
 
 		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
-		self.tool = previewTools.toolInfo(self.glCanvas)
+		self.tool = previewTools.toolNone(self.glCanvas)
 
 	def returnToModelViewAndUpdateModel(self):
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
@@ -134,24 +133,36 @@ class previewPanel(wx.Panel):
 		self.updateModelTransform()
 
 	def OnInfoSelect(self):
-		self.infoToolButton.setSelected(True)
+		if self.infoToolButton.getSelected():
+			self.infoToolButton.setSelected(False)
+			self.tool = previewTools.toolNone(self.glCanvas)
+		else:
+			self.infoToolButton.setSelected(True)
+			self.tool = previewTools.toolInfo(self.glCanvas)
 		self.rotateToolButton.setSelected(False)
 		self.scaleToolButton.setSelected(False)
-		self.tool = previewTools.toolInfo(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnRotateSelect(self):
 		self.infoToolButton.setSelected(False)
-		self.rotateToolButton.setSelected(True)
+		if self.rotateToolButton.getSelected():
+			self.rotateToolButton.setSelected(False)
+			self.tool = previewTools.toolNone(self.glCanvas)
+		else:
+			self.rotateToolButton.setSelected(True)
+			self.tool = previewTools.toolRotate(self.glCanvas)
 		self.scaleToolButton.setSelected(False)
-		self.tool = previewTools.toolRotate(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnScaleSelect(self):
 		self.infoToolButton.setSelected(False)
 		self.rotateToolButton.setSelected(False)
-		self.scaleToolButton.setSelected(True)
-		self.tool = previewTools.toolScale(self.glCanvas)
+		if self.scaleToolButton.getSelected():
+			self.scaleToolButton.setSelected(False)
+			self.tool = previewTools.toolNone(self.glCanvas)
+		else:
+			self.scaleToolButton.setSelected(True)
+			self.tool = previewTools.toolScale(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
 
 	def OnMove(self, e = None):
