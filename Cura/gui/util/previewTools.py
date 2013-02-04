@@ -336,7 +336,19 @@ class toolScale(object):
 			endPoint = [0,0,1]
 		scale = self._lineLineCrossingDistOnLine(p0, p1, numpy.array([0,0,0], numpy.float32), numpy.array(endPoint, numpy.float32)) / 15.0 / s
 		if not wx.GetKeyState(wx.WXK_SHIFT):
-			scale = round(scale * 10) / 10
+			objMatrix = self.parent.getObjectMatrix()
+			scaleX = numpy.linalg.norm(objMatrix[0].getA().flatten())
+			scaleY = numpy.linalg.norm(objMatrix[1].getA().flatten())
+			scaleZ = numpy.linalg.norm(objMatrix[2].getA().flatten())
+			if self.node == 1 or not wx.GetKeyState(wx.WXK_CONTROL):
+				matrixScale = (scaleX + scaleY + scaleZ) / 3
+			elif self.node == 2:
+				matrixScale = scaleX
+			elif self.node == 3:
+				matrixScale = scaleY
+			elif self.node == 4:
+				matrixScale = scaleZ
+			scale = (round((matrixScale * scale) * 10) / 10) / matrixScale
 		if scale < 0:
 			scale = -scale
 		if scale < 0.1:
@@ -391,7 +403,9 @@ class toolScale(object):
 			glTranslate(0, (radius + 5) * (90 - self.parent.pitch) / 10,0)
 		else:
 			glTranslate(0,-(radius + 5),0)
-		opengl.glDrawStringCenter("%dx%dx%d" % (size[0], size[1], size[2]))
+		if self.parent.tempMatrix is not None:
+			size = (numpy.matrix([size]) * self.parent.tempMatrix).getA().flatten()
+		opengl.glDrawStringCenter("%dx%dx%dmm" % (size[0], size[1], size[2]))
 		glPopMatrix()
 
 		glLineWidth(1)
