@@ -124,13 +124,6 @@ Remember to use `python` for pacakging and `pythonw` to run app for debugging.
 Required python packages are specified in *requirements.txt* and *requirements_darwin.txt*  
 If you use virtualenv, installing requirements as easy as `pip install -r requirements_darwin.txt`
 
-At time of writing PyObjC 2.5 is not available via pip, so you have to install it manually (Note `python` is the python of your virtualenv):
-
-1. Download [PyObjC 2.5](https://bitbucket.org/ronaldoussoren/pyobjc/get/pyobjc-2.5.zip)
-2. Extract the archive and `cd` into the directory
-3. `python install.py` (Note `python` is the python of your virtualenv):
-    If build fails, try the same command one more time. It's known issue.
-
 
 ###Package Cura into application
 Ensure that virtualenv is activated, so `python` points to the python of your virtualenv (e.g. ~/.virtualenvs/Cura/bin/python).Use package.sh to build Cura:  
