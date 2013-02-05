@@ -106,17 +106,24 @@ class previewPanel(wx.Panel):
 		self.Bind(wx.EVT_TIMER, self.OnCheckReloadFile, self.checkReloadFileTimer)
 		self.checkReloadFileTimer.Start(1000)
 
-		self.infoToolButton   = openglGui.glButton(self.glCanvas, 0, 'Info', 0,0, self.OnInfoSelect)
-		self.rotateToolButton = openglGui.glButton(self.glCanvas, 1, 'Rotate', 0,1, self.OnRotateSelect)
-		self.scaleToolButton  = openglGui.glButton(self.glCanvas, 2, 'Scale', 0,2, self.OnScaleSelect)
+		self.rotateToolButton = openglGui.glButton(self.glCanvas, 1, 'Rotate', (0,1), self.OnRotateSelect)
+		self.scaleToolButton  = openglGui.glButton(self.glCanvas, 2, 'Scale', (0,2), self.OnScaleSelect)
 
-		self.resetRotationButton = openglGui.glButton(self.glCanvas, 4, 'Reset rotation', 1,0, self.OnRotateReset)
-		self.layFlatButton       = openglGui.glButton(self.glCanvas, 5, 'Lay flat', 2,0, self.OnLayFlat)
+		self.resetRotationButton = openglGui.glButton(self.glCanvas, 4, 'Reset rotation', (1,1), self.OnRotateReset)
+		self.layFlatButton       = openglGui.glButton(self.glCanvas, 5, 'Lay flat', (1,2), self.OnLayFlat)
 
-		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 8, 'Scale reset', 1,0, self.OnScaleReset)
-		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 9, 'Scale to machine size', 2,0, self.OnScaleMax)
+		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 8, 'Scale reset', (1,1), self.OnScaleReset)
+		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 9, 'Scale to machine size', (1,2), self.OnScaleMax)
 
-		self.openFileButton      = openglGui.glButton(self.glCanvas, 3, 'Load file', -1,0, lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
+		self.openFileButton      = openglGui.glButton(self.glCanvas, 3, 'Load model', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
+		self.sliceButton         = openglGui.glButton(self.glCanvas, 6, 'Prepare model', (0,-2), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
+		self.printButton         = openglGui.glButton(self.glCanvas, 7, 'Print model', (0,-1), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
+
+		self.scaleForm = openglGui.glFrame(self.glCanvas, (1, 1))
+		openglGui.glGuiLayoutGrid(self.scaleForm)
+		openglGui.glLabel(self.scaleForm, 'Test', (0,0))
+		openglGui.glLabel(self.scaleForm, 'Test', (1,1))
+		self.scaleForm.setHidden(True)
 
 		self.returnToModelViewAndUpdateModel()
 
@@ -132,19 +139,7 @@ class previewPanel(wx.Panel):
 		self.scaleMaxButton.setHidden(not self.scaleToolButton.getSelected())
 		self.updateModelTransform()
 
-	def OnInfoSelect(self):
-		if self.infoToolButton.getSelected():
-			self.infoToolButton.setSelected(False)
-			self.tool = previewTools.toolNone(self.glCanvas)
-		else:
-			self.infoToolButton.setSelected(True)
-			self.tool = previewTools.toolInfo(self.glCanvas)
-		self.rotateToolButton.setSelected(False)
-		self.scaleToolButton.setSelected(False)
-		self.returnToModelViewAndUpdateModel()
-
 	def OnRotateSelect(self):
-		self.infoToolButton.setSelected(False)
 		if self.rotateToolButton.getSelected():
 			self.rotateToolButton.setSelected(False)
 			self.tool = previewTools.toolNone(self.glCanvas)
@@ -155,7 +150,6 @@ class previewPanel(wx.Panel):
 		self.returnToModelViewAndUpdateModel()
 
 	def OnScaleSelect(self):
-		self.infoToolButton.setSelected(False)
 		self.rotateToolButton.setSelected(False)
 		if self.scaleToolButton.getSelected():
 			self.scaleToolButton.setSelected(False)
@@ -572,6 +566,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		opengl.InitGL(self, self.view3D, self.zoom)
 		if self.view3D:
 			glTranslate(0,0,-self.zoom)
+			glTranslate(self.zoom/20.0,0,0)
 			glRotate(-self.pitch, 1,0,0)
 			glRotate(self.yaw, 0,0,1)
 

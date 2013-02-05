@@ -191,10 +191,19 @@ def DrawMachine(machineSize):
 
 def glDrawStringCenter(s):
 	glRasterPos2f(0, 0)
+	glBitmap(0,0,0,0, -glGetStringSize(s)[0]/2, 0, None)
+	for c in s:
+		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
+
+def glGetStringSize(s):
 	width = 0
 	for c in s:
 		width += glutBitmapWidth(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
-	glBitmap(0,0,0,0, -width/2, 0, None)
+	height = 18
+	return width, height
+
+def glDrawStringLeft(s):
+	glRasterPos2f(0, 0)
 	for c in s:
 		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
 
@@ -329,7 +338,7 @@ def DrawMesh(mesh):
 	glCullFace(GL_BACK)
 
 	glDisableClientState(GL_VERTEX_ARRAY)
-	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY)
 
 
 def DrawMeshSteep(mesh, matrix, angle):

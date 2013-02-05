@@ -393,7 +393,9 @@ class toolScale(object):
 
 		glColor3ub(0,0,0)
 		size = self.parent.getObjectSize()
-		radius = self.parent.getObjectBoundaryCircle() * max(scaleX, scaleY, scaleZ)
+		radius = self.parent.getObjectBoundaryCircle()
+		if self.scale is not None:
+			radius *= self.scale
 		glPushMatrix()
 		glTranslate(0,0,size[2]/2 + 5)
 		glRotate(-self.parent.yaw, 0,0,1)
@@ -405,7 +407,7 @@ class toolScale(object):
 			glTranslate(0,-(radius + 5),0)
 		if self.parent.tempMatrix is not None:
 			size = (numpy.matrix([size]) * self.parent.tempMatrix).getA().flatten()
-		opengl.glDrawStringCenter("%dx%dx%dmm" % (size[0], size[1], size[2]))
+		opengl.glDrawStringCenter("%0.1fx%0.1fx%0.1fmm" % (size[0], size[1], size[2]))
 		glPopMatrix()
 
 		glLineWidth(1)
@@ -464,5 +466,38 @@ class toolScale(object):
 			glColor3ub(0,0,0)
 			opengl.glDrawStringCenter("%0.2f" % (scaleZ))
 		glPopMatrix()
+
+		glColor(255,255,255)
+		size = size / 2
+		glLineWidth(1)
+		glBegin(GL_LINES)
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0], size[1], size[2]/4*3)
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0], size[1]/4*3, size[2])
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0]/4*3, size[1], size[2])
+
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0], -size[1], size[2]/4*3)
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0], -size[1]/4*3, size[2])
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0]/4*3, -size[1], size[2])
+
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0], -size[1], -size[2]/4*3)
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0], -size[1]/4*3, -size[2])
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0]/4*3, -size[1], -size[2])
+
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1], -size[2]/4*3)
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1]/4*3, -size[2])
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0]/4*3, size[1], -size[2])
+		glEnd()
 
 		glEnable(GL_DEPTH_TEST)

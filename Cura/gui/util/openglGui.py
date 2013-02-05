@@ -9,15 +9,67 @@ from OpenGL.GL import *
 
 from Cura.gui.util import opengl
 
-glButtonsTexture = None
+class glGuiControl(object):
+	def __init__(self, parent, pos):
+		self._parent = parent
+		self._base = parent._base
+		self._pos = pos
+		self._size = (0,0, 1, 1)
+		self._parent.add(self)
+
+	def setSize(self, x, y, w, h):
+		self._size = (x, y, w, h)
+
+	def getSize(self):
+		return self._size
+
+	def getMinSize(self):
+		return 1, 1
+
+	def updateLayout(self):
+		pass
+
+class glGuiContainer(glGuiControl):
+	def __init__(self, parent, pos):
+		self._glGuiControlList = []
+		glGuiLayoutButtons(self)
+		super(glGuiContainer, self).__init__(parent, pos)
+
+	def add(self, ctrl):
+		self._glGuiControlList.append(ctrl)
+		self.updateLayout()
+
+	def OnMouseDown(self, x, y):
+		for ctrl in self._glGuiControlList:
+			if ctrl.OnMouseDown(x, y):
+				return
+
+	def OnMouseMotion(self, x, y):
+		handled = False
+		for ctrl in self._glGuiControlList:
+			if ctrl.OnMouseMotion(x, y):
+				handled = True
+		return handled
+
+	def draw(self):
+		for ctrl in self._glGuiControlList:
+			ctrl.draw()
+
+	def updateLayout(self):
+		self._layout.update()
+		for ctrl in self._glGuiControlList:
+			ctrl.updateLayout()
 
 class glGuiPanel(glcanvas.GLCanvas):
 	def __init__(self, parent):
 		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 24, glcanvas.WX_GL_STENCIL_SIZE, 8)
-		glcanvas.GLCanvas.__init__(self, parent, attribList = attribList)
-		self._parent = parent
+		glcanvas.GLCanvas.__init__(self, parent, style=wx.WANTS_CHARS, attribList = attribList)
+		self._base = self
+		self._focus = None
+		self._container = None
+		self._container = glGuiContainer(self, (0,0))
+
 		self._context = glcanvas.GLContext(self)
-		self._glGuiControlList = []
 		self._glButtonsTexture = None
 		self._buttonSize = 64
 
@@ -26,25 +78,31 @@ class glGuiPanel(glcanvas.GLCanvas):
 		wx.EVT_ERASE_BACKGROUND(self, self._OnEraseBackground)
 		wx.EVT_LEFT_DOWN(self, self._OnGuiMouseLeftDown)
 		wx.EVT_MOTION(self, self._OnGuiMouseMotion)
+		wx.EVT_CHAR(self, self.OnKeyChar)
+		wx.EVT_KILL_FOCUS(self, self.OnFocusLost)
+
+	def OnKeyChar(self, e):
+		pass
+
+	def OnFocusLost(self, e):
+		self._focus = None
+		self.Refresh()
 
 	def _OnGuiMouseLeftDown(self,e):
-		for ctrl in self._glGuiControlList:
-			if ctrl.OnMouseDown(e.GetX(), e.GetY()):
-				return
+		self.SetFocus()
+		if self._container.OnMouseDown(e.GetX(), e.GetY()):
+			return
 		self.OnMouseLeftDown(e)
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
-		handled = False
-		for ctrl in self._glGuiControlList:
-			if ctrl.OnMouseMotion(e.GetX(), e.GetY()):
-				handled = True
-		if not handled:
+		if not self._container.OnMouseMotion(e.GetX(), e.GetY()):
 			self.OnMouseMotion(e)
 
 	def _OnGuiPaint(self, e):
 		h = self.GetSize().GetHeight()
 		w = self.GetSize().GetWidth()
+		oldButtonSize = self._buttonSize
 		if h / 3 > w / 4:
 			w = h * 4 / 3
 		if w < 64 * 10:
@@ -55,6 +113,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 			self._buttonSize = 80
 		else:
 			self._buttonSize = 96
+		if self._buttonSize != oldButtonSize:
+			self._container.updateLayout()
 
 		dc = wx.PaintDC(self)
 		self.SetCurrent(self._context)
@@ -64,6 +124,9 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self.SwapBuffers()
 
 	def _drawGui(self):
+		if self._glButtonsTexture is None:
+			self._glButtonsTexture = opengl.loadGLTexture('glButtons.png')
+
 		glDisable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
 		glDisable(GL_LIGHTING)
@@ -76,14 +139,15 @@ class glGuiPanel(glcanvas.GLCanvas):
 		glMatrixMode(GL_MODELVIEW)
 		glLoadIdentity()
 
-		for glButton in self._glGuiControlList:
-			glButton.draw()
+		self._container.draw()
 
 	def _OnEraseBackground(self,event):
 		#Workaround for windows background redraw flicker.
 		pass
 
 	def _OnSize(self,e):
+		self._container.setSize(0, 0, self.GetSize().GetWidth(), self.GetSize().GetHeight())
+		self._container.updateLayout()
 		self.Refresh()
 
 	def OnMouseLeftDown(self,e):
@@ -93,15 +157,84 @@ class glGuiPanel(glcanvas.GLCanvas):
 	def OnPaint(self, e):
 		pass
 
-class glButton(object):
-	def __init__(self, parent, imageID, tooltip, x, y, callback):
+	def add(self, ctrl):
+		if self._container is not None:
+			self._container.add(ctrl)
+
+class glGuiLayoutButtons(object):
+	def __init__(self, parent):
+		self._parent = parent
+		self._parent._layout = self
+
+	def update(self):
+		bs = self._parent._base._buttonSize
+		x0, y0, w, h = self._parent.getSize()
+		gridSize = bs * 1.3
+		for ctrl in self._parent._glGuiControlList:
+			pos = ctrl._pos
+			if pos[0] < 0:
+				x = w + pos[0] * gridSize - bs * 0.2
+			else:
+				x = pos[0] * gridSize + bs * 0.2
+			if pos[1] < 0:
+				y = h + pos[1] * gridSize - bs * 0.2
+			else:
+				y = pos[1] * gridSize + bs * 0.2
+			ctrl.setSize(x, y, gridSize, gridSize)
+
+	def getLayoutSize(self):
+		_, _, w, h = self._parent.getSize()
+		return w, h
+
+class glGuiLayoutGrid(object):
+	def __init__(self, parent):
+		self._parent = parent
+		self._parent._layout = self
+		self._size = 0,0
+
+	def update(self):
+		borderSize = self._parent._base._buttonSize * 0.2
+		x0, y0, w, h = self._parent.getSize()
+		x0 += borderSize
+		y0 += borderSize
+		widths = {}
+		heights = {}
+		for ctrl in self._parent._glGuiControlList:
+			x, y = ctrl._pos
+			w, h = ctrl.getMinSize()
+			if not x in widths:
+				widths[x] = w
+			else:
+				widths[x] = max(widths[x], w)
+			if not y in heights:
+				heights[y] = h
+			else:
+				heights[y] = max(heights[y], h)
+		for ctrl in self._parent._glGuiControlList:
+			x, y = ctrl._pos
+			x1 = x0
+			y1 = y0
+			for n in xrange(0, x):
+				if not n in widths:
+					widths[n] = 0
+				x1 += widths[n]
+			for n in xrange(0, y):
+				if not n in widths:
+					heights[n] = 0
+				y1 += heights[n]
+			ctrl.setSize(x1, y1, widths[x], heights[y])
+		self._size = sum(widths.values()) + borderSize * 2, sum(heights.values()) + borderSize * 2
+
+	def getLayoutSize(self):
+		return self._size
+
+class glButton(glGuiControl):
+	def __init__(self, parent, imageID, tooltip, pos, callback):
+		super(glButton, self).__init__(parent, pos)
 		self._tooltip = tooltip
 		self._parent = parent
 		self._imageID = imageID
-		self._x = x
-		self._y = y
 		self._callback = callback
-		self._parent._glGuiControlList.append(self)
 		self._selected = False
 		self._focus = False
 		self._hidden = False
@@ -115,31 +248,25 @@ class glButton(object):
 	def getSelected(self):
 		return self._selected
 
-	def _getSize(self):
-		return self._parent._buttonSize
+	def getMinSize(self):
+		return self._base._buttonSize, self._base._buttonSize
 
 	def _getPixelPos(self):
-		bs = self._getSize()
-		x = self._x * bs * 1.3 + bs * 0.8
-		y = self._y * bs * 1.3 + bs * 0.8
-		if self._x < 0:
-			x = self._parent.GetSize().GetWidth() + x - bs * 0.2
-		return x, y
+		x0, y0, w, h = self.getSize()
+		return x0 + w / 2, y0 + h / 2
 
 	def draw(self):
 		if self._hidden:
 			return
-		if self._parent._glButtonsTexture is None:
-			self._parent._glButtonsTexture = opengl.loadGLTexture('glButtons.png')
 
 		cx = (self._imageID % 4) / 4
 		cy = int(self._imageID / 4) / 4
-		bs = self._parent._buttonSize
+		bs = self._base._buttonSize
 		pos = self._getPixelPos()
 
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
-		glBindTexture(GL_TEXTURE_2D, self._parent._glButtonsTexture)
+		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
 		glEnable(GL_TEXTURE_2D)
 		scale = 0.8
 		if self._selected:
@@ -168,7 +295,7 @@ class glButton(object):
 	def _checkHit(self, x, y):
 		if self._hidden:
 			return False
-		bs = self._getSize()
+		bs = self.getMinSize()[0]
 		pos = self._getPixelPos()
 		return -bs * 0.5 <= x - pos[0] <= bs * 0.5 and -bs * 0.5 <= y - pos[1] <= bs * 0.5
 
@@ -183,4 +310,123 @@ class glButton(object):
 		if self._checkHit(x, y):
 			self._callback()
 			return True
+		return False
+
+class glFrame(glGuiContainer):
+	def __init__(self, parent, pos):
+		super(glFrame, self).__init__(parent, pos)
+		self._selected = False
+		self._focus = False
+		self._hidden = False
+
+	def setSelected(self, value):
+		self._selected = value
+
+	def setHidden(self, value):
+		self._hidden = value
+
+	def getSelected(self):
+		return self._selected
+
+	def getMinSize(self):
+		return self._base._buttonSize, self._base._buttonSize
+
+	def _getPixelPos(self):
+		x0, y0, w, h = self.getSize()
+		return x0, y0
+
+	def draw(self):
+		if self._hidden:
+			return
+
+		bs = self._parent._buttonSize
+		pos = self._getPixelPos()
+
+		glPushMatrix()
+		glTranslatef(pos[0], pos[1], 0)
+		glBindTexture(GL_TEXTURE_2D, self._parent._glButtonsTexture)
+		glDisable(GL_TEXTURE_2D)
+
+		size = self._layout.getLayoutSize()
+		glColor4ub(255,255,255,128)
+		glBegin(GL_QUADS)
+		glTexCoord2f(1, 0)
+		glVertex2f( size[0], 0)
+		glTexCoord2f(0, 0)
+		glVertex2f( 0, 0)
+		glTexCoord2f(0, 1)
+		glVertex2f( 0, size[1])
+		glTexCoord2f(1, 1)
+		glVertex2f( size[0], size[1])
+		glEnd()
+		glDisable(GL_TEXTURE_2D)
+		glPopMatrix()
+		#Draw the controls on the frame
+		super(glFrame, self).draw()
+
+	def _checkHit(self, x, y):
+		if self._hidden:
+			return False
+		pos = self._getPixelPos()
+		w, h = self._layout.getLayoutSize()
+		return 0 <= x - pos[0] <= w and 0 <= y - pos[1] <= h
+
+	def OnMouseMotion(self, x, y):
+		super(glFrame, self).OnMouseMotion(x, y)
+		if self._checkHit(x, y):
+			self._focus = True
+			return True
+		self._focus = False
+		return False
+
+	def OnMouseDown(self, x, y):
+		if self._checkHit(x, y):
+			super(glFrame, self).OnMouseDown(x, y)
+			return True
+		return False
+
+class glLabel(glGuiControl):
+	def __init__(self, parent, label, pos):
+		self._label = label
+		super(glLabel, self).__init__(parent, pos)
+
+	def getMinSize(self):
+		w, h = opengl.glGetStringSize(self._label)
+		return w + 10, h + 4
+
+	def _getPixelPos(self):
+		x0, y0, w, h = self.getSize()
+		return x0, y0
+
+	def draw(self):
+		pos = self._getPixelPos()
+
+		glPushMatrix()
+		glTranslatef(pos[0], pos[1], 0)
+
+		size = self.getMinSize()
+		glColor4ub(255,255,255,128)
+		glBegin(GL_QUADS)
+		glTexCoord2f(1, 0)
+		glVertex2f( size[0], 0)
+		glTexCoord2f(0, 0)
+		glVertex2f( 0, 0)
+		glTexCoord2f(0, 1)
+		glVertex2f( 0, size[1])
+		glTexCoord2f(1, 1)
+		glVertex2f( size[0], size[1])
+		glEnd()
+
+		glTranslate(5, size[1] - 5, 0)
+		glColor4ub(0,0,0,255)
+		opengl.glDrawStringLeft(self._label)
+		glPopMatrix()
+
+	def _checkHit(self, x, y):
+		return False
+
+	def OnMouseMotion(self, x, y):
+		return False
+
+	def OnMouseDown(self, x, y):
 		return False
