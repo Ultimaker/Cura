@@ -200,9 +200,8 @@ class projectPlanner(wx.Frame):
 		sizer = wx.GridBagSizer(2,2)
 		panel.SetSizer(sizer)
 		
-		self.infoToolButton   = openglGui.glButton(self.glCanvas, 0, 'Info', 0,0, self.OnInfoSelect)
-		self.rotateToolButton = openglGui.glButton(self.glCanvas, 1, 'Rotate', 0,1, self.OnRotateSelect)
-		self.scaleToolButton  = openglGui.glButton(self.glCanvas, 2, 'Scale', 0,2, self.OnScaleSelect)
+		self.rotateToolButton = openglGui.glButton(self.glCanvas, 1, 'Rotate', (0,1), self.OnRotateSelect)
+		self.scaleToolButton  = openglGui.glButton(self.glCanvas, 2, 'Scale', (0,2), self.OnScaleSelect)
 
 		self.SetSize((800,600))
 
@@ -216,14 +215,12 @@ class projectPlanner(wx.Frame):
 		self.glCanvas.Refresh()
 
 	def OnRotateSelect(self):
-		self.infoToolButton.setSelected(False)
 		self.rotateToolButton.setSelected(True)
 		self.scaleToolButton.setSelected(False)
 		self.tool = previewTools.toolRotate(self.glCanvas)
 		self.glCanvas.Refresh()
 
 	def OnScaleSelect(self):
-		self.infoToolButton.setSelected(False)
 		self.rotateToolButton.setSelected(False)
 		self.scaleToolButton.setSelected(True)
 		self.tool = previewTools.toolScale(self.glCanvas)
@@ -295,7 +292,7 @@ class projectPlanner(wx.Frame):
 			vMin = item.getMinimum()
 			vMax = item.getMaximum()
 			offset = - vMin - (vMax - vMin) / 2
-			offset += numpy.array([item.centerX, item.centerY, 0])
+			offset += numpy.array([item.centerX, item.centerY, (vMax[2] - vMin[2]) / 2])
 			vertexes = (item.mesh.vertexes * item.matrix).getA() + offset
 			for v in vertexes:
 				output.addVertex(v[0], v[1], v[2])
