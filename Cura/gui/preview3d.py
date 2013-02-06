@@ -119,10 +119,22 @@ class previewPanel(wx.Panel):
 		self.sliceButton         = openglGui.glButton(self.glCanvas, 6, 'Prepare model', (0,-2), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
 		self.printButton         = openglGui.glButton(self.glCanvas, 7, 'Print model', (0,-1), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
 
-		self.scaleForm = openglGui.glFrame(self.glCanvas, (1, 1))
+		self.scaleForm = openglGui.glFrame(self.glCanvas, (1, 3))
 		openglGui.glGuiLayoutGrid(self.scaleForm)
-		openglGui.glLabel(self.scaleForm, 'Test', (0,0))
-		openglGui.glLabel(self.scaleForm, 'Test', (1,1))
+		openglGui.glLabel(self.scaleForm, 'Scale X', (0,0))
+		self.scaleXctrl = openglGui.glTextCtrl(self.scaleForm, '1.0', (1,0), lambda value: self.OnScaleEntry(value, 0))
+		openglGui.glLabel(self.scaleForm, 'Scale Y', (0,1))
+		self.scaleYctrl = openglGui.glTextCtrl(self.scaleForm, '1.0', (1,1), lambda value: self.OnScaleEntry(value, 1))
+		openglGui.glLabel(self.scaleForm, 'Scale Z', (0,2))
+		self.scaleZctrl = openglGui.glTextCtrl(self.scaleForm, '1.0', (1,2), lambda value: self.OnScaleEntry(value, 2))
+		openglGui.glLabel(self.scaleForm, 'Size X (mm)', (0,4))
+		self.scaleXmmctrl = openglGui.glTextCtrl(self.scaleForm, '0.0', (1,4), lambda value: self.OnScaleEntryMM(value, 0))
+		openglGui.glLabel(self.scaleForm, 'Size Y (mm)', (0,5))
+		self.scaleYmmctrl = openglGui.glTextCtrl(self.scaleForm, '0.0', (1,5), lambda value: self.OnScaleEntryMM(value, 1))
+		openglGui.glLabel(self.scaleForm, 'Size Z (mm)', (0,6))
+		self.scaleZmmctrl = openglGui.glTextCtrl(self.scaleForm, '0.0', (1,6), lambda value: self.OnScaleEntryMM(value, 2))
+		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
+		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 		self.scaleForm.setHidden(True)
 
 		self.returnToModelViewAndUpdateModel()
@@ -137,6 +149,7 @@ class previewPanel(wx.Panel):
 		self.layFlatButton.setHidden(not self.rotateToolButton.getSelected())
 		self.resetScaleButton.setHidden(not self.scaleToolButton.getSelected())
 		self.scaleMaxButton.setHidden(not self.scaleToolButton.getSelected())
+		self.scaleForm.setHidden(not self.scaleToolButton.getSelected())
 		self.updateModelTransform()
 
 	def OnRotateSelect(self):
@@ -158,6 +171,40 @@ class previewPanel(wx.Panel):
 			self.scaleToolButton.setSelected(True)
 			self.tool = previewTools.toolScale(self.glCanvas)
 		self.returnToModelViewAndUpdateModel()
+
+	def OnScaleEntry(self, value, axis):
+		try:
+			value = float(value)
+		except:
+			return
+		scale = numpy.linalg.norm(self.matrix[axis].getA().flatten())
+		scale = value / scale
+		if scale == 0:
+			return
+		if self.scaleUniform.getValue():
+			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
+		else:
+			matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
+			matrix[axis][axis] = scale
+		self.matrix *= numpy.matrix(matrix, numpy.float64)
+		self.updateModelTransform()
+
+	def OnScaleEntryMM(self, value, axis):
+		try:
+			value = float(value)
+		except:
+			return
+		scale = self.objectsSize[axis]
+		scale = value / scale
+		if scale == 0:
+			return
+		if self.scaleUniform.getValue():
+			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
+		else:
+			matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
+			matrix[axis][axis] = scale
+		self.matrix *= numpy.matrix(matrix, numpy.float64)
+		self.updateModelTransform()
 
 	def OnMove(self, e = None):
 		if e is not None:
@@ -448,6 +495,16 @@ class previewPanel(wx.Panel):
 		self.objectsMinV = minV
 		self.objectsSize = self.objectsMaxV - self.objectsMinV
 		self.objectsBoundaryCircleSize = objectsBoundaryCircleSize
+
+		scaleX = numpy.linalg.norm(self.matrix[0].getA().flatten())
+		scaleY = numpy.linalg.norm(self.matrix[1].getA().flatten())
+		scaleZ = numpy.linalg.norm(self.matrix[2].getA().flatten())
+		self.scaleXctrl.setValue(round(scaleX, 2))
+		self.scaleYctrl.setValue(round(scaleY, 2))
+		self.scaleZctrl.setValue(round(scaleZ, 2))
+		self.scaleXmmctrl.setValue(round(self.objectsSize[0], 2))
+		self.scaleYmmctrl.setValue(round(self.objectsSize[1], 2))
+		self.scaleZmmctrl.setValue(round(self.objectsSize[2], 2))
 
 		self.glCanvas.Refresh()
 	

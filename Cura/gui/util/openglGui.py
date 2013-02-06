@@ -42,7 +42,8 @@ class glGuiContainer(glGuiControl):
 	def OnMouseDown(self, x, y):
 		for ctrl in self._glGuiControlList:
 			if ctrl.OnMouseDown(x, y):
-				return
+				return True
+		return False
 
 	def OnMouseMotion(self, x, y):
 		handled = False
@@ -82,7 +83,9 @@ class glGuiPanel(glcanvas.GLCanvas):
 		wx.EVT_KILL_FOCUS(self, self.OnFocusLost)
 
 	def OnKeyChar(self, e):
-		pass
+		if self._focus is not None:
+			self._focus.OnKeyChar(e.GetKeyCode())
+			self.Refresh()
 
 	def OnFocusLost(self, e):
 		self._focus = None
@@ -91,6 +94,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 	def _OnGuiMouseLeftDown(self,e):
 		self.SetFocus()
 		if self._container.OnMouseDown(e.GetX(), e.GetY()):
+			self.Refresh()
 			return
 		self.OnMouseLeftDown(e)
 
@@ -216,11 +220,11 @@ class glGuiLayoutGrid(object):
 			y1 = y0
 			for n in xrange(0, x):
 				if not n in widths:
-					widths[n] = 0
+					widths[n] = 3
 				x1 += widths[n]
 			for n in xrange(0, y):
-				if not n in widths:
-					heights[n] = 0
+				if not n in heights:
+					heights[n] = 3
 				y1 += heights[n]
 			ctrl.setSize(x1, y1, widths[x], heights[y])
 		self._size = sum(widths.values()) + borderSize * 2, sum(heights.values()) + borderSize * 2
@@ -345,7 +349,7 @@ class glFrame(glGuiContainer):
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
 		glBindTexture(GL_TEXTURE_2D, self._parent._glButtonsTexture)
-		glDisable(GL_TEXTURE_2D)
+		glEnable(GL_TEXTURE_2D)
 
 		size = self._layout.getLayoutSize()
 		glColor4ub(255,255,255,128)
@@ -399,25 +403,24 @@ class glLabel(glGuiControl):
 		return x0, y0
 
 	def draw(self):
-		pos = self._getPixelPos()
+		x, y, w, h = self.getSize()
 
 		glPushMatrix()
-		glTranslatef(pos[0], pos[1], 0)
+		glTranslatef(x, y, 0)
 
-		size = self.getMinSize()
 		glColor4ub(255,255,255,128)
 		glBegin(GL_QUADS)
 		glTexCoord2f(1, 0)
-		glVertex2f( size[0], 0)
+		glVertex2f( w, 0)
 		glTexCoord2f(0, 0)
 		glVertex2f( 0, 0)
 		glTexCoord2f(0, 1)
-		glVertex2f( 0, size[1])
+		glVertex2f( 0, h)
 		glTexCoord2f(1, 1)
-		glVertex2f( size[0], size[1])
+		glVertex2f( w, h)
 		glEnd()
 
-		glTranslate(5, size[1] - 5, 0)
+		glTranslate(5, h - 5, 0)
 		glColor4ub(0,0,0,255)
 		opengl.glDrawStringLeft(self._label)
 		glPopMatrix()
@@ -429,4 +432,150 @@ class glLabel(glGuiControl):
 		return False
 
 	def OnMouseDown(self, x, y):
+		return False
+
+class glTextCtrl(glGuiControl):
+	def __init__(self, parent, value, pos, callback):
+		self._callback = callback
+		self._value = str(value)
+		self._selectPos = 0
+		self._maxLen = 6
+		self._inCallback = False
+		super(glTextCtrl, self).__init__(parent, pos)
+
+	def setValue(self, value):
+		if self._inCallback:
+			return
+		self._value = str(value)
+
+	def getMinSize(self):
+		w, h = opengl.glGetStringSize("VALUES")
+		return w + 10, h + 4
+
+	def _getPixelPos(self):
+		x0, y0, w, h = self.getSize()
+		return x0, y0
+
+	def draw(self):
+		x, y, w, h = self.getSize()
+
+		glPushMatrix()
+		glTranslatef(x, y, 0)
+
+		if self._base._focus == self:
+			glColor4ub(255,255,255,255)
+		else:
+			glColor4ub(255,255,255,192)
+		glBegin(GL_QUADS)
+		glTexCoord2f(1, 0)
+		glVertex2f( w, 0)
+		glTexCoord2f(0, 0)
+		glVertex2f( 0, 0)
+		glTexCoord2f(0, 1)
+		glVertex2f( 0, h)
+		glTexCoord2f(1, 1)
+		glVertex2f( w, h)
+		glEnd()
+
+		glTranslate(5, h - 5, 0)
+		glColor4ub(0,0,0,255)
+		opengl.glDrawStringLeft(self._value)
+		if self._base._focus == self:
+			glTranslate(opengl.glGetStringSize(self._value[0:self._selectPos])[0] - 2, -1, 0)
+			opengl.glDrawStringLeft('|')
+		glPopMatrix()
+
+	def _checkHit(self, x, y):
+		x1, y1, w, h = self.getSize()
+		return 0 <= x - x1 <= w and 0 <= y - y1 <= h
+
+	def OnMouseMotion(self, x, y):
+		return False
+
+	def OnMouseDown(self, x, y):
+		if self._checkHit(x, y):
+			self._base._focus = self
+			self._selectPos = len(self._value)
+			return True
+		return False
+
+	def OnKeyChar(self, c):
+		self._inCallback = True
+		if c == wx.WXK_LEFT:
+			self._selectPos -= 1
+			self._selectPos = max(0, self._selectPos)
+		if c == wx.WXK_RIGHT:
+			self._selectPos += 1
+			self._selectPos = min(self._selectPos, len(self._value))
+		if c == wx.WXK_BACK and self._selectPos > 0:
+			self._value = self._value[0:self._selectPos - 1] + self._value[self._selectPos:]
+			self._selectPos -= 1
+			self._callback(self._value)
+		if c == wx.WXK_DELETE:
+			self._value = self._value[0:self._selectPos] + self._value[self._selectPos + 1:]
+			self._callback(self._value)
+		if (ord('0') <= c <= ord('9') or c == ord('.')) and len(self._value) < self._maxLen:
+			self._value = self._value[0:self._selectPos] + chr(c) + self._value[self._selectPos:]
+			self._selectPos += 1
+			self._callback(self._value)
+		self._inCallback = False
+
+class glCheckbox(glGuiControl):
+	def __init__(self, parent, value, pos, callback):
+		self._callback = callback
+		self._value = value
+		self._selectPos = 0
+		self._maxLen = 6
+		self._inCallback = False
+		super(glCheckbox, self).__init__(parent, pos)
+
+	def setValue(self, value):
+		if self._inCallback:
+			return
+		self._value = str(value)
+
+	def getValue(self):
+		return self._value
+
+	def getMinSize(self):
+		return 20, 20
+
+	def _getPixelPos(self):
+		x0, y0, w, h = self.getSize()
+		return x0, y0
+
+	def draw(self):
+		x, y, w, h = self.getSize()
+
+		glPushMatrix()
+		glTranslatef(x, y, 0)
+
+		if self._value:
+			glColor4ub(0,255,0,255)
+		else:
+			glColor4ub(255,0,0,255)
+		glBegin(GL_QUADS)
+		glTexCoord2f(1, 0)
+		glVertex2f( w, 0)
+		glTexCoord2f(0, 0)
+		glVertex2f( 0, 0)
+		glTexCoord2f(0, 1)
+		glVertex2f( 0, h)
+		glTexCoord2f(1, 1)
+		glVertex2f( w, h)
+		glEnd()
+
+		glPopMatrix()
+
+	def _checkHit(self, x, y):
+		x1, y1, w, h = self.getSize()
+		return 0 <= x - x1 <= w and 0 <= y - y1 <= h
+
+	def OnMouseMotion(self, x, y):
+		return False
+
+	def OnMouseDown(self, x, y):
+		if self._checkHit(x, y):
+			self._value = not self._value
+			return True
 		return False

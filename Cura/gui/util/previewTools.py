@@ -407,7 +407,7 @@ class toolScale(object):
 			glTranslate(0,-(radius + 5),0)
 		if self.parent.tempMatrix is not None:
 			size = (numpy.matrix([size]) * self.parent.tempMatrix).getA().flatten()
-		opengl.glDrawStringCenter("%0.1fx%0.1fx%0.1fmm" % (size[0], size[1], size[2]))
+		opengl.glDrawStringCenter("W, D, H: %0.1f, %0.1f, %0.1f mm" % (size[0], size[1], size[2]))
 		glPopMatrix()
 
 		glLineWidth(1)
@@ -467,8 +467,10 @@ class toolScale(object):
 			opengl.glDrawStringCenter("%0.2f" % (scaleZ))
 		glPopMatrix()
 
+		glEnable(GL_DEPTH_TEST)
 		glColor(255,255,255)
 		size = size / 2
+		size += 0.01
 		glLineWidth(1)
 		glBegin(GL_LINES)
 		glVertex3f(size[0], size[1], size[2])
@@ -478,12 +480,40 @@ class toolScale(object):
 		glVertex3f(size[0], size[1], size[2])
 		glVertex3f(size[0]/4*3, size[1], size[2])
 
+		glVertex3f(-size[0], size[1], size[2])
+		glVertex3f(-size[0], size[1], size[2]/4*3)
+		glVertex3f(-size[0], size[1], size[2])
+		glVertex3f(-size[0], size[1]/4*3, size[2])
+		glVertex3f(-size[0], size[1], size[2])
+		glVertex3f(-size[0]/4*3, size[1], size[2])
+
+		glVertex3f(size[0], -size[1], size[2])
+		glVertex3f(size[0], -size[1], size[2]/4*3)
+		glVertex3f(size[0], -size[1], size[2])
+		glVertex3f(size[0], -size[1]/4*3, size[2])
+		glVertex3f(size[0], -size[1], size[2])
+		glVertex3f(size[0]/4*3, -size[1], size[2])
+
 		glVertex3f(-size[0], -size[1], size[2])
 		glVertex3f(-size[0], -size[1], size[2]/4*3)
 		glVertex3f(-size[0], -size[1], size[2])
 		glVertex3f(-size[0], -size[1]/4*3, size[2])
 		glVertex3f(-size[0], -size[1], size[2])
 		glVertex3f(-size[0]/4*3, -size[1], size[2])
+
+		glVertex3f(size[0], size[1], -size[2])
+		glVertex3f(size[0], size[1], -size[2]/4*3)
+		glVertex3f(size[0], size[1], -size[2])
+		glVertex3f(size[0], size[1]/4*3, -size[2])
+		glVertex3f(size[0], size[1], -size[2])
+		glVertex3f(size[0]/4*3, size[1], -size[2])
+
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1], -size[2]/4*3)
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1]/4*3, -size[2])
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0]/4*3, size[1], -size[2])
 
 		glVertex3f(size[0], -size[1], -size[2])
 		glVertex3f(size[0], -size[1], -size[2]/4*3)
@@ -492,12 +522,12 @@ class toolScale(object):
 		glVertex3f(size[0], -size[1], -size[2])
 		glVertex3f(size[0]/4*3, -size[1], -size[2])
 
-		glVertex3f(-size[0], size[1], -size[2])
-		glVertex3f(-size[0], size[1], -size[2]/4*3)
-		glVertex3f(-size[0], size[1], -size[2])
-		glVertex3f(-size[0], size[1]/4*3, -size[2])
-		glVertex3f(-size[0], size[1], -size[2])
-		glVertex3f(-size[0]/4*3, size[1], -size[2])
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0], -size[1], -size[2]/4*3)
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0], -size[1]/4*3, -size[2])
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0]/4*3, -size[1], -size[2])
 		glEnd()
 
 		glEnable(GL_DEPTH_TEST)
