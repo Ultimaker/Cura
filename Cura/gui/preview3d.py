@@ -95,8 +95,6 @@ class previewPanel(wx.Panel):
 		self.toolbar.AddControl(self.layerSpin)
 		self.Bind(wx.EVT_SPINCTRL, self.OnLayerNrChange, self.layerSpin)
 
-		self.OnViewChange()
-		
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		sizer.Add(self.toolbar, 0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=1)
 		sizer.Add(self.glCanvas, 1, flag=wx.EXPAND)
@@ -145,6 +143,7 @@ class previewPanel(wx.Panel):
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 		self.scaleForm.setHidden(True)
 
+		self.OnViewChange()
 		self.returnToModelViewAndUpdateModel()
 
 		self.matrix = numpy.matrix(numpy.array(profile.getObjectMatrix(), numpy.float64).reshape((3,3,)))
@@ -185,14 +184,14 @@ class previewPanel(wx.Panel):
 			value = float(value)
 		except:
 			return
-		scale = numpy.linalg.norm(self.matrix[axis].getA().flatten())
+		scale = numpy.linalg.norm(self.matrix[::,axis].getA().flatten())
 		scale = value / scale
 		if scale == 0:
 			return
 		if self.scaleUniform.getValue():
 			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
 		else:
-			matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
+			matrix = [[1.0,0,0], [0, 1.0, 0], [0, 0, 1.0]]
 			matrix[axis][axis] = scale
 		self.matrix *= numpy.matrix(matrix, numpy.float64)
 		self.updateModelTransform()
@@ -243,18 +242,18 @@ class previewPanel(wx.Panel):
 		self.updateModelTransform()
 
 	def OnRotateReset(self):
-		x = numpy.linalg.norm(self.matrix[0].getA().flatten())
-		y = numpy.linalg.norm(self.matrix[1].getA().flatten())
-		z = numpy.linalg.norm(self.matrix[2].getA().flatten())
+		x = numpy.linalg.norm(self.matrix[::,0].getA().flatten())
+		y = numpy.linalg.norm(self.matrix[::,1].getA().flatten())
+		z = numpy.linalg.norm(self.matrix[::,2].getA().flatten())
 		self.matrix = numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
 		for obj in self.objectList:
 			obj.steepDirty = True
 		self.updateModelTransform()
 
 	def OnScaleReset(self):
-		x = 1/numpy.linalg.norm(self.matrix[0].getA().flatten())
-		y = 1/numpy.linalg.norm(self.matrix[1].getA().flatten())
-		z = 1/numpy.linalg.norm(self.matrix[2].getA().flatten())
+		x = 1/numpy.linalg.norm(self.matrix[::,0].getA().flatten())
+		y = 1/numpy.linalg.norm(self.matrix[::,1].getA().flatten())
+		z = 1/numpy.linalg.norm(self.matrix[::,2].getA().flatten())
 		self.matrix *= numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
 		for obj in self.objectList:
 			obj.steepDirty = True
@@ -455,6 +454,7 @@ class previewPanel(wx.Panel):
 		self.gcodeViewButton.Show(self.gcode is not None)
 		self.mixedViewButton.Show(self.gcode is not None)
 		self.layerSpin.Show(self.glCanvas.viewMode == "GCode" or self.glCanvas.viewMode == "Mixed")
+		self.printButton.setDisabled(self.gcode is None)
 		if self.gcode is not None:
 			self.layerSpin.SetRange(1, len(self.gcode.layerList) - 1)
 		self.toolbar.Realize()
@@ -504,9 +504,9 @@ class previewPanel(wx.Panel):
 		self.objectsSize = self.objectsMaxV - self.objectsMinV
 		self.objectsBoundaryCircleSize = objectsBoundaryCircleSize
 
-		scaleX = numpy.linalg.norm(self.matrix[0].getA().flatten())
-		scaleY = numpy.linalg.norm(self.matrix[1].getA().flatten())
-		scaleZ = numpy.linalg.norm(self.matrix[2].getA().flatten())
+		scaleX = numpy.linalg.norm(self.matrix[::,0].getA().flatten())
+		scaleY = numpy.linalg.norm(self.matrix[::,1].getA().flatten())
+		scaleZ = numpy.linalg.norm(self.matrix[::,2].getA().flatten())
 		self.scaleXctrl.setValue(round(scaleX, 2))
 		self.scaleYctrl.setValue(round(scaleY, 2))
 		self.scaleZctrl.setValue(round(scaleZ, 2))

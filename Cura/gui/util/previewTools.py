@@ -337,9 +337,9 @@ class toolScale(object):
 		scale = self._lineLineCrossingDistOnLine(p0, p1, numpy.array([0,0,0], numpy.float32), numpy.array(endPoint, numpy.float32)) / 15.0 / s
 		if not wx.GetKeyState(wx.WXK_SHIFT):
 			objMatrix = self.parent.getObjectMatrix()
-			scaleX = numpy.linalg.norm(objMatrix[0].getA().flatten())
-			scaleY = numpy.linalg.norm(objMatrix[1].getA().flatten())
-			scaleZ = numpy.linalg.norm(objMatrix[2].getA().flatten())
+			scaleX = numpy.linalg.norm(objMatrix[::,0].getA().flatten())
+			scaleY = numpy.linalg.norm(objMatrix[::,1].getA().flatten())
+			scaleZ = numpy.linalg.norm(objMatrix[::,2].getA().flatten())
 			if self.node == 1 or not wx.GetKeyState(wx.WXK_CONTROL):
 				matrixScale = (scaleX + scaleY + scaleZ) / 3
 			elif self.node == 2:
@@ -378,9 +378,9 @@ class toolScale(object):
 		if self.node == 4 and self.scale is not None:
 			sz *= self.scale
 		objMatrix = self.parent.getObjectMatrix()
-		scaleX = numpy.linalg.norm(objMatrix[0].getA().flatten())
-		scaleY = numpy.linalg.norm(objMatrix[1].getA().flatten())
-		scaleZ = numpy.linalg.norm(objMatrix[2].getA().flatten())
+		scaleX = numpy.linalg.norm(objMatrix[::,0].getA().flatten())
+		scaleY = numpy.linalg.norm(objMatrix[::,1].getA().flatten())
+		scaleZ = numpy.linalg.norm(objMatrix[::,2].getA().flatten())
 		if self.scale is not None:
 			scaleX *= self.scale
 			scaleY *= self.scale

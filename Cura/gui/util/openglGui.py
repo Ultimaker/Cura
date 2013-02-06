@@ -242,12 +242,16 @@ class glButton(glGuiControl):
 		self._selected = False
 		self._focus = False
 		self._hidden = False
+		self._disabled = False
 
 	def setSelected(self, value):
 		self._selected = value
 
 	def setHidden(self, value):
 		self._hidden = value
+
+	def setDisabled(self, value):
+		self._disabled = value
 
 	def getSelected(self):
 		return self._selected
@@ -278,7 +282,10 @@ class glButton(glGuiControl):
 		elif self._focus:
 			scale = 0.9
 		glScalef(bs * scale, bs * scale, bs * scale)
-		glColor4ub(255,255,255,255)
+		if self._disabled:
+			glColor4ub(128,128,128,128)
+		else:
+			glColor4ub(255,255,255,255)
 		glBegin(GL_QUADS)
 		glTexCoord2f(cx+0.25, cy)
 		glVertex2f( 0.5,-0.5)
