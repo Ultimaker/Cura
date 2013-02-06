@@ -173,42 +173,13 @@ class mainWindow(wx.Frame):
 		#Preview window
 		self.preview3d = preview3d.previewPanel(self.rightPane)
 
-		# load and slice buttons.
-		loadButton = wx.Button(self.rightPane, -1, '&Load model')
-		sliceButton = wx.Button(self.rightPane, -1, 'P&repare print')
-		printButton = wx.Button(self.rightPane, -1, '&Print')
-		self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(1), loadButton)
-		self.Bind(wx.EVT_BUTTON, self.OnSlice, sliceButton)
-		self.Bind(wx.EVT_BUTTON, self.OnPrint, printButton)
-
-		if self.extruderCount > 1:
-			loadButton2 = wx.Button(self.rightPane, -1, 'Load Dual')
-			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(2), loadButton2)
-		if self.extruderCount > 2:
-			loadButton3 = wx.Button(self.rightPane, -1, 'Load Triple')
-			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(3), loadButton3)
-		if self.extruderCount > 3:
-			loadButton4 = wx.Button(self.rightPane, -1, 'Load Quad')
-			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(4), loadButton4)
-
 		#Also bind double clicking the 3D preview to load an STL file.
 		#self.preview3d.glCanvas.Bind(wx.EVT_LEFT_DCLICK, lambda e: self._showModelLoadDialog(1), self.preview3d.glCanvas)
 
 		#Main sizer, to position the preview window, buttons and tab control
-		sizer = wx.GridBagSizer()
+		sizer = wx.BoxSizer()
 		self.rightPane.SetSizer(sizer)
-		sizer.Add(self.preview3d, (0,1), span=(1,2+self.extruderCount), flag=wx.EXPAND)
-		sizer.AddGrowableCol(2 + self.extruderCount)
-		sizer.AddGrowableRow(0)
-		sizer.Add(loadButton, (1,1), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		if self.extruderCount > 1:
-			sizer.Add(loadButton2, (1,2), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		if self.extruderCount > 2:
-			sizer.Add(loadButton3, (1,3), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		if self.extruderCount > 3:
-			sizer.Add(loadButton4, (1,4), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		sizer.Add(sliceButton, (1,1+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		sizer.Add(printButton, (1,2+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)		
+		sizer.Add(self.preview3d, 1, flag=wx.EXPAND)
 
 		# Main window sizer
 		sizer = wx.BoxSizer(wx.VERTICAL)

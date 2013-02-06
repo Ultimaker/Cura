@@ -119,6 +119,14 @@ class previewPanel(wx.Panel):
 		self.sliceButton         = openglGui.glButton(self.glCanvas, 6, 'Prepare model', (0,-2), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
 		self.printButton         = openglGui.glButton(self.glCanvas, 7, 'Print model', (0,-1), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
 
+		extruderCount = int(profile.getPreference('extruder_amount'))
+		if extruderCount > 1:
+			openglGui.glButton(self.glCanvas, 3, 'Load dual model', (1,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
+		if extruderCount > 2:
+			openglGui.glButton(self.glCanvas, 3, 'Load triple model', (2,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(3))
+		if extruderCount > 3:
+			openglGui.glButton(self.glCanvas, 3, 'Load quad model', (3,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
+
 		self.scaleForm = openglGui.glFrame(self.glCanvas, (1, 3))
 		openglGui.glGuiLayoutGrid(self.scaleForm)
 		openglGui.glLabel(self.scaleForm, 'Scale X', (0,0))
