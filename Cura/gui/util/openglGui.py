@@ -29,6 +29,25 @@ class glGuiControl(object):
 	def updateLayout(self):
 		pass
 
+	def focusNext(self):
+		for n in xrange(self._parent._glGuiControlList.index(self) + 1, len(self._parent._glGuiControlList)):
+			if self._parent._glGuiControlList[n].setFocus():
+				return
+		for n in xrange(0, self._parent._glGuiControlList.index(self)):
+			if self._parent._glGuiControlList[n].setFocus():
+				return
+
+	def focusPrevious(self):
+		for n in xrange(self._parent._glGuiControlList.index(self) -1, -1, -1):
+			if self._parent._glGuiControlList[n].setFocus():
+				return
+		for n in xrange(len(self._parent._glGuiControlList) - 1, self._parent._glGuiControlList.index(self), -1):
+			if self._parent._glGuiControlList[n].setFocus():
+				return
+
+	def setFocus(self):
+		return False
+
 class glGuiContainer(glGuiControl):
 	def __init__(self, parent, pos):
 		self._glGuiControlList = []
@@ -501,8 +520,7 @@ class glNumberCtrl(glGuiControl):
 
 	def OnMouseDown(self, x, y):
 		if self._checkHit(x, y):
-			self._base._focus = self
-			self._selectPos = len(self._value)
+			self.setFocus()
 			return True
 		return False
 
@@ -514,6 +532,25 @@ class glNumberCtrl(glGuiControl):
 		if c == wx.WXK_RIGHT:
 			self._selectPos += 1
 			self._selectPos = min(self._selectPos, len(self._value))
+		if c == wx.WXK_UP:
+			try:
+				value = float(self._value)
+			except:
+				pass
+			else:
+				value += 0.1
+				self._value = str(value)
+				self._callback(self._value)
+		if c == wx.WXK_DOWN:
+			try:
+				value = float(self._value)
+			except:
+				pass
+			else:
+				value -= 0.1
+				if value > 0:
+					self._value = str(value)
+					self._callback(self._value)
 		if c == wx.WXK_BACK and self._selectPos > 0:
 			self._value = self._value[0:self._selectPos - 1] + self._value[self._selectPos:]
 			self._selectPos -= 1
@@ -521,11 +558,21 @@ class glNumberCtrl(glGuiControl):
 		if c == wx.WXK_DELETE:
 			self._value = self._value[0:self._selectPos] + self._value[self._selectPos + 1:]
 			self._callback(self._value)
+		if c == wx.WXK_TAB:
+			if wx.GetKeyState(wx.WXK_SHIFT):
+				self.focusPrevious()
+			else:
+				self.focusNext()
 		if (ord('0') <= c <= ord('9') or c == ord('.')) and len(self._value) < self._maxLen:
 			self._value = self._value[0:self._selectPos] + chr(c) + self._value[self._selectPos:]
 			self._selectPos += 1
 			self._callback(self._value)
 		self._inCallback = False
+
+	def setFocus(self):
+		self._base._focus = self
+		self._selectPos = len(self._value)
+		return True
 
 class glCheckbox(glGuiControl):
 	def __init__(self, parent, value, pos, callback):
