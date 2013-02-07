@@ -441,14 +441,14 @@ class glLabel(glGuiControl):
 	def OnMouseDown(self, x, y):
 		return False
 
-class glTextCtrl(glGuiControl):
+class glNumberCtrl(glGuiControl):
 	def __init__(self, parent, value, pos, callback):
 		self._callback = callback
 		self._value = str(value)
 		self._selectPos = 0
 		self._maxLen = 6
 		self._inCallback = False
-		super(glTextCtrl, self).__init__(parent, pos)
+		super(glNumberCtrl, self).__init__(parent, pos)
 
 	def setValue(self, value):
 		if self._inCallback:
