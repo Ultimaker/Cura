@@ -365,6 +365,15 @@ class previewPanel(wx.Panel):
 			if obj.filename is not None and os.path.isfile(obj.filename) and obj.fileTime != os.stat(obj.filename).st_mtime:
 				self.checkReloadFileTimer.Stop()
 				self.ShowWarningPopup('File changed, reload?', self.reloadModelFiles)
+		if wx.TheClipboard.Open():
+			data = wx.TextDataObject()
+			if wx.TheClipboard.GetData(data):
+				data = data.GetText()
+				if re.match('^http://.*/.*$', data):
+					if data.endswith(tuple(meshLoader.supportedExtensions())):
+						#Got an url on the clipboard with a model file.
+						pass
+			wx.TheClipboard.Close()
 	
 	def reloadModelFiles(self, filelist = None):
 		if filelist is not None:
