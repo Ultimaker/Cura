@@ -311,12 +311,15 @@ def DrawMeshOutline(mesh):
 	glDisableClientState(GL_VERTEX_ARRAY)
 
 
-def DrawMesh(mesh):
+def DrawMesh(mesh, insideOut = False):
 	glEnable(GL_CULL_FACE)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, mesh.vertexes)
-	glNormalPointer(GL_FLOAT, 0, mesh.normal)
+	if insideOut:
+		glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
+	else:
+		glNormalPointer(GL_FLOAT, 0, mesh.normal)
 
 	#Odd, drawing in batchs is a LOT faster then drawing it all at once.
 	batchSize = 999    #Warning, batchSize needs to be dividable by 3
@@ -329,7 +332,10 @@ def DrawMesh(mesh):
 	glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
 
 	glCullFace(GL_FRONT)
-	glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
+	if insideOut:
+		glNormalPointer(GL_FLOAT, 0, mesh.normal)
+	else:
+		glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
 	for i in xrange(0, int(mesh.vertexCount / batchSize)):
 		glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
 	extraStartPos = int(mesh.vertexCount / batchSize) * batchSize

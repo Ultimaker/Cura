@@ -342,6 +342,26 @@ class glButton(glGuiControl):
 			return True
 		return False
 
+class glRadioButton(glButton):
+	def __init__(self, parent, imageID, tooltip, pos, group, callback):
+		super(glRadioButton, self).__init__(parent, imageID, tooltip, pos, self._onRadioSelect)
+		self._group = group
+		self._radioCallback = callback
+		self._group.append(self)
+
+	def setSelected(self, value):
+		self._selected = value
+
+	def _onRadioSelect(self):
+		for ctrl in self._group:
+			if ctrl != self:
+				ctrl.setSelected(False)
+		if self.getSelected():
+			self.setSelected(False)
+		else:
+			self.setSelected(True)
+		self._radioCallback()
+
 class glFrame(glGuiContainer):
 	def __init__(self, parent, pos):
 		super(glFrame, self).__init__(parent, pos)
