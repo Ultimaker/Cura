@@ -213,7 +213,10 @@ def loadGlobalProfile(filename):
 	#Read a configuration file as global config
 	global globalProfileParser
 	globalProfileParser = ConfigParser.ConfigParser()
-	globalProfileParser.read(filename)
+	try:
+		globalProfileParser.read(filename)
+	except ConfigParser.ParsingError:
+		pass
 
 def resetGlobalProfile():
 	#Read a configuration file as global config
@@ -341,7 +344,10 @@ def getPreference(name):
 	global globalPreferenceParser
 	if globalPreferenceParser is None:
 		globalPreferenceParser = ConfigParser.ConfigParser()
-		globalPreferenceParser.read(getPreferencePath())
+		try:
+			globalPreferenceParser.read(getPreferencePath())
+		except ConfigParser.ParsingError:
+			pass
 	if not globalPreferenceParser.has_option('preference', name):
 		if name in preferencesDefaultSettings:
 			default = preferencesDefaultSettings[name]
@@ -361,7 +367,10 @@ def putPreference(name, value):
 	global globalPreferenceParser
 	if globalPreferenceParser == None:
 		globalPreferenceParser = ConfigParser.ConfigParser()
-		globalPreferenceParser.read(getPreferencePath())
+		try:
+			globalPreferenceParser.read(getPreferencePath())
+		except ConfigParser.ParsingError:
+			pass
 	if not globalPreferenceParser.has_section('preference'):
 		globalPreferenceParser.add_section('preference')
 	globalPreferenceParser.set('preference', name, unicode(value).encode("utf-8"))

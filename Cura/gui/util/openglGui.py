@@ -323,7 +323,7 @@ class glButton(glGuiControl):
 		glPopMatrix()
 
 	def _checkHit(self, x, y):
-		if self._hidden:
+		if self._hidden or self._disabled:
 			return False
 		bs = self.getMinSize()[0]
 		pos = self._getPixelPos()
