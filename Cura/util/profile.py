@@ -432,7 +432,11 @@ def getMachineCenterCoords():
 	return [getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2]
 
 def getObjectMatrix():
-	return map(float, getProfileSetting('model_matrix').split(','))
+	try:
+		return map(float, getProfileSetting('model_matrix').split(','))
+	except ValueError:
+		return [1,0,0, 0,1,0, 0,0,1]
+
 
 #########################################################
 ## Alteration file functions
