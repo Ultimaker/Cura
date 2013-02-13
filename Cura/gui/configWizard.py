@@ -392,7 +392,7 @@ class UltimakerCheckupPage(InfoPage):
 		self.Bind(wx.EVT_BUTTON, self.OnErrorLog, self.errorLogButton)
 
 	def __del__(self):
-		if self.comm != None:
+		if self.comm is not None:
 			self.comm.close()
 
 	def AllowNext(self):
@@ -465,6 +465,8 @@ class UltimakerCheckupPage(InfoPage):
 					wx.CallAfter(self.infoBox.SetError, 'Temperature measurement FAILED!', 'http://wiki.ultimaker.com/Cura:_Temperature_measurement_problems')
 					self.comm.sendCommand('M104 S0')
 					self.comm.sendCommand('M104 S0')
+		elif self.checkupState >= 3 and self.checkupState < 10:
+			self.comm.sendCommand('M119')
 		wx.CallAfter(self.temperatureLabel.SetLabel, 'Head temperature: %d' % (temp))
 
 	def mcStateChange(self, state):
@@ -484,23 +486,38 @@ class UltimakerCheckupPage(InfoPage):
 			wx.CallAfter(self.machineState.SetLabel, 'Communication State: %s' % (self.comm.getStateString()))
 
 	def mcMessage(self, message):
-		if self.checkupState >= 3 and self.checkupState < 10 and 'x_min' in message:
+		if self.checkupState >= 3 and self.checkupState < 10 and ('_min' in message or '_max' in message):
 			for data in message.split(' '):
 				if ':' in data:
-					tag, value = data.split(':', 2)
+					tag, value = data.split(':', 1)
 					if tag == 'x_min':
-						self.xMinStop = (value == 'H')
+						self.xMinStop = (value == 'H' or value == 'TRIGGERED')
 					if tag == 'x_max':
-						self.xMaxStop = (value == 'H')
+						self.xMaxStop = (value == 'H' or value == 'TRIGGERED')
 					if tag == 'y_min':
-						self.yMinStop = (value == 'H')
+						self.yMinStop = (value == 'H' or value == 'TRIGGERED')
 					if tag == 'y_max':
-						self.yMaxStop = (value == 'H')
+						self.yMaxStop = (value == 'H' or value == 'TRIGGERED')
 					if tag == 'z_min':
-						self.zMinStop = (value == 'H')
+						self.zMinStop = (value == 'H' or value == 'TRIGGERED')
 					if tag == 'z_max':
-						self.zMaxStop = (value == 'H')
-			self.comm.sendCommand('M119')
+						self.zMaxStop = (value == 'H' or value == 'TRIGGERED')
+			if ':' in message:
+				tag, value = map(str.strip, message.split(':', 1))
+				if tag == 'x_min':
+					self.xMinStop = (value == 'H' or value == 'TRIGGERED')
+				if tag == 'x_max':
+					self.xMaxStop = (value == 'H' or value == 'TRIGGERED')
+				if tag == 'y_min':
+					self.yMinStop = (value == 'H' or value == 'TRIGGERED')
+				if tag == 'y_max':
+					self.yMaxStop = (value == 'H' or value == 'TRIGGERED')
+				if tag == 'z_min':
+					self.zMinStop = (value == 'H' or value == 'TRIGGERED')
+				if tag == 'z_max':
+					self.zMaxStop = (value == 'H' or value == 'TRIGGERED')
+			if 'z_max' in message:
+				self.comm.sendCommand('M119')
 
 			if self.checkupState == 3:
 				if not self.xMinStop and not self.xMaxStop and not self.yMinStop and not self.yMaxStop and not self.zMinStop and not self.zMaxStop:
@@ -776,7 +793,7 @@ class bedLevelWizardMain(InfoPage):
 		elif self._wizardState == 4:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back right corner...')
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth') - 20, feedTravel))
+			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth') - 25, feedTravel))
 			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 			self.comm.sendCommand('M400')
 			self._wizardState = 5
