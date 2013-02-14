@@ -109,6 +109,7 @@ def getProfileInformation():
 			'ObjectMatrix': storedSetting("object_matrix"),
 			'CenterX': lambda setting: profile.getProfileSettingFloat('object_center_x'),
 			'CenterY': lambda setting: profile.getProfileSettingFloat('object_center_y'),
+			'ObjectSink': storedSetting("object_sink"),
 			'AlternativeCenterFile': storedSetting("alternative_center"),
 		},'scale': {
 			'Activate_Scale': "False",

@@ -687,7 +687,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				wx.CallAfter(self.Refresh)
 		
 		glPushMatrix()
-		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
+		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, -profile.getProfileSettingFloat('object_sink'))
 		for obj in self.parent.objectList:
 			if obj.mesh is None:
 				continue
@@ -743,7 +743,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 
 		glColor3f(1.0,1.0,1.0)
 		glPushMatrix()
-		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
+		glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, -profile.getProfileSettingFloat('object_sink'))
 		for obj in self.parent.objectList:
 			if obj.mesh is None:
 				continue

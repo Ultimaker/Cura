@@ -67,6 +67,7 @@ profileDefaultSettings = {
 	'plugin_config': '',
 	'object_center_x': '-1',
 	'object_center_y': '-1',
+	'object_sink': '0.0',
 	
 	'gcode_extension': 'gcode',
 	'alternative_center': '',
