@@ -634,7 +634,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		return self.parent.matrix
 
 	def getObjectCenterPos(self):
-		return [self.parent.machineCenter.x, self.parent.machineCenter.y, self.parent.objectsSize[2] / 2]
+		return [self.parent.machineCenter.x, self.parent.machineCenter.y, self.parent.objectsSize[2] / 2 - profile.getProfileSettingFloat('object_sink')]
 
 	def OnMouseWheel(self,e):
 		self.zoom *= 1.0 - float(e.GetWheelRotation() / e.GetWheelDelta()) / 10.0
@@ -852,7 +852,8 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		#Draw the current selected tool
 		if self.parent.objectsMaxV is not None and self.viewMode != 'GCode' and self.viewMode != 'Mixed':
 			glPushMatrix()
-			glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, self.parent.objectsSize[2]/2)
+			pos = self.getObjectCenterPos()
+			glTranslate(pos[0], pos[1], pos[2])
 			self.parent.tool.OnDraw()
 			glPopMatrix()
 
