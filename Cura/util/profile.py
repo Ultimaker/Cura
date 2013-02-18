@@ -150,6 +150,7 @@ preferencesDefaultSettings = {
 	'machine_center_is_zero': 'False',
 	'ultimaker_extruder_upgrade': 'False',
 	'has_heated_bed': 'False',
+	'reprap_name': 'RepRap',
 	'extruder_amount': '1',
 	'extruder_offset_x1': '-22.0',
 	'extruder_offset_y1': '0.0',
@@ -170,6 +171,7 @@ preferencesDefaultSettings = {
 	'sdpath': '',
 	'sdshortnames': 'False',
 	'check_for_updates': 'True',
+	'submit_slice_information': 'False',
 
 	'planner_always_autoplace': 'True',
 	'extruder_head_size_min_x': '75.0',
@@ -188,6 +190,7 @@ preferencesDefaultSettings = {
 	'window_pos_y': '-1',
 	'window_width': '-1',
 	'window_height': '-1',
+	'window_normal_sash': '320',
 }
 
 #########################################################

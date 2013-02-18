@@ -26,10 +26,16 @@ class objModel(mesh.mesh):
 		self._prepareVertexCount(len(faceList) * 3)
 		for f in faceList:
 			i = f[0] - 1
+			if i < 0 or i >= len(vertexList):
+				i = 0
 			self.addVertex(vertexList[i][0], vertexList[i][1], vertexList[i][2])
 			i = f[1] - 1
+			if i < 0 or i >= len(vertexList):
+				i = 0
 			self.addVertex(vertexList[i][0], vertexList[i][1], vertexList[i][2])
 			i = f[2] - 1
+			if i < 0 or i >= len(vertexList):
+				i = 0
 			self.addVertex(vertexList[i][0], vertexList[i][1], vertexList[i][2])
 		
 		self._postProcessAfterLoad()

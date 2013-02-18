@@ -68,6 +68,7 @@ class preferencesDialog(wx.Frame):
 
 		configBase.TitleRow(right, 'Cura settings')
 		c = configBase.SettingRow(right, 'Check for updates', 'check_for_updates', True, 'Check for newer versions of Cura on startup', type = 'preference')
+		c = configBase.SettingRow(right, 'Send usage statistics', 'submit_slice_information', True, 'Submit anonymous usage information to improve next versions of Cura', type = 'preference')
 
 		self.okButton = wx.Button(right, -1, 'Ok')
 		right.GetSizer().Add(self.okButton, (right.GetSizer().GetRows(), 0), flag=wx.BOTTOM, border=5)

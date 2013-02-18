@@ -48,6 +48,12 @@ class glGuiControl(object):
 	def setFocus(self):
 		return False
 
+	def hasFocus(self):
+		return self._base._focus == self
+
+	def OnKeyChar(self, key):
+		pass
+
 class glGuiContainer(glGuiControl):
 	def __init__(self, parent, pos):
 		self._glGuiControlList = []
@@ -353,6 +359,7 @@ class glRadioButton(glButton):
 		self._selected = value
 
 	def _onRadioSelect(self):
+		self._base._focus = None
 		for ctrl in self._group:
 			if ctrl != self:
 				ctrl.setSelected(False)
@@ -361,6 +368,78 @@ class glRadioButton(glButton):
 		else:
 			self.setSelected(True)
 		self._radioCallback()
+
+class glComboButton(glButton):
+	def __init__(self, parent, tooltip, imageIDs, tooltips, pos, callback):
+		super(glComboButton, self).__init__(parent, imageIDs[0], tooltip, pos, self._onComboOpenSelect)
+		self._imageIDs = imageIDs
+		self._tooltips = tooltips
+		self._comboCallback = callback
+		self._selection = 0
+
+	def _onComboOpenSelect(self):
+		self._base._focus = self
+
+	def draw(self):
+		if self._hidden:
+			return
+		self._selected = self.hasFocus()
+		super(glComboButton, self).draw()
+		if not self._selected:
+			return
+
+		bs = self._base._buttonSize / 2
+		pos = self._getPixelPos()
+
+		glPushMatrix()
+		glTranslatef(pos[0]+bs*0.5, pos[1] + bs*0.5, 0)
+		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
+		glScalef(bs, bs, bs)
+		for n in xrange(0, len(self._imageIDs)):
+			cx = (self._imageIDs[n] % 4) / 4
+			cy = int(self._imageIDs[n] / 4) / 4
+			glEnable(GL_TEXTURE_2D)
+			glTranslatef(0, 1, 0)
+			if self._disabled:
+				glColor4ub(128,128,128,128)
+			else:
+				glColor4ub(255,255,255,255)
+			glBegin(GL_QUADS)
+			glTexCoord2f(cx+0.25, cy)
+			glVertex2f( 0.5,-0.5)
+			glTexCoord2f(cx, cy)
+			glVertex2f(-0.5,-0.5)
+			glTexCoord2f(cx, cy+0.25)
+			glVertex2f(-0.5, 0.5)
+			glTexCoord2f(cx+0.25, cy+0.25)
+			glVertex2f( 0.5, 0.5)
+			glEnd()
+			glDisable(GL_TEXTURE_2D)
+
+			glPushMatrix()
+			glColor4ub(0,0,0,255)
+			glTranslatef(-0.55, 0.1, 0)
+			opengl.glDrawStringRight(self._tooltips[n])
+			glPopMatrix()
+		glPopMatrix()
+
+	def getValue(self):
+		return self._selection
+
+	def OnMouseDown(self, x, y):
+		if self._hidden or self._disabled:
+			return False
+		if self.hasFocus():
+			bs = self._base._buttonSize / 2
+			pos = self._getPixelPos()
+			if 0 <= x - pos[0] <= bs and 0 <= y - pos[1] - bs <= bs * len(self._imageIDs):
+				self._selection = int((y - pos[1] - bs) / bs)
+				self._imageID = self._imageIDs[self._selection]
+				self._base._focus = None
+				self._comboCallback()
+				return True
+		return super(glComboButton, self).OnMouseDown(x, y)
+
 
 class glFrame(glGuiContainer):
 	def __init__(self, parent, pos):
@@ -508,7 +587,7 @@ class glNumberCtrl(glGuiControl):
 		glPushMatrix()
 		glTranslatef(x, y, 0)
 
-		if self._base._focus == self:
+		if self.hasFocus():
 			glColor4ub(255,255,255,255)
 		else:
 			glColor4ub(255,255,255,192)
@@ -526,7 +605,7 @@ class glNumberCtrl(glGuiControl):
 		glTranslate(5, h - 5, 0)
 		glColor4ub(0,0,0,255)
 		opengl.glDrawStringLeft(self._value)
-		if self._base._focus == self:
+		if self.hasFocus():
 			glTranslate(opengl.glGetStringSize(self._value[0:self._selectPos])[0] - 2, -1, 0)
 			opengl.glDrawStringLeft('|')
 		glPopMatrix()

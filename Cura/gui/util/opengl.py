@@ -207,6 +207,12 @@ def glDrawStringLeft(s):
 	for c in s:
 		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
 
+def glDrawStringRight(s):
+	glRasterPos2f(0, 0)
+	glBitmap(0,0,0,0, -glGetStringSize(s)[0], 0, None)
+	for c in s:
+		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
+
 def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
 	npModelMatrix = numpy.matrix(numpy.array(modelMatrix, numpy.float64).reshape((4,4)))
 	npProjMatrix = numpy.matrix(numpy.array(projMatrix, numpy.float64).reshape((4,4)))

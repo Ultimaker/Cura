@@ -148,6 +148,8 @@ class previewPanel(wx.Panel):
 		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
+		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [0,1,2,3,4], ['3D Model', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
+
 		self.OnViewChange()
 		self.OnToolSelect()
 		self.returnToModelViewAndUpdateModel()
@@ -478,19 +480,23 @@ class previewPanel(wx.Panel):
 		self.Update()
 	
 	def OnViewChange(self):
-		if self.normalViewButton.GetValue():
+		selection = self.viewSelection.getValue()
+		self.glCanvas.drawSteepOverhang = False
+		self.glCanvas.drawBorders = self.showBorderButton.GetValue()
+		if selection == 0:
 			self.glCanvas.viewMode = "Normal"
-		elif self.transparentViewButton.GetValue():
+		elif selection == 1:
 			self.glCanvas.viewMode = "Transparent"
-		elif self.xrayViewButton.GetValue():
+		elif selection == 2:
 			self.glCanvas.viewMode = "X-Ray"
-		elif self.gcodeViewButton.GetValue():
+		elif selection == 3:
+			self.glCanvas.viewMode = "Normal"
+			self.glCanvas.drawSteepOverhang = True
+		elif selection == 4:
 			self.layerSpin.SetValue(self.layerSpin.GetMax())
 			self.glCanvas.viewMode = "GCode"
-		elif self.mixedViewButton.GetValue():
+		elif selection == 5:
 			self.glCanvas.viewMode = "Mixed"
-		self.glCanvas.drawBorders = self.showBorderButton.GetValue()
-		self.glCanvas.drawSteepOverhang = self.showSteepOverhang.GetValue()
 		self.updateToolbar()
 		self.glCanvas.Refresh()
 	
