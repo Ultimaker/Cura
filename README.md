@@ -62,6 +62,8 @@ Assuming you have virtualenv at *~/.virtualenvs/Cura/* and [wxPython sources](ht
 1. `cd` into *~/Downloads/wxPython-src-2.9.4.0/* and configure the sources:
 
         ./configure \
+        CFLAGS='-msse2 -mno-sse3 -mno-sse4' \
+        CXXFLAGS='-msse2 -mno-sse3 -mno-sse4' \
         --disable-debug \
         --enable-clipboard \
         --enable-display \
