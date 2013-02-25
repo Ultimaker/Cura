@@ -105,23 +105,23 @@ class previewPanel(wx.Panel):
 		self.checkReloadFileTimer.Start(1000)
 
 		group = []
-		self.rotateToolButton = openglGui.glRadioButton(self.glCanvas, 1, 'Rotate', (0,1), group, self.OnToolSelect)
-		self.scaleToolButton  = openglGui.glRadioButton(self.glCanvas, 2, 'Scale', (0,2), group, self.OnToolSelect)
-		self.mirrorToolButton  = openglGui.glRadioButton(self.glCanvas, 12, 'Mirror', (0,3), group, self.OnToolSelect)
+		self.rotateToolButton = openglGui.glRadioButton(self.glCanvas, 1, 'Rotate', (0,-1), group, self.OnToolSelect)
+		self.scaleToolButton  = openglGui.glRadioButton(self.glCanvas, 2, 'Scale', (1,-1), group, self.OnToolSelect)
+		self.mirrorToolButton  = openglGui.glRadioButton(self.glCanvas, 12, 'Mirror', (2,-1), group, self.OnToolSelect)
 
-		self.resetRotationButton = openglGui.glButton(self.glCanvas, 4, 'Reset rotation', (1,1), self.OnRotateReset)
-		self.layFlatButton       = openglGui.glButton(self.glCanvas, 5, 'Lay flat', (1,2), self.OnLayFlat)
+		self.resetRotationButton = openglGui.glButton(self.glCanvas, 4, 'Reset rotation', (0,-2), self.OnRotateReset)
+		self.layFlatButton       = openglGui.glButton(self.glCanvas, 5, 'Lay flat', (0,-3), self.OnLayFlat)
 
-		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 8, 'Scale reset', (1,1), self.OnScaleReset)
-		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 9, 'Scale to machine size', (1,2), self.OnScaleMax)
+		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 8, 'Scale reset', (1,-2), self.OnScaleReset)
+		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 9, 'Scale to machine size', (1,-3), self.OnScaleMax)
 
-		self.mirrorXButton       = openglGui.glButton(self.glCanvas, 12, 'Mirror X', (1,1), lambda : self.OnMirror(0))
-		self.mirrorYButton       = openglGui.glButton(self.glCanvas, 13, 'Mirror Y', (1,2), lambda : self.OnMirror(1))
-		self.mirrorZButton       = openglGui.glButton(self.glCanvas, 14, 'Mirror Z', (1,3), lambda : self.OnMirror(2))
+		self.mirrorXButton       = openglGui.glButton(self.glCanvas, 12, 'Mirror X', (2,-2), lambda : self.OnMirror(0))
+		self.mirrorYButton       = openglGui.glButton(self.glCanvas, 13, 'Mirror Y', (2,-3), lambda : self.OnMirror(1))
+		self.mirrorZButton       = openglGui.glButton(self.glCanvas, 14, 'Mirror Z', (2,-4), lambda : self.OnMirror(2))
 
 		self.openFileButton      = openglGui.glButton(self.glCanvas, 3, 'Load model', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
-		self.sliceButton         = openglGui.glButton(self.glCanvas, 6, 'Prepare model', (0,-2), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
-		self.printButton         = openglGui.glButton(self.glCanvas, 7, 'Print model', (0,-1), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
+		self.sliceButton         = openglGui.glButton(self.glCanvas, 6, 'Prepare model', (1,0), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
+		self.printButton         = openglGui.glButton(self.glCanvas, 7, 'Print model', (2,0), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
 
 		extruderCount = int(profile.getPreference('extruder_amount'))
 		if extruderCount > 1:
@@ -131,7 +131,7 @@ class previewPanel(wx.Panel):
 		if extruderCount > 3:
 			openglGui.glButton(self.glCanvas, 3, 'Load quad model', (3,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
 
-		self.scaleForm = openglGui.glFrame(self.glCanvas, (1, 3))
+		self.scaleForm = openglGui.glFrame(self.glCanvas, (2, -3))
 		openglGui.glGuiLayoutGrid(self.scaleForm)
 		openglGui.glLabel(self.scaleForm, 'Scale X', (0,0))
 		self.scaleXctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,0), lambda value: self.OnScaleEntry(value, 0))

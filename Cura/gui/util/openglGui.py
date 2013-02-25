@@ -440,7 +440,6 @@ class glComboButton(glButton):
 				return True
 		return super(glComboButton, self).OnMouseDown(x, y)
 
-
 class glFrame(glGuiContainer):
 	def __init__(self, parent, pos):
 		super(glFrame, self).__init__(parent, pos)
