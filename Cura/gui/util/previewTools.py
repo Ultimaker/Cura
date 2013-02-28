@@ -123,7 +123,7 @@ class toolRotate(object):
 		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
 		oldDragPlane = self.dragPlane
 		if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorYZ <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorXZ <= radius * self.rotateRingDistMax:
-			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+			#self.parent.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
 			if self.dragStartAngle is None:
 				if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax:
 					self.dragPlane = 'XY'
@@ -134,7 +134,7 @@ class toolRotate(object):
 		else:
 			if self.dragStartAngle is None:
 				self.dragPlane = ''
-			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
+			#self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
 
 	def OnDragStart(self, p0, p1):
 		radius = self.parent.getObjectBoundaryCircle()

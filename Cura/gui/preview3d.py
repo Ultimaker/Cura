@@ -137,7 +137,7 @@ class previewPanel(wx.Panel):
 			self.setViewMode('Normal')
 		self.updateModelTransform()
 
-	def OnToolSelect(self):
+	def OnToolSelect(self, resetView = True):
 		if self.rotateToolButton.getSelected():
 			self.tool = previewTools.toolRotate(self.glCanvas)
 		elif self.scaleToolButton.getSelected():
@@ -154,7 +154,8 @@ class previewPanel(wx.Panel):
 		self.mirrorXButton.setHidden(not self.mirrorToolButton.getSelected())
 		self.mirrorYButton.setHidden(not self.mirrorToolButton.getSelected())
 		self.mirrorZButton.setHidden(not self.mirrorToolButton.getSelected())
-		self.returnToModelViewAndUpdateModel()
+		if resetView:
+			self.returnToModelViewAndUpdateModel()
 
 	def OnScaleEntry(self, value, axis):
 		try:
@@ -311,7 +312,7 @@ class previewPanel(wx.Panel):
 		if mode == "Normal":
 			self.viewSelection.setValue(0)
 		if mode == "GCode":
-			self.viewSelection.setValue(5)
+			self.viewSelection.setValue(4)
 		wx.CallAfter(self.glCanvas.Refresh)
 	
 	def loadModelFiles(self, filelist, showWarning = False):
@@ -472,6 +473,10 @@ class previewPanel(wx.Panel):
 			self.glCanvas.viewMode = "Mixed"
 		self.layerSelect.setHidden(self.glCanvas.viewMode != "GCode")
 		self.updateToolbar()
+		self.rotateToolButton.setSelected(False)
+		self.scaleToolButton.setSelected(False)
+		self.mirrorToolButton.setSelected(False)
+		self.OnToolSelect(False)
 		self.glCanvas.Refresh()
 	
 	def updateModelTransform(self, f=0):
