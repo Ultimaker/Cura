@@ -22,7 +22,6 @@ from Cura.util import util3d
 from Cura.util import sliceRun
 
 from Cura.gui.util import opengl
-from Cura.gui.util import toolbarUtil
 from Cura.gui.util import previewTools
 from Cura.gui.util import openglGui
 
@@ -72,31 +71,7 @@ class previewPanel(wx.Panel):
 		parent.Bind(wx.EVT_MOVE, self.OnMove)
 		parent.Bind(wx.EVT_SIZE, self.OnMove)
 		
-		self.toolbar = toolbarUtil.Toolbar(self)
-
-		group = []
-		toolbarUtil.RadioButton(self.toolbar, group, 'object-3d-on.png', 'object-3d-off.png', '3D view', callback=self.On3DClick)
-		toolbarUtil.RadioButton(self.toolbar, group, 'object-top-on.png', 'object-top-off.png', 'Topdown view', callback=self.OnTopClick)
-		self.toolbar.AddSeparator()
-
-		self.showBorderButton = toolbarUtil.ToggleButton(self.toolbar, '', 'view-border-on.png', 'view-border-off.png', 'Show model borders', callback=self.OnViewChange)
-		self.showSteepOverhang = toolbarUtil.ToggleButton(self.toolbar, '', 'steepOverhang-on.png', 'steepOverhang-off.png', 'Show steep overhang', callback=self.OnViewChange)
-		self.toolbar.AddSeparator()
-
-		group = []
-		self.normalViewButton = toolbarUtil.RadioButton(self.toolbar, group, 'view-normal-on.png', 'view-normal-off.png', 'Normal model view', callback=self.OnViewChange)
-		self.transparentViewButton = toolbarUtil.RadioButton(self.toolbar, group, 'view-transparent-on.png', 'view-transparent-off.png', 'Transparent model view', callback=self.OnViewChange)
-		self.xrayViewButton = toolbarUtil.RadioButton(self.toolbar, group, 'view-xray-on.png', 'view-xray-off.png', 'X-Ray view', callback=self.OnViewChange)
-		self.gcodeViewButton = toolbarUtil.RadioButton(self.toolbar, group, 'view-gcode-on.png', 'view-gcode-off.png', 'GCode view', callback=self.OnViewChange)
-		self.mixedViewButton = toolbarUtil.RadioButton(self.toolbar, group, 'view-mixed-on.png', 'view-mixed-off.png', 'Mixed model/GCode view', callback=self.OnViewChange)
-		self.toolbar.AddSeparator()
-
-		self.layerSpin = wx.SpinCtrl(self.toolbar, -1, '', size=(21*4,21), style=wx.SP_ARROW_KEYS)
-		self.toolbar.AddControl(self.layerSpin)
-		self.Bind(wx.EVT_SPINCTRL, self.OnLayerNrChange, self.layerSpin)
-
 		sizer = wx.BoxSizer(wx.VERTICAL)
-		sizer.Add(self.toolbar, 0, flag=wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, border=1)
 		sizer.Add(self.glCanvas, 1, flag=wx.EXPAND)
 		self.SetSizer(sizer)
 		
@@ -149,6 +124,7 @@ class previewPanel(wx.Panel):
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [0,1,2,3,4], ['3D Model', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
+		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-1), self.OnLayerNrChange)
 
 		self.OnViewChange()
 		self.OnToolSelect()
@@ -330,15 +306,14 @@ class previewPanel(wx.Panel):
 		self.glCanvas.offsetY = 0
 		self.glCanvas.Refresh()
 
-	def OnLayerNrChange(self, e):
+	def OnLayerNrChange(self):
 		self.glCanvas.Refresh()
 	
 	def setViewMode(self, mode):
 		if mode == "Normal":
-			self.normalViewButton.SetValue(True)
+			self.viewSelection.setValue(0)
 		if mode == "GCode":
-			self.gcodeViewButton.SetValue(True)
-		self.glCanvas.viewMode = mode
+			self.viewSelection.setValue(5)
 		wx.CallAfter(self.glCanvas.Refresh)
 	
 	def loadModelFiles(self, filelist, showWarning = False):
@@ -358,7 +333,9 @@ class previewPanel(wx.Panel):
 		self.gcodeFilename = sliceRun.getExportFilename(filelist[0])
 		#Do the STL file loading in a background thread so we don't block the UI.
 		if self.loadThread is not None and self.loadThread.isAlive():
+			self.abortLoading = True
 			self.loadThread.join()
+		self.abortLoading = False
 		self.loadThread = threading.Thread(target=self.doFileLoadThread)
 		self.loadThread.daemon = True
 		self.loadThread.start()
@@ -408,7 +385,7 @@ class previewPanel(wx.Panel):
 				obj.steepDirty = True
 				self.updateModelTransform()
 				self.OnScaleMax(True)
-				self.glCanvas.zoom = numpy.max(self.objectsSize) * 3.5
+				self.glCanvas.zoom = self.objectsBoundaryCircleSize * 6.0
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
 				wx.CallAfter(self.glCanvas.Refresh)
@@ -438,7 +415,7 @@ class previewPanel(wx.Panel):
 		wx.CallAfter(self.checkReloadFileTimer.Start, 1000)
 	
 	def loadProgress(self, progress):
-		pass
+		return self.abortLoading
 
 	def OnResetAll(self, e = None):
 		profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
@@ -470,19 +447,15 @@ class previewPanel(wx.Panel):
 		self.warningPopup.timer.Stop()
 
 	def updateToolbar(self):
-		self.gcodeViewButton.Show(self.gcode is not None)
-		self.mixedViewButton.Show(self.gcode is not None)
-		self.layerSpin.Show(self.glCanvas.viewMode == "GCode" or self.glCanvas.viewMode == "Mixed")
 		self.printButton.setDisabled(self.gcode is None)
 		if self.gcode is not None:
-			self.layerSpin.SetRange(1, len(self.gcode.layerList) - 1)
-		self.toolbar.Realize()
+			self.layerSelect.setRange(1, len(self.gcode.layerList) - 1)
 		self.Update()
 	
 	def OnViewChange(self):
 		selection = self.viewSelection.getValue()
 		self.glCanvas.drawSteepOverhang = False
-		self.glCanvas.drawBorders = self.showBorderButton.GetValue()
+		self.glCanvas.drawBorders = False
 		if selection == 0:
 			self.glCanvas.viewMode = "Normal"
 		elif selection == 1:
@@ -493,10 +466,11 @@ class previewPanel(wx.Panel):
 			self.glCanvas.viewMode = "Normal"
 			self.glCanvas.drawSteepOverhang = True
 		elif selection == 4:
-			self.layerSpin.SetValue(self.layerSpin.GetMax())
+			self.layerSelect.setValue(self.layerSelect.getMaxValue())
 			self.glCanvas.viewMode = "GCode"
 		elif selection == 5:
 			self.glCanvas.viewMode = "Mixed"
+		self.layerSelect.setHidden(self.glCanvas.viewMode != "GCode")
 		self.updateToolbar()
 		self.glCanvas.Refresh()
 	
@@ -659,8 +633,8 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glRotate(self.yaw, 0,0,1)
 
 			if self.viewMode == "GCode" or self.viewMode == "Mixed":
-				if self.parent.gcode is not None and len(self.parent.gcode.layerList) > self.parent.layerSpin.GetValue() and len(self.parent.gcode.layerList[self.parent.layerSpin.GetValue()]) > 0:
-					self.viewTarget[2] = self.parent.gcode.layerList[self.parent.layerSpin.GetValue()][0].list[-1].z
+				if self.parent.gcode is not None and len(self.parent.gcode.layerList) > self.parent.layerSelect.getValue() and len(self.parent.gcode.layerList[self.parent.layerSelect.getValue()]) > 0:
+					self.viewTarget[2] = self.parent.gcode.layerList[self.parent.layerSelect.getValue()][0].list[-1].z
 			else:
 				if self.parent.objectsMaxV is not None:
 					self.viewTarget = self.getObjectCenterPos()
@@ -725,11 +699,11 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
 			glEnable(GL_COLOR_MATERIAL)
 			glEnable(GL_LIGHTING)
-			drawUpToLayer = min(self.gcodeDisplayListMade, self.parent.layerSpin.GetValue() + 1)
+			drawUpToLayer = min(self.gcodeDisplayListMade, self.parent.layerSelect.getValue() + 1)
 			starttime = time.time()
 			for i in xrange(drawUpToLayer - 1, -1, -1):
 				c = 1.0
-				if i < self.parent.layerSpin.GetValue():
+				if i < self.parent.layerSelect.getValue():
 					c = 0.9 - (drawUpToLayer - i) * 0.1
 					if c < 0.4:
 						c = (0.4 + c) / 2

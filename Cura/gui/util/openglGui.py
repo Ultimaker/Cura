@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 import wx
+import math
+
 from wx import glcanvas
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -51,6 +53,9 @@ class glGuiControl(object):
 	def hasFocus(self):
 		return self._base._focus == self
 
+	def OnMouseUp(self, x, y):
+		pass
+
 	def OnKeyChar(self, key):
 		pass
 
@@ -67,6 +72,12 @@ class glGuiContainer(glGuiControl):
 	def OnMouseDown(self, x, y):
 		for ctrl in self._glGuiControlList:
 			if ctrl.OnMouseDown(x, y):
+				return True
+		return False
+
+	def OnMouseUp(self, x, y):
+		for ctrl in self._glGuiControlList:
+			if ctrl.OnMouseUp(x, y):
 				return True
 		return False
 
@@ -103,6 +114,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 		wx.EVT_SIZE(self, self._OnSize)
 		wx.EVT_ERASE_BACKGROUND(self, self._OnEraseBackground)
 		wx.EVT_LEFT_DOWN(self, self._OnGuiMouseLeftDown)
+		wx.EVT_LEFT_UP(self, self._OnGuiMouseLeftUp)
 		wx.EVT_MOTION(self, self._OnGuiMouseMotion)
 		wx.EVT_CHAR(self, self.OnKeyChar)
 		wx.EVT_KILL_FOCUS(self, self.OnFocusLost)
@@ -122,6 +134,11 @@ class glGuiPanel(glcanvas.GLCanvas):
 			self.Refresh()
 			return
 		self.OnMouseLeftDown(e)
+	def _OnGuiMouseLeftUp(self, e):
+		if self._container.OnMouseUp(e.GetX(), e.GetY()):
+			self.Refresh()
+			return
+		self.OnMouseLeftUp(e)
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
@@ -132,9 +149,11 @@ class glGuiPanel(glcanvas.GLCanvas):
 		h = self.GetSize().GetHeight()
 		w = self.GetSize().GetWidth()
 		oldButtonSize = self._buttonSize
-		if h / 3 > w / 4:
+		if h / 3 < w / 4:
 			w = h * 4 / 3
-		if w < 64 * 10:
+		if w < 64 * 8:
+			self._buttonSize = 32
+		elif w < 64 * 10:
 			self._buttonSize = 48
 		elif w < 64 * 15:
 			self._buttonSize = 64
@@ -181,6 +200,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 	def OnMouseLeftDown(self,e):
 		pass
+	def OnMouseLeftUp(self,e):
+		pass
 	def OnMouseMotion(self, e):
 		pass
 	def OnPaint(self, e):
@@ -198,7 +219,7 @@ class glGuiLayoutButtons(object):
 	def update(self):
 		bs = self._parent._base._buttonSize
 		x0, y0, w, h = self._parent.getSize()
-		gridSize = bs * 1.3
+		gridSize = bs * 1.2
 		for ctrl in self._parent._glGuiControlList:
 			pos = ctrl._pos
 			if pos[0] < 0:
@@ -425,6 +446,10 @@ class glComboButton(glButton):
 
 	def getValue(self):
 		return self._selection
+
+	def setValue(self, value):
+		self._selection = value
+		self._comboCallback()
 
 	def OnMouseDown(self, x, y):
 		if self._hidden or self._disabled:
@@ -729,5 +754,126 @@ class glCheckbox(glGuiControl):
 	def OnMouseDown(self, x, y):
 		if self._checkHit(x, y):
 			self._value = not self._value
+			return True
+		return False
+
+class glSlider(glGuiControl):
+	def __init__(self, parent, value, minValue, maxValue, pos, callback):
+		super(glSlider, self).__init__(parent, pos)
+		self._callback = callback
+		self._focus = False
+		self._hidden = False
+		self._value = value
+		self._minValue = minValue
+		self._maxValue = maxValue
+
+	def setValue(self, value):
+		self._value = value
+		self._value = max(self._minValue, self._value)
+		self._value = min(self._maxValue, self._value)
+
+	def getValue(self):
+		return self._value
+
+	def setRange(self, minValue, maxValue):
+		self._minValue = minValue
+		self._maxValue = maxValue
+		self._value = max(minValue, self._value)
+		self._value = min(maxValue, self._value)
+
+	def getMinValue(self):
+		return self._minValue
+
+	def getMaxValue(self):
+		return self._maxValue
+
+	def setHidden(self, value):
+		self._hidden = value
+
+	def getMinSize(self):
+		return self._base._buttonSize, self._base._buttonSize
+
+	def _getPixelPos(self):
+		x0, y0, w, h = self.getSize()
+		return x0 + w / 2, y0
+
+	def draw(self):
+		if self._hidden:
+			return
+
+		cx = 0
+		cy = 0
+		bs = self._base._buttonSize
+		pos = self._getPixelPos()
+
+		glPushMatrix()
+		glTranslatef(pos[0], pos[1], 0)
+		glDisable(GL_TEXTURE_2D)
+		if self.hasFocus():
+			glColor4ub(32,32,32,255)
+		else:
+			glColor4ub(32,32,32,192)
+		glScalef(bs, bs, bs)
+		glBegin(GL_QUADS)
+		glVertex2f( 0.1,-1.0)
+		glVertex2f(-0.1,-1.0)
+		glVertex2f(-0.1, 1.0)
+		glVertex2f( 0.1, 1.0)
+		glEnd()
+		glTranslate(0.0,0.9,0)
+		if self._focus:
+			glColor4ub(0,0,0,255)
+			glPushMatrix()
+			glTranslate(-0.1,0,0)
+			opengl.glDrawStringRight(str(self._minValue))
+			glTranslate(0,-1.8,0)
+			opengl.glDrawStringRight(str(self._maxValue))
+			glTranslate(0.2,1.8-1.8*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
+			opengl.glDrawStringLeft(str(self._value))
+			glPopMatrix()
+		glColor4ub(255,255,255,240)
+		glTranslate(0.0,-1.8*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
+		glBegin(GL_QUADS)
+		glVertex2f( 0.1,-0.1)
+		glVertex2f(-0.1,-0.1)
+		glVertex2f(-0.1, 0.1)
+		glVertex2f( 0.1, 0.1)
+		glEnd()
+		glPopMatrix()
+
+	def _checkHit(self, x, y):
+		if self._hidden:
+			return False
+		bs = self._base._buttonSize
+		pos = self._getPixelPos()
+		return -bs * 0.1 <= x - pos[0] <= bs * 0.1 and -bs * 1.0 <= y - pos[1] <= bs * 1.0
+
+	def setFocus(self):
+		self._base._focus = self
+		return True
+
+	def OnMouseMotion(self, x, y):
+		if self.hasFocus():
+			bs = self._base._buttonSize
+			pos = self._getPixelPos()
+			self.setValue(int(self._minValue + (self._maxValue - self._minValue) * -(y - pos[1] - bs * 0.9) / (bs * 1.8)))
+			self._callback()
+			return True
+		if self._checkHit(x, y):
+			self._focus = True
+			return True
+		self._focus = False
+		return False
+
+	def OnMouseDown(self, x, y):
+		if self._checkHit(x, y):
+			self.setFocus()
+			self.OnMouseMotion(x, y)
+			return True
+		return False
+
+	def OnMouseUp(self, x, y):
+		if self.hasFocus():
+			self._base._focus = None
 			return True
 		return False

@@ -75,11 +75,7 @@ class gcode(object):
 		for line in gcodeFile:
 			if type(line) is tuple:
 				line = line[0]
-			if self.progressCallback != None:
-				if filePos != gcodeFile.tell():
-					filePos = gcodeFile.tell()
-					self.progressCallback(float(filePos) / float(self._fileSize))
-			
+
 			#Parse Cura_SF comments
 			if line.startswith(';TYPE:'):
 				pathType = line[6:].strip()
@@ -97,6 +93,13 @@ class gcode(object):
 					pathType = 'SKIRT'
 				if comment.startswith('LAYER:'):
 					self.layerList.append(currentLayer)
+					if self.progressCallback is not None:
+						if filePos != gcodeFile.tell():
+							filePos = gcodeFile.tell()
+							if self.progressCallback(float(filePos) / float(self._fileSize)):
+								#Abort the loading, we can safely return as the results here will be discarded
+								gcodeFile.close()
+								return
 					currentLayer = []
 				if pathType != "CUSTOM":
 					startCodeDone = True
