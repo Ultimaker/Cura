@@ -791,19 +791,18 @@ class glSlider(glGuiControl):
 		self._hidden = value
 
 	def getMinSize(self):
-		return self._base._buttonSize, self._base._buttonSize
+		return self._base._buttonSize * 0.2, self._base._buttonSize * 4
 
 	def _getPixelPos(self):
 		x0, y0, w, h = self.getSize()
-		return x0 + w / 2, y0
+		minSize = self.getMinSize()
+		return x0 + w / 2 - minSize[0] / 2, y0 + h / 2 - minSize[1] / 2
 
 	def draw(self):
 		if self._hidden:
 			return
 
-		cx = 0
-		cy = 0
-		bs = self._base._buttonSize
+		w, h = self.getMinSize()
 		pos = self._getPixelPos()
 
 		glPushMatrix()
@@ -813,40 +812,40 @@ class glSlider(glGuiControl):
 			glColor4ub(32,32,32,255)
 		else:
 			glColor4ub(32,32,32,192)
-		glScalef(bs, bs, bs)
 		glBegin(GL_QUADS)
-		glVertex2f( 0.1,-1.0)
-		glVertex2f(-0.1,-1.0)
-		glVertex2f(-0.1, 1.0)
-		glVertex2f( 0.1, 1.0)
+		glVertex2f( w/2,-h/2)
+		glVertex2f(-w/2,-h/2)
+		glVertex2f(-w/2, h/2)
+		glVertex2f( w/2, h/2)
 		glEnd()
-		glTranslate(0.0,0.9,0)
+		scrollLength = h - w
+		glTranslate(0.0,scrollLength/2,0)
 		if self._focus:
 			glColor4ub(0,0,0,255)
 			glPushMatrix()
-			glTranslate(-0.1,0,0)
+			glTranslate(-w/2,0,0)
 			opengl.glDrawStringRight(str(self._minValue))
-			glTranslate(0,-1.8,0)
+			glTranslate(0,-scrollLength,0)
 			opengl.glDrawStringRight(str(self._maxValue))
-			glTranslate(0.2,1.8-1.8*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
+			glTranslate(w,scrollLength-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
 			opengl.glDrawStringLeft(str(self._value))
 			glPopMatrix()
 		glColor4ub(255,255,255,240)
-		glTranslate(0.0,-1.8*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
+		glTranslate(0.0,-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
 		glBegin(GL_QUADS)
-		glVertex2f( 0.1,-0.1)
-		glVertex2f(-0.1,-0.1)
-		glVertex2f(-0.1, 0.1)
-		glVertex2f( 0.1, 0.1)
+		glVertex2f( w/2,-w/2)
+		glVertex2f(-w/2,-w/2)
+		glVertex2f(-w/2, w/2)
+		glVertex2f( w/2, w/2)
 		glEnd()
 		glPopMatrix()
 
 	def _checkHit(self, x, y):
 		if self._hidden:
 			return False
-		bs = self._base._buttonSize
 		pos = self._getPixelPos()
-		return -bs * 0.1 <= x - pos[0] <= bs * 0.1 and -bs * 1.0 <= y - pos[1] <= bs * 1.0
+		w, h = self.getMinSize()
+		return -w/2 <= x - pos[0] <= w/2 and -h/2 <= y - pos[1] <= h/2
 
 	def setFocus(self):
 		self._base._focus = self
@@ -854,9 +853,10 @@ class glSlider(glGuiControl):
 
 	def OnMouseMotion(self, x, y):
 		if self.hasFocus():
-			bs = self._base._buttonSize
+			w, h = self.getMinSize()
+			scrollLength = h - w
 			pos = self._getPixelPos()
-			self.setValue(int(self._minValue + (self._maxValue - self._minValue) * -(y - pos[1] - bs * 0.9) / (bs * 1.8)))
+			self.setValue(int(self._minValue + (self._maxValue - self._minValue) * -(y - pos[1] - scrollLength/2) / scrollLength))
 			self._callback()
 			return True
 		if self._checkHit(x, y):

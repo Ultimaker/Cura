@@ -449,6 +449,9 @@ class previewPanel(wx.Panel):
 
 	def updateToolbar(self):
 		self.printButton.setDisabled(self.gcode is None)
+		self.rotateToolButton.setHidden(self.glCanvas.viewMode == "GCode")
+		self.scaleToolButton.setHidden(self.glCanvas.viewMode == "GCode")
+		self.mirrorToolButton.setHidden(self.glCanvas.viewMode == "GCode")
 		if self.gcode is not None:
 			self.layerSelect.setRange(1, len(self.gcode.layerList) - 1)
 		self.Update()
