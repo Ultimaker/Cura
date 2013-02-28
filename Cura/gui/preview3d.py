@@ -206,7 +206,7 @@ class previewPanel(wx.Panel):
 		sx, sy = self.glCanvas.GetClientSizeTuple()
 		self.warningPopup.SetPosition((x, y+sy-self.warningPopup.GetSize().height))
 
-	def OnScaleMax(self, onlyScaleDown = False):
+	def OnScaleMax(self):
 		if self.objectsMinV is None:
 			return
 		vMin = self.objectsMinV
@@ -220,8 +220,6 @@ class previewPanel(wx.Panel):
 		scaleY2 = (self.machineCenter.y - skirtSize) / ((vMax[1] - vMin[1]) / 2)
 		scaleZ = self.machineSize.z / (vMax[2] - vMin[2])
 		scale = min(scaleX1, scaleY1, scaleX2, scaleY2, scaleZ)
-		if scale > 1.0 and onlyScaleDown:
-			return
 		self.matrix *= numpy.matrix([[scale,0,0],[0,scale,0],[0,0,scale]], numpy.float64)
 		if self.glCanvas.viewMode == 'GCode' or self.glCanvas.viewMode == 'Mixed':
 			self.setViewMode('Normal')
@@ -384,7 +382,6 @@ class previewPanel(wx.Panel):
 				obj.dirty = True
 				obj.steepDirty = True
 				self.updateModelTransform()
-				self.OnScaleMax(True)
 				self.glCanvas.zoom = self.objectsBoundaryCircleSize * 6.0
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
