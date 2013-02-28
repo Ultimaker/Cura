@@ -392,12 +392,10 @@ class previewPanel(wx.Panel):
 		
 		if os.path.isfile(self.gcodeFilename) and self.gcodeFileTime != os.stat(self.gcodeFilename).st_mtime:
 			self.gcodeFileTime = os.stat(self.gcodeFilename).st_mtime
-			gcode = gcodeInterpreter.gcode()
-			gcode.progressCallback = self.loadProgress
-			gcode.load(self.gcodeFilename)
-			self.gcodeDirty = False
-			self.gcode = gcode
 			self.gcodeDirty = True
+			self.gcode = gcodeInterpreter.gcode()
+			self.gcode.progressCallback = self.loadProgress
+			self.gcode.load(self.gcodeFilename)
 
 			errorList = []
 			for line in open(self.gcodeFilename, "rt"):
@@ -415,6 +413,11 @@ class previewPanel(wx.Panel):
 		wx.CallAfter(self.checkReloadFileTimer.Start, 1000)
 	
 	def loadProgress(self, progress):
+		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
+			self.layerSelect.setRange(1, len(self.gcode.layerList) - 1)
+			self.layerSelect.setValue(self.layerSelect.getMaxValue())
+		else:
+			self.layerSelect.setRange(1, len(self.gcode.layerList) - 1)
 		return self.abortLoading
 
 	def OnResetAll(self, e = None):
@@ -660,10 +663,12 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				self.gcodeDisplayListMade = 0
 
 			if self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
-				glNewList(self.gcodeDisplayList + self.gcodeDisplayListMade, GL_COMPILE)
-				opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeDisplayListMade])
-				glEndList()
-				self.gcodeDisplayListMade += 1
+				gcodeGenStartTime = time.time()
+				while time.time() - gcodeGenStartTime < 0.1 and self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
+					glNewList(self.gcodeDisplayList + self.gcodeDisplayListMade, GL_COMPILE)
+					opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeDisplayListMade])
+					glEndList()
+					self.gcodeDisplayListMade += 1
 				wx.CallAfter(self.Refresh)
 		
 		glPushMatrix()

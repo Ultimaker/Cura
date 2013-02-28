@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import math
 import numpy
 import wx
+import time
 
 from Cura.util import meshLoader
 from Cura.util import util3d
