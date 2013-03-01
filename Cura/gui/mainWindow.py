@@ -535,7 +535,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
 		self.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
-		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Print config')
+		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Basic')
 
 		configBase.TitleRow(left, "Quality")
 		c = configBase.SettingRow(left, "Layer height (mm)", 'layer_height', '0.2', 'Layer height in millimeters.\n0.2 is a good value for quick prints.\n0.1 gives high quality prints.')
@@ -581,7 +581,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 		self.SizeLabelWidths(left, right)
 		
-		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced config')
+		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced')
 		
 		configBase.TitleRow(left, "Machine size")
 		c = configBase.SettingRow(left, "Nozzle size (mm)", 'nozzle_size', '0.4', 'The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings.')
