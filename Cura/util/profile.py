@@ -95,6 +95,7 @@ G92 E0                  ;zero the extruded length
 G1 F200 E3              ;extrude 3mm of feed stock
 G92 E0                  ;zero the extruded length again
 G1 F{travel_speed}
+M117 Printing...
 """,
 #######################################################################################
 	'end.gcode': """;End GCode

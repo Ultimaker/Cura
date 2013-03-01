@@ -100,11 +100,11 @@ class previewPanel(wx.Panel):
 
 		extruderCount = int(profile.getPreference('extruder_amount'))
 		if extruderCount > 1:
-			openglGui.glButton(self.glCanvas, 3, 'Load dual model', (1,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
+			openglGui.glButton(self.glCanvas, 3, 'Load dual model', (0,1), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
 		if extruderCount > 2:
-			openglGui.glButton(self.glCanvas, 3, 'Load triple model', (2,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(3))
+			openglGui.glButton(self.glCanvas, 3, 'Load triple model', (0,2), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(3))
 		if extruderCount > 3:
-			openglGui.glButton(self.glCanvas, 3, 'Load quad model', (3,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
+			openglGui.glButton(self.glCanvas, 3, 'Load quad model', (0,3), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
 
 		self.scaleForm = openglGui.glFrame(self.glCanvas, (2, -3))
 		openglGui.glGuiLayoutGrid(self.scaleForm)
