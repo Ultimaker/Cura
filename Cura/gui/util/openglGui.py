@@ -497,11 +497,10 @@ class glFrame(glGuiContainer):
 
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
-		glBindTexture(GL_TEXTURE_2D, self._parent._glButtonsTexture)
-		glEnable(GL_TEXTURE_2D)
+		glDisable(GL_TEXTURE_2D)
 
 		size = self._layout.getLayoutSize()
-		glColor4ub(255,255,255,128)
+		glColor4ub(0x60,0x60,0x60,255)
 		glBegin(GL_QUADS)
 		glTexCoord2f(1, 0)
 		glVertex2f( size[0], 0)
@@ -823,7 +822,7 @@ class glSlider(glGuiControl):
 		if self._focus:
 			glColor4ub(0,0,0,255)
 			glPushMatrix()
-			glTranslate(-w/2,0,0)
+			glTranslate(-w/2,opengl.glGetStringSize(str(self._minValue))[1]/2,0)
 			opengl.glDrawStringRight(str(self._minValue))
 			glTranslate(0,-scrollLength,0)
 			opengl.glDrawStringRight(str(self._maxValue))
