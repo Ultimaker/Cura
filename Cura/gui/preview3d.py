@@ -124,7 +124,7 @@ class previewPanel(wx.Panel):
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [0,1,2,3,4], ['3D Model', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
-		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-1), self.OnLayerNrChange)
+		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-2), self.OnLayerNrChange)
 
 		self.OnViewChange()
 		self.OnToolSelect()

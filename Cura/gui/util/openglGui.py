@@ -108,6 +108,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 		self._context = glcanvas.GLContext(self)
 		self._glButtonsTexture = None
+		self._glRobotTexture = None
 		self._buttonSize = 64
 
 		wx.EVT_PAINT(self, self._OnGuiPaint)
@@ -174,6 +175,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 	def _drawGui(self):
 		if self._glButtonsTexture is None:
 			self._glButtonsTexture = opengl.loadGLTexture('glButtons.png')
+			self._glRobotTexture = opengl.loadGLTexture('UltimakerRobot.png')
 
 		glDisable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
@@ -188,6 +190,25 @@ class glGuiPanel(glcanvas.GLCanvas):
 		glLoadIdentity()
 
 		self._container.draw()
+		glBindTexture(GL_TEXTURE_2D, self._glRobotTexture)
+		glEnable(GL_TEXTURE_2D)
+		glPushMatrix()
+		glColor4f(1,1,1,1)
+		glTranslate(size.GetWidth() - 8,size.GetHeight() - 16,0)
+		s = self._buttonSize * 1.4
+		glScale(s,s,s)
+		glBegin(GL_QUADS)
+		glTexCoord2f(1, 0)
+		glVertex2f(0,-1)
+		glTexCoord2f(0, 0)
+		glVertex2f(-1,-1)
+		glTexCoord2f(0, 1)
+		glVertex2f(-1, 0)
+		glTexCoord2f(1, 1)
+		glVertex2f(0, 0)
+		glEnd()
+		glDisable(GL_TEXTURE_2D)
+		glPopMatrix()
 
 	def _OnEraseBackground(self,event):
 		#Workaround for windows background redraw flicker.
@@ -500,7 +521,7 @@ class glFrame(glGuiContainer):
 		glDisable(GL_TEXTURE_2D)
 
 		size = self._layout.getLayoutSize()
-		glColor4ub(0x60,0x60,0x60,255)
+		glColor4ub(60,60,60,255)
 		glBegin(GL_QUADS)
 		glTexCoord2f(1, 0)
 		glVertex2f( size[0], 0)
@@ -808,9 +829,9 @@ class glSlider(glGuiControl):
 		glTranslatef(pos[0], pos[1], 0)
 		glDisable(GL_TEXTURE_2D)
 		if self.hasFocus():
-			glColor4ub(32,32,32,255)
+			glColor4ub(60,60,60,255)
 		else:
-			glColor4ub(32,32,32,192)
+			glColor4ub(60,60,60,192)
 		glBegin(GL_QUADS)
 		glVertex2f( w/2,-h/2)
 		glVertex2f(-w/2,-h/2)
