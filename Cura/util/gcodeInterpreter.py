@@ -51,7 +51,6 @@ class gcode(object):
 		return None
 	
 	def _load(self, gcodeFile):
-		filePos = 0
 		pos = util3d.Vector3()
 		posOffset = util3d.Vector3()
 		currentE = 0.0
@@ -94,12 +93,10 @@ class gcode(object):
 				if comment.startswith('LAYER:'):
 					self.layerList.append(currentLayer)
 					if self.progressCallback is not None:
-						if filePos != gcodeFile.tell():
-							filePos = gcodeFile.tell()
-							if self.progressCallback(float(filePos) / float(self._fileSize)):
-								#Abort the loading, we can safely return as the results here will be discarded
-								gcodeFile.close()
-								return
+						if self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize)):
+							#Abort the loading, we can safely return as the results here will be discarded
+							gcodeFile.close()
+							return
 					currentLayer = []
 				if pathType != "CUSTOM":
 					startCodeDone = True
@@ -262,6 +259,8 @@ class gcode(object):
 					else:
 						print "Unknown M code:" + str(M)
 		self.layerList.append(currentLayer)
+		if self.progressCallback is not None:
+			self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize))
 		self.extrusionAmount = maxExtrusion
 		self.totalMoveTimeMinute = totalMoveTimeMinute
 		#print "Extruded a total of: %d mm of filament" % (self.extrusionAmount)

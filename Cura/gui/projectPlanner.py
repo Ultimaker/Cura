@@ -74,7 +74,7 @@ class ProjectObject(object):
 	def getSize(self):
 		return self.mesh.getSize()
 	def getBoundaryCircle(self):
-		return self.mesh.bounderyCircleSize
+		return self.mesh.boundaryCircleSize
 	
 	def clone(self):
 		p = ProjectObject(self.parent, self.filename)

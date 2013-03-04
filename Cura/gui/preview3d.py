@@ -495,14 +495,14 @@ class previewPanel(wx.Panel):
 
 		minV = self.objectList[0].mesh.getMinimum()
 		maxV = self.objectList[0].mesh.getMaximum()
-		objectsBoundaryCircleSize = self.objectList[0].mesh.bounderyCircleSize
+		objectsBoundaryCircleSize = self.objectList[0].mesh.boundaryCircleSize
 		for obj in self.objectList:
 			if obj.mesh is None:
 				continue
 
 			minV = numpy.minimum(minV, obj.mesh.getMinimum())
 			maxV = numpy.maximum(maxV, obj.mesh.getMaximum())
-			objectsBoundaryCircleSize = max(objectsBoundaryCircleSize, obj.mesh.bounderyCircleSize)
+			objectsBoundaryCircleSize = max(objectsBoundaryCircleSize, obj.mesh.boundaryCircleSize)
 
 		self.objectsMaxV = maxV
 		self.objectsMinV = minV
@@ -538,9 +538,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		self.zoom = 300
 		self.viewTarget = [parent.machineCenter.x, parent.machineCenter.y, 0.0]
 		self.view3D = True
-		self.gcodeDisplayList = None
-		self.gcodeDisplayListMade = None
-		self.gcodeDisplayListCount = 0
+		self.gcodeDisplayList = []
+		self.gcodeQuickDisplayList = []
+		self.gcodeDisplayListMade = 0
+		self.gcodeQuickDisplayListMade = 0
 		self.objColor = [[1.0, 0.8, 0.6, 1.0], [0.2, 1.0, 0.1, 1.0], [1.0, 0.2, 0.1, 1.0], [0.1, 0.2, 1.0, 1.0]]
 		self.oldX = 0
 		self.oldY = 0
@@ -641,8 +642,9 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glRotate(self.yaw, 0,0,1)
 
 			if self.viewMode == "GCode" or self.viewMode == "Mixed":
-				if self.parent.gcode is not None and len(self.parent.gcode.layerList) > self.parent.layerSelect.getValue() and len(self.parent.gcode.layerList[self.parent.layerSelect.getValue()]) > 0:
-					self.viewTarget[2] = self.parent.gcode.layerList[self.parent.layerSelect.getValue()][0].list[-1].z
+				n = self.parent.layerSelect.getValue()
+				if self.parent.gcode is not None and -1 < n < len(self.parent.gcode.layerList) and len(self.parent.gcode.layerList[n]) > 0:
+					self.viewTarget[2] = self.parent.gcode.layerList[n][0].list[-1].z
 			else:
 				if self.parent.objectsMaxV is not None:
 					self.viewTarget = self.getObjectCenterPos()
@@ -659,19 +661,24 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 
 		if self.parent.gcode is not None and (self.viewMode == "GCode" or self.viewMode == "Mixed"):
 			if self.parent.gcodeDirty:
-				if self.gcodeDisplayListCount < len(self.parent.gcode.layerList) or self.gcodeDisplayList is None:
-					if self.gcodeDisplayList is not None:
-						glDeleteLists(self.gcodeDisplayList, self.gcodeDisplayListCount)
-					self.gcodeDisplayList = glGenLists(len(self.parent.gcode.layerList))
-					self.gcodeDisplayListCount = len(self.parent.gcode.layerList)
 				self.parent.gcodeDirty = False
 				self.gcodeDisplayListMade = 0
+				self.gcodeQuickDisplayListMade = 0
 
 			if self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
 				gcodeGenStartTime = time.time()
+				while time.time() - gcodeGenStartTime < 0.1 and self.gcodeQuickDisplayListMade < len(self.parent.gcode.layerList):
+					if len(self.gcodeQuickDisplayList) == self.gcodeQuickDisplayListMade:
+						self.gcodeQuickDisplayList.append(glGenLists(1))
+					glNewList(self.gcodeQuickDisplayList[self.gcodeQuickDisplayListMade], GL_COMPILE)
+					opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeQuickDisplayListMade], True)
+					glEndList()
+					self.gcodeQuickDisplayListMade += 1
 				while time.time() - gcodeGenStartTime < 0.1 and self.gcodeDisplayListMade < len(self.parent.gcode.layerList):
-					glNewList(self.gcodeDisplayList + self.gcodeDisplayListMade, GL_COMPILE)
-					opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeDisplayListMade])
+					if len(self.gcodeDisplayList) == self.gcodeDisplayListMade:
+						self.gcodeDisplayList.append(glGenLists(1))
+					glNewList(self.gcodeDisplayList[self.gcodeDisplayListMade], GL_COMPILE)
+					opengl.DrawGCodeLayer(self.parent.gcode.layerList[self.gcodeDisplayListMade], False)
 					glEndList()
 					self.gcodeDisplayListMade += 1
 				wx.CallAfter(self.Refresh)
@@ -709,7 +716,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
 			glEnable(GL_COLOR_MATERIAL)
 			glEnable(GL_LIGHTING)
-			drawUpToLayer = min(self.gcodeDisplayListMade, self.parent.layerSelect.getValue() + 1)
+			drawUpToLayer = min(self.gcodeQuickDisplayListMade, self.parent.layerSelect.getValue() + 1)
 			starttime = time.time()
 			for i in xrange(drawUpToLayer - 1, -1, -1):
 				c = 1.0
@@ -721,9 +728,10 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 						c = 0.1
 				glLightfv(GL_LIGHT0, GL_DIFFUSE, [0,0,0,0])
 				glLightfv(GL_LIGHT0, GL_AMBIENT, [c,c,c,c])
-				glCallList(self.gcodeDisplayList + i)
-				if time.time() - starttime > 0.1:
-					break
+				if self.gcodeDisplayListMade > i and drawUpToLayer - i < 15:
+					glCallList(self.gcodeDisplayList[i])
+				else:
+					glCallList(self.gcodeQuickDisplayList[i])
 
 			glDisable(GL_LIGHTING)
 			glDisable(GL_COLOR_MATERIAL)

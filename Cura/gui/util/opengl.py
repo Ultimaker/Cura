@@ -393,7 +393,7 @@ def DrawMeshSteep(mesh, matrix, angle):
 	glDepthFunc(GL_LESS)
 
 
-def DrawGCodeLayer(layer):
+def DrawGCodeLayer(layer, drawQuick = True):
 	filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
 	filamentArea = math.pi * filamentRadius * filamentRadius
 	lineWidth = profile.getProfileSettingFloat('nozzle_size') / 2 / 10
@@ -415,11 +415,15 @@ def DrawGCodeLayer(layer):
 				c = retractColor
 			else:
 				c = moveColor
+			if drawQuick:
+				continue
 		zOffset = 0.01
 		if path.type == 'extrude':
 			if path.pathType == 'FILL':
 				c = fillColorCycle[fillCycle]
 				fillCycle = (fillCycle + 1) % len(fillColorCycle)
+				if drawQuick:
+					continue
 			elif path.pathType == 'WALL-INNER':
 				c = innerWallColor
 				zOffset = 0.02
@@ -431,7 +435,7 @@ def DrawGCodeLayer(layer):
 				c = extrudeColor
 		if path.type == 'retract':
 			c = retractColor
-		if path.type == 'extrude':
+		if path.type == 'extrude' and not drawQuick:
 			drawLength = 0.0
 			prevNormal = None
 			for i in xrange(0, len(path.list) - 1):
