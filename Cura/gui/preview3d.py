@@ -716,12 +716,13 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				glTranslate(self.parent.machineCenter.x, self.parent.machineCenter.y, 0)
 			glEnable(GL_COLOR_MATERIAL)
 			glEnable(GL_LIGHTING)
-			drawUpToLayer = min(self.gcodeQuickDisplayListMade, self.parent.layerSelect.getValue() + 1)
-			starttime = time.time()
-			for i in xrange(drawUpToLayer - 1, -1, -1):
+			drawQuickUpToLayer = min(self.gcodeQuickDisplayListMade, self.parent.layerSelect.getValue() + 1)
+			drawUpToLayer = min(self.gcodeDisplayListMade, self.parent.layerSelect.getValue() + 1)
+
+			for i in xrange(drawQuickUpToLayer - 1, -1, -1):
 				c = 1.0
 				if i < self.parent.layerSelect.getValue():
-					c = 0.9 - (drawUpToLayer - i) * 0.1
+					c = 0.9 - (drawQuickUpToLayer - i) * 0.1
 					if c < 0.4:
 						c = (0.4 + c) / 2
 					if c < 0.1:
