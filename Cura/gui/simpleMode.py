@@ -19,6 +19,7 @@ class simpleModePanel(wx.Panel):
 		self.printTypeLow = wx.RadioButton(printTypePanel, -1, 'Fast low quality print')
 		self.printTypeHigh = wx.RadioButton(printTypePanel, -1, 'High quality print')
 		self.printTypeJoris = wx.RadioButton(printTypePanel, -1, 'Thin walled cup or vase')
+		self.printTypeJoris.Hide()
 
 		printMaterialPanel = wx.Panel(self)
 		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA', style=wx.RB_GROUP)
@@ -26,7 +27,8 @@ class simpleModePanel(wx.Panel):
 		self.printMaterialDiameter = wx.TextCtrl(printMaterialPanel, -1, profile.getProfileSetting('filament_diameter'))
 		
 		self.printSupport = wx.CheckBox(self, -1, 'Print support structure')
-		
+		self.printSupport.Hide()
+
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
 
@@ -50,10 +52,10 @@ class simpleModePanel(wx.Panel):
 		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
 
-		sb = wx.StaticBox(self, label="Other:")
-		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		boxsizer.Add(self.printSupport)
-		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
+		#sb = wx.StaticBox(self, label="Other:")
+		#boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		#boxsizer.Add(self.printSupport)
+		#sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		self.printTypeNormal.SetValue(True)
 		self.printMaterialPLA.SetValue(True)

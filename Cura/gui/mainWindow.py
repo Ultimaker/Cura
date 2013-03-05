@@ -28,7 +28,7 @@ from Cura.util import meshLoader
 
 class mainWindow(wx.Frame):
 	def __init__(self):
-		super(mainWindow, self).__init__(None, title='Cura - ' + version.getVersion())
+		super(mainWindow, self).__init__(None, title='Cura Steam Engine BETA - ' + version.getVersion())
 
 		self.extruderCount = int(profile.getPreference('extruder_amount'))
 
@@ -544,7 +544,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(left, "Wall thickness (mm)", 'wall_thickness', '0.8', 'Thickness of the walls.\nThis is used in combination with the nozzle size to define the number\nof perimeter lines and the thickness of those perimeter lines.')
 		validators.validFloat(c, 0.0001)
 		validators.wallThicknessValidator(c)
-		c = configBase.SettingRow(left, "Enable retraction", 'retraction_enable', False, 'Retract the filament when the nozzle is moving over a none-printed area. Details about the retraction can be configured in the advanced tab.')
+#		c = configBase.SettingRow(left, "Enable retraction", 'retraction_enable', False, 'Retract the filament when the nozzle is moving over a none-printed area. Details about the retraction can be configured in the advanced tab.')
 
 		configBase.TitleRow(left, "Fill")
 		c = configBase.SettingRow(left, "Bottom/Top thickness (mm)", 'solid_layer_thickness', '0.6', 'This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value.\nHaving this value a multiply of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.')
@@ -566,18 +566,18 @@ class normalSettingsPanel(configBase.configPanelBase):
 			c = configBase.SettingRow(right, "Bed temperature", 'print_bed_temperature', '0', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself')
 			validators.validFloat(c, 0.0, 340.0)
 
-		configBase.TitleRow(right, "Support structure")
-		c = configBase.SettingRow(right, "Support type", 'support', ['None', 'Exterior Only', 'Everywhere'], 'Type of support structure build.\n"Exterior only" is the most commonly used support setting.\n\nNone does not do any support.\nExterior only only creates support where the support structure will touch the build platform.\nEverywhere creates support even on the insides of the model.')
-		c = configBase.SettingRow(right, "Add raft", 'enable_raft', False, 'A raft is a few layers of lines below the bottom of the object. It prevents warping. Full raft settings can be found in the expert settings.\nFor PLA this is usually not required. But if you print with ABS it is almost required.')
-		if int(profile.getPreference('extruder_amount')) > 1:
-			c = configBase.SettingRow(right, "Support dual extrusion", 'support_dual_extrusion', False, 'Print the support material with the 2nd extruder in a dual extrusion setup. The primary extruder will be used for normal material, while the second extruder is used to print support material.')
+#		configBase.TitleRow(right, "Support structure")
+#		c = configBase.SettingRow(right, "Support type", 'support', ['None', 'Exterior Only', 'Everywhere'], 'Type of support structure build.\n"Exterior only" is the most commonly used support setting.\n\nNone does not do any support.\nExterior only only creates support where the support structure will touch the build platform.\nEverywhere creates support even on the insides of the model.')
+#		c = configBase.SettingRow(right, "Add raft", 'enable_raft', False, 'A raft is a few layers of lines below the bottom of the object. It prevents warping. Full raft settings can be found in the expert settings.\nFor PLA this is usually not required. But if you print with ABS it is almost required.')
+#		if int(profile.getPreference('extruder_amount')) > 1:
+#			c = configBase.SettingRow(right, "Support dual extrusion", 'support_dual_extrusion', False, 'Print the support material with the 2nd extruder in a dual extrusion setup. The primary extruder will be used for normal material, while the second extruder is used to print support material.')
 
 		configBase.TitleRow(right, "Filament")
 		c = configBase.SettingRow(right, "Diameter (mm)", 'filament_diameter', '2.89', 'Diameter of your filament, as accurately as possible.\nIf you cannot measure this value you will have to callibrate it, a higher number means less extrusion, a smaller number generates more extrusion.')
 		validators.validFloat(c, 1.0)
 		validators.warningAbove(c, 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
-		c = configBase.SettingRow(right, "Packing Density", 'filament_density', '1.00', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
-		validators.validFloat(c, 0.5, 1.5)
+#		c = configBase.SettingRow(right, "Packing Density", 'filament_density', '1.00', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
+#		validators.validFloat(c, 0.5, 1.5)
 
 		self.SizeLabelWidths(left, right)
 		
@@ -593,38 +593,38 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(left, "Start distance (mm)", 'skirt_gap', '6.0', 'The distance between the skirt and the first layer.\nThis is the minimal distance, multiple skirt lines will be put outwards from this distance.')
 		validators.validFloat(c, 0.0)
 
-		configBase.TitleRow(left, "Retraction")
-		c = configBase.SettingRow(left, "Minimum travel (mm)", 'retraction_min_travel', '5.0', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
-		validators.validFloat(c, 0.0)
-		c = configBase.SettingRow(left, "Speed (mm/s)", 'retraction_speed', '40.0', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
-		validators.validFloat(c, 0.1)
-		c = configBase.SettingRow(left, "Distance (mm)", 'retraction_amount', '0.0', 'Amount of retraction, set at 0 for no retraction at all. A value of 2.0mm seems to generate good results.')
-		validators.validFloat(c, 0.0)
-		c = configBase.SettingRow(left, "Extra length on start (mm)", 'retraction_extra', '0.0', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
-		validators.validFloat(c, 0.0)
+#		configBase.TitleRow(left, "Retraction")
+#		c = configBase.SettingRow(left, "Minimum travel (mm)", 'retraction_min_travel', '5.0', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
+#		validators.validFloat(c, 0.0)
+#		c = configBase.SettingRow(left, "Speed (mm/s)", 'retraction_speed', '40.0', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
+#		validators.validFloat(c, 0.1)
+#		c = configBase.SettingRow(left, "Distance (mm)", 'retraction_amount', '0.0', 'Amount of retraction, set at 0 for no retraction at all. A value of 2.0mm seems to generate good results.')
+#		validators.validFloat(c, 0.0)
+#		c = configBase.SettingRow(left, "Extra length on start (mm)", 'retraction_extra', '0.0', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
+#		validators.validFloat(c, 0.0)
 
 		configBase.TitleRow(right, "Speed")
 		c = configBase.SettingRow(right, "Travel speed (mm/s)", 'travel_speed', '150', 'Speed at which travel moves are done, a high quality build Ultimaker can reach speeds of 250mm/s. But some machines might miss steps then.')
 		validators.validFloat(c, 1.0)
 		validators.warningAbove(c, 300.0, "It is highly unlikely that your machine can achieve a travel speed above 300mm/s")
-		c = configBase.SettingRow(right, "Max Z speed (mm/s)", 'max_z_speed', '1.0', 'Speed at which Z moves are done. When you Z axis is properly lubercated you can increase this for less Z blob.')
-		validators.validFloat(c, 0.5)
+#		c = configBase.SettingRow(right, "Max Z speed (mm/s)", 'max_z_speed', '1.0', 'Speed at which Z moves are done. When you Z axis is properly lubercated you can increase this for less Z blob.')
+#		validators.validFloat(c, 0.5)
 		c = configBase.SettingRow(right, "Bottom layer speed (mm/s)", 'bottom_layer_speed', '25', 'Print speed for the bottom layer, you want to print the first layer slower so it sticks better to the printer bed.')
 		validators.validFloat(c, 0.0)
 
-		configBase.TitleRow(right, "Cool")
-		c = configBase.SettingRow(right, "Minimal layer time (sec)", 'cool_min_layer_time', '10', 'Minimum time spend in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spend atleast this amount of seconds printing this layer.')
-		validators.validFloat(c, 0.0)
-		c = configBase.SettingRow(right, "Enable cooling fan", 'fan_enabled', True, 'Enable the cooling fan during the print. The extra cooling from the cooling fan is essensial during faster prints.')
+#		configBase.TitleRow(right, "Cool")
+#		c = configBase.SettingRow(right, "Minimal layer time (sec)", 'cool_min_layer_time', '10', 'Minimum time spend in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spend atleast this amount of seconds printing this layer.')
+#		validators.validFloat(c, 0.0)
+#		c = configBase.SettingRow(right, "Enable cooling fan", 'fan_enabled', True, 'Enable the cooling fan during the print. The extra cooling from the cooling fan is essensial during faster prints.')
 
 		configBase.TitleRow(right, "Quality")
 		c = configBase.SettingRow(right, "Initial layer thickness (mm)", 'bottom_thickness', '0.0', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
 		validators.validFloat(c, 0.0)
 		validators.warningAbove(c, lambda : (float(profile.getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
-		c = configBase.SettingRow(right, "Cut off object bottom (mm)", 'object_sink', 0.05, '...')
-		validators.validFloat(c, 0.0)
-		configBase.settingNotify(c, lambda : self.GetParent().GetParent().GetParent().preview3d.Refresh())
-		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
+#		c = configBase.SettingRow(right, "Cut off object bottom (mm)", 'object_sink', 0.05, '...')
+#		validators.validFloat(c, 0.0)
+#		configBase.settingNotify(c, lambda : self.GetParent().GetParent().GetParent().preview3d.Refresh())
+#		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
 
 		self.SizeLabelWidths(left, right)
 
