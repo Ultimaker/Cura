@@ -8,6 +8,7 @@ import urllib
 import urllib2
 import platform
 import hashlib
+import subprocess
 
 if not hasattr(sys, 'frozen'):
 	cura_sf_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "./cura_sf/"))
@@ -35,6 +36,54 @@ def main():
 	if options.profile is not None:
 		profile.loadGlobalProfileFromString(options.profile)
 	options.output = fixUTF8(options.output)
+
+	steamEngineFilename = os.path.join(os.path.dirname(__file__), 'SteamEngine')
+	if platform.system() == "Windows":
+		steamEngineFilename += ".exe"
+		if os.path.isfile("C:\Software\Cura_SteamEngine\_bin\Release\Cura_SteamEngine.exe"):
+			steamEngineFilename = "C:\Software\Cura_SteamEngine\_bin\Release\Cura_SteamEngine.exe"
+	if os.path.isfile(steamEngineFilename):
+		for idx in xrange(0, len(args), 2):
+			position = map(float, args[idx].split(','))
+			if len(position) < 9 + 2:
+				position = position[0:2]
+				position += [1,0,0]
+				position += [0,1,0]
+				position += [0,0,1]
+
+			settings = {}
+			settings['layerThickness'] = int(profile.getProfileSettingFloat('layer_height') * 1000)
+			settings['initialLayerThickness'] = int(profile.getProfileSettingFloat('bottom_thickness') * 1000)
+			settings['filamentDiameter'] = int(profile.getProfileSettingFloat('filament_diameter') * 1000)
+			settings['extrusionWidth'] = int(profile.calculateEdgeWidth() * 1000)
+			settings['insetCount'] = int(profile.calculateLineCount())
+			settings['downSkinCount'] = int(profile.calculateSolidLayerCount())
+			settings['upSkinCount'] = int(profile.calculateSolidLayerCount())
+			if profile.getProfileSettingFloat('fill_density') > 0:
+				settings['sparseInfillLineDistance'] = int(100 * 1000 * profile.calculateEdgeWidth() / profile.getProfileSettingFloat('fill_density'))
+			else:
+				settings['sparseInfillLineDistance'] = 9999999
+			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
+			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
+
+			settings['initialSpeedupLayers'] = int(4)
+			settings['initialLayerSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
+			settings['printSpeed'] = int(profile.getProfileSettingFloat('print_speed'))
+			settings['moveSpeed'] = int(profile.getProfileSettingFloat('travel_speed'))
+			settings['fanOnLayerNr'] = int(profile.getProfileSettingFloat('fan_layer'))
+
+			cmdList = [steamEngineFilename, args[idx+1], '-o', options.output, '-m', ','.join(map(str, position[2:]))]
+			for (key, value) in settings.items():
+				cmdList += ['-s', str(key) + "=" + str(value)]
+			kwargs = {}
+			if subprocess.mswindows:
+				su = subprocess.STARTUPINFO()
+				su.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+				su.wShowWindow = subprocess.SW_HIDE
+				kwargs['startupinfo'] = su
+			p = subprocess.Popen(cmdList, **kwargs)
+			p.communicate()
+		return
 
 	clearZ = 0
 	resultFile = open(options.output, "w")
