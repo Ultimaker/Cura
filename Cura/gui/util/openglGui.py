@@ -849,7 +849,8 @@ class glSlider(glGuiControl):
 			opengl.glDrawStringRight(str(self._minValue))
 			glTranslate(0,-scrollLength,0)
 			opengl.glDrawStringRight(str(self._maxValue))
-			glTranslate(w,scrollLength-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
+			if self._maxValue-self._minValue > 0:
+				glTranslate(w,scrollLength-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
 			opengl.glDrawStringLeft(str(self._value))
 			glPopMatrix()
 		glColor4ub(255,255,255,240)
