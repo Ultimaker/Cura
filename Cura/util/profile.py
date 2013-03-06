@@ -127,7 +127,7 @@ G90                                    ;absolute positioning
 
 G1 Z{clear_z} F{max_z_speed}
 G92 E0
-G1 X{object_center_x} Y{object_center_x} F{travel_speed}
+G1 X{object_center_x} Y{object_center_y} F{travel_speed}
 G1 F200 E6
 G92 E0
 """,
