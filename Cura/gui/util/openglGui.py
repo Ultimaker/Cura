@@ -372,7 +372,6 @@ class glButton(glGuiControl):
 		glTranslatef(pos[0], pos[1], 0)
 		glDisable(GL_TEXTURE_2D)
 		if self._focus:
-			glColor4ub(0,0,0,255)
 			glColor4ub(255,255,255,255)
 			glTranslatef(0, -0.55*bs*scale, 0)
 			opengl.glDrawStringCenter(self._tooltip)
@@ -451,12 +450,12 @@ class glComboButton(glButton):
 		glScalef(bs, bs, bs)
 		for n in xrange(0, len(self._imageIDs)):
 			glTranslatef(0, 1, 0)
-			glColor3ub(255,255,255)
+			glColor4ub(255,255,255,255)
 			opengl.glDrawTexturedQuad(-0.5,-0.5,1,1, self._imageIDs[n])
 			glDisable(GL_TEXTURE_2D)
 
 			glPushMatrix()
-			glColor4ub(0,0,0,255)
+			glColor4ub(255,255,255,255)
 			glTranslatef(-0.55, 0.1, 0)
 			opengl.glDrawStringRight(self._tooltips[n])
 			glPopMatrix()
