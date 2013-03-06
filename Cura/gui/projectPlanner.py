@@ -199,32 +199,74 @@ class projectPlanner(wx.Frame):
 		
 		sizer = wx.GridBagSizer(2,2)
 		panel.SetSizer(sizer)
-		
-		self.rotateToolButton = openglGui.glButton(self.glCanvas, 1, 'Rotate', (0,1), self.OnRotateSelect)
-		self.scaleToolButton  = openglGui.glButton(self.glCanvas, 2, 'Scale', (0,2), self.OnScaleSelect)
+
+		group = []
+		self.rotateToolButton = openglGui.glRadioButton(self.glCanvas, 8, 'Rotate', (0,-1), group, self.OnToolSelect)
+		self.scaleToolButton  = openglGui.glRadioButton(self.glCanvas, 9, 'Scale', (1,-1), group, self.OnToolSelect)
+		self.mirrorToolButton  = openglGui.glRadioButton(self.glCanvas, 10, 'Mirror', (2,-1), group, self.OnToolSelect)
+
+		self.resetRotationButton = openglGui.glButton(self.glCanvas, 12, 'Reset', (0,-2), self.OnRotateReset)
+		self.layFlatButton       = openglGui.glButton(self.glCanvas, 16, 'Lay flat', (0,-3), self.OnLayFlat)
+
+		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 13, 'Reset', (1,-2), self.OnScaleReset)
+		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 17, 'To max', (1,-3), self.OnScaleMax)
+
+		self.mirrorXButton       = openglGui.glButton(self.glCanvas, 14, 'Mirror X', (2,-2), lambda : self.OnMirror(0))
+		self.mirrorYButton       = openglGui.glButton(self.glCanvas, 18, 'Mirror Y', (2,-3), lambda : self.OnMirror(1))
+		self.mirrorZButton       = openglGui.glButton(self.glCanvas, 22, 'Mirror Z', (2,-4), lambda : self.OnMirror(2))
+
+		self.scaleForm = openglGui.glFrame(self.glCanvas, (2, -2))
+		openglGui.glGuiLayoutGrid(self.scaleForm)
+		openglGui.glLabel(self.scaleForm, 'Scale X', (0,0))
+		self.scaleXctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,0), lambda value: self.OnScaleEntry(value, 0))
+		openglGui.glLabel(self.scaleForm, 'Scale Y', (0,1))
+		self.scaleYctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,1), lambda value: self.OnScaleEntry(value, 1))
+		openglGui.glLabel(self.scaleForm, 'Scale Z', (0,2))
+		self.scaleZctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,2), lambda value: self.OnScaleEntry(value, 2))
+		openglGui.glLabel(self.scaleForm, 'Size X (mm)', (0,4))
+		self.scaleXmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,4), lambda value: self.OnScaleEntryMM(value, 0))
+		openglGui.glLabel(self.scaleForm, 'Size Y (mm)', (0,5))
+		self.scaleYmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,5), lambda value: self.OnScaleEntryMM(value, 1))
+		openglGui.glLabel(self.scaleForm, 'Size Z (mm)', (0,6))
+		self.scaleZmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,6), lambda value: self.OnScaleEntryMM(value, 2))
+		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
+		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self.SetSize((800,600))
 
-		self.tool = previewTools.toolInfo(self.glCanvas)
+		self.OnToolSelect()
 
-	def OnInfoSelect(self):
-		self.infoToolButton.setSelected(True)
-		self.rotateToolButton.setSelected(False)
-		self.scaleToolButton.setSelected(False)
-		self.tool = previewTools.toolInfo(self.glCanvas)
+	def OnToolSelect(self):
+		if self.rotateToolButton.getSelected():
+			self.tool = previewTools.toolRotate(self.glCanvas)
+		elif self.scaleToolButton.getSelected():
+			self.tool = previewTools.toolScale(self.glCanvas)
+		elif self.mirrorToolButton.getSelected():
+			self.tool = previewTools.toolNone(self.glCanvas)
+		else:
+			self.tool = previewTools.toolNone(self.glCanvas)
+		self.resetRotationButton.setHidden(not self.rotateToolButton.getSelected())
+		self.layFlatButton.setHidden(not self.rotateToolButton.getSelected())
+		self.resetScaleButton.setHidden(not self.scaleToolButton.getSelected())
+		self.scaleMaxButton.setHidden(not self.scaleToolButton.getSelected())
+		self.scaleForm.setHidden(not self.scaleToolButton.getSelected())
+		self.mirrorXButton.setHidden(not self.mirrorToolButton.getSelected())
+		self.mirrorYButton.setHidden(not self.mirrorToolButton.getSelected())
+		self.mirrorZButton.setHidden(not self.mirrorToolButton.getSelected())
 		self.glCanvas.Refresh()
 
-	def OnRotateSelect(self):
-		self.rotateToolButton.setSelected(True)
-		self.scaleToolButton.setSelected(False)
-		self.tool = previewTools.toolRotate(self.glCanvas)
-		self.glCanvas.Refresh()
-
-	def OnScaleSelect(self):
-		self.rotateToolButton.setSelected(False)
-		self.scaleToolButton.setSelected(True)
-		self.tool = previewTools.toolScale(self.glCanvas)
-		self.glCanvas.Refresh()
+	def OnRotateReset(self):
+		pass
+	def OnLayFlat(self):
+		pass
+	def OnScaleReset(self):
+		pass
+	def OnScaleMax(self):
+		pass
+	def OnMirror(self, axis):
+		pass
+	def OnScaleEntry(self, axis):
+		pass
 
 	def OnClose(self, e):
 		self.Destroy()

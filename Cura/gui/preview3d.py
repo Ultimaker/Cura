@@ -322,7 +322,8 @@ class previewPanel(wx.Panel):
 				self.gcodeFileTime = None
 				self.logFileTime = None
 			obj.filename = filelist[idx]
-		
+
+		self.deselectTool()
 		self.gcodeFilename = sliceRun.getExportFilename(filelist[0])
 		#Do the STL file loading in a background thread so we don't block the UI.
 		if self.loadThread is not None and self.loadThread.isAlive():
@@ -470,12 +471,15 @@ class previewPanel(wx.Panel):
 			self.glCanvas.viewMode = "Mixed"
 		self.layerSelect.setHidden(self.glCanvas.viewMode != "GCode")
 		self.updateToolbar()
+		self.deselectTool()
+		self.glCanvas.Refresh()
+
+	def deselectTool(self):
 		self.rotateToolButton.setSelected(False)
 		self.scaleToolButton.setSelected(False)
 		self.mirrorToolButton.setSelected(False)
 		self.OnToolSelect()
-		self.glCanvas.Refresh()
-	
+
 	def updateModelTransform(self, f=0):
 		if len(self.objectList) < 1 or self.objectList[0].mesh is None:
 			return
@@ -855,7 +859,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		vMax = self.parent.objectsMaxV
 		if vMin is None:
 			return
- 		offset = - vMin - (vMax - vMin) / 2
+		offset = - vMin - (vMax - vMin) / 2
 
 		matrix = opengl.convert3x3MatrixTo4x4(self.parent.matrix)
 
