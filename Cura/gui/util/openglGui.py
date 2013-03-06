@@ -254,7 +254,7 @@ class glGuiLayoutButtons(object):
 	def update(self):
 		bs = self._parent._base._buttonSize
 		x0, y0, w, h = self._parent.getSize()
-		gridSize = bs * 1.2
+		gridSize = bs * 1.0
 		for ctrl in self._parent._glGuiControlList:
 			pos = ctrl._pos
 			if pos[0] < 0:
@@ -262,9 +262,9 @@ class glGuiLayoutButtons(object):
 			else:
 				x = pos[0] * gridSize + bs * 0.2
 			if pos[1] < 0:
-				y = h + pos[1] * gridSize - bs * 0.2
+				y = h + pos[1] * gridSize * 1.2 - bs * 0.2
 			else:
-				y = pos[1] * gridSize + bs * 0.2
+				y = pos[1] * gridSize * 1.2 + bs * 0.2
 			ctrl.setSize(x, y, gridSize, gridSize)
 
 	def getLayoutSize(self):
@@ -373,7 +373,8 @@ class glButton(glGuiControl):
 		glDisable(GL_TEXTURE_2D)
 		if self._focus:
 			glColor4ub(0,0,0,255)
-			glTranslatef(0, -0.55*bs, 0)
+			glColor4ub(255,255,255,255)
+			glTranslatef(0, -0.55*bs*scale, 0)
 			opengl.glDrawStringCenter(self._tooltip)
 		glPopMatrix()
 

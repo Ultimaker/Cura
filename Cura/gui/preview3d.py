@@ -84,11 +84,11 @@ class previewPanel(wx.Panel):
 		self.scaleToolButton  = openglGui.glRadioButton(self.glCanvas, 9, 'Scale', (1,-1), group, self.OnToolSelect)
 		self.mirrorToolButton  = openglGui.glRadioButton(self.glCanvas, 10, 'Mirror', (2,-1), group, self.OnToolSelect)
 
-		self.resetRotationButton = openglGui.glButton(self.glCanvas, 12, 'Reset rotation', (0,-2), self.OnRotateReset)
+		self.resetRotationButton = openglGui.glButton(self.glCanvas, 12, 'Reset', (0,-2), self.OnRotateReset)
 		self.layFlatButton       = openglGui.glButton(self.glCanvas, 16, 'Lay flat', (0,-3), self.OnLayFlat)
 
-		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 13, 'Scale reset', (1,-2), self.OnScaleReset)
-		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 17, 'Scale to machine size', (1,-3), self.OnScaleMax)
+		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 13, 'Reset', (1,-2), self.OnScaleReset)
+		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 17, 'To max', (1,-3), self.OnScaleMax)
 
 		self.mirrorXButton       = openglGui.glButton(self.glCanvas, 14, 'Mirror X', (2,-2), lambda : self.OnMirror(0))
 		self.mirrorYButton       = openglGui.glButton(self.glCanvas, 18, 'Mirror Y', (2,-3), lambda : self.OnMirror(1))

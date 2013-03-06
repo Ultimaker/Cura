@@ -37,6 +37,7 @@ def InitGL(window, view3D, zoom):
 	glDisable(GL_BLEND)
 
 	glClearColor(1.0, 1.0, 1.0, 1.0)
+	glClearColor(0.8, 0.8, 0.8, 1.0)
 	glClearStencil(0)
 	glClearDepth(1.0)
 
