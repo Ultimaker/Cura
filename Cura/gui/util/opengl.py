@@ -37,6 +37,7 @@ def InitGL(window, view3D, zoom):
 	glDisable(GL_BLEND)
 
 	glClearColor(1.0, 1.0, 1.0, 1.0)
+	glClearColor(0.8, 0.8, 0.8, 1.0)
 	glClearStencil(0)
 	glClearDepth(1.0)
 
@@ -213,6 +214,32 @@ def glDrawStringRight(s):
 	glBitmap(0,0,0,0, -glGetStringSize(s)[0], 0, None)
 	for c in s:
 		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
+
+def glDrawTexturedQuad(x, y, w, h, texID, mirror = 0):
+	tx = float(texID % 4) / 4
+	ty = float(int(texID / 4)) / 8
+	tsx = 0.25
+	tsy = 0.125
+	if mirror & 1:
+		tx += tsx
+		tsx = -tsx
+	if mirror & 2:
+		ty += tsy
+		tsy = -tsy
+	glPushMatrix()
+	glTranslatef(x, y, 0)
+	glEnable(GL_TEXTURE_2D)
+	glBegin(GL_QUADS)
+	glTexCoord2f(tx+tsx, ty)
+	glVertex2f(w, 0)
+	glTexCoord2f(tx, ty)
+	glVertex2f(0, 0)
+	glTexCoord2f(tx, ty+tsy)
+	glVertex2f(0, h)
+	glTexCoord2f(tx+tsx, ty+tsy)
+	glVertex2f(w, h)
+	glEnd()
+	glPopMatrix()
 
 def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
 	npModelMatrix = numpy.matrix(numpy.array(modelMatrix, numpy.float64).reshape((4,4)))

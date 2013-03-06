@@ -2,7 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import wx
-import math
+import traceback
+import sys
+import os
 
 from wx import glcanvas
 import OpenGL
@@ -105,6 +107,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self._focus = None
 		self._container = None
 		self._container = glGuiContainer(self, (0,0))
+		self._shownError = False
 
 		self._context = glcanvas.GLContext(self)
 		self._glButtonsTexture = None
@@ -166,11 +169,22 @@ class glGuiPanel(glcanvas.GLCanvas):
 			self._container.updateLayout()
 
 		dc = wx.PaintDC(self)
-		self.SetCurrent(self._context)
-		self.OnPaint(e)
-		self._drawGui()
-		glFlush()
-		self.SwapBuffers()
+		try:
+			self.SetCurrent(self._context)
+			self.OnPaint(e)
+			self._drawGui()
+			glFlush()
+			self.SwapBuffers()
+		except:
+			errStr = 'An error has occurred during the 3D view drawing.'
+			tb = traceback.extract_tb(sys.exc_info()[2])
+			errStr += "\n%s: '%s'" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]))
+			for n in xrange(len(tb)-1, -1, -1):
+				locationInfo = tb[n]
+				errStr += "\n @ %s:%s:%d" % (os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
+			if not self._shownError:
+				wx.CallAfter(wx.MessageBox, errStr, '3D window error', wx.OK | wx.ICON_EXCLAMATION)
+				self._shownError = True
 
 	def _drawGui(self):
 		if self._glButtonsTexture is None:
@@ -240,7 +254,7 @@ class glGuiLayoutButtons(object):
 	def update(self):
 		bs = self._parent._base._buttonSize
 		x0, y0, w, h = self._parent.getSize()
-		gridSize = bs * 1.2
+		gridSize = bs * 1.0
 		for ctrl in self._parent._glGuiControlList:
 			pos = ctrl._pos
 			if pos[0] < 0:
@@ -248,9 +262,9 @@ class glGuiLayoutButtons(object):
 			else:
 				x = pos[0] * gridSize + bs * 0.2
 			if pos[1] < 0:
-				y = h + pos[1] * gridSize - bs * 0.2
+				y = h + pos[1] * gridSize * 1.2 - bs * 0.2
 			else:
-				y = pos[1] * gridSize + bs * 0.2
+				y = pos[1] * gridSize * 1.2 + bs * 0.2
 			ctrl.setSize(x, y, gridSize, gridSize)
 
 	def getLayoutSize(self):
@@ -262,6 +276,7 @@ class glGuiLayoutGrid(object):
 		self._parent = parent
 		self._parent._layout = self
 		self._size = 0,0
+		self._alignBottom = True
 
 	def update(self):
 		borderSize = self._parent._base._buttonSize * 0.2
@@ -281,6 +296,10 @@ class glGuiLayoutGrid(object):
 				heights[y] = h
 			else:
 				heights[y] = max(heights[y], h)
+		self._size = sum(widths.values()) + borderSize * 2, sum(heights.values()) + borderSize * 2
+		if self._alignBottom:
+			y0 -= self._size[1] - self._parent.getSize()[3]
+			self._parent.setSize(x0 - borderSize, y0 - borderSize, self._size[0], self._size[1])
 		for ctrl in self._parent._glGuiControlList:
 			x, y = ctrl._pos
 			x1 = x0
@@ -294,7 +313,6 @@ class glGuiLayoutGrid(object):
 					heights[n] = 3
 				y1 += heights[n]
 			ctrl.setSize(x1, y1, widths[x], heights[y])
-		self._size = sum(widths.values()) + borderSize * 2, sum(heights.values()) + borderSize * 2
 
 	def getLayoutSize(self):
 		return self._size
@@ -339,34 +357,23 @@ class glButton(glGuiControl):
 		bs = self._base._buttonSize
 		pos = self._getPixelPos()
 
-		glPushMatrix()
-		glTranslatef(pos[0], pos[1], 0)
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
-		glEnable(GL_TEXTURE_2D)
 		scale = 0.8
 		if self._selected:
 			scale = 1.0
 		elif self._focus:
 			scale = 0.9
-		glScalef(bs * scale, bs * scale, bs * scale)
 		if self._disabled:
 			glColor4ub(128,128,128,128)
 		else:
 			glColor4ub(255,255,255,255)
-		glBegin(GL_QUADS)
-		glTexCoord2f(cx+0.25, cy)
-		glVertex2f( 0.5,-0.5)
-		glTexCoord2f(cx, cy)
-		glVertex2f(-0.5,-0.5)
-		glTexCoord2f(cx, cy+0.25)
-		glVertex2f(-0.5, 0.5)
-		glTexCoord2f(cx+0.25, cy+0.25)
-		glVertex2f( 0.5, 0.5)
-		glEnd()
+		opengl.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, self._imageID)
+		glPushMatrix()
+		glTranslatef(pos[0], pos[1], 0)
 		glDisable(GL_TEXTURE_2D)
 		if self._focus:
-			glColor4ub(0,0,0,255)
-			glTranslatef(0, -0.55, 0)
+			glColor4ub(255,255,255,255)
+			glTranslatef(0, -0.55*bs*scale, 0)
 			opengl.glDrawStringCenter(self._tooltip)
 		glPopMatrix()
 
@@ -420,46 +427,35 @@ class glComboButton(glButton):
 		self._selection = 0
 
 	def _onComboOpenSelect(self):
-		self._base._focus = self
+		if self.hasFocus():
+			self._base._focus = None
+		else:
+			self._base._focus = self
 
 	def draw(self):
 		if self._hidden:
 			return
 		self._selected = self.hasFocus()
 		super(glComboButton, self).draw()
-		if not self._selected:
-			return
 
 		bs = self._base._buttonSize / 2
 		pos = self._getPixelPos()
+
+		if not self._selected:
+			return
 
 		glPushMatrix()
 		glTranslatef(pos[0]+bs*0.5, pos[1] + bs*0.5, 0)
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
 		glScalef(bs, bs, bs)
 		for n in xrange(0, len(self._imageIDs)):
-			cx = (self._imageIDs[n] % 4) / 4
-			cy = int(self._imageIDs[n] / 4) / 4
-			glEnable(GL_TEXTURE_2D)
 			glTranslatef(0, 1, 0)
-			if self._disabled:
-				glColor4ub(128,128,128,128)
-			else:
-				glColor4ub(255,255,255,255)
-			glBegin(GL_QUADS)
-			glTexCoord2f(cx+0.25, cy)
-			glVertex2f( 0.5,-0.5)
-			glTexCoord2f(cx, cy)
-			glVertex2f(-0.5,-0.5)
-			glTexCoord2f(cx, cy+0.25)
-			glVertex2f(-0.5, 0.5)
-			glTexCoord2f(cx+0.25, cy+0.25)
-			glVertex2f( 0.5, 0.5)
-			glEnd()
+			glColor4ub(255,255,255,255)
+			opengl.glDrawTexturedQuad(-0.5,-0.5,1,1, self._imageIDs[n])
 			glDisable(GL_TEXTURE_2D)
 
 			glPushMatrix()
-			glColor4ub(0,0,0,255)
+			glColor4ub(255,255,255,255)
 			glTranslatef(-0.55, 0.1, 0)
 			opengl.glDrawStringRight(self._tooltips[n])
 			glPopMatrix()
@@ -518,19 +514,110 @@ class glFrame(glGuiContainer):
 
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
-		glDisable(GL_TEXTURE_2D)
+		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
+		glEnable(GL_TEXTURE_2D)
 
 		size = self._layout.getLayoutSize()
-		glColor4ub(60,60,60,255)
+		glColor4ub(255,255,255,255)
 		glBegin(GL_QUADS)
-		glTexCoord2f(1, 0)
-		glVertex2f( size[0], 0)
+		bs /= 2
+		tc = 1 / 4 / 2
+
+#		glTexCoord2f(1, 0)
+#		glVertex2f( size[0], 0)
+#		glTexCoord2f(0, 0)
+#		glVertex2f( 0, 0)
+#		glTexCoord2f(0, 1)
+#		glVertex2f( 0, size[1])
+#		glTexCoord2f(1, 1)
+#		glVertex2f( size[0], size[1])
+		#TopLeft
+		glTexCoord2f(tc, 0)
+		glVertex2f( bs, 0)
 		glTexCoord2f(0, 0)
 		glVertex2f( 0, 0)
-		glTexCoord2f(0, 1)
+		glTexCoord2f(0, tc/2)
+		glVertex2f( 0, bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, bs)
+		#TopRight
+		glTexCoord2f(tc+tc, 0)
+		glVertex2f( size[0], 0)
+		glTexCoord2f(tc, 0)
+		glVertex2f( size[0] - bs, 0)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0] - bs, bs)
+		glTexCoord2f(tc+tc, tc/2)
+		glVertex2f( size[0], bs)
+		#BottomLeft
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, size[1] - bs)
+		glTexCoord2f(0, tc/2)
+		glVertex2f( 0, size[1] - bs)
+		glTexCoord2f(0, tc/2+tc/2)
 		glVertex2f( 0, size[1])
-		glTexCoord2f(1, 1)
+		glTexCoord2f(tc, tc/2+tc/2)
+		glVertex2f( bs, size[1])
+		#BottomRight
+		glTexCoord2f(tc+tc, tc/2)
+		glVertex2f( size[0], size[1] - bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0] - bs, size[1] - bs)
+		glTexCoord2f(tc, tc/2+tc/2)
+		glVertex2f( size[0] - bs, size[1])
+		glTexCoord2f(tc+tc, tc/2+tc/2)
 		glVertex2f( size[0], size[1])
+
+		#Center
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0]-bs, bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, size[1]-bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0]-bs, size[1]-bs)
+
+		#Right
+		glTexCoord2f(tc+tc, tc/2)
+		glVertex2f( size[0], bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0]-bs, bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0]-bs, size[1]-bs)
+		glTexCoord2f(tc+tc, tc/2)
+		glVertex2f( size[0], size[1]-bs)
+
+		#Left
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, bs)
+		glTexCoord2f(0, tc/2)
+		glVertex2f( 0, bs)
+		glTexCoord2f(0, tc/2)
+		glVertex2f( 0, size[1]-bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, size[1]-bs)
+
+		#Top
+		glTexCoord2f(tc, 0)
+		glVertex2f( size[0]-bs, 0)
+		glTexCoord2f(tc, 0)
+		glVertex2f( bs, 0)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0]-bs, bs)
+
+		#Bottom
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( size[0]-bs, size[1]-bs)
+		glTexCoord2f(tc, tc/2)
+		glVertex2f( bs, size[1]-bs)
+		glTexCoord2f(tc, tc/2+tc/2)
+		glVertex2f( bs, size[1])
+		glTexCoord2f(tc, tc/2+tc/2)
+		glVertex2f( size[0]-bs, size[1])
+
 		glEnd()
 		glDisable(GL_TEXTURE_2D)
 		glPopMatrix()
@@ -577,20 +664,20 @@ class glLabel(glGuiControl):
 		glPushMatrix()
 		glTranslatef(x, y, 0)
 
-		glColor4ub(255,255,255,128)
-		glBegin(GL_QUADS)
-		glTexCoord2f(1, 0)
-		glVertex2f( w, 0)
-		glTexCoord2f(0, 0)
-		glVertex2f( 0, 0)
-		glTexCoord2f(0, 1)
-		glVertex2f( 0, h)
-		glTexCoord2f(1, 1)
-		glVertex2f( w, h)
-		glEnd()
+#		glColor4ub(255,255,255,128)
+#		glBegin(GL_QUADS)
+#		glTexCoord2f(1, 0)
+#		glVertex2f( w, 0)
+#		glTexCoord2f(0, 0)
+#		glVertex2f( 0, 0)
+#		glTexCoord2f(0, 1)
+#		glVertex2f( 0, h)
+#		glTexCoord2f(1, 1)
+#		glVertex2f( w, h)
+#		glEnd()
 
 		glTranslate(5, h - 5, 0)
-		glColor4ub(0,0,0,255)
+		glColor4ub(255,255,255,255)
 		opengl.glDrawStringLeft(self._label)
 		glPopMatrix()
 
@@ -641,9 +728,9 @@ class glNumberCtrl(glGuiControl):
 		glTexCoord2f(0, 0)
 		glVertex2f( 0, 0)
 		glTexCoord2f(0, 1)
-		glVertex2f( 0, h)
+		glVertex2f( 0, h-1)
 		glTexCoord2f(1, 1)
-		glVertex2f( w, h)
+		glVertex2f( w, h-1)
 		glEnd()
 
 		glTranslate(5, h - 5, 0)
@@ -747,20 +834,11 @@ class glCheckbox(glGuiControl):
 		glPushMatrix()
 		glTranslatef(x, y, 0)
 
+		glColor3ub(255,255,255)
 		if self._value:
-			glColor4ub(0,255,0,255)
+			opengl.glDrawTexturedQuad(w/2-h/2,0, h, h, 28)
 		else:
-			glColor4ub(255,0,0,255)
-		glBegin(GL_QUADS)
-		glTexCoord2f(1, 0)
-		glVertex2f( w, 0)
-		glTexCoord2f(0, 0)
-		glVertex2f( 0, 0)
-		glTexCoord2f(0, 1)
-		glVertex2f( 0, h)
-		glTexCoord2f(1, 1)
-		glVertex2f( w, h)
-		glEnd()
+			opengl.glDrawTexturedQuad(w/2-h/2,0, h, h, 29)
 
 		glPopMatrix()
 

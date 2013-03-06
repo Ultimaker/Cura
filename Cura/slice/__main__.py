@@ -108,6 +108,8 @@ def main():
 			zString = zString[0:zString.find(' ')]
 			clearZ = max(clearZ, float(zString) + 10)
 			profile.setTempOverride('clear_z', clearZ)
+			print position
+			print profile.getAlterationFileContents('nextobject.gcode')
 			resultFile.write(profile.getAlterationFileContents('nextobject.gcode').replace('?filename?', ' '.join(filenames).encode('ascii', 'replace')))
 
 		output = []
