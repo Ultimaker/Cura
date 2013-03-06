@@ -473,6 +473,7 @@ class previewPanel(wx.Panel):
 		self.rotateToolButton.setSelected(False)
 		self.scaleToolButton.setSelected(False)
 		self.mirrorToolButton.setSelected(False)
+		self.OnToolSelect()
 		self.glCanvas.Refresh()
 	
 	def updateModelTransform(self, f=0):
