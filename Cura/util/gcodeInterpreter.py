@@ -248,6 +248,8 @@ class gcode(object):
 						pass
 					elif M == 113:	#Extruder PWM (these should not be in the final GCode, but they are)
 						pass
+					elif M == 117:	#LCD message
+						pass
 					elif M == 140:	#Set bed temperature
 						pass
 					elif M == 190:	#Set bed temperature & wait
@@ -281,7 +283,7 @@ class gcode(object):
 		if code not in self.regMatch:
 			self.regMatch[code] = re.compile(code + '([^\s]+)')
 		m = self.regMatch[code].search(line)
-		if m == None:
+		if m is None:
 			return None
 		try:
 			return float(m.group(1))
