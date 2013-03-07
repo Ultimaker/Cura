@@ -48,6 +48,8 @@ The easiest way to install it is via [Homebrew](http://mxcl.github.com/homebrew/
 `brew install --fresh Cura/scripts/darwin/python.rb --universal`  
 Note if you already have Python installed via Homebrew, you have to uninstall it first.
 
+You can also install [official build](http://www.python.org/ftp/python/2.7.3/python-2.7.3-macosx10.6.dmg).
+
 
 ###Configure Virtualenv
 Create new virtualenv. If you have [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) installed:  
