@@ -8,6 +8,7 @@ import re
 import shutil
 import ConfigParser
 import numpy
+import math
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -66,6 +67,16 @@ class ProjectObject(object):
 	def updateMatrix(self):
 		self.mesh.matrix = self.matrix
 		self.mesh.processMatrix()
+
+		scaleX = numpy.linalg.norm(self.matrix[::,0].getA().flatten())
+		scaleY = numpy.linalg.norm(self.matrix[::,1].getA().flatten())
+		scaleZ = numpy.linalg.norm(self.matrix[::,2].getA().flatten())
+		self.parent.scaleXctrl.setValue(round(scaleX, 2))
+		self.parent.scaleYctrl.setValue(round(scaleY, 2))
+		self.parent.scaleZctrl.setValue(round(scaleZ, 2))
+		self.parent.scaleXmmctrl.setValue(round(self.getSize()[0], 2))
+		self.parent.scaleYmmctrl.setValue(round(self.getSize()[1], 2))
+		self.parent.scaleZmmctrl.setValue(round(self.getSize()[2], 2))
 
 	def getMinimum(self):
 		return self.mesh.getMinimum()
@@ -209,7 +220,6 @@ class projectPlanner(wx.Frame):
 		self.layFlatButton       = openglGui.glButton(self.glCanvas, 16, 'Lay flat', (0,-3), self.OnLayFlat)
 
 		self.resetScaleButton    = openglGui.glButton(self.glCanvas, 13, 'Reset', (1,-2), self.OnScaleReset)
-		self.scaleMaxButton      = openglGui.glButton(self.glCanvas, 17, 'To max', (1,-3), self.OnScaleMax)
 
 		self.mirrorXButton       = openglGui.glButton(self.glCanvas, 14, 'Mirror X', (2,-2), lambda : self.OnMirror(0))
 		self.mirrorYButton       = openglGui.glButton(self.glCanvas, 18, 'Mirror Y', (2,-3), lambda : self.OnMirror(1))
@@ -248,7 +258,6 @@ class projectPlanner(wx.Frame):
 		self.resetRotationButton.setHidden(not self.rotateToolButton.getSelected())
 		self.layFlatButton.setHidden(not self.rotateToolButton.getSelected())
 		self.resetScaleButton.setHidden(not self.scaleToolButton.getSelected())
-		self.scaleMaxButton.setHidden(not self.scaleToolButton.getSelected())
 		self.scaleForm.setHidden(not self.scaleToolButton.getSelected())
 		self.mirrorXButton.setHidden(not self.mirrorToolButton.getSelected())
 		self.mirrorYButton.setHidden(not self.mirrorToolButton.getSelected())
@@ -256,17 +265,112 @@ class projectPlanner(wx.Frame):
 		self.glCanvas.Refresh()
 
 	def OnRotateReset(self):
-		pass
+		if self.selection is None:
+			return
+		x = numpy.linalg.norm(self.selection.matrix[::,0].getA().flatten())
+		y = numpy.linalg.norm(self.selection.matrix[::,1].getA().flatten())
+		z = numpy.linalg.norm(self.selection.matrix[::,2].getA().flatten())
+		self.selection.matrix = numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
+		self.selection.updateMatrix()
+
 	def OnLayFlat(self):
-		pass
+		if self.selection is None:
+			return
+		transformedVertexes = (numpy.matrix(self.selection.mesh.vertexes, copy = False) * self.selection.matrix).getA()
+		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
+		dotMin = 1.0
+		dotV = None
+		for v in transformedVertexes:
+			diff = v - minZvertex
+			len = math.sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2])
+			if len < 5:
+				continue
+			dot = (diff[2] / len)
+			if dotMin > dot:
+				dotMin = dot
+				dotV = diff
+		if dotV is None:
+			return
+		rad = -math.atan2(dotV[1], dotV[0])
+		self.selection.matrix *= numpy.matrix([[math.cos(rad), math.sin(rad), 0], [-math.sin(rad), math.cos(rad), 0], [0,0,1]], numpy.float64)
+		rad = -math.asin(dotMin)
+		self.selection.matrix *= numpy.matrix([[math.cos(rad), 0, math.sin(rad)], [0,1,0], [-math.sin(rad), 0, math.cos(rad)]], numpy.float64)
+
+
+		transformedVertexes = (numpy.matrix(self.selection.mesh.vertexes, copy = False) * self.selection.matrix).getA()
+		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
+		dotMin = 1.0
+		dotV = None
+		for v in transformedVertexes:
+			diff = v - minZvertex
+			len = math.sqrt(diff[1] * diff[1] + diff[2] * diff[2])
+			if len < 5:
+				continue
+			dot = (diff[2] / len)
+			if dotMin > dot:
+				dotMin = dot
+				dotV = diff
+		if dotV is None:
+			return
+		if dotV[1] < 0:
+			rad = math.asin(dotMin)
+		else:
+			rad = -math.asin(dotMin)
+		self.selection.matrix *= numpy.matrix([[1,0,0], [0, math.cos(rad), math.sin(rad)], [0, -math.sin(rad), math.cos(rad)]], numpy.float64)
+
+		self.selection.updateMatrix()
+
 	def OnScaleReset(self):
-		pass
-	def OnScaleMax(self):
-		pass
+		if self.selection is None:
+			return
+		x = 1/numpy.linalg.norm(self.selection.matrix[::,0].getA().flatten())
+		y = 1/numpy.linalg.norm(self.selection.matrix[::,1].getA().flatten())
+		z = 1/numpy.linalg.norm(self.selection.matrix[::,2].getA().flatten())
+		self.selection.matrix *= numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
+		self.selection.updateMatrix()
+
 	def OnMirror(self, axis):
-		pass
-	def OnScaleEntry(self, axis):
-		pass
+		if self.selection is None:
+			return
+		matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
+		matrix[axis][axis] = -1
+		self.selection.matrix *= numpy.matrix(matrix, numpy.float64)
+
+	def OnScaleEntry(self, value, axis):
+		if self.selection is None:
+			return
+		try:
+			value = float(value)
+		except:
+			return
+		scale = numpy.linalg.norm(self.selection.matrix[::,axis].getA().flatten())
+		scale = value / scale
+		if scale == 0:
+			return
+		if self.scaleUniform.getValue():
+			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
+		else:
+			matrix = [[1.0,0,0], [0, 1.0, 0], [0, 0, 1.0]]
+			matrix[axis][axis] = scale
+		self.selection.matrix *= numpy.matrix(matrix, numpy.float64)
+		self.selection.updateMatrix()
+
+	def OnScaleEntryMM(self, value, axis):
+		try:
+			value = float(value)
+		except:
+			return
+		scale = self.selection.getSize()[axis]
+		scale = value / scale
+		if scale == 0:
+			return
+		if self.scaleUniform.getValue():
+			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
+		else:
+			matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
+			matrix[axis][axis] = scale
+		self.selection.matrix *= numpy.matrix(matrix, numpy.float64)
+		self.selection.updateMatrix()
 
 	def OnClose(self, e):
 		self.Destroy()

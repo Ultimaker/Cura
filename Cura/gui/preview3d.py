@@ -124,7 +124,7 @@ class previewPanel(wx.Panel):
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [7,11,15,19,23], ['Normal', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
-		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-2), self.OnLayerNrChange)
+		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-2), lambda : self.Refresh())
 
 		self.OnViewChange()
 		self.OnToolSelect()
@@ -285,23 +285,6 @@ class previewPanel(wx.Panel):
 			obj.steepDirty = True
 		self.updateModelTransform()
 
-	def On3DClick(self):
-		self.glCanvas.yaw = 30
-		self.glCanvas.pitch = 60
-		self.glCanvas.zoom = 300
-		self.glCanvas.view3D = True
-		self.glCanvas.Refresh()
-
-	def OnTopClick(self):
-		self.glCanvas.view3D = False
-		self.glCanvas.zoom = 100
-		self.glCanvas.offsetX = 0
-		self.glCanvas.offsetY = 0
-		self.glCanvas.Refresh()
-
-	def OnLayerNrChange(self):
-		self.glCanvas.Refresh()
-	
 	def setViewMode(self, mode):
 		if mode == "Normal":
 			self.viewSelection.setValue(0)
@@ -408,6 +391,8 @@ class previewPanel(wx.Panel):
 		wx.CallAfter(self.checkReloadFileTimer.Start, 1000)
 	
 	def loadProgress(self, progress):
+		if self.gcode is None:
+			return True
 		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
 			self.layerSelect.setRange(1, len(self.gcode.layerList) - 1)
 			self.layerSelect.setValue(self.layerSelect.getMaxValue())
