@@ -322,9 +322,11 @@ class previewPanel(wx.Panel):
 				self.gcodeFileTime = None
 				self.logFileTime = None
 			obj.filename = filelist[idx]
+			obj.mesh = None
 
 		self.deselectTool()
 		self.gcodeFilename = sliceRun.getExportFilename(filelist[0])
+		self.gcode = None
 		#Do the STL file loading in a background thread so we don't block the UI.
 		if self.loadThread is not None and self.loadThread.isAlive():
 			self.abortLoading = True
@@ -443,6 +445,7 @@ class previewPanel(wx.Panel):
 		self.warningPopup.timer.Stop()
 
 	def updateToolbar(self):
+		self.sliceButton.setDisabled(len(self.objectList) < 1 or self.objectList[0].mesh is None)
 		self.printButton.setDisabled(self.gcode is None)
 		self.rotateToolButton.setHidden(self.glCanvas.viewMode == "GCode")
 		self.scaleToolButton.setHidden(self.glCanvas.viewMode == "GCode")
@@ -653,6 +656,13 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
 
 		self.OnDraw()
+
+		if len(self.parent.objectList) > 0 and self.parent.objectList[0].mesh is None:
+			glDisable(GL_DEPTH_TEST)
+			glLoadIdentity()
+			glColor3ub(255,255,255)
+			glTranslate(0, -3, -10)
+			opengl.glDrawStringCenter('Loading %s ...' % (os.path.basename(self.parent.objectList[0].filename)))
 
 	def OnDraw(self):
 		machineSize = self.parent.machineSize
