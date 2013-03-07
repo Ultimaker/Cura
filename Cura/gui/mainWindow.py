@@ -519,7 +519,9 @@ class mainWindow(wx.Frame):
 			if not isSimple:
 				self.normalSashPos = self.splitter.GetSashPosition()
 			profile.putPreference('window_normal_sash', self.normalSashPos)
-			
+
+		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which keeps wxWidgets from quiting.
+		self.preview3d.glCanvas.OnPaint = lambda e : e
 		self.Destroy()
 
 	def OnQuit(self, e):

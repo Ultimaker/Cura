@@ -94,17 +94,17 @@ class previewPanel(wx.Panel):
 		self.mirrorYButton       = openglGui.glButton(self.glCanvas, 18, 'Mirror Y', (2,-3), lambda : self.OnMirror(1))
 		self.mirrorZButton       = openglGui.glButton(self.glCanvas, 22, 'Mirror Z', (2,-4), lambda : self.OnMirror(2))
 
-		self.openFileButton      = openglGui.glButton(self.glCanvas, 4, 'Load model', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
-		self.sliceButton         = openglGui.glButton(self.glCanvas, 5, 'Prepare model', (1,0), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
-		self.printButton         = openglGui.glButton(self.glCanvas, 6, 'Print model', (2,0), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
+		self.openFileButton      = openglGui.glButton(self.glCanvas, 4, 'Load', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
+		self.sliceButton         = openglGui.glButton(self.glCanvas, 5, 'Prepare', (1,0), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
+		self.printButton         = openglGui.glButton(self.glCanvas, 6, 'Print', (2,0), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
 
 		extruderCount = int(profile.getPreference('extruder_amount'))
 		if extruderCount > 1:
-			openglGui.glButton(self.glCanvas, 4, 'Load dual model', (0,1), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
+			openglGui.glButton(self.glCanvas, 4, 'Load dual', (0,1), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
 		if extruderCount > 2:
-			openglGui.glButton(self.glCanvas, 4, 'Load triple model', (0,2), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(3))
+			openglGui.glButton(self.glCanvas, 4, 'Load triple', (0,2), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(3))
 		if extruderCount > 3:
-			openglGui.glButton(self.glCanvas, 4, 'Load quad model', (0,3), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
+			openglGui.glButton(self.glCanvas, 4, 'Load quad', (0,3), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
 
 		self.scaleForm = openglGui.glFrame(self.glCanvas, (2, -2))
 		openglGui.glGuiLayoutGrid(self.scaleForm)
@@ -123,7 +123,7 @@ class previewPanel(wx.Panel):
 		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
-		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [7,11,15,19,23], ['3D Model', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
+		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [7,11,15,19,23], ['Normal', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
 		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-2), self.OnLayerNrChange)
 
 		self.OnViewChange()
@@ -640,7 +640,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glRotate(self.yaw, 0,0,1)
 
 			if self.viewMode == "GCode" or self.viewMode == "Mixed":
-				n = self.parent.layerSelect.getValue()
+				n = min(self.gcodeQuickDisplayListMade, self.parent.layerSelect.getValue())
 				if self.parent.gcode is not None and -1 < n < len(self.parent.gcode.layerList) and len(self.parent.gcode.layerList[n]) > 0:
 					self.viewTarget[2] = self.parent.gcode.layerList[n][0].list[-1].z
 			else:
