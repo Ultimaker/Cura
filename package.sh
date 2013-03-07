@@ -139,7 +139,7 @@ fi
 # Debian .deb
 #############################
 
-if [ "$BUILD_TARGET" = "darwin" ]; then
+if [ "$BUILD_TARGET" = "debian" ]; then
 	git clone https://github.com/GreatFruitOmsk/Power
 	rm -rf scripts/linux/debian/usr/share/cura
 	mkdir -p scripts/linux/debian/usr/share/cura
