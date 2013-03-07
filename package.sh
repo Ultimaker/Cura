@@ -150,7 +150,7 @@ if [ "$BUILD_TARGET" = "debian" ]; then
 	sudo chmod 755 scripts/linux/debian/DEBIAN/*
 	cd scripts/linux
 	dpkg-deb --build debian ${TARGET_DIR}.deb
-	sudo chown `id -un`:`id -gn` scripts/linux/debian -R
+	sudo chown `id -un`:`id -gn` debian -R
 	exit
 fi
 
