@@ -145,7 +145,7 @@ if [ "$BUILD_TARGET" = "debian" ]; then
 	mkdir -p scripts/linux/debian/usr/share/cura
 	cp -a Cura scripts/linux/debian/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/debian/usr/share/cura/
-	cp Power/power scripts/linux/debian/usr/share/cura/
+	cp -a Power/power scripts/linux/debian/usr/share/cura/
 	sudo chown root:root scripts/linux/debian -R
 	sudo chmod 755 scripts/linux/debian/DEBIAN/*
 	cd scripts/linux
