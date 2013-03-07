@@ -15,9 +15,9 @@ class simpleModePanel(wx.Panel):
 		#self.menubar.Insert(1, toolsMenu, 'Normal mode')
 
 		printTypePanel = wx.Panel(self)
-		self.printTypeNormal = wx.RadioButton(printTypePanel, -1, 'Normal quality print', style=wx.RB_GROUP)
+		self.printTypeHigh = wx.RadioButton(printTypePanel, -1, 'High quality print', style=wx.RB_GROUP)
+		self.printTypeNormal = wx.RadioButton(printTypePanel, -1, 'Normal quality print')
 		self.printTypeLow = wx.RadioButton(printTypePanel, -1, 'Fast low quality print')
-		self.printTypeHigh = wx.RadioButton(printTypePanel, -1, 'High quality print')
 		self.printTypeJoris = wx.RadioButton(printTypePanel, -1, 'Thin walled cup or vase')
 		self.printTypeJoris.Hide()
 
@@ -34,10 +34,10 @@ class simpleModePanel(wx.Panel):
 
 		sb = wx.StaticBox(printTypePanel, label="Select a print type:")
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		boxsizer.Add(self.printTypeHigh)
 		boxsizer.Add(self.printTypeNormal)
 		boxsizer.Add(self.printTypeLow)
-		boxsizer.Add(self.printTypeHigh)
-		boxsizer.Add(self.printTypeJoris)
+		boxsizer.Add(self.printTypeJoris, border=5, flag=wx.TOP)
 		printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printTypePanel, (0,0), flag=wx.EXPAND)

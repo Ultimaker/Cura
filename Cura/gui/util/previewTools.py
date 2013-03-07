@@ -415,10 +415,10 @@ class toolScale(object):
 		glColor3ub(128,0,0)
 		glVertex3f(0, 0, 0)
 		glVertex3f(sx, 0, 0)
-		glColor3ub(128,128,0)
+		glColor3ub(0,128,0)
 		glVertex3f(0, 0, 0)
 		glVertex3f(0, sy, 0)
-		glColor3ub(0,128,0)
+		glColor3ub(0,0,128)
 		glVertex3f(0, 0, 0)
 		glVertex3f(0, 0, sz)
 		glEnd()
@@ -445,9 +445,9 @@ class toolScale(object):
 			opengl.glDrawStringCenter("%0.2f" % (scaleX))
 		glPopMatrix()
 		if self.node == 3:
-			glColor3ub(255,255,0)
+			glColor3ub(64,255,64)
 		else:
-			glColor3ub(128,128,0)
+			glColor3ub(0,128,0)
 		glPushMatrix()
 		glTranslatef(0,sy,0)
 		opengl.DrawBox([-s,-s,-s], [s,s,s])
@@ -456,9 +456,9 @@ class toolScale(object):
 			opengl.glDrawStringCenter("%0.2f" % (scaleY))
 		glPopMatrix()
 		if self.node == 4:
-			glColor3ub(64,255,64)
+			glColor3ub(64,64,255)
 		else:
-			glColor3ub(0,128,0)
+			glColor3ub(0,0,128)
 		glPushMatrix()
 		glTranslatef(0,0,sz)
 		opengl.DrawBox([-s,-s,-s], [s,s,s])
