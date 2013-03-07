@@ -303,7 +303,10 @@ class MachineCom(object):
 			self._changeState(self.STATE_CONNECTING)
 
 		#Start monitoring the serial port.
-		timeout = time.time() + 5
+		if self._state == self.STATE_CONNECTING:
+			timeout = time.time() + 15
+		else:
+			timeout = time.time() + 5
 		tempRequestTimeout = timeout
 		while True:
 			line = self._readline()
@@ -461,7 +464,7 @@ class MachineCom(object):
 				pass
 		if 'M140' in cmd or 'M190' in cmd:
 			try:
-				self._bedTargetTemp = float(re.search('S([0-9]+)').group(1))
+				self._bedTargetTemp = float(re.search('S([0-9]+)', cmd).group(1))
 			except:
 				pass
 		self._log('Send: %s' % (cmd))

@@ -172,6 +172,7 @@ class CarveRepository(object):
 
 		self.centerX = settings.FloatSpin().getFromValue(0.0, 'CenterX', self, 1000.0, 0.0);
 		self.centerY = settings.FloatSpin().getFromValue(0.0, 'CenterY', self, 1000.0, 0.0);
+		self.objectSink = settings.FloatSpin().getFromValue(0.0, 'ObjectSink', self, 1000.0, 0.0)
 		self.matrix = settings.StringSetting().getFromValue('ObjectMatrix', self, '1,0,0,0,1,0,0,0,1')
 		self.alternativeCenter = settings.StringSetting().getFromValue('AlternativeCenterFile', self, '')
 
@@ -217,7 +218,7 @@ class CarveSkein(object):
 			minSize = carving.getCarveCornerMinimum()
 			maxSize = carving.getCarveCornerMaximum()
 		for v in carving.vertexes:
-			v.z -= minZ
+			v.z -= minZ + repository.objectSink.value
 			v.x -= minSize.x + (maxSize.x - minSize.x) / 2
 			v.y -= minSize.y + (maxSize.y - minSize.y) / 2
 			v.x += repository.centerX.value

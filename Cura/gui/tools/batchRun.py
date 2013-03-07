@@ -90,7 +90,7 @@ class batchRunWindow(wx.Frame):
 	def OnSlice(self, e):
 		sliceCmdList = []
 		outputFilenameList = []
-		center = profile.getMachineCenterCoords()
+		center = profile.getMachineCenterCoords() + profile.getObjectMatrix()
 		for filename in self.list:
 			outputFilename = sliceRun.getExportFilename(filename)
 			outputFilenameList.append(outputFilename)
@@ -191,9 +191,9 @@ class BatchSliceProgressWindow(wx.Frame):
 	
 	def OnRun(self, index):
 		while self.cmdIndex < len(self.sliceCmdList):
-			index = self.cmdIndex;
+			cmdIndex = self.cmdIndex;
 			self.cmdIndex += 1			
-			action = self.sliceCmdList[index]
+			action = self.sliceCmdList[cmdIndex]
 			wx.CallAfter(self.SetTitle, "Building: [%d/%d]"  % (self.sliceCmdList.index(action) + 1, len(self.sliceCmdList)))
 
 			p = sliceRun.startSliceCommandProcess(action)

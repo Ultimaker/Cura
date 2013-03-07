@@ -131,6 +131,8 @@ class sliceProgressPanel(wx.Panel):
 		self.abort = True
 		if self.mainWindow.preview3d.reloadModelFiles(self.filelist):
 			self.mainWindow.preview3d.setViewMode("GCode")
+		self.thread = None
+		del result.gcode
 		taskbar.setBusy(self.GetParent(), False)
 	
 	def SetProgress(self, stepName, layer, maxLayer):

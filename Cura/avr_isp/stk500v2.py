@@ -33,6 +33,7 @@ class Stk500v2(ispBase.IspBase):
 		if self.sendMessage([0x10, 0xc8, 0x64, 0x19, 0x20, 0x00, 0x53, 0x03, 0xac, 0x53, 0x00, 0x00]) != [0x10, 0x00]:
 			self.close()
 			raise ispBase.IspError("Failed to enter programming mode")
+		self.serial.timeout = 5
 
 	def close(self):
 		if self.serial != None:
@@ -100,7 +101,7 @@ class Stk500v2(ispBase.IspBase):
 		try:
 			self.serial.write(message)
 			self.serial.flush()
-		except SerialTimeoutException:
+		except Serial.SerialTimeoutException:
 			raise ispBase.IspError('Serial send timeout')
 		self.seq = (self.seq + 1) & 0xFF
 		return self.recvMessage()

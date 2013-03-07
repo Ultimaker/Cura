@@ -4,6 +4,7 @@ from __future__ import absolute_import
 import math
 import numpy
 import wx
+import time
 
 from Cura.util import meshLoader
 from Cura.util import util3d
@@ -36,6 +37,7 @@ def InitGL(window, view3D, zoom):
 	glDisable(GL_BLEND)
 
 	glClearColor(1.0, 1.0, 1.0, 1.0)
+	glClearColor(0.8, 0.8, 0.8, 1.0)
 	glClearStencil(0)
 	glClearDepth(1.0)
 
@@ -191,12 +193,53 @@ def DrawMachine(machineSize):
 
 def glDrawStringCenter(s):
 	glRasterPos2f(0, 0)
+	glBitmap(0,0,0,0, -glGetStringSize(s)[0]/2, 0, None)
+	for c in s:
+		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
+
+def glGetStringSize(s):
 	width = 0
 	for c in s:
 		width += glutBitmapWidth(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
-	glBitmap(0,0,0,0, -width/2, 0, None)
+	height = 18
+	return width, height
+
+def glDrawStringLeft(s):
+	glRasterPos2f(0, 0)
 	for c in s:
 		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
+
+def glDrawStringRight(s):
+	glRasterPos2f(0, 0)
+	glBitmap(0,0,0,0, -glGetStringSize(s)[0], 0, None)
+	for c in s:
+		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
+
+def glDrawTexturedQuad(x, y, w, h, texID, mirror = 0):
+	tx = float(texID % 4) / 4
+	ty = float(int(texID / 4)) / 8
+	tsx = 0.25
+	tsy = 0.125
+	if mirror & 1:
+		tx += tsx
+		tsx = -tsx
+	if mirror & 2:
+		ty += tsy
+		tsy = -tsy
+	glPushMatrix()
+	glTranslatef(x, y, 0)
+	glEnable(GL_TEXTURE_2D)
+	glBegin(GL_QUADS)
+	glTexCoord2f(tx+tsx, ty)
+	glVertex2f(w, 0)
+	glTexCoord2f(tx, ty)
+	glVertex2f(0, 0)
+	glTexCoord2f(tx, ty+tsy)
+	glVertex2f(0, h)
+	glTexCoord2f(tx+tsx, ty+tsy)
+	glVertex2f(w, h)
+	glEnd()
+	glPopMatrix()
 
 def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
 	npModelMatrix = numpy.matrix(numpy.array(modelMatrix, numpy.float64).reshape((4,4)))
@@ -302,12 +345,15 @@ def DrawMeshOutline(mesh):
 	glDisableClientState(GL_VERTEX_ARRAY)
 
 
-def DrawMesh(mesh):
+def DrawMesh(mesh, insideOut = False):
 	glEnable(GL_CULL_FACE)
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, mesh.vertexes)
-	glNormalPointer(GL_FLOAT, 0, mesh.normal)
+	if insideOut:
+		glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
+	else:
+		glNormalPointer(GL_FLOAT, 0, mesh.normal)
 
 	#Odd, drawing in batchs is a LOT faster then drawing it all at once.
 	batchSize = 999    #Warning, batchSize needs to be dividable by 3
@@ -320,7 +366,10 @@ def DrawMesh(mesh):
 	glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
 
 	glCullFace(GL_FRONT)
-	glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
+	if insideOut:
+		glNormalPointer(GL_FLOAT, 0, mesh.normal)
+	else:
+		glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
 	for i in xrange(0, int(mesh.vertexCount / batchSize)):
 		glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
 	extraStartPos = int(mesh.vertexCount / batchSize) * batchSize
@@ -329,7 +378,7 @@ def DrawMesh(mesh):
 	glCullFace(GL_BACK)
 
 	glDisableClientState(GL_VERTEX_ARRAY)
-	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY)
 
 
 def DrawMeshSteep(mesh, matrix, angle):
@@ -371,7 +420,7 @@ def DrawMeshSteep(mesh, matrix, angle):
 	glDepthFunc(GL_LESS)
 
 
-def DrawGCodeLayer(layer):
+def DrawGCodeLayer(layer, drawQuick = True):
 	filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
 	filamentArea = math.pi * filamentRadius * filamentRadius
 	lineWidth = profile.getProfileSettingFloat('nozzle_size') / 2 / 10
@@ -393,11 +442,15 @@ def DrawGCodeLayer(layer):
 				c = retractColor
 			else:
 				c = moveColor
+			if drawQuick:
+				continue
 		zOffset = 0.01
 		if path.type == 'extrude':
 			if path.pathType == 'FILL':
 				c = fillColorCycle[fillCycle]
 				fillCycle = (fillCycle + 1) % len(fillColorCycle)
+				if drawQuick:
+					continue
 			elif path.pathType == 'WALL-INNER':
 				c = innerWallColor
 				zOffset = 0.02
@@ -409,7 +462,7 @@ def DrawGCodeLayer(layer):
 				c = extrudeColor
 		if path.type == 'retract':
 			c = retractColor
-		if path.type == 'extrude':
+		if path.type == 'extrude' and not drawQuick:
 			drawLength = 0.0
 			prevNormal = None
 			for i in xrange(0, len(path.list) - 1):

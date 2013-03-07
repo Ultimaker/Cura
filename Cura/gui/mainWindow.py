@@ -109,11 +109,11 @@ class mainWindow(wx.Frame):
 		self.switchToNormalMenuItem = i
 		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
 		toolsMenu.AppendSeparator()
-		i = toolsMenu.Append(-1, 'Batch run...')
-		self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
-		self.normalModeOnlyItems.append(i)
 		i = toolsMenu.Append(-1, 'Project planner...')
 		self.Bind(wx.EVT_MENU, self.OnProjectPlanner, i)
+		self.normalModeOnlyItems.append(i)
+		i = toolsMenu.Append(-1, 'Batch run...')
+		self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
 		self.normalModeOnlyItems.append(i)
 		#		i = toolsMenu.Append(-1, 'Open SVG (2D) slicer...')
 		#		self.Bind(wx.EVT_MENU, self.OnSVGSlicerOpen, i)
@@ -173,42 +173,13 @@ class mainWindow(wx.Frame):
 		#Preview window
 		self.preview3d = preview3d.previewPanel(self.rightPane)
 
-		# load and slice buttons.
-		loadButton = wx.Button(self.rightPane, -1, '&Load model')
-		sliceButton = wx.Button(self.rightPane, -1, 'P&repare print')
-		printButton = wx.Button(self.rightPane, -1, '&Print')
-		self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(1), loadButton)
-		self.Bind(wx.EVT_BUTTON, self.OnSlice, sliceButton)
-		self.Bind(wx.EVT_BUTTON, self.OnPrint, printButton)
-
-		if self.extruderCount > 1:
-			loadButton2 = wx.Button(self.rightPane, -1, 'Load Dual')
-			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(2), loadButton2)
-		if self.extruderCount > 2:
-			loadButton3 = wx.Button(self.rightPane, -1, 'Load Triple')
-			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(3), loadButton3)
-		if self.extruderCount > 3:
-			loadButton4 = wx.Button(self.rightPane, -1, 'Load Quad')
-			self.Bind(wx.EVT_BUTTON, lambda e: self._showModelLoadDialog(4), loadButton4)
-
 		#Also bind double clicking the 3D preview to load an STL file.
-		self.preview3d.glCanvas.Bind(wx.EVT_LEFT_DCLICK, lambda e: self._showModelLoadDialog(1), self.preview3d.glCanvas)
+		#self.preview3d.glCanvas.Bind(wx.EVT_LEFT_DCLICK, lambda e: self._showModelLoadDialog(1), self.preview3d.glCanvas)
 
 		#Main sizer, to position the preview window, buttons and tab control
-		sizer = wx.GridBagSizer()
+		sizer = wx.BoxSizer()
 		self.rightPane.SetSizer(sizer)
-		sizer.Add(self.preview3d, (0,1), span=(1,2+self.extruderCount), flag=wx.EXPAND)
-		sizer.AddGrowableCol(2 + self.extruderCount)
-		sizer.AddGrowableRow(0)
-		sizer.Add(loadButton, (1,1), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		if self.extruderCount > 1:
-			sizer.Add(loadButton2, (1,2), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		if self.extruderCount > 2:
-			sizer.Add(loadButton3, (1,3), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		if self.extruderCount > 3:
-			sizer.Add(loadButton4, (1,4), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		sizer.Add(sliceButton, (1,1+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)
-		sizer.Add(printButton, (1,2+self.extruderCount), flag=wx.RIGHT|wx.BOTTOM|wx.TOP, border=5)		
+		sizer.Add(self.preview3d, 1, flag=wx.EXPAND)
 
 		# Main window sizer
 		sizer = wx.BoxSizer(wx.VERTICAL)
@@ -564,7 +535,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
 		self.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
-		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Print config')
+		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Basic')
 
 		configBase.TitleRow(left, "Quality")
 		c = configBase.SettingRow(left, "Layer height (mm)", 'layer_height', '0.2', 'Layer height in millimeters.\n0.2 is a good value for quick prints.\n0.1 gives high quality prints.')
@@ -610,7 +581,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 		self.SizeLabelWidths(left, right)
 		
-		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced config')
+		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced')
 		
 		configBase.TitleRow(left, "Machine size")
 		c = configBase.SettingRow(left, "Nozzle size (mm)", 'nozzle_size', '0.4', 'The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings.')
@@ -650,6 +621,9 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Initial layer thickness (mm)", 'bottom_thickness', '0.0', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
 		validators.validFloat(c, 0.0)
 		validators.warningAbove(c, lambda : (float(profile.getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
+		c = configBase.SettingRow(right, "Cut off object bottom (mm)", 'object_sink', 0.05, '...')
+		validators.validFloat(c, 0.0)
+		configBase.settingNotify(c, lambda : self.GetParent().GetParent().GetParent().preview3d.Refresh())
 		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
 
 		self.SizeLabelWidths(left, right)

@@ -70,6 +70,10 @@ class printProcessMonitor():
 		while len(line) > 0:
 			print line.rstrip()
 			line = p.stdout.readline()
+		line = p.stderr.readline()
+		while len(line) > 0:
+			print line.rstrip()
+			line = p.stderr.readline()
 		p.communicate()
 		self.handle = None
 		self.thread = None
@@ -456,6 +460,7 @@ class printWindow(wx.Frame):
 		self.pauseButton.SetLabel('Pause')
 		self.machineCom.cancelPrint()
 		self.machineCom.sendCommand("M84")
+		self.machineCom.sendCommand("M104 S0")
 		self.UpdateButtonStates()
 
 	def OnPause(self, e):
@@ -470,7 +475,7 @@ class printWindow(wx.Frame):
 	def OnClose(self, e):
 		global printWindowHandle
 		printWindowHandle = None
-		if self.machineCom != None:
+		if self.machineCom is not None:
 			self.machineCom.close()
 		self.Destroy()
 
@@ -581,11 +586,13 @@ class printWindow(wx.Frame):
 
 	def mcTempUpdate(self, temp, bedTemp, targetTemp, bedTargetTemp):
 		self.temperatureGraph.addPoint(temp, targetTemp, bedTemp, bedTargetTemp)
-#		ToFix, this causes problems with setting the temperature with the keyboard
-#		if self.temperatureSelect.GetValue() != targetTemp:
-#			wx.CallAfter(self.temperatureSelect.SetValue, targetTemp)
-#		if self.bedTemperatureSelect.GetValue() != bedTargetTemp:
-#			wx.CallAfter(self.bedTemperatureSelect.SetValue, bedTargetTemp)
+		wx.CallAfter(self._mcTempUpdate, temp, bedTemp, targetTemp, bedTargetTemp)
+
+	def _mcTempUpdate(self, temp, bedTemp, targetTemp, bedTargetTemp):
+		if self.temperatureSelect.GetValue() != targetTemp and wx.Window.FindFocus() != self.temperatureSelect:
+			self.temperatureSelect.SetValue(targetTemp)
+		if self.bedTemperatureSelect.GetValue() != bedTargetTemp and wx.Window.FindFocus() != self.bedTemperatureSelect:
+			self.bedTemperatureSelect.SetValue(bedTargetTemp)
 
 	def mcStateChange(self, state):
 		if self.machineCom is not None:

@@ -67,6 +67,7 @@ profileDefaultSettings = {
 	'plugin_config': '',
 	'object_center_x': '-1',
 	'object_center_y': '-1',
+	'object_sink': '0.0',
 	
 	'gcode_extension': 'gcode',
 	'alternative_center': '',
@@ -94,6 +95,7 @@ G92 E0                  ;zero the extruded length
 G1 F200 E3              ;extrude 3mm of feed stock
 G92 E0                  ;zero the extruded length again
 G1 F{travel_speed}
+M117 Printing...
 """,
 #######################################################################################
 	'end.gcode': """;End GCode
@@ -125,7 +127,7 @@ G90                                    ;absolute positioning
 
 G1 Z{clear_z} F{max_z_speed}
 G92 E0
-G1 X{object_center_x} Y{object_center_x} F{travel_speed}
+G1 X{object_center_x} Y{object_center_y} F{travel_speed}
 G1 F200 E6
 G92 E0
 """,
@@ -149,6 +151,7 @@ preferencesDefaultSettings = {
 	'machine_center_is_zero': 'False',
 	'ultimaker_extruder_upgrade': 'False',
 	'has_heated_bed': 'False',
+	'reprap_name': 'RepRap',
 	'extruder_amount': '1',
 	'extruder_offset_x1': '-22.0',
 	'extruder_offset_y1': '0.0',
@@ -169,6 +172,7 @@ preferencesDefaultSettings = {
 	'sdpath': '',
 	'sdshortnames': 'False',
 	'check_for_updates': 'True',
+	'submit_slice_information': 'False',
 
 	'planner_always_autoplace': 'True',
 	'extruder_head_size_min_x': '75.0',
@@ -177,7 +181,7 @@ preferencesDefaultSettings = {
 	'extruder_head_size_max_y': '35.0',
 	'extruder_head_size_height': '60.0',
 	
-	'model_colour': '#72CB30',
+	'model_colour': '#7AB645',
 	'model_colour2': '#CB3030',
 	'model_colour3': '#DDD93C',
 	'model_colour4': '#4550D3',
@@ -187,6 +191,7 @@ preferencesDefaultSettings = {
 	'window_pos_y': '-1',
 	'window_width': '-1',
 	'window_height': '-1',
+	'window_normal_sash': '320',
 }
 
 #########################################################
@@ -213,7 +218,10 @@ def loadGlobalProfile(filename):
 	#Read a configuration file as global config
 	global globalProfileParser
 	globalProfileParser = ConfigParser.ConfigParser()
-	globalProfileParser.read(filename)
+	try:
+		globalProfileParser.read(filename)
+	except ConfigParser.ParsingError:
+		pass
 
 def resetGlobalProfile():
 	#Read a configuration file as global config
@@ -341,7 +349,10 @@ def getPreference(name):
 	global globalPreferenceParser
 	if globalPreferenceParser is None:
 		globalPreferenceParser = ConfigParser.ConfigParser()
-		globalPreferenceParser.read(getPreferencePath())
+		try:
+			globalPreferenceParser.read(getPreferencePath())
+		except ConfigParser.ParsingError:
+			pass
 	if not globalPreferenceParser.has_option('preference', name):
 		if name in preferencesDefaultSettings:
 			default = preferencesDefaultSettings[name]
@@ -361,7 +372,10 @@ def putPreference(name, value):
 	global globalPreferenceParser
 	if globalPreferenceParser == None:
 		globalPreferenceParser = ConfigParser.ConfigParser()
-		globalPreferenceParser.read(getPreferencePath())
+		try:
+			globalPreferenceParser.read(getPreferencePath())
+		except ConfigParser.ParsingError:
+			pass
 	if not globalPreferenceParser.has_section('preference'):
 		globalPreferenceParser.add_section('preference')
 	globalPreferenceParser.set('preference', name, unicode(value).encode("utf-8"))
@@ -423,7 +437,11 @@ def getMachineCenterCoords():
 	return [getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2]
 
 def getObjectMatrix():
-	return map(float, getProfileSetting('model_matrix').split(','))
+	try:
+		return map(float, getProfileSetting('model_matrix').split(','))
+	except ValueError:
+		return [1,0,0, 0,1,0, 0,0,1]
+
 
 #########################################################
 ## Alteration file functions

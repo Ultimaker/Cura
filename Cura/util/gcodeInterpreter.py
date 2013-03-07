@@ -51,7 +51,6 @@ class gcode(object):
 		return None
 	
 	def _load(self, gcodeFile):
-		filePos = 0
 		pos = util3d.Vector3()
 		posOffset = util3d.Vector3()
 		currentE = 0.0
@@ -75,11 +74,7 @@ class gcode(object):
 		for line in gcodeFile:
 			if type(line) is tuple:
 				line = line[0]
-			if self.progressCallback != None:
-				if filePos != gcodeFile.tell():
-					filePos = gcodeFile.tell()
-					self.progressCallback(float(filePos) / float(self._fileSize))
-			
+
 			#Parse Cura_SF comments
 			if line.startswith(';TYPE:'):
 				pathType = line[6:].strip()
@@ -97,6 +92,11 @@ class gcode(object):
 					pathType = 'SKIRT'
 				if comment.startswith('LAYER:'):
 					self.layerList.append(currentLayer)
+					if self.progressCallback is not None:
+						if self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize)):
+							#Abort the loading, we can safely return as the results here will be discarded
+							gcodeFile.close()
+							return
 					currentLayer = []
 				if pathType != "CUSTOM":
 					startCodeDone = True
@@ -248,6 +248,8 @@ class gcode(object):
 						pass
 					elif M == 113:	#Extruder PWM (these should not be in the final GCode, but they are)
 						pass
+					elif M == 117:	#LCD message
+						pass
 					elif M == 140:	#Set bed temperature
 						pass
 					elif M == 190:	#Set bed temperature & wait
@@ -259,6 +261,8 @@ class gcode(object):
 					else:
 						print "Unknown M code:" + str(M)
 		self.layerList.append(currentLayer)
+		if self.progressCallback is not None:
+			self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize))
 		self.extrusionAmount = maxExtrusion
 		self.totalMoveTimeMinute = totalMoveTimeMinute
 		#print "Extruded a total of: %d mm of filament" % (self.extrusionAmount)
@@ -279,7 +283,7 @@ class gcode(object):
 		if code not in self.regMatch:
 			self.regMatch[code] = re.compile(code + '([^\s]+)')
 		m = self.regMatch[code].search(line)
-		if m == None:
+		if m is None:
 			return None
 		try:
 			return float(m.group(1))

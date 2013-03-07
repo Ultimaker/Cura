@@ -3,6 +3,7 @@ from __future__ import division
 
 import platform
 import wx, wx.lib.stattext, types
+from wx.lib.agw import floatspin
 
 from Cura.util import validators
 from Cura.util import profile
@@ -163,6 +164,13 @@ class SettingRow():
 			self.ctrl = wx.TextCtrl(panel, -1, getSettingFunc(configName))
 			self.ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
 			flag = wx.EXPAND
+		elif isinstance(defaultValue, types.FloatType):
+			digits = 0
+			while 1 / pow(10, digits) > defaultValue:
+				digits += 1
+			self.ctrl = floatspin.FloatSpin(panel, -1, value=float(getSettingFunc(configName)), increment=defaultValue, digits=digits, min_val=0.0)
+			self.ctrl.Bind(floatspin.EVT_FLOATSPIN, self.OnSettingChange)
+			flag = wx.EXPAND
 		elif isinstance(defaultValue, types.BooleanType):
 			self.ctrl = wx.CheckBox(panel, -1, style=wx.ALIGN_RIGHT)
 			self.SetValue(getSettingFunc(configName))
@@ -193,8 +201,12 @@ class SettingRow():
 
 		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
 		self.ctrl.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseExit)
-		
-		self.defaultBGColour = self.ctrl.GetBackgroundColour()
+		if isinstance(self.ctrl, floatspin.FloatSpin):
+			self.ctrl.GetTextCtrl().Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+			self.ctrl.GetTextCtrl().Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseExit)
+			self.defaultBGColour = self.ctrl.GetTextCtrl().GetBackgroundColour()
+		else:
+			self.defaultBGColour = self.ctrl.GetBackgroundColour()
 		
 		panel.main.settingControlList.append(self)
 
@@ -220,13 +232,16 @@ class SettingRow():
 				result = res
 			if res != validators.SUCCESS:
 				msgs.append(err)
+		ctrl = self.ctrl
+		if isinstance(ctrl, floatspin.FloatSpin):
+			ctrl = ctrl.GetTextCtrl()
 		if result == validators.ERROR:
-			self.ctrl.SetBackgroundColour('Red')
+			ctrl.SetBackgroundColour('Red')
 		elif result == validators.WARNING:
-			self.ctrl.SetBackgroundColour('Yellow')
+			ctrl.SetBackgroundColour('Yellow')
 		else:
-			self.ctrl.SetBackgroundColour(self.defaultBGColour)
-		self.ctrl.Refresh()
+			ctrl.SetBackgroundColour(self.defaultBGColour)
+		ctrl.Refresh()
 
 		self.validationMsg = '\n'.join(msgs)
 		self.panel.main.UpdatePopup(self)
@@ -242,6 +257,11 @@ class SettingRow():
 			self.ctrl.SetValue(str(value) == "True")
 		elif isinstance(self.ctrl, wx.ColourPickerCtrl):
 			self.ctrl.SetColour(value)
+		elif isinstance(self.ctrl, floatspin.FloatSpin):
+			try:
+				self.ctrl.SetValue(float(value))
+			except ValueError:
+				pass
 		else:
 			self.ctrl.SetValue(value)
 

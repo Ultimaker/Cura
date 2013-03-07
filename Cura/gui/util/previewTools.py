@@ -123,7 +123,7 @@ class toolRotate(object):
 		cursorX0, cursorY0, cursorZ0, cursorYZ, cursorXZ, cursorXY = self._ProjectToPlanes(p0, p1)
 		oldDragPlane = self.dragPlane
 		if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorYZ <= radius * self.rotateRingDistMax or radius * self.rotateRingDistMin <= cursorXZ <= radius * self.rotateRingDistMax:
-			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
+			#self.parent.SetCursor(wx.StockCursor(wx.CURSOR_SIZING))
 			if self.dragStartAngle is None:
 				if radius * self.rotateRingDistMin <= cursorXY <= radius * self.rotateRingDistMax:
 					self.dragPlane = 'XY'
@@ -134,7 +134,7 @@ class toolRotate(object):
 		else:
 			if self.dragStartAngle is None:
 				self.dragPlane = ''
-			self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
+			#self.parent.SetCursor(wx.StockCursor(wx.CURSOR_DEFAULT))
 
 	def OnDragStart(self, p0, p1):
 		radius = self.parent.getObjectBoundaryCircle()
@@ -336,7 +336,19 @@ class toolScale(object):
 			endPoint = [0,0,1]
 		scale = self._lineLineCrossingDistOnLine(p0, p1, numpy.array([0,0,0], numpy.float32), numpy.array(endPoint, numpy.float32)) / 15.0 / s
 		if not wx.GetKeyState(wx.WXK_SHIFT):
-			scale = round(scale * 10) / 10
+			objMatrix = self.parent.getObjectMatrix()
+			scaleX = numpy.linalg.norm(objMatrix[::,0].getA().flatten())
+			scaleY = numpy.linalg.norm(objMatrix[::,1].getA().flatten())
+			scaleZ = numpy.linalg.norm(objMatrix[::,2].getA().flatten())
+			if self.node == 1 or not wx.GetKeyState(wx.WXK_CONTROL):
+				matrixScale = (scaleX + scaleY + scaleZ) / 3
+			elif self.node == 2:
+				matrixScale = scaleX
+			elif self.node == 3:
+				matrixScale = scaleY
+			elif self.node == 4:
+				matrixScale = scaleZ
+			scale = (round((matrixScale * scale) * 10) / 10) / matrixScale
 		if scale < 0:
 			scale = -scale
 		if scale < 0.1:
@@ -366,9 +378,9 @@ class toolScale(object):
 		if self.node == 4 and self.scale is not None:
 			sz *= self.scale
 		objMatrix = self.parent.getObjectMatrix()
-		scaleX = numpy.linalg.norm(objMatrix[0].getA().flatten())
-		scaleY = numpy.linalg.norm(objMatrix[1].getA().flatten())
-		scaleZ = numpy.linalg.norm(objMatrix[2].getA().flatten())
+		scaleX = numpy.linalg.norm(objMatrix[::,0].getA().flatten())
+		scaleY = numpy.linalg.norm(objMatrix[::,1].getA().flatten())
+		scaleZ = numpy.linalg.norm(objMatrix[::,2].getA().flatten())
 		if self.scale is not None:
 			scaleX *= self.scale
 			scaleY *= self.scale
@@ -381,7 +393,9 @@ class toolScale(object):
 
 		glColor3ub(0,0,0)
 		size = self.parent.getObjectSize()
-		radius = self.parent.getObjectBoundaryCircle() * max(scaleX, scaleY, scaleZ)
+		radius = self.parent.getObjectBoundaryCircle()
+		if self.scale is not None:
+			radius *= self.scale
 		glPushMatrix()
 		glTranslate(0,0,size[2]/2 + 5)
 		glRotate(-self.parent.yaw, 0,0,1)
@@ -391,7 +405,9 @@ class toolScale(object):
 			glTranslate(0, (radius + 5) * (90 - self.parent.pitch) / 10,0)
 		else:
 			glTranslate(0,-(radius + 5),0)
-		opengl.glDrawStringCenter("%dx%dx%d" % (size[0], size[1], size[2]))
+		if self.parent.tempMatrix is not None:
+			size = (numpy.matrix([size]) * self.parent.tempMatrix).getA().flatten()
+		opengl.glDrawStringCenter("W, D, H: %0.1f, %0.1f, %0.1f mm" % (size[0], size[1], size[2]))
 		glPopMatrix()
 
 		glLineWidth(1)
@@ -450,5 +466,68 @@ class toolScale(object):
 			glColor3ub(0,0,0)
 			opengl.glDrawStringCenter("%0.2f" % (scaleZ))
 		glPopMatrix()
+
+		glEnable(GL_DEPTH_TEST)
+		glColor(255,255,255)
+		size = size / 2
+		size += 0.01
+		glLineWidth(1)
+		glBegin(GL_LINES)
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0], size[1], size[2]/4*3)
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0], size[1]/4*3, size[2])
+		glVertex3f(size[0], size[1], size[2])
+		glVertex3f(size[0]/4*3, size[1], size[2])
+
+		glVertex3f(-size[0], size[1], size[2])
+		glVertex3f(-size[0], size[1], size[2]/4*3)
+		glVertex3f(-size[0], size[1], size[2])
+		glVertex3f(-size[0], size[1]/4*3, size[2])
+		glVertex3f(-size[0], size[1], size[2])
+		glVertex3f(-size[0]/4*3, size[1], size[2])
+
+		glVertex3f(size[0], -size[1], size[2])
+		glVertex3f(size[0], -size[1], size[2]/4*3)
+		glVertex3f(size[0], -size[1], size[2])
+		glVertex3f(size[0], -size[1]/4*3, size[2])
+		glVertex3f(size[0], -size[1], size[2])
+		glVertex3f(size[0]/4*3, -size[1], size[2])
+
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0], -size[1], size[2]/4*3)
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0], -size[1]/4*3, size[2])
+		glVertex3f(-size[0], -size[1], size[2])
+		glVertex3f(-size[0]/4*3, -size[1], size[2])
+
+		glVertex3f(size[0], size[1], -size[2])
+		glVertex3f(size[0], size[1], -size[2]/4*3)
+		glVertex3f(size[0], size[1], -size[2])
+		glVertex3f(size[0], size[1]/4*3, -size[2])
+		glVertex3f(size[0], size[1], -size[2])
+		glVertex3f(size[0]/4*3, size[1], -size[2])
+
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1], -size[2]/4*3)
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0], size[1]/4*3, -size[2])
+		glVertex3f(-size[0], size[1], -size[2])
+		glVertex3f(-size[0]/4*3, size[1], -size[2])
+
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0], -size[1], -size[2]/4*3)
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0], -size[1]/4*3, -size[2])
+		glVertex3f(size[0], -size[1], -size[2])
+		glVertex3f(size[0]/4*3, -size[1], -size[2])
+
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0], -size[1], -size[2]/4*3)
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0], -size[1]/4*3, -size[2])
+		glVertex3f(-size[0], -size[1], -size[2])
+		glVertex3f(-size[0]/4*3, -size[1], -size[2])
+		glEnd()
 
 		glEnable(GL_DEPTH_TEST)

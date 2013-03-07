@@ -69,6 +69,8 @@ def main():
 		#Place any unused arguments as last file, so Cura starts with opening those files.
 		if len(args) > 0:
 			profile.putPreference('lastFile', ';'.join(args))
+			profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
+			profile.setPluginConfig([])
 
 		#Do not import anything from Cura.gui before this spot, as the above code also needs to run in pypy.
 		from Cura.gui import app

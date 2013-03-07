@@ -4,6 +4,10 @@ from optparse import OptionParser
 import sys
 import re
 import os
+import urllib
+import urllib2
+import platform
+import hashlib
 
 if not hasattr(sys, 'frozen'):
 	cura_sf_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "./cura_sf/"))
@@ -55,6 +59,8 @@ def main():
 			zString = zString[0:zString.find(' ')]
 			clearZ = max(clearZ, float(zString) + 10)
 			profile.setTempOverride('clear_z', clearZ)
+			print position
+			print profile.getAlterationFileContents('nextobject.gcode')
 			resultFile.write(profile.getAlterationFileContents('nextobject.gcode').replace('?filename?', ' '.join(filenames).encode('ascii', 'replace')))
 
 		output = []
@@ -86,6 +92,30 @@ def main():
 	if ret is not None:
 		print ret
 	print "Finalizing %s" % (os.path.basename(options.output))
+	if profile.getPreference('submit_slice_information') == 'True':
+		filenames = fixUTF8(args[idx + 1]).split('|')
+		for filename in filenames:
+			m = hashlib.sha512()
+			f = open(filename, "rb")
+			while True:
+				chunk = f.read(1024)
+				if not chunk:
+					break
+				m.update(chunk)
+			f.close()
+			data = {
+				'processor': platform.processor(),
+				'machine': platform.machine(),
+				'platform': platform.platform(),
+				'profile': profile.getGlobalProfileString(),
+				'modelhash': m.hexdigest(),
+			}
+			try:
+				f = urllib2.urlopen("http://software.ultimaker.com/upload_stats.php", data = urllib.urlencode(data), timeout = 5);
+				f.read()
+				f.close()
+			except:
+				pass
 
 
 def stitchMultiExtruder(outputList, resultFile):
