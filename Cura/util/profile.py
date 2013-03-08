@@ -87,7 +87,6 @@ M107       ;start with the fan off
 
 G28 X0 Y0  ;move X/Y to min endstops
 G28 Z0     ;move Z to min endstops
-G92 X0 Y0 Z0 E0         ;reset software position to front/left/z=0.0
 
 G1 Z15.0 F{max_z_speed} ;move the platform down 15mm
 
