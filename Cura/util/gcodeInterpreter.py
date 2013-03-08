@@ -214,7 +214,9 @@ class gcode(object):
 			else:
 				M = self.getCodeInt(line, 'M')
 				if M is not None:
-					if M == 1:	#Message with possible wait (ignored)
+					if M == 0:	#Message with possible wait (ignored)
+						pass
+					elif M == 1:	#Message with possible wait (ignored)
 						pass
 					elif M == 80:	#Enable power supply
 						pass

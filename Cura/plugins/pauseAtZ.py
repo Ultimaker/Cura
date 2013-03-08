@@ -30,16 +30,22 @@ y = 0
 pauseState = 0
 with open(filename, "w") as f:
 	for line in lines:
+		if line.startswith(';'):
+			if line.startswith(';TYPE:'):
+				currentSectionType = line[6:].strip()
+			f.write(line)
+			continue
 		if getValue(line, 'G', None) == 1:
 			newZ = getValue(line, 'Z', z)
 			x = getValue(line, 'X', x)
 			y = getValue(line, 'Y', y)
-			if newZ != z:
+			if newZ != z and currentSectionType != 'CUSTOM':
 				z = newZ
 				if z < pauseLevel and pauseState == 0:
 					pauseState = 1
 				if z >= pauseLevel and pauseState == 1:
 					pauseState = 2
+					f.write(";TYPE:CUSTOM\n")
 					#Retract
 					f.write("M83\n")
 					f.write("G1 E-%f F6000\n" % (retractAmount))
@@ -49,6 +55,9 @@ with open(filename, "w") as f:
 						f.write("G1 Z15 F300\n")
 					#Wait till the user continues printing
 					f.write("M0\n")
+					#Push the filament back, and retract again, the properly primes the nozzle when changing filament.
+					f.write("G1 E%f F6000\n" % (retractAmount))
+					f.write("G1 E-%f F6000\n" % (retractAmount))
 					#Move the head back
 					f.write("G1 X%f Y%f F9000\n" % (x, y))
 					f.write("G1 E%f F6000\n" % (retractAmount))
