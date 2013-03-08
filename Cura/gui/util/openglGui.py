@@ -328,9 +328,13 @@ class glButton(glGuiControl):
 		self._focus = False
 		self._hidden = False
 		self._disabled = False
+		self._showExpandArrow = False
 
 	def setSelected(self, value):
 		self._selected = value
+
+	def setExpandArrow(self, value):
+		self._showExpandArrow = value
 
 	def setHidden(self, value):
 		self._hidden = value
@@ -369,6 +373,11 @@ class glButton(glGuiControl):
 			glColor4ub(255,255,255,255)
 		opengl.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, 0)
 		opengl.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, self._imageID)
+		if self._showExpandArrow:
+			if self._selected:
+				opengl.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1)
+			else:
+				opengl.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1, 2)
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
 		glDisable(GL_TEXTURE_2D)

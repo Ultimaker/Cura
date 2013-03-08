@@ -98,6 +98,10 @@ class previewPanel(wx.Panel):
 		self.sliceButton         = openglGui.glButton(self.glCanvas, 5, 'Prepare', (1,0), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
 		self.printButton         = openglGui.glButton(self.glCanvas, 6, 'Print', (2,0), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
 
+		self.rotateToolButton.setExpandArrow(True)
+		self.scaleToolButton.setExpandArrow(True)
+		self.mirrorToolButton.setExpandArrow(True)
+
 		extruderCount = int(profile.getPreference('extruder_amount'))
 		if extruderCount > 1:
 			openglGui.glButton(self.glCanvas, 4, 'Load dual', (0,1), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
