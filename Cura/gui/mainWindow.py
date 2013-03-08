@@ -626,7 +626,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Initial layer thickness (mm)", 'bottom_thickness', '0.0', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
 		validators.validFloat(c, 0.0)
 		validators.warningAbove(c, lambda : (float(profile.getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
-		c = configBase.SettingRow(right, "Cut off object bottom (mm)", 'object_sink', 0.05, '...')
+		c = configBase.SettingRow(right, "Cut off object bottom (mm)", 'object_sink', 0.05, 'Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer.')
 		validators.validFloat(c, 0.0)
 		configBase.settingNotify(c, lambda : self.GetParent().GetParent().GetParent().preview3d.Refresh())
 		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
