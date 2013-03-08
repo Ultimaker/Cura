@@ -493,6 +493,7 @@ class glComboButton(glButton):
 
 	def setValue(self, value):
 		self._selection = value
+		self._imageID = self._imageIDs[self._selection]
 		self._comboCallback()
 
 	def OnMouseDown(self, x, y):
