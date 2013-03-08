@@ -298,6 +298,9 @@ class mainWindow(wx.Frame):
 			self.addToModelMRU(self.filelist[idx])
 
 	def OnDropFiles(self, files):
+		profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
+		profile.setPluginConfig([])
+		self.updateProfileToControls()
 		self._loadModels(files)
 
 	def OnLoadModel(self, e):
