@@ -291,7 +291,7 @@ class previewPanel(wx.Panel):
 		if mode == "GCode":
 			self.viewSelection.setValue(4)
 		wx.CallAfter(self.glCanvas.Refresh)
-	
+
 	def loadModelFiles(self, filelist, showWarning = False):
 		while len(filelist) > len(self.objectList):
 			self.objectList.append(previewObject())
@@ -304,8 +304,8 @@ class previewPanel(wx.Panel):
 				obj.fileTime = None
 				self.gcodeFileTime = None
 				self.logFileTime = None
+				obj.mesh = None
 			obj.filename = filelist[idx]
-			obj.mesh = None
 
 		self.deselectTool()
 		self.gcodeFilename = sliceRun.getExportFilename(filelist[0])
