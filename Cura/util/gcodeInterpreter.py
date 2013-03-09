@@ -214,7 +214,9 @@ class gcode(object):
 			else:
 				M = self.getCodeInt(line, 'M')
 				if M is not None:
-					if M == 1:	#Message with possible wait (ignored)
+					if M == 0:	#Message with possible wait (ignored)
+						pass
+					elif M == 1:	#Message with possible wait (ignored)
 						pass
 					elif M == 80:	#Enable power supply
 						pass
@@ -261,7 +263,7 @@ class gcode(object):
 					else:
 						print "Unknown M code:" + str(M)
 		self.layerList.append(currentLayer)
-		if self.progressCallback is not None:
+		if self.progressCallback is not None and self._fileSize > 0:
 			self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize))
 		self.extrusionAmount = maxExtrusion
 		self.totalMoveTimeMinute = totalMoveTimeMinute
@@ -272,7 +274,7 @@ class gcode(object):
 		if code not in self.regMatch:
 			self.regMatch[code] = re.compile(code + '([^\s]+)')
 		m = self.regMatch[code].search(line)
-		if m == None:
+		if m is None:
 			return None
 		try:
 			return int(m.group(1))

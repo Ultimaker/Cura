@@ -288,7 +288,7 @@ class mainWindow(wx.Frame):
 
 	def _loadModels(self, filelist):
 		self.filelist = filelist
-		self.SetTitle(filelist[-1] + ' - Cura - ' + version.getVersion())
+		self.SetTitle('Cura - %s - %s' % (version.getVersion(), filelist[-1]))
 		profile.putPreference('lastFile', ';'.join(self.filelist))
 		self.preview3d.loadModelFiles(self.filelist, True)
 		self.preview3d.setViewMode("Normal")
@@ -298,6 +298,9 @@ class mainWindow(wx.Frame):
 			self.addToModelMRU(self.filelist[idx])
 
 	def OnDropFiles(self, files):
+		profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
+		profile.setPluginConfig([])
+		self.updateProfileToControls()
 		self._loadModels(files)
 
 	def OnLoadModel(self, e):
@@ -519,7 +522,9 @@ class mainWindow(wx.Frame):
 			if not isSimple:
 				self.normalSashPos = self.splitter.GetSashPosition()
 			profile.putPreference('window_normal_sash', self.normalSashPos)
-			
+
+		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which keeps wxWidgets from quiting.
+		self.preview3d.glCanvas.OnPaint = lambda e : e
 		self.Destroy()
 
 	def OnQuit(self, e):
@@ -621,7 +626,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Initial layer thickness (mm)", 'bottom_thickness', '0.0', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
 		validators.validFloat(c, 0.0)
 		validators.warningAbove(c, lambda : (float(profile.getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
-		c = configBase.SettingRow(right, "Cut off object bottom (mm)", 'object_sink', 0.05, '...')
+		c = configBase.SettingRow(right, "Cut off object bottom (mm)", 'object_sink', 0.05, 'Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer.')
 		validators.validFloat(c, 0.0)
 		configBase.settingNotify(c, lambda : self.GetParent().GetParent().GetParent().preview3d.Refresh())
 		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')

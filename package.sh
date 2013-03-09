@@ -12,11 +12,12 @@ BUILD_TARGET=${1:-all}
 #BUILD_TARGET=win32
 #BUILD_TARGET=linux
 #BUILD_TARGET=darwin
+#BUILD_TARGET=debian
 
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-BUILD_NAME=13.01
+BUILD_NAME=13.03
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Which versions of external programs to use
@@ -134,6 +135,25 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	exit
 fi
 
+#############################
+# Debian .deb
+#############################
+
+if [ "$BUILD_TARGET" = "debian" ]; then
+	git clone https://github.com/GreatFruitOmsk/Power
+	rm -rf scripts/linux/debian/usr/share/cura
+	mkdir -p scripts/linux/debian/usr/share/cura
+	cp -a Cura scripts/linux/debian/usr/share/cura/
+	cp scripts/linux/cura.py scripts/linux/debian/usr/share/cura/
+	cp -a Power/power scripts/linux/debian/usr/share/cura/
+	echo $BUILD_NAME > scripts/linux/debian/usr/share/cura/Cura/version
+	sudo chown root:root scripts/linux/debian -R
+	sudo chmod 755 scripts/linux/debian/DEBIAN/*
+	cd scripts/linux
+	dpkg-deb --build debian ${TARGET_DIR}.deb
+	sudo chown `id -un`:`id -gn` debian -R
+	exit
+fi
 
 #############################
 # Rest

@@ -15,6 +15,7 @@ if not hasattr(sys, 'frozen'):
 		sys.path.append(cura_sf_path)
 
 from Cura.util import profile
+from Cura.util import version
 from Cura.slice.cura_sf.skeinforge_application.skeinforge_plugins.craft_plugins import export
 
 def fixUTF8(input):
@@ -108,10 +109,12 @@ def main():
 				'machine': platform.machine(),
 				'platform': platform.platform(),
 				'profile': profile.getGlobalProfileString(),
+				'preferences': profile.getGlobalPreferencesString(),
 				'modelhash': m.hexdigest(),
+				'version': version.getVersion(),
 			}
 			try:
-				f = urllib2.urlopen("http://software.ultimaker.com/upload_stats.php", data = urllib.urlencode(data), timeout = 5);
+				f = urllib2.urlopen("http://platform.ultimaker.com/curastats/", data = urllib.urlencode(data), timeout = 5);
 				f.read()
 				f.close()
 			except:

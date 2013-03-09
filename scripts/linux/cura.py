@@ -2,6 +2,8 @@
 
 import os, sys
 
+sys.path.insert(1, os.path.dirname(__file__))
+
 try:
     import OpenGL
     import wx
@@ -25,7 +27,6 @@ except ImportError as e:
     
     exit(1)
 
-sys.path.insert(1, os.path.dirname(__file__))
 
 import Cura.cura as cura
 

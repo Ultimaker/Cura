@@ -328,9 +328,13 @@ class glButton(glGuiControl):
 		self._focus = False
 		self._hidden = False
 		self._disabled = False
+		self._showExpandArrow = False
 
 	def setSelected(self, value):
 		self._selected = value
+
+	def setExpandArrow(self, value):
+		self._showExpandArrow = value
 
 	def setHidden(self, value):
 		self._hidden = value
@@ -367,13 +371,32 @@ class glButton(glGuiControl):
 			glColor4ub(128,128,128,128)
 		else:
 			glColor4ub(255,255,255,255)
+		opengl.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, 0)
 		opengl.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, self._imageID)
+		if self._showExpandArrow:
+			if self._selected:
+				opengl.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1)
+			else:
+				opengl.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1, 2)
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
 		glDisable(GL_TEXTURE_2D)
 		if self._focus:
-			glColor4ub(255,255,255,255)
 			glTranslatef(0, -0.55*bs*scale, 0)
+
+			glPushMatrix()
+			glColor4ub(60,60,60,255)
+			glTranslatef(-1, -1, 0)
+			opengl.glDrawStringCenter(self._tooltip)
+			glTranslatef(0, 2, 0)
+			opengl.glDrawStringCenter(self._tooltip)
+			glTranslatef(2, 0, 0)
+			opengl.glDrawStringCenter(self._tooltip)
+			glTranslatef(0, -2, 0)
+			opengl.glDrawStringCenter(self._tooltip)
+			glPopMatrix()
+
+			glColor4ub(255,255,255,255)
 			opengl.glDrawStringCenter(self._tooltip)
 		glPopMatrix()
 
@@ -447,16 +470,29 @@ class glComboButton(glButton):
 		glPushMatrix()
 		glTranslatef(pos[0]+bs*0.5, pos[1] + bs*0.5, 0)
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
-		glScalef(bs, bs, bs)
 		for n in xrange(0, len(self._imageIDs)):
-			glTranslatef(0, 1, 0)
+			glTranslatef(0, bs, 0)
 			glColor4ub(255,255,255,255)
-			opengl.glDrawTexturedQuad(-0.5,-0.5,1,1, self._imageIDs[n])
+			opengl.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, 0)
+			opengl.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, self._imageIDs[n])
 			glDisable(GL_TEXTURE_2D)
 
 			glPushMatrix()
+			glTranslatef(-0.55*bs, 0.1*bs, 0)
+
+			glPushMatrix()
+			glColor4ub(60,60,60,255)
+			glTranslatef(-1, -1, 0)
+			opengl.glDrawStringRight(self._tooltips[n])
+			glTranslatef(0, 2, 0)
+			opengl.glDrawStringRight(self._tooltips[n])
+			glTranslatef(2, 0, 0)
+			opengl.glDrawStringRight(self._tooltips[n])
+			glTranslatef(0, -2, 0)
+			opengl.glDrawStringRight(self._tooltips[n])
+			glPopMatrix()
+
 			glColor4ub(255,255,255,255)
-			glTranslatef(-0.55, 0.1, 0)
 			opengl.glDrawStringRight(self._tooltips[n])
 			glPopMatrix()
 		glPopMatrix()
@@ -466,6 +502,7 @@ class glComboButton(glButton):
 
 	def setValue(self, value):
 		self._selection = value
+		self._imageID = self._imageIDs[self._selection]
 		self._comboCallback()
 
 	def OnMouseDown(self, x, y):

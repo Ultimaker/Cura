@@ -94,17 +94,21 @@ class previewPanel(wx.Panel):
 		self.mirrorYButton       = openglGui.glButton(self.glCanvas, 18, 'Mirror Y', (2,-3), lambda : self.OnMirror(1))
 		self.mirrorZButton       = openglGui.glButton(self.glCanvas, 22, 'Mirror Z', (2,-4), lambda : self.OnMirror(2))
 
-		self.openFileButton      = openglGui.glButton(self.glCanvas, 4, 'Load model', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
-		self.sliceButton         = openglGui.glButton(self.glCanvas, 5, 'Prepare model', (1,0), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
-		self.printButton         = openglGui.glButton(self.glCanvas, 6, 'Print model', (2,0), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
+		self.openFileButton      = openglGui.glButton(self.glCanvas, 4, 'Load', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
+		self.sliceButton         = openglGui.glButton(self.glCanvas, 5, 'Prepare', (1,0), lambda : self.GetParent().GetParent().GetParent().OnSlice(None))
+		self.printButton         = openglGui.glButton(self.glCanvas, 6, 'Print', (2,0), lambda : self.GetParent().GetParent().GetParent().OnPrint(None))
+
+		self.rotateToolButton.setExpandArrow(True)
+		self.scaleToolButton.setExpandArrow(True)
+		self.mirrorToolButton.setExpandArrow(True)
 
 		extruderCount = int(profile.getPreference('extruder_amount'))
 		if extruderCount > 1:
-			openglGui.glButton(self.glCanvas, 4, 'Load dual model', (0,1), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
+			openglGui.glButton(self.glCanvas, 4, 'Load dual', (0,1), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(2))
 		if extruderCount > 2:
-			openglGui.glButton(self.glCanvas, 4, 'Load triple model', (0,2), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(3))
+			openglGui.glButton(self.glCanvas, 4, 'Load triple', (0,2), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(3))
 		if extruderCount > 3:
-			openglGui.glButton(self.glCanvas, 4, 'Load quad model', (0,3), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
+			openglGui.glButton(self.glCanvas, 4, 'Load quad', (0,3), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(4))
 
 		self.scaleForm = openglGui.glFrame(self.glCanvas, (2, -2))
 		openglGui.glGuiLayoutGrid(self.scaleForm)
@@ -123,8 +127,8 @@ class previewPanel(wx.Panel):
 		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
-		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [7,11,15,19,23], ['3D Model', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
-		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-2), self.OnLayerNrChange)
+		self.viewSelection = openglGui.glComboButton(self.glCanvas, 'View mode', [7,11,15,19,23], ['Normal', 'Transparent', 'X-Ray', 'Overhang', 'Layers'], (-1,0), self.OnViewChange)
+		self.layerSelect = openglGui.glSlider(self.glCanvas, 0, 0, 100, (-1,-2), lambda : self.Refresh())
 
 		self.OnViewChange()
 		self.OnToolSelect()
@@ -285,30 +289,13 @@ class previewPanel(wx.Panel):
 			obj.steepDirty = True
 		self.updateModelTransform()
 
-	def On3DClick(self):
-		self.glCanvas.yaw = 30
-		self.glCanvas.pitch = 60
-		self.glCanvas.zoom = 300
-		self.glCanvas.view3D = True
-		self.glCanvas.Refresh()
-
-	def OnTopClick(self):
-		self.glCanvas.view3D = False
-		self.glCanvas.zoom = 100
-		self.glCanvas.offsetX = 0
-		self.glCanvas.offsetY = 0
-		self.glCanvas.Refresh()
-
-	def OnLayerNrChange(self):
-		self.glCanvas.Refresh()
-	
 	def setViewMode(self, mode):
 		if mode == "Normal":
 			self.viewSelection.setValue(0)
 		if mode == "GCode":
 			self.viewSelection.setValue(4)
 		wx.CallAfter(self.glCanvas.Refresh)
-	
+
 	def loadModelFiles(self, filelist, showWarning = False):
 		while len(filelist) > len(self.objectList):
 			self.objectList.append(previewObject())
@@ -321,10 +308,12 @@ class previewPanel(wx.Panel):
 				obj.fileTime = None
 				self.gcodeFileTime = None
 				self.logFileTime = None
+				obj.mesh = None
 			obj.filename = filelist[idx]
 
 		self.deselectTool()
 		self.gcodeFilename = sliceRun.getExportFilename(filelist[0])
+		self.gcode = None
 		#Do the STL file loading in a background thread so we don't block the UI.
 		if self.loadThread is not None and self.loadThread.isAlive():
 			self.abortLoading = True
@@ -406,6 +395,8 @@ class previewPanel(wx.Panel):
 		wx.CallAfter(self.checkReloadFileTimer.Start, 1000)
 	
 	def loadProgress(self, progress):
+		if self.gcode is None:
+			return True
 		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
 			self.layerSelect.setRange(1, len(self.gcode.layerList) - 1)
 			self.layerSelect.setValue(self.layerSelect.getMaxValue())
@@ -443,6 +434,7 @@ class previewPanel(wx.Panel):
 		self.warningPopup.timer.Stop()
 
 	def updateToolbar(self):
+		self.sliceButton.setDisabled(len(self.objectList) < 1 or self.objectList[0].mesh is None)
 		self.printButton.setDisabled(self.gcode is None)
 		self.rotateToolButton.setHidden(self.glCanvas.viewMode == "GCode")
 		self.scaleToolButton.setHidden(self.glCanvas.viewMode == "GCode")
@@ -640,7 +632,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			glRotate(self.yaw, 0,0,1)
 
 			if self.viewMode == "GCode" or self.viewMode == "Mixed":
-				n = self.parent.layerSelect.getValue()
+				n = min(self.gcodeQuickDisplayListMade, self.parent.layerSelect.getValue())
 				if self.parent.gcode is not None and -1 < n < len(self.parent.gcode.layerList) and len(self.parent.gcode.layerList[n]) > 0:
 					self.viewTarget[2] = self.parent.gcode.layerList[n][0].list[-1].z
 			else:
@@ -653,6 +645,13 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
 
 		self.OnDraw()
+
+		if len(self.parent.objectList) > 0 and self.parent.objectList[0].mesh is None:
+			glDisable(GL_DEPTH_TEST)
+			glLoadIdentity()
+			glColor3ub(255,255,255)
+			glTranslate(0, -3, -10)
+			opengl.glDrawStringCenter('Loading %s ...' % (os.path.basename(self.parent.objectList[0].filename)))
 
 	def OnDraw(self):
 		machineSize = self.parent.machineSize

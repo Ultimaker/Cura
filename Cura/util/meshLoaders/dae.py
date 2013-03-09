@@ -30,7 +30,7 @@ class daeModel(mesh.mesh):
 				self._ProcessNode2(node)
 
 		scale = float(self._base['collada'][0]['asset'][0]['unit'][0]['_meter']) * 1000
-		self.origonalVertexes *= scale
+		self.vertexes *= scale
 		
 		self._base = None
 		self._cur = None

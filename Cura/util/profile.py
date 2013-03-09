@@ -87,7 +87,6 @@ M107       ;start with the fan off
 
 G28 X0 Y0  ;move X/Y to min endstops
 G28 Z0     ;move Z to min endstops
-G92 X0 Y0 Z0 E0         ;reset software position to front/left/z=0.0
 
 G1 Z15.0 F{max_z_speed} ;move the platform down 15mm
 
@@ -284,6 +283,24 @@ def getGlobalProfileString():
 	ret = '\b'.join(p) + '\f' + '\b'.join(alt)
 	ret = base64.b64encode(zlib.compress(ret, 9))
 	return ret
+
+def getGlobalPreferencesString():
+	global globalPreferenceParser
+	if globalPreferenceParser is None:
+		globalPreferenceParser = ConfigParser.ConfigParser()
+		try:
+			globalPreferenceParser.read(getPreferencePath())
+		except ConfigParser.ParsingError:
+			pass
+
+	p = []
+	if globalPreferenceParser.has_section('preference'):
+		for key in globalPreferenceParser.options('preference'):
+			p.append(key + "=" + globalPreferenceParser.get('preference', key))
+	ret = '\b'.join(p)
+	ret = base64.b64encode(zlib.compress(ret, 9))
+	return ret
+
 
 def getProfileSetting(name):
 	if name in tempOverride:
