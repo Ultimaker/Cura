@@ -1,4 +1,4 @@
 PyOpenGL>=3.0.2
 numpy>=1.6.2
 pyserial>=2.6
-power>=1.1
+power>=1.2
