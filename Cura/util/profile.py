@@ -284,6 +284,24 @@ def getGlobalProfileString():
 	ret = base64.b64encode(zlib.compress(ret, 9))
 	return ret
 
+def getGlobalPreferencesString():
+	global globalPreferenceParser
+	if globalPreferenceParser is None:
+		globalPreferenceParser = ConfigParser.ConfigParser()
+		try:
+			globalPreferenceParser.read(getPreferencePath())
+		except ConfigParser.ParsingError:
+			pass
+
+	p = []
+	if globalPreferenceParser.has_section('preference'):
+		for key in globalPreferenceParser.options('preference'):
+			p.append(key + "=" + globalPreferenceParser.get('preference', key))
+	ret = '\b'.join(p)
+	ret = base64.b64encode(zlib.compress(ret, 9))
+	return ret
+
+
 def getProfileSetting(name):
 	if name in tempOverride:
 		return unicode(tempOverride[name], "utf-8")
