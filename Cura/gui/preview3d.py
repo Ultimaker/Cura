@@ -378,7 +378,7 @@ class previewPanel(wx.Panel):
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
 				wx.CallAfter(self.glCanvas.Refresh)
-			else:
+			elif obj.filename is None or not os.path.isfile(obj.filename):
 				obj.mesh = None
 				obj.filename = None
 
