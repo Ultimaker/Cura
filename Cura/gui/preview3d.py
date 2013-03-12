@@ -362,8 +362,14 @@ class previewPanel(wx.Panel):
 		for obj in self.objectList:
 			if obj.filename is not None and os.path.isfile(obj.filename) and obj.fileTime != os.stat(obj.filename).st_mtime:
 				obj.fileTime = os.stat(obj.filename).st_mtime
-				mesh = meshLoader.loadMesh(obj.filename)
-				obj.mesh = mesh
+				try:
+					mesh = meshLoader.loadMesh(obj.filename)
+				except:
+					obj.mesh = None
+					obj.filename = None
+					print 'x'
+				else:
+					obj.mesh = mesh
 				obj.dirty = True
 				obj.steepDirty = True
 				self.updateModelTransform()
@@ -371,7 +377,10 @@ class previewPanel(wx.Panel):
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
 				wx.CallAfter(self.glCanvas.Refresh)
-		
+			else:
+				obj.mesh = None
+				obj.filename = None
+
 		if os.path.isfile(self.gcodeFilename) and self.gcodeFileTime != os.stat(self.gcodeFilename).st_mtime:
 			self.gcodeFileTime = os.stat(self.gcodeFilename).st_mtime
 			self.gcodeDirty = True
@@ -646,7 +655,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 
 		self.OnDraw()
 
-		if len(self.parent.objectList) > 0 and self.parent.objectList[0].mesh is None:
+		if len(self.parent.objectList) > 0 and self.parent.objectList[0].mesh is None and self.parent.objectList[0].filename is not None:
 			glDisable(GL_DEPTH_TEST)
 			glLoadIdentity()
 			glColor3ub(255,255,255)
