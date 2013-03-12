@@ -365,15 +365,16 @@ class previewPanel(wx.Panel):
 				try:
 					mesh = meshLoader.loadMesh(obj.filename)
 				except:
+					wx.CallAfter(self.ShowWarningPopup, 'Failed to load %s' % (obj.filename))
 					obj.mesh = None
 					obj.filename = None
-					print 'x'
 				else:
 					obj.mesh = mesh
 				obj.dirty = True
 				obj.steepDirty = True
 				self.updateModelTransform()
-				self.glCanvas.zoom = self.objectsBoundaryCircleSize * 6.0
+				if self.objectsBoundaryCircleSize is not None:
+					self.glCanvas.zoom = self.objectsBoundaryCircleSize * 6.0
 				self.errorList = []
 				wx.CallAfter(self.updateToolbar)
 				wx.CallAfter(self.glCanvas.Refresh)
