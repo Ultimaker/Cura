@@ -181,7 +181,7 @@ class Python < Formula
 
   def distutils_fix_superenv(args)
     # To allow certain Python bindings to find brewed software:
-    cflags = "CFLAGS=-I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
+    cflags = "CFLAGS=-msse2 -mno-sse3 -mno-sse4 -I#{HOMEBREW_PREFIX}/include -I#{Formula.factory('sqlite').opt_prefix}/include"
     ldflags = "LDFLAGS=-L#{HOMEBREW_PREFIX}/lib -L#{Formula.factory('sqlite').opt_prefix}/lib"
     unless MacOS::CLT.installed?
       # Help Python's build system (distribute/pip) to build things on Xcode-only systems
@@ -210,6 +210,7 @@ class Python < Formula
     #     building dbm using ndbm
     #     error: /usr/include/zlib.h: No such file or directory
     ENV.append 'CPPFLAGS', "-I#{MacOS.sdk_path}/usr/include" unless MacOS::CLT.installed?
+    ENV.append_to_cflags '-msse2 -mno-sse3 -mno-sse4'
 
     # Don't use optimizations other than "-Os" here, because Python's distutils
     # remembers (hint: `python3-config --cflags`) and reuses them for C
