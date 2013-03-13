@@ -4,6 +4,7 @@ import sys
 import math
 import re
 import os
+import time
 
 from Cura.util import util3d
 from Cura.util import profile
@@ -65,7 +66,6 @@ class gcode(object):
 		feedRate = 3600
 		layerThickness = 0.1
 		pathType = 'CUSTOM';
-		startCodeDone = False
 		currentLayer = []
 		currentPath = gcodePath('move', pathType, layerThickness, pos.copy())
 		currentPath.list[0].e = totalExtrusion
@@ -78,9 +78,7 @@ class gcode(object):
 			#Parse Cura_SF comments
 			if line.startswith(';TYPE:'):
 				pathType = line[6:].strip()
-				if pathType != "CUSTOM":
-					startCodeDone = True
-					
+
 			if ';' in line:
 				#Slic3r GCode comment parser
 				comment = line[line.find(';')+1:].strip()
@@ -98,8 +96,6 @@ class gcode(object):
 							gcodeFile.close()
 							return
 					currentLayer = []
-				if pathType != "CUSTOM":
-					startCodeDone = True
 				line = line[0:line.find(';')]
 			T = self.getCodeInt(line, 'T')
 			if T is not None:
@@ -271,28 +267,34 @@ class gcode(object):
 		#print "Estimated print duration: %.2f minutes" % (self.totalMoveTimeMinute)
 
 	def getCodeInt(self, line, code):
-		if code not in self.regMatch:
-			self.regMatch[code] = re.compile(code + '([^\s]+)')
-		m = self.regMatch[code].search(line)
-		if m is None:
+		n = line.find(code) + 1
+		if n < 1:
 			return None
+		m = line.find(' ', n)
 		try:
-			return int(m.group(1))
+			if m < 0:
+				return int(line[n:])
+			return int(line[n:m])
 		except:
 			return None
 
 	def getCodeFloat(self, line, code):
-		if code not in self.regMatch:
-			self.regMatch[code] = re.compile(code + '([^\s]+)')
-		m = self.regMatch[code].search(line)
-		if m is None:
+		n = line.find(code) + 1
+		if n < 1:
 			return None
+		m = line.find(' ', n)
 		try:
-			return float(m.group(1))
+			if m < 0:
+				return float(line[n:])
+			return float(line[n:m])
 		except:
 			return None
 
 if __name__ == '__main__':
+	t = time.time()
 	for filename in sys.argv[1:]:
-		gcode().load(filename)
+		g = gcode()
+		g.load(filename)
+		print g.totalMoveTimeMinute
+	print time.time() - t
 
