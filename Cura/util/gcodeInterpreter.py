@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 import sys
 import math
-import re
 import os
 import time
 
@@ -134,7 +133,7 @@ class gcode(object):
 					if f is not None:
 						feedRate = f
 					if x is not None or y is not None or z is not None:
-						totalMoveTimeMinute += (oldPos - pos).vsize() / feedRate
+						totalMoveTimeMinute += math.sqrt((oldPos.x - pos.x) * (oldPos.x - pos.x) + (oldPos.y - pos.y) * (oldPos.y - pos.y)) / feedRate
 					moveType = 'move'
 					if e is not None:
 						if not absoluteE:
