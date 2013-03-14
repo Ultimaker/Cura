@@ -26,6 +26,9 @@ profileDefaultSettings = {
 	'skirt_gap': '3.0',
 	'print_speed': '50',
 	'print_temperature': '220',
+	'print_temperature2': '0',
+	'print_temperature3': '0',
+	'print_temperature4': '0',
 	'print_bed_temperature': '70',
 	'support': 'None',
 	'filament_diameter': '2.89',
@@ -73,6 +76,9 @@ profileDefaultSettings = {
 	'alternative_center': '',
 	'clear_z': '0.0',
 	'extruder': '0',
+	'new_x': '0',
+	'new_y': '0',
+	'new_z': '0',
 }
 alterationDefault = {
 #######################################################################################
@@ -133,10 +139,11 @@ G92 E0
 #######################################################################################
 	'switchExtruder.gcode': """;Switch between the current extruder and the next extruder, when printing with multiple extruders.
 G92 E0
-G1 E-15 F5000
+G1 E-36 F5000
 G92 E0
 T{extruder}
-G1 E15 F5000
+;G1 X{new_x} Y{new_y} Z{new_z} F{travel_speed}
+G1 E36 F5000
 G92 E0
 """,
 }
@@ -535,7 +542,7 @@ def setAlterationFile(filename, value):
 	saveGlobalProfile(getDefaultProfilePath())
 
 ### Get the alteration file for output. (Used by Skeinforge)
-def getAlterationFileContents(filename):
+def getAlterationFileContents(filename, extruderCount = 1):
 	prefix = ''
 	postfix = ''
 	alterationContents = getAlterationFile(filename)
@@ -553,7 +560,20 @@ def getAlterationFileContents(filename):
 		if bedTemp > 0 and not '{print_bed_temperature}' in alterationContents:
 			prefix += 'M140 S%f\n' % (bedTemp)
 		if temp > 0 and not '{print_temperature}' in alterationContents:
-			prefix += 'M109 S%f\n' % (temp)
+			if extruderCount > 0:
+				for n in xrange(1, extruderCount):
+					t = temp
+					if n > 0 and getProfileSettingFloat('print_temperature%d' % (n+1)) > 0:
+						t = getProfileSettingFloat('print_temperature%d' % (n+1))
+					prefix += 'M104 T%d S%f\n' % (n, temp)
+				for n in xrange(0, extruderCount):
+					t = temp
+					if n > 0 and getProfileSettingFloat('print_temperature%d' % (n+1)) > 0:
+						t = getProfileSettingFloat('print_temperature%d' % (n+1))
+					prefix += 'M109 T%d S%f\n' % (n, temp)
+				prefix += 'T0\n'
+			else:
+				prefix += 'M109 S%f\n' % (temp)
 		if bedTemp > 0 and not '{print_bed_temperature}' in alterationContents:
 			prefix += 'M190 S%f\n' % (bedTemp)
 	elif filename == 'end.gcode':

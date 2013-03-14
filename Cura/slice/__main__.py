@@ -101,7 +101,7 @@ def main():
 		profile.setTempOverride('object_center_y', position[1])
 		if idx == 0:
 			resultFile.write(';TYPE:CUSTOM\n')
-			resultFile.write(profile.getAlterationFileContents('start.gcode').replace('?filename?', ' '.join(filenames).encode('ascii', 'replace')))
+			resultFile.write(profile.getAlterationFileContents('start.gcode', len(filenames)).replace('?filename?', ' '.join(filenames).encode('ascii', 'replace')))
 		else:
 			resultFile.write(';TYPE:CUSTOM\n')
 			n = output[-1].rfind('Z')+1

@@ -67,6 +67,7 @@ class gcode(object):
 		pathType = 'CUSTOM';
 		currentLayer = []
 		currentPath = gcodePath('move', pathType, layerThickness, pos.copy())
+		currentPath.extruder = currentExtruder
 		currentPath.list[0].e = totalExtrusion
 		currentPath.list[0].extrudeAmountMultiply = extrudeAmountMultiply
 		currentLayer.append(currentPath)
@@ -158,6 +159,7 @@ class gcode(object):
 						layerThickness = abs(oldPos.z - pos.z)
 					if currentPath.type != moveType or currentPath.pathType != pathType:
 						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath.list[-1])
+						currentPath.extruder = currentExtruder
 						currentLayer.append(currentPath)
 					newPos = pos.copy()
 					newPos.e = totalExtrusion
