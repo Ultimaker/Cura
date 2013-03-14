@@ -430,7 +430,7 @@ def DrawGCodeLayer(layer, drawQuick = True):
 	moveColor = [0, 0, 1, 0.5]
 	retractColor = [1, 0, 0.5, 0.5]
 	supportColor = [0, 1, 1, 1]
-	extrudeColor = [1, 0, 0, 1]
+	extrudeColor = [[1, 0, 0, 1], [0, 1, 1, 1], [1, 1, 0, 1], [1, 0, 1, 1]]
 	innerWallColor = [0, 1, 0, 1]
 	skirtColor = [0, 0.5, 0.5, 1]
 	prevPathWasRetract = False
@@ -459,7 +459,7 @@ def DrawGCodeLayer(layer, drawQuick = True):
 			elif path.pathType == 'SKIRT':
 				c = skirtColor
 			else:
-				c = extrudeColor
+				c = extrudeColor[path.extruder]
 		if path.type == 'retract':
 			c = retractColor
 		if path.type == 'extrude' and not drawQuick:
