@@ -32,6 +32,9 @@ profileDefaultSettings = {
 	'print_bed_temperature': '70',
 	'support': 'None',
 	'filament_diameter': '2.89',
+	'filament_diameter2': '0',
+	'filament_diameter3': '0',
+	'filament_diameter4': '0',
 	'filament_density': '1.00',
 	'retraction_min_travel': '5.0',
 	'retraction_enable': 'False',
@@ -142,7 +145,7 @@ G92 E0
 G1 E-36 F5000
 G92 E0
 T{extruder}
-;G1 X{new_x} Y{new_y} Z{new_z} F{travel_speed}
+G1 X{new_x} Y{new_y} Z{new_z} F{travel_speed}
 G1 E36 F5000
 G92 E0
 """,
