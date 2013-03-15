@@ -78,6 +78,9 @@ def main():
 				profile.setTempOverride('object_center_x', position[0])
 				profile.setTempOverride('object_center_y', position[1])
 			profile.setTempOverride('object_matrix', ','.join(map(str, position[2:11])))
+			if extruderNr > 0:
+				if profile.getProfileSettingFloat('filament_diameter%d' % (extruderNr + 1)) > 0:
+					profile.setTempOverride('filament_diameter', profile.getProfileSetting('filament_diameter%d' % (extruderNr + 1)))
 			output.append(export.getOutput(filename))
 			profile.resetTempOverride()
 		if len(output) == 1:
