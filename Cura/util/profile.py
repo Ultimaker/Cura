@@ -142,7 +142,7 @@ G92 E0
 G1 E-36 F5000
 G92 E0
 T{extruder}
-;G1 X{new_x} Y{new_y} Z{new_z} F{travel_speed}
+G1 X{new_x} Y{new_y} Z{new_z} F{travel_speed}
 G1 E36 F5000
 G92 E0
 """,

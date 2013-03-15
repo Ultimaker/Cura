@@ -121,39 +121,90 @@ def main():
 				pass
 
 
+def isPrintingLine(line):
+	if line.startswith("G1") and ('X' in line or 'Y' in line) and 'E' in line:
+		return True
+	return False
+
+def getCodeFloat(line, code, default):
+	n = line.find(code) + 1
+	if n < 1:
+		return default
+	m = line.find(' ', n)
+	try:
+		if m < 0:
+			return float(line[n:])
+		return float(line[n:m])
+	except:
+		return default
+
 def stitchMultiExtruder(outputList, resultFile):
 	print "Stitching %i files for multi-extrusion" % (len(outputList))
 	currentExtruder = 0
 	resultFile.write('T%d\n' % (currentExtruder))
-	layerNr = -1
+	layerNr = 0
 	hasLine = True
 	outputList = map(lambda o: o.split('\n'), outputList)
 	outputOrder = range(0, len(outputList))
+	outputSlice = []
+	for n in xrange(0, len(outputList)):
+		outputSlice.append([0, 0])
+	currentX = 0
+	currentY = 0
+	currentZ = 0
+	currentF = 60
 	while hasLine:
-		hasLine = False
-		outputOrder.reverse()
-		for outputIdx in outputOrder:
-			layerHasLine = False
-			while len(outputList[outputIdx]) > 0:
-				line = outputList[outputIdx].pop(0)
-				hasLine = True
-				if line.startswith(';LAYER:'):
-					break
-				if 'Z' in line:
-					lastZ = float(re.search('Z([^\s]+)', line).group(1))
-				if not layerHasLine:
-					nextExtruder = outputIdx
-					resultFile.write(';LAYER:%d\n' % (layerNr))
-					resultFile.write(';EXTRUDER:%d\n' % (nextExtruder))
-					if nextExtruder != currentExtruder:
-						resultFile.write(';TYPE:CUSTOM\n')
-						profile.setTempOverride('extruder', nextExtruder)
-						resultFile.write(profile.getAlterationFileContents('switchExtruder.gcode') + '\n')
-						profile.resetTempOverride()
-						currentExtruder = nextExtruder
-					layerHasLine = True
-				resultFile.write(line)
-				resultFile.write('\n')
+		hasLine = layerNr < 1000
+		for n in xrange(0, len(outputList)):
+			outputSlice[n][0] = outputSlice[n][1] + 1
+			outputSlice[n][1] = outputSlice[n][0]
+			while outputSlice[n][1] < len(outputList[n]) and not outputList[n][outputSlice[n][1]].startswith(';LAYER:'):
+				outputSlice[n][1] += 1
+		outputOrder = range(currentExtruder, len(outputList)) + range(0, currentExtruder)
+		for n in outputOrder:
+			if outputSlice[n][1] > outputSlice[n][0] + 1:
+				nextExtruder = n
+				resultFile.write(';LAYER:%d\n' % (layerNr))
+				resultFile.write(';EXTRUDER:%d\n' % (nextExtruder))
+
+				startSlice = outputSlice[n][0]
+				endSlice = outputSlice[n][1]
+				currentE = 0
+				while not isPrintingLine(outputList[n][startSlice]):
+					currentE = getCodeFloat(outputList[n][startSlice], 'E', currentE)
+					currentX = getCodeFloat(outputList[n][startSlice], 'X', currentX)
+					currentY = getCodeFloat(outputList[n][startSlice], 'Y', currentY)
+					currentZ = getCodeFloat(outputList[n][startSlice], 'Z', currentZ)
+					currentF = getCodeFloat(outputList[n][startSlice], 'F', currentF)
+					startSlice += 1
+				while not isPrintingLine(outputList[n][endSlice-1]):
+					endSlice -= 1
+
+				if nextExtruder != currentExtruder:
+					profile.setTempOverride('extruder', nextExtruder)
+					profile.setTempOverride('new_x', currentX)
+					profile.setTempOverride('new_y', currentY)
+					profile.setTempOverride('new_z', currentZ)
+					resultFile.write(profile.getAlterationFileContents('switchExtruder.gcode') + '\n')
+					profile.resetTempOverride()
+					currentExtruder = nextExtruder
+
+				for idx in xrange(outputSlice[n][0], startSlice):
+					if not 'G1' in outputList[n][idx]:
+						resultFile.write(outputList[n][idx])
+						resultFile.write('\n')
+
+				resultFile.write('G1 X%f Y%f Z%f F%f\n' % (currentX, currentY, currentZ, profile.getProfileSettingFloat('travel_speed') * 60))
+				resultFile.write('G1 F%f\n' % (currentF))
+				resultFile.write('G92 E%f\n' % (currentE))
+				for idx in xrange(startSlice, endSlice):
+					resultFile.write(outputList[n][idx])
+					resultFile.write('\n')
+					currentX = getCodeFloat(outputList[n][idx], 'X', currentX)
+					currentY = getCodeFloat(outputList[n][idx], 'Y', currentY)
+					currentZ = getCodeFloat(outputList[n][idx], 'Z', currentZ)
+					hasLine = True
+				resultFile.write('G92 E0\n')
 		layerNr += 1
 
 if __name__ == '__main__':
