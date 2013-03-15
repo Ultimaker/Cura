@@ -567,6 +567,18 @@ class normalSettingsPanel(configBase.configPanelBase):
 		c = configBase.SettingRow(right, "Printing temperature", 'print_temperature', '0', 'Temperature used for printing. Set at 0 to pre-heat yourself')
 		validators.validFloat(c, 0.0, 340.0)
 		validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
+		if int(profile.getPreference('extruder_amount')) > 1:
+			c = configBase.SettingRow(right, "2nd nozzle temperature", 'print_temperature2', '0', 'Temperature used for printing with the 2nd nozzle. Set at 0 to use the same temperature as for nozzle 1')
+			validators.validFloat(c, 0.0, 340.0)
+			validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
+		if int(profile.getPreference('extruder_amount')) > 2:
+			c = configBase.SettingRow(right, "3th nozzle temperature", 'print_temperature3', '0', 'Temperature used for printing with the 3th nozzle. Set at 0 to use the same temperature as for nozzle 1')
+			validators.validFloat(c, 0.0, 340.0)
+			validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
+		if int(profile.getPreference('extruder_amount')) > 3:
+			c = configBase.SettingRow(right, "4th nozzle temperature", 'print_temperature4', '0', 'Temperature used for printing with the 4th nozzle. Set at 0 to use the same temperature as for nozzle 1')
+			validators.validFloat(c, 0.0, 340.0)
+			validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
 		if profile.getPreference('has_heated_bed') == 'True':
 			c = configBase.SettingRow(right, "Bed temperature", 'print_bed_temperature', '0', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself')
 			validators.validFloat(c, 0.0, 340.0)
