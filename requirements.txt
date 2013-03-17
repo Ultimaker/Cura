@@ -2,3 +2,5 @@ PyOpenGL>=3.0.2
 numpy>=1.6.2
 pyserial>=2.6
 power>=1.2
+setuptools>=0.6.34
+cx-freeze>=4.3.1
