@@ -16,6 +16,26 @@ Packaging
 Cura development comes with a script "package.sh", this script has been designed to run under unix like OSes (Linux, MacOS). Running it from sygwin is not a priority.
 The "package.sh" script generates a final release package. You should not need it during development, unless you are changing the release process. If you want to distribute your own version of Cura, then the package.sh script will allow you to do that.
 
+Debian and Ubuntu Linux
+--------
+
+To build and install Cura, run the following commands:
+
+```bash
+git clone https://github.com/daid/Cura.git
+
+sudo apt-get install python-opengl
+sudo apt-get install python-numpy
+sudo apt-get install python-serial
+sudo apt-get install python-setuptools
+sudo apt-get install cx-freeze
+
+cd Cura
+
+sudo ./package.sh debian
+
+sudo dpkg -i ./scripts/linux/Cura*.deb
+```
 
 Mac OS X
 --------
