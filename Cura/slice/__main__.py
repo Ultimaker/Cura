@@ -72,6 +72,8 @@ def main():
 			settings['printSpeed'] = int(profile.getProfileSettingFloat('print_speed'))
 			settings['moveSpeed'] = int(profile.getProfileSettingFloat('travel_speed'))
 			settings['fanOnLayerNr'] = int(profile.getProfileSettingFloat('fan_layer'))
+			settings['supportAngle'] = int(60) if profile.getProfileSetting('support') != 'None' else int(-1)
+			settings['supportEverywhere'] = int(1) if profile.getProfileSetting('support') == 'Everywhere' else int(0)
 
 			cmdList = [steamEngineFilename, args[idx+1], '-o', options.output, '-m', ','.join(map(str, position[2:]))]
 			for (key, value) in settings.items():
