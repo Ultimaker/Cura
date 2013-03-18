@@ -563,7 +563,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		validators.warningAbove(c, 150.0, "It is highly unlikely that your machine can achieve a printing speed above 150mm/s")
 		validators.printSpeedValidator(c)
 
-		#configBase.TitleRow(right, "Temperature")
+		configBase.TitleRow(right, "Temperature")
 		c = configBase.SettingRow(right, "Printing temperature", 'print_temperature', '0', 'Temperature used for printing. Set at 0 to pre-heat yourself')
 		validators.validFloat(c, 0.0, 340.0)
 		validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
