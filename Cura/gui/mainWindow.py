@@ -554,7 +554,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		configBase.TitleRow(left, "Fill")
 		c = configBase.SettingRow(left, "Bottom/Top thickness (mm)", 'solid_layer_thickness', '0.6', 'This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value.\nHaving this value a multiply of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.')
 		validators.validFloat(c, 0.0)
-		c = configBase.SettingRow(left, "Fill Density (%)", 'fill_density', '20', 'This controls how densily filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough')
+		c = configBase.SettingRow(left, "Fill Density (%)", 'fill_density', '20', 'This controls how densely filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough')
 		validators.validFloat(c, 0.0, 100.0)
 
 		configBase.TitleRow(right, "Speed && Temperature")

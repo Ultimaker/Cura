@@ -11,9 +11,91 @@ else:
 from Cura.util import resources
 from Cura.util import version
 
+settingsDictionary = {}
+settingsList = []
+class setting:
+	def __init__(self, name, default, type, category, subcategory):
+		self._name = name
+		self._label = name
+		self._tooltip = ''
+		self._default = unicode(default)
+		self._value = self._default
+		self._type = type
+		self._category = category
+		self._subcategory = subcategory
+		self._validators = []
+
+		global settingsDictionary
+		settingsDictionary[name] = self
+		global settingsList
+		settingsList.append(self)
+
+	def setLabel(self, label, tooltip = ''):
+		self._label = label
+		self._tooltip = tooltip
+		return self
+
 #########################################################
-## Default settings when none are found.
+## Settings
 #########################################################
+setting('layer_height',              0.2, float, 'basic',    'Quality').setLabel('Layer height (mm)', 'Layer height in millimeters.\n0.2 is a good value for quick prints.\n0.1 gives high quality prints.\nDepending on your printer you can go as low as 0.02mm')
+setting('wall_thickness',            0.8, float, 'basic',    'Quality').setLabel('Wall thickness (mm)', 'Thickness of the walls.\nThis is used in combination with the nozzle size to define the number\nof perimeter lines and the thickness of those perimeter lines.')
+setting('retraction_enable',       False, bool,  'basic',    'Quality').setLabel('Enable retraction', 'Retract the filament when the nozzle is moving over a none-printed area. Details about the retraction can be configured in the advanced tab.')
+setting('solid_layer_thickness',     0.6, float, 'basic',    'Fill').setLabel('Bottom/Top thickness (mm)', 'This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value.\nHaving this value a multiply of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.')
+setting('fill_density',               20, float, 'basic',    'Fill').setLabel('Fill Density (%)', 'This controls how densely filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough.\nThis won\'t effect the outside of the print and only adjusts how strong the part becomes.')
+setting('nozzle_size',               0.4, float, 'advanced', 'Machine').setLabel('Nozzle size (mm)', 'The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings.')
+setting('skirt_line_count',            1, int,   'advanced', 'Skirt').setLabel('Line count', 'The skirt is a line drawn around the object at the first layer. This helps to prime your extruder, and to see if the object fits on your platform.\nSetting this to 0 will disable the skirt. Multiple skirt lines can help priming your extruder better for small objects.')
+setting('skirt_gap',                 3.0, float, 'advanced', 'Skirt').setLabel('Start distance (mm)', 'The distance between the skirt and the first layer.\nThis is the minimal distance, multiple skirt lines will be put outwards from this distance.')
+setting('print_speed',                50, float, 'basic',    'Speed & Temperature').setLabel('Print speed (mm/s)', 'Speed at which printing happens. A well adjusted Ultimaker can reach 150mm/s, but for good quality prints you want to print slower. Printing speed depends on a lot of factors. So you will be experimenting with optimal settings for this.')
+setting('print_temperature',         220, int,   'basic',    'Speed & Temperature').setLabel('Printing temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_temperature2',          0, int,   'basic',    'Speed & Temperature').setLabel('2nd nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_temperature3',          0, int,   'basic',    'Speed & Temperature').setLabel('3th nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_temperature4',          0, int,   'basic',    'Speed & Temperature').setLabel('4th nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_bed_temperature',      70, int,   'basic',    'Speed & Temperature').setLabel('Bed temperature (C)', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself.')
+setting('support',                'None', ['None', 'Touching buildplate', 'Everywhere'], 'Basic', 'Support structure').setLabel('Support type', 'Type of support structure build.\n"Exterior only" is the most commonly used support setting.\n\nNone does not do any support.\nTouching buildplate only creates support where the support structure will touch the build platform.\nEverywhere creates support even on top of parts of the model.')
+setting('enable_raft',             False, bool,  'basic',   'Support').setLabel('Enable raft', 'A raft is a few layers of lines below the bottom of the object. It prevents warping. Full raft settings can be found in the expert settings.\nFor PLA this is usually not required. But if you print with ABS it is almost required.')
+setting('support_dual_extrusion',  False, bool, 'basic', 'Support').setLabel('Support dual extrusion', 'Print the support material with the 2nd extruder in a dual extrusion setup. The primary extruder will be used for normal material, while the second extruder is used to print support material.')
+setting('filament_diameter',        2.89, float, 'basic',    'Filament').setLabel('Diameter (mm)', 'Diameter of your filament, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.')
+setting('filament_diameter2',          0, float, 'basic',    'Filament').setLabel('Diameter2 (mm)', 'Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter as for nozzle 1.')
+setting('filament_diameter3',          0, float, 'basic',    'Filament').setLabel('Diameter3 (mm)', 'Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter as for nozzle 1.')
+setting('filament_diameter4',          0, float, 'basic',    'Filament').setLabel('Diameter4 (mm)', 'Diameter of your filament for the 4th nozzle. Use 0 to use the same diameter as for nozzle 1.')
+setting('filament_density',         1.00, float, 'basic',    'Filament').setLabel('Packing Density', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
+setting('retraction_min_travel',     5.0, float, 'advanced', 'Retraction').setLabel('Minimum travel (mm)', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
+setting('retraction_speed',         40.0, float, 'advanced', 'Retraction').setLabel('Speed (mm/s)', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
+setting('retraction_amount',         4.5, float, 'advanced', 'Retraction').setLabel('Distance (mm)', 'Amount of retraction, set at 0 for no retraction at all. A value of 2.0mm seems to generate good results.')
+setting('retraction_extra',          0.0, float, 'advanced', 'Retraction').setLabel('Extra length on start (mm)', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
+setting('bottom_thickness',          0.3, float, 'advanced', 'Quality').setLabel('Initial layer thickness (mm)', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
+setting('object_sink',               0.0, float, 'advanced', 'Quality').setLabel('Cut off object bottom (mm)', 'Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer.')
+setting('enable_skin',             False, bool,  'advanced', 'Quality').setLabel('Duplicate outlines', 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
+setting('retract_on_jumps_only',    True, bool,  'expert',   'Retraction').setLabel('Retract on jumps only', 'Only retract when we are making a move that is over a hole in the model, else retract on every move. This effects print quality in different ways.')
+setting('travel_speed',            150.0, float, 'advanced', 'Speed').setLabel('Travel speed (mm/s)', 'Speed at which travel moves are done, a high quality build Ultimaker can reach speeds of 250mm/s. But some machines might miss steps then.')
+setting('max_z_speed',               3.0, float, 'expert',   'Speed').setLabel('Max Z speed (mm/s)', 'Speed at which Z moves are done. When you Z axis is properly lubricated you can increase this for less Z blob.')
+setting('bottom_layer_speed',         20, float, 'advanced', 'Speed').setLabel('Bottom layer speed (mm/s)', 'Print speed for the bottom layer, you want to print the first layer slower so it sticks better to the printer bed.')
+setting('cool_min_layer_time',         5, float, 'advanced', 'Cool').setLabel('Minimal layer time (sec)', 'Minimum time spend in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spend at least this amount of seconds printing this layer.')
+setting('fan_enabled',              True, bool,  'advanced', 'Cool').setLabel('Enable cooling fan', 'Enable the cooling fan during the print. The extra cooling from the cooling fan is essensial during faster prints.')
+setting('fan_layer',                   1, int,   'expert',   'Cool').setLabel('Fan on layer number', 'The layer at which the fan is turned on. The first layer is layer 0. The first layer can stick better if you turn on the fan on, on the 2nd layer.')
+setting('fan_speed',                 100, int,   'expert',   'Cool').setLabel('Fan speed min (%)', 'When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Minimal fan speed is used if the layer is not slowed down due to cooling.')
+setting('fan_speed_max',             100, int,   'expert',   'Cool').setLabel('Fan speed max (%)', 'When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Maximal fan speed is used if the layer is slowed down due to cooling by more then 200%.')
+setting('cool_min_feedrate',          10, float, 'expert',   'Cool').setLabel('Minimum feedrate (mm/s)', 'The minimal layer time can cause the print to slow down so much it starts to ooze. The minimal feedrate protects against this. Even if a print gets slown down it will never be slower then this minimal feedrate.')
+setting('extra_base_wall_thickness', 0.0, float, 'expert', 'Accuracy').setLabel('Extra Wall thickness for bottom/top (mm)', 'Additional wall thickness of the bottom and top layers.')
+setting('sequence', 'Loops > Perimeter > Infill', ['Loops > Perimeter > Infill', 'Loops > Infill > Perimeter', 'Infill > Loops > Perimeter', 'Infill > Perimeter > Loops', 'Perimeter > Infill > Loops', 'Perimeter > Loops > Infill'], 'expert', 'Sequence')
+setting('force_first_layer_sequence', True, bool, 'expert', 'Sequence').setLabel('Force first layer sequence', 'This setting forces the order of the first layer to be \'Perimeter > Loops > Infill\'')
+setting('infill_type', 'Line', ['Line', 'Grid Circular', 'Grid Hexagonal', 'Grid Rectangular'], 'expert', 'Infill').setLabel('Infill pattern', 'Pattern of the none-solid infill. Line is default, but grids can provide a strong print.')
+setting('solid_top', True, bool, 'expert', 'Infill').setLabel('Solid infill top', 'Create a solid top surface, if set to false the top is filled with the fill percentage. Useful for cups/vases.')
+setting('fill_overlap', 15, int, 'expert', 'Infill').setLabel('Infill overlap (%)', 'Amount of overlap between the infill and the walls. There is a slight overlap with the walls and the infill so the walls connect firmly to the infill.')
+setting('support_rate', 50, int, 'expert', 'Support').setLabel('Material amount (%)', 'Amount of material used for support, less material gives a weaker support structure which is easier to remove.')
+setting('support_distance',  0.5, float, 'expert', 'Support').setLabel('Distance from object (mm)', 'Distance between the support structure and the object. Empty gap in which no support structure is printed.')
+setting('joris', False, bool, 'expert', 'Joris').setLabel('Spiralize the outer contour', '[Joris] is a code name for smoothing out the Z move of the outer edge. This will create a steady Z increase over the whole print. It is intended to be used with a single walled wall thickness to make cups/vases.')
+setting('bridge_speed', 100, int, 'expert', 'Bridge').setLabel('Bridge speed (%)', 'Speed at which layers with bridges are printed, compared to normal printing speed.')
+setting('raft_margin', 5, float, 'expert', 'Raft').setLabel('Extra margin (mm)', 'If the raft is enabled, this is the extra raft area around the object which is also rafted. Increasing this margin will create a stronger raft.')
+setting('raft_base_material_amount', 100, int, 'expert', 'Raft').setLabel('Base material amount (%)', 'The base layer is the first layer put down as a raft. This layer has thick strong lines and is put firmly on the bed to prevent warping. This setting adjust the amount of material used for the base layer.')
+setting('raft_interface_material_amount', 100, int, 'expert', 'Raft').setLabel('Interface material amount (%)', 'raft_interface_material_amount', '100', 'The interface layer is a weak thin layer between the base layer and the printed object. It is designed to has little material to make it easy to break the base off the printed object. This setting adjusts the amount of material used for the interface layer.')
+setting('hop_on_move', False, bool, 'expert', 'Hop').setLabel('Enable hop on move', 'When moving from print position to print position, raise the printer head 0.2mm so it does not knock off the print (experimental).')
+
+setting('model_matrix', '1,0,0,0,1,0,0,0,1', string, 'hidden', 'hidden')
+setting('plugin_config', '', string, 'hidden', 'hidden')
+setting('object_center_x', -1, float, 'hidden', 'hidden')
+setting('object_center_y', -1, float, 'hidden', 'hidden')
 
 #Single place to store the defaults, so we have a consistent set of default settings.
 profileDefaultSettings = {
