@@ -74,6 +74,9 @@ def main():
 			settings['fanOnLayerNr'] = int(profile.getProfileSettingFloat('fan_layer'))
 			settings['supportAngle'] = int(60) if profile.getProfileSetting('support') != 'None' else int(-1)
 			settings['supportEverywhere'] = int(1) if profile.getProfileSetting('support') == 'Everywhere' else int(0)
+			settings['retractionAmount'] = int(0) if profile.getProfileSetting('retraction_enable') == 'False' else int(profile.getProfileSettingFloat('retraction_amount') * 1000)
+			settings['retractionSpeed'] = int(profile.getProfileSettingFloat('retraction_speed'))
+			settings['objectSink'] = int(profile.getProfileSettingFloat('object_sink') * 1000.0)
 
 			cmdList = [steamEngineFilename, args[idx+1], '-o', options.output, '-m', ','.join(map(str, position[2:]))]
 			for (key, value) in settings.items():
