@@ -20,55 +20,45 @@ class preferencesDialog(wx.Frame):
 		
 		left, right, main = self.panel.CreateConfigPanel(self)
 		configBase.TitleRow(left, 'Machine settings')
-		c = configBase.SettingRow(left, 'Steps per E', 'steps_per_e', '0', 'Amount of steps per mm filament extrusion', type = 'preference')
-		validators.validFloat(c, 0.1)
-		c = configBase.SettingRow(left, 'Maximum width (mm)', 'machine_width', '205', 'Size of the machine in mm', type = 'preference')
-		validators.validFloat(c, 10.0)
-		c = configBase.SettingRow(left, 'Maximum depth (mm)', 'machine_depth', '205', 'Size of the machine in mm', type = 'preference')
-		validators.validFloat(c, 10.0)
-		c = configBase.SettingRow(left, 'Maximum height (mm)', 'machine_height', '200', 'Size of the machine in mm', type = 'preference')
-		validators.validFloat(c, 10.0)
-		c = configBase.SettingRow(left, 'Extruder count', 'extruder_amount', ['1', '2', '3', '4'], 'Amount of extruders in your machine.', type = 'preference')
-		c = configBase.SettingRow(left, 'Heated bed', 'has_heated_bed', False, 'If you have an heated bed, this enabled heated bed settings', type = 'preference')
+		configBase.SettingRow(left, 'steps_per_e')
+		configBase.SettingRow(left, 'machine_width')
+		configBase.SettingRow(left, 'machine_depth')
+		configBase.SettingRow(left, 'machine_height')
+		configBase.SettingRow(left, 'extruder_amount')
+		configBase.SettingRow(left, 'has_heated_bed')
 		
 		for i in xrange(1, self.oldExtruderAmount):
 			configBase.TitleRow(left, 'Extruder %d' % (i+1))
-			c = configBase.SettingRow(left, 'Offset X', 'extruder_offset_x%d' % (i), '0.0', 'The offset of your secondary extruder compared to the primary.', type = 'preference')
-			validators.validFloat(c)
-			c = configBase.SettingRow(left, 'Offset Y', 'extruder_offset_y%d' % (i), '0.0', 'The offset of your secondary extruder compared to the primary.', type = 'preference')
-			validators.validFloat(c)
+			configBase.SettingRow(left, 'extruder_offset_x%d' % (i))
+			configBase.SettingRow(left, 'extruder_offset_y%d' % (i))
 
 		configBase.TitleRow(left, 'Colours')
-		c = configBase.SettingRow(left, 'Model colour', 'model_colour', wx.Colour(0,0,0), '', type = 'preference')
+		configBase.SettingRow(left, 'model_colour')
 		for i in xrange(1, self.oldExtruderAmount):
-			c = configBase.SettingRow(left, 'Model colour (%d)' % (i+1), 'model_colour%d' % (i+1), wx.Colour(0,0,0), '', type = 'preference')
+			configBase.SettingRow(left, 'model_colour%d' % (i+1))
 
 		configBase.TitleRow(right, 'Filament settings')
-		c = configBase.SettingRow(right, 'Density (kg/m3)', 'filament_physical_density', '1300', 'Weight of the filament per m3. Around 1300 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.', type = 'preference')
-		validators.validFloat(c, 500.0, 3000.0)
-		c = configBase.SettingRow(right, 'Cost (price/kg)', 'filament_cost_kg', '0', 'Cost of your filament per kg, to estimate the cost of the final print.', type = 'preference')
-		validators.validFloat(c, 0.0)
-		c = configBase.SettingRow(right, 'Cost (price/m)', 'filament_cost_meter', '0', 'Cost of your filament per meter, to estimate the cost of the final print.', type = 'preference')
-		validators.validFloat(c, 0.0)
-		
+		configBase.SettingRow(right, 'filament_physical_density')
+		configBase.SettingRow(right, 'filament_cost_kg')
+		configBase.SettingRow(right, 'filament_cost_meter')
+
 		configBase.TitleRow(right, 'Communication settings')
-		c = configBase.SettingRow(right, 'Serial port', 'serial_port', ['AUTO'] + machineCom.serialList(), 'Serial port to use for communication with the printer', type = 'preference')
-		c = configBase.SettingRow(right, 'Baudrate', 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()), 'Speed of the serial port communication\nNeeds to match your firmware settings\nCommon values are 250000, 115200, 57600', type = 'preference')
+		configBase.SettingRow(right, 'serial_port', ['AUTO'] + machineCom.serialList())
+		configBase.SettingRow(right, 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()))
 
 		configBase.TitleRow(right, 'Slicer settings')
-		#c = configBase.SettingRow(right, 'Slicer selection', 'slicer', ['Cura (Skeinforge based)', 'Slic3r'], 'Which slicer to use to slice objects. Usually the Cura engine produces the best results. But Slic3r is developing fast and is faster with slicing.', type = 'preference')
-		c = configBase.SettingRow(right, 'Save profile on slice', 'save_profile', False, 'When slicing save the profile as [stl_file]_profile.ini next to the model.', type = 'preference')
+		configBase.SettingRow(right, 'save_profile')
 
 		configBase.TitleRow(right, 'SD Card settings')
 		if len(profile.getSDcardDrives()) > 1:
-			c = configBase.SettingRow(right, 'SD card drive', 'sdpath', profile.getSDcardDrives(), 'Location of your SD card, when using the copy to SD feature.', type = 'preference')
+			configBase.SettingRow(right, 'sdpath', profile.getSDcardDrives())
 		else:
-			c = configBase.SettingRow(right, 'SD card path', 'sdpath', '', 'Location of your SD card, when using the copy to SD feature.', type = 'preference')
-		c = configBase.SettingRow(right, 'Copy to SD with 8.3 names', 'sdshortnames', False, 'Save the gcode files in short filenames, so they are properly shown on the UltiController', type = 'preference')
+			configBase.SettingRow(right, 'sdpath')
+		configBase.SettingRow(right, 'sdshortnames')
 
 		configBase.TitleRow(right, 'Cura settings')
-		c = configBase.SettingRow(right, 'Check for updates', 'check_for_updates', True, 'Check for newer versions of Cura on startup', type = 'preference')
-		c = configBase.SettingRow(right, 'Send usage statistics', 'submit_slice_information', True, 'Submit anonymous usage information to improve next versions of Cura', type = 'preference')
+		configBase.SettingRow(right, 'check_for_updates')
+		configBase.SettingRow(right, 'submit_slice_information')
 
 		self.okButton = wx.Button(right, -1, 'Ok')
 		right.GetSizer().Add(self.okButton, (right.GetSizer().GetRows(), 0), flag=wx.BOTTOM, border=5)

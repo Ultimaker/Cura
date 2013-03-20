@@ -136,7 +136,7 @@ class TitleRow():
 		sizer.SetRows(x + 2)
 
 class SettingRow():
-	def __init__(self, panel, configName):
+	def __init__(self, panel, configName, valueOverride = None):
 		"Add a setting to the configuration panel"
 		sizer = panel.GetSizer()
 		x = sizer.GetRows()
@@ -166,8 +166,11 @@ class SettingRow():
 			self.ctrl = wx.ColourPickerCtrl(panel, -1)
 			self.SetValue(self.setting.getValue())
 			self.ctrl.Bind(wx.EVT_COLOURPICKER_CHANGED, self.OnSettingChange)
-		elif type(self.setting.getType()) is list:
-			self.ctrl = wx.ComboBox(panel, -1, self.setting.getValue(), choices=self.setting.getType(), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+		elif type(self.setting.getType()) is list or valueOverride is not None:
+			if valueOverride is not None:
+				self.ctrl = wx.ComboBox(panel, -1, self.setting.getValue(), choices=valueOverride, style=wx.CB_DROPDOWN|wx.CB_READONLY)
+			else:
+				self.ctrl = wx.ComboBox(panel, -1, self.setting.getValue(), choices=self.setting.getType(), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 			self.ctrl.Bind(wx.EVT_COMBOBOX, self.OnSettingChange)
 			self.ctrl.Bind(wx.EVT_LEFT_DOWN, self.OnMouseExit)
 			flag = wx.EXPAND
@@ -176,16 +179,6 @@ class SettingRow():
 			self.ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
 			flag = wx.EXPAND
 
-		# Set the minimum size of control to something other than the humungous default
-		minSize = self.ctrl.GetMinSize()
-		
-		##if platform.system() == "Darwin":
-		##	# Under MacOS, it appears that the minSize is used for the actual size, so give the field a bit more room...
-		##	minSize[0] = 150
-		##else:
-		##	minSize[0] = 50
-		##self.ctrl.SetMinSize(minSize)
-		
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
 		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_BOTTOM|flag)
 		sizer.SetRows(x+1)
