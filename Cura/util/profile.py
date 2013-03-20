@@ -25,6 +25,7 @@ class setting(object):
 		self._category = category
 		self._subcategory = subcategory
 		self._validators = []
+		self._conditions = []
 
 		if type is types.FloatType:
 			validators.validFloat(self)
@@ -53,6 +54,12 @@ class setting(object):
 
 	def getTooltip(self):
 		return self._tooltip
+
+	def getCategory(self):
+		return self._category
+
+	def getSubCategory(self):
+		return self._subcategory
 
 	def isPreference(self):
 		return self._category == 'preference'
@@ -90,6 +97,15 @@ class setting(object):
 			if res != validators.SUCCESS:
 				msgs.append(err)
 		return result, '\n'.join(msgs)
+
+	def addCondition(self, conditionFunction):
+		self._conditions.append(conditionFunction)
+
+	def checkConditions(self):
+		for condition in self._conditions:
+			if not condition():
+				return False
+		return True
 
 #########################################################
 ## Settings
@@ -235,7 +251,7 @@ setting('extruder_offset_x2', '0.0', float, 'preference', 'hidden')
 setting('extruder_offset_y2', '0.0', float, 'preference', 'hidden')
 setting('extruder_offset_x3', '0.0', float, 'preference', 'hidden')
 setting('extruder_offset_y3', '0.0', float, 'preference', 'hidden')
-setting('filament_density', '1300', float, 'preference', 'hidden')
+setting('filament_physical_density', '1300', float, 'preference', 'hidden')
 setting('steps_per_e', '0', float, 'preference', 'hidden')
 setting('serial_port', 'AUTO', str, 'preference', 'hidden')
 setting('serial_port_auto', '', str, 'preference', 'hidden')
@@ -268,9 +284,51 @@ setting('window_width', '-1', float, 'preference', 'hidden')
 setting('window_height', '-1', float, 'preference', 'hidden')
 setting('window_normal_sash', '320', float, 'preference', 'hidden')
 
+validators.warningAbove(settingsDictionary['layer_height'], lambda : (float(getProfileSetting('nozzle_size')) * 80.0 / 100.0), "Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and are not recommended.")
+validators.wallThicknessValidator(settingsDictionary['wall_thickness'])
+validators.warningAbove(settingsDictionary['print_speed'], 150.0, "It is highly unlikely that your machine can achieve a printing speed above 150mm/s")
+validators.printSpeedValidator(settingsDictionary['print_speed'])
+validators.warningAbove(settingsDictionary['print_temperature'], 260.0, "Temperatures above 260C could damage your machine, be careful!")
+validators.warningAbove(settingsDictionary['print_temperature2'], 260.0, "Temperatures above 260C could damage your machine, be careful!")
+validators.warningAbove(settingsDictionary['print_temperature3'], 260.0, "Temperatures above 260C could damage your machine, be careful!")
+validators.warningAbove(settingsDictionary['print_temperature4'], 260.0, "Temperatures above 260C could damage your machine, be careful!")
+validators.warningAbove(settingsDictionary['filament_diameter'], 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
+validators.warningAbove(settingsDictionary['filament_diameter2'], 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
+validators.warningAbove(settingsDictionary['filament_diameter3'], 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
+validators.warningAbove(settingsDictionary['filament_diameter4'], 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
+validators.warningAbove(settingsDictionary['travel_speed'], 300.0, "It is highly unlikely that your machine can achieve a travel speed above 300mm/s")
+validators.warningAbove(settingsDictionary['bottom_thickness'], lambda : (float(getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
+
+#Conditions for multiple extruders
+settingsDictionary['print_temperature2'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
+settingsDictionary['print_temperature3'].addCondition(lambda : int(getPreference('extruder_amount')) > 2)
+settingsDictionary['print_temperature4'].addCondition(lambda : int(getPreference('extruder_amount')) > 3)
+settingsDictionary['filament_diameter2'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
+settingsDictionary['filament_diameter3'].addCondition(lambda : int(getPreference('extruder_amount')) > 2)
+settingsDictionary['filament_diameter4'].addCondition(lambda : int(getPreference('extruder_amount')) > 3)
+settingsDictionary['support_dual_extrusion'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
+#Heated bed
+settingsDictionary['print_bed_temperature'].addCondition(lambda : getPreference('has_heated_bed') == 'True')
+
 #########################################################
 ## Profile and preferences functions
 #########################################################
+
+def getSubCategoriesFor(category):
+	done = {}
+	ret = []
+	for s in settingsList:
+		if s.getCategory() == category and not s.getSubCategory() in done:
+			done[s.getSubCategory()] = True
+			ret.append(s.getSubCategory())
+	return ret
+
+def getSettingsForCategory(category, subCategory = None):
+	ret = []
+	for s in settingsList:
+		if s.getCategory() == category and (subCategory is None or s.getSubCategory() == subCategory):
+			ret.append(s)
+	return ret
 
 ## Profile functions
 def getBasePath():

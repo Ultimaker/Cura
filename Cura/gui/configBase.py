@@ -129,7 +129,7 @@ class TitleRow():
 		"Add a title row to the configuration panel"
 		sizer = panel.GetSizer()
 		x = sizer.GetRows()
-		self.title = wx.StaticText(panel, -1, name)
+		self.title = wx.StaticText(panel, -1, name.replace('&', '&&'))
 		self.title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		sizer.Add(self.title, (x,0), (1,3), flag=wx.EXPAND|wx.TOP|wx.LEFT, border=10)
 		sizer.Add(wx.StaticLine(panel), (x+1,0), (1,3), flag=wx.EXPAND|wx.LEFT,border=10)

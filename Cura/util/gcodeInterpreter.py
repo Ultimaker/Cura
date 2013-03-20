@@ -37,7 +37,7 @@ class gcode(object):
 		#Calculates the weight of the filament in kg
 		radius = float(profile.getProfileSetting('filament_diameter')) / 2
 		volumeM3 = (self.extrusionAmount * (math.pi * radius * radius)) / (1000*1000*1000)
-		return volumeM3 * profile.getPreferenceFloat('filament_density')
+		return volumeM3 * profile.getPreferenceFloat('filament_physical_density')
 	
 	def calculateCost(self):
 		cost_kg = profile.getPreferenceFloat('filament_cost_kg')

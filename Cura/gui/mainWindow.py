@@ -532,6 +532,20 @@ class mainWindow(wx.Frame):
 
 class normalSettingsPanel(configBase.configPanelBase):
 	"Main user interface window"
+	def _addSettingsToPanels(self, category, left, right):
+		count = len(profile.getSubCategoriesFor(category)) + len(profile.getSettingsForCategory(category))
+
+		p = left
+		n = 0
+		for title in profile.getSubCategoriesFor(category):
+			n += 1 + len(profile.getSettingsForCategory(category, title))
+			if n > count / 2:
+				p = right
+			configBase.TitleRow(p, title)
+			for s in profile.getSettingsForCategory(category, title):
+				if s.checkConditions():
+					configBase.SettingRow(p, s.getName())
+
 	def __init__(self, parent):
 		super(normalSettingsPanel, self).__init__(parent)
 
@@ -541,93 +555,13 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
 		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Basic')
-
-		configBase.TitleRow(left, "Quality")
-		c = configBase.SettingRow(left, 'layer_height')
-		#validators.warningAbove(c, lambda : (float(profile.getProfileSetting('nozzle_size')) * 80.0 / 100.0), "Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and are not recommended.")
-		c = configBase.SettingRow(left, 'wall_thickness')
-		#validators.wallThicknessValidator(c)
-		c = configBase.SettingRow(left, 'retraction_enable')
-
-		configBase.TitleRow(left, "Fill")
-		c = configBase.SettingRow(left, 'solid_layer_thickness')
-		c = configBase.SettingRow(left, 'fill_density')
-
-		configBase.TitleRow(right, "Speed && Temperature")
-		c = configBase.SettingRow(right, 'print_speed')
-		#validators.warningAbove(c, 150.0, "It is highly unlikely that your machine can achieve a printing speed above 150mm/s")
-		#validators.printSpeedValidator(c)
-
-		configBase.TitleRow(right, "Temperature")
-		c = configBase.SettingRow(right, 'print_temperature')
-		#validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
-		if int(profile.getPreference('extruder_amount')) > 1:
-			c = configBase.SettingRow(right, 'print_temperature2')
-			#validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
-		if int(profile.getPreference('extruder_amount')) > 2:
-			c = configBase.SettingRow(right, "3th nozzle temperature", 'print_temperature3', '0', 'Temperature used for printing with the 3th nozzle. Set at 0 to use the same temperature as for nozzle 1')
-			validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
-		if int(profile.getPreference('extruder_amount')) > 3:
-			c = configBase.SettingRow(right, "4th nozzle temperature", 'print_temperature4', '0', 'Temperature used for printing with the 4th nozzle. Set at 0 to use the same temperature as for nozzle 1')
-			validators.warningAbove(c, 260.0, "Temperatures above 260C could damage your machine, be careful!")
-		if profile.getPreference('has_heated_bed') == 'True':
-			c = configBase.SettingRow(right, "Bed temperature", 'print_bed_temperature', '0', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself')
-
-		configBase.TitleRow(right, "Support structure")
-		c = configBase.SettingRow(right, 'support')
-#		c = configBase.SettingRow(right, "Add raft", 'enable_raft', False, 'A raft is a few layers of lines below the bottom of the object. It prevents warping. Full raft settings can be found in the expert settings.\nFor PLA this is usually not required. But if you print with ABS it is almost required.')
-#		if int(profile.getPreference('extruder_amount')) > 1:
-#			c = configBase.SettingRow(right, "Support dual extrusion", 'support_dual_extrusion', False, 'Print the support material with the 2nd extruder in a dual extrusion setup. The primary extruder will be used for normal material, while the second extruder is used to print support material.')
-
-		configBase.TitleRow(right, "Filament")
-		c = configBase.SettingRow(right, 'filament_diameter')
-		#validators.warningAbove(c, 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
-#		if int(profile.getPreference('extruder_amount')) > 1:
-#			c = configBase.SettingRow(right, "Diameter (mm)", 'filament_diameter2', '2.89', 'Diameter of your filament for the 2nd nozzle, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion. Use 0 to use the same diameter as for nozzle 1.')
-#			validators.warningAbove(c, 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
-#		if int(profile.getPreference('extruder_amount')) > 2:
-#			c = configBase.SettingRow(right, "Diameter (mm)", 'filament_diameter3', '2.89', 'Diameter of your filament for the 3th nozzle, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion. Use 0 to use the same diameter as for nozzle 1.')
-#			validators.warningAbove(c, 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
-#		if int(profile.getPreference('extruder_amount')) > 3:
-#			c = configBase.SettingRow(right, "Diameter (mm)", 'filament_diameter4', '2.89', 'Diameter of your filament for the 4th nozzle, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion. Use 0 to use the same diameter as for nozzle 1.')
-#			validators.warningAbove(c, 3.5, "Are you sure your filament is that thick? Normal filament is around 3mm or 1.75mm.")
-#		c = configBase.SettingRow(right, "Packing Density", 'filament_density', '1.00', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
+		self._addSettingsToPanels('basic', left, right)
 
 		self.SizeLabelWidths(left, right)
 		
 		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced')
-		
-		configBase.TitleRow(left, "Machine size")
-		c = configBase.SettingRow(left, 'nozzle_size')
 
-		configBase.TitleRow(left, "Skirt")
-		c = configBase.SettingRow(left, 'skirt_line_count')
-		c = configBase.SettingRow(left, 'skirt_gap')
-
-		configBase.TitleRow(left, "Retraction")
-#		c = configBase.SettingRow(left, "Minimum travel (mm)", 'retraction_min_travel', '5.0', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
-		c = configBase.SettingRow(left, 'retraction_speed')
-		c = configBase.SettingRow(left, 'retraction_amount')
-#		c = configBase.SettingRow(left, "Extra length on start (mm)", 'retraction_extra', '0.0', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
-
-		configBase.TitleRow(right, "Speed")
-		c = configBase.SettingRow(right, 'travel_speed')
-		#validators.warningAbove(c, 300.0, "It is highly unlikely that your machine can achieve a travel speed above 300mm/s")
-#		c = configBase.SettingRow(right, "Max Z speed (mm/s)", 'max_z_speed', '1.0', 'Speed at which Z moves are done. When you Z axis is properly lubercated you can increase this for less Z blob.')
-		c = configBase.SettingRow(right, 'bottom_layer_speed')
-
-#		configBase.TitleRow(right, "Cool")
-#		c = configBase.SettingRow(right, "Minimal layer time (sec)", 'cool_min_layer_time', '10', 'Minimum time spend in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spend atleast this amount of seconds printing this layer.')
-#		c = configBase.SettingRow(right, "Enable cooling fan", 'fan_enabled', True, 'Enable the cooling fan during the print. The extra cooling from the cooling fan is essensial during faster prints.')
-
-		configBase.TitleRow(right, "Quality")
-		c = configBase.SettingRow(right, 'bottom_thickness')
-		#validators.validFloat(c, 0.0)
-		#validators.warningAbove(c, lambda : (float(profile.getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
-		c = configBase.SettingRow(right, 'object_sink')
-		#validators.validFloat(c, 0.0)
-#		configBase.settingNotify(c, lambda : self.GetParent().GetParent().GetParent().preview3d.Refresh())
-#		c = configBase.SettingRow(right, "Duplicate outlines", 'enable_skin', False, 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
+		self._addSettingsToPanels('advanced', left, right)
 
 		self.SizeLabelWidths(left, right)
 

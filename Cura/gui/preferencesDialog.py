@@ -44,7 +44,7 @@ class preferencesDialog(wx.Frame):
 			c = configBase.SettingRow(left, 'Model colour (%d)' % (i+1), 'model_colour%d' % (i+1), wx.Colour(0,0,0), '', type = 'preference')
 
 		configBase.TitleRow(right, 'Filament settings')
-		c = configBase.SettingRow(right, 'Density (kg/m3)', 'filament_density', '1300', 'Weight of the filament per m3. Around 1300 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.', type = 'preference')
+		c = configBase.SettingRow(right, 'Density (kg/m3)', 'filament_physical_density', '1300', 'Weight of the filament per m3. Around 1300 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.', type = 'preference')
 		validators.validFloat(c, 500.0, 3000.0)
 		c = configBase.SettingRow(right, 'Cost (price/kg)', 'filament_cost_kg', '0', 'Cost of your filament per kg, to estimate the cost of the final print.', type = 'preference')
 		validators.validFloat(c, 0.0)
