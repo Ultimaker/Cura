@@ -681,7 +681,7 @@ class projectPlanner(wx.Frame):
 		dlg.Destroy()
 
 		put = profile.setTempOverride
-		oldProfile = profile.getGlobalProfileString()
+		oldProfile = profile.getProfileString()
 		
 		if self.printMode == 0:
 			fileList = []

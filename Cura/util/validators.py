@@ -4,8 +4,6 @@ from __future__ import division
 import types
 import math
 
-from Cura.util import profile
-
 SUCCESS = 0
 WARNING = 1
 ERROR   = 2
@@ -13,49 +11,49 @@ ERROR   = 2
 class validFloat(object):
 	def __init__(self, setting, minValue = None, maxValue = None):
 		self.setting = setting
-		self.setting.validators.append(self)
+		self.setting._validators.append(self)
 		self.minValue = minValue
 		self.maxValue = maxValue
 	
 	def validate(self):
 		try:
-			f = float(eval(self.setting.GetValue().replace(',','.'), {}, {}))
+			f = float(eval(self.setting.getValue().replace(',','.'), {}, {}))
+			if self.minValue is not None and f < self.minValue:
+				return ERROR, 'This setting should not be below ' + str(round(self.minValue, 3))
+			if self.maxValue is not None and f > self.maxValue:
+				return ERROR, 'This setting should not be above ' + str(self.maxValue)
+			return SUCCESS, ''
+		except (ValueError, SyntaxError, TypeError, NameError):
+			return ERROR, '"' + str(self.setting.getValue()) + '" is not a valid number or expression'
+
+class validInt(object):
+	def __init__(self, setting, minValue = None, maxValue = None):
+		self.setting = setting
+		self.setting._validators.append(self)
+		self.minValue = minValue
+		self.maxValue = maxValue
+	
+	def validate(self):
+		try:
+			f = int(eval(self.setting.getValue(), {}, {}))
 			if self.minValue is not None and f < self.minValue:
 				return ERROR, 'This setting should not be below ' + str(self.minValue)
 			if self.maxValue is not None and f > self.maxValue:
 				return ERROR, 'This setting should not be above ' + str(self.maxValue)
 			return SUCCESS, ''
-		except (ValueError, SyntaxError, TypeError):
-			return ERROR, '"' + str(self.setting.GetValue()) + '" is not a valid number or expression'
-
-class validInt(object):
-	def __init__(self, setting, minValue = None, maxValue = None):
-		self.setting = setting
-		self.setting.validators.append(self)
-		self.minValue = minValue
-		self.maxValue = maxValue
-	
-	def validate(self):
-		try:
-			f = int(eval(self.setting.GetValue(), {}, {}))
-			if self.minValue != None and f < self.minValue:
-				return ERROR, 'This setting should not be below ' + str(self.minValue)
-			if self.maxValue != None and f > self.maxValue:
-				return ERROR, 'This setting should not be above ' + str(self.maxValue)
-			return SUCCESS, ''
-		except (ValueError, SyntaxError, TypeError):
-			return ERROR, '"' + str(self.setting.GetValue()) + '" is not a valid whole number or expression'
+		except (ValueError, SyntaxError, TypeError, NameError):
+			return ERROR, '"' + str(self.setting.getValue()) + '" is not a valid whole number or expression'
 
 class warningAbove(object):
 	def __init__(self, setting, minValueForWarning, warningMessage):
 		self.setting = setting
-		self.setting.validators.append(self)
+		self.setting._validators.append(self)
 		self.minValueForWarning = minValueForWarning
 		self.warningMessage = warningMessage
 	
 	def validate(self):
 		try:
-			f = float(eval(self.setting.GetValue().replace(',','.'), {}, {}))
+			f = float(eval(self.setting.getValue().replace(',','.'), {}, {}))
 			if isinstance(self.minValueForWarning, types.FunctionType):
 				if f >= self.minValueForWarning():
 					return WARNING, self.warningMessage % (self.minValueForWarning())
@@ -70,9 +68,10 @@ class warningAbove(object):
 class wallThicknessValidator(object):
 	def __init__(self, setting):
 		self.setting = setting
-		self.setting.validators.append(self)
+		self.setting._validators.append(self)
 	
 	def validate(self):
+		from Cura.util import profile
 		try:
 			wallThickness = profile.getProfileSettingFloat('wall_thickness')
 			nozzleSize = profile.getProfileSettingFloat('nozzle_size')
@@ -96,9 +95,10 @@ class wallThicknessValidator(object):
 class printSpeedValidator(object):
 	def __init__(self, setting):
 		self.setting = setting
-		self.setting.validators.append(self)
+		self.setting._validators.append(self)
 
 	def validate(self):
+		from Cura.util import profile
 		try:
 			nozzleSize = profile.getProfileSettingFloat('nozzle_size')
 			layerHeight = profile.getProfileSettingFloat('layer_height')

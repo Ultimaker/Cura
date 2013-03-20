@@ -54,10 +54,13 @@ def main():
 		help="Slice the given files instead of opening them in Cura")
 	(options, args) = parser.parse_args()
 
+	profile.loadPreferences(profile.getPreferencePath())
 	if options.profile is not None:
-		profile.loadGlobalProfileFromString(options.profile)
-	if options.profileini is not None:
-		profile.loadGlobalProfile(options.profileini)
+		profile.loadProfileFromString(options.profile)
+	elif options.profileini is not None:
+		profile.loadProfile(options.profileini)
+	else:
+		profile.loadProfile(profile.getDefaultProfilePath())
 
 	if options.printfile is not None:
 		from Cura.gui import printWindow

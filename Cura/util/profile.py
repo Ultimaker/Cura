@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
 
-import os, traceback, math, re, zlib, base64, time, sys, platform, glob, string, stat
+import os, traceback, math, re, zlib, base64, time, sys, platform, glob, string, stat, types
 import cPickle as pickle
 if sys.version_info[0] < 3:
 	import ConfigParser
@@ -10,10 +10,11 @@ else:
 
 from Cura.util import resources
 from Cura.util import version
+from Cura.util import validators
 
 settingsDictionary = {}
 settingsList = []
-class setting:
+class setting(object):
 	def __init__(self, name, default, type, category, subcategory):
 		self._name = name
 		self._label = name
@@ -25,6 +26,11 @@ class setting:
 		self._subcategory = subcategory
 		self._validators = []
 
+		if type is types.FloatType:
+			validators.validFloat(self)
+		elif type is types.IntType:
+			validators.validInt(self)
+
 		global settingsDictionary
 		settingsDictionary[name] = self
 		global settingsList
@@ -35,139 +41,119 @@ class setting:
 		self._tooltip = tooltip
 		return self
 
+	def setRange(self, minValue = None, maxValue = None):
+		if len(self._validators) < 1:
+			return
+		self._validators[0].minValue = minValue
+		self._validators[0].maxValue = maxValue
+		return self
+
+	def getLabel(self):
+		return self._label
+
+	def getTooltip(self):
+		return self._tooltip
+
+	def isPreference(self):
+		return self._category == 'preference'
+
+	def isAlteration(self):
+		return self._category == 'alteration'
+
+	def isProfile(self):
+		return not self.isAlteration() and not self.isPreference()
+
+	def getName(self):
+		return self._name
+
+	def getType(self):
+		return self._type
+
+	def getValue(self):
+		return self._value
+
+	def getDefault(self):
+		return self._default
+
+	def setValue(self, value):
+		self._value = unicode(value)
+
+	def validate(self):
+		result = validators.SUCCESS
+		msgs = []
+		for validator in self._validators:
+			res, err = validator.validate()
+			if res == validators.ERROR:
+				result = res
+			elif res == validators.WARNING and result != validators.ERROR:
+				result = res
+			if res != validators.SUCCESS:
+				msgs.append(err)
+		return result, '\n'.join(msgs)
+
 #########################################################
 ## Settings
 #########################################################
-setting('layer_height',              0.2, float, 'basic',    'Quality').setLabel('Layer height (mm)', 'Layer height in millimeters.\n0.2 is a good value for quick prints.\n0.1 gives high quality prints.\nDepending on your printer you can go as low as 0.02mm')
-setting('wall_thickness',            0.8, float, 'basic',    'Quality').setLabel('Wall thickness (mm)', 'Thickness of the walls.\nThis is used in combination with the nozzle size to define the number\nof perimeter lines and the thickness of those perimeter lines.')
+setting('layer_height',              0.2, float, 'basic',    'Quality').setRange(0.0001).setLabel('Layer height (mm)', 'Layer height in millimeters.\n0.2 is a good value for quick prints.\n0.1 gives high quality prints.\nDepending on your printer you can go as low as 0.02mm')
+setting('wall_thickness',            0.8, float, 'basic',    'Quality').setRange(0.0001).setLabel('Wall thickness (mm)', 'Thickness of the walls.\nThis is used in combination with the nozzle size to define the number\nof perimeter lines and the thickness of those perimeter lines.')
 setting('retraction_enable',       False, bool,  'basic',    'Quality').setLabel('Enable retraction', 'Retract the filament when the nozzle is moving over a none-printed area. Details about the retraction can be configured in the advanced tab.')
-setting('solid_layer_thickness',     0.6, float, 'basic',    'Fill').setLabel('Bottom/Top thickness (mm)', 'This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value.\nHaving this value a multiply of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.')
-setting('fill_density',               20, float, 'basic',    'Fill').setLabel('Fill Density (%)', 'This controls how densely filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough.\nThis won\'t effect the outside of the print and only adjusts how strong the part becomes.')
-setting('nozzle_size',               0.4, float, 'advanced', 'Machine').setLabel('Nozzle size (mm)', 'The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings.')
-setting('skirt_line_count',            1, int,   'advanced', 'Skirt').setLabel('Line count', 'The skirt is a line drawn around the object at the first layer. This helps to prime your extruder, and to see if the object fits on your platform.\nSetting this to 0 will disable the skirt. Multiple skirt lines can help priming your extruder better for small objects.')
-setting('skirt_gap',                 3.0, float, 'advanced', 'Skirt').setLabel('Start distance (mm)', 'The distance between the skirt and the first layer.\nThis is the minimal distance, multiple skirt lines will be put outwards from this distance.')
-setting('print_speed',                50, float, 'basic',    'Speed & Temperature').setLabel('Print speed (mm/s)', 'Speed at which printing happens. A well adjusted Ultimaker can reach 150mm/s, but for good quality prints you want to print slower. Printing speed depends on a lot of factors. So you will be experimenting with optimal settings for this.')
-setting('print_temperature',         220, int,   'basic',    'Speed & Temperature').setLabel('Printing temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
-setting('print_temperature2',          0, int,   'basic',    'Speed & Temperature').setLabel('2nd nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
-setting('print_temperature3',          0, int,   'basic',    'Speed & Temperature').setLabel('3th nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
-setting('print_temperature4',          0, int,   'basic',    'Speed & Temperature').setLabel('4th nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
-setting('print_bed_temperature',      70, int,   'basic',    'Speed & Temperature').setLabel('Bed temperature (C)', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself.')
+setting('solid_layer_thickness',     0.6, float, 'basic',    'Fill').setRange(0).setLabel('Bottom/Top thickness (mm)', 'This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value.\nHaving this value a multiply of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.')
+setting('fill_density',               20, float, 'basic',    'Fill').setRange(0, 100).setLabel('Fill Density (%)', 'This controls how densely filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough.\nThis won\'t effect the outside of the print and only adjusts how strong the part becomes.')
+setting('nozzle_size',               0.4, float, 'advanced', 'Machine').setRange(0.1,10).setLabel('Nozzle size (mm)', 'The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings.')
+setting('skirt_line_count',            1, int,   'advanced', 'Skirt').setRange(0).setLabel('Line count', 'The skirt is a line drawn around the object at the first layer. This helps to prime your extruder, and to see if the object fits on your platform.\nSetting this to 0 will disable the skirt. Multiple skirt lines can help priming your extruder better for small objects.')
+setting('skirt_gap',                 3.0, float, 'advanced', 'Skirt').setRange(0).setLabel('Start distance (mm)', 'The distance between the skirt and the first layer.\nThis is the minimal distance, multiple skirt lines will be put outwards from this distance.')
+setting('print_speed',                50, float, 'basic',    'Speed & Temperature').setRange(1).setLabel('Print speed (mm/s)', 'Speed at which printing happens. A well adjusted Ultimaker can reach 150mm/s, but for good quality prints you want to print slower. Printing speed depends on a lot of factors. So you will be experimenting with optimal settings for this.')
+setting('print_temperature',         220, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('Printing temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_temperature2',          0, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('2nd nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_temperature3',          0, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('3th nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_temperature4',          0, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('4th nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
+setting('print_bed_temperature',      70, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('Bed temperature (C)', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself.')
 setting('support',                'None', ['None', 'Touching buildplate', 'Everywhere'], 'Basic', 'Support structure').setLabel('Support type', 'Type of support structure build.\n"Exterior only" is the most commonly used support setting.\n\nNone does not do any support.\nTouching buildplate only creates support where the support structure will touch the build platform.\nEverywhere creates support even on top of parts of the model.')
 setting('enable_raft',             False, bool,  'basic',   'Support').setLabel('Enable raft', 'A raft is a few layers of lines below the bottom of the object. It prevents warping. Full raft settings can be found in the expert settings.\nFor PLA this is usually not required. But if you print with ABS it is almost required.')
 setting('support_dual_extrusion',  False, bool, 'basic', 'Support').setLabel('Support dual extrusion', 'Print the support material with the 2nd extruder in a dual extrusion setup. The primary extruder will be used for normal material, while the second extruder is used to print support material.')
-setting('filament_diameter',        2.89, float, 'basic',    'Filament').setLabel('Diameter (mm)', 'Diameter of your filament, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.')
-setting('filament_diameter2',          0, float, 'basic',    'Filament').setLabel('Diameter2 (mm)', 'Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter as for nozzle 1.')
-setting('filament_diameter3',          0, float, 'basic',    'Filament').setLabel('Diameter3 (mm)', 'Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter as for nozzle 1.')
-setting('filament_diameter4',          0, float, 'basic',    'Filament').setLabel('Diameter4 (mm)', 'Diameter of your filament for the 4th nozzle. Use 0 to use the same diameter as for nozzle 1.')
-setting('filament_density',         1.00, float, 'basic',    'Filament').setLabel('Packing Density', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
-setting('retraction_min_travel',     5.0, float, 'advanced', 'Retraction').setLabel('Minimum travel (mm)', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
-setting('retraction_speed',         40.0, float, 'advanced', 'Retraction').setLabel('Speed (mm/s)', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
-setting('retraction_amount',         4.5, float, 'advanced', 'Retraction').setLabel('Distance (mm)', 'Amount of retraction, set at 0 for no retraction at all. A value of 2.0mm seems to generate good results.')
-setting('retraction_extra',          0.0, float, 'advanced', 'Retraction').setLabel('Extra length on start (mm)', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
-setting('bottom_thickness',          0.3, float, 'advanced', 'Quality').setLabel('Initial layer thickness (mm)', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
+setting('filament_diameter',        2.89, float, 'basic',    'Filament').setRange(1).setLabel('Diameter (mm)', 'Diameter of your filament, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.')
+setting('filament_diameter2',          0, float, 'basic',    'Filament').setRange(0).setLabel('Diameter2 (mm)', 'Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter as for nozzle 1.')
+setting('filament_diameter3',          0, float, 'basic',    'Filament').setRange(0).setLabel('Diameter3 (mm)', 'Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter as for nozzle 1.')
+setting('filament_diameter4',          0, float, 'basic',    'Filament').setRange(0).setLabel('Diameter4 (mm)', 'Diameter of your filament for the 4th nozzle. Use 0 to use the same diameter as for nozzle 1.')
+setting('filament_density',         1.00, float, 'basic',    'Filament').setRange(0.5,1.5).setLabel('Packing Density', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
+setting('retraction_min_travel',     5.0, float, 'advanced', 'Retraction').setRange(0).setLabel('Minimum travel (mm)', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
+setting('retraction_speed',         40.0, float, 'advanced', 'Retraction').setRange(0.1).setLabel('Speed (mm/s)', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
+setting('retraction_amount',         4.5, float, 'advanced', 'Retraction').setRange(0).setLabel('Distance (mm)', 'Amount of retraction, set at 0 for no retraction at all. A value of 2.0mm seems to generate good results.')
+setting('retraction_extra',          0.0, float, 'advanced', 'Retraction').setRange(0).setLabel('Extra length on start (mm)', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
+setting('bottom_thickness',          0.3, float, 'advanced', 'Quality').setRange(0).setLabel('Initial layer thickness (mm)', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
 setting('object_sink',               0.0, float, 'advanced', 'Quality').setLabel('Cut off object bottom (mm)', 'Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer.')
 setting('enable_skin',             False, bool,  'advanced', 'Quality').setLabel('Duplicate outlines', 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
 setting('retract_on_jumps_only',    True, bool,  'expert',   'Retraction').setLabel('Retract on jumps only', 'Only retract when we are making a move that is over a hole in the model, else retract on every move. This effects print quality in different ways.')
-setting('travel_speed',            150.0, float, 'advanced', 'Speed').setLabel('Travel speed (mm/s)', 'Speed at which travel moves are done, a high quality build Ultimaker can reach speeds of 250mm/s. But some machines might miss steps then.')
-setting('max_z_speed',               3.0, float, 'expert',   'Speed').setLabel('Max Z speed (mm/s)', 'Speed at which Z moves are done. When you Z axis is properly lubricated you can increase this for less Z blob.')
-setting('bottom_layer_speed',         20, float, 'advanced', 'Speed').setLabel('Bottom layer speed (mm/s)', 'Print speed for the bottom layer, you want to print the first layer slower so it sticks better to the printer bed.')
-setting('cool_min_layer_time',         5, float, 'advanced', 'Cool').setLabel('Minimal layer time (sec)', 'Minimum time spend in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spend at least this amount of seconds printing this layer.')
+setting('travel_speed',            150.0, float, 'advanced', 'Speed').setRange(0.1).setLabel('Travel speed (mm/s)', 'Speed at which travel moves are done, a high quality build Ultimaker can reach speeds of 250mm/s. But some machines might miss steps then.')
+setting('max_z_speed',               3.0, float, 'expert',   'Speed').setRange(0.1).setLabel('Max Z speed (mm/s)', 'Speed at which Z moves are done. When you Z axis is properly lubricated you can increase this for less Z blob.')
+setting('bottom_layer_speed',         20, float, 'advanced', 'Speed').setRange(0.1).setLabel('Bottom layer speed (mm/s)', 'Print speed for the bottom layer, you want to print the first layer slower so it sticks better to the printer bed.')
+setting('cool_min_layer_time',         5, float, 'advanced', 'Cool').setRange(0).setLabel('Minimal layer time (sec)', 'Minimum time spend in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spend at least this amount of seconds printing this layer.')
 setting('fan_enabled',              True, bool,  'advanced', 'Cool').setLabel('Enable cooling fan', 'Enable the cooling fan during the print. The extra cooling from the cooling fan is essensial during faster prints.')
-setting('fan_layer',                   1, int,   'expert',   'Cool').setLabel('Fan on layer number', 'The layer at which the fan is turned on. The first layer is layer 0. The first layer can stick better if you turn on the fan on, on the 2nd layer.')
-setting('fan_speed',                 100, int,   'expert',   'Cool').setLabel('Fan speed min (%)', 'When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Minimal fan speed is used if the layer is not slowed down due to cooling.')
-setting('fan_speed_max',             100, int,   'expert',   'Cool').setLabel('Fan speed max (%)', 'When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Maximal fan speed is used if the layer is slowed down due to cooling by more then 200%.')
-setting('cool_min_feedrate',          10, float, 'expert',   'Cool').setLabel('Minimum feedrate (mm/s)', 'The minimal layer time can cause the print to slow down so much it starts to ooze. The minimal feedrate protects against this. Even if a print gets slown down it will never be slower then this minimal feedrate.')
-setting('extra_base_wall_thickness', 0.0, float, 'expert', 'Accuracy').setLabel('Extra Wall thickness for bottom/top (mm)', 'Additional wall thickness of the bottom and top layers.')
+setting('fan_layer',                   1, int,   'expert',   'Cool').setRange(0).setLabel('Fan on layer number', 'The layer at which the fan is turned on. The first layer is layer 0. The first layer can stick better if you turn on the fan on, on the 2nd layer.')
+setting('fan_speed',                 100, int,   'expert',   'Cool').setRange(0,100).setLabel('Fan speed min (%)', 'When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Minimal fan speed is used if the layer is not slowed down due to cooling.')
+setting('fan_speed_max',             100, int,   'expert',   'Cool').setRange(0,100).setLabel('Fan speed max (%)', 'When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Maximal fan speed is used if the layer is slowed down due to cooling by more then 200%.')
+setting('cool_min_feedrate',          10, float, 'expert',   'Cool').setRange(0).setLabel('Minimum feedrate (mm/s)', 'The minimal layer time can cause the print to slow down so much it starts to ooze. The minimal feedrate protects against this. Even if a print gets slown down it will never be slower then this minimal feedrate.')
+setting('extra_base_wall_thickness', 0.0, float, 'expert',   'Accuracy').setRange(0).setLabel('Extra Wall thickness for bottom/top (mm)', 'Additional wall thickness of the bottom and top layers.')
 setting('sequence', 'Loops > Perimeter > Infill', ['Loops > Perimeter > Infill', 'Loops > Infill > Perimeter', 'Infill > Loops > Perimeter', 'Infill > Perimeter > Loops', 'Perimeter > Infill > Loops', 'Perimeter > Loops > Infill'], 'expert', 'Sequence')
 setting('force_first_layer_sequence', True, bool, 'expert', 'Sequence').setLabel('Force first layer sequence', 'This setting forces the order of the first layer to be \'Perimeter > Loops > Infill\'')
 setting('infill_type', 'Line', ['Line', 'Grid Circular', 'Grid Hexagonal', 'Grid Rectangular'], 'expert', 'Infill').setLabel('Infill pattern', 'Pattern of the none-solid infill. Line is default, but grids can provide a strong print.')
 setting('solid_top', True, bool, 'expert', 'Infill').setLabel('Solid infill top', 'Create a solid top surface, if set to false the top is filled with the fill percentage. Useful for cups/vases.')
-setting('fill_overlap', 15, int, 'expert', 'Infill').setLabel('Infill overlap (%)', 'Amount of overlap between the infill and the walls. There is a slight overlap with the walls and the infill so the walls connect firmly to the infill.')
-setting('support_rate', 50, int, 'expert', 'Support').setLabel('Material amount (%)', 'Amount of material used for support, less material gives a weaker support structure which is easier to remove.')
-setting('support_distance',  0.5, float, 'expert', 'Support').setLabel('Distance from object (mm)', 'Distance between the support structure and the object. Empty gap in which no support structure is printed.')
+setting('fill_overlap', 15, int, 'expert', 'Infill').setRange(0,100).setLabel('Infill overlap (%)', 'Amount of overlap between the infill and the walls. There is a slight overlap with the walls and the infill so the walls connect firmly to the infill.')
+setting('support_rate', 50, int, 'expert', 'Support').setRange(0,100).setLabel('Material amount (%)', 'Amount of material used for support, less material gives a weaker support structure which is easier to remove.')
+setting('support_distance',  0.5, float, 'expert', 'Support').setRange(0).setLabel('Distance from object (mm)', 'Distance between the support structure and the object. Empty gap in which no support structure is printed.')
 setting('joris', False, bool, 'expert', 'Joris').setLabel('Spiralize the outer contour', '[Joris] is a code name for smoothing out the Z move of the outer edge. This will create a steady Z increase over the whole print. It is intended to be used with a single walled wall thickness to make cups/vases.')
-setting('bridge_speed', 100, int, 'expert', 'Bridge').setLabel('Bridge speed (%)', 'Speed at which layers with bridges are printed, compared to normal printing speed.')
-setting('raft_margin', 5, float, 'expert', 'Raft').setLabel('Extra margin (mm)', 'If the raft is enabled, this is the extra raft area around the object which is also rafted. Increasing this margin will create a stronger raft.')
-setting('raft_base_material_amount', 100, int, 'expert', 'Raft').setLabel('Base material amount (%)', 'The base layer is the first layer put down as a raft. This layer has thick strong lines and is put firmly on the bed to prevent warping. This setting adjust the amount of material used for the base layer.')
-setting('raft_interface_material_amount', 100, int, 'expert', 'Raft').setLabel('Interface material amount (%)', 'raft_interface_material_amount', '100', 'The interface layer is a weak thin layer between the base layer and the printed object. It is designed to has little material to make it easy to break the base off the printed object. This setting adjusts the amount of material used for the interface layer.')
+setting('bridge_speed', 100, int, 'expert', 'Bridge').setRange(0,100).setLabel('Bridge speed (%)', 'Speed at which layers with bridges are printed, compared to normal printing speed.')
+setting('raft_margin', 5, float, 'expert', 'Raft').setRange(0).setLabel('Extra margin (mm)', 'If the raft is enabled, this is the extra raft area around the object which is also rafted. Increasing this margin will create a stronger raft.')
+setting('raft_base_material_amount', 100, int, 'expert', 'Raft').setRange(0,100).setLabel('Base material amount (%)', 'The base layer is the first layer put down as a raft. This layer has thick strong lines and is put firmly on the bed to prevent warping. This setting adjust the amount of material used for the base layer.')
+setting('raft_interface_material_amount', 100, int, 'expert', 'Raft').setRange(0,100).setLabel('Interface material amount (%)', 'The interface layer is a weak thin layer between the base layer and the printed object. It is designed to has little material to make it easy to break the base off the printed object. This setting adjusts the amount of material used for the interface layer.')
 setting('hop_on_move', False, bool, 'expert', 'Hop').setLabel('Enable hop on move', 'When moving from print position to print position, raise the printer head 0.2mm so it does not knock off the print (experimental).')
 
-setting('model_matrix', '1,0,0,0,1,0,0,0,1', string, 'hidden', 'hidden')
-setting('plugin_config', '', string, 'hidden', 'hidden')
+setting('model_matrix', '1,0,0,0,1,0,0,0,1', str, 'hidden', 'hidden')
+setting('plugin_config', '', str, 'hidden', 'hidden')
 setting('object_center_x', -1, float, 'hidden', 'hidden')
 setting('object_center_y', -1, float, 'hidden', 'hidden')
 
-#Single place to store the defaults, so we have a consistent set of default settings.
-profileDefaultSettings = {
-	'nozzle_size': '0.4',
-	'layer_height': '0.2',
-	'wall_thickness': '0.8',
-	'solid_layer_thickness': '0.6',
-	'fill_density': '20',
-	'skirt_line_count': '1',
-	'skirt_gap': '3.0',
-	'print_speed': '50',
-	'print_temperature': '220',
-	'print_temperature2': '0',
-	'print_temperature3': '0',
-	'print_temperature4': '0',
-	'print_bed_temperature': '70',
-	'support': 'None',
-	'filament_diameter': '2.89',
-	'filament_diameter2': '0',
-	'filament_diameter3': '0',
-	'filament_diameter4': '0',
-	'filament_density': '1.00',
-	'retraction_min_travel': '5.0',
-	'retraction_enable': 'False',
-	'retraction_speed': '40.0',
-	'retraction_amount': '4.5',
-	'retraction_extra': '0.0',
-	'retract_on_jumps_only': 'True',
-	'travel_speed': '150',
-	'max_z_speed': '3.0',
-	'bottom_layer_speed': '20',
-	'cool_min_layer_time': '5',
-	'fan_enabled': 'True',
-	'fan_layer': '1',
-	'fan_speed': '100',
-	'fan_speed_max': '100',
-	'model_matrix': '1,0,0,0,1,0,0,0,1',
-	'extra_base_wall_thickness': '0.0',
-	'sequence': 'Loops > Perimeter > Infill',
-	'force_first_layer_sequence': 'True',
-	'infill_type': 'Line',
-	'solid_top': 'True',
-	'fill_overlap': '15',
-	'support_rate': '50',
-	'support_distance': '0.5',
-	'support_dual_extrusion': 'False',
-	'joris': 'False',
-	'enable_skin': 'False',
-	'enable_raft': 'False',
-	'cool_min_feedrate': '10',
-	'bridge_speed': '100',
-	'raft_margin': '5',
-	'raft_base_material_amount': '100',
-	'raft_interface_material_amount': '100',
-	'bottom_thickness': '0.3',
-	'hop_on_move': 'False',
-	'plugin_config': '',
-	'object_center_x': '-1',
-	'object_center_y': '-1',
-	'object_sink': '0.0',
-	
-	'gcode_extension': 'gcode',
-	'alternative_center': '',
-	'clear_z': '0.0',
-	'extruder': '0',
-	'new_x': '0',
-	'new_y': '0',
-	'new_z': '0',
-}
-alterationDefault = {
-#######################################################################################
-	'start.gcode': """;Sliced {filename} at: {day} {date} {time}
+setting('start.gcode', """;Sliced {filename} at: {day} {date} {time}
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 ;Print time: {print_time}
 ;Filament used: {filament_amount}m {filament_weight}g
@@ -186,9 +172,9 @@ G1 F200 E3              ;extrude 3mm of feed stock
 G92 E0                  ;zero the extruded length again
 G1 F{travel_speed}
 M117 Printing...
-""",
+""", str, 'alteration', 'alteration')
 #######################################################################################
-	'end.gcode': """;End GCode
+setting('end.gcode', """;End GCode
 M104 S0                     ;extruder heater off
 M140 S0                     ;heated bed heater off (if you have it)
 
@@ -199,15 +185,15 @@ G28 X0 Y0                              ;move X/Y to min endstops, so the head is
 
 M84                         ;steppers off
 G90                         ;absolute positioning
-""",
+""", str, 'alteration', 'alteration')
 #######################################################################################
-	'support_start.gcode': '',
-	'support_end.gcode': '',
-	'cool_start.gcode': '',
-	'cool_end.gcode': '',
-	'replace.csv': '',
+setting('support_start.gcode', '', str, 'alteration', 'alteration')
+setting('support_end.gcode', '', str, 'alteration', 'alteration')
+setting('cool_start.gcode', '', str, 'alteration', 'alteration')
+setting('cool_end.gcode', '', str, 'alteration', 'alteration')
+setting('replace.csv', '', str, 'alteration', 'alteration')
 #######################################################################################
-	'nextobject.gcode': """;Move to next object on the platform. clear_z is the minimal z height we need to make sure we do not hit any objects.
+setting('nextobject.gcode', """;Move to next object on the platform. clear_z is the minimal z height we need to make sure we do not hit any objects.
 G92 E0
 
 G91                                    ;relative positioning
@@ -220,9 +206,9 @@ G92 E0
 G1 X{object_center_x} Y{object_center_y} F{travel_speed}
 G1 F200 E6
 G92 E0
-""",
+""", str, 'alteration', 'alteration')
 #######################################################################################
-	'switchExtruder.gcode': """;Switch between the current extruder and the next extruder, when printing with multiple extruders.
+setting('switchExtruder.gcode', """;Switch between the current extruder and the next extruder, when printing with multiple extruders.
 G92 E0
 G1 E-36 F5000
 G92 E0
@@ -230,60 +216,57 @@ T{extruder}
 G1 X{new_x} Y{new_y} Z{new_z} F{travel_speed}
 G1 E36 F5000
 G92 E0
-""",
-}
-preferencesDefaultSettings = {
-	'startMode': 'Simple',
-	'lastFile': os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'example', 'UltimakerRobot_support.stl')),
-	'machine_width': '205',
-	'machine_depth': '205',
-	'machine_height': '200',
-	'machine_type': 'unknown',
-	'machine_center_is_zero': 'False',
-	'ultimaker_extruder_upgrade': 'False',
-	'has_heated_bed': 'False',
-	'reprap_name': 'RepRap',
-	'extruder_amount': '1',
-	'extruder_offset_x1': '-22.0',
-	'extruder_offset_y1': '0.0',
-	'extruder_offset_x2': '0.0',
-	'extruder_offset_y2': '0.0',
-	'extruder_offset_x3': '0.0',
-	'extruder_offset_y3': '0.0',
-	'filament_density': '1300',
-	'steps_per_e': '0',
-	'serial_port': 'AUTO',
-	'serial_port_auto': '',
-	'serial_baud': 'AUTO',
-	'serial_baud_auto': '',
-	'slicer': 'Cura (Skeinforge based)',
-	'save_profile': 'False',
-	'filament_cost_kg': '0',
-	'filament_cost_meter': '0',
-	'sdpath': '',
-	'sdshortnames': 'False',
-	'check_for_updates': 'True',
-	'submit_slice_information': 'False',
+""", str, 'alteration', 'alteration')
 
-	'planner_always_autoplace': 'True',
-	'extruder_head_size_min_x': '75.0',
-	'extruder_head_size_min_y': '18.0',
-	'extruder_head_size_max_x': '18.0',
-	'extruder_head_size_max_y': '35.0',
-	'extruder_head_size_height': '60.0',
-	
-	'model_colour': '#7AB645',
-	'model_colour2': '#CB3030',
-	'model_colour3': '#DDD93C',
-	'model_colour4': '#4550D3',
+setting('startMode', 'Simple', ['Simple', 'Normal'], 'preference', 'hidden')
+setting('lastFile', os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'example', 'UltimakerRobot_support.stl')), str, 'preference', 'hidden')
+setting('machine_width', '205', float, 'preference', 'hidden')
+setting('machine_depth', '205', float, 'preference', 'hidden')
+setting('machine_height', '200', float, 'preference', 'hidden')
+setting('machine_type', 'unknown', str, 'preference', 'hidden')
+setting('machine_center_is_zero', 'False', bool, 'preference', 'hidden')
+setting('ultimaker_extruder_upgrade', 'False', bool, 'preference', 'hidden')
+setting('has_heated_bed', 'False', bool, 'preference', 'hidden')
+setting('reprap_name', 'RepRap', str, 'preference', 'hidden')
+setting('extruder_amount', '1', int, 'preference', 'hidden')
+setting('extruder_offset_x1', '-21.6', float, 'preference', 'hidden')
+setting('extruder_offset_y1', '0.0', float, 'preference', 'hidden')
+setting('extruder_offset_x2', '0.0', float, 'preference', 'hidden')
+setting('extruder_offset_y2', '0.0', float, 'preference', 'hidden')
+setting('extruder_offset_x3', '0.0', float, 'preference', 'hidden')
+setting('extruder_offset_y3', '0.0', float, 'preference', 'hidden')
+setting('filament_density', '1300', float, 'preference', 'hidden')
+setting('steps_per_e', '0', float, 'preference', 'hidden')
+setting('serial_port', 'AUTO', str, 'preference', 'hidden')
+setting('serial_port_auto', '', str, 'preference', 'hidden')
+setting('serial_baud', 'AUTO', str, 'preference', 'hidden')
+setting('serial_baud_auto', '', int, 'preference', 'hidden')
+setting('save_profile', 'False', bool, 'preference', 'hidden')
+setting('filament_cost_kg', '0', float, 'preference', 'hidden')
+setting('filament_cost_meter', '0', float, 'preference', 'hidden')
+setting('sdpath', '', str, 'preference', 'hidden')
+setting('sdshortnames', 'False', bool, 'preference', 'hidden')
+setting('check_for_updates', 'True', bool, 'preference', 'hidden')
+setting('submit_slice_information', 'False', bool, 'preference', 'hidden')
 
-	'window_maximized': 'False',
-	'window_pos_x': '-1',
-	'window_pos_y': '-1',
-	'window_width': '-1',
-	'window_height': '-1',
-	'window_normal_sash': '320',
-}
+setting('planner_always_autoplace', 'True', bool, 'preference', 'hidden')
+setting('extruder_head_size_min_x', '75.0', float, 'preference', 'hidden')
+setting('extruder_head_size_min_y', '18.0', float, 'preference', 'hidden')
+setting('extruder_head_size_max_x', '18.0', float, 'preference', 'hidden')
+setting('extruder_head_size_max_y', '35.0', float, 'preference', 'hidden')
+setting('extruder_head_size_height', '60.0', float, 'preference', 'hidden')
+
+setting('model_colour', '#7AB645', str, 'preference', 'hidden')
+setting('model_colour2', '#CB3030', str, 'preference', 'hidden')
+setting('model_colour3', '#DDD93C', str, 'preference', 'hidden')
+setting('model_colour4', '#4550D3', str, 'preference', 'hidden')
+
+setting('window_maximized', 'False', bool, 'preference', 'hidden')
+setting('window_pos_x', '-1', float, 'preference', 'hidden')
+setting('window_pos_y', '-1', float, 'preference', 'hidden')
+setting('window_width', '-1', float, 'preference', 'hidden')
+setting('window_height', '-1', float, 'preference', 'hidden')
+setting('window_normal_sash', '320', float, 'preference', 'hidden')
 
 #########################################################
 ## Profile and preferences functions
@@ -305,19 +288,46 @@ def getBasePath():
 def getDefaultProfilePath():
 	return os.path.join(getBasePath(), 'current_profile.ini')
 
-def loadGlobalProfile(filename):
+def loadProfile(filename):
 	#Read a configuration file as global config
-	global globalProfileParser
-	globalProfileParser = ConfigParser.ConfigParser()
+	profileParser = ConfigParser.ConfigParser()
 	try:
-		globalProfileParser.read(filename)
+		profileParser.read(filename)
 	except ConfigParser.ParsingError:
-		pass
+		return
+	global settingsList
+	for set in settingsList:
+		if set.isPreference():
+			continue
+		section = 'profile'
+		if set.isAlteration():
+			section = 'alterations'
+		if profileParser.has_option(section, set.getName()):
+			set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'))
 
-def resetGlobalProfile():
+def saveProfile(filename):
+	#Save the current profile to an ini file
+	profileParser = ConfigParser.ConfigParser()
+	profileParser.add_section('profile')
+	profileParser.add_section('alterations')
+	global settingsList
+	for set in settingsList:
+		if set.isPreference():
+			continue
+		if set.isAlteration():
+			profileParser.set('alterations', set.getName(), set.getValue().encode('utf-8'))
+		else:
+			profileParser.set('profile', set.getName(), set.getValue().encode('utf-8'))
+
+	profileParser.write(open(filename, 'w'))
+
+def resetProfile():
 	#Read a configuration file as global config
-	global globalProfileParser
-	globalProfileParser = ConfigParser.ConfigParser()
+	global settingsList
+	for set in settingsList:
+		if set.isPreference():
+			continue
+		set.setValue(set.getDefault())
 
 	if getPreference('machine_type') == 'ultimaker':
 		putProfileSetting('nozzle_size', '0.4')
@@ -326,69 +336,49 @@ def resetGlobalProfile():
 	else:
 		putProfileSetting('nozzle_size', '0.5')
 
-def saveGlobalProfile(filename):
-	#Save the current profile to an ini file
-	globalProfileParser.write(open(filename, 'w'))
-
-def loadGlobalProfileFromString(options):
-	global globalProfileParser
-	globalProfileParser = ConfigParser.ConfigParser()
-	globalProfileParser.add_section('profile')
-	globalProfileParser.add_section('alterations')
+def loadProfileFromString(options):
 	options = base64.b64decode(options)
 	options = zlib.decompress(options)
 	(profileOpts, alt) = options.split('\f', 1)
+	global settingsDictionary
 	for option in profileOpts.split('\b'):
 		if len(option) > 0:
 			(key, value) = option.split('=', 1)
-			globalProfileParser.set('profile', key, value)
+			if key in settingsDictionary:
+				if settingsDictionary[key].isProfile():
+					settingsDictionary[key].setValue(value)
 	for option in alt.split('\b'):
 		if len(option) > 0:
 			(key, value) = option.split('=', 1)
-			globalProfileParser.set('alterations', key, value)
+			if key in settingsDictionary:
+				if settingsDictionary[key].isAlteration():
+					settingsDictionary[key].setValue(value)
 
-def getGlobalProfileString():
-	global globalProfileParser
-	if not globals().has_key('globalProfileParser'):
-		loadGlobalProfile(getDefaultProfilePath())
-	
+def getProfileString():
 	p = []
 	alt = []
-	tempDone = []
-	if globalProfileParser.has_section('profile'):
-		for key in globalProfileParser.options('profile'):
-			if key in tempOverride:
-				p.append(key + "=" + tempOverride[key])
-				tempDone.append(key)
+	global settingsList
+	for set in settingsList:
+		if set.isProfile():
+			if set.getName() in tempOverride:
+				p.append(set.getName() + "=" + tempOverride[set.getName()])
 			else:
-				p.append(key + "=" + globalProfileParser.get('profile', key))
-	if globalProfileParser.has_section('alterations'):
-		for key in globalProfileParser.options('alterations'):
-			if key in tempOverride:
-				p.append(key + "=" + tempOverride[key])
-				tempDone.append(key)
+				p.append(set.getName() + "=" + set.getValue())
+		if set.isAlteration():
+			if set.getName() in tempOverride:
+				alt.append(set.getName() + "=" + tempOverride[set.getName()])
 			else:
-				alt.append(key + "=" + globalProfileParser.get('alterations', key))
-	for key in tempOverride:
-		if key not in tempDone:
-			p.append(key + "=" + tempOverride[key])
+				alt.append(set.getName() + "=" + set.getValue())
 	ret = '\b'.join(p) + '\f' + '\b'.join(alt)
 	ret = base64.b64encode(zlib.compress(ret, 9))
 	return ret
 
 def getGlobalPreferencesString():
-	global globalPreferenceParser
-	if globalPreferenceParser is None:
-		globalPreferenceParser = ConfigParser.ConfigParser()
-		try:
-			globalPreferenceParser.read(getPreferencePath())
-		except ConfigParser.ParsingError:
-			pass
-
 	p = []
-	if globalPreferenceParser.has_section('preference'):
-		for key in globalPreferenceParser.options('preference'):
-			p.append(key + "=" + globalPreferenceParser.get('preference', key))
+	global settingsList
+	for set in settingsList:
+		if set.isPreference():
+			p.append(set.getName() + "=" + set.getValue())
 	ret = '\b'.join(p)
 	ret = base64.b64encode(zlib.compress(ret, 9))
 	return ret
@@ -396,23 +386,12 @@ def getGlobalPreferencesString():
 
 def getProfileSetting(name):
 	if name in tempOverride:
-		return unicode(tempOverride[name], "utf-8")
-	#Check if we have a configuration file loaded, else load the default.
-	if not globals().has_key('globalProfileParser'):
-		loadGlobalProfile(getDefaultProfilePath())
-	if not globalProfileParser.has_option('profile', name):
-		if name in profileDefaultSettings:
-			default = profileDefaultSettings[name]
-		else:
-			print("Missing default setting for: '" + name + "'")
-			profileDefaultSettings[name] = ''
-			default = ''
-		if not globalProfileParser.has_section('profile'):
-			globalProfileParser.add_section('profile')
-		globalProfileParser.set('profile', name, str(default))
-		#print(name + " not found in profile, so using default: " + str(default))
-		return default
-	return globalProfileParser.get('profile', name)
+		return tempOverride[name]
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isProfile():
+		return settingsDictionary[name].getValue()
+	print 'Error: "%s" not found in profile settings' % (name)
+	return ''
 
 def getProfileSettingFloat(name):
 	try:
@@ -423,21 +402,17 @@ def getProfileSettingFloat(name):
 
 def putProfileSetting(name, value):
 	#Check if we have a configuration file loaded, else load the default.
-	if not globals().has_key('globalProfileParser'):
-		loadGlobalProfile(getDefaultProfilePath())
-	if not globalProfileParser.has_section('profile'):
-		globalProfileParser.add_section('profile')
-	globalProfileParser.set('profile', name, str(value))
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isProfile():
+		settingsDictionary[name].setValue(value)
 
 def isProfileSetting(name):
-	if name in profileDefaultSettings:
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isProfile():
 		return True
 	return False
 
 ## Preferences functions
-global globalPreferenceParser
-globalPreferenceParser = None
-
 def getPreferencePath():
 	return os.path.join(getBasePath(), 'preferences.ini')
 
@@ -452,46 +427,48 @@ def getPreferenceColour(name):
 	colorString = getPreference(name)
 	return [float(int(colorString[1:3], 16)) / 255, float(int(colorString[3:5], 16)) / 255, float(int(colorString[5:7], 16)) / 255, 1.0]
 
+def loadPreferences(filename):
+	#Read a configuration file as global config
+	profileParser = ConfigParser.ConfigParser()
+	try:
+		profileParser.read(filename)
+	except ConfigParser.ParsingError:
+		return
+	global settingsList
+	for set in settingsList:
+		if set.isPreference():
+			if profileParser.has_option('preferences', set.getName()):
+				set.setValue(unicode(profileParser.get('preferences', set.getName()), 'utf-8', 'replace'))
+
+def savePreferences(filename):
+	#Save the current profile to an ini file
+	parser = ConfigParser.ConfigParser()
+	parser.add_section('preferences')
+	global settingsList
+	for set in settingsList:
+		if set.isPreference():
+			parser.set('preferences', set.getName(), set.getValue().encode('utf-8'))
+	parser.write(open(filename, 'w'))
+
 def getPreference(name):
 	if name in tempOverride:
-		return unicode(tempOverride[name])
-	global globalPreferenceParser
-	if globalPreferenceParser is None:
-		globalPreferenceParser = ConfigParser.ConfigParser()
-		try:
-			globalPreferenceParser.read(getPreferencePath())
-		except ConfigParser.ParsingError:
-			pass
-	if not globalPreferenceParser.has_option('preference', name):
-		if name in preferencesDefaultSettings:
-			default = preferencesDefaultSettings[name]
-		else:
-			print("Missing default setting for: '" + name + "'")
-			preferencesDefaultSettings[name] = ''
-			default = ''
-		if not globalPreferenceParser.has_section('preference'):
-			globalPreferenceParser.add_section('preference')
-		globalPreferenceParser.set('preference', name, str(default))
-		#print(name + " not found in preferences, so using default: " + str(default))
-		return default
-	return unicode(globalPreferenceParser.get('preference', name), "utf-8")
+		return tempOverride[name]
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isPreference():
+		return settingsDictionary[name].getValue()
+	print 'Error: "%s" not found in profile settings' % (name)
+	return ''
 
 def putPreference(name, value):
 	#Check if we have a configuration file loaded, else load the default.
-	global globalPreferenceParser
-	if globalPreferenceParser == None:
-		globalPreferenceParser = ConfigParser.ConfigParser()
-		try:
-			globalPreferenceParser.read(getPreferencePath())
-		except ConfigParser.ParsingError:
-			pass
-	if not globalPreferenceParser.has_section('preference'):
-		globalPreferenceParser.add_section('preference')
-	globalPreferenceParser.set('preference', name, unicode(value).encode("utf-8"))
-	globalPreferenceParser.write(open(getPreferencePath(), 'w'))
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isPreference():
+		settingsDictionary[name].setValue(value)
+	savePreferences(getPreferencePath())
 
 def isPreference(name):
-	if name in preferencesDefaultSettings:
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isPreference():
 		return True
 	return False
 
@@ -600,31 +577,20 @@ def replaceGCodeTags(filename, gcodeInt):
 
 ### Get aleration raw contents. (Used internally in Cura)
 def getAlterationFile(filename):
-	#Check if we have a configuration file loaded, else load the default.
-	if not globals().has_key('globalProfileParser'):
-		loadGlobalProfile(getDefaultProfilePath())
-	
-	if not globalProfileParser.has_option('alterations', filename):
-		if filename in alterationDefault:
-			default = alterationDefault[filename]
-		else:
-			print("Missing default alteration for: '" + filename + "'")
-			alterationDefault[filename] = ''
-			default = ''
-		if not globalProfileParser.has_section('alterations'):
-			globalProfileParser.add_section('alterations')
-		#print("Using default for: %s" % (filename))
-		globalProfileParser.set('alterations', filename, default)
-	return unicode(globalProfileParser.get('alterations', filename), "utf-8")
+	if filename in tempOverride:
+		return tempOverride[filename]
+	global settingsDictionary
+	if filename in settingsDictionary and settingsDictionary[filename].isAlteration():
+		return settingsDictionary[filename].getValue()
+	print 'Error: "%s" not found in profile settings' % (filename)
+	return ''
 
-def setAlterationFile(filename, value):
+def setAlterationFile(name, value):
 	#Check if we have a configuration file loaded, else load the default.
-	if not globals().has_key('globalProfileParser'):
-		loadGlobalProfile(getDefaultProfilePath())
-	if not globalProfileParser.has_section('alterations'):
-		globalProfileParser.add_section('alterations')
-	globalProfileParser.set('alterations', filename, value.encode("utf-8"))
-	saveGlobalProfile(getDefaultProfilePath())
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isAlteration():
+		settingsDictionary[name].setValue(value)
+	saveProfile(getDefaultProfilePath())
 
 ### Get the alteration file for output. (Used by Skeinforge)
 def getAlterationFileContents(filename, extruderCount = 1):
@@ -663,7 +629,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 			prefix += 'M190 S%f\n' % (bedTemp)
 	elif filename == 'end.gcode':
 		#Append the profile string to the end of the GCode, so we can load it from the GCode file later.
-		postfix = ';CURA_PROFILE_STRING:%s\n' % (getGlobalProfileString())
+		postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	elif filename == 'replace.csv':
 		#Always remove the extruder on/off M codes. These are no longer needed in 5D printing.
 		prefix = 'M101\nM103\n'

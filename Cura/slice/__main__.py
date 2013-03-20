@@ -35,7 +35,7 @@ def main():
 		print 'Missing output filename'
 		sys.exit(1)
 	if options.profile is not None:
-		profile.loadGlobalProfileFromString(options.profile)
+		profile.loadProfileFromString(options.profile)
 	options.output = fixUTF8(options.output)
 
 	steamEngineFilename = os.path.join(os.path.dirname(__file__), 'SteamEngine')
@@ -165,7 +165,7 @@ def main():
 				'processor': platform.processor(),
 				'machine': platform.machine(),
 				'platform': platform.platform(),
-				'profile': profile.getGlobalProfileString(),
+				'profile': profile.getProfileString(),
 				'preferences': profile.getGlobalPreferencesString(),
 				'modelhash': m.hexdigest(),
 				'version': version.getVersion(),

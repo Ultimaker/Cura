@@ -67,7 +67,7 @@ def getSliceCommand(outputfilename, filenames, positions):
 	pypyExe = getPyPyExe()
 	if pypyExe is None:
 		pypyExe = sys.executable
-	cmd = [pypyExe, '-m', 'Cura.slice', '-p', profile.getGlobalProfileString(), '-o']
+	cmd = [pypyExe, '-m', 'Cura.slice', '-p', profile.getProfileString(), '-o']
 	try:
 		cmd.append(str(outputfilename))
 	except UnicodeEncodeError:

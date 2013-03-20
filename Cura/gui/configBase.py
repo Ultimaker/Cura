@@ -90,9 +90,9 @@ class configPanelBase(wx.Panel):
 	def UpdatePopup(self, setting):
 		if self.popup.setting == setting:
 			if setting.validationMsg != '':
-				self.popup.text.SetLabel(setting.validationMsg + '\n\n' + setting.helpText)
+				self.popup.text.SetLabel(setting.validationMsg + '\n\n' + setting.setting.getTooltip())
 			else:
-				self.popup.text.SetLabel(setting.helpText)
+				self.popup.text.SetLabel(setting.setting.getTooltip())
 			self.popup.text.Wrap(350)
 			self.popup.Fit()
 			x, y = setting.ctrl.ClientToScreenXY(0, 0)
@@ -107,10 +107,7 @@ class configPanelBase(wx.Panel):
 	def updateProfileToControls(self):
 		"Update the configuration wx controls to show the new configuration settings"
 		for setting in self.settingControlList:
-			if setting.type == 'profile':
-				setting.SetValue(profile.getProfileSetting(setting.configName))
-			else:
-				setting.SetValue(profile.getPreference(setting.configName))
+			setting.SetValue(setting.setting.getValue())
 		self.Update()
 
 	def getLabelColumnWidth(self, panel):
@@ -139,50 +136,44 @@ class TitleRow():
 		sizer.SetRows(x + 2)
 
 class SettingRow():
-	def __init__(self, panel, label, configName, defaultValue = '', helpText = 'Help: TODO', type = 'profile'):
+	def __init__(self, panel, configName):
 		"Add a setting to the configuration panel"
 		sizer = panel.GetSizer()
 		x = sizer.GetRows()
 		y = 0
 		flag = 0
-		
-		self.validators = []
-		self.validationMsg = ''
-		self.helpText = helpText
-		self.configName = configName
-		self.panel = panel
-		self.type = type
 
-		self.label = wx.lib.stattext.GenStaticText(panel, -1, label)
+		self.setting = profile.settingsDictionary[configName]
+		self.validationMsg = ''
+		self.panel = panel
+
+		self.label = wx.lib.stattext.GenStaticText(panel, -1, self.setting.getLabel())
 		self.label.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
 		self.label.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseExit)
 
-		getSettingFunc = profile.getPreference
-		if self.type == 'profile':
-			getSettingFunc = profile.getProfileSetting
-		if isinstance(defaultValue, types.StringTypes):
-			self.ctrl = wx.TextCtrl(panel, -1, getSettingFunc(configName))
-			self.ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
-			flag = wx.EXPAND
-		elif isinstance(defaultValue, types.FloatType):
+		if self.setting.getType() is types.FloatType and False:
 			digits = 0
 			while 1 / pow(10, digits) > defaultValue:
 				digits += 1
 			self.ctrl = floatspin.FloatSpin(panel, -1, value=float(getSettingFunc(configName)), increment=defaultValue, digits=digits, min_val=0.0)
 			self.ctrl.Bind(floatspin.EVT_FLOATSPIN, self.OnSettingChange)
 			flag = wx.EXPAND
-		elif isinstance(defaultValue, types.BooleanType):
+		elif self.setting.getType() is types.BooleanType:
 			self.ctrl = wx.CheckBox(panel, -1, style=wx.ALIGN_RIGHT)
-			self.SetValue(getSettingFunc(configName))
+			self.SetValue(self.setting.getValue())
 			self.ctrl.Bind(wx.EVT_CHECKBOX, self.OnSettingChange)
-		elif isinstance(defaultValue, wx.Colour):
+		elif self.setting.getType() is wx.Colour:
 			self.ctrl = wx.ColourPickerCtrl(panel, -1)
-			self.SetValue(getSettingFunc(configName))
+			self.SetValue(self.setting.getValue())
 			self.ctrl.Bind(wx.EVT_COLOURPICKER_CHANGED, self.OnSettingChange)
-		else:
-			self.ctrl = wx.ComboBox(panel, -1, getSettingFunc(configName), choices=defaultValue, style=wx.CB_DROPDOWN|wx.CB_READONLY)
+		elif type(self.setting.getType()) is list:
+			self.ctrl = wx.ComboBox(panel, -1, self.setting.getValue(), choices=self.setting.getType(), style=wx.CB_DROPDOWN|wx.CB_READONLY)
 			self.ctrl.Bind(wx.EVT_COMBOBOX, self.OnSettingChange)
 			self.ctrl.Bind(wx.EVT_LEFT_DOWN, self.OnMouseExit)
+			flag = wx.EXPAND
+		else:
+			self.ctrl = wx.TextCtrl(panel, -1, self.setting.getValue())
+			self.ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
 			flag = wx.EXPAND
 
 		# Set the minimum size of control to something other than the humungous default
@@ -218,20 +209,9 @@ class SettingRow():
 		e.Skip()
 
 	def OnSettingChange(self, e):
-		if self.type == 'profile':
-			profile.putProfileSetting(self.configName, self.GetValue())
-		else:
-			profile.putPreference(self.configName, self.GetValue())
-		result = validators.SUCCESS
-		msgs = []
-		for validator in self.validators:
-			res, err = validator.validate()
-			if res == validators.ERROR:
-				result = res
-			elif res == validators.WARNING and result != validators.ERROR:
-				result = res
-			if res != validators.SUCCESS:
-				msgs.append(err)
+		self.setting.setValue(self.GetValue())
+		result, msg = self.setting.validate()
+
 		ctrl = self.ctrl
 		if isinstance(ctrl, floatspin.FloatSpin):
 			ctrl = ctrl.GetTextCtrl()
@@ -243,7 +223,7 @@ class SettingRow():
 			ctrl.SetBackgroundColour(self.defaultBGColour)
 		ctrl.Refresh()
 
-		self.validationMsg = '\n'.join(msgs)
+		self.validationMsg = msg
 		self.panel.main.UpdatePopup(self)
 
 	def GetValue(self):
