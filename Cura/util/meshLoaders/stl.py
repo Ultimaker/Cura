@@ -7,48 +7,49 @@ import time
 
 from Cura.util import mesh
 
-class stlModel(mesh.mesh):
-	def __init__(self):
-		super(stlModel, self).__init__()
+def _loadAscii(m, f):
+	cnt = 0
+	for lines in f:
+		for line in lines.split('\r'):
+			if 'vertex' in line:
+				cnt += 1
+	m._prepareFaceCount(int(cnt) / 3)
+	f.seek(5, os.SEEK_SET)
+	cnt = 0
+	data = [None,None,None]
+	for lines in f:
+		for line in lines.split('\r'):
+			if 'vertex' in line:
+				data[cnt] = line.split()[1:]
+				cnt += 1
+				if cnt == 3:
+					m._addFace(float(data[0][0]), float(data[0][1]), float(data[0][2]), float(data[1][0]), float(data[1][1]), float(data[1][2]), float(data[2][0]), float(data[2][1]), float(data[2][2]))
+					cnt = 0
 
-	def load(self, filename):
-		f = open(filename, "rb")
-		if f.read(5).lower() == "solid":
-			self._loadAscii(f)
-			if self.vertexCount < 3:
-				f.seek(5, os.SEEK_SET)
-				self._loadBinary(f)
-		else:
-			self._loadBinary(f)
-		f.close()
-		self._postProcessAfterLoad()
-		return self
-	
-	def _loadAscii(self, f):
-		cnt = 0
-		for lines in f:
-			for line in lines.split('\r'):
-				if 'vertex' in line:
-					cnt += 1
-		self._prepareVertexCount(int(cnt))
-		f.seek(5, os.SEEK_SET)
-		cnt = 0
-		for lines in f:
-			for line in lines.split('\r'):
-				if 'vertex' in line:
-					data = line.split()
-					self.addVertex(float(data[1]), float(data[2]), float(data[3]))
+def _loadBinary(m, f):
+	#Skip the header
+	f.read(80-5)
+	faceCount = struct.unpack('<I', f.read(4))[0]
+	m._prepareFaceCount(faceCount)
+	for idx in xrange(0, faceCount):
+		data = struct.unpack("<ffffffffffffH", f.read(50))
+		m._addFace(data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11])
 
-	def _loadBinary(self, f):
-		#Skip the header
-		f.read(80-5)
-		faceCount = struct.unpack('<I', f.read(4))[0]
-		self._prepareVertexCount(faceCount * 3)
-		for idx in xrange(0, faceCount):
-			data = struct.unpack("<ffffffffffffH", f.read(50))
-			self.addVertex(data[3], data[4], data[5])
-			self.addVertex(data[6], data[7], data[8])
-			self.addVertex(data[9], data[10], data[11])
+def loadSTLscene(filename):
+	obj = mesh.printableObject()
+	m = obj._addMesh()
+
+	f = open(filename, "rb")
+	if f.read(5).lower() == "solid":
+		_loadAscii(m, f)
+		if m.vertexCount < 3:
+			f.seek(5, os.SEEK_SET)
+			_loadBinary(m, f)
+	else:
+		_loadBinary(m, f)
+	f.close()
+	obj._postProcessAfterLoad()
+	return [obj]
 
 def saveAsSTL(mesh, filename):
 	f = open(filename, 'wb')

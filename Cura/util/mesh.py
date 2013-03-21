@@ -13,60 +13,74 @@ class printableObject(object):
 		self._meshList = []
 		self._position = [0.0, 0.0]
 		self._matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
+		self._transformedMin = None
+		self._transformedMax = None
+		self._boundaryCircleSize = None
 
 	def _addMesh(self):
 		m = mesh()
 		self._meshList.append(m)
 		return m
 
+	def _postProcessAfterLoad(self):
+		for m in self._meshList:
+			m._calculateNormals()
+		self.processMatrix()
+
 	def processMatrix(self):
-		self.transformedMin = numpy.array([999999999999,999999999999,999999999999], numpy.float64)
-		self.transformedMax = numpy.array([-999999999999,-999999999999,-999999999999], numpy.float64)
-		self.boundaryCircleSize = 0
+		self._transformedMin = numpy.array([999999999999,999999999999,999999999999], numpy.float64)
+		self._transformedMax = numpy.array([-999999999999,-999999999999,-999999999999], numpy.float64)
+		self._boundaryCircleSize = 0
 
 		for m in self._meshList:
-			transformedVertexes = (numpy.matrix(m.vertexes, copy = False) * self.matrix).getA()
+			transformedVertexes = (numpy.matrix(m.vertexes, copy = False) * self._matrix).getA()
 			transformedMin = transformedVertexes.min(0)
 			transformedMax = transformedVertexes.max(0)
 			for n in xrange(0, 3):
-				self.transformedMin[n] = min(transformedMin[n], self.transformedMin[n])
-				self.transformedMax[n] = min(transformedMax[n], self.transformedMax[n])
+				self._transformedMin[n] = min(transformedMin[n], self._transformedMin[n])
+				self._transformedMax[n] = max(transformedMax[n], self._transformedMax[n])
 
 			#Calculate the boundary circle
 			transformedSize = transformedMax - transformedMin
 			center = transformedMin + transformedSize / 2.0
 			boundaryCircleSize = round(math.sqrt(numpy.max(((transformedVertexes[::,0] - center[0]) * (transformedVertexes[::,0] - center[0])) + ((transformedVertexes[::,1] - center[1]) * (transformedVertexes[::,1] - center[1])) + ((transformedVertexes[::,2] - center[2]) * (transformedVertexes[::,2] - center[2])))), 3)
-			self.boundaryCircleSize = max(self.boundaryCircleSize, boundaryCircleSize)
-		self.transformedSize = self.transformedMax - self.transformedMin
+			self._boundaryCircleSize = max(self._boundaryCircleSize, boundaryCircleSize)
+		self._transformedSize = self._transformedMax - self._transformedMin
 
 	def getMaximum(self):
-		return self.transformedMax
+		return self._transformedMax
 	def getMinimum(self):
-		return self.transformedMin
+		return self._transformedMin
 	def getSize(self):
-		return self.transformedSize
+		return self._transformedSize
+	def getBoundaryCircle(self):
+		return self._boundaryCircleSize
 
 class mesh(object):
 	def __init__(self):
 		self.vertexes = None
 		self.vertexCount = 0
 
-	def _addVertex(self, x, y, z):
+	def _addFace(self, x0, y0, z0, x1, y1, z1, x2, y2, z2):
 		n = self.vertexCount
-		self.vertexes[n][0] = x
-		self.vertexes[n][1] = y
-		self.vertexes[n][2] = z
-		self.vertexCount += 1
+		self.vertexes[n][0] = x0
+		self.vertexes[n][1] = y0
+		self.vertexes[n][2] = z0
+		n += 1
+		self.vertexes[n][0] = x1
+		self.vertexes[n][1] = y1
+		self.vertexes[n][2] = z1
+		n += 1
+		self.vertexes[n][0] = x2
+		self.vertexes[n][1] = y2
+		self.vertexes[n][2] = z2
+		self.vertexCount += 3
 	
-	def _prepareVertexCount(self, vertexNumber):
+	def _prepareFaceCount(self, faceNumber):
 		#Set the amount of faces before loading data in them. This way we can create the numpy arrays before we fill them.
-		self.vertexes = numpy.zeros((vertexNumber, 3), numpy.float32)
-		self.normal = numpy.zeros((vertexNumber, 3), numpy.float32)
+		self.vertexes = numpy.zeros((faceNumber*3, 3), numpy.float32)
+		self.normal = numpy.zeros((faceNumber*3, 3), numpy.float32)
 		self.vertexCount = 0
-
-	def _postProcessAfterLoad(self):
-		self.processMatrix()
-		self._calculateNormals()
 
 	def _calculateNormals(self):
 		#Calculate the normals

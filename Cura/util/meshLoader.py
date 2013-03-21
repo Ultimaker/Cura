@@ -12,10 +12,16 @@ def wildcardFilter():
 	wildcardList = ';'.join(map(lambda s: '*' + s, supportedExtensions()))
 	return "Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
 
-def loadMesh(filename):
+#loadMeshes loads 1 or more printableObjects from a file.
+# STL files are a single printableObject with a single mesh, these are most common.
+# OBJ files usually contain a single mesh, but they can contain multiple meshes
+# AMF can contain whole scenes of objects with each object having multiple meshes.
+# DAE files are a mess, but they can contain scenes of objects as well as grouped meshes
+
+def loadMeshes(filename):
 	ext = filename[filename.rfind('.'):].lower()
 	if ext == '.stl':
-		return stl.stlModel().load(filename)
+		return stl.loadSTLscene(filename)
 	if ext == '.obj':
 		return obj.objModel().load(filename)
 	if ext == '.dae':
@@ -23,4 +29,4 @@ def loadMesh(filename):
 	if ext == '.amf':
 		return amf.amfModel().load(filename)
 	print 'Error: Unknown model extension: %s' % (ext)
-	return None
+	return []

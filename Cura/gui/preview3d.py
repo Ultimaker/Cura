@@ -7,6 +7,8 @@ import re
 import time
 import os
 import numpy
+import traceback
+import sys
 
 from wx import glcanvas
 import wx
@@ -363,8 +365,9 @@ class previewPanel(wx.Panel):
 			if obj.filename is not None and os.path.isfile(obj.filename) and obj.fileTime != os.stat(obj.filename).st_mtime:
 				obj.fileTime = os.stat(obj.filename).st_mtime
 				try:
-					mesh = meshLoader.loadMesh(obj.filename)
+					mesh = meshLoader.loadMeshes(obj.filename)[0]
 				except:
+					traceback.print_exc(file=sys.stdout)
 					wx.CallAfter(self.ShowWarningPopup, 'Failed to load %s' % (obj.filename))
 					obj.mesh = None
 					obj.filename = None
@@ -495,14 +498,14 @@ class previewPanel(wx.Panel):
 
 		minV = self.objectList[0].mesh.getMinimum()
 		maxV = self.objectList[0].mesh.getMaximum()
-		objectsBoundaryCircleSize = self.objectList[0].mesh.boundaryCircleSize
+		objectsBoundaryCircleSize = self.objectList[0].mesh.getBoundaryCircle()
 		for obj in self.objectList:
 			if obj.mesh is None:
 				continue
 
 			minV = numpy.minimum(minV, obj.mesh.getMinimum())
 			maxV = numpy.maximum(maxV, obj.mesh.getMaximum())
-			objectsBoundaryCircleSize = max(objectsBoundaryCircleSize, obj.mesh.boundaryCircleSize)
+			objectsBoundaryCircleSize = max(objectsBoundaryCircleSize, obj.mesh.getBoundaryCircle())
 
 		self.objectsMaxV = maxV
 		self.objectsMinV = minV

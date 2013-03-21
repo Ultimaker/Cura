@@ -6,8 +6,6 @@ import webbrowser
 
 from Cura.gui import configBase
 from Cura.gui import expertConfig
-from Cura.gui import preview3d
-from Cura.gui import sliceProgressPanel
 from Cura.gui import alterationPanel
 from Cura.gui import pluginPanel
 from Cura.gui import preferencesDialog
@@ -16,11 +14,10 @@ from Cura.gui import firmwareInstall
 from Cura.gui import printWindow
 from Cura.gui import simpleMode
 from Cura.gui import projectPlanner
+from Cura.gui import sceneView
 from Cura.gui.tools import batchRun
-from Cura.gui import flatSlicerWindow
 from Cura.gui.util import dropTarget
 from Cura.gui.tools import minecraftImport
-from Cura.util import validators
 from Cura.util import profile
 from Cura.util import version
 from Cura.util import sliceRun
@@ -171,7 +168,7 @@ class mainWindow(wx.Frame):
 		self.leftPane.SetSizer(self.leftSizer)
 		
 		#Preview window
-		self.preview3d = preview3d.previewPanel(self.rightPane)
+		self.scene = sceneView.SceneView(self.rightPane)
 
 		#Also bind double clicking the 3D preview to load an STL file.
 		#self.preview3d.glCanvas.Bind(wx.EVT_LEFT_DCLICK, lambda e: self._showModelLoadDialog(1), self.preview3d.glCanvas)
@@ -179,7 +176,7 @@ class mainWindow(wx.Frame):
 		#Main sizer, to position the preview window, buttons and tab control
 		sizer = wx.BoxSizer()
 		self.rightPane.SetSizer(sizer)
-		sizer.Add(self.preview3d, 1, flag=wx.EXPAND)
+		sizer.Add(self.scene, 1, flag=wx.EXPAND)
 
 		# Main window sizer
 		sizer = wx.BoxSizer(wx.VERTICAL)
@@ -189,7 +186,7 @@ class mainWindow(wx.Frame):
 		self.sizer = sizer
 
 		if len(self.filelist) > 0:
-			self.preview3d.loadModelFiles(self.filelist)
+			self.scene.loadScene(self.filelist)
 
 			# Update the Model MRU
 			for idx in xrange(0, len(self.filelist)):
@@ -290,8 +287,8 @@ class mainWindow(wx.Frame):
 		self.filelist = filelist
 		self.SetTitle('Cura - %s - %s' % (version.getVersion(), filelist[-1]))
 		profile.putPreference('lastFile', ';'.join(self.filelist))
-		self.preview3d.loadModelFiles(self.filelist, True)
-		self.preview3d.setViewMode("Normal")
+		self.scene.loadScene(self.filelist)
+		#self.preview3d.setViewMode("Normal")
 		
 		# Update the Model MRU
 		for idx in xrange(0, len(self.filelist)):
@@ -392,7 +389,7 @@ class mainWindow(wx.Frame):
 		self.sizer.Layout()
 
 	def updateProfileToControls(self):
-		self.preview3d.updateProfileToControls()
+		self.scene.updateProfileToControls()
 		self.normalSettingsPanel.updateProfileToControls()
 		self.simpleSettingsPanel.updateProfileToControls()
 
@@ -524,7 +521,7 @@ class mainWindow(wx.Frame):
 			profile.putPreference('window_normal_sash', self.normalSashPos)
 
 		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which keeps wxWidgets from quiting.
-		self.preview3d.glCanvas.OnPaint = lambda e : e
+		self.scene.OnPaint = lambda e : e
 		self.Destroy()
 
 	def OnQuit(self, e):

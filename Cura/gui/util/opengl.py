@@ -17,43 +17,74 @@ OpenGL.ERROR_CHECKING = False
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
+from OpenGL.GL import shaders
 glutInit()
 
-def InitGL(window, view3D, zoom):
-	# set viewing projection
-	glMatrixMode(GL_MODELVIEW)
-	glLoadIdentity()
-	size = window.GetSize()
-	glViewport(0, 0, size.GetWidth(), size.GetHeight())
-
-	glLightfv(GL_LIGHT0, GL_POSITION, [0.2, 0.2, 1.0, 0.0])
-	glLightfv(GL_LIGHT1, GL_POSITION, [1.0, 1.0, 1.0, 0.0])
-
-	glEnable(GL_RESCALE_NORMAL)
-	glEnable(GL_LIGHTING)
-	glEnable(GL_LIGHT0)
-	glEnable(GL_DEPTH_TEST)
-	glEnable(GL_CULL_FACE)
-	glDisable(GL_BLEND)
-
-	glClearColor(1.0, 1.0, 1.0, 1.0)
-	glClearColor(0.8, 0.8, 0.8, 1.0)
-	glClearStencil(0)
-	glClearDepth(1.0)
-
-	glMatrixMode(GL_PROJECTION)
-	glLoadIdentity()
-	aspect = float(size.GetWidth()) / float(size.GetHeight())
-	if view3D:
-		gluPerspective(45.0, aspect, 1.0, 1000.0)
-	else:
-		glOrtho(-aspect * (zoom), aspect * (zoom), -1.0 * (zoom), 1.0 * (zoom), -1000.0, 1000.0)
-
-	glMatrixMode(GL_MODELVIEW)
-	glLoadIdentity()
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
-
 platformMesh = None
+
+class GLShader(object):
+	def __init__(self, vertexProgram, fragmentProgram):
+		try:
+			self._vertexProgram = shaders.compileShader(vertexProgram, GL_VERTEX_SHADER)
+			self._fragmentProgram = shaders.compileShader(fragmentProgram, GL_FRAGMENT_SHADER)
+			self._program = shaders.compileProgram(self._vertexProgram, self._fragmentProgram)
+		except RuntimeError, e:
+			print "Shader error:"
+			print str(e)
+			self._program = None
+
+	def bind(self):
+		if self._program is not None:
+			shaders.glUseProgram(self._program)
+
+	def unbind(self):
+		shaders.glUseProgram(0)
+
+	def delete(self):
+		shaders.glDeleteShader(self._vertexProgram)
+		shaders.glDeleteShader(self._fragmentProgram)
+		glDeleteProgram(self._program)
+
+	def setUniform(self, name, value):
+		glUniform1f(glGetUniformLocation(self._program, name), value)
+
+class GLVBO(object):
+	def __init__(self, vertexArray, normalArray):
+		self._buffer = glGenBuffers(1)
+		self._size = len(vertexArray)
+		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
+		glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
+		glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+	def render(self):
+		glEnableClientState(GL_VERTEX_ARRAY)
+		glEnableClientState(GL_NORMAL_ARRAY)
+		#glVertexPointer(3, GL_FLOAT, 0, m.vertexes)
+		#glNormalPointer(GL_FLOAT, 0, m.normal)
+		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
+		glVertexPointer(3, GL_FLOAT, 2*3*4, c_void_p(0))
+		glNormalPointer(GL_FLOAT, 2*3*4, c_void_p(3 * 4))
+
+		batchSize = 999    #Warning, batchSize needs to be dividable by 3
+		extraStartPos = int(self._size / batchSize) * batchSize
+		extraCount = self._size - extraStartPos
+
+		for i in xrange(0, int(self._size / batchSize)):
+			glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
+		glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
+		glBindBuffer(GL_ARRAY_BUFFER, 0)
+		glDisableClientState(GL_VERTEX_ARRAY)
+		glDisableClientState(GL_NORMAL_ARRAY)
+
+	def release(self):
+		if self._buffer is not None:
+			glDeleteBuffers(self._buffer, 1)
+			self._buffer = None
+
+	def __del__(self):
+		if self._buffer is not None:
+			print "OpenGL buffer was not properly cleaned, trying to clean it up now."
+			glDeleteBuffers(self._buffer, 1)
 
 def DrawMachine(machineSize):
 	glDisable(GL_LIGHTING)
@@ -347,35 +378,36 @@ def DrawMeshOutline(mesh):
 
 def DrawMesh(mesh, insideOut = False):
 	glEnable(GL_CULL_FACE)
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_NORMAL_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, mesh.vertexes)
-	if insideOut:
-		glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
-	else:
-		glNormalPointer(GL_FLOAT, 0, mesh.normal)
+	glEnableClientState(GL_VERTEX_ARRAY)
+	glEnableClientState(GL_NORMAL_ARRAY)
+	for m in mesh._meshList:
+		glVertexPointer(3, GL_FLOAT, 0, m.vertexes)
+		if insideOut:
+			glNormalPointer(GL_FLOAT, 0, m.invNormal)
+		else:
+			glNormalPointer(GL_FLOAT, 0, m.normal)
 
-	#Odd, drawing in batchs is a LOT faster then drawing it all at once.
-	batchSize = 999    #Warning, batchSize needs to be dividable by 3
-	extraStartPos = int(mesh.vertexCount / batchSize) * batchSize
-	extraCount = mesh.vertexCount - extraStartPos
+		#Odd, drawing in batchs is a LOT faster then drawing it all at once.
+		batchSize = 999    #Warning, batchSize needs to be dividable by 3
+		extraStartPos = int(m.vertexCount / batchSize) * batchSize
+		extraCount = m.vertexCount - extraStartPos
 
-	glCullFace(GL_BACK)
-	for i in xrange(0, int(mesh.vertexCount / batchSize)):
-		glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
-	glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
+		glCullFace(GL_BACK)
+		for i in xrange(0, int(m.vertexCount / batchSize)):
+			glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
+		glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
 
-	glCullFace(GL_FRONT)
-	if insideOut:
-		glNormalPointer(GL_FLOAT, 0, mesh.normal)
-	else:
-		glNormalPointer(GL_FLOAT, 0, mesh.invNormal)
-	for i in xrange(0, int(mesh.vertexCount / batchSize)):
-		glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
-	extraStartPos = int(mesh.vertexCount / batchSize) * batchSize
-	extraCount = mesh.vertexCount - extraStartPos
-	glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
-	glCullFace(GL_BACK)
+		glCullFace(GL_FRONT)
+		if insideOut:
+			glNormalPointer(GL_FLOAT, 0, m.normal)
+		else:
+			glNormalPointer(GL_FLOAT, 0, m.invNormal)
+		for i in xrange(0, int(m.vertexCount / batchSize)):
+			glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
+		extraStartPos = int(m.vertexCount / batchSize) * batchSize
+		extraCount = m.vertexCount - extraStartPos
+		glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
+		glCullFace(GL_BACK)
 
 	glDisableClientState(GL_VERTEX_ARRAY)
 	glDisableClientState(GL_NORMAL_ARRAY)
