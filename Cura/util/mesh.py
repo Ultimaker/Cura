@@ -8,13 +8,50 @@ numpy.seterr(all='ignore')
 
 from Cura.util import util3d
 
+class printableObject(object):
+	def __init__(self):
+		self._meshList = []
+		self._position = [0.0, 0.0]
+		self._matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
+
+	def _addMesh(self):
+		m = mesh()
+		self._meshList.append(m)
+		return m
+
+	def processMatrix(self):
+		self.transformedMin = numpy.array([999999999999,999999999999,999999999999], numpy.float64)
+		self.transformedMax = numpy.array([-999999999999,-999999999999,-999999999999], numpy.float64)
+		self.boundaryCircleSize = 0
+
+		for m in self._meshList:
+			transformedVertexes = (numpy.matrix(m.vertexes, copy = False) * self.matrix).getA()
+			transformedMin = transformedVertexes.min(0)
+			transformedMax = transformedVertexes.max(0)
+			for n in xrange(0, 3):
+				self.transformedMin[n] = min(transformedMin[n], self.transformedMin[n])
+				self.transformedMax[n] = min(transformedMax[n], self.transformedMax[n])
+
+			#Calculate the boundary circle
+			transformedSize = transformedMax - transformedMin
+			center = transformedMin + transformedSize / 2.0
+			boundaryCircleSize = round(math.sqrt(numpy.max(((transformedVertexes[::,0] - center[0]) * (transformedVertexes[::,0] - center[0])) + ((transformedVertexes[::,1] - center[1]) * (transformedVertexes[::,1] - center[1])) + ((transformedVertexes[::,2] - center[2]) * (transformedVertexes[::,2] - center[2])))), 3)
+			self.boundaryCircleSize = max(self.boundaryCircleSize, boundaryCircleSize)
+		self.transformedSize = self.transformedMax - self.transformedMin
+
+	def getMaximum(self):
+		return self.transformedMax
+	def getMinimum(self):
+		return self.transformedMin
+	def getSize(self):
+		return self.transformedSize
+
 class mesh(object):
 	def __init__(self):
 		self.vertexes = None
-		self.matrix = numpy.matrix([[1,0,0], [0,1,0], [0,0,1]], numpy.float32);
 		self.vertexCount = 0
 
-	def addVertex(self, x, y, z):
+	def _addVertex(self, x, y, z):
 		n = self.vertexCount
 		self.vertexes[n][0] = x
 		self.vertexes[n][1] = y
@@ -30,23 +67,6 @@ class mesh(object):
 	def _postProcessAfterLoad(self):
 		self.processMatrix()
 		self._calculateNormals()
-
-	def processMatrix(self):
-		transformedVertexes = (numpy.matrix(self.vertexes, copy = False) * self.matrix).getA()
-		self.transformedMin = transformedVertexes.min(0)
-		self.transformedMax = transformedVertexes.max(0)
-		self.transformedSize = self.transformedMax - self.transformedMin
-
-		#Calculate the boundary circle
-		center = self.transformedMin + self.transformedSize / 2.0
-		self.boundaryCircleSize = round(math.sqrt(numpy.max(((transformedVertexes[::,0] - center[0]) * (transformedVertexes[::,0] - center[0])) + ((transformedVertexes[::,1] - center[1]) * (transformedVertexes[::,1] - center[1])) + ((transformedVertexes[::,2] - center[2]) * (transformedVertexes[::,2] - center[2])))), 3)
-
-	def getMaximum(self):
-		return self.transformedMax
-	def getMinimum(self):
-		return self.transformedMin
-	def getSize(self):
-		return self.transformedSize
 
 	def _calculateNormals(self):
 		#Calculate the normals
@@ -148,4 +168,3 @@ class mesh(object):
 			if f1 not in doneSet:
 				todoList.append(f1)
 				doneSet.add(f1)
-

@@ -24,4 +24,3 @@ def loadMesh(filename):
 		return amf.amfModel().load(filename)
 	print 'Error: Unknown model extension: %s' % (ext)
 	return None
-
