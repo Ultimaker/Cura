@@ -602,8 +602,8 @@ class UltimakerCalibrateStepsPerEPage(InfoPage):
 	def __init__(self, parent):
 		super(UltimakerCalibrateStepsPerEPage, self).__init__(parent, "Ultimaker Calibration")
 
-		if profile.getPreference('steps_per_e') == '0':
-			profile.putPreference('steps_per_e', '865.888')
+		#if profile.getPreference('steps_per_e') == '0':
+		#	profile.putPreference('steps_per_e', '865.888')
 
 		self.AddText("Calibrating the Steps Per E requires some manual actions.")
 		self.AddText("First remove any filament from your machine.")
