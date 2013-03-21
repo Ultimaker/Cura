@@ -495,17 +495,17 @@ def loadPreferences(filename):
 	global settingsList
 	for set in settingsList:
 		if set.isPreference():
-			if profileParser.has_option('preferences', set.getName()):
-				set.setValue(unicode(profileParser.get('preferences', set.getName()), 'utf-8', 'replace'))
+			if profileParser.has_option('preference', set.getName()):
+				set.setValue(unicode(profileParser.get('preference', set.getName()), 'utf-8', 'replace'))
 
 def savePreferences(filename):
 	#Save the current profile to an ini file
 	parser = ConfigParser.ConfigParser()
-	parser.add_section('preferences')
+	parser.add_section('preference')
 	global settingsList
 	for set in settingsList:
 		if set.isPreference():
-			parser.set('preferences', set.getName(), set.getValue().encode('utf-8'))
+			parser.set('preference', set.getName(), set.getValue().encode('utf-8'))
 	parser.write(open(filename, 'w'))
 
 def getPreference(name):
