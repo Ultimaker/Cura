@@ -825,7 +825,7 @@ class glNumberCtrl(glGuiControl):
 		if c == wx.WXK_DELETE:
 			self._value = self._value[0:self._selectPos] + self._value[self._selectPos + 1:]
 			self._callback(self._value)
-		if c == wx.WXK_TAB:
+		if c == wx.WXK_TAB or c == wx.WXK_NUMPAD_ENTER or c == wx.WXK_RETURN:
 			if wx.GetKeyState(wx.WXK_SHIFT):
 				self.focusPrevious()
 			else:
