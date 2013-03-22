@@ -98,7 +98,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._mouseState == 'dragOrClick':
 			if e.Button == 1 and self._focusObj is not None:
 				self._selectedObj = self._focusObj
-				newViewPos = (self._selectedObj.getMaximum() + self._selectedObj.getMinimum()) / 2
+				newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMinimum()[2] / 2])
 				self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
 		if self._mouseState == 'doubleClick':
 			if self._selectedObj is not None:
