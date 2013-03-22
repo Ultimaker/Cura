@@ -46,6 +46,10 @@ class printableObject(object):
 			boundaryCircleSize = round(math.sqrt(numpy.max(((transformedVertexes[::,0] - center[0]) * (transformedVertexes[::,0] - center[0])) + ((transformedVertexes[::,1] - center[1]) * (transformedVertexes[::,1] - center[1])) + ((transformedVertexes[::,2] - center[2]) * (transformedVertexes[::,2] - center[2])))), 3)
 			self._boundaryCircleSize = max(self._boundaryCircleSize, boundaryCircleSize)
 		self._transformedSize = self._transformedMax - self._transformedMin
+		self._drawOffset = (self._transformedMax + self._transformedMin) / 2
+		self._drawOffset[2] = self._transformedMin[2]
+		self._transformedMax -= self._drawOffset
+		self._transformedMin -= self._drawOffset
 
 	def getMaximum(self):
 		return self._transformedMax
@@ -53,6 +57,8 @@ class printableObject(object):
 		return self._transformedMin
 	def getSize(self):
 		return self._transformedSize
+	def getDrawOffset(self):
+		return self._drawOffset
 	def getBoundaryCircle(self):
 		return self._boundaryCircleSize
 

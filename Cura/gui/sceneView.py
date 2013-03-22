@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 import wx
 import numpy
+import time
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -12,6 +13,25 @@ from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
+
+class anim(object):
+	def __init__(self, start, end, runTime):
+		self._start = start.copy()
+		self._end = end.copy()
+		self._startTime = time.time()
+		self._runTime = runTime
+
+	def isDone(self):
+		return time.time() > self._startTime + self._runTime
+
+	def getPosition(self):
+		if self.isDone():
+			return self._end
+		f = (time.time() - self._startTime) / self._runTime
+		ts=f*f
+		tc=f*f*f
+		f = 6*tc*ts + -15*ts*ts + 10*tc
+		return self._start + (self._end - self._start) * f
 
 class SceneView(openglGui.glGuiPanel):
 	def __init__(self, parent):
@@ -27,7 +47,14 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors = [None,None,None,None]
 		self._mouseX = -1
 		self._mouseY = -1
+		self._viewTarget = numpy.array([0,0,0], numpy.float32);
+		self._animView = None
+		wx.EVT_IDLE(self, self.OnIdle)
 		self.updateProfileToControls()
+
+	def OnIdle(self, e):
+		if self._animView is not None:
+			self.Refresh()
 
 	def loadScene(self, fileList):
 		for filename in fileList:
@@ -58,8 +85,12 @@ class SceneView(openglGui.glGuiPanel):
 				self.Refresh()
 
 	def OnMouseDown(self,e):
+		self._mouseX = e.GetX()
+		self._mouseY = e.GetY()
 		if self._focusObj is not None:
 			self._selectedObj = self._focusObj
+			newViewPos = (self._selectedObj.getMaximum() + self._selectedObj.getMinimum()) / 2
+			self._animView = anim(self._viewTarget, newViewPos, 0.5)
 
 	def OnMouseMotion(self,e):
 		if e.Dragging() and e.LeftIsDown():
@@ -108,6 +139,10 @@ class SceneView(openglGui.glGuiPanel):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
 	def OnPaint(self,e):
+		if self._animView is not None:
+			self._viewTarget = self._animView.getPosition()
+			if self._animView.isDone():
+				self._animView = None
 		if self._objectShader is None:
 			self._objectShader = opengl.GLShader("""
 uniform float cameraDistance;
@@ -135,7 +170,7 @@ void main(void)
 		glTranslate(0,0,-self._zoom)
 		glRotate(-self._pitch, 1,0,0)
 		glRotate(self._yaw, 0,0,1)
-		glTranslate(0,0,-15)
+		glTranslate(-self._viewTarget[0],-self._viewTarget[1],-self._viewTarget[2])
 		glClearColor(1,1,1,1)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
@@ -155,7 +190,7 @@ void main(void)
 		glTranslate(0,0,-self._zoom)
 		glRotate(-self._pitch, 1,0,0)
 		glRotate(self._yaw, 0,0,1)
-		glTranslate(0,0,-15)
+		glTranslate(-self._viewTarget[0],-self._viewTarget[1],-self._viewTarget[2])
 
 		self._objectShader.bind()
 		self._objectShader.setUniform('cameraDistance', self._zoom)
@@ -175,8 +210,8 @@ void main(void)
 
 	def _renderObject(self, obj):
 		glPushMatrix()
-		offset = (obj.getMinimum() + obj.getMaximum()) / 2
-		glTranslate(-offset[0], -offset[1], -obj.getMinimum()[2])
+		offset = obj.getDrawOffset()
+		glTranslate(-offset[0], -offset[1], -offset[2])
 		for m in obj._meshList:
 			if m.vbo is None:
 				m.vbo = opengl.GLVBO(m.vertexes, m.normal)
