@@ -227,6 +227,9 @@ class mainWindow(wx.Frame):
 
 		self.splitter.SplitVertically(self.leftPane, self.rightPane, self.normalSashPos)
 
+		if wx.Display.GetFromPoint(self.GetPosition()) < 0:
+			self.Centre()
+
 		self.updateSliceMode()
 
 		self.Show(True)
