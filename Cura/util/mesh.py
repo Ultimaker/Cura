@@ -51,6 +51,9 @@ class printableObject(object):
 		self._transformedMax -= self._drawOffset
 		self._transformedMin -= self._drawOffset
 
+	def getPosition(self):
+		return self._position
+
 	def getMaximum(self):
 		return self._transformedMax
 	def getMinimum(self):

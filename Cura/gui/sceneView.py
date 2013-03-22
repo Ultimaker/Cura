@@ -16,8 +16,8 @@ from Cura.gui.util import openglGui
 
 class anim(object):
 	def __init__(self, start, end, runTime):
-		self._start = start.copy()
-		self._end = end.copy()
+		self._start = start
+		self._end = end
 		self._startTime = time.time()
 		self._runTime = runTime
 
@@ -47,13 +47,15 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors = [None,None,None,None]
 		self._mouseX = -1
 		self._mouseY = -1
+		self._mouseState = None
 		self._viewTarget = numpy.array([0,0,0], numpy.float32);
 		self._animView = None
+		self._animZoom = None
 		wx.EVT_IDLE(self, self.OnIdle)
 		self.updateProfileToControls()
 
 	def OnIdle(self, e):
-		if self._animView is not None:
+		if self._animView is not None or self._animZoom is not None:
 			self.Refresh()
 
 	def loadScene(self, fileList):
@@ -87,25 +89,39 @@ class SceneView(openglGui.glGuiPanel):
 	def OnMouseDown(self,e):
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
-		if self._focusObj is not None:
-			self._selectedObj = self._focusObj
-			newViewPos = (self._selectedObj.getMaximum() + self._selectedObj.getMinimum()) / 2
-			self._animView = anim(self._viewTarget, newViewPos, 0.5)
+		if e.ButtonDClick():
+			self._mouseState = 'doubleClick'
+		else:
+			self._mouseState = 'dragOrClick'
+
+	def OnMouseUp(self, e):
+		if self._mouseState == 'dragOrClick':
+			if e.Button == 1 and self._focusObj is not None:
+				self._selectedObj = self._focusObj
+				newViewPos = (self._selectedObj.getMaximum() + self._selectedObj.getMinimum()) / 2
+				self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
+		if self._mouseState == 'doubleClick':
+			if self._selectedObj is not None:
+				newZoom = numpy.linalg.norm(self._selectedObj.getSize()) * 2
+				self._animZoom = anim(self._zoom, newZoom, 0.5)
+		self._mouseState = None
 
 	def OnMouseMotion(self,e):
-		if e.Dragging() and e.LeftIsDown():
-			self._yaw += e.GetX() - self._mouseX
-			self._pitch -= e.GetY() - self._mouseY
-			if self._pitch > 170:
-				self._pitch = 170
-			if self._pitch < 10:
-				self._pitch = 10
-		if e.Dragging() and e.RightIsDown():
-			self._zoom += e.GetY() - self._mouseY
-			if self._zoom < 1:
-				self._zoom = 1
-			if self._zoom > numpy.max(self._machineSize) * 3:
-				self._zoom = numpy.max(self._machineSize) * 3
+		if e.Dragging():
+			self._mouseState == 'drag'
+			if not e.LeftIsDown() and e.RightIsDown():
+				self._yaw += e.GetX() - self._mouseX
+				self._pitch -= e.GetY() - self._mouseY
+				if self._pitch > 170:
+					self._pitch = 170
+				if self._pitch < 10:
+					self._pitch = 10
+			if (e.LeftIsDown() and e.RightIsDown()) or e.MiddleIsDown():
+				self._zoom += e.GetY() - self._mouseY
+				if self._zoom < 1:
+					self._zoom = 1
+				if self._zoom > numpy.max(self._machineSize) * 3:
+					self._zoom = numpy.max(self._machineSize) * 3
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
 
@@ -143,6 +159,10 @@ class SceneView(openglGui.glGuiPanel):
 			self._viewTarget = self._animView.getPosition()
 			if self._animView.isDone():
 				self._animView = None
+		if self._animZoom is not None:
+			self._zoom = self._animZoom.getPosition()
+			if self._animZoom.isDone():
+				self._animZoom = None
 		if self._objectShader is None:
 			self._objectShader = opengl.GLShader("""
 uniform float cameraDistance;
@@ -210,6 +230,7 @@ void main(void)
 
 	def _renderObject(self, obj):
 		glPushMatrix()
+		glTranslate(obj.getPosition()[0], obj.getPosition()[1], 0)
 		offset = obj.getDrawOffset()
 		glTranslate(-offset[0], -offset[1], -offset[2])
 		for m in obj._meshList:
