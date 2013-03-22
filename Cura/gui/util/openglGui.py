@@ -114,35 +114,44 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self._glRobotTexture = None
 		self._buttonSize = 64
 
+		self.glReleaseList = []
+
 		wx.EVT_PAINT(self, self._OnGuiPaint)
 		wx.EVT_SIZE(self, self._OnSize)
 		wx.EVT_ERASE_BACKGROUND(self, self._OnEraseBackground)
-		wx.EVT_LEFT_DOWN(self, self._OnGuiMouseLeftDown)
-		wx.EVT_LEFT_UP(self, self._OnGuiMouseLeftUp)
+		wx.EVT_LEFT_DOWN(self, self._OnGuiMouseDown)
+		wx.EVT_LEFT_UP(self, self._OnGuiMouseUp)
+		wx.EVT_RIGHT_DOWN(self, self._OnGuiMouseDown)
+		wx.EVT_RIGHT_UP(self, self._OnGuiMouseUp)
+		wx.EVT_MIDDLE_DOWN(self, self._OnGuiMouseDown)
+		wx.EVT_MIDDLE_UP(self, self._OnGuiMouseUp)
 		wx.EVT_MOTION(self, self._OnGuiMouseMotion)
-		wx.EVT_CHAR(self, self.OnKeyChar)
+		wx.EVT_CHAR(self, self._OnGuiKeyChar)
 		wx.EVT_KILL_FOCUS(self, self.OnFocusLost)
 
-	def OnKeyChar(self, e):
+	def _OnGuiKeyChar(self, e):
 		if self._focus is not None:
 			self._focus.OnKeyChar(e.GetKeyCode())
 			self.Refresh()
+		else:
+			self.OnKeyChar(e.GetKeyCode())
 
 	def OnFocusLost(self, e):
 		self._focus = None
 		self.Refresh()
 
-	def _OnGuiMouseLeftDown(self,e):
+	def _OnGuiMouseDown(self,e):
 		self.SetFocus()
 		if self._container.OnMouseDown(e.GetX(), e.GetY()):
 			self.Refresh()
 			return
-		self.OnMouseLeftDown(e)
-	def _OnGuiMouseLeftUp(self, e):
+		self.OnMouseDown(e)
+
+	def _OnGuiMouseUp(self, e):
 		if self._container.OnMouseUp(e.GetX(), e.GetY()):
 			self.Refresh()
 			return
-		self.OnMouseLeftUp(e)
+		self.OnMouseUp(e)
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
@@ -171,6 +180,9 @@ class glGuiPanel(glcanvas.GLCanvas):
 		dc = wx.PaintDC(self)
 		try:
 			self.SetCurrent(self._context)
+			for obj in self.glReleaseList:
+				obj.release()
+			del self.glReleaseList[:]
 			self.OnPaint(e)
 			self._drawGui()
 			glFlush()
@@ -234,11 +246,13 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self._container.updateLayout()
 		self.Refresh()
 
-	def OnMouseLeftDown(self,e):
+	def OnMouseDown(self,e):
 		pass
-	def OnMouseLeftUp(self,e):
+	def OnMouseUp(self,e):
 		pass
 	def OnMouseMotion(self, e):
+		pass
+	def OnKeyChar(self, keyCode):
 		pass
 	def OnPaint(self, e):
 		pass

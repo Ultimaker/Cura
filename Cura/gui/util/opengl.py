@@ -23,7 +23,8 @@ glutInit()
 platformMesh = None
 
 class GLShader(object):
-	def __init__(self, vertexProgram, fragmentProgram):
+	def __init__(self, owner, vertexProgram, fragmentProgram):
+		self._owner = owner
 		try:
 			self._vertexProgram = shaders.compileShader(vertexProgram, GL_VERTEX_SHADER)
 			self._fragmentProgram = shaders.compileShader(fragmentProgram, GL_FRAGMENT_SHADER)
@@ -40,18 +41,27 @@ class GLShader(object):
 	def unbind(self):
 		shaders.glUseProgram(0)
 
-	def delete(self):
-		shaders.glDeleteShader(self._vertexProgram)
-		shaders.glDeleteShader(self._fragmentProgram)
-		glDeleteProgram(self._program)
+	def release(self):
+		if self._program != None:
+			shaders.glDeleteShader(self._vertexProgram)
+			shaders.glDeleteShader(self._fragmentProgram)
+			glDeleteProgram(self._program)
+			self._program = None
 
 	def setUniform(self, name, value):
-		glUniform1f(glGetUniformLocation(self._program, name), value)
+		if self._program is not None:
+			glUniform1f(glGetUniformLocation(self._program, name), value)
+
+	def __del__(self):
+		if self._program is not None and bool(glDeleteProgram):
+			print "OpenGL shader was not properly cleaned, trying to clean it up now."
+			self._owner.glReleaseList.append(self)
 
 class GLVBO(object):
-	def __init__(self, vertexArray, normalArray):
+	def __init__(self, owner, vertexArray, normalArray):
 		self._buffer = glGenBuffers(1)
 		self._size = len(vertexArray)
+		self._owner = owner
 		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
 		glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
 		glBindBuffer(GL_ARRAY_BUFFER, 0)
@@ -59,8 +69,6 @@ class GLVBO(object):
 	def render(self):
 		glEnableClientState(GL_VERTEX_ARRAY)
 		glEnableClientState(GL_NORMAL_ARRAY)
-		#glVertexPointer(3, GL_FLOAT, 0, m.vertexes)
-		#glNormalPointer(GL_FLOAT, 0, m.normal)
 		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
 		glVertexPointer(3, GL_FLOAT, 2*3*4, c_void_p(0))
 		glNormalPointer(GL_FLOAT, 2*3*4, c_void_p(3 * 4))
@@ -82,9 +90,8 @@ class GLVBO(object):
 			self._buffer = None
 
 	def __del__(self):
-		if self._buffer is not None:
-			print "OpenGL buffer was not properly cleaned, trying to clean it up now."
-			glDeleteBuffers(self._buffer, 1)
+		if self._buffer is not None and bool(glDeleteBuffers):
+			self._owner.glReleaseList.append(self)
 
 def DrawMachine(machineSize):
 	glDisable(GL_LIGHTING)
