@@ -160,7 +160,7 @@ void main(void)
 		for obj in self._objectList:
 			col = self._objColors[0]
 			if self._selectedObj == obj:
-				col = map(lambda n: n * 1.3, col)
+				col = map(lambda n: n * 1.5, col)
 			elif self._focusObj == obj:
 				col = map(lambda n: n * 1.2, col)
 			elif self._focusObj is not None or  self._selectedObj is not None:
