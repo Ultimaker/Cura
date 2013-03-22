@@ -96,11 +96,15 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnMouseUp(self, e):
 		if self._mouseState == 'dragOrClick':
-			if e.Button == 1 and self._focusObj is not None:
-				self._selectedObj = self._focusObj
-				newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMaximum()[2] / 2])
-				self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
-		if self._mouseState == 'doubleClick':
+			if e.Button == 1:
+				if self._focusObj is not None:
+					self._selectedObj = self._focusObj
+					newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMaximum()[2] / 2])
+					self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
+				else:
+					self._selectedObj = None
+					self.Refresh()
+		elif self._mouseState == 'doubleClick':
 			if self._selectedObj is not None:
 				newZoom = numpy.linalg.norm(self._selectedObj.getSize()) * 2
 				self._animZoom = anim(self._zoom, newZoom, 0.5)
@@ -108,7 +112,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnMouseMotion(self,e):
 		if e.Dragging():
-			self._mouseState == 'drag'
+			self._mouseState = 'drag'
 			if not e.LeftIsDown() and e.RightIsDown():
 				self._yaw += e.GetX() - self._mouseX
 				self._pitch -= e.GetY() - self._mouseY
