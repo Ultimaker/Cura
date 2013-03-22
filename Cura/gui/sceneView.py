@@ -1,7 +1,7 @@
 from __future__ import absolute_import
-from __future__ import division
 
 import wx
+import numpy
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -19,7 +19,7 @@ class SceneView(openglGui.glGuiPanel):
 
 		self._yaw = 30
 		self._pitch = 60
-		self._zoom = 100
+		self._zoom = 300
 		self._objectList = []
 		self._objectShader = None
 		self._focusObj = None
@@ -45,6 +45,7 @@ class SceneView(openglGui.glGuiPanel):
 				self.glReleaseList.append(m.vbo)
 
 	def updateProfileToControls(self):
+		self._machineSize = numpy.array([profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')])
 		self._objColors[0] = profile.getPreferenceColour('model_colour')
 		self._objColors[1] = profile.getPreferenceColour('model_colour2')
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
@@ -72,8 +73,8 @@ class SceneView(openglGui.glGuiPanel):
 			self._zoom += e.GetY() - self._mouseY
 			if self._zoom < 1:
 				self._zoom = 1
-			if self._zoom > 500:
-				self._zoom = 500
+			if self._zoom > numpy.max(self._machineSize) * 3:
+				self._zoom = numpy.max(self._machineSize) * 3
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
 
@@ -91,6 +92,7 @@ class SceneView(openglGui.glGuiPanel):
 		glEnable(GL_DEPTH_TEST)
 		glDisable(GL_CULL_FACE)
 		glDisable(GL_BLEND)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 		glClearColor(0.8, 0.8, 0.8, 1.0)
 		glClearStencil(0)
@@ -169,6 +171,8 @@ void main(void)
 			self._renderObject(obj)
 		self._objectShader.unbind()
 
+		self._drawMachine()
+
 	def _renderObject(self, obj):
 		glPushMatrix()
 		offset = (obj.getMinimum() + obj.getMaximum()) / 2
@@ -178,3 +182,54 @@ void main(void)
 				m.vbo = opengl.GLVBO(m.vertexes, m.normal)
 			m.vbo.render()
 		glPopMatrix()
+
+	def _drawMachine(self):
+		size = [profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')]
+		v0 = [ size[0] / 2, size[1] / 2, size[2]]
+		v1 = [ size[0] / 2,-size[1] / 2, size[2]]
+		v2 = [-size[0] / 2, size[1] / 2, size[2]]
+		v3 = [-size[0] / 2,-size[1] / 2, size[2]]
+		v4 = [ size[0] / 2, size[1] / 2, 0]
+		v5 = [ size[0] / 2,-size[1] / 2, 0]
+		v6 = [-size[0] / 2, size[1] / 2, 0]
+		v7 = [-size[0] / 2,-size[1] / 2, 0]
+
+		vList = [v0,v1,v3,v2, v1,v0,v4,v5, v2,v3,v7,v6, v0,v2,v6,v4, v3,v1,v5,v7]
+		glEnable(GL_CULL_FACE)
+		glEnable(GL_BLEND)
+		glEnableClientState(GL_VERTEX_ARRAY)
+		glVertexPointer(3, GL_FLOAT, 3*4, vList)
+
+		glColor4ub(5, 171, 231, 64)
+		glDrawArrays(GL_QUADS, 0, 4)
+		glColor4ub(5, 171, 231, 96)
+		glDrawArrays(GL_QUADS, 4, 8)
+		glColor4ub(5, 171, 231, 128)
+		glDrawArrays(GL_QUADS, 12, 8)
+
+		sx = self._machineSize[0]
+		sy = self._machineSize[1]
+		for x in xrange(-int(sx/20)-1, int(sx / 20) + 1):
+			for y in xrange(-int(sx/20)-1, int(sy / 20) + 1):
+				x1 = x * 10
+				x2 = x1 + 10
+				y1 = y * 10
+				y2 = y1 + 10
+				x1 = max(min(x1, sx/2), -sx/2)
+				y1 = max(min(y1, sy/2), -sy/2)
+				x2 = max(min(x2, sx/2), -sx/2)
+				y2 = max(min(y2, sy/2), -sy/2)
+				if (x & 1) == (y & 1):
+					glColor4ub(5, 171, 231, 127)
+				else:
+					glColor4ub(5 * 8 / 10, 171 * 8 / 10, 231 * 8 / 10, 128)
+				glBegin(GL_QUADS)
+				glVertex3f(x1, y1, -0.02)
+				glVertex3f(x2, y1, -0.02)
+				glVertex3f(x2, y2, -0.02)
+				glVertex3f(x1, y2, -0.02)
+				glEnd()
+
+		glDisableClientState(GL_VERTEX_ARRAY)
+		glDisable(GL_BLEND)
+		glDisable(GL_CULL_FACE)
