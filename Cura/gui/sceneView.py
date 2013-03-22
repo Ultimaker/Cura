@@ -107,7 +107,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnPaint(self,e):
 		if self._objectShader is None:
-			self._objectShader = opengl.GLShader(self, """
+			self._objectShader = opengl.GLShader("""
 uniform float cameraDistance;
 varying float light_amount;
 
@@ -175,6 +175,6 @@ void main(void)
 		glTranslate(-offset[0], -offset[1], -obj.getMinimum()[2])
 		for m in obj._meshList:
 			if m.vbo is None:
-				m.vbo = opengl.GLVBO(self, m.vertexes, m.normal)
+				m.vbo = opengl.GLVBO(m.vertexes, m.normal)
 			m.vbo.render()
 		glPopMatrix()

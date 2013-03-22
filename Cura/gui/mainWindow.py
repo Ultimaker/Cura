@@ -521,6 +521,7 @@ class mainWindow(wx.Frame):
 			profile.putPreference('window_normal_sash', self.normalSashPos)
 
 		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which keeps wxWidgets from quiting.
+		print "Closing down"
 		self.scene.OnPaint = lambda e : e
 		self.Destroy()
 
