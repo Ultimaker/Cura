@@ -353,6 +353,7 @@ class FirmwareUpgradePage(InfoPage):
 
 	def OnSkipClick(self, e):
 		self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+		self.GetParent().ShowPage(self.GetNext())
 
 	def OnUrlClick(self, e):
 		webbrowser.open('http://daid.mine.nu/~daid/marlin_build/')
@@ -410,6 +411,7 @@ class UltimakerCheckupPage(InfoPage):
 
 	def OnSkipClick(self, e):
 		self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+		self.GetParent().ShowPage(self.GetNext())
 
 	def OnCheckClick(self, e=None):
 		self.errorLogButton.Show(False)
