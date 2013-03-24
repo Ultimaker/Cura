@@ -28,8 +28,8 @@ class anim(object):
 		if self.isDone():
 			return self._end
 		f = (time.time() - self._startTime) / self._runTime
-		ts=f*f
-		tc=f*f*f
+		ts = f*f
+		tc = f*f*f
 		f = 6*tc*ts + -15*ts*ts + 10*tc
 		return self._start + (self._end - self._start) * f
 
@@ -231,6 +231,29 @@ void main(void)
 		self._objectShader.unbind()
 
 		self._drawMachine()
+
+		#Draw the outline of the selected object, on top of everything else except the GUI.
+		if self._selectedObj is not None:
+			glClear(GL_STENCIL_BUFFER_BIT)
+
+			glDisable(GL_DEPTH_TEST)
+			glEnable(GL_STENCIL_TEST)
+			glStencilFunc(GL_ALWAYS, 1, 1)
+			glStencilOp(GL_INCR, GL_INCR, GL_INCR)
+			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
+			self._renderObject(self._selectedObj)
+
+			glStencilFunc(GL_EQUAL, 0, 255)
+			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+			glPolygonMode(GL_FRONT, GL_NONE)
+			glPolygonMode(GL_BACK, GL_LINE)
+			glLineWidth(2)
+			glColor4f(1,1,1,0.5)
+			self._renderObject(self._selectedObj)
+			glPolygonMode(GL_BACK, GL_FILL)
+			glPolygonMode(GL_FRONT, GL_FILL)
+			glDisable(GL_STENCIL_TEST)
+			glEnable(GL_DEPTH_TEST)
 
 	def _renderObject(self, obj):
 		glPushMatrix()

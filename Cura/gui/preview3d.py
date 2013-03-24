@@ -782,7 +782,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				glStencilFunc(GL_ALWAYS, 1, 1)
 				glStencilOp(GL_INCR, GL_INCR, GL_INCR)
 				self.drawModel(obj.displayList)
-				glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
+				glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP)
 				
 				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
 				glStencilFunc(GL_EQUAL, 0, 1)
