@@ -30,7 +30,8 @@ class anim(object):
 		f = (time.time() - self._startTime) / self._runTime
 		ts = f*f
 		tc = f*f*f
-		f = 6*tc*ts + -15*ts*ts + 10*tc
+		#f = 6*tc*ts + -15*ts*ts + 10*tc
+		f = tc + -3*ts + 3*f
 		return self._start + (self._end - self._start) * f
 
 class SceneView(openglGui.glGuiPanel):
@@ -57,10 +58,16 @@ class SceneView(openglGui.glGuiPanel):
 	def OnIdle(self, e):
 		if self._animView is not None or self._animZoom is not None:
 			self.Refresh()
+			return
+		for obj in self._objectList:
+			if obj._loadAnim is not None:
+				self.Refresh()
+				return
 
 	def loadScene(self, fileList):
 		for filename in fileList:
 			for obj in meshLoader.loadMeshes(filename):
+				obj._loadAnim = anim(1, 0, 2)
 				self._objectList.append(obj)
 
 	def _deleteObject(self, obj):
@@ -86,6 +93,16 @@ class SceneView(openglGui.glGuiPanel):
 				self._deleteObject(self._selectedObj)
 				self.Refresh()
 
+		if keyCode == wx.WXK_F3:
+			shaderEditor(self, self.ShaderUpdate, self._objectLoadShader.getVertexShader(), self._objectLoadShader.getFragmentShader())
+
+	def ShaderUpdate(self, v, f):
+		s = opengl.GLShader(v, f)
+		if s.isValid():
+			self._objectLoadShader.release()
+			self._objectLoadShader = s
+			self.Refresh()
+
 	def OnMouseDown(self,e):
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
@@ -101,19 +118,17 @@ class SceneView(openglGui.glGuiPanel):
 					self._selectedObj = self._focusObj
 					newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMaximum()[2] / 2])
 					self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
+					newZoom = self._selectedObj.getBoundaryCircle() * 4
+					self._animZoom = anim(self._zoom, newZoom, 0.5)
 				else:
 					self._selectedObj = None
 					self.Refresh()
-		elif self._mouseState == 'doubleClick':
-			if self._selectedObj is not None:
-				newZoom = numpy.linalg.norm(self._selectedObj.getSize()) * 2
-				self._animZoom = anim(self._zoom, newZoom, 0.5)
 		self._mouseState = None
 
 	def OnMouseMotion(self,e):
 		if e.Dragging():
-			self._mouseState = 'drag'
 			if not e.LeftIsDown() and e.RightIsDown():
+				self._mouseState = 'drag'
 				self._yaw += e.GetX() - self._mouseX
 				self._pitch -= e.GetY() - self._mouseY
 				if self._pitch > 170:
@@ -121,6 +136,7 @@ class SceneView(openglGui.glGuiPanel):
 				if self._pitch < 10:
 					self._pitch = 10
 			if (e.LeftIsDown() and e.RightIsDown()) or e.MiddleIsDown():
+				self._mouseState = 'drag'
 				self._zoom += e.GetY() - self._mouseY
 				if self._zoom < 1:
 					self._zoom = 1
@@ -190,6 +206,33 @@ void main(void)
 	gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
 }
 			""")
+			self._objectLoadShader = opengl.GLShader("""
+uniform float cameraDistance;
+uniform float intensity;
+varying float light_amount;
+
+void main(void)
+{
+	vec4 tmp = gl_Vertex;
+    tmp.x += sin(tmp.z/5+intensity*30) * 10 * intensity;
+    tmp.y += sin(tmp.z/3+intensity*40) * 10 * intensity;
+    gl_Position = gl_ModelViewProjectionMatrix * tmp;
+    gl_FrontColor = gl_Color;
+
+	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+	light_amount *= 1 - (length(gl_Position.xyz - vec3(0,0,cameraDistance)) / 1.5 / cameraDistance);
+	light_amount += 0.2;
+}
+			""","""
+uniform float cameraDistance;
+uniform float intensity;
+varying float light_amount;
+
+void main(void)
+{
+	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1-intensity);
+}
+			""")
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
 		glRotate(-self._pitch, 1,0,0)
@@ -219,6 +262,8 @@ void main(void)
 		self._objectShader.bind()
 		self._objectShader.setUniform('cameraDistance', self._zoom)
 		for obj in self._objectList:
+			if obj._loadAnim is not None:
+				continue
 			col = self._objColors[0]
 			if self._selectedObj == obj:
 				col = map(lambda n: n * 1.5, col)
@@ -229,6 +274,20 @@ void main(void)
 			glColor4f(col[0], col[1], col[2], col[3])
 			self._renderObject(obj)
 		self._objectShader.unbind()
+
+		glEnable(GL_BLEND)
+		self._objectLoadShader.bind()
+		self._objectLoadShader.setUniform('cameraDistance', self._zoom)
+		glColor4f(0.2, 0.6, 1.0, 1.0)
+		for obj in self._objectList:
+			if obj._loadAnim is None:
+				continue
+			self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())
+			self._renderObject(obj)
+			if obj._loadAnim.isDone():
+				obj._loadAnim = None
+		self._objectLoadShader.unbind()
+		glDisable(GL_BLEND)
 
 		self._drawMachine()
 
@@ -316,3 +375,24 @@ void main(void)
 		glDisableClientState(GL_VERTEX_ARRAY)
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
+
+class shaderEditor(wx.Dialog):
+	def __init__(self, parent, callback, v, f):
+		super(shaderEditor, self).__init__(parent, title="Shader editor", style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+		self._callback = callback
+		s = wx.BoxSizer(wx.VERTICAL)
+		self.SetSizer(s)
+		self._vertex = wx.TextCtrl(self, -1, v, style=wx.TE_MULTILINE)
+		self._fragment = wx.TextCtrl(self, -1, f, style=wx.TE_MULTILINE)
+		s.Add(self._vertex, 1, flag=wx.EXPAND)
+		s.Add(self._fragment, 1, flag=wx.EXPAND)
+
+		self._vertex.Bind(wx.EVT_TEXT, self.OnText, self._vertex)
+		self._fragment.Bind(wx.EVT_TEXT, self.OnText, self._fragment)
+
+		self.SetPosition(self.GetParent().GetPosition())
+		self.SetSize((self.GetSize().GetWidth(), self.GetParent().GetSize().GetHeight()))
+		self.Show()
+
+	def OnText(self, e):
+		self._callback(self._vertex.GetValue(), self._fragment.GetValue())

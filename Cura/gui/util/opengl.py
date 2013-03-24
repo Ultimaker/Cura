@@ -24,12 +24,13 @@ platformMesh = None
 
 class GLShader(object):
 	def __init__(self, vertexProgram, fragmentProgram):
+		self._vertexString = vertexProgram
+		self._fragmentString = fragmentProgram
 		try:
 			self._vertexProgram = shaders.compileShader(vertexProgram, GL_VERTEX_SHADER)
 			self._fragmentProgram = shaders.compileShader(fragmentProgram, GL_FRAGMENT_SHADER)
 			self._program = shaders.compileProgram(self._vertexProgram, self._fragmentProgram)
 		except RuntimeError, e:
-			print "Shader error:"
 			print str(e)
 			self._program = None
 
@@ -50,6 +51,15 @@ class GLShader(object):
 	def setUniform(self, name, value):
 		if self._program is not None:
 			glUniform1f(glGetUniformLocation(self._program, name), value)
+
+	def isValid(self):
+		return self._program is not None
+
+	def getVertexShader(self):
+		return self._vertexString
+
+	def getFragmentShader(self):
+		return self._fragmentString
 
 	def __del__(self):
 		if self._program is not None and bool(glDeleteProgram):
