@@ -261,7 +261,6 @@ void main(void)
 			#f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
 			#mouse3Dpos = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, f, self.modelMatrix, self.projMatrix, self.viewport)
 
-		return
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
 		glRotate(-self._pitch, 1,0,0)
