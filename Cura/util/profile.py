@@ -277,7 +277,7 @@ setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel('Model
 setting('model_colour3', '#DDD93C', str, 'preference', 'hidden').setLabel('Model colour (3)')
 setting('model_colour4', '#4550D3', str, 'preference', 'hidden').setLabel('Model colour (4)')
 
-setting('window_maximized', 'False', bool, 'preference', 'hidden')
+setting('window_maximized', 'True', bool, 'preference', 'hidden')
 setting('window_pos_x', '-1', float, 'preference', 'hidden')
 setting('window_pos_y', '-1', float, 'preference', 'hidden')
 setting('window_width', '-1', float, 'preference', 'hidden')
