@@ -128,8 +128,8 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnMouseMotion(self,e):
 		if e.Dragging():
+			self._mouseState = 'drag'
 			if not e.LeftIsDown() and e.RightIsDown():
-				self._mouseState = 'drag'
 				self._yaw += e.GetX() - self._mouseX
 				self._pitch -= e.GetY() - self._mouseY
 				if self._pitch > 170:
@@ -137,7 +137,6 @@ class SceneView(openglGui.glGuiPanel):
 				if self._pitch < 10:
 					self._pitch = 10
 			if (e.LeftIsDown() and e.RightIsDown()) or e.MiddleIsDown():
-				self._mouseState = 'drag'
 				self._zoom += e.GetY() - self._mouseY
 				if self._zoom < 1:
 					self._zoom = 1
@@ -258,8 +257,8 @@ void main(void)
 				self._focusObj = self._scene.objects()[n]
 			else:
 				self._focusObj = None
-			#f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
-			#mouse3Dpos = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, f, self.modelMatrix, self.projMatrix, self.viewport)
+			f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
+			self._mouse3Dpos = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, f, self.modelMatrix, self.projMatrix, self.viewport)
 
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
@@ -267,14 +266,18 @@ void main(void)
 		glRotate(self._yaw, 0,0,1)
 		glTranslate(-self._viewTarget[0],-self._viewTarget[1],-self._viewTarget[2])
 
+		glStencilFunc(GL_ALWAYS, 1, 1)
+		glStencilOp(GL_INCR, GL_INCR, GL_INCR)
 		self._objectShader.bind()
 		self._objectShader.setUniform('cameraDistance', self._zoom)
 		for obj in self._scene.objects():
 			if obj._loadAnim is not None:
 				continue
 			col = self._objColors[0]
+			glDisable(GL_STENCIL_TEST)
 			if self._selectedObj == obj:
 				col = map(lambda n: n * 1.5, col)
+				glEnable(GL_STENCIL_TEST)
 			elif self._focusObj == obj:
 				col = map(lambda n: n * 1.2, col)
 			elif self._focusObj is not None or  self._selectedObj is not None:
@@ -283,6 +286,7 @@ void main(void)
 			self._renderObject(obj)
 		self._objectShader.unbind()
 
+		glDisable(GL_STENCIL_TEST)
 		glEnable(GL_BLEND)
 		self._objectLoadShader.bind()
 		self._objectLoadShader.setUniform('cameraDistance', self._zoom)
@@ -301,25 +305,19 @@ void main(void)
 
 		#Draw the outline of the selected object, on top of everything else except the GUI.
 		if self._selectedObj is not None:
-			glClear(GL_STENCIL_BUFFER_BIT)
-
 			glDisable(GL_DEPTH_TEST)
+			glEnable(GL_CULL_FACE)
 			glEnable(GL_STENCIL_TEST)
-			glStencilFunc(GL_ALWAYS, 1, 1)
-			glStencilOp(GL_INCR, GL_INCR, GL_INCR)
-			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
-			self._renderObject(self._selectedObj)
-
 			glStencilFunc(GL_EQUAL, 0, 255)
-			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
-			glPolygonMode(GL_FRONT, GL_NONE)
-			glPolygonMode(GL_BACK, GL_LINE)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 			glLineWidth(2)
 			glColor4f(1,1,1,0.5)
+			t = time.time()
 			self._renderObject(self._selectedObj)
-			glPolygonMode(GL_BACK, GL_FILL)
-			glPolygonMode(GL_FRONT, GL_FILL)
+			print time.time() - t
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 			glDisable(GL_STENCIL_TEST)
+			glDisable(GL_CULL_FACE)
 			glEnable(GL_DEPTH_TEST)
 
 	def _renderObject(self, obj):

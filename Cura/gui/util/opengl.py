@@ -73,7 +73,7 @@ class GLVBO(object):
 		glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
 		glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-	def render(self):
+	def render(self, render_type = GL_TRIANGLES):
 		glEnableClientState(GL_VERTEX_ARRAY)
 		glEnableClientState(GL_NORMAL_ARRAY)
 		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
@@ -85,8 +85,8 @@ class GLVBO(object):
 		extraCount = self._size - extraStartPos
 
 		for i in xrange(0, int(self._size / batchSize)):
-			glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
-		glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
+			glDrawArrays(render_type, i * batchSize, batchSize)
+		glDrawArrays(render_type, extraStartPos, extraCount)
 		glBindBuffer(GL_ARRAY_BUFFER, 0)
 		glDisableClientState(GL_VERTEX_ARRAY)
 		glDisableClientState(GL_NORMAL_ARRAY)
