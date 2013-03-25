@@ -107,10 +107,16 @@ class SceneView(openglGui.glGuiPanel):
 	def OnMouseDown(self,e):
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
+		self._mouseClick3DPos = self._mouse3Dpos
 		if e.ButtonDClick():
 			self._mouseState = 'doubleClick'
 		else:
 			self._mouseState = 'dragOrClick'
+		if self._mouseState == 'dragOrClick':
+			if e.Button == 1:
+				if self._focusObj is not None:
+					self._selectedObj = self._focusObj
+					self.Refresh()
 
 	def OnMouseUp(self, e):
 		if self._mouseState == 'dragOrClick':
@@ -124,10 +130,13 @@ class SceneView(openglGui.glGuiPanel):
 				else:
 					self._selectedObj = None
 					self.Refresh()
+		if self._mouseState == 'drag' and self._selectedObj is not None:
+			self._scene.pushFree()
+			self.Refresh()
 		self._mouseState = None
 
 	def OnMouseMotion(self,e):
-		if e.Dragging():
+		if e.Dragging() and self._mouseState is not None:
 			self._mouseState = 'drag'
 			if not e.LeftIsDown() and e.RightIsDown():
 				self._yaw += e.GetX() - self._mouseX
@@ -136,12 +145,27 @@ class SceneView(openglGui.glGuiPanel):
 					self._pitch = 170
 				if self._pitch < 10:
 					self._pitch = 10
-			if (e.LeftIsDown() and e.RightIsDown()) or e.MiddleIsDown():
+			elif (e.LeftIsDown() and e.RightIsDown()) or e.MiddleIsDown():
 				self._zoom += e.GetY() - self._mouseY
 				if self._zoom < 1:
 					self._zoom = 1
 				if self._zoom > numpy.max(self._machineSize) * 3:
 					self._zoom = numpy.max(self._machineSize) * 3
+			elif e.LeftIsDown() and self._selectedObj is not None:
+				z = max(0, self._mouseClick3DPos[2])
+				p0 = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, 0, self.modelMatrix, self.projMatrix, self.viewport)
+				p1 = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, 1, self.modelMatrix, self.projMatrix, self.viewport)
+				p2 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
+				p3 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
+				p0[2] -= z
+				p1[2] -= z
+				p2[2] -= z
+				p3[2] -= z
+				cursorZ0 = p0 - (p1 - p0) * (p0[2] / (p1[2] - p0[2]))
+				cursorZ1 = p2 - (p3 - p2) * (p2[2] / (p3[2] - p2[2]))
+				diff = cursorZ1 - cursorZ0
+				self._selectedObj.setPosition(self._selectedObj.getPosition() + diff[0:2])
+
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
 
@@ -209,13 +233,14 @@ void main(void)
 			self._objectLoadShader = opengl.GLShader("""
 uniform float cameraDistance;
 uniform float intensity;
+uniform float scale;
 varying float light_amount;
 
 void main(void)
 {
 	vec4 tmp = gl_Vertex;
-    tmp.x += sin(tmp.z/5+intensity*30) * 10 * intensity;
-    tmp.y += sin(tmp.z/3+intensity*40) * 10 * intensity;
+    tmp.x += sin(tmp.z/5+intensity*30) * scale * intensity;
+    tmp.y += sin(tmp.z/3+intensity*40) * scale * intensity;
     gl_Position = gl_ModelViewProjectionMatrix * tmp;
     gl_FrontColor = gl_Color;
 
@@ -272,7 +297,10 @@ void main(void)
 		self._objectShader.setUniform('cameraDistance', self._zoom)
 		for obj in self._scene.objects():
 			if obj._loadAnim is not None:
-				continue
+				if obj._loadAnim.isDone():
+					obj._loadAnim = None
+				else:
+					continue
 			col = self._objColors[0]
 			glDisable(GL_STENCIL_TEST)
 			if self._selectedObj == obj:
@@ -295,9 +323,8 @@ void main(void)
 			if obj._loadAnim is None:
 				continue
 			self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())
+			self._objectLoadShader.setUniform('scale', obj.getBoundaryCircle() / 20)
 			self._renderObject(obj)
-			if obj._loadAnim.isDone():
-				obj._loadAnim = None
 		self._objectLoadShader.unbind()
 		glDisable(GL_BLEND)
 
@@ -312,9 +339,7 @@ void main(void)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 			glLineWidth(2)
 			glColor4f(1,1,1,0.5)
-			t = time.time()
 			self._renderObject(self._selectedObj)
-			print time.time() - t
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 			glDisable(GL_STENCIL_TEST)
 			glDisable(GL_CULL_FACE)
