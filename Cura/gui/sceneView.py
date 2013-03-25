@@ -11,6 +11,7 @@ from OpenGL.GL import *
 
 from Cura.util import profile
 from Cura.util import meshLoader
+from Cura.util import objectScene
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 
@@ -41,7 +42,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._yaw = 30
 		self._pitch = 60
 		self._zoom = 300
-		self._objectList = []
+		self._scene = objectScene.Scene()
 		self._objectShader = None
 		self._focusObj = None
 		self._selectedObj = None
@@ -59,7 +60,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._animView is not None or self._animZoom is not None:
 			self.Refresh()
 			return
-		for obj in self._objectList:
+		for obj in self._scene.objects():
 			if obj._loadAnim is not None:
 				self.Refresh()
 				return
@@ -68,14 +69,14 @@ class SceneView(openglGui.glGuiPanel):
 		for filename in fileList:
 			for obj in meshLoader.loadMeshes(filename):
 				obj._loadAnim = anim(1, 0, 2)
-				self._objectList.append(obj)
+				self._scene.add(obj)
 
 	def _deleteObject(self, obj):
 		if obj == self._selectedObj:
 			self._selectedObj = None
 		if obj == self._focusObj:
 			self._focusObj = None
-		self._objectList.remove(obj)
+		self._scene.remove(obj)
 		for m in obj._meshList:
 			if m.vbo is not None:
 				self.glReleaseList.append(m.vbo)
@@ -118,7 +119,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._selectedObj = self._focusObj
 					newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMaximum()[2] / 2])
 					self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
-					newZoom = self._selectedObj.getBoundaryCircle() * 4
+					newZoom = self._selectedObj.getBoundaryCircle() * 6
 					self._animZoom = anim(self._zoom, newZoom, 0.5)
 				else:
 					self._selectedObj = None
@@ -238,21 +239,29 @@ void main(void)
 		glRotate(-self._pitch, 1,0,0)
 		glRotate(self._yaw, 0,0,1)
 		glTranslate(-self._viewTarget[0],-self._viewTarget[1],-self._viewTarget[2])
+
+		self.viewport = glGetIntegerv(GL_VIEWPORT)
+		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX)
+		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
+
 		glClearColor(1,1,1,1)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
-		for n in xrange(0, len(self._objectList)):
-			obj = self._objectList[n]
+		for n in xrange(0, len(self._scene.objects())):
+			obj = self._scene.objects()[n]
 			glColor4ub((n >> 24) & 0xFF, (n >> 16) & 0xFF, (n >> 8) & 0xFF, n & 0xFF)
 			self._renderObject(obj)
 
 		if self._mouseX > -1:
 			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0]
-			if n < len(self._objectList):
-				self._focusObj = self._objectList[n]
+			if n < len(self._scene.objects()):
+				self._focusObj = self._scene.objects()[n]
 			else:
 				self._focusObj = None
+			#f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
+			#mouse3Dpos = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, f, self.modelMatrix, self.projMatrix, self.viewport)
 
+		return
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
 		glRotate(-self._pitch, 1,0,0)
@@ -261,7 +270,7 @@ void main(void)
 
 		self._objectShader.bind()
 		self._objectShader.setUniform('cameraDistance', self._zoom)
-		for obj in self._objectList:
+		for obj in self._scene.objects():
 			if obj._loadAnim is not None:
 				continue
 			col = self._objColors[0]
@@ -279,7 +288,7 @@ void main(void)
 		self._objectLoadShader.bind()
 		self._objectLoadShader.setUniform('cameraDistance', self._zoom)
 		glColor4f(0.2, 0.6, 1.0, 1.0)
-		for obj in self._objectList:
+		for obj in self._scene.objects():
 			if obj._loadAnim is None:
 				continue
 			self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())

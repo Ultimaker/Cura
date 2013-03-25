@@ -11,7 +11,7 @@ from Cura.util import util3d
 class printableObject(object):
 	def __init__(self):
 		self._meshList = []
-		self._position = [0.0, 0.0]
+		self._position = numpy.array([0.0, 0.0])
 		self._matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
 		self._transformedMin = None
 		self._transformedMax = None
@@ -53,6 +53,8 @@ class printableObject(object):
 
 	def getPosition(self):
 		return self._position
+	def setPosition(self, newPos):
+		self._position = newPos
 
 	def getMaximum(self):
 		return self._transformedMax
