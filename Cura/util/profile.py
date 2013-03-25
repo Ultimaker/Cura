@@ -195,7 +195,7 @@ preferencesDefaultSettings = {
 	'model_colour3': '#DDD93C',
 	'model_colour4': '#4550D3',
 
-	'window_maximized': 'False',
+	'window_maximized': 'True',
 	'window_pos_x': '-1',
 	'window_pos_y': '-1',
 	'window_width': '-1',
