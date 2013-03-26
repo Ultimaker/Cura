@@ -70,6 +70,7 @@ class SceneView(openglGui.glGuiPanel):
 			for obj in meshLoader.loadMeshes(filename):
 				obj._loadAnim = anim(1, 0, 2)
 				self._scene.add(obj)
+				self._selectObject(obj)
 
 	def _deleteObject(self, obj):
 		if obj == self._selectedObj:
@@ -81,12 +82,20 @@ class SceneView(openglGui.glGuiPanel):
 			if m.vbo is not None:
 				self.glReleaseList.append(m.vbo)
 
+	def _selectObject(self, obj):
+		self._selectedObj = obj
+		newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMaximum()[2] / 2])
+		self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
+		newZoom = self._selectedObj.getBoundaryCircle() * 6
+		self._animZoom = anim(self._zoom, newZoom, 0.5)
+
 	def updateProfileToControls(self):
 		self._machineSize = numpy.array([profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')])
 		self._objColors[0] = profile.getPreferenceColour('model_colour')
 		self._objColors[1] = profile.getPreferenceColour('model_colour2')
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
+		self._scene.setMachineSize(self._machineSize)
 
 	def OnKeyChar(self, keyCode):
 		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE:
@@ -122,11 +131,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._mouseState == 'dragOrClick':
 			if e.Button == 1:
 				if self._focusObj is not None:
-					self._selectedObj = self._focusObj
-					newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMaximum()[2] / 2])
-					self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
-					newZoom = self._selectedObj.getBoundaryCircle() * 6
-					self._animZoom = anim(self._zoom, newZoom, 0.5)
+					self._selectObject(self._focusObj)
 				else:
 					self._selectedObj = None
 					self.Refresh()
@@ -302,6 +307,8 @@ void main(void)
 				else:
 					continue
 			col = self._objColors[0]
+			if not self._scene.checkPlatform(obj):
+				col = [0.5,0.5,0.5,0.8]
 			glDisable(GL_STENCIL_TEST)
 			if self._selectedObj == obj:
 				col = map(lambda n: n * 1.5, col)
@@ -331,7 +338,7 @@ void main(void)
 		self._drawMachine()
 
 		#Draw the outline of the selected object, on top of everything else except the GUI.
-		if self._selectedObj is not None:
+		if self._selectedObj is not None and self._selectedObj._loadAnim is None:
 			glDisable(GL_DEPTH_TEST)
 			glEnable(GL_CULL_FACE)
 			glEnable(GL_STENCIL_TEST)
