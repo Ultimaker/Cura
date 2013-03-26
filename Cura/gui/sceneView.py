@@ -12,6 +12,7 @@ from OpenGL.GL import *
 from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.util import objectScene
+from Cura.util import resources
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 
@@ -50,9 +51,11 @@ class SceneView(openglGui.glGuiPanel):
 		self._mouseX = -1
 		self._mouseY = -1
 		self._mouseState = None
-		self._viewTarget = numpy.array([0,0,0], numpy.float32);
+		self._viewTarget = numpy.array([0,0,0], numpy.float32)
 		self._animView = None
 		self._animZoom = None
+		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
+		self._platformMesh._drawOffset = numpy.array([0,0,0.5], numpy.float32)
 		wx.EVT_IDLE(self, self.OnIdle)
 		self.updateProfileToControls()
 
@@ -364,6 +367,16 @@ void main(void)
 		glPopMatrix()
 
 	def _drawMachine(self):
+		glEnable(GL_CULL_FACE)
+		glEnable(GL_BLEND)
+
+		if profile.getPreference('machine_type') == 'ultimaker':
+			glColor4f(1,1,1,0.5)
+			self._objectShader.bind()
+			self._objectShader.setUniform('cameraDistance', self._zoom)
+			self._renderObject(self._platformMesh)
+			self._objectShader.unbind()
+
 		size = [profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')]
 		v0 = [ size[0] / 2, size[1] / 2, size[2]]
 		v1 = [ size[0] / 2,-size[1] / 2, size[2]]
@@ -375,8 +388,6 @@ void main(void)
 		v7 = [-size[0] / 2,-size[1] / 2, 0]
 
 		vList = [v0,v1,v3,v2, v1,v0,v4,v5, v2,v3,v7,v6, v0,v2,v6,v4, v3,v1,v5,v7]
-		glEnable(GL_CULL_FACE)
-		glEnable(GL_BLEND)
 		glEnableClientState(GL_VERTEX_ARRAY)
 		glVertexPointer(3, GL_FLOAT, 3*4, vList)
 
