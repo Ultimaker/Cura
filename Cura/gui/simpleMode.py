@@ -71,7 +71,7 @@ class simpleModePanel(wx.Panel):
 		put('print_speed', '50')
 		put('print_temperature', '220')
 		put('support', 'None')
-		put('retraction_enable', 'False')
+		put('retraction_enable', 'True')
 		put('retraction_min_travel', '5.0')
 		put('retraction_speed', '40.0')
 		put('retraction_amount', '4.5')
