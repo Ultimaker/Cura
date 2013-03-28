@@ -13,6 +13,7 @@ from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.util import objectScene
 from Cura.util import resources
+from Cura.util import sliceEngine
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 
@@ -56,8 +57,16 @@ class SceneView(openglGui.glGuiPanel):
 		self._animZoom = None
 		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
 		self._platformMesh._drawOffset = numpy.array([0,0,0.5], numpy.float32)
+		self._isSimpleMode = True
+		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
 		wx.EVT_IDLE(self, self.OnIdle)
 		self.updateProfileToControls()
+		self._sceneUpdateTimer = wx.Timer(self)
+		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
+
+		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
+		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), None)
+		self.printButton.setDisabled(True)
 
 	def OnIdle(self, e):
 		if self._animView is not None or self._animZoom is not None:
@@ -68,12 +77,23 @@ class SceneView(openglGui.glGuiPanel):
 				self.Refresh()
 				return
 
+	def sceneUpdated(self):
+		self._sceneUpdateTimer.Start(1, True)
+		self._slicer.abortSlicer()
+		self.Refresh()
+
+	def _updateSliceProgress(self, progressValue, ready):
+		self.printButton.setDisabled(not ready)
+		self.printButton.setProgressBar(progressValue)
+		self.Refresh()
+
 	def loadScene(self, fileList):
 		for filename in fileList:
 			for obj in meshLoader.loadMeshes(filename):
-				obj._loadAnim = anim(1, 0, 2)
+				obj._loadAnim = anim(1, 0, 1.5)
 				self._scene.add(obj)
 				self._selectObject(obj)
+		self.sceneUpdated()
 
 	def _deleteObject(self, obj):
 		if obj == self._selectedObj:
@@ -84,15 +104,27 @@ class SceneView(openglGui.glGuiPanel):
 		for m in obj._meshList:
 			if m.vbo is not None:
 				self.glReleaseList.append(m.vbo)
+		if self._isSimpleMode:
+			self._scene.arrangeAll()
+		self.sceneUpdated()
 
-	def _selectObject(self, obj):
-		self._selectedObj = obj
-		newViewPos = numpy.array([self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], self._selectedObj.getMaximum()[2] / 2])
-		self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
-		newZoom = self._selectedObj.getBoundaryCircle() * 6
-		self._animZoom = anim(self._zoom, newZoom, 0.5)
+	def _selectObject(self, obj, zoom = True):
+		if obj != self._selectedObj:
+			self._selectedObj = obj
+		if zoom:
+			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getMaximum()[2] / 2])
+			self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
+			newZoom = obj.getBoundaryCircle() * 6
+			if newZoom > numpy.max(self._machineSize) * 3:
+				newZoom = numpy.max(self._machineSize) * 3
+			self._animZoom = anim(self._zoom, newZoom, 0.5)
 
 	def updateProfileToControls(self):
+		oldSimpleMode = self._isSimpleMode
+		self._isSimpleMode = profile.getPreference('startMode') == 'Simple'
+		if self._isSimpleMode and not oldSimpleMode:
+			self._scene.arrangeAll()
+			self.sceneUpdated()
 		self._machineSize = numpy.array([profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')])
 		self._objColors[0] = profile.getPreferenceColour('model_colour')
 		self._objColors[1] = profile.getPreferenceColour('model_colour2')
@@ -127,7 +159,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._mouseState == 'dragOrClick':
 			if e.Button == 1:
 				if self._focusObj is not None:
-					self._selectedObj = self._focusObj
+					self._selectObject(self._focusObj, False)
 					self.Refresh()
 
 	def OnMouseUp(self, e):
@@ -138,9 +170,9 @@ class SceneView(openglGui.glGuiPanel):
 				else:
 					self._selectedObj = None
 					self.Refresh()
-		if self._mouseState == 'drag' and self._selectedObj is not None:
+		if self._mouseState == 'dragObject' and self._selectedObj is not None:
 			self._scene.pushFree()
-			self.Refresh()
+			self.sceneUpdated()
 		self._mouseState = None
 
 	def OnMouseMotion(self,e):
@@ -159,7 +191,8 @@ class SceneView(openglGui.glGuiPanel):
 					self._zoom = 1
 				if self._zoom > numpy.max(self._machineSize) * 3:
 					self._zoom = numpy.max(self._machineSize) * 3
-			elif e.LeftIsDown() and self._selectedObj is not None:
+			elif e.LeftIsDown() and self._selectedObj is not None and not self._isSimpleMode:
+				self._mouseState = 'dragObject'
 				z = max(0, self._mouseClick3DPos[2])
 				p0 = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, 0, self.modelMatrix, self.projMatrix, self.viewport)
 				p1 = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, 1, self.modelMatrix, self.projMatrix, self.viewport)
@@ -200,7 +233,7 @@ class SceneView(openglGui.glGuiPanel):
 		glMatrixMode(GL_PROJECTION)
 		glLoadIdentity()
 		aspect = float(size.GetWidth()) / float(size.GetHeight())
-		gluPerspective(45.0, aspect, 1.0, 1000.0)
+		gluPerspective(45.0, aspect, 1.0, numpy.max(self._machineSize) * 4)
 
 		glMatrixMode(GL_MODELVIEW)
 		glLoadIdentity()

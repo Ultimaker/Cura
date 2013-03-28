@@ -112,8 +112,6 @@ class mainWindow(wx.Frame):
 		i = toolsMenu.Append(-1, 'Batch run...')
 		self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
 		self.normalModeOnlyItems.append(i)
-		#		i = toolsMenu.Append(-1, 'Open SVG (2D) slicer...')
-		#		self.Bind(wx.EVT_MENU, self.OnSVGSlicerOpen, i)
 		if minecraftImport.hasMinecraft():
 			i = toolsMenu.Append(-1, 'Minecraft import...')
 			self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
@@ -259,6 +257,7 @@ class mainWindow(wx.Frame):
 
 			# Enabled sash
 			self.splitter.SetSashSize(4)
+		self.scene.updateProfileToControls()
 								
 	def OnPreferences(self, e):
 		prefDialog = preferencesDialog.preferencesDialog(self)
@@ -490,11 +489,6 @@ class mainWindow(wx.Frame):
 		mi = minecraftImport.minecraftImportWindow(self)
 		mi.Centre()
 		mi.Show(True)
-
-	def OnSVGSlicerOpen(self, e):
-		svgSlicer = flatSlicerWindow.flatSlicerWindow()
-		svgSlicer.Centre()
-		svgSlicer.Show(True)
 
 	def OnCheckForUpdate(self, e):
 		newVersion = version.checkForNewerVersion()

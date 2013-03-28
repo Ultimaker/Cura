@@ -22,8 +22,18 @@ class Scene():
 		self._objectList.remove(obj)
 
 	def pushFree(self):
+		n = 1000
 		while self._pushFree():
-			pass
+			n -= 1
+			if n < 0:
+				return
+
+	def arrangeAll(self):
+		oldList = self._objectList
+		self._objectList = []
+		for obj in oldList:
+			obj.setPosition(numpy.array([0,0], numpy.float32))
+			self.add(obj)
 
 	def _pushFree(self):
 		for a in self._objectList:

@@ -347,6 +347,7 @@ class glButton(glGuiControl):
 		self._hidden = False
 		self._disabled = False
 		self._showExpandArrow = False
+		self._progressBar = 0.0
 
 	def setSelected(self, value):
 		self._selected = value
@@ -359,6 +360,9 @@ class glButton(glGuiControl):
 
 	def setDisabled(self, value):
 		self._disabled = value
+
+	def setProgressBar(self, value):
+		self._progressBar = value
 
 	def getSelected(self):
 		return self._selected
@@ -417,6 +421,12 @@ class glButton(glGuiControl):
 			glColor4ub(255,255,255,255)
 			opengl.glDrawStringCenter(self._tooltip)
 		glPopMatrix()
+		if 0.0 < self._progressBar < 1.0:
+			glColor4ub(255,255,255,192)
+			glPushMatrix()
+			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4, 0)
+			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs * self._progressBar, bs / 4, 0)
+			glPopMatrix()
 
 	def _checkHit(self, x, y):
 		if self._hidden or self._disabled:
