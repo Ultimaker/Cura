@@ -50,10 +50,7 @@ class preferencesDialog(wx.Frame):
 		configBase.SettingRow(right, 'save_profile')
 
 		configBase.TitleRow(right, 'SD Card settings')
-		if len(profile.getSDcardDrives()) > 1:
-			configBase.SettingRow(right, 'sdpath', profile.getSDcardDrives())
-		else:
-			configBase.SettingRow(right, 'sdpath')
+		configBase.SettingRow(right, 'sdpath', profile.getSDcardDrives())
 		configBase.SettingRow(right, 'sdshortnames')
 
 		configBase.TitleRow(right, 'Cura settings')
