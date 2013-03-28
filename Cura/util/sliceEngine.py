@@ -30,6 +30,9 @@ class Slicer(object):
 			self._process.terminate()
 			self._thread.join()
 
+	def getGCodeFilename(self):
+		return self._exportFilename
+
 	def runSlicer(self, scene):
 		self.abortSlicer()
 		self._callback(0.0, False)
@@ -50,6 +53,7 @@ class Slicer(object):
 					f.write(mesh.vertexes.tostring())
 				pos = obj.getPosition() * 1000
 				pos += numpy.array([profile.getPreferenceFloat('machine_width') * 1000 / 2, profile.getPreferenceFloat('machine_depth') * 1000 / 2])
+				commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
 				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1]), '#']
 				self._objCount += 1
 		if self._objCount > 0:

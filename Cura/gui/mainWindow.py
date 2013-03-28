@@ -54,8 +54,6 @@ class mainWindow(wx.Frame):
 		self.fileMenu = wx.Menu()
 		i = self.fileMenu.Append(-1, 'Load model file...\tCTRL+L')
 		self.Bind(wx.EVT_MENU, lambda e: self._showModelLoadDialog(1), i)
-		i = self.fileMenu.Append(-1, 'Prepare print...\tCTRL+R')
-		self.Bind(wx.EVT_MENU, self.OnSlice, i)
 		i = self.fileMenu.Append(-1, 'Print...\tCTRL+P')
 		self.Bind(wx.EVT_MENU, self.OnPrint, i)
 
@@ -158,7 +156,7 @@ class mainWindow(wx.Frame):
 
 		##Gui components##
 		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane)
-		self.normalSettingsPanel = normalSettingsPanel(self.leftPane)
+		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
 
 		self.leftSizer = wx.BoxSizer(wx.VERTICAL)
 		self.leftSizer.Add(self.simpleSettingsPanel)
@@ -313,27 +311,6 @@ class mainWindow(wx.Frame):
 
 	def OnLoadModel4(self, e):
 		self._showModelLoadDialog(4)
-
-	def OnSlice(self, e):
-		if len(self.filelist) < 1:
-			wx.MessageBox('You need to load a file before you can prepare it.', 'Print error', wx.OK | wx.ICON_INFORMATION)
-			return
-		isSimple = profile.getPreference('startMode') == 'Simple'
-		if isSimple:
-			#save the current profile so we can put it back latter
-			oldProfile = profile.getProfileString()
-			self.simpleSettingsPanel.setupSlice()
-		#Create a progress panel and add it to the window. The progress panel will start the Skein operation.
-		spp = sliceProgressPanel.sliceProgressPanel(self, self, self.filelist)
-		self.sizer.Add(spp, 0, flag=wx.EXPAND)
-		self.sizer.Layout()
-		newSize = self.GetSize()
-		newSize.IncBy(0, spp.GetSize().GetHeight())
-		if newSize.GetWidth() < wx.GetDisplaySize()[0]:
-			self.SetSize(newSize)
-		self.progressPanelList.append(spp)
-		if isSimple:
-			profile.loadProfileFromString(oldProfile)
 
 	def OnPrint(self, e):
 		if len(self.filelist) < 1:
@@ -527,22 +504,8 @@ class mainWindow(wx.Frame):
 
 class normalSettingsPanel(configBase.configPanelBase):
 	"Main user interface window"
-	def _addSettingsToPanels(self, category, left, right):
-		count = len(profile.getSubCategoriesFor(category)) + len(profile.getSettingsForCategory(category))
-
-		p = left
-		n = 0
-		for title in profile.getSubCategoriesFor(category):
-			n += 1 + len(profile.getSettingsForCategory(category, title))
-			if n > count / 2:
-				p = right
-			configBase.TitleRow(p, title)
-			for s in profile.getSettingsForCategory(category, title):
-				if s.checkConditions():
-					configBase.SettingRow(p, s.getName())
-
-	def __init__(self, parent):
-		super(normalSettingsPanel, self).__init__(parent)
+	def __init__(self, parent, callback = None):
+		super(normalSettingsPanel, self).__init__(parent, callback)
 
 		#Main tabs
 		self.nb = wx.Notebook(self)
@@ -569,6 +532,20 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
+
+	def _addSettingsToPanels(self, category, left, right):
+		count = len(profile.getSubCategoriesFor(category)) + len(profile.getSettingsForCategory(category))
+
+		p = left
+		n = 0
+		for title in profile.getSubCategoriesFor(category):
+			n += 1 + len(profile.getSettingsForCategory(category, title))
+			if n > count / 2:
+				p = right
+			configBase.TitleRow(p, title)
+			for s in profile.getSettingsForCategory(category, title):
+				if s.checkConditions():
+					configBase.SettingRow(p, s.getName())
 
 	def SizeLabelWidths(self, left, right):
 		leftWidth = self.getLabelColumnWidth(left)

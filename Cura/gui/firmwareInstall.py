@@ -66,7 +66,7 @@ class InstallFirmware(wx.Dialog):
 		programmer = stk500v2.Stk500v2()
 		programmer.progressCallback = self.OnProgress
 		if self.port == 'AUTO':
-			for self.port in machineCom.serialList():
+			for self.port in machineCom.serialList(True):
 				try:
 					programmer.connect(self.port)
 					break

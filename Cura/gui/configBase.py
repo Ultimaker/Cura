@@ -10,7 +10,7 @@ from Cura.util import profile
 
 class configPanelBase(wx.Panel):
 	"A base class for configuration dialogs. Handles creation of settings, and popups"
-	def __init__(self, parent):
+	def __init__(self, parent, changeCallback = None):
 		super(configPanelBase, self).__init__(parent)
 		
 		self.settingControlList = []
@@ -23,6 +23,8 @@ class configPanelBase(wx.Panel):
 		self.popup.sizer = wx.BoxSizer()
 		self.popup.sizer.Add(self.popup.text, flag=wx.EXPAND|wx.ALL, border=1)
 		self.popup.SetSizer(self.popup.sizer)
+
+		self._callback = changeCallback
 	
 	def CreateConfigTab(self, nb, name):
 		leftConfigPanel, rightConfigPanel, configPanel = self.CreateConfigPanel(nb)
@@ -110,6 +112,12 @@ class configPanelBase(wx.Panel):
 			setting.SetValue(setting.setting.getValue())
 		self.Update()
 
+	def _validate(self):
+		for setting in self.settingControlList:
+			setting._validate()
+		if self._callback is not None:
+			self._callback()
+
 	def getLabelColumnWidth(self, panel):
 		maxWidth = 0
 		for child in panel.GetChildren():
@@ -151,14 +159,14 @@ class SettingRow():
 		self.label.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
 		self.label.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseExit)
 
-		if self.setting.getType() is types.FloatType and False:
-			digits = 0
-			while 1 / pow(10, digits) > defaultValue:
-				digits += 1
-			self.ctrl = floatspin.FloatSpin(panel, -1, value=float(getSettingFunc(configName)), increment=defaultValue, digits=digits, min_val=0.0)
-			self.ctrl.Bind(floatspin.EVT_FLOATSPIN, self.OnSettingChange)
-			flag = wx.EXPAND
-		elif self.setting.getType() is types.BooleanType:
+		#if self.setting.getType() is types.FloatType and False:
+		#	digits = 0
+		#	while 1 / pow(10, digits) > defaultValue:
+		#		digits += 1
+		#	self.ctrl = floatspin.FloatSpin(panel, -1, value=float(getSettingFunc(configName)), increment=defaultValue, digits=digits, min_val=0.0)
+		#	self.ctrl.Bind(floatspin.EVT_FLOATSPIN, self.OnSettingChange)
+		#	flag = wx.EXPAND
+		if self.setting.getType() is types.BooleanType:
 			self.ctrl = wx.CheckBox(panel, -1, style=wx.ALIGN_RIGHT)
 			self.SetValue(self.setting.getValue())
 			self.ctrl.Bind(wx.EVT_CHECKBOX, self.OnSettingChange)
@@ -203,6 +211,9 @@ class SettingRow():
 
 	def OnSettingChange(self, e):
 		self.setting.setValue(self.GetValue())
+		self.panel.main._validate()
+
+	def _validate(self):
 		result, msg = self.setting.validate()
 
 		ctrl = self.ctrl

@@ -23,18 +23,24 @@ try:
 except:
 	pass
 
-def serialList():
+def serialList(forAutoDetect=False):
 	baselist=[]
 	if os.name=="nt":
 		try:
 			key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
 			i=0
-			while(1):
-				baselist+=[_winreg.EnumValue(key,i)[1]]
+			while True:
+				values = _winreg.EnumValue(key, i)
+				if not forAutoDetect or 'USBSER' in values[0]:
+					baselist+=[_winreg.EnumValue(key,i)[1]]
 				i+=1
 		except:
 			pass
-	baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/tty.usb*") + glob.glob("/dev/cu.*") + glob.glob("/dev/rfcomm*")
+	if forAutoDetect:
+		baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/tty.usb*") + glob.glob("/dev/cu.*")
+		baselist = filter(lambda s: not 'Bluetooth' in s, baselist)
+	else:
+		baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/tty.usb*") + glob.glob("/dev/cu.*") + glob.glob("/dev/rfcomm*")
 	prev = profile.getPreference('serial_port_auto')
 	if prev in baselist:
 		baselist.remove(prev)
@@ -264,8 +270,8 @@ class MachineCom(object):
 		if self._port == 'AUTO':
 			self._changeState(self.STATE_DETECT_SERIAL)
 			programmer = stk500v2.Stk500v2()
-			self._log("Serial port list: %s" % (str(serialList())))
-			for p in serialList():
+			self._log("Serial port list: %s" % (str(serialList(True))))
+			for p in serialList(True):
 				try:
 					self._log("Connecting to: %s" % (p))
 					programmer.connect(p)
