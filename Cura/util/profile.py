@@ -57,7 +57,7 @@ profileDefaultSettings = {
 	'infill_type': 'Line',
 	'solid_top': 'True',
 	'fill_overlap': '15',
-	'support_rate': '50',
+	'support_rate': '80',
 	'support_distance': '0.5',
 	'support_dual_extrusion': 'False',
 	'joris': 'False',
