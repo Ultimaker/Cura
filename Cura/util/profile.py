@@ -261,7 +261,6 @@ setting('save_profile', 'False', bool, 'preference', 'hidden').setLabel('Save pr
 setting('filament_cost_kg', '0', float, 'preference', 'hidden').setLabel('Cost (price/kg)', 'Cost of your filament per kg, to estimate the cost of the final print.')
 setting('filament_cost_meter', '0', float, 'preference', 'hidden').setLabel('Cost (price/m)', 'Cost of your filament per meter, to estimate the cost of the final print.')
 setting('sdpath', '', str, 'preference', 'hidden').setLabel('SD card drive', 'Location of your SD card, when using the copy to SD feature.')
-setting('sdshortnames', 'False', bool, 'preference', 'hidden').setLabel('Copy to SD with 8.3 names', 'Save the gcode files in short filenames, so they are properly shown on the UltiController')
 setting('check_for_updates', 'True', bool, 'preference', 'hidden').setLabel('Check for updates', 'Check for newer versions of Cura on startup')
 setting('submit_slice_information', 'False', bool, 'preference', 'hidden').setLabel('Send usage statistics', 'Submit anonymous usage information to improve next versions of Cura')
 
@@ -798,23 +797,3 @@ def runPostProcessingPlugins(gcodefilename):
 			locationInfo = traceback.extract_tb(sys.exc_info()[2])[-1]
 			return "%s: '%s' @ %s:%s:%d" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]), os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
 	return None
-
-def getSDcardDrives():
-	drives = []
-	if platform.system() == "Windows":
-		from ctypes import windll
-		bitmask = windll.kernel32.GetLogicalDrives()
-		for letter in string.uppercase:
-			if bitmask & 1 and windll.kernel32.GetDriveTypeA(letter + ':/') == 2:
-				drives.append(letter + ':/')
-			bitmask >>= 1
-	elif platform.system() == "Darwin":
-		for volume in glob.glob('/Volumes/*'):
-			if stat.S_ISLNK(os.lstat(volume).st_mode):
-				continue
-			#'Ejectable: Yes' in os.system('diskutil info \'%s\'' % (volume))
-			drives.append(volume)
-	else:
-		for volume in glob.glob('/media/*'):
-			drives.append(volume)
-	return drives

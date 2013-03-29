@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import wx
 
 from Cura.gui import configBase
-from Cura.util import validators
+from Cura.util import removableStorage
 from Cura.util import machineCom
 from Cura.util import profile
 
@@ -50,8 +50,7 @@ class preferencesDialog(wx.Frame):
 		configBase.SettingRow(right, 'save_profile')
 
 		configBase.TitleRow(right, 'SD Card settings')
-		configBase.SettingRow(right, 'sdpath', profile.getSDcardDrives())
-		configBase.SettingRow(right, 'sdshortnames')
+		configBase.SettingRow(right, 'sdpath', removableStorage.getPossibleSDcardDrives())
 
 		configBase.TitleRow(right, 'Cura settings')
 		configBase.SettingRow(right, 'check_for_updates')

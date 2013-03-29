@@ -273,7 +273,10 @@ class SceneView(openglGui.glGuiPanel):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
 	def OnPaint(self,e):
-		self.printButton._imageID = 6 if machineCom.machineIsConnected() else 2
+		if machineCom.machineIsConnected():
+			self.printButton._imageID = 6
+		else:
+			self.printButton._imageID = 3
 
 		if self._animView is not None:
 			self._viewTarget = self._animView.getPosition()
