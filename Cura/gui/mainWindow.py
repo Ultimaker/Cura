@@ -195,7 +195,6 @@ class mainWindow(wx.Frame):
 		self.Centre()
 
 		# Restore the window position, size & state from the preferences file
-		self.normalSashPos = 320
 		try:
 			if profile.getPreference('window_maximized') == 'True':
 				self.Maximize(True)
@@ -210,6 +209,8 @@ class mainWindow(wx.Frame):
 				self.SetSize((width,height))
 				
 			self.normalSashPos = int(profile.getPreference('window_normal_sash'))
+			if self.normalSashPos < self.normalSettingsPanel.printPanel.GetBestSize()[0] + 5:
+				self.normalSashPos = self.normalSettingsPanel.printPanel.GetBestSize()[0] + 5
 		except:
 			self.Maximize(True)
 
@@ -252,7 +253,6 @@ class mainWindow(wx.Frame):
 			self.splitter.SetSashSize(0)
 		else:
 			self.splitter.SetSashPosition(self.normalSashPos, True)
-
 			# Enabled sash
 			self.splitter.SetSashSize(4)
 		self.scene.updateProfileToControls()
@@ -479,6 +479,10 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 
+		self.nb.SetSize(self.GetSize())
+		self.UpdateSize(self.printPanel)
+		self.UpdateSize(self.advancedPanel)
+
 	def _addSettingsToPanels(self, category, left, right):
 		count = len(profile.getSubCategoriesFor(category)) + len(profile.getSettingsForCategory(category))
 
@@ -544,7 +548,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 				self.Layout()
 				configPanel.Thaw()
 		else:
-			if colSize1[0] > (colBestSize1[0] + colBestSize2[0]):
+			if max(colSize1[0], colSize2[0]) > (colBestSize1[0] + colBestSize2[0]):
 				configPanel.Freeze()
 				sizer = wx.BoxSizer(wx.HORIZONTAL)
 				sizer.Add(configPanel.leftPanel, proportion=1, border=35, flag=wx.EXPAND)
@@ -554,7 +558,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 				configPanel.Layout()
 				self.Layout()
 				configPanel.Thaw()
-				
+
 	def updateProfileToControls(self):
 		super(normalSettingsPanel, self).updateProfileToControls()
 		self.alterationPanel.updateProfileToControls()
