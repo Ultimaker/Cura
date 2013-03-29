@@ -203,16 +203,17 @@ class mainWindow(wx.Frame):
 				posy = int(profile.getPreference('window_pos_y'))
 				width = int(profile.getPreference('window_width'))
 				height = int(profile.getPreference('window_height'))
-			if posx > 0 or posy > 0:
-				self.SetPosition((posx,posy))
-			if width > 0 and height > 0:
-				self.SetSize((width,height))
+				if posx > 0 or posy > 0:
+					self.SetPosition((posx,posy))
+				if width > 0 and height > 0:
+					self.SetSize((width,height))
 				
 			self.normalSashPos = int(profile.getPreference('window_normal_sash'))
-			if self.normalSashPos < self.normalSettingsPanel.printPanel.GetBestSize()[0] + 5:
-				self.normalSashPos = self.normalSettingsPanel.printPanel.GetBestSize()[0] + 5
 		except:
+			self.normalSashPos = 0
 			self.Maximize(True)
+		if self.normalSashPos < self.normalSettingsPanel.printPanel.GetBestSize()[0] + 5:
+			self.normalSashPos = self.normalSettingsPanel.printPanel.GetBestSize()[0] + 5
 
 		self.splitter.SplitVertically(self.leftPane, self.rightPane, self.normalSashPos)
 
