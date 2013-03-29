@@ -10,11 +10,13 @@ OpenGL.ERROR_CHECKING = False
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
+from Cura.gui import printWindow
 from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.util import objectScene
 from Cura.util import resources
 from Cura.util import sliceEngine
+from Cura.util import machineCom
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 
@@ -59,13 +61,14 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
 		self._platformMesh._drawOffset = numpy.array([0,0,0.5], numpy.float32)
 		self._isSimpleMode = True
-		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
-		self._sceneUpdateTimer = wx.Timer(self)
-		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
 
 		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.ShowLoadModel)
 		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.ShowPrintWindow)
 		self.printButton.setDisabled(True)
+
+		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
+		self._sceneUpdateTimer = wx.Timer(self)
+		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
 
 		self.updateProfileToControls()
 		wx.EVT_IDLE(self, self.OnIdle)
@@ -85,7 +88,8 @@ class SceneView(openglGui.glGuiPanel):
 		self.loadScene([filename])
 
 	def ShowPrintWindow(self):
-		pass
+		if machineCom.machineIsConnected():
+			printWindow.printFile(self._slicer.getGCodeFilename())
 
 	def OnIdle(self, e):
 		if self._animView is not None or self._animZoom is not None:
@@ -184,6 +188,8 @@ class SceneView(openglGui.glGuiPanel):
 					self.Refresh()
 
 	def OnMouseUp(self, e):
+		if e.LeftIsDown() or e.MiddleIsDown() or e.RightIsDown():
+			return
 		if self._mouseState == 'dragOrClick':
 			if e.Button == 1:
 				if self._focusObj is not None:
@@ -191,6 +197,12 @@ class SceneView(openglGui.glGuiPanel):
 				else:
 					self._selectedObj = None
 					self.Refresh()
+			if e.Button == 3 and self._selectedObj == self._focusObj:
+				#menu = wx.Menu()
+				#menu.Append(-1, 'Test')
+				#self.PopupMenu(menu)
+				#menu.Destroy()
+				pass
 		if self._mouseState == 'dragObject' and self._selectedObj is not None:
 			self._scene.pushFree()
 			self.sceneUpdated()
@@ -261,6 +273,8 @@ class SceneView(openglGui.glGuiPanel):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
 	def OnPaint(self,e):
+		self.printButton._imageID = 6 if machineCom.machineIsConnected() else 2
+
 		if self._animView is not None:
 			self._viewTarget = self._animView.getPosition()
 			if self._animView.isDone():

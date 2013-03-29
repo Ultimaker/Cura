@@ -8,6 +8,7 @@ import math
 import re
 import traceback
 import threading
+import platform
 import Queue as queue
 
 import serial
@@ -25,14 +26,14 @@ except:
 
 def serialList(forAutoDetect=False):
 	baselist=[]
-	if os.name=="nt":
+	if platform.system() == "Windows":
 		try:
 			key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
 			i=0
 			while True:
 				values = _winreg.EnumValue(key, i)
 				if not forAutoDetect or 'USBSER' in values[0]:
-					baselist+=[_winreg.EnumValue(key,i)[1]]
+					baselist+=[values[1]]
 				i+=1
 		except:
 			pass
@@ -45,9 +46,17 @@ def serialList(forAutoDetect=False):
 	if prev in baselist:
 		baselist.remove(prev)
 		baselist.insert(0, prev)
-	if version.isDevVersion():
+	if version.isDevVersion() and not forAutoDetect:
 		baselist.append('VIRTUAL')
 	return baselist
+
+def machineIsConnected():
+	port = profile.getPreference('serial_port')
+	if port == 'AUTO':
+		return len(serialList(True)) > 0
+	if platform.system() == "Windows":
+		return port in serialList(True)
+	return os.path.isfile(port)
 
 def baudrateList():
 	ret = [250000, 230400, 115200, 57600, 38400, 19200, 9600]
@@ -143,14 +152,14 @@ class MachineCom(object):
 	STATE_CLOSED_WITH_ERROR = 10
 	
 	def __init__(self, port = None, baudrate = None, callbackObject = None):
-		if port == None:
+		if port is None:
 			port = profile.getPreference('serial_port')
-		if baudrate == None:
+		if baudrate is None:
 			if profile.getPreference('serial_baud') == 'AUTO':
 				baudrate = 0
 			else:
 				baudrate = int(profile.getPreference('serial_baud'))
-		if callbackObject == None:
+		if callbackObject is None:
 			callbackObject = MachineComPrintCallback()
 
 		self._port = port
@@ -533,7 +542,7 @@ class MachineCom(object):
 		self._printSection = 'CUSTOM'
 		self._changeState(self.STATE_PRINTING)
 		self._printStartTime = time.time()
-		for i in xrange(0, 6):
+		for i in xrange(0, 4):
 			self._sendNext()
 	
 	def cancelPrint(self):

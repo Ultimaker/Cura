@@ -511,12 +511,12 @@ class printWindow(wx.Frame):
 	def OnTermKey(self, e):
 		if len(self.termHistory) > 0:
 			if e.GetKeyCode() == wx.WXK_UP:
-				self.termHistoryIdx = self.termHistoryIdx - 1
+				self.termHistoryIdx -= 1
 				if self.termHistoryIdx < 0:
 					self.termHistoryIdx = len(self.termHistory) - 1
 				self.termInput.SetValue(self.termHistory[self.termHistoryIdx])
 			if e.GetKeyCode() == wx.WXK_DOWN:
-				self.termHistoryIdx = self.termHistoryIdx - 1
+				self.termHistoryIdx -= 1
 				if self.termHistoryIdx >= len(self.termHistory):
 					self.termHistoryIdx = 0
 				self.termInput.SetValue(self.termHistory[self.termHistoryIdx])
