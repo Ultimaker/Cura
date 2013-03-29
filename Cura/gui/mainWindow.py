@@ -217,6 +217,11 @@ class mainWindow(wx.Frame):
 
 		if wx.Display.GetFromPoint(self.GetPosition()) < 0:
 			self.Centre()
+		if wx.Display.GetFromPoint((self.GetPositionTuple()[0] + self.GetSizeTuple()[1], self.GetPositionTuple()[1] + self.GetSizeTuple()[1])) < 0:
+			self.Centre()
+		if wx.Display.GetFromPoint(self.GetPosition()) < 0:
+			self.SetSize((800,600))
+			self.Centre()
 
 		self.updateSliceMode()
 
