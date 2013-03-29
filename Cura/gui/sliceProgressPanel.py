@@ -80,7 +80,7 @@ class sliceProgressPanel(wx.Panel):
 		try:
 			shutil.copy(exportFilename, os.path.join(profile.getPreference('sdpath'), filename))
 		except:
-			self.GetParent().preview3d.ShowWarningPopup("Failed to copy file to SD card.")
+			self.GetParent().preview3d.ShowWarningPopup("Failed to copy file to SD card, card out of space or locked?")
 			return
 		self.GetParent().preview3d.ShowWarningPopup("Copy finished, safely remove SD card?", self.OnSafeRemove)
 	
