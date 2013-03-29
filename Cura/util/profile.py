@@ -200,7 +200,7 @@ preferencesDefaultSettings = {
 	'window_pos_y': '-1',
 	'window_width': '-1',
 	'window_height': '-1',
-	'window_normal_sash': '320',
+	'window_normal_sash': '0',
 }
 
 #########################################################
