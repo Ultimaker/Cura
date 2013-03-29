@@ -146,6 +146,8 @@ class SceneView(openglGui.glGuiPanel):
 		if s.isValid():
 			self._objectLoadShader.release()
 			self._objectLoadShader = s
+			for obj in self._scene.objects():
+				obj._loadAnim = anim(1, 0, 1.5)
 			self.Refresh()
 
 	def OnMouseDown(self,e):
@@ -366,7 +368,7 @@ void main(void)
 			if obj._loadAnim is None:
 				continue
 			self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())
-			self._objectLoadShader.setUniform('scale', obj.getBoundaryCircle() / 20)
+			self._objectLoadShader.setUniform('scale', obj.getBoundaryCircle() / 10)
 			self._renderObject(obj)
 		self._objectLoadShader.unbind()
 		glDisable(GL_BLEND)
