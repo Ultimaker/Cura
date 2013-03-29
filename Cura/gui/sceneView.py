@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import wx
 import numpy
 import time
+import os
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -59,14 +60,32 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh._drawOffset = numpy.array([0,0,0.5], numpy.float32)
 		self._isSimpleMode = True
 		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
-		wx.EVT_IDLE(self, self.OnIdle)
-		self.updateProfileToControls()
 		self._sceneUpdateTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
 
-		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), lambda : self.GetParent().GetParent().GetParent()._showModelLoadDialog(1))
-		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), None)
+		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.ShowLoadModel)
+		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.ShowPrintWindow)
 		self.printButton.setDisabled(True)
+
+		self.updateProfileToControls()
+		wx.EVT_IDLE(self, self.OnIdle)
+
+	def ShowLoadModel(self):
+		dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
+		dlg.SetWildcard(meshLoader.wildcardFilter())
+		if dlg.ShowModal() != wx.ID_OK:
+			dlg.Destroy()
+			return
+		filename = dlg.GetPath()
+		dlg.Destroy()
+		if not(os.path.exists(filename)):
+			return False
+		profile.putPreference('lastFile', filename)
+		self.GetParent().GetParent().GetParent().addToModelMRU(filename)
+		self.loadScene([filename])
+
+	def ShowPrintWindow(self):
+		pass
 
 	def OnIdle(self, e):
 		if self._animView is not None or self._animZoom is not None:

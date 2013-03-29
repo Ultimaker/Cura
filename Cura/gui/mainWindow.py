@@ -53,9 +53,9 @@ class mainWindow(wx.Frame):
 		self.menubar = wx.MenuBar()
 		self.fileMenu = wx.Menu()
 		i = self.fileMenu.Append(-1, 'Load model file...\tCTRL+L')
-		self.Bind(wx.EVT_MENU, lambda e: self._showModelLoadDialog(1), i)
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowLoadModel(), i)
 		i = self.fileMenu.Append(-1, 'Print...\tCTRL+P')
-		self.Bind(wx.EVT_MENU, self.OnPrint, i)
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowPrintWindow(), i)
 
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, 'Open Profile...')
@@ -144,10 +144,8 @@ class mainWindow(wx.Frame):
 
 		if profile.getPreference('lastFile') != '':
 			self.filelist = profile.getPreference('lastFile').split(';')
-			self.SetTitle('Cura - %s - %s' % (version.getVersion(), self.filelist[-1]))
 		else:
 			self.filelist = []
-		self.progressPanelList = []
 
 		self.splitter = wx.SplitterWindow(self, style = wx.SP_3D | wx.SP_LIVE_UPDATE)
 		self.leftPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
@@ -165,9 +163,6 @@ class mainWindow(wx.Frame):
 		
 		#Preview window
 		self.scene = sceneView.SceneView(self.rightPane)
-
-		#Also bind double clicking the 3D preview to load an STL file.
-		#self.preview3d.glCanvas.Bind(wx.EVT_LEFT_DCLICK, lambda e: self._showModelLoadDialog(1), self.preview3d.glCanvas)
 
 		#Main sizer, to position the preview window, buttons and tab control
 		sizer = wx.BoxSizer()
@@ -262,55 +257,11 @@ class mainWindow(wx.Frame):
 		prefDialog.Centre()
 		prefDialog.Show(True)
 
-	def _showOpenDialog(self, title, wildcard = meshLoader.wildcardFilter()):
-		dlg=wx.FileDialog(self, title, os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
-		dlg.SetWildcard(wildcard)
-		if dlg.ShowModal() == wx.ID_OK:
-			filename = dlg.GetPath()
-			dlg.Destroy()
-			if not(os.path.exists(filename)):
-				return False
-			profile.putPreference('lastFile', filename)
-			return filename
-		dlg.Destroy()
-		return False
-
-	def _showModelLoadDialog(self, amount):
-		filelist = []
-		for i in xrange(0, amount):
-			filelist.append(self._showOpenDialog("Open file to print"))
-			if filelist[-1] == False:
-				return
-		self._loadModels(filelist)
-
-	def _loadModels(self, filelist):
-		self.filelist = filelist
-		self.SetTitle('Cura - %s - %s' % (version.getVersion(), filelist[-1]))
-		profile.putPreference('lastFile', ';'.join(self.filelist))
-		self.scene.loadScene(self.filelist)
-		#self.preview3d.setViewMode("Normal")
-		
-		# Update the Model MRU
-		for idx in xrange(0, len(self.filelist)):
-			self.addToModelMRU(self.filelist[idx])
-
 	def OnDropFiles(self, files):
 		profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
 		profile.setPluginConfig([])
 		self.updateProfileToControls()
-		self._loadModels(files)
-
-	def OnLoadModel(self, e):
-		self._showModelLoadDialog(1)
-
-	def OnLoadModel2(self, e):
-		self._showModelLoadDialog(2)
-
-	def OnLoadModel3(self, e):
-		self._showModelLoadDialog(3)
-
-	def OnLoadModel4(self, e):
-		self._showModelLoadDialog(4)
+		self.scene.loadScene(files)
 
 	def OnPrint(self, e):
 		if len(self.filelist) < 1:
@@ -331,7 +282,7 @@ class mainWindow(wx.Frame):
 		self.config.Flush()
 		# Load Model
 		filelist = [ path ]
-		self._loadModels(filelist)
+		self.scene.loadScene(filelist)
 
 	def addToModelMRU(self, file):
 		self.modelFileHistory.AddFileToHistory(file)
@@ -356,16 +307,6 @@ class mainWindow(wx.Frame):
 		self.config.SetPath("/ProfileMRU")
 		self.profileFileHistory.Save(self.config)
 		self.config.Flush()			
-
-	def removeSliceProgress(self, spp):
-		self.progressPanelList.remove(spp)
-		newSize = self.GetSize()
-		newSize.IncBy(0, -spp.GetSize().GetHeight())
-		if newSize.GetWidth() < wx.GetDisplaySize()[0]:
-			self.SetSize(newSize)
-		spp.Show(False)
-		self.sizer.Detach(spp)
-		self.sizer.Layout()
 
 	def updateProfileToControls(self):
 		self.scene.updateProfileToControls()
