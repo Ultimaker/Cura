@@ -17,6 +17,7 @@ from Cura.util import objectScene
 from Cura.util import resources
 from Cura.util import sliceEngine
 from Cura.util import machineCom
+from Cura.util import removableStorage
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 
@@ -275,6 +276,8 @@ class SceneView(openglGui.glGuiPanel):
 	def OnPaint(self,e):
 		if machineCom.machineIsConnected():
 			self.printButton._imageID = 6
+		elif len(removableStorage.getPossibleSDcardDrives()) > 0:
+			self.printButton._imageID = 2
 		else:
 			self.printButton._imageID = 3
 
