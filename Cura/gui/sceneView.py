@@ -191,7 +191,7 @@ class SceneView(openglGui.glGuiPanel):
 				self._deleteObject(self._selectedObj)
 				self.Refresh()
 
-		if keyCode == wx.WXK_F3:
+		if keyCode == wx.WXK_F3 and wx.GetKeyState(wx.WXK_SHIFT):
 			shaderEditor(self, self.ShaderUpdate, self._objectLoadShader.getVertexShader(), self._objectLoadShader.getFragmentShader())
 
 	def ShaderUpdate(self, v, f):
