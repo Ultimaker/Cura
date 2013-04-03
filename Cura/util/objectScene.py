@@ -53,6 +53,10 @@ class Scene():
 		for obj in self._objectList:
 			obj.setPosition(obj.getPosition() + offset)
 
+	def printOrder(self):
+		order = range(0, len(self._objectList))
+		return order
+
 	def _pushFree(self):
 		for a in self._objectList:
 			for b in self._objectList:

@@ -341,7 +341,7 @@ void main(void)
     gl_FrontColor = gl_Color;
 
 	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount *= 1 - (length(gl_Position.xyz - vec3(0,0,cameraDistance)) / 1.5 / cameraDistance);
+	light_amount *= 1.0 - (length(gl_Position.xyz - vec3(0.0,0.0,cameraDistance)) / 1.5 / cameraDistance);
 	light_amount += 0.2;
 }
 			""","""
@@ -368,7 +368,7 @@ void main(void)
     gl_FrontColor = gl_Color;
 
 	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount *= 1 - (length(gl_Position.xyz - vec3(0,0,cameraDistance)) / 1.5 / cameraDistance);
+	light_amount *= 1.0 - (length(gl_Position.xyz - vec3(0.0,0.0,cameraDistance)) / 1.5 / cameraDistance);
 	light_amount += 0.2;
 }
 			""","""
