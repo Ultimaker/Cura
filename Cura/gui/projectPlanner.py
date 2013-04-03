@@ -46,7 +46,7 @@ class ProjectObject(object):
 		self.filename = filename
 		self.matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
 		self.profile = None
-		
+
 		self.modelDisplayList = None
 		self.modelDirty = True
 
@@ -86,21 +86,21 @@ class ProjectObject(object):
 		return self.mesh.getSize()
 	def getBoundaryCircle(self):
 		return self.mesh.boundaryCircleSize
-	
+
 	def clone(self):
 		p = ProjectObject(self.parent, self.filename)
 
 		p.centerX = self.centerX + 5
 		p.centerY = self.centerY + 5
-		
+
 		p.filename = self.filename
 		p.matrix = self.matrix.copy()
 		p.profile = self.profile
-		
+
 		p.updateMatrix()
-		
+
 		return p
-	
+
 	def clampXY(self):
 		size = self.getSize()
 		if self.centerX < size[0] / 2:
@@ -116,14 +116,14 @@ class projectPlanner(wx.Frame):
 	"Main user interface window"
 	def __init__(self):
 		super(projectPlanner, self).__init__(None, title='Cura - Project Planner')
-		
+
 		wx.EVT_CLOSE(self, self.OnClose)
 		self.panel = wx.Panel(self, -1)
 		self.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		self.GetSizer().Add(self.panel, 1, flag=wx.EXPAND)
 
 		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.supportedExtensions()))
-		
+
 		self.list = []
 		self.selection = None
 		self.printMode = 0
@@ -158,7 +158,7 @@ class projectPlanner(wx.Frame):
 		self.printAllAtOnce = toolbarUtil.RadioButton(self.toolbar, group, 'all-at-once-on.png', 'all-at-once-off.png', 'Print all the objects at once', callback=self.OnPrintTypeChange)
 		self.toolbar.AddSeparator()
 		toolbarUtil.NormalButton(self.toolbar, self.OnQuit, 'exit.png', 'Close project planner')
-		
+
 		self.toolbar.Realize()
 
 		self.toolbar2 = toolbarUtil.Toolbar(self.panel)
@@ -185,7 +185,7 @@ class projectPlanner(wx.Frame):
 		self.sliceButton = wx.Button(self.panel, -1, "Prepare")
 		if not self.alwaysAutoPlace:
 			self.autoPlaceButton = wx.Button(self.panel, -1, "Auto Place")
-		
+
 		sizer.Add(self.toolbar, (0,0), span=(1,1), flag=wx.EXPAND|wx.LEFT|wx.RIGHT)
 		sizer.Add(self.toolbar2, (0,1), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT)
 		sizer.Add(self.glCanvas, (1,0), span=(5,1), flag=wx.EXPAND)
@@ -197,7 +197,7 @@ class projectPlanner(wx.Frame):
 			sizer.Add(self.autoPlaceButton, (3,2), span=(1,1))
 		sizer.AddGrowableCol(0)
 		sizer.AddGrowableRow(1)
-		
+
 		self.addButton.Bind(wx.EVT_BUTTON, self.OnAddModel)
 		self.remButton.Bind(wx.EVT_BUTTON, self.OnRemModel)
 		self.sliceButton.Bind(wx.EVT_BUTTON, self.OnSlice)
@@ -207,7 +207,7 @@ class projectPlanner(wx.Frame):
 
 		panel = wx.Panel(self.panel, -1)
 		sizer.Add(panel, (5,1), span=(1,2))
-		
+
 		sizer = wx.GridBagSizer(2,2)
 		panel.SetSizer(sizer)
 
@@ -377,12 +377,12 @@ class projectPlanner(wx.Frame):
 
 	def OnQuit(self, e):
 		self.Close()
-	
+
 	def OnPreferences(self, e):
 		prefDialog = preferencesDialog(self)
 		prefDialog.Centre()
 		prefDialog.Show(True)
-	
+
 	def OnCutMesh(self, e):
 		dlg=wx.FileDialog(self, "Open file to cut", os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
 		dlg.SetWildcard(meshLoader.wildcardFilter())
@@ -402,7 +402,7 @@ class projectPlanner(wx.Frame):
 			pd.Destroy()
 		self.glCanvas.Refresh()
 		dlg.Destroy()
-	
+
 	def OnDropFiles(self, filenames):
 		for filename in filenames:
 			item = ProjectObject(self, filename)
@@ -420,14 +420,14 @@ class projectPlanner(wx.Frame):
 		if self.alwaysAutoPlace:
 			self.OnAutoPlace(None)
 		self.glCanvas.Refresh()
-	
+
 	def OnSaveCombinedSTL(self, e):
 		dlg=wx.FileDialog(self, "Save as STL", os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE)
 		dlg.SetWildcard("STL files (*.stl)|*.stl;*.STL")
 		if dlg.ShowModal() == wx.ID_OK:
 			self._saveCombinedSTL(dlg.GetPath())
 		dlg.Destroy()
-	
+
 	def _saveCombinedSTL(self, filename):
 		totalCount = 0
 		for item in self.list:
@@ -443,7 +443,7 @@ class projectPlanner(wx.Frame):
 			for v in vertexes:
 				output.addVertex(v[0], v[1], v[2])
 		stl.saveAsSTL(output, filename)
-	
+
 	def OnSaveProject(self, e):
 		dlg=wx.FileDialog(self, "Save project file", os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE)
 		dlg.SetWildcard("Project files (*.curaproject)|*.curaproject")
@@ -456,14 +456,7 @@ class projectPlanner(wx.Frame):
 				cp.set(section, 'filename', item.filename.encode("utf-8"))
 				cp.set(section, 'centerX', str(item.centerX))
 				cp.set(section, 'centerY', str(item.centerY))
-				cp.set(section, 'scale', str(item.scale))
-				cp.set(section, 'rotate', str(item.rotate))
-				cp.set(section, 'flipX', str(item.flipX))
-				cp.set(section, 'flipY', str(item.flipY))
-				cp.set(section, 'flipZ', str(item.flipZ))
-				cp.set(section, 'swapXZ', str(item.swapXZ))
-				cp.set(section, 'swapYZ', str(item.swapYZ))
-				cp.set(section, 'extruder', str(item.extruder+1))
+				cp.set(section, 'matrix', ','.join(map(str, item.matrix.getA().flatten())))
 				if item.profile != None:
 					cp.set(section, 'profile', item.profile)
 				i += 1
@@ -480,28 +473,22 @@ class projectPlanner(wx.Frame):
 			i = 0
 			while cp.has_section('model_%d' % (i)):
 				section = 'model_%d' % (i)
-				
+
 				item = ProjectObject(self, unicode(cp.get(section, 'filename'), "utf-8"))
 				item.centerX = float(cp.get(section, 'centerX'))
 				item.centerY = float(cp.get(section, 'centerY'))
-				item.scale = float(cp.get(section, 'scale'))
-				item.rotate = float(cp.get(section, 'rotate'))
-				item.flipX = cp.get(section, 'flipX') == 'True'
-				item.flipY = cp.get(section, 'flipY') == 'True'
-				item.flipZ = cp.get(section, 'flipZ') == 'True'
-				item.swapXZ = cp.get(section, 'swapXZ') == 'True'
-				item.swapYZ = cp.get(section, 'swapYZ') == 'True'
+				item.matrix = numpy.matrix(numpy.array(map(float, cp.get(section, 'matrix').split(',')), numpy.float64).reshape((3,3,)))
 				if cp.has_option(section, 'extruder'):
 					item.extuder = int(cp.get(section, 'extruder')) - 1
 				if cp.has_option(section, 'profile'):
 					item.profile = cp.get(section, 'profile')
-				item.updateModelTransform()
+				item.updateMatrix()
 				i += 1
-				
+
 				self.list.append(item)
 
 			self.selected = self.list[0]
-			self._updateListbox()			
+			self._updateListbox()
 			self.OnListSelect(None)
 			self.glCanvas.Refresh()
 
@@ -526,7 +513,7 @@ class projectPlanner(wx.Frame):
 			return
 		self.selection = self.list[self.listbox.GetSelection()]
 		self.glCanvas.Refresh()
-	
+
 	def OnAddModel(self, e):
 		dlg=wx.FileDialog(self, "Open file to print", os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
 		dlg.SetWildcard(meshLoader.wildcardFilter())
@@ -540,14 +527,14 @@ class projectPlanner(wx.Frame):
 				self.OnListSelect(None)
 		self.glCanvas.Refresh()
 		dlg.Destroy()
-	
+
 	def OnRemModel(self, e):
 		if self.selection is None:
 			return
 		self.list.remove(self.selection)
 		self._updateListbox()
 		self.glCanvas.Refresh()
-	
+
 	def OnMoveUp(self, e):
 		if self.selection is None:
 			return
@@ -569,18 +556,18 @@ class projectPlanner(wx.Frame):
 		self.list.insert(i+1, self.selection)
 		self._updateListbox()
 		self.glCanvas.Refresh()
-	
+
 	def OnCopy(self, e):
 		if self.selection is None:
 			return
-		
+
 		item = self.selection.clone()
 		self.list.insert(self.list.index(self.selection), item)
 		self.selection = item
-		
+
 		self._updateListbox()
 		self.glCanvas.Refresh()
-	
+
 	def OnSetCustomProfile(self, e):
 		if self.selection is None:
 			return
@@ -593,7 +580,7 @@ class projectPlanner(wx.Frame):
 			self.selection.profile = None
 		self._updateListbox()
 		dlg.Destroy()
-	
+
 	def _updateListbox(self):
 		self.listbox.Clear()
 		for item in self.list:
@@ -625,7 +612,7 @@ class projectPlanner(wx.Frame):
 			for item in self.list:
 				item.clampXY()
 		self.glCanvas.Refresh()
-	
+
 	def _doAutoPlace(self, allowedSizeY):
 		extraSizeMin, extraSizeMax = self.getExtraHeadSize()
 
@@ -637,7 +624,7 @@ class projectPlanner(wx.Frame):
 			dirX = 1
 		posY = 0
 		dirY = 1
-		
+
 		minX = self.machineSize[0]
 		minY = self.machineSize[1]
 		maxX = 0
@@ -658,17 +645,17 @@ class projectPlanner(wx.Frame):
 			minY = min(minY, item.centerY - item.getSize()[1] / 2)
 			maxX = max(maxX, item.centerX + item.getSize()[0] / 2)
 			maxY = max(maxY, item.centerY + item.getSize()[1] / 2)
-		
+
 		for item in self.list:
 			if dirX < 0:
 				item.centerX -= minX / 2
 			else:
 				item.centerX += (self.machineSize[0] - maxX) / 2
 			item.centerY += (self.machineSize[1] - maxY) / 2
-		
+
 		if minX < 0 or maxX > self.machineSize[0]:
 			return ((maxX - minX) + (maxY - minY)) * 100
-		
+
 		return (maxX - minX) + (maxY - minY)
 
 	def OnSlice(self, e):
@@ -682,7 +669,7 @@ class projectPlanner(wx.Frame):
 
 		put = profile.setTempOverride
 		oldProfile = profile.getGlobalProfileString()
-		
+
 		if self.printMode == 0:
 			fileList = []
 			positionList = []
@@ -721,7 +708,7 @@ class projectPlanner(wx.Frame):
 		if self.printMode == 1:
 			extraSizeMin = numpy.array([6.0, 6.0, 0])
 			extraSizeMax = numpy.array([6.0, 6.0, 0])
-		
+
 		return extraSizeMin, extraSizeMax
 
 class PreviewGLCanvas(openglGui.glGuiPanel):
@@ -783,7 +770,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				#Define the drag type depending on the cursor position.
 				self.dragType = 'viewRotate'
 				if self.parent.tool.OnDragStart(p0, p1):
-						self.dragType = 'tool'
+					self.dragType = 'tool'
 			if self.dragType == 'viewRotate':
 				if self.view3D:
 					self.yaw += e.GetX() - self.oldX
@@ -817,18 +804,18 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 			self.Refresh()
 		self.oldX = e.GetX()
 		self.oldY = e.GetY()
-	
+
 	def OnMouseWheel(self,e):
 		if self.view3D:
 			self.zoom *= 1.0 - float(e.GetWheelRotation() / e.GetWheelDelta()) / 10.0
 			if self.zoom < 1.0:
 				self.zoom = 1.0
 			self.Refresh()
-	
+
 	def OnEraseBackground(self,event):
 		#Workaround for windows background redraw flicker.
 		pass
-	
+
 	def OnSize(self,event):
 		self.Refresh()
 
@@ -855,7 +842,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		for item in self.parent.list:
 			item.validPlacement = True
 			item.gotHit = False
-		
+
 		for idx1 in xrange(0, len(self.parent.list)):
 			item = self.parent.list[idx1]
 			iMin1 =-item.getSize() / 2 + numpy.array([item.centerX, item.centerY, 0]) - extraSizeMin #- self.parent.extruderOffset[item.extruder]
@@ -871,7 +858,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				if item != item2 and iMax1[0] >= iMin2[0] and iMin1[0] <= iMax2[0] and iMax1[1] >= iMin2[1] and iMin1[1] <= iMax2[1]:
 					item.validPlacement = False
 					item2.gotHit = True
-		
+
 		seenSelected = False
 		for item in self.parent.list:
 			if item == self.parent.selection:
@@ -883,7 +870,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 				glNewList(item.modelDisplayList, GL_COMPILE)
 				opengl.DrawMesh(item.mesh)
 				glEndList()
-			
+
 			if item.validPlacement:
 				if self.parent.selection == item:
 					glLightfv(GL_LIGHT0, GL_DIFFUSE,  map(lambda x: x + 0.2, self.objColor))
@@ -899,7 +886,7 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 					glLightfv(GL_LIGHT0, GL_DIFFUSE,  [1.0, 0.0, 0.0, 0.0])
 					glLightfv(GL_LIGHT0, GL_AMBIENT,  [0.2, 0.0, 0.0, 0.0])
 			glPushMatrix()
-			
+
 			glEnable(GL_LIGHTING)
 			glTranslate(item.centerX, item.centerY, 0)
 			vMin = item.getMinimum()
@@ -951,9 +938,9 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 					else:
 						glColor3f(0.7,0.7,0.0)
 					opengl.DrawBox(vMin, vMax)
-			
+
 			glPopMatrix()
-		
+
 		opengl.DrawMachine(util3d.Vector3(machineSize[0], machineSize[1], machineSize[2]))
 
 		if self.parent.selection is not None:
@@ -981,7 +968,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 	def __init__(self, sliceCommand, resultFilename, fileCount):
 		super(ProjectSliceProgressWindow, self).__init__(None, title='Cura')
 		self.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_BTNFACE))
-		
+
 		self.sliceCommand = sliceCommand
 		self.resultFilename = resultFilename
 		self.fileCount = fileCount
@@ -990,8 +977,8 @@ class ProjectSliceProgressWindow(wx.Frame):
 		self.totalDoneFactor = 0.0
 		self.startTime = time.time()
 		self.sliceStartTime = time.time()
-		
-		self.sizer = wx.GridBagSizer(2, 2) 
+
+		self.sizer = wx.GridBagSizer(2, 2)
 		self.statusText = wx.StaticText(self, -1, "Building: %s" % (resultFilename))
 		self.progressGauge = wx.Gauge(self, -1)
 		self.progressGauge.SetRange(10000)
@@ -1011,7 +998,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 		self.SetSizer(self.sizer)
 		self.Layout()
 		self.Fit()
-		
+
 		threading.Thread(target=self.OnRun).start()
 
 	def OnAbort(self, e):
@@ -1031,12 +1018,12 @@ class ProjectSliceProgressWindow(wx.Frame):
 			#print "#####" + str(newTime-self.startTime) + " " + self.prevStep + " -> " + stepName
 			self.startTime = newTime
 			self.prevStep = stepName
-		
+
 		progresValue = ((self.totalDoneFactor + sliceRun.sliceStepTimeFactor[stepName] * layer / maxLayer) / sliceRun.totalRunTimeFactor) * 10000
 		self.progressGauge.SetValue(int(progresValue))
 		self.statusText.SetLabel(stepName + " [" + str(layer) + "/" + str(maxLayer) + "]")
 		taskbar.setProgress(self, 10000 * self.progressGauge2.GetValue() + int(progresValue), 10000 * self.fileCount)
-	
+
 	def OnRun(self):
 		self.progressLog = []
 		p = sliceRun.startSliceCommandProcess(self.sliceCommand)
@@ -1066,7 +1053,7 @@ class ProjectSliceProgressWindow(wx.Frame):
 
 		gcode = gcodeInterpreter.gcode()
 		gcode.load(self.resultFilename)
-		
+
 		self.abort = True
 		sliceTime = time.time() - self.sliceStartTime
 		status = "Build: %s" % (self.resultFilename)
@@ -1079,11 +1066,11 @@ class ProjectSliceProgressWindow(wx.Frame):
 		profile.replaceGCodeTags(self.resultFilename, gcode)
 		wx.CallAfter(self.statusText.SetLabel, status)
 		wx.CallAfter(self.OnSliceDone)
-	
+
 	def _adjustNumberInLine(self, line, tag, f):
 		m = re.search('^(.*'+tag+')([0-9\.]*)(.*)$', line)
 		return m.group(1) + str(float(m.group(2)) + f) + m.group(3) + '\n'
-	
+
 	def OnSliceDone(self):
 		self.abortButton.Destroy()
 		self.closeButton = wx.Button(self, -1, "Close")
@@ -1112,10 +1099,10 @@ class ProjectSliceProgressWindow(wx.Frame):
 		if profile.getPreference('sdshortnames') == 'True':
 			filename = sliceRun.getShortFilename(filename)
 		shutil.copy(self.resultFilename, os.path.join(profile.getPreference('sdpath'), filename))
-	
+
 	def OnOpenFileLocation(self, e):
 		explorer.openExplorer(self.resultFilename)
-	
+
 	def OnPrint(self, e):
 		printWindow.printFile(self.resultFilename)
 
@@ -1125,13 +1112,13 @@ class ProjectSliceProgressWindow(wx.Frame):
 class preferencesDialog(wx.Frame):
 	def __init__(self, parent):
 		super(preferencesDialog, self).__init__(None, title="Project Planner Preferences", style=wx.DEFAULT_DIALOG_STYLE)
-		
+
 		self.parent = parent
 		wx.EVT_CLOSE(self, self.OnClose)
 
 		self.panel = configBase.configPanelBase(self)
 		extruderAmount = int(profile.getPreference('extruder_amount'))
-		
+
 		left, right, main = self.panel.CreateConfigPanel(self)
 		configBase.TitleRow(left, 'User interface settings')
 		c = configBase.SettingRow(left, 'Always auto place objects in planner', 'planner_always_autoplace', True, 'Disable this to allow manual placement in the project planner (requires restart).', type = 'preference')
@@ -1146,11 +1133,11 @@ class preferencesDialog(wx.Frame):
 		validators.validFloat(c, 0.1)
 		c = configBase.SettingRow(left, 'Head gantry height (mm)', 'extruder_head_size_height', '0', 'The tallest object height that will always fit under your printers gantry system when the printer head is at the lowest Z position.', type = 'preference')
 		validators.validFloat(c)
-		
+
 		self.okButton = wx.Button(left, -1, 'Ok')
 		left.GetSizer().Add(self.okButton, (left.GetSizer().GetRows(), 1))
 		self.okButton.Bind(wx.EVT_BUTTON, self.OnClose)
-		
+
 		self.MakeModal(True)
 		main.Fit()
 		self.Fit()
