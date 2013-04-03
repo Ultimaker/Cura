@@ -362,8 +362,8 @@ varying float light_amount;
 void main(void)
 {
 	vec4 tmp = gl_Vertex;
-    tmp.x += sin(tmp.z/5+intensity*30) * scale * intensity;
-    tmp.y += sin(tmp.z/3+intensity*40) * scale * intensity;
+    tmp.x += sin(tmp.z/5.0+intensity*30.0) * scale * intensity;
+    tmp.y += sin(tmp.z/3.0+intensity*40.0) * scale * intensity;
     gl_Position = gl_ModelViewProjectionMatrix * tmp;
     gl_FrontColor = gl_Color;
 
@@ -378,7 +378,7 @@ varying float light_amount;
 
 void main(void)
 {
-	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1-intensity);
+	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
 }
 			""")
 		self._init3DView()
