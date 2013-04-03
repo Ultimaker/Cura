@@ -4,11 +4,14 @@ import numpy
 import os
 import warnings
 import threading
+import traceback
 
 from Cura.util import profile
 
 def getEngineFilename():
-	return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
+	if os.file.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe')
+		return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
+	return 'SteamEngine'
 
 def getTempFilename():
 	warnings.simplefilter('ignore')
@@ -58,10 +61,13 @@ class Slicer(object):
 				self._objCount += 1
 		if self._objCount > 0:
 			print ' '.join(commandList)
-			self._process = self._runSliceProcess(commandList)
-			self._thread = threading.Thread(target=self._watchProcess)
-			self._thread.daemon = True
-			self._thread.start()
+			try:
+				self._process = self._runSliceProcess(commandList)
+				self._thread = threading.Thread(target=self._watchProcess)
+				self._thread.daemon = True
+				self._thread.start()
+			except OSError:
+				traceback.print_exc()
 
 	def _watchProcess(self):
 		self._callback(0.0, False)
