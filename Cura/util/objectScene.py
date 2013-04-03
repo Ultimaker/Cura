@@ -11,6 +11,9 @@ class Scene():
 	def setMachineSize(self, machineSize):
 		self._machineSize = machineSize
 
+	def setSizeOffsets(self, sizeOffsets):
+		self._sizeOffsets = sizeOffsets
+
 	def objects(self):
 		return self._objectList
 

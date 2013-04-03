@@ -72,6 +72,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
 		self._sceneUpdateTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
+		self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
 
 		self.updateProfileToControls()
 		wx.EVT_IDLE(self, self.OnIdle)
@@ -125,6 +126,7 @@ class SceneView(openglGui.glGuiPanel):
 	def sceneUpdated(self):
 		self._sceneUpdateTimer.Start(1, True)
 		self._slicer.abortSlicer()
+		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
 		self.Refresh()
 
 	def _updateSliceProgress(self, progressValue, ready):
@@ -205,6 +207,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
 		self._mouseClick3DPos = self._mouse3Dpos
+		self._mouseClickFocus = self._focusObj
 		if e.ButtonDClick():
 			self._mouseState = 'doubleClick'
 		else:
@@ -252,7 +255,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._zoom = 1
 				if self._zoom > numpy.max(self._machineSize) * 3:
 					self._zoom = numpy.max(self._machineSize) * 3
-			elif e.LeftIsDown() and self._selectedObj is not None and not self._isSimpleMode:
+			elif e.LeftIsDown() and self._selectedObj is not None and self._selectedObj == self._mouseClickFocus and not self._isSimpleMode:
 				self._mouseState = 'dragObject'
 				z = max(0, self._mouseClick3DPos[2])
 				p0 = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, 0, self.modelMatrix, self.projMatrix, self.viewport)
@@ -270,6 +273,14 @@ class SceneView(openglGui.glGuiPanel):
 
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
+
+	def OnMouseWheel(self, e):
+		self._zoom *= 1.0 - float(e.GetWheelRotation() / e.GetWheelDelta()) / 10.0
+		if self._zoom < 1.0:
+			self._zoom = 1.0
+		if self._zoom > numpy.max(self._machineSize) * 3:
+			self._zoom = numpy.max(self._machineSize) * 3
+		self.Refresh()
 
 	def _init3DView(self):
 		# set viewing projection

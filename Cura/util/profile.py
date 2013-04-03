@@ -574,6 +574,17 @@ def calculateSolidLayerCount():
 	solidThickness = getProfileSettingFloat('solid_layer_thickness')
 	return int(math.ceil(solidThickness / layerHeight - 0.0001))
 
+def calculateObjectSizeOffsets():
+	size = 0.0
+	if getProfileSettingFloat('skirt_line_count') > 0:
+		size += getProfileSettingFloat('skirt_line_count') * calculateEdgeWidth() + getProfileSettingFloat('skirt_gap')
+	#if getProfileSetting('enable_raft') != 'False':
+	#	size += profile.getProfileSettingFloat('raft_margin') * 2
+	#if getProfileSetting('support') != 'None':
+	#	extraSizeMin = extraSizeMin + numpy.array([3.0, 0, 0])
+	#	extraSizeMax = extraSizeMax + numpy.array([3.0, 0, 0])
+	return [size, size]
+
 def getMachineCenterCoords():
 	if getPreference('machine_center_is_zero') == 'True':
 		return [0, 0]
@@ -584,7 +595,6 @@ def getObjectMatrix():
 		return map(float, getProfileSetting('model_matrix').split(','))
 	except ValueError:
 		return [1,0,0, 0,1,0, 0,0,1]
-
 
 #########################################################
 ## Alteration file functions
