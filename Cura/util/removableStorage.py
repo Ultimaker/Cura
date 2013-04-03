@@ -3,6 +3,47 @@ import string
 import glob
 import os
 import stat
+import subprocess
+try:
+	from xml.etree import cElementTree as ElementTree
+except:
+	from xml.etree import ElementTree
+
+def _parseStupidPListXML(e):
+	if e.tag == 'plist':
+		return _parseStupidPListXML(list(e)[0])
+	if e.tag == 'array':
+		ret = []
+		for c in list(e):
+			ret.append(_parseStupidPListXML(c))
+		return ret
+	if e.tag == 'dict':
+		ret = {}
+		key = None
+		for c in list(e):
+			if c.tag == 'key':
+				key = c.text
+			elif key is not None:
+				ret[key] = _parseStupidPListXML(c)
+				key = None
+		return ret
+	if e.tag == 'true':
+		return True
+	if e.tag == 'false':
+		return False
+	return e.text
+
+def _findInTree(t, n):
+	ret = []
+	if type(t) is dict:
+		if '_name' in t and t['_name'] == n:
+			ret.append(t)
+		for k, v in t.items():
+			ret += _findInTree(v, n)
+	if type(t) is list:
+		for v in t:
+			ret += _findInTree(v, n)
+	return ret
 
 def getPossibleSDcardDrives():
 	drives = []
@@ -22,13 +63,21 @@ def getPossibleSDcardDrives():
 				drives.append(('%s (%s:)' % (volumeName, letter), letter + ':/', volumeName))
 			bitmask >>= 1
 	elif platform.system() == "Darwin":
-		for volume in glob.glob('/Volumes/*'):
-			if stat.S_ISLNK(os.lstat(volume).st_mode):
-				continue
-			#'Ejectable: Yes' in os.system('diskutil info \'%s\'' % (volume))
-			drives.append((os.path.basename(volume), os.path.basename(volume), volume))
+		p = subprocess.Popen(['system_profiler', 'SPUSBDataType', '-xml'], stdout=subprocess.PIPE)
+		xml = ElementTree.fromstring(p.communicate()[0])
+		p.wait()
+
+		xml = _parseStupidPListXML(xml)
+		for dev in _findInTree(xml, 'Mass Storage Device'):
+			if 'removable_media' in dev and dev['removable_media'] == 'yes' and 'volumes' in dev and len(dev['volumes']) > 0:
+				for vol in dev['volumes']:
+					if 'mount_point' in vol:
+						volume = vol['mount_point']
+						drives.append((os.path.basename(volume), os.path.basename(volume), volume))
 	else:
 		for volume in glob.glob('/media/*'):
 			drives.append((os.path.basename(volume), os.path.basename(volume), volume))
 	return drives
 
+if __name__ == '__main__':
+	print getPossibleSDcardDrives()
