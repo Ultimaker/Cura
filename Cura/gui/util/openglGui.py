@@ -145,7 +145,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 	def _OnGuiMouseDown(self,e):
 		self.SetFocus()
-		if self._container.OnMouseDown(e.GetX(), e.GetY(), e.Button):
+		if self._container.OnMouseDown(e.GetX(), e.GetY(), e.GetButton()):
 			self.Refresh()
 			return
 		self.OnMouseDown(e)

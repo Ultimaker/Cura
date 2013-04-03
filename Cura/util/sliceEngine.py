@@ -9,7 +9,7 @@ import traceback
 from Cura.util import profile
 
 def getEngineFilename():
-	if os.file.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe')
+	if os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
 		return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
 	return 'SteamEngine'
 

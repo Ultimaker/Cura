@@ -213,7 +213,7 @@ class SceneView(openglGui.glGuiPanel):
 		else:
 			self._mouseState = 'dragOrClick'
 		if self._mouseState == 'dragOrClick':
-			if e.Button == 1:
+			if e.GetButton() == 1:
 				if self._focusObj is not None:
 					self._selectObject(self._focusObj, False)
 					self.Refresh()
@@ -222,13 +222,13 @@ class SceneView(openglGui.glGuiPanel):
 		if e.LeftIsDown() or e.MiddleIsDown() or e.RightIsDown():
 			return
 		if self._mouseState == 'dragOrClick':
-			if e.Button == 1:
+			if e.GetButton() == 1:
 				if self._focusObj is not None:
 					self._selectObject(self._focusObj)
 				else:
 					self._selectedObj = None
 					self.Refresh()
-			if e.Button == 3 and self._selectedObj == self._focusObj:
+			if e.GetButton() == 3 and self._selectedObj == self._focusObj:
 				#menu = wx.Menu()
 				#menu.Append(-1, 'Test')
 				#self.PopupMenu(menu)
