@@ -5,13 +5,16 @@ import os
 import warnings
 import threading
 import traceback
+import platform
 
 from Cura.util import profile
 
 def getEngineFilename():
-	if os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
-		return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
-	return 'SteamEngine'
+	if platform.system() == 'Windows':
+		if os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
+			return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
+		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'SteamEngine.exe'))
+	return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'SteamEngine'))
 
 def getTempFilename():
 	warnings.simplefilter('ignore')
