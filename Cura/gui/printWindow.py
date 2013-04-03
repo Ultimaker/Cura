@@ -180,6 +180,7 @@ class printWindow(wx.Frame):
 
 		self.temperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21), style=wx.SP_ARROW_KEYS)
 		self.temperatureSelect.SetRange(0, 400)
+		self.temperatureHeatUpPLA = wx.Button(self.temperaturePanel, -1, '210C')
 		self.bedTemperatureLabel = wx.StaticText(self.temperaturePanel, -1, "BedTemp:")
 		self.bedTemperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21),
 			style=wx.SP_ARROW_KEYS)
@@ -191,11 +192,12 @@ class printWindow(wx.Frame):
 
 		sizer.Add(wx.StaticText(self.temperaturePanel, -1, "Temp:"), pos=(0, 0))
 		sizer.Add(self.temperatureSelect, pos=(0, 1))
+		sizer.Add(self.temperatureHeatUpPLA, pos=(0, 2))
 		sizer.Add(self.bedTemperatureLabel, pos=(1, 0))
 		sizer.Add(self.bedTemperatureSelect, pos=(1, 1))
-		sizer.Add(self.temperatureGraph, pos=(2, 0), span=(1, 2), flag=wx.EXPAND)
+		sizer.Add(self.temperatureGraph, pos=(2, 0), span=(1, 3), flag=wx.EXPAND)
 		sizer.AddGrowableRow(2)
-		sizer.AddGrowableCol(1)
+		sizer.AddGrowableCol(2)
 
 		nb.AddPage(self.temperaturePanel, 'Temp')
 
@@ -324,6 +326,7 @@ class printWindow(wx.Frame):
 		self.cancelButton.Bind(wx.EVT_BUTTON, self.OnCancel)
 		self.machineLogButton.Bind(wx.EVT_BUTTON, self.OnMachineLog)
 
+		self.Bind(wx.EVT_BUTTON, lambda e: (self.temperatureSelect.SetValue(210), self.machineCom.sendCommand("M104 S210")), self.temperatureHeatUpPLA)
 		self.Bind(wx.EVT_SPINCTRL, self.OnTempChange, self.temperatureSelect)
 		self.Bind(wx.EVT_SPINCTRL, self.OnBedTempChange, self.bedTemperatureSelect)
 
@@ -374,9 +377,11 @@ class printWindow(wx.Frame):
 		#self.loadButton.Enable(self.machineCom == None or not (self.machineCom.isPrinting() or self.machineCom.isPaused()))
 		self.printButton.Enable(self.machineCom is not None and self.machineCom.isOperational() and not (
 		self.machineCom.isPrinting() or self.machineCom.isPaused()))
+		self.temperatureHeatUpPLA.Enable(self.machineCom is not None and self.machineCom.isOperational() and not (
+		self.machineCom.isPrinting() or self.machineCom.isPaused()))
 		self.pauseButton.Enable(
-			self.machineCom != None and (self.machineCom.isPrinting() or self.machineCom.isPaused()))
-		if self.machineCom != None and self.machineCom.isPaused():
+			self.machineCom is not None and (self.machineCom.isPrinting() or self.machineCom.isPaused()))
+		if self.machineCom is not None and self.machineCom.isPaused():
 			self.pauseButton.SetLabel('Resume')
 		else:
 			self.pauseButton.SetLabel('Pause')
