@@ -4,6 +4,8 @@ import wx
 import numpy
 import time
 import os
+import traceback
+import shutil
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -74,23 +76,42 @@ class SceneView(openglGui.glGuiPanel):
 		self.updateProfileToControls()
 		wx.EVT_IDLE(self, self.OnIdle)
 
-	def ShowLoadModel(self):
-		dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
-		dlg.SetWildcard(meshLoader.wildcardFilter())
-		if dlg.ShowModal() != wx.ID_OK:
+	def ShowLoadModel(self, button):
+		if button == 1:
+			dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
+			dlg.SetWildcard(meshLoader.wildcardFilter())
+			if dlg.ShowModal() != wx.ID_OK:
+				dlg.Destroy()
+				return
+			filename = dlg.GetPath()
 			dlg.Destroy()
-			return
-		filename = dlg.GetPath()
-		dlg.Destroy()
-		if not(os.path.exists(filename)):
-			return False
-		profile.putPreference('lastFile', filename)
-		self.GetParent().GetParent().GetParent().addToModelMRU(filename)
-		self.loadScene([filename])
+			if not(os.path.exists(filename)):
+				return False
+			profile.putPreference('lastFile', filename)
+			self.GetParent().GetParent().GetParent().addToModelMRU(filename)
+			self.loadScene([filename])
 
-	def ShowPrintWindow(self):
-		if machineCom.machineIsConnected():
-			printWindow.printFile(self._slicer.getGCodeFilename())
+	def ShowPrintWindow(self, button):
+		if button == 1:
+			if machineCom.machineIsConnected():
+				printWindow.printFile(self._slicer.getGCodeFilename())
+			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
+				drives = removableStorage.getPossibleSDcardDrives()
+				if len(drives) > 1:
+					pass
+			else:
+				defPath = profile.getPreference('lastFile')
+				defPath = defPath[0:defPath.rfind('.')] + '.gcode'
+				dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
+				dlg.SetFilename(defPath)
+				dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
+				if dlg.ShowModal() != wx.ID_OK:
+					dlg.Destroy()
+					return
+				filename = dlg.GetPath()
+				dlg.Destroy()
+
+				shutil.copy(self._slicer.getGCodeFilename(), filename)
 
 	def OnIdle(self, e):
 		if self._animView is not None or self._animZoom is not None:
@@ -113,10 +134,16 @@ class SceneView(openglGui.glGuiPanel):
 
 	def loadScene(self, fileList):
 		for filename in fileList:
-			for obj in meshLoader.loadMeshes(filename):
-				obj._loadAnim = anim(1, 0, 1.5)
-				self._scene.add(obj)
-				self._selectObject(obj)
+			try:
+				objList = meshLoader.loadMeshes(filename)
+			except:
+				traceback.print_exc()
+			else:
+				for obj in objList:
+					obj._loadAnim = anim(1, 0, 1.5)
+					self._scene.add(obj)
+					self._scene.centerAll()
+					self._selectObject(obj)
 		self.sceneUpdated()
 
 	def _deleteObject(self, obj):
@@ -276,10 +303,13 @@ class SceneView(openglGui.glGuiPanel):
 	def OnPaint(self,e):
 		if machineCom.machineIsConnected():
 			self.printButton._imageID = 6
+			self.printButton._tooltip = 'Print'
 		elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 			self.printButton._imageID = 2
+			self.printButton._tooltip = 'Toolpath to SD'
 		else:
 			self.printButton._imageID = 3
+			self.printButton._tooltip = 'Save toolpath'
 
 		if self._animView is not None:
 			self._viewTarget = self._animView.getPosition()

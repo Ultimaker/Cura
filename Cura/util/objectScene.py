@@ -6,6 +6,7 @@ class Scene():
 		self._objectList = []
 		self._sizeOffsets = numpy.array([3.0,3.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
+		self._headOffsets = numpy.array([18.0,18.0], numpy.float32)
 
 	def setMachineSize(self, machineSize):
 		self._machineSize = machineSize
@@ -35,6 +36,20 @@ class Scene():
 			obj.setPosition(numpy.array([0,0], numpy.float32))
 			self.add(obj)
 
+	def centerAll(self):
+		minPos = numpy.array([9999999,9999999], numpy.float32)
+		maxPos = numpy.array([-9999999,-9999999], numpy.float32)
+		for obj in self._objectList:
+			pos = obj.getPosition()
+			size = obj.getSize()
+			minPos[0] = min(minPos[0], pos[0] - size[0] / 2)
+			minPos[1] = min(minPos[1], pos[1] - size[1] / 2)
+			maxPos[0] = max(maxPos[0], pos[0] + size[0] / 2)
+			maxPos[1] = max(maxPos[1], pos[1] + size[1] / 2)
+		offset = -(maxPos + minPos) / 2
+		for obj in self._objectList:
+			obj.setPosition(obj.getPosition() + offset)
+
 	def _pushFree(self):
 		for a in self._objectList:
 			for b in self._objectList:
@@ -50,7 +65,7 @@ class Scene():
 				aPos = a.getPosition()
 				bPos = b.getPosition()
 				center = (aPos[axis] + bPos[axis]) / 2
-				distance = (a.getSize()[axis] + b.getSize()[axis]) / 2 + 0.1 + self._sizeOffsets[axis] * 2
+				distance = (a.getSize()[axis] + b.getSize()[axis]) / 2 + 0.1 + self._sizeOffsets[axis] + self._headOffsets[axis]
 				if posDiff[axis] < 0:
 					distance = -distance
 				aPos[axis] = center + distance / 2
@@ -64,8 +79,9 @@ class Scene():
 		if a == b:
 			return False
 		posDiff = a.getPosition() - b.getPosition()
-		if abs(posDiff[0]) < (a.getSize()[0] + b.getSize()[0]) / 2 + self._sizeOffsets[0] * 2 and abs(posDiff[1]) < (a.getSize()[1] + b.getSize()[1]) / 2 + self._sizeOffsets[1] * 2:
-			return True
+		if abs(posDiff[0]) < (a.getSize()[0] + b.getSize()[0]) / 2 + self._sizeOffsets[0] + self._headOffsets[0]:
+			if abs(posDiff[1]) < (a.getSize()[1] + b.getSize()[1]) / 2 + self._sizeOffsets[1] + self._headOffsets[1]:
+				return True
 		return False
 
 	def checkPlatform(self, obj):
@@ -85,7 +101,7 @@ class Scene():
 		posList = []
 		for a in self._objectList:
 			p = a.getPosition()
-			s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets * 2
+			s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headOffsets
 			posList.append(p + s * ( 1, 1))
 			posList.append(p + s * ( 0, 1))
 			posList.append(p + s * (-1, 1))

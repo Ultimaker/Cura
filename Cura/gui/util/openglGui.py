@@ -71,9 +71,9 @@ class glGuiContainer(glGuiControl):
 		self._glGuiControlList.append(ctrl)
 		self.updateLayout()
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		for ctrl in self._glGuiControlList:
-			if ctrl.OnMouseDown(x, y):
+			if ctrl.OnMouseDown(x, y, button):
 				return True
 		return False
 
@@ -101,7 +101,7 @@ class glGuiContainer(glGuiControl):
 
 class glGuiPanel(glcanvas.GLCanvas):
 	def __init__(self, parent):
-		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 24, glcanvas.WX_GL_STENCIL_SIZE, 8)
+		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 32, glcanvas.WX_GL_STENCIL_SIZE, 8)
 		glcanvas.GLCanvas.__init__(self, parent, style=wx.WANTS_CHARS, attribList = attribList)
 		self._base = self
 		self._focus = None
@@ -145,7 +145,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 	def _OnGuiMouseDown(self,e):
 		self.SetFocus()
-		if self._container.OnMouseDown(e.GetX(), e.GetY()):
+		if self._container.OnMouseDown(e.GetX(), e.GetY(), e.Button):
 			self.Refresh()
 			return
 		self.OnMouseDown(e)
@@ -442,9 +442,9 @@ class glButton(glGuiControl):
 		self._focus = False
 		return False
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		if self._checkHit(x, y):
-			self._callback()
+			self._callback(button)
 			return True
 		return False
 
@@ -533,7 +533,7 @@ class glComboButton(glButton):
 		self._imageID = self._imageIDs[self._selection]
 		self._comboCallback()
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		if self._hidden or self._disabled:
 			return False
 		if self.hasFocus():
@@ -545,7 +545,7 @@ class glComboButton(glButton):
 				self._base._focus = None
 				self._comboCallback()
 				return True
-		return super(glComboButton, self).OnMouseDown(x, y)
+		return super(glComboButton, self).OnMouseDown(x, y, button)
 
 class glFrame(glGuiContainer):
 	def __init__(self, parent, pos):
@@ -704,9 +704,9 @@ class glFrame(glGuiContainer):
 		self._focus = False
 		return False
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		if self._checkHit(x, y):
-			super(glFrame, self).OnMouseDown(x, y)
+			super(glFrame, self).OnMouseDown(x, y, button)
 			return True
 		return False
 
@@ -752,7 +752,7 @@ class glLabel(glGuiControl):
 	def OnMouseMotion(self, x, y):
 		return False
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		return False
 
 class glNumberCtrl(glGuiControl):
@@ -813,7 +813,7 @@ class glNumberCtrl(glGuiControl):
 	def OnMouseMotion(self, x, y):
 		return False
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		if self._checkHit(x, y):
 			self.setFocus()
 			return True
@@ -914,7 +914,7 @@ class glCheckbox(glGuiControl):
 	def OnMouseMotion(self, x, y):
 		return False
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		if self._checkHit(x, y):
 			self._value = not self._value
 			return True
@@ -1032,7 +1032,7 @@ class glSlider(glGuiControl):
 		self._focus = False
 		return False
 
-	def OnMouseDown(self, x, y):
+	def OnMouseDown(self, x, y, button):
 		if self._checkHit(x, y):
 			self.setFocus()
 			self.OnMouseMotion(x, y)

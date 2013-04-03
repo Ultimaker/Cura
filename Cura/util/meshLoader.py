@@ -21,9 +21,9 @@ def wildcardFilter():
 def loadMeshes(filename):
 	ext = filename[filename.rfind('.'):].lower()
 	if ext == '.stl':
-		return stl.loadSTLscene(filename)
+		return stl.loadScene(filename)
 	if ext == '.obj':
-		return obj.objModel().load(filename)
+		return obj.loadScene(filename)
 	if ext == '.dae':
 		return dae.daeModel().load(filename)
 	if ext == '.amf':
