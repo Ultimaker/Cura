@@ -149,6 +149,7 @@ class toolRotate(object):
 			else:
 				self.dragPlane = 'YZ'
 				self.dragStartAngle = math.atan2(cursorX0[2], cursorX0[1]) * 180 / math.pi
+			self.dragEndAngle = self.dragStartAngle
 			return True
 		return False
 
@@ -315,7 +316,7 @@ class toolScale(object):
 		return t
 
 	def _nodeSize(self):
-		return float(self.parent.zoom) / float(self.parent.GetSize().GetWidth()) * 6.0
+		return float(self.parent._zoom) / float(self.parent.GetSize().GetWidth()) * 6.0
 
 	def OnMouseMove(self, p0, p1):
 		self.node = self._traceNodes(p0, p1)
@@ -398,11 +399,11 @@ class toolScale(object):
 			radius *= self.scale
 		glPushMatrix()
 		glTranslate(0,0,size[2]/2 + 5)
-		glRotate(-self.parent.yaw, 0,0,1)
-		if self.parent.pitch < 80:
+		glRotate(-self.parent._yaw, 0,0,1)
+		if self.parent._pitch < 80:
 			glTranslate(0, radius + 5,0)
-		elif self.parent.pitch < 100:
-			glTranslate(0, (radius + 5) * (90 - self.parent.pitch) / 10,0)
+		elif self.parent._pitch < 100:
+			glTranslate(0, (radius + 5) * (90 - self.parent._pitch) / 10,0)
 		else:
 			glTranslate(0,-(radius + 5),0)
 		if self.parent.tempMatrix is not None:

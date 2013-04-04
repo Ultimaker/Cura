@@ -20,6 +20,7 @@ from Cura.util import resources
 from Cura.util import sliceEngine
 from Cura.util import machineCom
 from Cura.util import removableStorage
+from Cura.gui.util import previewTools
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 
@@ -65,15 +66,57 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh._drawOffset = numpy.array([0,0,0.5], numpy.float32)
 		self._isSimpleMode = True
 
+		self._viewport = None
+		self._modelMatrix = None
+		self._projMatrix = None
+		self.tempMatrix = None
+
 		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.ShowLoadModel)
 		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.ShowPrintWindow)
 		self.printButton.setDisabled(True)
+
+		group = []
+		self.rotateToolButton = openglGui.glRadioButton(self, 8, 'Rotate', (0,-1), group, self.OnToolSelect)
+		self.scaleToolButton  = openglGui.glRadioButton(self, 9, 'Scale', (1,-1), group, self.OnToolSelect)
+		self.mirrorToolButton  = openglGui.glRadioButton(self, 10, 'Mirror', (2,-1), group, self.OnToolSelect)
+
+		self.resetRotationButton = openglGui.glButton(self, 12, 'Reset', (0,-2), self.OnRotateReset)
+		self.layFlatButton       = openglGui.glButton(self, 16, 'Lay flat', (0,-3), self.OnLayFlat)
+
+		self.resetScaleButton    = openglGui.glButton(self, 13, 'Reset', (1,-2), self.OnScaleReset)
+		self.scaleMaxButton      = openglGui.glButton(self, 17, 'To max', (1,-3), self.OnScaleMax)
+
+		self.mirrorXButton       = openglGui.glButton(self, 14, 'Mirror X', (2,-2), lambda button: self.OnMirror(0))
+		self.mirrorYButton       = openglGui.glButton(self, 18, 'Mirror Y', (2,-3), lambda button: self.OnMirror(1))
+		self.mirrorZButton       = openglGui.glButton(self, 22, 'Mirror Z', (2,-4), lambda button: self.OnMirror(2))
+
+		self.rotateToolButton.setExpandArrow(True)
+		self.scaleToolButton.setExpandArrow(True)
+		self.mirrorToolButton.setExpandArrow(True)
+
+		self.scaleForm = openglGui.glFrame(self, (2, -2))
+		openglGui.glGuiLayoutGrid(self.scaleForm)
+		openglGui.glLabel(self.scaleForm, 'Scale X', (0,0))
+		self.scaleXctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,0), lambda value: self.OnScaleEntry(value, 0))
+		openglGui.glLabel(self.scaleForm, 'Scale Y', (0,1))
+		self.scaleYctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,1), lambda value: self.OnScaleEntry(value, 1))
+		openglGui.glLabel(self.scaleForm, 'Scale Z', (0,2))
+		self.scaleZctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,2), lambda value: self.OnScaleEntry(value, 2))
+		openglGui.glLabel(self.scaleForm, 'Size X (mm)', (0,4))
+		self.scaleXmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,4), lambda value: self.OnScaleEntryMM(value, 0))
+		openglGui.glLabel(self.scaleForm, 'Size Y (mm)', (0,5))
+		self.scaleYmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,5), lambda value: self.OnScaleEntryMM(value, 1))
+		openglGui.glLabel(self.scaleForm, 'Size Z (mm)', (0,6))
+		self.scaleZmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,6), lambda value: self.OnScaleEntryMM(value, 2))
+		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
+		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
 		self._sceneUpdateTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
 		self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
 
+		self.OnToolSelect(0)
 		self.updateProfileToControls()
 		wx.EVT_IDLE(self, self.OnIdle)
 
@@ -99,7 +142,12 @@ class SceneView(openglGui.glGuiPanel):
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
-					pass
+					drive = drives[0]
+				else:
+					drive = drives[0]
+				filename = os.path.basename(profile.getPreference('lastFile'))
+				filename = filename[0:filename.rfind('.')] + '.gcode'
+				shutil.copy(self._slicer.getGCodeFilename(), drive[1] + filename)
 			else:
 				defPath = profile.getPreference('lastFile')
 				defPath = defPath[0:defPath.rfind('.')] + '.gcode'
@@ -122,6 +170,49 @@ class SceneView(openglGui.glGuiPanel):
 			if obj._loadAnim is not None:
 				self.Refresh()
 				return
+
+	def OnToolSelect(self, button):
+		if self.rotateToolButton.getSelected():
+			self.tool = previewTools.toolRotate(self)
+		elif self.scaleToolButton.getSelected():
+			self.tool = previewTools.toolScale(self)
+		elif self.mirrorToolButton.getSelected():
+			self.tool = previewTools.toolNone(self)
+		else:
+			self.tool = previewTools.toolNone(self)
+		self.resetRotationButton.setHidden(not self.rotateToolButton.getSelected())
+		self.layFlatButton.setHidden(not self.rotateToolButton.getSelected())
+		self.resetScaleButton.setHidden(not self.scaleToolButton.getSelected())
+		self.scaleMaxButton.setHidden(not self.scaleToolButton.getSelected())
+		self.scaleForm.setHidden(not self.scaleToolButton.getSelected())
+		self.mirrorXButton.setHidden(not self.mirrorToolButton.getSelected())
+		self.mirrorYButton.setHidden(not self.mirrorToolButton.getSelected())
+		self.mirrorZButton.setHidden(not self.mirrorToolButton.getSelected())
+
+	def OnRotateReset(self, button):
+		if self._selectedObj is None:
+			return
+		pass
+
+	def OnLayFlat(self, button):
+		if self._selectedObj is None:
+			return
+		pass
+
+	def OnScaleReset(self, button):
+		if self._selectedObj is None:
+			return
+		pass
+
+	def OnScaleMax(self, button):
+		if self._selectedObj is None:
+			return
+		pass
+
+	def OnMirror(self, axis):
+		if self._selectedObj is None:
+			return
+		self._selectedObj.mirror(axis)
 
 	def sceneUpdated(self):
 		self._sceneUpdateTimer.Start(1, True)
@@ -212,6 +303,11 @@ class SceneView(openglGui.glGuiPanel):
 			self._mouseState = 'doubleClick'
 		else:
 			self._mouseState = 'dragOrClick'
+		p0, p1 = self.getMouseRay(self._mouseX, self._mouseY)
+		p0 -= self.getObjectCenterPos() - self._viewTarget
+		p1 -= self.getObjectCenterPos() - self._viewTarget
+		if self.tool.OnDragStart(p0, p1):
+			self._mouseState = 'tool'
 		if self._mouseState == 'dragOrClick':
 			if e.GetButton() == 1:
 				if self._focusObj is not None:
@@ -234,15 +330,26 @@ class SceneView(openglGui.glGuiPanel):
 				#self.PopupMenu(menu)
 				#menu.Destroy()
 				pass
-		if self._mouseState == 'dragObject' and self._selectedObj is not None:
+		elif self._mouseState == 'dragObject' and self._selectedObj is not None:
 			self._scene.pushFree()
+			self.sceneUpdated()
+		elif self._mouseState == 'tool':
+			if self.tempMatrix is not None and self._selectedObj is not None:
+				self._selectedObj.applyMatrix(self.tempMatrix)
+			self.tempMatrix = None
+			self.tool.OnDragEnd()
 			self.sceneUpdated()
 		self._mouseState = None
 
 	def OnMouseMotion(self,e):
+		p0, p1 = self.getMouseRay(e.GetX(), e.GetY())
+		p0 -= self.getObjectCenterPos() - self._viewTarget
+		p1 -= self.getObjectCenterPos() - self._viewTarget
+
 		if e.Dragging() and self._mouseState is not None:
-			self._mouseState = 'drag'
-			if not e.LeftIsDown() and e.RightIsDown():
+			if self._mouseState == 'tool':
+				self.tool.OnDrag(p0, p1)
+			elif not e.LeftIsDown() and e.RightIsDown():
 				self._yaw += e.GetX() - self._mouseX
 				self._pitch -= e.GetY() - self._mouseY
 				if self._pitch > 170:
@@ -258,10 +365,8 @@ class SceneView(openglGui.glGuiPanel):
 			elif e.LeftIsDown() and self._selectedObj is not None and self._selectedObj == self._mouseClickFocus and not self._isSimpleMode:
 				self._mouseState = 'dragObject'
 				z = max(0, self._mouseClick3DPos[2])
-				p0 = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, 0, self.modelMatrix, self.projMatrix, self.viewport)
-				p1 = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, 1, self.modelMatrix, self.projMatrix, self.viewport)
-				p2 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 0, self.modelMatrix, self.projMatrix, self.viewport)
-				p3 = opengl.unproject(e.GetX(), self.viewport[1] + self.viewport[3] - e.GetY(), 1, self.modelMatrix, self.projMatrix, self.viewport)
+				p0, p1 = self.getMouseRay(self._mouseX, self._mouseY)
+				p2, p3 = self.getMouseRay(e.GetX(), e.GetY())
 				p0[2] -= z
 				p1[2] -= z
 				p2[2] -= z
@@ -270,6 +375,8 @@ class SceneView(openglGui.glGuiPanel):
 				cursorZ1 = p2 - (p3 - p2) * (p2[2] / (p3[2] - p2[2]))
 				diff = cursorZ1 - cursorZ0
 				self._selectedObj.setPosition(self._selectedObj.getPosition() + diff[0:2])
+		if not e.Dragging() or self._mouseState != 'tool':
+			self.tool.OnMouseMove(p0, p1)
 
 		self._mouseX = e.GetX()
 		self._mouseY = e.GetY()
@@ -281,6 +388,15 @@ class SceneView(openglGui.glGuiPanel):
 		if self._zoom > numpy.max(self._machineSize) * 3:
 			self._zoom = numpy.max(self._machineSize) * 3
 		self.Refresh()
+
+	def getMouseRay(self, x, y):
+		if self._viewport is None:
+			return numpy.array([0,0,0],numpy.float32), numpy.array([0,0,1],numpy.float32)
+		p0 = opengl.unproject(x, self._viewport[1] + self._viewport[3] - y, 0, self._modelMatrix, self._projMatrix, self._viewport)
+		p1 = opengl.unproject(x, self._viewport[1] + self._viewport[3] - y, 1, self._modelMatrix, self._projMatrix, self._viewport)
+		p0 -= self._viewTarget
+		p1 -= self._viewTarget
+		return p0, p1
 
 	def _init3DView(self):
 		# set viewing projection
@@ -387,9 +503,9 @@ void main(void)
 		glRotate(self._yaw, 0,0,1)
 		glTranslate(-self._viewTarget[0],-self._viewTarget[1],-self._viewTarget[2])
 
-		self.viewport = glGetIntegerv(GL_VIEWPORT)
-		self.modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX)
-		self.projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
+		self._viewport = glGetIntegerv(GL_VIEWPORT)
+		self._modelMatrix = glGetDoublev(GL_MODELVIEW_MATRIX)
+		self._projMatrix = glGetDoublev(GL_PROJECTION_MATRIX)
 
 		glClearColor(1,1,1,1)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
@@ -406,7 +522,8 @@ void main(void)
 			else:
 				self._focusObj = None
 			f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
-			self._mouse3Dpos = opengl.unproject(self._mouseX, self.viewport[1] + self.viewport[3] - self._mouseY, f, self.modelMatrix, self.projMatrix, self.viewport)
+			self._mouse3Dpos = opengl.unproject(self._mouseX, self._viewport[1] + self._viewport[3] - self._mouseY, f, self._modelMatrix, self._projMatrix, self._viewport)
+			self._mouse3Dpos -= self._viewTarget
 
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
@@ -429,11 +546,10 @@ void main(void)
 				col = [0.5,0.5,0.5,0.8]
 			glDisable(GL_STENCIL_TEST)
 			if self._selectedObj == obj:
-				col = map(lambda n: n * 1.5, col)
 				glEnable(GL_STENCIL_TEST)
-			elif self._focusObj == obj:
+			if self._focusObj == obj:
 				col = map(lambda n: n * 1.2, col)
-			elif self._focusObj is not None or  self._selectedObj is not None:
+			elif self._focusObj is not None or self._selectedObj is not None and obj != self._selectedObj:
 				col = map(lambda n: n * 0.8, col)
 			glColor4f(col[0], col[1], col[2], col[3])
 			self._renderObject(obj)
@@ -470,11 +586,27 @@ void main(void)
 			glDisable(GL_CULL_FACE)
 			glEnable(GL_DEPTH_TEST)
 
+		if self._selectedObj is not None:
+			glPushMatrix()
+			pos = self.getObjectCenterPos()
+			glTranslate(pos[0], pos[1], pos[2])
+			self.tool.OnDraw()
+			glPopMatrix()
+
 	def _renderObject(self, obj):
 		glPushMatrix()
-		glTranslate(obj.getPosition()[0], obj.getPosition()[1], 0)
+		glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
+
+		if self.tempMatrix is not None and obj == self._selectedObj:
+			tempMatrix = opengl.convert3x3MatrixTo4x4(self.tempMatrix)
+			glMultMatrixf(tempMatrix)
+
 		offset = obj.getDrawOffset()
-		glTranslate(-offset[0], -offset[1], -offset[2])
+		glTranslate(-offset[0], -offset[1], -offset[2] - obj.getSize()[2] / 2)
+
+		tempMatrix = opengl.convert3x3MatrixTo4x4(obj.getMatrix())
+		glMultMatrixf(tempMatrix)
+
 		for m in obj._meshList:
 			if m.vbo is None:
 				m.vbo = opengl.GLVBO(m.vertexes, m.normal)
@@ -539,6 +671,28 @@ void main(void)
 		glDisableClientState(GL_VERTEX_ARRAY)
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
+
+	def getObjectCenterPos(self):
+		if self._selectedObj is None:
+			return [0.0, 0.0, 0.0]
+		pos = self._selectedObj.getPosition()
+		size = self._selectedObj.getSize()
+		return [pos[0], pos[1], size[2]/2]
+
+	def getObjectBoundaryCircle(self):
+		if self._selectedObj is None:
+			return 0.0
+		return self._selectedObj.getBoundaryCircle()
+
+	def getObjectSize(self):
+		if self._selectedObj is None:
+			return [0.0, 0.0, 0.0]
+		return self._selectedObj.getSize()
+
+	def getObjectMatrix(self):
+		if self._selectedObj is None:
+			return numpy.matrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+		return self._selectedObj.getMatrix()
 
 class shaderEditor(wx.Dialog):
 	def __init__(self, parent, callback, v, f):

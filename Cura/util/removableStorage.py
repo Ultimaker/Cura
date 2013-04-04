@@ -73,10 +73,10 @@ def getPossibleSDcardDrives():
 				for vol in dev['volumes']:
 					if 'mount_point' in vol:
 						volume = vol['mount_point']
-						drives.append((os.path.basename(volume), os.path.basename(volume), volume))
+						drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
 	else:
 		for volume in glob.glob('/media/*'):
-			drives.append((os.path.basename(volume), os.path.basename(volume), volume))
+			drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
 	return drives
 
 if __name__ == '__main__':

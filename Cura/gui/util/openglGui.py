@@ -458,7 +458,7 @@ class glRadioButton(glButton):
 	def setSelected(self, value):
 		self._selected = value
 
-	def _onRadioSelect(self):
+	def _onRadioSelect(self, button):
 		self._base._focus = None
 		for ctrl in self._group:
 			if ctrl != self:
@@ -467,7 +467,7 @@ class glRadioButton(glButton):
 			self.setSelected(False)
 		else:
 			self.setSelected(True)
-		self._radioCallback()
+		self._radioCallback(button)
 
 class glComboButton(glButton):
 	def __init__(self, parent, tooltip, imageIDs, tooltips, pos, callback):

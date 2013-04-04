@@ -27,6 +27,10 @@ class printableObject(object):
 			m._calculateNormals()
 		self.processMatrix()
 
+	def applyMatrix(self, m):
+		self._matrix *= m
+		self.processMatrix()
+
 	def processMatrix(self):
 		self._transformedMin = numpy.array([999999999999,999999999999,999999999999], numpy.float64)
 		self._transformedMax = numpy.array([-999999999999,-999999999999,-999999999999], numpy.float64)
@@ -55,6 +59,8 @@ class printableObject(object):
 		return self._position
 	def setPosition(self, newPos):
 		self._position = newPos
+	def getMatrix(self):
+		return self._matrix
 
 	def getMaximum(self):
 		return self._transformedMax
@@ -66,6 +72,11 @@ class printableObject(object):
 		return self._drawOffset
 	def getBoundaryCircle(self):
 		return self._boundaryCircleSize
+
+	def mirror(self, axis):
+		matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
+		matrix[axis][axis] = -1
+		self.applyMatrix(numpy.matrix(matrix, numpy.float64))
 
 class mesh(object):
 	def __init__(self):
