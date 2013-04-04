@@ -47,9 +47,8 @@ class Slicer(object):
 		commandList += ['-b', self._binaryStorageFilename]
 		self._objCount = 0
 		with open(self._binaryStorageFilename, "wb") as f:
-			for obj in scene._objectList:
-				if not scene.checkPlatform(obj):
-					continue
+			for n in scene.printOrder():
+				obj = scene.objects()[n]
 				for mesh in obj._meshList:
 					n = numpy.array(mesh.vertexCount, numpy.int32)
 					f.write(n.tostring())

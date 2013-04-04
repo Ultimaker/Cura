@@ -1,7 +1,65 @@
 import random
 import numpy
 
-class Scene():
+class _objectOrder(object):
+	def __init__(self, order, todo):
+		self.order = order
+		self.todo = todo
+
+class _objectOrderFinder(object):
+	def __init__(self, scene, offset):
+		self._scene = scene
+		self._offset = offset - numpy.array([0.1,0.1])
+		self._objs = scene.objects()
+		self._leftToRight = True
+		self._frontToBack = True
+		initialList = []
+		for n in xrange(0, len(self._objs)):
+			if scene.checkPlatform(self._objs[n]):
+				initialList.append(n)
+		self._todo = [_objectOrder([], initialList)]
+		while len(self._todo) > 0:
+			current = self._todo.pop()
+			for addIdx in current.todo:
+				if not self._checkHitFor(addIdx, current.order):
+					todoList = current.todo[:]
+					todoList.remove(addIdx)
+					order = current.order[:] + [addIdx]
+					if len(todoList) == 0:
+						self.order = order
+						return
+					self._todo.append(_objectOrder(order, todoList))
+		self.order = None
+
+	def _checkHitFor(self, addIdx, others):
+		for idx in others:
+			if self._checkHit(addIdx, idx):
+				return True
+		return False
+
+	def _checkHit(self, addIdx, idx):
+		addPos = self._scene._objectList[addIdx].getPosition()
+		addSize = self._scene._objectList[addIdx].getSize()
+		pos = self._scene._objectList[idx].getPosition()
+		size = self._scene._objectList[idx].getSize()
+
+		if self._leftToRight:
+			if addPos[0] + addSize[0] / 2 + self._offset[0] <= pos[0] - size[0] / 2:
+				return False
+		else:
+			if addPos[0] - addSize[0] / 2 - self._offset[0] <= pos[0] + size[0] / 2:
+				return False
+
+		if self._frontToBack:
+			if addPos[1] - addSize[1] / 2 - self._offset[1] >= pos[1] + size[1] / 2:
+				return False
+		else:
+			if addPos[1] + addSize[1] / 2 + self._offset[1] >= pos[1] - size[1] / 2:
+				return False
+
+		return True
+
+class Scene(object):
 	def __init__(self):
 		self._objectList = []
 		self._sizeOffsets = numpy.array([3.0,3.0], numpy.float32)
@@ -54,8 +112,7 @@ class Scene():
 			obj.setPosition(obj.getPosition() + offset)
 
 	def printOrder(self):
-		order = range(0, len(self._objectList))
-		return order
+		return _objectOrderFinder(self, self._headOffsets + self._sizeOffsets).order
 
 	def _pushFree(self):
 		for a in self._objectList:
