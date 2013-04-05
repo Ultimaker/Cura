@@ -164,7 +164,6 @@ setting('fan_layer',                   1, int,   'expert',   'Cool').setRange(0)
 #setting('raft_interface_material_amount', 100, int, 'expert', 'Raft').setRange(0,100).setLabel('Interface material amount (%)', 'The interface layer is a weak thin layer between the base layer and the printed object. It is designed to has little material to make it easy to break the base off the printed object. This setting adjusts the amount of material used for the interface layer.')
 #setting('hop_on_move', False, bool, 'expert', 'Hop').setLabel('Enable hop on move', 'When moving from print position to print position, raise the printer head 0.2mm so it does not knock off the print (experimental).')
 
-setting('model_matrix', '1,0,0,0,1,0,0,0,1', str, 'hidden', 'hidden')
 setting('plugin_config', '', str, 'hidden', 'hidden')
 setting('object_center_x', -1, float, 'hidden', 'hidden')
 setting('object_center_y', -1, float, 'hidden', 'hidden')
@@ -589,12 +588,6 @@ def getMachineCenterCoords():
 	if getPreference('machine_center_is_zero') == 'True':
 		return [0, 0]
 	return [getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2]
-
-def getObjectMatrix():
-	try:
-		return map(float, getProfileSetting('model_matrix').split(','))
-	except ValueError:
-		return [1,0,0, 0,1,0, 0,0,1]
 
 #########################################################
 ## Alteration file functions

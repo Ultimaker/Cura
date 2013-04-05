@@ -11,16 +11,13 @@ from Cura.gui import pluginPanel
 from Cura.gui import preferencesDialog
 from Cura.gui import configWizard
 from Cura.gui import firmwareInstall
-from Cura.gui import printWindow
 from Cura.gui import simpleMode
-from Cura.gui import projectPlanner
 from Cura.gui import sceneView
 from Cura.gui.tools import batchRun
 from Cura.gui.util import dropTarget
 from Cura.gui.tools import minecraftImport
 from Cura.util import profile
 from Cura.util import version
-from Cura.util import sliceRun
 from Cura.util import meshLoader
 
 class mainWindow(wx.Frame):
@@ -104,9 +101,6 @@ class mainWindow(wx.Frame):
 		self.switchToNormalMenuItem = i
 		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
 		toolsMenu.AppendSeparator()
-		i = toolsMenu.Append(-1, 'Project planner...')
-		self.Bind(wx.EVT_MENU, self.OnProjectPlanner, i)
-		self.normalModeOnlyItems.append(i)
 		i = toolsMenu.Append(-1, 'Batch run...')
 		self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
 		self.normalModeOnlyItems.append(i)
@@ -264,19 +258,9 @@ class mainWindow(wx.Frame):
 		prefDialog.Show(True)
 
 	def OnDropFiles(self, files):
-		profile.putProfileSetting('model_matrix', '1,0,0,0,1,0,0,0,1')
 		profile.setPluginConfig([])
 		self.updateProfileToControls()
 		self.scene.loadScene(files)
-
-	def OnPrint(self, e):
-		if len(self.filelist) < 1:
-			wx.MessageBox('You need to load a file and prepare it before you can print.', 'Print error', wx.OK | wx.ICON_INFORMATION)
-			return
-		if not os.path.exists(sliceRun.getExportFilename(self.filelist[0])):
-			wx.MessageBox('You need to prepare a print before you can run the actual print.', 'Print error', wx.OK | wx.ICON_INFORMATION)
-			return
-		printWindow.printFile(sliceRun.getExportFilename(self.filelist[0]))
 
 	def OnModelMRU(self, e):
 		fileNum = e.GetId() - self.ID_MRU_MODEL1
@@ -403,11 +387,6 @@ class mainWindow(wx.Frame):
 		ecw = expertConfig.expertConfigWindow()
 		ecw.Centre()
 		ecw.Show(True)
-
-	def OnProjectPlanner(self, e):
-		pp = projectPlanner.projectPlanner()
-		pp.Centre()
-		pp.Show(True)
 
 	def OnMinecraftImport(self, e):
 		mi = minecraftImport.minecraftImportWindow(self)
