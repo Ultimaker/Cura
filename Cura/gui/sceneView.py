@@ -63,7 +63,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._animView = None
 		self._animZoom = None
 		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
-		self._platformMesh._drawOffset = numpy.array([0,0,0.5], numpy.float32)
+		self._platformMesh._drawOffset = numpy.array([0,0,1.5], numpy.float32)
 		self._isSimpleMode = True
 
 		self._viewport = None
@@ -255,6 +255,14 @@ class SceneView(openglGui.glGuiPanel):
 	def _selectObject(self, obj, zoom = True):
 		if obj != self._selectedObj:
 			self._selectedObj = obj
+			scale = self._selectedObj.getScale()
+			size = self._selectedObj.getSize()
+			self.scaleXctrl.setValue(round(scale[0], 2))
+			self.scaleYctrl.setValue(round(scale[1], 2))
+			self.scaleZctrl.setValue(round(scale[2], 2))
+			self.scaleXmmctrl.setValue(round(size[0], 2))
+			self.scaleYmmctrl.setValue(round(size[1], 2))
+			self.scaleZmmctrl.setValue(round(size[2], 2))
 		if zoom:
 			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getMaximum()[2] / 2])
 			self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
@@ -448,7 +456,6 @@ class SceneView(openglGui.glGuiPanel):
 				self._animZoom = None
 		if self._objectShader is None:
 			self._objectShader = opengl.GLShader("""
-uniform float cameraDistance;
 varying float light_amount;
 
 void main(void)
@@ -457,11 +464,9 @@ void main(void)
     gl_FrontColor = gl_Color;
 
 	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount *= 1.0 - (length(gl_Position.xyz - vec3(0.0,0.0,cameraDistance)) / 1.5 / cameraDistance);
 	light_amount += 0.2;
 }
 			""","""
-uniform float cameraDistance;
 varying float light_amount;
 
 void main(void)
@@ -470,7 +475,6 @@ void main(void)
 }
 			""")
 			self._objectLoadShader = opengl.GLShader("""
-uniform float cameraDistance;
 uniform float intensity;
 uniform float scale;
 varying float light_amount;
@@ -484,11 +488,9 @@ void main(void)
     gl_FrontColor = gl_Color;
 
 	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount *= 1.0 - (length(gl_Position.xyz - vec3(0.0,0.0,cameraDistance)) / 1.5 / cameraDistance);
 	light_amount += 0.2;
 }
 			""","""
-uniform float cameraDistance;
 uniform float intensity;
 varying float light_amount;
 
@@ -534,7 +536,6 @@ void main(void)
 		glStencilFunc(GL_ALWAYS, 1, 1)
 		glStencilOp(GL_INCR, GL_INCR, GL_INCR)
 		self._objectShader.bind()
-		self._objectShader.setUniform('cameraDistance', self._zoom)
 		for obj in self._scene.objects():
 			if obj._loadAnim is not None:
 				if obj._loadAnim.isDone():
@@ -558,7 +559,6 @@ void main(void)
 		glDisable(GL_STENCIL_TEST)
 		glEnable(GL_BLEND)
 		self._objectLoadShader.bind()
-		self._objectLoadShader.setUniform('cameraDistance', self._zoom)
 		glColor4f(0.2, 0.6, 1.0, 1.0)
 		for obj in self._scene.objects():
 			if obj._loadAnim is None:
@@ -570,6 +570,23 @@ void main(void)
 		glDisable(GL_BLEND)
 
 		self._drawMachine()
+
+		#Draw the object box-shadow, so you can see where it will collide with other objects.
+		if self._selectedObj is not None and len(self._scene.objects()) > 1:
+			size = self._selectedObj.getSize()[0:2] / 2 + self._scene.getObjectExtend()
+			glPushMatrix()
+			glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0.0)
+			glEnable(GL_BLEND)
+			glEnable(GL_CULL_FACE)
+			glColor4f(0,0,0,0.12)
+			glBegin(GL_QUADS)
+			glVertex3f(-size[0],  size[1], 0)
+			glVertex3f(-size[0], -size[1], 0)
+			glVertex3f( size[0], -size[1], 0)
+			glVertex3f( size[0],  size[1], 0)
+			glEnd()
+			glDisable(GL_CULL_FACE)
+			glPopMatrix()
 
 		#Draw the outline of the selected object, on top of everything else except the GUI.
 		if self._selectedObj is not None and self._selectedObj._loadAnim is None:
@@ -620,7 +637,6 @@ void main(void)
 		if profile.getPreference('machine_type') == 'ultimaker':
 			glColor4f(1,1,1,0.5)
 			self._objectShader.bind()
-			self._objectShader.setUniform('cameraDistance', self._zoom)
 			self._renderObject(self._platformMesh)
 			self._objectShader.unbind()
 

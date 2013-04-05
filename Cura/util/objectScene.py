@@ -17,6 +17,9 @@ class _objectOrderFinder(object):
 		for n in xrange(0, len(self._objs)):
 			if scene.checkPlatform(self._objs[n]):
 				initialList.append(n)
+		if len(initialList) == 0:
+			self.order = []
+			return
 		self._todo = [_objectOrder([], initialList)]
 		while len(self._todo) > 0:
 			current = self._todo.pop()
@@ -26,6 +29,7 @@ class _objectOrderFinder(object):
 					todoList.remove(addIdx)
 					order = current.order[:] + [addIdx]
 					if len(todoList) == 0:
+						self._todo = None
 						self.order = order
 						return
 					self._todo.append(_objectOrder(order, todoList))
@@ -72,6 +76,9 @@ class Scene(object):
 	def setSizeOffsets(self, sizeOffsets):
 		self._sizeOffsets = sizeOffsets
 
+	def getObjectExtend(self):
+		return self._sizeOffsets + self._headOffsets
+
 	def objects(self):
 		return self._objectList
 
@@ -112,7 +119,10 @@ class Scene(object):
 			obj.setPosition(obj.getPosition() + offset)
 
 	def printOrder(self):
-		return _objectOrderFinder(self, self._headOffsets + self._sizeOffsets).order
+		order = _objectOrderFinder(self, self._headOffsets + self._sizeOffsets).order
+		if order is None:
+			print "ODD! Cannot find out proper printing order!!!"
+		return order
 
 	def _pushFree(self):
 		for a in self._objectList:

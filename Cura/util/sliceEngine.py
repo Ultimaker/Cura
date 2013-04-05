@@ -30,6 +30,7 @@ class Slicer(object):
 		self._binaryStorageFilename = getTempFilename()
 		self._exportFilename = getTempFilename()
 		self._progressSteps = ['inset', 'skin', 'export']
+		self._objCount = 0
 
 	def abortSlicer(self):
 		if self._process is not None:
@@ -74,14 +75,21 @@ class Slicer(object):
 	def _watchProcess(self):
 		self._callback(0.0, False)
 		line = self._process.stdout.readline()
+		objectNr = 0
 		while len(line):
 			line = line.strip()
 			if line.startswith('Progress:'):
 				line = line.split(':')
-				progressValue = float(line[2]) / float(line[3])
-				progressValue /= len(self._progressSteps)
-				progressValue += 1.0 / len(self._progressSteps) * self._progressSteps.index(line[1])
-				self._callback(progressValue, False)
+				if line[1] == 'process':
+					objectNr += 1
+				else:
+					progressValue = float(line[2]) / float(line[3])
+					progressValue /= len(self._progressSteps)
+					progressValue += 1.0 / len(self._progressSteps) * self._progressSteps.index(line[1])
+
+					progressValue /= self._objCount
+					progressValue += 1.0 / self._objCount * objectNr
+					self._callback(progressValue, False)
 			else:
 				print '#', line.strip()
 			line = self._process.stdout.readline()

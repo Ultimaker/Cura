@@ -78,6 +78,12 @@ class printableObject(object):
 		matrix[axis][axis] = -1
 		self.applyMatrix(numpy.matrix(matrix, numpy.float64))
 
+	def getScale(self):
+		return numpy.array([
+			numpy.linalg.norm(self._matrix[::,0].getA().flatten()),
+			numpy.linalg.norm(self._matrix[::,1].getA().flatten()),
+			numpy.linalg.norm(self._matrix[::,2].getA().flatten())], numpy.float64);
+
 class mesh(object):
 	def __init__(self):
 		self.vertexes = None
