@@ -230,6 +230,7 @@ class previewPanel(wx.Panel):
 		z = numpy.linalg.norm(self.matrix[::,2].getA().flatten())
 		self.matrix = numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
 		for obj in self.objectList:
+			obj.dirty = True
 			obj.steepDirty = True
 		self.updateModelTransform()
 
