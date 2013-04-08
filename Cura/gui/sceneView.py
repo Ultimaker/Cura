@@ -227,6 +227,8 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def OnScaleEntryMM(self, value, axis):
+		if self._selectedObj is None:
+			return
 		try:
 			value = float(value)
 		except:
