@@ -54,13 +54,14 @@ class Slicer(object):
 			for n in scene.printOrder():
 				obj = scene.objects()[n]
 				for mesh in obj._meshList:
-					n = numpy.array(mesh.vertexCount, numpy.int32)
+					n = numpy.array([mesh.vertexCount], numpy.int32)
 					f.write(n.tostring())
 					f.write(mesh.vertexes.tostring())
 				pos = obj.getPosition() * 1000
 				pos += numpy.array([profile.getPreferenceFloat('machine_width') * 1000 / 2, profile.getPreferenceFloat('machine_depth') * 1000 / 2])
 				commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
-				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1]), '#']
+				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
+				commandList += ['#' * len(obj._meshList)]
 				self._objCount += 1
 		if self._objCount > 0:
 			print ' '.join(commandList)

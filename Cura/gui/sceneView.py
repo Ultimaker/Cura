@@ -237,6 +237,12 @@ class SceneView(openglGui.glGuiPanel):
 		self.updateProfileToControls()
 		self.sceneUpdated()
 
+	def OnMergeObjects(self, e):
+		if self._selectedObj is None or self._focusObj is None or self._selectedObj == self._focusObj:
+			return
+		self._scene.merge(self._selectedObj, self._focusObj)
+		self.sceneUpdated()
+
 	def sceneUpdated(self):
 		self._sceneUpdateTimer.Start(1, True)
 		self._slicer.abortSlicer()
@@ -299,6 +305,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
 		self._scene.setMachineSize(self._machineSize)
+		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
 
 		if self._selectedObj is not None:
 			scale = self._selectedObj.getScale()
@@ -358,12 +365,18 @@ class SceneView(openglGui.glGuiPanel):
 				else:
 					self._selectedObj = None
 					self.Refresh()
-			if e.GetButton() == 3 and self._selectedObj == self._focusObj:
-				#menu = wx.Menu()
-				#menu.Append(-1, 'Test')
-				#self.PopupMenu(menu)
-				#menu.Destroy()
-				pass
+			if e.GetButton() == 3:
+				if self._selectedObj == self._focusObj:
+					#menu = wx.Menu()
+					#menu.Append(-1, 'Test')
+					#self.PopupMenu(menu)
+					#menu.Destroy()
+					pass
+				if self._selectedObj != self._focusObj and self._focusObj is not None:
+					menu = wx.Menu()
+					self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Merge'))
+					self.PopupMenu(menu)
+					menu.Destroy()
 		elif self._mouseState == 'dragObject' and self._selectedObj is not None:
 			self._scene.pushFree()
 			self.sceneUpdated()
@@ -568,18 +581,19 @@ void main(void)
 					obj._loadAnim = None
 				else:
 					continue
-			col = self._objColors[0]
-			if not self._scene.checkPlatform(obj):
-				col = [0.5,0.5,0.5,0.8]
+			brightness = 1.0
 			glDisable(GL_STENCIL_TEST)
 			if self._selectedObj == obj:
 				glEnable(GL_STENCIL_TEST)
 			if self._focusObj == obj:
-				col = map(lambda n: n * 1.2, col)
+				brightness = 1.2
 			elif self._focusObj is not None or self._selectedObj is not None and obj != self._selectedObj:
-				col = map(lambda n: n * 0.8, col)
-			glColor4f(col[0], col[1], col[2], col[3])
-			self._renderObject(obj)
+				brightness = 0.8
+			if not self._scene.checkPlatform(obj):
+				glColor4f(0.5 * brightness, 0.5 * brightness, 0.5 * brightness, 0.8 * brightness)
+				self._renderObject(obj)
+			else:
+				self._renderObject(obj, brightness)
 		self._objectShader.unbind()
 
 		glDisable(GL_STENCIL_TEST)
@@ -619,6 +633,7 @@ void main(void)
 			glDisable(GL_DEPTH_TEST)
 			glEnable(GL_CULL_FACE)
 			glEnable(GL_STENCIL_TEST)
+			glDisable(GL_BLEND)
 			glStencilFunc(GL_EQUAL, 0, 255)
 
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
@@ -639,7 +654,7 @@ void main(void)
 			self.tool.OnDraw()
 			glPopMatrix()
 
-	def _renderObject(self, obj):
+	def _renderObject(self, obj, brightness = False):
 		glPushMatrix()
 		glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
 
@@ -653,9 +668,13 @@ void main(void)
 		tempMatrix = opengl.convert3x3MatrixTo4x4(obj.getMatrix())
 		glMultMatrixf(tempMatrix)
 
+		n = 0
 		for m in obj._meshList:
 			if m.vbo is None:
 				m.vbo = opengl.GLVBO(m.vertexes, m.normal)
+			if brightness:
+				glColor4fv(map(lambda n: n * brightness, self._objColors[n]))
+				n += 1
 			m.vbo.render()
 		glPopMatrix()
 

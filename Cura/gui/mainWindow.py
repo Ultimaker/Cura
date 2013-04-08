@@ -50,7 +50,7 @@ class mainWindow(wx.Frame):
 		self.menubar = wx.MenuBar()
 		self.fileMenu = wx.Menu()
 		i = self.fileMenu.Append(-1, 'Load model file...\tCTRL+L')
-		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowLoadModel(), i)
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowLoadModel(1), i)
 		i = self.fileMenu.Append(-1, 'Print...\tCTRL+P')
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowPrintWindow(), i)
 

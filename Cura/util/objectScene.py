@@ -66,7 +66,7 @@ class _objectOrderFinder(object):
 class Scene(object):
 	def __init__(self):
 		self._objectList = []
-		self._sizeOffsets = numpy.array([3.0,3.0], numpy.float32)
+		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
 		self._headOffsets = numpy.array([18.0,18.0], numpy.float32)
 
@@ -89,6 +89,11 @@ class Scene(object):
 
 	def remove(self, obj):
 		self._objectList.remove(obj)
+
+	def merge(self, obj1, obj2):
+		self.remove(obj2)
+		obj1._meshList += obj2._meshList
+		obj1.processMatrix()
 
 	def pushFree(self):
 		n = 1000
@@ -122,6 +127,8 @@ class Scene(object):
 		order = _objectOrderFinder(self, self._headOffsets + self._sizeOffsets).order
 		if order is None:
 			print "ODD! Cannot find out proper printing order!!!"
+			for obj in self._objectList:
+				print obj.getPosition(), obj.getSize()
 		return order
 
 	def _pushFree(self):
@@ -176,14 +183,14 @@ class Scene(object):
 		for a in self._objectList:
 			p = a.getPosition()
 			s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headOffsets
-			posList.append(p + s * ( 1, 1))
-			posList.append(p + s * ( 0, 1))
-			posList.append(p + s * (-1, 1))
-			posList.append(p + s * ( 1, 0))
-			posList.append(p + s * (-1, 0))
-			posList.append(p + s * ( 1,-1))
-			posList.append(p + s * ( 0,-1))
-			posList.append(p + s * (-1,-1))
+			posList.append(p + s * ( 1.0, 1.0))
+			posList.append(p + s * ( 0.0, 1.0))
+			posList.append(p + s * (-1.0, 1.0))
+			posList.append(p + s * ( 1.0, 0.0))
+			posList.append(p + s * (-1.0, 0.0))
+			posList.append(p + s * ( 1.0,-1.0))
+			posList.append(p + s * ( 0.0,-1.0))
+			posList.append(p + s * (-1.0,-1.0))
 
 		best = None
 		bestDist = None
