@@ -134,7 +134,7 @@ def getProfileInformation():
 		},'inset': {
 			'Add_Custom_Code_for_Temperature_Reading': "False",
 			'Infill_in_Direction_of_Bridge': ifSettingAboveZero('fill_density'),
-			'Infill_Width': storedSettingFloat("nozzle_size"),
+			'Infill_Width': calculateEdgeWidth,
 			'Loop_Order_Choice': DEFSET,
 			'Overlap_Removal_Width_over_Perimeter_Width_ratio': DEFSET,
 			'Turn_Extruder_Heater_Off_at_Shut_Down': "False",
@@ -162,7 +162,7 @@ def getProfileInformation():
 			'Line': ifSettingIs('infill_type', 'Line'),
 			'Infill_Perimeter_Overlap_ratio': storedPercentSetting('fill_overlap'),
 			'Infill_Solidity_ratio': storedPercentSetting('fill_density'),
-			'Infill_Width': storedSettingFloat("nozzle_size"),
+			'Infill_Width': calculateEdgeWidth,
 			'Sharpest_Angle_degrees': DEFSET,
 			'Solid_Surface_Thickness_layers': calculateSolidLayerCount,
 			'Start_From_Choice': DEFSET,
