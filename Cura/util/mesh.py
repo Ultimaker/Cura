@@ -84,6 +84,30 @@ class printableObject(object):
 			numpy.linalg.norm(self._matrix[::,1].getA().flatten()),
 			numpy.linalg.norm(self._matrix[::,2].getA().flatten())], numpy.float64);
 
+	def setScale(self, scale, axis, uniform):
+		currentScale = numpy.linalg.norm(self._matrix[::,axis].getA().flatten())
+		scale /= currentScale
+		if scale == 0:
+			return
+		if uniform:
+			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
+		else:
+			matrix = [[1.0,0,0], [0, 1.0, 0], [0, 0, 1.0]]
+			matrix[axis][axis] = scale
+		self.applyMatrix(numpy.matrix(matrix, numpy.float64))
+
+	def setSize(self, size, axis, uniform):
+		scale = self.getSize()[axis]
+		scale = size / scale
+		if scale == 0:
+			return
+		if uniform:
+			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
+		else:
+			matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
+			matrix[axis][axis] = scale
+		self.applyMatrix(numpy.matrix(matrix, numpy.float64))
+
 class mesh(object):
 	def __init__(self):
 		self.vertexes = None

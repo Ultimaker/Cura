@@ -213,6 +213,27 @@ class SceneView(openglGui.glGuiPanel):
 		if self._selectedObj is None:
 			return
 		self._selectedObj.mirror(axis)
+		self.sceneUpdated()
+
+	def OnScaleEntry(self, value, axis):
+		if self._selectedObj is None:
+			return
+		try:
+			value = float(value)
+		except:
+			return
+		self._selectedObj.setScale(value, axis, self.scaleUniform.getValue())
+		self.updateProfileToControls()
+		self.sceneUpdated()
+
+	def OnScaleEntryMM(self, value, axis):
+		try:
+			value = float(value)
+		except:
+			return
+		self._selectedObj.setSize(value, axis, self.scaleUniform.getValue())
+		self.updateProfileToControls()
+		self.sceneUpdated()
 
 	def sceneUpdated(self):
 		self._sceneUpdateTimer.Start(1, True)
@@ -255,14 +276,7 @@ class SceneView(openglGui.glGuiPanel):
 	def _selectObject(self, obj, zoom = True):
 		if obj != self._selectedObj:
 			self._selectedObj = obj
-			scale = self._selectedObj.getScale()
-			size = self._selectedObj.getSize()
-			self.scaleXctrl.setValue(round(scale[0], 2))
-			self.scaleYctrl.setValue(round(scale[1], 2))
-			self.scaleZctrl.setValue(round(scale[2], 2))
-			self.scaleXmmctrl.setValue(round(size[0], 2))
-			self.scaleYmmctrl.setValue(round(size[1], 2))
-			self.scaleZmmctrl.setValue(round(size[2], 2))
+			self.updateProfileToControls()
 		if zoom:
 			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getMaximum()[2] / 2])
 			self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
@@ -283,6 +297,16 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
 		self._scene.setMachineSize(self._machineSize)
+
+		if self._selectedObj is not None:
+			scale = self._selectedObj.getScale()
+			size = self._selectedObj.getSize()
+			self.scaleXctrl.setValue(round(scale[0], 2))
+			self.scaleYctrl.setValue(round(scale[1], 2))
+			self.scaleZctrl.setValue(round(scale[2], 2))
+			self.scaleXmmctrl.setValue(round(size[0], 2))
+			self.scaleYmmctrl.setValue(round(size[1], 2))
+			self.scaleZmmctrl.setValue(round(size[2], 2))
 
 	def OnKeyChar(self, keyCode):
 		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE:
