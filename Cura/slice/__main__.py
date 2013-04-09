@@ -173,8 +173,9 @@ def stitchMultiExtruder(outputList, resultFile):
 
 				startSlice = outputSlice[n][0]
 				endSlice = outputSlice[n][1]
+
 				currentE = 0
-				while not isPrintingLine(outputList[n][startSlice]):
+				while startSlice < len(outputList[n]) and not isPrintingLine(outputList[n][startSlice]):
 					currentE = getCodeFloat(outputList[n][startSlice], 'E', currentE)
 					currentX = getCodeFloat(outputList[n][startSlice], 'X', currentX)
 					currentY = getCodeFloat(outputList[n][startSlice], 'Y', currentY)
