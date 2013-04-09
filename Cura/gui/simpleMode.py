@@ -105,7 +105,7 @@ class simpleModePanel(wx.Panel):
 		nozzle_size = float(get('nozzle_size'))
 		if self.printTypeNormal.GetValue():
 			put('wall_thickness', nozzle_size * 2.0)
-			put('layer_height', '0.2')
+			put('layer_height', '0.15')
 			put('fill_density', '20')
 		elif self.printTypeLow.GetValue():
 			put('wall_thickness', nozzle_size * 1.4)
@@ -116,7 +116,7 @@ class simpleModePanel(wx.Panel):
 			put('bottom_layer_speed', '40')
 		elif self.printTypeHigh.GetValue():
 			put('wall_thickness', nozzle_size * 2.0)
-			put('layer_height', '0.1')
+			put('layer_height', '0.6')
 			put('fill_density', '25')
 			put('bottom_layer_speed', '15')
 			put('bottom_thickness', '0.25')
