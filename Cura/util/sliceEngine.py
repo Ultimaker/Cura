@@ -32,6 +32,11 @@ class Slicer(object):
 		self._progressSteps = ['inset', 'skin', 'export']
 		self._objCount = 0
 
+	def cleanup(self):
+		self.abortSlicer()
+		os.remove(self._binaryStorageFilename)
+		os.remove(self._exportFilename)
+
 	def abortSlicer(self):
 		if self._process is not None:
 			self._process.terminate()
@@ -90,7 +95,10 @@ class Slicer(object):
 
 					progressValue /= self._objCount
 					progressValue += 1.0 / self._objCount * objectNr
-					self._callback(progressValue, False)
+					try:
+						self._callback(progressValue, False)
+					except:
+						pass
 			else:
 				print '#', line.strip()
 			line = self._process.stdout.readline()
@@ -98,10 +106,13 @@ class Slicer(object):
 			print line.strip()
 		returnCode = self._process.wait()
 		print returnCode
-		if returnCode == 0:
-			self._callback(1.0, True)
-		else:
-			self._callback(0.0, False)
+		try:
+			if returnCode == 0:
+				self._callback(1.0, True)
+			else:
+				self._callback(0.0, False)
+		except:
+			pass
 		self._process = None
 
 	def _engineSettings(self):
