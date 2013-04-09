@@ -94,6 +94,8 @@ class Scene(object):
 		self.remove(obj2)
 		obj1._meshList += obj2._meshList
 		obj1.processMatrix()
+		obj1.setPosition((obj1.getPosition() + obj2.getPosition()) / 2)
+		self.pushFree()
 
 	def pushFree(self):
 		n = 1000
