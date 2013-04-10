@@ -24,26 +24,6 @@ from Cura.gui.util import previewTools
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 
-class anim(object):
-	def __init__(self, start, end, runTime):
-		self._start = start
-		self._end = end
-		self._startTime = time.time()
-		self._runTime = runTime
-
-	def isDone(self):
-		return time.time() > self._startTime + self._runTime
-
-	def getPosition(self):
-		if self.isDone():
-			return self._end
-		f = (time.time() - self._startTime) / self._runTime
-		ts = f*f
-		tc = f*f*f
-		#f = 6*tc*ts + -15*ts*ts + 10*tc
-		f = tc + -3*ts + 3*f
-		return self._start + (self._end - self._start) * f
-
 class SceneView(openglGui.glGuiPanel):
 	def __init__(self, parent):
 		super(SceneView, self).__init__(parent)
@@ -118,7 +98,6 @@ class SceneView(openglGui.glGuiPanel):
 
 		self.OnToolSelect(0)
 		self.updateProfileToControls()
-		wx.EVT_IDLE(self, self.OnIdle)
 
 	def ShowLoadModel(self, button):
 		if button == 1:
@@ -161,15 +140,6 @@ class SceneView(openglGui.glGuiPanel):
 				dlg.Destroy()
 
 				shutil.copy(self._slicer.getGCodeFilename(), filename)
-
-	def OnIdle(self, e):
-		if self._animView is not None or self._animZoom is not None:
-			self.Refresh()
-			return
-		for obj in self._scene.objects():
-			if obj._loadAnim is not None:
-				self.Refresh()
-				return
 
 	def OnToolSelect(self, button):
 		if self.rotateToolButton.getSelected():
@@ -262,7 +232,7 @@ class SceneView(openglGui.glGuiPanel):
 				traceback.print_exc()
 			else:
 				for obj in objList:
-					obj._loadAnim = anim(1, 0, 1.5)
+					obj._loadAnim = openglGui.animation(self, 1, 0, 1.5)
 					self._scene.add(obj)
 					self._scene.centerAll()
 					self._selectObject(obj)
@@ -287,11 +257,11 @@ class SceneView(openglGui.glGuiPanel):
 			self.updateProfileToControls()
 		if zoom:
 			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getMaximum()[2] / 2])
-			self._animView = anim(self._viewTarget.copy(), newViewPos, 0.5)
+			self._animView = openglGui.animation(self, self._viewTarget.copy(), newViewPos, 0.5)
 			newZoom = obj.getBoundaryCircle() * 6
 			if newZoom > numpy.max(self._machineSize) * 3:
 				newZoom = numpy.max(self._machineSize) * 3
-			self._animZoom = anim(self._zoom, newZoom, 0.5)
+			self._animZoom = openglGui.animation(self, self._zoom, newZoom, 0.5)
 
 	def updateProfileToControls(self):
 		oldSimpleMode = self._isSimpleMode
@@ -332,7 +302,7 @@ class SceneView(openglGui.glGuiPanel):
 			self._objectLoadShader.release()
 			self._objectLoadShader = s
 			for obj in self._scene.objects():
-				obj._loadAnim = anim(1, 0, 1.5)
+				obj._loadAnim = openglGui.animation(self, 1, 0, 1.5)
 			self.Refresh()
 
 	def OnMouseDown(self,e):

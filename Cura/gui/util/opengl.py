@@ -286,6 +286,109 @@ def glDrawTexturedQuad(x, y, w, h, texID, mirror = 0):
 	glEnd()
 	glPopMatrix()
 
+def glDrawStretchedQuad(x, y, w, h, cornerSize, texID):
+	tx0 = float(texID % 4) / 4
+	ty0 = float(int(texID / 4)) / 8
+	tx1 = tx0 + 0.25 / 2.0
+	ty1 = ty0 + 0.125 / 2.0
+	tx2 = tx0 + 0.25
+	ty2 = ty0 + 0.125
+
+	glPushMatrix()
+	glTranslatef(x, y, 0)
+	glEnable(GL_TEXTURE_2D)
+	glBegin(GL_QUADS)
+	#TopLeft
+	glTexCoord2f(tx1, ty0)
+	glVertex2f( cornerSize, 0)
+	glTexCoord2f(tx0, ty0)
+	glVertex2f( 0, 0)
+	glTexCoord2f(tx0, ty1)
+	glVertex2f( 0, cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, cornerSize)
+	#TopRight
+	glTexCoord2f(tx2, ty0)
+	glVertex2f( w, 0)
+	glTexCoord2f(tx1, ty0)
+	glVertex2f( w - cornerSize, 0)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w - cornerSize, cornerSize)
+	glTexCoord2f(tx2, ty1)
+	glVertex2f( w, cornerSize)
+	#BottomLeft
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, h - cornerSize)
+	glTexCoord2f(tx0, ty1)
+	glVertex2f( 0, h - cornerSize)
+	glTexCoord2f(tx0, ty2)
+	glVertex2f( 0, h)
+	glTexCoord2f(tx1, ty2)
+	glVertex2f( cornerSize, h)
+	#BottomRight
+	glTexCoord2f(tx2, ty1)
+	glVertex2f( w, h - cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w - cornerSize, h - cornerSize)
+	glTexCoord2f(tx1, ty2)
+	glVertex2f( w - cornerSize, h)
+	glTexCoord2f(tx2, ty2)
+	glVertex2f( w, h)
+
+	#Center
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w-cornerSize, cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, h-cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w-cornerSize, h-cornerSize)
+
+	#Right
+	glTexCoord2f(tx2, ty1)
+	glVertex2f( w, cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w-cornerSize, cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w-cornerSize, h-cornerSize)
+	glTexCoord2f(tx2, ty1)
+	glVertex2f( w, h-cornerSize)
+
+	#Left
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, cornerSize)
+	glTexCoord2f(tx0, ty1)
+	glVertex2f( 0, cornerSize)
+	glTexCoord2f(tx0, ty1)
+	glVertex2f( 0, h-cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, h-cornerSize)
+
+	#Top
+	glTexCoord2f(tx1, ty0)
+	glVertex2f( w-cornerSize, 0)
+	glTexCoord2f(tx1, ty0)
+	glVertex2f( cornerSize, 0)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w-cornerSize, cornerSize)
+
+	#Bottom
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( w-cornerSize, h-cornerSize)
+	glTexCoord2f(tx1, ty1)
+	glVertex2f( cornerSize, h-cornerSize)
+	glTexCoord2f(tx1, ty2)
+	glVertex2f( cornerSize, h)
+	glTexCoord2f(tx1, ty2)
+	glVertex2f( w-cornerSize, h)
+
+	glEnd()
+	glDisable(GL_TEXTURE_2D)
+	glPopMatrix()
+
 def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
 	npModelMatrix = numpy.matrix(numpy.array(modelMatrix, numpy.float64).reshape((4,4)))
 	npProjMatrix = numpy.matrix(numpy.array(projMatrix, numpy.float64).reshape((4,4)))

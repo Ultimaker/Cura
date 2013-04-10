@@ -5,6 +5,7 @@ import wx
 import traceback
 import sys
 import os
+import time
 
 from wx import glcanvas
 import OpenGL
@@ -12,6 +13,27 @@ OpenGL.ERROR_CHECKING = False
 from OpenGL.GL import *
 
 from Cura.gui.util import opengl
+
+class animation(object):
+	def __init__(self, gui, start, end, runTime):
+		self._start = start
+		self._end = end
+		self._startTime = time.time()
+		self._runTime = runTime
+		gui._animationList.append(self)
+
+	def isDone(self):
+		return time.time() > self._startTime + self._runTime
+
+	def getPosition(self):
+		if self.isDone():
+			return self._end
+		f = (time.time() - self._startTime) / self._runTime
+		ts = f*f
+		tc = f*f*f
+		#f = 6*tc*ts + -15*ts*ts + 10*tc
+		f = tc + -3*ts + 3*f
+		return self._start + (self._end - self._start) * f
 
 class glGuiControl(object):
 	def __init__(self, parent, pos):
@@ -114,6 +136,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 		self._glRobotTexture = None
 		self._buttonSize = 64
 
+		self._animationList = []
 		self.glReleaseList = []
 
 		wx.EVT_PAINT(self, self._OnGuiPaint)
@@ -131,6 +154,14 @@ class glGuiPanel(glcanvas.GLCanvas):
 		wx.EVT_MOTION(self, self._OnGuiMouseMotion)
 		wx.EVT_CHAR(self, self._OnGuiKeyChar)
 		wx.EVT_KILL_FOCUS(self, self.OnFocusLost)
+		wx.EVT_IDLE(self, self._OnIdle)
+
+	def _OnIdle(self, e):
+		if len(self._animationList) > 0:
+			for anim in self._animationList:
+				if anim.isDone():
+					self._animationList.remove(anim)
+			self.Refresh()
 
 	def _OnGuiKeyChar(self, e):
 		if self._focus is not None:
@@ -577,115 +608,9 @@ class glFrame(glGuiContainer):
 		bs = self._parent._buttonSize
 		pos = self._getPixelPos()
 
-		glPushMatrix()
-		glTranslatef(pos[0], pos[1], 0)
-		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
-		glEnable(GL_TEXTURE_2D)
-
 		size = self._layout.getLayoutSize()
 		glColor4ub(255,255,255,255)
-		glBegin(GL_QUADS)
-		bs /= 2
-		tc = 1 / 4 / 2
-
-#		glTexCoord2f(1, 0)
-#		glVertex2f( size[0], 0)
-#		glTexCoord2f(0, 0)
-#		glVertex2f( 0, 0)
-#		glTexCoord2f(0, 1)
-#		glVertex2f( 0, size[1])
-#		glTexCoord2f(1, 1)
-#		glVertex2f( size[0], size[1])
-		#TopLeft
-		glTexCoord2f(tc, 0)
-		glVertex2f( bs, 0)
-		glTexCoord2f(0, 0)
-		glVertex2f( 0, 0)
-		glTexCoord2f(0, tc/2)
-		glVertex2f( 0, bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, bs)
-		#TopRight
-		glTexCoord2f(tc+tc, 0)
-		glVertex2f( size[0], 0)
-		glTexCoord2f(tc, 0)
-		glVertex2f( size[0] - bs, 0)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0] - bs, bs)
-		glTexCoord2f(tc+tc, tc/2)
-		glVertex2f( size[0], bs)
-		#BottomLeft
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, size[1] - bs)
-		glTexCoord2f(0, tc/2)
-		glVertex2f( 0, size[1] - bs)
-		glTexCoord2f(0, tc/2+tc/2)
-		glVertex2f( 0, size[1])
-		glTexCoord2f(tc, tc/2+tc/2)
-		glVertex2f( bs, size[1])
-		#BottomRight
-		glTexCoord2f(tc+tc, tc/2)
-		glVertex2f( size[0], size[1] - bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0] - bs, size[1] - bs)
-		glTexCoord2f(tc, tc/2+tc/2)
-		glVertex2f( size[0] - bs, size[1])
-		glTexCoord2f(tc+tc, tc/2+tc/2)
-		glVertex2f( size[0], size[1])
-
-		#Center
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0]-bs, bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, size[1]-bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0]-bs, size[1]-bs)
-
-		#Right
-		glTexCoord2f(tc+tc, tc/2)
-		glVertex2f( size[0], bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0]-bs, bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0]-bs, size[1]-bs)
-		glTexCoord2f(tc+tc, tc/2)
-		glVertex2f( size[0], size[1]-bs)
-
-		#Left
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, bs)
-		glTexCoord2f(0, tc/2)
-		glVertex2f( 0, bs)
-		glTexCoord2f(0, tc/2)
-		glVertex2f( 0, size[1]-bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, size[1]-bs)
-
-		#Top
-		glTexCoord2f(tc, 0)
-		glVertex2f( size[0]-bs, 0)
-		glTexCoord2f(tc, 0)
-		glVertex2f( bs, 0)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0]-bs, bs)
-
-		#Bottom
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( size[0]-bs, size[1]-bs)
-		glTexCoord2f(tc, tc/2)
-		glVertex2f( bs, size[1]-bs)
-		glTexCoord2f(tc, tc/2+tc/2)
-		glVertex2f( bs, size[1])
-		glTexCoord2f(tc, tc/2+tc/2)
-		glVertex2f( size[0]-bs, size[1])
-
-		glEnd()
-		glDisable(GL_TEXTURE_2D)
-		glPopMatrix()
+		opengl.glDrawStretchedQuad(pos[0], pos[1], size[0], size[1], bs/2, 0)
 		#Draw the controls on the frame
 		super(glFrame, self).draw()
 
