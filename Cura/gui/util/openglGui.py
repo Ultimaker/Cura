@@ -251,6 +251,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 		glLoadIdentity()
 
 		self._container.draw()
+
 		glBindTexture(GL_TEXTURE_2D, self._glRobotTexture)
 		glEnable(GL_TEXTURE_2D)
 		glPushMatrix()
@@ -367,7 +368,8 @@ class glGuiLayoutGrid(object):
 		return self._size
 
 class glButton(glGuiControl):
-	def __init__(self, parent, imageID, tooltip, pos, callback):
+	def __init__(self, parent, imageID, tooltip, pos, callback, size = None):
+		self._buttonSize = size
 		super(glButton, self).__init__(parent, pos)
 		self._tooltip = tooltip
 		self._parent = parent
@@ -399,6 +401,8 @@ class glButton(glGuiControl):
 		return self._selected
 
 	def getMinSize(self):
+		if self._buttonSize is not None:
+			return self._buttonSize, self._buttonSize
 		return self._base._buttonSize, self._base._buttonSize
 
 	def _getPixelPos(self):
@@ -411,7 +415,7 @@ class glButton(glGuiControl):
 
 		cx = (self._imageID % 4) / 4
 		cy = int(self._imageID / 4) / 4
-		bs = self._base._buttonSize
+		bs = self.getMinSize()[0]
 		pos = self._getPixelPos()
 
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
@@ -610,7 +614,7 @@ class glFrame(glGuiContainer):
 
 		size = self._layout.getLayoutSize()
 		glColor4ub(255,255,255,255)
-		opengl.glDrawStretchedQuad(pos[0], pos[1], size[0], size[1], bs/2, 0)
+		opengl.glDrawStretchedQuad(pos[0], pos[1], size[0], size[1], bs*0.75, 0)
 		#Draw the controls on the frame
 		super(glFrame, self).draw()
 
@@ -635,10 +639,51 @@ class glFrame(glGuiContainer):
 			return True
 		return False
 
+class glNotification(glFrame):
+	def __init__(self, parent, pos):
+		self._anim = None
+		super(glNotification, self).__init__(parent, pos)
+		glGuiLayoutGrid(self)._alignBottom = False
+		self._label = glLabel(self, "Notification", (0, 0))
+		self._button = glButton(self, 30, "", (1, 0), self.onClose, 25)
+		self._padding = glLabel(self, "", (0, 1))
+		self.setHidden(True)
+
+	def setSize(self, x, y, w, h):
+		w, h = self._layout.getLayoutSize()
+		baseSize = self._base.GetSizeTuple()
+		if self._anim is not None:
+			super(glNotification, self).setSize(baseSize[0] / 2 - w / 2, baseSize[1] - self._anim.getPosition() - self._base._buttonSize * 0.2, 1, 1)
+		else:
+			super(glNotification, self).setSize(baseSize[0] / 2 - w / 2, baseSize[1] - self._base._buttonSize * 0.2, 1, 1)
+
+	def draw(self):
+		self.setSize(0,0,0,0)
+		self.updateLayout()
+		super(glNotification, self).draw()
+
+	def message(self, text):
+		if self._anim is not None:
+			self._anim = animation(self._base, self._anim.getPosition(), 25, 1)
+		else:
+			self._anim = animation(self._base, -20, 25, 1)
+		self.setHidden(False)
+		self._label.setLabel(text)
+		self.updateLayout()
+
+	def onClose(self, button):
+		if self._anim is not None:
+			self._anim = animation(self._base, self._anim.getPosition(), -20, 1)
+		else:
+			self._anim = animation(self._base, 25, -20, 1)
+
 class glLabel(glGuiControl):
 	def __init__(self, parent, label, pos):
 		self._label = label
 		super(glLabel, self).__init__(parent, pos)
+
+	def setLabel(self, label):
+		self._label = label
 
 	def getMinSize(self):
 		w, h = opengl.glGetStringSize(self._label)

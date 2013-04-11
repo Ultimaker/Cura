@@ -91,6 +91,8 @@ class SceneView(openglGui.glGuiPanel):
 		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
+		self.notification = openglGui.glNotification(self, (0, 0))
+
 		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
 		self._sceneUpdateTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
@@ -167,7 +169,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnLayFlat(self, button):
 		if self._selectedObj is None:
 			return
-		pass
+ /		pass
 
 	def OnScaleReset(self, button):
 		if self._selectedObj is None:

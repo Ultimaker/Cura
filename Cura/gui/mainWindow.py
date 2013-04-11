@@ -449,14 +449,17 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 		#Plugin page
 		self.pluginPanel = pluginPanel.pluginPanel(self.nb)
-		if len(self.pluginPanel.pluginList) > 0:
+		if len(self.pluginPanel.pluginList) > 0 and False:
 			self.nb.AddPage(self.pluginPanel, "Plugins")
 		else:
 			self.pluginPanel.Show(False)
 
 		#Alteration page
 		self.alterationPanel = alterationPanel.alterationPanel(self.nb)
-		self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
+		if False:
+			self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
+		else:
+			self.alterationPanel.Show(False)
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 
