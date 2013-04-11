@@ -164,22 +164,22 @@ class SceneView(openglGui.glGuiPanel):
 	def OnRotateReset(self, button):
 		if self._selectedObj is None:
 			return
-		pass
+		self._selectedObj.resetRotation()
 
 	def OnLayFlat(self, button):
 		if self._selectedObj is None:
 			return
-		pass
+		self._selectedObj.layFlat()
 
 	def OnScaleReset(self, button):
 		if self._selectedObj is None:
 			return
-		pass
+		self._selectedObj.resetScale()
 
 	def OnScaleMax(self, button):
 		if self._selectedObj is None:
 			return
-		pass
+		self._selectedObj.scaleUpTo(self._machineSize)
 
 	def OnMirror(self, axis):
 		if self._selectedObj is None:

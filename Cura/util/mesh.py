@@ -108,6 +108,24 @@ class printableObject(object):
 			matrix[axis][axis] = scale
 		self.applyMatrix(numpy.matrix(matrix, numpy.float64))
 
+	def resetScale(self):
+		x = 1/numpy.linalg.norm(self._matrix[::,0].getA().flatten())
+		y = 1/numpy.linalg.norm(self._matrix[::,1].getA().flatten())
+		z = 1/numpy.linalg.norm(self._matrix[::,2].getA().flatten())
+		self.applyMatrix(numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64))
+
+	def resetRotation(self):
+		x = numpy.linalg.norm(self.matrix[::,0].getA().flatten())
+		y = numpy.linalg.norm(self.matrix[::,1].getA().flatten())
+		z = numpy.linalg.norm(self.matrix[::,2].getA().flatten())
+		self.applyMatrix(numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64))
+
+	def layFlat(self):
+		pass
+
+	def scaleUpTo(self, size):
+		pass
+
 class mesh(object):
 	def __init__(self):
 		self.vertexes = None
