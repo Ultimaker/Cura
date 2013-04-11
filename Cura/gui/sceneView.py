@@ -169,7 +169,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnLayFlat(self, button):
 		if self._selectedObj is None:
 			return
- /		pass
+		pass
 
 	def OnScaleReset(self, button):
 		if self._selectedObj is None:
