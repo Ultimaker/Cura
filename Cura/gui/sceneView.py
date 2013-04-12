@@ -357,15 +357,15 @@ class SceneView(openglGui.glGuiPanel):
 			if e.GetButton() == 1:
 				self._selectObject(self._focusObj)
 			if e.GetButton() == 3:
-				if self._selectedObj is not None and self._selectedObj == self._focusObj:
+				if self._selectedObj is not None:
 					menu = wx.Menu()
-					self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
-					self.PopupMenu(menu)
-					menu.Destroy()
-				if self._selectedObj != self._focusObj and self._selectedObj is not None and self._focusObj is not None:
-					menu = wx.Menu()
-					self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Merge'))
-					self.PopupMenu(menu)
+					self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._selectedObj), menu.Append(-1, 'Delete'))
+					if self._selectedObj == self._focusObj:
+						self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
+					if self._selectedObj != self._focusObj and self._focusObj is not None:
+						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Merge'))
+					if menu.MenuItemCount > 0:
+						self.PopupMenu(menu)
 					menu.Destroy()
 		elif self._mouseState == 'dragObject' and self._selectedObj is not None:
 			self._scene.pushFree()
@@ -387,6 +387,7 @@ class SceneView(openglGui.glGuiPanel):
 			if self._mouseState == 'tool':
 				self.tool.OnDrag(p0, p1)
 			elif not e.LeftIsDown() and e.RightIsDown():
+				self._mouseState = 'drag'
 				self._yaw += e.GetX() - self._mouseX
 				self._pitch -= e.GetY() - self._mouseY
 				if self._pitch > 170:
@@ -394,6 +395,7 @@ class SceneView(openglGui.glGuiPanel):
 				if self._pitch < 10:
 					self._pitch = 10
 			elif (e.LeftIsDown() and e.RightIsDown()) or e.MiddleIsDown():
+				self._mouseState = 'drag'
 				self._zoom += e.GetY() - self._mouseY
 				if self._zoom < 1:
 					self._zoom = 1
