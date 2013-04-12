@@ -194,7 +194,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnScaleMax(self, button):
 		if self._selectedObj is None:
 			return
-		self._selectedObj.scaleUpTo(self._machineSize)
+		self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2)
 
 	def OnMirror(self, axis):
 		if self._selectedObj is None:
@@ -610,10 +610,10 @@ void main(void)
 			glEnable(GL_CULL_FACE)
 			glColor4f(0,0,0,0.12)
 			glBegin(GL_QUADS)
-			glVertex3f(-size[0],  size[1], 0)
-			glVertex3f(-size[0], -size[1], 0)
-			glVertex3f( size[0], -size[1], 0)
-			glVertex3f( size[0],  size[1], 0)
+			glVertex3f(-size[0],  size[1], 0.1)
+			glVertex3f(-size[0], -size[1], 0.1)
+			glVertex3f( size[0], -size[1], 0.1)
+			glVertex3f( size[0],  size[1], 0.1)
 			glEnd()
 			glDisable(GL_CULL_FACE)
 			glPopMatrix()
