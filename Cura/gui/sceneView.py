@@ -345,7 +345,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._selectedObj = None
 					self.Refresh()
 			if e.GetButton() == 3:
-				if self._selectedObj == self._focusObj:
+				if self._selectedObj is not None and self._selectedObj == self._focusObj:
 					menu = wx.Menu()
 					self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
 					self.PopupMenu(menu)
