@@ -291,6 +291,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 		pass
 	def OnPaint(self, e):
 		pass
+	def OnKeyChar(self, keycode):
+		pass
 
 	def add(self, ctrl):
 		if self._container is not None:

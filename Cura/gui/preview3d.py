@@ -232,6 +232,7 @@ class previewPanel(wx.Panel):
 		z = numpy.linalg.norm(self.matrix[::,2].getA().flatten())
 		self.matrix = numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
 		for obj in self.objectList:
+			obj.dirty = True
 			obj.steepDirty = True
 		self.updateModelTransform()
 
@@ -635,6 +636,20 @@ class PreviewGLCanvas(openglGui.glGuiPanel):
 		if self.zoom > 500:
 			self.zoom = 500
 		self.Refresh()
+
+	def OnKeyChar(self, keycode):
+		if keycode == wx.WXK_UP:
+			self.parent.layerSelect.setValue(self.parent.layerSelect.getValue() + 1)
+			self.Refresh()
+		elif keycode == wx.WXK_DOWN:
+			self.parent.layerSelect.setValue(self.parent.layerSelect.getValue() - 1)
+			self.Refresh()
+		elif keycode == wx.WXK_PAGEUP:
+			self.parent.layerSelect.setValue(self.parent.layerSelect.getValue() + 10)
+			self.Refresh()
+		elif keycode == wx.WXK_PAGEDOWN:
+			self.parent.layerSelect.setValue(self.parent.layerSelect.getValue() - 10)
+			self.Refresh()
 
 	def OnPaint(self,e):
 		opengl.InitGL(self, self.view3D, self.zoom)
