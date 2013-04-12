@@ -362,7 +362,7 @@ class SceneView(openglGui.glGuiPanel):
 					self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
 					self.PopupMenu(menu)
 					menu.Destroy()
-				if self._selectedObj != self._focusObj and self._focusObj is not None:
+				if self._selectedObj != self._focusObj and self._selectedObj is not None and self._focusObj is not None:
 					menu = wx.Menu()
 					self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Merge'))
 					self.PopupMenu(menu)
