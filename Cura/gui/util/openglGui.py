@@ -120,13 +120,15 @@ class glGuiPanel(glcanvas.GLCanvas):
 		wx.EVT_LEFT_DOWN(self, self._OnGuiMouseLeftDown)
 		wx.EVT_LEFT_UP(self, self._OnGuiMouseLeftUp)
 		wx.EVT_MOTION(self, self._OnGuiMouseMotion)
-		wx.EVT_CHAR(self, self.OnKeyChar)
+		wx.EVT_CHAR(self, self._OnGuiKeyChar)
 		wx.EVT_KILL_FOCUS(self, self.OnFocusLost)
 
-	def OnKeyChar(self, e):
+	def _OnGuiKeyChar(self, e):
 		if self._focus is not None:
 			self._focus.OnKeyChar(e.GetKeyCode())
 			self.Refresh()
+		else:
+			self.OnKeyChar(e.GetKeyCode())
 
 	def OnFocusLost(self, e):
 		self._focus = None
@@ -240,6 +242,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 	def OnMouseMotion(self, e):
 		pass
 	def OnPaint(self, e):
+		pass
+	def OnKeyChar(self, keycode):
 		pass
 
 	def add(self, ctrl):
