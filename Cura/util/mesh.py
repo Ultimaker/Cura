@@ -137,7 +137,47 @@ class printableObject(object):
 		self.applyMatrix(numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64))
 
 	def layFlat(self):
-		pass
+		transformedVertexes = (numpy.matrix(self._meshList[0].vertexes, copy = False) * self._matrix).getA()
+		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
+		dotMin = 1.0
+		dotV = None
+		for v in transformedVertexes:
+			diff = v - minZvertex
+			len = math.sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2])
+			if len < 5:
+				continue
+			dot = (diff[2] / len)
+			if dotMin > dot:
+				dotMin = dot
+				dotV = diff
+		if dotV is None:
+			return
+		rad = -math.atan2(dotV[1], dotV[0])
+		self._matrix *= numpy.matrix([[math.cos(rad), math.sin(rad), 0], [-math.sin(rad), math.cos(rad), 0], [0,0,1]], numpy.float64)
+		rad = -math.asin(dotMin)
+		self._matrix *= numpy.matrix([[math.cos(rad), 0, math.sin(rad)], [0,1,0], [-math.sin(rad), 0, math.cos(rad)]], numpy.float64)
+
+
+		transformedVertexes = (numpy.matrix(self._meshList[0].vertexes, copy = False) * self._matrix).getA()
+		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
+		dotMin = 1.0
+		dotV = None
+		for v in transformedVertexes:
+			diff = v - minZvertex
+			len = math.sqrt(diff[1] * diff[1] + diff[2] * diff[2])
+			if len < 5:
+				continue
+			dot = (diff[2] / len)
+			if dotMin > dot:
+				dotMin = dot
+				dotV = diff
+		if dotV is None:
+			return
+		if dotV[1] < 0:
+			rad = math.asin(dotMin)
+		else:
+			rad = -math.asin(dotMin)
+		self.applyMatrix(numpy.matrix([[1,0,0], [0, math.cos(rad), math.sin(rad)], [0, -math.sin(rad), math.cos(rad)]], numpy.float64))
 
 	def scaleUpTo(self, size):
 		vMin = self._transformedMin
