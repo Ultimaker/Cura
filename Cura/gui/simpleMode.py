@@ -108,16 +108,16 @@ class simpleModePanel(wx.Panel):
 			put('layer_height', '0.15')
 			put('fill_density', '20')
 		elif self.printTypeLow.GetValue():
-			put('wall_thickness', nozzle_size * 1.4)
-			put('layer_height', '0.25')
+			put('wall_thickness', nozzle_size * 2.5)
+			put('layer_height', '0.20')
 			put('fill_density', '10')
-			put('print_speed', '60')
+			put('print_speed', '50')
 			put('cool_min_layer_time', '3')
-			put('bottom_layer_speed', '40')
+			put('bottom_layer_speed', '30')
 		elif self.printTypeHigh.GetValue():
 			put('wall_thickness', nozzle_size * 2.0)
-			put('layer_height', '0.6')
-			put('fill_density', '25')
+			put('layer_height', '0.06')
+			put('fill_density', '20')
 			put('bottom_layer_speed', '15')
 			put('bottom_thickness', '0.25')
 		elif self.printTypeJoris.GetValue():
