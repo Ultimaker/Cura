@@ -99,6 +99,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
 
 		self.OnToolSelect(0)
+		self.updateToolButtons()
 		self.updateProfileToControls()
 
 	def ShowLoadModel(self, button):
@@ -160,6 +161,20 @@ class SceneView(openglGui.glGuiPanel):
 		self.mirrorXButton.setHidden(not self.mirrorToolButton.getSelected())
 		self.mirrorYButton.setHidden(not self.mirrorToolButton.getSelected())
 		self.mirrorZButton.setHidden(not self.mirrorToolButton.getSelected())
+
+	def updateToolButtons(self):
+		if self._selectedObj is None:
+			hidden = True
+		else:
+			hidden = False
+		self.rotateToolButton.setHidden(hidden)
+		self.scaleToolButton.setHidden(hidden)
+		self.mirrorToolButton.setHidden(hidden)
+		if hidden:
+			self.rotateToolButton.setSelected(False)
+			self.scaleToolButton.setSelected(False)
+			self.mirrorToolButton.setSelected(False)
+			self.OnToolSelect(0)
 
 	def OnRotateReset(self, button):
 		if self._selectedObj is None:
@@ -249,7 +264,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def _deleteObject(self, obj):
 		if obj == self._selectedObj:
-			self._selectedObj = None
+			self._selectObject(None)
 		if obj == self._focusObj:
 			self._focusObj = None
 		self._scene.remove(obj)
@@ -264,7 +279,8 @@ class SceneView(openglGui.glGuiPanel):
 		if obj != self._selectedObj:
 			self._selectedObj = obj
 			self.updateProfileToControls()
-		if zoom:
+			self.updateToolButtons()
+		if zoom and obj is not None:
 			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getMaximum()[2] / 2])
 			self._animView = openglGui.animation(self, self._viewTarget.copy(), newViewPos, 0.5)
 			newZoom = obj.getBoundaryCircle() * 6
@@ -339,11 +355,7 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		if self._mouseState == 'dragOrClick':
 			if e.GetButton() == 1:
-				if self._focusObj is not None:
-					self._selectObject(self._focusObj)
-				else:
-					self._selectedObj = None
-					self.Refresh()
+				self._selectObject(self._focusObj)
 			if e.GetButton() == 3:
 				if self._selectedObj is not None and self._selectedObj == self._focusObj:
 					menu = wx.Menu()
