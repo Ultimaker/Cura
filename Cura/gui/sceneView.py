@@ -209,6 +209,13 @@ class SceneView(openglGui.glGuiPanel):
 		self.updateProfileToControls()
 		self.sceneUpdated()
 
+	def OnDuplicateObject(self, e):
+		if self._selectedObj is None:
+			return
+		self._scene.add(self._selectedObj.copy())
+		self._scene.centerAll()
+		self.sceneUpdated()
+
 	def OnMergeObjects(self, e):
 		if self._selectedObj is None or self._focusObj is None or self._selectedObj == self._focusObj:
 			return
@@ -247,7 +254,7 @@ class SceneView(openglGui.glGuiPanel):
 			self._focusObj = None
 		self._scene.remove(obj)
 		for m in obj._meshList:
-			if m.vbo is not None:
+			if m.vbo is not None and m.vbo.decRef():
 				self.glReleaseList.append(m.vbo)
 		if self._isSimpleMode:
 			self._scene.arrangeAll()
@@ -339,11 +346,10 @@ class SceneView(openglGui.glGuiPanel):
 					self.Refresh()
 			if e.GetButton() == 3:
 				if self._selectedObj == self._focusObj:
-					#menu = wx.Menu()
-					#menu.Append(-1, 'Test')
-					#self.PopupMenu(menu)
-					#menu.Destroy()
-					pass
+					menu = wx.Menu()
+					self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
+					self.PopupMenu(menu)
+					menu.Destroy()
 				if self._selectedObj != self._focusObj and self._focusObj is not None:
 					menu = wx.Menu()
 					self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Merge'))

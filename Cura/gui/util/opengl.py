@@ -22,8 +22,20 @@ glutInit()
 
 platformMesh = None
 
-class GLShader(object):
+class GLReferenceCounter(object):
+	def __init__(self):
+		self._refCounter = 1
+
+	def incRef(self):
+		self._refCounter += 1
+
+	def decRef(self):
+		self._refCounter -= 1
+		return self._refCounter <= 0
+
+class GLShader(GLReferenceCounter):
 	def __init__(self, vertexProgram, fragmentProgram):
+		super(GLShader, self).__init__()
 		self._vertexString = vertexProgram
 		self._fragmentString = fragmentProgram
 		try:
@@ -65,8 +77,9 @@ class GLShader(object):
 		if self._program is not None and bool(glDeleteProgram):
 			print "Shader was not properly released!"
 
-class GLVBO(object):
+class GLVBO(GLReferenceCounter):
 	def __init__(self, vertexArray, normalArray):
+		super(GLVBO, self).__init__()
 		self._buffer = glGenBuffers(1)
 		self._size = len(vertexArray)
 		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)

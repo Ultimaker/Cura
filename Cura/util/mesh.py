@@ -15,7 +15,23 @@ class printableObject(object):
 		self._matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
 		self._transformedMin = None
 		self._transformedMax = None
+		self._transformedSize = None
 		self._boundaryCircleSize = None
+		self._drawOffset = None
+		self._loadAnim = None
+
+	def copy(self):
+		ret = printableObject()
+		ret._matrix = self._matrix.copy()
+		ret._meshList = self._meshList[:]
+		ret._transformedMin = self._transformedMin
+		ret._transformedMax = self._transformedMin
+		ret._transformedSize = self._transformedSize
+		ret._boundaryCircleSize = self._boundaryCircleSize
+		ret._drawOffset = self._drawOffset
+		for m in ret._meshList:
+			m.vbo.incRef()
+		return ret
 
 	def _addMesh(self):
 		m = mesh()
