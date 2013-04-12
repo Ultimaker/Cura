@@ -7,12 +7,12 @@ class _objectOrder(object):
 		self.todo = todo
 
 class _objectOrderFinder(object):
-	def __init__(self, scene, offset):
+	def __init__(self, scene, offset, leftToRight, frontToBack, gantryHeight):
 		self._scene = scene
 		self._offset = offset - numpy.array([0.1,0.1])
 		self._objs = scene.objects()
-		self._leftToRight = True
-		self._frontToBack = True
+		self._leftToRight = leftToRight
+		self._frontToBack = frontToBack
 		initialList = []
 		for n in xrange(0, len(self._objs)):
 			if scene.checkPlatform(self._objs[n]):
@@ -48,10 +48,10 @@ class _objectOrderFinder(object):
 		size = self._scene._objectList[idx].getSize()
 
 		if self._leftToRight:
-			if addPos[0] + addSize[0] / 2 + self._offset[0] <= pos[0] - size[0] / 2:
+			if addPos[0] - addSize[0] / 2 - self._offset[0] <= pos[0] + size[0] / 2:
 				return False
 		else:
-			if addPos[0] - addSize[0] / 2 - self._offset[0] <= pos[0] + size[0] / 2:
+			if addPos[0] + addSize[0] / 2 + self._offset[0] <= pos[0] - size[0] / 2:
 				return False
 
 		if self._frontToBack:
@@ -69,12 +69,22 @@ class Scene(object):
 		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
 		self._headOffsets = numpy.array([18.0,18.0], numpy.float32)
+		self._leftToRight = False
+		self._frontToBack = True
+		self._gantryHeight = 60
 
 	def setMachineSize(self, machineSize):
 		self._machineSize = machineSize
 
 	def setSizeOffsets(self, sizeOffsets):
 		self._sizeOffsets = sizeOffsets
+
+	def setHeadSize(self, xMin, xMax, yMin, yMax, gantryHeight):
+		self._leftToRight = xMin < xMax
+		self._frontToBack = yMin < yMax
+		self._headOffsets[0] = min(xMin, xMax)
+		self._headOffsets[1] = min(yMin, yMax)
+		self._gantryHeight = gantryHeight
 
 	def getObjectExtend(self):
 		return self._sizeOffsets + self._headOffsets
@@ -126,7 +136,7 @@ class Scene(object):
 			obj.setPosition(obj.getPosition() + offset)
 
 	def printOrder(self):
-		order = _objectOrderFinder(self, self._headOffsets + self._sizeOffsets).order
+		order = _objectOrderFinder(self, self._headOffsets + self._sizeOffsets, self._leftToRight, self._frontToBack, self._gantryHeight).order
 		if order is None:
 			print "ODD! Cannot find out proper printing order!!!"
 			for obj in self._objectList:

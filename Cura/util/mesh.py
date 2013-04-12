@@ -131,10 +131,11 @@ class printableObject(object):
 		self.applyMatrix(numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64))
 
 	def resetRotation(self):
-		x = numpy.linalg.norm(self.matrix[::,0].getA().flatten())
-		y = numpy.linalg.norm(self.matrix[::,1].getA().flatten())
-		z = numpy.linalg.norm(self.matrix[::,2].getA().flatten())
-		self.applyMatrix(numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64))
+		x = numpy.linalg.norm(self._matrix[::,0].getA().flatten())
+		y = numpy.linalg.norm(self._matrix[::,1].getA().flatten())
+		z = numpy.linalg.norm(self._matrix[::,2].getA().flatten())
+		self._matrix = numpy.matrix([[x,0,0],[0,y,0],[0,0,z]], numpy.float64)
+		self.processMatrix()
 
 	def layFlat(self):
 		transformedVertexes = (numpy.matrix(self._meshList[0].vertexes, copy = False) * self._matrix).getA()
