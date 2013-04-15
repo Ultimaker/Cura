@@ -245,6 +245,7 @@ echo $BUILD_NAME > ${TARGET_DIR}/Cura/version
 #add script files
 if [ $BUILD_TARGET = "win32" ]; then
     cp -a scripts/${BUILD_TARGET}/*.bat $TARGET_DIR/
+    cp SteamEngine.exe $TARGET_DIR
 else
     cp -a scripts/${BUILD_TARGET}/*.sh $TARGET_DIR/
 fi
