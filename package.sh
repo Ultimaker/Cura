@@ -173,8 +173,6 @@ if [ $BUILD_TARGET = "win32" ]; then
 	downloadURL http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-20120927-git-13f0cd6-win32-static.7z
 	downloadURL http://sourceforge.net/projects/comtypes/files/comtypes/0.6.2/comtypes-0.6.2.win32.exe
 	downloadURL http://www.uwe-sieber.de/files/ejectmedia.zip
-	#Get pypy
-	downloadURL https://bitbucket.org/pypy/pypy/downloads/pypy-${PYPY_VERSION}-win32.zip
 	#Get the power module for python
 	rm -rf Power
 	git clone https://github.com/GreatFruitOmsk/Power
@@ -237,16 +235,6 @@ if [ $BUILD_TARGET = "win32" ]; then
 	#Remove the gle files because they require MSVCR71.dll, which is not included. We also don't need gle, so it's safe to remove it.
 	rm -rf ${TARGET_DIR}/python/Lib/OpenGL/DLLS/gle*
 fi
-
-#Extract pypy
-if [ $BUILD_TARGET = "win32" ]; then
-	extract pypy-${PYPY_VERSION}-win32.zip -o${TARGET_DIR}
-else
-	cd ${TARGET_DIR}; $TAR -xjf ../pypy-${PYPY_VERSION}-${BUILD_TARGET}.tar.bz2; cd ..
-fi
-mv ${TARGET_DIR}/pypy-* ${TARGET_DIR}/pypy
-#Cleanup pypy
-rm -rf ${TARGET_DIR}/pypy/lib-python/2.7/test
 
 #add Cura
 mkdir -p ${TARGET_DIR}/Cura
