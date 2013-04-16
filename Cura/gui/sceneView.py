@@ -130,6 +130,7 @@ class SceneView(openglGui.glGuiPanel):
 				filename = os.path.basename(profile.getPreference('lastFile'))
 				filename = filename[0:filename.rfind('.')] + '.gcode'
 				shutil.copy(self._slicer.getGCodeFilename(), drive[1] + filename)
+				self.notification.message("Saved as %s" % (drive[1] + filename))
 			else:
 				defPath = profile.getPreference('lastFile')
 				defPath = defPath[0:defPath.rfind('.')] + '.gcode'
@@ -143,6 +144,7 @@ class SceneView(openglGui.glGuiPanel):
 				dlg.Destroy()
 
 				shutil.copy(self._slicer.getGCodeFilename(), filename)
+				self.notification.message("Saved as %s" % (filename))
 
 	def OnToolSelect(self, button):
 		if self.rotateToolButton.getSelected():
