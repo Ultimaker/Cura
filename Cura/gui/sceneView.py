@@ -182,11 +182,15 @@ class SceneView(openglGui.glGuiPanel):
 		if self._selectedObj is None:
 			return
 		self._selectedObj.resetRotation()
+		self._scene.pushFree()
+		self._selectObject(self._selectedObj)
 
 	def OnLayFlat(self, button):
 		if self._selectedObj is None:
 			return
 		self._selectedObj.layFlat()
+		self._scene.pushFree()
+		self._selectObject(self._selectedObj)
 
 	def OnScaleReset(self, button):
 		if self._selectedObj is None:
@@ -197,6 +201,8 @@ class SceneView(openglGui.glGuiPanel):
 		if self._selectedObj is None:
 			return
 		self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2)
+		self._scene.pushFree()
+		self._selectObject(self._selectedObj)
 
 	def OnMirror(self, axis):
 		if self._selectedObj is None:
@@ -213,6 +219,8 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		self._selectedObj.setScale(value, axis, self.scaleUniform.getValue())
 		self.updateProfileToControls()
+		self._scene.pushFree()
+		self._selectObject(self._selectedObj)
 		self.sceneUpdated()
 
 	def OnScaleEntryMM(self, value, axis):
@@ -224,11 +232,14 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		self._selectedObj.setSize(value, axis, self.scaleUniform.getValue())
 		self.updateProfileToControls()
+		self._scene.pushFree()
+		self._selectObject(self._selectedObj)
 		self.sceneUpdated()
 
 	def OnDeleteAll(self, e):
 		while len(self._scene.objects()) > 0:
 			self._deleteObject(self._scene.objects()[0])
+		self._animView = openglGui.animation(self, self._viewTarget.copy(), numpy.array([0,0,0], numpy.float32), 0.5)
 
 	def OnMultiply(self, e):
 		if self._focusObj is None:
@@ -409,6 +420,8 @@ class SceneView(openglGui.glGuiPanel):
 		elif self._mouseState == 'tool':
 			if self.tempMatrix is not None and self._selectedObj is not None:
 				self._selectedObj.applyMatrix(self.tempMatrix)
+				self._scene.pushFree()
+				self._selectObject(self._selectedObj)
 			self.tempMatrix = None
 			self.tool.OnDragEnd()
 			self.sceneUpdated()
