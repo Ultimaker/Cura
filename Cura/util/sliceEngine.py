@@ -100,7 +100,8 @@ class Slicer(object):
 					except:
 						pass
 			else:
-				print '#', line.strip()
+				#print '#', line.strip()
+				pass
 			line = self._process.stdout.readline()
 		for line in self._process.stderr:
 			print line.strip()

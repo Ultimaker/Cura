@@ -20,9 +20,19 @@ class _objectOrderFinder(object):
 		if len(initialList) == 0:
 			self.order = []
 			return
+
+		self._hitMap = [None] * (max(initialList)+1)
+		for a in initialList:
+			self._hitMap[a] = [False] * (max(initialList)+1)
+			for b in initialList:
+				self._hitMap[a][b] = self._checkHit(a, b)
+
+		initialList.sort(self._objIdxCmp)
+
 		self._todo = [_objectOrder([], initialList)]
 		while len(self._todo) > 0:
 			current = self._todo.pop()
+			#print len(self._todo), len(current.order), len(initialList)
 			for addIdx in current.todo:
 				if not self._checkHitFor(addIdx, current.order):
 					todoList = current.todo[:]
@@ -35,9 +45,14 @@ class _objectOrderFinder(object):
 					self._todo.append(_objectOrder(order, todoList))
 		self.order = None
 
+	def _objIdxCmp(self, a, b):
+		scoreA = sum(self._hitMap[a])
+		scoreB = sum(self._hitMap[b])
+		return scoreA - scoreB
+
 	def _checkHitFor(self, addIdx, others):
 		for idx in others:
-			if self._checkHit(addIdx, idx):
+			if self._hitMap[addIdx][idx]:
 				return True
 		return False
 

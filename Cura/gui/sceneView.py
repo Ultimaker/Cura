@@ -231,6 +231,16 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene.centerAll()
 		self.sceneUpdated()
 
+	def OnSplitObject(self, e):
+		if self._selectedObj is None:
+			return
+		self._scene.remove(self._selectedObj)
+		for obj in self._selectedObj.split():
+			self._scene.add(obj)
+		self._scene.centerAll()
+		self._selectObject(None)
+		self.sceneUpdated()
+
 	def OnMergeObjects(self, e):
 		if self._selectedObj is None or self._focusObj is None or self._selectedObj == self._focusObj:
 			return
@@ -363,8 +373,9 @@ class SceneView(openglGui.glGuiPanel):
 					self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._selectedObj), menu.Append(-1, 'Delete'))
 					if self._selectedObj == self._focusObj:
 						self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
+						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, 'Split'))
 					if self._selectedObj != self._focusObj and self._focusObj is not None:
-						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Merge'))
+						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Dual extrusion merge'))
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
