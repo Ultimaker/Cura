@@ -125,7 +125,7 @@ class Slicer(object):
 			'insetCount': int(profile.calculateLineCount()),
 			'downSkinCount': int(profile.calculateSolidLayerCount()),
 			'upSkinCount': int(profile.calculateSolidLayerCount()),
-			'sparseInfillLineDistance': int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density')),
+			'sparseInfillLineDistance': int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density')) if profile.getProfileSettingFloat('fill_density') > 0 else 9999999999,
 			'skirtDistance': int(profile.getProfileSettingFloat('skirt_gap') * 1000),
 			'skirtLineCount': int(profile.getProfileSettingFloat('skirt_line_count')),
 			'initialSpeedupLayers': int(4),

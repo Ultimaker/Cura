@@ -20,6 +20,7 @@ from Cura.util import resources
 from Cura.util import sliceEngine
 from Cura.util import machineCom
 from Cura.util import removableStorage
+from Cura.util import gcodeInterpreter
 from Cura.gui.util import previewTools
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
@@ -32,6 +33,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._pitch = 60
 		self._zoom = 300
 		self._scene = objectScene.Scene()
+		self._gcode = None
 		self._objectShader = None
 		self._focusObj = None
 		self._selectedObj = None
@@ -91,6 +93,9 @@ class SceneView(openglGui.glGuiPanel):
 		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
+		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,23], ['Normal', 'Layers'], (-1,0), self.OnViewChange)
+		self.layerSelect = openglGui.glSlider(self, 100, 0, 100, (-1,-2), lambda : self.QueueRefresh())
+
 		self.notification = openglGui.glNotification(self, (0, 0))
 
 		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
@@ -98,6 +103,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
 		self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
 
+		self.OnViewChange()
 		self.OnToolSelect(0)
 		self.updateToolButtons()
 		self.updateProfileToControls()
@@ -177,6 +183,16 @@ class SceneView(openglGui.glGuiPanel):
 			self.scaleToolButton.setSelected(False)
 			self.mirrorToolButton.setSelected(False)
 			self.OnToolSelect(0)
+
+	def OnViewChange(self):
+		if self.viewSelection.getValue() == 1:
+			self.viewMode = 'gcode'
+			self._selectObject(None)
+		else:
+			self.viewMode = 'normal'
+		self.layerSelect.setHidden(self.viewMode != 'gcode')
+		self.openFileButton.setHidden(self.viewMode == 'gcode')
+		self.QueueRefresh()
 
 	def OnRotateReset(self, button):
 		if self._selectedObj is None:
@@ -285,12 +301,17 @@ class SceneView(openglGui.glGuiPanel):
 		self._sceneUpdateTimer.Start(1, True)
 		self._slicer.abortSlicer()
 		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
-		self.Refresh()
+		self.QueueRefresh()
 
 	def _updateSliceProgress(self, progressValue, ready):
 		self.printButton.setDisabled(not ready)
 		self.printButton.setProgressBar(progressValue)
-		self.Refresh()
+		if ready:
+			self._gcode = gcodeInterpreter.gcode()
+			self._gcode.load(self._slicer.getGCodeFilename())
+		else:
+			self._gcode = None
+		self.QueueRefresh()
 
 	def loadScene(self, fileList):
 		for filename in fileList:
@@ -361,7 +382,7 @@ class SceneView(openglGui.glGuiPanel):
 		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE:
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
-				self.Refresh()
+				self.QueueRefresh()
 
 		if keyCode == wx.WXK_F3 and wx.GetKeyState(wx.WXK_SHIFT):
 			shaderEditor(self, self.ShaderUpdate, self._objectLoadShader.getVertexShader(), self._objectLoadShader.getFragmentShader())
@@ -373,7 +394,7 @@ class SceneView(openglGui.glGuiPanel):
 			self._objectLoadShader = s
 			for obj in self._scene.objects():
 				obj._loadAnim = openglGui.animation(self, 1, 0, 1.5)
-			self.Refresh()
+			self.QueueRefresh()
 
 	def OnMouseDown(self,e):
 		self._mouseX = e.GetX()
@@ -393,7 +414,7 @@ class SceneView(openglGui.glGuiPanel):
 			if e.GetButton() == 1:
 				if self._focusObj is not None:
 					self._selectObject(self._focusObj, False)
-					self.Refresh()
+					self.QueueRefresh()
 
 	def OnMouseUp(self, e):
 		if e.LeftIsDown() or e.MiddleIsDown() or e.RightIsDown():
@@ -594,10 +615,11 @@ void main(void)
 		glClearColor(1,1,1,1)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
-		for n in xrange(0, len(self._scene.objects())):
-			obj = self._scene.objects()[n]
-			glColor4ub((n >> 24) & 0xFF, (n >> 16) & 0xFF, (n >> 8) & 0xFF, n & 0xFF)
-			self._renderObject(obj)
+		if self.viewMode != 'gcode':
+			for n in xrange(0, len(self._scene.objects())):
+				obj = self._scene.objects()[n]
+				glColor4ub((n >> 24) & 0xFF, (n >> 16) & 0xFF, (n >> 8) & 0xFF, n & 0xFF)
+				self._renderObject(obj)
 
 		if self._mouseX > -1:
 			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0]
@@ -615,87 +637,100 @@ void main(void)
 		glRotate(self._yaw, 0,0,1)
 		glTranslate(-self._viewTarget[0],-self._viewTarget[1],-self._viewTarget[2])
 
-		glStencilFunc(GL_ALWAYS, 1, 1)
-		glStencilOp(GL_INCR, GL_INCR, GL_INCR)
-		self._objectShader.bind()
-		for obj in self._scene.objects():
-			if obj._loadAnim is not None:
-				if obj._loadAnim.isDone():
-					obj._loadAnim = None
-				else:
-					continue
-			brightness = 1.0
-			glDisable(GL_STENCIL_TEST)
-			if self._selectedObj == obj:
-				glEnable(GL_STENCIL_TEST)
-			if self._focusObj == obj:
-				brightness = 1.2
-			elif self._focusObj is not None or self._selectedObj is not None and obj != self._selectedObj:
-				brightness = 0.8
-			if not self._scene.checkPlatform(obj):
-				glColor4f(0.5 * brightness, 0.5 * brightness, 0.5 * brightness, 0.8 * brightness)
-				self._renderObject(obj)
-			else:
-				self._renderObject(obj, brightness)
-		self._objectShader.unbind()
+		if self.viewMode == 'gcode':
+			if self._gcode is not None:
+				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 
-		glDisable(GL_STENCIL_TEST)
-		glEnable(GL_BLEND)
-		self._objectLoadShader.bind()
-		glColor4f(0.2, 0.6, 1.0, 1.0)
-		for obj in self._scene.objects():
-			if obj._loadAnim is None:
-				continue
-			self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())
-			self._objectLoadShader.setUniform('scale', obj.getBoundaryCircle() / 10)
-			self._renderObject(obj)
-		self._objectLoadShader.unbind()
-		glDisable(GL_BLEND)
+				glPushMatrix()
+				glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
+				for n in xrange(0, self.layerSelect.getValue() + 1):
+					opengl.DrawGCodeLayer(self._gcode.layerList[n])
+				glPopMatrix()
+		else:
+			glStencilFunc(GL_ALWAYS, 1, 1)
+			glStencilOp(GL_INCR, GL_INCR, GL_INCR)
+			self._objectShader.bind()
+			for obj in self._scene.objects():
+				if obj._loadAnim is not None:
+					if obj._loadAnim.isDone():
+						obj._loadAnim = None
+					else:
+						continue
+				brightness = 1.0
+				glDisable(GL_STENCIL_TEST)
+				if self._selectedObj == obj:
+					glEnable(GL_STENCIL_TEST)
+				if self._focusObj == obj:
+					brightness = 1.2
+				elif self._focusObj is not None or self._selectedObj is not None and obj != self._selectedObj:
+					brightness = 0.8
+				if not self._scene.checkPlatform(obj):
+					glColor4f(0.5 * brightness, 0.5 * brightness, 0.5 * brightness, 0.8 * brightness)
+					self._renderObject(obj)
+				else:
+					self._renderObject(obj, brightness)
+			self._objectShader.unbind()
+
+			glDisable(GL_STENCIL_TEST)
+			glEnable(GL_BLEND)
+			self._objectLoadShader.bind()
+			glColor4f(0.2, 0.6, 1.0, 1.0)
+			for obj in self._scene.objects():
+				if obj._loadAnim is None:
+					continue
+				self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())
+				self._objectLoadShader.setUniform('scale', obj.getBoundaryCircle() / 10)
+				self._renderObject(obj)
+			self._objectLoadShader.unbind()
+			glDisable(GL_BLEND)
 
 		self._drawMachine()
 
-		#Draw the object box-shadow, so you can see where it will collide with other objects.
-		if self._selectedObj is not None and len(self._scene.objects()) > 1:
-			size = self._selectedObj.getSize()[0:2] / 2 + self._scene.getObjectExtend()
-			glPushMatrix()
-			glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0.0)
-			glEnable(GL_BLEND)
-			glEnable(GL_CULL_FACE)
-			glColor4f(0,0,0,0.12)
-			glBegin(GL_QUADS)
-			glVertex3f(-size[0],  size[1], 0.1)
-			glVertex3f(-size[0], -size[1], 0.1)
-			glVertex3f( size[0], -size[1], 0.1)
-			glVertex3f( size[0],  size[1], 0.1)
-			glEnd()
-			glDisable(GL_CULL_FACE)
-			glPopMatrix()
+		if self.viewMode == 'gcode':
+			pass
+		else:
+			#Draw the object box-shadow, so you can see where it will collide with other objects.
+			if self._selectedObj is not None and len(self._scene.objects()) > 1:
+				size = self._selectedObj.getSize()[0:2] / 2 + self._scene.getObjectExtend()
+				glPushMatrix()
+				glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0.0)
+				glEnable(GL_BLEND)
+				glEnable(GL_CULL_FACE)
+				glColor4f(0,0,0,0.12)
+				glBegin(GL_QUADS)
+				glVertex3f(-size[0],  size[1], 0.1)
+				glVertex3f(-size[0], -size[1], 0.1)
+				glVertex3f( size[0], -size[1], 0.1)
+				glVertex3f( size[0],  size[1], 0.1)
+				glEnd()
+				glDisable(GL_CULL_FACE)
+				glPopMatrix()
 
-		#Draw the outline of the selected object, on top of everything else except the GUI.
-		if self._selectedObj is not None and self._selectedObj._loadAnim is None:
-			glDisable(GL_DEPTH_TEST)
-			glEnable(GL_CULL_FACE)
-			glEnable(GL_STENCIL_TEST)
-			glDisable(GL_BLEND)
-			glStencilFunc(GL_EQUAL, 0, 255)
+			#Draw the outline of the selected object, on top of everything else except the GUI.
+			if self._selectedObj is not None and self._selectedObj._loadAnim is None:
+				glDisable(GL_DEPTH_TEST)
+				glEnable(GL_CULL_FACE)
+				glEnable(GL_STENCIL_TEST)
+				glDisable(GL_BLEND)
+				glStencilFunc(GL_EQUAL, 0, 255)
 
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-			glLineWidth(2)
-			glColor4f(1,1,1,0.5)
-			self._renderObject(self._selectedObj)
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+				glLineWidth(2)
+				glColor4f(1,1,1,0.5)
+				self._renderObject(self._selectedObj)
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 
-			glViewport(0, 0, self.GetSize().GetWidth(), self.GetSize().GetHeight())
-			glDisable(GL_STENCIL_TEST)
-			glDisable(GL_CULL_FACE)
-			glEnable(GL_DEPTH_TEST)
+				glViewport(0, 0, self.GetSize().GetWidth(), self.GetSize().GetHeight())
+				glDisable(GL_STENCIL_TEST)
+				glDisable(GL_CULL_FACE)
+				glEnable(GL_DEPTH_TEST)
 
-		if self._selectedObj is not None:
-			glPushMatrix()
-			pos = self.getObjectCenterPos()
-			glTranslate(pos[0], pos[1], pos[2])
-			self.tool.OnDraw()
-			glPopMatrix()
+			if self._selectedObj is not None:
+				glPushMatrix()
+				pos = self.getObjectCenterPos()
+				glTranslate(pos[0], pos[1], pos[2])
+				self.tool.OnDraw()
+				glPopMatrix()
 
 	def _renderObject(self, obj, brightness = False):
 		glPushMatrix()

@@ -611,8 +611,6 @@ def DrawGCodeLayer(layer, drawQuick = True):
 			if path.pathType == 'FILL':
 				c = fillColorCycle[fillCycle]
 				fillCycle = (fillCycle + 1) % len(fillColorCycle)
-				if drawQuick:
-					continue
 			elif path.pathType == 'WALL-INNER':
 				c = innerWallColor
 				zOffset = 0.02

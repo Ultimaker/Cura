@@ -138,6 +138,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 		self._animationList = []
 		self.glReleaseList = []
+		self._refreshQueued = False
 
 		wx.EVT_PAINT(self, self._OnGuiPaint)
 		wx.EVT_SIZE(self, self._OnSize)
@@ -157,7 +158,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 		wx.EVT_IDLE(self, self._OnIdle)
 
 	def _OnIdle(self, e):
-		if len(self._animationList) > 0:
+		if len(self._animationList) > 0 or self._refreshQueued:
+			self._refreshQueued = False
 			for anim in self._animationList:
 				if anim.isDone():
 					self._animationList.remove(anim)
@@ -293,6 +295,9 @@ class glGuiPanel(glcanvas.GLCanvas):
 		pass
 	def OnKeyChar(self, keycode):
 		pass
+
+	def QueueRefresh(self):
+		self._refreshQueued = True
 
 	def add(self, ctrl):
 		if self._container is not None:
@@ -514,7 +519,7 @@ class glComboButton(glButton):
 		self._comboCallback = callback
 		self._selection = 0
 
-	def _onComboOpenSelect(self):
+	def _onComboOpenSelect(self, button):
 		if self.hasFocus():
 			self._base._focus = None
 		else:
