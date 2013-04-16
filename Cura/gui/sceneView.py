@@ -226,20 +226,24 @@ class SceneView(openglGui.glGuiPanel):
 		self.updateProfileToControls()
 		self.sceneUpdated()
 
+	def OnDeleteAll(self, e):
+		for obj in self._scene.objects():
+			self._deleteObject(obj)
+
 	def OnDuplicateObject(self, e):
-		if self._selectedObj is None:
+		if self._focusObj is None:
 			return
-		self._scene.add(self._selectedObj.copy())
+		self._scene.add(self._focusObj.copy())
 		self._scene.centerAll()
 		self.sceneUpdated()
 
 	def OnFillPlatform(self, e):
-		if self._selectedObj is None:
+		if self._focusObj is None:
 			return
 		n = 0
 		while True:
 			n += 1
-			newObj = self._selectedObj.copy()
+			newObj = self._focusObj.copy()
 			self._scene.add(newObj)
 			self._scene.centerAll()
 			if not self._scene.checkPlatform(newObj):
@@ -250,10 +254,10 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def OnSplitObject(self, e):
-		if self._selectedObj is None:
+		if self._focusObj is None:
 			return
-		self._scene.remove(self._selectedObj)
-		for obj in self._selectedObj.split():
+		self._scene.remove(self._focusObj)
+		for obj in self._focusObj.split():
 			self._scene.add(obj)
 		self._scene.centerAll()
 		self._selectObject(None)
@@ -386,15 +390,16 @@ class SceneView(openglGui.glGuiPanel):
 			if e.GetButton() == 1:
 				self._selectObject(self._focusObj)
 			if e.GetButton() == 3:
-				if self._selectedObj is not None:
 					menu = wx.Menu()
-					self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._selectedObj), menu.Append(-1, 'Delete'))
-					if self._selectedObj == self._focusObj:
+					if self._focusObj is not None:
+						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, 'Delete'))
 						self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, 'Split'))
 						self.Bind(wx.EVT_MENU, self.OnFillPlatform, menu.Append(-1, 'Fill platform'))
 					if self._selectedObj != self._focusObj and self._focusObj is not None:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Dual extrusion merge'))
+					if len(self._scene.objects()) > 0:
+						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, 'Delete all'))
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
