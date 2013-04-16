@@ -29,18 +29,21 @@ class _objectOrderFinder(object):
 
 		initialList.sort(self._objIdxCmp)
 
+		n = 0
 		self._todo = [_objectOrder([], initialList)]
 		while len(self._todo) > 0:
+			n += 1
 			current = self._todo.pop()
-			#print len(self._todo), len(current.order), len(initialList)
+			print len(self._todo), len(current.order), len(initialList), current.order
 			for addIdx in current.todo:
-				if not self._checkHitFor(addIdx, current.order):
+				if not self._checkHitFor(addIdx, current.order) and not self._checkBlocks(addIdx, current.todo):
 					todoList = current.todo[:]
 					todoList.remove(addIdx)
 					order = current.order[:] + [addIdx]
 					if len(todoList) == 0:
 						self._todo = None
 						self.order = order
+						print n
 						return
 					self._todo.append(_objectOrder(order, todoList))
 		self.order = None
@@ -53,6 +56,12 @@ class _objectOrderFinder(object):
 	def _checkHitFor(self, addIdx, others):
 		for idx in others:
 			if self._hitMap[addIdx][idx]:
+				return True
+		return False
+
+	def _checkBlocks(self, addIdx, others):
+		for idx in others:
+			if addIdx != idx and self._hitMap[idx][addIdx]:
 				return True
 		return False
 
