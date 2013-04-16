@@ -457,7 +457,9 @@ class SceneView(openglGui.glGuiPanel):
 		self._mouseY = e.GetY()
 
 	def OnMouseWheel(self, e):
-		self._zoom *= 1.0 - float(e.GetWheelRotation() / e.GetWheelDelta()) / 10.0
+		delta = float(e.GetWheelRotation()) / float(e.GetWheelDelta())
+		delta = max(min(delta,4),-4)
+		self._zoom *= 1.0 - delta / 10.0
 		if self._zoom < 1.0:
 			self._zoom = 1.0
 		if self._zoom > numpy.max(self._machineSize) * 3:
