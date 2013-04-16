@@ -6,8 +6,6 @@ import math
 import numpy
 numpy.seterr(all='ignore')
 
-from Cura.util import util3d
-
 class printableObject(object):
 	def __init__(self):
 		self._meshList = []
