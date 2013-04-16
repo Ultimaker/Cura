@@ -236,12 +236,15 @@ class SceneView(openglGui.glGuiPanel):
 	def OnFillPlatform(self, e):
 		if self._selectedObj is None:
 			return
+		n = 0
 		while True:
+			n += 1
 			newObj = self._selectedObj.copy()
 			self._scene.add(newObj)
 			self._scene.centerAll()
 			if not self._scene.checkPlatform(newObj):
 				break
+		self.notification.message("Created %i objects" % (n))
 		self._scene.remove(newObj)
 		self._scene.centerAll()
 		self.sceneUpdated()

@@ -57,11 +57,11 @@ class configPanelBase(wx.Panel):
 
 		sizer = wx.GridBagSizer(2, 2)
 		leftConfigPanel.SetSizer(sizer)
-		sizer.AddGrowableCol(1)
+		#sizer.AddGrowableCol(1)
 
 		sizer = wx.GridBagSizer(2, 2)
 		rightConfigPanel.SetSizer(sizer)
-		sizer.AddGrowableCol(1)
+		#sizer.AddGrowableCol(1)
 
 		sizer = wx.BoxSizer(wx.HORIZONTAL)
 		sizer.Add(leftConfigPanel, proportion=1, border=35, flag=wx.EXPAND)

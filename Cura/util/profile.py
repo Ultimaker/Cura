@@ -453,7 +453,7 @@ def getProfileSettingFloat(name):
 	try:
 		setting = getProfileSetting(name).replace(',', '.')
 		return float(eval(setting, {}, {}))
-	except (ValueError, SyntaxError, TypeError):
+	except:
 		return 0.0
 
 def putProfileSetting(name, value):
@@ -476,7 +476,7 @@ def getPreferenceFloat(name):
 	try:
 		setting = getPreference(name).replace(',', '.')
 		return float(eval(setting, {}, {}))
-	except (ValueError, SyntaxError, TypeError):
+	except:
 		return 0.0
 
 def getPreferenceColour(name):
