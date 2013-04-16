@@ -596,6 +596,9 @@ class glFrame(glGuiContainer):
 
 	def setHidden(self, value):
 		self._hidden = value
+		for child in self._glGuiControlList:
+			if self._base._focus == child:
+				self._base._focus = None
 
 	def getSelected(self):
 		return self._selected
