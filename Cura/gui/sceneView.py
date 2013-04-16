@@ -230,25 +230,26 @@ class SceneView(openglGui.glGuiPanel):
 		while len(self._scene.objects()) > 0:
 			self._deleteObject(self._scene.objects()[0])
 
-	def OnDuplicateObject(self, e):
+	def OnMultiply(self, e):
 		if self._focusObj is None:
 			return
-		self._scene.add(self._focusObj.copy())
-		self._scene.centerAll()
-		self.sceneUpdated()
-
-	def OnFillPlatform(self, e):
-		if self._focusObj is None:
+		obj = self._focusObj
+		dlg = wx.NumberEntryDialog(self, "How many copies need to be made?", "Copies", "Multiply", 1, 1, 100)
+		if dlg.ShowModal() != wx.ID_OK:
+			dlg.Destroy()
 			return
+		cnt = dlg.GetValue()
+		dlg.Destroy()
 		n = 0
 		while True:
 			n += 1
-			newObj = self._focusObj.copy()
+			newObj = obj.copy()
 			self._scene.add(newObj)
 			self._scene.centerAll()
 			if not self._scene.checkPlatform(newObj):
 				break
-		self.notification.message("Created %i objects" % (n))
+			if n > cnt:
+				break
 		self._scene.remove(newObj)
 		self._scene.centerAll()
 		self.sceneUpdated()
@@ -393,9 +394,8 @@ class SceneView(openglGui.glGuiPanel):
 					menu = wx.Menu()
 					if self._focusObj is not None:
 						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, 'Delete'))
-						self.Bind(wx.EVT_MENU, self.OnDuplicateObject, menu.Append(-1, 'Duplicate'))
+						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, 'Multiply'))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, 'Split'))
-						self.Bind(wx.EVT_MENU, self.OnFillPlatform, menu.Append(-1, 'Fill platform'))
 					if self._selectedObj != self._focusObj and self._focusObj is not None:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Dual extrusion merge'))
 					if len(self._scene.objects()) > 0:
