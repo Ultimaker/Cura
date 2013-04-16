@@ -34,7 +34,7 @@ class _objectOrderFinder(object):
 		while len(self._todo) > 0:
 			n += 1
 			current = self._todo.pop()
-			print len(self._todo), len(current.order), len(initialList), current.order
+			#print len(self._todo), len(current.order), len(initialList), current.order
 			for addIdx in current.todo:
 				if not self._checkHitFor(addIdx, current.order) and not self._checkBlocks(addIdx, current.todo):
 					todoList = current.todo[:]
@@ -43,7 +43,6 @@ class _objectOrderFinder(object):
 					if len(todoList) == 0:
 						self._todo = None
 						self.order = order
-						print n
 						return
 					self._todo.append(_objectOrder(order, todoList))
 		self.order = None
