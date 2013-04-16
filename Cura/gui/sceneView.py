@@ -227,8 +227,8 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def OnDeleteAll(self, e):
-		for obj in self._scene.objects():
-			self._deleteObject(obj)
+		while len(self._scene.objects()) > 0:
+			self._deleteObject(self._scene.objects()[0])
 
 	def OnDuplicateObject(self, e):
 		if self._focusObj is None:
