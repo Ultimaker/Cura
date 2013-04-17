@@ -29,6 +29,12 @@ def getVersion(getGitVersion = True):
 		version = f.readline()
 		f.close()
 		return version.strip()
+	versionFile = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../../version"))
+	if os.path.exists(versionFile):
+		f = open(versionFile, "r")
+		version = f.readline()
+		f.close()
+		return version.strip()
 	return "?"
 
 def isDevVersion():
