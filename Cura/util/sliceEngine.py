@@ -39,7 +39,10 @@ class Slicer(object):
 
 	def abortSlicer(self):
 		if self._process is not None:
-			self._process.terminate()
+			try:
+				self._process.terminate()
+			except:
+				pass
 			self._thread.join()
 
 	def getGCodeFilename(self):

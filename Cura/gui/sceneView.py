@@ -187,6 +187,9 @@ class SceneView(openglGui.glGuiPanel):
 	def OnViewChange(self):
 		if self.viewSelection.getValue() == 1:
 			self.viewMode = 'gcode'
+			if self._gcode is not None:
+				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
+				self.layerSelect.setValue(len(self._gcode.layerList) - 1)
 			self._selectObject(None)
 		else:
 			self.viewMode = 'normal'
@@ -383,6 +386,18 @@ class SceneView(openglGui.glGuiPanel):
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
 				self.QueueRefresh()
+		if keyCode == wx.WXK_UP:
+			self.layerSelect.setValue(self.layerSelect.getValue() + 1)
+			self.QueueRefresh()
+		elif keyCode == wx.WXK_DOWN:
+			self.layerSelect.setValue(self.layerSelect.getValue() - 1)
+			self.QueueRefresh()
+		elif keyCode == wx.WXK_PAGEUP:
+			self.layerSelect.setValue(self.layerSelect.getValue() + 10)
+			self.QueueRefresh()
+		elif keyCode == wx.WXK_PAGEDOWN:
+			self.layerSelect.setValue(self.layerSelect.getValue() - 10)
+			self.QueueRefresh()
 
 		if keyCode == wx.WXK_F3 and wx.GetKeyState(wx.WXK_SHIFT):
 			shaderEditor(self, self.ShaderUpdate, self._objectLoadShader.getVertexShader(), self._objectLoadShader.getFragmentShader())
