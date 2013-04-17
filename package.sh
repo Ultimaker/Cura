@@ -17,7 +17,7 @@ BUILD_TARGET=${1:-all}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-BUILD_NAME=13.03
+BUILD_NAME=13.04-SteamEngine
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Which versions of external programs to use
@@ -103,14 +103,9 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 		exit 1
 	fi
 
-	downloadURL https://bitbucket.org/pypy/pypy/downloads/pypy-${PYPY_VERSION}-osx64.tar.bz2
-	$TAR -xjf pypy-${PYPY_VERSION}-osx64.tar.bz2
-	mv pypy-${PYPY_VERSION} scripts/darwin/dist/Cura.app/Contents/Resources/pypy
-	#For now, just copy all of Cura so pypy can find it
-	cp -a Cura scripts/darwin/dist/Cura.app/Contents/Resources/
-
     #Add cura version file (should read the version from the bundle with pyobjc, but will figure that out later)
     echo $BUILD_NAME > scripts/darwin/dist/Cura.app/Contents/Resources/version
+    cp SteamEngine scripts/darwin/dist/Cura.app/Contents/Resources/SteamEngine
 
 	cd scripts/darwin
 

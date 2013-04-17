@@ -6,6 +6,7 @@ import warnings
 import threading
 import traceback
 import platform
+import sys
 
 from Cura.util import profile
 
@@ -14,6 +15,8 @@ def getEngineFilename():
 		if os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
 			return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
 		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'SteamEngine.exe'))
+	if hasattr(sys, 'frozen'):
+		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../..', 'SteamEngine'))
 	return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'SteamEngine'))
 
 def getTempFilename():
@@ -34,8 +37,14 @@ class Slicer(object):
 
 	def cleanup(self):
 		self.abortSlicer()
-		os.remove(self._binaryStorageFilename)
-		os.remove(self._exportFilename)
+		try:
+			os.remove(self._binaryStorageFilename)
+		except:
+			pass
+		try:
+			os.remove(self._exportFilename)
+		except:
+			pass
 
 	def abortSlicer(self):
 		if self._process is not None:
