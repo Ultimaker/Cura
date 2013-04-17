@@ -97,7 +97,7 @@ class gcode(object):
 							return
 					currentLayer = []
 				line = line[0:line.find(';')]
-			T = self.getCodeInt(line, 'T')
+			T = getCodeInt(line, 'T')
 			if T is not None:
 				if currentExtruder > 0:
 					posOffset.x -= profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
@@ -107,29 +107,28 @@ class gcode(object):
 					posOffset.x += profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
 					posOffset.y += profile.getPreferenceFloat('extruder_offset_y%d' % (currentExtruder))
 			
-			G = self.getCodeInt(line, 'G')
+			G = getCodeInt(line, 'G')
 			if G is not None:
 				if G == 0 or G == 1:	#Move
-					x = self.getCodeFloat(line, 'X')
-					y = self.getCodeFloat(line, 'Y')
-					z = self.getCodeFloat(line, 'Z')
-					e = self.getCodeFloat(line, 'E')
-					f = self.getCodeFloat(line, 'F')
+					x = getCodeFloat(line, 'X')
+					y = getCodeFloat(line, 'Y')
+					z = getCodeFloat(line, 'Z')
+					e = getCodeFloat(line, 'E')
+					f = getCodeFloat(line, 'F')
 					oldPos = pos.copy()
-					if x is not None:
-						if posAbs:
+					if posAbs:
+						if x is not None:
 							pos.x = x * scale + posOffset.x
-						else:
-							pos.x += x * scale
-					if y is not None:
-						if posAbs:
+						if y is not None:
 							pos.y = y * scale + posOffset.y
-						else:
-							pos.y += y * scale
-					if z is not None:
-						if posAbs:
+						if z is not None:
 							pos.z = z * scale + posOffset.z
-						else:
+					else:
+						if x is not None:
+							pos.x += x * scale
+						if y is not None:
+							pos.y += y * scale
+						if z is not None:
 							pos.z += z * scale
 					if f is not None:
 						feedRate = f
@@ -139,16 +138,10 @@ class gcode(object):
 					if e is not None:
 						if not absoluteE:
 							e += currentE
-						if posAbs:
-							if e > currentE:
-								moveType = 'extrude'
-							if e < currentE:
-								moveType = 'retract'
-						else:
-							if e > 0:
-								moveType = 'extrude'
-							if e < 0:
-								moveType = 'retract'
+						if e > currentE:
+							moveType = 'extrude'
+						if e < currentE:
+							moveType = 'retract'
 						totalExtrusion += e - currentE
 						currentE = e
 						if totalExtrusion > maxExtrusion:
@@ -166,10 +159,10 @@ class gcode(object):
 					newPos.extrudeAmountMultiply = extrudeAmountMultiply
 					currentPath.list.append(newPos)
 				elif G == 4:	#Delay
-					S = self.getCodeFloat(line, 'S')
+					S = getCodeFloat(line, 'S')
 					if S is not None:
 						totalMoveTimeMinute += S / 60
-					P = self.getCodeFloat(line, 'P')
+					P = getCodeFloat(line, 'P')
 					if P is not None:
 						totalMoveTimeMinute += P / 60 / 1000
 				elif G == 20:	#Units are inches
@@ -177,9 +170,9 @@ class gcode(object):
 				elif G == 21:	#Units are mm
 					scale = 1.0
 				elif G == 28:	#Home
-					x = self.getCodeFloat(line, 'X')
-					y = self.getCodeFloat(line, 'Y')
-					z = self.getCodeFloat(line, 'Z')
+					x = getCodeFloat(line, 'X')
+					y = getCodeFloat(line, 'Y')
+					z = getCodeFloat(line, 'Z')
 					if x is None and y is None and z is None:
 						pos = util3d.Vector3()
 					else:
@@ -194,10 +187,10 @@ class gcode(object):
 				elif G == 91:	#Relative position
 					posAbs = False
 				elif G == 92:
-					x = self.getCodeFloat(line, 'X')
-					y = self.getCodeFloat(line, 'Y')
-					z = self.getCodeFloat(line, 'Z')
-					e = self.getCodeFloat(line, 'E')
+					x = getCodeFloat(line, 'X')
+					y = getCodeFloat(line, 'Y')
+					z = getCodeFloat(line, 'Z')
+					e = getCodeFloat(line, 'E')
 					if e is not None:
 						currentE = e
 					if x is not None:
@@ -209,7 +202,7 @@ class gcode(object):
 				else:
 					print "Unknown G code:" + str(G)
 			else:
-				M = self.getCodeInt(line, 'M')
+				M = getCodeInt(line, 'M')
 				if M is not None:
 					if M == 0:	#Message with possible wait (ignored)
 						pass
@@ -254,7 +247,7 @@ class gcode(object):
 					elif M == 190:	#Set bed temperature & wait
 						pass
 					elif M == 221:	#Extrude amount multiplier
-						s = self.getCodeFloat(line, 'S')
+						s = getCodeFloat(line, 'S')
 						if s != None:
 							extrudeAmountMultiply = s / 100.0
 					else:
@@ -267,29 +260,29 @@ class gcode(object):
 		#print "Extruded a total of: %d mm of filament" % (self.extrusionAmount)
 		#print "Estimated print duration: %.2f minutes" % (self.totalMoveTimeMinute)
 
-	def getCodeInt(self, line, code):
-		n = line.find(code) + 1
-		if n < 1:
-			return None
-		m = line.find(' ', n)
-		try:
-			if m < 0:
-				return int(line[n:])
-			return int(line[n:m])
-		except:
-			return None
+def getCodeInt(line, code):
+	n = line.find(code) + 1
+	if n < 1:
+		return None
+	m = line.find(' ', n)
+	try:
+		if m < 0:
+			return int(line[n:])
+		return int(line[n:m])
+	except:
+		return None
 
-	def getCodeFloat(self, line, code):
-		n = line.find(code) + 1
-		if n < 1:
-			return None
-		m = line.find(' ', n)
-		try:
-			if m < 0:
-				return float(line[n:])
-			return float(line[n:m])
-		except:
-			return None
+def getCodeFloat(line, code):
+	n = line.find(code) + 1
+	if n < 1:
+		return None
+	m = line.find(' ', n)
+	try:
+		if m < 0:
+			return float(line[n:])
+		return float(line[n:m])
+	except:
+		return None
 
 if __name__ == '__main__':
 	t = time.time()
