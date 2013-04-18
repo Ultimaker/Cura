@@ -672,20 +672,23 @@ void main(void)
 				glPushMatrix()
 				glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
 				t = time.time()
-				for n in xrange(0, self.layerSelect.getValue() + 1):
+				drawUpTill = min(len(self._gcode.layerList), self.layerSelect.getValue() + 1)
+				for n in xrange(0, drawUpTill):
+					c = 1.0 - float(drawUpTill - n) / 15
+					c = max(0.3, c)
 					if len(self._gcodeVBOs) < n + 1:
 						self._gcodeVBOs.append(self._generateGCodeVBOs(self._gcode.layerList[n]))
 						if time.time() - t > 0.5:
 							self.QueueRefresh()
 							break
 					#['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']
-					glColor3f(1, 0, 0)
+					glColor3f(c, 0, 0)
 					self._gcodeVBOs[n][0].render(GL_LINES)
-					glColor3f(0, 1, 0)
+					glColor3f(0, c, 0)
 					self._gcodeVBOs[n][1].render(GL_LINES)
-					glColor3f(0.5, 0.5, 0.0)
+					glColor3f(c/2, c/2, 0.0)
 					self._gcodeVBOs[n][2].render(GL_LINES)
-					glColor3f(0, 1, 1)
+					glColor3f(0, c, c)
 					self._gcodeVBOs[n][3].render(GL_LINES)
 					self._gcodeVBOs[n][4].render(GL_LINES)
 				glPopMatrix()
