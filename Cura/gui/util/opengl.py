@@ -78,22 +78,30 @@ class GLShader(GLReferenceCounter):
 			print "Shader was not properly released!"
 
 class GLVBO(GLReferenceCounter):
-	def __init__(self, vertexArray, normalArray):
+	def __init__(self, vertexArray, normalArray = None):
 		super(GLVBO, self).__init__()
 		self._buffer = glGenBuffers(1)
 		self._size = len(vertexArray)
+		self._hasNormals = normalArray is not None
 		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
-		glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
+		if self._hasNormals:
+			glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
+		else:
+			glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW)
 		glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 	def render(self, render_type = GL_TRIANGLES):
 		glEnableClientState(GL_VERTEX_ARRAY)
-		glEnableClientState(GL_NORMAL_ARRAY)
 		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
-		glVertexPointer(3, GL_FLOAT, 2*3*4, c_void_p(0))
-		glNormalPointer(GL_FLOAT, 2*3*4, c_void_p(3 * 4))
 
-		batchSize = 999    #Warning, batchSize needs to be dividable by 3
+		if self._hasNormals:
+			glEnableClientState(GL_NORMAL_ARRAY)
+			glVertexPointer(3, GL_FLOAT, 2*3*4, c_void_p(0))
+			glNormalPointer(GL_FLOAT, 2*3*4, c_void_p(3 * 4))
+		else:
+			glVertexPointer(3, GL_FLOAT, 3*4, c_void_p(0))
+
+		batchSize = 1002    #Warning, batchSize needs to be dividable by 3 and 2
 		extraStartPos = int(self._size / batchSize) * batchSize
 		extraCount = self._size - extraStartPos
 
@@ -101,8 +109,10 @@ class GLVBO(GLReferenceCounter):
 			glDrawArrays(render_type, i * batchSize, batchSize)
 		glDrawArrays(render_type, extraStartPos, extraCount)
 		glBindBuffer(GL_ARRAY_BUFFER, 0)
+
 		glDisableClientState(GL_VERTEX_ARRAY)
-		glDisableClientState(GL_NORMAL_ARRAY)
+		if self._hasNormals:
+			glDisableClientState(GL_NORMAL_ARRAY)
 
 	def release(self):
 		if self._buffer is not None:
@@ -672,11 +682,12 @@ def DrawGCodeLayer(layer, drawQuick = True):
 				prevVv1 = vv1
 				prevVv3 = vv3
 		else:
-			glBegin(GL_LINE_STRIP)
 			glColor4fv(c)
+			glBegin(GL_TRIANGLES)
 			for v in path.points:
 				glVertex3f(v[0], v[1], v[2])
 			glEnd()
+
 		if not path.type == 'move':
 			prevPathWasRetract = False
 		#if path.type == 'retract' and path.points[0].almostEqual(path.points[-1]):

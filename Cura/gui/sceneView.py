@@ -34,6 +34,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._zoom = 300
 		self._scene = objectScene.Scene()
 		self._gcode = None
+		self._gcodeVBOs = []
 		self._objectShader = None
 		self._focusObj = None
 		self._selectedObj = None
@@ -309,11 +310,15 @@ class SceneView(openglGui.glGuiPanel):
 	def _updateSliceProgress(self, progressValue, ready):
 		self.printButton.setDisabled(not ready)
 		self.printButton.setProgressBar(progressValue)
+		if self._gcode is not None:
+			self._gcode = None
+			for layerVBOlist in self._gcodeVBOs:
+				for vbo in layerVBOlist:
+					self.glReleaseList.append(vbo)
+			self._gcodeVBOs = []
 		if ready:
 			self._gcode = gcodeInterpreter.gcode()
 			self._gcode.load(self._slicer.getGCodeFilename())
-		else:
-			self._gcode = None
 		self.QueueRefresh()
 
 	def loadScene(self, fileList):
@@ -658,8 +663,23 @@ void main(void)
 
 				glPushMatrix()
 				glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
+				t = time.time()
 				for n in xrange(0, self.layerSelect.getValue() + 1):
-					opengl.DrawGCodeLayer(self._gcode.layerList[n])
+					if len(self._gcodeVBOs) < n + 1:
+						self._gcodeVBOs.append(self._generateGCodeVBOs(self._gcode.layerList[n]))
+						if time.time() - t > 0.5:
+							self.QueueRefresh()
+							break
+					#['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']
+					glColor3f(1, 0, 0)
+					self._gcodeVBOs[n][0].render(GL_LINES)
+					glColor3f(0, 1, 0)
+					self._gcodeVBOs[n][1].render(GL_LINES)
+					glColor3f(0.5, 0.5, 0.0)
+					self._gcodeVBOs[n][2].render(GL_LINES)
+					glColor3f(0, 1, 1)
+					self._gcodeVBOs[n][3].render(GL_LINES)
+					self._gcodeVBOs[n][4].render(GL_LINES)
 				glPopMatrix()
 		else:
 			glStencilFunc(GL_ALWAYS, 1, 1)
@@ -828,6 +848,19 @@ void main(void)
 		glDisableClientState(GL_VERTEX_ARRAY)
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
+
+	def _generateGCodeVBOs(self, layer):
+		ret = []
+		for extrudeType in ['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
+			pointList = numpy.zeros((0,3), numpy.float32)
+			for path in layer:
+				if path.type == 'extrude' and path.pathType == extrudeType:
+					a = numpy.array(path.points, numpy.float32)
+					a = numpy.concatenate((a[:-1], a[1:]), 1)
+					a = a.reshape((len(a) * 2, 3))
+					pointList = numpy.concatenate((pointList, a))
+			ret.append(opengl.GLVBO(pointList))
+		return ret
 
 	def getObjectCenterPos(self):
 		if self._selectedObj is None:

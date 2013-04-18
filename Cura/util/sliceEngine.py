@@ -91,7 +91,7 @@ class Slicer(object):
 				line = line.split(':')
 				if line[1] == 'process':
 					objectNr += 1
-				else:
+				elif line[1] in self._progressSteps:
 					progressValue = float(line[2]) / float(line[3])
 					progressValue /= len(self._progressSteps)
 					progressValue += 1.0 / len(self._progressSteps) * self._progressSteps.index(line[1])
