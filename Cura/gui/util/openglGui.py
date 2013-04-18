@@ -297,6 +297,9 @@ class glGuiPanel(glcanvas.GLCanvas):
 		pass
 
 	def QueueRefresh(self):
+		wx.CallAfter(self._queueRefresh)
+
+	def _queueRefresh(self):
 		self._refreshQueued = True
 
 	def add(self, ctrl):

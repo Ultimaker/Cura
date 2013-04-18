@@ -136,8 +136,12 @@ class SceneView(openglGui.glGuiPanel):
 					drive = drives[0]
 				filename = os.path.basename(profile.getPreference('lastFile'))
 				filename = filename[0:filename.rfind('.')] + '.gcode'
-				shutil.copy(self._slicer.getGCodeFilename(), drive[1] + filename)
-				self.notification.message("Saved as %s" % (drive[1] + filename))
+				try:
+					shutil.copy(self._slicer.getGCodeFilename(), drive[1] + filename)
+				except:
+					self.notification.message("Failed to save to SD card")
+				else:
+					self.notification.message("Saved as %s" % (drive[1] + filename))
 			else:
 				defPath = profile.getPreference('lastFile')
 				defPath = defPath[0:defPath.rfind('.')] + '.gcode'
@@ -150,8 +154,12 @@ class SceneView(openglGui.glGuiPanel):
 				filename = dlg.GetPath()
 				dlg.Destroy()
 
-				shutil.copy(self._slicer.getGCodeFilename(), filename)
-				self.notification.message("Saved as %s" % (filename))
+				try:
+					shutil.copy(self._slicer.getGCodeFilename(), filename)
+				except:
+					self.notification.message("Failed to save")
+				else:
+					self.notification.message("Saved as %s" % (filename))
 
 	def OnToolSelect(self, button):
 		if self.rotateToolButton.getSelected():
