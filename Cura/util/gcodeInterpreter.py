@@ -5,7 +5,6 @@ import math
 import os
 import time
 
-from Cura.util import util3d
 from Cura.util import profile
 
 class gcodePath(object):
@@ -13,7 +12,8 @@ class gcodePath(object):
 		self.type = newType
 		self.pathType = pathType
 		self.layerThickness = layerThickness
-		self.list = [startPoint]
+		self.points = [startPoint]
+		self.extrusion = [0]
 
 class gcode(object):
 	def __init__(self):
@@ -51,8 +51,8 @@ class gcode(object):
 		return None
 	
 	def _load(self, gcodeFile):
-		pos = util3d.Vector3()
-		posOffset = util3d.Vector3()
+		pos = [0.0, 0.0, 0.0]
+		posOffset = [0.0, 0.0, 0.0]
 		currentE = 0.0
 		totalExtrusion = 0.0
 		maxExtrusion = 0.0
@@ -62,14 +62,13 @@ class gcode(object):
 		absoluteE = True
 		scale = 1.0
 		posAbs = True
-		feedRate = 3600
+		feedRate = 3600.0
 		layerThickness = 0.1
 		pathType = 'CUSTOM';
 		currentLayer = []
-		currentPath = gcodePath('move', pathType, layerThickness, pos.copy())
+		currentPath = gcodePath('move', pathType, layerThickness, pos[:])
 		currentPath.extruder = currentExtruder
-		currentPath.list[0].e = totalExtrusion
-		currentPath.list[0].extrudeAmountMultiply = extrudeAmountMultiply
+
 		currentLayer.append(currentPath)
 		for line in gcodeFile:
 			if type(line) is tuple:
@@ -100,12 +99,12 @@ class gcode(object):
 			T = getCodeInt(line, 'T')
 			if T is not None:
 				if currentExtruder > 0:
-					posOffset.x -= profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset.y -= profile.getPreferenceFloat('extruder_offset_y%d' % (currentExtruder))
+					posOffset[0] -= profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
+					posOffset[1] -= profile.getPreferenceFloat('extruder_offset_y%d' % (currentExtruder))
 				currentExtruder = T
 				if currentExtruder > 0:
-					posOffset.x += profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset.y += profile.getPreferenceFloat('extruder_offset_y%d' % (currentExtruder))
+					posOffset[0] += profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
+					posOffset[1] += profile.getPreferenceFloat('extruder_offset_y%d' % (currentExtruder))
 			
 			G = getCodeInt(line, 'G')
 			if G is not None:
@@ -115,56 +114,59 @@ class gcode(object):
 					z = getCodeFloat(line, 'Z')
 					e = getCodeFloat(line, 'E')
 					f = getCodeFloat(line, 'F')
-					oldPos = pos.copy()
+					oldPos = pos[:]
 					if posAbs:
 						if x is not None:
-							pos.x = x * scale + posOffset.x
+							pos[0] = x * scale + posOffset[0]
 						if y is not None:
-							pos.y = y * scale + posOffset.y
+							pos[1] = y * scale + posOffset[1]
 						if z is not None:
-							pos.z = z * scale + posOffset.z
+							pos[2] = z * scale + posOffset[2]
 					else:
 						if x is not None:
-							pos.x += x * scale
+							pos[0] += x * scale
 						if y is not None:
-							pos.y += y * scale
+							pos[1] += y * scale
 						if z is not None:
-							pos.z += z * scale
+							pos[2] += z * scale
 					if f is not None:
 						feedRate = f
-					if x is not None or y is not None or z is not None:
-						totalMoveTimeMinute += math.sqrt((oldPos.x - pos.x) * (oldPos.x - pos.x) + (oldPos.y - pos.y) * (oldPos.y - pos.y)) / feedRate
+					#if x is not None or y is not None or z is not None:
+					#	diffX = oldPos[0] - pos[0]
+					#	diffY = oldPos[1] - pos[1]
+					#	totalMoveTimeMinute += math.sqrt(diffX * diffX + diffY * diffY) / feedRate
 					moveType = 'move'
 					if e is not None:
-						if not absoluteE:
-							e += currentE
-						if e > currentE:
+						if absoluteE:
+							e -= currentE
+						if e > 0:
 							moveType = 'extrude'
-						if e < currentE:
+						if e < 0:
 							moveType = 'retract'
-						totalExtrusion += e - currentE
-						currentE = e
+						totalExtrusion += e
+						currentE += e
 						if totalExtrusion > maxExtrusion:
 							maxExtrusion = totalExtrusion
-					if moveType == 'move' and oldPos.z != pos.z:
-						if oldPos.z > pos.z and abs(oldPos.z - pos.z) > 5.0 and pos.z < 1.0:
-							oldPos.z = 0.0
-						layerThickness = abs(oldPos.z - pos.z)
+					else:
+						e = 0.0
+					if moveType == 'move' and oldPos[2] != pos[2]:
+						if oldPos[2] > pos[2] and abs(oldPos[2] - pos[2]) > 5.0 and pos[2] < 1.0:
+							oldPos[2] = 0.0
+						layerThickness = abs(oldPos[2] - pos[2])
 					if currentPath.type != moveType or currentPath.pathType != pathType:
-						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath.list[-1])
+						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath.points[-1])
 						currentPath.extruder = currentExtruder
 						currentLayer.append(currentPath)
-					newPos = pos.copy()
-					newPos.e = totalExtrusion
-					newPos.extrudeAmountMultiply = extrudeAmountMultiply
-					currentPath.list.append(newPos)
+
+					currentPath.points.append(pos[:])
+					currentPath.extrusion.append(e * extrudeAmountMultiply)
 				elif G == 4:	#Delay
 					S = getCodeFloat(line, 'S')
 					if S is not None:
-						totalMoveTimeMinute += S / 60
+						totalMoveTimeMinute += S / 60.0
 					P = getCodeFloat(line, 'P')
 					if P is not None:
-						totalMoveTimeMinute += P / 60 / 1000
+						totalMoveTimeMinute += P / 60.0 / 1000.0
 				elif G == 20:	#Units are inches
 					scale = 25.4
 				elif G == 21:	#Units are mm
@@ -174,14 +176,14 @@ class gcode(object):
 					y = getCodeFloat(line, 'Y')
 					z = getCodeFloat(line, 'Z')
 					if x is None and y is None and z is None:
-						pos = util3d.Vector3()
+						pos = [0.0,0.0,0.0]
 					else:
 						if x is not None:
-							pos.x = 0.0
+							pos[0] = 0.0
 						if y is not None:
-							pos.y = 0.0
+							pos[0] = 0.0
 						if z is not None:
-							pos.z = 0.0
+							pos[0] = 0.0
 				elif G == 90:	#Absolute position
 					posAbs = True
 				elif G == 91:	#Relative position
@@ -194,11 +196,11 @@ class gcode(object):
 					if e is not None:
 						currentE = e
 					if x is not None:
-						posOffset.x = pos.x - x
+						posOffset[0] = pos[0] - x
 					if y is not None:
-						posOffset.y = pos.y - y
+						posOffset[1] = pos[1] - y
 					if z is not None:
-						posOffset.z = pos.z - z
+						posOffset[2] = pos[2] - z
 				else:
 					print "Unknown G code:" + str(G)
 			else:
@@ -248,7 +250,7 @@ class gcode(object):
 						pass
 					elif M == 221:	#Extrude amount multiplier
 						s = getCodeFloat(line, 'S')
-						if s != None:
+						if s is not None:
 							extrudeAmountMultiply = s / 100.0
 					else:
 						print "Unknown M code:" + str(M)

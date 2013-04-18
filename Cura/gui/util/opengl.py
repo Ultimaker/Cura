@@ -581,7 +581,6 @@ def DrawMeshSteep(mesh, matrix, angle):
 			glEnd()
 	glDepthFunc(GL_LESS)
 
-
 def DrawGCodeLayer(layer, drawQuick = True):
 	filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
 	filamentArea = math.pi * filamentRadius * filamentRadius
@@ -625,9 +624,9 @@ def DrawGCodeLayer(layer, drawQuick = True):
 		if path.type == 'extrude' and not drawQuick:
 			drawLength = 0.0
 			prevNormal = None
-			for i in xrange(0, len(path.list) - 1):
-				v0 = path.list[i]
-				v1 = path.list[i + 1]
+			for i in xrange(0, len(path.points) - 1):
+				v0 = path.points[i]
+				v1 = path.points[i + 1]
 
 				# Calculate line width from ePerDistance (needs layer thickness and filament diameter)
 				dist = (v0 - v1).vsize()
@@ -675,11 +674,11 @@ def DrawGCodeLayer(layer, drawQuick = True):
 		else:
 			glBegin(GL_LINE_STRIP)
 			glColor4fv(c)
-			for v in path.list:
-				glVertex3f(v.x, v.y, v.z)
+			for v in path.points:
+				glVertex3f(v[0], v[1], v[2])
 			glEnd()
 		if not path.type == 'move':
 			prevPathWasRetract = False
-		if path.type == 'retract' and path.list[0].almostEqual(path.list[-1]):
-			prevPathWasRetract = True
+		#if path.type == 'retract' and path.points[0].almostEqual(path.points[-1]):
+		#	prevPathWasRetract = True
 	glEnable(GL_CULL_FACE)
