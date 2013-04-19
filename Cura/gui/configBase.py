@@ -170,7 +170,7 @@ class SettingRow():
 			self.ctrl = wx.CheckBox(panel, -1, style=wx.ALIGN_RIGHT)
 			self.SetValue(self.setting.getValue())
 			self.ctrl.Bind(wx.EVT_CHECKBOX, self.OnSettingChange)
-		elif self.setting.getType() is wx.Colour:
+		elif valueOverride is not None and valueOverride is wx.Colour:
 			self.ctrl = wx.ColourPickerCtrl(panel, -1)
 			self.SetValue(self.setting.getValue())
 			self.ctrl.Bind(wx.EVT_COLOURPICKER_CHANGED, self.OnSettingChange)

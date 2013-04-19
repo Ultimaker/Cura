@@ -33,9 +33,9 @@ class preferencesDialog(wx.Frame):
 			configBase.SettingRow(left, 'extruder_offset_y%d' % (i))
 
 		configBase.TitleRow(left, 'Colours')
-		configBase.SettingRow(left, 'model_colour')
+		configBase.SettingRow(left, 'model_colour', wx.Colour)
 		for i in xrange(1, self.oldExtruderAmount):
-			configBase.SettingRow(left, 'model_colour%d' % (i+1))
+			configBase.SettingRow(left, 'model_colour%d' % (i+1), wx.Colour)
 
 		configBase.TitleRow(right, 'Filament settings')
 		configBase.SettingRow(right, 'filament_physical_density')
