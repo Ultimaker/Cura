@@ -131,35 +131,49 @@ class SceneView(openglGui.glGuiPanel):
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
-					drive = drives[0]
+					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", drives)
+					if dlg.ShowModal() != wx.ID_OK:
+						dlg.Destroy()
+						return
+					drive = drives[dlg.GetSelection()]
+					dlg.Destroy()
 				else:
 					drive = drives[0]
 				filename = os.path.basename(profile.getPreference('lastFile'))
 				filename = filename[0:filename.rfind('.')] + '.gcode'
 				try:
-					shutil.copy(self._slicer.getGCodeFilename(), drive[1] + filename)
+					shutil.copy(self._slicer.getGCodeFilename(), drive + filename)
 				except:
 					self.notification.message("Failed to save to SD card")
 				else:
-					self.notification.message("Saved as %s" % (drive[1] + filename))
+					self.notification.message("Saved as %s" % (drive + filename))
 			else:
-				defPath = profile.getPreference('lastFile')
-				defPath = defPath[0:defPath.rfind('.')] + '.gcode'
-				dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
-				dlg.SetFilename(defPath)
-				dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
-				if dlg.ShowModal() != wx.ID_OK:
-					dlg.Destroy()
-					return
-				filename = dlg.GetPath()
-				dlg.Destroy()
+				self._showSaveGCode()
+		if button == 3:
+			menu = wx.Menu()
+			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._slicer.getGCodeFilename()), menu.Append(-1, 'Print with USB'))
+			self.Bind(wx.EVT_MENU, lambda e: self._showSaveGCode(), menu.Append(-1, 'Save GCode...'))
+			self.PopupMenu(menu)
+			menu.Destroy()
 
-				try:
-					shutil.copy(self._slicer.getGCodeFilename(), filename)
-				except:
-					self.notification.message("Failed to save")
-				else:
-					self.notification.message("Saved as %s" % (filename))
+	def _showSaveGCode(self):
+		defPath = profile.getPreference('lastFile')
+		defPath = defPath[0:defPath.rfind('.')] + '.gcode'
+		dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
+		dlg.SetFilename(defPath)
+		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
+		if dlg.ShowModal() != wx.ID_OK:
+			dlg.Destroy()
+			return
+		filename = dlg.GetPath()
+		dlg.Destroy()
+
+		try:
+			shutil.copy(self._slicer.getGCodeFilename(), filename)
+		except:
+			self.notification.message("Failed to save")
+		else:
+			self.notification.message("Saved as %s" % (filename))
 
 	def OnToolSelect(self, button):
 		if self.rotateToolButton.getSelected():
