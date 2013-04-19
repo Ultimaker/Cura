@@ -131,7 +131,7 @@ class SceneView(openglGui.glGuiPanel):
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
-					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", drives)
+					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", map(lambda n: n[0], drives))
 					if dlg.ShowModal() != wx.ID_OK:
 						dlg.Destroy()
 						return
@@ -142,11 +142,11 @@ class SceneView(openglGui.glGuiPanel):
 				filename = os.path.basename(profile.getPreference('lastFile'))
 				filename = filename[0:filename.rfind('.')] + '.gcode'
 				try:
-					shutil.copy(self._slicer.getGCodeFilename(), drive + filename)
+					shutil.copy(self._slicer.getGCodeFilename(), drive[1] + filename)
 				except:
 					self.notification.message("Failed to save to SD card")
 				else:
-					self.notification.message("Saved as %s" % (drive + filename))
+					self.notification.message("Saved as %s" % (drive[1] + filename))
 			else:
 				self._showSaveGCode()
 		if button == 3:
