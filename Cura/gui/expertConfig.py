@@ -5,7 +5,7 @@ import wx
 from Cura.gui import configBase
 from Cura.util import profile
 
-class expertConfigWindow(wx.Frame):
+class expertConfigWindow(wx.Dialog):
 	"Expert configuration window"
 	def _addSettingsToPanels(self, category, left, right):
 		count = len(profile.getSubCategoriesFor(category)) + len(profile.getSettingsForCategory(category))
@@ -29,6 +29,10 @@ class expertConfigWindow(wx.Frame):
 
 		left, right, main = self.panel.CreateConfigPanel(self)
 		self._addSettingsToPanels('expert', left, right)
+
+		self.okButton = wx.Button(right, -1, 'Ok')
+		right.GetSizer().Add(self.okButton, (right.GetSizer().GetRows(), 0))
+		self.Bind(wx.EVT_BUTTON, lambda e: self.Close(), self.okButton)
 		
 		main.Fit()
 		self.Fit()

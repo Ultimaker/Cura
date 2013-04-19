@@ -386,7 +386,8 @@ class mainWindow(wx.Frame):
 	def OnExpertOpen(self, e):
 		ecw = expertConfig.expertConfigWindow()
 		ecw.Centre()
-		ecw.Show(True)
+		ecw.ShowModal()
+		self.scene.sceneUpdated()
 
 	def OnMinecraftImport(self, e):
 		mi = minecraftImport.minecraftImportWindow(self)
