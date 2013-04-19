@@ -7,6 +7,7 @@ import os
 import traceback
 import shutil
 import threading
+import math
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -95,7 +96,7 @@ class SceneView(openglGui.glGuiPanel):
 		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
-		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,23], ['Normal', 'Layers'], (-1,0), self.OnViewChange)
+		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,11,15,23], ['Normal', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
 		self.layerSelect = openglGui.glSlider(self, 100, 0, 100, (-1,-2), lambda : self.QueueRefresh())
 
 		self.notification = openglGui.glNotification(self, (0, 0))
@@ -209,7 +210,7 @@ class SceneView(openglGui.glGuiPanel):
 			self.OnToolSelect(0)
 
 	def OnViewChange(self):
-		if self.viewSelection.getValue() == 1:
+		if self.viewSelection.getValue() == 3:
 			self.viewMode = 'gcode'
 			if self._gcode is not None:
 				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
@@ -713,15 +714,28 @@ void main(void)
 							self.QueueRefresh()
 							break
 					#['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']
-					glColor3f(c, 0, 0)
-					self._gcodeVBOs[n][0].render(GL_LINES)
-					glColor3f(0, c, 0)
-					self._gcodeVBOs[n][1].render(GL_LINES)
-					glColor3f(c/2, c/2, 0.0)
-					self._gcodeVBOs[n][2].render(GL_LINES)
-					glColor3f(0, c, c)
-					self._gcodeVBOs[n][3].render(GL_LINES)
-					self._gcodeVBOs[n][4].render(GL_LINES)
+					if n == drawUpTill - 1:
+						if len(self._gcodeVBOs[n]) < 6:
+							self._gcodeVBOs[n] += self._generateGCodeVBOs2(self._gcode.layerList[n])
+						glColor3f(c, 0, 0)
+						self._gcodeVBOs[n][5].render(GL_QUADS)
+						glColor3f(0, c, 0)
+						self._gcodeVBOs[n][6].render(GL_QUADS)
+						glColor3f(c/2, c/2, 0.0)
+						self._gcodeVBOs[n][7].render(GL_QUADS)
+						glColor3f(0, c, c)
+						self._gcodeVBOs[n][8].render(GL_QUADS)
+						self._gcodeVBOs[n][9].render(GL_QUADS)
+					else:
+						glColor3f(c, 0, 0)
+						self._gcodeVBOs[n][0].render(GL_LINES)
+						glColor3f(0, c, 0)
+						self._gcodeVBOs[n][1].render(GL_LINES)
+						glColor3f(c/2, c/2, 0.0)
+						self._gcodeVBOs[n][2].render(GL_LINES)
+						glColor3f(0, c, c)
+						self._gcodeVBOs[n][3].render(GL_LINES)
+						self._gcodeVBOs[n][4].render(GL_LINES)
 				glPopMatrix()
 		else:
 			glStencilFunc(GL_ALWAYS, 1, 1)
@@ -901,6 +915,41 @@ void main(void)
 					a = numpy.concatenate((a[:-1], a[1:]), 1)
 					a = a.reshape((len(a) * 2, 3))
 					pointList = numpy.concatenate((pointList, a))
+			ret.append(opengl.GLVBO(pointList))
+		return ret
+
+	def _generateGCodeVBOs2(self, layer):
+		filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
+		filamentArea = math.pi * filamentRadius * filamentRadius
+
+		ret = []
+		for extrudeType in ['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
+			pointList = numpy.zeros((0,3), numpy.float32)
+			for path in layer:
+				if path.type == 'extrude' and path.pathType == extrudeType:
+					a = numpy.array(path.points, numpy.float32)
+					if extrudeType == 'FILL':
+						a[:,2] += 0.01
+
+					normal = a[1:] - a[:-1]
+					lens = numpy.sqrt(normal[:,0]**2 + normal[:,1]**2)
+					normal[:,0], normal[:,1] = -normal[:,1] / lens, normal[:,0] / lens
+					normal[:,2] /= lens
+
+					ePerDist = path.extrusion[1:] / lens
+					lineWidth = ePerDist * (filamentArea / path.layerThickness / 2)
+
+					normal[:,0] *= lineWidth
+					normal[:,1] *= lineWidth
+
+					b = numpy.zeros((len(a)-1, 0), numpy.float32)
+					b = numpy.concatenate((b, a[:-1] + normal), 1)
+					b = numpy.concatenate((b, a[1:] + normal), 1)
+					b = numpy.concatenate((b, a[1:] - normal), 1)
+					b = numpy.concatenate((b, a[:-1] - normal), 1)
+					b = b.reshape((len(b) * 4, 3))
+
+					pointList = numpy.concatenate((pointList, b))
 			ret.append(opengl.GLVBO(pointList))
 		return ret
 
