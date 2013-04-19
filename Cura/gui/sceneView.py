@@ -326,8 +326,19 @@ class SceneView(openglGui.glGuiPanel):
 			self._gcodeVBOs = []
 		if ready:
 			self._gcode = gcodeInterpreter.gcode()
+			self._gcode.progressCallback = self._gcodeLoadCallback
 			self._gcode.load(self._slicer.getGCodeFilename())
 		self.QueueRefresh()
+
+	def _gcodeLoadCallback(self, progress):
+		if self._gcode is None:
+			return True
+		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
+			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
+			self.layerSelect.setValue(self.layerSelect.getMaxValue())
+		else:
+			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
+		return False
 
 	def loadScene(self, fileList):
 		for filename in fileList:
@@ -667,8 +678,6 @@ void main(void)
 
 		if self.viewMode == 'gcode':
 			if self._gcode is not None:
-				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
-
 				glPushMatrix()
 				glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
 				t = time.time()
