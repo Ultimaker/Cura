@@ -101,9 +101,9 @@ class mainWindow(wx.Frame):
 		self.switchToNormalMenuItem = i
 		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
 		toolsMenu.AppendSeparator()
-		i = toolsMenu.Append(-1, 'Batch run...')
-		self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
-		self.normalModeOnlyItems.append(i)
+		#i = toolsMenu.Append(-1, 'Batch run...')
+		#self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
+		#self.normalModeOnlyItems.append(i)
 		if minecraftImport.hasMinecraft():
 			i = toolsMenu.Append(-1, 'Minecraft import...')
 			self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
