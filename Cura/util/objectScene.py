@@ -17,9 +17,14 @@ class _objectOrderFinder(object):
 		for n in xrange(0, len(self._objs)):
 			if scene.checkPlatform(self._objs[n]):
 				initialList.append(n)
+		for n in initialList:
+			if self._objs[n].getSize()[2] > gantryHeight and len(initialList) > 1:
+				self.order = None
+				return
 		if len(initialList) == 0:
 			self.order = []
 			return
+
 
 		self._hitMap = [None] * (max(initialList)+1)
 		for a in initialList:

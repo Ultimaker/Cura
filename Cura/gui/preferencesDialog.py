@@ -46,11 +46,11 @@ class preferencesDialog(wx.Frame):
 		configBase.SettingRow(right, 'serial_port', ['AUTO'] + machineCom.serialList())
 		configBase.SettingRow(right, 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()))
 
-		configBase.TitleRow(right, 'Slicer settings')
-		configBase.SettingRow(right, 'save_profile')
+		#configBase.TitleRow(right, 'Slicer settings')
+		#configBase.SettingRow(right, 'save_profile')
 
-		configBase.TitleRow(right, 'SD Card settings')
-		configBase.SettingRow(right, 'sdpath', removableStorage.getPossibleSDcardDrives())
+		#configBase.TitleRow(right, 'SD Card settings')
+		#configBase.SettingRow(right, 'sdpath', removableStorage.getPossibleSDcardDrives())
 
 		configBase.TitleRow(right, 'Cura settings')
 		configBase.SettingRow(right, 'check_for_updates')

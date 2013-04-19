@@ -68,18 +68,40 @@ class Slicer(object):
 		commandList += ['-b', self._binaryStorageFilename]
 		self._objCount = 0
 		with open(self._binaryStorageFilename, "wb") as f:
-			for n in scene.printOrder():
-				obj = scene.objects()[n]
-				for mesh in obj._meshList:
-					n = numpy.array([mesh.vertexCount], numpy.int32)
-					f.write(n.tostring())
-					f.write(mesh.vertexes.tostring())
-				pos = obj.getPosition() * 1000
-				pos += numpy.array([profile.getPreferenceFloat('machine_width') * 1000 / 2, profile.getPreferenceFloat('machine_depth') * 1000 / 2])
-				commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
+			order = scene.printOrder()
+			if order is None:
+				pos = numpy.array([profile.getPreferenceFloat('machine_width') * 1000 / 2, profile.getPreferenceFloat('machine_depth') * 1000 / 2])
 				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
-				commandList += ['#' * len(obj._meshList)]
-				self._objCount += 1
+
+				vertexTotal = 0
+				for obj in scene.objects():
+					if scene.checkPlatform(obj):
+						for mesh in obj._meshList:
+							vertexTotal += mesh.vertexCount
+
+				f.write(numpy.array([vertexTotal], numpy.int32).tostring())
+				for obj in scene.objects():
+					if scene.checkPlatform(obj):
+						for mesh in obj._meshList:
+							vertexes = (numpy.matrix(mesh.vertexes, copy = False) * numpy.matrix(obj._matrix, numpy.float32)).getA()
+							vertexes -= obj._drawOffset
+							vertexes += numpy.array([obj.getPosition()[0], obj.getPosition()[1], 0.0])
+							f.write(vertexes.tostring())
+
+				commandList += ['#']
+				self._objCount = 1
+			else:
+				for n in order:
+					obj = scene.objects()[n]
+					for mesh in obj._meshList:
+						f.write(numpy.array([mesh.vertexCount], numpy.int32).tostring())
+						f.write(mesh.vertexes.tostring())
+					pos = obj.getPosition() * 1000
+					pos += numpy.array([profile.getPreferenceFloat('machine_width') * 1000 / 2, profile.getPreferenceFloat('machine_depth') * 1000 / 2])
+					commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
+					commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
+					commandList += ['#' * len(obj._meshList)]
+					self._objCount += 1
 		if self._objCount > 0:
 			print ' '.join(commandList)
 			try:
@@ -112,7 +134,7 @@ class Slicer(object):
 					except:
 						pass
 			else:
-				#print '#', line.strip()
+				print '#', line.strip()
 				pass
 			line = self._process.stdout.readline()
 		for line in self._process.stderr:

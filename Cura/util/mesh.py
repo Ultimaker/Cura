@@ -51,7 +51,7 @@ class printableObject(object):
 		self._boundaryCircleSize = 0
 
 		for m in self._meshList:
-			transformedVertexes = (numpy.matrix(m.vertexes, copy = False) * self._matrix).getA()
+			transformedVertexes = (numpy.matrix(m.vertexes, copy = False) * numpy.matrix(self._matrix, numpy.float32)).getA()
 			transformedMin = transformedVertexes.min(0)
 			transformedMax = transformedVertexes.max(0)
 			for n in xrange(0, 3):
