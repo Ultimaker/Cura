@@ -481,7 +481,7 @@ class SceneView(openglGui.glGuiPanel):
 						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, 'Delete'))
 						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, 'Multiply'))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, 'Split'))
-					if self._selectedObj != self._focusObj and self._focusObj is not None:
+					if self._selectedObj != self._focusObj and self._focusObj is not None and int(profile.getPreference('extruder_amount')) > 1:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Dual extrusion merge'))
 					if len(self._scene.objects()) > 0:
 						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, 'Delete all'))
