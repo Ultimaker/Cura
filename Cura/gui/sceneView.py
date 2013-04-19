@@ -6,6 +6,7 @@ import time
 import os
 import traceback
 import shutil
+import threading
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -245,6 +246,8 @@ class SceneView(openglGui.glGuiPanel):
 		self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2)
 		self._scene.pushFree()
 		self._selectObject(self._selectedObj)
+		self.updateProfileToControls()
+		self.sceneUpdated()
 
 	def OnMirror(self, axis):
 		if self._selectedObj is None:
@@ -341,8 +344,13 @@ class SceneView(openglGui.glGuiPanel):
 		if ready:
 			self._gcode = gcodeInterpreter.gcode()
 			self._gcode.progressCallback = self._gcodeLoadCallback
-			self._gcode.load(self._slicer.getGCodeFilename())
+			self._thread = threading.Thread(target=self._loadGCode)
+			self._thread.daemon = True
+			self._thread.start()
 		self.QueueRefresh()
+
+	def _loadGCode(self):
+		self._gcode.load(self._slicer.getGCodeFilename())
 
 	def _gcodeLoadCallback(self, progress):
 		if self._gcode is None:
