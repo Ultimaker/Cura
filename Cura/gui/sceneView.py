@@ -216,6 +216,8 @@ class SceneView(openglGui.glGuiPanel):
 				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 				self.layerSelect.setValue(len(self._gcode.layerList) - 1)
 			self._selectObject(None)
+		elif self.viewSelection.getValue() == 1:
+			self.viewMode = 'transparent'
 		else:
 			self.viewMode = 'normal'
 		self.layerSelect.setHidden(self.viewMode != 'gcode')
@@ -740,6 +742,7 @@ void main(void)
 		else:
 			glStencilFunc(GL_ALWAYS, 1, 1)
 			glStencilOp(GL_INCR, GL_INCR, GL_INCR)
+
 			self._objectShader.bind()
 			for obj in self._scene.objects():
 				if obj._loadAnim is not None:
@@ -748,8 +751,15 @@ void main(void)
 					else:
 						continue
 				brightness = 1.0
-				glDisable(GL_STENCIL_TEST)
 				if self._selectedObj == obj:
+					#If we want transparent, then first render a solid black model to remove the printer size lines.
+					if self.viewMode == 'transparent':
+						glColor4f(0, 0, 0, 0)
+						self._renderObject(obj)
+						glEnable(GL_BLEND)
+						glBlendFunc(GL_ONE, GL_ONE)
+						glDisable(GL_DEPTH_TEST)
+						brightness *= 0.5
 					glEnable(GL_STENCIL_TEST)
 				if self._focusObj == obj:
 					brightness = 1.2
@@ -760,9 +770,12 @@ void main(void)
 					self._renderObject(obj)
 				else:
 					self._renderObject(obj, brightness)
+				glDisable(GL_STENCIL_TEST)
+				glDisable(GL_BLEND)
+				glEnable(GL_DEPTH_TEST)
 			self._objectShader.unbind()
 
-			glDisable(GL_STENCIL_TEST)
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 			glEnable(GL_BLEND)
 			self._objectLoadShader.bind()
 			glColor4f(0.2, 0.6, 1.0, 1.0)
