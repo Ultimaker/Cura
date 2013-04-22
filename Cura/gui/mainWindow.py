@@ -457,10 +457,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 		#Alteration page
 		self.alterationPanel = alterationPanel.alterationPanel(self.nb)
-		if False:
-			self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
-		else:
-			self.alterationPanel.Show(False)
+		self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 
