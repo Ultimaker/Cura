@@ -272,7 +272,7 @@ class mainWindow(wx.Frame):
 	def OnPreferences(self, e):
 		prefDialog = preferencesDialog.preferencesDialog(self)
 		prefDialog.Centre()
-		prefDialog.Show(True)
+		prefDialog.Show()
 
 	def _showOpenDialog(self, title, wildcard = meshLoader.wildcardFilter()):
 		dlg=wx.FileDialog(self, title, os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)

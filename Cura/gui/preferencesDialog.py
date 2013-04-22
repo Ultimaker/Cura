@@ -7,9 +7,9 @@ from Cura.util import validators
 from Cura.util import machineCom
 from Cura.util import profile
 
-class preferencesDialog(wx.Frame):
+class preferencesDialog(wx.Dialog):
 	def __init__(self, parent):
-		super(preferencesDialog, self).__init__(None, title="Preferences", style=wx.DEFAULT_DIALOG_STYLE)
+		super(preferencesDialog, self).__init__(None, title="Preferences")
 		
 		wx.EVT_CLOSE(self, self.OnClose)
 		
@@ -72,15 +72,13 @@ class preferencesDialog(wx.Frame):
 
 		self.okButton = wx.Button(right, -1, 'Ok')
 		right.GetSizer().Add(self.okButton, (right.GetSizer().GetRows(), 0), flag=wx.BOTTOM, border=5)
-		self.okButton.Bind(wx.EVT_BUTTON, self.OnClose)
+		self.okButton.Bind(wx.EVT_BUTTON, lambda e: self.Close())
 		
-		self.MakeModal(True)
 		main.Fit()
 		self.Fit()
 
 	def OnClose(self, e):
 		if self.oldExtruderAmount != int(profile.getPreference('extruder_amount')):
 			wx.MessageBox('After changing the amount of extruders you need to restart Cura for full effect.', 'Extruder amount warning.', wx.OK | wx.ICON_INFORMATION)
-		self.MakeModal(False)
 		self.parent.updateProfileToControls()
 		self.Destroy()
