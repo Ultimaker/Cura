@@ -255,7 +255,7 @@ class mainWindow(wx.Frame):
 	def OnPreferences(self, e):
 		prefDialog = preferencesDialog.preferencesDialog(self)
 		prefDialog.Centre()
-		prefDialog.Show(True)
+		prefDialog.Show()
 
 	def OnDropFiles(self, files):
 		profile.setPluginConfig([])
