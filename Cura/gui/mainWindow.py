@@ -147,7 +147,7 @@ class mainWindow(wx.Frame):
 		self.splitter.Bind(wx.EVT_SPLITTER_DCLICK, lambda evt: evt.Veto())
 
 		##Gui components##
-		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane)
+		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, lambda : self.scene.sceneUpdated())
 		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
 
 		self.leftSizer = wx.BoxSizer(wx.VERTICAL)

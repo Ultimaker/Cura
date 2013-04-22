@@ -103,7 +103,7 @@ class SceneView(openglGui.glGuiPanel):
 
 		self._slicer = sliceEngine.Slicer(self._updateSliceProgress)
 		self._sceneUpdateTimer = wx.Timer(self)
-		self.Bind(wx.EVT_TIMER, lambda e : self._slicer.runSlicer(self._scene), self._sceneUpdateTimer)
+		self.Bind(wx.EVT_TIMER, self._onRunSlicer, self._sceneUpdateTimer)
 		self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
 
 		self.OnViewChange()
@@ -336,6 +336,13 @@ class SceneView(openglGui.glGuiPanel):
 		self._slicer.abortSlicer()
 		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
 		self.QueueRefresh()
+
+	def _onRunSlicer(self, e):
+		if self._isSimpleMode:
+			self.GetTopLevelParent().simpleSettingsPanel.setupSlice()
+		self._slicer.runSlicer(self._scene)
+		if self._isSimpleMode:
+			profile.resetTempOverride()
 
 	def _updateSliceProgress(self, progressValue, ready):
 		self.printButton.setDisabled(not ready)

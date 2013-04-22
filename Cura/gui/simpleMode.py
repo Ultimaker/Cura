@@ -6,9 +6,10 @@ from Cura.util import profile
 
 class simpleModePanel(wx.Panel):
 	"Main user interface window for Quickprint mode"
-	def __init__(self, parent):
+	def __init__(self, parent, callback):
 		super(simpleModePanel, self).__init__(parent)
-		
+		self._callback = callback
+
 		#toolsMenu = wx.Menu()
 		#i = toolsMenu.Append(-1, 'Switch to Normal mode...')
 		#self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
@@ -27,7 +28,6 @@ class simpleModePanel(wx.Panel):
 		self.printMaterialDiameter = wx.TextCtrl(printMaterialPanel, -1, profile.getProfileSetting('filament_diameter'))
 		
 		self.printSupport = wx.CheckBox(self, -1, 'Print support structure')
-		self.printSupport.Hide()
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
@@ -52,16 +52,26 @@ class simpleModePanel(wx.Panel):
 		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
 
-		#sb = wx.StaticBox(self, label="Other:")
-		#boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		#boxsizer.Add(self.printSupport)
-		#sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
+		sb = wx.StaticBox(self, label="Other:")
+		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		boxsizer.Add(self.printSupport)
+		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		self.printTypeNormal.SetValue(True)
 		self.printMaterialPLA.SetValue(True)
 
+		self.printTypeHigh.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+		self.printTypeNormal.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+		self.printTypeLow.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+		#self.printTypeJoris.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+
+		self.printMaterialPLA.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+		self.printMaterialABS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+
+		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
+
 	def setupSlice(self):
-		put = profile.putProfileSetting
+		put = profile.setTempOverride
 		get = profile.getProfileSetting
 
 		put('layer_height', '0.2')
