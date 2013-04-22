@@ -218,6 +218,8 @@ class SceneView(openglGui.glGuiPanel):
 			self._selectObject(None)
 		elif self.viewSelection.getValue() == 1:
 			self.viewMode = 'transparent'
+		elif self.viewSelection.getValue() == 2:
+			self.viewMode = 'xray'
 		else:
 			self.viewMode = 'normal'
 		self.layerSelect.setHidden(self.viewMode != 'gcode')
@@ -760,6 +762,8 @@ void main(void)
 						glBlendFunc(GL_ONE, GL_ONE)
 						glDisable(GL_DEPTH_TEST)
 						brightness *= 0.5
+					if self.viewMode == 'xray':
+						glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
 					glEnable(GL_STENCIL_TEST)
 				if self._focusObj == obj:
 					brightness = 1.2
@@ -773,6 +777,36 @@ void main(void)
 				glDisable(GL_STENCIL_TEST)
 				glDisable(GL_BLEND)
 				glEnable(GL_DEPTH_TEST)
+				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+
+				if obj == self._selectedObj and self.viewMode == 'xray':
+					glPushMatrix()
+					glLoadIdentity()
+					glEnable(GL_STENCIL_TEST)
+					glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP)
+					glDisable(GL_DEPTH_TEST)
+					for i in xrange(2, 15, 2):
+						glStencilFunc(GL_EQUAL, i, 0xFF);
+						glColor(float(i)/10, float(i)/10, float(i)/5)
+						glBegin(GL_QUADS)
+						glVertex3f(-1000,-1000,-1)
+						glVertex3f( 1000,-1000,-1)
+						glVertex3f( 1000, 1000,-1)
+						glVertex3f(-1000, 1000,-1)
+						glEnd()
+					for i in xrange(1, 15, 2):
+						glStencilFunc(GL_EQUAL, i, 0xFF);
+						glColor(float(i)/10, 0, 0)
+						glBegin(GL_QUADS)
+						glVertex3f(-1000,-1000,-1)
+						glVertex3f( 1000,-1000,-1)
+						glVertex3f( 1000, 1000,-1)
+						glVertex3f(-1000, 1000,-1)
+						glEnd()
+					glPopMatrix()
+					glDisable(GL_STENCIL_TEST)
+					glEnable(GL_DEPTH_TEST)
+
 			self._objectShader.unbind()
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
