@@ -101,7 +101,7 @@ class GLVBO(GLReferenceCounter):
 		else:
 			glVertexPointer(3, GL_FLOAT, 3*4, c_void_p(0))
 
-		batchSize = 1002    #Warning, batchSize needs to be dividable by 3 and 2
+		batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
 		extraStartPos = int(self._size / batchSize) * batchSize
 		extraCount = self._size - extraStartPos
 
