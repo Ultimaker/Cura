@@ -60,6 +60,11 @@ def getPossibleSDcardDrives():
 				if volumeName == '':
 					volumeName = 'NO NAME'
 
+				freeBytes = ctypes.c_longlong(0)
+				if windll.kernel32.GetDiskFreeSpaceExA(letter + ':/', ctypes.byref(freeBytes), None, None) == 0:
+					continue
+				if freeBytes.value < 1:
+					continue
 				drives.append(('%s (%s:)' % (volumeName, letter), letter + ':/', volumeName))
 			bitmask >>= 1
 	elif platform.system() == "Darwin":
