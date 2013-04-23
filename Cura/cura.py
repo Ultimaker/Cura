@@ -66,8 +66,15 @@ def main():
 		from Cura.gui import printWindow
 		printWindow.startPrintInterface(options.printfile)
 	elif options.slice is not None:
-		from Cura.util import sliceRun
-		sliceRun.runSlice(args)
+		from Cura.util import sliceEngine
+		from Cura.util import objectScene
+		from Cura.util import meshLoader
+
+		scene = objectScene.Scene()
+		slicer = sliceEngine.Slicer()
+		for m in meshLoader.loadMeshes(args[0]):
+			scene.add(m)
+		slicer.runSlicer(scene)
 	else:
 		#Place any unused arguments as last file, so Cura starts with opening those files.
 		if len(args) > 0:
