@@ -760,7 +760,12 @@ void main(void)
 					else:
 						continue
 				brightness = 1.0
-				if self._selectedObj == obj:
+				if self._focusObj == obj:
+					brightness = 1.2
+				elif self._focusObj is not None or self._selectedObj is not None and obj != self._selectedObj:
+					brightness = 0.8
+
+				if self._selectedObj == obj or self._selectedObj is None:
 					#If we want transparent, then first render a solid black model to remove the printer size lines.
 					if self.viewMode == 'transparent':
 						glColor4f(0, 0, 0, 0)
@@ -771,11 +776,9 @@ void main(void)
 						brightness *= 0.5
 					if self.viewMode == 'xray':
 						glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
+					glStencilOp(GL_INCR, GL_INCR, GL_INCR)
 					glEnable(GL_STENCIL_TEST)
-				if self._focusObj == obj:
-					brightness = 1.2
-				elif self._focusObj is not None or self._selectedObj is not None and obj != self._selectedObj:
-					brightness = 0.8
+
 				if not self._scene.checkPlatform(obj):
 					glColor4f(0.5 * brightness, 0.5 * brightness, 0.5 * brightness, 0.8 * brightness)
 					self._renderObject(obj)
@@ -786,33 +789,33 @@ void main(void)
 				glEnable(GL_DEPTH_TEST)
 				glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
 
-				if obj == self._selectedObj and self.viewMode == 'xray':
-					glPushMatrix()
-					glLoadIdentity()
-					glEnable(GL_STENCIL_TEST)
-					glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP)
-					glDisable(GL_DEPTH_TEST)
-					for i in xrange(2, 15, 2):
-						glStencilFunc(GL_EQUAL, i, 0xFF);
-						glColor(float(i)/10, float(i)/10, float(i)/5)
-						glBegin(GL_QUADS)
-						glVertex3f(-1000,-1000,-1)
-						glVertex3f( 1000,-1000,-1)
-						glVertex3f( 1000, 1000,-1)
-						glVertex3f(-1000, 1000,-1)
-						glEnd()
-					for i in xrange(1, 15, 2):
-						glStencilFunc(GL_EQUAL, i, 0xFF);
-						glColor(float(i)/10, 0, 0)
-						glBegin(GL_QUADS)
-						glVertex3f(-1000,-1000,-1)
-						glVertex3f( 1000,-1000,-1)
-						glVertex3f( 1000, 1000,-1)
-						glVertex3f(-1000, 1000,-1)
-						glEnd()
-					glPopMatrix()
-					glDisable(GL_STENCIL_TEST)
-					glEnable(GL_DEPTH_TEST)
+			if self.viewMode == 'xray':
+				glPushMatrix()
+				glLoadIdentity()
+				glEnable(GL_STENCIL_TEST)
+				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
+				glDisable(GL_DEPTH_TEST)
+				for i in xrange(2, 15, 2):
+					glStencilFunc(GL_EQUAL, i, 0xFF)
+					glColor(float(i)/10, float(i)/10, float(i)/5)
+					glBegin(GL_QUADS)
+					glVertex3f(-1000,-1000,-10)
+					glVertex3f( 1000,-1000,-10)
+					glVertex3f( 1000, 1000,-10)
+					glVertex3f(-1000, 1000,-10)
+					glEnd()
+				for i in xrange(1, 15, 2):
+					glStencilFunc(GL_EQUAL, i, 0xFF)
+					glColor(float(i)/10, 0, 0)
+					glBegin(GL_QUADS)
+					glVertex3f(-1000,-1000,-10)
+					glVertex3f( 1000,-1000,-10)
+					glVertex3f( 1000, 1000,-10)
+					glVertex3f(-1000, 1000,-10)
+					glEnd()
+				glPopMatrix()
+				glDisable(GL_STENCIL_TEST)
+				glEnable(GL_DEPTH_TEST)
 
 			self._objectShader.unbind()
 
