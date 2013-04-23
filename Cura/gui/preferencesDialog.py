@@ -26,16 +26,23 @@ class preferencesDialog(wx.Dialog):
 		configBase.SettingRow(left, 'machine_height')
 		configBase.SettingRow(left, 'extruder_amount')
 		configBase.SettingRow(left, 'has_heated_bed')
-		
+
+		configBase.TitleRow(left, 'Printer head size')
+		configBase.SettingRow(left, 'extruder_head_size_min_x')
+		configBase.SettingRow(left, 'extruder_head_size_min_y')
+		configBase.SettingRow(left, 'extruder_head_size_max_x')
+		configBase.SettingRow(left, 'extruder_head_size_max_y')
+		configBase.SettingRow(left, 'extruder_head_size_height')
+
 		for i in xrange(1, self.oldExtruderAmount):
 			configBase.TitleRow(left, 'Extruder %d' % (i+1))
 			configBase.SettingRow(left, 'extruder_offset_x%d' % (i))
 			configBase.SettingRow(left, 'extruder_offset_y%d' % (i))
 
-		configBase.TitleRow(left, 'Colours')
-		configBase.SettingRow(left, 'model_colour', wx.Colour)
+		configBase.TitleRow(right, 'Colours')
+		configBase.SettingRow(right, 'model_colour', wx.Colour)
 		for i in xrange(1, self.oldExtruderAmount):
-			configBase.SettingRow(left, 'model_colour%d' % (i+1), wx.Colour)
+			configBase.SettingRow(right, 'model_colour%d' % (i+1), wx.Colour)
 
 		configBase.TitleRow(right, 'Filament settings')
 		configBase.SettingRow(right, 'filament_physical_density')

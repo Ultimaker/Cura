@@ -251,6 +251,11 @@ class RepRapInfoPage(InfoPage):
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSettingFloat('nozzle_size')) * 2)
 		profile.putPreference('has_heated_bed', str(self.heatedBed.GetValue()))
 		profile.putPreference('machine_center_is_zero', str(self.HomeAtCenter.GetValue()))
+		profile.putPreference('extruder_head_size_min_x', '0')
+		profile.putPreference('extruder_head_size_min_y', '0')
+		profile.putPreference('extruder_head_size_max_x', '0')
+		profile.putPreference('extruder_head_size_max_y', '0')
+		profile.putPreference('extruder_head_size_height', '0')
 
 
 class MachineSelectPage(InfoPage):
@@ -284,6 +289,11 @@ class MachineSelectPage(InfoPage):
 			profile.putPreference('machine_type', 'ultimaker')
 			profile.putPreference('machine_center_is_zero', 'False')
 			profile.putProfileSetting('nozzle_size', '0.4')
+			profile.putPreference('extruder_head_size_min_x', '75.0')
+			profile.putPreference('extruder_head_size_min_y', '18.0')
+			profile.putPreference('extruder_head_size_max_x', '18.0')
+			profile.putPreference('extruder_head_size_max_y', '35.0')
+			profile.putPreference('extruder_head_size_height', '60.0')
 		else:
 			profile.putPreference('machine_width', '80')
 			profile.putPreference('machine_depth', '80')
