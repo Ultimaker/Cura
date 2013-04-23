@@ -3,11 +3,15 @@ import string
 import glob
 import os
 import stat
+import time
 import subprocess
 try:
 	from xml.etree import cElementTree as ElementTree
 except:
 	from xml.etree import ElementTree
+
+_removeableCache = None
+_removeableCacheTime = None
 
 def _parseStupidPListXML(e):
 	if e.tag == 'plist':
@@ -46,6 +50,10 @@ def _findInTree(t, n):
 	return ret
 
 def getPossibleSDcardDrives():
+	global _removeableCache, _removeableCacheTime
+	if _removeableCache is not None and time.time() - _removeableCacheTime < 5.0:
+		return _removeableCache
+
 	drives = []
 	if platform.system() == "Windows":
 		from ctypes import windll
@@ -82,6 +90,9 @@ def getPossibleSDcardDrives():
 	else:
 		for volume in glob.glob('/media/*'):
 			drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
+
+	_removeableCache = drives
+	_removeableCacheTime = time.time()
 	return drives
 
 if __name__ == '__main__':
