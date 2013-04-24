@@ -150,15 +150,16 @@ class SceneView(openglGui.glGuiPanel):
 				else:
 					self.notification.message("Saved as %s" % (drive[1] + filename))
 			else:
-				self._showSaveGCode()
+				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
 			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._slicer.getGCodeFilename()), menu.Append(-1, 'Print with USB'))
-			self.Bind(wx.EVT_MENU, lambda e: self._showSaveGCode(), menu.Append(-1, 'Save GCode...'))
+			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, 'Save GCode...'))
+			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, 'Slice engine log...'))
 			self.PopupMenu(menu)
 			menu.Destroy()
 
-	def _showSaveGCode(self):
+	def showSaveGCode(self):
 		defPath = profile.getPreference('lastFile')
 		defPath = defPath[0:defPath.rfind('.')] + '.gcode'
 		dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
@@ -176,6 +177,11 @@ class SceneView(openglGui.glGuiPanel):
 			self.notification.message("Failed to save")
 		else:
 			self.notification.message("Saved as %s" % (filename))
+
+	def _showSliceLog(self):
+		dlg = wx.TextEntryDialog(self, "The slicing engine reported the following", "Engine log...", '\n'.join(self._slicer.getSliceLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)
+		dlg.ShowModal()
+		dlg.Destroy()
 
 	def OnToolSelect(self, button):
 		if self.rotateToolButton.getSelected():
@@ -295,11 +301,11 @@ class SceneView(openglGui.glGuiPanel):
 		if self._focusObj is None:
 			return
 		obj = self._focusObj
-		dlg = wx.NumberEntryDialog(self, "How many copies need to be made?", "Copies", "Multiply", 1, 1, 100)
+		dlg = wx.NumberEntryDialog(self, "How many items do you want?", "Copies", "Multiply", 2, 1, 100)
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
 			return
-		cnt = dlg.GetValue()
+		cnt = dlg.GetValue() - 1
 		dlg.Destroy()
 		n = 0
 		while True:
@@ -311,6 +317,8 @@ class SceneView(openglGui.glGuiPanel):
 				break
 			if n > cnt:
 				break
+		if n <= cnt:
+			self.notification.message("Could not create more then %d items" % (n))
 		self._scene.remove(newObj)
 		self._scene.centerAll()
 		self.sceneUpdated()

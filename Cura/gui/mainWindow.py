@@ -54,6 +54,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowLoadModel(1), i)
 		i = self.fileMenu.Append(-1, 'Print...\tCTRL+P')
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowPrintWindow(), i)
+		i = self.fileMenu.Append(-1, 'Save GCode...')
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveGCode(), i)
 
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, 'Open Profile...')

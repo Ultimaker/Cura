@@ -34,6 +34,7 @@ class Slicer(object):
 		self._exportFilename = getTempFilename()
 		self._progressSteps = ['inset', 'skin', 'export']
 		self._objCount = 0
+		self._sliceLog = []
 
 	def cleanup(self):
 		self.abortSlicer()
@@ -56,6 +57,9 @@ class Slicer(object):
 
 	def getGCodeFilename(self):
 		return self._exportFilename
+
+	def getSliceLog(self):
+		return self._sliceLog
 
 	def runSlicer(self, scene):
 		self.abortSlicer()
@@ -103,7 +107,6 @@ class Slicer(object):
 					commandList += ['#' * len(obj._meshList)]
 					self._objCount += 1
 		if self._objCount > 0:
-			print ' '.join(commandList)
 			try:
 				self._process = self._runSliceProcess(commandList)
 				self._thread = threading.Thread(target=self._watchProcess)
@@ -114,6 +117,7 @@ class Slicer(object):
 
 	def _watchProcess(self):
 		self._callback(0.0, False)
+		self._sliceLog = []
 		line = self._process.stdout.readline()
 		objectNr = 0
 		while len(line):
@@ -134,13 +138,11 @@ class Slicer(object):
 					except:
 						pass
 			else:
-				print '#', line.strip()
-				pass
+				self._sliceLog.append(line.strip())
 			line = self._process.stdout.readline()
 		for line in self._process.stderr:
-			print line.strip()
+			self._sliceLog.append(line.strip())
 		returnCode = self._process.wait()
-		print returnCode
 		try:
 			if returnCode == 0:
 				self._callback(1.0, True)
