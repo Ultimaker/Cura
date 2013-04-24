@@ -16,6 +16,7 @@ from Cura.gui import sceneView
 from Cura.gui.tools import batchRun
 from Cura.gui.util import dropTarget
 from Cura.gui.tools import minecraftImport
+from Cura.gui.tools import superformula
 from Cura.util import profile
 from Cura.util import version
 from Cura.util import meshLoader
@@ -107,6 +108,8 @@ class mainWindow(wx.Frame):
 		if minecraftImport.hasMinecraft():
 			i = toolsMenu.Append(-1, 'Minecraft import...')
 			self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
+		i = toolsMenu.Append(-1, 'Super-shaper...')
+		self.Bind(wx.EVT_MENU, self.OnSuperformula, i)
 		self.menubar.Append(toolsMenu, 'Tools')
 
 		expertMenu = wx.Menu()
@@ -393,6 +396,11 @@ class mainWindow(wx.Frame):
 		mi = minecraftImport.minecraftImportWindow(self)
 		mi.Centre()
 		mi.Show(True)
+
+	def OnSuperformula(self, e):
+		sf = superformula.superformulaWindow(self)
+		sf.Centre()
+		sf.Show(True)
 
 	def OnCheckForUpdate(self, e):
 		newVersion = version.checkForNewerVersion()
