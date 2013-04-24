@@ -539,8 +539,16 @@ class SceneView(openglGui.glGuiPanel):
 				self.tool.OnDrag(p0, p1)
 			elif not e.LeftIsDown() and e.RightIsDown():
 				self._mouseState = 'drag'
-				self._yaw += e.GetX() - self._mouseX
-				self._pitch -= e.GetY() - self._mouseY
+				if wx.GetKeyState(wx.WXK_SHIFT):
+					a = math.cos(math.radians(self._yaw)) / 3.0
+					b = math.sin(math.radians(self._yaw)) / 3.0
+					self._viewTarget[0] += float(e.GetX() - self._mouseX) * -a
+					self._viewTarget[1] += float(e.GetX() - self._mouseX) * b
+					self._viewTarget[0] += float(e.GetY() - self._mouseY) * b
+					self._viewTarget[1] += float(e.GetY() - self._mouseY) * a
+				else:
+					self._yaw += e.GetX() - self._mouseX
+					self._pitch -= e.GetY() - self._mouseY
 				if self._pitch > 170:
 					self._pitch = 170
 				if self._pitch < 10:
