@@ -362,6 +362,9 @@ class SceneView(openglGui.glGuiPanel):
 					self.glReleaseList.append(vbo)
 			self._gcodeVBOs = []
 		if ready:
+			print self._slicer.getFilamentAmount()
+			print self._slicer.getPrintTime()
+			print self._slicer.getFilamentCost()
 			self._gcode = gcodeInterpreter.gcode()
 			self._gcode.progressCallback = self._gcodeLoadCallback
 			self._thread = threading.Thread(target=self._loadGCode)

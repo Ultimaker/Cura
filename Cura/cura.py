@@ -76,14 +76,8 @@ def main():
 			scene.add(m)
 		slicer.runSlicer(scene)
 	else:
-		#Place any unused arguments as last file, so Cura starts with opening those files.
-		if len(args) > 0:
-			profile.putPreference('lastFile', ';'.join(args))
-			profile.setPluginConfig([])
-
-		#Do not import anything from Cura.gui before this spot, as the above code also needs to run in pypy.
 		from Cura.gui import app
-		app.CuraApp().MainLoop()
+		app.CuraApp(args).MainLoop()
 
 if __name__ == '__main__':
 	main()

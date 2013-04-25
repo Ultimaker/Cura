@@ -141,11 +141,6 @@ class mainWindow(wx.Frame):
 		self.menubar.Append(helpMenu, 'Help')
 		self.SetMenuBar(self.menubar)
 
-		if profile.getPreference('lastFile') != '':
-			self.filelist = profile.getPreference('lastFile').split(';')
-		else:
-			self.filelist = []
-
 		self.splitter = wx.SplitterWindow(self, style = wx.SP_3D | wx.SP_LIVE_UPDATE)
 		self.leftPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
 		self.rightPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
@@ -174,13 +169,6 @@ class mainWindow(wx.Frame):
 		sizer.Add(self.splitter, 1, wx.EXPAND)
 		sizer.Layout()
 		self.sizer = sizer
-
-		if len(self.filelist) > 0:
-			self.scene.loadScene(self.filelist)
-
-			# Update the Model MRU
-			for idx in xrange(0, len(self.filelist)):
-				self.addToModelMRU(self.filelist[idx])
 
 		self.updateProfileToControls()
 
@@ -225,8 +213,6 @@ class mainWindow(wx.Frame):
 			self.Centre()
 
 		self.updateSliceMode()
-
-		self.Show(True)
 
 	def updateSliceMode(self):
 		isSimple = profile.getPreference('startMode') == 'Simple'

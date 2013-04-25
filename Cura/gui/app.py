@@ -11,7 +11,7 @@ import warnings
 import wx._core
 
 class CuraApp(wx.App):
-	def __init__(self):
+	def __init__(self, files):
 		if platform.system() == "Windows" and not 'PYCHARM_HOSTED' in os.environ:
 			super(CuraApp, self).__init__(redirect = True, filename = 'output.txt')
 		else:
@@ -19,6 +19,7 @@ class CuraApp(wx.App):
 
 		self.mainWindow = None
 		self.splash = None
+		self.loadFiles = files
 
 		if sys.platform.startswith('darwin'):
 			#Do not show a splashscreen on OSX, as by Apple guidelines
@@ -29,7 +30,7 @@ class CuraApp(wx.App):
 
 	def MacOpenFile(self, path):
 		try:
-			self.mainWindow._loadModels([path])
+			self.mainWindow.OnDropFiles([path])
 		except Exception as e:
 			warnings.warn("File at {p} cannot be read: {e}".format(p=path, e=str(e)))
 
@@ -44,7 +45,9 @@ class CuraApp(wx.App):
 
 		#If we haven't run it before, run the configuration wizard.
 		if profile.getPreference('machine_type') == 'unknown':
-			if platform.system() == "Darwin":
+			if platform.system() == "Windows":
+				exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'UltimakerRobot_support.stl'))
+			else:
 				#Check if we need to copy our examples
 				exampleFile = os.path.expanduser('~/CuraExamples/UltimakerRobot_support.stl')
 				if not os.path.isfile(exampleFile):
@@ -54,19 +57,24 @@ class CuraApp(wx.App):
 						pass
 					for filename in glob.glob(os.path.normpath(os.path.join(resources.resourceBasePath, 'example', '*.*'))):
 						shutil.copy(filename, os.path.join(os.path.dirname(exampleFile), os.path.basename(filename)))
-					profile.putPreference('lastFile', exampleFile)
+			self.loadFiles = [exampleFile]
+			if self.splash is not None:
+				self.splash.Show(False)
 			configWizard.configWizard()
 
-		#Hide the splashscreen before showing the main window.
-		if self.splash is not None:
-			self.splash.Show(False)
 		if profile.getPreference('check_for_updates') == 'True':
 			newVersion = version.checkForNewerVersion()
 			if newVersion is not None:
+				if self.splash is not None:
+					self.splash.Show(False)
 				if wx.MessageBox('A new version of Cura is available, would you like to download?', 'New version available', wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
 					webbrowser.open(newVersion)
 					return
 		self.mainWindow = mainWindow.mainWindow()
+		if self.splash is not None:
+			self.splash.Show(False)
+		self.mainWindow.Show()
+		self.mainWindow.OnDropFiles(self.loadFiles)
 
 		setFullScreenCapable(self.mainWindow)
 
