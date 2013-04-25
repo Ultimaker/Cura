@@ -187,7 +187,6 @@ class printableObject(object):
 		scaleX2 = (self._position[0] + size[0] / 2) / ((vMax[0] - vMin[0]) / 2)
 		scaleY2 = (self._position[1] + size[1] / 2) / ((vMax[1] - vMin[1]) / 2)
 		scaleZ = size[2] / (vMax[2] - vMin[2])
-		print scaleX1, scaleY1, scaleX2, scaleY2, scaleZ
 		scale = min(scaleX1, scaleY1, scaleX2, scaleY2, scaleZ)
 		if scale > 0:
 			self.applyMatrix(numpy.matrix([[scale,0,0],[0,scale,0],[0,0,scale]], numpy.float64))
