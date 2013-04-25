@@ -105,9 +105,9 @@ class daeLoader(object):
 						faceCount = int(triangles['_count'])
 						stepSize = len(indexList) / (faceCount * 3)
 						for i in xrange(0, faceCount):
-							idx0 = indexList[(i * 3) + 0 * stepSize]
-							idx1 = indexList[(i * 3) + 1 * stepSize]
-							idx2 = indexList[(i * 3) + 2 * stepSize]
+							idx0 = indexList[((i * 3) + 0) * stepSize]
+							idx1 = indexList[((i * 3) + 1) * stepSize]
+							idx2 = indexList[((i * 3) + 2) * stepSize]
 							x0 = positionList[idx0*3]
 							y0 = positionList[idx0*3+1]
 							z0 = positionList[idx0*3+2]
