@@ -198,6 +198,7 @@ class printableObject(object):
 			for m in oriMesh.split(callback):
 				obj = printableObject()
 				obj._meshList.append(m)
+				obj._matrix = self._matrix.copy()
 				obj._postProcessAfterLoad()
 				ret.append(obj)
 		return ret
