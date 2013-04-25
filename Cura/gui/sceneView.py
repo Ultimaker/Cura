@@ -327,11 +327,14 @@ class SceneView(openglGui.glGuiPanel):
 		if self._focusObj is None:
 			return
 		self._scene.remove(self._focusObj)
-		for obj in self._focusObj.split():
+		for obj in self._focusObj.split(self._splitCallback):
 			self._scene.add(obj)
 		self._scene.centerAll()
 		self._selectObject(None)
 		self.sceneUpdated()
+
+	def _splitCallback(self, progress):
+		print progress
 
 	def OnMergeObjects(self, e):
 		if self._selectedObj is None or self._focusObj is None or self._selectedObj == self._focusObj:
@@ -354,7 +357,10 @@ class SceneView(openglGui.glGuiPanel):
 
 	def _updateSliceProgress(self, progressValue, ready):
 		self.printButton.setDisabled(not ready)
-		self.printButton.setProgressBar(progressValue)
+		if progressValue >= 0.0:
+			self.printButton.setProgressBar(progressValue)
+		else:
+			self.printButton.setProgressBar(None)
 		if self._gcode is not None:
 			self._gcode = None
 			for layerVBOlist in self._gcodeVBOs:
@@ -362,14 +368,19 @@ class SceneView(openglGui.glGuiPanel):
 					self.glReleaseList.append(vbo)
 			self._gcodeVBOs = []
 		if ready:
-			print self._slicer.getFilamentAmount()
-			print self._slicer.getPrintTime()
-			print self._slicer.getFilamentCost()
+			self.printButton.setProgressBar(None)
+			cost = self._slicer.getFilamentCost()
+			if cost is not None:
+				self.printButton.setBottomText('%s\n%s\n%s' % (self._slicer.getPrintTime(), self._slicer.getFilamentAmount(), cost))
+			else:
+				self.printButton.setBottomText('%s\n%s' % (self._slicer.getPrintTime(), self._slicer.getFilamentAmount()))
 			self._gcode = gcodeInterpreter.gcode()
 			self._gcode.progressCallback = self._gcodeLoadCallback
 			self._thread = threading.Thread(target=self._loadGCode)
 			self._thread.daemon = True
 			self._thread.start()
+		else:
+			self.printButton.setBottomText('')
 		self.QueueRefresh()
 
 	def _loadGCode(self):

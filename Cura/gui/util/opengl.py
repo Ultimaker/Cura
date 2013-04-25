@@ -274,8 +274,16 @@ def glGetStringSize(s):
 
 def glDrawStringLeft(s):
 	glRasterPos2f(0, 0)
+	n = 1
 	for c in s:
-		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
+		if c == '\n':
+			glPushMatrix()
+			glTranslate(0, 18 * n, 0)
+			n += 1
+			glRasterPos2f(0, 0)
+			glPopMatrix()
+		else:
+			glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
 
 def glDrawStringRight(s):
 	glRasterPos2f(0, 0)

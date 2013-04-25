@@ -390,7 +390,8 @@ class glButton(glGuiControl):
 		self._hidden = False
 		self._disabled = False
 		self._showExpandArrow = False
-		self._progressBar = 0.0
+		self._progressBar = None
+		self._altTooltip = ''
 
 	def setSelected(self, value):
 		self._selected = value
@@ -406,6 +407,9 @@ class glButton(glGuiControl):
 
 	def setProgressBar(self, value):
 		self._progressBar = value
+
+	def setBottomText(self, value):
+		self._altTooltip = value
 
 	def getSelected(self):
 		return self._selected
@@ -466,11 +470,29 @@ class glButton(glGuiControl):
 			glColor4ub(255,255,255,255)
 			opengl.glDrawStringCenter(self._tooltip)
 		glPopMatrix()
-		if 0.0 < self._progressBar < 1.0:
+		if self._progressBar is not None:
 			glColor4ub(255,255,255,192)
-			glPushMatrix()
 			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4, 0)
 			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs * self._progressBar, bs / 4, 0)
+		elif len(self._altTooltip) > 0:
+			glPushMatrix()
+			glTranslatef(pos[0], pos[1], 0)
+			glTranslatef(0.6*bs*scale, 0, 0)
+
+			glPushMatrix()
+			glColor4ub(60,60,60,255)
+			glTranslatef(-1, -1, 0)
+			opengl.glDrawStringLeft(self._altTooltip)
+			glTranslatef(0, 2, 0)
+			opengl.glDrawStringLeft(self._altTooltip)
+			glTranslatef(2, 0, 0)
+			opengl.glDrawStringLeft(self._altTooltip)
+			glTranslatef(0, -2, 0)
+			opengl.glDrawStringLeft(self._altTooltip)
+			glPopMatrix()
+
+			glColor4ub(255,255,255,255)
+			opengl.glDrawStringLeft(self._altTooltip)
 			glPopMatrix()
 
 	def _checkHit(self, x, y):

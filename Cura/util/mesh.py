@@ -192,10 +192,10 @@ class printableObject(object):
 		if scale > 0:
 			self.applyMatrix(numpy.matrix([[scale,0,0],[0,scale,0],[0,0,scale]], numpy.float64))
 
-	def split(self):
+	def split(self, callback):
 		ret = []
 		for oriMesh in self._meshList:
-			for m in oriMesh.split():
+			for m in oriMesh.split(callback):
 				obj = printableObject()
 				obj._meshList.append(m)
 				obj._postProcessAfterLoad()
@@ -247,7 +247,7 @@ class mesh(object):
 
 	def _vertexHash(self, idx):
 		v = self.vertexes[idx]
-		return int(v[0] * 100) | int(v[1] * 100) << 8 | int(v[2] * 100) << 16
+		return int(v[0] * 100) | int(v[1] * 100) << 10 | int(v[2] * 100) << 20
 
 	def _idxFromHash(self, map, idx):
 		vHash = self._vertexHash(idx)
@@ -255,12 +255,13 @@ class mesh(object):
 			if numpy.linalg.norm(self.vertexes[i] - self.vertexes[idx]) < 0.001:
 				return i
 
-	def split(self):
+	def split(self, callback):
 		vertexMap = {}
 
 		vertexToFace = []
 		for idx in xrange(0, self.vertexCount):
-			print idx, self.vertexCount
+			if (idx % 100) == 0:
+				callback(idx * 100 / self.vertexCount)
 			vHash = self._vertexHash(idx)
 			if vHash not in vertexMap:
 				vertexMap[vHash] = []
@@ -269,7 +270,8 @@ class mesh(object):
 
 		faceList = []
 		for idx in xrange(0, self.vertexCount, 3):
-			print idx, self.vertexCount
+			if (idx % 100) == 0:
+				callback(idx * 100 / self.vertexCount)
 			f = [self._idxFromHash(vertexMap, idx), self._idxFromHash(vertexMap, idx+1), self._idxFromHash(vertexMap, idx+2)]
 			vertexToFace[f[0]].append(idx / 3)
 			vertexToFace[f[1]].append(idx / 3)

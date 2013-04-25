@@ -85,11 +85,11 @@ class Slicer(object):
 		return '%02d:%02d' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
 
 	def getFilamentAmount(self):
-		return '%0.2fm' % (float(self._filamentMM) / 1000.0)
+		return '%0.2fm %0.0fgram' % (float(self._filamentMM) / 1000.0, self.getFilamentWeight() * 1000.0)
 
 	def runSlicer(self, scene):
 		self.abortSlicer()
-		self._callback(0.0, False)
+		self._callback(-1.0, False)
 
 		commandList = [getEngineFilename(), '-vv']
 		for k, v in self._engineSettings().iteritems():
@@ -180,7 +180,7 @@ class Slicer(object):
 			if returnCode == 0:
 				self._callback(1.0, True)
 			else:
-				self._callback(0.0, False)
+				self._callback(-1.0, False)
 		except:
 			pass
 		self._process = None

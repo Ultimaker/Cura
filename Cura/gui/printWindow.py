@@ -406,8 +406,7 @@ class printWindow(wx.Frame):
 			cost = self.gcode.calculateCost()
 			if cost is not None:
 				status += "Filament cost: %s\n" % (cost)
-			status += "Estimated print time: %02d:%02d\n" % (
-			int(self.gcode.totalMoveTimeMinute / 60), int(self.gcode.totalMoveTimeMinute % 60))
+			#status += "Estimated print time: %02d:%02d\n" % (int(self.gcode.totalMoveTimeMinute / 60), int(self.gcode.totalMoveTimeMinute % 60))
 		if self.machineCom is None or not self.machineCom.isPrinting():
 			self.progress.SetValue(0)
 			if self.gcodeList is not None:
@@ -420,7 +419,7 @@ class printWindow(wx.Frame):
 			if self.currentZ > 0:
 				status += 'Height: %0.1f\n' % (self.currentZ)
 			status += 'Print time: %02d:%02d\n' % (int(printTime / 60), int(printTime % 60))
-			if printTimeLeft == None:
+			if printTimeLeft is None:
 				status += 'Print time left: Unknown\n'
 			else:
 				status += 'Print time left: %02d:%02d\n' % (int(printTimeLeft / 60), int(printTimeLeft % 60))
