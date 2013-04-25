@@ -4,11 +4,15 @@ from  xml.parsers.expat import ParserCreate
 
 from Cura.util import mesh
 
-class daeModel(mesh.mesh):
-	def __init__(self):
-		super(daeModel, self).__init__()
+def loadScene(filename):
+	loader = daeLoader(filename)
+	return [loader.obj]
 
-	def load(self, filename):
+class daeLoader(object):
+	def __init__(self, filename):
+		self.obj = mesh.printableObject()
+		self.mesh = self.obj._addMesh()
+
 		r = ParserCreate()
 		r.StartElementHandler = self._StartElementHandler
 		r.EndElementHandler = self._EndElementHandler
@@ -18,27 +22,27 @@ class daeModel(mesh.mesh):
 		self._cur = self._base
 		self._idMap = {}
 		self._geometryList = []
+		self._faceCount = 0
 		r.ParseFile(open(filename, "r"))
 		
 		self.vertexCount = 0
 		for instance_visual_scene in self._base['collada'][0]['scene'][0]['instance_visual_scene']:
 			for node in self._idMap[instance_visual_scene['_url']]['node']:
 				self._ProcessNode1(node)
-		self._prepareVertexCount(self.vertexCount)
+		self.mesh._prepareFaceCount(self._faceCount)
 		for instance_visual_scene in self._base['collada'][0]['scene'][0]['instance_visual_scene']:
 			for node in self._idMap[instance_visual_scene['_url']]['node']:
 				self._ProcessNode2(node)
 
 		scale = float(self._base['collada'][0]['asset'][0]['unit'][0]['_meter']) * 1000
-		self.vertexes *= scale
+		self.mesh.vertexes *= scale
 		
 		self._base = None
 		self._cur = None
 		self._idMap = None
 		
-		self._postProcessAfterLoad()
-		return self
-	
+		self.obj._postProcessAfterLoad()
+
 	def _ProcessNode1(self, node):
 		if 'node' in node:
 			for n in node['node']:
@@ -48,7 +52,7 @@ class daeModel(mesh.mesh):
 				mesh = self._idMap[instance_geometry['_url']]['mesh'][0]
 				if 'triangles' in mesh:
 					for triangles in mesh['triangles']:
-						self.vertexCount += int(triangles['_count']) * 3
+						self._faceCount += int(triangles['_count'])
 				elif 'lines' in mesh:
 					pass #Ignore lines
 				else:
@@ -61,7 +65,7 @@ class daeModel(mesh.mesh):
 		if 'matrix' in node:
 			oldMatrix = matrix
 			matrix = map(float, node['matrix'][0]['__data'].split())
-			if oldMatrix != None:
+			if oldMatrix is not None:
 				newMatrix = [0]*16
 				newMatrix[0] = oldMatrix[0] * matrix[0] + oldMatrix[1] * matrix[4] + oldMatrix[2] * matrix[8] + oldMatrix[3] * matrix[12]
 				newMatrix[1] = oldMatrix[0] * matrix[1] + oldMatrix[1] * matrix[5] + oldMatrix[2] * matrix[9] + oldMatrix[3] * matrix[13]
@@ -98,17 +102,29 @@ class daeModel(mesh.mesh):
 						indexList = map(int, triangles['p'][0]['__data'].split())
 						positionList = map(float, vertices['float_array'][0]['__data'].split())
 
-						vertexCount = int(triangles['_count']) * 3
-						stepSize = len(indexList) / vertexCount
-						for i in xrange(0, vertexCount):
-							idx = indexList[i * stepSize]
-							if matrix != None:
-								x = positionList[idx*3]
-								y = positionList[idx*3+1]
-								z = positionList[idx*3+2]
-								self.addVertex(x * matrix[0] + y * matrix[1] + z * matrix[2] + matrix[3], x * matrix[4] + y * matrix[5] + z * matrix[6] + matrix[7], x * matrix[8] + y * matrix[9] + z * matrix[10] + matrix[11])
+						faceCount = int(triangles['_count'])
+						stepSize = len(indexList) / (faceCount * 3)
+						for i in xrange(0, faceCount):
+							idx0 = indexList[(i * 3) + 0 * stepSize]
+							idx1 = indexList[(i * 3) + 1 * stepSize]
+							idx2 = indexList[(i * 3) + 2 * stepSize]
+							x0 = positionList[idx0*3]
+							y0 = positionList[idx0*3+1]
+							z0 = positionList[idx0*3+2]
+							x1 = positionList[idx1*3]
+							y1 = positionList[idx1*3+1]
+							z1 = positionList[idx1*3+2]
+							x2 = positionList[idx2*3]
+							y2 = positionList[idx2*3+1]
+							z2 = positionList[idx2*3+2]
+							if matrix is not None:
+								self.mesh._addFace(
+									x0 * matrix[0] + y0 * matrix[1] + z0 * matrix[2] + matrix[3], x0 * matrix[4] + y0 * matrix[5] + z0 * matrix[6] + matrix[7], x0 * matrix[8] + y0 * matrix[9] + z0 * matrix[10] + matrix[11],
+									x1 * matrix[0] + y1 * matrix[1] + z1 * matrix[2] + matrix[3], x1 * matrix[4] + y1 * matrix[5] + z1 * matrix[6] + matrix[7], x1 * matrix[8] + y1 * matrix[9] + z1 * matrix[10] + matrix[11],
+									x2 * matrix[0] + y2 * matrix[1] + z2 * matrix[2] + matrix[3], x2 * matrix[4] + y2 * matrix[5] + z2 * matrix[6] + matrix[7], x2 * matrix[8] + y2 * matrix[9] + z2 * matrix[10] + matrix[11]
+								)
 							else:
-								self.addVertex(positionList[idx*3], positionList[idx*3+1], positionList[idx*3+2])
+								self.mesh._addFace(x0, y0, z0, x1, y1, z1, x2, y2, z2)
 		if 'instance_node' in node:
 			for instance_node in node['instance_node']:
 				self._ProcessNode2(self._idMap[instance_node['_url']], matrix)

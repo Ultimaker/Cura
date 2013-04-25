@@ -25,7 +25,7 @@ def loadMeshes(filename):
 	if ext == '.obj':
 		return obj.loadScene(filename)
 	if ext == '.dae':
-		return dae.daeModel().load(filename)
+		return dae.loadScene(filename)
 	if ext == '.amf':
 		return amf.loadScene(filename)
 	print 'Error: Unknown model extension: %s' % (ext)
