@@ -87,7 +87,7 @@ def saveScene(filename, objects):
 		xml.write('    <mesh>\n')
 		xml.write('      <vertices>\n')
 		for m in obj._meshList:
-			for v in m.vertexes:
+			for v in m.getTransformedVertexes(True):
 				xml.write('        <vertex>\n')
 				xml.write('          <coordinates>\n')
 				xml.write('            <x>%f</x>\n' % (v[0]))
@@ -110,6 +110,19 @@ def saveScene(filename, objects):
 			xml.write('    </mesh>\n')
 			idxOffset += len(m.vertexes)
 		xml.write('  </object>\n')
+
+	n += 1
+	xml.write('  <constellation id="%d">\n' % (n))
+	for idx in xrange(1, n):
+		xml.write('    <instance objectid="%d">\n' % (idx))
+		xml.write('      <deltax>0</deltax>\n')
+		xml.write('      <deltay>0</deltay>\n')
+		xml.write('      <deltaz>0</deltaz>\n')
+		xml.write('      <rx>0</rx>\n')
+		xml.write('      <ry>0</ry>\n')
+		xml.write('      <rz>0</rz>\n')
+		xml.write('    </instance>\n')
+	xml.write('  </constellation>\n')
 	xml.write('</amf>\n')
 
 	zfile = zipfile.ZipFile(filename, "w", zipfile.ZIP_DEFLATED)
