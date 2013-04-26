@@ -122,7 +122,7 @@ class projectPlanner(wx.Frame):
 		self.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		self.GetSizer().Add(self.panel, 1, flag=wx.EXPAND)
 
-		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.supportedExtensions()))
+		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions()))
 
 		self.list = []
 		self.selection = None

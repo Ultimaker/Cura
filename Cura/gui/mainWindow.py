@@ -29,7 +29,7 @@ class mainWindow(wx.Frame):
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
-		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.supportedExtensions()))
+		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions()))
 
 		self.normalModeOnlyItems = []
 
@@ -51,9 +51,13 @@ class mainWindow(wx.Frame):
 		self.menubar = wx.MenuBar()
 		self.fileMenu = wx.Menu()
 		i = self.fileMenu.Append(-1, 'Load model file...\tCTRL+L')
-		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowLoadModel(1), i)
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.showLoadModel(), i)
+		i = self.fileMenu.Append(-1, 'Save model...\tCTRL+S')
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveModel(), i)
+
+		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, 'Print...\tCTRL+P')
-		self.Bind(wx.EVT_MENU, lambda e: self.scene.ShowPrintWindow(), i)
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.showPrintWindow(), i)
 		i = self.fileMenu.Append(-1, 'Save GCode...')
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveGCode(), i)
 

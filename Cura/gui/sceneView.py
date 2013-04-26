@@ -56,8 +56,8 @@ class SceneView(openglGui.glGuiPanel):
 		self._projMatrix = None
 		self.tempMatrix = None
 
-		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.ShowLoadModel)
-		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.ShowPrintWindow)
+		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.showLoadModel)
+		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.showPrintWindow)
 		self.printButton.setDisabled(True)
 
 		group = []
@@ -111,10 +111,10 @@ class SceneView(openglGui.glGuiPanel):
 		self.updateToolButtons()
 		self.updateProfileToControls()
 
-	def ShowLoadModel(self, button):
+	def showLoadModel(self, button = 1):
 		if button == 1:
 			dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
-			dlg.SetWildcard(meshLoader.wildcardFilter())
+			dlg.SetWildcard(meshLoader.loadWildcardFilter())
 			if dlg.ShowModal() != wx.ID_OK:
 				dlg.Destroy()
 				return
@@ -126,7 +126,19 @@ class SceneView(openglGui.glGuiPanel):
 			self.GetParent().GetParent().GetParent().addToModelMRU(filename)
 			self.loadScene([filename])
 
-	def ShowPrintWindow(self, button):
+	def showSaveModel(self):
+		if len(self._scene.objects()) < 1:
+			return
+		dlg=wx.FileDialog(self, 'Save 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
+		dlg.SetWildcard(meshLoader.saveWildcardFilter())
+		if dlg.ShowModal() != wx.ID_OK:
+			dlg.Destroy()
+			return
+		filename = dlg.GetPath()
+		dlg.Destroy()
+		meshLoader.saveMeshes(filename, self._scene.objects())
+
+	def showPrintWindow(self, button):
 		if button == 1:
 			if machineCom.machineIsConnected():
 				printWindow.printFile(self._slicer.getGCodeFilename())
@@ -238,6 +250,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._selectedObj.resetRotation()
 		self._scene.pushFree()
 		self._selectObject(self._selectedObj)
+		self.sceneUpdated()
 
 	def OnLayFlat(self, button):
 		if self._selectedObj is None:
@@ -245,11 +258,15 @@ class SceneView(openglGui.glGuiPanel):
 		self._selectedObj.layFlat()
 		self._scene.pushFree()
 		self._selectObject(self._selectedObj)
+		self.sceneUpdated()
 
 	def OnScaleReset(self, button):
 		if self._selectedObj is None:
 			return
 		self._selectedObj.resetScale()
+		self._selectObject(self._selectedObj)
+		self.updateProfileToControls()
+		self.sceneUpdated()
 
 	def OnScaleMax(self, button):
 		if self._selectedObj is None:

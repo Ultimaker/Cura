@@ -51,28 +51,28 @@ def loadScene(filename):
 	obj._postProcessAfterLoad()
 	return [obj]
 
-def saveAsSTL(mesh, filename):
+def saveScene(filename, objects):
 	f = open(filename, 'wb')
 	#Write the STL binary header. This can contain any info, except for "SOLID" at the start.
 	f.write(("CURA BINARY STL EXPORT. " + time.strftime('%a %d %b %Y %H:%M:%S')).ljust(80, '\000'))
+
+	vertexCount = 0
+	for obj in objects:
+		for m in obj._meshList:
+			vertexCount += m.vertexCount
+
 	#Next follow 4 binary bytes containing the amount of faces, and then the face information.
-	f.write(struct.pack("<I", int(mesh.vertexCount / 3)))
-	for idx in xrange(0, mesh.vertexCount, 3):
-		v1 = mesh.vertexes[idx]
-		v2 = mesh.vertexes[idx+1]
-		v3 = mesh.vertexes[idx+2]
-		f.write(struct.pack("<fff", 0.0, 0.0, 0.0))
-		f.write(struct.pack("<fff", v1[0], v1[1], v1[2]))
-		f.write(struct.pack("<fff", v2[0], v2[1], v2[2]))
-		f.write(struct.pack("<fff", v3[0], v3[1], v3[2]))
-		f.write(struct.pack("<H", 0))
+	f.write(struct.pack("<I", int(vertexCount / 3)))
+	for obj in objects:
+		for m in obj._meshList:
+			vertexes = m.getTransformedVertexes(True)
+			for idx in xrange(0, m.vertexCount, 3):
+				v1 = vertexes[idx]
+				v2 = vertexes[idx+1]
+				v3 = vertexes[idx+2]
+				f.write(struct.pack("<fff", 0.0, 0.0, 0.0))
+				f.write(struct.pack("<fff", v1[0], v1[1], v1[2]))
+				f.write(struct.pack("<fff", v2[0], v2[1], v2[2]))
+				f.write(struct.pack("<fff", v3[0], v3[1], v3[2]))
+				f.write(struct.pack("<H", 0))
 	f.close()
-
-if __name__ == '__main__':
-	for filename in sys.argv[1:]:
-		m = stlModel().load(filename)
-		print("Loaded %d faces" % (m.vertexCount / 3))
-		parts = m.splitToParts()
-		for p in parts:
-			saveAsSTL(p, "export_%i.stl" % parts.index(p))
-

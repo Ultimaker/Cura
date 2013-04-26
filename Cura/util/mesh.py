@@ -21,18 +21,21 @@ class printableObject(object):
 	def copy(self):
 		ret = printableObject()
 		ret._matrix = self._matrix.copy()
-		ret._meshList = self._meshList[:]
-		ret._transformedMin = self._transformedMin
-		ret._transformedMax = self._transformedMin
-		ret._transformedSize = self._transformedSize
+		ret._transformedMin = self._transformedMin.copy()
+		ret._transformedMax = self._transformedMin.copy()
+		ret._transformedSize = self._transformedSize.copy()
 		ret._boundaryCircleSize = self._boundaryCircleSize
-		ret._drawOffset = self._drawOffset
-		for m in ret._meshList:
-			m.vbo.incRef()
+		ret._drawOffset = self._drawOffset.copy()
+		for m in self._meshList[:]:
+			m2 = ret._addMesh()
+			m2.vertexes = m.vertexes
+			m2.vertexCount = m.vertexCount
+			m2.vbo = m.vbo
+			m2.vbo.incRef()
 		return ret
 
 	def _addMesh(self):
-		m = mesh()
+		m = mesh(self)
 		self._meshList.append(m)
 		return m
 
@@ -51,7 +54,7 @@ class printableObject(object):
 		self._boundaryCircleSize = 0
 
 		for m in self._meshList:
-			transformedVertexes = (numpy.matrix(m.vertexes, copy = False) * numpy.matrix(self._matrix, numpy.float32)).getA()
+			transformedVertexes = m.getTransformedVertexes()
 			transformedMin = transformedVertexes.min(0)
 			transformedMax = transformedVertexes.max(0)
 			for n in xrange(0, 3):
@@ -136,7 +139,7 @@ class printableObject(object):
 		self.processMatrix()
 
 	def layFlat(self):
-		transformedVertexes = (numpy.matrix(self._meshList[0].vertexes, copy = False) * self._matrix).getA()
+		transformedVertexes = self.getTransformedVertexes()
 		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
 		dotMin = 1.0
 		dotV = None
@@ -157,7 +160,7 @@ class printableObject(object):
 		self._matrix *= numpy.matrix([[math.cos(rad), 0, math.sin(rad)], [0,1,0], [-math.sin(rad), 0, math.cos(rad)]], numpy.float64)
 
 
-		transformedVertexes = (numpy.matrix(self._meshList[0].vertexes, copy = False) * self._matrix).getA()
+		transformedVertexes = self.getTransformedVertexes()
 		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
 		dotMin = 1.0
 		dotV = None
@@ -194,19 +197,15 @@ class printableObject(object):
 	def split(self, callback):
 		ret = []
 		for oriMesh in self._meshList:
-			for m in oriMesh.split(callback):
-				obj = printableObject()
-				obj._meshList.append(m)
-				obj._matrix = self._matrix.copy()
-				obj._postProcessAfterLoad()
-				ret.append(obj)
+			ret += oriMesh.split(callback)
 		return ret
 
 class mesh(object):
-	def __init__(self):
+	def __init__(self, obj):
 		self.vertexes = None
 		self.vertexCount = 0
 		self.vbo = None
+		self._obj = obj
 
 	def _addFace(self, x0, y0, z0, x1, y1, z1, x2, y2, z2):
 		n = self.vertexCount
@@ -255,6 +254,16 @@ class mesh(object):
 			if numpy.linalg.norm(self.vertexes[i] - self.vertexes[idx]) < 0.001:
 				return i
 
+	def getTransformedVertexes(self, applyOffsets = False):
+		if applyOffsets:
+			pos = self._obj._position.copy()
+			pos.resize((3))
+			pos[2] = self._obj.getSize()[2] / 2
+			offset = self._obj._drawOffset.copy()
+			offset[2] += self._obj.getSize()[2] / 2
+			return (numpy.matrix(self.vertexes, copy = False) * numpy.matrix(self._obj._matrix, numpy.float32)).getA() - offset + pos
+		return (numpy.matrix(self.vertexes, copy = False) * numpy.matrix(self._obj._matrix, numpy.float32)).getA()
+
 	def split(self, callback):
 		vertexMap = {}
 
@@ -295,7 +304,9 @@ class mesh(object):
 							doneSet.add(i)
 							todoList.append(i)
 
-			m = mesh()
+			obj = printableObject()
+			obj._matrix = self._obj._matrix.copy()
+			m = obj._addMesh()
 			m._prepareFaceCount(len(meshFaceList))
 			for idx in meshFaceList:
 				m.vertexes[m.vertexCount] = self.vertexes[faceList[idx][0]]
@@ -304,5 +315,6 @@ class mesh(object):
 				m.vertexCount += 1
 				m.vertexes[m.vertexCount] = self.vertexes[faceList[idx][2]]
 				m.vertexCount += 1
-			ret.append(m)
+			obj._postProcessAfterLoad()
+			ret.append(obj)
 		return ret

@@ -5,11 +5,18 @@ from Cura.util.meshLoaders import obj
 from Cura.util.meshLoaders import dae
 from Cura.util.meshLoaders import amf
 
-def supportedExtensions():
+def loadSupportedExtensions():
 	return ['.stl', '.obj', '.dae', '.amf']
 
-def wildcardFilter():
-	wildcardList = ';'.join(map(lambda s: '*' + s, supportedExtensions()))
+def saveSupportedExtensions():
+	return ['.amf', '.stl']
+
+def loadWildcardFilter():
+	wildcardList = ';'.join(map(lambda s: '*' + s, loadSupportedExtensions()))
+	return "Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+
+def saveWildcardFilter():
+	wildcardList = ';'.join(map(lambda s: '*' + s, saveSupportedExtensions()))
 	return "Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
 
 #loadMeshes loads 1 or more printableObjects from a file.
@@ -30,3 +37,13 @@ def loadMeshes(filename):
 		return amf.loadScene(filename)
 	print 'Error: Unknown model extension: %s' % (ext)
 	return []
+
+def saveMeshes(filename, objects):
+	ext = filename[filename.rfind('.'):].lower()
+	if ext == '.stl':
+		stl.saveScene(filename, objects)
+		return
+	if ext == '.amf':
+		amf.saveScene(filename, objects)
+		return
+	print 'Error: Unknown model extension: %s' % (ext)

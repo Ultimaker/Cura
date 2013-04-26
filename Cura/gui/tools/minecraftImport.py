@@ -211,7 +211,9 @@ class minecraftImportWindow(wx.Frame):
 							faceCount += 1
 						if y == sy - 1 or not self.isSolid[blocks[x, y + 1, z]]:
 							faceCount += 1
-		m = mesh.mesh()
+
+		obj = mesh.printableObject()
+		m = obj._addMesh()
 		m._prepareFaceCount(faceCount * 2)
 		for x in xrange(0, sx):
 			for y in xrange(0, sy):
@@ -247,6 +249,5 @@ class minecraftImportWindow(wx.Frame):
 
 							m._addFace(x+1, y+1, z+1, x+1, y+1, z, x, y+1, z+1)
 
-		stlFilename = os.path.join(os.path.dirname(self.level.filename), 'export.stl')
-		stl.saveAsSTL(m, stlFilename)
-		self.GetParent().scene.loadScene([stlFilename])
+		obj._postProcessAfterLoad()
+		self.GetParent().scene._scene.add(obj)

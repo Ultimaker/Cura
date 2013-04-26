@@ -343,7 +343,7 @@ class previewPanel(wx.Panel):
 			if wx.TheClipboard.GetData(data):
 				data = data.GetText()
 				if re.match('^http://.*/.*$', data):
-					if data.endswith(tuple(meshLoader.supportedExtensions())):
+					if data.endswith(tuple(meshLoader.loadSupportedExtensions())):
 						#Got an url on the clipboard with a model file.
 						pass
 			wx.TheClipboard.Close()
