@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import cStringIO as StringIO
 import zipfile
 try:
 	from xml.etree import cElementTree as ElementTree
@@ -74,3 +75,44 @@ def loadScene(filename):
 		ret.append(obj)
 
 	return ret
+
+def saveScene(filename, objects):
+	xml = StringIO.StringIO()
+	xml.write('<?xml version="1.0" encoding="utf-8"?>\n')
+	xml.write('<amf unit="millimeter" version="1.1">\n')
+	n = 0
+	for obj in objects:
+		n += 1
+		xml.write('  <object id="%d">\n' % (n))
+		xml.write('    <mesh>\n')
+		xml.write('      <vertices>\n')
+		for m in obj._meshList:
+			for v in m.vertexes:
+				xml.write('        <vertex>\n')
+				xml.write('          <coordinates>\n')
+				xml.write('            <x>%f</x>\n' % (v[0]))
+				xml.write('            <y>%f</y>\n' % (v[1]))
+				xml.write('            <z>%f</z>\n' % (v[2]))
+				xml.write('          </coordinates>\n')
+				xml.write('        </vertex>\n')
+		xml.write('      </vertices>\n')
+
+		idxOffset = 0
+		for m in obj._meshList:
+			xml.write('      <volume>\n')
+			for idx in xrange(0, len(m.vertexes), 3):
+				xml.write('        <triangle>\n')
+				xml.write('          <v1>%i</v1>\n' % (idx + idxOffset))
+				xml.write('          <v2>%i</v2>\n' % (idx + idxOffset + 1))
+				xml.write('          <v3>%i</v3>\n' % (idx + idxOffset + 2))
+				xml.write('        </triangle>\n')
+			xml.write('      </volume>\n')
+			xml.write('    </mesh>\n')
+			idxOffset += len(m.vertexes)
+		xml.write('  </object>\n')
+	xml.write('</amf>\n')
+
+	zfile = zipfile.ZipFile(filename, "w", zipfile.ZIP_DEFLATED)
+	zfile.writestr(filename, xml.getvalue())
+	zfile.close()
+	xml.close()
