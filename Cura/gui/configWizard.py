@@ -351,8 +351,8 @@ class FirmwareUpgradePage(InfoPage):
 		self.AddText('Do not upgrade to this firmware if:')
 		self.AddText('* You have an older machine based on ATMega1280')
 		self.AddText('* Have other changes in the firmware')
-		button = self.AddButton('Goto this page for a custom firmware')
-		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
+#		button = self.AddButton('Goto this page for a custom firmware')
+#		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
 
 	def AllowNext(self):
 		return False
@@ -802,7 +802,7 @@ class bedLevelWizardMain(InfoPage):
 		return True
 
 	def OnResume(self, e):
-		feedZ = profile.getProfileSettingFloat('max_z_speed') * 60
+		feedZ = profile.getProfileSettingFloat('print_speed') * 60
 		feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
 		if self._wizardState == 2:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back left corner...')
@@ -814,14 +814,14 @@ class bedLevelWizardMain(InfoPage):
 		elif self._wizardState == 4:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back right corner...')
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth') - 25, feedTravel))
+			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width') - 5.0, profile.getPreferenceFloat('machine_depth') - 25, feedTravel))
 			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 			self.comm.sendCommand('M400')
 			self._wizardState = 5
 		elif self._wizardState == 6:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to front right corner...')
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width'), 20, feedTravel))
+			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width') - 5.0, 20, feedTravel))
 			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 			self.comm.sendCommand('M400')
 			self._wizardState = 7
@@ -831,6 +831,40 @@ class bedLevelWizardMain(InfoPage):
 			self.comm.sendCommand('M104 S%d' % (profile.getProfileSettingFloat('print_temperature')))
 			self.comm.sendCommand('G1 X%d Y%d F%d' % (0, 0, feedTravel))
 			self._wizardState = 9
+		elif self._wizardState == 10:
+			self._wizardState = 11
+			wx.CallAfter(self.infoBox.SetInfo, 'Printing a square on the printer bed at 0.3mm height.')
+			feedZ = profile.getProfileSettingFloat('print_speed') * 60
+			feedPrint = profile.getProfileSettingFloat('print_speed') * 60
+			feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
+			w = profile.getPreferenceFloat('machine_width')
+			d = profile.getPreferenceFloat('machine_depth')
+			filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
+			filamentArea = math.pi * filamentRadius * filamentRadius
+			ePerMM = (profile.calculateEdgeWidth() * 0.3) / filamentArea
+			eValue = 0.0
+
+			gcodeList = [
+				'G1 Z2 F%d' % (feedZ),
+				'G92 E0',
+				'G1 X%d Y%d F%d' % (5, 5, feedTravel),
+				'G1 Z0.3 F%d' % (feedZ)]
+			eValue += 5.0
+			gcodeList.append('G1 E%f F%d' % (eValue, profile.getProfileSettingFloat('retraction_speed') * 60))
+
+			for i in xrange(0, 3):
+				dist = 5.0 + 0.4 * float(i)
+				eValue += (d - 2.0*dist) * ePerMM
+				gcodeList.append('G1 X%f Y%f E%f F%d' % (dist, d - dist, eValue, feedPrint))
+				eValue += (w - 2.0*dist) * ePerMM
+				gcodeList.append('G1 X%f Y%f E%f F%d' % (w - dist, d - dist, eValue, feedPrint))
+				eValue += (d - 2.0*dist) * ePerMM
+				gcodeList.append('G1 X%f Y%f E%f F%d' % (w - dist, dist, eValue, feedPrint))
+				eValue += (w - 2.0*dist) * ePerMM
+				gcodeList.append('G1 X%f Y%f E%f F%d' % (dist, dist, eValue, feedPrint))
+
+			gcodeList.append('M400')
+			self.comm.printGCode(gcodeList)
 		self.resumeButton.Enable(False)
 
 	def mcLog(self, message):
@@ -857,39 +891,9 @@ class bedLevelWizardMain(InfoPage):
 			if temp < profile.getProfileSettingFloat('print_temperature') - 5:
 				wx.CallAfter(self.infoBox.SetInfo, 'Heating up printer: %d/%d' % (temp, profile.getProfileSettingFloat('print_temperature')))
 			else:
+				wx.CallAfter(self.infoBox.SetAttention, 'The printer is hot now. Please insert some PLA filament into the printer.')
+				wx.CallAfter(self.resumeButton.Enable, True)
 				self._wizardState = 10
-				wx.CallAfter(self.infoBox.SetInfo, 'Printing a square on the printer bed at 0.3mm height.')
-				feedZ = profile.getProfileSettingFloat('max_z_speed') * 60
-				feedPrint = profile.getProfileSettingFloat('print_speed') * 60
-				feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
-				w = profile.getPreferenceFloat('machine_width')
-				d = profile.getPreferenceFloat('machine_depth')
-				filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
-				filamentArea = math.pi * filamentRadius * filamentRadius
-				ePerMM = (profile.calculateEdgeWidth() * 0.3) / filamentArea
-				eValue = 0.0
-
-				gcodeList = [
-					'G1 Z2 F%d' % (feedZ),
-					'G92 E0',
-					'G1 X%d Y%d F%d' % (5, 5, feedTravel),
-					'G1 Z0.3 F%d' % (feedZ)]
-				eValue += 5;
-				gcodeList.append('G1 E%f F%d' % (eValue, profile.getProfileSettingFloat('retraction_speed') * 60))
-
-				for i in xrange(0, 3):
-					dist = 5.0 + 0.4 * i
-					eValue += (d - 2*dist) * ePerMM
-					gcodeList.append('G1 X%d Y%d E%f F%d' % (dist, d - dist, eValue, feedPrint))
-					eValue += (w - 2*dist) * ePerMM
-					gcodeList.append('G1 X%d Y%d E%f F%d' % (w - dist, d - dist, eValue, feedPrint))
-					eValue += (d - 2*dist) * ePerMM
-					gcodeList.append('G1 X%d Y%d E%f F%d' % (w - dist, dist, eValue, feedPrint))
-					eValue += (w - 2*dist) * ePerMM
-					gcodeList.append('G1 X%d Y%d E%f F%d' % (dist, dist, eValue, feedPrint))
-
-				gcodeList.append('M400')
-				self.comm.printGCode(gcodeList)
 
 	def mcStateChange(self, state):
 		if self.comm is None:
@@ -900,8 +904,8 @@ class bedLevelWizardMain(InfoPage):
 				self.comm.sendCommand('M105')
 				self.comm.sendCommand('G28')
 				self._wizardState = 1
-			elif self._wizardState == 10 and not self.comm.isPrinting():
-				self.comm.sendCommand('G1 Z15 F%d' % (profile.getProfileSettingFloat('max_z_speed') * 60))
+			elif self._wizardState == 11 and not self.comm.isPrinting():
+				self.comm.sendCommand('G1 Z15 F%d' % (profile.getProfileSettingFloat('print_speed') * 60))
 				self.comm.sendCommand('G92 E0')
 				self.comm.sendCommand('G1 E-10 F%d' % (profile.getProfileSettingFloat('retraction_speed') * 60))
 				self.comm.sendCommand('M104 S0')
@@ -909,7 +913,7 @@ class bedLevelWizardMain(InfoPage):
 				wx.CallAfter(self.infoBox.SetReadyIndicator)
 				wx.CallAfter(self.GetParent().FindWindowById(wx.ID_FORWARD).Enable)
 				wx.CallAfter(self.connectButton.Enable, True)
-				self._wizardState = 11
+				self._wizardState = 12
 		elif self.comm.isError():
 			wx.CallAfter(self.infoBox.SetError, 'Failed to establish connection with the printer.', 'http://wiki.ultimaker.com/Cura:_Connection_problems')
 

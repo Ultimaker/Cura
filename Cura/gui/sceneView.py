@@ -436,6 +436,8 @@ class SceneView(openglGui.glGuiPanel):
 		for m in obj._meshList:
 			if m.vbo is not None and m.vbo.decRef():
 				self.glReleaseList.append(m.vbo)
+		import gc
+		gc.collect()
 		if self._isSimpleMode:
 			self._scene.arrangeAll()
 		self.sceneUpdated()
@@ -498,6 +500,21 @@ class SceneView(openglGui.glGuiPanel):
 
 		if keyCode == wx.WXK_F3 and wx.GetKeyState(wx.WXK_SHIFT):
 			shaderEditor(self, self.ShaderUpdate, self._objectLoadShader.getVertexShader(), self._objectLoadShader.getFragmentShader())
+		if keyCode == wx.WXK_F4 and wx.GetKeyState(wx.WXK_SHIFT):
+			from collections import defaultdict
+			from gc import get_objects
+			self._beforeLeakTest = defaultdict(int)
+			for i in get_objects():
+				self._beforeLeakTest[type(i)] += 1
+		if keyCode == wx.WXK_F5 and wx.GetKeyState(wx.WXK_SHIFT):
+			from collections import defaultdict
+			from gc import get_objects
+			self._afterLeakTest = defaultdict(int)
+			for i in get_objects():
+				self._afterLeakTest[type(i)] += 1
+			for k in self._afterLeakTest:
+				if self._afterLeakTest[k]-self._beforeLeakTest[k]:
+					print k, self._afterLeakTest[k], self._beforeLeakTest[k], self._afterLeakTest[k] - self._beforeLeakTest[k]
 
 	def ShaderUpdate(self, v, f):
 		s = opengl.GLShader(v, f)

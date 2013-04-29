@@ -488,6 +488,7 @@ class MachineCom(object):
 		except serial.SerialTimeoutException:
 			self._log("Serial timeout while writing to serial port, trying again.")
 			try:
+				time.sleep(0.5)
 				self._serial.write(cmd + '\n')
 			except:
 				self._log("Unexpected error while writing serial port: %s" % (getExceptionString()))
