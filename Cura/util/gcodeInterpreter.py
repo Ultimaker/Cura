@@ -4,6 +4,7 @@ import sys
 import math
 import os
 import time
+import numpy
 
 from Cura.util import profile
 
@@ -88,13 +89,18 @@ class gcode(object):
 				elif comment == 'skirt':
 					pathType = 'SKIRT'
 				if comment.startswith('LAYER:'):
+					currentPath = gcodePath(moveType, pathType, layerThickness, currentPath.points[-1])
+					currentPath.extruder = currentExtruder
+					for path in currentLayer:
+						path.points = numpy.array(path.points, numpy.float32)
+						path.extrusion = numpy.array(path.extrusion, numpy.float32)
 					self.layerList.append(currentLayer)
 					if self.progressCallback is not None:
 						if self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize)):
 							#Abort the loading, we can safely return as the results here will be discarded
 							gcodeFile.close()
 							return
-					currentLayer = []
+					currentLayer = [currentPath]
 				line = line[0:line.find(';')]
 			T = getCodeInt(line, 'T')
 			if T is not None:
@@ -254,6 +260,9 @@ class gcode(object):
 							extrudeAmountMultiply = s / 100.0
 					else:
 						print "Unknown M code:" + str(M)
+		for path in currentLayer:
+			path.points = numpy.array(path.points, numpy.float32)
+			path.extrusion = numpy.array(path.extrusion, numpy.float32)
 		self.layerList.append(currentLayer)
 		if self.progressCallback is not None and self._fileSize > 0:
 			self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize))

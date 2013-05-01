@@ -1030,7 +1030,7 @@ void main(void)
 			pointList = numpy.zeros((0,3), numpy.float32)
 			for path in layer:
 				if path.type == 'extrude' and path.pathType == extrudeType:
-					a = numpy.array(path.points, numpy.float32)
+					a = path.points
 					a = numpy.concatenate((a[:-1], a[1:]), 1)
 					a = a.reshape((len(a) * 2, 3))
 					pointList = numpy.concatenate((pointList, a))
@@ -1046,7 +1046,7 @@ void main(void)
 			pointList = numpy.zeros((0,3), numpy.float32)
 			for path in layer:
 				if path.type == 'extrude' and path.pathType == extrudeType:
-					a = numpy.array(path.points, numpy.float32)
+					a = path.points
 					if extrudeType == 'FILL':
 						a[:,2] += 0.01
 
