@@ -380,6 +380,7 @@ class glGuiLayoutGrid(object):
 class glButton(glGuiControl):
 	def __init__(self, parent, imageID, tooltip, pos, callback, size = None):
 		self._buttonSize = size
+		self._hidden = False
 		super(glButton, self).__init__(parent, pos)
 		self._tooltip = tooltip
 		self._parent = parent
@@ -387,7 +388,6 @@ class glButton(glGuiControl):
 		self._callback = callback
 		self._selected = False
 		self._focus = False
-		self._hidden = False
 		self._disabled = False
 		self._showExpandArrow = False
 		self._progressBar = None
@@ -415,6 +415,8 @@ class glButton(glGuiControl):
 		return self._selected
 
 	def getMinSize(self):
+		if self._hidden:
+			return 0, 0
 		if self._buttonSize is not None:
 			return self._buttonSize, self._buttonSize
 		return self._base._buttonSize, self._base._buttonSize
@@ -681,7 +683,8 @@ class glNotification(glFrame):
 		super(glNotification, self).__init__(parent, pos)
 		glGuiLayoutGrid(self)._alignBottom = False
 		self._label = glLabel(self, "Notification", (0, 0))
-		self._button = glButton(self, 30, "", (1, 0), self.onClose, 25)
+		self._buttonEject = glButton(self, 31, "Eject", (1, 0), self.onEject, 25)
+		self._button = glButton(self, 30, "", (2, 0), self.onClose, 25)
 		self._padding = glLabel(self, "", (0, 1))
 		self.setHidden(True)
 
@@ -698,14 +701,20 @@ class glNotification(glFrame):
 		self.updateLayout()
 		super(glNotification, self).draw()
 
-	def message(self, text):
+	def message(self, text, ejectCallback = None):
 		if self._anim is not None:
 			self._anim = animation(self._base, self._anim.getPosition(), 25, 1)
 		else:
 			self._anim = animation(self._base, -20, 25, 1)
 		self.setHidden(False)
 		self._label.setLabel(text)
+		self._buttonEject.setHidden(ejectCallback is None)
+		self._ejectCallback = ejectCallback
 		self.updateLayout()
+
+	def onEject(self, button):
+		self.onClose(button)
+		self._ejectCallback()
 
 	def onClose(self, button):
 		if self._anim is not None:

@@ -160,7 +160,7 @@ class SceneView(openglGui.glGuiPanel):
 				except:
 					self.notification.message("Failed to save to SD card")
 				else:
-					self.notification.message("Saved as %s" % (drive[1] + filename))
+					self.notification.message("Saved as %s" % (drive[1] + filename), lambda : self.notification.message('You can now eject the card.') if removableStorage.ejectDrive(drive[1]) else self.notification.message('Safe remove failed...'))
 			else:
 				self.showSaveGCode()
 		if button == 3:
