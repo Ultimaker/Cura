@@ -95,5 +95,17 @@ def getPossibleSDcardDrives():
 	_removeableCacheTime = time.time()
 	return drives
 
+def ejectDrive(driveName):
+	if platform.system() == "Windows":
+		cmd = '"%s" %s>NUL' % (os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'EjectMedia.exe')), driveName)
+	elif platform.system() == "Darwin":
+		cmd = "diskutil eject '%s' > /dev/null 2>&1" % (driveName)
+	else:
+		cmd = "umount '%s' > /dev/null 2>&1" % (driveName)
+	if os.system(cmd):
+		return False
+	else:
+		return True
+
 if __name__ == '__main__':
 	print getPossibleSDcardDrives()

@@ -116,6 +116,9 @@ class GLVBO(GLReferenceCounter):
 
 	def release(self):
 		if self._buffer is not None:
+			glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
+			glBufferData(GL_ARRAY_BUFFER, None, GL_STATIC_DRAW)
+			glBindBuffer(GL_ARRAY_BUFFER, 0)
 			glDeleteBuffers(1, [self._buffer])
 			self._buffer = None
 
