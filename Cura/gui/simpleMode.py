@@ -117,7 +117,7 @@ class simpleModePanel(wx.Panel):
 		nozzle_size = float(get('nozzle_size'))
 		if self.printTypeNormal.GetValue():
 			put('wall_thickness', nozzle_size * 2.0)
-			put('layer_height', '0.15')
+			put('layer_height', '0.10')
 			put('fill_density', '20')
 		elif self.printTypeLow.GetValue():
 			put('wall_thickness', nozzle_size * 2.5)

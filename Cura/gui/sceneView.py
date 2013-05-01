@@ -438,8 +438,6 @@ class SceneView(openglGui.glGuiPanel):
 				self.glReleaseList.append(m.vbo)
 		import gc
 		gc.collect()
-		if self._isSimpleMode:
-			self._scene.arrangeAll()
 		self.sceneUpdated()
 
 	def _selectObject(self, obj, zoom = True):
@@ -608,7 +606,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._zoom = 1
 				if self._zoom > numpy.max(self._machineSize) * 3:
 					self._zoom = numpy.max(self._machineSize) * 3
-			elif e.LeftIsDown() and self._selectedObj is not None and self._selectedObj == self._mouseClickFocus and not self._isSimpleMode:
+			elif e.LeftIsDown() and self._selectedObj is not None and self._selectedObj == self._mouseClickFocus:
 				self._mouseState = 'dragObject'
 				z = max(0, self._mouseClick3DPos[2])
 				p0, p1 = self.getMouseRay(self._mouseX, self._mouseY)
