@@ -190,6 +190,7 @@ class Slicer(object):
 			'layerThickness': int(profile.getProfileSettingFloat('layer_height') * 1000),
 			'initialLayerThickness': int(profile.getProfileSettingFloat('bottom_thickness') * 1000) if profile.getProfileSettingFloat('bottom_thickness') > 0.0 else int(profile.getProfileSettingFloat('layer_height') * 1000),
 			'filamentDiameter': int(profile.getProfileSettingFloat('filament_diameter') * 1000),
+			'filamentFlow': int(profile.getProfileSettingFloat('filament_flow')),
 			'extrusionWidth': int(profile.calculateEdgeWidth() * 1000),
 			'insetCount': int(profile.calculateLineCount()),
 			'downSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_bottom') == 'True' else 0,
