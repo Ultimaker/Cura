@@ -125,6 +125,7 @@ setting('print_temperature3',          0, int,   'basic',    'Speed & Temperatur
 setting('print_temperature4',          0, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('4th nozzle temperature (C)', 'Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.')
 setting('print_bed_temperature',      70, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('Bed temperature (C)', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself.')
 setting('support',                'None', ['None', 'Touching buildplate', 'Everywhere'], 'basic', 'Support').setLabel('Support type', 'Type of support structure build.\n"Exterior only" is the most commonly used support setting.\n\nNone does not do any support.\nTouching buildplate only creates support where the support structure will touch the build platform.\nEverywhere creates support even on top of parts of the model.')
+setting('platform_adhesion',      'None', ['None', 'Brim', 'Raft'], 'basic', 'Support').setLabel('Platform adhesion type', 'Different options that help in preventing corners from lifting due to warping.\nBrim adds a single layer thick flat area around your object which is easy to cut off afterwards, and the recommended option.\nRaft adds a thick raster at below the object and a thin interface between this and your object.\n(Note that enabling the brim or raft disables the skirt)')
 #setting('enable_raft',             False, bool,  'basic',   'Support').setLabel('Enable raft', 'A raft is a few layers of lines below the bottom of the object. It prevents warping. Full raft settings can be found in the expert settings.\nFor PLA this is usually not required. But if you print with ABS it is almost required.')
 setting('support_dual_extrusion',  False, bool, 'basic', 'Support').setLabel('Support dual extrusion', 'Print the support material with the 2nd extruder in a dual extrusion setup. The primary extruder will be used for normal material, while the second extruder is used to print support material.')
 setting('filament_diameter',        2.89, float, 'basic',    'Filament').setRange(1).setLabel('Diameter (mm)', 'Diameter of your filament, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.')
@@ -132,7 +133,6 @@ setting('filament_diameter2',          0, float, 'basic',    'Filament').setRang
 setting('filament_diameter3',          0, float, 'basic',    'Filament').setRange(0).setLabel('Diameter3 (mm)', 'Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter as for nozzle 1.')
 setting('filament_diameter4',          0, float, 'basic',    'Filament').setRange(0).setLabel('Diameter4 (mm)', 'Diameter of your filament for the 4th nozzle. Use 0 to use the same diameter as for nozzle 1.')
 setting('filament_flow',            100., float, 'basic',    'Filament').setRange(1,300).setLabel('Flow (%)', 'Flow compensation, the amount of material extruded is multiplied by this value')
-#setting('filament_density',         1.00, float, 'basic',    'Filament').setRange(0.5,1.5).setLabel('Packing Density', 'Packing density of your filament. This should be 1.00 for PLA and 0.85 for ABS')
 #setting('retraction_min_travel',     5.0, float, 'advanced', 'Retraction').setRange(0).setLabel('Minimum travel (mm)', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
 setting('retraction_speed',         40.0, float, 'advanced', 'Retraction').setRange(0.1).setLabel('Speed (mm/s)', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
 setting('retraction_amount',         4.5, float, 'advanced', 'Retraction').setRange(0).setLabel('Distance (mm)', 'Amount of retraction, set at 0 for no retraction at all. A value of 2.0mm seems to generate good results.')
@@ -166,6 +166,7 @@ setting('solid_bottom', True, bool, 'expert', 'Infill').setLabel('Solid infill b
 #setting('raft_margin', 5, float, 'expert', 'Raft').setRange(0).setLabel('Extra margin (mm)', 'If the raft is enabled, this is the extra raft area around the object which is also rafted. Increasing this margin will create a stronger raft.')
 #setting('raft_base_material_amount', 100, int, 'expert', 'Raft').setRange(0,100).setLabel('Base material amount (%)', 'The base layer is the first layer put down as a raft. This layer has thick strong lines and is put firmly on the bed to prevent warping. This setting adjust the amount of material used for the base layer.')
 #setting('raft_interface_material_amount', 100, int, 'expert', 'Raft').setRange(0,100).setLabel('Interface material amount (%)', 'The interface layer is a weak thin layer between the base layer and the printed object. It is designed to has little material to make it easy to break the base off the printed object. This setting adjusts the amount of material used for the interface layer.')
+setting('brim_line_count', 20, int, 'expert', 'Brim').setRange(1,100).setLabel('Brim line amount', 'The amount of lines used for a brim, more lines means a larger brim which sticks better, but this also makes your effective print area smaller.')
 #setting('hop_on_move', False, bool, 'expert', 'Hop').setLabel('Enable hop on move', 'When moving from print position to print position, raise the printer head 0.2mm so it does not knock off the print (experimental).')
 
 setting('plugin_config', '', str, 'hidden', 'hidden')
@@ -580,8 +581,15 @@ def calculateSolidLayerCount():
 
 def calculateObjectSizeOffsets():
 	size = 0.0
-	if getProfileSettingFloat('skirt_line_count') > 0:
-		size += getProfileSettingFloat('skirt_line_count') * calculateEdgeWidth() + getProfileSettingFloat('skirt_gap')
+
+	if getProfileSetting('platform_adhesion') == 'Brim':
+		size += getProfileSettingFloat('brim_line_count') * calculateEdgeWidth()
+	elif getProfileSetting('platform_adhesion') == 'Raft':
+		pass
+	else:
+		if getProfileSettingFloat('skirt_line_count') > 0:
+			size += getProfileSettingFloat('skirt_line_count') * calculateEdgeWidth() + getProfileSettingFloat('skirt_gap')
+
 	#if getProfileSetting('enable_raft') != 'False':
 	#	size += profile.getProfileSettingFloat('raft_margin') * 2
 	#if getProfileSetting('support') != 'None':

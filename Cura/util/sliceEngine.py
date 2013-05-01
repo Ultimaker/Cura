@@ -186,7 +186,7 @@ class Slicer(object):
 		self._process = None
 
 	def _engineSettings(self):
-		return {
+		settings = {
 			'layerThickness': int(profile.getProfileSettingFloat('layer_height') * 1000),
 			'initialLayerThickness': int(profile.getProfileSettingFloat('bottom_thickness') * 1000) if profile.getProfileSettingFloat('bottom_thickness') > 0.0 else int(profile.getProfileSettingFloat('layer_height') * 1000),
 			'filamentDiameter': int(profile.getProfileSettingFloat('filament_diameter') * 1000),
@@ -196,8 +196,6 @@ class Slicer(object):
 			'downSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_bottom') == 'True' else 0,
 			'upSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_top') == 'True' else 0,
 			'sparseInfillLineDistance': int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density')) if profile.getProfileSettingFloat('fill_density') > 0 else 9999999999,
-			'skirtDistance': int(profile.getProfileSettingFloat('skirt_gap') * 1000),
-			'skirtLineCount': int(profile.getProfileSettingFloat('skirt_line_count')),
 			'initialSpeedupLayers': int(4),
 			'initialLayerSpeed': int(profile.getProfileSettingFloat('bottom_layer_speed')),
 			'printSpeed': int(profile.getProfileSettingFloat('print_speed')),
@@ -214,6 +212,16 @@ class Slicer(object):
 			'startCode': profile.getAlterationFileContents('start.gcode'),
 			'endCode': profile.getAlterationFileContents('end.gcode'),
 		}
+		if profile.getProfileSetting('platform_adhesion') == 'Brim':
+			settings['skirtDistance'] = 0.0
+			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('brim_line_count'))
+		elif profile.getProfileSetting('platform_adhesion') == 'Raft':
+			settings['skirtDistance'] = 0
+			settings['skirtLineCount'] = 0
+		else:
+			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
+			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
+		return settings
 
 	def _runSliceProcess(self, cmdList):
 		kwargs = {}
