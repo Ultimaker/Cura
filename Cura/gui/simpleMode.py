@@ -109,7 +109,7 @@ class simpleModePanel(wx.Panel):
 		put('raft_margin', '5')
 		put('raft_base_material_amount', '100')
 		put('raft_interface_material_amount', '100')
-		put('bottom_thickness', '0.0')
+		put('bottom_thickness', '0.3')
 
 		if self.printSupport.GetValue():
 			put('support', 'Exterior Only')
@@ -131,7 +131,6 @@ class simpleModePanel(wx.Panel):
 			put('layer_height', '0.06')
 			put('fill_density', '20')
 			put('bottom_layer_speed', '15')
-			put('bottom_thickness', '0.25')
 		elif self.printTypeJoris.GetValue():
 			put('wall_thickness', nozzle_size * 1.5)
 			put('layer_height', '0.3')
