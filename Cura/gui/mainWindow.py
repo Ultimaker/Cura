@@ -449,14 +449,14 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.SizeLabelWidths(left, right)
 
 		#Plugin page
-		self.pluginPanel = pluginPanel.pluginPanel(self.nb)
-		if len(self.pluginPanel.pluginList) > 0 and False:
+		self.pluginPanel = pluginPanel.pluginPanel(self.nb, callback)
+		if len(self.pluginPanel.pluginList) > 0:
 			self.nb.AddPage(self.pluginPanel, "Plugins")
 		else:
 			self.pluginPanel.Show(False)
 
 		#Alteration page
-		self.alterationPanel = alterationPanel.alterationPanel(self.nb)
+		self.alterationPanel = alterationPanel.alterationPanel(self.nb, callback)
 		self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)

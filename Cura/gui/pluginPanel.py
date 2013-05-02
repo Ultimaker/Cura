@@ -8,10 +8,11 @@ from Cura.util import profile
 from Cura.util import explorer
 
 class pluginPanel(wx.Panel):
-	def __init__(self, parent):
+	def __init__(self, parent, callback):
 		wx.Panel.__init__(self, parent,-1)
 		#Plugin page
 		self.pluginList = profile.getPluginList()
+		self.callback = callback
 
 		sizer = wx.GridBagSizer(2, 2)
 		self.SetSizer(sizer)
@@ -124,6 +125,7 @@ class pluginPanel(wx.Panel):
 			for k in panel.paramCtrls.keys():
 				self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
 		profile.setPluginConfig(self.pluginConfig)
+		self.callback()
 	
 	def OnAdd(self, e):
 		if self.listbox.GetSelection() < 0:
@@ -135,6 +137,7 @@ class pluginPanel(wx.Panel):
 			return
 		self.pluginConfig.append(newConfig)
 		profile.setPluginConfig(self.pluginConfig)
+		self.callback()
 
 	def OnRem(self, e):
 		panel = e.GetEventObject().GetParent()
@@ -154,6 +157,7 @@ class pluginPanel(wx.Panel):
 
 		self.pluginConfig.pop(idx)
 		profile.setPluginConfig(self.pluginConfig)
+		self.callback()
 
 	def OnHelp(self, e):
 		panel = e.GetEventObject().GetParent()

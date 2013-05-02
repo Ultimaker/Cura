@@ -178,6 +178,7 @@ class Slicer(object):
 		returnCode = self._process.wait()
 		try:
 			if returnCode == 0:
+				profile.runPostProcessingPlugins(self._exportFilename)
 				self._callback(1.0, True)
 			else:
 				self._callback(-1.0, False)

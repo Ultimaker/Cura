@@ -692,6 +692,8 @@ class SceneView(openglGui.glGuiPanel):
 			self._zoom = self._animZoom.getPosition()
 			if self._animZoom.isDone():
 				self._animZoom = None
+		if self.viewMode == 'gcode' and self._gcode is not None:
+			self._viewTarget[2] = self._gcode.layerList[self.layerSelect.getValue()][-1].points[0][2]
 		if self._objectShader is None:
 			self._objectShader = opengl.GLShader("""
 varying float light_amount;

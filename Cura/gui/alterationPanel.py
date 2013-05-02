@@ -6,9 +6,10 @@ from Cura.gui.util import gcodeTextArea
 from Cura.util import profile
 
 class alterationPanel(wx.Panel):
-	def __init__(self, parent):
+	def __init__(self, parent, callback):
 		wx.Panel.__init__(self, parent,-1)
 
+		self.callback = callback
 		self.alterationFileList = ['start.gcode', 'end.gcode']#, 'nextobject.gcode', 'replace.csv'
 		#if int(profile.getPreference('extruder_amount')) > 1:
 		#	self.alterationFileList.append('switchExtruder.gcode')
@@ -44,7 +45,7 @@ class alterationPanel(wx.Panel):
 	def OnFocusLost(self, e):
 		if self.currentFile == self.list.GetSelection():
 			profile.setAlterationFile(self.alterationFileList[self.list.GetSelection()], self.textArea.GetValue())
+			self.callback()
 
 	def updateProfileToControls(self):
 		self.OnSelect(None)
-
