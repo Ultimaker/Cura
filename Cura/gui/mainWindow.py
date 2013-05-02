@@ -13,7 +13,7 @@ from Cura.gui import configWizard
 from Cura.gui import firmwareInstall
 from Cura.gui import simpleMode
 from Cura.gui import sceneView
-from Cura.gui.tools import batchRun
+#from Cura.gui.tools import batchRun
 from Cura.gui.util import dropTarget
 from Cura.gui.tools import minecraftImport
 from Cura.gui.tools import superformula
