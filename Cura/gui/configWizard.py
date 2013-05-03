@@ -449,46 +449,51 @@ class UltimakerCheckupPage(InfoPage):
 			return
 		if self.checkupState == 0:
 			self.tempCheckTimeout = 20
-			if temp > 70:
+			if temp[self.checkExtruderNr] > 70:
 				self.checkupState = 1
 				wx.CallAfter(self.infoBox.SetInfo, 'Cooldown before temperature check.')
-				self.comm.sendCommand('M104 S0')
-				self.comm.sendCommand('M104 S0')
+				self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
+				self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
 			else:
-				self.startTemp = temp
+				self.startTemp = temp[self.checkExtruderNr]
 				self.checkupState = 2
 				wx.CallAfter(self.infoBox.SetInfo, 'Checking the heater and temperature sensor.')
-				self.comm.sendCommand('M104 S200')
-				self.comm.sendCommand('M104 S200')
+				self.comm.sendCommand('M104 S200 T%d' % (self.checkExtruderNr))
+				self.comm.sendCommand('M104 S200 T%d' % (self.checkExtruderNr))
 		elif self.checkupState == 1:
 			if temp < 60:
-				self.startTemp = temp
+				self.startTemp = temp[self.checkExtruderNr]
 				self.checkupState = 2
 				wx.CallAfter(self.infoBox.SetInfo, 'Checking the heater and temperature sensor.')
-				self.comm.sendCommand('M104 S200')
-				self.comm.sendCommand('M104 S200')
+				self.comm.sendCommand('M104 S200 T%d' % (self.checkExtruderNr))
+				self.comm.sendCommand('M104 S200 T%d' % (self.checkExtruderNr))
 		elif self.checkupState == 2:
 			#print "WARNING, TEMPERATURE TEST DISABLED FOR TESTING!"
-			if temp > self.startTemp + 40:
-				self.checkupState = 3
-				wx.CallAfter(self.infoBox.SetAttention, 'Please make sure none of the endstops are pressed.')
-				wx.CallAfter(self.endstopBitmap.Show, True)
-				wx.CallAfter(self.Layout)
-				self.comm.sendCommand('M104 S0')
-				self.comm.sendCommand('M104 S0')
-				self.comm.sendCommand('M119')
-				wx.CallAfter(self.tempState.SetBitmap, self.checkBitmap)
+			if temp[self.checkExtruderNr] > self.startTemp + 40:
+				self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
+				self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
+				if self.checkExtruderNr < int(profile.getPreference('extruder_amount')):
+					self.checkExtruderNr = 0
+					self.checkupState = 3
+					wx.CallAfter(self.infoBox.SetAttention, 'Please make sure none of the endstops are pressed.')
+					wx.CallAfter(self.endstopBitmap.Show, True)
+					wx.CallAfter(self.Layout)
+					self.comm.sendCommand('M119')
+					wx.CallAfter(self.tempState.SetBitmap, self.checkBitmap)
+				else:
+					self.checkupState = 0
+					self.checkExtruderNr += 1
 			else:
 				self.tempCheckTimeout -= 1
 				if self.tempCheckTimeout < 1:
 					self.checkupState = -1
 					wx.CallAfter(self.tempState.SetBitmap, self.crossBitmap)
 					wx.CallAfter(self.infoBox.SetError, 'Temperature measurement FAILED!', 'http://wiki.ultimaker.com/Cura:_Temperature_measurement_problems')
-					self.comm.sendCommand('M104 S0')
-					self.comm.sendCommand('M104 S0')
+					self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
+					self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
 		elif self.checkupState >= 3 and self.checkupState < 10:
 			self.comm.sendCommand('M119')
-		wx.CallAfter(self.temperatureLabel.SetLabel, 'Head temperature: %d' % (temp))
+		wx.CallAfter(self.temperatureLabel.SetLabel, 'Head temperature: %d' % (temp[self.checkExtruderNr]))
 
 	def mcStateChange(self, state):
 		if self.comm is None:
@@ -888,7 +893,7 @@ class bedLevelWizardMain(InfoPage):
 			wx.CallAfter(self.infoBox.SetAttention, 'Adjust the front right screw of your printer bed\nSo the nozzle just hits the bed.')
 			wx.CallAfter(self.resumeButton.Enable, True)
 		elif self._wizardState == 9:
-			if temp < profile.getProfileSettingFloat('print_temperature') - 5:
+			if temp[0] < profile.getProfileSettingFloat('print_temperature') - 5:
 				wx.CallAfter(self.infoBox.SetInfo, 'Heating up printer: %d/%d' % (temp, profile.getProfileSettingFloat('print_temperature')))
 			else:
 				wx.CallAfter(self.infoBox.SetAttention, 'The printer is hot now. Please insert some PLA filament into the printer.')
