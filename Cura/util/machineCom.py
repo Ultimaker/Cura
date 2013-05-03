@@ -169,9 +169,11 @@ class MachineCom(object):
 		self._serial = None
 		self._baudrateDetectList = baudrateList()
 		self._baudrateDetectRetry = 0
-		self._temp = 0
+		self._extruderCount = int(profile.getPreference('extruder_amount'))
+		self._temperatureRequestExtruder = 0
+		self._temp = [0] * self._extruderCount
+		self._targetTemp = [0] * self._extruderCount
 		self._bedTemp = 0
-		self._targetTemp = 0
 		self._bedTargetTemp = 0
 		self._gcodeList = None
 		self._gcodePos = 0
@@ -343,7 +345,7 @@ class MachineCom(object):
 					self._errorValue = line[6:]
 					self._changeState(self.STATE_ERROR)
 			if ' T:' in line or line.startswith('T:'):
-				self._temp = float(re.search("[0-9\.]*", line.split('T:')[1]).group(0))
+				self._temp[self._temperatureRequestExtruder] = float(re.search("[0-9\.]*", line.split('T:')[1]).group(0))
 				if ' B:' in line:
 					self._bedTemp = float(re.search("[0-9\.]*", line.split(' B:')[1]).group(0))
 				self._callback.mcTempUpdate(self._temp, self._bedTemp, self._targetTemp, self._bedTargetTemp)
@@ -403,15 +405,23 @@ class MachineCom(object):
 			elif self._state == self.STATE_OPERATIONAL:
 				#Request the temperature on comm timeout (every 2 seconds) when we are not printing.
 				if line == '':
-					self._sendCommand("M105")
+					if self._extruderCount > 0:
+						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
+						self._sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
+					else:
+						self._sendCommand("M105")
 					tempRequestTimeout = time.time() + 5
 			elif self._state == self.STATE_PRINTING:
 				if line == '' and time.time() > timeout:
 					self._log("Communication timeout during printing, forcing a line")
 					line = 'ok'
-				#Even when printing request the temperture every 5 seconds.
+				#Even when printing request the temperature every 5 seconds.
 				if time.time() > tempRequestTimeout:
-					self._commandQueue.put("M105")
+					if self._extruderCount > 0:
+						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
+						self._sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
+					else:
+						self._sendCommand("M105")
 					tempRequestTimeout = time.time() + 5
 				if 'ok' in line:
 					timeout = time.time() + 5
@@ -474,7 +484,10 @@ class MachineCom(object):
 			self._heatupWaitStartTime = time.time()
 		if 'M104' in cmd or 'M109' in cmd:
 			try:
-				self._targetTemp = float(re.search('S([0-9]+)', cmd).group(1))
+				t = 0
+				if 'T' in cmd:
+					t = int(re.search('T([0-9]+)', cmd).group(1))
+				self._targetTemp[t] = float(re.search('S([0-9]+)', cmd).group(1))
 			except:
 				pass
 		if 'M140' in cmd or 'M190' in cmd:

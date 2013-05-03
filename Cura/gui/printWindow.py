@@ -427,7 +427,7 @@ class printWindow(wx.Frame):
 			taskbar.setProgress(self, self.machineCom.getPrintPos(), len(self.gcodeList))
 		if self.machineCom != None:
 			if self.machineCom.getTemp() > 0:
-				status += 'Temp: %d\n' % (self.machineCom.getTemp())
+				status += 'Temp: %s\n' % (' ,'.join(map(str, self.machineCom.getTemp())))
 			if self.machineCom.getBedTemp() > 0:
 				status += 'Bed Temp: %d\n' % (self.machineCom.getBedTemp())
 				self.bedTemperatureLabel.Show(True)
@@ -593,8 +593,8 @@ class printWindow(wx.Frame):
 		wx.CallAfter(self._mcTempUpdate, temp, bedTemp, targetTemp, bedTargetTemp)
 
 	def _mcTempUpdate(self, temp, bedTemp, targetTemp, bedTargetTemp):
-		if self.temperatureSelect.GetValue() != targetTemp and wx.Window.FindFocus() != self.temperatureSelect:
-			self.temperatureSelect.SetValue(targetTemp)
+		if self.temperatureSelect.GetValue() != targetTemp[0] and wx.Window.FindFocus() != self.temperatureSelect:
+			self.temperatureSelect.SetValue(targetTemp[0])
 		if self.bedTemperatureSelect.GetValue() != bedTargetTemp and wx.Window.FindFocus() != self.bedTemperatureSelect:
 			self.bedTemperatureSelect.SetValue(bedTargetTemp)
 
@@ -635,14 +635,14 @@ class temperatureGraph(wx.Panel):
 		self.lastDraw = time.time() - 1.0
 		self.points = []
 		self.backBuffer = None
-		self.addPoint(0, 0, 0, 0)
+		self.addPoint([0]*16, [0]*16, 0, 0)
 		self.SetMinSize((320, 200))
 
 	def OnEraseBackground(self, e):
 		pass
 
 	def OnSize(self, e):
-		if self.backBuffer == None or self.GetSize() != self.backBuffer.GetSize():
+		if self.backBuffer is None or self.GetSize() != self.backBuffer.GetSize():
 			self.backBuffer = wx.EmptyBitmap(*self.GetSizeTuple())
 			self.UpdateDrawing(True)
 
@@ -669,17 +669,18 @@ class temperatureGraph(wx.Panel):
 
 		#Draw the background up to the current temperatures.
 		x0 = 0
-		t0 = 0
+		t0 = [0] * len(self.points[0][0])
 		bt0 = 0
 		tSP0 = 0
 		btSP0 = 0
 		for temp, tempSP, bedTemp, bedTempSP, t in self.points:
 			x1 = int(w - (now - t))
 			for x in xrange(x0, x1 + 1):
-				t = float(x - x0) / float(x1 - x0 + 1) * (temp - t0) + t0
+				for n in xrange(0, len(temp)):
+					t = float(x - x0) / float(x1 - x0 + 1) * (temp[n] - t0[n]) + t0[n]
+					dc.SetPen(tempPenBG)
+					dc.DrawLine(x, h, x, h - (t * h / 300))
 				bt = float(x - x0) / float(x1 - x0 + 1) * (bedTemp - bt0) + bt0
-				dc.SetPen(tempPenBG)
-				dc.DrawLine(x, h, x, h - (t * h / 300))
 				dc.SetPen(bedTempPenBG)
 				dc.DrawLine(x, h, x, h - (bt * h / 300))
 			t0 = temp
@@ -703,23 +704,24 @@ class temperatureGraph(wx.Panel):
 
 		#Draw the main lines
 		x0 = 0
-		t0 = 0
+		t0 = [0] * len(self.points[0][0])
 		bt0 = 0
-		tSP0 = 0
+		tSP0 = [0] * len(self.points[0][0])
 		btSP0 = 0
 		for temp, tempSP, bedTemp, bedTempSP, t in self.points:
 			x1 = int(w - (now - t))
 			for x in xrange(x0, x1 + 1):
-				t = float(x - x0) / float(x1 - x0 + 1) * (temp - t0) + t0
+				for n in xrange(0, len(temp)):
+					t = float(x - x0) / float(x1 - x0 + 1) * (temp[n] - t0[n]) + t0[n]
+					tSP = float(x - x0) / float(x1 - x0 + 1) * (tempSP[n] - tSP0[n]) + tSP0[n]
+					dc.SetPen(tempSPPen)
+					dc.DrawPoint(x, h - (tSP * h / 300))
+					dc.SetPen(tempPen)
+					dc.DrawPoint(x, h - (t * h / 300))
 				bt = float(x - x0) / float(x1 - x0 + 1) * (bedTemp - bt0) + bt0
-				tSP = float(x - x0) / float(x1 - x0 + 1) * (tempSP - tSP0) + tSP0
 				btSP = float(x - x0) / float(x1 - x0 + 1) * (bedTempSP - btSP0) + btSP0
-				dc.SetPen(tempSPPen)
-				dc.DrawPoint(x, h - (tSP * h / 300))
 				dc.SetPen(bedTempSPPen)
 				dc.DrawPoint(x, h - (btSP * h / 300))
-				dc.SetPen(tempPen)
-				dc.DrawPoint(x, h - (t * h / 300))
 				dc.SetPen(bedTempPen)
 				dc.DrawPoint(x, h - (bt * h / 300))
 			t0 = temp
@@ -736,11 +738,11 @@ class temperatureGraph(wx.Panel):
 			self.points.pop(0)
 
 	def addPoint(self, temp, tempSP, bedTemp, bedTempSP):
-		if bedTemp == None:
+		if bedTemp is None:
 			bedTemp = 0
-		if bedTempSP == None:
+		if bedTempSP is None:
 			bedTempSP = 0
-		self.points.append((temp, tempSP, bedTemp, bedTempSP, time.time()))
+		self.points.append((temp[:], tempSP[:], bedTemp, bedTempSP, time.time()))
 		wx.CallAfter(self.UpdateDrawing)
 
 
