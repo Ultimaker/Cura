@@ -212,6 +212,13 @@ class Slicer(object):
 			'coolHeadLift': 1 if profile.getProfileSetting('cool_head_lift') == 'True' else 0,
 			'startCode': profile.getAlterationFileContents('start.gcode'),
 			'endCode': profile.getAlterationFileContents('end.gcode'),
+
+			'extruderOffset[1].X': int(profile.getPreferenceFloat('extruder_offset_x1') * 1000),
+			'extruderOffset[1].Y': int(profile.getPreferenceFloat('extruder_offset_y1') * 1000),
+			'extruderOffset[2].X': int(profile.getPreferenceFloat('extruder_offset_x2') * 1000),
+			'extruderOffset[2].Y': int(profile.getPreferenceFloat('extruder_offset_y2') * 1000),
+			'extruderOffset[3].X': int(profile.getPreferenceFloat('extruder_offset_x3') * 1000),
+			'extruderOffset[3].Y': int(profile.getPreferenceFloat('extruder_offset_y3') * 1000),
 		}
 		if profile.getProfileSetting('platform_adhesion') == 'Brim':
 			settings['skirtDistance'] = 0.0

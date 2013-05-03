@@ -48,7 +48,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._animView = None
 		self._animZoom = None
 		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
-		self._platformMesh._drawOffset = numpy.array([0,0,1.5], numpy.float32)
+		self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
 		self._isSimpleMode = True
 
 		self._viewport = None
@@ -693,7 +693,10 @@ class SceneView(openglGui.glGuiPanel):
 			if self._animZoom.isDone():
 				self._animZoom = None
 		if self.viewMode == 'gcode' and self._gcode is not None:
-			self._viewTarget[2] = self._gcode.layerList[self.layerSelect.getValue()][-1].points[0][2]
+			try:
+				self._viewTarget[2] = self._gcode.layerList[self.layerSelect.getValue()][-1].points[0][2]
+			except:
+				pass
 		if self._objectShader is None:
 			self._objectShader = opengl.GLShader("""
 varying float light_amount;
@@ -759,12 +762,14 @@ void main(void)
 				self._renderObject(obj)
 
 		if self._mouseX > -1:
+			glFlush()
 			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0]
 			if n < len(self._scene.objects()):
 				self._focusObj = self._scene.objects()[n]
 			else:
 				self._focusObj = None
 			f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
+			#self.GetTopLevelParent().SetTitle(hex(n) + " " + str(f))
 			self._mouse3Dpos = opengl.unproject(self._mouseX, self._viewport[1] + self._viewport[3] - self._mouseY, f, self._modelMatrix, self._projMatrix, self._viewport)
 			self._mouse3Dpos -= self._viewTarget
 
