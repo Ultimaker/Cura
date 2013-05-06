@@ -758,12 +758,12 @@ void main(void)
 		if self.viewMode != 'gcode':
 			for n in xrange(0, len(self._scene.objects())):
 				obj = self._scene.objects()[n]
-				glColor4ub((n >> 24) & 0xFF, (n >> 16) & 0xFF, (n >> 8) & 0xFF, n & 0xFF)
+				glColor4ub((n >> 16) & 0xFF, (n >> 8) & 0xFF, (n >> 0) & 0xFF, 0xFF)
 				self._renderObject(obj)
 
 		if self._mouseX > -1:
 			glFlush()
-			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0]
+			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0] >> 8
 			if n < len(self._scene.objects()):
 				self._focusObj = self._scene.objects()[n]
 			else:
