@@ -1074,17 +1074,18 @@ class headOffsetCalibrationPage(InfoPage):
 			self.comm.printGCode(gcode.list())
 		elif self._wizardState == 7:
 			try:
-				n = int(self.textEntry.GetValue())
+				n = int(self.textEntry.GetValue()) - 1
 			except:
 				return
 			x = profile.getPreferenceFloat('extruder_offset_x1')
 			x += -1.0 + n * 0.1
 			profile.putPreference('extruder_offset_x1', '%0.2f' % (x))
 			self.infoBox.SetAttention('Which horizontal line number lays perfect on top of each other? Front most line is zero.')
+			self.textEntry.SetValue('10')
 			self._wizardState = 8
 		elif self._wizardState == 8:
 			try:
-				n = int(self.textEntry.GetValue())
+				n = int(self.textEntry.GetValue()) - 1
 			except:
 				return
 			y = profile.getPreferenceFloat('extruder_offset_y1')
@@ -1129,7 +1130,7 @@ class headOffsetCalibrationPage(InfoPage):
 				elif self._wizardState == 6:
 					self._wizardState = 7
 					wx.CallAfter(self.infoBox.SetAttention, 'Which vertical line number lays perfect on top of each other? Leftmost line is zero.')
-					wx.CallAfter(self.textEntry.SetValue, '5')
+					wx.CallAfter(self.textEntry.SetValue, '10')
 					wx.CallAfter(self.textEntry.Enable, True)
 					wx.CallAfter(self.resumeButton.Enable, True)
 					wx.CallAfter(self.resumeButton.SetFocus)
