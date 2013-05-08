@@ -937,7 +937,7 @@ class bedLevelWizardMain(InfoPage):
 
 class headOffsetCalibrationPage(InfoPage):
 	def __init__(self, parent):
-		super(headOffsetCalibrationPage, self).__init__(parent, "Printer head offset calibration (WIP)")
+		super(headOffsetCalibrationPage, self).__init__(parent, "Printer head offset calibration")
 
 		self.AddText('This wizard will help you in calibrating the printer head offsets of your dual extrusion machine')
 		self.AddSeperator()
