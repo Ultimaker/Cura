@@ -22,16 +22,19 @@ class gcode(object):
 		self.layerList = []
 		self.extrusionAmount = 0
 		self.totalMoveTimeMinute = 0
+		self.filename = None
 		self.progressCallback = None
 	
 	def load(self, filename):
 		if os.path.isfile(filename):
+			self.filename = filename
 			self._fileSize = os.stat(filename).st_size
 			gcodeFile = open(filename, 'r')
 			self._load(gcodeFile)
 			gcodeFile.close()
 	
 	def loadList(self, l):
+		self.filename = None
 		self._load(l)
 	
 	def calculateWeight(self):

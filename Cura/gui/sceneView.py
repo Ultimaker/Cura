@@ -114,7 +114,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showLoadModel(self, button = 1):
 		if button == 1:
 			dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
-			dlg.SetWildcard(meshLoader.loadWildcardFilter())
+			dlg.SetWildcard(meshLoader.loadWildcardFilter() + "|GCode file (*.gcode)|*.g;*.gcode;*.G;*.GCODE")
 			if dlg.ShowModal() != wx.ID_OK:
 				dlg.Destroy()
 				return
@@ -124,7 +124,28 @@ class SceneView(openglGui.glGuiPanel):
 				return False
 			profile.putPreference('lastFile', filename)
 			self.GetParent().GetParent().GetParent().addToModelMRU(filename)
-			self.loadScene([filename])
+			ext = filename[filename.rfind('.')+1:].upper()
+			if ext == 'G' or ext == 'GCODE':
+				if self._gcode is not None:
+					self._gcode = None
+					for layerVBOlist in self._gcodeVBOs:
+						for vbo in layerVBOlist:
+							self.glReleaseList.append(vbo)
+					self._gcodeVBOs = []
+				self._gcode = gcodeInterpreter.gcode()
+				self._gcode.progressCallback = self._gcodeLoadCallback
+				self._thread = threading.Thread(target=self._loadGCode, args=(filename,))
+				self._thread.daemon = True
+				self._thread.start()
+				self.printButton.setBottomText('')
+				self.viewSelection.setValue(3)
+				self.printButton.setDisabled(False)
+				self.OnViewChange()
+			else:
+				if self.viewSelection.getValue() == 3:
+					self.viewSelection.setValue(0)
+					self.OnViewChange()
+				self.loadScene([filename])
 
 	def showSaveModel(self):
 		if len(self._scene.objects()) < 1:
@@ -141,7 +162,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showPrintWindow(self, button):
 		if button == 1:
 			if machineCom.machineIsConnected():
-				printWindow.printFile(self._slicer.getGCodeFilename())
+				printWindow.printFile(self._gcode.filename)
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
@@ -156,7 +177,7 @@ class SceneView(openglGui.glGuiPanel):
 				filename = os.path.basename(profile.getPreference('lastFile'))
 				filename = filename[0:filename.rfind('.')] + '.gcode'
 				try:
-					shutil.copy(self._slicer.getGCodeFilename(), drive[1] + filename)
+					shutil.copy(self._gcode.filename, drive[1] + filename)
 				except:
 					self.notification.message("Failed to save to SD card")
 				else:
@@ -165,7 +186,7 @@ class SceneView(openglGui.glGuiPanel):
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
-			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._slicer.getGCodeFilename()), menu.Append(-1, 'Print with USB'))
+			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._gcode.filename), menu.Append(-1, 'Print with USB'))
 			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, 'Save GCode...'))
 			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, 'Slice engine log...'))
 			self.PopupMenu(menu)
@@ -184,7 +205,7 @@ class SceneView(openglGui.glGuiPanel):
 		dlg.Destroy()
 
 		try:
-			shutil.copy(self._slicer.getGCodeFilename(), filename)
+			shutil.copy(self._gcode.filename, filename)
 		except:
 			self.notification.message("Failed to save")
 		else:
@@ -241,7 +262,6 @@ class SceneView(openglGui.glGuiPanel):
 		else:
 			self.viewMode = 'normal'
 		self.layerSelect.setHidden(self.viewMode != 'gcode')
-		self.openFileButton.setHidden(self.viewMode == 'gcode')
 		self.QueueRefresh()
 
 	def OnRotateReset(self, button):
@@ -400,8 +420,10 @@ class SceneView(openglGui.glGuiPanel):
 			self.printButton.setBottomText('')
 		self.QueueRefresh()
 
-	def _loadGCode(self):
-		self._gcode.load(self._slicer.getGCodeFilename())
+	def _loadGCode(self, filename = None):
+		if filename is None:
+			filename = self._slicer.getGCodeFilename()
+		self._gcode.load(filename)
 
 	def _gcodeLoadCallback(self, progress):
 		if self._gcode is None:
