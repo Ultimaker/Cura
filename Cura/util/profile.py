@@ -691,12 +691,12 @@ def getAlterationFileContents(filename, extruderCount = 1):
 					t = temp
 					if n > 0 and getProfileSettingFloat('print_temperature%d' % (n+1)) > 0:
 						t = getProfileSettingFloat('print_temperature%d' % (n+1))
-					prefix += 'M104 T%d S%f\n' % (n, temp)
+					prefix += 'M104 T%d S%f\n' % (n, t)
 				for n in xrange(0, extruderCount):
 					t = temp
 					if n > 0 and getProfileSettingFloat('print_temperature%d' % (n+1)) > 0:
 						t = getProfileSettingFloat('print_temperature%d' % (n+1))
-					prefix += 'M109 T%d S%f\n' % (n, temp)
+					prefix += 'M109 T%d S%f\n' % (n, t)
 				prefix += 'T0\n'
 			else:
 				prefix += 'M109 S%f\n' % (temp)

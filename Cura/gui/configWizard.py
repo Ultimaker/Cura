@@ -975,14 +975,17 @@ class headOffsetCalibrationPage(InfoPage):
 			d = profile.getPreferenceFloat('machine_depth')
 
 			gcode = gcodeGenerator.gcodeGenerator()
-			gcode.setExtrusionRate(profile.getProfileSettingFloat('nozzle_size') * 1.5, 0.3)
+			gcode.setExtrusionRate(profile.getProfileSettingFloat('nozzle_size') * 1.5, 0.2)
+			gcode.setPrintSpeed(profile.getProfileSettingFloat('bottom_layer_speed'))
 			gcode.addCmd('T0')
 			gcode.addPrime(15)
 			gcode.addCmd('T1')
 			gcode.addPrime(15)
 
 			gcode.addCmd('T0')
-			gcode.addMove(w/2, 5, 0.3)
+			gcode.addMove(w/2, 5)
+			gcode.addMove(z=0.2)
+			gcode.addPrime()
 			gcode.addExtrude(w/2, d-5.0)
 			gcode.addRetract()
 			gcode.addMove(5, d/2)
@@ -992,19 +995,22 @@ class headOffsetCalibrationPage(InfoPage):
 
 			gcode.addCmd('T1')
 			gcode.addMove(w/2, 5)
+			gcode.addPrime()
 			gcode.addExtrude(w/2, d-5.0)
 			gcode.addRetract()
 			gcode.addMove(5, d/2)
 			gcode.addPrime()
 			gcode.addExtrude(w-5.0, d/2)
-			gcode.addCmd('T0')
 			gcode.addRetract(15)
+			gcode.addCmd('T0')
 
 			gcode.addMove(z=25)
+			gcode.addMove(0, 0)
+			gcode.addCmd('M400')
 
 			self.comm.printGCode(gcode.list())
 			self.resumeButton.Enable(False)
-		if self._wizardState == 4:
+		elif self._wizardState == 4:
 			try:
 				float(self.textEntry.GetValue())
 			except ValueError:
@@ -1014,7 +1020,7 @@ class headOffsetCalibrationPage(InfoPage):
 			self.infoBox.SetAttention('Please measure the distance between the horizontal lines in millimeters.')
 			self.textEntry.SetValue('0.0')
 			self.textEntry.Enable(True)
-		if self._wizardState == 5:
+		elif self._wizardState == 5:
 			try:
 				float(self.textEntry.GetValue())
 			except ValueError:
@@ -1026,6 +1032,69 @@ class headOffsetCalibrationPage(InfoPage):
 			self.textEntry.Enable(False)
 			self.resumeButton.Enable(False)
 
+			x = profile.getPreferenceFloat('extruder_offset_x1')
+			y = profile.getPreferenceFloat('extruder_offset_y1')
+			gcode = gcodeGenerator.gcodeGenerator()
+			gcode.setExtrusionRate(profile.getProfileSettingFloat('nozzle_size') * 1.5, 0.2)
+			gcode.setPrintSpeed(25)
+			gcode.addHome()
+			gcode.addCmd('T0')
+			gcode.addMove(50, 40, 0.2)
+			gcode.addPrime(15)
+			for n in xrange(0, 10):
+				gcode.addExtrude(50 + n * 10, 150)
+				gcode.addExtrude(50 + n * 10 + 5, 150)
+				gcode.addExtrude(50 + n * 10 + 5, 40)
+				gcode.addExtrude(50 + n * 10 + 10, 40)
+			gcode.addMove(40, 50)
+			for n in xrange(0, 10):
+				gcode.addExtrude(150, 50 + n * 10)
+				gcode.addExtrude(150, 50 + n * 10 + 5)
+				gcode.addExtrude(40, 50 + n * 10 + 5)
+				gcode.addExtrude(40, 50 + n * 10 + 10)
+			gcode.addRetract(15)
+
+			gcode.addCmd('T1')
+			gcode.addMove(50 - x, 30 - y, 0.2)
+			gcode.addPrime(15)
+			for n in xrange(0, 10):
+				gcode.addExtrude(50 + n * 10.2 - 1.0 - x, 140 - y)
+				gcode.addExtrude(50 + n * 10.2 - 1.0 + 5.1 - x, 140 - y)
+				gcode.addExtrude(50 + n * 10.2 - 1.0 + 5.1 - x, 30 - y)
+				gcode.addExtrude(50 + n * 10.2 - 1.0 + 10 - x, 30 - y)
+			gcode.addMove(30 - x, 50 - y, 0.2)
+			for n in xrange(0, 10):
+				gcode.addExtrude(160 - x, 50 + n * 10.2 - 1.0 - y)
+				gcode.addExtrude(160 - x, 50 + n * 10.2 - 1.0 + 5.1 - y)
+				gcode.addExtrude(30 - x, 50 + n * 10.2 - 1.0 + 5.1 - y)
+				gcode.addExtrude(30 - x, 50 + n * 10.2 - 1.0 + 10 - y)
+			gcode.addRetract(15)
+			gcode.addMove(z=15)
+			gcode.addCmd('M400')
+			self.comm.printGCode(gcode.list())
+		elif self._wizardState == 7:
+			try:
+				n = int(self.textEntry.GetValue())
+			except:
+				return
+			x = profile.getPreferenceFloat('extruder_offset_x1')
+			x += -1.0 + n * 0.1
+			profile.putPreference('extruder_offset_x1', '%0.2f' % (x))
+			self.infoBox.SetAttention('Which horizontal line number lays perfect on top of each other? Front most line is zero.')
+			self._wizardState = 8
+		elif self._wizardState == 8:
+			try:
+				n = int(self.textEntry.GetValue())
+			except:
+				return
+			y = profile.getPreferenceFloat('extruder_offset_y1')
+			y += -1.0 + n * 0.1
+			profile.putPreference('extruder_offset_y1', '%0.2f' % (y))
+			self.infoBox.SetInfo('Calibration finished. Offsets are: %s %s' % (profile.getPreferenceFloat('extruder_offset_x1'), profile.getPreferenceFloat('extruder_offset_y1')))
+			self.infoBox.SetReadyIndicator()
+			self._wizardState = 8
+			self.comm.close()
+
 	def mcLog(self, message):
 		print 'Log:', message
 
@@ -1035,6 +1104,7 @@ class headOffsetCalibrationPage(InfoPage):
 				self._wizardState = 2
 				wx.CallAfter(self.infoBox.SetAttention, 'Please load both extruders with PLA.')
 				wx.CallAfter(self.resumeButton.Enable, True)
+				wx.CallAfter(self.resumeButton.SetFocus)
 
 	def mcStateChange(self, state):
 		if self.comm is None:
@@ -1043,10 +1113,10 @@ class headOffsetCalibrationPage(InfoPage):
 			if self._wizardState == 0:
 				wx.CallAfter(self.infoBox.SetInfo, 'Homing printer and heating up both extruders.')
 				self.comm.sendCommand('M105')
-				self.comm.sendCommand('G28')
-				self.comm.sendCommand('G1 Z15 F%d' % (profile.getProfileSettingFloat('print_speed') * 60))
 				self.comm.sendCommand('M104 S220 T0')
 				self.comm.sendCommand('M104 S220 T1')
+				self.comm.sendCommand('G28')
+				self.comm.sendCommand('G1 Z15 F%d' % (profile.getProfileSettingFloat('print_speed') * 60))
 				self._wizardState = 1
 			if not self.comm.isPrinting():
 				if self._wizardState == 3:
@@ -1056,6 +1126,14 @@ class headOffsetCalibrationPage(InfoPage):
 					wx.CallAfter(self.textEntry.Enable, True)
 					wx.CallAfter(self.resumeButton.Enable, True)
 					wx.CallAfter(self.resumeButton.SetFocus)
+				elif self._wizardState == 6:
+					self._wizardState = 7
+					wx.CallAfter(self.infoBox.SetAttention, 'Which vertical line number lays perfect on top of each other? Leftmost line is zero.')
+					wx.CallAfter(self.textEntry.SetValue, '5')
+					wx.CallAfter(self.textEntry.Enable, True)
+					wx.CallAfter(self.resumeButton.Enable, True)
+					wx.CallAfter(self.resumeButton.SetFocus)
+
 		elif self.comm.isError():
 			wx.CallAfter(self.infoBox.SetError, 'Failed to establish connection with the printer.', 'http://wiki.ultimaker.com/Cura:_Connection_problems')
 
@@ -1077,6 +1155,31 @@ class bedLevelWizard(wx.wizard.Wizard):
 
 		self.mainPage = bedLevelWizardMain(self)
 		self.headOffsetCalibration = None
+
+		self.FitToPage(self.mainPage)
+		self.GetPageAreaSizer().Add(self.mainPage)
+
+		self.RunWizard(self.mainPage)
+		self.Destroy()
+
+	def OnPageChanging(self, e):
+		e.GetPage().StoreData()
+
+	def OnPageChanged(self, e):
+		if e.GetPage().AllowNext():
+			self.FindWindowById(wx.ID_FORWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_FORWARD).Disable()
+		self.FindWindowById(wx.ID_BACKWARD).Disable()
+
+class headOffsetWizard(wx.wizard.Wizard):
+	def __init__(self):
+		super(headOffsetWizard, self).__init__(None, -1, "Head offset wizard")
+
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+
+		self.mainPage = headOffsetCalibrationPage(self)
 
 		self.FitToPage(self.mainPage)
 		self.GetPageAreaSizer().Add(self.mainPage)

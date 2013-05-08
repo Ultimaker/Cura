@@ -133,6 +133,9 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnFirstRunWizard, i)
 		i = expertMenu.Append(-1, 'Run bed leveling wizard...')
 		self.Bind(wx.EVT_MENU, self.OnBedLevelWizard, i)
+		if self.extruderCount > 1:
+			i = expertMenu.Append(-1, 'Run head offset wizard...')
+			self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, i)
 		self.menubar.Append(expertMenu, 'Expert')
 
 		helpMenu = wx.Menu()
@@ -377,6 +380,9 @@ class mainWindow(wx.Frame):
 
 	def OnBedLevelWizard(self, e):
 		configWizard.bedLevelWizard()
+
+	def OnHeadOffsetWizard(self, e):
+		configWizard.headOffsetWizard()
 
 	def OnExpertOpen(self, e):
 		ecw = expertConfig.expertConfigWindow()

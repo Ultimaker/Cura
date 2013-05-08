@@ -17,7 +17,10 @@ class gcodeGenerator(object):
 		self._y = 0
 		self._z = 0
 
-		self._list = ['G92 E0']
+		self._list = ['M110', 'G92 E0']
+
+	def setPrintSpeed(self, speed):
+		self._feedPrint = speed * 60
 
 	def setExtrusionRate(self, lineWidth, layerHeight):
 		filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
@@ -52,7 +55,7 @@ class gcodeGenerator(object):
 		self._eValue -= amount
 		self._list += ['G1 E%f F%f' % (self._eValue, self._feedRetract)]
 
-	def addExtrude(self, x=None, y=None, z=None):
+	def _addExtrude(self, x=None, y=None, z=None):
 		cmd = "G1 "
 		oldX = self._x
 		oldY = self._y
@@ -68,6 +71,20 @@ class gcodeGenerator(object):
 		self._eValue += math.sqrt((self._x - oldX) * (self._x - oldX) + (self._y - oldY) * (self._y - oldY)) * self._ePerMM
 		cmd += "E%f F%d" % (self._eValue, self._feedPrint)
 		self._list += [cmd]
+
+	def addExtrude(self, x=None, y=None, z=None):
+		if x is not None and abs(self._x - x) > 10:
+			self.addExtrude((self._x + x) / 2.0, y, z)
+			self.addExtrude(x, y, z)
+			return
+		if y is not None and abs(self._y - y) > 10:
+			self.addExtrude(x, (self._y + y) / 2.0, z)
+			self.addExtrude(x, y, z)
+			return
+		self._addExtrude(x, y, z)
+
+	def addHome(self):
+		self._list += ['G28']
 
 	def addCmd(self, cmd):
 		self._list += [cmd]
