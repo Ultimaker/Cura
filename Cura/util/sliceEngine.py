@@ -229,6 +229,8 @@ class Slicer(object):
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
+		if settings['layerThickness'] <= 0.0:
+			settings['layerThickness'] = 1000
 		return settings
 
 	def _runSliceProcess(self, cmdList):
