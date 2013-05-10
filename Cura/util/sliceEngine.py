@@ -197,6 +197,7 @@ class Slicer(object):
 			'downSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_bottom') == 'True' else 0,
 			'upSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_top') == 'True' else 0,
 			'sparseInfillLineDistance': int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density')) if profile.getProfileSettingFloat('fill_density') > 0 else -1,
+			'infillOverlap': int(profile.getProfileSettingFloat('fill_overlap')),
 			'initialSpeedupLayers': int(4),
 			'initialLayerSpeed': int(profile.getProfileSettingFloat('bottom_layer_speed')),
 			'printSpeed': int(profile.getProfileSettingFloat('print_speed')),

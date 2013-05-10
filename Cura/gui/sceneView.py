@@ -828,6 +828,8 @@ void main(void)
 						glColor3f(0, c, c)
 						self._gcodeVBOs[n][8].render(GL_QUADS)
 						self._gcodeVBOs[n][9].render(GL_QUADS)
+						glColor3f(0, 0, c)
+						self._gcodeVBOs[n][10].render(GL_LINES)
 					else:
 						glColor3f(c, 0, 0)
 						self._gcodeVBOs[n][0].render(GL_LINES)
@@ -1091,14 +1093,26 @@ void main(void)
 					normal[:,1] *= lineWidth
 
 					b = numpy.zeros((len(a)-1, 0), numpy.float32)
-					b = numpy.concatenate((b, a[:-1] + normal), 1)
 					b = numpy.concatenate((b, a[1:] + normal), 1)
 					b = numpy.concatenate((b, a[1:] - normal), 1)
 					b = numpy.concatenate((b, a[:-1] - normal), 1)
+					b = numpy.concatenate((b, a[:-1] + normal), 1)
+					#b = numpy.concatenate((b, a[:-1]), 1)
+					#b = numpy.concatenate((b, a[:-1]), 1)
 					b = b.reshape((len(b) * 4, 3))
 
 					pointList = numpy.concatenate((pointList, b))
 			ret.append(opengl.GLVBO(pointList))
+
+		pointList = numpy.zeros((0,3), numpy.float32)
+		for path in layer:
+			if path.type == 'move' or path.type == 'retract':
+				a = path.points
+				a = numpy.concatenate((a[:-1], a[1:]), 1)
+				a = a.reshape((len(a) * 2, 3))
+				pointList = numpy.concatenate((pointList, a))
+		ret.append(opengl.GLVBO(pointList))
+
 		return ret
 
 	def getObjectCenterPos(self):
