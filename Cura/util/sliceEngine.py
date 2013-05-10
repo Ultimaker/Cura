@@ -222,11 +222,16 @@ class Slicer(object):
 			'extruderOffset[3].Y': int(profile.getPreferenceFloat('extruder_offset_y3') * 1000),
 		}
 		if profile.getProfileSetting('platform_adhesion') == 'Brim':
-			settings['skirtDistance'] = 0.0
+			settings['skirtDistance'] = 0
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('brim_line_count'))
 		elif profile.getProfileSetting('platform_adhesion') == 'Raft':
 			settings['skirtDistance'] = 0
 			settings['skirtLineCount'] = 0
+			settings['raftMargin'] = int(profile.getProfileSettingFloat('raft_margin') * 1000);
+			settings['raftBaseThickness'] = int(profile.getProfileSettingFloat('raft_base_thickness') * 1000);
+			settings['raftBaseLinewidth'] = int(profile.getProfileSettingFloat('raft_base_linewidth') * 1000);
+			settings['raftInterfaceThickness'] = int(profile.getProfileSettingFloat('raft_interface_thickness') * 1000);
+			settings['raftInterfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000);
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
