@@ -1071,6 +1071,8 @@ class headOffsetCalibrationPage(InfoPage):
 			gcode.addRetract(15)
 			gcode.addMove(z=15)
 			gcode.addCmd('M400')
+			gcode.addCmd('M104 T0 S0')
+			gcode.addCmd('M104 T1 S0')
 			self.comm.printGCode(gcode.list())
 		elif self._wizardState == 7:
 			try:
@@ -1095,6 +1097,7 @@ class headOffsetCalibrationPage(InfoPage):
 			self.infoBox.SetReadyIndicator()
 			self._wizardState = 8
 			self.comm.close()
+			self.resumeButton.Enable(False)
 
 	def mcLog(self, message):
 		print 'Log:', message
