@@ -31,15 +31,21 @@ class superShape(object):
 		self._n32 = n32
 
 		points = []
-
-		for n in xrange(-64, 64):
+		cnt = 64
+		for n in xrange(-cnt, cnt):
 			row = []
 			points.append(row)
-			f1 = n * math.pi / 64
-			r1 = math.pow((math.pow(abs(math.cos(m1*f1/4)/a1),n21) + math.pow(abs(math.sin(m1*f1/4)/b1), n31)), -(1/n11))
-			for m in xrange(0, 64):
-				f2 = m * math.pi / 128
-				r2 = math.pow((math.pow(abs(math.cos(m2*f2/4)/a2),n22) + math.pow(abs(math.sin(m2*f2/4)/b2), n32)), -(1/n12))
+			f1 = n * math.pi / cnt
+			try:
+				r1 = math.pow((math.pow(abs(math.cos(m1*f1/4)/a1),n21) + math.pow(abs(math.sin(m1*f1/4)/b1), n31)), -(1/n11))
+			except:
+				r1 = 1.0
+			for m in xrange(0, cnt):
+				f2 = m * math.pi / ((cnt*2) - 2)
+				try:
+					r2 = math.pow((math.pow(abs(math.cos(m2*f2/4)/a2),n22) + math.pow(abs(math.sin(m2*f2/4)/b2), n32)), -(1/n12))
+				except:
+					r2 = 1.0
 
 				x = r1 * math.cos(f1) * r2 * math.cos(f2)
 				y = r1 * math.sin(f1) * r2 * math.cos(f2)
@@ -65,11 +71,172 @@ class superShape(object):
 
 		self._obj._postProcessAfterLoad()
 
+	def isValid(self):
+		size = self._obj.getSize()
+		if size[0] / size[2] > 10:
+			return False
+		return True
+
 	def draw(self):
 		for m in self._obj._meshList:
 			if m.vbo is None:
 				m.vbo = opengl.GLVBO(m.vertexes, m.normal)
 			m.vbo.render()
+
+class superformulaEvolver(wx.Frame):
+	def __init__(self, parent):
+		super(superformulaEvolver, self).__init__(parent, title='Cura - Superformula')
+		self._rotate = 0.0
+		self._t0 = time.time()
+
+		sizer = wx.BoxSizer()
+		self.SetSizer(sizer)
+
+		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 32, glcanvas.WX_GL_STENCIL_SIZE, 8)
+		self._glCanvas = glcanvas.GLCanvas(self, style=wx.WANTS_CHARS, attribList = attribList)
+		self._glCanvas.SetMinSize((800,600))
+		sizer.Add(self._glCanvas, 1, flag=wx.EXPAND)
+		self._context = glcanvas.GLContext(self._glCanvas)
+
+		wx.EVT_PAINT(self._glCanvas, self._OnPaint)
+		wx.EVT_SIZE(self._glCanvas, self._OnSize)
+		wx.EVT_ERASE_BACKGROUND(self._glCanvas, self._OnEraseBackground)
+		wx.EVT_IDLE(self, self._OnIdle)
+
+		wx.EVT_LEFT_DOWN(self._glCanvas, self._OnMouseDown)
+
+		self._shapes = [None] * 12
+		self._releaseList = []
+
+		self._randomize()
+
+		self.Maximize()
+
+	def _OnMouseDown(self, e):
+		size = self._glCanvas.GetSize()
+		sel = e.GetX() / (size.GetWidth() / 4) + (size.GetHeight() - e.GetY()) / (size.GetHeight() / 3) * 4
+		shape = self._shapes[sel]
+		for n in xrange(0, len(self._shapes)):
+			if n == sel:
+				continue
+			for m in self._shapes[n]._obj._meshList:
+				if m.vbo is not None:
+					self._releaseList.append(m.vbo)
+			f = 0.5 + n * 0.1
+			update = True
+			while update:
+				self._shapes[n] = superShape(
+					shape._a1 + random.uniform(-f, f) / 2.0,
+					shape._b1 + random.uniform(-f, f) / 2.0,
+					shape._m1 + random.uniform(-f, f) * 2.0,
+					shape._n11 + random.uniform(-f, f),
+					shape._n21 + random.uniform(-f, f),
+					shape._n31 + random.uniform(-f, f),
+					shape._a2 + random.uniform(-f, f) / 2.0,
+					shape._b2 + random.uniform(-f, f) / 2.0,
+					shape._m2 + random.uniform(-f, f),
+					shape._n12 + random.uniform(-f, f),
+					shape._n22 + random.uniform(-f, f),
+					shape._n32 + random.uniform(-f, f))
+				update = not self._shapes[n].isValid()
+
+	def _randomize(self):
+		for shape in self._shapes:
+			if shape is not None:
+				for m in shape._obj._meshList:
+					if m.vbo is not None:
+						self._releaseList.append(m.vbo)
+		for n in xrange(0, len(self._shapes)):
+			update = True
+			while update:
+				self._shapes[n] = superShape(
+					random.uniform(0.5, 5.0),
+					random.uniform(0.5, 5.0),
+					random.uniform(0.5, 20.0),
+					random.uniform(0.5, 10.0),
+					random.uniform(0.5, 10.0),
+					random.uniform(0.5, 10.0),
+					random.uniform(0.5, 5.0),
+					random.uniform(0.5, 5.0),
+					random.uniform(0.5, 10.0),
+					random.uniform(0.5, 10.0),
+					random.uniform(0.5, 10.0),
+					random.uniform(0.5, 10.0))
+				update = not self._shapes[n].isValid()
+
+	def _OnEraseBackground(self,event):
+		#Workaround for windows background redraw flicker.
+		pass
+
+	def _OnSize(self, e):
+		self.Refresh()
+
+	def _OnIdle(self, e):
+		self._glCanvas.Refresh()
+
+	def _OnPaint(self, e):
+		dc = wx.PaintDC(self._glCanvas)
+
+		self._glCanvas.SetCurrent(self._context)
+		for obj in self._releaseList:
+			obj.release()
+		self._releaseList = []
+
+		size = self._glCanvas.GetSize()
+		glViewport(0, 0, size.GetWidth(), size.GetHeight())
+		glLoadIdentity()
+
+		glLightfv(GL_LIGHT0, GL_POSITION, [0.2, 0.2, 1.0, 0.0])
+
+		glDisable(GL_RESCALE_NORMAL)
+		glDisable(GL_LIGHTING)
+		glDisable(GL_LIGHT0)
+		glEnable(GL_DEPTH_TEST)
+		glDisable(GL_CULL_FACE)
+		glDisable(GL_BLEND)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+		glClearColor(0.0, 0.0, 0.0, 1.0)
+		glClearStencil(0)
+		glClearDepth(1.0)
+
+		glMatrixMode(GL_PROJECTION)
+		glLoadIdentity()
+		aspect = float(size.GetWidth()) / float(size.GetHeight())
+		gluPerspective(30.0, aspect, 1.0, 1000.0)
+
+		glMatrixMode(GL_MODELVIEW)
+		glLoadIdentity()
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
+
+		glTranslate(0,0,-2.0)
+		glRotate(-45 - math.sin(self._rotate/50.0) * 30, 1, 0, 0)
+		glRotate(self._rotate, 0, 0, 1)
+		self._rotate += (self._t0 - time.time()) * 20
+		self._t0 = time.time()
+
+		glEnable(GL_LIGHTING)
+		glEnable(GL_LIGHT0)
+		glLightfv(GL_LIGHT0, GL_POSITION, [0.2, 0.2, 1.0, 0.0])
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8,1.0,0.8,0])
+		glLightfv(GL_LIGHT0, GL_AMBIENT, [0.3,0.3,0.3,0])
+		glEnable(GL_LIGHT1)
+		glLightfv(GL_LIGHT1, GL_POSITION, [1.2, 0.2, 0.2, 0.0])
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, [0.5,0.3,0.2,0])
+		glLightfv(GL_LIGHT1, GL_AMBIENT, [0.0,0.0,0.0,0])
+
+		for n in xrange(0, len(self._shapes)):
+			shape = self._shapes[n]
+			scale = 1.0/numpy.max(shape._obj.getSize())
+			glPushMatrix()
+			glScalef(scale, scale, scale)
+			glEnable(GL_NORMALIZE)
+			glViewport(size.GetWidth() / 4 * (n % 4), size.GetHeight() / 3 * (n / 4), size.GetWidth() / 4, size.GetHeight() / 3)
+			shape.draw()
+			glPopMatrix()
+
+		glFlush()
+		self._glCanvas.SwapBuffers()
 
 class superformulaWindow(wx.Frame):
 	def __init__(self, parent):
@@ -165,19 +332,24 @@ class superformulaWindow(wx.Frame):
 		self._updateShape()
 
 	def onRandom(self):
-		self.sliderA1.SetValue(random.randint(self.sliderA1.GetMin(), self.sliderA1.GetMax()))
-		self.sliderB1.SetValue(random.randint(self.sliderB1.GetMin(), self.sliderB1.GetMax()))
-		self.sliderM1.SetValue(random.randint(self.sliderM1.GetMin(), self.sliderM1.GetMax()))
-		self.sliderN11.SetValue(random.randint(self.sliderN11.GetMin(), self.sliderN11.GetMax()))
-		self.sliderN21.SetValue(random.randint(self.sliderN21.GetMin(), self.sliderN21.GetMax()))
-		self.sliderN31.SetValue(random.randint(self.sliderN31.GetMin(), self.sliderN31.GetMax()))
-		self.sliderA2.SetValue(random.randint(self.sliderA2.GetMin(), self.sliderA2.GetMax()))
-		self.sliderB2.SetValue(random.randint(self.sliderB2.GetMin(), self.sliderB2.GetMax()))
-		self.sliderM2.SetValue(random.randint(self.sliderM2.GetMin(), self.sliderM2.GetMax()))
-		self.sliderN12.SetValue(random.randint(self.sliderN12.GetMin(), self.sliderN12.GetMax()))
-		self.sliderN22.SetValue(random.randint(self.sliderN22.GetMin(), self.sliderN22.GetMax()))
-		self.sliderN32.SetValue(random.randint(self.sliderN32.GetMin(), self.sliderN32.GetMax()))
-		self._updateShape()
+		update = True
+		while update:
+			update = False
+			self.sliderA1.SetValue(random.randint(self.sliderA1.GetMin(), self.sliderA1.GetMax()))
+			self.sliderB1.SetValue(random.randint(self.sliderB1.GetMin(), self.sliderB1.GetMax()))
+			self.sliderM1.SetValue(random.randint(self.sliderM1.GetMin(), self.sliderM1.GetMax()))
+			self.sliderN11.SetValue(random.randint(self.sliderN11.GetMin(), self.sliderN11.GetMax()))
+			self.sliderN21.SetValue(random.randint(self.sliderN21.GetMin(), self.sliderN21.GetMax()))
+			self.sliderN31.SetValue(random.randint(self.sliderN31.GetMin(), self.sliderN31.GetMax()))
+			self.sliderA2.SetValue(random.randint(self.sliderA2.GetMin(), self.sliderA2.GetMax()))
+			self.sliderB2.SetValue(random.randint(self.sliderB2.GetMin(), self.sliderB2.GetMax()))
+			self.sliderM2.SetValue(random.randint(self.sliderM2.GetMin(), self.sliderM2.GetMax()))
+			self.sliderN12.SetValue(random.randint(self.sliderN12.GetMin(), self.sliderN12.GetMax()))
+			self.sliderN22.SetValue(random.randint(self.sliderN22.GetMin(), self.sliderN22.GetMax()))
+			self.sliderN32.SetValue(random.randint(self.sliderN32.GetMin(), self.sliderN32.GetMax()))
+			self._updateShape()
+			if not self._shape.isValid():
+				update = True
 
 	def onAdd(self):
 		scale = 1.0/numpy.max(self._shape._obj.getSize()) * 50
@@ -269,6 +441,10 @@ class superformulaWindow(wx.Frame):
 		glLightfv(GL_LIGHT0, GL_POSITION, [0.2, 0.2, 1.0, 0.0])
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.8,1.0,0.8,0])
 		glLightfv(GL_LIGHT0, GL_AMBIENT, [0.3,0.3,0.3,0])
+		glEnable(GL_LIGHT1)
+		glLightfv(GL_LIGHT1, GL_POSITION, [1.2, 0.2, 0.2, 0.0])
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, [0.5,0.3,0.2,0])
+		glLightfv(GL_LIGHT1, GL_AMBIENT, [0.0,0.0,0.0,0])
 
 		scale = 1.0/numpy.max(self._shape._obj.getSize())
 		glScalef(scale, scale, scale)

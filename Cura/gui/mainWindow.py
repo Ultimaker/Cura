@@ -397,6 +397,7 @@ class mainWindow(wx.Frame):
 
 	def OnSuperformula(self, e):
 		sf = superformula.superformulaWindow(self)
+		#sf = superformula.superformulaEvolver(self)
 		sf.Centre()
 		sf.Show(True)
 

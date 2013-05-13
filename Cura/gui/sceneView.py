@@ -196,7 +196,7 @@ class SceneView(openglGui.glGuiPanel):
 		defPath = profile.getPreference('lastFile')
 		defPath = defPath[0:defPath.rfind('.')] + '.gcode'
 		dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
-		dlg.SetFilename(defPath)
+		dlg.SetFilename(os.path.basename(defPath))
 		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
