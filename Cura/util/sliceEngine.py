@@ -203,6 +203,8 @@ class Slicer(object):
 			'printSpeed': int(profile.getProfileSettingFloat('print_speed')),
 			'moveSpeed': int(profile.getProfileSettingFloat('travel_speed')),
 			'fanOnLayerNr': int(profile.getProfileSettingFloat('fan_layer')),
+			'fanSpeedMin': int(profile.getProfileSettingFloat('fan_speed')),
+			'fanSpeedMax': int(profile.getProfileSettingFloat('fan_speed_max')),
 			'supportAngle': int(-1) if profile.getProfileSetting('support') == 'None' else int(60),
 			'supportEverywhere': int(1) if profile.getProfileSetting('support') == 'Everywhere' else int(0),
 			'retractionAmount': int(profile.getProfileSettingFloat('retraction_amount') * 1000),
@@ -235,7 +237,7 @@ class Slicer(object):
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
-		if settings['layerThickness'] <= 0.0:
+		if settings['layerThickness'] <= 0:
 			settings['layerThickness'] = 1000
 		return settings
 
