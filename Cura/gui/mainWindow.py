@@ -145,6 +145,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('https://github.com/daid/Cura/issues'), i)
 		i = helpMenu.Append(-1, 'Check for update...')
 		self.Bind(wx.EVT_MENU, self.OnCheckForUpdate, i)
+		i = helpMenu.Append(-1, 'About Cura...')
+		self.Bind(wx.EVT_MENU, self.OnAbout, i)
 		self.menubar.Append(helpMenu, 'Help')
 		self.SetMenuBar(self.menubar)
 
@@ -408,6 +410,28 @@ class mainWindow(wx.Frame):
 				webbrowser.open(newVersion)
 		else:
 			wx.MessageBox('You are running the latest version of Cura!', 'Awesome!', wx.ICON_INFORMATION)
+
+	def OnAbout(self, e):
+		info = wx.AboutDialogInfo()
+		info.SetName('Cura')
+		info.SetDescription('End solution for Open Source Fused Filament Fabrication 3D printing.')
+		info.SetWebSite('http://software.ultimaker.com/')
+		info.SetCopyright('Copyright (C) David Braam')
+		info.SetLicence("""
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+""")
+		wx.AboutBox(info)
 
 	def OnClose(self, e):
 		profile.saveProfile(profile.getDefaultProfilePath())

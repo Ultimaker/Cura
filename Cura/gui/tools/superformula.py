@@ -361,6 +361,7 @@ class superformulaWindow(wx.Frame):
 		m.vertexCount = self._shape._obj._meshList[0].vertexCount
 		obj._postProcessAfterLoad()
 		self.GetParent().scene._scene.add(obj)
+		self.GetParent().scene.sceneUpdated()
 
 	def _updateShape(self):
 		if self._shape is not None:
