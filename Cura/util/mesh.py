@@ -139,7 +139,7 @@ class printableObject(object):
 		self.processMatrix()
 
 	def layFlat(self):
-		transformedVertexes = self.getTransformedVertexes()
+		transformedVertexes = self._meshList[0].getTransformedVertexes()
 		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
 		dotMin = 1.0
 		dotV = None
@@ -160,7 +160,7 @@ class printableObject(object):
 		self._matrix *= numpy.matrix([[math.cos(rad), 0, math.sin(rad)], [0,1,0], [-math.sin(rad), 0, math.cos(rad)]], numpy.float64)
 
 
-		transformedVertexes = self.getTransformedVertexes()
+		transformedVertexes = self._meshList[0].getTransformedVertexes()
 		minZvertex = transformedVertexes[transformedVertexes.argmin(0)[2]]
 		dotMin = 1.0
 		dotV = None

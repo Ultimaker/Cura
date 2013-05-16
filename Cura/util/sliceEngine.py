@@ -82,10 +82,14 @@ class Slicer(object):
 		return None
 
 	def getPrintTime(self):
-		return '%02d:%02d' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
+		if int(self._printTimeSeconds / 60 / 60) < 1:
+			return '%d minutes' % (int(self._printTimeSeconds / 60) % 60)
+		if int(self._printTimeSeconds / 60 / 60) == 1:
+			return '%d hour %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
+		return '%d hours %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
 
 	def getFilamentAmount(self):
-		return '%0.2fm %0.0fgram' % (float(self._filamentMM) / 1000.0, self.getFilamentWeight() * 1000.0)
+		return '%0.2f meter %0.0f gram' % (float(self._filamentMM) / 1000.0, self.getFilamentWeight() * 1000.0)
 
 	def runSlicer(self, scene):
 		self.abortSlicer()

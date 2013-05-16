@@ -948,7 +948,7 @@ void main(void)
 			if self._selectedObj is not None and len(self._scene.objects()) > 1:
 				size = self._selectedObj.getSize()[0:2] / 2 + self._scene.getObjectExtend()
 				glPushMatrix()
-				glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0.0)
+				glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0)
 				glEnable(GL_BLEND)
 				glEnable(GL_CULL_FACE)
 				glColor4f(0,0,0,0.12)
@@ -987,9 +987,12 @@ void main(void)
 				self.tool.OnDraw()
 				glPopMatrix()
 
-	def _renderObject(self, obj, brightness = False):
+	def _renderObject(self, obj, brightness = False, addSink = True):
 		glPushMatrix()
-		glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
+		if addSink:
+			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2 - profile.getProfileSettingFloat('object_sink'))
+		else:
+			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
 
 		if self.tempMatrix is not None and obj == self._selectedObj:
 			tempMatrix = opengl.convert3x3MatrixTo4x4(self.tempMatrix)
@@ -1018,7 +1021,7 @@ void main(void)
 		if profile.getPreference('machine_type') == 'ultimaker':
 			glColor4f(1,1,1,0.5)
 			self._objectShader.bind()
-			self._renderObject(self._platformMesh)
+			self._renderObject(self._platformMesh, False, False)
 			self._objectShader.unbind()
 
 		size = [profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')]
@@ -1134,7 +1137,7 @@ void main(void)
 			return [0.0, 0.0, 0.0]
 		pos = self._selectedObj.getPosition()
 		size = self._selectedObj.getSize()
-		return [pos[0], pos[1], size[2]/2]
+		return [pos[0], pos[1], size[2]/2 - profile.getProfileSettingFloat('object_sink')]
 
 	def getObjectBoundaryCircle(self):
 		if self._selectedObj is None:
