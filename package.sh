@@ -17,11 +17,10 @@ BUILD_TARGET=${1:-all}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-BUILD_NAME=13.04-SteamEngine
+BUILD_NAME=13.05
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Which versions of external programs to use
-PYPY_VERSION=1.9
 WIN_PORTABLE_PY_VERSION=2.7.2.1
 
 #############################
@@ -105,7 +104,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 
     #Add cura version file (should read the version from the bundle with pyobjc, but will figure that out later)
     echo $BUILD_NAME > scripts/darwin/dist/Cura.app/Contents/Resources/version
-    cp SteamEngine scripts/darwin/dist/Cura.app/Contents/Resources/SteamEngine
+    cp CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
 	cd scripts/darwin
 
@@ -171,8 +170,6 @@ if [ $BUILD_TARGET = "win32" ]; then
 	#Get the power module for python
 	rm -rf Power
 	git clone https://github.com/GreatFruitOmsk/Power
-else
-	downloadURL https://bitbucket.org/pypy/pypy/downloads/pypy-${PYPY_VERSION}-${BUILD_TARGET}.tar.bz2
 fi
 
 #############################
@@ -240,7 +237,7 @@ echo $BUILD_NAME > ${TARGET_DIR}/Cura/version
 #add script files
 if [ $BUILD_TARGET = "win32" ]; then
     cp -a scripts/${BUILD_TARGET}/*.bat $TARGET_DIR/
-    cp SteamEngine.exe $TARGET_DIR
+    cp CuraEngine.exe $TARGET_DIR
 else
     cp -a scripts/${BUILD_TARGET}/*.sh $TARGET_DIR/
 fi
