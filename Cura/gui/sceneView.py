@@ -176,12 +176,7 @@ class SceneView(openglGui.glGuiPanel):
 					drive = drives[0]
 				filename = os.path.basename(profile.getPreference('lastFile'))
 				filename = filename[0:filename.rfind('.')] + '.gcode'
-				try:
-					shutil.copy(self._gcode.filename, drive[1] + filename)
-				except:
-					self.notification.message("Failed to save to SD card")
-				else:
-					self.notification.message("Saved as %s" % (drive[1] + filename), lambda : self.notification.message('You can now eject the card.') if removableStorage.ejectDrive(drive[1]) else self.notification.message('Safe remove failed...'))
+				threading.Thread(target=self._copyFile,args=(self._gcode.filename, drive[1] + filename, drive[1])).start()
 			else:
 				self.showSaveGCode()
 		if button == 3:
@@ -204,12 +199,29 @@ class SceneView(openglGui.glGuiPanel):
 		filename = dlg.GetPath()
 		dlg.Destroy()
 
+		threading.Thread(target=self._copyFile,args=(self._gcode.filename, filename)).start()
+
+	def _copyFile(self, fileA, fileB, allowEject = False):
 		try:
-			shutil.copy(self._gcode.filename, filename)
+			size = float(os.stat(fileA).st_size)
+			with open(fileA, 'rb') as fsrc:
+				with open(fileB, 'wb') as fdst:
+					while 1:
+						buf = fsrc.read(16*1024)
+						if not buf:
+							break
+						fdst.write(buf)
+						self.printButton.setProgressBar(float(fsrc.tell()) / size)
+						self._queueRefresh()
 		except:
 			self.notification.message("Failed to save")
 		else:
-			self.notification.message("Saved as %s" % (filename))
+			if allowEject:
+				self.notification.message("Saved as %s" % (fileB), lambda : self.notification.message('You can now eject the card.') if removableStorage.ejectDrive(allowEject) else self.notification.message('Safe remove failed...'))
+			else:
+				self.notification.message("Saved as %s" % (fileB))
+		self.printButton.setProgressBar(None)
+
 
 	def _showSliceLog(self):
 		dlg = wx.TextEntryDialog(self, "The slicing engine reported the following", "Engine log...", '\n'.join(self._slicer.getSliceLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)
@@ -428,6 +440,8 @@ class SceneView(openglGui.glGuiPanel):
 	def _gcodeLoadCallback(self, progress):
 		if self._gcode is None:
 			return True
+		if len(self._gcode.layerList) % 5 == 0:
+			time.sleep(0.1)
 		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
 			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 			self.layerSelect.setValue(self.layerSelect.getMaxValue())
@@ -716,7 +730,7 @@ class SceneView(openglGui.glGuiPanel):
 				self._animZoom = None
 		if self.viewMode == 'gcode' and self._gcode is not None:
 			try:
-				self._viewTarget[2] = self._gcode.layerList[self.layerSelect.getValue()][-1].points[0][2]
+				self._viewTarget[2] = self._gcode.layerList[self.layerSelect.getValue()][-1]['points'][0][2]
 			except:
 				pass
 		if self._objectShader is None:
@@ -1060,8 +1074,8 @@ void main(void)
 		for extrudeType in ['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
 			pointList = numpy.zeros((0,3), numpy.float32)
 			for path in layer:
-				if path.type == 'extrude' and path.pathType == extrudeType:
-					a = path.points
+				if path['type'] == 'extrude' and path['pathType'] == extrudeType:
+					a = path['points']
 					a = numpy.concatenate((a[:-1], a[1:]), 1)
 					a = a.reshape((len(a) * 2, 3))
 					pointList = numpy.concatenate((pointList, a))
@@ -1076,8 +1090,8 @@ void main(void)
 		for extrudeType in ['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
 			pointList = numpy.zeros((0,3), numpy.float32)
 			for path in layer:
-				if path.type == 'extrude' and path.pathType == extrudeType:
-					a = path.points
+				if path['type'] == 'extrude' and path['pathType'] == extrudeType:
+					a = path['points']
 					if extrudeType == 'FILL':
 						a[:,2] += 0.01
 
@@ -1086,8 +1100,8 @@ void main(void)
 					normal[:,0], normal[:,1] = -normal[:,1] / lens, normal[:,0] / lens
 					normal[:,2] /= lens
 
-					ePerDist = path.extrusion[1:] / lens
-					lineWidth = ePerDist * (filamentArea / path.layerThickness / 2)
+					ePerDist = path['extrusion'][1:] / lens
+					lineWidth = ePerDist * (filamentArea / path['layerThickness'] / 2)
 
 					normal[:,0] *= lineWidth
 					normal[:,1] *= lineWidth
@@ -1106,8 +1120,8 @@ void main(void)
 
 		pointList = numpy.zeros((0,3), numpy.float32)
 		for path in layer:
-			if path.type == 'move' or path.type == 'retract':
-				a = path.points
+			if path['type'] == 'move' or path['type'] == 'retract':
+				a = path['points']
 				a = numpy.concatenate((a[:-1], a[1:]), 1)
 				a = a.reshape((len(a) * 2, 3))
 				pointList = numpy.concatenate((pointList, a))

@@ -476,6 +476,7 @@ class glButton(glGuiControl):
 		if progress is not None:
 			glColor4ub(255,255,255,192)
 			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4, 0)
+			glColor4ub(255,255,255,255)
 			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs * progress, bs / 4, 0)
 		elif len(self._altTooltip) > 0:
 			glPushMatrix()
@@ -710,6 +711,7 @@ class glNotification(glFrame):
 		self._label.setLabel(text)
 		self._buttonEject.setHidden(ejectCallback is None)
 		self._ejectCallback = ejectCallback
+		self._base._queueRefresh()
 		self.updateLayout()
 
 	def onEject(self, button):

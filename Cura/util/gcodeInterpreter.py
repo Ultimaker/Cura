@@ -8,13 +8,19 @@ import numpy
 
 from Cura.util import profile
 
-class gcodePath(object):
-	def __init__(self, newType, pathType, layerThickness, startPoint):
-		self.type = newType
-		self.pathType = pathType
-		self.layerThickness = layerThickness
-		self.points = [startPoint]
-		self.extrusion = [0]
+#class gcodePath(object):
+#	def __init__(self, newType, pathType, layerThickness, startPoint):
+#		self.type = newType
+#		self.pathType = pathType
+#		self.layerThickness = layerThickness
+#		self.points = [startPoint]
+#		self.extrusion = [0.0]
+def gcodePath(newType, pathType, layerThickness, startPoint):
+	return {'type': newType,
+			'pathType': pathType,
+			'layerThickness': layerThickness,
+			'points': [startPoint],
+			'extrusion': [0.0]}
 
 class gcode(object):
 	def __init__(self):
@@ -71,7 +77,7 @@ class gcode(object):
 		pathType = 'CUSTOM';
 		currentLayer = []
 		currentPath = gcodePath('move', pathType, layerThickness, pos[:])
-		currentPath.extruder = currentExtruder
+		currentPath['extruder'] = currentExtruder
 
 		currentLayer.append(currentPath)
 		for line in gcodeFile:
@@ -92,11 +98,11 @@ class gcode(object):
 				elif comment == 'skirt':
 					pathType = 'SKIRT'
 				if comment.startswith('LAYER:'):
-					currentPath = gcodePath(moveType, pathType, layerThickness, currentPath.points[-1])
-					currentPath.extruder = currentExtruder
+					currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
+					currentPath['extruder'] = currentExtruder
 					for path in currentLayer:
-						path.points = numpy.array(path.points, numpy.float32)
-						path.extrusion = numpy.array(path.extrusion, numpy.float32)
+						path['points'] = numpy.array(path['points'], numpy.float32)
+						path['extrusion'] = numpy.array(path['extrusion'], numpy.float32)
 					self.layerList.append(currentLayer)
 					if self.progressCallback is not None:
 						if self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize)):
@@ -122,7 +128,7 @@ class gcode(object):
 					y = getCodeFloat(line, 'Y')
 					z = getCodeFloat(line, 'Z')
 					e = getCodeFloat(line, 'E')
-					f = getCodeFloat(line, 'F')
+					#f = getCodeFloat(line, 'F')
 					oldPos = pos[:]
 					if posAbs:
 						if x is not None:
@@ -138,8 +144,8 @@ class gcode(object):
 							pos[1] += y * scale
 						if z is not None:
 							pos[2] += z * scale
-					if f is not None:
-						feedRate = f
+					#if f is not None:
+					#	feedRate = f
 					#if x is not None or y is not None or z is not None:
 					#	diffX = oldPos[0] - pos[0]
 					#	diffY = oldPos[1] - pos[1]
@@ -148,9 +154,9 @@ class gcode(object):
 					if e is not None:
 						if absoluteE:
 							e -= currentE
-						if e > 0:
+						if e > 0.0:
 							moveType = 'extrude'
-						if e < 0:
+						if e < 0.0:
 							moveType = 'retract'
 						totalExtrusion += e
 						currentE += e
@@ -162,13 +168,13 @@ class gcode(object):
 						if oldPos[2] > pos[2] and abs(oldPos[2] - pos[2]) > 5.0 and pos[2] < 1.0:
 							oldPos[2] = 0.0
 						layerThickness = abs(oldPos[2] - pos[2])
-					if currentPath.type != moveType or currentPath.pathType != pathType:
-						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath.points[-1])
-						currentPath.extruder = currentExtruder
+					if currentPath['type'] != moveType or currentPath['pathType'] != pathType:
+						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
+						currentPath['extruder'] = currentExtruder
 						currentLayer.append(currentPath)
 
-					currentPath.points.append(pos[:])
-					currentPath.extrusion.append(e * extrudeAmountMultiply)
+					currentPath['points'].append(pos[:])
+					currentPath['extrusion'].append(e * extrudeAmountMultiply)
 				elif G == 4:	#Delay
 					S = getCodeFloat(line, 'S')
 					if S is not None:
@@ -264,8 +270,8 @@ class gcode(object):
 					else:
 						print "Unknown M code:" + str(M)
 		for path in currentLayer:
-			path.points = numpy.array(path.points, numpy.float32)
-			path.extrusion = numpy.array(path.extrusion, numpy.float32)
+			path['points'] = numpy.array(path['points'], numpy.float32)
+			path['extrusion'] = numpy.array(path['extrusion'], numpy.float32)
 		self.layerList.append(currentLayer)
 		if self.progressCallback is not None and self._fileSize > 0:
 			self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize))
