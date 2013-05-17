@@ -88,6 +88,21 @@ def getPossibleSDcardDrives():
 					if 'mount_point' in vol:
 						volume = vol['mount_point']
 						drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
+
+		p = subprocess.Popen(['system_profiler', 'SPCardReaderDataType', '-xml'], stdout=subprocess.PIPE)
+		xml = ElementTree.fromstring(p.communicate()[0])
+		p.wait()
+
+		xml = _parseStupidPListXML(xml)
+		for entry in xml:
+			if '_items' in entry:
+				for item in entry['_items']:
+					for dev in item['_items']:
+						if 'removable_media' in dev and dev['removable_media'] == 'yes' and 'volumes' in dev and len(dev['volumes']) > 0:
+							for vol in dev['volumes']:
+								if 'mount_point' in vol:
+									volume = vol['mount_point']
+									drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
 	else:
 		for volume in glob.glob('/media/*'):
 			drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
