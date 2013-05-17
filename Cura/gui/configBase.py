@@ -1,6 +1,6 @@
-__copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 from __future__ import absolute_import
 from __future__ import division
+__copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import platform
 import wx, wx.lib.stattext, types
