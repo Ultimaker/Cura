@@ -1,4 +1,4 @@
-# coding=utf-8
+__copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 from __future__ import absolute_import
 
 import math

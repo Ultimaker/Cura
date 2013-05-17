@@ -1,20 +1,24 @@
 Cura
 ====
 
-If you are reading this, then you are looking at the *development* version of Cura. If you just want to use Cura look at the following location: https://github.com/daid/Cura/wiki
+Read this, it is important!
+===========================
+
+If you are reading this, then you are looking at the *development* version of Cura. If you just want to use Cura look at the following location: https://daid.github.com/Cura
 
 Development
 ===========
 
-Cura is developed in Python. Getting Cura up and running for development is not very difficult. If you copy the python and pypy from a release into your Cura development checkout then you can use Cura right away, just like you would with a release.
-For development with git, check the help on github. Pull requests is the fastest way to get changes into Cura.
-
+Cura is developed in Python with a C++ engine. The part you are looking at right now is the Python GUI.
+The C++ engine is responsible for generating the actual toolpath. For development of the engine check out https://github.com/Ultimaker/CuraEngine
 
 Packaging
 ---------
 
-Cura development comes with a script "package.sh", this script has been designed to run under unix like OSes (Linux, MacOS). Running it from sygwin is not a priority.
+Cura development comes with a script "package.sh", this script has been designed to run under unix like OSes (Linux, MacOS). For windows the package.sh script can be run from the git bash shell.
 The "package.sh" script generates a final release package. You should not need it during development, unless you are changing the release process. If you want to distribute your own version of Cura, then the package.sh script will allow you to do that.
+
+Both MacOS and Linux require some extra instructions for development, as you need to prepare an environment. Look below at the proper section to see what is needed.
 
 Debian and Ubuntu Linux
 --------

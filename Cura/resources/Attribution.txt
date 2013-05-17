@@ -1,1 +1,1 @@
-All files in the Resources directories are GPLv3, unless otherwise specified by the Attribution file.
+All files in the Resources directories are part of Cura and Copyright David Braam and released under GPLv3, unless otherwise specified by the Attribution file in the same directory.

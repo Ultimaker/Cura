@@ -1,3 +1,4 @@
+__copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import subprocess
 import time
 import math
