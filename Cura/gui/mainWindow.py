@@ -388,10 +388,9 @@ class mainWindow(wx.Frame):
 		configWizard.headOffsetWizard()
 
 	def OnExpertOpen(self, e):
-		ecw = expertConfig.expertConfigWindow()
+		ecw = expertConfig.expertConfigWindow(lambda : self.scene.sceneUpdated())
 		ecw.Centre()
-		ecw.ShowModal()
-		self.scene.sceneUpdated()
+		ecw.Show()
 
 	def OnMinecraftImport(self, e):
 		mi = minecraftImport.minecraftImportWindow(self)
