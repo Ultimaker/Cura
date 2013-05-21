@@ -448,6 +448,8 @@ class SceneView(openglGui.glGuiPanel):
 			self.layerSelect.setValue(self.layerSelect.getMaxValue())
 		else:
 			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
+		if self.viewMode == 'gcode':
+			self._queueRefresh()
 		return False
 
 	def loadScene(self, fileList):
