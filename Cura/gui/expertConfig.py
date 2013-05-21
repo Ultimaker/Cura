@@ -22,11 +22,11 @@ class expertConfigWindow(wx.Dialog):
 				if s.checkConditions():
 					configBase.SettingRow(p, s.getName())
 
-	def __init__(self):
+	def __init__(self, callback):
 		super(expertConfigWindow, self).__init__(None, title='Expert config', style=wx.DEFAULT_DIALOG_STYLE)
 
 		wx.EVT_CLOSE(self, self.OnClose)
-		self.panel = configBase.configPanelBase(self)
+		self.panel = configBase.configPanelBase(self, callback)
 
 		left, right, main = self.panel.CreateConfigPanel(self)
 		self._addSettingsToPanels('expert', left, right)

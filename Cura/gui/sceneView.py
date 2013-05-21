@@ -443,6 +443,8 @@ class SceneView(openglGui.glGuiPanel):
 			return True
 		if len(self._gcode.layerList) % 5 == 0:
 			time.sleep(0.1)
+		if self._gcode is None:
+			return True
 		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
 			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 			self.layerSelect.setValue(self.layerSelect.getMaxValue())
