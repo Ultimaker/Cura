@@ -15,6 +15,7 @@ from OpenGL.GLU import *
 
 from Cura.gui.util import opengl
 from Cura.util import mesh
+from Cura.util import meshLoader
 
 class superShape(object):
 	def __init__(self, a1, b1, m1, n11, n21, n31, a2, b2, m2, n12, n22, n32):
@@ -89,6 +90,7 @@ class superformulaEvolver(wx.Frame):
 		super(superformulaEvolver, self).__init__(parent, title='Cura - Superformula')
 		self._rotate = 0.0
 		self._t0 = time.time()
+		self._timeout = 0.0
 
 		sizer = wx.BoxSizer()
 		self.SetSizer(sizer)
@@ -105,7 +107,10 @@ class superformulaEvolver(wx.Frame):
 		wx.EVT_IDLE(self, self._OnIdle)
 
 		wx.EVT_LEFT_DOWN(self._glCanvas, self._OnMouseDown)
+		wx.EVT_MOTION(self._glCanvas, self._OnMouseMotion)
+		wx.EVT_CHAR(self._glCanvas, self._OnKeyChar)
 
+		self._hover = 6
 		self._shapes = [None] * 12
 		self._releaseList = []
 
@@ -113,12 +118,56 @@ class superformulaEvolver(wx.Frame):
 
 		self.Maximize()
 
-	def _OnMouseDown(self, e):
+	def _OnKeyChar(self, e):
+		self._timeout = 0.0
+		if e.GetKeyCode() == wx.WXK_LEFT:
+			if self._hover % 4 != 0:
+				self._hover -= 1
+		elif e.GetKeyCode() == wx.WXK_RIGHT:
+			if self._hover % 4 != 3:
+				self._hover += 1
+		elif e.GetKeyCode() == wx.WXK_UP:
+			if self._hover / 4 != 2:
+				self._hover += 4
+		elif e.GetKeyCode() == wx.WXK_DOWN:
+			if self._hover / 4 != 0:
+				self._hover -= 4
+		elif e.GetKeyCode() == wx.WXK_SPACE:
+			self._select()
+		elif e.GetKeyCode() == ord('z'):
+			hole = meshLoader.loadMeshes('C:/Models/Delicate_Stubby_Ring-A-Thing_Sized/StubbyPinHoleNegFlat.stl')[0]
+			v = hole._meshList[0].vertexes.copy()
+			v[::,1] = hole._meshList[0].vertexes[::,2]
+			v[::,2] = hole._meshList[0].vertexes[::,1]
+			v -= numpy.array([0,0,15], numpy.float32)
+			numpy.clip(v, numpy.array([-100,-100,0], numpy.float32), numpy.array([100,100,100], numpy.float32), v)
+
+			shape = self._shapes[self._hover]
+			scale = 1.0/numpy.max(shape._obj.getSize()) * 30
+
+			obj = mesh.printableObject()
+			m = obj._addMesh()
+			m._prepareFaceCount(shape._obj._meshList[0].vertexCount / 3 + hole._meshList[0].vertexCount / 3)
+			m.vertexes = numpy.concatenate((shape._obj._meshList[0].vertexes * scale, v))
+			m.vertexCount = shape._obj._meshList[0].vertexCount + hole._meshList[0].vertexCount
+			obj._postProcessAfterLoad()
+			self.GetParent().scene._scene.add(obj)
+			self.GetParent().scene.sceneUpdated()
+		elif e.GetKeyCode() == ord('r'):
+			self._randomize()
+
+	def _OnMouseMotion(self, e):
 		size = self._glCanvas.GetSize()
-		sel = e.GetX() / (size.GetWidth() / 4) + (size.GetHeight() - e.GetY()) / (size.GetHeight() / 3) * 4
-		shape = self._shapes[sel]
+		self._hover = e.GetX() / (size.GetWidth() / 4) + (size.GetHeight() - e.GetY()) / (size.GetHeight() / 3) * 4
+
+	def _OnMouseDown(self, e):
+		self._timeout = 0.0
+		self._select()
+
+	def _select(self):
+		shape = self._shapes[self._hover]
 		for n in xrange(0, len(self._shapes)):
-			if n == sel:
+			if n == self._hover:
 				continue
 			for m in self._shapes[n]._obj._meshList:
 				if m.vbo is not None:
@@ -213,7 +262,11 @@ class superformulaEvolver(wx.Frame):
 		glTranslate(0,0,-2.0)
 		glRotate(-45 - math.sin(self._rotate/50.0) * 30, 1, 0, 0)
 		glRotate(self._rotate, 0, 0, 1)
-		self._rotate += (self._t0 - time.time()) * 20
+		self._rotate += (time.time() - self._t0) * 20
+		self._timeout += time.time() - self._t0
+		if self._timeout > 60:
+			self._timeout = 0.0
+			self._randomize()
 		self._t0 = time.time()
 
 		glEnable(GL_LIGHTING)
@@ -231,10 +284,24 @@ class superformulaEvolver(wx.Frame):
 			scale = 1.0/numpy.max(shape._obj.getSize())
 			glPushMatrix()
 			glScalef(scale, scale, scale)
+			glTranslate(0,0,-shape._obj.getSize()[2] / 2.0)
 			glEnable(GL_NORMALIZE)
 			glViewport(size.GetWidth() / 4 * (n % 4), size.GetHeight() / 3 * (n / 4), size.GetWidth() / 4, size.GetHeight() / 3)
 			shape.draw()
 			glPopMatrix()
+
+			if n == self._hover:
+				glDisable(GL_LIGHTING)
+				glPushMatrix()
+				glLoadIdentity()
+				glBegin(GL_LINE_LOOP)
+				glVertex3f(-0.40, 0.25,-1)
+				glVertex3f( 0.40, 0.25,-1)
+				glVertex3f( 0.40,-0.25,-1)
+				glVertex3f(-0.40,-0.25,-1)
+				glEnd()
+				glPopMatrix()
+				glEnable(GL_LIGHTING)
 
 		glFlush()
 		self._glCanvas.SwapBuffers()
