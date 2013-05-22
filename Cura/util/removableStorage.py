@@ -87,7 +87,7 @@ def getPossibleSDcardDrives():
 				for vol in dev['volumes']:
 					if 'mount_point' in vol:
 						volume = vol['mount_point']
-						drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
+						drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
 
 		p = subprocess.Popen(['system_profiler', 'SPCardReaderDataType', '-xml'], stdout=subprocess.PIPE)
 		xml = ElementTree.fromstring(p.communicate()[0])
@@ -102,10 +102,10 @@ def getPossibleSDcardDrives():
 							for vol in dev['volumes']:
 								if 'mount_point' in vol:
 									volume = vol['mount_point']
-									drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
+									drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
 	else:
 		for volume in glob.glob('/media/*'):
-			drives.append((os.path.basename(volume), volume, os.path.basename(volume)))
+			drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
 
 	_removeableCache = drives
 	_removeableCacheTime = time.time()
