@@ -131,6 +131,14 @@ Section /o "Open OBJ files with Cura"
 	WriteRegStr HKCR "Cura OBJ model file\shell\open\command" "" '"$INSTDIR\python\pythonw.exe" -c "import os; os.chdir(\"$INSTDIR\"); import Cura.cura; Cura.cura.main()" "%1"'
 SectionEnd
 
+Section /o "Open AMF files with Cura"
+	WriteRegStr HKCR .amf "" "Cura AMF model file"
+	DeleteRegValue HKCR .amf "Content Type"
+	WriteRegStr HKCR "Cura AMF model file\DefaultIcon" "" "$INSTDIR\Cura\resources\stl.ico,0"
+	WriteRegStr HKCR "Cura AMF model file\shell" "" "open"
+	WriteRegStr HKCR "Cura AMF model file\shell\open\command" "" '"$INSTDIR\python\pythonw.exe" -c "import os; os.chdir(\"$INSTDIR\"); import Cura.cura; Cura.cura.main()" "%1"'
+SectionEnd
+
 ;--------------------------------
 
 ; Uninstaller
