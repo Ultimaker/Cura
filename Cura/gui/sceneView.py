@@ -97,7 +97,7 @@ class SceneView(openglGui.glGuiPanel):
 		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
-		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,11,15,23], ['Normal', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
+		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,19,11,15,23], ['Normal', 'Overhang', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
 		self.layerSelect = openglGui.glSlider(self, 100, 0, 100, (-1,-2), lambda : self.QueueRefresh())
 
 		self.notification = openglGui.glNotification(self, (0, 0))
@@ -139,11 +139,11 @@ class SceneView(openglGui.glGuiPanel):
 				self._thread.daemon = True
 				self._thread.start()
 				self.printButton.setBottomText('')
-				self.viewSelection.setValue(3)
+				self.viewSelection.setValue(4)
 				self.printButton.setDisabled(False)
 				self.OnViewChange()
 			else:
-				if self.viewSelection.getValue() == 3:
+				if self.viewSelection.getValue() == 4:
 					self.viewSelection.setValue(0)
 					self.OnViewChange()
 				self.loadScene([filename])
@@ -262,15 +262,17 @@ class SceneView(openglGui.glGuiPanel):
 			self.OnToolSelect(0)
 
 	def OnViewChange(self):
-		if self.viewSelection.getValue() == 3:
+		if self.viewSelection.getValue() == 4:
 			self.viewMode = 'gcode'
 			if self._gcode is not None:
 				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 				self.layerSelect.setValue(len(self._gcode.layerList) - 1)
 			self._selectObject(None)
 		elif self.viewSelection.getValue() == 1:
-			self.viewMode = 'transparent'
+			self.viewMode = 'overhang'
 		elif self.viewSelection.getValue() == 2:
+			self.viewMode = 'transparent'
+		elif self.viewSelection.getValue() == 3:
 			self.viewMode = 'xray'
 		else:
 			self.viewMode = 'normal'
@@ -758,6 +760,36 @@ void main(void)
 	gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
 }
 			""")
+			self._objectOverhangShader = opengl.GLShader("""
+uniform float cosAngle;
+uniform mat3 rotMatrix;
+varying float light_amount;
+
+void main(void)
+{
+    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    gl_FrontColor = gl_Color;
+
+	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+	light_amount += 0.2;
+	if (normalize(rotMatrix * gl_Normal).z < -cosAngle)
+	{
+		light_amount = -10;
+	}
+}
+			""","""
+varying float light_amount;
+
+void main(void)
+{
+	if (light_amount == -10)
+	{
+		gl_FragColor = vec4(1, 0, 0, gl_Color[3]);
+	}else{
+		gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
+	}
+}
+			""")
 			self._objectLoadShader = opengl.GLShader("""
 uniform float intensity;
 uniform float scale;
@@ -864,7 +896,11 @@ void main(void)
 			glStencilFunc(GL_ALWAYS, 1, 1)
 			glStencilOp(GL_INCR, GL_INCR, GL_INCR)
 
-			self._objectShader.bind()
+			if self.viewMode == 'overhang':
+				self._objectOverhangShader.bind()
+				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(60)))
+			else:
+				self._objectShader.bind()
 			for obj in self._scene.objects():
 				if obj._loadAnim is not None:
 					if obj._loadAnim.isDone():
@@ -890,6 +926,12 @@ void main(void)
 						glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE)
 					glStencilOp(GL_INCR, GL_INCR, GL_INCR)
 					glEnable(GL_STENCIL_TEST)
+
+				if self.viewMode == 'overhang':
+					if self._selectedObj == obj and self.tempMatrix is not None:
+						self._objectOverhangShader.setUniform('rotMatrix', obj.getMatrix() * self.tempMatrix)
+					else:
+						self._objectOverhangShader.setUniform('rotMatrix', obj.getMatrix())
 
 				if not self._scene.checkPlatform(obj):
 					glColor4f(0.5 * brightness, 0.5 * brightness, 0.5 * brightness, 0.8 * brightness)

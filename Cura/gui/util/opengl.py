@@ -62,7 +62,12 @@ class GLShader(GLReferenceCounter):
 
 	def setUniform(self, name, value):
 		if self._program is not None:
-			glUniform1f(glGetUniformLocation(self._program, name), value)
+			if type(value) is float:
+				glUniform1f(glGetUniformLocation(self._program, name), value)
+			elif type(value) is numpy.matrix:
+				glUniformMatrix3fv(glGetUniformLocation(self._program, name), 1, False, value.getA().astype(numpy.float32))
+			else:
+				print 'Unknown type for setUniform: %s' % (str(type(value)))
 
 	def isValid(self):
 		return self._program is not None
