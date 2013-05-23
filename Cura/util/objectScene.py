@@ -166,10 +166,6 @@ class Scene(object):
 
 	def printOrder(self):
 		order = _objectOrderFinder(self, self._headOffsets + self._sizeOffsets, self._leftToRight, self._frontToBack, self._gantryHeight).order
-		if order is None:
-			print "ODD! Cannot find out proper printing order!!!"
-			for obj in self._objectList:
-				print obj.getPosition(), obj.getSize()
 		return order
 
 	def _pushFree(self):
