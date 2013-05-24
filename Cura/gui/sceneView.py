@@ -1165,7 +1165,30 @@ void main(void)
 					#b = numpy.concatenate((b, a[:-1]), 1)
 					b = b.reshape((len(b) * 4, 3))
 
-					pointList = numpy.concatenate((pointList, b))
+					if len(a) > 2:
+						normal2 = normal[:-1] + normal[1:]
+						lens2 = numpy.sqrt(normal2[:,0]**2 + normal2[:,1]**2)
+						normal2[:,0] /= lens2
+						normal2[:,1] /= lens2
+						normal2[:,0] *= lineWidth[:-1]
+						normal2[:,1] *= lineWidth[:-1]
+
+						c = numpy.zeros((len(a)-2, 0), numpy.float32)
+						c = numpy.concatenate((c, a[1:-1]), 1)
+						c = numpy.concatenate((c, a[1:-1]+normal[1:]), 1)
+						c = numpy.concatenate((c, a[1:-1]+normal2), 1)
+						c = numpy.concatenate((c, a[1:-1]+normal[:-1]), 1)
+
+						c = numpy.concatenate((c, a[1:-1]), 1)
+						c = numpy.concatenate((c, a[1:-1]-normal[1:]), 1)
+						c = numpy.concatenate((c, a[1:-1]-normal2), 1)
+						c = numpy.concatenate((c, a[1:-1]-normal[:-1]), 1)
+
+						c = c.reshape((len(c) * 8, 3))
+
+						pointList = numpy.concatenate((pointList, b, c))
+					else:
+						pointList = numpy.concatenate((pointList, b))
 			ret.append(opengl.GLVBO(pointList))
 
 		pointList = numpy.zeros((0,3), numpy.float32)
