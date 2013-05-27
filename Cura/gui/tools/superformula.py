@@ -16,6 +16,7 @@ from OpenGL.GLU import *
 from Cura.gui.util import opengl
 from Cura.util import mesh
 from Cura.util import meshLoader
+from Cura.util import machineCom
 
 class superShape(object):
 	def __init__(self, a1, b1, m1, n11, n21, n31, a2, b2, m2, n12, n22, n32):
@@ -91,6 +92,11 @@ class superformulaEvolver(wx.Frame):
 		self._rotate = 0.0
 		self._t0 = time.time()
 		self._timeout = 0.0
+		self._lampState = 0
+		self._lampSpeed = 3
+		self._lampUpdateTime = time.time()
+		self._buttonDown = False
+		self._doPrint = False
 
 		sizer = wx.BoxSizer()
 		self.SetSizer(sizer)
@@ -116,44 +122,107 @@ class superformulaEvolver(wx.Frame):
 
 		self._randomize()
 
-		self.Maximize()
+		#style = self.GetWindowStyle()
+		#self.SetWindowStyle(style | wx.STAY_ON_TOP)
+		#self.Maximize()
+		self.ShowFullScreen(True, wx.FULLSCREEN_ALL)
+
+		self._comm = None
+		self._comm = machineCom.MachineCom(callbackObject=self)
+
+	def mcLog(self, message):
+		wx.CallAfter(self.SetTitle, message)
+		print message.strip()
+
+	def mcTempUpdate(self, temp, bedTemp, targetTemp, bedTargetTemp):
+		pass
+
+	def mcStateChange(self, state):
+		if self._comm is None:
+			return
+		if self._comm.isClosedOrError():
+			self._comm.close()
+			self._comm = machineCom.MachineCom(callbackObject=self)
+
+	def mcMessage(self, message):
+		cmd = message.strip()
+		if cmd == 'D0':
+			self._lampState = 127
+			self._lampSpeed = 25
+			self._comm.sendCommand('M42 S127')
+			self._buttonDown = True
+		elif cmd == 'U0':
+			self._buttonDown = False
+			if self._lampSpeed < 10:
+				wx.CallAfter(self._OnKey, wx.WXK_SPACE)
+			else:
+				wx.CallAfter(self._OnKey, ord('z'))
+			self._lampSpeed = 3
+		elif cmd == 'D1' and not self._comm.isPrinting():
+			wx.CallAfter(self._OnKey, wx.WXK_DOWN)
+		elif cmd == 'D2' and not self._comm.isPrinting():
+			wx.CallAfter(self._OnKey, wx.WXK_LEFT)
+		elif cmd == 'D3' and not self._comm.isPrinting():
+			wx.CallAfter(self._OnKey, wx.WXK_UP)
+		elif cmd == 'D4' and not self._comm.isPrinting():
+			wx.CallAfter(self._OnKey, wx.WXK_RIGHT)
+
+	def mcProgress(self, lineNr):
+		pass
+
+	def mcZChange(self, newZ):
+		pass
 
 	def _OnKeyChar(self, e):
+		self._OnKey(e.GetKeyCode())
+
+	def _OnKey(self, code):
 		self._timeout = 0.0
-		if e.GetKeyCode() == wx.WXK_LEFT:
+		if code == wx.WXK_LEFT:
 			if self._hover % 4 != 0:
 				self._hover -= 1
-		elif e.GetKeyCode() == wx.WXK_RIGHT:
+		elif code == wx.WXK_RIGHT:
 			if self._hover % 4 != 3:
 				self._hover += 1
-		elif e.GetKeyCode() == wx.WXK_UP:
+		elif code == wx.WXK_UP:
 			if self._hover / 4 != 2:
 				self._hover += 4
-		elif e.GetKeyCode() == wx.WXK_DOWN:
+		elif code == wx.WXK_DOWN:
 			if self._hover / 4 != 0:
 				self._hover -= 4
-		elif e.GetKeyCode() == wx.WXK_SPACE:
+		elif code == wx.WXK_SPACE:
 			self._select()
-		elif e.GetKeyCode() == ord('z'):
+		elif code == ord('z'):
 			hole = meshLoader.loadMeshes('C:/Models/Delicate_Stubby_Ring-A-Thing_Sized/StubbyPinHoleNegFlat.stl')[0]
-			v = hole._meshList[0].vertexes.copy()
+			v = hole._meshList[0].vertexes * 1.03
 			v[::,1] = hole._meshList[0].vertexes[::,2]
 			v[::,2] = hole._meshList[0].vertexes[::,1]
 			v -= numpy.array([0,0,15], numpy.float32)
 			numpy.clip(v, numpy.array([-100,-100,0], numpy.float32), numpy.array([100,100,100], numpy.float32), v)
 
 			shape = self._shapes[self._hover]
-			scale = 1.0/numpy.max(shape._obj.getSize()) * 30
+			scale = 1.0/numpy.max(shape._obj.getSize()) * 40
+
+			sv = shape._obj._meshList[0].vertexes * scale
 
 			obj = mesh.printableObject()
 			m = obj._addMesh()
 			m._prepareFaceCount(shape._obj._meshList[0].vertexCount / 3 + hole._meshList[0].vertexCount / 3)
-			m.vertexes = numpy.concatenate((shape._obj._meshList[0].vertexes * scale, v))
+			for n in xrange(0, shape._obj._meshList[0].vertexCount):
+				l = numpy.linalg.norm(sv[n])
+				if l < 6.5:
+					sv[n] *= 6.5 / l
+			m.vertexes = numpy.concatenate((sv, v))
 			m.vertexCount = shape._obj._meshList[0].vertexCount + hole._meshList[0].vertexCount
 			obj._postProcessAfterLoad()
+			self.GetParent().scene.OnDeleteAll(None)
 			self.GetParent().scene._scene.add(obj)
 			self.GetParent().scene.sceneUpdated()
-		elif e.GetKeyCode() == ord('r'):
+			self.GetParent().scene._updateSliceProgress(0, False)
+			self._doPrint = True
+		elif code == ord('c'):
+			self._comm.cancelPrint()
+		elif code == ord('r'):
 			self._randomize()
 
 	def _OnMouseMotion(self, e):
@@ -227,6 +296,33 @@ class superformulaEvolver(wx.Frame):
 	def _OnPaint(self, e):
 		dc = wx.PaintDC(self._glCanvas)
 
+		if time.time() > self._lampUpdateTime:
+			self._lampUpdateTime = time.time() + 0.05
+			if self._comm.isOperational():
+				self._lampState += self._lampSpeed
+				if self._lampState > 255:
+					self._lampState -= 256
+					if self._buttonDown:
+						self._lampSpeed = 20
+				if self._lampState < 127:
+					brightness = self._lampState
+				else:
+					brightness = 255 - self._lampState
+				if not self._comm.isPrinting():
+					self._comm.sendCommand('M42 S%d' % (brightness))
+
+		if self.GetParent().scene._gcode is not None and self.GetParent().scene._gcode.filename is not None and self._doPrint and not self._comm.isPrinting():
+			self._doPrint = False
+			gcodeList = ["M110", "M42 S0"]
+			for line in open(self.GetParent().scene._gcode.filename, 'r'):
+				if ';' in line:
+					line = line[0:line.find(';')]
+				line = line.strip()
+				if len(line) > 0:
+					gcodeList.append(line)
+			print len(gcodeList)
+			self._comm.printGCode(gcodeList)
+
 		self._glCanvas.SetCurrent(self._context)
 		for obj in self._releaseList:
 			obj.release()
@@ -279,29 +375,40 @@ class superformulaEvolver(wx.Frame):
 		glLightfv(GL_LIGHT1, GL_DIFFUSE, [0.5,0.3,0.2,0])
 		glLightfv(GL_LIGHT1, GL_AMBIENT, [0.0,0.0,0.0,0])
 
-		for n in xrange(0, len(self._shapes)):
-			shape = self._shapes[n]
+		if self._comm.isPrinting():
+			self._timeout = 0
+			shape = self._shapes[self._hover]
 			scale = 1.0/numpy.max(shape._obj.getSize())
 			glPushMatrix()
 			glScalef(scale, scale, scale)
 			glTranslate(0,0,-shape._obj.getSize()[2] / 2.0)
 			glEnable(GL_NORMALIZE)
-			glViewport(size.GetWidth() / 4 * (n % 4), size.GetHeight() / 3 * (n / 4), size.GetWidth() / 4, size.GetHeight() / 3)
 			shape.draw()
 			glPopMatrix()
-
-			if n == self._hover:
-				glDisable(GL_LIGHTING)
+		else:
+			for n in xrange(0, len(self._shapes)):
+				shape = self._shapes[n]
+				scale = 1.0/numpy.max(shape._obj.getSize())
 				glPushMatrix()
-				glLoadIdentity()
-				glBegin(GL_LINE_LOOP)
-				glVertex3f(-0.40, 0.25,-1)
-				glVertex3f( 0.40, 0.25,-1)
-				glVertex3f( 0.40,-0.25,-1)
-				glVertex3f(-0.40,-0.25,-1)
-				glEnd()
+				glScalef(scale, scale, scale)
+				glTranslate(0,0,-shape._obj.getSize()[2] / 2.0)
+				glEnable(GL_NORMALIZE)
+				glViewport(size.GetWidth() / 4 * (n % 4), size.GetHeight() / 3 * (n / 4), size.GetWidth() / 4, size.GetHeight() / 3)
+				shape.draw()
 				glPopMatrix()
-				glEnable(GL_LIGHTING)
+
+				if n == self._hover:
+					glDisable(GL_LIGHTING)
+					glPushMatrix()
+					glLoadIdentity()
+					glBegin(GL_LINE_LOOP)
+					glVertex3f(-0.40, 0.25,-1)
+					glVertex3f( 0.40, 0.25,-1)
+					glVertex3f( 0.40,-0.25,-1)
+					glVertex3f(-0.40,-0.25,-1)
+					glEnd()
+					glPopMatrix()
+					glEnable(GL_LIGHTING)
 
 		glFlush()
 		self._glCanvas.SwapBuffers()

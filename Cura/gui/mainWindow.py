@@ -55,6 +55,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showLoadModel(), i)
 		i = self.fileMenu.Append(-1, 'Save model...\tCTRL+S')
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveModel(), i)
+		i = self.fileMenu.Append(-1, 'Clear platform')
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.OnDeleteAll(e), i)
 
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, 'Print...\tCTRL+P')
