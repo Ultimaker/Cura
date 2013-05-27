@@ -105,7 +105,7 @@ class Slicer(object):
 		with open(self._binaryStorageFilename, "wb") as f:
 			order = scene.printOrder()
 			if order is None:
-				pos = numpy.array([profile.getPreferenceFloat('machine_width') * 1000 / 2, profile.getPreferenceFloat('machine_depth') * 1000 / 2])
+				pos = numpy.array(profile.getMachineCenterCoords()) * 1000
 				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
 
 				vertexTotal = 0
@@ -132,7 +132,7 @@ class Slicer(object):
 						f.write(numpy.array([mesh.vertexCount], numpy.int32).tostring())
 						f.write(mesh.vertexes.tostring())
 					pos = obj.getPosition() * 1000
-					pos += numpy.array([profile.getPreferenceFloat('machine_width') * 1000 / 2, profile.getPreferenceFloat('machine_depth') * 1000 / 2])
+					pos += numpy.array(profile.getMachineCenterCoords()) * 1000
 					commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
 					commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
 					commandList += ['#' * len(obj._meshList)]
