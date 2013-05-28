@@ -229,6 +229,7 @@ class Slicer(object):
 			'extruderOffset[2].Y': int(profile.getPreferenceFloat('extruder_offset_y2') * 1000),
 			'extruderOffset[3].X': int(profile.getPreferenceFloat('extruder_offset_x3') * 1000),
 			'extruderOffset[3].Y': int(profile.getPreferenceFloat('extruder_offset_y3') * 1000),
+			'fixHorrible': 0,
 		}
 		if profile.getProfileSetting('platform_adhesion') == 'Brim':
 			settings['skirtDistance'] = 0
@@ -244,6 +245,14 @@ class Slicer(object):
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
+
+		if profile.getProfileSetting('fix_horrible_union_all_type_a') == 'True':
+			settings['fixHorrible'] |= 0x01
+		if profile.getProfileSetting('fix_horrible_union_all_type_b') == 'True':
+			settings['fixHorrible'] |= 0x02
+		if profile.getProfileSetting('fix_horrible_use_open_bits') == 'True':
+			settings['fixHorrible'] |= 0x10
+
 		if settings['layerThickness'] <= 0:
 			settings['layerThickness'] = 1000
 		return settings
