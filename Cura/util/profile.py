@@ -268,7 +268,7 @@ setting('serial_baud_auto', '', int, 'preference', 'hidden')
 setting('save_profile', 'False', bool, 'preference', 'hidden').setLabel('Save profile on slice', 'When slicing save the profile as [stl_file]_profile.ini next to the model.')
 setting('filament_cost_kg', '0', float, 'preference', 'hidden').setLabel('Cost (price/kg)', 'Cost of your filament per kg, to estimate the cost of the final print.')
 setting('filament_cost_meter', '0', float, 'preference', 'hidden').setLabel('Cost (price/m)', 'Cost of your filament per meter, to estimate the cost of the final print.')
-setting('sdpath', '', str, 'preference', 'hidden').setLabel('SD card drive', 'Location of your SD card, when using the copy to SD feature.')
+setting('auto_detect_sd', 'True', bool, 'preference', 'hidden').setLabel('Auto detect SD card drive', 'Auto detect the SD card. You can disable this because on some systems external hard-drives or USB sticks are detected as SD card.')
 setting('check_for_updates', 'True', bool, 'preference', 'hidden').setLabel('Check for updates', 'Check for newer versions of Cura on startup')
 setting('submit_slice_information', 'False', bool, 'preference', 'hidden').setLabel('Send usage statistics', 'Submit anonymous usage information to improve next versions of Cura')
 

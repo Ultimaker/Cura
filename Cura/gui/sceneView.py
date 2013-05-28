@@ -395,7 +395,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def sceneUpdated(self):
-		self._sceneUpdateTimer.Start(1, True)
+		self._sceneUpdateTimer.Start(500, True)
 		self._slicer.abortSlicer()
 		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
 		self.QueueRefresh()

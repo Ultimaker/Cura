@@ -11,6 +11,8 @@ try:
 except:
 	from xml.etree import ElementTree
 
+from Cura.util import profile
+
 _removeableCache = None
 _removeableCacheTime = None
 
@@ -54,6 +56,9 @@ def getPossibleSDcardDrives():
 	global _removeableCache, _removeableCacheTime
 	if _removeableCache is not None and time.time() - _removeableCacheTime < 5.0:
 		return _removeableCache
+
+	if profile.getPreference('auto_detect_sd') == 'False':
+		return []
 
 	drives = []
 	if platform.system() == "Windows":
@@ -113,12 +118,24 @@ def getPossibleSDcardDrives():
 
 def ejectDrive(driveName):
 	if platform.system() == "Windows":
-		cmd = '"%s" %s>NUL' % (os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'EjectMedia.exe')), driveName)
+		cmd = [os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'EjectMedia.exe')), driveName]
 	elif platform.system() == "Darwin":
-		cmd = "diskutil eject '%s' > /dev/null 2>&1" % (driveName)
+		cmd = ["diskutil", "eject", driveName]
 	else:
-		cmd = "umount '%s' > /dev/null 2>&1" % (driveName)
-	if os.system(cmd):
+		cmd = ["umount", driveName]
+
+	kwargs = {}
+	if subprocess.mswindows:
+		su = subprocess.STARTUPINFO()
+		su.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+		su.wShowWindow = subprocess.SW_HIDE
+		kwargs['startupinfo'] = su
+	p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
+	output = p.communicate()
+
+	if p.wait():
+		print output[0]
+		print output[1]
 		return False
 	else:
 		return True

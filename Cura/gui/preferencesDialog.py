@@ -58,9 +58,9 @@ class preferencesDialog(wx.Dialog):
 		#configBase.SettingRow(right, 'save_profile')
 
 		#configBase.TitleRow(right, 'SD Card settings')
-		#configBase.SettingRow(right, 'sdpath', removableStorage.getPossibleSDcardDrives())
 
 		configBase.TitleRow(right, 'Cura settings')
+		configBase.SettingRow(right, 'auto_detect_sd')
 		configBase.SettingRow(right, 'check_for_updates')
 		configBase.SettingRow(right, 'submit_slice_information')
 
