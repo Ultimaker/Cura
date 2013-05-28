@@ -774,7 +774,7 @@ void main(void)
 	light_amount += 0.2;
 	if (normalize(rotMatrix * gl_Normal).z < -cosAngle)
 	{
-		light_amount = -10;
+		light_amount = -10.0;
 	}
 }
 			""","""
@@ -782,9 +782,9 @@ varying float light_amount;
 
 void main(void)
 {
-	if (light_amount == -10)
+	if (light_amount == -10.0)
 	{
-		gl_FragColor = vec4(1, 0, 0, gl_Color[3]);
+		gl_FragColor = vec4(1.0, 0.0, 0.0, gl_Color[3]);
 	}else{
 		gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
 	}
