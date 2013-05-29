@@ -259,7 +259,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 		glEnable(GL_TEXTURE_2D)
 		glPushMatrix()
 		glColor4f(1,1,1,1)
-		glTranslate(size.GetWidth() - 8,size.GetHeight() - 16,0)
+		glTranslate(size.GetWidth() - 8,size.GetHeight() - 32,0)
 		s = self._buttonSize * 1.4
 		glScale(s,s,s)
 		glBegin(GL_QUADS)
