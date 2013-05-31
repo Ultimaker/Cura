@@ -6,7 +6,6 @@ import numpy
 import time
 import os
 import traceback
-import shutil
 import threading
 import math
 
@@ -441,7 +440,7 @@ class SceneView(openglGui.glGuiPanel):
 	def _gcodeLoadCallback(self, progress):
 		if self._gcode is None:
 			return True
-		if len(self._gcode.layerList) % 5 == 0:
+		if len(self._gcode.layerList) % 15 == 0:
 			time.sleep(0.1)
 		if self._gcode is None:
 			return True

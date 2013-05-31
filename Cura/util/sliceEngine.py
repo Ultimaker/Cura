@@ -214,7 +214,7 @@ class Slicer(object):
 			'supportAngle': int(-1) if profile.getProfileSetting('support') == 'None' else int(60),
 			'supportEverywhere': int(1) if profile.getProfileSetting('support') == 'Everywhere' else int(0),
 			'supportLineWidth': int(profile.getProfileSettingFloat('support_rate') * profile.calculateEdgeWidth() * 1000 / 100),
-			'retractionAmount': int(profile.getProfileSettingFloat('retraction_amount') * 1000),
+			'retractionAmount': int(profile.getProfileSettingFloat('retraction_amount') * 1000) if profile.getProfileSetting('retraction_enable') == 'True' else 0,
 			'retractionSpeed': int(profile.getProfileSettingFloat('retraction_speed')),
 			'objectSink': int(profile.getProfileSettingFloat('object_sink') * 1000),
 			'minimalLayerTime': int(profile.getProfileSettingFloat('cool_min_layer_time')),
