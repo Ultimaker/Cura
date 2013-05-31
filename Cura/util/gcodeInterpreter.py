@@ -26,7 +26,7 @@ def gcodePath(newType, pathType, layerThickness, startPoint):
 class gcode(object):
 	def __init__(self):
 		self.regMatch = {}
-		self.layerList = []
+		self.layerList = None
 		self.extrusionAmount = 0
 		self.totalMoveTimeMinute = 0
 		self.filename = None
@@ -62,6 +62,7 @@ class gcode(object):
 		return None
 	
 	def _load(self, gcodeFile):
+		self.layerList = []
 		pos = [0.0, 0.0, 0.0]
 		posOffset = [0.0, 0.0, 0.0]
 		currentE = 0.0

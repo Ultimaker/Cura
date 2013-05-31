@@ -38,6 +38,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene = objectScene.Scene()
 		self._gcode = None
 		self._gcodeVBOs = []
+		self._gcodeLoadThread = None
 		self._objectShader = None
 		self._focusObj = None
 		self._selectedObj = None
@@ -138,10 +139,7 @@ class SceneView(openglGui.glGuiPanel):
 							self.glReleaseList.append(vbo)
 					self._gcodeVBOs = []
 				self._gcode = gcodeInterpreter.gcode()
-				self._gcode.progressCallback = self._gcodeLoadCallback
-				self._thread = threading.Thread(target=self._loadGCode, args=(gcodeFilename,))
-				self._thread.daemon = True
-				self._thread.start()
+				self._gcodeFilename = gcodeFilename
 				self.printButton.setBottomText('')
 				self.viewSelection.setValue(4)
 				self.printButton.setDisabled(False)
@@ -268,7 +266,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnViewChange(self):
 		if self.viewSelection.getValue() == 4:
 			self.viewMode = 'gcode'
-			if self._gcode is not None:
+			if self._gcode is not None and self._gcode.layerList is not None:
 				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 				self.layerSelect.setValue(len(self._gcode.layerList) - 1)
 			self._selectObject(None)
@@ -431,18 +429,14 @@ class SceneView(openglGui.glGuiPanel):
 			else:
 				self.printButton.setBottomText('%s\n%s' % (self._slicer.getPrintTime(), self._slicer.getFilamentAmount()))
 			self._gcode = gcodeInterpreter.gcode()
-			self._gcode.progressCallback = self._gcodeLoadCallback
-			self._thread = threading.Thread(target=self._loadGCode)
-			self._thread.daemon = True
-			self._thread.start()
+			self._gcodeFilename = self._slicer.getGCodeFilename()
 		else:
 			self.printButton.setBottomText('')
 		self.QueueRefresh()
 
-	def _loadGCode(self, filename = None):
-		if filename is None:
-			filename = self._slicer.getGCodeFilename()
-		self._gcode.load(filename)
+	def _loadGCode(self):
+		self._gcode.progressCallback = self._gcodeLoadCallback
+		self._gcode.load(self._gcodeFilename)
 
 	def _gcodeLoadCallback(self, progress):
 		if self._gcode is None:
@@ -857,7 +851,11 @@ void main(void)
 		glTranslate(-self._viewTarget[0],-self._viewTarget[1],-self._viewTarget[2])
 
 		if self.viewMode == 'gcode':
-			if self._gcode is not None:
+			if self._gcode is not None and self._gcode.layerList is None:
+				self._gcodeLoadThread = threading.Thread(target=self._loadGCode)
+				self._gcodeLoadThread.daemon = True
+				self._gcodeLoadThread.start()
+			if self._gcode is not None and self._gcode.layerList is not None:
 				glPushMatrix()
 				glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
 				t = time.time()
@@ -993,7 +991,14 @@ void main(void)
 		self._drawMachine()
 
 		if self.viewMode == 'gcode':
-			pass
+			if self._gcodeLoadThread is not None and self._gcodeLoadThread.isAlive():
+				glDisable(GL_DEPTH_TEST)
+				glPushMatrix()
+				glLoadIdentity()
+				glTranslate(0,-4,-10)
+				glColor4ub(60,60,60,255)
+				opengl.glDrawStringCenter('Loading toolpath for visualization...')
+				glPopMatrix()
 		else:
 			#Draw the object box-shadow, so you can see where it will collide with other objects.
 			if self._selectedObj is not None and len(self._scene.objects()) > 1:
