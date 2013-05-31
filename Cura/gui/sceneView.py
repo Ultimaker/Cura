@@ -114,19 +114,23 @@ class SceneView(openglGui.glGuiPanel):
 
 	def showLoadModel(self, button = 1):
 		if button == 1:
-			dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
+			dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
 			dlg.SetWildcard(meshLoader.loadWildcardFilter() + "|GCode file (*.gcode)|*.g;*.gcode;*.G;*.GCODE")
 			if dlg.ShowModal() != wx.ID_OK:
 				dlg.Destroy()
 				return
-			filename = dlg.GetPath()
+			filenames = dlg.GetPaths()
 			dlg.Destroy()
-			if not(os.path.exists(filename)):
+			if len(filenames) < 1:
 				return False
-			profile.putPreference('lastFile', filename)
-			self.GetParent().GetParent().GetParent().addToModelMRU(filename)
-			ext = filename[filename.rfind('.')+1:].upper()
-			if ext == 'G' or ext == 'GCODE':
+			profile.putPreference('lastFile', filenames[0])
+			gcodeFilename = None
+			for filename in filenames:
+				self.GetParent().GetParent().GetParent().addToModelMRU(filename)
+				ext = filename[filename.rfind('.')+1:].upper()
+				if ext == 'G' or ext == 'GCODE':
+					gcodeFilename = filename
+			if gcodeFilename is not None:
 				if self._gcode is not None:
 					self._gcode = None
 					for layerVBOlist in self._gcodeVBOs:
@@ -135,7 +139,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._gcodeVBOs = []
 				self._gcode = gcodeInterpreter.gcode()
 				self._gcode.progressCallback = self._gcodeLoadCallback
-				self._thread = threading.Thread(target=self._loadGCode, args=(filename,))
+				self._thread = threading.Thread(target=self._loadGCode, args=(gcodeFilename,))
 				self._thread.daemon = True
 				self._thread.start()
 				self.printButton.setBottomText('')
@@ -146,7 +150,7 @@ class SceneView(openglGui.glGuiPanel):
 				if self.viewSelection.getValue() == 4:
 					self.viewSelection.setValue(0)
 					self.OnViewChange()
-				self.loadScene([filename])
+				self.loadScene(filenames)
 
 	def showSaveModel(self):
 		if len(self._scene.objects()) < 1:
