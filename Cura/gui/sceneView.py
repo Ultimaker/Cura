@@ -1201,11 +1201,16 @@ void main(void)
 
 		pointList = numpy.zeros((0,3), numpy.float32)
 		for path in layer:
-			if path['type'] == 'move' or path['type'] == 'retract':
-				a = path['points']
+			if path['type'] == 'move':
+				a = path['points'] + numpy.array([0,0,0.01], numpy.float32)
 				a = numpy.concatenate((a[:-1], a[1:]), 1)
 				a = a.reshape((len(a) * 2, 3))
 				pointList = numpy.concatenate((pointList, a))
+#			if path['type'] == 'retract':
+#				a = path['points'] + numpy.array([0,0,0.01], numpy.float32)
+#				a = numpy.concatenate((a[:-1], a[1:] + numpy.array([0,0,0.3], numpy.float32)), 1)
+#				a = a.reshape((len(a) * 2, 3))
+#				pointList = numpy.concatenate((pointList, a))
 		ret.append(opengl.GLVBO(pointList))
 
 		return ret

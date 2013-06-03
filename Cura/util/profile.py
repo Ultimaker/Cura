@@ -262,7 +262,7 @@ setting('extruder_offset_x2', '0.0', float, 'preference', 'hidden').setLabel('Of
 setting('extruder_offset_y2', '0.0', float, 'preference', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
 setting('extruder_offset_x3', '0.0', float, 'preference', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
 setting('extruder_offset_y3', '0.0', float, 'preference', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
-setting('filament_physical_density', '1300', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel('Density (kg/m3)', 'Weight of the filament per m3. Around 1300 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.')
+setting('filament_physical_density', '1240', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel('Density (kg/m3)', 'Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.')
 setting('steps_per_e', '0', float, 'preference', 'hidden').setLabel('E-Steps per 1mm filament', 'Amount of steps per mm filament extrusion')
 setting('serial_port', 'AUTO', str, 'preference', 'hidden').setLabel('Serial port', 'Serial port to use for communication with the printer')
 setting('serial_port_auto', '', str, 'preference', 'hidden')
