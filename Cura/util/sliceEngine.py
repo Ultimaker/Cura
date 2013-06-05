@@ -96,8 +96,13 @@ class Slicer(object):
 		self.abortSlicer()
 		self._callback(-1.0, False)
 
+		extruderCount = 1
+		for obj in scene.objects():
+			if scene.checkPlatform(obj):
+				extruderCount = max(extruderCount, len(obj._meshList))
+
 		commandList = [getEngineFilename(), '-vv']
-		for k, v in self._engineSettings().iteritems():
+		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
 		commandList += ['-o', self._exportFilename]
 		commandList += ['-b', self._binaryStorageFilename]
@@ -186,12 +191,14 @@ class Slicer(object):
 				profile.runPostProcessingPlugins(self._exportFilename)
 				self._callback(1.0, True)
 			else:
+				for line in self._sliceLog:
+					print line
 				self._callback(-1.0, False)
 		except:
 			pass
 		self._process = None
 
-	def _engineSettings(self):
+	def _engineSettings(self, extruderCount):
 		settings = {
 			'layerThickness': int(profile.getProfileSettingFloat('layer_height') * 1000),
 			'initialLayerThickness': int(profile.getProfileSettingFloat('bottom_thickness') * 1000) if profile.getProfileSettingFloat('bottom_thickness') > 0.0 else int(profile.getProfileSettingFloat('layer_height') * 1000),
@@ -220,7 +227,7 @@ class Slicer(object):
 			'minimalLayerTime': int(profile.getProfileSettingFloat('cool_min_layer_time')),
 			'minimalFeedrate': int(profile.getProfileSettingFloat('cool_min_feedrate')),
 			'coolHeadLift': 1 if profile.getProfileSetting('cool_head_lift') == 'True' else 0,
-			'startCode': profile.getAlterationFileContents('start.gcode'),
+			'startCode': profile.getAlterationFileContents('start.gcode', extruderCount),
 			'endCode': profile.getAlterationFileContents('end.gcode'),
 
 			'extruderOffset[1].X': int(profile.getPreferenceFloat('extruder_offset_x1') * 1000),
@@ -237,11 +244,11 @@ class Slicer(object):
 		elif profile.getProfileSetting('platform_adhesion') == 'Raft':
 			settings['skirtDistance'] = 0
 			settings['skirtLineCount'] = 0
-			settings['raftMargin'] = int(profile.getProfileSettingFloat('raft_margin') * 1000);
-			settings['raftBaseThickness'] = int(profile.getProfileSettingFloat('raft_base_thickness') * 1000);
-			settings['raftBaseLinewidth'] = int(profile.getProfileSettingFloat('raft_base_linewidth') * 1000);
-			settings['raftInterfaceThickness'] = int(profile.getProfileSettingFloat('raft_interface_thickness') * 1000);
-			settings['raftInterfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000);
+			settings['raftMargin'] = int(profile.getProfileSettingFloat('raft_margin') * 1000)
+			settings['raftBaseThickness'] = int(profile.getProfileSettingFloat('raft_base_thickness') * 1000)
+			settings['raftBaseLinewidth'] = int(profile.getProfileSettingFloat('raft_base_linewidth') * 1000)
+			settings['raftInterfaceThickness'] = int(profile.getProfileSettingFloat('raft_interface_thickness') * 1000)
+			settings['raftInterfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000)
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
