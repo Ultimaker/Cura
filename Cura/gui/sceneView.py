@@ -164,7 +164,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showPrintWindow(self, button):
 		if button == 1:
 			if machineCom.machineIsConnected():
-				printWindow.printFile(self._gcode.filename)
+				printWindow.printFile(self._gcodeFilename)
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
@@ -178,12 +178,12 @@ class SceneView(openglGui.glGuiPanel):
 					drive = drives[0]
 				filename = os.path.basename(profile.getPreference('lastFile'))
 				filename = filename[0:filename.rfind('.')] + '.gcode'
-				threading.Thread(target=self._copyFile,args=(self._gcode.filename, drive[1] + filename, drive[1])).start()
+				threading.Thread(target=self._copyFile,args=(self._gcodeFilename, drive[1] + filename, drive[1])).start()
 			else:
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
-			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._gcode.filename), menu.Append(-1, 'Print with USB'))
+			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._gcodeFilename), menu.Append(-1, 'Print with USB'))
 			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, 'Save GCode...'))
 			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, 'Slice engine log...'))
 			self.PopupMenu(menu)
@@ -201,7 +201,7 @@ class SceneView(openglGui.glGuiPanel):
 		filename = dlg.GetPath()
 		dlg.Destroy()
 
-		threading.Thread(target=self._copyFile,args=(self._gcode.filename, filename)).start()
+		threading.Thread(target=self._copyFile,args=(self._gcodeFilename, filename)).start()
 
 	def _copyFile(self, fileA, fileB, allowEject = False):
 		try:
@@ -216,6 +216,8 @@ class SceneView(openglGui.glGuiPanel):
 						self.printButton.setProgressBar(float(fsrc.tell()) / size)
 						self._queueRefresh()
 		except:
+			import sys
+			print sys.exc_info()
 			self.notification.message("Failed to save")
 		else:
 			if allowEject:
@@ -307,7 +309,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnScaleMax(self, button):
 		if self._selectedObj is None:
 			return
-		self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2)
+		self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
 		self._scene.pushFree()
 		self._selectObject(self._selectedObj)
 		self.updateProfileToControls()
@@ -1206,11 +1208,11 @@ void main(void)
 				a = numpy.concatenate((a[:-1], a[1:]), 1)
 				a = a.reshape((len(a) * 2, 3))
 				pointList = numpy.concatenate((pointList, a))
-#			if path['type'] == 'retract':
-#				a = path['points'] + numpy.array([0,0,0.01], numpy.float32)
-#				a = numpy.concatenate((a[:-1], a[1:] + numpy.array([0,0,0.3], numpy.float32)), 1)
-#				a = a.reshape((len(a) * 2, 3))
-#				pointList = numpy.concatenate((pointList, a))
+			if path['type'] == 'retract':
+				a = path['points'] + numpy.array([0,0,0.01], numpy.float32)
+				a = numpy.concatenate((a[:-1], a[1:] + numpy.array([0,0,1], numpy.float32)), 1)
+				a = a.reshape((len(a) * 2, 3))
+				pointList = numpy.concatenate((pointList, a))
 		ret.append(opengl.GLVBO(pointList))
 
 		return ret
