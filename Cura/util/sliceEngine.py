@@ -259,6 +259,8 @@ class Slicer(object):
 			settings['fixHorrible'] |= 0x02
 		if profile.getProfileSetting('fix_horrible_use_open_bits') == 'True':
 			settings['fixHorrible'] |= 0x10
+		if profile.getProfileSetting('fix_horrible_extensive_stitching') == 'True':
+			settings['fixHorrible'] |= 0x04
 
 		if settings['layerThickness'] <= 0:
 			settings['layerThickness'] = 1000
