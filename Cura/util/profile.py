@@ -133,8 +133,9 @@ setting('filament_diameter4',          0, float, 'basic',    'Filament').setRang
 setting('filament_flow',            100., float, 'basic',    'Filament').setRange(1,300).setLabel('Flow (%)', 'Flow compensation, the amount of material extruded is multiplied by this value')
 #setting('retraction_min_travel',     5.0, float, 'advanced', 'Retraction').setRange(0).setLabel('Minimum travel (mm)', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
 setting('retraction_speed',         40.0, float, 'advanced', 'Retraction').setRange(0.1).setLabel('Speed (mm/s)', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
-setting('retraction_amount',         4.5, float, 'advanced', 'Retraction').setRange(0).setLabel('Distance (mm)', 'Amount of retraction, set at 0 for no retraction at all. A value of 2.0mm seems to generate good results.')
+setting('retraction_amount',         4.5, float, 'advanced', 'Retraction').setRange(0).setLabel('Distance (mm)', 'Amount of retraction, set at 0 for no retraction at all. A value of 4.5mm seems to generate good results.')
 #setting('retraction_extra',          0.0, float, 'advanced', 'Retraction').setRange(0).setLabel('Extra length on start (mm)', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
+setting('retraction_dual_amount',   16.5, float, 'advanced', 'Retraction').setRange(0).setLabel('Dual extrusion switch amount (mm)', 'Amount of retraction when switching nozzle with dual-extrusion, set at 0 for no retraction at all. A value of 16.0mm seems to generate good results.')
 setting('bottom_thickness',          0.3, float, 'advanced', 'Quality').setRange(0).setLabel('Initial layer thickness (mm)', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
 setting('object_sink',               0.0, float, 'advanced', 'Quality').setLabel('Cut off object bottom (mm)', 'Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer.')
 #setting('enable_skin',             False, bool,  'advanced', 'Quality').setLabel('Duplicate outlines', 'Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality.')
@@ -204,6 +205,48 @@ M117 Printing...
 #######################################################################################
 setting('end.gcode', """;End GCode
 M104 S0                     ;extruder heater off
+M140 S0                     ;heated bed heater off (if you have it)
+
+G91                                    ;relative positioning
+G1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure
+G1 Z+0.5 E-5 X-20 Y-20 F{travel_speed} ;move Z up a bit and retract filament even more
+G28 X0 Y0                              ;move X/Y to min endstops, so the head is out of the way
+
+M84                         ;steppers off
+G90                         ;absolute positioning
+""", str, 'alteration', 'alteration')
+#######################################################################################
+setting('start2.gcode', """;Sliced at: {day} {date} {time}
+;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+;Print time: {print_time}
+;Filament used: {filament_amount}m {filament_weight}g
+;Filament cost: {filament_cost}
+G21        ;metric values
+G90        ;absolute positioning
+M107       ;start with the fan off
+
+G28 X0 Y0  ;move X/Y to min endstops
+G28 Z0     ;move Z to min endstops
+
+G1 Z15.0 F{travel_speed} ;move the platform down 15mm
+
+T1
+G92 E0                  ;zero the extruded length
+G1 F200 E10             ;extrude 10mm of feed stock
+G92 E0                  ;zero the extruded length again
+G1 F200 E-{retraction_dual_amount}
+
+T0
+G92 E0                  ;zero the extruded length
+G1 F200 E10              ;extrude 10mm of feed stock
+G92 E0                  ;zero the extruded length again
+G1 F{travel_speed}
+M117 Printing...
+""", str, 'alteration', 'alteration')
+#######################################################################################
+setting('end2.gcode', """;End GCode
+M104 T0 S0                     ;extruder heater off
+M104 T1 S0                     ;extruder heater off
 M140 S0                     ;heated bed heater off (if you have it)
 
 G91                                    ;relative positioning
@@ -317,6 +360,7 @@ settingsDictionary['filament_diameter2'].addCondition(lambda : int(getPreference
 settingsDictionary['filament_diameter3'].addCondition(lambda : int(getPreference('extruder_amount')) > 2)
 settingsDictionary['filament_diameter4'].addCondition(lambda : int(getPreference('extruder_amount')) > 3)
 settingsDictionary['support_dual_extrusion'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
+settingsDictionary['retraction_dual_amount'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
 #Heated bed
 settingsDictionary['print_bed_temperature'].addCondition(lambda : getPreference('has_heated_bed') == 'True')
 
@@ -681,6 +725,8 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	postfix = ''
 	alterationContents = getAlterationFile(filename)
 	if filename == 'start.gcode':
+		if extruderCount > 1:
+			alterationContents = getAlterationFile("start%d.gcode" % (extruderCount))
 		#For the start code, hack the temperature and the steps per E value into it. So the temperature is reached before the start code extrusion.
 		#We also set our steps per E here, if configured.
 		eSteps = getPreferenceFloat('steps_per_e')
@@ -711,6 +757,8 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		if bedTemp > 0 and not '{print_bed_temperature}' in alterationContents:
 			prefix += 'M190 S%f\n' % (bedTemp)
 	elif filename == 'end.gcode':
+		if extruderCount > 1:
+			alterationContents = getAlterationFile("end%d.gcode" % (extruderCount))
 		#Append the profile string to the end of the GCode, so we can load it from the GCode file later.
 		postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	elif filename == 'replace.csv':
