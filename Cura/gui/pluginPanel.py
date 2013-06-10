@@ -59,6 +59,7 @@ class pluginPanel(wx.Panel):
 	
 	def updateProfileToControls(self):
 		self.pluginConfig = profile.getPluginConfig()
+		print 'pluginPanel::updateProfileToControls', self.pluginConfig
 		for p in self.panelList:
 			p.Show(False)
 			self.pluginEnabledPanel.GetSizer().Detach(p)
@@ -121,6 +122,7 @@ class pluginPanel(wx.Panel):
 		return True
 	
 	def OnSettingChange(self, e):
+		print 'pluginPanel::OnSettingChange'
 		for panel in self.panelList:
 			idx = self.panelList.index(panel)
 			for k in panel.paramCtrls.keys():

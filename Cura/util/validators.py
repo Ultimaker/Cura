@@ -82,6 +82,8 @@ class wallThicknessValidator(object):
 				return WARNING, 'Trying to print walls thinner then the 0.8 * nozzle size. Small chance that this will produce usable results'
 			if wallThickness < nozzleSize:
 				return SUCCESS, ''
+			if nozzleSize <= 0:
+				return ERROR, 'Incorrect nozzle size'
 			
 			lineCount = int(wallThickness / nozzleSize)
 			lineWidth = wallThickness / lineCount

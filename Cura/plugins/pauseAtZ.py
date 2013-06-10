@@ -25,10 +25,11 @@ def getValue(line, key, default = None):
 with open(filename, "r") as f:
 	lines = f.readlines()
 
-z = 0
-x = 0
-y = 0
+z = 0.
+x = 0.
+y = 0.
 pauseState = 0
+currentSectionType = 'CUSTOM'
 with open(filename, "w") as f:
 	for line in lines:
 		if line.startswith(';'):
@@ -36,7 +37,7 @@ with open(filename, "w") as f:
 				currentSectionType = line[6:].strip()
 			f.write(line)
 			continue
-		if getValue(line, 'G', None) == 1:
+		if getValue(line, 'G', None) == 1 or getValue(line, 'G', None) == 0:
 			newZ = getValue(line, 'Z', z)
 			x = getValue(line, 'X', x)
 			y = getValue(line, 'Y', y)

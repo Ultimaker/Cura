@@ -261,8 +261,9 @@ class mainWindow(wx.Frame):
 		prefDialog.Show()
 
 	def OnDropFiles(self, files):
-		profile.setPluginConfig([])
-		self.updateProfileToControls()
+		if len(files) > 0:
+			profile.setPluginConfig([])
+			self.updateProfileToControls()
 		self.scene.loadScene(files)
 
 	def OnModelMRU(self, e):

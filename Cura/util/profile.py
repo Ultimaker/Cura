@@ -781,12 +781,15 @@ def getAlterationFileContents(filename, extruderCount = 1):
 
 def getPluginConfig():
 	try:
-		return pickle.loads(getProfileSetting('plugin_config'))
+		return pickle.loads(str(getProfileSetting('plugin_config')))
 	except:
 		return []
 
 def setPluginConfig(config):
 	putProfileSetting('plugin_config', pickle.dumps(config))
+	print 'setPluginConfig:', config
+	locationInfo = traceback.extract_tb(sys.exc_info()[2])[-1]
+	print "%s: '%s' @ %s:%s:%d" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]), os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
 
 def getPluginBasePaths():
 	ret = []
@@ -835,7 +838,7 @@ def getPluginList():
 def runPostProcessingPlugins(gcodefilename):
 	pluginConfigList = getPluginConfig()
 	pluginList = getPluginList()
-	
+
 	for pluginConfig in pluginConfigList:
 		plugin = None
 		for pluginTest in pluginList:
