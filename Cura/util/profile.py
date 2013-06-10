@@ -787,9 +787,6 @@ def getPluginConfig():
 
 def setPluginConfig(config):
 	putProfileSetting('plugin_config', pickle.dumps(config))
-	print 'setPluginConfig:', config
-	locationInfo = traceback.extract_tb(sys.exc_info()[2])[-1]
-	print "%s: '%s' @ %s:%s:%d" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]), os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
 
 def getPluginBasePaths():
 	ret = []
