@@ -1,10 +1,11 @@
 from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
+import os
 from Cura.util import mesh
 
 def loadScene(filename):
-	obj = mesh.printableObject()
+	obj = mesh.printableObject(os.path.basename(filename))
 	m = obj._addMesh()
 
 	vertexList = []

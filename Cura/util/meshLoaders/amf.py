@@ -3,6 +3,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import cStringIO as StringIO
 import zipfile
+import os
 try:
 	from xml.etree import cElementTree as ElementTree
 except:
@@ -40,7 +41,7 @@ def loadScene(filename):
 
 	ret = []
 	for amfObj in amf.iter('object'):
-		obj = mesh.printableObject()
+		obj = mesh.printableObject(os.path.basename(filename))
 		for amfMesh in amfObj.iter('mesh'):
 			vertexList = []
 			for vertices in amfMesh.iter('vertices'):

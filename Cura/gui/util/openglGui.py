@@ -704,10 +704,7 @@ class glNotification(glFrame):
 		super(glNotification, self).draw()
 
 	def message(self, text, ejectCallback = None):
-		if self._anim is not None:
-			self._anim = animation(self._base, self._anim.getPosition(), 25, 1)
-		else:
-			self._anim = animation(self._base, -20, 25, 1)
+		self._anim = animation(self._base, -20, 25, 1)
 		self.setHidden(False)
 		self._label.setLabel(text)
 		self._buttonEject.setHidden(ejectCallback is None)

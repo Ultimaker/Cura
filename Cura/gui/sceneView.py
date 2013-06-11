@@ -176,8 +176,7 @@ class SceneView(openglGui.glGuiPanel):
 					dlg.Destroy()
 				else:
 					drive = drives[0]
-				filename = os.path.basename(profile.getPreference('lastFile'))
-				filename = filename[0:filename.rfind('.')] + '.gcode'
+				filename = self._scene._objectList[0].getName() + '.gcode'
 				threading.Thread(target=self._copyFile,args=(self._gcodeFilename, drive[1] + filename, drive[1])).start()
 			else:
 				self.showSaveGCode()
@@ -193,7 +192,7 @@ class SceneView(openglGui.glGuiPanel):
 		defPath = profile.getPreference('lastFile')
 		defPath = defPath[0:defPath.rfind('.')] + '.gcode'
 		dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
-		dlg.SetFilename(os.path.basename(defPath))
+		dlg.SetFilename(self._scene._objectList[0].getName())
 		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
