@@ -383,7 +383,8 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		self._scene.remove(self._focusObj)
 		for obj in self._focusObj.split(self._splitCallback):
-			self._scene.add(obj)
+			if numpy.max(obj.getSize()) > 2.0:
+				self._scene.add(obj)
 		self._scene.centerAll()
 		self._selectObject(None)
 		self.sceneUpdated()
