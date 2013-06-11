@@ -475,10 +475,10 @@ class glButton(glGuiControl):
 		glPopMatrix()
 		progress = self._progressBar
 		if progress is not None:
-			glColor4ub(255,255,255,192)
-			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4, 0)
+			glColor4ub(60,60,60,255)
+			opengl.glDrawQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4)
 			glColor4ub(255,255,255,255)
-			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs * progress, bs / 4, 0)
+			opengl.glDrawQuad(pos[0]-bs/2+2, pos[1]+bs/2+2, (bs - 5) * progress + 1, bs / 4 - 4)
 		elif len(self._altTooltip) > 0:
 			glPushMatrix()
 			glTranslatef(pos[0], pos[1], 0)

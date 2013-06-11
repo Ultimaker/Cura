@@ -299,6 +299,18 @@ def glDrawStringRight(s):
 	for c in s:
 		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
 
+def glDrawQuad(x, y, w, h):
+	glPushMatrix()
+	glTranslatef(x, y, 0)
+	glDisable(GL_TEXTURE_2D)
+	glBegin(GL_QUADS)
+	glVertex2f(w, 0)
+	glVertex2f(0, 0)
+	glVertex2f(0, h)
+	glVertex2f(w, h)
+	glEnd()
+	glPopMatrix()
+
 def glDrawTexturedQuad(x, y, w, h, texID, mirror = 0):
 	tx = float(texID % 4) / 4
 	ty = float(int(texID / 4)) / 8
