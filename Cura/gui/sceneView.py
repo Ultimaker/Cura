@@ -165,6 +165,8 @@ class SceneView(openglGui.glGuiPanel):
 		if button == 1:
 			if machineCom.machineIsConnected():
 				printWindow.printFile(self._gcodeFilename)
+				if self._gcodeFilename == self._slicer.getGCodeFilename():
+					self._slicer.submitSliceInfoOnline()
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
@@ -224,7 +226,8 @@ class SceneView(openglGui.glGuiPanel):
 			else:
 				self.notification.message("Saved as %s" % (fileB))
 		self.printButton.setProgressBar(None)
-
+		if fileA == self._slicer.getGCodeFilename():
+			self._slicer.submitSliceInfoOnline()
 
 	def _showSliceLog(self):
 		dlg = wx.TextEntryDialog(self, "The slicing engine reported the following", "Engine log...", '\n'.join(self._slicer.getSliceLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)

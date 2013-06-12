@@ -9,8 +9,12 @@ import threading
 import traceback
 import platform
 import sys
+import urllib
+import urllib2
+import hashlib
 
 from Cura.util import profile
+from Cura.util import version
 
 def getEngineFilename():
 	if platform.system() == 'Windows':
@@ -39,6 +43,7 @@ class Slicer(object):
 		self._sliceLog = []
 		self._printTimeSeconds = None
 		self._filamentMM = None
+		self._modelHash = None
 
 	def cleanup(self):
 		self.abortSlicer()
@@ -112,6 +117,7 @@ class Slicer(object):
 		commandList += ['-b', self._binaryStorageFilename]
 		self._objCount = 0
 		with open(self._binaryStorageFilename, "wb") as f:
+			hash = hashlib.sha512()
 			order = scene.printOrder()
 			if order is None:
 				pos = numpy.array(profile.getMachineCenterCoords()) * 1000
@@ -131,6 +137,7 @@ class Slicer(object):
 							vertexes -= obj._drawOffset
 							vertexes += numpy.array([obj.getPosition()[0], obj.getPosition()[1], 0.0])
 							f.write(vertexes.tostring())
+							hash.update(mesh.vertexes.tostring())
 
 				commandList += ['#']
 				self._objCount = 1
@@ -139,13 +146,16 @@ class Slicer(object):
 					obj = scene.objects()[n]
 					for mesh in obj._meshList:
 						f.write(numpy.array([mesh.vertexCount], numpy.int32).tostring())
-						f.write(mesh.vertexes.tostring())
+						s = mesh.vertexes.tostring()
+						f.write(s)
+						hash.update(s)
 					pos = obj.getPosition() * 1000
 					pos += numpy.array(profile.getMachineCenterCoords()) * 1000
 					commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
 					commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
 					commandList += ['#' * len(obj._meshList)]
 					self._objCount += 1
+			self._modelHash = hash.hexdigest()
 		if self._objCount > 0:
 			try:
 				self._process = self._runSliceProcess(commandList)
@@ -282,3 +292,24 @@ class Slicer(object):
 			kwargs['startupinfo'] = su
 			kwargs['creationflags'] = 0x00004000 #BELOW_NORMAL_PRIORITY_CLASS
 		return subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
+
+	def submitSliceInfoOnline(self):
+		if profile.getPreference('submit_slice_information') != 'True':
+			return
+		if version.isDevVersion():
+			return
+		data = {
+			'processor': platform.processor(),
+			'machine': platform.machine(),
+			'platform': platform.platform(),
+			'profile': profile.getGlobalProfileString(),
+			'preferences': profile.getGlobalPreferencesString(),
+			'modelhash': self._modelHash,
+			'version': version.getVersion(),
+		}
+		try:
+			f = urllib2.urlopen("http://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
+			f.read()
+			f.close()
+		except:
+			pass
