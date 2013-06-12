@@ -76,6 +76,7 @@ checkTool curl "curl: http://curl.haxx.se/"
 if [ $BUILD_TARGET = "win32" ]; then
 	#Check if we have 7zip, needed to extract and packup a bunch of packages for windows.
 	checkTool 7z "7zip: http://www.7-zip.org/"
+	checkTool mingw32-make "mingw: http://www.mingw.org/"
 fi
 #For building under MacOS we need gnutar instead of tar
 if [ -z `which gnutar` ]; then
@@ -95,7 +96,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	rm -rf scripts/darwin/build
 	rm -rf scripts/darwin/dist
 
-	python setup.py py2app
+	python build_app.py py2app
 	rc=$?
 	if [[ $rc != 0 ]]; then
 		echo "Cannot build app."
@@ -170,6 +171,8 @@ if [ $BUILD_TARGET = "win32" ]; then
 	#Get the power module for python
 	rm -rf Power
 	git clone https://github.com/GreatFruitOmsk/Power
+	rm -rf CuraEngine
+	git clone https://github.com/Ultimaker/CuraEngine
 fi
 
 #############################
@@ -226,6 +229,9 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf ${TARGET_DIR}/python/Lib/site-packages/wx-2.8-msw-unicode/wx/locale
 	#Remove the gle files because they require MSVCR71.dll, which is not included. We also don't need gle, so it's safe to remove it.
 	rm -rf ${TARGET_DIR}/python/Lib/OpenGL/DLLS/gle*
+
+    #Build the C++ engine
+	mingw32-make -C CuraEngine
 fi
 
 #add Cura
@@ -237,7 +243,7 @@ echo $BUILD_NAME > ${TARGET_DIR}/Cura/version
 #add script files
 if [ $BUILD_TARGET = "win32" ]; then
     cp -a scripts/${BUILD_TARGET}/*.bat $TARGET_DIR/
-    cp CuraEngine.exe $TARGET_DIR
+    cp CuraEngine/CuraEngine.exe $TARGET_DIR
 else
     cp -a scripts/${BUILD_TARGET}/*.sh $TARGET_DIR/
 fi

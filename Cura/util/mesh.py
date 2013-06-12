@@ -8,7 +8,10 @@ import numpy
 numpy.seterr(all='ignore')
 
 class printableObject(object):
-	def __init__(self):
+	def __init__(self, name):
+		self._name = name
+		if '.' in self._name:
+			self._name = self._name[0:self._name.rfind('.')]
 		self._meshList = []
 		self._position = numpy.array([0.0, 0.0])
 		self._matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
@@ -20,7 +23,7 @@ class printableObject(object):
 		self._loadAnim = None
 
 	def copy(self):
-		ret = printableObject()
+		ret = printableObject(self._name)
 		ret._matrix = self._matrix.copy()
 		ret._transformedMin = self._transformedMin.copy()
 		ret._transformedMax = self._transformedMin.copy()
@@ -73,6 +76,8 @@ class printableObject(object):
 		self._transformedMax -= self._drawOffset
 		self._transformedMin -= self._drawOffset
 
+	def getName(self):
+		return self._name
 	def getPosition(self):
 		return self._position
 	def setPosition(self, newPos):
@@ -305,7 +310,7 @@ class mesh(object):
 							doneSet.add(i)
 							todoList.append(i)
 
-			obj = printableObject()
+			obj = printableObject(self._obj._name)
 			obj._matrix = self._obj._matrix.copy()
 			m = obj._addMesh()
 			m._prepareFaceCount(len(meshFaceList))

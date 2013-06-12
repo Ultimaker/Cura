@@ -62,7 +62,7 @@ def checkForNewerVersion():
 				if version > localVersion:
 					return "%s/current/%s" % (updateBaseURL, filename)
 	except:
-		print sys.exc_info()
+		#print sys.exc_info()
 		return None
 	return None
 

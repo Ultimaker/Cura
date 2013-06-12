@@ -56,7 +56,7 @@ class superShape(object):
 
 				row.append([x,y,z])
 
-		self._obj = mesh.printableObject()
+		self._obj = mesh.printableObject("super")
 		objMesh = self._obj._addMesh()
 		objMesh._prepareFaceCount(len(points) * (len(points[0]) - 1) * 2)
 
@@ -205,7 +205,7 @@ class superformulaEvolver(wx.Frame):
 
 			sv = shape._obj._meshList[0].vertexes * scale
 
-			obj = mesh.printableObject()
+			obj = mesh.printableObject("super")
 			m = obj._addMesh()
 			m._prepareFaceCount(shape._obj._meshList[0].vertexCount / 3 + hole._meshList[0].vertexCount / 3)
 			for n in xrange(0, shape._obj._meshList[0].vertexCount):
@@ -529,7 +529,7 @@ class superformulaWindow(wx.Frame):
 	def onAdd(self):
 		scale = 1.0/numpy.max(self._shape._obj.getSize()) * 50
 
-		obj = mesh.printableObject()
+		obj = mesh.printableObject("super")
 		m = obj._addMesh()
 		m._prepareFaceCount(self._shape._obj._meshList[0].vertexCount / 3)
 		m.vertexes = self._shape._obj._meshList[0].vertexes * scale

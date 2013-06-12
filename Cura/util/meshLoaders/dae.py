@@ -2,6 +2,7 @@ from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 from  xml.parsers.expat import ParserCreate
+import os
 
 from Cura.util import mesh
 
@@ -11,7 +12,7 @@ def loadScene(filename):
 
 class daeLoader(object):
 	def __init__(self, filename):
-		self.obj = mesh.printableObject()
+		self.obj = mesh.printableObject(os.path.basename(filename))
 		self.mesh = self.obj._addMesh()
 
 		r = ParserCreate()

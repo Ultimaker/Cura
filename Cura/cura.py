@@ -40,12 +40,20 @@ def main():
 		from Cura.util import sliceEngine
 		from Cura.util import objectScene
 		from Cura.util import meshLoader
+		import shutil
 
+		def commandlineProgessCallback(progress, ready):
+			if progress >= 0 and not ready:
+				print 'Preparing: %d%%' % (progress * 100)
 		scene = objectScene.Scene()
-		slicer = sliceEngine.Slicer()
+		slicer = sliceEngine.Slicer(commandlineProgessCallback)
 		for m in meshLoader.loadMeshes(args[0]):
 			scene.add(m)
 		slicer.runSlicer(scene)
+		slicer.wait()
+		shutil.copyfile(slicer.getGCodeFilename(), args[0] + '.gcode')
+		print 'GCode file saved as: %s' % (args[0] + '.gcode')
+		slicer.cleanup()
 	else:
 		from Cura.gui import app
 		app.CuraApp(args).MainLoop()

@@ -475,10 +475,10 @@ class glButton(glGuiControl):
 		glPopMatrix()
 		progress = self._progressBar
 		if progress is not None:
-			glColor4ub(255,255,255,192)
-			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4, 0)
+			glColor4ub(60,60,60,255)
+			opengl.glDrawQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4)
 			glColor4ub(255,255,255,255)
-			opengl.glDrawTexturedQuad(pos[0]-bs/2, pos[1]+bs/2, bs * progress, bs / 4, 0)
+			opengl.glDrawQuad(pos[0]-bs/2+2, pos[1]+bs/2+2, (bs - 5) * progress + 1, bs / 4 - 4)
 		elif len(self._altTooltip) > 0:
 			glPushMatrix()
 			glTranslatef(pos[0], pos[1], 0)
@@ -704,10 +704,7 @@ class glNotification(glFrame):
 		super(glNotification, self).draw()
 
 	def message(self, text, ejectCallback = None):
-		if self._anim is not None:
-			self._anim = animation(self._base, self._anim.getPosition(), 25, 1)
-		else:
-			self._anim = animation(self._base, -20, 25, 1)
+		self._anim = animation(self._base, -20, 25, 1)
 		self.setHidden(False)
 		self._label.setLabel(text)
 		self._buttonEject.setHidden(ejectCallback is None)

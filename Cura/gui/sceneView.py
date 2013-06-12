@@ -165,6 +165,8 @@ class SceneView(openglGui.glGuiPanel):
 		if button == 1:
 			if machineCom.machineIsConnected():
 				printWindow.printFile(self._gcodeFilename)
+				if self._gcodeFilename == self._slicer.getGCodeFilename():
+					self._slicer.submitSliceInfoOnline()
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
@@ -176,8 +178,7 @@ class SceneView(openglGui.glGuiPanel):
 					dlg.Destroy()
 				else:
 					drive = drives[0]
-				filename = os.path.basename(profile.getPreference('lastFile'))
-				filename = filename[0:filename.rfind('.')] + '.gcode'
+				filename = self._scene._objectList[0].getName() + '.gcode'
 				threading.Thread(target=self._copyFile,args=(self._gcodeFilename, drive[1] + filename, drive[1])).start()
 			else:
 				self.showSaveGCode()
@@ -193,7 +194,7 @@ class SceneView(openglGui.glGuiPanel):
 		defPath = profile.getPreference('lastFile')
 		defPath = defPath[0:defPath.rfind('.')] + '.gcode'
 		dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
-		dlg.SetFilename(os.path.basename(defPath))
+		dlg.SetFilename(self._scene._objectList[0].getName())
 		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
@@ -225,7 +226,8 @@ class SceneView(openglGui.glGuiPanel):
 			else:
 				self.notification.message("Saved as %s" % (fileB))
 		self.printButton.setProgressBar(None)
-
+		if fileA == self._slicer.getGCodeFilename():
+			self._slicer.submitSliceInfoOnline()
 
 	def _showSliceLog(self):
 		dlg = wx.TextEntryDialog(self, "The slicing engine reported the following", "Engine log...", '\n'.join(self._slicer.getSliceLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)
@@ -383,7 +385,8 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		self._scene.remove(self._focusObj)
 		for obj in self._focusObj.split(self._splitCallback):
-			self._scene.add(obj)
+			if numpy.max(obj.getSize()) > 2.0:
+				self._scene.add(obj)
 		self._scene.centerAll()
 		self._selectObject(None)
 		self.sceneUpdated()
@@ -901,7 +904,7 @@ void main(void)
 
 			if self.viewMode == 'overhang':
 				self._objectOverhangShader.bind()
-				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(60)))
+				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(90 - 60)))
 			else:
 				self._objectShader.bind()
 			for obj in self._scene.objects():
