@@ -36,10 +36,10 @@ def hasWebcamSupport():
 
 def getFFMPEGpath():
 	if platform.system() == "Windows":
-		return os.path.normpath(os.path.join(os.path.split(__file__)[0], "../ffmpeg.exe"))
+		return os.path.normpath(os.path.join(os.path.split(__file__)[0], "../../ffmpeg.exe"))
 	elif os.path.exists('/usr/bin/ffmpeg'):
 		return '/usr/bin/ffmpeg'
-	return os.path.normpath(os.path.join(os.path.split(__file__)[0], "../ffmpeg"))
+	return os.path.normpath(os.path.join(os.path.split(__file__)[0], "../../ffmpeg"))
 
 
 class webcam(object):
