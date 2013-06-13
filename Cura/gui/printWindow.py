@@ -456,7 +456,7 @@ class printWindow(wx.Frame):
 			return
 		self.currentZ = -1
 		if self.cam is not None and self.timelapsEnable.GetValue():
-			self.cam.startTimelapse(self.filename[: self.filename.rfind('.')] + ".mpg")
+			self.cam.startTimelapse("c:/models/temp.mpg")
 		self.machineCom.printGCode(self.gcodeList)
 		self.UpdateButtonStates()
 

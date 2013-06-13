@@ -358,11 +358,11 @@ class SceneView(openglGui.glGuiPanel):
 		if self._focusObj is None:
 			return
 		obj = self._focusObj
-		dlg = wx.NumberEntryDialog(self, "How many items do you want?", "Copies", "Multiply", 2, 1, 100)
+		dlg = wx.NumberEntryDialog(self, "How many copies do you want?", "Copies", "Multiply", 1, 1, 100)
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
 			return
-		cnt = dlg.GetValue() - 1
+		cnt = dlg.GetValue()
 		dlg.Destroy()
 		n = 0
 		while True:
@@ -375,7 +375,7 @@ class SceneView(openglGui.glGuiPanel):
 			if n > cnt:
 				break
 		if n <= cnt:
-			self.notification.message("Could not create more then %d items" % (n))
+			self.notification.message("Could not create more then %d items" % (n - 1))
 		self._scene.remove(newObj)
 		self._scene.centerAll()
 		self.sceneUpdated()
