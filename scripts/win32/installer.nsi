@@ -89,6 +89,9 @@ Section "Cura ${VERSION}"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Cura_${VERSION}" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Cura_${VERSION}" "NoRepair" 1
   WriteUninstaller "uninstall.exe"
+
+  ; Write start menu entries for all users
+  SetShellVarContext all
   
   CreateDirectory "$SMPROGRAMS\Cura ${VERSION}"
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Uninstall Cura ${VERSION}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
@@ -100,6 +103,8 @@ Section "Cura ${VERSION}"
 SectionEnd
 
 Function LaunchLink
+  ; Write start menu entries for all users
+  SetShellVarContext all
   ExecShell "" "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk"
 FunctionEnd
 
@@ -149,6 +154,8 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Cura_${VERSION}"
   DeleteRegKey HKLM "SOFTWARE\Cura_${VERSION}"
 
+  ; Write start menu entries for all users
+  SetShellVarContext all
   ; Remove directories used
   RMDir /r "$SMPROGRAMS\Cura ${VERSION}"
   RMDir /r "$INSTDIR"
