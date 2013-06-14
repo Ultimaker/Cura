@@ -568,7 +568,6 @@ class printWindow(wx.Frame):
 		wx.CallAfter(self.progress.SetRange, len(gcodeList))
 		wx.CallAfter(self.UpdateButtonStates)
 		wx.CallAfter(self.UpdateProgress)
-		wx.CallAfter(self.SetTitle, 'Printing: %s' % (filename))
 
 	def sendLine(self, lineNr):
 		if lineNr >= len(self.gcodeList):
