@@ -9,6 +9,7 @@ import time
 import platform
 import os
 import power
+import datetime
 
 import wx
 from wx.lib import buttons
@@ -292,22 +293,24 @@ class printWindow(wx.Frame):
 			self.camPage.SetSizer(sizer)
 
 			self.timelapsEnable = wx.CheckBox(self.camPage, -1, 'Enable timelapse movie recording')
+			self.timelapsSavePath = wx.TextCtrl(self.camPage, -1, os.path.expanduser('~/timelaps_' + datetime.datetime.now().strftime('%Y-%m-%d_%H:%M') + '.mpg'))
 			sizer.Add(self.timelapsEnable, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
+			sizer.Add(self.timelapsSavePath, pos=(1, 0), span=(1, 2), flag=wx.EXPAND)
 
 			pages = self.cam.propertyPages()
-			self.cam.buttons = [self.timelapsEnable]
+			self.cam.buttons = [self.timelapsEnable, self.timelapsSavePath]
 			for page in pages:
 				button = wx.Button(self.camPage, -1, page)
 				button.index = pages.index(page)
-				sizer.Add(button, pos=(1, pages.index(page)))
+				sizer.Add(button, pos=(2, pages.index(page)))
 				button.Bind(wx.EVT_BUTTON, self.OnPropertyPageButton)
 				self.cam.buttons.append(button)
 
 			self.campreviewEnable = wx.CheckBox(self.camPage, -1, 'Show preview')
-			sizer.Add(self.campreviewEnable, pos=(2, 0), span=(1, 2), flag=wx.EXPAND)
+			sizer.Add(self.campreviewEnable, pos=(3, 0), span=(1, 2), flag=wx.EXPAND)
 
 			self.camPreview = wx.Panel(self.camPage)
-			sizer.Add(self.camPreview, pos=(3, 0), span=(1, 2), flag=wx.EXPAND)
+			sizer.Add(self.camPreview, pos=(4, 0), span=(1, 2), flag=wx.EXPAND)
 
 			nb.AddPage(self.camPage, 'Camera')
 			self.camPreview.timer = wx.Timer(self)
@@ -398,7 +401,7 @@ class printWindow(wx.Frame):
 
 	def UpdateProgress(self):
 		status = ""
-		if self.gcode == None:
+		if self.gcode is None:
 			status += "Loading gcode...\n"
 		else:
 			status += "Filament: %.2fm %.2fg\n" % (
@@ -456,7 +459,7 @@ class printWindow(wx.Frame):
 			return
 		self.currentZ = -1
 		if self.cam is not None and self.timelapsEnable.GetValue():
-			self.cam.startTimelapse("c:/models/temp.mpg")
+			self.cam.startTimelapse(self.timelapsSavePath)
 		self.machineCom.printGCode(self.gcodeList)
 		self.UpdateButtonStates()
 
