@@ -125,6 +125,10 @@ class Scene(object):
 		self._findFreePositionFor(obj)
 		self._objectList.append(obj)
 		self.pushFree()
+		if numpy.max(obj.getSize()[0:2]) > numpy.max(self._machineSize[0:2]) * 1.5:
+			scale = numpy.max(self._machineSize[0:2]) * 1.5 / numpy.max(obj.getSize()[0:2])
+			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
+			obj.applyMatrix(numpy.matrix(matrix, numpy.float64))
 
 	def remove(self, obj):
 		self._objectList.remove(obj)
