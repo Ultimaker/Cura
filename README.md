@@ -1,10 +1,10 @@
 Cura
 ====
 
-Read this, it is important!
+Read this, it's important!
 ===========================
 
-If you are reading this, then you are looking at the *development* version of Cura. If you just want to use Cura look at the following location: https://daid.github.com/Cura
+If you are reading this, then you are looking at the *development* version of Cura. If you just want to use Cura, take a look at the following location: https://daid.github.com/Cura
 
 Development
 ===========
@@ -15,7 +15,7 @@ The C++ engine is responsible for generating the actual toolpath. For developmen
 Packaging
 ---------
 
-Cura development comes with a script "package.sh", this script has been designed to run under unix like OSes (Linux, MacOS). For windows the package.sh script can be run from the git bash shell.
+Cura development comes with a script "package.sh", this script has been designed to run under *nix OSes (Linux, MacOS). For Windows the package.sh script can be run from bash using git.
 The "package.sh" script generates a final release package. You should not need it during development, unless you are changing the release process. If you want to distribute your own version of Cura, then the package.sh script will allow you to do that.
 
 Both MacOS and Linux require some extra instructions for development, as you need to prepare an environment. Look below at the proper section to see what is needed.
