@@ -1063,6 +1063,14 @@ void main(void)
 				glTranslate(pos[0], pos[1], pos[2])
 				self.tool.OnDraw()
 				glPopMatrix()
+		if self.viewMode == 'overhang' and not opengl.hasShaderSupport():
+			glDisable(GL_DEPTH_TEST)
+			glPushMatrix()
+			glLoadIdentity()
+			glTranslate(0,-4,-10)
+			glColor4ub(60,60,60,255)
+			opengl.glDrawStringCenter('Overhang view not working due to lack of OpenGL shaders support.')
+			glPopMatrix()
 
 	def _renderObject(self, obj, brightness = False, addSink = True):
 		glPushMatrix()
