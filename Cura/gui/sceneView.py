@@ -106,6 +106,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._sceneUpdateTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self._onRunSlicer, self._sceneUpdateTimer)
 		self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
+		self.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseLeave)
 
 		self.OnViewChange()
 		self.OnToolSelect(0)
@@ -414,6 +415,9 @@ class SceneView(openglGui.glGuiPanel):
 			profile.resetTempOverride()
 
 	def _updateSliceProgress(self, progressValue, ready):
+		if not ready:
+			if self.printButton.getProgressBar() is not None and progressValue >= 0.0 and abs(self.printButton.getProgressBar() - progressValue) < 0.01:
+				return
 		self.printButton.setDisabled(not ready)
 		if progressValue >= 0.0:
 			self.printButton.setProgressBar(progressValue)
@@ -466,7 +470,10 @@ class SceneView(openglGui.glGuiPanel):
 				traceback.print_exc()
 			else:
 				for obj in objList:
-					obj._loadAnim = openglGui.animation(self, 1, 0, 1.5)
+					if self._objectLoadShader is not None:
+						obj._loadAnim = openglGui.animation(self, 1, 0, 1.5)
+					else:
+						obj._loadAnim = None
 					self._scene.add(obj)
 					self._scene.centerAll()
 					self._selectObject(obj)
@@ -680,6 +687,10 @@ class SceneView(openglGui.glGuiPanel):
 			self._zoom = numpy.max(self._machineSize) * 3
 		self.Refresh()
 
+	def OnMouseLeave(self, e):
+		self._mouseX = -1
+		self._focusObj = None
+
 	def getMouseRay(self, x, y):
 		if self._viewport is None:
 			return numpy.array([0,0,0],numpy.float32), numpy.array([0,0,1],numpy.float32)
@@ -743,7 +754,8 @@ class SceneView(openglGui.glGuiPanel):
 			except:
 				pass
 		if self._objectShader is None:
-			self._objectShader = opengl.GLShader("""
+			if opengl.hasShaderSupport():
+				self._objectShader = opengl.GLShader("""
 varying float light_amount;
 
 void main(void)
@@ -754,15 +766,15 @@ void main(void)
 	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
 	light_amount += 0.2;
 }
-			""","""
+				""","""
 varying float light_amount;
 
 void main(void)
 {
 	gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
 }
-			""")
-			self._objectOverhangShader = opengl.GLShader("""
+				""")
+				self._objectOverhangShader = opengl.GLShader("""
 uniform float cosAngle;
 uniform mat3 rotMatrix;
 varying float light_amount;
@@ -779,7 +791,7 @@ void main(void)
 		light_amount = -10.0;
 	}
 }
-			""","""
+				""","""
 varying float light_amount;
 
 void main(void)
@@ -791,8 +803,8 @@ void main(void)
 		gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
 	}
 }
-			""")
-			self._objectLoadShader = opengl.GLShader("""
+				""")
+				self._objectLoadShader = opengl.GLShader("""
 uniform float intensity;
 uniform float scale;
 varying float light_amount;
@@ -816,7 +828,11 @@ void main(void)
 {
 	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
 }
-			""")
+				""")
+			else:
+				self._objectShader = opengl.GLFakeShader()
+				self._objectOverhangShader = opengl.GLFakeShader()
+				self._objectLoadShader = None
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
 		glRotate(-self._pitch, 1,0,0)
@@ -981,16 +997,17 @@ void main(void)
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 			glEnable(GL_BLEND)
-			self._objectLoadShader.bind()
-			glColor4f(0.2, 0.6, 1.0, 1.0)
-			for obj in self._scene.objects():
-				if obj._loadAnim is None:
-					continue
-				self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())
-				self._objectLoadShader.setUniform('scale', obj.getBoundaryCircle() / 10)
-				self._renderObject(obj)
-			self._objectLoadShader.unbind()
-			glDisable(GL_BLEND)
+			if self._objectLoadShader is not None:
+				self._objectLoadShader.bind()
+				glColor4f(0.2, 0.6, 1.0, 1.0)
+				for obj in self._scene.objects():
+					if obj._loadAnim is None:
+						continue
+					self._objectLoadShader.setUniform('intensity', obj._loadAnim.getPosition())
+					self._objectLoadShader.setUniform('scale', obj.getBoundaryCircle() / 10)
+					self._renderObject(obj)
+				self._objectLoadShader.unbind()
+				glDisable(GL_BLEND)
 
 		self._drawMachine()
 
@@ -1046,6 +1063,14 @@ void main(void)
 				glTranslate(pos[0], pos[1], pos[2])
 				self.tool.OnDraw()
 				glPopMatrix()
+		if self.viewMode == 'overhang' and not opengl.hasShaderSupport():
+			glDisable(GL_DEPTH_TEST)
+			glPushMatrix()
+			glLoadIdentity()
+			glTranslate(0,-4,-10)
+			glColor4ub(60,60,60,255)
+			opengl.glDrawStringCenter('Overhang view not working due to lack of OpenGL shaders support.')
+			glPopMatrix()
 
 	def _renderObject(self, obj, brightness = False, addSink = True):
 		glPushMatrix()

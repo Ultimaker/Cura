@@ -33,6 +33,9 @@ class GLReferenceCounter(object):
 		self._refCounter -= 1
 		return self._refCounter <= 0
 
+def hasShaderSupport():
+	return glCreateShader != False
+
 class GLShader(GLReferenceCounter):
 	def __init__(self, vertexProgram, fragmentProgram):
 		super(GLShader, self).__init__()
@@ -81,6 +84,37 @@ class GLShader(GLReferenceCounter):
 	def __del__(self):
 		if self._program is not None and bool(glDeleteProgram):
 			print "Shader was not properly released!"
+
+#A Class that acts as an OpenGL shader, but in reality is not none.
+class GLFakeShader(GLReferenceCounter):
+	def __init__(self):
+		super(GLFakeShader, self).__init__()
+
+	def bind(self):
+		glEnable(GL_LIGHTING)
+		glEnable(GL_LIGHT0)
+		glEnable(GL_COLOR_MATERIAL)
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, [1,1,1,1])
+		glLightfv(GL_LIGHT0, GL_AMBIENT, [0,0,0,0])
+		glLightfv(GL_LIGHT0, GL_SPECULAR, [0,0,0,0])
+
+	def unbind(self):
+		glDisable(GL_LIGHTING)
+
+	def release(self):
+		pass
+
+	def setUniform(self, name, value):
+		pass
+
+	def isValid(self):
+		return True
+
+	def getVertexShader(self):
+		return ''
+
+	def getFragmentShader(self):
+		return ''
 
 class GLVBO(GLReferenceCounter):
 	def __init__(self, vertexArray, normalArray = None):
