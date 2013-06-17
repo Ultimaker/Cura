@@ -39,6 +39,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._gcodeVBOs = []
 		self._gcodeLoadThread = None
 		self._objectShader = None
+		self._objectLoadShader = None
 		self._focusObj = None
 		self._selectedObj = None
 		self._objColors = [None,None,None,None]
