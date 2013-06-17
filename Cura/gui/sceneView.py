@@ -106,6 +106,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._sceneUpdateTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self._onRunSlicer, self._sceneUpdateTimer)
 		self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
+		self.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseLeave)
 
 		self.OnViewChange()
 		self.OnToolSelect(0)
@@ -682,6 +683,10 @@ class SceneView(openglGui.glGuiPanel):
 		if self._zoom > numpy.max(self._machineSize) * 3:
 			self._zoom = numpy.max(self._machineSize) * 3
 		self.Refresh()
+
+	def OnMouseLeave(self, e):
+		self._mouseX = -1
+		self._focusObj = None
 
 	def getMouseRay(self, x, y):
 		if self._viewport is None:
