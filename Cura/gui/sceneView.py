@@ -689,7 +689,6 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnMouseLeave(self, e):
 		self._mouseX = -1
-		self._focusObj = None
 
 	def getMouseRay(self, x, y):
 		if self._viewport is None:
