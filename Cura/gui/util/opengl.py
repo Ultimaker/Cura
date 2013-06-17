@@ -34,7 +34,7 @@ class GLReferenceCounter(object):
 		return self._refCounter <= 0
 
 def hasShaderSupport():
-	return glCreateShader != False
+	return bool(glCreateShader) != False
 
 class GLShader(GLReferenceCounter):
 	def __init__(self, vertexProgram, fragmentProgram):
@@ -119,39 +119,60 @@ class GLFakeShader(GLReferenceCounter):
 class GLVBO(GLReferenceCounter):
 	def __init__(self, vertexArray, normalArray = None):
 		super(GLVBO, self).__init__()
-		self._buffer = glGenBuffers(1)
-		self._size = len(vertexArray)
-		self._hasNormals = normalArray is not None
-		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
-		if self._hasNormals:
-			glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
+		if bool(glGenBuffers) == False:
+			self._vertexArray = vertexArray
+			self._normalArray = normalArray
+			self._buffer = None
 		else:
-			glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW)
-		glBindBuffer(GL_ARRAY_BUFFER, 0)
+			self._buffer = glGenBuffers(1)
+			self._size = len(vertexArray)
+			self._hasNormals = normalArray is not None
+			glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
+			if self._hasNormals:
+				glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
+			else:
+				glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW)
+			glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 	def render(self, render_type = GL_TRIANGLES):
-		glEnableClientState(GL_VERTEX_ARRAY)
-		glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
+		if self._buffer is None:
+			glEnableClientState(GL_VERTEX_ARRAY)
+			glVertexPointer(3, GL_FLOAT, 0, self._vertexArray)
+			if self._normalArray is not None:
+				glEnableClientState(GL_NORMAL_ARRAY)
+				glNormalPointer(GL_FLOAT, 0, self._normalArray)
+			#Odd, drawing in batchs is a LOT faster then drawing it all at once.
+			batchSize = 999    #Warning, batchSize needs to be dividable by 3
+			extraStartPos = int(len(self._vertexArray) / batchSize) * batchSize
+			extraCount = len(self._vertexArray) - extraStartPos
 
-		if self._hasNormals:
-			glEnableClientState(GL_NORMAL_ARRAY)
-			glVertexPointer(3, GL_FLOAT, 2*3*4, c_void_p(0))
-			glNormalPointer(GL_FLOAT, 2*3*4, c_void_p(3 * 4))
+			glCullFace(GL_BACK)
+			for i in xrange(0, int(len(self._vertexArray) / batchSize)):
+				glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
+			glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
 		else:
-			glVertexPointer(3, GL_FLOAT, 3*4, c_void_p(0))
+			glEnableClientState(GL_VERTEX_ARRAY)
+			glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
 
-		batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
-		extraStartPos = int(self._size / batchSize) * batchSize
-		extraCount = self._size - extraStartPos
+			if self._hasNormals:
+				glEnableClientState(GL_NORMAL_ARRAY)
+				glVertexPointer(3, GL_FLOAT, 2*3*4, c_void_p(0))
+				glNormalPointer(GL_FLOAT, 2*3*4, c_void_p(3 * 4))
+			else:
+				glVertexPointer(3, GL_FLOAT, 3*4, c_void_p(0))
 
-		for i in xrange(0, int(self._size / batchSize)):
-			glDrawArrays(render_type, i * batchSize, batchSize)
-		glDrawArrays(render_type, extraStartPos, extraCount)
-		glBindBuffer(GL_ARRAY_BUFFER, 0)
+			batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
+			extraStartPos = int(self._size / batchSize) * batchSize
+			extraCount = self._size - extraStartPos
 
-		glDisableClientState(GL_VERTEX_ARRAY)
-		if self._hasNormals:
-			glDisableClientState(GL_NORMAL_ARRAY)
+			for i in xrange(0, int(self._size / batchSize)):
+				glDrawArrays(render_type, i * batchSize, batchSize)
+			glDrawArrays(render_type, extraStartPos, extraCount)
+			glBindBuffer(GL_ARRAY_BUFFER, 0)
+
+			glDisableClientState(GL_VERTEX_ARRAY)
+			if self._hasNormals:
+				glDisableClientState(GL_NORMAL_ARRAY)
 
 	def release(self):
 		if self._buffer is not None:
@@ -160,6 +181,8 @@ class GLVBO(GLReferenceCounter):
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
 			glDeleteBuffers(1, [self._buffer])
 			self._buffer = None
+		self._vertexArray = None
+		self._normalArray = None
 
 	def __del__(self):
 		if self._buffer is not None and bool(glDeleteBuffers):
