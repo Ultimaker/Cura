@@ -409,6 +409,9 @@ class glButton(glGuiControl):
 	def setProgressBar(self, value):
 		self._progressBar = value
 
+	def getProgressBar(self):
+		return self._progressBar
+
 	def setBottomText(self, value):
 		self._altTooltip = value
 

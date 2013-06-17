@@ -414,6 +414,9 @@ class SceneView(openglGui.glGuiPanel):
 			profile.resetTempOverride()
 
 	def _updateSliceProgress(self, progressValue, ready):
+		if not ready:
+			if self.printButton.getProgressBar() is not None and progressValue >= 0.0 and abs(self.printButton.getProgressBar() - progressValue) < 0.01:
+				return
 		self.printButton.setDisabled(not ready)
 		if progressValue >= 0.0:
 			self.printButton.setProgressBar(progressValue)
