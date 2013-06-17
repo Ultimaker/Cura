@@ -105,7 +105,10 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 
     #Add cura version file (should read the version from the bundle with pyobjc, but will figure that out later)
     echo $BUILD_NAME > scripts/darwin/dist/Cura.app/Contents/Resources/version
-    cp CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
+	rm -rf CuraEngine
+	git clone https://github.com/Ultimaker/CuraEngine
+	make -C CuraEngine
+	cp CuraEngine/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
 	cd scripts/darwin
 
