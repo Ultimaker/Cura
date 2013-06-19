@@ -6,6 +6,7 @@ import os
 import stat
 import time
 import subprocess
+import threading
 try:
 	from xml.etree import cElementTree as ElementTree
 except:
@@ -13,8 +14,8 @@ except:
 
 from Cura.util import profile
 
-_removeableCache = None
-_removeableCacheTime = None
+_removableCacheUpdateThread = None
+_removableCache = []
 
 def _parseStupidPListXML(e):
 	if e.tag == 'plist':
@@ -53,68 +54,75 @@ def _findInTree(t, n):
 	return ret
 
 def getPossibleSDcardDrives():
-	global _removeableCache, _removeableCacheTime
-	if _removeableCache is not None and time.time() - _removeableCacheTime < 5.0:
-		return _removeableCache
+	global _removableCache, _removableCacheUpdateThread
 
 	if profile.getPreference('auto_detect_sd') == 'False':
 		return []
 
-	drives = []
-	if platform.system() == "Windows":
-		from ctypes import windll
-		import ctypes
-		bitmask = windll.kernel32.GetLogicalDrives()
-		for letter in string.uppercase:
-			if bitmask & 1 and windll.kernel32.GetDriveTypeA(letter + ':/') == 2:
-				volumeName = ''
-				nameBuffer = ctypes.create_unicode_buffer(1024)
-				if windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(letter + ':/'), nameBuffer, ctypes.sizeof(nameBuffer), None, None, None, None, 0) == 0:
-					volumeName = nameBuffer.value
-				if volumeName == '':
-					volumeName = 'NO NAME'
+	if _removableCacheUpdateThread is None:
+		_removableCacheUpdateThread = threading.Thread(target=_updateCache)
+		_removableCacheUpdateThread.daemon = True
+		_removableCacheUpdateThread.start()
+	return _removableCache
 
-				freeBytes = ctypes.c_longlong(0)
-				if windll.kernel32.GetDiskFreeSpaceExA(letter + ':/', ctypes.byref(freeBytes), None, None) == 0:
-					continue
-				if freeBytes.value < 1:
-					continue
-				drives.append(('%s (%s:)' % (volumeName, letter), letter + ':/', volumeName))
-			bitmask >>= 1
-	elif platform.system() == "Darwin":
-		p = subprocess.Popen(['system_profiler', 'SPUSBDataType', '-xml'], stdout=subprocess.PIPE)
-		xml = ElementTree.fromstring(p.communicate()[0])
-		p.wait()
+def _updateCache():
+	global _removableCache
 
-		xml = _parseStupidPListXML(xml)
-		for dev in _findInTree(xml, 'Mass Storage Device'):
-			if 'removable_media' in dev and dev['removable_media'] == 'yes' and 'volumes' in dev and len(dev['volumes']) > 0:
-				for vol in dev['volumes']:
-					if 'mount_point' in vol:
-						volume = vol['mount_point']
-						drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
+	while True:
+		drives = []
+		if platform.system() == "Windows":
+			from ctypes import windll
+			import ctypes
+			bitmask = windll.kernel32.GetLogicalDrives()
+			for letter in string.uppercase:
+				if bitmask & 1 and windll.kernel32.GetDriveTypeA(letter + ':/') == 2:
+					volumeName = ''
+					nameBuffer = ctypes.create_unicode_buffer(1024)
+					if windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(letter + ':/'), nameBuffer, ctypes.sizeof(nameBuffer), None, None, None, None, 0) == 0:
+						volumeName = nameBuffer.value
+					if volumeName == '':
+						volumeName = 'NO NAME'
 
-		p = subprocess.Popen(['system_profiler', 'SPCardReaderDataType', '-xml'], stdout=subprocess.PIPE)
-		xml = ElementTree.fromstring(p.communicate()[0])
-		p.wait()
+					freeBytes = ctypes.c_longlong(0)
+					if windll.kernel32.GetDiskFreeSpaceExA(letter + ':/', ctypes.byref(freeBytes), None, None) == 0:
+						continue
+					if freeBytes.value < 1:
+						continue
+					drives.append(('%s (%s:)' % (volumeName, letter), letter + ':/', volumeName))
+				bitmask >>= 1
+		elif platform.system() == "Darwin":
+			p = subprocess.Popen(['system_profiler', 'SPUSBDataType', '-xml'], stdout=subprocess.PIPE)
+			xml = ElementTree.fromstring(p.communicate()[0])
+			p.wait()
 
-		xml = _parseStupidPListXML(xml)
-		for entry in xml:
-			if '_items' in entry:
-				for item in entry['_items']:
-					for dev in item['_items']:
-						if 'removable_media' in dev and dev['removable_media'] == 'yes' and 'volumes' in dev and len(dev['volumes']) > 0:
-							for vol in dev['volumes']:
-								if 'mount_point' in vol:
-									volume = vol['mount_point']
-									drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
-	else:
-		for volume in glob.glob('/media/*'):
-			drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
+			xml = _parseStupidPListXML(xml)
+			for dev in _findInTree(xml, 'Mass Storage Device'):
+				if 'removable_media' in dev and dev['removable_media'] == 'yes' and 'volumes' in dev and len(dev['volumes']) > 0:
+					for vol in dev['volumes']:
+						if 'mount_point' in vol:
+							volume = vol['mount_point']
+							drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
 
-	_removeableCache = drives
-	_removeableCacheTime = time.time()
-	return drives
+			p = subprocess.Popen(['system_profiler', 'SPCardReaderDataType', '-xml'], stdout=subprocess.PIPE)
+			xml = ElementTree.fromstring(p.communicate()[0])
+			p.wait()
+
+			xml = _parseStupidPListXML(xml)
+			for entry in xml:
+				if '_items' in entry:
+					for item in entry['_items']:
+						for dev in item['_items']:
+							if 'removable_media' in dev and dev['removable_media'] == 'yes' and 'volumes' in dev and len(dev['volumes']) > 0:
+								for vol in dev['volumes']:
+									if 'mount_point' in vol:
+										volume = vol['mount_point']
+										drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
+		else:
+			for volume in glob.glob('/media/*'):
+				drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
+
+		_removableCache = drives
+		time.sleep(1)
 
 def ejectDrive(driveName):
 	if platform.system() == "Windows":
