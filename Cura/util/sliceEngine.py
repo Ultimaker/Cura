@@ -63,6 +63,7 @@ class Slicer(object):
 			except:
 				pass
 			self._thread.join()
+		self._thread = None
 
 	def wait(self):
 		if self._process is not None:
@@ -102,9 +103,6 @@ class Slicer(object):
 		return '%0.2f meter %0.0f gram' % (float(self._filamentMM) / 1000.0, self.getFilamentWeight() * 1000.0)
 
 	def runSlicer(self, scene):
-		self.abortSlicer()
-		self._callback(-1.0, False)
-
 		extruderCount = 1
 		for obj in scene.objects():
 			if scene.checkPlatform(obj):
@@ -157,15 +155,22 @@ class Slicer(object):
 					self._objCount += 1
 			self._modelHash = hash.hexdigest()
 		if self._objCount > 0:
-			try:
-				self._process = self._runSliceProcess(commandList)
-				self._thread = threading.Thread(target=self._watchProcess)
-				self._thread.daemon = True
-				self._thread.start()
-			except OSError:
-				traceback.print_exc()
+			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread))
+			self._thread.daemon = True
+			self._thread.start()
 
-	def _watchProcess(self):
+	def _watchProcess(self, commandList, oldThread):
+		if oldThread is not None:
+			if self._process is not None:
+				self._process.terminate()
+			oldThread.join()
+		try:
+			self._process = self._runSliceProcess(commandList)
+		except OSError:
+			traceback.print_exc()
+			return
+		if self._thread != threading.currentThread():
+			self._process.terminate()
 		self._callback(0.0, False)
 		self._sliceLog = []
 		self._printTimeSeconds = None
