@@ -164,6 +164,7 @@ class Slicer(object):
 			if self._process is not None:
 				self._process.terminate()
 			oldThread.join()
+		self._callback(-1.0, False)
 		try:
 			self._process = self._runSliceProcess(commandList)
 		except OSError:
