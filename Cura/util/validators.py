@@ -76,6 +76,8 @@ class wallThicknessValidator(object):
 		try:
 			wallThickness = profile.getProfileSettingFloat('wall_thickness')
 			nozzleSize = profile.getProfileSettingFloat('nozzle_size')
+			if wallThickness < 0.01:
+				return SUCCESS, ''
 			if wallThickness <= nozzleSize * 0.5:
 				return ERROR, 'Trying to print walls thinner then the half of your nozzle size, this will not produce anything usable'
 			if wallThickness <= nozzleSize * 0.85:

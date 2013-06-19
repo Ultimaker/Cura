@@ -112,7 +112,7 @@ class setting(object):
 ## Settings
 #########################################################
 setting('layer_height',              0.1, float, 'basic',    'Quality').setRange(0.0001).setLabel('Layer height (mm)', 'Layer height in millimeters.\nThis is the most important setting to determen the quality of your print. Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to 0.25mm with an Ultimaker for very fast prints at low quality.')
-setting('wall_thickness',            0.8, float, 'basic',    'Quality').setRange(0.0001).setLabel('Shell thickness (mm)', 'Thickness of the outside shell in the horizontal direction.\nThis is used in combination with the nozzle size to define the number\nof perimeter lines and the thickness of those perimeter lines.')
+setting('wall_thickness',            0.8, float, 'basic',    'Quality').setRange(0.0).setLabel('Shell thickness (mm)', 'Thickness of the outside shell in the horizontal direction.\nThis is used in combination with the nozzle size to define the number\nof perimeter lines and the thickness of those perimeter lines.')
 setting('retraction_enable',       False, bool,  'basic',    'Quality').setLabel('Enable retraction', 'Retract the filament when the nozzle is moving over a none-printed area. Details about the retraction can be configured in the advanced tab.')
 setting('solid_layer_thickness',     0.6, float, 'basic',    'Fill').setRange(0).setLabel('Bottom/Top thickness (mm)', 'This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value.\nHaving this value a multiply of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.')
 setting('fill_density',               20, float, 'basic',    'Fill').setRange(0, 100).setLabel('Fill Density (%)', 'This controls how densely filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough.\nThis won\'t effect the outside of the print and only adjusts how strong the part becomes.')
@@ -615,7 +615,9 @@ def calculateEdgeWidth():
 def calculateLineCount():
 	wallThickness = getProfileSettingFloat('wall_thickness')
 	nozzleSize = getProfileSettingFloat('nozzle_size')
-	
+
+	if wallThickness < 0.01:
+		return 0
 	if wallThickness < nozzleSize:
 		return 1
 
