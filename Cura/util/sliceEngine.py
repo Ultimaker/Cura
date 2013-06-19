@@ -246,6 +246,7 @@ class Slicer(object):
 			'retractionAmount': int(profile.getProfileSettingFloat('retraction_amount') * 1000) if profile.getProfileSetting('retraction_enable') == 'True' else 0,
 			'retractionSpeed': int(profile.getProfileSettingFloat('retraction_speed')),
 			'retractionAmountExtruderSwitch': int(profile.getProfileSettingFloat('retraction_dual_amount') * 1000),
+			'multiVolumeOverlap': int(profile.getProfileSettingFloat('overlap_dual') * 1000),
 			'objectSink': int(profile.getProfileSettingFloat('object_sink') * 1000),
 			'minimalLayerTime': int(profile.getProfileSettingFloat('cool_min_layer_time')),
 			'minimalFeedrate': int(profile.getProfileSettingFloat('cool_min_feedrate')),
