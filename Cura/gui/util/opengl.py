@@ -34,7 +34,9 @@ class GLReferenceCounter(object):
 		return self._refCounter <= 0
 
 def hasShaderSupport():
-	return bool(glCreateShader) != False
+	if bool(glCreateShader):
+		return True
+	return False
 
 class GLShader(GLReferenceCounter):
 	def __init__(self, vertexProgram, fragmentProgram):
@@ -119,7 +121,7 @@ class GLFakeShader(GLReferenceCounter):
 class GLVBO(GLReferenceCounter):
 	def __init__(self, vertexArray, normalArray = None):
 		super(GLVBO, self).__init__()
-		if bool(glGenBuffers) == False:
+		if not bool(glGenBuffers):
 			self._vertexArray = vertexArray
 			self._normalArray = normalArray
 			self._buffer = None
