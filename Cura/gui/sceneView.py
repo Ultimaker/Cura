@@ -890,29 +890,43 @@ void main(void)
 							break
 					#['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']
 					if n == drawUpTill - 1:
-						if len(self._gcodeVBOs[n]) < 6:
+						if len(self._gcodeVBOs[n]) < 9:
 							self._gcodeVBOs[n] += self._generateGCodeVBOs2(self._gcode.layerList[n])
 						glColor3f(c, 0, 0)
-						self._gcodeVBOs[n][5].render(GL_QUADS)
-						glColor3f(0, c, 0)
-						self._gcodeVBOs[n][6].render(GL_QUADS)
-						glColor3f(c/2, c/2, 0.0)
-						self._gcodeVBOs[n][7].render(GL_QUADS)
-						glColor3f(0, c, c)
 						self._gcodeVBOs[n][8].render(GL_QUADS)
+						glColor3f(c/2, 0, c)
 						self._gcodeVBOs[n][9].render(GL_QUADS)
+						glColor3f(0, c, c/2)
+						self._gcodeVBOs[n][10].render(GL_QUADS)
+						glColor3f(c, 0, 0)
+						self._gcodeVBOs[n][11].render(GL_QUADS)
+
+						glColor3f(0, c, 0)
+						self._gcodeVBOs[n][12].render(GL_QUADS)
+						glColor3f(c/2, c/2, 0.0)
+						self._gcodeVBOs[n][13].render(GL_QUADS)
+						glColor3f(0, c, c)
+						self._gcodeVBOs[n][14].render(GL_QUADS)
+						self._gcodeVBOs[n][15].render(GL_QUADS)
 						glColor3f(0, 0, c)
-						self._gcodeVBOs[n][10].render(GL_LINES)
+						self._gcodeVBOs[n][16].render(GL_LINES)
 					else:
 						glColor3f(c, 0, 0)
 						self._gcodeVBOs[n][0].render(GL_LINES)
-						glColor3f(0, c, 0)
+						glColor3f(c/2, 0, c)
 						self._gcodeVBOs[n][1].render(GL_LINES)
-						glColor3f(c/2, c/2, 0.0)
+						glColor3f(0, c, c/2)
 						self._gcodeVBOs[n][2].render(GL_LINES)
-						glColor3f(0, c, c)
+						glColor3f(c, 0, 0)
 						self._gcodeVBOs[n][3].render(GL_LINES)
+
+						glColor3f(0, c, 0)
 						self._gcodeVBOs[n][4].render(GL_LINES)
+						glColor3f(c/2, c/2, 0.0)
+						self._gcodeVBOs[n][5].render(GL_LINES)
+						glColor3f(0, c, c)
+						self._gcodeVBOs[n][6].render(GL_LINES)
+						self._gcodeVBOs[n][7].render(GL_LINES)
 				glPopMatrix()
 		else:
 			glStencilFunc(GL_ALWAYS, 1, 1)
@@ -1159,10 +1173,15 @@ void main(void)
 
 	def _generateGCodeVBOs(self, layer):
 		ret = []
-		for extrudeType in ['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
+		for extrudeType in ['WALL-OUTER:0', 'WALL-OUTER:1', 'WALL-OUTER:2', 'WALL-OUTER:3', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
+			if ':' in extrudeType:
+				extruder = int(extrudeType[extrudeType.find(':')+1:])
+				extrudeType = extrudeType[0:extrudeType.find(':')]
+			else:
+				extruder = None
 			pointList = numpy.zeros((0,3), numpy.float32)
 			for path in layer:
-				if path['type'] == 'extrude' and path['pathType'] == extrudeType:
+				if path['type'] == 'extrude' and path['pathType'] == extrudeType and (extruder is None or path['extruder'] == extruder):
 					a = path['points']
 					a = numpy.concatenate((a[:-1], a[1:]), 1)
 					a = a.reshape((len(a) * 2, 3))
@@ -1175,10 +1194,15 @@ void main(void)
 		filamentArea = math.pi * filamentRadius * filamentRadius
 
 		ret = []
-		for extrudeType in ['WALL-OUTER', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
+		for extrudeType in ['WALL-OUTER:0', 'WALL-OUTER:1', 'WALL-OUTER:2', 'WALL-OUTER:3', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
+			if ':' in extrudeType:
+				extruder = int(extrudeType[extrudeType.find(':')+1:])
+				extrudeType = extrudeType[0:extrudeType.find(':')]
+			else:
+				extruder = None
 			pointList = numpy.zeros((0,3), numpy.float32)
 			for path in layer:
-				if path['type'] == 'extrude' and path['pathType'] == extrudeType:
+				if path['type'] == 'extrude' and path['pathType'] == extrudeType and (extruder is None or path['extruder'] == extruder):
 					a = path['points']
 					if extrudeType == 'FILL':
 						a[:,2] += 0.01
