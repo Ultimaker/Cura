@@ -829,7 +829,7 @@ void main(void)
 	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
 }
 				""")
-			else:
+			if self._objectShader == None or not self._objectShader.isValid():
 				self._objectShader = opengl.GLFakeShader()
 				self._objectOverhangShader = opengl.GLFakeShader()
 				self._objectLoadShader = None
