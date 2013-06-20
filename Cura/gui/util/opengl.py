@@ -136,7 +136,9 @@ class GLVBO(GLReferenceCounter):
 		if not bool(glGenBuffers):
 			self._vertexArray = vertexArray
 			self._normalArray = normalArray
+			self._size = len(vertexArray)
 			self._buffer = None
+			self._hasNormals = self._normalArray is not None
 		else:
 			self._buffer = glGenBuffers(1)
 			self._size = len(vertexArray)
@@ -149,25 +151,14 @@ class GLVBO(GLReferenceCounter):
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 	def render(self, render_type = GL_TRIANGLES):
+		glEnableClientState(GL_VERTEX_ARRAY)
 		if self._buffer is None:
-			glEnableClientState(GL_VERTEX_ARRAY)
 			glVertexPointer(3, GL_FLOAT, 0, self._vertexArray)
-			if self._normalArray is not None:
+			if self._hasNormals:
 				glEnableClientState(GL_NORMAL_ARRAY)
 				glNormalPointer(GL_FLOAT, 0, self._normalArray)
-			#Odd, drawing in batchs is a LOT faster then drawing it all at once.
-			batchSize = 999    #Warning, batchSize needs to be dividable by 3
-			extraStartPos = int(len(self._vertexArray) / batchSize) * batchSize
-			extraCount = len(self._vertexArray) - extraStartPos
-
-			glCullFace(GL_BACK)
-			for i in xrange(0, int(len(self._vertexArray) / batchSize)):
-				glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
-			glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
 		else:
-			glEnableClientState(GL_VERTEX_ARRAY)
 			glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
-
 			if self._hasNormals:
 				glEnableClientState(GL_NORMAL_ARRAY)
 				glVertexPointer(3, GL_FLOAT, 2*3*4, c_void_p(0))
@@ -175,18 +166,19 @@ class GLVBO(GLReferenceCounter):
 			else:
 				glVertexPointer(3, GL_FLOAT, 3*4, c_void_p(0))
 
-			batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
-			extraStartPos = int(self._size / batchSize) * batchSize
-			extraCount = self._size - extraStartPos
+		batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
+		extraStartPos = int(self._size / batchSize) * batchSize
+		extraCount = self._size - extraStartPos
 
-			for i in xrange(0, int(self._size / batchSize)):
-				glDrawArrays(render_type, i * batchSize, batchSize)
-			glDrawArrays(render_type, extraStartPos, extraCount)
+		for i in xrange(0, int(self._size / batchSize)):
+			glDrawArrays(render_type, i * batchSize, batchSize)
+		glDrawArrays(render_type, extraStartPos, extraCount)
+		if self._buffer is None:
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
 
-			glDisableClientState(GL_VERTEX_ARRAY)
-			if self._hasNormals:
-				glDisableClientState(GL_NORMAL_ARRAY)
+		glDisableClientState(GL_VERTEX_ARRAY)
+		if self._hasNormals:
+			glDisableClientState(GL_NORMAL_ARRAY)
 
 	def release(self):
 		if self._buffer is not None:
