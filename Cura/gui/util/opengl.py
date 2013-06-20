@@ -173,7 +173,7 @@ class GLVBO(GLReferenceCounter):
 		for i in xrange(0, int(self._size / batchSize)):
 			glDrawArrays(render_type, i * batchSize, batchSize)
 		glDrawArrays(render_type, extraStartPos, extraCount)
-		if self._buffer is None:
+		if self._buffer is not None:
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
 
 		glDisableClientState(GL_VERTEX_ARRAY)

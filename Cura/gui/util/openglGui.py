@@ -124,7 +124,7 @@ class glGuiContainer(glGuiControl):
 
 class glGuiPanel(glcanvas.GLCanvas):
 	def __init__(self, parent):
-		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 32, glcanvas.WX_GL_STENCIL_SIZE, 8)
+		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 32, glcanvas.WX_GL_STENCIL_SIZE, 8, 0)
 		glcanvas.GLCanvas.__init__(self, parent, style=wx.WANTS_CHARS, attribList = attribList)
 		self._base = self
 		self._focus = None

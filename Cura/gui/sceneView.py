@@ -1143,6 +1143,7 @@ void main(void)
 		glDrawArrays(GL_QUADS, 4, 8)
 		glColor4ub(5, 171, 231, 128)
 		glDrawArrays(GL_QUADS, 12, 8)
+		glDisableClientState(GL_VERTEX_ARRAY)
 
 		sx = self._machineSize[0]
 		sy = self._machineSize[1]
@@ -1167,7 +1168,6 @@ void main(void)
 				glVertex3f(x1, y2, -0.02)
 				glEnd()
 
-		glDisableClientState(GL_VERTEX_ARRAY)
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
 
