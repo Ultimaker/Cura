@@ -44,9 +44,23 @@ class GLShader(GLReferenceCounter):
 		self._vertexString = vertexProgram
 		self._fragmentString = fragmentProgram
 		try:
-			self._vertexProgram = shaders.compileShader(vertexProgram, GL_VERTEX_SHADER)
-			self._fragmentProgram = shaders.compileShader(fragmentProgram, GL_FRAGMENT_SHADER)
-			self._program = shaders.compileProgram(self._vertexProgram, self._fragmentProgram)
+			vertexShader = shaders.compileShader(vertexProgram, GL_VERTEX_SHADER)
+			fragmentShader = shaders.compileShader(fragmentProgram, GL_FRAGMENT_SHADER)
+
+			#shader.compileProgram tries to return the shader program as a overloaded int. But the return value of a shader does not always fit in a int (needs to be a long). So we do raw OpenGL calls.
+			# self._program = shaders.compileProgram(self._vertexProgram, self._fragmentProgram)
+			self._program = glCreateProgram()
+			glAttachShader(self._program, vertexShader)
+			glAttachShader(self._program, fragmentShader)
+			glLinkProgram(self._program)
+			# Validation has to occur *after* linking
+			glValidateProgram(self._program)
+			if glGetProgramiv(self._program, GL_VALIDATE_STATUS) == GL_FALSE:
+				raise RuntimeError("Validation failure: %s"%(glGetProgramInfoLog(self._program)))
+			if glGetProgramiv(self._program, GL_LINK_STATUS) == GL_FALSE:
+				raise RuntimeError("Link failure: %s" % (glGetProgramInfoLog(self._program)))
+			glDeleteShader(vertexShader)
+			glDeleteShader(fragmentShader)
 		except RuntimeError, e:
 			print str(e)
 			self._program = None
@@ -60,8 +74,6 @@ class GLShader(GLReferenceCounter):
 
 	def release(self):
 		if self._program is not None:
-			shaders.glDeleteShader(self._vertexProgram)
-			shaders.glDeleteShader(self._fragmentProgram)
 			glDeleteProgram(self._program)
 			self._program = None
 

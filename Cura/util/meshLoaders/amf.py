@@ -109,8 +109,8 @@ def saveScene(filename, objects):
 				xml.write('          <v3>%i</v3>\n' % (idx + idxOffset + 2))
 				xml.write('        </triangle>\n')
 			xml.write('      </volume>\n')
-			xml.write('    </mesh>\n')
 			idxOffset += len(m.vertexes)
+		xml.write('    </mesh>\n')
 		xml.write('  </object>\n')
 
 	n += 1
