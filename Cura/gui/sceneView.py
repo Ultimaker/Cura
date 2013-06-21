@@ -1223,8 +1223,6 @@ void main(void)
 					b = numpy.concatenate((b, a[1:] - normal), 1)
 					b = numpy.concatenate((b, a[:-1] - normal), 1)
 					b = numpy.concatenate((b, a[:-1] + normal), 1)
-					#b = numpy.concatenate((b, a[:-1]), 1)
-					#b = numpy.concatenate((b, a[:-1]), 1)
 					b = b.reshape((len(b) * 4, 3))
 
 					if len(a) > 2:
