@@ -13,6 +13,7 @@ import OpenGL
 OpenGL.ERROR_CHECKING = False
 from OpenGL.GL import *
 
+from Cura.util import version
 from Cura.gui.util import opengl
 
 class animation(object):
@@ -220,9 +221,16 @@ class glGuiPanel(glcanvas.GLCanvas):
 			for obj in self.glReleaseList:
 				obj.release()
 			del self.glReleaseList[:]
+			renderStartTime = time.time()
 			self.OnPaint(e)
 			self._drawGui()
 			glFlush()
+			if version.isDevVersion():
+				renderTime = time.time() - renderStartTime
+				glLoadIdentity()
+				glTranslate(10, self.GetSize().GetHeight() - 30, -1)
+				glColor4f(0.2,0.2,0.2,0.5)
+				opengl.glDrawStringLeft("fps:%d" % (1 / renderTime))
 			self.SwapBuffers()
 		except:
 			errStr = 'An error has occurred during the 3D view drawing.'
