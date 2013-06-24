@@ -101,7 +101,7 @@ class superformulaEvolver(wx.Frame):
 		sizer = wx.BoxSizer()
 		self.SetSizer(sizer)
 
-		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 32, glcanvas.WX_GL_STENCIL_SIZE, 8)
+		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 24, glcanvas.WX_GL_STENCIL_SIZE, 8)
 		self._glCanvas = glcanvas.GLCanvas(self, style=wx.WANTS_CHARS, attribList = attribList)
 		self._glCanvas.SetMinSize((800,600))
 		sizer.Add(self._glCanvas, 1, flag=wx.EXPAND)
