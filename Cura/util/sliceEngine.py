@@ -211,6 +211,7 @@ class Slicer(object):
 				pluginError = profile.runPostProcessingPlugins(self._exportFilename)
 				if pluginError is not None:
 					print pluginError
+					self._sliceLog.append(pluginError)
 				self._callback(1.0, True)
 			else:
 				for line in self._sliceLog:

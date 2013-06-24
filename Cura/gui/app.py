@@ -44,6 +44,16 @@ class CuraApp(wx.App):
 		from Cura.util import resources
 		from Cura.util import version
 
+		#If we do not have preferences yet, try to load it from a previous Cura install
+		if profile.getPreference('machine_type') == 'unknown':
+			try:
+				otherCuraInstalls = profile.getAlternativeBasePaths()
+				otherCuraInstalls.sort()
+				profile.loadPreferences(os.path.join(otherCuraInstalls[-1], 'preferences.ini'))
+				profile.loadProfile(os.path.join(otherCuraInstalls[-1], 'current_profile.ini'))
+			except:
+				print sys.exc_info()
+
 		#If we haven't run it before, run the configuration wizard.
 		if profile.getPreference('machine_type') == 'unknown':
 			if platform.system() == "Windows":

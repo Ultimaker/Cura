@@ -398,6 +398,18 @@ def getBasePath():
 		os.makedirs(basePath)
 	return basePath
 
+def getAlternativeBasePaths():
+	paths = []
+	basePath = os.path.normpath(os.path.join(getBasePath(), '..'))
+	for subPath in os.listdir(basePath):
+		path = os.path.join(basePath, subPath)
+		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
+			paths.append(path)
+		path = os.path.join(basePath, subPath, 'Cura')
+		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
+			paths.append(path)
+	return paths
+
 def getDefaultProfilePath():
 	return os.path.join(getBasePath(), 'current_profile.ini')
 
