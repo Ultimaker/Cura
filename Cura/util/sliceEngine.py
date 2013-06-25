@@ -66,7 +66,7 @@ class Slicer(object):
 		self._thread = None
 
 	def wait(self):
-		if self._process is not None:
+		if self._thread is not None:
 			self._thread.join()
 
 	def getGCodeFilename(self):
