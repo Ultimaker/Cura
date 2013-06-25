@@ -277,6 +277,7 @@ class mainWindow(wx.Frame):
 		self.modelFileHistory.Save(self.config)
 		self.config.Flush()
 		# Load Model
+		profile.putPreference('lastFile', path)
 		filelist = [ path ]
 		self.scene.loadScene(filelist)
 
