@@ -958,10 +958,12 @@ class glSlider(glGuiControl):
 
 	def setValue(self, value):
 		self._value = value
-		self._value = max(self._minValue, self._value)
-		self._value = min(self._maxValue, self._value)
 
 	def getValue(self):
+		if self._value < self._minValue:
+			return self._minValue
+		if self._value > self._maxValue:
+			return self._maxValue
 		return self._value
 
 	def setRange(self, minValue, maxValue):
@@ -969,8 +971,6 @@ class glSlider(glGuiControl):
 			maxValue = minValue
 		self._minValue = minValue
 		self._maxValue = maxValue
-		self._value = max(minValue, self._value)
-		self._value = min(maxValue, self._value)
 
 	def getMinValue(self):
 		return self._minValue
@@ -1010,6 +1010,10 @@ class glSlider(glGuiControl):
 		glVertex2f( w/2, h/2)
 		glEnd()
 		scrollLength = h - w
+		if self._maxValue-self._minValue != 0:
+			valueNormalized = ((self.getValue()-self._minValue)/(self._maxValue-self._minValue))
+		else:
+			valueNormalized = 0
 		glTranslate(0.0,scrollLength/2,0)
 		if self._focus:
 			glColor4ub(0,0,0,255)
@@ -1018,13 +1022,11 @@ class glSlider(glGuiControl):
 			opengl.glDrawStringRight(str(self._minValue))
 			glTranslate(0,-scrollLength,0)
 			opengl.glDrawStringRight(str(self._maxValue))
-			if self._maxValue-self._minValue > 0:
-				glTranslate(w,scrollLength-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
-			opengl.glDrawStringLeft(str(self._value))
+			glTranslate(w,scrollLength-scrollLength*valueNormalized,0)
+			opengl.glDrawStringLeft(str(self.getValue()))
 			glPopMatrix()
 		glColor4ub(255,255,255,240)
-		if self._maxValue - self._minValue != 0:
-			glTranslate(0.0,-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
+		glTranslate(0.0,-scrollLength*valueNormalized,0)
 		glBegin(GL_QUADS)
 		glVertex2f( w/2,-w/2)
 		glVertex2f(-w/2,-w/2)

@@ -99,7 +99,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,19,11,15,23], ['Normal', 'Overhang', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
-		self.layerSelect = openglGui.glSlider(self, 100, 0, 100, (-1,-2), lambda : self.QueueRefresh())
+		self.layerSelect = openglGui.glSlider(self, 10000, 0, 1, (-1,-2), lambda : self.QueueRefresh())
 
 		self.notification = openglGui.glNotification(self, (0, 0))
 
@@ -273,7 +273,6 @@ class SceneView(openglGui.glGuiPanel):
 			self.viewMode = 'gcode'
 			if self._gcode is not None and self._gcode.layerList is not None:
 				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
-				self.layerSelect.setValue(len(self._gcode.layerList) - 1)
 			self._selectObject(None)
 		elif self.viewSelection.getValue() == 1:
 			self.viewMode = 'overhang'
@@ -454,11 +453,7 @@ class SceneView(openglGui.glGuiPanel):
 			time.sleep(0.1)
 		if self._gcode is None:
 			return True
-		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
-			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
-			self.layerSelect.setValue(self.layerSelect.getMaxValue())
-		else:
-			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
+		self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 		if self.viewMode == 'gcode':
 			self._queueRefresh()
 		return False
