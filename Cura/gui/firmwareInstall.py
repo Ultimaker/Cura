@@ -42,7 +42,7 @@ class InstallFirmware(wx.Dialog):
 
 		sizer = wx.BoxSizer(wx.VERTICAL)
 		
-		self.progressLabel = wx.StaticText(self, -1, 'Reading firmware...')
+		self.progressLabel = wx.StaticText(self, -1, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nX')
 		sizer.Add(self.progressLabel, 0, flag=wx.ALIGN_CENTER)
 		self.progressGauge = wx.Gauge(self, -1)
 		sizer.Add(self.progressGauge, 0, flag=wx.EXPAND)
@@ -54,7 +54,10 @@ class InstallFirmware(wx.Dialog):
 		
 		self.filename = filename
 		self.port = port
-		
+
+		self.Layout()
+		self.Fit()
+
 		threading.Thread(target=self.OnRun).start()
 		
 		self.ShowModal()
@@ -62,6 +65,7 @@ class InstallFirmware(wx.Dialog):
 		return
 
 	def OnRun(self):
+		wx.CallAfter(self.updateLabel, "Reading firmware...")
 		hexFile = intelHex.readHex(self.filename)
 		wx.CallAfter(self.updateLabel, "Connecting to machine...")
 		programmer = stk500v2.Stk500v2()
@@ -95,8 +99,8 @@ class InstallFirmware(wx.Dialog):
 	
 	def updateLabel(self, text):
 		self.progressLabel.SetLabel(text)
-		self.Layout()
-	
+		#self.Layout()
+
 	def OnProgress(self, value, max):
 		wx.CallAfter(self.progressGauge.SetRange, max)
 		wx.CallAfter(self.progressGauge.SetValue, value)

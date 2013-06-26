@@ -63,6 +63,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showPrintWindow(), i)
 		i = self.fileMenu.Append(-1, 'Save GCode...')
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveGCode(), i)
+		i = self.fileMenu.Append(-1, 'Show slice engine log...')
+		self.Bind(wx.EVT_MENU, lambda e: self.scene._showSliceLog(), i)
 
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, 'Open Profile...')
@@ -275,6 +277,7 @@ class mainWindow(wx.Frame):
 		self.modelFileHistory.Save(self.config)
 		self.config.Flush()
 		# Load Model
+		profile.putPreference('lastFile', path)
 		filelist = [ path ]
 		self.scene.loadScene(filelist)
 

@@ -437,6 +437,7 @@ class UltimakerCheckupPage(InfoPage):
 		self.tempState.SetBitmap(self.unknownBitmap)
 		self.stopState.SetBitmap(self.unknownBitmap)
 		self.checkupState = 0
+		self.checkExtruderNr = 0
 		self.comm = machineCom.MachineCom(callbackObject=self)
 
 	def OnErrorLog(self, e):

@@ -37,6 +37,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene = objectScene.Scene()
 		self._gcode = None
 		self._gcodeVBOs = []
+		self._gcodeFilename = None
 		self._gcodeLoadThread = None
 		self._objectShader = None
 		self._objectLoadShader = None
@@ -59,7 +60,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.tempMatrix = None
 
 		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.showLoadModel)
-		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.showPrintWindow)
+		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.OnPrintButton)
 		self.printButton.setDisabled(True)
 
 		group = []
@@ -99,7 +100,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,19,11,15,23], ['Normal', 'Overhang', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
-		self.layerSelect = openglGui.glSlider(self, 100, 0, 100, (-1,-2), lambda : self.QueueRefresh())
+		self.layerSelect = openglGui.glSlider(self, 10000, 0, 1, (-1,-2), lambda : self.QueueRefresh())
 
 		self.notification = openglGui.glNotification(self, (0, 0))
 
@@ -163,12 +164,10 @@ class SceneView(openglGui.glGuiPanel):
 		dlg.Destroy()
 		meshLoader.saveMeshes(filename, self._scene.objects())
 
-	def showPrintWindow(self, button):
+	def OnPrintButton(self, button):
 		if button == 1:
 			if machineCom.machineIsConnected():
-				printWindow.printFile(self._gcodeFilename)
-				if self._gcodeFilename == self._slicer.getGCodeFilename():
-					self._slicer.submitSliceInfoOnline()
+				self.showPrintWindow()
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
@@ -186,11 +185,18 @@ class SceneView(openglGui.glGuiPanel):
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
-			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._gcodeFilename), menu.Append(-1, 'Print with USB'))
+			self.Bind(wx.EVT_MENU, lambda e: self.showPrintWindow(), menu.Append(-1, 'Print with USB'))
 			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, 'Save GCode...'))
 			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, 'Slice engine log...'))
 			self.PopupMenu(menu)
 			menu.Destroy()
+
+	def showPrintWindow(self):
+		if self._gcodeFilename is None:
+			return
+		printWindow.printFile(self._gcodeFilename)
+		if self._gcodeFilename == self._slicer.getGCodeFilename():
+			self._slicer.submitSliceInfoOnline()
 
 	def showSaveGCode(self):
 		defPath = profile.getPreference('lastFile')
@@ -273,7 +279,6 @@ class SceneView(openglGui.glGuiPanel):
 			self.viewMode = 'gcode'
 			if self._gcode is not None and self._gcode.layerList is not None:
 				self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
-				self.layerSelect.setValue(len(self._gcode.layerList) - 1)
 			self._selectObject(None)
 		elif self.viewSelection.getValue() == 1:
 			self.viewMode = 'overhang'
@@ -454,11 +459,7 @@ class SceneView(openglGui.glGuiPanel):
 			time.sleep(0.1)
 		if self._gcode is None:
 			return True
-		if self.layerSelect.getValue() == self.layerSelect.getMaxValue():
-			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
-			self.layerSelect.setValue(self.layerSelect.getMaxValue())
-		else:
-			self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
+		self.layerSelect.setRange(1, len(self._gcode.layerList) - 1)
 		if self.viewMode == 'gcode':
 			self._queueRefresh()
 		return False
@@ -1223,8 +1224,6 @@ void main(void)
 					b = numpy.concatenate((b, a[1:] - normal), 1)
 					b = numpy.concatenate((b, a[:-1] - normal), 1)
 					b = numpy.concatenate((b, a[:-1] + normal), 1)
-					#b = numpy.concatenate((b, a[:-1]), 1)
-					#b = numpy.concatenate((b, a[:-1]), 1)
 					b = b.reshape((len(b) * 4, 3))
 
 					if len(a) > 2:

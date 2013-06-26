@@ -66,7 +66,7 @@ class Slicer(object):
 		self._thread = None
 
 	def wait(self):
-		if self._process is not None:
+		if self._thread is not None:
 			self._thread.join()
 
 	def getGCodeFilename(self):
@@ -211,6 +211,7 @@ class Slicer(object):
 				pluginError = profile.runPostProcessingPlugins(self._exportFilename)
 				if pluginError is not None:
 					print pluginError
+					self._sliceLog.append(pluginError)
 				self._callback(1.0, True)
 			else:
 				for line in self._sliceLog:

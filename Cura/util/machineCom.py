@@ -56,7 +56,7 @@ def machineIsConnected():
 	if port == 'AUTO':
 		return len(serialList(True)) > 0
 	if platform.system() == "Windows":
-		return port in serialList(True)
+		return port in serialList()
 	return os.path.isfile(port)
 
 def baudrateList():

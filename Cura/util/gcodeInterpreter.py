@@ -192,15 +192,19 @@ class gcode(object):
 					x = getCodeFloat(line, 'X')
 					y = getCodeFloat(line, 'Y')
 					z = getCodeFloat(line, 'Z')
+					if profile.getPreference('machine_center_is_zero') == 'True':
+						center = [profile.getProfileSettingFloat('machine_width') / 2, profile.getProfileSettingFloat('machine_depth') / 2,0.0]
+					else:
+						center = [0.0,0.0,0.0]
 					if x is None and y is None and z is None:
-						pos = [0.0,0.0,0.0]
+						pos = center
 					else:
 						if x is not None:
-							pos[0] = 0.0
+							pos[0] = center[0]
 						if y is not None:
-							pos[0] = 0.0
+							pos[0] = center[1]
 						if z is not None:
-							pos[0] = 0.0
+							pos[0] = center[2]
 				elif G == 90:	#Absolute position
 					posAbs = True
 				elif G == 91:	#Relative position

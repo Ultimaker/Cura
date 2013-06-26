@@ -13,6 +13,7 @@ import OpenGL
 OpenGL.ERROR_CHECKING = False
 from OpenGL.GL import *
 
+from Cura.util import version
 from Cura.gui.util import opengl
 
 class animation(object):
@@ -124,7 +125,7 @@ class glGuiContainer(glGuiControl):
 
 class glGuiPanel(glcanvas.GLCanvas):
 	def __init__(self, parent):
-		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 32, glcanvas.WX_GL_STENCIL_SIZE, 8, 0)
+		attribList = (glcanvas.WX_GL_RGBA, glcanvas.WX_GL_DOUBLEBUFFER, glcanvas.WX_GL_DEPTH_SIZE, 24, glcanvas.WX_GL_STENCIL_SIZE, 8, 0)
 		glcanvas.GLCanvas.__init__(self, parent, style=wx.WANTS_CHARS, attribList = attribList)
 		self._base = self
 		self._focus = None
@@ -220,9 +221,16 @@ class glGuiPanel(glcanvas.GLCanvas):
 			for obj in self.glReleaseList:
 				obj.release()
 			del self.glReleaseList[:]
+			renderStartTime = time.time()
 			self.OnPaint(e)
 			self._drawGui()
 			glFlush()
+			if version.isDevVersion():
+				renderTime = time.time() - renderStartTime
+				glLoadIdentity()
+				glTranslate(10, self.GetSize().GetHeight() - 30, -1)
+				glColor4f(0.2,0.2,0.2,0.5)
+				opengl.glDrawStringLeft("fps:%d" % (1 / renderTime))
 			self.SwapBuffers()
 		except:
 			errStr = 'An error has occurred during the 3D view drawing.'
@@ -950,10 +958,12 @@ class glSlider(glGuiControl):
 
 	def setValue(self, value):
 		self._value = value
-		self._value = max(self._minValue, self._value)
-		self._value = min(self._maxValue, self._value)
 
 	def getValue(self):
+		if self._value < self._minValue:
+			return self._minValue
+		if self._value > self._maxValue:
+			return self._maxValue
 		return self._value
 
 	def setRange(self, minValue, maxValue):
@@ -961,8 +971,6 @@ class glSlider(glGuiControl):
 			maxValue = minValue
 		self._minValue = minValue
 		self._maxValue = maxValue
-		self._value = max(minValue, self._value)
-		self._value = min(maxValue, self._value)
 
 	def getMinValue(self):
 		return self._minValue
@@ -1002,6 +1010,10 @@ class glSlider(glGuiControl):
 		glVertex2f( w/2, h/2)
 		glEnd()
 		scrollLength = h - w
+		if self._maxValue-self._minValue != 0:
+			valueNormalized = ((self.getValue()-self._minValue)/(self._maxValue-self._minValue))
+		else:
+			valueNormalized = 0
 		glTranslate(0.0,scrollLength/2,0)
 		if self._focus:
 			glColor4ub(0,0,0,255)
@@ -1010,13 +1022,11 @@ class glSlider(glGuiControl):
 			opengl.glDrawStringRight(str(self._minValue))
 			glTranslate(0,-scrollLength,0)
 			opengl.glDrawStringRight(str(self._maxValue))
-			if self._maxValue-self._minValue > 0:
-				glTranslate(w,scrollLength-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
-			opengl.glDrawStringLeft(str(self._value))
+			glTranslate(w,scrollLength-scrollLength*valueNormalized,0)
+			opengl.glDrawStringLeft(str(self.getValue()))
 			glPopMatrix()
 		glColor4ub(255,255,255,240)
-		if self._maxValue - self._minValue != 0:
-			glTranslate(0.0,-scrollLength*((self._value-self._minValue)/(self._maxValue-self._minValue)),0)
+		glTranslate(0.0,-scrollLength*valueNormalized,0)
 		glBegin(GL_QUADS)
 		glVertex2f( w/2,-w/2)
 		glVertex2f(-w/2,-w/2)
