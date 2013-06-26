@@ -37,6 +37,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene = objectScene.Scene()
 		self._gcode = None
 		self._gcodeVBOs = []
+		self._gcodeFilename = None
 		self._gcodeLoadThread = None
 		self._objectShader = None
 		self._objectLoadShader = None
@@ -59,7 +60,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.tempMatrix = None
 
 		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.showLoadModel)
-		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.showPrintWindow)
+		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.OnPrintButton)
 		self.printButton.setDisabled(True)
 
 		group = []
@@ -163,12 +164,10 @@ class SceneView(openglGui.glGuiPanel):
 		dlg.Destroy()
 		meshLoader.saveMeshes(filename, self._scene.objects())
 
-	def showPrintWindow(self, button):
+	def OnPrintButton(self, button):
 		if button == 1:
 			if machineCom.machineIsConnected():
-				printWindow.printFile(self._gcodeFilename)
-				if self._gcodeFilename == self._slicer.getGCodeFilename():
-					self._slicer.submitSliceInfoOnline()
+				self.showPrintWindow()
 			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
@@ -186,11 +185,18 @@ class SceneView(openglGui.glGuiPanel):
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
-			self.Bind(wx.EVT_MENU, lambda e: printWindow.printFile(self._gcodeFilename), menu.Append(-1, 'Print with USB'))
+			self.Bind(wx.EVT_MENU, lambda e: self.showPrintWindow(), menu.Append(-1, 'Print with USB'))
 			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, 'Save GCode...'))
 			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, 'Slice engine log...'))
 			self.PopupMenu(menu)
 			menu.Destroy()
+
+	def showPrintWindow(self):
+		if self._gcodeFilename is None:
+			return
+		printWindow.printFile(self._gcodeFilename)
+		if self._gcodeFilename == self._slicer.getGCodeFilename():
+			self._slicer.submitSliceInfoOnline()
 
 	def showSaveGCode(self):
 		defPath = profile.getPreference('lastFile')

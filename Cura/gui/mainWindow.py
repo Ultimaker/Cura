@@ -60,7 +60,7 @@ class mainWindow(wx.Frame):
 
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, 'Print...\tCTRL+P')
-		self.Bind(wx.EVT_MENU, lambda e: self.scene.showPrintWindow(1), i)
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.showPrintWindow(), i)
 		i = self.fileMenu.Append(-1, 'Save GCode...')
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveGCode(), i)
 		i = self.fileMenu.Append(-1, 'Show slice engine log...')
