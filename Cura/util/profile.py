@@ -324,7 +324,7 @@ setting('extruder_head_size_min_x', '0.0', float, 'preference', 'hidden').setLab
 setting('extruder_head_size_min_y', '0.0', float, 'preference', 'hidden').setLabel('Head size towards Y min (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan is on the left side.')
 setting('extruder_head_size_max_x', '0.0', float, 'preference', 'hidden').setLabel('Head size towards X max (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan is on the left side.')
 setting('extruder_head_size_max_y', '0.0', float, 'preference', 'hidden').setLabel('Head size towards Y max (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan is on the left side.')
-setting('extruder_head_size_height', '0.0', float, 'preference', 'hidden').setLabel('Printer gantry height (mm)', 'The height of the gantry holding up the printer head. If an object is higher then this then you cannot print multiple objects one for one. XXmm for an Ultimaker.')
+setting('extruder_head_size_height', '0.0', float, 'preference', 'hidden').setLabel('Printer gantry height (mm)', 'The height of the gantry holding up the printer head. If an object is higher then this then you cannot print multiple objects one for one. 60mm for an Ultimaker.')
 
 setting('model_colour', '#7AB645', str, 'preference', 'hidden').setLabel('Model colour')
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel('Model colour (2)')
