@@ -1,10 +1,10 @@
 Package: cura
-Version: 13.03-1
+Version: 13.06.3-1
 Section: misc
 Priority: optional
 Architecture: all
 Essential: no
-Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy, pypy
+Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy
 Maintainer: Daid <daid303@gmail.com>
 Provides: cura
 Installed-Size: 10000
