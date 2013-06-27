@@ -136,6 +136,8 @@ class Scene(object):
 	def merge(self, obj1, obj2):
 		self.remove(obj2)
 		obj1._meshList += obj2._meshList
+		for m in obj2._meshList:
+			m._obj = obj1
 		obj1.processMatrix()
 		obj1.setPosition((obj1.getPosition() + obj2.getPosition()) / 2)
 		self.pushFree()

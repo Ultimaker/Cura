@@ -9,8 +9,12 @@ __all__ = ['getPathForResource', 'getPathForImage', 'getPathForMesh']
 
 if sys.platform.startswith('darwin'):
 	if hasattr(sys, 'frozen'):
-		from Foundation import *
-		resourceBasePath = NSBundle.mainBundle().resourcePath()
+		try:
+			#Foundation import can crash on some MacOS installs
+			from Foundation import *
+			resourceBasePath = NSBundle.mainBundle().resourcePath()
+		except:
+			resourceBasePath = os.path.join(os.path.dirname(__file__), "../../../../../")
 	else:
 		resourceBasePath = os.path.join(os.path.dirname(__file__), "../resources")
 else:
