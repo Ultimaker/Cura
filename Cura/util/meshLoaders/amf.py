@@ -10,6 +10,7 @@ except:
 	from xml.etree import ElementTree
 
 from Cura.util import mesh
+from Cura.util import profile
 
 def loadScene(filename):
 	try:
@@ -99,8 +100,9 @@ def saveScene(filename, objects):
 			xml.write('        </vertex>\n')
 		xml.write('      </vertices>\n')
 
+		matID = 1
 		for m in meshList:
-			xml.write('      <volume>\n')
+			xml.write('      <volume materialid="%i">\n' % (matID))
 			for idx in xrange(0, len(m), 3):
 				xml.write('        <triangle>\n')
 				xml.write('          <v1>%i</v1>\n' % (m[idx]))
@@ -108,6 +110,7 @@ def saveScene(filename, objects):
 				xml.write('          <v3>%i</v3>\n' % (m[idx+2]))
 				xml.write('        </triangle>\n')
 			xml.write('      </volume>\n')
+			matID += 1
 		xml.write('    </mesh>\n')
 		xml.write('  </object>\n')
 
@@ -123,9 +126,18 @@ def saveScene(filename, objects):
 		xml.write('      <rz>0</rz>\n')
 		xml.write('    </instance>\n')
 	xml.write('  </constellation>\n')
+	for n in xrange(0, 4):
+		xml.write('  <material id="%i">\n' % (n + 1))
+		xml.write('    <metadata type="Name">Material %i</metadata>\n' % (n + 1))
+		if n == 0:
+			col = profile.getPreferenceColour('model_colour')
+		else:
+			col = profile.getPreferenceColour('model_colour%i' % (n + 1))
+		xml.write('    <color><r>%.2f</r><g>%.2f</g><b>%.2f</b></color>\n' % (col[0], col[1], col[2]))
+		xml.write('  </material>\n')
 	xml.write('</amf>\n')
 
 	zfile = zipfile.ZipFile(filename, "w", zipfile.ZIP_DEFLATED)
-	zfile.writestr(filename, xml.getvalue())
+	zfile.writestr(os.path.basename(filename), xml.getvalue())
 	zfile.close()
 	xml.close()
