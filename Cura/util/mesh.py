@@ -200,11 +200,38 @@ class printableObject(object):
 		if scale > 0:
 			self.applyMatrix(numpy.matrix([[scale,0,0],[0,scale,0],[0,0,scale]], numpy.float64))
 
+	#Split splits an object with multiple meshes into different objects, where each object is a part of the original mesh that has
+	# connected faces. This is useful to split up plate STL files.
 	def split(self, callback):
 		ret = []
 		for oriMesh in self._meshList:
 			ret += oriMesh.split(callback)
 		return ret
+
+	#getVertexIndexList returns an array of vertexes, and an integer array for each mesh in this object.
+	# the integer arrays are indexes into the vertex array for each triangle in the model.
+	def getVertexIndexList(self):
+		vertexMap = {}
+		vertexList = []
+		meshList = []
+		for m in self._meshList:
+			verts = m.getTransformedVertexes(True)
+			meshIdxList = []
+			for idx in xrange(0, len(verts)):
+				v = verts[idx]
+				hashNr = int(v[0] * 100) | int(v[1] * 100) << 10 | int(v[2] * 100) << 20
+				vIdx = None
+				if hashNr in vertexMap:
+					for idx2 in vertexMap[hashNr]:
+						if numpy.linalg.norm(v - vertexList[idx2]) < 0.001:
+							vIdx = idx2
+				if vIdx is None:
+					vIdx = len(vertexList)
+					vertexMap[hashNr] = [vIdx]
+					vertexList.append(v)
+				meshIdxList.append(vIdx)
+			meshList.append(numpy.array(meshIdxList, numpy.int32))
+		return numpy.array(vertexList, numpy.float32), meshList
 
 class mesh(object):
 	def __init__(self, obj):

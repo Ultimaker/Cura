@@ -88,28 +88,26 @@ def saveScene(filename, objects):
 		xml.write('  <object id="%d">\n' % (n))
 		xml.write('    <mesh>\n')
 		xml.write('      <vertices>\n')
-		for m in obj._meshList:
-			for v in m.getTransformedVertexes(True):
-				xml.write('        <vertex>\n')
-				xml.write('          <coordinates>\n')
-				xml.write('            <x>%f</x>\n' % (v[0]))
-				xml.write('            <y>%f</y>\n' % (v[1]))
-				xml.write('            <z>%f</z>\n' % (v[2]))
-				xml.write('          </coordinates>\n')
-				xml.write('        </vertex>\n')
+		vertexList, meshList = obj.getVertexIndexList()
+		for v in vertexList:
+			xml.write('        <vertex>\n')
+			xml.write('          <coordinates>\n')
+			xml.write('            <x>%f</x>\n' % (v[0]))
+			xml.write('            <y>%f</y>\n' % (v[1]))
+			xml.write('            <z>%f</z>\n' % (v[2]))
+			xml.write('          </coordinates>\n')
+			xml.write('        </vertex>\n')
 		xml.write('      </vertices>\n')
 
-		idxOffset = 0
-		for m in obj._meshList:
+		for m in meshList:
 			xml.write('      <volume>\n')
-			for idx in xrange(0, len(m.vertexes), 3):
+			for idx in xrange(0, len(m), 3):
 				xml.write('        <triangle>\n')
-				xml.write('          <v1>%i</v1>\n' % (idx + idxOffset))
-				xml.write('          <v2>%i</v2>\n' % (idx + idxOffset + 1))
-				xml.write('          <v3>%i</v3>\n' % (idx + idxOffset + 2))
+				xml.write('          <v1>%i</v1>\n' % (m[idx]))
+				xml.write('          <v2>%i</v2>\n' % (m[idx+1]))
+				xml.write('          <v3>%i</v3>\n' % (m[idx+2]))
 				xml.write('        </triangle>\n')
 			xml.write('      </volume>\n')
-			idxOffset += len(m.vertexes)
 		xml.write('    </mesh>\n')
 		xml.write('  </object>\n')
 
