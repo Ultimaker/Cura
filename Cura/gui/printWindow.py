@@ -20,31 +20,13 @@ from Cura.util import machineCom
 from Cura.util import gcodeInterpreter
 from Cura.util.resources import getPathForImage
 
-printWindowMonitorHandle = None
-
-def printFile(filename):
-	global printWindowMonitorHandle
-	if printWindowMonitorHandle is None:
-		printWindowMonitorHandle = printProcessMonitor()
-	printWindowMonitorHandle.loadFile(filename)
-
-
-def startPrintInterface(filename):
-	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.
-	# It needs to run in a separate process, as any running python code blocks the GCode sender python code (http://wiki.python.org/moin/GlobalInterpreterLock).
-	app = wx.App(False)
-	printWindowHandle = printWindow()
-	printWindowHandle.Show(True)
-	printWindowHandle.Raise()
-	printWindowHandle.OnConnect(None)
-	t = threading.Thread(target=printWindowHandle.LoadGCodeFile, args=(filename,))
-	t.daemon = True
-	t.start()
-	app.MainLoop()
-
+#The printProcessMonitor is used from the main GUI python process. This monitors the printing python process.
+# This class also handles starting of the 2nd process for printing and all communications with it.
 class printProcessMonitor():
 	def __init__(self):
 		self.handle = None
+		self._state = 'CLOSED'
+		self._z = 0.0
 
 	def loadFile(self, filename):
 		if self.handle is None:
@@ -68,15 +50,35 @@ class printProcessMonitor():
 		p = self.handle
 		line = p.stdout.readline()
 		while len(line) > 0:
+			try:
+				if line.startswith('Z:'):
+					self._z = float(line[2:])
+				elif line.startswith('STATE:'):
+					self._state = float(line[6:])
+			except:
+				pass
 			#print '>' + line.rstrip()
 			line = p.stdout.readline()
 		line = p.stderr.readline()
 		while len(line) > 0:
-			#print '>>' + line.rstrip()
+			print '>>' + line.rstrip()
 			line = p.stderr.readline()
 		p.communicate()
 		self.handle = None
 		self.thread = None
+
+def startPrintInterface(filename):
+	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.
+	# It needs to run in a separate process, as any running python code blocks the GCode sender python code (http://wiki.python.org/moin/GlobalInterpreterLock).
+	app = wx.App(False)
+	printWindowHandle = printWindow()
+	printWindowHandle.Show(True)
+	printWindowHandle.Raise()
+	printWindowHandle.OnConnect(None)
+	t = threading.Thread(target=printWindowHandle.LoadGCodeFile, args=(filename,))
+	t.daemon = True
+	t.start()
+	app.MainLoop()
 
 class PrintCommandButton(buttons.GenBitmapButton):
 	def __init__(self, parent, commandList, bitmapFilename, size=(20, 20)):
@@ -617,6 +619,12 @@ class printWindow(wx.Frame):
 				taskbar.setBusy(self, False)
 			if self.machineCom.isPaused():
 				taskbar.setPause(self, True)
+			if self.machineCom.isClosedOrError():
+				print 'STATE:CLOSED'
+			elif self.machineCom.isPrinting():
+				print 'STATE:PRINTING'
+			else:
+				print 'STATE:IDLE'
 		wx.CallAfter(self.UpdateButtonStates)
 		wx.CallAfter(self.UpdateProgress)
 
@@ -628,6 +636,7 @@ class printWindow(wx.Frame):
 
 	def mcZChange(self, newZ):
 		self.currentZ = newZ
+		print 'Z:%f' % newZ
 		if self.cam is not None:
 			wx.CallAfter(self.cam.takeNewImage)
 			wx.CallAfter(self.camPreview.Refresh)

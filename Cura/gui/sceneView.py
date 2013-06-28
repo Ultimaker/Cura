@@ -53,6 +53,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
 		self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
 		self._isSimpleMode = True
+		self._usbPrintMonitor = printWindow.printProcessMonitor()
 
 		self._viewport = None
 		self._modelMatrix = None
@@ -194,7 +195,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showPrintWindow(self):
 		if self._gcodeFilename is None:
 			return
-		printWindow.printFile(self._gcodeFilename)
+		self._usbPrintMonitor.loadFile(self._gcodeFilename)
 		if self._gcodeFilename == self._slicer.getGCodeFilename():
 			self._slicer.submitSliceInfoOnline()
 
