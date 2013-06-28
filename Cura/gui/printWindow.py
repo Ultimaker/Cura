@@ -30,8 +30,8 @@ def printFile(filename):
 
 
 def startPrintInterface(filename):
-	#startPrintInterface is called from the main script when we want the printer interface to run in a seperate process.
-	# It needs to run in a seperate process, as any running python code blocks the GCode sender pyton code (http://wiki.python.org/moin/GlobalInterpreterLock).
+	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.
+	# It needs to run in a separate process, as any running python code blocks the GCode sender python code (http://wiki.python.org/moin/GlobalInterpreterLock).
 	app = wx.App(False)
 	printWindowHandle = printWindow()
 	printWindowHandle.Show(True)
@@ -58,27 +58,25 @@ class printProcessMonitor():
 				if platform.machine() == 'i386':
 					cmdList.insert(0, 'arch')
 					cmdList.insert(1, '-i386')
-			self.handle = subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-				stderr=subprocess.PIPE)
+			self.handle = subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 			self.thread = threading.Thread(target=self.Monitor)
 			self.thread.start()
 		else:
-			self.handle.stdin.write(filename + '\n')
+			self.handle.stdin.write('LOAD:%s\n' % filename)
 
 	def Monitor(self):
 		p = self.handle
 		line = p.stdout.readline()
 		while len(line) > 0:
-			print line.rstrip()
+			#print '>' + line.rstrip()
 			line = p.stdout.readline()
 		line = p.stderr.readline()
 		while len(line) > 0:
-			print line.rstrip()
+			#print '>>' + line.rstrip()
 			line = p.stderr.readline()
 		p.communicate()
 		self.handle = None
 		self.thread = None
-
 
 class PrintCommandButton(buttons.GenBitmapButton):
 	def __init__(self, parent, commandList, bitmapFilename, size=(20, 20)):
@@ -150,8 +148,7 @@ class printWindow(wx.Frame):
 		self.OnPowerWarningChange(None)
 		self.powerWarningTimer.Start(10000)
 
-		self.statsText = wx.StaticText(self.panel, -1,
-			"Filament: ####.##m #.##g\nEstimated print time: #####:##\nMachine state:\nDetecting baudrateXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+		self.statsText = wx.StaticText(self.panel, -1, "Filament: ####.##m #.##g\nEstimated print time: #####:##\nMachine state:\nDetecting baudrateXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 		boxsizer.Add(self.statsText, flag=wx.LEFT, border=5)
 
 		self.sizer.Add(boxsizer, pos=(0, 0), span=(7, 1), flag=wx.EXPAND)
@@ -183,8 +180,7 @@ class printWindow(wx.Frame):
 		self.temperatureSelect.SetRange(0, 400)
 		self.temperatureHeatUpPLA = wx.Button(self.temperaturePanel, -1, '210C')
 		self.bedTemperatureLabel = wx.StaticText(self.temperaturePanel, -1, "BedTemp:")
-		self.bedTemperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21),
-			style=wx.SP_ARROW_KEYS)
+		self.bedTemperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21), style=wx.SP_ARROW_KEYS)
 		self.bedTemperatureSelect.SetRange(0, 400)
 		self.bedTemperatureLabel.Show(False)
 		self.bedTemperatureSelect.Show(False)
@@ -348,7 +344,17 @@ class printWindow(wx.Frame):
 
 		self.UpdateButtonStates()
 
-	#self.UpdateProgress()
+		#self.UpdateProgress()
+		self._thread = threading.Thread(target=self._stdinMonitor)
+		self._thread.daemon = True
+		self._thread.start()
+
+	def _stdinMonitor(self):
+		while True:
+			line = sys.stdin.readline().rstrip()
+			if line.startswith('LOAD:'):
+				if not self.LoadGCodeFile(line[5:]):
+					print 'LOADFAILED\n'
 
 	def OnCameraTimer(self, e):
 		if not self.campreviewEnable.GetValue():
@@ -428,7 +434,7 @@ class printWindow(wx.Frame):
 				status += 'Print time left: %02d:%02d\n' % (int(printTimeLeft / 60), int(printTimeLeft % 60))
 			self.progress.SetValue(self.machineCom.getPrintPos())
 			taskbar.setProgress(self, self.machineCom.getPrintPos(), len(self.gcodeList))
-		if self.machineCom != None:
+		if self.machineCom is not None:
 			if self.machineCom.getTemp() > 0:
 				status += 'Temp: %s\n' % (' ,'.join(map(str, self.machineCom.getTemp())))
 			if self.machineCom.getBedTemp() > 0:
@@ -542,7 +548,7 @@ class printWindow(wx.Frame):
 
 	def LoadGCodeFile(self, filename):
 		if self.machineCom is not None and self.machineCom.isPrinting():
-			return
+			return False
 		#Send an initial M110 to reset the line counter to zero.
 		prevLineType = lineType = 'CUSTOM'
 		gcodeList = ["M110"]
@@ -568,6 +574,7 @@ class printWindow(wx.Frame):
 		wx.CallAfter(self.progress.SetRange, len(gcodeList))
 		wx.CallAfter(self.UpdateButtonStates)
 		wx.CallAfter(self.UpdateProgress)
+		return True
 
 	def sendLine(self, lineNr):
 		if lineNr >= len(self.gcodeList):
