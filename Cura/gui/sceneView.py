@@ -53,7 +53,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
 		self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
 		self._isSimpleMode = True
-		self._usbPrintMonitor = printWindow.printProcessMonitor()
+		self._usbPrintMonitor = printWindow.printProcessMonitor(lambda : self._queueRefresh())
 
 		self._viewport = None
 		self._modelMatrix = None
@@ -195,7 +195,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showPrintWindow(self):
 		if self._gcodeFilename is None:
 			return
-		self._usbPrintMonitor.loadFile(self._gcodeFilename)
+		self._usbPrintMonitor.loadFile(self._gcodeFilename, self._slicer.getID())
 		if self._gcodeFilename == self._slicer.getGCodeFilename():
 			self._slicer.submitSliceInfoOnline()
 
@@ -1027,6 +1027,18 @@ void main(void)
 				glDisable(GL_BLEND)
 
 		self._drawMachine()
+
+		if self._usbPrintMonitor.getState() == 'PRINTING' and self._usbPrintMonitor.getID() == self._slicer.getID():
+			glEnable(GL_BLEND)
+			z = self._usbPrintMonitor.getZ()
+			size = self._machineSize
+			glColor4ub(255,255,0,128)
+			glBegin(GL_QUADS)
+			glVertex3f(-size[0]/2,-size[1]/2, z)
+			glVertex3f( size[0]/2,-size[1]/2, z)
+			glVertex3f( size[0]/2, size[1]/2, z)
+			glVertex3f(-size[0]/2, size[1]/2, z)
+			glEnd()
 
 		if self.viewMode == 'gcode':
 			if self._gcodeLoadThread is not None and self._gcodeLoadThread.isAlive():

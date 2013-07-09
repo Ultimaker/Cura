@@ -23,12 +23,14 @@ from Cura.util.resources import getPathForImage
 #The printProcessMonitor is used from the main GUI python process. This monitors the printing python process.
 # This class also handles starting of the 2nd process for printing and all communications with it.
 class printProcessMonitor():
-	def __init__(self):
+	def __init__(self, callback = None):
 		self.handle = None
 		self._state = 'CLOSED'
 		self._z = 0.0
+		self._callback = callback
+		self._id = -1
 
-	def loadFile(self, filename):
+	def loadFile(self, filename, id):
 		if self.handle is None:
 			if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
 				cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura')] 
@@ -45,18 +47,22 @@ class printProcessMonitor():
 			self.thread.start()
 		else:
 			self.handle.stdin.write('LOAD:%s\n' % filename)
+		self._id = id
 
 	def Monitor(self):
 		p = self.handle
 		line = p.stdout.readline()
 		while len(line) > 0:
+			line = line.rstrip()
 			try:
 				if line.startswith('Z:'):
 					self._z = float(line[2:])
+					self._callCallback()
 				elif line.startswith('STATE:'):
-					self._state = float(line[6:])
+					self._state = line[6:]
+					self._callCallback()
 			except:
-				pass
+				print sys.exc_info()
 			#print '>' + line.rstrip()
 			line = p.stdout.readline()
 		line = p.stderr.readline()
@@ -66,6 +72,19 @@ class printProcessMonitor():
 		p.communicate()
 		self.handle = None
 		self.thread = None
+
+	def getID(self):
+		return self._id
+
+	def getZ(self):
+		return self._z
+
+	def getState(self):
+		return self._state
+
+	def _callCallback(self):
+		if self._callback is not None:
+			self._callback()
 
 def startPrintInterface(filename):
 	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.

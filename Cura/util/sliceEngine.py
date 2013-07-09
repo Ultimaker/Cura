@@ -48,6 +48,7 @@ class Slicer(object):
 		self._printTimeSeconds = None
 		self._filamentMM = None
 		self._modelHash = None
+		self._id = 0
 
 	def cleanup(self):
 		self.abortSlicer()
@@ -78,6 +79,9 @@ class Slicer(object):
 
 	def getSliceLog(self):
 		return self._sliceLog
+
+	def getID(self):
+		return self._id
 
 	def getFilamentWeight(self):
 		#Calculates the weight of the filament in kg
@@ -168,6 +172,7 @@ class Slicer(object):
 			if self._process is not None:
 				self._process.terminate()
 			oldThread.join()
+		self._id += 1
 		self._callback(-1.0, False)
 		try:
 			self._process = self._runSliceProcess(commandList)
