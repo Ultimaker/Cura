@@ -1132,13 +1132,25 @@ void main(void)
 		glEnable(GL_CULL_FACE)
 		glEnable(GL_BLEND)
 
+		size = [profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')]
+
 		if profile.getPreference('machine_type') == 'ultimaker':
 			glColor4f(1,1,1,0.5)
 			self._objectShader.bind()
 			self._renderObject(self._platformMesh, False, False)
 			self._objectShader.unbind()
+		else:
+			glColor4f(0,0,0,1)
+			glLineWidth(3)
+			glBegin(GL_LINES)
+			glVertex3f(-size[0] / 2, -size[1] / 2, 0)
+			glVertex3f(-size[0] / 2, -size[1] / 2, 10)
+			glVertex3f(-size[0] / 2, -size[1] / 2, 0)
+			glVertex3f(-size[0] / 2+10, -size[1] / 2, 0)
+			glVertex3f(-size[0] / 2, -size[1] / 2, 0)
+			glVertex3f(-size[0] / 2, -size[1] / 2+10, 0)
+			glEnd()
 
-		size = [profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')]
 		v0 = [ size[0] / 2, size[1] / 2, size[2]]
 		v1 = [ size[0] / 2,-size[1] / 2, size[2]]
 		v2 = [-size[0] / 2, size[1] / 2, size[2]]
