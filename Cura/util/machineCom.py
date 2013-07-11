@@ -328,7 +328,7 @@ class MachineCom(object):
 		tempRequestTimeout = timeout
 		while True:
 			line = self._readline()
-			if line == None:
+			if line is None:
 				break
 			
 			#No matter the state, if we see an error, goto the error state and store the error for reference.
@@ -384,7 +384,7 @@ class MachineCom(object):
 							self._testingBaudrate = True
 						except:
 							self._log("Unexpected error while setting baudrate: %d %s" % (baudrate, getExceptionString()))
-				elif 'ok' in line and 'T:' in line:
+				elif 'T:' in line:
 					self._baudrateDetectTestOk += 1
 					if self._baudrateDetectTestOk < 10:
 						self._log("Baudrate test ok: %d" % (self._baudrateDetectTestOk))
