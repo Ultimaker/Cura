@@ -66,6 +66,27 @@ class warningAbove(object):
 			#We already have an error by the int/float validator in this case.
 			return SUCCESS, ''
 
+class warningBelow(object):
+	def __init__(self, setting, minValueForWarning, warningMessage):
+		self.setting = setting
+		self.setting._validators.append(self)
+		self.minValueForWarning = minValueForWarning
+		self.warningMessage = warningMessage
+
+	def validate(self):
+		try:
+			f = float(eval(self.setting.getValue().replace(',','.'), {}, {}))
+			if isinstance(self.minValueForWarning, types.FunctionType):
+				if f <= self.minValueForWarning():
+					return WARNING, self.warningMessage % (self.minValueForWarning())
+			else:
+				if f <= self.minValueForWarning:
+					return WARNING, self.warningMessage
+			return SUCCESS, ''
+		except (ValueError, SyntaxError, TypeError):
+			#We already have an error by the int/float validator in this case.
+			return SUCCESS, ''
+
 class wallThicknessValidator(object):
 	def __init__(self, setting):
 		self.setting = setting

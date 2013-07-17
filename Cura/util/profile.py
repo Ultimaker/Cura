@@ -338,6 +338,8 @@ setting('window_width', '-1', float, 'preference', 'hidden')
 setting('window_height', '-1', float, 'preference', 'hidden')
 setting('window_normal_sash', '320', float, 'preference', 'hidden')
 
+validators.warningAbove(settingsDictionary['filament_flow'], 150, "More flow then 150% is rare and usually not recommended.")
+validators.warningBelow(settingsDictionary['filament_flow'], 50, "More flow then 50% is rare and usually not recommended.")
 validators.warningAbove(settingsDictionary['layer_height'], lambda : (float(getProfileSetting('nozzle_size')) * 80.0 / 100.0), "Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and are not recommended.")
 validators.wallThicknessValidator(settingsDictionary['wall_thickness'])
 validators.warningAbove(settingsDictionary['print_speed'], 150.0, "It is highly unlikely that your machine can achieve a printing speed above 150mm/s")
