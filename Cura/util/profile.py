@@ -620,7 +620,7 @@ def calculateEdgeWidth():
 	if wallThickness < nozzleSize:
 		return wallThickness
 
-	lineCount = int(wallThickness / nozzleSize + 0.0001)
+	lineCount = int(wallThickness / (nozzleSize + 0.0001))
 	lineWidth = wallThickness / lineCount
 	lineWidthAlt = wallThickness / (lineCount + 1)
 	if lineWidth > nozzleSize * 1.5:
@@ -636,7 +636,7 @@ def calculateLineCount():
 	if wallThickness < nozzleSize:
 		return 1
 
-	lineCount = int(wallThickness / nozzleSize + 0.0001)
+	lineCount = int(wallThickness / (nozzleSize + 0.0001))
 	lineWidth = wallThickness / lineCount
 	lineWidthAlt = wallThickness / (lineCount + 1)
 	if lineWidth > nozzleSize * 1.5:
@@ -648,7 +648,7 @@ def calculateSolidLayerCount():
 	solidThickness = getProfileSettingFloat('solid_layer_thickness')
 	if layerHeight == 0.0:
 		return 1
-	return int(math.ceil(solidThickness / layerHeight - 0.0001))
+	return int(math.ceil(solidThickness / (layerHeight - 0.0001)))
 
 def calculateObjectSizeOffsets():
 	size = 0.0
