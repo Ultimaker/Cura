@@ -75,7 +75,7 @@ def _updateCache():
 			import ctypes
 			bitmask = windll.kernel32.GetLogicalDrives()
 			for letter in string.uppercase:
-				if bitmask & 1 and windll.kernel32.GetDriveTypeA(letter + ':/') == 2:
+				if letter != 'A' and letter != 'B' and bitmask & 1 and windll.kernel32.GetDriveTypeA(letter + ':/') == 2:
 					volumeName = ''
 					nameBuffer = ctypes.create_unicode_buffer(1024)
 					if windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(letter + ':/'), nameBuffer, ctypes.sizeof(nameBuffer), None, None, None, None, 0) == 0:
