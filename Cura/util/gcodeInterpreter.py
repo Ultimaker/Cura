@@ -75,6 +75,7 @@ class gcode(object):
 		scale = 1.0
 		posAbs = True
 		feedRate = 3600.0
+		moveType = 'move'
 		layerThickness = 0.1
 		pathType = 'CUSTOM';
 		currentLayer = []
