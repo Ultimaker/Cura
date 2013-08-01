@@ -14,8 +14,9 @@ from Cura.gui import configWizard
 from Cura.gui import firmwareInstall
 from Cura.gui import simpleMode
 from Cura.gui import sceneView
-#from Cura.gui.tools import batchRun
 from Cura.gui.util import dropTarget
+#from Cura.gui.tools import batchRun
+from Cura.gui.tools import pidDebugger
 from Cura.gui.tools import minecraftImport
 from Cura.util import profile
 from Cura.util import version
@@ -118,6 +119,9 @@ class mainWindow(wx.Frame):
 		if minecraftImport.hasMinecraft():
 			i = toolsMenu.Append(-1, 'Minecraft import...')
 			self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
+		if version.isDevVersion():
+			i = toolsMenu.Append(-1, 'PID Debugger...')
+			self.Bind(wx.EVT_MENU, self.OnPIDDebugger, i)
 		self.menubar.Append(toolsMenu, 'Tools')
 
 		expertMenu = wx.Menu()
@@ -399,6 +403,11 @@ class mainWindow(wx.Frame):
 		mi = minecraftImport.minecraftImportWindow(self)
 		mi.Centre()
 		mi.Show(True)
+
+	def OnPIDDebugger(self, e):
+		debugger = pidDebugger.debuggerWindow(self)
+		debugger.Centre()
+		debugger.Show(True)
 
 	def OnCheckForUpdate(self, e):
 		newVersion = version.checkForNewerVersion()
