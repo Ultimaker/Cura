@@ -27,6 +27,7 @@ class preferencesDialog(wx.Dialog):
 		configBase.SettingRow(left, 'machine_height')
 		configBase.SettingRow(left, 'extruder_amount')
 		configBase.SettingRow(left, 'has_heated_bed')
+		configBase.SettingRow(left, 'gcode_flavor')
 
 		configBase.TitleRow(left, 'Printer head size')
 		configBase.SettingRow(left, 'extruder_head_size_min_x')

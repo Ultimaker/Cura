@@ -134,7 +134,6 @@ setting('filament_flow',            100., float, 'basic',    'Filament').setRang
 #setting('retraction_min_travel',     5.0, float, 'advanced', 'Retraction').setRange(0).setLabel('Minimum travel (mm)', 'Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area')
 setting('retraction_speed',         40.0, float, 'advanced', 'Retraction').setRange(0.1).setLabel('Speed (mm/s)', 'Speed at which the filament is retracted, a higher retraction speed works better. But a very high retraction speed can lead to filament grinding.')
 setting('retraction_amount',         4.5, float, 'advanced', 'Retraction').setRange(0).setLabel('Distance (mm)', 'Amount of retraction, set at 0 for no retraction at all. A value of 4.5mm seems to generate good results.')
-#setting('retraction_extra',          0.0, float, 'advanced', 'Retraction').setRange(0).setLabel('Extra length on start (mm)', 'Extra extrusion amount when restarting after a retraction, to better "Prime" your extruder after retraction.')
 setting('retraction_dual_amount',   16.5, float, 'advanced', 'Retraction').setRange(0).setLabel('Dual extrusion switch amount (mm)', 'Amount of retraction when switching nozzle with dual-extrusion, set at 0 for no retraction at all. A value of 16.0mm seems to generate good results.')
 setting('bottom_thickness',          0.3, float, 'advanced', 'Quality').setRange(0).setLabel('Initial layer thickness (mm)', 'Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers.')
 setting('object_sink',               0.0, float, 'advanced', 'Quality').setLabel('Cut off object bottom (mm)', 'Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer.')
@@ -299,7 +298,8 @@ setting('machine_type', 'unknown', str, 'preference', 'hidden')
 setting('machine_center_is_zero', 'False', bool, 'preference', 'hidden')
 setting('ultimaker_extruder_upgrade', 'False', bool, 'preference', 'hidden')
 setting('has_heated_bed', 'False', bool, 'preference', 'hidden').setLabel('Heated bed', 'If you have an heated bed, this enabled heated bed settings (requires restart)')
-setting('reprap_name', 'RepRap', str, 'preference', 'hidden')
+setting('machine_type', 'unknown', str, 'preference', 'hidden')
+setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode'], 'preference', 'hidden').setLabel('GCode Flavor', 'Flavor of generated GCode.\nRepRap...')
 setting('extruder_amount', '1', ['1','2','3','4'], 'preference', 'hidden').setLabel('Extruder count', 'Amount of extruders in your machine.')
 setting('extruder_offset_x1', '-21.6', float, 'preference', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
 setting('extruder_offset_y1', '0.0', float, 'preference', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
@@ -367,6 +367,21 @@ settingsDictionary['retraction_dual_amount'].addCondition(lambda : int(getPrefer
 #Heated bed
 settingsDictionary['print_bed_temperature'].addCondition(lambda : getPreference('has_heated_bed') == 'True')
 
+#UltiGCode uses less settings
+settingsDictionary['print_temperature'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_temperature2'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_temperature3'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_temperature4'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter2'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter3'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter4'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_flow'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_bed_temperature'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['retraction_speed'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['retraction_amount'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+settingsDictionary['retraction_dual_amount'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+
 #########################################################
 ## Profile and preferences functions
 #########################################################
@@ -375,7 +390,7 @@ def getSubCategoriesFor(category):
 	done = {}
 	ret = []
 	for s in settingsList:
-		if s.getCategory() == category and not s.getSubCategory() in done:
+		if s.getCategory() == category and not s.getSubCategory() in done and s.checkConditions():
 			done[s.getSubCategory()] = True
 			ret.append(s.getSubCategory())
 	return ret
@@ -383,7 +398,7 @@ def getSubCategoriesFor(category):
 def getSettingsForCategory(category, subCategory = None):
 	ret = []
 	for s in settingsList:
-		if s.getCategory() == category and (subCategory is None or s.getSubCategory() == subCategory):
+		if s.getCategory() == category and (subCategory is None or s.getSubCategory() == subCategory) and s.checkConditions():
 			ret.append(s)
 	return ret
 
@@ -741,6 +756,8 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	prefix = ''
 	postfix = ''
 	alterationContents = getAlterationFile(filename)
+	if getPreference('gcode_flavor') == 'UltiGCode':
+		return ''
 	if filename == 'start.gcode':
 		if extruderCount > 1:
 			alterationContents = getAlterationFile("start%d.gcode" % (extruderCount))

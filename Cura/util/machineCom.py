@@ -256,7 +256,7 @@ class MachineCom(object):
 		return time.time() - self._printStartTime
 
 	def getPrintTimeRemainingEstimate(self):
-		if self._printStartTime100 == None or self.getPrintPos() < 200:
+		if self._printStartTime100 is None or self.getPrintPos() < 200:
 			return None
 		printTime = (time.time() - self._printStartTime100) / 60
 		printTimeTotal = printTime * (len(self._gcodeList) - 100) / (self.getPrintPos() - 100)

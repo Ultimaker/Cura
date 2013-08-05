@@ -298,6 +298,8 @@ class Slicer(object):
 
 		if settings['layerThickness'] <= 0:
 			settings['layerThickness'] = 1000
+		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+			settings['gcodeFlavor'] = 1
 		return settings
 
 	def _runSliceProcess(self, cmdList):
