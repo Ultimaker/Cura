@@ -77,9 +77,9 @@ class gcode(object):
 		feedRate = 3600.0
 		moveType = 'move'
 		layerThickness = 0.1
-		pathType = 'CUSTOM';
+		pathType = 'CUSTOM'
 		currentLayer = []
-		currentPath = gcodePath('move', pathType, layerThickness, pos[:])
+		currentPath = gcodePath('move', pathType, layerThickness, pos)
 		currentPath['extruder'] = currentExtruder
 
 		currentLayer.append(currentPath)
@@ -132,7 +132,8 @@ class gcode(object):
 					z = getCodeFloat(line, 'Z')
 					e = getCodeFloat(line, 'E')
 					#f = getCodeFloat(line, 'F')
-					oldPos = pos[:]
+					oldPos = pos
+					pos = pos[:]
 					if posAbs:
 						if x is not None:
 							pos[0] = x * scale + posOffset[0]
@@ -176,7 +177,7 @@ class gcode(object):
 						currentPath['extruder'] = currentExtruder
 						currentLayer.append(currentPath)
 
-					currentPath['points'].append(pos[:])
+					currentPath['points'].append(pos)
 					currentPath['extrusion'].append(e * extrudeAmountMultiply)
 				elif G == 4:	#Delay
 					S = getCodeFloat(line, 'S')
@@ -200,12 +201,13 @@ class gcode(object):
 					if x is None and y is None and z is None:
 						pos = center
 					else:
+						pos = pos[:]
 						if x is not None:
 							pos[0] = center[0]
 						if y is not None:
-							pos[0] = center[1]
+							pos[1] = center[1]
 						if z is not None:
-							pos[0] = center[2]
+							pos[2] = center[2]
 				elif G == 90:	#Absolute position
 					posAbs = True
 				elif G == 91:	#Relative position
