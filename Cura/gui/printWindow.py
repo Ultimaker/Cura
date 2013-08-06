@@ -486,7 +486,7 @@ class printWindow(wx.Frame):
 			return
 		self.currentZ = -1
 		if self.cam is not None and self.timelapsEnable.GetValue():
-			self.cam.startTimelapse(self.timelapsSavePath)
+			self.cam.startTimelapse(self.timelapsSavePath.GetValue())
 		self.machineCom.printGCode(self.gcodeList)
 		self.UpdateButtonStates()
 
