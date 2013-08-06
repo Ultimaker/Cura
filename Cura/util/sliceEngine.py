@@ -253,6 +253,7 @@ class Slicer(object):
 			'supportAngle': int(-1) if profile.getProfileSetting('support') == 'None' else int(60),
 			'supportEverywhere': int(1) if profile.getProfileSetting('support') == 'Everywhere' else int(0),
 			'supportLineWidth': int(profile.getProfileSettingFloat('support_rate') * profile.calculateEdgeWidth() * 1000 / 100),
+			'supportExtruder': -1 if profile.getProfileSetting('support_dual_extrusion') == 'Both' else (0 if profile.getProfileSetting('support_dual_extrusion') == 'First extruder' else 1),
 			'retractionAmount': int(profile.getProfileSettingFloat('retraction_amount') * 1000) if profile.getProfileSetting('retraction_enable') == 'True' else 0,
 			'retractionSpeed': int(profile.getProfileSettingFloat('retraction_speed')),
 			'retractionMinimalDistance': int(profile.getProfileSettingFloat('retraction_min_travel') * 1000),

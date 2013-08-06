@@ -176,10 +176,13 @@ class SettingRow():
 			self.SetValue(self.setting.getValue())
 			self.ctrl.Bind(wx.EVT_COLOURPICKER_CHANGED, self.OnSettingChange)
 		elif type(self.setting.getType()) is list or valueOverride is not None:
+			value = self.setting.getValue()
+			choices = self.setting.getType()
 			if valueOverride is not None:
-				self.ctrl = wx.ComboBox(panel, -1, self.setting.getValue(), choices=valueOverride, style=wx.CB_DROPDOWN|wx.CB_READONLY)
-			else:
-				self.ctrl = wx.ComboBox(panel, -1, self.setting.getValue(), choices=self.setting.getType(), style=wx.CB_DROPDOWN|wx.CB_READONLY)
+				choices = valueOverride
+			if value not in choices and len(choices) > 0:
+				value = choices[0]
+			self.ctrl = wx.ComboBox(panel, -1, value, choices=choices, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 			self.ctrl.Bind(wx.EVT_COMBOBOX, self.OnSettingChange)
 			self.ctrl.Bind(wx.EVT_LEFT_DOWN, self.OnMouseExit)
 			flag = wx.EXPAND

@@ -125,7 +125,7 @@ setting('print_temperature4',          0, int,   'basic',    'Speed & Temperatur
 setting('print_bed_temperature',      70, int,   'basic',    'Speed & Temperature').setRange(0,340).setLabel('Bed temperature (C)', 'Temperature used for the heated printer bed. Set at 0 to pre-heat yourself.')
 setting('support',                'None', ['None', 'Touching buildplate', 'Everywhere'], 'basic', 'Support').setLabel('Support type', 'Type of support structure build.\n"Touching buildplate" is the most commonly used support setting.\n\nNone does not do any support.\nTouching buildplate only creates support where the support structure will touch the build platform.\nEverywhere creates support even on top of parts of the model.')
 setting('platform_adhesion',      'None', ['None', 'Brim', 'Raft'], 'basic', 'Support').setLabel('Platform adhesion type', 'Different options that help in preventing corners from lifting due to warping.\nBrim adds a single layer thick flat area around your object which is easy to cut off afterwards, and the recommended option.\nRaft adds a thick raster at below the object and a thin interface between this and your object.\n(Note that enabling the brim or raft disables the skirt)')
-setting('support_dual_extrusion',  False, bool, 'basic', 'Support').setLabel('Support dual extrusion', 'Print the support material with the 2nd extruder in a dual extrusion setup. The primary extruder will be used for normal material, while the second extruder is used to print support material.')
+setting('support_dual_extrusion',  'Both', ['Both', 'First extruder', 'Second extruder'], 'basic', 'Support').setLabel('Support dual extrusion', 'Which extruder to use for support material, for break-away support you can use both extruders.\nBut if one of the materials is more expensive then the other you could select an extruder to use for support material. This causes more extruder switches.\nYou can also use the 2nd extruder for soluble support materials.')
 setting('filament_diameter',        2.85, float, 'basic',    'Filament').setRange(1).setLabel('Diameter (mm)', 'Diameter of your filament, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.')
 setting('filament_diameter2',          0, float, 'basic',    'Filament').setRange(0).setLabel('Diameter2 (mm)', 'Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter as for nozzle 1.')
 setting('filament_diameter3',          0, float, 'basic',    'Filament').setRange(0).setLabel('Diameter3 (mm)', 'Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter as for nozzle 1.')
@@ -797,20 +797,6 @@ def getAlterationFileContents(filename, extruderCount = 1):
 			alterationContents = getAlterationFile("end%d.gcode" % (extruderCount))
 		#Append the profile string to the end of the GCode, so we can load it from the GCode file later.
 		postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
-	elif filename == 'replace.csv':
-		#Always remove the extruder on/off M codes. These are no longer needed in 5D printing.
-		prefix = 'M101\nM103\n'
-	elif filename == 'support_start.gcode' or filename == 'support_end.gcode':
-		#Add support start/end code 
-		if getProfileSetting('support_dual_extrusion') == 'True' and int(getPreference('extruder_amount')) > 1:
-			if filename == 'support_start.gcode':
-				setTempOverride('extruder', '1')
-			else:
-				setTempOverride('extruder', '0')
-			alterationContents = getAlterationFileContents('switchExtruder.gcode')
-			clearTempOverride('extruder')
-		else:
-			alterationContents = ''
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
 
 ###### PLUGIN #####
