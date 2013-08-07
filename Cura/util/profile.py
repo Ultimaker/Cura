@@ -698,11 +698,11 @@ def replaceTagMatch(m):
 	pre = m.group(1)
 	tag = m.group(2)
 	if tag == 'time':
-		return pre + time.strftime('%H:%M:%S').encode('ascii', 'replace')
+		return pre + time.strftime('%H:%M:%S')
 	if tag == 'date':
-		return pre + time.strftime('%d %b %Y').encode('ascii', 'replace')
+		return pre + time.strftime('%d-%m-%Y')
 	if tag == 'day':
-		return pre + time.strftime('%a').encode('ascii', 'replace')
+		return pre + ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][int(time.strftime('%w'))]
 	if tag == 'print_time':
 		return pre + '#P_TIME#'
 	if tag == 'filament_amount':
