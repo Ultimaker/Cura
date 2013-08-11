@@ -61,6 +61,8 @@ with open(filename, "w") as f:
 					f.write("G1 E%f F6000\n" % (retractAmount))
 					f.write("G1 E-%f F6000\n" % (retractAmount))
 					#Move the head back
+					if z < 15:
+						f.write("G1 Z%f F300\n" % (z+1))
 					f.write("G1 X%f Y%f F9000\n" % (x, y))
 					f.write("G1 E%f F6000\n" % (retractAmount))
 					f.write("G1 F9000\n")
