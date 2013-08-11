@@ -45,37 +45,57 @@ def getFFMPEGpath():
 class webcam(object):
 	def __init__(self):
 		self._cam = None
+		self._hasCamera = False
 		self._overlayImage = wx.Bitmap(getPathForImage('cura-overlay.png'))
 		self._overlayUltimaker = wx.Bitmap(getPathForImage('ultimaker-overlay.png'))
-		if cv != None:
-			self._cam = highgui.cvCreateCameraCapture(-1)
-		elif win32vidcap != None:
-			try:
-				self._cam = win32vidcap.new_Dev(0, False)
-			except:
-				pass
+
+		#open the camera and close it to check if we have a camera, then open the camera again when we use it for the
+		# first time.
+		self._hasCamera = True
+		self._openCam()
+		if self._cam is not None:
+			print "detected camera"
+			del self._cam
+			self._cam = None
+			self._hasCamera = True
+		else:
+			self._hasCamera = False
 
 		self._doTimelapse = False
 		self._bitmap = None
 
 	def hasCamera(self):
-		return self._cam != None
+		return self._hasCamera
+
+	def _openCam(self):
+		print "open camera"
+		if not self._hasCamera:
+			return False
+		if self._cam is not None:
+			return True
+
+		if cv is not None:
+			self._cam = highgui.cvCreateCameraCapture(-1)
+		elif win32vidcap is not None:
+			try:
+				self._cam = win32vidcap.new_Dev(0, False)
+			except:
+				pass
+		return self._cam is not None
 
 	def propertyPages(self):
-		if self._cam == None:
-			return []
-		if cv != None:
+		if cv is not None:
 			#TODO Make an OpenCV property page
 			return []
-		elif win32vidcap != None:
+		elif win32vidcap is not None:
 			return ['Image properties', 'Format properties']
 
 	def openPropertyPage(self, pageType=0):
-		if self._cam == None:
+		if not self._openCam():
 			return
-		if cv != None:
+		if cv is not None:
 			pass
-		elif win32vidcap != None:
+		elif win32vidcap is not None:
 			if pageType == 0:
 				self._cam.displaycapturefilterproperties()
 			else:
@@ -86,18 +106,18 @@ class webcam(object):
 				self._cam = tmp
 
 	def takeNewImage(self):
-		if self._cam == None:
+		if not self._openCam():
 			return
-		if cv != None:
+		if cv is not None:
 			frame = cv.QueryFrame(self._cam)
 			cv.CvtColor(frame, frame, cv.CV_BGR2RGB)
 			bitmap = wx.BitmapFromBuffer(frame.width, frame.height, frame.imageData)
-		elif win32vidcap != None:
+		elif win32vidcap is not None:
 			buffer, width, height = self._cam.getbuffer()
 			try:
 				wxImage = wx.EmptyImage(width, height)
 				wxImage.SetData(buffer[::-1])
-				if self._bitmap != None:
+				if self._bitmap is not None:
 					del self._bitmap
 				bitmap = wxImage.ConvertToBitmap()
 				del wxImage
@@ -127,7 +147,7 @@ class webcam(object):
 		return self._bitmap
 
 	def startTimelapse(self, filename):
-		if self._cam == None:
+		if not self._openCam():
 			return
 		self._cleanTempDir()
 		self._timelapseFilename = filename
