@@ -29,7 +29,7 @@ z = 0.
 x = 0.
 y = 0.
 pauseState = 0
-currentSectionType = 'CUSTOM'
+currentSectionType = 'STARTOFFILE'
 with open(filename, "w") as f:
 	for line in lines:
 		if line.startswith(';'):
