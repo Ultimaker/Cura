@@ -80,6 +80,11 @@ def loadScene(filename):
 	return ret
 
 def saveScene(filename, objects):
+	f = open(filename, 'wb')
+	saveSceneStream(f, filename, objects)
+	f.close()
+
+def saveSceneStream(s, filename, objects):
 	xml = StringIO.StringIO()
 	xml.write('<?xml version="1.0" encoding="utf-8"?>\n')
 	xml.write('<amf unit="millimeter" version="1.1">\n')
@@ -137,7 +142,7 @@ def saveScene(filename, objects):
 		xml.write('  </material>\n')
 	xml.write('</amf>\n')
 
-	zfile = zipfile.ZipFile(filename, "w", zipfile.ZIP_DEFLATED)
+	zfile = zipfile.ZipFile(s, "w", zipfile.ZIP_DEFLATED)
 	zfile.writestr(os.path.basename(filename), xml.getvalue())
 	zfile.close()
 	xml.close()

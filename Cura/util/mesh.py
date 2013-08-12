@@ -208,6 +208,9 @@ class printableObject(object):
 			ret += oriMesh.split(callback)
 		return ret
 
+	def canStoreAsSTL(self):
+		return len(self._meshList) < 2
+
 	#getVertexIndexList returns an array of vertexes, and an integer array for each mesh in this object.
 	# the integer arrays are indexes into the vertex array for each triangle in the model.
 	def getVertexIndexList(self):

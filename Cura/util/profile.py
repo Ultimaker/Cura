@@ -324,6 +324,7 @@ setting('filament_cost_meter', '0', float, 'preference', 'hidden').setLabel('Cos
 setting('auto_detect_sd', 'True', bool, 'preference', 'hidden').setLabel('Auto detect SD card drive', 'Auto detect the SD card. You can disable this because on some systems external hard-drives or USB sticks are detected as SD card.')
 setting('check_for_updates', 'True', bool, 'preference', 'hidden').setLabel('Check for updates', 'Check for newer versions of Cura on startup')
 setting('submit_slice_information', 'False', bool, 'preference', 'hidden').setLabel('Send usage statistics', 'Submit anonymous usage information to improve next versions of Cura')
+setting('youmagine_token', '', str, 'preference', 'hidden')
 
 setting('extruder_head_size_min_x', '0.0', float, 'preference', 'hidden').setLabel('Head size towards X min (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 75mm for an Ultimaker if the fan is on the left side.')
 setting('extruder_head_size_min_y', '0.0', float, 'preference', 'hidden').setLabel('Head size towards Y min (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan is on the left side.')
@@ -331,7 +332,7 @@ setting('extruder_head_size_max_x', '0.0', float, 'preference', 'hidden').setLab
 setting('extruder_head_size_max_y', '0.0', float, 'preference', 'hidden').setLabel('Head size towards Y max (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan is on the left side.')
 setting('extruder_head_size_height', '0.0', float, 'preference', 'hidden').setLabel('Printer gantry height (mm)', 'The height of the gantry holding up the printer head. If an object is higher then this then you cannot print multiple objects one for one. 60mm for an Ultimaker.')
 
-setting('model_colour', '#7AB645', str, 'preference', 'hidden').setLabel('Model colour')
+setting('model_colour', '#FFC924', str, 'preference', 'hidden').setLabel('Model colour')
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel('Model colour (2)')
 setting('model_colour3', '#DDD93C', str, 'preference', 'hidden').setLabel('Model colour (3)')
 setting('model_colour4', '#4550D3', str, 'preference', 'hidden').setLabel('Model colour (4)')
@@ -640,7 +641,9 @@ def calculateEdgeWidth():
 	if wallThickness < nozzleSize:
 		return wallThickness
 
-	lineCount = int(wallThickness / (nozzleSize + 0.0001))
+	lineCount = int(wallThickness / (nozzleSize - 0.0001))
+	if lineCount == 0:
+		return nozzleSize
 	lineWidth = wallThickness / lineCount
 	lineWidthAlt = wallThickness / (lineCount + 1)
 	if lineWidth > nozzleSize * 1.5:
@@ -656,7 +659,7 @@ def calculateLineCount():
 	if wallThickness < nozzleSize:
 		return 1
 
-	lineCount = int(wallThickness / (nozzleSize + 0.0001))
+	lineCount = int(wallThickness / (nozzleSize - 0.0001))
 	lineWidth = wallThickness / lineCount
 	lineWidthAlt = wallThickness / (lineCount + 1)
 	if lineWidth > nozzleSize * 1.5:
