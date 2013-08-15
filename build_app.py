@@ -46,6 +46,20 @@ if sys.platform.startswith('darwin'):
                 u'UTTypeConformsTo': [u'public.xml', u'public.audiovisual-content'],
                 u'UTTypeDescription': u'Digital Asset Exchange (DAE)',
                 u'UTTypeTagSpecification': {u'public.filename-extension': [u'dae'], u'public.mime-type': [u'model/vnd.collada+xml']}
+            },
+            {
+                u'UTTypeIdentifier': u'com.ultimaker.obj',
+                u'UTTypeConformsTo': [u'public.data'],
+                u'UTTypeDescription': u'Wavefront OBJ',
+                u'UTTypeReferenceURL': u'https://en.wikipedia.org/wiki/Wavefront_.obj_file',
+                u'UTTypeTagSpecification': {u'public.filename-extension': [u'obj'], u'public.mime-type': [u'text/plain']}
+            },
+            {
+                u'UTTypeIdentifier': u'com.ultimaker.amf',
+                u'UTTypeConformsTo': [u'public.data'],
+                u'UTTypeDescription': u'Additive Manufacturing File',
+                u'UTTypeReferenceURL': u'https://en.wikipedia.org/wiki/Additive_Manufacturing_File_Format',
+                u'UTTypeTagSpecification': {u'public.filename-extension': [u'amf'], u'public.mime-type': [u'text/plain']}
             }
         ]
     }
