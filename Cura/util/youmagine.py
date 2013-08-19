@@ -1,22 +1,50 @@
 from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
-import sys
 import json
 import httplib as httpclient
 import urllib
-import cStringIO as StringIO
+
+class httpUploadDataStream(object):
+	def __init__(self, progressCallback):
+		self._dataList = []
+		self._totalLength = 0
+		self._readPos = 0
+		self._progressCallback = progressCallback
+
+	def write(self, data):
+		size = len(data)
+		if size < 1:
+			return
+		blocks = size / 2048
+		for n in xrange(0, blocks):
+			self._dataList.append(data[n*2048:n*2048+2048])
+		self._dataList.append(data[blocks*2048:])
+		self._totalLength += size
+
+	def read(self, size):
+		if self._readPos >= len(self._dataList):
+			return None
+		ret = self._dataList[self._readPos]
+		self._readPos += 1
+		if self._progressCallback is not None:
+			self._progressCallback(float(self._readPos / len(self._dataList)))
+		return ret
+
+	def __len__(self):
+		return self._totalLength
 
 class Youmagine(object):
-	def __init__(self, authToken):
-		self._hostUrl = ''
-		self._viewUrl = ''
-		self._authUrl = ''
+	def __init__(self, authToken, progressCallback = None):
+		self._hostUrl = 'api.youmagine.com'
+		self._viewUrl = 'www.youmagine.com'
+		self._authUrl = 'https://www.youmagine.com/integrations/cura/authorized_integrations/new'
 		self._authToken = authToken
 		self._userName = None
 		self._userID = None
 		self._http = None
 		self._hostReachable = True
+		self._progressCallback = progressCallback
 		self._categories = [
 			('Art', 2),
 			('Fashion', 3),
@@ -117,7 +145,7 @@ class Youmagine(object):
 			try:
 				if files is not None:
 					boundary = 'wL36Yn8afVp8Ag7AmP8qZ0SA4n1v9T'
-					s = StringIO.StringIO()
+					s = httpUploadDataStream(self._progressCallback)
 					for k, v in files.iteritems():
 						filename = v[0]
 						fileContents = v[1]
@@ -137,8 +165,7 @@ class Youmagine(object):
 						s.write('\r\n')
 					s.write('--%s--\r\n' % (boundary))
 
-					s = s.getvalue()
-					self._http.request(method, url, StringIO.StringIO(s), {"Content-type": "multipart/form-data; boundary=%s" % (boundary), "Content-Length": len(s)})
+					self._http.request(method, url, s, {"Content-type": "multipart/form-data; boundary=%s" % (boundary), "Content-Length": len(s)})
 				elif postData is not None:
 					self._http.request(method, url, urllib.urlencode(postData), {"Content-type": "application/x-www-form-urlencoded"})
 				else:
@@ -158,6 +185,7 @@ class Youmagine(object):
 				return json.loads(responseText)
 			except ValueError:
 				print response.getheaders()
+				print responseText
 				error = 'Failed to decode JSON response'
 		self._hostReachable = False
 		return {'error': error}

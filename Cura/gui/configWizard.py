@@ -337,14 +337,11 @@ class SelectParts(InfoPage):
 class FirmwareUpgradePage(InfoPage):
 	def __init__(self, parent):
 		super(FirmwareUpgradePage, self).__init__(parent, "Upgrade Ultimaker Firmware")
-		self.AddText(
-			'Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the step motors, regulates the temperature\nand ultimately makes your printer work.')
+		self.AddText('Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the step motors, regulates the temperature\nand ultimately makes your printer work.')
 		self.AddHiddenSeperator()
-		self.AddText(
-			'The firmware shipping with new Ultimakers works, but upgrades\nhave been made to make better prints, and make calibration easier.')
+		self.AddText('The firmware shipping with new Ultimakers works, but upgrades\nhave been made to make better prints, and make calibration easier.')
 		self.AddHiddenSeperator()
-		self.AddText(
-			'Cura requires these new features and thus\nyour firmware will most likely need to be upgraded.\nYou will get the chance to do so now.')
+		self.AddText('Cura requires these new features and thus\nyour firmware will most likely need to be upgraded.\nYou will get the chance to do so now.')
 		upgradeButton, skipUpgradeButton = self.AddDualButton('Upgrade to Marlin firmware', 'Skip upgrade')
 		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
 		skipUpgradeButton.Bind(wx.EVT_BUTTON, self.OnSkipClick)
@@ -367,7 +364,7 @@ class FirmwareUpgradePage(InfoPage):
 		self.GetParent().ShowPage(self.GetNext())
 
 	def OnUrlClick(self, e):
-		webbrowser.open('http://daid.mine.nu/~daid/marlin_build/')
+		webbrowser.open('http://marlinbuilder.robotfuzz.com/')
 
 
 class UltimakerCheckupPage(InfoPage):

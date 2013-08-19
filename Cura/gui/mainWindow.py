@@ -167,7 +167,7 @@ class mainWindow(wx.Frame):
 		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, lambda : self.scene.sceneUpdated())
 		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
 
-		self.youmagineButton = wx.BitmapButton(self.leftPane, -1, wx.Bitmap(resources.getPathForImage('youmagine-text.png')))
+		self.youmagineButton = wx.BitmapButton(self.leftPane, -1, wx.Bitmap(resources.getPathForImage('youmagine-icon.png')))
 		self.youmagineButton.SetToolTipString("Share your design to YouMagine.com")
 		self.youmagineButton.Bind(wx.EVT_BUTTON, self.OnYouMagine)
 

@@ -35,7 +35,7 @@ class youmagineManager(object):
 	def __init__(self, parent, objectScene):
 		self._mainWindow = parent
 		self._scene = objectScene
-		self._ym = youmagine.Youmagine(profile.getPreference('youmagine_token'))
+		self._ym = youmagine.Youmagine(profile.getPreference('youmagine_token'), self._progressCallback)
 
 		self._indicatorWindow = workingIndicatorWindow(self._mainWindow)
 		self._getAuthorizationWindow = getAuthorizationWindow(self._mainWindow, self._ym)
@@ -44,6 +44,9 @@ class youmagineManager(object):
 		thread = threading.Thread(target=self.checkAuthorizationThread)
 		thread.daemon = True
 		thread.start()
+
+	def _progressCallback(self, progress):
+		self._indicatorWindow.progress(progress)
 
 	#Do all the youmagine communication in a background thread, because it can take a while and block the UI thread otherwise
 	def checkAuthorizationThread(self):
@@ -142,11 +145,15 @@ class workingIndicatorWindow(wx.Frame):
 
 		self._indicatorBitmap = wx.StaticBitmap(self._panel, -1, wx.EmptyBitmapRGBA(24, 24, red=255, green=255, blue=255, alpha=1))
 		self._statusText = wx.StaticText(self._panel, -1, '...')
+		self._progress = wx.Gauge(self._panel, -1)
+		self._progress.SetRange(1000)
+		self._progress.SetMinSize((250, 30))
 
 		self._panel._sizer = wx.GridBagSizer(2, 2)
 		self._panel.SetSizer(self._panel._sizer)
 		self._panel._sizer.Add(self._indicatorBitmap, (0, 0))
 		self._panel._sizer.Add(self._statusText, (0, 1), flag=wx.ALIGN_CENTER_VERTICAL)
+		self._panel._sizer.Add(self._progress, (1, 0), span=(1,2), flag=wx.EXPAND)
 
 		self._busyState = 0
 		self._busyTimer = wx.Timer(self)
@@ -161,8 +168,16 @@ class workingIndicatorWindow(wx.Frame):
 			self._busyState = 0
 		self._indicatorBitmap.SetBitmap(self._busyBitmaps[self._busyState])
 
+	def progress(self, progressAmount):
+		wx.CallAfter(self._progress.Show)
+		wx.CallAfter(self._progress.SetValue, progressAmount*1000)
+		wx.CallAfter(self.Layout)
+		wx.CallAfter(self.Fit)
+
 	def showBusy(self, text):
 		self._statusText.SetLabel(text)
+		self._progress.Hide()
+		self.Layout()
 		self.Fit()
 		self.Centre()
 		self.Show()
