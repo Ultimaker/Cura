@@ -266,24 +266,25 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 		self._container.draw()
 
-		glBindTexture(GL_TEXTURE_2D, self._glRobotTexture)
-		glEnable(GL_TEXTURE_2D)
-		glPushMatrix()
-		glColor4f(1,1,1,1)
-		glTranslate(size.GetWidth() - 8,size.GetHeight() - 32,0)
-		s = self._buttonSize * 1.4
-		glScale(s,s,s)
-		glBegin(GL_QUADS)
-		glTexCoord2f(1, 0)
-		glVertex2f(0,-1)
-		glTexCoord2f(0, 0)
-		glVertex2f(-1,-1)
-		glTexCoord2f(0, 1)
-		glVertex2f(-1, 0)
-		glTexCoord2f(1, 1)
-		glVertex2f(0, 0)
-		glEnd()
-		glDisable(GL_TEXTURE_2D)
+		# glBindTexture(GL_TEXTURE_2D, self._glRobotTexture)
+		# glEnable(GL_TEXTURE_2D)
+		# glPushMatrix()
+		# glColor4f(1,1,1,1)
+		# glTranslate(size.GetWidth(),size.GetHeight(),0)
+		# s = self._buttonSize * 1
+		# glScale(s,s,s)
+		# glTranslate(-1.2,-0.2,0)
+		# glBegin(GL_QUADS)
+		# glTexCoord2f(1, 0)
+		# glVertex2f(0,-1)
+		# glTexCoord2f(0, 0)
+		# glVertex2f(-1,-1)
+		# glTexCoord2f(0, 1)
+		# glVertex2f(-1, 0)
+		# glTexCoord2f(1, 1)
+		# glVertex2f(0, 0)
+		# glEnd()
+		# glDisable(GL_TEXTURE_2D)
 		glPopMatrix()
 
 	def _OnEraseBackground(self,event):
@@ -337,7 +338,7 @@ class glGuiLayoutButtons(object):
 			else:
 				x = pos[0] * gridSize + bs * 0.2
 			if pos[1] < 0:
-				y = h + pos[1] * gridSize * 1.2 - bs * 0.2
+				y = h + pos[1] * gridSize * 1.2 - bs * 0.0
 			else:
 				y = pos[1] * gridSize * 1.2 + bs * 0.2
 			ctrl.setSize(x, y, gridSize, gridSize)

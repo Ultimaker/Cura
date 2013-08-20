@@ -18,7 +18,6 @@ from Cura.gui.util import dropTarget
 #from Cura.gui.tools import batchRun
 from Cura.gui.tools import pidDebugger
 from Cura.gui.tools import minecraftImport
-from Cura.gui.tools import youmagineGui
 from Cura.util import profile
 from Cura.util import version
 from Cura.util import meshLoader
@@ -167,14 +166,9 @@ class mainWindow(wx.Frame):
 		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, lambda : self.scene.sceneUpdated())
 		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
 
-		self.youmagineButton = wx.BitmapButton(self.leftPane, -1, wx.Bitmap(resources.getPathForImage('youmagine-icon.png')))
-		self.youmagineButton.SetToolTipString("Share your design to YouMagine.com")
-		self.youmagineButton.Bind(wx.EVT_BUTTON, self.OnYouMagine)
-
 		self.leftSizer = wx.BoxSizer(wx.VERTICAL)
 		self.leftSizer.Add(self.simpleSettingsPanel, 1)
 		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
-		self.leftSizer.Add(self.youmagineButton, 0, wx.ALIGN_CENTER)
 		self.leftPane.SetSizer(self.leftSizer)
 		
 		#Preview window
@@ -255,7 +249,6 @@ class mainWindow(wx.Frame):
 			
 			# Change location of sash to width of quick mode pane 
 			(width, height) = self.simpleSettingsPanel.GetSizer().GetSize() 
-			(width, height) = self.youmagineButton.GetSize()
 			self.splitter.SetSashPosition(width, True)
 			
 			# Disable sash
@@ -411,12 +404,6 @@ class mainWindow(wx.Frame):
 		debugger = pidDebugger.debuggerWindow(self)
 		debugger.Centre()
 		debugger.Show(True)
-
-	def OnYouMagine(self, e):
-		if len(self.scene._scene.objects()) < 1:
-			wx.MessageBox('You cannot upload to YouMagine without have a file loaded.', 'Cura', wx.OK | wx.ICON_ERROR)
-			return
-		youmagineGui.youmagineManager(self, self.scene._scene)
 
 	def OnCheckForUpdate(self, e):
 		newVersion = version.checkForNewerVersion()

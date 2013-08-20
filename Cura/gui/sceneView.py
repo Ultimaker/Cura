@@ -26,6 +26,7 @@ from Cura.util import gcodeInterpreter
 from Cura.gui.util import previewTools
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
+from Cura.gui.tools import youmagineGui
 
 class SceneView(openglGui.glGuiPanel):
 	def __init__(self, parent):
@@ -102,6 +103,8 @@ class SceneView(openglGui.glGuiPanel):
 
 		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,19,11,15,23], ['Normal', 'Overhang', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
 		self.layerSelect = openglGui.glSlider(self, 10000, 0, 1, (-1,-2), lambda : self.QueueRefresh())
+
+		self.youMagineButton = openglGui.glButton(self, 26, 'YouMagine', (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self))
 
 		self.notification = openglGui.glNotification(self, (0, 0))
 
