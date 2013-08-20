@@ -58,7 +58,7 @@ class Youmagine(object):
 		]
 		self._licenses = [
 			('Creative Commons - Share Alike', 'cc'),
-			('Creative Commons - Attribution-NonCommerical-ShareAlike', 'ccnc'),
+			('Creative Commons - Attribution-NonCommercial-ShareAlike', 'ccnc'),
 			('GPLv3', 'gplv3'),
 		]
 
