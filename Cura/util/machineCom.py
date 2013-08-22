@@ -53,10 +53,10 @@ def serialList(forAutoDetect=False):
 
 def machineIsConnected():
 	#UltiGCode is designed for SD-Card printing, so never auto-detect the serial port.
-	if profile.getPreference('gcode_flavor') == 'UltiGCode':
-		return False
 	port = profile.getPreference('serial_port')
 	if port == 'AUTO':
+		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+			return False
 		return len(serialList(True)) > 0
 	if platform.system() == "Windows":
 		return port in serialList()

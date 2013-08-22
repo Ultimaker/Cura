@@ -11,12 +11,13 @@ import warnings
 #Only import the _core to save import time
 import wx._core
 
+
 class CuraApp(wx.App):
 	def __init__(self, files):
 		if platform.system() == "Windows" and not 'PYCHARM_HOSTED' in os.environ:
-			super(CuraApp, self).__init__(redirect = True, filename = 'output.txt')
+			super(CuraApp, self).__init__(redirect=True, filename='output.txt')
 		else:
-			super(CuraApp, self).__init__(redirect = False)
+			super(CuraApp, self).__init__(redirect=False)
 
 		self.mainWindow = None
 		self.splash = None
@@ -100,7 +101,7 @@ if platform.system() == "Darwin":
 	def setFullScreenCapable(frame):
 		frameobj = _objc.PyObjCObject_New(frame.GetHandle(), 0, 1)
 
-		NSWindowCollectionBehaviorFullScreenPrimary = 1<<7
+		NSWindowCollectionBehaviorFullScreenPrimary = 1 << 7
 		window = frameobj.window()
 		newBehavior = window.collectionBehavior() | NSWindowCollectionBehaviorFullScreenPrimary
 		window.setCollectionBehavior_(newBehavior)

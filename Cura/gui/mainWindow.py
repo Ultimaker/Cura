@@ -489,8 +489,11 @@ class normalSettingsPanel(configBase.configPanelBase):
 			self.pluginPanel.Show(False)
 
 		#Alteration page
-		self.alterationPanel = alterationPanel.alterationPanel(self.nb, callback)
-		self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
+		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+			self.alterationPanel = None
+		else:
+			self.alterationPanel = alterationPanel.alterationPanel(self.nb, callback)
+			self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 
@@ -576,5 +579,6 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 	def updateProfileToControls(self):
 		super(normalSettingsPanel, self).updateProfileToControls()
-		self.alterationPanel.updateProfileToControls()
+		if self.alterationPanel is not None:
+			self.alterationPanel.updateProfileToControls()
 		self.pluginPanel.updateProfileToControls()
