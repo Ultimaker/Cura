@@ -186,6 +186,10 @@ class gcode(object):
 					P = getCodeFloat(line, 'P')
 					if P is not None:
 						totalMoveTimeMinute += P / 60.0 / 1000.0
+				elif G == 10:	#Retract
+					pass
+				elif G == 11:	#Push back after retract
+					pass
 				elif G == 20:	#Units are inches
 					scale = 25.4
 				elif G == 21:	#Units are mm
