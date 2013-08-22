@@ -885,7 +885,8 @@ void main(void)
 				self._gcodeLoadThread.start()
 			if self._gcode is not None and self._gcode.layerList is not None:
 				glPushMatrix()
-				glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
+				if profile.getPreference('machine_center_is_zero') != 'True':
+					glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
 				t = time.time()
 				drawUpTill = min(len(self._gcode.layerList), self.layerSelect.getValue() + 1)
 				for n in xrange(0, drawUpTill):
@@ -1224,6 +1225,7 @@ void main(void)
 	def _generateGCodeVBOs2(self, layer):
 		filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
 		filamentArea = math.pi * filamentRadius * filamentRadius
+		useFilamentArea = profile.getPreference('gcode_flavor') == 'UltiGCode'
 
 		ret = []
 		for extrudeType in ['WALL-OUTER:0', 'WALL-OUTER:1', 'WALL-OUTER:2', 'WALL-OUTER:3', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:
@@ -1245,7 +1247,10 @@ void main(void)
 					normal[:,2] /= lens
 
 					ePerDist = path['extrusion'][1:] / lens
-					lineWidth = ePerDist * (filamentArea / path['layerThickness'] / 2)
+					if useFilamentArea:
+						lineWidth = ePerDist / path['layerThickness'] / 2.0
+					else:
+						lineWidth = ePerDist * (filamentArea / path['layerThickness'] / 2)
 
 					normal[:,0] *= lineWidth
 					normal[:,1] *= lineWidth

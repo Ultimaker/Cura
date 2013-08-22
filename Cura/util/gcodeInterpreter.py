@@ -63,7 +63,7 @@ class gcode(object):
 	
 	def _load(self, gcodeFile):
 		self.layerList = []
-		pos = [0.0, 0.0, 0.0]
+		pos = [0.0,0.0,0.0]
 		posOffset = [0.0, 0.0, 0.0]
 		currentE = 0.0
 		totalExtrusion = 0.0
@@ -194,10 +194,7 @@ class gcode(object):
 					x = getCodeFloat(line, 'X')
 					y = getCodeFloat(line, 'Y')
 					z = getCodeFloat(line, 'Z')
-					if profile.getPreference('machine_center_is_zero') == 'True':
-						center = [profile.getProfileSettingFloat('machine_width') / 2, profile.getProfileSettingFloat('machine_depth') / 2,0.0]
-					else:
-						center = [0.0,0.0,0.0]
+					center = [0.0,0.0,0.0]
 					if x is None and y is None and z is None:
 						pos = center
 					else:
