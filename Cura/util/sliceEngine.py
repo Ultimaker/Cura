@@ -209,6 +209,9 @@ class Slicer(object):
 				self._printTimeSeconds = int(line.split(':')[1].strip())
 			elif line.startswith('Filament:'):
 				self._filamentMM = int(line.split(':')[1].strip())
+				if profile.getPreference('gcode_flavor') == 'UltiGCode':
+					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
+					self._filamentMM /= (math.pi * radius * radius)
 			else:
 				self._sliceLog.append(line.strip())
 			line = self._process.stdout.readline()

@@ -51,8 +51,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._viewTarget = numpy.array([0,0,0], numpy.float32)
 		self._animView = None
 		self._animZoom = None
-		self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
-		self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
+		self._platformMesh = None
 		self._isSimpleMode = True
 		self._usbPrintMonitor = printWindow.printProcessMonitor(lambda : self._queueRefresh())
 
@@ -104,7 +103,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,19,11,15,23], ['Normal', 'Overhang', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
 		self.layerSelect = openglGui.glSlider(self, 10000, 0, 1, (-1,-2), lambda : self.QueueRefresh())
 
-		self.youMagineButton = openglGui.glButton(self, 26, 'YouMagine upload', (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self))
+		self.youMagineButton = openglGui.glButton(self, 26, 'YouMagine upload', (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
 
 		self.notification = openglGui.glNotification(self, (0, 0))
 
@@ -1140,7 +1139,10 @@ void main(void)
 
 		size = [profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')]
 
-		if profile.getPreference('machine_type') == 'ultimaker':
+		if profile.getPreference('machine_type').startswith('ultimaker'):
+			if self._platformMesh is None:
+				self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
+				self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
 			glColor4f(1,1,1,0.5)
 			self._objectShader.bind()
 			self._renderObject(self._platformMesh, False, False)

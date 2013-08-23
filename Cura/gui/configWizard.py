@@ -326,6 +326,7 @@ class SelectParts(InfoPage):
 		profile.putPreference('has_heated_bed', str(self.heatedBed.GetValue()))
 		if self.dualExtrusion.GetValue():
 			profile.putPreference('extruder_amount', '2')
+			profile.putPreference('machine_depth', '195')
 		else:
 			profile.putPreference('extruder_amount', '1')
 		if profile.getPreference('ultimaker_extruder_upgrade') == 'True':
