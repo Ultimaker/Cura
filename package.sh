@@ -148,8 +148,9 @@ if [ "$BUILD_TARGET" = "debian" ]; then
 	cp scripts/linux/cura.py scripts/linux/debian/usr/share/cura/
 	cp -a Power/power scripts/linux/debian/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/debian/usr/share/cura/Cura/version
-	sudo chown root:root scripts/linux/debian -R
-	sudo chmod 755 scripts/linux/debian/DEBIAN/*
+	sudo chown root:root scripts/linux/debian/usr -R
+	sudo chmod 755 scripts/linux/debian/usr -R
+	sudo chmod 755 scripts/linux/debian/DEBIAN -R
 	cd scripts/linux
 	dpkg-deb --build debian ${TARGET_DIR}.deb
 	sudo chown `id -un`:`id -gn` debian -R
