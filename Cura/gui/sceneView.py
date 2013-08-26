@@ -104,6 +104,8 @@ class SceneView(openglGui.glGuiPanel):
 		self.layerSelect = openglGui.glSlider(self, 10000, 0, 1, (-1,-2), lambda : self.QueueRefresh())
 
 		self.youMagineButton = openglGui.glButton(self, 26, 'YouMagine upload', (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
+		self.youMagineButton.setDisabled(True)
+		self.youMagineButton.setHidden(True)
 
 		self.notification = openglGui.glNotification(self, (0, 0))
 
@@ -148,8 +150,10 @@ class SceneView(openglGui.glGuiPanel):
 				self.printButton.setBottomText('')
 				self.viewSelection.setValue(4)
 				self.printButton.setDisabled(False)
+				self.youMagineButton.setDisabled(True)
 				self.OnViewChange()
 			else:
+				self.youMagineButton.setDisabled(False)
 				if self.viewSelection.getValue() == 4:
 					self.viewSelection.setValue(0)
 					self.OnViewChange()
