@@ -660,6 +660,8 @@ def calculateLineCount():
 		return 1
 
 	lineCount = int(wallThickness / (nozzleSize - 0.0001))
+	if lineCount < 1:
+		lineCount = 1
 	lineWidth = wallThickness / lineCount
 	lineWidthAlt = wallThickness / (lineCount + 1)
 	if lineWidth > nozzleSize * 1.5:
