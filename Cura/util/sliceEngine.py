@@ -295,7 +295,7 @@ class Slicer(object):
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
-			settings['skirtMinLenght'] = int(profile.getProfileSettingFloat('skirt_minimal_length') * 1000)
+			settings['skirtMinLength'] = int(profile.getProfileSettingFloat('skirt_minimal_length') * 1000)
 
 		if profile.getProfileSetting('fix_horrible_union_all_type_a') == 'True':
 			settings['fixHorrible'] |= 0x01
