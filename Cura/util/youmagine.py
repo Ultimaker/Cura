@@ -112,7 +112,6 @@ class Youmagine(object):
 	def publishDesign(self, id):
 		res = self._request('PUT', '/designs/%d/mark_as/publish.json' % (id), {'ignore': 'me'})
 		if res is not None:
-			print res
 			return False
 		return True
 

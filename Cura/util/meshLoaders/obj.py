@@ -5,7 +5,7 @@ import os
 from Cura.util import mesh
 
 def loadScene(filename):
-	obj = mesh.printableObject(os.path.basename(filename))
+	obj = mesh.printableObject(filename)
 	m = obj._addMesh()
 
 	vertexList = []

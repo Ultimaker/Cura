@@ -213,7 +213,7 @@ class minecraftImportWindow(wx.Frame):
 						if y == sy - 1 or not self.isSolid[blocks[x, y + 1, z]]:
 							faceCount += 1
 
-		obj = mesh.printableObject("minecraft")
+		obj = mesh.printableObject(None)
 		m = obj._addMesh()
 		m._prepareFaceCount(faceCount * 2)
 		for x in xrange(0, sx):

@@ -42,7 +42,7 @@ def loadScene(filename):
 
 	ret = []
 	for amfObj in amf.iter('object'):
-		obj = mesh.printableObject(os.path.basename(filename))
+		obj = mesh.printableObject(filename)
 		for amfMesh in amfObj.iter('mesh'):
 			vertexList = []
 			for vertices in amfMesh.iter('vertices'):

@@ -3,13 +3,18 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import time
 import math
+import os
 
 import numpy
 numpy.seterr(all='ignore')
 
 class printableObject(object):
-	def __init__(self, name):
-		self._name = name
+	def __init__(self, originFilename):
+		self._originFilename = originFilename
+		if originFilename is None:
+			self._name = 'None'
+		else:
+			self._name = os.path.basename(originFilename)
 		if '.' in self._name:
 			self._name = self._name[0:self._name.rfind('.')]
 		self._meshList = []
@@ -23,7 +28,7 @@ class printableObject(object):
 		self._loadAnim = None
 
 	def copy(self):
-		ret = printableObject(self._name)
+		ret = printableObject(self._originFilename)
 		ret._matrix = self._matrix.copy()
 		ret._transformedMin = self._transformedMin.copy()
 		ret._transformedMax = self._transformedMin.copy()
@@ -78,6 +83,8 @@ class printableObject(object):
 
 	def getName(self):
 		return self._name
+	def getOriginFilename(self):
+		return self._originFilename
 	def getPosition(self):
 		return self._position
 	def setPosition(self, newPos):
@@ -340,7 +347,7 @@ class mesh(object):
 							doneSet.add(i)
 							todoList.append(i)
 
-			obj = printableObject(self._obj._name)
+			obj = printableObject(self._obj.getOriginFilename())
 			obj._matrix = self._obj._matrix.copy()
 			m = obj._addMesh()
 			m._prepareFaceCount(len(meshFaceList))

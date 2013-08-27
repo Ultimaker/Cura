@@ -18,6 +18,8 @@ from Cura.util.resources import getPathForImage
 
 from Cura.gui.util import webcam
 
+DESIGN_FILE_EXT = ['.scad', '.blend', '.max', '.stp', '.step', '.igs', '.iges', '.sldasm', '.sldprt', '.skp', '.ipt', '.dwg', '.123d', '.wings']
+
 def getClipboardText():
 	ret = ''
 	try:
@@ -30,6 +32,30 @@ def getClipboardText():
 		return ret
 	except:
 		return ret
+
+def getAdditionalFiles(objects, onlyExtChanged):
+	names = set()
+	for obj in objects:
+		name = obj.getOriginFilename()
+		if name is None:
+			continue
+		names.add(name[:name.rfind('.')])
+	ret = []
+	for name in names:
+		for ext in DESIGN_FILE_EXT:
+			if os.path.isfile(name + ext):
+				ret.append(name + ext)
+	if onlyExtChanged:
+		return ret
+	onlyExtList = ret
+	ret = []
+	for name in names:
+		for ext in DESIGN_FILE_EXT:
+			for filename in os.listdir(os.path.dirname(name)):
+				filename = os.path.join(os.path.dirname(name), filename)
+				if filename.endswith(ext) and filename not in ret and filename not in onlyExtList:
+					ret.append(filename)
+	return ret
 
 class youmagineManager(object):
 	def __init__(self, parent, objectScene):
@@ -77,12 +103,12 @@ class youmagineManager(object):
 		#TODO: Would you like to create a new design or add the model to an existing design?
 		wx.CallAfter(self._newDesignWindow.Show)
 
-	def createNewDesign(self, name, description, category, license, imageList, publish):
-		thread = threading.Thread(target=self.createNewDesignThread, args=(name, description, category, license, imageList, publish))
+	def createNewDesign(self, name, description, category, license, imageList, extraFileList, publish):
+		thread = threading.Thread(target=self.createNewDesignThread, args=(name, description, category, license, imageList, extraFileList, publish))
 		thread.daemon = True
 		thread.start()
 
-	def createNewDesignThread(self, name, description, category, license, imageList, publish):
+	def createNewDesignThread(self, name, description, category, license, imageList, extraFileList, publish):
 		wx.CallAfter(self._indicatorWindow.showBusy, 'Creating new design on YouMagine...')
 		id = self._ym.createDesign(name, description, category, license)
 		wx.CallAfter(self._indicatorWindow.Hide)
@@ -107,6 +133,12 @@ class youmagineManager(object):
 				wx.MessageBox('Failed to upload %s!' % (filename), 'YouMagine error.', wx.OK | wx.ICON_ERROR)
 			s.close()
 
+		for extra in extraFileList:
+			wx.CallAfter(self._indicatorWindow.showBusy, 'Uploading file %s...' % (os.path.basename(extra)))
+			with open(extra, "rb") as f:
+				if self._ym.createDocument(id, os.path.basename(extra), f.read()) is None:
+					wx.MessageBox('Failed to upload %s!' % (os.path.basename(extra)), 'YouMagine error.', wx.OK | wx.ICON_ERROR)
+
 		for image in imageList:
 			if type(image) in types.StringTypes:
 				filename = os.path.basename(image)
@@ -126,6 +158,7 @@ class youmagineManager(object):
 			wx.CallAfter(self._indicatorWindow.showBusy, 'Publishing design...')
 			self._ym.publishDesign(id)
 		wx.CallAfter(self._indicatorWindow.Hide)
+
 		webbrowser.open(self._ym.viewUrlForDesign(id))
 
 
@@ -232,25 +265,26 @@ class newDesignWindow(wx.Frame):
 		self.GetSizer().Add(p, 1, wx.EXPAND)
 		self._manager = manager
 		self._ym = ym
-		self._cam = webcam.webcam()
 
 		categoryOptions = ym.getCategories()
 		licenseOptions = ym.getLicenses()
 		self._designName = wx.TextCtrl(p, -1, 'Design name')
-		self._designDescription = wx.TextCtrl(p, -1, '', size=(1, 150), style = wx.TE_MULTILINE|wx.TE_PROCESS_TAB)
+		self._designDescription = wx.TextCtrl(p, -1, '', size=(1, 150), style = wx.TE_MULTILINE)
 		self._designLicense = wx.ComboBox(p, -1, licenseOptions[0], choices=licenseOptions, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		self._category = wx.ComboBox(p, -1, categoryOptions[-1], choices=categoryOptions, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		self._publish = wx.CheckBox(p, -1, 'Publish after upload')
 		self._shareButton = wx.Button(p, -1, 'Upload')
 		self._imageScroll = wx.lib.scrolledpanel.ScrolledPanel(p)
+		self._additionalFiles = wx.CheckListBox(p, -1)
+		self._additionalFiles.InsertItems(getAdditionalFiles(self._manager._scene.objects(), True), 0)
+		self._additionalFiles.SetChecked(range(0, self._additionalFiles.GetCount()))
+		self._additionalFiles.InsertItems(getAdditionalFiles(self._manager._scene.objects(), False), self._additionalFiles.GetCount())
 
 		self._imageScroll.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
 		self._addImageButton = wx.Button(self._imageScroll, -1, 'Add...', size=(70,52))
 		self._imageScroll.GetSizer().Add(self._addImageButton)
-		self._snapshotButton = wx.Button(self._imageScroll, -1, 'Take...', size=(70,52))
+		self._snapshotButton = wx.Button(self._imageScroll, -1, 'Webcam...', size=(70,52))
 		self._imageScroll.GetSizer().Add(self._snapshotButton)
-		if not self._cam.hasCamera():
-			self._snapshotButton.Hide()
 		self._imageScroll.Fit()
 		self._imageScroll.SetupScrolling(scroll_x=True, scroll_y=False)
 		self._imageScroll.SetMinSize((20, self._imageScroll.GetSize()[1] + wx.SystemSettings_GetMetric(wx.SYS_HSCROLL_Y)))
@@ -274,8 +308,11 @@ class newDesignWindow(wx.Frame):
 		s.Add(wx.StaticText(p, -1, 'Images:'), (6, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._imageScroll, (6, 1), span=(1, 2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
 		s.Add(wx.StaticLine(p, -1), (7,0), span=(1,3), flag=wx.EXPAND|wx.ALL)
-		s.Add(self._shareButton, (8, 1), flag=wx.BOTTOM, border=15)
-		s.Add(self._publish, (8, 2), flag=wx.BOTTOM|wx.ALIGN_CENTER_VERTICAL, border=15)
+		s.Add(wx.StaticText(p, -1, 'Design files:'), (8, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(self._additionalFiles, (8, 1), span=(1, 2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
+		s.Add(wx.StaticLine(p, -1), (9,0), span=(1,3), flag=wx.EXPAND|wx.ALL)
+		s.Add(self._shareButton, (10, 1), flag=wx.BOTTOM, border=15)
+		s.Add(self._publish, (10, 2), flag=wx.BOTTOM|wx.ALIGN_CENTER_VERTICAL, border=15)
 
 		s.AddGrowableRow(2)
 		s.AddGrowableCol(2)
@@ -306,7 +343,7 @@ class newDesignWindow(wx.Frame):
 				imageList.append(child.imageFilename)
 			if hasattr(child, 'imageData'):
 				imageList.append(child.imageData)
-		self._manager.createNewDesign(self._designName.GetValue(), self._designDescription.GetValue(), self._category.GetValue(), self._designLicense.GetValue(), imageList, self._publish.GetValue())
+		self._manager.createNewDesign(self._designName.GetValue(), self._designDescription.GetValue(), self._category.GetValue(), self._designLicense.GetValue(), imageList, self._additionalFiles.GetCheckedStrings(), self._publish.GetValue())
 		self.Destroy()
 
 	def OnAddImage(self, e):
@@ -318,7 +355,7 @@ class newDesignWindow(wx.Frame):
 		dlg.Destroy()
 
 	def OnTakeImage(self, e):
-		webcamPhotoWindow(self, self._cam).Show()
+		webcamPhotoWindow(self).Show()
 
 	def _addImage(self, image):
 		wxImage = None
@@ -365,14 +402,14 @@ class newDesignWindow(wx.Frame):
 		self._imageScroll.SetupScrolling(scroll_x=True, scroll_y=False)
 
 class webcamPhotoWindow(wx.Frame):
-	def __init__(self, parent, cam):
+	def __init__(self, parent):
 		super(webcamPhotoWindow, self).__init__(parent, title='YouMagine')
 		p = wx.Panel(self)
 		self.panel = p
 		self.SetSizer(wx.BoxSizer())
 		self.GetSizer().Add(p, 1, wx.EXPAND)
 
-		self._cam = cam
+		self._cam = webcam.webcam()
 		self._cam.takeNewImage(False)
 
 		s = wx.GridBagSizer(3, 3)
@@ -383,9 +420,9 @@ class webcamPhotoWindow(wx.Frame):
 		self._takeImageButton = wx.Button(p, -1, 'Snap image')
 		self._takeImageTimer = wx.Timer(self)
 
-		s.Add(self._takeImageButton, pos=(1, 0))
-		s.Add(self._cameraSelect, pos=(1, 1))
-		s.Add(self._preview, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
+		s.Add(self._takeImageButton, pos=(1, 0), flag=wx.ALL, border=5)
+		s.Add(self._cameraSelect, pos=(1, 1), flag=wx.ALL, border=5)
+		s.Add(self._preview, pos=(0, 0), span=(1, 2), flag=wx.EXPAND|wx.ALL, border=5)
 
 		if self._cam.getLastImage() is not None:
 			self._preview.SetMinSize((self._cam.getLastImage().GetWidth(), self._cam.getLastImage().GetHeight()))

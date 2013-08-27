@@ -12,7 +12,7 @@ def loadScene(filename):
 
 class daeLoader(object):
 	def __init__(self, filename):
-		self.obj = mesh.printableObject(os.path.basename(filename))
+		self.obj = mesh.printableObject(filename)
 		self.mesh = self.obj._addMesh()
 
 		r = ParserCreate()
