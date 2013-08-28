@@ -156,7 +156,10 @@ class youmagineManager(object):
 
 		if publish:
 			wx.CallAfter(self._indicatorWindow.showBusy, 'Publishing design...')
-			self._ym.publishDesign(id)
+			if not self._ym.publishDesign(id):
+				#If publishing failed try again after 1 second, this might help when you need to wait for the renderer. But does not always work.
+				time.sleep(1)
+				self._ym.publishDesign(id)
 		wx.CallAfter(self._indicatorWindow.Hide)
 
 		webbrowser.open(self._ym.viewUrlForDesign(id))

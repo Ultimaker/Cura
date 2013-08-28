@@ -103,7 +103,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,19,11,15,23], ['Normal', 'Overhang', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
 		self.layerSelect = openglGui.glSlider(self, 10000, 0, 1, (-1,-2), lambda : self.QueueRefresh())
 
-		self.youMagineButton = openglGui.glButton(self, 26, 'YouMagine upload', (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
+		self.youMagineButton = openglGui.glButton(self, 26, 'Share on YouMagine', (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
 		self.youMagineButton.setDisabled(True)
 
 		self.notification = openglGui.glNotification(self, (0, 0))
