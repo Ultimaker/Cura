@@ -192,7 +192,7 @@ class Youmagine(object):
 
 #Fake Youmagine class to test without internet
 class FakeYoumagine(Youmagine):
-	def __init__(self, authToken):
+	def __init__(self, authToken, callback):
 		super(FakeYoumagine, self).__init__(authToken)
 		self._authUrl = 'file:///C:/Models/output.html'
 		self._authToken = None
