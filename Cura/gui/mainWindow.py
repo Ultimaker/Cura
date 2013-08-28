@@ -152,6 +152,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('https://github.com/daid/Cura/issues'), i)
 		i = helpMenu.Append(-1, 'Check for update...')
 		self.Bind(wx.EVT_MENU, self.OnCheckForUpdate, i)
+		i = helpMenu.Append(-1, 'Open YouMagine website...')
+		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('https://www.youmagine.com/'), i)
 		i = helpMenu.Append(-1, 'About Cura...')
 		self.Bind(wx.EVT_MENU, self.OnAbout, i)
 		self.menubar.Append(helpMenu, 'Help')
