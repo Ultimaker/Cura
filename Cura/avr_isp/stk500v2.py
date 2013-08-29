@@ -148,7 +148,18 @@ class Stk500v2(ispBase.IspBase):
 
 def main():
 	programmer = Stk500v2()
-	programmer.connect(port = sys.argv[1])
+	if sys.argv[1] == 'AUTO':
+		import _winreg
+		key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
+		i=0
+		while True:
+			values = _winreg.EnumValue(key, i)
+			if 'USBSER' in values[0]:
+				programmer.connect(port = values[1])
+				break
+			i+=1
+	else:
+		programmer.connect(port = sys.argv[1])
 	programmer.programChip(intelHex.readHex(sys.argv[2]))
 	sys.exit(1)
 
