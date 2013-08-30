@@ -23,6 +23,9 @@ def main():
 		help="Internal option, do not use!")
 	parser.add_option("-s", "--slice", action="store_true", dest="slice",
 		help="Slice the given files instead of opening them in Cura")
+	parser.add_option("-o", "--output", action="store", type="string", dest="output",
+		help="path to write sliced file to")
+
 	(options, args) = parser.parse_args()
 
 	profile.loadPreferences(profile.getPreferencePath())
@@ -51,8 +54,14 @@ def main():
 			scene.add(m)
 		slicer.runSlicer(scene)
 		slicer.wait()
-		shutil.copyfile(slicer.getGCodeFilename(), args[0] + '.gcode')
-		print 'GCode file saved as: %s' % (args[0] + '.gcode')
+
+		if options.output:
+			shutil.copyfile(slicer.getGCodeFilename(), options.output)
+			print 'GCode file saved : %s' % options.output
+		else:
+			shutil.copyfile(slicer.getGCodeFilename(), args[0] + '.gcode')
+			print 'GCode file saved as: %s' % (args[0] + '.gcode')
+
 		slicer.cleanup()
 	else:
 		from Cura.gui import app
