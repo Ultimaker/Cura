@@ -56,7 +56,6 @@ def main():
 		slicer.wait()
 
 		if options.output:
-			print 'output', options.output
 			shutil.copyfile(slicer.getGCodeFilename(), options.output)
 			print 'GCode file saved : %s' % options.output
 		else:
