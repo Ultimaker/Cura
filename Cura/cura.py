@@ -24,7 +24,7 @@ def main():
 	parser.add_option("-s", "--slice", action="store_true", dest="slice",
 		help="Slice the given files instead of opening them in Cura")
 	parser.add_option("-o", "--output", action="store", type="string", dest="output",
-		help="Directory or file to write sliced files to")
+		help="path to write sliced file to")
 
 	(options, args) = parser.parse_args()
 
