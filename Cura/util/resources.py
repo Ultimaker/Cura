@@ -4,14 +4,19 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import os
 import sys
 
-__all__ = ['getPathForResource', 'getPathForImage', 'getPathForMesh']
+import wx
+import gettext
 
+if sys.platform.startswith('darwin'):
+	try:
+		#Foundation import can crash on some MacOS installs
+		from Foundation import *
+	except:
+		pass
 
 if sys.platform.startswith('darwin'):
 	if hasattr(sys, 'frozen'):
 		try:
-			#Foundation import can crash on some MacOS installs
-			from Foundation import *
 			resourceBasePath = NSBundle.mainBundle().resourcePath()
 		except:
 			resourceBasePath = os.path.join(os.path.dirname(__file__), "../../../../../")
@@ -37,3 +42,16 @@ def getPathForMesh(name):
 
 def getPathForFirmware(name):
 	return getPathForResource(resourceBasePath, 'firmware', name)
+
+def setupLocalization():
+	try:
+		if sys.platform.startswith('darwin'):
+			languages = NSLocale.preferredLanguages()
+		else:
+			languages = [wx.Locale(wx.LANGUAGE_DEFAULT).GetCanonicalName()]
+	except Exception as e:
+		languages = ['en']
+
+	locale_path = os.path.normpath(os.path.join(resourceBasePath, 'locale'))
+	translation = gettext.translation('Cura', locale_path, languages, fallback=True)
+	translation.install(unicode=True)
