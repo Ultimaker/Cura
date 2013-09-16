@@ -528,9 +528,10 @@ class printWindow(wx.Frame):
 		self.machineCom.setFeedrateModifier('SUPPORT', self.supportSpeedSelect.GetValue() / 100.0)
 
 	def AddTermLog(self, line):
+		self.termLog.SetInsertionPointEnd()
 		self.termLog.AppendText(unicode(line, 'utf-8', 'replace'))
-		l = len(self.termLog.GetValue())
-		self.termLog.SetCaret(wx.Caret(self.termLog, (l, l)))
+		#l = self.termLog.GetLastPosition()     # if needed (windows? mac?)
+		#self.termLog.ShowPosition(l)
 
 	def OnTermEnterLine(self, e):
 		line = self.termInput.GetValue()
