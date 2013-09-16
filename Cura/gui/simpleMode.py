@@ -27,6 +27,8 @@ class simpleModePanel(wx.Panel):
 		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA', style=wx.RB_GROUP)
 		self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS')
 		self.printMaterialDiameter = wx.TextCtrl(printMaterialPanel, -1, profile.getProfileSetting('filament_diameter'))
+		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+			printMaterialPanel.Show(False)
 		
 		self.printSupport = wx.CheckBox(self, -1, 'Print support structure')
 
@@ -93,7 +95,7 @@ class simpleModePanel(wx.Panel):
 		put('travel_speed', '150')
 		put('max_z_speed', '3.0')
 		put('bottom_layer_speed', '25')
-		put('cool_min_layer_time', '10')
+		put('cool_min_layer_time', '5')
 		put('fan_enabled', 'True')
 		put('fan_layer', '1')
 		put('fan_speed', '100')

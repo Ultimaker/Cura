@@ -528,6 +528,8 @@ class printWindow(wx.Frame):
 		self.machineCom.setFeedrateModifier('SUPPORT', self.supportSpeedSelect.GetValue() / 100.0)
 
 	def AddTermLog(self, line):
+		if len(self.termLog.GetValue()) > 10000:
+			self.termLog.SetValue(self.termLog.GetValue()[-10000:])
 		self.termLog.AppendText(unicode(line, 'utf-8', 'replace'))
 		l = len(self.termLog.GetValue())
 		self.termLog.SetCaret(wx.Caret(self.termLog, (l, l)))

@@ -264,8 +264,10 @@ class MachineSelectPage(InfoPage):
 		super(MachineSelectPage, self).__init__(parent, "Select your machine")
 		self.AddText('What kind of machine do you have:')
 
-		self.UltimakerRadio = self.AddRadioButton("Ultimaker", style=wx.RB_GROUP)
-		self.UltimakerRadio.SetValue(True)
+		self.Ultimaker2Radio = self.AddRadioButton("Ultimaker2", style=wx.RB_GROUP)
+		self.Ultimaker2Radio.SetValue(True)
+		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
+		self.UltimakerRadio = self.AddRadioButton("Ultimaker")
 		self.UltimakerRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimakerSelect)
 		self.OtherRadio = self.AddRadioButton("Other (Ex: RepRap)")
 		self.OtherRadio.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
@@ -276,19 +278,36 @@ class MachineSelectPage(InfoPage):
 		self.AddText('For full details see: http://wiki.ultimaker.com/Cura:stats')
 		self.SubmitUserStats.SetValue(True)
 
+	def OnUltimaker2Select(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimaker2ReadyPage)
+
 	def OnUltimakerSelect(self, e):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimakerFirmwareUpgradePage)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimakerSelectParts)
 
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().repRapInfoPage)
 
 	def StoreData(self):
-		if self.UltimakerRadio.GetValue():
+		if self.Ultimaker2Radio.GetValue():
+			profile.putPreference('machine_width', '230')
+			profile.putPreference('machine_depth', '225')
+			profile.putPreference('machine_height', '205')
+			profile.putPreference('machine_type', 'ultimaker2')
+			profile.putPreference('machine_center_is_zero', 'False')
+			profile.putPreference('gcode_flavor', 'UltiGCode')
+			profile.putProfileSetting('nozzle_size', '0.4')
+			profile.putPreference('extruder_head_size_min_x', '75.0')
+			profile.putPreference('extruder_head_size_min_y', '18.0')
+			profile.putPreference('extruder_head_size_max_x', '18.0')
+			profile.putPreference('extruder_head_size_max_y', '35.0')
+			profile.putPreference('extruder_head_size_height', '60.0')
+		elif self.UltimakerRadio.GetValue():
 			profile.putPreference('machine_width', '205')
 			profile.putPreference('machine_depth', '205')
 			profile.putPreference('machine_height', '200')
 			profile.putPreference('machine_type', 'ultimaker')
 			profile.putPreference('machine_center_is_zero', 'False')
+			profile.putPreference('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putProfileSetting('nozzle_size', '0.4')
 			profile.putPreference('extruder_head_size_min_x', '75.0')
 			profile.putPreference('extruder_head_size_min_y', '18.0')
@@ -300,6 +319,7 @@ class MachineSelectPage(InfoPage):
 			profile.putPreference('machine_depth', '80')
 			profile.putPreference('machine_height', '60')
 			profile.putPreference('machine_type', 'reprap')
+			profile.putPreference('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putPreference('startMode', 'Normal')
 			profile.putProfileSetting('nozzle_size', '0.5')
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
@@ -335,9 +355,9 @@ class SelectParts(InfoPage):
 			profile.putProfileSetting('retraction_enable', 'False')
 
 
-class FirmwareUpgradePage(InfoPage):
+class UltimakerFirmwareUpgradePage(InfoPage):
 	def __init__(self, parent):
-		super(FirmwareUpgradePage, self).__init__(parent, "Upgrade Ultimaker Firmware")
+		super(UltimakerFirmwareUpgradePage, self).__init__(parent, "Upgrade Ultimaker Firmware")
 		self.AddText('Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the step motors, regulates the temperature\nand ultimately makes your printer work.')
 		self.AddHiddenSeperator()
 		self.AddText('The firmware shipping with new Ultimakers works, but upgrades\nhave been made to make better prints, and make calibration easier.')
@@ -366,7 +386,6 @@ class FirmwareUpgradePage(InfoPage):
 
 	def OnUrlClick(self, e):
 		webbrowser.open('http://marlinbuilder.robotfuzz.com/')
-
 
 class UltimakerCheckupPage(InfoPage):
 	def __init__(self, parent):
@@ -728,6 +747,12 @@ class UltimakerCalibrateStepsPerEPage(InfoPage):
 	def StoreData(self):
 		profile.putPreference('steps_per_e', self.stepsPerEInput.GetValue())
 
+class Ultimaker2ReadyPage(InfoPage):
+	def __init__(self, parent):
+		super(Ultimaker2ReadyPage, self).__init__(parent, "Ultimaker2")
+		self.AddText('Congratulations on your the purchase of your brand new Ultimaker2.')
+		self.AddText('Cura is now ready to be used with your Ultimaker2.')
+		self.AddSeperator()
 
 class configWizard(wx.wizard.Wizard):
 	def __init__(self):
@@ -739,7 +764,7 @@ class configWizard(wx.wizard.Wizard):
 		self.firstInfoPage = FirstInfoPage(self)
 		self.machineSelectPage = MachineSelectPage(self)
 		self.ultimakerSelectParts = SelectParts(self)
-		self.ultimakerFirmwareUpgradePage = FirmwareUpgradePage(self)
+		self.ultimakerFirmwareUpgradePage = UltimakerFirmwareUpgradePage(self)
 		self.ultimakerCheckupPage = UltimakerCheckupPage(self)
 		self.ultimakerCalibrationPage = UltimakerCalibrationPage(self)
 		self.ultimakerCalibrateStepsPerEPage = UltimakerCalibrateStepsPerEPage(self)
@@ -747,8 +772,10 @@ class configWizard(wx.wizard.Wizard):
 		self.headOffsetCalibration = headOffsetCalibrationPage(self)
 		self.repRapInfoPage = RepRapInfoPage(self)
 
+		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
+
 		wx.wizard.WizardPageSimple.Chain(self.firstInfoPage, self.machineSelectPage)
-		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
+		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerSelectParts, self.ultimakerFirmwareUpgradePage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerFirmwareUpgradePage, self.ultimakerCheckupPage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerCheckupPage, self.bedLevelPage)

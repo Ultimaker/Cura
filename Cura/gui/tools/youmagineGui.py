@@ -262,7 +262,7 @@ class getAuthorizationWindow(wx.Frame):
 
 class newDesignWindow(wx.Frame):
 	def __init__(self, parent, manager, ym):
-		super(newDesignWindow, self).__init__(parent, title='YouMagine')
+		super(newDesignWindow, self).__init__(parent, title='Share on YouMagine')
 		p = wx.Panel(self)
 		self.SetSizer(wx.BoxSizer())
 		self.GetSizer().Add(p, 1, wx.EXPAND)
@@ -276,7 +276,7 @@ class newDesignWindow(wx.Frame):
 		self._designLicense = wx.ComboBox(p, -1, licenseOptions[0], choices=licenseOptions, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		self._category = wx.ComboBox(p, -1, categoryOptions[-1], choices=categoryOptions, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		self._publish = wx.CheckBox(p, -1, 'Publish after upload')
-		self._shareButton = wx.Button(p, -1, 'Upload')
+		self._shareButton = wx.Button(p, -1, 'Share!')
 		self._imageScroll = wx.lib.scrolledpanel.ScrolledPanel(p)
 		self._additionalFiles = wx.CheckListBox(p, -1)
 		self._additionalFiles.InsertItems(getAdditionalFiles(self._manager._scene.objects(), True), 0)
@@ -311,7 +311,7 @@ class newDesignWindow(wx.Frame):
 		s.Add(wx.StaticText(p, -1, 'Images:'), (6, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._imageScroll, (6, 1), span=(1, 2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
 		s.Add(wx.StaticLine(p, -1), (7,0), span=(1,3), flag=wx.EXPAND|wx.ALL)
-		s.Add(wx.StaticText(p, -1, 'Design files:'), (8, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, 'Related design files:'), (8, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._additionalFiles, (8, 1), span=(1, 2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
 		s.Add(wx.StaticLine(p, -1), (9,0), span=(1,3), flag=wx.EXPAND|wx.ALL)
 		s.Add(self._shareButton, (10, 1), flag=wx.BOTTOM, border=15)

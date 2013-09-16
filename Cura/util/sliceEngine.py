@@ -288,6 +288,7 @@ class Slicer(object):
 			settings['skirtDistance'] = 0
 			settings['skirtLineCount'] = 0
 			settings['raftMargin'] = int(profile.getProfileSettingFloat('raft_margin') * 1000)
+			settings['raftLineSpacing'] = int(profile.getProfileSettingFloat('raft_line_spacing') * 1000)
 			settings['raftBaseThickness'] = int(profile.getProfileSettingFloat('raft_base_thickness') * 1000)
 			settings['raftBaseLinewidth'] = int(profile.getProfileSettingFloat('raft_base_linewidth') * 1000)
 			settings['raftInterfaceThickness'] = int(profile.getProfileSettingFloat('raft_interface_thickness') * 1000)

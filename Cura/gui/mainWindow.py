@@ -113,7 +113,7 @@ class mainWindow(wx.Frame):
 		i = toolsMenu.Append(-1, 'Switch to full settings...')
 		self.switchToNormalMenuItem = i
 		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
-		toolsMenu.AppendSeparator()
+		#toolsMenu.AppendSeparator()
 		#i = toolsMenu.Append(-1, 'Batch run...')
 		#self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
 		#self.normalModeOnlyItems.append(i)

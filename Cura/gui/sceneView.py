@@ -409,6 +409,9 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnMergeObjects(self, e):
 		if self._selectedObj is None or self._focusObj is None or self._selectedObj == self._focusObj:
+			if len(self._scene.objects()) == 2:
+				self._scene.merge(self._scene.objects()[0], self._scene.objects()[1])
+				self.sceneUpdated()
 			return
 		self._scene.merge(self._selectedObj, self._focusObj)
 		self.sceneUpdated()
@@ -617,7 +620,7 @@ class SceneView(openglGui.glGuiPanel):
 						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, 'Delete'))
 						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, 'Multiply'))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, 'Split'))
-					if self._selectedObj != self._focusObj and self._focusObj is not None and int(profile.getPreference('extruder_amount')) > 1:
+					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getPreference('extruder_amount')) > 1:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Dual extrusion merge'))
 					if len(self._scene.objects()) > 0:
 						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, 'Delete all'))
@@ -1144,8 +1147,12 @@ void main(void)
 
 		if profile.getPreference('machine_type').startswith('ultimaker'):
 			if self._platformMesh is None:
-				self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
-				self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
+				if profile.getPreference('machine_type') == 'ultimaker2':
+					self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker2_platform.stl'))[0]
+					self._platformMesh._drawOffset = numpy.array([0,-37,145], numpy.float32)
+				else:
+					self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
+					self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
 			glColor4f(1,1,1,0.5)
 			self._objectShader.bind()
 			self._renderObject(self._platformMesh, False, False)
