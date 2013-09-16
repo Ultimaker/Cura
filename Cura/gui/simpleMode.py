@@ -17,10 +17,10 @@ class simpleModePanel(wx.Panel):
 		#self.menubar.Insert(1, toolsMenu, 'Normal mode')
 
 		printTypePanel = wx.Panel(self)
-		self.printTypeHigh = wx.RadioButton(printTypePanel, -1, 'High quality print', style=wx.RB_GROUP)
-		self.printTypeNormal = wx.RadioButton(printTypePanel, -1, 'Normal quality print')
-		self.printTypeLow = wx.RadioButton(printTypePanel, -1, 'Fast low quality print')
-		self.printTypeJoris = wx.RadioButton(printTypePanel, -1, 'Thin walled cup or vase')
+		self.printTypeHigh = wx.RadioButton(printTypePanel, -1, _("High quality print"), style=wx.RB_GROUP)
+		self.printTypeNormal = wx.RadioButton(printTypePanel, -1, _("Normal quality print"))
+		self.printTypeLow = wx.RadioButton(printTypePanel, -1, _("Fast low quality print"))
+		self.printTypeJoris = wx.RadioButton(printTypePanel, -1, _("Thin walled cup or vase"))
 		self.printTypeJoris.Hide()
 
 		printMaterialPanel = wx.Panel(self)
@@ -30,12 +30,12 @@ class simpleModePanel(wx.Panel):
 		if profile.getPreference('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
 		
-		self.printSupport = wx.CheckBox(self, -1, 'Print support structure')
+		self.printSupport = wx.CheckBox(self, -1, _("Print support structure"))
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
 
-		sb = wx.StaticBox(printTypePanel, label="Select a print type:")
+		sb = wx.StaticBox(printTypePanel, label=_("Select a print type:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		boxsizer.Add(self.printTypeHigh)
 		boxsizer.Add(self.printTypeNormal)
@@ -45,17 +45,17 @@ class simpleModePanel(wx.Panel):
 		printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printTypePanel, (0,0), flag=wx.EXPAND)
 
-		sb = wx.StaticBox(printMaterialPanel, label="Material:")
+		sb = wx.StaticBox(printMaterialPanel, label=_("Material:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		boxsizer.Add(self.printMaterialPLA)
 		boxsizer.Add(self.printMaterialABS)
-		boxsizer.Add(wx.StaticText(printMaterialPanel, -1, 'Diameter:'))
+		boxsizer.Add(wx.StaticText(printMaterialPanel, -1, _("Diameter:")))
 		boxsizer.Add(self.printMaterialDiameter)
 		printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
 
-		sb = wx.StaticBox(self, label="Other:")
+		sb = wx.StaticBox(self, label=_("Other:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		boxsizer.Add(self.printSupport)
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
@@ -116,7 +116,7 @@ class simpleModePanel(wx.Panel):
 		put('bottom_thickness', '0.3')
 
 		if self.printSupport.GetValue():
-			put('support', 'Exterior Only')
+			put('support', _("Exterior Only"))
 
 		nozzle_size = float(get('nozzle_size'))
 		if self.printTypeNormal.GetValue():

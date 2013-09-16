@@ -76,11 +76,11 @@ class youmagineManager(object):
 
 	#Do all the youmagine communication in a background thread, because it can take a while and block the UI thread otherwise
 	def checkAuthorizationThread(self):
-		wx.CallAfter(self._indicatorWindow.showBusy, 'Checking token')
+		wx.CallAfter(self._indicatorWindow.showBusy, _("Checking token"))
 		if not self._ym.isAuthorized():
 			wx.CallAfter(self._indicatorWindow.Hide)
 			if not self._ym.isHostReachable():
-				wx.MessageBox('Failed to contact YouMagine.com', 'YouMagine error.', wx.OK | wx.ICON_ERROR)
+				wx.MessageBox(_("Failed to contact YouMagine.com"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 				return
 			wx.CallAfter(self._getAuthorizationWindow.Show)
 			lastTriedClipboard = ''
@@ -97,7 +97,7 @@ class youmagineManager(object):
 			profile.putPreference('youmagine_token', self._ym.getAuthToken())
 			wx.CallAfter(self._getAuthorizationWindow.Hide)
 			wx.CallAfter(self._getAuthorizationWindow.Destroy)
-			wx.MessageBox('Cura is now authorized to share on YouMagine', 'YouMagine.', wx.OK | wx.ICON_INFORMATION)
+			wx.MessageBox(_("Cura is now authorized to share on YouMagine"), _("YouMagine."), wx.OK | wx.ICON_INFORMATION)
 		wx.CallAfter(self._indicatorWindow.Hide)
 
 		#TODO: Would you like to create a new design or add the model to an existing design?
@@ -109,15 +109,15 @@ class youmagineManager(object):
 		thread.start()
 
 	def createNewDesignThread(self, name, description, category, license, imageList, extraFileList, publish):
-		wx.CallAfter(self._indicatorWindow.showBusy, 'Creating new design on YouMagine...')
+		wx.CallAfter(self._indicatorWindow.showBusy, _("Creating new design on YouMagine..."))
 		id = self._ym.createDesign(name, description, category, license)
 		wx.CallAfter(self._indicatorWindow.Hide)
 		if id is None:
-			wx.MessageBox('Failed to create a design, nothing uploaded!', 'YouMagine error.', wx.OK | wx.ICON_ERROR)
+			wx.MessageBox(_("Failed to create a design, nothing uploaded!"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			return
 
 		for obj in self._scene.objects():
-			wx.CallAfter(self._indicatorWindow.showBusy, 'Building model %s...' % (obj.getName()))
+			wx.CallAfter(self._indicatorWindow.showBusy, _("Building model %s...") % (obj.getName()))
 			time.sleep(0.1)
 			s = StringIO.StringIO()
 			filename = obj.getName()
@@ -128,34 +128,34 @@ class youmagineManager(object):
 				amf.saveSceneStream(s, filename, [obj])
 				filename += '.amf'
 
-			wx.CallAfter(self._indicatorWindow.showBusy, 'Uploading model %s...' % (filename))
+			wx.CallAfter(self._indicatorWindow.showBusy, _("Uploading model %s...") % (filename))
 			if self._ym.createDocument(id, filename, s.getvalue()) is None:
-				wx.MessageBox('Failed to upload %s!' % (filename), 'YouMagine error.', wx.OK | wx.ICON_ERROR)
+				wx.MessageBox(_("Failed to upload %s!") % (filename), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			s.close()
 
 		for extra in extraFileList:
-			wx.CallAfter(self._indicatorWindow.showBusy, 'Uploading file %s...' % (os.path.basename(extra)))
+			wx.CallAfter(self._indicatorWindow.showBusy, _("Uploading file %s...") % (os.path.basename(extra)))
 			with open(extra, "rb") as f:
 				if self._ym.createDocument(id, os.path.basename(extra), f.read()) is None:
-					wx.MessageBox('Failed to upload %s!' % (os.path.basename(extra)), 'YouMagine error.', wx.OK | wx.ICON_ERROR)
+					wx.MessageBox(_("Failed to upload %s!") % (os.path.basename(extra)), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 
 		for image in imageList:
 			if type(image) in types.StringTypes:
 				filename = os.path.basename(image)
-				wx.CallAfter(self._indicatorWindow.showBusy, 'Uploading image %s...' % (filename))
+				wx.CallAfter(self._indicatorWindow.showBusy, _("Uploading image %s...") % (filename))
 				with open(image, "rb") as f:
 					if self._ym.createImage(id, filename, f.read()) is None:
-						wx.MessageBox('Failed to upload %s!' % (filename), 'YouMagine error.', wx.OK | wx.ICON_ERROR)
+						wx.MessageBox(_("Failed to upload %s!") % (filename), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			elif type(image) is wx.Bitmap:
 				s = StringIO.StringIO()
 				if wx.ImageFromBitmap(image).SaveStream(s, wx.BITMAP_TYPE_JPEG):
 					if self._ym.createImage(id, "snapshot.jpg", s.getvalue()) is None:
-						wx.MessageBox('Failed to upload snapshot!', 'YouMagine error.', wx.OK | wx.ICON_ERROR)
+						wx.MessageBox(_("Failed to upload snapshot!"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			else:
 				print type(image)
 
 		if publish:
-			wx.CallAfter(self._indicatorWindow.showBusy, 'Publishing design...')
+			wx.CallAfter(self._indicatorWindow.showBusy, _("Publishing design..."))
 			if not self._ym.publishDesign(id):
 				#If publishing failed try again after 1 second, this might help when you need to wait for the renderer. But does not always work.
 				time.sleep(1)
@@ -227,16 +227,16 @@ class getAuthorizationWindow(wx.Frame):
 		self._ym = ym
 		self.abort = False
 
-		self._requestButton = wx.Button(self._panel, -1, 'Request authorization from YouMagine')
-		self._authToken = wx.TextCtrl(self._panel, -1, 'Paste token here')
+		self._requestButton = wx.Button(self._panel, -1, _("Request authorization from YouMagine"))
+		self._authToken = wx.TextCtrl(self._panel, -1, _("Paste token here"))
 
 		self._panel._sizer = wx.GridBagSizer(5, 5)
 		self._panel.SetSizer(self._panel._sizer)
 
 		self._panel._sizer.Add(wx.StaticBitmap(self._panel, -1, wx.Bitmap(getPathForImage('youmagine-text.png'))), (0,0), span=(1,4), flag=wx.ALIGN_CENTRE | wx.ALL, border=5)
-		self._panel._sizer.Add(wx.StaticText(self._panel, -1, 'To share your designs on YouMagine\nyou need an account on YouMagine.com\nand authorize Cura to access your account.'), (1, 1))
+		self._panel._sizer.Add(wx.StaticText(self._panel, -1, _("To share your designs on YouMagine\nyou need an account on YouMagine.com\nand authorize Cura to access your account.")), (1, 1))
 		self._panel._sizer.Add(self._requestButton, (2, 1), flag=wx.ALL)
-		self._panel._sizer.Add(wx.StaticText(self._panel, -1, 'This will open a browser window where you can\nauthorize Cura to access your YouMagine account.\nYou can revoke access at any time\nfrom YouMagine.com'), (3, 1), flag=wx.ALL)
+		self._panel._sizer.Add(wx.StaticText(self._panel, -1, _("This will open a browser window where you can\nauthorize Cura to access your YouMagine account.\nYou can revoke access at any time\nfrom YouMagine.com")), (3, 1), flag=wx.ALL)
 		self._panel._sizer.Add(wx.StaticLine(self._panel, -1), (4,0), span=(1,4), flag=wx.EXPAND | wx.ALL)
 		self._panel._sizer.Add(self._authToken, (5, 1), flag=wx.EXPAND | wx.ALL)
 		self._panel._sizer.Add(wx.StaticLine(self._panel, -1), (6,0), span=(1,4), flag=wx.EXPAND | wx.ALL)
@@ -271,12 +271,12 @@ class newDesignWindow(wx.Frame):
 
 		categoryOptions = ym.getCategories()
 		licenseOptions = ym.getLicenses()
-		self._designName = wx.TextCtrl(p, -1, 'Design name')
+		self._designName = wx.TextCtrl(p, -1, _("Design name"))
 		self._designDescription = wx.TextCtrl(p, -1, '', size=(1, 150), style = wx.TE_MULTILINE)
 		self._designLicense = wx.ComboBox(p, -1, licenseOptions[0], choices=licenseOptions, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		self._category = wx.ComboBox(p, -1, categoryOptions[-1], choices=categoryOptions, style=wx.CB_DROPDOWN|wx.CB_READONLY)
-		self._publish = wx.CheckBox(p, -1, 'Publish after upload')
-		self._shareButton = wx.Button(p, -1, 'Share!')
+		self._publish = wx.CheckBox(p, -1, _("Publish after upload"))
+		self._shareButton = wx.Button(p, -1, _("Share!"))
 		self._imageScroll = wx.lib.scrolledpanel.ScrolledPanel(p)
 		self._additionalFiles = wx.CheckListBox(p, -1)
 		self._additionalFiles.InsertItems(getAdditionalFiles(self._manager._scene.objects(), True), 0)
@@ -284,34 +284,36 @@ class newDesignWindow(wx.Frame):
 		self._additionalFiles.InsertItems(getAdditionalFiles(self._manager._scene.objects(), False), self._additionalFiles.GetCount())
 
 		self._imageScroll.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
-		self._addImageButton = wx.Button(self._imageScroll, -1, 'Add...', size=(70,52))
+		self._addImageButton = wx.Button(self._imageScroll, -1, _("Add..."), size=(70,52))
 		self._imageScroll.GetSizer().Add(self._addImageButton)
-		self._snapshotButton = wx.Button(self._imageScroll, -1, 'Webcam...', size=(70,52))
+		self._snapshotButton = wx.Button(self._imageScroll, -1, _("Webcam..."), size=(70,52))
 		self._imageScroll.GetSizer().Add(self._snapshotButton)
 		self._imageScroll.Fit()
 		self._imageScroll.SetupScrolling(scroll_x=True, scroll_y=False)
 		self._imageScroll.SetMinSize((20, self._imageScroll.GetSize()[1] + wx.SystemSettings_GetMetric(wx.SYS_HSCROLL_Y)))
 
 		self._publish.SetValue(True)
-		self._publish.SetToolTipString('Directly publish the design after uploading.\nWithout this check the design will not be public\nuntil you publish it yourself on YouMagine.com')
+		self._publish.SetToolTipString(
+			_("Directly publish the design after uploading.\nWithout this check the design will not be public\nuntil you publish it yourself on YouMagine.com"))
 
 		s = wx.GridBagSizer(5, 5)
 		p.SetSizer(s)
 
 		s.Add(wx.StaticBitmap(p, -1, wx.Bitmap(getPathForImage('youmagine-text.png'))), (0,0), span=(1,3), flag=wx.ALIGN_CENTRE | wx.ALL, border=5)
-		s.Add(wx.StaticText(p, -1, 'Design name:'), (1, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, _("Design name:")), (1, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._designName, (1, 1), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
-		s.Add(wx.StaticText(p, -1, 'Description:'), (2, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, _("Description:")), (2, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._designDescription, (2, 1), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
-		s.Add(wx.StaticText(p, -1, 'Category:'), (3, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, _("Category:")), (3, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._category, (3, 1), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
-		s.Add(wx.StaticText(p, -1, 'License:'), (4, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, _("License:")), (4, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._designLicense, (4, 1), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
 		s.Add(wx.StaticLine(p, -1), (5,0), span=(1,3), flag=wx.EXPAND|wx.ALL)
-		s.Add(wx.StaticText(p, -1, 'Images:'), (6, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, _("Images:")), (6, 0), flag=wx.LEFT|wx.TOP, border=5)
 		s.Add(self._imageScroll, (6, 1), span=(1, 2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
 		s.Add(wx.StaticLine(p, -1), (7,0), span=(1,3), flag=wx.EXPAND|wx.ALL)
-		s.Add(wx.StaticText(p, -1, 'Related design files:'), (8, 0), flag=wx.LEFT|wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, _("Related design files:")), (8, 0), flag=wx.LEFT|wx.TOP, border=5)
+
 		s.Add(self._additionalFiles, (8, 1), span=(1, 2), flag=wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, border=5)
 		s.Add(wx.StaticLine(p, -1), (9,0), span=(1,3), flag=wx.EXPAND|wx.ALL)
 		s.Add(self._shareButton, (10, 1), flag=wx.BOTTOM, border=15)
@@ -333,11 +335,11 @@ class newDesignWindow(wx.Frame):
 
 	def OnShare(self, e):
 		if self._designName.GetValue() == '':
-			wx.MessageBox('The name cannot be empty', 'New design error.', wx.OK | wx.ICON_ERROR)
+			wx.MessageBox(_("The name cannot be empty"), _("New design error."), wx.OK | wx.ICON_ERROR)
 			self._designName.SetFocus()
 			return
 		if self._designDescription.GetValue() == '':
-			wx.MessageBox('The description cannot be empty', 'New design error.', wx.OK | wx.ICON_ERROR)
+			wx.MessageBox(_("The description cannot be empty"), _("New design error."), wx.OK | wx.ICON_ERROR)
 			self._designDescription.SetFocus()
 			return
 		imageList = []

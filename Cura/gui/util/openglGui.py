@@ -236,14 +236,14 @@ class glGuiPanel(glcanvas.GLCanvas):
 				opengl.glDrawStringLeft("fps:%d" % (1 / renderTime))
 			self.SwapBuffers()
 		except:
-			errStr = 'An error has occurred during the 3D view drawing.'
+			errStr = _("An error has occurred during the 3D view drawing.")
 			tb = traceback.extract_tb(sys.exc_info()[2])
 			errStr += "\n%s: '%s'" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]))
 			for n in xrange(len(tb)-1, -1, -1):
 				locationInfo = tb[n]
 				errStr += "\n @ %s:%s:%d" % (os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
 			if not self._shownError:
-				wx.CallAfter(wx.MessageBox, errStr, '3D window error', wx.OK | wx.ICON_EXCLAMATION)
+				wx.CallAfter(wx.MessageBox, errStr, _("3D window error"), wx.OK | wx.ICON_EXCLAMATION)
 				self._shownError = True
 
 	def _drawGui(self):

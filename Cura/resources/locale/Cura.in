@@ -1,0 +1,13 @@
+gui/app.py
+gui/tools/batchRun.py
+gui/configWizard.py
+gui/firmwareInstall.py
+gui/mainWindow.py
+gui/util/openglGui.py
+gui/pluginPanel.py
+gui/preferencesDialog.py
+gui/printWindow.py
+gui/sceneView.py
+gui/simpleMode.py
+gui/tools/youmagineGui.py
+util/profile.py

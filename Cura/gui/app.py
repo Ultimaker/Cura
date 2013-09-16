@@ -79,7 +79,7 @@ class CuraApp(wx.App):
 			if newVersion is not None:
 				if self.splash is not None:
 					self.splash.Show(False)
-				if wx.MessageBox('A new version of Cura is available, would you like to download?', 'New version available', wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
+				if wx.MessageBox(_("A new version of Cura is available, would you like to download?"), _("New version available"), wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
 					webbrowser.open(newVersion)
 					return
 		self.mainWindow = mainWindow.mainWindow()
@@ -91,20 +91,24 @@ class CuraApp(wx.App):
 		setFullScreenCapable(self.mainWindow)
 
 if platform.system() == "Darwin":
-	import ctypes, objc
-	_objc = ctypes.PyDLL(objc._objc.__file__)
+	try:
+		import ctypes, objc
+		_objc = ctypes.PyDLL(objc._objc.__file__)
 
-	# PyObject *PyObjCObject_New(id objc_object, int flags, int retain)
-	_objc.PyObjCObject_New.restype = ctypes.py_object
-	_objc.PyObjCObject_New.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
+		# PyObject *PyObjCObject_New(id objc_object, int flags, int retain)
+		_objc.PyObjCObject_New.restype = ctypes.py_object
+		_objc.PyObjCObject_New.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int]
 
-	def setFullScreenCapable(frame):
-		frameobj = _objc.PyObjCObject_New(frame.GetHandle(), 0, 1)
+		def setFullScreenCapable(frame):
+			frameobj = _objc.PyObjCObject_New(frame.GetHandle(), 0, 1)
 
-		NSWindowCollectionBehaviorFullScreenPrimary = 1 << 7
-		window = frameobj.window()
-		newBehavior = window.collectionBehavior() | NSWindowCollectionBehaviorFullScreenPrimary
-		window.setCollectionBehavior_(newBehavior)
+			NSWindowCollectionBehaviorFullScreenPrimary = 1 << 7
+			window = frameobj.window()
+			newBehavior = window.collectionBehavior() | NSWindowCollectionBehaviorFullScreenPrimary
+			window.setCollectionBehavior_(newBehavior)
+	except:
+		def setFullScreenCapable(frame):
+			pass
 
 else:
 	def setFullScreenCapable(frame):

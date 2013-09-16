@@ -36,22 +36,22 @@ class InstallFirmware(wx.Dialog):
 		if filename is None:
 			filename = getDefaultFirmware()
 		if filename is None:
-			wx.MessageBox('I am sorry, but Cura does not ship with a default firmware for your machine configuration.', 'Firmware update', wx.OK | wx.ICON_ERROR)
+			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			self.Destroy()
 			return
 
 		sizer = wx.BoxSizer(wx.VERTICAL)
-		
+
 		self.progressLabel = wx.StaticText(self, -1, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nX')
 		sizer.Add(self.progressLabel, 0, flag=wx.ALIGN_CENTER)
 		self.progressGauge = wx.Gauge(self, -1)
 		sizer.Add(self.progressGauge, 0, flag=wx.EXPAND)
-		self.okButton = wx.Button(self, -1, 'Ok')
+		self.okButton = wx.Button(self, -1, _("OK"))
 		self.okButton.Disable()
 		self.okButton.Bind(wx.EVT_BUTTON, self.OnOk)
 		sizer.Add(self.okButton, 0, flag=wx.ALIGN_CENTER)
 		self.SetSizer(sizer)
-		
+
 		self.filename = filename
 		self.port = port
 
@@ -59,15 +59,15 @@ class InstallFirmware(wx.Dialog):
 		self.Fit()
 
 		threading.Thread(target=self.OnRun).start()
-		
+
 		self.ShowModal()
 		self.Destroy()
 		return
 
 	def OnRun(self):
-		wx.CallAfter(self.updateLabel, "Reading firmware...")
+		wx.CallAfter(self.updateLabel, _("Reading firmware..."))
 		hexFile = intelHex.readHex(self.filename)
-		wx.CallAfter(self.updateLabel, "Connecting to machine...")
+		wx.CallAfter(self.updateLabel, _("Connecting to machine..."))
 		programmer = stk500v2.Stk500v2()
 		programmer.progressCallback = self.OnProgress
 		if self.port == 'AUTO':
@@ -82,21 +82,22 @@ class InstallFirmware(wx.Dialog):
 				programmer.connect(self.port)
 			except ispBase.IspError:
 				pass
-				
+
 		if programmer.isConnected():
-			wx.CallAfter(self.updateLabel, "Uploading firmware...")
+			wx.CallAfter(self.updateLabel, _("Uploading firmware..."))
 			try:
 				programmer.programChip(hexFile)
-				wx.CallAfter(self.updateLabel, "Done!\nInstalled firmware: %s" % (os.path.basename(self.filename)))
+				wx.CallAfter(self.updateLabel, _("Done!\nInstalled firmware: %s") % (os.path.basename(self.filename)))
 			except ispBase.IspError as e:
-				wx.CallAfter(self.updateLabel, "Failed to write firmware.\n" + str(e))
-				
+				wx.CallAfter(self.updateLabel, _("Failed to write firmware.\n") + str(e))
+
 			programmer.close()
 			wx.CallAfter(self.okButton.Enable)
 			return
-		wx.MessageBox('Failed to find machine for firmware upgrade\nIs your machine connected to the PC?', 'Firmware update', wx.OK | wx.ICON_ERROR)
+		wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
+					  _("Firmware update"), wx.OK | wx.ICON_ERROR)
 		wx.CallAfter(self.Close)
-	
+
 	def updateLabel(self, text):
 		self.progressLabel.SetLabel(text)
 		#self.Layout()

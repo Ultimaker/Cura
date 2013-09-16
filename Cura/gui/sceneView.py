@@ -60,24 +60,24 @@ class SceneView(openglGui.glGuiPanel):
 		self._projMatrix = None
 		self.tempMatrix = None
 
-		self.openFileButton      = openglGui.glButton(self, 4, 'Load', (0,0), self.showLoadModel)
-		self.printButton         = openglGui.glButton(self, 6, 'Print', (1,0), self.OnPrintButton)
+		self.openFileButton      = openglGui.glButton(self, 4, _("Load"), (0,0), self.showLoadModel)
+		self.printButton         = openglGui.glButton(self, 6, _("Print"), (1,0), self.OnPrintButton)
 		self.printButton.setDisabled(True)
 
 		group = []
-		self.rotateToolButton = openglGui.glRadioButton(self, 8, 'Rotate', (0,-1), group, self.OnToolSelect)
-		self.scaleToolButton  = openglGui.glRadioButton(self, 9, 'Scale', (1,-1), group, self.OnToolSelect)
-		self.mirrorToolButton  = openglGui.glRadioButton(self, 10, 'Mirror', (2,-1), group, self.OnToolSelect)
+		self.rotateToolButton = openglGui.glRadioButton(self, 8, _("Rotate"), (0,-1), group, self.OnToolSelect)
+		self.scaleToolButton  = openglGui.glRadioButton(self, 9, _("Scale"), (1,-1), group, self.OnToolSelect)
+		self.mirrorToolButton  = openglGui.glRadioButton(self, 10, _("Mirror"), (2,-1), group, self.OnToolSelect)
 
-		self.resetRotationButton = openglGui.glButton(self, 12, 'Reset', (0,-2), self.OnRotateReset)
-		self.layFlatButton       = openglGui.glButton(self, 16, 'Lay flat', (0,-3), self.OnLayFlat)
+		self.resetRotationButton = openglGui.glButton(self, 12, _("Reset"), (0,-2), self.OnRotateReset)
+		self.layFlatButton       = openglGui.glButton(self, 16, _("Lay flat"), (0,-3), self.OnLayFlat)
 
-		self.resetScaleButton    = openglGui.glButton(self, 13, 'Reset', (1,-2), self.OnScaleReset)
-		self.scaleMaxButton      = openglGui.glButton(self, 17, 'To max', (1,-3), self.OnScaleMax)
+		self.resetScaleButton    = openglGui.glButton(self, 13, _("Reset"), (1,-2), self.OnScaleReset)
+		self.scaleMaxButton      = openglGui.glButton(self, 17, _("To max"), (1,-3), self.OnScaleMax)
 
-		self.mirrorXButton       = openglGui.glButton(self, 14, 'Mirror X', (2,-2), lambda button: self.OnMirror(0))
-		self.mirrorYButton       = openglGui.glButton(self, 18, 'Mirror Y', (2,-3), lambda button: self.OnMirror(1))
-		self.mirrorZButton       = openglGui.glButton(self, 22, 'Mirror Z', (2,-4), lambda button: self.OnMirror(2))
+		self.mirrorXButton       = openglGui.glButton(self, 14, _("Mirror X"), (2,-2), lambda button: self.OnMirror(0))
+		self.mirrorYButton       = openglGui.glButton(self, 18, _("Mirror Y"), (2,-3), lambda button: self.OnMirror(1))
+		self.mirrorZButton       = openglGui.glButton(self, 22, _("Mirror Z"), (2,-4), lambda button: self.OnMirror(2))
 
 		self.rotateToolButton.setExpandArrow(True)
 		self.scaleToolButton.setExpandArrow(True)
@@ -85,25 +85,25 @@ class SceneView(openglGui.glGuiPanel):
 
 		self.scaleForm = openglGui.glFrame(self, (2, -2))
 		openglGui.glGuiLayoutGrid(self.scaleForm)
-		openglGui.glLabel(self.scaleForm, 'Scale X', (0,0))
+		openglGui.glLabel(self.scaleForm, _("Scale X"), (0,0))
 		self.scaleXctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,0), lambda value: self.OnScaleEntry(value, 0))
-		openglGui.glLabel(self.scaleForm, 'Scale Y', (0,1))
+		openglGui.glLabel(self.scaleForm, _("Scale Y"), (0,1))
 		self.scaleYctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,1), lambda value: self.OnScaleEntry(value, 1))
-		openglGui.glLabel(self.scaleForm, 'Scale Z', (0,2))
+		openglGui.glLabel(self.scaleForm, _("Scale Z"), (0,2))
 		self.scaleZctrl = openglGui.glNumberCtrl(self.scaleForm, '1.0', (1,2), lambda value: self.OnScaleEntry(value, 2))
-		openglGui.glLabel(self.scaleForm, 'Size X (mm)', (0,4))
+		openglGui.glLabel(self.scaleForm, _("Size X (mm)"), (0,4))
 		self.scaleXmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,4), lambda value: self.OnScaleEntryMM(value, 0))
-		openglGui.glLabel(self.scaleForm, 'Size Y (mm)', (0,5))
+		openglGui.glLabel(self.scaleForm, _("Size Y (mm)"), (0,5))
 		self.scaleYmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,5), lambda value: self.OnScaleEntryMM(value, 1))
-		openglGui.glLabel(self.scaleForm, 'Size Z (mm)', (0,6))
+		openglGui.glLabel(self.scaleForm, _("Size Z (mm)"), (0,6))
 		self.scaleZmmctrl = openglGui.glNumberCtrl(self.scaleForm, '0.0', (1,6), lambda value: self.OnScaleEntryMM(value, 2))
-		openglGui.glLabel(self.scaleForm, 'Uniform scale', (0,8))
+		openglGui.glLabel(self.scaleForm, _("Uniform scale"), (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
-		self.viewSelection = openglGui.glComboButton(self, 'View mode', [7,19,11,15,23], ['Normal', 'Overhang', 'Transparent', 'X-Ray', 'Layers'], (-1,0), self.OnViewChange)
+		self.viewSelection = openglGui.glComboButton(self, _("View mode"), [7,19,11,15,23], [_("Normal"), _("Overhang"), _("Transparent"), _("X-Ray"), _("Layers")], (-1,0), self.OnViewChange)
 		self.layerSelect = openglGui.glSlider(self, 10000, 0, 1, (-1,-2), lambda : self.QueueRefresh())
 
-		self.youMagineButton = openglGui.glButton(self, 26, 'Share on YouMagine', (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
+		self.youMagineButton = openglGui.glButton(self, 26, _("Share on YouMagine"), (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
 		self.youMagineButton.setDisabled(True)
 
 		self.notification = openglGui.glNotification(self, (0, 0))
@@ -121,7 +121,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def showLoadModel(self, button = 1):
 		if button == 1:
-			dlg=wx.FileDialog(self, 'Open 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
+			dlg=wx.FileDialog(self, _("Open 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
 			dlg.SetWildcard(meshLoader.loadWildcardFilter() + "|GCode file (*.gcode)|*.g;*.gcode;*.G;*.GCODE")
 			if dlg.ShowModal() != wx.ID_OK:
 				dlg.Destroy()
@@ -161,7 +161,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showSaveModel(self):
 		if len(self._scene.objects()) < 1:
 			return
-		dlg=wx.FileDialog(self, 'Save 3D model', os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
+		dlg=wx.FileDialog(self, _("Save 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
 		dlg.SetWildcard(meshLoader.saveWildcardFilter())
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
@@ -191,9 +191,9 @@ class SceneView(openglGui.glGuiPanel):
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
-			self.Bind(wx.EVT_MENU, lambda e: self.showPrintWindow(), menu.Append(-1, 'Print with USB'))
-			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, 'Save GCode...'))
-			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, 'Slice engine log...'))
+			self.Bind(wx.EVT_MENU, lambda e: self.showPrintWindow(), menu.Append(-1, _("Print with USB")))
+			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, _("Save GCode...")))
+			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, _("Slice engine log...")))
 			self.PopupMenu(menu)
 			menu.Destroy()
 
@@ -207,7 +207,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showSaveGCode(self):
 		defPath = profile.getPreference('lastFile')
 		defPath = defPath[0:defPath.rfind('.')] + '.gcode'
-		dlg=wx.FileDialog(self, 'Save toolpath', defPath, style=wx.FD_SAVE)
+		dlg=wx.FileDialog(self, _("Save toolpath"), defPath, style=wx.FD_SAVE)
 		dlg.SetFilename(self._scene._objectList[0].getName())
 		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
 		if dlg.ShowModal() != wx.ID_OK:
@@ -244,7 +244,7 @@ class SceneView(openglGui.glGuiPanel):
 			self._slicer.submitSliceInfoOnline()
 
 	def _showSliceLog(self):
-		dlg = wx.TextEntryDialog(self, "The slicing engine reported the following", "Engine log...", '\n'.join(self._slicer.getSliceLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)
+		dlg = wx.TextEntryDialog(self, _("The slicing engine reported the following"), _("Engine log..."), '\n'.join(self._slicer.getSliceLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)
 		dlg.ShowModal()
 		dlg.Destroy()
 
@@ -617,13 +617,13 @@ class SceneView(openglGui.glGuiPanel):
 			if e.GetButton() == 3:
 					menu = wx.Menu()
 					if self._focusObj is not None:
-						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, 'Delete'))
-						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, 'Multiply'))
-						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, 'Split'))
+						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete")))
+						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, _("Multiply")))
+						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, _("Split")))
 					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getPreference('extruder_amount')) > 1:
-						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, 'Dual extrusion merge'))
+						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, _("Dual extrusion merge")))
 					if len(self._scene.objects()) > 0:
-						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, 'Delete all'))
+						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all")))
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
@@ -745,13 +745,13 @@ class SceneView(openglGui.glGuiPanel):
 	def OnPaint(self,e):
 		if machineCom.machineIsConnected():
 			self.printButton._imageID = 6
-			self.printButton._tooltip = 'Print'
+			self.printButton._tooltip = _("Print")
 		elif len(removableStorage.getPossibleSDcardDrives()) > 0:
 			self.printButton._imageID = 2
-			self.printButton._tooltip = 'Toolpath to SD'
+			self.printButton._tooltip = _("Toolpath to SD")
 		else:
 			self.printButton._imageID = 3
-			self.printButton._tooltip = 'Save toolpath'
+			self.printButton._tooltip = _("Save toolpath")
 
 		if self._animView is not None:
 			self._viewTarget = self._animView.getPosition()
@@ -1058,7 +1058,7 @@ void main(void)
 				glLoadIdentity()
 				glTranslate(0,-4,-10)
 				glColor4ub(60,60,60,255)
-				opengl.glDrawStringCenter('Loading toolpath for visualization...')
+				opengl.glDrawStringCenter(_("Loading toolpath for visualization..."))
 				glPopMatrix()
 		else:
 			#Draw the object box-shadow, so you can see where it will collide with other objects.
@@ -1109,7 +1109,7 @@ void main(void)
 			glLoadIdentity()
 			glTranslate(0,-4,-10)
 			glColor4ub(60,60,60,255)
-			opengl.glDrawStringCenter('Overhang view not working due to lack of OpenGL shaders support.')
+			opengl.glDrawStringCenter(_("Overhang view not working due to lack of OpenGL shaders support."))
 			glPopMatrix()
 
 	def _renderObject(self, obj, brightness = False, addSink = True):
