@@ -11,8 +11,6 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 from optparse import OptionParser
 
-from Cura.util import resources
-resources.setupLocalization()  # it's important to set up localization at very beginning to install _
 from Cura.util import profile
 
 def main():

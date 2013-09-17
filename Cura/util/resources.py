@@ -4,6 +4,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import os
 import sys
 
+#Cura/util classes should not depend on wx...
 import wx
 import gettext
 
@@ -49,8 +50,7 @@ def setupLocalization():
 			languages = NSLocale.preferredLanguages()
 		else:
 			#Using wx.Locale before you created wx.App seems to cause an nasty exception. So default to 'en' at the moment.
-			#languages = [wx.Locale(wx.LANGUAGE_DEFAULT).GetCanonicalName()]
-			languages = ['en']
+			languages = [wx.Locale(wx.LANGUAGE_DEFAULT).GetCanonicalName()]
 	except Exception as e:
 		languages = ['en']
 

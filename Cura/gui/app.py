@@ -45,6 +45,8 @@ class CuraApp(wx.App):
 		from Cura.util import resources
 		from Cura.util import version
 
+		resources.setupLocalization()  # it's important to set up localization at very beginning to install _
+
 		#If we do not have preferences yet, try to load it from a previous Cura install
 		if profile.getPreference('machine_type') == 'unknown':
 			try:
