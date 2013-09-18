@@ -14,7 +14,7 @@ class Stk500v2(ispBase.IspBase):
 		self.progressCallback = None
 	
 	def connect(self, port = 'COM22', speed = 115200):
-		if self.serial != None:
+		if self.serial is not None:
 			self.close()
 		try:
 			self.serial = Serial(str(port), speed, timeout=1, writeTimeout=10000)
@@ -29,7 +29,7 @@ class Stk500v2(ispBase.IspBase):
 		time.sleep(0.1)
 		self.serial.setDTR(0)
 		time.sleep(0.2)
-		
+
 		self.sendMessage([1])
 		if self.sendMessage([0x10, 0xc8, 0x64, 0x19, 0x20, 0x00, 0x53, 0x03, 0xac, 0x53, 0x00, 0x00]) != [0x10, 0x00]:
 			self.close()
@@ -37,7 +37,7 @@ class Stk500v2(ispBase.IspBase):
 		self.serial.timeout = 5
 
 	def close(self):
-		if self.serial != None:
+		if self.serial is not None:
 			self.serial.close()
 			self.serial = None
 

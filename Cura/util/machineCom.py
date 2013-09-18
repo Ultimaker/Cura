@@ -291,7 +291,7 @@ class MachineCom(object):
 					self._log("Connecting to: %s" % (p))
 					programmer.connect(p)
 					self._serial = programmer.leaveISP()
-					profile.putPreference('serial_port_auto', p)
+					profile.putMachineSetting('serial_port_auto', p)
 					break
 				except ispBase.IspError as (e):
 					self._log("Error while connecting to %s: %s" % (p, str(e)))
@@ -395,7 +395,7 @@ class MachineCom(object):
 					else:
 						self._sendCommand("M999")
 						self._serial.timeout = 2
-						profile.putPreference('serial_baud_auto', self._serial.baudrate)
+						profile.putMachineSetting('serial_baud_auto', self._serial.baudrate)
 						self._changeState(self.STATE_OPERATIONAL)
 				else:
 					self._testingBaudrate = False
