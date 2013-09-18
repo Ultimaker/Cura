@@ -16,6 +16,7 @@ from Cura.util import profile
 from Cura.util import gcodeGenerator
 from Cura.util.resources import getPathForImage
 
+
 class InfoBox(wx.Panel):
 	def __init__(self, parent):
 		super(InfoBox, self).__init__(parent)
@@ -287,6 +288,10 @@ class MachineSelectPage(InfoPage):
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().repRapInfoPage)
 
+	def AllowNext(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimaker2ReadyPage)
+		return True
+
 	def StoreData(self):
 		if self.Ultimaker2Radio.GetValue():
 			profile.putMachineSetting('machine_width', '230')
@@ -327,6 +332,7 @@ class MachineSelectPage(InfoPage):
 			profile.putPreference('submit_slice_information', 'True')
 		else:
 			profile.putPreference('submit_slice_information', 'False')
+
 
 class SelectParts(InfoPage):
 	def __init__(self, parent):
@@ -775,7 +781,8 @@ class configWizard(wx.wizard.Wizard):
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.firstInfoPage, self.machineSelectPage)
-		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
+		#wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerSelectParts, self.ultimakerFirmwareUpgradePage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerFirmwareUpgradePage, self.ultimakerCheckupPage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerCheckupPage, self.bedLevelPage)
