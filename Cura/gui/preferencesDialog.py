@@ -4,7 +4,6 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import wx
 
 from Cura.gui import configBase
-from Cura.util import removableStorage
 from Cura.util import machineCom
 from Cura.util import profile
 
