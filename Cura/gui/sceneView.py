@@ -51,7 +51,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._viewTarget = numpy.array([0,0,0], numpy.float32)
 		self._animView = None
 		self._animZoom = None
-		self._platformMesh = None
+		self._platformMesh = {}
 		self._isSimpleMode = True
 		self._usbPrintMonitor = printWindow.printProcessMonitor(lambda : self._queueRefresh())
 
@@ -524,14 +524,14 @@ class SceneView(openglGui.glGuiPanel):
 		if self._isSimpleMode != oldSimpleMode:
 			self._scene.arrangeAll()
 			self.sceneUpdated()
-		self._machineSize = numpy.array([profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')])
+		self._machineSize = numpy.array([profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'), profile.getMachineSettingFloat('machine_height')])
 		self._objColors[0] = profile.getPreferenceColour('model_colour')
 		self._objColors[1] = profile.getPreferenceColour('model_colour2')
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
 		self._scene.setMachineSize(self._machineSize)
 		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
-		self._scene.setHeadSize(profile.getPreferenceFloat('extruder_head_size_min_x'), profile.getPreferenceFloat('extruder_head_size_max_x'), profile.getPreferenceFloat('extruder_head_size_min_y'), profile.getPreferenceFloat('extruder_head_size_max_y'), profile.getPreferenceFloat('extruder_head_size_height'))
+		self._scene.setHeadSize(profile.getMachineSettingFloat('extruder_head_size_min_x'), profile.getMachineSettingFloat('extruder_head_size_max_x'), profile.getMachineSettingFloat('extruder_head_size_min_y'), profile.getMachineSettingFloat('extruder_head_size_max_y'), profile.getMachineSettingFloat('extruder_head_size_height'))
 
 		if self._selectedObj is not None:
 			scale = self._selectedObj.getScale()
@@ -620,7 +620,7 @@ class SceneView(openglGui.glGuiPanel):
 						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete")))
 						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, _("Multiply")))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, _("Split")))
-					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getPreference('extruder_amount')) > 1:
+					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getMachineSetting('extruder_amount')) > 1:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, _("Dual extrusion merge")))
 					if len(self._scene.objects()) > 0:
 						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all")))
@@ -890,7 +890,7 @@ void main(void)
 				self._gcodeLoadThread.start()
 			if self._gcode is not None and self._gcode.layerList is not None:
 				glPushMatrix()
-				if profile.getPreference('machine_center_is_zero') != 'True':
+				if profile.getMachineSetting('machine_center_is_zero') != 'True':
 					glTranslate(-self._machineSize[0] / 2, -self._machineSize[1] / 2, 0)
 				t = time.time()
 				drawUpTill = min(len(self._gcode.layerList), self.layerSelect.getValue() + 1)
@@ -1143,19 +1143,23 @@ void main(void)
 		glEnable(GL_CULL_FACE)
 		glEnable(GL_BLEND)
 
-		size = [profile.getPreferenceFloat('machine_width'), profile.getPreferenceFloat('machine_depth'), profile.getPreferenceFloat('machine_height')]
+		size = [profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'), profile.getMachineSettingFloat('machine_height')]
 
-		if profile.getPreference('machine_type').startswith('ultimaker'):
-			if self._platformMesh is None:
-				if profile.getPreference('machine_type') == 'ultimaker2':
-					self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker2_platform.stl'))[0]
-					self._platformMesh._drawOffset = numpy.array([0,-37,145], numpy.float32)
+		machine = profile.getMachineSetting('machine_type')
+		if profile.getMachineSetting('machine_type').startswith('ultimaker'):
+			if machine not in self._platformMesh:
+				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
+				if len(meshes) > 0:
+					self._platformMesh[machine] = meshes[0]
 				else:
-					self._platformMesh = meshLoader.loadMeshes(resources.getPathForMesh('ultimaker_platform.stl'))[0]
-					self._platformMesh._drawOffset = numpy.array([0,0,2.5], numpy.float32)
+					self._platformMesh[machine] = None
+				if profile.getMachineSetting('machine_type') == 'ultimaker2':
+					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
+				else:
+					self._platformMesh[machine]._drawOffset = numpy.array([0,0,2.5], numpy.float32)
 			glColor4f(1,1,1,0.5)
 			self._objectShader.bind()
-			self._renderObject(self._platformMesh, False, False)
+			self._renderObject(self._platformMesh[machine], False, False)
 			self._objectShader.unbind()
 		else:
 			glColor4f(0,0,0,1)
@@ -1237,7 +1241,7 @@ void main(void)
 	def _generateGCodeVBOs2(self, layer):
 		filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
 		filamentArea = math.pi * filamentRadius * filamentRadius
-		useFilamentArea = profile.getPreference('gcode_flavor') == 'UltiGCode'
+		useFilamentArea = profile.getMachineSetting('gcode_flavor') == 'UltiGCode'
 
 		ret = []
 		for extrudeType in ['WALL-OUTER:0', 'WALL-OUTER:1', 'WALL-OUTER:2', 'WALL-OUTER:3', 'WALL-INNER', 'FILL', 'SUPPORT', 'SKIRT']:

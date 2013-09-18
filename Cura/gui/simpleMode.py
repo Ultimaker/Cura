@@ -27,7 +27,7 @@ class simpleModePanel(wx.Panel):
 		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA', style=wx.RB_GROUP)
 		self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS')
 		self.printMaterialDiameter = wx.TextCtrl(printMaterialPanel, -1, profile.getProfileSetting('filament_diameter'))
-		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
 		
 		self.printSupport = wx.CheckBox(self, -1, _("Print support structure"))

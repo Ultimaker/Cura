@@ -65,11 +65,14 @@ class setting(object):
 	def isPreference(self):
 		return self._category == 'preference'
 
+	def isMachineSetting(self):
+		return self._category == 'machine'
+
 	def isAlteration(self):
 		return self._category == 'alteration'
 
 	def isProfile(self):
-		return not self.isAlteration() and not self.isPreference()
+		return not self.isAlteration() and not self.isPreference() and not self.isMachineSetting()
 
 	def getName(self):
 		return self._name
@@ -296,28 +299,6 @@ G92 E0
 
 setting('startMode', 'Simple', ['Simple', 'Normal'], 'preference', 'hidden')
 setting('lastFile', os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'example', 'UltimakerRobot_support.stl')), str, 'preference', 'hidden')
-setting('machine_width', '205', float, 'preference', 'hidden').setLabel('Maximum width (mm)', 'Size of the machine in mm')
-setting('machine_depth', '205', float, 'preference', 'hidden').setLabel('Maximum depth (mm)', 'Size of the machine in mm')
-setting('machine_height', '200', float, 'preference', 'hidden').setLabel('Maximum height (mm)', 'Size of the machine in mm')
-setting('machine_type', 'unknown', str, 'preference', 'hidden')
-setting('machine_center_is_zero', 'False', bool, 'preference', 'hidden')
-setting('ultimaker_extruder_upgrade', 'False', bool, 'preference', 'hidden')
-setting('has_heated_bed', 'False', bool, 'preference', 'hidden').setLabel('Heated bed', 'If you have an heated bed, this enabled heated bed settings (requires restart)')
-setting('machine_type', 'unknown', str, 'preference', 'hidden')
-setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode'], 'preference', 'hidden').setLabel('GCode Flavor', 'Flavor of generated GCode.\nRepRap...')
-setting('extruder_amount', '1', ['1','2','3','4'], 'preference', 'hidden').setLabel('Extruder count', 'Amount of extruders in your machine.')
-setting('extruder_offset_x1', '-21.6', float, 'preference', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_y1', '0.0', float, 'preference', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_x2', '0.0', float, 'preference', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_y2', '0.0', float, 'preference', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_x3', '0.0', float, 'preference', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_y3', '0.0', float, 'preference', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
-setting('filament_physical_density', '1240', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel('Density (kg/m3)', 'Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.')
-setting('steps_per_e', '0', float, 'preference', 'hidden').setLabel('E-Steps per 1mm filament', 'Amount of steps per mm filament extrusion. If set to 0 then this value is ignored and the value in your firmware is used.')
-setting('serial_port', 'AUTO', str, 'preference', 'hidden').setLabel('Serial port', 'Serial port to use for communication with the printer')
-setting('serial_port_auto', '', str, 'preference', 'hidden')
-setting('serial_baud', 'AUTO', str, 'preference', 'hidden').setLabel('Baudrate', 'Speed of the serial port communication\nNeeds to match your firmware settings\nCommon values are 250000, 115200, 57600')
-setting('serial_baud_auto', '', int, 'preference', 'hidden')
 setting('save_profile', 'False', bool, 'preference', 'hidden').setLabel('Save profile on slice', 'When slicing save the profile as [stl_file]_profile.ini next to the model.')
 setting('filament_cost_kg', '0', float, 'preference', 'hidden').setLabel('Cost (price/kg)', 'Cost of your filament per kg, to estimate the cost of the final print.')
 setting('filament_cost_meter', '0', float, 'preference', 'hidden').setLabel('Cost (price/m)', 'Cost of your filament per meter, to estimate the cost of the final print.')
@@ -325,12 +306,7 @@ setting('auto_detect_sd', 'True', bool, 'preference', 'hidden').setLabel('Auto d
 setting('check_for_updates', 'True', bool, 'preference', 'hidden').setLabel('Check for updates', 'Check for newer versions of Cura on startup')
 setting('submit_slice_information', 'False', bool, 'preference', 'hidden').setLabel('Send usage statistics', 'Submit anonymous usage information to improve next versions of Cura')
 setting('youmagine_token', '', str, 'preference', 'hidden')
-
-setting('extruder_head_size_min_x', '0.0', float, 'preference', 'hidden').setLabel('Head size towards X min (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 75mm for an Ultimaker if the fan is on the left side.')
-setting('extruder_head_size_min_y', '0.0', float, 'preference', 'hidden').setLabel('Head size towards Y min (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan is on the left side.')
-setting('extruder_head_size_max_x', '0.0', float, 'preference', 'hidden').setLabel('Head size towards X max (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan is on the left side.')
-setting('extruder_head_size_max_y', '0.0', float, 'preference', 'hidden').setLabel('Head size towards Y max (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan is on the left side.')
-setting('extruder_head_size_height', '0.0', float, 'preference', 'hidden').setLabel('Printer gantry height (mm)', 'The height of the gantry holding up the printer head. If an object is higher then this then you cannot print multiple objects one for one. 60mm for an Ultimaker.')
+setting('filament_physical_density', '1240', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel('Density (kg/m3)', 'Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.')
 
 setting('model_colour', '#FFC924', str, 'preference', 'hidden').setLabel('Model colour')
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel('Model colour (2)')
@@ -343,6 +319,33 @@ setting('window_pos_y', '-1', float, 'preference', 'hidden')
 setting('window_width', '-1', float, 'preference', 'hidden')
 setting('window_height', '-1', float, 'preference', 'hidden')
 setting('window_normal_sash', '320', float, 'preference', 'hidden')
+
+setting('machine_width', '205', float, 'machine', 'hidden').setLabel('Maximum width (mm)', 'Size of the machine in mm')
+setting('machine_depth', '205', float, 'machine', 'hidden').setLabel('Maximum depth (mm)', 'Size of the machine in mm')
+setting('machine_height', '200', float, 'machine', 'hidden').setLabel('Maximum height (mm)', 'Size of the machine in mm')
+setting('machine_type', 'unknown', str, 'machine', 'hidden')
+setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden')
+setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
+setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel('Heated bed', 'If you have an heated bed, this enabled heated bed settings (requires restart)')
+setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode'], 'machine', 'hidden').setLabel('GCode Flavor', 'Flavor of generated GCode.\nRepRap...')
+setting('extruder_amount', '1', ['1','2','3','4'], 'machine', 'hidden').setLabel('Extruder count', 'Amount of extruders in your machine.')
+setting('extruder_offset_x1', '-21.6', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
+setting('extruder_offset_y1', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
+setting('extruder_offset_x2', '0.0', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
+setting('extruder_offset_y2', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
+setting('extruder_offset_x3', '0.0', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
+setting('extruder_offset_y3', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
+setting('steps_per_e', '0', float, 'machine', 'hidden').setLabel('E-Steps per 1mm filament', 'Amount of steps per mm filament extrusion. If set to 0 then this value is ignored and the value in your firmware is used.')
+setting('serial_port', 'AUTO', str, 'machine', 'hidden').setLabel('Serial port', 'Serial port to use for communication with the printer')
+setting('serial_port_auto', '', str, 'machine', 'hidden')
+setting('serial_baud', 'AUTO', str, 'machine', 'hidden').setLabel('Baudrate', 'Speed of the serial port communication\nNeeds to match your firmware settings\nCommon values are 250000, 115200, 57600')
+setting('serial_baud_auto', '', int, 'machine', 'hidden')
+
+setting('extruder_head_size_min_x', '0.0', float, 'machine', 'hidden').setLabel('Head size towards X min (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 75mm for an Ultimaker if the fan is on the left side.')
+setting('extruder_head_size_min_y', '0.0', float, 'machine', 'hidden').setLabel('Head size towards Y min (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan is on the left side.')
+setting('extruder_head_size_max_x', '0.0', float, 'machine', 'hidden').setLabel('Head size towards X max (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan is on the left side.')
+setting('extruder_head_size_max_y', '0.0', float, 'machine', 'hidden').setLabel('Head size towards Y max (mm)', 'The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan is on the left side.')
+setting('extruder_head_size_height', '0.0', float, 'machine', 'hidden').setLabel('Printer gantry height (mm)', 'The height of the gantry holding up the printer head. If an object is higher then this then you cannot print multiple objects one for one. 60mm for an Ultimaker.')
 
 validators.warningAbove(settingsDictionary['filament_flow'], 150, "More flow then 150% is rare and usually not recommended.")
 validators.warningBelow(settingsDictionary['filament_flow'], 50, "More flow then 50% is rare and usually not recommended.")
@@ -362,31 +365,31 @@ validators.warningAbove(settingsDictionary['travel_speed'], 300.0, "It is highly
 validators.warningAbove(settingsDictionary['bottom_thickness'], lambda : (float(getProfileSetting('nozzle_size')) * 3.0 / 4.0), "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad results and is not recommended.")
 
 #Conditions for multiple extruders
-settingsDictionary['print_temperature2'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
-settingsDictionary['print_temperature3'].addCondition(lambda : int(getPreference('extruder_amount')) > 2)
-settingsDictionary['print_temperature4'].addCondition(lambda : int(getPreference('extruder_amount')) > 3)
-settingsDictionary['filament_diameter2'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
-settingsDictionary['filament_diameter3'].addCondition(lambda : int(getPreference('extruder_amount')) > 2)
-settingsDictionary['filament_diameter4'].addCondition(lambda : int(getPreference('extruder_amount')) > 3)
-settingsDictionary['support_dual_extrusion'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
-settingsDictionary['retraction_dual_amount'].addCondition(lambda : int(getPreference('extruder_amount')) > 1)
+settingsDictionary['print_temperature2'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
+settingsDictionary['print_temperature3'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 2)
+settingsDictionary['print_temperature4'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 3)
+settingsDictionary['filament_diameter2'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
+settingsDictionary['filament_diameter3'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 2)
+settingsDictionary['filament_diameter4'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 3)
+settingsDictionary['support_dual_extrusion'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
+settingsDictionary['retraction_dual_amount'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
 #Heated bed
-settingsDictionary['print_bed_temperature'].addCondition(lambda : getPreference('has_heated_bed') == 'True')
+settingsDictionary['print_bed_temperature'].addCondition(lambda : getMachineSetting('has_heated_bed') == 'True')
 
-#UltiGCode uses less settings
-settingsDictionary['print_temperature'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['print_temperature2'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['print_temperature3'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['print_temperature4'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['filament_diameter'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['filament_diameter2'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['filament_diameter3'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['filament_diameter4'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['filament_flow'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['print_bed_temperature'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['retraction_speed'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['retraction_amount'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
-settingsDictionary['retraction_dual_amount'].addCondition(lambda : getPreference('gcode_flavor') != 'UltiGCode')
+#UltiGCode uses less settings, as these settings are located inside the machine instead of gcode.
+settingsDictionary['print_temperature'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_temperature2'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_temperature3'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_temperature4'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter2'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter3'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_diameter4'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['filament_flow'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['print_bed_temperature'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['retraction_speed'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['retraction_amount'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
+settingsDictionary['retraction_dual_amount'].addCondition(lambda : getMachineSetting('gcode_flavor') != 'UltiGCode')
 
 #########################################################
 ## Profile and preferences functions
@@ -460,7 +463,7 @@ def saveProfile(filename):
 	profileParser.add_section('alterations')
 	global settingsList
 	for set in settingsList:
-		if set.isPreference():
+		if set.isPreference() or set.isMachineSetting():
 			continue
 		if set.isAlteration():
 			profileParser.set('alterations', set.getName(), set.getValue().encode('utf-8'))
@@ -477,11 +480,11 @@ def resetProfile():
 			continue
 		set.setValue(set.getDefault())
 
-	if getPreference('machine_type') == 'ultimaker':
+	if getMachineSetting('machine_type') == 'ultimaker':
 		putProfileSetting('nozzle_size', '0.4')
-		if getPreference('ultimaker_extruder_upgrade') == 'True':
+		if getMachineSetting('ultimaker_extruder_upgrade') == 'True':
 			putProfileSetting('retraction_enable', 'True')
-	elif getPreference('machine_type') == 'ultimaker2':
+	elif getMachineSetting('machine_type') == 'ultimaker2':
 		putProfileSetting('nozzle_size', '0.4')
 		putProfileSetting('retraction_enable', 'True')
 	else:
@@ -541,7 +544,8 @@ def getProfileSetting(name):
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isProfile():
 		return settingsDictionary[name].getValue()
-	print 'Error: "%s" not found in profile settings' % (name)
+	traceback.print_stack()
+	sys.stderr.write('Error: "%s" not found in profile settings\n' % (name))
 	return ''
 
 def getProfileSettingFloat(name):
@@ -595,10 +599,13 @@ def savePreferences(filename):
 	#Save the current profile to an ini file
 	parser = ConfigParser.ConfigParser()
 	parser.add_section('preference')
+	parser.add_section('machine')
 	global settingsList
 	for set in settingsList:
 		if set.isPreference():
 			parser.set('preference', set.getName(), set.getValue().encode('utf-8'))
+		elif set.isMachineSetting():
+			parser.set('machine', set.getName(), set.getValue().encode('utf-8'))
 	parser.write(open(filename, 'w'))
 
 def getPreference(name):
@@ -607,7 +614,8 @@ def getPreference(name):
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isPreference():
 		return settingsDictionary[name].getValue()
-	print 'Error: "%s" not found in profile settings' % (name)
+	traceback.print_stack()
+	sys.stderr.write('Error: "%s" not found in preferences\n' % (name))
 	return ''
 
 def putPreference(name, value):
@@ -615,11 +623,44 @@ def putPreference(name, value):
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isPreference():
 		settingsDictionary[name].setValue(value)
-	savePreferences(getPreferencePath())
+		savePreferences(getPreferencePath())
+		return
+	traceback.print_stack()
+	sys.stderr.write('Error: "%s" not found in preferences\n' % (name))
 
 def isPreference(name):
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isPreference():
+		return True
+	return False
+
+def getMachineSettingFloat(name):
+	try:
+		setting = getMachineSetting(name).replace(',', '.')
+		return float(eval(setting, {}, {}))
+	except:
+		return 0.0
+
+def getMachineSetting(name):
+	if name in tempOverride:
+		return tempOverride[name]
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isMachineSetting():
+		return settingsDictionary[name].getValue()
+	traceback.print_stack()
+	sys.stderr.write('Error: "%s" not found in machine settings\n' % (name))
+	return ''
+
+def putMachineSetting(name, value):
+	#Check if we have a configuration file loaded, else load the default.
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isMachineSetting():
+		settingsDictionary[name].setValue(value)
+	savePreferences(getPreferencePath())
+
+def isMachineSetting(name):
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isMachineSetting():
 		return True
 	return False
 
@@ -697,9 +738,9 @@ def calculateObjectSizeOffsets():
 	return [size, size]
 
 def getMachineCenterCoords():
-	if getPreference('machine_center_is_zero') == 'True':
+	if getMachineSettingFloat('machine_center_is_zero') == 'True':
 		return [0, 0]
-	return [getPreferenceFloat('machine_width') / 2, getPreferenceFloat('machine_depth') / 2]
+	return [getMachineSettingFloat('machine_width') / 2, getMachineSettingFloat('machine_depth') / 2]
 
 #########################################################
 ## Alteration file functions
@@ -754,7 +795,8 @@ def getAlterationFile(filename):
 	global settingsDictionary
 	if filename in settingsDictionary and settingsDictionary[filename].isAlteration():
 		return settingsDictionary[filename].getValue()
-	print 'Error: "%s" not found in profile settings' % (filename)
+	traceback.print_stack()
+	sys.stderr.write('Error: "%s" not found in alteration settings\n' % (filename))
 	return ''
 
 def setAlterationFile(name, value):
@@ -769,19 +811,19 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	prefix = ''
 	postfix = ''
 	alterationContents = getAlterationFile(filename)
-	if getPreference('gcode_flavor') == 'UltiGCode':
+	if getMachineSetting('gcode_flavor') == 'UltiGCode':
 		return ''
 	if filename == 'start.gcode':
 		if extruderCount > 1:
 			alterationContents = getAlterationFile("start%d.gcode" % (extruderCount))
 		#For the start code, hack the temperature and the steps per E value into it. So the temperature is reached before the start code extrusion.
 		#We also set our steps per E here, if configured.
-		eSteps = getPreferenceFloat('steps_per_e')
+		eSteps = getMachineSettingFloat('steps_per_e')
 		if eSteps > 0:
 			prefix += 'M92 E%f\n' % (eSteps)
 		temp = getProfileSettingFloat('print_temperature')
 		bedTemp = 0
-		if getPreference('has_heated_bed') == 'True':
+		if getMachineSetting('has_heated_bed') == 'True':
 			bedTemp = getProfileSettingFloat('print_bed_temperature')
 
 		if bedTemp > 0 and not '{print_bed_temperature}' in alterationContents:

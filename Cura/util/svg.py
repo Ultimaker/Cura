@@ -218,7 +218,7 @@ if __name__ == '__main__':
 
 	f.write(';TYPE:CUSTOM\n')
 	f.write(profile.getAlterationFileContents('start.gcode'))
-	svg.center(complex(profile.getPreferenceFloat('machine_width') / 2, profile.getPreferenceFloat('machine_depth') / 2))
+	svg.center(complex(profile.getMachineSettingFloat('machine_width') / 2, profile.getMachineSettingFloat('machine_depth') / 2))
 
 	layerThickness = 0.4
 	filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2

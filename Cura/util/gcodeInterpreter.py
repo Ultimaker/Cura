@@ -117,12 +117,12 @@ class gcode(object):
 			T = getCodeInt(line, 'T')
 			if T is not None:
 				if currentExtruder > 0:
-					posOffset[0] -= profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset[1] -= profile.getPreferenceFloat('extruder_offset_y%d' % (currentExtruder))
+					posOffset[0] -= profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
+					posOffset[1] -= profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
 				currentExtruder = T
 				if currentExtruder > 0:
-					posOffset[0] += profile.getPreferenceFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset[1] += profile.getPreferenceFloat('extruder_offset_y%d' % (currentExtruder))
+					posOffset[0] += profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
+					posOffset[1] += profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
 			
 			G = getCodeInt(line, 'G')
 			if G is not None:

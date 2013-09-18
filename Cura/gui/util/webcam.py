@@ -146,7 +146,7 @@ class webcam(object):
 			dc = wx.MemoryDC()
 			dc.SelectObject(bitmap)
 			dc.DrawBitmap(self._overlayImage, bitmap.GetWidth() - self._overlayImage.GetWidth() - 5, 5, True)
-			if profile.getPreference('machine_type') == 'ultimaker':
+			if profile.getMachineSetting('machine_type').startswith('ultimaker'):
 				dc.DrawBitmap(self._overlayUltimaker, (bitmap.GetWidth() - self._overlayUltimaker.GetWidth()) / 2,
 					bitmap.GetHeight() - self._overlayUltimaker.GetHeight() - 5, True)
 			dc.SelectObject(wx.NullBitmap)

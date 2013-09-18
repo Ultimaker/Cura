@@ -12,7 +12,7 @@ class alterationPanel(wx.Panel):
 
 		self.callback = callback
 		self.alterationFileList = ['start.gcode', 'end.gcode']#, 'nextobject.gcode', 'replace.csv'
-		if int(profile.getPreference('extruder_amount')) > 1:
+		if int(profile.getMachineSetting('extruder_amount')) > 1:
 			self.alterationFileList += ['start2.gcode', 'end2.gcode']
 		self.currentFile = None
 

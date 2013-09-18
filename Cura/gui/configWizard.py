@@ -289,37 +289,37 @@ class MachineSelectPage(InfoPage):
 
 	def StoreData(self):
 		if self.Ultimaker2Radio.GetValue():
-			profile.putPreference('machine_width', '230')
-			profile.putPreference('machine_depth', '225')
-			profile.putPreference('machine_height', '205')
-			profile.putPreference('machine_type', 'ultimaker2')
-			profile.putPreference('machine_center_is_zero', 'False')
-			profile.putPreference('gcode_flavor', 'UltiGCode')
+			profile.putMachineSetting('machine_width', '230')
+			profile.putMachineSetting('machine_depth', '225')
+			profile.putMachineSetting('machine_height', '205')
+			profile.putMachineSetting('machine_type', 'ultimaker2')
+			profile.putMachineSetting('machine_center_is_zero', 'False')
+			profile.putMachineSetting('gcode_flavor', 'UltiGCode')
 			profile.putProfileSetting('nozzle_size', '0.4')
-			profile.putPreference('extruder_head_size_min_x', '75.0')
-			profile.putPreference('extruder_head_size_min_y', '18.0')
-			profile.putPreference('extruder_head_size_max_x', '18.0')
-			profile.putPreference('extruder_head_size_max_y', '35.0')
-			profile.putPreference('extruder_head_size_height', '60.0')
+			profile.putMachineSetting('extruder_head_size_min_x', '75.0')
+			profile.putMachineSetting('extruder_head_size_min_y', '18.0')
+			profile.putMachineSetting('extruder_head_size_max_x', '18.0')
+			profile.putMachineSetting('extruder_head_size_max_y', '35.0')
+			profile.putMachineSetting('extruder_head_size_height', '60.0')
 		elif self.UltimakerRadio.GetValue():
-			profile.putPreference('machine_width', '205')
-			profile.putPreference('machine_depth', '205')
-			profile.putPreference('machine_height', '200')
-			profile.putPreference('machine_type', 'ultimaker')
-			profile.putPreference('machine_center_is_zero', 'False')
-			profile.putPreference('gcode_flavor', 'RepRap (Marlin/Sprinter)')
+			profile.putMachineSetting('machine_width', '205')
+			profile.putMachineSetting('machine_depth', '205')
+			profile.putMachineSetting('machine_height', '200')
+			profile.putMachineSetting('machine_type', 'ultimaker')
+			profile.putMachineSetting('machine_center_is_zero', 'False')
+			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putProfileSetting('nozzle_size', '0.4')
-			profile.putPreference('extruder_head_size_min_x', '75.0')
-			profile.putPreference('extruder_head_size_min_y', '18.0')
-			profile.putPreference('extruder_head_size_max_x', '18.0')
-			profile.putPreference('extruder_head_size_max_y', '35.0')
-			profile.putPreference('extruder_head_size_height', '60.0')
+			profile.putMachineSetting('extruder_head_size_min_x', '75.0')
+			profile.putMachineSetting('extruder_head_size_min_y', '18.0')
+			profile.putMachineSetting('extruder_head_size_max_x', '18.0')
+			profile.putMachineSetting('extruder_head_size_max_y', '35.0')
+			profile.putMachineSetting('extruder_head_size_height', '60.0')
 		else:
-			profile.putPreference('machine_width', '80')
-			profile.putPreference('machine_depth', '80')
-			profile.putPreference('machine_height', '60')
-			profile.putPreference('machine_type', 'reprap')
-			profile.putPreference('gcode_flavor', 'RepRap (Marlin/Sprinter)')
+			profile.putMachineSetting('machine_width', '80')
+			profile.putMachineSetting('machine_depth', '80')
+			profile.putMachineSetting('machine_height', '60')
+			profile.putMachineSetting('machine_type', 'reprap')
+			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putPreference('startMode', 'Normal')
 			profile.putProfileSetting('nozzle_size', '0.5')
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
@@ -342,14 +342,14 @@ class SelectParts(InfoPage):
 		self.springExtruder.SetValue(True)
 
 	def StoreData(self):
-		profile.putPreference('ultimaker_extruder_upgrade', str(self.springExtruder.GetValue()))
-		profile.putPreference('has_heated_bed', str(self.heatedBed.GetValue()))
+		profile.putMachineSetting('ultimaker_extruder_upgrade', str(self.springExtruder.GetValue()))
+		profile.putMachineSetting('has_heated_bed', str(self.heatedBed.GetValue()))
 		if self.dualExtrusion.GetValue():
-			profile.putPreference('extruder_amount', '2')
-			profile.putPreference('machine_depth', '195')
+			profile.putMachineSetting('extruder_amount', '2')
+			profile.putMachineSetting('machine_depth', '195')
 		else:
-			profile.putPreference('extruder_amount', '1')
-		if profile.getPreference('ultimaker_extruder_upgrade') == 'True':
+			profile.putMachineSetting('extruder_amount', '1')
+		if profile.getMachineSetting('ultimaker_extruder_upgrade') == 'True':
 			profile.putProfileSetting('retraction_enable', 'True')
 		else:
 			profile.putProfileSetting('retraction_enable', 'False')
@@ -491,7 +491,7 @@ class UltimakerCheckupPage(InfoPage):
 			if temp[self.checkExtruderNr] > self.startTemp + 40:
 				self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
 				self.comm.sendCommand('M104 S0 T%d' % (self.checkExtruderNr))
-				if self.checkExtruderNr < int(profile.getPreference('extruder_amount')):
+				if self.checkExtruderNr < int(profile.getMachineSetting('extruder_amount')):
 					self.checkExtruderNr = 0
 					self.checkupState = 3
 					wx.CallAfter(self.infoBox.SetAttention, _("Please make sure none of the endstops are pressed."))
@@ -638,8 +638,8 @@ class UltimakerCalibrateStepsPerEPage(InfoPage):
 	def __init__(self, parent):
 		super(UltimakerCalibrateStepsPerEPage, self).__init__(parent, "Ultimaker Calibration")
 
-		#if profile.getPreference('steps_per_e') == '0':
-		#	profile.putPreference('steps_per_e', '865.888')
+		#if profile.getMachineSetting('steps_per_e') == '0':
+		#	profile.putMachineSetting('steps_per_e', '865.888')
 
 		self.AddText(_("Calibrating the Steps Per E requires some manual actions."))
 		self.AddText(_("First remove any filament from your machine."))
@@ -649,7 +649,7 @@ class UltimakerCalibrateStepsPerEPage(InfoPage):
 		self.AddText(_("Now measure the amount of extruded filament:\n(this can be more or less then 100mm)"))
 		self.lengthInput, self.saveLengthButton = self.AddTextCtrlButton("100", _("Save"))
 		self.AddText(_("This results in the following steps per E:"))
-		self.stepsPerEInput = self.AddTextCtrl(profile.getPreference('steps_per_e'))
+		self.stepsPerEInput = self.AddTextCtrl(profile.getMachineSetting('steps_per_e'))
 		self.AddText(_("You can repeat these steps to get better calibration."))
 		self.AddSeperator()
 		self.AddText(
@@ -832,7 +832,7 @@ class bedLevelWizardMain(InfoPage):
 		self._wizardState = 0
 
 	def AllowNext(self):
-		if self.GetParent().headOffsetCalibration is not None and int(profile.getPreference('extruder_amount')) > 1:
+		if self.GetParent().headOffsetCalibration is not None and int(profile.getMachineSetting('extruder_amount')) > 1:
 			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().headOffsetCalibration)
 		return True
 
@@ -842,21 +842,21 @@ class bedLevelWizardMain(InfoPage):
 		if self._wizardState == 2:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back left corner...')
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (0, profile.getPreferenceFloat('machine_depth'), feedTravel))
+			self.comm.sendCommand('G1 X%d Y%d F%d' % (0, profile.getMachineSettingFloat('machine_depth'), feedTravel))
 			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 			self.comm.sendCommand('M400')
 			self._wizardState = 3
 		elif self._wizardState == 4:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back right corner...')
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width') - 5.0, profile.getPreferenceFloat('machine_depth') - 25, feedTravel))
+			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, profile.getMachineSettingFloat('machine_depth') - 25, feedTravel))
 			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 			self.comm.sendCommand('M400')
 			self._wizardState = 5
 		elif self._wizardState == 6:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to front right corner...')
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getPreferenceFloat('machine_width') - 5.0, 20, feedTravel))
+			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, 20, feedTravel))
 			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 			self.comm.sendCommand('M400')
 			self._wizardState = 7
@@ -872,8 +872,8 @@ class bedLevelWizardMain(InfoPage):
 			feedZ = profile.getProfileSettingFloat('print_speed') * 60
 			feedPrint = profile.getProfileSettingFloat('print_speed') * 60
 			feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
-			w = profile.getPreferenceFloat('machine_width')
-			d = profile.getPreferenceFloat('machine_depth')
+			w = profile.getMachineSettingFloat('machine_width')
+			d = profile.getMachineSettingFloat('machine_depth')
 			filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
 			filamentArea = math.pi * filamentRadius * filamentRadius
 			ePerMM = (profile.calculateEdgeWidth() * 0.3) / filamentArea
@@ -997,8 +997,8 @@ class headOffsetCalibrationPage(InfoPage):
 			self._wizardState = 3
 			wx.CallAfter(self.infoBox.SetBusy, 'Printing initial calibration cross')
 
-			w = profile.getPreferenceFloat('machine_width')
-			d = profile.getPreferenceFloat('machine_depth')
+			w = profile.getMachineSettingFloat('machine_width')
+			d = profile.getMachineSettingFloat('machine_depth')
 
 			gcode = gcodeGenerator.gcodeGenerator()
 			gcode.setExtrusionRate(profile.getProfileSettingFloat('nozzle_size') * 1.5, 0.2)
@@ -1058,8 +1058,8 @@ class headOffsetCalibrationPage(InfoPage):
 			self.textEntry.Enable(False)
 			self.resumeButton.Enable(False)
 
-			x = profile.getPreferenceFloat('extruder_offset_x1')
-			y = profile.getPreferenceFloat('extruder_offset_y1')
+			x = profile.getMachineSettingFloat('extruder_offset_x1')
+			y = profile.getMachineSettingFloat('extruder_offset_y1')
 			gcode = gcodeGenerator.gcodeGenerator()
 			gcode.setExtrusionRate(profile.getProfileSettingFloat('nozzle_size') * 1.5, 0.2)
 			gcode.setPrintSpeed(25)
@@ -1105,7 +1105,7 @@ class headOffsetCalibrationPage(InfoPage):
 				n = int(self.textEntry.GetValue()) - 1
 			except:
 				return
-			x = profile.getPreferenceFloat('extruder_offset_x1')
+			x = profile.getMachineSettingFloat('extruder_offset_x1')
 			x += -1.0 + n * 0.1
 			profile.putPreference('extruder_offset_x1', '%0.2f' % (x))
 			self.infoBox.SetAttention('Which horizontal line number lays perfect on top of each other? Front most line is zero.')
@@ -1116,10 +1116,10 @@ class headOffsetCalibrationPage(InfoPage):
 				n = int(self.textEntry.GetValue()) - 1
 			except:
 				return
-			y = profile.getPreferenceFloat('extruder_offset_y1')
+			y = profile.getMachineSettingFloat('extruder_offset_y1')
 			y += -1.0 + n * 0.1
 			profile.putPreference('extruder_offset_y1', '%0.2f' % (y))
-			self.infoBox.SetInfo('Calibration finished. Offsets are: %s %s' % (profile.getPreferenceFloat('extruder_offset_x1'), profile.getPreferenceFloat('extruder_offset_y1')))
+			self.infoBox.SetInfo('Calibration finished. Offsets are: %s %s' % (profile.getMachineSettingFloat('extruder_offset_x1'), profile.getMachineSettingFloat('extruder_offset_y1')))
 			self.infoBox.SetReadyIndicator()
 			self._wizardState = 8
 			self.comm.close()

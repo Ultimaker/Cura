@@ -27,7 +27,7 @@ class mainWindow(wx.Frame):
 	def __init__(self):
 		super(mainWindow, self).__init__(None, title='Cura - ' + version.getVersion())
 
-		self.extruderCount = int(profile.getPreference('extruder_amount'))
+		self.extruderCount = int(profile.getMachineSetting('extruder_amount'))
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -491,7 +491,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 			self.pluginPanel.Show(False)
 
 		#Alteration page
-		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			self.alterationPanel = None
 		else:
 			self.alterationPanel = alterationPanel.alterationPanel(self.nb, callback)

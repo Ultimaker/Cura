@@ -43,7 +43,7 @@ def serialList(forAutoDetect=False):
 		baselist = filter(lambda s: not 'Bluetooth' in s, baselist)
 	else:
 		baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*")
-	prev = profile.getPreference('serial_port_auto')
+	prev = profile.getMachineSetting('serial_port_auto')
 	if prev in baselist:
 		baselist.remove(prev)
 		baselist.insert(0, prev)
@@ -53,9 +53,9 @@ def serialList(forAutoDetect=False):
 
 def machineIsConnected():
 	#UltiGCode is designed for SD-Card printing, so never auto-detect the serial port.
-	port = profile.getPreference('serial_port')
+	port = profile.getMachineSetting('serial_port')
 	if port == 'AUTO':
-		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			return False
 		return len(serialList(True)) > 0
 	if platform.system() == "Windows":
@@ -64,8 +64,8 @@ def machineIsConnected():
 
 def baudrateList():
 	ret = [250000, 230400, 115200, 57600, 38400, 19200, 9600]
-	if profile.getPreference('serial_baud_auto') != '':
-		prev = int(profile.getPreference('serial_baud_auto'))
+	if profile.getMachineSetting('serial_baud_auto') != '':
+		prev = int(profile.getMachineSetting('serial_baud_auto'))
 		if prev in ret:
 			ret.remove(prev)
 			ret.insert(0, prev)
@@ -157,12 +157,12 @@ class MachineCom(object):
 	
 	def __init__(self, port = None, baudrate = None, callbackObject = None):
 		if port is None:
-			port = profile.getPreference('serial_port')
+			port = profile.getMachineSetting('serial_port')
 		if baudrate is None:
-			if profile.getPreference('serial_baud') == 'AUTO':
+			if profile.getMachineSetting('serial_baud') == 'AUTO':
 				baudrate = 0
 			else:
-				baudrate = int(profile.getPreference('serial_baud'))
+				baudrate = int(profile.getMachineSetting('serial_baud'))
 		if callbackObject is None:
 			callbackObject = MachineComPrintCallback()
 
@@ -173,7 +173,7 @@ class MachineCom(object):
 		self._serial = None
 		self._baudrateDetectList = baudrateList()
 		self._baudrateDetectRetry = 0
-		self._extruderCount = int(profile.getPreference('extruder_amount'))
+		self._extruderCount = int(profile.getMachineSetting('extruder_amount'))
 		self._temperatureRequestExtruder = 0
 		self._temp = [0] * self._extruderCount
 		self._targetTemp = [0] * self._extruderCount

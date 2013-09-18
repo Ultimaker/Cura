@@ -209,7 +209,7 @@ class Slicer(object):
 				self._printTimeSeconds = int(line.split(':')[1].strip())
 			elif line.startswith('Filament:'):
 				self._filamentMM = int(line.split(':')[1].strip())
-				if profile.getPreference('gcode_flavor') == 'UltiGCode':
+				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
 					self._filamentMM /= (math.pi * radius * radius)
 			else:
@@ -273,12 +273,12 @@ class Slicer(object):
 			'startCode': profile.getAlterationFileContents('start.gcode', extruderCount),
 			'endCode': profile.getAlterationFileContents('end.gcode', extruderCount),
 
-			'extruderOffset[1].X': int(profile.getPreferenceFloat('extruder_offset_x1') * 1000),
-			'extruderOffset[1].Y': int(profile.getPreferenceFloat('extruder_offset_y1') * 1000),
-			'extruderOffset[2].X': int(profile.getPreferenceFloat('extruder_offset_x2') * 1000),
-			'extruderOffset[2].Y': int(profile.getPreferenceFloat('extruder_offset_y2') * 1000),
-			'extruderOffset[3].X': int(profile.getPreferenceFloat('extruder_offset_x3') * 1000),
-			'extruderOffset[3].Y': int(profile.getPreferenceFloat('extruder_offset_y3') * 1000),
+			'extruderOffset[1].X': int(profile.getMachineSettingFloat('extruder_offset_x1') * 1000),
+			'extruderOffset[1].Y': int(profile.getMachineSettingFloat('extruder_offset_y1') * 1000),
+			'extruderOffset[2].X': int(profile.getMachineSettingFloat('extruder_offset_x2') * 1000),
+			'extruderOffset[2].Y': int(profile.getMachineSettingFloat('extruder_offset_y2') * 1000),
+			'extruderOffset[3].X': int(profile.getMachineSettingFloat('extruder_offset_x3') * 1000),
+			'extruderOffset[3].Y': int(profile.getMachineSettingFloat('extruder_offset_y3') * 1000),
 			'fixHorrible': 0,
 		}
 		if profile.getProfileSetting('platform_adhesion') == 'Brim':
@@ -309,7 +309,7 @@ class Slicer(object):
 
 		if settings['layerThickness'] <= 0:
 			settings['layerThickness'] = 1000
-		if profile.getPreference('gcode_flavor') == 'UltiGCode':
+		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			settings['gcodeFlavor'] = 1
 		return settings
 
