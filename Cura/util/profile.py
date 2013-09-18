@@ -594,6 +594,9 @@ def loadPreferences(filename):
 		if set.isPreference():
 			if profileParser.has_option('preference', set.getName()):
 				set.setValue(unicode(profileParser.get('preference', set.getName()), 'utf-8', 'replace'))
+		elif set.isMachineSetting():
+			if profileParser.has_option('machine', set.getName()):
+				set.setValue(unicode(profileParser.get('machine', set.getName()), 'utf-8', 'replace'))
 
 def savePreferences(filename):
 	#Save the current profile to an ini file

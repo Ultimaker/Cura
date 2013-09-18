@@ -133,7 +133,7 @@ class configPanelBase(wx.Panel):
 				size[0] = width
 				child.SetBestSize(size)
 	
-class TitleRow():
+class TitleRow(object):
 	def __init__(self, panel, name):
 		"Add a title row to the configuration panel"
 		sizer = panel.GetSizer()
@@ -144,7 +144,7 @@ class TitleRow():
 		sizer.Add(wx.StaticLine(panel), (x+1,0), (1,3), flag=wx.EXPAND|wx.LEFT,border=10)
 		sizer.SetRows(x + 2)
 
-class SettingRow():
+class SettingRow(object):
 	def __init__(self, panel, configName, valueOverride = None):
 		"Add a setting to the configuration panel"
 		sizer = panel.GetSizer()
@@ -255,7 +255,7 @@ class SettingRow():
 
 #Settings notify works as a validator, but instead of validating anything, it calls another function, which can use the value.
 # A bit hacky, bit it works.
-class settingNotify():
+class settingNotify(object):
 	def __init__(self, setting, func):
 		self.setting = setting
 		self.setting.validators.append(self)
