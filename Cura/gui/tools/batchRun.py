@@ -15,7 +15,7 @@ class batchRunWindow(wx.Frame):
 		
 		self.list = []
 		
-		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions()))
+		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions() + ['.g', '.gcode']))
 		
 		wx.EVT_CLOSE(self, self.OnClose)
 		self.panel = wx.Panel(self, -1)
