@@ -143,7 +143,6 @@ class SceneView(openglGui.glGuiPanel):
 		self.loadScene(filenames)
 
 	def loadFiles(self, filenames):
-		print "load ", filenames
 		gcodeFilename = None
 		for filename in filenames:
 			self.GetParent().GetParent().GetParent().addToModelMRU(filename)

@@ -266,7 +266,6 @@ class mainWindow(wx.Frame):
 		prefDialog.Show()
 
 	def OnDropFiles(self, files):
-		print "dropped ", files
 		if len(files) > 0:
 			profile.setPluginConfig([])
 			self.updateProfileToControls()
