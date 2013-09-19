@@ -21,7 +21,7 @@ def getVersion(getGitVersion = True):
 	if os.path.exists(gitPath):
 		if not getGitVersion:
 			return "dev"
-		f = open(gitPath + "/refs/heads/master", "r")
+		f = open(gitPath + "/refs/heads/SteamEngine", "r")
 		version = f.readline()
 		f.close()
 		return version.strip()
