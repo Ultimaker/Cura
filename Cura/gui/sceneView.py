@@ -414,6 +414,12 @@ class SceneView(openglGui.glGuiPanel):
 		self._selectObject(None)
 		self.sceneUpdated()
 
+	def OnCenter(self, e):
+		if self._focusObj is None:
+			return
+		self._focusObj.setPosition(numpy.array([0.0, 0.0]))
+		self._scene.pushFree()
+
 	def _splitCallback(self, progress):
 		print progress
 
@@ -627,13 +633,14 @@ class SceneView(openglGui.glGuiPanel):
 			if e.GetButton() == 3:
 					menu = wx.Menu()
 					if self._focusObj is not None:
-						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete")))
-						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, _("Multiply")))
-						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, _("Split")))
+						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete object")))
+						self.Bind(wx.EVT_MENU, self.OnCenter, menu.Append(-1, _("Center on platform")))
+						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, _("Multiply object")))
+						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, _("Split object into parts")))
 					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getMachineSetting('extruder_amount')) > 1:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, _("Dual extrusion merge")))
 					if len(self._scene.objects()) > 0:
-						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all")))
+						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all objects")))
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
