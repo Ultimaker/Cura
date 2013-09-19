@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
-import platform
 import wx, wx.lib.stattext, types
 from wx.lib.agw import floatspin
 
@@ -252,16 +251,3 @@ class SettingRow(object):
 				pass
 		else:
 			self.ctrl.SetValue(value)
-
-#Settings notify works as a validator, but instead of validating anything, it calls another function, which can use the value.
-# A bit hacky, bit it works.
-class settingNotify(object):
-	def __init__(self, setting, func):
-		self.setting = setting
-		self.setting.validators.append(self)
-		self.func = func
-	
-	def validate(self):
-		self.func()
-		return validators.SUCCESS, ''
-

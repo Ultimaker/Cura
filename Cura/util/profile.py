@@ -527,7 +527,7 @@ def getProfileString():
 	ret = base64.b64encode(zlib.compress(ret, 9))
 	return ret
 
-def getGlobalPreferencesString():
+def getPreferencesString():
 	p = []
 	global settingsList
 	for set in settingsList:

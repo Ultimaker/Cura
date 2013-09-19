@@ -21,7 +21,6 @@ from Cura.gui.tools import minecraftImport
 from Cura.util import profile
 from Cura.util import version
 from Cura.util import meshLoader
-from Cura.util import resources
 
 class mainWindow(wx.Frame):
 	def __init__(self):

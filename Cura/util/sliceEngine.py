@@ -332,8 +332,8 @@ class Slicer(object):
 			'processor': platform.processor(),
 			'machine': platform.machine(),
 			'platform': platform.platform(),
-			'profile': profile.getGlobalProfileString(),
-			'preferences': profile.getGlobalPreferencesString(),
+			'profile': profile.getProfileString(),
+			'preferences': profile.getPreferencesString(),
 			'modelhash': self._modelHash,
 			'version': version.getVersion(),
 		}
