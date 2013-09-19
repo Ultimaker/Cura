@@ -530,9 +530,10 @@ class printWindow(wx.Frame):
 	def AddTermLog(self, line):
 		if len(self.termLog.GetValue()) > 10000:
 			self.termLog.SetValue(self.termLog.GetValue()[-10000:])
+		self.termLog.SetInsertionPointEnd()
 		self.termLog.AppendText(unicode(line, 'utf-8', 'replace'))
-		l = len(self.termLog.GetValue())
-		self.termLog.SetCaret(wx.Caret(self.termLog, (l, l)))
+		#l = self.termLog.GetLastPosition()     # if needed (windows? mac?)
+		#self.termLog.ShowPosition(l)
 
 	def OnTermEnterLine(self, e):
 		line = self.termInput.GetValue()
