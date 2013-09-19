@@ -106,22 +106,30 @@ class mainWindow(wx.Frame):
 		self.menubar.Append(self.fileMenu, _("&File"))
 
 		toolsMenu = wx.Menu()
+
 		i = toolsMenu.Append(-1, _("Switch to quickprint..."))
 		self.switchToQuickprintMenuItem = i
 		self.Bind(wx.EVT_MENU, self.OnSimpleSwitch, i)
+
 		i = toolsMenu.Append(-1, _("Switch to full settings..."))
 		self.switchToNormalMenuItem = i
 		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
+
 		#toolsMenu.AppendSeparator()
 		#i = toolsMenu.Append(-1, 'Batch run...')
 		#self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
 		#self.normalModeOnlyItems.append(i)
+
 		if minecraftImport.hasMinecraft():
 			i = toolsMenu.Append(-1, _("Minecraft import..."))
 			self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
+
 		if version.isDevVersion():
 			i = toolsMenu.Append(-1, _("PID Debugger..."))
 			self.Bind(wx.EVT_MENU, self.OnPIDDebugger, i)
+
+		i = toolsMenu.Append(-1, _("Copy profile to clipboard"))
+		self.Bind(wx.EVT_MENU, self.onCopyProfileClipboard,i)
 		self.menubar.Append(toolsMenu, _("Tools"))
 
 		expertMenu = wx.Menu()
@@ -187,7 +195,7 @@ class mainWindow(wx.Frame):
 		sizer.Layout()
 		self.sizer = sizer
 
-		self.updateProfileToControls()
+		self.updateProfileToAllControls()
 
 		self.SetBackgroundColour(self.normalSettingsPanel.GetBackgroundColour())
 
@@ -197,6 +205,12 @@ class mainWindow(wx.Frame):
 		# Set default window size & position
 		self.SetSize((wx.Display().GetClientArea().GetWidth()/2,wx.Display().GetClientArea().GetHeight()/2))
 		self.Centre()
+
+		#Timer set; used to check if profile is on the clipboard
+		self.timer = wx.Timer(self)
+		self.Bind(wx.EVT_TIMER, self.onTimer)
+		self.timer.Start(1000)
+		self.lastTriedClipboard = profile.getProfileString()
 
 		# Restore the window position, size & state from the preferences file
 		try:
@@ -230,6 +244,30 @@ class mainWindow(wx.Frame):
 			self.Centre()
 
 		self.updateSliceMode()
+
+	def onTimer(self, e):
+		#Check if there is something in the clipboard
+		profileString = ""
+		try:
+			if not wx.TheClipboard.IsOpened():
+				wx.TheClipboard.Open()
+				do = wx.TextDataObject()
+				if wx.TheClipboard.GetData(do):
+					profileString = do.GetText()
+				wx.TheClipboard.Close()
+
+				if "CURA_PROFILE_STRING:" in profileString:
+					#print "Found correct syntax on clipboard"
+					profileString = profileString.replace("\n","")
+					profileString = profileString.replace("CURA_PROFILE_STRING:", "")
+					if profileString != self.lastTriedClipboard:
+						self.lastTriedClipboard = profileString
+						profile.setProfileFromString(profileString)
+						print "changed profile"
+						self.updateProfileToAllControls()
+		except:
+			print "Unable to read from clipboard"
+
 
 	def updateSliceMode(self):
 		isSimple = profile.getPreference('startMode') == 'Simple'
@@ -268,7 +306,7 @@ class mainWindow(wx.Frame):
 	def OnDropFiles(self, files):
 		if len(files) > 0:
 			profile.setPluginConfig([])
-			self.updateProfileToControls()
+			self.updateProfileToAllControls()
 		self.scene.loadScene(files)
 
 	def OnModelMRU(self, e):
@@ -300,7 +338,7 @@ class mainWindow(wx.Frame):
 		self.config.Flush()
 		# Load Profile	
 		profile.loadProfile(path)
-		self.updateProfileToControls()
+		self.updateProfileToAllControls()
 
 	def addToProfileMRU(self, file):
 		self.profileFileHistory.AddFileToHistory(file)
@@ -308,7 +346,7 @@ class mainWindow(wx.Frame):
 		self.profileFileHistory.Save(self.config)
 		self.config.Flush()			
 
-	def updateProfileToControls(self):
+	def updateProfileToAllControls(self):
 		self.scene.updateProfileToControls()
 		self.normalSettingsPanel.updateProfileToControls()
 		self.simpleSettingsPanel.updateProfileToControls()
@@ -319,7 +357,7 @@ class mainWindow(wx.Frame):
 		if dlg.ShowModal() == wx.ID_OK:
 			profileFile = dlg.GetPath()
 			profile.loadProfile(profileFile)
-			self.updateProfileToControls()
+			self.updateProfileToAllControls()
 
 			# Update the Profile MRU
 			self.addToProfileMRU(profileFile)
@@ -334,10 +372,10 @@ class mainWindow(wx.Frame):
 			hasProfile = False
 			for line in f:
 				if line.startswith(';CURA_PROFILE_STRING:'):
-					profile.loadProfileFromString(line[line.find(':')+1:].strip())
+					profile.setProfileFromString(line[line.find(':')+1:].strip())
 					hasProfile = True
 			if hasProfile:
-				self.updateProfileToControls()
+				self.updateProfileToAllControls()
 			else:
 				wx.MessageBox(_("No profile found in GCode file.\nThis feature only works with GCode files made by Cura 12.07 or newer."), _("Profile load error"), wx.OK | wx.ICON_INFORMATION)
 		dlg.Destroy()
@@ -356,7 +394,7 @@ class mainWindow(wx.Frame):
 		dlg.Destroy()
 		if result:
 			profile.resetProfile()
-			self.updateProfileToControls()
+			self.updateProfileToAllControls()
 
 	def OnSimpleSwitch(self, e):
 		profile.putPreference('startMode', 'Simple')
@@ -383,7 +421,7 @@ class mainWindow(wx.Frame):
 
 	def OnFirstRunWizard(self, e):
 		configWizard.configWizard()
-		self.updateProfileToControls()
+		self.updateProfileToAllControls()
 
 	def OnBedLevelWizard(self, e):
 		configWizard.bedLevelWizard()
@@ -405,6 +443,19 @@ class mainWindow(wx.Frame):
 		debugger = pidDebugger.debuggerWindow(self)
 		debugger.Centre()
 		debugger.Show(True)
+
+	def onCopyProfileClipboard(self, e):
+		try:
+			if not wx.TheClipboard.IsOpened():
+				wx.TheClipboard.Open()
+				clipData = wx.TextDataObject()
+				self.lastTriedClipboard = profile.getProfileString()
+				profileString = profile.insertNewlines("CURA_PROFILE_STRING:" + self.lastTriedClipboard)
+				clipData.SetText(profileString)
+				wx.TheClipboard.SetData(clipData)
+				wx.TheClipboard.Close()
+		except:
+			print "Could not write to clipboard, unable to get ownership. Another program is using the clipboard."
 
 	def OnCheckForUpdate(self, e):
 		newVersion = version.checkForNewerVersion()
@@ -447,8 +498,8 @@ class mainWindow(wx.Frame):
 			profile.putPreference('window_pos_y', posy)
 			(width, height) = self.GetSize()
 			profile.putPreference('window_width', width)
-			profile.putPreference('window_height', height)			
-			
+			profile.putPreference('window_height', height)
+
 			# Save normal sash position.  If in normal mode (!simple mode), get last position of sash before saving it...
 			isSimple = profile.getPreference('startMode') == 'Simple'
 			if not isSimple:
@@ -477,7 +528,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Basic')
 		self._addSettingsToPanels('basic', left, right)
 		self.SizeLabelWidths(left, right)
-		
+
 		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced')
 		self._addSettingsToPanels('advanced', left, right)
 		self.SizeLabelWidths(left, right)

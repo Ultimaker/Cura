@@ -30,7 +30,7 @@ def main():
 
 	profile.loadPreferences(profile.getPreferencePath())
 	if options.profile is not None:
-		profile.loadProfileFromString(options.profile)
+		profile.setProfileFromString(options.profile)
 	elif options.profileini is not None:
 		profile.loadProfile(options.profileini)
 	else:

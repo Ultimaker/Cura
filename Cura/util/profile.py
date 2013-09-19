@@ -490,7 +490,7 @@ def resetProfile():
 	else:
 		putProfileSetting('nozzle_size', '0.5')
 
-def loadProfileFromString(options):
+def setProfileFromString(options):
 	options = base64.b64decode(options)
 	options = zlib.decompress(options)
 	(profileOpts, alt) = options.split('\f', 1)
@@ -518,7 +518,7 @@ def getProfileString():
 				p.append(set.getName() + "=" + tempOverride[set.getName()])
 			else:
 				p.append(set.getName() + "=" + set.getValue())
-		if set.isAlteration():
+		elif set.isAlteration():
 			if set.getName() in tempOverride:
 				alt.append(set.getName() + "=" + tempOverride[set.getName()])
 			else:
@@ -526,6 +526,12 @@ def getProfileString():
 	ret = '\b'.join(p) + '\f' + '\b'.join(alt)
 	ret = base64.b64encode(zlib.compress(ret, 9))
 	return ret
+
+def insertNewlines(string, every=64): #This should be moved to a better place then profile.
+	lines = []
+	for i in xrange(0, len(string), every):
+		lines.append(string[i:i+every])
+	return '\n'.join(lines)
 
 def getPreferencesString():
 	p = []

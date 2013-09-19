@@ -5,7 +5,7 @@ import wx, wx.stc
 
 from Cura.gui.util import gcodeTextArea
 from Cura.util import profile
-
+#Panel to change the start & endcode of the gcode.
 class alterationPanel(wx.Panel):
 	def __init__(self, parent, callback):
 		wx.Panel.__init__(self, parent,-1)
