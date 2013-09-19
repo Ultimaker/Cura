@@ -30,7 +30,7 @@ class mainWindow(wx.Frame):
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
-		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions()))
+		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions() + ['.g', '.gcode']))
 
 		self.normalModeOnlyItems = []
 
@@ -307,7 +307,7 @@ class mainWindow(wx.Frame):
 		if len(files) > 0:
 			profile.setPluginConfig([])
 			self.updateProfileToAllControls()
-		self.scene.loadScene(files)
+		self.scene.loadFiles(files)
 
 	def OnModelMRU(self, e):
 		fileNum = e.GetId() - self.ID_MRU_MODEL1
@@ -320,7 +320,7 @@ class mainWindow(wx.Frame):
 		# Load Model
 		profile.putPreference('lastFile', path)
 		filelist = [ path ]
-		self.scene.loadScene(filelist)
+		self.scene.loadFiles(filelist)
 
 	def addToModelMRU(self, file):
 		self.modelFileHistory.AddFileToHistory(file)

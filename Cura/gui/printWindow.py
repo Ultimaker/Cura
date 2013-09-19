@@ -18,7 +18,7 @@ from Cura.gui.util import webcam
 from Cura.gui.util import taskbar
 from Cura.util import machineCom
 from Cura.util import gcodeInterpreter
-from Cura.util.resources import getPathForImage
+from Cura.util import resources
 
 #The printProcessMonitor is used from the main GUI python process. This monitors the printing python process.
 # This class also handles starting of the 2nd process for printing and all communications with it.
@@ -90,6 +90,7 @@ def startPrintInterface(filename):
 	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.
 	# It needs to run in a separate process, as any running python code blocks the GCode sender python code (http://wiki.python.org/moin/GlobalInterpreterLock).
 	app = wx.App(False)
+	resources.setupLocalization()
 	printWindowHandle = printWindow()
 	printWindowHandle.Show(True)
 	printWindowHandle.Raise()
@@ -101,7 +102,7 @@ def startPrintInterface(filename):
 
 class PrintCommandButton(buttons.GenBitmapButton):
 	def __init__(self, parent, commandList, bitmapFilename, size=(20, 20)):
-		self.bitmap = wx.Bitmap(getPathForImage(bitmapFilename))
+		self.bitmap = wx.Bitmap(resources.getPathForImage(bitmapFilename))
 		super(PrintCommandButton, self).__init__(parent.directControlPanel, -1, self.bitmap, size=size)
 
 		self.commandList = commandList
@@ -431,8 +432,7 @@ class printWindow(wx.Frame):
 		if self.gcode is None:
 			status += _("Loading gcode...\n")
 		else:
-			status += _("Filament: %(amount).2fm %(weight).2fg\n") % (
-			self.gcode.extrusionAmount / 1000, self.gcode.calculateWeight() * 1000)
+			status += _("Filament: %(amount).2fm %(weight).2fg\n") % {'amount': self.gcode.extrusionAmount / 1000, 'weight': self.gcode.calculateWeight() * 1000}
 			cost = self.gcode.calculateCost()
 			if cost is not None:
 				status += _("Filament cost: %s\n") % (cost)
@@ -530,9 +530,10 @@ class printWindow(wx.Frame):
 	def AddTermLog(self, line):
 		if len(self.termLog.GetValue()) > 10000:
 			self.termLog.SetValue(self.termLog.GetValue()[-10000:])
+		self.termLog.SetInsertionPointEnd()
 		self.termLog.AppendText(unicode(line, 'utf-8', 'replace'))
-		l = len(self.termLog.GetValue())
-		self.termLog.SetCaret(wx.Caret(self.termLog, (l, l)))
+		#l = self.termLog.GetLastPosition()     # if needed (windows? mac?)
+		#self.termLog.ShowPosition(l)
 
 	def OnTermEnterLine(self, e):
 		line = self.termInput.GetValue()
