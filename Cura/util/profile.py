@@ -13,11 +13,14 @@ from Cura.util import resources
 from Cura.util import version
 from Cura.util import validators
 
-#The setting dictionary contains a key/value reference to all possible settings. With the setting name as key.
+#The settings dictionary contains a key/value reference to all possible settings. With the setting name as key.
 settingsDictionary = {}
+#The settings list is used to keep a full list of all the settings. This is needed to keep the settings in the proper order,
+# as the dictionary will not contain insertion order.
+settingsList = []
 
 class setting(object):
-	#A setting object contains a configuration setting. These are globally accessable trough the quick access functions
+	#A setting object contains a configuration setting. These are globally accessible trough the quick access functions
 	# and trough the settingsDictionary function.
 	# Settings can be:
 	# * profile settings (settings that effect the slicing process and the print result)
