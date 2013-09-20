@@ -13,9 +13,19 @@ from Cura.util import resources
 from Cura.util import version
 from Cura.util import validators
 
+#The setting dictionary contains a key/value reference to all possible settings. With the setting name as key.
 settingsDictionary = {}
-settingsList = []
+
 class setting(object):
+	#A setting object contains a configuration setting. These are globally accessable trough the quick access functions
+	# and trough the settingsDictionary function.
+	# Settings can be:
+	# * profile settings (settings that effect the slicing process and the print result)
+	# * preferences (settings that effect how cura works and acts)
+	# * machine settings (settings that relate to the physical configuration of your machine)
+	# * alterations (bad name copied from Skeinforge. These are the start/end code pieces)
+	# Settings have validators that check if the value is valid, but do not prevent invalid values!
+	# Settings have conditions that enable/disable this setting depending on other settings. (Ex: Dual-extrusion)
 	def __init__(self, name, default, type, category, subcategory):
 		self._name = name
 		self._label = name
@@ -43,7 +53,7 @@ class setting(object):
 		self._tooltip = tooltip
 		return self
 
-	def setRange(self, minValue = None, maxValue = None):
+	def setRange(self, minValue=None, maxValue=None):
 		if len(self._validators) < 1:
 			return
 		self._validators[0].minValue = minValue
