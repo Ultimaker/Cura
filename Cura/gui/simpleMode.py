@@ -159,7 +159,7 @@ class simpleModePanel(wx.Panel):
 			put('skirt_line_count', '0')
 			put('fan_layer', '1')
 			put('bottom_thickness', '0.0')
-			put('print_temperature', '260')
+			put('print_temperature', '245')
 		put('plugin_config', '')
 
 	def updateProfileToControls(self):
