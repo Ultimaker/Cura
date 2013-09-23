@@ -320,6 +320,7 @@ setting('check_for_updates', 'True', bool, 'preference', 'hidden').setLabel('Che
 setting('submit_slice_information', 'False', bool, 'preference', 'hidden').setLabel('Send usage statistics', 'Submit anonymous usage information to improve next versions of Cura')
 setting('youmagine_token', '', str, 'preference', 'hidden')
 setting('filament_physical_density', '1240', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel('Density (kg/m3)', 'Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.')
+setting('active_machine', '', str, 'preference', 'hidden')
 
 setting('model_colour', '#FFC924', str, 'preference', 'hidden').setLabel('Model colour')
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel('Model colour (2)')
@@ -333,10 +334,11 @@ setting('window_width', '-1', float, 'preference', 'hidden')
 setting('window_height', '-1', float, 'preference', 'hidden')
 setting('window_normal_sash', '320', float, 'preference', 'hidden')
 
+setting('machine_name', 'unknown', str, 'machine', 'hidden')
+setting('machine_type', 'unknown', str, 'machine', 'hidden') #Ultimaker, Ultimaker2, RepRap
 setting('machine_width', '205', float, 'machine', 'hidden').setLabel('Maximum width (mm)', 'Size of the machine in mm')
 setting('machine_depth', '205', float, 'machine', 'hidden').setLabel('Maximum depth (mm)', 'Size of the machine in mm')
 setting('machine_height', '200', float, 'machine', 'hidden').setLabel('Maximum height (mm)', 'Size of the machine in mm')
-setting('machine_type', 'unknown', str, 'machine', 'hidden')
 setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden')
 setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
 setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel('Heated bed', 'If you have an heated bed, this enabled heated bed settings (requires restart)')
