@@ -243,7 +243,6 @@ class Slicer(object):
 			'insetCount': int(profile.calculateLineCount()),
 			'downSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_bottom') == 'True' else 0,
 			'upSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_top') == 'True' else 0,
-			'sparseInfillLineDistance': int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density')) if profile.getProfileSettingFloat('fill_density') > 0 else -1,
 			'infillOverlap': int(profile.getProfileSettingFloat('fill_overlap')),
 			'initialSpeedupLayers': int(4),
 			'initialLayerSpeed': int(profile.getProfileSettingFloat('bottom_layer_speed')),
@@ -281,6 +280,16 @@ class Slicer(object):
 			'extruderOffset[3].Y': int(profile.getMachineSettingFloat('extruder_offset_y3') * 1000),
 			'fixHorrible': 0,
 		}
+		if profile.getProfileSettingFloat('fill_density') == 0:
+			settings['sparseInfillLineDistance'] = -1
+		elif profile.getProfileSettingFloat('fill_density') == 100:
+			settings['sparseInfillLineDistance'] = settings['extrusionWidth']
+			#Set the up/down skins height to 10000 if we want a 100% filled object.
+			# This gives better results then normal 100% infill as the sparse and up/down skin have some overlap.
+			settings['downSkinCount'] = 10000
+			settings['upSkinCount'] = 10000
+		else:
+			settings['sparseInfillLineDistance'] = int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density'))
 		if profile.getProfileSetting('platform_adhesion') == 'Brim':
 			settings['skirtDistance'] = 0
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('brim_line_count'))
