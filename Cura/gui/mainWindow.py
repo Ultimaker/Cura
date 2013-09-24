@@ -30,7 +30,7 @@ class mainWindow(wx.Frame):
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
-		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions() + ['.g', '.gcode']))
+		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions() + ['.g', '.gcode', '.ini']))
 
 		self.normalModeOnlyItems = []
 
@@ -290,7 +290,7 @@ class mainWindow(wx.Frame):
 			# Save normal mode sash
 			self.normalSashPos = self.splitter.GetSashPosition()
 
-			# Change location of sash to width of quick mode pane 
+			# Change location of sash to width of quick mode pane
 			(width, height) = self.simpleSettingsPanel.GetSizer().GetSize()
 			self.splitter.SetSashPosition(width, True)
 
@@ -340,7 +340,7 @@ class mainWindow(wx.Frame):
 		self.config.SetPath("/ProfileMRU")
 		self.profileFileHistory.Save(self.config)
 		self.config.Flush()
-		# Load Profile	
+		# Load Profile
 		profile.loadProfile(path)
 		self.updateProfileToAllControls()
 
@@ -348,7 +348,7 @@ class mainWindow(wx.Frame):
 		self.profileFileHistory.AddFileToHistory(file)
 		self.config.SetPath("/ProfileMRU")
 		self.profileFileHistory.Save(self.config)
-		self.config.Flush()			
+		self.config.Flush()
 
 	def updateProfileToAllControls(self):
 		self.scene.updateProfileToControls()
@@ -593,17 +593,17 @@ class normalSettingsPanel(configBase.configPanelBase):
 	def OnSize(self, e):
 		# Make the size of the Notebook control the same size as this control
 		self.nb.SetSize(self.GetSize())
-		
+
 		# Propegate the OnSize() event (just in case)
 		e.Skip()
-		
+
 		# Perform out resize magic
 		self.UpdateSize(self.printPanel)
 		self.UpdateSize(self.advancedPanel)
-	
+
 	def UpdateSize(self, configPanel):
 		sizer = configPanel.GetSizer()
-		
+
 		# Pseudocde
 		# if horizontal:
 		#     if width(col1) < best_width(col1) || width(col2) < best_width(col2):
@@ -612,7 +612,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		#     if width(col1) > (best_width(col1) + best_width(col1)):
 		#         switch to horizontal
 		#
-				
+
 		col1 = configPanel.leftPanel
 		colSize1 = col1.GetSize()
 		colBestSize1 = col1.GetBestSize()
@@ -621,7 +621,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		colBestSize2 = col2.GetBestSize()
 
 		orientation = sizer.GetOrientation()
-		
+
 		if orientation == wx.HORIZONTAL:
 			if (colSize1[0] <= colBestSize1[0]) or (colSize2[0] <= colBestSize2[0]):
 				configPanel.Freeze()
