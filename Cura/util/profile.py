@@ -19,6 +19,10 @@ settingsDictionary = {}
 # as the dictionary will not contain insertion order.
 settingsList = []
 
+#Currently selected machine (by index) Cura support multiple machines in the same preferences and can switch between them.
+# Each machine has it's own index and unique name.
+_selectedMachineIndex = 0
+
 class setting(object):
 	#A setting object contains a configuration setting. These are globally accessible trough the quick access functions
 	# and trough the settingsDictionary function.
@@ -34,7 +38,7 @@ class setting(object):
 		self._label = name
 		self._tooltip = ''
 		self._default = unicode(default)
-		self._value = self._default
+		self._values = []
 		self._type = type
 		self._category = category
 		self._subcategory = subcategory
@@ -93,14 +97,28 @@ class setting(object):
 	def getType(self):
 		return self._type
 
-	def getValue(self):
-		return self._value
+	def getValue(self, index = None):
+		if index is None:
+			index = self.getValueIndex()
+		if index >= len(self._values):
+			return self._default
+		return self._values[index]
 
 	def getDefault(self):
 		return self._default
 
-	def setValue(self, value):
-		self._value = unicode(value)
+	def setValue(self, value, index = None):
+		if index is None:
+			index = self.getValueIndex()
+		while index >= len(self._values):
+			self._values.append(self._default)
+		self._values[index] = unicode(value)
+
+	def getValueIndex(self):
+		if self.isMachineSetting():
+			global _selectedMachineIndex
+			return _selectedMachineIndex
+		return 0
 
 	def validate(self):
 		result = validators.SUCCESS
@@ -320,7 +338,7 @@ setting('check_for_updates', 'True', bool, 'preference', 'hidden').setLabel('Che
 setting('submit_slice_information', 'False', bool, 'preference', 'hidden').setLabel('Send usage statistics', 'Submit anonymous usage information to improve next versions of Cura')
 setting('youmagine_token', '', str, 'preference', 'hidden')
 setting('filament_physical_density', '1240', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel('Density (kg/m3)', 'Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print.')
-setting('active_machine', '', str, 'preference', 'hidden')
+setting('active_machine', '0', int, 'preference', 'hidden')
 
 setting('model_colour', '#FFC924', str, 'preference', 'hidden').setLabel('Model colour')
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel('Model colour (2)')
@@ -334,7 +352,7 @@ setting('window_width', '-1', float, 'preference', 'hidden')
 setting('window_height', '-1', float, 'preference', 'hidden')
 setting('window_normal_sash', '320', float, 'preference', 'hidden')
 
-setting('machine_name', 'unknown', str, 'machine', 'hidden')
+setting('machine_name', '', str, 'machine', 'hidden')
 setting('machine_type', 'unknown', str, 'machine', 'hidden') #Ultimaker, Ultimaker2, RepRap
 setting('machine_width', '205', float, 'machine', 'hidden').setLabel('Maximum width (mm)', 'Size of the machine in mm')
 setting('machine_depth', '205', float, 'machine', 'hidden').setLabel('Maximum depth (mm)', 'Size of the machine in mm')
@@ -604,32 +622,46 @@ def getPreferenceColour(name):
 	return [float(int(colorString[1:3], 16)) / 255, float(int(colorString[3:5], 16)) / 255, float(int(colorString[5:7], 16)) / 255, 1.0]
 
 def loadPreferences(filename):
+	global settingsList
 	#Read a configuration file as global config
 	profileParser = ConfigParser.ConfigParser()
 	try:
 		profileParser.read(filename)
 	except ConfigParser.ParsingError:
 		return
-	global settingsList
+
 	for set in settingsList:
 		if set.isPreference():
 			if profileParser.has_option('preference', set.getName()):
 				set.setValue(unicode(profileParser.get('preference', set.getName()), 'utf-8', 'replace'))
-		elif set.isMachineSetting():
-			if profileParser.has_option('machine', set.getName()):
-				set.setValue(unicode(profileParser.get('machine', set.getName()), 'utf-8', 'replace'))
+
+	n = 0
+	while profileParser.has_section('machine_%d' % (n)):
+		for set in settingsList:
+			if set.isMachineSetting():
+				if profileParser.has_option('machine_%d' % (n), set.getName()):
+					set.setValue(unicode(profileParser.get('machine_%d' % (n), set.getName()), 'utf-8', 'replace'), n)
+		n += 1
+
+	setActiveMachine(int(getPreference('active_machine')))
 
 def savePreferences(filename):
+	global settingsList
 	#Save the current profile to an ini file
 	parser = ConfigParser.ConfigParser()
 	parser.add_section('preference')
-	parser.add_section('machine')
-	global settingsList
+
 	for set in settingsList:
 		if set.isPreference():
 			parser.set('preference', set.getName(), set.getValue().encode('utf-8'))
-		elif set.isMachineSetting():
-			parser.set('machine', set.getName(), set.getValue().encode('utf-8'))
+
+	n = 0
+	while getMachineSetting('machine_name', n) != '':
+		parser.add_section('machine_%d' % (n))
+		for set in settingsList:
+			if set.isMachineSetting():
+				parser.set('machine_%d' % (n), set.getName(), set.getValue(n).encode('utf-8'))
+		n += 1
 	parser.write(open(filename, 'w'))
 
 def getPreference(name):
@@ -665,12 +697,12 @@ def getMachineSettingFloat(name):
 	except:
 		return 0.0
 
-def getMachineSetting(name):
+def getMachineSetting(name, index = None):
 	if name in tempOverride:
 		return tempOverride[name]
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isMachineSetting():
-		return settingsDictionary[name].getValue()
+		return settingsDictionary[name].getValue(index)
 	traceback.print_stack()
 	sys.stderr.write('Error: "%s" not found in machine settings\n' % (name))
 	return ''
@@ -687,6 +719,34 @@ def isMachineSetting(name):
 	if name in settingsDictionary and settingsDictionary[name].isMachineSetting():
 		return True
 	return False
+
+def checkAndUpdateMachineName():
+	global _selectedMachineIndex
+	name = getMachineSetting('machine_name')
+	index = None
+	if name == '':
+		name = getMachineSetting('machine_type')
+	n = 0
+	while getMachineSetting('machine_name', n) != '':
+		if n == _selectedMachineIndex:
+			continue
+		print name, index, getMachineSetting('machine_name', n)
+		if index is None:
+			if name == getMachineSetting('machine_name', n):
+				index = 1
+		else:
+			if '%s (%d)' % (name, index) == getMachineSetting('machine_name', n):
+				index += 1
+		n += 1
+	if index is not None:
+		name = '%s (%d)' % (name, index)
+	putMachineSetting('machine_name', name)
+	putPreference('active_machine', _selectedMachineIndex)
+
+def setActiveMachine(index):
+	global _selectedMachineIndex
+	_selectedMachineIndex = index
+	putPreference('active_machine', _selectedMachineIndex)
 
 ## Temp overrides for multi-extruder slicing and the project planner.
 tempOverride = {}

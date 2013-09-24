@@ -215,15 +215,18 @@ class InfoPage(wx.wizard.WizardPageSimple):
 
 
 class FirstInfoPage(InfoPage):
-	def __init__(self, parent):
-		super(FirstInfoPage, self).__init__(parent, _("First time run wizard"))
-		self.AddText(_("Welcome, and thanks for trying Cura!"))
-		self.AddSeperator()
+	def __init__(self, parent, addNew):
+		if addNew:
+			super(FirstInfoPage, self).__init__(parent, _("Add new machine wizard"))
+		else:
+			super(FirstInfoPage, self).__init__(parent, _("First time run wizard"))
+			self.AddText(_("Welcome, and thanks for trying Cura!"))
+			self.AddSeperator()
 		self.AddText(_("This wizard will help you with the following steps:"))
 		self.AddText(_("* Configure Cura for your machine"))
-		self.AddText(_("* Upgrade your firmware"))
-		self.AddText(_("* Check if your machine is working safely"))
-		self.AddText(_("* Level your printer bed"))
+		self.AddText(_("* Optionally upgrade your firmware"))
+		self.AddText(_("* Optionally check if your machine is working safely"))
+		self.AddText(_("* Optionally level your printer bed"))
 
 		#self.AddText('* Calibrate your machine')
 		#self.AddText('* Do your first print')
@@ -327,6 +330,7 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putPreference('startMode', 'Normal')
 			profile.putProfileSetting('nozzle_size', '0.5')
+		profile.checkAndUpdateMachineName()
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
 		if self.SubmitUserStats.GetValue():
 			profile.putPreference('submit_slice_information', 'True')
@@ -761,13 +765,13 @@ class Ultimaker2ReadyPage(InfoPage):
 		self.AddSeperator()
 
 class configWizard(wx.wizard.Wizard):
-	def __init__(self):
+	def __init__(self, addNew = False):
 		super(configWizard, self).__init__(None, -1, "Configuration Wizard")
 
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
 
-		self.firstInfoPage = FirstInfoPage(self)
+		self.firstInfoPage = FirstInfoPage(self, addNew)
 		self.machineSelectPage = MachineSelectPage(self)
 		self.ultimakerSelectParts = SelectParts(self)
 		self.ultimakerFirmwareUpgradePage = UltimakerFirmwareUpgradePage(self)

@@ -150,6 +150,10 @@ class mainWindow(wx.Frame):
 		if self.extruderCount > 1:
 			i = expertMenu.Append(-1, _("Run head offset wizard..."))
 			self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, i)
+
+		i = expertMenu.Append(-1, _("Add new machine..."))
+		self.Bind(wx.EVT_MENU, self.OnAddNewMachine, i)
+
 		self.menubar.Append(expertMenu, _("Expert"))
 
 		helpMenu = wx.Menu()
@@ -420,7 +424,19 @@ class mainWindow(wx.Frame):
 			firmwareInstall.InstallFirmware(filename)
 
 	def OnFirstRunWizard(self, e):
+		self.Hide()
 		configWizard.configWizard()
+		self.Show()
+		self.updateProfileToAllControls()
+
+	def OnAddNewMachine(self, e):
+		self.Hide()
+		n = 0
+		while profile.getMachineSetting('machine_name', n) != '':
+			n += 1
+		profile.setActiveMachine(n)
+		configWizard.configWizard(True)
+		self.Show()
 		self.updateProfileToAllControls()
 
 	def OnBedLevelWizard(self, e):
