@@ -355,6 +355,18 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel.updateProfileToControls()
 		self.simpleSettingsPanel.updateProfileToControls()
 
+	def reloadSettingPanels(self):
+		self.leftSizer.Detach(self.simpleSettingsPanel)
+		self.leftSizer.Detach(self.normalSettingsPanel)
+		self.simpleSettingsPanel.Destroy()
+		self.normalSettingsPanel.Destroy()
+		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, lambda : self.scene.sceneUpdated())
+		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
+		self.leftSizer.Add(self.simpleSettingsPanel, 1)
+		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
+		self.updateSliceMode()
+		self.updateProfileToAllControls()
+
 	def OnLoadProfile(self, e):
 		dlg=wx.FileDialog(self, _("Select profile file to load"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
 		dlg.SetWildcard("ini files (*.ini)|*.ini")
@@ -427,7 +439,7 @@ class mainWindow(wx.Frame):
 		self.Hide()
 		configWizard.configWizard()
 		self.Show()
-		self.updateProfileToAllControls()
+		self.reloadSettingPanels()
 
 	def OnAddNewMachine(self, e):
 		self.Hide()
@@ -437,7 +449,7 @@ class mainWindow(wx.Frame):
 		profile.setActiveMachine(n)
 		configWizard.configWizard(True)
 		self.Show()
-		self.updateProfileToAllControls()
+		self.reloadSettingPanels()
 
 	def OnBedLevelWizard(self, e):
 		configWizard.bedLevelWizard()
@@ -580,8 +592,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 				p = right
 			configBase.TitleRow(p, title)
 			for s in profile.getSettingsForCategory(category, title):
-				if s.checkConditions():
-					configBase.SettingRow(p, s.getName())
+				configBase.SettingRow(p, s.getName())
 
 	def SizeLabelWidths(self, left, right):
 		leftWidth = self.getLabelColumnWidth(left)

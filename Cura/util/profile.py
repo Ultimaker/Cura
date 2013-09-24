@@ -729,6 +729,7 @@ def checkAndUpdateMachineName():
 	n = 0
 	while getMachineSetting('machine_name', n) != '':
 		if n == _selectedMachineIndex:
+			n += 1
 			continue
 		print name, index, getMachineSetting('machine_name', n)
 		if index is None:

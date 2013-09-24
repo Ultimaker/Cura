@@ -72,7 +72,5 @@ class preferencesDialog(wx.Dialog):
 		self.Fit()
 
 	def OnClose(self, e):
-		if self.oldExtruderAmount != int(profile.getMachineSetting('extruder_amount')):
-			wx.MessageBox(_("After changing the amount of extruders you need to restart Cura for full effect."), _("Extruder amount warning."), wx.OK | wx.ICON_INFORMATION)
-		self.parent.updateProfileToAllControls()
+		self.parent.reloadSettingPanels()
 		self.Destroy()
