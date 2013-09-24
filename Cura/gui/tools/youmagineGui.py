@@ -18,7 +18,7 @@ from Cura.util.resources import getPathForImage
 
 from Cura.gui.util import webcam
 
-DESIGN_FILE_EXT = ['.scad', '.blend', '.max', '.stp', '.step', '.igs', '.iges', '.sldasm', '.sldprt', '.skp', '.ipt', '.dwg', '.123d', '.wings']
+DESIGN_FILE_EXT = ['.scad', '.blend', '.max', '.stp', '.step', '.igs', '.iges', '.sldasm', '.sldprt', '.skp', '.iam', '.prt', '.x_t', '.ipt', '.dwg', '.123d', '.wings', '.fcstd', '.top']
 
 def getClipboardText():
 	ret = ''
