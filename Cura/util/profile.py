@@ -360,14 +360,14 @@ setting('machine_height', '200', float, 'machine', 'hidden').setLabel('Maximum h
 setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden')
 setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
 setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel('Heated bed', 'If you have an heated bed, this enabled heated bed settings (requires restart)')
-setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode'], 'machine', 'hidden').setLabel('GCode Flavor', 'Flavor of generated GCode.\nRepRap...')
+setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode'], 'machine', 'hidden').setLabel('GCode Flavor', 'Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer.')
 setting('extruder_amount', '1', ['1','2','3','4'], 'machine', 'hidden').setLabel('Extruder count', 'Amount of extruders in your machine.')
 setting('extruder_offset_x1', '-21.6', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
 setting('extruder_offset_y1', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_x2', '0.0', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_y2', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_x3', '0.0', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your secondary extruder compared to the primary.')
-setting('extruder_offset_y3', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your secondary extruder compared to the primary.')
+setting('extruder_offset_x2', '0.0', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your tertiary extruder compared to the primary.')
+setting('extruder_offset_y2', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your tertiary extruder compared to the primary.')
+setting('extruder_offset_x3', '0.0', float, 'machine', 'hidden').setLabel('Offset X', 'The offset of your forth extruder compared to the primary.')
+setting('extruder_offset_y3', '0.0', float, 'machine', 'hidden').setLabel('Offset Y', 'The offset of your forth extruder compared to the primary.')
 setting('steps_per_e', '0', float, 'machine', 'hidden').setLabel('E-Steps per 1mm filament', 'Amount of steps per mm filament extrusion. If set to 0 then this value is ignored and the value in your firmware is used.')
 setting('serial_port', 'AUTO', str, 'machine', 'hidden').setLabel('Serial port', 'Serial port to use for communication with the printer')
 setting('serial_port_auto', '', str, 'machine', 'hidden')
@@ -726,10 +726,8 @@ def checkAndUpdateMachineName():
 	index = None
 	if name == '':
 		name = getMachineSetting('machine_type')
-	n = 0
-	while getMachineSetting('machine_name', n) != '':
+	for n in xrange(0, getMachineCount()):
 		if n == _selectedMachineIndex:
-			n += 1
 			continue
 		print name, index, getMachineSetting('machine_name', n)
 		if index is None:
@@ -738,11 +736,18 @@ def checkAndUpdateMachineName():
 		else:
 			if '%s (%d)' % (name, index) == getMachineSetting('machine_name', n):
 				index += 1
-		n += 1
 	if index is not None:
 		name = '%s (%d)' % (name, index)
 	putMachineSetting('machine_name', name)
 	putPreference('active_machine', _selectedMachineIndex)
+
+def getMachineCount():
+	n = 0
+	while getMachineSetting('machine_name', n) != '':
+		n += 1
+	if n < 1:
+		return 1
+	return n
 
 def setActiveMachine(index):
 	global _selectedMachineIndex

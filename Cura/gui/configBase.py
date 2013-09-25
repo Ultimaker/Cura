@@ -144,7 +144,7 @@ class TitleRow(object):
 		sizer.SetRows(x + 2)
 
 class SettingRow(object):
-	def __init__(self, panel, configName, valueOverride = None):
+	def __init__(self, panel, configName, valueOverride = None, index = None):
 		"Add a setting to the configuration panel"
 		sizer = panel.GetSizer()
 		x = sizer.GetRows()
@@ -152,6 +152,7 @@ class SettingRow(object):
 		flag = 0
 
 		self.setting = profile.settingsDictionary[configName]
+		self.settingIndex = index
 		self.validationMsg = ''
 		self.panel = panel
 
@@ -168,14 +169,14 @@ class SettingRow(object):
 		#	flag = wx.EXPAND
 		if self.setting.getType() is types.BooleanType:
 			self.ctrl = wx.CheckBox(panel, -1, style=wx.ALIGN_RIGHT)
-			self.SetValue(self.setting.getValue())
+			self.SetValue(self.setting.getValue(self.settingIndex))
 			self.ctrl.Bind(wx.EVT_CHECKBOX, self.OnSettingChange)
 		elif valueOverride is not None and valueOverride is wx.Colour:
 			self.ctrl = wx.ColourPickerCtrl(panel, -1)
-			self.SetValue(self.setting.getValue())
+			self.SetValue(self.setting.getValue(self.settingIndex))
 			self.ctrl.Bind(wx.EVT_COLOURPICKER_CHANGED, self.OnSettingChange)
 		elif type(self.setting.getType()) is list or valueOverride is not None:
-			value = self.setting.getValue()
+			value = self.setting.getValue(self.settingIndex)
 			choices = self.setting.getType()
 			if valueOverride is not None:
 				choices = valueOverride
@@ -186,7 +187,7 @@ class SettingRow(object):
 			self.ctrl.Bind(wx.EVT_LEFT_DOWN, self.OnMouseExit)
 			flag = wx.EXPAND
 		else:
-			self.ctrl = wx.TextCtrl(panel, -1, self.setting.getValue())
+			self.ctrl = wx.TextCtrl(panel, -1, self.setting.getValue(self.settingIndex))
 			self.ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
 			flag = wx.EXPAND
 
@@ -213,7 +214,7 @@ class SettingRow(object):
 		e.Skip()
 
 	def OnSettingChange(self, e):
-		self.setting.setValue(self.GetValue())
+		self.setting.setValue(self.GetValue(), self.settingIndex)
 		self.panel.main._validate()
 
 	def _validate(self):

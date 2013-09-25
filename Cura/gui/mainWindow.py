@@ -84,6 +84,8 @@ class mainWindow(wx.Frame):
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, _("Preferences...\tCTRL+,"))
 		self.Bind(wx.EVT_MENU, self.OnPreferences, i)
+		i = self.fileMenu.Append(-1, _("Machine settings..."))
+		self.Bind(wx.EVT_MENU, self.OnMachineSettings, i)
 		self.fileMenu.AppendSeparator()
 
 		# Model MRU list
@@ -307,6 +309,11 @@ class mainWindow(wx.Frame):
 		prefDialog.Centre()
 		prefDialog.Show()
 
+	def OnMachineSettings(self, e):
+		prefDialog = preferencesDialog.machineSettingsDialog(self)
+		prefDialog.Centre()
+		prefDialog.Show()
+
 	def OnDropFiles(self, files):
 		if len(files) > 0:
 			profile.setPluginConfig([])
@@ -443,10 +450,7 @@ class mainWindow(wx.Frame):
 
 	def OnAddNewMachine(self, e):
 		self.Hide()
-		n = 0
-		while profile.getMachineSetting('machine_name', n) != '':
-			n += 1
-		profile.setActiveMachine(n)
+		profile.setActiveMachine(profile.getMachineCount())
 		configWizard.configWizard(True)
 		self.Show()
 		self.reloadSettingPanels()
@@ -564,7 +568,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 		#Plugin page
 		self.pluginPanel = pluginPanel.pluginPanel(self.nb, callback)
 		if len(self.pluginPanel.pluginList) > 0:
-			self.nb.AddPage(self.pluginPanel, "Plugins")
+			self.nb.AddPage(self.pluginPanel, _("Plugins"))
 		else:
 			self.pluginPanel.Show(False)
 

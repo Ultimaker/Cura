@@ -41,12 +41,12 @@ def serialList(forAutoDetect=False):
 	if forAutoDetect:
 		baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.usb*")
 		baselist = filter(lambda s: not 'Bluetooth' in s, baselist)
+		prev = profile.getMachineSetting('serial_port_auto')
+		if prev in baselist:
+			baselist.remove(prev)
+			baselist.insert(0, prev)
 	else:
 		baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*")
-	prev = profile.getMachineSetting('serial_port_auto')
-	if prev in baselist:
-		baselist.remove(prev)
-		baselist.insert(0, prev)
 	if version.isDevVersion() and not forAutoDetect:
 		baselist.append('VIRTUAL')
 	return baselist
