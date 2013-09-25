@@ -643,7 +643,7 @@ def loadPreferences(filename):
 					set.setValue(unicode(profileParser.get('machine_%d' % (n), set.getName()), 'utf-8', 'replace'), n)
 		n += 1
 
-	setActiveMachine(int(getPreference('active_machine')))
+	setActiveMachine(int(getPreferenceFloat('active_machine')))
 
 def savePreferences(filename):
 	global settingsList
@@ -729,7 +729,6 @@ def checkAndUpdateMachineName():
 	for n in xrange(0, getMachineCount()):
 		if n == _selectedMachineIndex:
 			continue
-		print name, index, getMachineSetting('machine_name', n)
 		if index is None:
 			if name == getMachineSetting('machine_name', n):
 				index = 1

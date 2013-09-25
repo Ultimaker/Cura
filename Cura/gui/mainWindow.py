@@ -134,16 +134,16 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.onCopyProfileClipboard,i)
 		self.menubar.Append(toolsMenu, _("Tools"))
 
+		#Machine menu for machine configuration/tooling
+		self.machineMenu = wx.Menu()
+		self.updateMachineMenu()
+
+		self.menubar.Append(self.machineMenu, _("Machine"))
+
 		expertMenu = wx.Menu()
 		i = expertMenu.Append(-1, _("Open expert settings..."))
 		self.normalModeOnlyItems.append(i)
 		self.Bind(wx.EVT_MENU, self.OnExpertOpen, i)
-		expertMenu.AppendSeparator()
-		if firmwareInstall.getDefaultFirmware() is not None:
-			i = expertMenu.Append(-1, _("Install default Marlin firmware"))
-			self.Bind(wx.EVT_MENU, self.OnDefaultMarlinFirmware, i)
-		i = expertMenu.Append(-1, _("Install custom firmware"))
-		self.Bind(wx.EVT_MENU, self.OnCustomFirmware, i)
 		expertMenu.AppendSeparator()
 		i = expertMenu.Append(-1, _("Run first run wizard..."))
 		self.Bind(wx.EVT_MENU, self.OnFirstRunWizard, i)
@@ -152,9 +152,6 @@ class mainWindow(wx.Frame):
 		if self.extruderCount > 1:
 			i = expertMenu.Append(-1, _("Run head offset wizard..."))
 			self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, i)
-
-		i = expertMenu.Append(-1, _("Add new machine..."))
-		self.Bind(wx.EVT_MENU, self.OnAddNewMachine, i)
 
 		self.menubar.Append(expertMenu, _("Expert"))
 
@@ -374,6 +371,30 @@ class mainWindow(wx.Frame):
 		self.updateSliceMode()
 		self.updateProfileToAllControls()
 
+	def updateMachineMenu(self):
+		#Remove all items so we can rebuild the menu. Inserting items seems to cause crashes, so this is the safest way.
+		for item in self.machineMenu.GetMenuItems():
+			self.machineMenu.RemoveItem(item)
+
+		#Add a menu item for each machine configuration.
+		for n in xrange(0, profile.getMachineCount()):
+			i = self.machineMenu.Append(n, profile.getMachineSetting('machine_name', n), kind=wx.ITEM_RADIO)
+			if n == int(profile.getPreferenceFloat('active_machine')):
+				i.Check(True)
+			self.Bind(wx.EVT_MENU, lambda e: self.OnSelectMachine(e.GetId()), i)
+
+		#Add tools for machines.
+		self.machineMenu.AppendSeparator()
+		i = self.machineMenu.Append(-1, _("Install custom firmware"))
+		self.Bind(wx.EVT_MENU, self.OnCustomFirmware, i)
+
+		i = self.machineMenu.Append(-1, _("Install default Marlin firmware"))
+		self.Bind(wx.EVT_MENU, self.OnDefaultMarlinFirmware, i)
+
+		self.machineMenu.AppendSeparator()
+		i = self.machineMenu.Append(-1, _("Add new machine..."))
+		self.Bind(wx.EVT_MENU, self.OnAddNewMachine, i)
+
 	def OnLoadProfile(self, e):
 		dlg=wx.FileDialog(self, _("Select profile file to load"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
 		dlg.SetWildcard("ini files (*.ini)|*.ini")
@@ -453,6 +474,11 @@ class mainWindow(wx.Frame):
 		profile.setActiveMachine(profile.getMachineCount())
 		configWizard.configWizard(True)
 		self.Show()
+		self.reloadSettingPanels()
+		self.updateMachineMenu()
+
+	def OnSelectMachine(self, index):
+		profile.setActiveMachine(index)
 		self.reloadSettingPanels()
 
 	def OnBedLevelWizard(self, e):

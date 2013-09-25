@@ -96,6 +96,8 @@ class machineSettingsDialog(wx.Dialog):
 
 			self.nb.AddPage(main, profile.getMachineSetting('machine_name', idx))
 
+		self.nb.SetSelection(int(profile.getPreferenceFloat('active_machine')))
+
 		self.okButton = wx.Button(self.panel, -1, 'Ok')
 		self.panel.GetSizer().Add(self.okButton, flag=wx.ALL, border=5)
 		self.okButton.Bind(wx.EVT_BUTTON, lambda e: self.Close())

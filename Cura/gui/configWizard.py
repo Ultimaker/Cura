@@ -241,6 +241,7 @@ class RepRapInfoPage(InfoPage):
 		self.AddSeperator()
 		self.AddText(_("You will have to manually install Marlin or Sprinter firmware."))
 		self.AddSeperator()
+		self.machineName = self.AddLabelTextCtrl(_("Machine name"), "RepRap")
 		self.machineWidth = self.AddLabelTextCtrl(_("Machine width (mm)"), "80")
 		self.machineDepth = self.AddLabelTextCtrl(_("Machine depth (mm)"), "80")
 		self.machineHeight = self.AddLabelTextCtrl(_("Machine height (mm)"), "60")
@@ -249,19 +250,20 @@ class RepRapInfoPage(InfoPage):
 		self.HomeAtCenter = self.AddCheckbox(_("Bed center is 0,0,0 (RoStock)"))
 
 	def StoreData(self):
-		profile.putPreference('machine_width', self.machineWidth.GetValue())
-		profile.putPreference('machine_depth', self.machineDepth.GetValue())
-		profile.putPreference('machine_height', self.machineHeight.GetValue())
+		profile.putMachineSetting('machine_name', self.machineName.GetValue())
+		profile.putMachineSetting('machine_width', self.machineWidth.GetValue())
+		profile.putMachineSetting('machine_depth', self.machineDepth.GetValue())
+		profile.putMachineSetting('machine_height', self.machineHeight.GetValue())
 		profile.putProfileSetting('nozzle_size', self.nozzleSize.GetValue())
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSettingFloat('nozzle_size')) * 2)
-		profile.putPreference('has_heated_bed', str(self.heatedBed.GetValue()))
-		profile.putPreference('machine_center_is_zero', str(self.HomeAtCenter.GetValue()))
-		profile.putPreference('extruder_head_size_min_x', '0')
-		profile.putPreference('extruder_head_size_min_y', '0')
-		profile.putPreference('extruder_head_size_max_x', '0')
-		profile.putPreference('extruder_head_size_max_y', '0')
-		profile.putPreference('extruder_head_size_height', '0')
-
+		profile.putMachineSetting('has_heated_bed', str(self.heatedBed.GetValue()))
+		profile.putMachineSetting('machine_center_is_zero', str(self.HomeAtCenter.GetValue()))
+		profile.putMachineSetting('extruder_head_size_min_x', '0')
+		profile.putMachineSetting('extruder_head_size_min_y', '0')
+		profile.putMachineSetting('extruder_head_size_max_x', '0')
+		profile.putMachineSetting('extruder_head_size_max_y', '0')
+		profile.putMachineSetting('extruder_head_size_height', '0')
+		profile.checkAndUpdateMachineName()
 
 class MachineSelectPage(InfoPage):
 	def __init__(self, parent):
