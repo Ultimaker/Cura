@@ -345,7 +345,7 @@ setting('youmagine_token', '', str, 'preference', 'hidden')
 setting('filament_physical_density', '1240', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel(_("Density (kg/m3)"), _("Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print."))
 setting('active_machine', '0', int, 'preference', 'hidden')
 
-setting('model_colour', '#FFC924', str, 'preference', 'hidden').setLabel(_('Model colour')
+setting('model_colour', '#FFC924', str, 'preference', 'hidden').setLabel(_('Model colour'))
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel(_('Model colour (2)'))
 setting('model_colour3', '#DDD93C', str, 'preference', 'hidden').setLabel(_('Model colour (3)'))
 setting('model_colour4', '#4550D3', str, 'preference', 'hidden').setLabel(_('Model colour (4)'))
