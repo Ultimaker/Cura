@@ -19,6 +19,7 @@ from Cura.gui.util import taskbar
 from Cura.util import machineCom
 from Cura.util import gcodeInterpreter
 from Cura.util import resources
+from Cura.util import profile
 
 #The printProcessMonitor is used from the main GUI python process. This monitors the printing python process.
 # This class also handles starting of the 2nd process for printing and all communications with it.
@@ -200,7 +201,7 @@ class printWindow(wx.Frame):
 
 		self.temperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21), style=wx.SP_ARROW_KEYS)
 		self.temperatureSelect.SetRange(0, 400)
-		self.temperatureHeatUpPLA = wx.Button(self.temperaturePanel, -1, '210C')
+		self.temperatureHeatUp = wx.Button(self.temperaturePanel, -1, int(profile.getProfileSettingFloat('print_temperature')) + 'C')
 		self.bedTemperatureLabel = wx.StaticText(self.temperaturePanel, -1, _("BedTemp:"))
 		self.bedTemperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21), style=wx.SP_ARROW_KEYS)
 		self.bedTemperatureSelect.SetRange(0, 400)
@@ -347,7 +348,7 @@ class printWindow(wx.Frame):
 		self.cancelButton.Bind(wx.EVT_BUTTON, self.OnCancel)
 		self.machineLogButton.Bind(wx.EVT_BUTTON, self.OnMachineLog)
 
-		self.Bind(wx.EVT_BUTTON, lambda e: (self.temperatureSelect.SetValue(210), self.machineCom.sendCommand("M104 S210")), self.temperatureHeatUpPLA)
+		self.Bind(wx.EVT_BUTTON, lambda e: (self.temperatureSelect.SetValue(int(profile.getProfileSettingFloat('print_temperature'))), self.machineCom.sendCommand("M104 S%d" % (int(profile.getProfileSettingFloat('print_temperature'))))), self.temperatureHeatUpPLA)
 		self.Bind(wx.EVT_SPINCTRL, self.OnTempChange, self.temperatureSelect)
 		self.Bind(wx.EVT_SPINCTRL, self.OnBedTempChange, self.bedTemperatureSelect)
 
@@ -408,7 +409,7 @@ class printWindow(wx.Frame):
 		#self.loadButton.Enable(self.machineCom == None or not (self.machineCom.isPrinting() or self.machineCom.isPaused()))
 		self.printButton.Enable(self.machineCom is not None and self.machineCom.isOperational() and not (
 		self.machineCom.isPrinting() or self.machineCom.isPaused()))
-		self.temperatureHeatUpPLA.Enable(self.machineCom is not None and self.machineCom.isOperational() and not (
+		self.temperatureHeatUp.Enable(self.machineCom is not None and self.machineCom.isOperational() and not (
 		self.machineCom.isPrinting() or self.machineCom.isPaused()))
 		self.pauseButton.Enable(
 			self.machineCom is not None and (self.machineCom.isPrinting() or self.machineCom.isPaused()))

@@ -378,22 +378,21 @@ class mainWindow(wx.Frame):
 
 		#Add a menu item for each machine configuration.
 		for n in xrange(0, profile.getMachineCount()):
-			i = self.machineMenu.Append(n, profile.getMachineSetting('machine_name', n), kind=wx.ITEM_RADIO)
+			i = self.machineMenu.Append(n, profile.getMachineSetting('machine_name', n).title(), kind=wx.ITEM_RADIO)
 			if n == int(profile.getPreferenceFloat('active_machine')):
 				i.Check(True)
 			self.Bind(wx.EVT_MENU, lambda e: self.OnSelectMachine(e.GetId()), i)
+
+		self.machineMenu.AppendSeparator()
+		i = self.machineMenu.Append(-1, _("Add new machine..."))
+		self.Bind(wx.EVT_MENU, self.OnAddNewMachine, i)
 
 		#Add tools for machines.
 		self.machineMenu.AppendSeparator()
 		i = self.machineMenu.Append(-1, _("Install custom firmware"))
 		self.Bind(wx.EVT_MENU, self.OnCustomFirmware, i)
-
 		i = self.machineMenu.Append(-1, _("Install default Marlin firmware"))
 		self.Bind(wx.EVT_MENU, self.OnDefaultMarlinFirmware, i)
-
-		self.machineMenu.AppendSeparator()
-		i = self.machineMenu.Append(-1, _("Add new machine..."))
-		self.Bind(wx.EVT_MENU, self.OnAddNewMachine, i)
 
 	def OnLoadProfile(self, e):
 		dlg=wx.FileDialog(self, _("Select profile file to load"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)

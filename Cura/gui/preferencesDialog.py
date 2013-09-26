@@ -94,7 +94,7 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(right, 'serial_port', ['AUTO'] + machineCom.serialList(), index=idx)
 			configBase.SettingRow(right, 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()), index=idx)
 
-			self.nb.AddPage(main, profile.getMachineSetting('machine_name', idx))
+			self.nb.AddPage(main, profile.getMachineSetting('machine_name', idx).title())
 
 		self.nb.SetSelection(int(profile.getPreferenceFloat('active_machine')))
 
