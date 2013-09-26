@@ -753,6 +753,19 @@ def setActiveMachine(index):
 	_selectedMachineIndex = index
 	putPreference('active_machine', _selectedMachineIndex)
 
+def removeMachine(index):
+	global _selectedMachineIndex
+	global settingsList
+	if getMachineCount() < 2:
+		return
+	for n in xrange(index, getMachineCount()):
+		for setting in settingsList:
+			if setting.isMachineSetting():
+				setting.setValue(setting.getValue(n+1), n)
+
+	if _selectedMachineIndex >= index:
+		setActiveMachine(getMachineCount() - 1)
+
 ## Temp overrides for multi-extruder slicing and the project planner.
 tempOverride = {}
 def setTempOverride(name, value):

@@ -3,6 +3,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import wx
 
+from Cura.gui import configWizard
 from Cura.gui import configBase
 from Cura.util import machineCom
 from Cura.util import profile
@@ -98,12 +99,53 @@ class machineSettingsDialog(wx.Dialog):
 
 		self.nb.SetSelection(int(profile.getPreferenceFloat('active_machine')))
 
-		self.okButton = wx.Button(self.panel, -1, 'Ok')
-		self.panel.GetSizer().Add(self.okButton, flag=wx.ALL, border=5)
+		self.buttonPanel = wx.Panel(self.panel)
+		self.panel.GetSizer().Add(self.buttonPanel)
+
+		self.buttonPanel.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
+		self.okButton = wx.Button(self.buttonPanel, -1, 'Ok')
 		self.okButton.Bind(wx.EVT_BUTTON, lambda e: self.Close())
+		self.buttonPanel.GetSizer().Add(self.okButton, flag=wx.ALL, border=5)
+
+		self.addButton = wx.Button(self.buttonPanel, -1, 'Add new machine')
+		self.addButton.Bind(wx.EVT_BUTTON, self.OnAddMachine)
+		self.buttonPanel.GetSizer().Add(self.addButton, flag=wx.ALL, border=5)
+
+		self.remButton = wx.Button(self.buttonPanel, -1, 'Remove machine')
+		self.remButton.Bind(wx.EVT_BUTTON, self.OnRemoveMachine)
+		self.buttonPanel.GetSizer().Add(self.remButton, flag=wx.ALL, border=5)
 
 		main.Fit()
 		self.Fit()
+
+	def OnAddMachine(self, e):
+		self.Hide()
+		self.parent.Hide()
+		profile.setActiveMachine(profile.getMachineCount())
+		configWizard.configWizard(True)
+		self.parent.Show()
+		self.parent.reloadSettingPanels()
+		self.parent.updateMachineMenu()
+
+		prefDialog = machineSettingsDialog(self.parent)
+		prefDialog.Centre()
+		prefDialog.Show()
+		wx.CallAfter(self.Close)
+
+	def OnRemoveMachine(self, e):
+		if profile.getMachineCount() < 2:
+			wx.MessageBox(_("Cannot remove the last machine configuration in Cura"), _("Machine remove error"), wx.OK | wx.ICON_ERROR)
+			return
+
+		self.Hide()
+		profile.removeMachine(self.nb.GetSelection())
+		self.parent.reloadSettingPanels()
+		self.parent.updateMachineMenu()
+
+		prefDialog = machineSettingsDialog(self.parent)
+		prefDialog.Centre()
+		prefDialog.Show()
+		wx.CallAfter(self.Close)
 
 	def OnClose(self, e):
 		self.parent.reloadSettingPanels()
