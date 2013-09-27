@@ -259,14 +259,16 @@ class mainWindow(wx.Frame):
 					profileString = do.GetText()
 				wx.TheClipboard.Close()
 
-				if "CURA_PROFILE_STRING:" in profileString:
+				startTag = "CURA_PROFILE_STRING:"
+				if startTag in profileString:
 					#print "Found correct syntax on clipboard"
-					profileString = profileString.replace("\n","")
-					profileString = profileString.replace("CURA_PROFILE_STRING:", "")
+					profileString = profileString.replace("\n","").strip()
+					profileString = profileString[profileString.find(startTag)+len(startTag):]
 					if profileString != self.lastTriedClipboard:
+						print profileString
 						self.lastTriedClipboard = profileString
 						profile.setProfileFromString(profileString)
-						print "changed profile"
+						self.scene.notification.message("Loaded new profile from clipboard.")
 						self.updateProfileToAllControls()
 		except:
 			print "Unable to read from clipboard"
@@ -525,7 +527,12 @@ class mainWindow(wx.Frame):
 	def OnAbout(self, e):
 		info = wx.AboutDialogInfo()
 		info.SetName("Cura")
-		info.SetDescription(_("End solution for Open Source Fused Filament Fabrication 3D printing."))
+		info.SetDescription("""
+End solution for Open Source Fused Filament Fabrication 3D printing.
+* Cura is the graphical User Interface.
+* CuraEngine is the slicer/gcode generator.
+Cura and the CuraEngine are licensed AGPLv3.
+		""")
 		info.SetWebSite('http://software.ultimaker.com/')
 		info.SetCopyright(_("Copyright (C) David Braam"))
 		info.SetLicence("""
@@ -563,7 +570,7 @@ class mainWindow(wx.Frame):
 				self.normalSashPos = self.splitter.GetSashPosition()
 			profile.putPreference('window_normal_sash', self.normalSashPos)
 
-		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which keeps wxWidgets from quiting.
+		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which can keep wxWidgets from quiting.
 		print "Closing down"
 		self.scene.OnPaint = lambda e : e
 		self.scene._slicer.cleanup()

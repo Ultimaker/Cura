@@ -3,19 +3,18 @@
 # This file is distributed under the same license as the Cura package.
 # Ilya Kulakov <kulakov.ilya@gmail.com>, 2013.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 16:59+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-09-27 09:25+0200\n"
+"PO-Revision-Date: 2013-09-27 09:41+0100\n"
+"Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: Cura/gui/app.py:86 Cura/gui/mainWindow.py:520
 msgid "A new version of Cura is available, would you like to download?"
@@ -595,15 +594,11 @@ msgstr ""
 msgid "Awesome!"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:528
-msgid "End solution for Open Source Fused Filament Fabrication 3D printing."
-msgstr ""
-
-#: Cura/gui/mainWindow.py:530
+#: Cura/gui/mainWindow.py:535
 msgid "Copyright (C) David Braam"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:596
+#: Cura/gui/mainWindow.py:601
 msgid "Plugins"
 msgstr ""
 

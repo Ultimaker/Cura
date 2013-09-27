@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-26 16:59+0200\n"
-"PO-Revision-Date: 2013-09-26 17:08+0100\n"
+"POT-Creation-Date: 2013-09-27 09:25+0200\n"
+"PO-Revision-Date: 2013-09-27 09:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -594,15 +594,11 @@ msgstr ""
 msgid "Awesome!"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:528
-msgid "End solution for Open Source Fused Filament Fabrication 3D printing."
-msgstr ""
-
-#: Cura/gui/mainWindow.py:530
+#: Cura/gui/mainWindow.py:535
 msgid "Copyright (C) David Braam"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:596
+#: Cura/gui/mainWindow.py:601
 msgid "Plugins"
 msgstr ""
 

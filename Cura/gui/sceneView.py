@@ -144,24 +144,22 @@ class SceneView(openglGui.glGuiPanel):
 
 	def loadFiles(self, filenames):
 		gcodeFilename = None
+		profileFilename = None
 		for filename in filenames:
-			self.GetParent().GetParent().GetParent().addToModelMRU(filename)        #??? only Model files?
-			ext = filename[filename.rfind('.')+1:].upper()
-			if ext == 'G' or ext == 'GCODE':
+			ext = filename[filename.rfind('.')+1:].lower()
+			if ext == 'g' or ext == 'gcode':
 				gcodeFilename = filename
+			if ext == 'ini':
+				profileFilename = filename
 		if gcodeFilename is not None:
 			self.loadGCodeFile(gcodeFilename)
+		elif profileFilename is not None:
+			profile.loadProfile(profileFilename)
+			self.GetParent().GetParent().GetParent().updateProfileToAllControls()
 		else:
-			profileFilename = None
 			for filename in filenames:
-				ext = filename[filename.rfind('.')+1:].upper()
-				if ext == 'INI':
-					profileFilename = filename
-			if profileFilename is not None:
-				profile.loadProfile(profileFilename)
-				self.GetParent().GetParent().GetParent().updateProfileToAllControls()
-			else:
-				self.loadSceneFiles(filenames)
+				self.GetParent().GetParent().GetParent().addToModelMRU(filename)
+			self.loadSceneFiles(filenames)
 
 	def showLoadModel(self, button = 1):
 		if button == 1:

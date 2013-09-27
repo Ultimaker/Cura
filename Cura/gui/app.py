@@ -86,6 +86,8 @@ class CuraApp(wx.App):
 				if wx.MessageBox(_("A new version of Cura is available, would you like to download?"), _("New version available"), wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
 					webbrowser.open(newVersion)
 					return
+		if profile.getMachineSetting('machine_name') == '':
+			return
 		self.mainWindow = mainWindow.mainWindow()
 		if self.splash is not None:
 			self.splash.Show(False)
