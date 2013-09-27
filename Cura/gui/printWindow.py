@@ -34,7 +34,7 @@ class printProcessMonitor():
 	def loadFile(self, filename, id):
 		if self.handle is None:
 			if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
-				cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura')] 
+				cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura')]
 			else:
 				cmdList = [sys.executable, '-m', 'Cura.cura']
 			cmdList.append('-r')
@@ -201,7 +201,7 @@ class printWindow(wx.Frame):
 
 		self.temperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21), style=wx.SP_ARROW_KEYS)
 		self.temperatureSelect.SetRange(0, 400)
-		self.temperatureHeatUp = wx.Button(self.temperaturePanel, -1, int(profile.getProfileSettingFloat('print_temperature')) + 'C')
+		self.temperatureHeatUp = wx.Button(self.temperaturePanel, -1, str(int(profile.getProfileSettingFloat('print_temperature'))) + 'C')
 		self.bedTemperatureLabel = wx.StaticText(self.temperaturePanel, -1, _("BedTemp:"))
 		self.bedTemperatureSelect = wx.SpinCtrl(self.temperaturePanel, -1, '0', size=(21 * 3, 21), style=wx.SP_ARROW_KEYS)
 		self.bedTemperatureSelect.SetRange(0, 400)
@@ -212,7 +212,7 @@ class printWindow(wx.Frame):
 
 		sizer.Add(wx.StaticText(self.temperaturePanel, -1, _("Temp:")), pos=(0, 0))
 		sizer.Add(self.temperatureSelect, pos=(0, 1))
-		sizer.Add(self.temperatureHeatUpPLA, pos=(0, 2))
+		sizer.Add(self.temperatureHeatUp, pos=(0, 2))
 		sizer.Add(self.bedTemperatureLabel, pos=(1, 0))
 		sizer.Add(self.bedTemperatureSelect, pos=(1, 1))
 		sizer.Add(self.temperatureGraph, pos=(2, 0), span=(1, 3), flag=wx.EXPAND)
@@ -348,7 +348,7 @@ class printWindow(wx.Frame):
 		self.cancelButton.Bind(wx.EVT_BUTTON, self.OnCancel)
 		self.machineLogButton.Bind(wx.EVT_BUTTON, self.OnMachineLog)
 
-		self.Bind(wx.EVT_BUTTON, lambda e: (self.temperatureSelect.SetValue(int(profile.getProfileSettingFloat('print_temperature'))), self.machineCom.sendCommand("M104 S%d" % (int(profile.getProfileSettingFloat('print_temperature'))))), self.temperatureHeatUpPLA)
+		self.Bind(wx.EVT_BUTTON, lambda e: (self.temperatureSelect.SetValue(int(profile.getProfileSettingFloat('print_temperature'))), self.machineCom.sendCommand("M104 S%d" % (int(profile.getProfileSettingFloat('print_temperature'))))), self.temperatureHeatUp)
 		self.Bind(wx.EVT_SPINCTRL, self.OnTempChange, self.temperatureSelect)
 		self.Bind(wx.EVT_SPINCTRL, self.OnBedTempChange, self.bedTemperatureSelect)
 
