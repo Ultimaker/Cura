@@ -298,6 +298,8 @@ class SVG(object):
 		pathString = tag.get('d', '').replace(',', ' ').replace('-', ' -')
 		x = 0
 		y = 0
+		c2x = 0
+		c2y = 0
 		path = None
 		for command in re.findall('[a-df-zA-DF-Z][^a-df-zA-DF-Z]*', pathString):
 			params = re.split(' +', command[1:].strip())
@@ -319,6 +321,7 @@ class SVG(object):
 					y += params[1]
 					params = params[2:]
 					path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'M':
 				x = params[0]
 				y = params[1]
@@ -330,42 +333,51 @@ class SVG(object):
 					y = params[1]
 					params = params[2:]
 					path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'l':
 				while len(params) > 1:
 					x += params[0]
 					y += params[1]
 					params = params[2:]
 					path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'L':
 				while len(params) > 1:
 					x = params[0]
 					y = params[1]
 					params = params[2:]
 					path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'h':
 				x += params[0]
 				path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'H':
 				x = params[0]
 				path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'v':
 				y += params[0]
 				path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'V':
 				y = params[0]
 				path.addLineTo(x, y)
+				c2x, c2y = x, y
 			elif command == 'a':
 				while len(params) > 6:
 					x += params[5]
 					y += params[6]
 					path.addArcTo(x, y, params[2], params[0], params[1], params[3] > 0, params[4] > 0)
 					params = params[7:]
+				c2x, c2y = x, y
 			elif command == 'A':
 				while len(params) > 6:
 					x = params[5]
 					y = params[6]
 					path.addArcTo(x, y, params[2], params[0], params[1], params[3] > 0, params[4] > 0)
 					params = params[7:]
+				c2x, c2y = x, y
 			elif command == 'c':
 				while len(params) > 5:
 					c1x = x + params[0]
@@ -386,6 +398,66 @@ class SVG(object):
 					y = params[5]
 					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
 					params = params[6:]
+			elif command == 's':
+				while len(params) > 3:
+					c1x = x - (c2x - x)
+					c1y = y - (c2y - y)
+					c2x = x + params[0]
+					c2y = y + params[1]
+					x += params[2]
+					y += params[3]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[4:]
+			elif command == 'S':
+				while len(params) > 3:
+					c1x = x - (c2x - x)
+					c1y = y - (c2y - y)
+					c2x = params[0]
+					c2y = params[1]
+					x = params[2]
+					y = params[3]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[4:]
+			elif command == 'q':
+				while len(params) > 3:
+					c1x = x + params[0]
+					c1y = y + params[1]
+					c2x = c1x
+					c2y = c1y
+					x += params[2]
+					y += params[3]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[4:]
+			elif command == 'Q':
+				while len(params) > 3:
+					c1x = params[0]
+					c1y = params[1]
+					c2x = c1x
+					c2y = c1y
+					x = params[2]
+					y = params[3]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[4:]
+			elif command == 't':
+				while len(params) > 1:
+					c1x = x - (c2x - x)
+					c1y = y - (c2y - y)
+					c2x = c1x
+					c2y = c1y
+					x += params[0]
+					y += params[1]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[2:]
+			elif command == 'T':
+				while len(params) > 1:
+					c1x = x - (c2x - x)
+					c1y = y - (c2y - y)
+					c2x = c1x
+					c2y = c1y
+					x = params[0]
+					y = params[1]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[2:]
 			elif command == 'z' or command == 'Z':
 				path.closePath()
 				x = path._startPoint.real
