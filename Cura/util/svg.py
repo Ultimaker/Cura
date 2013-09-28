@@ -2,245 +2,425 @@ from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import math
+import re
+import sys
+import numpy
 from xml.etree import ElementTree
 
-import profile
+def applyTransformString(matrix, transform):
+	s = transform.find('(')
+	e = transform.find(')')
+	if s < 0 or e < 0:
+		print 'Unknown transform: %s' % (transform)
+		return matrix
+	tag = transform[:s]
+	data = map(float, re.split('[ \t,]+', transform[s+1:e].strip()))
+	if tag == 'matrix' and len(data) == 6:
+		return matrix * numpy.matrix([[data[0],data[1],0],[data[2],data[3],0],[data[4],data[5],1]], numpy.float64)
+	elif tag == 'translate' and len(data) == 1:
+		return matrix * numpy.matrix([[1,0,data[0]],[0,1,0],[0,0,1]], numpy.float64)
+	elif tag == 'translate' and len(data) == 2:
+		return matrix * numpy.matrix([[1,0,0],[0,1,0],[data[0],data[1],1]], numpy.float64)
+	elif tag == 'scale' and len(data) == 1:
+		return matrix * numpy.matrix([[data[0],0,0],[0,data[0],0],[0,0,1]], numpy.float64)
+	elif tag == 'scale' and len(data) == 2:
+		return matrix * numpy.matrix([[data[0],0,0],[0,data[1],0],[0,0,1]], numpy.float64)
+	elif tag == 'rotate' and len(data) == 1:
+		r = math.radians(data[0])
+		return matrix * numpy.matrix([[math.cos(r),math.sin(r),0],[-math.sin(r),math.cos(r),0],[0,0,1]], numpy.float64)
+	elif tag == 'skewX' and len(data) == 1:
+		return matrix * numpy.matrix([[1,0,0],[math.tan(data[0]),1,0],[0,0,1]], numpy.float64)
+	elif tag == 'skewY' and len(data) == 1:
+		return matrix * numpy.matrix([[1,math.tan(data[0]),0],[0,1,0],[0,0,1]], numpy.float64)
+	print 'Unknown transform: %s' % (transform)
+	return matrix
 
-def processRect(e):
-	x = float(e.get('x'))
-	y = float(e.get('y'))
-	width = float(e.get('width'))
-	height = float(e.get('height'))
-	return [[complex(x, -y), complex(x+width, -y), complex(x+width, -(y+height)), complex(x, -(y+height)), complex(x, -y)]]
+class Path(object):
+	LINE = 0
+	ARC = 1
+	CURVE = 2
 
-def processPath(e):
-	d = e.get('d').replace(',', ' ')
-	num = ""
-	cmd = None
-	paths = []
-	curPath = None
-	
-	p = complex(0, 0)
-	for c in d + "#":
-		if c in "-+.0123456789e":
-			num += c
-		if c in " \t\n\r#":
-			if len(num) > 0:
-				param.append(float(num))
-			num = ""
-		if c in "MmZzLlHhVvCcSsQqTtAa#":
-			if cmd == 'M':
-				p = complex(param[0], -param[1])
-				curPath = None
-				i = 2
-				while i < len(param):
-					if curPath == None:
-						curPath = [p]
-						paths.append(curPath)
-					p = complex(param[i], -param[i+1])
-					curPath.append(p)
-					i += 2
-			elif cmd == 'm':
-				p += complex(param[0], -param[1])
-				curPath = None
-				i = 2
-				while i < len(param):
-					if curPath == None:
-						curPath = [p]
-						paths.append(curPath)
-					p += complex(param[i], -param[i+1])
-					curPath.append(p)
-					i += 2
-			elif cmd == 'L':
-				if curPath == None:
-					curPath = [p]
-					paths.append(curPath)
-				i = 0
-				while i < len(param):
-					p = complex(param[i], -param[i+1])
-					curPath.append(p)
-					i += 2
-			elif cmd == 'l':
-				if curPath == None:
-					curPath = [p]
-					paths.append(curPath)
-				i = 0
-				while i < len(param):
-					p += complex(param[i], -param[i+1])
-					curPath.append(p)
-					i += 2
-				curPath.append(p)
-			elif cmd == 'C':
-				if curPath == None:
-					curPath = [p]
-					paths.append(curPath)
-				i = 0
-				while i < len(param):
-					addCurve(curPath, p, complex(param[i], -param[i+1]), complex(param[i+2], -param[i+3]), complex(param[i+4], -param[i+5]))
-					p = complex(param[i+4], -param[i+5])
-					curPath.append(p)
-					i += 6
-			elif cmd == 'c':
-				if curPath == None:
-					curPath = [p]
-					paths.append(curPath)
-				i = 0
-				while i < len(param):
-					addCurve(curPath, p, p + complex(param[i], -param[i+1]), p + complex(param[i+2], -param[i+3]), p + complex(param[i+4], -param[i+5]))
-					p += complex(param[i+4], -param[i+5])
-					curPath.append(p)
-					i += 6
-			elif cmd == 'a':
-				if curPath == None:
-					curPath = [p]
-					paths.append(curPath)
-				i = 0
-				print(param)
-				while i < len(param):
-					endPoint = p + complex(param[i+5], -param[i+6])
-					addArc(curPath, p, endPoint, complex(param[i], param[i+1]), param[i+2], param[i+3], param[i+4])
-					p = endPoint
-					curPath.append(p)
-					i += 7
-			elif cmd == 'Z' or cmd == 'z':
-				curPath.append(curPath[0])
-			elif cmd != None:
-				print(cmd)
-			cmd = c
-			param = []
-	return paths
+	def __init__(self, x, y, matrix):
+		self._matrix = matrix
+		self._relMatrix = numpy.matrix([[matrix[0,0],matrix[0,1]], [matrix[1,0],matrix[1,1]]])
+		self._startPoint = complex(x, y)
+		self._points = []
 
-def interpolate(p0, p1, f):
-	return complex(p0.real + (p1.real - p0.real) * f, p0.imag + (p1.imag - p0.imag) * f)
+	def addLineTo(self, x, y):
+		self._points.append({'type': Path.LINE, 'p': complex(x, y)})
 
-def addCurve(path, p0, q0, q1, p1):
-	oldPoint = p0
-	for n in xrange(0, 100):
-		k = n / 100.0
-		r0 = interpolate(p0, q0, k);
-		r1 = interpolate(q0, q1, k);
-		r2 = interpolate(q1, p1, k);
-		b0 = interpolate(r0, r1, k);
-		b1 = interpolate(r1, r2, k);
-		s = interpolate(b0, b1, k);
-		if abs(s - oldPoint) > 1.0:
-			path.append(s)
-			oldPoint = s
+	def addArcTo(self, x, y, rot, rx, ry, large, sweep):
+		self._points.append({
+			'type': Path.ARC,
+			'p': complex(x, y),
+			'rot': rot,
+			'radius': complex(rx, ry),
+			'large': large,
+			'sweep': sweep
+		})
 
-def addArc(path, begin, end, radius, xAxisRotation, largeArcFlag, sweepFlag):
-	xAxisRotationComplex = complex(math.cos(math.radians(xAxisRotation)), math.sin(math.radians(xAxisRotation)))
-	reverseXAxisRotationComplex = complex(xAxisRotationComplex.real, -xAxisRotationComplex.imag)
-	beginRotated = begin * reverseXAxisRotationComplex
-	endRotated = end * reverseXAxisRotationComplex
-	beginTransformed = complex(beginRotated.real / radius.real, beginRotated.imag / radius.imag)
-	endTransformed = complex(endRotated.real / radius.real, endRotated.imag / radius.imag)
-	midpointTransformed = 0.5 * (beginTransformed + endTransformed)
-	midMinusBeginTransformed = midpointTransformed - beginTransformed
-	midMinusBeginTransformedLength = abs(midMinusBeginTransformed)
+	def addCurveTo(self, x, y, cp1x, cp1y, cp2x, cp2y):
+		self._points.append({
+			'type': Path.CURVE,
+			'p': complex(x, y),
+			'cp1': complex(cp1x, cp1y),
+			'cp2': complex(cp2x, cp2y)
+		})
 
-	if midMinusBeginTransformedLength > 1.0:
-		radius *= midMinusBeginTransformedLength
-		beginTransformed /= midMinusBeginTransformedLength
-		endTransformed /= midMinusBeginTransformedLength
-		midpointTransformed /= midMinusBeginTransformedLength
-		midMinusBeginTransformed /= midMinusBeginTransformedLength
-		midMinusBeginTransformedLength = 1.0
-	midWiddershinsTransformed = complex(-midMinusBeginTransformed.imag, midMinusBeginTransformed.real)
-	midWiddershinsLengthSquared = 1.0 - midMinusBeginTransformedLength * midMinusBeginTransformedLength
-	if midWiddershinsLengthSquared < 0.0:
-		midWiddershinsLengthSquared = 0.0
-	midWiddershinsLength = math.sqrt(midWiddershinsLengthSquared)
-	midWiddershinsTransformed *= midWiddershinsLength / abs(midWiddershinsTransformed)
-	centerTransformed = midpointTransformed
-	if largeArcFlag == sweepFlag:
-		centerTransformed -= midWiddershinsTransformed
-	else:
-		centerTransformed += midWiddershinsTransformed
-	beginMinusCenterTransformed = beginTransformed - centerTransformed
-	beginMinusCenterTransformedLength = abs(beginMinusCenterTransformed)
-	if beginMinusCenterTransformedLength <= 0.0:
-		return end
-	beginAngle = math.atan2(beginMinusCenterTransformed.imag, beginMinusCenterTransformed.real)
-	endMinusCenterTransformed = endTransformed - centerTransformed
-	angleDifference = getAngleDifferenceByComplex(endMinusCenterTransformed, beginMinusCenterTransformed)
-	if sweepFlag:
-		if angleDifference < 0.0:
-			angleDifference += 2.0 * math.pi
-	else:
-		if angleDifference > 0.0:
-			angleDifference -= 2.0 * math.pi
+	def closePath(self):
+		self._points.append({'type': Path.LINE, 'p': self._startPoint})
 
-	center = complex(centerTransformed.real * radius.real, centerTransformed.imag * radius.imag) * xAxisRotationComplex
-	for side in xrange(1, 32):
-		a = beginAngle + float(side) * math.pi * 2 / 32
-		circumferential = complex(math.cos(a) * radius.real, math.sin(a) * radius.imag) * beginMinusCenterTransformedLength
-		point = center + circumferential * xAxisRotationComplex
-		path.append(point)
+	def getPoints(self):
+		pointList = [self._m(self._startPoint)]
+		p1 = self._startPoint
+		for p in self._points:
+			if p['type'] == Path.LINE:
+				p1 = p['p']
+				pointList.append(self._m(p1))
+			elif p['type'] == Path.ARC:
+				p2 = p['p']
+				rot = math.radians(p['rot'])
+				r = p['radius']
 
-def getAngleDifferenceByComplex( subtractFromComplex, subtractComplex ):
-	subtractComplexMirror = complex( subtractComplex.real , - subtractComplex.imag )
-	differenceComplex = subtractComplexMirror * subtractFromComplex
-	return math.atan2( differenceComplex.imag, differenceComplex.real )
+				#http://www.w3.org/TR/SVG/implnote.html#ArcConversionEndpointToCenter
+				diff = (p1 - p2) / 2
+				p1alt = diff #TODO: apply rot
+				p2alt = -diff #TODO: apply rot
+				rx2 = r.real*r.real
+				ry2 = r.imag*r.imag
+				x1alt2 = p1alt.real*p1alt.real
+				y1alt2 = p1alt.imag*p1alt.imag
 
+				f = x1alt2 / rx2 + y1alt2 / ry2
+				if f >= 1.0:
+					r *= math.sqrt(f+0.000001)
+					rx2 = r.real*r.real
+					ry2 = r.imag*r.imag
 
-def movePath(p, offset):
-	return map(lambda _p: _p - offset, p)
+				f = math.sqrt((rx2*ry2 - rx2*y1alt2 - ry2*x1alt2) / (rx2*y1alt2+ry2*x1alt2))
+				if p['large'] == p['sweep']:
+					f = -f
+				cAlt = f * complex(r.real*p1alt.imag/r.imag, -r.imag*p1alt.real/r.real)
+
+				c = cAlt + (p1 + p2) / 2 #TODO: apply rot
+
+				a1 = math.atan2((p1alt.imag - cAlt.imag) / r.imag, (p1alt.real - cAlt.real) / r.real)
+				a2 = math.atan2((p2alt.imag - cAlt.imag) / r.imag, (p2alt.real - cAlt.real) / r.real)
+
+				#if a1 > a2:
+				#	a2 += math.pi * 2
+				large = abs(a2 - a1) > math.pi
+				if large != p['large']:
+					if a1 < a2:
+						a1 += math.pi * 2
+					else:
+						a2 += math.pi * 2
+
+				for n in xrange(0, 16):
+					pointList.append(self._m(c + complex(math.cos(a1 + n*(a2-a1)/16) * r.real, math.sin(a1 + n*(a2-a1)/16) * r.imag)))
+
+				pointList.append(self._m(p2))
+				p1 = p2
+			elif p['type'] == Path.CURVE:
+				p1_ = self._m(p1)
+				p2 = self._m(p['p'])
+				cp1 = self._m(p['cp1'])
+				cp2 = self._m(p['cp2'])
+
+				for n in xrange(0, 10):
+					f = n / 10.0
+					g = 1.0-f
+					point = p1_*g*g*g + cp1*3.0*g*g*f + cp2*3.0*g*f*f + p2*f*f*f
+					pointList.append(point)
+
+				pointList.append(p2)
+				p1 = p['p']
+
+		return pointList
+
+	def getSVGPath(self):
+		p0 = self._m(self._startPoint)
+		ret = 'M %f %f ' % (p0.real, p0.imag)
+		for p in self._points:
+			if p['type'] == Path.LINE:
+				p0 = self._m(p['p'])
+				ret += 'L %f %f' % (p0.real, p0.imag)
+			elif p['type'] == Path.ARC:
+				p0 = self._m(p['p'])
+				radius = p['radius']
+				ret += 'A %f %f 0 %d %d %f %f' % (radius.real, radius.imag, p['large'], p['sweep'], p0.real, p0.imag)
+			elif p['type'] == Path.CURVE:
+				p0 = self._m(p['p'])
+				cp1 = self._m(p['cp1'])
+				cp2 = self._m(p['cp2'])
+				ret += 'C %f %f %f %f %f %f' % (cp1.real, cp1.imag, cp2.real, cp2.imag, p0.real, p0.imag)
+
+		return ret
+
+	def _m(self, p):
+		tmp = numpy.matrix([p.real, p.imag, 1], numpy.float64) * self._matrix
+		return complex(tmp[0,0], tmp[0,1])
+	def _r(self, p):
+		tmp = numpy.matrix([p.real, p.imag], numpy.float64) * self._relMatrix
+		return complex(tmp[0,0], tmp[0,1])
 
 class SVG(object):
 	def __init__(self, filename):
-		tagProcess = {}
-		tagProcess['rect'] = processRect
-		tagProcess['path'] = processPath
+		self.tagProcess = {}
+		self.tagProcess['rect'] = self._processRectTag
+		self.tagProcess['line'] = self._processLineTag
+		self.tagProcess['polyline'] = self._processPolylineTag
+		self.tagProcess['polygon'] = self._processPolygonTag
+		self.tagProcess['elipse'] = self._processPolygonTag
+		self.tagProcess['circle'] = self._processCircleTag
+		self.tagProcess['ellipse'] = self._processEllipseTag
+		self.tagProcess['path'] = self._processPathTag
+		self.tagProcess['g'] = self._processGTag
+		self.tagProcess['a'] = self._processGTag
+		self.tagProcess['text'] = None #No text implementation yet
+		self.tagProcess['image'] = None
+		self.tagProcess['metadata'] = None
+		self.tagProcess['defs'] = None
+		self.tagProcess['title'] = None
+		self.tagProcess['animate'] = None
+		self.tagProcess['set'] = None
+		self.tagProcess['script'] = None
+
+		#From Inkscape
+		self.tagProcess['namedview'] = None
+		#From w3c testsuite
+		self.tagProcess['SVGTestCase'] = None
 
 		self.paths = []
-		for e in ElementTree.parse(open(filename, "r")).getiterator():
+		f = open(filename, "r")
+		self._processGTag(ElementTree.parse(f).getroot(), numpy.matrix(numpy.identity(3, numpy.float64)))
+		f.close()
+
+	def _processGTag(self, tag, baseMatrix):
+		for e in tag:
+			if e.get('transform') is None:
+				matrix = baseMatrix
+			else:
+				matrix = applyTransformString(baseMatrix, e.get('transform'))
 			tag = e.tag[e.tag.find('}')+1:]
-			if not tag in tagProcess:
-				#print 'unknown tag: %s' % (tag)
-				continue
-			self.paths.extend(tagProcess[tag](e))
-	
-	def center(self, centerPoint):
-		offset = complex(0, 0)
-		n = 0
-		for path in self.paths:
-			for point in path:
-				offset += point
-				n += 1
-		offset /= n
-		offset -= centerPoint
-		
-		self.paths = [movePath(p, offset) for p in self.paths]
+			if not tag in self.tagProcess:
+				print 'unknown tag: %s' % (tag)
+			elif self.tagProcess[tag] is not None:
+				self.tagProcess[tag](e, matrix)
+
+	def _processLineTag(self, tag, matrix):
+		x1 = float(tag.get('x1', 0))
+		y1 = float(tag.get('y1', 0))
+		x2 = float(tag.get('x2', 0))
+		y2 = float(tag.get('y2', 0))
+		p = Path(x1, y1, matrix)
+		p.addLineTo(x2, y2)
+		self.paths.append(p)
+
+	def _processPolylineTag(self, tag, matrix):
+		values = map(float, re.split('[, \t]+', tag.get('points', '').replace('-', ' -').strip()))
+		p = Path(values[0], values[1], matrix)
+		for n in xrange(2, len(values)-1, 2):
+			p.addLineTo(values[n], values[n+1])
+		self.paths.append(p)
+
+	def _processPolygonTag(self, tag, matrix):
+		values = map(float, re.split('[, \t]+', tag.get('points', '').replace('-', ' -').strip()))
+		p = Path(values[0], values[1], matrix)
+		for n in xrange(2, len(values)-1, 2):
+			p.addLineTo(values[n], values[n+1])
+		p.closePath()
+		self.paths.append(p)
+
+	def _processCircleTag(self, tag, matrix):
+		cx = float(tag.get('cx', 0))
+		cy = float(tag.get('cy', 0))
+		r = float(tag.get('r', 0))
+		p = Path(cx-r, cy, matrix)
+		p.addArcTo(cx+r, cy, 0, r, r, False, False)
+		p.addArcTo(cx-r, cy, 0, r, r, False, False)
+		self.paths.append(p)
+
+	def _processEllipseTag(self, tag, matrix):
+		cx = float(tag.get('cx', 0))
+		cy = float(tag.get('cy', 0))
+		rx = float(tag.get('rx', 0))
+		ry = float(tag.get('rx', 0))
+		p = Path(cx-rx, cy, matrix)
+		p.addArcTo(cx+rx, cy, 0, rx, ry, False, False)
+		p.addArcTo(cx-rx, cy, 0, rx, ry, False, False)
+		self.paths.append(p)
+
+	def _processRectTag(self, tag, matrix):
+		x = float(tag.get('x', 0))
+		y = float(tag.get('y', 0))
+		width = float(tag.get('width', 0))
+		height = float(tag.get('height', 0))
+		if width <= 0 or height <= 0:
+			return
+		rx = tag.get('rx')
+		ry = tag.get('ry')
+		if rx is not None or ry is not None:
+			if ry is None:
+				ry = rx
+			if rx is None:
+				rx = ry
+			rx = float(rx)
+			ry = float(ry)
+			if rx > width / 2:
+				rx = width / 2
+			if ry > height / 2:
+				ry = height / 2
+		else:
+			rx = 0.0
+			ry = 0.0
+
+		if rx > 0 and ry > 0:
+			p = Path(x+rx, y, matrix)
+			p.addLineTo(x+width-rx, y)
+			p.addArcTo(x+width,y+ry, 0, rx, ry, False, True)
+			p.addLineTo(x+width, y+height-ry)
+			p.addArcTo(x+width-rx,y+height, 0, rx, ry, False, True)
+			p.addLineTo(x+rx, y+height)
+			p.addArcTo(x,y+height-ry, 0, rx, ry, False, True)
+			p.addLineTo(x, y+ry)
+			p.addArcTo(x+rx,y, 0, rx, ry, False, True)
+			self.paths.append(p)
+		else:
+			p = Path(x, y, matrix)
+			p.addLineTo(x,y+height)
+			p.addLineTo(x+width,y+height)
+			p.addLineTo(x+width,y)
+			p.closePath()
+			self.paths.append(p)
+
+	def _processPathTag(self, tag, matrix):
+		pathString = tag.get('d', '').replace(',', ' ').replace('-', ' -')
+		x = 0
+		y = 0
+		path = None
+		for command in re.findall('[a-df-zA-DF-Z][^a-df-zA-DF-Z]*', pathString):
+			params = re.split(' +', command[1:].strip())
+			if len(params) > 0 and params[0] == '':
+				params = params[1:]
+			if len(params) > 0 and params[-1] == '':
+				params = params[:-1]
+			params = map(float, params)
+			command = command[0]
+
+			if command == 'm':
+				x += params[0]
+				y += params[1]
+				path = Path(x, y, matrix)
+				self.paths.append(path)
+				params = params[2:]
+				while len(params) > 1:
+					x += params[0]
+					y += params[1]
+					params = params[2:]
+					path.addLineTo(x, y)
+			elif command == 'M':
+				x = params[0]
+				y = params[1]
+				path = Path(x, y, matrix)
+				self.paths.append(path)
+				params = params[2:]
+				while len(params) > 1:
+					x = params[0]
+					y = params[1]
+					params = params[2:]
+					path.addLineTo(x, y)
+			elif command == 'l':
+				while len(params) > 1:
+					x += params[0]
+					y += params[1]
+					params = params[2:]
+					path.addLineTo(x, y)
+			elif command == 'L':
+				while len(params) > 1:
+					x = params[0]
+					y = params[1]
+					params = params[2:]
+					path.addLineTo(x, y)
+			elif command == 'h':
+				x += params[0]
+				path.addLineTo(x, y)
+			elif command == 'H':
+				x = params[0]
+				path.addLineTo(x, y)
+			elif command == 'v':
+				y += params[0]
+				path.addLineTo(x, y)
+			elif command == 'V':
+				y = params[0]
+				path.addLineTo(x, y)
+			elif command == 'a':
+				while len(params) > 6:
+					x += params[5]
+					y += params[6]
+					path.addArcTo(x, y, params[2], params[0], params[1], params[3] > 0, params[4] > 0)
+					params = params[7:]
+			elif command == 'A':
+				while len(params) > 6:
+					x = params[5]
+					y = params[6]
+					path.addArcTo(x, y, params[2], params[0], params[1], params[3] > 0, params[4] > 0)
+					params = params[7:]
+			elif command == 'c':
+				while len(params) > 5:
+					c1x = x + params[0]
+					c1y = y + params[1]
+					c2x = x + params[2]
+					c2y = y + params[3]
+					x += params[4]
+					y += params[5]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[6:]
+			elif command == 'C':
+				while len(params) > 5:
+					c1x = params[0]
+					c1y = params[1]
+					c2x = params[2]
+					c2y = params[3]
+					x = params[4]
+					y = params[5]
+					path.addCurveTo(x, y, c1x, c1y, c2x, c2y)
+					params = params[6:]
+			elif command == 'z' or command == 'Z':
+				path.closePath()
+				x = path._startPoint.real
+				y = path._startPoint.imag
+			else:
+				print 'Unknown path command:', command, params
+
 
 if __name__ == '__main__':
-	svg = SVG("../logo.svg")
-	f = open("../../test_export.gcode", "w")
+	for n in xrange(1, len(sys.argv)):
+		print 'File: %s' % (sys.argv[n])
+		svg = SVG(sys.argv[n])
 
-	f.write(';TYPE:CUSTOM\n')
-	f.write(profile.getAlterationFileContents('start.gcode'))
-	svg.center(complex(profile.getMachineSettingFloat('machine_width') / 2, profile.getMachineSettingFloat('machine_depth') / 2))
+	f = open("test_export.html", "w")
 
-	layerThickness = 0.4
-	filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
-	filamentArea = math.pi * filamentRadius * filamentRadius
-	lineWidth = profile.getProfileSettingFloat('nozzle_size') * 2
+	f.write("<!DOCTYPE html><html><body>\n")
+	f.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" style='width:%dpx;height:%dpx'>\n" % (1000, 1000))
+	f.write("<g fill-rule='evenodd' style=\"fill: gray; stroke:black;stroke-width:2\">\n")
+	f.write("<path d=\"")
+	for path in svg.paths:
+		points = path.getPoints()
+		f.write("M %f %f " % (points[0].real, points[0].imag))
+		for point in points[1:]:
+			f.write("L %f %f " % (point.real, point.imag))
+	f.write("\"/>")
+	f.write("</g>\n")
 
-	e = 0
-	z = layerThickness
+	f.write("<g style=\"fill: none; stroke:red;stroke-width:1\">\n")
+	f.write("<path d=\"")
+	for path in svg.paths:
+		f.write(path.getSVGPath())
+	f.write("\"/>")
+	f.write("</g>\n")
 
-	for n in xrange(0, 20):
-		f.write("G1 Z%f F%f\n" % (z, profile.getProfileSettingFloat('max_z_speed')*60))
-		for path in svg.paths:
-			oldPoint = path[0]
-			extrusionMMperDist = lineWidth * layerThickness / filamentArea
-			f.write("G1 X%f Y%f F%f\n" % (oldPoint.real, oldPoint.imag, profile.getProfileSettingFloat('travel_speed')*60))
-			f.write("G1 F%f\n" % (profile.getProfileSettingFloat('print_speed')*60))
-			for point in path[1:]:
-				dist = abs(oldPoint - point)
-				e += dist * extrusionMMperDist
-				f.write("G1 X%f Y%f E%f\n" % (point.real, point.imag, e))
-				oldPoint = point
-		z += layerThickness
-	f.write(profile.getAlterationFileContents('end.gcode'))
+	f.write("</svg>\n")
+	f.write("</body></html>")
 	f.close()
 
