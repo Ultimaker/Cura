@@ -30,7 +30,8 @@ class mainWindow(wx.Frame):
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
-		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles, meshLoader.loadSupportedExtensions() + ['.g', '.gcode', '.ini']))
+		# allow dropping any file, restrict later
+		self.SetDropTarget(dropTarget.FileDropTarget(self.OnDropFiles))
 
 		self.normalModeOnlyItems = []
 

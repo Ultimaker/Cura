@@ -8,6 +8,7 @@ import os
 import traceback
 import threading
 import math
+import glob
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -137,29 +138,60 @@ class SceneView(openglGui.glGuiPanel):
 
 	def loadSceneFiles(self, filenames):
 		self.youMagineButton.setDisabled(False)
-		if self.viewSelection.getValue() == 4:
-			self.viewSelection.setValue(0)
-			self.OnViewChange()
+		#if self.viewSelection.getValue() == 4:
+		#	self.viewSelection.setValue(0)
+		#	self.OnViewChange()
 		self.loadScene(filenames)
 
 	def loadFiles(self, filenames):
+		mainWindow = self.GetParent().GetParent().GetParent()
+		# only one GCODE file can be active
+		# so if single gcode file, process this
+		# otherwise ignore all gcode files
 		gcodeFilename = None
-		profileFilename = None
-		for filename in filenames:
-			ext = filename[filename.rfind('.')+1:].lower()
-			if ext == 'g' or ext == 'gcode':
+		if len(filenames) == 1:
+			filename = filenames[0]
+			ext = filename[filename.rfind('.'):].lower()
+			if ext == '.g' or ext == '.gcode':
 				gcodeFilename = filename
-			if ext == 'ini':
-				profileFilename = filename
+				mainWindow.addToModelMRU(filename)
 		if gcodeFilename is not None:
 			self.loadGCodeFile(gcodeFilename)
-		elif profileFilename is not None:
-			profile.loadProfile(profileFilename)
-			self.GetParent().GetParent().GetParent().updateProfileToAllControls()
 		else:
-			for filename in filenames:
-				self.GetParent().GetParent().GetParent().addToModelMRU(filename)
-			self.loadSceneFiles(filenames)
+			# process directories and special file types
+			# and keep scene files for later processing
+			scene_filenames = []
+			ignored_types = dict()
+			# use file list as queue
+			# pop first entry for processing and append new files at end
+			while filenames:
+				filename = filenames.pop(0)
+				if os.path.isdir(filename):
+					# directory: queue all included files and directories
+					filenames.extend(os.path.join(filename, f) for f in os.listdir(filename))
+				else:
+					ext = filename[filename.rfind('.'):].lower()
+					if ext == '.ini':
+						profile.loadProfile(filename)
+						mainWindow.addToProfileMRU(filename)
+					elif ext in meshLoader.loadSupportedExtensions():
+						scene_filenames.append(filename)
+						mainWindow.addToModelMRU(filename)
+					else:
+						ignored_types[ext] = 1
+			if ignored_types:
+				ignored_types = ignored_types.keys()
+				ignored_types.sort()
+				self.notification.message("ignored: " + " ".join("*" + type for type in ignored_types))
+			mainWindow.updateProfileToAllControls()
+			# now process all the scene files
+			if scene_filenames:
+				self.loadSceneFiles(scene_filenames)
+				self._selectObject(None)
+				self.sceneUpdated()
+				newZoom = numpy.max(self._machineSize)
+				self._animView = openglGui.animation(self, self._viewTarget.copy(), numpy.array([0,0,0], numpy.float32), 0.5)
+				self._animZoom = openglGui.animation(self, self._zoom, newZoom, 0.5)
 
 	def showLoadModel(self, button = 1):
 		if button == 1:
