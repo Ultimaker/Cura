@@ -138,8 +138,20 @@ fi
 #############################
 
 if [ "$BUILD_TARGET" = "debian" ]; then
-	git clone https://github.com/GreatFruitOmsk/Power
-	git clone https://github.com/Ultimaker/CuraEngine
+	if [ ! -d "Power" ]; then
+		git clone https://github.com/GreatFruitOmsk/Power
+	else
+		cd Power
+		git pull
+		cd ..
+	fi
+	if [ ! -d "CuraEngine" ]; then
+		git clone https://github.com/Ultimaker/CuraEngine
+	else
+		cd CuraEngine
+		git pull
+		cd ..
+	fi
 	make -C CuraEngine
 	rm -rf scripts/linux/debian/usr/share/cura
 	mkdir -p scripts/linux/debian/usr/share/cura
