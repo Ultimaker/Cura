@@ -35,6 +35,10 @@ def applyTransformString(matrix, transform):
 	print 'Unknown transform: %s' % (transform)
 	return matrix
 
+def toFloat(f):
+	f = re.search('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?', f).group(0)
+	return float(f)
+
 class Path(object):
 	LINE = 0
 	ARC = 1
@@ -70,7 +74,7 @@ class Path(object):
 	def closePath(self):
 		self._points.append({'type': Path.LINE, 'p': self._startPoint})
 
-	def getPoints(self):
+	def getPoints(self, accuracy = 1):
 		pointList = [self._m(self._startPoint)]
 		p1 = self._startPoint
 		for p in self._points:
@@ -116,8 +120,11 @@ class Path(object):
 					else:
 						a2 += math.pi * 2
 
-				for n in xrange(0, 16):
-					pointList.append(self._m(c + complex(math.cos(a1 + n*(a2-a1)/16) * r.real, math.sin(a1 + n*(a2-a1)/16) * r.imag)))
+				pCenter = self._m(c + complex(math.cos(a1 + 0.5*(a2-a1)) * r.real, math.sin(a1 + 0.5*(a2-a1)) * r.imag))
+				dist = abs(pCenter - self._m(p1)) + abs(pCenter - self._m(p2))
+				segments = int(dist / accuracy) + 1
+				for n in xrange(1, segments):
+					pointList.append(self._m(c + complex(math.cos(a1 + n*(a2-a1)/segments) * r.real, math.sin(a1 + n*(a2-a1)/segments) * r.imag)))
 
 				pointList.append(self._m(p2))
 				p1 = p2
@@ -127,8 +134,11 @@ class Path(object):
 				cp1 = self._m(p['cp1'])
 				cp2 = self._m(p['cp2'])
 
-				for n in xrange(0, 10):
-					f = n / 10.0
+				pCenter = p1_*0.5*0.5*0.5 + cp1*3.0*0.5*0.5*0.5 + cp2*3.0*0.5*0.5*0.5 + p2*0.5*0.5*0.5
+				dist = abs(pCenter - p1_) + abs(pCenter - p2)
+				segments = int(dist / accuracy) + 1
+				for n in xrange(1, segments):
+					f = n / float(segments)
 					g = 1.0-f
 					point = p1_*g*g*g + cp1*3.0*g*g*f + cp2*3.0*g*f*f + p2*f*f*f
 					pointList.append(point)
@@ -148,7 +158,7 @@ class Path(object):
 			elif p['type'] == Path.ARC:
 				p0 = self._m(p['p'])
 				radius = p['radius']
-				ret += 'A %f %f 0 %d %d %f %f' % (radius.real, radius.imag, p['large'], p['sweep'], p0.real, p0.imag)
+				ret += 'A %f %f 0 %d %d %f %f' % (radius.real, radius.imag, 1 if p['large'] else 0, 1 if p['sweep'] else 0, p0.real, p0.imag)
 			elif p['type'] == Path.CURVE:
 				p0 = self._m(p['p'])
 				cp1 = self._m(p['cp1'])
@@ -175,14 +185,25 @@ class SVG(object):
 		self.tagProcess['circle'] = self._processCircleTag
 		self.tagProcess['ellipse'] = self._processEllipseTag
 		self.tagProcess['path'] = self._processPathTag
+		self.tagProcess['use'] = self._processUseTag
 		self.tagProcess['g'] = self._processGTag
 		self.tagProcess['a'] = self._processGTag
+		self.tagProcess['svg'] = self._processGTag
 		self.tagProcess['text'] = None #No text implementation yet
 		self.tagProcess['image'] = None
 		self.tagProcess['metadata'] = None
 		self.tagProcess['defs'] = None
+		self.tagProcess['style'] = None
+		self.tagProcess['marker'] = None
+		self.tagProcess['desc'] = None
+		self.tagProcess['filter'] = None
+		self.tagProcess['linearGradient'] = None
+		self.tagProcess['radialGradient'] = None
+		self.tagProcess['pattern'] = None
 		self.tagProcess['title'] = None
 		self.tagProcess['animate'] = None
+		self.tagProcess['animateColor'] = None
+		self.tagProcess['animateTransform'] = None
 		self.tagProcess['set'] = None
 		self.tagProcess['script'] = None
 
@@ -193,7 +214,10 @@ class SVG(object):
 
 		self.paths = []
 		f = open(filename, "r")
-		self._processGTag(ElementTree.parse(f).getroot(), numpy.matrix(numpy.identity(3, numpy.float64)))
+		self._xml = ElementTree.parse(f)
+		self._recursiveCount = 0
+		self._processGTag(self._xml.getroot(), numpy.matrix(numpy.identity(3, numpy.float64)))
+		self._xml = None
 		f.close()
 
 	def _processGTag(self, tag, baseMatrix):
@@ -202,30 +226,48 @@ class SVG(object):
 				matrix = baseMatrix
 			else:
 				matrix = applyTransformString(baseMatrix, e.get('transform'))
-			tag = e.tag[e.tag.find('}')+1:]
-			if not tag in self.tagProcess:
-				print 'unknown tag: %s' % (tag)
-			elif self.tagProcess[tag] is not None:
-				self.tagProcess[tag](e, matrix)
+			tagName = e.tag[e.tag.find('}')+1:]
+			if not tagName in self.tagProcess:
+				print 'unknown tag: %s' % (tagName)
+			elif self.tagProcess[tagName] is not None:
+				self.tagProcess[tagName](e, matrix)
+
+	def _processUseTag(self, tag, baseMatrix):
+		if self._recursiveCount > 16:
+			return
+		self._recursiveCount += 1
+		id = tag.get('{http://www.w3.org/1999/xlink}href')
+		if id[0] == '#':
+			for e in self._xml.findall(".//*[@id='%s']" % (id[1:])):
+				if e.get('transform') is None:
+					matrix = baseMatrix
+				else:
+					matrix = applyTransformString(baseMatrix, e.get('transform'))
+				tagName = e.tag[e.tag.find('}')+1:]
+				if not tagName in self.tagProcess:
+					print 'unknown tag: %s' % (tagName)
+				elif self.tagProcess[tagName] is not None:
+					self.tagProcess[tagName](e, matrix)
+		self._recursiveCount -= 1
 
 	def _processLineTag(self, tag, matrix):
-		x1 = float(tag.get('x1', 0))
-		y1 = float(tag.get('y1', 0))
-		x2 = float(tag.get('x2', 0))
-		y2 = float(tag.get('y2', 0))
+		x1 = toFloat(tag.get('x1', '0'))
+		y1 = toFloat(tag.get('y1', '0'))
+		x2 = toFloat(tag.get('x2', '0'))
+		y2 = toFloat(tag.get('y2', '0'))
 		p = Path(x1, y1, matrix)
 		p.addLineTo(x2, y2)
 		self.paths.append(p)
 
 	def _processPolylineTag(self, tag, matrix):
-		values = map(float, re.split('[, \t]+', tag.get('points', '').replace('-', ' -').strip()))
+		values = map(toFloat, re.split('[, \t]+', tag.get('points', '').strip()))
 		p = Path(values[0], values[1], matrix)
 		for n in xrange(2, len(values)-1, 2):
 			p.addLineTo(values[n], values[n+1])
 		self.paths.append(p)
 
 	def _processPolygonTag(self, tag, matrix):
-		values = map(float, re.split('[, \t]+', tag.get('points', '').replace('-', ' -').strip()))
+		values = map(toFloat, re.split('[, \t]+', tag.get('points', '').strip()))
 		p = Path(values[0], values[1], matrix)
 		for n in xrange(2, len(values)-1, 2):
 			p.addLineTo(values[n], values[n+1])
@@ -233,29 +275,29 @@ class SVG(object):
 		self.paths.append(p)
 
 	def _processCircleTag(self, tag, matrix):
-		cx = float(tag.get('cx', 0))
-		cy = float(tag.get('cy', 0))
-		r = float(tag.get('r', 0))
+		cx = toFloat(tag.get('cx', '0'))
+		cy = toFloat(tag.get('cy', '0'))
+		r = toFloat(tag.get('r', '0'))
 		p = Path(cx-r, cy, matrix)
 		p.addArcTo(cx+r, cy, 0, r, r, False, False)
 		p.addArcTo(cx-r, cy, 0, r, r, False, False)
 		self.paths.append(p)
 
 	def _processEllipseTag(self, tag, matrix):
-		cx = float(tag.get('cx', 0))
-		cy = float(tag.get('cy', 0))
-		rx = float(tag.get('rx', 0))
-		ry = float(tag.get('rx', 0))
+		cx = toFloat(tag.get('cx', '0'))
+		cy = toFloat(tag.get('cy', '0'))
+		rx = toFloat(tag.get('rx', '0'))
+		ry = toFloat(tag.get('rx', '0'))
 		p = Path(cx-rx, cy, matrix)
 		p.addArcTo(cx+rx, cy, 0, rx, ry, False, False)
 		p.addArcTo(cx-rx, cy, 0, rx, ry, False, False)
 		self.paths.append(p)
 
 	def _processRectTag(self, tag, matrix):
-		x = float(tag.get('x', 0))
-		y = float(tag.get('y', 0))
-		width = float(tag.get('width', 0))
-		height = float(tag.get('height', 0))
+		x = toFloat(tag.get('x', '0'))
+		y = toFloat(tag.get('y', '0'))
+		width = toFloat(tag.get('width', '0'))
+		height = toFloat(tag.get('height', '0'))
 		if width <= 0 or height <= 0:
 			return
 		rx = tag.get('rx')
@@ -295,7 +337,7 @@ class SVG(object):
 			self.paths.append(p)
 
 	def _processPathTag(self, tag, matrix):
-		pathString = tag.get('d', '').replace(',', ' ').replace('-', ' -')
+		pathString = tag.get('d', '').replace(',', ' ')
 		x = 0
 		y = 0
 		c2x = 0
@@ -307,7 +349,7 @@ class SVG(object):
 				params = params[1:]
 			if len(params) > 0 and params[-1] == '':
 				params = params[:-1]
-			params = map(float, params)
+			params = map(toFloat, params)
 			command = command[0]
 
 			if command == 'm':
@@ -468,7 +510,7 @@ class SVG(object):
 
 if __name__ == '__main__':
 	for n in xrange(1, len(sys.argv)):
-		print 'File: %s' % (sys.argv[n])
+		#print 'File: %s' % (sys.argv[n])
 		svg = SVG(sys.argv[n])
 
 	f = open("test_export.html", "w")
