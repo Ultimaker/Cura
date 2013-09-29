@@ -8,31 +8,44 @@ import numpy
 from xml.etree import ElementTree
 
 def applyTransformString(matrix, transform):
-	s = transform.find('(')
-	e = transform.find(')')
-	if s < 0 or e < 0:
-		print 'Unknown transform: %s' % (transform)
-		return matrix
-	tag = transform[:s]
-	data = map(float, re.split('[ \t,]+', transform[s+1:e].strip()))
-	if tag == 'matrix' and len(data) == 6:
-		return matrix * numpy.matrix([[data[0],data[1],0],[data[2],data[3],0],[data[4],data[5],1]], numpy.float64)
-	elif tag == 'translate' and len(data) == 1:
-		return matrix * numpy.matrix([[1,0,data[0]],[0,1,0],[0,0,1]], numpy.float64)
-	elif tag == 'translate' and len(data) == 2:
-		return matrix * numpy.matrix([[1,0,0],[0,1,0],[data[0],data[1],1]], numpy.float64)
-	elif tag == 'scale' and len(data) == 1:
-		return matrix * numpy.matrix([[data[0],0,0],[0,data[0],0],[0,0,1]], numpy.float64)
-	elif tag == 'scale' and len(data) == 2:
-		return matrix * numpy.matrix([[data[0],0,0],[0,data[1],0],[0,0,1]], numpy.float64)
-	elif tag == 'rotate' and len(data) == 1:
-		r = math.radians(data[0])
-		return matrix * numpy.matrix([[math.cos(r),math.sin(r),0],[-math.sin(r),math.cos(r),0],[0,0,1]], numpy.float64)
-	elif tag == 'skewX' and len(data) == 1:
-		return matrix * numpy.matrix([[1,0,0],[math.tan(data[0]),1,0],[0,0,1]], numpy.float64)
-	elif tag == 'skewY' and len(data) == 1:
-		return matrix * numpy.matrix([[1,math.tan(data[0]),0],[0,1,0],[0,0,1]], numpy.float64)
-	print 'Unknown transform: %s' % (transform)
+	if len(re.findall('\)', transform)) > 1:
+		print transform
+	while transform != '':
+		if transform[0] == ',':
+			transform = transform[1:].strip()
+		s = transform.find('(')
+		e = transform.find(')')
+		if s < 0 or e < 0:
+			print 'Unknown transform: %s' % (transform)
+			return matrix
+		tag = transform[:s]
+		data = map(float, re.split('[ \t,]+', transform[s+1:e].strip()))
+		if tag == 'matrix' and len(data) == 6:
+			matrix = numpy.matrix([[data[0],data[1],0],[data[2],data[3],0],[data[4],data[5],1]], numpy.float64) * matrix
+		elif tag == 'translate' and len(data) == 1:
+			matrix = numpy.matrix([[1,0,data[0]],[0,1,0],[0,0,1]], numpy.float64) * matrix
+		elif tag == 'translate' and len(data) == 2:
+			matrix = numpy.matrix([[1,0,0],[0,1,0],[data[0],data[1],1]], numpy.float64) * matrix
+		elif tag == 'scale' and len(data) == 1:
+			matrix = numpy.matrix([[data[0],0,0],[0,data[0],0],[0,0,1]], numpy.float64) * matrix
+		elif tag == 'scale' and len(data) == 2:
+			matrix = numpy.matrix([[data[0],0,0],[0,data[1],0],[0,0,1]], numpy.float64) * matrix
+		elif tag == 'rotate' and len(data) == 1:
+			r = math.radians(data[0])
+			matrix = numpy.matrix([[math.cos(r),math.sin(r),0],[-math.sin(r),math.cos(r),0],[0,0,1]], numpy.float64) * matrix
+		elif tag == 'rotate' and len(data) == 3:
+			matrix = numpy.matrix([[1,0,0],[0,1,0],[data[1],data[2],1]], numpy.float64) * matrix
+			r = math.radians(data[0])
+			matrix = numpy.matrix([[math.cos(r),math.sin(r),0],[-math.sin(r),math.cos(r),0],[0,0,1]], numpy.float64) * matrix
+			matrix = numpy.matrix([[1,0,0],[0,1,0],[-data[1],-data[2],1]], numpy.float64) * matrix
+		elif tag == 'skewX' and len(data) == 1:
+			matrix = numpy.matrix([[1,0,0],[math.tan(data[0]),1,0],[0,0,1]], numpy.float64) * matrix
+		elif tag == 'skewY' and len(data) == 1:
+			matrix = numpy.matrix([[1,math.tan(data[0]),0],[0,1,0],[0,0,1]], numpy.float64) * matrix
+		else:
+			print 'Unknown transform: %s' % (transform)
+			return matrix
+		transform = transform[e+1:].strip()
 	return matrix
 
 def toFloat(f):
@@ -111,8 +124,6 @@ class Path(object):
 				a1 = math.atan2((p1alt.imag - cAlt.imag) / r.imag, (p1alt.real - cAlt.real) / r.real)
 				a2 = math.atan2((p2alt.imag - cAlt.imag) / r.imag, (p2alt.real - cAlt.real) / r.real)
 
-				#if a1 > a2:
-				#	a2 += math.pi * 2
 				large = abs(a2 - a1) > math.pi
 				if large != p['large']:
 					if a1 < a2:
@@ -510,7 +521,7 @@ class SVG(object):
 
 if __name__ == '__main__':
 	for n in xrange(1, len(sys.argv)):
-		#print 'File: %s' % (sys.argv[n])
+		print 'File: %s' % (sys.argv[n])
 		svg = SVG(sys.argv[n])
 
 	f = open("test_export.html", "w")
