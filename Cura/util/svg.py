@@ -8,8 +8,6 @@ import numpy
 from xml.etree import ElementTree
 
 def applyTransformString(matrix, transform):
-	if len(re.findall('\)', transform)) > 1:
-		print transform
 	while transform != '':
 		if transform[0] == ',':
 			transform = transform[1:].strip()
