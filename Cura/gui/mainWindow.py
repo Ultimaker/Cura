@@ -92,14 +92,14 @@ class mainWindow(wx.Frame):
 
 		# Model MRU list
 		modelHistoryMenu = wx.Menu()
-		self.fileMenu.AppendMenu(wx.NewId(), _("&Recent Model Files"), modelHistoryMenu)
+		self.fileMenu.AppendMenu(wx.NewId(), '&' + _("Recent Model Files"), modelHistoryMenu)
 		self.modelFileHistory.UseMenu(modelHistoryMenu)
 		self.modelFileHistory.AddFilesToMenu()
 		self.Bind(wx.EVT_MENU_RANGE, self.OnModelMRU, id=self.ID_MRU_MODEL1, id2=self.ID_MRU_MODEL10)
 
 		# Profle MRU list
 		profileHistoryMenu = wx.Menu()
-		self.fileMenu.AppendMenu(wx.NewId(), _("&Recent Profile Files"), profileHistoryMenu)
+		self.fileMenu.AppendMenu(wx.NewId(), _("Recent Profile Files"), profileHistoryMenu)
 		self.profileFileHistory.UseMenu(profileHistoryMenu)
 		self.profileFileHistory.AddFilesToMenu()
 		self.Bind(wx.EVT_MENU_RANGE, self.OnProfileMRU, id=self.ID_MRU_PROFILE1, id2=self.ID_MRU_PROFILE10)
@@ -107,7 +107,7 @@ class mainWindow(wx.Frame):
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(wx.ID_EXIT, _("Quit"))
 		self.Bind(wx.EVT_MENU, self.OnQuit, i)
-		self.menubar.Append(self.fileMenu, _("&File"))
+		self.menubar.Append(self.fileMenu, '&' + _("File"))
 
 		toolsMenu = wx.Menu()
 
@@ -125,7 +125,7 @@ class mainWindow(wx.Frame):
 		#self.normalModeOnlyItems.append(i)
 
 		if minecraftImport.hasMinecraft():
-			i = toolsMenu.Append(-1, _("Minecraft import..."))
+			i = toolsMenu.Append(-1, _("Minecraft map import..."))
 			self.Bind(wx.EVT_MENU, self.OnMinecraftImport, i)
 
 		if version.isDevVersion():
@@ -606,7 +606,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 			n += 1 + len(profile.getSettingsForCategory(category, title))
 			if n > count / 2:
 				p = right
-			configBase.TitleRow(p, title)
+			configBase.TitleRow(p, _(title))
 			for s in profile.getSettingsForCategory(category, title):
 				configBase.SettingRow(p, s.getName())
 

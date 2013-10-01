@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-27 09:25+0200\n"
+"POT-Creation-Date: 2013-10-01 15:32+0200\n"
 "PO-Revision-Date: 2013-09-27 09:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
 
-#: Cura/gui/app.py:86 Cura/gui/mainWindow.py:520
+#: Cura/gui/app.py:86 Cura/gui/mainWindow.py:524
 msgid "A new version of Cura is available, would you like to download?"
 msgstr ""
 
-#: Cura/gui/app.py:86 Cura/gui/mainWindow.py:520
+#: Cura/gui/app.py:86 Cura/gui/mainWindow.py:524
 msgid "New version available"
 msgstr ""
 
@@ -358,7 +358,7 @@ msgid ""
 msgstr ""
 
 #: Cura/gui/firmwareInstall.py:39 Cura/gui/firmwareInstall.py:98
-#: Cura/gui/mainWindow.py:455
+#: Cura/gui/mainWindow.py:459
 msgid "Firmware update"
 msgstr ""
 
@@ -395,210 +395,206 @@ msgid ""
 "Is your machine connected to the PC?"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:54
+#: Cura/gui/mainWindow.py:56
 msgid "Load model file...\tCTRL+L"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:56
+#: Cura/gui/mainWindow.py:58
 msgid "Save model...\tCTRL+S"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:58
+#: Cura/gui/mainWindow.py:60
 msgid "Clear platform"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:62
+#: Cura/gui/mainWindow.py:64
 msgid "Print...\tCTRL+P"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:64 Cura/gui/sceneView.py:214
+#: Cura/gui/mainWindow.py:66 Cura/gui/sceneView.py:244
 msgid "Save GCode..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:66
+#: Cura/gui/mainWindow.py:68
 msgid "Show slice engine log..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:70
+#: Cura/gui/mainWindow.py:72
 msgid "Open Profile..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:73
+#: Cura/gui/mainWindow.py:75
 msgid "Save Profile..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:76
+#: Cura/gui/mainWindow.py:78
 msgid "Load Profile from GCode..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:80
+#: Cura/gui/mainWindow.py:82
 msgid "Reset Profile to default"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:85
+#: Cura/gui/mainWindow.py:87
 msgid "Preferences...\tCTRL+,"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:87
+#: Cura/gui/mainWindow.py:89
 msgid "Machine settings..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:93
-msgid "&Recent Model Files"
+#: Cura/gui/mainWindow.py:95
+msgid "Recent Model Files"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:100
-msgid "&Recent Profile Files"
-msgstr ""
-
-#: Cura/gui/mainWindow.py:106
-msgid "Quit"
+#: Cura/gui/mainWindow.py:102
+msgid "Recent Profile Files"
 msgstr ""
 
 #: Cura/gui/mainWindow.py:108
-msgid "&File"
+msgid "Quit"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:112
+#: Cura/gui/mainWindow.py:110
+msgid "File"
+msgstr ""
+
+#: Cura/gui/mainWindow.py:114
 msgid "Switch to quickprint..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:116
+#: Cura/gui/mainWindow.py:118
 msgid "Switch to full settings..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:126
-msgid "Minecraft import..."
+#: Cura/gui/mainWindow.py:128
+msgid "Minecraft map import..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:130
+#: Cura/gui/mainWindow.py:132
 msgid "PID Debugger..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:133
+#: Cura/gui/mainWindow.py:135
 msgid "Copy profile to clipboard"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:135
+#: Cura/gui/mainWindow.py:137
 msgid "Tools"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:141 Cura/util/profile.py:158
+#: Cura/gui/mainWindow.py:143 Cura/util/profile.py:158
 msgid "Machine"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:144
+#: Cura/gui/mainWindow.py:146
 msgid "Open expert settings..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:148
+#: Cura/gui/mainWindow.py:150
 msgid "Run first run wizard..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:150
+#: Cura/gui/mainWindow.py:152
 msgid "Run bed leveling wizard..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:153
+#: Cura/gui/mainWindow.py:155
 msgid "Run head offset wizard..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:156
+#: Cura/gui/mainWindow.py:158
 msgid "Expert"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:159
+#: Cura/gui/mainWindow.py:161
 msgid "Online documentation..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:161
+#: Cura/gui/mainWindow.py:163
 msgid "Report a problem..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:163
+#: Cura/gui/mainWindow.py:165
 msgid "Check for update..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:165
+#: Cura/gui/mainWindow.py:167
 msgid "Open YouMagine website..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:167
+#: Cura/gui/mainWindow.py:169
 msgid "About Cura..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:169
+#: Cura/gui/mainWindow.py:171
 msgid "Help"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:387
+#: Cura/gui/mainWindow.py:391
 msgid "Add new machine..."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:392
+#: Cura/gui/mainWindow.py:396
 msgid "Install custom firmware"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:394
+#: Cura/gui/mainWindow.py:398
 msgid "Install default Marlin firmware"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:398
+#: Cura/gui/mainWindow.py:402
 msgid "Select profile file to load"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:410
+#: Cura/gui/mainWindow.py:414
 msgid "Select gcode file to load profile from"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:423
+#: Cura/gui/mainWindow.py:427
 msgid ""
 "No profile found in GCode file.\n"
 "This feature only works with GCode files made by Cura 12.07 or newer."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:423
+#: Cura/gui/mainWindow.py:427
 msgid "Profile load error"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:427
+#: Cura/gui/mainWindow.py:431
 msgid "Select profile file to save"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:435
+#: Cura/gui/mainWindow.py:439
 msgid ""
 "This will reset all profile settings to defaults.\n"
 "Unless you have saved your current profile, all settings will be lost!\n"
 "Do you really want to reset?"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:435
+#: Cura/gui/mainWindow.py:439
 msgid "Profile reset"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:455
+#: Cura/gui/mainWindow.py:459
 msgid ""
 "Warning: Installing a custom firmware does not guarantee that you machine "
 "will function correctly, and could damage your machine."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:456
+#: Cura/gui/mainWindow.py:460
 msgid "Open firmware to upload"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:523
+#: Cura/gui/mainWindow.py:527
 msgid "You are running the latest version of Cura!"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:523
+#: Cura/gui/mainWindow.py:527
 msgid "Awesome!"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:535
-msgid "Copyright (C) David Braam"
-msgstr ""
-
-#: Cura/gui/mainWindow.py:601
+#: Cura/gui/mainWindow.py:583
 msgid "Plugins"
 msgstr ""
 
@@ -685,8 +681,8 @@ msgstr ""
 msgid "Connect"
 msgstr ""
 
-#: Cura/gui/printWindow.py:181 Cura/gui/sceneView.py:64
-#: Cura/gui/sceneView.py:774
+#: Cura/gui/printWindow.py:181 Cura/gui/sceneView.py:65
+#: Cura/gui/sceneView.py:804
 msgid "Print"
 msgstr ""
 
@@ -769,163 +765,163 @@ msgstr ""
 msgid "Filament cost: %s\n"
 msgstr ""
 
-#: Cura/gui/sceneView.py:63
+#: Cura/gui/sceneView.py:64
 msgid "Load"
 msgstr ""
 
-#: Cura/gui/sceneView.py:68
+#: Cura/gui/sceneView.py:69
 msgid "Rotate"
 msgstr ""
 
-#: Cura/gui/sceneView.py:69
+#: Cura/gui/sceneView.py:70
 msgid "Scale"
 msgstr ""
 
-#: Cura/gui/sceneView.py:70
+#: Cura/gui/sceneView.py:71
 msgid "Mirror"
 msgstr ""
 
-#: Cura/gui/sceneView.py:72 Cura/gui/sceneView.py:75
+#: Cura/gui/sceneView.py:73 Cura/gui/sceneView.py:76
 msgid "Reset"
 msgstr ""
 
-#: Cura/gui/sceneView.py:73
+#: Cura/gui/sceneView.py:74
 msgid "Lay flat"
 msgstr ""
 
-#: Cura/gui/sceneView.py:76
+#: Cura/gui/sceneView.py:77
 msgid "To max"
 msgstr ""
 
-#: Cura/gui/sceneView.py:78
+#: Cura/gui/sceneView.py:79
 msgid "Mirror X"
 msgstr ""
 
-#: Cura/gui/sceneView.py:79
+#: Cura/gui/sceneView.py:80
 msgid "Mirror Y"
 msgstr ""
 
-#: Cura/gui/sceneView.py:80
+#: Cura/gui/sceneView.py:81
 msgid "Mirror Z"
 msgstr ""
 
-#: Cura/gui/sceneView.py:88
+#: Cura/gui/sceneView.py:89
 msgid "Scale X"
 msgstr ""
 
-#: Cura/gui/sceneView.py:90
+#: Cura/gui/sceneView.py:91
 msgid "Scale Y"
 msgstr ""
 
-#: Cura/gui/sceneView.py:92
+#: Cura/gui/sceneView.py:93
 msgid "Scale Z"
 msgstr ""
 
-#: Cura/gui/sceneView.py:94
+#: Cura/gui/sceneView.py:95
 msgid "Size X (mm)"
 msgstr ""
 
-#: Cura/gui/sceneView.py:96
+#: Cura/gui/sceneView.py:97
 msgid "Size Y (mm)"
 msgstr ""
 
-#: Cura/gui/sceneView.py:98
+#: Cura/gui/sceneView.py:99
 msgid "Size Z (mm)"
 msgstr ""
 
-#: Cura/gui/sceneView.py:100
+#: Cura/gui/sceneView.py:101
 msgid "Uniform scale"
 msgstr ""
 
-#: Cura/gui/sceneView.py:103
+#: Cura/gui/sceneView.py:104
 msgid "View mode"
 msgstr ""
 
-#: Cura/gui/sceneView.py:103
+#: Cura/gui/sceneView.py:104
 msgid "Normal"
 msgstr ""
 
-#: Cura/gui/sceneView.py:103
+#: Cura/gui/sceneView.py:104
 msgid "Overhang"
 msgstr ""
 
-#: Cura/gui/sceneView.py:103
+#: Cura/gui/sceneView.py:104
 msgid "Transparent"
 msgstr ""
 
-#: Cura/gui/sceneView.py:103
+#: Cura/gui/sceneView.py:104
 msgid "X-Ray"
 msgstr ""
 
-#: Cura/gui/sceneView.py:103
+#: Cura/gui/sceneView.py:104
 msgid "Layers"
 msgstr ""
 
-#: Cura/gui/sceneView.py:106
+#: Cura/gui/sceneView.py:107
 msgid "Share on YouMagine"
 msgstr ""
 
-#: Cura/gui/sceneView.py:168
+#: Cura/gui/sceneView.py:198
 msgid "Open 3D model"
 msgstr ""
 
-#: Cura/gui/sceneView.py:183
+#: Cura/gui/sceneView.py:213
 msgid "Save 3D model"
 msgstr ""
 
-#: Cura/gui/sceneView.py:213
+#: Cura/gui/sceneView.py:243
 msgid "Print with USB"
 msgstr ""
 
-#: Cura/gui/sceneView.py:215
+#: Cura/gui/sceneView.py:245
 msgid "Slice engine log..."
 msgstr ""
 
-#: Cura/gui/sceneView.py:229 Cura/gui/sceneView.py:780
+#: Cura/gui/sceneView.py:257 Cura/gui/sceneView.py:810
 msgid "Save toolpath"
 msgstr ""
 
-#: Cura/gui/sceneView.py:266
+#: Cura/gui/sceneView.py:296
 msgid "The slicing engine reported the following"
 msgstr ""
 
-#: Cura/gui/sceneView.py:266
+#: Cura/gui/sceneView.py:296
 msgid "Engine log..."
 msgstr ""
 
-#: Cura/gui/sceneView.py:645
+#: Cura/gui/sceneView.py:675
 msgid "Delete object"
 msgstr ""
 
-#: Cura/gui/sceneView.py:646
+#: Cura/gui/sceneView.py:676
 msgid "Center on platform"
 msgstr ""
 
-#: Cura/gui/sceneView.py:647
+#: Cura/gui/sceneView.py:677
 msgid "Multiply object"
 msgstr ""
 
-#: Cura/gui/sceneView.py:648
+#: Cura/gui/sceneView.py:678
 msgid "Split object into parts"
 msgstr ""
 
-#: Cura/gui/sceneView.py:650
+#: Cura/gui/sceneView.py:680
 msgid "Dual extrusion merge"
 msgstr ""
 
-#: Cura/gui/sceneView.py:652
+#: Cura/gui/sceneView.py:682
 msgid "Delete all objects"
 msgstr ""
 
-#: Cura/gui/sceneView.py:777
+#: Cura/gui/sceneView.py:807
 msgid "Toolpath to SD"
 msgstr ""
 
-#: Cura/gui/sceneView.py:1087
+#: Cura/gui/sceneView.py:1117
 msgid "Loading toolpath for visualization..."
 msgstr ""
 
-#: Cura/gui/sceneView.py:1138
+#: Cura/gui/sceneView.py:1168
 msgid "Overhang view not working due to lack of OpenGL shaders support."
 msgstr ""
 
@@ -1271,7 +1267,7 @@ msgstr ""
 
 #: Cura/util/profile.py:159 Cura/util/profile.py:160 Cura/util/profile.py:161
 #: Cura/util/profile.py:162 Cura/util/profile.py:163 Cura/util/profile.py:164
-msgid "Speed & Temperature"
+msgid "Speed and Temperature"
 msgstr ""
 
 #: Cura/util/profile.py:159
@@ -1319,6 +1315,18 @@ msgid ""
 "Temperature used for the heated printer bed. Set at 0 to pre-heat yourself."
 msgstr ""
 
+#: Cura/util/profile.py:165 Cura/util/profile.py:166
+msgid "None"
+msgstr ""
+
+#: Cura/util/profile.py:165
+msgid "Touching buildplate"
+msgstr ""
+
+#: Cura/util/profile.py:165
+msgid "Everywhere"
+msgstr ""
+
 #: Cura/util/profile.py:165 Cura/util/profile.py:166 Cura/util/profile.py:167
 #: Cura/util/profile.py:206 Cura/util/profile.py:207 Cura/util/profile.py:208
 msgid "Support"
@@ -1339,6 +1347,16 @@ msgid ""
 "Everywhere creates support even on top of parts of the model."
 msgstr ""
 
+#: Cura/util/profile.py:166 Cura/util/profile.py:212
+msgid "Brim"
+msgstr ""
+
+#: Cura/util/profile.py:166 Cura/util/profile.py:213 Cura/util/profile.py:214
+#: Cura/util/profile.py:215 Cura/util/profile.py:216 Cura/util/profile.py:217
+#: Cura/util/profile.py:218
+msgid "Raft"
+msgstr ""
+
 #: Cura/util/profile.py:166
 msgid "Platform adhesion type"
 msgstr ""
@@ -1352,6 +1370,18 @@ msgid ""
 "Raft adds a thick raster at below the object and a thin interface between "
 "this and your object.\n"
 "(Note that enabling the brim or raft disables the skirt)"
+msgstr ""
+
+#: Cura/util/profile.py:167
+msgid "Both"
+msgstr ""
+
+#: Cura/util/profile.py:167
+msgid "First extruder"
+msgstr ""
+
+#: Cura/util/profile.py:167
+msgid "Second extruder"
 msgstr ""
 
 #: Cura/util/profile.py:167
@@ -1740,10 +1770,6 @@ msgid ""
 msgstr ""
 
 #: Cura/util/profile.py:212
-msgid "Brim"
-msgstr ""
-
-#: Cura/util/profile.py:212
 msgid "Brim line amount"
 msgstr ""
 
@@ -1751,11 +1777,6 @@ msgstr ""
 msgid ""
 "The amount of lines used for a brim, more lines means a larger brim which "
 "sticks better, but this also makes your effective print area smaller."
-msgstr ""
-
-#: Cura/util/profile.py:213 Cura/util/profile.py:214 Cura/util/profile.py:215
-#: Cura/util/profile.py:216 Cura/util/profile.py:217 Cura/util/profile.py:218
-msgid "Raft"
 msgstr ""
 
 #: Cura/util/profile.py:213
@@ -2085,4 +2106,52 @@ msgid ""
 "The height of the gantry holding up the printer head. If an object is higher "
 "then this then you cannot print multiple objects one for one. 60mm for an "
 "Ultimaker."
+msgstr ""
+
+#: Cura/util/profile.py:388
+#, python-format
+msgid "More flow then 150% is rare and usually not recommended."
+msgstr ""
+
+#: Cura/util/profile.py:389
+#, python-format
+msgid "More flow then 50% is rare and usually not recommended."
+msgstr ""
+
+#: Cura/util/profile.py:390
+#, python-format
+msgid ""
+"Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and "
+"are not recommended."
+msgstr ""
+
+#: Cura/util/profile.py:392
+msgid ""
+"It is highly unlikely that your machine can achieve a printing speed above "
+"150mm/s"
+msgstr ""
+
+#: Cura/util/profile.py:394 Cura/util/profile.py:395 Cura/util/profile.py:396
+#: Cura/util/profile.py:397
+msgid "Temperatures above 260C could damage your machine, be careful!"
+msgstr ""
+
+#: Cura/util/profile.py:398 Cura/util/profile.py:399 Cura/util/profile.py:400
+#: Cura/util/profile.py:401
+msgid ""
+"Are you sure your filament is that thick? Normal filament is around 3mm or "
+"1.75mm."
+msgstr ""
+
+#: Cura/util/profile.py:402
+msgid ""
+"It is highly unlikely that your machine can achieve a travel speed above "
+"300mm/s"
+msgstr ""
+
+#: Cura/util/profile.py:403
+#, python-format
+msgid ""
+"A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad "
+"results and is not recommended."
 msgstr ""

@@ -180,8 +180,12 @@ class SettingRow(object):
 			choices = self.setting.getType()
 			if valueOverride is not None:
 				choices = valueOverride
+			self._englishChoices = choices[:]
 			if value not in choices and len(choices) > 0:
 				value = choices[0]
+			for n in xrange(0, len(choices)):
+				choices[n] = _(choices[n])
+			value = _(value)
 			self.ctrl = wx.ComboBox(panel, -1, value, choices=choices, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 			self.ctrl.Bind(wx.EVT_COMBOBOX, self.OnSettingChange)
 			self.ctrl.Bind(wx.EVT_LEFT_DOWN, self.OnMouseExit)
@@ -237,6 +241,12 @@ class SettingRow(object):
 	def GetValue(self):
 		if isinstance(self.ctrl, wx.ColourPickerCtrl):
 			return str(self.ctrl.GetColour().GetAsString(wx.C2S_HTML_SYNTAX))
+		elif isinstance(self.ctrl, wx.ComboBox):
+			value = str(self.ctrl.GetValue())
+			for ret in self._englishChoices:
+				if _(ret) == value:
+					return ret
+			return value
 		else:
 			return str(self.ctrl.GetValue())
 
@@ -250,5 +260,7 @@ class SettingRow(object):
 				self.ctrl.SetValue(float(value))
 			except ValueError:
 				pass
+		elif isinstance(self.ctrl, wx.ComboBox):
+			self.ctrl.SetValue(_(value))
 		else:
 			self.ctrl.SetValue(value)

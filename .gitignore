@@ -4,6 +4,8 @@
 *.pyc
 *.zip
 *.exe
+*.po~
+*.gcode
 darwin-Cura-*
 win32-Cura-*
 linux-Cura-*
