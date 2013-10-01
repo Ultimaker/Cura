@@ -254,10 +254,8 @@ class SceneView(openglGui.glGuiPanel):
 			self._slicer.submitSliceInfoOnline()
 
 	def showSaveGCode(self):
-		defPath = profile.getPreference('lastFile')
-		defPath = defPath[0:defPath.rfind('.')] + '.gcode'
-		dlg=wx.FileDialog(self, _("Save toolpath"), defPath, style=wx.FD_SAVE)
-		dlg.SetFilename(self._scene._objectList[0].getName())
+		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE)
+		dlg.SetFilename(self._scene._objectList[0].getName()+'.gcode')
 		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
