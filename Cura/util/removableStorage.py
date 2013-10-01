@@ -119,7 +119,12 @@ def _updateCache():
 										drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
 		else:
 			for volume in glob.glob('/media/*'):
-				drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
+				if os.path.ismount(volume):
+					drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
+				elif volume == '/media/'+os.getenv('USER'):
+					for volume in glob.glob('/media/'+os.getenv('USER')+'/*'):
+						if os.path.ismount(volume):
+							drives.append((os.path.basename(volume), volume + '/', os.path.basename(volume)))
 
 		_removableCache = drives
 		time.sleep(1)
