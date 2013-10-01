@@ -7,6 +7,7 @@ from Cura.gui import configWizard
 from Cura.gui import configBase
 from Cura.util import machineCom
 from Cura.util import profile
+from Cura.util import resources
 
 class preferencesDialog(wx.Dialog):
 	def __init__(self, parent):
@@ -25,6 +26,9 @@ class preferencesDialog(wx.Dialog):
 		configBase.SettingRow(left, 'model_colour', wx.Colour)
 		for i in xrange(1, extruderCount):
 			configBase.SettingRow(left, 'model_colour%d' % (i+1), wx.Colour)
+
+		configBase.TitleRow(left, _("Language"))
+		configBase.SettingRow(left, 'language', map(lambda n: n[1], resources.getLanguageOptions()))
 
 		configBase.TitleRow(right, _("Filament settings"))
 		configBase.SettingRow(right, 'filament_physical_density')
