@@ -288,6 +288,8 @@ class newDesignWindow(wx.Frame):
 		self._imageScroll.GetSizer().Add(self._addImageButton)
 		self._snapshotButton = wx.Button(self._imageScroll, -1, _("Webcam..."), size=(70,52))
 		self._imageScroll.GetSizer().Add(self._snapshotButton)
+		if not webcam.hasWebcamSupport():
+			self._snapshotButton.Hide()
 		self._imageScroll.Fit()
 		self._imageScroll.SetupScrolling(scroll_x=True, scroll_y=False)
 		self._imageScroll.SetMinSize((20, self._imageScroll.GetSize()[1] + wx.SystemSettings_GetMetric(wx.SYS_HSCROLL_Y)))
@@ -360,7 +362,12 @@ class newDesignWindow(wx.Frame):
 		dlg.Destroy()
 
 	def OnTakeImage(self, e):
-		webcamPhotoWindow(self).Show()
+		w = webcamPhotoWindow(self)
+		if w.hasCamera():
+			w.Show()
+		else:
+			w.Destroy()
+			wx.MessageBox(_("No webcam found on your system"), _("Webcam error"), wx.OK | wx.ICON_ERROR)
 
 	def _addImage(self, image):
 		wxImage = None
@@ -443,6 +450,9 @@ class webcamPhotoWindow(wx.Frame):
 		self.Centre()
 
 		self._takeImageTimer.Start(200)
+
+	def hasCamera(self):
+		return self._cam.hasCamera()
 
 	def OnCameraChange(self, e):
 		self._cam.setActiveCamera(self._cameraSelect.GetSelection())

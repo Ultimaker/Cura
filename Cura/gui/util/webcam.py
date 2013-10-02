@@ -27,7 +27,7 @@ except:
 	win32vidcap = None
 
 def hasWebcamSupport():
-	if cv == None and win32vidcap == None:
+	if cv is None and win32vidcap is None:
 		return False
 	if not os.path.exists(getFFMPEGpath()):
 		return False
