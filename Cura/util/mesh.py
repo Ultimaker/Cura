@@ -16,7 +16,7 @@ class printableObject(object):
 		else:
 			self._name = os.path.basename(originFilename)
 		if '.' in self._name:
-			self._name = self._name[0:self._name.rfind('.')]
+			self._name = os.path.splitext(self._name)[0]
 		self._meshList = []
 		self._position = numpy.array([0.0, 0.0])
 		self._matrix = numpy.matrix([[1,0,0],[0,1,0],[0,0,1]], numpy.float64)
