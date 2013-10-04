@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-04 12:27+0200\n"
+"POT-Creation-Date: 2013-10-04 15:44+0200\n"
 "PO-Revision-Date: 2013-10-02 11:23+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -745,7 +745,7 @@ msgid "Connect"
 msgstr "Podłącz"
 
 #: Cura/gui/printWindow.py:181 Cura/gui/sceneView.py:65
-#: Cura/gui/sceneView.py:804
+#: Cura/gui/sceneView.py:803
 msgid "Print"
 msgstr "Drukuj"
 
@@ -940,51 +940,64 @@ msgstr "Drukuj przez USB"
 msgid "Slice engine log..."
 msgstr "Dziennik modułu Slice..."
 
-#: Cura/gui/sceneView.py:257 Cura/gui/sceneView.py:810
+#: Cura/gui/sceneView.py:257 Cura/gui/sceneView.py:809
 msgid "Save toolpath"
 msgstr "Zapisz ścieżkę narzędzia"
 
-#: Cura/gui/sceneView.py:296
+#: Cura/gui/sceneView.py:295
 msgid "The slicing engine reported the following"
 msgstr "Raport z modułu Slice "
 
-#: Cura/gui/sceneView.py:296
+#: Cura/gui/sceneView.py:295
 msgid "Engine log..."
 msgstr "Dziennik z silnika..."
 
-#: Cura/gui/sceneView.py:675
+#: Cura/gui/sceneView.py:422
+msgid "How many copies do you want?"
+msgstr ""
+
+#: Cura/gui/sceneView.py:422
+msgid "Number of copies"
+msgstr ""
+
+#: Cura/gui/sceneView.py:422
+#, fuzzy
+msgid "Multiply"
+msgstr "Powiel obiekt"
+
+#: Cura/gui/sceneView.py:674
 msgid "Delete object"
 msgstr "Usuń obiekt"
 
-#: Cura/gui/sceneView.py:676
+#: Cura/gui/sceneView.py:675
 msgid "Center on platform"
 msgstr "Wyśrodkuj na platformie"
 
-#: Cura/gui/sceneView.py:677
+#: Cura/gui/sceneView.py:676
 msgid "Multiply object"
 msgstr "Powiel obiekt"
 
-#: Cura/gui/sceneView.py:678
+#: Cura/gui/sceneView.py:677
 msgid "Split object into parts"
 msgstr "Podziel obiekt na części"
 
-#: Cura/gui/sceneView.py:680
+#: Cura/gui/sceneView.py:679
 msgid "Dual extrusion merge"
 msgstr "Złącz podwójne ekstrudowanie"
 
-#: Cura/gui/sceneView.py:682
+#: Cura/gui/sceneView.py:681
 msgid "Delete all objects"
 msgstr "Usuń wszystkie obiekty"
 
-#: Cura/gui/sceneView.py:807
+#: Cura/gui/sceneView.py:806
 msgid "Toolpath to SD"
 msgstr "Zapisz ścieżkę na SD"
 
-#: Cura/gui/sceneView.py:1117
+#: Cura/gui/sceneView.py:1116
 msgid "Loading toolpath for visualization..."
 msgstr "Wczytaj ścieżkę do wizualizacji..."
 
-#: Cura/gui/sceneView.py:1168
+#: Cura/gui/sceneView.py:1167
 msgid "Overhang view not working due to lack of OpenGL shaders support."
 msgstr "Widok zwisów nie działą z powodu braku wsparcia shaderów OpenGL."
 
