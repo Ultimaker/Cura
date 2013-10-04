@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
+import os
+
 from Cura.util.meshLoaders import stl
 from Cura.util.meshLoaders import obj
 from Cura.util.meshLoaders import dae
@@ -27,7 +29,7 @@ def saveWildcardFilter():
 # DAE files are a mess, but they can contain scenes of objects as well as grouped meshes
 
 def loadMeshes(filename):
-	ext = filename[filename.rfind('.'):].lower()
+	ext = os.path.splitext(filename)[1].lower()
 	if ext == '.stl':
 		return stl.loadScene(filename)
 	if ext == '.obj':
@@ -40,7 +42,7 @@ def loadMeshes(filename):
 	return []
 
 def saveMeshes(filename, objects):
-	ext = filename[filename.rfind('.'):].lower()
+	ext = os.path.splitext(filename)[1].lower()
 	if ext == '.stl':
 		stl.saveScene(filename, objects)
 		return

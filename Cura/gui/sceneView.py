@@ -151,7 +151,7 @@ class SceneView(openglGui.glGuiPanel):
 		gcodeFilename = None
 		if len(filenames) == 1:
 			filename = filenames[0]
-			ext = filename[filename.rfind('.'):].lower()
+			ext = os.path.splitext(filename)[1]
 			if ext == '.g' or ext == '.gcode':
 				gcodeFilename = filename
 				mainWindow.addToModelMRU(filename)
@@ -170,7 +170,7 @@ class SceneView(openglGui.glGuiPanel):
 					# directory: queue all included files and directories
 					filenames.extend(os.path.join(filename, f) for f in os.listdir(filename))
 				else:
-					ext = filename[filename.rfind('.'):].lower()
+					ext = os.path.splitext(filename)[1]
 					if ext == '.ini':
 						profile.loadProfile(filename)
 						mainWindow.addToProfileMRU(filename)
@@ -255,8 +255,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def showSaveGCode(self):
 		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE)
-		filename = self._scene._objectList[0].getName()
-		filename = filename[:filename.rfind('.')] + '.gcode'
+		filename = self._scene._objectList[0].getName() + '.gcode'
 		dlg.SetFilename(filename)
 		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
 		if dlg.ShowModal() != wx.ID_OK:
