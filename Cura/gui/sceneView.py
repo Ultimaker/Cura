@@ -151,7 +151,7 @@ class SceneView(openglGui.glGuiPanel):
 		gcodeFilename = None
 		if len(filenames) == 1:
 			filename = filenames[0]
-			ext = os.path.splitext(filename)[1]
+			ext = os.path.splitext(filename)[1].lower()
 			if ext == '.g' or ext == '.gcode':
 				gcodeFilename = filename
 				mainWindow.addToModelMRU(filename)
@@ -170,7 +170,7 @@ class SceneView(openglGui.glGuiPanel):
 					# directory: queue all included files and directories
 					filenames.extend(os.path.join(filename, f) for f in os.listdir(filename))
 				else:
-					ext = os.path.splitext(filename)[1]
+					ext = os.path.splitext(filename)[1].lower()
 					if ext == '.ini':
 						profile.loadProfile(filename)
 						mainWindow.addToProfileMRU(filename)
