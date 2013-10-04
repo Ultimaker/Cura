@@ -209,7 +209,7 @@ class toolRotate(object):
 				glEnd()
 				glTranslatef(1.1,0,0)
 				glColor4ub(0,0,0,255)
-				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle)))
+				opengl.glDrawStringCenter("%d" % (abs(self.dragEndAngle - self.dragStartAngle) + 0.5))
 				glColor4ub(255,64,64,255)
 				glPopMatrix()
 		else:
