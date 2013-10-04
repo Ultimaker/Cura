@@ -56,8 +56,8 @@ def setupLocalization(selectedLanguage = None):
 
 	if selectedLanguage is not None:
 		for item in getLanguageOptions():
-			if item[1] == selectedLanguage:
-				languages = [item[0]] + languages
+			if item[1] == selectedLanguage and item[0] is not None:
+				languages = [item[0]]
 
 	locale_path = os.path.normpath(os.path.join(resourceBasePath, 'locale'))
 	translation = gettext.translation('Cura', locale_path, languages, fallback=True)
@@ -65,6 +65,7 @@ def setupLocalization(selectedLanguage = None):
 
 def getLanguageOptions():
 	return [
+		[None, 'System default'],
 		['en', 'English'],
 		['de', 'Deutsch'],
 		['fr', 'French'],
