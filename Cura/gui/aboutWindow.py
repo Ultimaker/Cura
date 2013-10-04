@@ -28,6 +28,7 @@ class aboutWindow(wx.Dialog):
 		s.Add(wx.StaticText(p, -1, 'Cura is build with the following components:'), flag=wx.TOP, border=10)
 		self.addComponent('Cura', 'Graphical user interface', 'AGPLv3', 'https://github.com/daid/Cura')
 		self.addComponent('CuraEngine', 'GCode Generator', 'AGPLv3', 'https://github.com/Ultimaker/CuraEngine')
+		self.addComponent('Clipper', 'Polygon clipping library', 'Boost', 'http://www.angusj.com/delphi/clipper.php')
 
 		self.addComponent('Python 2.7', 'Framework', 'Python', 'http://python.org/')
 		self.addComponent('wxPython', 'GUI Framework', 'wxWindows', 'http://www.wxpython.org/')
