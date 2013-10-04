@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-02 11:20+0200\n"
+"POT-Creation-Date: 2013-10-04 12:27+0200\n"
 "PO-Revision-Date: 2013-09-27 09:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -536,11 +536,11 @@ msgid "Add new machine..."
 msgstr ""
 
 #: Cura/gui/mainWindow.py:396
-msgid "Install custom firmware"
+msgid "Install custom firmware..."
 msgstr ""
 
 #: Cura/gui/mainWindow.py:398
-msgid "Install default Marlin firmware"
+msgid "Install default Marlin firmware..."
 msgstr ""
 
 #: Cura/gui/mainWindow.py:402
@@ -1266,7 +1266,7 @@ msgid ""
 "This controls how densely filled the insides of your print will be. For a "
 "solid part use 100%, for an empty part use 0%. A value around 20% is usually "
 "enough.\n"
-"This won't effect the outside of the print and only adjusts how strong the "
+"This won't affect the outside of the print and only adjusts how strong the "
 "part becomes."
 msgstr ""
 
@@ -2128,12 +2128,12 @@ msgstr ""
 
 #: Cura/util/profile.py:389
 #, python-format
-msgid "More flow then 150% is rare and usually not recommended."
+msgid "More flow than 150% is rare and usually not recommended."
 msgstr ""
 
 #: Cura/util/profile.py:390
 #, python-format
-msgid "More flow then 50% is rare and usually not recommended."
+msgid "Less flow than 50% is rare and usually not recommended."
 msgstr ""
 
 #: Cura/util/profile.py:391

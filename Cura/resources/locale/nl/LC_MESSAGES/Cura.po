@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-02 11:20+0200\n"
+"POT-Creation-Date: 2013-10-04 12:27+0200\n"
 "PO-Revision-Date: 2013-10-01 15:32+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE &lt;LL@li.org&gt;\n"
@@ -441,15 +441,15 @@ msgstr ""
 
 #: Cura/gui/mainWindow.py:56
 msgid "Load model file...\tCTRL+L"
-msgstr "Laad model...\tCTRL+L"
+msgstr "Laad Model...\tCTRL+L"
 
 #: Cura/gui/mainWindow.py:58
 msgid "Save model...\tCTRL+S"
-msgstr "Model opslaan...\tCTRL+S"
+msgstr "Model Opslaan...\tCTRL+S"
 
 #: Cura/gui/mainWindow.py:60
 msgid "Clear platform"
-msgstr "Maak het platform leeg"
+msgstr "Maak Het Platform Leeg"
 
 #: Cura/gui/mainWindow.py:64
 msgid "Print...\tCTRL+P"
@@ -457,11 +457,11 @@ msgstr "Print...\tCTRL+P"
 
 #: Cura/gui/mainWindow.py:66 Cura/gui/sceneView.py:244
 msgid "Save GCode..."
-msgstr "Sla GCode op..."
+msgstr "Sla GCode Op..."
 
 #: Cura/gui/mainWindow.py:68
 msgid "Show slice engine log..."
-msgstr "Toon slicer log..."
+msgstr "Toon Slicer Log..."
 
 #: Cura/gui/mainWindow.py:72
 msgid "Open Profile..."
@@ -469,15 +469,15 @@ msgstr "Open Profiel..."
 
 #: Cura/gui/mainWindow.py:75
 msgid "Save Profile..."
-msgstr "Sla profiel op..."
+msgstr "Sla Profiel Op..."
 
 #: Cura/gui/mainWindow.py:78
 msgid "Load Profile from GCode..."
-msgstr "Laad Profiel uit GCode..."
+msgstr "Laad Profiel Uit GCode..."
 
 #: Cura/gui/mainWindow.py:82
 msgid "Reset Profile to default"
-msgstr "Reset Profiel naar standaard instellingen"
+msgstr "Reset Profiel Naar Standaardinstellingen"
 
 #: Cura/gui/mainWindow.py:87
 msgid "Preferences...\tCTRL+,"
@@ -485,11 +485,11 @@ msgstr "Voorkeuren...\tCTRL+,"
 
 #: Cura/gui/mainWindow.py:89
 msgid "Machine settings..."
-msgstr "Machine instellingen..."
+msgstr "Machineinstellingen..."
 
 #: Cura/gui/mainWindow.py:95
 msgid "Recent Model Files"
-msgstr "Recente modellen"
+msgstr "Recente Modellen"
 
 #: Cura/gui/mainWindow.py:102
 msgid "Recent Profile Files"
@@ -505,11 +505,11 @@ msgstr "Bestand"
 
 #: Cura/gui/mainWindow.py:114
 msgid "Switch to quickprint..."
-msgstr "Schakel over naar snelle print instellingen..."
+msgstr "Eenvoudige bedieningsmodus"
 
 #: Cura/gui/mainWindow.py:118
 msgid "Switch to full settings..."
-msgstr "Schakel over naar de volledige instellingen"
+msgstr "Uitgebreide bedieningsmodus"
 
 #: Cura/gui/mainWindow.py:128
 #, fuzzy
@@ -535,19 +535,19 @@ msgstr "Machine"
 
 #: Cura/gui/mainWindow.py:146
 msgid "Open expert settings..."
-msgstr "Open de expert instellingen"
+msgstr "Expertinstellingen..."
 
 #: Cura/gui/mainWindow.py:150
 msgid "Run first run wizard..."
-msgstr "Open de startwizard"
+msgstr "Opstartwizard..."
 
 #: Cura/gui/mainWindow.py:152
 msgid "Run bed leveling wizard..."
-msgstr "Open de wizard om het platform te nivelleren"
+msgstr "Wizard: Platform vlak afstellen..."
 
 #: Cura/gui/mainWindow.py:155
 msgid "Run head offset wizard..."
-msgstr "Open de wizard "
+msgstr "Wizard: Afstand Printkoppen Calibreren..."
 
 #: Cura/gui/mainWindow.py:158
 msgid "Expert"
@@ -555,19 +555,19 @@ msgstr "Expert"
 
 #: Cura/gui/mainWindow.py:161
 msgid "Online documentation..."
-msgstr "Online documentatie"
+msgstr "Online Documentatie..."
 
 #: Cura/gui/mainWindow.py:163
 msgid "Report a problem..."
-msgstr "Meld een probleem..."
+msgstr "Meld Een Probleem..."
 
 #: Cura/gui/mainWindow.py:165
 msgid "Check for update..."
-msgstr "Controleer op updates..."
+msgstr "Controleer Op Updates..."
 
 #: Cura/gui/mainWindow.py:167
 msgid "Open YouMagine website..."
-msgstr "Open de YouMagine website..."
+msgstr "Open De YouMagine Website..."
 
 #: Cura/gui/mainWindow.py:169
 msgid "About Cura..."
@@ -579,23 +579,23 @@ msgstr "Help"
 
 #: Cura/gui/mainWindow.py:391
 msgid "Add new machine..."
-msgstr "Voeg een nieuwe machine toe..."
+msgstr "Voeg Een Nieuwe Machine Toe..."
 
 #: Cura/gui/mainWindow.py:396
-msgid "Install custom firmware"
-msgstr "Installeer je eigen firmware"
+msgid "Install custom firmware..."
+msgstr "Installeer Je Eigen Firmware..."
 
 #: Cura/gui/mainWindow.py:398
-msgid "Install default Marlin firmware"
-msgstr "Installeer de standaard Marlin firmware"
+msgid "Install default Marlin firmware..."
+msgstr "Installeer De Standaardfirmware..."
 
 #: Cura/gui/mainWindow.py:402
 msgid "Select profile file to load"
-msgstr "Selecteer een profiel om te laden"
+msgstr "Selecteer Een Profielbestand Om Te Laden"
 
 #: Cura/gui/mainWindow.py:414
 msgid "Select gcode file to load profile from"
-msgstr "Selecteer een GCode bestand om het profiel uit te laden"
+msgstr "Selecteer Een GCode Bestand Om Het Profiel Uit Te Laden..."
 
 #: Cura/gui/mainWindow.py:427
 msgid ""
@@ -659,15 +659,16 @@ msgstr "Plugins:"
 
 #: Cura/gui/pluginPanel.py:30
 msgid "Open plugin location"
-msgstr "Open de plugin locatie"
+msgstr "Open de plugin map"
 
+# even opletten of dit voor- of beschrijvend is. M.a.w. zijn ze aangezet, of betekent dit "plugins aanzetten"?
 #: Cura/gui/pluginPanel.py:31
 msgid "Enabled plugins"
 msgstr "Plugins aangezet"
 
 #: Cura/gui/pluginPanel.py:133
 msgid "You need to select a plugin before you can add anything."
-msgstr "Je dient een plugin te selecteren voordat je iets kan toevoegen."
+msgstr "Selecteer eerst een plugin om toe te voegen..."
 
 #: Cura/gui/pluginPanel.py:133
 msgid "Error: no plugin selected"
@@ -683,15 +684,16 @@ msgstr ""
 
 #: Cura/gui/preferencesDialog.py:33
 msgid "Filament settings"
-msgstr "Filament instellingen"
+msgstr "Filamentinstellingen"
 
 #: Cura/gui/preferencesDialog.py:43
 msgid "Cura settings"
-msgstr "Cura instellingen"
+msgstr "Cura"
 
+# Suggestions: Machine settings -> General properties?
 #: Cura/gui/preferencesDialog.py:77
 msgid "Machine settings"
-msgstr "Machine instellingen"
+msgstr "Algemene eigenschappen"
 
 #: Cura/gui/preferencesDialog.py:86
 msgid "Printer head size"
@@ -704,12 +706,13 @@ msgstr "Extrusie %d"
 
 #: Cura/gui/preferencesDialog.py:98
 msgid "Communication settings"
-msgstr "Communicatie instellingen"
+msgstr "Communicatieinstellingen"
 
 #: Cura/gui/preferencesDialog.py:141
 msgid "Cannot remove the last machine configuration in Cura"
 msgstr "Kan de laatste machineconfiguratie niet verwijderen in Cura"
 
+# Suggestie: "Error removing machine"
 #: Cura/gui/preferencesDialog.py:141
 msgid "Machine remove error"
 msgstr "Fout bij verwijderen van machine"
@@ -728,8 +731,7 @@ msgid ""
 "Connect your computer to AC power or your print might not finish."
 msgstr ""
 "Je computer draait op een accu.\n"
-"Je print komt mogelijk niet af wanneer je je computer niet aansluit op het "
-"lichtnet."
+"Sluit je hem aan op het lichtnet zodat je print zeker voltooit."
 
 #: Cura/gui/printWindow.py:174
 msgid ""
@@ -754,7 +756,7 @@ msgstr "Printen"
 
 #: Cura/gui/printWindow.py:182 Cura/gui/printWindow.py:428
 msgid "Pause"
-msgstr "Pauze"
+msgstr "Pauzeer"
 
 #: Cura/gui/printWindow.py:183
 msgid "Cancel print"
@@ -762,7 +764,7 @@ msgstr "Annuleer print"
 
 #: Cura/gui/printWindow.py:184
 msgid "Error log"
-msgstr "Fout log"
+msgstr "Foutlog"
 
 #: Cura/gui/printWindow.py:206
 msgid "BedTemp:"
@@ -803,7 +805,7 @@ msgstr "Term"
 
 #: Cura/gui/printWindow.py:363
 msgid "Enable timelapse movie recording"
-msgstr "Maak het mogelijk om een timelapse op te nemen"
+msgstr "Maak een timelapse filmopname"
 
 #: Cura/gui/printWindow.py:377
 msgid "Show preview"
@@ -833,7 +835,7 @@ msgstr "Filament kosten: %s\n"
 
 #: Cura/gui/sceneView.py:64
 msgid "Load"
-msgstr "Laden"
+msgstr "Laden..."
 
 #: Cura/gui/sceneView.py:69
 msgid "Rotate"
@@ -901,7 +903,7 @@ msgstr "Uniform verschalen"
 
 #: Cura/gui/sceneView.py:104
 msgid "View mode"
-msgstr "Weergave modus"
+msgstr "Weergavetype"
 
 #: Cura/gui/sceneView.py:104
 msgid "Normal"
@@ -925,7 +927,7 @@ msgstr "Lagen"
 
 #: Cura/gui/sceneView.py:107
 msgid "Share on YouMagine"
-msgstr "Deel op YouMagine"
+msgstr "Deel op YouMagine..."
 
 #: Cura/gui/sceneView.py:198
 msgid "Open 3D model"
@@ -937,7 +939,7 @@ msgstr "Sla 3D model op"
 
 #: Cura/gui/sceneView.py:243
 msgid "Print with USB"
-msgstr "Print via USB"
+msgstr "Print via USB..."
 
 #: Cura/gui/sceneView.py:245
 msgid "Slice engine log..."
@@ -945,7 +947,7 @@ msgstr "Slicer log..."
 
 #: Cura/gui/sceneView.py:257 Cura/gui/sceneView.py:810
 msgid "Save toolpath"
-msgstr "Sla toolpad op"
+msgstr "Sla toolpad op..."
 
 #: Cura/gui/sceneView.py:296
 msgid "The slicing engine reported the following"
@@ -982,11 +984,11 @@ msgstr "Verwijder alle objecten"
 # Misschien GCode noemen in plaats van Toolpath
 #: Cura/gui/sceneView.py:807
 msgid "Toolpath to SD"
-msgstr "Toolpad naar SD"
+msgstr "Toolpad naar SD-kaart"
 
 #: Cura/gui/sceneView.py:1117
 msgid "Loading toolpath for visualization..."
-msgstr "Toolpad aan het laden voor visualisatie..."
+msgstr "Bezig met toolpad laden voor visualisatie..."
 
 #: Cura/gui/sceneView.py:1168
 msgid "Overhang view not working due to lack of OpenGL shaders support."
@@ -1004,7 +1006,7 @@ msgstr "Normale kwaliteit"
 
 #: Cura/gui/simpleMode.py:22
 msgid "Fast low quality print"
-msgstr "Snelle en lage kwaliteit"
+msgstr "Snelle, lage kwaliteit"
 
 #: Cura/gui/simpleMode.py:23
 msgid "Thin walled cup or vase"
@@ -1111,7 +1113,7 @@ msgstr "Token controleren"
 
 #: Cura/gui/tools/youmagineGui.py:83
 msgid "Failed to contact YouMagine.com"
-msgstr "Niet gelukt om te verbinden met YouMagine.com"
+msgstr "Verbinden met YouMagine.com is mislukt."
 
 #: Cura/gui/tools/youmagineGui.py:83 Cura/gui/tools/youmagineGui.py:116
 #: Cura/gui/tools/youmagineGui.py:133 Cura/gui/tools/youmagineGui.py:140
@@ -1171,7 +1173,7 @@ msgstr "Ontwerp publiceren..."
 
 #: Cura/gui/tools/youmagineGui.py:230
 msgid "Request authorization from YouMagine"
-msgstr "Authorisatie vragen aan YouMagine"
+msgstr "Vraagt authorisatie op van YouMagine"
 
 #: Cura/gui/tools/youmagineGui.py:231
 msgid "Paste token here"
@@ -1183,8 +1185,10 @@ msgid ""
 "you need an account on YouMagine.com\n"
 "and authorize Cura to access your account."
 msgstr ""
-"Om je ontwerpen op YouMagine te delen heb je een account op YouMagine nodig "
-"en dien je Cura toegang tot je accont te verlenen."
+"Om je ontwerpen op YouMagine te delen\n"
+"heb je een account op YouMagine nodig \n"
+"en dien je Cura toegang tot je account \n"
+"te verlenen."
 
 #: Cura/gui/tools/youmagineGui.py:239
 msgid ""
@@ -1193,8 +1197,10 @@ msgid ""
 "You can revoke access at any time\n"
 "from YouMagine.com"
 msgstr ""
-"Dit zal een browser scherm openen waar je Cura toestemming kan verlenen tot "
-"je YouMagine account. Je kan op elk moment toegang weigeren tot YouMagine.com"
+"Dit zal een browser scherm openen waar je Cura\n"
+"toestemming kan verlenen tot je YouMagine \n"
+"account. Je kan deze toegang altijd weer \n"
+"intrekken via www.YouMagine.com"
 
 #: Cura/gui/tools/youmagineGui.py:274
 msgid "Design name"
@@ -1223,8 +1229,8 @@ msgid ""
 "until you publish it yourself on YouMagine.com"
 msgstr ""
 "Publiceer het ontwerp direct na het uploaden.\n"
-"Zonder dit vinkje zal je ontwerp niet publiek zijn totdat je het zelf "
-"publiceert op YouMagine.com"
+"Zonder dit vinkje zal je ontwerp niet publiek \n"
+"zijn totdat je het zelf publiceert op YouMagine."
 
 #: Cura/gui/tools/youmagineGui.py:305
 msgid "Design name:"
@@ -1248,19 +1254,19 @@ msgstr "Afbeeldingen:"
 
 #: Cura/gui/tools/youmagineGui.py:317
 msgid "Related design files:"
-msgstr "Gerelateerde ontwerp bestanden:"
+msgstr "Gerelateerde ontwerpbestanden:"
 
 #: Cura/gui/tools/youmagineGui.py:340
 msgid "The name cannot be empty"
-msgstr "De naam kan niet leeg blijven"
+msgstr "De naam mag niet leeg zijn"
 
 #: Cura/gui/tools/youmagineGui.py:340 Cura/gui/tools/youmagineGui.py:344
 msgid "New design error."
-msgstr "Fout in nieuw ontwerp"
+msgstr "Fout bij nieuw ontwerp."
 
 #: Cura/gui/tools/youmagineGui.py:344
 msgid "The description cannot be empty"
-msgstr "De beschrijving kan niet leeg blijven"
+msgstr "De beschrijving kan niet leeg zijn"
 
 #: Cura/gui/tools/youmagineGui.py:370
 msgid "No webcam found on your system"
@@ -1272,11 +1278,11 @@ msgstr ""
 
 #: Cura/gui/util/openglGui.py:239
 msgid "An error has occurred during the 3D view drawing."
-msgstr "Er is een fout opgetreden tijdens de 3D vertoning van de tekening."
+msgstr "Een fout trad op bij het maken van de 3D weergave."
 
 #: Cura/gui/util/openglGui.py:246
 msgid "3D window error"
-msgstr "Fout in 3D scherm"
+msgstr "Fout in 3D venster"
 
 #: Cura/util/profile.py:153 Cura/util/profile.py:154 Cura/util/profile.py:155
 #: Cura/util/profile.py:179 Cura/util/profile.py:180 Cura/util/profile.py:182
@@ -1294,9 +1300,9 @@ msgid ""
 "Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to "
 "0.25mm with an Ultimaker for very fast prints at low quality."
 msgstr ""
-"Laagdikte in millimeteres.\n"
+"Laagdikte in millimeters.\n"
 "Dit is de belangrijkste instelling om de kwaliteit van je print te bepalen. "
-"Normale kwaliteit is 0,1 mm., hoge kwaliteit is 0,06 mm. Je kan met je "
+"Normale kwaliteit is 0,1 mm, hoge kwaliteit is 0,06 mm. Je kan met je "
 "Ultimaker tot 0,25 mm. gaan voor snelle prints van lage kwaliteit."
 
 #: Cura/util/profile.py:154
@@ -1309,22 +1315,22 @@ msgid ""
 "This is used in combination with the nozzle size to define the number\n"
 "of perimeter lines and the thickness of those perimeter lines."
 msgstr ""
-"Dikte van de buitenste laag in horizontale richting.\n"
-"Dit wordt gebruikt in combinatie met de afmeting van de printkop om het "
+"Breedte van de buitenste laag in horizontale richting.\n"
+"Dit wordt gebruikt in combinatie met de afmeting van de printkop om het\n"
 "aantal lijnen en de dikte van deze lijnen te bepalen."
 
 #: Cura/util/profile.py:155
 msgid "Enable retraction"
-msgstr "Zet retractie aan"
+msgstr "Retractie inschakelen"
 
 #: Cura/util/profile.py:155
 msgid ""
 "Retract the filament when the nozzle is moving over a none-printed area. "
 "Details about the retraction can be configured in the advanced tab."
 msgstr ""
-"Trekt het filament  terug wanneer de printkop over een deel beweegt waar "
-"niet geprint hoeft te worden. Details voor retractie kunnen ingesteld worden "
-"in het geavanceerde tabblad."
+"Trekt het filament terug wanneer de printkop over een deel beweegt waar niet "
+"geprint hoeft te worden. Details voor retractie kunnen ingesteld worden in "
+"het geavanceerde tabblad."
 
 #: Cura/util/profile.py:156 Cura/util/profile.py:157
 msgid "Fill"
@@ -1341,11 +1347,11 @@ msgid ""
 "Having this value a multiple of the layer thickness makes sense. And keep it "
 "near your wall thickness to make an evenly strong part."
 msgstr ""
-"Dit bepaalt de dikte van de bodem- en de bovenste laag. De hoeveelheid "
+"Dit bepaalt de dikte van de bodem en de bovenste laag. De hoeveelheid "
 "massieve lagen wordt berekend aan de hand van deze waarde en laagdikte.\n"
-"Het is logisch om deze waarde een veelvoud te laten zijn van de laagdikte. "
-"Voor een gelijke verdeling van de sterkte van het onderdeel is het aan te "
-"raden deze waarde ongeveer gelijk te laten zijn aan de wanddikte."
+"Het is verstandig om deze waarde een veelvoud te laten zijn van de "
+"laagdikte. Voor een gelijke verdeling van de sterkte van het onderdeel is "
+"het aan te raden deze waarde ongeveer gelijk te laten zijn aan de wanddikte."
 
 #: Cura/util/profile.py:157
 msgid "Fill Density (%)"
@@ -1356,12 +1362,12 @@ msgid ""
 "This controls how densely filled the insides of your print will be. For a "
 "solid part use 100%, for an empty part use 0%. A value around 20% is usually "
 "enough.\n"
-"This won't effect the outside of the print and only adjusts how strong the "
+"This won't affect the outside of the print and only adjusts how strong the "
 "part becomes."
 msgstr ""
 "Dit bepaalt hoe massief de binnenkant van je print is. Gebruik 100% voor een "
-"massief onderdeel en 0% voor een hol onderdeel. Een waarde van 20% voldoet "
-"meestal.\n"
+"massief onderdeel en 0% voor een hol onderdeel. Een waarde rond de 20% is "
+"vaak al voldoende.\n"
 "Dit beïnvloedt de buitenkant van de print niet! Het beïnvloedt de sterkte "
 "van het onderdeel."
 
@@ -1383,7 +1389,7 @@ msgstr "Snelheid en Temperatuur"
 
 #: Cura/util/profile.py:159
 msgid "Print speed (mm/s)"
-msgstr "Print snelheid (mm/s)"
+msgstr "Printsnelheid (mm/s)"
 
 #: Cura/util/profile.py:159
 msgid ""
@@ -1399,7 +1405,7 @@ msgstr ""
 
 #: Cura/util/profile.py:160
 msgid "Printing temperature (C)"
-msgstr "Print temperatuur (C)"
+msgstr "Printtemperatuur (C)"
 
 #: Cura/util/profile.py:160 Cura/util/profile.py:161 Cura/util/profile.py:162
 #: Cura/util/profile.py:163
@@ -1408,7 +1414,7 @@ msgid ""
 "For PLA a value of 210C is usually used.\n"
 "For ABS a value of 230C or higher is required."
 msgstr ""
-"De temperatuur waarbij geprint wordt.\n"
+"De temperatuur waarop geprint wordt.\n"
 "Voor PLA wordt meestal 210C gebruikt.\n"
 "Voor ABS wordt meestal 230C of hoger gebruikt.\n"
 "Voer 0 in wanneer je zelf handmatig wil voorverwarmen."
@@ -1469,7 +1475,7 @@ msgid ""
 msgstr ""
 "\"Contact met platform\" genereert alleen ondersteuning vanaf het platform. "
 "Dit is de meest gebruikte support instelling.\n"
-"\"Geen\" wanneer je geen ondersteuning wilt gebruiken.\n"
+"\"Geen\" wanneer je nergens ondersteuning wilt gebruiken.\n"
 "\"Overal\" genereert ook ondersteuning in een model zelf."
 
 #: Cura/util/profile.py:166 Cura/util/profile.py:212
@@ -1484,7 +1490,7 @@ msgstr "Mat"
 
 #: Cura/util/profile.py:166
 msgid "Platform adhesion type"
-msgstr "Type adhesie aan platform "
+msgstr "Type adhesie aan platform"
 
 #: Cura/util/profile.py:166
 msgid ""
@@ -1496,16 +1502,16 @@ msgid ""
 "this and your object.\n"
 "(Note that enabling the brim or raft disables the skirt)"
 msgstr ""
-"Verschillende mogelijkheden helpen te voorkomen dat hoeken loslaten van het "
+"Opties die helpen voorkomen dat het voorwerp bij de hoeken loslaat van het "
 "platform als gevolg van krimp van het materiaal.\n"
 "\"Brim\" voegt een enkele laag rondom je model toe. Deze is later "
-"gemakkelijk te verwijderen. Deze optie wordt aangeraden.\"Raft\" voegt een "
-"raster toe tussen het platform en het object.\n"
-"(Let op: Brim of raft heeft geen invloed op de Skirt)"
+"gemakkelijk te verwijderen. Deze optie wordt aangeraden.\n"
+"\"Raft\" voegt een raster toe tussen het platform en het object.\n"
+"(Let op: Als brim of raft aan staan wordt \"skirt\" uitgezet)"
 
 #: Cura/util/profile.py:167
 msgid "Both"
-msgstr "Bijde"
+msgstr "Beide"
 
 #: Cura/util/profile.py:167
 msgid "First extruder"
@@ -1528,11 +1534,11 @@ msgid ""
 "switches.\n"
 "You can also use the 2nd extruder for soluble support materials."
 msgstr ""
-"Welke printkop wil je gebruiken voor ondersteuningsmateriaal? Voor "
+"Welke printkop je wilt gebruiken voor ondersteuningsmateriaal. Voor "
 "ondersteuning van het zelfde materiaal kan je beide printkoppen gebruiken.\n"
 "Wanneer het ene materiaal duurder is dan het andere kan je selecteren welke "
 "printkop voor het ondersteuningsmateriaal gebruikt wordt. Dit zorgt wel voor "
-"meer wisselingen tussen de printkoppen.\n"
+"meer wisselingen tussen de printkoppen, wat tijd kost.\n"
 "Je kan de 2de printkop ook gebruiken voor oplosbaar ondersteuningsmateriaal."
 
 #: Cura/util/profile.py:168 Cura/util/profile.py:169 Cura/util/profile.py:170
@@ -1552,8 +1558,8 @@ msgid ""
 msgstr ""
 "Diameter van je filament, zo nauwkeurig mogelijk.\n"
 "Wanneer je deze waarde niet kan meten, dien je deze te kalibreren. Een "
-"hogere waarde betekent minder materiaal een lager getal zorgt voor meer "
-"geëxtrudeerd materiaal."
+"hogere waarde betekent minder geëxtrudeerd materiaal, een lager getal zorgt "
+"voor minder materiaal."
 
 #: Cura/util/profile.py:169
 msgid "Diameter2 (mm)"
@@ -1600,13 +1606,13 @@ msgid ""
 "Flow compensation, the amount of material extruded is multiplied by this "
 "value"
 msgstr ""
-"Compensatie van de flow, de hoeveelheid geëxtrudeerd materiaal wordt "
+"Compensatie van de flow. De hoeveelheid geëxtrudeerd materiaal wordt "
 "vermenigvuldigd met deze waarde."
 
 #: Cura/util/profile.py:173 Cura/util/profile.py:174 Cura/util/profile.py:175
 #: Cura/util/profile.py:176 Cura/util/profile.py:177 Cura/util/profile.py:178
 msgid "Retraction"
-msgstr "Terugtrekking"
+msgstr "Retractie"
 
 #: Cura/util/profile.py:173
 msgid "Speed (mm/s)"
@@ -1643,9 +1649,9 @@ msgid ""
 "Amount of retraction when switching nozzle with dual-extrusion, set at 0 for "
 "no retraction at all. A value of 16.0mm seems to generate good results."
 msgstr ""
-"Hoeveelheid retractie wanneer je duo extrusie gebruikt en tussen printkoppen "
-"wisselt. Voer 0 in voor geen terugtrekking. 16 mm geeft over het algemeen "
-"goede resultaten."
+"Hoeveelheid retractie wanneer je duo extrusie gebruikt er tussen printkoppen "
+"gewisseld wordt. Voer 0 in voor geen terugtrekking. 16 mm geeft over het "
+"algemeen goede resultaten."
 
 #: Cura/util/profile.py:176
 msgid "Minimum travel (mm)"
@@ -1661,7 +1667,7 @@ msgstr ""
 
 #: Cura/util/profile.py:177
 msgid "Enable combing"
-msgstr "Zet combing aan"
+msgstr "Omlopen inschakelen"
 
 #: Cura/util/profile.py:177
 msgid ""
@@ -1669,13 +1675,14 @@ msgid ""
 "over. If combing is disabled the printer head moves straight from the start "
 "point to the end point and it will always retract."
 msgstr ""
-"Omloop gebeurt wanneer de printkop gaten ontwijkt en er niet overheen "
-"beweegt. Wanneer omlopen aantaat zal de printer altijd retractie toepassen "
-"en recht van het start naar het eindpunt bewegen."
+"\"Omlopen\" (ook wel kammen of \"comb\") is het met de printkop ontwijken "
+"van het passeren van gaten. Dit vermindert draden, maar de printtijd neemt "
+"mogelijk toe. Wanneer omlopen uit staat zal de printer altijd retractie "
+"toepassen en recht van begin naar het eindpunt bewegen."
 
 #: Cura/util/profile.py:178
 msgid "Minimal extrusion before retracting (mm)"
-msgstr "Minimale extrusie voorafgaand aan terugtrekking (mm)"
+msgstr "Minimale extrusie voorafgaand aan retractie (mm)"
 
 #: Cura/util/profile.py:178
 msgid ""
@@ -1685,11 +1692,11 @@ msgid ""
 "This avoids retraction a lot on the same piece of filament which flattens "
 "the filament and causes grinding issues."
 msgstr ""
-"De minimale hoeveelheid extrusie die uitgevoerd moet worden voordat "
-"retractie nogmaals uitgevoerd kan worden. Wanneer retractie nodig is voordat "
-"deze hoeveelheid geextrudeerd is, wordt retractie genegeerd.\n"
+"De minimale hoeveelheid extrusie voordat retractie nogmaals uitgevoerd kan "
+"worden. Wanneer retractie nodig is voordat deze hoeveelheid geextrudeerd is, "
+"wordt retractie genegeerd.\n"
 "Deze optie voorkomt te veel retractie op een korte afstand, omdat dat het "
-"filament te veel kan beschadigen."
+"filament te veel kan beschadigen of vervormen."
 
 #: Cura/util/profile.py:179
 msgid "Initial layer thickness (mm)"
@@ -1714,9 +1721,9 @@ msgid ""
 "Sinks the object into the platform, this can be used for objects that do not "
 "have a flat bottom and thus create a too small first layer."
 msgstr ""
-"Dit laat het object in het platform zakken. Deze optie kan gebruikt worden "
-"voor objecten die geen vlakke onderkant hebben en dus een te kleine eerste "
-"laag hebben."
+"Dit laat het object visueel \"in het platform zakken\". Alles onder het "
+"platform wordt overgeslagen. Deze optie kan gebruikt worden voor objecten "
+"die geen vlakke onderkant hebben en dus een te kleine eerste laag hebben."
 
 #: Cura/util/profile.py:182
 msgid "Dual extrusion overlap (mm)"
@@ -1727,8 +1734,8 @@ msgid ""
 "Add a certain amount of overlapping extrusion on dual-extrusion prints. This "
 "bonds the different colors better together."
 msgstr ""
-"Om een betere hechting tussen verschillende kleuren te krijgen bij duo "
-"extrusie voeg je een hoeveelheid overlap toe."
+"Om een betere hechting tussen verschillende kleuren/materialen te krijgen "
+"bij duo extrusie voeg je een hoeveelheid overlap toe."
 
 #: Cura/util/profile.py:183
 msgid "Travel speed (mm/s)"
@@ -1740,8 +1747,8 @@ msgid ""
 "reach speeds of 250mm/s. But some machines might miss steps then."
 msgstr ""
 "De snelheid waarmee de printkop zich verplaatst wanneer deze niet print. Een "
-"Ultimaker kan tot 250 mm/s behalen, maar machines kunnen dan stappen gaan "
-"missen."
+"Ultimaker kan tot 250 mm/s behalen. Sommige machines zullen dan stappen gaan "
+"overslaan."
 
 #: Cura/util/profile.py:184
 msgid "Bottom layer speed (mm/s)"
@@ -1789,19 +1796,19 @@ msgid ""
 msgstr ""
 "Minimale tijd per laag. Dit geeft de laag de tijd om af te koelen voordat de "
 "volgende laag erop gelegd wordt. De printer zal langzamer bewegen om de "
-"ingestelde minimum tijd aan een laag te besteden."
+"ingestelde minimale tijd aan een laag te besteden."
 
 #: Cura/util/profile.py:187
 msgid "Enable cooling fan"
-msgstr "Koelventilator aanzetten"
+msgstr "Koelventilator(s) aanzetten"
 
 #: Cura/util/profile.py:187
 msgid ""
 "Enable the cooling fan during the print. The extra cooling from the cooling "
 "fan is essential during faster prints."
 msgstr ""
-"Zet de koelventilator aan tijdens het printen. Extra koeling van de "
-"koelventilator is essentieel bij snellere prints."
+"Zet de koelventilator(s) aan tijdens het printen. Extra koeling van de "
+"koelventilator(s) is essentieel bij sneller printen."
 
 #: Cura/util/profile.py:189
 msgid "Line count"
@@ -1814,9 +1821,10 @@ msgid ""
 "Setting this to 0 will disable the skirt. Multiple skirt lines can help "
 "priming your extruder better for small objects."
 msgstr ""
-"De zoom is een lijn om het object heen die geprint wordt tijdens de eerste "
-"laag. Deze zorgt dat de printkop goed is doorgelopen voordat de print "
-"begint. Door de zoom zie je meteen of het object op het platform past.\n"
+"De zoom (ook wel: \"skirt\") is een lus om het object heen die geprint wordt "
+"tijdens de eerste laag. Deze zorgt dat de printkop goed is doorgelopen "
+"voordat de print begint. Door de zoom zie je meteen of het object op het "
+"platform past.\n"
 "Wanneer je 0 invult begint de printer direct aan het object. Meerdere zomen "
 "zijn aan te raden bij kleine objecten."
 
@@ -1830,9 +1838,9 @@ msgid ""
 "This is the minimal distance, multiple skirt lines will be put outwards from "
 "this distance."
 msgstr ""
-"De afstand van de zoom tot je object.\n"
-"Dit is de minimale afstand. Meerdere zomen zullen van het object af gelegd "
-"worden."
+"De afstand tussen de zoom (ook wel: \"skirt\") en je object.\n"
+"Dit is de afstand van de eerste lus, de volgende lussen zullen verder van "
+"het object af gelegd worden."
 
 #: Cura/util/profile.py:191
 msgid "Minimal length (mm)"
@@ -1845,20 +1853,20 @@ msgid ""
 "Note: If the line count is set to 0 this is ignored."
 msgstr ""
 "De minimale lengte van de zoom. Wanneer deze waarde niet bereikt wordt, "
-"zullen er meer zomen geprint worden om deze minimale lengte te bereiken.\n"
+"zullen er meer lussen geprint worden om deze minimale lengte te bereiken.\n"
 "Let op: Wanneer het aantal lijnen op 0 staat, wordt deze waarde genegeerd."
 
 #: Cura/util/profile.py:194
 msgid "Fan on layer number"
-msgstr "Koelventilator aan bij laag nummer"
+msgstr "Koelventilator(s) aan vanaf laag (nummer)"
 
 #: Cura/util/profile.py:194
 msgid ""
 "The layer at which the fan is turned on. The first layer is layer 0. The "
 "first layer can stick better if you turn on the fan on, on the 2nd layer."
 msgstr ""
-"De laag vanaf welke de ventilator aangezet wordt. De eerste laag is laag 0. "
-"De eerste laag hecht beter wanneer de koelventilator niet aan staat."
+"De laag vanaf welke de koeling aangezet wordt. De eerste laag is laag 0. De "
+"eerste laag hecht beter wanneer de koeling uit staat."
 
 #: Cura/util/profile.py:195
 msgid "Fan speed min (%)"
@@ -1870,9 +1878,10 @@ msgid ""
 "slows down the layer, the fan is adjusted between the min and max speed. "
 "Minimal fan speed is used if the layer is not slowed down due to cooling."
 msgstr ""
-"De minimale snelheid van de koelventilator wordt gebruikt wanneer je deze "
-"aanzet. Wanneer de snelheid per laag lager wordt voor de koeling, wordt de "
-"ventilatorsnelheid gevarieerd tussen de minimale en maximale snelheid."
+"De minimale snelheid van de koelventilator wordt gebruikt wanneer deze "
+"aangezet wordt. Wanneer de snelheid per laag lager wordt voor de koeling, "
+"wordt de ventilatorsnelheid gevarieerd tussen de minimale en maximale "
+"snelheid."
 
 #: Cura/util/profile.py:196
 msgid "Fan speed max (%)"
@@ -2118,7 +2127,7 @@ msgstr "Combineer alles (Type-B)"
 
 #: Cura/util/profile.py:222
 msgid "Keep open faces"
-msgstr "Behoudt open vlakken."
+msgstr "Behoudt open vlakken"
 
 #: Cura/util/profile.py:222
 msgid ""
@@ -2424,12 +2433,12 @@ msgstr ""
 
 #: Cura/util/profile.py:389
 #, python-format
-msgid "More flow then 150% is rare and usually not recommended."
+msgid "More flow than 150% is rare and usually not recommended."
 msgstr ""
 
 #: Cura/util/profile.py:390
 #, python-format
-msgid "More flow then 50% is rare and usually not recommended."
+msgid "Less flow than 50% is rare and usually not recommended."
 msgstr ""
 
 #: Cura/util/profile.py:391

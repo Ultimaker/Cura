@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-02 11:20+0200\n"
+"POT-Creation-Date: 2013-10-04 12:27+0200\n"
 "PO-Revision-Date: 2013-10-02 11:23+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -577,11 +577,13 @@ msgid "Add new machine..."
 msgstr "Dodaj nową drukarkę..."
 
 #: Cura/gui/mainWindow.py:396
-msgid "Install custom firmware"
+#, fuzzy
+msgid "Install custom firmware..."
 msgstr "Zainstaluj własny firmware"
 
 #: Cura/gui/mainWindow.py:398
-msgid "Install default Marlin firmware"
+#, fuzzy
+msgid "Install default Marlin firmware..."
 msgstr "Zainstaluj domyślny firmware Marlin"
 
 #: Cura/gui/mainWindow.py:402
@@ -1347,11 +1349,12 @@ msgid "Fill Density (%)"
 msgstr "Gęstość wypełnienia (%)"
 
 #: Cura/util/profile.py:157
+#, fuzzy
 msgid ""
 "This controls how densely filled the insides of your print will be. For a "
 "solid part use 100%, for an empty part use 0%. A value around 20% is usually "
 "enough.\n"
-"This won't effect the outside of the print and only adjusts how strong the "
+"This won't affect the outside of the print and only adjusts how strong the "
 "part becomes."
 msgstr ""
 "Kontroluje jako gęsto upakowane są linie tworzące wypełnienie. Aby uzyskać w "
@@ -1972,8 +1975,8 @@ msgid ""
 "weaker support which is easier to remove. 20% seems to be a good average."
 msgstr ""
 "Procentowa wartość z jaką wydrukować strukturę wypełnienia supportu. "
-"Mniejsza wartość zużywa mniej materiału i jest łatwiejsza do usunięcia. "
-"20% s wydaje się odpowiednią średnią."
+"Mniejsza wartość zużywa mniej materiału i jest łatwiejsza do usunięcia. 20% "
+"s wydaje się odpowiednią średnią."
 
 #: Cura/util/profile.py:207
 msgid "Distance X/Y (mm)"
@@ -2418,12 +2421,12 @@ msgstr ""
 
 #: Cura/util/profile.py:389
 #, python-format
-msgid "More flow then 150% is rare and usually not recommended."
+msgid "More flow than 150% is rare and usually not recommended."
 msgstr ""
 
 #: Cura/util/profile.py:390
 #, python-format
-msgid "More flow then 50% is rare and usually not recommended."
+msgid "Less flow than 50% is rare and usually not recommended."
 msgstr ""
 
 #: Cura/util/profile.py:391

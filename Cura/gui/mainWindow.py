@@ -393,9 +393,9 @@ class mainWindow(wx.Frame):
 
 		#Add tools for machines.
 		self.machineMenu.AppendSeparator()
-		i = self.machineMenu.Append(-1, _("Install custom firmware"))
+		i = self.machineMenu.Append(-1, _("Install custom firmware..."))
 		self.Bind(wx.EVT_MENU, self.OnCustomFirmware, i)
-		i = self.machineMenu.Append(-1, _("Install default Marlin firmware"))
+		i = self.machineMenu.Append(-1, _("Install default Marlin firmware..."))
 		self.Bind(wx.EVT_MENU, self.OnDefaultMarlinFirmware, i)
 
 	def OnLoadProfile(self, e):
