@@ -42,6 +42,12 @@ class aboutWindow(wx.Dialog):
 			self.addComponent('EjectMedia', 'Utility to safe-remove SD cards', 'Freeware', 'http://www.uwe-sieber.de/english.html')
 		self.addComponent('Pymclevel', 'Python library for reading Minecraft levels.', 'ISC', 'https://github.com/mcedit/pymclevel')
 
+		#Translations done by:
+		#Dutch: Charlotte Jansen
+		#German: Gregor Luetolf
+		#Polish: Piotr Paczynski
+		#French: Jeremie Francois
+		#Spanish: Jose Gemez
 		self.Fit()
 
 	def addComponent(self, name, description, license, url):

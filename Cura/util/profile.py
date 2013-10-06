@@ -366,7 +366,7 @@ setting('machine_height', '200', float, 'machine', 'hidden').setLabel(_("Maximum
 setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden')
 setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
 setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel(_("Heated bed"), _("If you have an heated bed, this enabled heated bed settings (requires restart)"))
-setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode'], 'machine', 'hidden').setLabel(_("GCode Flavor"), _("Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer."))
+setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode', 'MakerBot'], 'machine', 'hidden').setLabel(_("GCode Flavor"), _("Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer.\nMakerBot GCode has a few changes in the way GCode is generated, but still requires MakerWare to generate to X3G."))
 setting('extruder_amount', '1', ['1','2','3','4'], 'machine', 'hidden').setLabel(_("Extruder count"), _("Amount of extruders in your machine."))
 setting('extruder_offset_x1', '-21.6', float, 'machine', 'hidden').setLabel(_("Offset X"), _("The offset of your secondary extruder compared to the primary."))
 setting('extruder_offset_y1', '0.0', float, 'machine', 'hidden').setLabel(_("Offset Y"), _("The offset of your secondary extruder compared to the primary."))
@@ -653,6 +653,21 @@ def loadPreferences(filename):
 		n += 1
 
 	setActiveMachine(int(getPreferenceFloat('active_machine')))
+
+def loadMachineSettings(filename):
+	global settingsList
+	#Read a configuration file as global config
+	profileParser = ConfigParser.ConfigParser()
+	try:
+		profileParser.read(filename)
+	except ConfigParser.ParsingError:
+		return
+
+	for set in settingsList:
+		if set.isMachineSetting():
+			if profileParser.has_option('machine', set.getName()):
+				set.setValue(unicode(profileParser.get('machine', set.getName()), 'utf-8', 'replace'))
+	checkAndUpdateMachineName()
 
 def savePreferences(filename):
 	global settingsList

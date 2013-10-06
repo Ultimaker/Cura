@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
+import os
 import webbrowser
 import threading
 import time
@@ -14,7 +15,7 @@ from Cura.gui import printWindow
 from Cura.util import machineCom
 from Cura.util import profile
 from Cura.util import gcodeGenerator
-from Cura.util.resources import getPathForImage
+from Cura.util import resources
 
 
 class InfoBox(wx.Panel):
@@ -25,14 +26,14 @@ class InfoBox(wx.Panel):
 		self.sizer = wx.GridBagSizer(5, 5)
 		self.SetSizer(self.sizer)
 
-		self.attentionBitmap = wx.Bitmap(getPathForImage('attention.png'))
-		self.errorBitmap = wx.Bitmap(getPathForImage('error.png'))
-		self.readyBitmap = wx.Bitmap(getPathForImage('ready.png'))
+		self.attentionBitmap = wx.Bitmap(resources.getPathForImage('attention.png'))
+		self.errorBitmap = wx.Bitmap(resources.getPathForImage('error.png'))
+		self.readyBitmap = wx.Bitmap(resources.getPathForImage('ready.png'))
 		self.busyBitmap = [
-			wx.Bitmap(getPathForImage('busy-0.png')),
-			wx.Bitmap(getPathForImage('busy-1.png')),
-			wx.Bitmap(getPathForImage('busy-2.png')),
-			wx.Bitmap(getPathForImage('busy-3.png'))
+			wx.Bitmap(resources.getPathForImage('busy-0.png')),
+			wx.Bitmap(resources.getPathForImage('busy-1.png')),
+			wx.Bitmap(resources.getPathForImage('busy-2.png')),
+			wx.Bitmap(resources.getPathForImage('busy-3.png'))
 		]
 
 		self.bitmap = wx.StaticBitmap(self, -1, wx.EmptyBitmapRGBA(24, 24, red=255, green=255, blue=255, alpha=1))
@@ -232,11 +233,47 @@ class FirstInfoPage(InfoPage):
 		#self.AddText('* Do your first print')
 
 
-class RepRapInfoPage(InfoPage):
+class OtherMachineSelectPage(InfoPage):
 	def __init__(self, parent):
-		super(RepRapInfoPage, self).__init__(parent, "RepRap information")
-		self.AddText(
-			_("RepRap machines are vastly different, and there is no\ndefault configuration in Cura for any of them."))
+		super(OtherMachineSelectPage, self).__init__(parent, "Other machine information")
+		self.AddText(_("The following pre-defined machine profiles are available"))
+		self.AddText(_("Note that these profiles are not guaranteed to give good results,\nor work at all. Extra tweaks might be required."))
+		self.options = []
+		machines = resources.getDefaultMachineProfiles()
+		machines.sort()
+		for filename in machines:
+			name = os.path.splitext(os.path.basename(filename))[0]
+			item = self.AddRadioButton(name)
+			item.filename = filename
+			item.Bind(wx.EVT_RADIOBUTTON, self.OnProfileSelect)
+			self.options.append(item)
+		self.AddSeperator()
+		item = self.AddRadioButton('Custom...')
+		item.SetValue(True)
+		item.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
+
+	def OnProfileSelect(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineInfoPage)
+
+	def OnOtherSelect(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().customRepRapInfoPage)
+
+	def StoreData(self):
+		for option in self.options:
+			if option.GetValue():
+				profile.loadProfile(option.filename)
+				profile.loadMachineSettings(option.filename)
+
+class OtherMachineInfoPage(InfoPage):
+	def __init__(self, parent):
+		super(OtherMachineInfoPage, self).__init__(parent, "Cura Ready!")
+		self.AddText(_("Cura is now ready to be used!"))
+
+class CustomRepRapInfoPage(InfoPage):
+	def __init__(self, parent):
+		super(CustomRepRapInfoPage, self).__init__(parent, "Custom RepRap information")
+		self.AddText(_("RepRap machines can be vastly different, so here you can set your own settings."))
+		self.AddText(_("Be sure to review the default profile before running it on your machine."))
 		self.AddText(_("If you like a default profile for your machine added,\nthen make an issue on github."))
 		self.AddSeperator()
 		self.AddText(_("You will have to manually install Marlin or Sprinter firmware."))
@@ -275,7 +312,7 @@ class MachineSelectPage(InfoPage):
 		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
 		self.UltimakerRadio = self.AddRadioButton("Ultimaker")
 		self.UltimakerRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimakerSelect)
-		self.OtherRadio = self.AddRadioButton(_("Other (Ex: RepRap)"))
+		self.OtherRadio = self.AddRadioButton(_("Other (Ex: RepRap, MakerBot)"))
 		self.OtherRadio.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
 		self.AddSeperator()
 		self.AddText(_("The collection of anonymous usage information helps with the continued improvement of Cura."))
@@ -291,7 +328,7 @@ class MachineSelectPage(InfoPage):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimakerSelectParts)
 
 	def OnOtherSelect(self, e):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().repRapInfoPage)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
 
 	def AllowNext(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimaker2ReadyPage)
@@ -404,16 +441,16 @@ class UltimakerCheckupPage(InfoPage):
 	def __init__(self, parent):
 		super(UltimakerCheckupPage, self).__init__(parent, "Ultimaker Checkup")
 
-		self.checkBitmap = wx.Bitmap(getPathForImage('checkmark.png'))
-		self.crossBitmap = wx.Bitmap(getPathForImage('cross.png'))
-		self.unknownBitmap = wx.Bitmap(getPathForImage('question.png'))
-		self.endStopNoneBitmap = wx.Bitmap(getPathForImage('endstop_none.png'))
-		self.endStopXMinBitmap = wx.Bitmap(getPathForImage('endstop_xmin.png'))
-		self.endStopXMaxBitmap = wx.Bitmap(getPathForImage('endstop_xmax.png'))
-		self.endStopYMinBitmap = wx.Bitmap(getPathForImage('endstop_ymin.png'))
-		self.endStopYMaxBitmap = wx.Bitmap(getPathForImage('endstop_ymax.png'))
-		self.endStopZMinBitmap = wx.Bitmap(getPathForImage('endstop_zmin.png'))
-		self.endStopZMaxBitmap = wx.Bitmap(getPathForImage('endstop_zmax.png'))
+		self.checkBitmap = wx.Bitmap(resources.getPathForImage('checkmark.png'))
+		self.crossBitmap = wx.Bitmap(resources.getPathForImage('cross.png'))
+		self.unknownBitmap = wx.Bitmap(resources.getPathForImage('question.png'))
+		self.endStopNoneBitmap = wx.Bitmap(resources.getPathForImage('endstop_none.png'))
+		self.endStopXMinBitmap = wx.Bitmap(resources.getPathForImage('endstop_xmin.png'))
+		self.endStopXMaxBitmap = wx.Bitmap(resources.getPathForImage('endstop_xmax.png'))
+		self.endStopYMinBitmap = wx.Bitmap(resources.getPathForImage('endstop_ymin.png'))
+		self.endStopYMaxBitmap = wx.Bitmap(resources.getPathForImage('endstop_ymax.png'))
+		self.endStopZMinBitmap = wx.Bitmap(resources.getPathForImage('endstop_zmin.png'))
+		self.endStopZMaxBitmap = wx.Bitmap(resources.getPathForImage('endstop_zmax.png'))
 
 		self.AddText(
 			_("It is a good idea to do a few sanity checks now on your Ultimaker.\nYou can skip these if you know your machine is functional."))
@@ -783,7 +820,9 @@ class configWizard(wx.wizard.Wizard):
 		self.ultimakerCalibrateStepsPerEPage = UltimakerCalibrateStepsPerEPage(self)
 		self.bedLevelPage = bedLevelWizardMain(self)
 		self.headOffsetCalibration = headOffsetCalibrationPage(self)
-		self.repRapInfoPage = RepRapInfoPage(self)
+		self.otherMachineSelectPage = OtherMachineSelectPage(self)
+		self.customRepRapInfoPage = CustomRepRapInfoPage(self)
+		self.otherMachineInfoPage = OtherMachineInfoPage(self)
 
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 
@@ -794,6 +833,7 @@ class configWizard(wx.wizard.Wizard):
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerFirmwareUpgradePage, self.ultimakerCheckupPage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerCheckupPage, self.bedLevelPage)
 		#wx.wizard.WizardPageSimple.Chain(self.ultimakerCalibrationPage, self.ultimakerCalibrateStepsPerEPage)
+		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
 
 		self.FitToPage(self.firstInfoPage)
 		self.GetPageAreaSizer().Add(self.firstInfoPage)

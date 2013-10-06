@@ -6,7 +6,7 @@ if sys.platform.startswith('darwin'):
     from setuptools import setup
 
     APP = ['Cura/cura.py']
-    DATA_FILES = ['Cura/LICENSE', 'Cura/resources/images', 'Cura/resources/meshes', 'Cura/resources/example', 'Cura/resources/firmware', 'Cura/resources/locale']
+    DATA_FILES = ['Cura/LICENSE', 'Cura/resources/images', 'Cura/resources/meshes', 'Cura/resources/example', 'Cura/resources/firmware', 'Cura/resources/locale', 'Cura/resources/machine_profiles']
     PLIST = {
         u'CFBundleName': u'Cura',
         u'CFBundleShortVersionString': u'13.06.5',

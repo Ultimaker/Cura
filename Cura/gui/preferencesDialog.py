@@ -27,8 +27,9 @@ class preferencesDialog(wx.Dialog):
 		for i in xrange(1, extruderCount):
 			configBase.SettingRow(left, 'model_colour%d' % (i+1), wx.Colour)
 
-		configBase.TitleRow(left, _("Language"))
-		configBase.SettingRow(left, 'language', map(lambda n: n[1], resources.getLanguageOptions()))
+		if len(resources.getLanguageOptions()) > 1:
+			configBase.TitleRow(left, _("Language"))
+			configBase.SettingRow(left, 'language', map(lambda n: n[1], resources.getLanguageOptions()))
 
 		configBase.TitleRow(right, _("Filament settings"))
 		configBase.SettingRow(right, 'filament_physical_density')

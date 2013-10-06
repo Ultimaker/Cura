@@ -3,6 +3,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import os
 import sys
+import glob
 
 #Cura/util classes should not depend on wx...
 import wx
@@ -43,6 +44,10 @@ def getPathForMesh(name):
 
 def getPathForFirmware(name):
 	return getPathForResource(resourceBasePath, 'firmware', name)
+
+def getDefaultMachineProfiles():
+	path = os.path.normpath(os.path.join(resourceBasePath, 'machine_profiles', '*.ini'))
+	return glob.glob(path)
 
 def setupLocalization(selectedLanguage = None):
 	try:
