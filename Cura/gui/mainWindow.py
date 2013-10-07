@@ -400,7 +400,7 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnCustomFirmware, i)
 
 		self.defaultFirmwareInstallMenuItem = self.machineMenu.Append(-1, _("Install default Marlin firmware..."))
-		self.Bind(wx.EVT_MENU, self.OnDefaultMarlinFirmware, i)
+		self.Bind(wx.EVT_MENU, self.OnDefaultMarlinFirmware, self.defaultFirmwareInstallMenuItem)
 
 	def OnLoadProfile(self, e):
 		dlg=wx.FileDialog(self, _("Select profile file to load"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
