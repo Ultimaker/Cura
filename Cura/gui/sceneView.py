@@ -8,7 +8,7 @@ import os
 import traceback
 import threading
 import math
-import glob
+import platform
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -598,7 +598,7 @@ class SceneView(openglGui.glGuiPanel):
 			self.scaleZmmctrl.setValue(round(size[2], 2))
 
 	def OnKeyChar(self, keyCode):
-		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE:
+		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE or (keyCode == wx.WXK_BACK and platform.system() == "Darwin"):
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
 				self.QueueRefresh()
