@@ -304,6 +304,7 @@ class mainWindow(wx.Frame):
 			self.splitter.SetSashPosition(self.normalSashPos, True)
 			# Enabled sash
 			self.splitter.SetSashSize(4)
+		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
 		self.scene.updateProfileToControls()
 
 	def OnPreferences(self, e):
@@ -397,7 +398,8 @@ class mainWindow(wx.Frame):
 		self.machineMenu.AppendSeparator()
 		i = self.machineMenu.Append(-1, _("Install custom firmware..."))
 		self.Bind(wx.EVT_MENU, self.OnCustomFirmware, i)
-		i = self.machineMenu.Append(-1, _("Install default Marlin firmware..."))
+
+		self.defaultFirmwareInstallMenuItem = self.machineMenu.Append(-1, _("Install default Marlin firmware..."))
 		self.Bind(wx.EVT_MENU, self.OnDefaultMarlinFirmware, i)
 
 	def OnLoadProfile(self, e):
