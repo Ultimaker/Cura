@@ -110,16 +110,6 @@ class mainWindow(wx.Frame):
 		self.menubar.Append(self.fileMenu, '&' + _("File"))
 
 		toolsMenu = wx.Menu()
-
-		i = toolsMenu.Append(-1, _("Switch to quickprint..."))
-		self.switchToQuickprintMenuItem = i
-		self.Bind(wx.EVT_MENU, self.OnSimpleSwitch, i)
-
-		i = toolsMenu.Append(-1, _("Switch to full settings..."))
-		self.switchToNormalMenuItem = i
-		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
-
-		#toolsMenu.AppendSeparator()
 		#i = toolsMenu.Append(-1, 'Batch run...')
 		#self.Bind(wx.EVT_MENU, self.OnBatchRun, i)
 		#self.normalModeOnlyItems.append(i)
@@ -143,6 +133,15 @@ class mainWindow(wx.Frame):
 		self.menubar.Append(self.machineMenu, _("Machine"))
 
 		expertMenu = wx.Menu()
+		i = expertMenu.Append(-1, _("Switch to quickprint..."), kind=wx.ITEM_RADIO)
+		self.switchToQuickprintMenuItem = i
+		self.Bind(wx.EVT_MENU, self.OnSimpleSwitch, i)
+
+		i = expertMenu.Append(-1, _("Switch to full settings..."), kind=wx.ITEM_RADIO)
+		self.switchToNormalMenuItem = i
+		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
+		expertMenu.AppendSeparator()
+
 		i = expertMenu.Append(-1, _("Open expert settings..."))
 		self.normalModeOnlyItems.append(i)
 		self.Bind(wx.EVT_MENU, self.OnExpertOpen, i)
@@ -285,8 +284,10 @@ class mainWindow(wx.Frame):
 
 		for i in self.normalModeOnlyItems:
 			i.Enable(not isSimple)
-		self.switchToQuickprintMenuItem.Enable(not isSimple)
-		self.switchToNormalMenuItem.Enable(isSimple)
+		if isSimple:
+			self.switchToQuickprintMenuItem.Check()
+		else:
+			self.switchToNormalMenuItem.Check()
 
 		# Set splitter sash position & size
 		if isSimple:
