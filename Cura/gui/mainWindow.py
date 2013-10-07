@@ -581,10 +581,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 
 		#Plugin page
 		self.pluginPanel = pluginPanel.pluginPanel(self.nb, callback)
-		if len(self.pluginPanel.pluginList) > 0:
-			self.nb.AddPage(self.pluginPanel, _("Plugins"))
-		else:
-			self.pluginPanel.Show(False)
+		self.nb.AddPage(self.pluginPanel, _("Plugins"))
 
 		#Alteration page
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
