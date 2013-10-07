@@ -308,21 +308,6 @@ setting('cool_start.gcode', '', str, 'alteration', 'alteration')
 setting('cool_end.gcode', '', str, 'alteration', 'alteration')
 setting('replace.csv', '', str, 'alteration', 'alteration')
 #######################################################################################
-setting('nextobject.gcode', """;Move to next object on the platform. clear_z is the minimal z height we need to make sure we do not hit any objects.
-G92 E0
-
-G91                                    ;relative positioning
-G1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure
-G1 Z+0.5 E-5 F{travel_speed}           ;move Z up a bit and retract filament even more
-G90                                    ;absolute positioning
-
-G1 Z{clear_z} F{max_z_speed}
-G92 E0
-G1 X{object_center_x} Y{object_center_y} F{travel_speed}
-G1 F200 E6
-G92 E0
-""", str, 'alteration', 'alteration')
-#######################################################################################
 setting('switchExtruder.gcode', """;Switch between the current extruder and the next extruder, when printing with multiple extruders.
 G92 E0
 G1 E-36 F5000
@@ -363,7 +348,7 @@ setting('machine_type', 'unknown', str, 'machine', 'hidden') #Ultimaker, Ultimak
 setting('machine_width', '205', float, 'machine', 'hidden').setLabel(_("Maximum width (mm)"), _("Size of the machine in mm"))
 setting('machine_depth', '205', float, 'machine', 'hidden').setLabel(_("Maximum depth (mm)"), _("Size of the machine in mm"))
 setting('machine_height', '200', float, 'machine', 'hidden').setLabel(_("Maximum height (mm)"), _("Size of the machine in mm"))
-setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden')
+setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden').setLabel(_("Machine center 0,0"), _("Machines firmware defines the center of the bed as 0,0 instead of the front left corner."))
 setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
 setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel(_("Heated bed"), _("If you have an heated bed, this enabled heated bed settings (requires restart)"))
 setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode', 'MakerBot'], 'machine', 'hidden').setLabel(_("GCode Flavor"), _("Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer.\nMakerBot GCode has a few changes in the way GCode is generated, but still requires MakerWare to generate to X3G."))
@@ -888,7 +873,9 @@ def replaceTagMatch(m):
 		return pre + '#F_WGHT#'
 	if tag == 'filament_cost':
 		return pre + '#F_COST#'
-	if pre == 'F' and tag in ['print_speed', 'retraction_speed', 'travel_speed', 'max_z_speed', 'bottom_layer_speed', 'cool_min_feedrate']:
+	if pre == 'F' and tag == 'max_z_speed':
+		f = getProfileSettingFloat('travel_speed') * 60
+	if pre == 'F' and tag in ['print_speed', 'retraction_speed', 'travel_speed', 'bottom_layer_speed', 'cool_min_feedrate']:
 		f = getProfileSettingFloat(tag) * 60
 	elif isProfileSetting(tag):
 		f = getProfileSettingFloat(tag)

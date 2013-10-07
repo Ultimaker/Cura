@@ -93,7 +93,6 @@ class simpleModePanel(wx.Panel):
 		put('retraction_amount', '4.5')
 		put('retraction_extra', '0.0')
 		put('travel_speed', '150')
-		put('max_z_speed', '3.0')
 		put('bottom_layer_speed', '25')
 		put('cool_min_layer_time', '5')
 		put('fan_enabled', 'True')
