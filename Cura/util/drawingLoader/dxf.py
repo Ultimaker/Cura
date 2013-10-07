@@ -9,9 +9,9 @@ from xml.etree import ElementTree
 
 from Cura.util.drawingLoader import drawing
 
-class DXF(object):
+class DXF(drawing.Drawing):
 	def __init__(self, filename):
-		self.paths = []
+		super(DXF, self).__init__()
 		self._lastLine = None
 		self._polyLine = None
 
@@ -48,17 +48,15 @@ class DXF(object):
 			if self._lastLine is not None and self._lastLinePoint == complex(float(obj[10]), float(obj[20])):
 				self._lastLine.addLineTo(float(obj[11]), float(obj[21]))
 			else:
-				p = drawing.Path(float(obj[10]), float(obj[20]))
+				p = self.addPath(float(obj[10]), float(obj[20]))
 				p.addLineTo(float(obj[11]), float(obj[21]))
-				self.paths.append(p)
 				self._lastLine = p
 			self._lastLinePoint = complex(float(obj[11]), float(obj[21]))
 		elif type == 'POLYLINE':
 			self._polyLine = None
 		elif type == 'VERTEX':
 			if self._polyLine is None:
-				self._polyLine = drawing.Path(float(obj[10]), float(obj[20]))
-				self.paths.append(self._polyLine)
+				self._polyLine = self.addPath(float(obj[10]), float(obj[20]))
 			else:
 				self._polyLine.addLineTo(float(obj[10]), float(obj[20]))
 		else:
@@ -69,5 +67,5 @@ if __name__ == '__main__':
 		print 'File: %s' % (sys.argv[n])
 		dxf = DXF(sys.argv[n])
 
-	drawing.saveAsHtml(dxf, "test_export.html")
+	dxf.saveAsHtml("test_export.html")
 

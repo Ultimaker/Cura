@@ -4,6 +4,55 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import math
 import numpy
 
+class Drawing(object):
+	def __init__(self):
+		self.paths = []
+
+	def addPath(self, x, y, matrix=numpy.matrix(numpy.identity(3, numpy.float64))):
+		p = Path(x, y, matrix)
+		self.paths.append(p)
+		return p
+
+	def saveAsHtml(self, filename):
+		f = open(filename, "w")
+
+		posMax = complex(-1000, -1000)
+		posMin = complex( 1000,  1000)
+		for path in self.paths:
+			points = path.getPoints()
+			for p in points:
+				if p.real > posMax.real:
+					posMax = complex(p.real, posMax.imag)
+				if p.imag > posMax.imag:
+					posMax = complex(posMax.real, p.imag)
+				if p.real < posMin.real:
+					posMin = complex(p.real, posMin.imag)
+				if p.imag < posMin.imag:
+					posMin = complex(posMin.real, p.imag)
+
+		f.write("<!DOCTYPE html><html><body>\n")
+		f.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" style='width:%dpx;height:%dpx'>\n" % ((posMax - posMin).real, (posMax - posMin).imag))
+		f.write("<g fill-rule='evenodd' style=\"fill: gray; stroke:black;stroke-width:2\">\n")
+		f.write("<path d=\"")
+		for path in self.paths:
+			points = path.getPoints()
+			f.write("M %f %f " % (points[0].real - posMin.real, points[0].imag - posMin.imag))
+			for point in points[1:]:
+				f.write("L %f %f " % (point.real - posMin.real, point.imag - posMin.imag))
+		f.write("\"/>")
+		f.write("</g>\n")
+
+		f.write("<g style=\"fill: none; stroke:red;stroke-width:1\">\n")
+		f.write("<path d=\"")
+		for path in self.paths:
+			f.write(path.getSVGPath())
+		f.write("\"/>")
+		f.write("</g>\n")
+
+		f.write("</svg>\n")
+		f.write("</body></html>")
+		f.close()
+
 class Path(object):
 	LINE = 0
 	ARC = 1
@@ -142,43 +191,3 @@ class Path(object):
 	def _m(self, p):
 		tmp = numpy.matrix([p.real, p.imag, 1], numpy.float64) * self._matrix
 		return complex(tmp[0,0], tmp[0,1])
-
-def saveAsHtml(paths, filename):
-	f = open(filename, "w")
-
-	posMax = complex(-1000, -1000)
-	posMin = complex( 1000,  1000)
-	for path in paths.paths:
-		points = path.getPoints()
-		for p in points:
-			if p.real > posMax.real:
-				posMax = complex(p.real, posMax.imag)
-			if p.imag > posMax.imag:
-				posMax = complex(posMax.real, p.imag)
-			if p.real < posMin.real:
-				posMin = complex(p.real, posMin.imag)
-			if p.imag < posMin.imag:
-				posMin = complex(posMin.real, p.imag)
-
-	f.write("<!DOCTYPE html><html><body>\n")
-	f.write("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" style='width:%dpx;height:%dpx'>\n" % ((posMax - posMin).real, (posMax - posMin).imag))
-	f.write("<g fill-rule='evenodd' style=\"fill: gray; stroke:black;stroke-width:2\">\n")
-	f.write("<path d=\"")
-	for path in paths.paths:
-		points = path.getPoints()
-		f.write("M %f %f " % (points[0].real - posMin.real, points[0].imag - posMin.imag))
-		for point in points[1:]:
-			f.write("L %f %f " % (point.real - posMin.real, point.imag - posMin.imag))
-	f.write("\"/>")
-	f.write("</g>\n")
-
-	f.write("<g style=\"fill: none; stroke:red;stroke-width:1\">\n")
-	f.write("<path d=\"")
-	for path in paths.paths:
-		f.write(path.getSVGPath())
-	f.write("\"/>")
-	f.write("</g>\n")
-
-	f.write("</svg>\n")
-	f.write("</body></html>")
-	f.close()

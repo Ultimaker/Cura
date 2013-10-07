@@ -52,8 +52,9 @@ def toFloat(f):
 	f = re.search('^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?', f).group(0)
 	return float(f)
 
-class SVG(object):
+class SVG(drawing.Drawing):
 	def __init__(self, filename):
+		super(SVG, self).__init__()
 		self.tagProcess = {}
 		self.tagProcess['rect'] = self._processRectTag
 		self.tagProcess['line'] = self._processLineTag
@@ -90,7 +91,6 @@ class SVG(object):
 		#From w3c testsuite
 		self.tagProcess['SVGTestCase'] = None
 
-		self.paths = []
 		f = open(filename, "r")
 		self._xml = ElementTree.parse(f)
 		self._recursiveCount = 0
@@ -137,43 +137,38 @@ class SVG(object):
 		y1 = toFloat(tag.get('y1', '0'))
 		x2 = toFloat(tag.get('x2', '0'))
 		y2 = toFloat(tag.get('y2', '0'))
-		p = drawing.Path(x1, y1, matrix)
+		p = self.addPath(x1, y1, matrix)
 		p.addLineTo(x2, y2)
-		self.paths.append(p)
 
 	def _processPolylineTag(self, tag, matrix):
 		values = map(toFloat, re.split('[, \t]+', tag.get('points', '').strip()))
-		p = drawing.Path(values[0], values[1], matrix)
+		p = self.addPath(values[0], values[1], matrix)
 		for n in xrange(2, len(values)-1, 2):
 			p.addLineTo(values[n], values[n+1])
-		self.paths.append(p)
 
 	def _processPolygonTag(self, tag, matrix):
 		values = map(toFloat, re.split('[, \t]+', tag.get('points', '').strip()))
-		p = drawing.Path(values[0], values[1], matrix)
+		p = self.addPath(values[0], values[1], matrix)
 		for n in xrange(2, len(values)-1, 2):
 			p.addLineTo(values[n], values[n+1])
 		p.closePath()
-		self.paths.append(p)
 
 	def _processCircleTag(self, tag, matrix):
 		cx = toFloat(tag.get('cx', '0'))
 		cy = toFloat(tag.get('cy', '0'))
 		r = toFloat(tag.get('r', '0'))
-		p = drawing.Path(cx-r, cy, matrix)
+		p = self.addPath(cx-r, cy, matrix)
 		p.addArcTo(cx+r, cy, 0, r, r, False, False)
 		p.addArcTo(cx-r, cy, 0, r, r, False, False)
-		self.paths.append(p)
 
 	def _processEllipseTag(self, tag, matrix):
 		cx = toFloat(tag.get('cx', '0'))
 		cy = toFloat(tag.get('cy', '0'))
 		rx = toFloat(tag.get('rx', '0'))
 		ry = toFloat(tag.get('rx', '0'))
-		p = drawing.Path(cx-rx, cy, matrix)
+		p = self.addPath(cx-rx, cy, matrix)
 		p.addArcTo(cx+rx, cy, 0, rx, ry, False, False)
 		p.addArcTo(cx-rx, cy, 0, rx, ry, False, False)
-		self.paths.append(p)
 
 	def _processRectTag(self, tag, matrix):
 		x = toFloat(tag.get('x', '0'))
@@ -200,7 +195,7 @@ class SVG(object):
 			ry = 0.0
 
 		if rx > 0 and ry > 0:
-			p = drawing.Path(x+width-rx, y, matrix)
+			p = self.addPath(x+width-rx, y, matrix)
 			p.addArcTo(x+width,y+ry, 0, rx, ry, False, True)
 			p.addLineTo(x+width, y+height-ry)
 			p.addArcTo(x+width-rx,y+height, 0, rx, ry, False, True)
@@ -209,14 +204,12 @@ class SVG(object):
 			p.addLineTo(x, y+ry)
 			p.addArcTo(x+rx,y, 0, rx, ry, False, True)
 			p.closePath()
-			self.paths.append(p)
 		else:
-			p = drawing.Path(x, y, matrix)
+			p = self.addPath(x, y, matrix)
 			p.addLineTo(x,y+height)
 			p.addLineTo(x+width,y+height)
 			p.addLineTo(x+width,y)
 			p.closePath()
-			self.paths.append(p)
 
 	def _processPathTag(self, tag, matrix):
 		pathString = tag.get('d', '').replace(',', ' ')
@@ -237,8 +230,7 @@ class SVG(object):
 			if command == 'm':
 				x += params[0]
 				y += params[1]
-				path = drawing.Path(x, y, matrix)
-				self.paths.append(path)
+				path = self.addPath(x, y, matrix)
 				params = params[2:]
 				while len(params) > 1:
 					x += params[0]
@@ -249,8 +241,7 @@ class SVG(object):
 			elif command == 'M':
 				x = params[0]
 				y = params[1]
-				path = drawing.Path(x, y, matrix)
-				self.paths.append(path)
+				path = self.addPath(x, y, matrix)
 				params = params[2:]
 				while len(params) > 1:
 					x = params[0]
@@ -395,4 +386,4 @@ if __name__ == '__main__':
 		print 'File: %s' % (sys.argv[n])
 		svg = SVG(sys.argv[n])
 
-	drawing.saveAsHtml(svg, "test_export.html")
+	svg.saveAsHtml("test_export.html")
