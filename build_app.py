@@ -5,17 +5,12 @@ import os
 if sys.platform.startswith('darwin'):
     from setuptools import setup
 
-    try:
-        f = open('scripts/darwin/dist/Cura.app/Contents/Resources/version', 'r')
-        version = unicode(f.readline().strip())
-        f.close()
-    except IOError:
-        version = 'Unknown'
+    version = os.environ['BUILD_NAME']
 
     APP = ['Cura/cura.py']
     DATA_FILES = ['Cura/LICENSE', 'Cura/resources/images', 'Cura/resources/meshes', 'Cura/resources/example', 'Cura/resources/firmware', 'Cura/resources/locale', 'Cura/resources/machine_profiles']
     PLIST = {
-        u'CFBundleName': u'Cura-'+version,
+        u'CFBundleName': u'Cura',
         u'CFBundleShortVersionString': version,
         u'CFBundleVersion': version,
         u'CFBundleIdentifier': u'com.ultimaker.Cura-'+version,
