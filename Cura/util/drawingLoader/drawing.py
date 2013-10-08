@@ -13,6 +13,12 @@ class Drawing(object):
 		self.paths.append(p)
 		return p
 
+	def _postProcessPaths(self):
+		for path in self.paths:
+			if not path.isClosed():
+				if abs(self._nodes[-1]['p'] - self._startPoint) < 0.001:
+					self._isClosed = True
+
 	def saveAsHtml(self, filename):
 		f = open(filename, "w")
 
@@ -60,49 +66,46 @@ class Path(object):
 
 	def __init__(self, x, y, matrix=numpy.matrix(numpy.identity(3, numpy.float64))):
 		self._matrix = matrix
-		self._startPoint = complex(x, y)
-		self._points = []
+		self._relMatrix = numpy.matrix([[matrix[0,0],matrix[1,0]],[matrix[0,1],matrix[1,1]]], numpy.float64)
+		self._startPoint = self._m(complex(x, y))
+		self._nodes = []
 		self._isClosed = False
 
 	def addLineTo(self, x, y):
-		self._points.append({'type': Path.LINE, 'p': complex(x, y)})
+		self._nodes.append({'type': Path.LINE, 'p': self._m(complex(x, y))})
 
 	def addArcTo(self, x, y, rot, rx, ry, large, sweep):
-		self._points.append({
+		self._nodes.append({
 			'type': Path.ARC,
-			'p': complex(x, y),
+			'p': self._m(complex(x, y)),
 			'rot': rot,
-			'radius': complex(rx, ry),
+			'radius': self._r(complex(rx, ry)),
 			'large': large,
 			'sweep': sweep
 		})
 
 	def addCurveTo(self, x, y, cp1x, cp1y, cp2x, cp2y):
-		self._points.append({
+		self._nodes.append({
 			'type': Path.CURVE,
-			'p': complex(x, y),
-			'cp1': complex(cp1x, cp1y),
-			'cp2': complex(cp2x, cp2y)
+			'p': self._m(complex(x, y)),
+			'cp1': self._m(complex(cp1x, cp1y)),
+			'cp2': self._m(complex(cp2x, cp2y))
 		})
 
 	def isClosed(self):
 		return self._isClosed
 
-	def checkClosed(self):
-		if abs(self._points[-1]['p'] - self._startPoint) < 0.001:
-			self._isClosed = True
-
 	def closePath(self):
-		self._points.append({'type': Path.LINE, 'p': self._startPoint})
+		self._nodes.append({'type': Path.LINE, 'p': self._startPoint})
 		self._isClosed = True
 
 	def getPoints(self, accuracy = 1):
-		pointList = [self._m(self._startPoint)]
+		pointList = [self._startPoint]
 		p1 = self._startPoint
-		for p in self._points:
+		for p in self._nodes:
 			if p['type'] == Path.LINE:
 				p1 = p['p']
-				pointList.append(self._m(p1))
+				pointList.append(p1)
 			elif p['type'] == Path.ARC:
 				p2 = p['p']
 				rot = math.radians(p['rot'])
@@ -140,27 +143,26 @@ class Path(object):
 					else:
 						a2 += math.pi * 2
 
-				pCenter = self._m(c + complex(math.cos(a1 + 0.5*(a2-a1)) * r.real, math.sin(a1 + 0.5*(a2-a1)) * r.imag))
-				dist = abs(pCenter - self._m(p1)) + abs(pCenter - self._m(p2))
+				pCenter = c + complex(math.cos(a1 + 0.5*(a2-a1)) * r.real, math.sin(a1 + 0.5*(a2-a1)) * r.imag)
+				dist = abs(pCenter - p1) + abs(pCenter - p2)
 				segments = int(dist / accuracy) + 1
 				for n in xrange(1, segments):
-					pointList.append(self._m(c + complex(math.cos(a1 + n*(a2-a1)/segments) * r.real, math.sin(a1 + n*(a2-a1)/segments) * r.imag)))
+					pointList.append(c + complex(math.cos(a1 + n*(a2-a1)/segments) * r.real, math.sin(a1 + n*(a2-a1)/segments) * r.imag))
 
-				pointList.append(self._m(p2))
+				pointList.append(p2)
 				p1 = p2
 			elif p['type'] == Path.CURVE:
-				p1_ = self._m(p1)
-				p2 = self._m(p['p'])
-				cp1 = self._m(p['cp1'])
-				cp2 = self._m(p['cp2'])
+				p2 = p['p']
+				cp1 = p['cp1']
+				cp2 = p['cp2']
 
-				pCenter = p1_*0.5*0.5*0.5 + cp1*3.0*0.5*0.5*0.5 + cp2*3.0*0.5*0.5*0.5 + p2*0.5*0.5*0.5
-				dist = abs(pCenter - p1_) + abs(pCenter - p2)
+				pCenter = p1*0.5*0.5*0.5 + cp1*3.0*0.5*0.5*0.5 + cp2*3.0*0.5*0.5*0.5 + p2*0.5*0.5*0.5
+				dist = abs(pCenter - p1) + abs(pCenter - p2)
 				segments = int(dist / accuracy) + 1
 				for n in xrange(1, segments):
 					f = n / float(segments)
 					g = 1.0-f
-					point = p1_*g*g*g + cp1*3.0*g*g*f + cp2*3.0*g*f*f + p2*f*f*f
+					point = p1*g*g*g + cp1*3.0*g*g*f + cp2*3.0*g*f*f + p2*f*f*f
 					pointList.append(point)
 
 				pointList.append(p2)
@@ -170,24 +172,28 @@ class Path(object):
 
 	#getSVGPath returns an SVG path string. Ths path string is not perfect when matrix transformations are involved.
 	def getSVGPath(self):
-		p0 = self._m(self._startPoint)
+		p0 = self._startPoint
 		ret = 'M %f %f ' % (p0.real, p0.imag)
-		for p in self._points:
+		for p in self._nodes:
 			if p['type'] == Path.LINE:
-				p0 = self._m(p['p'])
+				p0 = p['p']
 				ret += 'L %f %f' % (p0.real, p0.imag)
 			elif p['type'] == Path.ARC:
-				p0 = self._m(p['p'])
+				p0 = p['p']
 				radius = p['radius']
 				ret += 'A %f %f 0 %d %d %f %f' % (radius.real, radius.imag, 1 if p['large'] else 0, 1 if p['sweep'] else 0, p0.real, p0.imag)
 			elif p['type'] == Path.CURVE:
-				p0 = self._m(p['p'])
-				cp1 = self._m(p['cp1'])
-				cp2 = self._m(p['cp2'])
+				p0 = p['p']
+				cp1 = p['cp1']
+				cp2 = p['cp2']
 				ret += 'C %f %f %f %f %f %f' % (cp1.real, cp1.imag, cp2.real, cp2.imag, p0.real, p0.imag)
 
 		return ret
 
 	def _m(self, p):
 		tmp = numpy.matrix([p.real, p.imag, 1], numpy.float64) * self._matrix
+		return complex(tmp[0,0], tmp[0,1])
+
+	def _r(self, p):
+		tmp = numpy.matrix([p.real, p.imag], numpy.float64) * self._relMatrix
 		return complex(tmp[0,0], tmp[0,1])

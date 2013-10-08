@@ -230,6 +230,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 			glFlush()
 			if version.isDevVersion():
 				renderTime = time.time() - renderStartTime
+				if renderTime == 0:
+					renderTime = 0.001
 				glLoadIdentity()
 				glTranslate(10, self.GetSize().GetHeight() - 30, -1)
 				glColor4f(0.2,0.2,0.2,0.5)

@@ -94,13 +94,13 @@ class SVG(drawing.Drawing):
 		f = open(filename, "r")
 		self._xml = ElementTree.parse(f)
 		self._recursiveCount = 0
-		self._processGTag(self._xml.getroot(), numpy.matrix(numpy.identity(3, numpy.float64)))
+		matrix = numpy.matrix(numpy.identity(3, numpy.float64))
+		matrix = applyTransformString(matrix, "scale(%f)" % (25.4/90.0)) #Per default convert with 90 dpi
+		self._processGTag(self._xml.getroot(), matrix)
 		self._xml = None
 		f.close()
 
-		for path in self.paths:
-			if not path.isClosed():
-				path.checkClosed()
+		self._postProcessPaths()
 
 	def _processGTag(self, tag, baseMatrix):
 		for e in tag:

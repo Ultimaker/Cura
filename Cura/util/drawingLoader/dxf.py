@@ -39,9 +39,7 @@ class DXF(drawing.Drawing):
 			self._checkForNewPath(entityType, activeObject)
 		f.close()
 
-		for path in self.paths:
-			if not path.isClosed():
-				path.checkClosed()
+		self._postProcessPaths()
 
 	def _checkForNewPath(self, type, obj):
 		if type == 'LINE':
