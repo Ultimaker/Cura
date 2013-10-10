@@ -26,6 +26,8 @@ def getDefaultFirmware():
 			return resources.getPathForFirmware("MarlinUltimaker-115200.hex")
 		else:
 			return resources.getPathForFirmware("MarlinUltimaker-250000.hex")
+	if profile.getMachineSetting('machine_type') == 'ultimaker2':
+		return resources.getPathForFirmware("MarlinUltimaker2.hex")
 	return None
 
 class InstallFirmware(wx.Dialog):
