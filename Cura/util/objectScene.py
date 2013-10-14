@@ -77,7 +77,7 @@ class _objectOrderFinder(object):
 		size = self._scene._objectList[idx].getSize()
 
 		if self._leftToRight:
-			if addPos[0] - addSize[0] / 2 - self._offset[0] <= pos[0] + size[0] / 2:
+			if addPos[0] - addSize[0] / 2 - self._offset[0] >= pos[0] + size[0] / 2:
 				return False
 		else:
 			if addPos[0] + addSize[0] / 2 + self._offset[0] <= pos[0] - size[0] / 2:
@@ -87,7 +87,7 @@ class _objectOrderFinder(object):
 			if addPos[1] - addSize[1] / 2 - self._offset[1] >= pos[1] + size[1] / 2:
 				return False
 		else:
-			if addPos[1] + addSize[1] / 2 + self._offset[1] >= pos[1] - size[1] / 2:
+			if addPos[1] + addSize[1] / 2 + self._offset[1] <= pos[1] - size[1] / 2:
 				return False
 
 		return True
