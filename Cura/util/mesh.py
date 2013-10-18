@@ -31,7 +31,7 @@ class printableObject(object):
 		ret = printableObject(self._originFilename)
 		ret._matrix = self._matrix.copy()
 		ret._transformedMin = self._transformedMin.copy()
-		ret._transformedMax = self._transformedMin.copy()
+		ret._transformedMax = self._transformedMax.copy()
 		ret._transformedSize = self._transformedSize.copy()
 		ret._boundaryCircleSize = self._boundaryCircleSize
 		ret._drawOffset = self._drawOffset.copy()

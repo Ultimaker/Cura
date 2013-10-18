@@ -565,7 +565,7 @@ class SceneView(openglGui.glGuiPanel):
 			self.updateProfileToControls()
 			self.updateToolButtons()
 		if zoom and obj is not None:
-			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getMaximum()[2] / 2])
+			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2])
 			self._animView = openglGui.animation(self, self._viewTarget.copy(), newViewPos, 0.5)
 			newZoom = obj.getBoundaryCircle() * 6
 			if newZoom > numpy.max(self._machineSize) * 3:
@@ -897,7 +897,7 @@ void main(void)
 	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
 }
 				""")
-			if self._objectShader == None or not self._objectShader.isValid():
+			if self._objectShader is None or not self._objectShader.isValid():
 				self._objectShader = opengl.GLFakeShader()
 				self._objectOverhangShader = opengl.GLFakeShader()
 				self._objectLoadShader = None
