@@ -54,11 +54,15 @@ class Youmagine(object):
 			('Jewelry', 7),
 			('Maker/DIY', 8),
 			('Miniatures', 9),
+			('Toys', 10),
+			('3D printer parts and enhancements', 11),
 			('Other', 1),
 		]
 		self._licenses = [
-			('Creative Commons - Share Alike', 'cc'),
-			('Creative Commons - Attribution-NonCommercial-ShareAlike', 'ccnc'),
+			('Creative Commons - Attribution Share Alike', 'ccbysa'),
+			('Creative Commons - Attribution Non-Commercial ShareAlike', 'ccbyncsa'),
+			('Creative Commons - Attribution No Derivatives', 'ccbynd'),
+			('Creative Commons - Attribution Non-Commercial No Derivatives', 'ccbyncsa'),
 			('GPLv3', 'gplv3'),
 		]
 
