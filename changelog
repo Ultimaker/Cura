@@ -1,0 +1,7 @@
+Development
+* Added imageToMesh tool to load images as 3D height maps
+
+13.10
+* Added YouMagine upload button
+* Added multiple machine support
+* Redone support material
