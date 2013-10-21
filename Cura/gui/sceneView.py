@@ -28,6 +28,7 @@ from Cura.gui.util import previewTools
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
 from Cura.gui.tools import youmagineGui
+from Cura.gui.tools import imageToMesh
 
 class SceneView(openglGui.glGuiPanel):
 	def __init__(self, parent):
@@ -174,7 +175,7 @@ class SceneView(openglGui.glGuiPanel):
 					if ext == '.ini':
 						profile.loadProfile(filename)
 						mainWindow.addToProfileMRU(filename)
-					elif ext in meshLoader.loadSupportedExtensions():
+					elif ext in meshLoader.loadSupportedExtensions() or ext in imageToMesh.supportedExtensions():
 						scene_filenames.append(filename)
 						mainWindow.addToModelMRU(filename)
 					else:
@@ -196,7 +197,7 @@ class SceneView(openglGui.glGuiPanel):
 	def showLoadModel(self, button = 1):
 		if button == 1:
 			dlg=wx.FileDialog(self, _("Open 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
-			dlg.SetWildcard(meshLoader.loadWildcardFilter() + "|GCode file (*.gcode)|*.g;*.gcode;*.G;*.GCODE")
+			dlg.SetWildcard(meshLoader.loadWildcardFilter() + imageToMesh.wildcardList() + "|GCode file (*.gcode)|*.g;*.gcode;*.G;*.GCODE")
 			if dlg.ShowModal() != wx.ID_OK:
 				dlg.Destroy()
 				return
@@ -254,6 +255,8 @@ class SceneView(openglGui.glGuiPanel):
 			self._slicer.submitSliceInfoOnline()
 
 	def showSaveGCode(self):
+		if len(self._scene._objectList) < 1:
+			return
 		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE)
 		filename = self._scene._objectList[0].getName() + '.gcode'
 		dlg.SetFilename(filename)
@@ -530,7 +533,12 @@ class SceneView(openglGui.glGuiPanel):
 	def loadScene(self, fileList):
 		for filename in fileList:
 			try:
-				objList = meshLoader.loadMeshes(filename)
+				ext = os.path.splitext(filename)[1].lower()
+				if ext in imageToMesh.supportedExtensions():
+					imageToMesh.convertImageDialog(self, filename).Show()
+					objList = []
+				else:
+					objList = meshLoader.loadMeshes(filename)
 			except:
 				traceback.print_exc()
 			else:

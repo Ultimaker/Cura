@@ -59,6 +59,8 @@ class Path(object):
 			p1 = self._nodes[self._nodes.index(node) - 1].position
 
 		p2 = node.position
+		if abs(p1 - p2) < 0.0001:
+			return p1, 0.0, math.pi, complex(0.0, 0.0)
 		rot = math.radians(node.rotation)
 		r = node.radius
 
