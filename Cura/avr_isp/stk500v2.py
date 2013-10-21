@@ -145,23 +145,39 @@ class Stk500v2(ispBase.IspBase):
 				else:
 					return data
 
+def portList():
+	ret = []
+	import _winreg
+	key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
+	i=0
+	while True:
+		try:
+			values = _winreg.EnumValue(key, i)
+		except:
+			return ret
+		if 'USBSER' in values[0]:
+			ret.append(values[1])
+		i+=1
+	return ret
+
+def runProgrammer(port, filename):
+	programmer = Stk500v2()
+	programmer.connect(port = port)
+	programmer.programChip(intelHex.readHex(filename))
+	programmer.close()
 
 def main():
-	programmer = Stk500v2()
+	import threading
 	if sys.argv[1] == 'AUTO':
-		import _winreg
-		key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
-		i=0
-		while True:
-			values = _winreg.EnumValue(key, i)
-			if 'USBSER' in values[0]:
-				programmer.connect(port = values[1])
-				break
-			i+=1
+		print portList()
+		for port in portList():
+			threading.Thread(target=runProgrammer, args=(port,sys.argv[2])).start()
+			time.sleep(5)
 	else:
+		programmer = Stk500v2()
 		programmer.connect(port = sys.argv[1])
-	programmer.programChip(intelHex.readHex(sys.argv[2]))
-	sys.exit(1)
+		programmer.programChip(intelHex.readHex(sys.argv[2]))
+		sys.exit(1)
 
 if __name__ == '__main__':
 	main()
