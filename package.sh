@@ -23,6 +23,11 @@ TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 ##Which versions of external programs to use
 WIN_PORTABLE_PY_VERSION=2.7.2.1
 
+##Which CuraEngine to use
+if [ -z ${CURA_ENGINE_REPO} ] ; then
+	CURA_ENGINE_REPO="https://github.com/Ultimaker/CuraEngine"
+fi
+
 #############################
 # Support functions
 #############################
@@ -106,7 +111,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
     #Add cura version file (should read the version from the bundle with pyobjc, but will figure that out later)
     echo $BUILD_NAME > scripts/darwin/dist/Cura.app/Contents/Resources/version
 	rm -rf CuraEngine
-	git clone https://github.com/Ultimaker/CuraEngine
+	git clone ${CURA_ENGINE_REPO}
 	make -C CuraEngine
 	cp CuraEngine/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
@@ -146,7 +151,7 @@ if [ "$BUILD_TARGET" = "debian" ]; then
 		cd ..
 	fi
 	rm -rf CuraEngine
-	git clone https://github.com/Ultimaker/CuraEngine
+	git clone ${CURA_ENGINE_REPO}
 	make -C CuraEngine
 	rm -rf scripts/linux/debian/usr/share/cura
 	mkdir -p scripts/linux/debian/usr/share/cura
@@ -186,7 +191,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf Power
 	git clone https://github.com/GreatFruitOmsk/Power
 	rm -rf CuraEngine
-	git clone https://github.com/Ultimaker/CuraEngine
+	git clone ${CURA_ENGINE_REPO}
 fi
 
 #############################
