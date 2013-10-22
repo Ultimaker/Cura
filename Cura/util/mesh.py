@@ -52,6 +52,14 @@ class printableObject(object):
 		for m in self._meshList:
 			m._calculateNormals()
 		self.processMatrix()
+		if numpy.max(self.getSize()) > 10000.0:
+			for m in self._meshList:
+				m.vertexes /= 1000.0
+			self.processMatrix()
+		if numpy.max(self.getSize()) < 1.0:
+			for m in self._meshList:
+				m.vertexes *= 1000.0
+			self.processMatrix()
 
 	def applyMatrix(self, m):
 		self._matrix *= m
