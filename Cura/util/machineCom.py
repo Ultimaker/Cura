@@ -358,7 +358,7 @@ class MachineCom(object):
 					t = time.time()
 					self._heatupWaitTimeLost = t - self._heatupWaitStartTime
 					self._heatupWaitStartTime = t
-			elif line.strip() != '' and line.strip() != 'ok' and not line.startswith('Resend:') and line != 'echo:Unknown command:""\n' and self.isOperational():
+			elif line.strip() != '' and line.strip() != 'ok' and not line.startswith('Resend:') and not line.startswith('Error:checksum mismatch') and not line.startswith('Error:Line Number is not Last Line Number+1') and line != 'echo:Unknown command:""\n' and self.isOperational():
 				self._callback.mcMessage(line)
 
 			if self._state == self.STATE_DETECT_BAUDRATE:
