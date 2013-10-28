@@ -1,7 +1,11 @@
 from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
-import os, wx, threading, sys
+import os
+import wx
+import threading
+import sys
+import time
 
 from Cura.avr_isp import stk500v2
 from Cura.avr_isp import ispBase
@@ -41,17 +45,19 @@ class InstallFirmware(wx.Dialog):
 			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			self.Destroy()
 			return
+		if profile.getMachineSetting('machine_type') == 'reprap':
+			wx.MessageBox(_("Cura only supports firmware updates for ATMega2560 based hardware.\nSo updating your RepRap with Cura might or might not work."), _("Firmware update"), wx.OK | wx.ICON_INFORMATION)
 
 		sizer = wx.BoxSizer(wx.VERTICAL)
 
 		self.progressLabel = wx.StaticText(self, -1, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nX')
-		sizer.Add(self.progressLabel, 0, flag=wx.ALIGN_CENTER)
+		sizer.Add(self.progressLabel, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.progressGauge = wx.Gauge(self, -1)
 		sizer.Add(self.progressGauge, 0, flag=wx.EXPAND)
 		self.okButton = wx.Button(self, -1, _("OK"))
 		self.okButton.Disable()
 		self.okButton.Bind(wx.EVT_BUTTON, self.OnOk)
-		sizer.Add(self.okButton, 0, flag=wx.ALIGN_CENTER)
+		sizer.Add(self.okButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.SetSizer(sizer)
 
 		self.filename = filename
@@ -60,7 +66,9 @@ class InstallFirmware(wx.Dialog):
 		self.Layout()
 		self.Fit()
 
-		threading.Thread(target=self.OnRun).start()
+		self.thread = threading.Thread(target=self.OnRun)
+		self.thread.daemon = True
+		self.thread.start()
 
 		self.ShowModal()
 		self.Destroy()
@@ -73,32 +81,39 @@ class InstallFirmware(wx.Dialog):
 		programmer = stk500v2.Stk500v2()
 		programmer.progressCallback = self.OnProgress
 		if self.port == 'AUTO':
-			for self.port in machineCom.serialList(True):
-				try:
-					programmer.connect(self.port)
-					break
-				except ispBase.IspError:
-					pass
+			wx.CallAfter(self.updateLabel, _("Please connect the printer to\nyour computer with the USB cable."))
+			while not programmer.isConnected():
+				for self.port in machineCom.serialList(True):
+					try:
+						programmer.connect(self.port)
+						break
+					except ispBase.IspError:
+						pass
+				time.sleep(1)
+				if not self:
+					#Window destroyed
+					return
 		else:
 			try:
 				programmer.connect(self.port)
 			except ispBase.IspError:
 				pass
 
-		if programmer.isConnected():
-			wx.CallAfter(self.updateLabel, _("Uploading firmware..."))
-			try:
-				programmer.programChip(hexFile)
-				wx.CallAfter(self.updateLabel, _("Done!\nInstalled firmware: %s") % (os.path.basename(self.filename)))
-			except ispBase.IspError as e:
-				wx.CallAfter(self.updateLabel, _("Failed to write firmware.\n") + str(e))
-
-			programmer.close()
-			wx.CallAfter(self.okButton.Enable)
+		if not programmer.isConnected():
+			wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
+						  _("Firmware update"), wx.OK | wx.ICON_ERROR)
+			wx.CallAfter(self.Close)
 			return
-		wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
-					  _("Firmware update"), wx.OK | wx.ICON_ERROR)
-		wx.CallAfter(self.Close)
+
+		wx.CallAfter(self.updateLabel, _("Uploading firmware..."))
+		try:
+			programmer.programChip(hexFile)
+			wx.CallAfter(self.updateLabel, _("Done!\nInstalled firmware: %s") % (os.path.basename(self.filename)))
+		except ispBase.IspError as e:
+			wx.CallAfter(self.updateLabel, _("Failed to write firmware.\n") + str(e))
+
+		programmer.close()
+		wx.CallAfter(self.okButton.Enable)
 
 	def updateLabel(self, text):
 		self.progressLabel.SetLabel(text)
