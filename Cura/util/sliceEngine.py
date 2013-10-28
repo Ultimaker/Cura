@@ -251,7 +251,6 @@ class Slicer(object):
 			'printSpeed': int(profile.getProfileSettingFloat('print_speed')),
 			'infillSpeed': int(profile.getProfileSettingFloat('infill_speed')) if int(profile.getProfileSettingFloat('infill_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
 			'moveSpeed': int(profile.getProfileSettingFloat('travel_speed')),
-			'fanOnLayerNr': int(profile.getProfileSettingFloat('fan_layer')),
 			'fanSpeedMin': int(profile.getProfileSettingFloat('fan_speed')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
 			'fanSpeedMax': int(profile.getProfileSettingFloat('fan_speed_max')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
 			'supportAngle': int(-1) if profile.getProfileSetting('support') == 'None' else int(60),
@@ -282,6 +281,11 @@ class Slicer(object):
 			'extruderOffset[3].Y': int(profile.getMachineSettingFloat('extruder_offset_y3') * 1000),
 			'fixHorrible': 0,
 		}
+		fanFullHeight = int(profile.getProfileSettingFloat('fan_full_height') * 1000)
+		settings['fanFullOnLayerNr'] = (fanFullHeight - settings['initialLayerThickness']) / settings['layerThickness'] + 1
+		if settings['fanFullOnLayerNr'] < 0:
+			settings['fanFullOnLayerNr'] = 0
+
 		if profile.getProfileSettingFloat('fill_density') == 0:
 			settings['sparseInfillLineDistance'] = -1
 		elif profile.getProfileSettingFloat('fill_density') == 100:
