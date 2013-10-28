@@ -345,6 +345,7 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('has_heated_bed', 'True')
 			profile.putMachineSetting('gcode_flavor', 'UltiGCode')
 			profile.putProfileSetting('nozzle_size', '0.4')
+			profile.putProfileSetting('retraction_enable', 'True')
 			profile.putMachineSetting('extruder_head_size_min_x', '40.0')
 			profile.putMachineSetting('extruder_head_size_min_y', '10.0')
 			profile.putMachineSetting('extruder_head_size_max_x', '60.0')
@@ -373,6 +374,7 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putPreference('startMode', 'Normal')
 			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putProfileSetting('retraction_enable', 'True')
 		profile.checkAndUpdateMachineName()
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
 		if self.SubmitUserStats.GetValue():

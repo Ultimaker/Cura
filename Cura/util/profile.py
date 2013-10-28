@@ -503,7 +503,7 @@ def resetProfile():
 	#Read a configuration file as global config
 	global settingsList
 	for set in settingsList:
-		if set.isPreference():
+		if not set.isProfile():
 			continue
 		set.setValue(set.getDefault())
 
@@ -516,6 +516,7 @@ def resetProfile():
 		putProfileSetting('retraction_enable', 'True')
 	else:
 		putProfileSetting('nozzle_size', '0.5')
+		putProfileSetting('retraction_enable', 'True')
 
 def setProfileFromString(options):
 	options = base64.b64decode(options)
