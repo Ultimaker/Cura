@@ -115,6 +115,8 @@ class Slicer(object):
 		for obj in scene.objects():
 			if scene.checkPlatform(obj):
 				extruderCount = max(extruderCount, len(obj._meshList))
+		if profile.getProfileSetting('support_dual_extrusion') == 'Second extruder':
+			extruderCount = max(extruderCount, 2)
 
 		commandList = [getEngineFilename(), '-vv']
 		for k, v in self._engineSettings(extruderCount).iteritems():
