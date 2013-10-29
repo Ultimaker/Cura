@@ -231,6 +231,8 @@ setting('start.gcode', """;Sliced at: {day} {date} {time}
 ;Print time: {print_time}
 ;Filament used: {filament_amount}m {filament_weight}g
 ;Filament cost: {filament_cost}
+;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
+;M109 S{print_temperature} ;Uncomment to add your own temperature line
 G21        ;metric values
 G90        ;absolute positioning
 M107       ;start with the fan off
@@ -244,6 +246,7 @@ G92 E0                  ;zero the extruded length
 G1 F200 E3              ;extrude 3mm of feed stock
 G92 E0                  ;zero the extruded length again
 G1 F{travel_speed}
+;Put printing message on LCD screen
 M117 Printing...
 """, str, 'alteration', 'alteration')
 #######################################################################################
@@ -265,6 +268,10 @@ setting('start2.gcode', """;Sliced at: {day} {date} {time}
 ;Print time: {print_time}
 ;Filament used: {filament_amount}m {filament_weight}g
 ;Filament cost: {filament_cost}
+;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
+;M104 S{print_temperature} ;Uncomment to add your own temperature line
+;M109 T1 S{print_temperature2} ;Uncomment to add your own temperature line
+;M109 T0 S{print_temperature} ;Uncomment to add your own temperature line
 G21        ;metric values
 G90        ;absolute positioning
 M107       ;start with the fan off
@@ -274,17 +281,18 @@ G28 Z0     ;move Z to min endstops
 
 G1 Z15.0 F{travel_speed} ;move the platform down 15mm
 
-T1
+T1                      ;Switch to the 2nd extruder
 G92 E0                  ;zero the extruded length
 G1 F200 E10             ;extrude 10mm of feed stock
 G92 E0                  ;zero the extruded length again
 G1 F200 E-{retraction_dual_amount}
 
-T0
+T0                      ;Switch to the first extruder
 G92 E0                  ;zero the extruded length
-G1 F200 E10              ;extrude 10mm of feed stock
+G1 F200 E10             ;extrude 10mm of feed stock
 G92 E0                  ;zero the extruded length again
 G1 F{travel_speed}
+;Put printing message on LCD screen
 M117 Printing...
 """, str, 'alteration', 'alteration')
 #######################################################################################
@@ -920,6 +928,10 @@ def setAlterationFile(name, value):
 		settingsDictionary[name].setValue(value)
 	saveProfile(getDefaultProfilePath())
 
+def isTagIn(tag, contents):
+	contents = re.sub(';[^\n]*\n', '', contents)
+	return tag in contents
+
 ### Get the alteration file for output. (Used by Skeinforge)
 def getAlterationFileContents(filename, extruderCount = 1):
 	prefix = ''
@@ -940,9 +952,9 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		if getMachineSetting('has_heated_bed') == 'True':
 			bedTemp = getProfileSettingFloat('print_bed_temperature')
 
-		if bedTemp > 0 and not '{print_bed_temperature}' in alterationContents:
+		if bedTemp > 0 and isTagIn('{print_bed_temperature}', alterationContents):
 			prefix += 'M140 S%f\n' % (bedTemp)
-		if temp > 0 and not '{print_temperature}' in alterationContents:
+		if temp > 0 and not isTagIn('{print_temperature}', alterationContents):
 			if extruderCount > 0:
 				for n in xrange(1, extruderCount):
 					t = temp
@@ -957,7 +969,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 				prefix += 'T0\n'
 			else:
 				prefix += 'M109 S%f\n' % (temp)
-		if bedTemp > 0 and not '{print_bed_temperature}' in alterationContents:
+		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
 			prefix += 'M190 S%f\n' % (bedTemp)
 	elif filename == 'end.gcode':
 		if extruderCount > 1:
