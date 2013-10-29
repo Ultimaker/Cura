@@ -187,7 +187,10 @@ class gcode(object):
 					if P is not None:
 						totalMoveTimeMinute += P / 60.0 / 1000.0
 				elif G == 10:	#Retract
-					pass
+					currentPath = gcodePath('retract', pathType, layerThickness, currentPath['points'][-1])
+					currentPath['extruder'] = currentExtruder
+					currentLayer.append(currentPath)
+					currentPath['points'].append(currentPath['points'][0])
 				elif G == 11:	#Push back after retract
 					pass
 				elif G == 20:	#Units are inches
