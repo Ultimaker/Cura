@@ -3,12 +3,12 @@ Development
 * Fixed Z support distance when using "everywhere" support.
 * Updated to new version of clipper to fix rare slicing bugs that resulted in odd paths.
 * Fixed "Reset profile" so it no longer resets the machine settings.
-* Updated support material so support is smoother and has less small sections.
+* Updated support material so support is smoother and has less small sections which are hard to remove.
 * Fixed start-gcode when using dual-support material
 * Change how the fan is handled on lower layer to improve UM2 printing.
 * Fix that retraction is enabled when selecting UM2 or RepRap.
 * Scale down very large models, or scale up very tiny models automagicly.
-* 
+* Fixed skirt and brim to go around the support instead of under it.
 
 13.10
 * Added YouMagine upload button

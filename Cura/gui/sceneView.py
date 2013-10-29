@@ -522,7 +522,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._gcode.load(self._gcodeFilename)
 
 	def _gcodeLoadCallback(self, progress):
-		if self._gcode is None:
+		if not self or self._gcode is None:
 			return True
 		if len(self._gcode.layerList) % 15 == 0:
 			time.sleep(0.1)
