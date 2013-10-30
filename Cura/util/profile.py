@@ -206,7 +206,7 @@ setting('fill_overlap', 15, int, 'expert', _('Infill')).setRange(0,100).setLabel
 setting('support_fill_rate', 15, int, 'expert', _('Support')).setRange(0,100).setLabel(_("Fill amount (%)"), _("Amount of infill structure in the support material, less material gives weaker support which is easier to remove. 15% seems to be a good average."))
 setting('support_xy_distance', 0.7, float, 'expert', _('Support')).setRange(0,10).setLabel(_("Distance X/Y (mm)"), _("Distance of the support material from the print, in the X/Y directions.\n0.7mm gives a nice distance from the print so the support does not stick to the print."))
 setting('support_z_distance', 0.15, float, 'expert', _('Support')).setRange(0,10).setLabel(_("Distance Z (mm)"), _("Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier.\n0.15mm gives a good seperation of the support material."))
-#setting('joris', False, bool, 'expert', 'Joris').setLabel(_("Spiralize the outer contour"), _("[Joris] is a code name for smoothing out the Z move of the outer edge. This will create a steady Z increase over the whole print. It is intended to be used with a single walled wall thickness to make cups/vases."))
+setting('spiralize', False, bool, 'expert', 'Spiralize').setLabel(_("Spiralize the outer contour"), _("Spiralize is smoothing out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom."))
 #setting('bridge_speed', 100, int, 'expert', 'Bridge').setRange(0,100).setLabel(_("Bridge speed (%)"), _("Speed at which layers with bridges are printed, compared to normal printing speed."))
 setting('brim_line_count', 20, int, 'expert', _('Brim')).setRange(1,100).setLabel(_("Brim line amount"), _("The amount of lines used for a brim, more lines means a larger brim which sticks better, but this also makes your effective print area smaller."))
 setting('raft_margin', 5, float, 'expert', _('Raft')).setRange(0).setLabel(_("Extra margin (mm)"), _("If the raft is enabled, this is the extra raft area around the object which is also rafted. Increasing this margin will create a stronger raft while using more material and leaving less are for your print."))
@@ -799,6 +799,9 @@ def calculateEdgeWidth():
 	wallThickness = getProfileSettingFloat('wall_thickness')
 	nozzleSize = getProfileSettingFloat('nozzle_size')
 
+	if getProfileSetting('spiralize') == 'True':
+		return wallThickness
+
 	if wallThickness < 0.01:
 		return nozzleSize
 	if wallThickness < nozzleSize:
@@ -820,6 +823,8 @@ def calculateLineCount():
 	if wallThickness < 0.01:
 		return 0
 	if wallThickness < nozzleSize:
+		return 1
+	if getProfileSetting('spiralize') == 'True':
 		return 1
 
 	lineCount = int(wallThickness / (nozzleSize - 0.0001))

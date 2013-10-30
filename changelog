@@ -9,6 +9,7 @@ Development
 * Fix that retraction is enabled when selecting UM2 or RepRap.
 * Scale down very large models, or scale up very tiny models automagicly.
 * Fixed skirt and brim to go around the support instead of under it.
+* Added spiralize mode
 
 Ultimaker2 - Firmware update - xx.xx-xx
 * Fixed SD-Card read error

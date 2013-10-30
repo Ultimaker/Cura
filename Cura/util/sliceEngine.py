@@ -326,6 +326,8 @@ class Slicer(object):
 			settings['layerThickness'] = 1000
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			settings['gcodeFlavor'] = 1
+		if profile.getProfileSetting('spiralize') == 'True':
+			settings['spiralizeMode'] = 1
 		return settings
 
 	def _runSliceProcess(self, cmdList):
