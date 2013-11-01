@@ -11,7 +11,7 @@ Development
 * Fixed skirt and brim to go around the support instead of under it.
 * Added spiralize mode
 
-Ultimaker2 - Firmware update - 13.10-3
+Ultimaker2 - Firmware update - 13.10-5
 * Fixed SD-Card read error
 * Added feature to store your own material presets
 * Fixed the 280C ABS problem, causing a temperature sensor error
