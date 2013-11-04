@@ -1,4 +1,8 @@
 Development
+* Adjusted the gantry height to 55mm for the Ultimaker, as 60mm was 3mm to high for the default setup with an V2 hotend.
+
+
+13.11
 * Added imageToMesh tool to load images as 3D height maps
 * Fixed Z support distance when using "everywhere" support.
 * Updated to new version of clipper to fix rare slicing bugs that resulted in odd paths.

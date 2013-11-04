@@ -350,7 +350,7 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('extruder_head_size_min_y', '10.0')
 			profile.putMachineSetting('extruder_head_size_max_x', '60.0')
 			profile.putMachineSetting('extruder_head_size_max_y', '30.0')
-			profile.putMachineSetting('extruder_head_size_height', '60.0')
+			profile.putMachineSetting('extruder_head_size_height', '55.0')
 			profile.putProfileSetting('nozzle_size', '0.4')
 			profile.putProfileSetting('fan_full_height', '5.0')
 		elif self.UltimakerRadio.GetValue():
