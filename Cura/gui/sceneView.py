@@ -506,11 +506,16 @@ class SceneView(openglGui.glGuiPanel):
 			self._gcodeVBOs = []
 		if ready:
 			self.printButton.setProgressBar(None)
-			cost = self._slicer.getFilamentCost()
-			if cost is not None:
-				self.printButton.setBottomText('%s\n%s\n%s' % (self._slicer.getPrintTime(), self._slicer.getFilamentAmount(), cost))
-			else:
-				self.printButton.setBottomText('%s\n%s' % (self._slicer.getPrintTime(), self._slicer.getFilamentAmount()))
+			text = '%s' % (self._slicer.getPrintTime())
+			for e in xrange(0, int(profile.getMachineSetting('extruder_amount'))):
+				amount = self._slicer.getFilamentAmount(e)
+				if amount is None:
+					continue
+				text += '\n%s' % (amount)
+				cost = self._slicer.getFilamentCost(e)
+				if cost is not None:
+					text += '\n%s' % (cost)
+			self.printButton.setBottomText(text)
 			self._gcode = gcodeInterpreter.gcode()
 			self._gcodeFilename = self._slicer.getGCodeFilename()
 		else:

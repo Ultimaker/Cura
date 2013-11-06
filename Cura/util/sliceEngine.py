@@ -46,7 +46,7 @@ class Slicer(object):
 		self._objCount = 0
 		self._sliceLog = []
 		self._printTimeSeconds = None
-		self._filamentMM = None
+		self._filamentMM = [0.0, 0.0]
 		self._modelHash = None
 		self._id = 0
 
@@ -83,21 +83,21 @@ class Slicer(object):
 	def getID(self):
 		return self._id
 
-	def getFilamentWeight(self):
+	def getFilamentWeight(self, e=0):
 		#Calculates the weight of the filament in kg
 		radius = float(profile.getProfileSetting('filament_diameter')) / 2
-		volumeM3 = (self._filamentMM * (math.pi * radius * radius)) / (1000*1000*1000)
+		volumeM3 = (self._filamentMM[e] * (math.pi * radius * radius)) / (1000*1000*1000)
 		return volumeM3 * profile.getPreferenceFloat('filament_physical_density')
 
-	def getFilamentCost(self):
+	def getFilamentCost(self, e=0):
 		cost_kg = profile.getPreferenceFloat('filament_cost_kg')
 		cost_meter = profile.getPreferenceFloat('filament_cost_meter')
 		if cost_kg > 0.0 and cost_meter > 0.0:
-			return "%.2f / %.2f" % (self.getFilamentWeight() * cost_kg, self._filamentMM / 1000.0 * cost_meter)
+			return "%.2f / %.2f" % (self.getFilamentWeight(e) * cost_kg, self._filamentMM[e] / 1000.0 * cost_meter)
 		elif cost_kg > 0.0:
-			return "%.2f" % (self.getFilamentWeight() * cost_kg)
+			return "%.2f" % (self.getFilamentWeight(e) * cost_kg)
 		elif cost_meter > 0.0:
-			return "%.2f" % (self._filamentMM / 1000.0 * cost_meter)
+			return "%.2f" % (self._filamentMM[e] / 1000.0 * cost_meter)
 		return None
 
 	def getPrintTime(self):
@@ -107,8 +107,10 @@ class Slicer(object):
 			return '%d hour %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
 		return '%d hours %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
 
-	def getFilamentAmount(self):
-		return '%0.2f meter %0.0f gram' % (float(self._filamentMM) / 1000.0, self.getFilamentWeight() * 1000.0)
+	def getFilamentAmount(self, e=0):
+		if self._filamentMM[e] == 0.0:
+			return None
+		return '%0.2f meter %0.0f gram' % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
 
 	def runSlicer(self, scene):
 		extruderCount = 1
@@ -186,7 +188,7 @@ class Slicer(object):
 		self._callback(0.0, False)
 		self._sliceLog = []
 		self._printTimeSeconds = None
-		self._filamentMM = None
+		self._filamentMM = [0.0, 0.0]
 
 		line = self._process.stdout.readline()
 		objectNr = 0
@@ -210,10 +212,15 @@ class Slicer(object):
 			elif line.startswith('Print time:'):
 				self._printTimeSeconds = int(line.split(':')[1].strip())
 			elif line.startswith('Filament:'):
-				self._filamentMM = int(line.split(':')[1].strip())
+				self._filamentMM[0] = int(line.split(':')[1].strip())
 				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
-					self._filamentMM /= (math.pi * radius * radius)
+					self._filamentMM[0] /= (math.pi * radius * radius)
+			elif line.startswith('Filament2:'):
+				self._filamentMM[1] = int(line.split(':')[1].strip())
+				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
+					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
+					self._filamentMM[1] /= (math.pi * radius * radius)
 			else:
 				self._sliceLog.append(line.strip())
 			line = self._process.stdout.readline()
