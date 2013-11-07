@@ -289,7 +289,7 @@ class Slicer(object):
 			'fixHorrible': 0,
 		}
 		fanFullHeight = int(profile.getProfileSettingFloat('fan_full_height') * 1000)
-		settings['fanFullOnLayerNr'] = (fanFullHeight - settings['initialLayerThickness']) / settings['layerThickness'] + 1
+		settings['fanFullOnLayerNr'] = (fanFullHeight - settings['initialLayerThickness'] - 1) / settings['layerThickness'] + 1
 		if settings['fanFullOnLayerNr'] < 0:
 			settings['fanFullOnLayerNr'] = 0
 
