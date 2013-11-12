@@ -254,7 +254,8 @@ class mainWindow(wx.Frame):
 		profileString = ""
 		try:
 			if not wx.TheClipboard.IsOpened():
-				wx.TheClipboard.Open()
+				if not wx.TheClipboard.Open():
+					return
 				do = wx.TextDataObject()
 				if wx.TheClipboard.GetData(do):
 					profileString = do.GetText()
