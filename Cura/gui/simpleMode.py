@@ -35,7 +35,7 @@ class simpleModePanel(wx.Panel):
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
 
-		sb = wx.StaticBox(printTypePanel, label=_("Select a print type:"))
+		sb = wx.StaticBox(printTypePanel, label=_("Select a print profile:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		boxsizer.Add(self.printTypeHigh)
 		boxsizer.Add(self.printTypeNormal)
