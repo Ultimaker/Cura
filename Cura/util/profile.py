@@ -956,7 +956,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		if getMachineSetting('has_heated_bed') == 'True':
 			bedTemp = getProfileSettingFloat('print_bed_temperature')
 
-		if bedTemp > 0 and isTagIn('{print_bed_temperature}', alterationContents):
+		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
 			prefix += 'M140 S%f\n' % (bedTemp)
 		if temp > 0 and not isTagIn('{print_temperature}', alterationContents):
 			if extruderCount > 0:
