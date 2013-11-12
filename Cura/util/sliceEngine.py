@@ -335,6 +335,10 @@ class Slicer(object):
 			settings['gcodeFlavor'] = 1
 		if profile.getProfileSetting('spiralize') == 'True':
 			settings['spiralizeMode'] = 1
+		if profile.getProfileSetting('wipe_tower') == 'True':
+			settings['enableWipeTower'] = 1
+		if profile.getProfileSetting('ooze_shield') == 'True':
+			settings['enableOozeShield'] = 1
 		return settings
 
 	def _runSliceProcess(self, cmdList):
