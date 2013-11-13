@@ -1,6 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import random
 import numpy
+from Cura.util import profile
 
 class _objectOrder(object):
 	def __init__(self, order, todo):
@@ -226,6 +227,22 @@ class Scene(object):
 			return False
 		if p[1] + s[1] > self._machineSize[1] / 2:
 			return False
+
+		#Do clip Check for UM2.
+		machine = profile.getMachineSetting('machine_type')
+		if(machine == "ultimaker2"):
+			#lowerRight clip check
+			if p[0] - s[0] < -self._machineSize[0] / 2 + 50 and p[1] - s[1] < -self._machineSize[1]/2 + 5:
+				return False
+			#UpperRight
+			if p[0] - s[0] < -self._machineSize[0] / 2 + 50 and p[1] + s[1] > self._machineSize[1]/2 - 35:
+				return False
+			#LowerLeft
+			if p[0] + s[0] > self._machineSize[0] / 2 - 55 and p[1] - s[1] < -self._machineSize[1]/2 + 5:
+				return False
+			#UpperLeft
+			if p[0] + s[0] > self._machineSize[0] / 2 - 55 and p[1] + s[1] > self._machineSize[1]/2 - 35:
+				return False
 		return True
 
 	def _findFreePositionFor(self, obj):

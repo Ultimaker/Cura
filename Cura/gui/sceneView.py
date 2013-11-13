@@ -1323,12 +1323,63 @@ void main(void)
 				else:
 					glColor4ub(5 * 8 / 10, 171 * 8 / 10, 231 * 8 / 10, 128)
 				glBegin(GL_QUADS)
-				glVertex3f(x1, y1, -0.02)
+				glVertex3f(x1, y1, -0.02) #Draw bit below z0 to prevent zfighting.
 				glVertex3f(x2, y1, -0.02)
 				glVertex3f(x2, y2, -0.02)
 				glVertex3f(x1, y2, -0.02)
 				glEnd()
-		#if UM2, draw bat-area zone for head. THe head can't stop there, because its bat-area.
+
+		if machine == 'ultimaker2':
+
+			glColor4ub(127, 127, 127, 200)
+			#if UM2, draw bat-area zone for head. THe head can't stop there, because its bat-area.
+			#UpperRight
+			clipWidth = 50;
+			clipHeight = 35;
+			posX = sx / 2 - clipWidth;
+			posY = sy / 2 - clipHeight;
+			glBegin(GL_QUADS)
+			glVertex3f(posX, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY+clipHeight, 0.1)
+			glEnd()
+			#UpperLeft
+			clipWidth = 55;
+			clipHeight = 35;
+			posX = -sx / 2;
+			posY = sy / 2 - clipHeight;
+			glBegin(GL_QUADS)
+			glVertex3f(posX, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY+clipHeight, 0.1)
+			glEnd()
+			#LowerRight
+			clipWidth = 50;
+			clipHeight = 5;
+			posX = sx / 2 - clipWidth;
+			posY = -sy / 2;
+			glBegin(GL_QUADS)
+			glVertex3f(posX, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY+clipHeight, 0.1)
+			glEnd()
+			#LowerLeft
+			clipWidth = 55;
+			clipHeight = 5;
+			posX = -sx / 2;
+			posY = -sy / 2;
+			glBegin(GL_QUADS)
+			glVertex3f(posX, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY, 0.1)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY+clipHeight, 0.1)
+			glEnd()
+
+
+
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
 
