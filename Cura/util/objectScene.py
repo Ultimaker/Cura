@@ -70,6 +70,7 @@ class _objectOrderFinder(object):
 				return True
 		return False
 
+	#Check if printing one object will cause printhead colission with other object.
 	def _checkHit(self, addIdx, idx):
 		addPos = self._scene._objectList[addIdx].getPosition()
 		addSize = self._scene._objectList[addIdx].getSize()
@@ -98,16 +99,19 @@ class Scene(object):
 		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
 		self._headOffsets = numpy.array([18.0,18.0], numpy.float32)
+		#Print order variables
 		self._leftToRight = False
 		self._frontToBack = True
 		self._gantryHeight = 60
-
+	# Physical (square) machine size.
 	def setMachineSize(self, machineSize):
 		self._machineSize = machineSize
 
+	# Size offsets are offsets caused by brim, skirt, etc.
 	def setSizeOffsets(self, sizeOffsets):
 		self._sizeOffsets = sizeOffsets
 
+	#size of the printing head.
 	def setHeadSize(self, xMin, xMax, yMin, yMax, gantryHeight):
 		self._leftToRight = xMin < xMax
 		self._frontToBack = yMin < yMax
@@ -121,6 +125,7 @@ class Scene(object):
 	def objects(self):
 		return self._objectList
 
+	#Add new object to print area
 	def add(self, obj):
 		self._findFreePositionFor(obj)
 		self._objectList.append(obj)
@@ -133,6 +138,7 @@ class Scene(object):
 	def remove(self, obj):
 		self._objectList.remove(obj)
 
+	#Dual(multiple) extrusion merge
 	def merge(self, obj1, obj2):
 		self.remove(obj2)
 		obj1._meshList += obj2._meshList
@@ -199,6 +205,7 @@ class Scene(object):
 				return True
 		return False
 
+	#Check if two objects are hitting each-other (+ head space).
 	def _checkHit(self, a, b):
 		if a == b:
 			return False

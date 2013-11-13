@@ -1282,6 +1282,7 @@ void main(void)
 			glVertex3f(-size[0] / 2, -size[1] / 2+10, 0)
 			glEnd()
 
+		#Cornerpoints for big blue square
 		v0 = [ size[0] / 2, size[1] / 2, size[2]]
 		v1 = [ size[0] / 2,-size[1] / 2, size[2]]
 		v2 = [-size[0] / 2, size[1] / 2, size[2]]
@@ -1303,6 +1304,7 @@ void main(void)
 		glDrawArrays(GL_QUADS, 12, 8)
 		glDisableClientState(GL_VERTEX_ARRAY)
 
+		#Draw checkerboard
 		sx = self._machineSize[0]
 		sy = self._machineSize[1]
 		for x in xrange(-int(sx/20)-1, int(sx / 20) + 1):
@@ -1315,6 +1317,7 @@ void main(void)
 				y1 = max(min(y1, sy/2), -sy/2)
 				x2 = max(min(x2, sx/2), -sx/2)
 				y2 = max(min(y2, sy/2), -sy/2)
+				#Black or "white"  checker
 				if (x & 1) == (y & 1):
 					glColor4ub(5, 171, 231, 127)
 				else:
@@ -1325,7 +1328,7 @@ void main(void)
 				glVertex3f(x2, y2, -0.02)
 				glVertex3f(x1, y2, -0.02)
 				glEnd()
-
+		#if UM2, draw bat-area zone for head. THe head can't stop there, because its bat-area.
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
 
