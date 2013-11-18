@@ -36,7 +36,7 @@ def getDefaultFirmware():
 
 class InstallFirmware(wx.Dialog):
 	def __init__(self, filename = None, port = None):
-		super(InstallFirmware, self).__init__(parent=None, title="Firmware install", size=(250, 100))
+		super(InstallFirmware, self).__init__(parent=None, title="Firmware install for %s" % (profile.getMachineSetting('machine_name').title()), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:

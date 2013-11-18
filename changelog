@@ -2,6 +2,11 @@ Development
 * Adjusted the gantry height to 55mm for the Ultimaker, as 60mm was 3mm to high for the default setup with an V2 hotend.
 * Added disallowed zones for UM2.
 
+Ultimaker2 - Firmware update - 13.11-1
+* Slightly tweaked the SD-Card error problems.
+* Added LED settings to Tune menu
+* Start heating the nozzles when the bed is nearing its final temperature, so the nozzles do not sit hot.
+* Make sure all commands are finished before starting a print or changing material. This could cause issues when you where too fast.
 
 13.11
 * Added imageToMesh tool to load images as 3D height maps
