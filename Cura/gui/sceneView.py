@@ -375,7 +375,20 @@ class SceneView(openglGui.glGuiPanel):
 	def OnScaleMax(self, button):
 		if self._selectedObj is None:
 			return
-		self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
+		machine = profile.getMachineSetting('machine_type')
+		self._selectedObj.setPosition(numpy.array([0.0, 0.0]))
+		self._scene.pushFree()
+		#self.sceneUpdated()
+		if machine == "ultimaker2":
+			self._selectedObj.setPosition(numpy.array([0.0,-22.5]))
+
+			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
+			self._selectedObj.setPosition(numpy.array([0.0,-15]))
+			self._scene.pushFree()
+		else:
+			self._selectedObj.setPosition(numpy.array([0.0, 0.0]))
+			self._scene.pushFree()
+			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
 		self._scene.pushFree()
 		self._selectObject(self._selectedObj)
 		self.updateProfileToControls()
