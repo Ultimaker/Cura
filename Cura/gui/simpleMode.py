@@ -77,47 +77,17 @@ class simpleModePanel(wx.Panel):
 	def setupSlice(self):
 		put = profile.setTempOverride
 		get = profile.getProfileSetting
-
-		put('layer_height', '0.2')
-		put('wall_thickness', '0.8')
-		put('solid_layer_thickness', '0.6')
-		put('fill_density', '20')
-		put('skirt_line_count', '1')
-		put('skirt_gap', '6.0')
-		put('print_speed', '50')
-		put('print_temperature', '220')
-		put('support', 'None')
-		put('retraction_enable', 'True')
-		put('retraction_min_travel', '5.0')
-		put('retraction_speed', '40.0')
-		put('retraction_amount', '4.5')
-		put('retraction_extra', '0.0')
-		put('travel_speed', '150')
-		put('bottom_layer_speed', '25')
-		put('cool_min_layer_time', '5')
-		put('fan_enabled', 'True')
-		put('fan_speed', '100')
-		put('extra_base_wall_thickness', '0.0')
-		put('sequence', 'Loops > Perimeter > Infill')
-		put('force_first_layer_sequence', 'True')
-		put('infill_type', 'Line')
-		put('solid_top', 'True')
-		put('fill_overlap', '15')
-		put('support_rate', '80')
-		put('support_distance', '0.5')
-		put('joris', 'False')
-		put('cool_min_feedrate', '5')
-		put('bridge_speed', '100')
-		put('raft_margin', '5')
-		put('raft_base_material_amount', '100')
-		put('raft_interface_material_amount', '100')
-		put('bottom_thickness', '0.3')
+		for setting in profile.settingsList:
+			if not setting.isProfile():
+				continue
+			profile.setTempOverride(setting.getName(), setting.getDefault())
 
 		if self.printSupport.GetValue():
 			put('support', _("Exterior Only"))
 
 		nozzle_size = float(get('nozzle_size'))
 		if self.printTypeNormal.GetValue():
+			put('layer_height', '0.2')
 			put('wall_thickness', nozzle_size * 2.0)
 			put('layer_height', '0.10')
 			put('fill_density', '20')
@@ -125,7 +95,7 @@ class simpleModePanel(wx.Panel):
 			put('wall_thickness', nozzle_size * 2.5)
 			put('layer_height', '0.20')
 			put('fill_density', '10')
-			put('print_speed', '50')
+			put('print_speed', '60')
 			put('cool_min_layer_time', '3')
 			put('bottom_layer_speed', '30')
 		elif self.printTypeHigh.GetValue():
@@ -135,27 +105,14 @@ class simpleModePanel(wx.Panel):
 			put('bottom_layer_speed', '15')
 		elif self.printTypeJoris.GetValue():
 			put('wall_thickness', nozzle_size * 1.5)
-			put('layer_height', '0.3')
-			put('solid_layer_thickness', '0.9')
-			put('fill_density', '0')
-			put('joris', 'True')
-			put('extra_base_wall_thickness', '15.0')
-			put('sequence', 'Infill > Loops > Perimeter')
-			put('force_first_layer_sequence', 'False')
-			put('solid_top', 'False')
-			put('support', 'None')
-			put('cool_min_layer_time', '3')
 
 		put('filament_diameter', self.printMaterialDiameter.GetValue())
 		if self.printMaterialPLA.GetValue():
-			put('filament_density', '1.00')
-			put('enable_raft', 'False')
-			put('skirt_line_count', '1')
+			pass
 		if self.printMaterialABS.GetValue():
-			put('filament_density', '0.85')
-			put('enable_raft', 'True')
-			put('skirt_line_count', '0')
-			put('bottom_thickness', '0.0')
+			put('print_bed_temperature', '100')
+			put('platform_adhesion', 'Brim')
+			put('filament_flow', '107')
 			put('print_temperature', '245')
 		put('plugin_config', '')
 
