@@ -1,6 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import random
 import numpy
+from Cura.util import profile
 
 class _objectOrder(object):
 	def __init__(self, order, todo):
@@ -70,6 +71,7 @@ class _objectOrderFinder(object):
 				return True
 		return False
 
+	#Check if printing one object will cause printhead colission with other object.
 	def _checkHit(self, addIdx, idx):
 		addPos = self._scene._objectList[addIdx].getPosition()
 		addSize = self._scene._objectList[addIdx].getSize()
@@ -98,16 +100,19 @@ class Scene(object):
 		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
 		self._headOffsets = numpy.array([18.0,18.0], numpy.float32)
+		#Print order variables
 		self._leftToRight = False
 		self._frontToBack = True
 		self._gantryHeight = 60
-
+	# Physical (square) machine size.
 	def setMachineSize(self, machineSize):
 		self._machineSize = machineSize
 
+	# Size offsets are offsets caused by brim, skirt, etc.
 	def setSizeOffsets(self, sizeOffsets):
 		self._sizeOffsets = sizeOffsets
 
+	#size of the printing head.
 	def setHeadSize(self, xMin, xMax, yMin, yMax, gantryHeight):
 		self._leftToRight = xMin < xMax
 		self._frontToBack = yMin < yMax
@@ -121,6 +126,7 @@ class Scene(object):
 	def objects(self):
 		return self._objectList
 
+	#Add new object to print area
 	def add(self, obj):
 		self._findFreePositionFor(obj)
 		self._objectList.append(obj)
@@ -133,6 +139,7 @@ class Scene(object):
 	def remove(self, obj):
 		self._objectList.remove(obj)
 
+	#Dual(multiple) extrusion merge
 	def merge(self, obj1, obj2):
 		self.remove(obj2)
 		obj1._meshList += obj2._meshList
@@ -199,6 +206,7 @@ class Scene(object):
 				return True
 		return False
 
+	#Check if two objects are hitting each-other (+ head space).
 	def _checkHit(self, a, b):
 		if a == b:
 			return False
@@ -219,6 +227,22 @@ class Scene(object):
 			return False
 		if p[1] + s[1] > self._machineSize[1] / 2:
 			return False
+
+		#Do clip Check for UM2.
+		machine = profile.getMachineSetting('machine_type')
+		if(machine == "ultimaker2"):
+			#lowerRight clip check
+			if p[0] - s[0] < -self._machineSize[0] / 2 + 25 and p[1] - s[1] < -self._machineSize[1]/2 + 10:
+				return False
+			#UpperRight
+			if p[0] - s[0] < -self._machineSize[0] / 2 + 25 and p[1] + s[1] > self._machineSize[1]/2 - 10:
+				return False
+			#LowerLeft
+			if p[0] + s[0] > self._machineSize[0] / 2 - 25 and p[1] - s[1] < -self._machineSize[1]/2 + 10:
+				return False
+			#UpperLeft
+			if p[0] + s[0] > self._machineSize[0] / 2 - 25 and p[1] + s[1] > self._machineSize[1]/2 - 10:
+				return False
 		return True
 
 	def _findFreePositionFor(self, obj):

@@ -148,11 +148,11 @@ class mainWindow(wx.Frame):
 		expertMenu.AppendSeparator()
 		i = expertMenu.Append(-1, _("Run first run wizard..."))
 		self.Bind(wx.EVT_MENU, self.OnFirstRunWizard, i)
-		i = expertMenu.Append(-1, _("Run bed leveling wizard..."))
-		self.Bind(wx.EVT_MENU, self.OnBedLevelWizard, i)
+		self.bedLevelWizardMenuItem = expertMenu.Append(-1, _("Run bed leveling wizard..."))
+		self.Bind(wx.EVT_MENU, self.OnBedLevelWizard, self.bedLevelWizardMenuItem)
 		if self.extruderCount > 1:
-			i = expertMenu.Append(-1, _("Run head offset wizard..."))
-			self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, i)
+			self.headOffsetWizardMenuItem = expertMenu.Append(-1, _("Run head offset wizard..."))
+			self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, self.headOffsetWizardMenuItem)
 
 		self.menubar.Append(expertMenu, _("Expert"))
 
@@ -254,7 +254,8 @@ class mainWindow(wx.Frame):
 		profileString = ""
 		try:
 			if not wx.TheClipboard.IsOpened():
-				wx.TheClipboard.Open()
+				if not wx.TheClipboard.Open():
+					return
 				do = wx.TextDataObject()
 				if wx.TheClipboard.GetData(do):
 					profileString = do.GetText()
@@ -305,6 +306,9 @@ class mainWindow(wx.Frame):
 			# Enabled sash
 			self.splitter.SetSashSize(4)
 		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
+		if profile.getMachineSetting('machine_type') == 'ultimaker2':
+			self.bedLevelWizardMenuItem.Enable(False)
+			self.headOffsetWizardMenuItem.Enable(False)
 		self.scene.updateProfileToControls()
 
 	def OnPreferences(self, e):

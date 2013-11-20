@@ -5,6 +5,7 @@ import os
 import sys
 import urllib2
 import platform
+import subprocess
 try:
 	from xml.etree import cElementTree as ElementTree
 except:
@@ -13,15 +14,24 @@ except:
 from Cura.util import resources
 
 def getVersion(getGitVersion = True):
-	gitPath = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../../.git"))
+	gitPath = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../.."))
 	if hasattr(sys, 'frozen'):
 		versionFile = os.path.normpath(os.path.join(resources.resourceBasePath, "version"))
 	else:
 		versionFile = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../version"))
-	if os.path.exists(gitPath):
+
+	if getGitVersion:
+		gitProcess = subprocess.Popen(args = "git show -s --pretty=format:%H", shell = True, cwd = gitPath, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+		(stdoutdata, stderrdata) = gitProcess.communicate()
+
+		if gitProcess.returncode == 0:
+			return stdoutdata
+
+	gitHeadFile = gitPath + "/.git/refs/heads/SteamEngine"
+	if os.path.isfile(gitHeadFile):
 		if not getGitVersion:
 			return "dev"
-		f = open(gitPath + "/refs/heads/SteamEngine", "r")
+		f = open(gitHeadFile, "r")
 		version = f.readline()
 		f.close()
 		return version.strip()

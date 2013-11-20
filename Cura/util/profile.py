@@ -165,6 +165,8 @@ setting('print_bed_temperature',      70, int,   'basic',    _('Speed and Temper
 setting('support',                'None', [_('None'), _('Touching buildplate'), _('Everywhere')], 'basic', _('Support')).setLabel(_("Support type"), _("Type of support structure build.\n\"Touching buildplate\" is the most commonly used support setting.\n\nNone does not do any support.\nTouching buildplate only creates support where the support structure will touch the build platform.\nEverywhere creates support even on top of parts of the model."))
 setting('platform_adhesion',      'None', [_('None'), _('Brim'), _('Raft')], 'basic', _('Support')).setLabel(_("Platform adhesion type"), _("Different options that help in preventing corners from lifting due to warping.\nBrim adds a single layer thick flat area around your object which is easy to cut off afterwards, and the recommended option.\nRaft adds a thick raster at below the object and a thin interface between this and your object.\n(Note that enabling the brim or raft disables the skirt)"))
 setting('support_dual_extrusion',  'Both', [_('Both'), _('First extruder'), _('Second extruder')], 'basic', _('Support')).setLabel(_("Support dual extrusion"), _("Which extruder to use for support material, for break-away support you can use both extruders.\nBut if one of the materials is more expensive then the other you could select an extruder to use for support material. This causes more extruder switches.\nYou can also use the 2nd extruder for soluble support materials."))
+setting('wipe_tower',              False, bool,  'basic',    _('Dual extrusion')).setLabel(_("Wipe&prime tower"), _("The wipe-tower is a tower printed on every layer when switching between nozzles.\nThe old nozzle is wiped off on the tower before the new nozzle is used to print the 2nd color."))
+setting('ooze_shield',             False, bool,  'basic',    _('Dual extrusion')).setLabel(_("Ooze shield"), _("The ooze shield is a 1 line thick shell around the object which stands a few mm from the object.\nThis shield catches any oozing from the unused nozzle in dual-extrusion."))
 setting('filament_diameter',        2.85, float, 'basic',    _('Filament')).setRange(1).setLabel(_("Diameter (mm)"), _("Diameter of your filament, as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion."))
 setting('filament_diameter2',          0, float, 'basic',    _('Filament')).setRange(0).setLabel(_("Diameter2 (mm)"), _("Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter as for nozzle 1."))
 setting('filament_diameter3',          0, float, 'basic',    _('Filament')).setRange(0).setLabel(_("Diameter3 (mm)"), _("Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter as for nozzle 1."))
@@ -360,8 +362,8 @@ setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
 setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel(_("Heated bed"), _("If you have an heated bed, this enabled heated bed settings (requires restart)"))
 setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode', 'MakerBot'], 'machine', 'hidden').setLabel(_("GCode Flavor"), _("Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer.\nMakerBot GCode has a few changes in the way GCode is generated, but still requires MakerWare to generate to X3G."))
 setting('extruder_amount', '1', ['1','2','3','4'], 'machine', 'hidden').setLabel(_("Extruder count"), _("Amount of extruders in your machine."))
-setting('extruder_offset_x1', '-21.6', float, 'machine', 'hidden').setLabel(_("Offset X"), _("The offset of your secondary extruder compared to the primary."))
-setting('extruder_offset_y1', '0.0', float, 'machine', 'hidden').setLabel(_("Offset Y"), _("The offset of your secondary extruder compared to the primary."))
+setting('extruder_offset_x1', '0.0', float, 'machine', 'hidden').setLabel(_("Offset X"), _("The offset of your secondary extruder compared to the primary."))
+setting('extruder_offset_y1', '-21.6', float, 'machine', 'hidden').setLabel(_("Offset Y"), _("The offset of your secondary extruder compared to the primary."))
 setting('extruder_offset_x2', '0.0', float, 'machine', 'hidden').setLabel(_("Offset X"), _("The offset of your tertiary extruder compared to the primary."))
 setting('extruder_offset_y2', '0.0', float, 'machine', 'hidden').setLabel(_("Offset Y"), _("The offset of your tertiary extruder compared to the primary."))
 setting('extruder_offset_x3', '0.0', float, 'machine', 'hidden').setLabel(_("Offset X"), _("The offset of your forth extruder compared to the primary."))
@@ -404,6 +406,8 @@ settingsDictionary['filament_diameter3'].addCondition(lambda : int(getMachineSet
 settingsDictionary['filament_diameter4'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 3)
 settingsDictionary['support_dual_extrusion'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
 settingsDictionary['retraction_dual_amount'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
+settingsDictionary['wipe_tower'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
+settingsDictionary['ooze_shield'].addCondition(lambda : int(getMachineSetting('extruder_amount')) > 1)
 #Heated bed
 settingsDictionary['print_bed_temperature'].addCondition(lambda : getMachineSetting('has_heated_bed') == 'True')
 
@@ -942,6 +946,8 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	postfix = ''
 	alterationContents = getAlterationFile(filename)
 	if getMachineSetting('gcode_flavor') == 'UltiGCode':
+		if filename == 'end.gcode':
+			return 'M25 ;Stop reading from this point on.\n'
 		return ''
 	if filename == 'start.gcode':
 		if extruderCount > 1:
@@ -956,7 +962,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		if getMachineSetting('has_heated_bed') == 'True':
 			bedTemp = getProfileSettingFloat('print_bed_temperature')
 
-		if bedTemp > 0 and isTagIn('{print_bed_temperature}', alterationContents):
+		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
 			prefix += 'M140 S%f\n' % (bedTemp)
 		if temp > 0 and not isTagIn('{print_temperature}', alterationContents):
 			if extruderCount > 0:

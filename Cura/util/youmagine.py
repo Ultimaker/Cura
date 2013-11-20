@@ -237,11 +237,3 @@ class FakeYoumagine(Youmagine):
 
 	def _request(self, method, url, postData = None, files = None):
 		print "Err: Tried to do request: %s %s" % (method, url)
-
-def main():
-	ym = Youmagine('j3rY9kQF62ptuZF7vqbR')
-	if not ym.isAuthorized():
-		print "Failed to authorize"
-		return
-	for design in ym.listDesigns():
-		print design['name']
