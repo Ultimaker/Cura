@@ -250,6 +250,9 @@ class SceneView(openglGui.glGuiPanel):
 	def showPrintWindow(self):
 		if self._gcodeFilename is None:
 			return
+		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
+			wx.MessageBox(_("USB printing on the Ultimaker2 is not supported."), _("USB Printing Error"), wx.OK | wx.ICON_WARNING)
+			return
 		self._usbPrintMonitor.loadFile(self._gcodeFilename, self._slicer.getID())
 		if self._gcodeFilename == self._slicer.getGCodeFilename():
 			self._slicer.submitSliceInfoOnline()
