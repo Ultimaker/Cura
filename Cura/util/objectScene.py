@@ -232,16 +232,16 @@ class Scene(object):
 		machine = profile.getMachineSetting('machine_type')
 		if(machine == "ultimaker2"):
 			#lowerRight clip check
-			if p[0] - s[0] < -self._machineSize[0] / 2 + 50 and p[1] - s[1] < -self._machineSize[1]/2 + 5:
+			if p[0] - s[0] < -self._machineSize[0] / 2 + 25 and p[1] - s[1] < -self._machineSize[1]/2 + 10:
 				return False
 			#UpperRight
-			if p[0] - s[0] < -self._machineSize[0] / 2 + 50 and p[1] + s[1] > self._machineSize[1]/2 - 35:
+			if p[0] - s[0] < -self._machineSize[0] / 2 + 25 and p[1] + s[1] > self._machineSize[1]/2 - 10:
 				return False
 			#LowerLeft
-			if p[0] + s[0] > self._machineSize[0] / 2 - 55 and p[1] - s[1] < -self._machineSize[1]/2 + 5:
+			if p[0] + s[0] > self._machineSize[0] / 2 - 25 and p[1] - s[1] < -self._machineSize[1]/2 + 10:
 				return False
 			#UpperLeft
-			if p[0] + s[0] > self._machineSize[0] / 2 - 55 and p[1] + s[1] > self._machineSize[1]/2 - 35:
+			if p[0] + s[0] > self._machineSize[0] / 2 - 25 and p[1] + s[1] > self._machineSize[1]/2 - 10:
 				return False
 		return True
 

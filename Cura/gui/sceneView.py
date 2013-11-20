@@ -383,10 +383,10 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene.pushFree()
 		#self.sceneUpdated()
 		if machine == "ultimaker2":
-			self._selectedObj.setPosition(numpy.array([0.0,-22.5]))
-
+			#This is bad and Jaime should feel bad!
+			self._selectedObj.setPosition(numpy.array([0.0,-10.0]))
 			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
-			self._selectedObj.setPosition(numpy.array([0.0,-15]))
+			self._selectedObj.setPosition(numpy.array([0.0,0.0]))
 			self._scene.pushFree()
 		else:
 			self._selectedObj.setPosition(numpy.array([0.0, 0.0]))
@@ -1350,7 +1350,7 @@ void main(void)
 			glColor4ub(127, 127, 127, 200)
 			#if UM2, draw bat-area zone for head. THe head can't stop there, because its bat-area.
 			#UpperRight
-			clipWidth = 50
+			clipWidth = 25
 			clipHeight = 10
 			posX = sx / 2 - clipWidth
 			posY = sy / 2 - clipHeight
@@ -1361,7 +1361,7 @@ void main(void)
 			glVertex3f(posX, posY+clipHeight, 0.1)
 			glEnd()
 			#UpperLeft
-			clipWidth = 55
+			clipWidth = 25
 			clipHeight = 10
 			posX = -sx / 2
 			posY = sy / 2 - clipHeight
@@ -1372,7 +1372,7 @@ void main(void)
 			glVertex3f(posX, posY+clipHeight, 0.1)
 			glEnd()
 			#LowerRight
-			clipWidth = 50
+			clipWidth = 25
 			clipHeight = 10
 			posX = sx / 2 - clipWidth
 			posY = -sy / 2
@@ -1383,7 +1383,7 @@ void main(void)
 			glVertex3f(posX, posY+clipHeight, 0.1)
 			glEnd()
 			#LowerLeft
-			clipWidth = 55
+			clipWidth = 25
 			clipHeight = 10
 			posX = -sx / 2
 			posY = -sy / 2
@@ -1393,8 +1393,6 @@ void main(void)
 			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
 			glVertex3f(posX, posY+clipHeight, 0.1)
 			glEnd()
-
-
 
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
