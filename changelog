@@ -1,4 +1,6 @@
 Development
+
+13.11.2
 * Adjusted the gantry height to 55mm for the Ultimaker, as 60mm was 3mm to high for the default setup with an V2 hotend.
 * Added disallowed zones for UM2
 * Added ooze-shield for dual-color printing
