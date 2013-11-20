@@ -1350,10 +1350,10 @@ void main(void)
 			glColor4ub(127, 127, 127, 200)
 			#if UM2, draw bat-area zone for head. THe head can't stop there, because its bat-area.
 			#UpperRight
-			clipWidth = 50;
-			clipHeight = 35;
-			posX = sx / 2 - clipWidth;
-			posY = sy / 2 - clipHeight;
+			clipWidth = 50
+			clipHeight = 10
+			posX = sx / 2 - clipWidth
+			posY = sy / 2 - clipHeight
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0.1)
 			glVertex3f(posX+clipWidth, posY, 0.1)
@@ -1361,10 +1361,10 @@ void main(void)
 			glVertex3f(posX, posY+clipHeight, 0.1)
 			glEnd()
 			#UpperLeft
-			clipWidth = 55;
-			clipHeight = 35;
-			posX = -sx / 2;
-			posY = sy / 2 - clipHeight;
+			clipWidth = 55
+			clipHeight = 10
+			posX = -sx / 2
+			posY = sy / 2 - clipHeight
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0.1)
 			glVertex3f(posX+clipWidth, posY, 0.1)
@@ -1372,10 +1372,10 @@ void main(void)
 			glVertex3f(posX, posY+clipHeight, 0.1)
 			glEnd()
 			#LowerRight
-			clipWidth = 50;
-			clipHeight = 5;
-			posX = sx / 2 - clipWidth;
-			posY = -sy / 2;
+			clipWidth = 50
+			clipHeight = 10
+			posX = sx / 2 - clipWidth
+			posY = -sy / 2
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0.1)
 			glVertex3f(posX+clipWidth, posY, 0.1)
@@ -1383,10 +1383,10 @@ void main(void)
 			glVertex3f(posX, posY+clipHeight, 0.1)
 			glEnd()
 			#LowerLeft
-			clipWidth = 55;
-			clipHeight = 5;
-			posX = -sx / 2;
-			posY = -sy / 2;
+			clipWidth = 55
+			clipHeight = 10
+			posX = -sx / 2
+			posY = -sy / 2
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0.1)
 			glVertex3f(posX+clipWidth, posY, 0.1)

@@ -1,6 +1,9 @@
 Development
 * Adjusted the gantry height to 55mm for the Ultimaker, as 60mm was 3mm to high for the default setup with an V2 hotend.
-* Added disallowed zones for UM2.
+* Added disallowed zones for UM2
+* Added ooze-shield for dual-color printing
+* Added wipe tower for dual-extrusion
+* Added no-go zones for UM2 glass clips
 
 Ultimaker2 - Firmware update - 13.11-1
 * Slightly tweaked the SD-Card error problems.
