@@ -7,7 +7,9 @@ Development
 * Added wipe tower for dual-extrusion
 * Added no-go zones for UM2 glass clips
 
-Ultimaker2 - Firmware update - 13.11-1
+Ultimaker2 - Firmware update - 13.11-2
+* Fixed UM2 build volume offset so that you do not print off the glass plate.
+* Slightly tweaked the filament change procedure so there is less chance of a blob staying behind.
 * Slightly tweaked the SD-Card error problems.
 * Added LED settings to Tune menu
 * Start heating the nozzles when the bed is nearing its final temperature, so the nozzles do not sit hot.
