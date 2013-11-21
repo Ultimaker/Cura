@@ -58,7 +58,7 @@ msgstr "* Optie: nivelleer je print platform"
 
 #: Cura/gui/configWizard.py:239
 msgid "The following pre-defined machine profiles are available"
-msgstr ""
+msgstr "De volgende vooraf gedefinieerde machine profielen zijn beschikbaar"
 
 #: Cura/gui/configWizard.py:240
 msgid ""
@@ -83,7 +83,7 @@ msgstr ""
 #: Cura/gui/configWizard.py:276
 msgid ""
 "Be sure to review the default profile before running it on your machine."
-msgstr ""
+msgstr "Controleer het standaardprofiel voordat u het op uw machine gebruikt."
 
 #: Cura/gui/configWizard.py:277
 msgid ""
@@ -209,7 +209,7 @@ msgstr ""
 
 #: Cura/gui/configWizard.py:410
 msgid "Upgrade Ultimaker Firmware"
-msgstr "Upgrade Ultimaker Firmware"
+msgstr "Ultimaker Firmware Opwaarderen"
 
 #: Cura/gui/configWizard.py:411
 msgid ""
@@ -237,11 +237,11 @@ msgid ""
 "You will get the chance to do so now."
 msgstr ""
 "Cura heeft deze nieuwe mogelijkheden nodig en zal hoogstwaarschijnlijk "
-"geupgrade moeten worden. Je krijgt nu de kans om dat te doen."
+"opgewaardeerd moeten worden. Je krijgt nu de kans om dat te doen."
 
 #: Cura/gui/configWizard.py:420
 msgid "Do not upgrade to this firmware if:"
-msgstr "Upgrade niet naar deze firmware als:"
+msgstr "Niet opwaarderen naar deze firmware als:"
 
 #: Cura/gui/configWizard.py:421
 msgid "* You have an older machine based on ATMega1280"
@@ -281,7 +281,7 @@ msgstr "Eindschakelaars:"
 
 #: Cura/gui/configWizard.py:468
 msgid "Show error log"
-msgstr "Laat de error log zien"
+msgstr "Laat de foutmelding log zien"
 
 #: Cura/gui/configWizard.py:502
 msgid "Connecting to machine."
@@ -407,7 +407,7 @@ msgid ""
 "Error: Failed to open serial port to machine\n"
 "If this keeps happening, try disconnecting and reconnecting the USB cable"
 msgstr ""
-"Error: Het is niet gelukt via de seriele poort verbinding te maken. Wanneer "
+"Fout: Het is niet gelukt via de seriele poort verbinding te maken. Wanneer "
 "dit probleem zich blijft herhalen, haal dan de USB kabel uit de printer en "
 "sluit deze opnieuw aan."
 
@@ -430,7 +430,7 @@ msgstr "Oké"
 
 #: Cura/gui/firmwareInstall.py:68
 msgid "Reading firmware..."
-msgstr "Firmware checken..."
+msgstr "Firmware controleren..."
 
 #: Cura/gui/firmwareInstall.py:70
 msgid "Connecting to machine..."
@@ -458,7 +458,7 @@ msgid ""
 "Failed to find machine for firmware upgrade\n"
 "Is your machine connected to the PC?"
 msgstr ""
-"Geen machine gevonden om de firmware te upgraden\n"
+"Geen machine gevonden om de firmware op te waarderen\n"
 "Is je machine verbonden met de computer?"
 
 #: Cura/gui/mainWindow.py:56
@@ -530,10 +530,9 @@ msgstr "Bestand"
 msgid "Minecraft map import..."
 msgstr "Importeer Minecraft kaart data..."
 
-# Weet ik niet wat dit is en doet, vandaar de onzinnige vertaling
 #: Cura/gui/mainWindow.py:122
 msgid "PID Debugger..."
-msgstr "PID Muggendoder..."
+msgstr "PID foutopsporing..."
 
 #: Cura/gui/mainWindow.py:125
 msgid "Copy profile to clipboard"
@@ -569,7 +568,7 @@ msgstr "Wizard: Platform vlak afstellen..."
 
 #: Cura/gui/mainWindow.py:154
 msgid "Run head offset wizard..."
-msgstr "Wizard: Afstand Printkoppen Calibreren..."
+msgstr "Wizard: Afstand printkoppen calibreren..."
 
 #: Cura/gui/mainWindow.py:157
 msgid "Expert"
@@ -577,19 +576,19 @@ msgstr "Expert"
 
 #: Cura/gui/mainWindow.py:160
 msgid "Online documentation..."
-msgstr "Online Documentatie..."
+msgstr "Online documentatie..."
 
 #: Cura/gui/mainWindow.py:162
 msgid "Report a problem..."
-msgstr "Meld Een Probleem..."
+msgstr "Meld een probleem..."
 
 #: Cura/gui/mainWindow.py:164
 msgid "Check for update..."
-msgstr "Controleer Op Updates..."
+msgstr "Controleer op updates..."
 
 #: Cura/gui/mainWindow.py:166
 msgid "Open YouMagine website..."
-msgstr "Open De YouMagine Website..."
+msgstr "Open de YouMagine website..."
 
 #: Cura/gui/mainWindow.py:168
 msgid "About Cura..."
@@ -601,23 +600,23 @@ msgstr "Help"
 
 #: Cura/gui/mainWindow.py:394
 msgid "Add new machine..."
-msgstr "Voeg Een Nieuwe Machine Toe..."
+msgstr "Voeg een nieuwe machine toe..."
 
 #: Cura/gui/mainWindow.py:399
 msgid "Install custom firmware..."
-msgstr "Installeer Je Eigen Firmware..."
+msgstr "Installeer je eigen firmware..."
 
 #: Cura/gui/mainWindow.py:402
 msgid "Install default Marlin firmware..."
-msgstr "Installeer De Standaardfirmware..."
+msgstr "Installeer de standaardfirmware..."
 
 #: Cura/gui/mainWindow.py:406
 msgid "Select profile file to load"
-msgstr "Selecteer Een Profielbestand Om Te Laden"
+msgstr "Selecteer een profielbestand om te laden"
 
 #: Cura/gui/mainWindow.py:418
 msgid "Select gcode file to load profile from"
-msgstr "Selecteer Een GCode Bestand Om Het Profiel Uit Te Laden..."
+msgstr "Selecteer een GCode bestand om het profiel uit te laden..."
 
 #: Cura/gui/mainWindow.py:431
 msgid ""
@@ -625,7 +624,7 @@ msgid ""
 "This feature only works with GCode files made by Cura 12.07 or newer."
 msgstr ""
 "Er is geen profiel gevonden in het GCode bestand.\n"
-"Deze feature werkt alleen wanneer GCode is gemaakt vanuit Cura nieuwe dan "
+"Deze feature werkt alleen wanneer GCode is gemaakt vanuit Cura nieuwer dan "
 "versie 12.07"
 
 #: Cura/gui/mainWindow.py:431
@@ -642,14 +641,14 @@ msgid ""
 "Unless you have saved your current profile, all settings will be lost!\n"
 "Do you really want to reset?"
 msgstr ""
-"Dit zal alle profiel instellingen terug zetten naar de standaard waarden.\n"
+"Dit zal alle profiel instellingen herstellen naar de standaard waarden.\n"
 "Alle instellingen zullen verloren gaan, tenzij je je huidige profiel hebt "
 "opgeslagen!\n"
-"Wil je echt resetten?"
+"Wil je echt herstellen?"
 
 #: Cura/gui/mainWindow.py:443
 msgid "Profile reset"
-msgstr "Reset profiel"
+msgstr "Profiel herstellen"
 
 #: Cura/gui/mainWindow.py:463
 msgid ""
@@ -702,7 +701,7 @@ msgstr "Kleuren"
 
 #: Cura/gui/preferencesDialog.py:31 Cura/util/profile.py:331
 msgid "Language"
-msgstr ""
+msgstr "Taal"
 
 #: Cura/gui/preferencesDialog.py:34
 msgid "Filament settings"
@@ -741,7 +740,7 @@ msgstr "Fout bij verwijderen van machine"
 
 #: Cura/gui/printWindow.py:132
 msgid "Printing"
-msgstr "Print"
+msgstr "Printen"
 
 #: Cura/gui/printWindow.py:158
 msgid "Statistics"
@@ -786,7 +785,7 @@ msgstr "Annuleer print"
 
 #: Cura/gui/printWindow.py:184
 msgid "Error log"
-msgstr "Foutlog"
+msgstr "Foutmelding log"
 
 #: Cura/gui/printWindow.py:206
 msgid "BedTemp:"
@@ -873,7 +872,7 @@ msgstr "Spiegelen"
 
 #: Cura/gui/sceneView.py:73 Cura/gui/sceneView.py:76
 msgid "Reset"
-msgstr "Reset"
+msgstr "Herstel"
 
 #: Cura/gui/sceneView.py:74
 msgid "Lay flat"
@@ -981,11 +980,11 @@ msgstr "Logboek..."
 
 #: Cura/gui/sceneView.py:422
 msgid "How many copies do you want?"
-msgstr ""
+msgstr "Hoeveel exemplaren wilt u?"
 
 #: Cura/gui/sceneView.py:422
 msgid "Number of copies"
-msgstr ""
+msgstr "Aantal exemplaren"
 
 #: Cura/gui/sceneView.py:422
 #, fuzzy
@@ -1090,7 +1089,7 @@ msgstr "Bereid alles voor"
 
 #: Cura/gui/tools/batchRun.py:47
 msgid "Open file to batch prepare"
-msgstr "Open bestand om batch voor te bereiden"
+msgstr "Open bestand om partij voor te bereiden"
 
 #: Cura/gui/tools/batchRun.py:134
 #, python-format
@@ -1108,7 +1107,7 @@ msgstr "Onderbreek"
 
 #: Cura/gui/tools/batchRun.py:163 Cura/gui/tools/batchRun.py:233
 msgid "Close"
-msgstr "Sluit"
+msgstr "Sluiten"
 
 #: Cura/gui/tools/batchRun.py:187
 #, python-format
@@ -1634,14 +1633,14 @@ msgstr ""
 
 #: Cura/util/profile.py:172
 msgid "Flow (%)"
-msgstr "Flow (%)"
+msgstr "Vloeien (%)"
 
 #: Cura/util/profile.py:172
 msgid ""
 "Flow compensation, the amount of material extruded is multiplied by this "
 "value"
 msgstr ""
-"Compensatie van de flow. De hoeveelheid geëxtrudeerd materiaal wordt "
+"Compensatie van het vloeien. De hoeveelheid geëxtrudeerd materiaal wordt "
 "vermenigvuldigd met deze waarde."
 
 #: Cura/util/profile.py:173 Cura/util/profile.py:174 Cura/util/profile.py:175
@@ -1675,9 +1674,7 @@ msgstr ""
 
 #: Cura/util/profile.py:175
 msgid "Dual extrusion switch amount (mm)"
-msgstr ""
-"Sla ook meteen het profiel op als [stl_file]_profile.ini wanneer je een "
-"model slicet."
+msgstr "Duo extrusie wissel hoeveelheid (mm)"
 
 #: Cura/util/profile.py:175
 msgid ""
@@ -2046,6 +2043,20 @@ msgstr ""
 "verwijderen, maar maakt de print wel iets lelijker. \n"
 "0,15 mm. is een goede afstand waarbij het ondersteuningsmateriaal makkelijk "
 "te verwijderen is."
+
+#: Cura/util/profile.py:211
+msgid "Spiralize the outer contour"
+msgstr "Buitencontour spiraliseren"
+
+#: Cura/util/profile.py:211
+msgid ""
+"Spiralize is smoothing out the Z move of the outer edge. This will create a "
+"steady Z increase over the whole print. This feature turns a solid object "
+"into a single walled print with a solid bottom."
+msgstr ""
+"Spiraliseren is het gladstrijken van de Z-beweging van de buitenrand. Dit zal leiden tot een "
+"constante Z stijging over de gehele print. Met deze functie wordt een vast voorwerp "
+"een één wandige print met een stevige bodem."
 
 #: Cura/util/profile.py:212
 msgid "Brim line amount"
