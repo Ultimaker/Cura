@@ -153,6 +153,8 @@ class mainWindow(wx.Frame):
 		if self.extruderCount > 1:
 			self.headOffsetWizardMenuItem = expertMenu.Append(-1, _("Run head offset wizard..."))
 			self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, self.headOffsetWizardMenuItem)
+		else:
+			self.headOffsetWizardMenuItem = None
 
 		self.menubar.Append(expertMenu, _("Expert"))
 
@@ -308,7 +310,8 @@ class mainWindow(wx.Frame):
 		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
 		if profile.getMachineSetting('machine_type') == 'ultimaker2':
 			self.bedLevelWizardMenuItem.Enable(False)
-			self.headOffsetWizardMenuItem.Enable(False)
+			if self.headOffsetWizardMenuItem is not None:
+				self.headOffsetWizardMenuItem.Enable(False)
 		self.scene.updateProfileToControls()
 
 	def OnPreferences(self, e):
