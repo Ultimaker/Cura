@@ -726,7 +726,9 @@ class UltimakerCalibrateStepsPerEPage(InfoPage):
 		self.lengthInput.SetValue("100")
 
 	def OnExtrudeClick(self, e):
-		threading.Thread(target=self.OnExtrudeRun).start()
+		t = threading.Thread(target=self.OnExtrudeRun)
+		t.daemon = True
+		t.start()
 
 	def OnExtrudeRun(self):
 		self.heatButton.Enable(False)
@@ -759,7 +761,9 @@ class UltimakerCalibrateStepsPerEPage(InfoPage):
 		self.heatButton.Enable()
 
 	def OnHeatClick(self, e):
-		threading.Thread(target=self.OnHeatRun).start()
+		t = threading.Thread(target=self.OnHeatRun)
+		t.daemon = True
+		t.start()
 
 	def OnHeatRun(self):
 		self.heatButton.Enable(False)
