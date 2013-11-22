@@ -140,7 +140,7 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
 		expertMenu.AppendSeparator()
 
-		i = expertMenu.Append(-1, _("Open expert settings..."))
+		i = expertMenu.Append(-1, _("Open expert settings...\tCTRL+E"))
 		self.normalModeOnlyItems.append(i)
 		self.Bind(wx.EVT_MENU, self.OnExpertOpen, i)
 		expertMenu.AppendSeparator()
