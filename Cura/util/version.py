@@ -21,11 +21,14 @@ def getVersion(getGitVersion = True):
 		versionFile = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../version"))
 
 	if getGitVersion:
-		gitProcess = subprocess.Popen(args = "git show -s --pretty=format:%H", shell = True, cwd = gitPath, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-		(stdoutdata, stderrdata) = gitProcess.communicate()
+		try:
+			gitProcess = subprocess.Popen(args = "git show -s --pretty=format:%H", shell = True, cwd = gitPath, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+			(stdoutdata, stderrdata) = gitProcess.communicate()
 
-		if gitProcess.returncode == 0:
-			return stdoutdata
+			if gitProcess.returncode == 0:
+				return stdoutdata
+		except:
+			pass
 
 	gitHeadFile = gitPath + "/.git/refs/heads/SteamEngine"
 	if os.path.isfile(gitHeadFile):
