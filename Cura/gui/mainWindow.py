@@ -27,8 +27,6 @@ class mainWindow(wx.Frame):
 	def __init__(self):
 		super(mainWindow, self).__init__(None, title='Cura - ' + version.getVersion())
 
-		self.extruderCount = int(profile.getMachineSetting('extruder_amount'))
-
 		wx.EVT_CLOSE(self, self.OnClose)
 
 		# allow dropping any file, restrict later
@@ -150,11 +148,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, self.OnFirstRunWizard, i)
 		self.bedLevelWizardMenuItem = expertMenu.Append(-1, _("Run bed leveling wizard..."))
 		self.Bind(wx.EVT_MENU, self.OnBedLevelWizard, self.bedLevelWizardMenuItem)
-		if self.extruderCount > 1:
-			self.headOffsetWizardMenuItem = expertMenu.Append(-1, _("Run head offset wizard..."))
-			self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, self.headOffsetWizardMenuItem)
-		else:
-			self.headOffsetWizardMenuItem = None
+		self.headOffsetWizardMenuItem = expertMenu.Append(-1, _("Run head offset wizard..."))
+		self.Bind(wx.EVT_MENU, self.OnHeadOffsetWizard, self.headOffsetWizardMenuItem)
 
 		self.menubar.Append(expertMenu, _("Expert"))
 
@@ -310,8 +305,9 @@ class mainWindow(wx.Frame):
 		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
 		if profile.getMachineSetting('machine_type') == 'ultimaker2':
 			self.bedLevelWizardMenuItem.Enable(False)
-			if self.headOffsetWizardMenuItem is not None:
-				self.headOffsetWizardMenuItem.Enable(False)
+			self.headOffsetWizardMenuItem.Enable(False)
+		if int(profile.getMachineSetting('extruder_amount')) < 2:
+			self.headOffsetWizardMenuItem.Enable(False)
 		self.scene.updateProfileToControls()
 
 	def OnPreferences(self, e):
