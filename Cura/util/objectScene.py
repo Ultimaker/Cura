@@ -99,7 +99,9 @@ class Scene(object):
 		self._objectList = []
 		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
-		self._headOffsets = numpy.array([18.0,18.0], numpy.float32)
+		self._headSizeOffsets = numpy.array([18.0,18.0], numpy.float32)
+		self._extruderOffset = [numpy.array([0,0], numpy.float32)] * 4
+
 		#Print order variables
 		self._leftToRight = False
 		self._frontToBack = True
@@ -116,12 +118,15 @@ class Scene(object):
 	def setHeadSize(self, xMin, xMax, yMin, yMax, gantryHeight):
 		self._leftToRight = xMin < xMax
 		self._frontToBack = yMin < yMax
-		self._headOffsets[0] = min(xMin, xMax)
-		self._headOffsets[1] = min(yMin, yMax)
+		self._headSizeOffsets[0] = min(xMin, xMax)
+		self._headSizeOffsets[1] = min(yMin, yMax)
 		self._gantryHeight = gantryHeight
 
+	def setExtruderOffset(self, extruderNr, offsetX, offsetY):
+		self._extruderOffset[extruderNr] = numpy.array([offsetX, offsetY], numpy.float32)
+
 	def getObjectExtend(self):
-		return self._sizeOffsets + self._headOffsets
+		return self._sizeOffsets + self._headSizeOffsets
 
 	def objects(self):
 		return self._objectList
@@ -178,7 +183,7 @@ class Scene(object):
 			obj.setPosition(obj.getPosition() + offset)
 
 	def printOrder(self):
-		order = _objectOrderFinder(self, self._headOffsets + self._sizeOffsets, self._leftToRight, self._frontToBack, self._gantryHeight).order
+		order = _objectOrderFinder(self, self._headSizeOffsets + self._sizeOffsets, self._leftToRight, self._frontToBack, self._gantryHeight).order
 		return order
 
 	def _pushFree(self):
@@ -196,7 +201,7 @@ class Scene(object):
 				aPos = a.getPosition()
 				bPos = b.getPosition()
 				center = (aPos[axis] + bPos[axis]) / 2
-				distance = (a.getSize()[axis] + b.getSize()[axis]) / 2 + 0.1 + self._sizeOffsets[axis] + self._headOffsets[axis]
+				distance = (a.getSize()[axis] + b.getSize()[axis]) / 2 + 0.1 + self._sizeOffsets[axis] + self._headSizeOffsets[axis]
 				if posDiff[axis] < 0:
 					distance = -distance
 				aPos[axis] = center + distance / 2
@@ -211,37 +216,54 @@ class Scene(object):
 		if a == b:
 			return False
 		posDiff = a.getPosition() - b.getPosition()
-		if abs(posDiff[0]) < (a.getSize()[0] + b.getSize()[0]) / 2 + self._sizeOffsets[0] + self._headOffsets[0]:
-			if abs(posDiff[1]) < (a.getSize()[1] + b.getSize()[1]) / 2 + self._sizeOffsets[1] + self._headOffsets[1]:
+		if abs(posDiff[0]) < (a.getSize()[0] + b.getSize()[0]) / 2 + self._sizeOffsets[0] + self._headSizeOffsets[0]:
+			if abs(posDiff[1]) < (a.getSize()[1] + b.getSize()[1]) / 2 + self._sizeOffsets[1] + self._headSizeOffsets[1]:
 				return True
 		return False
 
 	def checkPlatform(self, obj):
 		p = obj.getPosition()
 		s = obj.getSize()[0:2] / 2 + self._sizeOffsets
-		if p[0] - s[0] < -self._machineSize[0] / 2:
+		offsetLeft = 0.0
+		offsetRight = 0.0
+		offsetBack = 0.0
+		offsetFront = 0.0
+		for n in xrange(1, len(obj._meshList)):
+			if offsetLeft < self._extruderOffset[n][0]:
+				offsetLeft = self._extruderOffset[n][0]
+			if offsetRight > self._extruderOffset[n][0]:
+				offsetRight = self._extruderOffset[n][0]
+			if offsetFront < self._extruderOffset[n][1]:
+				offsetFront = self._extruderOffset[n][1]
+			if offsetBack > self._extruderOffset[n][1]:
+				offsetBack = self._extruderOffset[n][1]
+		boundLeft = -self._machineSize[0] / 2 + offsetLeft
+		boundRight = self._machineSize[0] / 2 + offsetRight
+		boundFront = -self._machineSize[1] / 2 + offsetFront
+		boundBack = self._machineSize[1] / 2 + offsetBack
+		if p[0] - s[0] < boundLeft:
 			return False
-		if p[0] + s[0] > self._machineSize[0] / 2:
+		if p[0] + s[0] > boundRight:
 			return False
-		if p[1] - s[1] < -self._machineSize[1] / 2:
+		if p[1] - s[1] < boundFront:
 			return False
-		if p[1] + s[1] > self._machineSize[1] / 2:
+		if p[1] + s[1] > boundBack:
 			return False
 
 		#Do clip Check for UM2.
 		machine = profile.getMachineSetting('machine_type')
-		if(machine == "ultimaker2"):
+		if machine == "ultimaker2":
 			#lowerRight clip check
-			if p[0] - s[0] < -self._machineSize[0] / 2 + 25 and p[1] - s[1] < -self._machineSize[1]/2 + 10:
+			if p[0] - s[0] < boundLeft + 25 and p[1] - s[1] < boundFront + 10:
 				return False
 			#UpperRight
-			if p[0] - s[0] < -self._machineSize[0] / 2 + 25 and p[1] + s[1] > self._machineSize[1]/2 - 10:
+			if p[0] - s[0] < boundLeft + 25 and p[1] + s[1] > boundBack - 10:
 				return False
 			#LowerLeft
-			if p[0] + s[0] > self._machineSize[0] / 2 - 25 and p[1] - s[1] < -self._machineSize[1]/2 + 10:
+			if p[0] + s[0] > boundRight - 25 and p[1] - s[1] < boundFront + 10:
 				return False
 			#UpperLeft
-			if p[0] + s[0] > self._machineSize[0] / 2 - 25 and p[1] + s[1] > self._machineSize[1]/2 - 10:
+			if p[0] + s[0] > boundRight - 25 and p[1] + s[1] > boundBack - 10:
 				return False
 		return True
 
@@ -249,7 +271,7 @@ class Scene(object):
 		posList = []
 		for a in self._objectList:
 			p = a.getPosition()
-			s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headOffsets
+			s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headSizeOffsets
 			posList.append(p + s * ( 1.0, 1.0))
 			posList.append(p + s * ( 0.0, 1.0))
 			posList.append(p + s * (-1.0, 1.0))

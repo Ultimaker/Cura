@@ -618,6 +618,8 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene.setMachineSize(self._machineSize)
 		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
 		self._scene.setHeadSize(profile.getMachineSettingFloat('extruder_head_size_min_x'), profile.getMachineSettingFloat('extruder_head_size_max_x'), profile.getMachineSettingFloat('extruder_head_size_min_y'), profile.getMachineSettingFloat('extruder_head_size_max_y'), profile.getMachineSettingFloat('extruder_head_size_height'))
+		for n in xrange(1, 4):
+			self._scene.setExtruderOffset(n, profile.getMachineSettingFloat('extruder_offset_x%d' % (n)), profile.getMachineSettingFloat('extruder_offset_y%d' % (n)))
 
 		if self._selectedObj is not None:
 			scale = self._selectedObj.getScale()
