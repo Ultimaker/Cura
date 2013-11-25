@@ -6,12 +6,16 @@ import httplib as httpclient
 import urllib
 import time
 
+from Cura.util.printerConnection import printerConnectionBase
+
 #Class to connect and print files with the doodle3d.com wifi box
 # Auto-detects if the Doodle3D box is available with a printer
-class doodle3dConnect(object):
+class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 	def __init__(self):
+		super(doodle3dConnect, self).__init__()
+
 		self._http = None
-		self._connected = False
+		self._isAvailable = False
 		self._printing = False
 		self._fileBlocks = []
 		self._blockIndex = None
@@ -20,10 +24,11 @@ class doodle3dConnect(object):
 		self._hotendTemperature = [0] * 4
 		self._bedTemperature = 0
 
-		self.checkThread = threading.Thread(target=self._checkForDoodle3D)
+		self.checkThread = threading.Thread(target=self._doodle3Dthread)
 		self.checkThread.daemon = True
 		self.checkThread.start()
 
+	#Load the file into memory for printing.
 	def loadFile(self, filename):
 		if self._printing:
 			return
@@ -49,37 +54,45 @@ class doodle3dConnect(object):
 		self._fileBlocks.append('\n'.join(block) + '\n')
 		f.close()
 
+	#Start printing the previously loaded file
 	def startPrint(self):
-		if self._printing:
+		if self._printing or len(self._fileBlocks) < 1:
 			return
 		self._progressLine = 0
 		self._blockIndex = 0
 		self._printing = True
 
-	def stopPrint(self):
+	#Abort the previously loaded print file
+	def cancelPrint(self):
 		if not self._printing:
 			return
 		if self._request('POST', '/d3dapi/printer/stop', {'gcode': 'M104 S0\nG28'}):
 			self._printing = False
 
-	def isConnected(self):
-		return self._connected
-
 	def isPrinting(self):
 		return self._printing
 
-	def _checkForDoodle3D(self):
+	# Return if the printer with this connection type is available
+	def isAvailable(self):
+		return self._isAvailable
+
+	# Get the connection status string. This is displayed to the user and can be used to communicate
+	#  various information to the user.
+	def getStatusString(self):
+		return "TODO"
+
+	def _doodle3Dthread(self):
 		while True:
 			stateReply = self._request('GET', '/d3dapi/printer/state')
 			if stateReply is None:	#No API, wait 15 seconds before looking for Doodle3D again.
-				self._connected = False
+				self._isAvailable = False
 				time.sleep(15)
 				continue
 			if not stateReply:		#API gave back an error (this can happen if the Doodle3D box is connecting to the printer)
-				self._connected = False
+				self._isAvailable = False
 				time.sleep(5)
 				continue
-			self._connected = True
+			self._isAvailable = True
 
 			if stateReply['data']['state'] == 'idle':
 				if self._printing:
@@ -143,18 +156,18 @@ class doodle3dConnect(object):
 if __name__ == '__main__':
 	d = doodle3dConnect()
 	print 'Searching for Doodle3D box'
-	while not d.isConnected():
+	while not d.isAvailable():
 		time.sleep(1)
 
 	while d.isPrinting():
 		print 'Doodle3D already printing! Requesting stop!'
-		d.stopPrint()
+		d.cancelPrint()
 		time.sleep(5)
 
 	print 'Doodle3D box found, printing!'
 	d.loadFile("C:/Models/belt-tensioner-wave_export.gcode")
 	d.startPrint()
-	while d.isPrinting() and d.isConnected():
+	while d.isPrinting() and d.isAvailable():
 		time.sleep(1)
 		print d._progressLine, d._lineCount, d._blockIndex, len(d._fileBlocks)
 	print 'Done'
