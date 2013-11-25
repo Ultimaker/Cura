@@ -228,7 +228,10 @@ class Scene(object):
 		offsetRight = 0.0
 		offsetBack = 0.0
 		offsetFront = 0.0
-		for n in xrange(1, len(obj._meshList)):
+		extruderCount = len(obj._meshList)
+		if profile.getProfileSetting('support_dual_extrusion') == 'Second extruder' and profile.getProfileSetting('support') != 'None':
+			extruderCount = max(extruderCount, 2)
+		for n in xrange(1, extruderCount):
 			if offsetLeft < self._extruderOffset[n][0]:
 				offsetLeft = self._extruderOffset[n][0]
 			if offsetRight > self._extruderOffset[n][0]:
