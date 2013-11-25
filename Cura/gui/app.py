@@ -22,7 +22,7 @@ class CuraApp(wx.App):
 		self.mainWindow = None
 		self.splash = None
 		self.loadFiles = files
-		
+
 		if sys.platform.startswith('win') and len(files) > 0:
 			#Check for an already running instance, if another instance is running load files in there
 			from Cura.util import version
