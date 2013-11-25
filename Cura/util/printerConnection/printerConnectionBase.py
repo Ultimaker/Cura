@@ -25,6 +25,10 @@ class printerConnectionBase(object):
 	def isPrinting(self):
 		return False
 
+	#Amount of progression of the current print file. 0.0 to 1.0
+	def printProgress(self):
+		return 0.0
+
 	#Returns true if we need to establish an active connection.
 	# Depending on the type of the connection some types do not need an active connection (Doodle3D WiFi Box for example)
 	def hasActiveConnection(self):
@@ -73,6 +77,14 @@ class printerConnectionBase(object):
 	def getStatusString(self):
 		return "TODO"
 
-	def _doCallback(self):
+	def addCallback(self, callback):
+		self._callbackList.append(callback)
+
+	def removeCallback(self, callback):
+		if callback in self._callbackList:
+			self._callbackList.remove(callback)
+
+	#Run a callback, this can be ran from a different thread.
+	def _doCallback(self, param=None):
 		for callback in self._callbackList:
-			callback(self)
+			callback(self, param)

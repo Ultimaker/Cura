@@ -38,13 +38,16 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		blockSize = 0
 		f = open(filename, "r")
 		for line in f:
+			#Strip out comments, we do not need to send comments
 			if ';' in line:
 				line = line[:line.index(';')]
+			#Strip out whitespace at the beginning/end this saves data to send.
 			line = line.strip()
 
 			if len(line) < 1:
 				continue
 			self._lineCount += 1
+			#Put the lines in 2k sized blocks, so we can send those blocks as http requests.
 			if blockSize + len(line) > 2048:
 				self._fileBlocks.append('\n'.join(block) + '\n')
 				block = []
@@ -71,6 +74,12 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 
 	def isPrinting(self):
 		return self._printing
+
+	#Amount of progression of the current print file. 0.0 to 1.0
+	def printProgress(self):
+		if self._lineCount < 1:
+			return 0.0
+		return float(d._progressLine) / float(d._lineCount)
 
 	# Return if the printer with this connection type is available
 	def isAvailable(self):
