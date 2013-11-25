@@ -22,6 +22,27 @@ class CuraApp(wx.App):
 		self.mainWindow = None
 		self.splash = None
 		self.loadFiles = files
+		
+		if sys.platform.startswith('win') and len(files) > 0:
+			#Check for an already running instance, if another instance is running load files in there
+			from Cura.util import version
+			from ctypes import windll
+			import ctypes
+			import socket
+			import threading
+
+			other_hwnd = windll.user32.FindWindowA(None, ctypes.c_char_p('Cura - ' + version.getVersion()))
+			portNr = 0xCA00 + sum(map(ord, version.getVersion(False)))
+			if other_hwnd != 0:
+				sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+				sock.sendto('\0'.join(files), ("127.0.0.1", portNr))
+
+				windll.user32.SetForegroundWindow(other_hwnd)
+				return
+
+			socketListener = threading.Thread(target=self.Win32SocketListener, args=(portNr,))
+			socketListener.daemon = True
+			socketListener.start()
 
 		if sys.platform.startswith('darwin'):
 			#Do not show a splashscreen on OSX, as by Apple guidelines
@@ -35,6 +56,14 @@ class CuraApp(wx.App):
 			self.mainWindow.OnDropFiles([path])
 		except Exception as e:
 			warnings.warn("File at {p} cannot be read: {e}".format(p=path, e=str(e)))
+
+	def Win32SocketListener(self, port):
+		import socket
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		sock.bind(("127.0.0.1", port))
+		while True:
+			data, addr = sock.recvfrom(2048)
+			self.mainWindow.OnDropFiles(data.split('\0'))
 
 	def afterSplashCallback(self):
 		#These imports take most of the time and thus should be done after showing the splashscreen
