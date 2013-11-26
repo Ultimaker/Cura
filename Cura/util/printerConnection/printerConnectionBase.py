@@ -65,10 +65,11 @@ class printerConnectionBase(object):
 	def sendCommand(self, command):
 		pass
 
-	# Return if the printer with this connection type is available
+	# Return if the printer with this connection type is available for possible printing right now.
+	#  It is used to auto-detect which connection should default to the print button.
 	#  This means the printer is detected, but no connection has been made yet.
 	#  Example: COM port is detected, but no connection has been made.
-	#  Example: WiFi box is detected
+	#  Example: WiFi box is detected and is ready to print with a printer connected
 	def isAvailable(self):
 		return False
 

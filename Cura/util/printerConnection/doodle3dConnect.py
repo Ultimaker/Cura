@@ -79,7 +79,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 	def printProgress(self):
 		if self._lineCount < 1:
 			return 0.0
-		return float(d._progressLine) / float(d._lineCount)
+		return float(self._progressLine) / float(self._lineCount)
 
 	# Return if the printer with this connection type is available
 	def isAvailable(self):
@@ -88,6 +88,8 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 	# Get the connection status string. This is displayed to the user and can be used to communicate
 	#  various information to the user.
 	def getStatusString(self):
+		if not self._isAvailable:
+			return "Doodle3D box not found"
 		return "TODO"
 
 	def _doodle3Dthread(self):
@@ -95,13 +97,17 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 			stateReply = self._request('GET', '/d3dapi/printer/state')
 			if stateReply is None:	#No API, wait 15 seconds before looking for Doodle3D again.
 				self._isAvailable = False
+				self._doCallback()
 				time.sleep(15)
 				continue
 			if not stateReply:		#API gave back an error (this can happen if the Doodle3D box is connecting to the printer)
 				self._isAvailable = False
+				self._doCallback()
 				time.sleep(5)
 				continue
-			self._isAvailable = True
+			if not self._isAvailable:
+				self._isAvailable = True
+				self._doCallback()
 
 			if stateReply['data']['state'] == 'idle':
 				if self._printing:
