@@ -8,6 +8,44 @@ import os
 import numpy
 numpy.seterr(all='ignore')
 
+def convexHull(pointList):
+	def _isRightTurn((p, q, r)):
+		sum1 = q[0]*r[1] + p[0]*q[1] + r[0]*p[1]
+		sum2 = q[0]*p[1] + r[0]*q[1] + p[0]*r[1]
+
+		if sum1 - sum2 < 0:
+			return 1
+		else:
+			return 0
+
+	unique = {}
+	for p in pointList:
+		unique[(int(p[0]),int(p[1]))] = 1
+
+	points = unique.keys()
+	points.sort()
+
+	# Build upper half of the hull.
+	upper = [points[0], points[1]]
+	for p in points[2:]:
+		upper.append(p)
+		while len(upper) > 2 and not _isRightTurn(upper[-3:]):
+			del upper[-2]
+
+	# Build lower half of the hull.
+	points = points[::-1]
+	lower = [points[0], points[1]]
+	for p in points[2:]:
+		lower.append(p)
+		while len(lower) > 2 and not _isRightTurn(lower[-3:]):
+			del lower[-2]
+
+	# Remove duplicates.
+	del lower[0]
+	del lower[-1]
+
+	return numpy.array(upper + lower, numpy.float32) - numpy.array([0.0,0.0], numpy.float32)
+
 class printableObject(object):
 	def __init__(self, originFilename):
 		self._originFilename = originFilename
@@ -70,8 +108,10 @@ class printableObject(object):
 		self._transformedMax = numpy.array([-999999999999,-999999999999,-999999999999], numpy.float64)
 		self._boundaryCircleSize = 0
 
+		hull = numpy.zeros((0, 2), numpy.float32)
 		for m in self._meshList:
 			transformedVertexes = m.getTransformedVertexes()
+			hull = convexHull(numpy.concatenate((transformedVertexes[:,0:2], hull), 0))
 			transformedMin = transformedVertexes.min(0)
 			transformedMax = transformedVertexes.max(0)
 			for n in xrange(0, 3):
@@ -86,6 +126,7 @@ class printableObject(object):
 		self._transformedSize = self._transformedMax - self._transformedMin
 		self._drawOffset = (self._transformedMax + self._transformedMin) / 2
 		self._drawOffset[2] = self._transformedMin[2]
+		self._boundaryHull = hull - self._drawOffset[0:2]
 		self._transformedMax -= self._drawOffset
 		self._transformedMin -= self._drawOffset
 
