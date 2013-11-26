@@ -72,6 +72,7 @@ class printableObject(object):
 		ret._transformedMax = self._transformedMax.copy()
 		ret._transformedSize = self._transformedSize.copy()
 		ret._boundaryCircleSize = self._boundaryCircleSize
+		ret._boundaryHull = self._boundaryHull.copy()
 		ret._drawOffset = self._drawOffset.copy()
 		for m in self._meshList[:]:
 			m2 = ret._addMesh()
