@@ -19,7 +19,8 @@ class configPanelBase(wx.Panel):
 		self.popup = wx.PopupWindow(self, flags=wx.BORDER_SIMPLE)
 		self.popup.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_INFOBK))
 		self.popup.setting = None
-		self.popup.text = wx.StaticText(self.popup, -1, '');
+		self.popup.text = wx.StaticText(self.popup, -1, '')
+		self.popup.text.SetForegroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_INFOTEXT))
 		self.popup.sizer = wx.BoxSizer()
 		self.popup.sizer.Add(self.popup.text, flag=wx.EXPAND|wx.ALL, border=1)
 		self.popup.SetSizer(self.popup.sizer)
