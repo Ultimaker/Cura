@@ -918,6 +918,22 @@ def replaceGCodeTags(filename, gcodeInt):
 	f.write(data)
 	f.close()
 
+# ISSUE 459 - output gcode without Print time - START
+def replaceGCodeTagsFromSlicer(filename, slicerInt):
+	f = open(filename, 'r+')
+	data = f.read(2048)
+	data = data.replace('#P_TIME#', slicerInt.getPrintTime())
+	data = data.replace('#F_AMNT#', slicerInt.getFilamentAmount())
+	data = data.replace('#F_WGHT#', ('%8.2f' % (float(slicerInt.getFilamentWeight()) * 1000))[-8:])
+	cost = slicerInt.getFilamentCost()
+	if cost is None:
+		cost = 'Unknown'
+	data = data.replace('#F_COST#', ('%8s' % (cost.split(' ')[0]))[-8:])
+	f.seek(0)
+	f.write(data)
+	f.close()
+# ISSUE 459 - output gcode without Print time - END
+
 ### Get aleration raw contents. (Used internally in Cura)
 def getAlterationFile(filename):
 	if filename in tempOverride:
