@@ -8,6 +8,11 @@ import time
 
 from Cura.util.printerConnection import printerConnectionBase
 
+#Always LAN IP: 192.168.5.1
+#Request: http://connect.doodle3d.com/api/list.php
+#	{"status":"success","data":[{"id":"62.216.8.197\/10.0.0.35","0":"62.216.8.197\/10.0.0.35","remoteip":"62.216.8.197","1":"62.216.8.197","localip":"10.0.0.35","2":"10.0.0.35","wifiboxid":"Doodle3D-87354C","3":"Doodle3D-87354C","hidden":"0","4":"0","date":"2013-11-26 22:02:45","5":"2013-11-26 22:02:45"}],"debug":{"time":1385499835,"hourago":1385496235,"remoteip":"62.216.8.197"}}
+#TODO: api/info/status
+
 #Class to connect and print files with the doodle3d.com wifi box
 # Auto-detects if the Doodle3D box is available with a printer
 class doodle3dConnect(printerConnectionBase.printerConnectionBase):
@@ -21,8 +26,8 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		self._blockIndex = None
 		self._lineCount = 0
 		self._progressLine = 0
-		self._hotendTemperature = [0] * 4
-		self._bedTemperature = 0
+		self._hotendTemperature = [None] * 4
+		self._bedTemperature = None
 
 		self.checkThread = threading.Thread(target=self._doodle3Dthread)
 		self.checkThread.daemon = True
@@ -76,7 +81,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		return self._printing
 
 	#Amount of progression of the current print file. 0.0 to 1.0
-	def printProgress(self):
+	def getPrintProgress(self):
 		if self._lineCount < 1:
 			return 0.0
 		return float(self._progressLine) / float(self._lineCount)
@@ -91,6 +96,14 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		if not self._isAvailable:
 			return "Doodle3D box not found"
 		return "TODO"
+
+	#Get the temperature of an extruder, returns None is no temperature is known for this extruder
+	def getTemperature(self, extruder):
+		return self._hotendTemperature[extruder]
+
+	#Get the temperature of the heated bed, returns None is no temperature is known for the heated bed
+	def getBedTemperature(self):
+		return self._bedTemperature
 
 	def _doodle3Dthread(self):
 		while True:
@@ -116,7 +129,9 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 							self._blockIndex += 1
 					else:
 						self._printing = False
-			if stateReply['data']['state'] == 'printing':
+				else:
+					time.sleep(5)
+			elif stateReply['data']['state'] == 'printing':
 				if self._printing:
 					if self._blockIndex < len(self._fileBlocks):
 						for n in xrange(0, 5):
@@ -125,7 +140,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 									self._blockIndex += 1
 					else:
 						#If we are no longer sending new GCode delay a bit so we request the status less often.
-						time.sleep(1)
+						time.sleep(5)
 					progress = self._request('GET', '/d3dapi/printer/progress')
 					if progress:
 						self._progressLine = progress['data']['current_line']
@@ -140,6 +155,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 						self._printing = True
 						self._blockIndex = len(self._fileBlocks)
 						self._lineCount = progress['data']['total_lines']
+					time.sleep(5)
 
 	def _request(self, method, path, postData = None):
 		if self._http is None:
@@ -184,5 +200,5 @@ if __name__ == '__main__':
 	d.startPrint()
 	while d.isPrinting() and d.isAvailable():
 		time.sleep(1)
-		print d._progressLine, d._lineCount, d._blockIndex, len(d._fileBlocks)
+		print d.getTemperature(0), d.getStatusString(), d.getPrintProgress(), d._progressLine, d._lineCount, d._blockIndex, len(d._fileBlocks)
 	print 'Done'

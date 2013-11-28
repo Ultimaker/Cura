@@ -53,7 +53,7 @@ class dummyConnection(printerConnectionBase.printerConnectionBase):
 		return self._printing
 
 	#Amount of progression of the current print file. 0.0 to 1.0
-	def printProgress(self):
+	def getPrintProgress(self):
 		if self._lineCount < 1:
 			return 0.0
 		return float(self._progressLine) / float(self._lineCount)

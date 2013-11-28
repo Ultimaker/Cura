@@ -26,7 +26,7 @@ class printerConnectionBase(object):
 		return False
 
 	#Amount of progression of the current print file. 0.0 to 1.0
-	def printProgress(self):
+	def getPrintProgress(self):
 		return 0.0
 
 	#Returns true if we need to establish an active connection.
@@ -72,6 +72,14 @@ class printerConnectionBase(object):
 	#  Example: WiFi box is detected and is ready to print with a printer connected
 	def isAvailable(self):
 		return False
+
+	#Get the temperature of an extruder, returns None is no temperature is known for this extruder
+	def getTemperature(self, extruder):
+		return None
+
+	#Get the temperature of the heated bed, returns None is no temperature is known for the heated bed
+	def getBedTemperature(self):
+		return None
 
 	# Get the connection status string. This is displayed to the user and can be used to communicate
 	#  various information to the user.
