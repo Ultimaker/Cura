@@ -24,6 +24,7 @@ from Cura.util import sliceEngine
 from Cura.util import machineCom
 from Cura.util import removableStorage
 from Cura.util import gcodeInterpreter
+from Cura.util.printerConnection import printerConnectionManager
 from Cura.gui.util import previewTools
 from Cura.gui.util import opengl
 from Cura.gui.util import openglGui
@@ -56,6 +57,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh = {}
 		self._isSimpleMode = True
 		self._usbPrintMonitor = printWindow.printProcessMonitor(lambda : self._queueRefresh())
+		self._printerConnectionManager = printerConnectionManager.PrinterConnectionManager()
 
 		self._viewport = None
 		self._modelMatrix = None
@@ -495,7 +497,7 @@ class SceneView(openglGui.glGuiPanel):
 	def sceneUpdated(self):
 		self._sceneUpdateTimer.Start(500, True)
 		self._slicer.abortSlicer()
-		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
+		self._scene.updateSizeOffsets()
 		self.QueueRefresh()
 
 	def _onRunSlicer(self, e):
@@ -616,10 +618,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
 		self._scene.setMachineSize(self._machineSize)
-		self._scene.setSizeOffsets(numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32))
 		self._scene.setHeadSize(profile.getMachineSettingFloat('extruder_head_size_min_x'), profile.getMachineSettingFloat('extruder_head_size_max_x'), profile.getMachineSettingFloat('extruder_head_size_min_y'), profile.getMachineSettingFloat('extruder_head_size_max_y'), profile.getMachineSettingFloat('extruder_head_size_height'))
-		for n in xrange(1, 4):
-			self._scene.setExtruderOffset(n, profile.getMachineSettingFloat('extruder_offset_x%d' % (n)), profile.getMachineSettingFloat('extruder_offset_y%d' % (n)))
 
 		if self._selectedObj is not None:
 			scale = self._selectedObj.getScale()
@@ -832,12 +831,16 @@ class SceneView(openglGui.glGuiPanel):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
 	def OnPaint(self,e):
+		connectionEntry = self._printerConnectionManager.getAvailableConnection()
 		if machineCom.machineIsConnected():
 			self.printButton._imageID = 6
 			self.printButton._tooltip = _("Print")
-		elif len(removableStorage.getPossibleSDcardDrives()) > 0:
+		elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionEntry is None or connectionEntry.priority < 0):
 			self.printButton._imageID = 2
 			self.printButton._tooltip = _("Toolpath to SD")
+		elif connectionEntry is not None:
+			self.printButton._imageID = connectionEntry.icon
+			self.printButton._tooltip = _("Print with %s") % (connectionEntry.name)
 		else:
 			self.printButton._imageID = 3
 			self.printButton._tooltip = _("Save toolpath")
@@ -1151,19 +1154,31 @@ void main(void)
 				glPopMatrix()
 		else:
 			#Draw the object box-shadow, so you can see where it will collide with other objects.
-			if self._selectedObj is not None and len(self._scene.objects()) > 1:
-				size = self._selectedObj.getSize()[0:2] / 2 + self._scene.getObjectExtend()
-				glPushMatrix()
-				glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0)
+			if self._selectedObj is not None:
 				glEnable(GL_BLEND)
 				glEnable(GL_CULL_FACE)
-				glColor4f(0,0,0,0.12)
-				glBegin(GL_QUADS)
-				glVertex3f(-size[0],  size[1], 0.1)
-				glVertex3f(-size[0], -size[1], 0.1)
-				glVertex3f( size[0], -size[1], 0.1)
-				glVertex3f( size[0],  size[1], 0.1)
+				glColor4f(0,0,0,0.16)
+				glDepthMask(False)
+				for obj in self._scene.objects():
+					glPushMatrix()
+					glTranslatef(obj.getPosition()[0], obj.getPosition()[1], 0)
+					glBegin(GL_TRIANGLE_FAN)
+					for p in obj._boundaryHull[::-1]:
+						glVertex3f(p[0], p[1], 0)
+					glEnd()
+					glPopMatrix()
+				glPushMatrix()
+				glColor4f(0,0,0,0.06)
+				glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0)
+				glBegin(GL_TRIANGLE_FAN)
+				for p in self._selectedObj._printAreaHull[::-1]:
+					glVertex3f(p[0], p[1], 0)
 				glEnd()
+				glBegin(GL_TRIANGLE_FAN)
+				for p in self._selectedObj._headAreaHull[::-1]:
+					glVertex3f(p[0], p[1], 0)
+				glEnd()
+				glDepthMask(True)
 				glDisable(GL_CULL_FACE)
 				glPopMatrix()
 
@@ -1314,6 +1329,7 @@ void main(void)
 		glEnableClientState(GL_VERTEX_ARRAY)
 		glVertexPointer(3, GL_FLOAT, 3*4, vList)
 
+		glDepthMask(False)
 		glColor4ub(5, 171, 231, 64)
 		glDrawArrays(GL_QUADS, 0, 4)
 		glColor4ub(5, 171, 231, 96)
@@ -1341,10 +1357,10 @@ void main(void)
 				else:
 					glColor4ub(5 * 8 / 10, 171 * 8 / 10, 231 * 8 / 10, 128)
 				glBegin(GL_QUADS)
-				glVertex3f(x1, y1, -0.02) #Draw bit below z0 to prevent zfighting.
-				glVertex3f(x2, y1, -0.02)
-				glVertex3f(x2, y2, -0.02)
-				glVertex3f(x1, y2, -0.02)
+				glVertex3f(x1, y1, 0)
+				glVertex3f(x2, y1, 0)
+				glVertex3f(x2, y2, 0)
+				glVertex3f(x1, y2, 0)
 				glEnd()
 
 		if machine == 'ultimaker2':
@@ -1357,10 +1373,10 @@ void main(void)
 			posX = sx / 2 - clipWidth
 			posY = sy / 2 - clipHeight
 			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
-			glVertex3f(posX, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY, 0)
+			glVertex3f(posX+clipWidth, posY, 0)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
+			glVertex3f(posX, posY+clipHeight, 0)
 			glEnd()
 			#UpperLeft
 			clipWidth = 25
@@ -1368,10 +1384,10 @@ void main(void)
 			posX = -sx / 2
 			posY = sy / 2 - clipHeight
 			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
-			glVertex3f(posX, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY, 0)
+			glVertex3f(posX+clipWidth, posY, 0)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
+			glVertex3f(posX, posY+clipHeight, 0)
 			glEnd()
 			#LowerRight
 			clipWidth = 25
@@ -1379,10 +1395,10 @@ void main(void)
 			posX = sx / 2 - clipWidth
 			posY = -sy / 2
 			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
-			glVertex3f(posX, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY, 0)
+			glVertex3f(posX+clipWidth, posY, 0)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
+			glVertex3f(posX, posY+clipHeight, 0)
 			glEnd()
 			#LowerLeft
 			clipWidth = 25
@@ -1390,12 +1406,13 @@ void main(void)
 			posX = -sx / 2
 			posY = -sy / 2
 			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY, 0.1)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0.1)
-			glVertex3f(posX, posY+clipHeight, 0.1)
+			glVertex3f(posX, posY, 0)
+			glVertex3f(posX+clipWidth, posY, 0)
+			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
+			glVertex3f(posX, posY+clipHeight, 0)
 			glEnd()
 
+		glDepthMask(True)
 		glDisable(GL_BLEND)
 		glDisable(GL_CULL_FACE)
 

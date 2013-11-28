@@ -1,7 +1,9 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import random
 import numpy
+
 from Cura.util import profile
+from Cura.util import polygon
 
 class _objectOrder(object):
 	def __init__(self, order, todo):
@@ -73,26 +75,9 @@ class _objectOrderFinder(object):
 
 	#Check if printing one object will cause printhead colission with other object.
 	def _checkHit(self, addIdx, idx):
-		addPos = self._scene._objectList[addIdx].getPosition()
-		addSize = self._scene._objectList[addIdx].getSize()
-		pos = self._scene._objectList[idx].getPosition()
-		size = self._scene._objectList[idx].getSize()
-
-		if self._leftToRight:
-			if addPos[0] - addSize[0] / 2 - self._offset[0] >= pos[0] + size[0] / 2:
-				return False
-		else:
-			if addPos[0] + addSize[0] / 2 + self._offset[0] <= pos[0] - size[0] / 2:
-				return False
-
-		if self._frontToBack:
-			if addPos[1] - addSize[1] / 2 - self._offset[1] >= pos[1] + size[1] / 2:
-				return False
-		else:
-			if addPos[1] + addSize[1] / 2 + self._offset[1] <= pos[1] - size[1] / 2:
-				return False
-
-		return True
+		obj = self._scene._objectList[idx]
+		addObj = self._scene._objectList[addIdx]
+		return polygon.polygonCollision(obj._headAreaHull + obj.getPosition(), addObj._boundaryHull + addObj.getPosition())
 
 class Scene(object):
 	def __init__(self):
@@ -106,13 +91,22 @@ class Scene(object):
 		self._leftToRight = False
 		self._frontToBack = True
 		self._gantryHeight = 60
+		self._oneAtATime = True
+
 	# Physical (square) machine size.
 	def setMachineSize(self, machineSize):
 		self._machineSize = machineSize
 
 	# Size offsets are offsets caused by brim, skirt, etc.
-	def setSizeOffsets(self, sizeOffsets):
-		self._sizeOffsets = sizeOffsets
+	def updateSizeOffsets(self, force=False):
+		newOffsets = numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32)
+		if not force and numpy.array_equal(self._sizeOffsets, newOffsets):
+			return
+		self._sizeOffsets = newOffsets
+
+		extends = numpy.array([[-newOffsets[0],-newOffsets[1]],[ newOffsets[0],-newOffsets[1]],[ newOffsets[0], newOffsets[1]],[-newOffsets[0], newOffsets[1]]], numpy.float32)
+		for obj in self._objectList:
+			obj.setPrintAreaExtends(extends)
 
 	#size of the printing head.
 	def setHeadSize(self, xMin, xMax, yMin, yMax, gantryHeight):
@@ -121,6 +115,11 @@ class Scene(object):
 		self._headSizeOffsets[0] = min(xMin, xMax)
 		self._headSizeOffsets[1] = min(yMin, yMax)
 		self._gantryHeight = gantryHeight
+		self._oneAtATime = self._gantryHeight > 0
+
+		headArea = numpy.array([[-xMin,-yMin],[ xMax,-yMin],[ xMax, yMax],[-xMin, yMax]], numpy.float32)
+		for obj in self._objectList:
+			obj.setHeadArea(headArea)
 
 	def setExtruderOffset(self, extruderNr, offsetX, offsetY):
 		self._extruderOffset[extruderNr] = numpy.array([offsetX, offsetY], numpy.float32)
@@ -140,6 +139,7 @@ class Scene(object):
 			scale = numpy.max(self._machineSize[0:2]) * 2.5 / numpy.max(obj.getSize()[0:2])
 			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
 			obj.applyMatrix(numpy.matrix(matrix, numpy.float64))
+		self.updateSizeOffsets(True)
 
 	def remove(self, obj):
 		self._objectList.remove(obj)
@@ -155,6 +155,7 @@ class Scene(object):
 		self.pushFree()
 
 	def pushFree(self):
+		return
 		n = 1000
 		while self._pushFree():
 			n -= 1
@@ -183,7 +184,10 @@ class Scene(object):
 			obj.setPosition(obj.getPosition() + offset)
 
 	def printOrder(self):
-		order = _objectOrderFinder(self, self._headSizeOffsets + self._sizeOffsets, self._leftToRight, self._frontToBack, self._gantryHeight).order
+		if self._oneAtATime:
+			order = _objectOrderFinder(self, self._headSizeOffsets + self._sizeOffsets, self._leftToRight, self._frontToBack, self._gantryHeight).order
+		else:
+			order = None
 		return order
 
 	def _pushFree(self):
@@ -215,11 +219,10 @@ class Scene(object):
 	def _checkHit(self, a, b):
 		if a == b:
 			return False
-		posDiff = a.getPosition() - b.getPosition()
-		if abs(posDiff[0]) < (a.getSize()[0] + b.getSize()[0]) / 2 + self._sizeOffsets[0] + self._headSizeOffsets[0]:
-			if abs(posDiff[1]) < (a.getSize()[1] + b.getSize()[1]) / 2 + self._sizeOffsets[1] + self._headSizeOffsets[1]:
-				return True
-		return False
+		if self._oneAtATime:
+			return polygon.polygonCollision(a._headAreaHull + a.getPosition(), b._boundaryHull + b.getPosition())
+		else:
+			return polygon.polygonCollision(a._boundaryHull + a.getPosition(), b._boundaryHull + b.getPosition())
 
 	def checkPlatform(self, obj):
 		p = obj.getPosition()

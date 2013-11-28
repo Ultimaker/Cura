@@ -238,6 +238,8 @@ class gcode(object):
 						pass
 					elif M == 1:	#Message with possible wait (ignored)
 						pass
+					elif M == 25:	#Stop SD printing
+						pass
 					elif M == 80:	#Enable power supply
 						pass
 					elif M == 81:	#Suicide/disable power supply
