@@ -224,9 +224,11 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnPrintButton(self, button):
 		if button == 1:
+
+			connectionEntry = self._printerConnectionManager.getAvailableConnection()
 			if machineCom.machineIsConnected():
 				self.showPrintWindow()
-			elif len(removableStorage.getPossibleSDcardDrives()) > 0:
+			elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionEntry is None or connectionEntry.priority < 0):
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
 					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", map(lambda n: n[0], drives))
@@ -239,6 +241,9 @@ class SceneView(openglGui.glGuiPanel):
 					drive = drives[0]
 				filename = self._scene._objectList[0].getName() + '.gcode'
 				threading.Thread(target=self._copyFile,args=(self._gcodeFilename, drive[1] + filename, drive[1])).start()
+			elif connectionEntry is not None:
+				connectionEntry.connection.loadFile(self._gcodeFilename)
+				connectionEntry.connection.startPrint()
 			else:
 				self.showSaveGCode()
 		if button == 3:
