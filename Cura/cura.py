@@ -54,6 +54,9 @@ def main():
 			scene.add(m)
 		slicer.runSlicer(scene)
 		slicer.wait()
+		# ISSUE 459 - output gcode without Print time - START
+		profile.replaceGCodeTagsFromSlicer(slicer.getGCodeFilename(), slicer)
+		# ISSUE 459 - output gcode without Print time - END
 
 		if options.output:
 			shutil.copyfile(slicer.getGCodeFilename(), options.output)
