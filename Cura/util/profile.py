@@ -918,7 +918,6 @@ def replaceGCodeTags(filename, gcodeInt):
 	f.write(data)
 	f.close()
 
-# ISSUE 459 - output gcode without Print time - START
 def replaceGCodeTagsFromSlicer(filename, slicerInt):
 	f = open(filename, 'r+')
 	data = f.read(2048)
@@ -932,7 +931,6 @@ def replaceGCodeTagsFromSlicer(filename, slicerInt):
 	f.seek(0)
 	f.write(data)
 	f.close()
-# ISSUE 459 - output gcode without Print time - END
 
 ### Get aleration raw contents. (Used internally in Cura)
 def getAlterationFile(filename):
