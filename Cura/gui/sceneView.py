@@ -16,6 +16,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 
 from Cura.gui import printWindow
+from Cura.gui import printWindow2
 from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.util import objectScene
@@ -224,7 +225,6 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnPrintButton(self, button):
 		if button == 1:
-
 			connectionEntry = self._printerConnectionManager.getAvailableConnection()
 			if machineCom.machineIsConnected():
 				self.showPrintWindow()
@@ -242,8 +242,16 @@ class SceneView(openglGui.glGuiPanel):
 				filename = self._scene._objectList[0].getName() + '.gcode'
 				threading.Thread(target=self._copyFile,args=(self._gcodeFilename, drive[1] + filename, drive[1])).start()
 			elif connectionEntry is not None:
-				connectionEntry.connection.loadFile(self._gcodeFilename)
-				connectionEntry.connection.startPrint()
+				connection = connectionEntry.connection
+				if connectionEntry.window is None or not connectionEntry.window:
+					connectionEntry.window = printWindow2.printWindow(connection)
+				connectionEntry.window.Show()
+				connectionEntry.window.Raise()
+				if not connection.loadFile(self._gcodeFilename):
+					if connection.isPrinting():
+						self.notification.message("Cannot start print, because other print still running.")
+					else:
+						self.notification.message("Failed to start print...")
 			else:
 				self.showSaveGCode()
 		if button == 3:

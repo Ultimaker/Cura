@@ -24,7 +24,7 @@ class dummyConnection(printerConnectionBase.printerConnectionBase):
 	#Load the file into memory for printing.
 	def loadFile(self, filename):
 		if self._printing:
-			return
+			return False
 		self._lineCount = 0
 		f = open(filename, "r")
 		for line in f:
@@ -37,6 +37,8 @@ class dummyConnection(printerConnectionBase.printerConnectionBase):
 			if len(line) < 1:
 				continue
 			self._lineCount += 1
+		self._doCallback()
+		return True
 
 	#Start printing the previously loaded file
 	def startPrint(self):
@@ -65,12 +67,13 @@ class dummyConnection(printerConnectionBase.printerConnectionBase):
 	# Get the connection status string. This is displayed to the user and can be used to communicate
 	#  various information to the user.
 	def getStatusString(self):
-		return "DUMMY!"
+		return "DUMMY!\n%i %i\n%i" % (self._progressLine, self._lineCount, self._printing)
 
 	def _dummyThread(self):
 		while True:
 			if not self._printing:
 				time.sleep(5)
+				self._doCallback()
 			else:
 				time.sleep(0.01)
 				self._progressLine += 1

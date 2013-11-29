@@ -10,6 +10,7 @@ class connectionEntry(object):
 		self.priority = priority
 		self.icon = icon
 		self.connection = connection
+		self.window = None
 
 	def __cmp__(self, other):
 		return self.priority - other.priority

@@ -1,5 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
+import traceback
+
 #Base class for different printer connection implementations.
 # A printer connection can connect to printers in different ways, trough network, USB or carrier pigeons.
 # Each printer connection has different capabilities that you can query with the "has" functions.
@@ -10,9 +12,9 @@ class printerConnectionBase(object):
 	def __init__(self):
 		self._callbackList = []
 
-	#Load the file into memory for printing.
+	#Load the file into memory for printing, returns True on success
 	def loadFile(self, filename):
-		pass
+		return False
 
 	#Start printing the previously loaded file
 	def startPrint(self):
@@ -93,7 +95,18 @@ class printerConnectionBase(object):
 		if callback in self._callbackList:
 			self._callbackList.remove(callback)
 
-	#Run a callback, this can be ran from a different thread.
+	#Returns true if we got some kind of error. The getErrorLog returns all the information to diagnose the problem.
+	def isInErrorState(self):
+		return False
+	#Returns the error log in case there was an error.
+	def getErrorLog(self):
+		return ""
+
+	#Run a callback, this can be ran from a different thread, the receivers of the callback need to make sure they are thread safe.
 	def _doCallback(self, param=None):
 		for callback in self._callbackList:
-			callback(self, param)
+			try:
+				callback(self, param)
+			except:
+				self.removeCallback(callback)
+				traceback.print_exc()

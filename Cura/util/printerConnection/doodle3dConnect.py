@@ -35,7 +35,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 	#Load the file into memory for printing.
 	def loadFile(self, filename):
 		if self._printing:
-			return
+			return False
 		self._fileBlocks = []
 		self._lineCount = 0
 		block = []
@@ -60,6 +60,8 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 			block.append(line)
 		self._fileBlocks.append('\n'.join(block) + '\n')
 		f.close()
+		self._doCallback()
+		return True
 
 	#Start printing the previously loaded file
 	def startPrint(self):

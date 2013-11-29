@@ -314,12 +314,14 @@ class mainWindow(wx.Frame):
 		prefDialog = preferencesDialog.preferencesDialog(self)
 		prefDialog.Centre()
 		prefDialog.Show()
+		prefDialog.Raise()
 		wx.CallAfter(prefDialog.Show)
 
 	def OnMachineSettings(self, e):
 		prefDialog = preferencesDialog.machineSettingsDialog(self)
 		prefDialog.Centre()
 		prefDialog.Show()
+		prefDialog.Raise()
 
 	def OnDropFiles(self, files):
 		if len(files) > 0:
