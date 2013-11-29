@@ -94,6 +94,9 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 	def getStatusString(self):
 		if not self._isAvailable:
 			return "Doodle3D box not found"
+		if self._printing:
+			if self._fileIndex < len(self._fileBlocks):
+				return "Sending GCode: %.1f" % (float(self._fileIndex) / float(len(self._fileBlocks)))
 		return "TODO"
 
 	#Get the temperature of an extruder, returns None is no temperature is known for this extruder
@@ -120,7 +123,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 				#Check the status of each possible IP, if we find a valid box with a printer connected. Use that IP.
 				for possiblePrinter in printerList['data']:
 					status = self._request('GET', '/d3dapi/info/status', host=possiblePrinter['localip'])
-					if status and 'data' in status and status['data']['state'] == 'idle':
+					if status and 'data' in status and (status['data']['state'] == 'idle' or status['data']['state'] == 'buffering'):
 						self._host = possiblePrinter['localip']
 						break
 
@@ -149,7 +152,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 			if 'bed' in stateReply['data']:
 				self._bedTemperature = stateReply['data']['bed']
 
-			if stateReply['data']['state'] == 'idle':
+			if stateReply['data']['state'] == 'idle' or stateReply['data']['state'] == 'buffering':
 				if self._printing:
 					if self._blockIndex < len(self._fileBlocks):
 						if self._request('POST', '/d3dapi/printer/print', {'gcode': self._fileBlocks[self._blockIndex], 'start': 'True', 'first': 'True'}):
