@@ -82,3 +82,42 @@ def polygonCollision(polyA, polyB):
 		if aMax < bMin:
 			return False
 	return True
+
+def polygonCollisionPushVector(polyA, polyB):
+	retSize = 10000000.0
+	ret = False
+	for n in xrange(0, len(polyA)):
+		p0 = polyA[n-1]
+		p1 = polyA[n]
+		normal = (p1 - p0)[::-1]
+		normal[1] = -normal[1]
+		normal /= numpy.linalg.norm(normal)
+		aMin, aMax = projectPoly(polyA, normal)
+		bMin, bMax = projectPoly(polyB, normal)
+		if aMin > bMax:
+			return False
+		if bMin > aMax:
+			return False
+		size = min(bMax, bMax) - max(aMin, bMin)
+		if size < retSize:
+			ret = normal * (size + 0.1)
+			retSize = size
+	for n in xrange(0, len(polyB)):
+		p0 = polyB[n-1]
+		p1 = polyB[n]
+		normal = (p1 - p0)[::-1]
+		normal[1] = -normal[1]
+		normal /= numpy.linalg.norm(normal)
+		aMin, aMax = projectPoly(polyA, normal)
+		bMin, bMax = projectPoly(polyB, normal)
+		if aMin > bMax:
+			return False
+		if aMax < bMin:
+			return False
+		size = min(bMax, bMax) - max(aMin, bMin)
+		if size < retSize:
+			ret = normal * -(size + 0.1)
+			retSize = size
+	#ret = ret[::-1]
+	#ret[1] = -ret[1]
+	return ret

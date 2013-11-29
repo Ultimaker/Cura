@@ -36,6 +36,12 @@ class _objectOrderFinder(object):
 			for b in initialList:
 				self._hitMap[a][b] = self._checkHit(a, b)
 
+		#Check if we have 2 files that overlap so that they can never be printed one at a time.
+		for a in initialList:
+			if self._hitMap[a][b] and self._hitMap[b][a]:
+				self.order = None
+				return
+
 		initialList.sort(self._objIdxCmp)
 
 		n = 0
@@ -155,7 +161,6 @@ class Scene(object):
 		self.pushFree()
 
 	def pushFree(self):
-		return
 		n = 1000
 		while self._pushFree():
 			n -= 1
@@ -193,25 +198,13 @@ class Scene(object):
 	def _pushFree(self):
 		for a in self._objectList:
 			for b in self._objectList:
-				if not self._checkHit(a, b):
+				if a == b:
 					continue
-				posDiff = a.getPosition() - b.getPosition()
-				if posDiff[0] == 0.0 and posDiff[1] == 0.0:
-					posDiff[1] = 1.0
-				if abs(posDiff[0]) > abs(posDiff[1]):
-					axis = 0
-				else:
-					axis = 1
-				aPos = a.getPosition()
-				bPos = b.getPosition()
-				center = (aPos[axis] + bPos[axis]) / 2
-				distance = (a.getSize()[axis] + b.getSize()[axis]) / 2 + 0.1 + self._sizeOffsets[axis] + self._headSizeOffsets[axis]
-				if posDiff[axis] < 0:
-					distance = -distance
-				aPos[axis] = center + distance / 2
-				bPos[axis] = center - distance / 2
-				a.setPosition(aPos)
-				b.setPosition(bPos)
+				v = polygon.polygonCollisionPushVector(a._boundaryHull + a.getPosition(), b._boundaryHull + b.getPosition())
+				if type(v) is bool:
+					continue
+				a.setPosition(a.getPosition() + v / 2.0)
+				b.setPosition(b.getPosition() - v / 2.0)
 				return True
 		return False
 
