@@ -29,7 +29,6 @@ class _objectOrderFinder(object):
 			self.order = []
 			return
 
-
 		self._hitMap = [None] * (max(initialList)+1)
 		for a in initialList:
 			self._hitMap[a] = [False] * (max(initialList)+1)
@@ -38,9 +37,10 @@ class _objectOrderFinder(object):
 
 		#Check if we have 2 files that overlap so that they can never be printed one at a time.
 		for a in initialList:
-			if self._hitMap[a][b] and self._hitMap[b][a]:
-				self.order = None
-				return
+			for b in initialList:
+				if a != b and self._hitMap[a][b] and self._hitMap[b][a]:
+					self.order = None
+					return
 
 		initialList.sort(self._objIdxCmp)
 

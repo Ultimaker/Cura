@@ -131,6 +131,21 @@ class Slicer(object):
 			order = scene.printOrder()
 			if order is None:
 				pos = numpy.array(profile.getMachineCenterCoords()) * 1000
+				objMin = None
+				objMax = None
+				for obj in scene.objects():
+					if scene.checkPlatform(obj):
+						oMin = obj.getMinimum()[0:2] + obj.getPosition()
+						oMax = obj.getMaximum()[0:2] + obj.getPosition()
+						if objMin is None:
+							objMin = oMin
+							objMax = oMax
+						else:
+							objMin[0] = min(oMin[0], objMin[0])
+							objMin[1] = min(oMin[1], objMin[1])
+							objMax[0] = max(oMax[0], objMax[0])
+							objMax[1] = max(oMax[1], objMax[1])
+				pos += (objMin + objMax) / 2.0 * 1000
 				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
 
 				vertexTotal = 0
