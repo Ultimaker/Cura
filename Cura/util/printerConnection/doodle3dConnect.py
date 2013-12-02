@@ -22,6 +22,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		self._isAvailable = False
 		self._printing = False
 		self._fileBlocks = []
+		self._commandList = []
 		self._blockIndex = None
 		self._lineCount = 0
 		self._progressLine = 0
@@ -91,14 +92,24 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 	def isAvailable(self):
 		return self._isAvailable
 
+	#Are we able to send a direct coammand with sendCommand at this moment in time.
+	def isAbleToSendDirectCommand(self):
+		return self._isAvailable and not self._printing
+
+	#Directly send a command to the printer.
+	def sendCommand(self, command):
+		if not self._isAvailable or self._printing:
+			return
+		self._commandList.append(command)
+
 	# Get the connection status string. This is displayed to the user and can be used to communicate
 	#  various information to the user.
 	def getStatusString(self):
 		if not self._isAvailable:
 			return "Doodle3D box not found"
 		if self._printing:
-			if self._fileIndex < len(self._fileBlocks):
-				return "Sending GCode: %.1f" % (float(self._fileIndex) / float(len(self._fileBlocks)))
+			if self._blockIndex < len(self._fileBlocks):
+				return "Sending GCode: %.1f" % (float(self._blockIndex) / float(len(self._fileBlocks)))
 		return "TODO"
 
 	#Get the temperature of an extruder, returns None is no temperature is known for this extruder
@@ -164,7 +175,11 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 					else:
 						self._printing = False
 				else:
-					time.sleep(5)
+					if len(self._commandList) > 0:
+						if self._request('POST', '/d3dapi/printer/print', {'gcode': self._commandList[0], 'start': 'True', 'first': 'True'}):
+							self._commandList.pop(0)
+					else:
+						time.sleep(5)
 			elif stateReply['data']['state'] == 'printing':
 				if self._printing:
 					if self._blockIndex < len(self._fileBlocks):
@@ -181,7 +196,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 						self._progressLine = stateReply['data']['current_line']
 				else:
 					#Got a printing state without us having send the print file, set the state to printing, but make sure we never send anything.
-					if 'current_line' in stateReply['data'] and 'total_lines' in stateReply['data']:
+					if 'current_line' in stateReply['data'] and 'total_lines' in stateReply['data'] and stateReply['data']['total_lines'] > 2:
 						self._printing = True
 						self._blockIndex = len(self._fileBlocks)
 						self._progressLine = stateReply['data']['current_line']

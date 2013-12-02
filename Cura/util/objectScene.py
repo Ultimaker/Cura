@@ -82,7 +82,7 @@ class _objectOrderFinder(object):
 	def _checkHit(self, addIdx, idx):
 		obj = self._scene._objectList[idx]
 		addObj = self._scene._objectList[addIdx]
-		return polygon.polygonCollision(obj._headAreaHull + obj.getPosition(), addObj._boundaryHull + addObj.getPosition())
+		return polygon.polygonCollision(obj._boundaryHull + obj.getPosition(), addObj._headAreaHull + addObj.getPosition())
 
 class Scene(object):
 	def __init__(self):

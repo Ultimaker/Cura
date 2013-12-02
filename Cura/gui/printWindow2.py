@@ -296,6 +296,9 @@ class printWindow(wx.Frame):
 
 	def _doPrinterConnectionUpdate(self, connection, extraInfo = None):
 		wx.CallAfter(self.__doPrinterConnectionUpdate, connection, extraInfo)
+		temp = [connection.getTemperature(0)]
+		self.temperatureGraph.addPoint(temp, [0], connection.getBedTemperature(), 0)
+
 	def __doPrinterConnectionUpdate(self, connection, extraInfo):
 		t = time.time()
 		if self.lastUpdateTime + 0.5 > t:
@@ -487,6 +490,14 @@ class TemperatureGraph(wx.Panel):
 			self._points.pop(0)
 
 	def addPoint(self, temp, tempSP, bedTemp, bedTempSP):
+		if time.time() - self._points[-1][4] < 0.5:
+			return
+		for n in xrange(0, len(temp)):
+			if temp[n] is None:
+				temp[n] = 0
+		for n in xrange(0, len(tempSP)):
+			if tempSP[n] is None:
+				tempSP[n] = 0
 		if bedTemp is None:
 			bedTemp = 0
 		if bedTempSP is None:

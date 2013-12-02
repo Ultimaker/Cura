@@ -961,7 +961,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	alterationContents = getAlterationFile(filename)
 	if getMachineSetting('gcode_flavor') == 'UltiGCode':
 		if filename == 'end.gcode':
-			return 'M25 ;Stop reading from this point on.\n'
+			return 'M25 ;Stop reading from this point on.\n;CURA_PROFILE_STRING:%s\n' % (getProfileString())
 		return ''
 	if filename == 'start.gcode':
 		if extruderCount > 1:
