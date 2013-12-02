@@ -118,6 +118,38 @@ def polygonCollisionPushVector(polyA, polyB):
 		if size < retSize:
 			ret = normal * -(size + 0.1)
 			retSize = size
-	#ret = ret[::-1]
-	#ret[1] = -ret[1]
 	return ret
+
+def isLeft(a, b, c):
+	return ((b[0] - a[0])*(c[1] - a[1]) - (b[1] - a[1])*(c[0] - a[0])) > 0
+
+def lineLineIntersection(p0, p1, p2, p3):
+	A1 = p1[1] - p0[1]
+	B1 = p0[0] - p1[0]
+	C1 = A1*p0[0] + B1*p0[1]
+
+	A2 = p3[1] - p2[1]
+	B2 = p2[0] - p3[0]
+	C2 = A2 * p2[0] + B2 * p2[1]
+
+	det = A1*B2 - A2*B1
+	if det == 0:
+		return p0
+	return [(B2*C1 - B1*C2)/det, (A1 * C2 - A2 * C1) / det]
+
+def clipConvex(poly0, poly1):
+	res = poly0
+	for p1idx in xrange(0, len(poly1)):
+		src = res
+		res = []
+		p0 = poly1[p1idx-1]
+		p1 = poly1[p1idx]
+		for n in xrange(0, len(src)):
+			p = src[n]
+			if not isLeft(p0, p1, p):
+				if isLeft(p0, p1, src[n-1]):
+					res.append(lineLineIntersection(p0, p1, src[n-1], p))
+				res.append(p)
+			elif not isLeft(p0, p1, src[n-1]):
+				res.append(lineLineIntersection(p0, p1, src[n-1], p))
+	return numpy.array(res, numpy.float32)

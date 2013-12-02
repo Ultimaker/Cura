@@ -1188,7 +1188,7 @@ void main(void)
 					glVertex3f(p[0], p[1], 0)
 				glEnd()
 				glBegin(GL_TRIANGLE_FAN)
-				for p in self._selectedObj._headAreaHull[::-1]:
+				for p in self._selectedObj._headAreaMinHull[::-1]:
 					glVertex3f(p[0], p[1], 0)
 				glEnd()
 				glDepthMask(True)

@@ -11,9 +11,8 @@ class _objectOrder(object):
 		self.todo = todo
 
 class _objectOrderFinder(object):
-	def __init__(self, scene, offset, leftToRight, frontToBack, gantryHeight):
+	def __init__(self, scene, leftToRight, frontToBack, gantryHeight):
 		self._scene = scene
-		self._offset = offset - numpy.array([0.1,0.1])
 		self._objs = scene.objects()
 		self._leftToRight = leftToRight
 		self._frontToBack = frontToBack
@@ -125,13 +124,10 @@ class Scene(object):
 
 		headArea = numpy.array([[-xMin,-yMin],[ xMax,-yMin],[ xMax, yMax],[-xMin, yMax]], numpy.float32)
 		for obj in self._objectList:
-			obj.setHeadArea(headArea)
+			obj.setHeadArea(headArea, self._headSizeOffsets)
 
 	def setExtruderOffset(self, extruderNr, offsetX, offsetY):
 		self._extruderOffset[extruderNr] = numpy.array([offsetX, offsetY], numpy.float32)
-
-	def getObjectExtend(self):
-		return self._sizeOffsets + self._headSizeOffsets
 
 	def objects(self):
 		return self._objectList
@@ -190,7 +186,7 @@ class Scene(object):
 
 	def printOrder(self):
 		if self._oneAtATime:
-			order = _objectOrderFinder(self, self._headSizeOffsets + self._sizeOffsets, self._leftToRight, self._frontToBack, self._gantryHeight).order
+			order = _objectOrderFinder(self, self._leftToRight, self._frontToBack, self._gantryHeight).order
 		else:
 			order = None
 		return order
@@ -200,7 +196,10 @@ class Scene(object):
 			for b in self._objectList:
 				if a == b:
 					continue
-				v = polygon.polygonCollisionPushVector(a._boundaryHull + a.getPosition(), b._boundaryHull + b.getPosition())
+				if self._oneAtATime:
+					v = polygon.polygonCollisionPushVector(a._headAreaMinHull + a.getPosition(), b._boundaryHull + b.getPosition())
+				else:
+					v = polygon.polygonCollisionPushVector(a._boundaryHull + a.getPosition(), b._boundaryHull + b.getPosition())
 				if type(v) is bool:
 					continue
 				a.setPosition(a.getPosition() + v / 2.0)
@@ -213,7 +212,7 @@ class Scene(object):
 		if a == b:
 			return False
 		if self._oneAtATime:
-			return polygon.polygonCollision(a._headAreaHull + a.getPosition(), b._boundaryHull + b.getPosition())
+			return polygon.polygonCollision(a._headAreaMinHull + a.getPosition(), b._boundaryHull + b.getPosition())
 		else:
 			return polygon.polygonCollision(a._boundaryHull + a.getPosition(), b._boundaryHull + b.getPosition())
 

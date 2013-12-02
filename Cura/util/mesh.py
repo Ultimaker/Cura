@@ -30,8 +30,10 @@ class printableObject(object):
 		self._boundaryHull = None
 		self._printAreaExtend = numpy.array([[-1,-1],[ 1,-1],[ 1, 1],[-1, 1]], numpy.float32)
 		self._headAreaExtend = numpy.array([[-1,-1],[ 1,-1],[ 1, 1],[-1, 1]], numpy.float32)
+		self._headMinSize = numpy.array([1, 1], numpy.float32)
 		self._printAreaHull = None
 		self._headAreaHull = None
+		self._headAreaMinHull = None
 
 		self._loadAnim = None
 
@@ -104,7 +106,7 @@ class printableObject(object):
 
 		self._boundaryHull = polygon.minkowskiHull((hull.astype(numpy.float32) - self._drawOffset[0:2]), numpy.array([[-1,-1],[-1,1],[1,1],[1,-1]],numpy.float32))
 		self._printAreaHull = polygon.minkowskiHull(self._boundaryHull, self._printAreaExtend)
-		self._headAreaHull = polygon.minkowskiHull(self._printAreaHull, self._headAreaExtend)
+		self.setHeadArea(self._headAreaExtend, self._headMinSize)
 
 	def getName(self):
 		return self._name
@@ -131,11 +133,17 @@ class printableObject(object):
 	def setPrintAreaExtends(self, poly):
 		self._printAreaExtend = poly
 		self._printAreaHull = polygon.minkowskiHull(self._boundaryHull, self._printAreaExtend)
-		self._headAreaHull = polygon.minkowskiHull(self._printAreaHull, self._headAreaExtend)
 
-	def setHeadArea(self, poly):
+		self.setHeadArea(self._headAreaExtend, self._headMinSize)
+
+	def setHeadArea(self, poly, minSize):
 		self._headAreaExtend = poly
+		self._headMinSize = minSize
 		self._headAreaHull = polygon.minkowskiHull(self._printAreaHull, self._headAreaExtend)
+		pMin = numpy.min(self._printAreaHull, 0) - self._headMinSize
+		pMax = numpy.max(self._printAreaHull, 0) + self._headMinSize
+		square = numpy.array([pMin, [pMin[0], pMax[1]], pMax, [pMax[0], pMin[1]]], numpy.float32)
+		self._headAreaMinHull = polygon.clipConvex(self._headAreaHull, square)
 
 	def mirror(self, axis):
 		matrix = [[1,0,0], [0, 1, 0], [0, 0, 1]]
