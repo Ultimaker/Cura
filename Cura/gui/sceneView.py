@@ -627,6 +627,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._isSimpleMode != oldSimpleMode:
 			self._scene.arrangeAll()
 			self.sceneUpdated()
+		self._scene.updateSizeOffsets(True)
 		self._machineSize = numpy.array([profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'), profile.getMachineSettingFloat('machine_height')])
 		self._objColors[0] = profile.getPreferenceColour('model_colour')
 		self._objColors[1] = profile.getPreferenceColour('model_colour2')

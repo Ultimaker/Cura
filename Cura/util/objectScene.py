@@ -111,9 +111,13 @@ class Scene(object):
 			return
 		self._sizeOffsets = newOffsets
 
-		extends = numpy.array([[-newOffsets[0],-newOffsets[1]],[ newOffsets[0],-newOffsets[1]],[ newOffsets[0], newOffsets[1]],[-newOffsets[0], newOffsets[1]]], numpy.float32)
+		extends = [numpy.array([[-newOffsets[0],-newOffsets[1]],[ newOffsets[0],-newOffsets[1]],[ newOffsets[0], newOffsets[1]],[-newOffsets[0], newOffsets[1]]], numpy.float32)]
+		for n in xrange(1, 4):
+			headOffset = numpy.array([[0, 0], [-profile.getMachineSettingFloat('extruder_offset_x%d' % (n)), -profile.getMachineSettingFloat('extruder_offset_y%d' % (n))]], numpy.float32)
+			extends.append(polygon.minkowskiHull(extends[n-1], headOffset))
+
 		for obj in self._objectList:
-			obj.setPrintAreaExtends(extends)
+			obj.setPrintAreaExtends(extends[len(obj._meshList) - 1])
 
 	#size of the printing head.
 	def setHeadSize(self, xMin, xMax, yMin, yMax, gantryHeight):
@@ -125,6 +129,7 @@ class Scene(object):
 		self._oneAtATime = self._gantryHeight > 0
 
 		headArea = numpy.array([[-xMin,-yMin],[ xMax,-yMin],[ xMax, yMax],[-xMin, yMax]], numpy.float32)
+
 		for obj in self._objectList:
 			obj.setHeadArea(headArea, self._headSizeOffsets)
 
