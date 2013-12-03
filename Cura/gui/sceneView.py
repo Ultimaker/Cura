@@ -56,6 +56,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._animView = None
 		self._animZoom = None
 		self._platformMesh = {}
+		self._platformTexture = None
 		self._isSimpleMode = True
 		self._usbPrintMonitor = printWindow.printProcessMonitor(lambda : self._queueRefresh())
 		self._printerConnectionManager = printerConnectionManager.PrinterConnectionManager()
@@ -631,8 +632,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors[1] = profile.getPreferenceColour('model_colour2')
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
-		self._scene.setMachineSize(self._machineSize)
-		self._scene.setHeadSize(profile.getMachineSettingFloat('extruder_head_size_min_x'), profile.getMachineSettingFloat('extruder_head_size_max_x'), profile.getMachineSettingFloat('extruder_head_size_min_y'), profile.getMachineSettingFloat('extruder_head_size_max_y'), profile.getMachineSettingFloat('extruder_head_size_height'))
+		self._scene.updateMachineDimensions()
 
 		if self._selectedObj is not None:
 			scale = self._selectedObj.getScale()
@@ -1264,7 +1264,7 @@ void main(void)
 		size = [profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'), profile.getMachineSettingFloat('machine_height')]
 
 		machine = profile.getMachineSetting('machine_type')
-		if profile.getMachineSetting('machine_type').startswith('ultimaker'):
+		if machine.startswith('ultimaker'):
 			if machine not in self._platformMesh:
 				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
 				if len(meshes) > 0:
@@ -1330,62 +1330,79 @@ void main(void)
 			glEnd()
 
 		#Cornerpoints for big blue square
-		v0 = [ size[0] / 2, size[1] / 2, size[2]]
-		v1 = [ size[0] / 2,-size[1] / 2, size[2]]
-		v2 = [-size[0] / 2, size[1] / 2, size[2]]
-		v3 = [-size[0] / 2,-size[1] / 2, size[2]]
-		v4 = [ size[0] / 2, size[1] / 2, 0]
-		v5 = [ size[0] / 2,-size[1] / 2, 0]
-		v6 = [-size[0] / 2, size[1] / 2, 0]
-		v7 = [-size[0] / 2,-size[1] / 2, 0]
-
-		vList = [v0,v1,v3,v2, v1,v0,v4,v5, v2,v3,v7,v6, v0,v2,v6,v4, v3,v1,v5,v7]
-		glEnableClientState(GL_VERTEX_ARRAY)
-		glVertexPointer(3, GL_FLOAT, 3*4, vList)
+		# v0 = [ size[0] / 2, size[1] / 2, size[2]]
+		# v1 = [ size[0] / 2,-size[1] / 2, size[2]]
+		# v2 = [-size[0] / 2, size[1] / 2, size[2]]
+		# v3 = [-size[0] / 2,-size[1] / 2, size[2]]
+		# v4 = [ size[0] / 2, size[1] / 2, 0]
+		# v5 = [ size[0] / 2,-size[1] / 2, 0]
+		# v6 = [-size[0] / 2, size[1] / 2, 0]
+		# v7 = [-size[0] / 2,-size[1] / 2, 0]
+		#
+		# vList = [v0,v1,v3,v2, v1,v0,v4,v5, v2,v3,v7,v6, v0,v2,v6,v4, v3,v1,v5,v7]
+		# glEnableClientState(GL_VERTEX_ARRAY)
+		# glVertexPointer(3, GL_FLOAT, 3*4, vList)
 
 		glDepthMask(False)
-		glColor4ub(5, 171, 231, 64)
-		glDrawArrays(GL_QUADS, 0, 4)
-		glColor4ub(5, 171, 231, 96)
-		glDrawArrays(GL_QUADS, 4, 8)
+		# glColor4ub(5, 171, 231, 64)
+		# glDrawArrays(GL_QUADS, 0, 4)
+		# glColor4ub(5, 171, 231, 96)
+		# glDrawArrays(GL_QUADS, 4, 8)
+		# glColor4ub(5, 171, 231, 128)
+		# glDrawArrays(GL_QUADS, 12, 8)
+		# glDisableClientState(GL_VERTEX_ARRAY)
+
+		polys = profile.getMachineSizePolygons()
+		height = profile.getMachineSettingFloat('machine_height')
+		glBegin(GL_QUADS)
+		for n in xrange(0, len(polys[0])):
+			if n % 2 == 0:
+				glColor4ub(5, 171, 231, 96)
+			else:
+				glColor4ub(5, 171, 231, 64)
+			glVertex3f(polys[0][n][0], polys[0][n][1], height)
+			glVertex3f(polys[0][n][0], polys[0][n][1], 0)
+			glVertex3f(polys[0][n-1][0], polys[0][n-1][1], 0)
+			glVertex3f(polys[0][n-1][0], polys[0][n-1][1], height)
+		glEnd()
 		glColor4ub(5, 171, 231, 128)
-		glDrawArrays(GL_QUADS, 12, 8)
-		glDisableClientState(GL_VERTEX_ARRAY)
+		glBegin(GL_TRIANGLE_FAN)
+		for p in polys[0][::-1]:
+			glVertex3f(p[0], p[1], height)
+		glEnd()
 
 		#Draw checkerboard
-		sx = self._machineSize[0]
-		sy = self._machineSize[1]
-		for x in xrange(-int(sx/20)-1, int(sx / 20) + 1):
-			for y in xrange(-int(sx/20)-1, int(sy / 20) + 1):
-				x1 = x * 10
-				x2 = x1 + 10
-				y1 = y * 10
-				y2 = y1 + 10
-				x1 = max(min(x1, sx/2), -sx/2)
-				y1 = max(min(y1, sy/2), -sy/2)
-				x2 = max(min(x2, sx/2), -sx/2)
-				y2 = max(min(y2, sy/2), -sy/2)
-				#Black or "white"  checker
-				if (x & 1) == (y & 1):
-					glColor4ub(5, 171, 231, 127)
-				else:
-					glColor4ub(5 * 8 / 10, 171 * 8 / 10, 231 * 8 / 10, 128)
-				glBegin(GL_QUADS)
-				glVertex3f(x1, y1, 0)
-				glVertex3f(x2, y1, 0)
-				glVertex3f(x2, y2, 0)
-				glVertex3f(x1, y2, 0)
-				glEnd()
+		if self._platformTexture is None:
+			self._platformTexture = opengl.loadGLTexture('checkerboard.png')
+			glBindTexture(GL_TEXTURE_2D, self._platformTexture)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+		glColor4f(1,1,1,0.5)
+		glBindTexture(GL_TEXTURE_2D, self._platformTexture)
+		glEnable(GL_TEXTURE_2D)
+		glBegin(GL_TRIANGLE_FAN)
+		for p in polys[0]:
+			glTexCoord2f(p[0]/20, p[1]/20)
+			glVertex3f(p[0], p[1], 0)
+		glEnd()
+		glDisable(GL_TEXTURE_2D)
+		glColor4ub(127, 127, 127, 200)
+		for poly in polys[1:]:
+			glBegin(GL_TRIANGLE_FAN)
+			for p in poly:
+				glTexCoord2f(p[0]/20, p[1]/20)
+				glVertex3f(p[0], p[1], 0)
+			glEnd()
 
-		if machine == 'ultimaker2':
+		if machine == 'ultimaker2x':
 
 			glColor4ub(127, 127, 127, 200)
 			#if UM2, draw bat-area zone for head. THe head can't stop there, because its bat-area.
 			#UpperRight
 			clipWidth = 25
 			clipHeight = 10
-			posX = sx / 2 - clipWidth
-			posY = sy / 2 - clipHeight
+			posX = size[0] / 2 - clipWidth
+			posY = size[1] / 2 - clipHeight
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0)
 			glVertex3f(posX+clipWidth, posY, 0)
@@ -1395,8 +1412,8 @@ void main(void)
 			#UpperLeft
 			clipWidth = 25
 			clipHeight = 10
-			posX = -sx / 2
-			posY = sy / 2 - clipHeight
+			posX = -size[0] / 2
+			posY = size[1] / 2 - clipHeight
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0)
 			glVertex3f(posX+clipWidth, posY, 0)
@@ -1406,8 +1423,8 @@ void main(void)
 			#LowerRight
 			clipWidth = 25
 			clipHeight = 10
-			posX = sx / 2 - clipWidth
-			posY = -sy / 2
+			posX = size[0] / 2 - clipWidth
+			posY = -size[1] / 2
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0)
 			glVertex3f(posX+clipWidth, posY, 0)
@@ -1417,8 +1434,8 @@ void main(void)
 			#LowerLeft
 			clipWidth = 25
 			clipHeight = 10
-			posX = -sx / 2
-			posY = -sy / 2
+			posX = -size[0] / 2
+			posY = -size[1] / 2
 			glBegin(GL_QUADS)
 			glVertex3f(posX, posY, 0)
 			glVertex3f(posX+clipWidth, posY, 0)

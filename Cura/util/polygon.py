@@ -120,6 +120,34 @@ def polygonCollisionPushVector(polyA, polyB):
 			retSize = size
 	return ret
 
+#Check if polyA is fully inside of polyB.
+def fullInside(polyA, polyB):
+	for n in xrange(0, len(polyA)):
+		p0 = polyA[n-1]
+		p1 = polyA[n]
+		normal = (p1 - p0)[::-1]
+		normal[1] = -normal[1]
+		normal /= numpy.linalg.norm(normal)
+		aMin, aMax = projectPoly(polyA, normal)
+		bMin, bMax = projectPoly(polyB, normal)
+		if aMax > bMax:
+			return False
+		if aMin < bMin:
+			return False
+	for n in xrange(0, len(polyB)):
+		p0 = polyB[n-1]
+		p1 = polyB[n]
+		normal = (p1 - p0)[::-1]
+		normal[1] = -normal[1]
+		normal /= numpy.linalg.norm(normal)
+		aMin, aMax = projectPoly(polyA, normal)
+		bMin, bMax = projectPoly(polyB, normal)
+		if aMax > bMax:
+			return False
+		if aMin < bMin:
+			return False
+	return True
+
 def isLeft(a, b, c):
 	return ((b[0] - a[0])*(c[1] - a[1]) - (b[1] - a[1])*(c[0] - a[0])) > 0
 

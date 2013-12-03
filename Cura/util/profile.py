@@ -4,6 +4,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import os, traceback, math, re, zlib, base64, time, sys, platform, glob, string, stat, types
 import cPickle as pickle
+import numpy
 if sys.version_info[0] < 3:
 	import ConfigParser
 else:
@@ -869,6 +870,30 @@ def getMachineCenterCoords():
 	if getMachineSetting('machine_center_is_zero') == 'True':
 		return [0, 0]
 	return [getMachineSettingFloat('machine_width') / 2, getMachineSettingFloat('machine_depth') / 2]
+
+#Returns a list of convex polygons, first polygon is the allowed area of the machine,
+# the rest of the polygons are the dis-allowed areas of the machine.
+def getMachineSizePolygons():
+	size = numpy.array([getMachineSettingFloat('machine_width'), getMachineSettingFloat('machine_depth'), getMachineSettingFloat('machine_height')], numpy.float32)
+	ret = []
+	ret.append(numpy.array([[-size[0]/2,-size[1]/2],[ size[0]/2,-size[1]/2],[ size[0]/2, size[1]/2], [-size[0]/2, size[1]/2]], numpy.float32))
+
+	# Circle platform for delta printers...
+	# circle = []
+	# steps = 16
+	# for n in xrange(0, steps):
+	# 	circle.append([math.cos(float(n)/steps*2*math.pi) * size[0]/2, math.sin(float(n)/steps*2*math.pi) * size[0]/2])
+	# ret.append(numpy.array(circle, numpy.float32))
+
+	if getMachineSetting('machine_type') == 'ultimaker2':
+		#UM2 no-go zones
+		w = 25
+		h = 10
+		ret.append(numpy.array([[-size[0]/2,-size[1]/2],[-size[0]/2+w+2,-size[1]/2], [-size[0]/2+w,-size[1]/2+h], [-size[0]/2,-size[1]/2+h]], numpy.float32))
+		ret.append(numpy.array([[ size[0]/2-w-2,-size[1]/2],[ size[0]/2,-size[1]/2], [ size[0]/2,-size[1]/2+h],[ size[0]/2-w,-size[1]/2+h]], numpy.float32))
+		ret.append(numpy.array([[-size[0]/2+w+2, size[1]/2],[-size[0]/2, size[1]/2], [-size[0]/2, size[1]/2-h],[-size[0]/2+w, size[1]/2-h]], numpy.float32))
+		ret.append(numpy.array([[ size[0]/2, size[1]/2],[ size[0]/2-w-2, size[1]/2], [ size[0]/2-w, size[1]/2-h],[ size[0]/2, size[1]/2-h]], numpy.float32))
+	return ret
 
 #########################################################
 ## Alteration file functions
