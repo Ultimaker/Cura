@@ -587,7 +587,8 @@ class SceneView(openglGui.glGuiPanel):
 					else:
 						obj._loadAnim = None
 					self._scene.add(obj)
-					self._scene.centerAll()
+					if not self._scene.checkPlatform(obj):
+						self._scene.centerAll()
 					self._selectObject(obj)
 					if obj.getScale()[0] < 1.0:
 						self.notification.message("Warning: Object scaled down.")

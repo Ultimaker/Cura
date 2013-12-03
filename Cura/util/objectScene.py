@@ -134,13 +134,13 @@ class Scene(object):
 
 	#Add new object to print area
 	def add(self, obj):
-		self._findFreePositionFor(obj)
-		self._objectList.append(obj)
-		self.pushFree()
 		if numpy.max(obj.getSize()[0:2]) > numpy.max(self._machineSize[0:2]) * 2.5:
 			scale = numpy.max(self._machineSize[0:2]) * 2.5 / numpy.max(obj.getSize()[0:2])
 			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
 			obj.applyMatrix(numpy.matrix(matrix, numpy.float64))
+		self._findFreePositionFor(obj)
+		self._objectList.append(obj)
+		self.pushFree()
 		self.updateSizeOffsets(True)
 
 	def remove(self, obj):
@@ -157,7 +157,7 @@ class Scene(object):
 		self.pushFree()
 
 	def pushFree(self):
-		n = 1000
+		n = 10
 		while self._pushFree():
 			n -= 1
 			if n < 0:
@@ -194,7 +194,7 @@ class Scene(object):
 	def _pushFree(self):
 		for a in self._objectList:
 			for b in self._objectList:
-				if a == b:
+				if a == b or not self.checkPlatform(a) or not self.checkPlatform(b):
 					continue
 				if self._oneAtATime:
 					v = polygon.polygonCollisionPushVector(a._headAreaMinHull + a.getPosition(), b._boundaryHull + b.getPosition())
@@ -202,8 +202,8 @@ class Scene(object):
 					v = polygon.polygonCollisionPushVector(a._boundaryHull + a.getPosition(), b._boundaryHull + b.getPosition())
 				if type(v) is bool:
 					continue
-				a.setPosition(a.getPosition() + v / 2.0)
-				b.setPosition(b.getPosition() - v / 2.0)
+				a.setPosition(a.getPosition() + v * 0.4)
+				b.setPosition(b.getPosition() - v * 0.6)
 				return True
 		return False
 
@@ -269,7 +269,10 @@ class Scene(object):
 		posList = []
 		for a in self._objectList:
 			p = a.getPosition()
-			s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headSizeOffsets
+			if self._oneAtATime:
+				s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headSizeOffsets + numpy.array([3,3], numpy.float32)
+			else:
+				s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + numpy.array([3,3], numpy.float32)
 			posList.append(p + s * ( 1.0, 1.0))
 			posList.append(p + s * ( 0.0, 1.0))
 			posList.append(p + s * (-1.0, 1.0))
