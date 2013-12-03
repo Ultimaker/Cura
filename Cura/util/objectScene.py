@@ -222,16 +222,6 @@ class Scene(object):
 		area = obj._printAreaHull + obj.getPosition()
 		if not polygon.fullInside(area, self._machinePolygons[0]):
 			return False
-		# aMin = numpy.min(area, 0)
-		# aMax = numpy.max(area, 0)
-		# if aMin[0] < -self._machineSize[0] / 2:
-		# 	return False
-		# if aMax[0] > self._machineSize[0] / 2:
-		# 	return False
-		# if aMin[1] < -self._machineSize[1] / 2:
-		# 	return False
-		# if aMax[1] > self._machineSize[1] / 2:
-		# 	return False
 		#Check the "no go zones"
 		for poly in self._machinePolygons[1:]:
 			if polygon.polygonCollision(poly, area):

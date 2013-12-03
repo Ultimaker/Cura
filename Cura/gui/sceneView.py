@@ -1329,28 +1329,7 @@ void main(void)
 			glVertex3f(-size[0] / 2, -size[1] / 2+10, 0)
 			glEnd()
 
-		#Cornerpoints for big blue square
-		# v0 = [ size[0] / 2, size[1] / 2, size[2]]
-		# v1 = [ size[0] / 2,-size[1] / 2, size[2]]
-		# v2 = [-size[0] / 2, size[1] / 2, size[2]]
-		# v3 = [-size[0] / 2,-size[1] / 2, size[2]]
-		# v4 = [ size[0] / 2, size[1] / 2, 0]
-		# v5 = [ size[0] / 2,-size[1] / 2, 0]
-		# v6 = [-size[0] / 2, size[1] / 2, 0]
-		# v7 = [-size[0] / 2,-size[1] / 2, 0]
-		#
-		# vList = [v0,v1,v3,v2, v1,v0,v4,v5, v2,v3,v7,v6, v0,v2,v6,v4, v3,v1,v5,v7]
-		# glEnableClientState(GL_VERTEX_ARRAY)
-		# glVertexPointer(3, GL_FLOAT, 3*4, vList)
-
 		glDepthMask(False)
-		# glColor4ub(5, 171, 231, 64)
-		# glDrawArrays(GL_QUADS, 0, 4)
-		# glColor4ub(5, 171, 231, 96)
-		# glDrawArrays(GL_QUADS, 4, 8)
-		# glColor4ub(5, 171, 231, 128)
-		# glDrawArrays(GL_QUADS, 12, 8)
-		# glDisableClientState(GL_VERTEX_ARRAY)
 
 		polys = profile.getMachineSizePolygons()
 		height = profile.getMachineSettingFloat('machine_height')
@@ -1392,55 +1371,6 @@ void main(void)
 			for p in poly:
 				glTexCoord2f(p[0]/20, p[1]/20)
 				glVertex3f(p[0], p[1], 0)
-			glEnd()
-
-		if machine == 'ultimaker2x':
-
-			glColor4ub(127, 127, 127, 200)
-			#if UM2, draw bat-area zone for head. THe head can't stop there, because its bat-area.
-			#UpperRight
-			clipWidth = 25
-			clipHeight = 10
-			posX = size[0] / 2 - clipWidth
-			posY = size[1] / 2 - clipHeight
-			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0)
-			glVertex3f(posX+clipWidth, posY, 0)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
-			glVertex3f(posX, posY+clipHeight, 0)
-			glEnd()
-			#UpperLeft
-			clipWidth = 25
-			clipHeight = 10
-			posX = -size[0] / 2
-			posY = size[1] / 2 - clipHeight
-			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0)
-			glVertex3f(posX+clipWidth, posY, 0)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
-			glVertex3f(posX, posY+clipHeight, 0)
-			glEnd()
-			#LowerRight
-			clipWidth = 25
-			clipHeight = 10
-			posX = size[0] / 2 - clipWidth
-			posY = -size[1] / 2
-			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0)
-			glVertex3f(posX+clipWidth, posY, 0)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
-			glVertex3f(posX, posY+clipHeight, 0)
-			glEnd()
-			#LowerLeft
-			clipWidth = 25
-			clipHeight = 10
-			posX = -size[0] / 2
-			posY = -size[1] / 2
-			glBegin(GL_QUADS)
-			glVertex3f(posX, posY, 0)
-			glVertex3f(posX+clipWidth, posY, 0)
-			glVertex3f(posX+clipWidth, posY+clipHeight, 0)
-			glVertex3f(posX, posY+clipHeight, 0)
 			glEnd()
 
 		glDepthMask(True)
