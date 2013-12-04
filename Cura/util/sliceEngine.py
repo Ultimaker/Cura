@@ -113,6 +113,8 @@ class Slicer(object):
 		return '%0.2f meter %0.0f gram' % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
 
 	def runSlicer(self, scene):
+		if len(scene.objects()) < 1:
+			return
 		extruderCount = 1
 		for obj in scene.objects():
 			if scene.checkPlatform(obj):

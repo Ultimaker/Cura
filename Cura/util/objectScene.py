@@ -103,7 +103,7 @@ class Scene(object):
 	def updateMachineDimensions(self):
 		self._machineSize = numpy.array([profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'), profile.getMachineSettingFloat('machine_height')])
 		self._machinePolygons = profile.getMachineSizePolygons()
-		self.setHeadSize(profile.getMachineSettingFloat('extruder_head_size_min_x'), profile.getMachineSettingFloat('extruder_head_size_max_x'), profile.getMachineSettingFloat('extruder_head_size_min_y'), profile.getMachineSettingFloat('extruder_head_size_max_y'), profile.getMachineSettingFloat('extruder_head_size_height'))
+		self.updateHeadSize()
 
 	# Size offsets are offsets caused by brim, skirt, etc.
 	def updateSizeOffsets(self, force=False):
@@ -125,7 +125,13 @@ class Scene(object):
 			obj.setPrintAreaExtends(extends[len(obj._meshList) - 1])
 
 	#size of the printing head.
-	def setHeadSize(self, xMin, xMax, yMin, yMax, gantryHeight):
+	def updateHeadSize(self, obj = None):
+		xMin = profile.getMachineSettingFloat('extruder_head_size_min_x')
+		xMax = profile.getMachineSettingFloat('extruder_head_size_max_x')
+		yMin = profile.getMachineSettingFloat('extruder_head_size_min_y')
+		yMax = profile.getMachineSettingFloat('extruder_head_size_max_y')
+		gantryHeight = profile.getMachineSettingFloat('extruder_head_size_height')
+
 		self._leftToRight = xMin < xMax
 		self._frontToBack = yMin < yMax
 		self._headSizeOffsets[0] = min(xMin, xMax)
@@ -135,7 +141,10 @@ class Scene(object):
 
 		headArea = numpy.array([[-xMin,-yMin],[ xMax,-yMin],[ xMax, yMax],[-xMin, yMax]], numpy.float32)
 
-		for obj in self._objectList:
+		if obj is None:
+			for obj in self._objectList:
+				obj.setHeadArea(headArea, self._headSizeOffsets)
+		else:
 			obj.setHeadArea(headArea, self._headSizeOffsets)
 
 	def setExtruderOffset(self, extruderNr, offsetX, offsetY):
@@ -152,6 +161,7 @@ class Scene(object):
 			obj.applyMatrix(numpy.matrix(matrix, numpy.float64))
 		self._findFreePositionFor(obj)
 		self._objectList.append(obj)
+		self.updateHeadSize(obj)
 		self.updateSizeOffsets(True)
 		self.pushFree()
 
