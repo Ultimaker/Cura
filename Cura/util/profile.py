@@ -895,6 +895,16 @@ def getMachineSizePolygons():
 		ret.append(numpy.array([[ size[0]/2, size[1]/2],[ size[0]/2-w-2, size[1]/2], [ size[0]/2-w, size[1]/2-h],[ size[0]/2, size[1]/2-h]], numpy.float32))
 	return ret
 
+#returns the number of extruders minimal used. Normally this returns 1, but with dual-extrusion support material it returns 2
+def minimalExtruderCount():
+	if int(getMachineSetting('extruder_amount')) < 2:
+		return 1
+	if getProfileSetting('support') == 'None':
+		return 1
+	if getProfileSetting('support_dual_extrusion') == 'Second extruder':
+		return 2
+	return 1
+
 #########################################################
 ## Alteration file functions
 #########################################################

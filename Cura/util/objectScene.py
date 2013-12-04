@@ -90,6 +90,7 @@ class Scene(object):
 		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
 		self._headSizeOffsets = numpy.array([18.0,18.0], numpy.float32)
+		self._minExtruderCount = None
 		self._extruderOffset = [numpy.array([0,0], numpy.float32)] * 4
 
 		#Print order variables
@@ -107,14 +108,18 @@ class Scene(object):
 	# Size offsets are offsets caused by brim, skirt, etc.
 	def updateSizeOffsets(self, force=False):
 		newOffsets = numpy.array(profile.calculateObjectSizeOffsets(), numpy.float32)
-		if not force and numpy.array_equal(self._sizeOffsets, newOffsets):
+		minExtruderCount = profile.minimalExtruderCount()
+		if not force and numpy.array_equal(self._sizeOffsets, newOffsets) and self._minExtruderCount == minExtruderCount:
 			return
 		self._sizeOffsets = newOffsets
+		self._minExtruderCount = minExtruderCount
 
 		extends = [numpy.array([[-newOffsets[0],-newOffsets[1]],[ newOffsets[0],-newOffsets[1]],[ newOffsets[0], newOffsets[1]],[-newOffsets[0], newOffsets[1]]], numpy.float32)]
 		for n in xrange(1, 4):
 			headOffset = numpy.array([[0, 0], [-profile.getMachineSettingFloat('extruder_offset_x%d' % (n)), -profile.getMachineSettingFloat('extruder_offset_y%d' % (n))]], numpy.float32)
 			extends.append(polygon.minkowskiHull(extends[n-1], headOffset))
+		if minExtruderCount > 1:
+			extends[0] = extends[1]
 
 		for obj in self._objectList:
 			obj.setPrintAreaExtends(extends[len(obj._meshList) - 1])

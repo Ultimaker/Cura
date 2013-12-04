@@ -117,8 +117,8 @@ class Slicer(object):
 		for obj in scene.objects():
 			if scene.checkPlatform(obj):
 				extruderCount = max(extruderCount, len(obj._meshList))
-		if profile.getProfileSetting('support_dual_extrusion') == 'Second extruder':
-			extruderCount = max(extruderCount, 2)
+
+		extruderCount = max(extruderCount, profile.minimalExtruderCount())
 
 		commandList = [getEngineFilename(), '-vv']
 		for k, v in self._engineSettings(extruderCount).iteritems():
@@ -280,7 +280,7 @@ class Slicer(object):
 			'supportLineDistance': int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('support_fill_rate')) if profile.getProfileSettingFloat('support_fill_rate') > 0 else -1,
 			'supportXYDistance': int(1000 * profile.getProfileSettingFloat('support_xy_distance')),
 			'supportZDistance': int(1000 * profile.getProfileSettingFloat('support_z_distance')),
-			'supportExtruder': 0 if profile.getProfileSetting('support_dual_extrusion') == 'First extruder' else (1 if profile.getProfileSetting('support_dual_extrusion') == 'Second extruder' else -1),
+			'supportExtruder': 0 if profile.getProfileSetting('support_dual_extrusion') == 'First extruder' else (1 if profile.getProfileSetting('support_dual_extrusion') == 'Second extruder' and profile.minimalExtruderCount() > 1 else -1),
 			'retractionAmount': int(profile.getProfileSettingFloat('retraction_amount') * 1000) if profile.getProfileSetting('retraction_enable') == 'True' else 0,
 			'retractionSpeed': int(profile.getProfileSettingFloat('retraction_speed')),
 			'retractionMinimalDistance': int(profile.getProfileSettingFloat('retraction_min_travel') * 1000),

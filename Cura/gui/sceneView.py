@@ -611,7 +611,7 @@ class SceneView(openglGui.glGuiPanel):
 	def _selectObject(self, obj, zoom = True):
 		if obj != self._selectedObj:
 			self._selectedObj = obj
-			self.updateProfileToControls()
+			self.updateModelSettingsToControls()
 			self.updateToolButtons()
 		if zoom and obj is not None:
 			newViewPos = numpy.array([obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2])
@@ -634,7 +634,9 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
 		self._scene.updateMachineDimensions()
+		self.updateModelSettingsToControls()
 
+	def updateModelSettingsToControls(self):
 		if self._selectedObj is not None:
 			scale = self._selectedObj.getScale()
 			size = self._selectedObj.getSize()
