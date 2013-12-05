@@ -121,6 +121,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		return self._bedTemperature
 
 	def _doodle3DThread(self):
+		waitDelay = 0
 		while True:
 			while self._host is None:
 				printerList = self._request('GET', self.PRINTER_LIST_PATH, host=self.PRINTER_LIST_HOST)
@@ -136,23 +137,35 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 				#Check the status of each possible IP, if we find a valid box with a printer connected. Use that IP.
 				for possiblePrinter in printerList['data']:
 					status = self._request('GET', '/d3dapi/info/status', host=possiblePrinter['localip'])
-					if status and 'data' in status and (status['data']['state'] == 'idle' or status['data']['state'] == 'buffering'):
+					if status and 'data' in status:
 						self._host = possiblePrinter['localip']
 						break
 
 				if self._host is None:
 					#If we cannot find a doodle3d box, delay a minute and request the list again.
 					# This so we do not stress the connect.doodle3d.com api too much
-					time.sleep(60)
+					if waitDelay < 10:
+						waitDelay += 1
+					time.sleep(waitDelay * 60)
+				else:
+					#If we found a doodle3D box, reset the wait delay, so we can find it again in case it gets lost
+					waitDelay = 0
 
 			stateReply = self._request('GET', '/d3dapi/info/status')
-			if stateReply is None or not stateReply or stateReply['data']['state'] == 'disconnected':
+			if stateReply is None or not stateReply:
 				# No API, wait 5 seconds before looking for Doodle3D again.
 				# API gave back an error (this can happen if the Doodle3D box is connecting to the printer)
-				# Or no printer connected
 				self._host = None
-				self._isAvailable = False
-				self._doCallback()
+				if self._isAvailable:
+					self._isAvailable = False
+					self._doCallback()
+				time.sleep(5)
+				continue
+			if stateReply['data']['state'] == 'disconnected':
+				# No printer connected
+				if self._isAvailable:
+					self._isAvailable = False
+					self._doCallback()
 				time.sleep(5)
 				continue
 
