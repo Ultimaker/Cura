@@ -49,6 +49,7 @@ def main():
 			if progress >= 0 and not ready:
 				print 'Preparing: %d%%' % (progress * 100)
 		scene = objectScene.Scene()
+		scene.updateMachineDimensions()
 		slicer = sliceEngine.Slicer(commandlineProgessCallback)
 		for m in meshLoader.loadMeshes(args[0]):
 			scene.add(m)
