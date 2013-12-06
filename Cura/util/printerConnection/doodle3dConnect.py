@@ -109,8 +109,9 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 			return "Doodle3D box not found"
 		if self._printing:
 			if self._blockIndex < len(self._fileBlocks):
-				return "Sending GCode: %.1f" % (float(self._blockIndex) / float(len(self._fileBlocks)))
-		return "TODO"
+				return "Sending GCode: %.1f%%" % (float(self._blockIndex) * 100.0 / float(len(self._fileBlocks)))
+			return "Print progress: %.1f%%" % (self.getPrintProgress() * 100.0)
+		return "Printing found, waiting for print."
 
 	#Get the temperature of an extruder, returns None is no temperature is known for this extruder
 	def getTemperature(self, extruder):
@@ -191,6 +192,8 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 					if len(self._commandList) > 0:
 						if self._request('POST', '/d3dapi/printer/print', {'gcode': self._commandList[0], 'start': 'True', 'first': 'True'}):
 							self._commandList.pop(0)
+						else:
+							time.sleep(1)
 					else:
 						time.sleep(5)
 			elif stateReply['data']['state'] == 'printing':

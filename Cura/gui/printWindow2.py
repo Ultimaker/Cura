@@ -490,7 +490,7 @@ class TemperatureGraph(wx.Panel):
 			self._points.pop(0)
 
 	def addPoint(self, temp, tempSP, bedTemp, bedTempSP):
-		if time.time() - self._points[-1][4] < 0.5:
+		if len(self._points) > 0 and time.time() - self._points[-1][4] < 0.5:
 			return
 		for n in xrange(0, len(temp)):
 			if temp[n] is None:

@@ -150,23 +150,26 @@ class Slicer(object):
 				pos += (objMin + objMax) / 2.0 * 1000
 				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
 
-				vertexTotal = 0
+				vertexTotal = [0] * 4
+				meshMax = 1
 				for obj in scene.objects():
 					if scene.checkPlatform(obj):
-						for mesh in obj._meshList:
-							vertexTotal += mesh.vertexCount
+						meshMax = max(meshMax, len(obj._meshList))
+						for n in xrange(0, len(obj._meshList)):
+							vertexTotal[n] += obj._meshList[n].vertexCount
 
-				f.write(numpy.array([vertexTotal], numpy.int32).tostring())
-				for obj in scene.objects():
-					if scene.checkPlatform(obj):
-						for mesh in obj._meshList:
-							vertexes = (numpy.matrix(mesh.vertexes, copy = False) * numpy.matrix(obj._matrix, numpy.float32)).getA()
-							vertexes -= obj._drawOffset
-							vertexes += numpy.array([obj.getPosition()[0], obj.getPosition()[1], 0.0])
-							f.write(vertexes.tostring())
-							hash.update(mesh.vertexes.tostring())
+				for n in xrange(0, meshMax):
+					f.write(numpy.array([vertexTotal[n]], numpy.int32).tostring())
+					for obj in scene.objects():
+						if scene.checkPlatform(obj):
+							if n < len(obj._meshList):
+								vertexes = (numpy.matrix(obj._meshList[n].vertexes, copy = False) * numpy.matrix(obj._matrix, numpy.float32)).getA()
+								vertexes -= obj._drawOffset
+								vertexes += numpy.array([obj.getPosition()[0], obj.getPosition()[1], 0.0])
+								f.write(vertexes.tostring())
+								hash.update(obj._meshList[n].vertexes.tostring())
 
-				commandList += ['#']
+				commandList += ['#' * meshMax]
 				self._objCount = 1
 			else:
 				for n in order:
