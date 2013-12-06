@@ -28,6 +28,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		self._progressLine = 0
 		self._hotendTemperature = [None] * 4
 		self._bedTemperature = None
+		self._errorCount = 0
 
 		self.checkThread = threading.Thread(target=self._doodle3DThread)
 		self.checkThread.daemon = True
@@ -52,8 +53,8 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 			if len(line) < 1:
 				continue
 			self._lineCount += 1
-			#Put the lines in 2k sized blocks, so we can send those blocks as http requests.
-			if blockSize + len(line) > 2048:
+			#Put the lines in 8k sized blocks, so we can send those blocks as http requests.
+			if blockSize + len(line) > 1024 * 8:
 				self._fileBlocks.append('\n'.join(block) + '\n')
 				block = []
 				blockSize = 0
@@ -94,7 +95,8 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 
 	#Are we able to send a direct coammand with sendCommand at this moment in time.
 	def isAbleToSendDirectCommand(self):
-		return self._isAvailable and not self._printing
+		#The delay on direct commands is very high and so we disabled it.
+		return False #self._isAvailable and not self._printing
 
 	#Directly send a command to the printer.
 	def sendCommand(self, command):
@@ -108,10 +110,16 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		if not self._isAvailable:
 			return "Doodle3D box not found"
 		if self._printing:
+			ret = "Print progress: %.1f%%" % (self.getPrintProgress() * 100.0)
 			if self._blockIndex < len(self._fileBlocks):
-				return "Sending GCode: %.1f%%" % (float(self._blockIndex) * 100.0 / float(len(self._fileBlocks)))
-			return "Print progress: %.1f%%" % (self.getPrintProgress() * 100.0)
-		return "Printing found, waiting for print."
+				ret += "\nSending GCode: %.1f%%" % (float(self._blockIndex) * 100.0 / float(len(self._fileBlocks)))
+			elif len(self._fileBlocks) > 0:
+				ret += "\nFinished sending GCode to Doodle3D box.\nPrint will continue even if you shut down Cura."
+			else:
+				ret += "\nDifferent print still running..."
+			ret += "\nErrorCount: %d" % (self._errorCount)
+			return ret
+		return "Printer found, waiting for print command."
 
 	#Get the temperature of an extruder, returns None is no temperature is known for this extruder
 	def getTemperature(self, extruder):
@@ -150,25 +158,31 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 					time.sleep(waitDelay * 60)
 				else:
 					#If we found a doodle3D box, reset the wait delay, so we can find it again in case it gets lost
+					self._errorCount = 0
 					waitDelay = 0
 
 			stateReply = self._request('GET', '/d3dapi/info/status')
 			if stateReply is None or not stateReply:
-				# No API, wait 5 seconds before looking for Doodle3D again.
+				# No API, wait 15 seconds before looking for Doodle3D again.
 				# API gave back an error (this can happen if the Doodle3D box is connecting to the printer)
-				self._host = None
-				if self._isAvailable:
-					self._isAvailable = False
-					self._doCallback()
-				time.sleep(5)
+				self._errorCount += 1
+				if self._errorCount > 10:
+					self._host = None
+					if self._isAvailable:
+						self._printing = False
+						self._isAvailable = False
+						self._doCallback()
+				time.sleep(15)
 				continue
 			if stateReply['data']['state'] == 'disconnected':
 				# No printer connected
 				if self._isAvailable:
+					self._printing = False
 					self._isAvailable = False
 					self._doCallback()
 				time.sleep(5)
 				continue
+			self._errorCount = 0
 
 			#We got a valid status, set the doodle3d printer as available.
 			if not self._isAvailable:
@@ -204,27 +218,30 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 								if self._request('POST', '/d3dapi/printer/print', {'gcode': self._fileBlocks[self._blockIndex]}):
 									self._blockIndex += 1
 								else:
-									time.sleep(1)
+									#Cannot send new block, wait a bit, so we do not overload the API
+									time.sleep(15)
+									break
 					else:
 						#If we are no longer sending new GCode delay a bit so we request the status less often.
-						time.sleep(1)
+						time.sleep(5)
 					if 'current_line' in stateReply['data']:
 						self._progressLine = stateReply['data']['current_line']
 				else:
 					#Got a printing state without us having send the print file, set the state to printing, but make sure we never send anything.
 					if 'current_line' in stateReply['data'] and 'total_lines' in stateReply['data'] and stateReply['data']['total_lines'] > 2:
 						self._printing = True
-						self._blockIndex = len(self._fileBlocks)
+						self._fileBlocks = []
+						self._blockIndex = 1
 						self._progressLine = stateReply['data']['current_line']
 						self._lineCount = stateReply['data']['total_lines']
-					time.sleep(1)
+					time.sleep(5)
 			self._doCallback()
 
 	def _request(self, method, path, postData = None, host = None):
 		if host is None:
 			host = self._host
 		if self._http is None or self._http.host != host:
-			self._http = httpclient.HTTPConnection(host)
+			self._http = httpclient.HTTPConnection(host, timeout=30)
 
 		try:
 			if postData is not None:

@@ -191,7 +191,7 @@ class printWindow(wx.Frame):
 			self.camPage.SetSizer(sizer)
 
 			self.timelapsEnable = wx.CheckBox(self.camPage, -1, _("Enable timelapse movie recording"))
-			self.timelapsSavePath = wx.TextCtrl(self.camPage, -1, os.path.expanduser('~/timelaps_' + datetime.datetime.now().strftime('%Y-%m-%d_%H:%M') + '.mpg'))
+			self.timelapsSavePath = wx.TextCtrl(self.camPage, -1, os.path.expanduser('~/timelaps_' + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '.mpg'))
 			sizer.Add(self.timelapsEnable, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
 			sizer.Add(self.timelapsSavePath, pos=(1, 0), span=(1, 2), flag=wx.EXPAND)
 
@@ -292,7 +292,7 @@ class printWindow(wx.Frame):
 		if len(self.termLog.GetValue()) > 10000:
 			self.termLog.SetValue(self.termLog.GetValue()[-10000:])
 		self.termLog.SetInsertionPointEnd()
-		self.termLog.AppendText(unicode(line, 'utf-8', 'replace'))
+		self.termLog.AppendText(line.encode('utf-8', 'replace'))
 
 	def _doPrinterConnectionUpdate(self, connection, extraInfo = None):
 		wx.CallAfter(self.__doPrinterConnectionUpdate, connection, extraInfo)
