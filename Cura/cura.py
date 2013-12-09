@@ -45,12 +45,12 @@ def main():
 		from Cura.util import meshLoader
 		import shutil
 
-		def commandlineProgessCallback(progress, ready):
+		def commandlineProgressCallback(progress, ready):
 			if progress >= 0 and not ready:
 				print 'Preparing: %d%%' % (progress * 100)
 		scene = objectScene.Scene()
 		scene.updateMachineDimensions()
-		slicer = sliceEngine.Slicer(commandlineProgessCallback)
+		slicer = sliceEngine.Slicer(commandlineProgressCallback)
 		for m in meshLoader.loadMeshes(args[0]):
 			scene.add(m)
 		slicer.runSlicer(scene)
