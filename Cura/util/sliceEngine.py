@@ -356,7 +356,7 @@ class Slicer(object):
 		if profile.getProfileSetting('spiralize') == 'True':
 			settings['spiralizeMode'] = 1
 		if profile.getProfileSetting('wipe_tower') == 'True':
-			settings['enableWipeTower'] = 1
+			settings['wipeTowerSize'] = int(math.sqrt(profile.getProfileSettingFloat('wipe_tower_volume') * 1000 * 1000 * 1000 / settings['layerThickness']))
 		if profile.getProfileSetting('ooze_shield') == 'True':
 			settings['enableOozeShield'] = 1
 		return settings
