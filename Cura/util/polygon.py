@@ -18,6 +18,8 @@ def convexHull(pointList):
 
 	points = unique.keys()
 	points.sort()
+	if len(points) < 2:
+		return numpy.array([], numpy.float32)
 
 	# Build upper half of the hull.
 	upper = [points[0], points[1]]
@@ -38,7 +40,7 @@ def convexHull(pointList):
 	del lower[0]
 	del lower[-1]
 
-	return numpy.array(upper + lower, numpy.float32) - numpy.array([0.0,0.0], numpy.float32)
+	return numpy.array(upper + lower, numpy.float32)
 
 def minkowskiHull(a, b):
 	points = numpy.zeros((len(a) * len(b), 2))
