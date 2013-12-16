@@ -1,4 +1,18 @@
 Development
+* Added an expert parameter for the wipe tower size, and made brim go around the wipe tower
+* Added experimental support for printing with the Doodle3D WiFi box
+* Updated object boundaries for multi-object prints, allows for tighter fitting of objects on the build platform
+* Updated time-estimate to greatly improve accuracy of the estimate.
+* Fixed problem with retractions not happening when they should.
+
+Ultimaker2 - Firmware update - 13.12
+* Fixed bug in acceleration planning causing slow moves on rare occasions.
+* Disable the normal menus during USB printing, and support for USB based menus.
+* Expert feature: Support M907 for setting the motor current.
+
+Ultimaker Original - Firmware update - 13.12
+* Fixed bug in acceleration planning causing slow moves on rare occasions.
+* Updated to new ErikZalm Marlin base, fixing the long standing slower retraction bug.
 
 13.11.2
 * Adjusted the gantry height to 55mm for the Ultimaker, as 60mm was 3mm to high for the default setup with an V2 hotend.

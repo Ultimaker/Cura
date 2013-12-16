@@ -70,6 +70,7 @@ class CuraApp(wx.App):
 		import webbrowser
 		from Cura.gui import mainWindow
 		from Cura.gui import configWizard
+		from Cura.gui import newVersionDialog
 		from Cura.util import profile
 		from Cura.util import resources
 		from Cura.util import version
@@ -122,6 +123,9 @@ class CuraApp(wx.App):
 			self.splash.Show(False)
 		self.mainWindow.Show()
 		self.mainWindow.OnDropFiles(self.loadFiles)
+		if profile.getPreference('last_run_version') != version.getVersion(False):
+			profile.putPreference('last_run_version', version.getVersion(False))
+			newVersionDialog.newVersionDialog().Show()
 
 		setFullScreenCapable(self.mainWindow)
 

@@ -15,13 +15,13 @@ from Cura.util import machineCom
 from Cura.util import profile
 from Cura.util import resources
 
-def getDefaultFirmware():
-	if profile.getMachineSetting('machine_type') == 'ultimaker':
-		if profile.getMachineSetting('has_heated_bed') == 'True':
+def getDefaultFirmware(machineIndex = None):
+	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker':
+		if profile.getMachineSetting('has_heated_bed', machineIndex) == 'True':
 			return None
-		if profile.getMachineSettingFloat('extruder_amount') > 2:
+		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 2:
 			return None
-		if profile.getMachineSettingFloat('extruder_amount') > 1:
+		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 1:
 			if sys.platform.startswith('linux'):
 				return resources.getPathForFirmware("MarlinUltimaker-115200-dual.hex")
 			else:
@@ -30,22 +30,22 @@ def getDefaultFirmware():
 			return resources.getPathForFirmware("MarlinUltimaker-115200.hex")
 		else:
 			return resources.getPathForFirmware("MarlinUltimaker-250000.hex")
-	if profile.getMachineSetting('machine_type') == 'ultimaker2':
+	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker2':
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
 	return None
 
 class InstallFirmware(wx.Dialog):
-	def __init__(self, filename = None, port = None):
-		super(InstallFirmware, self).__init__(parent=None, title="Firmware install for %s" % (profile.getMachineSetting('machine_name').title()), size=(250, 100))
+	def __init__(self, filename = None, port = None, machineIndex = None):
+		super(InstallFirmware, self).__init__(parent=None, title="Firmware install for %s" % (profile.getMachineSetting('machine_name', machineIndex).title()), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
-			filename = getDefaultFirmware()
+			filename = getDefaultFirmware(machineIndex)
 		if filename is None:
 			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			self.Destroy()
 			return
-		if profile.getMachineSetting('machine_type') == 'reprap':
+		if profile.getMachineSetting('machine_type', machineIndex) == 'reprap':
 			wx.MessageBox(_("Cura only supports firmware updates for ATMega2560 based hardware.\nSo updating your RepRap with Cura might or might not work."), _("Firmware update"), wx.OK | wx.ICON_INFORMATION)
 
 		sizer = wx.BoxSizer(wx.VERTICAL)

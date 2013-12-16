@@ -80,7 +80,7 @@ class youmagineManager(object):
 		if not self._ym.isAuthorized():
 			wx.CallAfter(self._indicatorWindow.Hide)
 			if not self._ym.isHostReachable():
-				wx.MessageBox(_("Failed to contact YouMagine.com"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
+				wx.CallAfter(wx.MessageBox, _("Failed to contact YouMagine.com"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 				return
 			wx.CallAfter(self._getAuthorizationWindow.Show)
 			lastTriedClipboard = ''
@@ -113,7 +113,7 @@ class youmagineManager(object):
 		id = self._ym.createDesign(name, description, category, license)
 		wx.CallAfter(self._indicatorWindow.Hide)
 		if id is None:
-			wx.MessageBox(_("Failed to create a design, nothing uploaded!"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
+			wx.CallAfter(wx.MessageBox, _("Failed to create a design, nothing uploaded!"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			return
 
 		for obj in self._scene.objects():
@@ -130,14 +130,14 @@ class youmagineManager(object):
 
 			wx.CallAfter(self._indicatorWindow.showBusy, _("Uploading model %s...") % (filename))
 			if self._ym.createDocument(id, filename, s.getvalue()) is None:
-				wx.MessageBox(_("Failed to upload %s!") % (filename), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
+				wx.CallAfter(wx.MessageBox, _("Failed to upload %s!") % (filename), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			s.close()
 
 		for extra in extraFileList:
 			wx.CallAfter(self._indicatorWindow.showBusy, _("Uploading file %s...") % (os.path.basename(extra)))
 			with open(extra, "rb") as f:
 				if self._ym.createDocument(id, os.path.basename(extra), f.read()) is None:
-					wx.MessageBox(_("Failed to upload %s!") % (os.path.basename(extra)), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
+					wx.CallAfter(wx.MessageBox, _("Failed to upload %s!") % (os.path.basename(extra)), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 
 		for image in imageList:
 			if type(image) in types.StringTypes:
@@ -145,12 +145,12 @@ class youmagineManager(object):
 				wx.CallAfter(self._indicatorWindow.showBusy, _("Uploading image %s...") % (filename))
 				with open(image, "rb") as f:
 					if self._ym.createImage(id, filename, f.read()) is None:
-						wx.MessageBox(_("Failed to upload %s!") % (filename), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
+						wx.CallAfter(wx.MessageBox, _("Failed to upload %s!") % (filename), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			elif type(image) is wx.Bitmap:
 				s = StringIO.StringIO()
 				if wx.ImageFromBitmap(image).SaveStream(s, wx.BITMAP_TYPE_JPEG):
 					if self._ym.createImage(id, "snapshot.jpg", s.getvalue()) is None:
-						wx.MessageBox(_("Failed to upload snapshot!"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
+						wx.CallAfter(wx.MessageBox, _("Failed to upload snapshot!"), _("YouMagine error."), wx.OK | wx.ICON_ERROR)
 			else:
 				print type(image)
 
