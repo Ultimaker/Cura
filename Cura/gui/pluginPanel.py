@@ -2,6 +2,7 @@ from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+import os
 import webbrowser
 from wx.lib import scrolledpanel
 
@@ -174,4 +175,6 @@ class pluginPanel(wx.Panel):
 		webbrowser.open('http://wiki.ultimaker.com/Category:CuraPlugin')
 
 	def OnOpenPluginLocation(self, e):
+		if not os.path.exists(profile.getPluginBasePaths()[0]):
+			os.mkdir(profile.getPluginBasePaths()[0])
 		explorer.openExplorerPath(profile.getPluginBasePaths()[0])
