@@ -32,26 +32,30 @@ class convertImageDialog(wx.Dialog):
 		self.heightInput = wx.TextCtrl(p, -1, '10.0')
 		s.Add(self.heightInput, pos=(0, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 
-		s.Add(wx.StaticText(p, -1, _('Width (mm)')), pos=(1, 0), flag=wx.LEFT|wx.TOP|wx.RIGHT, border=5)
-		self.widthInput = wx.TextCtrl(p, -1, str(w * 0.3))
-		s.Add(self.widthInput, pos=(1, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
+		s.Add(wx.StaticText(p, -1, _('Base (mm)')), pos=(1, 0), flag=wx.LEFT|wx.TOP|wx.RIGHT, border=5)
+		self.baseHeightInput = wx.TextCtrl(p, -1, '1.0')
+		s.Add(self.baseHeightInput, pos=(1, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 
-		s.Add(wx.StaticText(p, -1, _('Depth (mm)')), pos=(2, 0), flag=wx.LEFT|wx.TOP|wx.RIGHT, border=5)
+		s.Add(wx.StaticText(p, -1, _('Width (mm)')), pos=(2, 0), flag=wx.LEFT|wx.TOP|wx.RIGHT, border=5)
+		self.widthInput = wx.TextCtrl(p, -1, str(w * 0.3))
+		s.Add(self.widthInput, pos=(2, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
+
+		s.Add(wx.StaticText(p, -1, _('Depth (mm)')), pos=(3, 0), flag=wx.LEFT|wx.TOP|wx.RIGHT, border=5)
 		self.depthInput = wx.TextCtrl(p, -1, str(h * 0.3))
-		s.Add(self.depthInput, pos=(2, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
+		s.Add(self.depthInput, pos=(3, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 
 		options = ['Darker is higher', 'Lighter is higher']
 		self.invertInput = wx.ComboBox(p, -1, options[0], choices=options, style=wx.CB_DROPDOWN|wx.CB_READONLY)
-		s.Add(self.invertInput, pos=(3, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
+		s.Add(self.invertInput, pos=(4, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 		self.invertInput.SetSelection(0)
 
 		options = ['No smoothing', 'Light smoothing', 'Heavy smoothing']
 		self.smoothInput = wx.ComboBox(p, -1, options[0], choices=options, style=wx.CB_DROPDOWN|wx.CB_READONLY)
-		s.Add(self.smoothInput, pos=(4, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
+		s.Add(self.smoothInput, pos=(5, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 		self.smoothInput.SetSelection(0)
 
 		self.okButton = wx.Button(p, -1, 'Ok')
-		s.Add(self.okButton, pos=(5, 1), flag=wx.ALL, border=5)
+		s.Add(self.okButton, pos=(6, 1), flag=wx.ALL, border=5)
 
 		self.okButton.Bind(wx.EVT_BUTTON, self.OnOkClick)
 		self.widthInput.Bind(wx.EVT_TEXT, self.OnWidthEnter)
@@ -70,8 +74,9 @@ class convertImageDialog(wx.Dialog):
 		blur = self.smoothInput.GetSelection()
 		blur *= blur
 		invert = self.invertInput.GetSelection() == 0
+		baseHeight = float(self.baseHeightInput.GetValue())
 
-		obj = convertImage(self.filename, height, width, blur, invert)
+		obj = convertImage(self.filename, height, width, blur, invert, baseHeight)
 		self.parent._scene.add(obj)
 		self.parent._scene.centerAll()
 		self.parent.sceneUpdated()
@@ -103,11 +108,11 @@ def convertImage(filename, height=20.0, width=100.0, blur=0, invert=False, baseH
 		image = image.Blur(blur)
 	z = numpy.fromstring(image.GetData(), numpy.uint8)
 	z = numpy.array(z[::3], numpy.float32)	#Only get the R values (as we are grayscale), and convert to float values
+	if invert:
+		z = 255 - z
 	pMin, pMax = numpy.min(z), numpy.max(z)
 	if pMax == pMin:
 		pMax += 1.0
-	if invert:
-		z = 255 - z
 	z = ((z - pMin) * height / (pMax - pMin)) + baseHeight
 
 	w, h = image.GetWidth(), image.GetHeight()
