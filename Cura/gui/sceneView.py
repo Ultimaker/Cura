@@ -25,6 +25,7 @@ from Cura.util import sliceEngine
 from Cura.util import machineCom
 from Cura.util import removableStorage
 from Cura.util import gcodeInterpreter
+from Cura.util import explorer
 from Cura.util.printerConnection import printerConnectionManager
 from Cura.gui.util import previewTools
 from Cura.gui.util import opengl
@@ -306,12 +307,20 @@ class SceneView(openglGui.glGuiPanel):
 			self.notification.message("Failed to save")
 		else:
 			if allowEject:
-				self.notification.message("Saved as %s" % (fileB), lambda : self.notification.message('You can now eject the card.') if removableStorage.ejectDrive(allowEject) else self.notification.message('Safe remove failed...'))
+				self.notification.message("Saved as %s" % (fileB), lambda : self._doEjectSD(allowEject), 31, 'Eject')
+			elif explorer.hasExplorer():
+				self.notification.message("Saved as %s" % (fileB), lambda : explorer.openExplorer(fileB), 4, 'Open folder')
 			else:
 				self.notification.message("Saved as %s" % (fileB))
 		self.printButton.setProgressBar(None)
 		if fileA == self._slicer.getGCodeFilename():
 			self._slicer.submitSliceInfoOnline()
+
+	def _doEjectSD(self, drive):
+		if removableStorage.ejectDrive(drive):
+			self.notification.message('You can now eject the card.')
+		else:
+			self.notification.message('Safe remove failed...')
 
 	def _showSliceLog(self):
 		dlg = wx.TextEntryDialog(self, _("The slicing engine reported the following"), _("Engine log..."), '\n'.join(self._slicer.getSliceLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)

@@ -709,7 +709,7 @@ class glNotification(glFrame):
 		super(glNotification, self).__init__(parent, pos)
 		glGuiLayoutGrid(self)._alignBottom = False
 		self._label = glLabel(self, "Notification", (0, 0))
-		self._buttonEject = glButton(self, 31, "Eject", (1, 0), self.onEject, 25)
+		self._buttonExtra = glButton(self, 31, "???", (1, 0), self.onExtraButton, 25)
 		self._button = glButton(self, 30, "", (2, 0), self.onClose, 25)
 		self._padding = glLabel(self, "", (0, 1))
 		self.setHidden(True)
@@ -727,18 +727,20 @@ class glNotification(glFrame):
 		self.updateLayout()
 		super(glNotification, self).draw()
 
-	def message(self, text, ejectCallback = None):
+	def message(self, text, extraButtonCallback = None, extraButtonIcon = None, extraButtonTooltip = None):
 		self._anim = animation(self._base, -20, 25, 1)
 		self.setHidden(False)
 		self._label.setLabel(text)
-		self._buttonEject.setHidden(ejectCallback is None)
-		self._ejectCallback = ejectCallback
+		self._buttonExtra.setHidden(extraButtonCallback is None)
+		self._buttonExtra._imageID = extraButtonIcon
+		self._buttonExtra._tooltip = extraButtonTooltip
+		self._extraButtonCallback = extraButtonCallback
 		self._base._queueRefresh()
 		self.updateLayout()
 
-	def onEject(self, button):
+	def onExtraButton(self, button):
 		self.onClose(button)
-		self._ejectCallback()
+		self._extraButtonCallback()
 
 	def onClose(self, button):
 		if self._anim is not None:

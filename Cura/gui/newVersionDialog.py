@@ -51,6 +51,7 @@ class newVersionDialog(wx.Dialog):
 			s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker2:'))
 			s.Add(wx.StaticText(p, -1, '* Fixed bug in acceleration planning causing slow moves on rare occasions.'))
+			s.Add(wx.StaticText(p, -1, '* Fixed the problem where aborting a print did not always home the head.'))
 			s.Add(wx.StaticText(p, -1, '* Disabled normal LCD menu curing USB printing.'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimaker2Firmware, button)
