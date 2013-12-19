@@ -9,6 +9,7 @@ Ultimaker2 - Firmware update - 13.12
 * Fixed the problem where aborting a print did not always home the head.
 * Fixed bug in acceleration planning causing slow moves on rare occasions.
 * Disable the normal menus during USB printing, and support for USB based menus.
+* Disable stepper drivers after print is finished or aborted, so you can manually move the head.
 * Expert feature: Support M907 for setting the motor current.
 
 Ultimaker Original - Firmware update - 13.12
