@@ -31,6 +31,7 @@ class newVersionDialog(wx.Dialog):
 		s.Add(wx.StaticText(p, -1, '* Updated object boundaries for multi-object prints, allows for tighter fitting of objects on the build platform'))
 		s.Add(wx.StaticText(p, -1, '* Updated time-estimate to greatly improve accuracy of the estimate.'))
 		s.Add(wx.StaticText(p, -1, '* Fixed problem with retractions not happening when they should.'))
+		s.Add(wx.StaticText(p, -1, '* Added keyboard control for the 3D window to look around with cursor keys.'))
 
 		self.hasUltimaker = None
 		self.hasUltimaker2 = None

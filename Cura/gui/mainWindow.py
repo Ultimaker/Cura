@@ -245,6 +245,7 @@ class mainWindow(wx.Frame):
 			self.Centre()
 
 		self.updateSliceMode()
+		self.scene.SetFocus()
 
 	def onTimer(self, e):
 		#Check if there is something in the clipboard

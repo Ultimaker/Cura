@@ -661,18 +661,68 @@ class SceneView(openglGui.glGuiPanel):
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
 				self.QueueRefresh()
-		if keyCode == wx.WXK_UP:
-			self.layerSelect.setValue(self.layerSelect.getValue() + 1)
-			self.QueueRefresh()
-		elif keyCode == wx.WXK_DOWN:
-			self.layerSelect.setValue(self.layerSelect.getValue() - 1)
-			self.QueueRefresh()
-		elif keyCode == wx.WXK_PAGEUP:
-			self.layerSelect.setValue(self.layerSelect.getValue() + 10)
-			self.QueueRefresh()
-		elif keyCode == wx.WXK_PAGEDOWN:
-			self.layerSelect.setValue(self.layerSelect.getValue() - 10)
-			self.QueueRefresh()
+		if self.viewMode == 'gcode':
+			if keyCode == wx.WXK_UP:
+				self.layerSelect.setValue(self.layerSelect.getValue() + 1)
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_DOWN:
+				self.layerSelect.setValue(self.layerSelect.getValue() - 1)
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_PAGEUP:
+				self.layerSelect.setValue(self.layerSelect.getValue() + 10)
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_PAGEDOWN:
+				self.layerSelect.setValue(self.layerSelect.getValue() - 10)
+				self.QueueRefresh()
+		else:
+			if keyCode == wx.WXK_UP:
+				if wx.GetKeyState(wx.WXK_SHIFT):
+					self._zoom /= 1.2
+					if self._zoom < 1:
+						self._zoom = 1
+				else:
+					self._pitch -= 15
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_DOWN:
+				if wx.GetKeyState(wx.WXK_SHIFT):
+					self._zoom *= 1.2
+					if self._zoom > numpy.max(self._machineSize) * 3:
+						self._zoom = numpy.max(self._machineSize) * 3
+				else:
+					self._pitch += 15
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_LEFT:
+				self._yaw -= 15
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_RIGHT:
+				self._yaw += 15
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_NUMPAD_ADD or keyCode == wx.WXK_ADD or keyCode == ord('+') or keyCode == ord('='):
+				self._zoom /= 1.2
+				if self._zoom < 1:
+					self._zoom = 1
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_NUMPAD_SUBTRACT or keyCode == wx.WXK_SUBTRACT or keyCode == ord('-'):
+				self._zoom *= 1.2
+				if self._zoom > numpy.max(self._machineSize) * 3:
+					self._zoom = numpy.max(self._machineSize) * 3
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_HOME:
+				self._yaw = 30
+				self._pitch = 60
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_PAGEUP:
+				self._yaw = 0
+				self._pitch = 0
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_PAGEDOWN:
+				self._yaw = 0
+				self._pitch = 90
+				self.QueueRefresh()
+			elif keyCode == wx.WXK_END:
+				self._yaw = 90
+				self._pitch = 90
+				self.QueueRefresh()
 
 		if keyCode == wx.WXK_F3 and wx.GetKeyState(wx.WXK_SHIFT):
 			shaderEditor(self, self.ShaderUpdate, self._objectLoadShader.getVertexShader(), self._objectLoadShader.getFragmentShader())

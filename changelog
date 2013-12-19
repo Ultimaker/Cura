@@ -4,6 +4,7 @@ Development
 * Updated object boundaries for multi-object prints, allows for tighter fitting of objects on the build platform
 * Updated time-estimate to greatly improve accuracy of the estimate.
 * Fixed problem with retractions not happening when they should.
+* Added keyboard control for the 3D window to look around with cursor keys.
 
 Ultimaker2 - Firmware update - 13.12
 * Fixed the problem where aborting a print did not always home the head.
