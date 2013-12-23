@@ -2,6 +2,28 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import traceback
 
+class printerConnectionGroup(object):
+	def __init__(self, name):
+		self._name = name
+
+	def getAvailableConnections(self):
+		return []
+
+	def getName(self):
+		return self._name
+
+	def getIconID(self):
+		return 5
+
+	def getPriority(self):
+		return -1
+
+	def __cmp__(self, other):
+		return self.getPriority() - other.getPriority()
+
+	def __repr__(self):
+		return self.name
+
 #Base class for different printer connection implementations.
 # A printer connection can connect to printers in different ways, trough network, USB or carrier pigeons.
 # Each printer connection has different capabilities that you can query with the "has" functions.
@@ -9,8 +31,13 @@ import traceback
 # Each printer connection has callback objects that receive status updates from the printer when information changes.
 
 class printerConnectionBase(object):
-	def __init__(self):
+	def __init__(self, name):
 		self._callbackList = []
+		self._name = name
+		self.window = None
+
+	def getName(self):
+		return self._name
 
 	#Load the file into memory for printing, returns True on success
 	def loadFile(self, filename):

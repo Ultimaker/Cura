@@ -8,10 +8,18 @@ import time
 
 from Cura.util.printerConnection import printerConnectionBase
 
+class dummyConnectionGroup(printerConnectionBase.printerConnectionGroup):
+	def __init__(self):
+		super(dummyConnectionGroup, self).__init__("Dummy")
+		self._list = [dummyConnection("Dummy 1"), dummyConnection("Dummy 2")]
+
+	def getAvailableConnections(self):
+		return self._list
+
 #Dummy printer class which is always
 class dummyConnection(printerConnectionBase.printerConnectionBase):
-	def __init__(self):
-		super(dummyConnection, self).__init__()
+	def __init__(self, name):
+		super(dummyConnection, self).__init__(name)
 
 		self._printing = False
 		self._lineCount = 0

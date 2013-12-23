@@ -3,14 +3,11 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import wx
 import power
 import time
-import os
-import datetime
 
 from wx.lib import buttons
 
 from Cura.util import profile
 from Cura.util import resources
-from Cura.gui.util import webcam
 
 class printWindow(wx.Frame):
 	"Main user interface window"
@@ -177,46 +174,7 @@ class printWindow(wx.Frame):
 
 		self.UpdateButtonStates()
 
-		if webcam.hasWebcamSupport():
-			#Need to call the camera class on the GUI thread, or else it won't work. Shame as it hangs the GUI for about 2 seconds.
-			wx.CallAfter(self._webcamCheck)
-
 		self._printerConnection.addCallback(self._doPrinterConnectionUpdate)
-
-	def _webcamCheck(self):
-		self.cam = webcam.webcam()
-		if self.cam.hasCamera():
-			self.camPage = wx.Panel(self.tabs)
-			sizer = wx.GridBagSizer(2, 2)
-			self.camPage.SetSizer(sizer)
-
-			self.timelapsEnable = wx.CheckBox(self.camPage, -1, _("Enable timelapse movie recording"))
-			self.timelapsSavePath = wx.TextCtrl(self.camPage, -1, os.path.expanduser('~/timelaps_' + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '.mpg'))
-			sizer.Add(self.timelapsEnable, pos=(0, 0), span=(1, 2), flag=wx.EXPAND)
-			sizer.Add(self.timelapsSavePath, pos=(1, 0), span=(1, 2), flag=wx.EXPAND)
-
-			pages = self.cam.propertyPages()
-			self.cam.buttons = [self.timelapsEnable, self.timelapsSavePath]
-			for page in pages:
-				button = wx.Button(self.camPage, -1, page)
-				button.index = pages.index(page)
-				sizer.Add(button, pos=(2, pages.index(page)))
-				button.Bind(wx.EVT_BUTTON, self.OnWebcamPropertyPageButton)
-				self.cam.buttons.append(button)
-
-			self.campreviewEnable = wx.CheckBox(self.camPage, -1, _("Show preview"))
-			sizer.Add(self.campreviewEnable, pos=(3, 0), span=(1, 2), flag=wx.EXPAND)
-
-			self.camPreview = wx.Panel(self.camPage)
-			sizer.Add(self.camPreview, pos=(4, 0), span=(1, 2), flag=wx.EXPAND)
-
-			self.tabs.AddPage(self.camPage, _("Camera"))
-			self.camPreview.timer = wx.Timer(self)
-			self.Bind(wx.EVT_TIMER, self.OnCameraTimer, self.camPreview.timer)
-			self.camPreview.timer.Start(500)
-			self.camPreview.Bind(wx.EVT_ERASE_BACKGROUND, self.OnCameraEraseBackground)
-		else:
-			self.cam = None
 
 	def OnPowerWarningChange(self, e):
 		type = self.powerManagement.get_providing_power_source_type()
@@ -330,31 +288,6 @@ class printWindow(wx.Frame):
 		self.temperatureSelect.Enable(self._printerConnection.isAbleToSendDirectCommand())
 		self.temperatureHeatUp.Enable(self._printerConnection.isAbleToSendDirectCommand())
 		self.termInput.Enable(self._printerConnection.isAbleToSendDirectCommand())
-
-	def OnWebcamPropertyPageButton(self, e):
-		self.cam.openPropertyPage(e.GetEventObject().index)
-
-	def OnCameraTimer(self, e):
-		if not self.campreviewEnable.GetValue():
-			return
-		if self.machineCom is not None and self.machineCom.isPrinting():
-			return
-		self.cam.takeNewImage()
-		self.camPreview.Refresh()
-
-	def OnCameraEraseBackground(self, e):
-		dc = e.GetDC()
-		if not dc:
-			dc = wx.ClientDC(self)
-			rect = self.GetUpdateRegion().GetBox()
-			dc.SetClippingRect(rect)
-		dc.SetBackground(wx.Brush(self.camPreview.GetBackgroundColour(), wx.SOLID))
-		if self.cam.getLastImage() is not None:
-			self.camPreview.SetMinSize((self.cam.getLastImage().GetWidth(), self.cam.getLastImage().GetHeight()))
-			self.camPage.Fit()
-			dc.DrawBitmap(self.cam.getLastImage(), 0, 0)
-		else:
-			dc.Clear()
 
 class PrintCommandButton(buttons.GenBitmapButton):
 	def __init__(self, parent, commandList, bitmapFilename, size=(20, 20)):

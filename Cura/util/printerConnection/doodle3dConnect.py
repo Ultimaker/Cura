@@ -8,17 +8,100 @@ import time
 
 from Cura.util.printerConnection import printerConnectionBase
 
-#Class to connect and print files with the doodle3d.com wifi box
-# Auto-detects if the Doodle3D box is available with a printer
-class doodle3dConnect(printerConnectionBase.printerConnectionBase):
+class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 	PRINTER_LIST_HOST = 'connect.doodle3d.com'
 	PRINTER_LIST_PATH = '/api/list.php'
 
 	def __init__(self):
-		super(doodle3dConnect, self).__init__()
+		super(doodle3dConnectionGroup, self).__init__("Doodle3D")
+		self._http = None
+		self._host = self.PRINTER_LIST_HOST
+		self._connectionMap = {}
+
+		self._thread = threading.Thread(target=self._doodle3DThread)
+		self._thread.daemon = True
+		self._thread.start()
+
+	def getAvailableConnections(self):
+		return filter(lambda c: c.isAvailable(), self._connectionMap.values())
+
+	def getIconID(self):
+		return 27
+
+	def getPriority(self):
+		return 100
+
+	def __cmp__(self, other):
+		return self.getPriority() - other.getPriority()
+
+	def __repr__(self):
+		return self.name
+
+	def _doodle3DThread(self):
+		self._waitDelay = 0
+		while True:
+			printerList = self._request('GET', self.PRINTER_LIST_PATH)
+			if not printerList or type(printerList) is not dict or 'data' not in printerList or type(printerList['data']) is not list:
+				#Check if we are connected to the Doodle3D box in access point mode, as this gives an
+				# invalid reply on the printer list API
+				printerList = {'data': [{'localip': 'draw.doodle3d.com'}]}
+
+			#Add the 192.168.5.1 IP to the list of printers to check, as this is the LAN port IP, which could also be available.
+			# (connect.doodle3d.com also checks for this IP in the javascript code)
+			printerList['data'].append({'localip': '192.168.5.1'})
+
+			#Check the status of each possible IP, if we find a valid box with a printer connected. Use that IP.
+			for possiblePrinter in printerList['data']:
+				if possiblePrinter['localip'] not in self._connectionMap:
+					status = self._request('GET', '/d3dapi/config/?network.cl.wifiboxid=', host=possiblePrinter['localip'])
+					if status and 'data' in status and 'network.cl.wifiboxid' in status['data']:
+						self._connectionMap[possiblePrinter['localip']] = doodle3dConnect(possiblePrinter['localip'], status['data']['network.cl.wifiboxid'], self)
+
+			# Delay a bit more after every request. This so we do not stress the connect.doodle3d.com api too much
+			if self._waitDelay < 10:
+				self._waitDelay += 1
+			time.sleep(self._waitDelay * 60)
+
+	def _request(self, method, path, postData = None, host = None):
+		if host is None:
+			host = self._host
+		if self._http is None or self._http.host != host:
+			self._http = httpclient.HTTPConnection(host, timeout=30)
+
+		try:
+			if postData is not None:
+				self._http.request(method, path, urllib.urlencode(postData), {"Content-type": "application/x-www-form-urlencoded", "User-Agent": "Cura Doodle3D connection"})
+			else:
+				self._http.request(method, path, headers={"Content-type": "application/x-www-form-urlencoded", "User-Agent": "Cura Doodle3D connection"})
+		except:
+			self._http.close()
+			return None
+		try:
+			response = self._http.getresponse()
+			responseText = response.read()
+		except:
+			self._http.close()
+			return None
+		try:
+			response = json.loads(responseText)
+		except ValueError:
+			self._http.close()
+			return None
+		if response['status'] != 'success':
+			return False
+
+		return response
+
+#Class to connect and print files with the doodle3d.com wifi box
+# Auto-detects if the Doodle3D box is available with a printer
+class doodle3dConnect(printerConnectionBase.printerConnectionBase):
+	def __init__(self, host, name, group):
+		super(doodle3dConnect, self).__init__(name)
 
 		self._http = None
-		self._host = None
+		self._group = group
+		self._host = host
+
 		self._isAvailable = False
 		self._printing = False
 		self._fileBlocks = []
@@ -29,6 +112,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		self._hotendTemperature = [None] * 4
 		self._bedTemperature = None
 		self._errorCount = 0
+		self._interruptSleep = False
 
 		self.checkThread = threading.Thread(target=self._doodle3DThread)
 		self.checkThread.daemon = True
@@ -72,6 +156,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		self._progressLine = 0
 		self._blockIndex = 0
 		self._printing = True
+		self._interruptSleep = True
 
 	#Abort the previously loaded print file
 	def cancelPrint(self):
@@ -103,6 +188,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		if not self._isAvailable or self._printing:
 			return
 		self._commandList.append(command)
+		self._interruptSleep = True
 
 	# Get the connection status string. This is displayed to the user and can be used to communicate
 	#  various information to the user.
@@ -130,41 +216,12 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		return self._bedTemperature
 
 	def _doodle3DThread(self):
-		waitDelay = 0
 		while True:
-			while self._host is None:
-				printerList = self._request('GET', self.PRINTER_LIST_PATH, host=self.PRINTER_LIST_HOST)
-				if not printerList or type(printerList) is not dict or 'data' not in printerList or type(printerList['data']) is not list:
-					#Check if we are connected to the Doodle3D box in access point mode, as this gives an
-					# invalid reply on the printer list API
-					printerList = {'data': [{'localip': 'draw.doodle3d.com'}]}
-
-				#Add the 192.168.5.1 IP to the list of printers to check, as this is the LAN port IP, which could also be available.
-				# (connect.doodle3d.com also checks for this IP in the javascript code)
-				printerList['data'].append({'localip': '192.168.5.1'})
-
-				#Check the status of each possible IP, if we find a valid box with a printer connected. Use that IP.
-				for possiblePrinter in printerList['data']:
-					status = self._request('GET', '/d3dapi/info/status', host=possiblePrinter['localip'])
-					if status and 'data' in status:
-						self._host = possiblePrinter['localip']
-						break
-
-				if self._host is None:
-					#If we cannot find a doodle3d box, delay a minute and request the list again.
-					# This so we do not stress the connect.doodle3d.com api too much
-					if waitDelay < 10:
-						waitDelay += 1
-					time.sleep(waitDelay * 60)
-				else:
-					#If we found a doodle3D box, reset the wait delay, so we can find it again in case it gets lost
-					self._errorCount = 0
-					waitDelay = 0
-
 			stateReply = self._request('GET', '/d3dapi/info/status')
 			if stateReply is None or not stateReply:
-				# No API, wait 15 seconds before looking for Doodle3D again.
+				# No API, wait 5 seconds before looking for Doodle3D again.
 				# API gave back an error (this can happen if the Doodle3D box is connecting to the printer)
+				# The Doodle3D box could also be offline, if we reach a high enough errorCount then assume the box is gone.
 				self._errorCount += 1
 				if self._errorCount > 10:
 					self._host = None
@@ -172,15 +229,18 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 						self._printing = False
 						self._isAvailable = False
 						self._doCallback()
-				time.sleep(15)
+					self._sleep(15)
+				else:
+					self._sleep(3)
 				continue
 			if stateReply['data']['state'] == 'disconnected':
-				# No printer connected
+				# No printer connected, we do not have a printer available, but the Doodle3D box is there.
+				# So keep trying to find a printer connected to it.
 				if self._isAvailable:
 					self._printing = False
 					self._isAvailable = False
 					self._doCallback()
-				time.sleep(5)
+				self._sleep(15)
 				continue
 			self._errorCount = 0
 
@@ -199,7 +259,7 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 						if self._request('POST', '/d3dapi/printer/print', {'gcode': self._fileBlocks[self._blockIndex], 'start': 'True', 'first': 'True'}):
 							self._blockIndex += 1
 						else:
-							time.sleep(1)
+							self._sleep(1)
 					else:
 						self._printing = False
 				else:
@@ -207,9 +267,9 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 						if self._request('POST', '/d3dapi/printer/print', {'gcode': self._commandList[0], 'start': 'True', 'first': 'True'}):
 							self._commandList.pop(0)
 						else:
-							time.sleep(1)
+							self._sleep(1)
 					else:
-						time.sleep(5)
+						self._sleep(5)
 			elif stateReply['data']['state'] == 'printing':
 				if self._printing:
 					if self._blockIndex < len(self._fileBlocks):
@@ -219,11 +279,11 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 									self._blockIndex += 1
 								else:
 									#Cannot send new block, wait a bit, so we do not overload the API
-									time.sleep(15)
+									self._sleep(15)
 									break
 					else:
 						#If we are no longer sending new GCode delay a bit so we request the status less often.
-						time.sleep(5)
+						self._sleep(5)
 					if 'current_line' in stateReply['data']:
 						self._progressLine = stateReply['data']['current_line']
 				else:
@@ -234,8 +294,15 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 						self._blockIndex = 1
 						self._progressLine = stateReply['data']['current_line']
 						self._lineCount = stateReply['data']['total_lines']
-					time.sleep(5)
+					self._sleep(5)
 			self._doCallback()
+
+	def _sleep(self, timeOut):
+		while timeOut > 0.0:
+			if not self._interruptSleep:
+				time.sleep(0.1)
+			timeOut -= 0.1
+		self._interruptSleep = False
 
 	def _request(self, method, path, postData = None, host = None):
 		if host is None:

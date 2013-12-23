@@ -227,10 +227,10 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnPrintButton(self, button):
 		if button == 1:
-			connectionEntry = self._printerConnectionManager.getAvailableConnection()
+			connectionGroup = self._printerConnectionManager.getAvailableGroup()
 			if machineCom.machineIsConnected():
 				self.showPrintWindow()
-			elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionEntry is None or connectionEntry.priority < 0):
+			elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
 					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", map(lambda n: n[0], drives))
@@ -243,26 +243,45 @@ class SceneView(openglGui.glGuiPanel):
 					drive = drives[0]
 				filename = self._scene._objectList[0].getName() + '.gcode'
 				threading.Thread(target=self._copyFile,args=(self._gcodeFilename, drive[1] + filename, drive[1])).start()
-			elif connectionEntry is not None:
-				connection = connectionEntry.connection
-				if connectionEntry.window is None or not connectionEntry.window:
-					connectionEntry.window = printWindow2.printWindow(connection)
-				connectionEntry.window.Show()
-				connectionEntry.window.Raise()
-				if not connection.loadFile(self._gcodeFilename):
-					if connection.isPrinting():
-						self.notification.message("Cannot start print, because other print still running.")
-					else:
-						self.notification.message("Failed to start print...")
+			elif connectionGroup is not None:
+				connections = connectionGroup.getAvailableConnections()
+				if len(connections) < 2:
+					connection = connections[0]
+				else:
+					dlg = wx.SingleChoiceDialog(self, "Select the %s connection to use" % (connectionGroup.getName()), "Multiple %s connections found" % (connectionGroup.getName()), map(lambda n: n.getName(), connections))
+					if dlg.ShowModal() != wx.ID_OK:
+						dlg.Destroy()
+						return
+					connection = connections[dlg.GetSelection()]
+					dlg.Destroy()
+				self._openPrintWindowForConnection(connection)
 			else:
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
 			self.Bind(wx.EVT_MENU, lambda e: self.showPrintWindow(), menu.Append(-1, _("Print with USB")))
+			connections = self._printerConnectionManager.getAvailableConnections()
+			menu.connectionMap = {}
+			for connection in connections:
+				i = menu.Append(-1, _("Print with %s") % (connection.getName()))
+				menu.connectionMap[i.GetId()] = connection
+				self.Bind(wx.EVT_MENU, lambda e: self._openPrintWindowForConnection(e.GetEventObject().connectionMap[e.GetId()]), i)
 			self.Bind(wx.EVT_MENU, lambda e: self.showSaveGCode(), menu.Append(-1, _("Save GCode...")))
 			self.Bind(wx.EVT_MENU, lambda e: self._showSliceLog(), menu.Append(-1, _("Slice engine log...")))
 			self.PopupMenu(menu)
 			menu.Destroy()
+
+	def _openPrintWindowForConnection(self, connection):
+		print '_openPrintWindowForConnection', connection.getName()
+		if connection.window is None or not connection.window:
+			connection.window = printWindow2.printWindow(connection)
+		connection.window.Show()
+		connection.window.Raise()
+		if not connection.loadFile(self._gcodeFilename):
+			if connection.isPrinting():
+				self.notification.message("Cannot start print, because other print still running.")
+			else:
+				self.notification.message("Failed to start print...")
 
 	def showPrintWindow(self):
 		if self._gcodeFilename is None:
@@ -907,16 +926,16 @@ class SceneView(openglGui.glGuiPanel):
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
 	def OnPaint(self,e):
-		connectionEntry = self._printerConnectionManager.getAvailableConnection()
+		connectionGroup = self._printerConnectionManager.getAvailableGroup()
 		if machineCom.machineIsConnected():
 			self.printButton._imageID = 6
 			self.printButton._tooltip = _("Print")
-		elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionEntry is None or connectionEntry.priority < 0):
+		elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 			self.printButton._imageID = 2
 			self.printButton._tooltip = _("Toolpath to SD")
-		elif connectionEntry is not None:
-			self.printButton._imageID = connectionEntry.icon
-			self.printButton._tooltip = _("Print with %s") % (connectionEntry.name)
+		elif connectionGroup is not None:
+			self.printButton._imageID = connectionGroup.getIconID()
+			self.printButton._tooltip = _("Print with %s") % (connectionGroup.getName())
 		else:
 			self.printButton._imageID = 3
 			self.printButton._tooltip = _("Save toolpath")
