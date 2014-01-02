@@ -1262,20 +1262,21 @@ void main(void)
 						glVertex3f(p[0], p[1], 0)
 					glEnd()
 					glPopMatrix()
-				glPushMatrix()
-				glColor4f(0,0,0,0.06)
-				glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0)
-				glBegin(GL_TRIANGLE_FAN)
-				for p in self._selectedObj._printAreaHull[::-1]:
-					glVertex3f(p[0], p[1], 0)
-				glEnd()
-				glBegin(GL_TRIANGLE_FAN)
-				for p in self._selectedObj._headAreaMinHull[::-1]:
-					glVertex3f(p[0], p[1], 0)
-				glEnd()
+				if self._scene.isOneAtATime():
+					glPushMatrix()
+					glColor4f(0,0,0,0.06)
+					glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0)
+					glBegin(GL_TRIANGLE_FAN)
+					for p in self._selectedObj._printAreaHull[::-1]:
+						glVertex3f(p[0], p[1], 0)
+					glEnd()
+					glBegin(GL_TRIANGLE_FAN)
+					for p in self._selectedObj._headAreaMinHull[::-1]:
+						glVertex3f(p[0], p[1], 0)
+					glEnd()
+					glPopMatrix()
 				glDepthMask(True)
 				glDisable(GL_CULL_FACE)
-				glPopMatrix()
 
 			#Draw the outline of the selected object, on top of everything else except the GUI.
 			if self._selectedObj is not None and self._selectedObj._loadAnim is None:

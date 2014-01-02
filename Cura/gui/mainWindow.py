@@ -122,6 +122,17 @@ class mainWindow(wx.Frame):
 
 		i = toolsMenu.Append(-1, _("Copy profile to clipboard"))
 		self.Bind(wx.EVT_MENU, self.onCopyProfileClipboard,i)
+
+		toolsMenu.AppendSeparator()
+		self.allAtOnceItem = toolsMenu.Append(-1, _("Print all at once"), kind=wx.ITEM_RADIO)
+		self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.allAtOnceItem)
+		self.oneAtATime = toolsMenu.Append(-1, _("Print one at a time"), kind=wx.ITEM_RADIO)
+		self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.oneAtATime)
+		if profile.getPreference('oneAtATime') == 'True':
+			self.oneAtATime.Check(True)
+		else:
+			self.allAtOnceItem.Check(True)
+
 		self.menubar.Append(toolsMenu, _("Tools"))
 
 		#Machine menu for machine configuration/tooling
@@ -309,6 +320,12 @@ class mainWindow(wx.Frame):
 			self.headOffsetWizardMenuItem.Enable(False)
 		if int(profile.getMachineSetting('extruder_amount')) < 2:
 			self.headOffsetWizardMenuItem.Enable(False)
+		self.scene.updateProfileToControls()
+
+	def onOneAtATimeSwitch(self, e):
+		profile.putPreference('oneAtATime', self.oneAtATime.IsChecked())
+		if self.oneAtATime.IsChecked() and profile.getMachineSettingFloat('extruder_head_size_height') < 1:
+			wx.MessageBox(_('For "One at a time" printing, you need to have entered the correct head size and gantry height in the machine settings'), _('One at a time warning'), wx.OK | wx.ICON_WARNING)
 		self.scene.updateProfileToControls()
 
 	def OnPreferences(self, e):

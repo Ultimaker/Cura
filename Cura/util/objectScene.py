@@ -137,7 +137,10 @@ class Scene(object):
 		self._headSizeOffsets[0] = min(xMin, xMax)
 		self._headSizeOffsets[1] = min(yMin, yMax)
 		self._gantryHeight = gantryHeight
-		self._oneAtATime = self._gantryHeight > 0
+		self._oneAtATime = self._gantryHeight > 0 and profile.getPreference('oneAtATime') == 'True'
+		for obj in self._objectList:
+			if obj.getSize()[2] > self._gantryHeight:
+				self._oneAtATime = False
 
 		headArea = numpy.array([[-xMin,-yMin],[ xMax,-yMin],[ xMax, yMax],[-xMin, yMax]], numpy.float32)
 
@@ -146,6 +149,9 @@ class Scene(object):
 				obj.setHeadArea(headArea, self._headSizeOffsets)
 		else:
 			obj.setHeadArea(headArea, self._headSizeOffsets)
+
+	def isOneAtATime(self):
+		return self._oneAtATime
 
 	def setExtruderOffset(self, extruderNr, offsetX, offsetY):
 		self._extruderOffset[extruderNr] = numpy.array([offsetX, offsetY], numpy.float32)

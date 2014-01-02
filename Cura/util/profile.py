@@ -330,6 +330,7 @@ G92 E0
 """, str, 'alteration', 'alteration')
 
 setting('startMode', 'Simple', ['Simple', 'Normal'], 'preference', 'hidden')
+setting('oneAtATime', 'True', bool, 'preference', 'hidden')
 setting('lastFile', os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'example', 'UltimakerRobot_support.stl')), str, 'preference', 'hidden')
 setting('save_profile', 'False', bool, 'preference', 'hidden').setLabel(_("Save profile on slice"), _("When slicing save the profile as [stl_file]_profile.ini next to the model."))
 setting('filament_cost_kg', '0', float, 'preference', 'hidden').setLabel(_("Cost (price/kg)"), _("Cost of your filament per kg, to estimate the cost of the final print."))
