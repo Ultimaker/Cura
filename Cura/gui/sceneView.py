@@ -399,7 +399,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._selectedObj is None:
 			return
 		self._selectedObj.resetRotation()
-		self._scene.pushFree()
+		self._scene.pushFree(self._selectedObj)
 		self._selectObject(self._selectedObj)
 		self.sceneUpdated()
 
@@ -407,7 +407,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._selectedObj is None:
 			return
 		self._selectedObj.layFlat()
-		self._scene.pushFree()
+		self._scene.pushFree(self._selectedObj)
 		self._selectObject(self._selectedObj)
 		self.sceneUpdated()
 
@@ -424,19 +424,19 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		machine = profile.getMachineSetting('machine_type')
 		self._selectedObj.setPosition(numpy.array([0.0, 0.0]))
-		self._scene.pushFree()
+		self._scene.pushFree(self._selectedObj)
 		#self.sceneUpdated()
 		if machine == "ultimaker2":
 			#This is bad and Jaime should feel bad!
 			self._selectedObj.setPosition(numpy.array([0.0,-10.0]))
 			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
 			self._selectedObj.setPosition(numpy.array([0.0,0.0]))
-			self._scene.pushFree()
+			self._scene.pushFree(self._selectedObj)
 		else:
 			self._selectedObj.setPosition(numpy.array([0.0, 0.0]))
-			self._scene.pushFree()
+			self._scene.pushFree(self._selectedObj)
 			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
-		self._scene.pushFree()
+		self._scene.pushFree(self._selectedObj)
 		self._selectObject(self._selectedObj)
 		self.updateProfileToControls()
 		self.sceneUpdated()
@@ -456,7 +456,7 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		self._selectedObj.setScale(value, axis, self.scaleUniform.getValue())
 		self.updateProfileToControls()
-		self._scene.pushFree()
+		self._scene.pushFree(self._selectedObj)
 		self._selectObject(self._selectedObj)
 		self.sceneUpdated()
 
@@ -469,7 +469,7 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		self._selectedObj.setSize(value, axis, self.scaleUniform.getValue())
 		self.updateProfileToControls()
-		self._scene.pushFree()
+		self._scene.pushFree(self._selectedObj)
 		self._selectObject(self._selectedObj)
 		self.sceneUpdated()
 
@@ -519,7 +519,7 @@ class SceneView(openglGui.glGuiPanel):
 		if self._focusObj is None:
 			return
 		self._focusObj.setPosition(numpy.array([0.0, 0.0]))
-		self._scene.pushFree()
+		self._scene.pushFree(self._selectedObj)
 		newViewPos = numpy.array([self._focusObj.getPosition()[0], self._focusObj.getPosition()[1], self._focusObj.getSize()[2] / 2])
 		self._animView = openglGui.animation(self, self._viewTarget.copy(), newViewPos, 0.5)
 		self.sceneUpdated()
@@ -811,12 +811,12 @@ class SceneView(openglGui.glGuiPanel):
 						self.PopupMenu(menu)
 					menu.Destroy()
 		elif self._mouseState == 'dragObject' and self._selectedObj is not None:
-			self._scene.pushFree()
+			self._scene.pushFree(self._selectedObj)
 			self.sceneUpdated()
 		elif self._mouseState == 'tool':
 			if self.tempMatrix is not None and self._selectedObj is not None:
 				self._selectedObj.applyMatrix(self.tempMatrix)
-				self._scene.pushFree()
+				self._scene.pushFree(self._selectedObj)
 				self._selectObject(self._selectedObj)
 			self.tempMatrix = None
 			self.tool.OnDragEnd()
