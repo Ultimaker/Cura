@@ -15,8 +15,8 @@ class DXF(drawing.Drawing):
 		self._lastLine = None
 		self._polyLine = None
 
-		entityType = 'UNKNOWN'
-		sectionName = 'UNKNOWN'
+		entityType = 'NONE'
+		sectionName = 'NONE'
 		activeObject = None
 		f = open(filename, "r")
 		while True:
@@ -26,15 +26,22 @@ class DXF(drawing.Drawing):
 			groupCode = int(groupCode)
 			value = f.readline().strip()
 			if groupCode == 0:
-				if sectionName == 'ENTITIES':
+				if entityType == 'SECTION':
+					sectionName = activeObject[2][0]
+				elif entityType == 'ENDSEC':
+					sectionName = 'NONE'
+				elif sectionName == 'ENTITIES':
 					self._checkForNewPath(entityType, activeObject)
+				elif activeObject is not None:
+					pass
+					#print sectionName, entityType, activeObject
 				entityType = value
 				activeObject = {}
-			elif entityType == 'SECTION':
-				if groupCode == 2:
-					sectionName = value
 			else:
-				activeObject[groupCode] = value
+				if groupCode in activeObject:
+					activeObject[groupCode].append(value)
+				else:
+					activeObject[groupCode] = [value]
 		if sectionName == 'ENTITIES':
 			self._checkForNewPath(entityType, activeObject)
 		f.close()
@@ -43,22 +50,34 @@ class DXF(drawing.Drawing):
 
 	def _checkForNewPath(self, type, obj):
 		if type == 'LINE':
-			if self._lastLine is not None and self._lastLinePoint == complex(float(obj[10]), float(obj[20])):
-				self._lastLine.addLineTo(float(obj[11]), float(obj[21]))
+			if self._lastLine is not None and self._lastLinePoint == complex(float(obj[10][0]), float(obj[20][0])):
+				self._lastLine.addLineTo(float(obj[11][0]), float(obj[21][0]))
 			else:
-				p = self.addPath(float(obj[10]), float(obj[20]))
-				p.addLineTo(float(obj[11]), float(obj[21]))
+				p = self.addPath(float(obj[10][0]), float(obj[20][0]))
+				p.addLineTo(float(obj[11][0]), float(obj[21][0]))
 				self._lastLine = p
-			self._lastLinePoint = complex(float(obj[11]), float(obj[21]))
+			self._lastLinePoint = complex(float(obj[11][0]), float(obj[21][0]))
 		elif type == 'POLYLINE':
 			self._polyLine = None
 		elif type == 'VERTEX':
 			if self._polyLine is None:
-				self._polyLine = self.addPath(float(obj[10]), float(obj[20]))
+				self._polyLine = self.addPath(float(obj[10][0]), float(obj[20][0]))
 			else:
-				self._polyLine.addLineTo(float(obj[10]), float(obj[20]))
+				self._polyLine.addLineTo(float(obj[10][0]), float(obj[20][0]))
+		elif type == 'LWPOLYLINE':
+			p = self.addPath(float(obj[10][0]), float(obj[20][0]))
+			for n in xrange(1, len(obj[10])):
+				p.addLineTo(float(obj[10][n]), float(obj[20][n]))
+			self._lastLine = p
+		elif type == 'SPLINE':
+			p = self.addPath(float(obj[10][0]), float(obj[20][0]))
+			for n in xrange(1, len(obj[10])):
+				p.addLineTo(float(obj[10][n]), float(obj[20][n]))
+			self._lastLine = p
 		else:
-			print type
+			print 'type=%s' % type
+			for k in obj.keys():
+				print k, obj[k]
 
 if __name__ == '__main__':
 	for n in xrange(1, len(sys.argv)):

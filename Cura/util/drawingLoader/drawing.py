@@ -191,6 +191,21 @@ class Drawing(object):
 		return p
 
 	def _postProcessPaths(self):
+		for path1 in self.paths:
+			if not path1.isClosed() and len(path1._nodes) > 0:
+				for path2 in self.paths:
+					if path1 != path2 and not path2.isClosed():
+						if abs(path1._nodes[-1].position - path2._startPoint) < 0.001:
+							path1._nodes += path2._nodes
+							path2._nodes = []
+
+		cleanList = []
+		for path in self.paths:
+			if len(path._nodes) < 1:
+				cleanList.append(path)
+		for path in cleanList:
+			self.paths.remove(path)
+
 		for path in self.paths:
 			if not path.isClosed():
 				if abs(path._nodes[-1].position - path._startPoint) < 0.001:
