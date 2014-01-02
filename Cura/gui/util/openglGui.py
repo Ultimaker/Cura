@@ -1030,7 +1030,7 @@ class glSlider(glGuiControl):
 		else:
 			valueNormalized = 0
 		glTranslate(0.0,scrollLength/2,0)
-		if self._focus:
+		if True:  # self._focus:
 			glColor4ub(0,0,0,255)
 			glPushMatrix()
 			glTranslate(-w/2,opengl.glGetStringSize(str(self._minValue))[1]/2,0)
