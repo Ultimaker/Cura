@@ -25,6 +25,9 @@ class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 	def getAvailableConnections(self):
 		return filter(lambda c: c.isAvailable(), self._connectionMap.values())
 
+	def remove(self, host):
+		del self._connectionMap[host]
+
 	def getIconID(self):
 		return 27
 
@@ -224,12 +227,13 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 				# The Doodle3D box could also be offline, if we reach a high enough errorCount then assume the box is gone.
 				self._errorCount += 1
 				if self._errorCount > 10:
-					self._host = None
 					if self._isAvailable:
 						self._printing = False
 						self._isAvailable = False
 						self._doCallback()
 					self._sleep(15)
+					self._group.remove(self._host)
+					return
 				else:
 					self._sleep(3)
 				continue
