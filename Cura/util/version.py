@@ -53,7 +53,8 @@ def getVersion(getGitVersion = True):
 
 def isDevVersion():
 	gitPath = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../../.git"))
-	return os.path.exists(gitPath)
+	hgPath  = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../../.hg"))
+	return os.path.exists(gitPath) or os.path.exists(hgPath)
 
 def checkForNewerVersion():
 	if isDevVersion():

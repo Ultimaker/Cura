@@ -292,6 +292,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._usbPrintMonitor.loadFile(self._gcodeFilename, self._slicer.getID())
 		if self._gcodeFilename == self._slicer.getGCodeFilename():
 			self._slicer.submitSliceInfoOnline()
+		self.viewSelection.setValue(4)
 
 	def showSaveGCode(self):
 		if len(self._scene._objectList) < 1:
@@ -1227,16 +1228,28 @@ void main(void)
 		self._drawMachine()
 
 		if self._usbPrintMonitor.getState() == 'PRINTING' and self._usbPrintMonitor.getID() == self._slicer.getID():
-			glEnable(GL_BLEND)
 			z = self._usbPrintMonitor.getZ()
-			size = self._machineSize
-			glColor4ub(255,255,0,128)
-			glBegin(GL_QUADS)
-			glVertex3f(-size[0]/2,-size[1]/2, z)
-			glVertex3f( size[0]/2,-size[1]/2, z)
-			glVertex3f( size[0]/2, size[1]/2, z)
-			glVertex3f(-size[0]/2, size[1]/2, z)
-			glEnd()
+			if self.viewMode == 'gcode':
+				layer_height = profile.getProfileSettingFloat('layer_height')
+				layer1_height = profile.getProfileSettingFloat('bottom_thickness')
+				if layer_height > 0:
+					if layer1_height > 0:
+						layer = int((z - layer1_height) / layer_height) + 1
+					else:
+						layer = int(z / layer_height)
+				else:
+					layer = 1
+				self.layerSelect.setValue(layer)
+			else:
+				size = self._machineSize
+				glEnable(GL_BLEND)
+				glColor4ub(255,255,0,128)
+				glBegin(GL_QUADS)
+				glVertex3f(-size[0]/2,-size[1]/2, z)
+				glVertex3f( size[0]/2,-size[1]/2, z)
+				glVertex3f( size[0]/2, size[1]/2, z)
+				glVertex3f(-size[0]/2, size[1]/2, z)
+				glEnd()
 
 		if self.viewMode == 'gcode':
 			if self._gcodeLoadThread is not None and self._gcodeLoadThread.isAlive():

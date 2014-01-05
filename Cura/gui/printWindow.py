@@ -93,6 +93,9 @@ class printProcessMonitor():
 def startPrintInterface(filename):
 	#startPrintInterface is called from the main script when we want the printer interface to run in a separate process.
 	# It needs to run in a separate process, as any running python code blocks the GCode sender python code (http://wiki.python.org/moin/GlobalInterpreterLock).
+
+	sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+
 	app = wx.App(False)
 	resources.setupLocalization(profile.getPreference('language'))
 	printWindowHandle = printWindow()

@@ -1,0 +1,7 @@
+syntax: glob
+*.pyc
+*.deb
+CuraEngine
+Power
+scripts/linux/debian
+scripts/darwin/dist/Cura.app
