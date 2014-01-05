@@ -400,7 +400,7 @@ class MachineCom(object):
 				else:
 					self._testingBaudrate = False
 			elif self._state == self.STATE_CONNECTING:
-				if line == '':
+				if line == '' or 'wait' in line:        # wait needed for Repetier (kind of watchdog)
 					self._sendCommand("M105")
 				elif 'ok' in line:
 					self._changeState(self.STATE_OPERATIONAL)
