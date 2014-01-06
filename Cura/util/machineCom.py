@@ -171,6 +171,7 @@ class MachineCom(object):
 		self._callback = callbackObject
 		self._state = self.STATE_NONE
 		self._serial = None
+		self._serialDetectList = []
 		self._baudrateDetectList = baudrateList()
 		self._baudrateDetectRetry = 0
 		self._extruderCount = int(profile.getMachineSetting('extruder_amount'))
@@ -284,8 +285,8 @@ class MachineCom(object):
 		#Open the serial port.
 		if self._port == 'AUTO':
 			self._changeState(self.STATE_DETECT_SERIAL)
-			programmer = stk500v2.Stk500v2()
 			self._log("Serial port list: %s" % (str(serialList(True))))
+			programmer = stk500v2.Stk500v2()
 			for p in serialList(True):
 				try:
 					self._log("Connecting to: %s" % (p))
@@ -299,6 +300,8 @@ class MachineCom(object):
 				except:
 					self._log("Unexpected error while connecting to serial port: %s %s" % (p, getExceptionString()))
 				programmer.close()
+			if self._serial is None:
+				self._serialDetectList = serialList(True)
 		elif self._port == 'VIRTUAL':
 			self._changeState(self.STATE_OPEN_SERIAL)
 			self._serial = VirtualPrinter()
@@ -313,16 +316,16 @@ class MachineCom(object):
 			except:
 				self._log("Unexpected error while connecting to serial port: %s %s" % (self._port, getExceptionString()))
 		if self._serial is None:
-			self._log("Failed to open serial port (%s)" % (self._port))
-			self._errorValue = 'Failed to autodetect serial port.'
-			self._changeState(self.STATE_ERROR)
-			return
-		self._log("Connected to: %s, starting monitor" % (self._serial))
-		if self._baudrate == 0:
-			self._changeState(self.STATE_DETECT_BAUDRATE)
+			baudrate = self._baudrate
+			if baudrate == 0:
+				baudrate = self._baudrateDetectList.pop(0)
+			self._serial = serial.Serial(self._serialDetectList.pop(0), baudrate, timeout=0.1, writeTimeout=10000)
 		else:
-			self._changeState(self.STATE_CONNECTING)
-
+			self._log("Connected to: %s, starting monitor" % (self._serial))
+			if self._baudrate == 0:
+				self._changeState(self.STATE_DETECT_BAUDRATE)
+			else:
+				self._changeState(self.STATE_CONNECTING)
 		#Start monitoring the serial port.
 		if self._state == self.STATE_CONNECTING:
 			timeout = time.time() + 15
@@ -349,9 +352,15 @@ class MachineCom(object):
 						self._errorValue = line[6:]
 						self._changeState(self.STATE_ERROR)
 			if ' T:' in line or line.startswith('T:'):
-				self._temp[self._temperatureRequestExtruder] = float(re.search("[0-9\.]*", line.split('T:')[1]).group(0))
-				if ' B:' in line:
-					self._bedTemp = float(re.search("[0-9\.]*", line.split(' B:')[1]).group(0))
+				try:
+					self._temp[self._temperatureRequestExtruder] = float(re.search("T: *([0-9\.]*)", line).group(1))
+				except:
+					pass
+				if 'B:' in line:
+					try:
+						self._bedTemp = float(re.search("B: *([0-9\.]*)", line).group(1))
+					except:
+						pass
 				self._callback.mcTempUpdate(self._temp, self._bedTemp, self._targetTemp, self._bedTargetTemp)
 				#If we are waiting for an M109 or M190 then measure the time we lost during heatup, so we can remove that time from our printing time estimate.
 				if not 'ok' in line and self._heatupWaitStartTime != 0:
@@ -361,7 +370,7 @@ class MachineCom(object):
 			elif line.strip() != '' and line.strip() != 'ok' and not line.startswith('Resend:') and not line.startswith('Error:checksum mismatch') and not line.startswith('Error:Line Number is not Last Line Number+1') and line != 'echo:Unknown command:""\n' and self.isOperational():
 				self._callback.mcMessage(line)
 
-			if self._state == self.STATE_DETECT_BAUDRATE:
+			if self._state == self.STATE_DETECT_BAUDRATE or self._state == self.STATE_DETECT_SERIAL:
 				if line == '' or time.time() > timeout:
 					if len(self._baudrateDetectList) < 1:
 						self.close()
@@ -374,7 +383,20 @@ class MachineCom(object):
 						self._sendCommand("M105")
 						self._testingBaudrate = True
 					else:
-						baudrate = self._baudrateDetectList.pop(0)
+						if self._state == self.STATE_DETECT_SERIAL:
+							if len(self._serialDetectList) == 0:
+								if len(self._baudrateDetectList) == 0:
+									self._log("Tried all serial ports and baudrates, but still not printer found that responds to M105.")
+									self._errorValue = 'Failed to autodetect serial port.'
+									self._changeState(self.STATE_ERROR)
+									return
+								else:
+									self._serialDetectList = serialList(True)
+									baudrate = self._baudrateDetectList.pop(0)
+							self._serial.close()
+							self._serial = serial.Serial(self._serialDetectList.pop(0), baudrate, timeout=0.5, writeTimeout=10000)
+						else:
+							baudrate = self._baudrateDetectList.pop(0)
 						try:
 							self._setBaudrate(baudrate)
 							self._serial.timeout = 0.5
@@ -400,7 +422,7 @@ class MachineCom(object):
 				else:
 					self._testingBaudrate = False
 			elif self._state == self.STATE_CONNECTING:
-				if line == '' or 'wait' in line:        # wait needed for Repetier (kind of watchdog)
+				if line == '' or 'wait' in line:        # 'wait' needed for Repetier (kind of watchdog)
 					self._sendCommand("M105")
 				elif 'ok' in line:
 					self._changeState(self.STATE_OPERATIONAL)

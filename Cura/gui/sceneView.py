@@ -292,7 +292,6 @@ class SceneView(openglGui.glGuiPanel):
 		self._usbPrintMonitor.loadFile(self._gcodeFilename, self._slicer.getID())
 		if self._gcodeFilename == self._slicer.getGCodeFilename():
 			self._slicer.submitSliceInfoOnline()
-		self.viewSelection.setValue(4)
 
 	def showSaveGCode(self):
 		if len(self._scene._objectList) < 1:
