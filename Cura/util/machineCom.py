@@ -312,7 +312,7 @@ class MachineCom(object):
 					self._serial = serial.Serial(str(self._port), self._baudrate, timeout=2, writeTimeout=10000)
 			except:
 				self._log("Unexpected error while connecting to serial port: %s %s" % (self._port, getExceptionString()))
-		if self._serial == None:
+		if self._serial is None:
 			self._log("Failed to open serial port (%s)" % (self._port))
 			self._errorValue = 'Failed to autodetect serial port.'
 			self._changeState(self.STATE_ERROR)
@@ -334,7 +334,8 @@ class MachineCom(object):
 			if line is None:
 				break
 			
-			#No matter the state, if we see an error, goto the error state and store the error for reference.
+			#No matter the state, if we see an fatal error, goto the error state and store the error for reference.
+			# Only goto error on known fatal errors.
 			if line.startswith('Error:'):
 				#Oh YEAH, consistency.
 				# Marlin reports an MIN/MAX temp error as "Error:x\n: Extruder switched off. MAXTEMP triggered !\n"
@@ -343,11 +344,10 @@ class MachineCom(object):
 				if re.match('Error:[0-9]\n', line):
 					line = line.rstrip() + self._readline()
 				#Skip the communication errors, as those get corrected.
-				if 'checksum mismatch' in line or 'Line Number is not Last Line Number' in line or 'No Line Number with checksum' in line or 'No Checksum with line number' in line:
-					pass
-				elif not self.isError():
-					self._errorValue = line[6:]
-					self._changeState(self.STATE_ERROR)
+				if 'Extruder switched off' in line or 'Temperature heated bed switched off' in line or 'Something is wrong, please turn off the printer.' in line:
+					if not self.isError():
+						self._errorValue = line[6:]
+						self._changeState(self.STATE_ERROR)
 			if ' T:' in line or line.startswith('T:'):
 				self._temp[self._temperatureRequestExtruder] = float(re.search("[0-9\.]*", line.split('T:')[1]).group(0))
 				if ' B:' in line:
