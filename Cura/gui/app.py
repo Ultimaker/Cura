@@ -23,7 +23,7 @@ class CuraApp(wx.App):
 		self.splash = None
 		self.loadFiles = files
 
-		if sys.platform.startswith('win') and len(files) > 0:
+		if sys.platform.startswith('win'):
 			#Check for an already running instance, if another instance is running load files in there
 			from Cura.util import version
 			from ctypes import windll
@@ -31,14 +31,18 @@ class CuraApp(wx.App):
 			import socket
 			import threading
 
-			other_hwnd = windll.user32.FindWindowA(None, ctypes.c_char_p('Cura - ' + version.getVersion()))
 			portNr = 0xCA00 + sum(map(ord, version.getVersion(False)))
-			if other_hwnd != 0:
-				sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-				sock.sendto('\0'.join(files), ("127.0.0.1", portNr))
+			if len(files) > 0:
+				try:
+					other_hwnd = windll.user32.FindWindowA(None, ctypes.c_char_p('Cura - ' + version.getVersion()))
+					if other_hwnd != 0:
+						sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+						sock.sendto('\0'.join(files), ("127.0.0.1", portNr))
 
-				windll.user32.SetForegroundWindow(other_hwnd)
-				return
+						windll.user32.SetForegroundWindow(other_hwnd)
+						return
+				except:
+					pass
 
 			socketListener = threading.Thread(target=self.Win32SocketListener, args=(portNr,))
 			socketListener.daemon = True

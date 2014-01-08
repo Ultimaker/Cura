@@ -680,7 +680,7 @@ class SceneView(openglGui.glGuiPanel):
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
 				self.QueueRefresh()
-		if self.viewMode == 'gcode':
+		if self.viewMode == 'gcode' and (wx.GetKeyState(wx.WXK_SHIFT) or wx.GetKeyState(wx.WXK_CONTROL)):
 			if keyCode == wx.WXK_UP:
 				self.layerSelect.setValue(self.layerSelect.getValue() + 1)
 				self.QueueRefresh()

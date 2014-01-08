@@ -26,12 +26,14 @@ class newVersionDialog(wx.Dialog):
 		s.Add(wx.StaticText(p, -1, '(This dialog is only shown once)'))
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 		s.Add(wx.StaticText(p, -1, 'New in this version:'))
-		s.Add(wx.StaticText(p, -1, '* Added an expert parameter for the wipe tower size, and made brim go around the wipe tower'))
-		s.Add(wx.StaticText(p, -1, '* Added experimental support for printing with the Doodle3D WiFi box'))
-		s.Add(wx.StaticText(p, -1, '* Updated object boundaries for multi-object prints, allows for tighter fitting of objects on the build platform'))
-		s.Add(wx.StaticText(p, -1, '* Updated time-estimate to greatly improve accuracy of the estimate.'))
-		s.Add(wx.StaticText(p, -1, '* Fixed problem with retractions not happening when they should.'))
-		s.Add(wx.StaticText(p, -1, '* Added keyboard control for the 3D window to look around with cursor keys.'))
+		s.Add(wx.StaticText(p, -1, '* Fixed a rare bug that caused the CuraEngine to crash on some models.'))
+		s.Add(wx.StaticText(p, -1, '* Added support for multiple Doodle3D boxes on the same network.'))
+		s.Add(wx.StaticText(p, -1, '* Made it possible to switch between "all at once" and "one at a time printing"'))
+		s.Add(wx.StaticText(p, -1, '* Improved USB communication stability.'))
+		s.Add(wx.StaticText(p, -1, '* Improved USB auto-detection for none-Ultimaker printers.'))
+		s.Add(wx.StaticText(p, -1, '* Set retraction enabled by default and in the quickprint profiles.'))
+		s.Add(wx.StaticText(p, -1, '* Fixed a bug that caused loading of really small objects to fail.'))
+		s.Add(wx.StaticText(p, -1, '* Made camera keyboard controls accessible in the GCode view, use shift+up/down for layer changes now.'))
 
 		self.hasUltimaker = None
 		self.hasUltimaker2 = None
@@ -40,21 +42,20 @@ class newVersionDialog(wx.Dialog):
 				self.hasUltimaker = n
 			if profile.getMachineSetting('machine_type', n) == 'ultimaker2':
 				self.hasUltimaker2 = n
-		if self.hasUltimaker is not None:
+		if self.hasUltimaker is not None and False:
 			s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker Original:'))
-			s.Add(wx.StaticText(p, -1, '* Fixed bug in acceleration planning causing slow moves on rare occasions.'))
-			s.Add(wx.StaticText(p, -1, '* Updated to new ErikZalm Marlin base, fixing the long standing slower retraction bug.'))
+			s.Add(wx.StaticText(p, -1, '* .'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimakerFirmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
 		if self.hasUltimaker2 is not None:
 			s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker2:'))
-			s.Add(wx.StaticText(p, -1, '* Fixed bug in acceleration planning causing slow moves on rare occasions.'))
-			s.Add(wx.StaticText(p, -1, '* Fixed the problem where aborting a print did not always home the head.'))
-			s.Add(wx.StaticText(p, -1, '* Disabled normal LCD menu curing USB printing.'))
-			s.Add(wx.StaticText(p, -1, '* Disable stepper drivers after print is finished or aborted, so you can manually move the head.'))
+			s.Add(wx.StaticText(p, -1, '* Fixed the bug where aborting a print caused massive retraction.'))
+			s.Add(wx.StaticText(p, -1, '* Fixed a bug where going into move-material when the printer was still moving caused a bed-crash.'))
+			s.Add(wx.StaticText(p, -1, '* Added bed temperature when cooling down the printer.'))
+			s.Add(wx.StaticText(p, -1, '* Allow abort if bed-leveling is selected.'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimaker2Firmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
