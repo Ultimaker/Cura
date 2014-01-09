@@ -362,6 +362,7 @@ setting('machine_width', '205', float, 'machine', 'hidden').setLabel(_("Maximum 
 setting('machine_depth', '205', float, 'machine', 'hidden').setLabel(_("Maximum depth (mm)"), _("Size of the machine in mm"))
 setting('machine_height', '200', float, 'machine', 'hidden').setLabel(_("Maximum height (mm)"), _("Size of the machine in mm"))
 setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden').setLabel(_("Machine center 0,0"), _("Machines firmware defines the center of the bed as 0,0 instead of the front left corner."))
+setting('machine_shape', 'Square', ['Square','Circular'], 'machine', 'hidden').setLabel(_("Build area shape"), _("The shape of machine build area."))
 setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
 setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel(_("Heated bed"), _("If you have an heated bed, this enabled heated bed settings (requires restart)"))
 setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'UltiGCode', 'MakerBot'], 'machine', 'hidden').setLabel(_("GCode Flavor"), _("Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer.\nMakerBot GCode has a few changes in the way GCode is generated, but still requires MakerWare to generate to X3G."))
@@ -880,14 +881,15 @@ def getMachineCenterCoords():
 def getMachineSizePolygons():
 	size = numpy.array([getMachineSettingFloat('machine_width'), getMachineSettingFloat('machine_depth'), getMachineSettingFloat('machine_height')], numpy.float32)
 	ret = []
-	ret.append(numpy.array([[-size[0]/2,-size[1]/2],[ size[0]/2,-size[1]/2],[ size[0]/2, size[1]/2], [-size[0]/2, size[1]/2]], numpy.float32))
-
-	# Circle platform for delta printers...
-	# circle = []
-	# steps = 16
-	# for n in xrange(0, steps):
-	# 	circle.append([math.cos(float(n)/steps*2*math.pi) * size[0]/2, math.sin(float(n)/steps*2*math.pi) * size[0]/2])
-	# ret.append(numpy.array(circle, numpy.float32))
+	if getMachineSetting('machine_shape') == 'Circular':
+		# Circle platform for delta printers...
+		circle = []
+		steps = 32
+		for n in xrange(0, steps):
+			circle.append([math.cos(float(n)/steps*2*math.pi) * size[0]/2, math.sin(float(n)/steps*2*math.pi) * size[1]/2])
+		ret.append(numpy.array(circle, numpy.float32))
+	else:
+		ret.append(numpy.array([[-size[0]/2,-size[1]/2],[size[0]/2,-size[1]/2],[size[0]/2, size[1]/2], [-size[0]/2, size[1]/2]], numpy.float32))
 
 	if getMachineSetting('machine_type') == 'ultimaker2':
 		#UM2 no-go zones

@@ -1427,12 +1427,17 @@ void main(void)
 
 		polys = profile.getMachineSizePolygons()
 		height = profile.getMachineSettingFloat('machine_height')
+		circular = profile.getMachineSetting('machine_shape') == 'Circular'
 		glBegin(GL_QUADS)
 		for n in xrange(0, len(polys[0])):
-			if n % 2 == 0:
-				glColor4ub(5, 171, 231, 96)
+			if not circular:
+				if n % 2 == 0:
+					glColor4ub(5, 171, 231, 96)
+				else:
+					glColor4ub(5, 171, 231, 64)
 			else:
-				glColor4ub(5, 171, 231, 64)
+				glColor4ub(5, 171, 231, 96)
+
 			glVertex3f(polys[0][n][0], polys[0][n][1], height)
 			glVertex3f(polys[0][n][0], polys[0][n][1], 0)
 			glVertex3f(polys[0][n-1][0], polys[0][n-1][1], 0)
