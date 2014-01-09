@@ -1,8 +1,8 @@
 Package: cura
-Version: 13.06.3-1
+Version: 14.01
 Section: misc
 Priority: optional
-Architecture: all
+Architecture: i386
 Essential: no
 Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy
 Maintainer: Daid <daid303@gmail.com>
