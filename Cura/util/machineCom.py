@@ -285,11 +285,10 @@ class MachineCom(object):
 		#Open the serial port.
 		if self._port == 'AUTO':
 			self._changeState(self.STATE_DETECT_SERIAL)
-			self._log("Serial port list: %s" % (str(serialList(True))))
 			programmer = stk500v2.Stk500v2()
 			for p in serialList(True):
 				try:
-					self._log("Connecting to: %s" % (p))
+					self._log("Connecting to: %s (programmer)" % (p))
 					programmer.connect(p)
 					self._serial = programmer.leaveISP()
 					profile.putMachineSetting('serial_port_auto', p)
@@ -301,6 +300,7 @@ class MachineCom(object):
 					self._log("Unexpected error while connecting to serial port: %s %s" % (p, getExceptionString()))
 				programmer.close()
 			if self._serial is None:
+				self._log("Serial port list: %s" % (str(serialList(True))))
 				self._serialDetectList = serialList(True)
 		elif self._port == 'VIRTUAL':
 			self._changeState(self.STATE_OPEN_SERIAL)
@@ -308,10 +308,11 @@ class MachineCom(object):
 		else:
 			self._changeState(self.STATE_OPEN_SERIAL)
 			try:
-				self._log("Connecting to: %s" % (self._port))
 				if self._baudrate == 0:
+					self._log("Connecting to: %s with baudrate: 115200 (fallback)" % (self._port))
 					self._serial = serial.Serial(str(self._port), 115200, timeout=0.1, writeTimeout=10000)
 				else:
+					self._log("Connecting to: %s with baudrate: %s (configured)" % (self._port, self._baudrate))
 					self._serial = serial.Serial(str(self._port), self._baudrate, timeout=2, writeTimeout=10000)
 			except:
 				self._log("Unexpected error while connecting to serial port: %s %s" % (self._port, getExceptionString()))
@@ -319,13 +320,19 @@ class MachineCom(object):
 			baudrate = self._baudrate
 			if baudrate == 0:
 				baudrate = self._baudrateDetectList.pop(0)
-			self._serial = serial.Serial(self._serialDetectList.pop(0), baudrate, timeout=0.1, writeTimeout=10000)
+			port = self._serialDetectList.pop(0)
+			self._log("Connecting to: %s with baudrate: %s (auto)" % (port, baudrate))
+			try:
+				self._serial = serial.Serial(port, baudrate, timeout=0.1, writeTimeout=10000)
+			except:
+				pass
 		else:
 			self._log("Connected to: %s, starting monitor" % (self._serial))
 			if self._baudrate == 0:
 				self._changeState(self.STATE_DETECT_BAUDRATE)
 			else:
 				self._changeState(self.STATE_CONNECTING)
+
 		#Start monitoring the serial port.
 		if self._state == self.STATE_CONNECTING:
 			timeout = time.time() + 15
