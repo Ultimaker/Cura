@@ -440,22 +440,22 @@ class MachineCom(object):
 				if line == '':
 					if self._extruderCount > 0:
 						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
-						self._sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
+						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
 					else:
-						self._sendCommand("M105")
+						self.sendCommand("M105")
 					tempRequestTimeout = time.time() + 5
 			elif self._state == self.STATE_PRINTING:
-				if line == '' and time.time() > timeout:
-					self._log("Communication timeout during printing, forcing a line")
-					line = 'ok'
 				#Even when printing request the temperature every 5 seconds.
 				if time.time() > tempRequestTimeout:
 					if self._extruderCount > 0:
 						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
-						self._sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
+						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
 					else:
-						self._sendCommand("M105")
+						self.sendCommand("M105")
 					tempRequestTimeout = time.time() + 5
+				if line == '' and time.time() > timeout:
+					self._log("Communication timeout during printing, forcing a line")
+					line = 'ok'
 				if 'ok' in line:
 					timeout = time.time() + 5
 					if not self._commandQueue.empty():
