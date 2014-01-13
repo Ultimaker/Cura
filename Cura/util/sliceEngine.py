@@ -280,7 +280,7 @@ class Slicer(object):
 			'moveSpeed': int(profile.getProfileSettingFloat('travel_speed')),
 			'fanSpeedMin': int(profile.getProfileSettingFloat('fan_speed')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
 			'fanSpeedMax': int(profile.getProfileSettingFloat('fan_speed_max')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
-			'supportAngle': int(-1) if profile.getProfileSetting('support') == 'None' else int(60),
+			'supportAngle': int(-1) if profile.getProfileSetting('support') == 'None' else int(profile.getProfileSettingFloat('support_angle')),
 			'supportEverywhere': int(1) if profile.getProfileSetting('support') == 'Everywhere' else int(0),
 			'supportLineDistance': int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('support_fill_rate')) if profile.getProfileSettingFloat('support_fill_rate') > 0 else -1,
 			'supportXYDistance': int(1000 * profile.getProfileSettingFloat('support_xy_distance')),

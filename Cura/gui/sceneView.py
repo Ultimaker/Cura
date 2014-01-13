@@ -1135,7 +1135,7 @@ void main(void)
 
 			if self.viewMode == 'overhang':
 				self._objectOverhangShader.bind()
-				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(90 - 60)))
+				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(90 - profile.getProfileSettingFloat('support_angle'))))
 			else:
 				self._objectShader.bind()
 			for obj in self._scene.objects():
