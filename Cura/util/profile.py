@@ -963,8 +963,8 @@ def replaceGCodeTags(filename, gcodeInt):
 def replaceGCodeTagsFromSlicer(filename, slicerInt):
 	f = open(filename, 'r+')
 	data = f.read(2048)
-	data = data.replace('#P_TIME#', slicerInt.getPrintTime())
-	data = data.replace('#F_AMNT#', slicerInt.getFilamentAmount())
+	data = data.replace('#P_TIME#', ('%8.2f' % (int(slicerInt._printTimeSeconds)))[-8:])
+	data = data.replace('#F_AMNT#', ('%8.2f' % (slicerInt._filamentMM[0]))[-8:])
 	data = data.replace('#F_WGHT#', ('%8.2f' % (float(slicerInt.getFilamentWeight()) * 1000))[-8:])
 	cost = slicerInt.getFilamentCost()
 	if cost is None:
