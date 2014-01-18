@@ -1,8 +1,10 @@
 syntax: glob
+*.pyc
+*.deb
+*.bak
 *.tar.bz2
 *.tar.gz
 *.7z
-*.pyc
 *.zip
 *.exe
 *.po~
@@ -28,11 +30,9 @@ scripts/darwin/dist/
 scripts/darwin/build/
 scripts/darwin/Cura.dmg.sparseimage
 scripts/win32/dist/
-scripts/linux/debian/usr/
+scripts/linux/debian*/usr/
 log.txt
 output.txt
-*.bak
-*.deb
 .git
 .hgignore
 .hgsubstate
