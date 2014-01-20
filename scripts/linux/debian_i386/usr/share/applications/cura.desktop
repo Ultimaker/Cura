@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Cura
+Comment=Cura
+Icon=/usr/share/cura/Cura/resources/images/c.png
+Exec=/usr/bin/python /usr/share/cura/cura.py
+Path=/usr/share/cura/
+StartupNotify=true
+Terminal=false
+Categories=GNOME;GTK;Utility;
