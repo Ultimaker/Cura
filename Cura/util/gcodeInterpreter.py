@@ -6,16 +6,11 @@ import math
 import os
 import time
 import numpy
+import types
+import cStringIO as StringIO
 
 from Cura.util import profile
 
-#class gcodePath(object):
-#	def __init__(self, newType, pathType, layerThickness, startPoint):
-#		self.type = newType
-#		self.pathType = pathType
-#		self.layerThickness = layerThickness
-#		self.points = [startPoint]
-#		self.extrusion = [0.0]
 def gcodePath(newType, pathType, layerThickness, startPoint):
 	return {'type': newType,
 			'pathType': pathType,
@@ -28,22 +23,23 @@ class gcode(object):
 		self.regMatch = {}
 		self.layerList = None
 		self.extrusionAmount = 0
-		self.totalMoveTimeMinute = 0
 		self.filename = None
 		self.progressCallback = None
 	
-	def load(self, filename):
-		if os.path.isfile(filename):
-			self.filename = filename
-			self._fileSize = os.stat(filename).st_size
-			gcodeFile = open(filename, 'r')
+	def load(self, data):
+		self.filename = None
+		if type(data) in types.StringTypes and os.path.isfile(data):
+			self.filename = data
+			self._fileSize = os.stat(data).st_size
+			gcodeFile = open(data, 'r')
 			self._load(gcodeFile)
 			gcodeFile.close()
-	
-	def loadList(self, l):
-		self.filename = None
-		self._load(l)
-	
+		elif type(data) is list:
+			self._load(data)
+		else:
+			self._fileSize = len(data.getvalue())
+			self._load(StringIO.StringIO(data.getvalue()))
+
 	def calculateWeight(self):
 		#Calculates the weight of the filament in kg
 		radius = float(profile.getProfileSetting('filament_diameter')) / 2
@@ -66,11 +62,8 @@ class gcode(object):
 		pos = [0.0,0.0,0.0]
 		posOffset = [0.0, 0.0, 0.0]
 		currentE = 0.0
-		totalExtrusion = 0.0
-		maxExtrusion = 0.0
 		currentExtruder = 0
 		extrudeAmountMultiply = 1.0
-		totalMoveTimeMinute = 0.0
 		absoluteE = True
 		scale = 1.0
 		posAbs = True
@@ -148,12 +141,6 @@ class gcode(object):
 							pos[1] += y * scale
 						if z is not None:
 							pos[2] += z * scale
-					#if f is not None:
-					#	feedRate = f
-					#if x is not None or y is not None or z is not None:
-					#	diffX = oldPos[0] - pos[0]
-					#	diffY = oldPos[1] - pos[1]
-					#	totalMoveTimeMinute += math.sqrt(diffX * diffX + diffY * diffY) / feedRate
 					moveType = 'move'
 					if e is not None:
 						if absoluteE:
@@ -162,10 +149,7 @@ class gcode(object):
 							moveType = 'extrude'
 						if e < 0.0:
 							moveType = 'retract'
-						totalExtrusion += e
 						currentE += e
-						if totalExtrusion > maxExtrusion:
-							maxExtrusion = totalExtrusion
 					else:
 						e = 0.0
 					if moveType == 'move' and oldPos[2] != pos[2]:
@@ -181,11 +165,7 @@ class gcode(object):
 					currentPath['extrusion'].append(e * extrudeAmountMultiply)
 				elif G == 4:	#Delay
 					S = getCodeFloat(line, 'S')
-					if S is not None:
-						totalMoveTimeMinute += S / 60.0
 					P = getCodeFloat(line, 'P')
-					if P is not None:
-						totalMoveTimeMinute += P / 60.0 / 1000.0
 				elif G == 10:	#Retract
 					currentPath = gcodePath('retract', pathType, layerThickness, currentPath['points'][-1])
 					currentPath['extruder'] = currentExtruder
@@ -290,10 +270,6 @@ class gcode(object):
 		self.layerList.append(currentLayer)
 		if self.progressCallback is not None and self._fileSize > 0:
 			self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize))
-		self.extrusionAmount = maxExtrusion
-		self.totalMoveTimeMinute = totalMoveTimeMinute
-		#print "Extruded a total of: %d mm of filament" % (self.extrusionAmount)
-		#print "Estimated print duration: %.2f minutes" % (self.totalMoveTimeMinute)
 
 def getCodeInt(line, code):
 	n = line.find(code) + 1
@@ -324,6 +300,5 @@ if __name__ == '__main__':
 	for filename in sys.argv[1:]:
 		g = gcode()
 		g.load(filename)
-		print g.totalMoveTimeMinute
 	print time.time() - t
 

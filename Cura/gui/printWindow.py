@@ -602,7 +602,7 @@ class printWindow(wx.Frame):
 					gcodeList.append(line)
 				prevLineType = lineType
 		gcode = gcodeInterpreter.gcode()
-		gcode.loadList(gcodeList)
+		gcode.load(gcodeList)
 		#print "Loaded: %s (%d)" % (filename, len(gcodeList))
 		self.filename = filename
 		self.gcode = gcode

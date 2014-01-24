@@ -12,9 +12,11 @@ import sys
 import urllib
 import urllib2
 import hashlib
+import cStringIO as StringIO
 
 from Cura.util import profile
 from Cura.util import version
+from Cura.util import gcodeInterpreter
 
 def getEngineFilename():
 	if platform.system() == 'Windows':
@@ -35,53 +37,20 @@ def getTempFilename():
 	warnings.simplefilter('default')
 	return ret
 
-class Slicer(object):
-	def __init__(self, progressCallback):
-		self._process = None
-		self._thread = None
-		self._callback = progressCallback
-		self._binaryStorageFilename = getTempFilename()
-		self._exportFilename = getTempFilename()
-		self._progressSteps = ['inset', 'skin', 'export']
-		self._objCount = 0
-		self._sliceLog = []
+class EngineResult(object):
+	def __init__(self):
+		self._engineLog = []
+		self._gcodeData = StringIO.StringIO()
+		self._polygons = []
+		self._success = False
 		self._printTimeSeconds = None
-		self._filamentMM = [0.0, 0.0]
+		self._filamentMM = [0.0] * 4
 		self._modelHash = None
-		self._id = 0
-
-	def cleanup(self):
-		self.abortSlicer()
-		try:
-			os.remove(self._binaryStorageFilename)
-		except:
-			pass
-		try:
-			os.remove(self._exportFilename)
-		except:
-			pass
-
-	def abortSlicer(self):
-		if self._process is not None:
-			try:
-				self._process.terminate()
-			except:
-				pass
-			self._thread.join()
-		self._thread = None
-
-	def wait(self):
-		if self._thread is not None:
-			self._thread.join()
-
-	def getGCodeFilename(self):
-		return self._exportFilename
-
-	def getSliceLog(self):
-		return self._sliceLog
-
-	def getID(self):
-		return self._id
+		self._profileString = profile.getProfileString()
+		self._preferencesString = profile.getPreferencesString()
+		self._gcodeInterpreter = gcodeInterpreter.gcode()
+		self._gcodeLoadThread = None
+		self._finished = False
 
 	def getFilamentWeight(self, e=0):
 		#Calculates the weight of the filament in kg
@@ -112,7 +81,95 @@ class Slicer(object):
 			return None
 		return '%0.2f meter %0.0f gram' % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
 
-	def runSlicer(self, scene):
+	def getLog(self):
+		return self._engineLog
+
+	def getGCode(self):
+		return self._gcodeData.getvalue()
+
+	def addLog(self, line):
+		self._engineLog.append(line)
+
+	def setHash(self, hash):
+		self._modelHash = hash
+
+	def setFinished(self, result):
+		self._finished = result
+
+	def isFinished(self):
+		return self._finished
+
+	def getGCodeLayers(self):
+		if not self._finished:
+			return None
+		if self._gcodeInterpreter.layerList is None and self._gcodeLoadThread is None:
+			self._gcodeInterpreter.progressCallback = self._gcodeInterpreterCallback
+			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData))
+			self._gcodeLoadThread.daemon = True
+			self._gcodeLoadThread.start()
+		return self._gcodeInterpreter.layerList
+
+	def _gcodeInterpreterCallback(self, progress):
+		if len(self._gcodeInterpreter.layerList) % 15 == 0:
+			time.sleep(0.1)
+		return False
+
+	def submitInfoOnline(self):
+		if profile.getPreference('submit_slice_information') != 'True':
+			return
+		if version.isDevVersion():
+			return
+		data = {
+			'processor': platform.processor(),
+			'machine': platform.machine(),
+			'platform': platform.platform(),
+			'profile': self._profileString,
+			'preferences': self._preferencesString,
+			'modelhash': self._modelHash,
+			'version': version.getVersion(),
+		}
+		try:
+			f = urllib2.urlopen("http://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
+			f.read()
+			f.close()
+		except:
+			pass
+
+class Engine(object):
+	def __init__(self, progressCallback):
+		self._process = None
+		self._thread = None
+		self._callback = progressCallback
+		self._binaryStorageFilename = getTempFilename()
+		self._progressSteps = ['inset', 'skin', 'export']
+		self._objCount = 0
+		self._result = None
+
+	def cleanup(self):
+		self.abortEngine()
+		try:
+			os.remove(self._binaryStorageFilename)
+		except:
+			pass
+
+	def abortEngine(self):
+		if self._process is not None:
+			try:
+				self._process.terminate()
+			except:
+				pass
+		if self._thread is not None:
+			self._thread.join()
+		self._thread = None
+
+	def wait(self):
+		if self._thread is not None:
+			self._thread.join()
+
+	def getResult(self):
+		return self._result
+
+	def runEngine(self, scene):
 		if len(scene.objects()) < 1:
 			return
 		extruderCount = 1
@@ -122,10 +179,9 @@ class Slicer(object):
 
 		extruderCount = max(extruderCount, profile.minimalExtruderCount())
 
-		commandList = [getEngineFilename(), '-vv']
+		commandList = [getEngineFilename(), '-vvv']
 		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
-		commandList += ['-o', self._exportFilename]
 		commandList += ['-b', self._binaryStorageFilename]
 		self._objCount = 0
 		with open(self._binaryStorageFilename, "wb") as f:
@@ -147,6 +203,8 @@ class Slicer(object):
 							objMin[1] = min(oMin[1], objMin[1])
 							objMax[0] = max(oMax[0], objMax[0])
 							objMax[1] = max(oMax[1], objMax[1])
+				if objMin is None:
+					return
 				pos += (objMin + objMax) / 2.0 * 1000
 				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
 
@@ -185,34 +243,66 @@ class Slicer(object):
 					commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
 					commandList += ['#' * len(obj._meshList)]
 					self._objCount += 1
-			self._modelHash = hash.hexdigest()
+			modelHash = hash.hexdigest()
 		if self._objCount > 0:
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread))
+			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, modelHash))
 			self._thread.daemon = True
 			self._thread.start()
 
-	def _watchProcess(self, commandList, oldThread):
+	def _watchProcess(self, commandList, oldThread, modelHash):
 		if oldThread is not None:
 			if self._process is not None:
 				self._process.terminate()
 			oldThread.join()
-		self._id += 1
-		self._callback(-1.0, False)
+		self._callback(-1.0)
 		try:
-			self._process = self._runSliceProcess(commandList)
+			self._process = self._runEngineProcess(commandList)
 		except OSError:
 			traceback.print_exc()
 			return
 		if self._thread != threading.currentThread():
 			self._process.terminate()
-		self._callback(0.0, False)
-		self._sliceLog = []
-		self._printTimeSeconds = None
-		self._filamentMM = [0.0, 0.0]
 
-		line = self._process.stdout.readline()
+		self._result = EngineResult()
+		self._result.setHash(modelHash)
+		self._callback(0.0)
+
+		logThread = threading.Thread(target=self._watchStderr, args=(self._process.stderr,))
+		logThread.daemon = True
+		logThread.start()
+
+		data = self._process.stdout.read(4096)
+		while len(data) > 0:
+			self._result._gcodeData.write(data)
+			data = self._process.stdout.read(4096)
+
+		returnCode = self._process.wait()
+		logThread.join()
+		if returnCode == 0:
+			pluginError = None #profile.runPostProcessingPlugins(self._exportFilename)
+			if pluginError is not None:
+				print pluginError
+				self._result.addLog(pluginError)
+			self._result.setFinished(True)
+			self._callback(1.0)
+		else:
+			for line in self._result.getLog():
+				print line
+			self._callback(-1.0)
+		self._process = None
+
+	def _watchStderr(self, stderr):
 		objectNr = 0
-		while len(line):
+
+		# data = stderr.read(4096)
+		# tmp = StringIO.StringIO()
+		# while len(data):
+		# 	tmp.write(data)
+		# 	data = stderr.read(4096)
+		# stderr = StringIO.StringIO(tmp.getvalue())
+
+		line = stderr.readline()
+		while len(line) > 0:
 			line = line.strip()
 			if line.startswith('Progress:'):
 				line = line.split(':')
@@ -226,41 +316,45 @@ class Slicer(object):
 					progressValue /= self._objCount
 					progressValue += 1.0 / self._objCount * objectNr
 					try:
-						self._callback(progressValue, False)
+						self._callback(progressValue)
 					except:
 						pass
+			elif line.startswith('Polygons:'):
+				line = line.split(':')
+				typeName = line[1]
+				layerNr = int(line[2])
+				size = int(line[3])
+				z = float(line[4])
+				while len(self._result._polygons) < layerNr + 1:
+					self._result._polygons.append({})
+				polygons = self._result._polygons[layerNr]
+				for n in xrange(0, size):
+					polygon = stderr.readline().strip()
+					if not polygon:
+						continue
+					polygon2d = numpy.fromstring(polygon, dtype=numpy.float32, sep=' ')
+					polygon2d = polygon2d.reshape((len(polygon2d) / 2, 2))
+					polygon = numpy.empty((len(polygon2d), 3), numpy.float32)
+					polygon[:,:-1] = polygon2d
+					polygon[:,2] = z
+					if typeName not in polygons:
+						polygons[typeName] = []
+					polygons[typeName].append(polygon)
 			elif line.startswith('Print time:'):
-				self._printTimeSeconds = int(line.split(':')[1].strip())
+				self._result._printTimeSeconds = int(line.split(':')[1].strip())
 			elif line.startswith('Filament:'):
-				self._filamentMM[0] = int(line.split(':')[1].strip())
+				self._result._filamentMM[0] = int(line.split(':')[1].strip())
 				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
-					self._filamentMM[0] /= (math.pi * radius * radius)
+					self._result._filamentMM[0] /= (math.pi * radius * radius)
 			elif line.startswith('Filament2:'):
-				self._filamentMM[1] = int(line.split(':')[1].strip())
+				self._result._filamentMM[1] = int(line.split(':')[1].strip())
 				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
-					self._filamentMM[1] /= (math.pi * radius * radius)
+					self._result._filamentMM[1] /= (math.pi * radius * radius)
 			else:
-				self._sliceLog.append(line.strip())
-			line = self._process.stdout.readline()
-		for line in self._process.stderr:
-			self._sliceLog.append(line.strip())
-		returnCode = self._process.wait()
-		try:
-			if returnCode == 0:
-				pluginError = profile.runPostProcessingPlugins(self._exportFilename)
-				if pluginError is not None:
-					print pluginError
-					self._sliceLog.append(pluginError)
-				self._callback(1.0, True)
-			else:
-				for line in self._sliceLog:
-					print line
-				self._callback(-1.0, False)
-		except:
-			pass
-		self._process = None
+				self._result.addLog(line)
+			line = stderr.readline()
 
 	def _engineSettings(self, extruderCount):
 		settings = {
@@ -361,7 +455,7 @@ class Slicer(object):
 			settings['enableOozeShield'] = 1
 		return settings
 
-	def _runSliceProcess(self, cmdList):
+	def _runEngineProcess(self, cmdList):
 		kwargs = {}
 		if subprocess.mswindows:
 			su = subprocess.STARTUPINFO()
@@ -370,24 +464,3 @@ class Slicer(object):
 			kwargs['startupinfo'] = su
 			kwargs['creationflags'] = 0x00004000 #BELOW_NORMAL_PRIORITY_CLASS
 		return subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
-
-	def submitSliceInfoOnline(self):
-		if profile.getPreference('submit_slice_information') != 'True':
-			return
-		if version.isDevVersion():
-			return
-		data = {
-			'processor': platform.processor(),
-			'machine': platform.machine(),
-			'platform': platform.platform(),
-			'profile': profile.getProfileString(),
-			'preferences': profile.getPreferencesString(),
-			'modelhash': self._modelHash,
-			'version': version.getVersion(),
-		}
-		try:
-			f = urllib2.urlopen("http://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
-			f.read()
-			f.close()
-		except:
-			pass
