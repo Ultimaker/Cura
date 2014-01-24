@@ -12,7 +12,8 @@ BUILD_TARGET=${1:-all}
 #BUILD_TARGET=win32
 #BUILD_TARGET=linux
 #BUILD_TARGET=darwin
-#BUILD_TARGET=debian
+#BUILD_TARGET=debian_i386
+#BUILD_TARGET=debian_amd64
 
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
@@ -139,10 +140,11 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 fi
 
 #############################
-# Debian .deb
+# Debian 32bit .deb
 #############################
 
-if [ "$BUILD_TARGET" = "debian" ]; then
+if [ "$BUILD_TARGET" = "debian_i386" ]; then
+        export CXX="g++ -m32"
 	if [ ! -d "Power" ]; then
 		git clone https://github.com/GreatFruitOmsk/Power
 	else
@@ -153,21 +155,54 @@ if [ "$BUILD_TARGET" = "debian" ]; then
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
 	make -C CuraEngine
-	rm -rf scripts/linux/debian/usr/share/cura
-	mkdir -p scripts/linux/debian/usr/share/cura
-	cp -a Cura scripts/linux/debian/usr/share/cura/
-	cp -a CuraEngine/CuraEngine scripts/linux/debian/usr/share/cura/
-	cp scripts/linux/cura.py scripts/linux/debian/usr/share/cura/
-	cp -a Power/power scripts/linux/debian/usr/share/cura/
-	echo $BUILD_NAME > scripts/linux/debian/usr/share/cura/Cura/version
-	sudo chown root:root scripts/linux/debian -R
-	sudo chmod 755 scripts/linux/debian/usr -R
-	sudo chmod 755 scripts/linux/debian/DEBIAN -R
+	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
+	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
+	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a CuraEngine/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
+	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
+	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build debian ${TARGET_DIR}.deb
-	sudo chown `id -un`:`id -gn` debian -R
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${BUILD_TARGET}.deb
+	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
+
+#############################
+# Debian 64bit .deb
+#############################
+
+if [ "$BUILD_TARGET" = "debian_amd64" ]; then
+        export CXX="g++ -m64"
+	if [ ! -d "Power" ]; then
+		git clone https://github.com/GreatFruitOmsk/Power
+	else
+		cd Power
+		git pull
+		cd ..
+	fi
+	rm -rf CuraEngine
+	git clone ${CURA_ENGINE_REPO}
+	make -C CuraEngine
+	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
+	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
+	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a CuraEngine/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
+	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
+	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
+	cd scripts/linux
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${BUILD_TARGET}.deb
+	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+	exit
+fi
+
 
 #############################
 # Rest

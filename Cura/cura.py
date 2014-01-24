@@ -28,7 +28,9 @@ def main():
 
 	(options, args) = parser.parse_args()
 
+	print "load preferences from " + profile.getPreferencePath()
 	profile.loadPreferences(profile.getPreferencePath())
+
 	if options.profile is not None:
 		profile.setProfileFromString(options.profile)
 	elif options.profileini is not None:
