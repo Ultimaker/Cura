@@ -110,7 +110,7 @@ class EngineResult(object):
 		return self._gcodeInterpreter.layerList
 
 	def _gcodeInterpreterCallback(self, progress):
-		if len(self._gcodeInterpreter.layerList) % 15 == 0:
+		if len(self._gcodeInterpreter.layerList) % 5 == 0:
 			time.sleep(0.1)
 		return False
 
