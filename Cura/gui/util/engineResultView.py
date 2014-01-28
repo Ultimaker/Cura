@@ -65,11 +65,11 @@ class engineResultView(object):
 		lineTypeList = [
 			('inset0',     'WALL-OUTER', [1,0,0,1]),
 			('insetx',     'WALL-INNER', [0,1,0,1]),
-			('openoutline', None, [1,0,0,1]),
-			('skin',       'FILL', [1,1,0,1]),
-			('infill',      None, [1,1,0,1]),
-			('support',    'SUPPORT',[0,1,1,1]),
-			('outline',     None, [0,0,0,1])
+			('openoutline', None,        [1,0,0,1]),
+			('skin',       'FILL',       [1,1,0,1]),
+			('infill',      None,        [1,1,0,1]),
+			('support',    'SUPPORT',    [0,1,1,1]),
+			('outline',     None,        [0,0,0,1])
 		]
 		n = 0
 		gcodeLayers = self._result.getGCodeLayers()
@@ -96,10 +96,10 @@ class engineResultView(object):
 							layerVBOs[typeName].render()
 				n += 20
 			else:
-				while len(self._layerVBOs) < n + 1:
-					self._layerVBOs.append({})
 				c = 1.0 - ((layerNr - n) - 1) * 0.05
 				c = max(0.5, c)
+				while len(self._layerVBOs) < n + 1:
+					self._layerVBOs.append({})
 				layerVBOs = self._layerVBOs[n]
 				if gcodeLayers is not None and layerNr - 10 < n < len(gcodeLayers):
 					for _, typeName, color in lineTypeList:
