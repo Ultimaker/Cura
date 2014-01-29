@@ -44,6 +44,7 @@ class EngineResult(object):
 		self._engineLog = []
 		self._gcodeData = StringIO.StringIO()
 		self._polygons = []
+		self._replaceInfo = {}
 		self._success = False
 		self._printTimeSeconds = None
 		self._filamentMM = [0.0] * 4
@@ -87,7 +88,12 @@ class EngineResult(object):
 		return self._engineLog
 
 	def getGCode(self):
-		return self._gcodeData.getvalue()
+		data = self._gcodeData.getvalue()
+		block0 = data[0:2048]
+		for k, v in self._replaceInfo.items():
+			v = (v + ' ' * len(k))[:len(k)]
+			block0 = block0.replace(k, v)
+		return block0 + data[2048:]
 
 	def addLog(self, line):
 		self._engineLog.append(line)
@@ -395,6 +401,8 @@ class Engine(object):
 				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
 					self._result._filamentMM[1] /= (math.pi * radius * radius)
+			elif line.startswith('Replace:'):
+				self._result._replaceInfo[line.split(':')[1].strip()] = line.split(':')[2].strip()
 			else:
 				self._result.addLog(line)
 			line = stderr.readline()
