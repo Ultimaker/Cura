@@ -10,7 +10,7 @@ import time
 
 from wx import glcanvas
 import OpenGL
-OpenGL.ERROR_CHECKING = False
+#OpenGL.ERROR_CHECKING = False
 from OpenGL.GL import *
 
 from Cura.util import version
@@ -245,6 +245,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 				locationInfo = tb[n]
 				errStr += "\n @ %s:%s:%d" % (os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
 			if not self._shownError:
+				traceback.print_exc()
 				wx.CallAfter(wx.MessageBox, errStr, _("3D window error"), wx.OK | wx.ICON_EXCLAMATION)
 				self._shownError = True
 
@@ -287,7 +288,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 		# glVertex2f(0, 0)
 		# glEnd()
 		# glDisable(GL_TEXTURE_2D)
-		glPopMatrix()
+		# glPopMatrix()
 
 	def _OnEraseBackground(self,event):
 		#Workaround for windows background redraw flicker.

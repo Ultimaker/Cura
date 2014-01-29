@@ -12,9 +12,13 @@ import sys
 import urllib
 import urllib2
 import hashlib
+import socket
+import struct
+import cStringIO as StringIO
 
 from Cura.util import profile
 from Cura.util import version
+from Cura.util import gcodeInterpreter
 
 def getEngineFilename():
 	if platform.system() == 'Windows':
@@ -35,53 +39,20 @@ def getTempFilename():
 	warnings.simplefilter('default')
 	return ret
 
-class Slicer(object):
-	def __init__(self, progressCallback):
-		self._process = None
-		self._thread = None
-		self._callback = progressCallback
-		self._binaryStorageFilename = getTempFilename()
-		self._exportFilename = getTempFilename()
-		self._progressSteps = ['inset', 'skin', 'export']
-		self._objCount = 0
-		self._sliceLog = []
+class EngineResult(object):
+	def __init__(self):
+		self._engineLog = []
+		self._gcodeData = StringIO.StringIO()
+		self._polygons = []
+		self._success = False
 		self._printTimeSeconds = None
-		self._filamentMM = [0.0, 0.0]
+		self._filamentMM = [0.0] * 4
 		self._modelHash = None
-		self._id = 0
-
-	def cleanup(self):
-		self.abortSlicer()
-		try:
-			os.remove(self._binaryStorageFilename)
-		except:
-			pass
-		try:
-			os.remove(self._exportFilename)
-		except:
-			pass
-
-	def abortSlicer(self):
-		if self._process is not None:
-			try:
-				self._process.terminate()
-			except:
-				pass
-			self._thread.join()
-		self._thread = None
-
-	def wait(self):
-		if self._thread is not None:
-			self._thread.join()
-
-	def getGCodeFilename(self):
-		return self._exportFilename
-
-	def getSliceLog(self):
-		return self._sliceLog
-
-	def getID(self):
-		return self._id
+		self._profileString = profile.getProfileString()
+		self._preferencesString = profile.getPreferencesString()
+		self._gcodeInterpreter = gcodeInterpreter.gcode()
+		self._gcodeLoadThread = None
+		self._finished = False
 
 	def getFilamentWeight(self, e=0):
 		#Calculates the weight of the filament in kg
@@ -112,7 +83,165 @@ class Slicer(object):
 			return None
 		return '%0.2f meter %0.0f gram' % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
 
-	def runSlicer(self, scene):
+	def getLog(self):
+		return self._engineLog
+
+	def getGCode(self):
+		return self._gcodeData.getvalue()
+
+	def addLog(self, line):
+		self._engineLog.append(line)
+
+	def setHash(self, hash):
+		self._modelHash = hash
+
+	def setFinished(self, result):
+		self._finished = result
+
+	def isFinished(self):
+		return self._finished
+
+	def getGCodeLayers(self, loadCallback):
+		if not self._finished:
+			return None
+		if self._gcodeInterpreter.layerList is None and self._gcodeLoadThread is None:
+			self._gcodeInterpreter.progressCallback = self._gcodeInterpreterCallback
+			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData))
+			self._gcodeLoadCallback = loadCallback
+			self._gcodeLoadThread.daemon = True
+			self._gcodeLoadThread.start()
+		return self._gcodeInterpreter.layerList
+
+	def _gcodeInterpreterCallback(self, progress):
+		if len(self._gcodeInterpreter.layerList) % 5 == 0:
+			time.sleep(0.1)
+		return self._gcodeLoadCallback(self, progress)
+
+	def submitInfoOnline(self):
+		if profile.getPreference('submit_slice_information') != 'True':
+			return
+		if version.isDevVersion():
+			return
+		data = {
+			'processor': platform.processor(),
+			'machine': platform.machine(),
+			'platform': platform.platform(),
+			'profile': self._profileString,
+			'preferences': self._preferencesString,
+			'modelhash': self._modelHash,
+			'version': version.getVersion(),
+		}
+		try:
+			f = urllib2.urlopen("http://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
+			f.read()
+			f.close()
+		except:
+			pass
+
+class Engine(object):
+	GUI_CMD_REQUEST_MESH = 0x01
+	GUI_CMD_SEND_POLYGONS = 0x02
+
+	def __init__(self, progressCallback):
+		self._process = None
+		self._thread = None
+		self._callback = progressCallback
+		self._progressSteps = ['inset', 'skin', 'export']
+		self._objCount = 0
+		self._result = None
+
+		self._serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self._serverPortNr = 0xC20A
+		while True:
+			try:
+				self._serversocket.bind(('127.0.0.1', self._serverPortNr))
+			except:
+				print "Failed to listen on port: %d" % (self._serverPortNr)
+				self._serverPortNr += 1
+				if self._serverPortNr > 0xFFFF:
+					print "Failed to listen on any port..."
+					break
+			else:
+				break
+		print 'Listening for engine communications on %d' % (self._serverPortNr)
+		self._serversocket.listen(1)
+		thread = threading.Thread(target=self._socketListenThread)
+		thread.daemon = True
+		thread.start()
+
+	def _socketListenThread(self):
+		while True:
+			sock, _ = self._serversocket.accept()
+			thread = threading.Thread(target=self._socketConnectionThread, args=(sock,))
+			thread.daemon = True
+			thread.start()
+
+	def _socketConnectionThread(self, sock):
+		while True:
+			try:
+				data = sock.recv(4)
+			except:
+				data = ''
+			if len(data) == 0:
+				sock.close()
+				return
+			cmd = struct.unpack('@i', data)[0]
+			if cmd == self.GUI_CMD_REQUEST_MESH:
+				meshInfo = self._modelData[0]
+				self._modelData = self._modelData[1:]
+				sock.sendall(struct.pack('@i', meshInfo[0]))
+				sock.sendall(meshInfo[1].tostring())
+			elif cmd == self.GUI_CMD_SEND_POLYGONS:
+				cnt = struct.unpack('@i', sock.recv(4))[0]
+				layerNr = struct.unpack('@i', sock.recv(4))[0]
+				z = struct.unpack('@i', sock.recv(4))[0]
+				z = float(z) / 1000.0
+				typeNameLen = struct.unpack('@i', sock.recv(4))[0]
+				typeName = sock.recv(typeNameLen)
+				while len(self._result._polygons) < layerNr + 1:
+					self._result._polygons.append({})
+				polygons = self._result._polygons[layerNr]
+				if typeName not in polygons:
+					polygons[typeName] = []
+				for n in xrange(0, cnt):
+					length = struct.unpack('@i', sock.recv(4))[0]
+					data = ''
+					while len(data) < length * 8 * 2:
+						recvData = sock.recv(length * 8 * 2 - len(data))
+						if len(recvData) < 1:
+							return
+						data += recvData
+					polygon2d = numpy.array(numpy.fromstring(data, numpy.int64), numpy.float32) / 1000.0
+					polygon2d = polygon2d.reshape((len(polygon2d) / 2, 2))
+					polygon = numpy.empty((len(polygon2d), 3), numpy.float32)
+					polygon[:,:-1] = polygon2d
+					polygon[:,2] = z
+					polygons[typeName].append(polygon)
+			else:
+				print "Unknown command on socket: %x" % (cmd)
+
+	def cleanup(self):
+		self.abortEngine()
+		self._serversocket.close()
+
+	def abortEngine(self):
+		if self._process is not None:
+			try:
+				self._process.terminate()
+			except:
+				pass
+		if self._thread is not None:
+			self._thread.join()
+		self._thread = None
+
+	def wait(self):
+		if self._thread is not None:
+			self._thread.join()
+
+	def getResult(self):
+		return self._result
+
+	def runEngine(self, scene):
 		if len(scene.objects()) < 1:
 			return
 		extruderCount = 1
@@ -122,97 +251,122 @@ class Slicer(object):
 
 		extruderCount = max(extruderCount, profile.minimalExtruderCount())
 
-		commandList = [getEngineFilename(), '-vv']
+		commandList = [getEngineFilename(), '-vvv']
 		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
-		commandList += ['-o', self._exportFilename]
-		commandList += ['-b', self._binaryStorageFilename]
+		commandList += ['-g', '%d' % self._serverPortNr]
 		self._objCount = 0
-		with open(self._binaryStorageFilename, "wb") as f:
-			hash = hashlib.sha512()
-			order = scene.printOrder()
-			if order is None:
-				pos = numpy.array(profile.getMachineCenterCoords()) * 1000
-				objMin = None
-				objMax = None
+		engineModelData = []
+		hash = hashlib.sha512()
+		order = scene.printOrder()
+		if order is None:
+			pos = numpy.array(profile.getMachineCenterCoords()) * 1000
+			objMin = None
+			objMax = None
+			for obj in scene.objects():
+				if scene.checkPlatform(obj):
+					oMin = obj.getMinimum()[0:2] + obj.getPosition()
+					oMax = obj.getMaximum()[0:2] + obj.getPosition()
+					if objMin is None:
+						objMin = oMin
+						objMax = oMax
+					else:
+						objMin[0] = min(oMin[0], objMin[0])
+						objMin[1] = min(oMin[1], objMin[1])
+						objMax[0] = max(oMax[0], objMax[0])
+						objMax[1] = max(oMax[1], objMax[1])
+			if objMin is None:
+				return
+			pos += (objMin + objMax) / 2.0 * 1000
+			commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
+
+			vertexTotal = [0] * 4
+			meshMax = 1
+			for obj in scene.objects():
+				if scene.checkPlatform(obj):
+					meshMax = max(meshMax, len(obj._meshList))
+					for n in xrange(0, len(obj._meshList)):
+						vertexTotal[n] += obj._meshList[n].vertexCount
+
+			for n in xrange(0, meshMax):
+				verts = numpy.zeros((0, 3), numpy.float32)
 				for obj in scene.objects():
 					if scene.checkPlatform(obj):
-						oMin = obj.getMinimum()[0:2] + obj.getPosition()
-						oMax = obj.getMaximum()[0:2] + obj.getPosition()
-						if objMin is None:
-							objMin = oMin
-							objMax = oMax
-						else:
-							objMin[0] = min(oMin[0], objMin[0])
-							objMin[1] = min(oMin[1], objMin[1])
-							objMax[0] = max(oMax[0], objMax[0])
-							objMax[1] = max(oMax[1], objMax[1])
-				pos += (objMin + objMax) / 2.0 * 1000
+						if n < len(obj._meshList):
+							vertexes = (numpy.matrix(obj._meshList[n].vertexes, copy = False) * numpy.matrix(obj._matrix, numpy.float32)).getA()
+							vertexes -= obj._drawOffset
+							vertexes += numpy.array([obj.getPosition()[0], obj.getPosition()[1], 0.0])
+							verts = numpy.concatenate((verts, vertexes))
+							hash.update(obj._meshList[n].vertexes.tostring())
+				engineModelData.append((vertexTotal[n], verts))
+
+			commandList += ['$' * meshMax]
+			self._objCount = 1
+		else:
+			for n in order:
+				obj = scene.objects()[n]
+				for mesh in obj._meshList:
+					engineModelData.append((mesh.vertexCount, mesh.vertexes))
+					hash.update(mesh.vertexes.tostring())
+				pos = obj.getPosition() * 1000
+				pos += numpy.array(profile.getMachineCenterCoords()) * 1000
+				commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
 				commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
-
-				vertexTotal = [0] * 4
-				meshMax = 1
-				for obj in scene.objects():
-					if scene.checkPlatform(obj):
-						meshMax = max(meshMax, len(obj._meshList))
-						for n in xrange(0, len(obj._meshList)):
-							vertexTotal[n] += obj._meshList[n].vertexCount
-
-				for n in xrange(0, meshMax):
-					f.write(numpy.array([vertexTotal[n]], numpy.int32).tostring())
-					for obj in scene.objects():
-						if scene.checkPlatform(obj):
-							if n < len(obj._meshList):
-								vertexes = (numpy.matrix(obj._meshList[n].vertexes, copy = False) * numpy.matrix(obj._matrix, numpy.float32)).getA()
-								vertexes -= obj._drawOffset
-								vertexes += numpy.array([obj.getPosition()[0], obj.getPosition()[1], 0.0])
-								f.write(vertexes.tostring())
-								hash.update(obj._meshList[n].vertexes.tostring())
-
-				commandList += ['#' * meshMax]
-				self._objCount = 1
-			else:
-				for n in order:
-					obj = scene.objects()[n]
-					for mesh in obj._meshList:
-						f.write(numpy.array([mesh.vertexCount], numpy.int32).tostring())
-						s = mesh.vertexes.tostring()
-						f.write(s)
-						hash.update(s)
-					pos = obj.getPosition() * 1000
-					pos += numpy.array(profile.getMachineCenterCoords()) * 1000
-					commandList += ['-m', ','.join(map(str, obj._matrix.getA().flatten()))]
-					commandList += ['-s', 'posx=%d' % int(pos[0]), '-s', 'posy=%d' % int(pos[1])]
-					commandList += ['#' * len(obj._meshList)]
-					self._objCount += 1
-			self._modelHash = hash.hexdigest()
+				commandList += ['$' * len(obj._meshList)]
+				self._objCount += 1
+		modelHash = hash.hexdigest()
 		if self._objCount > 0:
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread))
+			self._modelData = engineModelData
+			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, modelHash))
 			self._thread.daemon = True
 			self._thread.start()
 
-	def _watchProcess(self, commandList, oldThread):
+	def _watchProcess(self, commandList, oldThread, modelHash):
 		if oldThread is not None:
 			if self._process is not None:
 				self._process.terminate()
 			oldThread.join()
-		self._id += 1
-		self._callback(-1.0, False)
+		self._callback(-1.0)
 		try:
-			self._process = self._runSliceProcess(commandList)
+			self._process = self._runEngineProcess(commandList)
 		except OSError:
 			traceback.print_exc()
 			return
 		if self._thread != threading.currentThread():
 			self._process.terminate()
-		self._callback(0.0, False)
-		self._sliceLog = []
-		self._printTimeSeconds = None
-		self._filamentMM = [0.0, 0.0]
 
-		line = self._process.stdout.readline()
+		self._result = EngineResult()
+		self._result.setHash(modelHash)
+		self._callback(0.0)
+
+		logThread = threading.Thread(target=self._watchStderr, args=(self._process.stderr,))
+		logThread.daemon = True
+		logThread.start()
+
+		data = self._process.stdout.read(4096)
+		while len(data) > 0:
+			self._result._gcodeData.write(data)
+			data = self._process.stdout.read(4096)
+
+		returnCode = self._process.wait()
+		logThread.join()
+		if returnCode == 0:
+			pluginError = None #profile.runPostProcessingPlugins(self._exportFilename)
+			if pluginError is not None:
+				print pluginError
+				self._result.addLog(pluginError)
+			self._result.setFinished(True)
+			self._callback(1.0)
+		else:
+			for line in self._result.getLog():
+				print line
+			self._callback(-1.0)
+		self._process = None
+
+	def _watchStderr(self, stderr):
 		objectNr = 0
-		while len(line):
+		line = stderr.readline()
+		while len(line) > 0:
 			line = line.strip()
 			if line.startswith('Progress:'):
 				line = line.split(':')
@@ -226,41 +380,24 @@ class Slicer(object):
 					progressValue /= self._objCount
 					progressValue += 1.0 / self._objCount * objectNr
 					try:
-						self._callback(progressValue, False)
+						self._callback(progressValue)
 					except:
 						pass
 			elif line.startswith('Print time:'):
-				self._printTimeSeconds = int(line.split(':')[1].strip())
+				self._result._printTimeSeconds = int(line.split(':')[1].strip())
 			elif line.startswith('Filament:'):
-				self._filamentMM[0] = int(line.split(':')[1].strip())
+				self._result._filamentMM[0] = int(line.split(':')[1].strip())
 				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
-					self._filamentMM[0] /= (math.pi * radius * radius)
+					self._result._filamentMM[0] /= (math.pi * radius * radius)
 			elif line.startswith('Filament2:'):
-				self._filamentMM[1] = int(line.split(':')[1].strip())
+				self._result._filamentMM[1] = int(line.split(':')[1].strip())
 				if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
-					self._filamentMM[1] /= (math.pi * radius * radius)
+					self._result._filamentMM[1] /= (math.pi * radius * radius)
 			else:
-				self._sliceLog.append(line.strip())
-			line = self._process.stdout.readline()
-		for line in self._process.stderr:
-			self._sliceLog.append(line.strip())
-		returnCode = self._process.wait()
-		try:
-			if returnCode == 0:
-				pluginError = profile.runPostProcessingPlugins(self._exportFilename)
-				if pluginError is not None:
-					print pluginError
-					self._sliceLog.append(pluginError)
-				self._callback(1.0, True)
-			else:
-				for line in self._sliceLog:
-					print line
-				self._callback(-1.0, False)
-		except:
-			pass
-		self._process = None
+				self._result.addLog(line)
+			line = stderr.readline()
 
 	def _engineSettings(self, extruderCount):
 		settings = {
@@ -277,6 +414,8 @@ class Slicer(object):
 			'initialLayerSpeed': int(profile.getProfileSettingFloat('bottom_layer_speed')),
 			'printSpeed': int(profile.getProfileSettingFloat('print_speed')),
 			'infillSpeed': int(profile.getProfileSettingFloat('infill_speed')) if int(profile.getProfileSettingFloat('infill_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
+			'inset0Speed': int(profile.getProfileSettingFloat('inset0_speed')) if int(profile.getProfileSettingFloat('inset0_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
+			'insetXSpeed': int(profile.getProfileSettingFloat('insetx_speed')) if int(profile.getProfileSettingFloat('insetx_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
 			'moveSpeed': int(profile.getProfileSettingFloat('travel_speed')),
 			'fanSpeedMin': int(profile.getProfileSettingFloat('fan_speed')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
 			'fanSpeedMax': int(profile.getProfileSettingFloat('fan_speed_max')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
@@ -355,13 +494,13 @@ class Slicer(object):
 			settings['gcodeFlavor'] = 1
 		if profile.getProfileSetting('spiralize') == 'True':
 			settings['spiralizeMode'] = 1
-		if profile.getProfileSetting('wipe_tower') == 'True':
+		if profile.getProfileSetting('wipe_tower') == 'True' and extruderCount > 1:
 			settings['wipeTowerSize'] = int(math.sqrt(profile.getProfileSettingFloat('wipe_tower_volume') * 1000 * 1000 * 1000 / settings['layerThickness']))
 		if profile.getProfileSetting('ooze_shield') == 'True':
 			settings['enableOozeShield'] = 1
 		return settings
 
-	def _runSliceProcess(self, cmdList):
+	def _runEngineProcess(self, cmdList):
 		kwargs = {}
 		if subprocess.mswindows:
 			su = subprocess.STARTUPINFO()
@@ -370,24 +509,3 @@ class Slicer(object):
 			kwargs['startupinfo'] = su
 			kwargs['creationflags'] = 0x00004000 #BELOW_NORMAL_PRIORITY_CLASS
 		return subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
-
-	def submitSliceInfoOnline(self):
-		if profile.getPreference('submit_slice_information') != 'True':
-			return
-		if version.isDevVersion():
-			return
-		data = {
-			'processor': platform.processor(),
-			'machine': platform.machine(),
-			'platform': platform.platform(),
-			'profile': profile.getProfileString(),
-			'preferences': profile.getPreferencesString(),
-			'modelhash': self._modelHash,
-			'version': version.getVersion(),
-		}
-		try:
-			f = urllib2.urlopen("http://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
-			f.read()
-			f.close()
-		except:
-			pass

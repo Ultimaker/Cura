@@ -282,7 +282,7 @@ class CustomRepRapInfoPage(InfoPage):
 		self.machineName = self.AddLabelTextCtrl(_("Machine name"), "RepRap")
 		self.machineWidth = self.AddLabelTextCtrl(_("Machine width (mm)"), "80")
 		self.machineDepth = self.AddLabelTextCtrl(_("Machine depth (mm)"), "80")
-		self.machineHeight = self.AddLabelTextCtrl(_("Machine height (mm)"), "60")
+		self.machineHeight = self.AddLabelTextCtrl(_("Machine height (mm)"), "55")
 		self.nozzleSize = self.AddLabelTextCtrl(_("Nozzle size (mm)"), "0.5")
 		self.heatedBed = self.AddCheckbox(_("Heated bed"))
 		self.HomeAtCenter = self.AddCheckbox(_("Bed center is 0,0,0 (RoStock)"))
@@ -368,7 +368,7 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('extruder_head_size_min_y', '18.0')
 			profile.putMachineSetting('extruder_head_size_max_x', '18.0')
 			profile.putMachineSetting('extruder_head_size_max_y', '35.0')
-			profile.putMachineSetting('extruder_head_size_height', '60.0')
+			profile.putMachineSetting('extruder_head_size_height', '55.0')
 		else:
 			profile.putMachineSetting('machine_width', '80')
 			profile.putMachineSetting('machine_depth', '80')

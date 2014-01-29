@@ -575,7 +575,7 @@ class mainWindow(wx.Frame):
 		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which can keep wxWidgets from quiting.
 		print "Closing down"
 		self.scene.OnPaint = lambda e : e
-		self.scene._slicer.cleanup()
+		self.scene._engine.cleanup()
 		self.Destroy()
 
 	def OnQuit(self, e):

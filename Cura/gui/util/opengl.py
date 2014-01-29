@@ -6,14 +6,11 @@ import numpy
 import wx
 import time
 
-from Cura.util import meshLoader
-from Cura.util import util3d
-from Cura.util import profile
-from Cura.util.resources import getPathForMesh, getPathForImage
+from Cura.util.resources import getPathForImage
 
 import OpenGL
 
-OpenGL.ERROR_CHECKING = False
+#OpenGL.ERROR_CHECKING = False
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
@@ -131,26 +128,35 @@ class GLFakeShader(GLReferenceCounter):
 		return ''
 
 class GLVBO(GLReferenceCounter):
-	def __init__(self, vertexArray, normalArray = None):
+	def __init__(self, renderType, vertexArray, normalArray = None, indicesArray = None):
 		super(GLVBO, self).__init__()
+		self._renderType = renderType
 		if not bool(glGenBuffers):
 			self._vertexArray = vertexArray
 			self._normalArray = normalArray
+			self._indicesArray = indicesArray
 			self._size = len(vertexArray)
 			self._buffer = None
 			self._hasNormals = self._normalArray is not None
+			self._hasIndices = self._indicesArray is not None
 		else:
 			self._buffer = glGenBuffers(1)
 			self._size = len(vertexArray)
 			self._hasNormals = normalArray is not None
+			self._hasIndices = indicesArray is not None
 			glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
 			if self._hasNormals:
 				glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
 			else:
 				glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW)
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
+			if self._hasIndices:
+				self._size = len(indicesArray)
+				self._bufferIndices = glGenBuffers(1)
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self._bufferIndices)
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, numpy.array(indicesArray, numpy.uint32), GL_STATIC_DRAW)
 
-	def render(self, render_type = GL_TRIANGLES):
+	def render(self):
 		glEnableClientState(GL_VERTEX_ARRAY)
 		if self._buffer is None:
 			glVertexPointer(3, GL_FLOAT, 0, self._vertexArray)
@@ -165,16 +171,23 @@ class GLVBO(GLReferenceCounter):
 				glNormalPointer(GL_FLOAT, 2*3*4, c_void_p(3 * 4))
 			else:
 				glVertexPointer(3, GL_FLOAT, 3*4, c_void_p(0))
+			if self._hasIndices:
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self._bufferIndices)
 
-		batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
-		extraStartPos = int(self._size / batchSize) * batchSize
-		extraCount = self._size - extraStartPos
+		if self._hasIndices:
+			glDrawElements(self._renderType, self._size, GL_UNSIGNED_INT, c_void_p(0))
+		else:
+			batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
+			extraStartPos = int(self._size / batchSize) * batchSize
+			extraCount = self._size - extraStartPos
+			for i in xrange(0, int(self._size / batchSize)):
+				glDrawArrays(self._renderType, i * batchSize, batchSize)
+			glDrawArrays(self._renderType, extraStartPos, extraCount)
 
-		for i in xrange(0, int(self._size / batchSize)):
-			glDrawArrays(render_type, i * batchSize, batchSize)
-		glDrawArrays(render_type, extraStartPos, extraCount)
 		if self._buffer is not None:
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
+		if self._hasIndices:
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
 
 		glDisableClientState(GL_VERTEX_ARRAY)
 		if self._hasNormals:
@@ -545,106 +558,3 @@ def DrawMeshSteep(mesh, matrix, angle):
 			glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
 			glEnd()
 	glDepthFunc(GL_LESS)
-
-def DrawGCodeLayer(layer, drawQuick = True):
-	filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
-	filamentArea = math.pi * filamentRadius * filamentRadius
-	lineWidth = profile.getProfileSettingFloat('nozzle_size') / 2 / 10
-
-	fillCycle = 0
-	fillColorCycle = [[0.5, 0.5, 0.0, 1], [0.0, 0.5, 0.5, 1], [0.5, 0.0, 0.5, 1]]
-	moveColor = [0, 0, 1, 0.5]
-	retractColor = [1, 0, 0.5, 0.5]
-	supportColor = [0, 1, 1, 1]
-	extrudeColor = [[1, 0, 0, 1], [0, 1, 1, 1], [1, 1, 0, 1], [1, 0, 1, 1]]
-	innerWallColor = [0, 1, 0, 1]
-	skirtColor = [0, 0.5, 0.5, 1]
-	prevPathWasRetract = False
-
-	glDisable(GL_CULL_FACE)
-	for path in layer:
-		if path.type == 'move':
-			if prevPathWasRetract:
-				c = retractColor
-			else:
-				c = moveColor
-			if drawQuick:
-				continue
-		zOffset = 0.01
-		if path.type == 'extrude':
-			if path.pathType == 'FILL':
-				c = fillColorCycle[fillCycle]
-				fillCycle = (fillCycle + 1) % len(fillColorCycle)
-			elif path.pathType == 'WALL-INNER':
-				c = innerWallColor
-				zOffset = 0.02
-			elif path.pathType == 'SUPPORT':
-				c = supportColor
-			elif path.pathType == 'SKIRT':
-				c = skirtColor
-			else:
-				c = extrudeColor[path.extruder]
-		if path.type == 'retract':
-			c = retractColor
-		if path.type == 'extrude' and not drawQuick:
-			drawLength = 0.0
-			prevNormal = None
-			for i in xrange(0, len(path.points) - 1):
-				v0 = path.points[i]
-				v1 = path.points[i + 1]
-
-				# Calculate line width from ePerDistance (needs layer thickness and filament diameter)
-				dist = (v0 - v1).vsize()
-				if dist > 0 and path.layerThickness > 0:
-					extrusionMMperDist = (v1.e - v0.e) / dist
-					lineWidth = extrusionMMperDist * filamentArea / path.layerThickness / 2 * v1.extrudeAmountMultiply
-
-				drawLength += (v0 - v1).vsize()
-				normal = (v0 - v1).cross(util3d.Vector3(0, 0, 1))
-				normal.normalize()
-
-				vv2 = v0 + normal * lineWidth
-				vv3 = v1 + normal * lineWidth
-				vv0 = v0 - normal * lineWidth
-				vv1 = v1 - normal * lineWidth
-
-				glBegin(GL_QUADS)
-				glColor4fv(c)
-				glVertex3f(vv0.x, vv0.y, vv0.z - zOffset)
-				glVertex3f(vv1.x, vv1.y, vv1.z - zOffset)
-				glVertex3f(vv3.x, vv3.y, vv3.z - zOffset)
-				glVertex3f(vv2.x, vv2.y, vv2.z - zOffset)
-				glEnd()
-				if prevNormal is not None:
-					n = (normal + prevNormal)
-					n.normalize()
-					vv4 = v0 + n * lineWidth
-					vv5 = v0 - n * lineWidth
-					glBegin(GL_QUADS)
-					glColor4fv(c)
-					glVertex3f(vv2.x, vv2.y, vv2.z - zOffset)
-					glVertex3f(vv4.x, vv4.y, vv4.z - zOffset)
-					glVertex3f(prevVv3.x, prevVv3.y, prevVv3.z - zOffset)
-					glVertex3f(v0.x, v0.y, v0.z - zOffset)
-
-					glVertex3f(vv0.x, vv0.y, vv0.z - zOffset)
-					glVertex3f(vv5.x, vv5.y, vv5.z - zOffset)
-					glVertex3f(prevVv1.x, prevVv1.y, prevVv1.z - zOffset)
-					glVertex3f(v0.x, v0.y, v0.z - zOffset)
-					glEnd()
-
-				prevNormal = normal
-				prevVv1 = vv1
-				prevVv3 = vv3
-		else:
-			glColor4fv(c)
-			glBegin(GL_TRIANGLES)
-			for v in path.points:
-				glVertex3f(v[0], v[1], v[2])
-			glEnd()
-
-		if not path.type == 'move':
-			prevPathWasRetract = False
-		#if path.type == 'retract' and path.points[0].almostEqual(path.points[-1]):
-		#	prevPathWasRetract = True
-	glEnable(GL_CULL_FACE)
