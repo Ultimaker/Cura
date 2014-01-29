@@ -18,6 +18,7 @@ class engineResultView(object):
 		self._parent = parent
 		self._result = None
 		self._enabled = False
+		self._gcodeLoadProgress = 0
 		self._layerVBOs = []
 		self._layer20VBOs = []
 
@@ -43,6 +44,14 @@ class engineResultView(object):
 		self._enabled = enabled
 		self.layerSelect.setHidden(not enabled)
 
+	def _gcodeLoadCallback(self, result, progress):
+		if result != self._result:
+			#Abort loading from this thread.
+			return True
+		self._gcodeLoadProgress = progress
+		self._parent._queueRefresh()
+		return False
+
 	def OnDraw(self):
 		if not self._enabled:
 			return
@@ -50,6 +59,10 @@ class engineResultView(object):
 		result = self._result
 		if result is not None and result._polygons is not None:
 			self.layerSelect.setRange(1, len(result._polygons))
+		if result is not None:
+			gcodeLayers = result.getGCodeLayers(self._gcodeLoadCallback)
+		else:
+			gcodeLayers = None
 
 		glPushMatrix()
 		glEnable(GL_BLEND)
@@ -74,7 +87,6 @@ class engineResultView(object):
 			('outline',     None,        [0,0,0,1])
 		]
 		n = layerNr - 1
-		gcodeLayers = result.getGCodeLayers()
 		generatedVBO = False
 		while n >= 0:
 			if layerNr - n > 30 and n % 20 == 0:
@@ -83,8 +95,8 @@ class engineResultView(object):
 					self._layer20VBOs.append({})
 				if result is not None and result._polygons is not None and n + 20 < len(result._polygons):
 					layerVBOs = self._layer20VBOs[idx]
-					for typeName, _, color in lineTypeList:
-						if typeName in result._polygons[n + 19]:
+					for typeName, typeNameGCode, color in lineTypeList:
+						if (typeName in result._polygons[n + 19]) or (typeName == 'skirt' and typeName in result._polygons[n]):
 							if typeName not in layerVBOs:
 								if generatedVBO:
 									continue
@@ -104,7 +116,7 @@ class engineResultView(object):
 					self._layerVBOs.append({})
 				layerVBOs = self._layerVBOs[n]
 				if gcodeLayers is not None and layerNr - 10 < n < (len(gcodeLayers) - 1):
-					for _, typeName, color in lineTypeList:
+					for typeNamePolygons, typeName, color in lineTypeList:
 						if typeName is None:
 							continue
 						if 'GCODE-' + typeName not in layerVBOs:
@@ -119,7 +131,7 @@ class engineResultView(object):
 						layerVBOs['GCODE-MOVE'].render()
 				elif result is not None and result._polygons is not None and n < len(result._polygons):
 					polygons = result._polygons[n]
-					for typeName, _, color in lineTypeList:
+					for typeName, typeNameGCode, color in lineTypeList:
 						if typeName in polygons:
 							if typeName not in layerVBOs:
 								layerVBOs[typeName] = self._polygonsToVBO_lines(polygons[typeName])
@@ -129,6 +141,14 @@ class engineResultView(object):
 		glPopMatrix()
 		if generatedVBO:
 			self._parent._queueRefresh()
+
+		if gcodeLayers is not None and self._gcodeLoadProgress != 0.0 and self._gcodeLoadProgress != 1.0:
+			glPushMatrix()
+			glLoadIdentity()
+			glTranslate(0,-0.8,-2)
+			glColor4ub(60,60,60,255)
+			opengl.glDrawStringCenter(_("Loading toolpath for visualization (%d%%)") % (self._gcodeLoadProgress * 100))
+			glPopMatrix()
 
 	def _polygonsToVBO_lines(self, polygons):
 		verts = numpy.zeros((0, 3), numpy.float32)

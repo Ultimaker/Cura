@@ -101,12 +101,13 @@ class EngineResult(object):
 	def isFinished(self):
 		return self._finished
 
-	def getGCodeLayers(self):
+	def getGCodeLayers(self, loadCallback):
 		if not self._finished:
 			return None
 		if self._gcodeInterpreter.layerList is None and self._gcodeLoadThread is None:
 			self._gcodeInterpreter.progressCallback = self._gcodeInterpreterCallback
 			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData))
+			self._gcodeLoadCallback = loadCallback
 			self._gcodeLoadThread.daemon = True
 			self._gcodeLoadThread.start()
 		return self._gcodeInterpreter.layerList
@@ -114,7 +115,7 @@ class EngineResult(object):
 	def _gcodeInterpreterCallback(self, progress):
 		if len(self._gcodeInterpreter.layerList) % 5 == 0:
 			time.sleep(0.1)
-		return False
+		return self._gcodeLoadCallback(self, progress)
 
 	def submitInfoOnline(self):
 		if profile.getPreference('submit_slice_information') != 'True':
