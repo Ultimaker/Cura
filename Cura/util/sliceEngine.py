@@ -176,14 +176,12 @@ class Engine(object):
 			thread.start()
 
 	def _socketConnectionThread(self, sock):
-		print "Connection", sock
 		while True:
 			try:
 				data = sock.recv(4)
 			except:
 				data = ''
 			if len(data) == 0:
-				print "Connection closed"
 				sock.close()
 				return
 			cmd = struct.unpack('@i', data)[0]
@@ -366,14 +364,6 @@ class Engine(object):
 
 	def _watchStderr(self, stderr):
 		objectNr = 0
-
-		# data = stderr.read(4096)
-		# tmp = StringIO.StringIO()
-		# while len(data):
-		# 	tmp.write(data)
-		# 	data = stderr.read(4096)
-		# stderr = StringIO.StringIO(tmp.getvalue())
-
 		line = stderr.readline()
 		while len(line) > 0:
 			line = line.strip()

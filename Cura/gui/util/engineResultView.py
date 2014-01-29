@@ -47,8 +47,9 @@ class engineResultView(object):
 		if not self._enabled:
 			return
 
-		if self._result is not None and self._result._polygons is not None:
-			self.layerSelect.setRange(1, len(self._result._polygons))
+		result = self._result
+		if result is not None and result._polygons is not None:
+			self.layerSelect.setRange(1, len(result._polygons))
 
 		glPushMatrix()
 		glEnable(GL_BLEND)
@@ -58,7 +59,7 @@ class engineResultView(object):
 
 		layerNr = self.layerSelect.getValue()
 		if layerNr == self.layerSelect.getMaxValue():
-			layerNr = max(layerNr, len(self._result._polygons))
+			layerNr = max(layerNr, len(result._polygons))
 		viewZ = (layerNr - 1) * profile.getProfileSettingFloat('layer_height') + profile.getProfileSettingFloat('bottom_thickness')
 		self._parent._viewTarget[2] = viewZ
 		msize = max(profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'))
@@ -69,61 +70,62 @@ class engineResultView(object):
 			('skin',       'FILL',       [1,1,0,1]),
 			('infill',      None,        [1,1,0,1]),
 			('support',    'SUPPORT',    [0,1,1,1]),
+			('skirt',      'SKIRT',      [0,1,1,1]),
 			('outline',     None,        [0,0,0,1])
 		]
-		n = 0
-		gcodeLayers = self._result.getGCodeLayers()
+		n = layerNr - 1
+		gcodeLayers = result.getGCodeLayers()
 		generatedVBO = False
-		while n < layerNr:
-			if layerNr - n > 30:
+		while n >= 0:
+			if layerNr - n > 30 and n % 20 == 0:
 				idx = n / 20
 				while len(self._layer20VBOs) < idx + 1:
 					self._layer20VBOs.append({})
-				if self._result is not None and self._result._polygons is not None and n + 20 < len(self._result._polygons):
+				if result is not None and result._polygons is not None and n + 20 < len(result._polygons):
 					layerVBOs = self._layer20VBOs[idx]
 					for typeName, _, color in lineTypeList:
-						if typeName in self._result._polygons[n + 19]:
-							if typeName not in self._layer20VBOs[idx]:
+						if typeName in result._polygons[n + 19]:
+							if typeName not in layerVBOs:
 								if generatedVBO:
 									continue
 								polygons = []
 								for i in xrange(0, 20):
-									if typeName in self._result._polygons[n + i]:
-										polygons += self._result._polygons[n + i][typeName]
+									if typeName in result._polygons[n + i]:
+										polygons += result._polygons[n + i][typeName]
 								layerVBOs[typeName] = self._polygonsToVBO_lines(polygons)
 								generatedVBO = True
 							glColor4f(color[0]*0.5,color[1]*0.5,color[2]*0.5,color[3])
 							layerVBOs[typeName].render()
-				n += 20
+				n -= 20
 			else:
 				c = 1.0 - ((layerNr - n) - 1) * 0.05
 				c = max(0.5, c)
 				while len(self._layerVBOs) < n + 1:
 					self._layerVBOs.append({})
 				layerVBOs = self._layerVBOs[n]
-				if gcodeLayers is not None and layerNr - 10 < n < len(gcodeLayers):
+				if gcodeLayers is not None and layerNr - 10 < n < (len(gcodeLayers) - 1):
 					for _, typeName, color in lineTypeList:
 						if typeName is None:
 							continue
 						if 'GCODE-' + typeName not in layerVBOs:
-							layerVBOs['GCODE-' + typeName] = self._gcodeToVBO_quads(gcodeLayers[n:n+1], typeName)
+							layerVBOs['GCODE-' + typeName] = self._gcodeToVBO_quads(gcodeLayers[n+1:n+2], typeName)
 						glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
 						layerVBOs['GCODE-' + typeName].render()
 
 					if n == layerNr - 1:
 						if 'GCODE-MOVE' not in layerVBOs:
-							layerVBOs['GCODE-MOVE'] = self._gcodeToVBO_lines(gcodeLayers[n:n+1])
+							layerVBOs['GCODE-MOVE'] = self._gcodeToVBO_lines(gcodeLayers[n+1:n+2])
 						glColor4f(0,0,c,1)
 						layerVBOs['GCODE-MOVE'].render()
-				elif self._result is not None and self._result._polygons is not None and n < len(self._result._polygons):
-					polygons = self._result._polygons[n]
+				elif result is not None and result._polygons is not None and n < len(result._polygons):
+					polygons = result._polygons[n]
 					for typeName, _, color in lineTypeList:
 						if typeName in polygons:
 							if typeName not in layerVBOs:
 								layerVBOs[typeName] = self._polygonsToVBO_lines(polygons[typeName])
 							glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
 							layerVBOs[typeName].render()
-				n += 1
+				n -= 1
 		glPopMatrix()
 		if generatedVBO:
 			self._parent._queueRefresh()
