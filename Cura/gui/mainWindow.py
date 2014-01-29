@@ -64,7 +64,7 @@ class mainWindow(wx.Frame):
 		i = self.fileMenu.Append(-1, _("Save GCode..."))
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveGCode(), i)
 		i = self.fileMenu.Append(-1, _("Show slice engine log..."))
-		self.Bind(wx.EVT_MENU, lambda e: self.scene._showSliceLog(), i)
+		self.Bind(wx.EVT_MENU, lambda e: self.scene._showEngineLog(), i)
 
 		self.fileMenu.AppendSeparator()
 		i = self.fileMenu.Append(-1, _("Open Profile..."))
