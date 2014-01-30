@@ -29,13 +29,12 @@ class dummyConnection(printerConnectionBase.printerConnectionBase):
 		self.printThread.daemon = True
 		self.printThread.start()
 
-	#Load the file into memory for printing.
-	def loadFile(self, filename):
+	#Load the data into memory for printing, returns True on success
+	def loadGCodeData(self, dataStream):
 		if self._printing:
 			return False
 		self._lineCount = 0
-		f = open(filename, "r")
-		for line in f:
+		for line in dataStream:
 			#Strip out comments, we do not need to send comments
 			if ';' in line:
 				line = line[:line.index(';')]

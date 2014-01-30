@@ -39,8 +39,8 @@ class printerConnectionBase(object):
 	def getName(self):
 		return self._name
 
-	#Load the file into memory for printing, returns True on success
-	def loadFile(self, filename):
+	#Load the data into memory for printing, returns True on success
+	def loadGCodeData(self, dataStream):
 		return False
 
 	#Start printing the previously loaded file

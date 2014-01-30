@@ -122,15 +122,14 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		self.checkThread.start()
 
 	#Load the file into memory for printing.
-	def loadFile(self, filename):
+	def loadGCodeData(self, dataStream):
 		if self._printing:
 			return False
 		self._fileBlocks = []
 		self._lineCount = 0
 		block = []
 		blockSize = 0
-		f = open(filename, "r")
-		for line in f:
+		for line in dataStream:
 			#Strip out comments, we do not need to send comments
 			if ';' in line:
 				line = line[:line.index(';')]
@@ -148,7 +147,6 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 			blockSize += len(line) + 1
 			block.append(line)
 		self._fileBlocks.append('\n'.join(block) + '\n')
-		f.close()
 		self._doCallback()
 		return True
 

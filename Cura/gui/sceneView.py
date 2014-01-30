@@ -267,8 +267,7 @@ class SceneView(openglGui.glGuiPanel):
 			connection.window = printWindow2.printWindow(connection)
 		connection.window.Show()
 		connection.window.Raise()
-		#TODO: Fix for _engine.getResult
-		if not connection.loadFile(self._gcodeFilename):
+		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):
 			if connection.isPrinting():
 				self.notification.message("Cannot start print, because other print still running.")
 			else:
