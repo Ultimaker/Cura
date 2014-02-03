@@ -230,13 +230,16 @@ class MachineCom(object):
 		return "?%d?" % (self._state)
 	
 	def getShortErrorString(self):
-		if len(self._errorValue) < 30:
+		if len(self._errorValue) < 35:
 			return self._errorValue
-		return self._errorValue[:30] + "..."
+		return self._errorValue[:35] + "..."
 
 	def getErrorString(self):
 		return self._errorValue
-	
+
+	def isClosed(self):
+		return self._state == self.STATE_CLOSED_WITH_ERROR or self._state == self.STATE_CLOSED
+
 	def isClosedOrError(self):
 		return self._state == self.STATE_ERROR or self._state == self.STATE_CLOSED_WITH_ERROR or self._state == self.STATE_CLOSED
 

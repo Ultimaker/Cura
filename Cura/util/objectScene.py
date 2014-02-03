@@ -241,6 +241,8 @@ class Scene(object):
 
 	def checkPlatform(self, obj):
 		area = obj._printAreaHull + obj.getPosition()
+		if obj.getSize()[2] > self._machineSize[2]:
+			return False
 		if not polygon.fullInside(area, self._machinePolygons[0]):
 			return False
 		#Check the "no go zones"

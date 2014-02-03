@@ -257,7 +257,7 @@ class Engine(object):
 
 		extruderCount = max(extruderCount, profile.minimalExtruderCount())
 
-		commandList = [getEngineFilename(), '-vvv']
+		commandList = [getEngineFilename(), '-v', '-p']
 		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
 		commandList += ['-g', '%d' % self._serverPortNr]

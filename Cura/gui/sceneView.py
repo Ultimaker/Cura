@@ -217,9 +217,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnPrintButton(self, button):
 		if button == 1:
 			connectionGroup = self._printerConnectionManager.getAvailableGroup()
-			if machineCom.machineIsConnected():
-				self.showPrintWindow()
-			elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
+			if len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
 					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", map(lambda n: n[0], drives))
@@ -248,7 +246,6 @@ class SceneView(openglGui.glGuiPanel):
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
-			self.Bind(wx.EVT_MENU, lambda e: self.showPrintWindow(), menu.Append(-1, _("Print with USB")))
 			connections = self._printerConnectionManager.getAvailableConnections()
 			menu.connectionMap = {}
 			for connection in connections:
@@ -271,17 +268,6 @@ class SceneView(openglGui.glGuiPanel):
 				self.notification.message("Cannot start print, because other print still running.")
 			else:
 				self.notification.message("Failed to start print...")
-
-	def showPrintWindow(self):
-		if self._gcodeFilename is None:
-			return
-		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
-			wx.MessageBox(_("USB printing on the Ultimaker2 is not supported."), _("USB Printing Error"), wx.OK | wx.ICON_WARNING)
-			return
-		#TODO: Fix for _engine.getResult
-		self._usbPrintMonitor.loadFile(self._gcodeFilename, self._engine.getID())
-		if self._gcodeFilename is None:
-			self._engine.submitInfoOnline()
 
 	def showSaveGCode(self):
 		if len(self._scene._objectList) < 1:
@@ -881,10 +867,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnPaint(self,e):
 		connectionGroup = self._printerConnectionManager.getAvailableGroup()
-		if machineCom.machineIsConnected():
-			self.printButton._imageID = 6
-			self.printButton._tooltip = _("Print")
-		elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
+		if len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 			self.printButton._imageID = 2
 			self.printButton._tooltip = _("Toolpath to SD")
 		elif connectionGroup is not None:

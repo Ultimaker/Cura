@@ -16,6 +16,12 @@ class dummyConnectionGroup(printerConnectionBase.printerConnectionGroup):
 	def getAvailableConnections(self):
 		return self._list
 
+	def getIconID(self):
+		return 5
+
+	def getPriority(self):
+		return -100
+
 #Dummy printer class which is always
 class dummyConnection(printerConnectionBase.printerConnectionBase):
 	def __init__(self, name):

@@ -34,12 +34,6 @@ class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 	def getPriority(self):
 		return 100
 
-	def __cmp__(self, other):
-		return self.getPriority() - other.getPriority()
-
-	def __repr__(self):
-		return self.name
-
 	def _doodle3DThread(self):
 		self._waitDelay = 0
 		while True:

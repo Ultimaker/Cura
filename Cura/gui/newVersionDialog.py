@@ -26,14 +26,8 @@ class newVersionDialog(wx.Dialog):
 		s.Add(wx.StaticText(p, -1, '(This dialog is only shown once)'))
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 		s.Add(wx.StaticText(p, -1, 'New in this version:'))
-		s.Add(wx.StaticText(p, -1, '* Fixed a rare bug that caused the CuraEngine to crash on some models.'))
-		s.Add(wx.StaticText(p, -1, '* Added support for multiple Doodle3D boxes on the same network.'))
-		s.Add(wx.StaticText(p, -1, '* Made it possible to switch between "all at once" and "one at a time printing"'))
-		s.Add(wx.StaticText(p, -1, '* Improved USB communication stability.'))
-		s.Add(wx.StaticText(p, -1, '* Improved USB auto-detection for none-Ultimaker printers.'))
-		s.Add(wx.StaticText(p, -1, '* Set retraction enabled by default and in the quickprint profiles.'))
-		s.Add(wx.StaticText(p, -1, '* Fixed a bug that caused loading of really small objects to fail.'))
-		s.Add(wx.StaticText(p, -1, '* Made camera keyboard controls accessible in the GCode view, use shift+up/down for layer changes now.'))
+		s.Add(wx.StaticText(p, -1, '* Improved the LayerView rendering speed.'))
+		s.Add(wx.StaticText(p, -1, '* Made the LayerView update during slicing, so you can see the result before it is ready.'))
 
 		self.hasUltimaker = None
 		self.hasUltimaker2 = None
@@ -49,13 +43,10 @@ class newVersionDialog(wx.Dialog):
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimakerFirmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
-		if self.hasUltimaker2 is not None:
+		if self.hasUltimaker2 is not None and False:
 			s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker2:'))
-			s.Add(wx.StaticText(p, -1, '* Fixed the bug where aborting a print caused massive retraction.'))
-			s.Add(wx.StaticText(p, -1, '* Fixed a bug where going into move-material when the printer was still moving caused a bed-crash.'))
-			s.Add(wx.StaticText(p, -1, '* Added bed temperature when cooling down the printer.'))
-			s.Add(wx.StaticText(p, -1, '* Allow abort if bed-leveling is selected.'))
+			s.Add(wx.StaticText(p, -1, '* .'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimaker2Firmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
