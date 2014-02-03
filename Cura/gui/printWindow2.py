@@ -250,7 +250,7 @@ class printWindow(wx.Frame):
 		if len(self.termLog.GetValue()) > 10000:
 			self.termLog.SetValue(self.termLog.GetValue()[-10000:])
 		self.termLog.SetInsertionPointEnd()
-		self.termLog.AppendText(line.encode('utf-8', 'replace'))
+		self.termLog.AppendText(unicode(line, 'utf-8', 'replace').encode('utf-8', 'replace'))
 
 	def _doPrinterConnectionUpdate(self, connection, extraInfo = None):
 		wx.CallAfter(self.__doPrinterConnectionUpdate, connection, extraInfo)
@@ -264,7 +264,7 @@ class printWindow(wx.Frame):
 		self.lastUpdateTime = t
 
 		if extraInfo is not None:
-			self._addTermLog(extraInfo)
+			self._addTermLog('<%s\n' % (extraInfo))
 
 		self.UpdateButtonStates()
 		if connection.isPrinting():

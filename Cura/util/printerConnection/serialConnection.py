@@ -42,7 +42,6 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 		self._temperature = []
 
-		self._lineCount = 0
 		self._commState = None
 		self._commStateString = None
 		self._gcodeData = []
@@ -72,19 +71,23 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		for line in self._gcodeData:
 			self._process.stdin.write('G:%s\n' % (line))
 		self._process.stdin.write('START\n')
+		self._printProgress = 0
 
 	#Abort the previously loaded print file
 	def cancelPrint(self):
-		pass
+		if not self.isPrinting()or self._process is None:
+			return
+		self._process.stdin.write('STOP\n')
+		self._printProgress = 0
 
 	def isPrinting(self):
 		return self._commState == machineCom.MachineCom.STATE_PRINTING
 
 	#Amount of progression of the current print file. 0.0 to 1.0
 	def getPrintProgress(self):
-		if self._lineCount < 1:
+		if len(self._gcodeData) < 1:
 			return 0.0
-		return float(self._progressLine) / float(self._lineCount)
+		return float(self._printProgress) / float(len(self._gcodeData))
 
 	# Return if the printer with this connection type is available
 	def isAvailable(self):
@@ -137,7 +140,9 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		while len(line) > 0:
 			line = line.strip()
 			line = line.split(':', 1)
-			if line[0] == 'log':
+			if line[0] == '':
+				pass
+			elif line[0] == 'log':
 				pass
 			elif line[0] == 'temp':
 				line = line[1].split(':', 1)
@@ -149,6 +154,9 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				line = line[1].split(':', 1)
 				self._commState = int(line[0])
 				self._commStateString = line[1]
+				self._doCallback()
+			elif line[0] == 'progress':
+				self._printProgress = int(line[1])
 				self._doCallback()
 			else:
 				print line

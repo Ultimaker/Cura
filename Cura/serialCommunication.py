@@ -38,7 +38,6 @@ class serialComm(object):
 		sys.stdout.write('changeZ:%d\n' % (newZ))
 
 	def monitorStdin(self):
-
 		while not self._comm.isClosed():
 			line = sys.stdin.readline().strip()
 			line = line.split(':', 1)
