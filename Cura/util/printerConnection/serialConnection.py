@@ -6,6 +6,7 @@ import platform
 import os
 import sys
 import subprocess
+import json
 
 from Cura.util import machineCom
 from Cura.util.printerConnection import printerConnectionBase
@@ -22,7 +23,7 @@ class serialConnectionGroup(printerConnectionBase.printerConnectionGroup):
 				self._connectionMap[port] = serialConnection(port)
 		for key in self._connectionMap.keys():
 			if key not in serialList and not self._connectionMap[key].isActiveConnectionOpen():
-				self._connectionMap[key] = None
+				self._connectionMap.pop(key)
 		return self._connectionMap.values()
 
 	def getIconID(self):
@@ -38,6 +39,8 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 		self._process = None
 		self._thread = None
+
+		self._temperature = []
 
 		self._lineCount = 0
 		self._commState = None
@@ -115,6 +118,11 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			return False
 		return self._commState == machineCom.MachineCom.STATE_OPERATIONAL or self._commState == machineCom.MachineCom.STATE_PRINTING or self._commState == machineCom.MachineCom.STATE_PAUSED
 
+	def getTemperature(self, extruder):
+		if extruder >= len(self._temperature):
+			return None
+		return self._temperature[extruder]
+
 	def _serialCommunicationThread(self):
 		if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
 			cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura')]
@@ -132,7 +140,11 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			if line[0] == 'log':
 				pass
 			elif line[0] == 'temp':
-				pass
+				line = line[1].split(':', 1)
+				self._temperature = json.loads(line[0])
+				self._doCallback()
+			elif line[0] == 'message':
+				self._doCallback(line[1])
 			elif line[0] == 'state':
 				line = line[1].split(':', 1)
 				self._commState = int(line[0])

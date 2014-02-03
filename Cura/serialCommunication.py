@@ -6,6 +6,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import sys
 import time
 import os
+import json
 
 from Cura.util import machineCom
 
@@ -20,7 +21,7 @@ class serialComm(object):
 		sys.stdout.write('log:%s\n' % (message))
 
 	def mcTempUpdate(self, temp, bedTemp, targetTemp, bedTargetTemp):
-		sys.stdout.write('temp:%s\n' % str(temp))
+		sys.stdout.write('temp:%s\n' % json.dumps(temp))
 
 	def mcStateChange(self, state):
 		if self._comm is None:
@@ -43,7 +44,7 @@ class serialComm(object):
 			line = line.split(':', 1)
 			if line[0] == 'STOP':
 				self._comm.cancelPrint()
-				self._gcodeList = []
+				self._gcodeList = ['M110']
 			elif line[0] == 'G':
 				self._gcodeList.append(line[1])
 			elif line[0] == 'START':

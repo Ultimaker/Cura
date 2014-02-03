@@ -259,9 +259,12 @@ class printWindow(wx.Frame):
 
 	def __doPrinterConnectionUpdate(self, connection, extraInfo):
 		t = time.time()
-		if self.lastUpdateTime + 0.5 > t:
+		if self.lastUpdateTime + 0.5 > t and extraInfo is None:
 			return
 		self.lastUpdateTime = t
+
+		if extraInfo is not None:
+			self._addTermLog(extraInfo)
 
 		self.UpdateButtonStates()
 		if connection.isPrinting():
