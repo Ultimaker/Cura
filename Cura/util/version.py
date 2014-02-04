@@ -1,3 +1,7 @@
+"""
+The version utility module is used to get the current Cura version, and check for updates.
+It can also see if we are running a development build of Cura.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import os

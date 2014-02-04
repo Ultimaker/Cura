@@ -1,9 +1,17 @@
+"""
+The util3d module a vector class to work with 3D points. All the basic math operators have been overloaded to work on this object.
+This module is deprecated and only used by the SplitModels function.
+
+Use numpy arrays instead to work with vectors.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import math
 
 class Vector3(object):
+	""" 3D vector object. """
 	def __init__(self, x=0.0, y=0.0, z=0.0):
+		"""Create a new 3D vector"""
 		self.x = x
 		self.y = y
 		self.z = z

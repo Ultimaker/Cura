@@ -1,3 +1,12 @@
+"""
+Setting validators.
+These are the validators for various profile settings, each validator can be attached to a setting.
+The validators can be queried to see if the setting is valid.
+There are 3 possible outcomes:
+	Valid	- No problems found
+	Warning - The value is valid, but not recommended
+	Error	- The value is not a proper number, out of range, or some other way wrong.
+"""
 from __future__ import division
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 

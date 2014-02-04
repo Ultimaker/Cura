@@ -1,3 +1,10 @@
+"""
+DAE are COLLADA files.
+The DAE reader is a limited COLLADA reader. And has only been tested with DAE exports from SketchUp, http://www.sketchup.com/
+The reason for this reader in Cura is that the free version of SketchUp by default does not support any other format that we can read.
+
+http://en.wikipedia.org/wiki/COLLADA
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 from  xml.parsers.expat import ParserCreate

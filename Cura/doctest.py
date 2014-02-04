@@ -11,6 +11,7 @@ import types
 import random
 
 def treeWalk(moduleList, dirname, fnames):
+	""" Callback from the os.path.walk function, see if the given path is a module and import it to put it in the moduleList """
 	dirname = dirname.replace("\\", ".").replace("/", ".")
 	if dirname == 'Cura.util.pymclevel':
 		return
@@ -33,6 +34,11 @@ def treeWalk(moduleList, dirname, fnames):
 			print "Failed to load: %s" % (fullName)
 
 def main():
+	"""
+	Main doctest function.
+	Calculate how many things are documented and not documented yet.
+	And report a random selection of undocumented functions/ modules.
+	"""
 	moduleList = []
 	os.path.walk("Cura", treeWalk, moduleList)
 	moduleDocCount = 0
@@ -48,6 +54,11 @@ def main():
 			undocList.append(module.__name__)
 		for name in dir(module):
 			a = getattr(module, name)
+			try:
+				if not inspect.getfile(a).startswith('Cura'):
+					continue
+			except:
+				continue
 			if type(a) is types.FunctionType:
 				functionCount += 1
 				if inspect.getdoc(a):
@@ -74,6 +85,7 @@ def main():
 	print '%d/%d modules have documentation.' % (moduleDocCount, len(moduleList))
 	print '%d/%d functions have documentation.' % (functionDocCount, functionCount)
 	print '%d/%d types have documentation.' % (typeDocCount, typeCount)
+	print '%.1f%% documented.' % (float(moduleDocCount + functionDocCount + typeDocCount) / float(len(moduleList) + functionCount + typeCount) * 100.0)
 	print ''
 	print 'You might want to document:'
 	for n in xrange(0, 10):

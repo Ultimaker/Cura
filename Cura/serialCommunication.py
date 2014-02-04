@@ -1,8 +1,12 @@
+"""
+Serial communication with the printer for printing is done from a separate process,
+this to ensure that the PIL does not block the serial printing.
+
+This file is the 2nd process that is started to handle communication with the printer.
+And handles all communication with the initial process.
+"""
+
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
-
-# Serial communication with the printer for printing is done from a separate process,
-# this to ensure that the PIL does not block the serial printing.
-
 import sys
 import time
 import os

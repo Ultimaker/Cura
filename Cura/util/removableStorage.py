@@ -1,3 +1,10 @@
+"""
+This module handles detection and clean ejection of removable storage. (Mainly SD cards)
+This is OS depended.
+	On windows it looks for removable storage drives.
+	On MacOS it specificly looks for SD cards.
+	On Linux it looks for anything mounted in /media/
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import platform
 import string
