@@ -1,3 +1,8 @@
+"""
+Module to read intel hex files into binary data blobs.
+IntelHex files are commonly used to distribute firmware
+See: http://en.wikipedia.org/wiki/Intel_HEX
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import io
 
