@@ -23,7 +23,7 @@ class printWindow(wx.Frame):
 		self.sizer = wx.GridBagSizer(2, 2)
 		self.panel.SetSizer(self.sizer)
 
-		sb = wx.StaticBox(self.panel, label=_("Statistics"))
+		sb = wx.StaticBox(self.panel, label=_("Info"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 
 		self.powerWarningText = wx.StaticText(parent=self.panel,
@@ -175,6 +175,9 @@ class printWindow(wx.Frame):
 		self.UpdateButtonStates()
 
 		self._printerConnection.addCallback(self._doPrinterConnectionUpdate)
+
+		if self._printerConnection.hasActiveConnection() and not self._printerConnection.isActiveConnectionOpen():
+			self._printerConnection.openActiveConnection()
 
 	def OnPowerWarningChange(self, e):
 		type = self.powerManagement.get_providing_power_source_type()

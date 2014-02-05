@@ -1,3 +1,7 @@
+"""
+STK500v2 protocol implementation for programming AVR chips.
+The STK500v2 protocol is used by the ArduinoMega2560 and a few other Arduino platforms to load firmware.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import os, struct, sys, time
 

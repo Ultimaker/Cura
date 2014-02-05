@@ -1,3 +1,9 @@
+"""
+The objectScene module contain a objectScene class,
+this class contains a group of printableObjects that are located on the build platform.
+
+The objectScene handles the printing order of these objects, and if they collide.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import random
 import numpy

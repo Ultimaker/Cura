@@ -13,6 +13,8 @@ import random
 def treeWalk(moduleList, dirname, fnames):
 	""" Callback from the os.path.walk function, see if the given path is a module and import it to put it in the moduleList """
 	dirname = dirname.replace("\\", ".").replace("/", ".")
+	if dirname.startswith('Cura.gui'):
+		return
 	if dirname == 'Cura.util.pymclevel':
 		return
 	if dirname == 'Cura.util.Power':

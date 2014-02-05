@@ -15,7 +15,7 @@ try:
 except:
 	from xml.etree import ElementTree
 
-from Cura.util import mesh
+from Cura.util import printableObject
 from Cura.util import profile
 
 def loadScene(filename):
@@ -48,7 +48,7 @@ def loadScene(filename):
 
 	ret = []
 	for amfObj in amf.iter('object'):
-		obj = mesh.printableObject(filename)
+		obj = printableObject.printableObject(filename)
 		for amfMesh in amfObj.iter('mesh'):
 			vertexList = []
 			for vertices in amfMesh.iter('vertices'):

@@ -3,7 +3,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import wx
 import numpy
 
-from Cura.util import mesh
+from Cura.util import printableObject
 
 def supportedExtensions():
 	return ['.bmp', '.jpg', '.jpeg', '.png']
@@ -128,7 +128,7 @@ def convertImage(filename, height=20.0, width=100.0, blur=0, invert=False, baseH
 	v3 = v0[1:,0:-1,:]
 	v4 = v0[1:,1:,:]
 
-	obj = mesh.printableObject(filename)
+	obj = printableObject.printableObject(filename)
 	m = obj._addMesh()
 	m._prepareFaceCount((w-1) * (h-1) * 2 + 2 + (w-1)*4 + (h-1)*4)
 	m.vertexes = numpy.array(numpy.concatenate((v1,v3,v2,v2,v3,v4), 2).reshape(((w-1) * (h-1) * 6, 3)), numpy.float32, copy=False)

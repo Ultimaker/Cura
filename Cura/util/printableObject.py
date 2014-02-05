@@ -1,3 +1,8 @@
+"""
+The printableObject module contains a printableObject class,
+which is used to represent a single object that can be printed.
+A single object can have 1 or more meshes which represent different sections for multi-material extrusion.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import time

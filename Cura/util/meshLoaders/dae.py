@@ -10,7 +10,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 from  xml.parsers.expat import ParserCreate
 import os
 
-from Cura.util import mesh
+from Cura.util import printableObject
 
 def loadScene(filename):
 	loader = daeLoader(filename)
@@ -18,7 +18,7 @@ def loadScene(filename):
 
 class daeLoader(object):
 	def __init__(self, filename):
-		self.obj = mesh.printableObject(filename)
+		self.obj = printableObject.printableObject(filename)
 		self.mesh = self.obj._addMesh()
 
 		r = ParserCreate()

@@ -1,3 +1,7 @@
+"""
+The GCodeInterpreter module generates layer information from GCode.
+It does this by parsing the whole GCode file. On large files this can take a while and should be used from a thread.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import sys
@@ -85,16 +89,18 @@ class gcode(object):
 				pathType = line[6:].strip()
 
 			if ';' in line:
-				#Slic3r GCode comment parser
 				comment = line[line.find(';')+1:].strip()
+				#Slic3r GCode comment parser
 				if comment == 'fill':
 					pathType = 'FILL'
 				elif comment == 'perimeter':
 					pathType = 'WALL-INNER'
 				elif comment == 'skirt':
 					pathType = 'SKIRT'
+				#Cura layer comments.
 				if comment.startswith('LAYER:'):
 					currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
+					layerThickness = 0.0
 					currentPath['extruder'] = currentExtruder
 					for path in currentLayer:
 						path['points'] = numpy.array(path['points'], numpy.float32)
@@ -155,7 +161,8 @@ class gcode(object):
 					if moveType == 'move' and oldPos[2] != pos[2]:
 						if oldPos[2] > pos[2] and abs(oldPos[2] - pos[2]) > 5.0 and pos[2] < 1.0:
 							oldPos[2] = 0.0
-						layerThickness = abs(oldPos[2] - pos[2])
+						if layerThickness == 0.0:
+							layerThickness = abs(oldPos[2] - pos[2])
 					if currentPath['type'] != moveType or currentPath['pathType'] != pathType:
 						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
 						currentPath['extruder'] = currentExtruder

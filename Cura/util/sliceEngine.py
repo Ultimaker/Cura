@@ -441,6 +441,7 @@ class Engine(object):
 			'retractionSpeed': int(profile.getProfileSettingFloat('retraction_speed')),
 			'retractionMinimalDistance': int(profile.getProfileSettingFloat('retraction_min_travel') * 1000),
 			'retractionAmountExtruderSwitch': int(profile.getProfileSettingFloat('retraction_dual_amount') * 1000),
+			'retractionZHop': int(profile.getProfileSettingFloat('retraction_hop') * 1000),
 			'minimalExtrusionBeforeRetraction': int(profile.getProfileSettingFloat('retraction_minimal_extrusion') * 1000),
 			'enableCombing': 1 if profile.getProfileSetting('retraction_combing') == 'True' else 0,
 			'multiVolumeOverlap': int(profile.getProfileSettingFloat('overlap_dual') * 1000),
