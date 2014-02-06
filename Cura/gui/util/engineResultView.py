@@ -71,7 +71,7 @@ class engineResultView(object):
 		glLineWidth(2)
 
 		layerNr = self.layerSelect.getValue()
-		if layerNr == self.layerSelect.getMaxValue():
+		if layerNr == self.layerSelect.getMaxValue() and result is not None:
 			layerNr = max(layerNr, len(result._polygons))
 		viewZ = (layerNr - 1) * profile.getProfileSettingFloat('layer_height') + profile.getProfileSettingFloat('bottom_thickness')
 		self._parent._viewTarget[2] = viewZ
