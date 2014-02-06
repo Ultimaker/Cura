@@ -901,78 +901,78 @@ class SceneView(openglGui.glGuiPanel):
 		if self._objectShader is None:
 			if openglHelpers.hasShaderSupport():
 				self._objectShader = openglHelpers.GLShader("""
-varying float light_amount;
+					varying float light_amount;
 
-void main(void)
-{
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-    gl_FrontColor = gl_Color;
+					void main(void)
+					{
+						gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+						gl_FrontColor = gl_Color;
 
-	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount += 0.2;
-}
-				""","""
-varying float light_amount;
+						light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+						light_amount += 0.2;
+					}
+									""","""
+					varying float light_amount;
 
-void main(void)
-{
-	gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
-}
+					void main(void)
+					{
+						gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
+					}
 				""")
 				self._objectOverhangShader = openglHelpers.GLShader("""
-uniform float cosAngle;
-uniform mat3 rotMatrix;
-varying float light_amount;
+					uniform float cosAngle;
+					uniform mat3 rotMatrix;
+					varying float light_amount;
 
-void main(void)
-{
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-    gl_FrontColor = gl_Color;
+					void main(void)
+					{
+						gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+						gl_FrontColor = gl_Color;
 
-	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount += 0.2;
-	if (normalize(rotMatrix * gl_Normal).z < -cosAngle)
-	{
-		light_amount = -10.0;
-	}
-}
+						light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+						light_amount += 0.2;
+						if (normalize(rotMatrix * gl_Normal).z < -cosAngle)
+						{
+							light_amount = -10.0;
+						}
+					}
 				""","""
-varying float light_amount;
+					varying float light_amount;
 
-void main(void)
-{
-	if (light_amount == -10.0)
-	{
-		gl_FragColor = vec4(1.0, 0.0, 0.0, gl_Color[3]);
-	}else{
-		gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
-	}
-}
-				""")
+					void main(void)
+					{
+						if (light_amount == -10.0)
+						{
+							gl_FragColor = vec4(1.0, 0.0, 0.0, gl_Color[3]);
+						}else{
+							gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
+						}
+					}
+									""")
 				self._objectLoadShader = openglHelpers.GLShader("""
-uniform float intensity;
-uniform float scale;
-varying float light_amount;
+					uniform float intensity;
+					uniform float scale;
+					varying float light_amount;
 
-void main(void)
-{
-	vec4 tmp = gl_Vertex;
-    tmp.x += sin(tmp.z/5.0+intensity*30.0) * scale * intensity;
-    tmp.y += sin(tmp.z/3.0+intensity*40.0) * scale * intensity;
-    gl_Position = gl_ModelViewProjectionMatrix * tmp;
-    gl_FrontColor = gl_Color;
+					void main(void)
+					{
+						vec4 tmp = gl_Vertex;
+						tmp.x += sin(tmp.z/5.0+intensity*30.0) * scale * intensity;
+						tmp.y += sin(tmp.z/3.0+intensity*40.0) * scale * intensity;
+						gl_Position = gl_ModelViewProjectionMatrix * tmp;
+						gl_FrontColor = gl_Color;
 
-	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount += 0.2;
-}
+						light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+						light_amount += 0.2;
+					}
 			""","""
-uniform float intensity;
-varying float light_amount;
+				uniform float intensity;
+				varying float light_amount;
 
-void main(void)
-{
-	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
-}
+				void main(void)
+				{
+					gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
+				}
 				""")
 			if self._objectShader is None or not self._objectShader.isValid():
 				self._objectShader = openglHelpers.GLFakeShader()
@@ -1072,9 +1072,9 @@ void main(void)
 				glPushMatrix()
 				glLoadIdentity()
 				glEnable(GL_STENCIL_TEST)
-				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
+				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP) #Keep values
 				glDisable(GL_DEPTH_TEST)
-				for i in xrange(2, 15, 2):
+				for i in xrange(2, 15, 2): #All even values
 					glStencilFunc(GL_EQUAL, i, 0xFF)
 					glColor(float(i)/10, float(i)/10, float(i)/5)
 					glBegin(GL_QUADS)
@@ -1083,7 +1083,7 @@ void main(void)
 					glVertex3f( 1000, 1000,-10)
 					glVertex3f(-1000, 1000,-10)
 					glEnd()
-				for i in xrange(1, 15, 2):
+				for i in xrange(1, 15, 2): #All odd values
 					glStencilFunc(GL_EQUAL, i, 0xFF)
 					glColor(float(i)/10, 0, 0)
 					glBegin(GL_QUADS)
@@ -1128,7 +1128,7 @@ void main(void)
 					layer = 1
 				self.layerSelect.setValue(layer)
 			else:
-				size = self._machineSize
+				size = self._machineSize #Typing is hard.
 				glEnable(GL_BLEND)
 				glColor4ub(255,255,0,128)
 				glBegin(GL_QUADS)
@@ -1153,7 +1153,7 @@ void main(void)
 						glVertex3f(p[0], p[1], 0)
 					glEnd()
 					glPopMatrix()
-				if self._scene.isOneAtATime():
+				if self._scene.isOneAtATime(): #Check print sequence mode.
 					glPushMatrix()
 					glColor4f(0,0,0,0.06)
 					glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0)
@@ -1169,7 +1169,7 @@ void main(void)
 				glDepthMask(True)
 				glDisable(GL_CULL_FACE)
 
-			#Draw the outline of the selected object, on top of everything else except the GUI.
+			#Draw the outline of the selected object on top of everything else except the GUI.
 			if self._selectedObj is not None and self._selectedObj._loadAnim is None:
 				glDisable(GL_DEPTH_TEST)
 				glEnable(GL_CULL_FACE)
@@ -1203,7 +1203,7 @@ void main(void)
 			openglHelpers.glDrawStringCenter(_("Overhang view not working due to lack of OpenGL shaders support."))
 			glPopMatrix()
 
-	def _renderObject(self, obj, brightness = False, addSink = True):
+	def _renderObject(self, obj, brightness = 0, addSink = True):
 		glPushMatrix()
 		if addSink:
 			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2 - profile.getProfileSettingFloat('object_sink'))
@@ -1211,21 +1211,19 @@ void main(void)
 			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
 
 		if self.tempMatrix is not None and obj == self._selectedObj:
-			tempMatrix = openglHelpers.convert3x3MatrixTo4x4(self.tempMatrix)
-			glMultMatrixf(tempMatrix)
+			glMultMatrixf(openglHelpers.convert3x3MatrixTo4x4(self.tempMatrix))
 
 		offset = obj.getDrawOffset()
 		glTranslate(-offset[0], -offset[1], -offset[2] - obj.getSize()[2] / 2)
 
-		tempMatrix = openglHelpers.convert3x3MatrixTo4x4(obj.getMatrix())
-		glMultMatrixf(tempMatrix)
+		glMultMatrixf(openglHelpers.convert3x3MatrixTo4x4(obj.getMatrix()))
 
 		n = 0
 		for m in obj._meshList:
 			if m.vbo is None:
 				m.vbo = openglHelpers.GLVBO(GL_TRIANGLES, m.vertexes, m.normal)
-			if brightness:
-				glColor4fv(map(lambda n: n * brightness, self._objColors[n]))
+			if brightness != 0:
+				glColor4fv(map(lambda idx: idx * brightness, self._objColors[n]))
 				n += 1
 			m.vbo.render()
 		glPopMatrix()
@@ -1308,6 +1306,7 @@ void main(void)
 		height = profile.getMachineSettingFloat('machine_height')
 		circular = profile.getMachineSetting('machine_shape') == 'Circular'
 		glBegin(GL_QUADS)
+		# Draw the sides of the build volume.
 		for n in xrange(0, len(polys[0])):
 			if not circular:
 				if n % 2 == 0:
@@ -1322,6 +1321,8 @@ void main(void)
 			glVertex3f(polys[0][n-1][0], polys[0][n-1][1], 0)
 			glVertex3f(polys[0][n-1][0], polys[0][n-1][1], height)
 		glEnd()
+
+		#Draw top of build volume.
 		glColor4ub(5, 171, 231, 128)
 		glBegin(GL_TRIANGLE_FAN)
 		for p in polys[0][::-1]:
@@ -1342,6 +1343,8 @@ void main(void)
 			glTexCoord2f(p[0]/20, p[1]/20)
 			glVertex3f(p[0], p[1], 0)
 		glEnd()
+
+		#Draw no-go zones. (clips in case of UM2)
 		glDisable(GL_TEXTURE_2D)
 		glColor4ub(127, 127, 127, 200)
 		for poly in polys[1:]:
@@ -1374,9 +1377,10 @@ void main(void)
 
 	def getObjectMatrix(self):
 		if self._selectedObj is None:
-			return numpy.matrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+			return numpy.matrix(numpy.identity(3))
 		return self._selectedObj.getMatrix()
 
+#TODO: Remove this or put it in a seperate file
 class shaderEditor(wx.Dialog):
 	def __init__(self, parent, callback, v, f):
 		super(shaderEditor, self).__init__(parent, title="Shader editor", style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
