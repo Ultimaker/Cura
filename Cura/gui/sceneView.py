@@ -785,6 +785,9 @@ class SceneView(openglGui.glGuiPanel):
 			if self._mouseState == 'tool':
 				self.tool.OnDrag(p0, p1)
 			elif not e.LeftIsDown() and e.RightIsDown():
+				if self._mouseState == 'dragObject' and self._selectedObj is not None:
+					self._scene.pushFree(self._selectedObj)
+					self.sceneUpdated()
 				self._mouseState = 'drag'
 				if wx.GetKeyState(wx.WXK_SHIFT):
 					a = math.cos(math.radians(self._yaw)) / 3.0
@@ -801,6 +804,9 @@ class SceneView(openglGui.glGuiPanel):
 				if self._pitch < 10:
 					self._pitch = 10
 			elif (e.LeftIsDown() and e.RightIsDown()) or e.MiddleIsDown():
+				if self._mouseState == 'dragObject' and self._selectedObj is not None:
+					self._scene.pushFree(self._selectedObj)
+					self.sceneUpdated()
 				self._mouseState = 'drag'
 				self._zoom += e.GetY() - self._mouseY
 				if self._zoom < 1:
