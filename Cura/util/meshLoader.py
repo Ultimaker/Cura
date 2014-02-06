@@ -19,14 +19,6 @@ def saveSupportedExtensions():
 	""" return a list of supported file extensions for saving. """
 	return ['.amf', '.stl']
 
-def loadWildcardFilter():
-	wildcardList = ';'.join(map(lambda s: '*' + s, loadSupportedExtensions()))
-	return "Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
-
-def saveWildcardFilter():
-	wildcardList = ';'.join(map(lambda s: '*' + s, saveSupportedExtensions()))
-	return "Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
-
 def loadMeshes(filename):
 	"""
 	loadMeshes loads 1 or more printableObjects from a file.

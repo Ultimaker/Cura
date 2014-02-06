@@ -191,7 +191,17 @@ class SceneView(openglGui.glGuiPanel):
 	def showLoadModel(self, button = 1):
 		if button == 1:
 			dlg=wx.FileDialog(self, _("Open 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
-			dlg.SetWildcard(meshLoader.loadWildcardFilter() + imageToMesh.wildcardList() + "|GCode file (*.gcode)|*.g;*.gcode;*.G;*.GCODE")
+
+			wildcardList = ';'.join(map(lambda s: '*' + s, meshLoader.loadSupportedExtensions() + imageToMesh.supportedExtensions() + ['.g', '.gcode']))
+			wildcardFilter = "All (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+			wildcardList = ';'.join(map(lambda s: '*' + s, meshLoader.loadSupportedExtensions()))
+			wildcardFilter += "|Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+			wildcardList = ';'.join(map(lambda s: '*' + s, imageToMesh.supportedExtensions()))
+			wildcardFilter += "|Image files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+			wildcardList = ';'.join(map(lambda s: '*' + s, ['.g', '.gcode']))
+			wildcardFilter += "|GCode files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+
+			dlg.SetWildcard(wildcardFilter)
 			if dlg.ShowModal() != wx.ID_OK:
 				dlg.Destroy()
 				return
@@ -206,7 +216,10 @@ class SceneView(openglGui.glGuiPanel):
 		if len(self._scene.objects()) < 1:
 			return
 		dlg=wx.FileDialog(self, _("Save 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
-		dlg.SetWildcard(meshLoader.saveWildcardFilter())
+		fileExtensions = meshLoader.saveSupportedExtensions()
+		wildcardList = ';'.join(map(lambda s: '*' + s, fileExtensions))
+		wildcardFilter = "Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+		dlg.SetWildcard(wildcardFilter)
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
 			return

@@ -8,9 +8,6 @@ from Cura.util import printableObject
 def supportedExtensions():
 	return ['.bmp', '.jpg', '.jpeg', '.png']
 
-def wildcardList():
-	return ';'.join(map(lambda s: '*' + s, supportedExtensions()))
-
 class convertImageDialog(wx.Dialog):
 	def __init__(self, parent, filename):
 		super(convertImageDialog, self).__init__(None, title="Convert image...")
