@@ -135,7 +135,7 @@ class CuraApp(wx.App):
 
 		setFullScreenCapable(self.mainWindow)
 
-if platform.system() == "Darwin":
+if platform.system() == "Darwin": #Mac magic. Dragons live here. THis sets full screen options.
 	try:
 		import ctypes, objc
 		_objc = ctypes.PyDLL(objc._objc.__file__)

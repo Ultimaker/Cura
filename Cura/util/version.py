@@ -52,7 +52,7 @@ def getVersion(getGitVersion = True):
 		version = f.readline()
 		f.close()
 		return version.strip()
-	return "?"
+	return "?" #No idea what the version is. TODO:Tell the user.
 
 def isDevVersion():
 	gitPath = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../../.git"))

@@ -10,7 +10,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 
 from Cura.gui.util import openglHelpers
-
+#TODO: Rename these. Name is vague.
 class toolNone(object):
 	def __init__(self, parent):
 		self.parent = parent

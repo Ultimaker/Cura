@@ -1,3 +1,6 @@
+"""
+Api for taskbar. Only for windows 7 or higher (filling up the icon while its progressing).
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 try:
