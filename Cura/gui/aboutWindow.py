@@ -3,9 +3,9 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import wx
 import platform
 
-class aboutWindow(wx.Dialog):
+class aboutWindow(wx.Frame):
 	def __init__(self):
-		super(aboutWindow, self).__init__(None, title="About")
+		super(aboutWindow, self).__init__(None, title="About", style = wx.DEFAULT_DIALOG_STYLE)
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
