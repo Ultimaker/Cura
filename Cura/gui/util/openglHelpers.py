@@ -14,9 +14,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 from OpenGL.GL import shaders
-glutInit()
-
-platformMesh = None
+glutInit() #Hack; required before glut can be called. Not required for all OS.
 
 class GLReferenceCounter(object):
 	def __init__(self):
@@ -44,6 +42,7 @@ class GLShader(GLReferenceCounter):
 			fragmentShader = shaders.compileShader(fragmentProgram, GL_FRAGMENT_SHADER)
 
 			#shader.compileProgram tries to return the shader program as a overloaded int. But the return value of a shader does not always fit in a int (needs to be a long). So we do raw OpenGL calls.
+			# This is to ensure that this works on intel GPU's
 			# self._program = shaders.compileProgram(self._vertexProgram, self._fragmentProgram)
 			self._program = glCreateProgram()
 			glAttachShader(self._program, vertexShader)
@@ -95,8 +94,10 @@ class GLShader(GLReferenceCounter):
 		if self._program is not None and bool(glDeleteProgram):
 			print "Shader was not properly released!"
 
-#A Class that acts as an OpenGL shader, but in reality is not none.
 class GLFakeShader(GLReferenceCounter):
+	"""
+	A Class that acts as an OpenGL shader, but in reality is not one. Used if shaders are not supported.
+	"""
 	def __init__(self):
 		super(GLFakeShader, self).__init__()
 
@@ -127,10 +128,13 @@ class GLFakeShader(GLReferenceCounter):
 		return ''
 
 class GLVBO(GLReferenceCounter):
+	"""
+	Vertex buffer object. Used for faster rendering.
+	"""
 	def __init__(self, renderType, vertexArray, normalArray = None, indicesArray = None):
 		super(GLVBO, self).__init__()
 		self._renderType = renderType
-		if not bool(glGenBuffers):
+		if not bool(glGenBuffers): # Fallback if buffers are not supported.
 			self._vertexArray = vertexArray
 			self._normalArray = normalArray
 			self._indicesArray = indicesArray
@@ -144,7 +148,7 @@ class GLVBO(GLReferenceCounter):
 			self._hasNormals = normalArray is not None
 			self._hasIndices = indicesArray is not None
 			glBindBuffer(GL_ARRAY_BUFFER, self._buffer)
-			if self._hasNormals:
+			if self._hasNormals: #TODO: Add size check to see if arrays have same size.
 				glBufferData(GL_ARRAY_BUFFER, numpy.concatenate((vertexArray, normalArray), 1), GL_STATIC_DRAW)
 			else:
 				glBufferData(GL_ARRAY_BUFFER, vertexArray, GL_STATIC_DRAW)
@@ -176,8 +180,8 @@ class GLVBO(GLReferenceCounter):
 		if self._hasIndices:
 			glDrawElements(self._renderType, self._size, GL_UNSIGNED_INT, c_void_p(0))
 		else:
-			batchSize = 996    #Warning, batchSize needs to be dividable by 4, 3 and 2
-			extraStartPos = int(self._size / batchSize) * batchSize
+			batchSize = 996    #Warning, batchSize needs to be dividable by 4 (quads), 3 (triangles) and 2 (lines). Current value is magic.
+			extraStartPos = int(self._size / batchSize) * batchSize #leftovers.
 			extraCount = self._size - extraStartPos
 			for i in xrange(0, int(self._size / batchSize)):
 				glDrawArrays(self._renderType, i * batchSize, batchSize)
@@ -207,12 +211,18 @@ class GLVBO(GLReferenceCounter):
 			print "VBO was not properly released!"
 
 def glDrawStringCenter(s):
+	"""
+	Draw string on current draw pointer position
+	"""
 	glRasterPos2f(0, 0)
 	glBitmap(0,0,0,0, -glGetStringSize(s)[0]/2, 0, None)
 	for c in s:
 		glutBitmapCharacter(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
 
 def glGetStringSize(s):
+	"""
+	Get size in pixels of string
+	"""
 	width = 0
 	for c in s:
 		width += glutBitmapWidth(OpenGL.GLUT.GLUT_BITMAP_HELVETICA_18, ord(c))
