@@ -237,6 +237,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 				openglHelpers.glDrawStringLeft("fps:%d" % (1 / renderTime))
 			self.SwapBuffers()
 		except:
+			# When an exception happens, catch it and show a message box. If the exception is not caught the draw function bugs out.
+			# Only show this exception once so we do not overload the user with popups.
 			errStr = _("An error has occurred during the 3D view drawing.")
 			tb = traceback.extract_tb(sys.exc_info()[2])
 			errStr += "\n%s: '%s'" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]))
