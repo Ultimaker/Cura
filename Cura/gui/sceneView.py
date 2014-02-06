@@ -904,7 +904,7 @@ class SceneView(openglGui.glGuiPanel):
 			self._zoom = self._animZoom.getPosition()
 			if self._animZoom.isDone():
 				self._animZoom = None
-		if self._objectShader is None:
+		if self._objectShader is None: #TODO: add loading shaders from file(s)
 			if openglHelpers.hasShaderSupport():
 				self._objectShader = openglHelpers.GLShader("""
 					varying float light_amount;
@@ -980,7 +980,7 @@ class SceneView(openglGui.glGuiPanel):
 					gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
 				}
 				""")
-			if self._objectShader is None or not self._objectShader.isValid():
+			if self._objectShader is None or not self._objectShader.isValid(): #Could not make shader.
 				self._objectShader = openglHelpers.GLFakeShader()
 				self._objectOverhangShader = openglHelpers.GLFakeShader()
 				self._objectLoadShader = None
@@ -1003,7 +1003,7 @@ class SceneView(openglGui.glGuiPanel):
 				glColor4ub((n >> 16) & 0xFF, (n >> 8) & 0xFF, (n >> 0) & 0xFF, 0xFF)
 				self._renderObject(obj)
 
-		if self._mouseX > -1:
+		if self._mouseX > -1: # mouse has not passed over the opengl window.
 			glFlush()
 			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0] >> 8
 			if n < len(self._scene.objects()):
