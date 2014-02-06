@@ -287,6 +287,9 @@ def glDrawTexturedQuad(x, y, w, h, texID, mirror = 0):
 	glPopMatrix()
 
 def glDrawStretchedQuad(x, y, w, h, cornerSize, texID):
+	"""
+	Same as draw texured quad, but without stretching the corners. Useful for resizable windows.
+	"""
 	tx0 = float(texID % 4) / 4
 	ty0 = float(int(texID / 4)) / 8
 	tx1 = tx0 + 0.25 / 2.0
@@ -390,6 +393,9 @@ def glDrawStretchedQuad(x, y, w, h, cornerSize, texID):
 	glPopMatrix()
 
 def unproject(winx, winy, winz, modelMatrix, projMatrix, viewport):
+	"""
+	Projects window position to 3D space. (gluUnProject). Reimplentation as some drivers crash with the original.
+	"""
 	npModelMatrix = numpy.matrix(numpy.array(modelMatrix, numpy.float64).reshape((4,4)))
 	npProjMatrix = numpy.matrix(numpy.array(projMatrix, numpy.float64).reshape((4,4)))
 	finalMatrix = npModelMatrix * npProjMatrix
@@ -421,38 +427,9 @@ def loadGLTexture(filename):
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img.GetWidth(), img.GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, rgbData)
 	return tex
 
-def ResetMatrixRotationAndScale():
-	matrix = glGetFloatv(GL_MODELVIEW_MATRIX)
-	noZ = False
-	if matrix[3][2] > 0:
-		return False
-	scale2D = matrix[0][0]
-	matrix[0][0] = 1.0
-	matrix[1][0] = 0.0
-	matrix[2][0] = 0.0
-	matrix[0][1] = 0.0
-	matrix[1][1] = 1.0
-	matrix[2][1] = 0.0
-	matrix[0][2] = 0.0
-	matrix[1][2] = 0.0
-	matrix[2][2] = 1.0
-
-	if matrix[3][2] != 0.0:
-		matrix[3][0] = matrix[3][0] / (-matrix[3][2] / 100)
-		matrix[3][1] = matrix[3][1] / (-matrix[3][2] / 100)
-		matrix[3][2] = -100
-	else:
-		matrix[0][0] = scale2D
-		matrix[1][1] = scale2D
-		matrix[2][2] = scale2D
-		matrix[3][2] = -100
-		noZ = True
-
-	glLoadMatrixf(matrix)
-	return noZ
-
-
 def DrawBox(vMin, vMax):
+	""" Draw wireframe box
+	"""
 	glBegin(GL_LINE_LOOP)
 	glVertex3f(vMin[0], vMin[1], vMin[2])
 	glVertex3f(vMax[0], vMin[1], vMin[2])
@@ -476,94 +453,3 @@ def DrawBox(vMin, vMax):
 	glVertex3f(vMin[0], vMax[1], vMin[2])
 	glVertex3f(vMin[0], vMax[1], vMax[2])
 	glEnd()
-
-
-def DrawMeshOutline(mesh):
-	glEnable(GL_CULL_FACE)
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, mesh.vertexes)
-
-	glCullFace(GL_FRONT)
-	glLineWidth(3)
-	glPolygonMode(GL_BACK, GL_LINE)
-	glDrawArrays(GL_TRIANGLES, 0, mesh.vertexCount)
-	glPolygonMode(GL_BACK, GL_FILL)
-	glCullFace(GL_BACK)
-
-	glDisableClientState(GL_VERTEX_ARRAY)
-
-
-def DrawMesh(mesh, insideOut = False):
-	glEnable(GL_CULL_FACE)
-	glEnableClientState(GL_VERTEX_ARRAY)
-	glEnableClientState(GL_NORMAL_ARRAY)
-	for m in mesh._meshList:
-		glVertexPointer(3, GL_FLOAT, 0, m.vertexes)
-		if insideOut:
-			glNormalPointer(GL_FLOAT, 0, m.invNormal)
-		else:
-			glNormalPointer(GL_FLOAT, 0, m.normal)
-
-		#Odd, drawing in batchs is a LOT faster then drawing it all at once.
-		batchSize = 999    #Warning, batchSize needs to be dividable by 3
-		extraStartPos = int(m.vertexCount / batchSize) * batchSize
-		extraCount = m.vertexCount - extraStartPos
-
-		glCullFace(GL_BACK)
-		for i in xrange(0, int(m.vertexCount / batchSize)):
-			glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
-		glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
-
-		glCullFace(GL_FRONT)
-		if insideOut:
-			glNormalPointer(GL_FLOAT, 0, m.normal)
-		else:
-			glNormalPointer(GL_FLOAT, 0, m.invNormal)
-		for i in xrange(0, int(m.vertexCount / batchSize)):
-			glDrawArrays(GL_TRIANGLES, i * batchSize, batchSize)
-		extraStartPos = int(m.vertexCount / batchSize) * batchSize
-		extraCount = m.vertexCount - extraStartPos
-		glDrawArrays(GL_TRIANGLES, extraStartPos, extraCount)
-		glCullFace(GL_BACK)
-
-	glDisableClientState(GL_VERTEX_ARRAY)
-	glDisableClientState(GL_NORMAL_ARRAY)
-
-
-def DrawMeshSteep(mesh, matrix, angle):
-	cosAngle = math.sin(angle / 180.0 * math.pi)
-	glDisable(GL_LIGHTING)
-	glDepthFunc(GL_EQUAL)
-	normals = (numpy.matrix(mesh.normal, copy = False) * matrix).getA()
-	for i in xrange(0, int(mesh.vertexCount), 3):
-		if normals[i][2] < -0.999999:
-			if mesh.vertexes[i + 0][2] > 0.01:
-				glColor3f(0.5, 0, 0)
-				glBegin(GL_TRIANGLES)
-				glVertex3f(mesh.vertexes[i + 0][0], mesh.vertexes[i + 0][1], mesh.vertexes[i + 0][2])
-				glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
-				glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
-				glEnd()
-		elif normals[i][2] < -cosAngle:
-			glColor3f(-normals[i][2], 0, 0)
-			glBegin(GL_TRIANGLES)
-			glVertex3f(mesh.vertexes[i + 0][0], mesh.vertexes[i + 0][1], mesh.vertexes[i + 0][2])
-			glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
-			glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
-			glEnd()
-		elif normals[i][2] > 0.999999:
-			if mesh.vertexes[i + 0][2] > 0.01:
-				glColor3f(0.5, 0, 0)
-				glBegin(GL_TRIANGLES)
-				glVertex3f(mesh.vertexes[i + 0][0], mesh.vertexes[i + 0][1], mesh.vertexes[i + 0][2])
-				glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
-				glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
-				glEnd()
-		elif normals[i][2] > cosAngle:
-			glColor3f(normals[i][2], 0, 0)
-			glBegin(GL_TRIANGLES)
-			glVertex3f(mesh.vertexes[i + 0][0], mesh.vertexes[i + 0][1], mesh.vertexes[i + 0][2])
-			glVertex3f(mesh.vertexes[i + 2][0], mesh.vertexes[i + 2][1], mesh.vertexes[i + 2][2])
-			glVertex3f(mesh.vertexes[i + 1][0], mesh.vertexes[i + 1][1], mesh.vertexes[i + 1][2])
-			glEnd()
-	glDepthFunc(GL_LESS)
