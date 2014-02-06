@@ -266,7 +266,7 @@ class engineResultView(object):
 	def OnKeyChar(self, keyCode):
 		if not self._enabled:
 			return
-
+		#TODO: This is strange behaviour. Overloaded functionality of keyboard buttons!
 		if wx.GetKeyState(wx.WXK_SHIFT) or wx.GetKeyState(wx.WXK_CONTROL):
 			if keyCode == wx.WXK_UP:
 				self.layerSelect.setValue(self.layerSelect.getValue() + 1)
