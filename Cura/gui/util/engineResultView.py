@@ -10,7 +10,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 
 from Cura.util import profile
-from Cura.gui.util import opengl
+from Cura.gui.util import openglHelpers
 from Cura.gui.util import openglGui
 
 class engineResultView(object):
@@ -147,7 +147,7 @@ class engineResultView(object):
 			glLoadIdentity()
 			glTranslate(0,-0.8,-2)
 			glColor4ub(60,60,60,255)
-			opengl.glDrawStringCenter(_("Loading toolpath for visualization (%d%%)") % (self._gcodeLoadProgress * 100))
+			openglHelpers.glDrawStringCenter(_("Loading toolpath for visualization (%d%%)") % (self._gcodeLoadProgress * 100))
 			glPopMatrix()
 
 	def _polygonsToVBO_lines(self, polygons):
@@ -162,7 +162,7 @@ class engineResultView(object):
 				i = numpy.arange(len(verts), len(verts) + len(poly), 1, numpy.uint32)
 			indices = numpy.concatenate((indices, i), 0)
 			verts = numpy.concatenate((verts, poly), 0)
-		return opengl.GLVBO(GL_LINES, verts, indicesArray=indices)
+		return openglHelpers.GLVBO(GL_LINES, verts, indicesArray=indices)
 
 	def _polygonsToVBO_quads(self, polygons):
 		verts = numpy.zeros((0, 3), numpy.float32)
@@ -176,7 +176,7 @@ class engineResultView(object):
 			indices = numpy.concatenate((indices, i), 0)
 			verts = numpy.concatenate((verts, poly), 0)
 			verts = numpy.concatenate((verts, poly * numpy.array([1,0,1],numpy.float32) + numpy.array([0,-100,0],numpy.float32)), 0)
-		return opengl.GLVBO(GL_QUADS, verts, indicesArray=indices)
+		return openglHelpers.GLVBO(GL_QUADS, verts, indicesArray=indices)
 
 	def _gcodeToVBO_lines(self, gcodeLayers, extrudeType):
 		if ':' in extrudeType:
@@ -193,7 +193,7 @@ class engineResultView(object):
 					i = numpy.dstack((i[0:-1],i[1:])).flatten()
 					indices = numpy.concatenate((indices, i), 0)
 					verts = numpy.concatenate((verts, path['points']))
-		return opengl.GLVBO(GL_LINES, verts, indicesArray=indices)
+		return openglHelpers.GLVBO(GL_LINES, verts, indicesArray=indices)
 
 	def _gcodeToVBO_quads(self, gcodeLayers, extrudeType):
 		useFilamentArea = profile.getMachineSetting('gcode_flavor') == 'UltiGCode'
@@ -241,7 +241,7 @@ class engineResultView(object):
 
 					verts = numpy.concatenate((verts, b))
 					indices = numpy.concatenate((indices, i))
-		return opengl.GLVBO(GL_QUADS, verts, indicesArray=indices)
+		return openglHelpers.GLVBO(GL_QUADS, verts, indicesArray=indices)
 
 	def _gcodeToVBO_lines(self, gcodeLayers):
 		verts = numpy.zeros((0,3), numpy.float32)
@@ -261,7 +261,7 @@ class engineResultView(object):
 					i = numpy.arange(len(verts), len(verts) + len(a), 1, numpy.uint32)
 					verts = numpy.concatenate((verts, a))
 					indices = numpy.concatenate((indices, i))
-		return opengl.GLVBO(GL_LINES, verts, indicesArray=indices)
+		return openglHelpers.GLVBO(GL_LINES, verts, indicesArray=indices)
 
 	def OnKeyChar(self, keyCode):
 		if not self._enabled:

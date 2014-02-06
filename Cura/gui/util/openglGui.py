@@ -13,7 +13,7 @@ import OpenGL
 from OpenGL.GL import *
 
 from Cura.util import version
-from Cura.gui.util import opengl
+from Cura.gui.util import openglHelpers
 
 class animation(object):
 	def __init__(self, gui, start, end, runTime):
@@ -234,7 +234,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 				glLoadIdentity()
 				glTranslate(10, self.GetSize().GetHeight() - 30, -1)
 				glColor4f(0.2,0.2,0.2,0.5)
-				opengl.glDrawStringLeft("fps:%d" % (1 / renderTime))
+				openglHelpers.glDrawStringLeft("fps:%d" % (1 / renderTime))
 			self.SwapBuffers()
 		except:
 			errStr = _("An error has occurred during the 3D view drawing.")
@@ -250,8 +250,8 @@ class glGuiPanel(glcanvas.GLCanvas):
 
 	def _drawGui(self):
 		if self._glButtonsTexture is None:
-			self._glButtonsTexture = opengl.loadGLTexture('glButtons.png')
-			self._glRobotTexture = opengl.loadGLTexture('UltimakerRobot.png')
+			self._glButtonsTexture = openglHelpers.loadGLTexture('glButtons.png')
+			self._glRobotTexture = openglHelpers.loadGLTexture('UltimakerRobot.png')
 
 		glDisable(GL_DEPTH_TEST)
 		glEnable(GL_BLEND)
@@ -465,13 +465,13 @@ class glButton(glGuiControl):
 			glColor4ub(128,128,128,128)
 		else:
 			glColor4ub(255,255,255,255)
-		opengl.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, 0)
-		opengl.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, self._imageID)
+		openglHelpers.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, 0)
+		openglHelpers.glDrawTexturedQuad(pos[0]-bs*scale/2, pos[1]-bs*scale/2, bs*scale, bs*scale, self._imageID)
 		if self._showExpandArrow:
 			if self._selected:
-				opengl.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1)
+				openglHelpers.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1)
 			else:
-				opengl.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1, 2)
+				openglHelpers.glDrawTexturedQuad(pos[0]+bs*scale/2-bs*scale/4*1.2, pos[1]-bs*scale/2*1.2, bs*scale/4, bs*scale/4, 1, 2)
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
 		glDisable(GL_TEXTURE_2D)
@@ -481,24 +481,24 @@ class glButton(glGuiControl):
 			glPushMatrix()
 			glColor4ub(60,60,60,255)
 			glTranslatef(-1, -1, 0)
-			opengl.glDrawStringCenter(self._tooltip)
+			openglHelpers.glDrawStringCenter(self._tooltip)
 			glTranslatef(0, 2, 0)
-			opengl.glDrawStringCenter(self._tooltip)
+			openglHelpers.glDrawStringCenter(self._tooltip)
 			glTranslatef(2, 0, 0)
-			opengl.glDrawStringCenter(self._tooltip)
+			openglHelpers.glDrawStringCenter(self._tooltip)
 			glTranslatef(0, -2, 0)
-			opengl.glDrawStringCenter(self._tooltip)
+			openglHelpers.glDrawStringCenter(self._tooltip)
 			glPopMatrix()
 
 			glColor4ub(255,255,255,255)
-			opengl.glDrawStringCenter(self._tooltip)
+			openglHelpers.glDrawStringCenter(self._tooltip)
 		glPopMatrix()
 		progress = self._progressBar
 		if progress is not None:
 			glColor4ub(60,60,60,255)
-			opengl.glDrawQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4)
+			openglHelpers.glDrawQuad(pos[0]-bs/2, pos[1]+bs/2, bs, bs / 4)
 			glColor4ub(255,255,255,255)
-			opengl.glDrawQuad(pos[0]-bs/2+2, pos[1]+bs/2+2, (bs - 5) * progress + 1, bs / 4 - 4)
+			openglHelpers.glDrawQuad(pos[0]-bs/2+2, pos[1]+bs/2+2, (bs - 5) * progress + 1, bs / 4 - 4)
 		elif len(self._altTooltip) > 0:
 			glPushMatrix()
 			glTranslatef(pos[0], pos[1], 0)
@@ -510,17 +510,17 @@ class glButton(glGuiControl):
 				glPushMatrix()
 				glColor4ub(60,60,60,255)
 				glTranslatef(-1, -1, 0)
-				opengl.glDrawStringCenter(line)
+				openglHelpers.glDrawStringCenter(line)
 				glTranslatef(0, 2, 0)
-				opengl.glDrawStringCenter(line)
+				openglHelpers.glDrawStringCenter(line)
 				glTranslatef(2, 0, 0)
-				opengl.glDrawStringCenter(line)
+				openglHelpers.glDrawStringCenter(line)
 				glTranslatef(0, -2, 0)
-				opengl.glDrawStringCenter(line)
+				openglHelpers.glDrawStringCenter(line)
 				glPopMatrix()
 
 				glColor4ub(255,255,255,255)
-				opengl.glDrawStringCenter(line)
+				openglHelpers.glDrawStringCenter(line)
 				glTranslatef(0, 18, 0)
 			glPopMatrix()
 
@@ -597,8 +597,8 @@ class glComboButton(glButton):
 		for n in xrange(0, len(self._imageIDs)):
 			glTranslatef(0, bs, 0)
 			glColor4ub(255,255,255,255)
-			opengl.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, 0)
-			opengl.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, self._imageIDs[n])
+			openglHelpers.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, 0)
+			openglHelpers.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, self._imageIDs[n])
 			glDisable(GL_TEXTURE_2D)
 
 			glPushMatrix()
@@ -607,17 +607,17 @@ class glComboButton(glButton):
 			glPushMatrix()
 			glColor4ub(60,60,60,255)
 			glTranslatef(-1, -1, 0)
-			opengl.glDrawStringRight(self._tooltips[n])
+			openglHelpers.glDrawStringRight(self._tooltips[n])
 			glTranslatef(0, 2, 0)
-			opengl.glDrawStringRight(self._tooltips[n])
+			openglHelpers.glDrawStringRight(self._tooltips[n])
 			glTranslatef(2, 0, 0)
-			opengl.glDrawStringRight(self._tooltips[n])
+			openglHelpers.glDrawStringRight(self._tooltips[n])
 			glTranslatef(0, -2, 0)
-			opengl.glDrawStringRight(self._tooltips[n])
+			openglHelpers.glDrawStringRight(self._tooltips[n])
 			glPopMatrix()
 
 			glColor4ub(255,255,255,255)
-			opengl.glDrawStringRight(self._tooltips[n])
+			openglHelpers.glDrawStringRight(self._tooltips[n])
 			glPopMatrix()
 		glPopMatrix()
 
@@ -678,7 +678,7 @@ class glFrame(glGuiContainer):
 
 		size = self._layout.getLayoutSize()
 		glColor4ub(255,255,255,255)
-		opengl.glDrawStretchedQuad(pos[0], pos[1], size[0], size[1], bs*0.75, 0)
+		openglHelpers.glDrawStretchedQuad(pos[0], pos[1], size[0], size[1], bs*0.75, 0)
 		#Draw the controls on the frame
 		super(glFrame, self).draw()
 
@@ -757,7 +757,7 @@ class glLabel(glGuiControl):
 		self._label = label
 
 	def getMinSize(self):
-		w, h = opengl.glGetStringSize(self._label)
+		w, h = openglHelpers.glGetStringSize(self._label)
 		return w + 10, h + 4
 
 	def _getPixelPos(self):
@@ -784,7 +784,7 @@ class glLabel(glGuiControl):
 
 		glTranslate(5, h - 5, 0)
 		glColor4ub(255,255,255,255)
-		opengl.glDrawStringLeft(self._label)
+		openglHelpers.glDrawStringLeft(self._label)
 		glPopMatrix()
 
 	def _checkHit(self, x, y):
@@ -811,7 +811,7 @@ class glNumberCtrl(glGuiControl):
 		self._value = str(value)
 
 	def getMinSize(self):
-		w, h = opengl.glGetStringSize("VALUES")
+		w, h = openglHelpers.glGetStringSize("VALUES")
 		return w + 10, h + 4
 
 	def _getPixelPos(self):
@@ -841,10 +841,10 @@ class glNumberCtrl(glGuiControl):
 
 		glTranslate(5, h - 5, 0)
 		glColor4ub(0,0,0,255)
-		opengl.glDrawStringLeft(self._value)
+		openglHelpers.glDrawStringLeft(self._value)
 		if self.hasFocus():
-			glTranslate(opengl.glGetStringSize(self._value[0:self._selectPos])[0] - 2, -1, 0)
-			opengl.glDrawStringLeft('|')
+			glTranslate(openglHelpers.glGetStringSize(self._value[0:self._selectPos])[0] - 2, -1, 0)
+			openglHelpers.glDrawStringLeft('|')
 		glPopMatrix()
 
 	def _checkHit(self, x, y):
@@ -942,9 +942,9 @@ class glCheckbox(glGuiControl):
 
 		glColor3ub(255,255,255)
 		if self._value:
-			opengl.glDrawTexturedQuad(w/2-h/2,0, h, h, 28)
+			openglHelpers.glDrawTexturedQuad(w/2-h/2,0, h, h, 28)
 		else:
-			opengl.glDrawTexturedQuad(w/2-h/2,0, h, h, 29)
+			openglHelpers.glDrawTexturedQuad(w/2-h/2,0, h, h, 29)
 
 		glPopMatrix()
 
@@ -1033,12 +1033,12 @@ class glSlider(glGuiControl):
 		if True:  # self._focus:
 			glColor4ub(0,0,0,255)
 			glPushMatrix()
-			glTranslate(-w/2,opengl.glGetStringSize(str(self._minValue))[1]/2,0)
-			opengl.glDrawStringRight(str(self._minValue))
+			glTranslate(-w/2,openglHelpers.glGetStringSize(str(self._minValue))[1]/2,0)
+			openglHelpers.glDrawStringRight(str(self._minValue))
 			glTranslate(0,-scrollLength,0)
-			opengl.glDrawStringRight(str(self._maxValue))
+			openglHelpers.glDrawStringRight(str(self._maxValue))
 			glTranslate(w,scrollLength-scrollLength*valueNormalized,0)
-			opengl.glDrawStringLeft(str(self.getValue()))
+			openglHelpers.glDrawStringLeft(str(self.getValue()))
 			glPopMatrix()
 		glColor4ub(255,255,255,240)
 		glTranslate(0.0,-scrollLength*valueNormalized,0)

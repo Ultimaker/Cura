@@ -27,7 +27,7 @@ from Cura.util import removableStorage
 from Cura.util import explorer
 from Cura.util.printerConnection import printerConnectionManager
 from Cura.gui.util import previewTools
-from Cura.gui.util import opengl
+from Cura.gui.util import openglHelpers
 from Cura.gui.util import openglGui
 from Cura.gui.util import engineResultView
 from Cura.gui.tools import youmagineGui
@@ -702,7 +702,7 @@ class SceneView(openglGui.glGuiPanel):
 					print k, self._afterLeakTest[k], self._beforeLeakTest[k], self._afterLeakTest[k] - self._beforeLeakTest[k]
 
 	def ShaderUpdate(self, v, f):
-		s = opengl.GLShader(v, f)
+		s = openglHelpers.GLShader(v, f)
 		if s.isValid():
 			self._objectLoadShader.release()
 			self._objectLoadShader = s
@@ -830,8 +830,8 @@ class SceneView(openglGui.glGuiPanel):
 	def getMouseRay(self, x, y):
 		if self._viewport is None:
 			return numpy.array([0,0,0],numpy.float32), numpy.array([0,0,1],numpy.float32)
-		p0 = opengl.unproject(x, self._viewport[1] + self._viewport[3] - y, 0, self._modelMatrix, self._projMatrix, self._viewport)
-		p1 = opengl.unproject(x, self._viewport[1] + self._viewport[3] - y, 1, self._modelMatrix, self._projMatrix, self._viewport)
+		p0 = openglHelpers.unproject(x, self._viewport[1] + self._viewport[3] - y, 0, self._modelMatrix, self._projMatrix, self._viewport)
+		p1 = openglHelpers.unproject(x, self._viewport[1] + self._viewport[3] - y, 1, self._modelMatrix, self._projMatrix, self._viewport)
 		p0 -= self._viewTarget
 		p1 -= self._viewTarget
 		return p0, p1
@@ -886,8 +886,8 @@ class SceneView(openglGui.glGuiPanel):
 			if self._animZoom.isDone():
 				self._animZoom = None
 		if self._objectShader is None:
-			if opengl.hasShaderSupport():
-				self._objectShader = opengl.GLShader("""
+			if openglHelpers.hasShaderSupport():
+				self._objectShader = openglHelpers.GLShader("""
 varying float light_amount;
 
 void main(void)
@@ -906,7 +906,7 @@ void main(void)
 	gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
 }
 				""")
-				self._objectOverhangShader = opengl.GLShader("""
+				self._objectOverhangShader = openglHelpers.GLShader("""
 uniform float cosAngle;
 uniform mat3 rotMatrix;
 varying float light_amount;
@@ -936,7 +936,7 @@ void main(void)
 	}
 }
 				""")
-				self._objectLoadShader = opengl.GLShader("""
+				self._objectLoadShader = openglHelpers.GLShader("""
 uniform float intensity;
 uniform float scale;
 varying float light_amount;
@@ -962,8 +962,8 @@ void main(void)
 }
 				""")
 			if self._objectShader is None or not self._objectShader.isValid():
-				self._objectShader = opengl.GLFakeShader()
-				self._objectOverhangShader = opengl.GLFakeShader()
+				self._objectShader = openglHelpers.GLFakeShader()
+				self._objectOverhangShader = openglHelpers.GLFakeShader()
 				self._objectLoadShader = None
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
@@ -993,7 +993,7 @@ void main(void)
 				self._focusObj = None
 			f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
 			#self.GetTopLevelParent().SetTitle(hex(n) + " " + str(f))
-			self._mouse3Dpos = opengl.unproject(self._mouseX, self._viewport[1] + self._viewport[3] - self._mouseY, f, self._modelMatrix, self._projMatrix, self._viewport)
+			self._mouse3Dpos = openglHelpers.unproject(self._mouseX, self._viewport[1] + self._viewport[3] - self._mouseY, f, self._modelMatrix, self._projMatrix, self._viewport)
 			self._mouse3Dpos -= self._viewTarget
 
 		self._init3DView()
@@ -1181,13 +1181,13 @@ void main(void)
 				glTranslate(pos[0], pos[1], pos[2])
 				self.tool.OnDraw()
 				glPopMatrix()
-		if self.viewMode == 'overhang' and not opengl.hasShaderSupport():
+		if self.viewMode == 'overhang' and not openglHelpers.hasShaderSupport():
 			glDisable(GL_DEPTH_TEST)
 			glPushMatrix()
 			glLoadIdentity()
 			glTranslate(0,-4,-10)
 			glColor4ub(60,60,60,255)
-			opengl.glDrawStringCenter(_("Overhang view not working due to lack of OpenGL shaders support."))
+			openglHelpers.glDrawStringCenter(_("Overhang view not working due to lack of OpenGL shaders support."))
 			glPopMatrix()
 
 	def _renderObject(self, obj, brightness = False, addSink = True):
@@ -1198,19 +1198,19 @@ void main(void)
 			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
 
 		if self.tempMatrix is not None and obj == self._selectedObj:
-			tempMatrix = opengl.convert3x3MatrixTo4x4(self.tempMatrix)
+			tempMatrix = openglHelpers.convert3x3MatrixTo4x4(self.tempMatrix)
 			glMultMatrixf(tempMatrix)
 
 		offset = obj.getDrawOffset()
 		glTranslate(-offset[0], -offset[1], -offset[2] - obj.getSize()[2] / 2)
 
-		tempMatrix = opengl.convert3x3MatrixTo4x4(obj.getMatrix())
+		tempMatrix = openglHelpers.convert3x3MatrixTo4x4(obj.getMatrix())
 		glMultMatrixf(tempMatrix)
 
 		n = 0
 		for m in obj._meshList:
 			if m.vbo is None:
-				m.vbo = opengl.GLVBO(GL_TRIANGLES, m.vertexes, m.normal)
+				m.vbo = openglHelpers.GLVBO(GL_TRIANGLES, m.vertexes, m.normal)
 			if brightness:
 				glColor4fv(map(lambda n: n * brightness, self._objColors[n]))
 				n += 1
@@ -1243,7 +1243,7 @@ void main(void)
 			#For the Ultimaker 2 render the texture on the back plate to show the Ultimaker2 text.
 			if machine == 'ultimaker2':
 				if not hasattr(self._platformMesh[machine], 'texture'):
-					self._platformMesh[machine].texture = opengl.loadGLTexture('Ultimaker2backplate.png')
+					self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
 				glBindTexture(GL_TEXTURE_2D, self._platformMesh[machine].texture)
 				glEnable(GL_TEXTURE_2D)
 				glPushMatrix()
@@ -1317,7 +1317,7 @@ void main(void)
 
 		#Draw checkerboard
 		if self._platformTexture is None:
-			self._platformTexture = opengl.loadGLTexture('checkerboard.png')
+			self._platformTexture = openglHelpers.loadGLTexture('checkerboard.png')
 			glBindTexture(GL_TEXTURE_2D, self._platformTexture)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
