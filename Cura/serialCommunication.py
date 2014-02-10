@@ -25,7 +25,7 @@ class serialComm(object):
 		sys.stdout.write('log:%s\n' % (message))
 
 	def mcTempUpdate(self, temp, bedTemp, targetTemp, bedTargetTemp):
-		sys.stdout.write('temp:%s\n' % json.dumps(temp))
+		sys.stdout.write('temp:%s:%s:%f:%f\n' % (json.dumps(temp), json.dumps(targetTemp), bedTemp, bedTargetTemp))
 
 	def mcStateChange(self, state):
 		if self._comm is None:
@@ -50,18 +50,23 @@ class serialComm(object):
 				self._gcodeList = ['M110']
 			elif line[0] == 'G':
 				self._gcodeList.append(line[1])
+			elif line[0] == 'C':
+				self._comm.sendCommand(line[1])
 			elif line[0] == 'START':
 				self._comm.printGCode(self._gcodeList)
 			else:
 				sys.stderr.write(str(line))
 
+def startMonitor(portName):
+	sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+	comm = serialComm(portName)
+	comm.monitorStdin()
+
 def main():
 	if len(sys.argv) != 2:
 		return
-	sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 	portName = sys.argv[1]
-	comm = serialComm(portName)
-	comm.monitorStdin()
+	startMonitor(portName)
 
 if __name__ == '__main__':
 	main()

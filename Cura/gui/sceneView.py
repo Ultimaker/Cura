@@ -273,7 +273,7 @@ class SceneView(openglGui.glGuiPanel):
 	def _openPrintWindowForConnection(self, connection):
 		print '_openPrintWindowForConnection', connection.getName()
 		if connection.window is None or not connection.window:
-			connection.window = printWindow2.printWindow(connection)
+			connection.window = printWindow2.printWindow(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
 		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):

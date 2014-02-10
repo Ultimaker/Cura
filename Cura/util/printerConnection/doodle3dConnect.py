@@ -191,14 +191,13 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		if not self._isAvailable:
 			return "Doodle3D box not found"
 		if self._printing:
-			ret = "Print progress: %.1f%%" % (self.getPrintProgress() * 100.0)
 			if self._blockIndex < len(self._fileBlocks):
-				ret += "\nSending GCode: %.1f%%" % (float(self._blockIndex) * 100.0 / float(len(self._fileBlocks)))
+				ret = "Sending GCode: %.1f%%" % (float(self._blockIndex) * 100.0 / float(len(self._fileBlocks)))
 			elif len(self._fileBlocks) > 0:
-				ret += "\nFinished sending GCode to Doodle3D box.\nPrint will continue even if you shut down Cura."
+				ret = "Finished sending GCode to Doodle3D box."
 			else:
-				ret += "\nDifferent print still running..."
-			ret += "\nErrorCount: %d" % (self._errorCount)
+				ret = "Different print still running..."
+			#ret += "\nErrorCount: %d" % (self._errorCount)
 			return ret
 		return "Printer found, waiting for print command."
 

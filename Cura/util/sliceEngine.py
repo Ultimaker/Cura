@@ -264,7 +264,7 @@ class Engine(object):
 		commandList = [getEngineFilename(), '-v', '-p']
 		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
-		commandList += ['-g', '%d' % self._serverPortNr]
+		commandList += ['-g', '%d' % (self._serverPortNr)]
 		self._objCount = 0
 		engineModelData = []
 		hash = hashlib.sha512()

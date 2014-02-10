@@ -41,6 +41,10 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._thread = None
 
 		self._temperature = []
+		self._targetTemperature = []
+		self._bedTemperature = 0
+		self._targetBedTemperature = 0
+		self._log = []
 
 		self._commState = None
 		self._commStateString = None
@@ -126,9 +130,30 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			return None
 		return self._temperature[extruder]
 
+	def getBedTemperature(self):
+		return self._bedTemperature
+
+	#Are we able to send a direct coammand with sendCommand at this moment in time.
+	def isAbleToSendDirectCommand(self):
+		return self.isActiveConnectionOpen()
+
+	#Directly send a command to the printer.
+	def sendCommand(self, command):
+		if self._process is None:
+			return
+		self._process.stdin.write('C:%s\n' % (command))
+
+	#Returns true if we got some kind of error. The getErrorLog returns all the information to diagnose the problem.
+	def isInErrorState(self):
+		return self._commState == machineCom.MachineCom.STATE_ERROR or self._commState == machineCom.MachineCom.STATE_CLOSED_WITH_ERROR
+
+	#Returns the error log in case there was an error.
+	def getErrorLog(self):
+		return '\n'.join(self._log)
+
 	def _serialCommunicationThread(self):
 		if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
-			cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura')]
+			cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura'), '--serialCommunication']
 		else:
 			cmdList = [sys.executable, '-m', 'Cura.serialCommunication']
 		cmdList += [self._portName]
@@ -143,10 +168,15 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			if line[0] == '':
 				pass
 			elif line[0] == 'log':
-				pass
+				self._log.append(line[1])
+				if len(self._log) > 30:
+					self._log.pop(0)
 			elif line[0] == 'temp':
-				line = line[1].split(':', 1)
+				line = line[1].split(':')
 				self._temperature = json.loads(line[0])
+				self._targetTemperature = json.loads(line[1])
+				self._bedTemperature = float(line[2])
+				self._targetBedTemperature = float(line[3])
 				self._doCallback()
 			elif line[0] == 'message':
 				self._doCallback(line[1])

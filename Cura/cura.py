@@ -24,8 +24,15 @@ def main():
 		help="Slice the given files instead of opening them in Cura")
 	parser.add_option("-o", "--output", action="store", type="string", dest="output",
 		help="path to write sliced file to")
+	parser.add_option("--serialCommunication", action="store", type="string", dest="serialCommunication",
+		help="Start commandline serial monitor")
 
 	(options, args) = parser.parse_args()
+
+	if options.serialCommunication:
+		from Cura import serialCommunication
+		serialCommunication.startMonitor(options.serialCommunication)
+		return
 
 	print "load preferences from " + profile.getPreferencePath()
 	profile.loadPreferences(profile.getPreferencePath())
