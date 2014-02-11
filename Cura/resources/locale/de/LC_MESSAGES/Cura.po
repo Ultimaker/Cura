@@ -1,19 +1,22 @@
 # Copyright (C) 2013
 # This file is distributed under the same license as the Cura package.
 # Ilya Kulakov &lt;kulakov.ilya@gmail.com&gt;, 2013.
+# 
+# Lars Pötter <Lars_Poetter@gmx.de>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-08 14:30+0200\n"
-"PO-Revision-Date: 2013-10-01 15:37+0100\n"
-"Last-Translator: \n"
-"Language-Team: LANGUAGE &lt;LL@li.org&gt;\n"
+"PO-Revision-Date: 2014-02-11 21:03+0100\n"
+"Last-Translator: Lars Pötter <Lars_Poetter@gmx.de>\n"
+"Language-Team: Deutsch <Lars_Poetter@gmx.de>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Gtranslator 2.91.6\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Cura/gui/app.py:86 Cura/gui/mainWindow.py:528
 msgid "A new version of Cura is available, would you like to download?"
@@ -58,32 +61,34 @@ msgstr "* Drucktisch ausrichten (optional)"
 
 #: Cura/gui/configWizard.py:239
 msgid "The following pre-defined machine profiles are available"
-msgstr ""
+msgstr "Die folgenden Drucker Profile sind verfügbar"
 
 #: Cura/gui/configWizard.py:240
 msgid ""
 "Note that these profiles are not guaranteed to give good results,\n"
 "or work at all. Extra tweaks might be required."
 msgstr ""
+"Bitte beachten Sie das diese Profile nicht immer die besten Ergebnisse "
+"erzielen,\n"
+"oder überhaupt funktionieren. Kleiner Anpassungen können notwendig sein."
 
 #: Cura/gui/configWizard.py:270
-#, fuzzy
 msgid "Cura is now ready to be used!"
-msgstr "Cura ist nun berechtigt, Modell nach YouMagine hochzuladen"
+msgstr "Cura kann nun verwendet werden!"
 
 #: Cura/gui/configWizard.py:275
-#, fuzzy
 msgid ""
 "RepRap machines can be vastly different, so here you can set your own "
 "settings."
 msgstr ""
-"RepRap-Geräte sind sehr verschieden. Es gibt deshalb keine\n"
-"Standard-Konfiguration in Cura für diese Geräte."
+"RepRap-Geräte sind sehr verschieden. Deshalb können Sie hier Ihre "
+"Einstellungen vornehmen."
 
 #: Cura/gui/configWizard.py:276
 msgid ""
 "Be sure to review the default profile before running it on your machine."
 msgstr ""
+"Überprüfen Sie das standard Profil bevor Sie es auf Ihrem Drucker verwenden."
 
 #: Cura/gui/configWizard.py:277
 msgid ""
@@ -134,9 +139,8 @@ msgid "What kind of machine do you have:"
 msgstr "Welchen Typ Maschine haben Sie:"
 
 #: Cura/gui/configWizard.py:315
-#, fuzzy
 msgid "Other (Ex: RepRap, MakerBot)"
-msgstr "Andere (Ausser RepRap)"
+msgstr "Andere (Ausser: RepRap und RepRap)"
 
 #: Cura/gui/configWizard.py:318
 msgid ""
@@ -525,14 +529,12 @@ msgid "Quit"
 msgstr "Beenden"
 
 #: Cura/gui/mainWindow.py:110
-#, fuzzy
 msgid "File"
-msgstr "Füllung"
+msgstr "Datei"
 
 #: Cura/gui/mainWindow.py:118
-#, fuzzy
 msgid "Minecraft map import..."
-msgstr "Minecraft Import..."
+msgstr "Minecraft Karten Import..."
 
 #: Cura/gui/mainWindow.py:122
 msgid "PID Debugger..."
@@ -607,14 +609,12 @@ msgid "Add new machine..."
 msgstr "Neue Maschine hinzufügen..."
 
 #: Cura/gui/mainWindow.py:399
-#, fuzzy
 msgid "Install custom firmware..."
-msgstr "Installiere benutzerdefinierte Firmware"
+msgstr "Installiere benutzerdefinierte Firmware..."
 
 #: Cura/gui/mainWindow.py:402
-#, fuzzy
 msgid "Install default Marlin firmware..."
-msgstr "Installiere Standard Marlin Firmware"
+msgstr "Installiere Standard Marlin Firmware..."
 
 #: Cura/gui/mainWindow.py:406
 msgid "Select profile file to load"
@@ -707,7 +707,7 @@ msgstr "Farben"
 
 #: Cura/gui/preferencesDialog.py:31 Cura/util/profile.py:331
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: Cura/gui/preferencesDialog.py:34
 msgid "Filament settings"
@@ -985,16 +985,15 @@ msgstr "Bericht der Engine..."
 
 #: Cura/gui/sceneView.py:422
 msgid "How many copies do you want?"
-msgstr ""
+msgstr "Wie viele Kopien wollen Sie?"
 
 #: Cura/gui/sceneView.py:422
 msgid "Number of copies"
-msgstr ""
+msgstr "Anzahl der Kopien"
 
 #: Cura/gui/sceneView.py:422
-#, fuzzy
 msgid "Multiply"
-msgstr "Vervielfache Objekt"
+msgstr "Vervielfachen"
 
 #: Cura/gui/sceneView.py:674
 msgid "Delete object"
@@ -1306,11 +1305,11 @@ msgstr "Die Beschreibung kann nicht leer sein"
 
 #: Cura/gui/tools/youmagineGui.py:370
 msgid "No webcam found on your system"
-msgstr ""
+msgstr "An Ihrem Rechner wurde keine webcam gefunden."
 
 #: Cura/gui/tools/youmagineGui.py:370
 msgid "Webcam error"
-msgstr ""
+msgstr "Webcam Fehler"
 
 #: Cura/gui/util/openglGui.py:241
 msgid "An error has occurred during the 3D view drawing."
@@ -1396,7 +1395,6 @@ msgid "Fill Density (%)"
 msgstr "Fülldichte (%)"
 
 #: Cura/util/profile.py:157
-#, fuzzy
 msgid ""
 "This controls how densely filled the insides of your print will be. For a "
 "solid part use 100%, for an empty part use 0%. A value around 20% is usually "
@@ -1405,8 +1403,8 @@ msgid ""
 "part becomes."
 msgstr ""
 "Dieser Wert steuert, wie dicht gefüllt Ihr Druckobjekt sein wird. Für ein "
-"absolut festes Objekt verwenden Sie 100%, für ein hohles Objekt 0%. Ein Wert "
-"um 20% ist in der Regel ausreichend.\n"
+"vollständig gefülltes Objekt verwenden Sie 100%, für ein hohles Objekt 0%. "
+"Ein Wert um 20% ist in der Regel ausreichend.\n"
 "Beeinflusst nicht die Oberfläche ihres Druckobjekts, sondern bestimmt nur "
 "wie fest Ihr Objekt wird."
 
@@ -1484,15 +1482,15 @@ msgstr ""
 
 #: Cura/util/profile.py:165 Cura/util/profile.py:166
 msgid "None"
-msgstr ""
+msgstr "kein"
 
 #: Cura/util/profile.py:165
 msgid "Touching buildplate"
-msgstr ""
+msgstr "von der Bau Plattform aus"
 
 #: Cura/util/profile.py:165
 msgid "Everywhere"
-msgstr ""
+msgstr "überall"
 
 #: Cura/util/profile.py:165 Cura/util/profile.py:166 Cura/util/profile.py:167
 #: Cura/util/profile.py:206 Cura/util/profile.py:207 Cura/util/profile.py:208
@@ -1557,15 +1555,15 @@ msgstr ""
 
 #: Cura/util/profile.py:167
 msgid "Both"
-msgstr ""
+msgstr "Beide"
 
 #: Cura/util/profile.py:167
 msgid "First extruder"
-msgstr ""
+msgstr "Erster Extruder"
 
 #: Cura/util/profile.py:167
 msgid "Second extruder"
-msgstr ""
+msgstr "Zweiter Extruder"
 
 #: Cura/util/profile.py:167
 msgid "Support dual extrusion"
@@ -2306,6 +2304,8 @@ msgid ""
 "Change the language in which Cura runs. Switching language requires a "
 "restart of Cura"
 msgstr ""
+"Verwendete Sprache umschalten. Zum Übernehmen ist ein Neustart von Cura "
+"notwendig."
 
 #: Cura/util/profile.py:334
 msgid "Model colour"
@@ -2340,15 +2340,16 @@ msgid "Maximum height (mm)"
 msgstr "Maximale Höhe (mm)"
 
 #: Cura/util/profile.py:351
-#, fuzzy
 msgid "Machine center 0,0"
-msgstr "Name des Geräts"
+msgstr "Mittelpunkt der Bau Plattform (0, 0)"
 
 #: Cura/util/profile.py:351
 msgid ""
 "Machines firmware defines the center of the bed as 0,0 instead of the front "
 "left corner."
 msgstr ""
+"Die Firmware des Druckers definiert die Mitte der Bau Plattform als (0, 0) "
+"anstelle der vorderen linken Ecke."
 
 #: Cura/util/profile.py:353
 msgid ""
@@ -2363,7 +2364,6 @@ msgid "GCode Flavor"
 msgstr "GCode Flavor"
 
 #: Cura/util/profile.py:354
-#, fuzzy
 msgid ""
 "Flavor of generated GCode.\n"
 "RepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\n"
@@ -2376,7 +2376,9 @@ msgstr ""
 "RepRap verwendet normalen 5D GCode welcher auf Marlin/Sprinter basierter "
 "Firmware funktioniert.\n"
 "UltiGCode ist eine Variation des RepRap GCodes, welche mehr Einstellungen "
-"des Geräts verwendet, anstelle deren des Slicers."
+"des Geräts verwendet, anstelle deren des Slicers.\n"
+"MakerBot GCode enthält ein paar Anpassungen. Es wird aber immer noch "
+"MakerWare benötigt um den GCode in das X3G Format zu übersetzen."
 
 #: Cura/util/profile.py:355
 msgid "Extruder count"
@@ -2508,11 +2510,15 @@ msgstr ""
 #, python-format
 msgid "More flow than 150% is rare and usually not recommended."
 msgstr ""
+"Eine Fließgeschwindigkeit von mehr als 150% ist selten und normalerweise "
+"nicht empfohlen."
 
 #: Cura/util/profile.py:375
 #, python-format
 msgid "Less flow than 50% is rare and usually not recommended."
 msgstr ""
+"Eine Fließgeschwindigkeit von weniger als 50% ist selten und normalerweise "
+"nicht empfohlen."
 
 #: Cura/util/profile.py:376
 #, python-format
@@ -2520,17 +2526,23 @@ msgid ""
 "Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and "
 "are not recommended."
 msgstr ""
+"Schicht dicken von mehr als  %.2fmm (80%% des Düsen Durchmessers) führen zu "
+"einer schlechten Druckqualität und werden nicht empfohlen."
 
 #: Cura/util/profile.py:378
 msgid ""
 "It is highly unlikely that your machine can achieve a printing speed above "
 "150mm/s"
 msgstr ""
+"Es ist sehr unwahrscheinlich das Ihr Drucker eine Geschwindigkeit von mehr "
+"als 150mm/s erreichen kann."
 
 #: Cura/util/profile.py:380 Cura/util/profile.py:381 Cura/util/profile.py:382
 #: Cura/util/profile.py:383
 msgid "Temperatures above 260C could damage your machine, be careful!"
 msgstr ""
+"Temperaturen über 260°C können Ihren Drucker beschädigen! Seien Sie "
+"vorsichtig!"
 
 #: Cura/util/profile.py:384 Cura/util/profile.py:385 Cura/util/profile.py:386
 #: Cura/util/profile.py:387
@@ -2538,12 +2550,16 @@ msgid ""
 "Are you sure your filament is that thick? Normal filament is around 3mm or "
 "1.75mm."
 msgstr ""
+"Sind Sie sicher das Ihr Filament so dick ist? Normal sind dicken von 3 oder "
+"1,75 mm."
 
 #: Cura/util/profile.py:388
 msgid ""
 "It is highly unlikely that your machine can achieve a travel speed above "
 "300mm/s"
 msgstr ""
+"Es ist sehr unwahrscheinlich das Ihr Drucker eine Geschwindigkeit von mehr "
+"als 300mm/s erreichen kann."
 
 #: Cura/util/profile.py:389
 #, python-format
@@ -2551,6 +2567,9 @@ msgid ""
 "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad "
 "results and is not recommended."
 msgstr ""
+"Eine Schicht dicke von mehr als  %.2fmm (3/4 des Düsen Durchmessers) für die "
+"erste Schicht führt zu einer schlechten Druckqualität und wird nicht "
+"empfohlen."
 
 #~ msgid "&amp;File"
 #~ msgstr "&amp;Datei"
