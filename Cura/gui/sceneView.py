@@ -11,18 +11,16 @@ import platform
 import cStringIO as StringIO
 
 import OpenGL
-#OpenGL.ERROR_CHECKING = False
+OpenGL.ERROR_CHECKING = False
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
-from Cura.gui import printWindow
 from Cura.gui import printWindow2
 from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.util import objectScene
 from Cura.util import resources
 from Cura.util import sliceEngine
-from Cura.util import machineCom
 from Cura.util import removableStorage
 from Cura.util import explorer
 from Cura.util.printerConnection import printerConnectionManager
@@ -55,7 +53,6 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh = {}
 		self._platformTexture = None
 		self._isSimpleMode = True
-		self._usbPrintMonitor = printWindow.printProcessMonitor(lambda : self._queueRefresh())
 		self._printerConnectionManager = printerConnectionManager.PrinterConnectionManager()
 
 		self._viewport = None
@@ -273,7 +270,8 @@ class SceneView(openglGui.glGuiPanel):
 	def _openPrintWindowForConnection(self, connection):
 		print '_openPrintWindowForConnection', connection.getName()
 		if connection.window is None or not connection.window:
-			connection.window = printWindow2.printWindow(self, connection)
+			#connection.window = printWindow2.printWindowPlugin(self, connection, "C:/Software/Cura/Cura/plugins/PronterfaceUI/script.py")
+			connection.window = printWindow2.printWindowBasic(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
 		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):
@@ -1117,30 +1115,6 @@ class SceneView(openglGui.glGuiPanel):
 				glDisable(GL_BLEND)
 
 		self._drawMachine()
-
-		if self._usbPrintMonitor.getState() == 'PRINTING' and self._usbPrintMonitor.getID() == self._engine.getID():
-			z = self._usbPrintMonitor.getZ()
-			if self.viewMode == 'gcode':
-				layer_height = profile.getProfileSettingFloat('layer_height')
-				layer1_height = profile.getProfileSettingFloat('bottom_thickness')
-				if layer_height > 0:
-					if layer1_height > 0:
-						layer = int((z - layer1_height) / layer_height) + 1
-					else:
-						layer = int(z / layer_height)
-				else:
-					layer = 1
-				self.layerSelect.setValue(layer)
-			else:
-				size = self._machineSize #Typing is hard.
-				glEnable(GL_BLEND)
-				glColor4ub(255,255,0,128)
-				glBegin(GL_QUADS)
-				glVertex3f(-size[0]/2,-size[1]/2, z)
-				glVertex3f( size[0]/2,-size[1]/2, z)
-				glVertex3f( size[0]/2, size[1]/2, z)
-				glVertex3f(-size[0]/2, size[1]/2, z)
-				glEnd()
 
 		if self.viewMode != 'gcode':
 			#Draw the object box-shadow, so you can see where it will collide with other objects.

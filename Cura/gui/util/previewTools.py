@@ -5,7 +5,7 @@ import wx
 import numpy
 
 import OpenGL
-#OpenGL.ERROR_CHECKING = False
+OpenGL.ERROR_CHECKING = False
 from OpenGL.GLU import *
 from OpenGL.GL import *
 

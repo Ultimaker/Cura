@@ -3,17 +3,78 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import wx
 import power
 import time
+import sys
+import os
+import ctypes
 
-from wx.lib import buttons
+#TODO: This does not belong here!
+if sys.platform.startswith('win'):
+	def preventComputerFromSleeping(prevent):
+		"""
+		Function used to prevent the computer from going into sleep mode.
+		:param prevent: True = Prevent the system from going to sleep from this point on.
+		:param prevent: False = No longer prevent the system from going to sleep.
+		"""
+		ES_CONTINUOUS = 0x80000000
+		ES_SYSTEM_REQUIRED = 0x00000001
+		#SetThreadExecutionState returns 0 when failed, which is ignored. The function should be supported from windows XP and up.
+		if prevent:
+			ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
+		else:
+			ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
 
-from Cura.util import profile
-from Cura.util import resources
+else:
+	def preventComputerFromSleeping(prevent):
+		#No preventComputerFromSleeping for MacOS and Linux yet.
+		pass
 
-class printWindow(wx.Frame):
-	"Main user interface window"
+class printWindowPlugin(wx.Frame):
+	def __init__(self, parent, printerConnection, filename):
+		super(printWindowPlugin, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT, title=_("Printing on %s") % (printerConnection.getName()))
+		self._printerConnection = printerConnection
+		self._basePath = os.path.dirname(filename)
+		self._backgroundImage = None
+		self._colorCommandMap = {}
+
+		variables = {
+			'setImage': self.setImage,
+			'addColorCommand': self.addColorCommand,
+		}
+		execfile(filename, variables, variables)
+
+		self.Bind(wx.EVT_ERASE_BACKGROUND, self.OnEraseBackground)
+		self.Bind(wx.EVT_PAINT, self.OnDraw)
+		self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftClick)
+
+	def setImage(self, guiImage, mapImage):
+		self._backgroundImage = wx.BitmapFromImage(wx.Image(os.path.join(self._basePath, guiImage)))
+		self._mapImage = wx.Image(os.path.join(self._basePath, mapImage))
+		self.SetSize(self._backgroundImage.GetSize())
+
+	def addColorCommand(self, r, g, b, command):
+		self._colorCommandMap[(r, g, b)] = command
+
+	def OnEraseBackground(self, e):
+		pass
+
+	def OnDraw(self, e):
+		dc = wx.BufferedPaintDC(self, self._backgroundImage)
+
+	def OnLeftClick(self, e):
+		r = self._mapImage.GetRed(e.GetX(), e.GetY())
+		g = self._mapImage.GetGreen(e.GetX(), e.GetY())
+		b = self._mapImage.GetBlue(e.GetX(), e.GetY())
+		if (r, g, b) in self._colorCommandMap:
+			print self._colorCommandMap[(r, g, b)]
+
+class printWindowBasic(wx.Frame):
+	"""
+	Printing window for USB printing, network printing, and any other type of printer connection we can think off.
+	This is only a basic window with minimal information.
+	"""
 
 	def __init__(self, parent, printerConnection):
-		super(printWindow, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT, title=_("Printing on %s") % (printerConnection.getName()))
+		super(printWindowBasic, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT, title=_("Printing on %s") % (printerConnection.getName()))
 		self._printerConnection = printerConnection
 		self._lastUpdateTime = 0
 
@@ -75,6 +136,7 @@ class printWindow(wx.Frame):
 
 		if self._printerConnection.hasActiveConnection() and not self._printerConnection.isActiveConnectionOpen():
 			self._printerConnection.openActiveConnection()
+		preventComputerFromSleeping(True)
 
 	def OnPowerWarningChange(self, e):
 		type = self.powerManagement.get_providing_power_source_type()
@@ -97,6 +159,8 @@ class printWindow(wx.Frame):
 				pass #TODO: Give warning that the close will kill the print.
 			self._printerConnection.closeActiveConnection()
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
+		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
+		preventComputerFromSleeping(False)
 		self.Destroy()
 
 	def OnConnect(self, e):
@@ -191,7 +255,7 @@ class printWindow(wx.Frame):
 
 	def _updateButtonStates(self):
 		self.connectButton.Show(self._printerConnection.hasActiveConnection())
-		self.connectButton.Enable(not self._printerConnection.isActiveConnectionOpen())
+		self.connectButton.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
 		self.pauseButton.Show(self._printerConnection.hasPause())
 		if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
 			self.printButton.Enable(not self._printerConnection.isPrinting())

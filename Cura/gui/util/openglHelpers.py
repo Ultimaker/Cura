@@ -9,7 +9,7 @@ from Cura.util.resources import getPathForImage
 
 import OpenGL
 
-#OpenGL.ERROR_CHECKING = False
+OpenGL.ERROR_CHECKING = False
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *

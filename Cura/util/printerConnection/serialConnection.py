@@ -125,6 +125,12 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			return False
 		return self._commState == machineCom.MachineCom.STATE_OPERATIONAL or self._commState == machineCom.MachineCom.STATE_PRINTING or self._commState == machineCom.MachineCom.STATE_PAUSED
 
+	#Are we trying to open an active connection right now.
+	def isActiveConnectionOpening(self):
+		if self._process is None:
+			return False
+		return self._commState == machineCom.MachineCom.STATE_OPEN_SERIAL or self._commState == machineCom.MachineCom.STATE_CONNECTING or self._commState == machineCom.MachineCom.STATE_DETECT_SERIAL or self._commState == machineCom.MachineCom.STATE_DETECT_BAUDRATE
+
 	def getTemperature(self, extruder):
 		if extruder >= len(self._temperature):
 			return None

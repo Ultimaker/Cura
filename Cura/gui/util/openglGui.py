@@ -9,7 +9,7 @@ import time
 
 from wx import glcanvas
 import OpenGL
-#OpenGL.ERROR_CHECKING = False
+OpenGL.ERROR_CHECKING = False
 from OpenGL.GL import *
 
 from Cura.util import version

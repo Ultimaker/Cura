@@ -326,6 +326,11 @@ class MachineCom(object):
 			baudrate = self._baudrate
 			if baudrate == 0:
 				baudrate = self._baudrateDetectList.pop(0)
+			if len(self._serialDetectList) < 1:
+				self._log("Found no ports to try for auto detection")
+				self._errorValue = 'Failed to autodetect serial port.'
+				self._changeState(self.STATE_ERROR)
+				return
 			port = self._serialDetectList.pop(0)
 			self._log("Connecting to: %s with baudrate: %s (auto)" % (port, baudrate))
 			try:

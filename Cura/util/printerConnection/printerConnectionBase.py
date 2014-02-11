@@ -75,6 +75,10 @@ class printerConnectionBase(object):
 	def isActiveConnectionOpen(self):
 		return False
 
+	#Are we trying to open an active connection right now.
+	def isActiveConnectionOpening(self):
+		return False
+
 	#Returns true if we have the ability to pause the file printing.
 	def hasPause(self):
 		return False
