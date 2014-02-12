@@ -78,7 +78,7 @@ class printWindowPlugin(wx.Frame):
 	def script_setImage(self, guiImage, mapImage):
 		self._backgroundImage = wx.BitmapFromImage(wx.Image(os.path.join(self._basePath, guiImage)))
 		self._mapImage = wx.Image(os.path.join(self._basePath, mapImage))
-		self.SetClientSize(self._backgroundImage.GetSize())
+		self.SetClientSize(self._mapImage.GetSize())
 
 	def script_addColorCommand(self, r, g, b, command, data = None):
 		self._colorCommandMap[(r, g, b)] = (command, data)

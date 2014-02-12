@@ -6,23 +6,24 @@ import webbrowser
 from wx.lib import scrolledpanel
 
 from Cura.util import profile
+from Cura.util import plugin
 from Cura.util import explorer
 
 class pluginPanel(wx.Panel):
 	def __init__(self, parent, callback):
 		wx.Panel.__init__(self, parent,-1)
 		#Plugin page
-		self.pluginList = profile.getPluginList()
+		self.pluginList = plugin.getPluginList("postprocess")
 		self.callback = callback
 
 		sizer = wx.GridBagSizer(2, 2)
 		self.SetSizer(sizer)
 
-		effectStringList = []
-		for effect in self.pluginList:
-			effectStringList.append(effect['name'])
+		pluginStringList = []
+		for p in self.pluginList:
+			pluginStringList.append(p.getName())
 
-		self.listbox = wx.ListBox(self, -1, choices=effectStringList)
+		self.listbox = wx.ListBox(self, -1, choices=pluginStringList)
 		title = wx.StaticText(self, -1, _("Plugins:"))
 		title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		helpButton = wx.Button(self, -1, '?', style=wx.BU_EXACTFIT)
@@ -58,7 +59,7 @@ class pluginPanel(wx.Panel):
 		self.updateProfileToControls()
 
 	def updateProfileToControls(self):
-		self.pluginConfig = profile.getPluginConfig()
+		self.pluginConfig = plugin.getPostProcessPluginConfig()
 		for p in self.panelList:
 			p.Show(False)
 			self.pluginEnabledPanel.GetSizer().Detach(p)
@@ -69,7 +70,7 @@ class pluginPanel(wx.Panel):
 	def _buildPluginPanel(self, pluginConfig):
 		plugin = None
 		for pluginTest in self.pluginList:
-			if pluginTest['filename'] == pluginConfig['filename']:
+			if pluginTest.getFilename() == pluginConfig['filename']:
 				plugin = pluginTest
 		if plugin is None:
 			return False
@@ -77,7 +78,7 @@ class pluginPanel(wx.Panel):
 		pluginPanel = wx.Panel(self.pluginEnabledPanel)
 		s = wx.GridBagSizer(2, 2)
 		pluginPanel.SetSizer(s)
-		title = wx.StaticText(pluginPanel, -1, plugin['name'])
+		title = wx.StaticText(pluginPanel, -1, plugin.getName())
 		title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		remButton = wx.Button(pluginPanel, -1, 'X', style=wx.BU_EXACTFIT)
 		helpButton = wx.Button(pluginPanel, -1, '?', style=wx.BU_EXACTFIT)
@@ -85,13 +86,13 @@ class pluginPanel(wx.Panel):
 		s.Add(helpButton, pos=(0,0), span=(1,1), flag=wx.TOP|wx.LEFT|wx.ALIGN_RIGHT, border=5)
 		s.Add(remButton, pos=(0,3), span=(1,1), flag=wx.TOP|wx.RIGHT|wx.ALIGN_RIGHT, border=5)
 		s.Add(wx.StaticLine(pluginPanel), pos=(1,0), span=(1,4), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
-		info = wx.StaticText(pluginPanel, -1, plugin['info'])
+		info = wx.StaticText(pluginPanel, -1, plugin.getInfo())
 		info.Wrap(300)
 		s.Add(info, pos=(2,0), span=(1,4), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
 
 		pluginPanel.paramCtrls = {}
 		i = 0
-		for param in plugin['params']:
+		for param in plugin.getParams():
 			value = param['default']
 			if param['name'] in pluginConfig['params']:
 				value = pluginConfig['params'][param['name']]
@@ -125,19 +126,19 @@ class pluginPanel(wx.Panel):
 			idx = self.panelList.index(panel)
 			for k in panel.paramCtrls.keys():
 				self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
-		profile.setPluginConfig(self.pluginConfig)
+		plugin.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
 	def OnAdd(self, e):
 		if self.listbox.GetSelection() < 0:
 			wx.MessageBox(_("You need to select a plugin before you can add anything."), _("Error: no plugin selected"), wx.OK | wx.ICON_INFORMATION)
 			return
-		plugin = self.pluginList[self.listbox.GetSelection()]
-		newConfig = {'filename': plugin['filename'], 'params': {}}
+		p = self.pluginList[self.listbox.GetSelection()]
+		newConfig = {'filename': p.getFilename(), 'params': {}}
 		if not self._buildPluginPanel(newConfig):
 			return
 		self.pluginConfig.append(newConfig)
-		profile.setPluginConfig(self.pluginConfig)
+		plugin.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
 	def OnRem(self, e):
@@ -157,12 +158,11 @@ class pluginPanel(wx.Panel):
 		self.Layout()
 
 		self.pluginConfig.pop(idx)
-		profile.setPluginConfig(self.pluginConfig)
+		plugin.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
 	def OnHelp(self, e):
 		panel = e.GetEventObject().GetParent()
-		sizer = self.pluginEnabledPanel.GetSizer()
 		idx = self.panelList.index(panel)
 
 		fname = self.pluginConfig[idx]['filename'].lower()
@@ -174,6 +174,6 @@ class pluginPanel(wx.Panel):
 		webbrowser.open('http://wiki.ultimaker.com/Category:CuraPlugin')
 
 	def OnOpenPluginLocation(self, e):
-		if not os.path.exists(profile.getPluginBasePaths()[0]):
-			os.mkdir(profile.getPluginBasePaths()[0])
-		explorer.openExplorerPath(profile.getPluginBasePaths()[0])
+		if not os.path.exists(plugin.getPluginBasePaths()[0]):
+			os.mkdir(plugin.getPluginBasePaths()[0])
+		explorer.openExplorerPath(plugin.getPluginBasePaths()[0])

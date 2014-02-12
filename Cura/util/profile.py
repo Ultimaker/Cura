@@ -5,7 +5,19 @@ These settings can be globally accessed and modified.
 from __future__ import division
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
-import os, traceback, math, re, zlib, base64, time, sys, platform, glob, string, stat, types
+import os
+import traceback
+import math
+import re
+import zlib
+import base64
+import time
+import sys
+import platform
+import glob
+import string
+import stat
+import types
 import cPickle as pickle
 import numpy
 if sys.version_info[0] < 3:
@@ -13,7 +25,6 @@ if sys.version_info[0] < 3:
 else:
 	import configparser as ConfigParser
 
-from Cura.util import resources
 from Cura.util import version
 from Cura.util import validators
 
@@ -1042,98 +1053,3 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		#Append the profile string to the end of the GCode, so we can load it from the GCode file later.
 		postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
-
-###### PLUGIN #####
-
-def getPluginConfig():
-	try:
-		return pickle.loads(str(getProfileSetting('plugin_config')))
-	except:
-		return []
-
-def setPluginConfig(config):
-	putProfileSetting('plugin_config', pickle.dumps(config))
-
-def getPluginBasePaths():
-	ret = []
-	if platform.system() != "Windows":
-		ret.append(os.path.expanduser('~/.cura/plugins/'))
-	if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
-		ret.append(os.path.normpath(os.path.join(resources.resourceBasePath, "plugins")))
-	else:
-		ret.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'plugins')))
-	return ret
-
-def getPluginList():
-	ret = []
-	for basePath in getPluginBasePaths():
-		for filename in glob.glob(os.path.join(basePath, '*.py')):
-			filename = os.path.basename(filename)
-			if filename.startswith('_'):
-				continue
-			with open(os.path.join(basePath, filename), "r") as f:
-				item = {'filename': filename, 'name': None, 'info': None, 'type': None, 'params': []}
-				for line in f:
-					line = line.strip()
-					if not line.startswith('#'):
-						break
-					line = line[1:].split(':', 1)
-					if len(line) != 2:
-						continue
-					if line[0].upper() == 'NAME':
-						item['name'] = line[1].strip()
-					elif line[0].upper() == 'INFO':
-						item['info'] = line[1].strip()
-					elif line[0].upper() == 'TYPE':
-						item['type'] = line[1].strip()
-					elif line[0].upper() == 'DEPEND':
-						pass
-					elif line[0].upper() == 'PARAM':
-						m = re.match('([a-zA-Z][a-zA-Z0-9_]*)\(([a-zA-Z_]*)(?::([^\)]*))?\) +(.*)', line[1].strip())
-						if m is not None:
-							item['params'].append({'name': m.group(1), 'type': m.group(2), 'default': m.group(3), 'description': m.group(4)})
-					else:
-						print "Unknown item in effect meta data: %s %s" % (line[0], line[1])
-				if item['name'] is not None and item['type'] == 'postprocess':
-					ret.append(item)
-	return ret
-
-def runPostProcessingPlugins(gcodefilename):
-	pluginConfigList = getPluginConfig()
-	pluginList = getPluginList()
-
-	for pluginConfig in pluginConfigList:
-		plugin = None
-		for pluginTest in pluginList:
-			if pluginTest['filename'] == pluginConfig['filename']:
-				plugin = pluginTest
-		if plugin is None:
-			continue
-
-		pythonFile = None
-		for basePath in getPluginBasePaths():
-			testFilename = os.path.join(basePath, pluginConfig['filename'])
-			if os.path.isfile(testFilename):
-				pythonFile = testFilename
-		if pythonFile is None:
-			continue
-
-		locals = {'filename': gcodefilename}
-		for param in plugin['params']:
-			value = param['default']
-			if param['name'] in pluginConfig['params']:
-				value = pluginConfig['params'][param['name']]
-
-			if param['type'] == 'float':
-				try:
-					value = float(value)
-				except:
-					value = float(param['default'])
-
-			locals[param['name']] = value
-		try:
-			execfile(pythonFile, locals)
-		except:
-			locationInfo = traceback.extract_tb(sys.exc_info()[2])[-1]
-			return "%s: '%s' @ %s:%s:%d" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]), os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
-	return None
