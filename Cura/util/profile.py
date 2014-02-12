@@ -1059,9 +1059,9 @@ def getPluginBasePaths():
 	if platform.system() != "Windows":
 		ret.append(os.path.expanduser('~/.cura/plugins/'))
 	if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
-		ret.append(os.path.normpath(os.path.join(resources.resourceBasePath, "Cura/plugins")))
+		ret.append(os.path.normpath(os.path.join(resources.resourceBasePath, "plugins")))
 	else:
-		ret.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'plugins')))
+		ret.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'plugins')))
 	return ret
 
 def getPluginList():

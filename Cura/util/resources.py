@@ -26,12 +26,9 @@ if sys.platform.startswith('darwin'):
 		except:
 			resourceBasePath = os.path.join(os.path.dirname(__file__), "../../../../../")
 	else:
-		resourceBasePath = os.path.join(os.path.dirname(__file__), "../resources")
-else:
-	if hasattr(sys, 'frozen'):
 		resourceBasePath = os.path.join(os.path.dirname(__file__), "../../resources")
-	else:
-		resourceBasePath = os.path.join(os.path.dirname(__file__), "../resources")
+else:
+	resourceBasePath = os.path.join(os.path.dirname(__file__), "../../resources")
 
 def getPathForResource(dir, subdir, resource_name):
 	assert os.path.isdir(dir), "{p} is not a directory".format(p=dir)
