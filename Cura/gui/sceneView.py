@@ -21,6 +21,7 @@ from Cura.util import meshLoader
 from Cura.util import objectScene
 from Cura.util import resources
 from Cura.util import sliceEngine
+from Cura.util import plugin
 from Cura.util import removableStorage
 from Cura.util import explorer
 from Cura.util.printerConnection import printerConnectionManager
@@ -268,10 +269,15 @@ class SceneView(openglGui.glGuiPanel):
 			menu.Destroy()
 
 	def _openPrintWindowForConnection(self, connection):
-		print '_openPrintWindowForConnection', connection.getName()
 		if connection.window is None or not connection.window:
-			#connection.window = printWindow2.printWindowPlugin(self, connection, "C:/Software/Cura/Cura/plugins/PronterfaceUI/script.py")
-			connection.window = printWindow2.printWindowBasic(self, connection)
+			connection.window = None
+			windowType = profile.getPreference('printing_window')
+			for p in plugin.getPluginList('printwindow'):
+				if p.getName() == windowType:
+					connection.window = printWindow2.printWindowPlugin(self, connection, p.getFullFilename())
+					break
+			if connection.window is None:
+				connection.window = printWindow2.printWindowBasic(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
 		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):

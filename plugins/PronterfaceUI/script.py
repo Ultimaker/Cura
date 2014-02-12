@@ -1,6 +1,6 @@
 #Name: Pronterface UI
 #Info: Pronterface like UI for Cura
-#Depend: printWindow
+#Depend: printwindow
 #Type: printwindow
 
 # Printer UI based on the Printrun interface by Kliment.
