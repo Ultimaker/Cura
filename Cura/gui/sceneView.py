@@ -122,7 +122,10 @@ class SceneView(openglGui.glGuiPanel):
 
 	def loadGCodeFile(self, filename):
 		self.OnDeleteAll(None)
-		#TODO: Load straight GCodeFile
+		#Cheat the engine results to load a GCode file into it.
+		self._engine._result = sliceEngine.EngineResult()
+		with open(filename, "r") as f:
+			self._engine._result.setGCode(f.read())
 		self.printButton.setBottomText('')
 		self.viewSelection.setValue(4)
 		self.printButton.setDisabled(False)
