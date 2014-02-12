@@ -21,6 +21,7 @@ import struct
 import cStringIO as StringIO
 
 from Cura.util import profile
+from Cura.util import plugin
 from Cura.util import version
 from Cura.util import gcodeInterpreter
 
@@ -93,11 +94,17 @@ class EngineResult(object):
 
 	def getGCode(self):
 		data = self._gcodeData.getvalue()
-		block0 = data[0:2048]
-		for k, v in self._replaceInfo.items():
-			v = (v + ' ' * len(k))[:len(k)]
-			block0 = block0.replace(k, v)
-		return block0 + data[2048:]
+		if len(self._replaceInfo) > 0:
+			block0 = data[0:2048]
+			for k, v in self._replaceInfo.items():
+				v = (v + ' ' * len(k))[:len(k)]
+				block0 = block0.replace(k, v)
+			return block0 + data[2048:]
+		return data
+
+	def setGCode(self, gcode):
+		self._gcodeData = StringIO.StringIO(gcode)
+		self._replaceInfo = {}
 
 	def addLog(self, line):
 		self._engineLog.append(line)
@@ -361,7 +368,7 @@ class Engine(object):
 		returnCode = self._process.wait()
 		logThread.join()
 		if returnCode == 0:
-			pluginError = None #profile.runPostProcessingPlugins(self._exportFilename)
+			pluginError = plugin.runPostProcessingPlugins(self._result)
 			if pluginError is not None:
 				print pluginError
 				self._result.addLog(pluginError)

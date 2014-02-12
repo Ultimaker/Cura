@@ -8,8 +8,8 @@ import os
 import sys
 import traceback
 import platform
-import glob
 import re
+import tempfile
 import cPickle as pickle
 
 from Cura.util import profile
@@ -108,26 +108,27 @@ def getPluginList(pluginType):
 
 def runPostProcessingPlugins(engineResult):
 	pluginConfigList = getPostProcessPluginConfig()
-	pluginList = getPluginList()
+	pluginList = getPluginList('postprocess')
 
+	tempfilename = None
 	for pluginConfig in pluginConfigList:
 		plugin = None
 		for pluginTest in pluginList:
-			if pluginTest['filename'] == pluginConfig['filename']:
+			if pluginTest.getFilename() == pluginConfig['filename']:
 				plugin = pluginTest
 		if plugin is None:
 			continue
 
-		pythonFile = None
-		for basePath in getPluginBasePaths():
-			testFilename = os.path.join(basePath, pluginConfig['filename'])
-			if os.path.isfile(testFilename):
-				pythonFile = testFilename
-		if pythonFile is None:
-			continue
+		pythonFile = plugin.getFullFilename()
 
-		locals = {'filename': gcodefilename}
-		for param in plugin['params']:
+		if tempfilename is None:
+			f = tempfile.NamedTemporaryFile(prefix='CuraPluginTemp', delete=False)
+			tempfilename = f.name
+			f.write(engineResult.getGCode())
+			f.close()
+
+		locals = {'filename': tempfilename}
+		for param in plugin.getParams():
 			value = param['default']
 			if param['name'] in pluginConfig['params']:
 				value = pluginConfig['params'][param['name']]
@@ -144,4 +145,9 @@ def runPostProcessingPlugins(engineResult):
 		except:
 			locationInfo = traceback.extract_tb(sys.exc_info()[2])[-1]
 			return "%s: '%s' @ %s:%s:%d" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]), os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
+	if tempfilename is not None:
+		f = open(tempfilename, "r")
+		engineResult.setGCode(f.read())
+		f.close()
+		os.unlink(tempfilename)
 	return None
