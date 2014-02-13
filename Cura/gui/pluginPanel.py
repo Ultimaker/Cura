@@ -6,14 +6,14 @@ import webbrowser
 from wx.lib import scrolledpanel
 
 from Cura.util import profile
-from Cura.util import plugin
+from Cura.util import pluginInfo
 from Cura.util import explorer
 
 class pluginPanel(wx.Panel):
 	def __init__(self, parent, callback):
 		wx.Panel.__init__(self, parent,-1)
 		#Plugin page
-		self.pluginList = plugin.getPluginList("postprocess")
+		self.pluginList = pluginInfo.getPluginList("postprocess")
 		self.callback = callback
 
 		sizer = wx.GridBagSizer(2, 2)
@@ -59,7 +59,7 @@ class pluginPanel(wx.Panel):
 		self.updateProfileToControls()
 
 	def updateProfileToControls(self):
-		self.pluginConfig = plugin.getPostProcessPluginConfig()
+		self.pluginConfig = pluginInfo.getPostProcessPluginConfig()
 		for p in self.panelList:
 			p.Show(False)
 			self.pluginEnabledPanel.GetSizer().Detach(p)
@@ -126,7 +126,7 @@ class pluginPanel(wx.Panel):
 			idx = self.panelList.index(panel)
 			for k in panel.paramCtrls.keys():
 				self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
-		plugin.setPostProcessPluginConfig(self.pluginConfig)
+		pluginInfo.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
 	def OnAdd(self, e):
@@ -138,7 +138,7 @@ class pluginPanel(wx.Panel):
 		if not self._buildPluginPanel(newConfig):
 			return
 		self.pluginConfig.append(newConfig)
-		plugin.setPostProcessPluginConfig(self.pluginConfig)
+		pluginInfo.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
 	def OnRem(self, e):
@@ -158,7 +158,7 @@ class pluginPanel(wx.Panel):
 		self.Layout()
 
 		self.pluginConfig.pop(idx)
-		plugin.setPostProcessPluginConfig(self.pluginConfig)
+		pluginInfo.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
 	def OnHelp(self, e):
@@ -174,6 +174,6 @@ class pluginPanel(wx.Panel):
 		webbrowser.open('http://wiki.ultimaker.com/Category:CuraPlugin')
 
 	def OnOpenPluginLocation(self, e):
-		if not os.path.exists(plugin.getPluginBasePaths()[0]):
-			os.mkdir(plugin.getPluginBasePaths()[0])
-		explorer.openExplorerPath(plugin.getPluginBasePaths()[0])
+		if not os.path.exists(pluginInfo.getPluginBasePaths()[0]):
+			os.mkdir(pluginInfo.getPluginBasePaths()[0])
+		explorer.openExplorerPath(pluginInfo.getPluginBasePaths()[0])

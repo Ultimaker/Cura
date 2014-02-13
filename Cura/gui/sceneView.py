@@ -21,7 +21,7 @@ from Cura.util import meshLoader
 from Cura.util import objectScene
 from Cura.util import resources
 from Cura.util import sliceEngine
-from Cura.util import plugin
+from Cura.util import pluginInfo
 from Cura.util import removableStorage
 from Cura.util import explorer
 from Cura.util.printerConnection import printerConnectionManager
@@ -275,7 +275,7 @@ class SceneView(openglGui.glGuiPanel):
 		if connection.window is None or not connection.window:
 			connection.window = None
 			windowType = profile.getPreference('printing_window')
-			for p in plugin.getPluginList('printwindow'):
+			for p in pluginInfo.getPluginList('printwindow'):
 				if p.getName() == windowType:
 					connection.window = printWindow2.printWindowPlugin(self, connection, p.getFullFilename())
 					break

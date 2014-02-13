@@ -21,7 +21,7 @@ import struct
 import cStringIO as StringIO
 
 from Cura.util import profile
-from Cura.util import plugin
+from Cura.util import pluginInfo
 from Cura.util import version
 from Cura.util import gcodeInterpreter
 
@@ -368,7 +368,7 @@ class Engine(object):
 		returnCode = self._process.wait()
 		logThread.join()
 		if returnCode == 0:
-			pluginError = plugin.runPostProcessingPlugins(self._result)
+			pluginError = pluginInfo.runPostProcessingPlugins(self._result)
 			if pluginError is not None:
 				print pluginError
 				self._result.addLog(pluginError)

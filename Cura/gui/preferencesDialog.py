@@ -6,7 +6,7 @@ from Cura.gui import configWizard
 from Cura.gui import configBase
 from Cura.util import machineCom
 from Cura.util import profile
-from Cura.util import plugin
+from Cura.util import pluginInfo
 from Cura.util import resources
 
 class preferencesDialog(wx.Dialog):
@@ -23,7 +23,7 @@ class preferencesDialog(wx.Dialog):
 		left, right, main = self.panel.CreateConfigPanel(self)
 
 		printWindowTypes = ['Basic']
-		for p in plugin.getPluginList('printwindow'):
+		for p in pluginInfo.getPluginList('printwindow'):
 			printWindowTypes.append(p.getName())
 		configBase.TitleRow(left, _("Print window"))
 		configBase.SettingRow(left, 'printing_window', printWindowTypes)
