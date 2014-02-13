@@ -343,7 +343,6 @@ class mainWindow(wx.Frame):
 
 	def OnDropFiles(self, files):
 		if len(files) > 0:
-			profile.setPluginConfig([])
 			self.updateProfileToAllControls()
 		self.scene.loadFiles(files)
 
