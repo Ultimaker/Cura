@@ -377,6 +377,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnViewChange(self):
 		if self.viewSelection.getValue() == 4:
 			self.viewMode = 'gcode'
+			self.tool = previewTools.toolNone(self)
 		elif self.viewSelection.getValue() == 1:
 			self.viewMode = 'overhang'
 		elif self.viewSelection.getValue() == 2:
