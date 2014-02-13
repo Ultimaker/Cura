@@ -210,6 +210,9 @@ class InfoPage(wx.wizard.WizardPageSimple):
 	def AllowNext(self):
 		return True
 
+	def AllowBack(self):
+		return True
+
 	def StoreData(self):
 		pass
 
@@ -231,6 +234,9 @@ class FirstInfoPage(InfoPage):
 
 		#self.AddText('* Calibrate your machine')
 		#self.AddText('* Do your first print')
+
+	def AllowBack(self):
+		return False
 
 
 class OtherMachineSelectPage(InfoPage):
@@ -860,7 +866,10 @@ class configWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_FORWARD).Enable()
 		else:
 			self.FindWindowById(wx.ID_FORWARD).Disable()
-		self.FindWindowById(wx.ID_BACKWARD).Disable()
+		if e.GetPage().AllowBack():
+			self.FindWindowById(wx.ID_BACKWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_BACKWARD).Disable()
 
 class bedLevelWizardMain(InfoPage):
 	def __init__(self, parent):
@@ -1044,6 +1053,9 @@ class headOffsetCalibrationPage(InfoPage):
 
 		self.Bind(wx.EVT_BUTTON, self.OnConnect, self.connectButton)
 		self.Bind(wx.EVT_BUTTON, self.OnResume, self.resumeButton)
+
+	def AllowBack(self):
+		return True
 
 	def OnConnect(self, e = None):
 		if self.comm is not None:
@@ -1265,7 +1277,10 @@ class bedLevelWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_FORWARD).Enable()
 		else:
 			self.FindWindowById(wx.ID_FORWARD).Disable()
-		self.FindWindowById(wx.ID_BACKWARD).Disable()
+		if e.GetPage().AllowBack():
+			self.FindWindowById(wx.ID_BACKWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_BACKWARD).Disable()
 
 class headOffsetWizard(wx.wizard.Wizard):
 	def __init__(self):
@@ -1290,4 +1305,7 @@ class headOffsetWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_FORWARD).Enable()
 		else:
 			self.FindWindowById(wx.ID_FORWARD).Disable()
-		self.FindWindowById(wx.ID_BACKWARD).Disable()
+		if e.GetPage().AllowBack():
+			self.FindWindowById(wx.ID_BACKWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_BACKWARD).Disable()
