@@ -15,7 +15,7 @@ OpenGL.ERROR_CHECKING = False
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
-from Cura.gui import printWindow2
+from Cura.gui import printWindow
 from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.util import objectScene
@@ -277,10 +277,10 @@ class SceneView(openglGui.glGuiPanel):
 			windowType = profile.getPreference('printing_window')
 			for p in pluginInfo.getPluginList('printwindow'):
 				if p.getName() == windowType:
-					connection.window = printWindow2.printWindowPlugin(self, connection, p.getFullFilename())
+					connection.window = printWindow.printWindowPlugin(self, connection, p.getFullFilename())
 					break
 			if connection.window is None:
-				connection.window = printWindow2.printWindowBasic(self, connection)
+				connection.window = printWindow.printWindowBasic(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
 		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):
