@@ -22,6 +22,8 @@ class CuraApp(wx.App):
 		self.splash = None
 		self.loadFiles = files
 
+		self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
+
 		if sys.platform.startswith('win'):
 			#Check for an already running instance, if another instance is running load files in there
 			from Cura.util import version
@@ -59,6 +61,23 @@ class CuraApp(wx.App):
 			self.mainWindow.OnDropFiles([path])
 		except Exception as e:
 			warnings.warn("File at {p} cannot be read: {e}".format(p=path, e=str(e)))
+
+	def MacReopenApp(self, event):
+		self.GetTopWindow().Raise()
+
+	def MacHideApp(self, event):
+		self.GetTopWindow().Show(False)
+
+	def MacNewFile(self):
+		pass
+
+	def MacPrintFile(self, file_path):
+		pass
+
+	def OnActivate(self, e):
+		if e.GetActive():
+			self.GetTopWindow().Raise()
+		e.Skip()
 
 	def Win32SocketListener(self, port):
 		import socket
@@ -127,6 +146,7 @@ class CuraApp(wx.App):
 		self.mainWindow = mainWindow.mainWindow()
 		if self.splash is not None:
 			self.splash.Show(False)
+		self.SetTopWindow(self.mainWindow)
 		self.mainWindow.Show()
 		self.mainWindow.OnDropFiles(self.loadFiles)
 		if profile.getPreference('last_run_version') != version.getVersion(False):
