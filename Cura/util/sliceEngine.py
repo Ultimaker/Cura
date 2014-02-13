@@ -471,6 +471,8 @@ class Engine(object):
 		settings['fanFullOnLayerNr'] = (fanFullHeight - settings['initialLayerThickness'] - 1) / settings['layerThickness'] + 1
 		if settings['fanFullOnLayerNr'] < 0:
 			settings['fanFullOnLayerNr'] = 0
+		if profile.getProfileSetting('support_type') == 'Lines':
+			settings['supportType'] = 1
 
 		if profile.getProfileSettingFloat('fill_density') == 0:
 			settings['sparseInfillLineDistance'] = -1
