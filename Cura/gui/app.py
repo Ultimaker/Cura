@@ -155,6 +155,19 @@ class CuraApp(wx.App):
 
 		setFullScreenCapable(self.mainWindow)
 
+		if sys.platform.startswith('darwin'):
+			wx.CallAfter(self.StupidMacOSWorkaround)
+
+	def StupidMacOSWorkaround(self):
+		"""
+		On MacOS for some magical reason opening new frames does not work until you opened a new modal dialog and closed it.
+		If we do this from software, then, as if by magic, the bug which prevents opening extra frames is gone.
+		"""
+		dlg = wx.Dialog(None)
+		wx.PostEvent(dlg, wx.CommandEvent(wx.EVT_CLOSE.typeId))
+		dlg.ShowModal()
+		dlg.Destroy()
+
 if platform.system() == "Darwin": #Mac magic. Dragons live here. THis sets full screen options.
 	try:
 		import ctypes, objc
