@@ -42,7 +42,7 @@ def main():
 	elif options.profileini is not None:
 		profile.loadProfile(options.profileini)
 	else:
-		profile.loadProfile(profile.getDefaultProfilePath())
+		profile.loadProfile(profile.getDefaultProfilePath(), True)
 
 	if options.printfile is not None:
 		from Cura.gui import printWindow

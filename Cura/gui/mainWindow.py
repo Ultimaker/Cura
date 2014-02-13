@@ -552,7 +552,7 @@ class mainWindow(wx.Frame):
 		aboutBox.Show()
 
 	def OnClose(self, e):
-		profile.saveProfile(profile.getDefaultProfilePath())
+		profile.saveProfile(profile.getDefaultProfilePath(), True)
 
 		# Save the window position, size & state from the preferences file
 		profile.putPreference('window_maximized', self.IsMaximized())

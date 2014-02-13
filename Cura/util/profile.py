@@ -130,7 +130,7 @@ class setting(object):
 		self._values[index] = unicode(value)
 
 	def getValueIndex(self):
-		if self.isMachineSetting():
+		if self.isMachineSetting() or self.isProfile():
 			global _selectedMachineIndex
 			return _selectedMachineIndex
 		return 0
@@ -496,36 +496,62 @@ def getAlternativeBasePaths():
 def getDefaultProfilePath():
 	return os.path.join(getBasePath(), 'current_profile.ini')
 
-def loadProfile(filename):
+def loadProfile(filename, allMachines = False):
+	global settingsList
 	#Read a configuration file as global config
 	profileParser = ConfigParser.ConfigParser()
 	try:
 		profileParser.read(filename)
 	except ConfigParser.ParsingError:
 		return
-	global settingsList
-	for set in settingsList:
-		if set.isPreference():
-			continue
-		section = 'profile'
-		if set.isAlteration():
-			section = 'alterations'
-		if profileParser.has_option(section, set.getName()):
-			set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'))
+	if allMachines:
+		n = 0
+		while profileParser.has_section('profile_%d' % (n)):
+			for set in settingsList:
+				if set.isPreference():
+					continue
+				section = 'profile_%d' % (n)
+				if set.isAlteration():
+					section = 'alterations_%d' % (n)
+				if profileParser.has_option(section, set.getName()):
+					set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'), n)
+			n += 1
+	else:
+		for set in settingsList:
+			if set.isPreference():
+				continue
+			section = 'profile'
+			if set.isAlteration():
+				section = 'alterations'
+			if profileParser.has_option(section, set.getName()):
+				set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'))
 
-def saveProfile(filename):
+def saveProfile(filename, allMachines = False):
+	global settingsList
 	#Save the current profile to an ini file
 	profileParser = ConfigParser.ConfigParser()
-	profileParser.add_section('profile')
-	profileParser.add_section('alterations')
-	global settingsList
-	for set in settingsList:
-		if set.isPreference() or set.isMachineSetting():
-			continue
-		if set.isAlteration():
-			profileParser.set('alterations', set.getName(), set.getValue().encode('utf-8'))
-		else:
-			profileParser.set('profile', set.getName(), set.getValue().encode('utf-8'))
+	if allMachines:
+		for set in settingsList:
+			if set.isPreference() or set.isMachineSetting():
+				continue
+			for n in xrange(0, getMachineCount()):
+				if set.isAlteration():
+					section = 'alterations_%d' % (n)
+				else:
+					section = 'profile_%d' % (n)
+				if not profileParser.has_section(section):
+					profileParser.add_section(section)
+				profileParser.set(section, set.getName(), set.getValue(n).encode('utf-8'))
+	else:
+		profileParser.add_section('profile')
+		profileParser.add_section('alterations')
+		for set in settingsList:
+			if set.isPreference() or set.isMachineSetting():
+				continue
+			if set.isAlteration():
+				profileParser.set('alterations', set.getName(), set.getValue().encode('utf-8'))
+			else:
+				profileParser.set('profile', set.getName(), set.getValue().encode('utf-8'))
 
 	profileParser.write(open(filename, 'w'))
 
@@ -1002,7 +1028,7 @@ def setAlterationFile(name, value):
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isAlteration():
 		settingsDictionary[name].setValue(value)
-	saveProfile(getDefaultProfilePath())
+	saveProfile(getDefaultProfilePath(), True)
 
 def isTagIn(tag, contents):
 	contents = re.sub(';[^\n]*\n', '', contents)
