@@ -71,8 +71,8 @@ def main():
 				typeCount += 1
 				if inspect.getdoc(a):
 					typeDocCount += 1
-				# else:
-				# 	undocList.append('%s.%s' % (module.__name__, name))
+				else:
+					undocList.append('%s.%s' % (module.__name__, name))
 				for name2 in dir(a):
 					a2 = getattr(a, name2)
 					if type(a2) is types.MethodType:
