@@ -14,6 +14,10 @@ from Cura.util.printerConnection import serialConnection
 from Cura.util.printerConnection import doodle3dConnect
 
 class PrinterConnectionManager(object):
+	"""
+	The printer connection manager has one of each printer connection groups. Sorted on priority.
+	It can retrieve the first available connection as well as all available connections.
+	"""
 	def __init__(self):
 		self._groupList = []
 		if version.isDevVersion():

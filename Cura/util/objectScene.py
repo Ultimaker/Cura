@@ -12,11 +12,21 @@ from Cura.util import profile
 from Cura.util import polygon
 
 class _objectOrder(object):
+	"""
+	Internal object used by the _objectOrderFinder to keep track of a possible order in which to print objects.
+	"""
 	def __init__(self, order, todo):
+		"""
+		:param order:	List of indexes in which to print objects, ordered by printing order.
+		:param todo: 	List of indexes which are not yet inserted into the order list.
+		"""
 		self.order = order
 		self.todo = todo
 
 class _objectOrderFinder(object):
+	"""
+	Internal object used by the Scene class to figure out in which order to print objects.
+	"""
 	def __init__(self, scene, leftToRight, frontToBack, gantryHeight):
 		self._scene = scene
 		self._objs = scene.objects()
@@ -91,6 +101,10 @@ class _objectOrderFinder(object):
 		return polygon.polygonCollision(obj._boundaryHull + obj.getPosition(), addObj._headAreaHull + addObj.getPosition())
 
 class Scene(object):
+	"""
+	The scene class keep track of an collection of objects on a build platform and their state.
+	It can figure out in which order to print them (if any) and if an object can be printed at all.
+	"""
 	def __init__(self):
 		self._objectList = []
 		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)

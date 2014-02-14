@@ -18,6 +18,10 @@ from Cura.util import resources
 _pluginList = None
 
 class pluginInfo(object):
+	"""
+	Plugin information object. Used to keep track of information about the available plugins in this installation of Cura.
+	Each plugin as meta-data associated with it which can be retrieved from this class.
+	"""
 	def __init__(self, dirname, filename):
 		self._dirname = dirname
 		self._filename = filename

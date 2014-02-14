@@ -39,15 +39,17 @@ settingsList = []
 _selectedMachineIndex = 0
 
 class setting(object):
-	#A setting object contains a configuration setting. These are globally accessible trough the quick access functions
-	# and trough the settingsDictionary function.
-	# Settings can be:
-	# * profile settings (settings that effect the slicing process and the print result)
-	# * preferences (settings that effect how cura works and acts)
-	# * machine settings (settings that relate to the physical configuration of your machine)
-	# * alterations (bad name copied from Skeinforge. These are the start/end code pieces)
-	# Settings have validators that check if the value is valid, but do not prevent invalid values!
-	# Settings have conditions that enable/disable this setting depending on other settings. (Ex: Dual-extrusion)
+	"""
+		A setting object contains a configuration setting. These are globally accessible trough the quick access functions
+		and trough the settingsDictionary function.
+		Settings can be:
+		* profile settings (settings that effect the slicing process and the print result)
+		* preferences (settings that effect how cura works and acts)
+		* machine settings (settings that relate to the physical configuration of your machine)
+		* alterations (bad name copied from Skeinforge. These are the start/end code pieces)
+		Settings have validators that check if the value is valid, but do not prevent invalid values!
+		Settings have conditions that enable/disable this setting depending on other settings. (Ex: Dual-extrusion)
+	"""
 	def __init__(self, name, default, type, category, subcategory):
 		self._name = name
 		self._label = name

@@ -15,6 +15,10 @@ import json
 from Cura.util import machineCom
 
 class serialComm(object):
+	"""
+	The serialComm class is the interface class which handles the communication between stdin/stdout and the machineCom class.
+	This interface class is used to run the (USB) serial communication in a different process then the GUI.
+	"""
 	def __init__(self, portName):
 		self._comm = None
 		self._gcodeList = []

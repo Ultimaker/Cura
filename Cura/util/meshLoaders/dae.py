@@ -17,6 +17,12 @@ def loadScene(filename):
 	return [loader.obj]
 
 class daeLoader(object):
+	"""
+	COLLADA object loader. This class is a bit of a mess, COLLADA files are complex beasts, and this code has only been tweaked to accept
+	the COLLADA files exported from SketchUp.
+
+	Parts of this class can be cleaned up and improved by using more numpy.
+	"""
 	def __init__(self, filename):
 		self.obj = printableObject.printableObject(filename)
 		self.mesh = self.obj._addMesh()

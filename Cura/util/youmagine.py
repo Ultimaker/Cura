@@ -9,6 +9,10 @@ import httplib as httpclient
 import urllib
 
 class httpUploadDataStream(object):
+	"""
+	For http uploads we need a readable/writable datasteam to use with the httpclient.HTTPSConnection class.
+	This is used to facilitate file uploads towards Youmagine.
+	"""
 	def __init__(self, progressCallback):
 		self._dataList = []
 		self._totalLength = 0
@@ -38,6 +42,10 @@ class httpUploadDataStream(object):
 		return self._totalLength
 
 class Youmagine(object):
+	"""
+	Youmagine connection object. Has various functions to communicate with Youmagine.
+	These functions are blocking and thus this class should be used from a thread.
+	"""
 	def __init__(self, authToken, progressCallback = None):
 		self._hostUrl = 'api.youmagine.com'
 		self._viewUrl = 'www.youmagine.com'
@@ -197,8 +205,11 @@ class Youmagine(object):
 		return {'error': error}
 
 
-#Fake Youmagine class to test without internet
 class FakeYoumagine(Youmagine):
+	"""
+	Fake Youmagine class to test without internet, acts the same as the YouMagine class, but without going to the internet.
+	Assists in testing UI features.
+	"""
 	def __init__(self, authToken, callback):
 		super(FakeYoumagine, self).__init__(authToken)
 		self._authUrl = 'file:///C:/Models/output.html'

@@ -15,6 +15,9 @@ import cStringIO as StringIO
 from Cura.util import profile
 
 def gcodePath(newType, pathType, layerThickness, startPoint):
+	"""
+	Build a gcodePath object. This used to be objects, however, this code is timing sensitive and dictionaries proved to be faster.
+	"""
 	return {'type': newType,
 			'pathType': pathType,
 			'layerThickness': layerThickness,
@@ -22,6 +25,10 @@ def gcodePath(newType, pathType, layerThickness, startPoint):
 			'extrusion': [0.0]}
 
 class gcode(object):
+	"""
+	The heavy lifting GCode parser. This is most likely the hardest working python code in Cura.
+	It parses a GCode file and stores the result in layers where each layer as paths that describe the GCode.
+	"""
 	def __init__(self):
 		self.regMatch = {}
 		self.layerList = None

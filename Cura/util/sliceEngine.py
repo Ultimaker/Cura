@@ -26,6 +26,10 @@ from Cura.util import version
 from Cura.util import gcodeInterpreter
 
 def getEngineFilename():
+	"""
+		Finds and returns the path to the current engine executable. This is OS depended.
+	:return: The full path to the engine executable.
+	"""
 	if platform.system() == 'Windows':
 		if version.isDevVersion() and os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
 			return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
@@ -38,13 +42,11 @@ def getEngineFilename():
 		return '/usr/local/bin/CuraEngine'
 	return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine'))
 
-def getTempFilename():
-	warnings.simplefilter('ignore')
-	ret = os.tempnam(None, "Cura_Tmp")
-	warnings.simplefilter('default')
-	return ret
-
 class EngineResult(object):
+	"""
+	Result from running the CuraEngine.
+	Contains the engine log, polygons retrieved from the engine, the GCode and some meta-data.
+	"""
 	def __init__(self):
 		self._engineLog = []
 		self._gcodeData = StringIO.StringIO()
@@ -156,6 +158,11 @@ class EngineResult(object):
 			pass
 
 class Engine(object):
+	"""
+	Class used to communicate with the CuraEngine.
+	The CuraEngine is ran as a 2nd process and reports back information trough stderr.
+	GCode trough stdout and has a socket connection for polygon information and loading the 3D model into the engine.
+	"""
 	GUI_CMD_REQUEST_MESH = 0x01
 	GUI_CMD_SEND_POLYGONS = 0x02
 

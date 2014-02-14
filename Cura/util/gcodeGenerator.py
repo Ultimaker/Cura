@@ -9,6 +9,10 @@ import math
 from Cura.util import profile
 
 class gcodeGenerator(object):
+	"""
+	Generates a simple set of GCode commands for RepRap GCode firmware.
+	Use the add* commands to build the GCode, and then use the list function to retrieve the resulting gcode.
+	"""
 	def __init__(self):
 		self._feedPrint = profile.getProfileSettingFloat('print_speed') * 60
 		self._feedTravel = profile.getProfileSettingFloat('travel_speed') * 60

@@ -13,6 +13,10 @@ import time
 from Cura.util.printerConnection import printerConnectionBase
 
 class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
+	"""
+	The Doodle3D connection group runs a thread to poll for Doodle3D boxes.
+	For each Doodle3D box it finds, it creates a Doodle3DConnect object.
+	"""
 	PRINTER_LIST_HOST = 'connect.doodle3d.com'
 	PRINTER_LIST_PATH = '/api/list.php'
 
@@ -93,9 +97,11 @@ class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 
 		return response
 
-#Class to connect and print files with the doodle3d.com wifi box
-# Auto-detects if the Doodle3D box is available with a printer
 class doodle3dConnect(printerConnectionBase.printerConnectionBase):
+	"""
+	Class to connect and print files with the doodle3d.com wifi box
+	Auto-detects if the Doodle3D box is available with a printer and handles communication with the Doodle3D API
+	"""
 	def __init__(self, host, name, group):
 		super(doodle3dConnect, self).__init__(name)
 
