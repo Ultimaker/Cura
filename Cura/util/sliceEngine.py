@@ -172,6 +172,7 @@ class Engine(object):
 		self._callback = progressCallback
 		self._progressSteps = ['inset', 'skin', 'export']
 		self._objCount = 0
+		self._layerNrOffset = 0
 		self._result = None
 
 		self._serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -218,6 +219,7 @@ class Engine(object):
 			elif cmd == self.GUI_CMD_SEND_POLYGONS:
 				cnt = struct.unpack('@i', sock.recv(4))[0]
 				layerNr = struct.unpack('@i', sock.recv(4))[0]
+				layerNr += self._layerNrOffset
 				z = struct.unpack('@i', sock.recv(4))[0]
 				z = float(z) / 1000.0
 				typeNameLen = struct.unpack('@i', sock.recv(4))[0]
@@ -389,6 +391,7 @@ class Engine(object):
 
 	def _watchStderr(self, stderr):
 		objectNr = 0
+		self._layerNrOffset = 0
 		line = stderr.readline()
 		while len(line) > 0:
 			line = line.strip()
@@ -396,6 +399,7 @@ class Engine(object):
 				line = line.split(':')
 				if line[1] == 'process':
 					objectNr += 1
+					self._layerNrOffset = len(self._result._polygons)
 				elif line[1] in self._progressSteps:
 					progressValue = float(line[2]) / float(line[3])
 					progressValue /= len(self._progressSteps)
