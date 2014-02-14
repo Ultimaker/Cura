@@ -18,6 +18,11 @@ WARNING = 1
 ERROR   = 2
 
 class validFloat(object):
+	"""
+	Checks if the given value in the setting is a valid float. An invalid float is an error condition.
+	And supports a minimum and/or maximum value. The min/max values are error conditions.
+	If the value == min or max then this is also an error.
+	"""
 	def __init__(self, setting, minValue = None, maxValue = None):
 		self.setting = setting
 		self.setting._validators.append(self)
@@ -36,6 +41,11 @@ class validFloat(object):
 			return ERROR, '"' + str(self.setting.getValue()) + '" is not a valid number or expression'
 
 class validInt(object):
+	"""
+	Checks if the given value in the setting is a valid integer. An invalid integer is an error condition.
+	And supports a minimum and/or maximum value. The min/max values are error conditions.
+	If the value == min or max then this is also an error.
+	"""
 	def __init__(self, setting, minValue = None, maxValue = None):
 		self.setting = setting
 		self.setting._validators.append(self)
@@ -54,6 +64,9 @@ class validInt(object):
 			return ERROR, '"' + str(self.setting.getValue()) + '" is not a valid whole number or expression'
 
 class warningAbove(object):
+	"""
+	A validator to give off a warning if a value is equal or above a certain value.
+	"""
 	def __init__(self, setting, minValueForWarning, warningMessage):
 		self.setting = setting
 		self.setting._validators.append(self)
@@ -75,6 +88,9 @@ class warningAbove(object):
 			return SUCCESS, ''
 
 class warningBelow(object):
+	"""
+	A validator to give off a warning if a value is equal or below a certain value.
+	"""
 	def __init__(self, setting, minValueForWarning, warningMessage):
 		self.setting = setting
 		self.setting._validators.append(self)
@@ -96,6 +112,11 @@ class warningBelow(object):
 			return SUCCESS, ''
 
 class wallThicknessValidator(object):
+	"""
+	Special wall-thickness validator. The wall thickness is used to calculate the amount of shells and the thickness of the shells.
+	But, on certain conditions the resulting wall-thickness is not really suitable for printing. The range in which this can happen is small.
+	But better warn for it.
+	"""
 	def __init__(self, setting):
 		self.setting = setting
 		self.setting._validators.append(self)
@@ -127,6 +148,11 @@ class wallThicknessValidator(object):
 			return SUCCESS, ''
 
 class printSpeedValidator(object):
+	"""
+	Validate the printing speed by checking for a certain amount of volume per second.
+	This is based on the fact that you can push 10mm3 per second trough an UM-Origonal nozzle.
+	TODO: Update this code so it works better for different machine times with other feeders.
+	"""
 	def __init__(self, setting):
 		self.setting = setting
 		self.setting._validators.append(self)
@@ -150,4 +176,3 @@ class printSpeedValidator(object):
 		except ValueError:
 			#We already have an error by the int/float validator in this case.
 			return SUCCESS, ''
-

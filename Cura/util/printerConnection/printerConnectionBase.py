@@ -7,6 +7,12 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import traceback
 
 class printerConnectionGroup(object):
+	"""
+	Base for the printer connection group, needs to be subclassed.
+	Has functions for all available connections, getting the name, icon and priority.
+
+	The getIconID, getPriority and getAvailableConnections functions should be overloaded in a subclass.
+	"""
 	def __init__(self, name):
 		self._name = name
 
