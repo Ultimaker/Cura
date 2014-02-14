@@ -7,6 +7,9 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import io
 
 def readHex(filename):
+	"""
+	Read an verify an intel hex file. Return the data as an list of bytes.
+	"""
 	data = []
 	extraAddr = 0
 	f = io.open(filename, "r")

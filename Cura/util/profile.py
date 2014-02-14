@@ -472,6 +472,9 @@ def getSettingsForCategory(category, subCategory = None):
 
 ## Profile functions
 def getBasePath():
+	"""
+	:return: The path in which the current configuration files are stored. This depends on the used OS.
+	"""
 	if platform.system() == "Windows":
 		basePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 		#If we have a frozen python install, we need to step out of the library.zip
@@ -484,6 +487,9 @@ def getBasePath():
 	return basePath
 
 def getAlternativeBasePaths():
+	"""
+	Search for alternative installations of Cura and their preference files. Used to load configuration from older versions of Cura.
+	"""
 	paths = []
 	basePath = os.path.normpath(os.path.join(getBasePath(), '..'))
 	for subPath in os.listdir(basePath):
@@ -496,11 +502,18 @@ def getAlternativeBasePaths():
 	return paths
 
 def getDefaultProfilePath():
+	"""
+	:return: The default path where the currently used profile is stored and loaded on open and close of Cura.
+	"""
 	return os.path.join(getBasePath(), 'current_profile.ini')
 
 def loadProfile(filename, allMachines = False):
+	"""
+		Read a profile file as active profile settings.
+	:param filename:    The ini filename to save the profile in.
+	:param allMachines: When False only the current active profile is saved. If True all profiles for all machines are saved.
+	"""
 	global settingsList
-	#Read a configuration file as global config
 	profileParser = ConfigParser.ConfigParser()
 	try:
 		profileParser.read(filename)
@@ -529,8 +542,12 @@ def loadProfile(filename, allMachines = False):
 				set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'))
 
 def saveProfile(filename, allMachines = False):
+	"""
+		Save the current profile to an ini file.
+	:param filename:    The ini filename to save the profile in.
+	:param allMachines: When False only the current active profile is saved. If True all profiles for all machines are saved.
+	"""
 	global settingsList
-	#Save the current profile to an ini file
 	profileParser = ConfigParser.ConfigParser()
 	if allMachines:
 		for set in settingsList:
@@ -558,7 +575,7 @@ def saveProfile(filename, allMachines = False):
 	profileParser.write(open(filename, 'w'))
 
 def resetProfile():
-	#Read a configuration file as global config
+	""" Reset the profile for the current machine to default. """
 	global settingsList
 	for set in settingsList:
 		if not set.isProfile():
@@ -577,6 +594,10 @@ def resetProfile():
 		putProfileSetting('retraction_enable', 'True')
 
 def setProfileFromString(options):
+	"""
+	Parse an encoded string which has all the profile settings stored inside of it.
+	Used in combination with getProfileString to ease sharing of profiles.
+	"""
 	options = base64.b64decode(options)
 	options = zlib.decompress(options)
 	(profileOpts, alt) = options.split('\f', 1)
@@ -595,6 +616,10 @@ def setProfileFromString(options):
 					settingsDictionary[key].setValue(value)
 
 def getProfileString():
+	"""
+	Get an encoded string which contains all profile settings.
+	Used in combination with setProfileFromString to share settings in files, forums or other text based ways.
+	"""
 	p = []
 	alt = []
 	global settingsList
@@ -620,6 +645,9 @@ def insertNewlines(string, every=64): #This should be moved to a better place th
 	return '\n'.join(lines)
 
 def getPreferencesString():
+	"""
+	:return: An encoded string which contains all the current preferences.
+	"""
 	p = []
 	global settingsList
 	for set in settingsList:
@@ -631,6 +659,11 @@ def getPreferencesString():
 
 
 def getProfileSetting(name):
+	"""
+		Get the value of an profile setting.
+	:param name: Name of the setting to retrieve.
+	:return:     Value of the current setting.
+	"""
 	if name in tempOverride:
 		return tempOverride[name]
 	global settingsDictionary
@@ -648,12 +681,13 @@ def getProfileSettingFloat(name):
 		return 0.0
 
 def putProfileSetting(name, value):
-	#Check if we have a configuration file loaded, else load the default.
+	""" Store a certain value in a profile setting. """
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isProfile():
 		settingsDictionary[name].setValue(value)
 
 def isProfileSetting(name):
+	""" Check if a certain key name is actually a profile value. """
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isProfile():
 		return True
@@ -661,9 +695,15 @@ def isProfileSetting(name):
 
 ## Preferences functions
 def getPreferencePath():
+	"""
+	:return: The full path of the preference ini file.
+	"""
 	return os.path.join(getBasePath(), 'preferences.ini')
 
 def getPreferenceFloat(name):
+	"""
+	Get the float value of a preference, returns 0.0 if the preference is not a invalid float
+	"""
 	try:
 		setting = getPreference(name).replace(',', '.')
 		return float(eval(setting, {}, {}))
@@ -671,12 +711,17 @@ def getPreferenceFloat(name):
 		return 0.0
 
 def getPreferenceColour(name):
+	"""
+	Get a preference setting value as a color array. The color is stored as #RRGGBB hex string in the setting.
+	"""
 	colorString = getPreference(name)
 	return [float(int(colorString[1:3], 16)) / 255, float(int(colorString[3:5], 16)) / 255, float(int(colorString[5:7], 16)) / 255, 1.0]
 
 def loadPreferences(filename):
+	"""
+	Read a configuration file as global config
+	"""
 	global settingsList
-	#Read a configuration file as global config
 	profileParser = ConfigParser.ConfigParser()
 	try:
 		profileParser.read(filename)

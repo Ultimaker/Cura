@@ -1,6 +1,6 @@
 """
 A helper file to check which parts of the code have documentation and which are lacking documentation.
-This because much of the Cura code is currently undocumented which needs to be improved.'
+This because much of the Cura code is currently undocumented which needs to be improved.
 """
 import os
 import traceback
@@ -46,6 +46,8 @@ def main():
 	moduleDocCount = 0
 	functionCount = 0
 	functionDocCount = 0
+	memberCount = 0
+	memberDocCount = 0
 	typeCount = 0
 	typeDocCount = 0
 	undocList = []
@@ -65,8 +67,8 @@ def main():
 				functionCount += 1
 				if inspect.getdoc(a):
 					functionDocCount += 1
-				# else:
-				# 	undocList.append('%s.%s' % (module.__name__, name))
+				else:
+					undocList.append('%s.%s' % (module.__name__, name))
 			elif type(a) is types.TypeType:
 				typeCount += 1
 				if inspect.getdoc(a):
@@ -78,16 +80,17 @@ def main():
 					if type(a2) is types.MethodType:
 						if hasattr(a.__bases__[0], name2):
 							continue
-						functionCount += 1
+						memberCount += 1
 						if inspect.getdoc(a2):
-							functionDocCount += 1
+							memberDocCount += 1
 						# else:
 						# 	undocList.append('%s.%s.%s' % (module.__name__, name, name2))
 
 	print '%d/%d modules have documentation.' % (moduleDocCount, len(moduleList))
-	print '%d/%d functions have documentation.' % (functionDocCount, functionCount)
 	print '%d/%d types have documentation.' % (typeDocCount, typeCount)
-	print '%.1f%% documented.' % (float(moduleDocCount + functionDocCount + typeDocCount) / float(len(moduleList) + functionCount + typeCount) * 100.0)
+	print '%d/%d functions have documentation.' % (functionDocCount, functionCount)
+	print '%d/%d member functions have documentation.' % (memberDocCount, memberCount)
+	print '%.1f%% documented.' % (float(moduleDocCount + functionDocCount + typeDocCount + memberDocCount) / float(len(moduleList) + functionCount + typeCount + memberCount) * 100.0)
 	print ''
 	print 'You might want to document:'
 	for n in xrange(0, 10):
