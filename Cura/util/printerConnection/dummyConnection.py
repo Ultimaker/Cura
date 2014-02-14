@@ -1,3 +1,7 @@
+"""
+The dummy connection is a virtual printer connection which simulates the connection to a printer without doing anything.
+This is only enabled when you have a development version. And is used for debugging.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import threading

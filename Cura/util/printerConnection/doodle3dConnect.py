@@ -1,3 +1,7 @@
+"""
+Doodle3D printer connection. Auto-detects any Doodle3D boxes on the local network, and finds if they have a printer connected.
+This connection can then be used to send GCode to the printer.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import threading

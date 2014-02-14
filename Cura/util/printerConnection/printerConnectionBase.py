@@ -1,3 +1,7 @@
+"""
+Base of all printer connections. A printer connection is a way a connection can be made with a printer.
+The connections are based on a group, where each group can have 1 or more connections.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import traceback
@@ -24,13 +28,14 @@ class printerConnectionGroup(object):
 	def __repr__(self):
 		return '%s %d' % (self._name, self.getPriority())
 
-#Base class for different printer connection implementations.
-# A printer connection can connect to printers in different ways, trough network, USB or carrier pigeons.
-# Each printer connection has different capabilities that you can query with the "has" functions.
-# Each printer connection has a state that you can query with the "is" functions.
-# Each printer connection has callback objects that receive status updates from the printer when information changes.
-
 class printerConnectionBase(object):
+	"""
+	Base class for different printer connection implementations.
+		A printer connection can connect to printers in different ways, trough network, USB or carrier pigeons.
+		Each printer connection has different capabilities that you can query with the "has" functions.
+		Each printer connection has a state that you can query with the "is" functions.
+		Each printer connection has callback objects that receive status updates from the printer when information changes.
+	"""
 	def __init__(self, name):
 		self._callbackList = []
 		self._name = name

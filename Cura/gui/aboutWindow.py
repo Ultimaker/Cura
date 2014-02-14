@@ -36,14 +36,14 @@ class aboutWindow(wx.Frame):
 		self.addComponent('NumPy', 'Support library for faster math', 'BSD', 'http://www.numpy.org/')
 		if platform.system() == "Windows":
 			self.addComponent('VideoCapture', 'Library for WebCam capture on windows', 'LGPLv2.1', 'http://videocapture.sourceforge.net/')
-			self.addComponent('ffmpeg', 'Support for making timelaps video files', 'GPL', 'http://www.ffmpeg.org/')
+			#self.addComponent('ffmpeg', 'Support for making timelaps video files', 'GPL', 'http://www.ffmpeg.org/')
 			self.addComponent('comtypes', 'Library to help with windows taskbar features on Windows 7', 'MIT', 'http://starship.python.net/crew/theller/comtypes/')
 			self.addComponent('EjectMedia', 'Utility to safe-remove SD cards', 'Freeware', 'http://www.uwe-sieber.de/english.html')
 		self.addComponent('Pymclevel', 'Python library for reading Minecraft levels.', 'ISC', 'https://github.com/mcedit/pymclevel')
 
 		#Translations done by:
 		#Dutch: Charlotte Jansen
-		#German: Gregor Luetolf
+		#German: Gregor Luetolf, Lars Potter
 		#Polish: Piotr Paczynski
 		#French: Jeremie Francois
 		#Spanish: Jose Gemez
