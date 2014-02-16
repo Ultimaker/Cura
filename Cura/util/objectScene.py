@@ -204,7 +204,11 @@ class Scene(object):
 		obj1.setPosition((obj1.getPosition() + obj2.getPosition()) / 2)
 		self.pushFree(obj1)
 
-	def pushFree(self, staticObj):
+	def pushFree(self, staticObj = None):
+		if staticObj is None:
+			for obj in self._objectList:
+				self.pushFree(obj)
+			return
 		if not self.checkPlatform(staticObj):
 			return
 		pushList = []

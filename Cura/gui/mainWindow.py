@@ -326,6 +326,7 @@ class mainWindow(wx.Frame):
 		if self.oneAtATime.IsChecked() and profile.getMachineSettingFloat('extruder_head_size_height') < 1:
 			wx.MessageBox(_('For "One at a time" printing, you need to have entered the correct head size and gantry height in the machine settings'), _('One at a time warning'), wx.OK | wx.ICON_WARNING)
 		self.scene.updateProfileToControls()
+		self.scene._scene.pushFree()
 		self.scene.sceneUpdated()
 
 	def OnPreferences(self, e):
