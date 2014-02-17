@@ -311,7 +311,6 @@ class printWindowBasic(wx.Frame):
 			style=wx.ALIGN_CENTER)
 		self.powerWarningText.SetBackgroundColour('red')
 		self.powerWarningText.SetForegroundColour('white')
-		self.sizer.Add(self.powerWarningText, pos=(0, 0), span=(1, 5), flag=wx.EXPAND|wx.BOTTOM, border=5)
 		self.powerManagement = power.PowerManagement()
 		self.powerWarningTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self.OnPowerWarningChange, self.powerWarningTimer)
@@ -319,7 +318,6 @@ class printWindowBasic(wx.Frame):
 		self.powerWarningTimer.Start(10000)
 
 		self.statsText = wx.StaticText(self.panel, -1, _("InfoLine from printer connection\nInfoLine from dialog"))
-		self.sizer.Add(self.statsText, pos=(1, 0), span=(1, 5), flag=wx.LEFT, border=5)
 
 		self.connectButton = wx.Button(self.panel, -1, _("Connect"))
 		#self.loadButton = wx.Button(self.panel, -1, 'Load')
@@ -329,6 +327,8 @@ class printWindowBasic(wx.Frame):
 		self.errorLogButton = wx.Button(self.panel, -1, _("Error log"))
 		self.progress = wx.Gauge(self.panel, -1, range=1000)
 
+		self.sizer.Add(self.powerWarningText, pos=(0, 0), span=(1, 5), flag=wx.EXPAND|wx.BOTTOM, border=5)
+		self.sizer.Add(self.statsText, pos=(1, 0), span=(1, 5), flag=wx.LEFT, border=5)
 		self.sizer.Add(self.connectButton, pos=(2, 0))
 		#self.sizer.Add(self.loadButton, pos=(2,1))
 		self.sizer.Add(self.printButton, pos=(2, 1))
