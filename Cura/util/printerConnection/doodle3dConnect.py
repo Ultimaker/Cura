@@ -60,7 +60,10 @@ class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 				if possiblePrinter['localip'] not in self._connectionMap:
 					status = self._request('GET', '/d3dapi/config/?network.cl.wifiboxid=', host=possiblePrinter['localip'])
 					if status and 'data' in status and 'network.cl.wifiboxid' in status['data']:
-						self._connectionMap[possiblePrinter['localip']] = doodle3dConnect(possiblePrinter['localip'], status['data']['network.cl.wifiboxid'], self)
+						name = status['data']['network.cl.wifiboxid']
+						if 'wifiboxid' in possiblePrinter:
+							name = possiblePrinter['wifiboxid']
+						self._connectionMap[possiblePrinter['localip']] = doodle3dConnect(possiblePrinter['localip'], name, self)
 
 			# Delay a bit more after every request. This so we do not stress the connect.doodle3d.com api too much
 			if self._waitDelay < 10:
