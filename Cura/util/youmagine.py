@@ -7,6 +7,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import json
 import httplib as httpclient
 import urllib
+import textwrap
 
 class httpUploadDataStream(object):
 	"""
@@ -118,7 +119,13 @@ class Youmagine(object):
 		return True
 
 	def createDesign(self, name, description, category, license):
-		res = self._request('POST', '/designs.json', {'design[name]': name, 'design[excerpt]': description, 'design[design_category_id]': filter(lambda n: n[0] == category, self._categories)[0][1], 'design[license]': filter(lambda n: n[0] == license, self._licenses)[0][1]})
+		excerpt = description
+		description = ''
+		if len(excerpt) >= 300:
+			lines = textwrap.wrap(excerpt, 300)
+			excerpt = lines[0]
+			description = '\n'.join(lines[1:])
+		res = self._request('POST', '/designs.json', {'design[name]': name, 'design[excerpt]': excerpt, 'design[description]': description, 'design[design_category_id]': filter(lambda n: n[0] == category, self._categories)[0][1], 'design[license]': filter(lambda n: n[0] == license, self._licenses)[0][1]})
 		if 'id' in res:
 			return res['id']
 		print res
