@@ -80,6 +80,8 @@ class EngineResult(object):
 		return None
 
 	def getPrintTime(self):
+		if self._printTimeSeconds is None:
+			return ''
 		if int(self._printTimeSeconds / 60 / 60) < 1:
 			return '%d minutes' % (int(self._printTimeSeconds / 60) % 60)
 		if int(self._printTimeSeconds / 60 / 60) == 1:

@@ -126,6 +126,8 @@ class SceneView(openglGui.glGuiPanel):
 		self._engine._result = sliceEngine.EngineResult()
 		with open(filename, "r") as f:
 			self._engine._result.setGCode(f.read())
+		self._engine._result.setFinished(True)
+		self._engineResultView.setResult(self._engine._result)
 		self.printButton.setBottomText('')
 		self.viewSelection.setValue(4)
 		self.printButton.setDisabled(False)
@@ -471,6 +473,7 @@ class SceneView(openglGui.glGuiPanel):
 		while len(self._scene.objects()) > 0:
 			self._deleteObject(self._scene.objects()[0])
 		self._animView = openglGui.animation(self, self._viewTarget.copy(), numpy.array([0,0,0], numpy.float32), 0.5)
+		self._engineResultView.setResult(None)
 
 	def OnMultiply(self, e):
 		if self._focusObj is None:
