@@ -53,10 +53,13 @@ class newVersionDialog(wx.Dialog):
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimakerFirmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
-		if self.hasUltimaker2 is not None and False:
+		if self.hasUltimaker2 is not None:
 			s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker2:'))
-			s.Add(wx.StaticText(p, -1, '* .'))
+			s.Add(wx.StaticText(p, -1, '* Added pause function during printing.'))
+			s.Add(wx.StaticText(p, -1, '* Added material selection when changing material.'))
+			s.Add(wx.StaticText(p, -1, '* Fixed the move material maintenance function.'))
+			s.Add(wx.StaticText(p, -1, '* Fixed the led brightness on startup.'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimaker2Firmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
