@@ -18,6 +18,8 @@ def gcodePath(newType, pathType, layerThickness, startPoint):
 	"""
 	Build a gcodePath object. This used to be objects, however, this code is timing sensitive and dictionaries proved to be faster.
 	"""
+	if layerThickness <= 0.0:
+		layerThickness = 0.01
 	return {'type': newType,
 			'pathType': pathType,
 			'layerThickness': layerThickness,
