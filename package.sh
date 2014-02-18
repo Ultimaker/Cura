@@ -8,7 +8,7 @@
 #############################
 
 ##Select the build target
-BUILD_TARGET=${1:-all}
+BUILD_TARGET=${1:-none}
 #BUILD_TARGET=win32
 #BUILD_TARGET=linux
 #BUILD_TARGET=darwin
@@ -60,16 +60,22 @@ function extract
 	echo "Extracting $*"
 	echo "7z x -y $*" >> log.txt
 	7z x -y $* >> log.txt
+	if [ $? != 0 ]; then
+        echo "Failed to extract $*"
+        exit 1
+	fi
 }
 
 #############################
 # Actual build script
 #############################
-if [ "$BUILD_TARGET" = "all" ]; then
-	$0 win32
-	$0 linux
-	$0 darwin
-	exit
+if [ "$BUILD_TARGET" = "none" ]; then
+	echo "You need to specify a build target with:"
+	echo "$0 win32"
+	echo "$0 linux_i368"
+	echo "$0 linux_amd64"
+	echo "$0 darwin"
+	exit 0
 fi
 
 # Change working directory to the directory the script is in
@@ -113,7 +119,9 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
     echo $BUILD_NAME > scripts/darwin/dist/Cura.app/Contents/Resources/version
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 	make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	cp CuraEngine/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
 	cd scripts/darwin
@@ -154,7 +162,9 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	fi
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 	make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
 	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
@@ -188,7 +198,9 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	fi
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 	make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
 	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
@@ -231,6 +243,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	git clone https://github.com/GreatFruitOmsk/Power
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 fi
 
 #############################
@@ -290,6 +303,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 
     #Build the C++ engine
 	mingw32-make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 fi
 
 #add Cura
@@ -321,12 +335,14 @@ if (( ${ARCHIVE_FOR_DISTRIBUTION} )); then
 			rm -rf scripts/win32/dist
 			ln -sf `pwd`/${TARGET_DIR} scripts/win32/dist
 			wine ~/.wine/drive_c/Program\ Files/NSIS/makensis.exe /DVERSION=${BUILD_NAME} scripts/win32/installer.nsi
+            if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
 			mv scripts/win32/Cura_${BUILD_NAME}.exe ./
 		fi
 		if [ -f '/c/Program Files (x86)/NSIS/makensis.exe' ]; then
 			rm -rf scripts/win32/dist
 			mv `pwd`/${TARGET_DIR} scripts/win32/dist
 			'/c/Program Files (x86)/NSIS/makensis.exe' -DVERSION=${BUILD_NAME} 'scripts/win32/installer.nsi' >> log.txt
+            if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
 			mv scripts/win32/Cura_${BUILD_NAME}.exe ./
 		fi
 	else
