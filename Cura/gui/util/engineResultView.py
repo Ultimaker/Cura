@@ -3,6 +3,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import wx
 import numpy
 import math
+import threading
 
 import OpenGL
 OpenGL.ERROR_CHECKING = False
@@ -19,6 +20,7 @@ class engineResultView(object):
 		self._result = None
 		self._enabled = False
 		self._gcodeLoadProgress = 0
+		self._resultLock = threading.Lock()
 		self._layerVBOs = []
 		self._layer20VBOs = []
 
@@ -28,6 +30,7 @@ class engineResultView(object):
 		if self._result == result:
 			return
 
+		self._resultLock.acquire()
 		self._result = result
 
 		#Clean the saved VBO's
@@ -39,6 +42,7 @@ class engineResultView(object):
 				self._parent.glReleaseList.append(layer[typeName])
 		self._layerVBOs = []
 		self._layer20VBOs = []
+		self._resultLock.release()
 
 	def setEnabled(self, enabled):
 		self._enabled = enabled
@@ -56,6 +60,7 @@ class engineResultView(object):
 		if not self._enabled:
 			return
 
+		self._resultLock.acquire()
 		result = self._result
 		if result is not None:
 			gcodeLayers = result.getGCodeLayers(self._gcodeLoadCallback)
@@ -152,6 +157,7 @@ class engineResultView(object):
 			glColor4ub(60,60,60,255)
 			openglHelpers.glDrawStringCenter(_("Loading toolpath for visualization (%d%%)") % (self._gcodeLoadProgress * 100))
 			glPopMatrix()
+		self._resultLock.release()
 
 	def _polygonsToVBO_lines(self, polygons):
 		verts = numpy.zeros((0, 3), numpy.float32)

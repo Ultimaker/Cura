@@ -167,6 +167,7 @@ class Engine(object):
 	"""
 	GUI_CMD_REQUEST_MESH = 0x01
 	GUI_CMD_SEND_POLYGONS = 0x02
+	GUI_CMD_FINISH_OBJECT = 0x03
 
 	def __init__(self, progressCallback):
 		self._process = None
@@ -174,7 +175,6 @@ class Engine(object):
 		self._callback = progressCallback
 		self._progressSteps = ['inset', 'skin', 'export']
 		self._objCount = 0
-		self._layerNrOffset = 0
 		self._result = None
 
 		self._serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -204,6 +204,7 @@ class Engine(object):
 			thread.start()
 
 	def _socketConnectionThread(self, sock):
+		layerNrOffset = 0
 		while True:
 			try:
 				data = sock.recv(4)
@@ -221,7 +222,7 @@ class Engine(object):
 			elif cmd == self.GUI_CMD_SEND_POLYGONS:
 				cnt = struct.unpack('@i', sock.recv(4))[0]
 				layerNr = struct.unpack('@i', sock.recv(4))[0]
-				layerNr += self._layerNrOffset
+				layerNr += layerNrOffset
 				z = struct.unpack('@i', sock.recv(4))[0]
 				z = float(z) / 1000.0
 				typeNameLen = struct.unpack('@i', sock.recv(4))[0]
@@ -245,6 +246,8 @@ class Engine(object):
 					polygon[:,:-1] = polygon2d
 					polygon[:,2] = z
 					polygons[typeName].append(polygon)
+			elif cmd == self.GUI_CMD_FINISH_OBJECT:
+				layerNrOffset = len(self._result._polygons)
 			else:
 				print "Unknown command on socket: %x" % (cmd)
 
@@ -393,7 +396,6 @@ class Engine(object):
 
 	def _watchStderr(self, stderr):
 		objectNr = 0
-		self._layerNrOffset = 0
 		line = stderr.readline()
 		while len(line) > 0:
 			line = line.strip()
@@ -401,7 +403,6 @@ class Engine(object):
 				line = line.split(':')
 				if line[1] == 'process':
 					objectNr += 1
-					self._layerNrOffset = len(self._result._polygons)
 				elif line[1] in self._progressSteps:
 					progressValue = float(line[2]) / float(line[3])
 					progressValue /= len(self._progressSteps)
