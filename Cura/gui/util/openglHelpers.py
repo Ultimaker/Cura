@@ -142,6 +142,8 @@ class GLVBO(GLReferenceCounter):
 			self._buffer = None
 			self._hasNormals = self._normalArray is not None
 			self._hasIndices = self._indicesArray is not None
+			if self._hasIndices:
+				self._size = len(indicesArray)
 		else:
 			self._buffer = glGenBuffers(1)
 			self._size = len(vertexArray)
@@ -178,7 +180,10 @@ class GLVBO(GLReferenceCounter):
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, self._bufferIndices)
 
 		if self._hasIndices:
-			glDrawElements(self._renderType, self._size, GL_UNSIGNED_INT, c_void_p(0))
+			if self._buffer is None:
+				glDrawElements(self._renderType, self._size, GL_UNSIGNED_INT, self._indicesArray)
+			else:
+				glDrawElements(self._renderType, self._size, GL_UNSIGNED_INT, c_void_p(0))
 		else:
 			batchSize = 996    #Warning, batchSize needs to be dividable by 4 (quads), 3 (triangles) and 2 (lines). Current value is magic.
 			extraStartPos = int(self._size / batchSize) * batchSize #leftovers.
