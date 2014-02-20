@@ -483,7 +483,10 @@ def getBasePath():
 	else:
 		basePath = os.path.expanduser('~/.cura/%s' % version.getVersion(False))
 	if not os.path.isdir(basePath):
-		os.makedirs(basePath)
+		try:
+			os.makedirs(basePath)
+		except:
+			print "Failed to create directory: %s" % (basePath)
 	return basePath
 
 def getAlternativeBasePaths():
