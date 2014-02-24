@@ -1,4 +1,4 @@
-#Name: Tweak At Z 3.1
+#Name: Tweak At Z 3.1.1
 #Info: Change printing parameters at a given height
 #Help: TweakAtZ
 #Depend: GCode
@@ -28,8 +28,9 @@
 #history / changelog:
 #V3.0.1: TweakAtZ-state default 1 (i.e. the plugin works without any TweakAtZ comment)
 #V3.1:   Recognizes UltiGCode and deactivates value reset, fan speed added, alternatively layer no. to tweak at, extruder three temperature disabled by '#Ex3'
+#V3.1.1: Bugfix reset flow rate
 
-version = '3.1'
+version = '3.1.1'
 
 import re
 
@@ -101,6 +102,8 @@ with open(filename, "w") as f:
                         old_fanSpeed = 0
                 if 'M106' in line and state < 3: #looking for fan speed
                         old_fanSpeed = getValue(line, 'S', old_fanSpeed)
+                if 'M221' in line and state < 3: #looking for flow rate
+                        old_flowrate = getValue(line, 'S', old_flowrate)
 		if 'G1' in line or 'G0' in line:
 			newZ = getValue(line, 'Z', z)
 			x = getValue(line, 'X', x)
