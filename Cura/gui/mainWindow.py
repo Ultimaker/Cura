@@ -35,11 +35,13 @@ class mainWindow(wx.Frame):
 
 		# TODO: wxWidgets 2.9.4 has a bug when NSView does not register for dragged types when wx drop target is set. It was fixed in 2.9.5
 		if sys.platform.startswith('darwin'):
-			import Cocoa
-			import objc
-			nswindow = objc.objc_object(c_void_p=self.MacGetTopLevelWindowRef())
-			view = nswindow.contentView()
-			view.registerForDraggedTypes_([Cocoa.NSFilenamesPboardType])
+			try:
+				import objc
+				nswindow = objc.objc_object(c_void_p=self.MacGetTopLevelWindowRef())
+				view = nswindow.contentView()
+				view.registerForDraggedTypes_([u'NSFilenamesPboardType'])
+			except:
+				pass
 
 		self.normalModeOnlyItems = []
 
