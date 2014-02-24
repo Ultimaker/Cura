@@ -330,6 +330,7 @@ class mainWindow(wx.Frame):
 		if int(profile.getMachineSetting('extruder_amount')) < 2:
 			self.headOffsetWizardMenuItem.Enable(False)
 		self.scene.updateProfileToControls()
+		self.scene._scene.pushFree()
 
 	def onOneAtATimeSwitch(self, e):
 		profile.putPreference('oneAtATime', self.oneAtATime.IsChecked())
