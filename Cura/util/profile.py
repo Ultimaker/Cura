@@ -1,8 +1,23 @@
-from __future__ import absolute_import
+"""
+The profile module contains all the settings for Cura.
+These settings can be globally accessed and modified.
+"""
 from __future__ import division
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
-import os, traceback, math, re, zlib, base64, time, sys, platform, glob, string, stat, types
+import os
+import traceback
+import math
+import re
+import zlib
+import base64
+import time
+import sys
+import platform
+import glob
+import string
+import stat
+import types
 import cPickle as pickle
 import numpy
 if sys.version_info[0] < 3:
@@ -10,7 +25,6 @@ if sys.version_info[0] < 3:
 else:
 	import configparser as ConfigParser
 
-from Cura.util import resources
 from Cura.util import version
 from Cura.util import validators
 
@@ -25,15 +39,17 @@ settingsList = []
 _selectedMachineIndex = 0
 
 class setting(object):
-	#A setting object contains a configuration setting. These are globally accessible trough the quick access functions
-	# and trough the settingsDictionary function.
-	# Settings can be:
-	# * profile settings (settings that effect the slicing process and the print result)
-	# * preferences (settings that effect how cura works and acts)
-	# * machine settings (settings that relate to the physical configuration of your machine)
-	# * alterations (bad name copied from Skeinforge. These are the start/end code pieces)
-	# Settings have validators that check if the value is valid, but do not prevent invalid values!
-	# Settings have conditions that enable/disable this setting depending on other settings. (Ex: Dual-extrusion)
+	"""
+		A setting object contains a configuration setting. These are globally accessible trough the quick access functions
+		and trough the settingsDictionary function.
+		Settings can be:
+		* profile settings (settings that effect the slicing process and the print result)
+		* preferences (settings that effect how cura works and acts)
+		* machine settings (settings that relate to the physical configuration of your machine)
+		* alterations (bad name copied from Skeinforge. These are the start/end code pieces)
+		Settings have validators that check if the value is valid, but do not prevent invalid values!
+		Settings have conditions that enable/disable this setting depending on other settings. (Ex: Dual-extrusion)
+	"""
 	def __init__(self, name, default, type, category, subcategory):
 		self._name = name
 		self._label = name
@@ -116,7 +132,7 @@ class setting(object):
 		self._values[index] = unicode(value)
 
 	def getValueIndex(self):
-		if self.isMachineSetting():
+		if self.isMachineSetting() or self.isProfile():
 			global _selectedMachineIndex
 			return _selectedMachineIndex
 		return 0
@@ -179,37 +195,33 @@ setting('retraction_amount',         4.5, float, 'advanced', _('Retraction')).se
 setting('retraction_dual_amount',   16.5, float, 'advanced', _('Retraction')).setRange(0).setLabel(_("Dual extrusion switch amount (mm)"), _("Amount of retraction when switching nozzle with dual-extrusion, set at 0 for no retraction at all. A value of 16.0mm seems to generate good results."))
 setting('retraction_min_travel',     1.5, float, 'expert',   _('Retraction')).setRange(0).setLabel(_("Minimum travel (mm)"), _("Minimum amount of travel needed for a retraction to happen at all. To make sure you do not get a lot of retractions in a small area."))
 setting('retraction_combing',       True, bool,  'expert',   _('Retraction')).setLabel(_("Enable combing"), _("Combing is the act of avoiding holes in the print for the head to travel over. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract."))
-setting('retraction_minimal_extrusion',0.02, float,'expert',  _('Retraction')).setRange(0).setLabel(_("Minimal extrusion before retracting (mm)"), _("The minimal amount of extrusion that needs to be done before retracting again if a retraction needs to happen before this minimal is reached the retraction is ignored.\nThis avoids retraction a lot on the same piece of filament which flattens the filament and causes grinding issues."))
+setting('retraction_minimal_extrusion',0.02, float,'expert', _('Retraction')).setRange(0).setLabel(_("Minimal extrusion before retracting (mm)"), _("The minimal amount of extrusion that needs to be done before retracting again if a retraction needs to happen before this minimal is reached the retraction is ignored.\nThis avoids retraction a lot on the same piece of filament which flattens the filament and causes grinding issues."))
+setting('retraction_hop',            0.0, float, 'expert',   _('Retraction')).setRange(0).setLabel(_("Z hop when retracting (mm)"), _("When a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works good. This feature has a lot of positive effect on delta towers."))
 setting('bottom_thickness',          0.3, float, 'advanced', _('Quality')).setRange(0).setLabel(_("Initial layer thickness (mm)"), _("Layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier. Set to 0.0 to have the bottom layer thickness the same as the other layers."))
-setting('object_sink',               0.0, float, 'advanced', _('Quality')).setLabel(_("Cut off object bottom (mm)"), _("Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer."))
+setting('object_sink',               0.0, float, 'advanced', _('Quality')).setRange(0).setLabel(_("Cut off object bottom (mm)"), _("Sinks the object into the platform, this can be used for objects that do not have a flat bottom and thus create a too small first layer."))
 #setting('enable_skin',             False, bool,  'advanced', _('Quality')).setLabel(_("Duplicate outlines"), _("Skin prints the outer lines of the prints twice, each time with half the thickness. This gives the illusion of a higher print quality."))
 setting('overlap_dual',             0.15, float, 'advanced', _('Quality')).setLabel(_("Dual extrusion overlap (mm)"), _("Add a certain amount of overlapping extrusion on dual-extrusion prints. This bonds the different colors better together."))
 setting('travel_speed',            150.0, float, 'advanced', _('Speed')).setRange(0.1).setLabel(_("Travel speed (mm/s)"), _("Speed at which travel moves are done, a high quality build Ultimaker can reach speeds of 250mm/s. But some machines might miss steps then."))
 setting('bottom_layer_speed',         20, float, 'advanced', _('Speed')).setRange(0.1).setLabel(_("Bottom layer speed (mm/s)"), _("Print speed for the bottom layer, you want to print the first layer slower so it sticks better to the printer bed."))
 setting('infill_speed',              0.0, float, 'advanced', _('Speed')).setRange(0.0).setLabel(_("Infill speed (mm/s)"), _("Speed at which infill parts are printed. If set to 0 then the print speed is used for the infill. Printing the infill faster can greatly reduce printing, but this can negatively effect print quality."))
-setting('inset0_speed',              0.0, float, 'advanced', _('Speed')).setRange(0.0).setLabel(_("Outser shell speed (mm/s)"), _("Speed at which outer shell is printed. If set to 0 then the print speed is used. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way."))
-setting('insetx_speed',              0.0, float, 'advanced', _('Speed')).setRange(0.0).setLabel(_("Innser shell speed (mm/s)"), _("Speed at which inner shells are printed. If set to 0 then the print speed is used. Printing the inner shell faster then the outer shell will reduce printing time. It is good to set this somewhere in between the outer shell speed and the infill/printing speed."))
+setting('inset0_speed',              0.0, float, 'advanced', _('Speed')).setRange(0.0).setLabel(_("Outer shell speed (mm/s)"), _("Speed at which outer shell is printed. If set to 0 then the print speed is used. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way."))
+setting('insetx_speed',              0.0, float, 'advanced', _('Speed')).setRange(0.0).setLabel(_("Inner shell speed (mm/s)"), _("Speed at which inner shells are printed. If set to 0 then the print speed is used. Printing the inner shell faster then the outer shell will reduce printing time. It is good to set this somewhere in between the outer shell speed and the infill/printing speed."))
 setting('cool_min_layer_time',         5, float, 'advanced', _('Cool')).setRange(0).setLabel(_("Minimal layer time (sec)"), _("Minimum time spend in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spend at least this amount of seconds printing this layer."))
 setting('fan_enabled',              True, bool,  'advanced', _('Cool')).setLabel(_("Enable cooling fan"), _("Enable the cooling fan during the print. The extra cooling from the cooling fan is essential during faster prints."))
 
 setting('skirt_line_count',            1, int,   'expert', 'Skirt').setRange(0).setLabel(_("Line count"), _("The skirt is a line drawn around the object at the first layer. This helps to prime your extruder, and to see if the object fits on your platform.\nSetting this to 0 will disable the skirt. Multiple skirt lines can help priming your extruder better for small objects."))
 setting('skirt_gap',                 3.0, float, 'expert', 'Skirt').setRange(0).setLabel(_("Start distance (mm)"), _("The distance between the skirt and the first layer.\nThis is the minimal distance, multiple skirt lines will be put outwards from this distance."))
 setting('skirt_minimal_length',    150.0, float, 'expert', 'Skirt').setRange(0).setLabel(_("Minimal length (mm)"), _("The minimal length of the skirt, if this minimal length is not reached it will add more skirt lines to reach this minimal lenght.\nNote: If the line count is set to 0 this is ignored."))
-#setting('max_z_speed',               3.0, float, 'expert',   _('Speed')).setRange(0.1).setLabel(_("Max Z speed (mm/s)"), _("Speed at which Z moves are done. When you Z axis is properly lubricated you can increase this for less Z blob."))
-#setting('retract_on_jumps_only',    True, bool,  'expert',   _('Retraction')).setLabel(_('Retract on jumps only'), _('Only retract when we are making a move that is over a hole in the model, else retract on every move. This effects print quality in different ways.'))
 setting('fan_full_height',           0.5, float, 'expert',   _('Cool')).setRange(0).setLabel(_("Fan full on at height (mm)"), _("The height at which the fan is turned on completely. For the layers below this the fan speed is scaled linear with the fan off at layer 0."))
 setting('fan_speed',                 100, int,   'expert',   _('Cool')).setRange(0,100).setLabel(_("Fan speed min (%)"), _("When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Minimal fan speed is used if the layer is not slowed down due to cooling."))
 setting('fan_speed_max',             100, int,   'expert',   _('Cool')).setRange(0,100).setLabel(_("Fan speed max (%)"), _("When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Maximal fan speed is used if the layer is slowed down due to cooling by more than 200%."))
 setting('cool_min_feedrate',          10, float, 'expert',   _('Cool')).setRange(0).setLabel(_("Minimum speed (mm/s)"), _("The minimal layer time can cause the print to slow down so much it starts to ooze. The minimal feedrate protects against this. Even if a print gets slown down it will never be slower than this minimal speed."))
 setting('cool_head_lift',          False, bool,  'expert',   _('Cool')).setLabel(_("Cool head lift"), _("Lift the head if the minimal speed is hit because of cool slowdown, and wait the extra time so the minimal layer time is always hit."))
-#setting('extra_base_wall_thickness', 0.0, float, 'expert',   'Accuracy').setRange(0).setLabel(_("Extra Wall thickness for bottom/top (mm)"), _("Additional wall thickness of the bottom and top layers."))
-#setting('sequence', 'Loops > Perimeter > Infill', ['Loops > Perimeter > Infill', 'Loops > Infill > Perimeter', 'Infill > Loops > Perimeter', 'Infill > Perimeter > Loops', 'Perimeter > Infill > Loops', 'Perimeter > Loops > Infill'], 'expert', 'Sequence')
-#setting('force_first_layer_sequence', True, bool, 'expert', 'Sequence').setLabel(_('Force first layer sequence'), _('This setting forces the order of the first layer to be \'Perimeter > Loops > Infill\''))
-#setting('infill_type', 'Line', ['Line', 'Grid Circular', 'Grid Hexagonal', 'Grid Rectangular'], 'expert', _('Infill')).setLabel(_("Infill pattern"), _("Pattern of the none-solid infill. Line is default, but grids can provide a strong print."))
 setting('solid_top', True, bool, 'expert', _('Infill')).setLabel(_("Solid infill top"), _("Create a solid top surface, if set to false the top is filled with the fill percentage. Useful for cups/vases."))
 setting('solid_bottom', True, bool, 'expert', _('Infill')).setLabel(_("Solid infill bottom"), _("Create a solid bottom surface, if set to false the bottom is filled with the fill percentage. Useful for buildings."))
 setting('fill_overlap', 15, int, 'expert', _('Infill')).setRange(0,100).setLabel(_("Infill overlap (%)"), _("Amount of overlap between the infill and the walls. There is a slight overlap with the walls and the infill so the walls connect firmly to the infill."))
-setting('support_angle', 60, float, 'expert', _('Support')).setRange(0,90).setLabel(_("Overhang angle for support (deg)"), _("The minimal angle that overhangs need to have to get support. With 0deg being horizontal and 90deg being vertical."))
+setting('support_type', 'Grid', ['Grid', 'Lines'], 'expert', _('Support')).setLabel(_("Structure type"), _("The type of support structure.\nGrid is very strong and can come off in 1 piece, however, sometimes it is too strong.\nLines are single walled lines that break off one at a time. Which is more work to remove, but as it is less strong it does work better on tricky prints."))
+setting('support_angle', 60, float, 'expert', _('Support')).setRange(0,90).setLabel(_("Overhang angle for support (deg)"), _("The minimal angle that overhangs need to have to get support. With 0 degree being horizontal and 90 degree being vertical."))
 setting('support_fill_rate', 15, int, 'expert', _('Support')).setRange(0,100).setLabel(_("Fill amount (%)"), _("Amount of infill structure in the support material, less material gives weaker support which is easier to remove. 15% seems to be a good average."))
 setting('support_xy_distance', 0.7, float, 'expert', _('Support')).setRange(0,10).setLabel(_("Distance X/Y (mm)"), _("Distance of the support material from the print, in the X/Y directions.\n0.7mm gives a nice distance from the print so the support does not stick to the print."))
 setting('support_z_distance', 0.15, float, 'expert', _('Support')).setRange(0,10).setLabel(_("Distance Z (mm)"), _("Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier.\n0.15mm gives a good seperation of the support material."))
@@ -222,7 +234,6 @@ setting('raft_base_thickness', 0.3, float, 'expert', _('Raft')).setRange(0).setL
 setting('raft_base_linewidth', 0.7, float, 'expert', _('Raft')).setRange(0).setLabel(_("Base line width (mm)"), _("When you are using the raft this is the width of the base layer lines which are put down."))
 setting('raft_interface_thickness', 0.2, float, 'expert', _('Raft')).setRange(0).setLabel(_("Interface thickness (mm)"), _("When you are using the raft this is the thickness of the interface layer which is put down."))
 setting('raft_interface_linewidth', 0.2, float, 'expert', _('Raft')).setRange(0).setLabel(_("Interface line width (mm)"), _("When you are using the raft this is the width of the interface layer lines which are put down."))
-#setting('hop_on_move', False, bool, 'expert', 'Hop').setLabel(_("Enable hop on move"), _("When moving from print position to print position, raise the printer head 0.2mm so it does not knock off the print (experimental)."))
 setting('fix_horrible_union_all_type_a', True,  bool, 'expert', _('Fix horrible')).setLabel(_("Combine everything (Type-A)"), _("This expert option adds all parts of the model together. The result is usually that internal cavities disappear. Depending on the model this can be intended or not. Enabling this option is at your own risk. Type-A is depended on the model normals and tries to keep some internal holes intact. Type-B ignores all internal holes and only keeps the outside shape per layer."))
 setting('fix_horrible_union_all_type_b', False, bool, 'expert', _('Fix horrible')).setLabel(_("Combine everything (Type-B)"), _("This expert option adds all parts of the model together. The result is usually that internal cavities disappear. Depending on the model this can be intended or not. Enabling this option is at your own risk. Type-A is depended on the model normals and tries to keep some internal holes intact. Type-B ignores all internal holes and only keeps the outside shape per layer."))
 setting('fix_horrible_use_open_bits', False, bool, 'expert', _('Fix horrible')).setLabel(_("Keep open faces"), _("This expert option keeps all the open bits of the model intact. Normally Cura tries to stitch up small holes and remove everything with big holes, but this option keeps bits that are not properly part of anything and just goes with whatever it is left. This option is usually not what you want, but it might enable you to slice models otherwise failing to produce proper paths.\nAs with all \"Fix horrible\" options, results may vary and use at your own risk."))
@@ -350,6 +361,7 @@ setting('model_colour', '#FFC924', str, 'preference', 'hidden').setLabel(_('Mode
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel(_('Model colour (2)'), _('Display color for second extruder'))
 setting('model_colour3', '#DDD93C', str, 'preference', 'hidden').setLabel(_('Model colour (3)'), _('Display color for third extruder'))
 setting('model_colour4', '#4550D3', str, 'preference', 'hidden').setLabel(_('Model colour (4)'), _('Display color for forth extruder'))
+setting('printing_window', 'Basic', ['Basic'], 'preference', 'hidden').setLabel('Printing window type')
 
 setting('window_maximized', 'True', bool, 'preference', 'hidden')
 setting('window_pos_x', '-1', float, 'preference', 'hidden')
@@ -460,6 +472,9 @@ def getSettingsForCategory(category, subCategory = None):
 
 ## Profile functions
 def getBasePath():
+	"""
+	:return: The path in which the current configuration files are stored. This depends on the used OS.
+	"""
 	if platform.system() == "Windows":
 		basePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 		#If we have a frozen python install, we need to step out of the library.zip
@@ -468,10 +483,16 @@ def getBasePath():
 	else:
 		basePath = os.path.expanduser('~/.cura/%s' % version.getVersion(False))
 	if not os.path.isdir(basePath):
-		os.makedirs(basePath)
+		try:
+			os.makedirs(basePath)
+		except:
+			print "Failed to create directory: %s" % (basePath)
 	return basePath
 
 def getAlternativeBasePaths():
+	"""
+	Search for alternative installations of Cura and their preference files. Used to load configuration from older versions of Cura.
+	"""
 	paths = []
 	basePath = os.path.normpath(os.path.join(getBasePath(), '..'))
 	for subPath in os.listdir(basePath):
@@ -484,43 +505,80 @@ def getAlternativeBasePaths():
 	return paths
 
 def getDefaultProfilePath():
+	"""
+	:return: The default path where the currently used profile is stored and loaded on open and close of Cura.
+	"""
 	return os.path.join(getBasePath(), 'current_profile.ini')
 
-def loadProfile(filename):
-	#Read a configuration file as global config
+def loadProfile(filename, allMachines = False):
+	"""
+		Read a profile file as active profile settings.
+	:param filename:    The ini filename to save the profile in.
+	:param allMachines: When False only the current active profile is saved. If True all profiles for all machines are saved.
+	"""
+	global settingsList
 	profileParser = ConfigParser.ConfigParser()
 	try:
 		profileParser.read(filename)
 	except ConfigParser.ParsingError:
 		return
-	global settingsList
-	for set in settingsList:
-		if set.isPreference():
-			continue
-		section = 'profile'
-		if set.isAlteration():
-			section = 'alterations'
-		if profileParser.has_option(section, set.getName()):
-			set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'))
+	if allMachines:
+		n = 0
+		while profileParser.has_section('profile_%d' % (n)):
+			for set in settingsList:
+				if set.isPreference():
+					continue
+				section = 'profile_%d' % (n)
+				if set.isAlteration():
+					section = 'alterations_%d' % (n)
+				if profileParser.has_option(section, set.getName()):
+					set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'), n)
+			n += 1
+	else:
+		for set in settingsList:
+			if set.isPreference():
+				continue
+			section = 'profile'
+			if set.isAlteration():
+				section = 'alterations'
+			if profileParser.has_option(section, set.getName()):
+				set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'))
 
-def saveProfile(filename):
-	#Save the current profile to an ini file
-	profileParser = ConfigParser.ConfigParser()
-	profileParser.add_section('profile')
-	profileParser.add_section('alterations')
+def saveProfile(filename, allMachines = False):
+	"""
+		Save the current profile to an ini file.
+	:param filename:    The ini filename to save the profile in.
+	:param allMachines: When False only the current active profile is saved. If True all profiles for all machines are saved.
+	"""
 	global settingsList
-	for set in settingsList:
-		if set.isPreference() or set.isMachineSetting():
-			continue
-		if set.isAlteration():
-			profileParser.set('alterations', set.getName(), set.getValue().encode('utf-8'))
-		else:
-			profileParser.set('profile', set.getName(), set.getValue().encode('utf-8'))
+	profileParser = ConfigParser.ConfigParser()
+	if allMachines:
+		for set in settingsList:
+			if set.isPreference() or set.isMachineSetting():
+				continue
+			for n in xrange(0, getMachineCount()):
+				if set.isAlteration():
+					section = 'alterations_%d' % (n)
+				else:
+					section = 'profile_%d' % (n)
+				if not profileParser.has_section(section):
+					profileParser.add_section(section)
+				profileParser.set(section, set.getName(), set.getValue(n).encode('utf-8'))
+	else:
+		profileParser.add_section('profile')
+		profileParser.add_section('alterations')
+		for set in settingsList:
+			if set.isPreference() or set.isMachineSetting():
+				continue
+			if set.isAlteration():
+				profileParser.set('alterations', set.getName(), set.getValue().encode('utf-8'))
+			else:
+				profileParser.set('profile', set.getName(), set.getValue().encode('utf-8'))
 
 	profileParser.write(open(filename, 'w'))
 
 def resetProfile():
-	#Read a configuration file as global config
+	""" Reset the profile for the current machine to default. """
 	global settingsList
 	for set in settingsList:
 		if not set.isProfile():
@@ -539,6 +597,10 @@ def resetProfile():
 		putProfileSetting('retraction_enable', 'True')
 
 def setProfileFromString(options):
+	"""
+	Parse an encoded string which has all the profile settings stored inside of it.
+	Used in combination with getProfileString to ease sharing of profiles.
+	"""
 	options = base64.b64decode(options)
 	options = zlib.decompress(options)
 	(profileOpts, alt) = options.split('\f', 1)
@@ -557,6 +619,10 @@ def setProfileFromString(options):
 					settingsDictionary[key].setValue(value)
 
 def getProfileString():
+	"""
+	Get an encoded string which contains all profile settings.
+	Used in combination with setProfileFromString to share settings in files, forums or other text based ways.
+	"""
 	p = []
 	alt = []
 	global settingsList
@@ -582,6 +648,9 @@ def insertNewlines(string, every=64): #This should be moved to a better place th
 	return '\n'.join(lines)
 
 def getPreferencesString():
+	"""
+	:return: An encoded string which contains all the current preferences.
+	"""
 	p = []
 	global settingsList
 	for set in settingsList:
@@ -593,6 +662,11 @@ def getPreferencesString():
 
 
 def getProfileSetting(name):
+	"""
+		Get the value of an profile setting.
+	:param name: Name of the setting to retrieve.
+	:return:     Value of the current setting.
+	"""
 	if name in tempOverride:
 		return tempOverride[name]
 	global settingsDictionary
@@ -610,12 +684,13 @@ def getProfileSettingFloat(name):
 		return 0.0
 
 def putProfileSetting(name, value):
-	#Check if we have a configuration file loaded, else load the default.
+	""" Store a certain value in a profile setting. """
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isProfile():
 		settingsDictionary[name].setValue(value)
 
 def isProfileSetting(name):
+	""" Check if a certain key name is actually a profile value. """
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isProfile():
 		return True
@@ -623,9 +698,15 @@ def isProfileSetting(name):
 
 ## Preferences functions
 def getPreferencePath():
+	"""
+	:return: The full path of the preference ini file.
+	"""
 	return os.path.join(getBasePath(), 'preferences.ini')
 
 def getPreferenceFloat(name):
+	"""
+	Get the float value of a preference, returns 0.0 if the preference is not a invalid float
+	"""
 	try:
 		setting = getPreference(name).replace(',', '.')
 		return float(eval(setting, {}, {}))
@@ -633,12 +714,17 @@ def getPreferenceFloat(name):
 		return 0.0
 
 def getPreferenceColour(name):
+	"""
+	Get a preference setting value as a color array. The color is stored as #RRGGBB hex string in the setting.
+	"""
 	colorString = getPreference(name)
 	return [float(int(colorString[1:3], 16)) / 255, float(int(colorString[3:5], 16)) / 255, float(int(colorString[5:7], 16)) / 255, 1.0]
 
 def loadPreferences(filename):
+	"""
+	Read a configuration file as global config
+	"""
 	global settingsList
-	#Read a configuration file as global config
 	profileParser = ConfigParser.ConfigParser()
 	try:
 		profileParser.read(filename)
@@ -992,7 +1078,7 @@ def setAlterationFile(name, value):
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isAlteration():
 		settingsDictionary[name].setValue(value)
-	saveProfile(getDefaultProfilePath())
+	saveProfile(getDefaultProfilePath(), True)
 
 def isTagIn(tag, contents):
 	contents = re.sub(';[^\n]*\n', '', contents)
@@ -1045,98 +1131,3 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		#Append the profile string to the end of the GCode, so we can load it from the GCode file later.
 		postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
-
-###### PLUGIN #####
-
-def getPluginConfig():
-	try:
-		return pickle.loads(str(getProfileSetting('plugin_config')))
-	except:
-		return []
-
-def setPluginConfig(config):
-	putProfileSetting('plugin_config', pickle.dumps(config))
-
-def getPluginBasePaths():
-	ret = []
-	if platform.system() != "Windows":
-		ret.append(os.path.expanduser('~/.cura/plugins/'))
-	if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
-		ret.append(os.path.normpath(os.path.join(resources.resourceBasePath, "Cura/plugins")))
-	else:
-		ret.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'plugins')))
-	return ret
-
-def getPluginList():
-	ret = []
-	for basePath in getPluginBasePaths():
-		for filename in glob.glob(os.path.join(basePath, '*.py')):
-			filename = os.path.basename(filename)
-			if filename.startswith('_'):
-				continue
-			with open(os.path.join(basePath, filename), "r") as f:
-				item = {'filename': filename, 'name': None, 'info': None, 'type': None, 'params': []}
-				for line in f:
-					line = line.strip()
-					if not line.startswith('#'):
-						break
-					line = line[1:].split(':', 1)
-					if len(line) != 2:
-						continue
-					if line[0].upper() == 'NAME':
-						item['name'] = line[1].strip()
-					elif line[0].upper() == 'INFO':
-						item['info'] = line[1].strip()
-					elif line[0].upper() == 'TYPE':
-						item['type'] = line[1].strip()
-					elif line[0].upper() == 'DEPEND':
-						pass
-					elif line[0].upper() == 'PARAM':
-						m = re.match('([a-zA-Z][a-zA-Z0-9_]*)\(([a-zA-Z_]*)(?::([^\)]*))?\) +(.*)', line[1].strip())
-						if m is not None:
-							item['params'].append({'name': m.group(1), 'type': m.group(2), 'default': m.group(3), 'description': m.group(4)})
-					else:
-						print "Unknown item in effect meta data: %s %s" % (line[0], line[1])
-				if item['name'] is not None and item['type'] == 'postprocess':
-					ret.append(item)
-	return ret
-
-def runPostProcessingPlugins(gcodefilename):
-	pluginConfigList = getPluginConfig()
-	pluginList = getPluginList()
-
-	for pluginConfig in pluginConfigList:
-		plugin = None
-		for pluginTest in pluginList:
-			if pluginTest['filename'] == pluginConfig['filename']:
-				plugin = pluginTest
-		if plugin is None:
-			continue
-
-		pythonFile = None
-		for basePath in getPluginBasePaths():
-			testFilename = os.path.join(basePath, pluginConfig['filename'])
-			if os.path.isfile(testFilename):
-				pythonFile = testFilename
-		if pythonFile is None:
-			continue
-
-		locals = {'filename': gcodefilename}
-		for param in plugin['params']:
-			value = param['default']
-			if param['name'] in pluginConfig['params']:
-				value = pluginConfig['params'][param['name']]
-
-			if param['type'] == 'float':
-				try:
-					value = float(value)
-				except:
-					value = float(param['default'])
-
-			locals[param['name']] = value
-		try:
-			execfile(pythonFile, locals)
-		except:
-			locationInfo = traceback.extract_tb(sys.exc_info()[2])[-1]
-			return "%s: '%s' @ %s:%s:%d" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]), os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
-	return None

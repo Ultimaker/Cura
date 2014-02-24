@@ -1,12 +1,11 @@
-from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
 import platform
 
-class aboutWindow(wx.Dialog):
+class aboutWindow(wx.Frame):
 	def __init__(self):
-		super(aboutWindow, self).__init__(None, title="About")
+		super(aboutWindow, self).__init__(None, title="About", style = wx.DEFAULT_DIALOG_STYLE)
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -37,14 +36,14 @@ class aboutWindow(wx.Dialog):
 		self.addComponent('NumPy', 'Support library for faster math', 'BSD', 'http://www.numpy.org/')
 		if platform.system() == "Windows":
 			self.addComponent('VideoCapture', 'Library for WebCam capture on windows', 'LGPLv2.1', 'http://videocapture.sourceforge.net/')
-			self.addComponent('ffmpeg', 'Support for making timelaps video files', 'GPL', 'http://www.ffmpeg.org/')
+			#self.addComponent('ffmpeg', 'Support for making timelaps video files', 'GPL', 'http://www.ffmpeg.org/')
 			self.addComponent('comtypes', 'Library to help with windows taskbar features on Windows 7', 'MIT', 'http://starship.python.net/crew/theller/comtypes/')
 			self.addComponent('EjectMedia', 'Utility to safe-remove SD cards', 'Freeware', 'http://www.uwe-sieber.de/english.html')
 		self.addComponent('Pymclevel', 'Python library for reading Minecraft levels.', 'ISC', 'https://github.com/mcedit/pymclevel')
 
 		#Translations done by:
 		#Dutch: Charlotte Jansen
-		#German: Gregor Luetolf
+		#German: Gregor Luetolf, Lars Potter
 		#Polish: Piotr Paczynski
 		#French: Jeremie Francois
 		#Spanish: Jose Gemez
@@ -58,29 +57,3 @@ class aboutWindow(wx.Dialog):
 
 	def OnClose(self, e):
 		self.Destroy()
-
-# 		info = wx.AboutDialogInfo()
-# 		info.SetName("Cura")
-# 		info.SetDescription("""
-# End solution for Open Source Fused Filament Fabrication 3D printing.
-# * Cura is the graphical User Interface.
-# * CuraEngine is the slicer/gcode generator.
-# Cura and the CuraEngine are licensed AGPLv3.
-# 		""")
-# 		info.SetWebSite('http://software.ultimaker.com/')
-# 		info.SetCopyright(_("Copyright (C) David Braam"))
-# 		info.SetLicence("""
-#     This program is free software: you can redistribute it and/or modify
-#     it under the terms of the GNU Affero General Public License as published by
-#     the Free Software Foundation, either version 3 of the License, or
-#     (at your option) any later version.
-#
-#     This program is distributed in the hope that it will be useful,
-#     but WITHOUT ANY WARRANTY; without even the implied warranty of
-#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#     GNU Affero General Public License for more details.
-#
-#     You should have received a copy of the GNU Affero General Public License
-#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# """)
-# 		wx.AboutBox(info)

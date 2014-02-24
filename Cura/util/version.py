@@ -1,4 +1,7 @@
-from __future__ import absolute_import
+"""
+The version utility module is used to get the current Cura version, and check for updates.
+It can also see if we are running a development build of Cura.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import os
@@ -49,7 +52,7 @@ def getVersion(getGitVersion = True):
 		version = f.readline()
 		f.close()
 		return version.strip()
-	return "?"
+	return "?" #No idea what the version is. TODO:Tell the user.
 
 def isDevVersion():
 	gitPath = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0], "../../.git"))

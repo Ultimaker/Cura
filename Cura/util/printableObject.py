@@ -1,4 +1,8 @@
-from __future__ import absolute_import
+"""
+The printableObject module contains a printableObject class,
+which is used to represent a single object that can be printed.
+A single object can have 1 or more meshes which represent different sections for multi-material extrusion.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import time
@@ -11,6 +15,13 @@ numpy.seterr(all='ignore')
 from Cura.util import polygon
 
 class printableObject(object):
+	"""
+	A printable object is an object that can be printed and is on the build platform.
+	It contains 1 or more Meshes. Where more meshes are used for multi-extrusion.
+
+	Each object has a 3x3 transformation matrix to rotate/scale the object.
+	This object also keeps track of the 2D boundary polygon used for object collision in the objectScene class.
+	"""
 	def __init__(self, originFilename):
 		self._originFilename = originFilename
 		if originFilename is None:
@@ -286,6 +297,11 @@ class printableObject(object):
 		return numpy.array(vertexList, numpy.float32), meshList
 
 class mesh(object):
+	"""
+	A mesh is a list of 3D triangles build from vertexes. Each triangle has 3 vertexes.
+
+	A "VBO" can be associated with this object, which is used for rendering this object.
+	"""
 	def __init__(self, obj):
 		self.vertexes = None
 		self.vertexCount = 0

@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
@@ -12,23 +11,22 @@ import platform
 import cStringIO as StringIO
 
 import OpenGL
-#OpenGL.ERROR_CHECKING = False
+OpenGL.ERROR_CHECKING = False
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
 from Cura.gui import printWindow
-from Cura.gui import printWindow2
 from Cura.util import profile
 from Cura.util import meshLoader
 from Cura.util import objectScene
 from Cura.util import resources
 from Cura.util import sliceEngine
-from Cura.util import machineCom
+from Cura.util import pluginInfo
 from Cura.util import removableStorage
 from Cura.util import explorer
 from Cura.util.printerConnection import printerConnectionManager
 from Cura.gui.util import previewTools
-from Cura.gui.util import opengl
+from Cura.gui.util import openglHelpers
 from Cura.gui.util import openglGui
 from Cura.gui.util import engineResultView
 from Cura.gui.tools import youmagineGui
@@ -56,7 +54,6 @@ class SceneView(openglGui.glGuiPanel):
 		self._platformMesh = {}
 		self._platformTexture = None
 		self._isSimpleMode = True
-		self._usbPrintMonitor = printWindow.printProcessMonitor(lambda : self._queueRefresh())
 		self._printerConnectionManager = printerConnectionManager.PrinterConnectionManager()
 
 		self._viewport = None
@@ -125,7 +122,12 @@ class SceneView(openglGui.glGuiPanel):
 
 	def loadGCodeFile(self, filename):
 		self.OnDeleteAll(None)
-		#TODO: Load straight GCodeFile
+		#Cheat the engine results to load a GCode file into it.
+		self._engine._result = sliceEngine.EngineResult()
+		with open(filename, "r") as f:
+			self._engine._result.setGCode(f.read())
+		self._engine._result.setFinished(True)
+		self._engineResultView.setResult(self._engine._result)
 		self.printButton.setBottomText('')
 		self.viewSelection.setValue(4)
 		self.printButton.setDisabled(False)
@@ -192,7 +194,17 @@ class SceneView(openglGui.glGuiPanel):
 	def showLoadModel(self, button = 1):
 		if button == 1:
 			dlg=wx.FileDialog(self, _("Open 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
-			dlg.SetWildcard(meshLoader.loadWildcardFilter() + imageToMesh.wildcardList() + "|GCode file (*.gcode)|*.g;*.gcode;*.G;*.GCODE")
+
+			wildcardList = ';'.join(map(lambda s: '*' + s, meshLoader.loadSupportedExtensions() + imageToMesh.supportedExtensions() + ['.g', '.gcode']))
+			wildcardFilter = "All (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+			wildcardList = ';'.join(map(lambda s: '*' + s, meshLoader.loadSupportedExtensions()))
+			wildcardFilter += "|Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+			wildcardList = ';'.join(map(lambda s: '*' + s, imageToMesh.supportedExtensions()))
+			wildcardFilter += "|Image files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+			wildcardList = ';'.join(map(lambda s: '*' + s, ['.g', '.gcode']))
+			wildcardFilter += "|GCode files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+
+			dlg.SetWildcard(wildcardFilter)
 			if dlg.ShowModal() != wx.ID_OK:
 				dlg.Destroy()
 				return
@@ -207,7 +219,10 @@ class SceneView(openglGui.glGuiPanel):
 		if len(self._scene.objects()) < 1:
 			return
 		dlg=wx.FileDialog(self, _("Save 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
-		dlg.SetWildcard(meshLoader.saveWildcardFilter())
+		fileExtensions = meshLoader.saveSupportedExtensions()
+		wildcardList = ';'.join(map(lambda s: '*' + s, fileExtensions))
+		wildcardFilter = "Mesh files (%s)|%s;%s" % (wildcardList, wildcardList, wildcardList.upper())
+		dlg.SetWildcard(wildcardFilter)
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
 			return
@@ -218,9 +233,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnPrintButton(self, button):
 		if button == 1:
 			connectionGroup = self._printerConnectionManager.getAvailableGroup()
-			if machineCom.machineIsConnected():
-				self.showPrintWindow()
-			elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
+			if len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
 					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", map(lambda n: n[0], drives))
@@ -249,7 +262,6 @@ class SceneView(openglGui.glGuiPanel):
 				self.showSaveGCode()
 		if button == 3:
 			menu = wx.Menu()
-			self.Bind(wx.EVT_MENU, lambda e: self.showPrintWindow(), menu.Append(-1, _("Print with USB")))
 			connections = self._printerConnectionManager.getAvailableConnections()
 			menu.connectionMap = {}
 			for connection in connections:
@@ -262,33 +274,27 @@ class SceneView(openglGui.glGuiPanel):
 			menu.Destroy()
 
 	def _openPrintWindowForConnection(self, connection):
-		print '_openPrintWindowForConnection', connection.getName()
 		if connection.window is None or not connection.window:
-			connection.window = printWindow2.printWindow(connection)
+			connection.window = None
+			windowType = profile.getPreference('printing_window')
+			for p in pluginInfo.getPluginList('printwindow'):
+				if p.getName() == windowType:
+					connection.window = printWindow.printWindowPlugin(self, connection, p.getFullFilename())
+					break
+			if connection.window is None:
+				connection.window = printWindow.printWindowBasic(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
-		#TODO: Fix for _engine.getResult
-		if not connection.loadFile(self._gcodeFilename):
+		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):
 			if connection.isPrinting():
 				self.notification.message("Cannot start print, because other print still running.")
 			else:
 				self.notification.message("Failed to start print...")
 
-	def showPrintWindow(self):
-		if self._gcodeFilename is None:
-			return
-		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
-			wx.MessageBox(_("USB printing on the Ultimaker2 is not supported."), _("USB Printing Error"), wx.OK | wx.ICON_WARNING)
-			return
-		#TODO: Fix for _engine.getResult
-		self._usbPrintMonitor.loadFile(self._gcodeFilename, self._engine.getID())
-		if self._gcodeFilename is None:
-			self._engine.submitInfoOnline()
-
 	def showSaveGCode(self):
 		if len(self._scene._objectList) < 1:
 			return
-		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE)
+		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
 		filename = self._scene._objectList[0].getName() + '.gcode'
 		dlg.SetFilename(filename)
 		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
@@ -373,6 +379,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnViewChange(self):
 		if self.viewSelection.getValue() == 4:
 			self.viewMode = 'gcode'
+			self.tool = previewTools.toolNone(self)
 		elif self.viewSelection.getValue() == 1:
 			self.viewMode = 'overhang'
 		elif self.viewSelection.getValue() == 2:
@@ -466,6 +473,7 @@ class SceneView(openglGui.glGuiPanel):
 		while len(self._scene.objects()) > 0:
 			self._deleteObject(self._scene.objects()[0])
 		self._animView = openglGui.animation(self, self._viewTarget.copy(), numpy.array([0,0,0], numpy.float32), 0.5)
+		self._engineResultView.setResult(None)
 
 	def OnMultiply(self, e):
 		if self._focusObj is None:
@@ -718,7 +726,7 @@ class SceneView(openglGui.glGuiPanel):
 					print k, self._afterLeakTest[k], self._beforeLeakTest[k], self._afterLeakTest[k] - self._beforeLeakTest[k]
 
 	def ShaderUpdate(self, v, f):
-		s = opengl.GLShader(v, f)
+		s = openglHelpers.GLShader(v, f)
 		if s.isValid():
 			self._objectLoadShader.release()
 			self._objectLoadShader = s
@@ -734,6 +742,9 @@ class SceneView(openglGui.glGuiPanel):
 		if e.ButtonDClick():
 			self._mouseState = 'doubleClick'
 		else:
+			if self._mouseState == 'dragObject' and self._selectedObj is not None:
+				self._scene.pushFree(self._selectedObj)
+				self.sceneUpdated()
 			self._mouseState = 'dragOrClick'
 		p0, p1 = self.getMouseRay(self._mouseX, self._mouseY)
 		p0 -= self.getObjectCenterPos() - self._viewTarget
@@ -755,8 +766,9 @@ class SceneView(openglGui.glGuiPanel):
 			if e.GetButton() == 3:
 					menu = wx.Menu()
 					if self._focusObj is not None:
-						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete object")))
+
 						self.Bind(wx.EVT_MENU, self.OnCenter, menu.Append(-1, _("Center on platform")))
+						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete object")))
 						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, _("Multiply object")))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, _("Split object into parts")))
 					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getMachineSetting('extruder_amount')) > 1:
@@ -846,8 +858,8 @@ class SceneView(openglGui.glGuiPanel):
 	def getMouseRay(self, x, y):
 		if self._viewport is None:
 			return numpy.array([0,0,0],numpy.float32), numpy.array([0,0,1],numpy.float32)
-		p0 = opengl.unproject(x, self._viewport[1] + self._viewport[3] - y, 0, self._modelMatrix, self._projMatrix, self._viewport)
-		p1 = opengl.unproject(x, self._viewport[1] + self._viewport[3] - y, 1, self._modelMatrix, self._projMatrix, self._viewport)
+		p0 = openglHelpers.unproject(x, self._viewport[1] + self._viewport[3] - y, 0, self._modelMatrix, self._projMatrix, self._viewport)
+		p1 = openglHelpers.unproject(x, self._viewport[1] + self._viewport[3] - y, 1, self._modelMatrix, self._projMatrix, self._viewport)
 		p0 -= self._viewTarget
 		p1 -= self._viewTarget
 		return p0, p1
@@ -883,10 +895,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnPaint(self,e):
 		connectionGroup = self._printerConnectionManager.getAvailableGroup()
-		if machineCom.machineIsConnected():
-			self.printButton._imageID = 6
-			self.printButton._tooltip = _("Print")
-		elif len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
+		if len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 			self.printButton._imageID = 2
 			self.printButton._tooltip = _("Toolpath to SD")
 		elif connectionGroup is not None:
@@ -904,85 +913,85 @@ class SceneView(openglGui.glGuiPanel):
 			self._zoom = self._animZoom.getPosition()
 			if self._animZoom.isDone():
 				self._animZoom = None
-		if self._objectShader is None:
-			if opengl.hasShaderSupport():
-				self._objectShader = opengl.GLShader("""
-varying float light_amount;
+		if self._objectShader is None: #TODO: add loading shaders from file(s)
+			if openglHelpers.hasShaderSupport():
+				self._objectShader = openglHelpers.GLShader("""
+					varying float light_amount;
 
-void main(void)
-{
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-    gl_FrontColor = gl_Color;
+					void main(void)
+					{
+						gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+						gl_FrontColor = gl_Color;
 
-	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount += 0.2;
-}
-				""","""
-varying float light_amount;
+						light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+						light_amount += 0.2;
+					}
+									""","""
+					varying float light_amount;
 
-void main(void)
-{
-	gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
-}
+					void main(void)
+					{
+						gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
+					}
 				""")
-				self._objectOverhangShader = opengl.GLShader("""
-uniform float cosAngle;
-uniform mat3 rotMatrix;
-varying float light_amount;
+				self._objectOverhangShader = openglHelpers.GLShader("""
+					uniform float cosAngle;
+					uniform mat3 rotMatrix;
+					varying float light_amount;
 
-void main(void)
-{
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-    gl_FrontColor = gl_Color;
+					void main(void)
+					{
+						gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+						gl_FrontColor = gl_Color;
 
-	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount += 0.2;
-	if (normalize(rotMatrix * gl_Normal).z < -cosAngle)
-	{
-		light_amount = -10.0;
-	}
-}
+						light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+						light_amount += 0.2;
+						if (normalize(rotMatrix * gl_Normal).z < -cosAngle)
+						{
+							light_amount = -10.0;
+						}
+					}
 				""","""
-varying float light_amount;
+					varying float light_amount;
 
-void main(void)
-{
-	if (light_amount == -10.0)
-	{
-		gl_FragColor = vec4(1.0, 0.0, 0.0, gl_Color[3]);
-	}else{
-		gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
-	}
-}
-				""")
-				self._objectLoadShader = opengl.GLShader("""
-uniform float intensity;
-uniform float scale;
-varying float light_amount;
+					void main(void)
+					{
+						if (light_amount == -10.0)
+						{
+							gl_FragColor = vec4(1.0, 0.0, 0.0, gl_Color[3]);
+						}else{
+							gl_FragColor = vec4(gl_Color.xyz * light_amount, gl_Color[3]);
+						}
+					}
+									""")
+				self._objectLoadShader = openglHelpers.GLShader("""
+					uniform float intensity;
+					uniform float scale;
+					varying float light_amount;
 
-void main(void)
-{
-	vec4 tmp = gl_Vertex;
-    tmp.x += sin(tmp.z/5.0+intensity*30.0) * scale * intensity;
-    tmp.y += sin(tmp.z/3.0+intensity*40.0) * scale * intensity;
-    gl_Position = gl_ModelViewProjectionMatrix * tmp;
-    gl_FrontColor = gl_Color;
+					void main(void)
+					{
+						vec4 tmp = gl_Vertex;
+						tmp.x += sin(tmp.z/5.0+intensity*30.0) * scale * intensity;
+						tmp.y += sin(tmp.z/3.0+intensity*40.0) * scale * intensity;
+						gl_Position = gl_ModelViewProjectionMatrix * tmp;
+						gl_FrontColor = gl_Color;
 
-	light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
-	light_amount += 0.2;
-}
+						light_amount = abs(dot(normalize(gl_NormalMatrix * gl_Normal), normalize(gl_LightSource[0].position.xyz)));
+						light_amount += 0.2;
+					}
 			""","""
-uniform float intensity;
-varying float light_amount;
+				uniform float intensity;
+				varying float light_amount;
 
-void main(void)
-{
-	gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
-}
+				void main(void)
+				{
+					gl_FragColor = vec4(gl_Color.xyz * light_amount, 1.0-intensity);
+				}
 				""")
-			if self._objectShader is None or not self._objectShader.isValid():
-				self._objectShader = opengl.GLFakeShader()
-				self._objectOverhangShader = opengl.GLFakeShader()
+			if self._objectShader is None or not self._objectShader.isValid(): #Could not make shader.
+				self._objectShader = openglHelpers.GLFakeShader()
+				self._objectOverhangShader = openglHelpers.GLFakeShader()
 				self._objectLoadShader = None
 		self._init3DView()
 		glTranslate(0,0,-self._zoom)
@@ -1003,7 +1012,7 @@ void main(void)
 				glColor4ub((n >> 16) & 0xFF, (n >> 8) & 0xFF, (n >> 0) & 0xFF, 0xFF)
 				self._renderObject(obj)
 
-		if self._mouseX > -1:
+		if self._mouseX > -1: # mouse has not passed over the opengl window.
 			glFlush()
 			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0] >> 8
 			if n < len(self._scene.objects()):
@@ -1012,7 +1021,7 @@ void main(void)
 				self._focusObj = None
 			f = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT)[0][0]
 			#self.GetTopLevelParent().SetTitle(hex(n) + " " + str(f))
-			self._mouse3Dpos = opengl.unproject(self._mouseX, self._viewport[1] + self._viewport[3] - self._mouseY, f, self._modelMatrix, self._projMatrix, self._viewport)
+			self._mouse3Dpos = openglHelpers.unproject(self._mouseX, self._viewport[1] + self._viewport[3] - self._mouseY, f, self._modelMatrix, self._projMatrix, self._viewport)
 			self._mouse3Dpos -= self._viewTarget
 
 		self._init3DView()
@@ -1078,9 +1087,9 @@ void main(void)
 				glPushMatrix()
 				glLoadIdentity()
 				glEnable(GL_STENCIL_TEST)
-				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP)
+				glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP) #Keep values
 				glDisable(GL_DEPTH_TEST)
-				for i in xrange(2, 15, 2):
+				for i in xrange(2, 15, 2): #All even values
 					glStencilFunc(GL_EQUAL, i, 0xFF)
 					glColor(float(i)/10, float(i)/10, float(i)/5)
 					glBegin(GL_QUADS)
@@ -1089,7 +1098,7 @@ void main(void)
 					glVertex3f( 1000, 1000,-10)
 					glVertex3f(-1000, 1000,-10)
 					glEnd()
-				for i in xrange(1, 15, 2):
+				for i in xrange(1, 15, 2): #All odd values
 					glStencilFunc(GL_EQUAL, i, 0xFF)
 					glColor(float(i)/10, 0, 0)
 					glBegin(GL_QUADS)
@@ -1120,30 +1129,6 @@ void main(void)
 
 		self._drawMachine()
 
-		if self._usbPrintMonitor.getState() == 'PRINTING' and self._usbPrintMonitor.getID() == self._engine.getID():
-			z = self._usbPrintMonitor.getZ()
-			if self.viewMode == 'gcode':
-				layer_height = profile.getProfileSettingFloat('layer_height')
-				layer1_height = profile.getProfileSettingFloat('bottom_thickness')
-				if layer_height > 0:
-					if layer1_height > 0:
-						layer = int((z - layer1_height) / layer_height) + 1
-					else:
-						layer = int(z / layer_height)
-				else:
-					layer = 1
-				self.layerSelect.setValue(layer)
-			else:
-				size = self._machineSize
-				glEnable(GL_BLEND)
-				glColor4ub(255,255,0,128)
-				glBegin(GL_QUADS)
-				glVertex3f(-size[0]/2,-size[1]/2, z)
-				glVertex3f( size[0]/2,-size[1]/2, z)
-				glVertex3f( size[0]/2, size[1]/2, z)
-				glVertex3f(-size[0]/2, size[1]/2, z)
-				glEnd()
-
 		if self.viewMode != 'gcode':
 			#Draw the object box-shadow, so you can see where it will collide with other objects.
 			if self._selectedObj is not None:
@@ -1159,7 +1144,7 @@ void main(void)
 						glVertex3f(p[0], p[1], 0)
 					glEnd()
 					glPopMatrix()
-				if self._scene.isOneAtATime():
+				if self._scene.isOneAtATime(): #Check print sequence mode.
 					glPushMatrix()
 					glColor4f(0,0,0,0.06)
 					glTranslatef(self._selectedObj.getPosition()[0], self._selectedObj.getPosition()[1], 0)
@@ -1175,7 +1160,7 @@ void main(void)
 				glDepthMask(True)
 				glDisable(GL_CULL_FACE)
 
-			#Draw the outline of the selected object, on top of everything else except the GUI.
+			#Draw the outline of the selected object on top of everything else except the GUI.
 			if self._selectedObj is not None and self._selectedObj._loadAnim is None:
 				glDisable(GL_DEPTH_TEST)
 				glEnable(GL_CULL_FACE)
@@ -1200,16 +1185,16 @@ void main(void)
 				glTranslate(pos[0], pos[1], pos[2])
 				self.tool.OnDraw()
 				glPopMatrix()
-		if self.viewMode == 'overhang' and not opengl.hasShaderSupport():
+		if self.viewMode == 'overhang' and not openglHelpers.hasShaderSupport():
 			glDisable(GL_DEPTH_TEST)
 			glPushMatrix()
 			glLoadIdentity()
 			glTranslate(0,-4,-10)
 			glColor4ub(60,60,60,255)
-			opengl.glDrawStringCenter(_("Overhang view not working due to lack of OpenGL shaders support."))
+			openglHelpers.glDrawStringCenter(_("Overhang view not working due to lack of OpenGL shaders support."))
 			glPopMatrix()
 
-	def _renderObject(self, obj, brightness = False, addSink = True):
+	def _renderObject(self, obj, brightness = 0, addSink = True):
 		glPushMatrix()
 		if addSink:
 			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2 - profile.getProfileSettingFloat('object_sink'))
@@ -1217,21 +1202,19 @@ void main(void)
 			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
 
 		if self.tempMatrix is not None and obj == self._selectedObj:
-			tempMatrix = opengl.convert3x3MatrixTo4x4(self.tempMatrix)
-			glMultMatrixf(tempMatrix)
+			glMultMatrixf(openglHelpers.convert3x3MatrixTo4x4(self.tempMatrix))
 
 		offset = obj.getDrawOffset()
 		glTranslate(-offset[0], -offset[1], -offset[2] - obj.getSize()[2] / 2)
 
-		tempMatrix = opengl.convert3x3MatrixTo4x4(obj.getMatrix())
-		glMultMatrixf(tempMatrix)
+		glMultMatrixf(openglHelpers.convert3x3MatrixTo4x4(obj.getMatrix()))
 
 		n = 0
 		for m in obj._meshList:
 			if m.vbo is None:
-				m.vbo = opengl.GLVBO(GL_TRIANGLES, m.vertexes, m.normal)
-			if brightness:
-				glColor4fv(map(lambda n: n * brightness, self._objColors[n]))
+				m.vbo = openglHelpers.GLVBO(GL_TRIANGLES, m.vertexes, m.normal)
+			if brightness != 0:
+				glColor4fv(map(lambda idx: idx * brightness, self._objColors[n]))
 				n += 1
 			m.vbo.render()
 		glPopMatrix()
@@ -1262,7 +1245,7 @@ void main(void)
 			#For the Ultimaker 2 render the texture on the back plate to show the Ultimaker2 text.
 			if machine == 'ultimaker2':
 				if not hasattr(self._platformMesh[machine], 'texture'):
-					self._platformMesh[machine].texture = opengl.loadGLTexture('Ultimaker2backplate.png')
+					self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
 				glBindTexture(GL_TEXTURE_2D, self._platformMesh[machine].texture)
 				glEnable(GL_TEXTURE_2D)
 				glPushMatrix()
@@ -1314,6 +1297,7 @@ void main(void)
 		height = profile.getMachineSettingFloat('machine_height')
 		circular = profile.getMachineSetting('machine_shape') == 'Circular'
 		glBegin(GL_QUADS)
+		# Draw the sides of the build volume.
 		for n in xrange(0, len(polys[0])):
 			if not circular:
 				if n % 2 == 0:
@@ -1328,6 +1312,8 @@ void main(void)
 			glVertex3f(polys[0][n-1][0], polys[0][n-1][1], 0)
 			glVertex3f(polys[0][n-1][0], polys[0][n-1][1], height)
 		glEnd()
+
+		#Draw top of build volume.
 		glColor4ub(5, 171, 231, 128)
 		glBegin(GL_TRIANGLE_FAN)
 		for p in polys[0][::-1]:
@@ -1336,7 +1322,7 @@ void main(void)
 
 		#Draw checkerboard
 		if self._platformTexture is None:
-			self._platformTexture = opengl.loadGLTexture('checkerboard.png')
+			self._platformTexture = openglHelpers.loadGLTexture('checkerboard.png')
 			glBindTexture(GL_TEXTURE_2D, self._platformTexture)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
@@ -1348,6 +1334,8 @@ void main(void)
 			glTexCoord2f(p[0]/20, p[1]/20)
 			glVertex3f(p[0], p[1], 0)
 		glEnd()
+
+		#Draw no-go zones. (clips in case of UM2)
 		glDisable(GL_TEXTURE_2D)
 		glColor4ub(127, 127, 127, 200)
 		for poly in polys[1:]:
@@ -1380,9 +1368,10 @@ void main(void)
 
 	def getObjectMatrix(self):
 		if self._selectedObj is None:
-			return numpy.matrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+			return numpy.matrix(numpy.identity(3))
 		return self._selectedObj.getMatrix()
 
+#TODO: Remove this or put it in a seperate file
 class shaderEditor(wx.Dialog):
 	def __init__(self, parent, callback, v, f):
 		super(shaderEditor, self).__init__(parent, title="Shader editor", style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)

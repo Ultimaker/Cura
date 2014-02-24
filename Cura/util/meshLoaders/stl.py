@@ -1,4 +1,15 @@
-from __future__ import absolute_import
+"""
+STL file mesh loader.
+STL is the most common file format used for 3D printing right now.
+STLs come in 2 flavors.
+	Binary, which is easy and quick to read.
+	Ascii, which is harder to read, as can come with windows, mac and unix style newlines.
+	The ascii reader has been designed so it has great compatibility with all kinds of formats or slightly broken exports from tools.
+
+This module also contains a function to save objects as an STL file.
+
+http://en.wikipedia.org/wiki/STL_(file_format)
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import sys
@@ -6,7 +17,7 @@ import os
 import struct
 import time
 
-from Cura.util import mesh
+from Cura.util import printableObject
 
 def _loadAscii(m, f):
 	cnt = 0
@@ -37,7 +48,7 @@ def _loadBinary(m, f):
 		m._addFace(data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11])
 
 def loadScene(filename):
-	obj = mesh.printableObject(filename)
+	obj = printableObject.printableObject(filename)
 	m = obj._addMesh()
 
 	f = open(filename, "rb")

@@ -1,8 +1,18 @@
+"""
+Base of all printer connections. A printer connection is a way a connection can be made with a printer.
+The connections are based on a group, where each group can have 1 or more connections.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import traceback
 
 class printerConnectionGroup(object):
+	"""
+	Base for the printer connection group, needs to be subclassed.
+	Has functions for all available connections, getting the name, icon and priority.
+
+	The getIconID, getPriority and getAvailableConnections functions should be overloaded in a subclass.
+	"""
 	def __init__(self, name):
 		self._name = name
 
@@ -16,21 +26,22 @@ class printerConnectionGroup(object):
 		return 5
 
 	def getPriority(self):
-		return -1
+		return -100
 
 	def __cmp__(self, other):
 		return self.getPriority() - other.getPriority()
 
 	def __repr__(self):
-		return self.name
-
-#Base class for different printer connection implementations.
-# A printer connection can connect to printers in different ways, trough network, USB or carrier pigeons.
-# Each printer connection has different capabilities that you can query with the "has" functions.
-# Each printer connection has a state that you can query with the "is" functions.
-# Each printer connection has callback objects that receive status updates from the printer when information changes.
+		return '%s %d' % (self._name, self.getPriority())
 
 class printerConnectionBase(object):
+	"""
+	Base class for different printer connection implementations.
+		A printer connection can connect to printers in different ways, trough network, USB or carrier pigeons.
+		Each printer connection has different capabilities that you can query with the "has" functions.
+		Each printer connection has a state that you can query with the "is" functions.
+		Each printer connection has callback objects that receive status updates from the printer when information changes.
+	"""
 	def __init__(self, name):
 		self._callbackList = []
 		self._name = name
@@ -39,8 +50,8 @@ class printerConnectionBase(object):
 	def getName(self):
 		return self._name
 
-	#Load the file into memory for printing, returns True on success
-	def loadFile(self, filename):
+	#Load the data into memory for printing, returns True on success
+	def loadGCodeData(self, dataStream):
 		return False
 
 	#Start printing the previously loaded file
@@ -73,6 +84,10 @@ class printerConnectionBase(object):
 
 	#Is the active connection open right now.
 	def isActiveConnectionOpen(self):
+		return False
+
+	#Are we trying to open an active connection right now.
+	def isActiveConnectionOpening(self):
 		return False
 
 	#Returns true if we have the ability to pause the file printing.

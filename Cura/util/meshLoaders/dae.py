@@ -1,18 +1,30 @@
-from __future__ import absolute_import
+"""
+DAE are COLLADA files.
+The DAE reader is a limited COLLADA reader. And has only been tested with DAE exports from SketchUp, http://www.sketchup.com/
+The reason for this reader in Cura is that the free version of SketchUp by default does not support any other format that we can read.
+
+http://en.wikipedia.org/wiki/COLLADA
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 from  xml.parsers.expat import ParserCreate
 import os
 
-from Cura.util import mesh
+from Cura.util import printableObject
 
 def loadScene(filename):
 	loader = daeLoader(filename)
 	return [loader.obj]
 
 class daeLoader(object):
+	"""
+	COLLADA object loader. This class is a bit of a mess, COLLADA files are complex beasts, and this code has only been tweaked to accept
+	the COLLADA files exported from SketchUp.
+
+	Parts of this class can be cleaned up and improved by using more numpy.
+	"""
 	def __init__(self, filename):
-		self.obj = mesh.printableObject(filename)
+		self.obj = printableObject.printableObject(filename)
 		self.mesh = self.obj._addMesh()
 
 		r = ParserCreate()

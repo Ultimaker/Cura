@@ -1,4 +1,10 @@
-from __future__ import absolute_import
+"""
+AMF file reader.
+AMF files are the proposed replacement for STL. AMF is an open standard to share 3D manufacturing files.
+Many of the features found in AMF are currently not yet support in Cura. Most important the curved surfaces.
+
+http://en.wikipedia.org/wiki/Additive_Manufacturing_File_Format
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import cStringIO as StringIO
@@ -9,7 +15,7 @@ try:
 except:
 	from xml.etree import ElementTree
 
-from Cura.util import mesh
+from Cura.util import printableObject
 from Cura.util import profile
 
 def loadScene(filename):
@@ -42,7 +48,7 @@ def loadScene(filename):
 
 	ret = []
 	for amfObj in amf.iter('object'):
-		obj = mesh.printableObject(filename)
+		obj = printableObject.printableObject(filename)
 		for amfMesh in amfObj.iter('mesh'):
 			vertexList = []
 			for vertices in amfMesh.iter('vertices'):

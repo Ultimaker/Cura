@@ -8,7 +8,7 @@
 #############################
 
 ##Select the build target
-BUILD_TARGET=${1:-all}
+BUILD_TARGET=${1:-none}
 #BUILD_TARGET=win32
 #BUILD_TARGET=linux
 #BUILD_TARGET=darwin
@@ -18,7 +18,7 @@ BUILD_TARGET=${1:-all}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-export BUILD_NAME=14.02-TEST1
+export BUILD_NAME=14.02-RC3
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Which versions of external programs to use
@@ -60,16 +60,22 @@ function extract
 	echo "Extracting $*"
 	echo "7z x -y $*" >> log.txt
 	7z x -y $* >> log.txt
+	if [ $? != 0 ]; then
+        echo "Failed to extract $*"
+        exit 1
+	fi
 }
 
 #############################
 # Actual build script
 #############################
-if [ "$BUILD_TARGET" = "all" ]; then
-	$0 win32
-	$0 linux
-	$0 darwin
-	exit
+if [ "$BUILD_TARGET" = "none" ]; then
+	echo "You need to specify a build target with:"
+	echo "$0 win32"
+	echo "$0 linux_i368"
+	echo "$0 linux_amd64"
+	echo "$0 darwin"
+	exit 0
 fi
 
 # Change working directory to the directory the script is in
@@ -113,7 +119,9 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
     echo $BUILD_NAME > scripts/darwin/dist/Cura.app/Contents/Resources/version
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 	make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	cp CuraEngine/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
 	cd scripts/darwin
@@ -144,7 +152,7 @@ fi
 #############################
 
 if [ "$BUILD_TARGET" = "debian_i386" ]; then
-        export CXX="g++ -m32"
+    export CXX="g++ -m32"
 	if [ ! -d "Power" ]; then
 		git clone https://github.com/GreatFruitOmsk/Power
 	else
@@ -154,10 +162,14 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	fi
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 	make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
 	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a resources scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a plugins scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a CuraEngine/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
@@ -176,7 +188,7 @@ fi
 #############################
 
 if [ "$BUILD_TARGET" = "debian_amd64" ]; then
-        export CXX="g++ -m64"
+    export CXX="g++ -m64"
 	if [ ! -d "Power" ]; then
 		git clone https://github.com/GreatFruitOmsk/Power
 	else
@@ -186,10 +198,14 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	fi
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 	make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
 	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a resources scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a plugins scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a CuraEngine/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
@@ -219,7 +235,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	downloadURL http://sourceforge.net/projects/pyopengl/files/PyOpenGL/3.0.1/PyOpenGL-3.0.1.win32.exe
 	downloadURL http://sourceforge.net/projects/numpy/files/NumPy/1.6.2/numpy-1.6.2-win32-superpack-python2.7.exe
 	downloadURL http://videocapture.sourceforge.net/VideoCapture-0.9-5.zip
-	downloadURL http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-20120927-git-13f0cd6-win32-static.7z
+	#downloadURL http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-20120927-git-13f0cd6-win32-static.7z
 	downloadURL http://sourceforge.net/projects/comtypes/files/comtypes/0.6.2/comtypes-0.6.2.win32.exe
 	downloadURL http://www.uwe-sieber.de/files/ejectmedia.zip
 	#Get the power module for python
@@ -227,6 +243,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	git clone https://github.com/GreatFruitOmsk/Power
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 fi
 
 #############################
@@ -245,8 +262,8 @@ if [ $BUILD_TARGET = "win32" ]; then
 	extract numpy-1.6.2-win32-superpack-python2.7.exe numpy-1.6.2-sse2.exe
 	extract numpy-1.6.2-sse2.exe PLATLIB
 	extract VideoCapture-0.9-5.zip VideoCapture-0.9-5/Python27/DLLs/vidcap.pyd
-	extract ffmpeg-20120927-git-13f0cd6-win32-static.7z ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe
-	extract ffmpeg-20120927-git-13f0cd6-win32-static.7z ffmpeg-20120927-git-13f0cd6-win32-static/licenses
+	#extract ffmpeg-20120927-git-13f0cd6-win32-static.7z ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe
+	#extract ffmpeg-20120927-git-13f0cd6-win32-static.7z ffmpeg-20120927-git-13f0cd6-win32-static/licenses
 	extract comtypes-0.6.2.win32.exe
 	extract ejectmedia.zip Win32
 
@@ -260,8 +277,8 @@ if [ $BUILD_TARGET = "win32" ]; then
 	mv PLATLIB/numpy ${TARGET_DIR}/python/Lib
 	mv Power/power ${TARGET_DIR}/python/Lib
 	mv VideoCapture-0.9-5/Python27/DLLs/vidcap.pyd ${TARGET_DIR}/python/DLLs
-	mv ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe ${TARGET_DIR}/Cura/
-	mv ffmpeg-20120927-git-13f0cd6-win32-static/licenses ${TARGET_DIR}/Cura/ffmpeg-licenses/
+	#mv ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe ${TARGET_DIR}/Cura/
+	#mv ffmpeg-20120927-git-13f0cd6-win32-static/licenses ${TARGET_DIR}/Cura/ffmpeg-licenses/
 	mv Win32/EjectMedia.exe ${TARGET_DIR}/Cura/
 	
 	rm -rf Power/
@@ -270,7 +287,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf PLATLIB
 	rm -rf VideoCapture-0.9-5
 	rm -rf numpy-1.6.2-sse2.exe
-	rm -rf ffmpeg-20120927-git-13f0cd6-win32-static
+	#rm -rf ffmpeg-20120927-git-13f0cd6-win32-static
 
 	#Clean up portable python a bit, to keep the package size down.
 	rm -rf ${TARGET_DIR}/python/PyScripter.*
@@ -286,11 +303,14 @@ if [ $BUILD_TARGET = "win32" ]; then
 
     #Build the C++ engine
 	mingw32-make -C CuraEngine
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 fi
 
 #add Cura
-mkdir -p ${TARGET_DIR}/Cura
+mkdir -p ${TARGET_DIR}/Cura ${TARGET_DIR}/resources ${TARGET_DIR}/plugins
 cp -a Cura/* ${TARGET_DIR}/Cura
+cp -a resources/* ${TARGET_DIR}/resources
+cp -a plugins/* ${TARGET_DIR}/plugins
 #Add cura version file
 echo $BUILD_NAME > ${TARGET_DIR}/Cura/version
 
@@ -315,12 +335,14 @@ if (( ${ARCHIVE_FOR_DISTRIBUTION} )); then
 			rm -rf scripts/win32/dist
 			ln -sf `pwd`/${TARGET_DIR} scripts/win32/dist
 			wine ~/.wine/drive_c/Program\ Files/NSIS/makensis.exe /DVERSION=${BUILD_NAME} scripts/win32/installer.nsi
+            if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
 			mv scripts/win32/Cura_${BUILD_NAME}.exe ./
 		fi
 		if [ -f '/c/Program Files (x86)/NSIS/makensis.exe' ]; then
 			rm -rf scripts/win32/dist
 			mv `pwd`/${TARGET_DIR} scripts/win32/dist
 			'/c/Program Files (x86)/NSIS/makensis.exe' -DVERSION=${BUILD_NAME} 'scripts/win32/installer.nsi' >> log.txt
+            if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
 			mv scripts/win32/Cura_${BUILD_NAME}.exe ./
 		fi
 	else

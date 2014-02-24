@@ -1,11 +1,19 @@
-from __future__ import absolute_import
+"""
+YouMagine communication module.
+This module handles all communication with the YouMagine API.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import json
 import httplib as httpclient
 import urllib
+import textwrap
 
 class httpUploadDataStream(object):
+	"""
+	For http uploads we need a readable/writable datasteam to use with the httpclient.HTTPSConnection class.
+	This is used to facilitate file uploads towards Youmagine.
+	"""
 	def __init__(self, progressCallback):
 		self._dataList = []
 		self._totalLength = 0
@@ -35,6 +43,10 @@ class httpUploadDataStream(object):
 		return self._totalLength
 
 class Youmagine(object):
+	"""
+	Youmagine connection object. Has various functions to communicate with Youmagine.
+	These functions are blocking and thus this class should be used from a thread.
+	"""
 	def __init__(self, authToken, progressCallback = None):
 		self._hostUrl = 'api.youmagine.com'
 		self._viewUrl = 'www.youmagine.com'
@@ -107,7 +119,13 @@ class Youmagine(object):
 		return True
 
 	def createDesign(self, name, description, category, license):
-		res = self._request('POST', '/designs.json', {'design[name]': name, 'design[excerpt]': description, 'design[design_category_id]': filter(lambda n: n[0] == category, self._categories)[0][1], 'design[license]': filter(lambda n: n[0] == license, self._licenses)[0][1]})
+		excerpt = description
+		description = ''
+		if len(excerpt) >= 300:
+			lines = textwrap.wrap(excerpt, 300)
+			excerpt = lines[0]
+			description = '\n'.join(lines[1:])
+		res = self._request('POST', '/designs.json', {'design[name]': name, 'design[excerpt]': excerpt, 'design[description]': description, 'design[design_category_id]': filter(lambda n: n[0] == category, self._categories)[0][1], 'design[license]': filter(lambda n: n[0] == license, self._licenses)[0][1]})
 		if 'id' in res:
 			return res['id']
 		print res
@@ -194,8 +212,11 @@ class Youmagine(object):
 		return {'error': error}
 
 
-#Fake Youmagine class to test without internet
 class FakeYoumagine(Youmagine):
+	"""
+	Fake Youmagine class to test without internet, acts the same as the YouMagine class, but without going to the internet.
+	Assists in testing UI features.
+	"""
 	def __init__(self, authToken, callback):
 		super(FakeYoumagine, self).__init__(authToken)
 		self._authUrl = 'file:///C:/Models/output.html'

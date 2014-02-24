@@ -1,4 +1,7 @@
-from __future__ import absolute_import
+"""
+MachineCom handles communication with GCode based printers trough (USB) serial ports.
+For actual printing of objects this module is used from Cura.serialCommunication and ran in a separate process.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import os
@@ -26,6 +29,11 @@ except:
 	pass
 
 def serialList(forAutoDetect=False):
+	"""
+		Retrieve a list of serial ports found in the system.
+	:param forAutoDetect: if true then only the USB serial ports are listed. Else all ports are listed.
+	:return: A list of strings where each string is a serial port.
+	"""
 	baselist=[]
 	if platform.system() == "Windows":
 		try:
@@ -51,18 +59,11 @@ def serialList(forAutoDetect=False):
 		baselist.append('VIRTUAL')
 	return baselist
 
-def machineIsConnected():
-	#UltiGCode is designed for SD-Card printing, so never auto-detect the serial port.
-	port = profile.getMachineSetting('serial_port')
-	if port == 'AUTO':
-		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
-			return False
-		return len(serialList(True)) > 0
-	if platform.system() == "Windows":
-		return port in serialList()
-	return os.path.isfile(port)
-
 def baudrateList():
+	"""
+	:return: a list of integers containing all possible baudrates at which we can communicate.
+			Used for auto-baudrate detection as well as manual baudrate selection.
+	"""
 	ret = [250000, 230400, 115200, 57600, 38400, 19200, 9600]
 	if profile.getMachineSetting('serial_baud_auto') != '':
 		prev = int(profile.getMachineSetting('serial_baud_auto'))
@@ -72,6 +73,10 @@ def baudrateList():
 	return ret
 
 class VirtualPrinter():
+	"""
+	A virtual printer class used for debugging. Acts as a serial.Serial class, but without connecting to any port.
+	Only available when running the development version of Cura.
+	"""
 	def __init__(self):
 		self.readList = ['start\n', 'Marlin: Virtual Marlin!\n', '\x80\n']
 		self.temp = 0.0
@@ -124,6 +129,10 @@ class VirtualPrinter():
 		self.readList = None
 
 class MachineComPrintCallback(object):
+	"""
+	Base class for callbacks from the MachineCom class.
+	This class has all empty implementations and is attached to the MachineCom if no other callback object is attached.
+	"""
 	def mcLog(self, message):
 		pass
 	
@@ -143,6 +152,10 @@ class MachineComPrintCallback(object):
 		pass
 
 class MachineCom(object):
+	"""
+	Class for (USB) serial communication with 3D printers.
+	This class keeps track of if the connection is still live, can auto-detect serial ports and baudrates.
+	"""
 	STATE_NONE = 0
 	STATE_OPEN_SERIAL = 1
 	STATE_DETECT_SERIAL = 2
@@ -231,13 +244,16 @@ class MachineCom(object):
 		return "?%d?" % (self._state)
 	
 	def getShortErrorString(self):
-		if len(self._errorValue) < 30:
+		if len(self._errorValue) < 35:
 			return self._errorValue
-		return self._errorValue[:30] + "..."
+		return self._errorValue[:35] + "..."
 
 	def getErrorString(self):
 		return self._errorValue
-	
+
+	def isClosed(self):
+		return self._state == self.STATE_CLOSED_WITH_ERROR or self._state == self.STATE_CLOSED
+
 	def isClosedOrError(self):
 		return self._state == self.STATE_ERROR or self._state == self.STATE_CLOSED_WITH_ERROR or self._state == self.STATE_CLOSED
 
@@ -310,20 +326,25 @@ class MachineCom(object):
 			try:
 				if self._baudrate == 0:
 					self._log("Connecting to: %s with baudrate: 115200 (fallback)" % (self._port))
-					self._serial = serial.Serial(str(self._port), 115200, timeout=0.1, writeTimeout=10000)
+					self._serial = serial.Serial(str(self._port), 115200, timeout=3, writeTimeout=10000)
 				else:
 					self._log("Connecting to: %s with baudrate: %s (configured)" % (self._port, self._baudrate))
-					self._serial = serial.Serial(str(self._port), self._baudrate, timeout=2, writeTimeout=10000)
+					self._serial = serial.Serial(str(self._port), self._baudrate, timeout=5, writeTimeout=10000)
 			except:
 				self._log("Unexpected error while connecting to serial port: %s %s" % (self._port, getExceptionString()))
 		if self._serial is None:
 			baudrate = self._baudrate
 			if baudrate == 0:
 				baudrate = self._baudrateDetectList.pop(0)
+			if len(self._serialDetectList) < 1:
+				self._log("Found no ports to try for auto detection")
+				self._errorValue = 'Failed to autodetect serial port.'
+				self._changeState(self.STATE_ERROR)
+				return
 			port = self._serialDetectList.pop(0)
 			self._log("Connecting to: %s with baudrate: %s (auto)" % (port, baudrate))
 			try:
-				self._serial = serial.Serial(port, baudrate, timeout=0.1, writeTimeout=10000)
+				self._serial = serial.Serial(port, baudrate, timeout=3, writeTimeout=10000)
 			except:
 				pass
 		else:
@@ -401,7 +422,7 @@ class MachineCom(object):
 									self._serialDetectList = serialList(True)
 									baudrate = self._baudrateDetectList.pop(0)
 							self._serial.close()
-							self._serial = serial.Serial(self._serialDetectList.pop(0), baudrate, timeout=0.5, writeTimeout=10000)
+							self._serial = serial.Serial(self._serialDetectList.pop(0), baudrate, timeout=2.5, writeTimeout=10000)
 						else:
 							baudrate = self._baudrateDetectList.pop(0)
 						try:
@@ -506,7 +527,7 @@ class MachineCom(object):
 				pass
 
 	def _readline(self):
-		if self._serial == None:
+		if self._serial is None:
 			return None
 		try:
 			ret = self._serial.readline()

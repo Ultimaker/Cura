@@ -1,4 +1,7 @@
-from __future__ import absolute_import
+"""
+The GCodeInterpreter module generates layer information from GCode.
+It does this by parsing the whole GCode file. On large files this can take a while and should be used from a thread.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import sys
@@ -12,6 +15,11 @@ import cStringIO as StringIO
 from Cura.util import profile
 
 def gcodePath(newType, pathType, layerThickness, startPoint):
+	"""
+	Build a gcodePath object. This used to be objects, however, this code is timing sensitive and dictionaries proved to be faster.
+	"""
+	if layerThickness <= 0.0:
+		layerThickness = 0.01
 	return {'type': newType,
 			'pathType': pathType,
 			'layerThickness': layerThickness,
@@ -19,6 +27,10 @@ def gcodePath(newType, pathType, layerThickness, startPoint):
 			'extrusion': [0.0]}
 
 class gcode(object):
+	"""
+	The heavy lifting GCode parser. This is most likely the hardest working python code in Cura.
+	It parses a GCode file and stores the result in layers where each layer as paths that describe the GCode.
+	"""
 	def __init__(self):
 		self.regMatch = {}
 		self.layerList = None
@@ -86,16 +98,18 @@ class gcode(object):
 				pathType = line[6:].strip()
 
 			if ';' in line:
-				#Slic3r GCode comment parser
 				comment = line[line.find(';')+1:].strip()
+				#Slic3r GCode comment parser
 				if comment == 'fill':
 					pathType = 'FILL'
 				elif comment == 'perimeter':
 					pathType = 'WALL-INNER'
 				elif comment == 'skirt':
 					pathType = 'SKIRT'
+				#Cura layer comments.
 				if comment.startswith('LAYER:'):
 					currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
+					layerThickness = 0.0
 					currentPath['extruder'] = currentExtruder
 					for path in currentLayer:
 						path['points'] = numpy.array(path['points'], numpy.float32)
@@ -156,7 +170,8 @@ class gcode(object):
 					if moveType == 'move' and oldPos[2] != pos[2]:
 						if oldPos[2] > pos[2] and abs(oldPos[2] - pos[2]) > 5.0 and pos[2] < 1.0:
 							oldPos[2] = 0.0
-						layerThickness = abs(oldPos[2] - pos[2])
+						if layerThickness == 0.0:
+							layerThickness = abs(oldPos[2] - pos[2])
 					if currentPath['type'] != moveType or currentPath['pathType'] != pathType:
 						currentPath = gcodePath(moveType, pathType, layerThickness, currentPath['points'][-1])
 						currentPath['extruder'] = currentExtruder

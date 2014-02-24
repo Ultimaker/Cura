@@ -1,4 +1,7 @@
-from __future__ import absolute_import
+"""
+Tool to import sections of minecraft levels into Cura.
+This makes use of the pymclevel module from David Rio Vierra
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
@@ -6,7 +9,7 @@ import glob
 import os
 import numpy
 
-from Cura.util import mesh
+from Cura.util import printableObject
 from Cura.util.meshLoaders import stl
 from Cura.util.pymclevel import mclevel
 
@@ -213,7 +216,7 @@ class minecraftImportWindow(wx.Frame):
 						if y == sy - 1 or not self.isSolid[blocks[x, y + 1, z]]:
 							faceCount += 1
 
-		obj = mesh.printableObject(None)
+		obj = printableObject.printableObject(None)
 		m = obj._addMesh()
 		m._prepareFaceCount(faceCount * 2)
 		for x in xrange(0, sx):

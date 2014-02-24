@@ -1,4 +1,7 @@
-from __future__ import absolute_import
+"""
+Helper module to get easy access to the path where resources are stored.
+This is because the resource location is depended on the packaging method and OS
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import os
@@ -23,12 +26,9 @@ if sys.platform.startswith('darwin'):
 		except:
 			resourceBasePath = os.path.join(os.path.dirname(__file__), "../../../../../")
 	else:
-		resourceBasePath = os.path.join(os.path.dirname(__file__), "../resources")
-else:
-	if hasattr(sys, 'frozen'):
 		resourceBasePath = os.path.join(os.path.dirname(__file__), "../../resources")
-	else:
-		resourceBasePath = os.path.join(os.path.dirname(__file__), "../resources")
+else:
+	resourceBasePath = os.path.join(os.path.dirname(__file__), "../../resources")
 
 def getPathForResource(dir, subdir, resource_name):
 	assert os.path.isdir(dir), "{p} is not a directory".format(p=dir)

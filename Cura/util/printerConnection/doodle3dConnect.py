@@ -1,3 +1,7 @@
+"""
+Doodle3D printer connection. Auto-detects any Doodle3D boxes on the local network, and finds if they have a printer connected.
+This connection can then be used to send GCode to the printer.
+"""
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import threading
@@ -9,6 +13,10 @@ import time
 from Cura.util.printerConnection import printerConnectionBase
 
 class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
+	"""
+	The Doodle3D connection group runs a thread to poll for Doodle3D boxes.
+	For each Doodle3D box it finds, it creates a Doodle3DConnect object.
+	"""
 	PRINTER_LIST_HOST = 'connect.doodle3d.com'
 	PRINTER_LIST_PATH = '/api/list.php'
 
@@ -34,12 +42,6 @@ class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 	def getPriority(self):
 		return 100
 
-	def __cmp__(self, other):
-		return self.getPriority() - other.getPriority()
-
-	def __repr__(self):
-		return self.name
-
 	def _doodle3DThread(self):
 		self._waitDelay = 0
 		while True:
@@ -58,7 +60,10 @@ class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 				if possiblePrinter['localip'] not in self._connectionMap:
 					status = self._request('GET', '/d3dapi/config/?network.cl.wifiboxid=', host=possiblePrinter['localip'])
 					if status and 'data' in status and 'network.cl.wifiboxid' in status['data']:
-						self._connectionMap[possiblePrinter['localip']] = doodle3dConnect(possiblePrinter['localip'], status['data']['network.cl.wifiboxid'], self)
+						name = status['data']['network.cl.wifiboxid']
+						if 'wifiboxid' in possiblePrinter:
+							name = possiblePrinter['wifiboxid']
+						self._connectionMap[possiblePrinter['localip']] = doodle3dConnect(possiblePrinter['localip'], name, self)
 
 			# Delay a bit more after every request. This so we do not stress the connect.doodle3d.com api too much
 			if self._waitDelay < 10:
@@ -95,9 +100,11 @@ class doodle3dConnectionGroup(printerConnectionBase.printerConnectionGroup):
 
 		return response
 
-#Class to connect and print files with the doodle3d.com wifi box
-# Auto-detects if the Doodle3D box is available with a printer
 class doodle3dConnect(printerConnectionBase.printerConnectionBase):
+	"""
+	Class to connect and print files with the doodle3d.com wifi box
+	Auto-detects if the Doodle3D box is available with a printer and handles communication with the Doodle3D API
+	"""
 	def __init__(self, host, name, group):
 		super(doodle3dConnect, self).__init__(name)
 
@@ -122,15 +129,14 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		self.checkThread.start()
 
 	#Load the file into memory for printing.
-	def loadFile(self, filename):
+	def loadGCodeData(self, dataStream):
 		if self._printing:
 			return False
 		self._fileBlocks = []
 		self._lineCount = 0
 		block = []
 		blockSize = 0
-		f = open(filename, "r")
-		for line in f:
+		for line in dataStream:
 			#Strip out comments, we do not need to send comments
 			if ';' in line:
 				line = line[:line.index(';')]
@@ -148,7 +154,6 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 			blockSize += len(line) + 1
 			block.append(line)
 		self._fileBlocks.append('\n'.join(block) + '\n')
-		f.close()
 		self._doCallback()
 		return True
 
@@ -199,14 +204,13 @@ class doodle3dConnect(printerConnectionBase.printerConnectionBase):
 		if not self._isAvailable:
 			return "Doodle3D box not found"
 		if self._printing:
-			ret = "Print progress: %.1f%%" % (self.getPrintProgress() * 100.0)
 			if self._blockIndex < len(self._fileBlocks):
-				ret += "\nSending GCode: %.1f%%" % (float(self._blockIndex) * 100.0 / float(len(self._fileBlocks)))
+				ret = "Sending GCode: %.1f%%" % (float(self._blockIndex) * 100.0 / float(len(self._fileBlocks)))
 			elif len(self._fileBlocks) > 0:
-				ret += "\nFinished sending GCode to Doodle3D box.\nPrint will continue even if you shut down Cura."
+				ret = "Finished sending GCode to Doodle3D box."
 			else:
-				ret += "\nDifferent print still running..."
-			ret += "\nErrorCount: %d" % (self._errorCount)
+				ret = "Different print still running..."
+			#ret += "\nErrorCount: %d" % (self._errorCount)
 			return ret
 		return "Printer found, waiting for print command."
 

@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
@@ -89,6 +88,7 @@ class youmagineManager(object):
 				if self._getAuthorizationWindow.abort:
 					wx.CallAfter(self._getAuthorizationWindow.Destroy)
 					return
+				#TODO: Bug, this should not be called from a python thread but a wx.Timer (wx.TheClipboard does not function from threads on Linux)
 				clipboard = getClipboardText()
 				if len(clipboard) == 20:
 					if clipboard != lastTriedClipboard and re.match('[a-zA-Z0-9]*', clipboard):
