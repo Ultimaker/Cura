@@ -208,6 +208,11 @@ class GLVBO(GLReferenceCounter):
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
 			glDeleteBuffers(1, [self._buffer])
 			self._buffer = None
+			if self._hasIndices:
+				glBindBuffer(GL_ARRAY_BUFFER, self._bufferIndices)
+				glBufferData(GL_ARRAY_BUFFER, None, GL_STATIC_DRAW)
+				glBindBuffer(GL_ARRAY_BUFFER, 0)
+				glDeleteBuffers(1, [self._bufferIndices])
 		self._vertexArray = None
 		self._normalArray = None
 
