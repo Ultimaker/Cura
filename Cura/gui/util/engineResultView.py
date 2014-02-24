@@ -104,7 +104,12 @@ class engineResultView(object):
 					if result._polygons is not None and n + 20 < len(result._polygons):
 						layerVBOs = self._layer20VBOs[idx]
 						for typeName, typeNameGCode, color in lineTypeList:
-							if (typeName in result._polygons[n + 19]) or (typeName == 'skirt' and typeName in result._polygons[n]):
+							allow = typeName in result._polygons[n + 19]
+							if typeName == 'skirt':
+								for i in xrange(0, 20):
+									if typeName in result._polygons[n + i]:
+										allow = True
+							if allow:
 								if typeName not in layerVBOs:
 									if generatedVBO:
 										continue
