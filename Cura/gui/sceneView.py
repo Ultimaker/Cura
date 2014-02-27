@@ -1372,7 +1372,7 @@ class SceneView(openglGui.glGuiPanel):
 		return self._selectedObj.getMatrix()
 
 #TODO: Remove this or put it in a seperate file
-class shaderEditor(wx.Dialog):
+class shaderEditor(wx.Frame):
 	def __init__(self, parent, callback, v, f):
 		super(shaderEditor, self).__init__(parent, title="Shader editor", style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 		self._callback = callback
