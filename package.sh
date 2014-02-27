@@ -10,7 +10,6 @@
 ##Select the build target
 BUILD_TARGET=${1:-none}
 #BUILD_TARGET=win32
-#BUILD_TARGET=linux
 #BUILD_TARGET=darwin
 #BUILD_TARGET=debian_i386
 #BUILD_TARGET=debian_amd64
