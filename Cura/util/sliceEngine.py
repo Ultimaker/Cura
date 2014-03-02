@@ -347,17 +347,17 @@ class Engine(object):
 				self._objCount += 1
 		modelHash = hash.hexdigest()
 		if self._objCount > 0:
-			self._modelData = engineModelData
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, modelHash))
+			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash))
 			self._thread.daemon = True
 			self._thread.start()
 
-	def _watchProcess(self, commandList, oldThread, modelHash):
+	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash):
 		if oldThread is not None:
 			if self._process is not None:
 				self._process.terminate()
 			oldThread.join()
 		self._callback(-1.0)
+		self._modelData = engineModelData
 		try:
 			self._process = self._runEngineProcess(commandList)
 		except OSError:
@@ -367,6 +367,7 @@ class Engine(object):
 			self._process.terminate()
 
 		self._result = EngineResult()
+		self._result.addLog('Running: %s' % (' '.join(commandList)))
 		self._result.setHash(modelHash)
 		self._callback(0.0)
 
