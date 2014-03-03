@@ -12,6 +12,7 @@ import sys
 import subprocess
 import json
 
+from Cura.util import profile
 from Cura.util import machineCom
 from Cura.util.printerConnection import printerConnectionBase
 
@@ -25,8 +26,11 @@ class serialConnectionGroup(printerConnectionBase.printerConnectionGroup):
 		self._connectionMap = {}
 
 	def getAvailableConnections(self):
-		serialList = machineCom.serialList(True)
-		for port in machineCom.serialList(True):
+		if profile.getMachineSetting('serial_port') == 'AUTO':
+			serialList = machineCom.serialList(True)
+		else:
+			serialList = [profile.getMachineSetting('serial_port')]
+		for port in serialList:
 			if port not in self._connectionMap:
 				self._connectionMap[port] = serialConnection(port)
 		for key in self._connectionMap.keys():
