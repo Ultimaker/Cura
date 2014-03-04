@@ -37,7 +37,7 @@ cd Cura
 
 sudo ./package.sh debian_amd64          # or debian_i386 for 32bit
 
-sudo dpkg -i ./scripts/linux/Cura*.deb
+sudo dpkg -i ./scripts/linux/cura*.deb
 ```
 
 Mac OS X
