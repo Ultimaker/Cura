@@ -12,6 +12,12 @@ Development
 Cura is developed in Python with a C++ engine. The part you are looking at right now is the Python GUI.
 The C++ engine is responsible for generating the actual toolpath. For development of the engine check out https://github.com/Ultimaker/CuraEngine
 
+Issues
+===========
+
+Before posting issues (either Bugs, Feature requests or Requests for information) please read our policies carefully. These will be regulary updated and can be found at https://github.com/daid/Cura/wiki/Issue-policies
+
+
 Packaging
 ---------
 
