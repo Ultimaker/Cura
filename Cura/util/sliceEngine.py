@@ -40,7 +40,10 @@ def getEngineFilename():
 		return '/usr/bin/CuraEngine'
 	if os.path.isfile('/usr/local/bin/CuraEngine'):
 		return '/usr/local/bin/CuraEngine'
-	return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine'))
+	tempPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine'))
+	if os.path.isdir(tempPath):
+		tempPath = os.path.join(tempPath,'CuraEngine')
+	return tempPath
 
 class EngineResult(object):
 	"""
@@ -546,4 +549,5 @@ class Engine(object):
 			su.wShowWindow = subprocess.SW_HIDE
 			kwargs['startupinfo'] = su
 			kwargs['creationflags'] = 0x00004000 #BELOW_NORMAL_PRIORITY_CLASS
+		print cmdList
 		return subprocess.Popen(cmdList, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs)
