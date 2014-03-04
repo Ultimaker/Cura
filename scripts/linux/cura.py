@@ -11,19 +11,20 @@ try:
     import numpy
     import power
 except ImportError as e:
-    module = e.message.lstrip('No module named ')
-    
-    if module == 'OpenGL':
-        module = 'PyOpenGL'
-    elif module == 'serial':
-        module = 'pyserial'
-    
-    print 'Requires ' + module
+	if e.message[0:16] == 'No module named ':
+		module = e.message[16:]
 
-    if module == 'power':
-        print "Install from: https://github.com/GreatFruitOmsk/Power"
-    else:
-        print "Try sudo easy_install " + module
+		if module == 'OpenGL':
+			module = 'PyOpenGL'
+		elif module == 'serial':
+			module = 'pyserial'
+		print 'Requires ' + module
+
+		if module == 'power':
+			print "Install from: https://github.com/GreatFruitOmsk/Power"
+		else:
+			print "Try sudo easy_install " + module
+		print e.message
     
     exit(1)
 
