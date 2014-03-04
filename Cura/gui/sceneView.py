@@ -608,6 +608,8 @@ class SceneView(openglGui.glGuiPanel):
 		for m in obj._meshList:
 			if m.vbo is not None and m.vbo.decRef():
 				self.glReleaseList.append(m.vbo)
+		if len(self._scene.objects()) == 0:
+			self._engineResultView.setResult(None)
 		import gc
 		gc.collect()
 		self.sceneUpdated()
