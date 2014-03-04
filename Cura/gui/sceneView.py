@@ -191,6 +191,14 @@ class SceneView(openglGui.glGuiPanel):
 				self._animView = openglGui.animation(self, self._viewTarget.copy(), numpy.array([0,0,0], numpy.float32), 0.5)
 				self._animZoom = openglGui.animation(self, self._zoom, newZoom, 0.5)
 
+	def reloadScene(self, e):
+		# Copy the list before DeleteAll clears it
+		fileList = []
+		for obj in self._scene.objects():
+			fileList.append(obj.getOriginFilename())
+		self.OnDeleteAll(None)
+		self.loadScene(fileList)
+
 	def showLoadModel(self, button = 1):
 		if button == 1:
 			dlg=wx.FileDialog(self, _("Open 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
@@ -777,6 +785,7 @@ class SceneView(openglGui.glGuiPanel):
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, _("Dual extrusion merge")))
 					if len(self._scene.objects()) > 0:
 						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all objects")))
+						self.Bind(wx.EVT_MENU, self.reloadScene, menu.Append(-1, _("Reload all objects")))
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
