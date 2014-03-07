@@ -433,13 +433,13 @@ class SceneView(openglGui.glGuiPanel):
 		if machine == "ultimaker2":
 			#This is bad and Jaime should feel bad!
 			self._selectedObj.setPosition(numpy.array([0.0,-10.0]))
-			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
+			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([3,3,3], numpy.float32))
 			self._selectedObj.setPosition(numpy.array([0.0,0.0]))
 			self._scene.pushFree(self._selectedObj)
 		else:
 			self._selectedObj.setPosition(numpy.array([0.0, 0.0]))
 			self._scene.pushFree(self._selectedObj)
-			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
+			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([3,3,3], numpy.float32))
 		self._scene.pushFree(self._selectedObj)
 		self._selectObject(self._selectedObj)
 		self.updateProfileToControls()
