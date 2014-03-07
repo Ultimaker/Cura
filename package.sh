@@ -71,8 +71,8 @@ function extract
 if [ "$BUILD_TARGET" = "none" ]; then
 	echo "You need to specify a build target with:"
 	echo "$0 win32"
-	echo "$0 linux_i368"
-	echo "$0 linux_amd64"
+	echo "$0 debian_i368"
+	echo "$0 debian_amd64"
 	echo "$0 darwin"
 	exit 0
 fi

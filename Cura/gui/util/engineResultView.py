@@ -29,6 +29,8 @@ class engineResultView(object):
 	def setResult(self, result):
 		if self._result == result:
 			return
+		if result is None:
+			self.setEnabled(False)
 
 		self._resultLock.acquire()
 		self._result = result

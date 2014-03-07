@@ -22,6 +22,7 @@ from Cura.gui.tools import pidDebugger
 from Cura.gui.tools import minecraftImport
 from Cura.util import profile
 from Cura.util import version
+import platform
 from Cura.util import meshLoader
 
 class mainWindow(wx.Frame):
@@ -66,6 +67,8 @@ class mainWindow(wx.Frame):
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showLoadModel(), i)
 		i = self.fileMenu.Append(-1, _("Save model...\tCTRL+S"))
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.showSaveModel(), i)
+		i = self.fileMenu.Append(-1, _("Reload platform\tF5"))
+		self.Bind(wx.EVT_MENU, lambda e: self.scene.reloadScene(e), i)
 		i = self.fileMenu.Append(-1, _("Clear platform"))
 		self.Bind(wx.EVT_MENU, lambda e: self.scene.OnDeleteAll(e), i)
 
@@ -474,6 +477,8 @@ class mainWindow(wx.Frame):
 		dlg.SetWildcard("ini files (*.ini)|*.ini")
 		if dlg.ShowModal() == wx.ID_OK:
 			profileFile = dlg.GetPath()
+			if platform.system() == 'Linux': #hack for linux, as for some reason the .ini is not appended.
+				profileFile += '.ini'
 			profile.saveProfile(profileFile)
 		dlg.Destroy()
 

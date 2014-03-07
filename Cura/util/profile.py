@@ -252,6 +252,7 @@ setting('start.gcode', """;Sliced at: {day} {date} {time}
 ;M109 S{print_temperature} ;Uncomment to add your own temperature line
 G21        ;metric values
 G90        ;absolute positioning
+M82        ;set extruder to absolute mode
 M107       ;start with the fan off
 
 G28 X0 Y0  ;move X/Y to min endstops

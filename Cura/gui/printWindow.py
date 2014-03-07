@@ -577,5 +577,4 @@ class LogWindow(wx.Frame):
 		super(LogWindow, self).__init__(None, title="Error log")
 		self.textBox = wx.TextCtrl(self, -1, logText, style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY)
 		self.SetSize((500, 400))
-		self.Centre()
 		self.Show(True)
