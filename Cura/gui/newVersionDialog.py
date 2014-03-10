@@ -60,6 +60,7 @@ class newVersionDialog(wx.Dialog):
 			s.Add(wx.StaticText(p, -1, '* Added material selection when changing material.'))
 			s.Add(wx.StaticText(p, -1, '* Fixed the move material maintenance function.'))
 			s.Add(wx.StaticText(p, -1, '* Fixed the led brightness on startup.'))
+			s.Add(wx.StaticText(p, -1, '* Retraction settings are saved and restored on reset.'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimaker2Firmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
