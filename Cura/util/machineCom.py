@@ -492,27 +492,10 @@ class MachineCom(object):
 		self._log("Connection closed, closing down monitor")
 
 	def _setBaudrate(self, baudrate):
-		#For linux the pyserial implementation lacks TCGETS2 support. So do that ourselves
-		if sys.platform.startswith('linux'):
-			try:
-				self._serial.baudrate = baudrate
-			except:
-				try:
-					# set custom speed
-					import fcntl, array, termios
-					TCGETS2 = 0x802C542A
-					TCSETS2 = 0x402C542B
-					BOTHER = 0o010000
-					buf = array.array('i', [0] * 64)
-					fcntl.ioctl(self._serial.fd, TCGETS2, buf)
-					buf[2] &= ~termios.CBAUD
-					buf[2] |= BOTHER
-					buf[9] = buf[10] = baudrate
-					fcntl.ioctl(self._serial.fd, TCSETS2, buf)
-				except:
-					print getExceptionString()
-		else:
+		try:
 			self._serial.baudrate = baudrate
+		except:
+			print getExceptionString()
 
 	def _log(self, message):
 		self._callback.mcLog(message)

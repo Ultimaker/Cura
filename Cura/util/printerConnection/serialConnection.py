@@ -180,7 +180,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura'), '--serialCommunication']
 		else:
 			cmdList = [sys.executable, '-m', 'Cura.serialCommunication']
-		cmdList += [self._portName]
+		cmdList += [self._portName, profile.getMachineSetting('serial_baud')]
 		if platform.system() == "Darwin":
 			if platform.machine() == 'i386':
 				cmdList = ['arch', '-i386'] + cmdList
