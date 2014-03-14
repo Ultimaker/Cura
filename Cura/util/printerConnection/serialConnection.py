@@ -178,9 +178,10 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 	def _serialCommunicationThread(self):
 		if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
 			cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura'), '--serialCommunication']
+			cmdList += [self._portName + ':' + profile.getMachineSetting('serial_baud')]
 		else:
 			cmdList = [sys.executable, '-m', 'Cura.serialCommunication']
-		cmdList += [self._portName, profile.getMachineSetting('serial_baud')]
+			cmdList += [self._portName, profile.getMachineSetting('serial_baud')]
 		if platform.system() == "Darwin":
 			if platform.machine() == 'i386':
 				cmdList = ['arch', '-i386'] + cmdList
