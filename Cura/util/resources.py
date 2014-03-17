@@ -50,14 +50,8 @@ def getDefaultMachineProfiles():
 	return glob.glob(path)
 
 def setupLocalization(selectedLanguage = None):
-	try:
-		if sys.platform.startswith('darwin'):
-			languages = NSLocale.preferredLanguages()
-		else:
-			#Using wx.Locale before you created wx.App seems to cause an nasty exception. So default to 'en' at the moment.
-			languages = [wx.Locale(wx.LANGUAGE_DEFAULT).GetCanonicalName()]
-	except Exception as e:
-		languages = ['en']
+	#Default to english
+	languages = ['en']
 
 	if selectedLanguage is not None:
 		for item in getLanguageOptions():
@@ -70,7 +64,6 @@ def setupLocalization(selectedLanguage = None):
 
 def getLanguageOptions():
 	return [
-		# [None, 'System default'],
 		['en', 'English'],
 		# ['de', 'Deutsch'],
 		# ['fr', 'French'],
