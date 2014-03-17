@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-17 10:23+0100\n"
+"POT-Creation-Date: 2014-03-17 10:38+0100\n"
 "PO-Revision-Date: 2014-02-11 21:03+0100\n"
 "Last-Translator: Lars Pötter <Lars_Poetter@gmx.de>\n"
 "Language-Team: Deutsch <Lars_Poetter@gmx.de>\n"
@@ -2348,7 +2348,8 @@ msgid "Send usage statistics"
 msgstr "Sende Nutzerstatistiken"
 
 #: Cura/util/profile.py:355
-msgid "Submit anonymous usage information to improve next versions of Cura"
+#, fuzzy
+msgid "Submit anonymous usage information to improve future versions of Cura"
 msgstr ""
 "Übermittle anonyme Nutzungs-Informationen, um die nächste Version von Cura "
 "zu verbessern"
