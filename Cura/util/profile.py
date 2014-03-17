@@ -132,7 +132,7 @@ class setting(object):
 		self._values[index] = unicode(value)
 
 	def getValueIndex(self):
-		if self.isMachineSetting() or self.isProfile():
+		if self.isMachineSetting() or self.isProfile() or self.isAlteration():
 			global _selectedMachineIndex
 			return _selectedMachineIndex
 		return 0
