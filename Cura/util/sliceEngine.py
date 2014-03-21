@@ -443,6 +443,7 @@ class Engine(object):
 			'filamentDiameter': int(profile.getProfileSettingFloat('filament_diameter') * 1000),
 			'filamentFlow': int(profile.getProfileSettingFloat('filament_flow')),
 			'extrusionWidth': int(profile.calculateEdgeWidth() * 1000),
+			'layer0extrusionWidth': int(profile.calculateEdgeWidth() * 1000),
 			'insetCount': int(profile.calculateLineCount()),
 			'downSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_bottom') == 'True' else 0,
 			'upSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_top') == 'True' else 0,
@@ -534,6 +535,10 @@ class Engine(object):
 			settings['gcodeFlavor'] = 1
 		elif profile.getMachineSetting('gcode_flavor') == 'MakerBot':
 			settings['gcodeFlavor'] = 2
+		elif profile.getMachineSetting('gcode_flavor') == 'BFB':
+			settings['gcodeFlavor'] = 3
+		elif profile.getMachineSetting('gcode_flavor') == 'Mach3':
+			settings['gcodeFlavor'] = 4
 		if profile.getProfileSetting('spiralize') == 'True':
 			settings['spiralizeMode'] = 1
 		if profile.getProfileSetting('wipe_tower') == 'True' and extruderCount > 1:
