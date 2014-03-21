@@ -18,6 +18,7 @@ import urllib2
 import hashlib
 import socket
 import struct
+import errno
 import cStringIO as StringIO
 
 from Cura.util import profile
@@ -193,18 +194,22 @@ class Engine(object):
 					break
 			else:
 				break
-		print 'Listening for engine communications on %d' % (self._serverPortNr)
-		self._serversocket.listen(1)
 		thread = threading.Thread(target=self._socketListenThread)
 		thread.daemon = True
 		thread.start()
 
 	def _socketListenThread(self):
+		self._serversocket.listen(1)
+		print 'Listening for engine communications on %d' % (self._serverPortNr)
 		while True:
-			sock, _ = self._serversocket.accept()
-			thread = threading.Thread(target=self._socketConnectionThread, args=(sock,))
-			thread.daemon = True
-			thread.start()
+			try:
+				sock, _ = self._serversocket.accept()
+				thread = threading.Thread(target=self._socketConnectionThread, args=(sock,))
+				thread.daemon = True
+				thread.start()
+			except socket.error, e:
+				if e.errno != errno.EINTR:
+					raise
 
 	def _socketConnectionThread(self, sock):
 		layerNrOffset = 0
