@@ -7,8 +7,11 @@ import shutil
 import glob
 import warnings
 
-#Only import the _core to save import time
-import wx._core
+try:
+    #Only try to import the _core to save import time
+    import wx._core
+except ImportError:
+    import wx
 
 
 class CuraApp(wx.App):
