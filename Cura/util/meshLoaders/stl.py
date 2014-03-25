@@ -32,7 +32,7 @@ def _loadAscii(m, f):
 	for lines in f:
 		for line in lines.split('\r'):
 			if 'vertex' in line:
-				data[cnt] = line.split()[1:]
+				data[cnt] = line.replace(',', '.').split()[1:]
 				cnt += 1
 				if cnt == 3:
 					m._addFace(float(data[0][0]), float(data[0][1]), float(data[0][2]), float(data[1][0]), float(data[1][1]), float(data[1][2]), float(data[2][0]), float(data[2][1]), float(data[2][2]))
