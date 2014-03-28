@@ -1001,6 +1001,11 @@ def minimalExtruderCount():
 		return 2
 	return 1
 
+def getGCodeExtension():
+	if getMachineSetting('gcode_flavor') == 'BFB':
+		return '.bfb'
+	return '.gcode'
+
 #########################################################
 ## Alteration file functions
 #########################################################
