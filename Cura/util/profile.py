@@ -279,6 +279,7 @@ G28 X0 Y0                              ;move X/Y to min endstops, so the head is
 
 M84                         ;steppers off
 G90                         ;absolute positioning
+;{profile_string}
 """, str, 'alteration', 'alteration')
 #######################################################################################
 setting('start2.gcode', """;Sliced at: {day} {date} {time}
@@ -326,6 +327,7 @@ G28 X0 Y0                              ;move X/Y to min endstops, so the head is
 
 M84                         ;steppers off
 G90                         ;absolute positioning
+;{profile_string}
 """, str, 'alteration', 'alteration')
 #######################################################################################
 setting('support_start.gcode', '', str, 'alteration', 'alteration')
@@ -1026,6 +1028,8 @@ def replaceTagMatch(m):
 		return pre + '#F_WGHT#'
 	if tag == 'filament_cost':
 		return pre + '#F_COST#'
+	if tag == 'profile_string':
+		return pre + 'CURA_PROFILE_STRING:%s' % (getProfileString())
 	if pre == 'F' and tag == 'max_z_speed':
 		f = getProfileSettingFloat('travel_speed') * 60
 	if pre == 'F' and tag in ['print_speed', 'retraction_speed', 'travel_speed', 'bottom_layer_speed', 'cool_min_feedrate']:
@@ -1135,5 +1139,5 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		if extruderCount > 1:
 			alterationContents = getAlterationFile("end%d.gcode" % (extruderCount))
 		#Append the profile string to the end of the GCode, so we can load it from the GCode file later.
-		postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
+		#postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
