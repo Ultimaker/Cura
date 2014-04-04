@@ -7,7 +7,7 @@ import os
 import traceback
 import threading
 import math
-import platform
+import sys
 import cStringIO as StringIO
 
 import OpenGL
@@ -664,7 +664,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnKeyChar(self, keyCode):
 		if self._engineResultView.OnKeyChar(keyCode):
 			return
-		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE or (keyCode == wx.WXK_BACK and platform.system() == "Darwin"):
+		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE or (keyCode == wx.WXK_BACK and sys.platform.startswith("darwin")):
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
 				self.QueueRefresh()
