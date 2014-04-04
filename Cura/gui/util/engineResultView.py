@@ -82,7 +82,10 @@ class engineResultView(object):
 		layerNr = self.layerSelect.getValue()
 		if layerNr == self.layerSelect.getMaxValue() and result is not None and len(result._polygons) > 0:
 			layerNr = max(layerNr, len(result._polygons))
-		viewZ = (layerNr - 1) * profile.getProfileSettingFloat('layer_height') + profile.getProfileSettingFloat('bottom_thickness')
+		if len(result._polygons) > layerNr-1 and 'inset0' in result._polygons[layerNr-1] and len(result._polygons[layerNr-1]['inset0']) > 0 and len(result._polygons[layerNr-1]['inset0'][0]) > 0:
+			viewZ = result._polygons[layerNr-1]['inset0'][0][0][2]
+		else:
+			viewZ = (layerNr - 1) * profile.getProfileSettingFloat('layer_height') + profile.getProfileSettingFloat('bottom_thickness')
 		self._parent._viewTarget[2] = viewZ
 		msize = max(profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'))
 		lineTypeList = [
