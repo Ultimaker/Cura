@@ -52,6 +52,7 @@ class printWindowPlugin(wx.Frame):
 			'addTemperatureGraph': self.script_addTemperatureGraph,
 			'addProgressbar': self.script_addProgressbar,
 			'addButton': self.script_addButton,
+			'addSpinner': self.script_addSpinner,
 
 			'sendGCode': self.script_sendGCode,
 			'connect': self.script_connect,
@@ -130,6 +131,19 @@ class printWindowPlugin(wx.Frame):
 		button.data = data
 		self._buttonList.append(button)
 		self.Bind(wx.EVT_BUTTON, lambda e: command(data), button)
+
+	def script_addSpinner(self, r, g, b, command, data):
+		x, y, w, h = self._getColoredRect(r, g, b)
+		if x < 0:
+			return
+		spinner = wx.SpinCtrl(self, -1, style=wx.TE_PROCESS_ENTER)
+		spinner.SetRange(0, 300)
+		spinner.SetPosition((x, y))
+		spinner.SetSize((w, h))
+		spinner.command = command
+		spinner.data = data
+		self._buttonList.append(spinner)
+		self.Bind(wx.EVT_SPINCTRL, lambda e: command(data % (spinner.GetValue())), spinner)
 
 	def _getColoredRect(self, r, g, b):
 		for x in xrange(0, self._mapImage.GetWidth()):
