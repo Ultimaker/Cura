@@ -350,7 +350,7 @@ class printWindowBasic(wx.Frame):
 		self.Centre()
 
 		self.progress.SetMinSize(self.progress.GetSize())
-		self.statsText.SetLabel('')
+		self.statsText.SetLabel('\n\n')
 		self._updateButtonStates()
 
 		self._printerConnection.addCallback(self._doPrinterConnectionUpdate)
