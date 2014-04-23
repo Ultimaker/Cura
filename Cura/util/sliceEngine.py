@@ -544,6 +544,8 @@ class Engine(object):
 			settings['gcodeFlavor'] = 3
 		elif profile.getMachineSetting('gcode_flavor') == 'Mach3':
 			settings['gcodeFlavor'] = 4
+		elif profile.getMachineSetting('gcode_flavor') == 'RepRap (Volumetric)':
+			settings['gcodeFlavor'] = 5
 		if profile.getProfileSetting('spiralize') == 'True':
 			settings['spiralizeMode'] = 1
 		if profile.getProfileSetting('wipe_tower') == 'True' and extruderCount > 1:
