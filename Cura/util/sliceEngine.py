@@ -520,6 +520,15 @@ class Engine(object):
 			settings['raftBaseLinewidth'] = int(profile.getProfileSettingFloat('raft_base_linewidth') * 1000)
 			settings['raftInterfaceThickness'] = int(profile.getProfileSettingFloat('raft_interface_thickness') * 1000)
 			settings['raftInterfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000)
+			settings['raftInterfaceLineSpacing'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000 * 2.0)
+			settings['raftAirGap'] = int(profile.getProfileSettingFloat('raft_airgap') * 1000)
+			settings['raftBaseSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
+			settings['raftFanSpeed'] = 100
+			settings['raftSurfaceThickness'] = settings['raftInterfaceThickness']
+			settings['raftSurfaceLinewidth'] = int(profile.calculateEdgeWidth() * 1000)
+			settings['raftSurfaceLineSpacing'] = int(profile.calculateEdgeWidth() * 1000 * 0.9)
+			settings['raftSurfaceLayers'] = int(profile.getProfileSettingFloat('raft_surface_layers'))
+			settings['raftSurfaceSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
