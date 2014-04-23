@@ -27,7 +27,7 @@ class newVersionDialog(wx.Dialog):
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 		s.Add(wx.StaticText(p, -1, 'New in this version:'))
 		s.Add(wx.StaticText(p, -1, '* Updated drivers for Windows 8.1.'))
-		s.Add(wx.StaticText(p, -1, '* Added better raft support with surface layers and an air-gap.'))
+		s.Add(wx.StaticText(p, -1, '* Added better raft support with surface layers and an air-gap. Special thanks to Gregoire Passault.'))
 		s.Add(wx.StaticText(p, -1, '* Improved outer surface quality on high detail prints.'))
 		s.Add(wx.StaticText(p, -1, '* Fixed bug with multiple machines and different start/end GCode.'))
 		s.Add(wx.StaticText(p, -1, '* Added initial support for BitsFromBytes machines.'))
