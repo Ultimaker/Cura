@@ -33,7 +33,7 @@ fi
 #############################
 function checkTool
 {
-	if [ -z `which $1` ]; then
+	if [ -z "`which $1`" ]; then
 		echo "The $1 command must be somewhere in your \$PATH."
 		echo "Fix your \$PATH or install $2"
 		exit 1
@@ -121,7 +121,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
 	make -C CuraEngine VERSION=${BUILD_NAME}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
-	cp CuraEngine/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
+	cp CuraEngine/build/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
 	cd scripts/darwin
 
@@ -169,7 +169,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a resources scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a plugins scripts/linux/${BUILD_TARGET}/usr/share/cura/
-	cp -a CuraEngine/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a CuraEngine/build/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
@@ -205,7 +205,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a resources scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a plugins scripts/linux/${BUILD_TARGET}/usr/share/cura/
-	cp -a CuraEngine/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a CuraEngine/build/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
@@ -316,7 +316,7 @@ echo $BUILD_NAME > ${TARGET_DIR}/Cura/version
 #add script files
 if [ $BUILD_TARGET = "win32" ]; then
     cp -a scripts/${BUILD_TARGET}/*.bat $TARGET_DIR/
-    cp CuraEngine/CuraEngine.exe $TARGET_DIR
+    cp CuraEngine/build/CuraEngine.exe $TARGET_DIR
 else
     cp -a scripts/${BUILD_TARGET}/*.sh $TARGET_DIR/
 fi
