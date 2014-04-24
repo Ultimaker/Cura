@@ -50,9 +50,10 @@ class newVersionDialog(wx.Dialog):
 			s.Add(button, flag=wx.TOP, border=5)
 		if self.hasUltimaker2 is not None:
 			s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
-			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker2:'))
+			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker2: (14.04.1)'))
 			s.Add(wx.StaticText(p, -1, '* Improved the start of the print, first moves the bed up before moving to the print.'))
 			s.Add(wx.StaticText(p, -1, '* Made sure the head does not bump into the front of the casing at first startup.'))
+			s.Add(wx.StaticText(p, -1, '* Fixed support for the PauseAtZ plugin.'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimaker2Firmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
