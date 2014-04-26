@@ -1,4 +1,4 @@
-#Name: Tweak At Z 3.1.2-test
+#Name: Tweak At Z 3.1.2
 #Info: Change printing parameters at a given height
 #Help: TweakAtZ
 #Depend: GCode
@@ -31,7 +31,7 @@
 #V3.1.1: Bugfix reset flow rate
 #V3.1.2: Bugfix disable TweakAtZ on Cool Head Lift / Retraction Hop
 
-version = '3.1.2-test'
+version = '3.1.2'
 
 import re
 
