@@ -1,4 +1,4 @@
-#Name: Tweak At Z 3.1.1
+#Name: Tweak At Z 3.1.2
 #Info: Change printing parameters at a given height
 #Help: TweakAtZ
 #Depend: GCode
@@ -29,8 +29,9 @@
 #V3.0.1: TweakAtZ-state default 1 (i.e. the plugin works without any TweakAtZ comment)
 #V3.1:   Recognizes UltiGCode and deactivates value reset, fan speed added, alternatively layer no. to tweak at, extruder three temperature disabled by '#Ex3'
 #V3.1.1: Bugfix reset flow rate
+#V3.1.2: Bugfix disable TweakAtZ on Cool Head Lift / Retraction Hop
 
-version = '3.1.1'
+version = '3.1.2'
 
 import re
 
@@ -63,10 +64,11 @@ old_extruderTwo = -1
 old_fanSpeed = 0
 pres_ext = 0
 z = 0
-x = 0
-y = 0
+x = None
+y = None
 layer = -100000 #layer no. may be negative (raft) but never that low
 state = 1 #state 0: deactivated, state 1: activated, state 2: active, but below z, state 3: active, passed z
+old_state = -1
 no_reset = 0 #Default setting is reset (ok for Marlin/Sprinter), has to be set to 1 for UltiGCode (work-around for missing default values)
 
 try:
@@ -82,6 +84,12 @@ with open(filename, "w") as f:
                         no_reset = 1
                 if ';TweakAtZ-state' in line: #checks for state change comment
                         state = getValue(line, ';TweakAtZ-state', state)
+                if ';Small layer' in line: #checks for begin of Cool Head Lift
+                        old_state = state
+                        state = 0
+                if ('G4' in line) and old_state > -1:
+                        state = old_state
+                        old_state = -1
                 if ';LAYER:' in line: #new layer no. found
                         layer = getValue(line, ';LAYER:', layer)
                         if targetL_i > -100000: #target selected by layer no.
@@ -106,9 +114,9 @@ with open(filename, "w") as f:
                         old_flowrate = getValue(line, 'S', old_flowrate)
 		if 'G1' in line or 'G0' in line:
 			newZ = getValue(line, 'Z', z)
-			x = getValue(line, 'X', x)
-			y = getValue(line, 'Y', y)
-			if newZ != z:
+			x = getValue(line, 'X', None)
+			y = getValue(line, 'Y', None)
+			if (newZ != z) and (x is not None) and (y is not None): #no tweaking on retraction hops which have no x and y coordinate
 				z = newZ
 				if z < targetZ and state == 1:
 					state = 2
