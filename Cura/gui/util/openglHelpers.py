@@ -194,8 +194,8 @@ class GLVBO(GLReferenceCounter):
 
 		if self._buffer is not None:
 			glBindBuffer(GL_ARRAY_BUFFER, 0)
-		if self._hasIndices:
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+			if self._hasIndices:
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
 
 		glDisableClientState(GL_VERTEX_ARRAY)
 		if self._hasNormals:
