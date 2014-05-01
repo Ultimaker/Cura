@@ -157,7 +157,7 @@ class EngineResult(object):
 			'version': version.getVersion(),
 		}
 		try:
-			f = urllib2.urlopen("http://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
+			f = urllib2.urlopen("https://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
 			f.read()
 			f.close()
 		except:
