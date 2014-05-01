@@ -219,12 +219,12 @@ class gcode(object):
 					e = getCodeFloat(line, 'E')
 					if e is not None:
 						currentE = e
-					if x is not None:
-						posOffset[0] = pos[0] - x
-					if y is not None:
-						posOffset[1] = pos[1] - y
-					if z is not None:
-						posOffset[2] = pos[2] - z
+					#if x is not None:
+					#	posOffset[0] = pos[0] - x
+					#if y is not None:
+					#	posOffset[1] = pos[1] - y
+					#if z is not None:
+					#	posOffset[2] = pos[2] - z
 				else:
 					print "Unknown G code:" + str(G)
 			else:
