@@ -397,6 +397,7 @@ class SelectParts(InfoPage):
 		self.AddText(_("To assist you in having better default settings for your Ultimaker\nCura would like to know which upgrades you have in your machine."))
 		self.AddSeperator()
 		self.springExtruder = self.AddCheckbox(_("Extruder drive upgrade"))
+		self.heatedBedKit = self.AddCheckbox(_("Heated printer bed (kit)"))
 		self.heatedBed = self.AddCheckbox(_("Heated printer bed (self built)"))
 		self.dualExtrusion = self.AddCheckbox(_("Dual extrusion (experimental)"))
 		self.AddSeperator()
@@ -406,7 +407,10 @@ class SelectParts(InfoPage):
 
 	def StoreData(self):
 		profile.putMachineSetting('ultimaker_extruder_upgrade', str(self.springExtruder.GetValue()))
-		profile.putMachineSetting('has_heated_bed', str(self.heatedBed.GetValue()))
+		if self.heatedBed.GetValue() or self.heatedBedKit.GetValue():
+			profile.putMachineSetting('has_heated_bed', 'True')
+		else:
+			profile.putMachineSetting('has_heated_bed', 'False')
 		if self.dualExtrusion.GetValue():
 			profile.putMachineSetting('extruder_amount', '2')
 			profile.putMachineSetting('machine_depth', '195')

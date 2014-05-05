@@ -16,19 +16,18 @@ from Cura.util import resources
 
 def getDefaultFirmware(machineIndex = None):
 	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker':
-		if profile.getMachineSetting('has_heated_bed', machineIndex) == 'True':
-			return None
+		if sys.platform.startswith('linux'):
+			name = 'MarlinUltimaker-115200'
+		else:
+			name = 'MarlinUltimaker-250000'
 		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 2:
 			return None
+		if profile.getMachineSetting('has_heated_bed', machineIndex) == 'True':
+			name += '-HBK'
 		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 1:
-			if sys.platform.startswith('linux'):
-				return resources.getPathForFirmware("MarlinUltimaker-115200-dual.hex")
-			else:
-				return resources.getPathForFirmware("MarlinUltimaker-250000-dual.hex")
-		if sys.platform.startswith('linux'):
-			return resources.getPathForFirmware("MarlinUltimaker-115200.hex")
-		else:
-			return resources.getPathForFirmware("MarlinUltimaker-250000.hex")
+			name += '-dual'
+		return name + '.hex'
+
 	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker2':
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
 	return None
