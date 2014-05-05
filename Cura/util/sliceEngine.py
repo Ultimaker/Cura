@@ -161,7 +161,8 @@ class EngineResult(object):
 			f.read()
 			f.close()
 		except:
-			pass
+			import traceback
+			traceback.print_exc()
 
 class Engine(object):
 	"""
