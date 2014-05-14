@@ -70,7 +70,6 @@ class machineSettingsDialog(wx.Dialog):
 		wx.EVT_CLOSE(self, self.OnClose)
 
 		self.parent = parent
-		extruderCount = int(profile.getMachineSetting('extruder_amount'))
 
 		self.panel = configBase.configPanelBase(self)
 		self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
@@ -80,6 +79,7 @@ class machineSettingsDialog(wx.Dialog):
 		self.panel.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
 		for idx in xrange(0, profile.getMachineCount()):
+			extruderCount = int(profile.getMachineSetting('extruder_amount', idx))
 			left, right, main = self.panel.CreateConfigPanel(self.nb)
 			configBase.TitleRow(left, _("Machine settings"))
 			configBase.SettingRow(left, 'steps_per_e', index=idx)
