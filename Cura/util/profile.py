@@ -449,7 +449,6 @@ G90                         ;absolute positioning
 ;{profile_string}
 """, str, 'alteration', 'alteration')
 #######################################################################################
-#######################################################################################
 setting('support_start.gcode', '', str, 'alteration', 'alteration')
 setting('support_end.gcode', '', str, 'alteration', 'alteration')
 setting('cool_start.gcode', '', str, 'alteration', 'alteration')
