@@ -20,6 +20,8 @@ def gcodePath(newType, pathType, layerThickness, startPoint):
 	"""
 	if layerThickness <= 0.0:
 		layerThickness = 0.01
+	if profile.getProfileSetting('spiralize') == 'True':
+		layerThickness = profile.getProfileSettingFloat('layer_height')
 	return {'type': newType,
 			'pathType': pathType,
 			'layerThickness': layerThickness,
