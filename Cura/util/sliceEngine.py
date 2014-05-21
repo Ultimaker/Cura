@@ -558,6 +558,8 @@ class Engine(object):
 			settings['gcodeFlavor'] = 5
 		if profile.getProfileSetting('spiralize') == 'True':
 			settings['spiralizeMode'] = 1
+		if profile.getProfileSetting('simple_mode') == 'True':
+			settings['simpleMode'] = 1
 		if profile.getProfileSetting('wipe_tower') == 'True' and extruderCount > 1:
 			settings['wipeTowerSize'] = int(math.sqrt(profile.getProfileSettingFloat('wipe_tower_volume') * 1000 * 1000 * 1000 / settings['layerThickness']))
 		if profile.getProfileSetting('ooze_shield') == 'True':
