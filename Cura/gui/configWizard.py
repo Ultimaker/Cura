@@ -918,19 +918,35 @@ class bedLevelWizardMain(InfoPage):
 		feedZ = profile.getProfileSettingFloat('print_speed') * 60
 		feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
 		if self._wizardState == 2:
-			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back left corner...')
-			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (0, profile.getMachineSettingFloat('machine_depth'), feedTravel))
-			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
-			self.comm.sendCommand('M400')
-			self._wizardState = 3
+			if profile.getMachineSetting('has_heated_bed') == 'True':
+				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back center...')
+				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
+				self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') / 2.0, profile.getMachineSettingFloat('machine_depth'), feedTravel))
+				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
+				self.comm.sendCommand('M400')
+				self._wizardState = 3
+			else:
+				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back left corner...')
+				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
+				self.comm.sendCommand('G1 X%d Y%d F%d' % (0, profile.getMachineSettingFloat('machine_depth'), feedTravel))
+				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
+				self.comm.sendCommand('M400')
+				self._wizardState = 3
 		elif self._wizardState == 4:
-			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back right corner...')
-			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
-			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, profile.getMachineSettingFloat('machine_depth') - 25, feedTravel))
-			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
-			self.comm.sendCommand('M400')
-			self._wizardState = 5
+			if profile.getMachineSetting('has_heated_bed') == 'True':
+				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to front right corner...')
+				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
+				self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, 5, feedTravel))
+				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
+				self.comm.sendCommand('M400')
+				self._wizardState = 7
+			else:
+				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back right corner...')
+				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
+				self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, profile.getMachineSettingFloat('machine_depth') - 25, feedTravel))
+				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
+				self.comm.sendCommand('M400')
+				self._wizardState = 5
 		elif self._wizardState == 6:
 			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to front right corner...')
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
@@ -990,7 +1006,10 @@ class bedLevelWizardMain(InfoPage):
 			wx.CallAfter(self.resumeButton.Enable, True)
 		elif self._wizardState == 3:
 			self._wizardState = 4
-			wx.CallAfter(self.infoBox.SetAttention, 'Adjust the back left screw of your printer bed\nSo the nozzle just hits the bed.')
+			if profile.getMachineSetting('has_heated_bed') == 'True':
+				wx.CallAfter(self.infoBox.SetAttention, 'Adjust the back screw of your printer bed\nSo the nozzle just hits the bed.')
+			else:
+				wx.CallAfter(self.infoBox.SetAttention, 'Adjust the back left screw of your printer bed\nSo the nozzle just hits the bed.')
 			wx.CallAfter(self.resumeButton.Enable, True)
 		elif self._wizardState == 5:
 			self._wizardState = 6
