@@ -54,7 +54,7 @@ def serialList(forAutoDetect=False):
 			baselist.remove(prev)
 			baselist.insert(0, prev)
 	else:
-		baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*")
+		baselist = baselist + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*") + glob.glob('/dev/serial/by-id/*')
 	if version.isDevVersion() and not forAutoDetect:
 		baselist.append('VIRTUAL')
 	return baselist
