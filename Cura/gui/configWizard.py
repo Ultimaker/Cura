@@ -892,10 +892,21 @@ class bedLevelWizardMain(InfoPage):
 
 		self.infoBox = self.AddInfoBox()
 		self.resumeButton = self.AddButton('Resume')
+		self.upButton, self.downButton = self.AddDualButton('Up 0.2mm', 'Down 0.2mm')
+		self.upButton2, self.downButton2 = self.AddDualButton('Up 10mm', 'Down 10mm')
 		self.resumeButton.Enable(False)
+
+		self.upButton.Enable(False)
+		self.downButton.Enable(False)
+		self.upButton2.Enable(False)
+		self.downButton2.Enable(False)
 
 		self.Bind(wx.EVT_BUTTON, self.OnConnect, self.connectButton)
 		self.Bind(wx.EVT_BUTTON, self.OnResume, self.resumeButton)
+		self.Bind(wx.EVT_BUTTON, self.OnBedUp, self.upButton)
+		self.Bind(wx.EVT_BUTTON, self.OnBedDown, self.downButton)
+		self.Bind(wx.EVT_BUTTON, self.OnBedUp2, self.upButton2)
+		self.Bind(wx.EVT_BUTTON, self.OnBedDown2, self.downButton2)
 
 	def OnConnect(self, e = None):
 		if self.comm is not None:
@@ -909,6 +920,30 @@ class bedLevelWizardMain(InfoPage):
 		self.infoBox.SetBusy('Connecting to machine.')
 		self._wizardState = 0
 
+	def OnBedUp(self, e):
+		feedZ = profile.getProfileSettingFloat('print_speed') * 60
+		self.comm.sendCommand('G92 Z10')
+		self.comm.sendCommand('G1 Z9.8 F%d' % (feedZ))
+		self.comm.sendCommand('M400')
+
+	def OnBedDown(self, e):
+		feedZ = profile.getProfileSettingFloat('print_speed') * 60
+		self.comm.sendCommand('G92 Z10')
+		self.comm.sendCommand('G1 Z10.2 F%d' % (feedZ))
+		self.comm.sendCommand('M400')
+
+	def OnBedUp2(self, e):
+		feedZ = profile.getProfileSettingFloat('print_speed') * 60
+		self.comm.sendCommand('G92 Z10')
+		self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
+		self.comm.sendCommand('M400')
+
+	def OnBedDown2(self, e):
+		feedZ = profile.getProfileSettingFloat('print_speed') * 60
+		self.comm.sendCommand('G92 Z10')
+		self.comm.sendCommand('G1 Z20 F%d' % (feedZ))
+		self.comm.sendCommand('M400')
+
 	def AllowNext(self):
 		if self.GetParent().headOffsetCalibration is not None and int(profile.getMachineSetting('extruder_amount')) > 1:
 			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().headOffsetCalibration)
@@ -917,7 +952,16 @@ class bedLevelWizardMain(InfoPage):
 	def OnResume(self, e):
 		feedZ = profile.getProfileSettingFloat('print_speed') * 60
 		feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
-		if self._wizardState == 2:
+		if self._wizardState == -1:
+			wx.CallAfter(self.infoBox.SetInfo, 'Homing printer...')
+			wx.CallAfter(self.upButton.Enable, False)
+			wx.CallAfter(self.downButton.Enable, False)
+			wx.CallAfter(self.upButton2.Enable, False)
+			wx.CallAfter(self.downButton2.Enable, False)
+			self.comm.sendCommand('M105')
+			self.comm.sendCommand('G28')
+			self._wizardState = 1
+		elif self._wizardState == 2:
 			if profile.getMachineSetting('has_heated_bed') == 'True':
 				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back center...')
 				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
@@ -966,7 +1010,7 @@ class bedLevelWizardMain(InfoPage):
 			feedZ = profile.getProfileSettingFloat('print_speed') * 60
 			feedPrint = profile.getProfileSettingFloat('print_speed') * 60
 			feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
-			w = profile.getMachineSettingFloat('machine_width')
+			w = profile.getMachineSettingFloat('machine_width') - 10
 			d = profile.getMachineSettingFloat('machine_depth')
 			filamentRadius = profile.getProfileSettingFloat('filament_diameter') / 2
 			filamentArea = math.pi * filamentRadius * filamentRadius
@@ -1032,10 +1076,13 @@ class bedLevelWizardMain(InfoPage):
 			return
 		if self.comm.isOperational():
 			if self._wizardState == 0:
-				wx.CallAfter(self.infoBox.SetInfo, 'Homing printer...')
-				self.comm.sendCommand('M105')
-				self.comm.sendCommand('G28')
-				self._wizardState = 1
+				wx.CallAfter(self.infoBox.SetAttention, 'Use the up/down buttons to move the bed and adjust your Z endstop.')
+				wx.CallAfter(self.upButton.Enable, True)
+				wx.CallAfter(self.downButton.Enable, True)
+				wx.CallAfter(self.upButton2.Enable, True)
+				wx.CallAfter(self.downButton2.Enable, True)
+				wx.CallAfter(self.resumeButton.Enable, True)
+				self._wizardState = -1
 			elif self._wizardState == 11 and not self.comm.isPrinting():
 				self.comm.sendCommand('G1 Z15 F%d' % (profile.getProfileSettingFloat('print_speed') * 60))
 				self.comm.sendCommand('G92 E0')
