@@ -483,6 +483,8 @@ class Engine(object):
 			'coolHeadLift': 1 if profile.getProfileSetting('cool_head_lift') == 'True' else 0,
 			'startCode': profile.getAlterationFileContents('start.gcode', extruderCount),
 			'endCode': profile.getAlterationFileContents('end.gcode', extruderCount),
+			'preSwitchExtruderCode': profile.getAlterationFileContents('preSwitchExtruder.gcode', extruderCount),
+			'postSwitchExtruderCode': profile.getAlterationFileContents('postSwitchExtruder.gcode', extruderCount),
 
 			'extruderOffset[1].X': int(profile.getMachineSettingFloat('extruder_offset_x1') * 1000),
 			'extruderOffset[1].Y': int(profile.getMachineSettingFloat('extruder_offset_y1') * 1000),

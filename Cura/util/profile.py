@@ -456,14 +456,11 @@ setting('cool_start.gcode', '', str, 'alteration', 'alteration')
 setting('cool_end.gcode', '', str, 'alteration', 'alteration')
 setting('replace.csv', '', str, 'alteration', 'alteration')
 #######################################################################################
-setting('switchExtruder.gcode', """;Switch between the current extruder and the next extruder, when printing with multiple extruders.
-G92 E0
-G1 E-36 F5000
-G92 E0
-T{extruder}
-G1 X{new_x} Y{new_y} Z{new_z} F{travel_speed}
-G1 E36 F5000
-G92 E0
+setting('preSwitchExtruder.gcode', """;Switch between the current extruder and the next extruder, when printing with multiple extruders.
+;This code is added before the T(n)
+""", str, 'alteration', 'alteration')
+setting('postSwitchExtruder.gcode', """;Switch between the current extruder and the next extruder, when printing with multiple extruders.
+;This code is added after the T(n)
 """, str, 'alteration', 'alteration')
 
 setting('startMode', 'Simple', ['Simple', 'Normal'], 'preference', 'hidden')
