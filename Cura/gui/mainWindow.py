@@ -479,7 +479,7 @@ class mainWindow(wx.Frame):
 		dlg.SetWildcard("ini files (*.ini)|*.ini")
 		if dlg.ShowModal() == wx.ID_OK:
 			profileFile = dlg.GetPath()
-			if platform.system() == 'Linux': #hack for linux, as for some reason the .ini is not appended.
+			if not profileFile.lower().endswith('.ini'): #hack for linux, as for some reason the .ini is not appended.
 				profileFile += '.ini'
 			profile.saveProfile(profileFile)
 		dlg.Destroy()
@@ -510,6 +510,7 @@ class mainWindow(wx.Frame):
 		dlg.SetWildcard("HEX file (*.hex)|*.hex;*.HEX")
 		if dlg.ShowModal() == wx.ID_OK:
 			filename = dlg.GetPath()
+			dlg.Destroy()
 			if not(os.path.exists(filename)):
 				return
 			#For some reason my Ubuntu 10.10 crashes here.
