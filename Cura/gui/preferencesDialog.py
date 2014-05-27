@@ -128,6 +128,10 @@ class machineSettingsDialog(wx.Dialog):
 		self.remButton.Bind(wx.EVT_BUTTON, self.OnRemoveMachine)
 		self.buttonPanel.GetSizer().Add(self.remButton, flag=wx.ALL, border=5)
 
+		self.renButton = wx.Button(self.buttonPanel, -1, 'Change machine name')
+		self.renButton.Bind(wx.EVT_BUTTON, self.OnRenameMachine)
+		self.buttonPanel.GetSizer().Add(self.renButton, flag=wx.ALL, border=5)
+
 		main.Fit()
 		self.Fit()
 
@@ -159,6 +163,14 @@ class machineSettingsDialog(wx.Dialog):
 		prefDialog.Centre()
 		prefDialog.Show()
 		wx.CallAfter(self.Close)
+
+	def OnRenameMachine(self, e):
+		dialog = wx.TextEntryDialog(self, _("Enter the new name:"), _("Change machine name"), self.nb.GetPageText(self.nb.GetSelection()))
+		if dialog.ShowModal() != wx.ID_OK:
+			return
+		self.nb.SetPageText(self.nb.GetSelection(), dialog.GetValue())
+		profile.putMachineSetting('machine_name', dialog.GetValue(), self.nb.GetSelection())
+		self.parent.updateMachineMenu()
 
 	def OnClose(self, e):
 		self.parent.reloadSettingPanels()

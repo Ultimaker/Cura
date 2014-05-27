@@ -943,11 +943,11 @@ def getMachineSetting(name, index = None):
 	sys.stderr.write('Error: "%s" not found in machine settings\n' % (name))
 	return ''
 
-def putMachineSetting(name, value):
+def putMachineSetting(name, value, index = None):
 	#Check if we have a configuration file loaded, else load the default.
 	global settingsDictionary
 	if name in settingsDictionary and settingsDictionary[name].isMachineSetting():
-		settingsDictionary[name].setValue(value)
+		settingsDictionary[name].setValue(value, index)
 	savePreferences(getPreferencePath())
 
 def isMachineSetting(name):
