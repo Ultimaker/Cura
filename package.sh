@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script is to package the Cura package for Windows/Linux and Mac OS X
 # This script should run under Linux and Mac OS X, as well as Windows with Cygwin.
@@ -13,6 +13,7 @@ BUILD_TARGET=${1:-none}
 #BUILD_TARGET=darwin
 #BUILD_TARGET=debian_i386
 #BUILD_TARGET=debian_amd64
+#BUILD_TARGET=freebsd
 
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
@@ -74,6 +75,7 @@ if [ "$BUILD_TARGET" = "none" ]; then
 	echo "$0 debian_i368"
 	echo "$0 debian_amd64"
 	echo "$0 darwin"
+	echo "$0 freebsd"
 	exit 0
 fi
 
