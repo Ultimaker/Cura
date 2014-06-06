@@ -68,6 +68,6 @@ def getLanguageOptions():
 		# ['de', 'Deutsch'],
 		# ['fr', 'French'],
 		# ['nl', 'Nederlands'],
-		# ['sp', 'Spanish'],
+		# ['es', 'Spanish'],
 		# ['po', 'Polish']
 	]
