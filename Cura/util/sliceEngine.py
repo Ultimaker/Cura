@@ -449,7 +449,7 @@ class Engine(object):
 			'filamentDiameter': int(profile.getProfileSettingFloat('filament_diameter') * 1000),
 			'filamentFlow': int(profile.getProfileSettingFloat('filament_flow')),
 			'extrusionWidth': int(profile.calculateEdgeWidth() * 1000),
-			'layer0extrusionWidth': int(profile.calculateEdgeWidth() * 1000),
+			'layer0extrusionWidth': int(profile.calculateEdgeWidth() * profile.getProfileSettingFloat('layer0_width_factor') / 100 * 1000),
 			'insetCount': int(profile.calculateLineCount()),
 			'downSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_bottom') == 'True' else 0,
 			'upSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_top') == 'True' else 0,
