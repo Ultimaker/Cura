@@ -238,6 +238,60 @@ class FirstInfoPage(InfoPage):
 	def AllowBack(self):
 		return False
 
+class PrintrbotPage(InfoPage):
+	def __init__(self, parent):
+		self._printer_info = {
+			# X, Y, Z, Filament Diameter, PrintTemperature, Print Speed, Travel Speed, Retract speed, Retract amount
+			"Original": (130, 130, 130, 2.95, 208, 40, 70, 30, 1),
+			"Simple Maker's Edition v1": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			"Simple Maker's Edition v2 (2013 Printrbot Simple)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			"Simple Maker's Edition v3 (2014 Printrbot Simple)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			"Simple Maker's Edition v4 (Model 1405)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			"Simple Metal": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			"Jr v1": (150, 100, 80, 1.75, 208, 40, 70, 30, 1),
+			"Jr v2": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			"LC v2": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			"Plus v2": (200, 200, 200, 1.75, 208, 40, 70, 30, 1),
+			"Plus v2.1": (200, 200, 200, 1.75, 208, 40, 70, 30, 1),
+			"Plus v2.2 (Model 1404/140422)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			"Plus v2.3 (Model 140501)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			"Plus v2.4 (Model 140507)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+		}
+
+		super(PrintrbotPage, self).__init__(parent, "Printrbot Selection")
+		self.AddText(_("Select which Printrbot machine you have:"))
+		keys = self._printer_info.keys()
+		keys.sort()
+		self._items = []
+		for name in keys:
+			item = self.AddRadioButton(name)
+			item.data = self._printer_info[name]
+			self._items.append(item)
+
+	def StoreData(self):
+		profile.putMachineSetting('machine_name', 'Printrbot ???')
+		for item in self._items:
+			if item.GetValue():
+				data = item.data
+				profile.putMachineSetting('machine_name', 'Printrbot ' + item.GetLabel())
+				profile.putMachineSetting('machine_width', data[0])
+				profile.putMachineSetting('machine_depth', data[1])
+				profile.putMachineSetting('machine_height', data[2])
+				profile.putProfileSetting('nozzle_size', '0.5')
+				profile.putProfileSetting('filament_diameter', data[3])
+				profile.putProfileSetting('print_temperature', data[4])
+				profile.putProfileSetting('print_speed', data[5])
+				profile.putProfileSetting('travel_speed', data[6])
+				profile.putProfileSetting('retraction_speed', data[7])
+				profile.putProfileSetting('retraction_amount', data[8])
+				profile.putProfileSetting('wall_thickness', float(profile.getProfileSettingFloat('nozzle_size')) * 2)
+				profile.putMachineSetting('has_heated_bed', 'False')
+				profile.putMachineSetting('machine_center_is_zero', 'False')
+				profile.putMachineSetting('extruder_head_size_min_x', '0')
+				profile.putMachineSetting('extruder_head_size_min_y', '0')
+				profile.putMachineSetting('extruder_head_size_max_x', '0')
+				profile.putMachineSetting('extruder_head_size_max_y', '0')
+				profile.putMachineSetting('extruder_head_size_height', '0')
 
 class OtherMachineSelectPage(InfoPage):
 	def __init__(self, parent):
@@ -318,6 +372,8 @@ class MachineSelectPage(InfoPage):
 		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
 		self.UltimakerRadio = self.AddRadioButton("Ultimaker Original")
 		self.UltimakerRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimakerSelect)
+		self.PrintrbotRadio = self.AddRadioButton("Printrbot")
+		self.PrintrbotRadio.Bind(wx.EVT_RADIOBUTTON, self.OnPrintrbotSelect)
 		self.OtherRadio = self.AddRadioButton(_("Other (Ex: RepRap, MakerBot)"))
 		self.OtherRadio.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
 		self.AddSeperator()
@@ -332,6 +388,9 @@ class MachineSelectPage(InfoPage):
 
 	def OnUltimakerSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimakerSelectParts)
+
+	def OnPrintrbotSelect(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().printrbotSelectType)
 
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
@@ -841,6 +900,7 @@ class configWizard(wx.wizard.Wizard):
 		self.ultimakerCalibrateStepsPerEPage = UltimakerCalibrateStepsPerEPage(self)
 		self.bedLevelPage = bedLevelWizardMain(self)
 		self.headOffsetCalibration = headOffsetCalibrationPage(self)
+		self.printrbotSelectType = PrintrbotPage(self)
 		self.otherMachineSelectPage = OtherMachineSelectPage(self)
 		self.customRepRapInfoPage = CustomRepRapInfoPage(self)
 		self.otherMachineInfoPage = OtherMachineInfoPage(self)
@@ -854,6 +914,7 @@ class configWizard(wx.wizard.Wizard):
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerFirmwareUpgradePage, self.ultimakerCheckupPage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerCheckupPage, self.bedLevelPage)
 		#wx.wizard.WizardPageSimple.Chain(self.ultimakerCalibrationPage, self.ultimakerCalibrateStepsPerEPage)
+		wx.wizard.WizardPageSimple.Chain(self.printrbotSelectType, self.otherMachineInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
 
 		self.FitToPage(self.firstInfoPage)
