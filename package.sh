@@ -149,6 +149,50 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 fi
 
 #############################
+# FreeBSD by cederom@tlen.pl
+#############################
+
+if [ "$BUILD_TARGET" = "freebsd" ]; then
+	export CXX="c++"
+	rm -rf Power
+	if [ ! -d "Power" ]; then
+		git clone https://github.com/GreatFruitOmsk/Power
+	else
+		cd Power
+		git pull
+		cd ..
+	fi
+	rm -rf CuraEngine
+	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
+	gmake -j4 -C CuraEngine VERSION=${BUILD_NAME}
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
+	rm -rf scripts/freebsd/dist
+	mkdir -p scripts/freebsd/dist/usr/local/share/cura
+	mkdir -p scripts/freebsd/dist/usr/local/share/applications
+	mkdir -p scripts/freebsd/dist/usr/local/bin
+	cp -a Cura scripts/freebsd/dist/usr/local/share/cura/
+	cp -a resources scripts/freebsd/dist/usr/local/share/cura/
+	cp -a plugins scripts/freebsd/dist/usr/local/share/cura/
+	cp -a CuraEngine/build/CuraEngine scripts/freebsd/dist/usr/local/share/cura/
+	cp scripts/freebsd/cura.py scripts/freebsd/dist/usr/local/share/cura/
+	cp scripts/freebsd/cura.desktop scripts/freebsd/dist/usr/local/share/applications/
+	cp scripts/freebsd/cura scripts/freebsd/dist/usr/local/bin/
+	cp -a Power/power scripts/freebsd/dist/usr/local/share/cura/
+	echo $BUILD_NAME > scripts/freebsd/dist/usr/local/share/cura/Cura/version
+	# Create archive or package if root
+	if [ `whoami` == "root" ]; then
+	    echo "Building a package for FreeBSD not yet implemented! Use the port Luke!"
+	else
+	    echo "You are not root, building simple package archive..."
+	    cd scripts/freebsd/dist
+	    pwd
+	    $TAR czf ../../../${TARGET_DIR}.tar.gz *
+	fi
+	exit
+fi
+
+#############################
 # Debian 32bit .deb
 #############################
 
@@ -219,7 +263,6 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
-
 
 #############################
 # Rest
