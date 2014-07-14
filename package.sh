@@ -149,7 +149,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 fi
 
 #############################
-# FreeBSD by cederom@tlen.pl
+# FreeBSD part by CeDeROM
 #############################
 
 if [ "$BUILD_TARGET" = "freebsd" ]; then
@@ -168,26 +168,36 @@ if [ "$BUILD_TARGET" = "freebsd" ]; then
 	gmake -j4 -C CuraEngine VERSION=${BUILD_NAME}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/freebsd/dist
-	mkdir -p scripts/freebsd/dist/usr/local/share/cura
-	mkdir -p scripts/freebsd/dist/usr/local/share/applications
-	mkdir -p scripts/freebsd/dist/usr/local/bin
-	cp -a Cura scripts/freebsd/dist/usr/local/share/cura/
-	cp -a resources scripts/freebsd/dist/usr/local/share/cura/
-	cp -a plugins scripts/freebsd/dist/usr/local/share/cura/
-	cp -a CuraEngine/build/CuraEngine scripts/freebsd/dist/usr/local/share/cura/
-	cp scripts/freebsd/cura.py scripts/freebsd/dist/usr/local/share/cura/
-	cp scripts/freebsd/cura.desktop scripts/freebsd/dist/usr/local/share/applications/
-	cp scripts/freebsd/cura scripts/freebsd/dist/usr/local/bin/
-	cp -a Power/power scripts/freebsd/dist/usr/local/share/cura/
-	echo $BUILD_NAME > scripts/freebsd/dist/usr/local/share/cura/Cura/version
+	mkdir -p scripts/freebsd/dist/share/cura
+	mkdir -p scripts/freebsd/dist/share/applications
+	mkdir -p scripts/freebsd/dist/bin
+	cp -a Cura scripts/freebsd/dist/share/cura/
+	cp -a resources scripts/freebsd/dist/share/cura/
+	cp -a plugins scripts/freebsd/dist/share/cura/
+	cp -a CuraEngine/build/CuraEngine scripts/freebsd/dist/share/cura/
+	cp scripts/freebsd/cura.py scripts/freebsd/dist/share/cura/
+	cp scripts/freebsd/cura.desktop scripts/freebsd/dist/share/applications/
+	cp scripts/freebsd/cura scripts/freebsd/dist/bin/
+	cp -a Power/power scripts/freebsd/dist/share/cura/
+	echo $BUILD_NAME > scripts/freebsd/dist/share/cura/Cura/version
+	#Create file list (pkg-plist)
+	cd scripts/freebsd/dist
+	find * -type f > ../pkg-plist
+	DIRLVL=20; while [ $DIRLVL -ge 0 ]; do
+		DIRS=`find share/cura -type d -depth $DIRLVL`
+		for DIR in $DIRS; do
+			echo "@dirrm $DIR" >> ../pkg-plist
+		done
+		DIRLVL=`expr $DIRLVL - 1`
+	done
+	cd ..
 	# Create archive or package if root
 	if [ `whoami` == "root" ]; then
-	    echo "Building a package for FreeBSD not yet implemented! Use the port Luke!"
+	    echo "Are you root? Use the Port Luke! :-)"
 	else
 	    echo "You are not root, building simple package archive..."
-	    cd scripts/freebsd/dist
 	    pwd
-	    $TAR czf ../../../${TARGET_DIR}.tar.gz *
+	    $TAR czf ../../${TARGET_DIR}.tar.gz dist/**
 	fi
 	exit
 fi
