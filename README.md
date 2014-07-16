@@ -21,7 +21,7 @@ Before posting issues (either Bugs, Feature requests or Requests for information
 Packaging
 ---------
 
-Cura development comes with a script "package.sh", this script has been designed to run under *nix OSes (Linux, MacOS). For Windows the package.sh script can be run from bash using git.
+Cura development comes with a script "package.sh", this script has been designed to run under *nix OSes (Linux, MacOS, FreeBSD). For Windows the package.sh script can be run from bash using git.
 The "package.sh" script generates a final release package. You should not need it during development, unless you are changing the release process. If you want to distribute your own version of Cura, then the package.sh script will allow you to do that.
 
 Both MacOS and Linux require some extra instructions for development, as you need to prepare an environment. Look below at the proper section to see what is needed.
@@ -78,6 +78,13 @@ The easiest way to install it is via [Homebrew](http://mxcl.github.com/homebrew/
 Note if you already have Python installed via Homebrew, you have to uninstall it first.
 
 You can also install [official build](http://www.python.org/ftp/python/2.7.3/python-2.7.3-macosx10.6.dmg).
+
+
+FreeBSD
+--------
+On FreeBSD simply use the Port Tree (`cd /usr/ports/cad/cura`) to create (`make package`) and install (`make install`) the package as root. Port will check for all necessary dependencies. You can also use the provided binary package with `pkg install Cura`.
+
+If you want to create an archive for local use the `package.sh freebsd` script (as an ordinary user) will give you a tarball with the program.
 
 
 ###Configure Virtualenv
