@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Cura
+Comment=Cura is a complete and open slicing solution for RepRap 3D printers
+Icon=/usr/local/share/cura/resources/images/c.png
+Exec=/usr/local/bin/cura
+Path=/usr/local/share/cura/
+StartupNotify=true
+Terminal=false
+Categories=GNOME;GTK;Utility;
