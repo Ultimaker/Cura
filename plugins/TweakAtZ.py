@@ -1,4 +1,4 @@
-#Name: Tweak At Z 3.1.2
+#Name: Tweak At Z 3.2
 #Info: Change printing parameters at a given height
 #Help: TweakAtZ
 #Depend: GCode
@@ -6,7 +6,9 @@
 #Param: targetZ(float:5.0) Z height to tweak at (mm)
 #Param: targetL(int:) (ALT) Layer no. to tweak at
 #Param: speed(int:) New Speed (%)
-#Param: flowrate(int:) New Flow Rate (%)
+#Param: flowrate(int:) New General Flow Rate (%)
+#Param: flowrateOne(int:) New Flow Rate Extruder 1 (%)
+#Param: flowrateTwo(int:) New Flow Rate Extruder 2 (%)
 #Param: platformTemp(int:) New Bed Temp (deg C)
 #Param: extruderOne(int:) New Extruder 1 Temp (deg C)
 #Param: extruderTwo(int:) New Extruder 2 Temp (deg C)
@@ -15,12 +17,13 @@
 
 ## Written by Steven Morlock, smorloc@gmail.com
 ## Modified by Ricardo Gomez, ricardoga@otulook.com, to add Bed Temperature and make it work with Cura_13.06.04+
-## Modified by Stefan Heule, Dim3nsioneer@gmx.ch, to add Flow Rate, restoration of initial values when returning to low Z, extended stage numbers, direct stage manipulation by GCODE-comments, UltiGCode regocnition, addition of fan speed, alternative selection by layer no., disabling extruder three
+## Modified by Stefan Heule, Dim3nsioneer@gmx.ch, to add Flow Rate, restoration of initial values when returning to low Z, extended stage numbers, direct stage manipulation by GCODE-comments, UltiGCode regocnition, addition of fan speed, alternative selection by layer no., disabling extruder three, addition of flow rate for specific extruder
 ## This script is licensed under the Creative Commons - Attribution - Share Alike (CC BY-SA) terms
 
 # Uses -
 # M220 S<factor in percent> - set speed factor override percentage
 # M221 S<factor in percent> - set flow factor override percentage
+# M221 S<factor in percent> T<0-#toolheads> - set flow factor override percentage for single extruder
 # M104 S<temp> T<0-#toolheads> - set extruder <T> to target temperature <S>
 # M140 S<temp> - set bed target temperature
 # M106 S<PWM> - set fan speed to target speed <S>
@@ -29,9 +32,10 @@
 #V3.0.1: TweakAtZ-state default 1 (i.e. the plugin works without any TweakAtZ comment)
 #V3.1:   Recognizes UltiGCode and deactivates value reset, fan speed added, alternatively layer no. to tweak at, extruder three temperature disabled by '#Ex3'
 #V3.1.1: Bugfix reset flow rate
-#V3.1.2: Bugfix disable TweakAtZ on Cool Head Lift / Retraction Hop
+#V3.1.2: Bugfix disable TweakAtZ on Cool Head Lift
+#V3.2:   Flow rate for specific extruder added (only for 2 extruders), bugfix parser, added speed reset at the end of the print
 
-version = '3.1.2'
+version = '3.2'
 
 import re
 
@@ -44,7 +48,7 @@ def getValue(line, key, default = None):
         elif ";LAYER:" in key:
                 m = re.search('^[+-]?[0-9]*', subPart)
         else:
-                m = re.search('^[0-9]+\.?[0-9]*', subPart)
+                m = re.search('^[-]?[0-9]+\.?[0-9]*', subPart) #the minus at the beginning allows for negative values, e.g. for delta printers
 	if m == None:
 		return default
 	try:
@@ -57,6 +61,8 @@ with open(filename, "r") as f:
 
 old_speed = 100
 old_flowrate = 100
+old_flowrateOne = 100
+old_flowrateTwo = 100
 old_platformTemp = -1
 old_extruderOne = -1
 old_extruderTwo = -1
@@ -79,7 +85,8 @@ except:
 
 with open(filename, "w") as f:
 	for line in lines:
-		f.write(line)
+		if not ('M84' in line or 'M25' in line):
+                        f.write(line)
                 if 'FLAVOR:UltiGCode' in line: #Flavor is UltiGCode! No reset of values
                         no_reset = 1
                 if ';TweakAtZ-state' in line: #checks for state change comment
@@ -111,7 +118,19 @@ with open(filename, "w") as f:
                 if 'M106' in line and state < 3: #looking for fan speed
                         old_fanSpeed = getValue(line, 'S', old_fanSpeed)
                 if 'M221' in line and state < 3: #looking for flow rate
-                        old_flowrate = getValue(line, 'S', old_flowrate)
+                        tmp_extruder = getValue(line,'T',None)
+                        if tmp_extruder == None: #check if extruder is specified
+                                old_flowrate = getValue(line, 'S', old_flowrate)
+                        else:
+                                if tmp_extruder == 0: #first extruder
+                                        old_flowrateOne = getValue(line, 'S', old_flowrateOne)
+                                if tmp_extruder == 1: #second extruder
+                                        old_flowrateOne = getValue(line, 'S', old_flowrateOne)
+                if ('M84' in line or 'M25' in line):
+                        if state>0 and speed is not None and speed != '': #'finish' commands for UM Original and UM2
+                                f.write("M220 S100 ; speed reset to 100% at the end of print\n");
+                                f.write("M117                     \n")
+                        f.write(line)
 		if 'G1' in line or 'G0' in line:
 			newZ = getValue(line, 'Z', z)
 			x = getValue(line, 'X', None)
@@ -124,12 +143,18 @@ with open(filename, "w") as f:
 					state = 3
                                         if targetL_i > -100000:
                                                 f.write(";TweakAtZ V%s: executed at Layer %d\n" % (version,targetL_i))
+                                                f.write("M117 Printing... tw@L%4d\n" % targetL_i)
                                         else:
                                                 f.write(";TweakAtZ V%s: executed at %1.2f mm\n" % (version,targetZ))
+                                                f.write("M117 Printing... tw@%5.1f\n" % targetZ)
 					if speed is not None and speed != '':
 						f.write("M220 S%f\n" % float(speed))
 					if flowrate is not None and flowrate != '':
 						f.write("M221 S%f\n" % float(flowrate))
+					if flowrateOne is not None and flowrateOne != '':
+						f.write("M221 T0 S%f\n" % float(flowrateOne))
+					if flowrateTwo is not None and flowrateTwo != '':
+						f.write("M221 T1 S%f\n" % float(flowrateTwo))
 					if platformTemp is not None and platformTemp != '':
 						f.write("M140 S%f\n" % float(platformTemp))
 					if extruderOne is not None and extruderOne != '':
@@ -151,6 +176,10 @@ with open(filename, "w") as f:
                                                         f.write("M220 S%f\n" % float(old_speed))
                                                 if flowrate is not None and flowrate != '':
                                                         f.write("M221 S%f\n" % float(old_flowrate))
+                                                if flowrateOne is not None and flowrateOne != '':
+                                                        f.write("M221 T0 S%f\n" % float(old_flowrateOne))
+                                                if flowrateTwo is not None and flowrateTwo != '':
+                                                        f.write("M221 T1 S%f\n" % float(old_flowrateTwo))
                                                 if platformTemp is not None and platformTemp != '':
                                                         f.write("M140 S%f\n" % float(old_platformTemp))
                                                 if extruderOne is not None and extruderOne != '':
