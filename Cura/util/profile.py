@@ -597,10 +597,7 @@ def getBasePath():
 	:return: The path in which the current configuration files are stored. This depends on the used OS.
 	"""
 	if platform.system() == "Windows":
-		basePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-		#If we have a frozen python install, we need to step out of the library.zip
-		if hasattr(sys, 'frozen'):
-			basePath = os.path.normpath(os.path.join(basePath, ".."))
+		basePath = os.path.normpath(os.path.expanduser('~/.cura/%s' % version.getVersion(False)))
 	elif platform.system() == "Darwin":
 		basePath = os.path.expanduser('~/Library/Application Support/Cura/%s' % version.getVersion(False))
 	else:
@@ -625,6 +622,18 @@ def getAlternativeBasePaths():
 		path = os.path.join(basePath, subPath, 'Cura')
 		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
 			paths.append(path)
+
+	#Check the old base path, which was in the application directory.
+	oldBasePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+	basePath = os.path.normpath(os.path.join(oldBasePath, ".."))
+	for subPath in os.listdir(basePath):
+		path = os.path.join(basePath, subPath)
+		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
+			paths.append(path)
+		path = os.path.join(basePath, subPath, 'Cura')
+		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
+			paths.append(path)
+
 	return paths
 
 def getDefaultProfilePath():

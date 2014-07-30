@@ -119,18 +119,14 @@ class CuraApp(wx.App):
 
 		#If we haven't run it before, run the configuration wizard.
 		if profile.getMachineSetting('machine_type') == 'unknown':
-			if platform.system() == "Windows":
-				exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'UltimakerRobot_support.stl'))
-			else:
-				#Check if we need to copy our examples
-				exampleFile = os.path.expanduser('~/CuraExamples/UltimakerRobot_support.stl')
-				if not os.path.isfile(exampleFile):
-					try:
-						os.makedirs(os.path.dirname(exampleFile))
-					except:
-						pass
-					for filename in glob.glob(os.path.normpath(os.path.join(resources.resourceBasePath, 'example', '*.*'))):
-						shutil.copy(filename, os.path.join(os.path.dirname(exampleFile), os.path.basename(filename)))
+			otherCuraInstalls = profile.getAlternativeBasePaths()
+			otherCuraInstalls.sort()
+			if len(otherCuraInstalls) > 0:
+				profile.loadPreferences(os.path.join(otherCuraInstalls[-1], 'preferences.ini'))
+				profile.loadProfile(os.path.join(otherCuraInstalls[-1], 'current_profile.ini'))
+			#Check if we need to copy our examples
+			exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'UltimakerRobot_support.stl'))
+
 			self.loadFiles = [exampleFile]
 			if self.splash is not None:
 				self.splash.Show(False)
