@@ -38,6 +38,7 @@ sudo apt-get install python-opengl
 sudo apt-get install python-numpy
 sudo apt-get install python-serial
 sudo apt-get install python-setuptools
+sudo apt-get install curl
 
 cd Cura
 
