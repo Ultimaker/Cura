@@ -1290,6 +1290,20 @@ class SceneView(openglGui.glGuiPanel):
 				glDisable(GL_TEXTURE_2D)
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 				glPopMatrix()
+				
+		elif machine.startswith('Witbox'):
+			if machine not in self._platformMesh:
+				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
+				if len(meshes) > 0:
+					self._platformMesh[machine] = meshes[0]
+				else:
+					self._platformMesh[machine] = None
+				if machine == 'Witbox':
+					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
+			glColor4f(1,1,1,0.5)
+			self._objectShader.bind()
+			self._renderObject(self._platformMesh[machine], False, False)
+			self._objectShader.unbind()
 		else:
 			glColor4f(0,0,0,1)
 			glLineWidth(3)
