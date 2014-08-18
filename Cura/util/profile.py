@@ -614,25 +614,28 @@ def getAlternativeBasePaths():
 	Search for alternative installations of Cura and their preference files. Used to load configuration from older versions of Cura.
 	"""
 	paths = []
-	basePath = os.path.normpath(os.path.join(getBasePath(), '..'))
-	for subPath in os.listdir(basePath):
-		path = os.path.join(basePath, subPath)
-		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
-			paths.append(path)
-		path = os.path.join(basePath, subPath, 'Cura')
-		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
-			paths.append(path)
+	try:
+		basePath = os.path.normpath(os.path.join(getBasePath(), '..'))
+		for subPath in os.listdir(basePath):
+			path = os.path.join(basePath, subPath)
+			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
+				paths.append(path)
+			path = os.path.join(basePath, subPath, 'Cura')
+			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
+				paths.append(path)
 
-	#Check the old base path, which was in the application directory.
-	oldBasePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-	basePath = os.path.normpath(os.path.join(oldBasePath, ".."))
-	for subPath in os.listdir(basePath):
-		path = os.path.join(basePath, subPath)
-		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
-			paths.append(path)
-		path = os.path.join(basePath, subPath, 'Cura')
-		if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
-			paths.append(path)
+		#Check the old base path, which was in the application directory.
+		oldBasePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+		basePath = os.path.normpath(os.path.join(oldBasePath, ".."))
+		for subPath in os.listdir(basePath):
+			path = os.path.join(basePath, subPath)
+			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
+				paths.append(path)
+			path = os.path.join(basePath, subPath, 'Cura')
+			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
+				paths.append(path)
+	except:
+		pass
 
 	return paths
 
