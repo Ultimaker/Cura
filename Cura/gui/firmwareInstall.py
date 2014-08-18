@@ -31,6 +31,8 @@ def getDefaultFirmware(machineIndex = None):
 
 	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker2':
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
+	if profile.getMachineSetting('machine_type', machineIndex) == 'Witbox':
+		return resources.getPathForFirmware("MarlinWitbox.hex")
 	return None
 
 class InstallFirmware(wx.Dialog):
