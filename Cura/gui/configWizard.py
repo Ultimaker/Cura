@@ -207,6 +207,14 @@ class InfoPage(wx.wizard.WizardPageSimple):
 		self.rowNr += 1
 		return check
 
+	def AddCombo(self, label, options):
+		combo = wx.ComboBox(self, -1, options[0], choices=options, style=wx.CB_DROPDOWN|wx.CB_READONLY)
+		text = wx.StaticText(self, -1, label)
+		self.GetSizer().Add(text, pos=(self.rowNr, 0), span=(1, 1), flag=wx.LEFT | wx.RIGHT)
+		self.GetSizer().Add(combo, pos=(self.rowNr, 1), span=(1, 1), flag=wx.LEFT | wx.RIGHT)
+		self.rowNr += 1
+		return combo
+
 	def AllowNext(self):
 		return True
 
@@ -226,6 +234,11 @@ class FirstInfoPage(InfoPage):
 			self.AddText(_("Welcome, and thanks for trying Cura!"))
 			self.AddSeperator()
 		self.AddText(_("This wizard will help you in setting up Cura for your machine."))
+		if not addNew:
+			self.AddSeperator()
+			self._language_option = self.AddCombo(_("Select your language:"), map(lambda o: o[1], resources.getLanguageOptions()))
+		else:
+			self._language_option = None
 		# self.AddText(_("This wizard will help you with the following steps:"))
 		# self.AddText(_("* Configure Cura for your machine"))
 		# self.AddText(_("* Optionally upgrade your firmware"))
@@ -237,6 +250,11 @@ class FirstInfoPage(InfoPage):
 
 	def AllowBack(self):
 		return False
+
+	def StoreData(self):
+		if self._language_option is not None:
+			profile.putPreference('language', self._language_option.GetValue())
+			resources.setupLocalization(self._language_option.GetValue())
 
 class PrintrbotPage(InfoPage):
 	def __init__(self, parent):
