@@ -392,6 +392,10 @@ class MachineSelectPage(InfoPage):
 		self.UltimakerRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimakerSelect)
 		self.PrintrbotRadio = self.AddRadioButton("Printrbot")
 		self.PrintrbotRadio.Bind(wx.EVT_RADIOBUTTON, self.OnPrintrbotSelect)
+		self.LulzbotTazRadio = self.AddRadioButton("Lulzbot TAZ")
+		self.LulzbotTazRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
+		self.LulzbotMiniRadio = self.AddRadioButton("Lulzbot Mini")
+		self.LulzbotMiniRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.OtherRadio = self.AddRadioButton(_("Other (Ex: RepRap, MakerBot, Witbox)"))
 		self.OtherRadio.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
 		self.AddSeperator()
@@ -409,6 +413,9 @@ class MachineSelectPage(InfoPage):
 
 	def OnPrintrbotSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().printrbotSelectType)
+
+	def OnLulzbotSelect(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
 
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
@@ -451,6 +458,27 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('extruder_head_size_max_x', '18.0')
 			profile.putMachineSetting('extruder_head_size_max_y', '35.0')
 			profile.putMachineSetting('extruder_head_size_height', '55.0')
+		elif self.LulzbotTazRadio.GetValue() or self.LulzbotMiniRadio.GetValue():
+			if self.LulzbotTazRadio.GetValue():
+				profile.putMachineSetting('machine_width', '298')
+				profile.putMachineSetting('machine_depth', '275')
+				profile.putMachineSetting('machine_height', '250')
+				profile.putMachineSetting('machine_name', 'Lulzbot TAZ')
+			else:
+				profile.putMachineSetting('machine_width', '160')
+				profile.putMachineSetting('machine_depth', '160')
+				profile.putMachineSetting('machine_height', '160')
+				profile.putMachineSetting('machine_name', 'Lulzbot Mini')
+			profile.putMachineSetting('machine_type', 'Aleph Objects')
+			profile.putMachineSetting('machine_center_is_zero', 'False')
+			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
+			profile.putMachineSetting('has_heated_bed', 'True')
+			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putMachineSetting('extruder_head_size_min_x', '0.0')
+			profile.putMachineSetting('extruder_head_size_min_y', '0.0')
+			profile.putMachineSetting('extruder_head_size_max_x', '0.0')
+			profile.putMachineSetting('extruder_head_size_max_y', '0.0')
+			profile.putMachineSetting('extruder_head_size_height', '0.0')
 		else:
 			profile.putMachineSetting('machine_width', '80')
 			profile.putMachineSetting('machine_depth', '80')
@@ -902,6 +930,12 @@ class Ultimaker2ReadyPage(InfoPage):
 		self.AddText('Cura is now ready to be used with your Ultimaker2.')
 		self.AddSeperator()
 
+class LulzbotReadyPage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotReadyPage, self).__init__(parent, "Lulzbot TAZ/Mini")
+		self.AddText('Cura is now ready to be used with your Lulzbot.')
+		self.AddSeperator()
+
 class configWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
 		super(configWizard, self).__init__(None, -1, "Configuration Wizard")
@@ -924,6 +958,7 @@ class configWizard(wx.wizard.Wizard):
 		self.otherMachineInfoPage = OtherMachineInfoPage(self)
 
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
+		self.lulzbotReadyPage = LulzbotReadyPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.firstInfoPage, self.machineSelectPage)
 		#wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
