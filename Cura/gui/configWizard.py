@@ -473,7 +473,7 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('machine_center_is_zero', 'False')
 			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putMachineSetting('has_heated_bed', 'True')
-			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putProfileSetting('nozzle_size', '0.4')
 			profile.putMachineSetting('extruder_head_size_min_x', '0.0')
 			profile.putMachineSetting('extruder_head_size_min_y', '0.0')
 			profile.putMachineSetting('extruder_head_size_max_x', '0.0')
