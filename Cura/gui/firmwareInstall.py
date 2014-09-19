@@ -29,6 +29,18 @@ def getDefaultFirmware(machineIndex = None):
 			name += '-dual'
 		return resources.getPathForFirmware(name + '.hex')
 
+	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker_plus':
+		name = 'MarlinUltimaker-UMOP'
+		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 2:
+			return None
+		if sys.platform.startswith('linux'):
+			name += '-115200'
+		else:
+			name += '-250000'
+		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 1:
+			name += '-dual'
+		return resources.getPathForFirmware(name + '.hex')
+
 	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker2':
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
 	if profile.getMachineSetting('machine_type', machineIndex) == 'Witbox':

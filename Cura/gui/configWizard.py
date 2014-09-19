@@ -390,6 +390,8 @@ class MachineSelectPage(InfoPage):
 		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
 		self.UltimakerRadio = self.AddRadioButton("Ultimaker Original")
 		self.UltimakerRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimakerSelect)
+		self.UltimakerOPRadio = self.AddRadioButton("Ultimaker Original+")
+		self.UltimakerOPRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimakerOPSelect)
 		self.PrintrbotRadio = self.AddRadioButton("Printrbot")
 		self.PrintrbotRadio.Bind(wx.EVT_RADIOBUTTON, self.OnPrintrbotSelect)
 		self.LulzbotTazRadio = self.AddRadioButton("Lulzbot TAZ")
@@ -410,6 +412,9 @@ class MachineSelectPage(InfoPage):
 
 	def OnUltimakerSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimakerSelectParts)
+
+	def OnUltimakerOPSelect(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimakerFirmwareUpgradePage)
 
 	def OnPrintrbotSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().printrbotSelectType)
@@ -439,7 +444,7 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('extruder_head_size_min_y', '10.0')
 			profile.putMachineSetting('extruder_head_size_max_x', '60.0')
 			profile.putMachineSetting('extruder_head_size_max_y', '30.0')
-			profile.putMachineSetting('extruder_head_size_height', '55.0')
+			profile.putMachineSetting('extruder_head_size_height', '48.0')
 			profile.putProfileSetting('nozzle_size', '0.4')
 			profile.putProfileSetting('fan_full_height', '5.0')
 			profile.putMachineSetting('extruder_offset_x1', '18.0')
@@ -458,6 +463,23 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('extruder_head_size_max_x', '18.0')
 			profile.putMachineSetting('extruder_head_size_max_y', '35.0')
 			profile.putMachineSetting('extruder_head_size_height', '55.0')
+		elif self.UltimakerOPRadio.GetValue():
+			profile.putMachineSetting('machine_width', '205')
+			profile.putMachineSetting('machine_depth', '205')
+			profile.putMachineSetting('machine_height', '200')
+			profile.putMachineSetting('machine_name', 'ultimaker original+')
+			profile.putMachineSetting('machine_type', 'ultimaker_plus')
+			profile.putMachineSetting('machine_center_is_zero', 'False')
+			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
+			profile.putProfileSetting('nozzle_size', '0.4')
+			profile.putMachineSetting('extruder_head_size_min_x', '75.0')
+			profile.putMachineSetting('extruder_head_size_min_y', '18.0')
+			profile.putMachineSetting('extruder_head_size_max_x', '18.0')
+			profile.putMachineSetting('extruder_head_size_max_y', '35.0')
+			profile.putMachineSetting('extruder_head_size_height', '55.0')
+			profile.putMachineSetting('has_heated_bed', 'True')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putProfileSetting('retraction_enable', 'True')
 		elif self.LulzbotTazRadio.GetValue() or self.LulzbotMiniRadio.GetValue():
 			if self.LulzbotTazRadio.GetValue():
 				profile.putMachineSetting('machine_width', '298')
@@ -539,9 +561,11 @@ class UltimakerFirmwareUpgradePage(InfoPage):
 		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
 		skipUpgradeButton.Bind(wx.EVT_BUTTON, self.OnSkipClick)
 		self.AddHiddenSeperator()
-		self.AddText(_("Do not upgrade to this firmware if:"))
-		self.AddText(_("* You have an older machine based on ATMega1280 (Rev 1 machine)"))
-		self.AddText(_("* Have other changes in the firmware"))
+		if profile.getMachineSetting('machine_type') == 'ultimaker':
+			self.AddText(_("Do not upgrade to this firmware if:"))
+			self.AddText(_("* You have an older machine based on ATMega1280 (Rev 1 machine)"))
+			self.AddText(_("* Build your own heated bed"))
+			self.AddText(_("* Have other changes in the firmware"))
 #		button = self.AddButton('Goto this page for a custom firmware')
 #		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
 
@@ -652,7 +676,7 @@ class UltimakerCheckupPage(InfoPage):
 				self.comm.sendCommand('M104 S200 T%d' % (self.checkExtruderNr))
 				self.comm.sendCommand('M104 S200 T%d' % (self.checkExtruderNr))
 		elif self.checkupState == 1:
-			if temp < 60:
+			if temp[self.checkExtruderNr] < 60:
 				self.startTemp = temp[self.checkExtruderNr]
 				self.checkupState = 2
 				wx.CallAfter(self.infoBox.SetInfo, _("Checking the heater and temperature sensor."))
@@ -738,9 +762,14 @@ class UltimakerCheckupPage(InfoPage):
 
 			if self.checkupState == 3:
 				if not self.xMinStop and not self.xMaxStop and not self.yMinStop and not self.yMaxStop and not self.zMinStop and not self.zMaxStop:
-					self.checkupState = 4
-					wx.CallAfter(self.infoBox.SetAttention, _("Please press the right X endstop."))
-					wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopXMaxBitmap)
+					if profile.getMachineSetting('machine_type') == 'ultimaker_plus':
+						self.checkupState = 5
+						wx.CallAfter(self.infoBox.SetAttention, _("Please press the left X endstop."))
+						wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopXMinBitmap)
+					else:
+						self.checkupState = 4
+						wx.CallAfter(self.infoBox.SetAttention, _("Please press the right X endstop."))
+						wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopXMaxBitmap)
 			elif self.checkupState == 4:
 				if not self.xMinStop and self.xMaxStop and not self.yMinStop and not self.yMaxStop and not self.zMinStop and not self.zMaxStop:
 					self.checkupState = 5
@@ -753,9 +782,14 @@ class UltimakerCheckupPage(InfoPage):
 					wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopYMinBitmap)
 			elif self.checkupState == 6:
 				if not self.xMinStop and not self.xMaxStop and self.yMinStop and not self.yMaxStop and not self.zMinStop and not self.zMaxStop:
-					self.checkupState = 7
-					wx.CallAfter(self.infoBox.SetAttention, _("Please press the back Y endstop."))
-					wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopYMaxBitmap)
+					if profile.getMachineSetting('machine_type') == 'ultimaker_plus':
+						self.checkupState = 8
+						wx.CallAfter(self.infoBox.SetAttention, _("Please press the top Z endstop."))
+						wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopZMinBitmap)
+					else:
+						self.checkupState = 7
+						wx.CallAfter(self.infoBox.SetAttention, _("Please press the back Y endstop."))
+						wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopYMaxBitmap)
 			elif self.checkupState == 7:
 				if not self.xMinStop and not self.xMaxStop and not self.yMinStop and self.yMaxStop and not self.zMinStop and not self.zMaxStop:
 					self.checkupState = 8
@@ -763,9 +797,18 @@ class UltimakerCheckupPage(InfoPage):
 					wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopZMinBitmap)
 			elif self.checkupState == 8:
 				if not self.xMinStop and not self.xMaxStop and not self.yMinStop and not self.yMaxStop and self.zMinStop and not self.zMaxStop:
-					self.checkupState = 9
-					wx.CallAfter(self.infoBox.SetAttention, _("Please press the bottom Z endstop."))
-					wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopZMaxBitmap)
+					if profile.getMachineSetting('machine_type') == 'ultimaker_plus':
+						self.checkupState = 10
+						self.comm.close()
+						wx.CallAfter(self.infoBox.SetInfo, _("Checkup finished"))
+						wx.CallAfter(self.infoBox.SetReadyIndicator)
+						wx.CallAfter(self.endstopBitmap.Show, False)
+						wx.CallAfter(self.stopState.SetBitmap, self.checkBitmap)
+						wx.CallAfter(self.OnSkipClick, None)
+					else:
+						self.checkupState = 9
+						wx.CallAfter(self.infoBox.SetAttention, _("Please press the bottom Z endstop."))
+						wx.CallAfter(self.endstopBitmap.SetBitmap, self.endStopZMaxBitmap)
 			elif self.checkupState == 9:
 				if not self.xMinStop and not self.xMaxStop and not self.yMinStop and not self.yMaxStop and not self.zMinStop and self.zMaxStop:
 					self.checkupState = 10

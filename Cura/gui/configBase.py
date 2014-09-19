@@ -177,9 +177,10 @@ class SettingRow(object):
 			self.ctrl.Bind(wx.EVT_COLOURPICKER_CHANGED, self.OnSettingChange)
 		elif type(self.setting.getType()) is list or valueOverride is not None:
 			value = self.setting.getValue(self.settingIndex)
-			choices = self.setting.getType()[:]
+			choices = self.setting.getType()
 			if valueOverride is not None:
 				choices = valueOverride
+			choices = choices[:]
 			self._englishChoices = choices[:]
 			if value not in choices and len(choices) > 0:
 				value = choices[0]

@@ -1244,7 +1244,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._platformMesh[machine] = meshes[0]
 				else:
 					self._platformMesh[machine] = None
-				if machine == 'ultimaker2':
+				if machine == 'ultimaker2' or machine == 'ultimaker_plus':
 					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
 				else:
 					self._platformMesh[machine]._drawOffset = numpy.array([0,0,2.5], numpy.float32)
@@ -1254,9 +1254,12 @@ class SceneView(openglGui.glGuiPanel):
 			self._objectShader.unbind()
 
 			#For the Ultimaker 2 render the texture on the back plate to show the Ultimaker2 text.
-			if machine == 'ultimaker2':
+			if machine == 'ultimaker2' or machine == 'ultimaker_plus':
 				if not hasattr(self._platformMesh[machine], 'texture'):
-					self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
+					if machine == 'ultimaker2':
+						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
+					else:
+						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('UltimakerPlusbackplate.png')
 				glBindTexture(GL_TEXTURE_2D, self._platformMesh[machine].texture)
 				glEnable(GL_TEXTURE_2D)
 				glPushMatrix()
