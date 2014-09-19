@@ -30,6 +30,7 @@ class newVersionDialog(wx.Dialog):
 		s.Add(wx.StaticText(p, -1, '* When using the Pause at height plugin, the extruder will lose power so you could swap filament in an UM2.'))
 		s.Add(wx.StaticText(p, -1, '* Fixed an issue on both MacOS and Windows where Cura failed to start.'))
 		s.Add(wx.StaticText(p, -1, '* New TweakAtZ plugin from Dim3nsioneer.'))
+		s.Add(wx.StaticText(p, -1, '* Toolpath generation tries to find internal corners to start/end a layer, to minimize the seam seen on some prints'))
 		s.Add(wx.StaticText(p, -1, '* Added Ultimaker Original+'))
 		s.Add(wx.StaticText(p, -1, '* Added Ultimaker Original Heated Bed Upgrade Kit'))
 
