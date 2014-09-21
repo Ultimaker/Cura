@@ -1237,7 +1237,9 @@ class SceneView(openglGui.glGuiPanel):
 		size = [profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'), profile.getMachineSettingFloat('machine_height')]
 
 		machine = profile.getMachineSetting('machine_type')
-		if machine.startswith('ultimaker'):
+	
+		#Due to NC licensing, temporarily removing platform mesh loading for Ultimaker and Witbox
+		'''if machine.startswith('ultimaker'):
 			if machine not in self._platformMesh:
 				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
 				if len(meshes) > 0:
@@ -1307,17 +1309,18 @@ class SceneView(openglGui.glGuiPanel):
 			self._objectShader.bind()
 			self._renderObject(self._platformMesh[machine], False, False)
 			self._objectShader.unbind()
-		else:
-			glColor4f(0,0,0,1)
-			glLineWidth(3)
-			glBegin(GL_LINES)
-			glVertex3f(-size[0] / 2, -size[1] / 2, 0)
-			glVertex3f(-size[0] / 2, -size[1] / 2, 10)
-			glVertex3f(-size[0] / 2, -size[1] / 2, 0)
-			glVertex3f(-size[0] / 2+10, -size[1] / 2, 0)
-			glVertex3f(-size[0] / 2, -size[1] / 2, 0)
-			glVertex3f(-size[0] / 2, -size[1] / 2+10, 0)
-			glEnd()
+		'''
+		
+		glColor4f(0,0,0,1)
+		glLineWidth(3)
+		glBegin(GL_LINES)
+		glVertex3f(-size[0] / 2, -size[1] / 2, 0)
+		glVertex3f(-size[0] / 2, -size[1] / 2, 10)
+		glVertex3f(-size[0] / 2, -size[1] / 2, 0)
+		glVertex3f(-size[0] / 2+10, -size[1] / 2, 0)
+		glVertex3f(-size[0] / 2, -size[1] / 2, 0)
+		glVertex3f(-size[0] / 2, -size[1] / 2+10, 0)
+		glEnd()
 
 		glDepthMask(False)
 
