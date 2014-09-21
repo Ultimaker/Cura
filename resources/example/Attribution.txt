@@ -4,3 +4,6 @@ The below models are shared under the CC BY-SA 3.0 license (http://creativecommo
 
 * UltimakerHandle.stl: Ultimaker handle by Silvius
   http://www.thingiverse.com/thing:22819
+
+* OpenHardwareKeychain.stl: Open Hardware Keychain by kevinkline4124
+  http://www.thingiverse.com/thing:21596

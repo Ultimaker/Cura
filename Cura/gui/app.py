@@ -125,7 +125,7 @@ class CuraApp(wx.App):
 				profile.loadPreferences(os.path.join(otherCuraInstalls[-1], 'preferences.ini'))
 				profile.loadProfile(os.path.join(otherCuraInstalls[-1], 'current_profile.ini'))
 			#Check if we need to copy our examples
-			exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'UltimakerRobot_support.stl'))
+			exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'OpenHardwareKeychain.stl'))
 
 			self.loadFiles = [exampleFile]
 			if self.splash is not None:
