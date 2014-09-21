@@ -727,6 +727,9 @@ def resetProfile():
 		putProfileSetting('nozzle_size', '0.4')
 		if getMachineSetting('ultimaker_extruder_upgrade') == 'True':
 			putProfileSetting('retraction_enable', 'True')
+	elif getMachineSetting('machine_type') == 'ultimaker_plus':
+		putProfileSetting('nozzle_size', '0.4')
+		putProfileSetting('retraction_enable', 'True')
 	elif getMachineSetting('machine_type') == 'ultimaker2':
 		putProfileSetting('nozzle_size', '0.4')
 		putProfileSetting('retraction_enable', 'True')
