@@ -19,8 +19,8 @@ import hashlib
 import socket
 import struct
 import errno
-import cStringIO as StringIO
 
+from Cura.util.bigDataStorage import BigDataStorage
 from Cura.util import profile
 from Cura.util import pluginInfo
 from Cura.util import version
@@ -34,6 +34,8 @@ def getEngineFilename():
 	if platform.system() == 'Windows':
 		if version.isDevVersion() and os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
 			return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
+		if version.isDevVersion() and os.path.exists('C:/Program Files (x86)/Cura_14.09/CuraEngine.exe'):
+			return 'C:/Program Files (x86)/Cura_14.09/CuraEngine.exe'
 		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine.exe'))
 	if hasattr(sys, 'frozen'):
 		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../..', 'CuraEngine'))
@@ -53,7 +55,7 @@ class EngineResult(object):
 	"""
 	def __init__(self):
 		self._engineLog = []
-		self._gcodeData = StringIO.StringIO()
+		self._gcodeData = BigDataStorage()
 		self._polygons = []
 		self._replaceInfo = {}
 		self._success = False
@@ -101,17 +103,12 @@ class EngineResult(object):
 		return self._engineLog
 
 	def getGCode(self):
-		data = self._gcodeData.getvalue()
-		if len(self._replaceInfo) > 0:
-			block0 = data[0:2048]
-			for k, v in self._replaceInfo.items():
-				v = (v + ' ' * len(k))[:len(k)]
-				block0 = block0.replace(k, v)
-			return block0 + data[2048:]
-		return data
+		self._gcodeData.seekStart()
+		return self._gcodeData
 
 	def setGCode(self, gcode):
-		self._gcodeData = StringIO.StringIO(gcode)
+		self._gcodeData = BigDataStorage()
+		self._gcodeData.write(gcode)
 		self._replaceInfo = {}
 
 	def addLog(self, line):
@@ -121,6 +118,9 @@ class EngineResult(object):
 		self._modelHash = hash
 
 	def setFinished(self, result):
+		if result:
+			for k, v in self._replaceInfo.items():
+				self._gcodeData.replaceAtStart(k, v)
 		self._finished = result
 
 	def isFinished(self):
@@ -131,7 +131,7 @@ class EngineResult(object):
 			return None
 		if self._gcodeInterpreter.layerList is None and self._gcodeLoadThread is None:
 			self._gcodeInterpreter.progressCallback = self._gcodeInterpreterCallback
-			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData))
+			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData.clone()))
 			self._gcodeLoadCallback = loadCallback
 			self._gcodeLoadThread.daemon = True
 			self._gcodeLoadThread.start()
