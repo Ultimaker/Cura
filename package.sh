@@ -18,7 +18,7 @@ BUILD_TARGET=${1:-none}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-export BUILD_NAME=14.09
+export BUILD_NAME=14.09.1_RC1
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Revision
@@ -78,7 +78,7 @@ function extract
 if [ "$BUILD_TARGET" = "none" ]; then
 	echo "You need to specify a build target with:"
 	echo "$0 win32"
-	echo "$0 debian_i368"
+	echo "$0 debian_i386"
 	echo "$0 debian_amd64"
 	echo "$0 darwin"
 	echo "$0 freebsd"
