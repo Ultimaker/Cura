@@ -51,9 +51,9 @@ class gcode(object):
 		elif type(data) is list:
 			self._load(data)
 		else:
-			data = data.getvalue()
 			self._fileSize = len(data)
-			self._load(StringIO.StringIO(data))
+			data.seekStart()
+			self._load(data)
 
 	def calculateWeight(self):
 		#Calculates the weight of the filament in kg

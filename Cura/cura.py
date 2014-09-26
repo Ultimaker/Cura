@@ -72,7 +72,12 @@ def main():
 		if not options.output:
 			options.output = args[0] + profile.getGCodeExtension()
 		with open(options.output, "wb") as f:
-			f.write(engine.getResult().getGCode())
+			gcode = engine.getResult().getGCode()
+			while True:
+				data = gcode.read()
+				if len(data) == 0:
+					break
+				f.write(data)
 		print 'GCode file saved : %s' % options.output
 
 		engine.cleanup()
