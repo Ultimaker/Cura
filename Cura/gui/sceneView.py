@@ -911,7 +911,8 @@ class SceneView(openglGui.glGuiPanel):
 			self.printButton._tooltip = _("Toolpath to SD")
 		elif connectionGroup is not None:
 			self.printButton._imageID = connectionGroup.getIconID()
-			self.printButton._tooltip = _("Print with %s") % (connectionGroup.getName())
+			#self.printButton._tooltip = _("Print with %s") % (connectionGroup.getName())
+			self.printButton._tooltip = _("Print/Control")
 		else:
 			self.printButton._imageID = 3
 			self.printButton._tooltip = _("Save toolpath")
