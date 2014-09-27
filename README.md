@@ -4,7 +4,12 @@ Cura
 Read this, it's important!
 ===========================
 
-If you are reading this, then you are looking at the *development* version of Cura. If you just want to use Cura, take a look at the following location: https://daid.github.com/Cura
+This is the development version of Cura for LulzBot 3D Printers by Aleph Objects, Inc. It is available here:
+https://github.com/alephobjects/Cura
+
+This branch is based on the upstream version maintained by daid and Ultimaker:
+https://github.com/daid/Cura
+
 
 Development
 ===========
