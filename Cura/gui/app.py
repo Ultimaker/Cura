@@ -150,7 +150,7 @@ class CuraApp(wx.App):
 		self.mainWindow.OnDropFiles(self.loadFiles)
 		if profile.getPreference('last_run_version') != version.getVersion(False):
 			profile.putPreference('last_run_version', version.getVersion(False))
-			newVersionDialog.newVersionDialog().Show()
+			#newVersionDialog.newVersionDialog().Show()
 
 		setFullScreenCapable(self.mainWindow)
 
