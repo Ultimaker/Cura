@@ -405,7 +405,7 @@ class MachineSelectPage(InfoPage):
 		self.AddText(_("This does NOT submit your models online nor gathers any privacy related information."))
 		self.SubmitUserStats = self.AddCheckbox(_("Submit anonymous usage information:"))
 		self.AddText(_("For full details see: http://wiki.ultimaker.com/Cura:stats"))
-		self.SubmitUserStats.SetValue(True)
+		self.SubmitUserStats.SetValue(False)
 
 	def OnUltimaker2Select(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimaker2ReadyPage)
