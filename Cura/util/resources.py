@@ -50,7 +50,7 @@ def getDefaultMachineProfiles():
 
 def setupLocalization(selectedLanguage = None):
 	#Default to english
-	languages = ['zh']
+	languages = ['en']
 
 	if selectedLanguage is not None:
 		for item in getLanguageOptions():
