@@ -1,3 +1,4 @@
+#coding:utf8
 """
 Helper module to get easy access to the path where resources are stored.
 This is because the resource location is depended on the packaging method and OS
@@ -65,7 +66,7 @@ def getLanguageOptions():
 		['en', 'English'],
 		['de', 'Deutsch'],
 		['fr', 'French'],
-		# ['cs', 'Cesky'],
+		['zh', 'Chinese'],
 		# ['nl', 'Nederlands'],
 		# ['es', 'Spanish'],
 		# ['po', 'Polish']
