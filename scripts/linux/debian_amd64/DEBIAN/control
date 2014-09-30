@@ -1,11 +1,12 @@
+Source: cura
 Package: cura
-Version: 14.01
+Version: 14.09
+Maintainer: Aleph Objects, Inc. <info@alephobjects.com>
 Section: misc
 Priority: optional
 Architecture: amd64
 Essential: no
 Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy
-Maintainer: Daid <daid303@gmail.com>
 Provides: cura
 Installed-Size: 10000
 Description: Cura is a full software solution for 3D printing,
