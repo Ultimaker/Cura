@@ -184,16 +184,16 @@ class Engine(object):
 
 		self._serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self._serverPortNr = 0xC20A
-        for potential_port in xrange(0xC20A, 0xFFFF):
-            self._serverPortNr = potential_port
+		for potential_port in xrange(0xC20A, 0xFFFF):
+			self._serverPortNr = potential_port
 			try:
 				self._serversocket.bind(('127.0.0.1', self._serverPortNr))
-                break
+				break
 			except:
 				print("Failed to listen on port: %d" % (self._serverPortNr))
-        else:
-            print("Failed to listen on any port, this is a fatal error")
-            exit(10)
+		else:
+			print("Failed to listen on any port, this is a fatal error")
+			exit(10)
 		thread = threading.Thread(target=self._socketListenThread)
 		thread.daemon = True
 		thread.start()
