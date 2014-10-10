@@ -5,20 +5,27 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import numpy
 
+
+def _isLeft(a, b, c):
+	""" Check if C is left of the infinite line from A to B """
+	return ((b[0] - a[0])*(c[1] - a[1]) - (b[1] - a[1])*(c[0] - a[0])) > 0
+
+
+def _isRightTurn((p, q, r)):
+	sum1 = q[0]*r[1] + p[0]*q[1] + r[0]*p[1]
+	sum2 = q[0]*p[1] + r[0]*q[1] + p[0]*r[1]
+
+	if sum1 - sum2 < 0:
+		return 1
+	else:
+		return 0
+
+
 def convexHull(pointList):
 	""" Create a convex hull from a list of points. """
-	def _isRightTurn((p, q, r)):
-		sum1 = q[0]*r[1] + p[0]*q[1] + r[0]*p[1]
-		sum2 = q[0]*p[1] + r[0]*q[1] + p[0]*r[1]
-
-		if sum1 - sum2 < 0:
-			return 1
-		else:
-			return 0
-
 	unique = {}
 	for p in pointList:
-		unique[p[0],p[1]] = 1
+		unique[p[0], p[1]] = 1
 
 	points = unique.keys()
 	points.sort()
@@ -48,6 +55,7 @@ def convexHull(pointList):
 
 	return numpy.array(upper + lower, numpy.float32)
 
+
 def minkowskiHull(a, b):
 	"""Calculate the minkowski hull of 2 convex polygons"""
 	points = numpy.zeros((len(a) * len(b), 2))
@@ -56,7 +64,8 @@ def minkowskiHull(a, b):
 			points[n * len(b) + m] = a[n] + b[m]
 	return convexHull(points.copy())
 
-def projectPoly(poly, normal):
+
+def _projectPoly(poly, normal):
 	"""
 	Project a convex polygon on a given normal.
 	A projection of a convex polygon on a infinite line is a finite line.
@@ -70,6 +79,7 @@ def projectPoly(poly, normal):
 		pMax = max(pMax, p)
 	return pMin, pMax
 
+
 def polygonCollision(polyA, polyB):
 	""" Check if convexy polygon A and B collide, return True if this is the case. """
 	for n in xrange(0, len(polyA)):
@@ -78,8 +88,8 @@ def polygonCollision(polyA, polyB):
 		normal = (p1 - p0)[::-1]
 		normal[1] = -normal[1]
 		normal /= numpy.linalg.norm(normal)
-		aMin, aMax = projectPoly(polyA, normal)
-		bMin, bMax = projectPoly(polyB, normal)
+		aMin, aMax = _projectPoly(polyA, normal)
+		bMin, bMax = _projectPoly(polyB, normal)
 		if aMin > bMax:
 			return False
 		if bMin > aMax:
@@ -90,13 +100,14 @@ def polygonCollision(polyA, polyB):
 		normal = (p1 - p0)[::-1]
 		normal[1] = -normal[1]
 		normal /= numpy.linalg.norm(normal)
-		aMin, aMax = projectPoly(polyA, normal)
-		bMin, bMax = projectPoly(polyB, normal)
+		aMin, aMax = _projectPoly(polyA, normal)
+		bMin, bMax = _projectPoly(polyB, normal)
 		if aMin > bMax:
 			return False
-		if aMax < bMin:
+		if bMin > aMax:
 			return False
 	return True
+
 
 def polygonCollisionPushVector(polyA, polyB):
 	""" Check if convex polygon A and B collide, return the vector of penetration if this is the case, else return False. """
@@ -108,13 +119,13 @@ def polygonCollisionPushVector(polyA, polyB):
 		normal = (p1 - p0)[::-1]
 		normal[1] = -normal[1]
 		normal /= numpy.linalg.norm(normal)
-		aMin, aMax = projectPoly(polyA, normal)
-		bMin, bMax = projectPoly(polyB, normal)
+		aMin, aMax = _projectPoly(polyA, normal)
+		bMin, bMax = _projectPoly(polyB, normal)
 		if aMin > bMax:
 			return False
 		if bMin > aMax:
 			return False
-		size = min(bMax, bMax) - max(aMin, bMin)
+		size = min(aMax, bMax) - max(aMin, bMin)
 		if size < retSize:
 			ret = normal * (size + 0.1)
 			retSize = size
@@ -124,17 +135,18 @@ def polygonCollisionPushVector(polyA, polyB):
 		normal = (p1 - p0)[::-1]
 		normal[1] = -normal[1]
 		normal /= numpy.linalg.norm(normal)
-		aMin, aMax = projectPoly(polyA, normal)
-		bMin, bMax = projectPoly(polyB, normal)
+		aMin, aMax = _projectPoly(polyA, normal)
+		bMin, bMax = _projectPoly(polyB, normal)
 		if aMin > bMax:
 			return False
-		if aMax < bMin:
+		if bMin > aMax:
 			return False
-		size = min(bMax, bMax) - max(aMin, bMin)
+		size = min(aMax, bMax) - max(aMin, bMin)
 		if size < retSize:
 			ret = normal * -(size + 0.1)
 			retSize = size
 	return ret
+
 
 def fullInside(polyA, polyB):
 	"""
@@ -146,8 +158,8 @@ def fullInside(polyA, polyB):
 		normal = (p1 - p0)[::-1]
 		normal[1] = -normal[1]
 		normal /= numpy.linalg.norm(normal)
-		aMin, aMax = projectPoly(polyA, normal)
-		bMin, bMax = projectPoly(polyB, normal)
+		aMin, aMax = _projectPoly(polyA, normal)
+		bMin, bMax = _projectPoly(polyB, normal)
 		if aMax > bMax:
 			return False
 		if aMin < bMin:
@@ -158,17 +170,14 @@ def fullInside(polyA, polyB):
 		normal = (p1 - p0)[::-1]
 		normal[1] = -normal[1]
 		normal /= numpy.linalg.norm(normal)
-		aMin, aMax = projectPoly(polyA, normal)
-		bMin, bMax = projectPoly(polyB, normal)
+		aMin, aMax = _projectPoly(polyA, normal)
+		bMin, bMax = _projectPoly(polyB, normal)
 		if aMax > bMax:
 			return False
 		if aMin < bMin:
 			return False
 	return True
 
-def isLeft(a, b, c):
-	""" Check if C is left of the infinite line from A to B """
-	return ((b[0] - a[0])*(c[1] - a[1]) - (b[1] - a[1])*(c[0] - a[0])) > 0
 
 def lineLineIntersection(p0, p1, p2, p3):
 	""" Return the intersection of the infinite line trough points p0 and p1 and infinite line trough points p2 and p3. """
@@ -185,6 +194,7 @@ def lineLineIntersection(p0, p1, p2, p3):
 		return p0
 	return [(B2*C1 - B1*C2)/det, (A1 * C2 - A2 * C1) / det]
 
+
 def clipConvex(poly0, poly1):
 	""" Cut the convex polygon 0 so that it completely fits in convex polygon 1, any part sticking out of polygon 1 is cut off """
 	res = poly0
@@ -195,10 +205,10 @@ def clipConvex(poly0, poly1):
 		p1 = poly1[p1idx]
 		for n in xrange(0, len(src)):
 			p = src[n]
-			if not isLeft(p0, p1, p):
-				if isLeft(p0, p1, src[n-1]):
+			if not _isLeft(p0, p1, p):
+				if _isLeft(p0, p1, src[n-1]):
 					res.append(lineLineIntersection(p0, p1, src[n-1], p))
 				res.append(p)
-			elif not isLeft(p0, p1, src[n-1]):
+			elif not _isLeft(p0, p1, src[n-1]):
 				res.append(lineLineIntersection(p0, p1, src[n-1], p))
 	return numpy.array(res, numpy.float32)
