@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-17 10:38+0100\n"
+"POT-Creation-Date: 2014-10-13 09:32+0200\n"
 "PO-Revision-Date: 2014-09-11 12:20+0900\n"
 "Last-Translator: Jinbuhm Kim <Jinbuhm.Kim@gmail.com>\n"
 "Language-Team: Korean <Jinbuhm.Kim@gmail.com>\n"
@@ -19,35 +19,45 @@ msgstr ""
 "Language: ko_KR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: Cura/gui/app.py:141 Cura/gui/mainWindow.py:563
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:566
 msgid "A new version of Cura is available, would you like to download?"
 msgstr "새로운 버젼의 큐라가 있습니다. 다운로드하시겠습니까?"
 
-#: Cura/gui/app.py:141 Cura/gui/mainWindow.py:563
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:566
 msgid "New version available"
 msgstr "새로운 버젼이 있습니다."
 
-#: Cura/gui/configWizard.py:223
+#: Cura/gui/configWizard.py:231
 msgid "Add new machine wizard"
 msgstr "새로운 기기 추가를 위한 마법사"
 
-#: Cura/gui/configWizard.py:225
+#: Cura/gui/configWizard.py:233
 msgid "First time run wizard"
 msgstr "처음 실행 마법사"
 
-#: Cura/gui/configWizard.py:226
+#: Cura/gui/configWizard.py:234
 msgid "Welcome, and thanks for trying Cura!"
 msgstr "환영합니다. 큐라를 사용해주셔서 감사합니다 !"
 
-#: Cura/gui/configWizard.py:228
+#: Cura/gui/configWizard.py:236
 msgid "This wizard will help you in setting up Cura for your machine."
 msgstr "마법사가 당신의 기기를 위한 큐라의 설정을 도와줄 것입니다."
 
-#: Cura/gui/configWizard.py:245
+#: Cura/gui/configWizard.py:239
+#, fuzzy
+msgid "Select your language:"
+msgstr "기기를 선택하세요"
+
+#: Cura/gui/configWizard.py:280
+#, fuzzy
+msgid "Select which Printrbot machine you have:"
+msgstr "어떤 기기를 가지고 있나요:"
+
+#: Cura/gui/configWizard.py:317
 msgid "The following pre-defined machine profiles are available"
 msgstr "다음의 미리 정의된 기기 프로파일들이 사용가능합니다."
 
-#: Cura/gui/configWizard.py:246
+#: Cura/gui/configWizard.py:318
 msgid ""
 "Note that these profiles are not guaranteed to give good results,\n"
 "or work at all. Extra tweaks might be required.\n"
@@ -60,11 +70,11 @@ msgstr ""
 "만약 미리 정의된 프로파일에 문제가 발견이 되거나 추가적인 프로파일을 원하면\n"
 "github의 이슈 트래커에 신고를 해주세요."
 
-#: Cura/gui/configWizard.py:276
+#: Cura/gui/configWizard.py:348
 msgid "Cura is now ready to be used!"
 msgstr "큐라를 사용할 준비가 되었습니다!"
 
-#: Cura/gui/configWizard.py:281
+#: Cura/gui/configWizard.py:353
 msgid ""
 "RepRap machines can be vastly different, so here you can set your own "
 "settings."
@@ -72,12 +82,12 @@ msgstr ""
 "RepRap 기기들은 많이 다를 수 있기 때문에 여기에서 자신만의 설정을 할 수 있습"
 "니다."
 
-#: Cura/gui/configWizard.py:282
+#: Cura/gui/configWizard.py:354
 msgid ""
 "Be sure to review the default profile before running it on your machine."
 msgstr "기기에 실행하기전에 기본 프로파일을 검토해야 합니다."
 
-#: Cura/gui/configWizard.py:283
+#: Cura/gui/configWizard.py:355
 msgid ""
 "If you like a default profile for your machine added,\n"
 "then make an issue on github."
@@ -85,57 +95,58 @@ msgstr ""
 "당신이 추가한 기기에 기본 프로파일이 맞다면 \n"
 "github에 이슈를 남기십시요."
 
-#: Cura/gui/configWizard.py:285
+#: Cura/gui/configWizard.py:357
 msgid "You will have to manually install Marlin or Sprinter firmware."
 msgstr "Marlin이나 Sprinter 펌웨어를 수동으로 설치를 해야만 합니다."
 
-#: Cura/gui/configWizard.py:287
+#: Cura/gui/configWizard.py:359
 msgid "Machine name"
 msgstr "기기 이름"
 
-#: Cura/gui/configWizard.py:288
+#: Cura/gui/configWizard.py:360
 msgid "Machine width (mm)"
 msgstr "기기 폭 (mm)"
 
-#: Cura/gui/configWizard.py:289
+#: Cura/gui/configWizard.py:361
 msgid "Machine depth (mm)"
 msgstr "기기 길이(mm)"
 
-#: Cura/gui/configWizard.py:290
+#: Cura/gui/configWizard.py:362
 msgid "Machine height (mm)"
 msgstr "기기 높이(mm)"
 
-#: Cura/gui/configWizard.py:291 Cura/util/profile.py:175
+#: Cura/gui/configWizard.py:363 Cura/util/profile.py:175
 msgid "Nozzle size (mm)"
 msgstr "노즐 사이즈(mm)"
 
-#: Cura/gui/configWizard.py:292 Cura/util/profile.py:383
+#: Cura/gui/configWizard.py:364 Cura/util/profile.py:503
 msgid "Heated bed"
 msgstr "히팅 베드"
 
-#: Cura/gui/configWizard.py:293
+#: Cura/gui/configWizard.py:365
 msgid "Bed center is 0,0,0 (RoStock)"
 msgstr "베드의 중심은 0,0,0 (Rosock)"
 
-#: Cura/gui/configWizard.py:313
+#: Cura/gui/configWizard.py:385
 msgid "Select your machine"
 msgstr "기기를 선택하세요"
 
-#: Cura/gui/configWizard.py:314
+#: Cura/gui/configWizard.py:386
 msgid "What kind of machine do you have:"
 msgstr "어떤 기기를 가지고 있나요:"
 
-#: Cura/gui/configWizard.py:321
-msgid "Other (Ex: RepRap, MakerBot)"
+#: Cura/gui/configWizard.py:401
+#, fuzzy
+msgid "Other (Ex: RepRap, MakerBot, Witbox)"
 msgstr "그 외(예: RepRap, MakerBot)"
 
-#: Cura/gui/configWizard.py:324
+#: Cura/gui/configWizard.py:404
 msgid ""
 "The collection of anonymous usage information helps with the continued "
 "improvement of Cura."
 msgstr "익명의 사용정보의 수집은 큐라의 향상에 도움이 됩니다."
 
-#: Cura/gui/configWizard.py:325
+#: Cura/gui/configWizard.py:405
 msgid ""
 "This does NOT submit your models online nor gathers any privacy related "
 "information."
@@ -143,19 +154,19 @@ msgstr ""
 "이것은 당신의 모델을 온라인에 보내거나 프라이버시와 관계된 정보를 모으지 않습"
 "니다."
 
-#: Cura/gui/configWizard.py:326
+#: Cura/gui/configWizard.py:406
 msgid "Submit anonymous usage information:"
 msgstr "익명으로 사용 정보를 보내기:"
 
-#: Cura/gui/configWizard.py:327
+#: Cura/gui/configWizard.py:407
 msgid "For full details see: http://wiki.ultimaker.com/Cura:stats"
 msgstr "더 자세한 정보 보기: http://wiki.ultimaker.com/Cura:stats"
 
-#: Cura/gui/configWizard.py:396
+#: Cura/gui/configWizard.py:524
 msgid "Select upgraded parts you have"
 msgstr "업그레이드된 부품을 선택하기"
 
-#: Cura/gui/configWizard.py:397
+#: Cura/gui/configWizard.py:525
 msgid ""
 "To assist you in having better default settings for your Ultimaker\n"
 "Cura would like to know which upgrades you have in your machine."
@@ -163,19 +174,24 @@ msgstr ""
 "Ultimaker의 더 나은 설정을 위해\n"
 "큐라는 당신의 기기에 어떤 업그레이드를 했는지 알고 싶습니다."
 
-#: Cura/gui/configWizard.py:399
+#: Cura/gui/configWizard.py:527
 msgid "Extruder drive upgrade"
 msgstr "익스투루더 드라이브 업그레이드"
 
-#: Cura/gui/configWizard.py:400
+#: Cura/gui/configWizard.py:528
+#, fuzzy
+msgid "Heated printer bed (kit)"
+msgstr "히팅 프린터 베드 (자작)"
+
+#: Cura/gui/configWizard.py:529
 msgid "Heated printer bed (self built)"
 msgstr "히팅 프린터 베드 (자작)"
 
-#: Cura/gui/configWizard.py:401
+#: Cura/gui/configWizard.py:530
 msgid "Dual extrusion (experimental)"
 msgstr "이중 압출 (실험)"
 
-#: Cura/gui/configWizard.py:403
+#: Cura/gui/configWizard.py:532
 msgid ""
 "If you have an Ultimaker bought after october 2012 you will have the\n"
 "Extruder drive upgrade. If you do not have this upgrade,\n"
@@ -185,7 +201,7 @@ msgstr ""
 "당신은 업그레이된 익스투루더 드라이브를 가지고 있습니다. \n"
 "만약 이것이 없다면 신뢰성을 향상시키기를 추천합니다."
 
-#: Cura/gui/configWizard.py:404
+#: Cura/gui/configWizard.py:533
 msgid ""
 "This upgrade can be bought from the Ultimaker webshop\n"
 "or found on thingiverse as thing:26094"
@@ -193,11 +209,11 @@ msgstr ""
 "이 업그레이드는 Ultimaker 웹샵에서 구매하거나 \n"
 "thingiverse(26094)에서 찾을 수 있습니다."
 
-#: Cura/gui/configWizard.py:423
+#: Cura/gui/configWizard.py:555
 msgid "Upgrade Ultimaker Firmware"
 msgstr "Ultimaker 펌웨어 업그레이드"
 
-#: Cura/gui/configWizard.py:424
+#: Cura/gui/configWizard.py:556
 msgid ""
 "Firmware is the piece of software running directly on your 3D printer.\n"
 "This firmware controls the step motors, regulates the temperature\n"
@@ -207,7 +223,7 @@ msgstr ""
 "펌웨어는 스텝모터와 온도를 제어하고 \n"
 "궁극적으로 프린터를 동작하게 만듭니다."
 
-#: Cura/gui/configWizard.py:426
+#: Cura/gui/configWizard.py:558
 msgid ""
 "The firmware shipping with new Ultimakers works, but upgrades\n"
 "have been made to make better prints, and make calibration easier."
@@ -215,7 +231,7 @@ msgstr ""
 "새로운 Ultimaker에 저장되어 있는 펌웨어도 동작하지만\n"
 "업그레이드는 더 나은 프린트와 쉬운 보정을 가능하게 합니다. "
 
-#: Cura/gui/configWizard.py:428
+#: Cura/gui/configWizard.py:560
 msgid ""
 "Cura requires these new features and thus\n"
 "your firmware will most likely need to be upgraded.\n"
@@ -225,20 +241,24 @@ msgstr ""
 "펌웨어는 업그레이드 돼야 합니다. \n"
 "당신은 이제 그렇게 할 수 있는 기회를 가질 겁니다."
 
-#: Cura/gui/configWizard.py:433
+#: Cura/gui/configWizard.py:566
 msgid "Do not upgrade to this firmware if:"
 msgstr "만약 다음 사항에 해당이 되면 이 펌웨어를 업그레이드 하지 마십시요:"
 
-#: Cura/gui/configWizard.py:434
+#: Cura/gui/configWizard.py:567
 msgid "* You have an older machine based on ATMega1280 (Rev 1 machine)"
 msgstr ""
 "* 당신은 ATMega1280 (Rev 1 기기)에 기반한 오래된 기기를 가지고 있습니다"
 
-#: Cura/gui/configWizard.py:435
+#: Cura/gui/configWizard.py:568
+msgid "* Build your own heated bed"
+msgstr ""
+
+#: Cura/gui/configWizard.py:569
 msgid "* Have other changes in the firmware"
 msgstr "* 펌웨어에 다른 변경사항을 가지고 있습니다"
 
-#: Cura/gui/configWizard.py:469
+#: Cura/gui/configWizard.py:603
 msgid ""
 "It is a good idea to do a few sanity checks now on your Ultimaker.\n"
 "You can skip these if you know your machine is functional."
@@ -247,101 +267,101 @@ msgstr ""
 "만약 당신의 기기가 제대로 동작한다고 알고 있다면 이 과정을 건너뛸 수 있습니"
 "다."
 
-#: Cura/gui/configWizard.py:470
+#: Cura/gui/configWizard.py:604
 msgid "Run checks"
 msgstr "체크 실행 "
 
-#: Cura/gui/configWizard.py:470
+#: Cura/gui/configWizard.py:604
 msgid "Skip checks"
 msgstr "체크 건너뛰기 "
 
-#: Cura/gui/configWizard.py:474
+#: Cura/gui/configWizard.py:608
 msgid "Communication:"
 msgstr "통신:"
 
-#: Cura/gui/configWizard.py:475
+#: Cura/gui/configWizard.py:609
 msgid "Temperature:"
 msgstr "온도:"
 
-#: Cura/gui/configWizard.py:476
+#: Cura/gui/configWizard.py:610
 msgid "Endstops:"
 msgstr "엔드스탑:"
 
-#: Cura/gui/configWizard.py:481
+#: Cura/gui/configWizard.py:615
 msgid "Show error log"
 msgstr "에러 기록 보기"
 
-#: Cura/gui/configWizard.py:515
+#: Cura/gui/configWizard.py:649
 msgid "Connecting to machine."
 msgstr "기기에 연결합니다."
 
-#: Cura/gui/configWizard.py:536
+#: Cura/gui/configWizard.py:670
 msgid "Cooldown before temperature check."
 msgstr "온도 체크전 온도내리기 "
 
-#: Cura/gui/configWizard.py:542 Cura/gui/configWizard.py:549
+#: Cura/gui/configWizard.py:676 Cura/gui/configWizard.py:683
 msgid "Checking the heater and temperature sensor."
 msgstr "히터 및 온도센서 체크중."
 
-#: Cura/gui/configWizard.py:560
+#: Cura/gui/configWizard.py:694
 msgid "Please make sure none of the endstops are pressed."
 msgstr "엔드스탑이 눌러지지 않았는지 확인하세요."
 
-#: Cura/gui/configWizard.py:573
+#: Cura/gui/configWizard.py:707
 msgid "Temperature measurement FAILED!"
 msgstr "온도 측정 실패!"
 
-#: Cura/gui/configWizard.py:578
+#: Cura/gui/configWizard.py:712
 #, python-format
 msgid "Head temperature: %d"
 msgstr "헤드 온도:%d"
 
-#: Cura/gui/configWizard.py:585 Cura/gui/configWizard.py:594
+#: Cura/gui/configWizard.py:719 Cura/gui/configWizard.py:728
 #, python-format
 msgid "Communication State: %s"
 msgstr "통신 상태:%s"
 
-#: Cura/gui/configWizard.py:588
+#: Cura/gui/configWizard.py:722
 msgid "Failed to establish connection with the printer."
 msgstr "프린터와 연결 실패."
 
-#: Cura/gui/configWizard.py:633
-msgid "Please press the right X endstop."
-msgstr "오른쪽 X축 엔드스탑을 누르세요."
-
-#: Cura/gui/configWizard.py:638
+#: Cura/gui/configWizard.py:768 Cura/gui/configWizard.py:777
 msgid "Please press the left X endstop."
 msgstr "왼쪽 X축 엔드스탑을 누르세요."
 
-#: Cura/gui/configWizard.py:643
+#: Cura/gui/configWizard.py:772
+msgid "Please press the right X endstop."
+msgstr "오른쪽 X축 엔드스탑을 누르세요."
+
+#: Cura/gui/configWizard.py:782
 msgid "Please press the front Y endstop."
 msgstr "앞쪽 Y축 엔드스탑을 누르세요."
 
-#: Cura/gui/configWizard.py:648
-msgid "Please press the back Y endstop."
-msgstr "뒷쪽 Y축 엔드스탑을 누르세요."
-
-#: Cura/gui/configWizard.py:653
+#: Cura/gui/configWizard.py:788 Cura/gui/configWizard.py:797
 msgid "Please press the top Z endstop."
 msgstr "상단 Z축 엔드스탑을 누르세요."
 
-#: Cura/gui/configWizard.py:658
-msgid "Please press the bottom Z endstop."
-msgstr "하단 Z축 엔드스탑을 누르세요."
+#: Cura/gui/configWizard.py:792
+msgid "Please press the back Y endstop."
+msgstr "뒷쪽 Y축 엔드스탑을 누르세요."
 
-#: Cura/gui/configWizard.py:664
+#: Cura/gui/configWizard.py:804 Cura/gui/configWizard.py:817
 msgid "Checkup finished"
 msgstr "체크가 끝났습니다."
 
-#: Cura/gui/configWizard.py:707
+#: Cura/gui/configWizard.py:811
+msgid "Please press the bottom Z endstop."
+msgstr "하단 Z축 엔드스탑을 누르세요."
+
+#: Cura/gui/configWizard.py:860
 msgid "Calibrating the Steps Per E requires some manual actions."
 msgstr "Steps Per E 를 보정하는 것은 몇가지 수동작업이 필요합니다."
 
-#: Cura/gui/configWizard.py:708
+#: Cura/gui/configWizard.py:861
 msgid "First remove any filament from your machine."
 msgstr "먼저 필라멘트를 기기에서 제거하십시요."
 
-#: Cura/gui/configWizard.py:709
+#: Cura/gui/configWizard.py:862
 msgid ""
 "Next put in your filament so the tip is aligned with the\n"
 "top of the extruder drive."
@@ -349,15 +369,15 @@ msgstr ""
 "다음 필라멘트를 넣어서 팁이\n"
 "익스투루더의 상단과 정렬이 되도록 하십시요."
 
-#: Cura/gui/configWizard.py:710
+#: Cura/gui/configWizard.py:863
 msgid "We'll push the filament 100mm"
 msgstr "이제 필라멘트를 100mm 밀어 넣을 겁니다."
 
-#: Cura/gui/configWizard.py:711
+#: Cura/gui/configWizard.py:864
 msgid "Extrude 100mm filament"
 msgstr "필라멘트100mm 압출"
 
-#: Cura/gui/configWizard.py:712
+#: Cura/gui/configWizard.py:865
 msgid ""
 "Now measure the amount of extruded filament:\n"
 "(this can be more or less then 100mm)"
@@ -365,19 +385,19 @@ msgstr ""
 "이제 압출된 필라멘트의 양을 측정하십시요:\n"
 "(이것은 100mm 보다 많거나 적을 수 있습니다)"
 
-#: Cura/gui/configWizard.py:713
+#: Cura/gui/configWizard.py:866
 msgid "Save"
 msgstr "저장 "
 
-#: Cura/gui/configWizard.py:714
+#: Cura/gui/configWizard.py:867
 msgid "This results in the following steps per E:"
 msgstr "This results in the following steps per E:"
 
-#: Cura/gui/configWizard.py:716
+#: Cura/gui/configWizard.py:869
 msgid "You can repeat these steps to get better calibration."
 msgstr "더 나은 보정을 위해 이 과정을 반복할 수 있습니다."
 
-#: Cura/gui/configWizard.py:719
+#: Cura/gui/configWizard.py:872
 msgid ""
 "If you still have filament in your printer which needs\n"
 "heat to remove, press the heat up button below:"
@@ -385,11 +405,11 @@ msgstr ""
 "제거해야할 필라멘트가 아직 프린터에 남아있다면\n"
 "아래 가열 버튼을 누르세요:"
 
-#: Cura/gui/configWizard.py:720
+#: Cura/gui/configWizard.py:873
 msgid "Heatup for filament removal"
 msgstr "필라멘트 제거를 위해 가열"
 
-#: Cura/gui/configWizard.py:745 Cura/gui/configWizard.py:779
+#: Cura/gui/configWizard.py:898 Cura/gui/configWizard.py:932
 msgid ""
 "Error: Failed to open serial port to machine\n"
 "If this keeps happening, try disconnecting and reconnecting the USB cable"
@@ -397,18 +417,18 @@ msgstr ""
 "오류: 시리얼 포트를 여는데 실패했습니다\n"
 "만약 이 현상이 계속되면 USB 케이블을 제거하고 다시 연결을 해보십시오"
 
-#: Cura/gui/firmwareInstall.py:44
+#: Cura/gui/firmwareInstall.py:58
 msgid ""
 "I am sorry, but Cura does not ship with a default firmware for your machine "
 "configuration."
 msgstr "죄송합니다, 큐라는 이 기기의 설정을 위한 기본 펌웨어가 없습니다."
 
-#: Cura/gui/firmwareInstall.py:44 Cura/gui/firmwareInstall.py:48
-#: Cura/gui/firmwareInstall.py:103 Cura/gui/mainWindow.py:506
+#: Cura/gui/firmwareInstall.py:58 Cura/gui/firmwareInstall.py:62
+#: Cura/gui/firmwareInstall.py:117 Cura/gui/mainWindow.py:508
 msgid "Firmware update"
 msgstr "펌웨어 업데이트 "
 
-#: Cura/gui/firmwareInstall.py:48
+#: Cura/gui/firmwareInstall.py:62
 msgid ""
 "Cura only supports firmware updates for ATMega2560 based hardware.\n"
 "So updating your RepRap with Cura might or might not work."
@@ -416,19 +436,19 @@ msgstr ""
 "큐라는 ATMega2560기반의 하드웨어의 펌웨어 업데이트만 지원합니다. \n"
 "따라서 RepRap기반의 기기는 동작을 하지 않을 수도 있습니다."
 
-#: Cura/gui/firmwareInstall.py:56
+#: Cura/gui/firmwareInstall.py:70
 msgid "OK"
 msgstr "확인"
 
-#: Cura/gui/firmwareInstall.py:77
+#: Cura/gui/firmwareInstall.py:91
 msgid "Reading firmware..."
 msgstr "펌웨어 읽기..."
 
-#: Cura/gui/firmwareInstall.py:79
+#: Cura/gui/firmwareInstall.py:93
 msgid "Connecting to machine..."
 msgstr "기기에 접속중..."
 
-#: Cura/gui/firmwareInstall.py:83
+#: Cura/gui/firmwareInstall.py:97
 msgid ""
 "Please connect the printer to\n"
 "your computer with the USB cable."
@@ -436,7 +456,7 @@ msgstr ""
 "USB 케이블로 프린터와\n"
 " 컴퓨터를 연결하시오."
 
-#: Cura/gui/firmwareInstall.py:102
+#: Cura/gui/firmwareInstall.py:116
 msgid ""
 "Failed to find machine for firmware upgrade\n"
 "Is your machine connected to the PC?"
@@ -444,11 +464,11 @@ msgstr ""
 "펌웨어 업데이트를 위한 기기를 찾는데 실패\n"
 "기기가 PC에 연결이 되어 있나요?"
 
-#: Cura/gui/firmwareInstall.py:107
+#: Cura/gui/firmwareInstall.py:121
 msgid "Uploading firmware..."
 msgstr "펌웨어 업로딩 중..."
 
-#: Cura/gui/firmwareInstall.py:110
+#: Cura/gui/firmwareInstall.py:124
 #, python-format
 msgid ""
 "Done!\n"
@@ -457,7 +477,7 @@ msgstr ""
 "완료!\n"
 "설치된 펌웨어:%s"
 
-#: Cura/gui/firmwareInstall.py:112
+#: Cura/gui/firmwareInstall.py:126
 msgid "Failed to write firmware.\n"
 msgstr "펌웨어 쓰기 실패.\n"
 
@@ -637,7 +657,7 @@ msgstr "로드할 프로파일 파일 선택"
 msgid "Select gcode file to load profile from"
 msgstr "프로파일을 로드하기위해 gcode파일 선택"
 
-#: Cura/gui/mainWindow.py:472
+#: Cura/gui/mainWindow.py:474
 msgid ""
 "No profile found in GCode file.\n"
 "This feature only works with GCode files made by Cura 12.07 or newer."
@@ -645,15 +665,15 @@ msgstr ""
 "GCode 파일에 프로파일 파일이 없음.\n"
 "이 기능은 큐라 12.07이상에서 만들어진 GCode files만 동작합니다."
 
-#: Cura/gui/mainWindow.py:472
+#: Cura/gui/mainWindow.py:474
 msgid "Profile load error"
 msgstr "프로파일 로드 에러"
 
-#: Cura/gui/mainWindow.py:476
+#: Cura/gui/mainWindow.py:478
 msgid "Select profile file to save"
 msgstr "저장할 프로파일 파일 선택"
 
-#: Cura/gui/mainWindow.py:486
+#: Cura/gui/mainWindow.py:488
 msgid ""
 "This will reset all profile settings to defaults.\n"
 "Unless you have saved your current profile, all settings will be lost!\n"
@@ -663,11 +683,11 @@ msgstr ""
 "현재 프로파일을 저장하지 않으면 모든 설정은 사라집니다 !\n"
 "정말 리셋하기를 원하십니까?"
 
-#: Cura/gui/mainWindow.py:486
+#: Cura/gui/mainWindow.py:488
 msgid "Profile reset"
 msgstr "프로파일 리셋"
 
-#: Cura/gui/mainWindow.py:506
+#: Cura/gui/mainWindow.py:508
 msgid ""
 "Warning: Installing a custom firmware does not guarantee that you machine "
 "will function correctly, and could damage your machine."
@@ -675,19 +695,19 @@ msgstr ""
 "경고: 사용자 정의 펌웨어의 설치는 정상적인 동작을 보장하지 않으며 기기에 손상"
 "을 줄 수 있습니다."
 
-#: Cura/gui/mainWindow.py:507
+#: Cura/gui/mainWindow.py:509
 msgid "Open firmware to upload"
 msgstr "업로드할 펌웨어 열기"
 
-#: Cura/gui/mainWindow.py:566
+#: Cura/gui/mainWindow.py:569
 msgid "You are running the latest version of Cura!"
 msgstr "최신 버젼의 큐라를 사용하고 있습니다 !"
 
-#: Cura/gui/mainWindow.py:566
+#: Cura/gui/mainWindow.py:569
 msgid "Awesome!"
 msgstr "좋습니다!"
 
-#: Cura/gui/mainWindow.py:621
+#: Cura/gui/mainWindow.py:624
 msgid "Plugins"
 msgstr "플러그인"
 
@@ -719,7 +739,7 @@ msgstr "프린트 윈도우 "
 msgid "Colours"
 msgstr "색상"
 
-#: Cura/gui/preferencesDialog.py:37 Cura/util/profile.py:358
+#: Cura/gui/preferencesDialog.py:37 Cura/util/profile.py:478
 msgid "Language"
 msgstr "언어"
 
@@ -748,20 +768,29 @@ msgstr "익스투루더 %d"
 msgid "Communication settings"
 msgstr "통신 설정"
 
-#: Cura/gui/preferencesDialog.py:150
+#: Cura/gui/preferencesDialog.py:154
 msgid "Cannot remove the last machine configuration in Cura"
 msgstr "큐라에서 마지막 기기 설정을 제거할 수 없습니다"
 
-#: Cura/gui/preferencesDialog.py:150
+#: Cura/gui/preferencesDialog.py:154
 msgid "Machine remove error"
 msgstr "기기 제거 오류"
 
-#: Cura/gui/printWindow.py:33 Cura/gui/printWindow.py:298
+#: Cura/gui/preferencesDialog.py:168
+msgid "Enter the new name:"
+msgstr ""
+
+#: Cura/gui/preferencesDialog.py:168
+#, fuzzy
+msgid "Change machine name"
+msgstr "기기 이름"
+
+#: Cura/gui/printWindow.py:33 Cura/gui/printWindow.py:312
 #, python-format
 msgid "Printing on %s"
 msgstr "%s에서 프린팅"
 
-#: Cura/gui/printWindow.py:310
+#: Cura/gui/printWindow.py:324
 msgid ""
 "Your computer is running on battery power.\n"
 "Connect your computer to AC power or your print might not finish."
@@ -769,33 +798,37 @@ msgstr ""
 "컴퓨터가 배터리 전원으로 동작합니다.\n"
 "컴퓨터를 AC전원에 연결하지 않으면 프린트가 끝나지 않을 수 있습니다."
 
-#: Cura/gui/printWindow.py:320
+#: Cura/gui/printWindow.py:334
+#, fuzzy
 msgid ""
 "InfoLine from printer connection\n"
 "InfoLine from dialog\n"
-"Extra line"
+"Extra line\n"
+"More lines for layout\n"
+"More lines for layout\n"
+"More lines for layout"
 msgstr ""
 "InfoLine from printer connection\n"
 "InfoLine from dialog\n"
 "Extra line"
 
-#: Cura/gui/printWindow.py:322
+#: Cura/gui/printWindow.py:336
 msgid "Connect"
 msgstr "연결 "
 
-#: Cura/gui/printWindow.py:324 Cura/gui/sceneView.py:65
+#: Cura/gui/printWindow.py:338 Cura/gui/sceneView.py:65
 msgid "Print"
 msgstr "프린트"
 
-#: Cura/gui/printWindow.py:325
+#: Cura/gui/printWindow.py:339
 msgid "Pause"
 msgstr "일시정지"
 
-#: Cura/gui/printWindow.py:326
+#: Cura/gui/printWindow.py:340
 msgid "Cancel print"
 msgstr "프린터 취소"
 
-#: Cura/gui/printWindow.py:327
+#: Cura/gui/printWindow.py:341
 msgid "Error log"
 msgstr "오류 로그"
 
@@ -903,7 +936,7 @@ msgstr "3D 모델 열기 "
 msgid "Save 3D model"
 msgstr "3D 모델 저장"
 
-#: Cura/gui/sceneView.py:276 Cura/gui/sceneView.py:914
+#: Cura/gui/sceneView.py:276 Cura/gui/sceneView.py:915
 #, python-format
 msgid "Print with %s"
 msgstr "%s 프린트"
@@ -912,63 +945,63 @@ msgstr "%s 프린트"
 msgid "Slice engine log..."
 msgstr "슬라이스 엔진 로그..."
 
-#: Cura/gui/sceneView.py:305 Cura/gui/sceneView.py:917
+#: Cura/gui/sceneView.py:305 Cura/gui/sceneView.py:918
 msgid "Save toolpath"
 msgstr "툴패스 저장"
 
-#: Cura/gui/sceneView.py:351
+#: Cura/gui/sceneView.py:352
 msgid "The slicing engine reported the following"
 msgstr "슬라이스 엔진의 리포트는 다음과 같습니다"
 
-#: Cura/gui/sceneView.py:351
+#: Cura/gui/sceneView.py:352
 msgid "Engine log..."
 msgstr "엔진 로그..."
 
-#: Cura/gui/sceneView.py:490
+#: Cura/gui/sceneView.py:491
 msgid "How many copies do you want?"
 msgstr "몇 개를 출력하실 건가요?"
 
-#: Cura/gui/sceneView.py:490
+#: Cura/gui/sceneView.py:491
 msgid "Number of copies"
 msgstr "프린트할 갯수"
 
-#: Cura/gui/sceneView.py:490
+#: Cura/gui/sceneView.py:491
 msgid "Multiply"
 msgstr "곱하기"
 
-#: Cura/gui/sceneView.py:780
+#: Cura/gui/sceneView.py:781
 msgid "Center on platform"
 msgstr "플팻폼 중앙에 위치"
 
-#: Cura/gui/sceneView.py:781
+#: Cura/gui/sceneView.py:782
 msgid "Delete object"
 msgstr "오브젝트 제거"
 
-#: Cura/gui/sceneView.py:782
+#: Cura/gui/sceneView.py:783
 msgid "Multiply object"
 msgstr "오브젝트 복사"
 
-#: Cura/gui/sceneView.py:783
+#: Cura/gui/sceneView.py:784
 msgid "Split object into parts"
 msgstr "오브젝트 나누기"
 
-#: Cura/gui/sceneView.py:785
+#: Cura/gui/sceneView.py:786
 msgid "Dual extrusion merge"
 msgstr "이중 압출 합치기"
 
-#: Cura/gui/sceneView.py:787
+#: Cura/gui/sceneView.py:788
 msgid "Delete all objects"
 msgstr "모든 오브젝트 제거"
 
-#: Cura/gui/sceneView.py:788
+#: Cura/gui/sceneView.py:789
 msgid "Reload all objects"
 msgstr "모든 오브젝트 다시 불러오기"
 
-#: Cura/gui/sceneView.py:911
+#: Cura/gui/sceneView.py:912
 msgid "Toolpath to SD"
 msgstr "툴패스를 SD에 저장"
 
-#: Cura/gui/sceneView.py:1205
+#: Cura/gui/sceneView.py:1206
 msgid "Overhang view not working due to lack of OpenGL shaders support."
 msgstr "OpenGL 셰이더가 지원이되지 않아서 돌출 보기가 동작하지 않습니다."
 
@@ -1212,7 +1245,7 @@ msgstr "시스템에 웹켐이 없습니다"
 msgid "Webcam error"
 msgstr "웹캠 오류"
 
-#: Cura/gui/util/engineResultView.py:165
+#: Cura/gui/util/engineResultView.py:168
 #, python-format
 msgid "Loading toolpath for visualization (%d%%)"
 msgstr "시각화를 위한 툴패스 불러오기 (%d%%)"
@@ -1226,7 +1259,8 @@ msgid "3D window error"
 msgstr "3D 윈도우 오류"
 
 #: Cura/util/profile.py:170 Cura/util/profile.py:171 Cura/util/profile.py:172
-#: Cura/util/profile.py:200 Cura/util/profile.py:201 Cura/util/profile.py:203
+#: Cura/util/profile.py:200 Cura/util/profile.py:201 Cura/util/profile.py:202
+#: Cura/util/profile.py:204
 msgid "Quality"
 msgstr "품질"
 
@@ -1387,8 +1421,8 @@ msgid "Everywhere"
 msgstr "모든 곳"
 
 #: Cura/util/profile.py:182 Cura/util/profile.py:183 Cura/util/profile.py:184
-#: Cura/util/profile.py:223 Cura/util/profile.py:224 Cura/util/profile.py:225
-#: Cura/util/profile.py:226 Cura/util/profile.py:227
+#: Cura/util/profile.py:224 Cura/util/profile.py:225 Cura/util/profile.py:226
+#: Cura/util/profile.py:227 Cura/util/profile.py:228
 msgid "Support"
 msgstr "서포트"
 
@@ -1414,13 +1448,13 @@ msgstr ""
 "다.\n"
 "'모든 곳' 은 모델의 상단 부분에 서포트를 만듭니다."
 
-#: Cura/util/profile.py:183 Cura/util/profile.py:230
+#: Cura/util/profile.py:183 Cura/util/profile.py:232
 msgid "Brim"
 msgstr "Brim"
 
-#: Cura/util/profile.py:183 Cura/util/profile.py:231 Cura/util/profile.py:232
-#: Cura/util/profile.py:233 Cura/util/profile.py:234 Cura/util/profile.py:235
-#: Cura/util/profile.py:236
+#: Cura/util/profile.py:183 Cura/util/profile.py:233 Cura/util/profile.py:234
+#: Cura/util/profile.py:235 Cura/util/profile.py:236 Cura/util/profile.py:237
+#: Cura/util/profile.py:238 Cura/util/profile.py:239 Cura/util/profile.py:240
 msgid "Raft"
 msgstr "Raft"
 
@@ -1698,10 +1732,22 @@ msgstr ""
 "다. 0.0으로 설정하면 다른 레이어와 같은 두께입니다."
 
 #: Cura/util/profile.py:201
+#, fuzzy
+msgid "Initial layer line width (%)"
+msgstr "인터페이스 라인 두께 (mm)"
+
+#: Cura/util/profile.py:201
+msgid ""
+"Extra width factor for the extrusion on the first layer, on some printers "
+"it's good to have wider extrusion on the first layer to get better bed "
+"adhesion."
+msgstr ""
+
+#: Cura/util/profile.py:202
 msgid "Cut off object bottom (mm)"
 msgstr "오브젝트 하단 자름 (mm)"
 
-#: Cura/util/profile.py:201
+#: Cura/util/profile.py:202
 msgid ""
 "Sinks the object into the platform, this can be used for objects that do not "
 "have a flat bottom and thus create a too small first layer."
@@ -1709,11 +1755,11 @@ msgstr ""
 "오브젝트를 플랫폼에 박아넣습니다. 이것은 오브젝트가 평평한 바닥이 없을때 사용"
 "되고 아주 작은 첫번째 레이어를 만듭니다."
 
-#: Cura/util/profile.py:203
+#: Cura/util/profile.py:204
 msgid "Dual extrusion overlap (mm)"
 msgstr "이중 압출 오버랩 (mm)"
 
-#: Cura/util/profile.py:203
+#: Cura/util/profile.py:204
 msgid ""
 "Add a certain amount of overlapping extrusion on dual-extrusion prints. This "
 "bonds the different colors together."
@@ -1721,16 +1767,16 @@ msgstr ""
 "이중 압출 프린트를 할때 일정한 양의 겹치는 압출양을 추가합니다. 이것은 서로 "
 "다른 색상이 함께 접착시킵니다."
 
-#: Cura/util/profile.py:204 Cura/util/profile.py:205 Cura/util/profile.py:206
-#: Cura/util/profile.py:207 Cura/util/profile.py:208
+#: Cura/util/profile.py:205 Cura/util/profile.py:206 Cura/util/profile.py:207
+#: Cura/util/profile.py:208 Cura/util/profile.py:209
 msgid "Speed"
 msgstr "속도"
 
-#: Cura/util/profile.py:204
+#: Cura/util/profile.py:205
 msgid "Travel speed (mm/s)"
 msgstr "이동 속도 (mm/s)"
 
-#: Cura/util/profile.py:204
+#: Cura/util/profile.py:205
 msgid ""
 "Speed at which travel moves are done, a well built Ultimaker can reach "
 "speeds of 250mm/s. But some machines might miss steps then."
@@ -1738,11 +1784,11 @@ msgstr ""
 "이동시 속도, 잘 설정돤 Ultimaker의 경우 250mm/s까지 가능하지만 어떤 기기들은 "
 "스텝을 잃기도 합니다."
 
-#: Cura/util/profile.py:205
+#: Cura/util/profile.py:206
 msgid "Bottom layer speed (mm/s)"
 msgstr "바닥면 속도 (mm/s)"
 
-#: Cura/util/profile.py:205
+#: Cura/util/profile.py:206
 msgid ""
 "Print speed for the bottom layer, you want to print the first layer slower "
 "so it sticks better to the printer bed."
@@ -1750,11 +1796,11 @@ msgstr ""
 "바닥면 프린트 속도, 첫번째 레이어의 프린트 속도를 느리게 해서 프린터 베드에 "
 "더 잘 붙게 할 수 있습니다."
 
-#: Cura/util/profile.py:206
+#: Cura/util/profile.py:207
 msgid "Infill speed (mm/s)"
 msgstr "채움 속도 (mm/s)"
 
-#: Cura/util/profile.py:206
+#: Cura/util/profile.py:207
 msgid ""
 "Speed at which infill parts are printed. If set to 0 then the print speed is "
 "used for the infill. Printing the infill faster can greatly reduce printing "
@@ -1764,11 +1810,11 @@ msgstr ""
 "가 사용이 됩니다. 채우는 것을 빨리 프린팅하면 프린팅 시간을 많이 줄일 수 있지"
 "만 프린트 질에는 나쁜 영향을 미칩니다."
 
-#: Cura/util/profile.py:207
+#: Cura/util/profile.py:208
 msgid "Outer shell speed (mm/s)"
 msgstr "바깥면 속도 (mm/s)"
 
-#: Cura/util/profile.py:207
+#: Cura/util/profile.py:208
 msgid ""
 "Speed at which outer shell is printed. If set to 0 then the print speed is "
 "used. Printing the outer shell at a lower speed improves the final skin "
@@ -1779,11 +1825,11 @@ msgstr ""
 "이 됩니다. 느리게 프린팅을 하면 표면의 질을 높입니다. 하지만 안쪽면을 프린트"
 "하는 속도와 차이가 많이나면 프린트 질이 나빠집니다."
 
-#: Cura/util/profile.py:208
+#: Cura/util/profile.py:209
 msgid "Inner shell speed (mm/s)"
 msgstr "안쪽면 속도 (mm/s)"
 
-#: Cura/util/profile.py:208
+#: Cura/util/profile.py:209
 msgid ""
 "Speed at which inner shells are printed. If set to 0 then the print speed is "
 "used. Printing the inner shell faster then the outer shell will reduce "
@@ -1794,17 +1840,17 @@ msgstr ""
 "이 됩니다. 바깥면 보다 안쪽면을 더빨리 프린팅하면 프린팅 시간을 줄일 수 있습"
 "니다. 내부를 채우는 속도와 바깥면을 프린팅하는 속도의 중간으로 하면 좋습니다."
 
-#: Cura/util/profile.py:209 Cura/util/profile.py:210 Cura/util/profile.py:215
-#: Cura/util/profile.py:216 Cura/util/profile.py:217 Cura/util/profile.py:218
-#: Cura/util/profile.py:219
+#: Cura/util/profile.py:210 Cura/util/profile.py:211 Cura/util/profile.py:216
+#: Cura/util/profile.py:217 Cura/util/profile.py:218 Cura/util/profile.py:219
+#: Cura/util/profile.py:220
 msgid "Cool"
 msgstr "냉각"
 
-#: Cura/util/profile.py:209
+#: Cura/util/profile.py:210
 msgid "Minimal layer time (sec)"
 msgstr "레이어당 최소시간 (sec)"
 
-#: Cura/util/profile.py:209
+#: Cura/util/profile.py:210
 msgid ""
 "Minimum time spent in a layer, gives the layer time to cool down before the "
 "next layer is put on top. If the layer will be placed down too fast the "
@@ -1815,22 +1861,22 @@ msgstr ""
 "질 시간을 줍니다. 만약 레이어가 빨리 쌓여지면 프린터는 적어도 이 시간만큼을 "
 "소비했는 지 확인합니다."
 
-#: Cura/util/profile.py:210
+#: Cura/util/profile.py:211
 msgid "Enable cooling fan"
 msgstr "쿨링팬 활성화"
 
-#: Cura/util/profile.py:210
+#: Cura/util/profile.py:211
 msgid ""
 "Enable the cooling fan during the print. The extra cooling from the cooling "
 "fan is essential during faster prints."
 msgstr ""
 "프린트중에 쿨링팬을 활성화하기. 쿨링팬은 빠른 프린트를 위해 필수적입니다."
 
-#: Cura/util/profile.py:212
+#: Cura/util/profile.py:213
 msgid "Line count"
 msgstr "라인 수"
 
-#: Cura/util/profile.py:212
+#: Cura/util/profile.py:213
 msgid ""
 "The skirt is a line drawn around the object at the first layer. This helps "
 "to prime your extruder, and to see if the object fits on your platform.\n"
@@ -1843,11 +1889,11 @@ msgstr ""
 " 0으로 설정하면 스커트를 비활성화합니다. 다수의 스커트 라인은 압출기를 준비시"
 "키는데 도움을 주어서 작은 오브젝트의 경우 더 좋습니다."
 
-#: Cura/util/profile.py:213
+#: Cura/util/profile.py:214
 msgid "Start distance (mm)"
 msgstr "시작 거리 (mm)"
 
-#: Cura/util/profile.py:213
+#: Cura/util/profile.py:214
 msgid ""
 "The distance between the skirt and the first layer.\n"
 "This is the minimal distance, multiple skirt lines will be put outwards from "
@@ -1856,11 +1902,11 @@ msgstr ""
 "스커트와 첫번째 레이어의 거리.\n"
 "이것은 최소 거리로 다수의 스커트 라인의 경우 이 거리 바깥쪽에 그려집니다."
 
-#: Cura/util/profile.py:214
+#: Cura/util/profile.py:215
 msgid "Minimal length (mm)"
 msgstr "최소 길이 (mm)"
 
-#: Cura/util/profile.py:214
+#: Cura/util/profile.py:215
 msgid ""
 "The minimal length of the skirt, if this minimal length is not reached it "
 "will add more skirt lines to reach this minimal lenght.\n"
@@ -1870,11 +1916,11 @@ msgstr ""
 "합니다. \n"
 "주의: 만약 라인수가 0이면 이것은 무시됩니다."
 
-#: Cura/util/profile.py:215
+#: Cura/util/profile.py:216
 msgid "Fan full on at height (mm)"
 msgstr "최대 팬 속도일 때의 높이 (%)"
 
-#: Cura/util/profile.py:215
+#: Cura/util/profile.py:216
 msgid ""
 "The height at which the fan is turned on completely. For the layers below "
 "this the fan speed is scaled linearly with the fan off at layer 0."
@@ -1882,11 +1928,11 @@ msgstr ""
 "팬이 완전히 켜지는 높이. 이 아래의 레이어에서 팬의 속도는 비율에 따라 일정하"
 "게 적어져서 레이어 0에서는 팬이 꺼집니다."
 
-#: Cura/util/profile.py:216
+#: Cura/util/profile.py:217
 msgid "Fan speed min (%)"
 msgstr "최소 팬 속도 (%)"
 
-#: Cura/util/profile.py:216
+#: Cura/util/profile.py:217
 msgid ""
 "When the fan is turned on, it is enabled at this speed setting. If cool "
 "slows down the layer, the fan is adjusted between the min and max speed. "
@@ -1896,11 +1942,11 @@ msgstr ""
 "다. 만약 레이어가 쿨링 때문에 레이어가 빨리 완료되면 최소 팬 속도가 사용이 됩"
 "니다."
 
-#: Cura/util/profile.py:217
+#: Cura/util/profile.py:218
 msgid "Fan speed max (%)"
 msgstr "최대 팬 속도 (%)"
 
-#: Cura/util/profile.py:217
+#: Cura/util/profile.py:218
 msgid ""
 "When the fan is turned on, it is enabled at this speed setting. If cool "
 "slows down the layer, the fan is adjusted between the min and max speed. "
@@ -1910,11 +1956,11 @@ msgstr ""
 "팬이 켜지면 이 속도 설정으로 가동되며 최소 속도와 최대 속도사이로 조정이 됩니"
 "다. 만약 레이어가 빨리 완료되지 않으면 최대 팬 속도가 사용이 됩니다."
 
-#: Cura/util/profile.py:218
+#: Cura/util/profile.py:219
 msgid "Minimum speed (mm/s)"
 msgstr "최소 속도 (mm/s)"
 
-#: Cura/util/profile.py:218
+#: Cura/util/profile.py:219
 msgid ""
 "The minimal layer time can cause the print to slow down so much it starts to "
 "ooze. The minimal feedrate protects against this. Even if a print gets "
@@ -1924,11 +1970,11 @@ msgstr ""
 "량은 이것을 막습니다. 프린트가 느려질지라도 이 최소 속도 보다는 더 느려지지 "
 "않습니다."
 
-#: Cura/util/profile.py:219
+#: Cura/util/profile.py:220
 msgid "Cool head lift"
 msgstr "헤드 들기"
 
-#: Cura/util/profile.py:219
+#: Cura/util/profile.py:220
 msgid ""
 "Lift the head if the minimal speed is hit because of cool slowdown, and wait "
 "the extra time so the minimal layer time is always hit."
@@ -1936,15 +1982,15 @@ msgstr ""
 "만약 최소 속도가 되면 헤드를 올린다. 그리고 추가 시간 동안 기다려서 최소 레이"
 "어 시간이 항상 만족되도록 한다."
 
-#: Cura/util/profile.py:220 Cura/util/profile.py:221 Cura/util/profile.py:222
+#: Cura/util/profile.py:221 Cura/util/profile.py:222 Cura/util/profile.py:223
 msgid "Infill"
 msgstr "채우기"
 
-#: Cura/util/profile.py:220
+#: Cura/util/profile.py:221
 msgid "Solid infill top"
 msgstr "조밀한 상단 채움"
 
-#: Cura/util/profile.py:220
+#: Cura/util/profile.py:221
 msgid ""
 "Create a solid top surface, if set to false the top is filled with the fill "
 "percentage. Useful for cups/vases."
@@ -1952,11 +1998,11 @@ msgstr ""
 "상단면에 단단한 표면을 만듭니다. 만약 아니요로 설정을 하면 상단면은 퍼센트 단"
 "위로 채웁니다. 컵/꽃병일 경우 유용합니다."
 
-#: Cura/util/profile.py:221
+#: Cura/util/profile.py:222
 msgid "Solid infill bottom"
 msgstr "조밀한 하단 채움"
 
-#: Cura/util/profile.py:221
+#: Cura/util/profile.py:222
 msgid ""
 "Create a solid bottom surface, if set to false the bottom is filled with the "
 "fill percentage. Useful for buildings."
@@ -1964,11 +2010,11 @@ msgstr ""
 "하단면에 단단한 표면을 만듭니다. 만약 아니요로 설정을 하면 하단면은 퍼센트 단"
 "위로 채웁니다. 빌딩의 경우 유용합니다."
 
-#: Cura/util/profile.py:222
+#: Cura/util/profile.py:223
 msgid "Infill overlap (%)"
 msgstr "Infill 겹침 (%)"
 
-#: Cura/util/profile.py:222
+#: Cura/util/profile.py:223
 msgid ""
 "Amount of overlap between the infill and the walls. There is a slight "
 "overlap with the walls and the infill so the walls connect firmly to the "
@@ -1977,11 +2023,11 @@ msgstr ""
 "벽과 채움사이에 겹쳐지는 양. 벽과 채워지는 것 사이에는 약간의 겹쳐지는 부분"
 "이 있어서 벽이 충전재에 단단히 연결이 됩니다."
 
-#: Cura/util/profile.py:223
+#: Cura/util/profile.py:224
 msgid "Structure type"
 msgstr "스트럭쳐 종류"
 
-#: Cura/util/profile.py:223
+#: Cura/util/profile.py:224
 msgid ""
 "The type of support structure.\n"
 "Grid is very strong and can come off in 1 piece, however, sometimes it is "
@@ -1995,22 +2041,22 @@ msgstr ""
 "라인은 한번에 하나씩 떨어질 수 있는 하나의 벽으로된 선입니다. 제거하지 쉽지"
 "만 덜 강하고 까다로운 프린트에는 잘 동작하지 않습니다."
 
-#: Cura/util/profile.py:224
+#: Cura/util/profile.py:225
 msgid "Overhang angle for support (deg)"
 msgstr "서포트를 위한 돌출부 각도(deg)"
 
-#: Cura/util/profile.py:224
+#: Cura/util/profile.py:225
 msgid ""
 "The minimal angle that overhangs need to have to get support. With 0 degree "
 "being horizontal and 90 degree being vertical."
 msgstr ""
 "돌출부가 서포트가 되기 위한 최소 각도. 0도는 수평이고 90도는 직각입니다."
 
-#: Cura/util/profile.py:225
+#: Cura/util/profile.py:226
 msgid "Fill amount (%)"
 msgstr "채우는 양 (%)"
 
-#: Cura/util/profile.py:225
+#: Cura/util/profile.py:226
 #, python-format
 msgid ""
 "Amount of infill structure in the support material, less material gives "
@@ -2019,11 +2065,11 @@ msgstr ""
 "서포트 재질에 채우는 양, 재료가 적으면 서포트가 약해서 제거하기 쉽습니다. 15%"
 "가 평균적으로 좋습니다."
 
-#: Cura/util/profile.py:226
+#: Cura/util/profile.py:227
 msgid "Distance X/Y (mm)"
 msgstr "거리 X/Y (mm)"
 
-#: Cura/util/profile.py:226
+#: Cura/util/profile.py:227
 msgid ""
 "Distance of the support material from the print, in the X/Y directions.\n"
 "0.7mm gives a nice distance from the print so the support does not stick to "
@@ -2032,11 +2078,11 @@ msgstr ""
 "프린트로 부터 서포트 재질까지의 X/Y 방향으로의 거리.\n"
 "프린트로 부터 0.7mm 가 괜찮은 거리로 서포트가 프린트에 붙지 않습니다."
 
-#: Cura/util/profile.py:227
+#: Cura/util/profile.py:228
 msgid "Distance Z (mm)"
 msgstr "거리 Z (mm)"
 
-#: Cura/util/profile.py:227
+#: Cura/util/profile.py:228
 msgid ""
 "Distance from the top/bottom of the support to the print. A small gap here "
 "makes it easier to remove the support but makes the print a bit uglier.\n"
@@ -2046,25 +2092,37 @@ msgstr ""
 "기 쉽게하지만 프린트의 모양이 약간 안좋게 합니다.\n"
 "0.15mm이면 서포트 재질로 부터 쉽게 분리 할 수 있습니다."
 
-#: Cura/util/profile.py:228
+#: Cura/util/profile.py:229
 msgid "Spiralize the outer contour"
 msgstr "외형 윤곽을 나선형으로 하기"
 
-#: Cura/util/profile.py:228
+#: Cura/util/profile.py:229
+#, fuzzy
 msgid ""
 "Spiralize is smoothing out the Z move of the outer edge. This will create a "
 "steady Z increase over the whole print. This feature turns a solid object "
-"into a single walled print with a solid bottom."
+"into a single walled print with a solid bottom.\n"
+"This feature used to be called Joris in older versions."
 msgstr ""
 "나선형으로 하기는 바깥쪽 가장자리의 Z 움직임을 부드럽게 합니다. 이것은 전체 "
 "프린트물에 Z축을 천천히 증가시킵니다. 이 기능은 하나의 오브젝트를 단단한 바닥"
 "을 가지고 하나의 벽으로된 출력물으로 만듭니다."
 
 #: Cura/util/profile.py:230
+msgid "Only follow mesh surface"
+msgstr ""
+
+#: Cura/util/profile.py:230
+msgid ""
+"Only follow the mesh surfaces of the 3D model, do not do anything else. No "
+"infill, no top/bottom, nothing."
+msgstr ""
+
+#: Cura/util/profile.py:232
 msgid "Brim line amount"
 msgstr "Brim line amount"
 
-#: Cura/util/profile.py:230
+#: Cura/util/profile.py:232
 msgid ""
 "The amount of lines used for a brim, more lines means a larger brim which "
 "sticks better, but this also makes your effective print area smaller."
@@ -2072,11 +2130,11 @@ msgstr ""
 "Brim에 사용되는 라인의 수, 라인이 많이 사용되면 brim이 더 커지고 바닥에 더 "
 "잘 붙습니다. 하지만 이것은 유효 프린트 면적을 줄어들게 합니다."
 
-#: Cura/util/profile.py:231
+#: Cura/util/profile.py:233
 msgid "Extra margin (mm)"
 msgstr "추가 마진 (mm)"
 
-#: Cura/util/profile.py:231
+#: Cura/util/profile.py:233
 msgid ""
 "If the raft is enabled, this is the extra raft area around the object which "
 "is also rafted. Increasing this margin will create a stronger raft while "
@@ -2086,68 +2144,88 @@ msgstr ""
 "마진을 증가시키면 더 강한 raft를 만들고 재료가 더 많이 사용이 되고 프린트를 "
 "위한 공간이 적어집니다."
 
-#: Cura/util/profile.py:232
+#: Cura/util/profile.py:234
 msgid "Line spacing (mm)"
 msgstr "라인 간격 (mm)"
 
-#: Cura/util/profile.py:232
+#: Cura/util/profile.py:234
 msgid ""
 "When you are using the raft this is the distance between the centerlines of "
 "the raft line."
 msgstr "Raft를 사용을 하면 이것은 중심선과 raft선 사이의 거리입니다."
 
-#: Cura/util/profile.py:233
+#: Cura/util/profile.py:235
 msgid "Base thickness (mm)"
 msgstr "베이스 두께 (mm)"
 
-#: Cura/util/profile.py:233
+#: Cura/util/profile.py:235
 msgid ""
 "When you are using the raft this is the thickness of the base layer which is "
 "put down."
 msgstr "Raft를 사용을 하면 이것은 바닥에 깔리는 기본 레이어의 두께입니다."
 
-#: Cura/util/profile.py:234
+#: Cura/util/profile.py:236
 msgid "Base line width (mm)"
 msgstr "베이스 라인 폭 (mm)"
 
-#: Cura/util/profile.py:234
+#: Cura/util/profile.py:236
 msgid ""
 "When you are using the raft this is the width of the base layer lines which "
 "are put down."
 msgstr "Raft를 사용을 하면 이것은 바닥에 깔리는 기본 레이어 라인의 폭입니다."
 
-#: Cura/util/profile.py:235
+#: Cura/util/profile.py:237
 msgid "Interface thickness (mm)"
 msgstr "인터페이스 두께 (mm)"
 
-#: Cura/util/profile.py:235
+#: Cura/util/profile.py:237
 msgid ""
 "When you are using the raft this is the thickness of the interface layer "
 "which is put down."
 msgstr ""
 "Raft를 사용을 하면 이것은 바닥에 깔리는 인터페이스 레이어의 두께입니다."
 
-#: Cura/util/profile.py:236
+#: Cura/util/profile.py:238
 msgid "Interface line width (mm)"
 msgstr "인터페이스 라인 두께 (mm)"
 
-#: Cura/util/profile.py:236
+#: Cura/util/profile.py:238
 msgid ""
 "When you are using the raft this is the width of the interface layer lines "
 "which are put down."
 msgstr ""
 "Raft를 사용을 하면 이것은 바닥에 깔리는 인터페이스 레이어 라인의 폭입니다."
 
-#: Cura/util/profile.py:237 Cura/util/profile.py:238 Cura/util/profile.py:239
+#: Cura/util/profile.py:239
+msgid "Airgap"
+msgstr ""
+
+#: Cura/util/profile.py:239
+msgid ""
+"Gap between the last layer of the raft and the first printing layer. A small "
+"gap of 0.2mm works wonders on PLA and makes the raft easy to remove."
+msgstr ""
+
 #: Cura/util/profile.py:240
+msgid "Surface layers"
+msgstr ""
+
+#: Cura/util/profile.py:240
+msgid ""
+"Amount of surface layers put on top of the raft, these are fully filled "
+"layers on which the model is printed."
+msgstr ""
+
+#: Cura/util/profile.py:241 Cura/util/profile.py:242 Cura/util/profile.py:243
+#: Cura/util/profile.py:244
 msgid "Fix horrible"
 msgstr "Fix horrible"
 
-#: Cura/util/profile.py:237
+#: Cura/util/profile.py:241
 msgid "Combine everything (Type-A)"
 msgstr "Combine everything (Type-A)"
 
-#: Cura/util/profile.py:237 Cura/util/profile.py:238
+#: Cura/util/profile.py:241 Cura/util/profile.py:242
 msgid ""
 "This expert option adds all parts of the model together. The result is "
 "usually that internal cavities disappear. Depending on the model this can be "
@@ -2161,15 +2239,15 @@ msgstr ""
 "지하려고합니다. 타입 B는 모든 내부 구멍을 무시하고 단지 레이어 별로 외부 형태"
 "를 유지합니다."
 
-#: Cura/util/profile.py:238
+#: Cura/util/profile.py:242
 msgid "Combine everything (Type-B)"
 msgstr "Combine everything (Type-B)"
 
-#: Cura/util/profile.py:239
+#: Cura/util/profile.py:243
 msgid "Keep open faces"
 msgstr "Keep open faces"
 
-#: Cura/util/profile.py:239
+#: Cura/util/profile.py:243
 msgid ""
 "This expert option keeps all the open bits of the model intact. Normally "
 "Cura tries to stitch up small holes and remove everything with big holes, "
@@ -2185,11 +2263,11 @@ msgstr ""
 "모든 \"Fix horrible\" 옵션과 마찬가지로, 결과는 다를 수 있으며, 위험이 따릅니"
 "다."
 
-#: Cura/util/profile.py:240
+#: Cura/util/profile.py:244
 msgid "Extensive stitching"
 msgstr "Extensive stitching"
 
-#: Cura/util/profile.py:240
+#: Cura/util/profile.py:244
 msgid ""
 "Extensive stitching tries to fix up open holes in the model by closing the "
 "hole with touching polygons. This algorthm is quite expensive and could "
@@ -2202,37 +2280,37 @@ msgstr ""
 "모든 \"Fix horrible\"옵션과 마찬가지로, 결과는 매우 다를 수 있으며 위험이 따"
 "릅니다."
 
-#: Cura/util/profile.py:350
+#: Cura/util/profile.py:470
 msgid "Save profile on slice"
 msgstr "프로파일을 슬라이스에 저장"
 
-#: Cura/util/profile.py:350
+#: Cura/util/profile.py:470
 msgid ""
 "When slicing save the profile as [stl_file]_profile.ini next to the model."
 msgstr "슬라이싱할때 프로파일을 모델 옆에 [stl_file]_profile.ini에 저장합니다."
 
-#: Cura/util/profile.py:351
+#: Cura/util/profile.py:471
 msgid "Cost (price/kg)"
 msgstr "비용 (가격/kg)"
 
-#: Cura/util/profile.py:351
+#: Cura/util/profile.py:471
 msgid "Cost of your filament per kg, to estimate the cost of the final print."
 msgstr "최종 프린트의 가격을 예상하기 위한 필라멘트의 Kg당 비용"
 
-#: Cura/util/profile.py:352
+#: Cura/util/profile.py:472
 msgid "Cost (price/m)"
 msgstr "비용 (가격/m)"
 
-#: Cura/util/profile.py:352
+#: Cura/util/profile.py:472
 msgid ""
 "Cost of your filament per meter, to estimate the cost of the final print."
 msgstr "최종 프린트의 가격을 예상하기 위한 필라멘트의 미터당 비용"
 
-#: Cura/util/profile.py:353
+#: Cura/util/profile.py:473
 msgid "Auto detect SD card drive"
 msgstr "SD카드 자동 감지"
 
-#: Cura/util/profile.py:353
+#: Cura/util/profile.py:473
 msgid ""
 "Auto detect the SD card. You can disable this because on some systems "
 "external hard-drives or USB sticks are detected as SD card."
@@ -2240,27 +2318,27 @@ msgstr ""
 "SD 카드 자동 감지. 외장 하드 드라이브나 USB 메모리 스틱이 SD 카드로 인식이 "
 "될 수 있기 때문에 일부 시스템에서는 이 기능을 사용 중지 할 수 있습니다."
 
-#: Cura/util/profile.py:354
+#: Cura/util/profile.py:474
 msgid "Check for updates"
 msgstr "업데이트 확인"
 
-#: Cura/util/profile.py:354
+#: Cura/util/profile.py:474
 msgid "Check for newer versions of Cura on startup"
 msgstr "시작할 때 큐라의 새로운 버젼이 있는지 확인"
 
-#: Cura/util/profile.py:355
+#: Cura/util/profile.py:475
 msgid "Send usage statistics"
 msgstr "사용 통계 보내기"
 
-#: Cura/util/profile.py:355
+#: Cura/util/profile.py:475
 msgid "Submit anonymous usage information to improve future versions of Cura"
 msgstr "큐라의 다음 버젼의 향상을 위해 익명으로 사용 정보 보내기"
 
-#: Cura/util/profile.py:357
+#: Cura/util/profile.py:477
 msgid "Density (kg/m3)"
 msgstr "밀도 (kg/m3)"
 
-#: Cura/util/profile.py:357
+#: Cura/util/profile.py:477
 msgid ""
 "Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. "
 "This value is used to estimate the weight if the filament used for the print."
@@ -2268,107 +2346,110 @@ msgstr ""
 "세제곱 미터당 필라멘트의 중량. PLA는 약 1240, ABS는 1040. 이 값은 프린트에 사"
 "용된 필라멘트의 중량을 추정하기 위해 사용됩니다."
 
-#: Cura/util/profile.py:358
+#: Cura/util/profile.py:478
 msgid ""
 "Change the language in which Cura runs. Switching language requires a "
 "restart of Cura"
 msgstr ""
 "큐라의 언어를 변경합니다. 언어를 변경하려면 큐라를 다시 시작해야 합니다."
 
-#: Cura/util/profile.py:361
+#: Cura/util/profile.py:481
 msgid "Model colour"
 msgstr "모델 색상"
 
-#: Cura/util/profile.py:361
+#: Cura/util/profile.py:481
 msgid "Display color for first extruder"
 msgstr "1번째 익스투루더의 색상 표시 "
 
-#: Cura/util/profile.py:362
+#: Cura/util/profile.py:482
 msgid "Model colour (2)"
 msgstr "모델 색상 (2)"
 
-#: Cura/util/profile.py:362
+#: Cura/util/profile.py:482
 msgid "Display color for second extruder"
 msgstr "2번째 익스투루더의 색상 표시 "
 
-#: Cura/util/profile.py:363
+#: Cura/util/profile.py:483
 msgid "Model colour (3)"
 msgstr "모델 색상 (3)"
 
-#: Cura/util/profile.py:363
+#: Cura/util/profile.py:483
 msgid "Display color for third extruder"
 msgstr "3번째 익스투루더의 색상 표시 "
 
-#: Cura/util/profile.py:364
+#: Cura/util/profile.py:484
 msgid "Model colour (4)"
 msgstr "모델 색상 (4)"
 
-#: Cura/util/profile.py:364
+#: Cura/util/profile.py:484
 msgid "Display color for forth extruder"
 msgstr "4번째 익스투루더의 색상 표시 "
 
-#: Cura/util/profile.py:365
+#: Cura/util/profile.py:485
 msgid "Printing window type"
 msgstr "프린팅 윈도우 종류"
 
-#: Cura/util/profile.py:365
+#: Cura/util/profile.py:485
 msgid "Select the interface used for USB printing."
 msgstr "USB 프린팅을 위한 인터페이스 선택"
 
-#: Cura/util/profile.py:377
+#: Cura/util/profile.py:497
 msgid "Maximum width (mm)"
 msgstr "최대 두께 (mm)"
 
-#: Cura/util/profile.py:377 Cura/util/profile.py:378 Cura/util/profile.py:379
+#: Cura/util/profile.py:497 Cura/util/profile.py:498 Cura/util/profile.py:499
 msgid "Size of the machine in mm"
 msgstr "기기 크기(밀리미터)"
 
-#: Cura/util/profile.py:378
+#: Cura/util/profile.py:498
 msgid "Maximum depth (mm)"
 msgstr "최대 길이 (mm)"
 
-#: Cura/util/profile.py:379
+#: Cura/util/profile.py:499
 msgid "Maximum height (mm)"
 msgstr "최대 높이 (mm)"
 
-#: Cura/util/profile.py:380
+#: Cura/util/profile.py:500
 msgid "Machine center 0,0"
 msgstr "기기 중심 0,0"
 
-#: Cura/util/profile.py:380
+#: Cura/util/profile.py:500
 msgid ""
 "Machines firmware defines the center of the bed as 0,0 instead of the front "
 "left corner."
 msgstr ""
 "기기의 펌웨어는 기기의 앞, 왼쪽 코너대신에 베드의 중심을 0,0으로 정의 합니다."
 
-#: Cura/util/profile.py:381
+#: Cura/util/profile.py:501
 msgid "Build area shape"
 msgstr "빌드 영역의 형상"
 
-#: Cura/util/profile.py:381
+#: Cura/util/profile.py:501
 msgid "The shape of machine build area."
 msgstr "기기의 빌드 영역의 모양"
 
-#: Cura/util/profile.py:383
+#: Cura/util/profile.py:503
 msgid ""
 "If you have an heated bed, this enabled heated bed settings (requires "
 "restart)"
 msgstr ""
 "히팅 베드가 있으면 이것은 히팅 베드 설정을 활성화합니다. (재시작 해야함)"
 
-#: Cura/util/profile.py:384
+#: Cura/util/profile.py:504
 msgid "GCode Flavor"
 msgstr "GCode 형태"
 
-#: Cura/util/profile.py:384
+#: Cura/util/profile.py:504
+#, fuzzy
 msgid ""
 "Flavor of generated GCode.\n"
 "RepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\n"
 "UltiGCode is a variation of the RepRap GCode which puts more settings in the "
 "machine instead of the slicer.\n"
 "MakerBot GCode has a few changes in the way GCode is generated, but still "
-"requires MakerWare to generate to X3G."
+"requires MakerWare to generate to X3G.\n"
+"BFB style generates RPM based code.\n"
+"Mach3 uses A,B,C instead of E for extruders."
 msgstr ""
 "생성된 GCode의 형태.\n"
 "RepRap은 Marlin/Sprinter 기반의 펌웨어에서 동작하는 일반적인 5D GCode 입니"
@@ -2378,39 +2459,39 @@ msgstr ""
 "MakerBot GCode는 GCode가 생성되는 방식이 조금 다릅니다. 하지만 X3G 파일을 생"
 "성하기 위해서 MakerWare가 필요합니다."
 
-#: Cura/util/profile.py:385
+#: Cura/util/profile.py:505
 msgid "Extruder count"
 msgstr "익스투루더 갯수"
 
-#: Cura/util/profile.py:385
+#: Cura/util/profile.py:505
 msgid "Amount of extruders in your machine."
 msgstr "기기의 익스투루더의 갯수"
 
-#: Cura/util/profile.py:386 Cura/util/profile.py:388 Cura/util/profile.py:390
+#: Cura/util/profile.py:506 Cura/util/profile.py:508 Cura/util/profile.py:510
 msgid "Offset X"
 msgstr "오프셋 X"
 
-#: Cura/util/profile.py:386 Cura/util/profile.py:387
+#: Cura/util/profile.py:506 Cura/util/profile.py:507
 msgid "The offset of your secondary extruder compared to the primary."
 msgstr "1번째로 부터 2번째 익스투루더의 오프셋"
 
-#: Cura/util/profile.py:387 Cura/util/profile.py:389 Cura/util/profile.py:391
+#: Cura/util/profile.py:507 Cura/util/profile.py:509 Cura/util/profile.py:511
 msgid "Offset Y"
 msgstr "오프셋 Y"
 
-#: Cura/util/profile.py:388 Cura/util/profile.py:389
+#: Cura/util/profile.py:508 Cura/util/profile.py:509
 msgid "The offset of your tertiary extruder compared to the primary."
 msgstr "1번째로부터 3번째 익스투루더의 오프셋"
 
-#: Cura/util/profile.py:390 Cura/util/profile.py:391
+#: Cura/util/profile.py:510 Cura/util/profile.py:511
 msgid "The offset of your forth extruder compared to the primary."
 msgstr "1번째로 부터 4번째 익스투루더의 오프셋"
 
-#: Cura/util/profile.py:392
+#: Cura/util/profile.py:512
 msgid "E-Steps per 1mm filament"
 msgstr "1mm 필라멘트 당 E-Steps"
 
-#: Cura/util/profile.py:392
+#: Cura/util/profile.py:512
 msgid ""
 "Amount of steps per mm filament extrusion. If set to 0 then this value is "
 "ignored and the value in your firmware is used."
@@ -2418,19 +2499,19 @@ msgstr ""
 "1mm 필라멘트 압출 당 스텝의 수. 0으로 설정하면 이 값은 무시되고 펌웨어의 값"
 "이 사용됩니다."
 
-#: Cura/util/profile.py:393
+#: Cura/util/profile.py:513
 msgid "Serial port"
 msgstr "시리얼 포트"
 
-#: Cura/util/profile.py:393
+#: Cura/util/profile.py:513
 msgid "Serial port to use for communication with the printer"
 msgstr "프린터와 통신하는데 사용되는 시리얼 포트"
 
-#: Cura/util/profile.py:395
+#: Cura/util/profile.py:515
 msgid "Baudrate"
 msgstr "보드레이트"
 
-#: Cura/util/profile.py:395
+#: Cura/util/profile.py:515
 msgid ""
 "Speed of the serial port communication\n"
 "Needs to match your firmware settings\n"
@@ -2440,11 +2521,11 @@ msgstr ""
 "펌웨어 설정과 일치해야 합니다\n"
 "일반적인 값은 250000, 115200, 57600"
 
-#: Cura/util/profile.py:398
+#: Cura/util/profile.py:518
 msgid "Head size towards X min (mm)"
 msgstr "X min 방향으로의 헤드 크기 (mm)"
 
-#: Cura/util/profile.py:398
+#: Cura/util/profile.py:518
 msgid ""
 "The head size when printing multiple objects, measured from the tip of the "
 "nozzle towards the outer part of the head. 75mm for an Ultimaker if the fan "
@@ -2453,11 +2534,11 @@ msgstr ""
 "복수의 오브젝트를 출력할때 노즐의 팁으로 부터 헤드의 바깥 부분쪽으로 측정된 "
 "헤드의 크기. 만약 팬이 왼쪽에있는 경우 Ultimaker는 75mm."
 
-#: Cura/util/profile.py:399
+#: Cura/util/profile.py:519
 msgid "Head size towards Y min (mm)"
 msgstr "Y min 방향으로의 헤드 크기 (mm)"
 
-#: Cura/util/profile.py:399 Cura/util/profile.py:400
+#: Cura/util/profile.py:519 Cura/util/profile.py:520
 msgid ""
 "The head size when printing multiple objects, measured from the tip of the "
 "nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan "
@@ -2466,15 +2547,15 @@ msgstr ""
 "복수의 오브젝트를 출력할때 노즐의 팁으로 부터 헤드의 바깥 부분쪽으로 측정된 "
 "헤드의 크기. 만약 팬이 왼쪽에 있는 경우 Ultimaker는 18mm."
 
-#: Cura/util/profile.py:400
+#: Cura/util/profile.py:520
 msgid "Head size towards X max (mm)"
 msgstr "X max 방향으로의 헤드 크기 (mm)"
 
-#: Cura/util/profile.py:401
+#: Cura/util/profile.py:521
 msgid "Head size towards Y max (mm)"
 msgstr "Y max 방향으로의 헤드 크기 (mm)"
 
-#: Cura/util/profile.py:401
+#: Cura/util/profile.py:521
 msgid ""
 "The head size when printing multiple objects, measured from the tip of the "
 "nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan "
@@ -2483,11 +2564,11 @@ msgstr ""
 "복수의 오브젝트를 출력할때 노즐의 팁으로 부터 헤드의 바깥 부분쪽으로 측정된 "
 "헤드의 크기. 만약 팬이 왼쪽에있는 경우 Ultimaker는 35mm."
 
-#: Cura/util/profile.py:402
+#: Cura/util/profile.py:522
 msgid "Printer gantry height (mm)"
 msgstr "프린터 갠트리 높이 (mm)"
 
-#: Cura/util/profile.py:402
+#: Cura/util/profile.py:522
 msgid ""
 "The height of the gantry holding up the printer head. If an object is higher "
 "then this then you cannot print multiple objects one for one. 60mm for an "
@@ -2496,17 +2577,17 @@ msgstr ""
 "프린터 헤드를 받치고 있는 갠트리의 높이. 먄약 오브젝트가 이것보다 높은 경우 "
 "여러 오브젝트를 하나 하나를 인쇄 할 수 없습니다. Ultimaker는 60mm."
 
-#: Cura/util/profile.py:404
+#: Cura/util/profile.py:524
 #, python-format
 msgid "More flow than 150% is rare and usually not recommended."
 msgstr "150% 이상의 압출량은 일반적이지 않고 사용하지 않는것이 좋습니다."
 
-#: Cura/util/profile.py:405
+#: Cura/util/profile.py:525
 #, python-format
 msgid "Less flow than 50% is rare and usually not recommended."
 msgstr "50% 이하의 압출량은 일반적이지 않고 사용하지 않는것이 좋습니다."
 
-#: Cura/util/profile.py:406
+#: Cura/util/profile.py:526
 #, python-format
 msgid ""
 "Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and "
@@ -2515,19 +2596,19 @@ msgstr ""
 "두꺼운 층 %.2fmm (80%%  노즐 크기)는 일반적으로 결과가 좋지 않고 사용하지 않"
 "는 것이 좋습니다."
 
-#: Cura/util/profile.py:408
+#: Cura/util/profile.py:528
 msgid ""
 "It is highly unlikely that your machine can achieve a printing speed above "
 "150mm/s"
 msgstr "당신의 기기가 150mm/s 이상의 속도를 낼 가능성이 거의 없습니다."
 
-#: Cura/util/profile.py:410 Cura/util/profile.py:411 Cura/util/profile.py:412
-#: Cura/util/profile.py:413
+#: Cura/util/profile.py:530 Cura/util/profile.py:531 Cura/util/profile.py:532
+#: Cura/util/profile.py:533
 msgid "Temperatures above 260C could damage your machine, be careful!"
 msgstr "온도가 260C이상이면 기기에 손상을 줍니다. 조심 하십시요!"
 
-#: Cura/util/profile.py:414 Cura/util/profile.py:415 Cura/util/profile.py:416
-#: Cura/util/profile.py:417
+#: Cura/util/profile.py:534 Cura/util/profile.py:535 Cura/util/profile.py:536
+#: Cura/util/profile.py:537
 msgid ""
 "Are you sure your filament is that thick? Normal filament is around 3mm or "
 "1.75mm."
@@ -2535,14 +2616,14 @@ msgstr ""
 "필라멘트의 두께가 얼마인지 아십니까? 일반적인 필라멘트는 대략 3mm 나 1.75mm입"
 "니다."
 
-#: Cura/util/profile.py:418
+#: Cura/util/profile.py:538
 msgid ""
 "It is highly unlikely that your machine can achieve a travel speed above "
 "300mm/s"
 msgstr ""
 "기기가 300mm/s 이상의 이동 속도를 달성 할 수 있는 가능성이 거의 없습니다"
 
-#: Cura/util/profile.py:419
+#: Cura/util/profile.py:539
 #, python-format
 msgid ""
 "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad "
