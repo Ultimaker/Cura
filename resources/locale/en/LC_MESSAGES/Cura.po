@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-28 17:57+0200\n"
+"POT-Creation-Date: 2014-10-13 09:32+0200\n"
 "PO-Revision-Date: 2013-09-27 09:41+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,39 +16,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
 
-#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:566
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:566
 msgid "A new version of Cura is available, would you like to download?"
 msgstr ""
 
-#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:566
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:566
 msgid "New version available"
 msgstr ""
 
-#: Cura/gui/configWizard.py:223
+#: Cura/gui/configWizard.py:231
 msgid "Add new machine wizard"
 msgstr ""
 
-#: Cura/gui/configWizard.py:225
+#: Cura/gui/configWizard.py:233
 msgid "First time run wizard"
 msgstr ""
 
-#: Cura/gui/configWizard.py:226
+#: Cura/gui/configWizard.py:234
 msgid "Welcome, and thanks for trying Cura!"
 msgstr ""
 
-#: Cura/gui/configWizard.py:228
+#: Cura/gui/configWizard.py:236
 msgid "This wizard will help you in setting up Cura for your machine."
 msgstr ""
 
-#: Cura/gui/configWizard.py:262
+#: Cura/gui/configWizard.py:239
+msgid "Select your language:"
+msgstr ""
+
+#: Cura/gui/configWizard.py:280
 msgid "Select which Printrbot machine you have:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:299
+#: Cura/gui/configWizard.py:317
 msgid "The following pre-defined machine profiles are available"
 msgstr ""
 
-#: Cura/gui/configWizard.py:300
+#: Cura/gui/configWizard.py:318
 msgid ""
 "Note that these profiles are not guaranteed to give good results,\n"
 "or work at all. Extra tweaks might be required.\n"
@@ -57,367 +61,371 @@ msgid ""
 "Please report it at the github issue tracker."
 msgstr ""
 
-#: Cura/gui/configWizard.py:330
+#: Cura/gui/configWizard.py:348
 msgid "Cura is now ready to be used!"
 msgstr ""
 
-#: Cura/gui/configWizard.py:335
+#: Cura/gui/configWizard.py:353
 msgid ""
 "RepRap machines can be vastly different, so here you can set your own "
 "settings."
 msgstr ""
 
-#: Cura/gui/configWizard.py:336
+#: Cura/gui/configWizard.py:354
 msgid ""
 "Be sure to review the default profile before running it on your machine."
 msgstr ""
 
-#: Cura/gui/configWizard.py:337
+#: Cura/gui/configWizard.py:355
 msgid ""
 "If you like a default profile for your machine added,\n"
 "then make an issue on github."
 msgstr ""
 
-#: Cura/gui/configWizard.py:339
+#: Cura/gui/configWizard.py:357
 msgid "You will have to manually install Marlin or Sprinter firmware."
 msgstr ""
 
-#: Cura/gui/configWizard.py:341
+#: Cura/gui/configWizard.py:359
 msgid "Machine name"
 msgstr ""
 
-#: Cura/gui/configWizard.py:342
+#: Cura/gui/configWizard.py:360
 msgid "Machine width (mm)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:343
+#: Cura/gui/configWizard.py:361
 msgid "Machine depth (mm)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:344
+#: Cura/gui/configWizard.py:362
 msgid "Machine height (mm)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:345 Cura/util/profile.py:175
+#: Cura/gui/configWizard.py:363 Cura/util/profile.py:175
 msgid "Nozzle size (mm)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:346 Cura/util/profile.py:503
+#: Cura/gui/configWizard.py:364 Cura/util/profile.py:503
 msgid "Heated bed"
 msgstr ""
 
-#: Cura/gui/configWizard.py:347
+#: Cura/gui/configWizard.py:365
 msgid "Bed center is 0,0,0 (RoStock)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:367
+#: Cura/gui/configWizard.py:385
 msgid "Select your machine"
 msgstr ""
 
-#: Cura/gui/configWizard.py:368
+#: Cura/gui/configWizard.py:386
 msgid "What kind of machine do you have:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:377
-msgid "Other (Ex: RepRap, MakerBot)"
+#: Cura/gui/configWizard.py:401
+msgid "Other (Ex: RepRap, MakerBot, Witbox)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:380
+#: Cura/gui/configWizard.py:404
 msgid ""
 "The collection of anonymous usage information helps with the continued "
 "improvement of Cura."
 msgstr ""
 
-#: Cura/gui/configWizard.py:381
+#: Cura/gui/configWizard.py:405
 msgid ""
 "This does NOT submit your models online nor gathers any privacy related "
 "information."
 msgstr ""
 
-#: Cura/gui/configWizard.py:382
+#: Cura/gui/configWizard.py:406
 msgid "Submit anonymous usage information:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:383
+#: Cura/gui/configWizard.py:407
 msgid "For full details see: http://wiki.ultimaker.com/Cura:stats"
 msgstr ""
 
-#: Cura/gui/configWizard.py:455
+#: Cura/gui/configWizard.py:524
 msgid "Select upgraded parts you have"
 msgstr ""
 
-#: Cura/gui/configWizard.py:456
+#: Cura/gui/configWizard.py:525
 msgid ""
 "To assist you in having better default settings for your Ultimaker\n"
 "Cura would like to know which upgrades you have in your machine."
 msgstr ""
 
-#: Cura/gui/configWizard.py:458
+#: Cura/gui/configWizard.py:527
 msgid "Extruder drive upgrade"
 msgstr ""
 
-#: Cura/gui/configWizard.py:459
+#: Cura/gui/configWizard.py:528
 msgid "Heated printer bed (kit)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:460
+#: Cura/gui/configWizard.py:529
 msgid "Heated printer bed (self built)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:461
+#: Cura/gui/configWizard.py:530
 msgid "Dual extrusion (experimental)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:463
+#: Cura/gui/configWizard.py:532
 msgid ""
 "If you have an Ultimaker bought after october 2012 you will have the\n"
 "Extruder drive upgrade. If you do not have this upgrade,\n"
 "it is highly recommended to improve reliability."
 msgstr ""
 
-#: Cura/gui/configWizard.py:464
+#: Cura/gui/configWizard.py:533
 msgid ""
 "This upgrade can be bought from the Ultimaker webshop\n"
 "or found on thingiverse as thing:26094"
 msgstr ""
 
-#: Cura/gui/configWizard.py:486
+#: Cura/gui/configWizard.py:555
 msgid "Upgrade Ultimaker Firmware"
 msgstr ""
 
-#: Cura/gui/configWizard.py:487
+#: Cura/gui/configWizard.py:556
 msgid ""
 "Firmware is the piece of software running directly on your 3D printer.\n"
 "This firmware controls the step motors, regulates the temperature\n"
 "and ultimately makes your printer work."
 msgstr ""
 
-#: Cura/gui/configWizard.py:489
+#: Cura/gui/configWizard.py:558
 msgid ""
 "The firmware shipping with new Ultimakers works, but upgrades\n"
 "have been made to make better prints, and make calibration easier."
 msgstr ""
 
-#: Cura/gui/configWizard.py:491
+#: Cura/gui/configWizard.py:560
 msgid ""
 "Cura requires these new features and thus\n"
 "your firmware will most likely need to be upgraded.\n"
 "You will get the chance to do so now."
 msgstr ""
 
-#: Cura/gui/configWizard.py:496
+#: Cura/gui/configWizard.py:566
 msgid "Do not upgrade to this firmware if:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:497
+#: Cura/gui/configWizard.py:567
 msgid "* You have an older machine based on ATMega1280 (Rev 1 machine)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:498
+#: Cura/gui/configWizard.py:568
+msgid "* Build your own heated bed"
+msgstr ""
+
+#: Cura/gui/configWizard.py:569
 msgid "* Have other changes in the firmware"
 msgstr ""
 
-#: Cura/gui/configWizard.py:532
+#: Cura/gui/configWizard.py:603
 msgid ""
 "It is a good idea to do a few sanity checks now on your Ultimaker.\n"
 "You can skip these if you know your machine is functional."
 msgstr ""
 
-#: Cura/gui/configWizard.py:533
+#: Cura/gui/configWizard.py:604
 msgid "Run checks"
 msgstr ""
 
-#: Cura/gui/configWizard.py:533
+#: Cura/gui/configWizard.py:604
 msgid "Skip checks"
 msgstr ""
 
-#: Cura/gui/configWizard.py:537
+#: Cura/gui/configWizard.py:608
 msgid "Communication:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:538
+#: Cura/gui/configWizard.py:609
 msgid "Temperature:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:539
+#: Cura/gui/configWizard.py:610
 msgid "Endstops:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:544
+#: Cura/gui/configWizard.py:615
 msgid "Show error log"
 msgstr ""
 
-#: Cura/gui/configWizard.py:578
+#: Cura/gui/configWizard.py:649
 msgid "Connecting to machine."
 msgstr ""
 
-#: Cura/gui/configWizard.py:599
+#: Cura/gui/configWizard.py:670
 msgid "Cooldown before temperature check."
 msgstr ""
 
-#: Cura/gui/configWizard.py:605 Cura/gui/configWizard.py:612
+#: Cura/gui/configWizard.py:676 Cura/gui/configWizard.py:683
 msgid "Checking the heater and temperature sensor."
 msgstr ""
 
-#: Cura/gui/configWizard.py:623
+#: Cura/gui/configWizard.py:694
 msgid "Please make sure none of the endstops are pressed."
 msgstr ""
 
-#: Cura/gui/configWizard.py:636
+#: Cura/gui/configWizard.py:707
 msgid "Temperature measurement FAILED!"
 msgstr ""
 
-#: Cura/gui/configWizard.py:641
+#: Cura/gui/configWizard.py:712
 #, python-format
 msgid "Head temperature: %d"
 msgstr ""
 
-#: Cura/gui/configWizard.py:648 Cura/gui/configWizard.py:657
+#: Cura/gui/configWizard.py:719 Cura/gui/configWizard.py:728
 #, python-format
 msgid "Communication State: %s"
 msgstr ""
 
-#: Cura/gui/configWizard.py:651
+#: Cura/gui/configWizard.py:722
 msgid "Failed to establish connection with the printer."
 msgstr ""
 
-#: Cura/gui/configWizard.py:696
-msgid "Please press the right X endstop."
-msgstr ""
-
-#: Cura/gui/configWizard.py:701
+#: Cura/gui/configWizard.py:768 Cura/gui/configWizard.py:777
 msgid "Please press the left X endstop."
 msgstr ""
 
-#: Cura/gui/configWizard.py:706
+#: Cura/gui/configWizard.py:772
+msgid "Please press the right X endstop."
+msgstr ""
+
+#: Cura/gui/configWizard.py:782
 msgid "Please press the front Y endstop."
 msgstr ""
 
-#: Cura/gui/configWizard.py:711
-msgid "Please press the back Y endstop."
-msgstr ""
-
-#: Cura/gui/configWizard.py:716
+#: Cura/gui/configWizard.py:788 Cura/gui/configWizard.py:797
 msgid "Please press the top Z endstop."
 msgstr ""
 
-#: Cura/gui/configWizard.py:721
-msgid "Please press the bottom Z endstop."
+#: Cura/gui/configWizard.py:792
+msgid "Please press the back Y endstop."
 msgstr ""
 
-#: Cura/gui/configWizard.py:727
+#: Cura/gui/configWizard.py:804 Cura/gui/configWizard.py:817
 msgid "Checkup finished"
 msgstr ""
 
-#: Cura/gui/configWizard.py:770
+#: Cura/gui/configWizard.py:811
+msgid "Please press the bottom Z endstop."
+msgstr ""
+
+#: Cura/gui/configWizard.py:860
 msgid "Calibrating the Steps Per E requires some manual actions."
 msgstr ""
 
-#: Cura/gui/configWizard.py:771
+#: Cura/gui/configWizard.py:861
 msgid "First remove any filament from your machine."
 msgstr ""
 
-#: Cura/gui/configWizard.py:772
+#: Cura/gui/configWizard.py:862
 msgid ""
 "Next put in your filament so the tip is aligned with the\n"
 "top of the extruder drive."
 msgstr ""
 
-#: Cura/gui/configWizard.py:773
+#: Cura/gui/configWizard.py:863
 msgid "We'll push the filament 100mm"
 msgstr ""
 
-#: Cura/gui/configWizard.py:774
+#: Cura/gui/configWizard.py:864
 msgid "Extrude 100mm filament"
 msgstr ""
 
-#: Cura/gui/configWizard.py:775
+#: Cura/gui/configWizard.py:865
 msgid ""
 "Now measure the amount of extruded filament:\n"
 "(this can be more or less then 100mm)"
 msgstr ""
 
-#: Cura/gui/configWizard.py:776
+#: Cura/gui/configWizard.py:866
 msgid "Save"
 msgstr ""
 
-#: Cura/gui/configWizard.py:777
+#: Cura/gui/configWizard.py:867
 msgid "This results in the following steps per E:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:779
+#: Cura/gui/configWizard.py:869
 msgid "You can repeat these steps to get better calibration."
 msgstr ""
 
-#: Cura/gui/configWizard.py:782
+#: Cura/gui/configWizard.py:872
 msgid ""
 "If you still have filament in your printer which needs\n"
 "heat to remove, press the heat up button below:"
 msgstr ""
 
-#: Cura/gui/configWizard.py:783
+#: Cura/gui/configWizard.py:873
 msgid "Heatup for filament removal"
 msgstr ""
 
-#: Cura/gui/configWizard.py:808 Cura/gui/configWizard.py:842
+#: Cura/gui/configWizard.py:898 Cura/gui/configWizard.py:932
 msgid ""
 "Error: Failed to open serial port to machine\n"
 "If this keeps happening, try disconnecting and reconnecting the USB cable"
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:44
+#: Cura/gui/firmwareInstall.py:58
 msgid ""
 "I am sorry, but Cura does not ship with a default firmware for your machine "
 "configuration."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:44 Cura/gui/firmwareInstall.py:48
-#: Cura/gui/firmwareInstall.py:103 Cura/gui/mainWindow.py:508
+#: Cura/gui/firmwareInstall.py:58 Cura/gui/firmwareInstall.py:62
+#: Cura/gui/firmwareInstall.py:117 Cura/gui/mainWindow.py:508
 msgid "Firmware update"
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:48
+#: Cura/gui/firmwareInstall.py:62
 msgid ""
 "Cura only supports firmware updates for ATMega2560 based hardware.\n"
 "So updating your RepRap with Cura might or might not work."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:56
+#: Cura/gui/firmwareInstall.py:70
 msgid "OK"
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:77
+#: Cura/gui/firmwareInstall.py:91
 msgid "Reading firmware..."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:79
+#: Cura/gui/firmwareInstall.py:93
 msgid "Connecting to machine..."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:83
+#: Cura/gui/firmwareInstall.py:97
 msgid ""
 "Please connect the printer to\n"
 "your computer with the USB cable."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:102
+#: Cura/gui/firmwareInstall.py:116
 msgid ""
 "Failed to find machine for firmware upgrade\n"
 "Is your machine connected to the PC?"
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:107
+#: Cura/gui/firmwareInstall.py:121
 msgid "Uploading firmware..."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:110
+#: Cura/gui/firmwareInstall.py:124
 #, python-format
 msgid ""
 "Done!\n"
 "Installed firmware: %s"
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:112
+#: Cura/gui/firmwareInstall.py:126
 msgid "Failed to write firmware.\n"
 msgstr ""
 
@@ -860,7 +868,7 @@ msgstr ""
 msgid "Save 3D model"
 msgstr ""
 
-#: Cura/gui/sceneView.py:276 Cura/gui/sceneView.py:914
+#: Cura/gui/sceneView.py:276 Cura/gui/sceneView.py:915
 #, python-format
 msgid "Print with %s"
 msgstr ""
@@ -869,63 +877,63 @@ msgstr ""
 msgid "Slice engine log..."
 msgstr ""
 
-#: Cura/gui/sceneView.py:305 Cura/gui/sceneView.py:917
+#: Cura/gui/sceneView.py:305 Cura/gui/sceneView.py:918
 msgid "Save toolpath"
 msgstr ""
 
-#: Cura/gui/sceneView.py:351
+#: Cura/gui/sceneView.py:352
 msgid "The slicing engine reported the following"
 msgstr ""
 
-#: Cura/gui/sceneView.py:351
+#: Cura/gui/sceneView.py:352
 msgid "Engine log..."
 msgstr ""
 
-#: Cura/gui/sceneView.py:490
+#: Cura/gui/sceneView.py:491
 msgid "How many copies do you want?"
 msgstr ""
 
-#: Cura/gui/sceneView.py:490
+#: Cura/gui/sceneView.py:491
 msgid "Number of copies"
 msgstr ""
 
-#: Cura/gui/sceneView.py:490
+#: Cura/gui/sceneView.py:491
 msgid "Multiply"
 msgstr ""
 
-#: Cura/gui/sceneView.py:780
+#: Cura/gui/sceneView.py:781
 msgid "Center on platform"
 msgstr ""
 
-#: Cura/gui/sceneView.py:781
+#: Cura/gui/sceneView.py:782
 msgid "Delete object"
 msgstr ""
 
-#: Cura/gui/sceneView.py:782
+#: Cura/gui/sceneView.py:783
 msgid "Multiply object"
 msgstr ""
 
-#: Cura/gui/sceneView.py:783
+#: Cura/gui/sceneView.py:784
 msgid "Split object into parts"
 msgstr ""
 
-#: Cura/gui/sceneView.py:785
+#: Cura/gui/sceneView.py:786
 msgid "Dual extrusion merge"
 msgstr ""
 
-#: Cura/gui/sceneView.py:787
+#: Cura/gui/sceneView.py:788
 msgid "Delete all objects"
 msgstr ""
 
-#: Cura/gui/sceneView.py:788
+#: Cura/gui/sceneView.py:789
 msgid "Reload all objects"
 msgstr ""
 
-#: Cura/gui/sceneView.py:911
+#: Cura/gui/sceneView.py:912
 msgid "Toolpath to SD"
 msgstr ""
 
-#: Cura/gui/sceneView.py:1205
+#: Cura/gui/sceneView.py:1206
 msgid "Overhang view not working due to lack of OpenGL shaders support."
 msgstr ""
 
