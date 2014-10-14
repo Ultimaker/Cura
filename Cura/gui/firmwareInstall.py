@@ -60,12 +60,13 @@ class InstallFirmware(wx.Dialog):
 			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			self.Destroy()
 			return
-		if profile.getMachineSetting('machine_type', machineIndex) == 'reprap':
+		self._machine_type = profile.getMachineSetting('machine_type', machineIndex)
+		if self._machine_type == 'reprap':
 			wx.MessageBox(_("Cura only supports firmware updates for ATMega2560 based hardware.\nSo updating your RepRap with Cura might or might not work."), _("Firmware update"), wx.OK | wx.ICON_INFORMATION)
 
 		sizer = wx.BoxSizer(wx.VERTICAL)
 
-		self.progressLabel = wx.StaticText(self, -1, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nX')
+		self.progressLabel = wx.StaticText(self, -1, 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nX\nX')
 		sizer.Add(self.progressLabel, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.progressGauge = wx.Gauge(self, -1)
 		sizer.Add(self.progressGauge, 0, flag=wx.EXPAND)
@@ -119,6 +120,19 @@ class InstallFirmware(wx.Dialog):
 						  _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			wx.CallAfter(self.Close)
 			return
+
+		if self._machine_type == 'ultimaker':
+			if programmer.hasChecksumFunction():
+				wx.CallAfter(self.updateLabel, _("Failed to install firmware:\nThis firmware is not compatible with this machine.\nTrying to install UMO firmware on an UM2 or UMO+?"))
+				programmer.close()
+				wx.CallAfter(self.okButton.Enable)
+				return
+		if self._machine_type == 'ultimaker_plus' or self._machine_type == 'ultimaker2':
+			if not programmer.hasChecksumFunction():
+				wx.CallAfter(self.updateLabel, _("Failed to install firmware:\nThis firmware is not compatible with this machine.\nTrying to install UM2 or UMO+ firmware on an UMO?"))
+				programmer.close()
+				wx.CallAfter(self.okButton.Enable)
+				return
 
 		wx.CallAfter(self.updateLabel, _("Uploading firmware..."))
 		try:
