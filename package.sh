@@ -22,11 +22,10 @@ export BUILD_NAME=14.09
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Debian package release
-debian_64_release_counter=scripts/linux/debian_amd64_release
-debian_64_release=$(<$debian_64_release_counter)
-debian_32_release_counter=scripts/linux/debian_i386_release
-debian_32_release=$(<$debian_32_release_counter)
+export DEBIAN_RELEASE=1
 
+##Git commit
+GIT_HASH=$(git rev-parse --short=4 HEAD)
 
 ##Which versions of external programs to use
 WIN_PORTABLE_PY_VERSION=2.7.2.1
@@ -214,8 +213,6 @@ fi
 #############################
 
 if [ "$BUILD_TARGET" = "debian_i386" ]; then
-	((debian_32_release += 1))
-	echo $debian_32_release > $debian_32_release_counter
     export CXX="g++ -m32"
 	if [ ! -d "Power" ]; then
 		git clone https://github.com/GreatFruitOmsk/Power
@@ -242,7 +239,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura-AO_${BUILD_NAME}-${debian_32_release}-${BUILD_TARGET}.deb
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura-lulzbot_${BUILD_NAME}-${DEBIAN_RELEASE}-${GIT_HASH}_${BUILD_TARGET}.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
@@ -252,8 +249,6 @@ fi
 #############################
 
 if [ "$BUILD_TARGET" = "debian_amd64" ]; then
-	((debian_64_release += 1))
-	echo $debian_64_release > $debian_64_release_counter
     export CXX="g++ -m64"
 	if [ ! -d "Power" ]; then
 		git clone https://github.com/GreatFruitOmsk/Power
@@ -280,7 +275,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura-AO_${BUILD_NAME}-${debian_64_release}-${BUILD_TARGET}.deb
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura-lulzbot_${BUILD_NAME}-${DEBIAN_RELEASE}-${GIT_HASH}_${BUILD_TARGET}.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
