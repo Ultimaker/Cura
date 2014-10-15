@@ -1333,11 +1333,11 @@ class SceneView(openglGui.glGuiPanel):
 		for n in xrange(0, len(polys[0])):
 			if not circular:
 				if n % 2 == 0:
-					glColor4ub(5, 171, 231, 96)
+					glColor4ub(210, 235, 103, 100)
 				else:
-					glColor4ub(5, 171, 231, 64)
+					glColor4ub(223, 241, 145, 100)
 			else:
-				glColor4ub(5, 171, 231, 96)
+				glColor4ub(223, 241, 145, 100)
 
 			glVertex3f(polys[0][n][0], polys[0][n][1], height)
 			glVertex3f(polys[0][n][0], polys[0][n][1], 0)
@@ -1346,7 +1346,7 @@ class SceneView(openglGui.glGuiPanel):
 		glEnd()
 
 		#Draw top of build volume.
-		glColor4ub(5, 171, 231, 128)
+		glColor4ub(183, 209, 90, 100)
 		glBegin(GL_TRIANGLE_FAN)
 		for p in polys[0][::-1]:
 			glVertex3f(p[0], p[1], height)
@@ -1358,7 +1358,8 @@ class SceneView(openglGui.glGuiPanel):
 			glBindTexture(GL_TEXTURE_2D, self._platformTexture)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-		glColor4f(1,1,1,0.5)
+		#Dark checkerboard color
+		glColor4f(1,1,1,0.7)
 		glBindTexture(GL_TEXTURE_2D, self._platformTexture)
 		glEnable(GL_TEXTURE_2D)
 		glBegin(GL_TRIANGLE_FAN)
