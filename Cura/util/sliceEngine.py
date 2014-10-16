@@ -89,15 +89,15 @@ class EngineResult(object):
 		if self._printTimeSeconds is None:
 			return ''
 		if int(self._printTimeSeconds / 60 / 60) < 1:
-			return '%d minutes' % (int(self._printTimeSeconds / 60) % 60)
+			return _('%d minutes') % (int(self._printTimeSeconds / 60) % 60)
 		if int(self._printTimeSeconds / 60 / 60) == 1:
-			return '%d hour %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
-		return '%d hours %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
+			return _('%d hour %d minutes') % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
+		return _('%d hours %d minutes') % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
 
 	def getFilamentAmount(self, e=0):
 		if self._filamentMM[e] == 0.0:
 			return None
-		return '%0.2f meter %0.0f gram' % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
+		return _('%0.2f meter %0.0f gram') % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
 
 	def getLog(self):
 		return self._engineLog
