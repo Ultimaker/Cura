@@ -1,0 +1,2 @@
+#!/bin/sh
+PYTHONPATH=$PYTHONPATH:/usr/local/share/cura/ `echo /usr/bin/env python` /usr/local/share/cura/cura.py "$@"

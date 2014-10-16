@@ -20,6 +20,8 @@ def gcodePath(newType, pathType, layerThickness, startPoint):
 	"""
 	if layerThickness <= 0.0:
 		layerThickness = 0.01
+	if profile.getProfileSetting('spiralize') == 'True':
+		layerThickness = profile.getProfileSettingFloat('layer_height')
 	return {'type': newType,
 			'pathType': pathType,
 			'layerThickness': layerThickness,
@@ -49,9 +51,9 @@ class gcode(object):
 		elif type(data) is list:
 			self._load(data)
 		else:
-			data = data.getvalue()
 			self._fileSize = len(data)
-			self._load(StringIO.StringIO(data))
+			data.seekStart()
+			self._load(data)
 
 	def calculateWeight(self):
 		#Calculates the weight of the filament in kg
@@ -219,12 +221,12 @@ class gcode(object):
 					e = getCodeFloat(line, 'E')
 					if e is not None:
 						currentE = e
-					if x is not None:
-						posOffset[0] = pos[0] - x
-					if y is not None:
-						posOffset[1] = pos[1] - y
-					if z is not None:
-						posOffset[2] = pos[2] - z
+					#if x is not None:
+					#	posOffset[0] = pos[0] - x
+					#if y is not None:
+					#	posOffset[1] = pos[1] - y
+					#if z is not None:
+					#	posOffset[2] = pos[2] - z
 				else:
 					print "Unknown G code:" + str(G)
 			else:

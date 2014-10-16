@@ -129,7 +129,12 @@ def runPostProcessingPlugins(engineResult):
 		if tempfilename is None:
 			f = tempfile.NamedTemporaryFile(prefix='CuraPluginTemp', delete=False)
 			tempfilename = f.name
-			f.write(engineResult.getGCode())
+			gcode = engineResult.getGCode()
+			while True:
+				data = gcode.read()
+				if len(data) == 0:
+					break
+				f.write(data)
 			f.close()
 
 		locals = {'filename': tempfilename}

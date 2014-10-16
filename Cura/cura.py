@@ -34,7 +34,8 @@ def main():
 
 	if options.serialCommunication:
 		from Cura import serialCommunication
-		serialCommunication.startMonitor(options.serialCommunication)
+		port, baud = options.serialCommunication.split(':')
+		serialCommunication.startMonitor(port, baud)
 		return
 
 	print "load preferences from " + profile.getPreferencePath()
@@ -69,9 +70,14 @@ def main():
 		engine.wait()
 
 		if not options.output:
-			options.output = args[0] + '.gcode'
+			options.output = args[0] + profile.getGCodeExtension()
 		with open(options.output, "wb") as f:
-			f.write(engine.getResult().getGCode())
+			gcode = engine.getResult().getGCode()
+			while True:
+				data = gcode.read()
+				if len(data) == 0:
+					break
+				f.write(data)
 		print 'GCode file saved : %s' % options.output
 
 		engine.cleanup()

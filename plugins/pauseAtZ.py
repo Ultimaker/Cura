@@ -55,6 +55,8 @@ with open(filename, "w") as f:
 					f.write("G1 X%f Y%f F9000\n" % (parkX, parkY))
 					if z < 15:
 						f.write("G1 Z15 F300\n")
+					#Disable the E steppers
+					f.write("M84 E0\n")
 					#Wait till the user continues printing
 					f.write("M0\n")
 					#Push the filament back, and retract again, the properly primes the nozzle when changing filament.

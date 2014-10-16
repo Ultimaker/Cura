@@ -33,10 +33,20 @@ addColorCommand(180, 0, 0, sendGCode, "G91; G1 Z-0.1 F200; G90")
 addColorCommand(160, 0, 0, sendGCode, "G91; G1 Z-1 F200; G90")
 addColorCommand(140, 0, 0, sendGCode, "G91; G1 Z-10 F200; G90")
 
+addColorCommand(255, 180, 0, sendGCode, "G91; G1 E10 F120; G90")
+addColorCommand(255, 160, 0, sendGCode, "G91; G1 E1 F120; G90")
+addColorCommand(255, 140, 0, sendGCode, "G91; G1 E0.1 F120; G90")
+addColorCommand(255, 120, 0, sendGCode, "G91; G1 E-0.1 F120; G90")
+addColorCommand(255, 100, 0, sendGCode, "G91; G1 E-1 F120; G90")
+addColorCommand(255,  80, 0, sendGCode, "G91; G1 E-10 F120; G90")
+
 addColorCommand(255, 255, 0, sendGCode, "G28")
 addColorCommand(240, 255, 0, sendGCode, "G28 X0")
 addColorCommand(220, 255, 0, sendGCode, "G28 Y0")
 addColorCommand(200, 255, 0, sendGCode, "G28 Z0")
+
+addSpinner(180, 0, 160, sendGCode, "M104 S%d")
+addSpinner(180, 0, 180, sendGCode, "M140 S%d")
 
 addTerminal(255, 0, 255)
 addTemperatureGraph(180, 0, 255)

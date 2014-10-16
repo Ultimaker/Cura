@@ -1,3 +1,4 @@
+#coding:utf8
 """
 Helper module to get easy access to the path where resources are stored.
 This is because the resource location is depended on the packaging method and OS
@@ -8,8 +9,6 @@ import os
 import sys
 import glob
 
-#Cura/util classes should not depend on wx...
-import wx
 import gettext
 
 if sys.platform.startswith('darwin'):
@@ -50,14 +49,8 @@ def getDefaultMachineProfiles():
 	return glob.glob(path)
 
 def setupLocalization(selectedLanguage = None):
-	try:
-		if sys.platform.startswith('darwin'):
-			languages = NSLocale.preferredLanguages()
-		else:
-			#Using wx.Locale before you created wx.App seems to cause an nasty exception. So default to 'en' at the moment.
-			languages = [wx.Locale(wx.LANGUAGE_DEFAULT).GetCanonicalName()]
-	except Exception as e:
-		languages = ['en']
+	#Default to english
+	languages = ['en']
 
 	if selectedLanguage is not None:
 		for item in getLanguageOptions():
@@ -70,11 +63,11 @@ def setupLocalization(selectedLanguage = None):
 
 def getLanguageOptions():
 	return [
-		# [None, 'System default'],
 		['en', 'English'],
-		# ['de', 'Deutsch'],
-		# ['fr', 'French'],
+		['de', 'Deutsch'],
+		['fr', 'French'],
+		# ['zh', 'Chinese'],
 		# ['nl', 'Nederlands'],
-		# ['sp', 'Spanish'],
+		# ['es', 'Spanish'],
 		# ['po', 'Polish']
 	]

@@ -280,9 +280,9 @@ class Scene(object):
 		for a in self._objectList:
 			p = a.getPosition()
 			if self._oneAtATime:
-				s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headSizeOffsets + numpy.array([3,3], numpy.float32)
+				s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + self._sizeOffsets + self._headSizeOffsets + numpy.array([4,4], numpy.float32)
 			else:
-				s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + numpy.array([3,3], numpy.float32)
+				s = (a.getSize()[0:2] + obj.getSize()[0:2]) / 2 + numpy.array([4,4], numpy.float32)
 			posList.append(p + s * ( 1.0, 1.0))
 			posList.append(p + s * ( 0.0, 1.0))
 			posList.append(p + s * (-1.0, 1.0))
