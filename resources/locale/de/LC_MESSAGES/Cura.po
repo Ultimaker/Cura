@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-13 09:32+0200\n"
+"POT-Creation-Date: 2014-10-16 11:25+0200\n"
 "PO-Revision-Date: 2014-02-11 21:03+0100\n"
 "Last-Translator: Lars Pötter <Lars_Poetter@gmx.de>\n"
 "Language-Team: Deutsch <Lars_Poetter@gmx.de>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:566
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
 msgid "A new version of Cura is available, would you like to download?"
 msgstr ""
 "Eine neue Version von Cura ist verfügbar, möchten Sie diese herunterladen?"
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:566
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
 msgid "New version available"
 msgstr "Neue Version verfügbar"
 
@@ -49,10 +49,19 @@ msgstr "Dieser Assistent wird Ihnen bei den folgenden Schritten helfen:"
 msgid "Select your language:"
 msgstr "Wählen Sie ihr Gerät aus"
 
+#: Cura/gui/configWizard.py:279
+msgid "Printrbot Selection"
+msgstr ""
+
 #: Cura/gui/configWizard.py:280
 #, fuzzy
 msgid "Select which Printrbot machine you have:"
 msgstr "Welchen Typ Maschine haben Sie:"
+
+#: Cura/gui/configWizard.py:316
+#, fuzzy
+msgid "Other machine information"
+msgstr "Grösse des Geräts in mm"
 
 #: Cura/gui/configWizard.py:317
 msgid "The following pre-defined machine profiles are available"
@@ -71,9 +80,22 @@ msgstr ""
 "erzielen,\n"
 "oder überhaupt funktionieren. Kleiner Anpassungen können notwendig sein."
 
+#: Cura/gui/configWizard.py:329
+msgid "Custom..."
+msgstr ""
+
+#: Cura/gui/configWizard.py:347
+msgid "Cura Ready!"
+msgstr ""
+
 #: Cura/gui/configWizard.py:348
 msgid "Cura is now ready to be used!"
 msgstr "Cura kann nun verwendet werden!"
+
+#: Cura/gui/configWizard.py:352
+#, fuzzy
+msgid "Custom RepRap information"
+msgstr "Sende anonyme Informationen zur Verwendung:"
 
 #: Cura/gui/configWizard.py:353
 msgid ""
@@ -267,6 +289,10 @@ msgstr ""
 msgid "* Have other changes in the firmware"
 msgstr "* Sie andere Anpassungen in der Firmware vorgenommen haben"
 
+#: Cura/gui/configWizard.py:589
+msgid "Ultimaker Checkup"
+msgstr ""
+
 #: Cura/gui/configWizard.py:603
 msgid ""
 "It is a good idea to do a few sanity checks now on your Ultimaker.\n"
@@ -299,7 +325,8 @@ msgstr "Endstopps:"
 msgid "Show error log"
 msgstr "Zeige den Fehlerbericht"
 
-#: Cura/gui/configWizard.py:649
+#: Cura/gui/configWizard.py:649 Cura/gui/configWizard.py:1078
+#: Cura/gui/configWizard.py:1297
 msgid "Connecting to machine."
 msgstr "Verbinde zur Maschine."
 
@@ -329,7 +356,8 @@ msgstr "Temperatur Druckkopf: %d"
 msgid "Communication State: %s"
 msgstr "Kommunikations-Status: %s"
 
-#: Cura/gui/configWizard.py:722
+#: Cura/gui/configWizard.py:722 Cura/gui/configWizard.py:1255
+#: Cura/gui/configWizard.py:1473
 msgid "Failed to establish connection with the printer."
 msgstr "Konnte keine Verbindung zum Drucker aufbauen."
 
@@ -360,6 +388,10 @@ msgstr "Funktionstests abgeschlossen"
 #: Cura/gui/configWizard.py:811
 msgid "Please press the bottom Z endstop."
 msgstr "Bitte drücken Sie den unteren Z Endstopp."
+
+#: Cura/gui/configWizard.py:832 Cura/gui/configWizard.py:855
+msgid "Ultimaker Calibration"
+msgstr ""
 
 #: Cura/gui/configWizard.py:860
 msgid "Calibrating the Steps Per E requires some manual actions."
@@ -428,7 +460,222 @@ msgstr ""
 "Fehler: Serieller Port zum Gerät konnte nicht geöffnet werden\n"
 "Besteht dieses Problem wiederholt, stecken Sie das USB-Kabel neu ein."
 
-#: Cura/gui/firmwareInstall.py:58
+#: Cura/gui/configWizard.py:972
+msgid "Ultimaker2"
+msgstr ""
+
+#: Cura/gui/configWizard.py:973
+msgid "Congratulations on your the purchase of your brand new Ultimaker2."
+msgstr ""
+
+#: Cura/gui/configWizard.py:974
+#, fuzzy
+msgid "Cura is now ready to be used with your Ultimaker2."
+msgstr "Cura kann nun verwendet werden!"
+
+#: Cura/gui/configWizard.py:979
+msgid "Lulzbot TAZ/Mini"
+msgstr ""
+
+#: Cura/gui/configWizard.py:980
+#, fuzzy
+msgid "Cura is now ready to be used with your Lulzbot."
+msgstr "Cura kann nun verwendet werden!"
+
+#: Cura/gui/configWizard.py:985
+msgid "Configuration Wizard"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1038 Cura/gui/configWizard.py:1486
+#, fuzzy
+msgid "Bed leveling wizard"
+msgstr "Drucktisch-Ausrichtung Assistent aufrufen..."
+
+#: Cura/gui/configWizard.py:1040
+#, fuzzy
+msgid "This wizard will help you in leveling your printer bed"
+msgstr "Dieser Assistent wird Ihnen bei den folgenden Schritten helfen:"
+
+#: Cura/gui/configWizard.py:1042
+#, fuzzy
+msgid "It will do the following steps"
+msgstr "Dies bedeutet folgende Anzahl Schritte pro E:"
+
+#: Cura/gui/configWizard.py:1043
+msgid "* Move the printer head to each corner"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1044
+msgid "  and let you adjust the height of the bed to the nozzle"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1045
+msgid "* Print a line around the bed to check if it is level"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1048 Cura/gui/configWizard.py:1273
+#, fuzzy
+msgid "Connect to printer"
+msgstr "Verbinde zur Maschine."
+
+#: Cura/gui/configWizard.py:1052 Cura/gui/configWizard.py:1279
+msgid "Resume"
+msgstr "Fortsetzen"
+
+#: Cura/gui/configWizard.py:1053
+msgid "Up 0.2mm"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1053
+msgid "Down 0.2mm"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1054
+msgid "Up 10mm"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1054
+msgid "Down 10mm"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1114
+msgid "Homing printer..."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1124
+msgid "Moving head to back center..."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1131
+msgid "Moving head to back left corner..."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1139 Cura/gui/configWizard.py:1153
+msgid "Moving head to front right corner..."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1146
+msgid "Moving head to back right corner..."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1160
+msgid "Heating up printer..."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1167
+msgid "Printing a square on the printer bed at 0.3mm height."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1207
+msgid ""
+"Adjust the front left screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1212
+msgid ""
+"Adjust the back screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1214
+msgid ""
+"Adjust the back left screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1218
+msgid ""
+"Adjust the back right screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1222
+msgid ""
+"Adjust the front right screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1226
+#, python-format
+msgid "Heating up printer: %d/%d"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1228
+msgid ""
+"The printer is hot now. Please insert some PLA filament into the printer."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1237
+msgid "Use the up/down buttons to move the bed and adjust your Z endstop."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1249
+msgid ""
+"Calibration finished.\n"
+"The squares on the bed should slightly touch each other."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1270
+#, fuzzy
+msgid ""
+"This wizard will help you in calibrating the printer head offsets of your "
+"dual extrusion machine"
+msgstr "Dieser Assistent wird Ihnen bei den folgenden Schritten helfen:"
+
+#: Cura/gui/configWizard.py:1303
+msgid "Printing initial calibration cross"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1351
+msgid ""
+"Please measure the distance between the horizontal lines in millimeters."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1361
+msgid "Printing the fine calibration lines."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1416
+msgid ""
+"Which horizontal line number lays perfect on top of each other? Front most "
+"line is zero."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1427
+#, python-format
+msgid "Calibration finished. Offsets are: %s %s"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1440
+msgid "Please load both extruders with PLA."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1449
+msgid "Homing printer and heating up both extruders."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1459
+msgid "Please measure the distance between the vertical lines in millimeters."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1466
+msgid ""
+"Which vertical line number lays perfect on top of each other? Leftmost line "
+"is zero."
+msgstr ""
+
+#: Cura/gui/configWizard.py:1515
+#, fuzzy
+msgid "Head offset wizard"
+msgstr "Assistent für den Druckkopfversatz aufrufen..."
+
+#: Cura/gui/expertConfig.py:25
+#, fuzzy
+msgid "Expert config"
+msgstr "Experte"
+
+#: Cura/gui/firmwareInstall.py:59
 msgid ""
 "I am sorry, but Cura does not ship with a default firmware for your machine "
 "configuration."
@@ -436,36 +683,36 @@ msgstr ""
 "Bitte entschuldigen Sie, Cura enthält keine Standard-Firmware für Ihre "
 "Geräte-Konfiguration."
 
-#: Cura/gui/firmwareInstall.py:58 Cura/gui/firmwareInstall.py:62
-#: Cura/gui/firmwareInstall.py:117 Cura/gui/mainWindow.py:508
+#: Cura/gui/firmwareInstall.py:59 Cura/gui/firmwareInstall.py:64
+#: Cura/gui/firmwareInstall.py:119 Cura/gui/mainWindow.py:510
 msgid "Firmware update"
 msgstr "Firmware-Aktualisierung"
 
-#: Cura/gui/firmwareInstall.py:62
+#: Cura/gui/firmwareInstall.py:64
 msgid ""
 "Cura only supports firmware updates for ATMega2560 based hardware.\n"
 "So updating your RepRap with Cura might or might not work."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:70
+#: Cura/gui/firmwareInstall.py:72 Cura/gui/firmwareInstall.py:175
 msgid "OK"
 msgstr "OK"
 
-#: Cura/gui/firmwareInstall.py:91
+#: Cura/gui/firmwareInstall.py:93 Cura/gui/firmwareInstall.py:206
 msgid "Reading firmware..."
 msgstr "Lese Firmware..."
 
-#: Cura/gui/firmwareInstall.py:93
+#: Cura/gui/firmwareInstall.py:95 Cura/gui/firmwareInstall.py:208
 msgid "Connecting to machine..."
 msgstr "Verbinde zum Gerät..."
 
-#: Cura/gui/firmwareInstall.py:97
+#: Cura/gui/firmwareInstall.py:99 Cura/gui/firmwareInstall.py:212
 msgid ""
 "Please connect the printer to\n"
 "your computer with the USB cable."
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:116
+#: Cura/gui/firmwareInstall.py:118
 msgid ""
 "Failed to find machine for firmware upgrade\n"
 "Is your machine connected to the PC?"
@@ -473,11 +720,25 @@ msgstr ""
 "Konnte Gerät für Firmware-Aktualisierung nicht finden\n"
 "Ist das Gerät mit dem PC verbunden?"
 
-#: Cura/gui/firmwareInstall.py:121
+#: Cura/gui/firmwareInstall.py:125
+msgid ""
+"Failed to install firmware:\n"
+"This firmware is not compatible with this machine.\n"
+"Trying to install UMO firmware on an UM2 or UMO+?"
+msgstr ""
+
+#: Cura/gui/firmwareInstall.py:131
+msgid ""
+"Failed to install firmware:\n"
+"This firmware is not compatible with this machine.\n"
+"Trying to install UM2 or UMO+ firmware on an UMO?"
+msgstr ""
+
+#: Cura/gui/firmwareInstall.py:136 Cura/gui/firmwareInstall.py:234
 msgid "Uploading firmware..."
 msgstr "Hochladen der Firmware..."
 
-#: Cura/gui/firmwareInstall.py:124
+#: Cura/gui/firmwareInstall.py:139 Cura/gui/firmwareInstall.py:237
 #, python-format
 msgid ""
 "Done!\n"
@@ -486,9 +747,14 @@ msgstr ""
 "Geschafft!\n"
 "Firmware installiert: %s"
 
-#: Cura/gui/firmwareInstall.py:126
+#: Cura/gui/firmwareInstall.py:141 Cura/gui/firmwareInstall.py:239
 msgid "Failed to write firmware.\n"
 msgstr "Schreiben der Firmware fehlgeschlagen.\n"
+
+#: Cura/gui/firmwareInstall.py:231
+#, fuzzy
+msgid "Failed to connect to programmer.\n"
+msgstr "Verbindung zu YouMagine.com fehlgeschlagen"
 
 #: Cura/gui/mainWindow.py:66
 msgid "Load model file...\tCTRL+L"
@@ -539,7 +805,7 @@ msgstr "Profil auf Standard zurücksetzen"
 msgid "Preferences...\tCTRL+,"
 msgstr "Voreinstellungen...\tCTRL+,"
 
-#: Cura/gui/mainWindow.py:101 Cura/gui/mainWindow.py:434
+#: Cura/gui/mainWindow.py:101 Cura/gui/mainWindow.py:436
 msgid "Machine settings..."
 msgstr "Geräte-Einstellungen..."
 
@@ -567,108 +833,113 @@ msgstr "Minecraft Karten Import..."
 msgid "PID Debugger..."
 msgstr "PID Debugger..."
 
-#: Cura/gui/mainWindow.py:137
+#: Cura/gui/mainWindow.py:136
+#, fuzzy
+msgid "Auto Firmware Update..."
+msgstr "Firmware-Aktualisierung"
+
+#: Cura/gui/mainWindow.py:139
 msgid "Copy profile to clipboard"
 msgstr "Kopiere Profil in Zwischenablage"
 
-#: Cura/gui/mainWindow.py:141
+#: Cura/gui/mainWindow.py:143
 msgid "Print all at once"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:143
+#: Cura/gui/mainWindow.py:145
 #, fuzzy
 msgid "Print one at a time"
 msgstr "Grösse des Druckkopfs"
 
-#: Cura/gui/mainWindow.py:150
+#: Cura/gui/mainWindow.py:152
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: Cura/gui/mainWindow.py:156 Cura/util/profile.py:175
+#: Cura/gui/mainWindow.py:158 Cura/util/profile.py:175
 msgid "Machine"
 msgstr "Maschine"
 
-#: Cura/gui/mainWindow.py:159
+#: Cura/gui/mainWindow.py:161
 msgid "Switch to quickprint..."
 msgstr "Wechseln zum Schnelldruck..."
 
-#: Cura/gui/mainWindow.py:163
+#: Cura/gui/mainWindow.py:165
 msgid "Switch to full settings..."
 msgstr "Wechseln zum Expertenmodus..."
 
-#: Cura/gui/mainWindow.py:168
+#: Cura/gui/mainWindow.py:170
 #, fuzzy
 msgid "Open expert settings...\tCTRL+E"
 msgstr "Öffne Experten-Einstellungen..."
 
-#: Cura/gui/mainWindow.py:172
+#: Cura/gui/mainWindow.py:174
 msgid "Run first run wizard..."
 msgstr "Erster-Start Assistent von Cura aufrufen..."
 
-#: Cura/gui/mainWindow.py:174
+#: Cura/gui/mainWindow.py:176
 msgid "Run bed leveling wizard..."
 msgstr "Drucktisch-Ausrichtung Assistent aufrufen..."
 
-#: Cura/gui/mainWindow.py:176
+#: Cura/gui/mainWindow.py:178
 msgid "Run head offset wizard..."
 msgstr "Assistent für den Druckkopfversatz aufrufen..."
 
-#: Cura/gui/mainWindow.py:179
+#: Cura/gui/mainWindow.py:181
 msgid "Expert"
 msgstr "Experte"
 
-#: Cura/gui/mainWindow.py:182
+#: Cura/gui/mainWindow.py:184
 msgid "Online documentation..."
 msgstr "Online-Dokumentation..."
 
-#: Cura/gui/mainWindow.py:184
+#: Cura/gui/mainWindow.py:186
 msgid "Report a problem..."
 msgstr "Fehler melden..."
 
-#: Cura/gui/mainWindow.py:186
+#: Cura/gui/mainWindow.py:188
 msgid "Check for update..."
 msgstr "Prüfe auf Update..."
 
-#: Cura/gui/mainWindow.py:188
+#: Cura/gui/mainWindow.py:190
 msgid "Open YouMagine website..."
 msgstr "Website YouMagine öffnen..."
 
-#: Cura/gui/mainWindow.py:190
+#: Cura/gui/mainWindow.py:192
 msgid "About Cura..."
 msgstr "Über Cura..."
 
-#: Cura/gui/mainWindow.py:192
+#: Cura/gui/mainWindow.py:194
 msgid "Help"
 msgstr "Hilfe"
 
-#: Cura/gui/mainWindow.py:343
+#: Cura/gui/mainWindow.py:345
 msgid ""
 "For \"One at a time\" printing, you need to have entered the correct head "
 "size and gantry height in the machine settings"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:343
+#: Cura/gui/mainWindow.py:345
 msgid "One at a time warning"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:440
+#: Cura/gui/mainWindow.py:442
 #, fuzzy
 msgid "Install default firmware..."
 msgstr "Installiere Standard Marlin Firmware..."
 
-#: Cura/gui/mainWindow.py:443
+#: Cura/gui/mainWindow.py:445
 msgid "Install custom firmware..."
 msgstr "Installiere benutzerdefinierte Firmware..."
 
-#: Cura/gui/mainWindow.py:447
+#: Cura/gui/mainWindow.py:449
 msgid "Select profile file to load"
 msgstr "Wählen Sie die Profil-Datei zum Laden"
 
-#: Cura/gui/mainWindow.py:459
+#: Cura/gui/mainWindow.py:461
 msgid "Select gcode file to load profile from"
 msgstr "Wählen Sie die GCode-Datei zum Laden des Profils"
 
-#: Cura/gui/mainWindow.py:474
+#: Cura/gui/mainWindow.py:476
 msgid ""
 "No profile found in GCode file.\n"
 "This feature only works with GCode files made by Cura 12.07 or newer."
@@ -677,15 +948,15 @@ msgstr ""
 "Diese Funktion ist nur bei GCode-Dateien verfügbar, welche mit Cura ab "
 "Version 12.07 erstellt wurden."
 
-#: Cura/gui/mainWindow.py:474
+#: Cura/gui/mainWindow.py:476
 msgid "Profile load error"
 msgstr "Fehler beim Laden des Profils"
 
-#: Cura/gui/mainWindow.py:478
+#: Cura/gui/mainWindow.py:480
 msgid "Select profile file to save"
 msgstr "Wählen Sie die Profil-Datei zum Speichern aus"
 
-#: Cura/gui/mainWindow.py:488
+#: Cura/gui/mainWindow.py:490
 msgid ""
 "This will reset all profile settings to defaults.\n"
 "Unless you have saved your current profile, all settings will be lost!\n"
@@ -696,11 +967,11 @@ msgstr ""
 "verloren!\n"
 "Wollen Sie die Profil-Einstellungen wirklich zurücksetzen?"
 
-#: Cura/gui/mainWindow.py:488
+#: Cura/gui/mainWindow.py:490
 msgid "Profile reset"
 msgstr "Profil zurücksetzen"
 
-#: Cura/gui/mainWindow.py:508
+#: Cura/gui/mainWindow.py:510
 msgid ""
 "Warning: Installing a custom firmware does not guarantee that you machine "
 "will function correctly, and could damage your machine."
@@ -709,19 +980,27 @@ msgstr ""
 "nicht automatisch die Funktionstüchtigkeit ihres Geräts, und kann zu "
 "Beschädigungen an Ihrem Gerät führen."
 
-#: Cura/gui/mainWindow.py:509
+#: Cura/gui/mainWindow.py:511 Cura/gui/mainWindow.py:553
 msgid "Open firmware to upload"
 msgstr "Firmware zum Hochladen auswählen"
 
-#: Cura/gui/mainWindow.py:569
+#: Cura/gui/mainWindow.py:582
 msgid "You are running the latest version of Cura!"
 msgstr "Sie verwenden die aktuelle Version von Cura!"
 
-#: Cura/gui/mainWindow.py:569
+#: Cura/gui/mainWindow.py:582
 msgid "Awesome!"
 msgstr "Sehr gut!"
 
-#: Cura/gui/mainWindow.py:624
+#: Cura/gui/mainWindow.py:627
+msgid "Basic"
+msgstr ""
+
+#: Cura/gui/mainWindow.py:631
+msgid "Advanced"
+msgstr ""
+
+#: Cura/gui/mainWindow.py:637
 msgid "Plugins"
 msgstr "Plugins"
 
@@ -745,6 +1024,11 @@ msgstr "Bitte wählen Sie zunächst das gewünschte Plugin aus."
 msgid "Error: no plugin selected"
 msgstr "Fehler: Kein Plugin ausgewählt"
 
+#: Cura/gui/preferencesDialog.py:14
+#, fuzzy
+msgid "Preferences"
+msgstr "Voreinstellungen...\tCTRL+,"
+
 #: Cura/gui/preferencesDialog.py:28
 #, fuzzy
 msgid "Print window"
@@ -766,7 +1050,7 @@ msgstr "Druckmaterial-Einstellungen"
 msgid "Cura settings"
 msgstr "Cura-Einstellungen"
 
-#: Cura/gui/preferencesDialog.py:84
+#: Cura/gui/preferencesDialog.py:68 Cura/gui/preferencesDialog.py:84
 msgid "Machine settings"
 msgstr "Maschinen-Einstellungen"
 
@@ -783,6 +1067,25 @@ msgstr "Extruder %d"
 msgid "Communication settings"
 msgstr "Kommunikations-Einstellungen"
 
+#: Cura/gui/preferencesDialog.py:119
+msgid "Ok"
+msgstr ""
+
+#: Cura/gui/preferencesDialog.py:123
+#, fuzzy
+msgid "Add new machine"
+msgstr "Neue Maschine hinzufügen..."
+
+#: Cura/gui/preferencesDialog.py:127
+#, fuzzy
+msgid "Remove machine"
+msgstr "Wählen Sie ihr Gerät aus"
+
+#: Cura/gui/preferencesDialog.py:131 Cura/gui/preferencesDialog.py:168
+#, fuzzy
+msgid "Change machine name"
+msgstr "Name des Geräts"
+
 #: Cura/gui/preferencesDialog.py:154
 msgid "Cannot remove the last machine configuration in Cura"
 msgstr "Kann die letzte Gerätekonfiguration nicht aus Cura entfernen"
@@ -794,11 +1097,6 @@ msgstr "Fehler: Gerät entfernen"
 #: Cura/gui/preferencesDialog.py:168
 msgid "Enter the new name:"
 msgstr ""
-
-#: Cura/gui/preferencesDialog.py:168
-#, fuzzy
-msgid "Change machine name"
-msgstr "Name des Geräts"
 
 #: Cura/gui/printWindow.py:33 Cura/gui/printWindow.py:312
 #, fuzzy, python-format
@@ -2750,6 +3048,26 @@ msgstr ""
 "erste Schicht führt zu einer schlechten Druckqualität und wird nicht "
 "empfohlen."
 
+#: Cura/util/sliceEngine.py:92
+#, python-format
+msgid "%d minutes"
+msgstr ""
+
+#: Cura/util/sliceEngine.py:94
+#, python-format
+msgid "%d hour %d minutes"
+msgstr ""
+
+#: Cura/util/sliceEngine.py:95
+#, python-format
+msgid "%d hours %d minutes"
+msgstr ""
+
+#: Cura/util/sliceEngine.py:100
+#, python-format
+msgid "%0.2f meter %0.0f gram"
+msgstr ""
+
 #~ msgid "* Configure Cura for your machine"
 #~ msgstr "* Cura für Ihr Gerät einrichten"
 
@@ -2761,9 +3079,6 @@ msgstr ""
 
 #~ msgid "* Optionally level your printer bed"
 #~ msgstr "* Drucktisch ausrichten (optional)"
-
-#~ msgid "Add new machine..."
-#~ msgstr "Neue Maschine hinzufügen..."
 
 #~ msgid "Statistics"
 #~ msgstr "Statistik"
@@ -2811,9 +3126,6 @@ msgstr ""
 
 #~ msgid "Camera"
 #~ msgstr "Kamera"
-
-#~ msgid "Resume"
-#~ msgstr "Fortsetzen"
 
 #~ msgid "Loading gcode...\n"
 #~ msgstr "Lade Gcode...\n"
