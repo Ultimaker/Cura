@@ -116,19 +116,19 @@ class machineSettingsDialog(wx.Dialog):
 		self.panel.GetSizer().Add(self.buttonPanel)
 
 		self.buttonPanel.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
-		self.okButton = wx.Button(self.buttonPanel, -1, 'Ok')
+		self.okButton = wx.Button(self.buttonPanel, -1, _('Ok'))
 		self.okButton.Bind(wx.EVT_BUTTON, lambda e: self.Close())
 		self.buttonPanel.GetSizer().Add(self.okButton, flag=wx.ALL, border=5)
 
-		self.addButton = wx.Button(self.buttonPanel, -1, 'Add new machine')
+		self.addButton = wx.Button(self.buttonPanel, -1, _('Add new machine'))
 		self.addButton.Bind(wx.EVT_BUTTON, self.OnAddMachine)
 		self.buttonPanel.GetSizer().Add(self.addButton, flag=wx.ALL, border=5)
 
-		self.remButton = wx.Button(self.buttonPanel, -1, 'Remove machine')
+		self.remButton = wx.Button(self.buttonPanel, -1, _('Remove machine'))
 		self.remButton.Bind(wx.EVT_BUTTON, self.OnRemoveMachine)
 		self.buttonPanel.GetSizer().Add(self.remButton, flag=wx.ALL, border=5)
 
-		self.renButton = wx.Button(self.buttonPanel, -1, 'Change machine name')
+		self.renButton = wx.Button(self.buttonPanel, -1, _('Change machine name'))
 		self.renButton.Bind(wx.EVT_BUTTON, self.OnRenameMachine)
 		self.buttonPanel.GetSizer().Add(self.renButton, flag=wx.ALL, border=5)
 
