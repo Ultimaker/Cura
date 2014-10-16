@@ -7,7 +7,7 @@ import os
 import traceback
 import threading
 import math
-import platform
+import sys
 import cStringIO as StringIO
 
 import OpenGL
@@ -191,6 +191,14 @@ class SceneView(openglGui.glGuiPanel):
 				self._animView = openglGui.animation(self, self._viewTarget.copy(), numpy.array([0,0,0], numpy.float32), 0.5)
 				self._animZoom = openglGui.animation(self, self._zoom, newZoom, 0.5)
 
+	def reloadScene(self, e):
+		# Copy the list before DeleteAll clears it
+		fileList = []
+		for obj in self._scene.objects():
+			fileList.append(obj.getOriginFilename())
+		self.OnDeleteAll(None)
+		self.loadScene(fileList)
+
 	def showLoadModel(self, button = 1):
 		if button == 1:
 			dlg=wx.FileDialog(self, _("Open 3D model"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_MULTIPLE)
@@ -244,7 +252,7 @@ class SceneView(openglGui.glGuiPanel):
 					dlg.Destroy()
 				else:
 					drive = drives[0]
-				filename = self._scene._objectList[0].getName() + '.gcode'
+				filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
 				threading.Thread(target=self._saveGCode,args=(drive[1] + filename, drive[1])).start()
 			elif connectionGroup is not None:
 				connections = connectionGroup.getAvailableConnections()
@@ -285,7 +293,7 @@ class SceneView(openglGui.glGuiPanel):
 				connection.window = printWindow.printWindowBasic(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
-		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):
+		if not connection.loadGCodeData(self._engine.getResult().getGCode()):
 			if connection.isPrinting():
 				self.notification.message("Cannot start print, because other print still running.")
 			else:
@@ -295,9 +303,9 @@ class SceneView(openglGui.glGuiPanel):
 		if len(self._scene._objectList) < 1:
 			return
 		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
-		filename = self._scene._objectList[0].getName() + '.gcode'
+		filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
 		dlg.SetFilename(filename)
-		dlg.SetWildcard('Toolpath (*.gcode)|*.gcode;*.g')
+		dlg.SetWildcard('Toolpath (*%s)|*%s;*%s' % (profile.getGCodeExtension(), profile.getGCodeExtension(), profile.getGCodeExtension()[0:2]))
 		if dlg.ShowModal() != wx.ID_OK:
 			dlg.Destroy()
 			return
@@ -307,17 +315,18 @@ class SceneView(openglGui.glGuiPanel):
 		threading.Thread(target=self._saveGCode,args=(filename,)).start()
 
 	def _saveGCode(self, targetFilename, ejectDrive = False):
-		data = self._engine.getResult().getGCode()
+		gcode = self._engine.getResult().getGCode()
 		try:
-			size = float(len(data))
-			fsrc = StringIO.StringIO(data)
+			size = float(len(gcode))
+			read_pos = 0
 			with open(targetFilename, 'wb') as fdst:
 				while 1:
-					buf = fsrc.read(16*1024)
-					if not buf:
+					buf = gcode.read(16*1024)
+					if len(buf) < 1:
 						break
+					read_pos += len(buf)
 					fdst.write(buf)
-					self.printButton.setProgressBar(float(fsrc.tell()) / size)
+					self.printButton.setProgressBar(read_pos / size)
 					self._queueRefresh()
 		except:
 			import sys, traceback
@@ -425,13 +434,13 @@ class SceneView(openglGui.glGuiPanel):
 		if machine == "ultimaker2":
 			#This is bad and Jaime should feel bad!
 			self._selectedObj.setPosition(numpy.array([0.0,-10.0]))
-			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
+			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([3,3,3], numpy.float32))
 			self._selectedObj.setPosition(numpy.array([0.0,0.0]))
 			self._scene.pushFree(self._selectedObj)
 		else:
 			self._selectedObj.setPosition(numpy.array([0.0, 0.0]))
 			self._scene.pushFree(self._selectedObj)
-			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([1,1,1], numpy.float32))
+			self._selectedObj.scaleUpTo(self._machineSize - numpy.array(profile.calculateObjectSizeOffsets() + [0.0], numpy.float32) * 2 - numpy.array([3,3,3], numpy.float32))
 		self._scene.pushFree(self._selectedObj)
 		self._selectObject(self._selectedObj)
 		self.updateProfileToControls()
@@ -496,7 +505,7 @@ class SceneView(openglGui.glGuiPanel):
 			if n > cnt:
 				break
 		if n <= cnt:
-			self.notification.message("Could not create more then %d items" % (n - 1))
+			self.notification.message("Could not create more than %d items" % (n - 1))
 		self._scene.remove(newObj)
 		self._scene.centerAll()
 		self.sceneUpdated()
@@ -608,6 +617,8 @@ class SceneView(openglGui.glGuiPanel):
 		for m in obj._meshList:
 			if m.vbo is not None and m.vbo.decRef():
 				self.glReleaseList.append(m.vbo)
+		if len(self._scene.objects()) == 0:
+			self._engineResultView.setResult(None)
 		import gc
 		gc.collect()
 		self.sceneUpdated()
@@ -654,7 +665,7 @@ class SceneView(openglGui.glGuiPanel):
 	def OnKeyChar(self, keyCode):
 		if self._engineResultView.OnKeyChar(keyCode):
 			return
-		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE or (keyCode == wx.WXK_BACK and platform.system() == "Darwin"):
+		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE or (keyCode == wx.WXK_BACK and sys.platform.startswith("darwin")):
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
 				self.QueueRefresh()
@@ -775,6 +786,7 @@ class SceneView(openglGui.glGuiPanel):
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, _("Dual extrusion merge")))
 					if len(self._scene.objects()) > 0:
 						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all objects")))
+						self.Bind(wx.EVT_MENU, self.reloadScene, menu.Append(-1, _("Reload all objects")))
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
@@ -1233,7 +1245,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._platformMesh[machine] = meshes[0]
 				else:
 					self._platformMesh[machine] = None
-				if machine == 'ultimaker2':
+				if machine == 'ultimaker2' or machine == 'ultimaker_plus':
 					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
 				else:
 					self._platformMesh[machine]._drawOffset = numpy.array([0,0,2.5], numpy.float32)
@@ -1243,9 +1255,12 @@ class SceneView(openglGui.glGuiPanel):
 			self._objectShader.unbind()
 
 			#For the Ultimaker 2 render the texture on the back plate to show the Ultimaker2 text.
-			if machine == 'ultimaker2':
+			if machine == 'ultimaker2' or machine == 'ultimaker_plus':
 				if not hasattr(self._platformMesh[machine], 'texture'):
-					self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
+					if machine == 'ultimaker2':
+						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
+					else:
+						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('UltimakerPlusbackplate.png')
 				glBindTexture(GL_TEXTURE_2D, self._platformMesh[machine].texture)
 				glEnable(GL_TEXTURE_2D)
 				glPushMatrix()
@@ -1279,6 +1294,20 @@ class SceneView(openglGui.glGuiPanel):
 				glDisable(GL_TEXTURE_2D)
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 				glPopMatrix()
+				
+		elif machine.startswith('Witbox'):
+			if machine not in self._platformMesh:
+				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
+				if len(meshes) > 0:
+					self._platformMesh[machine] = meshes[0]
+				else:
+					self._platformMesh[machine] = None
+				if machine == 'Witbox':
+					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
+			glColor4f(1,1,1,0.5)
+			self._objectShader.bind()
+			self._renderObject(self._platformMesh[machine], False, False)
+			self._objectShader.unbind()
 		else:
 			glColor4f(0,0,0,1)
 			glLineWidth(3)
@@ -1372,7 +1401,7 @@ class SceneView(openglGui.glGuiPanel):
 		return self._selectedObj.getMatrix()
 
 #TODO: Remove this or put it in a seperate file
-class shaderEditor(wx.Dialog):
+class shaderEditor(wx.Frame):
 	def __init__(self, parent, callback, v, f):
 		super(shaderEditor, self).__init__(parent, title="Shader editor", style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 		self._callback = callback

@@ -180,6 +180,7 @@ class SettingRow(object):
 			choices = self.setting.getType()
 			if valueOverride is not None:
 				choices = valueOverride
+			choices = choices[:]
 			self._englishChoices = choices[:]
 			if value not in choices and len(choices) > 0:
 				value = choices[0]

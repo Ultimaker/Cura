@@ -12,10 +12,16 @@ Development
 Cura is developed in Python with a C++ engine. The part you are looking at right now is the Python GUI.
 The C++ engine is responsible for generating the actual toolpath. For development of the engine check out https://github.com/Ultimaker/CuraEngine
 
+Issues
+===========
+
+Before posting issues (either Bugs, Feature requests or Requests for information) please read our policies carefully. These will be regulary updated and can be found at https://github.com/daid/Cura/wiki/Issue-policies
+
+
 Packaging
 ---------
 
-Cura development comes with a script "package.sh", this script has been designed to run under *nix OSes (Linux, MacOS). For Windows the package.sh script can be run from bash using git.
+Cura development comes with a script "package.sh", this script has been designed to run under *nix OSes (Linux, MacOS, FreeBSD). For Windows the package.sh script can be run from bash using git.
 The "package.sh" script generates a final release package. You should not need it during development, unless you are changing the release process. If you want to distribute your own version of Cura, then the package.sh script will allow you to do that.
 
 Both MacOS and Linux require some extra instructions for development, as you need to prepare an environment. Look below at the proper section to see what is needed.
@@ -32,12 +38,13 @@ sudo apt-get install python-opengl
 sudo apt-get install python-numpy
 sudo apt-get install python-serial
 sudo apt-get install python-setuptools
+sudo apt-get install curl
 
 cd Cura
 
 sudo ./package.sh debian_amd64          # or debian_i386 for 32bit
 
-sudo dpkg -i ./scripts/linux/Cura*.deb
+sudo dpkg -i ./scripts/linux/cura*.deb
 ```
 
 Mac OS X
@@ -72,6 +79,13 @@ The easiest way to install it is via [Homebrew](http://mxcl.github.com/homebrew/
 Note if you already have Python installed via Homebrew, you have to uninstall it first.
 
 You can also install [official build](http://www.python.org/ftp/python/2.7.3/python-2.7.3-macosx10.6.dmg).
+
+
+FreeBSD
+--------
+On FreeBSD simply use the Port Tree (`cd /usr/ports/cad/cura`) to create (`make package`) and install (`make install`) the package as root. Port will check for all necessary dependencies. You can also use the provided binary package with `pkg install Cura`.
+
+If you want to create an archive for local use the `package.sh freebsd` script (as an ordinary user) will give you a tarball with the program.
 
 
 ###Configure Virtualenv

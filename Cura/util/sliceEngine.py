@@ -18,8 +18,9 @@ import urllib2
 import hashlib
 import socket
 import struct
-import cStringIO as StringIO
+import errno
 
+from Cura.util.bigDataStorage import BigDataStorage
 from Cura.util import profile
 from Cura.util import pluginInfo
 from Cura.util import version
@@ -33,6 +34,8 @@ def getEngineFilename():
 	if platform.system() == 'Windows':
 		if version.isDevVersion() and os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
 			return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
+		if version.isDevVersion() and os.path.exists('C:/Program Files (x86)/Cura_14.09/CuraEngine.exe'):
+			return 'C:/Program Files (x86)/Cura_14.09/CuraEngine.exe'
 		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine.exe'))
 	if hasattr(sys, 'frozen'):
 		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../..', 'CuraEngine'))
@@ -40,7 +43,10 @@ def getEngineFilename():
 		return '/usr/bin/CuraEngine'
 	if os.path.isfile('/usr/local/bin/CuraEngine'):
 		return '/usr/local/bin/CuraEngine'
-	return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine'))
+	tempPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine'))
+	if os.path.isdir(tempPath):
+		tempPath = os.path.join(tempPath,'CuraEngine')
+	return tempPath
 
 class EngineResult(object):
 	"""
@@ -49,7 +55,7 @@ class EngineResult(object):
 	"""
 	def __init__(self):
 		self._engineLog = []
-		self._gcodeData = StringIO.StringIO()
+		self._gcodeData = BigDataStorage()
 		self._polygons = []
 		self._replaceInfo = {}
 		self._success = False
@@ -97,17 +103,12 @@ class EngineResult(object):
 		return self._engineLog
 
 	def getGCode(self):
-		data = self._gcodeData.getvalue()
-		if len(self._replaceInfo) > 0:
-			block0 = data[0:2048]
-			for k, v in self._replaceInfo.items():
-				v = (v + ' ' * len(k))[:len(k)]
-				block0 = block0.replace(k, v)
-			return block0 + data[2048:]
-		return data
+		self._gcodeData.seekStart()
+		return self._gcodeData
 
 	def setGCode(self, gcode):
-		self._gcodeData = StringIO.StringIO(gcode)
+		self._gcodeData = BigDataStorage()
+		self._gcodeData.write(gcode)
 		self._replaceInfo = {}
 
 	def addLog(self, line):
@@ -117,6 +118,9 @@ class EngineResult(object):
 		self._modelHash = hash
 
 	def setFinished(self, result):
+		if result:
+			for k, v in self._replaceInfo.items():
+				self._gcodeData.replaceAtStart(k, v)
 		self._finished = result
 
 	def isFinished(self):
@@ -127,7 +131,7 @@ class EngineResult(object):
 			return None
 		if self._gcodeInterpreter.layerList is None and self._gcodeLoadThread is None:
 			self._gcodeInterpreter.progressCallback = self._gcodeInterpreterCallback
-			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData))
+			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData.clone()))
 			self._gcodeLoadCallback = loadCallback
 			self._gcodeLoadThread.daemon = True
 			self._gcodeLoadThread.start()
@@ -153,11 +157,12 @@ class EngineResult(object):
 			'version': version.getVersion(),
 		}
 		try:
-			f = urllib2.urlopen("http://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
+			f = urllib2.urlopen("https://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
 			f.read()
 			f.close()
 		except:
-			pass
+			import traceback
+			traceback.print_exc()
 
 class Engine(object):
 	"""
@@ -179,29 +184,32 @@ class Engine(object):
 
 		self._serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self._serverPortNr = 0xC20A
-		while True:
+		for potential_port in xrange(0xC20A, 0xFFFF):
+			self._serverPortNr = potential_port
 			try:
 				self._serversocket.bind(('127.0.0.1', self._serverPortNr))
-			except:
-				print "Failed to listen on port: %d" % (self._serverPortNr)
-				self._serverPortNr += 1
-				if self._serverPortNr > 0xFFFF:
-					print "Failed to listen on any port..."
-					break
-			else:
 				break
-		print 'Listening for engine communications on %d' % (self._serverPortNr)
-		self._serversocket.listen(1)
+			except:
+				print("Failed to listen on port: %d" % (self._serverPortNr))
+		else:
+			print("Failed to listen on any port, this is a fatal error")
+			exit(10)
 		thread = threading.Thread(target=self._socketListenThread)
 		thread.daemon = True
 		thread.start()
 
 	def _socketListenThread(self):
+		self._serversocket.listen(1)
+		print 'Listening for engine communications on %d' % (self._serverPortNr)
 		while True:
-			sock, _ = self._serversocket.accept()
-			thread = threading.Thread(target=self._socketConnectionThread, args=(sock,))
-			thread.daemon = True
-			thread.start()
+			try:
+				sock, _ = self._serversocket.accept()
+				thread = threading.Thread(target=self._socketConnectionThread, args=(sock,))
+				thread.daemon = True
+				thread.start()
+			except socket.error, e:
+				if e.errno != errno.EINTR:
+					raise
 
 	def _socketConnectionThread(self, sock):
 		layerNrOffset = 0
@@ -347,17 +355,17 @@ class Engine(object):
 				self._objCount += 1
 		modelHash = hash.hexdigest()
 		if self._objCount > 0:
-			self._modelData = engineModelData
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, modelHash))
+			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash))
 			self._thread.daemon = True
 			self._thread.start()
 
-	def _watchProcess(self, commandList, oldThread, modelHash):
+	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash):
 		if oldThread is not None:
 			if self._process is not None:
 				self._process.terminate()
 			oldThread.join()
 		self._callback(-1.0)
+		self._modelData = engineModelData
 		try:
 			self._process = self._runEngineProcess(commandList)
 		except OSError:
@@ -367,6 +375,7 @@ class Engine(object):
 			self._process.terminate()
 
 		self._result = EngineResult()
+		self._result.addLog('Running: %s' % (' '.join(commandList)))
 		self._result.setHash(modelHash)
 		self._callback(0.0)
 
@@ -439,6 +448,7 @@ class Engine(object):
 			'filamentDiameter': int(profile.getProfileSettingFloat('filament_diameter') * 1000),
 			'filamentFlow': int(profile.getProfileSettingFloat('filament_flow')),
 			'extrusionWidth': int(profile.calculateEdgeWidth() * 1000),
+			'layer0extrusionWidth': int(profile.calculateEdgeWidth() * profile.getProfileSettingFloat('layer0_width_factor') / 100 * 1000),
 			'insetCount': int(profile.calculateLineCount()),
 			'downSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_bottom') == 'True' else 0,
 			'upSkinCount': int(profile.calculateSolidLayerCount()) if profile.getProfileSetting('solid_top') == 'True' else 0,
@@ -472,6 +482,8 @@ class Engine(object):
 			'coolHeadLift': 1 if profile.getProfileSetting('cool_head_lift') == 'True' else 0,
 			'startCode': profile.getAlterationFileContents('start.gcode', extruderCount),
 			'endCode': profile.getAlterationFileContents('end.gcode', extruderCount),
+			'preSwitchExtruderCode': profile.getAlterationFileContents('preSwitchExtruder.gcode', extruderCount),
+			'postSwitchExtruderCode': profile.getAlterationFileContents('postSwitchExtruder.gcode', extruderCount),
 
 			'extruderOffset[1].X': int(profile.getMachineSettingFloat('extruder_offset_x1') * 1000),
 			'extruderOffset[1].Y': int(profile.getMachineSettingFloat('extruder_offset_y1') * 1000),
@@ -510,6 +522,15 @@ class Engine(object):
 			settings['raftBaseLinewidth'] = int(profile.getProfileSettingFloat('raft_base_linewidth') * 1000)
 			settings['raftInterfaceThickness'] = int(profile.getProfileSettingFloat('raft_interface_thickness') * 1000)
 			settings['raftInterfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000)
+			settings['raftInterfaceLineSpacing'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000 * 2.0)
+			settings['raftAirGapLayer0'] = int(profile.getProfileSettingFloat('raft_airgap') * 1000)
+			settings['raftBaseSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
+			settings['raftFanSpeed'] = 100
+			settings['raftSurfaceThickness'] = settings['raftInterfaceThickness']
+			settings['raftSurfaceLinewidth'] = int(profile.calculateEdgeWidth() * 1000)
+			settings['raftSurfaceLineSpacing'] = int(profile.calculateEdgeWidth() * 1000 * 0.9)
+			settings['raftSurfaceLayers'] = int(profile.getProfileSettingFloat('raft_surface_layers'))
+			settings['raftSurfaceSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
 		else:
 			settings['skirtDistance'] = int(profile.getProfileSettingFloat('skirt_gap') * 1000)
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('skirt_line_count'))
@@ -530,8 +551,16 @@ class Engine(object):
 			settings['gcodeFlavor'] = 1
 		elif profile.getMachineSetting('gcode_flavor') == 'MakerBot':
 			settings['gcodeFlavor'] = 2
+		elif profile.getMachineSetting('gcode_flavor') == 'BFB':
+			settings['gcodeFlavor'] = 3
+		elif profile.getMachineSetting('gcode_flavor') == 'Mach3':
+			settings['gcodeFlavor'] = 4
+		elif profile.getMachineSetting('gcode_flavor') == 'RepRap (Volumetric)':
+			settings['gcodeFlavor'] = 5
 		if profile.getProfileSetting('spiralize') == 'True':
 			settings['spiralizeMode'] = 1
+		if profile.getProfileSetting('simple_mode') == 'True':
+			settings['simpleMode'] = 1
 		if profile.getProfileSetting('wipe_tower') == 'True' and extruderCount > 1:
 			settings['wipeTowerSize'] = int(math.sqrt(profile.getProfileSettingFloat('wipe_tower_volume') * 1000 * 1000 * 1000 / settings['layerThickness']))
 		if profile.getProfileSetting('ooze_shield') == 'True':

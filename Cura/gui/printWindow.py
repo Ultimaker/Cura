@@ -30,7 +30,7 @@ else:
 
 class printWindowPlugin(wx.Frame):
 	def __init__(self, parent, printerConnection, filename):
-		super(printWindowPlugin, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT, title=_("Printing on %s") % (printerConnection.getName()))
+		super(printWindowPlugin, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_FLOAT_ON_PARENT|wx.MINIMIZE_BOX, title=_("Printing on %s") % (printerConnection.getName()))
 		self._printerConnection = printerConnection
 		self._basePath = os.path.dirname(filename)
 		self._backgroundImage = None
@@ -52,6 +52,7 @@ class printWindowPlugin(wx.Frame):
 			'addTemperatureGraph': self.script_addTemperatureGraph,
 			'addProgressbar': self.script_addProgressbar,
 			'addButton': self.script_addButton,
+			'addSpinner': self.script_addSpinner,
 
 			'sendGCode': self.script_sendGCode,
 			'connect': self.script_connect,
@@ -130,6 +131,19 @@ class printWindowPlugin(wx.Frame):
 		button.data = data
 		self._buttonList.append(button)
 		self.Bind(wx.EVT_BUTTON, lambda e: command(data), button)
+
+	def script_addSpinner(self, r, g, b, command, data):
+		x, y, w, h = self._getColoredRect(r, g, b)
+		if x < 0:
+			return
+		spinner = wx.SpinCtrl(self, -1, style=wx.TE_PROCESS_ENTER)
+		spinner.SetRange(0, 300)
+		spinner.SetPosition((x, y))
+		spinner.SetSize((w, h))
+		spinner.command = command
+		spinner.data = data
+		self._buttonList.append(spinner)
+		self.Bind(wx.EVT_SPINCTRL, lambda e: command(data % (spinner.GetValue())), spinner)
 
 	def _getColoredRect(self, r, g, b):
 		for x in xrange(0, self._mapImage.GetWidth()):
@@ -317,7 +331,7 @@ class printWindowBasic(wx.Frame):
 		self.OnPowerWarningChange(None)
 		self.powerWarningTimer.Start(10000)
 
-		self.statsText = wx.StaticText(self.panel, -1, _("InfoLine from printer connection\nInfoLine from dialog"))
+		self.statsText = wx.StaticText(self.panel, -1, _("InfoLine from printer connection\nInfoLine from dialog\nExtra line\nMore lines for layout\nMore lines for layout\nMore lines for layout"))
 
 		self.connectButton = wx.Button(self.panel, -1, _("Connect"))
 		#self.loadButton = wx.Button(self.panel, -1, 'Load')
@@ -350,7 +364,7 @@ class printWindowBasic(wx.Frame):
 		self.Centre()
 
 		self.progress.SetMinSize(self.progress.GetSize())
-		self.statsText.SetLabel('')
+		self.statsText.SetLabel('\n\n\n\n\n\n')
 		self._updateButtonStates()
 
 		self._printerConnection.addCallback(self._doPrinterConnectionUpdate)
@@ -427,6 +441,7 @@ class printWindowBasic(wx.Frame):
 			info += 'Temperature: %d' % (self._printerConnection.getTemperature(0))
 		if self._printerConnection.getBedTemperature() > 0:
 			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
+		info += '\n\n'
 		self.statsText.SetLabel(info)
 
 	def _updateButtonStates(self):
@@ -577,5 +592,4 @@ class LogWindow(wx.Frame):
 		super(LogWindow, self).__init__(None, title="Error log")
 		self.textBox = wx.TextCtrl(self, -1, logText, style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY)
 		self.SetSize((500, 400))
-		self.Centre()
 		self.Show(True)

@@ -165,11 +165,10 @@ class temperatureGraph(wx.Panel):
 
 	def UpdateDrawing(self, force=False):
 		now = time.time()
-		self.timeScale = 10
+		self.timeScale = 30
 		self.now = now
 		if not force and now - self.lastDraw < 0.1:
 			return
-		self.lastDraw = now
 		dc = wx.MemoryDC()
 		dc.SelectObject(self.backBuffer)
 		dc.Clear()
@@ -211,11 +210,13 @@ class temperatureGraph(wx.Panel):
 		self._drawLine(dc, '#FF4040', lambda p: p[1])#temp
 		self._drawLine(dc, '#40FF40', lambda p: p[2])#heater
 
+		self.lastDraw = time.time()
+
 		del dc
 		self.Refresh(eraseBackground=False)
 		self.Update()
 
-		if len(self.points) > 0 and (time.time() - self.points[0][0]) > (w + 20) / self.timeScale:
+		while len(self.points) > 0 and (time.time() - self.points[0][0]) > (w + 20) / self.timeScale:
 			self.points.pop(0)
 
 	def addPoint(self, temperature, heater_output, pTerm, iTerm, dTerm, targetTemp):

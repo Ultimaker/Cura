@@ -59,7 +59,10 @@ def win32_appdata():
             )
         except Exception, e:
             #print "Error while getting AppData folder using SHGetSpecialFolderLocation: {0!r}".format(e)
-            return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
+            try:
+                return os.environ['APPDATA'].decode(sys.getfilesystemencoding())
+            except KeyError:
+                return 'C:/'
 
 if sys.platform == "win32":
     appDataDir = win32_appdata()

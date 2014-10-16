@@ -12,6 +12,7 @@ import sys
 import subprocess
 import json
 
+from Cura.util import profile
 from Cura.util import machineCom
 from Cura.util.printerConnection import printerConnectionBase
 
@@ -25,8 +26,11 @@ class serialConnectionGroup(printerConnectionBase.printerConnectionGroup):
 		self._connectionMap = {}
 
 	def getAvailableConnections(self):
-		serialList = machineCom.serialList(True)
-		for port in machineCom.serialList(True):
+		if profile.getMachineSetting('serial_port') == 'AUTO':
+			serialList = machineCom.serialList(True)
+		else:
+			serialList = [profile.getMachineSetting('serial_port')]
+		for port in serialList:
 			if port not in self._connectionMap:
 				self._connectionMap[port] = serialConnection(port)
 		for key in self._connectionMap.keys():
@@ -174,9 +178,10 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 	def _serialCommunicationThread(self):
 		if platform.system() == "Darwin" and hasattr(sys, 'frozen'):
 			cmdList = [os.path.join(os.path.dirname(sys.executable), 'Cura'), '--serialCommunication']
+			cmdList += [self._portName + ':' + profile.getMachineSetting('serial_baud')]
 		else:
 			cmdList = [sys.executable, '-m', 'Cura.serialCommunication']
-		cmdList += [self._portName]
+			cmdList += [self._portName, profile.getMachineSetting('serial_baud')]
 		if platform.system() == "Darwin":
 			if platform.machine() == 'i386':
 				cmdList = ['arch', '-i386'] + cmdList
