@@ -133,6 +133,8 @@ class mainWindow(wx.Frame):
 		if version.isDevVersion():
 			i = toolsMenu.Append(-1, _("PID Debugger..."))
 			self.Bind(wx.EVT_MENU, self.OnPIDDebugger, i)
+			i = toolsMenu.Append(-1, _("Auto Firmware Update..."))
+			self.Bind(wx.EVT_MENU, self.OnAutoFirmwareUpdate, i)
 
 		i = toolsMenu.Append(-1, _("Copy profile to clipboard"))
 		self.Bind(wx.EVT_MENU, self.onCopyProfileClipboard,i)
@@ -501,7 +503,7 @@ class mainWindow(wx.Frame):
 		self.updateSliceMode()
 
 	def OnDefaultMarlinFirmware(self, e):
-		firmwareInstall.InstallFirmware()
+		firmwareInstall.InstallFirmware(self)
 
 	def OnCustomFirmware(self, e):
 		if profile.getMachineSetting('machine_type').startswith('ultimaker'):
@@ -514,7 +516,7 @@ class mainWindow(wx.Frame):
 			if not(os.path.exists(filename)):
 				return
 			#For some reason my Ubuntu 10.10 crashes here.
-			firmwareInstall.InstallFirmware(filename)
+			firmwareInstall.InstallFirmware(self, filename)
 
 	def OnFirstRunWizard(self, e):
 		self.Hide()
@@ -546,6 +548,17 @@ class mainWindow(wx.Frame):
 		debugger = pidDebugger.debuggerWindow(self)
 		debugger.Centre()
 		debugger.Show(True)
+
+	def OnAutoFirmwareUpdate(self, e):
+		dlg=wx.FileDialog(self, _("Open firmware to upload"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
+		dlg.SetWildcard("HEX file (*.hex)|*.hex;*.HEX")
+		if dlg.ShowModal() == wx.ID_OK:
+			filename = dlg.GetPath()
+			dlg.Destroy()
+			if not(os.path.exists(filename)):
+				return
+			#For some reason my Ubuntu 10.10 crashes here.
+			installer = firmwareInstall.AutoUpdateFirmware(self, filename)
 
 	def onCopyProfileClipboard(self, e):
 		try:
