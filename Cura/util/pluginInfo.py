@@ -131,7 +131,7 @@ def runPostProcessingPlugins(engineResult):
 			tempfilename = f.name
 			gcode = engineResult.getGCode()
 			while True:
-				data = gcode.read()
+				data = gcode.read(16 * 1024)
 				if len(data) == 0:
 					break
 				f.write(data)
