@@ -25,6 +25,8 @@ from Cura.util import version
 import platform
 from Cura.util import meshLoader
 
+from wx.lib.pubsub import Publisher
+
 class mainWindow(wx.Frame):
 	def __init__(self):
 		super(mainWindow, self).__init__(None, title=_('Cura - ') + version.getVersion())
@@ -273,6 +275,35 @@ class mainWindow(wx.Frame):
 
 		self.updateSliceMode()
 		self.scene.SetFocus()
+		self.dialogframe = None
+		Publisher().subscribe(self.onPluginUpdate, "pluginupdate")
+
+	def onPluginUpdate(self,msg): #receives commands from the plugin thread
+		cmd = str(msg.data).split(";")
+		if cmd[0] == "OpenPluginProgressWindow":
+			if len(cmd)==1: #no titel received
+				cmd.append("Plugin")
+			if len(cmd)<3: #no message text received
+				cmd.append("Plugin is executed...")
+			dialogwidth = 300
+			dialogheight = 80
+			self.dialogframe = wx.Frame(self, -1, cmd[1],pos = ((wx.SystemSettings.GetMetric(wx.SYS_SCREEN_X)-dialogwidth)/2,(wx.SystemSettings.GetMetric(wx.SYS_SCREEN_Y)-dialogheight)/2), size=(dialogwidth,dialogheight), style = wx.STAY_ON_TOP)
+			self.dialogpanel = wx.Panel(self.dialogframe, -1, pos = (0,0), size = (dialogwidth,dialogheight))
+			self.dlgtext = wx.StaticText(self.dialogpanel, label = cmd[2], pos = (10,10), size = (280,40))
+			self.dlgbar = wx.Gauge(self.dialogpanel,-1, 100, pos = (10,50), size = (280,20), style = wx.GA_HORIZONTAL)
+			self.dialogframe.Show()
+
+		elif cmd[0] == "Progress":
+			number = int(cmd[1])
+			if number <= 100 and self.dialogframe is not None:
+				self.dlgbar.SetValue(number)
+			else:
+				self.dlgbar.SetValue(100)
+		elif cmd[0] == "ClosePluginProgressWindow":
+			self.dialogframe.Destroy()
+			self.dialogframe=None
+		else:
+			print "Unknown Plugin update received: " + cmd[0]
 
 	def onTimer(self, e):
 		#Check if there is something in the clipboard
