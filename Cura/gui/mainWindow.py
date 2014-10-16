@@ -624,11 +624,11 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
 		self.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
-		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Basic')
+		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, _('Basic'))
 		self._addSettingsToPanels('basic', left, right)
 		self.SizeLabelWidths(left, right)
 
-		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced')
+		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, _('Advanced'))
 		self._addSettingsToPanels('advanced', left, right)
 		self.SizeLabelWidths(left, right)
 
