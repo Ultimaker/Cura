@@ -44,6 +44,8 @@ sudo apt-get install python-numpy
 sudo apt-get install python-serial
 sudo apt-get install python-setuptools
 sudo apt-get install curl
+# Run this also if you're building for 32bit Debian
+sudo apt-get install gcc-multilib g++-4.7-multilib
 
 cd Cura
 
