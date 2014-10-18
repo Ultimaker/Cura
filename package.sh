@@ -396,7 +396,7 @@ if (( ${ARCHIVE_FOR_DISTRIBUTION} )); then
 			ln -sf `pwd`/${TARGET_DIR} scripts/win32/dist
 			wine ~/.wine/drive_c/Program\ Files/NSIS/makensis.exe /DVERSION=${BUILD_NAME} scripts/win32/installer.nsi
             if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
-			mv scripts/win32/Cura_${BUILD_NAME}.exe ./
+			mv scripts/win32/Cura_${BUILD_NAME}-${GIT_HASH}.exe ./
 		fi
 		if [ -f '/c/Program Files (x86)/NSIS/makensis.exe' ]; then
 			rm -rf scripts/win32/dist
