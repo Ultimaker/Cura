@@ -13,6 +13,7 @@ BUILD_TARGET=${1:-none}
 #BUILD_TARGET=darwin
 #BUILD_TARGET=debian_i386
 #BUILD_TARGET=debian_amd64
+#BUILD_TARGET=debian_armhf
 #BUILD_TARGET=freebsd
 
 ##Do we need to create the final archive
@@ -80,6 +81,7 @@ if [ "$BUILD_TARGET" = "none" ]; then
 	echo "$0 win32"
 	echo "$0 debian_i386"
 	echo "$0 debian_amd64"
+	echo "$0 debian_armhf"
 	echo "$0 darwin"
 	echo "$0 freebsd"
 	exit 0
@@ -276,6 +278,42 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
 	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_amd64.deb
+	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+	exit
+fi
+
+#############################
+# Debian armhf .deb
+#############################
+
+if [ "$BUILD_TARGET" = "debian_armhf" ]; then
+    export CXX="g++"
+	if [ ! -d "Power" ]; then
+		git clone https://github.com/GreatFruitOmsk/Power
+	else
+		cd Power
+		git pull
+		cd ..
+	fi
+	rm -rf CuraEngine
+	git clone ${CURA_ENGINE_REPO}
+    if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
+	make -C CuraEngine VERSION=${BUILD_NAME}
+    if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
+	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
+	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
+	cp -a Cura scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a resources scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a plugins scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a CuraEngine/build/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
+	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
+	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
+	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
+	cd scripts/linux
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${BUILD_TARGET}.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
