@@ -21,14 +21,17 @@ class BigDataStorage(object):
 		self._active.seek(0)
 		self._read_index = 0
 
+	def activeRead(self, size=None):
+		return self._active.read(size) if size != None else self._active.read()
+
 	def read(self, size=None):
-		ret = self._active.read(size)
+		ret = self.activeRead(size)
 		if ret == '':
 			if self._read_index + 1 < len(self._list):
 				self._read_index += 1
 				self._active = self._list[self._read_index]
 				self._active.seek(0)
-				ret = self._active.read(size)
+				ret = self.activeRead(size)
 		return ret
 
 	def replaceAtStart(self, key, value):
