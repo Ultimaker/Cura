@@ -458,11 +458,12 @@ class glButton(glGuiControl):
 		pos = self._getPixelPos()
 
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
+		#button sizing		
 		scale = 0.8
 		if self._selected:
-			scale = 1.0
+			scale = 0.85
 		elif self._focus:
-			scale = 0.9
+			scale = 0.85
 		if self._disabled:
 			glColor4ub(128,128,128,128)
 		else:
@@ -477,7 +478,7 @@ class glButton(glGuiControl):
 		glPushMatrix()
 		glTranslatef(pos[0], pos[1], 0)
 		glDisable(GL_TEXTURE_2D)
-		if self._focus:
+		'''if self._focus:
 			glTranslatef(0, -0.55*bs*scale, 0)
 
 			glPushMatrix()
@@ -494,6 +495,7 @@ class glButton(glGuiControl):
 
 			glColor4ub(255,255,255,255)
 			openglHelpers.glDrawStringCenter(self._tooltip)
+		'''
 		glPopMatrix()
 		progress = self._progressBar
 		if progress is not None:
