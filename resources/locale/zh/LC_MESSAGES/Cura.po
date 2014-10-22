@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-16 11:25+0200\n"
+"POT-Creation-Date: 2014-10-22 10:17+0200\n"
 "PO-Revision-Date: 2014-09-29 16:02+0800\n"
 "Last-Translator: \n"
 "Language-Team: coloz <clz@clz.me>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Language: zh_Hans_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:610
 msgid "A new version of Cura is available, would you like to download?"
 msgstr ""
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:610
 msgid "New version available"
 msgstr ""
 
@@ -627,7 +627,7 @@ msgid ""
 msgstr ""
 
 #: Cura/gui/firmwareInstall.py:59 Cura/gui/firmwareInstall.py:64
-#: Cura/gui/firmwareInstall.py:119 Cura/gui/mainWindow.py:510
+#: Cura/gui/firmwareInstall.py:119 Cura/gui/mainWindow.py:541
 msgid "Firmware update"
 msgstr "固件更新"
 
@@ -698,257 +698,257 @@ msgstr "固件写入失败\n"
 msgid "Failed to connect to programmer.\n"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:66
+#: Cura/gui/mainWindow.py:68
 msgid "Load model file...\tCTRL+L"
 msgstr "读取模型文件...\tCTRL+L"
 
-#: Cura/gui/mainWindow.py:68
+#: Cura/gui/mainWindow.py:70
 msgid "Save model...\tCTRL+S"
 msgstr "保存模型...\tCTRL+S"
 
-#: Cura/gui/mainWindow.py:70
+#: Cura/gui/mainWindow.py:72
 msgid "Reload platform\tF5"
 msgstr "重新载入模型\tF5"
 
-#: Cura/gui/mainWindow.py:72
+#: Cura/gui/mainWindow.py:74
 msgid "Clear platform"
 msgstr "清除所有模型"
 
-#: Cura/gui/mainWindow.py:76
+#: Cura/gui/mainWindow.py:78
 msgid "Print...\tCTRL+P"
 msgstr "打印...\tCTRL+P"
 
-#: Cura/gui/mainWindow.py:78 Cura/gui/sceneView.py:279
+#: Cura/gui/mainWindow.py:80 Cura/gui/sceneView.py:279
 msgid "Save GCode..."
 msgstr "保存GCode..."
 
-#: Cura/gui/mainWindow.py:80
+#: Cura/gui/mainWindow.py:82
 msgid "Show slice engine log..."
 msgstr "显示切片引擎记录..."
 
-#: Cura/gui/mainWindow.py:84
+#: Cura/gui/mainWindow.py:86
 msgid "Open Profile..."
 msgstr "打开配置文件..."
 
-#: Cura/gui/mainWindow.py:87
+#: Cura/gui/mainWindow.py:89
 msgid "Save Profile..."
 msgstr "保存配置文件..."
 
-#: Cura/gui/mainWindow.py:90
+#: Cura/gui/mainWindow.py:92
 msgid "Load Profile from GCode..."
 msgstr "从Gcode中读取配置文件..."
 
-#: Cura/gui/mainWindow.py:94
+#: Cura/gui/mainWindow.py:96
 msgid "Reset Profile to default"
 msgstr "恢复默认配置..."
 
-#: Cura/gui/mainWindow.py:99
+#: Cura/gui/mainWindow.py:101
 msgid "Preferences...\tCTRL+,"
 msgstr "偏好配置......\tCTRL+,"
 
-#: Cura/gui/mainWindow.py:101 Cura/gui/mainWindow.py:436
+#: Cura/gui/mainWindow.py:103 Cura/gui/mainWindow.py:467
 msgid "Machine settings..."
 msgstr "机型设置..."
 
-#: Cura/gui/mainWindow.py:107
+#: Cura/gui/mainWindow.py:109
 msgid "Recent Model Files"
 msgstr "最近使用的模型文件"
 
-#: Cura/gui/mainWindow.py:114
+#: Cura/gui/mainWindow.py:116
 msgid "Recent Profile Files"
 msgstr "最近使用的配置文件"
 
-#: Cura/gui/mainWindow.py:120
+#: Cura/gui/mainWindow.py:122
 msgid "Quit"
 msgstr "退出"
 
-#: Cura/gui/mainWindow.py:122
+#: Cura/gui/mainWindow.py:124
 msgid "File"
 msgstr "文件"
 
-#: Cura/gui/mainWindow.py:130
+#: Cura/gui/mainWindow.py:132
 msgid "Minecraft map import..."
 msgstr "导入Minecraft地图..."
 
-#: Cura/gui/mainWindow.py:134
+#: Cura/gui/mainWindow.py:136
 msgid "PID Debugger..."
 msgstr "PID调试器..."
 
-#: Cura/gui/mainWindow.py:136
+#: Cura/gui/mainWindow.py:138
 #, fuzzy
 msgid "Auto Firmware Update..."
 msgstr "固件更新"
 
-#: Cura/gui/mainWindow.py:139
+#: Cura/gui/mainWindow.py:141
 msgid "Copy profile to clipboard"
 msgstr "复制配置到剪切板"
 
-#: Cura/gui/mainWindow.py:143
+#: Cura/gui/mainWindow.py:145
 msgid "Print all at once"
 msgstr "同时打印多个模型"
 
-#: Cura/gui/mainWindow.py:145
+#: Cura/gui/mainWindow.py:147
 msgid "Print one at a time"
 msgstr "逐个打印模型"
 
-#: Cura/gui/mainWindow.py:152
+#: Cura/gui/mainWindow.py:154
 msgid "Tools"
 msgstr "工具"
 
-#: Cura/gui/mainWindow.py:158 Cura/util/profile.py:175
+#: Cura/gui/mainWindow.py:160 Cura/util/profile.py:175
 msgid "Machine"
 msgstr "机型"
 
-#: Cura/gui/mainWindow.py:161
+#: Cura/gui/mainWindow.py:163
 msgid "Switch to quickprint..."
 msgstr "切换到快速打印模式..."
 
-#: Cura/gui/mainWindow.py:165
+#: Cura/gui/mainWindow.py:167
 msgid "Switch to full settings..."
 msgstr "切换到完整配置模式..."
 
-#: Cura/gui/mainWindow.py:170
+#: Cura/gui/mainWindow.py:172
 msgid "Open expert settings...\tCTRL+E"
 msgstr "额外设置...\tCTRL+E"
 
-#: Cura/gui/mainWindow.py:174
+#: Cura/gui/mainWindow.py:176
 msgid "Run first run wizard..."
 msgstr "运行首次使用向导..."
 
-#: Cura/gui/mainWindow.py:176
+#: Cura/gui/mainWindow.py:178
 msgid "Run bed leveling wizard..."
 msgstr "运行平台调平向导..."
 
-#: Cura/gui/mainWindow.py:178
+#: Cura/gui/mainWindow.py:180
 msgid "Run head offset wizard..."
 msgstr "运行多喷头校正向导..."
 
-#: Cura/gui/mainWindow.py:181
+#: Cura/gui/mainWindow.py:183
 msgid "Expert"
 msgstr "专业设置"
 
-#: Cura/gui/mainWindow.py:184
+#: Cura/gui/mainWindow.py:186
 msgid "Online documentation..."
 msgstr "在线文档..."
 
-#: Cura/gui/mainWindow.py:186
+#: Cura/gui/mainWindow.py:188
 msgid "Report a problem..."
 msgstr "问题提交..."
 
-#: Cura/gui/mainWindow.py:188
+#: Cura/gui/mainWindow.py:190
 msgid "Check for update..."
 msgstr "检查更新..."
 
-#: Cura/gui/mainWindow.py:190
+#: Cura/gui/mainWindow.py:192
 msgid "Open YouMagine website..."
 msgstr "打开YouMagine网站..."
 
-#: Cura/gui/mainWindow.py:192
+#: Cura/gui/mainWindow.py:194
 msgid "About Cura..."
 msgstr "关于Cura"
 
-#: Cura/gui/mainWindow.py:194
+#: Cura/gui/mainWindow.py:196
 msgid "Help"
 msgstr "帮助"
 
-#: Cura/gui/mainWindow.py:345
+#: Cura/gui/mainWindow.py:376
 msgid ""
 "For \"One at a time\" printing, you need to have entered the correct head "
 "size and gantry height in the machine settings"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:345
+#: Cura/gui/mainWindow.py:376
 msgid "One at a time warning"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:442
+#: Cura/gui/mainWindow.py:473
 msgid "Install default firmware..."
 msgstr "安装默认固件..."
 
-#: Cura/gui/mainWindow.py:445
+#: Cura/gui/mainWindow.py:476
 msgid "Install custom firmware..."
 msgstr "安装自定义固件"
 
-#: Cura/gui/mainWindow.py:449
+#: Cura/gui/mainWindow.py:480
 msgid "Select profile file to load"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:461
+#: Cura/gui/mainWindow.py:492
 msgid "Select gcode file to load profile from"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:476
+#: Cura/gui/mainWindow.py:507
 msgid ""
 "No profile found in GCode file.\n"
 "This feature only works with GCode files made by Cura 12.07 or newer."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:476
+#: Cura/gui/mainWindow.py:507
 msgid "Profile load error"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:480
+#: Cura/gui/mainWindow.py:511
 msgid "Select profile file to save"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:490
+#: Cura/gui/mainWindow.py:521
 msgid ""
 "This will reset all profile settings to defaults.\n"
 "Unless you have saved your current profile, all settings will be lost!\n"
 "Do you really want to reset?"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:490
+#: Cura/gui/mainWindow.py:521
 msgid "Profile reset"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:510
+#: Cura/gui/mainWindow.py:541
 msgid ""
 "Warning: Installing a custom firmware does not guarantee that you machine "
 "will function correctly, and could damage your machine."
 msgstr ""
 
-#: Cura/gui/mainWindow.py:511 Cura/gui/mainWindow.py:553
+#: Cura/gui/mainWindow.py:542 Cura/gui/mainWindow.py:584
 msgid "Open firmware to upload"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:582
+#: Cura/gui/mainWindow.py:613
 msgid "You are running the latest version of Cura!"
 msgstr "你正在运行最新版本的的Cura!"
 
-#: Cura/gui/mainWindow.py:582
+#: Cura/gui/mainWindow.py:613
 msgid "Awesome!"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:627
+#: Cura/gui/mainWindow.py:658
 msgid "Basic"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:631
+#: Cura/gui/mainWindow.py:662
 msgid "Advanced"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:637
+#: Cura/gui/mainWindow.py:668
 msgid "Plugins"
 msgstr "插件"
 
-#: Cura/gui/pluginPanel.py:27
+#: Cura/gui/pluginPanel.py:31
 msgid "Plugins:"
 msgstr "插件:"
 
-#: Cura/gui/pluginPanel.py:31
+#: Cura/gui/pluginPanel.py:35
 msgid "Open plugin location"
 msgstr "打开本地插件"
 
-#: Cura/gui/pluginPanel.py:32
+#: Cura/gui/pluginPanel.py:36
 msgid "Enabled plugins"
 msgstr "使能插件"
 
-#: Cura/gui/pluginPanel.py:134
+#: Cura/gui/pluginPanel.py:159
 msgid "You need to select a plugin before you can add anything."
 msgstr ""
 
-#: Cura/gui/pluginPanel.py:134
+#: Cura/gui/pluginPanel.py:159
 msgid "Error: no plugin selected"
 msgstr "错误:没有插件可供选择"
 

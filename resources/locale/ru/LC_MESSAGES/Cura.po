@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-16 11:25+0200\n"
+"POT-Creation-Date: 2014-10-22 10:17+0200\n"
 "PO-Revision-Date: 2014-04-20 09:41+0100\n"
 "Last-Translator: Andrew Answer <mail@answe.ru>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Language: Russian\n"
 "X-Generator: Poedit 1.5.7\n"
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:610
 msgid "A new version of Cura is available, would you like to download?"
 msgstr "Новая версия Cura доступна, хотите скачать?"
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:610
 msgid "New version available"
 msgstr "Новая версия доступна"
 
@@ -672,7 +672,7 @@ msgstr ""
 "Извините, Cura не поставляется с прошивкой по умолчанию для вашего принтера."
 
 #: Cura/gui/firmwareInstall.py:59 Cura/gui/firmwareInstall.py:64
-#: Cura/gui/firmwareInstall.py:119 Cura/gui/mainWindow.py:510
+#: Cura/gui/firmwareInstall.py:119 Cura/gui/mainWindow.py:541
 msgid "Firmware update"
 msgstr "Обновление прошивки"
 
@@ -749,160 +749,160 @@ msgstr "Не удалось записать прошивку.\n"
 msgid "Failed to connect to programmer.\n"
 msgstr "Не могу соединиться с YouMagine.com"
 
-#: Cura/gui/mainWindow.py:66
+#: Cura/gui/mainWindow.py:68
 msgid "Load model file...\tCTRL+L"
 msgstr "Загрузить файл модели...\tCTRL+L"
 
-#: Cura/gui/mainWindow.py:68
+#: Cura/gui/mainWindow.py:70
 msgid "Save model...\tCTRL+S"
 msgstr "Сохранить модель...\tCTRL+S"
 
-#: Cura/gui/mainWindow.py:70
+#: Cura/gui/mainWindow.py:72
 msgid "Reload platform\tF5"
 msgstr "Перезагрузить стол\tF5"
 
-#: Cura/gui/mainWindow.py:72
+#: Cura/gui/mainWindow.py:74
 msgid "Clear platform"
 msgstr "Очистить стол"
 
-#: Cura/gui/mainWindow.py:76
+#: Cura/gui/mainWindow.py:78
 msgid "Print...\tCTRL+P"
 msgstr "Печать...\tCTRL+P"
 
-#: Cura/gui/mainWindow.py:78 Cura/gui/sceneView.py:279
+#: Cura/gui/mainWindow.py:80 Cura/gui/sceneView.py:279
 msgid "Save GCode..."
 msgstr "Сохранить G-код..."
 
-#: Cura/gui/mainWindow.py:80
+#: Cura/gui/mainWindow.py:82
 msgid "Show slice engine log..."
 msgstr "Показать лог слайсера..."
 
-#: Cura/gui/mainWindow.py:84
+#: Cura/gui/mainWindow.py:86
 msgid "Open Profile..."
 msgstr "Открыть профиль печати..."
 
-#: Cura/gui/mainWindow.py:87
+#: Cura/gui/mainWindow.py:89
 msgid "Save Profile..."
 msgstr "Сохранить профиль печати..."
 
-#: Cura/gui/mainWindow.py:90
+#: Cura/gui/mainWindow.py:92
 msgid "Load Profile from GCode..."
 msgstr "Загрузить профиль из G-кода..."
 
-#: Cura/gui/mainWindow.py:94
+#: Cura/gui/mainWindow.py:96
 msgid "Reset Profile to default"
 msgstr "Сбросить профиль"
 
-#: Cura/gui/mainWindow.py:99
+#: Cura/gui/mainWindow.py:101
 msgid "Preferences...\tCTRL+,"
 msgstr "Настройки программы...\tCTRL+,"
 
-#: Cura/gui/mainWindow.py:101 Cura/gui/mainWindow.py:436
+#: Cura/gui/mainWindow.py:103 Cura/gui/mainWindow.py:467
 msgid "Machine settings..."
 msgstr "Настройки принтера..."
 
-#: Cura/gui/mainWindow.py:107
+#: Cura/gui/mainWindow.py:109
 msgid "Recent Model Files"
 msgstr "Последние файлы моделей"
 
-#: Cura/gui/mainWindow.py:114
+#: Cura/gui/mainWindow.py:116
 msgid "Recent Profile Files"
 msgstr "Последние профили печати"
 
-#: Cura/gui/mainWindow.py:120
+#: Cura/gui/mainWindow.py:122
 msgid "Quit"
 msgstr "Выход"
 
-#: Cura/gui/mainWindow.py:122
+#: Cura/gui/mainWindow.py:124
 msgid "File"
 msgstr "Файл"
 
-#: Cura/gui/mainWindow.py:130
+#: Cura/gui/mainWindow.py:132
 msgid "Minecraft map import..."
 msgstr "Импорт карты Minecraft..."
 
-#: Cura/gui/mainWindow.py:134
+#: Cura/gui/mainWindow.py:136
 msgid "PID Debugger..."
 msgstr "PID отладчик..."
 
-#: Cura/gui/mainWindow.py:136
+#: Cura/gui/mainWindow.py:138
 #, fuzzy
 msgid "Auto Firmware Update..."
 msgstr "Обновление прошивки"
 
-#: Cura/gui/mainWindow.py:139
+#: Cura/gui/mainWindow.py:141
 msgid "Copy profile to clipboard"
 msgstr "Скопировать профиль в буфер обмена"
 
-#: Cura/gui/mainWindow.py:143
+#: Cura/gui/mainWindow.py:145
 msgid "Print all at once"
 msgstr "Напечатать все сразу"
 
-#: Cura/gui/mainWindow.py:145
+#: Cura/gui/mainWindow.py:147
 msgid "Print one at a time"
 msgstr "Напечатать по одной за раз"
 
-#: Cura/gui/mainWindow.py:152
+#: Cura/gui/mainWindow.py:154
 msgid "Tools"
 msgstr "Инструменты"
 
-#: Cura/gui/mainWindow.py:158 Cura/util/profile.py:175
+#: Cura/gui/mainWindow.py:160 Cura/util/profile.py:175
 msgid "Machine"
 msgstr "Принтер"
 
-#: Cura/gui/mainWindow.py:161
+#: Cura/gui/mainWindow.py:163
 msgid "Switch to quickprint..."
 msgstr "Переключиться на быструю печать..."
 
-#: Cura/gui/mainWindow.py:165
+#: Cura/gui/mainWindow.py:167
 msgid "Switch to full settings..."
 msgstr "Переключиться на полный набор настроек..."
 
-#: Cura/gui/mainWindow.py:170
+#: Cura/gui/mainWindow.py:172
 msgid "Open expert settings...\tCTRL+E"
 msgstr "Открыть подробные настройки...\tCTRL+E"
 
-#: Cura/gui/mainWindow.py:174
+#: Cura/gui/mainWindow.py:176
 msgid "Run first run wizard..."
 msgstr "Запустить мастер начальных настроек..."
 
-#: Cura/gui/mainWindow.py:176
+#: Cura/gui/mainWindow.py:178
 msgid "Run bed leveling wizard..."
 msgstr "Запустить мастер выравнивания стола..."
 
-#: Cura/gui/mainWindow.py:178
+#: Cura/gui/mainWindow.py:180
 msgid "Run head offset wizard..."
 msgstr "Запустить мастер смещения головки..."
 
-#: Cura/gui/mainWindow.py:181
+#: Cura/gui/mainWindow.py:183
 msgid "Expert"
 msgstr "Подробно"
 
-#: Cura/gui/mainWindow.py:184
+#: Cura/gui/mainWindow.py:186
 msgid "Online documentation..."
 msgstr "Онлайн-справка"
 
-#: Cura/gui/mainWindow.py:186
+#: Cura/gui/mainWindow.py:188
 msgid "Report a problem..."
 msgstr "Сообщить о проблеме..."
 
-#: Cura/gui/mainWindow.py:188
+#: Cura/gui/mainWindow.py:190
 msgid "Check for update..."
 msgstr "Проверить обновления..."
 
-#: Cura/gui/mainWindow.py:190
+#: Cura/gui/mainWindow.py:192
 msgid "Open YouMagine website..."
 msgstr "Открыть сайт YouMagine..."
 
-#: Cura/gui/mainWindow.py:192
+#: Cura/gui/mainWindow.py:194
 msgid "About Cura..."
 msgstr "О Cura..."
 
-#: Cura/gui/mainWindow.py:194
+#: Cura/gui/mainWindow.py:196
 msgid "Help"
 msgstr "Помощь"
 
-#: Cura/gui/mainWindow.py:345
+#: Cura/gui/mainWindow.py:376
 msgid ""
 "For \"One at a time\" printing, you need to have entered the correct head "
 "size and gantry height in the machine settings"
@@ -910,27 +910,27 @@ msgstr ""
 "Для печати моделей по одной вы должны ввести верные размеры головки и высоту "
 "сопла в настройках принтера"
 
-#: Cura/gui/mainWindow.py:345
+#: Cura/gui/mainWindow.py:376
 msgid "One at a time warning"
 msgstr "Предупреждение для печати моделей по одной"
 
-#: Cura/gui/mainWindow.py:442
+#: Cura/gui/mainWindow.py:473
 msgid "Install default firmware..."
 msgstr "Установить прошивку по умолчанию..."
 
-#: Cura/gui/mainWindow.py:445
+#: Cura/gui/mainWindow.py:476
 msgid "Install custom firmware..."
 msgstr "Установить другую прошивку..."
 
-#: Cura/gui/mainWindow.py:449
+#: Cura/gui/mainWindow.py:480
 msgid "Select profile file to load"
 msgstr "Выберите файл профиля для загрузки"
 
-#: Cura/gui/mainWindow.py:461
+#: Cura/gui/mainWindow.py:492
 msgid "Select gcode file to load profile from"
 msgstr "Выберите файл G-кода для загрузки профиля из него"
 
-#: Cura/gui/mainWindow.py:476
+#: Cura/gui/mainWindow.py:507
 msgid ""
 "No profile found in GCode file.\n"
 "This feature only works with GCode files made by Cura 12.07 or newer."
@@ -938,15 +938,15 @@ msgstr ""
 "Профиль не найден.\n"
 "Эта опция работает только с файлами G-кода, созданными в Cura 12.07 и выше."
 
-#: Cura/gui/mainWindow.py:476
+#: Cura/gui/mainWindow.py:507
 msgid "Profile load error"
 msgstr "Ошибка загрузки профиля"
 
-#: Cura/gui/mainWindow.py:480
+#: Cura/gui/mainWindow.py:511
 msgid "Select profile file to save"
 msgstr "Выберите файл профиля для сохранения"
 
-#: Cura/gui/mainWindow.py:490
+#: Cura/gui/mainWindow.py:521
 msgid ""
 "This will reset all profile settings to defaults.\n"
 "Unless you have saved your current profile, all settings will be lost!\n"
@@ -956,11 +956,11 @@ msgstr ""
 "Если вы не сохранили настройки, они будут потеряны!\n"
 "Вы на самом деле хотите выполнить сброс?"
 
-#: Cura/gui/mainWindow.py:490
+#: Cura/gui/mainWindow.py:521
 msgid "Profile reset"
 msgstr "Сброс профиля"
 
-#: Cura/gui/mainWindow.py:510
+#: Cura/gui/mainWindow.py:541
 msgid ""
 "Warning: Installing a custom firmware does not guarantee that you machine "
 "will function correctly, and could damage your machine."
@@ -968,47 +968,47 @@ msgstr ""
 "Внимание, установка другой прошивки не гарантирует работоспособность вашего "
 "принтера и может повредить его."
 
-#: Cura/gui/mainWindow.py:511 Cura/gui/mainWindow.py:553
+#: Cura/gui/mainWindow.py:542 Cura/gui/mainWindow.py:584
 msgid "Open firmware to upload"
 msgstr "Откройте прошивку для обновления"
 
-#: Cura/gui/mainWindow.py:582
+#: Cura/gui/mainWindow.py:613
 msgid "You are running the latest version of Cura!"
 msgstr "У вас запущена последняя версия Cura!"
 
-#: Cura/gui/mainWindow.py:582
+#: Cura/gui/mainWindow.py:613
 msgid "Awesome!"
 msgstr "Круто!"
 
-#: Cura/gui/mainWindow.py:627
+#: Cura/gui/mainWindow.py:658
 msgid "Basic"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:631
+#: Cura/gui/mainWindow.py:662
 msgid "Advanced"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:637
+#: Cura/gui/mainWindow.py:668
 msgid "Plugins"
 msgstr "Расширения"
 
-#: Cura/gui/pluginPanel.py:27
+#: Cura/gui/pluginPanel.py:31
 msgid "Plugins:"
 msgstr "Расширения:"
 
-#: Cura/gui/pluginPanel.py:31
+#: Cura/gui/pluginPanel.py:35
 msgid "Open plugin location"
 msgstr "Папка расширений"
 
-#: Cura/gui/pluginPanel.py:32
+#: Cura/gui/pluginPanel.py:36
 msgid "Enabled plugins"
 msgstr "Работающие расширения"
 
-#: Cura/gui/pluginPanel.py:134
+#: Cura/gui/pluginPanel.py:159
 msgid "You need to select a plugin before you can add anything."
 msgstr "Вам нужно выбрать расширение перед добавлением чего-либо."
 
-#: Cura/gui/pluginPanel.py:134
+#: Cura/gui/pluginPanel.py:159
 msgid "Error: no plugin selected"
 msgstr "Ошибка: расширение не выбрано"
 

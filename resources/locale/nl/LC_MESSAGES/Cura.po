@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-16 11:25+0200\n"
+"POT-Creation-Date: 2014-10-22 10:17+0200\n"
 "PO-Revision-Date: 2013-10-01 15:32+0100\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE &lt;LL@li.org&gt;\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.7\n"
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:610
 msgid "A new version of Cura is available, would you like to download?"
 msgstr "Er is een nieuwere versie van Cura beschikbaar, wil je die downloaden?"
 
-#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:579
+#: Cura/gui/app.py:140 Cura/gui/mainWindow.py:610
 msgid "New version available"
 msgstr "Nieuwe versie beschikbaar"
 
@@ -675,7 +675,7 @@ msgstr ""
 "machine."
 
 #: Cura/gui/firmwareInstall.py:59 Cura/gui/firmwareInstall.py:64
-#: Cura/gui/firmwareInstall.py:119 Cura/gui/mainWindow.py:510
+#: Cura/gui/firmwareInstall.py:119 Cura/gui/mainWindow.py:541
 msgid "Firmware update"
 msgstr "Firmware update"
 
@@ -747,191 +747,191 @@ msgstr "Het is niet gelukt de firmware te uploaden. \n"
 msgid "Failed to connect to programmer.\n"
 msgstr "Verbinden met YouMagine.com is mislukt."
 
-#: Cura/gui/mainWindow.py:66
+#: Cura/gui/mainWindow.py:68
 msgid "Load model file...\tCTRL+L"
 msgstr "Laad Model...\tCTRL+L"
 
-#: Cura/gui/mainWindow.py:68
+#: Cura/gui/mainWindow.py:70
 msgid "Save model...\tCTRL+S"
 msgstr "Model Opslaan...\tCTRL+S"
 
-#: Cura/gui/mainWindow.py:70
+#: Cura/gui/mainWindow.py:72
 #, fuzzy
 msgid "Reload platform\tF5"
 msgstr "Maak Het Platform Leeg"
 
-#: Cura/gui/mainWindow.py:72
+#: Cura/gui/mainWindow.py:74
 msgid "Clear platform"
 msgstr "Maak Het Platform Leeg"
 
-#: Cura/gui/mainWindow.py:76
+#: Cura/gui/mainWindow.py:78
 msgid "Print...\tCTRL+P"
 msgstr "Print...\tCTRL+P"
 
-#: Cura/gui/mainWindow.py:78 Cura/gui/sceneView.py:279
+#: Cura/gui/mainWindow.py:80 Cura/gui/sceneView.py:279
 msgid "Save GCode..."
 msgstr "Sla GCode Op..."
 
-#: Cura/gui/mainWindow.py:80
+#: Cura/gui/mainWindow.py:82
 msgid "Show slice engine log..."
 msgstr "Toon Slicer Log..."
 
-#: Cura/gui/mainWindow.py:84
+#: Cura/gui/mainWindow.py:86
 msgid "Open Profile..."
 msgstr "Open Profiel..."
 
-#: Cura/gui/mainWindow.py:87
+#: Cura/gui/mainWindow.py:89
 msgid "Save Profile..."
 msgstr "Sla Profiel Op..."
 
-#: Cura/gui/mainWindow.py:90
+#: Cura/gui/mainWindow.py:92
 msgid "Load Profile from GCode..."
 msgstr "Laad Profiel Uit GCode..."
 
-#: Cura/gui/mainWindow.py:94
+#: Cura/gui/mainWindow.py:96
 msgid "Reset Profile to default"
 msgstr "Reset Profiel Naar Standaardinstellingen"
 
-#: Cura/gui/mainWindow.py:99
+#: Cura/gui/mainWindow.py:101
 msgid "Preferences...\tCTRL+,"
 msgstr "Voorkeuren...\tCTRL+,"
 
-#: Cura/gui/mainWindow.py:101 Cura/gui/mainWindow.py:436
+#: Cura/gui/mainWindow.py:103 Cura/gui/mainWindow.py:467
 msgid "Machine settings..."
 msgstr "Machineinstellingen..."
 
-#: Cura/gui/mainWindow.py:107
+#: Cura/gui/mainWindow.py:109
 msgid "Recent Model Files"
 msgstr "Recente Modellen"
 
-#: Cura/gui/mainWindow.py:114
+#: Cura/gui/mainWindow.py:116
 msgid "Recent Profile Files"
 msgstr "Recente Profielen"
 
-#: Cura/gui/mainWindow.py:120
+#: Cura/gui/mainWindow.py:122
 msgid "Quit"
 msgstr "Sluit"
 
-#: Cura/gui/mainWindow.py:122
+#: Cura/gui/mainWindow.py:124
 msgid "File"
 msgstr "Bestand"
 
-#: Cura/gui/mainWindow.py:130
+#: Cura/gui/mainWindow.py:132
 #, fuzzy
 msgid "Minecraft map import..."
 msgstr "Importeer Minecraft kaart data..."
 
-#: Cura/gui/mainWindow.py:134
+#: Cura/gui/mainWindow.py:136
 msgid "PID Debugger..."
 msgstr "PID foutopsporing..."
 
-#: Cura/gui/mainWindow.py:136
+#: Cura/gui/mainWindow.py:138
 #, fuzzy
 msgid "Auto Firmware Update..."
 msgstr "Firmware update"
 
-#: Cura/gui/mainWindow.py:139
+#: Cura/gui/mainWindow.py:141
 msgid "Copy profile to clipboard"
 msgstr "Kopieer profiel naar klembord"
 
-#: Cura/gui/mainWindow.py:143
+#: Cura/gui/mainWindow.py:145
 msgid "Print all at once"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:145
+#: Cura/gui/mainWindow.py:147
 #, fuzzy
 msgid "Print one at a time"
 msgstr "Afmetingen printkop"
 
-#: Cura/gui/mainWindow.py:152
+#: Cura/gui/mainWindow.py:154
 msgid "Tools"
 msgstr "Gereedschappen"
 
-#: Cura/gui/mainWindow.py:158 Cura/util/profile.py:175
+#: Cura/gui/mainWindow.py:160 Cura/util/profile.py:175
 msgid "Machine"
 msgstr "Machine"
 
-#: Cura/gui/mainWindow.py:161
+#: Cura/gui/mainWindow.py:163
 msgid "Switch to quickprint..."
 msgstr "Eenvoudige bedieningsmodus"
 
-#: Cura/gui/mainWindow.py:165
+#: Cura/gui/mainWindow.py:167
 msgid "Switch to full settings..."
 msgstr "Uitgebreide bedieningsmodus"
 
-#: Cura/gui/mainWindow.py:170
+#: Cura/gui/mainWindow.py:172
 #, fuzzy
 msgid "Open expert settings...\tCTRL+E"
 msgstr "Expertinstellingen..."
 
-#: Cura/gui/mainWindow.py:174
+#: Cura/gui/mainWindow.py:176
 msgid "Run first run wizard..."
 msgstr "Opstartwizard..."
 
-#: Cura/gui/mainWindow.py:176
+#: Cura/gui/mainWindow.py:178
 msgid "Run bed leveling wizard..."
 msgstr "Wizard: Platform vlak afstellen..."
 
-#: Cura/gui/mainWindow.py:178
+#: Cura/gui/mainWindow.py:180
 msgid "Run head offset wizard..."
 msgstr "Wizard: Afstand printkoppen calibreren..."
 
-#: Cura/gui/mainWindow.py:181
+#: Cura/gui/mainWindow.py:183
 msgid "Expert"
 msgstr "Expert"
 
-#: Cura/gui/mainWindow.py:184
+#: Cura/gui/mainWindow.py:186
 msgid "Online documentation..."
 msgstr "Online documentatie..."
 
-#: Cura/gui/mainWindow.py:186
+#: Cura/gui/mainWindow.py:188
 msgid "Report a problem..."
 msgstr "Meld een probleem..."
 
-#: Cura/gui/mainWindow.py:188
+#: Cura/gui/mainWindow.py:190
 msgid "Check for update..."
 msgstr "Controleer op updates..."
 
-#: Cura/gui/mainWindow.py:190
+#: Cura/gui/mainWindow.py:192
 msgid "Open YouMagine website..."
 msgstr "Open de YouMagine website..."
 
-#: Cura/gui/mainWindow.py:192
+#: Cura/gui/mainWindow.py:194
 msgid "About Cura..."
 msgstr "Over Cura..."
 
-#: Cura/gui/mainWindow.py:194
+#: Cura/gui/mainWindow.py:196
 msgid "Help"
 msgstr "Help"
 
-#: Cura/gui/mainWindow.py:345
+#: Cura/gui/mainWindow.py:376
 msgid ""
 "For \"One at a time\" printing, you need to have entered the correct head "
 "size and gantry height in the machine settings"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:345
+#: Cura/gui/mainWindow.py:376
 msgid "One at a time warning"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:442
+#: Cura/gui/mainWindow.py:473
 #, fuzzy
 msgid "Install default firmware..."
 msgstr "Installeer de standaardfirmware..."
 
-#: Cura/gui/mainWindow.py:445
+#: Cura/gui/mainWindow.py:476
 msgid "Install custom firmware..."
 msgstr "Installeer je eigen firmware..."
 
-#: Cura/gui/mainWindow.py:449
+#: Cura/gui/mainWindow.py:480
 msgid "Select profile file to load"
 msgstr "Selecteer een profielbestand om te laden"
 
-#: Cura/gui/mainWindow.py:461
+#: Cura/gui/mainWindow.py:492
 msgid "Select gcode file to load profile from"
 msgstr "Selecteer een GCode bestand om het profiel uit te laden..."
 
-#: Cura/gui/mainWindow.py:476
+#: Cura/gui/mainWindow.py:507
 msgid ""
 "No profile found in GCode file.\n"
 "This feature only works with GCode files made by Cura 12.07 or newer."
@@ -940,15 +940,15 @@ msgstr ""
 "Deze feature werkt alleen wanneer GCode is gemaakt vanuit Cura nieuwer dan "
 "versie 12.07"
 
-#: Cura/gui/mainWindow.py:476
+#: Cura/gui/mainWindow.py:507
 msgid "Profile load error"
 msgstr "Fout bij het laden van het profiel"
 
-#: Cura/gui/mainWindow.py:480
+#: Cura/gui/mainWindow.py:511
 msgid "Select profile file to save"
 msgstr "Selecteer een profiel om op te slaan"
 
-#: Cura/gui/mainWindow.py:490
+#: Cura/gui/mainWindow.py:521
 msgid ""
 "This will reset all profile settings to defaults.\n"
 "Unless you have saved your current profile, all settings will be lost!\n"
@@ -959,11 +959,11 @@ msgstr ""
 "opgeslagen!\n"
 "Wil je echt herstellen?"
 
-#: Cura/gui/mainWindow.py:490
+#: Cura/gui/mainWindow.py:521
 msgid "Profile reset"
 msgstr "Profiel herstellen"
 
-#: Cura/gui/mainWindow.py:510
+#: Cura/gui/mainWindow.py:541
 msgid ""
 "Warning: Installing a custom firmware does not guarantee that you machine "
 "will function correctly, and could damage your machine."
@@ -971,48 +971,48 @@ msgstr ""
 "Let op: Wanneer je je eigen firmware installeert, zou je machine niet goed "
 "kunnen werken en zou je je printer kunnen beschadigen."
 
-#: Cura/gui/mainWindow.py:511 Cura/gui/mainWindow.py:553
+#: Cura/gui/mainWindow.py:542 Cura/gui/mainWindow.py:584
 msgid "Open firmware to upload"
 msgstr "Open firmware om te installeren"
 
-#: Cura/gui/mainWindow.py:582
+#: Cura/gui/mainWindow.py:613
 msgid "You are running the latest version of Cura!"
 msgstr "Je hebt de nieuwste versie van Cura!"
 
-#: Cura/gui/mainWindow.py:582
+#: Cura/gui/mainWindow.py:613
 msgid "Awesome!"
 msgstr "Te gek!"
 
-#: Cura/gui/mainWindow.py:627
+#: Cura/gui/mainWindow.py:658
 msgid "Basic"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:631
+#: Cura/gui/mainWindow.py:662
 msgid "Advanced"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:637
+#: Cura/gui/mainWindow.py:668
 msgid "Plugins"
 msgstr "Plugins"
 
-#: Cura/gui/pluginPanel.py:27
+#: Cura/gui/pluginPanel.py:31
 msgid "Plugins:"
 msgstr "Plugins:"
 
-#: Cura/gui/pluginPanel.py:31
+#: Cura/gui/pluginPanel.py:35
 msgid "Open plugin location"
 msgstr "Open de plugin map"
 
 # even opletten of dit voor- of beschrijvend is. M.a.w. zijn ze aangezet, of betekent dit "plugins aanzetten"?
-#: Cura/gui/pluginPanel.py:32
+#: Cura/gui/pluginPanel.py:36
 msgid "Enabled plugins"
 msgstr "Plugins aangezet"
 
-#: Cura/gui/pluginPanel.py:134
+#: Cura/gui/pluginPanel.py:159
 msgid "You need to select a plugin before you can add anything."
 msgstr "Selecteer eerst een plugin om toe te voegen..."
 
-#: Cura/gui/pluginPanel.py:134
+#: Cura/gui/pluginPanel.py:159
 msgid "Error: no plugin selected"
 msgstr "Fout: geen plugin geselecteerd"
 
