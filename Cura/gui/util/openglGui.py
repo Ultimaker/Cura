@@ -459,11 +459,11 @@ class glButton(glGuiControl):
 
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
 		#button sizing		
-		scale = 0.8
+		scale = 1.0
 		if self._selected:
-			scale = 0.85
+			scale = 1.0
 		elif self._focus:
-			scale = 0.85
+			scale = 1.0
 		if self._disabled:
 			glColor4ub(128,128,128,128)
 		else:
