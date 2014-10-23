@@ -589,14 +589,14 @@ class glComboButton(glButton):
 		self._selected = self.hasFocus()
 		super(glComboButton, self).draw()
 
-		bs = self._base._buttonSize / 2
+		bs = self._base._buttonSize #/ 2
 		pos = self._getPixelPos()
 
 		if not self._selected:
 			return
 
 		glPushMatrix()
-		glTranslatef(pos[0]+bs*0.5, pos[1] + bs*0.5, 0)
+		glTranslatef(pos[0]+bs*0.1, pos[1] + bs*0.5, 0)
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
 		for n in xrange(0, len(self._imageIDs)):
 			glTranslatef(0, bs, 0)
