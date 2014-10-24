@@ -10,6 +10,6 @@ Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy
 Provides: cura
 Installed-Size: 10000
 Description: Cura is a full software solution for 3D printing,
- aimed at RepRaps and the Ultimaker. It's free software payed for
+ aimed at RepRaps and the Ultimaker. It's free software paid for
  and maintained by Ultimaker.
 
