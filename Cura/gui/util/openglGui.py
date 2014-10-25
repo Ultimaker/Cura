@@ -589,20 +589,20 @@ class glComboButton(glButton):
 		self._selected = self.hasFocus()
 		super(glComboButton, self).draw()
 
-		bs = self._base._buttonSize #/ 2
+		bs = self._base._buttonSize / 1.3
 		pos = self._getPixelPos()
 
 		if not self._selected:
 			return
 
 		glPushMatrix()
-		glTranslatef(pos[0]+bs*0.1, pos[1] + bs*0.5, 0)
+		glTranslatef(pos[0]+bs*0.5, pos[1] + bs*0.5, 0)
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
 		for n in xrange(0, len(self._imageIDs)):
 			glTranslatef(0, bs, 0)
 			glColor4ub(255,255,255,255)
-			openglHelpers.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, 0)
-			openglHelpers.glDrawTexturedQuad(-0.5*bs,-0.5*bs,bs,bs, self._imageIDs[n])
+			openglHelpers.glDrawTexturedQuad(-0.85*bs,-0.8*bs,bs,bs, 0)
+			openglHelpers.glDrawTexturedQuad(-0.85*bs,-0.8*bs,bs,bs, self._imageIDs[n])
 			glDisable(GL_TEXTURE_2D)
 
 			glPushMatrix()
@@ -611,17 +611,17 @@ class glComboButton(glButton):
 			glPushMatrix()
 			glColor4ub(60,60,60,255)
 			glTranslatef(-1, -1, 0)
-			openglHelpers.glDrawStringRight(self._tooltips[n])
+			#openglHelpers.glDrawStringRight(self._tooltips[n])
 			glTranslatef(0, 2, 0)
-			openglHelpers.glDrawStringRight(self._tooltips[n])
+			#openglHelpers.glDrawStringRight(self._tooltips[n])
 			glTranslatef(2, 0, 0)
-			openglHelpers.glDrawStringRight(self._tooltips[n])
+			#openglHelpers.glDrawStringRight(self._tooltips[n])
 			glTranslatef(0, -2, 0)
-			openglHelpers.glDrawStringRight(self._tooltips[n])
+			#openglHelpers.glDrawStringRight(self._tooltips[n])
 			glPopMatrix()
 
 			glColor4ub(255,255,255,255)
-			openglHelpers.glDrawStringRight(self._tooltips[n])
+			#openglHelpers.glDrawStringRight(self._tooltips[n])
 			glPopMatrix()
 		glPopMatrix()
 
@@ -637,7 +637,7 @@ class glComboButton(glButton):
 		if self._hidden or self._disabled:
 			return False
 		if self.hasFocus():
-			bs = self._base._buttonSize / 2
+			bs = self._base._buttonSize / 1.3
 			pos = self._getPixelPos()
 			if 0 <= x - pos[0] <= bs and 0 <= y - pos[1] - bs <= bs * len(self._imageIDs):
 				self._selection = int((y - pos[1] - bs) / bs)
@@ -1016,12 +1016,12 @@ class glSlider(glGuiControl):
 		pos = self._getPixelPos()
 
 		glPushMatrix()
-		glTranslatef(pos[0], pos[1], 0)
+		glTranslatef(pos[0], pos[1]*1.05, 0)
 		glDisable(GL_TEXTURE_2D)
 		if self.hasFocus():
-			glColor4ub(60,60,60,255)
+			glColor4ub(177,205,54,255)
 		else:
-			glColor4ub(60,60,60,192)
+			glColor4ub(177,205,54,192)
 		glBegin(GL_QUADS)
 		glVertex2f( w/2,-h/2)
 		glVertex2f(-w/2,-h/2)
@@ -1035,7 +1035,7 @@ class glSlider(glGuiControl):
 			valueNormalized = 0
 		glTranslate(0.0,scrollLength/2,0)
 		if True:  # self._focus:
-			glColor4ub(0,0,0,255)
+			glColor4ub(90,104,27,255)
 			glPushMatrix()
 			glTranslate(-w/2,openglHelpers.glGetStringSize(str(self._minValue))[1]/2,0)
 			openglHelpers.glDrawStringRight(str(self._minValue))
@@ -1044,7 +1044,7 @@ class glSlider(glGuiControl):
 			glTranslate(w,scrollLength-scrollLength*valueNormalized,0)
 			openglHelpers.glDrawStringLeft(str(self.getValue()))
 			glPopMatrix()
-		glColor4ub(255,255,255,240)
+		glColor4ub(90,104,27,255)
 		glTranslate(0.0,-scrollLength*valueNormalized,0)
 		glBegin(GL_QUADS)
 		glVertex2f( w/2,-w/2)
@@ -1070,7 +1070,7 @@ class glSlider(glGuiControl):
 			w, h = self.getMinSize()
 			scrollLength = h - w
 			pos = self._getPixelPos()
-			self.setValue(int(self._minValue + (self._maxValue - self._minValue) * -(y - pos[1] - scrollLength/2) / scrollLength))
+			self.setValue(int(self._minValue + (self._maxValue - self._minValue) * -(y - pos[1]*1.05 - scrollLength/2) / scrollLength))
 			self._callback()
 			return True
 		if self._checkHit(x, y):
