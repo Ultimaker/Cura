@@ -17,12 +17,14 @@ class aboutWindow(wx.Frame):
 		s = wx.BoxSizer(wx.VERTICAL)
 		p.SetSizer(s)
 
-		title = wx.StaticText(p, -1, 'Cura')
+		title = wx.StaticText(p, -1, 'Cura LulzBot Edition')
 		title.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
 		s.Add(title, flag=wx.ALIGN_CENTRE|wx.EXPAND|wx.BOTTOM, border=5)
 
 		s.Add(wx.StaticText(p, -1, 'End solution for Open Source Fused Filament Fabrication 3D printing.'))
-		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by Ultimaker.'))
+		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by Ultimaker.'), flag=wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, 'Cura LulzBot Edition has been modified and maintained by Aleph Objects, Inc.'))
+		s.Add(wx.StaticText(p, -1, 'for use with LulzBot 3D printers.'))
 
 		s.Add(wx.StaticText(p, -1, 'Cura is build with the following components:'), flag=wx.TOP, border=10)
 		self.addComponent('Cura', 'Graphical user interface', 'AGPLv3', 'https://github.com/daid/Cura')
@@ -40,7 +42,8 @@ class aboutWindow(wx.Frame):
 			self.addComponent('comtypes', 'Library to help with windows taskbar features on Windows 7', 'MIT', 'http://starship.python.net/crew/theller/comtypes/')
 			self.addComponent('EjectMedia', 'Utility to safe-remove SD cards', 'Freeware', 'http://www.uwe-sieber.de/english.html')
 		self.addComponent('Pymclevel', 'Python library for reading Minecraft levels.', 'ISC', 'https://github.com/mcedit/pymclevel')
-
+		s.Add(wx.StaticText(p, -1, "Copyright (C) 2014 Aleph Objects, Inc. - Release under terms of the AGPLv3 License"), flag=wx.TOP, border=10)
+		s.Add(wx.StaticText(p, -1, "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"))
 		#Translations done by:
 		#Dutch: Charlotte Jansen
 		#German: Gregor Luetolf, Lars Potter
