@@ -1,6 +1,6 @@
 Source: cura
 Package: cura
-Version: 14.01-1.01-c6a3
+Version: 14.09-1.01-2276
 Maintainer: Aleph Objects, Inc. <info@alephobjects.com>
 Section: misc
 Priority: optional
@@ -10,6 +10,6 @@ Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy
 Provides: cura
 Installed-Size: 10000
 Description: Cura is a full software solution for 3D printing,
- aimed at RepRaps and the Ultimaker. It's free software paid for
- and maintained by Ultimaker.
+ aimed at Open Hardware 3D Printers. Cura is free software paid for
+ and maintained by Ultimaker. Cura LulzBot Edition been modified and maintained by Aleph Objects, Inc. for use with LulzBot 3D printers.
 
