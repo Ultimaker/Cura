@@ -22,7 +22,7 @@ export BUILD_NAME=14.09
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Debian package release
-export DEBIAN_RELEASE=1.01
+export DEBIAN_RELEASE=1.02
 
 ##Git commit
 GIT_HASH=$(git rev-parse --short=4 HEAD)
