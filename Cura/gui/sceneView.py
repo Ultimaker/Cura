@@ -891,7 +891,8 @@ class SceneView(openglGui.glGuiPanel):
 		glDisable(GL_BLEND)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
-		glClearColor(0.8, 0.8, 0.8, 1.0)
+		#scene background color
+		glClearColor(0.85, 0.85, 0.85, 1.0)
 		glClearStencil(0)
 		glClearDepth(1.0)
 
@@ -1129,7 +1130,8 @@ class SceneView(openglGui.glGuiPanel):
 			glEnable(GL_BLEND)
 			if self._objectLoadShader is not None:
 				self._objectLoadShader.bind()
-				glColor4f(0.2, 0.6, 1.0, 1.0)
+				#Model color during load animation
+				glColor4ub(177, 205, 54, 255)
 				for obj in self._scene.objects():
 					if obj._loadAnim is None:
 						continue
@@ -1239,7 +1241,7 @@ class SceneView(openglGui.glGuiPanel):
 
 		machine = profile.getMachineSetting('machine_type')
 	
-		#Due to NC licensing, temporarily removing platform mesh loading for Ultimaker and Witbox
+		#Due to NC licensing of the stl files, temporarily removing platform mesh loading for Ultimaker and Witbox
 		'''if machine.startswith('ultimaker'):
 			if machine not in self._platformMesh:
 				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
