@@ -21,8 +21,8 @@ ARCHIVE_FOR_DISTRIBUTION=1
 export BUILD_NAME=14.09
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
-##Debian package release
-export DEBIAN_RELEASE=1.02
+##Revision
+export REVISION=1.02
 
 ##Git commit
 GIT_HASH=$(git rev-parse --short=4 HEAD)
@@ -239,7 +239,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${DEBIAN_RELEASE}-${GIT_HASH}_i386.deb
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_i386.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
@@ -275,7 +275,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${DEBIAN_RELEASE}-${GIT_HASH}_amd64.deb
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_amd64.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
@@ -396,7 +396,7 @@ if (( ${ARCHIVE_FOR_DISTRIBUTION} )); then
 			ln -sf `pwd`/${TARGET_DIR} scripts/win32/dist
 			wine ~/.wine/drive_c/Program\ Files/NSIS/makensis.exe /DVERSION=${BUILD_NAME} scripts/win32/installer.nsi
             if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
-			mv scripts/win32/Cura_${BUILD_NAME}-${GIT_HASH}.exe ./
+			mv scripts/win32/Cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}.exe ./
 		fi
 		if [ -f '/c/Program Files (x86)/NSIS/makensis.exe' ]; then
 			rm -rf scripts/win32/dist
