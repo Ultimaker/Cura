@@ -562,7 +562,7 @@ end.gcode = M104 S0
 					put('insetx_speed', '50')
 					put('cool_min_layer_time', '20')
 					put('skirt_minimal_length', '0')
-					put('fan_full_height', '0.28'
+					put('fan_full_height', '0.28')
 					put('brim_line_count', '3')
 					put('skirt_line_count', '2')
 					put('fill_overlap', '10')
