@@ -90,7 +90,7 @@ class simpleModePanel(wx.Panel):
 		if self.printSupport.GetValue():
 			put('support', _("Exterior Only"))
 
-# LulzBot Mini slice settings for use with the simple slice selection. This needs to be further modified to only be used when the Mini machine config is loaded.
+# LulzBot Mini slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini':
 			put('fill_density', '30')
 			put('print_temperature', '0')
@@ -385,7 +385,187 @@ end.gcode = M104 S0
 			nozzle_size = float(get('nozzle_size'))
 			put('filament_diameter', self.printMaterialDiameter.GetValue())
 			put('plugin_config', '')
-### TAZ profile settings are needed here
+### LulzBot TAZ slice settings for use with the simple slice selection.
+		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
+			put('nozzle_size', '0.35')
+			put('print_temperature', '0')
+			put('print_bed_temperature', '0')
+			put('start.gcode', """;Sliced at: {day} {date} {time}
+	;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+	;Print time: {print_time}
+	;Filament used: {filament_amount}m {filament_weight}g
+	;Filament cost: {filament_cost}
+	;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
+	;M109 S{print_temperature} ;Uncomment to add your own temperature line
+	G21        ;metric values
+	G90        ;absolute positioning
+	M82        ;set extruder to absolute mode
+	M107       ;start with the fan off
+	G28 X0 Y0  ;move X/Y to min endstops
+	G28 Z0     ;move Z to min endstops
+	G1 Z15.0 F{travel_speed} ;move the platform down 15mm
+	G92 E0                  ;zero the extruded length
+	G1 F200 E0              ;extrude 3mm of feed stock
+	G92 E0                  ;zero the extruded length again
+	G1 F{travel_speed}
+	M203 X192 Y208 Z3 ;speed limits""")
+			put('end.gcode', """= M400
+	M104 S0                                        ; Hotend off
+	M140 S0                                        ;heated bed heater off (if you have it)
+	M107                                             ; fans off
+	G91                                                ;relative positioning
+	G1 E-1 F300                                  ;retract the filament a bit before lifting the nozzle, to release some of the pressure
+	G1 Z+0.5 E-5 X-20 Y-20 F3000    ;move Z up a bit and retract filament even more
+	M84                                                 ;steppers off
+	G90                                                 ;absolute positioning
+	;{profile_string}""")
+			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
+				put('retraction_speed', '25')
+				put('retraction_amount', '1.5')
+				put('layer0_width_factor', '125')
+				put('travel_speed', '175')
+				if self.printMaterialHIPS.GetValue():
+					put('bottom_layer_speed', '30')
+					if self.printTypeLow.GetValue():
+						put('layer_height', '0.28')
+						put('solid_layer_thickness', '0.8')
+						put('print_speed', '130')
+						put('retraction_hop', '0.1')
+						put('inset0_speed', '70')
+						put('insetx_speed', '100')
+						put('cool_min_layer_time', '15')
+						put('fan_full_height', '1')
+						put('fan_speed', '25')
+						put('fan_speed_max', '30')
+						put('brim_line_count', '8')
+					if self.printTypeNormal.GetValue():
+						put('layer_height', '0.21')
+						put('wall_thickness', '1.05')
+						put('solid_layer_thickness', '0.63')
+						put('print_speed', '65')
+						put('infill_speed', '85')
+						put('inset0_speed', '45')
+						put('insetx_speed', '50')
+						put('skirt_minimal_length', '250')
+						put('fan_full_height', '0.35')
+						put('fan_speed', '50')
+						put('fan_speed_max', '50')
+					if self.printTypeHigh.GetValue():
+						put('layer_height', '0.14')
+						put('wall_thickness', '0.56')
+						put('solid_layer_thickness', '0.98')
+						put('fill_density', '40')
+						put('print_speed', '40')
+						put('infill_speed', '65')
+						put('inset0_speed', '25')
+						put('insetx_speed', '45')
+						put('cool_min_layer_time', '10')
+						put('fan_full_height', '0.56')
+						put('fan_speed', '50')
+						put('fan_speed_max', '60')
+						put('cool_min_feedrate', '8')
+				if self.printMaterialABS.GetValue():
+					put('cool_min_layer_time', '15')
+					if self.printTypeLow.GetValue():
+						put('layer_height', '0.28')
+						put('solid_layer_thickness', '0.8')
+						put('print_speed', '85')
+						put('retraction_hop', '0.1')
+						put('bottom_layer_speed', '30')
+						put('infill_speed', '110')
+						put('inset0_speed', '70')
+						put('insetx_speed', '80')
+						put('fan_full_height', '5')
+						put('fan_speed', '25')
+						put('fan_speed_max', '30')
+						put('brim_line_count', '8')
+					if self.printTypeNormal.GetValue():
+						put('layer_height', '0.21')
+						put('wall_thickness', '1.05')
+						put('solid_layer_thickness', '0.63')
+						put('print_speed', '110')
+						put('bottom_layer_speed', '25')
+						put('inset0_speed', '60')
+						put('insetx_speed', '90')
+						put('fan_speed', '25')
+						put('fan_speed_max', '25')
+						put('fill_overlap', '5')
+					if self.printTypeHigh.GetValue():
+						put('layer_height', '0.14')
+						put('solid_layer_thickness', '0.8')
+						put('fill_density', '30')
+						put('print_speed', '60')
+						put('retraction_hop', '0.1')
+						put('bottom_layer_speed', '25')
+						put('infill_speed', '60')
+						put('inset0_speed', '40')
+						put('insetx_speed', '50')
+						put('fan_full_height', '5')
+						put('fan_speed', '40')
+						put('fan_speed_max', '75')
+						put('skirt_line_count', '4')
+			elif self.printMaterialPLA.GetValue():
+				if self.printTypeLow.GetValue():
+					put('layer_height', '0.28')
+					put('wall_thickness', '1.05')
+					put('solid_layer_thickness', '0.84')
+					put('print_speed', '140')
+					put('retraction_speed', '25')
+					put('retraction_amount', '3')
+					put('retraction_hop', '0.1')
+					put('layer0_width_factor', '125')
+					put('travel_speed', '180')
+					put('bottom_layer_speed', '40')
+					put('inset0_speed', '60')
+					put('insetx_speed', '100')
+					put('cool_min_layer_time', '15')
+					put('skirt_minimal_length', '250')
+					put('fan_full_height', '1')
+					put('fan_speed', '75')
+					put('cool_min_feedrate', '15')
+					put('brim_line_count', '2')
+					put('skirt_line_count', '3')
+					put('fill_overlap', '0')
+				if self.printTypeNormal.GetValue():
+					put('layer_height', '0.21')
+					put('solid_layer_thickness', '1')
+					put('fill_density', '30')
+					put('print_speed', '30')
+					put('retraction_speed', '25')
+					put('retraction_amount', '3')
+					put('retraction_hop', '0.1')
+					put('layer0_width_factor', '125')
+					put('bottom_layer_speed', '30')
+					put('infill_speed', '95')
+					put('inset0_speed', '65')
+					put('insetx_speed', '75')
+					put('cool_min_layer_time', '15')
+					put('skirt_minimal_length', '250')
+					put('fan_full_height', '1')
+					put('fan_speed', '75')
+					put('cool_min_feedrate', '15')
+					put('brim_line_count', '2')
+					put('skirt_line_count', '3')
+				if self.printTypeHigh.GetValue():
+					put('layer_height', '0.14')
+					put('wall_thickness', '1.05')
+					put('solid_layer_thickness', '0.56')
+					put('fill_density', '30')
+					put('print_speed', '100')
+					put('retraction_speed', '30')
+					put('retraction_amount', '2')
+					put('bottom_thickness', '0.25')
+					put('layer0_width_factor', '200')
+					put('travel_speed', '170')
+					put('infill_speed', '75')
+					put('inset0_speed', '25')
+					put('insetx_speed', '50')
+					put('cool_min_layer_time', '20')
+					put('skirt_minimal_length', '0')
+					put('fan_full_height', '0.28'
+					put('brim_line_count', '3')
+					put('skirt_line_count', '2')
+					put('fill_overlap', '10')
 		else:
 			nozzle_size = float(get('nozzle_size'))
 			if self.printTypeNormal.GetValue():
