@@ -576,6 +576,7 @@ class glComboButton(glButton):
 		self._tooltips = tooltips
 		self._comboCallback = callback
 		self._selection = 0
+		self._disabled = False
 
 	def _onComboOpenSelect(self, button):
 		if self.hasFocus():
@@ -627,6 +628,9 @@ class glComboButton(glButton):
 
 	def getValue(self):
 		return self._selection
+
+	def setDisabled(self, value):
+		self._disabled = value
 
 	def setValue(self, value):
 		self._selection = value

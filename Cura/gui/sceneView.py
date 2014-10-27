@@ -102,7 +102,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
 		self.viewSelection = openglGui.glComboButton(self, _("View mode"), [7,19,11,15,23], [_("Normal"), _("Overhang"), _("Transparent"), _("X-Ray"), _("Layers")], (-1,0), self.OnViewChange)
-
+		self.viewSelection.setDisabled(True)
 		#self.youMagineButton = openglGui.glButton(self, 26, _("Share on YouMagine"), (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
 		#self.youMagineButton.setDisabled(True)
 
@@ -129,6 +129,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._engine._result.setFinished(True)
 		self._engineResultView.setResult(self._engine._result)
 		self.printButton.setBottomText('')
+		self.viewSelection.setDisabled(False)
 		self.viewSelection.setValue(4)
 		self.printButton.setDisabled(False)
 		#self.youMagineButton.setDisabled(True)
@@ -482,6 +483,8 @@ class SceneView(openglGui.glGuiPanel):
 			self._deleteObject(self._scene.objects()[0])
 		self._animView = openglGui.animation(self, self._viewTarget.copy(), numpy.array([0,0,0], numpy.float32), 0.5)
 		self._engineResultView.setResult(None)
+		self.viewSelection.setDisabled(True)
+		self.printButton.setDisabled(True)
 
 	def OnMultiply(self, e):
 		if self._focusObj is None:
@@ -561,6 +564,7 @@ class SceneView(openglGui.glGuiPanel):
 			if self.printButton.getProgressBar() is not None and progressValue >= 0.0 and abs(self.printButton.getProgressBar() - progressValue) < 0.01:
 				return
 		self.printButton.setDisabled(not finished)
+		self.viewSelection.setDisabled(not finished)
 		if progressValue >= 0.0:
 			self.printButton.setProgressBar(progressValue)
 		else:
@@ -618,6 +622,9 @@ class SceneView(openglGui.glGuiPanel):
 				self.glReleaseList.append(m.vbo)
 		if len(self._scene.objects()) == 0:
 			self._engineResultView.setResult(None)
+			self.printButton.setDisabled(True)
+			self.viewSelection.setDisabled(True)
+			self.printButton.setBottomText('')
 		import gc
 		gc.collect()
 		self.sceneUpdated()
