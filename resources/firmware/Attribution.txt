@@ -1,0 +1,12 @@
+
+==MarlinUltimaker==
+The MarlinUltimaker-*.hex firmware is build from https://github.com/Ultimaker/Marlin and released under GPLv3
+The sources for the included firmware are taged with the first Cura version number which includes the build.
+
+==MarlinUltimaker2==
+The MarlinUltimaker2.hex firmware is build from https://github.com/Ultimaker/SecretMarlin and released under GPLv3
+The sources for the included firmware are taged with the first Cura version number which includes the build.
+
+==MarlinWitbox==
+The MarlinWitbox.hex firmware is build from https://github.com/bq/Marlin and released under GPLv3
+
