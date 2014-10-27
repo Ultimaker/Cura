@@ -10,8 +10,8 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="332.9375"
-   height="471.40625"
+   width="433.78125"
+   height="614.1875"
    id="svg10646"
    version="1.1"
    inkscape:version="0.48.4 r9939"
@@ -42,7 +42,7 @@
        cy="271.63931"
        r="197.1096"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,1.0290119,0,-1.3403508)">
+       gradientTransform="matrix(1.3028371,0,0,1.3406349,-465.00112,-14.985489)">
       <stop
          offset="0.2943"
          style="stop-color:#FFFFFF;stop-opacity:0"
@@ -77,9 +77,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="179.84227"
-     inkscape:cy="189.14301"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="591.55429"
+     inkscape:cy="320.40343"
      inkscape:document-units="px"
      inkscape:current-layer="g10669"
      showgrid="false"
@@ -113,23 +113,24 @@
        transform="translate(-1351.4143,217.85504)"
        id="g10669">
       <rect
-         style="fill:#b1cd36;stroke:#d6ef43;stroke-width:5.08447981;stroke-miterlimit:10"
+         style="fill:#b1cd36;stroke:#d6ef43;stroke-width:6.6242485;stroke-miterlimit:10"
          id="rect5074"
-         height="466.33719"
-         width="327.84961"
+         height="607.5614"
+         width="427.13461"
          stroke-miterlimit="10"
-         y="46.259579"
-         x="1538.0251" />
+         y="47.029461"
+         x="1538.795" />
       <rect
          style="fill:url(#SVGID_5_-5);fill-opacity:0.18999999"
          id="rect5081"
-         height="463.98148"
-         width="327.89999"
-         y="46.200001"
-         x="1548" />
+         height="604.49225"
+         width="427.20026"
+         y="46.951839"
+         x="1551.7906" />
       <g
          style="opacity:0.1"
-         id="g5083">
+         id="g5083"
+         transform="matrix(1.3028371,0,0,1.3028371,-465.00112,-13.23923)">
         <image
            style="overflow:visible"
            id="image5085"
@@ -140,7 +141,8 @@
            overflow="visible" />
       </g>
       <g
-         id="g5087">
+         id="g5087"
+         transform="matrix(1.3028371,0,0,1.3028371,-465.00112,-13.23923)">
         <image
            style="opacity:0.3;overflow:visible"
            id="image5089"
@@ -156,13 +158,14 @@
             <polygon
                style="fill:#b1cd36;stroke:#5a681b;stroke-miterlimit:10"
                id="polygon5095"
-               points="1702.2,77.4 1815.1,274.1 1588.7,274.1 "
+               points="1588.7,274.1 1702.2,77.4 1815.1,274.1 "
                stroke-miterlimit="10" />
           </g>
         </g>
       </g>
       <g
-         id="g5097">
+         id="g5097"
+         transform="matrix(1.3028371,0,0,1.3028371,-465.00112,-13.23923)">
         <radialGradient
            gradientUnits="userSpaceOnUse"
            fy="199.91"
@@ -183,7 +186,7 @@
         <polygon
            style="fill:url(#SVGID_6_)"
            id="polygon5104"
-           points="1702.2,77.4 1814.9,274 1589,274 " />
+           points="1589,274 1702.2,77.4 1814.9,274 " />
         <g
            style="opacity:0.2"
            id="g5106">
@@ -198,7 +201,8 @@
         </g>
       </g>
       <g
-         id="g5110">
+         id="g5110"
+         transform="matrix(1.3028371,0,0,1.3028371,-465.00112,-13.23923)">
         <g
            id="g5112">
           <g
@@ -206,7 +210,7 @@
             <polygon
                style="fill:none;stroke:#d6ef43;stroke-miterlimit:10"
                id="polygon5116"
-               points="1702.2,95.3 1800.1,265.9 1603.8,265.9 "
+               points="1603.8,265.9 1702.2,95.3 1800.1,265.9 "
                stroke-miterlimit="10" />
           </g>
           <line
@@ -339,21 +343,21 @@
                       <polygon
                          style="fill:#cae240"
                          id="polygon5176"
-                         points="1693.9,212.2 1693.9,201.3 1704.3,198.2 1704.3,210.1 " />
+                         points="1693.9,201.3 1704.3,198.2 1704.3,210.1 1693.9,212.2 " />
                     </g>
                     <g
                        id="g5178">
                       <polygon
                          style="fill:#b1cd36"
                          id="polygon5180"
-                         points="1711.3,212.5 1704.3,210.1 1704.3,198.2 1711.3,202.8 " />
+                         points="1704.3,210.1 1704.3,198.2 1711.3,202.8 1711.3,212.5 " />
                     </g>
                     <g
                        id="g5182">
                       <polygon
                          style="fill:#9caf31"
                          id="polygon5184"
-                         points="1703.4,213.8 1693.9,212.2 1704.3,210.1 1711.3,212.5 " />
+                         points="1693.9,212.2 1704.3,210.1 1711.3,212.5 1703.4,213.8 " />
                     </g>
                   </g>
                 </g>
@@ -361,7 +365,7 @@
               <polygon
                  style="fill:none;stroke:#5a681b;stroke-width:0.5;stroke-miterlimit:10"
                  id="polygon5186"
-                 points="1693.9,201.3 1693.9,212.2 1703.4,213.8 1711.3,212.5 1711.3,202.8 1704.3,198.2 "
+                 points="1704.3,198.2 1693.9,201.3 1693.9,212.2 1703.4,213.8 1711.3,212.5 1711.3,202.8 "
                  stroke-miterlimit="10" />
             </g>
           </g>
@@ -373,15 +377,15 @@
             <polygon
                style="fill:#b1cd36"
                id="polygon5192"
-               points="1702.7,130.7 1702.7,130.7 1702.7,130.7 1702.7,130.7 1708.4,140.5 1697.1,140.5 " />
+               points="1697.1,140.5 1702.7,130.7 1702.7,130.7 1702.7,130.7 1702.7,130.7 1708.4,140.5 " />
             <polygon
                style="fill:#b1cd36"
                id="polygon5194"
-               points="1686.7,158.8 1692.4,168.6 1681.1,168.6 " />
+               points="1681.1,168.6 1686.7,158.8 1692.4,168.6 " />
             <polygon
                style="fill:#b1cd36"
                id="polygon5196"
-               points="1693.8,168.7 1687.3,157.4 1696.4,141.7 1709.1,141.7 1718.3,157.7 1712,168.7 " />
+               points="1712,168.7 1693.8,168.7 1687.3,157.4 1696.4,141.7 1709.1,141.7 1718.3,157.7 " />
             <polygon
                style="fill:#b1cd36"
                id="polygon5198"
@@ -482,23 +486,24 @@
         </g>
       </g>
       <line
-         style="fill:none;stroke:#89932c;stroke-miterlimit:10"
+         style="fill:none;stroke:#89932c;stroke-width:1.30283701;stroke-miterlimit:10"
          id="line5246"
-         y2="443"
-         x2="1839.9"
-         y1="443"
-         x1="1563.9"
+         y2="563.91754"
+         x2="1932.0889"
+         y1="563.91754"
+         x1="1572.5059"
          stroke-miterlimit="10" />
       <rect
-         style="fill:none;stroke:#d6ef43;stroke-width:1.01689589;stroke-miterlimit:10"
+         style="fill:none;stroke:#d6ef43;stroke-width:1.32484961;stroke-miterlimit:10"
          id="rect5530"
-         height="447.9278"
-         width="309.35248"
+         height="583.5769"
+         width="403.03586"
          stroke-miterlimit="10"
-         y="55.877975"
-         x="1547.2238" />
+         y="59.560669"
+         x="1550.7793" />
       <g
-         id="Rocktopus_x5F_Transparent_2_">
+         id="Rocktopus_x5F_Transparent_2_"
+         transform="matrix(1.3028371,0,0,1.3028371,-465.00112,-13.23923)">
         <image
            style="overflow:visible"
            transform="matrix(0.1092,0,0,0.1092,1562.1078,285.3948)"
@@ -522,44 +527,44 @@
            y="393.27679" /></text>
       <text
          xml:space="preserve"
-         style="font-size:7.01461649px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
-         x="1559.1979"
-         y="455.88608"
+         style="font-size:9.13890171px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
+         x="1566.3796"
+         y="580.70605"
          id="text12074"
          sodipodi:linespacing="125%"><tspan
            sodipodi:role="line"
            id="tspan12076"
-           x="1559.1979"
-           y="455.88608"
-           style="letter-spacing:0.18753238px;fill:#595927;fill-opacity:1">Copyright (C) 2014 Aleph Objects, Inc. - Released under terms of the AGPLv3 License</tspan></text>
+           x="1566.3796"
+           y="580.70605"
+           style="letter-spacing:0.24432413px;fill:#595927;fill-opacity:1">Copyright (C) 2014 Aleph Objects, Inc. - Released under terms of the AGPLv3 License</tspan></text>
       <text
          sodipodi:linespacing="125%"
          id="text12586"
-         y="479.88611"
-         x="1559.1979"
-         style="font-size:7.01461649px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
+         y="611.97418"
+         x="1566.3796"
+         style="font-size:9.13890171px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
          xml:space="preserve"><tspan
-           style="letter-spacing:0.18753238px;fill:#595927;fill-opacity:1"
-           y="479.88611"
-           x="1559.1979"
+           style="letter-spacing:0.24432413px;fill:#595927;fill-opacity:1"
+           y="611.97418"
+           x="1566.3796"
            id="tspan12588"
            sodipodi:role="line">Cura LulzBot Edition is derived from Cura, developed by David Brahm and Ultimaker</tspan></text>
       <text
          xml:space="preserve"
-         style="font-size:7.01461649px;font-style:normal;font-weight:normal;line-height:114.99999762%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
-         x="1559.5514"
-         y="489.88611"
+         style="font-size:9.13890171px;font-style:normal;font-weight:normal;line-height:114.99999762%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
+         x="1566.8402"
+         y="625.0025"
          id="text12590"
          sodipodi:linespacing="115%"><tspan
            sodipodi:role="line"
-           x="1559.5514"
-           y="489.88611"
-           style="font-size:6px;line-height:114.99999762%;letter-spacing:0.18753238px;fill:#595927;fill-opacity:1"
+           x="1566.8402"
+           y="625.0025"
+           style="font-size:7.8170228px;line-height:114.99999762%;letter-spacing:0.24432413px;fill:#595927;fill-opacity:1"
            id="tspan12606">Rocktopus by Kent Johnson is licensed under CC BY-SA 4.0 and derived from work by dietl and</tspan><tspan
            sodipodi:role="line"
-           x="1559.5514"
-           y="496.7861"
-           style="font-size:6px;line-height:114.99999762%;letter-spacing:0.18753238px;fill:#595927;fill-opacity:1"
+           x="1566.8402"
+           y="633.99207"
+           style="font-size:7.8170228px;line-height:114.99999762%;letter-spacing:0.24432413px;fill:#595927;fill-opacity:1"
            id="tspan12610">yeoldebrian - lulzbot.com/rocktopus</tspan></text>
       <flowRoot
          xml:space="preserve"
@@ -572,16 +577,16 @@
              height="15.909903"
              x="22.98097"
              y="444.59253" /></flowRegion><flowPara
-           id="flowPara12600"></flowPara></flowRoot>      <text
+           id="flowPara12600" /></flowRoot>      <text
          sodipodi:linespacing="125%"
          id="text12612"
-         y="465.88608"
-         x="1559.1979"
-         style="font-size:7.01461649px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
+         y="593.73444"
+         x="1566.3796"
+         style="font-size:9.13890171px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#595927;fill-opacity:1;stroke:none;font-family:museo;-inkscape-font-specification:museo"
          xml:space="preserve"><tspan
-           style="letter-spacing:0.18753238px;fill:#595927;fill-opacity:1"
-           y="465.88608"
-           x="1559.1979"
+           style="letter-spacing:0.24432413px;fill:#595927;fill-opacity:1"
+           y="593.73444"
+           x="1566.3796"
            id="tspan12614"
            sodipodi:role="line">Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License</tspan></text>
     </g>
