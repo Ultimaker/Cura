@@ -204,7 +204,7 @@ msgid ""
 msgstr ""
 "Pokud jste zakoupil Ultimaker po říjnu 2012, budete mít upgrade extrudéru. "
 "Pokud tento upgrade nevlastníte, doporučujeme jej zakoupit pro zvýšení "
-"spolehlivosti.\n"
+"spolehlivosti."
 
 #: Cura/gui/configWizard.py:533
 msgid ""
@@ -701,7 +701,7 @@ msgstr ""
 
 #: Cura/gui/firmwareInstall.py:136 Cura/gui/firmwareInstall.py:234
 msgid "Uploading firmware..."
-msgstr "Nahrávám firmware\n"
+msgstr "Nahrávám firmware"
 
 #: Cura/gui/firmwareInstall.py:139 Cura/gui/firmwareInstall.py:237
 #, python-format
@@ -714,7 +714,7 @@ msgstr ""
 
 #: Cura/gui/firmwareInstall.py:141 Cura/gui/firmwareInstall.py:239
 msgid "Failed to write firmware.\n"
-msgstr "Nepodařilo se zapsat firmware"
+msgstr "Nepodařilo se zapsat firmware\n"
 
 #: Cura/gui/firmwareInstall.py:231
 #, fuzzy
