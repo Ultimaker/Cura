@@ -1258,7 +1258,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 			bedTemp = getProfileSettingFloat('print_bed_temperature')
 
 		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
-			prefix += 'M140 S%f\n' % (bedTemp)
+			prefix += 'M190 S%f\n' % (bedTemp)
 		if temp > 0 and not isTagIn('{print_temperature}', alterationContents):
 			if extruderCount > 0:
 				for n in xrange(1, extruderCount):
@@ -1274,8 +1274,6 @@ def getAlterationFileContents(filename, extruderCount = 1):
 				prefix += 'T0\n'
 			else:
 				prefix += 'M109 S%f\n' % (temp)
-		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
-			prefix += 'M190 S%f\n' % (bedTemp)
 	elif filename == 'end.gcode':
 		if extruderCount > 1:
 			alterationContents = getAlterationFile("end%d.gcode" % (extruderCount))
