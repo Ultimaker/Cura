@@ -426,7 +426,7 @@ class MachineSelectPage(InfoPage):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
 
 	def AllowNext(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimaker2ReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
 		return True
 
 	def StoreData(self):
@@ -980,7 +980,10 @@ class Ultimaker2ReadyPage(InfoPage):
 class LulzbotReadyPage(InfoPage):
 	def __init__(self, parent):
 		super(LulzbotReadyPage, self).__init__(parent, "Lulzbot TAZ/Mini")
-		self.AddText('Cura is now ready to be used with your Lulzbot.')
+		self.AddText('Cura is now ready to be used with your Lulzbot 3D printer.')
+		self.AddSeperator()
+		self.AddText('For more information about using Cura with your LulzBot')
+		self.AddText('3D printer, please visit www.LulzBot.com/cura')
 		self.AddSeperator()
 
 class configWizard(wx.wizard.Wizard):
