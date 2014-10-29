@@ -400,12 +400,12 @@ class MachineSelectPage(InfoPage):
 		self.PrintrbotRadio.Bind(wx.EVT_RADIOBUTTON, self.OnPrintrbotSelect)
 		self.OtherRadio = self.AddRadioButton(_("Other (Ex: RepRap, MakerBot, Witbox)"))
 		self.OtherRadio.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
-		self.AddSeperator()
-		self.AddText(_("The collection of anonymous usage information helps with the continued improvement of Cura."))
-		self.AddText(_("This does NOT submit your models online nor gathers any privacy related information."))
-		self.SubmitUserStats = self.AddCheckbox(_("Submit anonymous usage information:"))
-		self.AddText(_("For full details see: http://wiki.ultimaker.com/Cura:stats"))
-		self.SubmitUserStats.SetValue(False)
+		#self.AddSeperator()
+		#self.AddText(_("The collection of anonymous usage information helps with the continued improvement of Cura."))
+		#self.AddText(_("This does NOT submit your models online nor gathers any privacy related information."))
+		#self.SubmitUserStats = self.AddCheckbox(_("Submit anonymous usage information:"))
+		#self.AddText(_("For full details see: http://wiki.ultimaker.com/Cura:stats"))
+		#self.SubmitUserStats.SetValue(False)
 
 	def OnUltimaker2Select(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimaker2ReadyPage)
@@ -516,10 +516,10 @@ class MachineSelectPage(InfoPage):
 			profile.putProfileSetting('nozzle_size', '0.5')
 		profile.checkAndUpdateMachineName()
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
-		if self.SubmitUserStats.GetValue():
-			profile.putPreference('submit_slice_information', 'True')
-		else:
-			profile.putPreference('submit_slice_information', 'False')
+		#if self.SubmitUserStats.GetValue():
+		#	profile.putPreference('submit_slice_information', 'True')
+		#else:
+		#	profile.putPreference('submit_slice_information', 'False')
 
 
 class SelectParts(InfoPage):

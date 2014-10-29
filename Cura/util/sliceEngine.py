@@ -142,7 +142,7 @@ class EngineResult(object):
 			time.sleep(0.1)
 		return self._gcodeLoadCallback(self, progress)
 
-	def submitInfoOnline(self):
+	'''def submitInfoOnline(self):
 		if profile.getPreference('submit_slice_information') != 'True':
 			return
 		if version.isDevVersion():
@@ -162,7 +162,7 @@ class EngineResult(object):
 			f.close()
 		except:
 			import traceback
-			traceback.print_exc()
+			traceback.print_exc()'''
 
 class Engine(object):
 	"""
