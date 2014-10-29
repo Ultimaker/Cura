@@ -82,9 +82,9 @@ if [ "$BUILD_TARGET" = "none" ]; then
 fi
 
 if [ -z `which make` ]; then
-	MAKE=make
-else
 	MAKE=mingw32-make
+else
+	MAKE=make
 fi
 
 # Change working directory to the directory the script is in
