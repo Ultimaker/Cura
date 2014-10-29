@@ -87,6 +87,12 @@ if [ "$BUILD_TARGET" = "none" ]; then
 	exit 0
 fi
 
+if [ -z `which make` ]; then
+	MAKE=make
+else
+	MAKE=mingw32-make
+fi
+
 # Change working directory to the directory the script is in
 # http://stackoverflow.com/a/246128
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -97,7 +103,7 @@ checkTool curl "curl: http://curl.haxx.se/"
 if [ $BUILD_TARGET = "win32" ]; then
 	#Check if we have 7zip, needed to extract and packup a bunch of packages for windows.
 	checkTool 7z "7zip: http://www.7-zip.org/"
-	checkTool mingw32-make "mingw: http://www.mingw.org/"
+	checkTool $MAKE "mingw: http://www.mingw.org/"
 fi
 #For building under MacOS we need gnutar instead of tar
 if [ -z `which gnutar` ]; then
@@ -129,7 +135,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	make -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	cp CuraEngine/build/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
@@ -226,7 +232,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	make -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
@@ -262,7 +268,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	make -C CuraEngine
+	$MAKE -C CuraEngine
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
@@ -298,7 +304,7 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	make -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
@@ -402,7 +408,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf ${TARGET_DIR}/python/Lib/OpenGL/DLLS/gle*
 
     #Build the C++ engine
-	mingw32-make -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 fi
 
