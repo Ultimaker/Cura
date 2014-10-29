@@ -488,6 +488,7 @@ class MachineSelectPage(InfoPage):
 				profile.putProfileSetting('nozzle_size', '0.35')
 				profile.putMachineSetting('machine_name', 'Lulzbot TAZ')
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ')
+				profile.putMachineSetting('serial_baud', '115200')
 			else:
 				profile.putMachineSetting('machine_width', '158')
 				profile.putMachineSetting('machine_depth', '158')
@@ -495,6 +496,7 @@ class MachineSelectPage(InfoPage):
 				profile.putProfileSetting('nozzle_size', '0.5')
 				profile.putMachineSetting('machine_name', 'Lulzbot Mini')
 				profile.putMachineSetting('machine_type', 'lulzbot_mini')
+				profile.putMachineSetting('serial_baud', '115200')
 			profile.putMachineSetting('machine_center_is_zero', 'False')
 			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putMachineSetting('has_heated_bed', 'True')
