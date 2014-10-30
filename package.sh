@@ -134,6 +134,9 @@ fi
 if [ -d "C:/arduino-1.0.3" ]; then
 	ARDUINO_PATH=C:/arduino-1.0.3
 	ARDUINO_VERSION=103
+elif [ -d "/Applications/Arduino.app/Contents/Resources/Java" ]; then
+	ARDUINO_PATH=/Applications/Arduino.app/Contents/Resources/Java
+	ARDUINO_VERSION=105
 else
 	ARDUINO_PATH=/usr/share/arduino
 	ARDUINO_VERSION=105
