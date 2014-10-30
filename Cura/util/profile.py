@@ -623,19 +623,32 @@ def getAlternativeBasePaths():
 			path = os.path.join(basePath, subPath, 'Cura')
 			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
 				paths.append(path)
+		paths.sort()
 
-		#Check the old base path, which was in the application directory.
-		oldBasePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-		basePath = os.path.normpath(os.path.join(oldBasePath, ".."))
-		for subPath in os.listdir(basePath):
-			path = os.path.join(basePath, subPath)
-			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
-				paths.append(path)
-			path = os.path.join(basePath, subPath, 'Cura')
-			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
-				paths.append(path)
+		if sys.platform.startswith('win'):
+			extra_list = []
+			#Check the old base path, which was in the application directory.
+			basePath = "C:\\program files (x86)\\"
+			for subPath in os.listdir(basePath):
+				path = os.path.join(basePath, subPath)
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+				path = os.path.join(basePath, subPath, 'Cura')
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+			basePath = "C:\\program files\\"
+			for subPath in os.listdir(basePath):
+				path = os.path.join(basePath, subPath)
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+				path = os.path.join(basePath, subPath, 'Cura')
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+			extra_list.sort()
+			paths = extra_list + paths
 	except:
-		pass
+		import traceback
+		print traceback.print_exc()
 
 	return paths
 
