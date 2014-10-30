@@ -149,9 +149,6 @@ Section "Cura ${VERSION}"
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Uninstall Cura ${VERSION}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\python\pythonw.exe" '-m "Cura.cura"' "$INSTDIR\resources\cura.ico" 0
   
-  ; Give all users write permissions in the install directory, so they can read/write profile and preferences files.
-  AccessControl::GrantOnFile "$INSTDIR" "(S-1-5-32-545)" "FullAccess"
-  
 SectionEnd
 
 Function LaunchLink
