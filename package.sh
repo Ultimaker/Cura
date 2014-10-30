@@ -268,7 +268,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	rm -rf CuraEngine
 	git clone ${CURA_ENGINE_REPO}
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	$MAKE -C CuraEngine
+	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
@@ -358,6 +358,12 @@ mkdir -p ${TARGET_DIR}
 
 rm -f log.txt
 if [ $BUILD_TARGET = "win32" ]; then
+	if [ -z `which i686-w64-mingw32-g++` ]; then
+		CXX=g++
+	else
+		CXX=i686-w64-mingw32-g++
+	fi
+	
 	#For windows extract portable python to include it.
 	extract PortablePython_${WIN_PORTABLE_PY_VERSION}.exe \$_OUTDIR/App
 	extract PortablePython_${WIN_PORTABLE_PY_VERSION}.exe \$_OUTDIR/Lib/site-packages
@@ -408,7 +414,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf ${TARGET_DIR}/python/Lib/OpenGL/DLLS/gle*
 
     #Build the C++ engine
-	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_NAME} OS=Windows_NT CXX=${CXX}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 fi
 
