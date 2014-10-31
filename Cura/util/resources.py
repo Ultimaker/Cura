@@ -32,7 +32,8 @@ else:
 def getPathForResource(dir, subdir, resource_name):
 	assert os.path.isdir(dir), "{p} is not a directory".format(p=dir)
 	path = os.path.normpath(os.path.join(dir, subdir, resource_name))
-	assert os.path.isfile(path), "{p} is not a file.".format(p=path)
+	if not os.path.isfile(path):
+		return None
 	return path
 
 def getPathForImage(name):
