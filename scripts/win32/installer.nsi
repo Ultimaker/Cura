@@ -208,7 +208,7 @@ Section /o "Uninstall other Cura versions"
 		StrCmp $2 "" loop
 		
 		ReadRegStr $3 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\$1" "UninstallString"
-		ExecWait '"$3" /S _?=$INSTDIR'
+		ExecWait '$3 /S _?=$INSTDIR'
 	done:
 SectionEnd
 
