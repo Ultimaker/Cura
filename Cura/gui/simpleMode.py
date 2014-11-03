@@ -566,7 +566,7 @@ end.gcode = M104 S0
 					put('brim_line_count', '3')
 					put('skirt_line_count', '2')
 					put('fill_overlap', '10')
-		else:
+		elif not profile.getMachineSetting('machine_type') == 'lulzbot_mini' and not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			nozzle_size = float(get('nozzle_size'))
 			if self.printTypeNormal.GetValue():
 				put('layer_height', '0.2')
