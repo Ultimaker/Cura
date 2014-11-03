@@ -385,10 +385,10 @@ class MachineSelectPage(InfoPage):
 		super(MachineSelectPage, self).__init__(parent, _("Select your machine"))
 		self.AddText(_("What kind of machine do you have:"))
 
-		self.LulzbotMiniRadio = self.AddRadioButton("Lulzbot Mini", style=wx.RB_GROUP)
+		self.LulzbotMiniRadio = self.AddRadioButton("LulzBot Mini", style=wx.RB_GROUP)
 		self.LulzbotMiniRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.LulzbotMiniRadio.SetValue(True)
-		self.LulzbotTazRadio = self.AddRadioButton("Lulzbot TAZ")
+		self.LulzbotTazRadio = self.AddRadioButton("LulzBot TAZ")
 		self.LulzbotTazRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.Ultimaker2Radio = self.AddRadioButton("Ultimaker2")
 		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
@@ -486,7 +486,7 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putProfileSetting('nozzle_size', '0.35')
-				profile.putMachineSetting('machine_name', 'Lulzbot TAZ')
+				profile.putMachineSetting('machine_name', 'LulzBot TAZ')
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ')
 				profile.putMachineSetting('serial_baud', '115200')
 			else:
@@ -494,7 +494,7 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_depth', '158')
 				profile.putMachineSetting('machine_height', '155')
 				profile.putProfileSetting('nozzle_size', '0.5')
-				profile.putMachineSetting('machine_name', 'Lulzbot Mini')
+				profile.putMachineSetting('machine_name', 'LulzBot Mini')
 				profile.putMachineSetting('machine_type', 'lulzbot_mini')
 				profile.putMachineSetting('serial_baud', '115200')
 			profile.putMachineSetting('machine_center_is_zero', 'False')
@@ -979,8 +979,8 @@ class Ultimaker2ReadyPage(InfoPage):
 
 class LulzbotReadyPage(InfoPage):
 	def __init__(self, parent):
-		super(LulzbotReadyPage, self).__init__(parent, "Lulzbot TAZ/Mini")
-		self.AddText('Cura is now ready to be used with your Lulzbot 3D printer.')
+		super(LulzbotReadyPage, self).__init__(parent, "LulzBot TAZ/Mini")
+		self.AddText('Cura is now ready to be used with your LulzBot 3D printer.')
 		self.AddSeperator()
 		self.AddText('For more information about using Cura with your LulzBot')
 		self.AddText('3D printer, please visit www.LulzBot.com/cura')
