@@ -101,18 +101,17 @@ class simpleModePanel(wx.Panel):
 			put('layer0_width_factor', '125')
 			put('cool_min_layer_time', '15')
 			put('cool_head_lift', 'True')
-			put('end.gcode', """;End GCode
-	M400
-	M104 S0                                        ; Hotend off
-	M140 S0                                        ; heated bed heater off (if you have it)
-	M107                                              ; fans off
-	G92 E0                                           ; set extruder to 0
-	G1 E-3 F300                                   ; retract a bit to relieve pressure
-	G1 X5 Y5 Z156 F10000                 ; move to cooling positioning
-	M190 R60                                       ; wait for bed to cool
+			put('end.gcode', """M400
+	M104 S0                         ; Hotend off
+	M140 S0                         ; heated bed heater off (if you have it)
+	M107                            ; fans off
+	G92 E0                          ; set extruder to 0
+	G1 E-3 F300                     ; retract a bit to relieve pressure
+	G1 X5 Y5 Z156 F10000            ; move to cooling positioning
+	M190 R60                        ; wait for bed to cool
 	G1 X145 Y175 Z156 F1000         ; move to cooling positioning
-	M84                                                 ; steppers off
-	G90                                                 ; absolute positioning
+	M84                             ; steppers off
+	G90                             ; absolute positioning
 	;{profile_string}""")
 
 			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
@@ -237,7 +236,6 @@ class simpleModePanel(wx.Panel):
 						put('infill_speed', '85')
 						put('inset0_speed', '45')
 						put('insetx_speed', '50')
-						put('skirt_minimal_length', '200')
 					if self.printTypeHigh.GetValue():
 						put('layer_height', '0.14')
 						put('print_speed', '30')
@@ -299,34 +297,34 @@ class simpleModePanel(wx.Panel):
 	M109 S130              ; set to cleaning temp and wait
 	G1 Z150 E-45 F200      ; suck up XXmm of filament
 	M109 S140              ; heat up rest of way
-	G1 X45 Y178 F11520     ; move behind scraper
-	G1 Z0  F1200           ; CRITICAL: set Z to height of top of scraper
-	G1 X45 Y178 Z-1 F4000  ; wiping ; plunge into wipe pad
-	G1 X55 Y176 Z-.5 F4000  ; wiping
-	G1 X45 Y178 F4000      ; wiping
-	G1 X55 Y176 F4000      ; wiping
-	G1 X45 Y178 F4000      ; wiping
-	G1 X55 Y176 F4000      ; wiping
-	G1 X45 Y178 F4000      ; wiping
-	G1 X55 Y176 F4000      ; wiping
-	G1 X60 Y178 F4000      ; wiping
-	G1 X80 Y176 F4000      ; wiping
-	G1 X60 Y178 F4000      ; wiping
-	G1 X80 Y176 F4000      ; wiping
-	G1 X60 Y178 F4000      ; wiping
-	G1 X90 Y176 F4000      ; wiping
-	G1 X80 Y178 F4000      ; wiping
-	G1 X100 Y176 F4000     ; wiping
-	G1 X80 Y178 F4000      ; wiping
-	G1 X100 Y176 F4000     ; wiping
-	G1 X80 Y178 F4000      ; wiping
-	G1 X100 Y176 F4000     ; wiping
-	G1 X110 Y178 F4000     ; wiping
-	G1 X100 Y176 F4000     ; wiping
-	G1 X110 Y178 F4000     ; wiping
-	G1 X100 Y176 F4000     ; wiping
-	G1 X110 Y178 F4000     ; wiping
-	G1 X115 Y175 Z-1.5 F1000 ; wipe slower and bury noz in cleanish area
+	G1 X45 Y174 F11520           ; move behind scraper
+	G1 Z0  F1200                 ; CRITICAL: set Z to height of top of scraper
+	G1 X45 Y174 Z-.5 F4000       ; wiping ; plunge into wipe pad
+	G1 X55 Y172 Z-.5 F4000       ; wiping
+	G1 X45 Y174 Z0 F4000         ; wiping
+	G1 X55 Y172 F4000            ; wiping
+	G1 X45 Y174 F4000            ; wiping
+	G1 X55 Y172 F4000            ; wiping
+	G1 X45 Y174 F4000            ; wiping
+	G1 X55 Y172 F4000            ; wiping
+	G1 X60 Y174 F4000            ; wiping
+	G1 X80 Y172 F4000            ; wiping
+	G1 X60 Y174 F4000            ; wiping
+	G1 X80 Y172 F4000            ; wiping
+	G1 X60 Y174 F4000            ; wiping
+	G1 X90 Y172 F4000            ; wiping
+	G1 X80 Y174 F4000            ; wiping
+	G1 X100 Y172 F4000           ; wiping
+	G1 X80 Y174 F4000            ; wiping
+	G1 X100 Y172 F4000           ; wiping
+	G1 X80 Y174 F4000            ; wiping
+	G1 X100 Y172 F4000           ; wiping
+	G1 X110 Y174 F4000           ; wiping
+	G1 X100 Y172 F4000           ; wiping
+	G1 X110 Y174 F4000           ; wiping
+	G1 X100 Y172 F4000           ; wiping
+	G1 X110 Y174 F4000           ; wiping
+	G1 X115 Y172 Z-0.5 F1000     ; wipe slower and bury noz in cleanish area
 	G1 Z10                 ; raise z
 	G28 X0 Y0              ; home x and y
 	M109 S140              ; set to probing temp
@@ -335,17 +333,7 @@ class simpleModePanel(wx.Panel):
 	M109 S190              ; set extruder temp and wait
 	G1 Z2 E5 F200          ; extrude filament back into nozzle
 	M140 S65               ; get bed temping up during first layer
-	M206 X0.0 Y0.0 Z0.0    ; offset home position for fine tuning
-end.gcode = M104 S0
-	M140 S0                      ;heated bed heater off (if you have it)
-	M107                         ; fans off
-	G91                          ;relative positioning
-	G1 E-1 F300                  ;retract the filament a bit before lifting the nozzle, to release some of the pressure
-	G1 Z+0.5 E-5 X-20 Y-20 F3000 ;move Z up a bit and retract filament even more
-	G1 X155 Y175 Z156 F10000            ;move X/Y to min endstops, so the head is out of the way
-	M84                          ;steppers off
-	G90                          ;absolute positioning
-	;{profile_string}""")
+	M206 X0.0 Y0.0 Z0.0    ; offset home position for fine tuning""")
 				put("end.gcode", """M400
 	M104 S0                                        ; Hotend off
 	M140 S0                                        ; heated bed heater off (if you have it)
