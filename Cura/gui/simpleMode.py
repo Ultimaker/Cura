@@ -183,7 +183,6 @@ class simpleModePanel(wx.Panel):
 					put('fan_full_height', '2')
 					put('fan_speed', '45')
 					put('cool_min_feedrate', '45')
-					put('brim_line_count', '10')
 					put('raft_airgap', '0.5')
 					put('plugin_config', """(lp1
 	(dp2
@@ -257,7 +256,6 @@ class simpleModePanel(wx.Panel):
 						put('infill_speed', '110')
 						put('inset0_speed', '70')
 						put('insetx_speed', '80')
-						put('brim_line_count', '8')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.25')
 						put('print_speed', '75')
@@ -283,7 +281,6 @@ class simpleModePanel(wx.Panel):
 				put('fan_speed', '75')
 				put('fan_speed_max', '100')
 				put('cool_min_feedrate', '15')
-				put('brim_line_count', '2')
 				put('start.gcode', """;LulzBot Mini
 	;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 	;Print time: {print_time}
@@ -437,7 +434,6 @@ end.gcode = M104 S0
 						put('fan_full_height', '1')
 						put('fan_speed', '25')
 						put('fan_speed_max', '30')
-						put('brim_line_count', '8')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.21')
 						put('wall_thickness', '1.05')
@@ -478,7 +474,6 @@ end.gcode = M104 S0
 						put('fan_full_height', '5')
 						put('fan_speed', '25')
 						put('fan_speed_max', '30')
-						put('brim_line_count', '8')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.21')
 						put('wall_thickness', '1.05')
@@ -523,7 +518,6 @@ end.gcode = M104 S0
 					put('fan_full_height', '1')
 					put('fan_speed', '75')
 					put('cool_min_feedrate', '15')
-					put('brim_line_count', '2')
 					put('skirt_line_count', '3')
 					put('fill_overlap', '0')
 				if self.printTypeNormal.GetValue():
@@ -544,7 +538,6 @@ end.gcode = M104 S0
 					put('fan_full_height', '1')
 					put('fan_speed', '75')
 					put('cool_min_feedrate', '15')
-					put('brim_line_count', '2')
 					put('skirt_line_count', '3')
 				if self.printTypeHigh.GetValue():
 					put('layer_height', '0.14')
@@ -563,7 +556,6 @@ end.gcode = M104 S0
 					put('cool_min_layer_time', '20')
 					put('skirt_minimal_length', '0')
 					put('fan_full_height', '0.28')
-					put('brim_line_count', '3')
 					put('skirt_line_count', '2')
 					put('fill_overlap', '10')
 		elif not profile.getMachineSetting('machine_type') == 'lulzbot_mini' and not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
