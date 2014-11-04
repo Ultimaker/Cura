@@ -5,6 +5,7 @@ import wx
 import threading
 import sys
 import time
+import serial
 
 from Cura.avr_isp import stk500v2
 from Cura.avr_isp import ispBase
@@ -164,9 +165,10 @@ class InstallFirmware(wx.Dialog):
 
 class AutoUpdateFirmware(wx.Dialog):
 	def __init__(self, parent, filename = None, port = None, machineIndex = None):
-		super(AutoUpdateFirmware, self).__init__(parent=parent, title=_("Auto Firmware install"), size=(250, 100))
+		super(AutoUpdateFirmware, self).__init__(parent=parent, title=_("Auto Firmware install"), size=(250, 500))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
+		self._serial = None
 
 		sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -177,6 +179,19 @@ class AutoUpdateFirmware(wx.Dialog):
 		self.okButton = wx.Button(self, -1, _("OK"))
 		self.okButton.Bind(wx.EVT_BUTTON, self.OnOk)
 		sizer.Add(self.okButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
+
+		f = wx.Font(8, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
+		self._termLog = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_DONTWRAP)
+		self._termLog.SetFont(f)
+		self._termLog.SetEditable(0)
+		self._termLog.SetMinSize((1, 400))
+		self._termInput = wx.TextCtrl(self, style=wx.TE_PROCESS_ENTER)
+		self._termInput.SetFont(f)
+		sizer.Add(self._termLog, 0, flag=wx.ALIGN_CENTER|wx.ALL|wx.EXPAND)
+		sizer.Add(self._termInput, 0, flag=wx.ALIGN_CENTER|wx.ALL|wx.EXPAND)
+
+		self.Bind(wx.EVT_TEXT_ENTER, self.OnTermEnterLine, self._termInput)
+
 		self.SetSizer(sizer)
 
 		self.filename = filename
@@ -189,9 +204,31 @@ class AutoUpdateFirmware(wx.Dialog):
 		self.thread.daemon = True
 		self.thread.start()
 
+		self.read_thread = threading.Thread(target=self.OnSerialRead)
+		self.read_thread.daemon = True
+		self.read_thread.start()
+
 		self.ShowModal()
 		self.Destroy()
 		return
+
+	def _addTermLog(self, line):
+		if self._termLog is not None:
+			if len(self._termLog.GetValue()) > 10000:
+				self._termLog.SetValue(self._termLog.GetValue()[-10000:])
+			self._termLog.SetInsertionPointEnd()
+			if type(line) != unicode:
+				line = unicode(line, 'utf-8', 'replace')
+			self._termLog.AppendText(line.encode('utf-8', 'replace'))
+
+	def OnTermEnterLine(self, e):
+		lines = self._termInput.GetValue().split(';')
+		for line in lines:
+			if line == '':
+				continue
+			self._addTermLog('> %s\n' % (line))
+			if self._serial is not None:
+				self._serial.write(line + '\n')
 
 	def OnRun(self):
 		mtime = 0
@@ -199,9 +236,21 @@ class AutoUpdateFirmware(wx.Dialog):
 			new_mtime = os.stat(self.filename).st_mtime
 			if mtime != new_mtime:
 				mtime = new_mtime
+				if self._serial is not None:
+					self._serial.close()
+					self._serial = None
 				time.sleep(0.5)
 				self.OnInstall()
+				self._serial = serial.Serial(self.port, 250000)
 			time.sleep(0.5)
+
+	def OnSerialRead(self):
+		while bool(self):
+			if self._serial is None:
+				time.sleep(0.5)
+			else:
+				line = self._serial.readline()
+				wx.CallAfter(self._addTermLog, line)
 
 	def OnInstall(self):
 		wx.CallAfter(self.okButton.Disable)
