@@ -239,7 +239,10 @@ class AutoUpdateFirmware(wx.Dialog):
 					self._serial = None
 				time.sleep(0.5)
 				self.OnInstall()
-				self._serial = serial.Serial(self.port, 250000)
+				try:
+					self._serial = serial.Serial(self.port, 250000)
+				except:
+					pass
 			time.sleep(0.5)
 
 	def OnSerialRead(self):
@@ -247,8 +250,11 @@ class AutoUpdateFirmware(wx.Dialog):
 			if self._serial is None:
 				time.sleep(0.5)
 			else:
-				line = self._serial.readline()
-				wx.CallAfter(self._addTermLog, line)
+				try:
+					line = self._serial.readline()
+					wx.CallAfter(self._addTermLog, line)
+				except:
+					pass
 
 	def OnInstall(self):
 		wx.CallAfter(self.okButton.Disable)

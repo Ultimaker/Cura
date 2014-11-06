@@ -173,8 +173,6 @@ class mainWindow(wx.Frame):
 		self.normalModeOnlyItems.append(i)
 		self.Bind(wx.EVT_MENU, self.OnExpertOpen, i)
 		expertMenu.AppendSeparator()
-		#i = expertMenu.Append(-1, _("Run first run wizard..."))
-		#self.Bind(wx.EVT_MENU, self.OnFirstRunWizard, i)
 		self.bedLevelWizardMenuItem = expertMenu.Append(-1, _("Run bed leveling wizard..."))
 		self.Bind(wx.EVT_MENU, self.OnBedLevelWizard, self.bedLevelWizardMenuItem)
 		self.headOffsetWizardMenuItem = expertMenu.Append(-1, _("Run head offset wizard..."))
@@ -463,7 +461,8 @@ class mainWindow(wx.Frame):
 			self.Bind(wx.EVT_MENU, lambda e: self.OnSelectMachine(e.GetId() - 0x1000), i)
 
 		self.machineMenu.AppendSeparator()
-
+		i = self.machineMenu.Append(-1, _("Add new machine..."))
+		self.Bind(wx.EVT_MENU, self.OnAddNewMachine, i)
 		i = self.machineMenu.Append(-1, _("Machine settings..."))
 		self.Bind(wx.EVT_MENU, self.OnMachineSettings, i)
 
@@ -549,11 +548,13 @@ class mainWindow(wx.Frame):
 			#For some reason my Ubuntu 10.10 crashes here.
 			firmwareInstall.InstallFirmware(self, filename)
 
-	def OnFirstRunWizard(self, e):
+	def OnAddNewMachine(self, e):
 		self.Hide()
-		configWizard.configWizard()
+		profile.setActiveMachine(profile.getMachineCount())
+		configWizard.configWizard(True)
 		self.Show()
 		self.reloadSettingPanels()
+		self.updateMachineMenu()
 
 	def OnSelectMachine(self, index):
 		profile.setActiveMachine(index)
