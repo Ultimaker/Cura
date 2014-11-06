@@ -49,7 +49,7 @@ addSpinner(180, 0, 160, sendGCode, "M104 S%d")
 addSpinner(180, 0, 180, sendGCode, "M140 S%d")
 
 addTerminal(255, 0, 255)
-addTemperatureGraph(180, 0, 325)
+addTemperatureGraph(180, 0, 255)
 addProgressbar(255, 200, 200)
 
 addButton(0, 255, 255, 'Connect', connect)

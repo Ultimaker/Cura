@@ -512,10 +512,10 @@ class TemperatureGraph(wx.Panel):
 				for n in xrange(0, min(len(t0), len(temp))):
 					t = float(x - x0) / float(x1 - x0 + 1) * (temp[n] - t0[n]) + t0[n]
 					dc.SetPen(tempPenBG)
-					dc.DrawLine(x, h, x, h - (t * h / 300))
+					dc.DrawLine(x, h, x, h - (t * h / 350))
 				bt = float(x - x0) / float(x1 - x0 + 1) * (bedTemp - bt0) + bt0
 				dc.SetPen(bedTempPenBG)
-				dc.DrawLine(x, h, x, h - (bt * h / 300))
+				dc.DrawLine(x, h, x, h - (bt * h / 350))
 			t0 = temp
 			bt0 = bedTemp
 			tSP0 = tempSP
@@ -527,7 +527,7 @@ class TemperatureGraph(wx.Panel):
 			dc.SetPen(bgLinePen)
 			dc.DrawLine(x, 0, x, h)
 		tmpNr = 0
-		for y in xrange(h - 1, 0, -h * 50 / 300):
+		for y in xrange(h - 1, 0, -h * 50 / 350):
 			dc.SetPen(bgLinePen)
 			dc.DrawLine(0, y, w, y)
 			dc.DrawText(str(tmpNr), 0, y - dc.GetFont().GetPixelSize().GetHeight())
@@ -548,15 +548,15 @@ class TemperatureGraph(wx.Panel):
 					t = float(x - x0) / float(x1 - x0 + 1) * (temp[n] - t0[n]) + t0[n]
 					tSP = float(x - x0) / float(x1 - x0 + 1) * (tempSP[n] - tSP0[n]) + tSP0[n]
 					dc.SetPen(tempSPPen)
-					dc.DrawPoint(x, h - (tSP * h / 300))
+					dc.DrawPoint(x, h - (tSP * h / 350))
 					dc.SetPen(tempPen)
-					dc.DrawPoint(x, h - (t * h / 300))
+					dc.DrawPoint(x, h - (t * h / 350))
 				bt = float(x - x0) / float(x1 - x0 + 1) * (bedTemp - bt0) + bt0
 				btSP = float(x - x0) / float(x1 - x0 + 1) * (bedTempSP - btSP0) + btSP0
 				dc.SetPen(bedTempSPPen)
-				dc.DrawPoint(x, h - (btSP * h / 300))
+				dc.DrawPoint(x, h - (btSP * h / 350))
 				dc.SetPen(bedTempPen)
-				dc.DrawPoint(x, h - (bt * h / 300))
+				dc.DrawPoint(x, h - (bt * h / 350))
 			t0 = temp
 			bt0 = bedTemp
 			tSP0 = tempSP
