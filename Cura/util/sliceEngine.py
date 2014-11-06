@@ -526,10 +526,10 @@ class Engine(object):
 			settings['raftAirGapLayer0'] = int(profile.getProfileSettingFloat('raft_airgap') * 1000 + profile.getProfileSettingFloat('raft_airgap_all') * 1000)
 			settings['raftAirGap'] = int(profile.getProfileSettingFloat('raft_airgap_all') * 1000)
 			settings['raftBaseSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
-			settings['raftFanSpeed'] = 100
-			settings['raftSurfaceThickness'] = settings['raftInterfaceThickness']
-			settings['raftSurfaceLinewidth'] = int(profile.calculateEdgeWidth() * 1000)
-			settings['raftSurfaceLineSpacing'] = int(profile.calculateEdgeWidth() * 1000 * 0.9)
+			settings['raftFanSpeed'] = 0
+			settings['raftSurfaceThickness'] = int(profile.getProfileSettingFloat('raft_surface_thickness') * 1000)
+			settings['raftSurfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_surface_linewidth') * 1000)
+			settings['raftSurfaceLineSpacing'] = int(profile.getProfileSettingFloat('raft_surface_linewidth') * 1000)
 			settings['raftSurfaceLayers'] = int(profile.getProfileSettingFloat('raft_surface_layers'))
 			settings['raftSurfaceSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
 		else:
