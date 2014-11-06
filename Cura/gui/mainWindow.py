@@ -199,17 +199,17 @@ class mainWindow(wx.Frame):
 		self.rightPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
 		self.splitter.Bind(wx.EVT_SPLITTER_DCLICK, lambda evt: evt.Veto())
 
+		#Preview window
+		self.scene = sceneView.SceneView(self.rightPane)
+
 		##Gui components##
-		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, lambda : self.scene.sceneUpdated())
-		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
+		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, self.scene.sceneUpdated)
+		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, self.scene.sceneUpdated)
 
 		self.leftSizer = wx.BoxSizer(wx.VERTICAL)
 		self.leftSizer.Add(self.simpleSettingsPanel, 1)
 		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
 		self.leftPane.SetSizer(self.leftSizer)
-
-		#Preview window
-		self.scene = sceneView.SceneView(self.rightPane)
 
 		#Main sizer, to position the preview window, buttons and tab control
 		sizer = wx.BoxSizer()
