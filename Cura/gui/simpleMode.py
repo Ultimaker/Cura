@@ -87,9 +87,6 @@ class simpleModePanel(wx.Panel):
 				continue
 			profile.setTempOverride(setting.getName(), setting.getDefault())
 
-		if self.printSupport.GetValue():
-			put('support', _("Exterior Only"))
-
 # LulzBot Mini slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini':
 			put('wall_thickness', '1')
@@ -119,7 +116,13 @@ M84                             ; steppers off
 G90                             ; absolute positioning
 ;{profile_string}
 """)
-
+			if self.printSupport.GetValue():
+				put('support', _("Everywhere"))
+				put('support_type', 'Lines')
+				put('support_angle', '45')
+				put('support_fill_rate', '30')
+				put('support_xy_distance', '0.7')
+				put('support_z_distance', '0.05')
 			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
 				put('solid_layer_thickness', '0.8')
 				put('retraction_amount', '1.5')
@@ -547,7 +550,8 @@ M140 S75                     ; get bed temping up during first layer
 				put('bottom_layer_speed', '15')
 			elif self.printTypeJoris.GetValue():
 				put('wall_thickness', nozzle_size * 1.5)
-
+			if self.printSupport.GetValue():
+				put('support', _("Exterior Only"))
 			put('filament_diameter', self.printMaterialDiameter.GetValue())
 			if self.printMaterialPLA.GetValue():
 				pass
