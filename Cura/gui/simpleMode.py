@@ -92,6 +92,7 @@ class simpleModePanel(wx.Panel):
 
 # LulzBot Mini slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini':
+			put('wall_thickness', '1')
 			put('fill_density', '30')
 			put('print_temperature', '0')
 			put('print_bed_temperature', '0')
@@ -99,90 +100,94 @@ class simpleModePanel(wx.Panel):
 			put('retraction_hop', '0.1')
 			put('bottom_thickness', '0.425')
 			put('layer0_width_factor', '125')
+			put('travel_speed', '175')
 			put('cool_min_layer_time', '15')
-			put('cool_head_lift', 'True')
+			put('skirt_minimal_length', '250')
+			put('brim_line_count', '10')
+			put('raft_airgap', '0.5')
 			put('end.gcode', """M400
-	M104 S0                         ; Hotend off
-	M140 S0                         ; heated bed heater off (if you have it)
-	M107                            ; fans off
-	G92 E0                          ; set extruder to 0
-	G1 E-3 F300                     ; retract a bit to relieve pressure
-	G1 X5 Y5 Z156 F10000            ; move to cooling positioning
-	M190 R60                        ; wait for bed to cool
-	G1 X145 Y175 Z156 F1000         ; move to cooling positioning
-	M84                             ; steppers off
-	G90                             ; absolute positioning
-	;{profile_string}""")
+M104 S0                         ; Hotend off
+M140 S0                         ; heated bed heater off (if you have it)
+M107                            ; fans off
+G92 E0                          ; set extruder to 0
+G1 E-3 F300                     ; retract a bit to relieve pressure
+G1 X5 Y5 Z156 F10000            ; move to cooling positioning
+M190 R60                        ; wait for bed to cool
+M140 S0                         ; Turn off bed temp
+G1 X145 Y175 Z156 F1000         ; move to cooling positioning
+M84                             ; steppers off
+G90                             ; absolute positioning
+;{profile_string}
+""")
 
 			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
 				put('solid_layer_thickness', '0.8')
 				put('retraction_amount', '1.5')
-				put('travel_speed', '175')
-				put('fan_speed_max', '75')
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
-	;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
-	;Print time: {print_time}
-	;Filament used: {filament_amount}m {filament_weight}g
-	;Filament cost: {filament_cost}
-	;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
-	;M109 S{print_temperature} ;Uncomment to add your own temperature line
-	G21                          ; metric values
-	G90                          ; absolute positioning
-	M82                          ; set extruder to absolute mode
-	M107                         ; start with the fan off
-	G92 E0                       ; set extruder position to 0
-	M140 S110                    ; get bed heating up
-	G28                          ; home all
-	M109 S150                    ; set to cleaning temp and wait
-	G1 Z150 E-30 F75             ; suck up XXmm of filament
-	M109 S170                    ; heat up rest of way
-	G1 X45 Y174 F11520           ; move behind scraper
-	G1 Z0  F1200                 ; CRITICAL: set Z to height of top of scraper
-	G1 X45 Y174 Z-.5 F4000       ; wiping ; plunge into wipe pad
-	G1 X55 Y172 Z-.5 F4000       ; wiping
-	G1 X45 Y174 Z0 F4000         ; wiping
-	G1 X55 Y172 F4000            ; wiping
-	G1 X45 Y174 F4000            ; wiping
-	G1 X55 Y172 F4000            ; wiping
-	G1 X45 Y174 F4000            ; wiping
-	G1 X55 Y172 F4000            ; wiping
-	G1 X60 Y174 F4000            ; wiping
-	G1 X80 Y172 F4000            ; wiping
-	G1 X60 Y174 F4000            ; wiping
-	G1 X80 Y172 F4000            ; wiping
-	G1 X60 Y174 F4000            ; wiping
-	G1 X90 Y172 F4000            ; wiping
-	G1 X80 Y174 F4000            ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X80 Y174 F4000            ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X80 Y174 F4000            ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X110 Y174 F4000           ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X110 Y174 F4000           ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X110 Y174 F4000           ; wiping
-	G1 X115 Y172 Z-0.5 F1000     ; wipe slower and bury noz in cleanish area
-	G1 Z10                       ; raise z
-	G28 X0 Y0                    ; home x and y
-	M109 S170                    ; set to probing temp
-	M204 S300                    ; set accel for probing
-	G29                          ; Probe
-	M204 S2000                   ; set accel back to normal
-	G1 X5 Y15 Z10 F5000          ; get out the way
-	M400                         ; clear buffer
-	G4 S1                        ; pause
-	M109 S230                    ; set extruder temp and wait
-	G4 S25                       ; wait for bed to temp up
-	G1 Z2 E0 F75                 ; extrude filament back into nozzle
-	M140 S110                    ; get bed temping up during first layer""")
+;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+;Print time: {print_time}
+;Filament used: {filament_amount}m {filament_weight}g
+;Filament cost: {filament_cost}
+;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
+;M109 S{print_temperature} ;Uncomment to add your own temperature line
+G21                          ; metric values
+G90                          ; absolute positioning
+M82                          ; set extruder to absolute mode
+M107                         ; start with the fan off
+G92 E0                       ; set extruder position to 0
+M140 S110                    ; get bed heating up
+G28                          ; home all
+M109 S150                    ; set to cleaning temp and wait
+G1 Z150 E-30 F75             ; suck up XXmm of filament
+M109 S170                    ; heat up rest of way
+G1 X45 Y174 F11520           ; move behind scraper
+G1 Z0  F1200                 ; CRITICAL: set Z to height of top of scraper
+G1 X45 Y174 Z-.5 F4000       ; wiping ; plunge into wipe pad
+G1 X55 Y172 Z-.5 F4000       ; wiping
+G1 X45 Y174 Z0 F4000         ; wiping
+G1 X55 Y172 F4000            ; wiping
+G1 X45 Y174 F4000            ; wiping
+G1 X55 Y172 F4000            ; wiping
+G1 X45 Y174 F4000            ; wiping
+G1 X55 Y172 F4000            ; wiping
+G1 X60 Y174 F4000            ; wiping
+G1 X80 Y172 F4000            ; wiping
+G1 X60 Y174 F4000            ; wiping
+G1 X80 Y172 F4000            ; wiping
+G1 X60 Y174 F4000            ; wiping
+G1 X90 Y172 F4000            ; wiping
+G1 X80 Y174 F4000            ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X80 Y174 F4000            ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X80 Y174 F4000            ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X110 Y174 F4000           ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X110 Y174 F4000           ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X110 Y174 F4000           ; wiping
+G1 X115 Y172 Z-0.5 F1000     ; wipe slower and bury noz in cleanish area
+G1 Z10                       ; raise z
+G28 X0 Y0                    ; home x and y
+M109 S170                    ; set to probing temp
+M204 S300                    ; set accel for probing
+G29                          ; Probe
+M204 S2000                   ; set accel back to normal
+G1 X5 Y15 Z10 F5000          ; get out the way
+M400                         ; clear buffer
+G4 S1                        ; pause
+M109 S230                    ; set extruder temp and wait
+G4 S25                       ; wait for bed to temp up
+G1 Z2 E0 F75                 ; extrude filament back into nozzle
+M140 S110                    ; get bed temping up during first layer
+""")
 				if self.printMaterialHIPS.GetValue():
 					put('bottom_layer_speed', '30')
 					put('fan_full_height', '2')
 					put('fan_speed', '45')
+					put('fan_speed_max', '75')
 					put('cool_min_feedrate', '45')
-					put('raft_airgap', '0.5')
 					put('plugin_config', """(lp1
 	(dp2
 	S'params'
@@ -243,10 +248,10 @@ class simpleModePanel(wx.Panel):
 						put('inset0_speed', '20')
 						put('insetx_speed', '25')
 				if self.printMaterialABS.GetValue():
-					put('cool_min_feedrate', '10')
-					put('fan_enabled', 'False')
 					put('fan_full_height', '5')
 					put('fan_speed', '40')
+					put('fan_speed_max', '75')
+					put('cool_min_feedrate', '10')
 					if self.printTypeLow.GetValue():
 						put('layer_height', '0.38')
 						put('print_speed', '85')
@@ -256,117 +261,95 @@ class simpleModePanel(wx.Panel):
 						put('insetx_speed', '80')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.25')
-						put('print_speed', '75')
+						put('print_speed', '50')
 						put('bottom_layer_speed', '25')
-						put('infill_speed', '80')
-						put('inset0_speed', '60')
-						put('insetx_speed', '70')
+						put('infill_speed', '55')
+						put('inset0_speed', '45')
+						put('insetx_speed', '50')
 					if self.printTypeHigh.GetValue():
 						put('layer_height', '0.14')
-						put('print_speed', '60')
+						put('print_speed', '50')
 						put('bottom_layer_speed', '25')
-						put('infill_speed', '60')
-						put('inset0_speed', '40')
+						put('infill_speed', '55')
+						put('inset0_speed', '45')
 						put('insetx_speed', '50')
-						put('fan_full_height', '5')
-
 			elif self.printMaterialPLA.GetValue():
 				put('solid_layer_thickness', '1')
 				put('retraction_amount', '3')
-				put('skirt_minimal_length', '250')
-				put('skirt_line_count', '3')
+				put('bottom_layer_speed', '25')
+				put('infill_speed', '55')
+				put('inset0_speed', '45')
+				put('insetx_speed', '50')
 				put('fan_full_height', '1')
 				put('fan_speed', '75')
 				put('fan_speed_max', '100')
 				put('cool_min_feedrate', '15')
-				put('start.gcode', """;LulzBot Mini
-	;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
-	;Print time: {print_time}
-	;Filament used: {filament_amount}m {filament_weight}g
-	;Filament cost: {filament_cost}
-	;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
-	;M109 S{print_temperature} ;Uncomment to add your own temperature line
-	
-	G21                    ; metric values
-	G90                    ; absolute positioning
-	M82                    ; set extruder to absolute mode
-	M107                   ; start with the fan off
-	G92 E0                 ; set extruder position to 0
-	M140 S65               ; get bed heating up
-	G28                    ; home all
-	M109 S130              ; set to cleaning temp and wait
-	G1 Z150 E-45 F200      ; suck up XXmm of filament
-	M109 S140              ; heat up rest of way
-	G1 X45 Y174 F11520           ; move behind scraper
-	G1 Z0  F1200                 ; CRITICAL: set Z to height of top of scraper
-	G1 X45 Y174 Z-.5 F4000       ; wiping ; plunge into wipe pad
-	G1 X55 Y172 Z-.5 F4000       ; wiping
-	G1 X45 Y174 Z0 F4000         ; wiping
-	G1 X55 Y172 F4000            ; wiping
-	G1 X45 Y174 F4000            ; wiping
-	G1 X55 Y172 F4000            ; wiping
-	G1 X45 Y174 F4000            ; wiping
-	G1 X55 Y172 F4000            ; wiping
-	G1 X60 Y174 F4000            ; wiping
-	G1 X80 Y172 F4000            ; wiping
-	G1 X60 Y174 F4000            ; wiping
-	G1 X80 Y172 F4000            ; wiping
-	G1 X60 Y174 F4000            ; wiping
-	G1 X90 Y172 F4000            ; wiping
-	G1 X80 Y174 F4000            ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X80 Y174 F4000            ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X80 Y174 F4000            ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X110 Y174 F4000           ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X110 Y174 F4000           ; wiping
-	G1 X100 Y172 F4000           ; wiping
-	G1 X110 Y174 F4000           ; wiping
-	G1 X115 Y172 Z-0.5 F1000     ; wipe slower and bury noz in cleanish area
-	G1 Z10                 ; raise z
-	G28 X0 Y0              ; home x and y
-	M109 S140              ; set to probing temp
-	G29                    ; Probe
-	G1 X5 Y15 Z10 F5000    ; get out the way
-	M109 S190              ; set extruder temp and wait
-	G1 Z2 E5 F200          ; extrude filament back into nozzle
-	M140 S65               ; get bed temping up during first layer
-	M206 X0.0 Y0.0 Z0.0    ; offset home position for fine tuning""")
-				put("end.gcode", """M400
-	M104 S0                                        ; Hotend off
-	M140 S0                                        ; heated bed heater off (if you have it)
-	M107                                              ; fans off
-	G92 E0                                           ; set extruder to 0
-	G1 E-3 F300                                   ; retract a bit to relieve pressure
-	G1 X5 Y5 Z156 F10000                 ; move to cooling positioning
-	M190 R60                                       ; wait for bed to cool
-	G1 X145 Y175 Z156 F1000         ; move to cooling positioning
-	M84                                                 ; steppers off
-	G90                                                 ; absolute positioning
-	;{profile_string}""")
+				put('print_speed', '50')
+				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
+;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+;Print time: {print_time}
+;Filament used: {filament_amount}m {filament_weight}g
+;Filament cost: {filament_cost}
+;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
+;M109 S{print_temperature} ;Uncomment to add your own temperature line
+G21                          ; metric values
+G90                          ; absolute positioning
+M82                          ; set extruder to absolute mode
+M107                         ; start with the fan off
+G92 E0                       ; set extruder position to 0
+M140 S75                     ; get bed heating up
+G28                          ; home all
+M109 S140                    ; set to cleaning temp and wait
+G1 Z150 E-30 F75             ; suck up XXmm of filament
+M109 S140                    ; heat up rest of way
+G1 X45 Y174 F11520           ; move behind scraper
+G1 Z0  F1200                 ; CRITICAL: set Z to height of top of scraper
+G1 X45 Y174 Z-.5 F4000       ; wiping ; plunge into wipe pad
+G1 X55 Y172 Z-.5 F4000       ; wiping
+G1 X45 Y174 Z0 F4000         ; wiping
+G1 X55 Y172 F4000            ; wiping
+G1 X45 Y174 F4000            ; wiping
+G1 X55 Y172 F4000            ; wiping
+G1 X45 Y174 F4000            ; wiping
+G1 X55 Y172 F4000            ; wiping
+G1 X60 Y174 F4000            ; wiping
+G1 X80 Y172 F4000            ; wiping
+G1 X60 Y174 F4000            ; wiping
+G1 X80 Y172 F4000            ; wiping
+G1 X60 Y174 F4000            ; wiping
+G1 X90 Y172 F4000            ; wiping
+G1 X80 Y174 F4000            ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X80 Y174 F4000            ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X80 Y174 F4000            ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X110 Y174 F4000           ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X110 Y174 F4000           ; wiping
+G1 X100 Y172 F4000           ; wiping
+G1 X110 Y174 F4000           ; wiping
+G1 X115 Y172 Z-0.5 F1000     ; wipe slower and bury noz in cleanish area
+G1 Z10                       ; raise z
+G28 X0 Y0                    ; home x and y
+M109 S140                    ; set to probing temp
+M204 S300                    ; Set probing acceleration
+G29                          ; Probe
+M204 S2000                   ; Restore standard acceleration
+G1 X5 Y15 Z10 F5000          ; get out the way
+G4 S1                        ; pause
+M400                         ; clear buffer
+M109 S195                    ; set extruder temp and wait
+G4 S15                       ; wait for bed to temp up
+G1 Z2 E0 F75                 ; extrude filament back into nozzle
+M140 S75                     ; get bed temping up during first layer
+""")
 				if self.printTypeLow.GetValue():
 					put('layer_height', '0.38')
-					put('print_speed', '90')
-					put('infill_speed', '115')
-					put('inset0_speed', '75')
-					put('insetx_speed', '85')
 				if self.printTypeNormal.GetValue():
 					put('layer_height', '0.25')
-					put('print_speed', '50')
-					put('infill_speed', '95')
-					put('inset0_speed', '65')
-					put('insetx_speed', '75')
-					put('raft_airgap', '0.5')
 				if self.printTypeHigh.GetValue():
-					put('layer_height', '0.14')
-					put('print_speed', '30')
-					put('bottom_layer_speed', '25')
-					put('infill_speed', '75')
-					put('inset0_speed', '45')
-					put('insetx_speed', '55')
-					put('raft_airgap', '0.5')					
+					put('layer_height', '0.14')				
 			nozzle_size = float(get('nozzle_size'))
 			put('filament_diameter', self.printMaterialDiameter.GetValue())
 			put('plugin_config', '')
@@ -375,7 +358,8 @@ class simpleModePanel(wx.Panel):
 			put('nozzle_size', '0.35')
 			put('print_temperature', '0')
 			put('print_bed_temperature', '0')
-			put('start.gcode', """;Sliced at: {day} {date} {time}
+			put('start.gcode', """;This Gcode has been generated specifically for the LulzBot TAZ
+	;Sliced at: {day} {date} {time}
 	;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 	;Print time: {print_time}
 	;Filament used: {filament_amount}m {filament_weight}g
@@ -486,7 +470,6 @@ class simpleModePanel(wx.Panel):
 						put('fan_full_height', '5')
 						put('fan_speed', '40')
 						put('fan_speed_max', '75')
-						put('skirt_line_count', '4')
 			elif self.printMaterialPLA.GetValue():
 				if self.printTypeLow.GetValue():
 					put('layer_height', '0.28')
@@ -506,7 +489,6 @@ class simpleModePanel(wx.Panel):
 					put('fan_full_height', '1')
 					put('fan_speed', '75')
 					put('cool_min_feedrate', '15')
-					put('skirt_line_count', '3')
 					put('fill_overlap', '0')
 				if self.printTypeNormal.GetValue():
 					put('layer_height', '0.21')
@@ -526,7 +508,6 @@ class simpleModePanel(wx.Panel):
 					put('fan_full_height', '1')
 					put('fan_speed', '75')
 					put('cool_min_feedrate', '15')
-					put('skirt_line_count', '3')
 				if self.printTypeHigh.GetValue():
 					put('layer_height', '0.14')
 					put('wall_thickness', '1.05')
@@ -544,7 +525,6 @@ class simpleModePanel(wx.Panel):
 					put('cool_min_layer_time', '20')
 					put('skirt_minimal_length', '0')
 					put('fan_full_height', '0.28')
-					put('skirt_line_count', '2')
 					put('fill_overlap', '10')
 		elif not profile.getMachineSetting('machine_type') == 'lulzbot_mini' and not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			nozzle_size = float(get('nozzle_size'))
