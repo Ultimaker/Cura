@@ -23,10 +23,12 @@ class simpleModePanel(wx.Panel):
 		self.printTypeJoris.Hide()
 
 		printMaterialPanel = wx.Panel(self)
-		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA', style=wx.RB_GROUP)
-		self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS')
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
-			self.printMaterialHIPS = wx.RadioButton(printMaterialPanel, -1, 'HIPS')
+			self.printMaterialHIPS = wx.RadioButton(printMaterialPanel, -1, 'HIPS', style=wx.RB_GROUP)
+			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS')
+		else:
+			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS', style=wx.RB_GROUP)
+		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA')
 		self.printMaterialDiameter = wx.TextCtrl(printMaterialPanel, -1, profile.getProfileSetting('filament_diameter'))
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
@@ -48,10 +50,10 @@ class simpleModePanel(wx.Panel):
 
 		sb = wx.StaticBox(printMaterialPanel, label=_("Material:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		boxsizer.Add(self.printMaterialPLA)
-		boxsizer.Add(self.printMaterialABS)
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			boxsizer.Add(self.printMaterialHIPS)
+		boxsizer.Add(self.printMaterialABS)
+		boxsizer.Add(self.printMaterialPLA)
 		boxsizer.Add(wx.StaticText(printMaterialPanel, -1, _("Diameter:")))
 		boxsizer.Add(self.printMaterialDiameter)
 		printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
