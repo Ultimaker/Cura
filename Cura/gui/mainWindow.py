@@ -25,7 +25,11 @@ from Cura.util import version
 import platform
 from Cura.util import meshLoader
 
-from wx.lib.pubsub import Publisher
+try:
+	#MacOS release currently lacks some wx components, like the Publisher.
+	from wx.lib.pubsub import Publisher
+except:
+	Publisher = None
 
 class mainWindow(wx.Frame):
 	def __init__(self):
@@ -274,7 +278,8 @@ class mainWindow(wx.Frame):
 		self.updateSliceMode()
 		self.scene.SetFocus()
 		self.dialogframe = None
-		Publisher().subscribe(self.onPluginUpdate, "pluginupdate")
+		if Publisher is not None:
+			Publisher().subscribe(self.onPluginUpdate, "pluginupdate")
 
 	def onPluginUpdate(self,msg): #receives commands from the plugin thread
 		cmd = str(msg.data).split(";")
