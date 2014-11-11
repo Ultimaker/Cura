@@ -1,8 +1,12 @@
-from Cura.Application import Application
+from Cura.WxApplication import WxApplication
 
-class PrinterApplication(Application):
+import wx
+
+class PrinterApplication(WxApplication):
     def __init__(self):
         super(PrinterApplication, self).__init__()
         
     def run(self):
-        print("Shoopdawoop")
+        frame = wx.Frame(None, wx.ID_ANY, "Hello World")
+        frame.Show(True)
+        super(PrinterApplication, self).run()
