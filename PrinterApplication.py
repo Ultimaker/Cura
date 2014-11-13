@@ -7,7 +7,10 @@ class PrinterApplication(WxApplication):
         
     def run(self):
         self._plugin_registry.loadPlugins({ "type": "StorageDevice" })
+        self._plugin_registry.loadPlugins({ "type": "View" })
         
-        window = MainWindow("Cura Printer")
+        self.getController().setActiveView("MeshView")
+        
+        window = MainWindow("Cura Printer", self)
         window.Show()
         super(PrinterApplication, self).run()
