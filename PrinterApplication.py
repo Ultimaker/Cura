@@ -6,6 +6,8 @@ class PrinterApplication(WxApplication):
         super(PrinterApplication, self).__init__()
         
     def run(self):
+        self._plugin_registry.loadPlugins({ "type": "StorageDevice" })
+        
         window = MainWindow("Cura Printer")
         window.Show()
         super(PrinterApplication, self).run()
