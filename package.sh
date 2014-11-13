@@ -340,8 +340,8 @@ if [ $BUILD_TARGET = "win32" ]; then
 	#mv ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe ${TARGET_DIR}/Cura/
 	#mv ffmpeg-20120927-git-13f0cd6-win32-static/licenses ${TARGET_DIR}/Cura/ffmpeg-licenses/
 	mv Win32/EjectMedia.exe ${TARGET_DIR}/Cura/
-	mv scripts/win32/libgcc_s_dw2-1.dll ${TARGET_DIR}
-	mv scripts/win32/libstdc++-6.dll ${TARGET_DIR}
+	mv scripts/win32/nsisPlugins/libgcc_s_dw2-1.dll ${TARGET_DIR}
+	mv scripts/win32/nsisPlugins/libstdc++-6.dll ${TARGET_DIR}
 	
 	rm -rf Power/
 	rm -rf \$_OUTDIR
