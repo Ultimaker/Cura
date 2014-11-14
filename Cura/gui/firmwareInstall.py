@@ -43,6 +43,8 @@ def getDefaultFirmware(machineIndex = None):
 
 	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker2':
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
+	if profile.getMachineSetting('machine_type', machineIndex) == 'lulzbot_mini':
+		return resources.getPathForFirmware("marlin_mini_2014Q4.hex")
 	if profile.getMachineSetting('machine_type', machineIndex) == 'Witbox':
 		return resources.getPathForFirmware("MarlinWitbox.hex")
 	return None
