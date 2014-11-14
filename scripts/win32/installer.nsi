@@ -149,9 +149,6 @@ Section "Cura ${VERSION}"
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Uninstall Cura ${VERSION}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\python\pythonw.exe" '-m "Cura.cura"' "$INSTDIR\resources\cura.ico" 0
   
-  ; Give all users write permissions in the install directory, so they can read/write profile and preferences files.
-  AccessControl::GrantOnFile "$INSTDIR" "(S-1-5-32-545)" "FullAccess"
-  
 SectionEnd
 
 Function LaunchLink
@@ -166,9 +163,11 @@ Section "Install Arduino Drivers"
   File /r "drivers\"
   
   ${If} ${RunningX64}
-    ExecWait '"$INSTDIR\drivers\dpinst64.exe" /lm'
+    IfSilent +2
+      ExecWait '"$INSTDIR\drivers\dpinst64.exe" /lm'
   ${Else}
-    ExecWait '"$INSTDIR\drivers\dpinst32.exe" /lm'
+    IfSilent +2
+      ExecWait '"$INSTDIR\drivers\dpinst32.exe" /lm'
   ${EndIf}
 SectionEnd
 
@@ -207,7 +206,7 @@ Section /o "Uninstall other Cura versions"
 		StrCmp $2 "" loop
 		
 		ReadRegStr $3 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\$1" "UninstallString"
-		ExecWait '"$3" /S _?=$INSTDIR'
+		ExecWait '$3 /S _?=$INSTDIR'
 	done:
 SectionEnd
 

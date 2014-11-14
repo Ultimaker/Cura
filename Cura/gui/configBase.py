@@ -140,7 +140,7 @@ class TitleRow(object):
 		self.title = wx.StaticText(panel, -1, name.replace('&', '&&'))
 		self.title.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_BOLD))
 		sizer.Add(self.title, (x,0), (1,3), flag=wx.EXPAND|wx.TOP|wx.LEFT, border=10)
-		sizer.Add(wx.StaticLine(panel), (x+1,0), (1,3), flag=wx.EXPAND|wx.LEFT,border=10)
+		sizer.Add(wx.StaticLine(panel), (x+1,0), (1,4), flag=wx.EXPAND|wx.LEFT,border=10)
 		sizer.SetRows(x + 2)
 
 class SettingRow(object):
@@ -150,6 +150,7 @@ class SettingRow(object):
 		x = sizer.GetRows()
 		y = 0
 		flag = 0
+		has_expert_settings = False
 
 		self.setting = profile.settingsDictionary[configName]
 		self.settingIndex = index
@@ -180,6 +181,7 @@ class SettingRow(object):
 			choices = self.setting.getType()
 			if valueOverride is not None:
 				choices = valueOverride
+			choices = choices[:]
 			self._englishChoices = choices[:]
 			if value not in choices and len(choices) > 0:
 				value = choices[0]
@@ -196,7 +198,12 @@ class SettingRow(object):
 			flag = wx.EXPAND
 
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
-		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_BOTTOM|flag)
+		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_CENTER_VERTICAL|flag)
+		if self.setting.getExpertSubCategory() is not None:
+			self._expert_button = wx.Button(panel, -1, '...', style=wx.BU_EXACTFIT)
+			self._expert_button.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize() * 0.8, wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_NORMAL))
+			self._expert_button.Bind(wx.EVT_BUTTON, self.OnExpertOpen)
+			sizer.Add(self._expert_button, (x,y+2), flag=wx.ALIGN_CENTER_VERTICAL)
 		sizer.SetRows(x+1)
 
 		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
@@ -221,7 +228,19 @@ class SettingRow(object):
 		self.setting.setValue(self.GetValue(), self.settingIndex)
 		self.panel.main._validate()
 
+	def OnExpertOpen(self, e):
+		from Cura.gui import expertConfig
+
+		expert_sub_category = self.setting.getExpertSubCategory()
+		if type(expert_sub_category) is list:
+			expert_sub_category = expert_sub_category[self.ctrl.GetSelection()]
+		ecw = expertConfig.expertConfigWindow(self.panel.main._callback, expert_sub_category)
+		ecw.Centre()
+		ecw.Show()
+
 	def _validate(self):
+		if type(self.setting.getExpertSubCategory()) is list:
+			self._expert_button.Enable(self.setting.getExpertSubCategory()[self.ctrl.GetSelection()] is not None)
 		result, msg = self.setting.validate()
 
 		ctrl = self.ctrl
@@ -242,7 +261,7 @@ class SettingRow(object):
 		if isinstance(self.ctrl, wx.ColourPickerCtrl):
 			return str(self.ctrl.GetColour().GetAsString(wx.C2S_HTML_SYNTAX))
 		elif isinstance(self.ctrl, wx.ComboBox):
-			value = str(self.ctrl.GetValue())
+			value = unicode(self.ctrl.GetValue())
 			for ret in self._englishChoices:
 				if _(ret) == value:
 					return ret

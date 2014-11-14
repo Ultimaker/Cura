@@ -11,7 +11,7 @@ from Cura.util import resources
 
 class preferencesDialog(wx.Dialog):
 	def __init__(self, parent):
-		super(preferencesDialog, self).__init__(None, title="Preferences")
+		super(preferencesDialog, self).__init__(None, title=_("Preferences"))
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -65,7 +65,7 @@ class preferencesDialog(wx.Dialog):
 
 class machineSettingsDialog(wx.Dialog):
 	def __init__(self, parent):
-		super(machineSettingsDialog, self).__init__(None, title="Machine settings")
+		super(machineSettingsDialog, self).__init__(None, title=_("Machine settings"))
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -116,19 +116,19 @@ class machineSettingsDialog(wx.Dialog):
 		self.panel.GetSizer().Add(self.buttonPanel)
 
 		self.buttonPanel.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
-		self.okButton = wx.Button(self.buttonPanel, -1, 'Ok')
+		self.okButton = wx.Button(self.buttonPanel, -1, _('Ok'))
 		self.okButton.Bind(wx.EVT_BUTTON, lambda e: self.Close())
 		self.buttonPanel.GetSizer().Add(self.okButton, flag=wx.ALL, border=5)
 
-		self.addButton = wx.Button(self.buttonPanel, -1, 'Add new machine')
+		self.addButton = wx.Button(self.buttonPanel, -1, _('Add new machine'))
 		self.addButton.Bind(wx.EVT_BUTTON, self.OnAddMachine)
 		self.buttonPanel.GetSizer().Add(self.addButton, flag=wx.ALL, border=5)
 
-		self.remButton = wx.Button(self.buttonPanel, -1, 'Remove machine')
+		self.remButton = wx.Button(self.buttonPanel, -1, _('Remove machine'))
 		self.remButton.Bind(wx.EVT_BUTTON, self.OnRemoveMachine)
 		self.buttonPanel.GetSizer().Add(self.remButton, flag=wx.ALL, border=5)
 
-		self.renButton = wx.Button(self.buttonPanel, -1, 'Change machine name')
+		self.renButton = wx.Button(self.buttonPanel, -1, _('Change machine name'))
 		self.renButton.Bind(wx.EVT_BUTTON, self.OnRenameMachine)
 		self.buttonPanel.GetSizer().Add(self.renButton, flag=wx.ALL, border=5)
 

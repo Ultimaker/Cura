@@ -1,3 +1,4 @@
+#coding:utf8
 """
 Helper module to get easy access to the path where resources are stored.
 This is because the resource location is depended on the packaging method and OS
@@ -31,7 +32,8 @@ else:
 def getPathForResource(dir, subdir, resource_name):
 	assert os.path.isdir(dir), "{p} is not a directory".format(p=dir)
 	path = os.path.normpath(os.path.join(dir, subdir, resource_name))
-	assert os.path.isfile(path), "{p} is not a file.".format(p=path)
+	if not os.path.isfile(path):
+		return None
 	return path
 
 def getPathForImage(name):
@@ -58,6 +60,7 @@ def setupLocalization(selectedLanguage = None):
 
 	locale_path = os.path.normpath(os.path.join(resourceBasePath, 'locale'))
 	translation = gettext.translation('Cura', locale_path, languages, fallback=True)
+	#translation.ugettext = lambda message: u'#' + message
 	translation.install(unicode=True)
 
 def getLanguageOptions():
@@ -65,7 +68,7 @@ def getLanguageOptions():
 		['en', 'English'],
 		['de', 'Deutsch'],
 		['fr', 'French'],
-		# ['cs', 'Cesky'],
+		# ['zh', 'Chinese'],
 		# ['nl', 'Nederlands'],
 		# ['es', 'Spanish'],
 		# ['po', 'Polish']

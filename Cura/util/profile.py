@@ -59,6 +59,7 @@ class setting(object):
 		self._type = type
 		self._category = category
 		self._subcategory = subcategory
+		self._expert_sub_category = None
 		self._validators = []
 		self._conditions = []
 
@@ -95,6 +96,13 @@ class setting(object):
 
 	def getSubCategory(self):
 		return self._subcategory
+
+	def getExpertSubCategory(self):
+		return self._expert_sub_category
+
+	def setExpertSubCategory(self, expert_sub_category):
+		self._expert_sub_category = expert_sub_category
+		return self
 
 	def isPreference(self):
 		return self._category == 'preference'
@@ -169,9 +177,9 @@ def _(n):
 
 setting('layer_height',              0.1, float, 'basic',    _('Quality')).setRange(0.0001).setLabel(_("Layer height (mm)"), _("Layer height in millimeters.\nThis is the most important setting to determine the quality of your print. Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to 0.25mm with an Ultimaker for very fast prints at low quality."))
 setting('wall_thickness',            0.8, float, 'basic',    _('Quality')).setRange(0.0).setLabel(_("Shell thickness (mm)"), _("Thickness of the outside shell in the horizontal direction.\nThis is used in combination with the nozzle size to define the number\nof perimeter lines and the thickness of those perimeter lines."))
-setting('retraction_enable',        True, bool,  'basic',    _('Quality')).setLabel(_("Enable retraction"), _("Retract the filament when the nozzle is moving over a none-printed area. Details about the retraction can be configured in the advanced tab."))
+setting('retraction_enable',        True, bool,  'basic',    _('Quality')).setExpertSubCategory('Retraction').setLabel(_("Enable retraction"), _("Retract the filament when the nozzle is moving over a none-printed area. Details about the retraction can be configured in the advanced tab."))
 setting('solid_layer_thickness',     0.6, float, 'basic',    _('Fill')).setRange(0).setLabel(_("Bottom/Top thickness (mm)"), _("This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value.\nHaving this value a multiple of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part."))
-setting('fill_density',               20, float, 'basic',    _('Fill')).setRange(0, 100).setLabel(_("Fill Density (%)"), _("This controls how densely filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough.\nThis won't affect the outside of the print and only adjusts how strong the part becomes."))
+setting('fill_density',               20, float, 'basic',    _('Fill')).setExpertSubCategory('Infill').setRange(0, 100).setLabel(_("Fill Density (%)"), _("This controls how densely filled the insides of your print will be. For a solid part use 100%, for an empty part use 0%. A value around 20% is usually enough.\nThis won't affect the outside of the print and only adjusts how strong the part becomes."))
 setting('nozzle_size',               0.4, float, 'advanced', _('Machine')).setRange(0.1,10).setLabel(_("Nozzle size (mm)"), _("The nozzle size is very important, this is used to calculate the line width of the infill, and used to calculate the amount of outside wall lines and thickness for the wall thickness you entered in the print settings."))
 setting('print_speed',                50, float, 'basic',    _('Speed and Temperature')).setRange(1).setLabel(_("Print speed (mm/s)"), _("Speed at which printing happens. A well adjusted Ultimaker can reach 150mm/s, but for good quality prints you want to print slower. Printing speed depends on a lot of factors. So you will be experimenting with optimal settings for this."))
 setting('print_temperature',         220, int,   'basic',    _('Speed and Temperature')).setRange(0,340).setLabel(_("Printing temperature (C)"), _("Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required."))
@@ -179,8 +187,8 @@ setting('print_temperature2',          0, int,   'basic',    _('Speed and Temper
 setting('print_temperature3',          0, int,   'basic',    _('Speed and Temperature')).setRange(0,340).setLabel(_("3th nozzle temperature (C)"), _("Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required."))
 setting('print_temperature4',          0, int,   'basic',    _('Speed and Temperature')).setRange(0,340).setLabel(_("4th nozzle temperature (C)"), _("Temperature used for printing. Set at 0 to pre-heat yourself.\nFor PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required."))
 setting('print_bed_temperature',      70, int,   'basic',    _('Speed and Temperature')).setRange(0,340).setLabel(_("Bed temperature (C)"), _("Temperature used for the heated printer bed. Set at 0 to pre-heat yourself."))
-setting('support',                'None', [_('None'), _('Touching buildplate'), _('Everywhere')], 'basic', _('Support')).setLabel(_("Support type"), _("Type of support structure build.\n\"Touching buildplate\" is the most commonly used support setting.\n\nNone does not do any support.\nTouching buildplate only creates support where the support structure will touch the build platform.\nEverywhere creates support even on top of parts of the model."))
-setting('platform_adhesion',      'None', [_('None'), _('Brim'), _('Raft')], 'basic', _('Support')).setLabel(_("Platform adhesion type"), _("Different options that help in preventing corners from lifting due to warping.\nBrim adds a single layer thick flat area around your object which is easy to cut off afterwards, and it is the recommended option.\nRaft adds a thick raster below the object and a thin interface between this and your object.\n(Note that enabling the brim or raft disables the skirt)"))
+setting('support',                'None', [_('None'), _('Touching buildplate'), _('Everywhere')], 'basic', _('Support')).setExpertSubCategory('Support').setLabel(_("Support type"), _("Type of support structure build.\n\"Touching buildplate\" is the most commonly used support setting.\n\nNone does not do any support.\nTouching buildplate only creates support where the support structure will touch the build platform.\nEverywhere creates support even on top of parts of the model."))
+setting('platform_adhesion',      'None', [_('None'), _('Brim'), _('Raft')], 'basic', _('Support')).setExpertSubCategory(['Skirt', 'Brim', 'Raft']).setLabel(_("Platform adhesion type"), _("Different options that help in preventing corners from lifting due to warping.\nBrim adds a single layer thick flat area around your object which is easy to cut off afterwards, and it is the recommended option.\nRaft adds a thick raster below the object and a thin interface between this and your object.\n(Note that enabling the brim or raft disables the skirt)"))
 setting('support_dual_extrusion',  'Both', [_('Both'), _('First extruder'), _('Second extruder')], 'basic', _('Support')).setLabel(_("Support dual extrusion"), _("Which extruder to use for support material, for break-away support you can use both extruders.\nBut if one of the materials is more expensive then the other you could select an extruder to use for support material. This causes more extruder switches.\nYou can also use the 2nd extruder for soluble support materials."))
 setting('wipe_tower',              False, bool,  'basic',    _('Dual extrusion')).setLabel(_("Wipe&prime tower"), _("The wipe-tower is a tower printed on every layer when switching between nozzles.\nThe old nozzle is wiped off on the tower before the new nozzle is used to print the 2nd color."))
 setting('wipe_tower_volume',          15, float, 'expert',   _('Dual extrusion')).setLabel(_("Wipe&prime tower volume per layer (mm3)"), _("The amount of material put in the wipe/prime tower.\nThis is done in volume because in general you want to extrude a\ncertain amount of volume to get the extruder going, independent on the layer height.\nThis means that with thinner layers, your tower gets bigger."))
@@ -208,11 +216,11 @@ setting('infill_speed',              0.0, float, 'advanced', _('Speed')).setRang
 setting('inset0_speed',              0.0, float, 'advanced', _('Speed')).setRange(0.0).setLabel(_("Outer shell speed (mm/s)"), _("Speed at which outer shell is printed. If set to 0 then the print speed is used. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way."))
 setting('insetx_speed',              0.0, float, 'advanced', _('Speed')).setRange(0.0).setLabel(_("Inner shell speed (mm/s)"), _("Speed at which inner shells are printed. If set to 0 then the print speed is used. Printing the inner shell faster then the outer shell will reduce printing time. It is good to set this somewhere in between the outer shell speed and the infill/printing speed."))
 setting('cool_min_layer_time',         5, float, 'advanced', _('Cool')).setRange(0).setLabel(_("Minimal layer time (sec)"), _("Minimum time spent in a layer, gives the layer time to cool down before the next layer is put on top. If the layer will be placed down too fast the printer will slow down to make sure it has spent at least this amount of seconds printing this layer."))
-setting('fan_enabled',              True, bool,  'advanced', _('Cool')).setLabel(_("Enable cooling fan"), _("Enable the cooling fan during the print. The extra cooling from the cooling fan is essential during faster prints."))
+setting('fan_enabled',              True, bool,  'advanced', _('Cool')).setExpertSubCategory('Cool').setLabel(_("Enable cooling fan"), _("Enable the cooling fan during the print. The extra cooling from the cooling fan is essential during faster prints."))
 
-setting('skirt_line_count',            1, int,   'expert', 'Skirt').setRange(0).setLabel(_("Line count"), _("The skirt is a line drawn around the object at the first layer. This helps to prime your extruder, and to see if the object fits on your platform.\nSetting this to 0 will disable the skirt. Multiple skirt lines can help priming your extruder better for small objects."))
-setting('skirt_gap',                 3.0, float, 'expert', 'Skirt').setRange(0).setLabel(_("Start distance (mm)"), _("The distance between the skirt and the first layer.\nThis is the minimal distance, multiple skirt lines will be put outwards from this distance."))
-setting('skirt_minimal_length',    150.0, float, 'expert', 'Skirt').setRange(0).setLabel(_("Minimal length (mm)"), _("The minimal length of the skirt, if this minimal length is not reached it will add more skirt lines to reach this minimal lenght.\nNote: If the line count is set to 0 this is ignored."))
+setting('skirt_line_count',            1, int,   'expert', _('Skirt')).setRange(0).setLabel(_("Line count"), _("The skirt is a line drawn around the object at the first layer. This helps to prime your extruder, and to see if the object fits on your platform.\nSetting this to 0 will disable the skirt. Multiple skirt lines can help priming your extruder better for small objects."))
+setting('skirt_gap',                 3.0, float, 'expert', _('Skirt')).setRange(0).setLabel(_("Start distance (mm)"), _("The distance between the skirt and the first layer.\nThis is the minimal distance, multiple skirt lines will be put outwards from this distance."))
+setting('skirt_minimal_length',    150.0, float, 'expert', _('Skirt')).setRange(0).setLabel(_("Minimal length (mm)"), _("The minimal length of the skirt, if this minimal length is not reached it will add more skirt lines to reach this minimal lenght.\nNote: If the line count is set to 0 this is ignored."))
 setting('fan_full_height',           0.5, float, 'expert',   _('Cool')).setRange(0).setLabel(_("Fan full on at height (mm)"), _("The height at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off at layer 0."))
 setting('fan_speed',                 100, int,   'expert',   _('Cool')).setRange(0,100).setLabel(_("Fan speed min (%)"), _("When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Minimal fan speed is used if the layer is not slowed down due to cooling."))
 setting('fan_speed_max',             100, int,   'expert',   _('Cool')).setRange(0,100).setLabel(_("Fan speed max (%)"), _("When the fan is turned on, it is enabled at this speed setting. If cool slows down the layer, the fan is adjusted between the min and max speed. Maximal fan speed is used if the layer is slowed down due to cooling by more than 200%."))
@@ -221,13 +229,13 @@ setting('cool_head_lift',          False, bool,  'expert',   _('Cool')).setLabel
 setting('solid_top', True, bool, 'expert', _('Infill')).setLabel(_("Solid infill top"), _("Create a solid top surface, if set to false the top is filled with the fill percentage. Useful for cups/vases."))
 setting('solid_bottom', True, bool, 'expert', _('Infill')).setLabel(_("Solid infill bottom"), _("Create a solid bottom surface, if set to false the bottom is filled with the fill percentage. Useful for buildings."))
 setting('fill_overlap', 15, int, 'expert', _('Infill')).setRange(0,100).setLabel(_("Infill overlap (%)"), _("Amount of overlap between the infill and the walls. There is a slight overlap with the walls and the infill so the walls connect firmly to the infill."))
-setting('support_type', 'Grid', ['Grid', 'Lines'], 'expert', _('Support')).setLabel(_("Structure type"), _("The type of support structure.\nGrid is very strong and can come off in 1 piece, however, sometimes it is too strong.\nLines are single walled lines that break off one at a time. Which is more work to remove, but as it is less strong it does work better on tricky prints."))
-setting('support_angle', 60, float, 'expert', _('Support')).setRange(0,90).setLabel(_("Overhang angle for support (deg)"), _("The minimal angle that overhangs need to have to get support. With 0 degree being horizontal and 90 degree being vertical."))
+setting('support_type', 'Lines', ['Grid', 'Lines'], 'expert', _('Support')).setLabel(_("Structure type"), _("The type of support structure.\nGrid is very strong and can come off in 1 piece, however, sometimes it is too strong.\nLines are single walled lines that break off one at a time. Which is more work to remove, but as it is less strong it does work better on tricky prints."))
+setting('support_angle', 60, float, 'expert', _('Support')).setRange(0,90).setLabel(_("Overhang angle for support (deg)"), _("The minimal angle that overhangs need to have to get support. With 90 degree being horizontal and 0 degree being vertical."))
 setting('support_fill_rate', 15, int, 'expert', _('Support')).setRange(0,100).setLabel(_("Fill amount (%)"), _("Amount of infill structure in the support material, less material gives weaker support which is easier to remove. 15% seems to be a good average."))
 setting('support_xy_distance', 0.7, float, 'expert', _('Support')).setRange(0,10).setLabel(_("Distance X/Y (mm)"), _("Distance of the support material from the print, in the X/Y directions.\n0.7mm gives a nice distance from the print so the support does not stick to the print."))
 setting('support_z_distance', 0.15, float, 'expert', _('Support')).setRange(0,10).setLabel(_("Distance Z (mm)"), _("Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier.\n0.15mm gives a good seperation of the support material."))
-setting('spiralize', False, bool, 'expert', 'Black Magic').setLabel(_("Spiralize the outer contour"), _("Spiralize is smoothing out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom.\nThis feature used to be called Joris in older versions."))
-setting('simple_mode', False, bool, 'expert', 'Black Magic').setLabel(_("Only follow mesh surface"), _("Only follow the mesh surfaces of the 3D model, do not do anything else. No infill, no top/bottom, nothing."))
+setting('spiralize', False, bool, 'expert', _('Black Magic')).setLabel(_("Spiralize the outer contour"), _("Spiralize is smoothing out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom.\nThis feature used to be called Joris in older versions."))
+setting('simple_mode', False, bool, 'expert', _('Black Magic')).setLabel(_("Only follow mesh surface"), _("Only follow the mesh surfaces of the 3D model, do not do anything else. No infill, no top/bottom, nothing."))
 #setting('bridge_speed', 100, int, 'expert', 'Bridge').setRange(0,100).setLabel(_("Bridge speed (%)"), _("Speed at which layers with bridges are printed, compared to normal printing speed."))
 setting('brim_line_count', 20, int, 'expert', _('Brim')).setRange(1,100).setLabel(_("Brim line amount"), _("The amount of lines used for a brim, more lines means a larger brim which sticks better, but this also makes your effective print area smaller."))
 setting('raft_margin', 5.0, float, 'expert', _('Raft')).setRange(0).setLabel(_("Extra margin (mm)"), _("If the raft is enabled, this is the extra raft area around the object which is also rafted. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."))
@@ -236,8 +244,11 @@ setting('raft_base_thickness', 0.3, float, 'expert', _('Raft')).setRange(0).setL
 setting('raft_base_linewidth', 1.0, float, 'expert', _('Raft')).setRange(0).setLabel(_("Base line width (mm)"), _("When you are using the raft this is the width of the base layer lines which are put down."))
 setting('raft_interface_thickness', 0.27, float, 'expert', _('Raft')).setRange(0).setLabel(_("Interface thickness (mm)"), _("When you are using the raft this is the thickness of the interface layer which is put down."))
 setting('raft_interface_linewidth', 0.4, float, 'expert', _('Raft')).setRange(0).setLabel(_("Interface line width (mm)"), _("When you are using the raft this is the width of the interface layer lines which are put down."))
-setting('raft_airgap', 0.22, float, 'expert', _('Raft')).setRange(0).setLabel(_("Airgap"), _("Gap between the last layer of the raft and the first printing layer. A small gap of 0.2mm works wonders on PLA and makes the raft easy to remove."))
+setting('raft_airgap_all', 0.0, float, 'expert', _('Raft')).setRange(0).setLabel(_("Airgap"), _("Gap between the last layer of the raft the whole print."))
+setting('raft_airgap', 0.22, float, 'expert', _('Raft')).setRange(0).setLabel(_("First Layer Airgap"), _("Gap between the last layer of the raft and the first printing layer. A small gap of 0.2mm works wonders on PLA and makes the raft easy to remove. This value is added on top of the 'Airgap' setting."))
 setting('raft_surface_layers', 2, int, 'expert', _('Raft')).setRange(0).setLabel(_("Surface layers"), _("Amount of surface layers put on top of the raft, these are fully filled layers on which the model is printed."))
+setting('raft_surface_thickness', 0.27, float, 'expert', _('Raft')).setRange(0).setLabel(_("Surface layer thickness (mm)"), _("Thickness of each surface layer."))
+setting('raft_surface_linewidth', 0.4, float, 'expert', _('Raft')).setRange(0).setLabel(_("Surface layer line width (mm)"), _("Width of the lines for each surface layer."))
 setting('fix_horrible_union_all_type_a', True,  bool, 'expert', _('Fix horrible')).setLabel(_("Combine everything (Type-A)"), _("This expert option adds all parts of the model together. The result is usually that internal cavities disappear. Depending on the model this can be intended or not. Enabling this option is at your own risk. Type-A is dependent on the model normals and tries to keep some internal holes intact. Type-B ignores all internal holes and only keeps the outside shape per layer."))
 setting('fix_horrible_union_all_type_b', False, bool, 'expert', _('Fix horrible')).setLabel(_("Combine everything (Type-B)"), _("This expert option adds all parts of the model together. The result is usually that internal cavities disappear. Depending on the model this can be intended or not. Enabling this option is at your own risk. Type-A is dependent on the model normals and tries to keep some internal holes intact. Type-B ignores all internal holes and only keeps the outside shape per layer."))
 setting('fix_horrible_use_open_bits', False, bool, 'expert', _('Fix horrible')).setLabel(_("Keep open faces"), _("This expert option keeps all the open bits of the model intact. Normally Cura tries to stitch up small holes and remove everything with big holes, but this option keeps bits that are not properly part of anything and just goes with whatever is left. This option is usually not what you want, but it might enable you to slice models otherwise failing to produce proper paths.\nAs with all \"Fix horrible\" options, results may vary and use at your own risk."))
@@ -623,19 +634,32 @@ def getAlternativeBasePaths():
 			path = os.path.join(basePath, subPath, 'Cura')
 			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != getBasePath():
 				paths.append(path)
+		paths.sort()
 
-		#Check the old base path, which was in the application directory.
-		oldBasePath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-		basePath = os.path.normpath(os.path.join(oldBasePath, ".."))
-		for subPath in os.listdir(basePath):
-			path = os.path.join(basePath, subPath)
-			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
-				paths.append(path)
-			path = os.path.join(basePath, subPath, 'Cura')
-			if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')) and path != oldBasePath:
-				paths.append(path)
+		if sys.platform.startswith('win'):
+			extra_list = []
+			#Check the old base path, which was in the application directory.
+			basePath = "C:\\program files (x86)\\"
+			for subPath in os.listdir(basePath):
+				path = os.path.join(basePath, subPath)
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+				path = os.path.join(basePath, subPath, 'Cura')
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+			basePath = "C:\\program files\\"
+			for subPath in os.listdir(basePath):
+				path = os.path.join(basePath, subPath)
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+				path = os.path.join(basePath, subPath, 'Cura')
+				if os.path.isdir(path) and os.path.isfile(os.path.join(path, 'preferences.ini')):
+					extra_list.append(path)
+			extra_list.sort()
+			paths = extra_list + paths
 	except:
-		pass
+		import traceback
+		print traceback.print_exc()
 
 	return paths
 
@@ -727,6 +751,9 @@ def resetProfile():
 		putProfileSetting('nozzle_size', '0.4')
 		if getMachineSetting('ultimaker_extruder_upgrade') == 'True':
 			putProfileSetting('retraction_enable', 'True')
+	elif getMachineSetting('machine_type') == 'ultimaker_plus':
+		putProfileSetting('nozzle_size', '0.4')
+		putProfileSetting('retraction_enable', 'True')
 	elif getMachineSetting('machine_type') == 'ultimaker2':
 		putProfileSetting('nozzle_size', '0.4')
 		putProfileSetting('retraction_enable', 'True')
@@ -1255,7 +1282,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 			bedTemp = getProfileSettingFloat('print_bed_temperature')
 
 		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
-			prefix += 'M140 S%f\n' % (bedTemp)
+			prefix += 'M190 S%f\n' % (bedTemp)
 		if temp > 0 and not isTagIn('{print_temperature}', alterationContents):
 			if extruderCount > 0:
 				for n in xrange(1, extruderCount):
@@ -1271,8 +1298,6 @@ def getAlterationFileContents(filename, extruderCount = 1):
 				prefix += 'T0\n'
 			else:
 				prefix += 'M109 S%f\n' % (temp)
-		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
-			prefix += 'M190 S%f\n' % (bedTemp)
 	elif filename == 'end.gcode':
 		if extruderCount > 1:
 			alterationContents = getAlterationFile("end%d.gcode" % (extruderCount))

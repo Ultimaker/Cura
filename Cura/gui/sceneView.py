@@ -293,7 +293,7 @@ class SceneView(openglGui.glGuiPanel):
 				connection.window = printWindow.printWindowBasic(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
-		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):
+		if not connection.loadGCodeData(self._engine.getResult().getGCode()):
 			if connection.isPrinting():
 				self.notification.message("Cannot start print, because other print still running.")
 			else:
@@ -315,17 +315,18 @@ class SceneView(openglGui.glGuiPanel):
 		threading.Thread(target=self._saveGCode,args=(filename,)).start()
 
 	def _saveGCode(self, targetFilename, ejectDrive = False):
-		data = self._engine.getResult().getGCode()
+		gcode = self._engine.getResult().getGCode()
 		try:
-			size = float(len(data))
-			fsrc = StringIO.StringIO(data)
+			size = float(len(gcode))
+			read_pos = 0
 			with open(targetFilename, 'wb') as fdst:
 				while 1:
-					buf = fsrc.read(16*1024)
-					if not buf:
+					buf = gcode.read(16*1024)
+					if len(buf) < 1:
 						break
+					read_pos += len(buf)
 					fdst.write(buf)
-					self.printButton.setProgressBar(float(fsrc.tell()) / size)
+					self.printButton.setProgressBar(read_pos / size)
 					self._queueRefresh()
 		except:
 			import sys, traceback
@@ -542,7 +543,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def sceneUpdated(self):
-		self._sceneUpdateTimer.Start(500, True)
+		wx.CallAfter(self._sceneUpdateTimer.Start, 500, True)
 		self._engine.abortEngine()
 		self._scene.updateSizeOffsets()
 		self.QueueRefresh()
@@ -1244,7 +1245,7 @@ class SceneView(openglGui.glGuiPanel):
 					self._platformMesh[machine] = meshes[0]
 				else:
 					self._platformMesh[machine] = None
-				if machine == 'ultimaker2':
+				if machine == 'ultimaker2' or machine == 'ultimaker_plus':
 					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
 				else:
 					self._platformMesh[machine]._drawOffset = numpy.array([0,0,2.5], numpy.float32)
@@ -1254,9 +1255,12 @@ class SceneView(openglGui.glGuiPanel):
 			self._objectShader.unbind()
 
 			#For the Ultimaker 2 render the texture on the back plate to show the Ultimaker2 text.
-			if machine == 'ultimaker2':
+			if machine == 'ultimaker2' or machine == 'ultimaker_plus':
 				if not hasattr(self._platformMesh[machine], 'texture'):
-					self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
+					if machine == 'ultimaker2':
+						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
+					else:
+						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('UltimakerPlusbackplate.png')
 				glBindTexture(GL_TEXTURE_2D, self._platformMesh[machine].texture)
 				glEnable(GL_TEXTURE_2D)
 				glPushMatrix()
