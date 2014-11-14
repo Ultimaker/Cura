@@ -34,6 +34,7 @@ class simpleModePanel(wx.Panel):
 			printMaterialPanel.Show(False)
 		
 		self.printSupport = wx.CheckBox(self, -1, _("Print support structure"))
+		self.printBrim = wx.CheckBox(self, -1, _("Print Brim"))
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
@@ -63,6 +64,7 @@ class simpleModePanel(wx.Panel):
 		sb = wx.StaticBox(self, label=_("Other:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		boxsizer.Add(self.printSupport)
+		boxsizer.Add(self.printBrim)
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		self.printTypeNormal.SetValue(True)
@@ -80,6 +82,7 @@ class simpleModePanel(wx.Panel):
 		self.printMaterialDiameter.Bind(wx.EVT_TEXT, lambda e: self._callback())
 
 		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
+		self.printBrim.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
 
 	def setupSlice(self):
 		put = profile.setTempOverride
@@ -125,6 +128,8 @@ G90                             ; absolute positioning
 				put('support_fill_rate', '30')
 				put('support_xy_distance', '0.7')
 				put('support_z_distance', '0.05')
+			if self.printBrim.GetValue():
+				put('platform_adhesion', 'Brim')
 			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
 				put('solid_layer_thickness', '0.8')
 				put('retraction_amount', '1.5')
@@ -393,6 +398,15 @@ M140 S75                     ; get bed temping up during first layer
 	M84                                                 ;steppers off
 	G90                                                 ;absolute positioning
 	;{profile_string}""")
+			if self.printSupport.GetValue():
+				put('support', _("Everywhere"))
+				put('support_type', 'Lines')
+				put('support_angle', '45')
+				put('support_fill_rate', '30')
+				put('support_xy_distance', '0.7')
+				put('support_z_distance', '0.05')
+			if self.printBrim.GetValue():
+				put('platform_adhesion', 'Brim')
 			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
 				put('retraction_speed', '25')
 				put('retraction_amount', '1.5')
@@ -533,6 +547,9 @@ M140 S75                     ; get bed temping up during first layer
 					put('fill_overlap', '10')
 		elif not profile.getMachineSetting('machine_type') == 'lulzbot_mini' and not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			nozzle_size = float(get('nozzle_size'))
+			if self.printBrim.GetValue():
+				put('platform_adhesion', 'Brim')
+				put('brim_line_count', '10')
 			if self.printTypeNormal.GetValue():
 				put('layer_height', '0.2')
 				put('wall_thickness', nozzle_size * 2.0)
