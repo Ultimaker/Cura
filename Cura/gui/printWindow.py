@@ -502,6 +502,9 @@ class printWindowBasic(wx.Frame):
 			preventComputerFromSleeping(self._isPrinting)
 
 
+	def _addTermLog(self, msg):
+		pass
+
 	def _updateButtonStates(self):
 		self.connectButton.Show(self._printerConnection.hasActiveConnection())
 		self.connectButton.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
