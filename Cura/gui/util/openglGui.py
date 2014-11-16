@@ -599,7 +599,7 @@ class glComboButton(glButton):
 		glPushMatrix()
 		glTranslatef(pos[0]+bs*0.5, pos[1] + bs*0.5, 0)
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
-		for n in xrange(0, len(self._imageIDs)):
+		for n in xrange(1, len(self._imageIDs)):
 			glTranslatef(0, bs, 0)
 			glColor4ub(255,255,255,255)
 			openglHelpers.glDrawTexturedQuad(-0.85*bs,-0.8*bs,bs,bs, 0)
@@ -645,7 +645,7 @@ class glComboButton(glButton):
 			pos = self._getPixelPos()
 			if 0 <= x - pos[0] <= bs and 0 <= y - pos[1] - bs <= bs * len(self._imageIDs):
 				self._selection = int((y - pos[1] - bs) / bs)
-				self._imageID = self._imageIDs[self._selection]
+				self._imageID = self._imageIDs[(self._selection)+1]
 				self._base._focus = None
 				self._comboCallback()
 				return True
