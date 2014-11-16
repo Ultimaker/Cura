@@ -107,20 +107,6 @@ class simpleModePanel(wx.Panel):
 			put('skirt_minimal_length', '250')
 			put('brim_line_count', '10')
 			put('raft_airgap', '0.5')
-			put('end.gcode', """M400
-M104 S0                         ; Hotend off
-M140 S0                         ; heated bed heater off (if you have it)
-M107                            ; fans off
-G92 E0                          ; set extruder to 0
-G1 E-3 F300                     ; retract a bit to relieve pressure
-G1 X5 Y5 Z156 F10000            ; move to cooling positioning
-M190 R60                        ; wait for bed to cool
-M140 S0                         ; Turn off bed temp
-G1 X145 Y175 Z156 F1000         ; move to cooling positioning
-M84                             ; steppers off
-G90                             ; absolute positioning
-;{profile_string}
-""")
 			if self.printSupport.GetValue():
 				put('support', _("Everywhere"))
 				put('support_type', 'Lines')
@@ -191,6 +177,20 @@ M109 S230                    ; set extruder temp and wait
 G4 S25                       ; wait for bed to temp up
 G1 Z2 E0 F75                 ; extrude filament back into nozzle
 M140 S110                    ; get bed temping up during first layer
+""")
+				put('end.gcode', """M400
+M104 S0                         ; Hotend off
+M140 S0                         ; heated bed heater off (if you have it)
+M107                            ; fans off
+G92 E0                          ; set extruder to 0
+G1 E-3 F300                     ; retract a bit to relieve pressure
+G1 X5 Y5 Z156 F10000            ; move to cooling positioning
+M190 R60                        ; wait for bed to cool
+M140 S0                         ; Turn off bed temp
+G1 X145 Y175 Z156 F1000         ; move to cooling positioning
+M84                             ; steppers off
+G90                             ; absolute positioning
+;{profile_string}
 """)
 				if self.printMaterialHIPS.GetValue():
 					put('bottom_layer_speed', '30')
@@ -354,6 +354,19 @@ G4 S15                       ; wait for bed to temp up
 G1 Z2 E0 F75                 ; extrude filament back into nozzle
 M140 S75                     ; get bed temping up during first layer
 """)
+				put('end.gcode', """
+M400
+M104 S0                                      ; hotend off
+M140 S0                                      ; heated bed heater off (if you have it)
+M107                                         ; fans off
+G92 E5                                       ; set extruder to 5mm for retract on print end
+G1 X5 Y5 Z156 E0 F10000                      ; move to cooling positioning
+M190 R50                                     ; wait for bed to cool
+M104 S0                                      ;
+G1 X145 Y175 Z156 F1000                      ; move to cooling positioning
+M84                                          ; steppers off
+G90                                          ; absolute positioning
+;{profile_string}""")
 				if self.printTypeLow.GetValue():
 					put('layer_height', '0.38')
 				if self.printTypeNormal.GetValue():
