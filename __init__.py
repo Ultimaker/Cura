@@ -5,4 +5,6 @@ def getMetaData():
     return { "name": "CuraBackend", "type": "Backend" }
 
 def register(app):
-    app.setBackend(CuraEngineBackend())
+    engine = CuraEngineBackend()
+    app.setBackend(engine)
+    engine.addCommand(TransferMeshCommand())
