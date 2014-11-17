@@ -7,10 +7,11 @@ class PrinterApplication(QtApplication):
         super(PrinterApplication, self).__init__()
         
     def run(self):
+        self._plugin_registry.loadPlugins({ "type": "Logger"})
         self._plugin_registry.loadPlugins({ "type": "StorageDevice" })
         self._plugin_registry.loadPlugins({ "type": "View" })
         self._plugin_registry.loadPlugins({ "type": "MeshHandler" })
-        self._plugin_registry.loadPlugins({ "type": "Logger"})
+        
         
         self.getController().setActiveView("MeshView")
 
