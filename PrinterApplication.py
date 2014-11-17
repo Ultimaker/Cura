@@ -1,11 +1,7 @@
-from Cura.Wx.WxApplication import WxApplication
-from Cura.Wx.MainWindow import MainWindow
-
+from Cura.Qt.QtApplication import QtApplication
 from Cura.Scene.SceneObject import SceneObject
 
-import wx
-
-class PrinterApplication(WxApplication):
+class PrinterApplication(QtApplication):
     def __init__(self):
         super(PrinterApplication, self).__init__()
         
@@ -21,7 +17,11 @@ class PrinterApplication(WxApplication):
         mesh.setMeshData(self.getMeshFileHandler().read("plugins/STLReader/simpleTestCube.stl",self.getStorageDevice('local')))
         root.addChild(mesh)
 
-        window = MainWindow("Cura Printer", self)
-        window.getCanvas().setBackgroundColor(wx.Colour(255, 0, 0, 255))
-        window.Show()
-        super(PrinterApplication, self).run()
+        self.setMainQml("printer/Printer.qml")
+        self.initializeEngine()
+
+        if self._engine.rootObjects:
+            self.exec_()
+
+    def registerObjects(self, engine):
+        pass
