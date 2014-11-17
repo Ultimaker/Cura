@@ -1,6 +1,8 @@
 from Cura.Qt.QtApplication import QtApplication
 from Cura.Scene.SceneObject import SceneObject
 
+import os.path
+
 class PrinterApplication(QtApplication):
     def __init__(self):
         super(PrinterApplication, self).__init__()
@@ -17,7 +19,7 @@ class PrinterApplication(QtApplication):
         mesh.setMeshData(self.getMeshFileHandler().read("plugins/STLReader/simpleTestCube.stl",self.getStorageDevice('local')))
         root.addChild(mesh)
 
-        self.setMainQml("printer/Printer.qml")
+        self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
         self.initializeEngine()
 
         if self._engine.rootObjects:
