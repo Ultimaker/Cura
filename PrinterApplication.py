@@ -1,6 +1,5 @@
 from Cura.Qt.QtApplication import QtApplication
 from Cura.Scene.SceneObject import SceneObject
-
 import os.path
 
 class PrinterApplication(QtApplication):
@@ -11,6 +10,7 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "StorageDevice" })
         self._plugin_registry.loadPlugins({ "type": "View" })
         self._plugin_registry.loadPlugins({ "type": "MeshHandler" })
+        self._plugin_registry.loadPlugins({ "type": "Logging"}
         
         self.getController().setActiveView("MeshView")
 
