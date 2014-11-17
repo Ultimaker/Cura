@@ -10,7 +10,7 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "StorageDevice" })
         self._plugin_registry.loadPlugins({ "type": "View" })
         self._plugin_registry.loadPlugins({ "type": "MeshHandler" })
-        self._plugin_registry.loadPlugins({ "type": "Logging"})
+        self._plugin_registry.loadPlugins({ "type": "Logger"})
         
         self.getController().setActiveView("MeshView")
 
@@ -18,7 +18,7 @@ class PrinterApplication(QtApplication):
         mesh = SceneObject()
         mesh.setMeshData(self.getMeshFileHandler().read("plugins/STLReader/simpleTestCube.stl",self.getStorageDevice('local')))
         root.addChild(mesh)
-
+        self.log('i',"Application started")
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
         self.initializeEngine()
 
