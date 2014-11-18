@@ -122,8 +122,6 @@ class simpleModePanel(wx.Panel):
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 ;Print time: {print_time}
-;Filament used: {filament_amount}m {filament_weight}g
-;Filament cost: {filament_cost}
 ;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
 ;M109 S{print_temperature} ;Uncomment to add your own temperature line
 G21                          ; metric values
@@ -298,8 +296,6 @@ G90                             ; absolute positioning
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 ;Print time: {print_time}
-;Filament used: {filament_amount}m {filament_weight}g
-;Filament cost: {filament_cost}
 ;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
 ;M109 S{print_temperature} ;Uncomment to add your own temperature line
 G21                          ; metric values
@@ -385,8 +381,6 @@ G90                                          ; absolute positioning
 	;Sliced at: {day} {date} {time}
 	;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 	;Print time: {print_time}
-	;Filament used: {filament_amount}m {filament_weight}g
-	;Filament cost: {filament_cost}
 	;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
 	;M109 S{print_temperature} ;Uncomment to add your own temperature line
 	G21        ;metric values
