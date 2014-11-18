@@ -7,4 +7,4 @@ Exec=/usr/bin/python /usr/share/cura/cura.py
 Path=/usr/share/cura/
 StartupNotify=true
 Terminal=false
-Categories=GNOME;GTK;Utility;
+Categories=Graphics;Electronics;
