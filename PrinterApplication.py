@@ -17,7 +17,7 @@ class PrinterApplication(QtApplication):
 
         root = self.getController().getScene().getRoot()
         mesh = SceneObject()
-        mesh.setMeshData(self.getMeshFileHandler().read("plugins/STLReader/simpleTestCube.stl",self.getStorageDevice('local')))
+        mesh.setMeshData(self.getMeshFileHandler().read("plugins/FileHandlers/STLReader/simpleTestCube.stl",self.getStorageDevice('local')))
         root.addChild(mesh)
         self.log('i',"Application started")
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
