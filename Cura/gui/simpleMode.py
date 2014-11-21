@@ -95,16 +95,17 @@ class simpleModePanel(wx.Panel):
 # LulzBot Mini slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini':
 			put('wall_thickness', '1')
-			put('fill_density', '30')
+			put('fill_density', '20')
 			put('print_temperature', '0')
 			put('print_bed_temperature', '0')
-			put('retraction_speed', '25')
+			put('retraction_amount', '1.5')
 			put('retraction_hop', '0.1')
 			put('bottom_thickness', '0.425')
 			put('layer0_width_factor', '125')
 			put('travel_speed', '175')
-			put('cool_min_layer_time', '15')
+			put('bottom_layer_speed', '25')
 			put('skirt_minimal_length', '250')
+			put('cool_min_feedrate', '10')
 			put('brim_line_count', '10')
 			put('raft_airgap', '0.5')
 			if self.printSupport.GetValue():
@@ -118,7 +119,8 @@ class simpleModePanel(wx.Panel):
 				put('platform_adhesion', 'Brim')
 			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
 				put('solid_layer_thickness', '0.8')
-				put('retraction_amount', '1.5')
+				put('retraction_speed', '25')
+				put('cool_min_layer_time', '15')
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 ;Print time: {print_time}
@@ -191,11 +193,9 @@ G90                             ; absolute positioning
 ;{profile_string}
 """)
 				if self.printMaterialHIPS.GetValue():
-					put('bottom_layer_speed', '30')
 					put('fan_full_height', '2')
-					put('fan_speed', '45')
-					put('fan_speed_max', '75')
-					put('cool_min_feedrate', '45')
+					put('fan_speed', '60')
+					put('fan_speed_max', '80')
 					put('plugin_config', """(lp1
 	(dp2
 	S'params'
@@ -203,7 +203,7 @@ G90                             ; absolute positioning
 	(dp4
 	S'targetL'
 	p5
-	V
+	V3
 	sS'extruderTwo'
 	p6
 	V
@@ -212,7 +212,7 @@ G90                             ; absolute positioning
 	V
 	sS'targetZ'
 	p8
-	V2
+	V
 	sS'flowrate'
 	p9
 	V
@@ -245,10 +245,10 @@ G90                             ; absolute positioning
 						put('insetx_speed', '80')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.25')
-						put('print_speed', '65')
-						put('infill_speed', '85')
-						put('inset0_speed', '45')
-						put('insetx_speed', '50')
+						put('print_speed', '50')
+						put('infill_speed', '70')
+						put('inset0_speed', '40')
+						put('insetx_speed', '45')
 					if self.printTypeHigh.GetValue():
 						put('layer_height', '0.14')
 						put('print_speed', '30')
@@ -258,41 +258,35 @@ G90                             ; absolute positioning
 				if self.printMaterialABS.GetValue():
 					put('fan_full_height', '5')
 					put('fan_speed', '40')
-					put('fan_speed_max', '75')
-					put('cool_min_feedrate', '10')
+					put('fan_speed_max', '60')
 					if self.printTypeLow.GetValue():
 						put('layer_height', '0.38')
 						put('print_speed', '85')
-						put('bottom_layer_speed', '30')
 						put('infill_speed', '110')
 						put('inset0_speed', '70')
 						put('insetx_speed', '80')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.25')
 						put('print_speed', '50')
-						put('bottom_layer_speed', '25')
 						put('infill_speed', '55')
 						put('inset0_speed', '45')
 						put('insetx_speed', '50')
 					if self.printTypeHigh.GetValue():
 						put('layer_height', '0.14')
 						put('print_speed', '50')
-						put('bottom_layer_speed', '25')
 						put('infill_speed', '55')
 						put('inset0_speed', '45')
 						put('insetx_speed', '50')
 			elif self.printMaterialPLA.GetValue():
 				put('solid_layer_thickness', '1')
-				put('retraction_amount', '3')
-				put('bottom_layer_speed', '25')
+				put('retraction_speed', '10')
 				put('infill_speed', '55')
 				put('inset0_speed', '45')
 				put('insetx_speed', '50')
+				put('cool_min_layer_time', '20')
 				put('fan_full_height', '1')
-				put('fan_speed', '75')
+				put('fan_speed', '100')
 				put('fan_speed_max', '100')
-				put('cool_min_feedrate', '15')
-				put('print_speed', '50')
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 ;Print time: {print_time}
@@ -348,7 +342,7 @@ M400                         ; clear buffer
 M109 S195                    ; set extruder temp and wait
 G4 S15                       ; wait for bed to temp up
 G1 Z2 E0 F75                 ; extrude filament back into nozzle
-M140 S75                     ; get bed temping up during first layer
+M140 S65                     ; get bed temping up during first layer
 """)
 				put('end.gcode', """
 M400
