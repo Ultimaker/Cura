@@ -1108,7 +1108,7 @@ def calculateSolidLayerCount():
 	solidThickness = getProfileSettingFloat('solid_layer_thickness')
 	if layerHeight == 0.0:
 		return 1
-	return int(math.ceil(solidThickness / (layerHeight - 0.0001)))
+	return int(math.ceil((solidThickness - 0.0001) / layerHeight))
 
 def calculateObjectSizeOffsets():
 	size = 0.0
