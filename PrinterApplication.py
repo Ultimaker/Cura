@@ -1,5 +1,5 @@
 from Cura.Qt.QtApplication import QtApplication
-from Cura.Scene.SceneObject import SceneObject
+from Cura.Scene.SceneNode import SceneNode
 from Cura.Scene.Camera import Camera
 from Cura.Math.Vector import Vector
 
@@ -21,7 +21,7 @@ class PrinterApplication(QtApplication):
         self.getController().setActiveTool("TransformTool")
 
         root = self.getController().getScene().getRoot()
-        mesh = SceneObject(root)
+        mesh = SceneNode(root)
         mesh.setMeshData(self.getMeshFileHandler().read("plugins/FileHandlers/STLReader/simpleTestCube.stl",self.getStorageDevice('local')))
 
         camera = Camera(root)
