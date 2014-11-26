@@ -138,7 +138,6 @@ class machineSettingsDialog(wx.Dialog):
 	def OnAddMachine(self, e):
 		self.Hide()
 		self.parent.Hide()
-		profile.setActiveMachine(profile.getMachineCount())
 		configWizard.configWizard(True)
 		self.parent.Show()
 		self.parent.reloadSettingPanels()

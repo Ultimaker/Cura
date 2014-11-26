@@ -555,7 +555,6 @@ class mainWindow(wx.Frame):
 
 	def OnAddNewMachine(self, e):
 		self.Hide()
-		profile.setActiveMachine(profile.getMachineCount())
 		configWizard.configWizard(True)
 		self.Show()
 		self.reloadSettingPanels()

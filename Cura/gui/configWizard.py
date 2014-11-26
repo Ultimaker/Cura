@@ -258,33 +258,38 @@ class FirstInfoPage(InfoPage):
 
 class PrintrbotPage(InfoPage):
 	def __init__(self, parent):
-		self._printer_info = {
+		self._printer_info = [
 			# X, Y, Z, Filament Diameter, PrintTemperature, Print Speed, Travel Speed, Retract speed, Retract amount
-			"Original": (130, 130, 130, 2.95, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v1": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v2 (2013 Printrbot Simple)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v3 (2014 Printrbot Simple)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v4 (Model 1405)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Metal": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
-			"Jr v1": (150, 100, 80, 1.75, 208, 40, 70, 30, 1),
-			"Jr v2": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
-			"LC v2": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2": (200, 200, 200, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.1": (200, 200, 200, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.2 (Model 1404/140422)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.3 (Model 140501)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.4 (Model 140507)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
-		}
+			("Simple Metal", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			("Metal Plus", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),#TODO: Check info
+			("Simple Makers Kit", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),#TODO: Check info
+			(":" + _("Older models"),),
+			("Original", 130, 130, 130, 2.95, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v1", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v2 (2013 Printrbot Simple)", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v3 (2014 Printrbot Simple)", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v4 (Model 1405)", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Jr v1", 150, 100, 80, 1.75, 208, 40, 70, 30, 1),
+			("Jr v2", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			("LC v2", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2", 200, 200, 200, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.1", 200, 200, 200, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.2 (Model 1404/140422)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.3 (Model 140501)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.4 (Model 140507)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+		]
 
 		super(PrintrbotPage, self).__init__(parent, _("Printrbot Selection"))
 		self.AddText(_("Select which Printrbot machine you have:"))
-		keys = self._printer_info.keys()
-		keys.sort()
 		self._items = []
-		for name in keys:
-			item = self.AddRadioButton(name)
-			item.data = self._printer_info[name]
-			self._items.append(item)
+		for printer in self._printer_info:
+			if printer[0].startswith(":"):
+				self.AddSeperator()
+				self.AddText(printer[0][1:])
+			else:
+				item = self.AddRadioButton(printer[0])
+				item.data = printer[1:]
+				self._items.append(item)
 
 	def StoreData(self):
 		profile.putMachineSetting('machine_name', 'Printrbot ???')
@@ -984,8 +989,13 @@ class configWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
 		super(configWizard, self).__init__(None, -1, _("Configuration Wizard"))
 
+		self._old_machine_index = int(profile.getPreferenceFloat('active_machine'))
+		if addNew:
+			profile.setActiveMachine(profile.getMachineCount())
+
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
 
 		self.firstInfoPage = FirstInfoPage(self, addNew)
 		self.machineSelectPage = MachineSelectPage(self)
@@ -1032,6 +1042,9 @@ class configWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_BACKWARD).Enable()
 		else:
 			self.FindWindowById(wx.ID_BACKWARD).Disable()
+
+	def OnCancel(self, e):
+		profile.setActiveMachine(self._old_machine_index)
 
 class bedLevelWizardMain(InfoPage):
 	def __init__(self, parent):

@@ -44,6 +44,10 @@ def getDefaultFirmware(machineIndex = None):
 		return resources.getPathForFirmware(name + '.hex')
 
 	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker2':
+		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 2:
+			return None
+		if profile.getMachineSettingFloat('extruder_amount', machineIndex) == 2:
+			return resources.getPathForFirmware("MarlinUltimaker2-dual.hex")
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
 	if profile.getMachineSetting('machine_type', machineIndex) == 'Witbox':
 		return resources.getPathForFirmware("MarlinWitbox.hex")
