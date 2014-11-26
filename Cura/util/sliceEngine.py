@@ -8,17 +8,16 @@ import time
 import math
 import numpy
 import os
-import warnings
 import threading
 import traceback
 import platform
-import sys
 import urllib
 import urllib2
 import hashlib
 import socket
 import struct
 import errno
+import inspect
 
 from Cura.util.bigDataStorage import BigDataStorage
 from Cura.util import profile
@@ -31,22 +30,24 @@ def getEngineFilename():
 		Finds and returns the path to the current engine executable. This is OS depended.
 	:return: The full path to the engine executable.
 	"""
+	base_search_path = os.path.dirname(inspect.getfile(getEngineFilename))
+	search_filename = 'CuraEngine'
 	if platform.system() == 'Windows':
+		search_filename += '.exe'
 		if version.isDevVersion() and os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
 			return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
-		if version.isDevVersion() and os.path.exists('C:/Program Files (x86)/Cura_14.09/CuraEngine.exe'):
-			return 'C:/Program Files (x86)/Cura_14.09/CuraEngine.exe'
-		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine.exe'))
-	if hasattr(sys, 'frozen'):
-		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../..', 'CuraEngine'))
+	for n in xrange(0, 10):
+		full_filename = os.path.abspath(os.path.join(base_search_path, '/'.join(['..'] * n), search_filename))
+		if os.path.isfile(full_filename):
+			return full_filename
+		full_filename = os.path.abspath(os.path.join(base_search_path, '/'.join(['..'] * n), 'CuraEngine', search_filename))
+		if os.path.isfile(full_filename):
+			return full_filename
 	if os.path.isfile('/usr/bin/CuraEngine'):
 		return '/usr/bin/CuraEngine'
 	if os.path.isfile('/usr/local/bin/CuraEngine'):
 		return '/usr/local/bin/CuraEngine'
-	tempPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine'))
-	if os.path.isdir(tempPath):
-		tempPath = os.path.join(tempPath,'CuraEngine')
-	return tempPath
+	return ''
 
 class EngineResult(object):
 	"""
@@ -182,6 +183,7 @@ class Engine(object):
 		self._objCount = 0
 		self._result = None
 
+		self._engine_executable = getEngineFilename()
 		self._serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self._serverPortNr = 0xC20A
 		for potential_port in xrange(0xC20A, 0xFFFF):
@@ -290,7 +292,7 @@ class Engine(object):
 
 		extruderCount = max(extruderCount, profile.minimalExtruderCount())
 
-		commandList = [getEngineFilename(), '-v', '-p']
+		commandList = [self._engine_executable, '-v', '-p']
 		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
 		commandList += ['-g', '%d' % (self._serverPortNr)]
