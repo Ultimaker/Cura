@@ -138,7 +138,7 @@ class machineSettingsDialog(wx.Dialog):
 	def OnAddMachine(self, e):
 		self.Hide()
 		self.parent.Hide()
-		configWizard.configWizard(True)
+		configWizard.ConfigWizard(True)
 		self.parent.Show()
 		self.parent.reloadSettingPanels()
 		self.parent.updateMachineMenu()

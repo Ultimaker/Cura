@@ -558,7 +558,7 @@ class mainWindow(wx.Frame):
 
 	def OnAddNewMachine(self, e):
 		self.Hide()
-		configWizard.configWizard(True)
+		configWizard.ConfigWizard(True)
 		self.Show()
 		self.reloadSettingPanels()
 		self.updateMachineMenu()
