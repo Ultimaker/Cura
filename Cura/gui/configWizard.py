@@ -229,8 +229,8 @@ class PrintrbotPage(InfoPage):
 		self._printer_info = [
 			# X, Y, Z, Filament Diameter, PrintTemperature, Print Speed, Travel Speed, Retract speed, Retract amount
 			("Simple Metal", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),
-			("Metal Plus", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),#TODO: Check info
-			("Simple Makers Kit", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),#TODO: Check info
+			("Metal Plus", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Simple Makers Kit", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
 			(":" + _("Older models"),),
 			("Original", 130, 130, 130, 2.95, 208, 40, 70, 30, 1),
 			("Simple Maker's Edition v1", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
@@ -245,9 +245,11 @@ class PrintrbotPage(InfoPage):
 			("Plus v2.2 (Model 1404/140422)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
 			("Plus v2.3 (Model 140501)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
 			("Plus v2.4 (Model 140507)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Go v2 Large", 609, 305, 305, 1.75, 208, 35, 70, 30, 1),
 		]
 
 		super(PrintrbotPage, self).__init__(parent, _("Printrbot Selection"))
+		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Printrbot_logo.png')))
 		self.AddText(_("Select which Printrbot machine you have:"))
 		self._items = []
 		for printer in self._printer_info:
