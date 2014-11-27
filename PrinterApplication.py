@@ -24,9 +24,16 @@ class PrinterApplication(QtApplication):
         mesh = SceneNode(root)
         mesh.setMeshData(self.getMeshFileHandler().read("plugins/FileHandlers/STLReader/simpleTestCube.stl",self.getStorageDevice('local')))
 
-        camera = Camera(root)
-        camera.translate(Vector(0, 0, 5))
-        self.getController().getScene().setActiveCamera(camera)
+        camera = Camera('3d', root)
+        camera.translate(Vector(0, 5, 5))
+        camera.rotateByAngleAxis(45, Vector(1, 0, 0))
+
+        camera = Camera('left', root)
+        camera.translate(Vector(5, 0, 0))
+        camera.rotateByAngleAxis(-90, Vector(0, 1, 0))
+        camera.setLocked(True)
+
+        self.getController().getScene().setActiveCamera('3d')
 
         self.log('i',"Application started")
 
