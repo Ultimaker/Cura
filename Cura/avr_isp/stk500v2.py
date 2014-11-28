@@ -7,6 +7,7 @@ import os, struct, sys, time
 
 from serial import Serial
 from serial import SerialException
+from serial import SerialTimeoutException
 
 import ispBase, intelHex
 
@@ -133,7 +134,7 @@ class Stk500v2(ispBase.IspBase):
 		try:
 			self.serial.write(message)
 			self.serial.flush()
-		except Serial.SerialTimeoutException:
+		except SerialTimeoutException:
 			raise ispBase.IspError('Serial send timeout')
 		self.seq = (self.seq + 1) & 0xFF
 		return self.recvMessage()
