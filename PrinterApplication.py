@@ -16,9 +16,7 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "MeshHandler" })
         self._plugin_registry.loadPlugins({ "type": "Tool" })
         
-        
         self.getController().setActiveView("MeshView")
-        self.getController().setActiveTool("TransformTool")
 
         root = self.getController().getScene().getRoot()
         mesh = SceneNode(root)
