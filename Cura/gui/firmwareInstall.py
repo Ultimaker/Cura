@@ -108,7 +108,7 @@ class InstallFirmware(wx.Dialog):
 						programmer.connect(self.port)
 						break
 					except ispBase.IspError:
-						pass
+						programmer.close()
 				time.sleep(1)
 				if not self:
 					#Window destroyed
@@ -117,7 +117,7 @@ class InstallFirmware(wx.Dialog):
 			try:
 				programmer.connect(self.port)
 			except ispBase.IspError:
-				pass
+				programmer.close()
 
 		if not programmer.isConnected():
 			wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
