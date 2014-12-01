@@ -63,7 +63,7 @@ def checkForNewerVersion():
 	if isDevVersion():
 		return None
 	try:
-		updateBaseURL = 'http://software.ultimaker.com'
+		updateBaseURL = ''
 		localVersion = map(int, getVersion(False).split('.'))
 		while len(localVersion) < 3:
 			localVersion += [1]
