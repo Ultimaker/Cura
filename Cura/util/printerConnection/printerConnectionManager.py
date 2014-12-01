@@ -11,7 +11,6 @@ from Cura.util import profile
 from Cura.util import version
 from Cura.util.printerConnection import dummyConnection
 from Cura.util.printerConnection import serialConnection
-from Cura.util.printerConnection import doodle3dConnect
 
 class PrinterConnectionManager(object):
 	"""
@@ -23,7 +22,6 @@ class PrinterConnectionManager(object):
 		if version.isDevVersion():
 			self._groupList.append(dummyConnection.dummyConnectionGroup())
 		self._groupList.append(serialConnection.serialConnectionGroup())
-		self._groupList.append(doodle3dConnect.doodle3dConnectionGroup())
 
 		#Sort the connections by highest priority first.
 		self._groupList.sort(reverse=True)
