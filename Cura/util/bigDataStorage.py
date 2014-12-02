@@ -1,3 +1,4 @@
+import sys
 import cStringIO as StringIO
 
 class BigDataStorage(object):

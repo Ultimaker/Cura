@@ -385,25 +385,29 @@ class Engine(object):
 		logThread.daemon = True
 		logThread.start()
 
-		data = self._process.stdout.read(4096)
-		while len(data) > 0:
-			self._result._gcodeData.write(data)
+		try:
 			data = self._process.stdout.read(4096)
+			while len(data) > 0:
+				self._result._gcodeData.write(data)
+				data = self._process.stdout.read(4096)
 
-		returnCode = self._process.wait()
-		logThread.join()
-		if returnCode == 0:
-			pluginError = pluginInfo.runPostProcessingPlugins(self._result)
-			if pluginError is not None:
-				print pluginError
-				self._result.addLog(pluginError)
-			self._result.setFinished(True)
-			self._callback(1.0)
-		else:
-			for line in self._result.getLog():
-				print line
+			returnCode = self._process.wait()
+			logThread.join()
+			if returnCode == 0:
+				self._result.setFinished(True)
+				plugin_error = pluginInfo.runPostProcessingPlugins(self._result)
+				if plugin_error is not None:
+					print plugin_error
+					self._result.addLog(plugin_error)
+				self._callback(1.0)
+			else:
+				for line in self._result.getLog():
+					print line
+				self._callback(-1.0)
+			self._process = None
+		except MemoryError:
+			self._result.addLog("MemoryError")
 			self._callback(-1.0)
-		self._process = None
 
 	def _watchStderr(self, stderr):
 		objectNr = 0
