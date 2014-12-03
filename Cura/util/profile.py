@@ -819,7 +819,7 @@ def getPreferencesString():
 	p = []
 	global settingsList
 	for set in settingsList:
-		if set.isPreference():
+		if (set.isPreference() and set.getName() != 'lastFile' and set.getName() != 'youmagine_token') or set.isMachineSetting():
 			p.append(set.getName() + "=" + set.getValue().encode('utf-8'))
 	ret = '\b'.join(p)
 	ret = base64.b64encode(zlib.compress(ret, 9))
