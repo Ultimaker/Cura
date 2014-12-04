@@ -62,9 +62,11 @@ class newVersionDialog(wx.Dialog):
 		if self.hasUltimaker2 is not None:
 			s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 			s.Add(wx.StaticText(p, -1, 'New firmware for your Ultimaker2:'))
-			s.Add(wx.StaticText(p, -1, '* Detect when the Z endstop is not working properly.\n    Which prevents the bed from damaging the nozzle.'))
+			s.Add(wx.StaticText(p, -1, '* Detect when the endstops are not working properly.\n    Which prevents the bed from damaging the nozzle.'))
 			s.Add(wx.StaticText(p, -1, '* Added the ability to import/export material profiles to the SD card.'))
 			s.Add(wx.StaticText(p, -1, '* Improved hotend temperature stability.'))
+			s.Add(wx.StaticText(p, -1, '* Added UPET material profile.'))
+			s.Add(wx.StaticText(p, -1, '* Minor improvements to the time estimate code.'))
 			button = wx.Button(p, -1, 'Install now')
 			self.Bind(wx.EVT_BUTTON, self.OnUltimaker2Firmware, button)
 			s.Add(button, flag=wx.TOP, border=5)
