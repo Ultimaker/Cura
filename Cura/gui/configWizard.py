@@ -224,38 +224,6 @@ class InfoPage(wx.wizard.WizardPageSimple):
 	def StoreData(self):
 		pass
 
-
-class FirstInfoPage(InfoPage):
-	def __init__(self, parent, addNew):
-		if addNew:
-			super(FirstInfoPage, self).__init__(parent, _("Add new machine wizard"))
-		else:
-			super(FirstInfoPage, self).__init__(parent, _("First time run wizard"))
-			self.AddText(_("Welcome, and thanks for trying Cura!"))
-			self.AddSeperator()
-		self.AddText(_("This wizard will help you in setting up Cura for your machine."))
-		if not addNew:
-			self.AddSeperator()
-			self._language_option = self.AddCombo(_("Select your language:"), map(lambda o: o[1], resources.getLanguageOptions()))
-		else:
-			self._language_option = None
-		# self.AddText(_("This wizard will help you with the following steps:"))
-		# self.AddText(_("* Configure Cura for your machine"))
-		# self.AddText(_("* Optionally upgrade your firmware"))
-		# self.AddText(_("* Optionally check if your machine is working safely"))
-		# self.AddText(_("* Optionally level your printer bed"))
-
-		#self.AddText('* Calibrate your machine')
-		#self.AddText('* Do your first print')
-
-	def AllowBack(self):
-		return False
-
-	def StoreData(self):
-		if self._language_option is not None:
-			profile.putPreference('language', self._language_option.GetValue())
-			resources.setupLocalization(self._language_option.GetValue())
-
 class PrintrbotPage(InfoPage):
 	def __init__(self, parent):
 		self._printer_info = {
@@ -400,12 +368,6 @@ class MachineSelectPage(InfoPage):
 		self.PrintrbotRadio.Bind(wx.EVT_RADIOBUTTON, self.OnPrintrbotSelect)
 		self.OtherRadio = self.AddRadioButton(_("Other (Ex: RepRap, MakerBot, Witbox)"))
 		self.OtherRadio.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
-		#self.AddSeperator()
-		#self.AddText(_("The collection of anonymous usage information helps with the continued improvement of Cura."))
-		#self.AddText(_("This does NOT submit your models online nor gathers any privacy related information."))
-		#self.SubmitUserStats = self.AddCheckbox(_("Submit anonymous usage information:"))
-		#self.AddText(_("For full details see: http://wiki.ultimaker.com/Cura:stats"))
-		#self.SubmitUserStats.SetValue(False)
 
 	def OnUltimaker2Select(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ultimaker2ReadyPage)
@@ -516,11 +478,6 @@ class MachineSelectPage(InfoPage):
 			profile.putProfileSetting('nozzle_size', '0.5')
 		profile.checkAndUpdateMachineName()
 		profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
-		#if self.SubmitUserStats.GetValue():
-		#	profile.putPreference('submit_slice_information', 'True')
-		#else:
-		#	profile.putPreference('submit_slice_information', 'False')
-
 
 class SelectParts(InfoPage):
 	def __init__(self, parent):
@@ -993,7 +950,6 @@ class configWizard(wx.wizard.Wizard):
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
 
-		self.firstInfoPage = FirstInfoPage(self, addNew)
 		self.machineSelectPage = MachineSelectPage(self)
 		self.ultimakerSelectParts = SelectParts(self)
 		self.ultimakerFirmwareUpgradePage = UltimakerFirmwareUpgradePage(self)
@@ -1010,7 +966,6 @@ class configWizard(wx.wizard.Wizard):
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 		self.lulzbotReadyPage = LulzbotReadyPage(self)
 
-		wx.wizard.WizardPageSimple.Chain(self.firstInfoPage, self.machineSelectPage)
 		#wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerSelectParts, self.ultimakerFirmwareUpgradePage)
@@ -1020,10 +975,10 @@ class configWizard(wx.wizard.Wizard):
 		wx.wizard.WizardPageSimple.Chain(self.printrbotSelectType, self.otherMachineInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
 
-		self.FitToPage(self.firstInfoPage)
-		self.GetPageAreaSizer().Add(self.firstInfoPage)
+		self.FitToPage(self.machineSelectPage)
+		self.GetPageAreaSizer().Add(self.machineSelectPage)
 
-		self.RunWizard(self.firstInfoPage)
+		self.RunWizard(self.machineSelectPage)
 		self.Destroy()
 
 	def OnPageChanging(self, e):
