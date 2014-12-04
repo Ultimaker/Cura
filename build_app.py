@@ -66,6 +66,7 @@ if sys.platform.startswith('darwin'):
         ]
     }
     OPTIONS = {
+	'arch': 'intel',
         'argv_emulation': True,
         'iconfile': 'resources/Cura.icns',
         'includes': ['objc', 'Foundation'],
