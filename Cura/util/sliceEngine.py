@@ -156,6 +156,8 @@ class EngineResult(object):
 			'preferences': self._preferencesString,
 			'modelhash': self._modelHash,
 			'version': version.getVersion(),
+			'printtime': self._printTimeSeconds,
+			'filament': ','.join(map(str, self._filamentMM)),
 		}
 		try:
 			f = urllib2.urlopen("https://stats.youmagine.com/curastats/slice", data = urllib.urlencode(data), timeout = 1)
