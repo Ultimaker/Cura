@@ -90,7 +90,10 @@ class CuraApp(wx.App):
 			sock.bind(("127.0.0.1", port))
 			while True:
 				data, addr = sock.recvfrom(2048)
-				wx.callAfter(self.mainWindow.OnDropFiles, data.split('\0'))
+				try:
+					wx.CallAfter(self.mainWindow.OnDropFiles, data.split('\0'))
+				except Exception as e:
+					warnings.warn("File at {p} cannot be read: {e}".format(p=data, e=str(e)))
 		except:
 			pass
 
