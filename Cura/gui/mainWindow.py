@@ -398,8 +398,6 @@ class mainWindow(wx.Frame):
 		prefDialog.Raise()
 
 	def OnDropFiles(self, files):
-		if len(files) > 0:
-			self.updateProfileToAllControls()
 		self.scene.loadFiles(files)
 
 	def OnModelMRU(self, e):
