@@ -24,15 +24,6 @@ class PrinterApplication(QtApplication):
         root = self.getController().getScene().getRoot()
         platform = Platform(root)
 
-        mesh = SceneNode(platform)
-        mesh.setMeshData(self.getMeshFileHandler().read(Resources.locate(Resources.MeshesLocation, "simplecube.stl"), self.getStorageDevice('local')))
-        mesh.translate(Vector(30, 30, 0))
-        mesh.scale(10)
-
-        mesh = SceneNode(platform)
-        mesh.setMeshData(self.getMeshFileHandler().read(Resources.locate(Resources.MeshesLocation, "sphere.obj"), self.getStorageDevice('local')))
-        mesh.translate(Vector(0, 0, 0))
-
         self.getRenderer().setLightPosition(Vector(0, 150, 150))
 
         camera = Camera('3d', root)
@@ -44,11 +35,11 @@ class PrinterApplication(QtApplication):
         camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
 
         camera = Camera('left', root)
-        camera.translate(Vector(150, 50, 0))
+        camera.translate(Vector(-150, 50, 0))
         proj = Matrix()
         proj.setOrtho(-200, 200, -200, 200, 1, 500)
         camera.setProjectionMatrix(proj)
-        camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
+        camera.lookAt(Vector(0, 50, 0), Vector(0, 1, 0))
         camera.setLocked(True)
 
         camera = Camera('top', root)
@@ -56,7 +47,7 @@ class PrinterApplication(QtApplication):
         proj = Matrix()
         proj.setOrtho(-200, 200, -200, 200, 1, 500)
         camera.setProjectionMatrix(proj)
-        camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
+        camera.lookAt(Vector(0, 0, 0), Vector(0, 0, -1))
         camera.setLocked(True)
 
         camera = Camera('front', root)
@@ -64,7 +55,7 @@ class PrinterApplication(QtApplication):
         proj = Matrix()
         proj.setOrtho(-200, 200, -200, 200, 1, 500)
         camera.setProjectionMatrix(proj)
-        camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
+        camera.lookAt(Vector(0, 50, 0), Vector(0, 1, 0))
         camera.setLocked(True)
 
         self.getController().getScene().setActiveCamera('3d')
