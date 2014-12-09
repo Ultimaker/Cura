@@ -1,6 +1,7 @@
 from Cura.Qt.QtApplication import QtApplication
 from Cura.Scene.SceneNode import SceneNode
 from Cura.Scene.Camera import Camera
+from Cura.Scene.Platform import Platform
 from Cura.Math.Vector import Vector
 from Cura.Math.Matrix import Matrix
 from Cura.Resources import Resources
@@ -21,17 +22,16 @@ class PrinterApplication(QtApplication):
         self.getController().setActiveView("MeshView")
 
         root = self.getController().getScene().getRoot()
-        mesh = SceneNode(root)
-        mesh.setMeshData(self.getMeshFileHandler().read(Resources.getMesh("ultimaker2_platform.stl"), self.getStorageDevice('local')))
+        platform = Platform(root)
 
-        mesh2 = SceneNode(mesh)
-        mesh2.setMeshData(self.getMeshFileHandler().read(Resources.getMesh("simplecube.stl"), self.getStorageDevice('local')))
-        mesh2.translate(Vector(30, 30, 0))
-        mesh2.scale(10)
+        mesh = SceneNode(platform)
+        mesh.setMeshData(self.getMeshFileHandler().read(Resources.locate(Resources.MeshesLocation, "simplecube.stl"), self.getStorageDevice('local')))
+        mesh.translate(Vector(30, 30, 0))
+        mesh.scale(10)
 
-        mesh3 = SceneNode(mesh)
-        mesh3.setMeshData(self.getMeshFileHandler().read(Resources.getMesh("sphere.obj"), self.getStorageDevice('local')))
-        mesh3.translate(Vector(0, 0, 0))
+        mesh = SceneNode(platform)
+        mesh.setMeshData(self.getMeshFileHandler().read(Resources.locate(Resources.MeshesLocation, "sphere.obj"), self.getStorageDevice('local')))
+        mesh.translate(Vector(0, 0, 0))
 
         self.getRenderer().setLightPosition(Vector(0, 150, 150))
 
