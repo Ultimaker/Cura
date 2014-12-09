@@ -2,5 +2,5 @@
 
 from PrinterApplication import PrinterApplication
 
-app = PrinterApplication()
+app = PrinterApplication.getInstance()
 app.run()
