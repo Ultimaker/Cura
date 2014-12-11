@@ -24,6 +24,11 @@ class PrinterApplication(QtApplication):
         root = self.getController().getScene().getRoot()
         platform = Platform(root)
 
+        try:
+            self.getMachineSettings().loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'ultimaker2.cfg'))
+        except FileNotFoundError:
+            pass
+
         self.getRenderer().setLightPosition(Vector(0, 150, 150))
 
         camera = Camera('3d', root)
@@ -65,6 +70,8 @@ class PrinterApplication(QtApplication):
 
         if self._engine.rootObjects:
             self.exec_()
+
+        self.getMachineSettings().saveValuesToFile(Resources.getStoragePath(Resources.SettingsLocation, 'ultimaker2.cfg'))
 
     def registerObjects(self, engine):
         pass
