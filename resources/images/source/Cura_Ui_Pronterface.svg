@@ -14,8 +14,8 @@
    height="400"
    id="svg6373"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   inkscape:export-filename="/home/steven/Cura/cura-dev/plugins/PronterfaceUI/image.png"
+   inkscape:version="0.48.3.1 r9886"
+   inkscape:export-filename="/home/aleph/cura-dev/plugins/PronterfaceUI/map.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
    sodipodi:docname="Cura_Ui_Pronterface.svg">
@@ -44,18 +44,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="405.72322"
-     inkscape:cy="221.22524"
+     inkscape:zoom="0.88183594"
+     inkscape:cx="535.82198"
+     inkscape:cy="169.74498"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
      showgrid="false"
-     inkscape:snap-global="false"
-     inkscape:window-width="1475"
-     inkscape:window-height="794"
-     inkscape:window-x="287"
-     inkscape:window-y="34"
-     inkscape:window-maximized="0"
+     inkscape:snap-global="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1058"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
      showguides="true"
      inkscape:guide-bbox="true">
     <inkscape:grid
@@ -67,20 +67,28 @@
        snapvisiblegridlinesonly="true" />
     <sodipodi:guide
        orientation="0,1"
-       position="375.5,361.5"
-       id="guide3556" />
-    <sodipodi:guide
-       orientation="0,1"
        position="348,135"
        id="guide3558" />
     <sodipodi:guide
        orientation="0,1"
-       position="349.25,352.75"
+       position="375.63677,351.11406"
        id="guide3560" />
     <sodipodi:guide
        orientation="0,1"
        position="364,145.25"
        id="guide3562" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="337.36434,218.71982"
+       id="guide3411" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="366.84828,296.54042"
+       id="guide3413" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="357.2093,146.42746"
+       id="guide3415" />
   </sodipodi:namedview>
   <metadata
      id="metadata6378">
@@ -90,7 +98,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -192,6 +200,21 @@
        width="24.430717"
        id="rect4545"
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <rect
+       ry="0"
+       y="223.29436"
+       x="337.38525"
+       height="30.278177"
+       width="29.463013"
+       id="rect3417"
+       style="fill:#ff5000;fill-opacity:1;stroke:none" />
+    <rect
+       y="48.885941"
+       x="337.36435"
+       height="30.599747"
+       width="29.48394"
+       id="rect3419"
+       style="fill:#ffb400;fill-opacity:1;stroke:none;display:inline" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -213,7 +236,7 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-652.36218)"
-     style="display:inline">
+     style="display:none">
     <g
        transform="matrix(0.49864351,0,0,0.51948681,-30.087938,582.92706)"
        id="g4655">
@@ -483,7 +506,7 @@
             <polygon
                style="fill:#adadad;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="120,232 123.6,219.5 120.1,217 109.5,232.5 "
+               points="120.1,217 109.5,232.5 120,232 123.6,219.5 "
                id="polygon4762" />
             <g
                id="g4764">
@@ -494,21 +517,21 @@
                    id="g4768">
                   <polygon
                      style="fill:#ffffff"
-                     points="121.7,218.2 129.2,225.3 129.3,241.6 113.2,245 113.1,230.2 "
+                     points="129.3,241.6 113.2,245 113.1,230.2 121.7,218.2 129.2,225.3 "
                      id="polygon4770" />
                 </g>
                 <g
                    id="g4772">
                   <polygon
                      style="fill:#c9c9c9"
-                     points="139.9,245.5 129.1,241.8 129.1,225.9 139.8,233 "
+                     points="129.1,225.9 139.8,233 139.9,245.5 129.1,241.8 "
                      id="polygon4774" />
                 </g>
                 <g
                    id="g4776">
                   <polygon
                      style="fill:#adadad"
-                     points="127.8,247.4 113,245 129.1,241.5 140,245.4 "
+                     points="129.1,241.5 140,245.4 127.8,247.4 113,245 "
                      id="polygon4778" />
                 </g>
               </g>
@@ -516,7 +539,7 @@
             <polygon
                style="fill:none;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="127.7,247.5 139.9,245.5 139.9,233 135.6,226.5 122.3,218.6 121.7,218.4 113,230.7 113.1,245.2 "
+               points="139.9,233 135.6,226.5 122.3,218.6 121.7,218.4 113,230.7 113.1,245.2 127.7,247.5 139.9,245.5 "
                id="polygon4780" />
             <polyline
                style="fill:#c9c9c9;stroke:#666665;stroke-miterlimit:10"
@@ -525,7 +548,7 @@
                id="polyline4782" />
             <polygon
                style="fill:#adadad"
-               points="122.8,232.8 122.8,241.9 118.2,242.9 118.2,234 "
+               points="118.2,242.9 118.2,234 122.8,232.8 122.8,241.9 "
                id="polygon4784" />
             <g
                id="g4786">
@@ -538,14 +561,14 @@
                      id="g4792">
                     <polygon
                        style="fill:#ffffff"
-                       points="129,223.3 129,220 132.5,219 132.5,226.8 "
+                       points="132.5,219 132.5,226.8 129,223.3 129,220 "
                        id="polygon4794" />
                   </g>
                   <g
                      id="g4796">
                     <polygon
                        style="fill:#c9c9c9"
-                       points="134.9,227.7 132.5,226.9 132.5,219 134.9,220.5 "
+                       points="132.5,219 134.9,220.5 134.9,227.7 132.5,226.9 "
                        id="polygon4798" />
                   </g>
                 </g>
@@ -554,7 +577,7 @@
             <polygon
                style="fill:none;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="132.2,226.7 134.9,228.1 134.9,220.5 132.5,219 129,220 129,223.2 "
+               points="134.9,220.5 132.5,219 129,220 129,223.2 132.2,226.7 134.9,228.1 "
                id="polygon4800" />
           </g>
         </g>
@@ -597,7 +620,7 @@
               <polygon
                  style="fill:#9caf31;stroke:#5a681b;stroke-miterlimit:10"
                  stroke-miterlimit="10"
-                 points="108.2,609.5 113.2,592.5 108.4,589.2 94,610.2 "
+                 points="108.4,589.2 94,610.2 108.2,609.5 113.2,592.5 "
                  id="polygon4820" />
               <g
                  id="g4822">
@@ -608,21 +631,21 @@
                      id="g4826">
                     <polygon
                        style="fill:#cae240"
-                       points="110.6,590.9 120.8,600.5 120.8,622.6 99,627.2 98.9,607.1 "
+                       points="120.8,622.6 99,627.2 98.9,607.1 110.6,590.9 120.8,600.5 "
                        id="polygon4828" />
                   </g>
                   <g
                      id="g4830">
                     <polygon
                        style="fill:#b1cd36"
-                       points="135.3,627.9 120.6,622.9 120.6,601.2 135.2,611 "
+                       points="120.6,601.2 135.2,611 135.3,627.9 120.6,622.9 "
                        id="polygon4832" />
                   </g>
                   <g
                      id="g4834">
                     <polygon
                        style="fill:#9caf31"
-                       points="118.9,630.5 98.8,627.2 120.6,622.5 135.4,627.7 "
+                       points="120.6,622.5 135.4,627.7 118.9,630.5 98.8,627.2 "
                        id="polygon4836" />
                   </g>
                 </g>
@@ -630,7 +653,7 @@
               <polygon
                  style="fill:none;stroke:#5a681b;stroke-miterlimit:10"
                  stroke-miterlimit="10"
-                 points="118.8,630.6 135.3,627.9 135.3,611 129.4,602.1 111.3,591.4 110.6,591.1 98.8,607.8 98.8,627.4 "
+                 points="135.3,611 129.4,602.1 111.3,591.4 110.6,591.1 98.8,607.8 98.8,627.4 118.8,630.6 135.3,627.9 "
                  id="polygon4838" />
               <polyline
                  style="fill:#b1cd36;stroke:#5a681b;stroke-miterlimit:10"
@@ -640,7 +663,7 @@
             </g>
             <polygon
                style="fill:#9caf31"
-               points="112,610.6 112,623 105.8,624.4 105.8,612.3 "
+               points="105.8,624.4 105.8,612.3 112,610.6 112,623 "
                id="polygon4842" />
             <g
                id="g4844">
@@ -655,14 +678,14 @@
                        id="g4852">
                       <polygon
                          style="fill:#cae240"
-                         points="120.5,597.8 120.5,593.3 125.3,591.9 125.3,602.5 "
+                         points="125.3,591.9 125.3,602.5 120.5,597.8 120.5,593.3 "
                          id="polygon4854" />
                     </g>
                     <g
                        id="g4856">
                       <polygon
                          style="fill:#b1cd36"
-                         points="128.4,603.8 125.3,602.7 125.3,591.9 128.4,594 "
+                         points="125.3,591.9 128.4,594 128.4,603.8 125.3,602.7 "
                          id="polygon4858" />
                     </g>
                   </g>
@@ -671,7 +694,7 @@
               <polygon
                  style="fill:none;stroke:#5a681b;stroke-miterlimit:10"
                  stroke-miterlimit="10"
-                 points="124.9,602.3 128.4,604.3 128.4,594 125.3,591.9 120.5,593.3 120.5,597.7 "
+                 points="128.4,594 125.3,591.9 120.5,593.3 120.5,597.7 124.9,602.3 128.4,604.3 "
                  id="polygon4860" />
             </g>
           </g>
@@ -694,7 +717,7 @@
             <polygon
                style="fill:#adadad;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="490.7,616.7 494.3,604.2 490.8,601.7 480.2,617.2 "
+               points="490.8,601.7 480.2,617.2 490.7,616.7 494.3,604.2 "
                id="polygon4870" />
             <g
                id="g4872">
@@ -705,21 +728,21 @@
                    id="g4876">
                   <polygon
                      style="fill:#ffffff"
-                     points="492.4,603 499.9,610.1 499.9,626.3 483.9,629.7 483.8,614.9 "
+                     points="499.9,626.3 483.9,629.7 483.8,614.9 492.4,603 499.9,610.1 "
                      id="polygon4878" />
                 </g>
                 <g
                    id="g4880">
                   <polygon
                      style="fill:#c9c9c9"
-                     points="510.6,630.2 499.8,626.5 499.7,610.6 510.5,617.7 "
+                     points="499.7,610.6 510.5,617.7 510.6,630.2 499.8,626.5 "
                      id="polygon4882" />
                 </g>
                 <g
                    id="g4884">
                   <polygon
                      style="fill:#adadad"
-                     points="498.5,632.1 483.7,629.7 499.8,626.3 510.7,630.1 "
+                     points="499.8,626.3 510.7,630.1 498.5,632.1 483.7,629.7 "
                      id="polygon4886" />
                 </g>
               </g>
@@ -727,7 +750,7 @@
             <polygon
                style="fill:none;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="498.4,632.2 510.6,630.2 510.6,617.7 506.3,611.2 492.9,603.3 492.4,603.1 483.7,615.4 483.7,629.9 "
+               points="510.6,617.7 506.3,611.2 492.9,603.3 492.4,603.1 483.7,615.4 483.7,629.9 498.4,632.2 510.6,630.2 "
                id="polygon4888" />
             <polyline
                style="fill:#c9c9c9;stroke:#666665;stroke-miterlimit:10"
@@ -736,7 +759,7 @@
                id="polyline4890" />
             <polygon
                style="fill:#adadad"
-               points="493.5,617.5 493.5,626.6 488.8,627.6 488.9,618.8 "
+               points="488.8,627.6 488.9,618.8 493.5,617.5 493.5,626.6 "
                id="polygon4892" />
             <g
                id="g4894">
@@ -749,14 +772,14 @@
                      id="g4900">
                     <polygon
                        style="fill:#ffffff"
-                       points="499.7,608.1 499.7,604.7 503.2,603.7 503.2,611.5 "
+                       points="503.2,603.7 503.2,611.5 499.7,608.1 499.7,604.7 "
                        id="polygon4902" />
                   </g>
                   <g
                      id="g4904">
                     <polygon
                        style="fill:#c9c9c9"
-                       points="505.5,612.5 503.2,611.7 503.2,603.7 505.5,605.2 "
+                       points="503.2,603.7 505.5,605.2 505.5,612.5 503.2,611.7 "
                        id="polygon4906" />
                   </g>
                 </g>
@@ -765,7 +788,7 @@
             <polygon
                style="fill:none;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="502.9,611.4 505.5,612.8 505.5,605.2 503.2,603.7 499.7,604.7 499.7,608 "
+               points="505.5,605.2 503.2,603.7 499.7,604.7 499.7,608 502.9,611.4 505.5,612.8 "
                id="polygon4908" />
           </g>
         </g>
@@ -807,7 +830,7 @@
             <polygon
                style="fill:#adadad;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="488.6,232 492.2,219.5 488.7,217 478.1,232.5 "
+               points="488.7,217 478.1,232.5 488.6,232 492.2,219.5 "
                id="polygon4926" />
             <g
                id="g4928">
@@ -818,21 +841,21 @@
                    id="g4932">
                   <polygon
                      style="fill:#ffffff"
-                     points="490.3,218.2 497.8,225.3 497.9,241.6 481.8,245 481.7,230.2 "
+                     points="497.9,241.6 481.8,245 481.7,230.2 490.3,218.2 497.8,225.3 "
                      id="polygon4934" />
                 </g>
                 <g
                    id="g4936">
                   <polygon
                      style="fill:#c9c9c9"
-                     points="508.5,245.5 497.7,241.8 497.7,225.9 508.5,233 "
+                     points="497.7,225.9 508.5,233 508.5,245.5 497.7,241.8 "
                      id="polygon4938" />
                 </g>
                 <g
                    id="g4940">
                   <polygon
                      style="fill:#adadad"
-                     points="496.4,247.4 481.6,245 497.7,241.5 508.6,245.4 "
+                     points="497.7,241.5 508.6,245.4 496.4,247.4 481.6,245 "
                      id="polygon4942" />
                 </g>
               </g>
@@ -840,7 +863,7 @@
             <polygon
                style="fill:none;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="496.3,247.5 508.5,245.5 508.5,233 504.2,226.5 490.9,218.6 490.3,218.4 481.6,230.7 481.7,245.2 "
+               points="508.5,233 504.2,226.5 490.9,218.6 490.3,218.4 481.6,230.7 481.7,245.2 496.3,247.5 508.5,245.5 "
                id="polygon4944" />
             <polyline
                style="fill:#c9c9c9;stroke:#666665;stroke-miterlimit:10"
@@ -849,7 +872,7 @@
                id="polyline4946" />
             <polygon
                style="fill:#adadad"
-               points="491.4,232.8 491.4,241.9 486.8,242.9 486.8,234 "
+               points="486.8,242.9 486.8,234 491.4,232.8 491.4,241.9 "
                id="polygon4948" />
             <g
                id="g4950">
@@ -862,14 +885,14 @@
                      id="g4956">
                     <polygon
                        style="fill:#ffffff"
-                       points="497.6,223.3 497.6,220 501.1,219 501.1,226.8 "
+                       points="501.1,219 501.1,226.8 497.6,223.3 497.6,220 "
                        id="polygon4958" />
                   </g>
                   <g
                      id="g4960">
                     <polygon
                        style="fill:#c9c9c9"
-                       points="503.5,227.7 501.1,226.9 501.1,219 503.5,220.5 "
+                       points="501.1,219 503.5,220.5 503.5,227.7 501.1,226.9 "
                        id="polygon4962" />
                   </g>
                 </g>
@@ -878,7 +901,7 @@
             <polygon
                style="fill:none;stroke:#666665;stroke-miterlimit:10"
                stroke-miterlimit="10"
-               points="500.8,226.7 503.5,228.1 503.5,220.5 501.1,219 497.6,220 497.6,223.2 "
+               points="503.5,220.5 501.1,219 497.6,220 497.6,223.2 500.8,226.7 503.5,228.1 "
                id="polygon4964" />
           </g>
         </g>
@@ -1208,7 +1231,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Z and E controls"
-     style="display:inline">
+     style="display:none">
     <g
        style="font-size:9.31507587px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:outage;-inkscape-font-specification:outage"
        id="text8331" />
