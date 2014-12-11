@@ -29,7 +29,6 @@ class simpleModePanel(wx.Panel):
 		else:
 			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS', style=wx.RB_GROUP)
 		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA')
-		self.printMaterialDiameter = wx.TextCtrl(printMaterialPanel, -1, profile.getProfileSetting('filament_diameter'))
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
 		
@@ -55,8 +54,6 @@ class simpleModePanel(wx.Panel):
 			boxsizer.Add(self.printMaterialHIPS)
 		boxsizer.Add(self.printMaterialABS)
 		boxsizer.Add(self.printMaterialPLA)
-		boxsizer.Add(wx.StaticText(printMaterialPanel, -1, _("Diameter:")))
-		boxsizer.Add(self.printMaterialDiameter)
 		printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
@@ -79,7 +76,6 @@ class simpleModePanel(wx.Panel):
 		self.printMaterialABS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			self.printMaterialHIPS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		self.printMaterialDiameter.Bind(wx.EVT_TEXT, lambda e: self._callback())
 
 		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
 		self.printBrim.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
@@ -94,6 +90,7 @@ class simpleModePanel(wx.Panel):
 
 # LulzBot Mini slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini':
+			put('filament_diameter', '2.85')
 			put('nozzle_size', '0.5')
 			put('wall_thickness', '1')
 			put('fill_density', '20')
@@ -123,6 +120,7 @@ class simpleModePanel(wx.Panel):
 				put('cool_min_layer_time', '15')
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+;Filament diameter: {filament_diameter}
 ;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
 ;M109 S{print_temperature} ;Uncomment to add your own temperature line
 G21                          ; metric values
@@ -293,6 +291,7 @@ G90                             ; absolute positioning
 				put('fan_speed_max', '100')
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+;Filament Diameter: {filament_diameter}
 ;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
 ;M109 S{print_temperature} ;Uncomment to add your own temperature line
 G21                          ; metric values
@@ -368,10 +367,10 @@ G90                                          ; absolute positioning
 					put('layer_height', '0.25')
 				if self.printTypeHigh.GetValue():
 					put('layer_height', '0.14')				
-			put('filament_diameter', self.printMaterialDiameter.GetValue())
 			put('plugin_config', '')
 ### LulzBot TAZ slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
+			put('filament_diameter', '2.85')
 			put('nozzle_size', '0.35')
 			put('wall_thickness', '1.05')
 			put('solid_layer_thickness', '0.84')
@@ -386,6 +385,7 @@ G90                                          ; absolute positioning
 			put('start.gcode', """;This Gcode has been generated specifically for the LulzBot TAZ
 	;Sliced at: {day} {date} {time}
 	;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+	;Filament Diameter: {filament_diameter}
 	;Print time: {print_time}
 	;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
 	;M109 S{print_temperature} ;Uncomment to add your own temperature line
@@ -532,7 +532,7 @@ G90                                          ; absolute positioning
 				put('wall_thickness', nozzle_size * 1.5)
 			if self.printSupport.GetValue():
 				put('support', _("Exterior Only"))
-			put('filament_diameter', self.printMaterialDiameter.GetValue())
+			put('filament_diameter', '2.85')
 			if self.printMaterialPLA.GetValue():
 				pass
 			if self.printMaterialABS.GetValue():
