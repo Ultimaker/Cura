@@ -24,6 +24,9 @@ class PrinterApplication(QtApplication):
         root = self.getController().getScene().getRoot()
         platform = Platform(root)
 
+        mesh = SceneNode(platform)
+        mesh.setMeshData(self.getMeshFileHandler().read(Resources.getPath(Resources.MeshesLocation, 'UltimakerRobot_support.stl'), self.getStorageDevice('local')))
+
         try:
             self.getMachineSettings().loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'ultimaker2.cfg'))
         except FileNotFoundError:
