@@ -494,7 +494,6 @@ G90                                          ; absolute positioning
 				put('platform_adhesion', 'Brim')
 				put('filament_flow', '107')
 				put('print_temperature', '245')
-			put('plugin_config', '')
 
 	def updateProfileToControls(self):
 		pass
