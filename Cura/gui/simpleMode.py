@@ -94,12 +94,11 @@ class simpleModePanel(wx.Panel):
 			put('nozzle_size', '0.5')
 			put('wall_thickness', '1')
 			put('fill_density', '20')
-			put('retraction_amount', '1.5')
+			put('retraction_speed', '10')
 			put('retraction_hop', '0.1')
 			put('bottom_thickness', '0.425')
 			put('layer0_width_factor', '125')
 			put('travel_speed', '175')
-			put('bottom_layer_speed', '25')
 			put('skirt_minimal_length', '250')
 			put('cool_min_feedrate', '10')
 			put('brim_line_count', '10')
@@ -114,21 +113,24 @@ class simpleModePanel(wx.Panel):
 			if self.printBrim.GetValue():
 				put('platform_adhesion', 'Brim')
 			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
-				put('print_temperature', '230')
+				put('print_temperature', '240')
 				put('solid_layer_thickness', '0.8')
-				put('retraction_speed', '25')
+				put('retraction_amount', '1')
+				put('bottom_layer_speed', '25')
 				put('cool_min_layer_time', '15')
+				put('fan_full_height', '0.5')
+				put('fan_speed', '40')
+				put('fan_speed_max', '50')
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
-;Filament diameter: {filament_diameter}
-;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
-;M109 S{print_temperature} ;Uncomment to add your own temperature line
+;Filament Diameter: {filament_diameter}
+;Nozzle Size: {nozzle_size}
 G21                          ; metric values
 G90                          ; absolute positioning
 M82                          ; set extruder to absolute mode
 M107                         ; start with the fan off
 G92 E0                       ; set extruder position to 0
-M140 S{print_bed_temperature}; get bed heating up
+M140 S110                    ; get bed heating up
 G28                          ; home all
 M109 S150                    ; set to cleaning temp and wait
 G1 Z150 E-30 F75             ; suck up XXmm of filament
@@ -192,56 +194,12 @@ G90                             ; absolute positioning
 """)
 				if self.printMaterialHIPS.GetValue():
 					put('print_bed_temperature', '100')
-					put('fan_full_height', '2')
-					put('fan_speed', '60')
-					put('fan_speed_max', '80')
-					put('plugin_config', """(lp1
-	(dp2
-	S'params'
-	p3
-	(dp4
-	S'targetL'
-	p5
-	V3
-	sS'extruderTwo'
-	p6
-	V
-	sS'flowrateTwo'
-	p7
-	V
-	sS'targetZ'
-	p8
-	V
-	sS'flowrate'
-	p9
-	V
-	sS'fanSpeed'
-	p10
-	V
-	sS'platformTemp'
-	p11
-	V85
-	p12
-	sS'speed'
-	p13
-	V
-	sS'flowrateOne'
-	p14
-	V
-	sS'extruderOne'
-	p15
-	V
-	ssS'filename'
-	p16
-	S'TweakAtZ.py'
-	p17
-	sa.""")
 					if self.printTypeLow.GetValue():
 						put('layer_height', '0.38')
 						put('print_speed', '85')
-						put('infill_speed', '110')
-						put('inset0_speed', '70')
-						put('insetx_speed', '80')
+						put('infill_speed', '70')
+						put('inset0_speed', '40')
+						put('insetx_speed', '45')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.25')
 						put('print_speed', '50')
@@ -249,39 +207,38 @@ G90                             ; absolute positioning
 						put('inset0_speed', '40')
 						put('insetx_speed', '45')
 					if self.printTypeHigh.GetValue():
-						put('layer_height', '0.14')
+						put('layer_height', '0.16')
 						put('print_speed', '30')
 						put('infill_speed', '50')
 						put('inset0_speed', '20')
 						put('insetx_speed', '25')
 				if self.printMaterialABS.GetValue():
 					put('print_bed_temperature', '110')
-					put('fan_full_height', '3')
-					put('fan_speed', '40')
-					put('fan_speed_max', '50')
 					if self.printTypeLow.GetValue():
 						put('layer_height', '0.38')
 						put('print_speed', '85')
-						put('infill_speed', '70')
-						put('inset0_speed', '40')
-						put('insetx_speed', '45')
+						put('infill_speed', '65')
+						put('inset0_speed', '45')
+						put('insetx_speed', '55')
 					if self.printTypeNormal.GetValue():
 						put('layer_height', '0.25')
-						put('print_speed', '50')
-						put('infill_speed', '70')
-						put('inset0_speed', '40')
-						put('insetx_speed', '45')
-					if self.printTypeHigh.GetValue():
-						put('layer_height', '0.14')
 						put('print_speed', '50')
 						put('infill_speed', '55')
 						put('inset0_speed', '45')
 						put('insetx_speed', '50')
+					if self.printTypeHigh.GetValue():
+						put('layer_height', '0.18')
+						put('print_speed', '50')
+						put('infill_speed', '40')
+						put('inset0_speed', '30')
+						put('insetx_speed', '35')
 			elif self.printMaterialPLA.GetValue():
 				put('print_temperature', '200')
 				put('print_bed_temperature', '65')
 				put('solid_layer_thickness', '1')
-				put('retraction_speed', '10')
+				put('print_speed', '50')
+				put('retraction_amount', '1.5')
+				put('bottom_layer_speed', '20')
 				put('infill_speed', '55')
 				put('inset0_speed', '45')
 				put('insetx_speed', '50')
@@ -292,8 +249,7 @@ G90                             ; absolute positioning
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 ;Filament Diameter: {filament_diameter}
-;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line
-;M109 S{print_temperature} ;Uncomment to add your own temperature line
+;Nozzle Size: {nozzle_size}
 G21                          ; metric values
 G90                          ; absolute positioning
 M82                          ; set extruder to absolute mode
@@ -345,7 +301,6 @@ M109 S{print_temperature}    ; set extruder temp and wait
 G4 S15                       ; wait for bed to temp up
 G1 Z2 E0 F75                 ; extrude filament back into nozzle
 M140 S{print_bed_temperature}; get bed temping up during first layer
-
 """)
 				put('end.gcode', """
 M400
@@ -367,7 +322,6 @@ G90                                          ; absolute positioning
 					put('layer_height', '0.25')
 				if self.printTypeHigh.GetValue():
 					put('layer_height', '0.14')				
-			put('plugin_config', '')
 ### LulzBot TAZ slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			put('filament_diameter', '2.85')
