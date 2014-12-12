@@ -6,6 +6,8 @@ from Cura.Math.Vector import Vector
 from Cura.Math.Matrix import Matrix
 from Cura.Resources import Resources
 
+from Cura.Scene.BoxRenderer import BoxRenderer
+
 import os.path
 
 class PrinterApplication(QtApplication):
@@ -26,6 +28,10 @@ class PrinterApplication(QtApplication):
 
         mesh = SceneNode(platform)
         mesh.setMeshData(self.getMeshFileHandler().read(Resources.getPath(Resources.MeshesLocation, 'UltimakerRobot_support.stl'), self.getStorageDevice('local')))
+        mesh.rotateByAngleAxis(45, Vector(0, 1, 0))
+        mesh.translate(Vector(0, 10, 0))
+
+        box = BoxRenderer(mesh.getBoundingBox(), root)
 
         try:
             self.getMachineSettings().loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'ultimaker2.cfg'))
