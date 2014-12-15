@@ -1,12 +1,12 @@
-from Cura.Qt.QtApplication import QtApplication
-from Cura.Scene.SceneNode import SceneNode
-from Cura.Scene.Camera import Camera
-from Cura.Scene.Platform import Platform
-from Cura.Math.Vector import Vector
-from Cura.Math.Matrix import Matrix
-from Cura.Resources import Resources
+from UM.Qt.QtApplication import QtApplication
+from UM.Scene.SceneNode import SceneNode
+from UM.Scene.Camera import Camera
+from UM.Scene.Platform import Platform
+from UM.Math.Vector import Vector
+from UM.Math.Matrix import Matrix
+from UM.Resources import Resources
 
-from Cura.Scene.BoxRenderer import BoxRenderer
+from UM.Scene.BoxRenderer import BoxRenderer
 
 import os.path
 
