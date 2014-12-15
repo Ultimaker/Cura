@@ -1,4 +1,4 @@
-from Cura.Backend.Command import Command
+from UM.Backend.Command import Command
 
 class TransferVerticeListCommand(Command):
     def __init__(self):

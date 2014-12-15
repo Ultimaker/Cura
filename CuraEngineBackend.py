@@ -1,4 +1,4 @@
-from Cura.Backend.Backend import Backend
+from UM.Backend.Backend import Backend
 
 class CuraEngineBackend(Backend):
     def __init__(self):

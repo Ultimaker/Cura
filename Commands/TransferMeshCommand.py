@@ -1,5 +1,5 @@
-from Cura.Backend.Command import Command
-from Cura.plugins.CuraBackendEngine.Commands.TransferVertCommand import TransferVertCommand
+from UM.Backend.Command import Command
+from UM.plugins.CuraBackendEngine.Commands.TransferVertCommand import TransferVertCommand
 
 class TransferMeshCommand(Command):
     def __init__(self):
