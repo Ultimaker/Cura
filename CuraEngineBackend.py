@@ -1,5 +1,5 @@
 from UM.Backend.Backend import Backend
 
-class UMEngineBackend(Backend):
+class CuraEngineBackend(Backend):
     def __init__(self):
-        super(UMEngineBackend,self).__init__()
+        super(CuraEngineBackend,self).__init__()
