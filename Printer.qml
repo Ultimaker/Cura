@@ -2,8 +2,8 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 
-import Cura 1.0 as Cura
+import UM 1.0 as UM
 
-Cura.DefaultWindow {
-    title: "Cura"
+UM.DefaultWindow {
+    title: "UM"
 }
