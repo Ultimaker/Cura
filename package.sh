@@ -108,8 +108,8 @@ cd "$SCRIPT_DIR"
 
 checkTool git "git: http://git-scm.com/"
 checkTool curl "curl: http://curl.haxx.se/"
-checkTool avr-gcc "avr-gcc: http://winavr.sourceforge.net/ "
 if [ $BUILD_TARGET = "win32" ]; then
+	checkTool avr-gcc "avr-gcc: http://winavr.sourceforge.net/ "
 	#Check if we have 7zip, needed to extract and packup a bunch of packages for windows.
 	checkTool 7z "7zip: http://www.7-zip.org/"
 	checkTool $MAKE "mingw: http://www.mingw.org/"
