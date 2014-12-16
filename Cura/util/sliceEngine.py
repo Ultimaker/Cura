@@ -265,6 +265,7 @@ class Engine(object):
 
 	def cleanup(self):
 		self.abortEngine()
+		self.wait()
 		self._serversocket.close()
 
 	def abortEngine(self):
@@ -273,9 +274,6 @@ class Engine(object):
 				self._process.terminate()
 			except:
 				pass
-		if self._thread is not None:
-			self._thread.join()
-		self._thread = None
 
 	def wait(self):
 		if self._thread is not None:
