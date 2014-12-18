@@ -22,15 +22,19 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "MeshHandler" })
         self._plugin_registry.loadPlugins({ "type": "Tool" })
         
-        self.getController().setActiveView("MeshView")
+        controller = self.getController()
 
-        root = self.getController().getScene().getRoot()
-        platform = Platform(root)
+        controller.setActiveView("MeshView")
+        controller.setCameraTool("CameraTool")
+        controller.setSelectionTool("SelectionTool")
 
         try:
             self.getMachineSettings().loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'ultimaker2.cfg'))
         except FileNotFoundError:
             pass
+
+        root = controller.getScene().getRoot()
+        platform = Platform(root)
 
         self.getRenderer().setLightPosition(Vector(0, 150, 150))
 
@@ -66,7 +70,7 @@ class PrinterApplication(QtApplication):
         camera.lookAt(Vector(0, 50, 0), Vector(0, 1, 0))
         camera.setLocked(True)
 
-        self.getController().getScene().setActiveCamera('3d')
+        controller.getScene().setActiveCamera('3d')
 
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
         self.initializeEngine()
