@@ -452,9 +452,9 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ')
 				profile.putMachineSetting('serial_baud', '115200')
 			else:
-				profile.putMachineSetting('machine_width', '158')
-				profile.putMachineSetting('machine_depth', '158')
-				profile.putMachineSetting('machine_height', '155')
+				profile.putMachineSetting('machine_width', '155')
+				profile.putMachineSetting('machine_depth', '155')
+				profile.putMachineSetting('machine_height', '163')
 				profile.putProfileSetting('nozzle_size', '0.5')
 				profile.putMachineSetting('machine_name', 'LulzBot Mini')
 				profile.putMachineSetting('machine_type', 'lulzbot_mini')
