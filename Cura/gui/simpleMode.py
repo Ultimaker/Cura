@@ -193,7 +193,7 @@ G90                             ; absolute positioning
 ;{profile_string}
 """)
 				if self.printMaterialHIPS.GetValue():
-					put('print_bed_temperature', '100')
+					put('print_bed_temperature', '97')
 					if self.printTypeLow.GetValue():
 						put('layer_height', '0.38')
 						put('print_speed', '85')
@@ -213,7 +213,7 @@ G90                             ; absolute positioning
 						put('inset0_speed', '20')
 						put('insetx_speed', '25')
 				if self.printMaterialABS.GetValue():
-					put('print_bed_temperature', '110')
+					put('print_bed_temperature', '104')
 					if self.printTypeLow.GetValue():
 						put('layer_height', '0.38')
 						put('print_speed', '85')
@@ -233,18 +233,18 @@ G90                             ; absolute positioning
 						put('inset0_speed', '30')
 						put('insetx_speed', '35')
 			elif self.printMaterialPLA.GetValue():
-				put('print_temperature', '200')
-				put('print_bed_temperature', '65')
+				put('print_temperature', '205')
+				put('print_bed_temperature', '60')
 				put('solid_layer_thickness', '1')
 				put('print_speed', '50')
 				put('retraction_amount', '1.5')
-				put('bottom_layer_speed', '20')
-				put('infill_speed', '55')
-				put('inset0_speed', '45')
-				put('insetx_speed', '50')
+				put('bottom_layer_speed', '15')
+				put('infill_speed', '40')
+				put('inset0_speed', '30')
+				put('insetx_speed', '35')
 				put('cool_min_layer_time', '20')
-				put('fan_full_height', '1')
-				put('fan_speed', '100')
+				put('fan_full_height', '0.5')
+				put('fan_speed', '75')
 				put('fan_speed_max', '100')
 				put('start.gcode', """;This Gcode has been generated specifically for the LulzBot Mini
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
