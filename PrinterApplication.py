@@ -12,7 +12,8 @@ import os.path
 
 class PrinterApplication(QtApplication):
     def __init__(self):
-        super(PrinterApplication, self).__init__()
+        super().__init__()
+        self.setApplicationName('printer')
         
     def run(self):
         self._plugin_registry.loadPlugins({ "type": "Logger"})
