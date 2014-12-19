@@ -13,16 +13,6 @@ class configPanelBase(wx.Panel):
 		super(configPanelBase, self).__init__(parent)
 		
 		self.settingControlList = []
-		
-		#Create the popup window
-		self.popup = wx.PopupWindow(self, flags=wx.BORDER_SIMPLE)
-		self.popup.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_INFOBK))
-		self.popup.setting = None
-		self.popup.text = wx.StaticText(self.popup, -1, '')
-		self.popup.text.SetForegroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_INFOTEXT))
-		self.popup.sizer = wx.BoxSizer()
-		self.popup.sizer.Add(self.popup.text, flag=wx.EXPAND|wx.ALL, border=1)
-		self.popup.SetSizer(self.popup.sizer)
 
 		self._callback = changeCallback
 	
@@ -80,32 +70,7 @@ class configPanelBase(wx.Panel):
 		nb.AddPage(configPanel, name)
 
 		return leftConfigPanel, rightConfigPanel, configPanel
-
-	def OnPopupDisplay(self, setting):
-		self.popup.setting = setting
-		self.UpdatePopup(setting)
-		self.popup.Show(True)
-		
-	def OnPopupHide(self, e):
-		self.popup.Show(False)
-	
-	def UpdatePopup(self, setting):
-		if self.popup.setting == setting:
-			if setting.validationMsg != '':
-				self.popup.text.SetLabel(setting.validationMsg + '\n\n' + setting.setting.getTooltip())
-			else:
-				self.popup.text.SetLabel(setting.setting.getTooltip())
-			self.popup.text.Wrap(350)
-			self.popup.Fit()
-			x, y = setting.ctrl.ClientToScreenXY(0, 0)
-			sx, sy = setting.ctrl.GetSizeTuple()
-			#if platform.system() == "Windows":
-			#	for some reason, under windows, the popup is relative to the main window... in some cases. (Wierd ass bug)
-			#	wx, wy = self.ClientToScreenXY(0, 0)
-			#	x -= wx
-			#	y -= wy
-			self.popup.SetPosition((x, y+sy))
-	
+    
 	def updateProfileToControls(self):
 		"Update the configuration wx controls to show the new configuration settings"
 		for setting in self.settingControlList:
@@ -158,7 +123,6 @@ class SettingRow(object):
 
 		self.label = wx.lib.stattext.GenStaticText(panel, -1, self.setting.getLabel())
 		self.label.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
-		self.label.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseExit)
 
 		#if self.setting.getType() is types.FloatType and False:
 		#	digits = 0
@@ -201,10 +165,8 @@ class SettingRow(object):
 		sizer.SetRows(x+1)
 
 		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
-		self.ctrl.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseExit)
 		if isinstance(self.ctrl, floatspin.FloatSpin):
 			self.ctrl.GetTextCtrl().Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
-			self.ctrl.GetTextCtrl().Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseExit)
 			self.defaultBGColour = self.ctrl.GetTextCtrl().GetBackgroundColour()
 		else:
 			self.defaultBGColour = self.ctrl.GetBackgroundColour()
@@ -212,10 +174,10 @@ class SettingRow(object):
 		panel.main.settingControlList.append(self)
 
 	def OnMouseEnter(self, e):
-		self.panel.main.OnPopupDisplay(self)
+		self.label.SetToolTipString(self.setting.getTooltip())
 
 	def OnMouseExit(self, e):
-		self.panel.main.OnPopupHide(self)
+		self.label.SetToolTipString('')
 		e.Skip()
 
 	def OnSettingChange(self, e):
@@ -237,7 +199,6 @@ class SettingRow(object):
 		ctrl.Refresh()
 
 		self.validationMsg = msg
-		self.panel.main.UpdatePopup(self)
 
 	def GetValue(self):
 		if isinstance(self.ctrl, wx.ColourPickerCtrl):
