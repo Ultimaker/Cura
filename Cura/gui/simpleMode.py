@@ -65,7 +65,10 @@ class simpleModePanel(wx.Panel):
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		self.printTypeNormal.SetValue(True)
-		self.printMaterialPLA.SetValue(True)
+		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
+			self.printMaterialHIPS.SetValue(True)
+		else:
+			self.printMaterialPLA.SetValue(True)
 
 		self.printTypeHigh.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 		self.printTypeNormal.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
