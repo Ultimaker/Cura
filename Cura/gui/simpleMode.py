@@ -1,8 +1,11 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+import ConfigParser as configparser
+import os.path
 
 from Cura.util import profile
+from Cura.util import resources
 
 class simpleModePanel(wx.Panel):
 	"Main user interface window for Quickprint mode"
@@ -10,22 +13,30 @@ class simpleModePanel(wx.Panel):
 		super(simpleModePanel, self).__init__(parent)
 		self._callback = callback
 
-		#toolsMenu = wx.Menu()
-		#i = toolsMenu.Append(-1, 'Switch to Normal mode...')
-		#self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
-		#self.menubar.Insert(1, toolsMenu, 'Normal mode')
+		self._print_profile_options = []
+		self._print_material_options = []
 
 		printTypePanel = wx.Panel(self)
-		self.printTypeHigh = wx.RadioButton(printTypePanel, -1, _("High quality print"), style=wx.RB_GROUP)
-		self.printTypeNormal = wx.RadioButton(printTypePanel, -1, _("Normal quality print"))
-		self.printTypeLow = wx.RadioButton(printTypePanel, -1, _("Fast low quality print"))
-		self.printTypeJoris = wx.RadioButton(printTypePanel, -1, _("Thin walled cup or vase"))
-		self.printTypeJoris.Hide()
+		for filename in resources.getSimpleModeProfiles():
+			cp = configparser.ConfigParser()
+			cp.read(filename)
+			name = os.path.basename(filename)
+			if cp.has_option('info', 'name'):
+				name = cp.get('info', 'name')
+			button = wx.RadioButton(printTypePanel, -1, name, style=wx.RB_GROUP if len(self._print_profile_options) == 0 else 0)
+			button.filename = filename
+			self._print_profile_options.append(button)
 
 		printMaterialPanel = wx.Panel(self)
-		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA', style=wx.RB_GROUP)
-		self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS')
-		self.printMaterialDiameter = wx.TextCtrl(printMaterialPanel, -1, profile.getProfileSetting('filament_diameter'))
+		for filename in resources.getSimpleModeMaterials():
+			cp = configparser.ConfigParser()
+			cp.read(filename)
+			name = os.path.basename(filename)
+			if cp.has_option('info', 'name'):
+				name = cp.get('info', 'name')
+			button = wx.RadioButton(printMaterialPanel, -1, name, style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
+			button.filename = filename
+			self._print_material_options.append(button)
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
 		
@@ -36,20 +47,16 @@ class simpleModePanel(wx.Panel):
 
 		sb = wx.StaticBox(printTypePanel, label=_("Select a quickprint profile:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		boxsizer.Add(self.printTypeHigh)
-		boxsizer.Add(self.printTypeNormal)
-		boxsizer.Add(self.printTypeLow)
-		boxsizer.Add(self.printTypeJoris, border=5, flag=wx.TOP)
+		for button in self._print_profile_options:
+			boxsizer.Add(button)
 		printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printTypePanel, (0,0), flag=wx.EXPAND)
 
 		sb = wx.StaticBox(printMaterialPanel, label=_("Material:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		boxsizer.Add(self.printMaterialPLA)
-		boxsizer.Add(self.printMaterialABS)
-		boxsizer.Add(wx.StaticText(printMaterialPanel, -1, _("Diameter:")))
-		boxsizer.Add(self.printMaterialDiameter)
+		for button in self._print_material_options:
+			boxsizer.Add(button)
 		printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
@@ -59,61 +66,41 @@ class simpleModePanel(wx.Panel):
 		boxsizer.Add(self.printSupport)
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
-		self.printTypeNormal.SetValue(True)
-		self.printMaterialPLA.SetValue(True)
-
-		self.printTypeHigh.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		self.printTypeNormal.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		self.printTypeLow.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		#self.printTypeJoris.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-
-		self.printMaterialPLA.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		self.printMaterialABS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		self.printMaterialDiameter.Bind(wx.EVT_TEXT, lambda e: self._callback())
+		for button in self._print_profile_options:
+			button.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+		for button in self._print_material_options:
+			button.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 
 		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
 
-	def setupSlice(self):
-		put = profile.setTempOverride
-		get = profile.getProfileSetting
+	def getSettingOverrides(self):
+		settings = {}
 		for setting in profile.settingsList:
 			if not setting.isProfile():
 				continue
-			profile.setTempOverride(setting.getName(), setting.getDefault())
+			settings[setting.getName()] = setting.getDefault()
+
+		for button in self._print_profile_options:
+			if button.GetValue():
+				cp = configparser.ConfigParser()
+				cp.read(button.filename)
+				for setting in profile.settingsList:
+					if setting.isProfile():
+						if cp.has_option('profile', setting.getName()):
+							settings[setting.getName()] = cp.get('profile', setting.getName())
+		if profile.getMachineSetting('gcode_flavor') != 'UltiGCode':
+			for button in self._print_material_options:
+				if button.GetValue():
+					cp = configparser.ConfigParser()
+					cp.read(button.filename)
+					for setting in profile.settingsList:
+						if setting.isProfile():
+							if cp.has_option('profile', setting.getName()):
+								settings[setting.getName()] = cp.get('profile', setting.getName())
 
 		if self.printSupport.GetValue():
-			put('support', _("Exterior Only"))
-
-		nozzle_size = float(get('nozzle_size'))
-		if self.printTypeNormal.GetValue():
-			put('layer_height', '0.2')
-			put('wall_thickness', nozzle_size * 2.0)
-			put('layer_height', '0.10')
-			put('fill_density', '20')
-		elif self.printTypeLow.GetValue():
-			put('wall_thickness', nozzle_size * 2.5)
-			put('layer_height', '0.20')
-			put('fill_density', '10')
-			put('print_speed', '60')
-			put('cool_min_layer_time', '3')
-			put('bottom_layer_speed', '30')
-		elif self.printTypeHigh.GetValue():
-			put('wall_thickness', nozzle_size * 2.0)
-			put('layer_height', '0.06')
-			put('fill_density', '20')
-			put('bottom_layer_speed', '15')
-		elif self.printTypeJoris.GetValue():
-			put('wall_thickness', nozzle_size * 1.5)
-
-		put('filament_diameter', self.printMaterialDiameter.GetValue())
-		if self.printMaterialPLA.GetValue():
-			pass
-		if self.printMaterialABS.GetValue():
-			put('print_bed_temperature', '100')
-			put('platform_adhesion', 'Brim')
-			put('filament_flow', '107')
-			put('print_temperature', '245')
-		put('plugin_config', '')
+			settings['support'] = "Exterior Only"
+		return settings
 
 	def updateProfileToControls(self):
 		pass

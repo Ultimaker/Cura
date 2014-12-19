@@ -36,6 +36,9 @@ class _objectOrderFinder(object):
 		for n in xrange(0, len(self._objs)):
 			if scene.checkPlatform(self._objs[n]):
 				initialList.append(n)
+		if len(initialList) == 1:
+			self.order = initialList
+			return
 		for n in initialList:
 			if self._objs[n].getSize()[2] > gantryHeight and len(initialList) > 1:
 				self.order = None

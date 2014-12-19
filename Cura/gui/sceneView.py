@@ -550,10 +550,9 @@ class SceneView(openglGui.glGuiPanel):
 
 	def _onRunEngine(self, e):
 		if self._isSimpleMode:
-			self.GetTopLevelParent().simpleSettingsPanel.setupSlice()
-		self._engine.runEngine(self._scene)
-		if self._isSimpleMode:
-			profile.resetTempOverride()
+			self._engine.runEngine(self._scene, self.GetTopLevelParent().simpleSettingsPanel.getSettingOverrides())
+		else:
+			self._engine.runEngine(self._scene)
 
 	def _updateEngineProgress(self, progressValue):
 		result = self._engine.getResult()
