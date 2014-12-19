@@ -7,6 +7,7 @@ from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
 
 from UM.Scene.BoxRenderer import BoxRenderer
+from UM.Scene.Selection import Selection
 
 import os.path
 
@@ -27,6 +28,8 @@ class PrinterApplication(QtApplication):
         controller.setActiveView("MeshView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
+
+        Selection.selectionChanged.connect(self.onSelectionChanged)
 
         try:
             self.getMachineSettings().loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'ultimaker2.cfg'))
@@ -82,3 +85,11 @@ class PrinterApplication(QtApplication):
 
     def registerObjects(self, engine):
         pass
+
+    def onSelectionChanged(self):
+        if Selection.getCount() > 0:
+            if not self.getController().getActiveTool():
+                self.getController().setActiveTool('TranslateTool')
+        else:
+            if self.getController().getActiveTool() and self.getController().getActiveTool().getName() == 'TranslateTool':
+                self.getController().setActiveTool(None)
