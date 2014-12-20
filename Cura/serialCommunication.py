@@ -8,6 +8,7 @@ And handles all communication with the initial process.
 
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import sys
+import threading
 import time
 import os
 import json
@@ -46,8 +47,8 @@ class serialComm(object):
 	def mcProgress(self, lineNr):
 		sys.stdout.write('progress:%d\n' % (lineNr))
 
-	#def mcZChange(self, newZ):
-	#	sys.stdout.write('changeZ:%d\n' % (newZ))
+	def mcZChange(self, newZ):
+		pass
 
 	def monitorStdin(self):
 		while not self._comm.isClosed():
@@ -68,7 +69,10 @@ class serialComm(object):
 def startMonitor(portName, baudrate):
 	sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 	comm = serialComm(portName, baudrate)
-	comm.monitorStdin()
+	thread = threading.Thread(target=comm.monitorStdin)
+	thread.start()
+	while thread.is_alive():
+		time.sleep(0)
 
 def main():
 	if len(sys.argv) != 3:
