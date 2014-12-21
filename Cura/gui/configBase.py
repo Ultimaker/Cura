@@ -22,7 +22,7 @@ class configPanelBase(wx.Panel):
 		return leftConfigPanel, rightConfigPanel
 	
 	def CreateConfigPanel(self, parent):
-		configPanel = wx.Panel(parent);
+		configPanel = wx.Panel(parent)
 		leftConfigPanel = wx.Panel(configPanel)
 		rightConfigPanel = wx.Panel(configPanel)
 

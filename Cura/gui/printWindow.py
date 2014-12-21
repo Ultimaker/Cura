@@ -136,14 +136,23 @@ class printWindowPlugin(wx.Frame):
 		x, y, w, h = self._getColoredRect(r, g, b)
 		if x < 0:
 			return
+
+		def run_command(spinner):
+			value = spinner.GetValue()
+			if spinner.last_value != value:
+				if spinner.last_value != '' and value != 0:
+					spinner.command(spinner.data % value)
+				spinner.last_value = value
+
 		spinner = wx.SpinCtrl(self, -1, style=wx.TE_PROCESS_ENTER)
 		spinner.SetRange(0, 300)
 		spinner.SetPosition((x, y))
 		spinner.SetSize((w, h))
 		spinner.command = command
 		spinner.data = data
+		spinner.last_value = ''
 		self._buttonList.append(spinner)
-		self.Bind(wx.EVT_SPINCTRL, lambda e: command(data % (spinner.GetValue())), spinner)
+		self.Bind(wx.EVT_SPINCTRL, lambda e: run_command(spinner), spinner)
 
 	def _getColoredRect(self, r, g, b):
 		for x in xrange(0, self._mapImage.GetWidth()):
