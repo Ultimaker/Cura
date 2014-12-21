@@ -340,7 +340,6 @@ class SceneView(openglGui.glGuiPanel):
 			else:
 				self.notification.message("Saved as %s" % (targetFilename))
 		self.printButton.setProgressBar(None)
-		self._engine.getResult().submitInfoOnline()
 
 	def _doEjectSD(self, drive):
 		if removableStorage.ejectDrive(drive):
