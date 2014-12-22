@@ -397,10 +397,10 @@ class Engine(object):
 			logThread.join()
 			self._result.addLog("Slicer process returned : %d" % returnCode)
 			if returnCode == 0:
-				self._result.setFinished(True)
 				plugin_error = pluginInfo.runPostProcessingPlugins(self._result, pluginConfig)
 				if plugin_error is not None:
 					self._result.addLog(plugin_error)
+				self._result.setFinished(True)
 				self._callback(1.0)
 			else:
 				self._callback(-1.0)
