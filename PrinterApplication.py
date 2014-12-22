@@ -9,12 +9,16 @@ from UM.Resources import Resources
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
 
+from PlatformPhysics import PlatformPhysics
+
 import os.path
 
 class PrinterApplication(QtApplication):
     def __init__(self):
         super().__init__()
         self.setApplicationName('printer')
+
+        self._physics = None
         
     def run(self):
         self._plugin_registry.loadPlugins({ "type": "Logger"})
@@ -29,7 +33,13 @@ class PrinterApplication(QtApplication):
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
+        t = controller.getTool('TranslateTool')
+        if t:
+            t.setYRange(0.0, 0.0)
+
         Selection.selectionChanged.connect(self.onSelectionChanged)
+
+        self._physics = PlatformPhysics(controller)
 
         try:
             self.getMachineSettings().loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'ultimaker2.cfg'))
@@ -90,6 +100,8 @@ class PrinterApplication(QtApplication):
         if Selection.getCount() > 0:
             if not self.getController().getActiveTool():
                 self.getController().setActiveTool('TranslateTool')
+
+            self.getController().getTool('CameraTool').setOrigin(Selection.getSelectedObject(0).getGlobalPosition())
         else:
             if self.getController().getActiveTool() and self.getController().getActiveTool().getName() == 'TranslateTool':
                 self.getController().setActiveTool(None)
