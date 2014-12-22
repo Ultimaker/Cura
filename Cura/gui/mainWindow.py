@@ -547,6 +547,14 @@ class mainWindow(wx.Frame):
 
 	def OnNormalSwitch(self, e):
 		profile.putPreference('startMode', 'Normal')
+		dlg = wx.MessageDialog(self, _("Copy the settings from quickprint to your full settings?\n(This will overwrite any full setting modifications you have)"), _("Profile copy"), wx.YES_NO | wx.ICON_QUESTION)
+		result = dlg.ShowModal() == wx.ID_YES
+		dlg.Destroy()
+		if result:
+			profile.resetProfile()
+			for k, v in self.simpleSettingsPanel.getSettingOverrides().items():
+				profile.putProfileSetting(k, v)
+			self.updateProfileToAllControls()
 		self.updateSliceMode()
 
 	def OnDefaultMarlinFirmware(self, e):
