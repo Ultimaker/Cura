@@ -76,6 +76,9 @@ class BigDataStorage(object):
 			pos += self._list[self._iter_index].tell()
 		return pos
 
+	def close(self):
+		pass
+
 	def clone(self):
 		clone = BigDataStorage()
 		clone._list = []

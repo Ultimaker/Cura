@@ -404,11 +404,11 @@ class Engine(object):
 			returnCode = self._process.wait()
 			logThread.join()
 			if returnCode == 0:
-				self._result.setFinished(True)
 				plugin_error = pluginInfo.runPostProcessingPlugins(self._result)
 				if plugin_error is not None:
 					print plugin_error
 					self._result.addLog(plugin_error)
+				self._result.setFinished(True)
 				self._callback(1.0)
 			else:
 				for line in self._result.getLog():
