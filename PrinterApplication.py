@@ -10,6 +10,7 @@ from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
 
 from PlatformPhysics import PlatformPhysics
+from BuildVolume import BuildVolume
 
 import os.path
 
@@ -49,7 +50,11 @@ class PrinterApplication(QtApplication):
         root = controller.getScene().getRoot()
         platform = Platform(root)
 
-        self.getRenderer().setLightPosition(Vector(0, 150, 150))
+        volume = BuildVolume(root)
+        volume.translate(Vector(0, 75.1, 0))
+        volume.scale(150.0)
+
+        self.getRenderer().setLightPosition(Vector(0, 150, 0))
 
         camera = Camera('3d', root)
         camera.translate(Vector(0, 150, 150))
