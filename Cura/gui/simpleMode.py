@@ -20,23 +20,32 @@ class simpleModePanel(wx.Panel):
 		for filename in resources.getSimpleModeProfiles():
 			cp = configparser.ConfigParser()
 			cp.read(filename)
-			name = os.path.basename(filename)
+			base_filename = os.path.splitext(os.path.basename(filename))[0]
+			name = base_filename
 			if cp.has_option('info', 'name'):
 				name = cp.get('info', 'name')
 			button = wx.RadioButton(printTypePanel, -1, name, style=wx.RB_GROUP if len(self._print_profile_options) == 0 else 0)
+			button.base_filename = base_filename
 			button.filename = filename
 			self._print_profile_options.append(button)
+			if profile.getPreference('simpleModeProfile') == base_filename:
+				button.SetValue(True)
 
 		printMaterialPanel = wx.Panel(self)
 		for filename in resources.getSimpleModeMaterials():
 			cp = configparser.ConfigParser()
 			cp.read(filename)
-			name = os.path.basename(filename)
+			base_filename = os.path.splitext(os.path.basename(filename))[0]
+			name = base_filename
 			if cp.has_option('info', 'name'):
 				name = cp.get('info', 'name')
 			button = wx.RadioButton(printMaterialPanel, -1, name, style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
+			button.base_filename = base_filename
 			button.filename = filename
 			self._print_material_options.append(button)
+			if profile.getPreference('simpleModeMaterial') == base_filename:
+				button.SetValue(True)
+
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
 		
@@ -67,11 +76,20 @@ class simpleModePanel(wx.Panel):
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		for button in self._print_profile_options:
-			button.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+			button.Bind(wx.EVT_RADIOBUTTON, self._update)
 		for button in self._print_material_options:
-			button.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
+			button.Bind(wx.EVT_RADIOBUTTON, self._update)
 
-		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
+		self.printSupport.Bind(wx.EVT_CHECKBOX, self._update)
+
+	def _update(self, e):
+		for button in self._print_profile_options:
+			if button.GetValue():
+				profile.putPreference('simpleModeProfile', button.base_filename)
+		for button in self._print_material_options:
+			if button.GetValue():
+				profile.putPreference('simpleModeMaterial', button.base_filename)
+		self._callback()
 
 	def getSettingOverrides(self):
 		settings = {}
