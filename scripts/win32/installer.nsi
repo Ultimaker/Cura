@@ -26,6 +26,8 @@ SetCompressor /SOLID lzma
 !include "MUI2.nsh"
 !include "Library.nsh"
 
+!system "check_drivers.bat"
+
 ;--------------------------------
 
 ; StrContains
