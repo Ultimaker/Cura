@@ -51,7 +51,7 @@ class PrinterApplication(QtApplication):
         platform = Platform(root)
 
         volume = BuildVolume(root)
-        volume.translate(Vector(0, 75.1, 0))
+        volume.translate(Vector(0, 73, 0))
         volume.scale(150.0)
 
         self.getRenderer().setLightPosition(Vector(0, 150, 0))
