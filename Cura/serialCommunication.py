@@ -51,9 +51,14 @@ class serialComm(object):
 		pass
 
 	def monitorStdin(self):
-		while not self._comm.isClosed():
-			line = sys.stdin.readline().strip()
-			line = line.split(':', 1)
+		while not (self._comm.isClosed() or sys.stdin.closed):
+			line = sys.stdin.readline()
+                        # If readline returns an empty string it means that
+                        # we've hit stdin's EOF, probably because the parent was
+                        # closed, so we need to exit as well instead of spamming stderr.
+                        if line == '':
+                                break
+			line = line.strip().split(':', 1)
 			if line[0] == 'STOP':
 				self._comm.cancelPrint()
 				self._gcodeList = ['M110']
