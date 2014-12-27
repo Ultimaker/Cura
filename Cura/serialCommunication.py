@@ -72,7 +72,7 @@ def startMonitor(portName, baudrate):
 	thread = threading.Thread(target=comm.monitorStdin)
 	thread.start()
 	while thread.is_alive():
-		time.sleep(0)
+		time.sleep(0.1)
 
 def main():
 	if len(sys.argv) != 3:
