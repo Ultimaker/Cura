@@ -130,6 +130,7 @@ class CuraApp(wx.App):
 			self.loadFiles = [exampleFile]
 			if self.splash is not None:
 				self.splash.Show(False)
+				self.splash = None
 			configWizard.configWizard()
 
 		if profile.getPreference('check_for_updates') == 'True':
@@ -137,6 +138,7 @@ class CuraApp(wx.App):
 			if newVersion is not None:
 				if self.splash is not None:
 					self.splash.Show(False)
+					self.splash = None
 				if wx.MessageBox(_("A new version of Cura is available, would you like to download?"), _("New version available"), wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
 					webbrowser.open(newVersion)
 					return
@@ -145,6 +147,7 @@ class CuraApp(wx.App):
 		self.mainWindow = mainWindow.mainWindow()
 		if self.splash is not None:
 			self.splash.Show(False)
+			self.splash = None
 		self.SetTopWindow(self.mainWindow)
 		self.mainWindow.Show()
 		self.mainWindow.OnDropFiles(self.loadFiles)
