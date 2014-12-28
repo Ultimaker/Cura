@@ -8,9 +8,18 @@ class splashScreen(wx.SplashScreen):
 	def __init__(self, callback):
 		self.callback = callback
 		bitmap = wx.Bitmap(getPathForImage('splash.png'))
-		super(splashScreen, self).__init__(bitmap, wx.SPLASH_CENTRE_ON_SCREEN, 0, None)
-		wx.CallAfter(self.DoCallback)
+		super(splashScreen, self).__init__(bitmap, wx.SPLASH_CENTRE_ON_SCREEN | wx.SPLASH_TIMEOUT, 100, None)
+		# Add a timeout and call the callback in the close event to avoid having the callback called
+		# before the splashscreen paint events which could cause it not to appear or to appear as a grey
+		# rectangle while the app is loading
+		self.Bind(wx.EVT_CLOSE, self.OnClose)
 
-	def DoCallback(self):
-		self.callback()
+	def DoDestroy(self):
 		self.Destroy()
+
+	def OnClose(self, e):
+		if self.callback:
+				# Avoid calling the callback twice
+				self.callback()
+				self.callback = None
+		wx.CallAfter(self.DoDestroy)
