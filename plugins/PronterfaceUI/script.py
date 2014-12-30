@@ -41,10 +41,8 @@ addColorCommand(240, 255, 0, sendGCode, "G28 X0")
 addColorCommand(220, 255, 0, sendGCode, "G28 Y0")
 addColorCommand(200, 255, 0, sendGCode, "G28 Z0")
 
-addSpinner(180, 0, 160, sendGCode, "M104 S%d")
-#Hot end temp button RGB is (180, 0, 140)
-addSpinner(180, 0, 180, sendGCode, "M140 S%d")
-#Bed temp button is (180, 0, 150)
+addTextButton(180, 0, 160, 180, 0, 140, 'set', sendGCode, "M104 S%d")
+addTextButton(180, 0, 180, 180, 0, 150, 'set', sendGCode, "M140 S%d")
 
 addTerminal(255, 0, 255)
 addTemperatureGraph(180, 0, 255)

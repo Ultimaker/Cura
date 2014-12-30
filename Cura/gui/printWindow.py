@@ -53,6 +53,7 @@ class printWindowPlugin(wx.Frame):
 			'addProgressbar': self.script_addProgressbar,
 			'addButton': self.script_addButton,
 			'addSpinner': self.script_addSpinner,
+			'addTextButton': self.script_addTextButton,
 
 			'sendGCode': self.script_sendGCode,
 			'connect': self.script_connect,
@@ -139,20 +140,42 @@ class printWindowPlugin(wx.Frame):
 
 		def run_command(spinner):
 			value = spinner.GetValue()
-			if spinner.last_value != value:
-				if spinner.last_value != '' and value != 0:
-					spinner.command(spinner.data % value)
+			print "Value (%s) and (%s)" % (spinner.last_value, value)
+			if spinner.last_value != '' and value != 0:
+				spinner.command(spinner.data % value)
 				spinner.last_value = value
 
 		spinner = wx.SpinCtrl(self, -1, style=wx.TE_PROCESS_ENTER)
 		spinner.SetRange(0, 300)
 		spinner.SetPosition((x, y))
 		spinner.SetSize((w, h))
+		spinner.SetValue(0)
 		spinner.command = command
 		spinner.data = data
 		spinner.last_value = ''
 		self._buttonList.append(spinner)
 		self.Bind(wx.EVT_SPINCTRL, lambda e: run_command(spinner), spinner)
+
+	def script_addTextButton(self, r_text, g_text, b_text, r_button, g_button, b_button, text, command, data):
+		x_text, y_text, w_text, h_text = self._getColoredRect(r_text, g_text, b_text)
+		if x_text < 0:
+			return
+		x_button, y_button, w_button, h_button = self._getColoredRect(r_button, g_button, b_button)
+		if x_button < 0:
+			return
+		from wx.lib.intctrl import IntCtrl
+		text = IntCtrl(self, -1)
+		text.SetBounds(0, 300)
+		text.SetPosition((x_text, y_text))
+		text.SetSize((w_text, h_text))
+		
+		button = wx.Button(self, -1, _(text))
+		button.SetPosition((x_button, y_button))
+		button.SetSize((w_button, h_button))
+		button.command = command
+		button.data = data
+		self._buttonList.append(button)
+		self.Bind(wx.EVT_BUTTON, lambda e: command(data % text.GetValue()), button)
 
 	def _getColoredRect(self, r, g, b):
 		for x in xrange(0, self._mapImage.GetWidth()):
