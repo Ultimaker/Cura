@@ -156,7 +156,7 @@ class printWindowPlugin(wx.Frame):
 		self._buttonList.append(spinner)
 		self.Bind(wx.EVT_SPINCTRL, lambda e: run_command(spinner), spinner)
 
-	def script_addTextButton(self, r_text, g_text, b_text, r_button, g_button, b_button, text, command, data):
+	def script_addTextButton(self, r_text, g_text, b_text, r_button, g_button, b_button, button_text, command, data):
 		x_text, y_text, w_text, h_text = self._getColoredRect(r_text, g_text, b_text)
 		if x_text < 0:
 			return
@@ -169,7 +169,7 @@ class printWindowPlugin(wx.Frame):
 		text.SetPosition((x_text, y_text))
 		text.SetSize((w_text, h_text))
 		
-		button = wx.Button(self, -1, _(text))
+		button = wx.Button(self, -1, _(button_text))
 		button.SetPosition((x_button, y_button))
 		button.SetSize((w_button, h_button))
 		button.command = command
