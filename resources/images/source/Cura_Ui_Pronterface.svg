@@ -14,7 +14,7 @@
    height="400"
    id="svg6373"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    inkscape:export-filename="/home/aleph/cura-dev/plugins/PronterfaceUI/map.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90"
@@ -45,17 +45,17 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="0.88183594"
-     inkscape:cx="535.82198"
-     inkscape:cy="169.74498"
+     inkscape:cx="321.24425"
+     inkscape:cy="120.22504"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
      showgrid="false"
      inkscape:snap-global="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1058"
-     inkscape:window-x="1920"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1352"
+     inkscape:window-height="938"
+     inkscape:window-x="242"
+     inkscape:window-y="62"
+     inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true">
     <inkscape:grid
@@ -89,6 +89,10 @@
        orientation="0,1"
        position="357.2093,146.42746"
        id="guide3415" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="343.9557,50.321152"
+       id="guide4193" />
   </sodipodi:namedview>
   <metadata
      id="metadata6378">
@@ -98,7 +102,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -106,7 +110,8 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Button map"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <image
        style="fill:#a00000;fill-opacity:1;display:inline"
        y="652.36218"
@@ -128,7 +133,8 @@
      inkscape:groupmode="layer"
      id="layer5"
      inkscape:label="Button map edits"
-     style="display:inline">
+     style="display:inline"
+     sodipodi:insensitive="true">
     <rect
        style="fill:#ffb400;fill-opacity:1;stroke:none;display:inline"
        id="rect3692"
@@ -215,12 +221,43 @@
        width="29.48394"
        id="rect3419"
        style="fill:#ffb400;fill-opacity:1;stroke:none;display:inline" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       id="rect4183"
+       width="50.073357"
+       height="29.823198"
+       x="311.19165"
+       y="293.80252" />
+    <rect
+       y="349.00064"
+       x="311.19165"
+       height="29.823198"
+       width="50.073357"
+       id="rect4185"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <rect
+       transform="translate(0,-652.36218)"
+       style="display:inline;fill:#b40096;fill-opacity:1;stroke:none"
+       id="rect4187"
+       width="36.760788"
+       height="25.308628"
+       x="343.95685"
+       y="1005.2532" />
+    <rect
+       transform="translate(0,-652.36218)"
+       y="948.24524"
+       x="343.95685"
+       height="25.308628"
+       width="36.760788"
+       id="rect4189"
+       style="display:inline;fill:#b4008c;fill-opacity:1;stroke:none" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Original image"
-     style="display:none">
+     style="display:none"
+     sodipodi:insensitive="true">
     <image
        transform="translate(0,-652.36218)"
        style="display:inline"
@@ -517,7 +554,7 @@
                    id="g4768">
                   <polygon
                      style="fill:#ffffff"
-                     points="129.3,241.6 113.2,245 113.1,230.2 121.7,218.2 129.2,225.3 "
+                     points="129.2,225.3 129.3,241.6 113.2,245 113.1,230.2 121.7,218.2 "
                      id="polygon4770" />
                 </g>
                 <g
@@ -631,7 +668,7 @@
                      id="g4826">
                     <polygon
                        style="fill:#cae240"
-                       points="120.8,622.6 99,627.2 98.9,607.1 110.6,590.9 120.8,600.5 "
+                       points="120.8,600.5 120.8,622.6 99,627.2 98.9,607.1 110.6,590.9 "
                        id="polygon4828" />
                   </g>
                   <g
@@ -728,7 +765,7 @@
                    id="g4876">
                   <polygon
                      style="fill:#ffffff"
-                     points="499.9,626.3 483.9,629.7 483.8,614.9 492.4,603 499.9,610.1 "
+                     points="499.9,610.1 499.9,626.3 483.9,629.7 483.8,614.9 492.4,603 "
                      id="polygon4878" />
                 </g>
                 <g
@@ -841,7 +878,7 @@
                    id="g4932">
                   <polygon
                      style="fill:#ffffff"
-                     points="497.9,241.6 481.8,245 481.7,230.2 490.3,218.2 497.8,225.3 "
+                     points="497.8,225.3 497.9,241.6 481.8,245 481.7,230.2 490.3,218.2 "
                      id="polygon4934" />
                 </g>
                 <g
@@ -1199,7 +1236,7 @@
     <g
        style="display:inline"
        id="g4503"
-       transform="matrix(0.4896969,0,0,0.4896969,183.11149,747.64097)">
+       transform="matrix(0.4896969,0,0,0.4896969,135.11149,747.64097)">
       <path
          id="path243"
          d="m 372.45,421.4 c 1.6,0 3.1,0.6 4.2,1.8 1.1,1.2 1.8,2.6 1.8,4.2 0,1.6 -0.6,3.1 -1.8,4.2 -1.2,1.1 -2.6,1.8 -4.2,1.8 -1.6,0 -3.1,-0.6 -4.2,-1.8 -1.1,-1.2 -1.8,-2.6 -1.8,-4.2 0,-1.6 0.6,-3.1 1.8,-4.2 1.2,-1.1 2.5,-1.8 4.2,-1.8 z m -3.1,6.1 c 0,0.8 0.3,1.6 0.9,2.1 0.6,0.6 1.3,0.9 2.1,0.9 0.8,0 1.6,-0.3 2.1,-0.9 0.6,-0.6 0.9,-1.3 0.9,-2.1 0,-0.8 -0.3,-1.6 -0.9,-2.1 -0.6,-0.6 -1.3,-0.9 -2.1,-0.9 -0.8,0 -1.6,0.3 -2.1,0.9 -0.6,0.5 -0.9,1.2 -0.9,2.1 z"
@@ -1213,7 +1250,7 @@
     </g>
     <g
        style="display:inline"
-       transform="matrix(0.4896969,0,0,0.4896969,183.11149,804.87843)"
+       transform="matrix(0.4896969,0,0,0.4896969,135.11149,804.87843)"
        id="g4507">
       <path
          style="fill:#849a3b"
@@ -1231,7 +1268,8 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Z and E controls"
-     style="display:none">
+     style="display:none"
+     sodipodi:insensitive="true">
     <g
        style="font-size:9.31507587px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;display:inline;font-family:outage;-inkscape-font-specification:outage"
        id="text8331" />
