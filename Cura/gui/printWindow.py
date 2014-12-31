@@ -17,9 +17,13 @@ if sys.platform.startswith('win'):
 		"""
 		ES_CONTINUOUS = 0x80000000
 		ES_SYSTEM_REQUIRED = 0x00000001
+		ES_AWAYMODE_REQUIRED = 0x00000040
 		#SetThreadExecutionState returns 0 when failed, which is ignored. The function should be supported from windows XP and up.
 		if prevent:
-			ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
+			# For Vista and up we use ES_AWAYMODE_REQUIRED to prevent a print from failing if the PC does go to sleep
+			# As it's not supported on XP, we catch the error and fallback to using ES_SYSTEM_REQUIRED only
+			if ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_AWAYMODE_REQUIRED) == 0:
+				ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
 		else:
 			ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
 
