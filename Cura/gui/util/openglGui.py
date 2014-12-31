@@ -634,7 +634,8 @@ class glComboButton(glButton):
 
 	def setValue(self, value):
 		self._selection = value
-		self._imageID = self._imageIDs[self._selection]
+		self._imageID = self._imageIDs[self._selection+1]
+		print self._imageID
 		self._comboCallback()
 
 	def OnMouseDown(self, x, y, button):
@@ -642,9 +643,12 @@ class glComboButton(glButton):
 			return False
 		if self.hasFocus():
 			bs = self._base._buttonSize / 1.3
-			pos = self._getPixelPos()
-			if 0 <= x - pos[0] <= bs and 0 <= y - pos[1] - bs <= bs * len(self._imageIDs):
-				self._selection = int((y - pos[1] - bs) / bs)
+			pos = self.getSize()
+			offsetX = pos[0] + (self._base._buttonSize - bs)
+			offsetY = pos[1] + self._base._buttonSize
+
+			if 0 <= x - offsetX <= bs and 0 <= y - offsetY <= bs * len(self._imageIDs):
+				self._selection = int((y - offsetY) / bs)
 				self._imageID = self._imageIDs[self._selection]
 				self._base._focus = None
 				self._comboCallback()
