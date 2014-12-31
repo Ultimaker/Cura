@@ -27,9 +27,24 @@ if sys.platform.startswith('win'):
 		else:
 			ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
 
+elif sys.platform.startswith('darwin'):
+	import objc
+	bundle = objc.initFrameworkWrapper("IOKit",
+	frameworkIdentifier="com.apple.iokit",
+	frameworkPath=objc.pathForFramework("/System/Library/Frameworks/IOKit.framework"),
+	globals=globals())
+	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
+	def preventComputerFromSleeping(prevent):
+		if prevent:
+			success, preventComputerFromSleeping.assertionID = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn, "Cura is printing", None)
+			if success != kIOReturnSuccess:
+				preventComputerFromSleeping.assertionID = None
+		else:
+			if preventComputerFromSleeping.assertionID is not None:
+				IOPMAssertionRelease(preventComputerFromSleeping.assertionID)
+				preventComputerFromSleeping.assertionID = None
 else:
 	def preventComputerFromSleeping(prevent):
-		#No preventComputerFromSleeping for MacOS and Linux yet.
 		pass
 
 class printWindowPlugin(wx.Frame):
