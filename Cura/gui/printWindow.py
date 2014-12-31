@@ -44,6 +44,7 @@ class printWindowPlugin(wx.Frame):
 		self._tempGraph = None
 		self._infoText = None
 		self._lastUpdateTime = time.time()
+		self._isPrinting = False
 
 		variables = {
 			'setImage': self.script_setImage,
@@ -75,7 +76,6 @@ class printWindowPlugin(wx.Frame):
 
 		if self._printerConnection.hasActiveConnection() and not self._printerConnection.isActiveConnectionOpen():
 			self._printerConnection.openActiveConnection()
-		preventComputerFromSleeping(True)
 
 	def script_setImage(self, guiImage, mapImage):
 		self._backgroundImage = wx.BitmapFromImage(wx.Image(os.path.join(self._basePath, guiImage)))
@@ -334,6 +334,9 @@ class printWindowPlugin(wx.Frame):
 			self._infoText.SetLabel(info)
 		else:
 			self.SetTitle(info.replace('\n', ', '))
+		if connection.isPrinting() != self._isPrinting:
+			self._isPrinting = connection.isPrinting()
+			preventComputerFromSleeping(self._isPrinting)
 
 class printWindowBasic(wx.Frame):
 	"""
@@ -344,6 +347,7 @@ class printWindowBasic(wx.Frame):
 		super(printWindowBasic, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT, title=_("Printing on %s") % (printerConnection.getName()))
 		self._printerConnection = printerConnection
 		self._lastUpdateTime = 0
+		self._isPrinting = False
 
 		self.SetSizer(wx.BoxSizer())
 		self.panel = wx.Panel(self)
@@ -403,7 +407,6 @@ class printWindowBasic(wx.Frame):
 
 		if self._printerConnection.hasActiveConnection() and not self._printerConnection.isActiveConnectionOpen():
 			self._printerConnection.openActiveConnection()
-		preventComputerFromSleeping(True)
 
 	def OnPowerWarningChange(self, e):
 		type = self.powerManagement.get_providing_power_source_type()
@@ -475,6 +478,10 @@ class printWindowBasic(wx.Frame):
 			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
 		info += '\n\n'
 		self.statsText.SetLabel(info)
+		if connection.isPrinting() != self._isPrinting:
+			self._isPrinting = connection.isPrinting()
+			preventComputerFromSleeping(self._isPrinting)
+
 
 	def _updateButtonStates(self):
 		self.connectButton.Show(self._printerConnection.hasActiveConnection())
