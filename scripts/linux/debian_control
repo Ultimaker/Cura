@@ -1,8 +1,8 @@
 Package: cura
-Version: 14.01
+Version: [BUILD_NAME]
 Section: misc
 Priority: optional
-Architecture: armhf
+Architecture: [ARCH]
 Essential: no
 Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy
 Maintainer: Daid <daid303@gmail.com>
