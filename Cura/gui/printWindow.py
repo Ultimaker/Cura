@@ -17,15 +17,34 @@ if sys.platform.startswith('win'):
 		"""
 		ES_CONTINUOUS = 0x80000000
 		ES_SYSTEM_REQUIRED = 0x00000001
+		ES_AWAYMODE_REQUIRED = 0x00000040
 		#SetThreadExecutionState returns 0 when failed, which is ignored. The function should be supported from windows XP and up.
 		if prevent:
-			ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
+			# For Vista and up we use ES_AWAYMODE_REQUIRED to prevent a print from failing if the PC does go to sleep
+			# As it's not supported on XP, we catch the error and fallback to using ES_SYSTEM_REQUIRED only
+			if ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_AWAYMODE_REQUIRED) == 0:
+				ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)
 		else:
 			ctypes.windll.kernel32.SetThreadExecutionState(ES_CONTINUOUS)
 
+elif sys.platform.startswith('darwin'):
+	import objc
+	bundle = objc.initFrameworkWrapper("IOKit",
+	frameworkIdentifier="com.apple.iokit",
+	frameworkPath=objc.pathForFramework("/System/Library/Frameworks/IOKit.framework"),
+	globals=globals())
+	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
+	def preventComputerFromSleeping(prevent):
+		if prevent:
+			success, preventComputerFromSleeping.assertionID = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn, "Cura is printing", None)
+			if success != kIOReturnSuccess:
+				preventComputerFromSleeping.assertionID = None
+		else:
+			if preventComputerFromSleeping.assertionID is not None:
+				IOPMAssertionRelease(preventComputerFromSleeping.assertionID)
+				preventComputerFromSleeping.assertionID = None
 else:
 	def preventComputerFromSleeping(prevent):
-		#No preventComputerFromSleeping for MacOS and Linux yet.
 		pass
 
 class printWindowPlugin(wx.Frame):
@@ -44,6 +63,7 @@ class printWindowPlugin(wx.Frame):
 		self._tempGraph = None
 		self._infoText = None
 		self._lastUpdateTime = time.time()
+		self._isPrinting = False
 
 		variables = {
 			'setImage': self.script_setImage,
@@ -75,7 +95,6 @@ class printWindowPlugin(wx.Frame):
 
 		if self._printerConnection.hasActiveConnection() and not self._printerConnection.isActiveConnectionOpen():
 			self._printerConnection.openActiveConnection()
-		preventComputerFromSleeping(True)
 
 	def script_setImage(self, guiImage, mapImage):
 		self._backgroundImage = wx.BitmapFromImage(wx.Image(os.path.join(self._basePath, guiImage)))
@@ -334,6 +353,9 @@ class printWindowPlugin(wx.Frame):
 			self._infoText.SetLabel(info)
 		else:
 			self.SetTitle(info.replace('\n', ', '))
+		if connection.isPrinting() != self._isPrinting:
+			self._isPrinting = connection.isPrinting()
+			preventComputerFromSleeping(self._isPrinting)
 
 class printWindowBasic(wx.Frame):
 	"""
@@ -344,6 +366,7 @@ class printWindowBasic(wx.Frame):
 		super(printWindowBasic, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT, title=_("Printing on %s") % (printerConnection.getName()))
 		self._printerConnection = printerConnection
 		self._lastUpdateTime = 0
+		self._isPrinting = False
 
 		self.SetSizer(wx.BoxSizer())
 		self.panel = wx.Panel(self)
@@ -403,7 +426,6 @@ class printWindowBasic(wx.Frame):
 
 		if self._printerConnection.hasActiveConnection() and not self._printerConnection.isActiveConnectionOpen():
 			self._printerConnection.openActiveConnection()
-		preventComputerFromSleeping(True)
 
 	def OnPowerWarningChange(self, e):
 		type = self.powerManagement.get_providing_power_source_type()
@@ -475,6 +497,10 @@ class printWindowBasic(wx.Frame):
 			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
 		info += '\n\n'
 		self.statsText.SetLabel(info)
+		if connection.isPrinting() != self._isPrinting:
+			self._isPrinting = connection.isPrinting()
+			preventComputerFromSleeping(self._isPrinting)
+
 
 	def _updateButtonStates(self):
 		self.connectButton.Show(self._printerConnection.hasActiveConnection())

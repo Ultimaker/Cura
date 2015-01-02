@@ -570,8 +570,8 @@ class glRadioButton(glButton):
 		self._radioCallback(button)
 
 class glComboButton(glButton):
-	def __init__(self, parent, tooltip, imageIDs, tooltips, pos, callback):
-		super(glComboButton, self).__init__(parent, imageIDs[0], tooltip, pos, self._onComboOpenSelect)
+	def __init__(self, parent, tooltip, defaultImageID, imageIDs, tooltips, pos, callback):
+		super(glComboButton, self).__init__(parent, defaultImageID, tooltip, pos, self._onComboOpenSelect)
 		self._imageIDs = imageIDs
 		self._tooltips = tooltips
 		self._comboCallback = callback
@@ -599,7 +599,7 @@ class glComboButton(glButton):
 		glPushMatrix()
 		glTranslatef(pos[0]+bs*0.5, pos[1] + bs*0.5, 0)
 		glBindTexture(GL_TEXTURE_2D, self._base._glButtonsTexture)
-		for n in xrange(1, len(self._imageIDs)):
+		for n in xrange(0, len(self._imageIDs)):
 			glTranslatef(0, bs, 0)
 			glColor4ub(255,255,255,255)
 			openglHelpers.glDrawTexturedQuad(-0.85*bs,-0.8*bs,bs,bs, 0)
@@ -642,10 +642,13 @@ class glComboButton(glButton):
 			return False
 		if self.hasFocus():
 			bs = self._base._buttonSize / 1.3
-			pos = self._getPixelPos()
-			if 0 <= x - pos[0] <= bs and 0 <= y - pos[1] - bs <= bs * len(self._imageIDs):
-				self._selection = int((y - pos[1] - bs) / bs)
-				self._imageID = self._imageIDs[(self._selection)+1]
+			pos = self.getSize()
+			offsetX = pos[0] + (self._base._buttonSize - bs)
+			offsetY = pos[1] + self._base._buttonSize
+
+			if 0 <= x - offsetX <= bs and 0 <= y - offsetY <= bs * len(self._imageIDs):
+				self._selection = int((y - offsetY) / bs)
+				self._imageID = self._imageIDs[self._selection]
 				self._base._focus = None
 				self._comboCallback()
 				return True
