@@ -160,6 +160,7 @@ class SettingRow(object):
 			self.ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
 			flag = wx.EXPAND
 
+		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
 		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_BOTTOM|flag)
 		sizer.SetRows(x+1)
@@ -175,9 +176,11 @@ class SettingRow(object):
 
 	def OnMouseEnter(self, e):
 		self.label.SetToolTipString(self.setting.getTooltip())
+		self.ctrl.SetToolTipString(self.setting.getTooltip())
 
 	def OnMouseExit(self, e):
 		self.label.SetToolTipString('')
+		self.ctrl.SetToolTipString('')
 		e.Skip()
 
 	def OnSettingChange(self, e):
