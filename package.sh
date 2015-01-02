@@ -292,7 +292,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed 's/\[BUILD_NAME\]/${BUILD_NAME}/' | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -322,7 +322,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed 's/\[BUILD_NAME\]/${BUILD_NAME}/' | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -352,7 +352,7 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed 's/\[BUILD_NAME\]/${BUILD_NAME}/' | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
