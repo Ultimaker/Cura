@@ -51,6 +51,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._viewTarget = numpy.array([0,0,0], numpy.float32)
 		self._animView = None
 		self._animZoom = None
+		self._lastObjectSink = None
 		self._platformMesh = {}
 		self._platformTexture = None
 		self._isSimpleMode = True
@@ -543,6 +544,12 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def sceneUpdated(self):
+
+		objectSink = profile.getProfileSettingFloat("object_sink")
+		if self._lastObjectSink != objectSink:
+			self._lastObjectSink = objectSink
+			self._scene.updateHeadSize()
+
 		wx.CallAfter(self._sceneUpdateTimer.Start, 500, True)
 		self._engine.abortEngine()
 		self._scene.updateSizeOffsets()
