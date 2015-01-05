@@ -492,7 +492,6 @@ class Engine(object):
 			'extruderOffset[2].Y': int(profile.getMachineSettingFloat('extruder_offset_y2') * 1000),
 			'extruderOffset[3].X': int(profile.getMachineSettingFloat('extruder_offset_x3') * 1000),
 			'extruderOffset[3].Y': int(profile.getMachineSettingFloat('extruder_offset_y3') * 1000),
-			'zOffset': int(profile.getMachineSettingFloat('extruder_z_offset') * 1000),
 			'fixHorrible': 0,
 		}
 		fanFullHeight = int(profile.getProfileSettingFloat('fan_full_height') * 1000)
