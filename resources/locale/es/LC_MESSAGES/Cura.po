@@ -18,7 +18,7 @@ msgstr ""
 
 #: Cura/gui/app.py:141 Cura/gui/mainWindow.py:613
 msgid "A new version of Cura is available, would you like to download?"
-msgstr "Una nueva versión de Cura esta disponible, quieres descargarla?"
+msgstr "Una nueva versión de Cura esta disponible, ¿quieres descargarla?"
 
 #: Cura/gui/app.py:141 Cura/gui/mainWindow.py:613
 msgid "New version available"
@@ -26,15 +26,15 @@ msgstr "Nueva versión disponible"
 
 #: Cura/gui/configWizard.py:231
 msgid "Add new machine wizard"
-msgstr "Añadir asistente para nueva máquina"
+msgstr "Asistente para nueva máquina"
 
 #: Cura/gui/configWizard.py:233
 msgid "First time run wizard"
-msgstr "Hacer asistente inicial"
+msgstr "Hacer asistencia inicial"
 
 #: Cura/gui/configWizard.py:234
 msgid "Welcome, and thanks for trying Cura!"
-msgstr "Bienvenido, y gracias por usar Cura!"
+msgstr "Bienvenido, y gracias por ¡usar Cura!"
 
 #: Cura/gui/configWizard.py:236
 #, fuzzy
@@ -44,30 +44,27 @@ msgstr "Este asistente te ayudara con los siguientes pasos:"
 #: Cura/gui/configWizard.py:239
 #, fuzzy
 msgid "Select your language:"
-msgstr "Selecciona tu maquina"
+msgstr "Selecciona tu lenguaje:"
 
 #: Cura/gui/configWizard.py:266
-#, fuzzy
 msgid "Older models"
-msgstr "Haciendo: %d modelos"
+msgstr "Modelos antiguos"
 
 #: Cura/gui/configWizard.py:283
 msgid "Printrbot Selection"
-msgstr ""
+msgstr "Selección printrbot"
 
 #: Cura/gui/configWizard.py:285
-#, fuzzy
 msgid "Select which Printrbot machine you have:"
-msgstr "Que tipo de máquina tienes:"
+msgstr "Seleccione que Printrbot máquina tiene"
 
 #: Cura/gui/configWizard.py:323
-#, fuzzy
 msgid "Other machine information"
-msgstr "Tamaño de la maquina en mm"
+msgstr "Otra información de la máquina"
 
 #: Cura/gui/configWizard.py:324
 msgid "The following pre-defined machine profiles are available"
-msgstr ""
+msgstr "Los siguientes perfiles de máquina predefinidos están disponibles"
 
 #: Cura/gui/configWizard.py:325
 msgid ""
@@ -77,38 +74,41 @@ msgid ""
 "or want an extra profile.\n"
 "Please report it at the github issue tracker."
 msgstr ""
+"Tenga en cuenta que estos perfiles no están garantizados para dar buenos resultados,\n"
+"o el trabajo en absoluto. podría ser necesario retoques adicionales.\n "
+"Si usted encuentra problemas con los perfiles predefinidos,\n"
+"o quieren un perfil extra. \n"
+"Por favor repórtelo a la de seguimiento de incidencias github."
 
 #: Cura/gui/configWizard.py:336
 msgid "Custom..."
-msgstr ""
+msgstr "Personalizable..."
 
 #: Cura/gui/configWizard.py:354
 msgid "Cura Ready!"
-msgstr ""
+msgstr "¡Cura listo!"
 
 #: Cura/gui/configWizard.py:355
-#, fuzzy
 msgid "Cura is now ready to be used!"
-msgstr "Cura esta ahora autorizado para compartir en YouMagine"
+msgstr "¡Cura esta listo para su uso!"
 
 #: Cura/gui/configWizard.py:359
-#, fuzzy
 msgid "Custom RepRap information"
-msgstr "Enviar información de uso anónima"
+msgstr "Personalizar la información"
 
 #: Cura/gui/configWizard.py:360
-#, fuzzy
 msgid ""
 "RepRap machines can be vastly different, so here you can set your own "
 "settings."
 msgstr ""
-"Las impresores RepRap son muy diferentes, asi que\n"
-"no hay configuracion por defecto en Cura."
+"Máquinas RepRap pueden ser muy diferentes, por lo que aquí se puede "
+"establecer su propio ajustes."
 
 #: Cura/gui/configWizard.py:361
 msgid ""
 "Be sure to review the default profile before running it on your machine."
 msgstr ""
+"Asegúrese de revisar el perfil predeterminado antes de ejecutarlo en su máquina."
 
 #: Cura/gui/configWizard.py:362
 msgid ""
@@ -140,7 +140,7 @@ msgstr "Altura máquina (mm)"
 
 #: Cura/gui/configWizard.py:370 Cura/util/profile.py:183
 msgid "Nozzle size (mm)"
-msgstr "Tamaño Nozzle (mm)"
+msgstr "Tamaño boquilla (mm)"
 
 #: Cura/gui/configWizard.py:371 Cura/util/profile.py:514
 msgid "Heated bed"
@@ -159,9 +159,8 @@ msgid "What kind of machine do you have:"
 msgstr "Que tipo de máquina tienes:"
 
 #: Cura/gui/configWizard.py:408
-#, fuzzy
 msgid "Other (Ex: RepRap, MakerBot, Witbox)"
-msgstr "Otras (ej. RepRap)"
+msgstr "Otras (ej. RepRap, witbox, etc)"
 
 #: Cura/gui/configWizard.py:411
 msgid ""
@@ -179,11 +178,11 @@ msgstr ""
 
 #: Cura/gui/configWizard.py:413
 msgid "Submit anonymous usage information:"
-msgstr "Enviar información de uso anónima"
+msgstr "Enviar información de uso anónima:"
 
 #: Cura/gui/configWizard.py:414
 msgid "For full details see: http://wiki.ultimaker.com/Cura:stats"
-msgstr "Para mas detalles: http://wiki.ultimaker.com/Cura:stats"
+msgstr "Para más detalles: http://wiki.ultimaker.com/Cura:stats"
 
 #: Cura/gui/configWizard.py:531
 msgid "Select upgraded parts you have"
@@ -202,9 +201,8 @@ msgid "Extruder drive upgrade"
 msgstr "Mejora extrusor"
 
 #: Cura/gui/configWizard.py:535
-#, fuzzy
 msgid "Heated printer bed (kit)"
-msgstr "Cama caliente (autoconstruida)"
+msgstr "Cama caliente (kit)"
 
 #: Cura/gui/configWizard.py:536
 msgid "Heated printer bed (self built)"
@@ -212,7 +210,7 @@ msgstr "Cama caliente (autoconstruida)"
 
 #: Cura/gui/configWizard.py:537
 msgid "Dual extrusion (experimental)"
-msgstr "Extrusion dual (experimental)"
+msgstr "Extrusion doble (experimental)"
 
 #: Cura/gui/configWizard.py:539
 msgid ""
@@ -275,7 +273,7 @@ msgstr "Tienes una máquina basada en el antiguo ATMega1280"
 
 #: Cura/gui/configWizard.py:575
 msgid "* Build your own heated bed"
-msgstr ""
+msgstr "* Construye tu propia cama"
 
 #: Cura/gui/configWizard.py:576
 msgid "* Have other changes in the firmware"
@@ -283,7 +281,7 @@ msgstr "Tiene otros cambios en el firmware"
 
 #: Cura/gui/configWizard.py:596
 msgid "Ultimaker Checkup"
-msgstr ""
+msgstr "Ultimaker chequeada"
 
 #: Cura/gui/configWizard.py:610
 msgid ""
@@ -336,7 +334,7 @@ msgstr "Por favor asegurate que los endstosp no estan presionados."
 
 #: Cura/gui/configWizard.py:714
 msgid "Temperature measurement FAILED!"
-msgstr "Medición de la temperatura a FALLADO!"
+msgstr "¡La Medición de temperatura a FALLADO!"
 
 #: Cura/gui/configWizard.py:719
 #, python-format
@@ -355,23 +353,23 @@ msgstr "Fallo al establecer la conexión con la impresora"
 
 #: Cura/gui/configWizard.py:775 Cura/gui/configWizard.py:784
 msgid "Please press the left X endstop."
-msgstr "Por favor presiona el endstop X izquierdo."
+msgstr "Presiona el fin de carrera X izquierdo."
 
 #: Cura/gui/configWizard.py:779
 msgid "Please press the right X endstop."
-msgstr "Por favor presiona el endstop X derecho."
+msgstr "Presiona el fin de carrera X derecho."
 
 #: Cura/gui/configWizard.py:789
 msgid "Please press the front Y endstop."
-msgstr "Por favor presiona el endstop Y delantero. "
+msgstr "Presiona el fin de carrera Y delantero. "
 
 #: Cura/gui/configWizard.py:795 Cura/gui/configWizard.py:804
 msgid "Please press the top Z endstop."
-msgstr "Por favor presiona el endstop Z superior. "
+msgstr "Presiona el fin de carrera Z superior. "
 
 #: Cura/gui/configWizard.py:799
 msgid "Please press the back Y endstop."
-msgstr "Por favor presiona el endstop Y trasero. "
+msgstr "Presiona el fin de carrera Y trasero. "
 
 #: Cura/gui/configWizard.py:811 Cura/gui/configWizard.py:824
 msgid "Checkup finished"
@@ -379,11 +377,11 @@ msgstr "Chequeo finalizado"
 
 #: Cura/gui/configWizard.py:818
 msgid "Please press the bottom Z endstop."
-msgstr "Por favor presiona el endstop Z inferior. "
+msgstr "Presiona el fin de carrera Z inferior. "
 
 #: Cura/gui/configWizard.py:839 Cura/gui/configWizard.py:862
 msgid "Ultimaker Calibration"
-msgstr ""
+msgstr "Calibración de la Ultimaker"
 
 #: Cura/gui/configWizard.py:867
 msgid "Calibrating the Steps Per E requires some manual actions."
@@ -456,30 +454,27 @@ msgstr ""
 
 #: Cura/gui/configWizard.py:980
 msgid "Congratulations on your the purchase of your brand new Ultimaker2."
-msgstr ""
+msgstr "Felicidades por la compra de su nueva Ultimaker2"
 
 #: Cura/gui/configWizard.py:981
-#, fuzzy
 msgid "Cura is now ready to be used with your Ultimaker2."
-msgstr "Cura esta ahora autorizado para compartir en YouMagine"
+msgstr "Cura ya está listo para ser usado con su Ultimaker2."
 
 #: Cura/gui/configWizard.py:986
 msgid "Lulzbot TAZ/Mini"
 msgstr ""
 
 #: Cura/gui/configWizard.py:987
-#, fuzzy
 msgid "Cura is now ready to be used with your Lulzbot."
 msgstr "Cura esta ahora autorizado para compartir en YouMagine"
 
 #: Cura/gui/configWizard.py:992
 msgid "Configuration Wizard"
-msgstr ""
+msgstr "Guía de configuración"
 
 #: Cura/gui/configWizard.py:1053 Cura/gui/configWizard.py:1501
-#, fuzzy
 msgid "Bed leveling wizard"
-msgstr "Iniciar sistente para calibración de la cama..."
+msgstr "Nivelación de la cama"
 
 #: Cura/gui/configWizard.py:1055
 #, fuzzy
@@ -493,18 +488,17 @@ msgstr "Esto se da como resultado los siguiente pasos por E:"
 
 #: Cura/gui/configWizard.py:1058
 msgid "* Move the printer head to each corner"
-msgstr ""
+msgstr "* Mueva el cabezal a cada esquina"
 
 #: Cura/gui/configWizard.py:1059
 msgid "  and let you adjust the height of the bed to the nozzle"
-msgstr ""
+msgstr " y le permiten ajustar la altura de la cama a la boquilla"
 
 #: Cura/gui/configWizard.py:1060
 msgid "* Print a line around the bed to check if it is level"
-msgstr ""
+msgstr "* Imprimir una línea alrededor de la cama para chequear el nivel"
 
 #: Cura/gui/configWizard.py:1063 Cura/gui/configWizard.py:1288
-#, fuzzy
 msgid "Connect to printer"
 msgstr "Conectando a la maquina"
 
@@ -514,117 +508,135 @@ msgstr "Continuar"
 
 #: Cura/gui/configWizard.py:1068
 msgid "Up 0.2mm"
-msgstr ""
+msgstr "Arriba 0,2mm"
 
 #: Cura/gui/configWizard.py:1068
 msgid "Down 0.2mm"
-msgstr ""
+msgstr "Abajo 0,2mm"
 
 #: Cura/gui/configWizard.py:1069
 msgid "Up 10mm"
-msgstr ""
+msgstr "Arriba 10mm"
 
 #: Cura/gui/configWizard.py:1069
 msgid "Down 10mm"
-msgstr ""
+msgstr "Abajo 10mm"
 
 #: Cura/gui/configWizard.py:1129
 msgid "Homing printer..."
-msgstr ""
+msgstr "Punto de inicio..."
 
 #: Cura/gui/configWizard.py:1139
 msgid "Moving head to back center..."
-msgstr ""
+msgstr "Moviendo la cabeza a centro posterior..."
 
 #: Cura/gui/configWizard.py:1146
 msgid "Moving head to back left corner..."
-msgstr ""
+msgstr "Moviendo la cabeza hacia atrás esquina izquierda..."
 
 #: Cura/gui/configWizard.py:1154 Cura/gui/configWizard.py:1168
 msgid "Moving head to front right corner..."
-msgstr ""
+msgstr "Moviendo la cabeza hacia atrás esquina derecha..."
 
 #: Cura/gui/configWizard.py:1161
 msgid "Moving head to back right corner..."
-msgstr ""
+msgstr "Moviendo la cabeza hacia atrás esquina atras a la derecha..."
 
 #: Cura/gui/configWizard.py:1175
 msgid "Heating up printer..."
-msgstr ""
+msgstr "Calentar impresora..."
 
 #: Cura/gui/configWizard.py:1182
 msgid "Printing a square on the printer bed at 0.3mm height."
-msgstr ""
+msgstr "Impresión de una cuadrado en la cama impresora en 0,3mm de altura."
 
 #: Cura/gui/configWizard.py:1222
 msgid ""
 "Adjust the front left screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
+"Ajuste el tornillo delantero izquierdo de su cama impresora \n"
+"De modo que la boquilla sólo golpea la cama."
 
 #: Cura/gui/configWizard.py:1227
 msgid ""
 "Adjust the back screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
+"Ajuste el tornillo de atrás de su cama impresora \n"
+"De modo que boquilla sólo golpea la cama."
 
 #: Cura/gui/configWizard.py:1229
 msgid ""
 "Adjust the back left screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
+"Ajustar la izquierda el tornillo posterior de la impresora cama \n"
+"De modo que boquilla sólo golpea la cama."
 
 #: Cura/gui/configWizard.py:1233
 msgid ""
 "Adjust the back right screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
+"Ajustar el tornillo posterior derecha de la impresora cama \n"
+"De modo que la boquilla sólo golpea la cama."
 
 #: Cura/gui/configWizard.py:1237
 msgid ""
 "Adjust the front right screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
+"Ajuste el tornillo frontal derecha de la impresora cama \n"
+"De modo que la boquilla sólo golpea la cama."
 
 #: Cura/gui/configWizard.py:1241
 #, python-format
 msgid "Heating up printer: %d/%d"
 msgstr ""
+msgid "Calentando la impresora: %d/%d"
 
 #: Cura/gui/configWizard.py:1243
 msgid ""
 "The printer is hot now. Please insert some PLA filament into the printer."
 msgstr ""
+" La impresora está caliente ahora. Por favor, inserte algunos filamentos PLA en la impresora."
 
 #: Cura/gui/configWizard.py:1252
 msgid "Use the up/down buttons to move the bed and adjust your Z endstop."
 msgstr ""
+"Utilice los botones arriba/abajo hasta que mover la cama y ajustar su Z tope final."
 
 #: Cura/gui/configWizard.py:1264
 msgid ""
 "Calibration finished.\n"
 "The squares on the bed should slightly touch each other."
 msgstr ""
+"Calibración terminada.\n"
+"El cuadrado en la cama deben tocar ligeramente el uno al otro."
 
 #: Cura/gui/configWizard.py:1285
 #, fuzzy
 msgid ""
 "This wizard will help you in calibrating the printer head offsets of your "
 "dual extrusion machine"
-msgstr "Este asistente te ayudara con los siguientes pasos:"
+msgstr
+"Este asistente le ayudará en la calibración de los desplazamientos de la cabeza impresora de su"
+"máquina de extrusión de doble"
 
 #: Cura/gui/configWizard.py:1318
 msgid "Printing initial calibration cross"
-msgstr ""
+msgstr "Impresión de la cruz de calibración inicial"
 
 #: Cura/gui/configWizard.py:1366
 msgid ""
 "Please measure the distance between the horizontal lines in millimeters."
 msgstr ""
+"Por favor, mida la distancia entre las líneas horizontales en milímetros."
 
 #: Cura/gui/configWizard.py:1376
 msgid "Printing the fine calibration lines."
-msgstr ""
+msgstr "Impresión de las líneas de calibración fina."
 
 #: Cura/gui/configWizard.py:1431
 msgid ""
@@ -635,19 +647,19 @@ msgstr ""
 #: Cura/gui/configWizard.py:1442
 #, python-format
 msgid "Calibration finished. Offsets are: %s %s"
-msgstr ""
+msgstr "Calibración terminada. Las compensaciones son: %s %s"
 
 #: Cura/gui/configWizard.py:1455
 msgid "Please load both extruders with PLA."
-msgstr ""
+msgstr "Por favor cargar ambos extrusoras con PLA."
 
 #: Cura/gui/configWizard.py:1464
 msgid "Homing printer and heating up both extruders."
-msgstr ""
+msgstr "Posición de inicio y calentar ambos extrusoras."
 
 #: Cura/gui/configWizard.py:1474
 msgid "Please measure the distance between the vertical lines in millimeters."
-msgstr ""
+msgstr "Por favor, mida la distancia entre las líneas verticales en milímetros."
 
 #: Cura/gui/configWizard.py:1481
 msgid ""
@@ -658,7 +670,7 @@ msgstr ""
 #: Cura/gui/configWizard.py:1530
 #, fuzzy
 msgid "Head offset wizard"
-msgstr "Iniciar asistente de distancia entre extrusores..."
+msgstr "Asistente compensación del cabezal"
 
 #: Cura/gui/expertConfig.py:27
 #, fuzzy
@@ -683,10 +695,12 @@ msgid ""
 "Cura only supports firmware updates for ATMega2560 based hardware.\n"
 "So updating your RepRap with Cura might or might not work."
 msgstr ""
+"Cura sólo admite actualizaciones de firmware para el hardware basado Atmega2560.\n"
+"Así que la actualización de su RepRap con Cura podría o no podría funcionar."
 
 #: Cura/gui/firmwareInstall.py:77 Cura/gui/firmwareInstall.py:181
 msgid "OK"
-msgstr "OK"
+msgstr "Aceptar"
 
 #: Cura/gui/firmwareInstall.py:98 Cura/gui/firmwareInstall.py:265
 msgid "Reading firmware..."
@@ -701,6 +715,8 @@ msgid ""
 "Please connect the printer to\n"
 "your computer with the USB cable."
 msgstr ""
+"Por favor, conecte la impresora a \n"
+"su computadora con el cable USB."
 
 #: Cura/gui/firmwareInstall.py:123
 msgid ""
@@ -708,7 +724,7 @@ msgid ""
 "Is your machine connected to the PC?"
 msgstr ""
 "Fallo al buscar actualización del firmware\n"
-"Esta tu máquina conectada al PC?"
+"¿Esta tu máquina conectada al PC?"
 
 #: Cura/gui/firmwareInstall.py:130
 msgid ""
@@ -716,6 +732,9 @@ msgid ""
 "This firmware is not compatible with this machine.\n"
 "Trying to install UMO firmware on an UM2 or UMO+?"
 msgstr ""
+"No se pudo instalar el firmware:\n"
+"Este firmware no es compatible con este equipo.\n"
+"¿Tratar de instalar el firmware UMO en una UM2 o UMO+?"
 
 #: Cura/gui/firmwareInstall.py:136
 msgid ""
@@ -723,6 +742,9 @@ msgid ""
 "This firmware is not compatible with this machine.\n"
 "Trying to install UM2 or UMO+ firmware on an UMO?"
 msgstr ""
+"No se pudo instalar el firmware:\n"
+"Este firmware no es compatible con este equipo.\n"
+"¿Tratar de instalar el firmware UMO en una UM2 o UMO+?"
 
 #: Cura/gui/firmwareInstall.py:141 Cura/gui/firmwareInstall.py:293
 msgid "Uploading firmware..."
@@ -734,7 +756,7 @@ msgid ""
 "Done!\n"
 "Installed firmware: %s"
 msgstr ""
-"Hecho!\n"
+"¡Hecho!\n"
 "Firmware instalado: %s"
 
 #: Cura/gui/firmwareInstall.py:146 Cura/gui/firmwareInstall.py:298
@@ -742,9 +764,8 @@ msgid "Failed to write firmware.\n"
 msgstr "Fallo al cargar firmware.\n"
 
 #: Cura/gui/firmwareInstall.py:290
-#, fuzzy
 msgid "Failed to connect to programmer.\n"
-msgstr "Fallo conectando con YouMagine.com"
+msgstr "Fallo la conexion al programador\n"
 
 #: Cura/gui/mainWindow.py:72
 msgid "Load model file...\tCTRL+L"
@@ -785,11 +806,11 @@ msgstr "Guardar Perfil..."
 
 #: Cura/gui/mainWindow.py:96
 msgid "Load Profile from GCode..."
-msgstr "Cargar Perfil desde GCode"
+msgstr "Leer Perfil desde GCode"
 
 #: Cura/gui/mainWindow.py:100
 msgid "Reset Profile to default"
-msgstr "Reseter Pefil a por defecto"
+msgstr "Reiniciar Perfil por defecto"
 
 #: Cura/gui/mainWindow.py:105
 msgid "Preferences...\tCTRL+,"
@@ -817,7 +838,7 @@ msgstr "Archivo"
 
 #: Cura/gui/mainWindow.py:136
 msgid "Minecraft map import..."
-msgstr "Minecraft map import..."
+msgstr "Importar mapa de Minecraft..."
 
 #: Cura/gui/mainWindow.py:140
 msgid "PID Debugger..."
@@ -834,7 +855,7 @@ msgstr "Copiar perfil al portapapeles"
 
 #: Cura/gui/mainWindow.py:149
 msgid "Print all at once"
-msgstr ""
+msgstr "Imprimir todas a la vez"
 
 #: Cura/gui/mainWindow.py:151
 #, fuzzy
@@ -864,7 +885,7 @@ msgstr "Abrir ajustes experto..."
 
 #: Cura/gui/mainWindow.py:180
 msgid "Run bed leveling wizard..."
-msgstr "Iniciar sistente para calibración de la cama..."
+msgstr "Iniciar asistente para calibración de la cama..."
 
 #: Cura/gui/mainWindow.py:182
 msgid "Run head offset wizard..."
@@ -876,7 +897,7 @@ msgstr "Experto"
 
 #: Cura/gui/mainWindow.py:188
 msgid "Online documentation..."
-msgstr "Documentación online..."
+msgstr "Documentación en la red..."
 
 #: Cura/gui/mainWindow.py:190
 msgid "Report a problem..."
@@ -892,7 +913,7 @@ msgstr "Abre tu página YouMagine"
 
 #: Cura/gui/mainWindow.py:196
 msgid "About Cura..."
-msgstr "Sobra Cura"
+msgstr "Sobra Cura..."
 
 #: Cura/gui/mainWindow.py:198
 msgid "Help"
@@ -903,20 +924,21 @@ msgid ""
 "For \"One at a time\" printing, you need to have entered the correct head "
 "size and gantry height in the machine settings"
 msgstr ""
+" Para \"Uno a la vez\" imprimir, tiene que haber entrado en la cabeza correcta"
+" tamaño y puente de altura en la configuración del equipo "
 
 #: Cura/gui/mainWindow.py:379
+#, fuzzy
 msgid "One at a time warning"
-msgstr ""
+msgstr "Advertencia de tiempo"
 
 #: Cura/gui/mainWindow.py:467
-#, fuzzy
 msgid "Add new machine..."
-msgstr "Añadir nueva máquina"
+msgstr "Añadir nueva máquina..."
 
 #: Cura/gui/mainWindow.py:475
-#, fuzzy
 msgid "Install default firmware..."
-msgstr "Instalar firmware Marlin por defecto"
+msgstr "Instalar el firmware por defecto..."
 
 #: Cura/gui/mainWindow.py:478
 #, fuzzy
@@ -925,11 +947,11 @@ msgstr "Instalar firmware personalizado"
 
 #: Cura/gui/mainWindow.py:482
 msgid "Select profile file to load"
-msgstr "Seleccion perfil a cargar"
+msgstr "Seleccion de perfil a cargar"
 
 #: Cura/gui/mainWindow.py:494
 msgid "Select gcode file to load profile from"
-msgstr "Selección gcode para cargar perfil desde el"
+msgstr "Selección gcode para cargar perfil desde él"
 
 #: Cura/gui/mainWindow.py:509
 msgid ""
@@ -937,7 +959,7 @@ msgid ""
 "This feature only works with GCode files made by Cura 12.07 or newer."
 msgstr ""
 "No se ha encontrado Perfil en el GCode.\n"
-"Esta caracteristicas solo funciona en versiones de Cura 12.07 o nuevas."
+"Esta caracteristicas solo funciona en versiones de Cura 12.07 o superior."
 
 #: Cura/gui/mainWindow.py:509
 msgid "Profile load error"
@@ -961,7 +983,7 @@ msgstr ""
 
 #: Cura/gui/mainWindow.py:523
 msgid "Profile reset"
-msgstr "Resetear Perfil"
+msgstr "Reiniciar Perfil"
 
 #: Cura/gui/mainWindow.py:543
 msgid ""
@@ -981,47 +1003,45 @@ msgstr "Estas usando la última versión de Cura!"
 
 #: Cura/gui/mainWindow.py:616
 msgid "Awesome!"
-msgstr "Im-presionante!"
+msgstr "¡Impresionante!"
 
 #: Cura/gui/mainWindow.py:661
 msgid "Basic"
-msgstr ""
+msgstr "Basico"
 
 #: Cura/gui/mainWindow.py:665
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzado"
 
 #: Cura/gui/mainWindow.py:671
 msgid "Plugins"
-msgstr "Plugins"
+msgstr "Complementos"
 
 #: Cura/gui/pluginPanel.py:31
 msgid "Plugins:"
-msgstr "Plugins:"
+msgstr "Complementos:"
 
 #: Cura/gui/pluginPanel.py:35
 msgid "Open plugin location"
-msgstr "Abrir localización plugin"
+msgstr "Abrir localización complementos"
 
 #: Cura/gui/pluginPanel.py:36
 msgid "Enabled plugins"
-msgstr "Habilitar plugins"
+msgstr "Habilitar complementos"
 
 #: Cura/gui/pluginPanel.py:159
 msgid "You need to select a plugin before you can add anything."
-msgstr "Tienes que selecionar un plugin antes de añadir nada"
+msgstr "Tienes que selecionar un complemento antes de añadir nada"
 
 #: Cura/gui/pluginPanel.py:159
 msgid "Error: no plugin selected"
-msgstr "Error: no hay plugin seleccionado"
+msgstr "Error: no hay complento seleccionado"
 
 #: Cura/gui/preferencesDialog.py:14
-#, fuzzy
 msgid "Preferences"
-msgstr "Preferencias...\tCTRL+,"
+msgstr "Preferencias"
 
 #: Cura/gui/preferencesDialog.py:28
-#, fuzzy
 msgid "Print window"
 msgstr "Imprimiendo"
 
@@ -1031,7 +1051,7 @@ msgstr "Colores"
 
 #: Cura/gui/preferencesDialog.py:37 Cura/util/profile.py:489
 msgid "Language"
-msgstr ""
+msgstr "Lenguaje"
 
 #: Cura/gui/preferencesDialog.py:40
 msgid "Filament settings"
@@ -1060,7 +1080,7 @@ msgstr "Ajustes comunicación"
 
 #: Cura/gui/preferencesDialog.py:119
 msgid "Ok"
-msgstr ""
+msgstr "Aceptar"
 
 #: Cura/gui/preferencesDialog.py:123
 #, fuzzy
@@ -1073,13 +1093,12 @@ msgid "Remove machine"
 msgstr "Selecciona tu maquina"
 
 #: Cura/gui/preferencesDialog.py:131 Cura/gui/preferencesDialog.py:167
-#, fuzzy
 msgid "Change machine name"
-msgstr "Nombre de la máquina"
+msgstr "Cambiar el nombre"
 
 #: Cura/gui/preferencesDialog.py:153
 msgid "Cannot remove the last machine configuration in Cura"
-msgstr "No se puede borrar la ultima configuración de la máquina en Cura"
+msgstr "No se puede borrar la ultima configuración de la máquina"
 
 #: Cura/gui/preferencesDialog.py:153
 msgid "Machine remove error"
@@ -1087,12 +1106,11 @@ msgstr "Quitar errores de la máquina"
 
 #: Cura/gui/preferencesDialog.py:167
 msgid "Enter the new name:"
-msgstr ""
+msgstr "Nuevo nombre:"
 
 #: Cura/gui/printWindow.py:33 Cura/gui/printWindow.py:312
-#, fuzzy, python-format
 msgid "Printing on %s"
-msgstr "Imprimiendo"
+msgstr "Imprimiendo en %s"
 
 #: Cura/gui/printWindow.py:324
 msgid ""
@@ -1130,7 +1148,7 @@ msgstr "Cancelar impresión"
 
 #: Cura/gui/printWindow.py:341
 msgid "Error log"
-msgstr "Error log"
+msgstr "Errores"
 
 #: Cura/gui/sceneView.py:64
 msgid "Load"
@@ -1150,7 +1168,7 @@ msgstr "Simetria"
 
 #: Cura/gui/sceneView.py:73 Cura/gui/sceneView.py:76
 msgid "Reset"
-msgstr "Resetear"
+msgstr "Reiniciar"
 
 #: Cura/gui/sceneView.py:74
 msgid "Lay flat"
@@ -1259,14 +1277,13 @@ msgstr "Engine log..."
 
 #: Cura/gui/sceneView.py:491
 msgid "How many copies do you want?"
-msgstr ""
+msgstr "¿Cuántas copias lo que quieres?"
 
 #: Cura/gui/sceneView.py:491
 msgid "Number of copies"
-msgstr ""
+msgstr "Número de copias"
 
 #: Cura/gui/sceneView.py:491
-#, fuzzy
 msgid "Multiply"
 msgstr "Multiplicar objeto"
 
@@ -1305,8 +1322,7 @@ msgstr "Trazadpo a SD"
 
 #: Cura/gui/sceneView.py:1206
 msgid "Overhang view not working due to lack of OpenGL shaders support."
-msgstr ""
-"Vista Voladizo no funciona debido a la falta de soporte de shaders OpenGL."
+msgstr "Vista \"Salientes\" no funciona por falta de \"OpenGL shaders\"."
 
 #: Cura/gui/simpleMode.py:19
 msgid "High quality print"
@@ -1355,9 +1371,8 @@ msgid "Height (mm)"
 msgstr "Espesor de capa (mm)"
 
 #: Cura/gui/tools/imageToMesh.py:32
-#, fuzzy
 msgid "Base (mm)"
-msgstr "Grosor base (mm)"
+msgstr "Grosor de base (mm)"
 
 #: Cura/gui/tools/imageToMesh.py:36
 #, fuzzy
@@ -1371,20 +1386,19 @@ msgstr "Diamtreo (mm)"
 
 #: Cura/gui/tools/projector.py:42
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: Cura/gui/tools/projector.py:43
 msgid "Rectangle"
-msgstr ""
+msgstr "Rectangulo"
 
 #: Cura/gui/tools/projector.py:44
-#, fuzzy
 msgid "Circle"
-msgstr "Archivo"
+msgstr "Circulo"
 
 #: Cura/gui/tools/projector.py:45
 msgid "Draw curves"
-msgstr ""
+msgstr "Dibujar curvas"
 
 #: Cura/gui/tools/youmagineGui.py:78
 msgid "Checking token"
@@ -1490,7 +1504,7 @@ msgstr "Publicar despues de cargar"
 
 #: Cura/gui/tools/youmagineGui.py:279
 msgid "Share!"
-msgstr "Comparte!"
+msgstr "¡Comparte!"
 
 #: Cura/gui/tools/youmagineGui.py:287
 msgid "Add..."
@@ -1548,16 +1562,15 @@ msgstr "La descripción no puede estar vacia"
 
 #: Cura/gui/tools/youmagineGui.py:370
 msgid "No webcam found on your system"
-msgstr ""
+msgstr "No tienes webcam en tu computadora"
 
 #: Cura/gui/tools/youmagineGui.py:370
 msgid "Webcam error"
-msgstr ""
+msgstr "Error de la webcam"
 
 #: Cura/gui/util/engineResultView.py:168
-#, fuzzy, python-format
 msgid "Loading toolpath for visualization (%d%%)"
-msgstr "Cargando trazados para visualización..."
+msgstr "Cargando trazados para visualización (%d%%)"
 
 #: Cura/gui/util/openglGui.py:242
 msgid "An error has occurred during the 3D view drawing."
@@ -1565,7 +1578,7 @@ msgstr "Un error ha ocurrido durante el regenerado de la vista 3D."
 
 #: Cura/gui/util/openglGui.py:250
 msgid "3D window error"
-msgstr "Error en la ventana 3d"
+msgstr "Error en la ventana 3D"
 
 #: Cura/util/profile.py:178 Cura/util/profile.py:179 Cura/util/profile.py:180
 #: Cura/util/profile.py:208 Cura/util/profile.py:209 Cura/util/profile.py:210
@@ -1716,7 +1729,7 @@ msgstr "Temperatura 4º nozzle (C)"
 
 #: Cura/util/profile.py:189
 msgid "Bed temperature (C)"
-msgstr "Temp Cama caliente (C)"
+msgstr "Temp. cama caliente (C)"
 
 #: Cura/util/profile.py:189
 msgid ""
@@ -1832,9 +1845,8 @@ msgstr ""
 "solubles."
 
 #: Cura/util/profile.py:193 Cura/util/profile.py:194 Cura/util/profile.py:195
-#, fuzzy
 msgid "Dual extrusion"
-msgstr "Fusionar extrusión dual"
+msgstr "Extrusion doble"
 
 #: Cura/util/profile.py:193
 msgid "Wipe&prime tower"
