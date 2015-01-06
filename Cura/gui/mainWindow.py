@@ -369,7 +369,7 @@ class mainWindow(wx.Frame):
 			# Enabled sash
 			self.splitter.SetSashSize(4)
 		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
-		if profile.getMachineSetting('machine_type') == 'ultimaker2':
+		if profile.getMachineSetting('machine_type').startswith('ultimaker2'):
 			self.bedLevelWizardMenuItem.Enable(False)
 			self.headOffsetWizardMenuItem.Enable(False)
 		if int(profile.getMachineSetting('extruder_amount')) < 2:

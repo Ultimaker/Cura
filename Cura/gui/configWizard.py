@@ -421,6 +421,10 @@ class MachineSelectPage(InfoPage):
 		self.Ultimaker2Radio = self.AddRadioButton("Ultimaker2", style=wx.RB_GROUP)
 		self.Ultimaker2Radio.SetValue(True)
 		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
+		self.Ultimaker2ExtRadio = self.AddRadioButton("Ultimaker2extended")
+		self.Ultimaker2ExtRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
+		self.Ultimaker2GoRadio = self.AddRadioButton("Ultimaker2go")
+		self.Ultimaker2GoRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
 		self.UltimakerRadio = self.AddRadioButton("Ultimaker Original")
 		self.UltimakerRadio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimakerSelect)
 		self.UltimakerOPRadio = self.AddRadioButton("Ultimaker Original+")
@@ -464,14 +468,29 @@ class MachineSelectPage(InfoPage):
 
 	def StoreData(self):
 		profile.putProfileSetting('retraction_enable', 'True')
-		if self.Ultimaker2Radio.GetValue():
-			profile.putMachineSetting('machine_width', '230')
-			profile.putMachineSetting('machine_depth', '225')
-			profile.putMachineSetting('machine_height', '205')
-			profile.putMachineSetting('machine_name', 'ultimaker2')
-			profile.putMachineSetting('machine_type', 'ultimaker2')
+		if self.Ultimaker2Radio.GetValue() or self.Ultimaker2GoRadio.GetValue() or self.Ultimaker2ExtRadio.GetValue():
+			if self.Ultimaker2Radio.GetValue():
+				profile.putMachineSetting('machine_width', '230')
+				profile.putMachineSetting('machine_depth', '225')
+				profile.putMachineSetting('machine_height', '205')
+				profile.putMachineSetting('machine_name', 'ultimaker2')
+				profile.putMachineSetting('machine_type', 'ultimaker2')
+				profile.putMachineSetting('has_heated_bed', 'True')
+			if self.Ultimaker2GoRadio.GetValue():
+				profile.putMachineSetting('machine_width', '120')
+				profile.putMachineSetting('machine_depth', '120')
+				profile.putMachineSetting('machine_height', '115')
+				profile.putMachineSetting('machine_name', 'ultimaker2go')
+				profile.putMachineSetting('machine_type', 'ultimaker2go')
+				profile.putMachineSetting('has_heated_bed', 'False')
+			if self.Ultimaker2ExtRadio.GetValue():
+				profile.putMachineSetting('machine_width', '230')
+				profile.putMachineSetting('machine_depth', '225')
+				profile.putMachineSetting('machine_height', '305')
+				profile.putMachineSetting('machine_name', 'ultimaker2extended')
+				profile.putMachineSetting('machine_type', 'ultimaker2extended')
+				profile.putMachineSetting('has_heated_bed', 'False')
 			profile.putMachineSetting('machine_center_is_zero', 'False')
-			profile.putMachineSetting('has_heated_bed', 'True')
 			profile.putMachineSetting('gcode_flavor', 'UltiGCode')
 			profile.putMachineSetting('extruder_head_size_min_x', '40.0')
 			profile.putMachineSetting('extruder_head_size_min_y', '10.0')
