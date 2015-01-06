@@ -239,7 +239,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_i386.deb
+	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_i386.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
@@ -275,7 +275,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_amd64.deb
+	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_amd64.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
