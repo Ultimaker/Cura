@@ -26,7 +26,8 @@ class CuraApp(wx.App):
 		self.splash = None
 		self.loadFiles = files
 
-		self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
+		if platform.system() == "Darwin":
+			self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
 
 		if sys.platform.startswith('win'):
 			#Check for an already running instance, if another instance is running load files in there
@@ -79,10 +80,9 @@ class CuraApp(wx.App):
 		pass
 
 	def OnActivate(self, e):
-		if platform.system() == "Darwin":
-			if e.GetActive():
-				self.GetTopWindow().Raise()
-			e.Skip()
+		if e.GetActive():
+			self.GetTopWindow().Raise()
+		e.Skip()
 
 	def Win32SocketListener(self, port):
 		import socket
