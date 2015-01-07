@@ -120,6 +120,15 @@ class SceneView(openglGui.glGuiPanel):
 		self.updateToolButtons()
 		self.updateProfileToControls()
 
+	def cleanup(self):
+		self._engine.cleanup()
+		if self._objectShader is not None:
+			self._objectShader.release()
+		if self._objectLoadShader is not None:
+			self._objectLoadShader.release()
+		if self._objectOverhangShader is not None:
+			self._objectOverhangShader.release()
+
 	def loadGCodeFile(self, filename):
 		self.OnDeleteAll(None)
 		#Cheat the engine results to load a GCode file into it.
