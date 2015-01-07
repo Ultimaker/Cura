@@ -776,7 +776,7 @@ def resetProfile():
 	elif getMachineSetting('machine_type') == 'ultimaker_plus':
 		putProfileSetting('nozzle_size', '0.4')
 		putProfileSetting('retraction_enable', 'True')
-	elif getMachineSetting('machine_type') == 'ultimaker2':
+	elif getMachineSetting('machine_type').startswith('ultimaker2'):
 		putProfileSetting('nozzle_size', '0.4')
 		putProfileSetting('retraction_enable', 'True')
 	else:
@@ -1170,10 +1170,10 @@ def getMachineSizePolygons():
 	else:
 		ret.append(numpy.array([[-size[0]/2,-size[1]/2],[size[0]/2,-size[1]/2],[size[0]/2, size[1]/2], [-size[0]/2, size[1]/2]], numpy.float32))
 
-	if getMachineSetting('machine_type') == 'ultimaker2':
+	if getMachineSetting('machine_type').startswith('ultimaker2'):
 		#UM2 no-go zones
 		w = 25
-		h = 10
+		h = 8
 		ret.append(numpy.array([[-size[0]/2,-size[1]/2],[-size[0]/2+w+2,-size[1]/2], [-size[0]/2+w,-size[1]/2+h], [-size[0]/2,-size[1]/2+h]], numpy.float32))
 		ret.append(numpy.array([[ size[0]/2-w-2,-size[1]/2],[ size[0]/2,-size[1]/2], [ size[0]/2,-size[1]/2+h],[ size[0]/2-w,-size[1]/2+h]], numpy.float32))
 		ret.append(numpy.array([[-size[0]/2+w+2, size[1]/2],[-size[0]/2, size[1]/2], [-size[0]/2, size[1]/2-h],[-size[0]/2+w, size[1]/2-h]], numpy.float32))

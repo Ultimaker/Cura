@@ -648,6 +648,8 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
 		self._scene.updateMachineDimensions()
+		if self._zoom > numpy.max(self._machineSize) * 3:
+			self._animZoom = openglGui.animation(self, self._zoom, numpy.max(self._machineSize) * 3, 0.5)
 		self.updateModelSettingsToControls()
 
 	def updateModelSettingsToControls(self):
@@ -1244,20 +1246,27 @@ class SceneView(openglGui.glGuiPanel):
 			texture_name = None
 			offset = [0,0,0]
 			texture_offset = [0,0,0]
+			texture_scale = 1.0
 			if machine_type == 'ultimaker2' or machine_type == 'ultimaker2extended':
 				filename = resources.getPathForMesh('ultimaker2_platform.stl')
 				offset = [0,-37,145]
 				texture_name = 'Ultimaker2backplate.png'
 				texture_offset = [0,150,-5]
-			if machine_type == 'ultimaker_plus':
+			elif machine_type == 'ultimaker2go':
+				filename = resources.getPathForMesh('ultimaker2go_platform.stl')
+				offset = [0,-42,145]
+				texture_offset = [0,105,-5]
+				texture_name = 'Ultimaker2backplate.png'
+				texture_scale = 0.9
+			elif machine_type == 'ultimaker_plus':
 				filename = resources.getPathForMesh('ultimaker2_platform.stl')
 				offset = [0,-37,145]
 				texture_offset = [0,150,-5]
 				texture_name = 'UltimakerPlusbackplate.png'
-			if machine_type == 'ultimaker':
+			elif machine_type == 'ultimaker':
 				filename = resources.getPathForMesh('ultimaker_platform.stl')
 				offset = [0,0,2.5]
-			if machine_type == 'Witbox':
+			elif machine_type == 'Witbox':
 				filename = resources.getPathForMesh('Witbox_platform.stl')
 				offset = [0,-37,145]
 
@@ -1270,6 +1279,7 @@ class SceneView(openglGui.glGuiPanel):
 					if texture_name is not None:
 						self._platformMesh[machine_type].texture = openglHelpers.loadGLTexture(texture_name)
 						self._platformMesh[machine_type].texture_offset = texture_offset
+						self._platformMesh[machine_type].texture_scale = texture_scale
 		if self._platformMesh[machine_type] is not None:
 			mesh = self._platformMesh[machine_type]
 			glColor4f(1,1,1,0.5)
@@ -1285,11 +1295,14 @@ class SceneView(openglGui.glGuiPanel):
 				glColor4f(1,1,1,1)
 
 				glTranslate(mesh.texture_offset[0], mesh.texture_offset[1], mesh.texture_offset[2])
+				glScalef(mesh.texture_scale, mesh.texture_scale, mesh.texture_scale)
 				h = 50
 				d = 8
 				w = 100
 				glEnable(GL_BLEND)
-				glBlendFunc(GL_DST_COLOR, GL_ZERO)
+				glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA)
+				glEnable(GL_ALPHA_TEST)
+				glAlphaFunc(GL_GREATER, 0.0)
 				glBegin(GL_QUADS)
 				glTexCoord2f(1, 0)
 				glVertex3f( w, 0, h)
