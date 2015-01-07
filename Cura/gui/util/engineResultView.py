@@ -24,7 +24,7 @@ class engineResultView(object):
 		self._layerVBOs = []
 		self._layer20VBOs = []
 
-		self.layerSelect = openglGui.glSlider(self._parent, 10000, 0, 1, (-1,-2), lambda : self._parent.QueueRefresh())
+		self.layerSelect = openglGui.glSlider(self._parent, 10000, 1, 1, (-1,-2), lambda : self._parent.QueueRefresh())
 
 	def setResult(self, result):
 		if self._result == result:

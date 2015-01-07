@@ -87,7 +87,7 @@ def getLanguageOptions():
 		['de', 'Deutsch'],
 		['fr', 'French'],
 		['tr', 'Turkish'],
-		['ko', 'Korean'],
+		# ['ko', 'Korean'],
 		# ['zh', 'Chinese'],
 		# ['nl', 'Nederlands'],
 		# ['es', 'Spanish'],
