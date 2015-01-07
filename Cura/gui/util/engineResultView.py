@@ -19,12 +19,14 @@ class engineResultView(object):
 		self._parent = parent
 		self._result = None
 		self._enabled = False
+		self._singleLayer = False
 		self._gcodeLoadProgress = 0
 		self._resultLock = threading.Lock()
 		self._layerVBOs = []
 		self._layer20VBOs = []
 
 		self.layerSelect = openglGui.glSlider(self._parent, 10000, 0, 1, (-1,-2), lambda : self._parent.QueueRefresh())
+		self.singleLayerToggle = openglGui.glButton(self._parent, 23, _("Single Layer"), (-1,-1.5), self.OnSingleLayerToggle, 0.5) #stay half size of the base size
 
 	def setResult(self, result):
 		if self._result == result:
@@ -46,9 +48,19 @@ class engineResultView(object):
 		self._layer20VBOs = []
 		self._resultLock.release()
 
+	def OnSingleLayerToggle(self, button):
+		self._singleLayer = not self._singleLayer
+		if self._singleLayer:
+			self.singleLayerToggle._tooltip = "Multi Layer"
+		else:
+			self.singleLayerToggle._tooltip = "Single Layer"
+
 	def setEnabled(self, enabled):
 		self._enabled = enabled
+		self._singleLayer = False
 		self.layerSelect.setHidden(not enabled)
+		self.singleLayerToggle.setHidden(not enabled)
+		
 
 	def _gcodeLoadCallback(self, result, progress):
 		if result != self._result:
@@ -124,8 +136,10 @@ class engineResultView(object):
 											polygons += result._polygons[n + i][typeName]
 									layerVBOs[typeName] = self._polygonsToVBO_lines(polygons)
 									generatedVBO = True
-								glColor4f(color[0]*0.5,color[1]*0.5,color[2]*0.5,color[3])
-								layerVBOs[typeName].render()
+
+								if not self._singleLayer or n == layerNr - 1:
+									glColor4f(color[0]*0.5,color[1]*0.5,color[2]*0.5,color[3])
+									layerVBOs[typeName].render()
 					n -= 20
 				else:
 					c = 1.0 - ((layerNr - n) - 1) * 0.05
@@ -139,8 +153,10 @@ class engineResultView(object):
 								continue
 							if 'GCODE-' + typeName not in layerVBOs:
 								layerVBOs['GCODE-' + typeName] = self._gcodeToVBO_quads(gcodeLayers[n+1:n+2], typeName)
-							glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
-							layerVBOs['GCODE-' + typeName].render()
+
+							if not self._singleLayer or n == layerNr - 1:
+								glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
+								layerVBOs['GCODE-' + typeName].render()
 
 						if n == layerNr - 1:
 							if 'GCODE-MOVE' not in layerVBOs:
@@ -153,8 +169,10 @@ class engineResultView(object):
 							if typeName in polygons:
 								if typeName not in layerVBOs:
 									layerVBOs[typeName] = self._polygonsToVBO_lines(polygons[typeName])
-								glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
-								layerVBOs[typeName].render()
+
+								if not self._singleLayer or n == layerNr - 1:
+									glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
+									layerVBOs[typeName].render()
 					n -= 1
 		glPopMatrix()
 		if generatedVBO:
