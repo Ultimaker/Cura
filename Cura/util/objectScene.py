@@ -154,6 +154,7 @@ class Scene(object):
 		yMin = profile.getMachineSettingFloat('extruder_head_size_min_y')
 		yMax = profile.getMachineSettingFloat('extruder_head_size_max_y')
 		gantryHeight = profile.getMachineSettingFloat('extruder_head_size_height')
+		objectSink = profile.getProfileSettingFloat("object_sink")
 
 		self._leftToRight = xMin < xMax
 		self._frontToBack = yMin < yMax
@@ -162,7 +163,7 @@ class Scene(object):
 		self._gantryHeight = gantryHeight
 		self._oneAtATime = self._gantryHeight > 0 and profile.getPreference('oneAtATime') == 'True'
 		for obj in self._objectList:
-			if obj.getSize()[2] > self._gantryHeight:
+			if obj.getSize()[2] - objectSink > self._gantryHeight:
 				self._oneAtATime = False
 
 		headArea = numpy.array([[-xMin,-yMin],[ xMax,-yMin],[ xMax, yMax],[-xMin, yMax]], numpy.float32)
@@ -267,8 +268,10 @@ class Scene(object):
 			return polygon.polygonCollision(a._boundaryHull + a.getPosition(), b._boundaryHull + b.getPosition())
 
 	def checkPlatform(self, obj):
+		objectSink = profile.getProfileSettingFloat("object_sink")
+
 		area = obj._printAreaHull + obj.getPosition()
-		if obj.getSize()[2] > self._machineSize[2]:
+		if obj.getSize()[2] - objectSink > self._machineSize[2]:
 			return False
 		if not polygon.fullInside(area, self._machinePolygons[0]):
 			return False
