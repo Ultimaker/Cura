@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: Cura Translation\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-08 10:01+0100\n"
-"PO-Revision-Date: 2014-11-14 20:43+0900\n"
-"Last-Translator: Jinbuhm Kim <Jinbuhm.Kim@gmail.com>\n"
+"PO-Revision-Date: 2015-01-06 16:23+0900\n"
+"Last-Translator: JInbuhm Kim <Jinbuhm.Kim@gmail.com>\n"
 "Language-Team: Korean <Jinbuhm.Kim@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7beta1\n"
+"X-Generator: Poedit 1.7.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "Language: ko_KR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -48,9 +48,8 @@ msgid "Select your language:"
 msgstr "언어를 선택하세요"
 
 #: Cura/gui/configWizard.py:266
-#, fuzzy
 msgid "Older models"
-msgstr "3D 모델 열기 "
+msgstr "오래된 모델"
 
 #: Cura/gui/configWizard.py:283
 msgid "Printrbot Selection"
@@ -915,9 +914,8 @@ msgid "One at a time warning"
 msgstr "한번에 하나씩 프린팅 경고"
 
 #: Cura/gui/mainWindow.py:467
-#, fuzzy
 msgid "Add new machine..."
-msgstr "새로운 기기 추가"
+msgstr "새로운 기기 추가..."
 
 #: Cura/gui/mainWindow.py:475
 msgid "Install default firmware..."
@@ -2178,7 +2176,7 @@ msgstr ""
 
 #: Cura/util/profile.py:221 Cura/util/profile.py:222 Cura/util/profile.py:223
 msgid "Skirt"
-msgstr ""
+msgstr "Skirt"
 
 #: Cura/util/profile.py:221
 msgid "Line count"
@@ -2354,7 +2352,6 @@ msgid "Overhang angle for support (deg)"
 msgstr "서포트를 위한 돌출부 각도(deg)"
 
 #: Cura/util/profile.py:233
-#, fuzzy
 msgid ""
 "The minimal angle that overhangs need to have to get support. With 90 degree "
 "being horizontal and 0 degree being vertical."
@@ -2371,8 +2368,8 @@ msgid ""
 "Amount of infill structure in the support material, less material gives "
 "weaker support which is easier to remove. 15% seems to be a good average."
 msgstr ""
-"서포트 재질에 채우는 양, 재료가 적으면 서포트가 약해서 제거하기 쉽습니다. 15%"
-"가 평균적으로 좋습니다."
+"서포트 재질에 채우는 양, 재료가 적으면 서포트가 약해서 제거하기 쉽습니다. "
+"15% 가 평균적으로 좋습니다."
 
 #: Cura/util/profile.py:235
 msgid "Distance X/Y (mm)"
@@ -2403,7 +2400,7 @@ msgstr ""
 
 #: Cura/util/profile.py:237 Cura/util/profile.py:238
 msgid "Black Magic"
-msgstr ""
+msgstr "Black Magic"
 
 #: Cura/util/profile.py:237
 msgid "Spiralize the outer contour"
@@ -2517,21 +2514,20 @@ msgstr "Airgap"
 
 #: Cura/util/profile.py:247
 msgid "Gap between the last layer of the raft the whole print."
-msgstr ""
+msgstr "Gap between the last layer of the raft the whole print."
 
 #: Cura/util/profile.py:248
 msgid "First Layer Airgap"
-msgstr ""
+msgstr "첫번째 레이어 Airgap"
 
 #: Cura/util/profile.py:248
-#, fuzzy
 msgid ""
 "Gap between the last layer of the raft and the first printing layer. A small "
 "gap of 0.2mm works wonders on PLA and makes the raft easy to remove. This "
 "value is added on top of the 'Airgap' setting."
 msgstr ""
 "첫번째 프린팅 레이어와 마지막 raft레이어 사이의 간격. PLA에서 0.2mm의 간격은 "
-"raft를 쉽게 제거되게 합니다."
+"raft를 쉽게 제거되게 합니다. 이 값은 Airgap 설정의 상위에 더해집니다."
 
 #: Cura/util/profile.py:249
 msgid "Surface layers"
@@ -2546,22 +2542,20 @@ msgstr ""
 "다."
 
 #: Cura/util/profile.py:250
-#, fuzzy
 msgid "Surface layer thickness (mm)"
-msgstr "첫번째 레이어 두께 (mm)"
+msgstr "표면 레이어 두께 (mm)"
 
 #: Cura/util/profile.py:250
 msgid "Thickness of each surface layer."
-msgstr ""
+msgstr "각 표면 레이어의 두께"
 
 #: Cura/util/profile.py:251
-#, fuzzy
 msgid "Surface layer line width (mm)"
-msgstr "인터페이스 라인 두께 (mm)"
+msgstr "표면 레이어 라인 두께 (mm)"
 
 #: Cura/util/profile.py:251
 msgid "Width of the lines for each surface layer."
-msgstr ""
+msgstr "각 표면 레이어의 라인두께"
 
 #: Cura/util/profile.py:252 Cura/util/profile.py:253 Cura/util/profile.py:254
 #: Cura/util/profile.py:255
