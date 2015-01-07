@@ -353,7 +353,6 @@ class mainWindow(wx.Frame):
 		prefDialog.Centre()
 		prefDialog.Show()
 		prefDialog.Raise()
-		wx.CallAfter(prefDialog.Show)
 
 	def OnMachineSettings(self, e):
 		prefDialog = preferencesDialog.machineSettingsDialog(self)
@@ -572,9 +571,10 @@ class mainWindow(wx.Frame):
 			wx.MessageBox(_("You are running the latest version of Cura!"), _("Awesome!"), wx.ICON_INFORMATION)
 
 	def OnAbout(self, e):
-		aboutBox = aboutWindow.aboutWindow()
+		aboutBox = aboutWindow.aboutWindow(self)
 		aboutBox.Centre()
 		aboutBox.Show()
+		aboutBox.Raise()
 
 	def OnClose(self, e):
 		profile.saveProfile(profile.getDefaultProfilePath(), True)

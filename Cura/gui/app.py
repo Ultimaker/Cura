@@ -5,6 +5,7 @@ import os
 import platform
 import shutil
 import glob
+import subprocess
 import warnings
 
 try:
@@ -162,14 +163,12 @@ class CuraApp(wx.App):
 			wx.CallAfter(self.StupidMacOSWorkaround)
 
 	def StupidMacOSWorkaround(self):
-		"""
-		On MacOS for some magical reason opening new frames does not work until you opened a new modal dialog and closed it.
-		If we do this from software, then, as if by magic, the bug which prevents opening extra frames is gone.
-		"""
-		dlg = wx.Dialog(None)
-		wx.PostEvent(dlg, wx.CommandEvent(wx.EVT_CLOSE.typeId))
-		dlg.ShowModal()
-		dlg.Destroy()
+		subprocess.Popen(['osascript', '-e', '''\
+		tell application "System Events"
+		set procName to name of first process whose unix id is %s
+		end tell
+		tell application procName to activate
+		''' % os.getpid()])
 
 if platform.system() == "Darwin": #Mac magic. Dragons live here. THis sets full screen options.
 	try:
