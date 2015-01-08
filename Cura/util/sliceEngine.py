@@ -399,8 +399,10 @@ class Engine(object):
 			self._result.setFinished(True)
 			self._callback(1.0)
 		else:
-			for line in self._result.getLog():
-				print line
+                        # We do not print the slicer log because it can quickly fill up
+                        # the .xsession-errors file if cura gets launched from the WM on Linux
+			#for line in self._result.getLog():
+			#	print line
 			self._callback(-1.0)
 		self._process = None
 
