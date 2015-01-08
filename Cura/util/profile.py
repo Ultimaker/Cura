@@ -1184,11 +1184,14 @@ def getMachineSizePolygons():
 	if getMachineSetting('machine_type').startswith('ultimaker2'):
 		#UM2 no-go zones
 		w = 25
+		w2 = 5
 		h = 8
+		if getMachineSetting('machine_type') == 'ultimaker2go':
+			w2 = 25
 		ret.append(numpy.array([[-size[0]/2,-size[1]/2],[-size[0]/2+w+2,-size[1]/2], [-size[0]/2+w,-size[1]/2+h], [-size[0]/2,-size[1]/2+h]], numpy.float32))
-		ret.append(numpy.array([[ size[0]/2-w-2,-size[1]/2],[ size[0]/2,-size[1]/2], [ size[0]/2,-size[1]/2+h],[ size[0]/2-w,-size[1]/2+h]], numpy.float32))
+		ret.append(numpy.array([[ size[0]/2-w2-2,-size[1]/2],[ size[0]/2,-size[1]/2], [ size[0]/2,-size[1]/2+h],[ size[0]/2-w2,-size[1]/2+h]], numpy.float32))
 		ret.append(numpy.array([[-size[0]/2+w+2, size[1]/2],[-size[0]/2, size[1]/2], [-size[0]/2, size[1]/2-h],[-size[0]/2+w, size[1]/2-h]], numpy.float32))
-		ret.append(numpy.array([[ size[0]/2, size[1]/2],[ size[0]/2-w-2, size[1]/2], [ size[0]/2-w, size[1]/2-h],[ size[0]/2, size[1]/2-h]], numpy.float32))
+		ret.append(numpy.array([[ size[0]/2, size[1]/2],[ size[0]/2-w2-2, size[1]/2], [ size[0]/2-w2, size[1]/2-h],[ size[0]/2, size[1]/2-h]], numpy.float32))
 	return ret
 
 #returns the number of extruders minimal used. Normally this returns 1, but with dual-extrusion support material it returns 2
