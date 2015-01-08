@@ -391,6 +391,14 @@ class Engine(object):
 
 		returnCode = self._process.wait()
 		logThread.join()
+		self._result.addLog("Slicer process returned : %d" % returnCode)
+		try:
+			with open(os.path.join(profile.getBasePath(), 'debug.log'), "w") as f:
+				for line in self._result.getLog():
+					f.write(line + "\n")
+		except:
+			pass
+
 		if returnCode == 0:
 			pluginError = pluginInfo.runPostProcessingPlugins(self._result)
 			if pluginError is not None:
@@ -399,10 +407,6 @@ class Engine(object):
 			self._result.setFinished(True)
 			self._callback(1.0)
 		else:
-                        # We do not print the slicer log because it can quickly fill up
-                        # the .xsession-errors file if cura gets launched from the WM on Linux
-			#for line in self._result.getLog():
-			#	print line
 			self._callback(-1.0)
 		self._process = None
 
