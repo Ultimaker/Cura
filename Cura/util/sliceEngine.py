@@ -393,7 +393,7 @@ class Engine(object):
 		logThread.join()
 		self._result.addLog("Slicer process returned : %d" % returnCode)
 		try:
-			with open(os.path.join(profile.getBasePath(), 'debug.log'), "w") as f:
+			with open(os.path.join(profile.getBasePath(), 'engine.log'), "w") as f:
 				for line in self._result.getLog():
 					f.write(line + "\n")
 		except:
