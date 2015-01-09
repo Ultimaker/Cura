@@ -299,7 +299,7 @@ class mainWindow(wx.Frame):
 			print "Unable to read from clipboard"
 
 
-	def updateSliceMode(self):
+	def updateSliceMode(self, changedMode = True):
 		isSimple = profile.getPreference('startMode') == 'Simple'
 
 		self.normalSettingsPanel.Show(not isSimple)
@@ -315,8 +315,10 @@ class mainWindow(wx.Frame):
 
 		# Set splitter sash position & size
 		if isSimple:
-			# Save normal mode sash
-			self.normalSashPos = self.splitter.GetSashPosition()
+			# Save normal mode sash (only if we changed mode from normal
+			# to simple)
+			if changedMode:
+				self.normalSashPos = self.splitter.GetSashPosition()
 
 			# Change location of sash to width of quick mode pane
 			(width, height) = self.simpleSettingsPanel.GetSizer().GetSize()
@@ -325,7 +327,9 @@ class mainWindow(wx.Frame):
 			# Disable sash
 			self.splitter.SetSashSize(0)
 		else:
-			self.splitter.SetSashPosition(self.normalSashPos, True)
+			# Only change the sash position if we changed mode from simple
+			if changedMode:
+				self.splitter.SetSashPosition(self.normalSashPos, True)
 			# Enabled sash
 			self.splitter.SetSashSize(4)
 		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
@@ -416,7 +420,7 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
 		self.leftSizer.Add(self.simpleSettingsPanel, 1)
 		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
-		self.updateSliceMode()
+		self.updateSliceMode(False)
 		self.updateProfileToAllControls()
 
 	def updateMachineMenu(self):
