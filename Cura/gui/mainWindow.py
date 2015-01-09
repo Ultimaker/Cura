@@ -411,7 +411,7 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel.updateProfileToControls()
 		self.simpleSettingsPanel.updateProfileToControls()
 
-	def reloadSettingPanels(self):
+	def reloadSettingPanels(self, changedSliceMode):
 		self.leftSizer.Detach(self.simpleSettingsPanel)
 		self.leftSizer.Detach(self.normalSettingsPanel)
 		self.simpleSettingsPanel.Destroy()
@@ -420,7 +420,7 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
 		self.leftSizer.Add(self.simpleSettingsPanel, 1)
 		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
-		self.updateSliceMode(False)
+		self.updateSliceMode(changedSliceMode)
 		self.updateProfileToAllControls()
 
 	def updateMachineMenu(self):
@@ -524,13 +524,15 @@ class mainWindow(wx.Frame):
 
 	def OnFirstRunWizard(self, e):
 		self.Hide()
+		wasSimple = profile.getPreference('startMode') == 'Simple'
 		configWizard.configWizard()
+		isSimple = profile.getPreference('startMode') == 'Simple'
 		self.Show()
-		self.reloadSettingPanels()
+		self.reloadSettingPanels(isSimple != wasSimple)
 
 	def OnSelectMachine(self, index):
 		profile.setActiveMachine(index)
-		self.reloadSettingPanels()
+		self.reloadSettingPanels(False)
 
 	def OnBedLevelWizard(self, e):
 		configWizard.bedLevelWizard()
