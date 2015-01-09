@@ -27,6 +27,8 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "View" })
         self._plugin_registry.loadPlugins({ "type": "MeshHandler" })
         self._plugin_registry.loadPlugins({ "type": "Tool" })
+
+        self._plugin_registry.loadPlugin('CuraEngineBackend')
         
         controller = self.getController()
 
