@@ -124,16 +124,7 @@ class gcode(object):
 							return
 					currentLayer = [currentPath]
 				line = line[0:line.find(';')]
-			T = getCodeInt(line, 'T')
-			if T is not None:
-				if currentExtruder > 0:
-					posOffset[0] -= profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset[1] -= profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
-				currentExtruder = T
-				if currentExtruder > 0:
-					posOffset[0] += profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset[1] += profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
-			
+
 			G = getCodeInt(line, 'G')
 			if G is not None:
 				if G == 0 or G == 1:	#Move
@@ -282,6 +273,17 @@ class gcode(object):
 							extrudeAmountMultiply = s / 100.0
 					else:
 						print "Unknown M code:" + str(M)
+				else:
+					T = getCodeInt(line, 'T')
+					if T is not None:
+						if currentExtruder > 0:
+							posOffset[0] -= profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
+							posOffset[1] -= profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
+						currentExtruder = T
+						if currentExtruder > 0:
+							posOffset[0] += profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
+							posOffset[1] += profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
+
 		for path in currentLayer:
 			path['points'] = numpy.array(path['points'], numpy.float32)
 			path['extrusion'] = numpy.array(path['extrusion'], numpy.float32)
