@@ -111,8 +111,7 @@ def getPluginList(pluginType):
 			ret.append(plugin)
 	return ret
 
-def runPostProcessingPlugins(engineResult):
-	pluginConfigList = getPostProcessPluginConfig()
+def runPostProcessingPlugins(engineResult, pluginConfigList):
 	pluginList = getPluginList('postprocess')
 
 	tempfilename = None

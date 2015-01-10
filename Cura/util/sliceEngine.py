@@ -356,11 +356,11 @@ class Engine(object):
 				self._objCount += 1
 		modelHash = hash.hexdigest()
 		if self._objCount > 0:
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash))
+			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash, pluginInfo.getPostProcessPluginConfig()))
 			self._thread.daemon = True
 			self._thread.start()
 
-	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash):
+	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash, pluginConfig):
 		if oldThread is not None:
 			if self._process is not None:
 				self._process.terminate()
@@ -400,7 +400,7 @@ class Engine(object):
 			pass
 
 		if returnCode == 0:
-			pluginError = pluginInfo.runPostProcessingPlugins(self._result)
+			pluginError = pluginInfo.runPostProcessingPlugins(self._result, pluginConfig)
 			if pluginError is not None:
 				print pluginError
 				self._result.addLog(pluginError)
