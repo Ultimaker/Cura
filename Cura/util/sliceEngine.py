@@ -298,7 +298,10 @@ class Engine(object):
 	def _runEngine(self, scene, overrides, old_thread):
 		if old_thread is not None:
 			if self._process is not None:
-				self._process.terminate()
+				try:
+					self._process.terminate()
+				except:
+					pass
 			old_thread.join()
 		self._callback(-1.0)
 
@@ -427,6 +430,7 @@ class Engine(object):
 				self._callback(-1.0)
 			self._process = None
 		except MemoryError:
+			traceback.print_exc()
 			self._result.addLog("MemoryError")
 			self._callback(-1.0)
 
