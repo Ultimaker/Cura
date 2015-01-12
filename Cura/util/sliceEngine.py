@@ -412,7 +412,7 @@ class Engine(object):
 			if returnCode == 0:
 				self._result.addReplaceTag('#P_TIME#', self._result.getPrintTime())
 				self._result.addReplaceTag('#F_AMNT#', self._result.getFilamentAmountMeters(0))
-				self._result.addReplaceTag('#F_WGHT#', math.round(self._result.getFilamentWeight(0) * 1000.0))
+				self._result.addReplaceTag('#F_WGHT#', math.floor(self._result.getFilamentWeight(0) * 1000.0))
 				self._result.addReplaceTag('#F_COST#', self._result.getFilamentCost(0))
 				self._result.applyReplaceTags()
 				plugin_error = pluginInfo.runPostProcessingPlugins(self._result)
