@@ -1245,34 +1245,6 @@ def replaceTagMatch(m):
 		return pre + str(int(f))
 	return pre + str(f)
 
-def replaceGCodeTags(filename, gcodeInt):
-	f = open(filename, 'r+')
-	data = f.read(2048)
-	data = data.replace('#P_TIME#', ('%5d:%02d' % (int(gcodeInt.totalMoveTimeMinute / 60), int(gcodeInt.totalMoveTimeMinute % 60)))[-8:])
-	data = data.replace('#F_AMNT#', ('%8.2f' % (gcodeInt.extrusionAmount / 1000))[-8:])
-	data = data.replace('#F_WGHT#', ('%8.2f' % (gcodeInt.calculateWeight() * 1000))[-8:])
-	cost = gcodeInt.calculateCost()
-	if cost is None:
-		cost = 'Unknown'
-	data = data.replace('#F_COST#', ('%8s' % (cost.split(' ')[0]))[-8:])
-	f.seek(0)
-	f.write(data)
-	f.close()
-
-def replaceGCodeTagsFromSlicer(filename, slicerInt):
-	f = open(filename, 'r+')
-	data = f.read(2048)
-	data = data.replace('#P_TIME#', ('%8.2f' % (int(slicerInt._printTimeSeconds)))[-8:])
-	data = data.replace('#F_AMNT#', ('%8.2f' % (slicerInt._filamentMM[0]))[-8:])
-	data = data.replace('#F_WGHT#', ('%8.2f' % (float(slicerInt.getFilamentWeight()) * 1000))[-8:])
-	cost = slicerInt.getFilamentCost()
-	if cost is None:
-		cost = 'Unknown'
-	data = data.replace('#F_COST#', ('%8s' % (cost.split(' ')[0]))[-8:])
-	f.seek(0)
-	f.write(data)
-	f.close()
-
 ### Get aleration raw contents. (Used internally in Cura)
 def getAlterationFile(filename):
 	if filename in tempOverride:
