@@ -35,14 +35,16 @@ class BigDataStorage(object):
 				ret = self.activeRead(size)
 		return ret
 
-	def replaceAtStart(self, key, value):
+	def replaceAtStart(self, dictionary):
 		data = self._list[0].getvalue()
 		block0 = data[0:2048]
-		value = (value + ' ' * len(key))[:len(key)]
-		block0 = block0.replace(key, value)
+		block1 = StringIO.StringIO()
+		block1.write(data[2048:])
+		self._list.insert(1, block1)
+		for key, value in dictionary.items():
+			block0 = block0.replace(key, str(value))
 		self._list[0] = StringIO.StringIO()
 		self._list[0].write(block0)
-		self._list[0].write(data[2048:])
 
 	def __len__(self):
 		ret = 0

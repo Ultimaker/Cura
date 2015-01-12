@@ -100,6 +100,9 @@ class EngineResult(object):
 			return None
 		return _('%0.2f meter %0.0f gram') % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
 
+	def getFilamentAmountMeters(self, e=0):
+		return float(self._filamentMM[e]) / 1000.0
+
 	def getLog(self):
 		return self._engineLog
 
@@ -118,10 +121,13 @@ class EngineResult(object):
 	def setHash(self, hash):
 		self._modelHash = hash
 
+	def addReplaceTag(self, key, value):
+		self._replaceInfo[key] = value
+
+	def applyReplaceTags(self):
+		self._gcodeData.replaceAtStart(self._replaceInfo)
+
 	def setFinished(self, result):
-		if result:
-			for k, v in self._replaceInfo.items():
-				self._gcodeData.replaceAtStart(k, v)
 		self._finished = result
 
 	def isFinished(self):
@@ -404,6 +410,11 @@ class Engine(object):
 			returnCode = self._process.wait()
 			logThread.join()
 			if returnCode == 0:
+				self._result.addReplaceTag('#P_TIME#', self._result.getPrintTime())
+				self._result.addReplaceTag('#F_AMNT#', self._result.getFilamentAmountMeters(0))
+				self._result.addReplaceTag('#F_WGHT#', math.round(self._result.getFilamentWeight(0) * 1000.0))
+				self._result.addReplaceTag('#F_COST#', self._result.getFilamentCost(0))
+				self._result.applyReplaceTags()
 				plugin_error = pluginInfo.runPostProcessingPlugins(self._result)
 				if plugin_error is not None:
 					print plugin_error
@@ -452,7 +463,7 @@ class Engine(object):
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
 					self._result._filamentMM[1] /= (math.pi * radius * radius)
 			elif line.startswith('Replace:'):
-				self._result._replaceInfo[line.split(':')[1].strip()] = line.split(':')[2].strip()
+				self._result.addReplaceTag(line.split(':')[1].strip(), line.split(':')[2].strip())
 			else:
 				self._result.addLog(line)
 			line = stderr.readline()
