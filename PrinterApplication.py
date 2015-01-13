@@ -18,7 +18,7 @@ class PrinterApplication(QtApplication):
     def __init__(self):
         super().__init__()
         self.setApplicationName('printer')
-
+        self._machine_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, "ultimaker2.json"))
         self._physics = None
         
     def run(self):
