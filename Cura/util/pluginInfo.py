@@ -79,6 +79,9 @@ def getPostProcessPluginConfig():
 def setPostProcessPluginConfig(config):
 	profile.putProfileSetting('plugin_config', pickle.dumps(config))
 
+def overridePostProcessPluginConfig(config):
+	profile.setTempOverride('plugin_config', pickle.dumps(config))
+
 def getPluginBasePaths():
 	ret = []
 	if platform.system() != "Windows":
