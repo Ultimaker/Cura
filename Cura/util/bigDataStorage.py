@@ -21,7 +21,7 @@ class BigDataStorage(object):
 		self._active.seek(0)
 		self._read_index = 0
 
-	def read(self, size=None):
+	def read(self, size=-1):
 		ret = self._active.read(size)
 		if ret == '':
 			if self._read_index + 1 < len(self._list):
