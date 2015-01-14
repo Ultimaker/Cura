@@ -136,6 +136,11 @@ else
 	ARDUINO_VERSION=105
 fi
 
+if [ ! -d "$ARDUINO_PATH" ]; then
+  echo "Arduino path '$ARDUINO_PATH' doesn't exist"
+  exit 1
+fi
+
 #Build the Ultimaker Original firmwares.
 gitClone git@github.com:Ultimaker/Marlin.git _UltimakerMarlin
 cd _UltimakerMarlin/Marlin
