@@ -26,6 +26,60 @@ The "package.sh" script generates a final release package. You should not need i
 
 Both MacOS and Linux require some extra instructions for development, as you need to prepare an environment. Look below at the proper section to see what is needed.
 
+Fedora
+--------
+
+Fedora builds Cura by using ```mock```, thereby enabling it to build RPMs for
+every distribution that ```mock``` has a configuration file for. In pratice
+this means that Fedora can build RPMs for several versions of Fedora, CentOS
+and RHEL.
+
+Cura can be built under a regular user account, there is no need to have root
+privileges. In fact, having root privileges is very much discouraged.
+
+However, the user account under which the build is performed needs to be a
+member of the 'mock' group. This is accomplished as follows:
+
+```bash
+sudo usermod -a -G mock "$(whoami)"
+```
+
+To install the software that is required to build Cura, run the following
+commands:
+
+```bash
+sudo yum install -y git rpmdevtools rpm-build mock arduino
+
+# Ensure that the Arduino tools can be found by the build
+sudo mkdir -p /usr/share/arduino/hardware/tools/avr
+sudo ln -sf /usr/bin /usr/share/arduino/hardware/tools/avr/bin
+
+```
+
+To build and install Cura, run the following commands:
+
+```bash
+# Get the Cura software, only required once
+git clone https://github.com/daid/Cura.git Cura
+
+# Build for the current system
+cd Cura
+./package.sh fedora
+
+# Install on the current system
+sudo yum localinstall -y scripts/linux/fedora/RPMS/Cura-*.rpm
+```
+
+Examples of building other configurations:
+
+```bash
+# Build for Fedora rawhide x86-64 and i386
+./package.sh fedora fedora-rawhide-x86_64.cfg fedora-rawhide-i386.cfg
+
+# Since only the basename of the mock configurations is used, this also works:
+./package.sh fedora /etc/mock/fedora-21-x86_64.cfg /etc/mock/fedora-rawhide-i386.cfg
+```
+
 Debian and Ubuntu Linux
 --------
 
