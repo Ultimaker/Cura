@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+set -e
 set -u
 
 # This script is to package the Cura package for Windows/Linux and Mac OS X
