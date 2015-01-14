@@ -518,7 +518,7 @@ class UltimakerFirmwareUpgradePage(InfoPage):
 		self.AddText(_("The firmware shipping with new Ultimakers works, but upgrades\nhave been made to make better prints, and make calibration easier."))
 		self.AddHiddenSeperator()
 		self.AddText(_("Cura requires these new features and thus\nyour firmware will most likely need to be upgraded.\nYou will get the chance to do so now."))
-		upgradeButton, skipUpgradeButton = self.AddDualButton('Upgrade to Marlin firmware', 'Skip upgrade')
+		upgradeButton, skipUpgradeButton = self.AddDualButton(_('Upgrade to Marlin firmware'), _('Skip upgrade'))
 		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
 		skipUpgradeButton.Bind(wx.EVT_BUTTON, self.OnSkipClick)
 		self.AddHiddenSeperator()
@@ -1226,7 +1226,7 @@ class bedLevelWizardMain(InfoPage):
 
 class headOffsetCalibrationPage(InfoPage):
 	def __init__(self, parent):
-		super(headOffsetCalibrationPage, self).__init__(parent, "Printer head offset calibration")
+		super(headOffsetCalibrationPage, self).__init__(parent, _("Printer head offset calibration"))
 
 		self.AddText(_('This wizard will help you in calibrating the printer head offsets of your dual extrusion machine'))
 		self.AddSeperator()

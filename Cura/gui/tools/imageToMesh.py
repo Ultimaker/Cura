@@ -41,12 +41,12 @@ class convertImageDialog(wx.Dialog):
 		self.depthInput = wx.TextCtrl(p, -1, str(h * 0.3))
 		s.Add(self.depthInput, pos=(3, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 
-		options = ['Darker is higher', 'Lighter is higher']
+		options = [_('Darker is higher'), _('Lighter is higher')]
 		self.invertInput = wx.ComboBox(p, -1, options[0], choices=options, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		s.Add(self.invertInput, pos=(4, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 		self.invertInput.SetSelection(0)
 
-		options = ['No smoothing', 'Light smoothing', 'Heavy smoothing']
+		options = [_('No smoothing'), _('Light smoothing'), _('Heavy smoothing')]
 		self.smoothInput = wx.ComboBox(p, -1, options[0], choices=options, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		s.Add(self.smoothInput, pos=(5, 1), flag=wx.LEFT|wx.TOP|wx.RIGHT|wx.EXPAND, border=5)
 		self.smoothInput.SetSelection(0)

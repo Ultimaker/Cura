@@ -27,7 +27,7 @@ from Cura.util import meshLoader
 
 class mainWindow(wx.Frame):
 	def __init__(self):
-		super(mainWindow, self).__init__(None, title='Cura - ' + version.getVersion())
+		super(mainWindow, self).__init__(None, title=_('Cura - ') + version.getVersion())
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -295,7 +295,7 @@ class mainWindow(wx.Frame):
 						print profileString
 						self.lastTriedClipboard = profileString
 						profile.setProfileFromString(profileString)
-						self.scene.notification.message("Loaded new profile from clipboard.")
+						self.scene.notification.message(_("Loaded new profile from clipboard."))
 						self.updateProfileToAllControls()
 		except:
 			print "Unable to read from clipboard"
@@ -627,11 +627,11 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
 		self.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
-		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Basic')
+		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, _('Basic'))
 		self._addSettingsToPanels('basic', left, right)
 		self.SizeLabelWidths(left, right)
 
-		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced')
+		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, _('Advanced'))
 		self._addSettingsToPanels('advanced', left, right)
 		self.SizeLabelWidths(left, right)
 
@@ -644,7 +644,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 			self.alterationPanel = None
 		else:
 			self.alterationPanel = alterationPanel.alterationPanel(self.nb, callback)
-			self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
+			self.nb.AddPage(self.alterationPanel, _("Start/End-GCode"))
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 

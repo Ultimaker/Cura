@@ -5,7 +5,7 @@ import platform
 
 class aboutWindow(wx.Frame):
 	def __init__(self):
-		super(aboutWindow, self).__init__(None, title="About", style = wx.DEFAULT_DIALOG_STYLE)
+		super(aboutWindow, self).__init__(None, title=_("About"), style = wx.DEFAULT_DIALOG_STYLE)
 
 		wx.EVT_CLOSE(self, self.OnClose)
 

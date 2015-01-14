@@ -7,7 +7,7 @@ from Cura.util import machineCom
 
 class debuggerWindow(wx.Frame):
 	def __init__(self, parent):
-		super(debuggerWindow, self).__init__(parent, title='Cura - PID Debugger')
+		super(debuggerWindow, self).__init__(parent, title=_('Cura - PID Debugger'))
 
 		self.machineCom = None
 		self.machineCom = machineCom.MachineCom(callbackObject=self)
@@ -199,7 +199,7 @@ class temperatureGraph(wx.Panel):
 			for n in xrange(0, 10):
 				tempAvg += self.points[-n-1][1]
 				heaterAvg += self.points[-n-1][2]
-			dc.DrawText("Temp: %d Heater: %d" % (tempAvg / 10, heaterAvg * 100 / 255 / 10), 0, 0)
+			dc.DrawText(_("Temp: %d Heater: %d") % (tempAvg / 10, heaterAvg * 100 / 255 / 10), 0, 0)
 
 		#Draw the main lines
 		self._drawLine(dc, '#404040', lambda p: p[6])#target

@@ -52,7 +52,7 @@ class preferencesDialog(wx.Dialog):
 		configBase.SettingRow(right, 'check_for_updates')
 		#configBase.SettingRow(right, 'submit_slice_information')
 
-		self.okButton = wx.Button(right, -1, 'Ok')
+		self.okButton = wx.Button(right, -1, _('Ok'))
 		right.GetSizer().Add(self.okButton, (right.GetSizer().GetRows(), 0), flag=wx.BOTTOM, border=5)
 		self.okButton.Bind(wx.EVT_BUTTON, lambda e: self.Close())
 

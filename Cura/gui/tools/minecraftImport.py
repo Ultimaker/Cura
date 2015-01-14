@@ -18,7 +18,7 @@ def hasMinecraft():
 
 class minecraftImportWindow(wx.Frame):
 	def __init__(self, parent):
-		super(minecraftImportWindow, self).__init__(parent, title='Cura - Minecraft import')
+		super(minecraftImportWindow, self).__init__(parent, title=_('Cura - Minecraft import'))
 
 		saveFileList = map(os.path.basename, glob.glob(mclevel.saveFileDir + "/*"))
 
@@ -37,7 +37,7 @@ class minecraftImportWindow(wx.Frame):
 		self.previewPanel.SetMinSize((512, 512))
 		sizer.Add(self.previewPanel, (0,2), flag=wx.EXPAND)
 
-		self.importButton = wx.Button(self.panel, -1, 'Import')
+		self.importButton = wx.Button(self.panel, -1, _('Import'))
 		sizer.Add(self.importButton, (1,2))
 
 		sizer.AddGrowableRow(1)

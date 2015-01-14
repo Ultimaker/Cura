@@ -52,7 +52,7 @@ def getDefaultFirmware(machineIndex = None):
 
 class InstallFirmware(wx.Dialog):
 	def __init__(self, parent = None, filename = None, port = None, machineIndex = None):
-		super(InstallFirmware, self).__init__(parent=parent, title="Firmware install for %s" % (profile.getMachineSetting('machine_name', machineIndex).title()), size=(250, 100))
+		super(InstallFirmware, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineSetting('machine_name', machineIndex).title()), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
@@ -164,7 +164,7 @@ class InstallFirmware(wx.Dialog):
 
 class AutoUpdateFirmware(wx.Dialog):
 	def __init__(self, parent, filename = None, port = None, machineIndex = None):
-		super(AutoUpdateFirmware, self).__init__(parent=parent, title="Auto Firmware install", size=(250, 100))
+		super(AutoUpdateFirmware, self).__init__(parent=parent, title=_("Auto Firmware install"), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 

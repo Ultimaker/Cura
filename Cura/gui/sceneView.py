@@ -181,7 +181,7 @@ class SceneView(openglGui.glGuiPanel):
 			if ignored_types:
 				ignored_types = ignored_types.keys()
 				ignored_types.sort()
-				self.notification.message("ignored: " + " ".join("*" + type for type in ignored_types))
+				self.notification.message(_("ignored: ") + " ".join("*" + type for type in ignored_types))
 			mainWindow.updateProfileToAllControls()
 			# now process all the scene files
 			if scene_filenames:
@@ -245,7 +245,7 @@ class SceneView(openglGui.glGuiPanel):
 			if len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
-					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", map(lambda n: n[0], drives))
+					dlg = wx.SingleChoiceDialog(self, _("Select SD drive"), _("Multiple removable drives have been found,\nplease select your SD card drive"), map(lambda n: n[0], drives))
 					if dlg.ShowModal() != wx.ID_OK:
 						dlg.Destroy()
 						return
@@ -260,7 +260,7 @@ class SceneView(openglGui.glGuiPanel):
 				if len(connections) < 2:
 					connection = connections[0]
 				else:
-					dlg = wx.SingleChoiceDialog(self, "Select the %s connection to use" % (connectionGroup.getName()), "Multiple %s connections found" % (connectionGroup.getName()), map(lambda n: n.getName(), connections))
+					dlg = wx.SingleChoiceDialog(self, _("Select the %s connection to use") % (connectionGroup.getName()), _("Multiple %s connections found") % (connectionGroup.getName()), map(lambda n: n.getName(), connections))
 					if dlg.ShowModal() != wx.ID_OK:
 						dlg.Destroy()
 						return
@@ -296,9 +296,9 @@ class SceneView(openglGui.glGuiPanel):
 		connection.window.Raise()
 		if not connection.loadGCodeData(self._engine.getResult().getGCode()):
 			if connection.isPrinting():
-				self.notification.message("Cannot start print, because other print still running.")
+				self.notification.message(_("Cannot start print, because other print still running."))
 			else:
-				self.notification.message("Failed to start print...")
+				self.notification.message(_("Failed to start print..."))
 
 	def showSaveGCode(self):
 		if len(self._scene._objectList) < 1:
@@ -332,21 +332,21 @@ class SceneView(openglGui.glGuiPanel):
 		except:
 			import sys, traceback
 			traceback.print_exc()
-			self.notification.message("Failed to save")
+			self.notification.message(_("Failed to save"))
 		else:
 			if ejectDrive:
-				self.notification.message("Saved as %s" % (targetFilename), lambda : self._doEjectSD(ejectDrive), 31, 'Eject')
+				self.notification.message(_("Saved as %s") % (targetFilename), lambda : self._doEjectSD(ejectDrive), 31, 'Eject')
 			elif explorer.hasExplorer():
-				self.notification.message("Saved as %s" % (targetFilename), lambda : explorer.openExplorer(targetFilename), 4, 'Open folder')
+				self.notification.message(_("Saved as %s") % (targetFilename), lambda : explorer.openExplorer(targetFilename), 4, _('Open folder'))
 			else:
-				self.notification.message("Saved as %s" % (targetFilename))
+				self.notification.message(_("Saved as %s") % (targetFilename))
 		self.printButton.setProgressBar(None)
 
 	def _doEjectSD(self, drive):
 		if removableStorage.ejectDrive(drive):
-			self.notification.message('You can now eject the card.')
+			self.notification.message(_('You can now eject the card.'))
 		else:
-			self.notification.message('Safe remove failed...')
+			self.notification.message(_('Safe remove failed...'))
 
 	def _showEngineLog(self):
 		dlg = wx.TextEntryDialog(self, _("The slicing engine reported the following"), _("Engine log..."), '\n'.join(self._engine.getResult().getLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)
@@ -507,7 +507,8 @@ class SceneView(openglGui.glGuiPanel):
 			if n > cnt:
 				break
 		if n <= cnt:
-			self.notification.message("Could not create more than %d items" % (n - 1))
+			self.notification.message(_("Could not create more than %d items") % (n - 1))
+		self.notification.message(_("Could not create more than %d items") % (n - 1))
 		self._scene.remove(newObj)
 		self._scene.centerAll()
 		self.sceneUpdated()
@@ -608,7 +609,7 @@ class SceneView(openglGui.glGuiPanel):
 						self._scene.centerAll()
 					self._selectObject(obj)
 					if obj.getScale()[0] < 1.0:
-						self.notification.message("Warning: Object scaled down.")
+						self.notification.message(_("Warning: Object scaled down."))
 		self.sceneUpdated()
 
 	def _deleteObject(self, obj):
@@ -1416,7 +1417,7 @@ class SceneView(openglGui.glGuiPanel):
 #TODO: Remove this or put it in a seperate file
 class shaderEditor(wx.Frame):
 	def __init__(self, parent, callback, v, f):
-		super(shaderEditor, self).__init__(parent, title="Shader editor", style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+		super(shaderEditor, self).__init__(parent, title=_("Shader editor"), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 		self._callback = callback
 		s = wx.BoxSizer(wx.VERTICAL)
 		self.SetSizer(s)
