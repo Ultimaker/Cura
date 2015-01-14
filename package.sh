@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -u
+
 # This script is to package the Cura package for Windows/Linux and Mac OS X
 # This script should run under Linux and Mac OS X, as well as Windows with Cygwin.
 
@@ -26,7 +28,7 @@ TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 WIN_PORTABLE_PY_VERSION=2.7.2.1
 
 ##Which CuraEngine to use
-if [ -z ${CURA_ENGINE_REPO} ] ; then
+if [ -z ${CURA_ENGINE_REPO:-} ] ; then
 	CURA_ENGINE_REPO="git@github.com:Ultimaker/CuraEngine.git"
 fi
 
