@@ -151,7 +151,7 @@ class gcode(object):
 							pos[2] += z * scale
 					moveType = 'move'
 					if e is not None:
-						if absoluteE:
+						if absoluteE and posAbs:
 							e -= currentE
 						if e > 0.0:
 							moveType = 'extrude'
