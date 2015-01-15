@@ -528,10 +528,12 @@ class Engine(object):
 		settings['fanFullOnLayerNr'] = (fanFullHeight - settings['initialLayerThickness'] - 1) / settings['layerThickness'] + 1
 		if settings['fanFullOnLayerNr'] < 0:
 			settings['fanFullOnLayerNr'] = 0
-		if profile.getProfileSetting('enable_combing') == 'All':
+		if profile.getProfileSetting('retraction_combing') == 'All':
 			settings['enableCombing'] = 1
-		elif profile.getProfileSetting('enable_combing') == 'No Skin':
+		elif profile.getProfileSetting('retraction_combing') == 'No Skin':
 			settings['enableCombing'] = 2
+		else:
+			settings['enableCombing'] = 0
 		if profile.getProfileSetting('support_type') == 'Lines':
 			settings['supportType'] = 1
 
