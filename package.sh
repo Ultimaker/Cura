@@ -235,7 +235,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	cd ..
 
 	# Create sparse image for distribution
-	hdiutil detach /Volumes/Cura\ -\ Ultimaker/
+	hdiutil detach /Volumes/Cura\ -\ Ultimaker/ || true
 	rm -rf Cura.dmg.sparseimage
 	hdiutil convert DmgTemplateCompressed.dmg -format UDSP -o Cura.dmg
 	hdiutil resize -size 500m Cura.dmg.sparseimage
