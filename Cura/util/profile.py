@@ -518,7 +518,7 @@ setting('machine_center_is_zero', 'False', bool, 'machine', 'hidden').setLabel(_
 setting('machine_shape', 'Square', ['Square','Circular'], 'machine', 'hidden').setLabel(_("Build area shape"), _("The shape of machine build area."))
 setting('ultimaker_extruder_upgrade', 'False', bool, 'machine', 'hidden')
 setting('has_heated_bed', 'False', bool, 'machine', 'hidden').setLabel(_("Heated bed"), _("If you have an heated bed, this enabled heated bed settings (requires restart)"))
-setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'RepRap (Volumetric)', 'UltiGCode', 'MakerBot', 'BFB', 'Mach3'], 'machine', 'hidden').setLabel(_("GCode Flavor"), _("Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer.\nMakerBot GCode has a few changes in the way GCode is generated, but still requires MakerWare to generate to X3G.\nBFB style generates RPM based code.\nMach3 uses A,B,C instead of E for extruders."))
+setting('gcode_flavor', 'RepRap (Marlin/Sprinter)', ['RepRap (Marlin/Sprinter)', 'RepRap (Volumetric)', 'UltiGCode', 'MakerBot', 'BFB', 'Mach3/LinuxCNC'], 'machine', 'hidden').setLabel(_("GCode Flavor"), _("Flavor of generated GCode.\nRepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\nUltiGCode is a variation of the RepRap GCode which puts more settings in the machine instead of the slicer.\nMakerBot GCode has a few changes in the way GCode is generated, but still requires MakerWare to generate to X3G.\nBFB style generates RPM based code.\nMach3 uses A,B,C instead of E for extruders."))
 setting('extruder_amount', '1', ['1','2','3','4','5'], 'machine', 'hidden').setLabel(_("Extruder count"), _("Amount of extruders in your machine."))
 setting('extruder_offset_x1', '0.0', float, 'machine', 'hidden').setLabel(_("Offset X"), _("The offset of your secondary extruder compared to the primary."))
 setting('extruder_offset_y1', '21.6', float, 'machine', 'hidden').setLabel(_("Offset Y"), _("The offset of your secondary extruder compared to the primary."))
@@ -1210,6 +1210,8 @@ def minimalExtruderCount():
 def getGCodeExtension():
 	if getMachineSetting('gcode_flavor') == 'BFB':
 		return '.bfb'
+	if getMachineSetting('gcode_flavor') == 'Mach3/LinuxCNC':
+		return '.ngc'
 	return '.gcode'
 
 #########################################################
@@ -1280,6 +1282,9 @@ def getAlterationFileContents(filename, extruderCount = 1):
 			return 'M25 ;Stop reading from this point on.\n;CURA_PROFILE_STRING:%s\n' % (getProfileString())
 		return ''
 	if filename == 'start.gcode':
+		gcode_parameter_key = 'S'
+		if getMachineSetting('gcode_flavor') == 'Mach3/LinuxCNC':
+			gcode_parameter_key = 'P'
 		if extruderCount > 1:
 			alterationContents = getAlterationFile("start%d.gcode" % (extruderCount))
 		#For the start code, hack the temperature and the steps per E value into it. So the temperature is reached before the start code extrusion.
@@ -1293,22 +1298,22 @@ def getAlterationFileContents(filename, extruderCount = 1):
 			bedTemp = getProfileSettingFloat('print_bed_temperature')
 
 		if bedTemp > 0 and not isTagIn('{print_bed_temperature}', alterationContents):
-			prefix += 'M190 S%f\n' % (bedTemp)
+			prefix += 'M190 %s%f\n' % (gcode_parameter_key, bedTemp)
 		if temp > 0 and not isTagIn('{print_temperature}', alterationContents):
-			if extruderCount > 0:
+			if extruderCount > 1:
 				for n in xrange(1, extruderCount):
 					t = temp
 					if n > 0 and getProfileSettingFloat('print_temperature%d' % (n+1)) > 0:
 						t = getProfileSettingFloat('print_temperature%d' % (n+1))
-					prefix += 'M104 T%d S%f\n' % (n, t)
+					prefix += 'M104 T%d %s%f\n' % (n, gcode_parameter_key, t)
 				for n in xrange(0, extruderCount):
 					t = temp
 					if n > 0 and getProfileSettingFloat('print_temperature%d' % (n+1)) > 0:
 						t = getProfileSettingFloat('print_temperature%d' % (n+1))
-					prefix += 'M109 T%d S%f\n' % (n, t)
+					prefix += 'M109 T%d %s%f\n' % (n, gcode_parameter_key, t)
 				prefix += 'T0\n'
 			else:
-				prefix += 'M109 S%f\n' % (temp)
+				prefix += 'M109 %s%f\n' % (gcode_parameter_key, temp)
 	elif filename == 'end.gcode':
 		if extruderCount > 1:
 			alterationContents = getAlterationFile("end%d.gcode" % (extruderCount))

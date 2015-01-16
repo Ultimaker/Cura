@@ -591,7 +591,7 @@ class Engine(object):
 			settings['gcodeFlavor'] = 2
 		elif profile.getMachineSetting('gcode_flavor') == 'BFB':
 			settings['gcodeFlavor'] = 3
-		elif profile.getMachineSetting('gcode_flavor') == 'Mach3':
+		elif profile.getMachineSetting('gcode_flavor') == 'Mach3/LinuxCNC':
 			settings['gcodeFlavor'] = 4
 		elif profile.getMachineSetting('gcode_flavor') == 'RepRap (Volumetric)':
 			settings['gcodeFlavor'] = 5
