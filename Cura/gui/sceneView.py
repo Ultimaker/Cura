@@ -316,6 +316,8 @@ class SceneView(openglGui.glGuiPanel):
 	def showSaveGCode(self):
 		if len(self._scene._objectList) < 1:
 			return
+		if not self._engine.getResult().isFinished():
+			return
 		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
 		filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
 		dlg.SetFilename(filename)
