@@ -5,6 +5,7 @@ import os
 import platform
 import shutil
 import glob
+import subprocess
 import warnings
 
 try:
@@ -25,7 +26,8 @@ class CuraApp(wx.App):
 		self.splash = None
 		self.loadFiles = files
 
-		self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
+		if platform.system() == "Darwin":
+			self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
 
 		if sys.platform.startswith('win'):
 			#Check for an already running instance, if another instance is running load files in there
@@ -78,10 +80,9 @@ class CuraApp(wx.App):
 		pass
 
 	def OnActivate(self, e):
-		if platform.system() == "Darwin":
-			if e.GetActive():
-				self.GetTopWindow().Raise()
-			e.Skip()
+		if e.GetActive():
+			self.GetTopWindow().Raise()
+		e.Skip()
 
 	def Win32SocketListener(self, port):
 		import socket
@@ -162,14 +163,12 @@ class CuraApp(wx.App):
 			wx.CallAfter(self.StupidMacOSWorkaround)
 
 	def StupidMacOSWorkaround(self):
-		"""
-		On MacOS for some magical reason opening new frames does not work until you opened a new modal dialog and closed it.
-		If we do this from software, then, as if by magic, the bug which prevents opening extra frames is gone.
-		"""
-		dlg = wx.Dialog(None)
-		wx.PostEvent(dlg, wx.CommandEvent(wx.EVT_CLOSE.typeId))
-		dlg.ShowModal()
-		dlg.Destroy()
+		subprocess.Popen(['osascript', '-e', '''\
+		tell application "System Events"
+		set procName to name of first process whose unix id is %s
+		end tell
+		tell application procName to activate
+		''' % os.getpid()])
 
 if platform.system() == "Darwin": #Mac magic. Dragons live here. THis sets full screen options.
 	try:

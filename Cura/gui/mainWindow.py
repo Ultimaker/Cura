@@ -353,7 +353,6 @@ class mainWindow(wx.Frame):
 		prefDialog.Centre()
 		prefDialog.Show()
 		prefDialog.Raise()
-		wx.CallAfter(prefDialog.Show)
 
 	def OnMachineSettings(self, e):
 		prefDialog = preferencesDialog.machineSettingsDialog(self)
@@ -572,9 +571,10 @@ class mainWindow(wx.Frame):
 			wx.MessageBox(_("You are running the latest version of Cura!"), _("Awesome!"), wx.ICON_INFORMATION)
 
 	def OnAbout(self, e):
-		aboutBox = aboutWindow.aboutWindow()
+		aboutBox = aboutWindow.aboutWindow(self)
 		aboutBox.Centre()
 		aboutBox.Show()
+		aboutBox.Raise()
 
 	def OnClose(self, e):
 		profile.saveProfile(profile.getDefaultProfilePath(), True)
@@ -598,7 +598,7 @@ class mainWindow(wx.Frame):
 		#HACK: Set the paint function of the glCanvas to nothing so it won't keep refreshing. Which can keep wxWidgets from quiting.
 		print "Closing down"
 		self.scene.OnPaint = lambda e : e
-		self.scene._engine.cleanup()
+		self.scene.cleanup()
 		self.Destroy()
 
 	def OnQuit(self, e):

@@ -19,7 +19,8 @@ class splashScreen(wx.SplashScreen):
 
 	def OnClose(self, e):
 		if self.callback:
-				# Avoid calling the callback twice
-				self.callback()
-				self.callback = None
+			# Avoid calling the callback twice
+			self.callback()
+			self.callback = None
 		wx.CallAfter(self.DoDestroy)
+		e.Skip()

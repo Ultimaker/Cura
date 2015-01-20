@@ -6,10 +6,11 @@ import time
 import sys
 import os
 import ctypes
+import subprocess
 
 #TODO: This does not belong here!
 if sys.platform.startswith('win'):
-	def preventComputerFromSleeping(prevent):
+	def preventComputerFromSleeping(frame, prevent):
 		"""
 		Function used to prevent the computer from going into sleep mode.
 		:param prevent: True = Prevent the system from going to sleep from this point on.
@@ -34,7 +35,7 @@ elif sys.platform.startswith('darwin'):
 	frameworkPath=objc.pathForFramework("/System/Library/Frameworks/IOKit.framework"),
 	globals=globals())
 	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
-	def preventComputerFromSleeping(prevent):
+	def preventComputerFromSleeping(frame, prevent):
 		if prevent:
 			success, preventComputerFromSleeping.assertionID = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn, "Cura is printing", None)
 			if success != kIOReturnSuccess:
@@ -44,8 +45,13 @@ elif sys.platform.startswith('darwin'):
 				IOPMAssertionRelease(preventComputerFromSleeping.assertionID)
 				preventComputerFromSleeping.assertionID = None
 else:
-	def preventComputerFromSleeping(prevent):
-		pass
+	def preventComputerFromSleeping(frame, prevent):
+                if os.path.isfile("/usr/bin/xdg-screensaver"):
+                        try:
+                                cmd = ['xdg-screensaver', 'suspend' if prevent else 'resume', str(frame.GetHandle())]
+                                subprocess.call(cmd)
+                        except:
+                                pass
 
 class printWindowPlugin(wx.Frame):
 	def __init__(self, parent, printerConnection, filename):
@@ -252,7 +258,7 @@ class printWindowPlugin(wx.Frame):
 			self._printerConnection.closeActiveConnection()
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
 		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
-		preventComputerFromSleeping(False)
+		preventComputerFromSleeping(self, False)
 		self.Destroy()
 
 	def OnTermEnterLine(self, e):
@@ -355,7 +361,7 @@ class printWindowPlugin(wx.Frame):
 			self.SetTitle(info.replace('\n', ', '))
 		if connection.isPrinting() != self._isPrinting:
 			self._isPrinting = connection.isPrinting()
-			preventComputerFromSleeping(self._isPrinting)
+			preventComputerFromSleeping(self, self._isPrinting)
 
 class printWindowBasic(wx.Frame):
 	"""
@@ -449,7 +455,7 @@ class printWindowBasic(wx.Frame):
 			self._printerConnection.closeActiveConnection()
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
 		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
-		preventComputerFromSleeping(False)
+		preventComputerFromSleeping(self, False)
 		self.Destroy()
 
 	def OnConnect(self, e):
@@ -499,7 +505,7 @@ class printWindowBasic(wx.Frame):
 		self.statsText.SetLabel(info)
 		if connection.isPrinting() != self._isPrinting:
 			self._isPrinting = connection.isPrinting()
-			preventComputerFromSleeping(self._isPrinting)
+			preventComputerFromSleeping(self, self._isPrinting)
 
 
 	def _updateButtonStates(self):

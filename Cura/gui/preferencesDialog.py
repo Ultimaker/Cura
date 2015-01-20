@@ -11,7 +11,7 @@ from Cura.util import resources
 
 class preferencesDialog(wx.Dialog):
 	def __init__(self, parent):
-		super(preferencesDialog, self).__init__(None, title="Preferences")
+		super(preferencesDialog, self).__init__(parent, title="Preferences")
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -65,7 +65,7 @@ class preferencesDialog(wx.Dialog):
 
 class machineSettingsDialog(wx.Dialog):
 	def __init__(self, parent):
-		super(machineSettingsDialog, self).__init__(None, title="Machine settings")
+		super(machineSettingsDialog, self).__init__(parent, title="Machine settings")
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -86,6 +86,7 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(left, 'machine_width', index=idx)
 			configBase.SettingRow(left, 'machine_depth', index=idx)
 			configBase.SettingRow(left, 'machine_height', index=idx)
+			configBase.SettingRow(left, 'extruder_z_offset', index=idx)
 			configBase.SettingRow(left, 'extruder_amount', index=idx)
 			configBase.SettingRow(left, 'has_heated_bed', index=idx)
 			configBase.SettingRow(left, 'machine_center_is_zero', index=idx)

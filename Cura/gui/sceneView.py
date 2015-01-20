@@ -52,6 +52,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._animView = None
 		self._animZoom = None
 		self._platformMesh = {}
+		self.glReleaseList = []
 		self._platformTexture = None
 		self._isSimpleMode = True
 		self._printerConnectionManager = printerConnectionManager.PrinterConnectionManager()
@@ -119,6 +120,19 @@ class SceneView(openglGui.glGuiPanel):
 		self.OnToolSelect(0)
 		self.updateToolButtons()
 		self.updateProfileToControls()
+
+	def cleanup(self):
+		# Delete all objects first
+		self.OnDeleteAll(None)
+		self._engine.cleanup()
+		if self._objectShader is not None:
+			self._objectShader.release()
+		if self._objectLoadShader is not None:
+			self._objectLoadShader.release()
+		if self._objectOverhangShader is not None:
+			self._objectOverhangShader.release()
+		for obj in self.glReleaseList:
+			obj.release()
 
 	def loadGCodeFile(self, filename):
 		self.OnDeleteAll(None)

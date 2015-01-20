@@ -509,6 +509,8 @@ setting('extruder_offset_x2', '0.0', float, 'machine', 'hidden').setLabel(_("Off
 setting('extruder_offset_y2', '0.0', float, 'machine', 'hidden').setLabel(_("Offset Y"), _("The offset of your tertiary extruder compared to the primary."))
 setting('extruder_offset_x3', '0.0', float, 'machine', 'hidden').setLabel(_("Offset X"), _("The offset of your forth extruder compared to the primary."))
 setting('extruder_offset_y3', '0.0', float, 'machine', 'hidden').setLabel(_("Offset Y"), _("The offset of your forth extruder compared to the primary."))
+setting('extruder_z_offset', '0.0', float, 'machine', 'hidden').setLabel(_("Z-Offset (mm)"), _("This value will be added to the Z coordinate of every line in the output G-Code to compensate for a badly calibrate Z height endstop."))
+
 setting('steps_per_e', '0', float, 'machine', 'hidden').setLabel(_("E-Steps per 1mm filament"), _("Amount of steps per mm filament extrusion. If set to 0 then this value is ignored and the value in your firmware is used."))
 setting('serial_port', 'AUTO', str, 'machine', 'hidden').setLabel(_("Serial port"), _("Serial port to use for communication with the printer"))
 setting('serial_port_auto', '', str, 'machine', 'hidden')
