@@ -25,9 +25,15 @@ from Cura.util import version
 import platform
 from Cura.util import meshLoader
 
+try:
+	#MacOS release currently lacks some wx components, like the Publisher.
+	from wx.lib.pubsub import Publisher
+except:
+	Publisher = None
+
 class mainWindow(wx.Frame):
 	def __init__(self):
-		super(mainWindow, self).__init__(None, title='Cura - ' + version.getVersion())
+		super(mainWindow, self).__init__(None, title=_('Cura - ') + version.getVersion())
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -133,6 +139,8 @@ class mainWindow(wx.Frame):
 		if version.isDevVersion():
 			i = toolsMenu.Append(-1, _("PID Debugger..."))
 			self.Bind(wx.EVT_MENU, self.OnPIDDebugger, i)
+			i = toolsMenu.Append(-1, _("Auto Firmware Update..."))
+			self.Bind(wx.EVT_MENU, self.OnAutoFirmwareUpdate, i)
 
 		i = toolsMenu.Append(-1, _("Copy profile to clipboard"))
 		self.Bind(wx.EVT_MENU, self.onCopyProfileClipboard,i)
@@ -169,8 +177,6 @@ class mainWindow(wx.Frame):
 		self.normalModeOnlyItems.append(i)
 		self.Bind(wx.EVT_MENU, self.OnExpertOpen, i)
 		expertMenu.AppendSeparator()
-		i = expertMenu.Append(-1, _("Run first run wizard..."))
-		self.Bind(wx.EVT_MENU, self.OnFirstRunWizard, i)
 		self.bedLevelWizardMenuItem = expertMenu.Append(-1, _("Run bed leveling wizard..."))
 		self.Bind(wx.EVT_MENU, self.OnBedLevelWizard, self.bedLevelWizardMenuItem)
 		self.headOffsetWizardMenuItem = expertMenu.Append(-1, _("Run head offset wizard..."))
@@ -197,17 +203,17 @@ class mainWindow(wx.Frame):
 		self.rightPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
 		self.splitter.Bind(wx.EVT_SPLITTER_DCLICK, lambda evt: evt.Veto())
 
+		#Preview window
+		self.scene = sceneView.SceneView(self.rightPane)
+
 		##Gui components##
-		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, lambda : self.scene.sceneUpdated())
-		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, lambda : self.scene.sceneUpdated())
+		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, self.scene.sceneUpdated)
+		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, self.scene.sceneUpdated)
 
 		self.leftSizer = wx.BoxSizer(wx.VERTICAL)
 		self.leftSizer.Add(self.simpleSettingsPanel, 1)
 		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
 		self.leftPane.SetSizer(self.leftSizer)
-
-		#Preview window
-		self.scene = sceneView.SceneView(self.rightPane)
 
 		#Main sizer, to position the preview window, buttons and tab control
 		sizer = wx.BoxSizer()
@@ -271,6 +277,36 @@ class mainWindow(wx.Frame):
 
 		self.updateSliceMode()
 		self.scene.SetFocus()
+		self.dialogframe = None
+		if Publisher is not None:
+			Publisher().subscribe(self.onPluginUpdate, "pluginupdate")
+
+	def onPluginUpdate(self,msg): #receives commands from the plugin thread
+		cmd = str(msg.data).split(";")
+		if cmd[0] == "OpenPluginProgressWindow":
+			if len(cmd)==1: #no titel received
+				cmd.append("Plugin")
+			if len(cmd)<3: #no message text received
+				cmd.append("Plugin is executed...")
+			dialogwidth = 300
+			dialogheight = 80
+			self.dialogframe = wx.Frame(self, -1, cmd[1],pos = ((wx.SystemSettings.GetMetric(wx.SYS_SCREEN_X)-dialogwidth)/2,(wx.SystemSettings.GetMetric(wx.SYS_SCREEN_Y)-dialogheight)/2), size=(dialogwidth,dialogheight), style = wx.STAY_ON_TOP)
+			self.dialogpanel = wx.Panel(self.dialogframe, -1, pos = (0,0), size = (dialogwidth,dialogheight))
+			self.dlgtext = wx.StaticText(self.dialogpanel, label = cmd[2], pos = (10,10), size = (280,40))
+			self.dlgbar = wx.Gauge(self.dialogpanel,-1, 100, pos = (10,50), size = (280,20), style = wx.GA_HORIZONTAL)
+			self.dialogframe.Show()
+
+		elif cmd[0] == "Progress":
+			number = int(cmd[1])
+			if number <= 100 and self.dialogframe is not None:
+				self.dlgbar.SetValue(number)
+			else:
+				self.dlgbar.SetValue(100)
+		elif cmd[0] == "ClosePluginProgressWindow":
+			self.dialogframe.Destroy()
+			self.dialogframe=None
+		else:
+			print "Unknown Plugin update received: " + cmd[0]
 
 	def onTimer(self, e):
 		#Check if there is something in the clipboard
@@ -293,7 +329,7 @@ class mainWindow(wx.Frame):
 						print profileString
 						self.lastTriedClipboard = profileString
 						profile.setProfileFromString(profileString)
-						self.scene.notification.message("Loaded new profile from clipboard.")
+						self.scene.notification.message(_("Loaded new profile from clipboard."))
 						self.updateProfileToAllControls()
 		except:
 			print "Unable to read from clipboard"
@@ -361,8 +397,6 @@ class mainWindow(wx.Frame):
 		prefDialog.Raise()
 
 	def OnDropFiles(self, files):
-		if len(files) > 0:
-			self.updateProfileToAllControls()
 		self.scene.loadFiles(files)
 
 	def OnModelMRU(self, e):
@@ -432,7 +466,8 @@ class mainWindow(wx.Frame):
 			self.Bind(wx.EVT_MENU, lambda e: self.OnSelectMachine(e.GetId() - 0x1000), i)
 
 		self.machineMenu.AppendSeparator()
-
+		i = self.machineMenu.Append(-1, _("Add new machine..."))
+		self.Bind(wx.EVT_MENU, self.OnAddNewMachine, i)
 		i = self.machineMenu.Append(-1, _("Machine settings..."))
 		self.Bind(wx.EVT_MENU, self.OnMachineSettings, i)
 
@@ -503,7 +538,7 @@ class mainWindow(wx.Frame):
 		self.updateSliceMode()
 
 	def OnDefaultMarlinFirmware(self, e):
-		firmwareInstall.InstallFirmware()
+		firmwareInstall.InstallFirmware(self)
 
 	def OnCustomFirmware(self, e):
 		if profile.getMachineSetting('machine_type').startswith('ultimaker'):
@@ -516,13 +551,14 @@ class mainWindow(wx.Frame):
 			if not(os.path.exists(filename)):
 				return
 			#For some reason my Ubuntu 10.10 crashes here.
-			firmwareInstall.InstallFirmware(filename)
+			firmwareInstall.InstallFirmware(self, filename)
 
-	def OnFirstRunWizard(self, e):
+	def OnAddNewMachine(self, e):
 		self.Hide()
-		configWizard.configWizard()
+		configWizard.ConfigWizard(True)
 		self.Show()
 		self.reloadSettingPanels()
+		self.updateMachineMenu()
 
 	def OnSelectMachine(self, index):
 		profile.setActiveMachine(index)
@@ -548,6 +584,17 @@ class mainWindow(wx.Frame):
 		debugger = pidDebugger.debuggerWindow(self)
 		debugger.Centre()
 		debugger.Show(True)
+
+	def OnAutoFirmwareUpdate(self, e):
+		dlg=wx.FileDialog(self, _("Open firmware to upload"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
+		dlg.SetWildcard("HEX file (*.hex)|*.hex;*.HEX")
+		if dlg.ShowModal() == wx.ID_OK:
+			filename = dlg.GetPath()
+			dlg.Destroy()
+			if not(os.path.exists(filename)):
+				return
+			#For some reason my Ubuntu 10.10 crashes here.
+			installer = firmwareInstall.AutoUpdateFirmware(self, filename)
 
 	def onCopyProfileClipboard(self, e):
 		try:
@@ -614,11 +661,11 @@ class normalSettingsPanel(configBase.configPanelBase):
 		self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
 		self.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
-		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, 'Basic')
+		(left, right, self.printPanel) = self.CreateDynamicConfigTab(self.nb, _('Basic'))
 		self._addSettingsToPanels('basic', left, right)
 		self.SizeLabelWidths(left, right)
 
-		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, 'Advanced')
+		(left, right, self.advancedPanel) = self.CreateDynamicConfigTab(self.nb, _('Advanced'))
 		self._addSettingsToPanels('advanced', left, right)
 		self.SizeLabelWidths(left, right)
 
@@ -631,7 +678,7 @@ class normalSettingsPanel(configBase.configPanelBase):
 			self.alterationPanel = None
 		else:
 			self.alterationPanel = alterationPanel.alterationPanel(self.nb, callback)
-			self.nb.AddPage(self.alterationPanel, "Start/End-GCode")
+			self.nb.AddPage(self.alterationPanel, _("Start/End-GCode"))
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 

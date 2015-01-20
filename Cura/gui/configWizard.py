@@ -226,33 +226,40 @@ class InfoPage(wx.wizard.WizardPageSimple):
 
 class PrintrbotPage(InfoPage):
 	def __init__(self, parent):
-		self._printer_info = {
+		self._printer_info = [
 			# X, Y, Z, Filament Diameter, PrintTemperature, Print Speed, Travel Speed, Retract speed, Retract amount
-			"Original": (130, 130, 130, 2.95, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v1": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v2 (2013 Printrbot Simple)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v3 (2014 Printrbot Simple)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Maker's Edition v4 (Model 1405)": (100, 100, 100, 1.75, 208, 40, 70, 30, 1),
-			"Simple Metal": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
-			"Jr v1": (150, 100, 80, 1.75, 208, 40, 70, 30, 1),
-			"Jr v2": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
-			"LC v2": (150, 150, 150, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2": (200, 200, 200, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.1": (200, 200, 200, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.2 (Model 1404/140422)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.3 (Model 140501)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
-			"Plus v2.4 (Model 140507)": (250, 250, 250, 1.75, 208, 40, 70, 30, 1),
-		}
+			("Simple Metal", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			("Metal Plus", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Simple Makers Kit", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			(":" + _("Older models"),),
+			("Original", 130, 130, 130, 2.95, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v1", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v2 (2013 Printrbot Simple)", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v3 (2014 Printrbot Simple)", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Simple Maker's Edition v4 (Model 1405)", 100, 100, 100, 1.75, 208, 40, 70, 30, 1),
+			("Jr v1", 150, 100, 80, 1.75, 208, 40, 70, 30, 1),
+			("Jr v2", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			("LC v2", 150, 150, 150, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2", 200, 200, 200, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.1", 200, 200, 200, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.2 (Model 1404/140422)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.3 (Model 140501)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Plus v2.4 (Model 140507)", 250, 250, 250, 1.75, 208, 40, 70, 30, 1),
+			("Go v2 Large", 609, 305, 305, 1.75, 208, 35, 70, 30, 1),
+		]
 
-		super(PrintrbotPage, self).__init__(parent, "Printrbot Selection")
+		super(PrintrbotPage, self).__init__(parent, _("Printrbot Selection"))
+		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Printrbot_logo.png')))
 		self.AddText(_("Select which Printrbot machine you have:"))
-		keys = self._printer_info.keys()
-		keys.sort()
 		self._items = []
-		for name in keys:
-			item = self.AddRadioButton(name)
-			item.data = self._printer_info[name]
-			self._items.append(item)
+		for printer in self._printer_info:
+			if printer[0].startswith(":"):
+				self.AddSeperator()
+				self.AddText(printer[0][1:])
+			else:
+				item = self.AddRadioButton(printer[0])
+				item.data = printer[1:]
+				self._items.append(item)
 
 	def StoreData(self):
 		profile.putMachineSetting('machine_name', 'Printrbot ???')
@@ -281,7 +288,7 @@ class PrintrbotPage(InfoPage):
 
 class OtherMachineSelectPage(InfoPage):
 	def __init__(self, parent):
-		super(OtherMachineSelectPage, self).__init__(parent, "Other machine information")
+		super(OtherMachineSelectPage, self).__init__(parent, _("Other machine information"))
 		self.AddText(_("The following pre-defined machine profiles are available"))
 		self.AddText(_("Note that these profiles are not guaranteed to give good results,\nor work at all. Extra tweaks might be required.\nIf you find issues with the predefined profiles,\nor want an extra profile.\nPlease report it at the github issue tracker."))
 		self.options = []
@@ -294,7 +301,7 @@ class OtherMachineSelectPage(InfoPage):
 			item.Bind(wx.EVT_RADIOBUTTON, self.OnProfileSelect)
 			self.options.append(item)
 		self.AddSeperator()
-		item = self.AddRadioButton('Custom...')
+		item = self.AddRadioButton(_('Custom...'))
 		item.SetValue(True)
 		item.Bind(wx.EVT_RADIOBUTTON, self.OnOtherSelect)
 
@@ -312,12 +319,12 @@ class OtherMachineSelectPage(InfoPage):
 
 class OtherMachineInfoPage(InfoPage):
 	def __init__(self, parent):
-		super(OtherMachineInfoPage, self).__init__(parent, "Cura Ready!")
+		super(OtherMachineInfoPage, self).__init__(parent, _("Cura Ready!"))
 		self.AddText(_("Cura is now ready to be used!"))
 
 class CustomRepRapInfoPage(InfoPage):
 	def __init__(self, parent):
-		super(CustomRepRapInfoPage, self).__init__(parent, "Custom RepRap information")
+		super(CustomRepRapInfoPage, self).__init__(parent, _("Custom RepRap information"))
 		self.AddText(_("RepRap machines can be vastly different, so here you can set your own settings."))
 		self.AddText(_("Be sure to review the default profile before running it on your machine."))
 		self.AddText(_("If you like a default profile for your machine added,\nthen make an issue on github."))
@@ -518,7 +525,7 @@ class UltimakerFirmwareUpgradePage(InfoPage):
 		self.AddText(_("The firmware shipping with new Ultimakers works, but upgrades\nhave been made to make better prints, and make calibration easier."))
 		self.AddHiddenSeperator()
 		self.AddText(_("Cura requires these new features and thus\nyour firmware will most likely need to be upgraded.\nYou will get the chance to do so now."))
-		upgradeButton, skipUpgradeButton = self.AddDualButton('Upgrade to Marlin firmware', 'Skip upgrade')
+		upgradeButton, skipUpgradeButton = self.AddDualButton(_('Upgrade to Marlin firmware'), _('Skip upgrade'))
 		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
 		skipUpgradeButton.Bind(wx.EVT_BUTTON, self.OnSkipClick)
 		self.AddHiddenSeperator()
@@ -546,7 +553,7 @@ class UltimakerFirmwareUpgradePage(InfoPage):
 
 class UltimakerCheckupPage(InfoPage):
 	def __init__(self, parent):
-		super(UltimakerCheckupPage, self).__init__(parent, "Ultimaker Checkup")
+		super(UltimakerCheckupPage, self).__init__(parent, _("Ultimaker Checkup"))
 
 		self.checkBitmap = wx.Bitmap(resources.getPathForImage('checkmark.png'))
 		self.crossBitmap = wx.Bitmap(resources.getPathForImage('cross.png'))
@@ -789,7 +796,7 @@ class UltimakerCheckupPage(InfoPage):
 
 class UltimakerCalibrationPage(InfoPage):
 	def __init__(self, parent):
-		super(UltimakerCalibrationPage, self).__init__(parent, "Ultimaker Calibration")
+		super(UltimakerCalibrationPage, self).__init__(parent, _("Ultimaker Calibration"))
 
 		self.AddText("Your Ultimaker requires some calibration.")
 		self.AddText("This calibration is needed for a proper extrusion amount.")
@@ -812,7 +819,7 @@ class UltimakerCalibrationPage(InfoPage):
 
 class UltimakerCalibrateStepsPerEPage(InfoPage):
 	def __init__(self, parent):
-		super(UltimakerCalibrateStepsPerEPage, self).__init__(parent, "Ultimaker Calibration")
+		super(UltimakerCalibrateStepsPerEPage, self).__init__(parent, _("Ultimaker Calibration"))
 
 		#if profile.getMachineSetting('steps_per_e') == '0':
 		#	profile.putMachineSetting('steps_per_e', '865.888')
@@ -929,26 +936,31 @@ class UltimakerCalibrateStepsPerEPage(InfoPage):
 
 class Ultimaker2ReadyPage(InfoPage):
 	def __init__(self, parent):
-		super(Ultimaker2ReadyPage, self).__init__(parent, "Ultimaker2")
-		self.AddText('Congratulations on your the purchase of your brand new Ultimaker2.')
-		self.AddText('Cura is now ready to be used with your Ultimaker2.')
+		super(Ultimaker2ReadyPage, self).__init__(parent, _("Ultimaker2"))
+		self.AddText(_('Congratulations on your the purchase of your brand new Ultimaker2.'))
+		self.AddText(_('Cura is now ready to be used with your Ultimaker2.'))
 		self.AddSeperator()
 
 class LulzbotReadyPage(InfoPage):
 	def __init__(self, parent):
-		super(LulzbotReadyPage, self).__init__(parent, "LulzBot TAZ/Mini")
-		self.AddText('Cura is now ready to be used with your LulzBot 3D printer.')
+		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ/Mini"))
+		self.AddText(_('Cura is now ready to be used with your LulzBot 3D printer.'))
 		self.AddSeperator()
-		self.AddText('For more information about using Cura with your LulzBot')
-		self.AddText('3D printer, please visit www.LulzBot.com/cura')
+		self.AddText(_('For more information about using Cura with your LulzBot'))
+		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
 		self.AddSeperator()
 
-class configWizard(wx.wizard.Wizard):
+class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
-		super(configWizard, self).__init__(None, -1, "Configuration Wizard")
+		super(ConfigWizard, self).__init__(None, -1, _("Configuration Wizard"))
+
+		self._old_machine_index = int(profile.getPreferenceFloat('active_machine'))
+		if addNew:
+			profile.setActiveMachine(profile.getMachineCount())
 
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
 
 		self.machineSelectPage = MachineSelectPage(self)
 		self.ultimakerSelectParts = SelectParts(self)
@@ -994,25 +1006,28 @@ class configWizard(wx.wizard.Wizard):
 		else:
 			self.FindWindowById(wx.ID_BACKWARD).Disable()
 
+	def OnCancel(self, e):
+		profile.setActiveMachine(self._old_machine_index)
+
 class bedLevelWizardMain(InfoPage):
 	def __init__(self, parent):
-		super(bedLevelWizardMain, self).__init__(parent, "Bed leveling wizard")
+		super(bedLevelWizardMain, self).__init__(parent, _("Bed leveling wizard"))
 
-		self.AddText('This wizard will help you in leveling your printer bed')
+		self.AddText(_('This wizard will help you in leveling your printer bed'))
 		self.AddSeperator()
-		self.AddText('It will do the following steps')
-		self.AddText('* Move the printer head to each corner')
-		self.AddText('  and let you adjust the height of the bed to the nozzle')
-		self.AddText('* Print a line around the bed to check if it is level')
+		self.AddText(_('It will do the following steps'))
+		self.AddText(_('* Move the printer head to each corner'))
+		self.AddText(_('  and let you adjust the height of the bed to the nozzle'))
+		self.AddText(_('* Print a line around the bed to check if it is level'))
 		self.AddSeperator()
 
-		self.connectButton = self.AddButton('Connect to printer')
+		self.connectButton = self.AddButton(_('Connect to printer'))
 		self.comm = None
 
 		self.infoBox = self.AddInfoBox()
-		self.resumeButton = self.AddButton('Resume')
-		self.upButton, self.downButton = self.AddDualButton('Up 0.2mm', 'Down 0.2mm')
-		self.upButton2, self.downButton2 = self.AddDualButton('Up 10mm', 'Down 10mm')
+		self.resumeButton = self.AddButton(_('Resume'))
+		self.upButton, self.downButton = self.AddDualButton(_('Up 0.2mm'), _('Down 0.2mm'))
+		self.upButton2, self.downButton2 = self.AddDualButton(_('Up 10mm'), _('Down 10mm'))
 		self.resumeButton.Enable(False)
 
 		self.upButton.Enable(False)
@@ -1036,7 +1051,7 @@ class bedLevelWizardMain(InfoPage):
 			return
 		self.connectButton.Enable(False)
 		self.comm = machineCom.MachineCom(callbackObject=self)
-		self.infoBox.SetBusy('Connecting to machine.')
+		self.infoBox.SetBusy(_('Connecting to machine.'))
 		self._wizardState = 0
 
 	def OnBedUp(self, e):
@@ -1072,7 +1087,7 @@ class bedLevelWizardMain(InfoPage):
 		feedZ = profile.getProfileSettingFloat('print_speed') * 60
 		feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
 		if self._wizardState == -1:
-			wx.CallAfter(self.infoBox.SetInfo, 'Homing printer...')
+			wx.CallAfter(self.infoBox.SetInfo, _('Homing printer...'))
 			wx.CallAfter(self.upButton.Enable, False)
 			wx.CallAfter(self.downButton.Enable, False)
 			wx.CallAfter(self.upButton2.Enable, False)
@@ -1082,14 +1097,14 @@ class bedLevelWizardMain(InfoPage):
 			self._wizardState = 1
 		elif self._wizardState == 2:
 			if profile.getMachineSetting('has_heated_bed') == 'True':
-				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back center...')
+				wx.CallAfter(self.infoBox.SetBusy, _('Moving head to back center...'))
 				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
 				self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') / 2.0, profile.getMachineSettingFloat('machine_depth'), feedTravel))
 				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 				self.comm.sendCommand('M400')
 				self._wizardState = 3
 			else:
-				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back left corner...')
+				wx.CallAfter(self.infoBox.SetBusy, _('Moving head to back left corner...'))
 				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
 				self.comm.sendCommand('G1 X%d Y%d F%d' % (0, profile.getMachineSettingFloat('machine_depth'), feedTravel))
 				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
@@ -1097,35 +1112,35 @@ class bedLevelWizardMain(InfoPage):
 				self._wizardState = 3
 		elif self._wizardState == 4:
 			if profile.getMachineSetting('has_heated_bed') == 'True':
-				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to front right corner...')
+				wx.CallAfter(self.infoBox.SetBusy, _('Moving head to front right corner...'))
 				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
 				self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, 5, feedTravel))
 				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 				self.comm.sendCommand('M400')
 				self._wizardState = 7
 			else:
-				wx.CallAfter(self.infoBox.SetBusy, 'Moving head to back right corner...')
+				wx.CallAfter(self.infoBox.SetBusy, _('Moving head to back right corner...'))
 				self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
 				self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, profile.getMachineSettingFloat('machine_depth') - 25, feedTravel))
 				self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 				self.comm.sendCommand('M400')
 				self._wizardState = 5
 		elif self._wizardState == 6:
-			wx.CallAfter(self.infoBox.SetBusy, 'Moving head to front right corner...')
+			wx.CallAfter(self.infoBox.SetBusy, _('Moving head to front right corner...'))
 			self.comm.sendCommand('G1 Z3 F%d' % (feedZ))
 			self.comm.sendCommand('G1 X%d Y%d F%d' % (profile.getMachineSettingFloat('machine_width') - 5.0, 20, feedTravel))
 			self.comm.sendCommand('G1 Z0 F%d' % (feedZ))
 			self.comm.sendCommand('M400')
 			self._wizardState = 7
 		elif self._wizardState == 8:
-			wx.CallAfter(self.infoBox.SetBusy, 'Heating up printer...')
+			wx.CallAfter(self.infoBox.SetBusy, _('Heating up printer...'))
 			self.comm.sendCommand('G1 Z15 F%d' % (feedZ))
 			self.comm.sendCommand('M104 S%d' % (profile.getProfileSettingFloat('print_temperature')))
 			self.comm.sendCommand('G1 X%d Y%d F%d' % (0, 0, feedTravel))
 			self._wizardState = 9
 		elif self._wizardState == 10:
 			self._wizardState = 11
-			wx.CallAfter(self.infoBox.SetInfo, 'Printing a square on the printer bed at 0.3mm height.')
+			wx.CallAfter(self.infoBox.SetInfo, _('Printing a square on the printer bed at 0.3mm height.'))
 			feedZ = profile.getProfileSettingFloat('print_speed') * 60
 			feedPrint = profile.getProfileSettingFloat('print_speed') * 60
 			feedTravel = profile.getProfileSettingFloat('travel_speed') * 60
@@ -1165,28 +1180,28 @@ class bedLevelWizardMain(InfoPage):
 	def mcTempUpdate(self, temp, bedTemp, targetTemp, bedTargetTemp):
 		if self._wizardState == 1:
 			self._wizardState = 2
-			wx.CallAfter(self.infoBox.SetAttention, 'Adjust the front left screw of your printer bed\nSo the nozzle just hits the bed.')
+			wx.CallAfter(self.infoBox.SetAttention, _('Adjust the front left screw of your printer bed\nSo the nozzle just hits the bed.'))
 			wx.CallAfter(self.resumeButton.Enable, True)
 		elif self._wizardState == 3:
 			self._wizardState = 4
 			if profile.getMachineSetting('has_heated_bed') == 'True':
-				wx.CallAfter(self.infoBox.SetAttention, 'Adjust the back screw of your printer bed\nSo the nozzle just hits the bed.')
+				wx.CallAfter(self.infoBox.SetAttention, _('Adjust the back screw of your printer bed\nSo the nozzle just hits the bed.'))
 			else:
-				wx.CallAfter(self.infoBox.SetAttention, 'Adjust the back left screw of your printer bed\nSo the nozzle just hits the bed.')
+				wx.CallAfter(self.infoBox.SetAttention, _('Adjust the back left screw of your printer bed\nSo the nozzle just hits the bed.'))
 			wx.CallAfter(self.resumeButton.Enable, True)
 		elif self._wizardState == 5:
 			self._wizardState = 6
-			wx.CallAfter(self.infoBox.SetAttention, 'Adjust the back right screw of your printer bed\nSo the nozzle just hits the bed.')
+			wx.CallAfter(self.infoBox.SetAttention, _('Adjust the back right screw of your printer bed\nSo the nozzle just hits the bed.'))
 			wx.CallAfter(self.resumeButton.Enable, True)
 		elif self._wizardState == 7:
 			self._wizardState = 8
-			wx.CallAfter(self.infoBox.SetAttention, 'Adjust the front right screw of your printer bed\nSo the nozzle just hits the bed.')
+			wx.CallAfter(self.infoBox.SetAttention, _('Adjust the front right screw of your printer bed\nSo the nozzle just hits the bed.'))
 			wx.CallAfter(self.resumeButton.Enable, True)
 		elif self._wizardState == 9:
 			if temp[0] < profile.getProfileSettingFloat('print_temperature') - 5:
-				wx.CallAfter(self.infoBox.SetInfo, 'Heating up printer: %d/%d' % (temp[0], profile.getProfileSettingFloat('print_temperature')))
+				wx.CallAfter(self.infoBox.SetInfo, _('Heating up printer: %d/%d') % (temp[0], profile.getProfileSettingFloat('print_temperature')))
 			else:
-				wx.CallAfter(self.infoBox.SetAttention, 'The printer is hot now. Please insert some PLA filament into the printer.')
+				wx.CallAfter(self.infoBox.SetAttention, _('The printer is hot now. Please insert some PLA filament into the printer.'))
 				wx.CallAfter(self.resumeButton.Enable, True)
 				self._wizardState = 10
 
@@ -1195,7 +1210,7 @@ class bedLevelWizardMain(InfoPage):
 			return
 		if self.comm.isOperational():
 			if self._wizardState == 0:
-				wx.CallAfter(self.infoBox.SetAttention, 'Use the up/down buttons to move the bed and adjust your Z endstop.')
+				wx.CallAfter(self.infoBox.SetAttention, _('Use the up/down buttons to move the bed and adjust your Z endstop.'))
 				wx.CallAfter(self.upButton.Enable, True)
 				wx.CallAfter(self.downButton.Enable, True)
 				wx.CallAfter(self.upButton2.Enable, True)
@@ -1207,13 +1222,13 @@ class bedLevelWizardMain(InfoPage):
 				self.comm.sendCommand('G92 E0')
 				self.comm.sendCommand('G1 E-10 F%d' % (profile.getProfileSettingFloat('retraction_speed') * 60))
 				self.comm.sendCommand('M104 S0')
-				wx.CallAfter(self.infoBox.SetInfo, 'Calibration finished.\nThe squares on the bed should slightly touch each other.')
+				wx.CallAfter(self.infoBox.SetInfo, _('Calibration finished.\nThe squares on the bed should slightly touch each other.'))
 				wx.CallAfter(self.infoBox.SetReadyIndicator)
 				wx.CallAfter(self.GetParent().FindWindowById(wx.ID_FORWARD).Enable)
 				wx.CallAfter(self.connectButton.Enable, True)
 				self._wizardState = 12
 		elif self.comm.isError():
-			wx.CallAfter(self.infoBox.SetError, 'Failed to establish connection with the printer.', 'http://wiki.ultimaker.com/Cura:_Connection_problems')
+			wx.CallAfter(self.infoBox.SetError, _('Failed to establish connection with the printer.'), 'http://wiki.ultimaker.com/Cura:_Connection_problems')
 
 	def mcMessage(self, message):
 		pass
@@ -1226,18 +1241,18 @@ class bedLevelWizardMain(InfoPage):
 
 class headOffsetCalibrationPage(InfoPage):
 	def __init__(self, parent):
-		super(headOffsetCalibrationPage, self).__init__(parent, "Printer head offset calibration")
+		super(headOffsetCalibrationPage, self).__init__(parent, _("Printer head offset calibration"))
 
-		self.AddText('This wizard will help you in calibrating the printer head offsets of your dual extrusion machine')
+		self.AddText(_('This wizard will help you in calibrating the printer head offsets of your dual extrusion machine'))
 		self.AddSeperator()
 
-		self.connectButton = self.AddButton('Connect to printer')
+		self.connectButton = self.AddButton(_('Connect to printer'))
 		self.comm = None
 
 		self.infoBox = self.AddInfoBox()
 		self.textEntry = self.AddTextCtrl('')
 		self.textEntry.Enable(False)
-		self.resumeButton = self.AddButton('Resume')
+		self.resumeButton = self.AddButton(_('Resume'))
 		self.resumeButton.Enable(False)
 
 		self.Bind(wx.EVT_BUTTON, self.OnConnect, self.connectButton)
@@ -1255,13 +1270,13 @@ class headOffsetCalibrationPage(InfoPage):
 			return
 		self.connectButton.Enable(False)
 		self.comm = machineCom.MachineCom(callbackObject=self)
-		self.infoBox.SetBusy('Connecting to machine.')
+		self.infoBox.SetBusy(_('Connecting to machine.'))
 		self._wizardState = 0
 
 	def OnResume(self, e):
 		if self._wizardState == 2:
 			self._wizardState = 3
-			wx.CallAfter(self.infoBox.SetBusy, 'Printing initial calibration cross')
+			wx.CallAfter(self.infoBox.SetBusy, _('Printing initial calibration cross'))
 
 			w = profile.getMachineSettingFloat('machine_width')
 			d = profile.getMachineSettingFloat('machine_depth')
@@ -1309,7 +1324,7 @@ class headOffsetCalibrationPage(InfoPage):
 				return
 			profile.putPreference('extruder_offset_x1', self.textEntry.GetValue())
 			self._wizardState = 5
-			self.infoBox.SetAttention('Please measure the distance between the horizontal lines in millimeters.')
+			self.infoBox.SetAttention(_('Please measure the distance between the horizontal lines in millimeters.'))
 			self.textEntry.SetValue('0.0')
 			self.textEntry.Enable(True)
 		elif self._wizardState == 5:
@@ -1319,7 +1334,7 @@ class headOffsetCalibrationPage(InfoPage):
 				return
 			profile.putPreference('extruder_offset_y1', self.textEntry.GetValue())
 			self._wizardState = 6
-			self.infoBox.SetBusy('Printing the fine calibration lines.')
+			self.infoBox.SetBusy(_('Printing the fine calibration lines.'))
 			self.textEntry.SetValue('')
 			self.textEntry.Enable(False)
 			self.resumeButton.Enable(False)
@@ -1374,7 +1389,7 @@ class headOffsetCalibrationPage(InfoPage):
 			x = profile.getMachineSettingFloat('extruder_offset_x1')
 			x += -1.0 + n * 0.1
 			profile.putPreference('extruder_offset_x1', '%0.2f' % (x))
-			self.infoBox.SetAttention('Which horizontal line number lays perfect on top of each other? Front most line is zero.')
+			self.infoBox.SetAttention(_('Which horizontal line number lays perfect on top of each other? Front most line is zero.'))
 			self.textEntry.SetValue('10')
 			self._wizardState = 8
 		elif self._wizardState == 8:
@@ -1385,7 +1400,7 @@ class headOffsetCalibrationPage(InfoPage):
 			y = profile.getMachineSettingFloat('extruder_offset_y1')
 			y += -1.0 + n * 0.1
 			profile.putPreference('extruder_offset_y1', '%0.2f' % (y))
-			self.infoBox.SetInfo('Calibration finished. Offsets are: %s %s' % (profile.getMachineSettingFloat('extruder_offset_x1'), profile.getMachineSettingFloat('extruder_offset_y1')))
+			self.infoBox.SetInfo(_('Calibration finished. Offsets are: %s %s') % (profile.getMachineSettingFloat('extruder_offset_x1'), profile.getMachineSettingFloat('extruder_offset_y1')))
 			self.infoBox.SetReadyIndicator()
 			self._wizardState = 8
 			self.comm.close()
@@ -1398,7 +1413,7 @@ class headOffsetCalibrationPage(InfoPage):
 		if self._wizardState == 1:
 			if temp[0] >= 210 and temp[1] >= 210:
 				self._wizardState = 2
-				wx.CallAfter(self.infoBox.SetAttention, 'Please load both extruders with PLA.')
+				wx.CallAfter(self.infoBox.SetAttention, _('Please load both extruders with PLA.'))
 				wx.CallAfter(self.resumeButton.Enable, True)
 				wx.CallAfter(self.resumeButton.SetFocus)
 
@@ -1407,7 +1422,7 @@ class headOffsetCalibrationPage(InfoPage):
 			return
 		if self.comm.isOperational():
 			if self._wizardState == 0:
-				wx.CallAfter(self.infoBox.SetInfo, 'Homing printer and heating up both extruders.')
+				wx.CallAfter(self.infoBox.SetInfo, _('Homing printer and heating up both extruders.'))
 				self.comm.sendCommand('M105')
 				self.comm.sendCommand('M104 S220 T0')
 				self.comm.sendCommand('M104 S220 T1')
@@ -1417,21 +1432,21 @@ class headOffsetCalibrationPage(InfoPage):
 			if not self.comm.isPrinting():
 				if self._wizardState == 3:
 					self._wizardState = 4
-					wx.CallAfter(self.infoBox.SetAttention, 'Please measure the distance between the vertical lines in millimeters.')
+					wx.CallAfter(self.infoBox.SetAttention, _('Please measure the distance between the vertical lines in millimeters.'))
 					wx.CallAfter(self.textEntry.SetValue, '0.0')
 					wx.CallAfter(self.textEntry.Enable, True)
 					wx.CallAfter(self.resumeButton.Enable, True)
 					wx.CallAfter(self.resumeButton.SetFocus)
 				elif self._wizardState == 6:
 					self._wizardState = 7
-					wx.CallAfter(self.infoBox.SetAttention, 'Which vertical line number lays perfect on top of each other? Leftmost line is zero.')
+					wx.CallAfter(self.infoBox.SetAttention, _('Which vertical line number lays perfect on top of each other? Leftmost line is zero.'))
 					wx.CallAfter(self.textEntry.SetValue, '10')
 					wx.CallAfter(self.textEntry.Enable, True)
 					wx.CallAfter(self.resumeButton.Enable, True)
 					wx.CallAfter(self.resumeButton.SetFocus)
 
 		elif self.comm.isError():
-			wx.CallAfter(self.infoBox.SetError, 'Failed to establish connection with the printer.', 'http://wiki.ultimaker.com/Cura:_Connection_problems')
+			wx.CallAfter(self.infoBox.SetError, _('Failed to establish connection with the printer.'), 'http://wiki.ultimaker.com/Cura:_Connection_problems')
 
 	def mcMessage(self, message):
 		pass
@@ -1444,7 +1459,7 @@ class headOffsetCalibrationPage(InfoPage):
 
 class bedLevelWizard(wx.wizard.Wizard):
 	def __init__(self):
-		super(bedLevelWizard, self).__init__(None, -1, "Bed leveling wizard")
+		super(bedLevelWizard, self).__init__(None, -1, _("Bed leveling wizard"))
 
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
@@ -1473,7 +1488,7 @@ class bedLevelWizard(wx.wizard.Wizard):
 
 class headOffsetWizard(wx.wizard.Wizard):
 	def __init__(self):
-		super(headOffsetWizard, self).__init__(None, -1, "Head offset wizard")
+		super(headOffsetWizard, self).__init__(None, -1, _("Head offset wizard"))
 
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)

@@ -5,7 +5,7 @@ import platform
 
 class aboutWindow(wx.Frame):
 	def __init__(self, parent):
-		super(aboutWindow, self).__init__(parent, title="About", style = wx.DEFAULT_DIALOG_STYLE)
+		super(aboutWindow, self).__init__(parent, title=_("About"), style = wx.DEFAULT_DIALOG_STYLE)
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
@@ -21,7 +21,7 @@ class aboutWindow(wx.Frame):
 		title.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
 		s.Add(title, flag=wx.ALIGN_CENTRE|wx.EXPAND|wx.BOTTOM, border=5)
 
-		s.Add(wx.StaticText(p, -1, 'Version 14.09-1.15'))
+		s.Add(wx.StaticText(p, -1, 'Version 14.09-1.18'))
 		s.Add(wx.StaticText(p, -1, 'End solution for Open Source Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by David Braam and Ultimaker.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura LulzBot Edition has been modified and maintained by Aleph Objects, Inc.'))

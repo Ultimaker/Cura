@@ -48,12 +48,12 @@ class GLShader(GLReferenceCounter):
 			glAttachShader(self._program, vertexShader)
 			glAttachShader(self._program, fragmentShader)
 			glLinkProgram(self._program)
+			if glGetProgramiv(self._program, GL_LINK_STATUS) == GL_FALSE:
+				raise RuntimeError("Link failure: %s" % (glGetProgramInfoLog(self._program)))
 			# Validation has to occur *after* linking
 			glValidateProgram(self._program)
 			if glGetProgramiv(self._program, GL_VALIDATE_STATUS) == GL_FALSE:
 				raise RuntimeError("Validation failure: %s"%(glGetProgramInfoLog(self._program)))
-			if glGetProgramiv(self._program, GL_LINK_STATUS) == GL_FALSE:
-				raise RuntimeError("Link failure: %s" % (glGetProgramInfoLog(self._program)))
 			glDeleteShader(vertexShader)
 			glDeleteShader(fragmentShader)
 		except RuntimeError, e:
