@@ -359,11 +359,11 @@ class Engine(object):
 				self._objCount += 1
 		modelHash = hash.hexdigest()
 		if self._objCount > 0:
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash))
+			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash, pluginInfo.getPostProcessPluginConfig()))
 			self._thread.daemon = True
 			self._thread.start()
 
-	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash):
+	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash, pluginConfig):
 		if oldThread is not None:
 			if self._process is not None:
 				self._process.terminate()
@@ -395,21 +395,26 @@ class Engine(object):
 
 			returnCode = self._process.wait()
 			logThread.join()
+			self._result.addLog("Slicer process returned : %d" % returnCode)
 			if returnCode == 0:
 				self._result.setFinished(True)
-				plugin_error = pluginInfo.runPostProcessingPlugins(self._result)
+				plugin_error = pluginInfo.runPostProcessingPlugins(self._result, pluginConfig)
 				if plugin_error is not None:
-					print plugin_error
 					self._result.addLog(plugin_error)
 				self._callback(1.0)
 			else:
-				for line in self._result.getLog():
-					print line
 				self._callback(-1.0)
 			self._process = None
 		except MemoryError:
 			self._result.addLog("MemoryError")
 			self._callback(-1.0)
+		finally:
+			try:
+				with open(os.path.join(profile.getBasePath(), 'engine.log'), "w") as f:
+					for line in self._result.getLog():
+						f.write(line + "\n")
+			except:
+				pass
 
 	def _watchStderr(self, stderr):
 		objectNr = 0

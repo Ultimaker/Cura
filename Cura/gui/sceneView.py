@@ -259,16 +259,28 @@ class SceneView(openglGui.glGuiPanel):
 			if len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
-					dlg = wx.SingleChoiceDialog(self, _("Select SD drive"), _("Multiple removable drives have been found,\nplease select your SD card drive"), map(lambda n: n[0], drives))
-					if dlg.ShowModal() != wx.ID_OK:
-						dlg.Destroy()
-						return
-					drive = drives[dlg.GetSelection()]
-					dlg.Destroy()
+					choices = map(lambda n: n[0], drives)
+					choices += (_("Custom file destination"), )
+					title = _("Multiple removable drives have been found")
 				else:
-					drive = drives[0]
-				filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
-				threading.Thread(target=self._saveGCode,args=(drive[1] + filename, drive[1])).start()
+					choices = [drives[0][0], _("Custom file destination")]
+					title = _("A removable drive has been found")
+
+				dlg = wx.SingleChoiceDialog(self, _("Select destination SD card drive\nYou can also select a custom file to save to"), title, choices)
+				if dlg.ShowModal() != wx.ID_OK:
+					dlg.Destroy()
+					return
+				try:
+					drive = drives[dlg.GetSelection()]
+				except:
+					drive = None
+				dlg.Destroy()
+
+				if drive is None:
+					self.showSaveGCode()
+				else:
+					filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
+					threading.Thread(target=self._saveGCode,args=(drive[1] + filename, drive[1])).start()
 			elif connectionGroup is not None:
 				connections = connectionGroup.getAvailableConnections()
 				if len(connections) < 2:
