@@ -20,8 +20,8 @@ class PrinterApplication(QtApplication):
         self.setApplicationName('printer')
         self._machine_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, "ultimaker2.json"))
         self._physics = None
-        
-    def run(self):
+    
+    def _loadPlugins(self):
         self._plugin_registry.loadPlugins({ "type": "Logger"})
         self._plugin_registry.loadPlugins({ "type": "StorageDevice" })
         self._plugin_registry.loadPlugins({ "type": "View" })
@@ -29,6 +29,9 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "Tool" })
 
         self._plugin_registry.loadPlugin('CuraEngineBackend')
+    
+    def run(self):
+        
         
         controller = self.getController()
 
