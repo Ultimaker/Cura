@@ -62,11 +62,11 @@ class BigDataStorage(object):
 	def next(self):
 		if self._iter_index < len(self._list):
 			ret = self._list[self._iter_index].readline()
-			if ret == '':
+			if ret == '' or (ret[-1] != '\n' and ret[-1] != '\r'):
 				self._iter_index += 1
 				if self._iter_index < len(self._list):
 					self._list[self._iter_index].seek(0)
-				return self.next()
+				return ret + self.next()
 			return ret
 		raise StopIteration
 
