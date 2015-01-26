@@ -164,17 +164,17 @@ class printSpeedValidator(object):
 		try:
 			nozzleSize = profile.getProfileSettingFloat('nozzle_size')
 			layerHeight = profile.getProfileSettingFloat('layer_height')
-			printSpeed = profile.getProfileSettingFloat('print_speed')
+			printSpeed = float(eval(self.setting.getValue().replace(',','.'), {}, {}))
 			
 			printVolumePerMM = layerHeight * nozzleSize
 			printVolumePerSecond = printVolumePerMM * printSpeed
-			#Using 10mm3 per second with a 0.4mm nozzle (normal max according to Joergen Geerds)
-			maxPrintVolumePerSecond = 10 / (math.pi*(0.2*0.2)) * (math.pi*(nozzleSize/2*nozzleSize/2))
+			#Using 8mm3 per second with a 0.4mm nozzle
+			maxPrintVolumePerSecond = 8 / (math.pi*(0.2*0.2)) * (math.pi*(nozzleSize/2*nozzleSize/2))
 			
 			if printVolumePerSecond > maxPrintVolumePerSecond:
 				return WARNING, 'You are trying to print more then %.1fmm^3 of filament per second. This might cause filament slipping. (You are printing at %0.1fmm^3 per second)' % (maxPrintVolumePerSecond, printVolumePerSecond)
 			
-			return SUCCESS, ''
+			return SUCCESS, 'You are printing at %0.1fmm^3 per second' % (printVolumePerSecond)
 		except ValueError:
 			#We already have an error by the int/float validator in this case.
 			return SUCCESS, ''
