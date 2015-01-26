@@ -141,7 +141,9 @@ class wallThicknessValidator(object):
 			lineWidth = wallThickness / lineCount
 			lineWidthAlt = wallThickness / (lineCount + 1)
 			if lineWidth >= nozzleSize * 1.5 and lineWidthAlt <= nozzleSize * 0.85:
-				return WARNING, 'Current selected wall thickness results in a line thickness of ' + str(lineWidthAlt) + 'mm which is not recommended with your nozzle of ' + str(nozzleSize) + 'mm'
+				return WARNING, 'Current selected shell thickness results in a line thickness of ' + str(lineWidthAlt) + 'mm which is not recommended with your nozzle of ' + str(nozzleSize) + 'mm'
+			if abs((lineCount * nozzleSize) - wallThickness) > 0.01 and abs(((lineCount + 1) * nozzleSize) - wallThickness) > 0.01:
+				return WARNING, 'Currently selected shell thickness is not a multiple of the nozzle size. While this prints fine, it does not give optimal results.'
 			return SUCCESS, ''
 		except ValueError:
 			#We already have an error by the int/float validator in this case.
