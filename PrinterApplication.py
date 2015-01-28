@@ -95,10 +95,9 @@ class PrinterApplication(QtApplication):
 
         controller.getScene().setActiveCamera('3d')
 
-        
-        self.initializeEngine()
-        self._engine.addImageProvider("camera",self._camera_image_provider)
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
+        self.initializeEngine()
+        
         if self._engine.rootObjects:
             self.exec_()
 
