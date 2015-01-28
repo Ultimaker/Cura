@@ -5,6 +5,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Preferences import Preferences
 
 from . import Cura_pb2
+from . import ProcessSlicedObjectListJob
 
 class CuraEngineBackend(Backend):
     def __init__(self):
@@ -35,23 +36,23 @@ class CuraEngineBackend(Backend):
             meshData = object.getMeshData()
 
             obj = msg.objects.add()
-            obj.vertices = meshData.getVerticesAsByteArray()
+            obj.id = id(object)
 
-            if meshData.hasNormals():
-                obj.normals = meshData.getNormalsAsByteArray()
+            verts = meshData.getVertices()
+            verts[:,[1,2]] = verts[:,[2,1]]
+            obj.vertices = verts.tostring()
 
-            if meshData.hasIndices():
-                obj.indices = meshData.getIndicesAsByteArray()
+            #if meshData.hasNormals():
+                #obj.normals = meshData.getNormalsAsByteArray()
+
+            #if meshData.hasIndices():
+                #obj.indices = meshData.getIndicesAsByteArray()
 
         self._socket.sendMessage(msg)
 
     def _onSlicedObjectListMessage(self, message):
-        print('Received Sliced Objects')
-
-        for object in message.objects:
-            print('Object:', object.id)
-            for layer in object.layers:
-                print('  Layer:', layer.id)
+        job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+        job.start()
 
     def _onProgressMessage(self, message):
         self.processingProgress.emit(message.amount)
