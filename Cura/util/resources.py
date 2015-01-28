@@ -55,16 +55,20 @@ def setupLocalization(selectedLanguage = None):
 	#Default to english
 	languages = ['en']
 
-	if selectedLanguage is None or selectedLanguage == 'AUTO':
-		defaultLocale = getDefaultLocale()
-		if defaultLocale is not None:
-			for item in getLanguageOptions():
-				if item[0] is not None and defaultLocale.startswith(item[0]):
-					languages = [item[0]]
-	else:
+	if selectedLanguage is not None:
 		for item in getLanguageOptions():
 			if item[1] == selectedLanguage and item[0] is not None:
 				languages = [item[0]]
+				break
+	if languages[0] == 'AUTO':
+		languages = ['en']
+		defaultLocale = getDefaultLocale()
+		if defaultLocale is not None:
+			for item in getLanguageOptions():
+				if item[0] == 'AUTO':
+					continue
+				if item[0] is not None and defaultLocale.startswith(item[0]):
+					languages = [item[0]]
 
 	locale_path = os.path.normpath(os.path.join(resourceBasePath, 'locale'))
 	translation = gettext.translation('Cura', locale_path, languages, fallback=True)
@@ -73,6 +77,7 @@ def setupLocalization(selectedLanguage = None):
 
 def getLanguageOptions():
 	return [
+		['AUTO', 'Autodetect'],
 		['en', 'English'],
 		['de', 'Deutsch'],
 		['fr', 'French'],

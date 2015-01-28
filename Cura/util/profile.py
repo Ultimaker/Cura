@@ -486,7 +486,7 @@ setting('check_for_updates', 'False', bool, 'preference', 'hidden').setLabel(_("
 setting('submit_slice_information', 'False', bool, 'preference', 'hidden').setLabel(_("Send usage statistics"), _("Submit anonymous usage information to improve future versions of Cura"))
 setting('youmagine_token', '', str, 'preference', 'hidden')
 setting('filament_physical_density', '1240', float, 'preference', 'hidden').setRange(500.0, 3000.0).setLabel(_("Density (kg/m3)"), _("Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. This value is used to estimate the weight if the filament used for the print."))
-setting('language', 'AUTO', str, 'preference', 'hidden').setLabel(_('Language'), _('Change the language in which Cura runs. Switching language requires a restart of Cura'))
+setting('language', 'Autodetect', str, 'preference', 'hidden').setLabel(_('Language'), _('Change the language in which Cura runs. Switching language requires a restart of Cura'))
 setting('active_machine', '0', int, 'preference', 'hidden')
 
 setting('model_colour', '#C9E240', str, 'preference', 'hidden').setLabel(_('Model colour'), _('Display color for first extruder'))
