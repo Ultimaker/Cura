@@ -13,19 +13,13 @@ class CuraEngineBackend(Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
-        self._socket.registerMessageType(1, Cura_pb2.ObjectList)
-        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
-        self._socket.registerMessageType(3, Cura_pb2.Progress)
-        self._socket.registerMessageType(4, Cura_pb2.GCode)
-        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
-
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
         self._message_handlers[Cura_pb2.GCode] = self._onGCodeMessage
         self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
 
     def getEngineCommand(self):
-        return [Preferences.getPreference("BackendLocation"), '--connect', "127.0.0.1:49674"]
+        return [Preferences.getPreference("BackendLocation"), '--connect', "127.0.0.1:{0}".format(self._port)]
 
     def _onSceneChanged(self, source):
         if (type(source) is not SceneNode) or (source is self._scene.getRoot()):
@@ -67,3 +61,12 @@ class CuraEngineBackend(Backend):
 
     def _onObjectPrintTimeMessage(self, message):
         pass
+
+    def _createSocket(self):
+        super()._createSocket()
+        
+        self._socket.registerMessageType(1, Cura_pb2.ObjectList)
+        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
+        self._socket.registerMessageType(3, Cura_pb2.Progress)
+        self._socket.registerMessageType(4, Cura_pb2.GCode)
+        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
