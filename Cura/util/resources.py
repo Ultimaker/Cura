@@ -8,6 +8,8 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import os
 import sys
 import glob
+import platform
+import locale
 
 import gettext
 
@@ -53,7 +55,13 @@ def setupLocalization(selectedLanguage = None):
 	#Default to english
 	languages = ['en']
 
-	if selectedLanguage is not None:
+	if selectedLanguage is None or selectedLanguage == 'AUTO':
+		defaultLocale = getDefaultLocale()
+		if defaultLocale is not None:
+			for item in getLanguageOptions():
+				if item[0] is not None and defaultLocale.startswith(item[0]):
+					languages = [item[0]]
+	else:
 		for item in getLanguageOptions():
 			if item[1] == selectedLanguage and item[0] is not None:
 				languages = [item[0]]
@@ -75,3 +83,25 @@ def getLanguageOptions():
 		# ['es', 'Spanish'],
 		# ['po', 'Polish']
 	]
+
+def getDefaultLocale():
+	defaultLocale = None
+
+	# On Windows, we look for the actual UI language, as someone could have
+	# an english windows but use a non-english locale.
+	if platform.system() == "Windows":
+		try:
+			import ctypes
+
+			windll = ctypes.windll.kernel32
+			defaultLocale = locale.windows_locale[windll.GetUserDefaultUILanguage()]
+		except:
+			pass
+
+	if defaultLocale is None:
+		try:
+			defaultLocale = locale.getdefaultlocale()[0]
+		except:
+			pass
+
+	return defaultLocale
