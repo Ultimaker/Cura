@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='Cura.proto',
   package='Cura',
-  serialized_pb=_b('\n\nCura.proto\x12\x04\x43ura\"+\n\nObjectList\x12\x1d\n\x07objects\x18\x01 \x03(\x0b\x32\x0c.Cura.Object\"H\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x05\"7\n\x10SlicedObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.Cura.SlicedObject\"7\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x1b\n\x06layers\x18\x02 \x03(\x0b\x32\x0b.Cura.Layer\"4\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x1f\n\x08polygons\x18\x02 \x03(\x0b\x32\r.Cura.Polygon\"\x9f\x01\n\x07Polygon\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.Cura.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\"b\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\"\x15\n\x05GCode\x12\x0c\n\x04\x63ode\x18\x01 \x01(\x0c\"+\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\x62\x06proto3')
+  serialized_pb=_b('\n\nCura.proto\x12\x04\x43ura\"+\n\nObjectList\x12\x1d\n\x07objects\x18\x01 \x03(\x0b\x32\x0c.Cura.Object\"H\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"7\n\x10SlicedObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.Cura.SlicedObject\"7\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x1b\n\x06layers\x18\x02 \x03(\x0b\x32\x0b.Cura.Layer\"4\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x1f\n\x08polygons\x18\x02 \x03(\x0b\x32\r.Cura.Polygon\"\x9f\x01\n\x07Polygon\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.Cura.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\"b\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\"\x19\n\x05GCode\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"+\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -153,7 +153,7 @@ _PROGRESS = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='amount', full_name='Cura.Progress.amount', index=0,
-      number=1, type=5, cpp_type=1, label=1,
+      number=1, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -324,9 +324,9 @@ _GCODE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='code', full_name='Cura.GCode.code', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
+      name='filename', full_name='Cura.GCode.filename', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -342,7 +342,7 @@ _GCODE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=497,
-  serialized_end=518,
+  serialized_end=522,
 )
 
 
@@ -378,8 +378,8 @@ _OBJECTPRINTTIME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=520,
-  serialized_end=563,
+  serialized_start=524,
+  serialized_end=567,
 )
 
 _OBJECTLIST.fields_by_name['objects'].message_type = _OBJECT
