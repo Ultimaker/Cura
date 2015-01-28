@@ -12,6 +12,8 @@ from UM.Scene.Selection import Selection
 from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
 
+from PyQt5.QtCore import pyqtSlot, QUrl
+
 import os.path
 
 class PrinterApplication(QtApplication):
@@ -104,7 +106,7 @@ class PrinterApplication(QtApplication):
         self.getMachineSettings().saveValuesToFile(Resources.getStoragePath(Resources.SettingsLocation, 'ultimaker2.cfg'))
 
     def registerObjects(self, engine):
-        pass
+        engine.rootContext().setContextProperty('Printer', self)
 
     def onSelectionChanged(self):
         if Selection.getCount() > 0:
@@ -115,3 +117,13 @@ class PrinterApplication(QtApplication):
         else:
             if self.getController().getActiveTool() and self.getController().getActiveTool().getName() == 'TranslateTool':
                 self.getController().setActiveTool(None)
+
+    @pyqtSlot(QUrl)
+    def saveGCode(self, file):
+        try:
+            gcode = self.getController().getScene().gcode
+        except AttributeError:
+            return
+
+        with open(file.toLocalFile(), 'w') as f:
+            f.write(gcode)
