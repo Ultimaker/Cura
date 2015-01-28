@@ -6,6 +6,9 @@ from UM.Preferences import Preferences
 
 from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
+from . import ProcessGCodeJob
+
+import threading
 
 class CuraEngineBackend(Backend):
     def __init__(self):
@@ -13,6 +16,7 @@ class CuraEngineBackend(Backend):
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
+        self._sceneChangeTimer = None
 
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
@@ -26,6 +30,36 @@ class CuraEngineBackend(Backend):
         if (type(source) is not SceneNode) or (source is self._scene.getRoot()):
             return
 
+        if self._sceneChangeTimer:
+            return
+
+        self._sceneChangeTimer = threading.Timer(1, self._sceneChangeTimerFinished)
+        self._sceneChangeTimer.start()
+
+    def _onSlicedObjectListMessage(self, message):
+        job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+        job.start()
+
+    def _onProgressMessage(self, message):
+        self.processingProgress.emit(message.amount)
+
+    def _onGCodeMessage(self, message):
+        job = ProcessGCodeJob.ProcessGCodeJob(message)
+        job.start()
+
+    def _onObjectPrintTimeMessage(self, message):
+        pass
+
+    def _createSocket(self):
+        super()._createSocket()
+        
+        self._socket.registerMessageType(1, Cura_pb2.ObjectList)
+        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
+        self._socket.registerMessageType(3, Cura_pb2.Progress)
+        self._socket.registerMessageType(4, Cura_pb2.GCode)
+        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
+
+    def _sceneChangeTimerFinished(self):
         objects = []
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
@@ -50,24 +84,4 @@ class CuraEngineBackend(Backend):
 
         self._socket.sendMessage(msg)
 
-    def _onSlicedObjectListMessage(self, message):
-        job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
-        job.start()
-
-    def _onProgressMessage(self, message):
-        self.processingProgress.emit(message.amount)
-
-    def _onGCodeMessage(self, message):
-        pass
-
-    def _onObjectPrintTimeMessage(self, message):
-        pass
-
-    def _createSocket(self):
-        super()._createSocket()
-        
-        self._socket.registerMessageType(1, Cura_pb2.ObjectList)
-        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
-        self._socket.registerMessageType(3, Cura_pb2.Progress)
-        self._socket.registerMessageType(4, Cura_pb2.GCode)
-        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
+        self._sceneChangeTimer = None
