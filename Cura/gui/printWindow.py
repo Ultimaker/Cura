@@ -508,6 +508,12 @@ class printWindowBasic(wx.Frame):
 			preventComputerFromSleeping(self, self._isPrinting)
 
 
+	def _addTermLog(self, msg):
+		pass
+
+	def _addTermLog(self, msg):
+		pass
+
 	def _updateButtonStates(self):
 		self.connectButton.Show(self._printerConnection.hasActiveConnection())
 		self.connectButton.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
@@ -653,7 +659,7 @@ class TemperatureGraph(wx.Panel):
 
 class LogWindow(wx.Frame):
 	def __init__(self, logText):
-		super(LogWindow, self).__init__(None, title="Error log")
+		super(LogWindow, self).__init__(None, title=_("Error log"))
 		self.textBox = wx.TextCtrl(self, -1, logText, style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY)
 		self.SetSize((500, 400))
 		self.Show(True)

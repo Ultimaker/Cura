@@ -24,11 +24,11 @@ class simpleModePanel(wx.Panel):
 
 		printMaterialPanel = wx.Panel(self)
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
-			self.printMaterialHIPS = wx.RadioButton(printMaterialPanel, -1, 'HIPS', style=wx.RB_GROUP)
-			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS')
+			self.printMaterialHIPS = wx.RadioButton(printMaterialPanel, -1, _('HIPS'), style=wx.RB_GROUP)
+			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, _('ABS'))
 		else:
-			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS', style=wx.RB_GROUP)
-		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA')
+			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, _('ABS'), style=wx.RB_GROUP)
+		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, _('PLA'))
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
 		
