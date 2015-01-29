@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='Cura.proto',
   package='Cura',
-  serialized_pb=_b('\n\nCura.proto\x12\x04\x43ura\"+\n\nObjectList\x12\x1d\n\x07objects\x18\x01 \x03(\x0b\x32\x0c.Cura.Object\"H\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"7\n\x10SlicedObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.Cura.SlicedObject\"7\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x1b\n\x06layers\x18\x02 \x03(\x0b\x32\x0b.Cura.Layer\"4\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x1f\n\x08polygons\x18\x02 \x03(\x0b\x32\r.Cura.Polygon\"\x9f\x01\n\x07Polygon\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.Cura.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\"b\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\"\x19\n\x05GCode\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"+\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\x62\x06proto3')
+  serialized_pb=_b('\n\nCura.proto\x12\x04\x43ura\"+\n\nObjectList\x12\x1d\n\x07objects\x18\x01 \x03(\x0b\x32\x0c.Cura.Object\"H\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"7\n\x10SlicedObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.Cura.SlicedObject\"7\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x1b\n\x06layers\x18\x02 \x03(\x0b\x32\x0b.Cura.Layer\"4\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x1f\n\x08polygons\x18\x02 \x03(\x0b\x32\r.Cura.Polygon\"\x9f\x01\n\x07Polygon\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.Cura.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\"b\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\"\x19\n\x05GCode\x12\x10\n\x08\x66ilename\x18\x01 \x01(\t\"+\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\".\n\x0bSettingList\x12\x1f\n\x08settings\x18\x01 \x03(\x0b\x32\r.Cura.Setting\"&\n\x07Setting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -382,12 +382,80 @@ _OBJECTPRINTTIME = _descriptor.Descriptor(
   serialized_end=567,
 )
 
+
+_SETTINGLIST = _descriptor.Descriptor(
+  name='SettingList',
+  full_name='Cura.SettingList',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='settings', full_name='Cura.SettingList.settings', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=569,
+  serialized_end=615,
+)
+
+
+_SETTING = _descriptor.Descriptor(
+  name='Setting',
+  full_name='Cura.Setting',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='Cura.Setting.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='Cura.Setting.value', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=617,
+  serialized_end=655,
+)
+
 _OBJECTLIST.fields_by_name['objects'].message_type = _OBJECT
 _SLICEDOBJECTLIST.fields_by_name['objects'].message_type = _SLICEDOBJECT
 _SLICEDOBJECT.fields_by_name['layers'].message_type = _LAYER
 _LAYER.fields_by_name['polygons'].message_type = _POLYGON
 _POLYGON.fields_by_name['type'].enum_type = _POLYGON_TYPE
 _POLYGON_TYPE.containing_type = _POLYGON
+_SETTINGLIST.fields_by_name['settings'].message_type = _SETTING
 DESCRIPTOR.message_types_by_name['ObjectList'] = _OBJECTLIST
 DESCRIPTOR.message_types_by_name['Object'] = _OBJECT
 DESCRIPTOR.message_types_by_name['Progress'] = _PROGRESS
@@ -397,6 +465,8 @@ DESCRIPTOR.message_types_by_name['Layer'] = _LAYER
 DESCRIPTOR.message_types_by_name['Polygon'] = _POLYGON
 DESCRIPTOR.message_types_by_name['GCode'] = _GCODE
 DESCRIPTOR.message_types_by_name['ObjectPrintTime'] = _OBJECTPRINTTIME
+DESCRIPTOR.message_types_by_name['SettingList'] = _SETTINGLIST
+DESCRIPTOR.message_types_by_name['Setting'] = _SETTING
 
 ObjectList = _reflection.GeneratedProtocolMessageType('ObjectList', (_message.Message,), dict(
   DESCRIPTOR = _OBJECTLIST,
@@ -460,6 +530,20 @@ ObjectPrintTime = _reflection.GeneratedProtocolMessageType('ObjectPrintTime', (_
   # @@protoc_insertion_point(class_scope:Cura.ObjectPrintTime)
   ))
 _sym_db.RegisterMessage(ObjectPrintTime)
+
+SettingList = _reflection.GeneratedProtocolMessageType('SettingList', (_message.Message,), dict(
+  DESCRIPTOR = _SETTINGLIST,
+  __module__ = 'Cura_pb2'
+  # @@protoc_insertion_point(class_scope:Cura.SettingList)
+  ))
+_sym_db.RegisterMessage(SettingList)
+
+Setting = _reflection.GeneratedProtocolMessageType('Setting', (_message.Message,), dict(
+  DESCRIPTOR = _SETTING,
+  __module__ = 'Cura_pb2'
+  # @@protoc_insertion_point(class_scope:Cura.Setting)
+  ))
+_sym_db.RegisterMessage(Setting)
 
 
 # @@protoc_insertion_point(module_scope)

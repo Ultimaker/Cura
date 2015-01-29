@@ -9,6 +9,7 @@ from . import ProcessSlicedObjectListJob
 from . import ProcessGCodeJob
 
 import threading
+import struct
 
 class CuraEngineBackend(Backend):
     def __init__(self):
@@ -16,7 +17,11 @@ class CuraEngineBackend(Backend):
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
-        self._sceneChangeTimer = None
+
+        self._settings = Application.getInstance().getMachineSettings()
+        self._settings.settingChanged.connect(self._onSettingChanged)
+
+        self._changeTimer = None
 
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
@@ -30,11 +35,10 @@ class CuraEngineBackend(Backend):
         if (type(source) is not SceneNode) or (source is self._scene.getRoot()):
             return
 
-        if self._sceneChangeTimer:
-            return
+        self._onChanged()
 
-        self._sceneChangeTimer = threading.Timer(1, self._sceneChangeTimerFinished)
-        self._sceneChangeTimer.start()
+    def _onSettingChanged(self, setting):
+        self._onChanged()
 
     def _onSlicedObjectListMessage(self, message):
         job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
@@ -59,11 +63,35 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(4, Cura_pb2.GCode)
         self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
 
-    def _sceneChangeTimerFinished(self):
+    def _onChanged(self):
+        if self._changeTimer:
+            return
+
+        self._changeTimer = threading.Timer(1, self._onChangeTimerFinished)
+        self._changeTimer.start()
+
+    def _onChangeTimerFinished(self):
         objects = []
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
                 objects.append(node)
+
+        if not objects:
+            return #No point in slicing an empty build plate
+
+        msg = Cura_pb2.SettingList()
+        for setting in self._settings.getAllSettings():
+            s = msg.settings.add()
+            s.name = setting.getKey()
+
+            if setting.getType() == 'float':
+                s.value = struct.pack('!f', setting.getValue())
+            elif setting.getType() == 'int' or setting.getType() == 'enum':
+                s.value = struct.pack('!i', setting.getValue())
+
+        self._socket.sendMessage(msg)
+
+        self._scene.acquireLock()
 
         msg = Cura_pb2.ObjectList()
         for object in objects:
@@ -82,6 +110,8 @@ class CuraEngineBackend(Backend):
             #if meshData.hasIndices():
                 #obj.indices = meshData.getIndicesAsByteArray()
 
+        self._scene.releaseLock()
+
         self._socket.sendMessage(msg)
 
-        self._sceneChangeTimer = None
+        self._changeTimer = None
