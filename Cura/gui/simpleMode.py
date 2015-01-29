@@ -3,6 +3,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 import wx
 
 from Cura.util import profile
+import cPickle as pickle
 
 class simpleModePanel(wx.Panel):
 	"Main user interface window for Quickprint mode"
@@ -83,7 +84,34 @@ class simpleModePanel(wx.Panel):
 		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
 		self.printBrim.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
 
+		self.loadSettings()
+
+	def getSavedSettings(self):
+		try:
+			return pickle.loads(str(profile.getProfileSetting('simpleModeSettings')))
+		except:
+			return {}
+
+	def loadSettings(self):
+		settings = self.getSavedSettings()
+		for item in settings.keys():
+			if getattr(self, item, None):
+				getattr(self, item).SetValue(settings[item])
+
+	def saveSettings(self):
+		settings = {}
+		settingItems = ['printTypeHigh', 'printTypeNormal', 'printTypeLow', 'printTypeJoris',
+						'printMaterialHIPS', 'printMaterialABS', 'printMaterialPLA',
+						'printSupport', 'printBrim']
+
+		for item in settingItems:
+			if getattr(self, item, None):
+				settings[item] = getattr(self, item).GetValue()
+
+		profile.putProfileSetting('simpleModeSettings', pickle.dumps(settings))
+
 	def setupSlice(self):
+		self.saveSettings()
 		put = profile.setTempOverride
 		get = profile.getProfileSetting
 		for setting in profile.settingsList:
