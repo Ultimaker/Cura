@@ -95,7 +95,7 @@ class simpleModePanel(wx.Panel):
 	def loadSettings(self):
 		settings = self.getSavedSettings()
 		for item in settings.keys():
-			if getattr(self, item, None):
+			if hasattr(self, item):
 				getattr(self, item).SetValue(settings[item])
 
 	def saveSettings(self):
@@ -105,7 +105,7 @@ class simpleModePanel(wx.Panel):
 						'printSupport', 'printBrim']
 
 		for item in settingItems:
-			if getattr(self, item, None):
+			if hasattr(self, item):
 				settings[item] = getattr(self, item).GetValue()
 
 		profile.putProfileSetting('simpleModeSettings', pickle.dumps(settings))
