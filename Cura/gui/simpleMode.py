@@ -513,7 +513,6 @@ G90                                          ; absolute positioning
 				put('platform_adhesion', 'Brim')
 				put('brim_line_count', '10')
 			if self.printTypeNormal.GetValue():
-				put('layer_height', '0.2')
 				put('wall_thickness', nozzle_size * 2.0)
 				put('layer_height', '0.10')
 				put('fill_density', '20')
