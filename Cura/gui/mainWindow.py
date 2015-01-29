@@ -560,7 +560,7 @@ class mainWindow(wx.Frame):
 	def OnAddNewMachine(self, e):
 		self.Hide()
 		wasSimple = profile.getPreference('startMode') == 'Simple'
-		configWizard.configWizard(True)
+		configWizard.ConfigWizard(True)
 		isSimple = profile.getPreference('startMode') == 'Simple'
 		self.Show()
 		self.reloadSettingPanels(isSimple != wasSimple)
