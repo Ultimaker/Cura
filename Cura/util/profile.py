@@ -489,7 +489,10 @@ setting('filament_cost_meter', '0', float, 'preference', 'hidden').setLabel(_("C
 setting('auto_detect_sd', 'True', bool, 'preference', 'hidden').setLabel(_("Auto detect SD card drive"), _("Auto detect the SD card. You can disable this because on some systems external hard-drives or USB sticks are detected as SD card."))
 
 def _getMyDocumentsFolder():
-	path = os.path.expanduser('~/Documents')
+	if platform.system() == "Windows":
+		path = os.path.expanduser('~/Documents')
+	else:
+		path = os.path.expanduser('~/')
 	if not os.path.exists(path):
 		path = ''
 
