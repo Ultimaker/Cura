@@ -1,6 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+import os
 
 from Cura.gui import configWizard
 from Cura.gui import configBase
@@ -48,7 +49,12 @@ class preferencesDialog(wx.Dialog):
 		configBase.TitleRow(right, 'SD Card settings')
 		configBase.SettingRow(right, 'auto_detect_sd')
 		configBase.SettingRow(right, 'sdcard_rootfolder')
-		
+		#same as the expert settings button.
+		self.browseButton = wx.Button(right, -1, '...', style=wx.BU_EXACTFIT)
+		self.browseButton.SetFont(wx.Font(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPointSize() * 0.8, wx.FONTFAMILY_DEFAULT, wx.NORMAL, wx.FONTWEIGHT_NORMAL))
+		self.browseButton.Bind(wx.EVT_BUTTON, self.OnBrowseSDRootFolder)
+		right.GetSizer().Add(self.browseButton, (right.GetSizer().GetRows()-1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+
 		configBase.TitleRow(right, _("Cura settings"))
 		configBase.SettingRow(right, 'check_for_updates')
 		configBase.SettingRow(right, 'submit_slice_information')
@@ -63,6 +69,28 @@ class preferencesDialog(wx.Dialog):
 	def OnClose(self, e):
 		#self.parent.reloadSettingPanels()
 		self.Destroy()
+
+	def OnBrowseSDRootFolder(self, e):
+		path = profile.getPreference('sdcard_rootfolder')
+		if path == '':
+			path = os.path.expanduser('~/Documents')
+			if not os.path.exists(path):
+				path = ''
+
+		dlg=wx.DirDialog(self, _("Select replication root folder"), path)
+		if dlg.ShowModal() != wx.ID_OK:
+			dlg.Destroy()
+			return
+
+		profile.putPreference('sdcard_rootfolder', dlg.GetPath())
+		dlg.Destroy()
+		self.Close()
+		self.parent.OnPreferences(None)
+
+
+
+
+
 
 class machineSettingsDialog(wx.Dialog):
 	def __init__(self, parent):
