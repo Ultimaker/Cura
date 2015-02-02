@@ -39,7 +39,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._yaw = 30
 		self._pitch = 60
 		self._zoom = 300
-		self._scene = objectScene.Scene()
+		self._scene = objectScene.Scene(self)
 		self._objectShader = None
 		self._objectLoadShader = None
 		self._focusObj = None
@@ -120,6 +120,8 @@ class SceneView(openglGui.glGuiPanel):
 		self.OnToolSelect(0)
 		self.updateToolButtons()
 		self.updateProfileToControls()
+
+
 
 	def loadGCodeFile(self, filename):
 		self.OnDeleteAll(None)
