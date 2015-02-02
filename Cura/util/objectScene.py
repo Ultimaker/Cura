@@ -184,8 +184,8 @@ class Scene(object):
 		return self._objectList
 
 	#Add new object to print area
-	def add(self, obj):
-		if numpy.max(obj.getSize()[0:2]) > numpy.max(self._machineSize[0:2]) * 2.5:
+	def add(self, obj, positionOnly=False):
+		if not positionOnly and numpy.max(obj.getSize()[0:2]) > numpy.max(self._machineSize[0:2]) * 2.5:
 			scale = numpy.max(self._machineSize[0:2]) * 2.5 / numpy.max(obj.getSize()[0:2])
 			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
 			obj.applyMatrix(numpy.matrix(matrix, numpy.float64))
@@ -230,12 +230,12 @@ class Scene(object):
 		for obj in pushList:
 			self.pushFree(obj)
 
-	def arrangeAll(self):
+	def arrangeAll(self, positionOnly=False):
 		oldList = self._objectList
 		self._objectList = []
 		for obj in oldList:
 			obj.setPosition(numpy.array([0,0], numpy.float32))
-			self.add(obj)
+			self.add(obj, positionOnly)
 
 	def centerAll(self):
 		minPos = numpy.array([9999999,9999999], numpy.float32)

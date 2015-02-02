@@ -195,10 +195,27 @@ class SceneView(openglGui.glGuiPanel):
 	def reloadScene(self, e):
 		# Copy the list before DeleteAll clears it
 		fileList = []
+		pms_transforms = [] #position, rotation matrix, scale
 		for obj in self._scene.objects():
 			fileList.append(obj.getOriginFilename())
+			pms_transforms.append((obj.getPosition(), obj.getMatrix(), obj.getScale()))
+
 		self.OnDeleteAll(None)
-		self.loadScene(fileList)
+		self.loadScene(fileList, pms_transforms)
+
+	def OnResetPositions(self, e):
+
+		self._scene.arrangeAll(True)
+		self._scene.centerAll()
+
+
+	def OnResetTransformations(self, e):
+		for obj in self._scene.objects():
+			obj.resetScale()
+			obj.resetRotation()
+
+		self._scene.arrangeAll()
+		self._scene.centerAll()
 
 	def showLoadModel(self, button = 1):
 		if button == 1:
@@ -510,20 +527,44 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		cnt = dlg.GetValue()
 		dlg.Destroy()
+
+		# 0:unrequested arrange all. Objects should not move.
+		# 1:requested arrange all but refused.
+		# 2:arrange all and center from now on.
+		requestedArrangeAll = 0
+
 		n = 0
 		while True:
 			n += 1
 			newObj = obj.copy()
 			self._scene.add(newObj)
-			self._scene.centerAll()
+			if requestedArrangeAll == 2:
+				self._scene.centerAll()
+
 			if not self._scene.checkPlatform(newObj):
+				if requestedArrangeAll == 0:
+					requestedArrangeAll = 1
+					dlg = wx.MessageDialog(self, _("Cannot fit all the requested duplicates. Do you want to try and reset object positions?"), _("Reset Positions"), wx.YES_NO)
+
+					if dlg.ShowModal() == wx.ID_YES:
+						dlg.Destroy()
+						requestedArrangeAll = 2
+						self._scene.remove(newObj)
+						self.OnResetPositions(None)
+						n -= 1
+						continue
+
+					dlg.Destroy()
+
 				break
 			if n > cnt:
 				break
 		if n <= cnt:
 			self.notification.message("Could not create more than %d items" % (n - 1))
 		self._scene.remove(newObj)
-		self._scene.centerAll()
+		if requestedArrangeAll == 2:
+			self._scene.centerAll()
+
 		self.sceneUpdated()
 
 	def OnSplitObject(self, e):
@@ -604,8 +645,10 @@ class SceneView(openglGui.glGuiPanel):
 			self.printButton.setBottomText('')
 		self.QueueRefresh()
 
-	def loadScene(self, fileList):
+	def loadScene(self, fileList, pms_transforms=None):
+		objIndex = -1
 		for filename in fileList:
+			objIndex += 1
 			try:
 				ext = os.path.splitext(filename)[1].lower()
 				if ext in imageToMesh.supportedExtensions():
@@ -622,11 +665,18 @@ class SceneView(openglGui.glGuiPanel):
 					else:
 						obj._loadAnim = None
 					self._scene.add(obj)
-					if not self._scene.checkPlatform(obj):
-						self._scene.centerAll()
-					self._selectObject(obj)
-					if obj.getScale()[0] < 1.0:
-						self.notification.message("Warning: Object scaled down.")
+					if pms_transforms is not None and len(pms_transforms) == len(fileList):
+						obj.setPosition(pms_transforms[objIndex][0])
+						obj.applyMatrix(pms_transforms[objIndex][1])
+						obj.setScale(pms_transforms[objIndex][2][0], 0, False)
+						obj.setScale(pms_transforms[objIndex][2][1], 1, False)
+						obj.setScale(pms_transforms[objIndex][2][2], 2, False)
+					else:
+						if not self._scene.checkPlatform(obj):
+							self._scene.centerAll()
+						self._selectObject(obj)
+						if obj.getScale()[0] < 1.0:
+							self.notification.message("Warning: Object scaled down.")
 		self.sceneUpdated()
 
 	def _deleteObject(self, obj):
@@ -805,11 +855,15 @@ class SceneView(openglGui.glGuiPanel):
 						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete object")))
 						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, _("Multiply object")))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, _("Split object into parts")))
+
 					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getMachineSetting('extruder_amount')) > 1:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, _("Dual extrusion merge")))
 					if len(self._scene.objects()) > 0:
 						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all objects")))
 						self.Bind(wx.EVT_MENU, self.reloadScene, menu.Append(-1, _("Reload all objects")))
+						self.Bind(wx.EVT_MENU, self.OnResetPositions, menu.Append(-1, _("Reset all objects positions")))
+						self.Bind(wx.EVT_MENU, self.OnResetTransformations, menu.Append(-1, _("Reset all objects transformations")))
+
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
