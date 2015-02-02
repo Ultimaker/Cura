@@ -285,6 +285,13 @@ class mainWindow(wx.Frame):
 		if Publisher is not None:
 			Publisher().subscribe(self.onPluginUpdate, "pluginupdate")
 
+		pluginCount = self.normalSettingsPanel.pluginPanel.GetActivePluginCount()
+		if pluginCount == 1:
+			self.scene.notification.message("Warning: 1 plugin from the previous session is still active.")
+
+		if pluginCount > 1:
+			self.scene.notification.message("Warning: %i plugins from the previous session are still active." % pluginCount)
+
 	def onPluginUpdate(self,msg): #receives commands from the plugin thread
 		cmd = str(msg.data).split(";")
 		if cmd[0] == "OpenPluginProgressWindow":
