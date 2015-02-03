@@ -445,7 +445,7 @@ class mainWindow(wx.Frame):
 		self.normalSettingsPanel.updateProfileToControls()
 		self.simpleSettingsPanel.updateProfileToControls()
 
-	def reloadSettingPanels(self, changedSliceMode):
+	def reloadSettingPanels(self, changedSliceMode = False):
 		self.leftSizer.Detach(self.simpleSettingsPanel)
 		self.leftSizer.Detach(self.normalSettingsPanel)
 		self.simpleSettingsPanel.Destroy()
