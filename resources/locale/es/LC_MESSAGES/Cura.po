@@ -7,1547 +7,1112 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-06 03:11-0300\n"
+"POT-Creation-Date: 2015-02-04 14:38+0100\n"
 "PO-Revision-Date: 2015-01-06 16:05-0300\n"
 "Last-Translator: Ernesto Bazzano <bazza@riseup.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: Cura/util/sliceEngine.py:93
-#, python-format
-msgid "%d minutes"
-msgstr "%d minutos"
+#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:642
+msgid "A new version of Cura is available, would you like to download?"
+msgstr "Una nueva versión de Cura esta disponible, ¿quieres descargarla?"
 
-#: Cura/util/sliceEngine.py:95
-#, python-format
-msgid "%d hour %d minutes"
-msgstr "%d hora %d minutos"
+#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:642
+msgid "New version available"
+msgstr "Nueva versión disponible"
 
-#: Cura/util/sliceEngine.py:96
-#, python-format
-msgid "%d hours %d minutes"
-msgstr "%d hora %d minutos"
+#: Cura/gui/configWizard.py:231
+msgid "Add new machine wizard"
+msgstr "Asistente para nueva máquina"
 
-#: Cura/util/sliceEngine.py:101
-#, python-format
-msgid "%0.2f meter %0.0f gram"
-msgstr "%0.2f metros %0.0f gramos"
+#: Cura/gui/configWizard.py:233
+msgid "First time run wizard"
+msgstr "Hacer asistencia inicial"
 
-#: Cura/util/profile.py:178 Cura/util/profile.py:179 Cura/util/profile.py:180
-#: Cura/util/profile.py:208 Cura/util/profile.py:209 Cura/util/profile.py:210
-#: Cura/util/profile.py:212
-msgid "Quality"
-msgstr "Calidad"
+#: Cura/gui/configWizard.py:234
+msgid "Welcome, and thanks for trying Cura!"
+msgstr "Bienvenido, y gracias por ¡usar Cura!"
 
-#: Cura/util/profile.py:178
-msgid "Layer height (mm)"
-msgstr "Espesor de la capa (mm)"
+#: Cura/gui/configWizard.py:236
+msgid "This wizard will help you in setting up Cura for your machine."
+msgstr "Este asistente le ayudará en la creación de Cura para su máquina."
 
-#: Cura/util/profile.py:178
+#: Cura/gui/configWizard.py:239
+msgid "Select your language:"
+msgstr "Selecciona tu lenguaje:"
+
+#: Cura/gui/configWizard.py:266
+msgid "Older models"
+msgstr "Modelos antiguos"
+
+#: Cura/gui/configWizard.py:283
+msgid "Printrbot Selection"
+msgstr "Selección printrbot"
+
+#: Cura/gui/configWizard.py:285
+msgid "Select which Printrbot machine you have:"
+msgstr "Seleccione que Printrbot máquina tiene"
+
+#: Cura/gui/configWizard.py:349
+msgid "Other machine information"
+msgstr "Otra información de la máquina"
+
+#: Cura/gui/configWizard.py:350
+msgid "The following pre-defined machine profiles are available"
+msgstr "Los siguientes perfiles de máquina predefinidos están disponibles"
+
+#: Cura/gui/configWizard.py:351
 msgid ""
-"Layer height in millimeters.\n"
-"This is the most important setting to determine the quality of your print. "
-"Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to "
-"0.25mm with an Ultimaker for very fast prints at low quality."
+"Note that these profiles are not guaranteed to give good results,\n"
+"or work at all. Extra tweaks might be required.\n"
+"If you find issues with the predefined profiles,\n"
+"or want an extra profile.\n"
+"Please report it at the github issue tracker."
 msgstr ""
-"Espeso de capa en milimetros. \n"
-"Este es el ajuste más importante para definir la calidad de impresión. "
-"Impresiones normales usan 0.1 mm, Alta calidad 0,06 mm. Puedes incluso "
-"utilizar 0.25mm para impresiones muy rapidas a baja calidad en la Ultimaker."
+"Tenga en cuenta que estos perfiles no están garantizados para dar buenos "
+"resultados,\n"
+"o el trabajo en absoluto. podría ser necesario retoques adicionales.\n"
+" Si usted encuentra problemas con los perfiles predefinidos,\n"
+"o quieren un perfil extra. \n"
+"Por favor repórtelo a la de seguimiento de incidencias github."
 
-#: Cura/util/profile.py:179
-msgid "Shell thickness (mm)"
-msgstr "Espesor de la pared (mm)"
+#: Cura/gui/configWizard.py:362
+msgid "Custom..."
+msgstr "Personalizable..."
 
-#: Cura/util/profile.py:179
+#: Cura/gui/configWizard.py:380
+msgid "Cura Ready!"
+msgstr "¡Cura listo!"
+
+#: Cura/gui/configWizard.py:381
+msgid "Cura is now ready to be used!"
+msgstr "¡Cura esta listo para su uso!"
+
+#: Cura/gui/configWizard.py:385
+msgid "Custom RepRap information"
+msgstr "Personalizar la información"
+
+#: Cura/gui/configWizard.py:386
 msgid ""
-"Thickness of the outside shell in the horizontal direction.\n"
-"This is used in combination with the nozzle size to define the number\n"
-"of perimeter lines and the thickness of those perimeter lines."
+"RepRap machines can be vastly different, so here you can set your own "
+"settings."
 msgstr ""
-"Grosor de la pared exterior en la dirección horizontal. \n"
-"Este se utiliza en combinación con el tamaño de la boquilla para definir el "
-"número \n"
-"de líneas perimetrales y el espesor de las líneas del perímetro."
+"Máquinas RepRap pueden ser muy diferentes, por lo que aquí se puede "
+"establecer su propio ajustes."
 
-#: Cura/util/profile.py:180 Cura/util/profile.py:201 Cura/util/profile.py:202
-#: Cura/util/profile.py:203 Cura/util/profile.py:204 Cura/util/profile.py:205
-#: Cura/util/profile.py:206 Cura/util/profile.py:207
-msgid "Retraction"
-msgstr "Retracción"
-
-#: Cura/util/profile.py:180
-msgid "Enable retraction"
-msgstr "Habilitar retracción"
-
-#: Cura/util/profile.py:180
+#: Cura/gui/configWizard.py:387
 msgid ""
-"Retract the filament when the nozzle is moving over a none-printed area. "
-"Details about the retraction can be configured in the advanced tab."
+"Be sure to review the default profile before running it on your machine."
 msgstr ""
-"Retraer el filamento cuando el nozzle se mueva sobre un area sin impresión. "
-"Detalles de la retracción pueden ser configurados en la pestaña ajustes "
-"avanzados."
+"Asegúrese de revisar el perfil predeterminado antes de ejecutarlo en su "
+"máquina."
 
-#: Cura/util/profile.py:181 Cura/util/profile.py:182
-msgid "Fill"
-msgstr "Relleno"
-
-#: Cura/util/profile.py:181
-msgid "Bottom/Top thickness (mm)"
-msgstr "Espesor superior e inferior"
-
-#: Cura/util/profile.py:181
+#: Cura/gui/configWizard.py:388
 msgid ""
-"This controls the thickness of the bottom and top layers, the amount of "
-"solid layers put down is calculated by the layer thickness and this value.\n"
-"Having this value a multiple of the layer thickness makes sense. And keep it "
-"near your wall thickness to make an evenly strong part."
+"If you like a default profile for your machine added,\n"
+"then make an issue on github."
 msgstr ""
-"Controla el espesor de la capa inferior y  superior, la cantidad de capas "
-"sólidas se calcula por el espesor de la capa y este valor.\n"
-"Tener un valor múltiplo del espesor de la capa tiene sentido. Y mantenerlo "
-"cerca de su espesor de pared para hacer una pieza uniformemente fuerte."
+"Si quieres añadir un perfil por defecto para tu máquina,\n"
+"crea un requerimiento en el github."
 
-#: Cura/util/profile.py:182 Cura/util/profile.py:230 Cura/util/profile.py:231
-#: Cura/util/profile.py:232
-msgid "Infill"
-msgstr "Relleno"
+#: Cura/gui/configWizard.py:390
+msgid "You will have to manually install Marlin or Sprinter firmware."
+msgstr "Tendrás que instalar manual Marlin o Sprinter"
 
-#: Cura/util/profile.py:182
-msgid "Fill Density (%)"
-msgstr "Densidad Relleno (%)"
+#: Cura/gui/configWizard.py:392
+msgid "Machine name"
+msgstr "Nombre de la máquina"
 
-#: Cura/util/profile.py:182
-msgid ""
-"This controls how densely filled the insides of your print will be. For a "
-"solid part use 100%, for an empty part use 0%. A value around 20% is usually "
-"enough.\n"
-"This won't affect the outside of the print and only adjusts how strong the "
-"part becomes."
-msgstr ""
-"Esto controla la densidad de relleno interior de la impresión. Para una "
-"impresión sólida usar 100%, para una vacía 0%. Un valor de alrededor de 20% "
-"es suficiente por lo general.\n"
-"Esto no afectará a la parte exterior de la impresión y sólo afecta a lo "
-"fuerte que la pieza será."
+#: Cura/gui/configWizard.py:393
+msgid "Machine width (mm)"
+msgstr "Anchura máquina (mm)"
 
-#: Cura/util/profile.py:183 Cura/gui/mainWindow.py:168
-msgid "Machine"
-msgstr "Maquina"
+#: Cura/gui/configWizard.py:394
+msgid "Machine depth (mm)"
+msgstr "Produndidad máquina (mm)"
 
-#: Cura/util/profile.py:183 Cura/gui/configWizard.py:396
+#: Cura/gui/configWizard.py:395
+msgid "Machine height (mm)"
+msgstr "Altura máquina (mm)"
+
+#: Cura/gui/configWizard.py:396 Cura/util/profile.py:183
 msgid "Nozzle size (mm)"
 msgstr "Tamaño boquilla (mm)"
 
-#: Cura/util/profile.py:183
-msgid ""
-"The nozzle size is very important, this is used to calculate the line width "
-"of the infill, and used to calculate the amount of outside wall lines and "
-"thickness for the wall thickness you entered in the print settings."
-msgstr ""
-"El tamaño del noozle es muy importante, se usa para calcular el ancho del "
-"trazado y el relleno, y es usado para calcular la cantidad de lineas "
-"exteriores y su espesor de pared según los datos introducidos."
-
-#: Cura/util/profile.py:184 Cura/util/profile.py:185 Cura/util/profile.py:186
-#: Cura/util/profile.py:187 Cura/util/profile.py:188 Cura/util/profile.py:189
-msgid "Speed and Temperature"
-msgstr "Velocidad  "
-
-#: Cura/util/profile.py:184
-msgid "Print speed (mm/s)"
-msgstr "Velocidad impresión (mm/s)"
-
-#: Cura/util/profile.py:184
-msgid ""
-"Speed at which printing happens. A well adjusted Ultimaker can reach 150mm/"
-"s, but for good quality prints you want to print slower. Printing speed "
-"depends on a lot of factors. So you will be experimenting with optimal "
-"settings for this."
-msgstr ""
-"Velocid a la que imprime Una Ultimaker bien ajustada puede alcanzar 150mm/s "
-"pero para impresiones de calidad es mejor velocidades menores. La velocidad "
-"de impresión depende de muchos factores. Experimenta hasta encontrar tus "
-"ajustes óptimos."
-
-#: Cura/util/profile.py:185
-msgid "Printing temperature (C)"
-msgstr "Temperatura impresión (C)"
-
-#: Cura/util/profile.py:185 Cura/util/profile.py:186 Cura/util/profile.py:187
-#: Cura/util/profile.py:188
-msgid ""
-"Temperature used for printing. Set at 0 to pre-heat yourself.\n"
-"For PLA a value of 210C is usually used.\n"
-"For ABS a value of 230C or higher is required."
-msgstr ""
-"Temperaturas usadas para imprimir. Deja a 0 para definirlas.\n"
-"Para PLA un valor a partir 210C es usual\n"
-"Para ABS un valor de 230 o más es requerido."
-
-#: Cura/util/profile.py:186
-msgid "2nd nozzle temperature (C)"
-msgstr "Temperatura 2º nozzle (C)"
-
-#: Cura/util/profile.py:187
-msgid "3th nozzle temperature (C)"
-msgstr "Temperatura 3º nozzle (C)"
-
-#: Cura/util/profile.py:188
-msgid "4th nozzle temperature (C)"
-msgstr "Temperatura 4º nozzle (C)"
-
-#: Cura/util/profile.py:189
-msgid "Bed temperature (C)"
-msgstr "Temperatura de la cama (C)"
-
-#: Cura/util/profile.py:189
-msgid ""
-"Temperature used for the heated printer bed. Set at 0 to pre-heat yourself."
-msgstr ""
-"Temperatura usada para calentar la cama. Pon 0 para calentar tu mismo. "
-
-#: Cura/util/profile.py:190 Cura/util/profile.py:191
-msgid "None"
-msgstr "Nada"
-
-#: Cura/util/profile.py:190
-msgid "Touching buildplate"
-msgstr "Tocando la cama caliente"
-
-#: Cura/util/profile.py:190
-msgid "Everywhere"
-msgstr "Cualquier sitio"
-
-#: Cura/util/profile.py:190 Cura/util/profile.py:191 Cura/util/profile.py:192
-#: Cura/util/profile.py:233 Cura/util/profile.py:234 Cura/util/profile.py:235
-#: Cura/util/profile.py:236 Cura/util/profile.py:237
-msgid "Support"
-msgstr "Soportes"
-
-#: Cura/util/profile.py:190
-msgid "Support type"
-msgstr "Tipo de soporte"
-
-#: Cura/util/profile.py:190
-msgid ""
-"Type of support structure build.\n"
-"\"Touching buildplate\" is the most commonly used support setting.\n"
-"\n"
-"None does not do any support.\n"
-"Touching buildplate only creates support where the support structure will "
-"touch the build platform.\n"
-"Everywhere creates support even on top of parts of the model."
-msgstr ""
-"Tipo de estructura de soporte. \n"
-"\"Tocar plataforma\" es el ajuste de soporte más utilizado.\n"
-"\n"
-"Nada no hace ningún tipo de soporte. \n"
-"Tocar plataforma  creara apoyos en la estructura hasta tocar la "
-"plataforma. \n"
-"Cualquier sitio creara soportes incluso sobre la pieza"
-
-#: Cura/util/profile.py:191 Cura/util/profile.py:241
-msgid "Brim"
-msgstr "Borde (Brim)"
-
-#: Cura/util/profile.py:191 Cura/util/profile.py:242 Cura/util/profile.py:243
-#: Cura/util/profile.py:244 Cura/util/profile.py:245 Cura/util/profile.py:246
-#: Cura/util/profile.py:247 Cura/util/profile.py:248 Cura/util/profile.py:249
-#: Cura/util/profile.py:250 Cura/util/profile.py:251 Cura/util/profile.py:252
-msgid "Raft"
-msgstr "Borrador (Raft)"
-
-#: Cura/util/profile.py:191 Cura/util/profile.py:222 Cura/util/profile.py:223
-#: Cura/util/profile.py:224
-msgid "Skirt"
-msgstr "Falda"
-
-#: Cura/util/profile.py:191
-msgid "Platform adhesion type"
-msgstr "Tipo de adhesion en la cama"
-
-#: Cura/util/profile.py:191
-msgid ""
-"Different options that help in preventing corners from lifting due to "
-"warping.\n"
-"Brim adds a single layer thick flat area around your object which is easy to "
-"cut off afterwards, and it is the recommended option.\n"
-"Raft adds a thick raster below the object and a thin interface between this "
-"and your object.\n"
-"(Note that enabling the brim or raft disables the skirt)"
-msgstr ""
-"Diferentes opciones que ayudan en la prevención de las esquinas de elevación "
-"debido a la deformación. \n"
-"Falda (Brim) añade una capa de grosor plana alrededor de su objeto, que es "
-"fácil de cortar después, y la opción recomendada. \n"
-"Borrador (Raft) agrega una trama gruesa por debajo del objeto y una interfaz "
-"fina entre esto y su objeto. \n"
-"(Tenga en cuenta que la activación de Raft o Brim desactiva el borde-skirt)"
-
-#: Cura/util/profile.py:192
-msgid "Both"
-msgstr "Ambos"
-
-#: Cura/util/profile.py:192
-msgid "First extruder"
-msgstr "Primer extrusor"
-
-#: Cura/util/profile.py:192
-msgid "Second extruder"
-msgstr "Segundo extrusor"
-
-#: Cura/util/profile.py:192
-msgid "Support dual extrusion"
-msgstr "Soporte extrusión dual"
-
-#: Cura/util/profile.py:192
-msgid ""
-"Which extruder to use for support material, for break-away support you can "
-"use both extruders.\n"
-"But if one of the materials is more expensive then the other you could "
-"select an extruder to use for support material. This causes more extruder "
-"switches.\n"
-"You can also use the 2nd extruder for soluble support materials."
-msgstr ""
-"Cual  extrusor se usa para el material de soporte, para soporte de apoyo, se "
-"pueden usar los dos extrusores. \n"
-"Sin embargo, si uno de los materiales es más caro que el otro podría "
-"seleccionar un extrusor para el material de soporte. Esto hace más cambios "
-"de extrusor. \n"
-"También puede utilizar la segunda extrusora para materiales de soporte "
-"solubles."
-
-#: Cura/util/profile.py:193 Cura/util/profile.py:194 Cura/util/profile.py:195
-msgid "Dual extrusion"
-msgstr "Extrusion doble"
-
-#: Cura/util/profile.py:193
-msgid "Wipe&prime tower"
-msgstr "Limpie y la pila principal"
-
-#: Cura/util/profile.py:193
-msgid ""
-"The wipe-tower is a tower printed on every layer when switching between "
-"nozzles.\n"
-"The old nozzle is wiped off on the tower before the new nozzle is used to "
-"print the 2nd color."
-msgstr ""
-"La torre de limpieza es una torre impresa que en cada capa cuando se cambia "
-"entre las boquillas.\n"
-"La vieja boquilla se limpia en la torre antes de que la nueva boquilla se "
-"utiliza para imprimir el segundo color."
-
-#: Cura/util/profile.py:194
-msgid "Wipe&prime tower volume per layer (mm3)"
-msgstr "Limpie y volumen de la pila principal por capa (mm3)"
-
-#: Cura/util/profile.py:194
-msgid ""
-"The amount of material put in the wipe/prime tower.\n"
-"This is done in volume because in general you want to extrude a\n"
-"certain amount of volume to get the extruder going, independent on the layer "
-"height.\n"
-"This means that with thinner layers, your tower gets bigger."
-msgstr ""
-"La cantidad de material puesto en el pila de limpieza.\n"
-"Esto se hace en el volumen porque, en general desea extruir una\n"
-"cierta cantidad de volumen para obtener la extrusora va , independientemente "
-"de la altura de la capa.\n"
-"Esto significa que con capas más delgadas, la pila se hace más grande."
-
-#: Cura/util/profile.py:195
-msgid "Ooze shield"
-msgstr "El escudo exudado"
-
-#: Cura/util/profile.py:195
-msgid ""
-"The ooze shield is a 1 line thick shell around the object which stands a few "
-"mm from the object.\n"
-"This shield catches any oozing from the unused nozzle in dual-extrusion."
-msgstr ""
-"El escudo exudado es una gruesa cáscara de 1 línea alrededor del objeto que "
-"se encuentra unos pocos mm desde el objeto .\n"
-"Este escudo atrapa cualquier supuración de la boquilla sin utilizar en doble "
-"extrusión."
-
-#: Cura/util/profile.py:196 Cura/util/profile.py:197 Cura/util/profile.py:198
-#: Cura/util/profile.py:199 Cura/util/profile.py:200
-msgid "Filament"
-msgstr "Filamento"
-
-#: Cura/util/profile.py:196
-msgid "Diameter (mm)"
-msgstr "Diámetro (mm)"
-
-#: Cura/util/profile.py:196
-msgid ""
-"Diameter of your filament, as accurately as possible.\n"
-"If you cannot measure this value you will have to calibrate it, a higher "
-"number means less extrusion, a smaller number generates more extrusion."
-msgstr ""
-"Diámetro del filamento, con la mayor precisión posible.\n"
-"Si no se puede medir este valor tendrá que calibrarlo, más alto significa "
-"menos extrusión,  más pequeño genera más extrusión."
-
-#: Cura/util/profile.py:197
-msgid "Diameter2 (mm)"
-msgstr "Diámetro 2(mm)"
-
-#: Cura/util/profile.py:197
-msgid ""
-"Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter "
-"as for nozzle 1."
-msgstr ""
-"Diámetro de tu filamento para el 2º extrusor. Usa 0 para usar el mismo "
-"diámetro que para el 1."
-
-#: Cura/util/profile.py:198
-msgid "Diameter3 (mm)"
-msgstr "Diametro 3(mm)"
-
-#: Cura/util/profile.py:198
-msgid ""
-"Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter "
-"as for nozzle 1."
-msgstr ""
-"Diametro de tu filamento para el 3º extrusor. Usa 0 para usar el mismo "
-"diametro que para el 1."
-
-#: Cura/util/profile.py:199
-msgid "Diameter4 (mm)"
-msgstr "Diametro 4(mm)"
-
-#: Cura/util/profile.py:199
-msgid ""
-"Diameter of your filament for the 4th nozzle. Use 0 to use the same diameter "
-"as for nozzle 1."
-msgstr ""
-"Diametro de tu filamento para el 4º extrusor. Usa 0 para usar el mismo "
-"diametro que para el 1."
-
-#: Cura/util/profile.py:200
-msgid "Flow (%)"
-msgstr "Flujo (%)"
-
-#: Cura/util/profile.py:200
-msgid ""
-"Flow compensation, the amount of material extruded is multiplied by this "
-"value"
-msgstr ""
-"Compensación de flujo, la cantidad de material extruida se multiplicará por "
-"este valor"
-
-#: Cura/util/profile.py:201
-msgid "Speed (mm/s)"
-msgstr "Velocidad (mm/s)"
-
-#: Cura/util/profile.py:201
-msgid ""
-"Speed at which the filament is retracted, a higher retraction speed works "
-"better. But a very high retraction speed can lead to filament grinding."
-msgstr ""
-"Velocidad a la que el filamento es retraido, a mayor velocidad mejor "
-"funcionamiento. Velocidades muy alta puedes comerse el filamento."
-
-#: Cura/util/profile.py:202
-msgid "Distance (mm)"
-msgstr "Distancia (mm)"
-
-#: Cura/util/profile.py:202
-msgid ""
-"Amount of retraction, set at 0 for no retraction at all. A value of 4.5mm "
-"seems to generate good results."
-msgstr ""
-"Cantidad de retracción, fijar a 0 para no retraer. Un valor de 4.5mm parece "
-"ofrecer buenos resultados."
-
-#: Cura/util/profile.py:203
-msgid "Dual extrusion switch amount (mm)"
-msgstr "Extrusión dual cantidad de cambio (mm)"
-
-#: Cura/util/profile.py:203
-msgid ""
-"Amount of retraction when switching nozzle with dual-extrusion, set at 0 for "
-"no retraction at all. A value of 16.0mm seems to generate good results."
-msgstr ""
-"Cantidd de retracción cuando cambiar nozzle con extrusión dual, fijar a 0 "
-"para no retraer. Un valor de 16 mm parece ofrecer buenos resultados."
-
-#: Cura/util/profile.py:204
-msgid "Minimum travel (mm)"
-msgstr "Viaje mínimo (mm)"
-
-#: Cura/util/profile.py:204
-msgid ""
-"Minimum amount of travel needed for a retraction to happen at all. To make "
-"sure you do not get a lot of retractions in a small area."
-msgstr ""
-"Minima distancia de desplazamiento necesaria para retraer. Para asegurar que "
-"no retrae en pequeñas areas"
-
-#: Cura/util/profile.py:205
-msgid "Enable combing"
-msgstr "Habilitar peinado (combing)"
-
-#: Cura/util/profile.py:205
-msgid ""
-"Combing is the act of avoiding holes in the print for the head to travel "
-"over. If combing is disabled the printer head moves straight from the start "
-"point to the end point and it will always retract."
-msgstr ""
-"Peinado (combing) es el acto de evitar los agujeros en la impresión. Si esta "
-"desactiva el cabezal de impresión se desplaza directamente desde el punto de "
-"inicio hasta el punto final y siempre se retrae."
-
-#: Cura/util/profile.py:206
-msgid "Minimal extrusion before retracting (mm)"
-msgstr "Mínima extrusión para retraer (mm)"
-
-#: Cura/util/profile.py:206
-msgid ""
-"The minimal amount of extrusion that needs to be done before retracting "
-"again if a retraction needs to happen before this minimal is reached the "
-"retraction is ignored.\n"
-"This avoids retracting a lot on the same piece of filament which flattens "
-"the filament and causes grinding issues."
-msgstr ""
-"La cantidad mínima de extrusión que hay que hacer antes de retraer de nuevo "
-"si una retracción tiene que ocurrir antes de que este mínimo se alcanza la "
-"retracción se ignora.\n"
-"Esto evita la retracción mucho en la misma pieza de filamento que se aplana "
-"el filamento y provoca problemas de molienda."
-
-#: Cura/util/profile.py:207
-msgid "Z hop when retracting (mm)"
-msgstr "Mínima extrusión para retraer (mm)"
-
-#: Cura/util/profile.py:207
-msgid ""
-"When a retraction is done, the head is lifted by this amount to travel over "
-"the print. A value of 0.075 works well. This feature has a lot of positive "
-"effect on delta towers."
-msgstr ""
-"Cuando se realiza una retractación, la cabeza es levantada por esta cantidad "
-"para viajar por la impresión. Un valor de 0,075 funciona bien. Esta "
-"característica tiene una gran cantidad de efecto positivo en torres delta."
-
-#: Cura/util/profile.py:208
-msgid "Initial layer thickness (mm)"
-msgstr "Espesor capa inicial (mm)"
-
-#: Cura/util/profile.py:208
-msgid ""
-"Layer thickness of the bottom layer. A thicker bottom layer makes sticking "
-"to the bed easier. Set to 0.0 to have the bottom layer thickness the same as "
-"the other layers."
-msgstr ""
-"Espesor de capa inferior. Un capa inferior mas gruesa ayuda a adherir la "
-"impresión mejor. Un valor de 0.0 hara que la capa tenga el mismo espesor que "
-"las demás."
-
-#: Cura/util/profile.py:209
-msgid "Initial layer line width (%)"
-msgstr "Ancho de linea de la capa (mm)"
-
-#: Cura/util/profile.py:209
-msgid ""
-"Extra width factor for the extrusion on the first layer, on some printers "
-"it's good to have wider extrusion on the first layer to get better bed "
-"adhesion."
-msgstr ""
-"Factor de espesor extra para la extrusión en la primera capa, en algunas "
-"impresoras es bueno tener más ancho de extrusión en la primera capa para "
-"obtener una mejor adherencia cama."
-
-#: Cura/util/profile.py:210
-msgid "Cut off object bottom (mm)"
-msgstr "Cortar fondo del objeto (mm)"
-
-#: Cura/util/profile.py:210
-msgid ""
-"Sinks the object into the platform, this can be used for objects that do not "
-"have a flat bottom and thus create a too small first layer."
-msgstr ""
-"Hunde el objeto en la plataforma, esto puede ser utilizado para objetos que "
-"no tienen un fondo plano y por lo tanto crean una primera capa demasiado "
-"pequeño."
-
-#: Cura/util/profile.py:212
-msgid "Dual extrusion overlap (mm)"
-msgstr "Superposición de la extrusión dual"
-
-#: Cura/util/profile.py:212
-msgid ""
-"Add a certain amount of overlapping extrusion on dual-extrusion prints. This "
-"bonds the different colors together."
-msgstr ""
-"Añadir cierta cantidad de superposición en las extrusiones doble. Esto "
-"mezcla mejor diferentes colores."
-
-#: Cura/util/profile.py:213 Cura/util/profile.py:214 Cura/util/profile.py:215
-#: Cura/util/profile.py:216 Cura/util/profile.py:217 Cura/util/profile.py:218
-msgid "Speed"
-msgstr "Velocidad"
-
-#: Cura/util/profile.py:213
-msgid "Travel speed (mm/s)"
-msgstr "Velocidad desplazamientos (mm/s)"
-
-#: Cura/util/profile.py:213
-msgid ""
-"Speed at which travel moves are done, a well built Ultimaker can reach "
-"speeds of 250mm/s. But some machines might miss steps then."
-msgstr ""
-"Velocidad a la que se realizan viajes movimientos, un Ultimaker bien "
-"construido puede alcanzar velocidades de 250 mm/s . Pero algunas máquinas "
-"podrían perderse los pasos a continuación ."
-
-#: Cura/util/profile.py:214
-msgid "Bottom layer speed (mm/s)"
-msgstr "Velociad capa inferior (mm/s)"
-
-#: Cura/util/profile.py:214
-msgid ""
-"Print speed for the bottom layer, you want to print the first layer slower "
-"so it sticks better to the printer bed."
-msgstr ""
-"Velocidad de impresión para la capa inferior, esta capa debe imprimirse mas "
-"lenta para mejor la adhesión."
-
-#: Cura/util/profile.py:215
-msgid "Infill speed (mm/s)"
-msgstr "Velocidad relleno (mm/s)"
-
-#: Cura/util/profile.py:215
-msgid ""
-"Speed at which infill parts are printed. If set to 0 then the print speed is "
-"used for the infill. Printing the infill faster can greatly reduce printing "
-"time, but this can negatively affect print quality."
-msgstr ""
-"Velocidad a la que se imprimen las piezas de relleno. Si se establece en 0, "
-"entonces la velocidad de impresión se utiliza para el relleno. Imprimir el "
-"relleno más rápido puede reducir considerablemente el tiempo de impresión, "
-"pero esto puede afectar negativamente a la calidad de impresión."
-
-#: Cura/util/profile.py:216
-msgid "Top/bottom speed (mm/s)"
-msgstr "Velocidad capa superior e inferior (mm/s)"
-
-#: Cura/util/profile.py:216
-msgid ""
-"Speed at which top/bottom parts are printed. If set to 0 then the print "
-"speed is used for the infill. Printing the top/bottom faster can greatly "
-"reduce printing time, but this can negatively affect print quality."
-msgstr ""
-"Velocidad a la que arriba/partes inferiores se imprimen. Si se establece en "
-"0, entonces la velocidad de impresión se utiliza para el relleno. Impresión "
-"de la parte superior/inferior más rápido puede reducir considerablemente el "
-"tiempo de impresión, pero esto puede afectar negativamente a la calidad de "
-"impresión."
-
-#: Cura/util/profile.py:217
-msgid "Outer shell speed (mm/s)"
-msgstr "Velocidad del borde externa (mm/s)"
-
-#: Cura/util/profile.py:217
-msgid ""
-"Speed at which outer shell is printed. If set to 0 then the print speed is "
-"used. Printing the outer shell at a lower speed improves the final skin "
-"quality. However, having a large difference between the inner shell speed "
-"and the outer shell speed will effect quality in a negative way."
-msgstr ""
-"Velocidad a la que se imprime cáscara externa. Si se establece en 0, "
-"entonces se utiliza la velocidad de impresión. Impresión de la capa exterior "
-"a una velocidad inferior mejora la calidad final de la piel. Sin embargo, "
-"tener una gran diferencia entre la velocidad de la cáscara interior y la "
-"cáscara exterior velocidad afectará a la calidad de una manera negativa."
-
-#: Cura/util/profile.py:218
-msgid "Inner shell speed (mm/s)"
-msgstr "Velocidad relleno interno (mm/s)"
-
-#: Cura/util/profile.py:218
-msgid ""
-"Speed at which inner shells are printed. If set to 0 then the print speed is "
-"used. Printing the inner shell faster then the outer shell will reduce "
-"printing time. It is good to set this somewhere in between the outer shell "
-"speed and the infill/printing speed."
-msgstr ""
-"Velocidad a la que son impresos los rellenos. Si dejas 0 se usara la "
-"velocidad de impresión. Imprimir los rellenos más rápido puede reducir mucho "
-"el tiempo de impresión, pero puede puede afectar negativamente la calidad."
-
-#: Cura/util/profile.py:219 Cura/util/profile.py:220 Cura/util/profile.py:225
-#: Cura/util/profile.py:226 Cura/util/profile.py:227 Cura/util/profile.py:228
-#: Cura/util/profile.py:229
-msgid "Cool"
-msgstr "Ventilación"
-
-#: Cura/util/profile.py:219
-msgid "Minimal layer time (sec)"
-msgstr "Minimo tiempo por capa (seg)"
-
-#: Cura/util/profile.py:219
-msgid ""
-"Minimum time spent in a layer, gives the layer time to cool down before the "
-"next layer is put on top. If the layer will be placed down too fast the "
-"printer will slow down to make sure it has spent at least this amount of "
-"seconds printing this layer."
-msgstr ""
-"Tiempo mínimo de permanencia en una capa, le da al tiempo de capa para que "
-"se enfríe antes de poner la siguiente capa en la parte superior. Si la capa "
-"se colocará abajo demasiado rápido la impresora se ralentizará para "
-"asegurarse de que ha pasado por lo menos esta cantidad de segundos la "
-"impresión de esta capa."
-
-#: Cura/util/profile.py:220
-msgid "Enable cooling fan"
-msgstr "Habilitar ventilación"
-
-#: Cura/util/profile.py:220
-msgid ""
-"Enable the cooling fan during the print. The extra cooling from the cooling "
-"fan is essential during faster prints."
-msgstr ""
-"Activa la ventilación durante la impresión. La ventilación extra es esencial "
-"en las impresiones rápidas."
-
-#: Cura/util/profile.py:222
-msgid "Line count"
-msgstr "Numero lineas"
-
-#: Cura/util/profile.py:222
-msgid ""
-"The skirt is a line drawn around the object at the first layer. This helps "
-"to prime your extruder, and to see if the object fits on your platform.\n"
-"Setting this to 0 will disable the skirt. Multiple skirt lines can help "
-"priming your extruder better for small objects."
-msgstr ""
-"El Borde es una linea alrededor del objeto en la primera capa. Esto ayuda a "
-"limpiar el extrusor y ver si caben los objetos en la plataforma.\n"
-"Un valor de 0 desactiva el Borde. Multiples lineas ayudan a cebar el "
-"extrusor para objetos pequeños."
-
-#: Cura/util/profile.py:223
-msgid "Start distance (mm)"
-msgstr "Distancia de inicio (mm)"
-
-#: Cura/util/profile.py:223
-msgid ""
-"The distance between the skirt and the first layer.\n"
-"This is the minimal distance, multiple skirt lines will be put outwards from "
-"this distance."
-msgstr ""
-"La distancia entre el borde y la primera capa.\n"
-"Esta es la mínima distancia, multiples bordes se pondrán hacia afuera."
-
-#: Cura/util/profile.py:224
-msgid "Minimal length (mm)"
-msgstr "Minima longitud (mm)"
-
-#: Cura/util/profile.py:224
-msgid ""
-"The minimal length of the skirt, if this minimal length is not reached it "
-"will add more skirt lines to reach this minimal lenght.\n"
-"Note: If the line count is set to 0 this is ignored."
-msgstr ""
-"La longitud mínima de la falda (skirt), si no se alcanza esta longitud "
-"mínima, añadirá más líneas a la falda (skirt) para llegar a esta longitud "
-"mínima.\n"
-"Nota: Si el número de línea se establece en 0 esto se ignora."
-
-#: Cura/util/profile.py:225
-msgid "Fan full on at height (mm)"
-msgstr "Ventidador desde la altura (mm)"
-
-#: Cura/util/profile.py:225
-msgid ""
-"The height at which the fan is turned on completely. For the layers below "
-"this the fan speed is scaled linearly with the fan off at layer 0."
-msgstr ""
-"La altura a la que el ventilador se enciende completamente. Para las capas "
-"por debajo de esta la velocidad del ventilador se escala linealmente con el "
-"ventilador en la capa 0."
-
-#: Cura/util/profile.py:226
-msgid "Fan speed min (%)"
-msgstr "Velocidad ventilador min (%)"
-
-#: Cura/util/profile.py:226
-msgid ""
-"When the fan is turned on, it is enabled at this speed setting. If cool "
-"slows down the layer, the fan is adjusted between the min and max speed. "
-"Minimal fan speed is used if the layer is not slowed down due to cooling."
-msgstr ""
-"Cuando el ventilador esta activado, funciona a esta velocidad. Si la "
-"ventilación reduce la velocidad de la capa, el ventilador se ajustará en las "
-"velocidades max y min. La velocidad minima será usada si no se reduce la "
-"velocidad debido al la ventilación."
-
-#: Cura/util/profile.py:227
-msgid "Fan speed max (%)"
-msgstr "Velocidad ventilador max (%)"
-
-#: Cura/util/profile.py:227
-msgid ""
-"When the fan is turned on, it is enabled at this speed setting. If cool "
-"slows down the layer, the fan is adjusted between the min and max speed. "
-"Maximal fan speed is used if the layer is slowed down due to cooling by more "
-"than 200%."
-msgstr ""
-"Cuando el ventilador está encendido, se habilita en este nivel de velocidad. "
-"Si la ventialción ralentiza la capa, se ajusta entre el min y la velocidad "
-"máxima. Máxima velocidad del ventilador se utiliza si la capa se hace más "
-"lenta debido al enfriamiento por más de 200%."
-
-#: Cura/util/profile.py:228
-msgid "Minimum speed (mm/s)"
-msgstr "Minima velocidad (mm/s)"
-
-#: Cura/util/profile.py:228
-msgid ""
-"The minimal layer time can cause the print to slow down so much it starts to "
-"ooze. The minimal feedrate protects against this. Even if a print gets "
-"slowed down it will never be slower than this minimal speed."
-msgstr ""
-"El tiempo mínimo por capa puede hacer que la impresión se ralentice tanto "
-"que empieza a exudar. El avance mínimo protege contra esto. Incluso si una "
-"impresión se ralentiza nunca será más lenta que la velocidad mínima."
-
-#: Cura/util/profile.py:229
-msgid "Cool head lift"
-msgstr "Cool head lift"
-
-#: Cura/util/profile.py:229
-msgid ""
-"Lift the head if the minimal speed is hit because of cool slowdown, and wait "
-"the extra time so the minimal layer time is always hit."
-msgstr ""
-"Levante la cabeza si la velocidad mínima es alcanzada por la desaceleración "
-"de la ventilación, y esperar el tiempo extra para que el tiempo mínimo por "
-"capa siempre se alcance."
-
-#: Cura/util/profile.py:230
-msgid "Solid infill top"
-msgstr "Relleno solido superior"
-
-#: Cura/util/profile.py:230
-msgid ""
-"Create a solid top surface, if set to false the top is filled with the fill "
-"percentage. Useful for cups/vases."
-msgstr ""
-"Crea una superficie superior solidad, si esta desactivado se rellena con el "
-"porcentaje de rellon. Util para vaso y tazas."
-
-#: Cura/util/profile.py:231
-msgid "Solid infill bottom"
-msgstr "Relleno solido inferior"
-
-#: Cura/util/profile.py:231
-msgid ""
-"Create a solid bottom surface, if set to false the bottom is filled with the "
-"fill percentage. Useful for buildings."
-msgstr ""
-"Crea una superficie solida inferior, si se desactiva la capa inferior se "
-"realiza con el porc. del relleno. Útil para edificios."
-
-#: Cura/util/profile.py:232
-msgid "Infill overlap (%)"
-msgstr "Superposición relleno (%)"
-
-#: Cura/util/profile.py:232
-msgid ""
-"Amount of overlap between the infill and the walls. There is a slight "
-"overlap with the walls and the infill so the walls connect firmly to the "
-"infill."
-msgstr ""
-"Cantidad de superposicion entre el relleno y las paredes. Un ligera "
-"superposición entre paredes y relleno conecta firmemente ambas."
-
-#: Cura/util/profile.py:233
-msgid "Structure type"
-msgstr "Tipo de soporte"
-
-#: Cura/util/profile.py:233
-msgid ""
-"The type of support structure.\n"
-"Grid is very strong and can come off in 1 piece, however, sometimes it is "
-"too strong.\n"
-"Lines are single walled lines that break off one at a time. Which is more "
-"work to remove, but as it is less strong it does work better on tricky "
-"prints."
-msgstr ""
-"El tipo de estructura de soporte.\n"
-"Grilla es muy fuerte y puede salir en 1 pieza, sin embargo, a veces es "
-"demasiado fuerte.\n"
-"Las líneas son líneas de pared única que se desprenden de una en una. ¿Qué "
-"es más trabajo para eliminar, pero ya que es menos fuerte que funcionara "
-"mejor en impresiones difíciles."
-
-#: Cura/util/profile.py:234
-msgid "Overhang angle for support (deg)"
-msgstr "Ángulo saliente de apoyo (grados)"
-
-#: Cura/util/profile.py:234
-msgid ""
-"The minimal angle that overhangs need to have to get support. With 90 degree "
-"being horizontal and 0 degree being vertical."
-msgstr ""
-"El ángulo mínimo que voladizos hay que tener para obtener apoyo. Con 90 "
-"grados de ser horizontal y 0 grados verticales."
-
-#: Cura/util/profile.py:235
-msgid "Fill amount (%)"
-msgstr "Cantidad de relleno (%)"
-
-#: Cura/util/profile.py:235
-#, python-format
-msgid ""
-"Amount of infill structure in the support material, less material gives "
-"weaker support which is easier to remove. 15% seems to be a good average."
-msgstr ""
-
-#: Cura/util/profile.py:236
-msgid "Distance X/Y (mm)"
-msgstr "Distancia X/Y (mm)"
-
-#: Cura/util/profile.py:236
-msgid ""
-"Distance of the support material from the print, in the X/Y directions.\n"
-"0.7mm gives a nice distance from the print so the support does not stick to "
-"the print."
-msgstr ""
-"Distancia del material de soporte a la impresión, en las direcciones X/Y.\n"
-"0.7mm da buen resultado y el soporte no se pega a la impresión."
-
-#: Cura/util/profile.py:237
-msgid "Distance Z (mm)"
-msgstr "Distancia Z (mm)"
-
-#: Cura/util/profile.py:237
-msgid ""
-"Distance from the top/bottom of the support to the print. A small gap here "
-"makes it easier to remove the support but makes the print a bit uglier.\n"
-"0.15mm gives a good seperation of the support material."
-msgstr ""
-"Distancia desde la parte superior/inferior del soporte a la impresión. Un "
-"pequeño espacio aquí hace que sea más fácil de quitar el apoyo, pero hace "
-"que la impresión mas fea.\n"
-"0,15 mm da una buena separación del material de soporte."
-
-#: Cura/util/profile.py:238 Cura/util/profile.py:239
-msgid "Black Magic"
-msgstr "Magia negra"
-
-#: Cura/util/profile.py:238
-msgid "Spiralize the outer contour"
-msgstr "Espiralizar el contorno exterior"
-
-#: Cura/util/profile.py:238
-msgid ""
-"Spiralize is smoothing out the Z move of the outer edge. This will create a "
-"steady Z increase over the whole print. This feature turns a solid object "
-"into a single walled print with a solid bottom.\n"
-"This feature used to be called Joris in older versions."
-msgstr ""
-"Espiralizar está allanando el movimiento Z del borde exterior . Esto creará "
-"un incremento Z constante durante toda la impresión. Esta característica "
-"convierte a un objeto sólido en una impresión de una sola pared con un fondo "
-"sólido.\n"
-"Esta característica se llamaba Joris en versiones anteriores."
-
-#: Cura/util/profile.py:239
-msgid "Only follow mesh surface"
-msgstr "Sólo seguir superficie de malla"
-
-#: Cura/util/profile.py:239
-msgid ""
-"Only follow the mesh surfaces of the 3D model, do not do anything else. No "
-"infill, no top/bottom, nothing."
-msgstr ""
-"Sólo siga las superficies de malla del modelo 3D, no hacer nada más. Sin "
-"relleno, no superior e inferior, ni nada."
-
-#: Cura/util/profile.py:241
-msgid "Brim line amount"
-msgstr "Cantidad de bordes"
-
-#: Cura/util/profile.py:241
-msgid ""
-"The amount of lines used for a brim, more lines means a larger brim which "
-"sticks better, but this also makes your effective print area smaller."
-msgstr ""
-"La cantidad de lineas usada por Brim, mas lineas significa mayor Brim y "
-"mejor adhesión, pero hace tu área efectiva de impresión menor."
-
-#: Cura/util/profile.py:242
-msgid "Extra margin (mm)"
-msgstr "Margen extra (mm)"
-
-#: Cura/util/profile.py:242
-msgid ""
-"If the raft is enabled, this is the extra raft area around the object which "
-"is also rafted. Increasing this margin will create a stronger raft while "
-"using more material and leaving less area for your print."
-msgstr ""
-"Si la borrador (raft) está activada, esta es la zona de borrador adicional "
-"alrededor del objeto que también esta bocetado. El aumento de este margen "
-"creará un sostén más fuerte durante el uso de más material y dejando menos "
-"espacio para su impresión."
-
-#: Cura/util/profile.py:243
-msgid "Line spacing (mm)"
-msgstr "Espacio entre lineas (mm)"
-
-#: Cura/util/profile.py:243
-msgid ""
-"When you are using the raft this is the distance between the centerlines of "
-"the raft line."
-msgstr ""
-"Cuando se utiliza la balsa es la distancia entre las líneas centrales del "
-"relleno de balsa."
-
-#: Cura/util/profile.py:244
-msgid "Base thickness (mm)"
-msgstr "Grosor de la base (mm)"
-
-#: Cura/util/profile.py:244
-msgid ""
-"When you are using the raft this is the thickness of the base layer which is "
-"put down."
-msgstr ""
-"Cuando se utiliza la balsa es el espesor de la capa de balsa que es puesta "
-"abajo."
-
-#: Cura/util/profile.py:245
-msgid "Base line width (mm)"
-msgstr "Ancho de la linea base (mm)"
-
-#: Cura/util/profile.py:245
-msgid ""
-"When you are using the raft this is the width of the base layer lines which "
-"are put down."
-msgstr ""
-"Cuando se utiliza la balsa es el ancho de la capa de balsa que es puesta "
-"abajo."
-
-#: Cura/util/profile.py:246
-msgid "Interface thickness (mm)"
-msgstr "Espesor interfaz (mm)"
-
-#: Cura/util/profile.py:246
-msgid ""
-"When you are using the raft this is the thickness of the interface layer "
-"which is put down."
-msgstr ""
-"Cuando estás usando raft-balsa est es el espesor de la linea de interfaz que "
-"será depositada"
-
-#: Cura/util/profile.py:247
-msgid "Interface line width (mm)"
-msgstr "Ancho de linea de la interfaz (mm)"
-
-#: Cura/util/profile.py:247
-msgid ""
-"When you are using the raft this is the width of the interface layer lines "
-"which are put down."
-msgstr ""
-"Cuando estás usando raft-balsa est es el ancho de la linea de interfaz que "
-"será depositada"
-
-#: Cura/util/profile.py:248
-msgid "Airgap"
-msgstr "Capa liviana"
-
-#: Cura/util/profile.py:248
-msgid "Gap between the last layer of the raft the whole print."
-msgstr "Brecha entre la última capa de boceto (raft) que toda la impresión."
-
-#: Cura/util/profile.py:249
-msgid "First Layer Airgap"
-msgstr "Primero capa liviana"
-
-#: Cura/util/profile.py:249
-msgid ""
-"Gap between the last layer of the raft and the first printing layer. A small "
-"gap of 0.2mm works wonders on PLA and makes the raft easy to remove. This "
-"value is added on top of the 'Airgap' setting."
-msgstr ""
-"Brecha entre la última capa de el borrador (raft) y la primera capa de "
-"impresión. Un pequeño espacio de 0,2mm hace maravillas en PLA y hace que el "
-"borrador (raft) fácil de quitar. Este valor se añade encima del parámetro de "
-"\"dispersión superficial\"."
-
-#: Cura/util/profile.py:250
-msgid "Surface layers"
-msgstr "Capa de superficie"
-
-#: Cura/util/profile.py:250
-msgid ""
-"Amount of surface layers put on top of the raft, these are fully filled "
-"layers on which the model is printed."
-msgstr ""
-"Importe de las capas superficiales, situadas una encima del boceto (raft), "
-"estos son totalmente capas llenas en la que se imprime el modelo."
-
-#: Cura/util/profile.py:251
-msgid "Surface layer thickness (mm)"
-msgstr "Espesor de la capa de superficie (mm)"
-
-#: Cura/util/profile.py:251
-msgid "Thickness of each surface layer."
-msgstr "Espesor de cada capa de la superficie."
-
-#: Cura/util/profile.py:252
-msgid "Surface layer line width (mm)"
-msgstr "Ancho de la capa de superficie (mm)"
-
-#: Cura/util/profile.py:252
-msgid "Width of the lines for each surface layer."
-msgstr "Espesor de las líneas para cada capa de la superficie."
-
-#: Cura/util/profile.py:253 Cura/util/profile.py:254 Cura/util/profile.py:255
-#: Cura/util/profile.py:256
-msgid "Fix horrible"
-msgstr "Corregir horrible"
-
-#: Cura/util/profile.py:253
-msgid "Combine everything (Type-A)"
-msgstr "Combinar todo (Tipo-A)"
-
-#: Cura/util/profile.py:253 Cura/util/profile.py:254
-msgid ""
-"This expert option adds all parts of the model together. The result is "
-"usually that internal cavities disappear. Depending on the model this can be "
-"intended or not. Enabling this option is at your own risk. Type-A is "
-"dependent on the model normals and tries to keep some internal holes intact. "
-"Type-B ignores all internal holes and only keeps the outside shape per layer."
-msgstr ""
-"Esta opción experta agrega todas las partes del modelo en conjunto. El "
-"resultado suele ser que las cavidades internas desaparecen. Dependiendo del "
-"modelo de esto puede requerido o no. La activación de esta opción es a su "
-"propio riesgo. Tipo-A se depende de los modelos normales y trata de mantener "
-"algunos agujeros internos intactos. Tipo-B ignora todos los agujeros "
-"internos y sólo mantiene la forma exterior por capa."
-
-#: Cura/util/profile.py:254
-msgid "Combine everything (Type-B)"
-msgstr "Combinar todo (Tipo-B)"
-
-#: Cura/util/profile.py:255
-msgid "Keep open faces"
-msgstr "Mantener caras abiertas"
-
-#: Cura/util/profile.py:255
-msgid ""
-"This expert option keeps all the open bits of the model intact. Normally "
-"Cura tries to stitch up small holes and remove everything with big holes, "
-"but this option keeps bits that are not properly part of anything and just "
-"goes with whatever is left. This option is usually not what you want, but it "
-"might enable you to slice models otherwise failing to produce proper paths.\n"
-"As with all \"Fix horrible\" options, results may vary and use at your own "
-"risk."
-msgstr ""
-"Esta opción experto mantiene todos los agujeros del modelo intactos. "
-"Normalmente Cura intenta suturar pequeños agujeros y eliminar todo en los "
-"grandes , pero esta opción mantiene agujeros que no son propiamente parte de "
-"nada y sólo va con lo que se deja. Esta opción no suele ser lo que quieras, "
-"pero podría permitir que usted rebane modelos que de lo contrario "
-"resultarían fallidos.\n"
-"Al igual que con todos los \"Correjir horribles \"  los resultados pueden "
-"variar y usar a su propio riesgo."
-
-#: Cura/util/profile.py:256
-msgid "Extensive stitching"
-msgstr "Costura amplia"
-
-#: Cura/util/profile.py:256
-msgid ""
-"Extensive stitching tries to fix up open holes in the model by closing the "
-"hole with touching polygons. This algorthm is quite expensive and could "
-"introduce a lot of processing time.\n"
-"As with all \"Fix horrible\" options, results may vary and use at your own "
-"risk."
-msgstr ""
-"Costura amplia intenta de arreglar los agujeros en el modelo cerrando "
-"agujeros con polígonos. Este algoritmo es complejo y puede tardar en "
-"procesar.\n"
-"Igual que \"Fix horrible\" puede tener resultados diversos úsalo bajo tu "
-"riesgo."
-
-#: Cura/util/profile.py:484
-msgid "Save profile on slice"
-msgstr "Guardar perfil al filetear"
-
-#: Cura/util/profile.py:484
-msgid ""
-"When slicing save the profile as [stl_file]_profile.ini next to the model."
-msgstr ""
-"Cuando se filetee guardar el perfil como [stl_file]_profile.ini junto al "
-"modelo."
-
-#: Cura/util/profile.py:485
-msgid "Cost (price/kg)"
-msgstr "Coste (precio/kg)"
-
-#: Cura/util/profile.py:485
-msgid "Cost of your filament per kg, to estimate the cost of the final print."
-msgstr ""
-"Coste de tu filamento por kg, para estimar el coste de la impresión final."
-
-#: Cura/util/profile.py:486
-msgid "Cost (price/m)"
-msgstr "Coster (precio/m)"
-
-#: Cura/util/profile.py:486
-msgid ""
-"Cost of your filament per meter, to estimate the cost of the final print."
-msgstr ""
-"Coste de tu filamento por metro, para estimar el coste de tu impresión final."
-
-#: Cura/util/profile.py:487
-msgid "Auto detect SD card drive"
-msgstr "Autodetectar tajeta SD"
-
-#: Cura/util/profile.py:487
-msgid ""
-"Auto detect the SD card. You can disable this because on some systems "
-"external hard-drives or USB sticks are detected as SD card."
-msgstr ""
-"Autodetectando SD card. Puedes deshabilitar esto porque algunos discos duros "
-"o pendrive son detectados como SD card."
-
-#: Cura/util/profile.py:488
-msgid "Check for updates"
-msgstr "Comprobando actualizaciones"
-
-#: Cura/util/profile.py:488
-msgid "Check for newer versions of Cura on startup"
-msgstr "Comprobar nuevas versiones de Cura en el inicio"
-
-#: Cura/util/profile.py:489
-msgid "Send usage statistics"
-msgstr "Enviar estadisticas de uso"
-
-#: Cura/util/profile.py:489
-msgid "Submit anonymous usage information to improve future versions of Cura"
-msgstr "Enviar información anónima para mejor las próximas versiones de Cura"
-
-#: Cura/util/profile.py:491
-msgid "Density (kg/m3)"
-msgstr "Densidad (kg/m3)"
-
-#: Cura/util/profile.py:491
-msgid ""
-"Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. "
-"This value is used to estimate the weight if the filament used for the print."
-msgstr ""
-"Peso del filamento por m3. Sobre 1240 para el PLA y sobre 1040 para ABS.  "
-"Este valor es usado para estimar el peso del filamento usado en la impresión."
-
-#: Cura/util/profile.py:492 Cura/gui/preferencesDialog.py:37
-msgid "Language"
-msgstr "Lenguaje"
-
-#: Cura/util/profile.py:492
-msgid ""
-"Change the language in which Cura runs. Switching language requires a "
-"restart of Cura"
-msgstr ""
-"Cambiar el idioma en el que se ejecuta Cura. El Cambio de idioma requiere un "
-"reinicio del Cura"
-
-#: Cura/util/profile.py:495
-msgid "Model colour"
-msgstr "Color Modelo"
-
-#: Cura/util/profile.py:495
-msgid "Display color for first extruder"
-msgstr "Color de la pantalla para la primera extrusora"
-
-#: Cura/util/profile.py:496
-msgid "Model colour (2)"
-msgstr "Color Modelo (2)"
-
-#: Cura/util/profile.py:496
-msgid "Display color for second extruder"
-msgstr "Color de la pantalla para la segunda extrusora"
-
-#: Cura/util/profile.py:497
-msgid "Model colour (3)"
-msgstr "Color Modelo (3)"
-
-#: Cura/util/profile.py:497
-msgid "Display color for third extruder"
-msgstr "Color de la pantalla por el tercer extrusor"
-
-#: Cura/util/profile.py:498
-msgid "Model colour (4)"
-msgstr "Color Modelo (4)"
-
-#: Cura/util/profile.py:498
-msgid "Display color for forth extruder"
-msgstr "Color de la pantalla para extrusora adelante"
-
-#: Cura/util/profile.py:499
-msgid "Printing window type"
-msgstr "Impresión tipo de ventana"
-
-#: Cura/util/profile.py:499
-msgid "Select the interface used for USB printing."
-msgstr "Seleccione la interfaz que se utiliza para la impresión USB ."
-
-#: Cura/util/profile.py:511
-msgid "Maximum width (mm)"
-msgstr "Máxima anchura (mm)"
-
-#: Cura/util/profile.py:511 Cura/util/profile.py:512 Cura/util/profile.py:513
-msgid "Size of the machine in mm"
-msgstr "Tamaño de la maquina en mm"
-
-#: Cura/util/profile.py:512
-msgid "Maximum depth (mm)"
-msgstr "Maxima profundidad (mm)"
-
-#: Cura/util/profile.py:513
-msgid "Maximum height (mm)"
-msgstr "Máxima altura (mm)"
-
-#: Cura/util/profile.py:514
-msgid "Machine center 0,0"
-msgstr "Centro de la maquina 0,0"
-
-#: Cura/util/profile.py:514
-msgid ""
-"Machines firmware defines the center of the bed as 0,0 instead of the front "
-"left corner."
-msgstr ""
-"Máquinas firmware define el centro de la cama como 0,0 en lugar de la "
-"esquina frontal izquierda."
-
-#: Cura/util/profile.py:515
-msgid "Build area shape"
-msgstr "Construye forma de área"
-
-#: Cura/util/profile.py:515
-msgid "The shape of machine build area."
-msgstr "La forma del área de construcción de la máquina."
-
-#: Cura/util/profile.py:517 Cura/gui/configWizard.py:397
+#: Cura/gui/configWizard.py:397 Cura/util/profile.py:531
 msgid "Heated bed"
 msgstr "Cama caliente"
 
-#: Cura/util/profile.py:517
+#: Cura/gui/configWizard.py:398
+msgid "Bed center is 0,0,0 (RoStock)"
+msgstr "Centro de la base en 0,0,0 (Rostock)"
+
+#: Cura/gui/configWizard.py:418
+msgid "Select your machine"
+msgstr "Selecciona tu maquina"
+
+#: Cura/gui/configWizard.py:419
+msgid "What kind of machine do you have:"
+msgstr "Que tipo de máquina tienes:"
+
+#: Cura/gui/configWizard.py:438
+msgid "Other (Ex: RepRap, MakerBot, Witbox)"
+msgstr "Otras (ej. RepRap, witbox, etc)"
+
+#: Cura/gui/configWizard.py:441
 msgid ""
-"If you have an heated bed, this enabled heated bed settings (requires "
-"restart)"
-msgstr ""
-"Si tienes una cama caliente, activalo para tener los ajustes (requiere "
-"reinicio)"
+"The collection of anonymous usage information helps with the continued "
+"improvement of Cura."
+msgstr "La recolección de datos de utilización anónima ayuda a mejorar Cura."
 
-#: Cura/util/profile.py:518
-msgid "GCode Flavor"
-msgstr "GCode Flavor"
-
-#: Cura/util/profile.py:518
+#: Cura/gui/configWizard.py:442
 msgid ""
-"Flavor of generated GCode.\n"
-"RepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\n"
-"UltiGCode is a variation of the RepRap GCode which puts more settings in the "
-"machine instead of the slicer.\n"
-"MakerBot GCode has a few changes in the way GCode is generated, but still "
-"requires MakerWare to generate to X3G.\n"
-"BFB style generates RPM based code.\n"
-"Mach3 uses A,B,C instead of E for extruders."
+"This does NOT submit your models online nor gathers any privacy related "
+"information."
 msgstr ""
-"Estilo de GCode.\n"
-"Impresoras RepRap suelen usar 5D Gcode (firmwares Marlin y Sprinter).\n"
-"UltiGcode es una variación del código RepRap con mas ajustes en la máquina."
+"Esta hace que NO envie sus modelos online ni recopila datos relacionados con "
+"su privacidad."
 
-#: Cura/util/profile.py:519
-msgid "Extruder count"
-msgstr "Numero extrusores"
+#: Cura/gui/configWizard.py:443
+msgid "Submit anonymous usage information:"
+msgstr "Enviar información de uso anónima:"
 
-#: Cura/util/profile.py:519
-msgid "Amount of extruders in your machine."
-msgstr "Cantidad de extrusores en tu máquina"
+#: Cura/gui/configWizard.py:444
+msgid "For full details see: http://wiki.ultimaker.com/Cura:stats"
+msgstr "Para más detalles: http://wiki.ultimaker.com/Cura:stats"
 
-#: Cura/util/profile.py:520 Cura/util/profile.py:522 Cura/util/profile.py:524
-msgid "Offset X"
-msgstr "Desplazamiento X"
+#: Cura/gui/configWizard.py:576
+msgid "Select upgraded parts you have"
+msgstr "Selecciona mejoras que tienes"
 
-#: Cura/util/profile.py:520 Cura/util/profile.py:521
-msgid "The offset of your secondary extruder compared to the primary."
-msgstr "La distancia del segundo extrusor relativa al primero."
-
-#: Cura/util/profile.py:521 Cura/util/profile.py:523 Cura/util/profile.py:525
-msgid "Offset Y"
-msgstr "Desplazamiento Y"
-
-#: Cura/util/profile.py:522 Cura/util/profile.py:523
-msgid "The offset of your tertiary extruder compared to the primary."
-msgstr "La distancia del tercer extrusor relativa al primero."
-
-#: Cura/util/profile.py:524 Cura/util/profile.py:525
-msgid "The offset of your forth extruder compared to the primary."
-msgstr "La distancia del cuarto extrusor relativa al primero"
-
-#: Cura/util/profile.py:526
-msgid "E-Steps per 1mm filament"
-msgstr "Pasos extrusor por 1 mm de filamento"
-
-#: Cura/util/profile.py:526
+#: Cura/gui/configWizard.py:577
 msgid ""
-"Amount of steps per mm filament extrusion. If set to 0 then this value is "
-"ignored and the value in your firmware is used."
+"To assist you in having better default settings for your Ultimaker\n"
+"Cura would like to know which upgrades you have in your machine."
 msgstr ""
-"Cantidad de pasos por mm de filamento extruido. Si pones 0 este valor será "
-"ignorado y se cogerá el valor del firmware"
+"Para ayudarle a tener mejores ajustes predeterminados para su Ultimaker \n"
+"Cura necesitaría saber qué actualizaciones que tiene en su máquina."
 
-#: Cura/util/profile.py:527
-msgid "Serial port"
-msgstr "Puerto Serial"
+#: Cura/gui/configWizard.py:579
+msgid "Extruder drive upgrade"
+msgstr "Mejora extrusor"
 
-#: Cura/util/profile.py:527
-msgid "Serial port to use for communication with the printer"
-msgstr "Puerto Serie para comunicarse con la impresora"
+#: Cura/gui/configWizard.py:580
+msgid "Heated printer bed (kit)"
+msgstr "Cama caliente (kit)"
 
-#: Cura/util/profile.py:529
-msgid "Baudrate"
-msgstr "Velocidad"
+#: Cura/gui/configWizard.py:581
+msgid "Heated printer bed (self built)"
+msgstr "Cama caliente (autoconstruida)"
 
-#: Cura/util/profile.py:529
+#: Cura/gui/configWizard.py:582
+msgid "Dual extrusion (experimental)"
+msgstr "Extrusion doble (experimental)"
+
+#: Cura/gui/configWizard.py:584
 msgid ""
-"Speed of the serial port communication\n"
-"Needs to match your firmware settings\n"
-"Common values are 250000, 115200, 57600"
+"If you have an Ultimaker bought after october 2012 you will have the\n"
+"Extruder drive upgrade. If you do not have this upgrade,\n"
+"it is highly recommended to improve reliability."
 msgstr ""
-"Velocidad del puerto serie\n"
-"Es necesario que coincida con la del firmware\n"
-"Valores habituales 250000, 115200, 57600"
+"Si tienes una Ultimaker comprada posterior a Octubre de 2012 tu tienes\n"
+"la mejora en el extrusor. Si no tienes esta mejora,\n"
+"es recomendable para mejorar el desempeño."
 
-#: Cura/util/profile.py:532
-msgid "Head size towards X min (mm)"
-msgstr "Tamañano de la cabeza hacia X min (mm)"
-
-#: Cura/util/profile.py:532
+#: Cura/gui/configWizard.py:585
 msgid ""
-"The head size when printing multiple objects, measured from the tip of the "
-"nozzle towards the outer part of the head. 75mm for an Ultimaker if the fan "
-"is on the left side."
+"This upgrade can be bought from the Ultimaker webshop\n"
+"or found on thingiverse as thing:26094"
 msgstr ""
-"El tamaño de la cabeza al imprimir múltiples objetos, medida desde la punta "
-"de la boquilla hacia la parte exterior del carro. 75 mm para una Ultimaker "
-"si el ventilador está en el lado izquierdo."
+"Esta mejora puede comprarse en la webshop de Ultimaker\n"
+"o encontrarse en thingiverse thing:26094"
 
-#: Cura/util/profile.py:533
-msgid "Head size towards Y min (mm)"
-msgstr "Tamañano de la cabeza hacia Y min (mm)"
+#: Cura/gui/configWizard.py:607
+msgid "Upgrade Ultimaker Firmware"
+msgstr "Actuliza Firmware Ultimaker"
 
-#: Cura/util/profile.py:533 Cura/util/profile.py:534
+#: Cura/gui/configWizard.py:608
 msgid ""
-"The head size when printing multiple objects, measured from the tip of the "
-"nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan "
-"is on the left side."
+"Firmware is the piece of software running directly on your 3D printer.\n"
+"This firmware controls the step motors, regulates the temperature\n"
+"and ultimately makes your printer work."
 msgstr ""
-"El tamaño de la cabeza al imprimir múltiples objetos, medida desde la punta "
-"de la boquilla hacia la parte exterior de la cabeza. 18 mm para una "
-"Ultimaker si el ventilador está en el lado izquierdo."
+"Firmware es un software que se ejecuta en la propia impresora.\n"
+"Controla los pasos de motor, temperatura\n"
+"y finalmente hace que tu impresora funcione."
 
-#: Cura/util/profile.py:534
-msgid "Head size towards X max (mm)"
-msgstr "Tamañano de la cabeza hacia X max (mm)"
-
-#: Cura/util/profile.py:535
-msgid "Head size towards Y max (mm)"
-msgstr "Tamañano de la cabeza hacia Y max (mm)"
-
-#: Cura/util/profile.py:535
+#: Cura/gui/configWizard.py:610
 msgid ""
-"The head size when printing multiple objects, measured from the tip of the "
-"nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan "
-"is on the left side."
+"The firmware shipping with new Ultimakers works, but upgrades\n"
+"have been made to make better prints, and make calibration easier."
 msgstr ""
-"El tamaño de la cabeza al imprimir múltiples objetos, medida desde la punta "
-"de la boquilla hacia la parte exterior de la cabeza. 35mm para una Ultimaker "
-"si el ventilador está en el lado izquierdo."
+"El firmware que trae la Ultimaker funciona, pero actualizaciones\n"
+"hacen que se imprima y se calibre mejor."
 
-#: Cura/util/profile.py:536
-msgid "Printer gantry height (mm)"
-msgstr "Altura pórtico (gantry) de la impresora (mm)"
-
-#: Cura/util/profile.py:536
+#: Cura/gui/configWizard.py:612
 msgid ""
-"The height of the gantry holding up the printer head. If an object is higher "
-"then this then you cannot print multiple objects one for one. 60mm for an "
-"Ultimaker."
+"Cura requires these new features and thus\n"
+"your firmware will most likely need to be upgraded.\n"
+"You will get the chance to do so now."
 msgstr ""
-"La altura del carro que soporta el cabezal de la impresora. Si un objeto es "
-"más alto que esto, entonces  no puede imprimirse varios objetos uno a uno. "
-"60 mm para un Ultimaker."
+"Cura requiere estas nuevas características y por lo tanto\n"
+"el firmware es necesario que tenga que ser actualizado. \n"
+"Usted tendrá la oportunidad de hacerlo ahora."
 
-#: Cura/util/profile.py:538
+#: Cura/gui/configWizard.py:618
+msgid "Do not upgrade to this firmware if:"
+msgstr "No actualices a este firmware si:"
+
+#: Cura/gui/configWizard.py:619
+msgid "* You have an older machine based on ATMega1280 (Rev 1 machine)"
+msgstr "* Tienes una máquina basada en el antiguo ATMega1280"
+
+#: Cura/gui/configWizard.py:620
+msgid "* Build your own heated bed"
+msgstr "* Construye tu propia cama"
+
+#: Cura/gui/configWizard.py:621
+msgid "* Have other changes in the firmware"
+msgstr "Tiene otros cambios en el firmware"
+
+#: Cura/gui/configWizard.py:641
+msgid "Ultimaker Checkup"
+msgstr "Ultimaker chequeada"
+
+#: Cura/gui/configWizard.py:655
+msgid ""
+"It is a good idea to do a few sanity checks now on your Ultimaker.\n"
+"You can skip these if you know your machine is functional."
+msgstr ""
+"Es una buena idea hacer algunos chequeos ahora en tu Ultimaker.\n"
+"Puedes obviarlos si tu máquina es funcional."
+
+#: Cura/gui/configWizard.py:656
+msgid "Run checks"
+msgstr "Iniciar chequeos"
+
+#: Cura/gui/configWizard.py:656
+msgid "Skip checks"
+msgstr "Saltar comprobaciones"
+
+#: Cura/gui/configWizard.py:660
+msgid "Communication:"
+msgstr "Comunicación:"
+
+#: Cura/gui/configWizard.py:661
+msgid "Temperature:"
+msgstr "Temperatura:"
+
+#: Cura/gui/configWizard.py:662
+msgid "Endstops:"
+msgstr "Final de carrera:"
+
+#: Cura/gui/configWizard.py:667
+msgid "Show error log"
+msgstr "Mostrar log de errores"
+
+#: Cura/gui/configWizard.py:701 Cura/gui/configWizard.py:1138
+#: Cura/gui/configWizard.py:1357
+msgid "Connecting to machine."
+msgstr "Conectando a la maquina"
+
+#: Cura/gui/configWizard.py:722
+msgid "Cooldown before temperature check."
+msgstr "Enfriar antes de comprobar la temperatura"
+
+#: Cura/gui/configWizard.py:728 Cura/gui/configWizard.py:735
+msgid "Checking the heater and temperature sensor."
+msgstr "Comprueba el extrusor y el sensor de temperatura"
+
+#: Cura/gui/configWizard.py:746
+msgid "Please make sure none of the endstops are pressed."
+msgstr "Por favor asegurate que los endstosp no estan presionados."
+
+#: Cura/gui/configWizard.py:759
+msgid "Temperature measurement FAILED!"
+msgstr "¡La Medición de temperatura a FALLADO!"
+
+#: Cura/gui/configWizard.py:764
 #, python-format
-msgid "More flow than 150% is rare and usually not recommended."
-msgstr ""
+msgid "Head temperature: %d"
+msgstr "Temp. cabezal %d"
 
-#: Cura/util/profile.py:539
+#: Cura/gui/configWizard.py:771 Cura/gui/configWizard.py:780
 #, python-format
-msgid "Less flow than 50% is rare and usually not recommended."
+msgid "Communication State: %s"
+msgstr "Estado de comunicación: %s"
+
+#: Cura/gui/configWizard.py:774 Cura/gui/configWizard.py:1315
+#: Cura/gui/configWizard.py:1533
+msgid "Failed to establish connection with the printer."
+msgstr "Fallo al establecer la conexión con la impresora"
+
+#: Cura/gui/configWizard.py:820 Cura/gui/configWizard.py:829
+msgid "Please press the left X endstop."
+msgstr "Presiona el fin de carrera X izquierdo."
+
+#: Cura/gui/configWizard.py:824
+msgid "Please press the right X endstop."
+msgstr "Presiona el fin de carrera X derecho."
+
+#: Cura/gui/configWizard.py:834
+msgid "Please press the front Y endstop."
+msgstr "Presiona el fin de carrera Y delantero. "
+
+#: Cura/gui/configWizard.py:840 Cura/gui/configWizard.py:849
+msgid "Please press the top Z endstop."
+msgstr "Presiona el fin de carrera Z superior. "
+
+#: Cura/gui/configWizard.py:844
+msgid "Please press the back Y endstop."
+msgstr "Presiona el fin de carrera Y trasero. "
+
+#: Cura/gui/configWizard.py:856 Cura/gui/configWizard.py:869
+msgid "Checkup finished"
+msgstr "Chequeo finalizado"
+
+#: Cura/gui/configWizard.py:863
+msgid "Please press the bottom Z endstop."
+msgstr "Presiona el fin de carrera Z inferior. "
+
+#: Cura/gui/configWizard.py:884 Cura/gui/configWizard.py:907
+msgid "Ultimaker Calibration"
+msgstr "Calibración de la Ultimaker"
+
+#: Cura/gui/configWizard.py:912
+msgid "Calibrating the Steps Per E requires some manual actions."
+msgstr "Calibrar los pasos del Extrusor requiere algunas acciones manuales."
+
+#: Cura/gui/configWizard.py:913
+msgid "First remove any filament from your machine."
+msgstr "Primero remover cualquier filamento de tu maquina"
+
+#: Cura/gui/configWizard.py:914
+msgid ""
+"Next put in your filament so the tip is aligned with the\n"
+"top of the extruder drive."
+msgstr ""
+"A continuación, pon en el filamento de manera que la punta quede alineada "
+"con la \n"
+"superior de la unidad extrusora."
+
+#: Cura/gui/configWizard.py:915
+msgid "We'll push the filament 100mm"
+msgstr "Empujaremos 100 mm de filamento"
+
+#: Cura/gui/configWizard.py:916
+msgid "Extrude 100mm filament"
+msgstr "Extruir 100mm filamento"
+
+#: Cura/gui/configWizard.py:917
+msgid ""
+"Now measure the amount of extruded filament:\n"
+"(this can be more or less then 100mm)"
+msgstr ""
+"Ahora mide la cantidad de filamento extruido:\n"
+"(debe ser mas o menos 100mm)"
+
+#: Cura/gui/configWizard.py:918
+msgid "Save"
+msgstr "Guardar"
+
+#: Cura/gui/configWizard.py:919
+msgid "This results in the following steps per E:"
+msgstr "Esto se da como resultado los siguiente pasos por E:"
+
+#: Cura/gui/configWizard.py:921
+msgid "You can repeat these steps to get better calibration."
+msgstr "Puedes repetir estos paso para conseguir una mejor calibración."
+
+#: Cura/gui/configWizard.py:924
+msgid ""
+"If you still have filament in your printer which needs\n"
+"heat to remove, press the heat up button below:"
+msgstr ""
+"Si aún tienes filamento en tu impresora que necesita\n"
+"calor para removerlo, presiona el botón de calentar debajo:"
+
+#: Cura/gui/configWizard.py:925
+msgid "Heatup for filament removal"
+msgstr "Calentar para remover filamento"
+
+#: Cura/gui/configWizard.py:950 Cura/gui/configWizard.py:984
+msgid ""
+"Error: Failed to open serial port to machine\n"
+"If this keeps happening, try disconnecting and reconnecting the USB cable"
+msgstr ""
+"Error: Fallo al abrir el Puerto Serie de la maquina\n"
+"Si sigue ocurriendo, prueba a desconectar y reconectar el cable USB"
+
+#: Cura/gui/configWizard.py:1024
+msgid "Ultimaker2"
 msgstr ""
 
-#: Cura/util/profile.py:540
+#: Cura/gui/configWizard.py:1025
+msgid "Congratulations on your the purchase of your brand new Ultimaker2."
+msgstr "Felicidades por la compra de su nueva Ultimaker2."
+
+#: Cura/gui/configWizard.py:1026
+msgid "Cura is now ready to be used with your Ultimaker2."
+msgstr "Cura ya está listo para ser usado con su Ultimaker2."
+
+#: Cura/gui/configWizard.py:1031
+msgid "Lulzbot TAZ/Mini"
+msgstr ""
+
+#: Cura/gui/configWizard.py:1032
+msgid "Cura is now ready to be used with your Lulzbot."
+msgstr "Cura esta ahora autorizado para compartir en YouMagine"
+
+#: Cura/gui/configWizard.py:1037
+msgid "Configuration Wizard"
+msgstr "Guía de configuración"
+
+#: Cura/gui/configWizard.py:1098 Cura/gui/configWizard.py:1546
+msgid "Bed leveling wizard"
+msgstr "Nivelación de la cama"
+
+#: Cura/gui/configWizard.py:1100
+msgid "This wizard will help you in leveling your printer bed"
+msgstr "Este asistente le ayudará a nivelar la cama de la impresora"
+
+#: Cura/gui/configWizard.py:1102
+msgid "It will do the following steps"
+msgstr "Lo hará los siguientes pasos"
+
+#: Cura/gui/configWizard.py:1103
+msgid "* Move the printer head to each corner"
+msgstr "* Mueva el cabezal a cada esquina"
+
+#: Cura/gui/configWizard.py:1104
+msgid "  and let you adjust the height of the bed to the nozzle"
+msgstr " y le permiten ajustar la altura de la cama a la boquilla"
+
+#: Cura/gui/configWizard.py:1105
+msgid "* Print a line around the bed to check if it is level"
+msgstr "* Imprimir una línea alrededor de la cama para chequear el nivel"
+
+#: Cura/gui/configWizard.py:1108 Cura/gui/configWizard.py:1333
+msgid "Connect to printer"
+msgstr "Conectando a la maquina"
+
+#: Cura/gui/configWizard.py:1112 Cura/gui/configWizard.py:1339
+msgid "Resume"
+msgstr "Continuar"
+
+#: Cura/gui/configWizard.py:1113
+msgid "Up 0.2mm"
+msgstr "Arriba 0,2mm"
+
+#: Cura/gui/configWizard.py:1113
+msgid "Down 0.2mm"
+msgstr "Abajo 0,2mm"
+
+#: Cura/gui/configWizard.py:1114
+msgid "Up 10mm"
+msgstr "Arriba 10mm"
+
+#: Cura/gui/configWizard.py:1114
+msgid "Down 10mm"
+msgstr "Abajo 10mm"
+
+#: Cura/gui/configWizard.py:1174
+msgid "Homing printer..."
+msgstr "Punto de inicio..."
+
+#: Cura/gui/configWizard.py:1184
+msgid "Moving head to back center..."
+msgstr "Moviendo la cabeza a centro posterior..."
+
+#: Cura/gui/configWizard.py:1191
+msgid "Moving head to back left corner..."
+msgstr "Moviendo la cabeza hacia atrás esquina izquierda..."
+
+#: Cura/gui/configWizard.py:1199 Cura/gui/configWizard.py:1213
+msgid "Moving head to front right corner..."
+msgstr "Moviendo la cabeza hacia atrás esquina derecha..."
+
+#: Cura/gui/configWizard.py:1206
+msgid "Moving head to back right corner..."
+msgstr "Moviendo la cabeza hacia atrás esquina atras a la derecha..."
+
+#: Cura/gui/configWizard.py:1220
+msgid "Heating up printer..."
+msgstr "Calentar impresora..."
+
+#: Cura/gui/configWizard.py:1227
+msgid "Printing a square on the printer bed at 0.3mm height."
+msgstr "Impresión de una cuadrado en la cama impresora en 0,3mm de altura."
+
+#: Cura/gui/configWizard.py:1267
+msgid ""
+"Adjust the front left screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+"Ajuste el tornillo delantero izquierdo de su cama impresora \n"
+"De modo que la boquilla sólo golpea la cama."
+
+#: Cura/gui/configWizard.py:1272
+msgid ""
+"Adjust the back screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+"Ajuste el tornillo de atrás de su cama impresora \n"
+"De modo que boquilla sólo golpea la cama."
+
+#: Cura/gui/configWizard.py:1274
+msgid ""
+"Adjust the back left screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+"Ajustar la izquierda el tornillo posterior de la impresora cama \n"
+"De modo que boquilla sólo golpea la cama."
+
+#: Cura/gui/configWizard.py:1278
+msgid ""
+"Adjust the back right screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+"Ajustar el tornillo posterior derecha de la impresora cama \n"
+"De modo que la boquilla sólo golpea la cama."
+
+#: Cura/gui/configWizard.py:1282
+msgid ""
+"Adjust the front right screw of your printer bed\n"
+"So the nozzle just hits the bed."
+msgstr ""
+"Ajuste el tornillo frontal derecha de la impresora cama \n"
+"De modo que la boquilla sólo golpea la cama."
+
+#: Cura/gui/configWizard.py:1286
+#, python-format
+msgid "Heating up printer: %d/%d"
+msgstr "El calentamiento de la impresora: %d/%d"
+
+#: Cura/gui/configWizard.py:1288
+msgid ""
+"The printer is hot now. Please insert some PLA filament into the printer."
+msgstr ""
+" La impresora está caliente ahora. Por favor, inserte algunos filamentos PLA "
+"en la impresora."
+
+#: Cura/gui/configWizard.py:1297
+msgid "Use the up/down buttons to move the bed and adjust your Z endstop."
+msgstr ""
+"Utilice los botones arriba/abajo hasta que mover la cama y ajustar su Z tope "
+"final."
+
+#: Cura/gui/configWizard.py:1309
+msgid ""
+"Calibration finished.\n"
+"The squares on the bed should slightly touch each other."
+msgstr ""
+"Calibración terminada.\n"
+"El cuadrado en la cama deben tocar ligeramente el uno al otro."
+
+#: Cura/gui/configWizard.py:1330
+msgid ""
+"This wizard will help you in calibrating the printer head offsets of your "
+"dual extrusion machine"
+msgstr ""
+"Este asistente le ayudará en la calibración de los desplazamientos de la "
+"cabeza impresora de la máquina de extrusión de doble"
+
+#: Cura/gui/configWizard.py:1363
+msgid "Printing initial calibration cross"
+msgstr "Impresión de la cruz de calibración inicial"
+
+#: Cura/gui/configWizard.py:1411
+msgid ""
+"Please measure the distance between the horizontal lines in millimeters."
+msgstr ""
+"Por favor, mida la distancia entre las líneas horizontales en milímetros."
+
+#: Cura/gui/configWizard.py:1421
+msgid "Printing the fine calibration lines."
+msgstr "Impresión de las líneas de calibración fina."
+
+#: Cura/gui/configWizard.py:1476
+msgid ""
+"Which horizontal line number lays perfect on top of each other? Front most "
+"line is zero."
+msgstr ""
+"¿Qué número de línea horizontal establece perfecta en la parte superior de "
+"uno al otro? Frente más línea es cero."
+
+#: Cura/gui/configWizard.py:1487
+#, python-format
+msgid "Calibration finished. Offsets are: %s %s"
+msgstr "Calibración terminada. Las compensaciones son: %s %s"
+
+#: Cura/gui/configWizard.py:1500
+msgid "Please load both extruders with PLA."
+msgstr "Por favor cargar ambos extrusoras con PLA."
+
+#: Cura/gui/configWizard.py:1509
+msgid "Homing printer and heating up both extruders."
+msgstr "Posición de inicio y calentar ambos extrusoras."
+
+#: Cura/gui/configWizard.py:1519
+msgid "Please measure the distance between the vertical lines in millimeters."
+msgstr ""
+"Por favor, mida la distancia entre las líneas verticales en milímetros."
+
+#: Cura/gui/configWizard.py:1526
+msgid ""
+"Which vertical line number lays perfect on top of each other? Leftmost line "
+"is zero."
+msgstr ""
+"¿Qué número línea vertical establece perfecta en la parte superior de uno al "
+"otro? Línea de más a la izquierda es cero."
+
+#: Cura/gui/configWizard.py:1575
+msgid "Head offset wizard"
+msgstr "Asistente compensación del cabezal"
+
+#: Cura/gui/expertConfig.py:27
+msgid "Expert config"
+msgstr "Experto"
+
+#: Cura/gui/firmwareInstall.py:71
+msgid ""
+"I am sorry, but Cura does not ship with a default firmware for your machine "
+"configuration."
+msgstr ""
+"Lo siento, pero cura no viene con un firmware por defecto para la "
+"configuración de tu maquina."
+
+#: Cura/gui/firmwareInstall.py:71 Cura/gui/firmwareInstall.py:76
+#: Cura/gui/firmwareInstall.py:131 Cura/gui/mainWindow.py:572
+msgid "Firmware update"
+msgstr "Actualización firmware"
+
+#: Cura/gui/firmwareInstall.py:76
+msgid ""
+"Cura only supports firmware updates for ATMega2560 based hardware.\n"
+"So updating your RepRap with Cura might or might not work."
+msgstr ""
+"Cura sólo admite actualizaciones de firmware para el hardware basado "
+"Atmega2560.\n"
+"Así que la actualización de su RepRap con Cura podría o no podría funcionar."
+
+#: Cura/gui/firmwareInstall.py:84 Cura/gui/firmwareInstall.py:188
+msgid "OK"
+msgstr "Aceptar"
+
+#: Cura/gui/firmwareInstall.py:105 Cura/gui/firmwareInstall.py:272
+msgid "Reading firmware..."
+msgstr "Leyendo firmware..."
+
+#: Cura/gui/firmwareInstall.py:107 Cura/gui/firmwareInstall.py:274
+msgid "Connecting to machine..."
+msgstr "Conectando a la máquina"
+
+#: Cura/gui/firmwareInstall.py:111 Cura/gui/firmwareInstall.py:278
+msgid ""
+"Please connect the printer to\n"
+"your computer with the USB cable."
+msgstr ""
+"Por favor, conecte la impresora a \n"
+"su computadora con el cable USB."
+
+#: Cura/gui/firmwareInstall.py:130
+msgid ""
+"Failed to find machine for firmware upgrade\n"
+"Is your machine connected to the PC?"
+msgstr ""
+"Fallo al buscar actualización del firmware\n"
+"¿Esta tu máquina conectada al PC?"
+
+#: Cura/gui/firmwareInstall.py:137
+msgid ""
+"Failed to install firmware:\n"
+"This firmware is not compatible with this machine.\n"
+"Trying to install UMO firmware on an UM2 or UMO+?"
+msgstr ""
+"No se pudo instalar el firmware:\n"
+"Este firmware no es compatible con este equipo.\n"
+"¿Tratar de instalar el firmware UMO en una UM2 o UMO+?"
+
+#: Cura/gui/firmwareInstall.py:143
+msgid ""
+"Failed to install firmware:\n"
+"This firmware is not compatible with this machine.\n"
+"Trying to install UM2 or UMO+ firmware on an UMO?"
+msgstr ""
+"No se pudo instalar el firmware:\n"
+"Este firmware no es compatible con este equipo.\n"
+"¿Tratar de instalar el firmware UMO en una UM2 o UMO+?"
+
+#: Cura/gui/firmwareInstall.py:148 Cura/gui/firmwareInstall.py:300
+msgid "Uploading firmware..."
+msgstr "Subiendo firmware"
+
+#: Cura/gui/firmwareInstall.py:151 Cura/gui/firmwareInstall.py:303
 #, python-format
 msgid ""
-"Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and "
-"are not recommended."
+"Done!\n"
+"Installed firmware: %s"
 msgstr ""
-"Capas más finas que %.2fmm (80%% del diámetro de la boquilla) usualmente dan "
-"malos resultados y no son recomendables."
+"¡Hecho!\n"
+"Firmware instalado: %s"
 
-#: Cura/util/profile.py:542
+#: Cura/gui/firmwareInstall.py:153 Cura/gui/firmwareInstall.py:305
+msgid "Failed to write firmware.\n"
+msgstr "Fallo al cargar firmware.\n"
+
+#: Cura/gui/firmwareInstall.py:297
+msgid "Failed to connect to programmer.\n"
+msgstr "Fallo la conexion al programador\n"
+
+#: Cura/gui/mainWindow.py:72
+msgid "Load model file...\tCTRL+L"
+msgstr "Cargar modelo...\tCTRL+L"
+
+#: Cura/gui/mainWindow.py:74
+msgid "Save model...\tCTRL+S"
+msgstr "Guardar modelo...\tCTRL+S"
+
+#: Cura/gui/mainWindow.py:76
+msgid "Reload platform\tF5"
+msgstr "Limpiar plataforma\tF5"
+
+#: Cura/gui/mainWindow.py:78
+msgid "Clear platform"
+msgstr "Limpiar plataforma"
+
+#: Cura/gui/mainWindow.py:82
+msgid "Print...\tCTRL+P"
+msgstr "Imprimir...\tCTRL+P"
+
+#: Cura/gui/mainWindow.py:84 Cura/gui/sceneView.py:312
+msgid "Save GCode..."
+msgstr "Guardar GCode..."
+
+#: Cura/gui/mainWindow.py:86
+msgid "Show slice engine log..."
+msgstr "Mostrar log de fileteado"
+
+#: Cura/gui/mainWindow.py:90
+msgid "Open Profile..."
+msgstr "Abrir Perfil..."
+
+#: Cura/gui/mainWindow.py:93
+msgid "Save Profile..."
+msgstr "Guardar Perfil..."
+
+#: Cura/gui/mainWindow.py:100
+msgid "Load Profile from GCode..."
+msgstr "Leer Perfil desde GCode"
+
+#: Cura/gui/mainWindow.py:104
+msgid "Reset Profile to default"
+msgstr "Reiniciar Perfil por defecto"
+
+#: Cura/gui/mainWindow.py:109
+msgid "Preferences...\tCTRL+,"
+msgstr "Preferencias...\tCTRL+,"
+
+#: Cura/gui/mainWindow.py:111 Cura/gui/mainWindow.py:480
+msgid "Machine settings..."
+msgstr "Ajuste de la máquina..."
+
+#: Cura/gui/mainWindow.py:117
+msgid "Recent Model Files"
+msgstr "Modelos Recientes"
+
+#: Cura/gui/mainWindow.py:124
+msgid "Recent Profile Files"
+msgstr "Perfiles Recientes"
+
+#: Cura/gui/mainWindow.py:130
+msgid "Quit"
+msgstr "Salir"
+
+#: Cura/gui/mainWindow.py:132
+msgid "File"
+msgstr "Archivo"
+
+#: Cura/gui/mainWindow.py:140
+msgid "Minecraft map import..."
+msgstr "Importar mapa de Minecraft..."
+
+#: Cura/gui/mainWindow.py:144
+msgid "PID Debugger..."
+msgstr "PID Debugger..."
+
+#: Cura/gui/mainWindow.py:146
+msgid "Auto Firmware Update..."
+msgstr "Actualización firmware..."
+
+#: Cura/gui/mainWindow.py:153
+msgid "Print all at once"
+msgstr "Imprimir todas a la vez"
+
+#: Cura/gui/mainWindow.py:155
+msgid "Print one at a time"
+msgstr "Imprimir una por una"
+
+#: Cura/gui/mainWindow.py:162
+msgid "Tools"
+msgstr "Herramientas"
+
+#: Cura/gui/mainWindow.py:168 Cura/util/profile.py:183
+msgid "Machine"
+msgstr "Maquina"
+
+#: Cura/gui/mainWindow.py:171
+msgid "Switch to quickprint..."
+msgstr "Cambiar a ajustes rapidos..."
+
+#: Cura/gui/mainWindow.py:175
+msgid "Switch to full settings..."
+msgstr "Cambiar a ajustes completos..."
+
+#: Cura/gui/mainWindow.py:180
+msgid "Open expert settings...\tCTRL+E"
+msgstr "Abrir ajustes experto...\tCTRL+E"
+
+#: Cura/gui/mainWindow.py:184
+msgid "Run bed leveling wizard..."
+msgstr "Iniciar asistente para calibración de la cama..."
+
+#: Cura/gui/mainWindow.py:186
+msgid "Run head offset wizard..."
+msgstr "Iniciar asistente de distancia entre extrusores..."
+
+#: Cura/gui/mainWindow.py:189
+msgid "Expert"
+msgstr "Experto"
+
+#: Cura/gui/mainWindow.py:192
+msgid "Online documentation..."
+msgstr "Documentación en la red..."
+
+#: Cura/gui/mainWindow.py:194
+msgid "Report a problem..."
+msgstr "Reportar un problema..."
+
+#: Cura/gui/mainWindow.py:196
+msgid "Check for update..."
+msgstr "Comprobando actualizaciones..."
+
+#: Cura/gui/mainWindow.py:198
+msgid "Open YouMagine website..."
+msgstr "Abre tu página YouMagine"
+
+#: Cura/gui/mainWindow.py:200
+msgid "About Cura..."
+msgstr "Sobra Cura..."
+
+#: Cura/gui/mainWindow.py:202
+msgid "Help"
+msgstr "Ayuda"
+
+#: Cura/gui/mainWindow.py:390
 msgid ""
-"It is highly unlikely that your machine can achieve a printing speed above "
-"150mm/s"
+"For \"One at a time\" printing, you need to have entered the correct head "
+"size and gantry height in the machine settings"
 msgstr ""
-"Es muy poco probable que su máquina puede alcanzar una velocidad de "
-"impresión por encima de 150 mm/s"
+" Para \"Uno a la vez\" imprimir, tiene que haber entrado en la cabeza "
+"correcta tamaño y puente de altura en la configuración del equipo "
 
-#: Cura/util/profile.py:544 Cura/util/profile.py:545 Cura/util/profile.py:546
-#: Cura/util/profile.py:547
-msgid "Temperatures above 260C could damage your machine, be careful!"
-msgstr "Temperaturas por encima de 260C puede dañar tu impresora, ¡CUIDADO!"
+#: Cura/gui/mainWindow.py:390
+msgid "One at a time warning"
+msgstr "Advertencia de uno por vez"
 
-#: Cura/util/profile.py:548 Cura/util/profile.py:549 Cura/util/profile.py:550
-#: Cura/util/profile.py:551
+#: Cura/gui/mainWindow.py:478
+msgid "Add new machine..."
+msgstr "Añadir nueva máquina..."
+
+#: Cura/gui/mainWindow.py:486
+msgid "Install default firmware..."
+msgstr "Instalar el firmware por defecto..."
+
+#: Cura/gui/mainWindow.py:489
+msgid "Install custom firmware..."
+msgstr "Instalar firmware personalizado..."
+
+#: Cura/gui/mainWindow.py:493
+msgid "Select profile file to load"
+msgstr "Seleccion de perfil a cargar"
+
+#: Cura/gui/mainWindow.py:505
+msgid "Select gcode file to load profile from"
+msgstr "Selección gcode para cargar perfil desde él"
+
+#: Cura/gui/mainWindow.py:520
 msgid ""
-"Are you sure your filament is that thick? Normal filament is around 3mm or "
-"1.75mm."
+"No profile found in GCode file.\n"
+"This feature only works with GCode files made by Cura 12.07 or newer."
 msgstr ""
-"¿Estás seguro del grosor? Normalmente los filamentos son de 3mm o  1.75mm."
+"No se ha encontrado Perfil en el GCode.\n"
+"Esta caracteristicas solo funciona en versiones de Cura 12.07 o superior."
 
-#: Cura/util/profile.py:552
+#: Cura/gui/mainWindow.py:520
+msgid "Profile load error"
+msgstr "Carga de Perfil erronea"
+
+#: Cura/gui/mainWindow.py:524 Cura/gui/mainWindow.py:534
+msgid "Select profile file to save"
+msgstr "Seleccion perfil para guardar"
+
+#: Cura/gui/mainWindow.py:544
 msgid ""
-"It is highly unlikely that your machine can achieve a travel speed above "
-"300mm/s"
+"This will reset all profile settings to defaults.\n"
+"Unless you have saved your current profile, all settings will be lost!\n"
+"Do you really want to reset?"
 msgstr ""
-"Es muy poco probable que su máquina puede alcanzar una velocidad de "
-"desplazamiento por encima de 300 mm/s"
+"Esto restablecerá todos los ajustes de perfil a los valores "
+"predeterminados.\n"
+"A menos que usted ha grabado su perfil actual, todos los ajustes se "
+"perderán!\n"
+"¿Realmente desea reiniciar?"
 
-#: Cura/util/profile.py:553
+#: Cura/gui/mainWindow.py:544
+msgid "Profile reset"
+msgstr "Reiniciar Perfil"
+
+#: Cura/gui/mainWindow.py:557
+msgid ""
+"Copy the settings from quickprint to your full settings?\n"
+"(This will overwrite any full setting modifications you have)"
+msgstr ""
+"Copiar los ajustes de QuickPrint a sus ajustes completos ?\n"
+"(Esto sobrescribirá cualquier modificación de ajuste completo que tienes)"
+
+#: Cura/gui/mainWindow.py:557
+msgid "Profile copy"
+msgstr "Copar perfil"
+
+#: Cura/gui/mainWindow.py:572
+msgid ""
+"Warning: Installing a custom firmware does not guarantee that you machine "
+"will function correctly, and could damage your machine."
+msgstr ""
+"Advertencia: Instalando un firmware personalizado no garantizamos el "
+"correcto funcionamiento de la impresora y se podría dañar"
+
+#: Cura/gui/mainWindow.py:573 Cura/gui/mainWindow.py:616
+msgid "Open firmware to upload"
+msgstr "Abrir firmware para cargar"
+
+#: Cura/gui/mainWindow.py:645
+msgid "You are running the latest version of Cura!"
+msgstr "Estas usando la última versión de Cura!"
+
+#: Cura/gui/mainWindow.py:645
+msgid "Awesome!"
+msgstr "¡Impresionante!"
+
+#: Cura/gui/mainWindow.py:690
+msgid "Basic"
+msgstr "Basico"
+
+#: Cura/gui/mainWindow.py:694
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: Cura/gui/mainWindow.py:700
+msgid "Plugins"
+msgstr "Complementos"
+
+#: Cura/gui/pluginPanel.py:31
+msgid "Plugins:"
+msgstr "Complementos:"
+
+#: Cura/gui/pluginPanel.py:35
+msgid "Open plugin location"
+msgstr "Abrir localización complementos"
+
+#: Cura/gui/pluginPanel.py:36
+msgid "Enabled plugins"
+msgstr "Habilitar complementos"
+
+#: Cura/gui/pluginPanel.py:159
+msgid "You need to select a plugin before you can add anything."
+msgstr "Tienes que selecionar un complemento antes de añadir nada"
+
+#: Cura/gui/pluginPanel.py:159
+msgid "Error: no plugin selected"
+msgstr "Error: no hay complento seleccionado"
+
+#: Cura/gui/preferencesDialog.py:15
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: Cura/gui/preferencesDialog.py:29
+msgid "Print window"
+msgstr "Imprimiendo"
+
+#: Cura/gui/preferencesDialog.py:32
+msgid "Colours"
+msgstr "Colores"
+
+#: Cura/gui/preferencesDialog.py:38 Cura/util/profile.py:506
+msgid "Language"
+msgstr "Lenguaje"
+
+#: Cura/gui/preferencesDialog.py:41
+msgid "Filament settings"
+msgstr "Ajustes filamento"
+
+#: Cura/gui/preferencesDialog.py:58
+msgid "Cura settings"
+msgstr "Ajustes de Cura"
+
+#: Cura/gui/preferencesDialog.py:80
+msgid "Select replication root folder"
+msgstr ""
+
+#: Cura/gui/preferencesDialog.py:97 Cura/gui/preferencesDialog.py:113
+msgid "Machine settings"
+msgstr "Ajuste de la máquina"
+
+#: Cura/gui/preferencesDialog.py:124
+msgid "Printer head size"
+msgstr "Tamaño cabezal de impresión"
+
+#: Cura/gui/preferencesDialog.py:132
 #, python-format
-msgid ""
-"A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad "
-"results and is not recommended."
-msgstr ""
-"Una capa final de mas de %.2fmm (3/4 del tamaño del cabezal) usualmente da "
-"malos resultados y no es recomendable."
+msgid "Extruder %d"
+msgstr "Extrusor %d"
+
+#: Cura/gui/preferencesDialog.py:136
+msgid "Communication settings"
+msgstr "Ajustes comunicación"
+
+#: Cura/gui/preferencesDialog.py:148
+msgid "Ok"
+msgstr "Aceptar"
+
+#: Cura/gui/preferencesDialog.py:152
+msgid "Add new machine"
+msgstr "Añadir nueva máquina"
+
+#: Cura/gui/preferencesDialog.py:156
+msgid "Remove machine"
+msgstr "Selecciona tu maquina"
+
+#: Cura/gui/preferencesDialog.py:160 Cura/gui/preferencesDialog.py:196
+msgid "Change machine name"
+msgstr "Cambiar el nombre"
+
+#: Cura/gui/preferencesDialog.py:182
+msgid "Cannot remove the last machine configuration in Cura"
+msgstr "No se puede borrar la ultima configuración de la máquina"
+
+#: Cura/gui/preferencesDialog.py:182
+msgid "Machine remove error"
+msgstr "Quitar errores de la máquina"
+
+#: Cura/gui/preferencesDialog.py:196
+msgid "Enter the new name:"
+msgstr "Nuevo nombre:"
 
 #: Cura/gui/printWindow.py:33 Cura/gui/printWindow.py:312
 #, python-format
@@ -1582,7 +1147,7 @@ msgstr ""
 msgid "Connect"
 msgstr "Conectar"
 
-#: Cura/gui/printWindow.py:338 Cura/gui/sceneView.py:65
+#: Cura/gui/printWindow.py:338 Cura/gui/sceneView.py:66
 msgid "Print"
 msgstr "Imprimir"
 
@@ -1598,25 +1163,245 @@ msgstr "Cancelar impresión"
 msgid "Error log"
 msgstr "Errores"
 
-#: Cura/gui/pluginPanel.py:31
-msgid "Plugins:"
-msgstr "Complementos:"
+#: Cura/gui/sceneView.py:65
+msgid "Load"
+msgstr "Cargar"
 
-#: Cura/gui/pluginPanel.py:35
-msgid "Open plugin location"
-msgstr "Abrir localización complementos"
+#: Cura/gui/sceneView.py:70
+msgid "Rotate"
+msgstr "Rotar"
 
-#: Cura/gui/pluginPanel.py:36
-msgid "Enabled plugins"
-msgstr "Habilitar complementos"
+#: Cura/gui/sceneView.py:71
+msgid "Scale"
+msgstr "Escala"
 
-#: Cura/gui/pluginPanel.py:159
-msgid "You need to select a plugin before you can add anything."
-msgstr "Tienes que selecionar un complemento antes de añadir nada"
+#: Cura/gui/sceneView.py:72
+msgid "Mirror"
+msgstr "Simetria"
 
-#: Cura/gui/pluginPanel.py:159
-msgid "Error: no plugin selected"
-msgstr "Error: no hay complento seleccionado"
+#: Cura/gui/sceneView.py:74 Cura/gui/sceneView.py:77
+msgid "Reset"
+msgstr "Reiniciar"
+
+#: Cura/gui/sceneView.py:75
+msgid "Lay flat"
+msgstr "Recostar"
+
+#: Cura/gui/sceneView.py:78
+msgid "To max"
+msgstr "Al máximo"
+
+#: Cura/gui/sceneView.py:80
+msgid "Mirror X"
+msgstr "Simetria X"
+
+#: Cura/gui/sceneView.py:81
+msgid "Mirror Y"
+msgstr "Simetria Y"
+
+#: Cura/gui/sceneView.py:82
+msgid "Mirror Z"
+msgstr "Simetria Z"
+
+#: Cura/gui/sceneView.py:90
+msgid "Scale X"
+msgstr "Escala X"
+
+#: Cura/gui/sceneView.py:92
+msgid "Scale Y"
+msgstr "Escala Y"
+
+#: Cura/gui/sceneView.py:94
+msgid "Scale Z"
+msgstr "Escala Z"
+
+#: Cura/gui/sceneView.py:96
+msgid "Size X (mm)"
+msgstr "Tamaño X (mm)"
+
+#: Cura/gui/sceneView.py:98
+msgid "Size Y (mm)"
+msgstr "Tamaño Y (mm)"
+
+#: Cura/gui/sceneView.py:100
+msgid "Size Z (mm)"
+msgstr "Tamaño Z (mm)"
+
+#: Cura/gui/sceneView.py:102
+msgid "Uniform scale"
+msgstr "Escala Uniforme"
+
+#: Cura/gui/sceneView.py:105
+msgid "View mode"
+msgstr "Modo vista"
+
+#: Cura/gui/sceneView.py:105
+msgid "Normal"
+msgstr "Normal"
+
+#: Cura/gui/sceneView.py:105
+msgid "Overhang"
+msgstr "Salientes"
+
+#: Cura/gui/sceneView.py:105
+msgid "Transparent"
+msgstr "Transparente"
+
+#: Cura/gui/sceneView.py:105
+msgid "X-Ray"
+msgstr "Rayos X"
+
+#: Cura/gui/sceneView.py:105
+msgid "Layers"
+msgstr "Capas"
+
+#: Cura/gui/sceneView.py:107
+msgid "Share on YouMagine"
+msgstr "Comparte en YoMagine"
+
+#: Cura/gui/sceneView.py:224
+msgid "Open 3D model"
+msgstr "Abrir modelo 3D"
+
+#: Cura/gui/sceneView.py:249
+msgid "Save 3D model"
+msgstr "Guardar modelo 3d"
+
+#: Cura/gui/sceneView.py:309 Cura/gui/sceneView.py:994
+#, python-format
+msgid "Print with %s"
+msgstr "Imprimir con %s"
+
+#: Cura/gui/sceneView.py:313
+msgid "Slice engine log..."
+msgstr "Log del motor de fileteado..."
+
+#: Cura/gui/sceneView.py:340 Cura/gui/sceneView.py:997
+msgid "Save toolpath"
+msgstr "Guardar trayectorias (GCode)"
+
+#: Cura/gui/sceneView.py:387
+msgid "The slicing engine reported the following"
+msgstr "El fileteado informó lo siguiente"
+
+#: Cura/gui/sceneView.py:387
+msgid "Engine log..."
+msgstr "Engine log..."
+
+#: Cura/gui/sceneView.py:526
+msgid "How many copies do you want?"
+msgstr "¿Cuántas copias lo que quieres?"
+
+#: Cura/gui/sceneView.py:526
+msgid "Number of copies"
+msgstr "Número de copias"
+
+#: Cura/gui/sceneView.py:526
+msgid "Multiply"
+msgstr "Multiplicar objeto"
+
+#: Cura/gui/sceneView.py:549
+msgid ""
+"Cannot fit all the requested duplicates. Do you want to try and reset object "
+"positions?"
+msgstr ""
+
+#: Cura/gui/sceneView.py:549
+msgid "Reset Positions"
+msgstr ""
+
+#: Cura/gui/sceneView.py:856
+msgid "Center on platform"
+msgstr "Centrar en la plataforma"
+
+#: Cura/gui/sceneView.py:857
+msgid "Delete object"
+msgstr "Borrar objeto"
+
+#: Cura/gui/sceneView.py:858
+msgid "Multiply object"
+msgstr "Multiplicar objeto"
+
+#: Cura/gui/sceneView.py:859
+msgid "Split object into parts"
+msgstr "Cortar objetos en partes"
+
+#: Cura/gui/sceneView.py:862
+msgid "Dual extrusion merge"
+msgstr "Fusionar extrusión dual"
+
+#: Cura/gui/sceneView.py:864
+msgid "Delete all objects"
+msgstr "Borrar todos los objetos"
+
+#: Cura/gui/sceneView.py:865
+msgid "Reload all objects"
+msgstr "Releer todos los objetos"
+
+#: Cura/gui/sceneView.py:866
+#, fuzzy
+msgid "Reset all objects positions"
+msgstr "Borrar todos los objetos"
+
+#: Cura/gui/sceneView.py:867
+msgid "Reset all objects transformations"
+msgstr ""
+
+#: Cura/gui/sceneView.py:991
+msgid "Toolpath to SD"
+msgstr "Trazadpo a SD"
+
+#: Cura/gui/sceneView.py:1285
+msgid "Overhang view not working due to lack of OpenGL shaders support."
+msgstr "Vista \"Salientes\" no funciona por falta de \"OpenGL shaders\"."
+
+#: Cura/gui/simpleMode.py:52
+msgid "Print support structure"
+msgstr "Imprimir estructura de soportes"
+
+#: Cura/gui/simpleMode.py:57
+msgid "Select a quickprint profile:"
+msgstr "Seleccion tipo de impresora:"
+
+#: Cura/gui/simpleMode.py:65
+msgid "Material:"
+msgstr "Material:"
+
+#: Cura/gui/simpleMode.py:73
+msgid "Other:"
+msgstr "Otro:"
+
+#: Cura/gui/tools/imageToMesh.py:28
+msgid "Height (mm)"
+msgstr "Espesor de capa (mm)"
+
+#: Cura/gui/tools/imageToMesh.py:32
+msgid "Base (mm)"
+msgstr "Grosor de base (mm)"
+
+#: Cura/gui/tools/imageToMesh.py:36
+msgid "Width (mm)"
+msgstr "Ancho (mm)"
+
+#: Cura/gui/tools/imageToMesh.py:40
+msgid "Depth (mm)"
+msgstr "Diametro (mm)"
+
+#: Cura/gui/tools/projector.py:42
+msgid "Edit"
+msgstr "Editar"
+
+#: Cura/gui/tools/projector.py:43
+msgid "Rectangle"
+msgstr "Rectangulo"
+
+#: Cura/gui/tools/projector.py:44
+msgid "Circle"
+msgstr "Circulo"
+
+#: Cura/gui/tools/projector.py:45
+msgid "Draw curves"
+msgstr "Dibujar curvas"
 
 #: Cura/gui/tools/youmagineGui.py:78
 msgid "Checking token"
@@ -1786,664 +1571,11 @@ msgstr "No tienes webcam en tu computadora"
 msgid "Webcam error"
 msgstr "Error de la webcam"
 
-#: Cura/gui/tools/imageToMesh.py:28
-msgid "Height (mm)"
-msgstr "Espesor de capa (mm)"
-
-#: Cura/gui/tools/imageToMesh.py:32
-msgid "Base (mm)"
-msgstr "Grosor de base (mm)"
-
-#: Cura/gui/tools/imageToMesh.py:36
-msgid "Width (mm)"
-msgstr "Ancho (mm)"
-
-#: Cura/gui/tools/imageToMesh.py:40
-msgid "Depth (mm)"
-msgstr "Diametro (mm)"
-
-#: Cura/gui/configWizard.py:231
-msgid "Add new machine wizard"
-msgstr "Asistente para nueva máquina"
-
-#: Cura/gui/configWizard.py:233
-msgid "First time run wizard"
-msgstr "Hacer asistencia inicial"
-
-#: Cura/gui/configWizard.py:234
-msgid "Welcome, and thanks for trying Cura!"
-msgstr "Bienvenido, y gracias por ¡usar Cura!"
-
-#: Cura/gui/configWizard.py:236
-msgid "This wizard will help you in setting up Cura for your machine."
-msgstr "Este asistente le ayudará en la creación de Cura para su máquina."
-
-#: Cura/gui/configWizard.py:239
-msgid "Select your language:"
-msgstr "Selecciona tu lenguaje:"
-
-#: Cura/gui/configWizard.py:266
-msgid "Older models"
-msgstr "Modelos antiguos"
-
-#: Cura/gui/configWizard.py:283
-msgid "Printrbot Selection"
-msgstr "Selección printrbot"
-
-#: Cura/gui/configWizard.py:285
-msgid "Select which Printrbot machine you have:"
-msgstr "Seleccione que Printrbot máquina tiene"
-
-#: Cura/gui/configWizard.py:349
-msgid "Other machine information"
-msgstr "Otra información de la máquina"
-
-#: Cura/gui/configWizard.py:350
-msgid "The following pre-defined machine profiles are available"
-msgstr "Los siguientes perfiles de máquina predefinidos están disponibles"
-
-#: Cura/gui/configWizard.py:351
-msgid ""
-"Note that these profiles are not guaranteed to give good results,\n"
-"or work at all. Extra tweaks might be required.\n"
-"If you find issues with the predefined profiles,\n"
-"or want an extra profile.\n"
-"Please report it at the github issue tracker."
-msgstr ""
-"Tenga en cuenta que estos perfiles no están garantizados para dar buenos "
-"resultados,\n"
-"o el trabajo en absoluto. podría ser necesario retoques adicionales.\n"
-" Si usted encuentra problemas con los perfiles predefinidos,\n"
-"o quieren un perfil extra. \n"
-"Por favor repórtelo a la de seguimiento de incidencias github."
-
-#: Cura/gui/configWizard.py:362
-msgid "Custom..."
-msgstr "Personalizable..."
-
-#: Cura/gui/configWizard.py:380
-msgid "Cura Ready!"
-msgstr "¡Cura listo!"
-
-#: Cura/gui/configWizard.py:381
-msgid "Cura is now ready to be used!"
-msgstr "¡Cura esta listo para su uso!"
-
-#: Cura/gui/configWizard.py:385
-msgid "Custom RepRap information"
-msgstr "Personalizar la información"
-
-#: Cura/gui/configWizard.py:386
-msgid ""
-"RepRap machines can be vastly different, so here you can set your own "
-"settings."
-msgstr ""
-"Máquinas RepRap pueden ser muy diferentes, por lo que aquí se puede "
-"establecer su propio ajustes."
-
-#: Cura/gui/configWizard.py:387
-msgid ""
-"Be sure to review the default profile before running it on your machine."
-msgstr ""
-"Asegúrese de revisar el perfil predeterminado antes de ejecutarlo en su "
-"máquina."
-
-#: Cura/gui/configWizard.py:388
-msgid ""
-"If you like a default profile for your machine added,\n"
-"then make an issue on github."
-msgstr ""
-"Si quieres añadir un perfil por defecto para tu máquina,\n"
-"crea un requerimiento en el github."
-
-#: Cura/gui/configWizard.py:390
-msgid "You will have to manually install Marlin or Sprinter firmware."
-msgstr "Tendrás que instalar manual Marlin o Sprinter"
-
-#: Cura/gui/configWizard.py:392
-msgid "Machine name"
-msgstr "Nombre de la máquina"
-
-#: Cura/gui/configWizard.py:393
-msgid "Machine width (mm)"
-msgstr "Anchura máquina (mm)"
-
-#: Cura/gui/configWizard.py:394
-msgid "Machine depth (mm)"
-msgstr "Produndidad máquina (mm)"
-
-#: Cura/gui/configWizard.py:395
-msgid "Machine height (mm)"
-msgstr "Altura máquina (mm)"
-
-#: Cura/gui/configWizard.py:398
-msgid "Bed center is 0,0,0 (RoStock)"
-msgstr "Centro de la base en 0,0,0 (Rostock)"
-
-#: Cura/gui/configWizard.py:418
-msgid "Select your machine"
-msgstr "Selecciona tu maquina"
-
-#: Cura/gui/configWizard.py:419
-msgid "What kind of machine do you have:"
-msgstr "Que tipo de máquina tienes:"
-
-#: Cura/gui/configWizard.py:434
-msgid "Other (Ex: RepRap, MakerBot, Witbox)"
-msgstr "Otras (ej. RepRap, witbox, etc)"
-
-#: Cura/gui/configWizard.py:437
-msgid ""
-"The collection of anonymous usage information helps with the continued "
-"improvement of Cura."
-msgstr "La recolección de datos de utilización anónima ayuda a mejorar Cura."
-
-#: Cura/gui/configWizard.py:438
-msgid ""
-"This does NOT submit your models online nor gathers any privacy related "
-"information."
-msgstr ""
-"Esta hace que NO envie sus modelos online ni recopila datos relacionados con "
-"su privacidad."
-
-#: Cura/gui/configWizard.py:439
-msgid "Submit anonymous usage information:"
-msgstr "Enviar información de uso anónima:"
-
-#: Cura/gui/configWizard.py:440
-msgid "For full details see: http://wiki.ultimaker.com/Cura:stats"
-msgstr "Para más detalles: http://wiki.ultimaker.com/Cura:stats"
-
-#: Cura/gui/configWizard.py:557
-msgid "Select upgraded parts you have"
-msgstr "Selecciona mejoras que tienes"
-
-#: Cura/gui/configWizard.py:558
-msgid ""
-"To assist you in having better default settings for your Ultimaker\n"
-"Cura would like to know which upgrades you have in your machine."
-msgstr ""
-"Para ayudarle a tener mejores ajustes predeterminados para su Ultimaker \n"
-"Cura necesitaría saber qué actualizaciones que tiene en su máquina."
-
-#: Cura/gui/configWizard.py:560
-msgid "Extruder drive upgrade"
-msgstr "Mejora extrusor"
-
-#: Cura/gui/configWizard.py:561
-msgid "Heated printer bed (kit)"
-msgstr "Cama caliente (kit)"
-
-#: Cura/gui/configWizard.py:562
-msgid "Heated printer bed (self built)"
-msgstr "Cama caliente (autoconstruida)"
-
-#: Cura/gui/configWizard.py:563
-msgid "Dual extrusion (experimental)"
-msgstr "Extrusion doble (experimental)"
-
-#: Cura/gui/configWizard.py:565
-msgid ""
-"If you have an Ultimaker bought after october 2012 you will have the\n"
-"Extruder drive upgrade. If you do not have this upgrade,\n"
-"it is highly recommended to improve reliability."
-msgstr ""
-"Si tienes una Ultimaker comprada posterior a Octubre de 2012 tu tienes\n"
-"la mejora en el extrusor. Si no tienes esta mejora,\n"
-"es recomendable para mejorar el desempeño."
-
-#: Cura/gui/configWizard.py:566
-msgid ""
-"This upgrade can be bought from the Ultimaker webshop\n"
-"or found on thingiverse as thing:26094"
-msgstr ""
-"Esta mejora puede comprarse en la webshop de Ultimaker\n"
-"o encontrarse en thingiverse thing:26094"
-
-#: Cura/gui/configWizard.py:588
-msgid "Upgrade Ultimaker Firmware"
-msgstr "Actuliza Firmware Ultimaker"
-
-#: Cura/gui/configWizard.py:589
-msgid ""
-"Firmware is the piece of software running directly on your 3D printer.\n"
-"This firmware controls the step motors, regulates the temperature\n"
-"and ultimately makes your printer work."
-msgstr ""
-"Firmware es un software que se ejecuta en la propia impresora.\n"
-"Controla los pasos de motor, temperatura\n"
-"y finalmente hace que tu impresora funcione."
-
-#: Cura/gui/configWizard.py:591
-msgid ""
-"The firmware shipping with new Ultimakers works, but upgrades\n"
-"have been made to make better prints, and make calibration easier."
-msgstr ""
-"El firmware que trae la Ultimaker funciona, pero actualizaciones\n"
-"hacen que se imprima y se calibre mejor."
-
-#: Cura/gui/configWizard.py:593
-msgid ""
-"Cura requires these new features and thus\n"
-"your firmware will most likely need to be upgraded.\n"
-"You will get the chance to do so now."
-msgstr ""
-"Cura requiere estas nuevas características y por lo tanto\n"
-"el firmware es necesario que tenga que ser actualizado. \n"
-"Usted tendrá la oportunidad de hacerlo ahora."
-
-#: Cura/gui/configWizard.py:599
-msgid "Do not upgrade to this firmware if:"
-msgstr "No actualices a este firmware si:"
-
-#: Cura/gui/configWizard.py:600
-msgid "* You have an older machine based on ATMega1280 (Rev 1 machine)"
-msgstr "* Tienes una máquina basada en el antiguo ATMega1280"
-
-#: Cura/gui/configWizard.py:601
-msgid "* Build your own heated bed"
-msgstr "* Construye tu propia cama"
-
-#: Cura/gui/configWizard.py:602
-msgid "* Have other changes in the firmware"
-msgstr "Tiene otros cambios en el firmware"
-
-#: Cura/gui/configWizard.py:622
-msgid "Ultimaker Checkup"
-msgstr "Ultimaker chequeada"
-
-#: Cura/gui/configWizard.py:636
-msgid ""
-"It is a good idea to do a few sanity checks now on your Ultimaker.\n"
-"You can skip these if you know your machine is functional."
-msgstr ""
-"Es una buena idea hacer algunos chequeos ahora en tu Ultimaker.\n"
-"Puedes obviarlos si tu máquina es funcional."
-
-#: Cura/gui/configWizard.py:637
-msgid "Run checks"
-msgstr "Iniciar chequeos"
-
-#: Cura/gui/configWizard.py:637
-msgid "Skip checks"
-msgstr "Saltar comprobaciones"
-
-#: Cura/gui/configWizard.py:641
-msgid "Communication:"
-msgstr "Comunicación:"
-
-#: Cura/gui/configWizard.py:642
-msgid "Temperature:"
-msgstr "Temperatura:"
-
-#: Cura/gui/configWizard.py:643
-msgid "Endstops:"
-msgstr "Final de carrera:"
-
-#: Cura/gui/configWizard.py:648
-msgid "Show error log"
-msgstr "Mostrar log de errores"
-
-#: Cura/gui/configWizard.py:682 Cura/gui/configWizard.py:1119
-#: Cura/gui/configWizard.py:1338
-msgid "Connecting to machine."
-msgstr "Conectando a la maquina"
-
-#: Cura/gui/configWizard.py:703
-msgid "Cooldown before temperature check."
-msgstr "Enfriar antes de comprobar la temperatura"
-
-#: Cura/gui/configWizard.py:709 Cura/gui/configWizard.py:716
-msgid "Checking the heater and temperature sensor."
-msgstr "Comprueba el extrusor y el sensor de temperatura"
-
-#: Cura/gui/configWizard.py:727
-msgid "Please make sure none of the endstops are pressed."
-msgstr "Por favor asegurate que los endstosp no estan presionados."
-
-#: Cura/gui/configWizard.py:740
-msgid "Temperature measurement FAILED!"
-msgstr "¡La Medición de temperatura a FALLADO!"
-
-#: Cura/gui/configWizard.py:745
-#, python-format
-msgid "Head temperature: %d"
-msgstr "Temp. cabezal %d"
-
-#: Cura/gui/configWizard.py:752 Cura/gui/configWizard.py:761
-#, python-format
-msgid "Communication State: %s"
-msgstr "Estado de comunicación: %s"
-
-#: Cura/gui/configWizard.py:755 Cura/gui/configWizard.py:1296
-#: Cura/gui/configWizard.py:1514
-msgid "Failed to establish connection with the printer."
-msgstr "Fallo al establecer la conexión con la impresora"
-
-#: Cura/gui/configWizard.py:801 Cura/gui/configWizard.py:810
-msgid "Please press the left X endstop."
-msgstr "Presiona el fin de carrera X izquierdo."
-
-#: Cura/gui/configWizard.py:805
-msgid "Please press the right X endstop."
-msgstr "Presiona el fin de carrera X derecho."
-
-#: Cura/gui/configWizard.py:815
-msgid "Please press the front Y endstop."
-msgstr "Presiona el fin de carrera Y delantero. "
-
-#: Cura/gui/configWizard.py:821 Cura/gui/configWizard.py:830
-msgid "Please press the top Z endstop."
-msgstr "Presiona el fin de carrera Z superior. "
-
-#: Cura/gui/configWizard.py:825
-msgid "Please press the back Y endstop."
-msgstr "Presiona el fin de carrera Y trasero. "
-
-#: Cura/gui/configWizard.py:837 Cura/gui/configWizard.py:850
-msgid "Checkup finished"
-msgstr "Chequeo finalizado"
-
-#: Cura/gui/configWizard.py:844
-msgid "Please press the bottom Z endstop."
-msgstr "Presiona el fin de carrera Z inferior. "
-
-#: Cura/gui/configWizard.py:865 Cura/gui/configWizard.py:888
-msgid "Ultimaker Calibration"
-msgstr "Calibración de la Ultimaker"
-
-#: Cura/gui/configWizard.py:893
-msgid "Calibrating the Steps Per E requires some manual actions."
-msgstr "Calibrar los pasos del Extrusor requiere algunas acciones manuales."
-
-#: Cura/gui/configWizard.py:894
-msgid "First remove any filament from your machine."
-msgstr "Primero remover cualquier filamento de tu maquina"
-
-#: Cura/gui/configWizard.py:895
-msgid ""
-"Next put in your filament so the tip is aligned with the\n"
-"top of the extruder drive."
-msgstr ""
-"A continuación, pon en el filamento de manera que la punta quede alineada "
-"con la \n"
-"superior de la unidad extrusora."
-
-#: Cura/gui/configWizard.py:896
-msgid "We'll push the filament 100mm"
-msgstr "Empujaremos 100 mm de filamento"
-
-#: Cura/gui/configWizard.py:897
-msgid "Extrude 100mm filament"
-msgstr "Extruir 100mm filamento"
-
-#: Cura/gui/configWizard.py:898
-msgid ""
-"Now measure the amount of extruded filament:\n"
-"(this can be more or less then 100mm)"
-msgstr ""
-"Ahora mide la cantidad de filamento extruido:\n"
-"(debe ser mas o menos 100mm)"
-
-#: Cura/gui/configWizard.py:899
-msgid "Save"
-msgstr "Guardar"
-
-#: Cura/gui/configWizard.py:900
-msgid "This results in the following steps per E:"
-msgstr "Esto se da como resultado los siguiente pasos por E:"
-
-#: Cura/gui/configWizard.py:902
-msgid "You can repeat these steps to get better calibration."
-msgstr "Puedes repetir estos paso para conseguir una mejor calibración."
-
-#: Cura/gui/configWizard.py:905
-msgid ""
-"If you still have filament in your printer which needs\n"
-"heat to remove, press the heat up button below:"
-msgstr ""
-"Si aún tienes filamento en tu impresora que necesita\n"
-"calor para removerlo, presiona el botón de calentar debajo:"
-
-#: Cura/gui/configWizard.py:906
-msgid "Heatup for filament removal"
-msgstr "Calentar para remover filamento"
-
-#: Cura/gui/configWizard.py:931 Cura/gui/configWizard.py:965
-msgid ""
-"Error: Failed to open serial port to machine\n"
-"If this keeps happening, try disconnecting and reconnecting the USB cable"
-msgstr ""
-"Error: Fallo al abrir el Puerto Serie de la maquina\n"
-"Si sigue ocurriendo, prueba a desconectar y reconectar el cable USB"
-
-#: Cura/gui/configWizard.py:1005
-msgid "Ultimaker2"
+#: Cura/gui/util/engineResultView.py:29
+msgid "Single Layer"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1006
-msgid "Congratulations on your the purchase of your brand new Ultimaker2."
-msgstr "Felicidades por la compra de su nueva Ultimaker2."
-
-#: Cura/gui/configWizard.py:1007
-msgid "Cura is now ready to be used with your Ultimaker2."
-msgstr "Cura ya está listo para ser usado con su Ultimaker2."
-
-#: Cura/gui/configWizard.py:1012
-msgid "Lulzbot TAZ/Mini"
-msgstr ""
-
-#: Cura/gui/configWizard.py:1013
-msgid "Cura is now ready to be used with your Lulzbot."
-msgstr "Cura esta ahora autorizado para compartir en YouMagine"
-
-#: Cura/gui/configWizard.py:1018
-msgid "Configuration Wizard"
-msgstr "Guía de configuración"
-
-#: Cura/gui/configWizard.py:1079 Cura/gui/configWizard.py:1527
-msgid "Bed leveling wizard"
-msgstr "Nivelación de la cama"
-
-#: Cura/gui/configWizard.py:1081
-msgid "This wizard will help you in leveling your printer bed"
-msgstr "Este asistente le ayudará a nivelar la cama de la impresora"
-
-#: Cura/gui/configWizard.py:1083
-msgid "It will do the following steps"
-msgstr "Lo hará los siguientes pasos"
-
-#: Cura/gui/configWizard.py:1084
-msgid "* Move the printer head to each corner"
-msgstr "* Mueva el cabezal a cada esquina"
-
-#: Cura/gui/configWizard.py:1085
-msgid "  and let you adjust the height of the bed to the nozzle"
-msgstr " y le permiten ajustar la altura de la cama a la boquilla"
-
-#: Cura/gui/configWizard.py:1086
-msgid "* Print a line around the bed to check if it is level"
-msgstr "* Imprimir una línea alrededor de la cama para chequear el nivel"
-
-#: Cura/gui/configWizard.py:1089 Cura/gui/configWizard.py:1314
-msgid "Connect to printer"
-msgstr "Conectando a la maquina"
-
-#: Cura/gui/configWizard.py:1093 Cura/gui/configWizard.py:1320
-msgid "Resume"
-msgstr "Continuar"
-
-#: Cura/gui/configWizard.py:1094
-msgid "Up 0.2mm"
-msgstr "Arriba 0,2mm"
-
-#: Cura/gui/configWizard.py:1094
-msgid "Down 0.2mm"
-msgstr "Abajo 0,2mm"
-
-#: Cura/gui/configWizard.py:1095
-msgid "Up 10mm"
-msgstr "Arriba 10mm"
-
-#: Cura/gui/configWizard.py:1095
-msgid "Down 10mm"
-msgstr "Abajo 10mm"
-
-#: Cura/gui/configWizard.py:1155
-msgid "Homing printer..."
-msgstr "Punto de inicio..."
-
-#: Cura/gui/configWizard.py:1165
-msgid "Moving head to back center..."
-msgstr "Moviendo la cabeza a centro posterior..."
-
-#: Cura/gui/configWizard.py:1172
-msgid "Moving head to back left corner..."
-msgstr "Moviendo la cabeza hacia atrás esquina izquierda..."
-
-#: Cura/gui/configWizard.py:1180 Cura/gui/configWizard.py:1194
-msgid "Moving head to front right corner..."
-msgstr "Moviendo la cabeza hacia atrás esquina derecha..."
-
-#: Cura/gui/configWizard.py:1187
-msgid "Moving head to back right corner..."
-msgstr "Moviendo la cabeza hacia atrás esquina atras a la derecha..."
-
-#: Cura/gui/configWizard.py:1201
-msgid "Heating up printer..."
-msgstr "Calentar impresora..."
-
-#: Cura/gui/configWizard.py:1208
-msgid "Printing a square on the printer bed at 0.3mm height."
-msgstr "Impresión de una cuadrado en la cama impresora en 0,3mm de altura."
-
-#: Cura/gui/configWizard.py:1248
-msgid ""
-"Adjust the front left screw of your printer bed\n"
-"So the nozzle just hits the bed."
-msgstr ""
-"Ajuste el tornillo delantero izquierdo de su cama impresora \n"
-"De modo que la boquilla sólo golpea la cama."
-
-#: Cura/gui/configWizard.py:1253
-msgid ""
-"Adjust the back screw of your printer bed\n"
-"So the nozzle just hits the bed."
-msgstr ""
-"Ajuste el tornillo de atrás de su cama impresora \n"
-"De modo que boquilla sólo golpea la cama."
-
-#: Cura/gui/configWizard.py:1255
-msgid ""
-"Adjust the back left screw of your printer bed\n"
-"So the nozzle just hits the bed."
-msgstr ""
-"Ajustar la izquierda el tornillo posterior de la impresora cama \n"
-"De modo que boquilla sólo golpea la cama."
-
-#: Cura/gui/configWizard.py:1259
-msgid ""
-"Adjust the back right screw of your printer bed\n"
-"So the nozzle just hits the bed."
-msgstr ""
-"Ajustar el tornillo posterior derecha de la impresora cama \n"
-"De modo que la boquilla sólo golpea la cama."
-
-#: Cura/gui/configWizard.py:1263
-msgid ""
-"Adjust the front right screw of your printer bed\n"
-"So the nozzle just hits the bed."
-msgstr ""
-"Ajuste el tornillo frontal derecha de la impresora cama \n"
-"De modo que la boquilla sólo golpea la cama."
-
-#: Cura/gui/configWizard.py:1267
-#, python-format
-msgid "Heating up printer: %d/%d"
-msgstr "El calentamiento de la impresora: %d/%d"
-
-#: Cura/gui/configWizard.py:1269
-msgid ""
-"The printer is hot now. Please insert some PLA filament into the printer."
-msgstr ""
-" La impresora está caliente ahora. Por favor, inserte algunos filamentos PLA "
-"en la impresora."
-
-#: Cura/gui/configWizard.py:1278
-msgid "Use the up/down buttons to move the bed and adjust your Z endstop."
-msgstr ""
-"Utilice los botones arriba/abajo hasta que mover la cama y ajustar su Z tope "
-"final."
-
-#: Cura/gui/configWizard.py:1290
-msgid ""
-"Calibration finished.\n"
-"The squares on the bed should slightly touch each other."
-msgstr ""
-"Calibración terminada.\n"
-"El cuadrado en la cama deben tocar ligeramente el uno al otro."
-
-#: Cura/gui/configWizard.py:1311
-msgid ""
-"This wizard will help you in calibrating the printer head offsets of your "
-"dual extrusion machine"
-msgstr ""
-"Este asistente le ayudará en la calibración de los desplazamientos de la "
-"cabeza impresora de la máquina de extrusión de doble"
-
-#: Cura/gui/configWizard.py:1344
-msgid "Printing initial calibration cross"
-msgstr "Impresión de la cruz de calibración inicial"
-
-#: Cura/gui/configWizard.py:1392
-msgid ""
-"Please measure the distance between the horizontal lines in millimeters."
-msgstr ""
-"Por favor, mida la distancia entre las líneas horizontales en milímetros."
-
-#: Cura/gui/configWizard.py:1402
-msgid "Printing the fine calibration lines."
-msgstr "Impresión de las líneas de calibración fina."
-
-#: Cura/gui/configWizard.py:1457
-msgid ""
-"Which horizontal line number lays perfect on top of each other? Front most "
-"line is zero."
-msgstr ""
-"¿Qué número de línea horizontal establece perfecta en la parte superior de "
-"uno al otro? Frente más línea es cero."
-
-#: Cura/gui/configWizard.py:1468
-#, python-format
-msgid "Calibration finished. Offsets are: %s %s"
-msgstr "Calibración terminada. Las compensaciones son: %s %s"
-
-#: Cura/gui/configWizard.py:1481
-msgid "Please load both extruders with PLA."
-msgstr "Por favor cargar ambos extrusoras con PLA."
-
-#: Cura/gui/configWizard.py:1490
-msgid "Homing printer and heating up both extruders."
-msgstr "Posición de inicio y calentar ambos extrusoras."
-
-#: Cura/gui/configWizard.py:1500
-msgid "Please measure the distance between the vertical lines in millimeters."
-msgstr ""
-"Por favor, mida la distancia entre las líneas verticales en milímetros."
-
-#: Cura/gui/configWizard.py:1507
-msgid ""
-"Which vertical line number lays perfect on top of each other? Leftmost line "
-"is zero."
-msgstr ""
-"¿Qué número línea vertical establece perfecta en la parte superior de uno al "
-"otro? Línea de más a la izquierda es cero."
-
-#: Cura/gui/configWizard.py:1556
-msgid "Head offset wizard"
-msgstr "Asistente compensación del cabezal"
-
-#: Cura/gui/util/engineResultView.py:168
+#: Cura/gui/util/engineResultView.py:186
 #, python-format
 msgid "Loading toolpath for visualization (%d%%)"
 msgstr "Cargando trazados para visualización (%d%%)"
@@ -2456,614 +1588,1573 @@ msgstr "Un error ha ocurrido durante el regenerado de la vista 3D."
 msgid "3D window error"
 msgstr "Error en la ventana 3D"
 
-#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:635
-msgid "A new version of Cura is available, would you like to download?"
-msgstr "Una nueva versión de Cura esta disponible, ¿quieres descargarla?"
+#: Cura/util/profile.py:178 Cura/util/profile.py:179 Cura/util/profile.py:180
+#: Cura/util/profile.py:210 Cura/util/profile.py:211 Cura/util/profile.py:212
+#: Cura/util/profile.py:214
+msgid "Quality"
+msgstr "Calidad"
 
-#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:635
-msgid "New version available"
-msgstr "Nueva versión disponible"
+#: Cura/util/profile.py:178
+msgid "Layer height (mm)"
+msgstr "Espesor de la capa (mm)"
 
-#: Cura/gui/sceneView.py:64
-msgid "Load"
-msgstr "Cargar"
+#: Cura/util/profile.py:178
+msgid ""
+"Layer height in millimeters.\n"
+"This is the most important setting to determine the quality of your print. "
+"Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to "
+"0.25mm with an Ultimaker for very fast prints at low quality."
+msgstr ""
+"Espeso de capa en milimetros. \n"
+"Este es el ajuste más importante para definir la calidad de impresión. "
+"Impresiones normales usan 0.1 mm, Alta calidad 0,06 mm. Puedes incluso "
+"utilizar 0.25mm para impresiones muy rapidas a baja calidad en la Ultimaker."
 
-#: Cura/gui/sceneView.py:69
-msgid "Rotate"
-msgstr "Rotar"
+#: Cura/util/profile.py:179
+msgid "Shell thickness (mm)"
+msgstr "Espesor de la pared (mm)"
 
-#: Cura/gui/sceneView.py:70
-msgid "Scale"
-msgstr "Escala"
+#: Cura/util/profile.py:179
+msgid ""
+"Thickness of the outside shell in the horizontal direction.\n"
+"This is used in combination with the nozzle size to define the number\n"
+"of perimeter lines and the thickness of those perimeter lines."
+msgstr ""
+"Grosor de la pared exterior en la dirección horizontal. \n"
+"Este se utiliza en combinación con el tamaño de la boquilla para definir el "
+"número \n"
+"de líneas perimetrales y el espesor de las líneas del perímetro."
 
-#: Cura/gui/sceneView.py:71
-msgid "Mirror"
-msgstr "Simetria"
+#: Cura/util/profile.py:180 Cura/util/profile.py:203 Cura/util/profile.py:204
+#: Cura/util/profile.py:205 Cura/util/profile.py:206 Cura/util/profile.py:207
+#: Cura/util/profile.py:208 Cura/util/profile.py:209
+msgid "Retraction"
+msgstr "Retracción"
 
-#: Cura/gui/sceneView.py:73 Cura/gui/sceneView.py:76
-msgid "Reset"
-msgstr "Reiniciar"
+#: Cura/util/profile.py:180
+msgid "Enable retraction"
+msgstr "Habilitar retracción"
 
-#: Cura/gui/sceneView.py:74
-msgid "Lay flat"
-msgstr "Recostar"
+#: Cura/util/profile.py:180
+msgid ""
+"Retract the filament when the nozzle is moving over a none-printed area. "
+"Details about the retraction can be configured in the advanced tab."
+msgstr ""
+"Retraer el filamento cuando el nozzle se mueva sobre un area sin impresión. "
+"Detalles de la retracción pueden ser configurados en la pestaña ajustes "
+"avanzados."
 
-#: Cura/gui/sceneView.py:77
-msgid "To max"
-msgstr "Al máximo"
+#: Cura/util/profile.py:181 Cura/util/profile.py:182
+msgid "Fill"
+msgstr "Relleno"
 
-#: Cura/gui/sceneView.py:79
-msgid "Mirror X"
-msgstr "Simetria X"
+#: Cura/util/profile.py:181
+msgid "Bottom/Top thickness (mm)"
+msgstr "Espesor superior e inferior"
 
-#: Cura/gui/sceneView.py:80
-msgid "Mirror Y"
-msgstr "Simetria Y"
+#: Cura/util/profile.py:181
+msgid ""
+"This controls the thickness of the bottom and top layers, the amount of "
+"solid layers put down is calculated by the layer thickness and this value.\n"
+"Having this value a multiple of the layer thickness makes sense. And keep it "
+"near your wall thickness to make an evenly strong part."
+msgstr ""
+"Controla el espesor de la capa inferior y  superior, la cantidad de capas "
+"sólidas se calcula por el espesor de la capa y este valor.\n"
+"Tener un valor múltiplo del espesor de la capa tiene sentido. Y mantenerlo "
+"cerca de su espesor de pared para hacer una pieza uniformemente fuerte."
 
-#: Cura/gui/sceneView.py:81
-msgid "Mirror Z"
-msgstr "Simetria Z"
+#: Cura/util/profile.py:182 Cura/util/profile.py:232 Cura/util/profile.py:233
+#: Cura/util/profile.py:234
+msgid "Infill"
+msgstr "Relleno"
 
-#: Cura/gui/sceneView.py:89
-msgid "Scale X"
-msgstr "Escala X"
+#: Cura/util/profile.py:182
+msgid "Fill Density (%)"
+msgstr "Densidad Relleno (%)"
 
-#: Cura/gui/sceneView.py:91
-msgid "Scale Y"
-msgstr "Escala Y"
+#: Cura/util/profile.py:182
+msgid ""
+"This controls how densely filled the insides of your print will be. For a "
+"solid part use 100%, for an empty part use 0%. A value around 20% is usually "
+"enough.\n"
+"This won't affect the outside of the print and only adjusts how strong the "
+"part becomes."
+msgstr ""
+"Esto controla la densidad de relleno interior de la impresión. Para una "
+"impresión sólida usar 100%, para una vacía 0%. Un valor de alrededor de 20% "
+"es suficiente por lo general.\n"
+"Esto no afectará a la parte exterior de la impresión y sólo afecta a lo "
+"fuerte que la pieza será."
 
-#: Cura/gui/sceneView.py:93
-msgid "Scale Z"
-msgstr "Escala Z"
+#: Cura/util/profile.py:183
+msgid ""
+"The nozzle size is very important, this is used to calculate the line width "
+"of the infill, and used to calculate the amount of outside wall lines and "
+"thickness for the wall thickness you entered in the print settings."
+msgstr ""
+"El tamaño del noozle es muy importante, se usa para calcular el ancho del "
+"trazado y el relleno, y es usado para calcular la cantidad de lineas "
+"exteriores y su espesor de pared según los datos introducidos."
 
-#: Cura/gui/sceneView.py:95
-msgid "Size X (mm)"
-msgstr "Tamaño X (mm)"
+#: Cura/util/profile.py:184 Cura/util/profile.py:185 Cura/util/profile.py:186
+#: Cura/util/profile.py:187 Cura/util/profile.py:188 Cura/util/profile.py:189
+#: Cura/util/profile.py:190
+msgid "Speed and Temperature"
+msgstr "Velocidad  "
 
-#: Cura/gui/sceneView.py:97
-msgid "Size Y (mm)"
-msgstr "Tamaño Y (mm)"
+#: Cura/util/profile.py:184
+msgid "Print speed (mm/s)"
+msgstr "Velocidad impresión (mm/s)"
 
-#: Cura/gui/sceneView.py:99
-msgid "Size Z (mm)"
-msgstr "Tamaño Z (mm)"
+#: Cura/util/profile.py:184
+msgid ""
+"Speed at which printing happens. A well adjusted Ultimaker can reach 150mm/"
+"s, but for good quality prints you want to print slower. Printing speed "
+"depends on a lot of factors. So you will be experimenting with optimal "
+"settings for this."
+msgstr ""
+"Velocid a la que imprime Una Ultimaker bien ajustada puede alcanzar 150mm/s "
+"pero para impresiones de calidad es mejor velocidades menores. La velocidad "
+"de impresión depende de muchos factores. Experimenta hasta encontrar tus "
+"ajustes óptimos."
 
-#: Cura/gui/sceneView.py:101
-msgid "Uniform scale"
-msgstr "Escala Uniforme"
+#: Cura/util/profile.py:185
+msgid "Printing temperature (C)"
+msgstr "Temperatura impresión (C)"
 
-#: Cura/gui/sceneView.py:104
-msgid "View mode"
-msgstr "Modo vista"
+#: Cura/util/profile.py:185 Cura/util/profile.py:186 Cura/util/profile.py:187
+#: Cura/util/profile.py:188 Cura/util/profile.py:189
+msgid ""
+"Temperature used for printing. Set at 0 to pre-heat yourself.\n"
+"For PLA a value of 210C is usually used.\n"
+"For ABS a value of 230C or higher is required."
+msgstr ""
+"Temperaturas usadas para imprimir. Deja a 0 para definirlas.\n"
+"Para PLA un valor a partir 210C es usual\n"
+"Para ABS un valor de 230 o más es requerido."
 
-#: Cura/gui/sceneView.py:104
-msgid "Normal"
-msgstr "Normal"
+#: Cura/util/profile.py:186
+msgid "2nd nozzle temperature (C)"
+msgstr "Temperatura 2º nozzle (C)"
 
-#: Cura/gui/sceneView.py:104
-msgid "Overhang"
-msgstr "Salientes"
+#: Cura/util/profile.py:187
+msgid "3th nozzle temperature (C)"
+msgstr "Temperatura 3º nozzle (C)"
 
-#: Cura/gui/sceneView.py:104
-msgid "Transparent"
-msgstr "Transparente"
+#: Cura/util/profile.py:188
+msgid "4th nozzle temperature (C)"
+msgstr "Temperatura 4º nozzle (C)"
 
-#: Cura/gui/sceneView.py:104
-msgid "X-Ray"
-msgstr "Rayos X"
+#: Cura/util/profile.py:189
+#, fuzzy
+msgid "5th nozzle temperature (C)"
+msgstr "Temperatura 3º nozzle (C)"
 
-#: Cura/gui/sceneView.py:104
-msgid "Layers"
-msgstr "Capas"
+#: Cura/util/profile.py:190
+msgid "Bed temperature (C)"
+msgstr "Temperatura de la cama (C)"
 
-#: Cura/gui/sceneView.py:106
-msgid "Share on YouMagine"
-msgstr "Comparte en YoMagine"
+#: Cura/util/profile.py:190
+msgid ""
+"Temperature used for the heated printer bed. Set at 0 to pre-heat yourself."
+msgstr ""
+"Temperatura usada para calentar la cama. Pon 0 para calentar tu mismo. "
 
-#: Cura/gui/sceneView.py:204
-msgid "Open 3D model"
-msgstr "Abrir modelo 3D"
+#: Cura/util/profile.py:191 Cura/util/profile.py:192
+msgid "None"
+msgstr "Nada"
 
-#: Cura/gui/sceneView.py:229
-msgid "Save 3D model"
-msgstr "Guardar modelo 3d"
+#: Cura/util/profile.py:191
+msgid "Touching buildplate"
+msgstr "Tocando la cama caliente"
 
-#: Cura/gui/sceneView.py:276 Cura/gui/sceneView.py:914
+#: Cura/util/profile.py:191
+msgid "Everywhere"
+msgstr "Cualquier sitio"
+
+#: Cura/util/profile.py:191 Cura/util/profile.py:192 Cura/util/profile.py:193
+#: Cura/util/profile.py:235 Cura/util/profile.py:236 Cura/util/profile.py:237
+#: Cura/util/profile.py:238 Cura/util/profile.py:239
+msgid "Support"
+msgstr "Soportes"
+
+#: Cura/util/profile.py:191
+msgid "Support type"
+msgstr "Tipo de soporte"
+
+#: Cura/util/profile.py:191
+msgid ""
+"Type of support structure build.\n"
+"\"Touching buildplate\" is the most commonly used support setting.\n"
+"\n"
+"None does not do any support.\n"
+"Touching buildplate only creates support where the support structure will "
+"touch the build platform.\n"
+"Everywhere creates support even on top of parts of the model."
+msgstr ""
+"Tipo de estructura de soporte. \n"
+"\"Tocar plataforma\" es el ajuste de soporte más utilizado.\n"
+"\n"
+"Nada no hace ningún tipo de soporte. \n"
+"Tocar plataforma  creara apoyos en la estructura hasta tocar la "
+"plataforma. \n"
+"Cualquier sitio creara soportes incluso sobre la pieza"
+
+#: Cura/util/profile.py:192 Cura/util/profile.py:243
+msgid "Brim"
+msgstr "Borde (Brim)"
+
+#: Cura/util/profile.py:192 Cura/util/profile.py:244 Cura/util/profile.py:245
+#: Cura/util/profile.py:246 Cura/util/profile.py:247 Cura/util/profile.py:248
+#: Cura/util/profile.py:249 Cura/util/profile.py:250 Cura/util/profile.py:251
+#: Cura/util/profile.py:252 Cura/util/profile.py:253 Cura/util/profile.py:254
+msgid "Raft"
+msgstr "Borrador (Raft)"
+
+#: Cura/util/profile.py:192 Cura/util/profile.py:224 Cura/util/profile.py:225
+#: Cura/util/profile.py:226
+msgid "Skirt"
+msgstr "Falda"
+
+#: Cura/util/profile.py:192
+msgid "Platform adhesion type"
+msgstr "Tipo de adhesion en la cama"
+
+#: Cura/util/profile.py:192
+msgid ""
+"Different options that help in preventing corners from lifting due to "
+"warping.\n"
+"Brim adds a single layer thick flat area around your object which is easy to "
+"cut off afterwards, and it is the recommended option.\n"
+"Raft adds a thick raster below the object and a thin interface between this "
+"and your object.\n"
+"(Note that enabling the brim or raft disables the skirt)"
+msgstr ""
+"Diferentes opciones que ayudan en la prevención de las esquinas de elevación "
+"debido a la deformación. \n"
+"Falda (Brim) añade una capa de grosor plana alrededor de su objeto, que es "
+"fácil de cortar después, y la opción recomendada. \n"
+"Borrador (Raft) agrega una trama gruesa por debajo del objeto y una interfaz "
+"fina entre esto y su objeto. \n"
+"(Tenga en cuenta que la activación de Raft o Brim desactiva el borde-skirt)"
+
+#: Cura/util/profile.py:193
+msgid "Both"
+msgstr "Ambos"
+
+#: Cura/util/profile.py:193
+msgid "First extruder"
+msgstr "Primer extrusor"
+
+#: Cura/util/profile.py:193
+msgid "Second extruder"
+msgstr "Segundo extrusor"
+
+#: Cura/util/profile.py:193
+msgid "Support dual extrusion"
+msgstr "Soporte extrusión dual"
+
+#: Cura/util/profile.py:193
+msgid ""
+"Which extruder to use for support material, for break-away support you can "
+"use both extruders.\n"
+"But if one of the materials is more expensive then the other you could "
+"select an extruder to use for support material. This causes more extruder "
+"switches.\n"
+"You can also use the 2nd extruder for soluble support materials."
+msgstr ""
+"Cual  extrusor se usa para el material de soporte, para soporte de apoyo, se "
+"pueden usar los dos extrusores. \n"
+"Sin embargo, si uno de los materiales es más caro que el otro podría "
+"seleccionar un extrusor para el material de soporte. Esto hace más cambios "
+"de extrusor. \n"
+"También puede utilizar la segunda extrusora para materiales de soporte "
+"solubles."
+
+#: Cura/util/profile.py:194 Cura/util/profile.py:195 Cura/util/profile.py:196
+msgid "Dual extrusion"
+msgstr "Extrusion doble"
+
+#: Cura/util/profile.py:194
+msgid "Wipe&prime tower"
+msgstr "Limpie y la pila principal"
+
+#: Cura/util/profile.py:194
+msgid ""
+"The wipe-tower is a tower printed on every layer when switching between "
+"nozzles.\n"
+"The old nozzle is wiped off on the tower before the new nozzle is used to "
+"print the 2nd color."
+msgstr ""
+"La torre de limpieza es una torre impresa que en cada capa cuando se cambia "
+"entre las boquillas.\n"
+"La vieja boquilla se limpia en la torre antes de que la nueva boquilla se "
+"utiliza para imprimir el segundo color."
+
+#: Cura/util/profile.py:195
+msgid "Wipe&prime tower volume per layer (mm3)"
+msgstr "Limpie y volumen de la pila principal por capa (mm3)"
+
+#: Cura/util/profile.py:195
+msgid ""
+"The amount of material put in the wipe/prime tower.\n"
+"This is done in volume because in general you want to extrude a\n"
+"certain amount of volume to get the extruder going, independent on the layer "
+"height.\n"
+"This means that with thinner layers, your tower gets bigger."
+msgstr ""
+"La cantidad de material puesto en el pila de limpieza.\n"
+"Esto se hace en el volumen porque, en general desea extruir una\n"
+"cierta cantidad de volumen para obtener la extrusora va , independientemente "
+"de la altura de la capa.\n"
+"Esto significa que con capas más delgadas, la pila se hace más grande."
+
+#: Cura/util/profile.py:196
+msgid "Ooze shield"
+msgstr "El escudo exudado"
+
+#: Cura/util/profile.py:196
+msgid ""
+"The ooze shield is a 1 line thick shell around the object which stands a few "
+"mm from the object.\n"
+"This shield catches any oozing from the unused nozzle in dual-extrusion."
+msgstr ""
+"El escudo exudado es una gruesa cáscara de 1 línea alrededor del objeto que "
+"se encuentra unos pocos mm desde el objeto .\n"
+"Este escudo atrapa cualquier supuración de la boquilla sin utilizar en doble "
+"extrusión."
+
+#: Cura/util/profile.py:197 Cura/util/profile.py:198 Cura/util/profile.py:199
+#: Cura/util/profile.py:200 Cura/util/profile.py:201 Cura/util/profile.py:202
+msgid "Filament"
+msgstr "Filamento"
+
+#: Cura/util/profile.py:197
+msgid "Diameter (mm)"
+msgstr "Diámetro (mm)"
+
+#: Cura/util/profile.py:197
+msgid ""
+"Diameter of your filament, as accurately as possible.\n"
+"If you cannot measure this value you will have to calibrate it, a higher "
+"number means less extrusion, a smaller number generates more extrusion."
+msgstr ""
+"Diámetro del filamento, con la mayor precisión posible.\n"
+"Si no se puede medir este valor tendrá que calibrarlo, más alto significa "
+"menos extrusión,  más pequeño genera más extrusión."
+
+#: Cura/util/profile.py:198
+msgid "Diameter2 (mm)"
+msgstr "Diámetro 2(mm)"
+
+#: Cura/util/profile.py:198
+msgid ""
+"Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter "
+"as for nozzle 1."
+msgstr ""
+"Diámetro de tu filamento para el 2º extrusor. Usa 0 para usar el mismo "
+"diámetro que para el 1."
+
+#: Cura/util/profile.py:199
+msgid "Diameter3 (mm)"
+msgstr "Diametro 3(mm)"
+
+#: Cura/util/profile.py:199
+msgid ""
+"Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter "
+"as for nozzle 1."
+msgstr ""
+"Diametro de tu filamento para el 3º extrusor. Usa 0 para usar el mismo "
+"diametro que para el 1."
+
+#: Cura/util/profile.py:200
+msgid "Diameter4 (mm)"
+msgstr "Diametro 4(mm)"
+
+#: Cura/util/profile.py:200
+msgid ""
+"Diameter of your filament for the 4th nozzle. Use 0 to use the same diameter "
+"as for nozzle 1."
+msgstr ""
+"Diametro de tu filamento para el 4º extrusor. Usa 0 para usar el mismo "
+"diametro que para el 1."
+
+#: Cura/util/profile.py:201
+#, fuzzy
+msgid "Diameter5 (mm)"
+msgstr "Diámetro (mm)"
+
+#: Cura/util/profile.py:201
+#, fuzzy
+msgid ""
+"Diameter of your filament for the 5th nozzle. Use 0 to use the same diameter "
+"as for nozzle 1."
+msgstr ""
+"Diametro de tu filamento para el 3º extrusor. Usa 0 para usar el mismo "
+"diametro que para el 1."
+
+#: Cura/util/profile.py:202
+msgid "Flow (%)"
+msgstr "Flujo (%)"
+
+#: Cura/util/profile.py:202
+msgid ""
+"Flow compensation, the amount of material extruded is multiplied by this "
+"value"
+msgstr ""
+"Compensación de flujo, la cantidad de material extruida se multiplicará por "
+"este valor"
+
+#: Cura/util/profile.py:203
+msgid "Speed (mm/s)"
+msgstr "Velocidad (mm/s)"
+
+#: Cura/util/profile.py:203
+msgid ""
+"Speed at which the filament is retracted, a higher retraction speed works "
+"better. But a very high retraction speed can lead to filament grinding."
+msgstr ""
+"Velocidad a la que el filamento es retraido, a mayor velocidad mejor "
+"funcionamiento. Velocidades muy alta puedes comerse el filamento."
+
+#: Cura/util/profile.py:204
+msgid "Distance (mm)"
+msgstr "Distancia (mm)"
+
+#: Cura/util/profile.py:204
+msgid ""
+"Amount of retraction, set at 0 for no retraction at all. A value of 4.5mm "
+"seems to generate good results."
+msgstr ""
+"Cantidad de retracción, fijar a 0 para no retraer. Un valor de 4.5mm parece "
+"ofrecer buenos resultados."
+
+#: Cura/util/profile.py:205
+msgid "Dual extrusion switch amount (mm)"
+msgstr "Extrusión dual cantidad de cambio (mm)"
+
+#: Cura/util/profile.py:205
+msgid ""
+"Amount of retraction when switching nozzle with dual-extrusion, set at 0 for "
+"no retraction at all. A value of 16.0mm seems to generate good results."
+msgstr ""
+"Cantidd de retracción cuando cambiar nozzle con extrusión dual, fijar a 0 "
+"para no retraer. Un valor de 16 mm parece ofrecer buenos resultados."
+
+#: Cura/util/profile.py:206
+msgid "Minimum travel (mm)"
+msgstr "Viaje mínimo (mm)"
+
+#: Cura/util/profile.py:206
+msgid ""
+"Minimum amount of travel needed for a retraction to happen at all. To make "
+"sure you do not get a lot of retractions in a small area."
+msgstr ""
+"Minima distancia de desplazamiento necesaria para retraer. Para asegurar que "
+"no retrae en pequeñas areas"
+
+#: Cura/util/profile.py:207
+msgid "Off"
+msgstr ""
+
+#: Cura/util/profile.py:207
+msgid "All"
+msgstr ""
+
+#: Cura/util/profile.py:207
+msgid "No Skin"
+msgstr ""
+
+#: Cura/util/profile.py:207
+msgid "Enable combing"
+msgstr "Habilitar peinado (combing)"
+
+#: Cura/util/profile.py:207
+#, fuzzy
+msgid ""
+"Combing is the act of avoiding holes in the print for the head to travel "
+"over. If combing is 'Off' the printer head moves straight from the start "
+"point to the end point and it will always retract.  If 'All', enable combing "
+"on all surfaces.  If 'No Skin', enable combing on all except skin surfaces."
+msgstr ""
+"Peinado (combing) es el acto de evitar los agujeros en la impresión. Si esta "
+"desactiva el cabezal de impresión se desplaza directamente desde el punto de "
+"inicio hasta el punto final y siempre se retrae."
+
+#: Cura/util/profile.py:208
+msgid "Minimal extrusion before retracting (mm)"
+msgstr "Mínima extrusión para retraer (mm)"
+
+#: Cura/util/profile.py:208
+msgid ""
+"The minimal amount of extrusion that needs to be done before retracting "
+"again if a retraction needs to happen before this minimal is reached the "
+"retraction is ignored.\n"
+"This avoids retracting a lot on the same piece of filament which flattens "
+"the filament and causes grinding issues."
+msgstr ""
+"La cantidad mínima de extrusión que hay que hacer antes de retraer de nuevo "
+"si una retracción tiene que ocurrir antes de que este mínimo se alcanza la "
+"retracción se ignora.\n"
+"Esto evita la retracción mucho en la misma pieza de filamento que se aplana "
+"el filamento y provoca problemas de molienda."
+
+#: Cura/util/profile.py:209
+msgid "Z hop when retracting (mm)"
+msgstr "Mínima extrusión para retraer (mm)"
+
+#: Cura/util/profile.py:209
+msgid ""
+"When a retraction is done, the head is lifted by this amount to travel over "
+"the print. A value of 0.075 works well. This feature has a lot of positive "
+"effect on delta towers."
+msgstr ""
+"Cuando se realiza una retractación, la cabeza es levantada por esta cantidad "
+"para viajar por la impresión. Un valor de 0,075 funciona bien. Esta "
+"característica tiene una gran cantidad de efecto positivo en torres delta."
+
+#: Cura/util/profile.py:210
+msgid "Initial layer thickness (mm)"
+msgstr "Espesor capa inicial (mm)"
+
+#: Cura/util/profile.py:210
+msgid ""
+"Layer thickness of the bottom layer. A thicker bottom layer makes sticking "
+"to the bed easier. Set to 0.0 to have the bottom layer thickness the same as "
+"the other layers."
+msgstr ""
+"Espesor de capa inferior. Un capa inferior mas gruesa ayuda a adherir la "
+"impresión mejor. Un valor de 0.0 hara que la capa tenga el mismo espesor que "
+"las demás."
+
+#: Cura/util/profile.py:211
+msgid "Initial layer line width (%)"
+msgstr "Ancho de linea de la capa (mm)"
+
+#: Cura/util/profile.py:211
+msgid ""
+"Extra width factor for the extrusion on the first layer, on some printers "
+"it's good to have wider extrusion on the first layer to get better bed "
+"adhesion."
+msgstr ""
+"Factor de espesor extra para la extrusión en la primera capa, en algunas "
+"impresoras es bueno tener más ancho de extrusión en la primera capa para "
+"obtener una mejor adherencia cama."
+
+#: Cura/util/profile.py:212
+msgid "Cut off object bottom (mm)"
+msgstr "Cortar fondo del objeto (mm)"
+
+#: Cura/util/profile.py:212
+msgid ""
+"Sinks the object into the platform, this can be used for objects that do not "
+"have a flat bottom and thus create a too small first layer."
+msgstr ""
+"Hunde el objeto en la plataforma, esto puede ser utilizado para objetos que "
+"no tienen un fondo plano y por lo tanto crean una primera capa demasiado "
+"pequeño."
+
+#: Cura/util/profile.py:214
+msgid "Dual extrusion overlap (mm)"
+msgstr "Superposición de la extrusión dual"
+
+#: Cura/util/profile.py:214
+msgid ""
+"Add a certain amount of overlapping extrusion on dual-extrusion prints. This "
+"bonds the different colors together."
+msgstr ""
+"Añadir cierta cantidad de superposición en las extrusiones doble. Esto "
+"mezcla mejor diferentes colores."
+
+#: Cura/util/profile.py:215 Cura/util/profile.py:216 Cura/util/profile.py:217
+#: Cura/util/profile.py:218 Cura/util/profile.py:219 Cura/util/profile.py:220
+msgid "Speed"
+msgstr "Velocidad"
+
+#: Cura/util/profile.py:215
+msgid "Travel speed (mm/s)"
+msgstr "Velocidad desplazamientos (mm/s)"
+
+#: Cura/util/profile.py:215
+msgid ""
+"Speed at which travel moves are done, a well built Ultimaker can reach "
+"speeds of 250mm/s. But some machines might miss steps then."
+msgstr ""
+"Velocidad a la que se realizan viajes movimientos, un Ultimaker bien "
+"construido puede alcanzar velocidades de 250 mm/s . Pero algunas máquinas "
+"podrían perderse los pasos a continuación ."
+
+#: Cura/util/profile.py:216
+msgid "Bottom layer speed (mm/s)"
+msgstr "Velociad capa inferior (mm/s)"
+
+#: Cura/util/profile.py:216
+msgid ""
+"Print speed for the bottom layer, you want to print the first layer slower "
+"so it sticks better to the printer bed."
+msgstr ""
+"Velocidad de impresión para la capa inferior, esta capa debe imprimirse mas "
+"lenta para mejor la adhesión."
+
+#: Cura/util/profile.py:217
+msgid "Infill speed (mm/s)"
+msgstr "Velocidad relleno (mm/s)"
+
+#: Cura/util/profile.py:217
+msgid ""
+"Speed at which infill parts are printed. If set to 0 then the print speed is "
+"used for the infill. Printing the infill faster can greatly reduce printing "
+"time, but this can negatively affect print quality."
+msgstr ""
+"Velocidad a la que se imprimen las piezas de relleno. Si se establece en 0, "
+"entonces la velocidad de impresión se utiliza para el relleno. Imprimir el "
+"relleno más rápido puede reducir considerablemente el tiempo de impresión, "
+"pero esto puede afectar negativamente a la calidad de impresión."
+
+#: Cura/util/profile.py:218
+msgid "Top/bottom speed (mm/s)"
+msgstr "Velocidad capa superior e inferior (mm/s)"
+
+#: Cura/util/profile.py:218
+msgid ""
+"Speed at which top/bottom parts are printed. If set to 0 then the print "
+"speed is used for the infill. Printing the top/bottom faster can greatly "
+"reduce printing time, but this can negatively affect print quality."
+msgstr ""
+"Velocidad a la que arriba/partes inferiores se imprimen. Si se establece en "
+"0, entonces la velocidad de impresión se utiliza para el relleno. Impresión "
+"de la parte superior/inferior más rápido puede reducir considerablemente el "
+"tiempo de impresión, pero esto puede afectar negativamente a la calidad de "
+"impresión."
+
+#: Cura/util/profile.py:219
+msgid "Outer shell speed (mm/s)"
+msgstr "Velocidad del borde externa (mm/s)"
+
+#: Cura/util/profile.py:219
+msgid ""
+"Speed at which outer shell is printed. If set to 0 then the print speed is "
+"used. Printing the outer shell at a lower speed improves the final skin "
+"quality. However, having a large difference between the inner shell speed "
+"and the outer shell speed will effect quality in a negative way."
+msgstr ""
+"Velocidad a la que se imprime cáscara externa. Si se establece en 0, "
+"entonces se utiliza la velocidad de impresión. Impresión de la capa exterior "
+"a una velocidad inferior mejora la calidad final de la piel. Sin embargo, "
+"tener una gran diferencia entre la velocidad de la cáscara interior y la "
+"cáscara exterior velocidad afectará a la calidad de una manera negativa."
+
+#: Cura/util/profile.py:220
+msgid "Inner shell speed (mm/s)"
+msgstr "Velocidad relleno interno (mm/s)"
+
+#: Cura/util/profile.py:220
+msgid ""
+"Speed at which inner shells are printed. If set to 0 then the print speed is "
+"used. Printing the inner shell faster then the outer shell will reduce "
+"printing time. It is good to set this somewhere in between the outer shell "
+"speed and the infill/printing speed."
+msgstr ""
+"Velocidad a la que son impresos los rellenos. Si dejas 0 se usara la "
+"velocidad de impresión. Imprimir los rellenos más rápido puede reducir mucho "
+"el tiempo de impresión, pero puede puede afectar negativamente la calidad."
+
+#: Cura/util/profile.py:221 Cura/util/profile.py:222 Cura/util/profile.py:227
+#: Cura/util/profile.py:228 Cura/util/profile.py:229 Cura/util/profile.py:230
+#: Cura/util/profile.py:231
+msgid "Cool"
+msgstr "Ventilación"
+
+#: Cura/util/profile.py:221
+msgid "Minimal layer time (sec)"
+msgstr "Minimo tiempo por capa (seg)"
+
+#: Cura/util/profile.py:221
+msgid ""
+"Minimum time spent in a layer, gives the layer time to cool down before the "
+"next layer is put on top. If the layer will be placed down too fast the "
+"printer will slow down to make sure it has spent at least this amount of "
+"seconds printing this layer."
+msgstr ""
+"Tiempo mínimo de permanencia en una capa, le da al tiempo de capa para que "
+"se enfríe antes de poner la siguiente capa en la parte superior. Si la capa "
+"se colocará abajo demasiado rápido la impresora se ralentizará para "
+"asegurarse de que ha pasado por lo menos esta cantidad de segundos la "
+"impresión de esta capa."
+
+#: Cura/util/profile.py:222
+msgid "Enable cooling fan"
+msgstr "Habilitar ventilación"
+
+#: Cura/util/profile.py:222
+msgid ""
+"Enable the cooling fan during the print. The extra cooling from the cooling "
+"fan is essential during faster prints."
+msgstr ""
+"Activa la ventilación durante la impresión. La ventilación extra es esencial "
+"en las impresiones rápidas."
+
+#: Cura/util/profile.py:224
+msgid "Line count"
+msgstr "Numero lineas"
+
+#: Cura/util/profile.py:224
+msgid ""
+"The skirt is a line drawn around the object at the first layer. This helps "
+"to prime your extruder, and to see if the object fits on your platform.\n"
+"Setting this to 0 will disable the skirt. Multiple skirt lines can help "
+"priming your extruder better for small objects."
+msgstr ""
+"El Borde es una linea alrededor del objeto en la primera capa. Esto ayuda a "
+"limpiar el extrusor y ver si caben los objetos en la plataforma.\n"
+"Un valor de 0 desactiva el Borde. Multiples lineas ayudan a cebar el "
+"extrusor para objetos pequeños."
+
+#: Cura/util/profile.py:225
+msgid "Start distance (mm)"
+msgstr "Distancia de inicio (mm)"
+
+#: Cura/util/profile.py:225
+msgid ""
+"The distance between the skirt and the first layer.\n"
+"This is the minimal distance, multiple skirt lines will be put outwards from "
+"this distance."
+msgstr ""
+"La distancia entre el borde y la primera capa.\n"
+"Esta es la mínima distancia, multiples bordes se pondrán hacia afuera."
+
+#: Cura/util/profile.py:226
+msgid "Minimal length (mm)"
+msgstr "Minima longitud (mm)"
+
+#: Cura/util/profile.py:226
+msgid ""
+"The minimal length of the skirt, if this minimal length is not reached it "
+"will add more skirt lines to reach this minimal lenght.\n"
+"Note: If the line count is set to 0 this is ignored."
+msgstr ""
+"La longitud mínima de la falda (skirt), si no se alcanza esta longitud "
+"mínima, añadirá más líneas a la falda (skirt) para llegar a esta longitud "
+"mínima.\n"
+"Nota: Si el número de línea se establece en 0 esto se ignora."
+
+#: Cura/util/profile.py:227
+msgid "Fan full on at height (mm)"
+msgstr "Ventidador desde la altura (mm)"
+
+#: Cura/util/profile.py:227
+msgid ""
+"The height at which the fan is turned on completely. For the layers below "
+"this the fan speed is scaled linearly with the fan off at layer 0."
+msgstr ""
+"La altura a la que el ventilador se enciende completamente. Para las capas "
+"por debajo de esta la velocidad del ventilador se escala linealmente con el "
+"ventilador en la capa 0."
+
+#: Cura/util/profile.py:228
+msgid "Fan speed min (%)"
+msgstr "Velocidad ventilador min (%)"
+
+#: Cura/util/profile.py:228
+msgid ""
+"When the fan is turned on, it is enabled at this speed setting. If cool "
+"slows down the layer, the fan is adjusted between the min and max speed. "
+"Minimal fan speed is used if the layer is not slowed down due to cooling."
+msgstr ""
+"Cuando el ventilador esta activado, funciona a esta velocidad. Si la "
+"ventilación reduce la velocidad de la capa, el ventilador se ajustará en las "
+"velocidades max y min. La velocidad minima será usada si no se reduce la "
+"velocidad debido al la ventilación."
+
+#: Cura/util/profile.py:229
+msgid "Fan speed max (%)"
+msgstr "Velocidad ventilador max (%)"
+
+#: Cura/util/profile.py:229
+msgid ""
+"When the fan is turned on, it is enabled at this speed setting. If cool "
+"slows down the layer, the fan is adjusted between the min and max speed. "
+"Maximal fan speed is used if the layer is slowed down due to cooling by more "
+"than 200%."
+msgstr ""
+"Cuando el ventilador está encendido, se habilita en este nivel de velocidad. "
+"Si la ventialción ralentiza la capa, se ajusta entre el min y la velocidad "
+"máxima. Máxima velocidad del ventilador se utiliza si la capa se hace más "
+"lenta debido al enfriamiento por más de 200%."
+
+#: Cura/util/profile.py:230
+msgid "Minimum speed (mm/s)"
+msgstr "Minima velocidad (mm/s)"
+
+#: Cura/util/profile.py:230
+msgid ""
+"The minimal layer time can cause the print to slow down so much it starts to "
+"ooze. The minimal feedrate protects against this. Even if a print gets "
+"slowed down it will never be slower than this minimal speed."
+msgstr ""
+"El tiempo mínimo por capa puede hacer que la impresión se ralentice tanto "
+"que empieza a exudar. El avance mínimo protege contra esto. Incluso si una "
+"impresión se ralentiza nunca será más lenta que la velocidad mínima."
+
+#: Cura/util/profile.py:231
+msgid "Cool head lift"
+msgstr "Cool head lift"
+
+#: Cura/util/profile.py:231
+msgid ""
+"Lift the head if the minimal speed is hit because of cool slowdown, and wait "
+"the extra time so the minimal layer time is always hit."
+msgstr ""
+"Levante la cabeza si la velocidad mínima es alcanzada por la desaceleración "
+"de la ventilación, y esperar el tiempo extra para que el tiempo mínimo por "
+"capa siempre se alcance."
+
+#: Cura/util/profile.py:232
+msgid "Solid infill top"
+msgstr "Relleno solido superior"
+
+#: Cura/util/profile.py:232
+msgid ""
+"Create a solid top surface, if set to false the top is filled with the fill "
+"percentage. Useful for cups/vases."
+msgstr ""
+"Crea una superficie superior solidad, si esta desactivado se rellena con el "
+"porcentaje de rellon. Util para vaso y tazas."
+
+#: Cura/util/profile.py:233
+msgid "Solid infill bottom"
+msgstr "Relleno solido inferior"
+
+#: Cura/util/profile.py:233
+msgid ""
+"Create a solid bottom surface, if set to false the bottom is filled with the "
+"fill percentage. Useful for buildings."
+msgstr ""
+"Crea una superficie solida inferior, si se desactiva la capa inferior se "
+"realiza con el porc. del relleno. Útil para edificios."
+
+#: Cura/util/profile.py:234
+msgid "Infill overlap (%)"
+msgstr "Superposición relleno (%)"
+
+#: Cura/util/profile.py:234
+msgid ""
+"Amount of overlap between the infill and the walls. There is a slight "
+"overlap with the walls and the infill so the walls connect firmly to the "
+"infill."
+msgstr ""
+"Cantidad de superposicion entre el relleno y las paredes. Un ligera "
+"superposición entre paredes y relleno conecta firmemente ambas."
+
+#: Cura/util/profile.py:235
+msgid "Structure type"
+msgstr "Tipo de soporte"
+
+#: Cura/util/profile.py:235
+msgid ""
+"The type of support structure.\n"
+"Grid is very strong and can come off in 1 piece, however, sometimes it is "
+"too strong.\n"
+"Lines are single walled lines that break off one at a time. Which is more "
+"work to remove, but as it is less strong it does work better on tricky "
+"prints."
+msgstr ""
+"El tipo de estructura de soporte.\n"
+"Grilla es muy fuerte y puede salir en 1 pieza, sin embargo, a veces es "
+"demasiado fuerte.\n"
+"Las líneas son líneas de pared única que se desprenden de una en una. ¿Qué "
+"es más trabajo para eliminar, pero ya que es menos fuerte que funcionara "
+"mejor en impresiones difíciles."
+
+#: Cura/util/profile.py:236
+msgid "Overhang angle for support (deg)"
+msgstr "Ángulo saliente de apoyo (grados)"
+
+#: Cura/util/profile.py:236
+msgid ""
+"The minimal angle that overhangs need to have to get support. With 90 degree "
+"being horizontal and 0 degree being vertical."
+msgstr ""
+"El ángulo mínimo que voladizos hay que tener para obtener apoyo. Con 90 "
+"grados de ser horizontal y 0 grados verticales."
+
+#: Cura/util/profile.py:237
+msgid "Fill amount (%)"
+msgstr "Cantidad de relleno (%)"
+
+#: Cura/util/profile.py:237
 #, python-format
-msgid "Print with %s"
-msgstr "Imprimir con %s"
-
-#: Cura/gui/sceneView.py:279 Cura/gui/mainWindow.py:84
-msgid "Save GCode..."
-msgstr "Guardar GCode..."
-
-#: Cura/gui/sceneView.py:280
-msgid "Slice engine log..."
-msgstr "Log del motor de fileteado..."
-
-#: Cura/gui/sceneView.py:305 Cura/gui/sceneView.py:917
-msgid "Save toolpath"
-msgstr "Guardar trayectorias (GCode)"
-
-#: Cura/gui/sceneView.py:352
-msgid "The slicing engine reported the following"
-msgstr "El fileteado informó lo siguiente"
-
-#: Cura/gui/sceneView.py:352
-msgid "Engine log..."
-msgstr "Engine log..."
-
-#: Cura/gui/sceneView.py:491
-msgid "How many copies do you want?"
-msgstr "¿Cuántas copias lo que quieres?"
-
-#: Cura/gui/sceneView.py:491
-msgid "Number of copies"
-msgstr "Número de copias"
-
-#: Cura/gui/sceneView.py:491
-msgid "Multiply"
-msgstr "Multiplicar objeto"
-
-#: Cura/gui/sceneView.py:780
-msgid "Center on platform"
-msgstr "Centrar en la plataforma"
-
-#: Cura/gui/sceneView.py:781
-msgid "Delete object"
-msgstr "Borrar objeto"
-
-#: Cura/gui/sceneView.py:782
-msgid "Multiply object"
-msgstr "Multiplicar objeto"
-
-#: Cura/gui/sceneView.py:783
-msgid "Split object into parts"
-msgstr "Cortar objetos en partes"
-
-#: Cura/gui/sceneView.py:785
-msgid "Dual extrusion merge"
-msgstr "Fusionar extrusión dual"
-
-#: Cura/gui/sceneView.py:787
-msgid "Delete all objects"
-msgstr "Borrar todos los objetos"
-
-#: Cura/gui/sceneView.py:788
-msgid "Reload all objects"
-msgstr "Releer todos los objetos"
-
-#: Cura/gui/sceneView.py:911
-msgid "Toolpath to SD"
-msgstr "Trazadpo a SD"
-
-#: Cura/gui/sceneView.py:1205
-msgid "Overhang view not working due to lack of OpenGL shaders support."
-msgstr "Vista \"Salientes\" no funciona por falta de \"OpenGL shaders\"."
-
-#: Cura/gui/firmwareInstall.py:64
 msgid ""
-"I am sorry, but Cura does not ship with a default firmware for your machine "
-"configuration."
+"Amount of infill structure in the support material, less material gives "
+"weaker support which is easier to remove. 15% seems to be a good average."
 msgstr ""
-"Lo siento, pero cura no viene con un firmware por defecto para la "
-"configuración de tu maquina."
 
-#: Cura/gui/firmwareInstall.py:64 Cura/gui/firmwareInstall.py:69
-#: Cura/gui/firmwareInstall.py:124 Cura/gui/mainWindow.py:565
-msgid "Firmware update"
-msgstr "Actualización firmware"
+#: Cura/util/profile.py:238
+msgid "Distance X/Y (mm)"
+msgstr "Distancia X/Y (mm)"
 
-#: Cura/gui/firmwareInstall.py:69
+#: Cura/util/profile.py:238
 msgid ""
-"Cura only supports firmware updates for ATMega2560 based hardware.\n"
-"So updating your RepRap with Cura might or might not work."
+"Distance of the support material from the print, in the X/Y directions.\n"
+"0.7mm gives a nice distance from the print so the support does not stick to "
+"the print."
 msgstr ""
-"Cura sólo admite actualizaciones de firmware para el hardware basado "
-"Atmega2560.\n"
-"Así que la actualización de su RepRap con Cura podría o no podría funcionar."
+"Distancia del material de soporte a la impresión, en las direcciones X/Y.\n"
+"0.7mm da buen resultado y el soporte no se pega a la impresión."
 
-#: Cura/gui/firmwareInstall.py:77 Cura/gui/firmwareInstall.py:181
-msgid "OK"
-msgstr "Aceptar"
+#: Cura/util/profile.py:239
+msgid "Distance Z (mm)"
+msgstr "Distancia Z (mm)"
 
-#: Cura/gui/firmwareInstall.py:98 Cura/gui/firmwareInstall.py:265
-msgid "Reading firmware..."
-msgstr "Leyendo firmware..."
-
-#: Cura/gui/firmwareInstall.py:100 Cura/gui/firmwareInstall.py:267
-msgid "Connecting to machine..."
-msgstr "Conectando a la máquina"
-
-#: Cura/gui/firmwareInstall.py:104 Cura/gui/firmwareInstall.py:271
+#: Cura/util/profile.py:239
 msgid ""
-"Please connect the printer to\n"
-"your computer with the USB cable."
+"Distance from the top/bottom of the support to the print. A small gap here "
+"makes it easier to remove the support but makes the print a bit uglier.\n"
+"0.15mm gives a good seperation of the support material."
 msgstr ""
-"Por favor, conecte la impresora a \n"
-"su computadora con el cable USB."
+"Distancia desde la parte superior/inferior del soporte a la impresión. Un "
+"pequeño espacio aquí hace que sea más fácil de quitar el apoyo, pero hace "
+"que la impresión mas fea.\n"
+"0,15 mm da una buena separación del material de soporte."
 
-#: Cura/gui/firmwareInstall.py:123
+#: Cura/util/profile.py:240 Cura/util/profile.py:241
+msgid "Black Magic"
+msgstr "Magia negra"
+
+#: Cura/util/profile.py:240
+msgid "Spiralize the outer contour"
+msgstr "Espiralizar el contorno exterior"
+
+#: Cura/util/profile.py:240
 msgid ""
-"Failed to find machine for firmware upgrade\n"
-"Is your machine connected to the PC?"
+"Spiralize is smoothing out the Z move of the outer edge. This will create a "
+"steady Z increase over the whole print. This feature turns a solid object "
+"into a single walled print with a solid bottom.\n"
+"This feature used to be called Joris in older versions."
 msgstr ""
-"Fallo al buscar actualización del firmware\n"
-"¿Esta tu máquina conectada al PC?"
+"Espiralizar está allanando el movimiento Z del borde exterior . Esto creará "
+"un incremento Z constante durante toda la impresión. Esta característica "
+"convierte a un objeto sólido en una impresión de una sola pared con un fondo "
+"sólido.\n"
+"Esta característica se llamaba Joris en versiones anteriores."
 
-#: Cura/gui/firmwareInstall.py:130
+#: Cura/util/profile.py:241
+msgid "Only follow mesh surface"
+msgstr "Sólo seguir superficie de malla"
+
+#: Cura/util/profile.py:241
 msgid ""
-"Failed to install firmware:\n"
-"This firmware is not compatible with this machine.\n"
-"Trying to install UMO firmware on an UM2 or UMO+?"
+"Only follow the mesh surfaces of the 3D model, do not do anything else. No "
+"infill, no top/bottom, nothing."
 msgstr ""
-"No se pudo instalar el firmware:\n"
-"Este firmware no es compatible con este equipo.\n"
-"¿Tratar de instalar el firmware UMO en una UM2 o UMO+?"
+"Sólo siga las superficies de malla del modelo 3D, no hacer nada más. Sin "
+"relleno, no superior e inferior, ni nada."
 
-#: Cura/gui/firmwareInstall.py:136
+#: Cura/util/profile.py:243
+msgid "Brim line amount"
+msgstr "Cantidad de bordes"
+
+#: Cura/util/profile.py:243
 msgid ""
-"Failed to install firmware:\n"
-"This firmware is not compatible with this machine.\n"
-"Trying to install UM2 or UMO+ firmware on an UMO?"
+"The amount of lines used for a brim, more lines means a larger brim which "
+"sticks better, but this also makes your effective print area smaller."
 msgstr ""
-"No se pudo instalar el firmware:\n"
-"Este firmware no es compatible con este equipo.\n"
-"¿Tratar de instalar el firmware UMO en una UM2 o UMO+?"
+"La cantidad de lineas usada por Brim, mas lineas significa mayor Brim y "
+"mejor adhesión, pero hace tu área efectiva de impresión menor."
 
-#: Cura/gui/firmwareInstall.py:141 Cura/gui/firmwareInstall.py:293
-msgid "Uploading firmware..."
-msgstr "Subiendo firmware"
+#: Cura/util/profile.py:244
+msgid "Extra margin (mm)"
+msgstr "Margen extra (mm)"
 
-#: Cura/gui/firmwareInstall.py:144 Cura/gui/firmwareInstall.py:296
+#: Cura/util/profile.py:244
+msgid ""
+"If the raft is enabled, this is the extra raft area around the object which "
+"is also rafted. Increasing this margin will create a stronger raft while "
+"using more material and leaving less area for your print."
+msgstr ""
+"Si la borrador (raft) está activada, esta es la zona de borrador adicional "
+"alrededor del objeto que también esta bocetado. El aumento de este margen "
+"creará un sostén más fuerte durante el uso de más material y dejando menos "
+"espacio para su impresión."
+
+#: Cura/util/profile.py:245
+msgid "Line spacing (mm)"
+msgstr "Espacio entre lineas (mm)"
+
+#: Cura/util/profile.py:245
+msgid ""
+"When you are using the raft this is the distance between the centerlines of "
+"the raft line."
+msgstr ""
+"Cuando se utiliza la balsa es la distancia entre las líneas centrales del "
+"relleno de balsa."
+
+#: Cura/util/profile.py:246
+msgid "Base thickness (mm)"
+msgstr "Grosor de la base (mm)"
+
+#: Cura/util/profile.py:246
+msgid ""
+"When you are using the raft this is the thickness of the base layer which is "
+"put down."
+msgstr ""
+"Cuando se utiliza la balsa es el espesor de la capa de balsa que es puesta "
+"abajo."
+
+#: Cura/util/profile.py:247
+msgid "Base line width (mm)"
+msgstr "Ancho de la linea base (mm)"
+
+#: Cura/util/profile.py:247
+msgid ""
+"When you are using the raft this is the width of the base layer lines which "
+"are put down."
+msgstr ""
+"Cuando se utiliza la balsa es el ancho de la capa de balsa que es puesta "
+"abajo."
+
+#: Cura/util/profile.py:248
+msgid "Interface thickness (mm)"
+msgstr "Espesor interfaz (mm)"
+
+#: Cura/util/profile.py:248
+msgid ""
+"When you are using the raft this is the thickness of the interface layer "
+"which is put down."
+msgstr ""
+"Cuando estás usando raft-balsa est es el espesor de la linea de interfaz que "
+"será depositada"
+
+#: Cura/util/profile.py:249
+msgid "Interface line width (mm)"
+msgstr "Ancho de linea de la interfaz (mm)"
+
+#: Cura/util/profile.py:249
+msgid ""
+"When you are using the raft this is the width of the interface layer lines "
+"which are put down."
+msgstr ""
+"Cuando estás usando raft-balsa est es el ancho de la linea de interfaz que "
+"será depositada"
+
+#: Cura/util/profile.py:250
+msgid "Airgap"
+msgstr "Capa liviana"
+
+#: Cura/util/profile.py:250
+msgid "Gap between the last layer of the raft the whole print."
+msgstr "Brecha entre la última capa de boceto (raft) que toda la impresión."
+
+#: Cura/util/profile.py:251
+msgid "First Layer Airgap"
+msgstr "Primero capa liviana"
+
+#: Cura/util/profile.py:251
+msgid ""
+"Gap between the last layer of the raft and the first printing layer. A small "
+"gap of 0.2mm works wonders on PLA and makes the raft easy to remove. This "
+"value is added on top of the 'Airgap' setting."
+msgstr ""
+"Brecha entre la última capa de el borrador (raft) y la primera capa de "
+"impresión. Un pequeño espacio de 0,2mm hace maravillas en PLA y hace que el "
+"borrador (raft) fácil de quitar. Este valor se añade encima del parámetro de "
+"\"dispersión superficial\"."
+
+#: Cura/util/profile.py:252
+msgid "Surface layers"
+msgstr "Capa de superficie"
+
+#: Cura/util/profile.py:252
+msgid ""
+"Amount of surface layers put on top of the raft, these are fully filled "
+"layers on which the model is printed."
+msgstr ""
+"Importe de las capas superficiales, situadas una encima del boceto (raft), "
+"estos son totalmente capas llenas en la que se imprime el modelo."
+
+#: Cura/util/profile.py:253
+msgid "Surface layer thickness (mm)"
+msgstr "Espesor de la capa de superficie (mm)"
+
+#: Cura/util/profile.py:253
+msgid "Thickness of each surface layer."
+msgstr "Espesor de cada capa de la superficie."
+
+#: Cura/util/profile.py:254
+msgid "Surface layer line width (mm)"
+msgstr "Ancho de la capa de superficie (mm)"
+
+#: Cura/util/profile.py:254
+msgid "Width of the lines for each surface layer."
+msgstr "Espesor de las líneas para cada capa de la superficie."
+
+#: Cura/util/profile.py:255 Cura/util/profile.py:256 Cura/util/profile.py:257
+#: Cura/util/profile.py:258
+msgid "Fix horrible"
+msgstr "Corregir horrible"
+
+#: Cura/util/profile.py:255
+msgid "Combine everything (Type-A)"
+msgstr "Combinar todo (Tipo-A)"
+
+#: Cura/util/profile.py:255 Cura/util/profile.py:256
+msgid ""
+"This expert option adds all parts of the model together. The result is "
+"usually that internal cavities disappear. Depending on the model this can be "
+"intended or not. Enabling this option is at your own risk. Type-A is "
+"dependent on the model normals and tries to keep some internal holes intact. "
+"Type-B ignores all internal holes and only keeps the outside shape per layer."
+msgstr ""
+"Esta opción experta agrega todas las partes del modelo en conjunto. El "
+"resultado suele ser que las cavidades internas desaparecen. Dependiendo del "
+"modelo de esto puede requerido o no. La activación de esta opción es a su "
+"propio riesgo. Tipo-A se depende de los modelos normales y trata de mantener "
+"algunos agujeros internos intactos. Tipo-B ignora todos los agujeros "
+"internos y sólo mantiene la forma exterior por capa."
+
+#: Cura/util/profile.py:256
+msgid "Combine everything (Type-B)"
+msgstr "Combinar todo (Tipo-B)"
+
+#: Cura/util/profile.py:257
+msgid "Keep open faces"
+msgstr "Mantener caras abiertas"
+
+#: Cura/util/profile.py:257
+msgid ""
+"This expert option keeps all the open bits of the model intact. Normally "
+"Cura tries to stitch up small holes and remove everything with big holes, "
+"but this option keeps bits that are not properly part of anything and just "
+"goes with whatever is left. This option is usually not what you want, but it "
+"might enable you to slice models otherwise failing to produce proper paths.\n"
+"As with all \"Fix horrible\" options, results may vary and use at your own "
+"risk."
+msgstr ""
+"Esta opción experto mantiene todos los agujeros del modelo intactos. "
+"Normalmente Cura intenta suturar pequeños agujeros y eliminar todo en los "
+"grandes , pero esta opción mantiene agujeros que no son propiamente parte de "
+"nada y sólo va con lo que se deja. Esta opción no suele ser lo que quieras, "
+"pero podría permitir que usted rebane modelos que de lo contrario "
+"resultarían fallidos.\n"
+"Al igual que con todos los \"Correjir horribles \"  los resultados pueden "
+"variar y usar a su propio riesgo."
+
+#: Cura/util/profile.py:258
+msgid "Extensive stitching"
+msgstr "Costura amplia"
+
+#: Cura/util/profile.py:258
+msgid ""
+"Extensive stitching tries to fix up open holes in the model by closing the "
+"hole with touching polygons. This algorthm is quite expensive and could "
+"introduce a lot of processing time.\n"
+"As with all \"Fix horrible\" options, results may vary and use at your own "
+"risk."
+msgstr ""
+"Costura amplia intenta de arreglar los agujeros en el modelo cerrando "
+"agujeros con polígonos. Este algoritmo es complejo y puede tardar en "
+"procesar.\n"
+"Igual que \"Fix horrible\" puede tener resultados diversos úsalo bajo tu "
+"riesgo."
+
+#: Cura/util/profile.py:486
+msgid "Save profile on slice"
+msgstr "Guardar perfil al filetear"
+
+#: Cura/util/profile.py:486
+msgid ""
+"When slicing save the profile as [stl_file]_profile.ini next to the model."
+msgstr ""
+"Cuando se filetee guardar el perfil como [stl_file]_profile.ini junto al "
+"modelo."
+
+#: Cura/util/profile.py:487
+msgid "Cost (price/kg)"
+msgstr "Coste (precio/kg)"
+
+#: Cura/util/profile.py:487
+msgid "Cost of your filament per kg, to estimate the cost of the final print."
+msgstr ""
+"Coste de tu filamento por kg, para estimar el coste de la impresión final."
+
+#: Cura/util/profile.py:488
+msgid "Cost (price/m)"
+msgstr "Coster (precio/m)"
+
+#: Cura/util/profile.py:488
+msgid ""
+"Cost of your filament per meter, to estimate the cost of the final print."
+msgstr ""
+"Coste de tu filamento por metro, para estimar el coste de tu impresión final."
+
+#: Cura/util/profile.py:489
+msgid "Auto detect SD card drive"
+msgstr "Autodetectar tajeta SD"
+
+#: Cura/util/profile.py:489
+msgid ""
+"Auto detect the SD card. You can disable this because on some systems "
+"external hard-drives or USB sticks are detected as SD card."
+msgstr ""
+"Autodetectando SD card. Puedes deshabilitar esto porque algunos discos duros "
+"o pendrive son detectados como SD card."
+
+#: Cura/util/profile.py:501
+msgid "Base folder to replicate on SD card"
+msgstr ""
+
+#: Cura/util/profile.py:501
+msgid ""
+"The specified folder will be used as a base path. Any gcode generated from "
+"object coming from within that folder will be automatically saved on the SD "
+"card at the same sub-folder. Any object coming from outside of this path "
+"will save the gcode on the root folder of the card."
+msgstr ""
+
+#: Cura/util/profile.py:502
+msgid "Check for updates"
+msgstr "Comprobando actualizaciones"
+
+#: Cura/util/profile.py:502
+msgid "Check for newer versions of Cura on startup"
+msgstr "Comprobar nuevas versiones de Cura en el inicio"
+
+#: Cura/util/profile.py:503
+msgid "Send usage statistics"
+msgstr "Enviar estadisticas de uso"
+
+#: Cura/util/profile.py:503
+msgid "Submit anonymous usage information to improve future versions of Cura"
+msgstr "Enviar información anónima para mejor las próximas versiones de Cura"
+
+#: Cura/util/profile.py:505
+msgid "Density (kg/m3)"
+msgstr "Densidad (kg/m3)"
+
+#: Cura/util/profile.py:505
+msgid ""
+"Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. "
+"This value is used to estimate the weight if the filament used for the print."
+msgstr ""
+"Peso del filamento por m3. Sobre 1240 para el PLA y sobre 1040 para ABS.  "
+"Este valor es usado para estimar el peso del filamento usado en la impresión."
+
+#: Cura/util/profile.py:506
+msgid ""
+"Change the language in which Cura runs. Switching language requires a "
+"restart of Cura"
+msgstr ""
+"Cambiar el idioma en el que se ejecuta Cura. El Cambio de idioma requiere un "
+"reinicio del Cura"
+
+#: Cura/util/profile.py:509
+msgid "Model colour"
+msgstr "Color Modelo"
+
+#: Cura/util/profile.py:509
+msgid "Display color for first extruder"
+msgstr "Color de la pantalla para la primera extrusora"
+
+#: Cura/util/profile.py:510
+msgid "Model colour (2)"
+msgstr "Color Modelo (2)"
+
+#: Cura/util/profile.py:510
+msgid "Display color for second extruder"
+msgstr "Color de la pantalla para la segunda extrusora"
+
+#: Cura/util/profile.py:511
+msgid "Model colour (3)"
+msgstr "Color Modelo (3)"
+
+#: Cura/util/profile.py:511
+msgid "Display color for third extruder"
+msgstr "Color de la pantalla por el tercer extrusor"
+
+#: Cura/util/profile.py:512
+msgid "Model colour (4)"
+msgstr "Color Modelo (4)"
+
+#: Cura/util/profile.py:512
+msgid "Display color for forth extruder"
+msgstr "Color de la pantalla para extrusora adelante"
+
+#: Cura/util/profile.py:513
+msgid "Printing window type"
+msgstr "Impresión tipo de ventana"
+
+#: Cura/util/profile.py:513
+msgid "Select the interface used for USB printing."
+msgstr "Seleccione la interfaz que se utiliza para la impresión USB ."
+
+#: Cura/util/profile.py:525
+msgid "Maximum width (mm)"
+msgstr "Máxima anchura (mm)"
+
+#: Cura/util/profile.py:525 Cura/util/profile.py:526 Cura/util/profile.py:527
+msgid "Size of the machine in mm"
+msgstr "Tamaño de la maquina en mm"
+
+#: Cura/util/profile.py:526
+msgid "Maximum depth (mm)"
+msgstr "Maxima profundidad (mm)"
+
+#: Cura/util/profile.py:527
+msgid "Maximum height (mm)"
+msgstr "Máxima altura (mm)"
+
+#: Cura/util/profile.py:528
+msgid "Machine center 0,0"
+msgstr "Centro de la maquina 0,0"
+
+#: Cura/util/profile.py:528
+msgid ""
+"Machines firmware defines the center of the bed as 0,0 instead of the front "
+"left corner."
+msgstr ""
+"Máquinas firmware define el centro de la cama como 0,0 en lugar de la "
+"esquina frontal izquierda."
+
+#: Cura/util/profile.py:529
+msgid "Build area shape"
+msgstr "Construye forma de área"
+
+#: Cura/util/profile.py:529
+msgid "The shape of machine build area."
+msgstr "La forma del área de construcción de la máquina."
+
+#: Cura/util/profile.py:531
+msgid ""
+"If you have an heated bed, this enabled heated bed settings (requires "
+"restart)"
+msgstr ""
+"Si tienes una cama caliente, activalo para tener los ajustes (requiere "
+"reinicio)"
+
+#: Cura/util/profile.py:532
+msgid "GCode Flavor"
+msgstr "GCode Flavor"
+
+#: Cura/util/profile.py:532
+msgid ""
+"Flavor of generated GCode.\n"
+"RepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\n"
+"UltiGCode is a variation of the RepRap GCode which puts more settings in the "
+"machine instead of the slicer.\n"
+"MakerBot GCode has a few changes in the way GCode is generated, but still "
+"requires MakerWare to generate to X3G.\n"
+"BFB style generates RPM based code.\n"
+"Mach3 uses A,B,C instead of E for extruders."
+msgstr ""
+"Estilo de GCode.\n"
+"Impresoras RepRap suelen usar 5D Gcode (firmwares Marlin y Sprinter).\n"
+"UltiGcode es una variación del código RepRap con mas ajustes en la máquina."
+
+#: Cura/util/profile.py:533
+msgid "Extruder count"
+msgstr "Numero extrusores"
+
+#: Cura/util/profile.py:533
+msgid "Amount of extruders in your machine."
+msgstr "Cantidad de extrusores en tu máquina"
+
+#: Cura/util/profile.py:534 Cura/util/profile.py:536 Cura/util/profile.py:538
+#: Cura/util/profile.py:540
+msgid "Offset X"
+msgstr "Desplazamiento X"
+
+#: Cura/util/profile.py:534 Cura/util/profile.py:535
+msgid "The offset of your secondary extruder compared to the primary."
+msgstr "La distancia del segundo extrusor relativa al primero."
+
+#: Cura/util/profile.py:535 Cura/util/profile.py:537 Cura/util/profile.py:539
+#: Cura/util/profile.py:541
+msgid "Offset Y"
+msgstr "Desplazamiento Y"
+
+#: Cura/util/profile.py:536 Cura/util/profile.py:537
+msgid "The offset of your tertiary extruder compared to the primary."
+msgstr "La distancia del tercer extrusor relativa al primero."
+
+#: Cura/util/profile.py:538 Cura/util/profile.py:539 Cura/util/profile.py:540
+#: Cura/util/profile.py:541
+msgid "The offset of your forth extruder compared to the primary."
+msgstr "La distancia del cuarto extrusor relativa al primero"
+
+#: Cura/util/profile.py:542
+msgid "E-Steps per 1mm filament"
+msgstr "Pasos extrusor por 1 mm de filamento"
+
+#: Cura/util/profile.py:542
+msgid ""
+"Amount of steps per mm filament extrusion. If set to 0 then this value is "
+"ignored and the value in your firmware is used."
+msgstr ""
+"Cantidad de pasos por mm de filamento extruido. Si pones 0 este valor será "
+"ignorado y se cogerá el valor del firmware"
+
+#: Cura/util/profile.py:543
+msgid "Serial port"
+msgstr "Puerto Serial"
+
+#: Cura/util/profile.py:543
+msgid "Serial port to use for communication with the printer"
+msgstr "Puerto Serie para comunicarse con la impresora"
+
+#: Cura/util/profile.py:545
+msgid "Baudrate"
+msgstr "Velocidad"
+
+#: Cura/util/profile.py:545
+msgid ""
+"Speed of the serial port communication\n"
+"Needs to match your firmware settings\n"
+"Common values are 250000, 115200, 57600"
+msgstr ""
+"Velocidad del puerto serie\n"
+"Es necesario que coincida con la del firmware\n"
+"Valores habituales 250000, 115200, 57600"
+
+#: Cura/util/profile.py:548
+msgid "Head size towards X min (mm)"
+msgstr "Tamañano de la cabeza hacia X min (mm)"
+
+#: Cura/util/profile.py:548
+msgid ""
+"The head size when printing multiple objects, measured from the tip of the "
+"nozzle towards the outer part of the head. 75mm for an Ultimaker if the fan "
+"is on the left side."
+msgstr ""
+"El tamaño de la cabeza al imprimir múltiples objetos, medida desde la punta "
+"de la boquilla hacia la parte exterior del carro. 75 mm para una Ultimaker "
+"si el ventilador está en el lado izquierdo."
+
+#: Cura/util/profile.py:549
+msgid "Head size towards Y min (mm)"
+msgstr "Tamañano de la cabeza hacia Y min (mm)"
+
+#: Cura/util/profile.py:549 Cura/util/profile.py:550
+msgid ""
+"The head size when printing multiple objects, measured from the tip of the "
+"nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan "
+"is on the left side."
+msgstr ""
+"El tamaño de la cabeza al imprimir múltiples objetos, medida desde la punta "
+"de la boquilla hacia la parte exterior de la cabeza. 18 mm para una "
+"Ultimaker si el ventilador está en el lado izquierdo."
+
+#: Cura/util/profile.py:550
+msgid "Head size towards X max (mm)"
+msgstr "Tamañano de la cabeza hacia X max (mm)"
+
+#: Cura/util/profile.py:551
+msgid "Head size towards Y max (mm)"
+msgstr "Tamañano de la cabeza hacia Y max (mm)"
+
+#: Cura/util/profile.py:551
+msgid ""
+"The head size when printing multiple objects, measured from the tip of the "
+"nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan "
+"is on the left side."
+msgstr ""
+"El tamaño de la cabeza al imprimir múltiples objetos, medida desde la punta "
+"de la boquilla hacia la parte exterior de la cabeza. 35mm para una Ultimaker "
+"si el ventilador está en el lado izquierdo."
+
+#: Cura/util/profile.py:552
+msgid "Printer gantry height (mm)"
+msgstr "Altura pórtico (gantry) de la impresora (mm)"
+
+#: Cura/util/profile.py:552
+msgid ""
+"The height of the gantry holding up the printer head. If an object is higher "
+"then this then you cannot print multiple objects one for one. 60mm for an "
+"Ultimaker."
+msgstr ""
+"La altura del carro que soporta el cabezal de la impresora. Si un objeto es "
+"más alto que esto, entonces  no puede imprimirse varios objetos uno a uno. "
+"60 mm para un Ultimaker."
+
+#: Cura/util/profile.py:554
+#, python-format
+msgid "More flow than 150% is rare and usually not recommended."
+msgstr ""
+
+#: Cura/util/profile.py:555
+#, python-format
+msgid "Less flow than 50% is rare and usually not recommended."
+msgstr ""
+
+#: Cura/util/profile.py:556
 #, python-format
 msgid ""
-"Done!\n"
-"Installed firmware: %s"
+"Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and "
+"are not recommended."
 msgstr ""
-"¡Hecho!\n"
-"Firmware instalado: %s"
+"Capas más finas que %.2fmm (80%% del diámetro de la boquilla) usualmente dan "
+"malos resultados y no son recomendables."
 
-#: Cura/gui/firmwareInstall.py:146 Cura/gui/firmwareInstall.py:298
-msgid "Failed to write firmware.\n"
-msgstr "Fallo al cargar firmware.\n"
+#: Cura/util/profile.py:558
+msgid ""
+"It is highly unlikely that your machine can achieve a printing speed above "
+"150mm/s"
+msgstr ""
+"Es muy poco probable que su máquina puede alcanzar una velocidad de "
+"impresión por encima de 150 mm/s"
 
-#: Cura/gui/firmwareInstall.py:290
-msgid "Failed to connect to programmer.\n"
-msgstr "Fallo la conexion al programador\n"
+#: Cura/util/profile.py:565 Cura/util/profile.py:566 Cura/util/profile.py:567
+#: Cura/util/profile.py:568 Cura/util/profile.py:569
+msgid "Temperatures above 260C could damage your machine, be careful!"
+msgstr "Temperaturas por encima de 260C puede dañar tu impresora, ¡CUIDADO!"
 
-#: Cura/gui/simpleMode.py:52
-msgid "Print support structure"
-msgstr "Imprimir estructura de soportes"
+#: Cura/util/profile.py:570 Cura/util/profile.py:571 Cura/util/profile.py:572
+#: Cura/util/profile.py:573 Cura/util/profile.py:574
+msgid ""
+"Are you sure your filament is that thick? Normal filament is around 3mm or "
+"1.75mm."
+msgstr ""
+"¿Estás seguro del grosor? Normalmente los filamentos son de 3mm o  1.75mm."
 
-#: Cura/gui/simpleMode.py:57
-msgid "Select a quickprint profile:"
-msgstr "Seleccion tipo de impresora:"
+#: Cura/util/profile.py:575
+msgid ""
+"It is highly unlikely that your machine can achieve a travel speed above "
+"300mm/s"
+msgstr ""
+"Es muy poco probable que su máquina puede alcanzar una velocidad de "
+"desplazamiento por encima de 300 mm/s"
 
-#: Cura/gui/simpleMode.py:65
-msgid "Material:"
-msgstr "Material:"
-
-#: Cura/gui/simpleMode.py:73
-msgid "Other:"
-msgstr "Otro:"
-
-#: Cura/gui/expertConfig.py:27
-msgid "Expert config"
-msgstr "Experto"
-
-#: Cura/gui/preferencesDialog.py:14
-msgid "Preferences"
-msgstr "Preferencias"
-
-#: Cura/gui/preferencesDialog.py:28
-msgid "Print window"
-msgstr "Imprimiendo"
-
-#: Cura/gui/preferencesDialog.py:31
-msgid "Colours"
-msgstr "Colores"
-
-#: Cura/gui/preferencesDialog.py:40
-msgid "Filament settings"
-msgstr "Ajustes filamento"
-
-#: Cura/gui/preferencesDialog.py:50
-msgid "Cura settings"
-msgstr "Ajustes de Cura"
-
-#: Cura/gui/preferencesDialog.py:68 Cura/gui/preferencesDialog.py:84
-msgid "Machine settings"
-msgstr "Ajuste de la máquina"
-
-#: Cura/gui/preferencesDialog.py:95
-msgid "Printer head size"
-msgstr "Tamaño cabezal de impresión"
-
-#: Cura/gui/preferencesDialog.py:103
+#: Cura/util/profile.py:576
 #, python-format
-msgid "Extruder %d"
-msgstr "Extrusor %d"
-
-#: Cura/gui/preferencesDialog.py:107
-msgid "Communication settings"
-msgstr "Ajustes comunicación"
-
-#: Cura/gui/preferencesDialog.py:119
-msgid "Ok"
-msgstr "Aceptar"
-
-#: Cura/gui/preferencesDialog.py:123
-msgid "Add new machine"
-msgstr "Añadir nueva máquina"
-
-#: Cura/gui/preferencesDialog.py:127
-msgid "Remove machine"
-msgstr "Selecciona tu maquina"
-
-#: Cura/gui/preferencesDialog.py:131 Cura/gui/preferencesDialog.py:167
-msgid "Change machine name"
-msgstr "Cambiar el nombre"
-
-#: Cura/gui/preferencesDialog.py:153
-msgid "Cannot remove the last machine configuration in Cura"
-msgstr "No se puede borrar la ultima configuración de la máquina"
-
-#: Cura/gui/preferencesDialog.py:153
-msgid "Machine remove error"
-msgstr "Quitar errores de la máquina"
-
-#: Cura/gui/preferencesDialog.py:167
-msgid "Enter the new name:"
-msgstr "Nuevo nombre:"
-
-#: Cura/gui/mainWindow.py:72
-msgid "Load model file...\tCTRL+L"
-msgstr "Cargar modelo...\tCTRL+L"
-
-#: Cura/gui/mainWindow.py:74
-msgid "Save model...\tCTRL+S"
-msgstr "Guardar modelo...\tCTRL+S"
-
-#: Cura/gui/mainWindow.py:76
-msgid "Reload platform\tF5"
-msgstr "Limpiar plataforma\tF5"
-
-#: Cura/gui/mainWindow.py:78
-msgid "Clear platform"
-msgstr "Limpiar plataforma"
-
-#: Cura/gui/mainWindow.py:82
-msgid "Print...\tCTRL+P"
-msgstr "Imprimir...\tCTRL+P"
-
-#: Cura/gui/mainWindow.py:86
-msgid "Show slice engine log..."
-msgstr "Mostrar log de fileteado"
-
-#: Cura/gui/mainWindow.py:90
-msgid "Open Profile..."
-msgstr "Abrir Perfil..."
-
-#: Cura/gui/mainWindow.py:93
-msgid "Save Profile..."
-msgstr "Guardar Perfil..."
-
-#: Cura/gui/mainWindow.py:100
-msgid "Load Profile from GCode..."
-msgstr "Leer Perfil desde GCode"
-
-#: Cura/gui/mainWindow.py:104
-msgid "Reset Profile to default"
-msgstr "Reiniciar Perfil por defecto"
-
-#: Cura/gui/mainWindow.py:109
-msgid "Preferences...\tCTRL+,"
-msgstr "Preferencias...\tCTRL+,"
-
-#: Cura/gui/mainWindow.py:111 Cura/gui/mainWindow.py:473
-msgid "Machine settings..."
-msgstr "Ajuste de la máquina..."
-
-#: Cura/gui/mainWindow.py:117
-msgid "Recent Model Files"
-msgstr "Modelos Recientes"
-
-#: Cura/gui/mainWindow.py:124
-msgid "Recent Profile Files"
-msgstr "Perfiles Recientes"
-
-#: Cura/gui/mainWindow.py:130
-msgid "Quit"
-msgstr "Salir"
-
-#: Cura/gui/mainWindow.py:132
-msgid "File"
-msgstr "Archivo"
-
-#: Cura/gui/mainWindow.py:140
-msgid "Minecraft map import..."
-msgstr "Importar mapa de Minecraft..."
-
-#: Cura/gui/mainWindow.py:144
-msgid "PID Debugger..."
-msgstr "PID Debugger..."
-
-#: Cura/gui/mainWindow.py:146
-msgid "Auto Firmware Update..."
-msgstr "Actualización firmware..."
-
-#: Cura/gui/mainWindow.py:149
-msgid "Copy profile to clipboard"
-msgstr "Copiar perfil al portapapeles"
-
-#: Cura/gui/mainWindow.py:153
-msgid "Print all at once"
-msgstr "Imprimir todas a la vez"
-
-#: Cura/gui/mainWindow.py:155
-msgid "Print one at a time"
-msgstr "Imprimir una por una"
-
-#: Cura/gui/mainWindow.py:162
-msgid "Tools"
-msgstr "Herramientas"
-
-#: Cura/gui/mainWindow.py:171
-msgid "Switch to quickprint..."
-msgstr "Cambiar a ajustes rapidos..."
-
-#: Cura/gui/mainWindow.py:175
-msgid "Switch to full settings..."
-msgstr "Cambiar a ajustes completos..."
-
-#: Cura/gui/mainWindow.py:180
-msgid "Open expert settings...\tCTRL+E"
-msgstr "Abrir ajustes experto...\tCTRL+E"
-
-#: Cura/gui/mainWindow.py:184
-msgid "Run bed leveling wizard..."
-msgstr "Iniciar asistente para calibración de la cama..."
-
-#: Cura/gui/mainWindow.py:186
-msgid "Run head offset wizard..."
-msgstr "Iniciar asistente de distancia entre extrusores..."
-
-#: Cura/gui/mainWindow.py:189
-msgid "Expert"
-msgstr "Experto"
-
-#: Cura/gui/mainWindow.py:192
-msgid "Online documentation..."
-msgstr "Documentación en la red..."
-
-#: Cura/gui/mainWindow.py:194
-msgid "Report a problem..."
-msgstr "Reportar un problema..."
-
-#: Cura/gui/mainWindow.py:196
-msgid "Check for update..."
-msgstr "Comprobando actualizaciones..."
-
-#: Cura/gui/mainWindow.py:198
-msgid "Open YouMagine website..."
-msgstr "Abre tu página YouMagine"
-
-#: Cura/gui/mainWindow.py:200
-msgid "About Cura..."
-msgstr "Sobra Cura..."
-
-#: Cura/gui/mainWindow.py:202
-msgid "Help"
-msgstr "Ayuda"
-
-#: Cura/gui/mainWindow.py:383
 msgid ""
-"For \"One at a time\" printing, you need to have entered the correct head "
-"size and gantry height in the machine settings"
+"A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad "
+"results and is not recommended."
 msgstr ""
-" Para \"Uno a la vez\" imprimir, tiene que haber entrado en la cabeza "
-"correcta tamaño y puente de altura en la configuración del equipo "
+"Una capa final de mas de %.2fmm (3/4 del tamaño del cabezal) usualmente da "
+"malos resultados y no es recomendable."
 
-#: Cura/gui/mainWindow.py:383
-msgid "One at a time warning"
-msgstr "Advertencia de uno por vez"
+#: Cura/util/sliceEngine.py:93
+#, python-format
+msgid "%d minutes"
+msgstr "%d minutos"
 
-#: Cura/gui/mainWindow.py:471
-msgid "Add new machine..."
-msgstr "Añadir nueva máquina..."
+#: Cura/util/sliceEngine.py:95
+#, python-format
+msgid "%d hour %d minutes"
+msgstr "%d hora %d minutos"
 
-#: Cura/gui/mainWindow.py:479
-msgid "Install default firmware..."
-msgstr "Instalar el firmware por defecto..."
+#: Cura/util/sliceEngine.py:96
+#, python-format
+msgid "%d hours %d minutes"
+msgstr "%d hora %d minutos"
 
-#: Cura/gui/mainWindow.py:482
-msgid "Install custom firmware..."
-msgstr "Instalar firmware personalizado..."
+#: Cura/util/sliceEngine.py:101
+#, python-format
+msgid "%0.2f meter %0.0f gram"
+msgstr "%0.2f metros %0.0f gramos"
 
-#: Cura/gui/mainWindow.py:486
-msgid "Select profile file to load"
-msgstr "Seleccion de perfil a cargar"
-
-#: Cura/gui/mainWindow.py:498
-msgid "Select gcode file to load profile from"
-msgstr "Selección gcode para cargar perfil desde él"
-
-#: Cura/gui/mainWindow.py:513
-msgid ""
-"No profile found in GCode file.\n"
-"This feature only works with GCode files made by Cura 12.07 or newer."
-msgstr ""
-"No se ha encontrado Perfil en el GCode.\n"
-"Esta caracteristicas solo funciona en versiones de Cura 12.07 o superior."
-
-#: Cura/gui/mainWindow.py:513
-msgid "Profile load error"
-msgstr "Carga de Perfil erronea"
-
-#: Cura/gui/mainWindow.py:517 Cura/gui/mainWindow.py:527
-msgid "Select profile file to save"
-msgstr "Seleccion perfil para guardar"
-
-#: Cura/gui/mainWindow.py:537
-msgid ""
-"This will reset all profile settings to defaults.\n"
-"Unless you have saved your current profile, all settings will be lost!\n"
-"Do you really want to reset?"
-msgstr ""
-"Esto restablecerá todos los ajustes de perfil a los valores "
-"predeterminados.\n"
-"A menos que usted ha grabado su perfil actual, todos los ajustes se "
-"perderán!\n"
-"¿Realmente desea reiniciar?"
-
-#: Cura/gui/mainWindow.py:537
-msgid "Profile reset"
-msgstr "Reiniciar Perfil"
-
-#: Cura/gui/mainWindow.py:550
-msgid ""
-"Copy the settings from quickprint to your full settings?\n"
-"(This will overwrite any full setting modifications you have)"
-msgstr ""
-"Copiar los ajustes de QuickPrint a sus ajustes completos ?\n"
-"(Esto sobrescribirá cualquier modificación de ajuste completo que tienes)"
-
-#: Cura/gui/mainWindow.py:550
-msgid "Profile copy"
-msgstr "Copar perfil"
-
-#: Cura/gui/mainWindow.py:565
-msgid ""
-"Warning: Installing a custom firmware does not guarantee that you machine "
-"will function correctly, and could damage your machine."
-msgstr ""
-"Advertencia: Instalando un firmware personalizado no garantizamos el "
-"correcto funcionamiento de la impresora y se podría dañar"
-
-#: Cura/gui/mainWindow.py:566 Cura/gui/mainWindow.py:609
-msgid "Open firmware to upload"
-msgstr "Abrir firmware para cargar"
-
-#: Cura/gui/mainWindow.py:638
-msgid "You are running the latest version of Cura!"
-msgstr "Estas usando la última versión de Cura!"
-
-#: Cura/gui/mainWindow.py:638
-msgid "Awesome!"
-msgstr "¡Impresionante!"
-
-#: Cura/gui/mainWindow.py:683
-msgid "Basic"
-msgstr "Basico"
-
-#: Cura/gui/mainWindow.py:687
-msgid "Advanced"
-msgstr "Avanzado"
-
-#: Cura/gui/mainWindow.py:693
-msgid "Plugins"
-msgstr "Complementos"
+#~ msgid "Copy profile to clipboard"
+#~ msgstr "Copiar perfil al portapapeles"
 
 #~ msgid "High quality print"
 #~ msgstr "Impresión Alta calidad"
@@ -3082,18 +3173,6 @@ msgstr "Complementos"
 
 #~ msgid "Exterior Only"
 #~ msgstr "Exterior solamente"
-
-#~ msgid "Edit"
-#~ msgstr "Editar"
-
-#~ msgid "Rectangle"
-#~ msgstr "Rectangulo"
-
-#~ msgid "Circle"
-#~ msgstr "Circulo"
-
-#~ msgid "Draw curves"
-#~ msgstr "Dibujar curvas"
 
 #~ msgid "Run first run wizard..."
 #~ msgstr "Iniciar asistente inicial..."

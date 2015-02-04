@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-08 10:01+0100\n"
+"POT-Creation-Date: 2015-02-04 14:38+0100\n"
 "Last-Translator: Michal Vondracek <info@michalvondracek.cz>\n"
 "Language-Team: Czech <info@3draty.cz>\n"
 "MIME-Version: 1.0\n"
@@ -11,11 +11,11 @@ msgstr ""
 "X-Generator: POEditor.com\n"
 "Language: cs\n"
 
-#: Cura/gui/app.py:141 Cura/gui/mainWindow.py:613
+#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:642
 msgid "A new version of Cura is available, would you like to download?"
 msgstr "Nalezena nová verze Cura, mám ji stáhnout?"
 
-#: Cura/gui/app.py:141 Cura/gui/mainWindow.py:613
+#: Cura/gui/app.py:144 Cura/gui/mainWindow.py:642
 msgid "New version available"
 msgstr "Nová verze je dostupná"
 
@@ -53,16 +53,16 @@ msgstr ""
 msgid "Select which Printrbot machine you have:"
 msgstr "Vyber jakou Printerbot tiskárnu máš:"
 
-#: Cura/gui/configWizard.py:323
+#: Cura/gui/configWizard.py:349
 #, fuzzy
 msgid "Other machine information"
 msgstr "Velikost tiskového prostoru v mm."
 
-#: Cura/gui/configWizard.py:324
+#: Cura/gui/configWizard.py:350
 msgid "The following pre-defined machine profiles are available"
 msgstr "Jsou dostupné tyto profily tiskáren"
 
-#: Cura/gui/configWizard.py:325
+#: Cura/gui/configWizard.py:351
 msgid ""
 "Note that these profiles are not guaranteed to give good results,\n"
 "or work at all. Extra tweaks might be required.\n"
@@ -74,24 +74,24 @@ msgstr ""
 "zapotřebí věnovat pozornost nastavení. V případě nalezení problému s "
 "předdefinovanými profily nebo žádosti o přidání vyplňte ticket na GitHubu."
 
-#: Cura/gui/configWizard.py:336
+#: Cura/gui/configWizard.py:362
 msgid "Custom..."
 msgstr ""
 
-#: Cura/gui/configWizard.py:354
+#: Cura/gui/configWizard.py:380
 msgid "Cura Ready!"
 msgstr ""
 
-#: Cura/gui/configWizard.py:355
+#: Cura/gui/configWizard.py:381
 msgid "Cura is now ready to be used!"
 msgstr "Cura je připravena k používání!"
 
-#: Cura/gui/configWizard.py:359
+#: Cura/gui/configWizard.py:385
 #, fuzzy
 msgid "Custom RepRap information"
 msgstr "Odesílat anonymní informace o užívání:"
 
-#: Cura/gui/configWizard.py:360
+#: Cura/gui/configWizard.py:386
 msgid ""
 "RepRap machines can be vastly different, so here you can set your own "
 "settings."
@@ -99,109 +99,109 @@ msgstr ""
 "RepRap tiskárny jsou od sebe dosti odlišné, zde můžete změnit nastavení tak, "
 "aby odpovídalo té vaší."
 
-#: Cura/gui/configWizard.py:361
+#: Cura/gui/configWizard.py:387
 msgid ""
 "Be sure to review the default profile before running it on your machine."
 msgstr "Zkontrolujte nastavení profilu před spuštěním tisku."
 
-#: Cura/gui/configWizard.py:362
+#: Cura/gui/configWizard.py:388
 msgid ""
 "If you like a default profile for your machine added,\n"
 "then make an issue on github."
 msgstr "Chcete-li zařadit profil pro svou tiskárnu vytvořte ticket na GitHubu."
 
-#: Cura/gui/configWizard.py:364
+#: Cura/gui/configWizard.py:390
 msgid "You will have to manually install Marlin or Sprinter firmware."
 msgstr "Je potřeba ručně nainstalovat Marlin nebo Sprinter firmware."
 
-#: Cura/gui/configWizard.py:366
+#: Cura/gui/configWizard.py:392
 msgid "Machine name"
 msgstr "Jméno tiskárny"
 
-#: Cura/gui/configWizard.py:367
+#: Cura/gui/configWizard.py:393
 msgid "Machine width (mm)"
 msgstr "Šířka tiskárny (mm)"
 
-#: Cura/gui/configWizard.py:368
+#: Cura/gui/configWizard.py:394
 msgid "Machine depth (mm)"
 msgstr "Hloubka tiskárny (mm)"
 
-#: Cura/gui/configWizard.py:369
+#: Cura/gui/configWizard.py:395
 msgid "Machine height (mm)"
 msgstr "Výška tiskárny (mm)"
 
-#: Cura/gui/configWizard.py:370 Cura/util/profile.py:183
+#: Cura/gui/configWizard.py:396 Cura/util/profile.py:183
 msgid "Nozzle size (mm)"
 msgstr "Šířka trysky (mm)"
 
-#: Cura/gui/configWizard.py:371 Cura/util/profile.py:514
+#: Cura/gui/configWizard.py:397 Cura/util/profile.py:531
 msgid "Heated bed"
 msgstr "Ohřívaný stolek"
 
-#: Cura/gui/configWizard.py:372
+#: Cura/gui/configWizard.py:398
 msgid "Bed center is 0,0,0 (RoStock)"
 msgstr "Střed stolku je 0,0,0 (RoStock)"
 
-#: Cura/gui/configWizard.py:392
+#: Cura/gui/configWizard.py:418
 msgid "Select your machine"
 msgstr "Zvolte svou tiskárnu"
 
-#: Cura/gui/configWizard.py:393
+#: Cura/gui/configWizard.py:419
 msgid "What kind of machine do you have:"
 msgstr "Jaký typ tiskárny máte:"
 
-#: Cura/gui/configWizard.py:408
+#: Cura/gui/configWizard.py:438
 #, fuzzy
 msgid "Other (Ex: RepRap, MakerBot, Witbox)"
 msgstr "Ostatní (např.: RepRap, MakerBot)"
 
-#: Cura/gui/configWizard.py:411
+#: Cura/gui/configWizard.py:441
 msgid ""
 "The collection of anonymous usage information helps with the continued "
 "improvement of Cura."
 msgstr "Sběr anonymních informací o užívání napomáhá při vývoji Cura."
 
-#: Cura/gui/configWizard.py:412
+#: Cura/gui/configWizard.py:442
 msgid ""
 "This does NOT submit your models online nor gathers any privacy related "
 "information."
 msgstr "NEdochází k odesílání vašich modelů ani dalších soukromých informací."
 
-#: Cura/gui/configWizard.py:413
+#: Cura/gui/configWizard.py:443
 msgid "Submit anonymous usage information:"
 msgstr "Odesílat anonymní informace o užívání:"
 
-#: Cura/gui/configWizard.py:414
+#: Cura/gui/configWizard.py:444
 msgid "For full details see: http://wiki.ultimaker.com/Cura:stats"
 msgstr "Pro další detaily: http://wiki.ultimaker.com/Cura:stats"
 
-#: Cura/gui/configWizard.py:531
+#: Cura/gui/configWizard.py:576
 msgid "Select upgraded parts you have"
 msgstr "Jaké upgrady vlastníte?"
 
-#: Cura/gui/configWizard.py:532
+#: Cura/gui/configWizard.py:577
 msgid ""
 "To assist you in having better default settings for your Ultimaker\n"
 "Cura would like to know which upgrades you have in your machine."
 msgstr "Pomůžeme vám doladit nastavení vašeho Ultimakeru. "
 
-#: Cura/gui/configWizard.py:534
+#: Cura/gui/configWizard.py:579
 msgid "Extruder drive upgrade"
 msgstr "Vylepšení etruderu"
 
-#: Cura/gui/configWizard.py:535
+#: Cura/gui/configWizard.py:580
 msgid "Heated printer bed (kit)"
 msgstr "Ohřívaná podložka (kit)"
 
-#: Cura/gui/configWizard.py:536
+#: Cura/gui/configWizard.py:581
 msgid "Heated printer bed (self built)"
 msgstr "Ohrívaný stolek (samovýroba)"
 
-#: Cura/gui/configWizard.py:537
+#: Cura/gui/configWizard.py:582
 msgid "Dual extrusion (experimental)"
 msgstr "Dvojtryska (experimentální)"
 
-#: Cura/gui/configWizard.py:539
+#: Cura/gui/configWizard.py:584
 msgid ""
 "If you have an Ultimaker bought after october 2012 you will have the\n"
 "Extruder drive upgrade. If you do not have this upgrade,\n"
@@ -211,7 +211,7 @@ msgstr ""
 "Pokud tento upgrade nevlastníte, doporučujeme jej zakoupit pro zvýšení "
 "spolehlivosti."
 
-#: Cura/gui/configWizard.py:540
+#: Cura/gui/configWizard.py:585
 msgid ""
 "This upgrade can be bought from the Ultimaker webshop\n"
 "or found on thingiverse as thing:26094"
@@ -219,11 +219,11 @@ msgstr ""
 "Tento upgrade můžete zakoupit v Ultimaker eshopu nebo na Thingiverse jako "
 "věc číslo: 26094"
 
-#: Cura/gui/configWizard.py:562
+#: Cura/gui/configWizard.py:607
 msgid "Upgrade Ultimaker Firmware"
 msgstr "Aktualizace firmware Ultimaker"
 
-#: Cura/gui/configWizard.py:563
+#: Cura/gui/configWizard.py:608
 msgid ""
 "Firmware is the piece of software running directly on your 3D printer.\n"
 "This firmware controls the step motors, regulates the temperature\n"
@@ -232,7 +232,7 @@ msgstr ""
 "Firmware je program řídící krokové motory, reguluje teplotu. Je srdcem 3D "
 "tiskárny."
 
-#: Cura/gui/configWizard.py:565
+#: Cura/gui/configWizard.py:610
 msgid ""
 "The firmware shipping with new Ultimakers works, but upgrades\n"
 "have been made to make better prints, and make calibration easier."
@@ -240,7 +240,7 @@ msgstr ""
 "Firmware dodávaný s Ultimakerem funguje, byly však vydány aktualizace "
 "vylepšující kvalitu tisku a zjednodušující kalibraci."
 
-#: Cura/gui/configWizard.py:567
+#: Cura/gui/configWizard.py:612
 msgid ""
 "Cura requires these new features and thus\n"
 "your firmware will most likely need to be upgraded.\n"
@@ -249,27 +249,27 @@ msgstr ""
 "Cura tyto vlastnosti firmware vyžaduje, tedy bude nejspíše třeba firmware "
 "aktualizovat. Právě teď je na to správná chvíle."
 
-#: Cura/gui/configWizard.py:573
+#: Cura/gui/configWizard.py:618
 msgid "Do not upgrade to this firmware if:"
 msgstr "Neaktualizujte firmware když:"
 
-#: Cura/gui/configWizard.py:574
+#: Cura/gui/configWizard.py:619
 msgid "* You have an older machine based on ATMega1280 (Rev 1 machine)"
 msgstr "* Máte starší tiskárnu s elektronikou ATMega1280 (Rev 1)"
 
-#: Cura/gui/configWizard.py:575
+#: Cura/gui/configWizard.py:620
 msgid "* Build your own heated bed"
 msgstr ""
 
-#: Cura/gui/configWizard.py:576
+#: Cura/gui/configWizard.py:621
 msgid "* Have other changes in the firmware"
 msgstr "* Jste již provedl nějaké změny v původním firmware"
 
-#: Cura/gui/configWizard.py:596
+#: Cura/gui/configWizard.py:641
 msgid "Ultimaker Checkup"
 msgstr ""
 
-#: Cura/gui/configWizard.py:610
+#: Cura/gui/configWizard.py:655
 msgid ""
 "It is a good idea to do a few sanity checks now on your Ultimaker.\n"
 "You can skip these if you know your machine is functional."
@@ -277,139 +277,139 @@ msgstr ""
 "Je dobrým nápadem provést pár testů. Můžete tyto testy přeskočit, jestliže "
 "víte, že vaše tiskárna funguje správně."
 
-#: Cura/gui/configWizard.py:611
+#: Cura/gui/configWizard.py:656
 msgid "Run checks"
 msgstr "Spustit testy"
 
-#: Cura/gui/configWizard.py:611
+#: Cura/gui/configWizard.py:656
 msgid "Skip checks"
 msgstr "Přeskočit testy"
 
-#: Cura/gui/configWizard.py:615
+#: Cura/gui/configWizard.py:660
 msgid "Communication:"
 msgstr "Komunikace"
 
-#: Cura/gui/configWizard.py:616
+#: Cura/gui/configWizard.py:661
 msgid "Temperature:"
 msgstr "Teplota"
 
-#: Cura/gui/configWizard.py:617
+#: Cura/gui/configWizard.py:662
 msgid "Endstops:"
 msgstr "Koncové spínače"
 
-#: Cura/gui/configWizard.py:622
+#: Cura/gui/configWizard.py:667
 msgid "Show error log"
 msgstr "Zobrazit záznam chyb"
 
-#: Cura/gui/configWizard.py:656 Cura/gui/configWizard.py:1093
-#: Cura/gui/configWizard.py:1312
+#: Cura/gui/configWizard.py:701 Cura/gui/configWizard.py:1138
+#: Cura/gui/configWizard.py:1357
 msgid "Connecting to machine."
 msgstr "Probíhá připojení k tiskárně."
 
-#: Cura/gui/configWizard.py:677
+#: Cura/gui/configWizard.py:722
 msgid "Cooldown before temperature check."
 msgstr "Ochlazení před kontrolou teplot."
 
-#: Cura/gui/configWizard.py:683 Cura/gui/configWizard.py:690
+#: Cura/gui/configWizard.py:728 Cura/gui/configWizard.py:735
 msgid "Checking the heater and temperature sensor."
 msgstr "Kontrola ohřívací patrony a teplotního senzoru."
 
-#: Cura/gui/configWizard.py:701
+#: Cura/gui/configWizard.py:746
 msgid "Please make sure none of the endstops are pressed."
 msgstr "Ujistěte se, že žádný z koncových spínaču není stisknutý."
 
-#: Cura/gui/configWizard.py:714
+#: Cura/gui/configWizard.py:759
 msgid "Temperature measurement FAILED!"
 msgstr "Měření teploty SELHALO!"
 
-#: Cura/gui/configWizard.py:719
+#: Cura/gui/configWizard.py:764
 #, python-format
 msgid "Head temperature: %d"
 msgstr "Teplota hlavy: %d"
 
-#: Cura/gui/configWizard.py:726 Cura/gui/configWizard.py:735
+#: Cura/gui/configWizard.py:771 Cura/gui/configWizard.py:780
 #, python-format
 msgid "Communication State: %s"
 msgstr "Stav komunikace: %s"
 
-#: Cura/gui/configWizard.py:729 Cura/gui/configWizard.py:1270
-#: Cura/gui/configWizard.py:1488
+#: Cura/gui/configWizard.py:774 Cura/gui/configWizard.py:1315
+#: Cura/gui/configWizard.py:1533
 msgid "Failed to establish connection with the printer."
 msgstr "Nepodařilo se navázat spojení s tiskárnou"
 
-#: Cura/gui/configWizard.py:775 Cura/gui/configWizard.py:784
+#: Cura/gui/configWizard.py:820 Cura/gui/configWizard.py:829
 msgid "Please press the left X endstop."
 msgstr "Stiskněte koncový spínač nalevo X "
 
-#: Cura/gui/configWizard.py:779
+#: Cura/gui/configWizard.py:824
 msgid "Please press the right X endstop."
 msgstr "Stiskněte koncový spínač napravo X "
 
-#: Cura/gui/configWizard.py:789
+#: Cura/gui/configWizard.py:834
 msgid "Please press the front Y endstop."
 msgstr "Stiskněte koncový spínač vpředu Y "
 
-#: Cura/gui/configWizard.py:795 Cura/gui/configWizard.py:804
+#: Cura/gui/configWizard.py:840 Cura/gui/configWizard.py:849
 msgid "Please press the top Z endstop."
 msgstr "Stiskněte koncový spínač nahoře Z "
 
-#: Cura/gui/configWizard.py:799
+#: Cura/gui/configWizard.py:844
 msgid "Please press the back Y endstop."
 msgstr "Stiskněte koncový spínač vzadu Y "
 
-#: Cura/gui/configWizard.py:811 Cura/gui/configWizard.py:824
+#: Cura/gui/configWizard.py:856 Cura/gui/configWizard.py:869
 msgid "Checkup finished"
 msgstr "Testy ukončeny"
 
-#: Cura/gui/configWizard.py:818
+#: Cura/gui/configWizard.py:863
 msgid "Please press the bottom Z endstop."
 msgstr "Stiskněte koncový spínač dole Z "
 
-#: Cura/gui/configWizard.py:839 Cura/gui/configWizard.py:862
+#: Cura/gui/configWizard.py:884 Cura/gui/configWizard.py:907
 msgid "Ultimaker Calibration"
 msgstr ""
 
-#: Cura/gui/configWizard.py:867
+#: Cura/gui/configWizard.py:912
 msgid "Calibrating the Steps Per E requires some manual actions."
 msgstr "Kalibrace extrudéru vyžaduje pár ručních zásahů."
 
-#: Cura/gui/configWizard.py:868
+#: Cura/gui/configWizard.py:913
 msgid "First remove any filament from your machine."
 msgstr "Ne"
 
-#: Cura/gui/configWizard.py:869
+#: Cura/gui/configWizard.py:914
 msgid ""
 "Next put in your filament so the tip is aligned with the\n"
 "top of the extruder drive."
 msgstr "Zasuňte filament tak, že bude v rovině s vrškem extruderu."
 
-#: Cura/gui/configWizard.py:870
+#: Cura/gui/configWizard.py:915
 msgid "We'll push the filament 100mm"
 msgstr "Filament se posune o 100mm"
 
-#: Cura/gui/configWizard.py:871
+#: Cura/gui/configWizard.py:916
 msgid "Extrude 100mm filament"
 msgstr "Extrudovat 100mm filamentu."
 
-#: Cura/gui/configWizard.py:872
+#: Cura/gui/configWizard.py:917
 msgid ""
 "Now measure the amount of extruded filament:\n"
 "(this can be more or less then 100mm)"
 msgstr "Změřte délku vyextrudovaného filamentu.(měla by být přibližně 100mm)"
 
-#: Cura/gui/configWizard.py:873
+#: Cura/gui/configWizard.py:918
 msgid "Save"
 msgstr "Uložit"
 
-#: Cura/gui/configWizard.py:874
+#: Cura/gui/configWizard.py:919
 msgid "This results in the following steps per E:"
 msgstr "Což znamená kroků na extruderu:"
 
-#: Cura/gui/configWizard.py:876
+#: Cura/gui/configWizard.py:921
 msgid "You can repeat these steps to get better calibration."
 msgstr "Tento proces můžete opakovat pro zpřesnění kalibrace."
 
-#: Cura/gui/configWizard.py:879
+#: Cura/gui/configWizard.py:924
 msgid ""
 "If you still have filament in your printer which needs\n"
 "heat to remove, press the heat up button below:"
@@ -417,11 +417,11 @@ msgstr ""
 "Jestliže máte v tiskárně filament, které je třeaba ohřát před vyjmutím, "
 "stistkněte tlačítko \"Ohřát pro vyjmutí\" níže."
 
-#: Cura/gui/configWizard.py:880
+#: Cura/gui/configWizard.py:925
 msgid "Heatup for filament removal"
 msgstr "Ohřát pro vyjmutí filamentu"
 
-#: Cura/gui/configWizard.py:905 Cura/gui/configWizard.py:939
+#: Cura/gui/configWizard.py:950 Cura/gui/configWizard.py:984
 msgid ""
 "Error: Failed to open serial port to machine\n"
 "If this keeps happening, try disconnecting and reconnecting the USB cable"
@@ -429,213 +429,213 @@ msgstr ""
 "Chyba: Nelze otevřít seriový pot.\n"
 "V případě že se tak děje neustále, zkuste odpojit a znovu zapojiit USB kabel."
 
-#: Cura/gui/configWizard.py:979
+#: Cura/gui/configWizard.py:1024
 msgid "Ultimaker2"
 msgstr ""
 
-#: Cura/gui/configWizard.py:980
+#: Cura/gui/configWizard.py:1025
 msgid "Congratulations on your the purchase of your brand new Ultimaker2."
 msgstr ""
 
-#: Cura/gui/configWizard.py:981
+#: Cura/gui/configWizard.py:1026
 #, fuzzy
 msgid "Cura is now ready to be used with your Ultimaker2."
 msgstr "Cura je připravena k používání!"
 
-#: Cura/gui/configWizard.py:986
+#: Cura/gui/configWizard.py:1031
 msgid "Lulzbot TAZ/Mini"
 msgstr ""
 
-#: Cura/gui/configWizard.py:987
+#: Cura/gui/configWizard.py:1032
 #, fuzzy
 msgid "Cura is now ready to be used with your Lulzbot."
 msgstr "Cura je připravena k používání!"
 
-#: Cura/gui/configWizard.py:992
+#: Cura/gui/configWizard.py:1037
 msgid "Configuration Wizard"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1053 Cura/gui/configWizard.py:1501
+#: Cura/gui/configWizard.py:1098 Cura/gui/configWizard.py:1546
 #, fuzzy
 msgid "Bed leveling wizard"
 msgstr "Spustit průvodce vyrovnáním stolku"
 
-#: Cura/gui/configWizard.py:1055
+#: Cura/gui/configWizard.py:1100
 #, fuzzy
 msgid "This wizard will help you in leveling your printer bed"
 msgstr "Tento průvodce ti pomůže v nastavení Cura pro tvou tiskárnu"
 
-#: Cura/gui/configWizard.py:1057
+#: Cura/gui/configWizard.py:1102
 #, fuzzy
 msgid "It will do the following steps"
 msgstr "Což znamená kroků na extruderu:"
 
-#: Cura/gui/configWizard.py:1058
+#: Cura/gui/configWizard.py:1103
 msgid "* Move the printer head to each corner"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1059
+#: Cura/gui/configWizard.py:1104
 msgid "  and let you adjust the height of the bed to the nozzle"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1060
+#: Cura/gui/configWizard.py:1105
 msgid "* Print a line around the bed to check if it is level"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1063 Cura/gui/configWizard.py:1288
+#: Cura/gui/configWizard.py:1108 Cura/gui/configWizard.py:1333
 #, fuzzy
 msgid "Connect to printer"
 msgstr "Probíhá připojení k tiskárně."
 
-#: Cura/gui/configWizard.py:1067 Cura/gui/configWizard.py:1294
+#: Cura/gui/configWizard.py:1112 Cura/gui/configWizard.py:1339
 #, fuzzy
 msgid "Resume"
 msgstr "Reset"
 
-#: Cura/gui/configWizard.py:1068
+#: Cura/gui/configWizard.py:1113
 msgid "Up 0.2mm"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1068
+#: Cura/gui/configWizard.py:1113
 msgid "Down 0.2mm"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1069
+#: Cura/gui/configWizard.py:1114
 msgid "Up 10mm"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1069
+#: Cura/gui/configWizard.py:1114
 msgid "Down 10mm"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1129
+#: Cura/gui/configWizard.py:1174
 msgid "Homing printer..."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1139
+#: Cura/gui/configWizard.py:1184
 msgid "Moving head to back center..."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1146
+#: Cura/gui/configWizard.py:1191
 msgid "Moving head to back left corner..."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1154 Cura/gui/configWizard.py:1168
+#: Cura/gui/configWizard.py:1199 Cura/gui/configWizard.py:1213
 msgid "Moving head to front right corner..."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1161
+#: Cura/gui/configWizard.py:1206
 msgid "Moving head to back right corner..."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1175
+#: Cura/gui/configWizard.py:1220
 msgid "Heating up printer..."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1182
+#: Cura/gui/configWizard.py:1227
 msgid "Printing a square on the printer bed at 0.3mm height."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1222
+#: Cura/gui/configWizard.py:1267
 msgid ""
 "Adjust the front left screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1227
+#: Cura/gui/configWizard.py:1272
 msgid ""
 "Adjust the back screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1229
+#: Cura/gui/configWizard.py:1274
 msgid ""
 "Adjust the back left screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1233
+#: Cura/gui/configWizard.py:1278
 msgid ""
 "Adjust the back right screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1237
+#: Cura/gui/configWizard.py:1282
 msgid ""
 "Adjust the front right screw of your printer bed\n"
 "So the nozzle just hits the bed."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1241
+#: Cura/gui/configWizard.py:1286
 #, python-format
 msgid "Heating up printer: %d/%d"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1243
+#: Cura/gui/configWizard.py:1288
 msgid ""
 "The printer is hot now. Please insert some PLA filament into the printer."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1252
+#: Cura/gui/configWizard.py:1297
 msgid "Use the up/down buttons to move the bed and adjust your Z endstop."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1264
+#: Cura/gui/configWizard.py:1309
 msgid ""
 "Calibration finished.\n"
 "The squares on the bed should slightly touch each other."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1285
+#: Cura/gui/configWizard.py:1330
 #, fuzzy
 msgid ""
 "This wizard will help you in calibrating the printer head offsets of your "
 "dual extrusion machine"
 msgstr "Tento průvodce ti pomůže v nastavení Cura pro tvou tiskárnu"
 
-#: Cura/gui/configWizard.py:1318
+#: Cura/gui/configWizard.py:1363
 msgid "Printing initial calibration cross"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1366
+#: Cura/gui/configWizard.py:1411
 msgid ""
 "Please measure the distance between the horizontal lines in millimeters."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1376
+#: Cura/gui/configWizard.py:1421
 msgid "Printing the fine calibration lines."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1431
+#: Cura/gui/configWizard.py:1476
 msgid ""
 "Which horizontal line number lays perfect on top of each other? Front most "
 "line is zero."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1442
+#: Cura/gui/configWizard.py:1487
 #, python-format
 msgid "Calibration finished. Offsets are: %s %s"
 msgstr ""
 
-#: Cura/gui/configWizard.py:1455
+#: Cura/gui/configWizard.py:1500
 msgid "Please load both extruders with PLA."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1464
+#: Cura/gui/configWizard.py:1509
 msgid "Homing printer and heating up both extruders."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1474
+#: Cura/gui/configWizard.py:1519
 msgid "Please measure the distance between the vertical lines in millimeters."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1481
+#: Cura/gui/configWizard.py:1526
 msgid ""
 "Which vertical line number lays perfect on top of each other? Leftmost line "
 "is zero."
 msgstr ""
 
-#: Cura/gui/configWizard.py:1530
+#: Cura/gui/configWizard.py:1575
 #, fuzzy
 msgid "Head offset wizard"
 msgstr "Spustit průvodce nastavením offsetu hotendů"
@@ -645,18 +645,18 @@ msgstr "Spustit průvodce nastavením offsetu hotendů"
 msgid "Expert config"
 msgstr "Expert"
 
-#: Cura/gui/firmwareInstall.py:64
+#: Cura/gui/firmwareInstall.py:71
 msgid ""
 "I am sorry, but Cura does not ship with a default firmware for your machine "
 "configuration."
 msgstr "Je nám líto, ale Cura neobsahuje základní firmware pro vaši tiskárnu."
 
-#: Cura/gui/firmwareInstall.py:64 Cura/gui/firmwareInstall.py:69
-#: Cura/gui/firmwareInstall.py:124 Cura/gui/mainWindow.py:543
+#: Cura/gui/firmwareInstall.py:71 Cura/gui/firmwareInstall.py:76
+#: Cura/gui/firmwareInstall.py:131 Cura/gui/mainWindow.py:572
 msgid "Firmware update"
 msgstr "Aktualizace firmware"
 
-#: Cura/gui/firmwareInstall.py:69
+#: Cura/gui/firmwareInstall.py:76
 msgid ""
 "Cura only supports firmware updates for ATMega2560 based hardware.\n"
 "So updating your RepRap with Cura might or might not work."
@@ -664,25 +664,25 @@ msgstr ""
 "Cura podporuje pouze elektroniku založenou na ATMega2560. Takže aktualizace "
 "pomocí Cury nemusí fungovat!"
 
-#: Cura/gui/firmwareInstall.py:77 Cura/gui/firmwareInstall.py:181
+#: Cura/gui/firmwareInstall.py:84 Cura/gui/firmwareInstall.py:188
 msgid "OK"
 msgstr "OK"
 
-#: Cura/gui/firmwareInstall.py:98 Cura/gui/firmwareInstall.py:265
+#: Cura/gui/firmwareInstall.py:105 Cura/gui/firmwareInstall.py:272
 msgid "Reading firmware..."
 msgstr "Čtení firmware..."
 
-#: Cura/gui/firmwareInstall.py:100 Cura/gui/firmwareInstall.py:267
+#: Cura/gui/firmwareInstall.py:107 Cura/gui/firmwareInstall.py:274
 msgid "Connecting to machine..."
 msgstr "Připojování k tiskárně.."
 
-#: Cura/gui/firmwareInstall.py:104 Cura/gui/firmwareInstall.py:271
+#: Cura/gui/firmwareInstall.py:111 Cura/gui/firmwareInstall.py:278
 msgid ""
 "Please connect the printer to\n"
 "your computer with the USB cable."
 msgstr "Prosím přopojte tiskárnu k vašemu počítači pomocí USB kabelu."
 
-#: Cura/gui/firmwareInstall.py:123
+#: Cura/gui/firmwareInstall.py:130
 msgid ""
 "Failed to find machine for firmware upgrade\n"
 "Is your machine connected to the PC?"
@@ -690,25 +690,25 @@ msgstr ""
 "Nepodařilo se najít tiskárnu pro aktualizaci firmware. Je tiskárna připojená "
 "k PC?"
 
-#: Cura/gui/firmwareInstall.py:130
+#: Cura/gui/firmwareInstall.py:137
 msgid ""
 "Failed to install firmware:\n"
 "This firmware is not compatible with this machine.\n"
 "Trying to install UMO firmware on an UM2 or UMO+?"
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:136
+#: Cura/gui/firmwareInstall.py:143
 msgid ""
 "Failed to install firmware:\n"
 "This firmware is not compatible with this machine.\n"
 "Trying to install UM2 or UMO+ firmware on an UMO?"
 msgstr ""
 
-#: Cura/gui/firmwareInstall.py:141 Cura/gui/firmwareInstall.py:293
+#: Cura/gui/firmwareInstall.py:148 Cura/gui/firmwareInstall.py:300
 msgid "Uploading firmware..."
 msgstr "Nahrávám firmware"
 
-#: Cura/gui/firmwareInstall.py:144 Cura/gui/firmwareInstall.py:296
+#: Cura/gui/firmwareInstall.py:151 Cura/gui/firmwareInstall.py:303
 #, python-format
 msgid ""
 "Done!\n"
@@ -717,11 +717,11 @@ msgstr ""
 "Hotovo!\n"
 "Informace of firmware: %s"
 
-#: Cura/gui/firmwareInstall.py:146 Cura/gui/firmwareInstall.py:298
+#: Cura/gui/firmwareInstall.py:153 Cura/gui/firmwareInstall.py:305
 msgid "Failed to write firmware.\n"
 msgstr "Nepodařilo se zapsat firmware\n"
 
-#: Cura/gui/firmwareInstall.py:290
+#: Cura/gui/firmwareInstall.py:297
 #, fuzzy
 msgid "Failed to connect to programmer.\n"
 msgstr "Nepodařilo se kontaktovat YouMagine.com"
@@ -746,7 +746,7 @@ msgstr "Smazat vše"
 msgid "Print...\tCTRL+P"
 msgstr "Tisk...\tCTRL+P"
 
-#: Cura/gui/mainWindow.py:84 Cura/gui/sceneView.py:279
+#: Cura/gui/mainWindow.py:84 Cura/gui/sceneView.py:312
 msgid "Save GCode..."
 msgstr "Uložit GCode..."
 
@@ -762,120 +762,116 @@ msgstr "Otevřít profil..."
 msgid "Save Profile..."
 msgstr "Uložit profil..."
 
-#: Cura/gui/mainWindow.py:96
+#: Cura/gui/mainWindow.py:100
 msgid "Load Profile from GCode..."
 msgstr "Načíst profil z GCode..."
 
-#: Cura/gui/mainWindow.py:100
+#: Cura/gui/mainWindow.py:104
 msgid "Reset Profile to default"
 msgstr "Resetovat profil do základního nastavení"
 
-#: Cura/gui/mainWindow.py:105
+#: Cura/gui/mainWindow.py:109
 msgid "Preferences...\tCTRL+,"
 msgstr "Nastavení...\tCTRL+,"
 
-#: Cura/gui/mainWindow.py:107 Cura/gui/mainWindow.py:469
+#: Cura/gui/mainWindow.py:111 Cura/gui/mainWindow.py:480
 msgid "Machine settings..."
 msgstr "Nastavení tiskárny..."
 
-#: Cura/gui/mainWindow.py:113
+#: Cura/gui/mainWindow.py:117
 msgid "Recent Model Files"
 msgstr "Nedávné modely"
 
-#: Cura/gui/mainWindow.py:120
+#: Cura/gui/mainWindow.py:124
 msgid "Recent Profile Files"
 msgstr "Nedávné profily"
 
-#: Cura/gui/mainWindow.py:126
+#: Cura/gui/mainWindow.py:130
 msgid "Quit"
 msgstr "Konec"
 
-#: Cura/gui/mainWindow.py:128
+#: Cura/gui/mainWindow.py:132
 msgid "File"
 msgstr "Soubor"
 
-#: Cura/gui/mainWindow.py:136
+#: Cura/gui/mainWindow.py:140
 msgid "Minecraft map import..."
 msgstr "Import mapy Minecraftu..."
 
-#: Cura/gui/mainWindow.py:140
+#: Cura/gui/mainWindow.py:144
 msgid "PID Debugger..."
 msgstr "Ladění PID..."
 
-#: Cura/gui/mainWindow.py:142
+#: Cura/gui/mainWindow.py:146
 #, fuzzy
 msgid "Auto Firmware Update..."
 msgstr "Aktualizace firmware"
 
-#: Cura/gui/mainWindow.py:145
-msgid "Copy profile to clipboard"
-msgstr "Kopírovat profil do schránky"
-
-#: Cura/gui/mainWindow.py:149
+#: Cura/gui/mainWindow.py:153
 msgid "Print all at once"
 msgstr "Tisknout vše najednou"
 
-#: Cura/gui/mainWindow.py:151
+#: Cura/gui/mainWindow.py:155
 msgid "Print one at a time"
 msgstr "Tisknout postupně"
 
-#: Cura/gui/mainWindow.py:158
+#: Cura/gui/mainWindow.py:162
 msgid "Tools"
 msgstr "Nástroje"
 
-#: Cura/gui/mainWindow.py:164 Cura/util/profile.py:183
+#: Cura/gui/mainWindow.py:168 Cura/util/profile.py:183
 msgid "Machine"
 msgstr "Tiskárna"
 
-#: Cura/gui/mainWindow.py:167
+#: Cura/gui/mainWindow.py:171
 msgid "Switch to quickprint..."
 msgstr "Přepnout do jednoduchého módu..."
 
-#: Cura/gui/mainWindow.py:171
+#: Cura/gui/mainWindow.py:175
 msgid "Switch to full settings..."
 msgstr "Přepnout do rozšířeného módu..."
 
-#: Cura/gui/mainWindow.py:176
+#: Cura/gui/mainWindow.py:180
 msgid "Open expert settings...\tCTRL+E"
 msgstr "Otevřít nastavení pro experty...\tCTRL+E"
 
-#: Cura/gui/mainWindow.py:180
+#: Cura/gui/mainWindow.py:184
 msgid "Run bed leveling wizard..."
 msgstr "Spustit průvodce vyrovnáním stolku"
 
-#: Cura/gui/mainWindow.py:182
+#: Cura/gui/mainWindow.py:186
 msgid "Run head offset wizard..."
 msgstr "Spustit průvodce nastavením offsetu hotendů"
 
-#: Cura/gui/mainWindow.py:185
+#: Cura/gui/mainWindow.py:189
 msgid "Expert"
 msgstr "Expert"
 
-#: Cura/gui/mainWindow.py:188
+#: Cura/gui/mainWindow.py:192
 msgid "Online documentation..."
 msgstr "Dokumentace online"
 
-#: Cura/gui/mainWindow.py:190
+#: Cura/gui/mainWindow.py:194
 msgid "Report a problem..."
 msgstr "Nahlásit problém..."
 
-#: Cura/gui/mainWindow.py:192
+#: Cura/gui/mainWindow.py:196
 msgid "Check for update..."
 msgstr "Zkontrolovat aktualizace..."
 
-#: Cura/gui/mainWindow.py:194
+#: Cura/gui/mainWindow.py:198
 msgid "Open YouMagine website..."
 msgstr "Otevřít YouMagine stránky..."
 
-#: Cura/gui/mainWindow.py:196
+#: Cura/gui/mainWindow.py:200
 msgid "About Cura..."
 msgstr "O Cura..."
 
-#: Cura/gui/mainWindow.py:198
+#: Cura/gui/mainWindow.py:202
 msgid "Help"
 msgstr "Nápověda"
 
-#: Cura/gui/mainWindow.py:379
+#: Cura/gui/mainWindow.py:390
 msgid ""
 "For \"One at a time\" printing, you need to have entered the correct head "
 "size and gantry height in the machine settings"
@@ -883,32 +879,32 @@ msgstr ""
 "Pro \"Tisknout po jednom\" je třeba mít správně vyplněné údaje o velikosti "
 "hlavy a rozměrech konstrukce v nastavení tiskárny."
 
-#: Cura/gui/mainWindow.py:379
+#: Cura/gui/mainWindow.py:390
 msgid "One at a time warning"
 msgstr "Varování - po jednom "
 
-#: Cura/gui/mainWindow.py:467
+#: Cura/gui/mainWindow.py:478
 #, fuzzy
 msgid "Add new machine..."
 msgstr "Průvodce přidáním nové tiskárny"
 
-#: Cura/gui/mainWindow.py:475
+#: Cura/gui/mainWindow.py:486
 msgid "Install default firmware..."
 msgstr "Nainstalovat základní firmware"
 
-#: Cura/gui/mainWindow.py:478
+#: Cura/gui/mainWindow.py:489
 msgid "Install custom firmware..."
 msgstr "Nainstalovat vlastní firmware..."
 
-#: Cura/gui/mainWindow.py:482
+#: Cura/gui/mainWindow.py:493
 msgid "Select profile file to load"
 msgstr "Vyberte profil k načtení"
 
-#: Cura/gui/mainWindow.py:494
+#: Cura/gui/mainWindow.py:505
 msgid "Select gcode file to load profile from"
 msgstr "Vyberte GCode z nějž bude profil načten"
 
-#: Cura/gui/mainWindow.py:509
+#: Cura/gui/mainWindow.py:520
 msgid ""
 "No profile found in GCode file.\n"
 "This feature only works with GCode files made by Cura 12.07 or newer."
@@ -916,15 +912,15 @@ msgstr ""
 "Nenalezen profil v GCode. Pracuje pouze s GCode generovaným Curou 12.07 a "
 "novější."
 
-#: Cura/gui/mainWindow.py:509
+#: Cura/gui/mainWindow.py:520
 msgid "Profile load error"
 msgstr "Chyba při načítání profilu"
 
-#: Cura/gui/mainWindow.py:513
+#: Cura/gui/mainWindow.py:524 Cura/gui/mainWindow.py:534
 msgid "Select profile file to save"
 msgstr "Vyberte soubor profilu pro uložení"
 
-#: Cura/gui/mainWindow.py:523
+#: Cura/gui/mainWindow.py:544
 msgid ""
 "This will reset all profile settings to defaults.\n"
 "Unless you have saved your current profile, all settings will be lost!\n"
@@ -934,11 +930,22 @@ msgstr ""
 "neuložíte, přijdete o ně.\n"
 "Určitě resetovat?"
 
-#: Cura/gui/mainWindow.py:523
+#: Cura/gui/mainWindow.py:544
 msgid "Profile reset"
 msgstr "Resetovat profil"
 
-#: Cura/gui/mainWindow.py:543
+#: Cura/gui/mainWindow.py:557
+msgid ""
+"Copy the settings from quickprint to your full settings?\n"
+"(This will overwrite any full setting modifications you have)"
+msgstr ""
+
+#: Cura/gui/mainWindow.py:557
+#, fuzzy
+msgid "Profile copy"
+msgstr "Resetovat profil"
+
+#: Cura/gui/mainWindow.py:572
 msgid ""
 "Warning: Installing a custom firmware does not guarantee that you machine "
 "will function correctly, and could damage your machine."
@@ -946,27 +953,27 @@ msgstr ""
 "Varování: Instalace vlastního firmware negarantuje funkci zařízení a může "
 "dojít i k zničení tiskárny."
 
-#: Cura/gui/mainWindow.py:544 Cura/gui/mainWindow.py:587
+#: Cura/gui/mainWindow.py:573 Cura/gui/mainWindow.py:616
 msgid "Open firmware to upload"
 msgstr "Otevřít firmware"
 
-#: Cura/gui/mainWindow.py:616
+#: Cura/gui/mainWindow.py:645
 msgid "You are running the latest version of Cura!"
 msgstr "Používáte poslední verzi Cura!"
 
-#: Cura/gui/mainWindow.py:616
+#: Cura/gui/mainWindow.py:645
 msgid "Awesome!"
 msgstr "Skvělé!"
 
-#: Cura/gui/mainWindow.py:661
+#: Cura/gui/mainWindow.py:690
 msgid "Basic"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:665
+#: Cura/gui/mainWindow.py:694
 msgid "Advanced"
 msgstr ""
 
-#: Cura/gui/mainWindow.py:671
+#: Cura/gui/mainWindow.py:700
 msgid "Plugins"
 msgstr "Rozšíření"
 
@@ -990,75 +997,79 @@ msgstr "Nejprve zvolte rozšíření"
 msgid "Error: no plugin selected"
 msgstr "Chyba: nebylo zvoleno rozšíření"
 
-#: Cura/gui/preferencesDialog.py:14
+#: Cura/gui/preferencesDialog.py:15
 #, fuzzy
 msgid "Preferences"
 msgstr "Nastavení...\tCTRL+,"
 
-#: Cura/gui/preferencesDialog.py:28
+#: Cura/gui/preferencesDialog.py:29
 msgid "Print window"
 msgstr "Tiskové okno"
 
-#: Cura/gui/preferencesDialog.py:31
+#: Cura/gui/preferencesDialog.py:32
 msgid "Colours"
 msgstr "Barvy"
 
-#: Cura/gui/preferencesDialog.py:37 Cura/util/profile.py:489
+#: Cura/gui/preferencesDialog.py:38 Cura/util/profile.py:506
 msgid "Language"
 msgstr "Řeč"
 
-#: Cura/gui/preferencesDialog.py:40
+#: Cura/gui/preferencesDialog.py:41
 msgid "Filament settings"
 msgstr "Nastavení filamentu"
 
-#: Cura/gui/preferencesDialog.py:50
+#: Cura/gui/preferencesDialog.py:58
 msgid "Cura settings"
 msgstr "Nastavení Cura"
 
-#: Cura/gui/preferencesDialog.py:68 Cura/gui/preferencesDialog.py:84
+#: Cura/gui/preferencesDialog.py:80
+msgid "Select replication root folder"
+msgstr ""
+
+#: Cura/gui/preferencesDialog.py:97 Cura/gui/preferencesDialog.py:113
 msgid "Machine settings"
 msgstr "Nastavení tiskárny"
 
-#: Cura/gui/preferencesDialog.py:95
+#: Cura/gui/preferencesDialog.py:124
 msgid "Printer head size"
 msgstr "Velikost hotendu"
 
-#: Cura/gui/preferencesDialog.py:103
+#: Cura/gui/preferencesDialog.py:132
 #, python-format
 msgid "Extruder %d"
 msgstr "Extruder: %d"
 
-#: Cura/gui/preferencesDialog.py:107
+#: Cura/gui/preferencesDialog.py:136
 msgid "Communication settings"
 msgstr "Parametry komunikace"
 
-#: Cura/gui/preferencesDialog.py:119
+#: Cura/gui/preferencesDialog.py:148
 msgid "Ok"
 msgstr ""
 
-#: Cura/gui/preferencesDialog.py:123
+#: Cura/gui/preferencesDialog.py:152
 #, fuzzy
 msgid "Add new machine"
 msgstr "Průvodce přidáním nové tiskárny"
 
-#: Cura/gui/preferencesDialog.py:127
+#: Cura/gui/preferencesDialog.py:156
 #, fuzzy
 msgid "Remove machine"
 msgstr "Zvolte svou tiskárnu"
 
-#: Cura/gui/preferencesDialog.py:131 Cura/gui/preferencesDialog.py:167
+#: Cura/gui/preferencesDialog.py:160 Cura/gui/preferencesDialog.py:196
 msgid "Change machine name"
 msgstr "Změň název tiskárny"
 
-#: Cura/gui/preferencesDialog.py:153
+#: Cura/gui/preferencesDialog.py:182
 msgid "Cannot remove the last machine configuration in Cura"
 msgstr "Nelze odebrat poslední tiskárnu z Cura"
 
-#: Cura/gui/preferencesDialog.py:153
+#: Cura/gui/preferencesDialog.py:182
 msgid "Machine remove error"
 msgstr "Nelze odebrat tiskárnu"
 
-#: Cura/gui/preferencesDialog.py:167
+#: Cura/gui/preferencesDialog.py:196
 msgid "Enter the new name:"
 msgstr "Zadej nové jméno"
 
@@ -1093,7 +1104,7 @@ msgstr ""
 msgid "Connect"
 msgstr "Připojit"
 
-#: Cura/gui/printWindow.py:338 Cura/gui/sceneView.py:65
+#: Cura/gui/printWindow.py:338 Cura/gui/sceneView.py:66
 msgid "Print"
 msgstr "Tisknout"
 
@@ -1109,218 +1120,213 @@ msgstr "Zrušit tisk"
 msgid "Error log"
 msgstr "Chyby"
 
-#: Cura/gui/sceneView.py:64
+#: Cura/gui/sceneView.py:65
 msgid "Load"
 msgstr "Načíst"
 
-#: Cura/gui/sceneView.py:69
+#: Cura/gui/sceneView.py:70
 msgid "Rotate"
 msgstr "Otocit"
 
-#: Cura/gui/sceneView.py:70
+#: Cura/gui/sceneView.py:71
 msgid "Scale"
 msgstr "Zmenit velikost"
 
-#: Cura/gui/sceneView.py:71
+#: Cura/gui/sceneView.py:72
 msgid "Mirror"
 msgstr "Zrcadlit"
 
-#: Cura/gui/sceneView.py:73 Cura/gui/sceneView.py:76
+#: Cura/gui/sceneView.py:74 Cura/gui/sceneView.py:77
 msgid "Reset"
 msgstr "Reset"
 
-#: Cura/gui/sceneView.py:74
+#: Cura/gui/sceneView.py:75
 msgid "Lay flat"
 msgstr "Polozit"
 
-#: Cura/gui/sceneView.py:77
+#: Cura/gui/sceneView.py:78
 msgid "To max"
 msgstr "Na max"
 
-#: Cura/gui/sceneView.py:79
+#: Cura/gui/sceneView.py:80
 msgid "Mirror X"
 msgstr "Zrcadlit podle X"
 
-#: Cura/gui/sceneView.py:80
+#: Cura/gui/sceneView.py:81
 msgid "Mirror Y"
 msgstr "Zrcadlit podle Y"
 
-#: Cura/gui/sceneView.py:81
+#: Cura/gui/sceneView.py:82
 msgid "Mirror Z"
 msgstr "Zrcadlit podle Z"
 
-#: Cura/gui/sceneView.py:89
+#: Cura/gui/sceneView.py:90
 msgid "Scale X"
 msgstr "Zmenit velikost v X"
 
-#: Cura/gui/sceneView.py:91
+#: Cura/gui/sceneView.py:92
 msgid "Scale Y"
 msgstr "Zmenit velikost v Y"
 
-#: Cura/gui/sceneView.py:93
+#: Cura/gui/sceneView.py:94
 msgid "Scale Z"
 msgstr "Zmenit velikost v Z"
 
-#: Cura/gui/sceneView.py:95
+#: Cura/gui/sceneView.py:96
 msgid "Size X (mm)"
 msgstr "Zmenit velikost v X (mm)"
 
-#: Cura/gui/sceneView.py:97
+#: Cura/gui/sceneView.py:98
 msgid "Size Y (mm)"
 msgstr "Zmenit velikost v Y (mm)"
 
-#: Cura/gui/sceneView.py:99
+#: Cura/gui/sceneView.py:100
 msgid "Size Z (mm)"
 msgstr "Zmenit velikost v Z (mm)"
 
-#: Cura/gui/sceneView.py:101
+#: Cura/gui/sceneView.py:102
 msgid "Uniform scale"
 msgstr "Dodrzovat proporce"
 
-#: Cura/gui/sceneView.py:104
+#: Cura/gui/sceneView.py:105
 msgid "View mode"
 msgstr "Zobrazeni"
 
-#: Cura/gui/sceneView.py:104
+#: Cura/gui/sceneView.py:105
 msgid "Normal"
 msgstr "Normální"
 
-#: Cura/gui/sceneView.py:104
+#: Cura/gui/sceneView.py:105
 msgid "Overhang"
 msgstr "Previsy"
 
-#: Cura/gui/sceneView.py:104
+#: Cura/gui/sceneView.py:105
 msgid "Transparent"
 msgstr "Pruhledny"
 
-#: Cura/gui/sceneView.py:104
+#: Cura/gui/sceneView.py:105
 msgid "X-Ray"
 msgstr "Rentgen"
 
-#: Cura/gui/sceneView.py:104
+#: Cura/gui/sceneView.py:105
 msgid "Layers"
 msgstr "Vrstvy"
 
-#: Cura/gui/sceneView.py:106
+#: Cura/gui/sceneView.py:107
 msgid "Share on YouMagine"
 msgstr "Sdílet na YouMagine"
 
-#: Cura/gui/sceneView.py:204
+#: Cura/gui/sceneView.py:224
 msgid "Open 3D model"
 msgstr "Otevřít 3D model"
 
-#: Cura/gui/sceneView.py:229
+#: Cura/gui/sceneView.py:249
 msgid "Save 3D model"
 msgstr "Uložit 3D model"
 
-#: Cura/gui/sceneView.py:276 Cura/gui/sceneView.py:915
+#: Cura/gui/sceneView.py:309 Cura/gui/sceneView.py:994
 #, python-format
 msgid "Print with %s"
 msgstr "Tisknout na %s"
 
-#: Cura/gui/sceneView.py:280
+#: Cura/gui/sceneView.py:313
 msgid "Slice engine log..."
 msgstr "Loig sliceru"
 
-#: Cura/gui/sceneView.py:305 Cura/gui/sceneView.py:918
+#: Cura/gui/sceneView.py:340 Cura/gui/sceneView.py:997
 msgid "Save toolpath"
 msgstr "Uložit cestu"
 
-#: Cura/gui/sceneView.py:352
+#: Cura/gui/sceneView.py:387
 msgid "The slicing engine reported the following"
 msgstr "Slicer vrátil"
 
-#: Cura/gui/sceneView.py:352
+#: Cura/gui/sceneView.py:387
 msgid "Engine log..."
 msgstr "Log sliceru"
 
-#: Cura/gui/sceneView.py:491
+#: Cura/gui/sceneView.py:526
 msgid "How many copies do you want?"
 msgstr "Kolik kopií?"
 
-#: Cura/gui/sceneView.py:491
+#: Cura/gui/sceneView.py:526
 msgid "Number of copies"
 msgstr "Počet kopií"
 
-#: Cura/gui/sceneView.py:491
+#: Cura/gui/sceneView.py:526
 msgid "Multiply"
 msgstr "Duplikovat"
 
-#: Cura/gui/sceneView.py:781
+#: Cura/gui/sceneView.py:549
+msgid ""
+"Cannot fit all the requested duplicates. Do you want to try and reset object "
+"positions?"
+msgstr ""
+
+#: Cura/gui/sceneView.py:549
+msgid "Reset Positions"
+msgstr ""
+
+#: Cura/gui/sceneView.py:856
 msgid "Center on platform"
 msgstr "Do středu stolku"
 
-#: Cura/gui/sceneView.py:782
+#: Cura/gui/sceneView.py:857
 msgid "Delete object"
 msgstr "Smazat objekt"
 
-#: Cura/gui/sceneView.py:783
+#: Cura/gui/sceneView.py:858
 msgid "Multiply object"
 msgstr "Duplikovat objekt"
 
-#: Cura/gui/sceneView.py:784
+#: Cura/gui/sceneView.py:859
 msgid "Split object into parts"
 msgstr "Rozdělit objekt na části"
 
-#: Cura/gui/sceneView.py:786
+#: Cura/gui/sceneView.py:862
 msgid "Dual extrusion merge"
 msgstr "Spojit do dvoubarevného modelu"
 
-#: Cura/gui/sceneView.py:788
+#: Cura/gui/sceneView.py:864
 msgid "Delete all objects"
 msgstr "Smazat vše"
 
-#: Cura/gui/sceneView.py:789
+#: Cura/gui/sceneView.py:865
 msgid "Reload all objects"
 msgstr "Znovu načíst vše"
 
-#: Cura/gui/sceneView.py:912
+#: Cura/gui/sceneView.py:866
+#, fuzzy
+msgid "Reset all objects positions"
+msgstr "Smazat vše"
+
+#: Cura/gui/sceneView.py:867
+msgid "Reset all objects transformations"
+msgstr ""
+
+#: Cura/gui/sceneView.py:991
 msgid "Toolpath to SD"
 msgstr "Uložit na SD"
 
-#: Cura/gui/sceneView.py:1206
+#: Cura/gui/sceneView.py:1285
 msgid "Overhang view not working due to lack of OpenGL shaders support."
 msgstr "Zborazení převisů není funkční, protože není podpora OpenGL shaderů-"
 
-#: Cura/gui/simpleMode.py:19
-msgid "High quality print"
-msgstr "Kvalitní tisk"
-
-#: Cura/gui/simpleMode.py:20
-msgid "Normal quality print"
-msgstr "Normální tisk"
-
-#: Cura/gui/simpleMode.py:21
-msgid "Fast low quality print"
-msgstr "Rychlý tisk"
-
-#: Cura/gui/simpleMode.py:22
-msgid "Thin walled cup or vase"
-msgstr "Tenkostěnný hrnek či váza"
-
-#: Cura/gui/simpleMode.py:32
+#: Cura/gui/simpleMode.py:52
 msgid "Print support structure"
 msgstr "Tisknout s podporou"
 
-#: Cura/gui/simpleMode.py:37
+#: Cura/gui/simpleMode.py:57
 msgid "Select a quickprint profile:"
 msgstr "Vyberte si profil"
 
-#: Cura/gui/simpleMode.py:47
+#: Cura/gui/simpleMode.py:65
 msgid "Material:"
 msgstr "Materiál:"
 
-#: Cura/gui/simpleMode.py:51
-msgid "Diameter:"
-msgstr "Průměr:"
-
-#: Cura/gui/simpleMode.py:57
+#: Cura/gui/simpleMode.py:73
 msgid "Other:"
 msgstr "Ostatní:"
-
-#: Cura/gui/simpleMode.py:85
-msgid "Exterior Only"
-msgstr "Pouze vnějšek"
 
 #: Cura/gui/tools/imageToMesh.py:28
 msgid "Height (mm)"
@@ -1518,7 +1524,11 @@ msgstr "Ve vašem systému nalezena žádná webkamera"
 msgid "Webcam error"
 msgstr "Chyba webkamery"
 
-#: Cura/gui/util/engineResultView.py:168
+#: Cura/gui/util/engineResultView.py:29
+msgid "Single Layer"
+msgstr ""
+
+#: Cura/gui/util/engineResultView.py:186
 #, python-format
 msgid "Loading toolpath for visualization (%d%%)"
 msgstr "Nahrávám dráhy nástroje pro vizualizaci (% d%%)"
@@ -1532,8 +1542,8 @@ msgid "3D window error"
 msgstr "Chyba 3D vykreslování"
 
 #: Cura/util/profile.py:178 Cura/util/profile.py:179 Cura/util/profile.py:180
-#: Cura/util/profile.py:208 Cura/util/profile.py:209 Cura/util/profile.py:210
-#: Cura/util/profile.py:212
+#: Cura/util/profile.py:210 Cura/util/profile.py:211 Cura/util/profile.py:212
+#: Cura/util/profile.py:214
 msgid "Quality"
 msgstr "Kvalita"
 
@@ -1565,6 +1575,12 @@ msgid ""
 msgstr ""
 "Tloušťka vnější stěny. V kombinaci s šířkou trysky určuje počet vnějších "
 "obrysů a jejich šíři."
+
+#: Cura/util/profile.py:180 Cura/util/profile.py:203 Cura/util/profile.py:204
+#: Cura/util/profile.py:205 Cura/util/profile.py:206 Cura/util/profile.py:207
+#: Cura/util/profile.py:208 Cura/util/profile.py:209
+msgid "Retraction"
+msgstr "Retrakce"
 
 #: Cura/util/profile.py:180
 msgid "Enable retraction"
@@ -1598,6 +1614,11 @@ msgstr ""
 "Je rozumné nastavit tuto hodnotu na násobek šířky vrstvy pro roznoměrně "
 "pevný model mějte tuto hodnotu podobnou tloušťce vnější vrstvy."
 
+#: Cura/util/profile.py:182 Cura/util/profile.py:232 Cura/util/profile.py:233
+#: Cura/util/profile.py:234
+msgid "Infill"
+msgstr "Výplň"
+
 #: Cura/util/profile.py:182
 msgid "Fill Density (%)"
 msgstr "Hustota výplně (%)"
@@ -1624,6 +1645,7 @@ msgstr ""
 
 #: Cura/util/profile.py:184 Cura/util/profile.py:185 Cura/util/profile.py:186
 #: Cura/util/profile.py:187 Cura/util/profile.py:188 Cura/util/profile.py:189
+#: Cura/util/profile.py:190
 msgid "Speed and Temperature"
 msgstr "Rychlost a teplota"
 
@@ -1647,7 +1669,7 @@ msgid "Printing temperature (C)"
 msgstr "Teplota tisku (C)"
 
 #: Cura/util/profile.py:185 Cura/util/profile.py:186 Cura/util/profile.py:187
-#: Cura/util/profile.py:188
+#: Cura/util/profile.py:188 Cura/util/profile.py:189
 msgid ""
 "Temperature used for printing. Set at 0 to pre-heat yourself.\n"
 "For PLA a value of 210C is usually used.\n"
@@ -1670,39 +1692,44 @@ msgid "4th nozzle temperature (C)"
 msgstr "Teplota čtvrté trysky (C)"
 
 #: Cura/util/profile.py:189
+#, fuzzy
+msgid "5th nozzle temperature (C)"
+msgstr "Teplota třetí trysky (C)"
+
+#: Cura/util/profile.py:190
 msgid "Bed temperature (C)"
 msgstr "Teplota ohřívací podložky (C)"
 
-#: Cura/util/profile.py:189
+#: Cura/util/profile.py:190
 msgid ""
 "Temperature used for the heated printer bed. Set at 0 to pre-heat yourself."
 msgstr ""
 "Teplota použitá pro vyhřívané lůžko tiskárny. Nastavte na 0 pro manuální "
 "nastavení."
 
-#: Cura/util/profile.py:190 Cura/util/profile.py:191
+#: Cura/util/profile.py:191 Cura/util/profile.py:192
 msgid "None"
 msgstr ""
 
-#: Cura/util/profile.py:190
+#: Cura/util/profile.py:191
 msgid "Touching buildplate"
 msgstr ""
 
-#: Cura/util/profile.py:190
+#: Cura/util/profile.py:191
 msgid "Everywhere"
 msgstr ""
 
-#: Cura/util/profile.py:190 Cura/util/profile.py:191 Cura/util/profile.py:192
-#: Cura/util/profile.py:232 Cura/util/profile.py:233 Cura/util/profile.py:234
-#: Cura/util/profile.py:235 Cura/util/profile.py:236
+#: Cura/util/profile.py:191 Cura/util/profile.py:192 Cura/util/profile.py:193
+#: Cura/util/profile.py:235 Cura/util/profile.py:236 Cura/util/profile.py:237
+#: Cura/util/profile.py:238 Cura/util/profile.py:239
 msgid "Support"
 msgstr "Podpora"
 
-#: Cura/util/profile.py:190
+#: Cura/util/profile.py:191
 msgid "Support type"
 msgstr "Typ podpory"
 
-#: Cura/util/profile.py:190
+#: Cura/util/profile.py:191
 msgid ""
 "Type of support structure build.\n"
 "\"Touching buildplate\" is the most commonly used support setting.\n"
@@ -1720,22 +1747,27 @@ msgstr ""
 "dotkne modelu.\n"
 "\"Všude\" vytváří podporu i na horní části modelu."
 
-#: Cura/util/profile.py:191 Cura/util/profile.py:240
+#: Cura/util/profile.py:192 Cura/util/profile.py:243
 msgid "Brim"
 msgstr "Okraj"
 
-#: Cura/util/profile.py:191 Cura/util/profile.py:241 Cura/util/profile.py:242
-#: Cura/util/profile.py:243 Cura/util/profile.py:244 Cura/util/profile.py:245
+#: Cura/util/profile.py:192 Cura/util/profile.py:244 Cura/util/profile.py:245
 #: Cura/util/profile.py:246 Cura/util/profile.py:247 Cura/util/profile.py:248
 #: Cura/util/profile.py:249 Cura/util/profile.py:250 Cura/util/profile.py:251
+#: Cura/util/profile.py:252 Cura/util/profile.py:253 Cura/util/profile.py:254
 msgid "Raft"
 msgstr "Raft"
 
-#: Cura/util/profile.py:191
+#: Cura/util/profile.py:192 Cura/util/profile.py:224 Cura/util/profile.py:225
+#: Cura/util/profile.py:226
+msgid "Skirt"
+msgstr ""
+
+#: Cura/util/profile.py:192
 msgid "Platform adhesion type"
 msgstr "Vylepšení přilnavosti"
 
-#: Cura/util/profile.py:191
+#: Cura/util/profile.py:192
 msgid ""
 "Different options that help in preventing corners from lifting due to "
 "warping.\n"
@@ -1753,23 +1785,23 @@ msgstr ""
 "objektem. \n"
 "(Povolený \"Brim\" nebo \"Raft\" zakáže \"Skirt\")"
 
-#: Cura/util/profile.py:192
+#: Cura/util/profile.py:193
 msgid "Both"
 msgstr "Oba"
 
-#: Cura/util/profile.py:192
+#: Cura/util/profile.py:193
 msgid "First extruder"
 msgstr "První extruder"
 
-#: Cura/util/profile.py:192
+#: Cura/util/profile.py:193
 msgid "Second extruder"
 msgstr "Druhý extruder"
 
-#: Cura/util/profile.py:192
+#: Cura/util/profile.py:193
 msgid "Support dual extrusion"
 msgstr "Podpora dvojtrysky"
 
-#: Cura/util/profile.py:192
+#: Cura/util/profile.py:193
 msgid ""
 "Which extruder to use for support material, for break-away support you can "
 "use both extruders.\n"
@@ -1782,16 +1814,16 @@ msgstr ""
 "V případě, že jeden z materiálů je dražší, je vhodné použít ten levnější pro "
 "podpory. Vedlejším efektem je častější změna extruderů."
 
-#: Cura/util/profile.py:193 Cura/util/profile.py:194 Cura/util/profile.py:195
+#: Cura/util/profile.py:194 Cura/util/profile.py:195 Cura/util/profile.py:196
 msgid "Dual extrusion"
 msgstr "Dvojtryska"
 
-#: Cura/util/profile.py:193
+#: Cura/util/profile.py:194
 #, fuzzy
 msgid "Wipe&prime tower"
 msgstr "Otírací komínek"
 
-#: Cura/util/profile.py:193
+#: Cura/util/profile.py:194
 msgid ""
 "The wipe-tower is a tower printed on every layer when switching between "
 "nozzles.\n"
@@ -1802,12 +1834,12 @@ msgstr ""
 "Tryska co dotisknula se otře o tuto podporu předtím, než druhá začne "
 "tisknout."
 
-#: Cura/util/profile.py:194
+#: Cura/util/profile.py:195
 #, fuzzy
 msgid "Wipe&prime tower volume per layer (mm3)"
 msgstr "Objem otíracího komínku na jedné vrstvě (mm3)"
 
-#: Cura/util/profile.py:194
+#: Cura/util/profile.py:195
 msgid ""
 "The amount of material put in the wipe/prime tower.\n"
 "This is done in volume because in general you want to extrude a\n"
@@ -1819,11 +1851,11 @@ msgstr ""
 "protože je třeba vyextrudovat určitý objem materiálu, bez ohledu na výšku "
 "vrstvy."
 
-#: Cura/util/profile.py:195
+#: Cura/util/profile.py:196
 msgid "Ooze shield"
 msgstr "Otírací ohrádka"
 
-#: Cura/util/profile.py:195
+#: Cura/util/profile.py:196
 msgid ""
 "The ooze shield is a 1 line thick shell around the object which stands a few "
 "mm from the object.\n"
@@ -1832,16 +1864,16 @@ msgstr ""
 "Otírací ohrádka je objekt o šířce jedné linky, který se vytiskne okolo "
 "objektu. O tuto ohrádku se pak otírají ukapávající trysky."
 
-#: Cura/util/profile.py:196 Cura/util/profile.py:197 Cura/util/profile.py:198
-#: Cura/util/profile.py:199 Cura/util/profile.py:200
+#: Cura/util/profile.py:197 Cura/util/profile.py:198 Cura/util/profile.py:199
+#: Cura/util/profile.py:200 Cura/util/profile.py:201 Cura/util/profile.py:202
 msgid "Filament"
 msgstr "Filament"
 
-#: Cura/util/profile.py:196
+#: Cura/util/profile.py:197
 msgid "Diameter (mm)"
 msgstr "Průměr (mm)"
 
-#: Cura/util/profile.py:196
+#: Cura/util/profile.py:197
 msgid ""
 "Diameter of your filament, as accurately as possible.\n"
 "If you cannot measure this value you will have to calibrate it, a higher "
@@ -1850,11 +1882,11 @@ msgstr ""
 "Průměr filamentu co nejpřesněji. Vyšší číslo znamená méně vytlačovaného "
 "materiálu."
 
-#: Cura/util/profile.py:197
+#: Cura/util/profile.py:198
 msgid "Diameter2 (mm)"
 msgstr "Průměr 2 (mm)"
 
-#: Cura/util/profile.py:197
+#: Cura/util/profile.py:198
 msgid ""
 "Diameter of your filament for the 2nd nozzle. Use 0 to use the same diameter "
 "as for nozzle 1."
@@ -1862,11 +1894,11 @@ msgstr ""
 "Průměr filamentu pro druhou trysku. Vložte 0 pro shodný průměr s první "
 "tryskou."
 
-#: Cura/util/profile.py:198
+#: Cura/util/profile.py:199
 msgid "Diameter3 (mm)"
 msgstr "Průměr 3 (mm)"
 
-#: Cura/util/profile.py:198
+#: Cura/util/profile.py:199
 msgid ""
 "Diameter of your filament for the 3th nozzle. Use 0 to use the same diameter "
 "as for nozzle 1."
@@ -1874,11 +1906,11 @@ msgstr ""
 "Průměr filamentu pro třetí trysku. Vložte 0 pro shodný průměr s první "
 "tryskou."
 
-#: Cura/util/profile.py:199
+#: Cura/util/profile.py:200
 msgid "Diameter4 (mm)"
 msgstr "Průměr 4 (mm)"
 
-#: Cura/util/profile.py:199
+#: Cura/util/profile.py:200
 msgid ""
 "Diameter of your filament for the 4th nozzle. Use 0 to use the same diameter "
 "as for nozzle 1."
@@ -1886,11 +1918,25 @@ msgstr ""
 "Průměr filamentu pro čtvrtou trysku. Vložte 0 pro shodný průměr s první "
 "tryskou."
 
-#: Cura/util/profile.py:200
+#: Cura/util/profile.py:201
+#, fuzzy
+msgid "Diameter5 (mm)"
+msgstr "Průměr (mm)"
+
+#: Cura/util/profile.py:201
+#, fuzzy
+msgid ""
+"Diameter of your filament for the 5th nozzle. Use 0 to use the same diameter "
+"as for nozzle 1."
+msgstr ""
+"Průměr filamentu pro třetí trysku. Vložte 0 pro shodný průměr s první "
+"tryskou."
+
+#: Cura/util/profile.py:202
 msgid "Flow (%)"
 msgstr "Rychlost extruderu (%)"
 
-#: Cura/util/profile.py:200
+#: Cura/util/profile.py:202
 msgid ""
 "Flow compensation, the amount of material extruded is multiplied by this "
 "value"
@@ -1898,17 +1944,11 @@ msgstr ""
 "Kompenzace toku plastu, množství vytlačovaného materiálu je vynásobeno touto "
 "hodnotou."
 
-#: Cura/util/profile.py:201 Cura/util/profile.py:202 Cura/util/profile.py:203
-#: Cura/util/profile.py:204 Cura/util/profile.py:205 Cura/util/profile.py:206
-#: Cura/util/profile.py:207
-msgid "Retraction"
-msgstr "Retrakce"
-
-#: Cura/util/profile.py:201
+#: Cura/util/profile.py:203
 msgid "Speed (mm/s)"
 msgstr "Rychlost (mm/s)"
 
-#: Cura/util/profile.py:201
+#: Cura/util/profile.py:203
 msgid ""
 "Speed at which the filament is retracted, a higher retraction speed works "
 "better. But a very high retraction speed can lead to filament grinding."
@@ -1916,21 +1956,21 @@ msgstr ""
 "Rychlost jakou se provádí retrakce, vyšší rychlosti fungují lépe. Avšak moc "
 "rychlá retrakce může ohoblovat materiál."
 
-#: Cura/util/profile.py:202
+#: Cura/util/profile.py:204
 msgid "Distance (mm)"
 msgstr "Vzdálenost (mm)"
 
-#: Cura/util/profile.py:202
+#: Cura/util/profile.py:204
 msgid ""
 "Amount of retraction, set at 0 for no retraction at all. A value of 4.5mm "
 "seems to generate good results."
 msgstr "Délka retrakce, 0 - bez retrakce. Pro Ultimaker se doporučuje 4.5mm"
 
-#: Cura/util/profile.py:203
+#: Cura/util/profile.py:205
 msgid "Dual extrusion switch amount (mm)"
 msgstr "Délka retrakce při výměně trysky (mm)"
 
-#: Cura/util/profile.py:203
+#: Cura/util/profile.py:205
 msgid ""
 "Amount of retraction when switching nozzle with dual-extrusion, set at 0 for "
 "no retraction at all. A value of 16.0mm seems to generate good results."
@@ -1938,11 +1978,11 @@ msgstr ""
 "Délka retrakce když se vymění trysky, 0 - žádná retrakce. Hodnota 16mm se "
 "zdá být fajn."
 
-#: Cura/util/profile.py:204
+#: Cura/util/profile.py:206
 msgid "Minimum travel (mm)"
 msgstr "Minimální přejezd (mm)"
 
-#: Cura/util/profile.py:204
+#: Cura/util/profile.py:206
 msgid ""
 "Minimum amount of travel needed for a retraction to happen at all. To make "
 "sure you do not get a lot of retractions in a small area."
@@ -1950,25 +1990,39 @@ msgstr ""
 "Minimální vzdálenost kterou musí tryska urazit aby se retrakce stala. U "
 "malých objektů se tak snížuje počet retrakcí."
 
-#: Cura/util/profile.py:205
+#: Cura/util/profile.py:207
+msgid "Off"
+msgstr ""
+
+#: Cura/util/profile.py:207
+msgid "All"
+msgstr ""
+
+#: Cura/util/profile.py:207
+msgid "No Skin"
+msgstr ""
+
+#: Cura/util/profile.py:207
 msgid "Enable combing"
 msgstr "Povolit Vyhýbání"
 
-#: Cura/util/profile.py:205
+#: Cura/util/profile.py:207
+#, fuzzy
 msgid ""
 "Combing is the act of avoiding holes in the print for the head to travel "
-"over. If combing is disabled the printer head moves straight from the start "
-"point to the end point and it will always retract."
+"over. If combing is 'Off' the printer head moves straight from the start "
+"point to the end point and it will always retract.  If 'All', enable combing "
+"on all surfaces.  If 'No Skin', enable combing on all except skin surfaces."
 msgstr ""
 "Vyhýbání je způsob jak zabránit přejezdům trysky nad vnitřními dírami "
 "objektu. Tryska pak jezdí jen po oblastech výplně. Při vypnutém Vyhýbání, se "
 "tisková hlav pohybuje přímo z bodu do bodu a vždy dojde k retrakci."
 
-#: Cura/util/profile.py:206
+#: Cura/util/profile.py:208
 msgid "Minimal extrusion before retracting (mm)"
 msgstr "Minimální extruze před retrakcí (mm)"
 
-#: Cura/util/profile.py:206
+#: Cura/util/profile.py:208
 msgid ""
 "The minimal amount of extrusion that needs to be done before retracting "
 "again if a retraction needs to happen before this minimal is reached the "
@@ -1981,11 +2035,11 @@ msgstr ""
 "Tato volba snižuje počet retrakcí na stejném místě. Čímž zabraňuje možnému "
 "prodření filamentu."
 
-#: Cura/util/profile.py:207
+#: Cura/util/profile.py:209
 msgid "Z hop when retracting (mm)"
 msgstr "Zvednout trysku v ose Z při retrakci (mm)"
 
-#: Cura/util/profile.py:207
+#: Cura/util/profile.py:209
 msgid ""
 "When a retraction is done, the head is lifted by this amount to travel over "
 "the print. A value of 0.075 works well. This feature has a lot of positive "
@@ -1995,11 +2049,11 @@ msgstr ""
 "tiskem. Hodnota 0.075 funguje dobře. Tato vlastnost přináší mnoho "
 "pozitivních efektů u delta tiskáren."
 
-#: Cura/util/profile.py:208
+#: Cura/util/profile.py:210
 msgid "Initial layer thickness (mm)"
 msgstr "Tloušťka první vrstvy (mm)"
 
-#: Cura/util/profile.py:208
+#: Cura/util/profile.py:210
 msgid ""
 "Layer thickness of the bottom layer. A thicker bottom layer makes sticking "
 "to the bed easier. Set to 0.0 to have the bottom layer thickness the same as "
@@ -2008,11 +2062,11 @@ msgstr ""
 "Tloušťka spodní vrstvy. Tlustější vrstva lépe drží na podložce. Hodnota 0 "
 "znamená stejnou tloušťku jako ostatní vrstvy."
 
-#: Cura/util/profile.py:209
+#: Cura/util/profile.py:211
 msgid "Initial layer line width (%)"
 msgstr "Šířka čáry (%) při první vrstvě"
 
-#: Cura/util/profile.py:209
+#: Cura/util/profile.py:211
 msgid ""
 "Extra width factor for the extrusion on the first layer, on some printers "
 "it's good to have wider extrusion on the first layer to get better bed "
@@ -2021,22 +2075,22 @@ msgstr ""
 "Extra šířka pro první vrstvu. Pro některé tiskárny je výhodné mít první "
 "vrstvu širší než ostatní, model se pak lépe přichytí k podložce."
 
-#: Cura/util/profile.py:210
+#: Cura/util/profile.py:212
 msgid "Cut off object bottom (mm)"
 msgstr "Zanořit objekt (mm)"
 
-#: Cura/util/profile.py:210
+#: Cura/util/profile.py:212
 msgid ""
 "Sinks the object into the platform, this can be used for objects that do not "
 "have a flat bottom and thus create a too small first layer."
 msgstr ""
 "Zanoří objekt do podložky, používá se u objektů, které nemají rovný spodek."
 
-#: Cura/util/profile.py:212
+#: Cura/util/profile.py:214
 msgid "Dual extrusion overlap (mm)"
 msgstr "Přesah při dual extrusion (mm)"
 
-#: Cura/util/profile.py:212
+#: Cura/util/profile.py:214
 msgid ""
 "Add a certain amount of overlapping extrusion on dual-extrusion prints. This "
 "bonds the different colors together."
@@ -2044,16 +2098,16 @@ msgstr ""
 "Úroveň překryvu při dual-extruzi. Tím dochází k propojení jednotlivých barev/"
 "materiálů k sobě."
 
-#: Cura/util/profile.py:213 Cura/util/profile.py:214 Cura/util/profile.py:215
-#: Cura/util/profile.py:216 Cura/util/profile.py:217
+#: Cura/util/profile.py:215 Cura/util/profile.py:216 Cura/util/profile.py:217
+#: Cura/util/profile.py:218 Cura/util/profile.py:219 Cura/util/profile.py:220
 msgid "Speed"
 msgstr "Rychlost"
 
-#: Cura/util/profile.py:213
+#: Cura/util/profile.py:215
 msgid "Travel speed (mm/s)"
 msgstr "Rychlost přesunu (mm/s)"
 
-#: Cura/util/profile.py:213
+#: Cura/util/profile.py:215
 msgid ""
 "Speed at which travel moves are done, a well built Ultimaker can reach "
 "speeds of 250mm/s. But some machines might miss steps then."
@@ -2061,11 +2115,11 @@ msgstr ""
 "Rychlost netiskových posuvů. Dobře nastavená tiskárna dosahuje rychlosti až "
 "250mm/s. Některé tiskárny však mohou ztrácet kroky."
 
-#: Cura/util/profile.py:214
+#: Cura/util/profile.py:216
 msgid "Bottom layer speed (mm/s)"
 msgstr "Rychlost tisku první vrstvy (mm/s)"
 
-#: Cura/util/profile.py:214
+#: Cura/util/profile.py:216
 msgid ""
 "Print speed for the bottom layer, you want to print the first layer slower "
 "so it sticks better to the printer bed."
@@ -2073,11 +2127,11 @@ msgstr ""
 "Rychlost tisku spodní vrstvy. První vrstva se většinou tiskne pomaleji, aby "
 "se dobře přichytila na podložku."
 
-#: Cura/util/profile.py:215
+#: Cura/util/profile.py:217
 msgid "Infill speed (mm/s)"
 msgstr "Rychlost tisku výplně (mm/s)"
 
-#: Cura/util/profile.py:215
+#: Cura/util/profile.py:217
 msgid ""
 "Speed at which infill parts are printed. If set to 0 then the print speed is "
 "used for the infill. Printing the infill faster can greatly reduce printing "
@@ -2087,11 +2141,27 @@ msgstr ""
 "Rychlejší tisk výplní může snížit čas tisku, avšak může se i negativně "
 "podepsat na kvalitě výtisku."
 
-#: Cura/util/profile.py:216
+#: Cura/util/profile.py:218
+#, fuzzy
+msgid "Top/bottom speed (mm/s)"
+msgstr "Rychlost tisku první vrstvy (mm/s)"
+
+#: Cura/util/profile.py:218
+#, fuzzy
+msgid ""
+"Speed at which top/bottom parts are printed. If set to 0 then the print "
+"speed is used for the infill. Printing the top/bottom faster can greatly "
+"reduce printing time, but this can negatively affect print quality."
+msgstr ""
+"Rychlost výplně. 0 znamená stejnou rychlost jako je základní tisková. "
+"Rychlejší tisk výplní může snížit čas tisku, avšak může se i negativně "
+"podepsat na kvalitě výtisku."
+
+#: Cura/util/profile.py:219
 msgid "Outer shell speed (mm/s)"
 msgstr "Rychlost tisku vnějších kontur (mm/s)"
 
-#: Cura/util/profile.py:216
+#: Cura/util/profile.py:219
 msgid ""
 "Speed at which outer shell is printed. If set to 0 then the print speed is "
 "used. Printing the outer shell at a lower speed improves the final skin "
@@ -2103,11 +2173,11 @@ msgstr ""
 "v případě moc rozdílných rychlostí vnitřních a vnějších částí, může naopak "
 "kvalitu výsledného výtisku zhoršit."
 
-#: Cura/util/profile.py:217
+#: Cura/util/profile.py:220
 msgid "Inner shell speed (mm/s)"
 msgstr "Rychlost tisku vnitřních kontur (mm/s)"
 
-#: Cura/util/profile.py:217
+#: Cura/util/profile.py:220
 msgid ""
 "Speed at which inner shells are printed. If set to 0 then the print speed is "
 "used. Printing the inner shell faster then the outer shell will reduce "
@@ -2119,17 +2189,17 @@ msgstr ""
 "dobu tisku. Je vhodné nastavit tuto rychlost přibližně mezi rychlost "
 "vnějších obrysů a rychlost tisku výplně."
 
-#: Cura/util/profile.py:218 Cura/util/profile.py:219 Cura/util/profile.py:224
-#: Cura/util/profile.py:225 Cura/util/profile.py:226 Cura/util/profile.py:227
-#: Cura/util/profile.py:228
+#: Cura/util/profile.py:221 Cura/util/profile.py:222 Cura/util/profile.py:227
+#: Cura/util/profile.py:228 Cura/util/profile.py:229 Cura/util/profile.py:230
+#: Cura/util/profile.py:231
 msgid "Cool"
 msgstr "Chlazení"
 
-#: Cura/util/profile.py:218
+#: Cura/util/profile.py:221
 msgid "Minimal layer time (sec)"
 msgstr "Minimální doba tisku vrstvy (sekundy)"
 
-#: Cura/util/profile.py:218
+#: Cura/util/profile.py:221
 msgid ""
 "Minimum time spent in a layer, gives the layer time to cool down before the "
 "next layer is put on top. If the layer will be placed down too fast the "
@@ -2141,11 +2211,11 @@ msgstr ""
 "bude minimálně tato určená. Tato volba dává čas předchozí vrstvě, aby "
 "dostatečně zchladla, než se na ní začne vrstvit další."
 
-#: Cura/util/profile.py:219
+#: Cura/util/profile.py:222
 msgid "Enable cooling fan"
 msgstr "Používat větráček pro chlazení"
 
-#: Cura/util/profile.py:219
+#: Cura/util/profile.py:222
 msgid ""
 "Enable the cooling fan during the print. The extra cooling from the cooling "
 "fan is essential during faster prints."
@@ -2153,15 +2223,11 @@ msgstr ""
 "Povolit ventilátor při tisku. Chlazení modelu pomůže při rychlejších "
 "tiscích, a nižších vrstvách. Především vhodné pro PLA."
 
-#: Cura/util/profile.py:221 Cura/util/profile.py:222 Cura/util/profile.py:223
-msgid "Skirt"
-msgstr ""
-
-#: Cura/util/profile.py:221
+#: Cura/util/profile.py:224
 msgid "Line count"
 msgstr "Počet objetí"
 
-#: Cura/util/profile.py:221
+#: Cura/util/profile.py:224
 msgid ""
 "The skirt is a line drawn around the object at the first layer. This helps "
 "to prime your extruder, and to see if the object fits on your platform.\n"
@@ -2173,11 +2239,11 @@ msgstr ""
 "Nastavení na 0 sukénku zakáže. Více sukénkové řádky mohou pomoci připravě "
 "extruderu pro malé objekty."
 
-#: Cura/util/profile.py:222
+#: Cura/util/profile.py:225
 msgid "Start distance (mm)"
 msgstr "Vzdálenost od modelu (mm)"
 
-#: Cura/util/profile.py:222
+#: Cura/util/profile.py:225
 msgid ""
 "The distance between the skirt and the first layer.\n"
 "This is the minimal distance, multiple skirt lines will be put outwards from "
@@ -2187,11 +2253,11 @@ msgstr ""
 "Je to minimální vzdálenost, pokud bude více perimetrů sukénky, budou "
 "přibývat z vnějšku."
 
-#: Cura/util/profile.py:223
+#: Cura/util/profile.py:226
 msgid "Minimal length (mm)"
 msgstr "Minimální délka (mm)"
 
-#: Cura/util/profile.py:223
+#: Cura/util/profile.py:226
 msgid ""
 "The minimal length of the skirt, if this minimal length is not reached it "
 "will add more skirt lines to reach this minimal lenght.\n"
@@ -2201,11 +2267,11 @@ msgstr ""
 "další sukénky, dokud se jí nedosáhne. \n"
 "Poznámka: Pokud je nastavena 0, volba ignorována."
 
-#: Cura/util/profile.py:224
+#: Cura/util/profile.py:227
 msgid "Fan full on at height (mm)"
 msgstr "Spustit větrák naplno ve výšce (mm)"
 
-#: Cura/util/profile.py:224
+#: Cura/util/profile.py:227
 msgid ""
 "The height at which the fan is turned on completely. For the layers below "
 "this the fan speed is scaled linearly with the fan off at layer 0."
@@ -2213,11 +2279,11 @@ msgstr ""
 "Výška, ve které je ventilátor na 100%. Pro nižší vrstvy je rychlost "
 "ventilátoru řízena lineárně. Na vrstvě 0 je ventilátor vypnut"
 
-#: Cura/util/profile.py:225
+#: Cura/util/profile.py:228
 msgid "Fan speed min (%)"
 msgstr "Minimální rychlost větráku (%)"
 
-#: Cura/util/profile.py:225
+#: Cura/util/profile.py:228
 msgid ""
 "When the fan is turned on, it is enabled at this speed setting. If cool "
 "slows down the layer, the fan is adjusted between the min and max speed. "
@@ -2227,11 +2293,11 @@ msgstr ""
 "tisku, spustí se větrák rychlostí mezi min a max. Minimální rychlost větráku "
 "se používá, když nedojde ke zpomalení tisku vrstvy pro její ochlazení."
 
-#: Cura/util/profile.py:226
+#: Cura/util/profile.py:229
 msgid "Fan speed max (%)"
 msgstr "Maximální rychlost větráku (%)"
 
-#: Cura/util/profile.py:226
+#: Cura/util/profile.py:229
 msgid ""
 "When the fan is turned on, it is enabled at this speed setting. If cool "
 "slows down the layer, the fan is adjusted between the min and max speed. "
@@ -2242,11 +2308,11 @@ msgstr ""
 "tisku, spustí se větrák rychlostí mezi min a max. Maximální rychlost větráku "
 "se používá, když dojde ke zpomalení tisku vrstvy o 200% pro její ochlazení."
 
-#: Cura/util/profile.py:227
+#: Cura/util/profile.py:230
 msgid "Minimum speed (mm/s)"
 msgstr "Minimální rychlost (mm/s)"
 
-#: Cura/util/profile.py:227
+#: Cura/util/profile.py:230
 msgid ""
 "The minimal layer time can cause the print to slow down so much it starts to "
 "ooze. The minimal feedrate protects against this. Even if a print gets "
@@ -2256,11 +2322,11 @@ msgstr ""
 "žačne tryska odkapávat. Minimální rychlost tisku má tomuto jevu zabránit. I "
 "když je tisk zpomalen, nikdy jeho rychlost nesmí klesnout pod tuto minimální."
 
-#: Cura/util/profile.py:228
+#: Cura/util/profile.py:231
 msgid "Cool head lift"
 msgstr "Přizvednutí trysky pro ochlazení"
 
-#: Cura/util/profile.py:228
+#: Cura/util/profile.py:231
 msgid ""
 "Lift the head if the minimal speed is hit because of cool slowdown, and wait "
 "the extra time so the minimal layer time is always hit."
@@ -2268,15 +2334,11 @@ msgstr ""
 "Při použití této volby dojde k nadzvednutí hlavy a posečkání do nastavené "
 "minimální doby tisku."
 
-#: Cura/util/profile.py:229 Cura/util/profile.py:230 Cura/util/profile.py:231
-msgid "Infill"
-msgstr "Výplň"
-
-#: Cura/util/profile.py:229
+#: Cura/util/profile.py:232
 msgid "Solid infill top"
 msgstr "Plná výplň vršku"
 
-#: Cura/util/profile.py:229
+#: Cura/util/profile.py:232
 msgid ""
 "Create a solid top surface, if set to false the top is filled with the fill "
 "percentage. Useful for cups/vases."
@@ -2284,11 +2346,11 @@ msgstr ""
 "Tiskne plnou výplní vršek modelu. Není-li volba použita, vršek se vytiskne "
 "tak hustě, jak je nastavena výplň."
 
-#: Cura/util/profile.py:230
+#: Cura/util/profile.py:233
 msgid "Solid infill bottom"
 msgstr "Plná výplň spodku"
 
-#: Cura/util/profile.py:230
+#: Cura/util/profile.py:233
 msgid ""
 "Create a solid bottom surface, if set to false the bottom is filled with the "
 "fill percentage. Useful for buildings."
@@ -2296,11 +2358,11 @@ msgstr ""
 "Tiskne plnou výplní spodek modelu. Není-li volba použita, spodek se vytiskne "
 "tak hustě, jak je nastavena výplň."
 
-#: Cura/util/profile.py:231
+#: Cura/util/profile.py:234
 msgid "Infill overlap (%)"
 msgstr "Přesah výplně (%)"
 
-#: Cura/util/profile.py:231
+#: Cura/util/profile.py:234
 msgid ""
 "Amount of overlap between the infill and the walls. There is a slight "
 "overlap with the walls and the infill so the walls connect firmly to the "
@@ -2309,11 +2371,11 @@ msgstr ""
 "Velikost překryvu výplně a obrysů. Tato volba zajišťuje že dojde k propojení "
 "obrysů a výplně."
 
-#: Cura/util/profile.py:232
+#: Cura/util/profile.py:235
 msgid "Structure type"
 msgstr "Druh struktury"
 
-#: Cura/util/profile.py:232
+#: Cura/util/profile.py:235
 msgid ""
 "The type of support structure.\n"
 "Grid is very strong and can come off in 1 piece, however, sometimes it is "
@@ -2329,11 +2391,11 @@ msgstr ""
 "druhé. Znamená to víc práce při odlamování, ale jsou méně pevné. Funguje "
 "lépe na složitější modely."
 
-#: Cura/util/profile.py:233
+#: Cura/util/profile.py:236
 msgid "Overhang angle for support (deg)"
 msgstr "Úhel převisu pro který se tvoří support (stupně)"
 
-#: Cura/util/profile.py:233
+#: Cura/util/profile.py:236
 #, fuzzy
 msgid ""
 "The minimal angle that overhangs need to have to get support. With 90 degree "
@@ -2342,11 +2404,11 @@ msgstr ""
 "Minimální úhel pro stavbu podpor. 0 stupňů znamená horizontálně, 90 "
 "vertikálně"
 
-#: Cura/util/profile.py:234
+#: Cura/util/profile.py:237
 msgid "Fill amount (%)"
 msgstr "Úroveň výplně"
 
-#: Cura/util/profile.py:234
+#: Cura/util/profile.py:237
 #, python-format
 msgid ""
 "Amount of infill structure in the support material, less material gives "
@@ -2355,11 +2417,11 @@ msgstr ""
 "Hustota výplně podpor. Méně materiálu znamená křehčí podporu, která se lépe "
 "odlamuje. 15% se zdá být dobrým průměrem-"
 
-#: Cura/util/profile.py:235
+#: Cura/util/profile.py:238
 msgid "Distance X/Y (mm)"
 msgstr "Vzdálenost X/Y (mm)"
 
-#: Cura/util/profile.py:235
+#: Cura/util/profile.py:238
 msgid ""
 "Distance of the support material from the print, in the X/Y directions.\n"
 "0.7mm gives a nice distance from the print so the support does not stick to "
@@ -2368,11 +2430,11 @@ msgstr ""
 "Vzdálenost podpěr od výtisku, ve směrech X / Y. \n"
 "Dopodučeno je 0,7 mm, podpěry se pak nelepí k výtisku."
 
-#: Cura/util/profile.py:236
+#: Cura/util/profile.py:239
 msgid "Distance Z (mm)"
 msgstr "Vzdálenost Z (mm)"
 
-#: Cura/util/profile.py:236
+#: Cura/util/profile.py:239
 msgid ""
 "Distance from the top/bottom of the support to the print. A small gap here "
 "makes it easier to remove the support but makes the print a bit uglier.\n"
@@ -2382,15 +2444,15 @@ msgstr ""
 "odstranit podpěru, ale je tisk tnevzhlednější. \n"
 "Doporučeno je 0,15 mm.u."
 
-#: Cura/util/profile.py:237 Cura/util/profile.py:238
+#: Cura/util/profile.py:240 Cura/util/profile.py:241
 msgid "Black Magic"
 msgstr ""
 
-#: Cura/util/profile.py:237
+#: Cura/util/profile.py:240
 msgid "Spiralize the outer contour"
 msgstr "Tisknout do spirály"
 
-#: Cura/util/profile.py:237
+#: Cura/util/profile.py:240
 msgid ""
 "Spiralize is smoothing out the Z move of the outer edge. This will create a "
 "steady Z increase over the whole print. This feature turns a solid object "
@@ -2402,21 +2464,21 @@ msgstr ""
 "objekt s tloušťkou vnější stěny na jednu trysku. Tato možnost se ve starších "
 "verzích nazývala Joris."
 
-#: Cura/util/profile.py:238
+#: Cura/util/profile.py:241
 msgid "Only follow mesh surface"
 msgstr "Pouze okraje"
 
-#: Cura/util/profile.py:238
+#: Cura/util/profile.py:241
 msgid ""
 "Only follow the mesh surfaces of the 3D model, do not do anything else. No "
 "infill, no top/bottom, nothing."
 msgstr "Pouze obrysy. Žádné plnění, ani vršek, ani spodek ... nic."
 
-#: Cura/util/profile.py:240
+#: Cura/util/profile.py:243
 msgid "Brim line amount"
 msgstr "Počet linek pro Obrys"
 
-#: Cura/util/profile.py:240
+#: Cura/util/profile.py:243
 msgid ""
 "The amount of lines used for a brim, more lines means a larger brim which "
 "sticks better, but this also makes your effective print area smaller."
@@ -2424,11 +2486,11 @@ msgstr ""
 "Množství linek použitý pro Obrys. Víc linek znamená větší obrys, který se "
 "lépe přichytí, ale zároveň zmenšuje tiskovou plochu."
 
-#: Cura/util/profile.py:241
+#: Cura/util/profile.py:244
 msgid "Extra margin (mm)"
 msgstr "Extra okraj (mm)"
 
-#: Cura/util/profile.py:241
+#: Cura/util/profile.py:244
 msgid ""
 "If the raft is enabled, this is the extra raft area around the object which "
 "is also rafted. Increasing this margin will create a stronger raft while "
@@ -2438,69 +2500,69 @@ msgstr ""
 "vzdálenosti vytvoří silnější raft avšak ubírá tak na velikosti tisknutelné "
 "plochy."
 
-#: Cura/util/profile.py:242
+#: Cura/util/profile.py:245
 msgid "Line spacing (mm)"
 msgstr "Vzdálenost linek (mm)"
 
-#: Cura/util/profile.py:242
+#: Cura/util/profile.py:245
 msgid ""
 "When you are using the raft this is the distance between the centerlines of "
 "the raft line."
 msgstr "Používáš-li raft, toto je vzdálenost mezi středy linek raftu."
 
-#: Cura/util/profile.py:243
+#: Cura/util/profile.py:246
 msgid "Base thickness (mm)"
 msgstr "Tloušťka základny (mm)"
 
-#: Cura/util/profile.py:243
+#: Cura/util/profile.py:246
 msgid ""
 "When you are using the raft this is the thickness of the base layer which is "
 "put down."
 msgstr "Používáš-li raft, toto je tloušťka základní vrstvy."
 
-#: Cura/util/profile.py:244
+#: Cura/util/profile.py:247
 msgid "Base line width (mm)"
 msgstr "Šířka tištěné linky (mm)"
 
-#: Cura/util/profile.py:244
+#: Cura/util/profile.py:247
 msgid ""
 "When you are using the raft this is the width of the base layer lines which "
 "are put down."
 msgstr "Používáš-li raft, toto je šířka linek základní vrstvy."
 
-#: Cura/util/profile.py:245
+#: Cura/util/profile.py:248
 msgid "Interface thickness (mm)"
 msgstr "Tloušťka druhé vrstvy (tenké) raftu (mm)"
 
-#: Cura/util/profile.py:245
+#: Cura/util/profile.py:248
 msgid ""
 "When you are using the raft this is the thickness of the interface layer "
 "which is put down."
 msgstr "Používáš-li raft, toto je tloušťka druhé vrstvy raftu."
 
-#: Cura/util/profile.py:246
+#: Cura/util/profile.py:249
 msgid "Interface line width (mm)"
 msgstr "Šířka linek druhé vrstvy raftu (mm)"
 
-#: Cura/util/profile.py:246
+#: Cura/util/profile.py:249
 msgid ""
 "When you are using the raft this is the width of the interface layer lines "
 "which are put down."
 msgstr "Používáš-li raft, toto je šířka linek druhé vrstvy raftu."
 
-#: Cura/util/profile.py:247
+#: Cura/util/profile.py:250
 msgid "Airgap"
 msgstr "Vzduchová mezera"
 
-#: Cura/util/profile.py:247
+#: Cura/util/profile.py:250
 msgid "Gap between the last layer of the raft the whole print."
 msgstr ""
 
-#: Cura/util/profile.py:248
+#: Cura/util/profile.py:251
 msgid "First Layer Airgap"
 msgstr ""
 
-#: Cura/util/profile.py:248
+#: Cura/util/profile.py:251
 #, fuzzy
 msgid ""
 "Gap between the last layer of the raft and the first printing layer. A small "
@@ -2510,44 +2572,44 @@ msgstr ""
 "Mezírka mezi poslední vrstvou raftu a modelem. Malinká mezírka 0.2mm funguje "
 "skvěle na PLA a zajistí jednoduché odlomení raftu."
 
-#: Cura/util/profile.py:249
+#: Cura/util/profile.py:252
 msgid "Surface layers"
 msgstr "Povrchové vrstvy"
 
-#: Cura/util/profile.py:249
+#: Cura/util/profile.py:252
 msgid ""
 "Amount of surface layers put on top of the raft, these are fully filled "
 "layers on which the model is printed."
 msgstr "Počet vrstev nad raftem. Tyto vrstvy jsou s plnou výplní."
 
-#: Cura/util/profile.py:250
+#: Cura/util/profile.py:253
 #, fuzzy
 msgid "Surface layer thickness (mm)"
 msgstr "Tloušťka první vrstvy (mm)"
 
-#: Cura/util/profile.py:250
+#: Cura/util/profile.py:253
 msgid "Thickness of each surface layer."
 msgstr ""
 
-#: Cura/util/profile.py:251
+#: Cura/util/profile.py:254
 #, fuzzy
 msgid "Surface layer line width (mm)"
 msgstr "Šířka linek druhé vrstvy raftu (mm)"
 
-#: Cura/util/profile.py:251
+#: Cura/util/profile.py:254
 msgid "Width of the lines for each surface layer."
 msgstr ""
 
-#: Cura/util/profile.py:252 Cura/util/profile.py:253 Cura/util/profile.py:254
-#: Cura/util/profile.py:255
+#: Cura/util/profile.py:255 Cura/util/profile.py:256 Cura/util/profile.py:257
+#: Cura/util/profile.py:258
 msgid "Fix horrible"
 msgstr "Opravovat"
 
-#: Cura/util/profile.py:252
+#: Cura/util/profile.py:255
 msgid "Combine everything (Type-A)"
 msgstr "Vše spojit (Typ A)"
 
-#: Cura/util/profile.py:252 Cura/util/profile.py:253
+#: Cura/util/profile.py:255 Cura/util/profile.py:256
 msgid ""
 "This expert option adds all parts of the model together. The result is "
 "usually that internal cavities disappear. Depending on the model this can be "
@@ -2563,15 +2625,15 @@ msgstr ""
 "* Typ-B ignoruje všechny vnitřní otvory a drodržuje pouze vnejší okraj, vždy "
 "v rámci vrstvy"
 
-#: Cura/util/profile.py:253
+#: Cura/util/profile.py:256
 msgid "Combine everything (Type-B)"
 msgstr "Vše spojit (Typ B)"
 
-#: Cura/util/profile.py:254
+#: Cura/util/profile.py:257
 msgid "Keep open faces"
 msgstr "Ponechat otevřené stěny"
 
-#: Cura/util/profile.py:254
+#: Cura/util/profile.py:257
 msgid ""
 "This expert option keeps all the open bits of the model intact. Normally "
 "Cura tries to stitch up small holes and remove everything with big holes, "
@@ -2588,11 +2650,11 @@ msgstr ""
 "rozřezání i modelů, u kterých ostatní algoritmy selhávají. \n"
 "Tato volba může vést k nepředvídatelným výsledkům."
 
-#: Cura/util/profile.py:255
+#: Cura/util/profile.py:258
 msgid "Extensive stitching"
 msgstr "Zalátání všeho"
 
-#: Cura/util/profile.py:255
+#: Cura/util/profile.py:258
 msgid ""
 "Extensive stitching tries to fix up open holes in the model by closing the "
 "hole with touching polygons. This algorthm is quite expensive and could "
@@ -2605,37 +2667,37 @@ msgstr ""
 "Stejně tak jako všechny volby automatické opravy i tato může vést k "
 "nepředvídatelným výsledkům."
 
-#: Cura/util/profile.py:481
+#: Cura/util/profile.py:486
 msgid "Save profile on slice"
 msgstr "Ulož profil řezání"
 
-#: Cura/util/profile.py:481
+#: Cura/util/profile.py:486
 msgid ""
 "When slicing save the profile as [stl_file]_profile.ini next to the model."
 msgstr "Ulož profil řezání s jménem modelu [stl_file]_profile.ini"
 
-#: Cura/util/profile.py:482
+#: Cura/util/profile.py:487
 msgid "Cost (price/kg)"
 msgstr "Cena cena za kg"
 
-#: Cura/util/profile.py:482
+#: Cura/util/profile.py:487
 msgid "Cost of your filament per kg, to estimate the cost of the final print."
 msgstr "Cena 1kg vašeho vlákna, pro odhad nákladů tisku."
 
-#: Cura/util/profile.py:483
+#: Cura/util/profile.py:488
 msgid "Cost (price/m)"
 msgstr "Cena za metr"
 
-#: Cura/util/profile.py:483
+#: Cura/util/profile.py:488
 msgid ""
 "Cost of your filament per meter, to estimate the cost of the final print."
 msgstr "Cena 1m vašeho vlákna, pro odhad nákladů tisku."
 
-#: Cura/util/profile.py:484
+#: Cura/util/profile.py:489
 msgid "Auto detect SD card drive"
 msgstr "Autodetekce SD karty"
 
-#: Cura/util/profile.py:484
+#: Cura/util/profile.py:489
 msgid ""
 "Auto detect the SD card. You can disable this because on some systems "
 "external hard-drives or USB sticks are detected as SD card."
@@ -2643,29 +2705,41 @@ msgstr ""
 "Automatická detekce SD karty. Lze vypnout, protože na některých systémech "
 "jsou externí hard-disky nebo USB flash disky detekovány jako SD karta."
 
-#: Cura/util/profile.py:485
+#: Cura/util/profile.py:501
+msgid "Base folder to replicate on SD card"
+msgstr ""
+
+#: Cura/util/profile.py:501
+msgid ""
+"The specified folder will be used as a base path. Any gcode generated from "
+"object coming from within that folder will be automatically saved on the SD "
+"card at the same sub-folder. Any object coming from outside of this path "
+"will save the gcode on the root folder of the card."
+msgstr ""
+
+#: Cura/util/profile.py:502
 msgid "Check for updates"
 msgstr "Kontrolovat aktualizace"
 
-#: Cura/util/profile.py:485
+#: Cura/util/profile.py:502
 msgid "Check for newer versions of Cura on startup"
 msgstr "Kontrolovat aktualizace při startu Cura"
 
-#: Cura/util/profile.py:486
+#: Cura/util/profile.py:503
 msgid "Send usage statistics"
 msgstr "Zasílat statistické informace"
 
-#: Cura/util/profile.py:486
+#: Cura/util/profile.py:503
 msgid "Submit anonymous usage information to improve future versions of Cura"
 msgstr ""
 "Odesílat anonymní informace o užívání, data budou použitá pro vylepšení "
 "budoucích verzí."
 
-#: Cura/util/profile.py:488
+#: Cura/util/profile.py:505
 msgid "Density (kg/m3)"
 msgstr "Hustota (kg/m3)"
 
-#: Cura/util/profile.py:488
+#: Cura/util/profile.py:505
 msgid ""
 "Weight of the filament per m3. Around 1240 for PLA. And around 1040 for ABS. "
 "This value is used to estimate the weight if the filament used for the print."
@@ -2673,87 +2747,87 @@ msgstr ""
 "Váha filamentu na metr krychlový. Okolo 1240 pro PLA, 1040 pro ABS. Tato "
 "hodnota slouží pro výpočet přibližné váhy modelu."
 
-#: Cura/util/profile.py:489
+#: Cura/util/profile.py:506
 msgid ""
 "Change the language in which Cura runs. Switching language requires a "
 "restart of Cura"
 msgstr "Změna jazyka. Pro přepnutí je nutné restartovat Cura."
 
-#: Cura/util/profile.py:492
+#: Cura/util/profile.py:509
 msgid "Model colour"
 msgstr "Barva modelu"
 
-#: Cura/util/profile.py:492
+#: Cura/util/profile.py:509
 msgid "Display color for first extruder"
 msgstr "Barva zobrazení 1. extruderu"
 
-#: Cura/util/profile.py:493
+#: Cura/util/profile.py:510
 msgid "Model colour (2)"
 msgstr "Barva modelu 2"
 
-#: Cura/util/profile.py:493
+#: Cura/util/profile.py:510
 msgid "Display color for second extruder"
 msgstr "Barva zobrazení 2. extruderu"
 
-#: Cura/util/profile.py:494
+#: Cura/util/profile.py:511
 msgid "Model colour (3)"
 msgstr "Barva modelu 3"
 
-#: Cura/util/profile.py:494
+#: Cura/util/profile.py:511
 msgid "Display color for third extruder"
 msgstr "Barva zobrazení 3. extruderu"
 
-#: Cura/util/profile.py:495
+#: Cura/util/profile.py:512
 msgid "Model colour (4)"
 msgstr "Barva modelu 4"
 
-#: Cura/util/profile.py:495
+#: Cura/util/profile.py:512
 msgid "Display color for forth extruder"
 msgstr "Barva zobrazení 4. extruderu"
 
-#: Cura/util/profile.py:496
+#: Cura/util/profile.py:513
 msgid "Printing window type"
 msgstr "Typ okna tisku"
 
-#: Cura/util/profile.py:496
+#: Cura/util/profile.py:513
 msgid "Select the interface used for USB printing."
 msgstr "Vyberte USB rozhraní kde je připojena tiskárna."
 
-#: Cura/util/profile.py:508
+#: Cura/util/profile.py:525
 msgid "Maximum width (mm)"
 msgstr "Maximální šířka (mm)"
 
-#: Cura/util/profile.py:508 Cura/util/profile.py:509 Cura/util/profile.py:510
+#: Cura/util/profile.py:525 Cura/util/profile.py:526 Cura/util/profile.py:527
 msgid "Size of the machine in mm"
 msgstr "Velikost tiskového prostoru v mm."
 
-#: Cura/util/profile.py:509
+#: Cura/util/profile.py:526
 msgid "Maximum depth (mm)"
 msgstr "Maximání hloubka (mm)"
 
-#: Cura/util/profile.py:510
+#: Cura/util/profile.py:527
 msgid "Maximum height (mm)"
 msgstr "Maximální výška (mm)"
 
-#: Cura/util/profile.py:511
+#: Cura/util/profile.py:528
 msgid "Machine center 0,0"
 msgstr "Střed 0,0"
 
-#: Cura/util/profile.py:511
+#: Cura/util/profile.py:528
 msgid ""
 "Machines firmware defines the center of the bed as 0,0 instead of the front "
 "left corner."
 msgstr "Firmware definuje střed podložky 0,0 místo předního rohu."
 
-#: Cura/util/profile.py:512
+#: Cura/util/profile.py:529
 msgid "Build area shape"
 msgstr "Tvar tiskové plochy"
 
-#: Cura/util/profile.py:512
+#: Cura/util/profile.py:529
 msgid "The shape of machine build area."
 msgstr "Tvar tiskové oblasti"
 
-#: Cura/util/profile.py:514
+#: Cura/util/profile.py:531
 msgid ""
 "If you have an heated bed, this enabled heated bed settings (requires "
 "restart)"
@@ -2761,11 +2835,11 @@ msgstr ""
 "Pokud máte vyhřívané lůžko, je povoleno nastavení vyhřívání (vyžaduje "
 "restart)"
 
-#: Cura/util/profile.py:515
+#: Cura/util/profile.py:532
 msgid "GCode Flavor"
 msgstr "Typ G-Code"
 
-#: Cura/util/profile.py:515
+#: Cura/util/profile.py:532
 msgid ""
 "Flavor of generated GCode.\n"
 "RepRap is normal 5D GCode which works on Marlin/Sprinter based firmwares.\n"
@@ -2785,39 +2859,42 @@ msgstr ""
 "BFB typ generuje G-code na základě RPM.\n"
 "Mach3 používá  A,B,C místo E pro extrudery."
 
-#: Cura/util/profile.py:516
+#: Cura/util/profile.py:533
 msgid "Extruder count"
 msgstr "Počet extruderů"
 
-#: Cura/util/profile.py:516
+#: Cura/util/profile.py:533
 msgid "Amount of extruders in your machine."
 msgstr "Počet extruderů vaší tiskárny"
 
-#: Cura/util/profile.py:517 Cura/util/profile.py:519 Cura/util/profile.py:521
+#: Cura/util/profile.py:534 Cura/util/profile.py:536 Cura/util/profile.py:538
+#: Cura/util/profile.py:540
 msgid "Offset X"
 msgstr "Posunutí v X"
 
-#: Cura/util/profile.py:517 Cura/util/profile.py:518
+#: Cura/util/profile.py:534 Cura/util/profile.py:535
 msgid "The offset of your secondary extruder compared to the primary."
 msgstr "Vzdálenost 2. extruderu od 1."
 
-#: Cura/util/profile.py:518 Cura/util/profile.py:520 Cura/util/profile.py:522
+#: Cura/util/profile.py:535 Cura/util/profile.py:537 Cura/util/profile.py:539
+#: Cura/util/profile.py:541
 msgid "Offset Y"
 msgstr "Posunutí v Y"
 
-#: Cura/util/profile.py:519 Cura/util/profile.py:520
+#: Cura/util/profile.py:536 Cura/util/profile.py:537
 msgid "The offset of your tertiary extruder compared to the primary."
 msgstr "Vzdálenost 3. extruderu od 1."
 
-#: Cura/util/profile.py:521 Cura/util/profile.py:522
+#: Cura/util/profile.py:538 Cura/util/profile.py:539 Cura/util/profile.py:540
+#: Cura/util/profile.py:541
 msgid "The offset of your forth extruder compared to the primary."
 msgstr "Vzdálenost 4. extruderu od 1. "
 
-#: Cura/util/profile.py:523
+#: Cura/util/profile.py:542
 msgid "E-Steps per 1mm filament"
 msgstr "Počet kroků motoru extruderu na 1mm."
 
-#: Cura/util/profile.py:523
+#: Cura/util/profile.py:542
 msgid ""
 "Amount of steps per mm filament extrusion. If set to 0 then this value is "
 "ignored and the value in your firmware is used."
@@ -2825,19 +2902,19 @@ msgstr ""
 "Počet kroků na mm vytlačovaného vlákna. Pokud je nastavena 0 a pak je "
 "použita hodnota ve firmwaru."
 
-#: Cura/util/profile.py:524
+#: Cura/util/profile.py:543
 msgid "Serial port"
 msgstr "Sériový port"
 
-#: Cura/util/profile.py:524
+#: Cura/util/profile.py:543
 msgid "Serial port to use for communication with the printer"
 msgstr "Sériový port použítý pro komunikaci s tiskárnou"
 
-#: Cura/util/profile.py:526
+#: Cura/util/profile.py:545
 msgid "Baudrate"
 msgstr "Přenosová rychlost (bd)"
 
-#: Cura/util/profile.py:526
+#: Cura/util/profile.py:545
 msgid ""
 "Speed of the serial port communication\n"
 "Needs to match your firmware settings\n"
@@ -2847,11 +2924,11 @@ msgstr ""
 "Musí odpovídat nastavení firmwaru \n"
 "Běžné hodnoty jsou 250000, 115200, 57600"
 
-#: Cura/util/profile.py:529
+#: Cura/util/profile.py:548
 msgid "Head size towards X min (mm)"
 msgstr "Pozice trysky v extruderu - X min (mm)"
 
-#: Cura/util/profile.py:529
+#: Cura/util/profile.py:548
 msgid ""
 "The head size when printing multiple objects, measured from the tip of the "
 "nozzle towards the outer part of the head. 75mm for an Ultimaker if the fan "
@@ -2861,11 +2938,11 @@ msgstr ""
 "trysky k vnější hraně hlavy. 75mm je pro Ultimaker, když je větrák na levé "
 "straně."
 
-#: Cura/util/profile.py:530
+#: Cura/util/profile.py:549
 msgid "Head size towards Y min (mm)"
 msgstr "Pozice trysky v extruderu - Y min (mm)"
 
-#: Cura/util/profile.py:530 Cura/util/profile.py:531
+#: Cura/util/profile.py:549 Cura/util/profile.py:550
 msgid ""
 "The head size when printing multiple objects, measured from the tip of the "
 "nozzle towards the outer part of the head. 18mm for an Ultimaker if the fan "
@@ -2875,15 +2952,15 @@ msgstr ""
 "trysky k vnější hraně hlavy. 18mm je pro Ultimaker, když je větrák na levé "
 "straně."
 
-#: Cura/util/profile.py:531
+#: Cura/util/profile.py:550
 msgid "Head size towards X max (mm)"
 msgstr "Pozice trysky v extruderu - X max (mm)"
 
-#: Cura/util/profile.py:532
+#: Cura/util/profile.py:551
 msgid "Head size towards Y max (mm)"
 msgstr "Pozice trysky v extruderu - Y max (mm)"
 
-#: Cura/util/profile.py:532
+#: Cura/util/profile.py:551
 msgid ""
 "The head size when printing multiple objects, measured from the tip of the "
 "nozzle towards the outer part of the head. 35mm for an Ultimaker if the fan "
@@ -2893,11 +2970,11 @@ msgstr ""
 "trysky k vnější hraně hlavy. 35mm je pro Ultimaker, když je větrák na levé "
 "straně."
 
-#: Cura/util/profile.py:533
+#: Cura/util/profile.py:552
 msgid "Printer gantry height (mm)"
 msgstr "Výška tiskového prostoru (mm)"
 
-#: Cura/util/profile.py:533
+#: Cura/util/profile.py:552
 msgid ""
 "The height of the gantry holding up the printer head. If an object is higher "
 "then this then you cannot print multiple objects one for one. 60mm for an "
@@ -2906,17 +2983,17 @@ msgstr ""
 "Výška portálu držící tiskovou hlavu. V případě, že je objekt vyšší než tato "
 "hodnota, nelze vytisknout více objektů postupně. Ultimaker používá 60mm"
 
-#: Cura/util/profile.py:535
+#: Cura/util/profile.py:554
 #, fuzzy, python-format
 msgid "More flow than 150% is rare and usually not recommended."
 msgstr "Vyšší tok než 150% je podivný a nedoporučený."
 
-#: Cura/util/profile.py:536
+#: Cura/util/profile.py:555
 #, fuzzy, python-format
 msgid "Less flow than 50% is rare and usually not recommended."
 msgstr "Nižší tok než 50% je podivný a nedoporučený."
 
-#: Cura/util/profile.py:537
+#: Cura/util/profile.py:556
 #, python-format
 msgid ""
 "Thicker layers then %.2fmm (80%% nozzle size) usually give bad results and "
@@ -2925,7 +3002,7 @@ msgstr ""
 "Vrstvy vyšší než %.2fmm (80%% šířky trysky) většinou podávají horší výsledky "
 "a nejsou doporučované."
 
-#: Cura/util/profile.py:539
+#: Cura/util/profile.py:558
 msgid ""
 "It is highly unlikely that your machine can achieve a printing speed above "
 "150mm/s"
@@ -2933,13 +3010,13 @@ msgstr ""
 "Je velmi nepravděpodobné, že vaše tiskárna může dosáhnout rychlosti posuvu "
 "nad 150 mm/s"
 
-#: Cura/util/profile.py:541 Cura/util/profile.py:542 Cura/util/profile.py:543
-#: Cura/util/profile.py:544
+#: Cura/util/profile.py:565 Cura/util/profile.py:566 Cura/util/profile.py:567
+#: Cura/util/profile.py:568 Cura/util/profile.py:569
 msgid "Temperatures above 260C could damage your machine, be careful!"
 msgstr "Teploty nad 260C mohou zničit vaši tiskárnu, opatrně!"
 
-#: Cura/util/profile.py:545 Cura/util/profile.py:546 Cura/util/profile.py:547
-#: Cura/util/profile.py:548
+#: Cura/util/profile.py:570 Cura/util/profile.py:571 Cura/util/profile.py:572
+#: Cura/util/profile.py:573 Cura/util/profile.py:574
 msgid ""
 "Are you sure your filament is that thick? Normal filament is around 3mm or "
 "1.75mm."
@@ -2947,7 +3024,7 @@ msgstr ""
 "Jsi si jistý, že vaše vlákno má tento průměr? Normální vlákno má průměr "
 "kolem 3 mm nebo 1,75 mm."
 
-#: Cura/util/profile.py:549
+#: Cura/util/profile.py:575
 msgid ""
 "It is highly unlikely that your machine can achieve a travel speed above "
 "300mm/s"
@@ -2955,7 +3032,7 @@ msgstr ""
 "Je velmi nepravděpodobné, že vaše tiskárna může dosáhnout rychlosti posuvu "
 "nad 300 mm/s"
 
-#: Cura/util/profile.py:550
+#: Cura/util/profile.py:576
 #, fuzzy, python-format
 msgid ""
 "A bottom layer of more then %.2fmm (3/4 nozzle size) usually give bad "
@@ -2983,6 +3060,27 @@ msgstr ""
 #, python-format
 msgid "%0.2f meter %0.0f gram"
 msgstr ""
+
+#~ msgid "Copy profile to clipboard"
+#~ msgstr "Kopírovat profil do schránky"
+
+#~ msgid "High quality print"
+#~ msgstr "Kvalitní tisk"
+
+#~ msgid "Normal quality print"
+#~ msgstr "Normální tisk"
+
+#~ msgid "Fast low quality print"
+#~ msgstr "Rychlý tisk"
+
+#~ msgid "Thin walled cup or vase"
+#~ msgstr "Tenkostěnný hrnek či váza"
+
+#~ msgid "Diameter:"
+#~ msgstr "Průměr:"
+
+#~ msgid "Exterior Only"
+#~ msgstr "Pouze vnějšek"
 
 #~ msgid "Run first run wizard..."
 #~ msgstr "Spustit průvodce prvním spuštěním"
