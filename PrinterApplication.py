@@ -20,7 +20,8 @@ class PrinterApplication(QtApplication):
     def __init__(self):
         super().__init__()
         self.setApplicationName('printer')
-        self._machine_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, "ultimaker2.json"))
+        self._machine_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, "ultimaker_original+.json"))
+        self.setRequiredPlugins(['CuraEngineBackend', 'MeshView', 'LayerView', 'STLReader','SelectionTool','CameraTool'])
         self._physics = None
     
     def _loadPlugins(self):
@@ -33,8 +34,6 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugin('CuraEngineBackend')
     
     def run(self):
-        
-        
         controller = self.getController()
 
         controller.setActiveView("MeshView")
@@ -66,7 +65,7 @@ class PrinterApplication(QtApplication):
         camera = Camera('3d', root)
         camera.translate(Vector(0, 150, 150))
         proj = Matrix()
-        proj.setPerspective(45, 640/480, 1, 500)
+        proj.setPerspective(85, 640/480, 1, 500)
         camera.setProjectionMatrix(proj)
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
