@@ -356,8 +356,10 @@ class MachineSelectPage(InfoPage):
 		self.LulzbotMiniRadio = self.AddRadioButton("LulzBot Mini", style=wx.RB_GROUP)
 		self.LulzbotMiniRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.LulzbotMiniRadio.SetValue(True)
-		self.LulzbotTazRadio = self.AddRadioButton("LulzBot TAZ")
-		self.LulzbotTazRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
+		self.LulzbotTaz5Radio = self.AddRadioButton("LulzBot TAZ 5")
+		self.LulzbotTaz5Radio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
+		self.LulzbotTaz4Radio = self.AddRadioButton("LulzBot TAZ 4")
+		self.LulzbotTaz4Radio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.Ultimaker2Radio = self.AddRadioButton("Ultimaker2")
 		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
 		self.UltimakerRadio = self.AddRadioButton("Ultimaker Original")
@@ -442,14 +444,22 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('has_heated_bed', 'True')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putProfileSetting('retraction_enable', 'True')
-		elif self.LulzbotTazRadio.GetValue() or self.LulzbotMiniRadio.GetValue():
-			if self.LulzbotTazRadio.GetValue():
+		elif self.LulzbotTaz4Radio.GetValue() or self.LulzbotTaz5Radio.GetValue() or self.LulzbotMiniRadio.GetValue():
+			if self.LulzbotTaz4Radio.GetValue():
 				profile.putMachineSetting('machine_width', '298')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putProfileSetting('nozzle_size', '0.35')
-				profile.putMachineSetting('machine_name', 'LulzBot TAZ')
-				profile.putMachineSetting('machine_type', 'lulzbot_TAZ')
+				profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
+				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
+				profile.putMachineSetting('serial_baud', '115200')
+			elif self.LulzbotTaz5Radio.GetValue():
+				profile.putMachineSetting('machine_width', '298')
+				profile.putMachineSetting('machine_depth', '275')
+				profile.putMachineSetting('machine_height', '250')
+				profile.putProfileSetting('nozzle_size', '0.35')
+				profile.putMachineSetting('machine_name', 'LulzBot TAZ 5')
+				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
 				profile.putMachineSetting('serial_baud', '115200')
 			else:
 				profile.putMachineSetting('machine_width', '155')
