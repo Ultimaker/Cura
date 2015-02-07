@@ -342,7 +342,131 @@ G90                                          ; absolute positioning
 					put('inset0_speed', '25')
 					put('insetx_speed', '27')
 ### LulzBot TAZ 5 slice settings for use with the simple slice selection.
-
+		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5':
+			put('wall_thickness', '1.05')
+			put('retraction_speed', '10')
+			put('retraction_hop', '0.1')
+			put('layer0_width_factor', '125')
+			put('travel_speed', '175')
+			put('bottom_layer_speed', '15')
+			put('skirt_minimal_length', '250')
+			put('fan_full_height', '0.5')
+			put('brim_line_count', '10')
+			put('print_temperature', '0')
+			put('print_bed_temperature', '0')
+			if self.printSupport.GetValue():
+				put('support', _("Everywhere"))
+				put('support_type', 'Lines')
+				put('support_angle', '45')
+				put('support_fill_rate', '30')
+				put('support_xy_distance', '0.7')
+				put('support_z_distance', '0.05')
+			put('start.gcode', """;Sliced at: {day} {date} {time} for use with the LulzBot TAZ 5
+;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
+G21                     ;metric values
+G90                     ;absolute positioning
+M82                     ;set extruder to absolute mode
+M107                    ;start with the fan off
+G28 X0 Y0               ;move X/Y to min endstops
+G28 Z0                  ;move Z to min endstops
+G1 Z15.0 F{travel_speed};move the platform down 15mm
+G92 E0                  ; zero the extruded length
+G1 F200 E0              ; extrude 3mm of feed stock
+G92 E0                  ; zero the extruded length again
+G1 F{travel_speed}      ; set travel speed
+M203 X192 Y208 Z3       ; speed limits
+M117 Printing...        ; send message to LCD""")
+			put('end.gcode', """M400                           ; wait for buffer to clear
+M104 S0                        ; hotend off
+M140 S0                        ; heated bed heater off (if you have it)
+M107                           ; fans off
+G91                            ; relative positioning
+G1 E-1 F300                    ; retract the filament a bit before lifting the nozzle, to release some of the pressure
+G1 Z+0.5 E-5 X-20 Y-20 F3000   ; move Z up a bit and retract filament even more
+G90                            ; absolute positioning
+G1 X0 Y250                     ; move to cooling position
+M84                            ; steppers off
+G90                            ; absolute positioning
+M117 TAZ Ready.
+;{profile_string}""")
+			if self.printMaterialHIPS.GetValue() or self.printMaterialABS.GetValue():
+				put('retraction_amount', '1')
+				put('fan_speed', '40')
+			if self.printMaterialHIPS.GetValue() or self.printMaterialPLA.GetValue():
+				put('raft_airgap', '0.5')
+			if self.printMaterialHIPS:
+				put('fan_speed_max', '50')
+				put('cool_min_layer_time', '20')
+				if self.printTypeLow.GetValue():
+					put('layer_height', '0.28')
+					put('solid_layer_thickness', '0.84')
+					put('infill_speed', '70')
+					put('inset0_speed', '40')
+					put('insetx_speed', '45')
+				if self.printTypeNormal.GetValue():
+					put('layer_height', '0.22')
+					put('solid_layer_thickness', '0.88')
+					put('infill_speed', '50')
+					put('inset0_speed', '30')
+					put('insetx_speed', '35')
+				if self.printTypeHigh.GetValue():
+					put('layer_height', '0.14')
+					put('solid_layer_thickness', '0.7')
+					put('infill_speed', '30')
+					put('inset0_speed', '20')
+					put('insetx_speed', '25')
+			if self.printMaterialABS.GetValue():
+				put('fan_speed_max', '60')
+				put('raft_airgap', '0.35')
+				if self.printTypeLow.GetValue():
+					put('layer_height', '0.28')
+					put('solid_layer_thickness', '0.84')
+					put('infill_speed', '60')
+					put('inset0_speed', '50')
+					put('insetx_speed', '55')
+					put('cool_min_layer_time', '15')
+				if self.printTypeNormal.GetValue():
+					put('layer_height', '0.22')
+					put('solid_layer_thickness', '0.88')
+					put('infill_speed', '55')
+					put('inset0_speed', '45')
+					put('insetx_speed', '50')
+					put('cool_min_layer_time', '15')
+				if self.printTypeHigh.GetValue():
+					put('layer_height', '0.16')
+					put('solid_layer_thickness', '0.74')
+					put('infill_speed', '40')
+					put('inset0_speed', '30')
+					put('insetx_speed', '35')
+					put('cool_min_layer_time', '20')
+			if self.printMaterialPLA.GetValue():
+				put('retraction_amount', '1.5')
+				put('fan_speed', '75')
+				put('fan_speed_max', '100')
+				if self.printTypeLow.GetValue():
+					put('layer_height', '0.28')
+					put('solid_layer_thickness', '0.84')
+					put('infill_speed', '80')
+					put('inset0_speed', '60')
+					put('insetx_speed', '70')
+					put('cool_min_layer_time', '15')
+					put('cool_min_feedrate', '15')
+				if self.printTypeNormal.GetValue():
+					put('layer_height', '0.21')
+					put('solid_layer_thickness', '0.84')
+					put('infill_speed', '60')
+					put('inset0_speed', '50')
+					put('insetx_speed', '55')
+					put('cool_min_layer_time', '15')
+					put('cool_min_feedrate', '10')
+				if self.printTypeHigh.GetValue():
+					put('layer_height', '0.14')
+					put('solid_layer_thickness', '0.7')
+					put('infill_speed', '50')
+					put('inset0_speed', '40')
+					put('insetx_speed', '45')
+					put('cool_min_layer_time', '20')
+					put('cool_min_feedrate', '5')
 
 ### LulzBot TAZ 4 slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
