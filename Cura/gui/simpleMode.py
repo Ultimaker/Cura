@@ -389,6 +389,8 @@ G90                                          ; absolute positioning
 				put('support_fill_rate', '30')
 				put('support_xy_distance', '0.7')
 				put('support_z_distance', '0.05')
+			if self.printBrim.GetValue():
+				put('platform_adhesion', 'Brim')
 			put('start.gcode', """;Sliced at: {day} {date} {time} for use with the LulzBot TAZ 5
 ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}
 G21                     ;metric values
