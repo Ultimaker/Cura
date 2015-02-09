@@ -371,6 +371,7 @@ G90                                          ; absolute positioning
 					put('insetx_speed', '27')
 ### LulzBot TAZ 5 slice settings for use with the simple slice selection.
 		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5':
+			put('nozzle_size', '0.35')
 			put('wall_thickness', '1.05')
 			put('retraction_speed', '10')
 			put('retraction_hop', '0.1')
@@ -382,6 +383,7 @@ G90                                          ; absolute positioning
 			put('brim_line_count', '10')
 			put('print_temperature', '0')
 			put('print_bed_temperature', '0')
+			put('retraction_minimal_extrusion', '0.005')
 			if self.printSupport.GetValue():
 				put('support', _("Everywhere"))
 				put('support_type', 'Lines')
