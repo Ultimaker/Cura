@@ -66,7 +66,7 @@ class simpleModePanel(wx.Panel):
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		self.printTypeNormal.SetValue(True)
-		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
+		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
 			self.printMaterialHIPS.SetValue(True)
 		else:
 			self.printMaterialPLA.SetValue(True)
@@ -78,7 +78,7 @@ class simpleModePanel(wx.Panel):
 
 		self.printMaterialPLA.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 		self.printMaterialABS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
+		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
 			self.printMaterialHIPS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 
 		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
