@@ -210,6 +210,8 @@ class gcode(object):
 							pos[1] = center[1]
 						if z is not None:
 							pos[2] = center[2]
+				elif G == 29:	#Probe Z
+					pos[2] = 0.0
 				elif G == 90:	#Absolute position
 					posAbs = True
 				elif G == 91:	#Relative position
@@ -275,6 +277,12 @@ class gcode(object):
 					elif M == 140:	#Set bed temperature
 						pass
 					elif M == 190:	#Set bed temperature & wait
+						pass
+					elif M == 203:	#Set maximum feedrate
+						pass
+					elif M == 204:	#Set default acceleration
+						pass
+					elif M == 400:	#Wait for current moves to finish
 						pass
 					elif M == 221:	#Extrude amount multiplier
 						s = getCodeFloat(line, 'S')
