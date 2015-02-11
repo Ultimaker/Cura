@@ -11,7 +11,7 @@ import struct
 
 class ProcessSlicedObjectListJob(Job):
     def __init__(self, message):
-        super().__init__(description = 'Processing sliced object', visible = True)
+        super().__init__(description = 'Processing sliced object')
         self._message = message
         self._scene = Application.getInstance().getController().getScene()
 
