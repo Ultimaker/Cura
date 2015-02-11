@@ -165,25 +165,12 @@ UM.MainWindow {
                 onSaveRequested: saveAction.trigger();
             }
 
-//             UM.JobList { anchors.left: parent.left; anchors.bottom: parent.bottom; width: parent.width / 10; height: parent.height / 5; }
-
-//             ProgressBar {
-//                 id: progressBar;
-//
-//                 anchors {
-//                     left: parent.left;
-//                     bottom: parent.bottom;
-//                     right: parent.right;
-//                 }
-//
-//                 minimumValue: 0;
-//                 maximumValue: 1;
-//
-//                 Connections {
-//                     target: UM.Backend;
-//                     onProcessingProgress: progressBar.value = amount;
-//                 }
-//             }
+            UM.MessageStack {
+                anchors.bottom: parent.bottom;
+                anchors.horizontalCenter: parent.horizontalCenter;
+                width: parent.width * 0.333;
+                height: 250;
+            }
         }
     }
 
