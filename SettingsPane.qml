@@ -37,7 +37,7 @@ Rectangle {
             rightMargin: UM.Theme.defaultMargin;
         }
 
-        Label { text: "Print Settings"; width: parent.width; }
+        Label { text: "Print Settings"; width: parent.width; font.capitalization: Font.AllUppercase; font.pointSize: UM.Theme.smallTextSize; }
 
         Item {
             width: parent.width;
