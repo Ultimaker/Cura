@@ -15,6 +15,15 @@ Rectangle {
         UM.Models.directoryListModel.directory = file
     }
 
+    MouseArea {
+        anchors.fill: parent;
+        acceptedButtons: Qt.AllButtons;
+
+        onWheel: {
+            wheel.accepted = true;
+        }
+    }
+
     ColumnLayout {
         anchors.fill: parent;
         anchors.margins: UM.Theme.defaultMargin;
