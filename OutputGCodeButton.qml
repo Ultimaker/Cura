@@ -5,42 +5,93 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Button {
-    id: saveButton;
+Rectangle {
+    id: base;
 
-    text: "Save";
+    color: UM.Theme.primaryColor;
+    border.width: 1;
+    border.color: UM.Theme.borderColor;
 
     signal saveRequested();
-    iconSource: UM.Resources.getIcon('save.png');
 
-    onClicked: saveDialog.open();
+    Label {
+        id: label;
+        anchors.verticalCenter: parent.verticalCenter;
+        anchors.left: parent.left;
+        anchors.right: icon.left;
+        horizontalAlignment: Text.AlignHCenter;
+        font.pointSize: UM.Theme.largeTextSize;
+        color: "white";
 
-    style: ButtonStyle {
-        background: Rectangle {
-            color: UM.Theme.primaryColor;
-            border.width: 1;
-            border.color: UM.Theme.borderColor;
+        text: "Save";
+    }
+
+    Rectangle {
+        id: icon;
+
+        anchors.right: parent.right;
+        anchors.top: parent.top;
+        anchors.bottom: parent.bottom;
+        anchors.margins: 1;
+
+        color: "white";
+
+        width: height;
+
+        Rectangle {
+            anchors { left: parent.left; top: parent.top; bottom: parent.bottom; }
+            width: 1;
+            color: UM.Theme.borderColor;
         }
-        label: Item {
-            Label {
-                anchors.verticalCenter: parent.verticalCenter;
-                anchors.left: parent.left;
-                anchors.right: icon.left;
-                text: control.text;
-                horizontalAlignment: Text.AlignHCenter;
-                font.pointSize: UM.Theme.largeTextSize;
-            }
 
-            Rectangle {
-                id: icon;
+        UM.RecolorImage { id: iconImage; anchors.centerIn: parent; width: 32; height: 32; source: UM.Resources.getIcon('save.png'); color: '#000'; }
+    }
 
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter;
+    MouseArea {
+        anchors.fill: parent;
 
-                width: control.height;
-                height: control.height;
-                UM.RecolorImage { anchors.centerIn: parent; source: control.iconSource; color: "#f00"; }
+        onClicked: {
+            switch(base.state) {
+                case 'sdcard':
+                    base.state = 'usb';
+                    break;
+                case 'usb':
+                    base.state = '';
+                    break;
+                default:
+                    base.saveRequested();
+                    break;
             }
         }
     }
+
+    states: [
+        State {
+            name: 'sdcard';
+            PropertyChanges { target: label; text: 'Write to SD'; }
+            PropertyChanges { target: iconImage; source: UM.Resources.getIcon('sdcard.png'); }
+        },
+        State {
+            name: 'usb';
+            PropertyChanges { target: label; text: 'Send over USB'; }
+            PropertyChanges { target: iconImage; source: UM.Resources.getIcon('usb.png'); }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            SequentialAnimation {
+                ParallelAnimation {
+                    NumberAnimation { target: label; property: 'opacity'; to: 0; duration: 250; }
+                    NumberAnimation { target: iconImage; property: 'opacity'; to: 0; duration: 250; }
+                }
+                PropertyAction { target: label; property: 'text'; }
+                PropertyAction { target: iconImage; property: 'source'; }
+                ParallelAnimation {
+                    NumberAnimation { target: label; property: 'opacity'; to: 1; duration: 250; }
+                    NumberAnimation { target: iconImage; property: 'opacity'; to: 1; duration: 250; }
+                }
+            }
+        }
+    ]
 }
