@@ -3,6 +3,7 @@ from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Preferences import Preferences
+from UM.Math.Vector import Vector
 
 from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
@@ -10,6 +11,7 @@ from . import ProcessGCodeJob
 
 import threading
 import struct
+import numpy
 
 class CuraEngineBackend(Backend):
     def __init__(self):
@@ -62,6 +64,7 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(3, Cura_pb2.Progress)
         self._socket.registerMessageType(4, Cura_pb2.GCode)
         self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
+        self._socket.registerMessageType(6, Cura_pb2.SettingList)
 
     def _onChanged(self):
         if self._changeTimer:
@@ -77,30 +80,26 @@ class CuraEngineBackend(Backend):
                 objects.append(node)
 
         if not objects:
+            self._changeTimer = None
             return #No point in slicing an empty build plate
 
-        msg = Cura_pb2.SettingList()
-        for setting in self._settings.getAllSettings():
-            s = msg.settings.add()
-            s.name = setting.getKey()
-
-            if setting.getType() == 'float':
-                s.value = struct.pack('!f', setting.getValue())
-            elif setting.getType() == 'int' or setting.getType() == 'enum':
-                s.value = struct.pack('!i', setting.getValue())
-
-        self._socket.sendMessage(msg)
+        self._sendSettings()
 
         self._scene.acquireLock()
 
         msg = Cura_pb2.ObjectList()
+
+        #TODO: All at once/one at a time mode
+        center = Vector()
         for object in objects:
+            center += object.getPosition()
+
             meshData = object.getMeshData()
 
             obj = msg.objects.add()
             obj.id = id(object)
 
-            verts = meshData.getVertices()
+            verts = numpy.array(meshData.getVertices(), copy=True)
             verts[:,[1,2]] = verts[:,[2,1]]
             obj.vertices = verts.tostring()
 
@@ -112,6 +111,165 @@ class CuraEngineBackend(Backend):
 
         self._scene.releaseLock()
 
+        center /= float(len(objects))
+        if not self._settings.getSettingValueByKey('machine_center_is_zero'):
+            center.setX(center.x + self._settings.getSettingValueByKey('machine_width') / 2)
+            center.setZ(center.z + self._settings.getSettingValueByKey('machine_depth') / 2)
+
+        posmsg = Cura_pb2.SettingList()
+        posX = posmsg.settings.add()
+        posX.name = 'position.X'
+        posX.value = str(int(center.x * 1000)).encode('utf-8')
+        posY = posmsg.settings.add()
+        posY.name = 'position.Y'
+        posY.value = str(int(center.z * 1000)).encode('utf-8')
+        posZ = posmsg.settings.add()
+        posZ.name = 'position.Z'
+        posZ.value = str(int(0)).encode('utf-8')
+        self._socket.sendMessage(posmsg)
+
         self._socket.sendMessage(msg)
 
         self._changeTimer = None
+
+    def _sendSettings(self):
+        extruder = 0
+
+        settings = {
+            'extruderNr': extruder,
+            'layerThickness': int(self._settings.getSettingValueByKey('layer_height') * 1000),
+            'initialLayerThickness': int(self._settings.getSettingValueByKey('layer_height_0') * 1000),
+            'printTemperature': int(self._settings.getSettingValueByKey('material_print_temperature')),
+            'filamentDiameter': int(self._settings.getSettingValueByKey('material_diameter') * 1000),
+            'filamentFlow': int(self._settings.getSettingValueByKey('material_flow')),
+            'layer0extrusionWidth': int(self._settings.getSettingValueByKey('wall_line_width_0') * 1000),
+            'extrusionWidth': int(self._settings.getSettingValueByKey('wall_line_width_x') * 1000),
+            'insetCount': int(self._settings.getSettingValueByKey('wall_line_count')),
+            'downSkinCount': int(self._settings.getSettingValueByKey('bottom_layers')),
+            'upSkinCount': int(self._settings.getSettingValueByKey('top_layers')),
+            #'skirtDistance': int(self._settings.getSettingValueByKey('skirt_gap') * 1000),
+            #'skirtLineCount': int(fbk('skirt_line_count')),
+            #'skirtMinLength': int(fbk('skirt_minimal_length') * 1000),
+
+            'retractionAmount': int(self._settings.getSettingValueByKey('retraction_amount') * 1000),
+            'retractionAmountPrime': int(0 * 1000),
+            # 'retractionAmountExtruderSwitch': int(fbk('') * 1000),
+            'retractionSpeed': int(self._settings.getSettingValueByKey('retraction_speed')),
+            'retractionPrimeSpeed': int(self._settings.getSettingValueByKey('retraction_speed')),
+            'retractionMinimalDistance': int(self._settings.getSettingValueByKey('retraction_min_travel') * 1000),
+            'minimalExtrusionBeforeRetraction': int(self._settings.getSettingValueByKey('retraction_minimal_extrusion') * 1000),
+            'retractionZHop': int(self._settings.getSettingValueByKey('retraction_hop') * 1000),
+
+            'enableCombing': 1 if self._settings.getSettingValueByKey('retraction_combing') else 0,
+            # 'enableOozeShield': int(fbk('') * 1000),
+            # 'wipeTowerSize': int(fbk('') * 1000),
+            # 'multiVolumeOverlap': int(fbk('') * 1000),
+
+            'initialSpeedupLayers': int(self._settings.getSettingValueByKey('speed_slowdown_layers')),
+            'initialLayerSpeed': int(self._settings.getSettingValueByKey('speed_layer_0')),
+            'skirtSpeed': int(self._settings.getSettingValueByKey('skirt_speed')),
+            'inset0Speed': int(self._settings.getSettingValueByKey('speed_wall_0')),
+            'insetXSpeed': int(self._settings.getSettingValueByKey('speed_wall_x')),
+            'supportSpeed': int(self._settings.getSettingValueByKey('speed_support')),
+            'moveSpeed': int(self._settings.getSettingValueByKey('speed_travel')),
+            #'fanFullOnLayerNr': int(fbk('cool_fan_full_layer')),
+
+            'infillOverlap': int(self._settings.getSettingValueByKey('fill_overlap')),
+            'infillSpeed': int(self._settings.getSettingValueByKey('speed_infill')),
+
+            'minimalLayerTime': int(self._settings.getSettingValueByKey('cool_min_layer_time')),
+            'minimalFeedrate': int(self._settings.getSettingValueByKey('cool_min_speed')),
+            'coolHeadLift': 1 if self._settings.getSettingValueByKey('cool_lift_head') else 0,
+            'fanSpeedMin': int(self._settings.getSettingValueByKey('cool_fan_speed_min')),
+            'fanSpeedMax': int(self._settings.getSettingValueByKey('cool_fan_speed_max')),
+
+            #'spiralizeMode': 1 if vbk('magic_spiralize') == 'True' else 0,
+
+        }
+
+        if self._settings.getSettingValueByKey('top_bottom_pattern') == 'lines':
+            settings['skinPattern'] = 'SKIN_LINES'
+        elif self._settings.getSettingValueByKey('top_bottom_pattern') == 'concentric':
+            settings['skinPattern'] = 'SKIN_CONCENTRIC'
+
+        if self._settings.getSettingValueByKey('fill_pattern') == 'Grid':
+            settings['infillPattern'] = 'INFILL_GRID'
+        elif self._settings.getSettingValueByKey('fill_pattern') == 'Lines':
+            settings['infillPattern'] = 'INFILL_LINES'
+        elif self._settings.getSettingValueByKey('fill_pattern') == 'concentric':
+            settings['infillPattern'] = 'INFILL_CONCENTRIC'
+
+        #if vbk('adhesion_type') == 'raft':
+            #settings['raftMargin'] = int(fbk('raft_margin') * 1000)
+            #settings['raftLineSpacing'] = int(fbk('raft_line_spacing') * 1000)
+            #settings['raftBaseThickness'] = int(fbk('raft_base_thickness') * 1000)
+            #settings['raftBaseLinewidth'] = int(fbk('raft_base_linewidth') * 1000)
+            #settings['raftBaseSpeed'] = int(fbk('raft_base_speed') * 1000)
+            #settings['raftInterfaceThickness'] = int(fbk('raft_interface_thickness') * 1000)
+            #settings['raftInterfaceLinewidth'] = int(fbk('raft_interface_linewidth') * 1000)
+            #settings['raftInterfaceLineSpacing'] = int(fbk('raft_line_spacing') * 1000)
+            #settings['raftFanSpeed'] = 0
+            #settings['raftSurfaceThickness'] = int(fbk('layer_height_0') * 1000)
+            #settings['raftSurfaceLinewidth'] = int(fbk('wall_line_width_x') * 1000)
+            #settings['raftSurfaceLineSpacing'] = int(fbk('wall_line_width_x') * 1000)
+            #settings['raftSurfaceLayers'] = int(fbk('raft_surface_layers'))
+            #settings['raftSurfaceSpeed'] = int(fbk('speed_layer_0') * 1000)
+            #settings['raftAirGap'] = int(fbk('raft_airgap') * 1000)
+            #settings['skirtLineCount'] = 0
+        #if vbk('adhesion_type') == 'brim':
+            #settings['skirtDistance'] = 0
+            #settings['skirtLineCount'] = int(fbk('brim_line_count'))
+        #if vbk('support_type') == '':
+            #settings['supportType'] = ''
+            #settings['supportAngle'] = -1
+        #else:
+            #settings['supportType'] = 'GRID'
+            #settings['supportAngle'] = int(fbk('support_angle'))
+            #settings['supportEverywhere'] = 1 if vbk('support_type') == 'everywhere' else 0
+            #settings['supportLineDistance'] = int(100 * fbk('wall_line_width_x') * 1000 / fbk('support_fill_rate'))
+            #settings['supportXYDistance'] = int(fbk('support_xy_distance') * 1000)
+            #settings['supportZDistance'] = int(fbk('support_z_distance') * 1000)
+            #settings['supportExtruder'] = -1
+            #if vbk('support_pattern') == 'grid':
+                #settings['supportType'] = 'GRID'
+            #elif vbk('support_pattern') == 'lines':
+                #settings['supportType'] = 'LINES'
+
+        settings['sparseInfillLineDistance'] = -1
+        if self._settings.getSettingValueByKey('fill_sparse_density') >= 100:
+            settings['sparseInfillLineDistance'] = self._settings.getSettingValueByKey('wall_line_width_x')
+            settings['downSkinCount'] = 10000
+            settings['upSkinCount'] = 10000
+        elif self._settings.getSettingValueByKey('fill_sparse_density') > 0:
+            settings['sparseInfillLineDistance'] = int(100 * self._settings.getSettingValueByKey('wall_line_width_x') * 1000 / self._settings.getSettingValueByKey('fill_sparse_density'))
+        settings['sparseInfillCombineCount'] = int(round(self._settings.getSettingValueByKey('fill_sparse_combine')))
+
+        gcodeFlavor = self._settings.getSettingValueByKey('machine_gcode_flavor')
+        if gcodeFlavor == 'UltiGCode':
+            settings['gcodeFlavor'] = 1
+        elif gcodeFlavor == 'Makerbot':
+            settings['gcodeFlavor'] = 2
+        elif gcodeFlavor == 'BFB':
+            settings['gcodeFlavor'] = 3
+        elif gcodeFlavor == 'Mach3':
+            settings['gcodeFlavor'] = 4
+        elif gcodeFlavor == 'Volumetric':
+            settings['gcodeFlavor'] = 5
+        else:
+            settings['gcodeFlavor'] = 0
+
+        settings['startCode'] = self._settings.getSettingValueByKey('machine_start_gcode')
+        settings['endCode'] = self._settings.getSettingValueByKey('machine_end_gcode')
+
+        #for n in range(1, self._machine.getMaxNozzles()):
+        n = 1
+        settings['extruderOffset1.X'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_x_1') * 1000)
+        settings['extruderOffset1.Y'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_y_1') * 1000)
+
+        msg = Cura_pb2.SettingList()
+        for key, value in settings.items():
+            s = msg.settings.add()
+            s.name = key
+            s.value = str(value).encode('utf-8')
+
+        self._socket.sendMessage(msg)
