@@ -10,6 +10,7 @@ Button {
 
     text: "Save";
 
+    signal saveRequested();
     iconSource: UM.Resources.getIcon('save.png');
 
     onClicked: saveDialog.open();

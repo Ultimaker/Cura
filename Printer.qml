@@ -26,8 +26,8 @@ UM.MainWindow {
             Menu {
                 title: '&File';
 
-                MenuItem { action: loadFileAction; }
-                MenuItem { action: saveFileAction; }
+                MenuItem { action: openAction; }
+                MenuItem { action: saveAction; }
 
                 MenuSeparator { }
 
@@ -132,7 +132,7 @@ UM.MainWindow {
                 width: UM.Theme.panelWidth;
                 height: base.height / 2 - UM.Theme.toolbarHeight;
 
-                onRequestOpenFile: openDialog.open();
+                onRequestOpenFile: openAction.trigger();
                 onOpenFile: UM.Controller.addMesh(file);
             }
 
@@ -161,6 +161,8 @@ UM.MainWindow {
 
                 width: UM.Theme.panelWidth;
                 height: 40;
+
+                onSaveRequested: saveAction.trigger();
             }
 
 //             UM.JobList { anchors.left: parent.left; anchors.bottom: parent.bottom; width: parent.width / 10; height: parent.height / 5; }
@@ -256,7 +258,7 @@ UM.MainWindow {
     }
 
     Action {
-        id: loadFileAction;
+        id: openAction;
         text: "Open...";
         iconName: "document-open";
         shortcut: StandardKey.Open;
@@ -264,11 +266,11 @@ UM.MainWindow {
     }
 
     Action {
-        id: saveFileAction;
+        id: saveAction;
         text: "Save...";
         iconName: "document-save";
         shortcut: StandardKey.Save;
-        enabled: false;
+        onTriggered: saveDialog.open();
     }
 
     Menu {
@@ -296,6 +298,8 @@ UM.MainWindow {
         id: saveDialog;
         title: "Choose Filename";
         selectExisting: false;
+
+        modality: Qt.NonModal
 
         onAccepted:
         {
