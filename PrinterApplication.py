@@ -34,6 +34,8 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugin('CuraEngineBackend')
     
     def run(self):
+        self.parseArguments()
+
         controller = self.getController()
 
         controller.setActiveView("MeshView")
