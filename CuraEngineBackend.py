@@ -151,9 +151,9 @@ class CuraEngineBackend(Backend):
             'insetCount': int(self._settings.getSettingValueByKey('wall_line_count')),
             'downSkinCount': int(self._settings.getSettingValueByKey('bottom_layers')),
             'upSkinCount': int(self._settings.getSettingValueByKey('top_layers')),
-            #'skirtDistance': int(self._settings.getSettingValueByKey('skirt_gap') * 1000),
-            #'skirtLineCount': int(fbk('skirt_line_count')),
-            #'skirtMinLength': int(fbk('skirt_minimal_length') * 1000),
+            'skirtDistance': int(self._settings.getSettingValueByKey('skirt_gap') * 1000),
+            'skirtLineCount': int(self._settings.getSettingValueByKey('skirt_line_count')),
+            'skirtMinLength': int(self._settings.getSettingValueByKey('skirt_minimal_length') * 1000),
 
             'retractionAmount': int(self._settings.getSettingValueByKey('retraction_amount') * 1000),
             'retractionAmountPrime': int(0 * 1000),
@@ -184,8 +184,8 @@ class CuraEngineBackend(Backend):
             'minimalLayerTime': int(self._settings.getSettingValueByKey('cool_min_layer_time')),
             'minimalFeedrate': int(self._settings.getSettingValueByKey('cool_min_speed')),
             'coolHeadLift': 1 if self._settings.getSettingValueByKey('cool_lift_head') else 0,
-            'fanSpeedMin': int(self._settings.getSettingValueByKey('cool_fan_speed_min')),
-            'fanSpeedMax': int(self._settings.getSettingValueByKey('cool_fan_speed_max')),
+            'fanSpeedMin': self._settings.getSettingValueByKey('cool_fan_speed_min'),
+            'fanSpeedMax': self._settings.getSettingValueByKey('cool_fan_speed_max'),
 
             #'spiralizeMode': 1 if vbk('magic_spiralize') == 'True' else 0,
 
@@ -203,26 +203,29 @@ class CuraEngineBackend(Backend):
         elif self._settings.getSettingValueByKey('fill_pattern') == 'concentric':
             settings['infillPattern'] = 'INFILL_CONCENTRIC'
 
-        #if vbk('adhesion_type') == 'raft':
-            #settings['raftMargin'] = int(fbk('raft_margin') * 1000)
-            #settings['raftLineSpacing'] = int(fbk('raft_line_spacing') * 1000)
-            #settings['raftBaseThickness'] = int(fbk('raft_base_thickness') * 1000)
-            #settings['raftBaseLinewidth'] = int(fbk('raft_base_linewidth') * 1000)
-            #settings['raftBaseSpeed'] = int(fbk('raft_base_speed') * 1000)
-            #settings['raftInterfaceThickness'] = int(fbk('raft_interface_thickness') * 1000)
-            #settings['raftInterfaceLinewidth'] = int(fbk('raft_interface_linewidth') * 1000)
-            #settings['raftInterfaceLineSpacing'] = int(fbk('raft_line_spacing') * 1000)
-            #settings['raftFanSpeed'] = 0
-            #settings['raftSurfaceThickness'] = int(fbk('layer_height_0') * 1000)
-            #settings['raftSurfaceLinewidth'] = int(fbk('wall_line_width_x') * 1000)
-            #settings['raftSurfaceLineSpacing'] = int(fbk('wall_line_width_x') * 1000)
-            #settings['raftSurfaceLayers'] = int(fbk('raft_surface_layers'))
-            #settings['raftSurfaceSpeed'] = int(fbk('speed_layer_0') * 1000)
-            #settings['raftAirGap'] = int(fbk('raft_airgap') * 1000)
-            #settings['skirtLineCount'] = 0
-        #if vbk('adhesion_type') == 'brim':
-            #settings['skirtDistance'] = 0
-            #settings['skirtLineCount'] = int(fbk('brim_line_count'))
+        adhesion_type = self._settings.getSettingValueByKey('adhesion_type')
+        if adhesion_type == 'Raft':
+            settings['raftMargin'] = int(self._settings.getSettingValueByKey('raft_margin') * 1000)
+            settings['raftLineSpacing'] = int(self._settings.getSettingValueByKey('raft_line_spacing') * 1000)
+            settings['raftBaseThickness'] = int(self._settings.getSettingValueByKey('raft_base_thickness') * 1000)
+            settings['raftBaseLinewidth'] = int(self._settings.getSettingValueByKey('raft_base_linewidth') * 1000)
+            settings['raftBaseSpeed'] = int(self._settings.getSettingValueByKey('raft_base_speed') * 1000)
+            settings['raftInterfaceThickness'] = int(self._settings.getSettingValueByKey('raft_interface_thickness') * 1000)
+            settings['raftInterfaceLinewidth'] = int(self._settings.getSettingValueByKey('raft_interface_linewidth') * 1000)
+            settings['raftInterfaceLineSpacing'] = int(self._settings.getSettingValueByKey('raft_line_spacing') * 1000)
+            settings['raftFanSpeed'] = 0
+            settings['raftSurfaceThickness'] = int(self._settings.getSettingValueByKey('layer_height_0') * 1000)
+            settings['raftSurfaceLinewidth'] = int(self._settings.getSettingValueByKey('wall_line_width_x') * 1000)
+            settings['raftSurfaceLineSpacing'] = int(self._settings.getSettingValueByKey('wall_line_width_x') * 1000)
+            settings['raftSurfaceLayers'] = int(self._settings.getSettingValueByKey('raft_surface_layers'))
+            settings['raftSurfaceSpeed'] = int(self._settings.getSettingValueByKey('speed_layer_0') * 1000)
+            settings['raftAirGap'] = int(self._settings.getSettingValueByKey('raft_airgap') * 1000)
+            settings['skirtLineCount'] = 0
+            pass
+        elif adhesion_type == 'Brim':
+            settings['skirtDistance'] = 0
+            settings['skirtLineCount'] = self._settings.getSettingValueByKey('brim_line_count')
+
         #if vbk('support_type') == '':
             #settings['supportType'] = ''
             #settings['supportAngle'] = -1
