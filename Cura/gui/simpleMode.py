@@ -23,7 +23,10 @@ class simpleModePanel(wx.Panel):
 		self.printTypeJoris.Hide()
 
 		printMaterialPanel = wx.Panel(self)
-		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
+		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			self.printMaterialHIPS = wx.RadioButton(printMaterialPanel, -1, 'HIPS', style=wx.RB_GROUP)
 			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS')
 		else:
@@ -50,7 +53,10 @@ class simpleModePanel(wx.Panel):
 
 		sb = wx.StaticBox(printMaterialPanel, label=_("Material:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
+		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			boxsizer.Add(self.printMaterialHIPS)
 		boxsizer.Add(self.printMaterialABS)
 		boxsizer.Add(self.printMaterialPLA)
@@ -65,7 +71,10 @@ class simpleModePanel(wx.Panel):
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		self.printTypeNormal.SetValue(True)
-		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
+		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			self.printMaterialHIPS.SetValue(True)
 		else:
 			self.printMaterialPLA.SetValue(True)
@@ -77,7 +86,10 @@ class simpleModePanel(wx.Panel):
 
 		self.printMaterialPLA.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 		self.printMaterialABS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
+		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			self.printMaterialHIPS.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 
 		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
@@ -473,7 +485,8 @@ M117 TAZ Ready.
 					put('cool_min_feedrate', '5')
 
 ### LulzBot TAZ 4 slice settings for use with the simple slice selection.
-		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
+		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
+		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			put('filament_diameter', '2.85')
 			put('nozzle_size', '0.35')
 			put('wall_thickness', '1.05')
@@ -610,7 +623,10 @@ M117 TAZ Ready.
 					put('skirt_minimal_length', '0')
 					put('fan_full_height', '0.28')
 					put('fill_overlap', '10')
-		elif not profile.getMachineSetting('machine_type') == 'lulzbot_mini' and not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' and not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4':
+		elif not profile.getMachineSetting('machine_type') == 'lulzbot_mini' and \
+			 not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' and \
+			 not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' and \
+			 not profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
 			nozzle_size = float(get('nozzle_size'))
 			if self.printBrim.GetValue():
 				put('platform_adhesion', 'Brim')
