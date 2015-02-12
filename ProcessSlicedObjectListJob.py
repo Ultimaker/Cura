@@ -10,16 +10,19 @@ import numpy
 import struct
 
 class ProcessSlicedObjectListJob(Job):
-    def __init__(self, message):
+    def __init__(self, message, center):
         super().__init__(description = 'Processing sliced object')
         self._message = message
         self._scene = Application.getInstance().getController().getScene()
+        self._center = center
 
     def run(self):
         objectIdMap = {}
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
                 objectIdMap[id(node)] = node
+
+        layerHeight = Application.getInstance().getMachineSettings().getSettingValueByKey('layer_height')
 
         for object in self._message.objects:
             mesh = objectIdMap[object.id].getMeshData()
@@ -31,7 +34,9 @@ class ProcessSlicedObjectListJob(Job):
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
                     points = numpy.asarray(points, dtype=numpy.float32)
                     points /= 1000
-                    points = numpy.insert(points, 1, layer.id / 10, axis = 1)
+                    points = numpy.insert(points, 1, layer.id * layerHeight, axis = 1)
+                    points[:,0] -= self._center.x
+                    points[:,2] -= self._center.z
                     layerData.addPolygon(layer.id, polygon.type, points)
 
             mesh.layerData = layerData

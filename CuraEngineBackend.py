@@ -30,6 +30,8 @@ class CuraEngineBackend(Backend):
         self._message_handlers[Cura_pb2.GCode] = self._onGCodeMessage
         self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
 
+        self._center = None
+
     def getEngineCommand(self):
         return [Preferences.getPreference("BackendLocation"), '--connect', "127.0.0.1:{0}".format(self._port)]
 
@@ -43,7 +45,7 @@ class CuraEngineBackend(Backend):
         self._onChanged()
 
     def _onSlicedObjectListMessage(self, message):
-        job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+        job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message, self._center)
         job.start()
 
     def _onProgressMessage(self, message):
@@ -127,6 +129,8 @@ class CuraEngineBackend(Backend):
         posZ.name = 'position.Z'
         posZ.value = str(int(0)).encode('utf-8')
         self._socket.sendMessage(posmsg)
+
+        self._center = center
 
         self._socket.sendMessage(msg)
 
