@@ -41,25 +41,32 @@ Rectangle {
 
         Item {
             width: parent.width;
-            height: childrenRect.height;
+            height: 24;
 
-            Label { anchors.right: parent.horizontalCenter; text: "Material"; width: parent.width / 2; }
-            ComboBox {
-                anchors.left: parent.horizontalCenter;
-                width: parent.width / 2;
-                model: ListModel {
-                    ListElement { text: "PLA"; }
-                    ListElement { text: "ABS"; }
+            Row {
+                anchors.fill: parent;
+
+                Label { text: "Material"; horizontalAlignment: Text.AlignRight; width: parent.width * 0.6; }
+                ComboBox {
+                    width: parent.width * 0.4;
+                    model: ListModel {
+                        ListElement { text: "PLA"; }
+                        ListElement { text: "ABS"; }
+                    }
+                    style: ComboBoxStyle { }
                 }
             }
         }
 
         Item {
             width: parent.width;
-            height: childrenRect.height;
+            height: 24;
 
-            Label { anchors.right: parent.horizontalCenter; text: "Time"; width: parent.width / 2; }
-            Label { anchors.left: parent.horizontalCenter; text: "10:10"; width: parent.width / 2; }
+            Row {
+                anchors.fill: parent;
+                Label { text: "Time"; width: base.width * 0.6; horizontalAlignment: Text.AlignRight; }
+                Label { text: "10:10"; width: base.width * 0.4; horizontalAlignment: Text.AlignLeft; }
+            }
         }
 
         Rectangle { color: "black"; height: 1; width: parent.width; }
