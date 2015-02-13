@@ -53,7 +53,9 @@ UM.MainWindow {
                     MenuItem {
                         text: model.name;
                         checkable: true;
+                        checked: model.active;
                         exclusiveGroup: machineMenuGroup;
+                        onTriggered: UM.Models.machinesModel.setActive(index)
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)
