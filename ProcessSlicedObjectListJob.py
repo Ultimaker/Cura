@@ -22,7 +22,7 @@ class ProcessSlicedObjectListJob(Job):
             if type(node) is SceneNode and node.getMeshData():
                 objectIdMap[id(node)] = node
 
-        layerHeight = Application.getInstance().getMachineSettings().getSettingValueByKey('layer_height')
+        layerHeight = Application.getInstance().getActiveMachine().getSettingValueByKey('layer_height')
 
         for object in self._message.objects:
             mesh = objectIdMap[object.id].getMeshData()

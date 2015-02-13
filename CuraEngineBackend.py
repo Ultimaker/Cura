@@ -20,8 +20,9 @@ class CuraEngineBackend(Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
-        self._settings = Application.getInstance().getMachineSettings()
-        self._settings.settingChanged.connect(self._onSettingChanged)
+        self._settings = None
+        Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
+        self._onActiveMachineChanged()
 
         self._changeTimer = None
 
@@ -40,6 +41,15 @@ class CuraEngineBackend(Backend):
             return
 
         self._onChanged()
+
+    def _onActiveMachineChanged(self):
+        if self._settings:
+            self._settings.settingChanged.disconnect(self._onSettingChanged)
+
+        self._settings = Application.getInstance().getActiveMachine()
+        if self._settings:
+            self._settings.settingChanged.connect(self._onSettingChanged)
+            self._onChanged()
 
     def _onSettingChanged(self, setting):
         self._onChanged()
@@ -69,6 +79,9 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(6, Cura_pb2.SettingList)
 
     def _onChanged(self):
+        if not self._settings:
+            return
+
         if self._changeTimer:
             return
 
