@@ -1405,6 +1405,7 @@ class SceneView(openglGui.glGuiPanel):
 				glVertex3f(-w, d, 0)
 				glEnd()
 				glDisable(GL_TEXTURE_2D)
+				glDisable(GL_ALPHA_TEST)
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 				glPopMatrix()
 		else:
