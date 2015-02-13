@@ -276,15 +276,19 @@ class SceneView(openglGui.glGuiPanel):
 				
 				#check if the file is part of the root folder. If so, create folders on sd card to get the same folder hierarchy.
 				repDir = profile.getPreference("sdcard_rootfolder")
-				if os.path.exists(repDir) and os.path.isdir(repDir):
-					repDir = os.path.abspath(repDir)
-					originFilename = os.path.abspath( self._scene._objectList[0].getOriginFilename() )
-					if os.path.dirname(originFilename).startswith(repDir):
-						filename = os.path.splitext(originFilename[len(repDir):])[0] + profile.getGCodeExtension()
-						sdPath = os.path.dirname(os.path.join( drive[1], filename))
-						if not os.path.exists(sdPath):
-							print "Creating replication directory:", sdPath
-							os.makedirs(sdPath)
+				try:
+					if os.path.exists(repDir) and os.path.isdir(repDir):
+						repDir = os.path.abspath(repDir)
+						originFilename = os.path.abspath( self._scene._objectList[0].getOriginFilename() )
+						if os.path.dirname(originFilename).startswith(repDir):
+							new_filename = os.path.splitext(originFilename[len(repDir):])[0] + profile.getGCodeExtension()
+							sdPath = os.path.dirname(os.path.join(drive[1], new_filename))
+							if not os.path.exists(sdPath):
+								print "Creating replication directory:", sdPath
+								os.makedirs(sdPath)
+							filename = new_filename
+				except:
+					pass
 
 				threading.Thread(target=self._saveGCode,args=(drive[1] + filename, drive[1])).start()
 			elif connectionGroup is not None:
