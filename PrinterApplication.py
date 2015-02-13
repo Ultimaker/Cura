@@ -46,11 +46,6 @@ class PrinterApplication(QtApplication):
 
         self._physics = PlatformPhysics(controller)
 
-        try:
-            self.getMachineSettings().loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'ultimaker2.cfg'))
-        except FileNotFoundError:
-            pass
-
         root = controller.getScene().getRoot()
         platform = Platform(root)
 
@@ -100,7 +95,7 @@ class PrinterApplication(QtApplication):
         if self._engine.rootObjects:
             self.exec_()
 
-        self.getMachineSettings().saveValuesToFile(Resources.getStoragePath(Resources.SettingsLocation, 'ultimaker2.cfg'))
+        self.saveMachines()
 
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty('Printer', self)
