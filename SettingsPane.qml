@@ -45,10 +45,11 @@ Rectangle {
 
             Row {
                 anchors.fill: parent;
+                spacing: UM.Theme.defaultMargin;
 
-                Label { text: "Material"; horizontalAlignment: Text.AlignRight; width: parent.width * 0.6; }
+                Label { text: "Material"; horizontalAlignment: Text.AlignRight; width: base.width * 0.5; }
                 ComboBox {
-                    width: parent.width * 0.4;
+                    width: parent.width * 0.35;
                     model: ListModel {
                         ListElement { text: "PLA"; }
                         ListElement { text: "ABS"; }
@@ -64,8 +65,9 @@ Rectangle {
 
             Row {
                 anchors.fill: parent;
-                Label { text: "Time"; width: base.width * 0.6; horizontalAlignment: Text.AlignRight; }
-                Label { text: "10:10"; width: base.width * 0.4; horizontalAlignment: Text.AlignLeft; }
+                spacing: UM.Theme.defaultMargin;
+                Label { text: "Time"; width: base.width * 0.5; horizontalAlignment: Text.AlignRight; }
+                Label { text: Qt.formatTime(new Date(timeSlider.value * 60000)); width: base.width * 0.35; horizontalAlignment: Text.AlignLeft; }
             }
         }
 
@@ -78,9 +80,14 @@ Rectangle {
             height: 60;
 
             Slider {
+                id: timeSlider;
                 anchors.left: parent.left;
                 anchors.right: parent.right;
                 height: 20;
+
+                minimumValue: 60;
+                maximumValue: 600;
+                stepSize: 10;
 
                 style: SliderStyle {
                     groove: Rectangle {
@@ -106,17 +113,20 @@ Rectangle {
                 }
             }
 
-            Label {
+            Column {
                 anchors.left: parent.left;
                 anchors.bottom: parent.bottom;
-                text: "0:00\nLow Quality";
+
+                Label { text: Qt.formatTime(new Date(timeSlider.minimumValue * 60000)); }
+                Label { text: "Low Quality"; }
             }
 
-            Label {
+            Column {
                 anchors.right: parent.right;
                 anchors.bottom: parent.bottom;
-                horizontalAlignment: Text.AlignRight;
-                text: "10:00\nHigh Quality";
+
+                Label { text: Qt.formatTime(new Date(timeSlider.maximumValue * 60000)); anchors.right: parent.right; }
+                Label { text: "High Quality"; }
             }
         }
 
