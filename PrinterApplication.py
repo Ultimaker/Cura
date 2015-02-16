@@ -13,6 +13,7 @@ from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
 
 from PyQt5.QtCore import pyqtSlot, QUrl
+from PyQt5.QtGui import QColor
 
 import os.path
 
@@ -21,6 +22,8 @@ class PrinterApplication(QtApplication):
         super().__init__(name = 'Cura')
         self.setRequiredPlugins(['CuraEngineBackend', 'MeshView', 'LayerView', 'STLReader','SelectionTool','CameraTool'])
         self._physics = None
+        self._volume = None
+        self.activeMachineChanged.connect(self._onActiveMachineChanged)
     
     def _loadPlugins(self):
         self._plugin_registry.loadPlugins({ "type": "Logger"})
@@ -49,11 +52,10 @@ class PrinterApplication(QtApplication):
         root = controller.getScene().getRoot()
         platform = Platform(root)
 
-        volume = BuildVolume(root)
-        volume.translate(Vector(0, 73, 0))
-        volume.scale(150.0)
+        self._volume = BuildVolume(root)
 
         self.getRenderer().setLightPosition(Vector(0, 150, 0))
+        self.getRenderer().setBackgroundColor(QColor(200, 200, 200))
 
         camera = Camera('3d', root)
         camera.translate(Vector(0, 150, 150))
@@ -89,6 +91,8 @@ class PrinterApplication(QtApplication):
 
         controller.getScene().setActiveCamera('3d')
 
+        self.setActiveMachine(self.getMachines()[0])
+
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
         self.initializeEngine()
         
@@ -119,3 +123,11 @@ class PrinterApplication(QtApplication):
 
         with open(file.toLocalFile(), 'w') as f:
             f.write(gcode)
+
+    def _onActiveMachineChanged(self):
+        machine = self.getActiveMachine()
+        if machine:
+            self._volume.setWidth(machine.getSettingValueByKey('machine_width'))
+            self._volume.setHeight(machine.getSettingValueByKey('machine_height'))
+            self._volume.setDepth(machine.getSettingValueByKey('machine_depth'))
+            self._volume.rebuild()
