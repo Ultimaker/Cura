@@ -120,7 +120,6 @@ class gcode(object):
 					if self.progressCallback is not None:
 						if self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize)):
 							#Abort the loading, we can safely return as the results here will be discarded
-							gcodeFile.close()
 							return
 					currentLayer = [currentPath]
 				line = line[0:line.find(';')]
