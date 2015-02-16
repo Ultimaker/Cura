@@ -88,15 +88,12 @@ To build and install Cura, run the following commands:
 ```bash
 git clone https://github.com/daid/Cura.git
 
-sudo apt-get install python-opengl
-sudo apt-get install python-numpy
-sudo apt-get install python-serial
-sudo apt-get install python-setuptools
-sudo apt-get install curl
+sudo apt-get install python-opengl python-numpy python-serial python-setuptools python-wxgtk2.8 curl
 
 cd Cura
 
-sudo ./package.sh debian_amd64          # or debian_i386 for 32bit
+./package.sh debian_amd64          # or debian_i386 for 32bit
+# this will prompt for your root password to run dpkg-deb
 
 sudo dpkg -i ./scripts/linux/cura*.deb
 ```
