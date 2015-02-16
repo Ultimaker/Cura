@@ -49,6 +49,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._mouseY = -1
 		self._mouseState = None
 		self._viewTarget = numpy.array([0,0,0], numpy.float32)
+		self._mouse3Dpos = numpy.array([0,0,0], numpy.float32)
 		self._animView = None
 		self._animZoom = None
 		self._platformMesh = {}
