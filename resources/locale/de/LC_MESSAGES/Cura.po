@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: Cura\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-04 14:38+0100\n"
-"PO-Revision-Date: 2014-10-16 14:55+0100\n"
-"Last-Translator: Mischa Fürst <mischa.fuerst@gmail.com>\n"
+"PO-Revision-Date: 2015-02-17 13:55+0100\n"
+"Last-Translator: \n"
 "Language-Team: Deutsch <mischa.fuerst@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: de\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.5.7\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Cura/gui/app.py:144 Cura/gui/mainWindow.py:642
@@ -49,9 +49,8 @@ msgid "Select your language:"
 msgstr "Sprache wählen:"
 
 #: Cura/gui/configWizard.py:266
-#, fuzzy
 msgid "Older models"
-msgstr "Verarbeite: %d Modelle"
+msgstr ""
 
 #: Cura/gui/configWizard.py:283
 msgid "Printrbot Selection"
