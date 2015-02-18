@@ -13,7 +13,7 @@ UM.MainWindow {
     width: 1280
     height: 720
 
-    title: "Cura";
+    title: qsTr("Cura");
 
     Item {
         id: backgroundItem;
@@ -24,7 +24,8 @@ UM.MainWindow {
             window: base
 
             Menu {
-                title: '&File';
+                //: File menu
+                title: qsTr("&File");
 
                 MenuItem { action: openAction; }
                 MenuItem { action: saveAction; }
@@ -35,7 +36,8 @@ UM.MainWindow {
             }
 
             Menu {
-                title: '&Edit';
+                //: Edit menu
+                title: qsTr("&Edit");
 
                 MenuItem { action: undoAction; }
                 MenuItem { action: redoAction; }
@@ -46,7 +48,8 @@ UM.MainWindow {
 
             Menu {
                 id: machineMenu;
-                title: "&Machine";
+                //: Machine menu
+                title: qsTr("&Machine");
 
                 Instantiator {
                     model: UM.Models.machinesModel
@@ -62,24 +65,32 @@ UM.MainWindow {
                 }
 
                 ExclusiveGroup { id: machineMenuGroup; }
+
                 MenuSeparator { }
-                MenuItem { text: "Add new machine..."; enabled: false; }
+
+
+                MenuItem { action: addMachineAction; }
+                MenuItem { action: settingsAction; }
             }
 
             Menu {
-                title: 'E&xtensions';
+                //: Extensions menu
+                title: qsTr("E&xtensions");
 
-                MenuItem { text: "No extensions loaded"; enabled: false; }
+                //: Empty extensions menu
+                MenuItem { text: qsTr("No extensions loaded"); enabled: false; }
             }
 
             Menu {
-                title: '&Settings';
+                //: Settings menu
+                title: qsTr("&Settings");
 
                 MenuItem { action: preferencesAction; }
             }
 
             Menu {
-                title: '&Help';
+                //: Help menu
+                title: qsTr("&Help");
 
                 MenuItem { action: helpAction; enabled: false; }
                 MenuItem { action: aboutAction; enabled: false; }
@@ -180,7 +191,8 @@ UM.MainWindow {
 
     Action {
         id: undoAction;
-        text: "Undo";
+        //: Undo action
+        text: qsTr("Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
         onTriggered: UM.OperationStack.undo();
@@ -189,7 +201,8 @@ UM.MainWindow {
 
     Action {
         id: redoAction;
-        text: "Redo";
+        //: Redo action
+        text: qsTr("Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
         onTriggered: UM.OperationStack.redo();
@@ -198,7 +211,8 @@ UM.MainWindow {
 
     Action {
         id: quitAction;
-        text: "Quit";
+        //: Quit action
+        text: qsTr("Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
         onTriggered: Qt.quit();
@@ -206,34 +220,39 @@ UM.MainWindow {
 
     Action {
         id: preferencesAction;
-        text: "Preferences";
+        //: Preferences action
+        text: qsTr("Preferences");
         iconName: "configure";
         onTriggered: preferences.visible = true;
     }
 
     Action {
         id: settingsAction;
-        text: "Configure Printers";
+        //: Manage Printers action
+        text: qsTr("Configure Printers");
         iconSource: UM.Resources.getIcon("settings.png");
         onTriggered: preferences.visible = true;
     }
 
     Action {
         id: helpAction;
-        text: "Show Manual";
+        //: Show Manual action
+        text: qsTr("Show Manual");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
     }
 
     Action {
         id: aboutAction;
-        text: "About...";
+        //: About action
+        text: qsTr("About...");
         iconName: "help-about";
     }
 
     Action {
         id: deleteAction;
-        text: "Delete Selection";
+        //: Delete selection action
+        text: qsTr("Delete Selection");
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
         onTriggered: UM.Controller.removeSelection();
@@ -241,14 +260,16 @@ UM.MainWindow {
 
     Action {
         id: deleteAllAction;
-        text: "Clear Build Platform";
+        //: Clear build platform action
+        text: qsTr("Clear Build Platform");
         iconName: "edit-clear";
         enabled: false;
     }
 
     Action {
         id: openAction;
-        text: "Open...";
+        //: Open file action
+        text: qsTr("Open...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
         onTriggered: openDialog.open();
@@ -256,7 +277,8 @@ UM.MainWindow {
 
     Action {
         id: saveAction;
-        text: "Save...";
+        //: Save file action
+        text: qsTr("Save...");
         iconName: "document-save";
         shortcut: StandardKey.Save;
         onTriggered: saveDialog.open();
@@ -271,7 +293,8 @@ UM.MainWindow {
     FileDialog {
         id: openDialog;
 
-        title: "Choose files"
+        //: File open dialog title
+        title: qsTr("Open File")
         modality: Qt.NonModal
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
@@ -285,7 +308,8 @@ UM.MainWindow {
 
     FileDialog {
         id: saveDialog;
-        title: "Choose Filename";
+        //: File save dialog title
+        title: qsTr("Save File");
         selectExisting: false;
 
         modality: Qt.NonModal

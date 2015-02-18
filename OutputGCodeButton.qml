@@ -23,7 +23,8 @@ Rectangle {
         font.pointSize: UM.Theme.largeTextSize;
         color: "white";
 
-        text: "Save";
+        //: Save file to disk button
+        text: qsTr("Save");
     }
 
     Rectangle {
@@ -68,12 +69,14 @@ Rectangle {
     states: [
         State {
             name: 'sdcard';
-            PropertyChanges { target: label; text: 'Write to SD'; }
+            //: Write to SD card button
+            PropertyChanges { target: label; text: qsTr("Write to SD"); }
             PropertyChanges { target: iconImage; source: UM.Resources.getIcon('sdcard.png'); }
         },
         State {
             name: 'usb';
-            PropertyChanges { target: label; text: 'Send over USB'; }
+            //: Send print over USB button
+            PropertyChanges { target: label; text: qsTr("Send over USB"); }
             PropertyChanges { target: iconImage; source: UM.Resources.getIcon('usb.png'); }
         }
     ]

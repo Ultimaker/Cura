@@ -28,7 +28,8 @@ Rectangle {
         anchors.fill: parent;
         anchors.margins: UM.Theme.defaultMargin;
 
-        Button { text: "Open File"; iconSource: UM.Resources.getIcon("open.png"); Layout.fillWidth: true; onClicked: base.requestOpenFile(); }
+        //: Open file button
+        Button { text: qsTr("Open File"); iconSource: UM.Resources.getIcon("open.png"); Layout.fillWidth: true; onClicked: base.requestOpenFile(); }
 
         Rectangle {
             Layout.fillWidth: true;

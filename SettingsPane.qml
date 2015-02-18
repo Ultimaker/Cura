@@ -37,7 +37,8 @@ Rectangle {
             rightMargin: UM.Theme.defaultMargin;
         }
 
-        Label { text: "Print Settings"; width: parent.width; font.capitalization: Font.AllUppercase; font.pointSize: UM.Theme.smallTextSize; }
+        //: Print Settings panel title
+        Label { text: qsTr("Print Settings"); width: parent.width; font.capitalization: Font.AllUppercase; font.pointSize: UM.Theme.smallTextSize; }
 
         Item {
             width: parent.width;
@@ -47,7 +48,8 @@ Rectangle {
                 anchors.fill: parent;
                 spacing: UM.Theme.defaultMargin;
 
-                Label { text: "Material"; horizontalAlignment: Text.AlignRight; width: base.width * 0.5; }
+                //: Material selection combo box label
+                Label { text: qsTr("Material"); horizontalAlignment: Text.AlignRight; width: base.width * 0.5; }
                 ComboBox {
                     width: parent.width * 0.35;
                     model: ListModel {
@@ -66,7 +68,8 @@ Rectangle {
             Row {
                 anchors.fill: parent;
                 spacing: UM.Theme.defaultMargin;
-                Label { text: "Time"; width: base.width * 0.5; horizontalAlignment: Text.AlignRight; }
+                //: Time display label
+                Label { text: qsTr("Time"); width: base.width * 0.5; horizontalAlignment: Text.AlignRight; }
                 Label { text: Qt.formatTime(new Date(timeSlider.value * 60000)); width: base.width * 0.35; horizontalAlignment: Text.AlignLeft; }
             }
         }
@@ -118,7 +121,8 @@ Rectangle {
                 anchors.bottom: parent.bottom;
 
                 Label { text: Qt.formatTime(new Date(timeSlider.minimumValue * 60000)); }
-                Label { text: "Low Quality"; }
+                //: Low quality display label
+                Label { text: qsTr("Low Quality"); }
             }
 
             Column {
@@ -126,7 +130,8 @@ Rectangle {
                 anchors.bottom: parent.bottom;
 
                 Label { text: Qt.formatTime(new Date(timeSlider.maximumValue * 60000)); anchors.right: parent.right; }
-                Label { text: "High Quality"; }
+                //: High quality display label
+                Label { text: qsTr("High Quality"); }
             }
         }
 
