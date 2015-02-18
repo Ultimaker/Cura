@@ -106,7 +106,7 @@ UM.MainWindow {
                 }
             }
 
-            UM.Toolbar {
+            PrinterToolbar {
                 id: toolbar;
 
                 anchors {
