@@ -200,7 +200,7 @@ class CuraEngineBackend(Backend):
             'fanSpeedMin': self._settings.getSettingValueByKey('cool_fan_speed_min'),
             'fanSpeedMax': self._settings.getSettingValueByKey('cool_fan_speed_max'),
 
-            #'spiralizeMode': 1 if vbk('magic_spiralize') == 'True' else 0,
+            'spiralizeMode': 1 if self._settings.getSettingValueByKey('magic_spiralize') == 'True' else 0,
 
         }
 
@@ -239,21 +239,21 @@ class CuraEngineBackend(Backend):
             settings['skirtDistance'] = 0
             settings['skirtLineCount'] = self._settings.getSettingValueByKey('brim_line_count')
 
-        #if vbk('support_type') == '':
-            #settings['supportType'] = ''
-            #settings['supportAngle'] = -1
-        #else:
-            #settings['supportType'] = 'GRID'
-            #settings['supportAngle'] = int(fbk('support_angle'))
-            #settings['supportEverywhere'] = 1 if vbk('support_type') == 'everywhere' else 0
-            #settings['supportLineDistance'] = int(100 * fbk('wall_line_width_x') * 1000 / fbk('support_fill_rate'))
-            #settings['supportXYDistance'] = int(fbk('support_xy_distance') * 1000)
-            #settings['supportZDistance'] = int(fbk('support_z_distance') * 1000)
-            #settings['supportExtruder'] = -1
-            #if vbk('support_pattern') == 'grid':
-                #settings['supportType'] = 'GRID'
-            #elif vbk('support_pattern') == 'lines':
-                #settings['supportType'] = 'LINES'
+        if self._settings.getSettingValueByKey('support_type') == 'None':
+            settings['supportType'] = ''
+            settings['supportAngle'] = -1
+        else:
+            settings['supportType'] = 'GRID'
+            settings['supportAngle'] = self._settings.getSettingValueByKey('support_angle')
+            settings['supportEverywhere'] = 1 if self._settings.getSettingValueByKey('support_type') == 'Everywhere' else 0
+            settings['supportLineDistance'] = int(100 * self._settings.getSettingValueByKey('wall_line_width_x') * 1000 / self._settings.getSettingValueByKey('support_fill_rate'))
+            settings['supportXYDistance'] = int(self._settings.getSettingValueByKey('support_xy_distance') * 1000)
+            settings['supportZDistance'] = int(self._settings.getSettingValueByKey('support_z_distance') * 1000)
+            settings['supportExtruder'] = -1
+            if self._settings.getSettingValueByKey('support_pattern') == 'Grid':
+                settings['supportType'] = 'GRID'
+            elif self._settings.getSettingValueByKey('support_pattern') == 'Lines':
+                settings['supportType'] = 'LINES'
 
         settings['sparseInfillLineDistance'] = -1
         if self._settings.getSettingValueByKey('fill_sparse_density') >= 100:
