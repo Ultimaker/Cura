@@ -69,14 +69,20 @@ Rectangle {
     states: [
         State {
             name: 'sdcard';
-            //: Write to SD card button
-            PropertyChanges { target: label; text: qsTr("Write to SD"); }
+            PropertyChanges {
+                target: label;
+                //: Write to SD card button
+                text: qsTr("Write to SD");
+            }
             PropertyChanges { target: iconImage; source: UM.Resources.getIcon('sdcard.png'); }
         },
         State {
             name: 'usb';
-            //: Send print over USB button
-            PropertyChanges { target: label; text: qsTr("Send over USB"); }
+            PropertyChanges {
+                target: label
+                //: Send print over USB button
+                text: qsTr("Send over USB");
+            }
             PropertyChanges { target: iconImage; source: UM.Resources.getIcon('usb.png'); }
         }
     ]
