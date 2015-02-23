@@ -19,7 +19,7 @@ import os.path
 
 class PrinterApplication(QtApplication):
     def __init__(self):
-        super().__init__(name = 'Cura')
+        super().__init__(name = 'cura')
         self.setRequiredPlugins(['CuraEngineBackend', 'MeshView', 'LayerView', 'STLReader','SelectionTool','CameraTool'])
         self._physics = None
         self._volume = None
