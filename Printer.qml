@@ -215,7 +215,7 @@ UM.MainWindow {
         text: qsTr("Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
-        onTriggered: Qt.quit();
+        onTriggered: base.visible = false;
     }
 
     Action {
