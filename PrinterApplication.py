@@ -12,7 +12,7 @@ from UM.Scene.Selection import Selection
 from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
 
-from PyQt5.QtCore import pyqtSlot, QUrl
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt
 from PyQt5.QtGui import QColor
 
 import os.path
@@ -35,6 +35,8 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugin('CuraEngineBackend')
     
     def run(self):
+        self.showSplashMessage('Setting up scene...')
+
         controller = self.getController()
 
         controller.setActiveView("MeshView")
@@ -93,10 +95,13 @@ class PrinterApplication(QtApplication):
 
         self.setActiveMachine(self.getMachines()[0])
 
+        self.showSplashMessage('Loading interface...')
+
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
         self.initializeEngine()
         
         if self._engine.rootObjects:
+            self.closeSplash()
             self.exec_()
 
         self.saveMachines()
