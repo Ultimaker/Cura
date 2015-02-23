@@ -163,6 +163,10 @@ UM.MainWindow {
                 width: UM.Theme.panelWidth;
 
                 expandedHeight: base.height;
+
+                onShowDescription: {
+                    descriptionPane.show(text, x, y - contentItem.y);
+                }
             }
 
             OutputGCodeButton {
@@ -183,6 +187,11 @@ UM.MainWindow {
                 anchors.horizontalCenter: parent.horizontalCenter;
                 width: parent.width * 0.333;
                 height: 250;
+            }
+
+            DescriptionPane {
+                id: descriptionPane;
+                anchors.right: settings.left;
             }
         }
     }

@@ -14,6 +14,8 @@ Rectangle {
 
     property bool collapsed: true;
 
+    signal showDescription(string text, real x, real y);
+
     MouseArea {
         anchors.left: parent.left;
         anchors.right: parent.right;
@@ -135,7 +137,17 @@ Rectangle {
             }
         }
 
-        UM.SettingsView { id: settingsView; width: parent.width; height: 0; opacity: 0; visible: false; verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff }
+        UM.SettingsView {
+            id: settingsView;
+
+            width: parent.width;
+            height: 0;
+            opacity: 0;
+            visible: false;
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+            onShowDescription: base.showDescription(text, x, y);
+        }
 
         Rectangle { color: "black"; height: 1; width: parent.width; }
 
