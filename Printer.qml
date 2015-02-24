@@ -308,6 +308,8 @@ UM.MainWindow {
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
 
+        nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
+
         onAccepted:
         {
             UM.Controller.addMesh(fileUrl)
@@ -322,6 +324,8 @@ UM.MainWindow {
         selectExisting: false;
 
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.Modal;
+
+        nameFilters: UM.MeshFileHandler.supportedWriteFileTypes
 
         onAccepted:
         {
