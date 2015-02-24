@@ -144,7 +144,6 @@ Rectangle {
             height: 0;
             opacity: 0;
             visible: false;
-            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
             onShowDescription: base.showDescription(text, x, y);
         }
@@ -175,7 +174,6 @@ Rectangle {
                 opacity: 1;
                 height: Math.min(settingsView.listHeight, base.expandedHeight * 0.6);
                 visible: true;
-                verticalScrollBarPolicy: Qt.ScrollBarAsNeeded;
             }
         }
     ]
