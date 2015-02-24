@@ -110,13 +110,13 @@ class PrinterApplication(QtApplication):
         engine.rootContext().setContextProperty('Printer', self)
 
     def onSelectionChanged(self):
-        if Selection.getCount() > 0:
+        if Selection.hasSelection():
             if not self.getController().getActiveTool():
                 self.getController().setActiveTool('TranslateTool')
 
             self.getController().getTool('CameraTool').setOrigin(Selection.getSelectedObject(0).getGlobalPosition())
         else:
-            if self.getController().getActiveTool() and self.getController().getActiveTool().getName() == 'TranslateTool':
+            if self.getController().getActiveTool():
                 self.getController().setActiveTool(None)
 
     @pyqtSlot(QUrl)
