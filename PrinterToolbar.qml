@@ -153,6 +153,7 @@ UM.Toolbar {
             foregroundHighlightColor: "black";
         }
         action: base.settings;
+        iconSource: UM.Resources.getIcon("settings.png");
     }
 
     Item { width: UM.Theme.windowRightMargin; }

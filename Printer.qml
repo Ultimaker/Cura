@@ -27,23 +27,23 @@ UM.MainWindow {
                 //: File menu
                 title: qsTr("&File");
 
-                MenuItem { action: openAction; }
-                MenuItem { action: saveAction; }
+                MenuItem { action: actions.open; }
+                MenuItem { action: actions.save; }
 
                 MenuSeparator { }
 
-                MenuItem { action: quitAction; }
+                MenuItem { action: actions.quit; }
             }
 
             Menu {
                 //: Edit menu
                 title: qsTr("&Edit");
 
-                MenuItem { action: undoAction; }
-                MenuItem { action: redoAction; }
+                MenuItem { action: actions.undo; }
+                MenuItem { action: actions.redo; }
                 MenuSeparator { }
-                MenuItem { action: deleteAction; }
-                MenuItem { action: deleteAllAction; }
+                MenuItem { action: actions.deleteSelection; }
+                MenuItem { action: actions.deleteAll; }
             }
 
             Menu {
@@ -69,8 +69,8 @@ UM.MainWindow {
                 MenuSeparator { }
 
 
-                MenuItem { action: addMachineAction; }
-                MenuItem { action: settingsAction; }
+                MenuItem { action: actions.addMachine; }
+                MenuItem { action: actions.settings; }
             }
 
             Menu {
@@ -85,15 +85,15 @@ UM.MainWindow {
                 //: Settings menu
                 title: qsTr("&Settings");
 
-                MenuItem { action: preferencesAction; }
+                MenuItem { action: actions.preferences; }
             }
 
             Menu {
                 //: Help menu
                 title: qsTr("&Help");
 
-                MenuItem { action: helpAction; enabled: false; }
-                MenuItem { action: aboutAction; enabled: false; }
+                MenuItem { action: actions.help; }
+                MenuItem { action: actions.about; }
             }
         }
 
@@ -126,9 +126,9 @@ UM.MainWindow {
                     top: parent.top;
                 }
 
-                undo: undoAction;
-                redo: redoAction;
-                settings: settingsAction;
+                undo: actions.undo;
+                redo: actions.redo;
+                settings: actions.settings;
             }
 
             FilePane {
@@ -145,7 +145,7 @@ UM.MainWindow {
                 width: UM.Theme.panelWidth;
                 height: base.height / 2 - UM.Theme.toolbarHeight;
 
-                onRequestOpenFile: openAction.trigger();
+                onRequestOpenFile: actions.open.trigger();
                 onOpenFile: UM.Controller.addMesh(file);
             }
 
@@ -198,105 +198,29 @@ UM.MainWindow {
 
     UM.PreferencesDialog { id: preferences }
 
-    Action {
-        id: undoAction;
-        //: Undo action
-        text: qsTr("Undo");
-        iconName: "edit-undo";
-        shortcut: StandardKey.Undo;
-        onTriggered: UM.OperationStack.undo();
-        enabled: UM.OperationStack.canUndo;
-    }
+    PrinterActions {
+        id: actions;
 
-    Action {
-        id: redoAction;
-        //: Redo action
-        text: qsTr("Redo");
-        iconName: "edit-redo";
-        shortcut: StandardKey.Redo;
-        onTriggered: UM.OperationStack.redo();
-        enabled: UM.OperationStack.canRedo;
-    }
+        open.onTriggered: openDialog.open();
+        save.onTriggered: saveDialog.open();
 
-    Action {
-        id: quitAction;
-        //: Quit action
-        text: qsTr("Quit");
-        iconName: "application-exit";
-        shortcut: StandardKey.Quit;
-        onTriggered: base.visible = false;
-    }
+        quit.onTriggered: base.visible = false;
 
-    Action {
-        id: preferencesAction;
-        //: Preferences action
-        text: qsTr("Preferences");
-        iconName: "configure";
-        onTriggered: preferences.visible = true;
-    }
+        undo.onTriggered: UM.OperationStack.undo();
+        undo.enabled: UM.OperationStack.canUndo;
+        redo.onTriggered: UM.OperationStack.redo();
+        redo.enabled: UM.OperationStack.canRedo;
 
-    Action {
-        id: settingsAction;
-        //: Manage Printers action
-        text: qsTr("Configure Printers");
-        iconSource: UM.Resources.getIcon("settings.png");
-        onTriggered: preferences.visible = true;
-    }
+        deleteSelection.onTriggered: UM.Controller.removeSelection();
 
-    Action {
-        id: helpAction;
-        //: Show Manual action
-        text: qsTr("Show Manual");
-        iconName: "help-contents";
-        shortcut: StandardKey.Help;
-    }
-
-    Action {
-        id: aboutAction;
-        //: About action
-        text: qsTr("About...");
-        iconName: "help-about";
-    }
-
-    Action {
-        id: deleteAction;
-        //: Delete selection action
-        text: qsTr("Delete Selection");
-        iconName: "edit-delete";
-        shortcut: StandardKey.Delete;
-        onTriggered: UM.Controller.removeSelection();
-    }
-
-    Action {
-        id: deleteAllAction;
-        //: Clear build platform action
-        text: qsTr("Clear Build Platform");
-        iconName: "edit-clear";
-        enabled: false;
-    }
-
-    Action {
-        id: openAction;
-        //: Open file action
-        text: qsTr("Open...");
-        iconName: "document-open";
-        shortcut: StandardKey.Open;
-        onTriggered: openDialog.open();
-    }
-
-    Action {
-        id: saveAction;
-        //: Save file action
-        text: qsTr("Save...");
-        iconName: "document-save";
-        shortcut: StandardKey.Save;
-        onTriggered: saveDialog.open();
+        preferences.onTriggered: preferences.visible = true;
+        settings.onTriggered: preferences.visible = true;
     }
 
     Menu {
         id: contextMenu;
 
-        MenuItem { action: deleteAction; }
+        MenuItem { action: actions.deleteSelection; }
     }
 
     FileDialog {
