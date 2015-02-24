@@ -243,12 +243,17 @@ class CuraEngineBackend(Backend):
             settings['supportType'] = ''
             settings['supportAngle'] = -1
         else:
-            settings['supportType'] = 'GRID'
+            settings['areaSupportPolyGenerator'] = 1
+            settings['supportType'] = 'LINES'
             settings['supportAngle'] = self._settings.getSettingValueByKey('support_angle')
             settings['supportEverywhere'] = 1 if self._settings.getSettingValueByKey('support_type') == 'Everywhere' else 0
             settings['supportLineDistance'] = int(100 * self._settings.getSettingValueByKey('wall_line_width_x') * 1000 / self._settings.getSettingValueByKey('support_fill_rate'))
             settings['supportXYDistance'] = int(self._settings.getSettingValueByKey('support_xy_distance') * 1000)
             settings['supportZDistance'] = int(self._settings.getSettingValueByKey('support_z_distance') * 1000)
+            settings['supportZDistanceBottom'] = int(self._settings.getSettingValueByKey('support_top_distance') * 1000)
+            settings['supportZDistanceTop'] = int(self._settings.getSettingValueByKey('support_bottom_distance') * 1000)
+            settings['supportJoinDistance'] = int(self._settings.getSettingValueByKey('support_join_distance') * 1000)
+            settings['supportBridgeBack'] = int(self._settings.getSettingValueByKey('support_bridge_back'))
             settings['supportExtruder'] = -1
             if self._settings.getSettingValueByKey('support_pattern') == 'Grid':
                 settings['supportType'] = 'GRID'
