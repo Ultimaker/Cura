@@ -60,36 +60,9 @@ class PrinterApplication(QtApplication):
         self.getRenderer().setBackgroundColor(QColor(200, 200, 200))
 
         camera = Camera('3d', root)
-        camera.translate(Vector(0, 150, 150))
-        proj = Matrix()
-        proj.setPerspective(85, 640/480, 1, 500)
-        camera.setProjectionMatrix(proj)
+        camera.translate(Vector(-150, 150, 300))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
-
-        camera = Camera('left', root)
-        camera.translate(Vector(-150, 50, 0))
-        proj = Matrix()
-        proj.setOrtho(-200, 200, -200, 200, 1, 500)
-        camera.setProjectionMatrix(proj)
-        camera.lookAt(Vector(0, 50, 0), Vector(0, 1, 0))
-        camera.setLocked(True)
-
-        camera = Camera('top', root)
-        camera.translate(Vector(0, 150, 0))
-        proj = Matrix()
-        proj.setOrtho(-200, 200, -200, 200, 1, 500)
-        camera.setProjectionMatrix(proj)
-        camera.lookAt(Vector(0, 0, 0), Vector(0, 0, -1))
-        camera.setLocked(True)
-
-        camera = Camera('front', root)
-        camera.translate(Vector(0, 50, 150))
-        proj = Matrix()
-        proj.setOrtho(-200, 200, -200, 200, 1, 500)
-        camera.setProjectionMatrix(proj)
-        camera.lookAt(Vector(0, 50, 0), Vector(0, 1, 0))
-        camera.setLocked(True)
 
         controller.getScene().setActiveCamera('3d')
 
