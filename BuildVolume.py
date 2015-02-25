@@ -33,7 +33,7 @@ class BuildVolume(SceneNode):
             )
             self._material.setUniformValue('u_color', [0.0, 0.0, 0.5, 0.1])
 
-        renderer.queueMesh(self.getMeshData(), self.getGlobalTransformation(), material = self._material, transparent = True)
+        renderer.queueNode(self, material = self._material, transparent = True)
         return True
 
     def rebuild(self):
