@@ -25,7 +25,7 @@ class LayerView(View):
                     except AttributeError:
                         continue
 
-                    renderer.queueMesh(layerData, node.getGlobalTransformation(), material = self._material, mode = Renderer.RenderLineLoop)
+                    renderer.queueNode(node, mesh = layerData, material = self._material, mode = Renderer.RenderLineLoop)
 
     def endRendering(self):
         pass
