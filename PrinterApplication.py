@@ -11,6 +11,7 @@ from UM.Scene.Selection import Selection
 
 from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
+from CameraAnimation import CameraAnimation
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal
 from PyQt5.QtGui import QColor
@@ -64,6 +65,9 @@ class PrinterApplication(QtApplication):
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
 
+        self._camera_animation = CameraAnimation()
+        self._camera_animation.setCameraTool(self.getController().getTool('CameraTool'))
+
         controller.getScene().setActiveCamera('3d')
 
         self.showSplashMessage('Loading interface...')
@@ -79,6 +83,7 @@ class PrinterApplication(QtApplication):
 
         if self._engine.rootObjects:
             self.closeSplash()
+
             self.exec_()
 
         self.saveMachines()
@@ -91,7 +96,9 @@ class PrinterApplication(QtApplication):
             if not self.getController().getActiveTool():
                 self.getController().setActiveTool('TranslateTool')
 
-            self.getController().getTool('CameraTool').setOrigin(Selection.getSelectedObject(0).getGlobalPosition())
+            self._camera_animation.setStart(self.getController().getTool('CameraTool').getOrigin())
+            self._camera_animation.setTarget(Selection.getSelectedObject(0).getGlobalPosition())
+            self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
                 self.getController().setActiveTool(None)
