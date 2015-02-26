@@ -213,6 +213,8 @@ UM.MainWindow {
 
         deleteSelection.onTriggered: UM.Controller.removeSelection();
 
+        addMachine.onTriggered: addMachine.visible = true;
+
         preferences.onTriggered: preferences.visible = true;
         settings.onTriggered: preferences.visible = true;
     }
@@ -255,5 +257,14 @@ UM.MainWindow {
         {
             Printer.saveGCode(fileUrl);
         }
+    }
+
+    AddMachineWizard {
+        id: addMachine;
+    }
+
+    Connections {
+        target: Printer
+        onRequestAddPrinter: addMachine.visible = true;
     }
 }

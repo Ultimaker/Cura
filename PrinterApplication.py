@@ -12,7 +12,7 @@ from UM.Scene.Selection import Selection
 from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal
 from PyQt5.QtGui import QColor
 
 import os.path
@@ -66,13 +66,17 @@ class PrinterApplication(QtApplication):
 
         controller.getScene().setActiveCamera('3d')
 
-        self.setActiveMachine(self.getMachines()[0])
-
         self.showSplashMessage('Loading interface...')
 
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
         self.initializeEngine()
-        
+
+        #TODO: Add support for active machine preference
+        if self.getMachines():
+            self.setActiveMachine(self.getMachines()[0])
+        else:
+            self.requestAddPrinter.emit()
+
         if self._engine.rootObjects:
             self.closeSplash()
             self.exec_()
@@ -101,6 +105,8 @@ class PrinterApplication(QtApplication):
 
         with open(file.toLocalFile(), 'w') as f:
             f.write(gcode)
+
+    requestAddPrinter = pyqtSignal()
 
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
