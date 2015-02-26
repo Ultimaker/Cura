@@ -216,7 +216,7 @@ UM.MainWindow {
         addMachine.onTriggered: addMachine.visible = true;
 
         preferences.onTriggered: preferences.visible = true;
-        settings.onTriggered: preferences.visible = true;
+        settings.onTriggered: { preferences.visible = true; preferences.setPage(1); }
     }
 
     Menu {
