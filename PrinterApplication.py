@@ -21,17 +21,27 @@ import os.path
 class PrinterApplication(QtApplication):
     def __init__(self):
         super().__init__(name = 'cura')
-        self.setRequiredPlugins(['CuraEngineBackend', 'MeshView', 'LayerView', 'STLReader','SelectionTool','CameraTool'])
+        self.setRequiredPlugins([
+            'CuraEngineBackend',
+            'MeshView',
+            'LayerView',
+            'STLReader',
+            'SelectionTool',
+            'CameraTool',
+            'GCodeWriter',
+            'LocalFileStorage'
+        ])
         self._physics = None
         self._volume = None
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
     
     def _loadPlugins(self):
-        self._plugin_registry.loadPlugins({ "type": "Logger"})
-        self._plugin_registry.loadPlugins({ "type": "StorageDevice" })
-        self._plugin_registry.loadPlugins({ "type": "View" })
-        self._plugin_registry.loadPlugins({ "type": "MeshHandler" })
-        self._plugin_registry.loadPlugins({ "type": "Tool" })
+        self._plugin_registry.loadPlugins({ "type": "logger"})
+        self._plugin_registry.loadPlugins({ "type": "storage_device" })
+        self._plugin_registry.loadPlugins({ "type": "view" })
+        self._plugin_registry.loadPlugins({ "type": "mesh_reader" })
+        self._plugin_registry.loadPlugins({ "type": "mesh_writer" })
+        self._plugin_registry.loadPlugins({ "type": "tool" })
 
         self._plugin_registry.loadPlugin('CuraEngineBackend')
     
