@@ -8,6 +8,5 @@ def getMetaData():
 
 def register(app):
     Preferences.addPreference("BackendLocation","../PinkUnicornEngine/CuraEngine")
-    engine = CuraEngineBackend.CuraEngineBackend()
-    app.setBackend(engine)
-    #engine.addCommand(TransferMeshCommand())
+    return CuraEngineBackend.CuraEngineBackend()
+
