@@ -282,14 +282,14 @@ class Engine(object):
 	def getResult(self):
 		return self._result
 
-	def runEngine(self, scene):
+	def runEngine(self, scene, overrides = None):
 		if len(scene.objects()) < 1:
 			return
-		self._thread = threading.Thread(target=self._runEngine, args=(scene, self._thread, pluginInfo.getPostProcessPluginConfig()))
+		self._thread = threading.Thread(target=self._runEngine, args=(scene, overrides, self._thread, pluginInfo.getPostProcessPluginConfig()))
 		self._thread.daemon = True
 		self._thread.start()
 
-	def _runEngine(self, scene, old_thread, pluginConfig):
+	def _runEngine(self, scene, overrides, old_thread, pluginConfig):
 		if old_thread is not None:
 			if self._process is not None:
 				self._process.terminate()
@@ -303,10 +303,15 @@ class Engine(object):
 
 		extruderCount = max(extruderCount, profile.minimalExtruderCount())
 
+		if overrides is not None:
+			for k, v in overrides.items():
+				profile.setTempOverride(k, v)
 		commandList = [self._engine_executable, '-v', '-p']
 		for k, v in self._engineSettings(extruderCount).iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
 		commandList += ['-g', '%d' % (self._serverPortNr)]
+		if overrides is not None:
+			profile.resetTempOverride()
 		self._objCount = 0
 		engineModelData = []
 		hash = hashlib.sha512()

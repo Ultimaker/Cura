@@ -93,6 +93,10 @@ class mainWindow(wx.Frame):
 		i = self.fileMenu.Append(-1, _("Save Profile..."))
 		self.normalModeOnlyItems.append(i)
 		self.Bind(wx.EVT_MENU, self.OnSaveProfile, i)
+		if version.isDevVersion():
+			i = self.fileMenu.Append(-1, "Save difference from default...")
+			self.normalModeOnlyItems.append(i)
+			self.Bind(wx.EVT_MENU, self.OnSaveDifferences, i)
 		i = self.fileMenu.Append(-1, _("Load Profile from GCode..."))
 		self.normalModeOnlyItems.append(i)
 		self.Bind(wx.EVT_MENU, self.OnLoadProfileFromGcode, i)
@@ -519,10 +523,20 @@ class mainWindow(wx.Frame):
 		dlg=wx.FileDialog(self, _("Select profile file to save"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE)
 		dlg.SetWildcard("ini files (*.ini)|*.ini")
 		if dlg.ShowModal() == wx.ID_OK:
-			profileFile = dlg.GetPath()
-			if not profileFile.lower().endswith('.ini'): #hack for linux, as for some reason the .ini is not appended.
-				profileFile += '.ini'
-			profile.saveProfile(profileFile)
+			profile_filename = dlg.GetPath()
+			if not profile_filename.lower().endswith('.ini'): #hack for linux, as for some reason the .ini is not appended.
+				profile_filename += '.ini'
+			profile.saveProfile(profile_filename)
+		dlg.Destroy()
+
+	def OnSaveDifferences(self, e):
+		dlg=wx.FileDialog(self, _("Select profile file to save"), os.path.split(profile.getPreference('lastFile'))[0], style=wx.FD_SAVE)
+		dlg.SetWildcard("ini files (*.ini)|*.ini")
+		if dlg.ShowModal() == wx.ID_OK:
+			profile_filename = dlg.GetPath()
+			if not profile_filename.lower().endswith('.ini'): #hack for linux, as for some reason the .ini is not appended.
+				profile_filename += '.ini'
+			profile.saveProfileDifferenceFromDefault(profile_filename)
 		dlg.Destroy()
 
 	def OnResetProfile(self, e):
@@ -539,6 +553,14 @@ class mainWindow(wx.Frame):
 
 	def OnNormalSwitch(self, e):
 		profile.putPreference('startMode', 'Normal')
+		dlg = wx.MessageDialog(self, _("Copy the settings from quickprint to your full settings?\n(This will overwrite any full setting modifications you have)"), _("Profile copy"), wx.YES_NO | wx.ICON_QUESTION)
+		result = dlg.ShowModal() == wx.ID_YES
+		dlg.Destroy()
+		if result:
+			profile.resetProfile()
+			for k, v in self.simpleSettingsPanel.getSettingOverrides().items():
+				profile.putProfileSetting(k, v)
+			self.updateProfileToAllControls()
 		self.updateSliceMode()
 
 	def OnDefaultMarlinFirmware(self, e):

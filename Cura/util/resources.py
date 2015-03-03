@@ -51,6 +51,20 @@ def getDefaultMachineProfiles():
 	path = os.path.normpath(os.path.join(resourceBasePath, 'machine_profiles', '*.ini'))
 	return glob.glob(path)
 
+def getSimpleModeProfiles():
+	path = os.path.normpath(os.path.join(resourceBasePath, 'quickprint', 'profiles', '*.ini'))
+	user_path = os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', 'profiles')))
+	if os.path.isdir(user_path):
+		return sorted(glob.glob(user_path))
+	return sorted(glob.glob(path))
+
+def getSimpleModeMaterials():
+	path = os.path.normpath(os.path.join(resourceBasePath, 'quickprint', 'materials', '*.ini'))
+	user_path = os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', 'materials')))
+	if os.path.isdir(user_path):
+		return sorted(glob.glob(user_path))
+	return sorted(glob.glob(path))
+
 def setupLocalization(selectedLanguage = None):
 	#Default to english
 	languages = ['en']

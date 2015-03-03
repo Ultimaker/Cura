@@ -744,6 +744,25 @@ def saveProfile(filename, allMachines = False):
 	except:
 		print "Failed to write profile file: %s" % (filename)
 
+def saveProfileDifferenceFromDefault(filename):
+	"""
+		Save the current profile to an ini file. Only save the profile settings that differ from the default settings.
+	:param filename:    The ini filename to save the profile in.
+	"""
+	global settingsList
+	profileParser = ConfigParser.ConfigParser()
+	profileParser.add_section('profile')
+	for set in settingsList:
+		if set.isPreference() or set.isMachineSetting() or set.isAlteration():
+			continue
+		if set.getDefault() == set.getValue():
+			continue
+		profileParser.set('profile', set.getName(), set.getValue().encode('utf-8'))
+	try:
+		profileParser.write(open(filename, 'w'))
+	except:
+		print "Failed to write profile file: %s" % (filename)
+
 def resetProfile():
 	""" Reset the profile for the current machine to default. """
 	global settingsList
