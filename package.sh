@@ -19,7 +19,7 @@ BUILD_TARGET=${1:-none}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-export BUILD_NAME=15.01-RC1
+export BUILD_NAME=15.01-RC2
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Revision
@@ -114,8 +114,8 @@ cd "$SCRIPT_DIR"
 
 checkTool git "git: http://git-scm.com/"
 checkTool curl "curl: http://curl.haxx.se/"
-checkTool avr-gcc "avr-gcc: http://winavr.sourceforge.net/ "
 if [ $BUILD_TARGET = "win32" ]; then
+	checkTool avr-gcc "avr-gcc: http://winavr.sourceforge.net/ "
 	#Check if we have 7zip, needed to extract and packup a bunch of packages for windows.
 	checkTool 7z "7zip: http://www.7-zip.org/"
 	checkTool $MAKE "mingw: http://www.mingw.org/"
@@ -158,8 +158,8 @@ $MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VE
 git checkout Marlin_UM_Original_Plus
 $MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_250000 DEFINES="'VERSION_BASE=\"Ultimaker+:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_single\"' BAUDRATE=250000 TEMP_SENSOR_1=0 EXTRUDERS=1"
 $MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_115200 DEFINES="'VERSION_BASE=\"Ultimaker+:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_single\"' BAUDRATE=115200 TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker+:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_dual\"' BAUDRATE=250000 TEMP_SENSOR_1=-1 EXTRUDERS=2"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker+:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_dual\"' BAUDRATE=115200 TEMP_SENSOR_1=-1 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker+:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_dual\"' BAUDRATE=250000 TEMP_SENSOR_1=20 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker+:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_dual\"' BAUDRATE=115200 TEMP_SENSOR_1=20 EXTRUDERS=2"
 cd -
 
 gitClone git@github.com:Ultimaker/Ultimaker2Marlin.git _Ultimaker2Marlin
