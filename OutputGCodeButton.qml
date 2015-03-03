@@ -13,6 +13,7 @@ Rectangle {
     border.color: UM.Theme.borderColor;
 
     signal saveRequested();
+    signal saveToSdRequested();
 
     Label {
         id: label;
@@ -54,10 +55,7 @@ Rectangle {
         onClicked: {
             switch(base.state) {
                 case 'sdcard':
-                    base.state = 'usb';
-                    break;
-                case 'usb':
-                    base.state = '';
+                    base.saveToSdRequested();
                     break;
                 default:
                     base.saveRequested();
@@ -69,6 +67,7 @@ Rectangle {
     states: [
         State {
             name: 'sdcard';
+            when: Printer.removableDrives.length > 0;
             PropertyChanges {
                 target: label;
                 //: Write to SD card button

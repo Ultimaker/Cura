@@ -13,7 +13,7 @@ from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
 from CameraAnimation import CameraAnimation
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor
 
 import os.path
@@ -85,6 +85,8 @@ class PrinterApplication(QtApplication):
         self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
         self.initializeEngine()
 
+        self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
+
         #TODO: Add support for active machine preference
         if self.getMachines():
             self.setActiveMachine(self.getMachines()[0])
@@ -132,3 +134,13 @@ class PrinterApplication(QtApplication):
             self._volume.setHeight(machine.getSettingValueByKey('machine_height'))
             self._volume.setDepth(machine.getSettingValueByKey('machine_depth'))
             self._volume.rebuild()
+
+    removableDrivesChanged = pyqtSignal()
+
+    @pyqtProperty("QStringList", notify = removableDrivesChanged)
+    def removableDrives(self):
+        return list(self.getStorageDevice('LocalFileStorage').getRemovableDrives().keys())
+
+    def _removableDrivesChanged(self):
+        print(self.getStorageDevice('LocalFileStorage').getRemovableDrives())
+        self.removableDrivesChanged.emit()
