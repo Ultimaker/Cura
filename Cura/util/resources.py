@@ -12,6 +12,7 @@ import platform
 import locale
 
 import gettext
+import profile
 
 if sys.platform.startswith('darwin'):
 	try:
@@ -51,26 +52,27 @@ def getDefaultMachineProfiles():
 	path = os.path.normpath(os.path.join(resourceBasePath, 'machine_profiles', '*.ini'))
 	return glob.glob(path)
 
+def getSimpleModeIniFiles(subdir):
+	machine_type = profile.getMachineSetting('machine_type')
+	paths = []
+	paths.append(os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', machine_type, subdir))))
+	paths.append(os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', subdir))))
+	paths.append(os.path.normpath(os.path.join(resourceBasePath, 'quickprint', machine_type, subdir)))
+	paths.append(os.path.normpath(os.path.join(resourceBasePath, 'quickprint', subdir)))
+	for path in paths:
+		if os.path.isdir(path):
+			return sorted(glob.glob(os.path.join(path, '*.ini')))
+	return []
+
+
 def getSimpleModeProfiles():
-	path = os.path.normpath(os.path.join(resourceBasePath, 'quickprint', 'profiles', '*.ini'))
-	user_path = os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', 'profiles')))
-	if os.path.isdir(user_path):
-		return sorted(glob.glob(user_path))
-	return sorted(glob.glob(path))
+	return getSimpleModeIniFiles('profiles')
 
 def getSimpleModeMaterials():
-	path = os.path.normpath(os.path.join(resourceBasePath, 'quickprint', 'materials', '*.ini'))
-	user_path = os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', 'materials')))
-	if os.path.isdir(user_path):
-		return sorted(glob.glob(user_path))
-	return sorted(glob.glob(path))
+	return getSimpleModeIniFiles('materials')
 
 def getSimpleModeOptions():
-	path = os.path.normpath(os.path.join(resourceBasePath, 'quickprint', 'options', '*.ini'))
-	user_path = os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', 'options')))
-	if os.path.isdir(user_path):
-		return sorted(glob.glob(user_path))
-	return sorted(glob.glob(path))
+	return getSimpleModeIniFiles('options')
 
 def setupLocalization(selectedLanguage = None):
 	#Default to english
