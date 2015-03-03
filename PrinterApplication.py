@@ -115,16 +115,6 @@ class PrinterApplication(QtApplication):
             if self.getController().getActiveTool():
                 self.getController().setActiveTool(None)
 
-    @pyqtSlot(QUrl)
-    def saveGCode(self, file):
-        try:
-            gcode = self.getController().getScene().gcode
-        except AttributeError:
-            return
-
-        with open(file.toLocalFile(), 'w') as f:
-            f.write(gcode)
-
     requestAddPrinter = pyqtSignal()
 
     def _onActiveMachineChanged(self):
