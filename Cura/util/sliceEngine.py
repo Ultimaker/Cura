@@ -287,6 +287,17 @@ class Engine(object):
 	def runEngine(self, scene):
 		if len(scene.objects()) < 1:
 			return
+		self._thread = threading.Thread(target=self._runEngine, args=(scene, self._thread, pluginInfo.getPostProcessPluginConfig()))
+		self._thread.daemon = True
+		self._thread.start()
+
+	def _runEngine(self, scene, old_thread, pluginConfig):
+		if old_thread is not None:
+			if self._process is not None:
+				self._process.terminate()
+			old_thread.join()
+		self._callback(-1.0)
+
 		extruderCount = 1
 		for obj in scene.objects():
 			if scene.checkPlatform(obj):
@@ -358,25 +369,17 @@ class Engine(object):
 				commandList += ['$' * len(obj._meshList)]
 				self._objCount += 1
 		modelHash = hash.hexdigest()
-		if self._objCount > 0:
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash, pluginInfo.getPostProcessPluginConfig()))
-			self._thread.daemon = True
-			self._thread.start()
+		if self._objCount < 1:
+			return
+		if self._thread != threading.currentThread():
+			return
 
-	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash, pluginConfig):
-		if oldThread is not None:
-			if self._process is not None:
-				self._process.terminate()
-			oldThread.join()
-		self._callback(-1.0)
 		self._modelData = engineModelData
 		try:
 			self._process = self._runEngineProcess(commandList)
 		except OSError:
 			traceback.print_exc()
 			return
-		if self._thread != threading.currentThread():
-			self._process.terminate()
 
 		self._result = EngineResult()
 		self._result.addLog('Running: %s' % (' '.join(commandList)))
@@ -390,6 +393,8 @@ class Engine(object):
 		try:
 			data = self._process.stdout.read(4096)
 			while len(data) > 0:
+				if self._thread != threading.currentThread():
+					self._process.terminate()
 				self._result._gcodeData.write(data)
 				data = self._process.stdout.read(4096)
 
