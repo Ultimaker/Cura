@@ -5,7 +5,6 @@ import ConfigParser as configparser
 import os.path
 
 from Cura.util import profile
-import cPickle as pickle
 from Cura.util import resources
 
 class simpleModePanel(wx.Panel):
@@ -83,32 +82,6 @@ class simpleModePanel(wx.Panel):
 			button.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 		for button in self._print_other_options:
 			button.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
-
-		self.loadSettings()
-
-	def getSavedSettings(self):
-		try:
-			return pickle.loads(str(profile.getProfileSetting('simpleModeSettings')))
-		except:
-			return {}
-
-	def loadSettings(self):
-		settings = self.getSavedSettings()
-		for item in settings.keys():
-			if hasattr(self, item):
-				getattr(self, item).SetValue(settings[item])
-
-	def saveSettings(self):
-		settings = {}
-		settingItems = ['printTypeHigh', 'printTypeNormal', 'printTypeLow', 'printTypeJoris',
-						'printMaterialHIPS', 'printMaterialABS', 'printMaterialPLA',
-						'printSupport', 'printBrim']
-
-		for item in settingItems:
-			if hasattr(self, item):
-				settings[item] = getattr(self, item).GetValue()
-
-		profile.putProfileSetting('simpleModeSettings', pickle.dumps(settings))
 
 	def getSettingOverrides(self):
 		settings = {}
