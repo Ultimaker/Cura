@@ -65,6 +65,13 @@ def getSimpleModeMaterials():
 		return sorted(glob.glob(user_path))
 	return sorted(glob.glob(path))
 
+def getSimpleModeOptions():
+	path = os.path.normpath(os.path.join(resourceBasePath, 'quickprint', 'options', '*.ini'))
+	user_path = os.path.normpath(os.path.expanduser(os.path.join('~', '.Cura', 'quickprint', 'options')))
+	if os.path.isdir(user_path):
+		return sorted(glob.glob(user_path))
+	return sorted(glob.glob(path))
+
 def setupLocalization(selectedLanguage = None):
 	#Default to english
 	languages = ['en']

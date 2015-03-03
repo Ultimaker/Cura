@@ -16,6 +16,7 @@ class simpleModePanel(wx.Panel):
 
 		self._print_profile_options = []
 		self._print_material_options = []
+		self._print_other_options = []
 
 		printTypePanel = wx.Panel(self)
 		for filename in resources.getSimpleModeProfiles():
@@ -41,8 +42,15 @@ class simpleModePanel(wx.Panel):
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
 
-		self.printSupport = wx.CheckBox(self, -1, _("Print support structure"))
-		self.printBrim = wx.CheckBox(self, -1, _("Print Brim"))
+		for filename in resources.getSimpleModeOptions():
+			cp = configparser.ConfigParser()
+			cp.read(filename)
+			name = os.path.basename(filename)
+			if cp.has_option('info', 'name'):
+				name = cp.get('info', 'name')
+			button = wx.CheckBox(self, -1, name)
+			button.filename = filename
+			self._print_other_options.append(button)
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
@@ -65,17 +73,16 @@ class simpleModePanel(wx.Panel):
 
 		sb = wx.StaticBox(self, label=_("Other:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		boxsizer.Add(self.printSupport)
-		boxsizer.Add(self.printBrim)
+		for button in self._print_other_options:
+			boxsizer.Add(button)
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
 
 		for button in self._print_profile_options:
 			button.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
 		for button in self._print_material_options:
 			button.Bind(wx.EVT_RADIOBUTTON, lambda e: self._callback())
-
-		self.printSupport.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
-		self.printBrim.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
+		for button in self._print_other_options:
+			button.Bind(wx.EVT_CHECKBOX, lambda e: self._callback())
 
 		self.loadSettings()
 
@@ -128,9 +135,15 @@ class simpleModePanel(wx.Panel):
 							if cp.has_option('profile', setting.getName()):
 								settings[setting.getName()] = cp.get('profile', setting.getName())
 
+		for button in self._print_other_options:
+			if button.GetValue():
+				cp = configparser.ConfigParser()
+				cp.read(button.filename)
+				for setting in profile.settingsList:
+					if setting.isProfile():
+						if cp.has_option('profile', setting.getName()):
+							settings[setting.getName()] = cp.get('profile', setting.getName())
 
-		if self.printSupport.GetValue():
-			settings['support'] = "Exterior Only"
 		return settings
 
 	def updateProfileToControls(self):
