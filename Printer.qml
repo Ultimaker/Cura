@@ -179,7 +179,7 @@ UM.MainWindow {
                 width: UM.Theme.panelWidth;
                 height: 40;
 
-                onSaveRequested: saveAction.trigger();
+                onSaveRequested: actions.save.trigger();
             }
 
             UM.MessageStack {
@@ -238,7 +238,7 @@ UM.MainWindow {
 
         onAccepted:
         {
-            UM.Controller.addMesh(fileUrl)
+            UM.MeshFileHandler.readLocalFile(fileUrl)
             files.setDirectory(fileUrl)
         }
     }
@@ -255,7 +255,7 @@ UM.MainWindow {
 
         onAccepted:
         {
-            Printer.saveGCode(fileUrl);
+            UM.MeshFileHandler.writeLocalFile(fileUrl);
         }
     }
 
