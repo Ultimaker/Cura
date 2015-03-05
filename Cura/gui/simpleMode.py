@@ -53,10 +53,12 @@ class simpleModePanel(wx.Panel):
 		for filename in resources.getSimpleModeOptions():
 			cp = configparser.ConfigParser()
 			cp.read(filename)
-			name = os.path.basename(filename)
+			base_filename = os.path.splitext(os.path.basename(filename))[0]
+			name = base_filename
 			if cp.has_option('info', 'name'):
 				name = cp.get('info', 'name')
 			button = wx.CheckBox(self, -1, name)
+			button.base_filename = base_filename
 			button.filename = filename
 			self._print_other_options.append(button)
 
