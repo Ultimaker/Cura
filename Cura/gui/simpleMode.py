@@ -6,6 +6,7 @@ import os.path
 
 from Cura.util import profile
 from Cura.util import resources
+from Cura.util.simpleModeSettings import SimpleModeSettings
 
 class simpleModePanel(wx.Panel):
 	"Main user interface window for Quickprint mode"
@@ -109,6 +110,25 @@ class simpleModePanel(wx.Panel):
 			if not setting.isProfile():
 				continue
 			settings[setting.getName()] = setting.getDefault()
+
+		profile_setting = None
+		for button in self._print_profile_options:
+			if button.GetValue():
+				profile_setting = button.base_filename
+				break
+		material_setting = None
+		for button in self._print_material_options:
+			if button.GetValue():
+				material_setting = button.base_filename
+				break
+		other_settings = []
+		for button in self._print_other_options:
+			if button.GetValue():
+				other_settings.append(button.base_filename)
+
+		simple_settings = SimpleModeSettings.getSimpleSettings(profile_setting, material_setting, other_settings)
+		for setting in simple_settings.keys():
+			settings[setting] = simple_settings[setting]
 
 		for button in self._print_profile_options:
 			if button.GetValue():
