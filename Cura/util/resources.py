@@ -61,7 +61,9 @@ def getSimpleModeIniFiles(subdir):
 	paths.append(os.path.normpath(os.path.join(resourceBasePath, 'quickprint', subdir)))
 	for path in paths:
 		if os.path.isdir(path):
-			return sorted(glob.glob(os.path.join(path, '*.ini')))
+			files = sorted(glob.glob(os.path.join(path, '*.ini')))
+			if len(files) > 0:
+				return files
 	return []
 
 

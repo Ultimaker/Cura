@@ -19,7 +19,7 @@ BUILD_TARGET=${1:-none}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-export BUILD_NAME=15.01-RC5
+export BUILD_NAME=15.01-RC6
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Revision
@@ -298,6 +298,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -327,6 +328,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -356,6 +358,7 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -473,8 +476,6 @@ if [ $BUILD_TARGET = "win32" ]; then
 	cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll $TARGET_DIR
     cp /usr/i686-w64-mingw32/lib/libwinpthread-1.dll $TARGET_DIR
     cp /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll $TARGET_DIR
-else
-    cp -a scripts/${BUILD_TARGET}/*.sh $TARGET_DIR/
 fi
 
 #package the result

@@ -13,12 +13,12 @@ class expertConfigWindow(wx.Dialog):
 		p = left
 		n = 0
 		for title in profile.getSubCategoriesFor(category):
-			if sub_category is not None and _(sub_category) != title:
+			if sub_category is not None and sub_category != title:
 				continue
 			n += 1 + len(profile.getSettingsForCategory(category, title))
 			if n > count / 2:
 				p = right
-			configBase.TitleRow(p, title)
+			configBase.TitleRow(p, _(title))
 			for s in profile.getSettingsForCategory(category, title):
 				if s.checkConditions():
 					configBase.SettingRow(p, s.getName())
