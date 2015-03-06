@@ -481,8 +481,8 @@ setting('postSwitchExtruder.gcode', """;Switch between the current extruder and 
 """, str, 'alteration', 'alteration')
 
 setting('startMode', 'Simple', ['Simple', 'Normal'], 'preference', 'hidden')
-setting('simpleModeProfile', '2_normal', str, 'preference', 'hidden')
-setting('simpleModeMaterial', '1_pla', str, 'preference', 'hidden')
+setting('simpleModeProfile', '2_normal', str, 'hidden', 'hidden')
+setting('simpleModeMaterial', '1_pla', str, 'hidden', 'hidden')
 setting('oneAtATime', 'True', bool, 'preference', 'hidden')
 setting('lastFile', os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'example', 'Rocktopus.stl')), str, 'preference', 'hidden')
 setting('save_profile', 'False', bool, 'preference', 'hidden').setLabel(_("Save profile on slice"), _("When slicing save the profile as [stl_file]_profile.ini next to the model."))

@@ -38,7 +38,7 @@ class simpleModePanel(wx.Panel):
 			button.base_filename = base_filename
 			button.filename = filename
 			self._print_profile_options.append(button)
-			if profile.getPreference('simpleModeProfile') == base_filename:
+			if profile.getProfileSetting('simpleModeProfile') == base_filename:
 				button.SetValue(True)
 
 		printMaterialPanel = wx.Panel(self)
@@ -53,7 +53,7 @@ class simpleModePanel(wx.Panel):
 			button.base_filename = base_filename
 			button.filename = filename
 			self._print_material_options.append(button)
-			if profile.getPreference('simpleModeMaterial') == base_filename:
+			if profile.getProfileSetting('simpleModeMaterial') == base_filename:
 				button.SetValue(True)
 
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
@@ -106,10 +106,10 @@ class simpleModePanel(wx.Panel):
 	def _update(self, e):
 		for button in self._print_profile_options:
 			if button.GetValue():
-				profile.putPreference('simpleModeProfile', button.base_filename)
+				profile.putProfileSetting('simpleModeProfile', button.base_filename)
 		for button in self._print_material_options:
 			if button.GetValue():
-				profile.putPreference('simpleModeMaterial', button.base_filename)
+				profile.putProfileSetting('simpleModeMaterial', button.base_filename)
 		self._callback()
 
 	def getSettingOverrides(self):
