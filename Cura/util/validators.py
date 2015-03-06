@@ -165,6 +165,8 @@ class printSpeedValidator(object):
 			nozzleSize = profile.getProfileSettingFloat('nozzle_size')
 			layerHeight = profile.getProfileSettingFloat('layer_height')
 			printSpeed = float(eval(self.setting.getValue().replace(',','.'), {}, {}))
+			if printSpeed == 0.0:
+				printSpeed = profile.getProfileSettingFloat('print_speed')
 			
 			printVolumePerMM = layerHeight * nozzleSize
 			printVolumePerSecond = printVolumePerMM * printSpeed
