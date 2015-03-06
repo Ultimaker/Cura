@@ -154,7 +154,7 @@ class setting(object):
 				result = res
 			elif res == validators.WARNING and result != validators.ERROR:
 				result = res
-			if res != validators.SUCCESS:
+			if len(err) > 0:
 				msgs.append(err)
 		return result, '\n'.join(msgs)
 
@@ -549,6 +549,11 @@ validators.warningAbove(settingsDictionary['layer_height'], lambda : (float(getP
 validators.wallThicknessValidator(settingsDictionary['wall_thickness'])
 validators.warningAbove(settingsDictionary['print_speed'], 150.0, _("It is highly unlikely that your machine can achieve a printing speed above 150mm/s"))
 validators.printSpeedValidator(settingsDictionary['print_speed'])
+validators.printSpeedValidator(settingsDictionary['bottom_layer_speed'])
+validators.printSpeedValidator(settingsDictionary['infill_speed'])
+validators.printSpeedValidator(settingsDictionary['solidarea_speed'])
+validators.printSpeedValidator(settingsDictionary['inset0_speed'])
+validators.printSpeedValidator(settingsDictionary['insetx_speed'])
 validators.warningAbove(settingsDictionary['print_temperature'], 260.0, _("Temperatures above 260C could damage your machine, be careful!"))
 validators.warningAbove(settingsDictionary['print_temperature2'], 260.0, _("Temperatures above 260C could damage your machine, be careful!"))
 validators.warningAbove(settingsDictionary['print_temperature3'], 260.0, _("Temperatures above 260C could damage your machine, be careful!"))

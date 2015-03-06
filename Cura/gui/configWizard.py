@@ -450,7 +450,7 @@ class MachineSelectPage(InfoPage):
 			if self.Ultimaker2ExtRadio.GetValue():
 				profile.putMachineSetting('machine_width', '230')
 				profile.putMachineSetting('machine_depth', '225')
-				profile.putMachineSetting('machine_height', '305')
+				profile.putMachineSetting('machine_height', '315')
 				profile.putMachineSetting('machine_name', 'ultimaker2extended')
 				profile.putMachineSetting('machine_type', 'ultimaker2extended')
 				profile.putMachineSetting('has_heated_bed', 'False')
