@@ -18,6 +18,14 @@ class simpleModePanel(wx.Panel):
 		self._print_material_options = []
 		self._print_other_options = []
 
+		# This is a hack around an issue where the machine type in the wizard
+		# changed and causes some people to have it set to lulzbot_TAZ and some
+		# people have it set to lulzbot_TAZ_4.
+		# To avoid duplicating the custom settings overrides, we just change the
+		# machine_type instead.
+		if profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
+
 		printTypePanel = wx.Panel(self)
 		for filename in resources.getSimpleModeProfiles():
 			cp = configparser.ConfigParser()
