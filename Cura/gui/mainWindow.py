@@ -373,11 +373,8 @@ class mainWindow(wx.Frame):
 			# Enabled sash
 			self.splitter.SetSashSize(4)
 		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
-		if profile.getMachineSetting('machine_type') == 'ultimaker2' or \
-		   profile.getMachineSetting('machine_type') == 'lulzbot_mini' or \
-		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
-		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or \
-		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ':
+		if profile.getMachineSetting('machine_type').startswith('ultimaker2') or \
+		   profile.getMachineSetting('machine_type').startswith('lulzbot_'):
 			self.bedLevelWizardMenuItem.Enable(False)
 			self.headOffsetWizardMenuItem.Enable(False)
 		else:

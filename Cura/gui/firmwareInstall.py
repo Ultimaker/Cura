@@ -17,41 +17,48 @@ from Cura.util import profile
 from Cura.util import resources
 
 def getDefaultFirmware(machineIndex = None):
-	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker':
+	machine_type = profile.getMachineSetting('machine_type', machineIndex)
+	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
+	heated_bed = profile.getMachineSetting('has_heated_bed', machineIndex) == 'True'
+	baudrate = 250000
+	if sys.platform.startswith('linux'):
+		baudrate = 115200
+	if machine_type == 'ultimaker':
 		name = 'MarlinUltimaker'
-		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 2:
+		if extruders > 2:
 			return None
-		if profile.getMachineSetting('has_heated_bed', machineIndex) == 'True':
+		if heated_bed:
 			name += '-HBK'
-		if sys.platform.startswith('linux'):
-			name += '-115200'
-		else:
-			name += '-250000'
-		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 1:
+		name += '-%d' % (baudrate)
+		if extruders > 1:
 			name += '-dual'
 		return resources.getPathForFirmware(name + '.hex')
 
-	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker_plus':
-		name = 'MarlinUltimaker-UMOP'
-		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 2:
+	if machine_type == 'ultimaker_plus':
+		name = 'MarlinUltimaker-UMOP-%d' % (baudrate)
+		if extruders > 2:
 			return None
-		if sys.platform.startswith('linux'):
-			name += '-115200'
-		else:
-			name += '-250000'
-		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 1:
+		if extruders > 1:
 			name += '-dual'
 		return resources.getPathForFirmware(name + '.hex')
 
-	if profile.getMachineSetting('machine_type', machineIndex) == 'ultimaker2':
-		if profile.getMachineSettingFloat('extruder_amount', machineIndex) > 2:
+	if machine_type == 'ultimaker2':
+		if extruders > 2:
 			return None
-		if profile.getMachineSettingFloat('extruder_amount', machineIndex) == 2:
+		if extruders > 1:
 			return resources.getPathForFirmware("MarlinUltimaker2-dual.hex")
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
-	if profile.getMachineSetting('machine_type', machineIndex) == 'lulzbot_mini':
+	if machine_type == 'lulzbot_mini':
 		return resources.getPathForFirmware("marlin_mini_2014Q4.hex")
-	if profile.getMachineSetting('machine_type', machineIndex) == 'Witbox':
+	if machine_type == 'ultimaker2go':
+		return resources.getPathForFirmware("MarlinUltimaker2go.hex")
+	if machine_type == 'ultimaker2extended':
+		if extruders > 2:
+			return None
+		if extruders > 1:
+			return resources.getPathForFirmware("MarlinUltimaker2extended-dual.hex")
+		return resources.getPathForFirmware("MarlinUltimaker2extended.hex")
+	if machine_type == 'Witbox':
 		return resources.getPathForFirmware("MarlinWitbox.hex")
 	return None
 
