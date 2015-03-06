@@ -45,10 +45,11 @@ class preferencesDialog(wx.Dialog):
 		#configBase.TitleRow(right, 'Slicer settings')
 		#configBase.SettingRow(right, 'save_profile')
 
-		#configBase.TitleRow(right, 'SD Card settings')
-
-		configBase.TitleRow(right, _("Cura settings"))
+		configBase.TitleRow(right, 'SD Card settings')
 		configBase.SettingRow(right, 'auto_detect_sd')
+		configBase.SettingRow(right, 'sdcard_rootfolder')
+		
+		configBase.TitleRow(right, _("Cura settings"))
 		configBase.SettingRow(right, 'check_for_updates')
 		#configBase.SettingRow(right, 'submit_slice_information')
 

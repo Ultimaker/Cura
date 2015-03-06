@@ -441,6 +441,9 @@ class glButton(glGuiControl):
 		if self._hidden:
 			return 0, 0
 		if self._buttonSize is not None:
+			if self._buttonSize > 0 and self._buttonSize < 1:
+				return self._base._buttonSize * self._buttonSize, self._base._buttonSize * self._buttonSize
+
 			return self._buttonSize, self._buttonSize
 		return self._base._buttonSize, self._base._buttonSize
 

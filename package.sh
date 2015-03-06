@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -e
+set -u
+
 # This script is to package the Cura package for Windows/Linux and Mac OS X
 # This script should run under Linux and Mac OS X, as well as Windows with Cygwin.
 
@@ -19,7 +22,7 @@ BUILD_TARGET=${1:-none}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-export BUILD_NAME=15.01-RC7
+export BUILD_NAME=15.01-RC8
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Revision
@@ -32,7 +35,7 @@ GIT_HASH=$(git rev-parse --short=4 HEAD)
 WIN_PORTABLE_PY_VERSION=2.7.2.1
 
 ##Which CuraEngine to use
-if [ -z ${CURA_ENGINE_REPO} ] ; then
+if [ -z ${CURA_ENGINE_REPO:-} ] ; then
 	CURA_ENGINE_REPO="git@github.com:alephobjects/CuraEngine.git"
 fi
 
@@ -98,6 +101,8 @@ if [ "$BUILD_TARGET" = "none" ]; then
 	echo "$0 debian_armhf"
 	echo "$0 darwin"
 	echo "$0 freebsd"
+	echo "$0 fedora                         # current   system"
+	echo "$0 fedora \"mock_config_file\" ...  # different system(s)"
 	exit 0
 fi
 
@@ -141,6 +146,12 @@ else
 	ARDUINO_PATH=/usr/share/arduino
 	ARDUINO_VERSION=105
 fi
+
+if [ ! -d "$ARDUINO_PATH" ]; then
+  echo "Arduino path '$ARDUINO_PATH' doesn't exist"
+  exit 1
+fi
+
 
 #Build the Ultimaker Original firmwares.
 gitClone git@github.com:Ultimaker/Marlin.git _UltimakerMarlin
@@ -375,6 +386,133 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${BUILD_TARGET}.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
+fi
+
+#############################
+# Fedora Generic
+#############################
+
+function sanitiseVersion() {
+  local _version="$1"
+  echo "${_version//-/.}"
+}
+
+function fedoraCreateSRPM() {
+  local _curaName="$1"
+  local _version="$(sanitiseVersion "$2")"
+  local _srcSpecFile="$3"
+  local _srcSpecFileRelease="$4"
+  local _dstSrpmDir="$5"
+
+  local _dstTarSources="$HOME/rpmbuild/SOURCES/$_curaName-$_version.tar.gz"
+  local _dstSpec="$HOME/rpmbuild/SPECS/$_curaName-$_version.spec"
+
+  local _namePower="Power"
+  local _nameCuraEngine="CuraEngine"
+
+  gitClone "https://github.com/GreatFruitOmsk/Power" "$_namePower"
+  gitClone "$CURA_ENGINE_REPO" "$_nameCuraEngine"
+
+  cd "$_namePower"
+  local _gitPower="$(git rev-list -1 HEAD)"
+  cd -
+
+  cd "$_nameCuraEngine"
+  local _gitCuraEngine="$(git rev-list -1 HEAD)"
+  cd -
+
+  local _gitCura="$(git rev-list -1 HEAD)"
+
+  rpmdev-setuptree
+
+  rm -fv "$_dstTarSources"
+  tar \
+    --exclude-vcs \
+    --transform "s#^#$_curaName-$_version/#" \
+    -zcvf "$_dstTarSources" \
+      "$_nameCuraEngine" \
+      "$_namePower" \
+      Cura \
+      resources \
+      plugins \
+      scripts/linux/cura.py \
+      scripts/linux/fedora/usr
+
+  sed \
+    -e "s#__curaName__#$_curaName#" \
+    -e "s#__version__#$_version#" \
+    -e "s#__gitCura__#$_gitCura#" \
+    -e "s#__gitCuraEngine__#$_gitCuraEngine#" \
+    -e "s#__gitPower__#$_gitPower#" \
+    -e "s#__basedir__#scripts/linux/fedora#" \
+    "$_srcSpecFile" \
+    > "$_dstSpec"
+
+  rpmbuild -bs "$_dstSpec"
+
+  mkdir -pv "$_dstSrpmDir"
+  cp -v \
+    "$HOME/rpmbuild/SRPMS/$_curaName-$_version-$_srcSpecFileRelease.src.rpm" \
+    "$_dstSrpmDir"
+}
+
+function buildFedora() {
+  local _nameForRpm="Cura"
+  local _versionForRpm="$(sanitiseVersion "$BUILD_NAME")"
+
+  #
+  # SRPM
+  #
+
+  local _srcSpecFile="scripts/linux/fedora/rpm.spec"
+  local _srcSpecFileRelease="$(rpmspec -P "$_srcSpecFile" | grep -E '^Release:'|awk '{print $NF}')"
+  local _dstSrpmDir="scripts/linux/fedora/SRPMS"
+
+  fedoraCreateSRPM \
+    "$_nameForRpm" \
+    "$_versionForRpm" \
+    "$_srcSpecFile" \
+    "$_srcSpecFileRelease" \
+    "$_dstSrpmDir"
+
+  #
+  # RPM
+  #
+
+  local _srpmFile="$_dstSrpmDir/$_nameForRpm-$_versionForRpm-$_srcSpecFileRelease.src.rpm"
+  local _dstRpmDir="scripts/linux/fedora/RPMS"
+
+  while [ $# -ne 0 ]; do
+    local _mockRelease="$(basename "${1%\.cfg}")"
+    local _mockReleaseArg=""
+    if [ -n "$_mockRelease" ]; then
+      _mockReleaseArg="-r $_mockRelease"
+    fi
+
+    mkdir -pv "$_dstRpmDir/$_mockRelease"
+    mock \
+      $_mockReleaseArg \
+      --resultdir="$_dstRpmDir/$_mockRelease" \
+      "$_srpmFile"
+
+    shift 1
+  done
+}
+
+#############################
+# Fedora RPMs
+#############################
+
+if [ "$BUILD_TARGET" = "fedora" ]; then
+  shift 1 # skip "fedora" arg
+
+  if [ $# -eq 0 ]; then
+    "$0" "$BUILD_TARGET" ""
+  else
+    buildFedora "${@}"
+  fi
+
+  exit
 fi
 
 #############################
