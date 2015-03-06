@@ -5,6 +5,7 @@ from UM.Scene.Platform import Platform
 from UM.Math.Vector import Vector
 from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
+from UM.Scene.ToolHandle import ToolHandle
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -56,7 +57,7 @@ class PrinterApplication(QtApplication):
 
         t = controller.getTool('TranslateTool')
         if t:
-            t.setYRange(0.0, 0.0)
+            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
