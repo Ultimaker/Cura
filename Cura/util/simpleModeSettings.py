@@ -1,4 +1,6 @@
-from Cura.util.settings import lulzbot_mini_settings
+from Cura.util.settings import lulzbot_mini_settings, \
+		lulzbot_taz4_settings, \
+		lulzbot_taz5_settings
 
 import ConfigParser as configparser
 from Cura.util import profile
@@ -41,6 +43,8 @@ class SimpleModeSettings(object):
 	# will only be applied for Low and Normal quality prints in ABS
 
 	settings = {"lulzbot_mini": lulzbot_mini_settings,
+				"lulzbot_TAZ_4": lulzbot_taz4_settings,
+				"lulzbot_TAZ_5": lulzbot_taz5_settings,
 				None: {}}
 
 

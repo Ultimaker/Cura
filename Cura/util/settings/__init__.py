@@ -1,1 +1,3 @@
 from lulzbotMini import lulzbot_mini_settings
+from lulzbotTAZ4 import lulzbot_taz4_settings
+from lulzbotTAZ5 import lulzbot_taz5_settings
