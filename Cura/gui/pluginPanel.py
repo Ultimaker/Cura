@@ -202,3 +202,14 @@ class pluginPanel(wx.Panel):
 		if not os.path.exists(pluginInfo.getPluginBasePaths()[0]):
 			os.mkdir(pluginInfo.getPluginBasePaths()[0])
 		explorer.openExplorerPath(pluginInfo.getPluginBasePaths()[0])
+
+	def GetActivePluginCount(self):
+		pluginCount = 0
+		for pluginConfig in self.pluginConfig:
+			self._buildPluginPanel(pluginConfig)
+
+			for pluginTest in self.pluginList:
+				if pluginTest.getFilename() == pluginConfig['filename']:
+					pluginCount += 1
+
+		return pluginCount

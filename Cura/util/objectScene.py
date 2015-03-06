@@ -108,7 +108,7 @@ class Scene(object):
 	The scene class keep track of an collection of objects on a build platform and their state.
 	It can figure out in which order to print them (if any) and if an object can be printed at all.
 	"""
-	def __init__(self):
+	def __init__(self, sceneView=None):
 		self._objectList = []
 		self._sizeOffsets = numpy.array([0.0,0.0], numpy.float32)
 		self._machineSize = numpy.array([100,100,100], numpy.float32)
@@ -121,6 +121,10 @@ class Scene(object):
 		self._frontToBack = True
 		self._gantryHeight = 60
 		self._oneAtATime = True
+
+		self._lastOneAtATime = False
+		self._lastResultOneAtATime = True
+		self._sceneView = sceneView
 
 	# update the physical machine dimensions
 	def updateMachineDimensions(self):
@@ -161,10 +165,28 @@ class Scene(object):
 		self._headSizeOffsets[0] = min(xMin, xMax)
 		self._headSizeOffsets[1] = min(yMin, yMax)
 		self._gantryHeight = gantryHeight
-		self._oneAtATime = self._gantryHeight > 0 and profile.getPreference('oneAtATime') == 'True'
-		for obj in self._objectList:
-			if obj.getSize()[2] - objectSink > self._gantryHeight:
-				self._oneAtATime = False
+
+		printOneAtATime = profile.getPreference('oneAtATime') == 'True'
+		self._oneAtATime = self._gantryHeight > 0 and printOneAtATime
+		if self._oneAtATime:
+			if not self._lastOneAtATime:
+				#print mode was changed by user. We need to reset that value to test with current scene content
+				self._lastResultOneAtATime = True
+
+			for obj in self._objectList:
+				if obj.getSize()[2] - objectSink > self._gantryHeight:
+					self._oneAtATime = False
+					if self._lastResultOneAtATime:
+						if self._sceneView:
+							self._sceneView.notification.message("Info: Print one at a time mode disabled. Object too tall.")
+						break
+
+		if self._lastOneAtATime and self._oneAtATime and not self._lastResultOneAtATime:
+			if self._sceneView:
+				self._sceneView.notification.message("Info: Print one at a time mode re-enabled.")
+
+		self._lastResultOneAtATime = self._oneAtATime
+		self._lastOneAtATime = printOneAtATime
 
 		headArea = numpy.array([[-xMin,-yMin],[ xMax,-yMin],[ xMax, yMax],[-xMin, yMax]], numpy.float32)
 
@@ -184,8 +206,8 @@ class Scene(object):
 		return self._objectList
 
 	#Add new object to print area
-	def add(self, obj):
-		if numpy.max(obj.getSize()[0:2]) > numpy.max(self._machineSize[0:2]) * 2.5:
+	def add(self, obj, positionOnly=False):
+		if not positionOnly and numpy.max(obj.getSize()[0:2]) > numpy.max(self._machineSize[0:2]) * 2.5:
 			scale = numpy.max(self._machineSize[0:2]) * 2.5 / numpy.max(obj.getSize()[0:2])
 			matrix = [[scale,0,0], [0, scale, 0], [0, 0, scale]]
 			obj.applyMatrix(numpy.matrix(matrix, numpy.float64))
@@ -230,12 +252,12 @@ class Scene(object):
 		for obj in pushList:
 			self.pushFree(obj)
 
-	def arrangeAll(self):
+	def arrangeAll(self, positionOnly=False):
 		oldList = self._objectList
 		self._objectList = []
 		for obj in oldList:
 			obj.setPosition(numpy.array([0,0], numpy.float32))
-			self.add(obj)
+			self.add(obj, positionOnly)
 
 	def centerAll(self):
 		minPos = numpy.array([9999999,9999999], numpy.float32)

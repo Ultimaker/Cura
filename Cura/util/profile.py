@@ -497,7 +497,10 @@ def _getMyDocumentsFolder():
 		path = os.path.expanduser('~/')
 	if not os.path.exists(path):
 		path = ''
-
+	try:
+		path = unicode(path)
+	except UnicodeDecodeError:
+		path = ''
 	return path
 
 setting('sdcard_rootfolder', _getMyDocumentsFolder(), str, 'preference', 'hidden').setLabel(_("Base folder to replicate on SD card"), _("The specified folder will be used as a base path. Any gcode generated from object coming from within that folder will be automatically saved on the SD card at the same sub-folder. Any object coming from outside of this path will save the gcode on the root folder of the card."))

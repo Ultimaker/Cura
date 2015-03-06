@@ -1,4 +1,4 @@
-#Name: Tweak At Z 4.0
+#Name: Tweak At Z 4.0.1
 #Info: Change printing parameters at a given height
 #Help: TweakAtZ
 #Depend: GCode
@@ -42,8 +42,9 @@
 ##V4.0:   Progress bar, tweaking over multiple layers, M605&M606 implemented, reset after one layer option,
 ##        extruder three code removed, tweaking print speed, save call of Publisher class,
 ##        uses previous value from other plugins also on UltiGCode
+##V4.0.1: Bugfix for doubled G1 commands
 
-version = '4.0'
+version = '4.0.1'
 
 import re
 import wx
@@ -201,8 +202,8 @@ with open(filename, "w") as file:
 				if 'G1' in line and x != None and y != None and f != None and e != None and newZ==z:
 					file.write("G1 F%d X%1.3f Y%1.3f E%1.5f\n" % (int(f/100.0*float(printspeed)),getValue(line,'X'),
 																  getValue(line,'Y'),getValue(line,'E')))
-			else: #G1 command but not a print movement
-				file.write(line)
+                                else: #G1 command but not a print movement
+                                        file.write(line)
 			# no tweaking on retraction hops which have no x and y coordinate:
 			if (newZ != z) and (x is not None) and (y is not None):
 				z = newZ
