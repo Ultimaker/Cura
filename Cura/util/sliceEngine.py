@@ -511,7 +511,6 @@ class Engine(object):
 			'retractionAmountExtruderSwitch': int(profile.getProfileSettingFloat('retraction_dual_amount') * 1000),
 			'retractionZHop': int(profile.getProfileSettingFloat('retraction_hop') * 1000),
 			'minimalExtrusionBeforeRetraction': int(profile.getProfileSettingFloat('retraction_minimal_extrusion') * 1000),
-			'enableCombing': 1 if profile.getProfileSetting('retraction_combing') == 'True' else 0,
 			'multiVolumeOverlap': int(profile.getProfileSettingFloat('overlap_dual') * 1000),
 			'objectSink': max(0, int(profile.getProfileSettingFloat('object_sink') * 1000)),
 			'minimalLayerTime': int(profile.getProfileSettingFloat('cool_min_layer_time')),
@@ -535,6 +534,12 @@ class Engine(object):
 		settings['fanFullOnLayerNr'] = (fanFullHeight - settings['initialLayerThickness'] - 1) / settings['layerThickness'] + 1
 		if settings['fanFullOnLayerNr'] < 0:
 			settings['fanFullOnLayerNr'] = 0
+		if profile.getProfileSetting('retraction_combing') == 'All':
+			settings['enableCombing'] = 1
+		elif profile.getProfileSetting('retraction_combing') == 'No Skin':
+			settings['enableCombing'] = 2
+		else:
+			settings['enableCombing'] = 0
 		if profile.getProfileSetting('support_type') == 'Lines':
 			settings['supportType'] = 1
 
@@ -592,7 +597,7 @@ class Engine(object):
 			settings['gcodeFlavor'] = 2
 		elif profile.getMachineSetting('gcode_flavor') == 'BFB':
 			settings['gcodeFlavor'] = 3
-		elif profile.getMachineSetting('gcode_flavor') == 'Mach3':
+		elif profile.getMachineSetting('gcode_flavor') == 'Mach3/LinuxCNC':
 			settings['gcodeFlavor'] = 4
 		elif profile.getMachineSetting('gcode_flavor') == 'RepRap (Volumetric)':
 			settings['gcodeFlavor'] = 5
