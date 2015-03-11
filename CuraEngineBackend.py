@@ -17,6 +17,8 @@ class CuraEngineBackend(Backend):
     def __init__(self):
         super().__init__()
 
+        Preferences.getInstance().addPreference('backend/location', '../PinkUnicornEngine/CuraEngine')
+
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
@@ -34,7 +36,7 @@ class CuraEngineBackend(Backend):
         self._center = None
 
     def getEngineCommand(self):
-        return [Preferences.getPreference("BackendLocation"), '--connect', "127.0.0.1:{0}".format(self._port)]
+        return [Preferences.getInstance().getValue("backend/location"), '--connect', "127.0.0.1:{0}".format(self._port)]
 
     def _onSceneChanged(self, source):
         if (type(source) is not SceneNode) or (source is self._scene.getRoot()):
