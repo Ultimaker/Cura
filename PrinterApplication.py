@@ -99,8 +99,6 @@ class PrinterApplication(QtApplication):
 
             self.exec_()
 
-        self.saveMachines()
-
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty('Printer', self)
 
