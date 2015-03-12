@@ -13,7 +13,7 @@ class LayerView(View):
         renderer = self.getRenderer()
 
         if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, 'basic.vert'), Resources.getPath(Resources.ShadersLocation, 'color.frag'))
+            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, 'basic.vert'), Resources.getPath(Resources.ShadersLocation, 'vertexcolor.frag'))
 
             self._material.setUniformValue("u_color", [1.0, 0.0, 0.0, 1.0])
 
@@ -25,7 +25,7 @@ class LayerView(View):
                     except AttributeError:
                         continue
 
-                    renderer.queueNode(node, mesh = layerData, material = self._material, mode = Renderer.RenderLineLoop)
+                    renderer.queueNode(node, mesh = layerData, material = self._material, mode = Renderer.RenderLines)
 
     def endRendering(self):
         pass
