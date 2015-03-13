@@ -196,7 +196,13 @@ UM.MainWindow {
         }
     }
 
-    UM.PreferencesDialog { id: preferences }
+    UM.PreferencesDialog {
+        id: preferences
+
+        Component.onCompleted: {
+            addPage(qsTr('View'), Qt.resolvedUrl('./ViewPage.qml'));
+        }
+    }
 
     PrinterActions {
         id: actions;
