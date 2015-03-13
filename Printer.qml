@@ -200,7 +200,7 @@ UM.MainWindow {
         id: preferences
 
         Component.onCompleted: {
-            addPage(qsTr('View'), Qt.resolvedUrl('./ViewPage.qml'));
+            insertPage(1, qsTr('View'), Qt.resolvedUrl('./ViewPage.qml'));
         }
     }
 
