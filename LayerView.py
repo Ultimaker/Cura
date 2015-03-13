@@ -11,6 +11,7 @@ class LayerView(View):
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
+        renderer.setRenderSelection(False)
 
         if not self._material:
             self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, 'basic.vert'), Resources.getPath(Resources.ShadersLocation, 'vertexcolor.frag'))
