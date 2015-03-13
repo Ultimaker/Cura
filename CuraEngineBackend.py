@@ -35,6 +35,8 @@ class CuraEngineBackend(Backend):
 
         self._center = None
 
+        self._slice_interval = 0.5
+
     def getEngineCommand(self):
         return [Preferences.getInstance().getValue("backend/location"), '--connect', "127.0.0.1:{0}".format(self._port)]
 
@@ -85,9 +87,9 @@ class CuraEngineBackend(Backend):
             return
 
         if self._changeTimer:
-            return
+            self._changeTimer.cancel()
 
-        self._changeTimer = threading.Timer(1, self._onChangeTimerFinished)
+        self._changeTimer = threading.Timer(self._slice_interval, self._onChangeTimerFinished)
         self._changeTimer.start()
 
     def _onChangeTimerFinished(self):
