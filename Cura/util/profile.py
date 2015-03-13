@@ -919,6 +919,13 @@ def isProfileSetting(name):
 		return True
 	return False
 
+def isAlterationSetting(name):
+	""" Check if a certain key name is actually a profile value. """
+	global settingsDictionary
+	if name in settingsDictionary and settingsDictionary[name].isAlteration():
+		return True
+	return False
+
 ## Preferences functions
 def getPreferencePath():
 	"""

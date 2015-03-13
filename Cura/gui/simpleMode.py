@@ -143,7 +143,7 @@ class simpleModePanel(wx.Panel):
 				cp = configparser.ConfigParser()
 				cp.read(button.filename)
 				for setting in profile.settingsList:
-					if setting.isProfile():
+					if setting.isProfile() or setting.isAlteration():
 						if cp.has_option('profile', setting.getName()):
 							settings[setting.getName()] = cp.get('profile', setting.getName())
 		if profile.getMachineSetting('gcode_flavor') != 'UltiGCode':
@@ -152,7 +152,7 @@ class simpleModePanel(wx.Panel):
 					cp = configparser.ConfigParser()
 					cp.read(button.filename)
 					for setting in profile.settingsList:
-						if setting.isProfile():
+						if setting.isProfile() or setting.isAlteration():
 							if cp.has_option('profile', setting.getName()):
 								settings[setting.getName()] = cp.get('profile', setting.getName())
 
@@ -161,7 +161,7 @@ class simpleModePanel(wx.Panel):
 				cp = configparser.ConfigParser()
 				cp.read(button.filename)
 				for setting in profile.settingsList:
-					if setting.isProfile():
+					if setting.isProfile() or setting.isAlteration():
 						if cp.has_option('profile', setting.getName()):
 							settings[setting.getName()] = cp.get('profile', setting.getName())
 

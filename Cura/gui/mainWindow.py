@@ -567,7 +567,10 @@ class mainWindow(wx.Frame):
 		if result:
 			profile.resetProfile()
 			for k, v in self.simpleSettingsPanel.getSettingOverrides().items():
-				profile.putProfileSetting(k, v)
+				if profile.isProfileSetting(k):
+					profile.putProfileSetting(k, v)
+				elif profile.isAlterationSetting(k):
+					profile.setAlterationFile(k, v)
 			self.updateProfileToAllControls()
 		self.updateSliceMode()
 
