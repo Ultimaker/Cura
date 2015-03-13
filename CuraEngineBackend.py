@@ -120,6 +120,7 @@ class CuraEngineBackend(Backend):
             return #No point in slicing an empty build plate
 
         self._slicing = True
+        self.processingProgress.emit(0.0)
 
         self._sendSettings()
 
