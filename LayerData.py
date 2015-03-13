@@ -37,7 +37,7 @@ class Polygon():
         self._type = type
         self._begin = mesh._vertex_count
         mesh.addVertices(data)
-        self._end = self._begin + len(data)
+        self._end = self._begin + len(data) - 1
 
         color = None
         if type == self.Inset0Type:
@@ -60,6 +60,9 @@ class Polygon():
         for i in range(self._begin, self._end):
             indices.append(i)
             indices.append(i + 1)
+
+        indices.append(self._end)
+        indices.append(self._begin)
         mesh.addIndices(numpy.array(indices, dtype=numpy.int32))
 
     @property
