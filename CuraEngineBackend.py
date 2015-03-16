@@ -157,6 +157,7 @@ class CuraEngineBackend(Backend):
             'layerThickness': int(self._settings.getSettingValueByKey('layer_height') * 1000),
             'initialLayerThickness': int(self._settings.getSettingValueByKey('layer_height_0') * 1000),
             'printTemperature': int(self._settings.getSettingValueByKey('material_print_temperature')),
+            'bedTemperature': int(self._settings.getSettingValueByKey('material_bed_temperature') * 100),
             'filamentDiameter': int(self._settings.getSettingValueByKey('material_diameter') * 1000),
             'filamentFlow': int(self._settings.getSettingValueByKey('material_flow')),
             'layer0extrusionWidth': int(self._settings.getSettingValueByKey('wall_line_width_0') * 1000),
@@ -204,17 +205,19 @@ class CuraEngineBackend(Backend):
 
         }
 
-        if self._settings.getSettingValueByKey('top_bottom_pattern') == 'lines':
+        if self._settings.getSettingValueByKey('top_bottom_pattern') == 'Lines':
             settings['skinPattern'] = 'SKIN_LINES'
-        elif self._settings.getSettingValueByKey('top_bottom_pattern') == 'concentric':
+        elif self._settings.getSettingValueByKey('top_bottom_pattern') == 'Concentric':
             settings['skinPattern'] = 'SKIN_CONCENTRIC'
 
         if self._settings.getSettingValueByKey('fill_pattern') == 'Grid':
             settings['infillPattern'] = 'INFILL_GRID'
         elif self._settings.getSettingValueByKey('fill_pattern') == 'Lines':
             settings['infillPattern'] = 'INFILL_LINES'
-        elif self._settings.getSettingValueByKey('fill_pattern') == 'concentric':
+        elif self._settings.getSettingValueByKey('fill_pattern') == 'Concentric':
             settings['infillPattern'] = 'INFILL_CONCENTRIC'
+        elif self._settings.getSettingValueByKey('fill_pattern') == 'ZigZag':
+            settings['infillPattern'] = 'INFILL_ZIGZAG'
 
         adhesion_type = self._settings.getSettingValueByKey('adhesion_type')
         if adhesion_type == 'Raft':
@@ -243,22 +246,27 @@ class CuraEngineBackend(Backend):
             settings['supportType'] = ''
             settings['supportAngle'] = -1
         else:
-            settings['areaSupportPolyGenerator'] = 1
             settings['supportType'] = 'LINES'
             settings['supportAngle'] = self._settings.getSettingValueByKey('support_angle')
-            settings['supportEverywhere'] = 1 if self._settings.getSettingValueByKey('support_type') == 'Everywhere' else 0
+            settings['supportOnBuildplateOnly'] = 1 if self._settings.getSettingValueByKey('support_type') == 'Touching Buildplate' else 0
             settings['supportLineDistance'] = int(100 * self._settings.getSettingValueByKey('wall_line_width_x') * 1000 / self._settings.getSettingValueByKey('support_fill_rate'))
             settings['supportXYDistance'] = int(self._settings.getSettingValueByKey('support_xy_distance') * 1000)
             settings['supportZDistance'] = int(self._settings.getSettingValueByKey('support_z_distance') * 1000)
             settings['supportZDistanceBottom'] = int(self._settings.getSettingValueByKey('support_top_distance') * 1000)
             settings['supportZDistanceTop'] = int(self._settings.getSettingValueByKey('support_bottom_distance') * 1000)
             settings['supportJoinDistance'] = int(self._settings.getSettingValueByKey('support_join_distance') * 1000)
-            settings['supportBridgeBack'] = int(self._settings.getSettingValueByKey('support_bridge_back'))
+            settings['supportAreaSmoothing'] = int(self._settings.getSettingValueByKey('support_area_smoothing') * 1000)
+            settings['supportMinimalAreaSqrt'] = int(self._settings.getSettingValueByKey('support_minimal_diameter') * 1000) if self._settings.getSettingValueByKey('support_use_towers') else 0
+            settings['supportTowerDiameter'] = int(self._settings.getSettingValueByKey('support_tower_diameter') * 1000)
+            settings['supportTowerRoofAngle'] = int(self._settings.getSettingValueByKey('support_tower_roof_angle'))
+            settings['supportConnectZigZags'] = 1 if self._settings.getSettingValueByKey('support_connect_zigzags') else 0 
             settings['supportExtruder'] = -1
             if self._settings.getSettingValueByKey('support_pattern') == 'Grid':
                 settings['supportType'] = 'GRID'
             elif self._settings.getSettingValueByKey('support_pattern') == 'Lines':
                 settings['supportType'] = 'LINES'
+            elif self._settings.getSettingValueByKey('support_pattern') == 'ZigZag':
+                settings['supportType'] = 'ZIGZAG'
 
         settings['sparseInfillLineDistance'] = -1
         if self._settings.getSettingValueByKey('fill_sparse_density') >= 100:
