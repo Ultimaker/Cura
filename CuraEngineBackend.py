@@ -4,6 +4,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Preferences import Preferences
 from UM.Math.Vector import Vector
+from UM.Signal import Signal
 
 from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
@@ -16,6 +17,8 @@ import numpy
 class CuraEngineBackend(Backend):
     def __init__(self):
         super().__init__()
+
+        Preferences.getInstance().addPreference('backend/location', '../PinkUnicornEngine/CuraEngine')
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
@@ -33,8 +36,18 @@ class CuraEngineBackend(Backend):
 
         self._center = None
 
+        self._slice_interval = 0.5
+
+        self._slicing = False
+        self._restart = False
+
+        self.changeTimerFinished.connect(self._onChangeTimerFinished)
+        self.backendConnected.connect(self._onBackendConnected)
+
     def getEngineCommand(self):
-        return [Preferences.getPreference("BackendLocation"), '--connect', "127.0.0.1:{0}".format(self._port)]
+        return [Preferences.getInstance().getValue("backend/location"), '--connect', "127.0.0.1:{0}".format(self._port)]
+
+    changeTimerFinished = Signal()
 
     def _onSceneChanged(self, source):
         if (type(source) is not SceneNode) or (source is self._scene.getRoot()):
@@ -59,6 +72,8 @@ class CuraEngineBackend(Backend):
         job.start()
 
     def _onProgressMessage(self, message):
+        if message.amount >= 0.99:
+            self._slicing = False
         self.processingProgress.emit(message.amount)
 
     def _onGCodeMessage(self, message):
@@ -83,12 +98,18 @@ class CuraEngineBackend(Backend):
             return
 
         if self._changeTimer:
-            return
+            self._changeTimer.cancel()
 
-        self._changeTimer = threading.Timer(1, self._onChangeTimerFinished)
+        self._changeTimer = threading.Timer(self._slice_interval, lambda: self.changeTimerFinished.emit())
         self._changeTimer.start()
 
     def _onChangeTimerFinished(self):
+        if self._slicing:
+            self._slicing = False
+            self._restart = True
+            self._process.terminate()
+            return
+
         objects = []
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
@@ -97,6 +118,9 @@ class CuraEngineBackend(Backend):
         if not objects:
             self._changeTimer = None
             return #No point in slicing an empty build plate
+
+        self._slicing = True
+        self.processingProgress.emit(0.0)
 
         self._sendSettings()
 
@@ -306,3 +330,8 @@ class CuraEngineBackend(Backend):
             s.value = str(value).encode('utf-8')
 
         self._socket.sendMessage(msg)
+
+    def _onBackendConnected(self):
+        if self._restart:
+            self._onChanged()
+            self._restart = False

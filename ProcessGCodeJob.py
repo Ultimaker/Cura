@@ -18,10 +18,10 @@ class ProcessGCodeJob(Job):
             if type(node) is SceneNode and node.getMeshData():
                 objectIdMap[id(node)] = node
 
-        node = objectIdMap[self._message.id]
-        if node:
+        if self._message.id in objectIdMap:
+            node = objectIdMap[self._message.id]
             with open(self._message.filename) as f:
                 data = f.read(None)
                 setattr(node.getMeshData(), 'gcode', data)
 
-            os.remove(self._message.filename)
+        os.remove(self._message.filename)
