@@ -18,6 +18,8 @@ from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor
 
 import os.path
+import numpy
+numpy.seterr(all='ignore')
 
 class PrinterApplication(QtApplication):
     def __init__(self):
