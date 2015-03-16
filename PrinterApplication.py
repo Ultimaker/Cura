@@ -6,6 +6,8 @@ from UM.Math.Vector import Vector
 from UM.Math.Matrix import Matrix
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Mesh.WriteMeshJob import WriteMeshJob
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -131,6 +133,20 @@ class PrinterApplication(QtApplication):
     @pyqtProperty("QStringList", notify = removableDrivesChanged)
     def removableDrives(self):
         return list(self.getStorageDevice('LocalFileStorage').getRemovableDrives().keys())
+
+    @pyqtSlot()
+    def saveToSD(self):
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+
+            drives = self.getStorageDevice('LocalFileStorage').getRemovableDrives()
+            path = next(iter(drives.values()))
+            filename = os.path.join(path, node.getName()[0:node.getName().rfind('.')] + '.gcode')
+
+            job = WriteMeshJob(filename, node.getMeshData())
+            job.start()
+            return
 
     def _removableDrivesChanged(self):
         print(self.getStorageDevice('LocalFileStorage').getRemovableDrives())

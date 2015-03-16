@@ -13,7 +13,7 @@ Rectangle {
     border.color: UM.Theme.borderColor;
 
     signal saveRequested();
-    signal saveToSdRequested();
+    signal saveToSDRequested();
 
     Label {
         id: label;
@@ -55,7 +55,7 @@ Rectangle {
         onClicked: {
             switch(base.state) {
                 case 'sdcard':
-                    base.saveToSdRequested();
+                    base.saveToSDRequested();
                     break;
                 default:
                     base.saveRequested();

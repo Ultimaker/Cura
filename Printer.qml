@@ -180,6 +180,7 @@ UM.MainWindow {
                 height: 40;
 
                 onSaveRequested: actions.save.trigger();
+                onSaveToSDRequested: Printer.saveToSD()
             }
 
             UM.MessageStack {
