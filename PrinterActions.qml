@@ -9,8 +9,17 @@ Item {
     property alias undo: undoAction;
     property alias redo: redoAction;
 
-    property alias deleteSelection: deleteAction;
+    property alias deleteSelection: deleteSelectionAction;
+
+    property alias deleteObject: deleteObjectAction;
+    property alias centerObject: centerObjectAction;
+    property alias multiplyObject: multiplyObjectAction;
+    property alias splitObject: splitObjectAction;
+
     property alias deleteAll: deleteAllAction;
+    property alias reloadAll: reloadAllAction;
+    property alias resetAllTranslation: resetAllTranslationAction;
+    property alias resetAll: resetAllAction;
 
     property alias addMachine: addMachineAction;
     property alias settings: settingsAction;
@@ -79,7 +88,7 @@ Item {
     }
 
     Action {
-        id: deleteAction;
+        id: deleteSelectionAction;
         //: Delete selection action
         text: qsTr("Delete Selection");
         iconName: "edit-delete";
@@ -87,10 +96,54 @@ Item {
     }
 
     Action {
+        id: deleteObjectAction;
+        //: Delete object action
+        text: qsTr("Delete Object");
+        iconName: "edit-delete";
+    }
+
+    Action {
+        id: centerObjectAction;
+        //: Center object action
+        text: qsTr("Center Object on Platform");
+    }
+
+    Action {
+        id: multiplyObjectAction;
+        //: Duplicate object action
+        text: qsTr("Duplicate Object");
+    }
+
+    Action {
+        id: splitObjectAction;
+        //: Split object action
+        text: qsTr("Split Object into Parts");
+        enabled: false;
+    }
+
+    Action {
         id: deleteAllAction;
         //: Clear build platform action
         text: qsTr("Clear Build Platform");
         iconName: "edit-clear";
+    }
+
+    Action {
+        id: reloadAllAction;
+        //: Reload all objects action
+        text: qsTr("Reload All Objects");
+    }
+
+    Action {
+        id: resetAllTranslationAction;
+        //: Reset all positions action
+        text: qsTr("Reset All Object Positions");
+    }
+
+    Action {
+        id: resetAllAction;
+        //: Reset all positions action
+        text: qsTr("Reset All Object Transformations");
     }
 
     Action {

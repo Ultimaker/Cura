@@ -227,9 +227,28 @@ UM.MainWindow {
     }
 
     Menu {
+        id: objectContextMenu;
+
+        property variant id: -1;
+
+        MenuItem { action: actions.centerObject; }
+        MenuItem { action: actions.deleteObject; }
+        MenuItem { action: actions.multiplyObject; }
+        MenuItem { action: actions.splitObject; }
+        MenuSeparator { }
+        MenuItem { action: actions.deleteAll; }
+        MenuItem { action: actions.reloadAll; }
+        MenuItem { action: actions.resetAllTranslation; }
+        MenuItem { action: actions.resetAll; }
+    }
+
+    Menu {
         id: contextMenu;
 
-        MenuItem { action: actions.deleteSelection; }
+        MenuItem { action: actions.deleteAll; }
+        MenuItem { action: actions.reloadAll; }
+        MenuItem { action: actions.resetAllTranslation; }
+        MenuItem { action: actions.resetAll; }
     }
 
     Connections {
@@ -237,6 +256,9 @@ UM.MainWindow {
         onContextMenuRequested: {
             if(id == 0) {
                 contextMenu.popup();
+            } else {
+                objectContextMenu.id = id;
+                objectContextMenu.popup();
             }
         }
     }
