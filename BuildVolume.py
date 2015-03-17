@@ -22,6 +22,9 @@ class BuildVolume(SceneNode):
         self._material = None
         self._line_mesh = None
 
+        self._grid_mesh = None
+        self._grid_material = None
+
     def setWidth(self, width):
         self._width = width
 
@@ -42,8 +45,15 @@ class BuildVolume(SceneNode):
                 Resources.getPath(Resources.ShadersLocation, 'basic.vert'),
                 Resources.getPath(Resources.ShadersLocation, 'vertexcolor.frag')
             )
+            self._grid_material = renderer.createMaterial(
+                Resources.getPath(Resources.ShadersLocation, 'basic.vert'),
+                Resources.getPath(Resources.ShadersLocation, 'grid.frag')
+            )
+            self._grid_material.setUniformValue('u_gridColor0', Color(1.0, 1.0, 1.0, 1.0))
+            self._grid_material.setUniformValue('u_gridColor1', Color(0.0, 0.0, 0.0, 1.0))
 
         #renderer.queueNode(self, material = self._material, transparent = True)
+        renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material)
         renderer.queueNode(self, mesh = self._line_mesh, mode = Renderer.RenderLines, material = self._material)
         return True
 
@@ -85,22 +95,6 @@ class BuildVolume(SceneNode):
         md.addVertex(minW, maxH, maxD)
         md.addVertex(maxW, maxH, minD)
         md.addVertex(maxW, maxH, maxD)
-
-        for n in range(0, int(maxW), 10):
-            md.addVertex(n, minH, minD)
-            md.addVertex(n, minH, maxD)
-
-        for n in range(0, int(minW), -10):
-            md.addVertex(n, minH, minD)
-            md.addVertex(n, minH, maxD)
-
-        for n in range(0, int(maxD), 10):
-            md.addVertex(minW, minH, n)
-            md.addVertex(maxW, minH, n)
-
-        for n in range(0, int(minD), -10):
-            md.addVertex(minW, minH, n)
-            md.addVertex(maxW, minH, n)
 
         for n in range(0, md.getVertexCount()):
             md.setVertexColor(n, BuildVolume.VolumeOutlineColor)
@@ -155,3 +149,18 @@ class BuildVolume(SceneNode):
         )
 
         self.setMeshData(mb.getData())
+
+        mb = MeshBuilder()
+        mb.addQuad(
+            Vector(minW, minH, maxD),
+            Vector(maxW, minH, maxD),
+            Vector(maxW, minH, minD),
+            Vector(minW, minH, minD)
+        )
+        self._grid_mesh = mb.getData()
+        self._grid_mesh.setVertexUVCoordinates(0, 0.0, 0.0)
+        self._grid_mesh.setVertexUVCoordinates(1, 1.0, 1.0)
+        self._grid_mesh.setVertexUVCoordinates(2, 0.0, 1.0)
+        self._grid_mesh.setVertexUVCoordinates(3, 0.0, 0.0)
+        self._grid_mesh.setVertexUVCoordinates(4, 1.0, 1.0)
+        self._grid_mesh.setVertexUVCoordinates(5, 1.0, 0.0)
