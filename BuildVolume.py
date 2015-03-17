@@ -1,3 +1,4 @@
+from UM.View.Renderer import Renderer
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Resources import Resources
@@ -6,7 +7,11 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Math.Vector import Vector
 from UM.Math.Color import Color
 
+import numpy
+
 class BuildVolume(SceneNode):
+    VolumeOutlineColor = Color(140, 170, 240, 255)
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -15,6 +20,7 @@ class BuildVolume(SceneNode):
         self._depth = 0
 
         self._material = None
+        self._line_mesh = None
 
     def setWidth(self, width):
         self._width = width
@@ -28,6 +34,8 @@ class BuildVolume(SceneNode):
     def render(self, renderer):
         if not self.getMeshData():
             return True
+        if self._line_mesh is None:
+            return True
 
         if not self._material:
             self._material = renderer.createMaterial(
@@ -35,14 +43,13 @@ class BuildVolume(SceneNode):
                 Resources.getPath(Resources.ShadersLocation, 'vertexcolor.frag')
             )
 
-        renderer.queueNode(self, material = self._material, transparent = True)
+        #renderer.queueNode(self, material = self._material, transparent = True)
+        renderer.queueNode(self, mesh = self._line_mesh, mode = Renderer.RenderLines, material = self._material)
         return True
 
     def rebuild(self):
         if self._width == 0 or self._height == 0 or self._depth == 0:
             return
-
-        mb = MeshBuilder()
 
         minW = -self._width / 2
         maxW = self._width / 2
@@ -50,6 +57,57 @@ class BuildVolume(SceneNode):
         maxH = self._height
         minD = -self._depth / 2
         maxD = self._depth / 2
+
+        md = MeshData()
+        md.addVertex(minW, minH, minD)
+        md.addVertex(maxW, minH, minD)
+        md.addVertex(minW, minH, minD)
+        md.addVertex(minW, maxH, minD)
+        md.addVertex(minW, maxH, minD)
+        md.addVertex(maxW, maxH, minD)
+        md.addVertex(maxW, minH, minD)
+        md.addVertex(maxW, maxH, minD)
+
+        md.addVertex(minW, minH, maxD)
+        md.addVertex(maxW, minH, maxD)
+        md.addVertex(minW, minH, maxD)
+        md.addVertex(minW, maxH, maxD)
+        md.addVertex(minW, maxH, maxD)
+        md.addVertex(maxW, maxH, maxD)
+        md.addVertex(maxW, minH, maxD)
+        md.addVertex(maxW, maxH, maxD)
+
+        md.addVertex(minW, minH, minD)
+        md.addVertex(minW, minH, maxD)
+        md.addVertex(maxW, minH, minD)
+        md.addVertex(maxW, minH, maxD)
+        md.addVertex(minW, maxH, minD)
+        md.addVertex(minW, maxH, maxD)
+        md.addVertex(maxW, maxH, minD)
+        md.addVertex(maxW, maxH, maxD)
+
+        for n in range(0, int(maxW), 10):
+            md.addVertex(n, minH, minD)
+            md.addVertex(n, minH, maxD)
+
+        for n in range(0, int(minW), -10):
+            md.addVertex(n, minH, minD)
+            md.addVertex(n, minH, maxD)
+
+        for n in range(0, int(maxD), 10):
+            md.addVertex(minW, minH, n)
+            md.addVertex(maxW, minH, n)
+
+        for n in range(0, int(minD), -10):
+            md.addVertex(minW, minH, n)
+            md.addVertex(maxW, minH, n)
+
+        for n in range(0, md.getVertexCount()):
+            md.setVertexColor(n, BuildVolume.VolumeOutlineColor)
+
+        self._line_mesh = md
+
+        mb = MeshBuilder()
 
         mb.addQuad(
             Vector(minW, minH, maxD),
