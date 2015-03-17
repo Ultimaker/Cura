@@ -232,6 +232,15 @@ UM.MainWindow {
         MenuItem { action: actions.deleteSelection; }
     }
 
+    Connections {
+        target: UM.Controller
+        onContextMenuRequested: {
+            if(id == 0) {
+                contextMenu.popup();
+            }
+        }
+    }
+
     FileDialog {
         id: openDialog;
 
