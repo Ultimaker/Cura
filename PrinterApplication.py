@@ -8,9 +8,15 @@ from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.WriteMeshJob import WriteMeshJob
+from UM.Mesh.ReadMeshJob import ReadMeshJob
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
+
+from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
+from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
+from UM.Operations.GroupedOperation import GroupedOperation
+from UM.Operations.SetTransformOperation import SetTransformOperation
 
 from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
@@ -22,6 +28,7 @@ from PyQt5.QtGui import QColor
 import os.path
 import numpy
 numpy.seterr(all='ignore')
+import copy
 
 class PrinterApplication(QtApplication):
     def __init__(self):
@@ -119,6 +126,106 @@ class PrinterApplication(QtApplication):
                 self.getController().setActiveTool(None)
 
     requestAddPrinter = pyqtSignal()
+
+    @pyqtSlot('quint64')
+    def deleteObject(self, object_id):
+        object = self.getController().getScene().findObject(object_id)
+
+        if object:
+            op = RemoveSceneNodeOperation(object)
+            op.push()
+
+    @pyqtSlot('quint64', int)
+    def multiplyObject(self, object_id, count):
+        node = self.getController().getScene().findObject(object_id)
+
+        if node:
+            op = GroupedOperation()
+            for i in range(count):
+                new_node = SceneNode()
+                new_node.setMeshData(node.getMeshData())
+                new_node.setScale(node.getScale())
+                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, 0, 0))
+                new_node.setSelectable(True)
+                op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
+            op.push()
+
+    @pyqtSlot('quint64')
+    def centerObject(self, object_id):
+        node = self.getController().getScene().findObject(object_id)
+
+        if node:
+            transform = node.getLocalTransformation()
+            transform.setTranslation(Vector(0, 0, 0))
+            op = SetTransformOperation(node, transform)
+            op.push()
+
+    @pyqtSlot()
+    def deleteAll(self):
+        nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+            nodes.append(node)
+
+        if nodes:
+            op = GroupedOperation()
+
+            for node in nodes:
+                op.addOperation(RemoveSceneNodeOperation(node))
+
+            op.push()
+
+    @pyqtSlot()
+    def resetAllTranslation(self):
+        nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+            nodes.append(node)
+
+        if nodes:
+            op = GroupedOperation()
+
+            for node in nodes:
+                transform = node.getLocalTransformation()
+                transform.setTranslation(Vector(0, 0, 0))
+                op.addOperation(SetTransformOperation(node, transform))
+
+            op.push()
+
+    @pyqtSlot()
+    def resetAll(self):
+        nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+            nodes.append(node)
+
+        if nodes:
+            op = GroupedOperation()
+
+            for node in nodes:
+                transform = Matrix()
+                op.addOperation(SetTransformOperation(node, transform))
+
+            op.push()
+
+    @pyqtSlot()
+    def reloadAll(self):
+        nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+
+            nodes.append(node)
+
+        if nodes:
+            file_name = node.getMeshData().getFileName()
+
+            job = ReadMeshJob(file_name)
+            job.finished.connect(lambda j: node.setMeshData(j.getResult()))
+            job.start()
 
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()

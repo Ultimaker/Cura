@@ -220,6 +220,32 @@ UM.MainWindow {
 
         deleteSelection.onTriggered: UM.Controller.removeSelection();
 
+        deleteObject.onTriggered: {
+            if(objectContextMenu.id != 0) {
+                Printer.deleteObject(objectContextMenu.id);
+                objectContextMenu.id = 0;
+            }
+        }
+
+        multiplyObject.onTriggered: {
+            if(objectContextMenu.id != 0) {
+                Printer.multiplyObject(objectContextMenu.id, 1);
+                objectContextMenu.id = 0;
+            }
+        }
+
+        centerObject.onTriggered: {
+            if(objectContextMenu.id != 0) {
+                Printer.centerObject(objectContextMenu.id);
+                objectContextMenu.id = 0;
+            }
+        }
+
+        deleteAll.onTriggered: Printer.deleteAll()
+        resetAllTranslation.onTriggered: Printer.resetAllTranslation()
+        resetAll.onTriggered: Printer.resetAll()
+        reloadAll.onTriggered: Printer.reloadAll()
+
         addMachine.onTriggered: addMachine.visible = true;
 
         preferences.onTriggered: preferences.visible = true;
