@@ -49,8 +49,8 @@ class BuildVolume(SceneNode):
                 Resources.getPath(Resources.ShadersLocation, 'basic.vert'),
                 Resources.getPath(Resources.ShadersLocation, 'grid.frag')
             )
-            self._grid_material.setUniformValue('u_gridColor0', Color(1.0, 1.0, 1.0, 1.0))
-            self._grid_material.setUniformValue('u_gridColor1', Color(0.0, 0.0, 0.0, 1.0))
+            self._grid_material.setUniformValue('u_gridColor0', Color(255, 255, 255, 255))
+            self._grid_material.setUniformValue('u_gridColor1', Color(140, 170, 240, 255))
 
         #renderer.queueNode(self, material = self._material, transparent = True)
         renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material)
@@ -158,9 +158,6 @@ class BuildVolume(SceneNode):
             Vector(minW, minH, minD)
         )
         self._grid_mesh = mb.getData()
-        self._grid_mesh.setVertexUVCoordinates(0, 0.0, 0.0)
-        self._grid_mesh.setVertexUVCoordinates(1, 1.0, 1.0)
-        self._grid_mesh.setVertexUVCoordinates(2, 0.0, 1.0)
-        self._grid_mesh.setVertexUVCoordinates(3, 0.0, 0.0)
-        self._grid_mesh.setVertexUVCoordinates(4, 1.0, 1.0)
-        self._grid_mesh.setVertexUVCoordinates(5, 1.0, 0.0)
+        for n in range(0, 6):
+            v = self._grid_mesh.getVertex(n)
+            self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
