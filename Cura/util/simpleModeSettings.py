@@ -81,7 +81,7 @@ class SimpleModeSettings(object):
 						cp = configparser.ConfigParser()
 						cp.read(ini_file[0])
 						for setting in profile.settingsList:
-							if setting.isProfile():
+							if setting.isProfile() or setting.isAlteration():
 								if cp.has_option('profile', setting.getName()):
 									simple_settings[setting.getName()] = cp.get('profile', setting.getName())
 

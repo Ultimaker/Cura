@@ -115,9 +115,8 @@ class simpleModePanel(wx.Panel):
 	def getSettingOverrides(self):
 		settings = {}
 		for setting in profile.settingsList:
-			if not setting.isProfile():
-				continue
-			settings[setting.getName()] = setting.getDefault()
+			if setting.isProfile() or setting.isAlteration():
+				settings[setting.getName()] = setting.getDefault()
 
 		profile_setting = None
 		for button in self._print_profile_options:
