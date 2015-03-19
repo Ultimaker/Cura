@@ -45,6 +45,7 @@ class PrinterApplication(QtApplication):
         ])
         self._physics = None
         self._volume = None
+        self._platform = None
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
     
     def _loadPlugins(self):
@@ -75,7 +76,7 @@ class PrinterApplication(QtApplication):
         self._physics = PlatformPhysics(controller)
 
         root = controller.getScene().getRoot()
-        platform = Platform(root)
+        self._platform = Platform(root)
 
         self._volume = BuildVolume(root)
 
@@ -233,7 +234,27 @@ class PrinterApplication(QtApplication):
             self._volume.setWidth(machine.getSettingValueByKey('machine_width'))
             self._volume.setHeight(machine.getSettingValueByKey('machine_height'))
             self._volume.setDepth(machine.getSettingValueByKey('machine_depth'))
+
+            disallowed_areas = machine.getSettingValueByKey('machine_disallowed_areas')
+            areas = []
+            if disallowed_areas:
+
+                for area in disallowed_areas:
+                    polygon = []
+                    polygon.append(Vector(area[0][0], 0.1, area[0][1]))
+                    polygon.append(Vector(area[1][0], 0.1, area[1][1]))
+                    polygon.append(Vector(area[2][0], 0.1, area[2][1]))
+                    polygon.append(Vector(area[3][0], 0.1, area[3][1]))
+                    areas.append(polygon)
+            self._volume.setDisallowedAreas(areas)
+
             self._volume.rebuild()
+
+            offset = machine.getSettingValueByKey('machine_platform_offset')
+            if offset:
+                self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
+            else:
+                self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     removableDrivesChanged = pyqtSignal()
 

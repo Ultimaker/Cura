@@ -24,6 +24,9 @@ class BuildVolume(SceneNode):
         self._grid_mesh = None
         self._grid_material = None
 
+        self._disallowed_areas = []
+        self._disallowed_area_mesh = None
+
     def setWidth(self, width):
         self._width = width
 
@@ -32,6 +35,9 @@ class BuildVolume(SceneNode):
 
     def setDepth(self, depth):
         self._depth = depth
+
+    def setDisallowedAreas(self, areas):
+        self._disallowed_areas = areas
 
     def render(self, renderer):
         if not self.getMeshData():
@@ -51,6 +57,8 @@ class BuildVolume(SceneNode):
 
         renderer.queueNode(self, material = self._material, mode = Renderer.RenderLines)
         renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material)
+        if self._disallowed_area_mesh:
+            renderer.queueNode(self, mesh = self._disallowed_area_mesh, material = self._material)
         return True
 
     def rebuild(self):
@@ -94,3 +102,18 @@ class BuildVolume(SceneNode):
         for n in range(0, 6):
             v = self._grid_mesh.getVertex(n)
             self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
+
+        if self._disallowed_areas:
+            mb = MeshBuilder()
+            for area in self._disallowed_areas:
+                mb.addQuad(
+                    area[0],
+                    area[1],
+                    area[2],
+                    area[3],
+                    color = Color(0.8, 0.8, 0.8, 1.0)
+                )
+
+            self._disallowed_area_mesh = mb.getData()
+        else:
+            self._disallowed_area_mesh = None
