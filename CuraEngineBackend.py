@@ -174,6 +174,68 @@ class CuraEngineBackend(Backend):
         self._changeTimer = None
 
     def _sendSettings(self):
+        self._sendSettings_neith() if self._settings.getSettingValueByKey('wireframe') else self._sendSettings_normal()
+        
+    def _sendSettings_neith(self):
+        extruder = 0
+        
+        settings = {
+            'neith': 1,
+            'extruderNr': extruder,
+            'printTemperature': int(self._settings.getSettingValueByKey('material_print_temperature')),
+            'bedTemperature': int(self._settings.getSettingValueByKey('material_bed_temperature') * 100),
+            'filamentDiameter': int(self._settings.getSettingValueByKey('material_diameter') * 1000),
+            'retractionAmount': int(self._settings.getSettingValueByKey('retraction_amount') * 1000),
+            'retractionAmountPrime': int(0 * 1000),
+            # 'retractionAmountExtruderSwitch': int(fbk('') * 1000),
+            'retractionSpeed': int(self._settings.getSettingValueByKey('retraction_speed')),
+            'retractionPrimeSpeed': int(self._settings.getSettingValueByKey('retraction_speed')),
+            'retractionMinimalDistance': int(self._settings.getSettingValueByKey('retraction_min_travel') * 1000),
+            'retractionZHop': int(self._settings.getSettingValueByKey('retraction_hop') * 1000),
+
+            'moveSpeed': int(self._settings.getSettingValueByKey('speed_travel')),
+
+            'fanSpeedMin': self._settings.getSettingValueByKey('cool_fan_speed_min'),
+            'fanSpeedMax': self._settings.getSettingValueByKey('cool_fan_speed_max'),
+
+            # ================================
+            #    wireframe printing options
+            # ================================
+            
+        }
+        
+        
+        gcodeFlavor = self._settings.getSettingValueByKey('machine_gcode_flavor')
+        if gcodeFlavor == 'UltiGCode':
+            settings['gcodeFlavor'] = 1
+        elif gcodeFlavor == 'Makerbot':
+            settings['gcodeFlavor'] = 2
+        elif gcodeFlavor == 'BFB':
+            settings['gcodeFlavor'] = 3
+        elif gcodeFlavor == 'Mach3':
+            settings['gcodeFlavor'] = 4
+        elif gcodeFlavor == 'Volumetric':
+            settings['gcodeFlavor'] = 5
+        else:
+            settings['gcodeFlavor'] = 0
+
+        settings['startCode'] = self._settings.getSettingValueByKey('machine_start_gcode')
+        settings['endCode'] = self._settings.getSettingValueByKey('machine_end_gcode')
+
+        #for n in range(1, self._machine.getMaxNozzles()):
+        n = 1
+        settings['extruderOffset1.X'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_x_1') * 1000)
+        settings['extruderOffset1.Y'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_y_1') * 1000)
+
+        msg = Cura_pb2.SettingList()
+        for key, value in settings.items():
+            s = msg.settings.add()
+            s.name = key
+            s.value = str(value).encode('utf-8')
+
+        self._socket.sendMessage(msg)
+
+    def _sendSettings_normal(self):
         extruder = 0
 
         settings = {
