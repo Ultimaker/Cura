@@ -40,4 +40,3 @@ class ProcessSlicedObjectListJob(Job):
                     layerData.addPolygon(layer.id, polygon.type, points)
 
             mesh.layerData = layerData
-            objectIdMap[object.id].meshDataChanged.emit()
