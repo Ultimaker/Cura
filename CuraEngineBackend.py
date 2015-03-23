@@ -201,9 +201,49 @@ class CuraEngineBackend(Backend):
             # ================================
             #    wireframe printing options
             # ================================
-            'wireframePrintspeed': self._settings.getSettingValueByKey('wireframe_printspeed')
+            'wireframeConnectionHeight': int(self._settings.getSettingValueByKey('wireframe_height')*1000),
+            'wireframeNozzleClearance': int(self._settings.getSettingValueByKey('wireframe_nozzle_clearance')*1000),
+            
+            'machineNozzleTipOuterDiameter': int(self._settings.getSettingValueByKey('machine_nozzle_tip_outer_diameter')*1000),
+            'machineNozzleHeadDistance': int(self._settings.getSettingValueByKey('machine_nozzle_head_distance')*1000),
+            'machineNozzleExpansionAngle': int(self._settings.getSettingValueByKey('machine_nozzle_expansion_angle')),
+            
+            'wireframePrintspeedBottom': self._settings.getSettingValueByKey('wireframe_printspeed_bottom'),
+            'wireframePrintspeedUp': self._settings.getSettingValueByKey('wireframe_printspeed_up'),
+            'wireframePrintspeedDown': self._settings.getSettingValueByKey('wireframe_printspeed_down'),
+            'wireframePrintspeedFlat': self._settings.getSettingValueByKey('wireframe_printspeed_flat'),
+            
+            'wireframeFlowConnection': int(self._settings.getSettingValueByKey('wireframe_flow_connection')),
+            'wireframeFlowFlat': int(self._settings.getSettingValueByKey('wireframe_flow_flat')),
+            
+            'wireframeTopDelay': int(self._settings.getSettingValueByKey('wireframe_top_delay')*100),
+            'wireframeBottomDelay': int(self._settings.getSettingValueByKey('wireframe_bottom_delay')*100),
+            'wireframeFlatDelay': int(self._settings.getSettingValueByKey('wireframe_flat_delay')*100),
+            
+            'wireframeUpDistHalfSpeed': int(self._settings.getSettingValueByKey('wireframe_up_half_speed')*1000),
+            'wireframeTopJump': int(self._settings.getSettingValueByKey('wireframe_top_jump')*1000),
+            
+            'wireframeFallDown': int(self._settings.getSettingValueByKey('wireframe_fall_down')*1000),
+            'wireframeDragAlong': int(self._settings.getSettingValueByKey('wireframe_drag_along')*1000),
+            
+            'wireframeStraightBeforeDown': int(self._settings.getSettingValueByKey('wireframe_straight_before_down')),
+            
+            
+            'wireframeRoofFallDown': int(self._settings.getSettingValueByKey('wireframe_roof_fall_down')*1000),
+            'wireframeRoofDragAlong': int(self._settings.getSettingValueByKey('wireframe_roof_drag_along')*1000),
+            'wireframeRoofOuterDelay': int(self._settings.getSettingValueByKey('wireframe_roof_outer_delay')*100),
+            'wireframeRoofInset': int(self._settings.getSettingValueByKey('wireframe_roof_inset')*1000),
+            
+            
         }
         
+        wireFrameStrategy = self._settings.getSettingValueByKey('wireframe_strategy')
+        if wireFrameStrategy == 'Compensate':
+            settings['wireframeStrategy' = 0
+        if wireFrameStrategy == 'Knot':
+            settings['wireframeStrategy' = 1
+        if wireFrameStrategy == 'Retract':
+            settings['wireframeStrategy' = 2
         
         gcodeFlavor = self._settings.getSettingValueByKey('machine_gcode_flavor')
         if gcodeFlavor == 'UltiGCode':
