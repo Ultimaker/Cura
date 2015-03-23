@@ -239,11 +239,11 @@ class CuraEngineBackend(Backend):
         
         wireFrameStrategy = self._settings.getSettingValueByKey('wireframe_strategy')
         if wireFrameStrategy == 'Compensate':
-            settings['wireframeStrategy' = 0
+            settings['wireframeStrategy'] = 0
         if wireFrameStrategy == 'Knot':
-            settings['wireframeStrategy' = 1
+            settings['wireframeStrategy'] = 1
         if wireFrameStrategy == 'Retract':
-            settings['wireframeStrategy' = 2
+            settings['wireframeStrategy'] = 2
         
         gcodeFlavor = self._settings.getSettingValueByKey('machine_gcode_flavor')
         if gcodeFlavor == 'UltiGCode':
