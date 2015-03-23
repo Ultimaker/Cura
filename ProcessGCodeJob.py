@@ -19,7 +19,11 @@ class ProcessGCodeJob(Job):
                 objectIdMap[id(node)] = node
 
         if self._message.id in objectIdMap:
-            node = objectIdMap[self._message.id]
+            try:
+                node = objectIdMap[self._message.id]
+            except KeyError:
+                return
+
             with open(self._message.filename) as f:
                 data = f.read(None)
                 setattr(node.getMeshData(), 'gcode', data)
