@@ -221,23 +221,23 @@ UM.MainWindow {
         deleteSelection.onTriggered: UM.Controller.removeSelection();
 
         deleteObject.onTriggered: {
-            if(objectContextMenu.id != 0) {
-                Printer.deleteObject(objectContextMenu.id);
-                objectContextMenu.id = 0;
+            if(objectContextMenu.objectId != 0) {
+                Printer.deleteObject(objectContextMenu.objectId);
+                objectContextMenu.objectId = 0;
             }
         }
 
         multiplyObject.onTriggered: {
-            if(objectContextMenu.id != 0) {
-                Printer.multiplyObject(objectContextMenu.id, 1);
-                objectContextMenu.id = 0;
+            if(objectContextMenu.objectId != 0) {
+                Printer.multiplyObject(objectContextMenu.objectId, 1);
+                objectContextMenu.objectId = 0;
             }
         }
 
         centerObject.onTriggered: {
-            if(objectContextMenu.id != 0) {
-                Printer.centerObject(objectContextMenu.id);
-                objectContextMenu.id = 0;
+            if(objectContextMenu.objectId != 0) {
+                Printer.centerObject(objectContextMenu.objectId);
+                objectContextMenu.objectId = 0;
             }
         }
 
@@ -255,7 +255,7 @@ UM.MainWindow {
     Menu {
         id: objectContextMenu;
 
-        property variant id: -1;
+        property variant objectId: -1;
 
         MenuItem { action: actions.centerObject; }
         MenuItem { action: actions.deleteObject; }
@@ -280,10 +280,10 @@ UM.MainWindow {
     Connections {
         target: UM.Controller
         onContextMenuRequested: {
-            if(id == 0) {
+            if(objectId == 0) {
                 contextMenu.popup();
             } else {
-                objectContextMenu.id = id;
+                objectContextMenu.objectId = objectId;
                 objectContextMenu.popup();
             }
         }
