@@ -201,7 +201,7 @@ class CuraEngineBackend(Backend):
             # ================================
             #    wireframe printing options
             # ================================
-            
+            'wireframePrintspeed': self._settings.getSettingValueByKey('wireframe_printspeed')
         }
         
         
