@@ -40,8 +40,15 @@ class ProcessSlicedObjectListJob(Job):
                     points = numpy.asarray(points, dtype=numpy.float32)
                     points /= 1000
                     points = numpy.insert(points, 1, layer.id * layerHeight, axis = 1)
+
                     points[:,0] -= self._center.x
                     points[:,2] -= self._center.z
+
+                    points = numpy.pad(points, ((0,0), (0,1)), 'constant', constant_values=(0.0, 1.0))
+                    inverse = node.getGlobalTransformation().getInverse().getData()
+                    points = points.dot(inverse)
+                    points = points[:,0:3]
+
                     layerData.addPolygon(layer.id, polygon.type, points)
 
             mesh.layerData = layerData

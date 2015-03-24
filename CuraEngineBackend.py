@@ -150,25 +150,6 @@ class CuraEngineBackend(Backend):
 
         self._scene.releaseLock()
 
-        center /= float(len(objects))
-        if not self._settings.getSettingValueByKey('machine_center_is_zero'):
-            center.setX(center.x + self._settings.getSettingValueByKey('machine_width') / 2)
-            center.setZ(center.z + self._settings.getSettingValueByKey('machine_depth') / 2)
-
-        posmsg = Cura_pb2.SettingList()
-        posX = posmsg.settings.add()
-        posX.name = 'position.X'
-        posX.value = str(int(center.x * 1000)).encode('utf-8')
-        posY = posmsg.settings.add()
-        posY.name = 'position.Y'
-        posY.value = str(int(center.z * 1000)).encode('utf-8')
-        posZ = posmsg.settings.add()
-        posZ.name = 'position.Z'
-        posZ.value = str(int(0)).encode('utf-8')
-        self._socket.sendMessage(posmsg)
-
-        self._center = center
-
         self._socket.sendMessage(msg)
 
         self._changeTimer = None
@@ -266,6 +247,16 @@ class CuraEngineBackend(Backend):
         n = 1
         settings['extruderOffset1.X'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_x_1') * 1000)
         settings['extruderOffset1.Y'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_y_1') * 1000)
+
+        if not self._settings.getSettingValueByKey('machine_center_is_zero'):
+            settings['position.X'] = int((self._settings.getSettingValueByKey('machine_width') / 2.0) * 1000)
+            settings['position.Y'] = int((self._settings.getSettingValueByKey('machine_depth') / 2.0) * 1000)
+            self._center = Vector(self._settings.getSettingValueByKey('machine_width') / 2.0, 0.0, self._settings.getSettingValueByKey('machine_depth') / 2.0)
+        else:
+            settings['position.X'] = 0
+            settings['position.Y'] = 0
+            self._center = Vector(0.0, 0.0, 0.0)
+        settings['position.Z'] = 0
 
         msg = Cura_pb2.SettingList()
         for key, value in settings.items():
@@ -424,6 +415,16 @@ class CuraEngineBackend(Backend):
         n = 1
         settings['extruderOffset1.X'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_x_1') * 1000)
         settings['extruderOffset1.Y'] = int(self._settings.getSettingValueByKey('machine_nozzle_offset_y_1') * 1000)
+
+        if not self._settings.getSettingValueByKey('machine_center_is_zero'):
+            settings['position.X'] = int((self._settings.getSettingValueByKey('machine_width') / 2.0) * 1000)
+            settings['position.Y'] = int((self._settings.getSettingValueByKey('machine_depth') / 2.0) * 1000)
+            self._center = Vector(self._settings.getSettingValueByKey('machine_width') / 2.0, 0.0, self._settings.getSettingValueByKey('machine_depth') / 2.0)
+        else:
+            settings['position.X'] = 0
+            settings['position.Y'] = 0
+            self._center = Vector(0.0, 0.0, 0.0)
+        settings['position.Z'] = 0
 
         msg = Cura_pb2.SettingList()
         for key, value in settings.items():
