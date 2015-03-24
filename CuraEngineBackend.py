@@ -14,6 +14,8 @@ import threading
 import struct
 import numpy
 
+from PyQt5.QtCore import QTimer
+
 class CuraEngineBackend(Backend):
     def __init__(self):
         super().__init__()
@@ -27,7 +29,10 @@ class CuraEngineBackend(Backend):
         Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
         self._onActiveMachineChanged()
 
-        self._changeTimer = None
+        self._changeTimer = QTimer()
+        self._changeTimer.setInterval(500)
+        self._changeTimer.setSingleShot(True)
+        self._changeTimer.timeout.connect(self._onChangeTimerFinished)
 
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
@@ -36,12 +41,9 @@ class CuraEngineBackend(Backend):
 
         self._center = None
 
-        self._slice_interval = 0.5
-
         self._slicing = False
         self._restart = False
 
-        self.changeTimerFinished.connect(self._onChangeTimerFinished)
         self.backendConnected.connect(self._onBackendConnected)
 
     def getEngineCommand(self):
@@ -97,10 +99,6 @@ class CuraEngineBackend(Backend):
         if not self._settings:
             return
 
-        if self._changeTimer:
-            self._changeTimer.cancel()
-
-        self._changeTimer = threading.Timer(self._slice_interval, lambda: self.changeTimerFinished.emit())
         self._changeTimer.start()
 
     def _onChangeTimerFinished(self):
@@ -116,7 +114,6 @@ class CuraEngineBackend(Backend):
                 objects.append(node)
 
         if not objects:
-            self._changeTimer = None
             return #No point in slicing an empty build plate
 
         self._slicing = True
@@ -151,8 +148,6 @@ class CuraEngineBackend(Backend):
         self._scene.releaseLock()
 
         self._socket.sendMessage(msg)
-
-        self._changeTimer = None
 
     def _sendSettings(self):
         self._sendSettings_neith() if self._settings.getSettingValueByKey('wireframe') else self._sendSettings_normal()
