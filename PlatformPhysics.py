@@ -24,6 +24,9 @@ class PlatformPhysics:
                 continue
 
             bbox = node.getBoundingBox()
+            if not bbox or not bbox.isValid():
+                continue
+
             if not Float.fuzzyCompare(bbox.bottom, 0.0):
                 self._signal_source = node
                 op = PlatformPhysicsOperation(node, Vector(0, -bbox.bottom, 0))
