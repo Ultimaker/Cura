@@ -1,0 +1,30 @@
+{
+    "fonts": {
+        "large": {
+            "size": 1.5,
+            "bold": true
+        },
+        "default": {
+            "size": 1
+        },
+        "small": {
+            "size": 0.8
+        },
+        "tiny": {
+            "size": 0.5
+        }
+    },
+
+    "colors": {
+        "primary": [1.0, 0.0, 0.0, 1.0],
+        "border": [0.0, 1.0, 0.0, 1.0]
+    },
+
+    "sizes": {
+        "toolbar_button": [2.0, 2.0],
+        "window_margin": [1.0, 1.0],
+        "default_margin": [1.0, 1.0],
+        "panel": [10.0, 10.0],
+        "toolbar_spacing": [1.0, 1.0]
+    }
+}
