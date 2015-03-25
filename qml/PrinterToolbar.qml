@@ -12,14 +12,14 @@ UM.Toolbar {
     property Action redo;
     property Action settings;
 
-    Item { width: UM.Theme.windowLeftMargin; }
+    Item { width: UM.Styles.windowLeftMargin; }
 
     Item {
-        width: UM.Theme.panelWidth;
+        width: UM.Styles.panelWidth;
         Image { anchors.centerIn: parent; source: UM.Resources.getIcon("cura_logo.png"); }
     }
 
-    Item { width: UM.Theme.toolbarSpacing; }
+    Item { width: UM.Styles.toolbarSpacing; }
 
     ToolButton { style: UM.ToolbarButtonStyle { } action: base.undo; iconSource: UM.Resources.getIcon('undo.png'); }
     ToolButton { style: UM.ToolbarButtonStyle { } action: base.redo; iconSource: UM.Resources.getIcon('redo.png'); }
@@ -85,12 +85,12 @@ UM.Toolbar {
         }
     }
 
-    Item { width: UM.Theme.toolbarSpacing; }
+    Item { width: UM.Styles.toolbarSpacing; }
 
     ToolButton {
         id: machineButton;
-        width: UM.Theme.panelWidth - UM.Theme.toolbarButtonWidth - 1;
-        height: UM.Theme.toolbarButtonHeight;
+        width: UM.Styles.panelWidth - UM.Styles.toolbarButtonWidth - 1;
+        height: UM.Styles.toolbarButtonHeight;
         text: UM.Application.machineName;
 
         style: UM.ToolbarButtonStyle {
@@ -109,8 +109,8 @@ UM.Toolbar {
                     text: control.text;
                     elide: Text.ElideRight;
                     fontSizeMode: Text.HorizontalFit;
-                    minimumPointSize: UM.Theme.smallTextSize;
-                    font.pointSize: UM.Theme.largeTextSize;
+                    minimumPointSize: UM.Styles.smallTextSize;
+                    font.pointSize: UM.Styles.largeTextSize;
 
                     verticalAlignment: Text.AlignBottom;
                 }
@@ -120,7 +120,7 @@ UM.Toolbar {
                     anchors.left: parent.left;
                     //: Machine toolbar button
                     text: qsTr("Machine");
-                    font.pointSize: UM.Theme.tinyTextSize;
+                    font.pointSize: UM.Styles.tinyTextSize;
                     font.capitalization: Font.AllUppercase;
                 }
             }
@@ -156,5 +156,5 @@ UM.Toolbar {
         iconSource: UM.Resources.getIcon("settings.png");
     }
 
-    Item { width: UM.Theme.windowRightMargin; }
+    Item { width: UM.Styles.windowRightMargin; }
 }

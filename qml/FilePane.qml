@@ -26,7 +26,7 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent;
-        anchors.margins: UM.Theme.defaultMargin;
+        anchors.margins: UM.Styles.defaultMargin;
 
         //: Open file button
         Button { text: qsTr("Open File"); iconSource: UM.Resources.getIcon("open.png"); Layout.fillWidth: true; onClicked: base.requestOpenFile(); }
@@ -70,7 +70,7 @@ Rectangle {
             Label {
                 anchors.verticalCenter: parent.verticalCenter;
                 anchors.left: parent.left;
-                anchors.leftMargin: UM.Theme.defaultMargin;
+                anchors.leftMargin: UM.Styles.defaultMargin;
 
                 text: model.name;
             }

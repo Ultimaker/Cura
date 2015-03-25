@@ -20,7 +20,7 @@ Window {
 
         ColumnLayout {
             anchors.fill: parent;
-            anchors.margins: UM.Theme.defaultMargin;
+            anchors.margins: UM.Styles.defaultMargin;
 
             Label {
                 text: qsTr("Please select the type of printer:");

@@ -8,9 +8,9 @@ import UM 1.0 as UM
 Rectangle {
     id: base;
 
-    color: UM.Theme.primaryColor;
+    color: UM.Styles.primaryColor;
     border.width: 1;
-    border.color: UM.Theme.borderColor;
+    border.color: UM.Styles.borderColor;
 
     signal saveRequested();
     signal saveToSDRequested();
@@ -21,7 +21,7 @@ Rectangle {
         anchors.left: parent.left;
         anchors.right: icon.left;
         horizontalAlignment: Text.AlignHCenter;
-        font.pointSize: UM.Theme.largeTextSize;
+        font.pointSize: UM.Styles.largeTextSize;
         color: "white";
 
         //: Save file to disk button
@@ -43,7 +43,7 @@ Rectangle {
         Rectangle {
             anchors { left: parent.left; top: parent.top; bottom: parent.bottom; }
             width: 1;
-            color: UM.Theme.borderColor;
+            color: UM.Styles.borderColor;
         }
 
         UM.RecolorImage { id: iconImage; anchors.centerIn: parent; width: 32; height: 32; source: UM.Resources.getIcon('save.png'); color: '#000'; }

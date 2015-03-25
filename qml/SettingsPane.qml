@@ -30,17 +30,17 @@ Rectangle {
 
     Column {
         id: contents;
-        spacing: UM.Theme.defaultMargin;
+        spacing: UM.Styles.defaultMargin;
 
         anchors {
             left: parent.left;
-            leftMargin: UM.Theme.defaultMargin;
+            leftMargin: UM.Styles.defaultMargin;
             right: parent.right;
-            rightMargin: UM.Theme.defaultMargin;
+            rightMargin: UM.Styles.defaultMargin;
         }
 
         //: Print Settings panel title
-        Label { text: qsTr("Print Settings"); width: parent.width; font.capitalization: Font.AllUppercase; font.pointSize: UM.Theme.smallTextSize; }
+        Label { text: qsTr("Print Settings"); width: parent.width; font.capitalization: Font.AllUppercase; font.pointSize: UM.Styles.smallTextSize; }
 
         Item {
             width: parent.width;
@@ -48,7 +48,7 @@ Rectangle {
 
             Row {
                 anchors.fill: parent;
-                spacing: UM.Theme.defaultMargin;
+                spacing: UM.Styles.defaultMargin;
 
                 //: Material selection combo box label
                 Label { text: qsTr("Material"); horizontalAlignment: Text.AlignRight; width: base.width * 0.5; }
@@ -69,7 +69,7 @@ Rectangle {
 
             Row {
                 anchors.fill: parent;
-                spacing: UM.Theme.defaultMargin;
+                spacing: UM.Styles.defaultMargin;
                 //: Time display label
                 Label { text: qsTr("Time"); width: base.width * 0.5; horizontalAlignment: Text.AlignRight; }
                 Label { text: Qt.formatTime(new Date(timeSlider.value * 60000)); width: base.width * 0.35; horizontalAlignment: Text.AlignLeft; }
@@ -114,7 +114,7 @@ Rectangle {
                             color: "black";
                         }
                     }
-                    handle: Rectangle { width: 5; height: control.height; color: UM.Theme.primaryColor; }
+                    handle: Rectangle { width: 5; height: control.height; color: UM.Styles.primaryColor; }
                 }
             }
 

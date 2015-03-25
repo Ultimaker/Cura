@@ -135,15 +135,15 @@ UM.MainWindow {
                 id: files;
 
                 anchors.left: parent.left;
-                anchors.leftMargin: UM.Theme.windowLeftMargin;
+                anchors.leftMargin: UM.Styles.windowLeftMargin;
                 anchors.top: toolbar.bottom;
                 anchors.topMargin: -1;
 
                 border.width: 1;
-                border.color: UM.Theme.borderColor;
+                border.color: UM.Styles.borderColor;
 
-                width: UM.Theme.panelWidth;
-                height: base.height / 2 - UM.Theme.toolbarHeight;
+                width: UM.Styles.panelWidth;
+                height: base.height / 2 - UM.Styles.toolbarHeight;
 
                 onRequestOpenFile: actions.open.trigger();
                 onOpenFile: UM.Controller.addMesh(file);
@@ -153,14 +153,14 @@ UM.MainWindow {
                 id: settings;
 
                 anchors.right: parent.right;
-                anchors.rightMargin: UM.Theme.windowRightMargin;
+                anchors.rightMargin: UM.Styles.windowRightMargin;
                 anchors.top: toolbar.bottom;
                 anchors.topMargin: -1;
 
                 border.width: 1;
-                border.color: UM.Theme.borderColor;
+                border.color: UM.Styles.borderColor;
 
-                width: UM.Theme.panelWidth;
+                width: UM.Styles.panelWidth;
 
                 expandedHeight: base.height;
 
@@ -171,12 +171,12 @@ UM.MainWindow {
 
             OutputGCodeButton {
                 anchors.right: parent.right;
-                anchors.rightMargin: UM.Theme.windowRightMargin;
+                anchors.rightMargin: UM.Styles.windowRightMargin;
 
                 anchors.bottom: parent.bottom;
                 anchors.bottomMargin: -1;
 
-                width: UM.Theme.panelWidth;
+                width: UM.Styles.panelWidth;
                 height: 40;
 
                 onSaveRequested: actions.save.trigger();
@@ -331,4 +331,6 @@ UM.MainWindow {
         target: Printer
         onRequestAddPrinter: addMachine.visible = true;
     }
+
+    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
 }
