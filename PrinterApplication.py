@@ -57,7 +57,7 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "tool" })
 
         self._plugin_registry.loadPlugin('CuraEngineBackend')
-    
+
     def run(self):
         self.showSplashMessage('Setting up scene...')
 
@@ -95,7 +95,7 @@ class PrinterApplication(QtApplication):
 
         self.showSplashMessage('Loading interface...')
 
-        self.setMainQml(os.path.dirname(__file__) + "/Printer.qml")
+        self.setMainQml(os.path.dirname(__file__) + "/qml/Printer.qml")
         self.initializeEngine()
 
         self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
