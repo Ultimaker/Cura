@@ -7,24 +7,46 @@
         "default": {
             "size": 1
         },
+        "default_allcaps": {
+            "size": 1,
+            "capitalize": true
+        },
         "small": {
-            "size": 0.8
+            "size": 0.75
         },
         "tiny": {
             "size": 0.5
+        },
+        "sidebar_header": {
+            "size": 0.75,
+            "capitalize": true
         }
     },
 
     "colors": {
-        "primary": [1.0, 0.0, 0.0, 1.0],
-        "border": [0.0, 1.0, 0.0, 1.0]
+        "primary": [12, 169, 227, 255],
+        "primary_text": [255, 255, 255, 255],
+        "border": [205, 202, 201, 255],
+
+        "text": [35, 35, 35, 255],
+        "text_inactive": [205, 202, 201, 255],
+        "text_hover": [12, 169, 227, 255],
+        "text_pressed": [12, 169, 227, 255],
+
+        "button_inactive": [205, 202, 201, 255],
+        "button_hover": [174, 174, 174, 255]
     },
 
     "sizes": {
         "toolbar_button": [2.0, 2.0],
-        "window_margin": [1.0, 1.0],
+        "window_margin": [2.0, 2.0],
         "default_margin": [1.0, 1.0],
-        "panel": [10.0, 10.0],
-        "toolbar_spacing": [1.0, 1.0]
+        "panel": [22.0, 10.0],
+        "toolbar_spacing": [1.0, 1.0],
+        "section": [22.0, 3.0],
+        "section_icon": [2.14, 2.14],
+        "section_text_margin": [0.33, 0.33],
+        "button": [4.25, 4.25],
+        "button_icon": [3.57, 3.57]
     }
 }
