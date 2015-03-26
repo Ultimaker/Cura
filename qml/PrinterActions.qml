@@ -22,7 +22,7 @@ Item {
     property alias resetAll: resetAllAction;
 
     property alias addMachine: addMachineAction;
-    property alias settings: settingsAction;
+    property alias configureMachines: settingsAction;
 
     property alias preferences: preferencesAction;
     property alias help: helpAction;

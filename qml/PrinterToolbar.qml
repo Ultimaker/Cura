@@ -5,44 +5,19 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-UM.Toolbar {
+RowLayout {
     id: base;
 
-    property Action undo;
-    property Action redo;
-    property Action settings;
-
-    Item { width: UM.Styles.windowLeftMargin; }
-
-    Item {
-        width: UM.Styles.panelWidth;
-        Image { anchors.centerIn: parent; source: UM.Resources.getIcon("cura_logo.png"); }
-    }
-
-    Item { width: UM.Styles.toolbarSpacing; }
-
-    ToolButton { style: UM.ToolbarButtonStyle { } action: base.undo; iconSource: UM.Resources.getIcon('undo.png'); }
-    ToolButton { style: UM.ToolbarButtonStyle { } action: base.redo; iconSource: UM.Resources.getIcon('redo.png'); }
-
-    //         Item { width: 10; }
-
-    //         ToolButton { text: "3D"; onClicked: UM.Scene.setActiveCamera('3d'); }
-    //         ToolButton { text: "Left"; onClicked: UM.Scene.setActiveCamera('left'); }
-    //         ToolButton { text: "Top"; onClicked: UM.Scene.setActiveCamera('top'); }
-    //         ToolButton { text: "Front"; onClicked: UM.Scene.setActiveCamera('front'); }
-
-    Item { Layout.fillWidth: true; }
+    spacing: UM.Theme.sizes.default_margin.width * 2;
 
     Repeater {
         id: repeat
 
         model: UM.Models.toolModel
 
-        ToolButton {
-            style: UM.ToolbarButtonStyle { }
-
+        PrinterButton {
             text: model.name;
-            iconSource: UM.Resources.getIcon(model.icon);
+            iconSource: UM.Theme.icons[model.icon];
             tooltip: model.description;
 
             checkable: true;
@@ -56,105 +31,4 @@ UM.Toolbar {
             }
         }
     }
-
-    Item { Layout.fillWidth: true; }
-
-    ToolButton {
-        //: View Mode toolbar button
-        text: qsTr("View Mode");
-        iconSource: UM.Resources.getIcon("viewmode.png");
-
-        style: UM.ToolbarButtonStyle { }
-
-        menu: Menu {
-            id: viewMenu;
-            Instantiator {
-                model: UM.Models.viewModel;
-                MenuItem {
-                    text: model.name;
-                    checkable: true;
-                    checked: model.active;
-                    exclusiveGroup: viewMenuGroup;
-                    onTriggered: UM.Controller.setActiveView(model.id);
-                }
-                onObjectAdded: viewMenu.insertItem(index, object)
-                onObjectRemoved: viewMenu.removeItem(object)
-            }
-
-            ExclusiveGroup { id: viewMenuGroup; }
-        }
-    }
-
-    Item { width: UM.Styles.toolbarSpacing; }
-
-    ToolButton {
-        id: machineButton;
-        width: UM.Styles.panelWidth - UM.Styles.toolbarButtonWidth - 1;
-        height: UM.Styles.toolbarButtonHeight;
-        text: UM.Application.machineName;
-
-        style: UM.ToolbarButtonStyle {
-            backgroundColor: "white";
-            backgroundHighlightColor: "#eee";
-
-            label: Item {
-                anchors.fill: parent;
-                Label {
-                    anchors {
-                        top: parent.top;
-                        topMargin: 2;
-                        left: parent.left;
-                        right: parent.right;
-                    }
-                    text: control.text;
-                    elide: Text.ElideRight;
-                    fontSizeMode: Text.HorizontalFit;
-                    minimumPointSize: UM.Styles.smallTextSize;
-                    font.pointSize: UM.Styles.largeTextSize;
-
-                    verticalAlignment: Text.AlignBottom;
-                }
-                Label {
-                    anchors.bottom: parent.bottom;
-                    anchors.bottomMargin: 2;
-                    anchors.left: parent.left;
-                    //: Machine toolbar button
-                    text: qsTr("Machine");
-                    font.pointSize: UM.Styles.tinyTextSize;
-                    font.capitalization: Font.AllUppercase;
-                }
-            }
-        }
-
-        menu: Menu {
-            id: machineMenu;
-            Instantiator {
-                model: UM.Models.machinesModel
-                MenuItem {
-                    text: model.name;
-                    checkable: true;
-                    checked: model.active;
-                    exclusiveGroup: machineMenuGroup;
-                    onTriggered: UM.Models.machinesModel.setActive(index)
-                }
-                onObjectAdded: machineMenu.insertItem(index, object)
-                onObjectRemoved: machineMenu.removeItem(object)
-            }
-
-            ExclusiveGroup { id: machineMenuGroup; }
-        }
-    }
-
-    ToolButton {
-        style: UM.ToolbarButtonStyle {
-            backgroundColor: "white";
-            foregroundColor: "black";
-            backgroundHighlightColor: "#eee";
-            foregroundHighlightColor: "black";
-        }
-        action: base.settings;
-        iconSource: UM.Resources.getIcon("settings.png");
-    }
-
-    Item { width: UM.Styles.windowRightMargin; }
 }

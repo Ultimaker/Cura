@@ -68,9 +68,8 @@ UM.MainWindow {
 
                 MenuSeparator { }
 
-
                 MenuItem { action: actions.addMachine; }
-                MenuItem { action: actions.settings; }
+                MenuItem { action: actions.configureMachines; }
             }
 
             Menu {
@@ -117,70 +116,20 @@ UM.MainWindow {
                 }
             }
 
-            PrinterToolbar {
-                id: toolbar;
+            Sidebar {
+                id: sidebar;
 
                 anchors {
-                    left: parent.left;
-                    right: parent.right;
                     top: parent.top;
+                    bottom: parent.bottom;
+                    right: parent.right;
+                    rightMargin: UM.Theme.sizes.window_margin.width;
                 }
 
-                undo: actions.undo;
-                redo: actions.redo;
-                settings: actions.settings;
-            }
+                width: UM.Theme.sizes.panel.width;
 
-            FilePane {
-                id: files;
-
-                anchors.left: parent.left;
-                anchors.leftMargin: UM.Styles.windowLeftMargin;
-                anchors.top: toolbar.bottom;
-                anchors.topMargin: -1;
-
-                border.width: 1;
-                border.color: UM.Styles.borderColor;
-
-                width: UM.Styles.panelWidth;
-                height: base.height / 2 - UM.Styles.toolbarHeight;
-
-                onRequestOpenFile: actions.open.trigger();
-                onOpenFile: UM.Controller.addMesh(file);
-            }
-
-            SettingsPane {
-                id: settings;
-
-                anchors.right: parent.right;
-                anchors.rightMargin: UM.Styles.windowRightMargin;
-                anchors.top: toolbar.bottom;
-                anchors.topMargin: -1;
-
-                border.width: 1;
-                border.color: UM.Styles.borderColor;
-
-                width: UM.Styles.panelWidth;
-
-                expandedHeight: base.height;
-
-                onShowDescription: {
-                    descriptionPane.show(text, x, y - contentItem.y);
-                }
-            }
-
-            OutputGCodeButton {
-                anchors.right: parent.right;
-                anchors.rightMargin: UM.Styles.windowRightMargin;
-
-                anchors.bottom: parent.bottom;
-                anchors.bottomMargin: -1;
-
-                width: UM.Styles.panelWidth;
-                height: 40;
-
-                onSaveRequested: actions.save.trigger();
-                onSaveToSDRequested: Printer.saveToSD()
+                addMachineAction: actions.addMachine;
+                configureMachinesAction: actions.configureMachines;
             }
 
             UM.MessageStack {
@@ -193,6 +142,61 @@ UM.MainWindow {
             DescriptionPane {
                 id: descriptionPane;
                 anchors.right: settings.left;
+            }
+
+            PrinterButton {
+                id: openFileButton;
+
+                iconSource: UM.Theme.icons.open;
+
+                anchors {
+                    top: parent.top;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    left: parent.left;
+                    leftMargin: UM.Theme.sizes.window_margin.width;
+                }
+
+                action: actions.open;
+            }
+
+            PrinterButton {
+                anchors {
+                    top: parent.top;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    right: sidebar.left;
+                    rightMargin: UM.Theme.sizes.window_margin.width;
+                }
+
+                //: View Mode toolbar button
+                text: qsTr("View Mode");
+                iconSource: UM.Theme.icons.viewmode;
+
+                menu: Menu {
+                    id: viewMenu;
+                    Instantiator {
+                        model: UM.Models.viewModel;
+                        MenuItem {
+                            text: model.name;
+                            checkable: true;
+                            checked: model.active;
+                            exclusiveGroup: viewMenuGroup;
+                            onTriggered: UM.Controller.setActiveView(model.id);
+                        }
+                        onObjectAdded: viewMenu.insertItem(index, object)
+                        onObjectRemoved: viewMenu.removeItem(object)
+                    }
+
+                    ExclusiveGroup { id: viewMenuGroup; }
+                }
+            }
+
+            PrinterToolbar {
+                anchors {
+                    left: parent.left;
+                    leftMargin: UM.Theme.sizes.window_margin.width;
+                    bottom: parent.bottom;
+                    bottomMargin: UM.Theme.sizes.window_margin.height;
+                }
             }
         }
     }
@@ -249,7 +253,7 @@ UM.MainWindow {
         addMachine.onTriggered: addMachine.visible = true;
 
         preferences.onTriggered: preferences.visible = true;
-        settings.onTriggered: { preferences.visible = true; preferences.setPage(1); }
+        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(1); }
     }
 
     Menu {

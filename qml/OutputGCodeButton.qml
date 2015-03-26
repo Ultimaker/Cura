@@ -8,45 +8,37 @@ import UM 1.0 as UM
 Rectangle {
     id: base;
 
-    color: UM.Styles.primaryColor;
-    border.width: 1;
-    border.color: UM.Styles.borderColor;
+    color: UM.Theme.colors.primary;
 
     signal saveRequested();
     signal saveToSDRequested();
 
+    Image {
+        id: icon;
+
+        anchors.left: parent.left;
+        anchors.top: parent.top;
+        anchors.bottom: parent.bottom;
+
+        width: height;
+
+        sourceSize.width: width;
+        sourceSize.height: height;
+
+        source: UM.Theme.icons.save;
+    }
+
     Label {
         id: label;
         anchors.verticalCenter: parent.verticalCenter;
-        anchors.left: parent.left;
-        anchors.right: icon.left;
+        anchors.left: icon.left;
+        anchors.right: parent.right;
         horizontalAlignment: Text.AlignHCenter;
         font.pointSize: UM.Styles.largeTextSize;
         color: "white";
 
         //: Save file to disk button
         text: qsTr("Save");
-    }
-
-    Rectangle {
-        id: icon;
-
-        anchors.right: parent.right;
-        anchors.top: parent.top;
-        anchors.bottom: parent.bottom;
-        anchors.margins: 1;
-
-        color: "white";
-
-        width: height;
-
-        Rectangle {
-            anchors { left: parent.left; top: parent.top; bottom: parent.bottom; }
-            width: 1;
-            color: UM.Styles.borderColor;
-        }
-
-        UM.RecolorImage { id: iconImage; anchors.centerIn: parent; width: 32; height: 32; source: UM.Resources.getIcon('save.png'); color: '#000'; }
     }
 
     MouseArea {
