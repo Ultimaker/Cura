@@ -5,11 +5,17 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Rectangle {
+UM.AngledCornerRectangle {
+    id: base;
+
     Layout.preferredHeight: UM.Theme.sizes.section.height;
     Layout.preferredWidth: UM.Theme.sizes.section.width;
 
-    color: UM.Theme.colors.primary;
+    property bool clickable: false;
+    signal clicked();
+
+    color: clickable ? UM.Theme.colors.button : UM.Theme.colors.primary;
+    cornerSize: UM.Theme.sizes.default_margin.width;
 
     property alias icon: iconImage.source;
     property alias text: label.text;
@@ -43,4 +49,29 @@ Rectangle {
         font: UM.Theme.fonts.large;
         color: UM.Theme.colors.primary_text;
     }
+
+    MouseArea {
+        id: mouse;
+        anchors.fill: parent;
+
+        enabled: base.clickable;
+        hoverEnabled: true;
+
+        onClicked: {console.log('click'); base.clicked(); }
+    }
+
+    states: [
+        State {
+            name: "hover";
+            when: mouse.containsMouse;
+
+            PropertyChanges { target: base; color: UM.Theme.colors.button_hover; }
+        },
+        State {
+            name: "down";
+            when: mouse.pressed;
+
+            PropertyChanges { target: base; color: UM.Theme.colors.button_down; }
+        }
+    ]
 }

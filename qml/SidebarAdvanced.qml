@@ -9,6 +9,12 @@ UM.SettingsView {
     id: settingsView;
 
     onShowDescription: base.showDescription(text, x, y);
+
+    categoryStyle: UM.Theme.styles.category;
+
+    spacing: UM.Theme.sizes.default_margin.height;
+
+    style: ScrollViewStyle { }
 }
 //
 // Rectangle {
