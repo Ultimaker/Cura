@@ -51,4 +51,21 @@ QtObject {
             }
         }
     }
+
+    property Component category: Component {
+        ButtonStyle {
+            background: UM.AngledCornerRectangle {
+                property bool down: control.pressed || (control.checkable && control.checked);
+                color: down ? UM.Theme.colors.button_down : control.hovered ? UM.Theme.colors.button_hover : UM.Theme.colors.button;
+                cornerSize: UM.Theme.sizes.default_margin.width;
+            }
+            label: Row {
+                anchors.fill: parent;
+                anchors.margins: UM.Theme.sizes.default_margin.width;
+                spacing: UM.Theme.sizes.default_margin.width;
+                Image { anchors.verticalCenter: parent.verticalCenter; source: control.iconSource; }
+                Label { anchors.verticalCenter: parent.verticalCenter; text: control.text; font: UM.Theme.fonts.large; color: UM.Theme.colors.button_text }
+            }
+        }
+    }
 }
