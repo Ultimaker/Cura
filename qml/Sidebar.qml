@@ -5,11 +5,13 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Rectangle {
+UM.AngledCornerRectangle {
     id: base;
 
     property Action addMachineAction;
     property Action configureMachinesAction;
+
+    cornerSize: UM.Theme.sizes.default_margin.width;
 
     MouseArea {
         anchors.fill: parent
@@ -47,7 +49,7 @@ Rectangle {
 
         OutputGCodeButton {
             Layout.preferredWidth: base.width - UM.Theme.sizes.default_margin.width * 2;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
+            Layout.preferredHeight: UM.Theme.sizes.button.height;
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter;
         }
     }
