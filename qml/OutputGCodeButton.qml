@@ -5,27 +5,41 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Rectangle {
+UM.AngledCornerRectangle {
     id: base;
 
-    color: UM.Theme.colors.primary;
+    color: UM.Theme.colors.secondary;
+    cornerSize: UM.Theme.sizes.default_margin.width;
 
     signal saveRequested();
     signal saveToSDRequested();
 
-    Image {
+    UM.AngledCornerRectangle {
+        anchors.fill: parent;
+        anchors.margins: 1;
+        cornerSize: UM.Theme.sizes.default_margin.width;
+    }
+
+    UM.AngledCornerRectangle {
         id: icon;
 
         anchors.left: parent.left;
-        anchors.top: parent.top;
-        anchors.bottom: parent.bottom;
+        width: parent.height;
+        height: parent.height;
+        cornerSize: UM.Theme.sizes.default_margin.width;
+        color: UM.Theme.colors.secondary;
 
-        width: height;
+        Image {
+            anchors.centerIn: parent;
 
-        sourceSize.width: width;
-        sourceSize.height: height;
+            width: UM.Theme.sizes.button_icon.width;
+            height: UM.Theme.sizes.button_icon.height;
 
-        source: UM.Theme.icons.save;
+            sourceSize.width: width;
+            sourceSize.height: height;
+
+            source: UM.Theme.icons.save;
+        }
     }
 
     Label {
@@ -35,7 +49,6 @@ Rectangle {
         anchors.right: parent.right;
         horizontalAlignment: Text.AlignHCenter;
         font.pointSize: UM.Styles.largeTextSize;
-        color: "white";
 
         //: Save file to disk button
         text: qsTr("Save");
@@ -56,28 +69,28 @@ Rectangle {
         }
     }
 
-    states: [
-        State {
-            name: 'sdcard';
-            when: Printer.removableDrives.length > 0;
-            PropertyChanges {
-                target: label;
-                //: Write to SD card button
-                text: qsTr("Write to SD");
-            }
-            PropertyChanges { target: iconImage; source: UM.Resources.getIcon('sdcard.png'); }
-        },
-        State {
-            name: 'usb';
-            PropertyChanges {
-                target: label
-                //: Send print over USB button
-                text: qsTr("Send over USB");
-            }
-            PropertyChanges { target: iconImage; source: UM.Resources.getIcon('usb.png'); }
-        }
-    ]
-
+//     states: [
+//         State {
+//             name: 'sdcard';
+//             when: Printer.removableDrives.length > 0;
+//             PropertyChanges {
+//                 target: label;
+//                 //: Write to SD card button
+//                 text: qsTr("Write to SD");
+//             }
+//             PropertyChanges { target: iconImage; source: UM.Resources.getIcon('sdcard.png'); }
+//         },
+//         State {
+//             name: 'usb';
+//             PropertyChanges {
+//                 target: label
+//                 //: Send print over USB button
+//                 text: qsTr("Send over USB");
+//             }
+//             PropertyChanges { target: iconImage; source: UM.Resources.getIcon('usb.png'); }
+//         }
+//     ]
+/*
     transitions: [
         Transition {
             SequentialAnimation {
@@ -93,5 +106,5 @@ Rectangle {
                 }
             }
         }
-    ]
+    ]*/
 }
