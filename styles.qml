@@ -20,7 +20,7 @@ QtObject {
                 property bool down: control.pressed || (control.checkable && control.checked);
 
                 font: UM.Theme.fonts.sidebar_header;
-                color: control.hovered ? UM.Theme.colors.text_hover : down ? UM.Theme.colors.text_pressed : UM.Theme.colors.text;
+                color: down ? UM.Theme.colors.text_pressed : control.hovered ? UM.Theme.colors.text_hover : UM.Theme.colors.text;
 
                 text: control.text;
             }
@@ -29,10 +29,13 @@ QtObject {
 
     property Component tool_button: Component {
         ButtonStyle {
-            background: Rectangle {
+            background: UM.AngledCornerRectangle {
+                property bool down: control.pressed || (control.checkable && control.checked);
+
                 implicitWidth: UM.Theme.sizes.button.width;
                 implicitHeight: UM.Theme.sizes.button.height;
-                color: UM.Theme.colors.primary;
+                color: down ? UM.Theme.colors.button_down : control.hovered ? UM.Theme.colors.button_hover : UM.Theme.colors.button;
+                cornerSize: UM.Theme.sizes.default_margin.width;
             }
 
             label: Item {
