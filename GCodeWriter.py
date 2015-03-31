@@ -1,5 +1,6 @@
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
+import io
 
 class GCodeWriter(MeshWriter):
     def __init__(self):
