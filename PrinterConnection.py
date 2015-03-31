@@ -1,5 +1,6 @@
 from UM.Logger import Logger
 from .avr_isp import stk500v2
+import threading
 
 class PrinterConnection():
     def __init__(self, serial_port):
@@ -19,12 +20,14 @@ class PrinterConnection():
         self._listen_thread = threading.Thread(target=self._listen)
         self._listen_thread.daemon = True
         #self._listen_thread.start()
+    def getSerialPort(self):
+        return self._serial_port
     
     ##  Try to connect the serial. This simply starts the thread.
     def connect(self):
         self._connect_thread.start()
     
-    def _connect(self):
+    def _connect(self): 
         self._is_connecting = True
         programmer.connect(serial_port) #Connect with the serial, if this succeeds, it's an arduino based usb device.
         try:
@@ -32,8 +35,7 @@ class PrinterConnection():
             # Create new printer connection
             self.active_printer_connection = PrinterConnection(temp_serial)
             Logger.log('i', "Established connection on port %s" % serial_port)
-            break
-        except ispBase.IspError as (e):
+        except ispBase.IspError as e:
             Logger.log('i', "Could not establish connection on %s: %s. Device is not arduino based." %(serial_port,str(e)))
         except:
             Logger.log('i', "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % serial_port)
@@ -42,14 +44,14 @@ class PrinterConnection():
             #Device is not arduino based, so we need to cycle the baud rates.
             for baud_rate in self._getBaudrateList():
                 timeout_time = time.time() + 5
-                if self._serial = None:
+                if self._serial is None:
                     self._serial = serial.Serial(str(self._port), baud_rate, timeout=5, writeTimeout=10000)
                 else:
                     if not self.setBaudRate(baud_rate):
                         continue #Could not set the baud rate, go to the next
                 sucesfull_responses = 0
                 while timeout_time > time.time():
-                    line = self._readline():
+                    line = self._readline()
                     if "T:" in line:
                         self._serial.timeout = 0.5
                         self._sendCommand("M105") # Request temperature, as this should (if baudrate is correct) result in a command with 'T:' in it
@@ -63,7 +65,6 @@ class PrinterConnection():
             return #Stop trying to connect, we are connected.
     
     def _listen(self):
-        time.sleep(5)
         pass
     
     def setBaudRate(self, baud_rate):
@@ -82,10 +83,12 @@ class PrinterConnection():
         if self._is_connected:
              self._listen_thread.start() #Start listening
         
+    def close(self):
+        pass #TODO: handle 
     
     def isConnected(self):
-        return self._is_connected = True
-            
+        return self._is_connected 
+    
     def _listen(self):
         while True:
             line = self._readline()
@@ -118,7 +121,7 @@ class PrinterConnection():
                 
                 
     def hasError(self):
-        return self._error_state == None ? False : True
+        return False
         
         
     def _readline(self):
@@ -127,7 +130,7 @@ class PrinterConnection():
         try:
             ret = self._serial.readline()
         except:
-            self._log("Unexpected error while reading serial port."))
+            self._log("Unexpected error while reading serial port.")    
             self._errorValue = getExceptionString()
             self.close(True)
             return None

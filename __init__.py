@@ -1,4 +1,3 @@
-from . import USBPrintDevice
 from . import USBPrinterManager
 def getMetaData():
     return {

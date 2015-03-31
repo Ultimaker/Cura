@@ -1,10 +1,12 @@
 from UM.Signal import Signal, SignalEmitter
 from UM.PluginObject import PluginObject
+from . import PrinterConnection
 
 import threading
 import platform
 import glob
 import time
+import os
 
 class USBPrinterManager(SignalEmitter,PluginObject):
     def __init__(self):
@@ -24,17 +26,16 @@ class USBPrinterManager(SignalEmitter,PluginObject):
             temp_serial_port_list = self.getSerialPortList(only_list_usb = True)
             if temp_serial_port_list != self._serial_port_list: # Something changed about the list since we last changed something.
                 disconnected_ports = [port for port in self._serial_port_list if port not in temp_serial_port_list ]
-                self._serial_port_list = temp_serial.port_list
-                
+                self._serial_port_list = temp_serial_port_list
                 for serial_port in self._serial_port_list:
                     if self.getConnectionByPort(serial_port) is None: #If it doesn't already exist, add it
-                        self._printer_connections.append(PrinterConnection(serial_port))
+                        if not os.path.islink(serial_port): #Only add the connection if it's a non symbolic link
+                            self._printer_connections.append(PrinterConnection.PrinterConnection(serial_port))
                 
                 for serial_port in disconnected_ports: # Close connections and remove them from list.
                     connection = self.getConnectionByPort(serial_port)
                     connection.close()
                     self._printer_connections.remove(connection)
-            
             time.sleep(5) #Throttle, as we don't need this information to be updated every single second.        
     
     def connectAllConnections(self):
