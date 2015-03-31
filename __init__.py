@@ -1,5 +1,5 @@
 from . import USBPrintDevice
-
+from . import USBPrinterManager
 def getMetaData():
     return {
         'type': 'storage_device',
@@ -12,4 +12,4 @@ def getMetaData():
     }
 
 def register(app):
-    return USBPrintDevice.USBPrintDevice()
+    return USBPrinterManager.USBPrinterManager()
