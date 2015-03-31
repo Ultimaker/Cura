@@ -324,6 +324,8 @@ class CuraEngineBackend(Backend):
 
         if self._settings.getSettingValueByKey('fill_pattern') == 'Grid':
             settings['infillPattern'] = 'INFILL_GRID'
+        elif self._settings.getSettingValueByKey('fill_pattern') == 'Triangles': # TODO add option to fdmPrinter.json once it has been translated(?)
+            settings['infillPattern'] = 'INFILL_TRIANGLES'
         elif self._settings.getSettingValueByKey('fill_pattern') == 'Lines':
             settings['infillPattern'] = 'INFILL_LINES'
         elif self._settings.getSettingValueByKey('fill_pattern') == 'Concentric':
