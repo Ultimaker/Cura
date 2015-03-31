@@ -29,7 +29,8 @@ class PrinterConnection():
     
     def _connect(self): 
         self._is_connecting = True
-        programmer.connect(serial_port) #Connect with the serial, if this succeeds, it's an arduino based usb device.
+        programmer = stk500v2.Stk500v2()
+        programmer.connect(self._serial_port) #Connect with the serial, if this succeeds, it's an arduino based usb device.
         try:
             self._serial = programmer.leaveISP() 
             # Create new printer connection
