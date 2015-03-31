@@ -17,6 +17,8 @@ class USBPrinterManager(SignalEmitter,PluginObject):
         self._check_ports_thread = threading.Thread(target=self._updateConnectionList)
         self._check_ports_thread.daemon = True
         self._check_ports_thread.start()
+        time.sleep(6)
+        self.connectAllConnections()
     
     ##  Check all serial ports and create a PrinterConnection object for them.
     #   Note that this does not validate if the serial ports are actually usable!
