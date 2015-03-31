@@ -127,10 +127,8 @@ class Stk500v2(ispBase.IspBase):
         for c in data:
             message += struct.pack(">B", c)
         checksum = 0
-        print("messsage " , message)
         for c in message:
-            print(c)
-            checksum ^= ord(c)
+            checksum ^= c
         message += struct.pack(">B", checksum)
         try:
             self.serial.write(message)

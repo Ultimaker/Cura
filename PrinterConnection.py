@@ -1,5 +1,5 @@
 from UM.Logger import Logger
-from .avr_isp import stk500v2
+from .avr_isp import stk500v2, ispBase
 import threading
 
 class PrinterConnection():
@@ -34,12 +34,12 @@ class PrinterConnection():
         try:
             self._serial = programmer.leaveISP() 
             # Create new printer connection
-            self.active_printer_connection = PrinterConnection(temp_serial)
-            Logger.log('i', "Established connection on port %s" % serial_port)
+            self.active_printer_connection = PrinterConnection(self._serial_port)
+            Logger.log('i', "Established connection on port %s" % self._serial_port)
         except ispBase.IspError as e:
-            Logger.log('i', "Could not establish connection on %s: %s. Device is not arduino based." %(serial_port,str(e)))
+            Logger.log('i', "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except:
-            Logger.log('i', "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % serial_port)
+            Logger.log('i', "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
         
         if self._serial is None:
             #Device is not arduino based, so we need to cycle the baud rates.
@@ -76,7 +76,7 @@ class PrinterConnection():
     
     def setIsConnected(self, state):
         self._is_connecting = False
-        if state != state:
+        if self._is_connected != state:
             self._is_connected = state
         else:
             Logger.log('w', "Printer connection state was not changed")
@@ -96,18 +96,18 @@ class PrinterConnection():
             if line is None: 
                 break #None is only returned when something went wrong. Stop listening
             
-            if line.startswith('Error:'):
+            if line.startswith(b'Error:'):
                 #Oh YEAH, consistency.
                 # Marlin reports an MIN/MAX temp error as "Error:x\n: Extruder switched off. MAXTEMP triggered !\n"
                 #       But a bed temp error is reported as "Error: Temperature heated bed switched off. MAXTEMP triggered !!"
                 #       So we can have an extra newline in the most common case. Awesome work people.
-                if re.match('Error:[0-9]\n', line):
+                if re.match(b'Error:[0-9]\n', line):
                         line = line.rstrip() + self._readline()
                 #Skip the communication errors, as those get corrected.
-                if 'Extruder switched off' in line or 'Temperature heated bed switched off' in line or 'Something is wrong, please turn off the printer.' in line:
+                if b'Extruder switched off' in line or b'Temperature heated bed switched off' in line or b'Something is wrong, please turn off the printer.' in line:
                     if not self.hasError():
                         self._error_state = line[6:]
-            if ' T:' in line or line.startswith('T:'): #Temperature message
+            if b' T:' in line or line.startswith(b'T:'): #Temperature message
                 try:
                     print("TEMPERATURE", float(re.search("T: *([0-9\.]*)", line).group(1)))
                 except:
