@@ -298,7 +298,7 @@ UM.MainWindow {
 
         //: File open dialog title
         title: qsTr("Open File")
-        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.Modal;
+        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
 
@@ -317,7 +317,7 @@ UM.MainWindow {
         title: qsTr("Save File");
         selectExisting: false;
 
-        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.Modal;
+        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
 
         nameFilters: UM.MeshFileHandler.supportedWriteFileTypes
 
