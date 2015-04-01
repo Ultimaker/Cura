@@ -141,7 +141,7 @@ UM.MainWindow {
 
             DescriptionPane {
                 id: descriptionPane;
-                anchors.right: settings.left;
+                anchors.right: sidebar.left;
             }
 
             PrinterButton {
