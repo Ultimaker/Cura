@@ -111,7 +111,8 @@ Column {
         width: parent.width;
         height: UM.Theme.sizes.section.height;
 
-        icon: UM.Theme.icons.printsetup;
+        iconSource: UM.Theme.icons.printsetup;
         text: qsTr("Print Setup");
+        enabled: false;
     }
 }
