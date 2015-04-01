@@ -37,19 +37,42 @@
         "button": [205, 202, 201, 255],
         "button_hover": [174, 174, 174, 255],
         "button_down": [12, 169, 227, 255],
-        "button_text": [255, 255, 255, 255]
+        "button_text": [255, 255, 255, 255],
+        "button_disabled": [12, 169, 227, 255],
+
+        "scrollbar_background": [245, 245, 245, 255],
+        "scrollbar_handle": [205, 202, 201, 255],
+        "scrollbar_handle_hover": [174, 174, 174, 255],
+        "scrollbar_handle_down": [12, 159, 227, 255],
+
+        "setting_label": [174, 174, 174, 255],
+        "setting_control": [255, 255, 255, 255],
+        "setting_control_highlight": [245, 245, 245, 255],
+        "setting_control_border": [174, 174, 174, 255],
+        "setting_control_text": [35, 35, 35, 255],
+        "setting_control_hover": [35, 35, 35, 255],
+        "setting_unit": [174, 174, 174, 255]
     },
 
     "sizes": {
-        "toolbar_button": [2.0, 2.0],
         "window_margin": [2.0, 2.0],
         "default_margin": [1.0, 1.0],
         "panel": [22.0, 10.0],
+        "toolbar_button": [2.0, 2.0],
         "toolbar_spacing": [1.0, 1.0],
+
         "section": [22.0, 3.0],
         "section_icon": [2.14, 2.14],
         "section_text_margin": [0.33, 0.33],
+
+        "setting": [21.0, 2.0],
+        "setting_control": [6.0, 2.0],
+        "setting_control_margin": [3.0, 3.0],
+        "setting_unit_margin": [0.5, 0.5],
+
         "button": [4.25, 4.25],
-        "button_icon": [3.57, 3.57]
+        "button_icon": [3.57, 3.57],
+        
+        "scrollbar": [0.5, 0.5]
     }
 }
