@@ -253,7 +253,7 @@ UM.MainWindow {
         addMachine.onTriggered: addMachine.visible = true;
 
         preferences.onTriggered: preferences.visible = true;
-        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(1); }
+        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
     }
 
     Menu {
