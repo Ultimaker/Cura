@@ -20,6 +20,14 @@
         "sidebar_header": {
             "size": 0.75,
             "capitalize": true
+        },
+        "timeslider_time": {
+            "size": 1.0,
+            "bold": true
+        },
+        "button_tooltip": {
+            "size": 0.75,
+            "capitalize": true
         }
     },
 
@@ -29,9 +37,9 @@
         "border": [205, 202, 201, 255],
         "secondary": [205, 202, 201, 255],
 
-        "text": [35, 35, 35, 255],
+        "text": [174, 174, 174, 255],
         "text_inactive": [205, 202, 201, 255],
-        "text_hover": [174, 174, 174, 255],
+        "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
 
         "button": [205, 202, 201, 255],
@@ -51,7 +59,18 @@
         "setting_control_border": [174, 174, 174, 255],
         "setting_control_text": [35, 35, 35, 255],
         "setting_control_hover": [35, 35, 35, 255],
-        "setting_unit": [174, 174, 174, 255]
+        "setting_unit": [174, 174, 174, 255],
+
+        "slider_groove": [245, 245, 245, 255],
+        "slider_groove_border": [205, 202, 201, 255],
+        "slider_groove_fill": [205, 202, 201, 255],
+        "slider_handle": [12, 169, 227, 255],
+
+        "checkbox": [255, 255, 255, 255],
+        "checkbox_hover": [245, 245, 245, 255],
+        "checkbox_border": [174, 174, 174, 255],
+        "checkbox_mark": [35, 35, 35, 255],
+        "checkbox_text": [174, 174, 174, 255]
     },
 
     "sizes": {
@@ -72,7 +91,12 @@
 
         "button": [4.25, 4.25],
         "button_icon": [3.57, 3.57],
-        
-        "scrollbar": [0.5, 0.5]
+
+        "scrollbar": [0.5, 0.5],
+
+        "slider_groove": [0.5, 0.5],
+        "slider_handle": [1.5, 1.5],
+
+        "checkbox": [1.5, 1.5]
     }
 }
