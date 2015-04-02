@@ -70,7 +70,9 @@
         "checkbox_hover": [245, 245, 245, 255],
         "checkbox_border": [174, 174, 174, 255],
         "checkbox_mark": [35, 35, 35, 255],
-        "checkbox_text": [174, 174, 174, 255]
+        "checkbox_text": [174, 174, 174, 255],
+
+        "tooltip": [255, 225, 146, 255]
     },
 
     "sizes": {
@@ -97,6 +99,9 @@
         "slider_groove": [0.5, 0.5],
         "slider_handle": [1.5, 1.5],
 
-        "checkbox": [1.5, 1.5]
+        "checkbox": [1.5, 1.5],
+
+        "tooltip": [20.0, 10.0],
+        "tooltip_margins": [1.0, 1.0]
     }
 }
