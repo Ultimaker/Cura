@@ -90,6 +90,8 @@ QtObject {
             decrementControl: Item { }
             incrementControl: Item { }
 
+            transientScrollBars: false
+
             scrollBarBackground: UM.AngledCornerRectangle {
                 implicitWidth: UM.Theme.sizes.scrollbar.width;
 
