@@ -13,6 +13,16 @@ UM.AngledCornerRectangle {
 
     cornerSize: UM.Theme.sizes.default_margin.width;
 
+    function showTooltip(item, position, text) {
+        tooltip.text = text;
+        position = item.mapToItem(base, position.x, position.y);
+        tooltip.show(position);
+    }
+
+    function hideTooltip() {
+        tooltip.hide();
+    }
+
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.AllButtons;
@@ -25,7 +35,7 @@ UM.AngledCornerRectangle {
     ColumnLayout {
         anchors.fill: parent;
         anchors.topMargin: UM.Theme.sizes.default_margin.height;
-        anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
+        anchors.bottomMargin: UM.Theme.sizes.window_margin.height;
 
         spacing: UM.Theme.sizes.default_margin.height;
 
@@ -45,6 +55,10 @@ UM.AngledCornerRectangle {
             Layout.fillHeight: true;
 
             source: header.currentModeFile;
+
+            property Item sidebar: base;
+
+            onLoaded: item.configureSettings = base.configureMachinesAction
         }
 
         OutputGCodeButton {
@@ -52,5 +66,9 @@ UM.AngledCornerRectangle {
             Layout.preferredHeight: UM.Theme.sizes.button.height;
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter;
         }
+    }
+
+    SidebarTooltip {
+        id: tooltip;
     }
 }

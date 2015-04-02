@@ -70,6 +70,8 @@ ScrollView {
                         model: delegateItem.settingsModel;
 
                         delegate: UM.SettingItem {
+                            id: item;
+
                             width: UM.Theme.sizes.setting.width;
 
                             height: model.visible ? UM.Theme.sizes.setting.height : 0;
@@ -95,6 +97,12 @@ ScrollView {
                             onItemValueChanged: delegateItem.settingsModel.setSettingValue(index, model.key, value);
                             onContextMenuRequested: contextMenu.popup();
 
+                            onShowTooltip: {
+                                position = { x: UM.Theme.sizes.default_margin.width, y: item.height }
+                                sidebar.showTooltip(item, position, model.description);
+                            }
+                            onHideTooltip: sidebar.hideTooltip();
+
                             Menu {
                                 id: contextMenu;
 
@@ -102,7 +110,6 @@ ScrollView {
                                     //: Settings context menu action
                                     text: qsTr("Hide this setting");
                                     onTriggered: delegateItem.settingsModel.hideSetting(model.key);
-//                                     onTriggered: settingsList.model.setVisibility(model.key, false);
                                 }
                                 MenuItem {
                                     //: Settings context menu action
