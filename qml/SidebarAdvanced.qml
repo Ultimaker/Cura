@@ -10,6 +10,8 @@ ScrollView {
 
     style: UM.Theme.styles.scrollview;
 
+    property Action configureSettings;
+
     Column {
         id: contents
         spacing: UM.Theme.sizes.default_margin.height;
@@ -80,6 +82,7 @@ ScrollView {
                             property bool settingVisible: model.visible;
 
                             name: model.name;
+                            description: model.description;
                             value: model.value;
                             unit: model.unit;
                             valid: model.valid;
@@ -90,6 +93,24 @@ ScrollView {
                             style: UM.Theme.styles.setting_item;
 
                             onItemValueChanged: delegateItem.settingsModel.setSettingValue(index, model.key, value);
+                            onContextMenuRequested: contextMenu.popup();
+
+                            Menu {
+                                id: contextMenu;
+
+                                MenuItem {
+                                    //: Settings context menu action
+                                    text: qsTr("Hide this setting");
+                                    onTriggered: delegateItem.settingsModel.hideSetting(model.key);
+//                                     onTriggered: settingsList.model.setVisibility(model.key, false);
+                                }
+                                MenuItem {
+                                    //: Settings context menu action
+                                    text: qsTr("Configure setting visiblity...");
+
+                                    onTriggered: if(base.configureSettings) base.configureSettings.trigger();
+                                }
+                            }
                         }
                     }
 
