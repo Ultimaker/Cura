@@ -45,6 +45,7 @@ class PrinterApplication(QtApplication):
         self._physics = None
         self._volume = None
         self._platform = None
+        self._output_source = 'local_file'
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
     
     def _loadPlugins(self):
@@ -256,6 +257,24 @@ class PrinterApplication(QtApplication):
                 self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     removableDrivesChanged = pyqtSignal()
+
+    outputDeviceChanged = pyqtSignal()
+    @pyqtProperty(str, notify = outputDeviceChanged)
+    def outputDevice(self):
+        return self._output_source
+
+    @pyqtProperty(str, notify = outputDeviceChanged)
+    def outputDeviceIcon(self):
+        if self._output_source == 'local_file':
+            return 'save'
+        elif self._output_source == 'sdcard':
+            return 'save_sd'
+        elif self._output_source == 'usb':
+            return 'print_usb'
+
+    @pyqtSlot()
+    def writeToOutputDevice(self):
+        pass
 
     @pyqtProperty("QStringList", notify = removableDrivesChanged)
     def removableDrives(self):
