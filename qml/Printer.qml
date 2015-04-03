@@ -91,7 +91,9 @@ UM.MainWindow {
                 //: Help menu
                 title: qsTr("&Help");
 
-                MenuItem { action: actions.help; }
+                MenuItem { action: actions.documentation; }
+                MenuItem { action: actions.reportBug; }
+                MenuSeparator { }
                 MenuItem { action: actions.about; }
             }
         }
@@ -254,6 +256,9 @@ UM.MainWindow {
 
         preferences.onTriggered: preferences.visible = true;
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
+
+        documentation.onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/support");
+        reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/PluggableCura/issues");
     }
 
     Menu {

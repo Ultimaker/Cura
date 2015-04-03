@@ -25,7 +25,8 @@ Item {
     property alias configureMachines: settingsAction;
 
     property alias preferences: preferencesAction;
-    property alias help: helpAction;
+    property alias documentation: documentationAction;
+    property alias reportBug: reportBugAction;
     property alias about: aboutAction;
 
     Action {
@@ -73,11 +74,18 @@ Item {
     }
 
     Action {
-        id: helpAction;
-        //: Show Manual action
-        text: qsTr("Show Manual");
+        id: documentationAction;
+        //: Show Online Documentation action
+        text: qsTr("Show Online Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
+    }
+
+    Action {
+        id: reportBugAction;
+        //: Report a Bug Action
+        text: qsTr("Report a Bug");
+        iconName: "tools-report-bug";
     }
 
     Action {
