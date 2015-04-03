@@ -10,6 +10,7 @@ UM.AngledCornerRectangle {
 
     property Action addMachineAction;
     property Action configureMachinesAction;
+    property alias saveAction: saveButton.saveAction;
 
     cornerSize: UM.Theme.sizes.default_margin.width;
 
@@ -58,10 +59,11 @@ UM.AngledCornerRectangle {
 
             property Item sidebar: base;
 
-            onLoaded: item.configureSettings = base.configureMachinesAction
+            onLoaded: if(item) item.configureSettings = base.configureMachinesAction
         }
 
-        OutputGCodeButton {
+        SaveButton {
+            id: saveButton;
             Layout.preferredWidth: base.width - UM.Theme.sizes.default_margin.width * 2;
             Layout.preferredHeight: UM.Theme.sizes.button.height;
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter;
