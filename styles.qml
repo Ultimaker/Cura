@@ -37,7 +37,19 @@ QtObject {
 
                 implicitWidth: UM.Theme.sizes.button.width;
                 implicitHeight: UM.Theme.sizes.button.height;
-                color: down ? UM.Theme.colors.button_down : control.hovered ? UM.Theme.colors.button_hover : UM.Theme.colors.button;
+                color: {
+                    if(!control.enabled) {
+                        return UM.Theme.colors.button_disabled;
+                    } else if(control.checkable && control.checked && control.hovered) {
+                        return UM.Theme.colors.button_active_hover;
+                    } else if(control.pressed || (control.checkable && control.checked)) {
+                        return UM.Theme.colors.button_active;
+                    } else if(control.hovered) {
+                        return UM.Theme.colors.button_hover;
+                    } else {
+                        return UM.Theme.colors.button;
+                    }
+                }
                 Behavior on color { ColorAnimation { duration: 50; } }
                 cornerSize: UM.Theme.sizes.default_margin.width;
             }
@@ -59,17 +71,20 @@ QtObject {
     property Component sidebar_category: Component {
         ButtonStyle {
             background: UM.AngledCornerRectangle {
-                property bool down: control.pressed || (control.checkable && control.checked);
                 implicitHeight: UM.Theme.sizes.section.height;
                 color: {
-                    if(!control.enabled) {
-                        return UM.Theme.colors.button_disabled;
-                    } else if(down) {
-                        return UM.Theme.colors.button_down;
+                    if(control.color) {
+                        return control.color;
+                    } else if(!control.enabled) {
+                        return UM.Theme.colors.setting_category_disabled;
+                    } else if(control.hovered && control.checkable && control.checked) {
+                        return UM.Theme.colors.setting_category_active_hover;
+                    } else if(control.pressed || (control.checkable && control.checked)) {
+                        return UM.Theme.colors.setting_category_active;
                     } else if(control.hovered) {
-                        return UM.Theme.colors.button_hover;
+                        return UM.Theme.colors.setting_category_hover;
                     } else {
-                        return UM.Theme.colors.button;
+                        return UM.Theme.colors.setting_category;
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
@@ -79,8 +94,18 @@ QtObject {
                 anchors.fill: parent;
                 anchors.margins: UM.Theme.sizes.default_margin.width;
                 spacing: UM.Theme.sizes.default_margin.width;
-                Image { anchors.verticalCenter: parent.verticalCenter; source: control.iconSource; }
-                Label { anchors.verticalCenter: parent.verticalCenter; text: control.text; font: UM.Theme.fonts.large; color: UM.Theme.colors.button_text }
+
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter;
+                    source: control.iconSource;
+                }
+
+                Label {
+                    anchors.verticalCenter: parent.verticalCenter;
+                    text: control.text;
+                    font: UM.Theme.fonts.setting_category;
+                    color: UM.Theme.colors.setting_category_text;
+                }
             }
         }
     }
@@ -127,12 +152,72 @@ QtObject {
         controlTextColor: UM.Theme.colors.setting_control_text;
         controlFont: UM.Theme.fonts.default;
 
-        validationErrorColor: Qt.rgba(1.0, 0.0, 0.0, 1.0);
-        validationWarningColor: Qt.rgba(1.0, 1.0, 0.0, 1.0);
-        validationOkColor: Qt.rgba(1.0, 1.0, 1.0, 1.0);
+        validationErrorColor: UM.Theme.colors.setting_validation_error;
+        validationWarningColor: UM.Theme.colors.setting_validation_warning;
+        validationOkColor: UM.Theme.colors.setting_validation_ok;
 
         unitRightMargin: UM.Theme.sizes.setting_unit_margin.width;
         unitColor: UM.Theme.colors.setting_unit;
         unitFont: UM.Theme.fonts.default;
+    }
+
+    property Component checkbox: Component {
+        CheckBoxStyle {
+            background: Item { }
+            indicator: Rectangle {
+                implicitWidth:  UM.Theme.sizes.checkbox.width;
+                implicitHeight: UM.Theme.sizes.checkbox.height;
+
+                color: control.hovered ? UM.Theme.colors.checkbox_hover : UM.Theme.colors.checkbox;
+                Behavior on color { ColorAnimation { duration: 50; } }
+
+                border.width: 1
+                border.color: UM.Theme.colors.checkbox_border;
+
+                Label {
+                    anchors.centerIn: parent;
+                    color: UM.Theme.colors.checkbox_mark;
+
+                    text: "✓";
+
+                    opacity: control.checked ? 1 : 0;
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
+                }
+            }
+            label: Label {
+                text: control.text;
+                color: UM.Theme.colors.checkbox_text;
+                font: UM.Theme.fonts.default;
+            }
+        }
+    }
+
+    property Component slider: Component {
+        SliderStyle {
+            groove: Rectangle {
+                implicitWidth: control.width;
+                implicitHeight: UM.Theme.sizes.slider_groove.height;
+
+                color: UM.Theme.colors.slider_groove;
+                border.width: 1;
+                border.color: UM.Theme.colors.slider_groove_border;
+
+                Rectangle {
+                    anchors {
+                        left: parent.left;
+                        top: parent.top;
+                        bottom: parent.bottom;
+                    }
+                    color: UM.Theme.colors.slider_groove_fill;
+                    width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
+                }
+            }
+            handle: Rectangle {
+                width: UM.Theme.sizes.slider_handle.width;
+                height: UM.Theme.sizes.slider_handle.height;
+                color: control.hovered ? UM.Theme.colors.slider_handle_hover : UM.Theme.colors.slider_handle;
+                Behavior on color { ColorAnimation { duration: 50; } }
+            }
+        }
     }
 }
