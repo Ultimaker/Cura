@@ -28,7 +28,6 @@ from PyQt5.QtGui import QColor
 import os.path
 import numpy
 numpy.seterr(all='ignore')
-import copy
 
 class PrinterApplication(QtApplication):
     def __init__(self):
@@ -95,7 +94,7 @@ class PrinterApplication(QtApplication):
 
         self.showSplashMessage('Loading interface...')
 
-        self.setMainQml(os.path.dirname(__file__) + "/qml/Printer.qml")
+        self.setMainQml(os.path.dirname(__file__), "qml/Printer.qml")
         self.initializeEngine()
 
         self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
