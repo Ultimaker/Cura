@@ -18,8 +18,13 @@ Rectangle {
     property alias text: label.text;
 
     function show(position) {
-        x = position.x;
-        y = position.y;
+        if(position.y + base.height > parent.height) {
+            x = position.x;
+            y = parent.height - base.height;
+        } else {
+            x = position.x;
+            y = position.y;
+        }
         base.opacity = 1;
     }
 
@@ -37,8 +42,7 @@ Rectangle {
             right: parent.right;
             rightMargin: UM.Theme.sizes.tooltip_margins.width;
         }
-
-//         horizontalAlignment: Qt.AlignJustify;
         wrapMode: Text.Wrap;
+        font: UM.Theme.fonts.default;
     }
 }
