@@ -2,32 +2,44 @@
     "fonts": {
         "large": {
             "size": 1.5,
-            "bold": true
+            "bold": true,
+            "family": "Roboto"
         },
         "default": {
-            "size": 1
+            "size": 1,
+            "family": "Roboto"
         },
         "default_allcaps": {
             "size": 1,
-            "capitalize": true
+            "capitalize": true,
+            "family": "Roboto"
         },
         "small": {
-            "size": 0.75
+            "size": 0.75,
+            "family": "Roboto"
         },
         "tiny": {
-            "size": 0.5
+            "size": 0.5,
+            "family": "Roboto"
         },
         "sidebar_header": {
             "size": 0.75,
-            "capitalize": true
+            "capitalize": true,
+            "family": "Roboto"
         },
         "timeslider_time": {
             "size": 1.0,
-            "bold": true
+            "bold": true,
+            "family": "Roboto"
         },
         "button_tooltip": {
             "size": 0.75,
-            "capitalize": true
+            "capitalize": true,
+            "family": "Roboto"
+        },
+        "setting_category": {
+            "size": 1.5,
+            "family": "Roboto"
         }
     },
 
