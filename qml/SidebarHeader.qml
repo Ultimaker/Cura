@@ -114,5 +114,7 @@ Column {
         iconSource: UM.Theme.icons.printsetup;
         text: qsTr("Print Setup");
         enabled: false;
+
+        color: UM.Theme.colors.primary;
     }
 }

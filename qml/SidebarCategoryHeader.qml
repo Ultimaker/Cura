@@ -11,5 +11,7 @@ Button {
     Layout.preferredHeight: UM.Theme.sizes.section.height;
     Layout.preferredWidth: UM.Theme.sizes.section.width;
 
+    property variant color;
+
     style: UM.Theme.styles.sidebar_category;
 }
