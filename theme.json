@@ -72,13 +72,21 @@
         "checkbox_mark": [35, 35, 35, 255],
         "checkbox_text": [174, 174, 174, 255],
 
-        "tooltip": [255, 225, 146, 255]
+        "tooltip": [255, 225, 146, 255],
+
+        "save_button": [255, 255, 255, 255],
+        "save_button_border": [205, 202, 201, 255],
+        "save_button_inactive": [205, 202, 201, 255],
+        "save_button_active": [12, 159, 227, 255],
+        "save_button_active_hover": [34, 150, 190, 255],
+        "save_button_text": [35, 35, 35, 255]
     },
 
     "sizes": {
         "window_margin": [2.0, 2.0],
         "default_margin": [1.0, 1.0],
         "panel": [22.0, 10.0],
+        "logo": [9.5, 2.0],
         "toolbar_button": [2.0, 2.0],
         "toolbar_spacing": [1.0, 1.0],
 
@@ -102,6 +110,9 @@
         "checkbox": [1.5, 1.5],
 
         "tooltip": [20.0, 10.0],
-        "tooltip_margins": [1.0, 1.0]
+        "tooltip_margins": [1.0, 1.0],
+
+        "save_button_border": [0.06, 0.06],
+        "save_button_label_margin": [0.5, 0.5]
     }
 }
