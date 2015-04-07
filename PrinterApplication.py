@@ -288,8 +288,9 @@ class PrinterApplication(QtApplication):
         self.outputDevicesChanged.emit()
 
     def removeOutputDevice(self, id):
-        del self._output_devices[id]
-        self.outputDevicesChanged.emit()
+        if id in self._output_devices:
+            del self._output_devices[id]
+            self.outputDevicesChanged.emit()
 
     @pyqtSlot(str)
     def writeToOutputDevice(self, device):
