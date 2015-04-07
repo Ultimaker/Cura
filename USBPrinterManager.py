@@ -51,8 +51,8 @@ class USBPrinterManager(SignalEmitter,PluginObject):
                 for serial_port in disconnected_ports: # Close connections and remove them from list.
                     connection = self.getConnectionByPort(serial_port)
                     if connection != None:
+                        self._printer_connections.remove(connection)
                         connection.close()
-                    self._printer_connections.remove(connection)
             time.sleep(5) #Throttle, as we don't need this information to be updated every single second.        
     
     ##  Attempt to connect with all possible connections. 
@@ -111,7 +111,8 @@ class USBPrinterManager(SignalEmitter,PluginObject):
                 'icon': 'print_usb',
                 'priority': 1
             })
-    
+        else:
+            Application.getInstance().removeOutputDevice(serial_port)
     def _writeToSerial(self, serial_port):
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():

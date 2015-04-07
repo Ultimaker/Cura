@@ -338,8 +338,8 @@ class PrinterConnection(SignalEmitter):
         try:
             ret = self._serial.readline()
         except:
-            self._log("Unexpected error while reading serial port.")    
-            self._errorValue = getExceptionString()
+            Logger.log('e',"Unexpected error while reading serial port.")    
+            #self._errorValue = getExceptionString()
             self.close()
             return None
         #if ret == '':
