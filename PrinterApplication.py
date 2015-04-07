@@ -272,6 +272,7 @@ class PrinterApplication(QtApplication):
         elif self._output_source == 'usb':
             return 'print_usb'
 
+
     @pyqtSlot()
     def writeToOutputDevice(self):
         pass
