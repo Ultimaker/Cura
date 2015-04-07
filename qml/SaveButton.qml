@@ -15,7 +15,35 @@ Button {
 
     enabled: progress >= 0.95;
 
-    iconSource: UM.Theme.icons[Printer.outputDeviceIcon];
+    property string currentDevice: 'local_file'
+    property bool defaultOverride: false;
+    property bool defaultAmbiguous: false;
+
+    iconSource: UM.Theme.icons[Printer.outputDevices[base.currentDevice].icon];
+    tooltip: Printer.outputDevices[base.currentDevice].description;
+
+    Connections {
+        target: Printer;
+        onOutputDevicesChanged: {
+            if(!base.defaultOverride) {
+                base.defaultAmbiguous = false;
+                var device = null;
+                for(var i in Printer.outputDevices) {
+                    if(device == null) {
+                        device = i;
+                    } else if(Printer.outputDevices[i].priority > Printer.outputDevices[device].priority) {
+                        device = i;
+                    } else if(Printer.outputDevices[i].priority == Printer.outputDevices[device].priority) {
+                        base.defaultAmbiguous = true;
+                    }
+                }
+
+                if(device != null) {
+                    base.currentDevice = device;
+                }
+            }
+        }
+    }
 
     style: ButtonStyle {
         background: UM.AngledCornerRectangle {
@@ -101,6 +129,40 @@ Button {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent;
+
+        acceptedButtons: Qt.RightButton;
+
+        onClicked: devicesMenu.popup();
+    }
+
+    Menu {
+        id: devicesMenu;
+
+        Instantiator {
+            model: Printer.outputDeviceNames;
+            MenuItem {
+                text: Printer.outputDevices[modelData].description;
+                checkable: true;
+                checked: base.defaultAmbiguous ? false : modelData == base.currentDevice;
+                exclusiveGroup: devicesMenuGroup;
+                onTriggered: {
+                    base.defaultOverride = true;
+                    base.currentDevice = modelData;
+                    if(base.defaultAmbiguous) {
+                        base.defaultAmbiguous = false;
+                        Printer.writeToOutputDevice(modelData);
+                    }
+                }
+            }
+            onObjectAdded: devicesMenu.insertItem(index, object)
+            onObjectRemoved: devicesMenu.removeItem(object)
+        }
+
+        ExclusiveGroup { id: devicesMenuGroup; }
+    }
+
     text: {
         if(base.progress < 0) {
             return qsTr("Please load a 3D model");
@@ -112,10 +174,10 @@ Button {
     }
 
     onClicked: {
-        if(Printer.outputDevice != "local_file") {
-            Printer.writeToOutputDevice();
-        } else if(base.saveAction) {
-            base.saveAction.trigger();
+        if(base.defaultAmbiguous) {
+            devicesMenu.popup();
+        } else {
+            Printer.writeToOutputDevice(base.currentDevice);
         }
     }
 }
