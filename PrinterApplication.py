@@ -45,7 +45,15 @@ class PrinterApplication(QtApplication):
         self._physics = None
         self._volume = None
         self._platform = None
-        self._output_source = 'local_file'
+        self._output_devices = {
+            'local_file': {
+                'id': 'local_file',
+                'function': self._writeToLocalFile,
+                'description': 'Save to Disk',
+                'icon': 'save',
+                'priority': 0
+            }
+        }
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
     
     def _loadPlugins(self):
@@ -106,6 +114,7 @@ class PrinterApplication(QtApplication):
         else:
             self.requestAddPrinter.emit()
 
+        self._removableDrivesChanged()
         if self._engine.rootObjects:
             self.closeSplash()
 
@@ -256,39 +265,51 @@ class PrinterApplication(QtApplication):
             else:
                 self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
-    removableDrivesChanged = pyqtSignal()
+    outputDevicesChanged = pyqtSignal()
+    @pyqtProperty('QVariantMap', notify = outputDevicesChanged)
+    def outputDevices(self):
+        return self._output_devices
 
-    outputDeviceChanged = pyqtSignal()
-    @pyqtProperty(str, notify = outputDeviceChanged)
-    def outputDevice(self):
-        return self._output_source
+    @pyqtProperty('QStringList', notify = outputDevicesChanged)
+    def outputDeviceNames(self):
+        return self._output_devices.keys()
 
-    @pyqtProperty(str, notify = outputDeviceChanged)
-    def outputDeviceIcon(self):
-        if self._output_source == 'local_file':
-            return 'save'
-        elif self._output_source == 'sdcard':
-            return 'save_sd'
-        elif self._output_source == 'usb':
-            return 'print_usb'
+    ##  Add an output device that can be written to.
+    #
+    #   \param id The identifier used to identify the device.
+    #   \param device A dictionary of device information.
+    #                 It should contains the following:
+    #                 - function: A function to be called when trying to write to the device. Will be passed the device id as first parameter.
+    #                 - description: A translated string containing a description of what happens when writing to the device.
+    #                 - icon: The icon to use to represent the device.
+    #                 - priority: The priority of the device. The device with the highest priority will be used as the default device.
+    def addOutputDevice(self, id, device):
+        self._output_devices[id] = device
+        self.outputDevicesChanged.emit()
 
+    def removeOutputDevice(self, id):
+        del self._output_devices[id]
+        self.outputDevicesChanged.emit()
 
-    @pyqtSlot()
-    def writeToOutputDevice(self):
-        pass
+    @pyqtSlot(str)
+    def writeToOutputDevice(self, device):
+        self._output_devices[device]['function'](device)
 
-    @pyqtProperty("QStringList", notify = removableDrivesChanged)
-    def removableDrives(self):
-        return list(self.getStorageDevice('LocalFileStorage').getRemovableDrives().keys())
+    writeToLocalFileRequested = pyqtSignal()
+    def _writeToLocalFile(self, device):
+        self.writeToLocalFileRequested.emit()
 
-    @pyqtSlot()
-    def saveToSD(self):
+    def _writeToSD(self, device):
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
 
-            drives = self.getStorageDevice('LocalFileStorage').getRemovableDrives()
-            path = next(iter(drives.values()))
+            try:
+                path = self.getStorageDevice('LocalFileStorage').getRemovableDrives()[device]
+            except KeyError:
+                Logger.log('e', 'Tried to write to unknown SD card %s', device)
+                return
+
             filename = os.path.join(path, node.getName()[0:node.getName().rfind('.')] + '.gcode')
 
             job = WriteMeshJob(filename, node.getMeshData())
@@ -296,5 +317,18 @@ class PrinterApplication(QtApplication):
             return
 
     def _removableDrivesChanged(self):
-        print(self.getStorageDevice('LocalFileStorage').getRemovableDrives())
-        self.removableDrivesChanged.emit()
+        drives = self.getStorageDevice('LocalFileStorage').getRemovableDrives()
+        for drive in drives:
+            if drive not in self._output_devices:
+                self.addOutputDevice(drive, {
+                    'id': drive,
+                    'function': self._writeToSD,
+                    'description': 'Save to SD Card {0}'.format(drive),
+                    'icon': 'save_sd',
+                    'priority': 1
+                })
+
+        for device in self._output_devices:
+            if not device in drives:
+                if self._output_devices[device]['function'] == self._writeToSD:
+                    self.removeOutputDevice(device)

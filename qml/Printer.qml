@@ -354,6 +354,7 @@ UM.MainWindow {
     Connections {
         target: Printer
         onRequestAddPrinter: addMachine.visible = true;
+        onWriteToLocalFileRequested: saveDialog.open();
     }
 
     Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
