@@ -13,7 +13,7 @@ Button {
     property real progress: UM.Backend.progress;
     Behavior on progress { NumberAnimation { duration: 250; } }
 
-//     enabled: progress >= 0.95;
+    enabled: progress >= 0.95;
 
     property string currentDevice: 'local_file'
     property bool defaultOverride: false;
@@ -29,7 +29,6 @@ Button {
                 base.defaultAmbiguous = false;
                 var device = null;
                 for(var i in Printer.outputDevices) {
-                    console.log(i);
                     if(device == null) {
                         device = i;
                     } else if(Printer.outputDevices[i].priority > Printer.outputDevices[device].priority) {
