@@ -55,10 +55,9 @@ ScrollView {
                         var h = 0.0;
                         for(var i in children) {
                             var item = children[i];
-                            h += children[i].height;
-
+                            h += children[i].height;   
                             if(item.settingVisible) {
-                                if(i - 1 > 0) {
+                                if(i > 0) {
                                     h += spacing;
                                 }
                             }
