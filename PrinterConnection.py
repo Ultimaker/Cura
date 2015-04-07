@@ -7,7 +7,11 @@ import queue
 import re
 import functools
 
-class PrinterConnection():
+from UM.Application import Application
+from UM.Signal import Signal, SignalEmitter
+
+
+class PrinterConnection(SignalEmitter):
     def __init__(self, serial_port):
         super().__init__()
         
@@ -156,15 +160,27 @@ class PrinterConnection():
         except Exception as e:
             return False
     
+    
+    
     def setIsConnected(self, state):
         self._is_connecting = False
         if self._is_connected != state:
             self._is_connected = state
+            self.connectionStateChanged.emit(self._serial_port)
+            if self._is_connected: 
+                self._listen_thread.start() #Start listening
+                '''Application.getInstance().addOutputDevice(self._serial_port, {
+                    'id': self._serial_port,
+                    'function': self.printGCode,
+                    'description': 'Print with USB {0}'.format(self._serial_port),
+                    'icon': 'print_usb',
+                    'priority': 1
+                })'''
+                
         else:
             Logger.log('w', "Printer connection state was not changed")
             
-        if self._is_connected:
-             self._listen_thread.start() #Start listening
+    connectionStateChanged = Signal()    
     
     ##  Close the printer connection    
     def close(self):
@@ -251,7 +267,8 @@ class PrinterConnection():
                     pass
                 if b'B:' in line: #Check if it's a bed temperature
                     try:
-                        print("BED TEMPERATURE" ,float(re.search(b"B: *([0-9\.]*)", line).group(1)))
+                        #print("BED TEMPERATURE" ,float(re.search(b"B: *([0-9\.]*)", line).group(1)))
+                        pass
                     except:
                         pass
                 #TODO: temperature changed callback
@@ -306,7 +323,7 @@ class PrinterConnection():
                 if self._current_z != z:
                     self._current_z = z
         except Exception as e:
-            self._log("Unexpected error: %s" % e)
+            Logger.log('e', "Unexpected error: %s" % e)
         checksum = functools.reduce(lambda x,y: x^y, map(ord, 'N%d%s' % (self._gcode_position, line)))
         
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))

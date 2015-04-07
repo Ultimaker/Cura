@@ -1,7 +1,9 @@
 from UM.Signal import Signal, SignalEmitter
 from UM.PluginObject import PluginObject
 from . import PrinterConnection
-
+from UM.Application import Application
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.SceneNode import SceneNode
 import threading
 import platform
 import glob
@@ -41,11 +43,15 @@ class USBPrinterManager(SignalEmitter,PluginObject):
                 for serial_port in self._serial_port_list:
                     if self.getConnectionByPort(serial_port) is None: #If it doesn't already exist, add it
                         if not os.path.islink(serial_port): #Only add the connection if it's a non symbolic link
-                            self._printer_connections.append(PrinterConnection.PrinterConnection(serial_port))
+                            connection = PrinterConnection.PrinterConnection(serial_port)
+                            connection.connect()
+                            connection.connectionStateChanged.connect(self.serialConectionStateCallback)
+                            self._printer_connections.append(connection)
                 
                 for serial_port in disconnected_ports: # Close connections and remove them from list.
                     connection = self.getConnectionByPort(serial_port)
-                    connection.close()
+                    if connection != None:
+                        connection.close()
                     self._printer_connections.remove(connection)
             time.sleep(5) #Throttle, as we don't need this information to be updated every single second.        
     
@@ -93,7 +99,28 @@ class USBPrinterManager(SignalEmitter,PluginObject):
             return True
         else: 
             return False
+        
+        
+    def serialConectionStateCallback(self,serial_port):
+        connection = self.getConnectionByPort(serial_port)
+        if connection.isConnected():
+            Application.getInstance().addOutputDevice(serial_port, {
+                'id': serial_port,
+                'function': self._writeToSerial,
+                'description': 'Write to USB {0}'.format(serial_port),
+                'icon': 'print_usb',
+                'priority': 1
+            })
     
+    def _writeToSerial(self, serial_port):
+        for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+            
+            gcode = getattr(node.getMeshData(), 'gcode', False)
+            self.sendGCodeByPort(serial_port,gcode.split('\n'))
+            
+        
     ## Get a list of printer connection objects that are connected.
     def getActiveConnections(self):
         return [connection for connection in self._printer_connections if connection.isConnected()]
