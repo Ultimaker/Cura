@@ -5,6 +5,7 @@ import threading
 import time
 import queue
 import re
+import functools
 
 class PrinterConnection():
     def __init__(self, serial_port):
@@ -87,6 +88,8 @@ class PrinterConnection():
         if self.isPrinting() or not self._is_connected:
             return
         self._gcode = gcode_list
+        #Reset line number. If this is not done, first line is sometimes ignored
+        self._gcode.insert(0,"M110 N0") 
         self._gcode_position = 0
         self._print_start_time_100 = None
         self._is_printing = True
@@ -196,6 +199,7 @@ class PrinterConnection():
         #Logger.log('i','Sending: %s' % (cmd))
         try:
             command = (cmd + '\n').encode()
+            #self._serial.write(b'\n')
             self._serial.write(command)
         except serial.SerialTimeoutException:
             Logger.log("w","Serial timeout while writing to serial port, trying again.")
@@ -224,9 +228,9 @@ class PrinterConnection():
     ##  Listen thread function. 
     def _listen(self):
         temperature_request_timeout = time.time()
+        ok_timeout = time.time()
         while self._is_connected:
             line = self._readline()
-            #print("listening: " ,line.decode('utf-8',"replace"))
             if line is None: 
                 break #None is only returned when something went wrong. Stop listening
             if line.startswith(b'Error:'):
@@ -241,8 +245,7 @@ class PrinterConnection():
                     if not self.hasError():
                         self._error_state = line[6:]
             elif b' T:' in line or line.startswith(b'T:'): #Temperature message
-                try:
-                    print("TEMPERATURE", float(re.search(b"T: *([0-9\.]*)", line).group(1)))     
+                try: 
                     self._extruder_temperatures[self._temperatureRequestExtruder] = float(re.search(b"T: *([0-9\.]*)", line).group(1))
                 except:
                     pass
@@ -255,21 +258,23 @@ class PrinterConnection():
                 
             if self._is_printing:
                 if time.time() > temperature_request_timeout: #When printing, request temperature every 5 seconds.
-                    if self._extruderCount > 0:
-                        self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
-                        self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
+                    if self._extruder_count > 0:
+                        self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._extruder_count
+                        self.sendCommand("M105 T%d" % (self._temperature_requested_extruder_index))
                     else:
                         self.sendCommand("M105")
                     temperature_request_timeout = time.time() + 5
-                
+                if line == b'' and time.time() > ok_timeout:
+                    line = b'ok' #Force a timeout (basicly, send next command)
                 if b'ok' in line:
-                    if not self._commandQueue.empty():
-                        self._sendCommand(self._commandQueue.get())
+                    ok_timeout = time.time() + 5
+                    if not self._command_queue.empty():
+                        self._sendCommand(self._command_queue.get())
                     else:
                         self._sendNextGcodeLine()
                 elif b"resend" in line.lower() or b"rs" in line:
                     try:
-                        self._gcode_position = int(line.replace("N:"," ").replace("N"," ").replace(":"," ").split()[-1])
+                        self._gcode_position = int(line.replace(b"N:",b" ").replace(b"N",b" ").replace(b":",b" ").split()[-1])
                     except:
                         if b"rs" in line:
                             self._gcode_position = int(line.split()[1])
@@ -283,13 +288,15 @@ class PrinterConnection():
                         self.sendCommand("M105")
     ##  Send next Gcode in the gcode list            
     def _sendNextGcodeLine(self):
-        if self._gcode_position >= len(self._gcode_list):
+        if self._gcode_position >= len(self._gcode):
             #self._changeState(self.STATE_OPERATIONAL)
             return
         if self._gcode_position == 100:
             self._print_start_time_100 = time.time()
-        line = self._gcode_list[self._gcode_position]
-        
+        line = self._gcode[self._gcode_position]
+        if ';' in line:
+            line = line[:line.find(';')]
+        line = line.strip()
         try:
             if line == 'M0' or line == 'M1':
                 #self.setPause(True)
@@ -300,10 +307,10 @@ class PrinterConnection():
                     self._current_z = z
         except Exception as e:
             self._log("Unexpected error: %s" % e)
-        checksum = reduce(lambda x,y:x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
+        checksum = functools.reduce(lambda x,y: x^y, map(ord, 'N%d%s' % (self._gcode_position, line)))
+        
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
         self._gcode_position += 1        
-  
                 
     def hasError(self):
         return False    
