@@ -113,15 +113,15 @@ class USBPrinterManager(SignalEmitter,PluginObject):
             })
         else:
             Application.getInstance().removeOutputDevice(serial_port)
+
     def _writeToSerial(self, serial_port):
-        for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
-                continue
-            
-            gcode = getattr(node.getMeshData(), 'gcode', False)
-            self.sendGCodeByPort(serial_port,gcode.split('\n'))
-            
-        
+        gcode_list = getattr(Application.getInstance().getController().getScene(), 'gcode_list', None)
+        if gcode_list:
+            final_list = []
+            for gcode in gcode_list:
+                final_list += gcode.split('\n')
+            self.sendGCodeByPort(serial_port, gcode_list)
+
     ## Get a list of printer connection objects that are connected.
     def getActiveConnections(self):
         return [connection for connection in self._printer_connections if connection.isConnected()]

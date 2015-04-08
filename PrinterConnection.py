@@ -93,7 +93,7 @@ class PrinterConnection(SignalEmitter):
             return
         self._gcode = gcode_list
         #Reset line number. If this is not done, first line is sometimes ignored
-        self._gcode.insert(0,"M110 N0") 
+        self._gcode.insert(0, "M110")
         self._gcode_position = 0
         self._print_start_time_100 = None
         self._is_printing = True
@@ -150,8 +150,7 @@ class PrinterConnection(SignalEmitter):
                         self.setIsConnected(True)
                         return 
         self.setIsConnected(False)
-    
-    
+
     ##  Set the baud rate of the serial. This can cause exceptions, but we simply want to ignore those.
     def setBaudRate(self, baud_rate):
         try:
@@ -159,9 +158,7 @@ class PrinterConnection(SignalEmitter):
             return True
         except Exception as e:
             return False
-    
-    
-    
+
     def setIsConnected(self, state):
         self._is_connecting = False
         if self._is_connected != state:
@@ -358,4 +355,3 @@ class PrinterConnection(SignalEmitter):
                 #ret.remove(prev)
                 #ret.insert(0, prev)
         return ret
-            
