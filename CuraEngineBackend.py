@@ -105,7 +105,11 @@ class CuraEngineBackend(Backend):
         if self._slicing:
             self._slicing = False
             self._restart = True
-            self._process.terminate()
+            if self._process is not None:
+                try:
+                    self._process.terminate()
+                except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                    pass
             return
 
         objects = []
