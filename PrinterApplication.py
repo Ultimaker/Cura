@@ -92,9 +92,9 @@ class PrinterApplication(QtApplication):
         self.getRenderer().setBackgroundColor(QColor(246, 246, 246))
 
         camera = Camera('3d', root)
-        camera.translate(Vector(-150, 150, 300))
+        camera.setPosition(Vector(-150, 150, 300))
         camera.setPerspective(True)
-        camera.lookAt(Vector(0, 0, 0), Vector(0, 1, 0))
+        camera.lookAt(Vector(0, 0, 0))
 
         self._camera_animation = CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool('CameraTool'))
