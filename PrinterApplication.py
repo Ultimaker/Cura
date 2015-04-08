@@ -89,7 +89,7 @@ class PrinterApplication(QtApplication):
         self._volume = BuildVolume(root)
 
         self.getRenderer().setLightPosition(Vector(0, 150, 0))
-        self.getRenderer().setBackgroundColor(QColor(246, 246, 246))
+        self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         camera = Camera('3d', root)
         camera.setPosition(Vector(-150, 150, 300))
