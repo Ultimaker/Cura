@@ -138,7 +138,7 @@ class CuraEngineBackend(Backend):
         for object in objects:
             center += object.getPosition()
 
-            meshData = object.getMeshData().getTransformed(object.getGlobalTransformation())
+            meshData = object.getMeshData().getTransformed(object.getWorldTransformation())
 
             obj = msg.objects.add()
             obj.id = id(object)
