@@ -129,7 +129,7 @@ class PrinterApplication(QtApplication):
                 self.getController().setActiveTool('TranslateTool')
 
             self._camera_animation.setStart(self.getController().getTool('CameraTool').getOrigin())
-            self._camera_animation.setTarget(Selection.getSelectedObject(0).getGlobalPosition())
+            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
