@@ -1,11 +1,8 @@
 from UM.Job import Job
 from UM.Application import Application
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.SceneNode import SceneNode
 
-import os
 
-class ProcessGCodeJob(Job):
+class ProcessGCodeLayerJob(Job):
     def __init__(self, message):
         super().__init__()
 
@@ -13,19 +10,4 @@ class ProcessGCodeJob(Job):
         self._message = message
 
     def run(self):
-        objectIdMap = {}
-        for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is SceneNode and node.getMeshData():
-                objectIdMap[id(node)] = node
-
-        if self._message.id in objectIdMap:
-            try:
-                node = objectIdMap[self._message.id]
-            except KeyError:
-                return
-
-            with open(self._message.filename) as f:
-                data = f.read(None)
-                setattr(node.getMeshData(), 'gcode', data)
-
-        os.remove(self._message.filename)
+        self._scene.gcode_list.append(self._message.data.decode('utf-8', 'replace'))

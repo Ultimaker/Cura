@@ -20,7 +20,7 @@ class CuraEngineBackend(Backend):
     def __init__(self):
         super().__init__()
 
-        Preferences.getInstance().addPreference('backend/location', '../PinkUnicornEngine/CuraEngine')
+        Preferences.getInstance().addPreference('backend/location', 'C:/Software/Cura_PinkUnicornEngine/_bin/Debug/Cura_SteamEngine.exe')
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
@@ -36,7 +36,7 @@ class CuraEngineBackend(Backend):
 
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
-        self._message_handlers[Cura_pb2.GCode] = self._onGCodeMessage
+        self._message_handlers[Cura_pb2.GCodeLayer] = self._onGCodeLayerMessage
         self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
 
         self._center = None
@@ -78,8 +78,8 @@ class CuraEngineBackend(Backend):
             self._slicing = False
         self.processingProgress.emit(message.amount)
 
-    def _onGCodeMessage(self, message):
-        job = ProcessGCodeJob.ProcessGCodeJob(message)
+    def _onGCodeLayerMessage(self, message):
+        job = ProcessGCodeJob.ProcessGCodeLayerJob(message)
         job.start()
 
     def _onObjectPrintTimeMessage(self, message):
@@ -91,7 +91,7 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(1, Cura_pb2.ObjectList)
         self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
         self._socket.registerMessageType(3, Cura_pb2.Progress)
-        self._socket.registerMessageType(4, Cura_pb2.GCode)
+        self._socket.registerMessageType(4, Cura_pb2.GCodeLayer)
         self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
         self._socket.registerMessageType(6, Cura_pb2.SettingList)
 
@@ -122,6 +122,10 @@ class CuraEngineBackend(Backend):
         self._sendSettings()
 
         self._scene.acquireLock()
+        # Set the gcode as an empty list. This will be filled with strings by GCodeLayer messages.
+        # This is done so the gcode can be fragmented in memory and does not need a continues memory space.
+        # (AKA. This prevents MemoryErrors)
+        setattr(self._scene, 'gcode_list', [])
 
         msg = Cura_pb2.ObjectList()
 

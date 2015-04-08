@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='Cura.proto',
   package='Cura',
-  serialized_pb=_b('\n\nCura.proto\x12\x04\x43ura\"+\n\nObjectList\x12\x1d\n\x07objects\x18\x01 \x03(\x0b\x32\x0c.Cura.Object\"H\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"7\n\x10SlicedObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.Cura.SlicedObject\"7\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x1b\n\x06layers\x18\x02 \x03(\x0b\x32\x0b.Cura.Layer\"4\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x1f\n\x08polygons\x18\x02 \x03(\x0b\x32\r.Cura.Polygon\"\x9f\x01\n\x07Polygon\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.Cura.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\"b\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\"%\n\x05GCode\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08\x66ilename\x18\x02 \x01(\t\"+\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\".\n\x0bSettingList\x12\x1f\n\x08settings\x18\x01 \x03(\x0b\x32\r.Cura.Setting\"&\n\x07Setting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x62\x06proto3')
+  serialized_pb=_b('\n\nCura.proto\x12\x04\x43ura\"+\n\nObjectList\x12\x1d\n\x07objects\x18\x01 \x03(\x0b\x32\x0c.Cura.Object\"H\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"7\n\x10SlicedObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.Cura.SlicedObject\"7\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x1b\n\x06layers\x18\x02 \x03(\x0b\x32\x0b.Cura.Layer\"4\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x1f\n\x08polygons\x18\x02 \x03(\x0b\x32\r.Cura.Polygon\"\x9f\x01\n\x07Polygon\x12 \n\x04type\x18\x01 \x01(\x0e\x32\x12.Cura.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\"b\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\"&\n\nGCodeLayer\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"+\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\".\n\x0bSettingList\x12\x1f\n\x08settings\x18\x01 \x03(\x0b\x32\r.Cura.Setting\"&\n\x07Setting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -316,24 +316,24 @@ _POLYGON = _descriptor.Descriptor(
 )
 
 
-_GCODE = _descriptor.Descriptor(
-  name='GCode',
-  full_name='Cura.GCode',
+_GCODELAYER = _descriptor.Descriptor(
+  name='GCodeLayer',
+  full_name='Cura.GCodeLayer',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='id', full_name='Cura.GCode.id', index=0,
+      name='id', full_name='Cura.GCodeLayer.id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='filename', full_name='Cura.GCode.filename', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
+      name='data', full_name='Cura.GCodeLayer.data', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -349,7 +349,7 @@ _GCODE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=497,
-  serialized_end=534,
+  serialized_end=535,
 )
 
 
@@ -385,8 +385,8 @@ _OBJECTPRINTTIME = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=536,
-  serialized_end=579,
+  serialized_start=537,
+  serialized_end=580,
 )
 
 
@@ -415,8 +415,8 @@ _SETTINGLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=581,
-  serialized_end=627,
+  serialized_start=582,
+  serialized_end=628,
 )
 
 
@@ -452,8 +452,8 @@ _SETTING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=629,
-  serialized_end=667,
+  serialized_start=630,
+  serialized_end=668,
 )
 
 _OBJECTLIST.fields_by_name['objects'].message_type = _OBJECT
@@ -470,7 +470,7 @@ DESCRIPTOR.message_types_by_name['SlicedObjectList'] = _SLICEDOBJECTLIST
 DESCRIPTOR.message_types_by_name['SlicedObject'] = _SLICEDOBJECT
 DESCRIPTOR.message_types_by_name['Layer'] = _LAYER
 DESCRIPTOR.message_types_by_name['Polygon'] = _POLYGON
-DESCRIPTOR.message_types_by_name['GCode'] = _GCODE
+DESCRIPTOR.message_types_by_name['GCodeLayer'] = _GCODELAYER
 DESCRIPTOR.message_types_by_name['ObjectPrintTime'] = _OBJECTPRINTTIME
 DESCRIPTOR.message_types_by_name['SettingList'] = _SETTINGLIST
 DESCRIPTOR.message_types_by_name['Setting'] = _SETTING
@@ -524,12 +524,12 @@ Polygon = _reflection.GeneratedProtocolMessageType('Polygon', (_message.Message,
   ))
 _sym_db.RegisterMessage(Polygon)
 
-GCode = _reflection.GeneratedProtocolMessageType('GCode', (_message.Message,), dict(
-  DESCRIPTOR = _GCODE,
+GCodeLayer = _reflection.GeneratedProtocolMessageType('GCodeLayer', (_message.Message,), dict(
+  DESCRIPTOR = _GCODELAYER,
   __module__ = 'Cura_pb2'
-  # @@protoc_insertion_point(class_scope:Cura.GCode)
+  # @@protoc_insertion_point(class_scope:Cura.GCodeLayer)
   ))
-_sym_db.RegisterMessage(GCode)
+_sym_db.RegisterMessage(GCodeLayer)
 
 ObjectPrintTime = _reflection.GeneratedProtocolMessageType('ObjectPrintTime', (_message.Message,), dict(
   DESCRIPTOR = _OBJECTPRINTTIME,
