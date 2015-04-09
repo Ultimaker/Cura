@@ -467,6 +467,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnViewStateChange(self, state):
 		self._engineResultView.layerSelect.setHidden(self.viewMode != 'gcode' or state)
+		self._engineResultView.singleLayerToggle.setHidden(self.viewMode != 'gcode' or state)
 
 	def OnRotateReset(self, button):
 		if self._selectedObj is None:
