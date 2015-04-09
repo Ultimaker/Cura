@@ -55,3 +55,4 @@ for site_package in site.getsitepackages():
 		shutil.copytree(os.path.join(qt_origin_path, 'qml/QtQuick.2'), 'dist/qml/QtQuick.2')
 		print('Coping PyQt5 svg library from: %s' % qt_origin_path)
 		shutil.copy(os.path.join(qt_origin_path, 'Qt5Svg.dll'), 'dist/Qt5Svg.dll')
+os.rename('dist/printer.exe', 'dist/Cura.exe')
