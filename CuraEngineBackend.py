@@ -20,7 +20,7 @@ class CuraEngineBackend(Backend):
     def __init__(self):
         super().__init__()
 
-        Preferences.getInstance().addPreference('backend/location', 'C:/Software/Cura_PinkUnicornEngine/_bin/Debug/Cura_SteamEngine.exe')
+        Preferences.getInstance().addPreference('backend/location', '../PinkUnicornEngine/CuraEngine')
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
