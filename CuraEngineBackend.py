@@ -10,8 +10,8 @@ from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
 from . import ProcessGCodeJob
 
-import threading
-import struct
+import os
+import sys
 import numpy
 
 from PyQt5.QtCore import QTimer
@@ -20,7 +20,14 @@ class CuraEngineBackend(Backend):
     def __init__(self):
         super().__init__()
 
-        Preferences.getInstance().addPreference('backend/location', '../PinkUnicornEngine/CuraEngine')
+        # Find out where the engine is located, and how it is called. This depends on how Cura is packaged and which OS we are running on.
+        default_engine_location = '../PinkUnicornEngine/CuraEngine'
+        if hasattr(sys, 'frozen'):
+            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), 'CuraEngine')
+        if sys.platform == 'win32':
+            default_engine_location += '.exe'
+        default_engine_location = os.path.abspath(default_engine_location)
+        Preferences.getInstance().addPreference('backend/location', default_engine_location)
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
