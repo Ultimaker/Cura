@@ -119,9 +119,7 @@ class PrinterConnection(SignalEmitter):
         programmer = stk500v2.Stk500v2()    
         try:
             programmer.connect(self._serial_port) #Connect with the serial, if this succeeds, it's an arduino based usb device.
-            self._serial = programmer.leaveISP() 
-            # Create new printer connection
-            Logger.log('i', "Established connection on port %s" % self._serial_port)
+            self._serial = programmer.leaveISP()    
         except ispBase.IspError as e:
             Logger.log('i', "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except:
@@ -150,6 +148,7 @@ class PrinterConnection(SignalEmitter):
                     if sucesfull_responses >= self._required_responses_auto_baud:
                         self._serial.timeout = 2 #Reset serial timeout
                         self.setIsConnected(True)
+                        Logger.log('i', "Established connection on port %s" % self._serial_port)
                         return 
         self.setIsConnected(False)
 
@@ -223,9 +222,11 @@ class PrinterConnection(SignalEmitter):
                 self._serial.write((cmd + '\n').encode())
             except Exception as e:
                 Logger.log("e","Unexpected error while writing serial port %s " % e)
+                self._setErrorState("Unexpected error while writing serial port %s " % e)
                 self.close()
         except Exception as e:
             Logger.log('e',"Unexpected error while writing serial port %s" % e)
+            self._setErrorState("Unexpected error while writing serial port %s " % e)
             self.close()
     
     ##  Ensure that close gets called when object is destroyed
@@ -239,6 +240,28 @@ class PrinterConnection(SignalEmitter):
             self._command_queue.put(cmd)
         elif self.isConnected():
             self._sendCommand(cmd)
+    
+    def _setErrorState(self, error):
+        self._error_state = error
+        self.onError.emit(error)
+    
+    onError = Signal()
+    
+    def _setExtruderTemperature(self, index, temperature):
+        try: 
+            self._extruder_temperatures[index] = temperature
+            self.onExtruderTemperatureChange.emit(self._serial_port,index,temperature)
+        except:
+            pass
+    
+    onExtruderTemperatureChange = Signal()
+    
+    def _setBedTemperature(self, temperature):
+        self._bed_temperature = temperature
+        self.onBedTemperatureChange.emit(self._serial_port,temperature)
+        
+    onBedTemperatureChange = Signal()
+        
     
     ##  Listen thread function. 
     def _listen(self):
@@ -258,16 +281,19 @@ class PrinterConnection(SignalEmitter):
                 #Skip the communication errors, as those get corrected.
                 if b'Extruder switched off' in line or b'Temperature heated bed switched off' in line or b'Something is wrong, please turn off the printer.' in line:
                     if not self.hasError():
-                        self._error_state = line[6:]
+                        self._setErrorState(line[6:])
+                        #self._error_state = line[6:]
             elif b' T:' in line or line.startswith(b'T:'): #Temperature message
                 try: 
-                    self._extruder_temperatures[self._temperatureRequestExtruder] = float(re.search(b"T: *([0-9\.]*)", line).group(1))
+                    self._setExtruderTemperature(self._temperature_requested_extruder_index,float(re.search(b"T: *([0-9\.]*)", line).group(1)))
+                    #self._extruder_temperatures[self._temperature_requested_extruder_index] = float(re.search(b"T: *([0-9\.]*)", line).group(1))
                 except:
                     pass
                 if b'B:' in line: #Check if it's a bed temperature
                     try:
+                        self._setBedTemperature(float(re.search(b"B: *([0-9\.]*)", line).group(1)))
                         #print("BED TEMPERATURE" ,float(re.search(b"B: *([0-9\.]*)", line).group(1)))
-                        pass
+
                     except:
                         pass
                 #TODO: temperature changed callback
@@ -323,6 +349,7 @@ class PrinterConnection(SignalEmitter):
                     self._current_z = z
         except Exception as e:
             Logger.log('e', "Unexpected error: %s" % e)
+            self._setErrorState("Unexpected error: %s" %e)
         checksum = functools.reduce(lambda x,y: x^y, map(ord, 'N%d%s' % (self._gcode_position, line)))
         
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
@@ -354,7 +381,8 @@ class PrinterConnection(SignalEmitter):
         try:
             ret = self._serial.readline()
         except:
-            Logger.log('e',"Unexpected error while reading serial port.")    
+            Logger.log('e',"Unexpected error while reading serial port.")
+            self._setErrorState("Printer has been disconnected") 
             #self._errorValue = getExceptionString()
             self.close()
             return None

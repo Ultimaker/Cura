@@ -6,10 +6,21 @@ Rectangle
     width: 300; height: 100
     ColumnLayout 
     {
-        Text 
+        RowLayout 
         {
-            text: "Hello world!"
-            color: "blue"
+            Text 
+            {
+                text: "extruder temperature " + manager.extruderTemperature
+            }
+            Text 
+            {
+                text: "bed temperature " + manager.bedTemperature
+            }
+            Text 
+            {
+                text: "" + manager.error
+            }
+        
         }
         RowLayout 
         {
@@ -17,11 +28,13 @@ Rectangle
             {
                 text: "Print"  
                 onClicked: { manager.startPrint() }
+                enabled: manager.progress == 0 ? true : false
             }
             Button
             {
                 text: "Cancel" 
                 onClicked: { manager.cancelPrint() }
+                enabled: manager.progress == 0 ? false:  true
             }
         }
         ProgressBar 

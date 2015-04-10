@@ -22,15 +22,13 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
         self._check_ports_thread.daemon = True
         self._check_ports_thread.start()
         
-        self._progress = 50
-
+        self._progress = 0
         
-        ## DEBUG CODE
-        self.view = QQuickView()
-        self.view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
-        self.view.show()
-        self.view.engine().rootContext().setContextProperty('manager',self)
         
+        self.view = None
+        self._extruder_temp = 0
+        self._bed_temp = 0
+        self._error_message = "" 
         #time.sleep(1)
         #self.connectAllConnections()
         #time.sleep(5)
@@ -42,27 +40,37 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
         #print("sending heat " , self.sendCommandToAllActive("M104 S190"))
         
     
-    #def spawnInterface(self):
-        #view = QQuickView()
-        #view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
-        #view.show()
-    
-    ##  Check all serial ports and create a PrinterConnection object for them.
-    #   Note that this does not validate if the serial ports are actually usable!
-    #   This is only done when the connect function is called.
-    
+    def spawnInterface(self,serial_port):
+        if self.view is None:
+            self.view = QQuickView()
+            self.view.engine().rootContext().setContextProperty('manager',self)
+            self.view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
+            self.view.show()
+            
     
     processingProgress = pyqtSignal(float, arguments = ['amount'])
-    #@pyqtProperty(float, notify = processingProgress)
     @pyqtProperty(float,notify = processingProgress)
     def progress(self):
         return self._progress
     
-    @pyqtSlot()
-    def test(self):
-        print("derp")
+    pyqtExtruderTemperature = pyqtSignal(float, arguments = ['amount'])
+    @pyqtProperty(float,notify = pyqtExtruderTemperature)
+    def extruderTemperature(self):
+        return self._extruder_temp
     
+    pyqtBedTemperature = pyqtSignal(float, arguments = ['amount'])
+    @pyqtProperty(float,notify = pyqtBedTemperature)
+    def bedTemperature(self):
+        return self._bed_temp
     
+    pyqtError = pyqtSignal(str, arguments = ['amount'])
+    @pyqtProperty(str,notify = pyqtError)
+    def error(self):
+        return self._error_message
+    
+    ##  Check all serial ports and create a PrinterConnection object for them.
+    #   Note that this does not validate if the serial ports are actually usable!
+    #   This (the validation) is only done when the connect function is called.
     def _updateConnectionList(self):  
         while True: 
             temp_serial_port_list = self.getSerialPortList(only_list_usb = True)
@@ -76,6 +84,9 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
                             connection.connect()
                             connection.connectionStateChanged.connect(self.serialConectionStateCallback)
                             connection.progressChanged.connect(self.onProgress)
+                            connection.onExtruderTemperatureChange.connect(self.onExtruderTemperature)
+                            connection.onBedTemperatureChange.connect(self.onBedTemperature)
+                            connection.onError.connect(self.onError)
                             self._printer_connections.append(connection)
                 
                 for serial_port in disconnected_ports: # Close connections and remove them from list.
@@ -84,6 +95,24 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
                         self._printer_connections.remove(connection)
                         connection.close()
             time.sleep(5) #Throttle, as we don't need this information to be updated every single second.        
+    
+    def onExtruderTemperature(self, serial_port, index,temperature):
+        #print("ExtruderTemperature " , serial_port, " " , index, " " , temperature)
+        self._extruder_temp = temperature
+        self.pyqtExtruderTemperature.emit(temperature)
+        
+        pass
+    
+    def onBedTemperature(self, serial_port,temperature):
+        self._bed_temperature = temperature
+        self.pyqtBedTemperature.emit(temperature)
+        #print("bedTemperature " , serial_port, " "  , temperature)
+        pass
+    
+    def onError(self, error):
+        self._error_message = error
+        self.pyqtError.emit(error)
+        pass
     
     def onProgress(self, progress, serial_port):
         self._progress = progress
@@ -102,6 +131,7 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
             printer_connection.printGCode(gcode_list)
             return True
         return False
+    
     @pyqtSlot()
     def cancelPrint(self):
         for printer_connection in self.getActiveConnections():
@@ -145,21 +175,30 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
         if connection.isConnected():
             Application.getInstance().addOutputDevice(serial_port, {
                 'id': serial_port,
-                'function': self._writeToSerial,
+                'function': self.spawnInterface,
                 'description': 'Write to USB {0}'.format(serial_port),
                 'icon': 'print_usb',
                 'priority': 1
             })
         else:
             Application.getInstance().removeOutputDevice(serial_port)
-
-    def _writeToSerial(self, serial_port):
+    
+    '''def _writeToSerial(self, serial_port):
         gcode_list = getattr(Application.getInstance().getController().getScene(), 'gcode_list', None)
         if gcode_list:
             final_list = []
             for gcode in gcode_list:
                 final_list += gcode.split('\n')
-            self.sendGCodeByPort(serial_port, gcode_list)
+            self.sendGCodeByPort(serial_port, gcode_list)'''
+    @pyqtSlot()        
+    def startPrint(self):
+        gcode_list = getattr(Application.getInstance().getController().getScene(), 'gcode_list', None)
+        if gcode_list:
+            final_list = []
+            for gcode in gcode_list:
+                final_list += gcode.split('\n')
+            self.sendGCodeToAllActive(gcode_list)
+    
 
     ## Get a list of printer connection objects that are connected.
     def getActiveConnections(self):
