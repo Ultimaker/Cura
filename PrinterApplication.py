@@ -250,10 +250,10 @@ class PrinterApplication(QtApplication):
 
                 for area in disallowed_areas:
                     polygon = []
-                    polygon.append(Vector(area[0][0], 0.1, area[0][1]))
-                    polygon.append(Vector(area[1][0], 0.1, area[1][1]))
-                    polygon.append(Vector(area[2][0], 0.1, area[2][1]))
-                    polygon.append(Vector(area[3][0], 0.1, area[3][1]))
+                    polygon.append(Vector(area[0][0], 0.2, area[0][1]))
+                    polygon.append(Vector(area[1][0], 0.2, area[1][1]))
+                    polygon.append(Vector(area[2][0], 0.2, area[2][1]))
+                    polygon.append(Vector(area[3][0], 0.2, area[3][1]))
                     areas.append(polygon)
             self._volume.setDisallowedAreas(areas)
 
