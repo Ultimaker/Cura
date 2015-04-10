@@ -10,16 +10,27 @@ import glob
 import time
 import os
 
-class USBPrinterManager(SignalEmitter,PluginObject):
-    def __init__(self):
-        super().__init__()
+from PyQt5.QtQuick import QQuickView
+from PyQt5.QtCore import QUrl, QObject,pyqtSlot , pyqtProperty,pyqtSignal
+
+class USBPrinterManager(QObject, SignalEmitter,PluginObject):
+    def __init__(self, parent = None):
+        super().__init__(parent)
         self._serial_port_list = []
         self._printer_connections = []
         self._check_ports_thread = threading.Thread(target=self._updateConnectionList)
         self._check_ports_thread.daemon = True
         self._check_ports_thread.start()
         
+        self._progress = 50
+
+        
         ## DEBUG CODE
+        self.view = QQuickView()
+        self.view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
+        self.view.show()
+        self.view.engine().rootContext().setContextProperty('manager',self)
+        
         #time.sleep(1)
         #self.connectAllConnections()
         #time.sleep(5)
@@ -31,9 +42,27 @@ class USBPrinterManager(SignalEmitter,PluginObject):
         #print("sending heat " , self.sendCommandToAllActive("M104 S190"))
         
     
+    #def spawnInterface(self):
+        #view = QQuickView()
+        #view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
+        #view.show()
+    
     ##  Check all serial ports and create a PrinterConnection object for them.
     #   Note that this does not validate if the serial ports are actually usable!
     #   This is only done when the connect function is called.
+    
+    
+    processingProgress = pyqtSignal(float, arguments = ['amount'])
+    #@pyqtProperty(float, notify = processingProgress)
+    @pyqtProperty(float,notify = processingProgress)
+    def progress(self):
+        return self._progress
+    
+    @pyqtSlot()
+    def test(self):
+        print("derp")
+    
+    
     def _updateConnectionList(self):  
         while True: 
             temp_serial_port_list = self.getSerialPortList(only_list_usb = True)
@@ -46,6 +75,7 @@ class USBPrinterManager(SignalEmitter,PluginObject):
                             connection = PrinterConnection.PrinterConnection(serial_port)
                             connection.connect()
                             connection.connectionStateChanged.connect(self.serialConectionStateCallback)
+                            connection.progressChanged.connect(self.onProgress)
                             self._printer_connections.append(connection)
                 
                 for serial_port in disconnected_ports: # Close connections and remove them from list.
@@ -54,6 +84,11 @@ class USBPrinterManager(SignalEmitter,PluginObject):
                         self._printer_connections.remove(connection)
                         connection.close()
             time.sleep(5) #Throttle, as we don't need this information to be updated every single second.        
+    
+    def onProgress(self, progress, serial_port):
+        self._progress = progress
+        self.processingProgress.emit(progress)
+        pass
     
     ##  Attempt to connect with all possible connections. 
     def connectAllConnections(self):
@@ -67,6 +102,10 @@ class USBPrinterManager(SignalEmitter,PluginObject):
             printer_connection.printGCode(gcode_list)
             return True
         return False
+    @pyqtSlot()
+    def cancelPrint(self):
+        for printer_connection in self.getActiveConnections():
+            printer_connection.cancelPrint()
     
     ##  Send gcode to all active printers.
     #   \return True if there was at least one active connection.
@@ -103,17 +142,27 @@ class USBPrinterManager(SignalEmitter,PluginObject):
         
     def serialConectionStateCallback(self,serial_port):
         connection = self.getConnectionByPort(serial_port)
-        if connection.isConnected():
-            Application.getInstance().addOutputDevice(serial_port, {
-                'id': serial_port,
-                'function': self._writeToSerial,
-                'description': 'Write to USB {0}'.format(serial_port),
-                'icon': 'print_usb',
-                'priority': 1
-            })
-        else:
-            Application.getInstance().removeOutputDevice(serial_port)
+        if connection is not None:
+            if connection.isConnected():
+                Application.getInstance().addOutputDevice(serial_port, {
+                    'id': serial_port,
+                    'function': self._writeToSerial,
+                    'description': 'Write to USB {0}'.format(serial_port),
+                    'icon': 'print_usb',
+                    'priority': 1
+                })
+            else:
+                Application.getInstance().removeOutputDevice(serial_port)
+    
+    
     def _writeToSerial(self, serial_port):
+        ## Create USB control window
+        #self.view = QQuickView()
+        #self.view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
+        #self.view.show()
+        
+        #self.view.engine().rootContext().setContextProperty('manager',self)
+        
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue

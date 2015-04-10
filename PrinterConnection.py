@@ -32,6 +32,8 @@ class PrinterConnection(SignalEmitter):
         # response. If the baudrate is correct, this should make sense, else we get giberish.
         self._required_responses_auto_baud = 10
         
+        self._progress = 0
+        
         self._listen_thread = threading.Thread(target=self._listen)
         self._listen_thread.daemon = True
         
@@ -327,7 +329,24 @@ class PrinterConnection(SignalEmitter):
         checksum = functools.reduce(lambda x,y: x^y, map(ord, 'N%d%s' % (self._gcode_position, line)))
         
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
-        self._gcode_position += 1        
+        self._gcode_position += 1 
+        self.setProgress(( self._gcode_position / len(self._gcode)) * 100)
+        self.progressChanged.emit(self._progress, self._serial_port)
+        
+    progressChanged = Signal()
+    
+    def setProgress(self, progress):
+        self._progress = progress
+        self.progressChanged.emit(self._progress, self._serial_port)
+    
+    def cancelPrint(self):
+        self._gcode_position = 0
+        self.setProgress(0)
+        self._gcode = []
+        # Turn of temperatures
+        self._sendCommand("M140 S0")
+        self._sendCommand("M109 S0")
+        self._is_printing = False
                 
     def hasError(self):
         return False    
