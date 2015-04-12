@@ -6,7 +6,7 @@ Section: misc
 Priority: optional
 Architecture: [ARCH]
 Essential: no
-Depends: python-wxgtk2.8, python-opengl, python-serial, python-numpy
+Depends: python-wxgtk2.8 | python-wxgtk3.0, python-opengl, python-serial, python-numpy
 Provides: cura
 Installed-Size: 10000
 Description: Cura is a full software solution for 3D printing,
