@@ -9,6 +9,7 @@ import functools
 
 from UM.Application import Application
 from UM.Signal import Signal, SignalEmitter
+from UM.Resources import Resources
 
 
 class PrinterConnection(SignalEmitter):
@@ -112,6 +113,29 @@ class PrinterConnection(SignalEmitter):
     def connect(self):
         if not self._connect_thread.isAlive():
             self._connect_thread.start()
+            
+            
+    def updateFirmware(self, file_name):
+        if self._is_connecting or  self._is_connected:
+            return False
+
+        hex_file = intelHex.readHex(file_name)
+        if len(hex_file) == 0:
+            Logger.log('e', "Unable to read provided hex file. Could not update firmware")
+            return False
+        programmer = stk500v2.Stk500v2()
+        programmer.connect(self._serial_port)
+        time.sleep(1) #Give programmer some time to connect
+        if not programmer.isConnected():
+            Logger.log('e', "Unable to connect with serial. Could not update firmware")
+            return False
+        try:
+            programmer.programChip(hex_file)
+        except Exception as e:
+            Logger.log("e", "Exception while trying to update firmware" , e)
+            return False
+        programmer.close()
+        return True
     
     ##  Private connect function run by thread. Can be started by calling connect.
     def _connect(self): 
@@ -121,7 +145,7 @@ class PrinterConnection(SignalEmitter):
             programmer.connect(self._serial_port) #Connect with the serial, if this succeeds, it's an arduino based usb device.
             self._serial = programmer.leaveISP()    
         except ispBase.IspError as e:
-            Logger.log('i', "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
+            Logger.log('i', "Could not establish connect        ion on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except:
             Logger.log('i', "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
         
