@@ -165,8 +165,11 @@ class CuraEngineBackend(Backend):
         self._socket.sendMessage(msg)
 
     def _sendSettings(self):
-        self._sendSettings_neith() if self._settings.getSettingValueByKey('wireframe') else self._sendSettings_normal()
-        
+        if self._settings.getSettingValueByKey('wireframe'):
+            self._sendSettings_neith()
+        else:
+            self._sendSettings_normal()
+
     def _sendSettings_neith(self):
         extruder = 0
         
