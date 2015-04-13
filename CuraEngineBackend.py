@@ -164,6 +164,7 @@ class CuraEngineBackend(Backend):
 
         self._socket.sendMessage(msg)
 
+    ## TODO: Neith settings need to be moved to their own backend.
     def _sendSettings(self):
         self._sendSettings_neith() if self._settings.getSettingValueByKey('wireframe') else self._sendSettings_normal()
         
@@ -375,7 +376,6 @@ class CuraEngineBackend(Backend):
             settings['supportType'] = ''
             settings['supportAngle'] = -1
         else:
-            settings['supportType'] = 'LINES'
             settings['supportAngle'] = self._settings.getSettingValueByKey('support_angle')
             settings['supportOnBuildplateOnly'] = 1 if self._settings.getSettingValueByKey('support_type') == 'Touching Buildplate' else 0
             settings['supportLineDistance'] = int(100 * self._settings.getSettingValueByKey('wall_line_width_x') * 1000 / self._settings.getSettingValueByKey('support_fill_rate'))
@@ -389,7 +389,7 @@ class CuraEngineBackend(Backend):
             settings['supportTowerDiameter'] = int(self._settings.getSettingValueByKey('support_tower_diameter') * 1000)
             settings['supportTowerRoofAngle'] = int(self._settings.getSettingValueByKey('support_tower_roof_angle'))
             settings['supportConnectZigZags'] = 1 if self._settings.getSettingValueByKey('support_connect_zigzags') else 0 
-            settings['supportExtruder'] = -1
+            settings['supportExtruder'] = -1 #Not yet implemented
             if self._settings.getSettingValueByKey('support_pattern') == 'Grid':
                 settings['supportType'] = 'GRID'
             elif self._settings.getSettingValueByKey('support_pattern') == 'Lines':
