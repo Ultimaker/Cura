@@ -1,20 +1,21 @@
 from UM.Signal import Signal, SignalEmitter
-from UM.PluginObject import PluginObject
 from . import PrinterConnection
 from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Resources import Resources
 import threading
 import platform
 import glob
 import time
 import os
 import sys
+from UM.Extension import Extension
 
 from PyQt5.QtQuick import QQuickView
 from PyQt5.QtCore import QUrl, QObject,pyqtSlot , pyqtProperty,pyqtSignal
 
-class USBPrinterManager(QObject, SignalEmitter,PluginObject):
+class USBPrinterManager(QObject, SignalEmitter, Extension):
     def __init__(self, parent = None):
         super().__init__(parent)
         self._serial_port_list = []
@@ -30,6 +31,8 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
         self._extruder_temp = 0
         self._bed_temp = 0
         self._error_message = "" 
+        
+        self.addMenuItem("Update firmware", self.updateAllFirmware)
         
         #time.sleep(1)
         #self.connectAllConnections()
@@ -105,7 +108,10 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
         
         pass
     
-    
+    def updateAllFirmware(self):
+        for printer_connection in self._printer_connections:
+            printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+            
     def updateFirmwareBySerial(self, serial_port):
         printer_connection = self.getConnectionByPort(serial_port)
         if printer_connection is not None:

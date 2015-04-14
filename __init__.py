@@ -1,12 +1,12 @@
 from . import USBPrinterManager
 def getMetaData():
     return {
-        'type': 'storage_device',
+        'type': 'extension',
         'plugin': {
-            'name': 'Local File Storage',
+            'name': 'USB printing',
             'author': 'Jaime van Kessel',
             'version': '1.0',
-            'description': 'Accepts G-Code and sends them to a printer. '
+            'description': 'Accepts G-Code and sends them to a printer. Plugin can also update firmware '
         }
     }
 
