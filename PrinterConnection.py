@@ -77,6 +77,8 @@ class PrinterConnection(SignalEmitter):
         # This index is the extruder we requested data from the last time.
         self._temperature_requested_extruder_index = 0 
         
+        self._updating_firmware = False
+        
     #TODO: Might need to add check that extruders can not be changed when it started printing or loading these settings from settings object    
     def setNumExtuders(self, num):
         self._extruder_count = num
@@ -111,10 +113,9 @@ class PrinterConnection(SignalEmitter):
     
     ##  Try to connect the serial. This simply starts the thread, which runs _connect.
     def connect(self):
-        if not self._connect_thread.isAlive():
+        if not self._updating_firmware and not self._connect_thread.isAlive():
             self._connect_thread.start()
-            
-            
+
     def updateFirmware(self, file_name):
         if self._is_connecting or  self._is_connected:
             return False
@@ -124,15 +125,19 @@ class PrinterConnection(SignalEmitter):
             Logger.log('e', "Unable to read provided hex file. Could not update firmware")
             return False
         programmer = stk500v2.Stk500v2()
+        programmer.progressCallback = self.setProgress 
         programmer.connect(self._serial_port)
         time.sleep(1) #Give programmer some time to connect
         if not programmer.isConnected():
             Logger.log('e', "Unable to connect with serial. Could not update firmware")
             return False
+        self._updating_firmware = True
         try:
             programmer.programChip(hex_file)
+            self._updating_firmware = False
         except Exception as e:
             Logger.log("e", "Exception while trying to update firmware" , e)
+            self._updating_firmware = False
             return False
         programmer.close()
         return True
@@ -383,7 +388,7 @@ class PrinterConnection(SignalEmitter):
         
     progressChanged = Signal()
     
-    def setProgress(self, progress):
+    def setProgress(self, progress,max_progress = 100):
         self._progress = progress
         self.progressChanged.emit(self._progress, self._serial_port)
     

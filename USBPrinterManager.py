@@ -9,6 +9,7 @@ import platform
 import glob
 import time
 import os
+import sys
 
 from PyQt5.QtQuick import QQuickView
 from PyQt5.QtCore import QUrl, QObject,pyqtSlot , pyqtProperty,pyqtSignal
@@ -29,6 +30,7 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
         self._extruder_temp = 0
         self._bed_temp = 0
         self._error_message = "" 
+        
         #time.sleep(1)
         #self.connectAllConnections()
         #time.sleep(5)
@@ -103,6 +105,39 @@ class USBPrinterManager(QObject, SignalEmitter,PluginObject):
         
         pass
     
+    
+    def updateFirmwareBySerial(self, serial_port):
+        printer_connection = self.getConnectionByPort(serial_port)
+        if printer_connection is not None:
+            printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+        
+    def _getDefaultFirmwareName(self):
+        machine_type = Application.getInstance().getActiveMachine().getTypeID()
+        firmware_name = ""
+        baudrate = 250000
+        if sys.platform.startswith('linux'):
+                baudrate = 115200
+        if machine_type == "ultimaker_original":
+            firmware_name = 'MarlinUltimaker'
+            firmware_name += '-%d' % (baudrate)    
+        elif machine_type == "ultimaker_original_plus":
+            firmware_name = 'MarlinUltimaker-UMOP-%d' % (baudrate)
+        elif machine_type == "Witbox":
+            return "MarlinWitbox.hex"
+        elif machine_type == "ultimaker2go":
+            return "MarlinUltimaker2go.hex"
+        elif machine_type == "ultimaker2extended":
+            return "MarlinUltimaker2extended.hex"
+        elif machine_type == "ultimaker2":
+            return "MarlinUltimaker2.hex"
+
+        
+        ##TODO: Add check for multiple extruders
+        
+        if firmware_name != "":
+            firmware_name += ".hex"
+        return firmware_name
+
     def onBedTemperature(self, serial_port,temperature):
         self._bed_temperature = temperature
         self.pyqtBedTemperature.emit(temperature)
