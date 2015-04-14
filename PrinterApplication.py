@@ -64,6 +64,7 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "mesh_writer" })
         self._plugin_registry.loadPlugins({ "type": "tool" })
 
+        self._plugin_registry.loadPlugin('USBPrinting')
         self._plugin_registry.loadPlugin('CuraEngineBackend')
 
     def run(self):

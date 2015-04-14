@@ -73,11 +73,36 @@ UM.MainWindow {
             }
 
             Menu {
+                id:extension_menu
                 //: Extensions menu
                 title: qsTr("E&xtensions");
 
-                //: Empty extensions menu
-                MenuItem { text: qsTr("No extensions loaded"); enabled: false; }
+                Instantiator 
+                {
+                    model: UM.Models.extensionModel
+                    id: blub
+                    
+                    Menu
+                    {
+                        title: model.name;
+                        id: sub_menu
+                        Instantiator
+                        {
+                            model: actions
+                            MenuItem 
+                            {
+                                text:model.text
+                                onTriggered: UM.Models.extensionModel.subMenuTriggered(name,model.text)
+                            }
+                            onObjectAdded: sub_menu.insertItem(index, object)
+                            onObjectRemoved: sub_menu.removeItem(object)
+                            
+                        }
+       
+                    }
+                    onObjectAdded: extension_menu.insertItem(index, object)
+                    onObjectRemoved: extension_menu.removeItem(object)
+                }
             }
 
             Menu {
