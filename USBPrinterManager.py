@@ -15,6 +15,10 @@ from UM.Extension import Extension
 from PyQt5.QtQuick import QQuickView
 from PyQt5.QtCore import QUrl, QObject,pyqtSlot , pyqtProperty,pyqtSignal
 
+from UM.i18n import i18nCatalog
+
+i18n_catalog = i18nCatalog('plugins')
+
 class USBPrinterManager(QObject, SignalEmitter, Extension):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -32,7 +36,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         self._bed_temp = 0
         self._error_message = "" 
         
-        self.addMenuItem("Update firmware", self.updateAllFirmware)
+        self.addMenuItem(i18n_catalog.i18n("Update firmware"), self.updateAllFirmware)
         
         #time.sleep(1)
         #self.connectAllConnections()
