@@ -43,7 +43,7 @@ Column {
                     model: ListModel {
                         id: modeModel;
                         ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
-                        ListElement { text: QT_TR_NOOP("Advanced"); file: "../../UM/Qt/qml/UM/SettingView.qml" }
+                        ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
                     }
 
                     MenuItem {
