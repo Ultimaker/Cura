@@ -143,7 +143,7 @@ UM.MainWindow {
                 }
             }
 
-            UM.Sidebar {
+            Sidebar {
                 id: sidebar;
 
                 anchors {
