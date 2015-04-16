@@ -261,6 +261,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     def getSerialPortList(self,only_list_usb=False):
         base_list=[]
         if platform.system() == "Windows":
+            import _winreg
             try:
                 key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
                 i=0
