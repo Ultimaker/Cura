@@ -10,6 +10,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.WriteMeshJob import WriteMeshJob
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
+from UM.Preferences import Preferences
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -56,6 +57,9 @@ class PrinterApplication(QtApplication):
             }
         }
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
+
+        Preferences.getInstance().addPreference('cura/active_machine', '')
+        Preferences.getInstance().addPreference('cura/active_mode', 'simple')
     
     def _loadPlugins(self):
         self._plugin_registry.loadPlugins({ "type": "logger"})
@@ -110,9 +114,15 @@ class PrinterApplication(QtApplication):
 
         self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
 
-        #TODO: Add support for active machine preference
         if self.getMachines():
-            self.setActiveMachine(self.getMachines()[0])
+            active_machine_pref = Preferences.getInstance().getValue('cura/active_machine')
+            if active_machine_pref:
+                for machine in self.getMachines():
+                    if machine.getName() == active_machine_pref:
+                        self.setActiveMachine(machine)
+
+            if not self.getActiveMachine():
+                self.setActiveMachine(self.getMachines()[0])
         else:
             self.requestAddPrinter.emit()
 
@@ -251,6 +261,8 @@ class PrinterApplication(QtApplication):
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
         if machine:
+            Preferences.getInstance().setValue('cura/active_machine', machine.getName())
+
             self._volume.setWidth(machine.getSettingValueByKey('machine_width'))
             self._volume.setHeight(machine.getSettingValueByKey('machine_height'))
             self._volume.setDepth(machine.getSettingValueByKey('machine_depth'))

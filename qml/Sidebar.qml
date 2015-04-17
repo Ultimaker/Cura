@@ -49,6 +49,15 @@ UM.AngledCornerRectangle {
             addMachineAction: base.addMachineAction;
             configureMachinesAction: base.configureMachinesAction;
             modesModel: modesListModel;
+
+            currentModeIndex: {
+                var index = parseInt(UM.Preferences.getValue('cura/active_mode'))
+                if(index) {
+                    return index;
+                }
+                return 0;
+            }
+            onCurrentModeIndexChanged: UM.Preferences.setValue('cura/active_mode', currentModeIndex);
         }
 
         Loader {
