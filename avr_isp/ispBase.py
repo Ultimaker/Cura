@@ -26,6 +26,7 @@ class IspBase():
         self.writeFlash(flashData)
         print("Verifying %i bytes" % len(flashData))
         self.verifyFlash(flashData)
+        print("Completed")
 
     def getSignature(self):
         """

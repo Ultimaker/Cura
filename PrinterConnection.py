@@ -38,6 +38,9 @@ class PrinterConnection(SignalEmitter):
         self._listen_thread = threading.Thread(target=self._listen)
         self._listen_thread.daemon = True
         
+        self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
+        self._update_firmware_thread.demon = True
+        
         self._heatup_wait_start_time = time.time()
         
         ## Queue for commands that need to be send. Used when command is sent when a print is active.
@@ -79,6 +82,8 @@ class PrinterConnection(SignalEmitter):
         
         self._updating_firmware = False
         
+        self._firmware_file_name = None
+        
     #TODO: Might need to add check that extruders can not be changed when it started printing or loading these settings from settings object    
     def setNumExtuders(self, num):
         self._extruder_count = num
@@ -116,20 +121,20 @@ class PrinterConnection(SignalEmitter):
         if not self._updating_firmware and not self._connect_thread.isAlive():
             self._connect_thread.start()
 
-    def updateFirmware(self, file_name):
+    def _updateFirmware(self):
         if self._is_connecting or  self._is_connected:
             self.close()
-        hex_file = intelHex.readHex(file_name)
+        hex_file = intelHex.readHex(self._firmware_file_name)
         if len(hex_file) == 0:
             Logger.log('e', "Unable to read provided hex file. Could not update firmware")
-            return False
+            return 
         programmer = stk500v2.Stk500v2()
         programmer.progressCallback = self.setProgress 
         programmer.connect(self._serial_port)
         time.sleep(1) #Give programmer some time to connect
         if not programmer.isConnected():
             Logger.log('e', "Unable to connect with serial. Could not update firmware")
-            return False
+            return 
         self._updating_firmware = True
         try:
             programmer.programChip(hex_file)
@@ -137,9 +142,14 @@ class PrinterConnection(SignalEmitter):
         except Exception as e:
             Logger.log("e", "Exception while trying to update firmware %s" %e)
             self._updating_firmware = False
-            return False
+            return
         programmer.close()
-        return True
+        return 
+    
+    def updateFirmware(self, file_name):
+        self._firmware_file_name = file_name
+        self._update_firmware_thread.start()
+        
     
     ##  Private connect function run by thread. Can be started by calling connect.
     def _connect(self): 

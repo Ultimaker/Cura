@@ -80,19 +80,19 @@ class Stk500v2(ispBase.IspBase):
         #Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
         page_size = self.chip['pageSize'] * 2
         flashSize = page_size * self.chip['pageCount']
+        print("Writing flash")
         if flashSize > 0xFFFF:
             self.sendMessage([0x06, 0x80, 0x00, 0x00, 0x00])
         else:
             self.sendMessage([0x06, 0x00, 0x00, 0x00, 0x00])
-        
-        loadCount = (len(flash_data) + page_size - 1) / page_size
-        for i in range(0, loadCount):
+        load_count = (len(flash_data) + page_size - 1) / page_size   
+        for i in range(0, int(load_count)):
             recv = self.sendMessage([0x13, page_size >> 8, page_size & 0xFF, 0xc1, 0x0a, 0x40, 0x4c, 0x20, 0x00, 0x00] + flash_data[(i * page_size):(i * page_size + page_size)])
             if self.progressCallback is not None:
                 if self._has_checksum:
-                    self.progressCallback(i + 1, loadCount)
+                    self.progressCallback(i + 1, load_count)
                 else:
-                    self.progressCallback(i + 1, loadCount*2)
+                    self.progressCallback(i + 1, load_count*2)
     
     def verifyFlash(self, flashData):
         if self._has_checksum:
@@ -114,7 +114,7 @@ class Stk500v2(ispBase.IspBase):
                 self.sendMessage([0x06, 0x00, 0x00, 0x00, 0x00])
 
             loadCount = (len(flashData) + 0xFF) / 0x100
-            for i in range(0, loadCount):
+            for i in range(0, int(loadCount)):
                 recv = self.sendMessage([0x14, 0x01, 0x00, 0x20])[2:0x102]
                 if self.progressCallback is not None:
                     self.progressCallback(loadCount + i + 1, loadCount*2)
