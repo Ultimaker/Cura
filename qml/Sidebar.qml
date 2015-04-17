@@ -48,6 +48,7 @@ UM.AngledCornerRectangle {
 
             addMachineAction: base.addMachineAction;
             configureMachinesAction: base.configureMachinesAction;
+            modesModel: modesListModel;
         }
 
         Loader {
@@ -56,7 +57,7 @@ UM.AngledCornerRectangle {
             Layout.fillWidth: true;
             Layout.fillHeight: true;
 
-            source: header.currentModeFile;
+            source: modesListModel.get(header.currentModeIndex).file;
 
             property Item sidebar: base;
 
@@ -85,5 +86,11 @@ UM.AngledCornerRectangle {
     
     SidebarTooltip {
         id: tooltip;
+    }
+
+    ListModel {
+        id: modesListModel;
+        ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
+        ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
     }
 }

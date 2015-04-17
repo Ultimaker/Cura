@@ -8,7 +8,8 @@ import UM 1.0 as UM
 Column {
     id: base;
 
-    property string currentModeFile: modeModel.get(modeMenu.currentIndex).file;
+    property variant modesModel;
+    property alias currentModeIndex: modeMenu.currentIndex;
     property Action addMachineAction;
     property Action configureMachinesAction;
 
@@ -28,7 +29,7 @@ Column {
         }
 
         ToolButton {
-            text: qsTr(modeModel.get(modeMenu.currentIndex).text);
+            text: base.modesModel ? qsTr(base.modesModel.get(modeMenu.currentIndex).text) : "";
 
             style: UM.Theme.styles.sidebar_header_button;
 
@@ -40,11 +41,7 @@ Column {
                 property int currentIndex: 0;
 
                 Instantiator {
-                    model: ListModel {
-                        id: modeModel;
-                        ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
-                        ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
-                    }
+                    model: base.modesModel;
 
                     MenuItem {
                         text: qsTr(model.text);
