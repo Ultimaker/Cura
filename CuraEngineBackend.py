@@ -326,6 +326,7 @@ class CuraEngineBackend(Backend):
             'insetXSpeed': int(self._settings.getSettingValueByKey('speed_wall_x')),
             'supportSpeed': int(self._settings.getSettingValueByKey('speed_support')),
             'moveSpeed': int(self._settings.getSettingValueByKey('speed_travel')),
+            'skinSpeed': int(self._settings.getSettingValueByKey('speed_topbottom')),
 
             'infillOverlap': int(self._settings.getSettingValueByKey('fill_overlap')),
             'infillSpeed': int(self._settings.getSettingValueByKey('speed_infill')),
