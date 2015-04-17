@@ -9,6 +9,7 @@ from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.WriteMeshJob import WriteMeshJob
 from UM.Mesh.ReadMeshJob import ReadMeshJob
+from UM.Logger import Logger
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -331,6 +332,6 @@ class PrinterApplication(QtApplication):
                 })
 
         for device in self._output_devices:
-            if not device in drives:
+            if device not in drives:
                 if self._output_devices[device]['function'] == self._writeToSD:
                     self.removeOutputDevice(device)
