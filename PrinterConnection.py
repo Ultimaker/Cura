@@ -150,7 +150,7 @@ class PrinterConnection(SignalEmitter):
             programmer.connect(self._serial_port) #Connect with the serial, if this succeeds, it's an arduino based usb device.
             self._serial = programmer.leaveISP()    
         except ispBase.IspError as e:
-            Logger.log('i', "Could not establish connect        ion on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
+            Logger.log('i', "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except:
             Logger.log('i', "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
         
