@@ -54,6 +54,24 @@ QtObject {
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
                 cornerSize: UM.Theme.sizes.default_margin.width;
+
+                Rectangle {
+                    anchors.bottom: parent.top;
+
+                    width: parent.width;
+                    height: control.hovered ? label.height : 0;
+                    Behavior on height { NumberAnimation { duration: 75; } }
+
+                    opacity: control.hovered ? 1.0 : 0.0;
+                    Behavior on opacity { NumberAnimation { duration: 75; } }
+
+                    Label {
+                        id: label
+                        anchors.horizontalCenter: parent.horizontalCenter;
+                        text: control.text;
+                        font: UM.Theme.fonts.button_tooltip;
+                    }
+                }
             }
 
             label: Item {
