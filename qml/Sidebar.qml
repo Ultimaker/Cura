@@ -13,8 +13,9 @@ UM.AngledCornerRectangle {
     property alias saveAction: saveButton.saveAction;
 
     cornerSize: UM.Theme.sizes.default_margin.width;
-
+    
     function showTooltip(item, position, text) {
+        print("omg zomg")
         tooltip.text = text;
         position = item.mapToItem(base, position.x, position.y);
         tooltip.show(position);
@@ -59,7 +60,18 @@ UM.AngledCornerRectangle {
 
             property Item sidebar: base;
 
-            onLoaded: if(item) item.configureSettings = base.configureMachinesAction
+            onLoaded:
+            { 
+                if(item) item.configureSettings = base.configureMachinesAction;
+                if(typeof(item.onShowTooltip) != 'undefined')
+                {
+                    item.showTooltip.connect(base.showTooltip)
+                }
+                    
+            }
+
+            //onShowTooltip: base.showTooltip(item,position,text)
+            //onHideTooltip: base.hideTooltip()   
         }
 
         SaveButton {
@@ -68,8 +80,9 @@ UM.AngledCornerRectangle {
             Layout.preferredHeight: UM.Theme.sizes.button.height;
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter;
         }
+        
     }
-
+    
     SidebarTooltip {
         id: tooltip;
     }
