@@ -1,5 +1,5 @@
 from UM.Logger import Logger
-from .avr_isp import stk500v2, ispBase
+from .avr_isp import stk500v2, ispBase, intelHex
 import serial
 import threading
 import time
@@ -158,7 +158,11 @@ class PrinterConnection(SignalEmitter):
         for baud_rate in self._getBaudrateList(): #Cycle all baud rates (auto detect)
             
             if self._serial is None:
-                self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout=3, writeTimeout=10000)
+                try:
+                    self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout=3, writeTimeout=10000)
+                except serial.SerialException:
+                    Logger.log('i', "Could not open port %s" % self._serial_port)
+                    return
             else:   
                 if not self.setBaudRate(baud_rate):
                     continue #Could not set the baud rate, go to the next
@@ -179,6 +183,7 @@ class PrinterConnection(SignalEmitter):
                         self.setIsConnected(True)
                         Logger.log('i', "Established connection on port %s" % self._serial_port)
                         return 
+        self.close()
         self.setIsConnected(False)
 
     ##  Set the baud rate of the serial. This can cause exceptions, but we simply want to ignore those.
@@ -211,7 +216,7 @@ class PrinterConnection(SignalEmitter):
     
     ##  Close the printer connection    
     def close(self):
-        if self._serial != None:
+        if self._serial is not None:
             self._serial.close()
             self.setIsConnected(False)
         self._serial = None
