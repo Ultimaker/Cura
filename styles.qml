@@ -26,6 +26,8 @@ QtObject {
                 color: down ? UM.Theme.colors.text_pressed : control.hovered ? UM.Theme.colors.text_hover : UM.Theme.colors.text;
 
                 text: control.text;
+
+                elide: Text.ElideRight;
             }
         }
     }
