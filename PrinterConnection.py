@@ -410,7 +410,8 @@ class PrinterConnection(SignalEmitter):
     progressChanged = Signal()
     
     def setProgress(self, progress,max_progress = 100):
-        self._progress = progress
+        self._progress  = progress / max_progress * 100 #Convert to scale of 0-100
+        #self._progress = progress
         self.progressChanged.emit(self._progress, self._serial_port)
     
     def cancelPrint(self):
