@@ -77,6 +77,7 @@ Column {
         ToolButton {
             id: machineButton;
             text: UM.Application.machineName;
+            tooltip: UM.Application.machineName;
 
             style: UM.Theme.styles.sidebar_header_button;
 
