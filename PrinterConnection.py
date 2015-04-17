@@ -117,7 +117,6 @@ class PrinterConnection(SignalEmitter):
             self._connect_thread.start()
 
     def updateFirmware(self, file_name):
-        print("Update firmware; " , self._is_connecting, " ", self._is_connected )
         if self._is_connecting or  self._is_connected:
             self.close()
         hex_file = intelHex.readHex(file_name)
@@ -219,9 +218,13 @@ class PrinterConnection(SignalEmitter):
     
     ##  Close the printer connection    
     def close(self):
+        if self._connect_thread.isAlive():
+            self._connect_thread.join()
         if self._serial is not None:
-            self._serial.close()
             self.setIsConnected(False)
+            self._listen_thread.join()
+            self._serial.close()
+            
         self._serial = None
     
     def isConnected(self):
@@ -417,8 +420,8 @@ class PrinterConnection(SignalEmitter):
             return None
         try:
             ret = self._serial.readline()
-        except:
-            Logger.log('e',"Unexpected error while reading serial port.")
+        except Exception as e:
+            Logger.log('e',"Unexpected error while reading serial port. %s" %e)
             self._setErrorState("Printer has been disconnected") 
             #self._errorValue = getExceptionString()
             self.close()
