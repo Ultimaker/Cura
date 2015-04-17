@@ -44,6 +44,7 @@ class CuraEngineBackend(Backend):
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
         self._message_handlers[Cura_pb2.GCodeLayer] = self._onGCodeLayerMessage
+        self._message_handlers[Cura_pb2.GCodePrefix] = self._onGCodePrefixMessage
         self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
 
         self._center = None
@@ -54,7 +55,7 @@ class CuraEngineBackend(Backend):
         self.backendConnected.connect(self._onBackendConnected)
 
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"), '--connect', "127.0.0.1:{0}".format(self._port)]
+        return [Preferences.getInstance().getValue("backend/location"), '-vv', '--connect', "127.0.0.1:{0}".format(self._port)]
 
     changeTimerFinished = Signal()
 
@@ -89,6 +90,9 @@ class CuraEngineBackend(Backend):
         job = ProcessGCodeJob.ProcessGCodeLayerJob(message)
         job.start()
 
+    def _onGCodePrefixMessage(self, message):
+        self._scene.gcode_list.insert(0, message.data.decode('utf-8', 'replace'))
+
     def _onObjectPrintTimeMessage(self, message):
         pass
 
@@ -101,6 +105,7 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(4, Cura_pb2.GCodeLayer)
         self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
         self._socket.registerMessageType(6, Cura_pb2.SettingList)
+        self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
 
     def _onChanged(self):
         if not self._settings:
@@ -242,17 +247,17 @@ class CuraEngineBackend(Backend):
         
         gcodeFlavor = self._settings.getSettingValueByKey('machine_gcode_flavor')
         if gcodeFlavor == 'UltiGCode':
-            settings['gcodeFlavor'] = 1
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_ULTIGCODE"
         elif gcodeFlavor == 'Makerbot':
-            settings['gcodeFlavor'] = 2
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_MAKERBOT"
         elif gcodeFlavor == 'BFB':
-            settings['gcodeFlavor'] = 3
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_BFB"
         elif gcodeFlavor == 'Mach3':
-            settings['gcodeFlavor'] = 4
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_MACH3"
         elif gcodeFlavor == 'Volumetric':
-            settings['gcodeFlavor'] = 5
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_REPRAP_VOLUMATRIC"
         else:
-            settings['gcodeFlavor'] = 0
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_REPRAP"
 
         settings['startCode'] = self._settings.getSettingValueByKey('machine_start_gcode')
         settings['endCode'] = self._settings.getSettingValueByKey('machine_end_gcode')
@@ -411,17 +416,17 @@ class CuraEngineBackend(Backend):
 
         gcodeFlavor = self._settings.getSettingValueByKey('machine_gcode_flavor')
         if gcodeFlavor == 'UltiGCode':
-            settings['gcodeFlavor'] = 1
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_ULTIGCODE"
         elif gcodeFlavor == 'Makerbot':
-            settings['gcodeFlavor'] = 2
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_MAKERBOT"
         elif gcodeFlavor == 'BFB':
-            settings['gcodeFlavor'] = 3
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_BFB"
         elif gcodeFlavor == 'Mach3':
-            settings['gcodeFlavor'] = 4
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_MACH3"
         elif gcodeFlavor == 'Volumetric':
-            settings['gcodeFlavor'] = 5
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_REPRAP_VOLUMATRIC"
         else:
-            settings['gcodeFlavor'] = 0
+            settings['gcodeFlavor'] = "GCODE_FLAVOR_REPRAP"
 
         settings['startCode'] = self._settings.getSettingValueByKey('machine_start_gcode')
         settings['endCode'] = self._settings.getSettingValueByKey('machine_end_gcode')
