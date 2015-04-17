@@ -116,6 +116,7 @@ UM.MainWindow {
                 //: Help menu
                 title: qsTr("&Help");
 
+                MenuItem { action: actions.showEngineLog; }
                 MenuItem { action: actions.documentation; }
                 MenuItem { action: actions.reportBug; }
                 MenuSeparator { }
@@ -300,6 +301,7 @@ UM.MainWindow {
 
         documentation.onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/support");
         reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/PluggableCura/issues");
+        showEngineLog.onTriggered: engineLog.open();
     }
 
     Menu {
@@ -370,6 +372,10 @@ UM.MainWindow {
         {
             UM.MeshFileHandler.writeLocalFile(fileUrl);
         }
+    }
+
+    EngineLog {
+        id: engineLog;
     }
 
     AddMachineWizard {

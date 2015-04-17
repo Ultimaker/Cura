@@ -25,6 +25,8 @@ Item {
     property alias configureMachines: settingsAction;
 
     property alias preferences: preferencesAction;
+
+    property alias showEngineLog: showEngineLogAction;
     property alias documentation: documentationAction;
     property alias reportBug: reportBugAction;
     property alias about: aboutAction;
@@ -168,5 +170,12 @@ Item {
         text: qsTr("Save...");
         iconName: "document-save";
         shortcut: StandardKey.Save;
+    }
+
+    Action {
+        id: showEngineLogAction;
+        //: Show engine log action
+        text: qsTr("Show engine log...");
+        iconName: "view-list-text";
     }
 }

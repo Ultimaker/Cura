@@ -239,6 +239,15 @@ class PrinterApplication(QtApplication):
             job.finished.connect(lambda j: node.setMeshData(j.getResult()))
             job.start()
 
+    @pyqtSlot(result=str)
+    def getEngineLog(self):
+        log = ""
+
+        for entry in self.getBackend().getLog():
+            log += entry.decode()
+
+        return log
+
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
         if machine:
