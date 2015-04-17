@@ -326,7 +326,6 @@ class CuraEngineBackend(Backend):
             'insetXSpeed': int(self._settings.getSettingValueByKey('speed_wall_x')),
             'supportSpeed': int(self._settings.getSettingValueByKey('speed_support')),
             'moveSpeed': int(self._settings.getSettingValueByKey('speed_travel')),
-            #'fanFullOnLayerNr': int(fbk('cool_fan_full_layer')),
 
             'infillOverlap': int(self._settings.getSettingValueByKey('fill_overlap')),
             'infillSpeed': int(self._settings.getSettingValueByKey('speed_infill')),
@@ -336,6 +335,7 @@ class CuraEngineBackend(Backend):
             'coolHeadLift': 1 if self._settings.getSettingValueByKey('cool_lift_head') else 0,
             'fanSpeedMin': self._settings.getSettingValueByKey('cool_fan_speed_min'),
             'fanSpeedMax': self._settings.getSettingValueByKey('cool_fan_speed_max'),
+            'fanFullOnLayerNr': self._settings.getSettingValueByKey('cool_fan_full_layer'),
 
             'spiralizeMode': 1 if self._settings.getSettingValueByKey('magic_spiralize') == 'True' else 0,
 
