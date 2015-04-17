@@ -31,30 +31,29 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         self._progress = 0
         
         
-        self.view = None
+        self._control_view = None
+        self._firmware_view = None
         self._extruder_temp = 0
         self._bed_temp = 0
         self._error_message = "" 
         
+        ## Add menu item to top menu.
         self.addMenuItem(i18n_catalog.i18n("Update firmware"), self.updateAllFirmware)
-        
-        #time.sleep(1)
-        #self.connectAllConnections()
-        #time.sleep(5)
-        #f = open("Orb.gcode")
-        #lines = f.readlines()
-        #print(len(lines))
-        #print(len(self._printer_connections))
-        #self.sendGCodeToAllActive(lines)
-        #print("sending heat " , self.sendCommandToAllActive("M104 S190"))
-        
     
-    def spawnInterface(self,serial_port):
-        if self.view is None:
-            self.view = QQuickView()
-            self.view.engine().rootContext().setContextProperty('manager',self)
-            self.view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
-            self.view.show()
+    def spawnFirmwareInterface(self, serial_port):
+        if self._firmware_view is None:
+            self._firmware_view = QQuickView()
+            self._firmware_view.engine().rootContext().setContextProperty('manager',self)
+            self._firmware_view.setSource(QUrl("plugins/USBPrinting/FirmwareUpdateWindow.qml"))
+            self._firmware_view.show()
+    
+    
+    def spawnControlInterface(self,serial_port):
+        if self._control_view is None:
+            self._control_view = QQuickView()
+            self._control_view.engine().rootContext().setContextProperty('manager',self)
+            self._control_view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
+            self._control_view.show()
             
     
     processingProgress = pyqtSignal(float, arguments = ['amount'])
@@ -113,12 +112,14 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         pass
     
     def updateAllFirmware(self):
+        self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:
             printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
             
     def updateFirmwareBySerial(self, serial_port):
         printer_connection = self.getConnectionByPort(serial_port)
         if printer_connection is not None:
+            self.spawnFirmwareInterface(printer_connection.getSerialPort())
             printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
         
     def _getDefaultFirmwareName(self):
@@ -220,7 +221,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         if connection.isConnected():
             Application.getInstance().addOutputDevice(serial_port, {
                 'id': serial_port,
-                'function': self.spawnInterface,
+                'function': self.spawnControlInterface,
                 'description': 'Write to USB {0}'.format(serial_port),
                 'icon': 'print_usb',
                 'priority': 1
