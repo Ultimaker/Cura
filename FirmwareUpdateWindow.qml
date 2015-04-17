@@ -9,7 +9,7 @@ Rectangle
 
         Text 
         {
-            text: "Updating firmware
+            text: "Updating firmware"
         }
         ProgressBar 
         {

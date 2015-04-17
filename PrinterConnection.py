@@ -117,9 +117,9 @@ class PrinterConnection(SignalEmitter):
             self._connect_thread.start()
 
     def updateFirmware(self, file_name):
+        print("Update firmware; " , self._is_connecting, " ", self._is_connected )
         if self._is_connecting or  self._is_connected:
-            return False
-
+            self.close()
         hex_file = intelHex.readHex(file_name)
         if len(hex_file) == 0:
             Logger.log('e', "Unable to read provided hex file. Could not update firmware")
@@ -136,7 +136,7 @@ class PrinterConnection(SignalEmitter):
             programmer.programChip(hex_file)
             self._updating_firmware = False
         except Exception as e:
-            Logger.log("e", "Exception while trying to update firmware" , e)
+            Logger.log("e", "Exception while trying to update firmware %s" %e)
             self._updating_firmware = False
             return False
         programmer.close()
@@ -173,6 +173,9 @@ class PrinterConnection(SignalEmitter):
             self._sendCommand("M105")  #Request temperature, as this should (if baudrate is correct) result in a command with 'T:' in it
             while timeout_time > time.time():
                 line = self._readline() 
+                if line is None:
+                    self.setIsConnected(False) # something went wrong with reading, could be that close was called.
+                    return
                 if b"T:" in line:
                     self._serial.timeout = 0.5
                     self._serial.write(b"\n")

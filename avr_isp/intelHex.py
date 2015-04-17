@@ -34,7 +34,7 @@ def readHex(filename):
         if recType == 0:#Data record
             while len(data) < addr + recLen:
                 data.append(0)
-            for i in xrange(0, recLen):
+            for i in range(0, recLen):
                 data[addr + i] = int(line[i*2+9:i*2+11], 16)
         elif recType == 1:	#End Of File record
             pass
