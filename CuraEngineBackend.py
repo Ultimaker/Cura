@@ -57,7 +57,7 @@ class CuraEngineBackend(Backend):
     def getEngineCommand(self):
         return [Preferences.getInstance().getValue("backend/location"), '-vv', '--connect', "127.0.0.1:{0}".format(self._port)]
 
-    changeTimerFinished = Signal()
+    printDurationMessage = Signal()
 
     def _onSceneChanged(self, source):
         if (type(source) is not SceneNode) or (source is self._scene.getRoot()):
@@ -94,7 +94,7 @@ class CuraEngineBackend(Backend):
         self._scene.gcode_list.insert(0, message.data.decode('utf-8', 'replace'))
 
     def _onObjectPrintTimeMessage(self, message):
-        pass
+        self.printDurationMessage.emit(message.time, message.material_amount)
 
     def _createSocket(self):
         super()._createSocket()
