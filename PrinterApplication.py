@@ -56,6 +56,9 @@ class PrinterApplication(QtApplication):
                 'priority': 0
             }
         }
+        self._print_duration = -1
+        self._print_material_amount = -1
+
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
         Preferences.getInstance().addPreference('cura/active_machine', '')
@@ -113,6 +116,8 @@ class PrinterApplication(QtApplication):
         self.initializeEngine()
 
         self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
+
+        self.getBackend().printDurationMessage.connect(self._onPrintDurationMessage)
 
         if self.getMachines():
             active_machine_pref = Preferences.getInstance().getValue('cura/active_machine')
@@ -258,6 +263,16 @@ class PrinterApplication(QtApplication):
 
         return log
 
+    printDurationChanged = pyqtSignal()
+
+    @pyqtProperty(float, notify = printDurationChanged)
+    def printDuration(self):
+        return self._print_duration
+
+    @pyqtProperty(float, notify = printDurationChanged)
+    def printMaterialAmount(self):
+        return self._print_material_amount
+
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
         if machine:
@@ -356,3 +371,8 @@ class PrinterApplication(QtApplication):
             if device not in drives:
                 if self._output_devices[device]['function'] == self._writeToSD:
                     self.removeOutputDevice(device)
+
+    def _onPrintDurationMessage(self, duration, material_amount):
+        self._print_duration = duration
+        self._print_material_amount = material_amount
+        self.printDurationChanged.emit()

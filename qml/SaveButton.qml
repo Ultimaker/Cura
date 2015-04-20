@@ -19,6 +19,10 @@ Button {
     property bool defaultOverride: false;
     property bool defaultAmbiguous: false;
 
+    property real printDurationHours: Math.floor(Printer.printDuration / 3600);
+    property real printDurationMinutes: Math.round(((Printer.printDuration / 3600) - printDurationHours) * 60);
+    property real printMaterialAmount: Printer.printMaterialAmount < 0 ? -1 : Math.round(Printer.printMaterialAmount / 10) / 100;
+
     iconSource: UM.Theme.icons[Printer.outputDevices[base.currentDevice].icon];
     tooltip: Printer.outputDevices[base.currentDevice].description;
 
@@ -115,17 +119,53 @@ Button {
             }
         }
 
-        label: Label {
-            id: label;
-            anchors.top: parent.top;
-            anchors.topMargin: UM.Theme.sizes.save_button_label_margin.height;
-            anchors.left: parent.left;
-            anchors.leftMargin: control.height + UM.Theme.sizes.save_button_label_margin.width;
+        label: Column {
+            Label {
+                id: label;
+                anchors.left: parent.left;
+                anchors.leftMargin: control.height + UM.Theme.sizes.save_button_label_margin.width;
 
-            color: UM.Theme.colors.save_button_text;
-            font: UM.Theme.fonts.default;
+                color: UM.Theme.colors.save_button_text;
+                font: UM.Theme.fonts.default;
 
-            text: control.text;
+                text: control.text;
+            }
+            Label {
+                anchors.left: parent.left;
+                anchors.leftMargin: control.height + UM.Theme.sizes.save_button_label_margin.width;
+
+                color: UM.Theme.colors.save_button_text;
+                font: UM.Theme.fonts.default;
+
+                text: {
+                    if(control.printDurationHours < 0 || control.printDurationMinutes < 0)
+                    {
+                        return "";
+                    }
+
+                    if(control.printDurationHours > 1)
+                    {
+                        return qsTr("%1 hours %2 minutes").arg(control.printDurationHours).arg(control.printDurationMinutes);
+                    }
+                    else if(control.printDurationHours > 0)
+                    {
+                        return qsTr("1 hour %1 minutes").arg(control.printDurationMinutes);
+                    }
+                    else
+                    {
+                        return qsTr("%2 minutes").arg(control.printDurationMinutes);
+                    }
+                }
+            }
+            Label {
+                anchors.left: parent.left;
+                anchors.leftMargin: control.height + UM.Theme.sizes.save_button_label_margin.width;
+
+                color: UM.Theme.colors.save_button_text;
+                font: UM.Theme.fonts.default;
+
+                text: control.printMaterialAmount < 0 ? "" : "%1m material".arg(control.printMaterialAmount);
+            }
         }
     }
 
