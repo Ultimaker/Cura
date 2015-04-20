@@ -127,7 +127,8 @@ class CuraEngineBackend(Backend):
         objects = []
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
-                objects.append(node)
+                if not getattr(node, '_outside_buildarea', False):
+                    objects.append(node)
 
         if not objects:
             return #No point in slicing an empty build plate
