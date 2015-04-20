@@ -15,7 +15,6 @@ UM.AngledCornerRectangle {
     cornerSize: UM.Theme.sizes.default_margin.width;
     
     function showTooltip(item, position, text) {
-        print("omg zomg")
         tooltip.text = text;
         position = item.mapToItem(base, position.x, position.y);
         tooltip.show(position);
@@ -72,16 +71,19 @@ UM.AngledCornerRectangle {
 
             onLoaded:
             { 
-                if(item) item.configureSettings = base.configureMachinesAction;
-                if(typeof(item.onShowTooltip) != 'undefined')
+                if(item)
                 {
-                    item.showTooltip.connect(base.showTooltip)
+                    item.configureSettings = base.configureMachinesAction;
+                    if(item.onShowTooltip != undefined)
+                    {
+                        item.showTooltip.connect(base.showTooltip)
+                    }
+                    if(item.onHideTooltip != undefined)
+                    {
+                        item.hideTooltip.connect(base.hideTooltip)
+                    }
                 }
-                    
             }
-
-            //onShowTooltip: base.showTooltip(item,position,text)
-            //onHideTooltip: base.hideTooltip()   
         }
 
         SaveButton {

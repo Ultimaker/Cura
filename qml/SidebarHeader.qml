@@ -110,7 +110,7 @@ Column {
         height: UM.Theme.sizes.section.height;
 
         iconSource: UM.Theme.icons.printsetup;
-        text: qsTr("Setup");
+        text: qsTr("Print Setup");
         enabled: false;
 
         color: UM.Theme.colors.primary;
