@@ -3,6 +3,7 @@ from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Math.Float import Float
 from UM.Math.Vector import Vector
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
 
 from PlatformPhysicsOperation import PlatformPhysicsOperation
@@ -11,10 +12,11 @@ import time
 import threading
 
 class PlatformPhysics:
-    def __init__(self, controller):
+    def __init__(self, controller, volume):
         super().__init__()
         self._controller = controller
         self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
+        self._build_volume = volume
         self._signal_source = None
 
     def _onSceneChanged(self, source):
@@ -26,6 +28,11 @@ class PlatformPhysics:
             bbox = node.getBoundingBox()
             if not bbox or not bbox.isValid():
                 continue
+
+            if self._build_volume.getBoundingBox().intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+                node._outside_buildarea = True
+            else:
+                node._outside_buildarea = False
 
             if not Float.fuzzyCompare(bbox.bottom, 0.0):
                 self._signal_source = node

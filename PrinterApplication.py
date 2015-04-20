@@ -87,8 +87,6 @@ class PrinterApplication(QtApplication):
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
-        self._physics = PlatformPhysics(controller)
-
         root = controller.getScene().getRoot()
         self._platform = Platform(root)
 
@@ -96,6 +94,8 @@ class PrinterApplication(QtApplication):
 
         self.getRenderer().setLightPosition(Vector(0, 150, 0))
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
+
+        self._physics = PlatformPhysics(controller, self._volume)
 
         camera = Camera('3d', root)
         camera.setPosition(Vector(-150, 150, 300))

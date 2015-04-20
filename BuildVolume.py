@@ -6,6 +6,7 @@ from UM.Mesh.MeshData import MeshData
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Math.Vector import Vector
 from UM.Math.Color import Color
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 
 import numpy
 
@@ -26,6 +27,8 @@ class BuildVolume(SceneNode):
 
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
+
+        self._calculate_aabb = False
 
     def setWidth(self, width):
         self._width = width
@@ -117,3 +120,5 @@ class BuildVolume(SceneNode):
             self._disallowed_area_mesh = mb.getData()
         else:
             self._disallowed_area_mesh = None
+
+        self._aabb = AxisAlignedBox(minimum = Vector(minW, minH, minD), maximum = Vector(maxW, maxH, maxD))
