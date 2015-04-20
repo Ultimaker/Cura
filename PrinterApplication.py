@@ -33,7 +33,7 @@ numpy.seterr(all='ignore')
 
 class PrinterApplication(QtApplication):
     def __init__(self):
-        super().__init__(name = 'cura')
+        super().__init__(name = 'cura', version = "14.2.1")
         self.setRequiredPlugins([
             'CuraEngineBackend',
             'MeshView',
