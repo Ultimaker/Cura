@@ -121,4 +121,4 @@ class BuildVolume(SceneNode):
         else:
             self._disallowed_area_mesh = None
 
-        self._aabb = AxisAlignedBox(minimum = Vector(minW, minH, minD), maximum = Vector(maxW, maxH, maxD))
+        self._aabb = AxisAlignedBox(minimum = Vector(minW, minH - 1.0, minD), maximum = Vector(maxW, maxH, maxD))
