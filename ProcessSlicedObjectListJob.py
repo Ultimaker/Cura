@@ -18,19 +18,24 @@ class ProcessSlicedObjectListJob(Job):
 
     def run(self):
         objectIdMap = {}
+        new_node = SceneNode()
+        ## Put all nodes in a dict identified by ID
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
-                objectIdMap[id(node)] = node
+                if hasattr(node.getMeshData(), "layerData"):
+                    self._scene.getRoot().removeChild(node)
+                else:
+                    objectIdMap[id(node)] = node
 
         layerHeight = Application.getInstance().getActiveMachine().getSettingValueByKey('layer_height')
 
         for object in self._message.objects:
-            try:
+            try:        
                 node = objectIdMap[object.id]
             except KeyError:
                 continue
-
-            mesh = node.getMeshData()
+            
+            mesh = MeshData()
 
             layerData = LayerData.LayerData()
             for layer in object.layers:
@@ -44,11 +49,14 @@ class ProcessSlicedObjectListJob(Job):
                     points[:,0] -= self._center.x
                     points[:,2] -= self._center.z
 
-                    points = numpy.pad(points, ((0,0), (0,1)), 'constant', constant_values=(0.0, 1.0))
-                    inverse = node.getWorldTransformation().getInverse().getData()
-                    points = points.dot(inverse)
-                    points = points[:,0:3]
+                    #points = numpy.pad(points, ((0,0), (0,1)), 'constant', constant_values=(0.0, 1.0))
+                    #inverse = node.getWorldTransformation().getInverse().getData()
+                    #points = points.dot(inverse)
+                    #points = points[:,0:3]
 
                     layerData.addPolygon(layer.id, polygon.type, points)
 
             mesh.layerData = layerData
+            
+        new_node.setMeshData(mesh)
+        new_node.setParent(self._scene.getRoot())

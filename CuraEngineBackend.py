@@ -60,9 +60,10 @@ class CuraEngineBackend(Backend):
     printDurationMessage = Signal()
 
     def _onSceneChanged(self, source):
-        if (type(source) is not SceneNode) or (source is self._scene.getRoot()):
+        if (type(source) is not SceneNode) or (source is self._scene.getRoot()) or (source.getMeshData() is None):
             return
-
+        if(source.getMeshData().getVertices() is None):
+            return
         self._onChanged()
 
     def _onActiveMachineChanged(self):
@@ -126,7 +127,7 @@ class CuraEngineBackend(Backend):
 
         objects = []
         for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is SceneNode and node.getMeshData():
+            if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
                 if not getattr(node, '_outside_buildarea', False):
                     objects.append(node)
 
@@ -155,7 +156,7 @@ class CuraEngineBackend(Backend):
 
             obj = msg.objects.add()
             obj.id = id(object)
-
+            
             verts = numpy.array(meshData.getVertices(), copy=True)
             verts[:,[1,2]] = verts[:,[2,1]]
             obj.vertices = verts.tostring()
