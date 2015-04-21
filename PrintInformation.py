@@ -117,7 +117,7 @@ class PrintInformation(QObject):
 
             if self._slice_reason != self.SliceReason.SettingChanged:
                 self._slice_pass = self.SlicePass.LowQualitySettings
-                self._backend.slice(settings = self._low_quality_settings, save_gcode = False, save_polygons = False, force_restart = False)
+                self._backend.slice(settings = self._low_quality_settings, save_gcode = False, save_polygons = False, force_restart = False, report_progress = False)
             else:
                 self._slice_pass = None
                 self._slice_reason = None
@@ -127,7 +127,7 @@ class PrintInformation(QObject):
             self.minimumPrintTimeChanged.emit()
 
             self._slice_pass = self.SlicePass.HighQualitySettings
-            self._backend.slice(settings = self._high_quality_settings, save_gcode = False, save_polygons = False, force_restart = False)
+            self._backend.slice(settings = self._high_quality_settings, save_gcode = False, save_polygons = False, force_restart = False, report_progress = False)
         elif self._slice_pass == self.SlicePass.HighQualitySettings:
             self._maximum_print_time = QDateTime.fromMSecsSinceEpoch(round(time * 1000))
             self.maximumPrintTimeChanged.emit()
