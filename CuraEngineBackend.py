@@ -96,7 +96,8 @@ class CuraEngineBackend(Backend):
 
     def _onObjectPrintTimeMessage(self, message):
         self.printDurationMessage.emit(message.time, message.material_amount)
-
+    
+    ##  Create socket and register the used message types. Note that these must be the same on engine side!
     def _createSocket(self):
         super()._createSocket()
         
@@ -152,13 +153,14 @@ class CuraEngineBackend(Backend):
         for object in objects:
             center += object.getPosition()
 
-            meshData = object.getMeshData().getTransformed(object.getWorldTransformation())
+            mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
             obj = msg.objects.add()
             obj.id = id(object)
             
-            verts = numpy.array(meshData.getVertices(), copy=True)
+            verts = numpy.array(mesh_data.getVertices(), copy=True)
             verts[:,[1,2]] = verts[:,[2,1]]
+            verts[:,[2]] *= -1
             obj.vertices = verts.tostring()
 
             #if meshData.hasNormals():
