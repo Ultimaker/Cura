@@ -108,7 +108,10 @@ class CuraEngineBackend(Backend):
 
         self._slicing = True
         self.slicingStarted.emit()
-        self.processingProgress.emit(0.0)
+
+        self._report_progress = kwargs.get('report_progress', True)
+        if self._report_progress:
+            self.processingProgress.emit(0.0)
 
         self._sendSettings(kwargs.get('settings', self._settings))
 
