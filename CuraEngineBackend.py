@@ -36,10 +36,10 @@ class CuraEngineBackend(Backend):
         Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
         self._onActiveMachineChanged()
 
-        self._changeTimer = QTimer()
-        self._changeTimer.setInterval(500)
-        self._changeTimer.setSingleShot(True)
-        self._changeTimer.timeout.connect(self._onChangeTimerFinished)
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(500)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self._onChangeTimerFinished)
 
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
@@ -112,7 +112,7 @@ class CuraEngineBackend(Backend):
         if not self._settings:
             return
 
-        self._changeTimer.start()
+        self._change_timer.start()
 
     def _onChangeTimerFinished(self):
         if self._slicing:
