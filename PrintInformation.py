@@ -4,6 +4,7 @@ from UM.Application import Application
 from UM.Settings.MachineSettings import MachineSettings
 from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
+from UM.Qt.Duration import Duration
 
 ##  A class for processing and calculating minimum, currrent and maximum print time.
 #
@@ -34,9 +35,9 @@ class PrintInformation(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        self._minimum_print_time = QDateTime()
-        self._current_print_time = QDateTime()
-        self._maximum_print_time = QDateTime()
+        self._minimum_print_time = Duration(None, self)
+        self._current_print_time = Duration(None, self)
+        self._maximum_print_time = Duration(None, self)
 
         self._material_amount = -1
 
@@ -66,19 +67,20 @@ class PrintInformation(QObject):
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
             self._backend.slicingStarted.connect(self._onSlicingStarted)
+            self._backend.slicingCancelled.connect(self._onSlicingCancelled)
 
     minimumPrintTimeChanged = pyqtSignal()
-    @pyqtProperty(QDateTime, notify = minimumPrintTimeChanged)
+    @pyqtProperty(Duration, notify = minimumPrintTimeChanged)
     def minimumPrintTime(self):
         return self._minimum_print_time
 
     currentPrintTimeChanged = pyqtSignal()
-    @pyqtProperty(QDateTime, notify = currentPrintTimeChanged)
+    @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
         return self._current_print_time
 
     maximumPrintTimeChanged = pyqtSignal()
-    @pyqtProperty(QDateTime, notify = maximumPrintTimeChanged)
+    @pyqtProperty(Duration, notify = maximumPrintTimeChanged)
     def maximumPrintTime(self):
         return self._maximum_print_time
 
@@ -107,9 +109,15 @@ class PrintInformation(QObject):
         if self._slice_reason is None:
             self._slice_reason = self.SliceReason.Other
 
+        if self._slice_pass == self.SlicePass.CurrentSettings and self._slice_reason != self.SliceReason.SettingChanged:
+            self._minimum_print_time.setDuration(-1)
+            self.minimumPrintTimeChanged.emit()
+            self._maximum_print_time.setDuration(-1)
+            self.maximumPrintTimeChanged.emit()
+
     def _onPrintDurationMessage(self, time, amount):
         if self._slice_pass == self.SlicePass.CurrentSettings:
-            self._current_print_time = QDateTime.fromMSecsSinceEpoch(round(time * 1000))
+            self._current_print_time.setDuration(time)
             self.currentPrintTimeChanged.emit()
 
             self._material_amount = round(amount / 10) / 100
@@ -121,15 +129,14 @@ class PrintInformation(QObject):
             else:
                 self._slice_pass = None
                 self._slice_reason = None
-
         elif self._slice_pass == self.SlicePass.LowQualitySettings:
-            self._minimum_print_time = QDateTime.fromMSecsSinceEpoch(round(time * 1000))
+            self._minimum_print_time.setDuration(time)
             self.minimumPrintTimeChanged.emit()
 
             self._slice_pass = self.SlicePass.HighQualitySettings
             self._backend.slice(settings = self._high_quality_settings, save_gcode = False, save_polygons = False, force_restart = False, report_progress = False)
         elif self._slice_pass == self.SlicePass.HighQualitySettings:
-            self._maximum_print_time = QDateTime.fromMSecsSinceEpoch(round(time * 1000))
+            self._maximum_print_time.setDuration(time)
             self.maximumPrintTimeChanged.emit()
 
             self._slice_pass = None
@@ -188,3 +195,6 @@ class PrintInformation(QObject):
 
     def _onSettingChanged(self, source):
         self._slice_reason = self.SliceReason.SettingChanged
+
+    def _onSlicingCancelled(self):
+        self._slice_pass = None
