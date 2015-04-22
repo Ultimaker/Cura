@@ -10,5 +10,5 @@ def getMetaData():
     }
 
 def register(app):
-    return CuraEngineBackend.CuraEngineBackend()
+    return {"backend":CuraEngineBackend.CuraEngineBackend()}
 
