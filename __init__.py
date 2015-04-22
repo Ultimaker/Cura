@@ -16,4 +16,4 @@ def getMetaData():
     }
         
 def register(app):
-    return USBPrinterManager.USBPrinterManager()
+    return {"extension":USBPrinterManager.USBPrinterManager()}
