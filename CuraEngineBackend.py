@@ -39,7 +39,7 @@ class CuraEngineBackend(Backend):
         self._change_timer = QTimer()
         self._change_timer.setInterval(500)
         self._change_timer.setSingleShot(True)
-        self._change_timer.timeout.connect(self._onChangeTimerFinished)
+        self._change_timer.timeout.connect(self.slice)
 
         self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
         self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
@@ -213,7 +213,7 @@ class CuraEngineBackend(Backend):
         if not self._settings:
             return
 
-        self._changeTimer.start()
+        self._change_timer.start()
 
     ## TODO: Neith settings need to be moved to their own backend.
     def _sendSettings(self, settings):
