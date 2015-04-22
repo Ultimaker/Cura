@@ -66,63 +66,23 @@ class CuraEngineBackend(Backend):
     #   \param material_amount The amount of material the print will use.
     printDurationMessage = Signal()
 
-    def _onSceneChanged(self, source):
-        if (type(source) is not SceneNode) or (source is self._scene.getRoot()) or (source.getMeshData() is None):
-            return
-        if(source.getMeshData().getVertices() is None):
-            return
-        self._onChanged()
+    ##  Emitted when the slicing process starts.
+    slicingStarted = Signal()
 
-    def _onActiveMachineChanged(self):
-        if self._settings:
-            self._settings.settingChanged.disconnect(self._onSettingChanged)
+    ##  Emitted whne the slicing process is aborted forcefully.
+    slicingCancelled = Signal()
 
-        self._settings = Application.getInstance().getActiveMachine()
-        if self._settings:
-            self._settings.settingChanged.connect(self._onSettingChanged)
-            self._onChanged()
-
-    def _onSettingChanged(self, setting):
-        self._onChanged()
-
-    def _onSlicedObjectListMessage(self, message):
-        job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message, self._center)
-        job.start()
-
-    def _onProgressMessage(self, message):
-        if message.amount >= 0.99:
-            self._slicing = False
-        self.processingProgress.emit(message.amount)
-
-    def _onGCodeLayerMessage(self, message):
-        job = ProcessGCodeJob.ProcessGCodeLayerJob(message)
-        job.start()
-
-    def _onGCodePrefixMessage(self, message):
-        self._scene.gcode_list.insert(0, message.data.decode('utf-8', 'replace'))
-
-    def _onObjectPrintTimeMessage(self, message):
-        self.printDurationMessage.emit(message.time, message.material_amount)
-    
-    ##  Create socket and register the used message types. Note that these must be the same on engine side!
-    def _createSocket(self):
-        super()._createSocket()
-        
-        self._socket.registerMessageType(1, Cura_pb2.ObjectList)
-        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
-        self._socket.registerMessageType(3, Cura_pb2.Progress)
-        self._socket.registerMessageType(4, Cura_pb2.GCodeLayer)
-        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
-        self._socket.registerMessageType(6, Cura_pb2.SettingList)
-        self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
-
-    def _onChanged(self):
-        if not self._settings:
-            return
-
-        self._change_timer.start()
-
-    def _onChangeTimerFinished(self):
+    ##  Perform a slice of the scene with the given set of settings.
+    #
+    #   \param kwargs Keyword arguments.
+    #                 Valid values are:
+    #                 - settings: The settings to use for the slice. The default is the active machine.
+    #                 - save_gcode: True if the generated gcode should be saved, False if not. True by default.
+    #                 - save_polygons: True if the generated polygon data should be saved, False if not. True by default.
+    #                 - force_restart: True if the slicing process should be forcefully restarted if it is already slicing.
+    #                                  If False, this method will do nothing when already slicing. True by default.
+    #                 - report_progress: True if the slicing progress should be reported, False if not. Default is True.
+    def slice(self, **kwargs):
         if self._slicing:
             if not kwargs.get('force_restart', True):
                 return
