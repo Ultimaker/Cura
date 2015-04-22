@@ -19,9 +19,8 @@ Button {
     property bool defaultOverride: false;
     property bool defaultAmbiguous: false;
 
-    property real printDurationHours: Math.floor(Printer.printDuration / 3600);
-    property real printDurationMinutes: Math.round(((Printer.printDuration / 3600) - printDurationHours) * 60);
-    property real printMaterialAmount: Printer.printMaterialAmount < 0 ? -1 : Math.round(Printer.printMaterialAmount / 10) / 100;
+    property variant printDuration: PrintInformation.currentPrintTime;
+    property real printMaterialAmount: PrintInformation.materialAmount < 0 ? -1 : PrintInformation.materialAmount;
 
     iconSource: UM.Theme.icons[Printer.outputDevices[base.currentDevice].icon];
     tooltip: Printer.outputDevices[base.currentDevice].description;
@@ -138,23 +137,31 @@ Button {
                 font: UM.Theme.fonts.default;
 
                 text: {
-                    if(control.printDurationHours < 0 || control.printDurationMinutes < 0)
+                    if(!control.printDuration)
                     {
                         return "";
                     }
 
-                    if(control.printDurationHours > 1)
+                    var days = ""
+                    var day_count = control.printDuration.getDate() - 1;
+                    if(day_count > 0)
                     {
-                        return qsTr("%1 hours %2 minutes").arg(control.printDurationHours).arg(control.printDurationMinutes);
+                        days = Qt.formatDateTime(control.printDuration, qsTr("d 'day(s)'", "", day_count));
                     }
-                    else if(control.printDurationHours > 0)
+
+                    var hours = ""
+                    if(control.printDuration.getHours() > 0)
                     {
-                        return qsTr("1 hour %1 minutes").arg(control.printDurationMinutes);
+                        hours = Qt.formatDateTime(control.printDuration, qsTr("h 'hour(s)'", "", control.printDuration.getHours()));
                     }
-                    else
+
+                    var minutes = ""
+                    if(control.printDuration.getMinutes() > 0)
                     {
-                        return qsTr("%2 minutes").arg(control.printDurationMinutes);
+                        minutes = Qt.formatDateTime(control.printDuration, qsTr("m 'minute(s)'", "", control.printDuration.getMinutes()));
                     }
+
+                    return [days, hours, minutes].join(" ");
                 }
             }
             Label {

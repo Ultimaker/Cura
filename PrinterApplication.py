@@ -23,6 +23,7 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from PlatformPhysics import PlatformPhysics
 from BuildVolume import BuildVolume
 from CameraAnimation import CameraAnimation
+from PrintInformation import PrintInformation
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor
@@ -56,8 +57,7 @@ class PrinterApplication(QtApplication):
                 'priority': 0
             }
         }
-        self._print_duration = -1
-        self._print_material_amount = -1
+        self._print_information = None
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
@@ -117,8 +117,6 @@ class PrinterApplication(QtApplication):
 
         self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
 
-        self.getBackend().printDurationMessage.connect(self._onPrintDurationMessage)
-
         if self.getMachines():
             active_machine_pref = Preferences.getInstance().getValue('cura/active_machine')
             if active_machine_pref:
@@ -139,6 +137,8 @@ class PrinterApplication(QtApplication):
 
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty('Printer', self)
+        self._print_information = PrintInformation()
+        engine.rootContext().setContextProperty('PrintInformation', self._print_information)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
@@ -262,16 +262,6 @@ class PrinterApplication(QtApplication):
             log += entry.decode()
 
         return log
-
-    printDurationChanged = pyqtSignal()
-
-    @pyqtProperty(float, notify = printDurationChanged)
-    def printDuration(self):
-        return self._print_duration
-
-    @pyqtProperty(float, notify = printDurationChanged)
-    def printMaterialAmount(self):
-        return self._print_material_amount
 
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
