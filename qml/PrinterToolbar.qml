@@ -38,7 +38,7 @@ Item {
                     anchors.fill: parent;
                     onClicked: parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
                 }
-            }
+            }   
         }
     }
 
