@@ -12,4 +12,4 @@ def getMetaData():
     }
 
 def register(app):
-    return LayerView.LayerView()
+    return {"view":LayerView.LayerView()}
