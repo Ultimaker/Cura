@@ -20,7 +20,7 @@ Button {
     property bool defaultAmbiguous: false;
 
     property variant printDuration: PrintInformation.currentPrintTime;
-    property real printMaterialAmount: PrintInformation.materialAmount < 0 ? -1 : PrintInformation.materialAmount;
+    property real printMaterialAmount: PrintInformation.materialAmount;
 
     iconSource: UM.Theme.icons[Printer.outputDevices[base.currentDevice].icon];
     tooltip: Printer.outputDevices[base.currentDevice].description;
@@ -136,33 +136,7 @@ Button {
                 color: UM.Theme.colors.save_button_text;
                 font: UM.Theme.fonts.default;
 
-                text: {
-                    if(!control.printDuration)
-                    {
-                        return "";
-                    }
-
-                    var days = ""
-                    var day_count = control.printDuration.getDate() - 1;
-                    if(day_count > 0)
-                    {
-                        days = Qt.formatDateTime(control.printDuration, qsTr("d 'day(s)'", "", day_count));
-                    }
-
-                    var hours = ""
-                    if(control.printDuration.getHours() > 0)
-                    {
-                        hours = Qt.formatDateTime(control.printDuration, qsTr("h 'hour(s)'", "", control.printDuration.getHours()));
-                    }
-
-                    var minutes = ""
-                    if(control.printDuration.getMinutes() > 0)
-                    {
-                        minutes = Qt.formatDateTime(control.printDuration, qsTr("m 'minute(s)'", "", control.printDuration.getMinutes()));
-                    }
-
-                    return [days, hours, minutes].join(" ");
-                }
+                text: (!control.printDuration || !control.printDuration.valid) ? "" : control.printDuration.getDisplayString(UM.DurationFormat.Long)
             }
             Label {
                 anchors.left: parent.left;
@@ -171,7 +145,7 @@ Button {
                 color: UM.Theme.colors.save_button_text;
                 font: UM.Theme.fonts.default;
 
-                text: control.printMaterialAmount < 0 ? "" : "%1m material".arg(control.printMaterialAmount);
+                text: control.printMaterialAmount < 0 ? "" : qsTr("%1m material").arg(control.printMaterialAmount);
             }
         }
     }

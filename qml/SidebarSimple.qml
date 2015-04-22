@@ -27,7 +27,7 @@ Item {
             Label {
                 anchors.left: parent.left;
                 anchors.verticalCenter: parent.verticalCenter;
-                text:Qt.formatTime(base.minimumPrintTime, "hh:mm");
+                text: base.minimumPrintTime.valid ? base.minimumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
                 font: UM.Theme.fonts.timeslider_time;
                 color: UM.Theme.colors.primary;
             }
@@ -38,7 +38,7 @@ Item {
                     {
                         return qsTr("No Model Loaded");
                     }
-                    else if (base.minimumPrintTime == null || base.maximumPrintTime == null)
+                    else if (!base.minimumPrintTime.valid || !base.maximumPrintTime.valid)
                     {
                         return qsTr("Calculating...")
                     }
@@ -53,7 +53,7 @@ Item {
             Label {
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter;
-                text: Qt.formatTime(base.maximumPrintTime, "hh:mm");
+                text: base.maximumPrintTime.valid ? base.maximumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
                 font: UM.Theme.fonts.timeslider_time;
                 color: UM.Theme.colors.primary;
             }
@@ -79,7 +79,7 @@ Item {
             Label {
                 anchors.left: parent.left;
                 anchors.verticalCenter: parent.verticalCenter;
-                text: "Minimum\nDraft";
+                text: qsTr("Minimum\nDraft");
                 color: UM.Theme.colors.text;
                 font: UM.Theme.fonts.default;
             }
@@ -87,7 +87,7 @@ Item {
             Label {
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter;
-                text: "Maximum\nQuality";
+                text: qsTr("Maximum\nQuality");
                 horizontalAlignment: Text.AlignRight;
                 color: UM.Theme.colors.text;
                 font: UM.Theme.fonts.default;
@@ -98,9 +98,12 @@ Item {
             Layout.fillWidth: true;
             Layout.preferredHeight: UM.Theme.sizes.section.height;
 
-            text: "Enable Support";
+            text: qsTr("Enable Support");
 
             style: UM.Theme.styles.checkbox;
+
+            checked: Printer.getSettingValue('support_enable');
+            onCheckedChanged: Printer.setSettingValue('support_enable', checked);
         }
 
         Item { Layout.fillWidth: true; Layout.fillHeight: true; }
