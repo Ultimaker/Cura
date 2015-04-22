@@ -8,15 +8,15 @@ class PlatformPhysicsOperation(Operation):
     def __init__(self, node, translation):
         super().__init__()
         self._node = node
-        self._transform = node.getLocalTransformation()
-        self._position = node.getPosition() + translation
+        self._old_position = node.getPosition()
+        self._new_position = node.getPosition() + translation
         self._always_merge = True
 
     def undo(self):
-        self._node.setLocalTransformation(self._transform)
+        self._node.setPosition(self._old_position)
 
     def redo(self):
-        self._node.setPosition(self._position)
+        self._node.setPosition(self._new_position)
 
     def mergeWith(self, other):
         group = GroupedOperation()
