@@ -71,9 +71,12 @@ class EngineResult(object):
 
 	def getFilamentWeight(self, e=0):
 		#Calculates the weight of the filament in kg
-		radius = float(profile.getProfileSetting('filament_diameter')) / 2
-		volumeM3 = (self._filamentMM[e] * (math.pi * radius * radius)) / (1000*1000*1000)
-		return volumeM3 * profile.getPreferenceFloat('filament_physical_density')
+		try:
+			radius = float(profile.getProfileSetting('filament_diameter')) / 2
+			volumeM3 = (self._filamentMM[e] * (math.pi * radius * radius)) / (1000*1000*1000)
+			return volumeM3 * profile.getPreferenceFloat('filament_physical_density')
+		except:
+			return 0.0
 
 	def getFilamentCost(self, e=0):
 		cost_kg = profile.getPreferenceFloat('filament_cost_kg')
@@ -316,7 +319,14 @@ class Engine(object):
 			for k, v in overrides.items():
 				profile.setTempOverride(k, v)
 		commandList = [self._engine_executable, '-v', '-p']
-		for k, v in self._engineSettings(extruderCount).iteritems():
+		try:
+			engineSettings = self._engineSettings(extruderCount)
+		except:
+			self._filamentMM = [0.0] * 4
+			self._callback(-1.0)
+			return
+
+		for k, v in engineSettings.iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
 		commandList += ['-g', '%d' % (self._serverPortNr)]
 		if overrides is not None:
@@ -414,11 +424,14 @@ class Engine(object):
 			logThread.join()
 			self._result.addLog("Slicer process returned : %d" % returnCode)
 			if returnCode == 0:
-				self._result.addReplaceTag('#P_TIME#', self._result.getPrintTime())
-				self._result.addReplaceTag('#F_AMNT#', self._result.getFilamentAmountMeters(0))
-				self._result.addReplaceTag('#F_WGHT#', math.floor(self._result.getFilamentWeight(0) * 1000.0))
-				self._result.addReplaceTag('#F_COST#', self._result.getFilamentCost(0))
-				self._result.applyReplaceTags()
+				try:
+					self._result.addReplaceTag('#P_TIME#', self._result.getPrintTime())
+					self._result.addReplaceTag('#F_AMNT#', self._result.getFilamentAmountMeters(0))
+					self._result.addReplaceTag('#F_WGHT#', math.floor(self._result.getFilamentWeight(0) * 1000.0))
+					self._result.addReplaceTag('#F_COST#', self._result.getFilamentCost(0))
+					self._result.applyReplaceTags()
+				except:
+					pass
 				plugin_error = pluginInfo.runPostProcessingPlugins(self._result, pluginConfig)
 				if plugin_error is not None:
 					self._result.addLog(plugin_error)
