@@ -1,3 +1,5 @@
+from PyQt5.QtCore import QTimer
+
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.TranslateOperation import TranslateOperation
@@ -19,7 +21,15 @@ class PlatformPhysics:
         self._build_volume = volume
         self._signal_source = None
 
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(100)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self._onChangeTimerFinished)
+
     def _onSceneChanged(self, source):
+        self._change_timer.start()
+
+    def _onChangeTimerFinished(self):
         root = self._controller.getScene().getRoot()
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode:
