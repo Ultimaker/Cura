@@ -263,36 +263,6 @@ class PrinterApplication(QtApplication):
 
         return log
 
-    def _onActiveMachineChanged(self):
-        machine = self.getActiveMachine()
-        if machine:
-            Preferences.getInstance().setValue('cura/active_machine', machine.getName())
-
-            self._volume.setWidth(machine.getSettingValueByKey('machine_width'))
-            self._volume.setHeight(machine.getSettingValueByKey('machine_height'))
-            self._volume.setDepth(machine.getSettingValueByKey('machine_depth'))
-
-            disallowed_areas = machine.getSettingValueByKey('machine_disallowed_areas')
-            areas = []
-            if disallowed_areas:
-
-                for area in disallowed_areas:
-                    polygon = []
-                    polygon.append(Vector(area[0][0], 0.2, area[0][1]))
-                    polygon.append(Vector(area[1][0], 0.2, area[1][1]))
-                    polygon.append(Vector(area[2][0], 0.2, area[2][1]))
-                    polygon.append(Vector(area[3][0], 0.2, area[3][1]))
-                    areas.append(polygon)
-            self._volume.setDisallowedAreas(areas)
-
-            self._volume.rebuild()
-
-            offset = machine.getSettingValueByKey('machine_platform_offset')
-            if offset:
-                self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
-            else:
-                self._platform.setPosition(Vector(0.0, 0.0, 0.0))
-
     outputDevicesChanged = pyqtSignal()
     @pyqtProperty('QVariantMap', notify = outputDevicesChanged)
     def outputDevices(self):
@@ -301,6 +271,20 @@ class PrinterApplication(QtApplication):
     @pyqtProperty('QStringList', notify = outputDevicesChanged)
     def outputDeviceNames(self):
         return self._output_devices.keys()
+
+    @pyqtSlot(str, result = 'QVariant')
+    def getSettingValue(self, key):
+        if not self.getActiveMachine():
+            return None
+
+        return self.getActiveMachine().getSettingValueByKey(key)
+
+    @pyqtSlot(str, 'QVariant')
+    def setSettingValue(self, key, value):
+        if not self.getActiveMachine():
+            return
+
+        self.getActiveMachine().setSettingValueByKey(key, value)
 
     ##  Add an output device that can be written to.
     #
@@ -362,7 +346,32 @@ class PrinterApplication(QtApplication):
                 if self._output_devices[device]['function'] == self._writeToSD:
                     self.removeOutputDevice(device)
 
-    def _onPrintDurationMessage(self, duration, material_amount):
-        self._print_duration = duration
-        self._print_material_amount = material_amount
-        self.printDurationChanged.emit()
+    def _onActiveMachineChanged(self):
+        machine = self.getActiveMachine()
+        if machine:
+            Preferences.getInstance().setValue('cura/active_machine', machine.getName())
+
+            self._volume.setWidth(machine.getSettingValueByKey('machine_width'))
+            self._volume.setHeight(machine.getSettingValueByKey('machine_height'))
+            self._volume.setDepth(machine.getSettingValueByKey('machine_depth'))
+
+            disallowed_areas = machine.getSettingValueByKey('machine_disallowed_areas')
+            areas = []
+            if disallowed_areas:
+
+                for area in disallowed_areas:
+                    polygon = []
+                    polygon.append(Vector(area[0][0], 0.2, area[0][1]))
+                    polygon.append(Vector(area[1][0], 0.2, area[1][1]))
+                    polygon.append(Vector(area[2][0], 0.2, area[2][1]))
+                    polygon.append(Vector(area[3][0], 0.2, area[3][1]))
+                    areas.append(polygon)
+            self._volume.setDisallowedAreas(areas)
+
+            self._volume.rebuild()
+
+            offset = machine.getSettingValueByKey('machine_platform_offset')
+            if offset:
+                self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
+            else:
+                self._platform.setPosition(Vector(0.0, 0.0, 0.0))
