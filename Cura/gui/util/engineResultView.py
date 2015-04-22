@@ -32,7 +32,11 @@ class engineResultView(object):
 		if self._result == result:
 			return
 		if result is None:
-			self.setEnabled(False)
+			self._singleLayer = False
+			self.layerSelect.setHidden(True)
+			self.singleLayerToggle.setHidden(True)
+		else:
+			self.setEnabled(self._enabled)
 
 		self._resultLock.acquire()
 		self._result = result
