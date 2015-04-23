@@ -45,6 +45,8 @@ class ProcessSlicedObjectListJob(Job):
                     points /= 1000
                     points = numpy.insert(points, 1, layer.id * layerHeight, axis = 1)
 
+                    points[:,2] *= -1
+
                     #points = numpy.pad(points, ((0,0), (0,1)), 'constant', constant_values=(0.0, 1.0))
                     #inverse = node.getWorldTransformation().getInverse().getData()
                     #points = points.dot(inverse)

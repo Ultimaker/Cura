@@ -141,7 +141,7 @@ class CuraEngineBackend(Backend):
             
             verts = numpy.array(mesh_data.getVertices(), copy=True)
             verts[:,[1,2]] = verts[:,[2,1]]
-            verts[:,[2]] *= -1
+            verts[:,1] *= -1
             obj.vertices = verts.tostring()
 
             #if meshData.hasNormals():
