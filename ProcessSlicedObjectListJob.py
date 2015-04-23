@@ -49,6 +49,8 @@ class ProcessSlicedObjectListJob(Job):
                     points[:,0] -= self._center.x
                     points[:,2] -= self._center.z
 
+                    points[:,2] *= -1
+
                     #points = numpy.pad(points, ((0,0), (0,1)), 'constant', constant_values=(0.0, 1.0))
                     #inverse = node.getWorldTransformation().getInverse().getData()
                     #points = points.dot(inverse)
