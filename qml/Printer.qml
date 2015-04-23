@@ -301,7 +301,7 @@ UM.MainWindow {
 
         documentation.onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/support");
         reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/PluggableCura/issues");
-        showEngineLog.onTriggered: engineLog.open();
+        showEngineLog.onTriggered: engineLog.visible = true;
     }
 
     Menu {

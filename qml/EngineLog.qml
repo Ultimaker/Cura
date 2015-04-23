@@ -3,22 +3,52 @@ import QtQuick.Window 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 
+import UM 1.0 as UM
+
 Window {
     id: dialog
 
     title: qsTr("Cura Engine Log");
 
     modality: Qt.NonModal;
+    flags: Qt.Dialog;
 
     width: 640;
+    height: 480;
 
-    TextArea {
-        id: textArea
+    Rectangle {
+        anchors.fill: parent;
+        color: UM.Theme.colors.system_window;
 
-        anchors.left: parent.left;
-        anchors.right: parent.right;
+        ColumnLayout {
+            anchors.fill: parent;
+            anchors.margins: UM.Theme.sizes.default_margin.width;
 
-        implicitHeight: 480;
+            TextArea {
+                id: textArea
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+
+            Timer {
+                id: updateTimer;
+                interval: 1000;
+                running: false;
+                repeat: true;
+                onTriggered: textArea.text = Printer.getEngineLog();
+            }
+
+            RowLayout {
+                Item {
+                    Layout.fillWidth: true;
+                }
+                Button {
+                    text: qsTr("Close");
+                    onClicked: dialog.visible = false;
+                }
+            }
+        }
     }
 
     onVisibleChanged: {
@@ -28,13 +58,5 @@ Window {
         } else {
             updateTimer.stop();
         }
-    }
-
-    Timer {
-        id: updateTimer;
-        interval: 1000;
-        running: false;
-        repeat: true;
-        onTriggered: textArea.text = Printer.getEngineLog();
     }
 }
