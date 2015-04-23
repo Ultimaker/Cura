@@ -10,11 +10,10 @@ import numpy
 import struct
 
 class ProcessSlicedObjectListJob(Job):
-    def __init__(self, message, center):
+    def __init__(self, message):
         super().__init__(description = 'Processing sliced object')
         self._message = message
         self._scene = Application.getInstance().getController().getScene()
-        self._center = center
 
     def run(self):
         objectIdMap = {}
@@ -45,9 +44,6 @@ class ProcessSlicedObjectListJob(Job):
                     points = numpy.asarray(points, dtype=numpy.float32)
                     points /= 1000
                     points = numpy.insert(points, 1, layer.id * layerHeight, axis = 1)
-
-                    points[:,0] -= self._center.x
-                    points[:,2] -= self._center.z
 
                     #points = numpy.pad(points, ((0,0), (0,1)), 'constant', constant_values=(0.0, 1.0))
                     #inverse = node.getWorldTransformation().getInverse().getData()
