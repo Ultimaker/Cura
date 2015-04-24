@@ -28,7 +28,7 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
 
-        self._calculate_aabb = False
+        self.setCalculateBoundingBox(False)
 
     def setWidth(self, width):
         self._width = width
