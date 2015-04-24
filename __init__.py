@@ -8,7 +8,8 @@ def getMetaData():
             "name": "Layer View"
         },
         'view': {
-            'name': 'Layers'
+            'name': 'Layers',
+            'view_panel': 'LayerView.qml'
         }
     }
 
