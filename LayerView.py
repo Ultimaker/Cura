@@ -8,7 +8,7 @@ class LayerView(View):
     def __init__(self):
         super().__init__()
         self._material = None
-        self._num_layers = 
+        self._num_layers = 0
         self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
 
     def beginRendering(self):
