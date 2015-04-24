@@ -264,6 +264,7 @@ class PrinterApplication(QtApplication):
         return log
 
     outputDevicesChanged = pyqtSignal()
+    
     @pyqtProperty('QVariantMap', notify = outputDevicesChanged)
     def outputDevices(self):
         return self._output_devices
@@ -309,6 +310,7 @@ class PrinterApplication(QtApplication):
         self._output_devices[device]['function'](device)
 
     writeToLocalFileRequested = pyqtSignal()
+    
     def _writeToLocalFile(self, device):
         self.writeToLocalFileRequested.emit()
 
