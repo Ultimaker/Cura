@@ -13,7 +13,7 @@ import sys
 from UM.Extension import Extension
 
 from PyQt5.QtQuick import QQuickView
-from PyQt5.QtCore import QUrl, QObject,pyqtSlot , pyqtProperty,pyqtSignal
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.i18n import i18nCatalog
 
@@ -39,6 +39,11 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         ## Add menu item to top menu of the application.
         self.addMenuItem(i18n_catalog.i18n("Update firmware"), self.updateAllFirmware)
     
+    pyqtError = pyqtSignal(str, arguments = ['amount'])
+    processingProgress = pyqtSignal(float, arguments = ['amount'])
+    pyqtExtruderTemperature = pyqtSignal(float, arguments = ['amount'])
+    pyqtBedTemperature = pyqtSignal(float, arguments = ['amount'])
+    
     ##  Show firmware interface.
     #   This will create the view if its not already created.
     def spawnFirmwareInterface(self, serial_port):
@@ -60,26 +65,18 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     @pyqtProperty(float,notify = processingProgress)
     def progress(self):
         return self._progress
-    
-    processingProgress = pyqtSignal(float, arguments = ['amount'])
-    
+
     @pyqtProperty(float,notify = pyqtExtruderTemperature)
     def extruderTemperature(self):
         return self._extruder_temp
-    
-    pyqtExtruderTemperature = pyqtSignal(float, arguments = ['amount'])
-    
+
     @pyqtProperty(float,notify = pyqtBedTemperature)
     def bedTemperature(self):
         return self._bed_temp
-    
-    pyqtBedTemperature = pyqtSignal(float, arguments = ['amount'])
-   
+
     @pyqtProperty(str,notify = pyqtError)
     def error(self):
         return self._error_message
-    
-    pyqtError = pyqtSignal(str, arguments = ['amount'])
     
     ##  Check all serial ports and create a PrinterConnection object for them.
     #   Note that this does not validate if the serial ports are actually usable!
@@ -263,7 +260,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
                 while True:
                     values = winreg.EnumValue(key, i)
                     if not base_list or 'USBSER' in values[0]:
-                        base_list + =[values[1]]
+                        base_list += [values[1]]
                     i += 1
             except Exception as e:
                 pass
