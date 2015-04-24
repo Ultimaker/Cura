@@ -167,6 +167,25 @@ UM.MainWindow {
                 width: parent.width * 0.333;
                 height: 250;
             }
+            
+            Loader 
+            {
+                id: view_panel
+
+                //anchors.left: parent.left;
+                //anchors.right: parent.right;
+                //anchors.bottom: parent.bottom
+                anchors.top: viewModeButton.bottom
+                anchors.topMargin: UM.Theme.sizes.default_margin.height;
+                anchors.right: sidebar.left;
+                anchors.rightMargin: UM.Theme.sizes.window_margin.width;
+                //anchors.bottom: buttons.top;
+                //anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
+
+                height: childrenRect.height;
+
+                source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+            }
 
             DescriptionPane {
                 id: descriptionPane;
@@ -210,7 +229,7 @@ UM.MainWindow {
                     right: sidebar.left;
                     rightMargin: UM.Theme.sizes.window_margin.width;
                 }
-
+                id: viewModeButton
                 //: View Mode toolbar button
                 text: qsTr("View Mode");
                 iconSource: UM.Theme.icons.viewmode;
@@ -373,6 +392,8 @@ UM.MainWindow {
             UM.MeshFileHandler.writeLocalFile(fileUrl);
         }
     }
+    
+   
 
     EngineLog {
         id: engineLog;
