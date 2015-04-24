@@ -1,5 +1,6 @@
 from . import LayerView
 
+
 def getMetaData():
     return {
         'type': 'view',
@@ -10,6 +11,7 @@ def getMetaData():
             'name': 'Layers'
         }
     }
+
 
 def register(app):
     return {"view":LayerView.LayerView()}
