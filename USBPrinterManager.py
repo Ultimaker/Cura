@@ -19,6 +19,7 @@ from UM.i18n import i18nCatalog
 
 i18n_catalog = i18nCatalog('plugins')
 
+
 class USBPrinterManager(QObject, SignalEmitter, Extension):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -48,26 +49,25 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             self._firmware_view.show()
     
     
-    def spawnControlInterface(self,serial_port):
+    def spawnControlInterface(self, serial_port):
         if self._control_view is None:
             self._control_view = QQuickView()
             self._control_view.engine().rootContext().setContextProperty('manager',self)
             self._control_view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
             self._control_view.show()
-            
-    
+
     processingProgress = pyqtSignal(float, arguments = ['amount'])
-    @pyqtProperty(float,notify = processingProgress)
+    @pyqtProperty(float, notify=processingProgress)
     def progress(self):
         return self._progress
-    
+
     pyqtExtruderTemperature = pyqtSignal(float, arguments = ['amount'])
-    @pyqtProperty(float,notify = pyqtExtruderTemperature)
+    @pyqtProperty(float, notify=pyqtExtruderTemperature)
     def extruderTemperature(self):
         return self._extruder_temp
     
     pyqtBedTemperature = pyqtSignal(float, arguments = ['amount'])
-    @pyqtProperty(float,notify = pyqtBedTemperature)
+    @pyqtProperty(float, notify=pyqtBedTemperature)
     def bedTemperature(self):
         return self._bed_temp
     
@@ -268,15 +268,15 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
                 i=0
                 while True:
                     values = winreg.EnumValue(key, i)
-                    if not base_list or 'USBSER' in values[0]:
-                        base_list+=[values[1]]
+                    if 'USBSER' in values[0]:
+                        base_list += [values[1]]
                     i+=1
             except:
                 pass
         
         if base_list:
             base_list = base_list + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.usb*")
-            base_list = filter(lambda s: not 'Bluetooth' in s, base_list) #Filter because mac sometimes puts them in the list
+            base_list = filter(lambda s: 'Bluetooth' not in s, base_list) #Filter because mac sometimes puts them in the list
             #prev = profile.getMachineSetting('serial_port_auto')
             #if prev in base_list:
             #    base_list.remove(prev)

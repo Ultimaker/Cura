@@ -3,13 +3,17 @@ STK500v2 protocol implementation for programming AVR chips.
 The STK500v2 protocol is used by the ArduinoMega2560 and a few other Arduino platforms to load firmware.
 This is a python 3 conversion of the code created by David Braam for the Cura project.
 """
-import os, struct, sys, time
+import os
+import struct
+import sys
+import time
 
 from serial import Serial
 from serial import SerialException
 from serial import SerialTimeoutException
 
 from . import ispBase, intelHex
+
 
 class Stk500v2(ispBase.IspBase):
     def __init__(self):
@@ -55,8 +59,8 @@ class Stk500v2(ispBase.IspBase):
             self.serial.close()
             self.serial = None
 
-	#Leave ISP does not reset the serial port, only resets the device, and returns the serial port after disconnecting it from the programming interface.
-	#	This allows you to use the serial port without opening it again.
+    #Leave ISP does not reset the serial port, only resets the device, and returns the serial port after disconnecting it from the programming interface.
+    #	This allows you to use the serial port without opening it again.
     def leaveISP(self):
         if self.serial is not None:
             if self.sendMessage([0x11]) != [0x11, 0x00]:

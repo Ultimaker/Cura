@@ -149,8 +149,7 @@ class PrinterConnection(SignalEmitter):
     def updateFirmware(self, file_name):
         self._firmware_file_name = file_name
         self._update_firmware_thread.start()
-        
-    
+
     ##  Private connect function run by thread. Can be started by calling connect.
     def _connect(self): 
         self._is_connecting = True
@@ -378,6 +377,7 @@ class PrinterConnection(SignalEmitter):
                         self.sendCommand("M105 T%d" % self._temperature_requested_extruder_index)
                     else:
                         self.sendCommand("M105")
+
     ##  Send next Gcode in the gcode list            
     def _sendNextGcodeLine(self):
         if self._gcode_position >= len(self._gcode):
