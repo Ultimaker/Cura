@@ -48,7 +48,8 @@ class PrintInformation(QObject):
         self._time_quality_changed_timer.timeout.connect(self._updateTimeQualitySettings)
 
         self._interpolation_settings = {
-            "layer_height": { "minimum": "low", "maximum": "high", "curve": "linear" }
+            "layer_height": { "minimum": "low", "maximum": "high", "curve": "linear" },
+            "fill_sparse_density": { "minimum": "low", "maximum": "high", "curve": "linear" }
         }
 
         self._low_quality_settings = None
