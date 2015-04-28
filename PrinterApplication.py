@@ -64,6 +64,8 @@ class PrinterApplication(QtApplication):
         Preferences.getInstance().addPreference('cura/active_machine', '')
         Preferences.getInstance().addPreference('cura/active_mode', 'simple')
     
+    ##  Handle loading of all plugin types (and the backend explicitly)
+    #   \sa PluginRegistery
     def _loadPlugins(self):
         self._plugin_registry.loadPlugins({ "type": "logger"})
         self._plugin_registry.loadPlugins({ "type": "storage_device" })
@@ -154,6 +156,7 @@ class PrinterApplication(QtApplication):
 
     requestAddPrinter = pyqtSignal()
 
+    ##  Remove an object from the scene
     @pyqtSlot('quint64')
     def deleteObject(self, object_id):
         object = self.getController().getScene().findObject(object_id)
@@ -161,7 +164,8 @@ class PrinterApplication(QtApplication):
         if object:
             op = RemoveSceneNodeOperation(object)
             op.push()
-
+    
+    ##  Create a number of copies of existing object.
     @pyqtSlot('quint64', int)
     def multiplyObject(self, object_id, count):
         node = self.getController().getScene().findObject(object_id)
@@ -176,7 +180,8 @@ class PrinterApplication(QtApplication):
                 new_node.setSelectable(True)
                 op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
             op.push()
-
+    
+    ##  Center object on platform.
     @pyqtSlot('quint64')
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
@@ -186,7 +191,8 @@ class PrinterApplication(QtApplication):
             transform.setTranslation(Vector(0, 0, 0))
             op = SetTransformOperation(node, transform)
             op.push()
-
+    
+    ##  Delete all mesh data on the scene.
     @pyqtSlot()
     def deleteAll(self):
         nodes = []
@@ -202,7 +208,8 @@ class PrinterApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
-
+    
+    ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
     def resetAllTranslation(self):
         nodes = []
@@ -220,7 +227,8 @@ class PrinterApplication(QtApplication):
                 op.addOperation(SetTransformOperation(node, transform))
 
             op.push()
-
+    
+    ## Reset all transformations on nodes with mesh data. 
     @pyqtSlot()
     def resetAll(self):
         nodes = []
@@ -237,7 +245,8 @@ class PrinterApplication(QtApplication):
                 op.addOperation(SetTransformOperation(node, transform))
 
             op.push()
-
+            
+    ##  Reload all mesh data on the screen from file.
     @pyqtSlot()
     def reloadAll(self):
         nodes = []
@@ -253,7 +262,9 @@ class PrinterApplication(QtApplication):
             job = ReadMeshJob(file_name)
             job.finished.connect(lambda j: node.setMeshData(j.getResult()))
             job.start()
-
+    
+    ##  Get logging data of the backend engine
+    #   \returns \type{string} Logging data
     @pyqtSlot(result=str)
     def getEngineLog(self):
         log = ""
@@ -279,7 +290,8 @@ class PrinterApplication(QtApplication):
             return None
 
         return self.getActiveMachine().getSettingValueByKey(key)
-
+    
+    ##  Change setting by key value pair
     @pyqtSlot(str, 'QVariant')
     def setSettingValue(self, key, value):
         if not self.getActiveMachine():
@@ -289,8 +301,8 @@ class PrinterApplication(QtApplication):
 
     ##  Add an output device that can be written to.
     #
-    #   \param id The identifier used to identify the device.
-    #   \param device A dictionary of device information.
+    #   \param id \type{string} The identifier used to identify the device.
+    #   \param device \type{StorageDevice} A dictionary of device information.
     #                 It should contains the following:
     #                 - function: A function to be called when trying to write to the device. Will be passed the device id as first parameter.
     #                 - description: A translated string containing a description of what happens when writing to the device.
@@ -299,7 +311,10 @@ class PrinterApplication(QtApplication):
     def addOutputDevice(self, id, device):
         self._output_devices[id] = device
         self.outputDevicesChanged.emit()
-
+    
+    ##  Remove output device
+    #   \param id \type{string} The identifier used to identify the device.
+    #   \sa PrinterApplication::addOutputDevice()
     def removeOutputDevice(self, id):
         if id in self._output_devices:
             del self._output_devices[id]
@@ -324,7 +339,7 @@ class PrinterApplication(QtApplication):
             except KeyError:
                 Logger.log('e', 'Tried to write to unknown SD card %s', device)
                 return
-
+    
             filename = os.path.join(path, node.getName()[0:node.getName().rfind('.')] + '.gcode')
 
             job = WriteMeshJob(filename, node.getMeshData())
