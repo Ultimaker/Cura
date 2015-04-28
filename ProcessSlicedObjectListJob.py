@@ -54,6 +54,8 @@ class ProcessSlicedObjectListJob(Job):
 
                     layerData.addPolygon(layer.id, polygon.type, points)
 
+            # We are done processing all the layers we got from the engine, now create a mesh out of the data
+            layerData.build()
             mesh.layerData = layerData
             
         new_node.setMeshData(mesh)
