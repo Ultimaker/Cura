@@ -30,7 +30,7 @@ class LayerData(MeshData):
 
             for polygon in data:
                 polygon.build()
-                self._element_counts[layer].append(polygon.count)
+                self._element_counts[layer].append(polygon.elementCount)
 
 class Polygon():
     NoneType = 0
@@ -86,5 +86,5 @@ class Polygon():
         return self._data
 
     @property
-    def count(self):
-        return self._end - self._begin
+    def elementCount(self):
+        return (self._end - self._begin) * 2 #The range of vertices multiplied by 2 since each vertex is used twice
