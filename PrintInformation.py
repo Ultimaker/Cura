@@ -70,26 +70,31 @@ class PrintInformation(QObject):
             self._backend.slicingCancelled.connect(self._onSlicingCancelled)
 
     minimumPrintTimeChanged = pyqtSignal()
+    
     @pyqtProperty(Duration, notify = minimumPrintTimeChanged)
     def minimumPrintTime(self):
         return self._minimum_print_time
 
     currentPrintTimeChanged = pyqtSignal()
+    
     @pyqtProperty(Duration, notify = currentPrintTimeChanged)
     def currentPrintTime(self):
         return self._current_print_time
 
     maximumPrintTimeChanged = pyqtSignal()
+    
     @pyqtProperty(Duration, notify = maximumPrintTimeChanged)
     def maximumPrintTime(self):
         return self._maximum_print_time
 
     materialAmountChanged = pyqtSignal()
+    
     @pyqtProperty(float, notify = materialAmountChanged)
     def materialAmount(self):
         return self._material_amount
 
     timeQualityValueChanged = pyqtSignal()
+    
     @pyqtProperty(int, notify = timeQualityValueChanged)
     def timeQualityValue(self):
         return self._time_quality_value
