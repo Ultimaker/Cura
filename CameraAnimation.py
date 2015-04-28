@@ -11,8 +11,8 @@ class CameraAnimation(QVariantAnimation):
         self.setDuration(500)
         self.setEasingCurve(QEasingCurve.InOutQuad)
 
-    def setCameraTool(self, cameraTool):
-        self._camera_tool = cameraTool
+    def setCameraTool(self, camera_tool):
+        self._camera_tool = camera_tool
 
     def setStart(self, start):
         self.setStartValue(QVector3D(start.x, start.y, start.z))
