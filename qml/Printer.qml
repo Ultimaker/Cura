@@ -10,8 +10,8 @@ UM.MainWindow {
     id: base
     visible: true
 
-    width: 1280
-    height: 720
+    //width: 1280
+    //height: 720
 
     title: qsTr("Cura");
 
