@@ -11,6 +11,7 @@ from UM.Mesh.WriteMeshJob import WriteMeshJob
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
+from UM.Message import Message
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -343,7 +344,9 @@ class PrinterApplication(QtApplication):
             filename = os.path.join(path, node.getName()[0:node.getName().rfind('.')] + '.gcode')
 
             job = WriteMeshJob(filename, node.getMeshData())
+            job._sdcard = device
             job.start()
+            job.finished.connect(self._onWriteToSDFinished)
             return
 
     def _removableDrivesChanged(self):
@@ -358,10 +361,14 @@ class PrinterApplication(QtApplication):
                     'priority': 1
                 })
 
+        drives_to_remove = []
         for device in self._output_devices:
             if device not in drives:
                 if self._output_devices[device]['function'] == self._writeToSD:
-                    self.removeOutputDevice(device)
+                    drives_to_remove.append(device)
+
+        for drive in drives_to_remove:
+            self.removeOutputDevice(drive)
 
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
@@ -392,3 +399,14 @@ class PrinterApplication(QtApplication):
                 self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
             else:
                 self._platform.setPosition(Vector(0.0, 0.0, 0.0))
+
+    def _onWriteToSDFinished(self, job):
+        message = Message("Saved to SD Card {0} as {1}".format(job._sdcard, job.getFileName()))
+        message.addAction("Eject", "eject", "Eject SD Card {0}".format(job._sdcard))
+        message._sdcard = job._sdcard
+        message.actionTriggered.connect(self._onMessageActionTriggered)
+        message.show()
+
+    def _onMessageActionTriggered(self, message, action):
+        if action == "Eject":
+            self.getStorageDevice("LocalFileStorage").ejectRemovableDrive(message._sdcard)
