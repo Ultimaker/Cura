@@ -5,69 +5,59 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
-Window {
+UM.Dialog {
     id: base
-
-    width: 640
-    height: 480
 
     //: Add Printer dialog title
     title: qsTr("Add Printer");
 
-    Rectangle {
+    ColumnLayout {
         anchors.fill: parent;
-        color: palette.window;
+        anchors.margins: UM.Styles.defaultMargin;
 
-        ColumnLayout {
-            anchors.fill: parent;
-            anchors.margins: UM.Styles.defaultMargin;
+        Label {
+            text: qsTr("Add Printer");
+            font.pointSize: 18;
+        }
 
-            Label {
-                text: qsTr("Please select the type of printer:");
-            }
+        Label {
+            text: qsTr("Please select the type of printer:");
+        }
 
-            ScrollView {
-                Layout.fillWidth: true;
+        ScrollView {
+            Layout.fillWidth: true;
 
-                ListView {
-                    id: machineList;
-                    model: UM.Models.availableMachinesModel
-                    delegate: RadioButton { exclusiveGroup: printerGroup; text: model.name; onClicked: ListView.view.currentIndex = index; }
-                }
-            }
-
-            Label {
-                text: qsTr("Printer Name:");
-            }
-
-            TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
-
-            Item { Layout.fillWidth: true; Layout.fillHeight: true; }
-
-            ExclusiveGroup { id: printerGroup; }
-
-            RowLayout {
-                Layout.fillWidth: true
-
-                Item { Layout.fillWidth: true; }
-
-                Button {
-                    text: qsTr("Next");
-                    onClicked: {
-                        if(machineList.currentIndex != -1) {
-                            UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
-                            base.visible = false
-                        }
-                    }
-                }
-
-                Button {
-                    text: qsTr("Cancel");
-                    onClicked: base.visible = false;
-                }
+            ListView {
+                id: machineList;
+                model: UM.Models.availableMachinesModel
+                delegate: RadioButton { exclusiveGroup: printerGroup; text: model.name; onClicked: ListView.view.currentIndex = index; }
             }
         }
+
+        Label {
+            text: qsTr("Printer Name:");
+        }
+
+        TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
+
+        Item { Layout.fillWidth: true; Layout.fillHeight: true; }
+
+        ExclusiveGroup { id: printerGroup; }
     }
 
-    SystemPalette { id: palette; colorGroup: SystemPalette.Active }
+    rightButtons: [
+        Button {
+            text: qsTr("Next");
+            onClicked: {
+                if(machineList.currentIndex != -1) {
+                    UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
+                    base.visible = false
+                }
+            }
+        },
+        Button {
+            text: qsTr("Cancel");
+            onClicked: base.visible = false;
+        }
+    ]
 }
