@@ -73,33 +73,32 @@ UM.MainWindow {
             }
 
             Menu {
-                id:extension_menu
+                id: extension_menu
                 //: Extensions menu
                 title: qsTr("E&xtensions");
 
                 Instantiator 
                 {
                     model: UM.Models.extensionModel
-                    id: blub
-                    
+
                     Menu
                     {
-                        title: model.name;
                         id: sub_menu
+                        title: model.name;
+
                         Instantiator
                         {
                             model: actions
-                            MenuItem 
+                            MenuItem
                             {
-                                text:model.text
-                                onTriggered: UM.Models.extensionModel.subMenuTriggered(name,model.text)
+                                text: model.text
+                                onTriggered: UM.Models.extensionModel.subMenuTriggered(name, model.text)
                             }
                             onObjectAdded: sub_menu.insertItem(index, object)
                             onObjectRemoved: sub_menu.removeItem(object)
-                            
                         }
-       
                     }
+
                     onObjectAdded: extension_menu.insertItem(index, object)
                     onObjectRemoved: extension_menu.removeItem(object)
                 }
@@ -162,13 +161,17 @@ UM.MainWindow {
             }
 
             UM.MessageStack {
-                anchors.bottom: parent.bottom;
-                anchors.horizontalCenter: parent.horizontalCenter;
-                width: parent.width * 0.333;
-                height: 250;
+                anchors {
+                    left: toolbar.right;
+                    leftMargin: UM.Theme.sizes.window_margin.width;
+                    right: sidebar.left;
+                    rightMargin: UM.Theme.sizes.window_margin.width;
+                    top: parent.verticalCenter;
+                    bottom: parent.bottom;
+                }
             }
-            
-            Loader 
+
+            Loader
             {
                 id: view_panel
 
@@ -254,6 +257,8 @@ UM.MainWindow {
             }
 
             PrinterToolbar {
+                id: toolbar;
+
                 anchors {
                     left: parent.left;
                     leftMargin: UM.Theme.sizes.window_margin.width;
@@ -268,7 +273,7 @@ UM.MainWindow {
         id: preferences
 
         Component.onCompleted: {
-            insertPage(1, qsTr('View'), Qt.resolvedUrl('./ViewPage.qml'));
+            insertPage(1, qsTr('View'), 'view-preview', Qt.resolvedUrl('./ViewPage.qml'));
         }
     }
 
@@ -321,6 +326,7 @@ UM.MainWindow {
         documentation.onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/support");
         reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/PluggableCura/issues");
         showEngineLog.onTriggered: engineLog.visible = true;
+        about.onTriggered: aboutDialog.visible = true;
     }
 
     Menu {
@@ -392,8 +398,6 @@ UM.MainWindow {
             UM.MeshFileHandler.writeLocalFile(fileUrl);
         }
     }
-    
-   
 
     EngineLog {
         id: engineLog;
@@ -401,6 +405,10 @@ UM.MainWindow {
 
     AddMachineWizard {
         id: addMachine;
+    }
+
+    AboutDialog {
+        id: aboutDialog
     }
 
     Connections {
