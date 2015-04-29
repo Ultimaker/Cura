@@ -3,6 +3,7 @@ from PyQt5.QtCore import QTimer
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.TranslateOperation import TranslateOperation
+from UM.Operations.ScaleToBoundsOperation import ScaleToBoundsOperation
 from UM.Math.Float import Float
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -76,10 +77,13 @@ class PlatformPhysics:
                     if overlap is None:
                         continue
 
-                    print(overlap)
                     move_vector.setX(-overlap[0])
                     move_vector.setZ(-overlap[1])
 
             if move_vector != Vector():
                 op = PlatformPhysicsOperation(node, move_vector)
+                op.push()
+
+            if node.getBoundingBox().intersectsBox(self._build_volume.getBoundingBox()) == AxisAlignedBox.IntersectionResult.FullIntersection:
+                op = ScaleToBoundsOperation(node, self._build_volume.getBoundingBox())
                 op.push()
