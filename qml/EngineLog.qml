@@ -1,54 +1,33 @@
 import QtQuick 2.2
-import QtQuick.Window 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Window {
-    id: dialog
+UM.Dialog {
+    id: dialog;
 
-    title: qsTr("Cura Engine Log");
+    //: Engine Log dialog title
+    title: qsTr("Engine Log");
 
     modality: Qt.NonModal;
-    flags: Qt.Dialog;
 
-    width: 640;
-    height: 480;
-
-    Rectangle {
+    TextArea {
+        id: textArea
         anchors.fill: parent;
-        color: UM.Theme.colors.system_window;
 
-        ColumnLayout {
-            anchors.fill: parent;
-            anchors.margins: UM.Theme.sizes.default_margin.width;
-
-            TextArea {
-                id: textArea
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-            }
-
-            Timer {
-                id: updateTimer;
-                interval: 1000;
-                running: false;
-                repeat: true;
-                onTriggered: textArea.text = Printer.getEngineLog();
-            }
-
-            RowLayout {
-                Item {
-                    Layout.fillWidth: true;
-                }
-                Button {
-                    text: qsTr("Close");
-                    onClicked: dialog.visible = false;
-                }
-            }
+        Timer {
+            id: updateTimer;
+            interval: 1000;
+            running: false;
+            repeat: true;
+            onTriggered: textArea.text = Printer.getEngineLog();
         }
+    }
+
+    rightButtons: Button {
+        text: qsTr("Close");
+        onClicked: dialog.visible = false;
     }
 
     onVisibleChanged: {
