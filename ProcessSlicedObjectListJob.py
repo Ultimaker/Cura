@@ -26,7 +26,8 @@ class ProcessSlicedObjectListJob(Job):
                 else:
                     objectIdMap[id(node)] = node
 
-        layerHeight = Application.getInstance().getActiveMachine().getSettingValueByKey('layer_height')
+        settings = Application.getInstance().getActiveMachine()
+        layerHeight = settings.getSettingValueByKey('layer_height')
 
         for object in self._message.objects:
             try:        
@@ -46,6 +47,10 @@ class ProcessSlicedObjectListJob(Job):
                     points = numpy.insert(points, 1, layer.id * layerHeight, axis = 1)
 
                     points[:,2] *= -1
+
+                    if not settings.getSettingValueByKey('machine_center_is_zero'):
+                        center = [settings.getSettingValueByKey('machine_width') / 2, 0.0, -settings.getSettingValueByKey('machine_depth') / 2]
+                        points -= numpy.array(center)
 
                     #points = numpy.pad(points, ((0,0), (0,1)), 'constant', constant_values=(0.0, 1.0))
                     #inverse = node.getWorldTransformation().getInverse().getData()
