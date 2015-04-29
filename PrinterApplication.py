@@ -394,6 +394,9 @@ class PrinterApplication(QtApplication):
 
             self._volume.rebuild()
 
+            if self.getController().getTool('ScaleTool'):
+                self.getController().getTool('ScaleTool').setMaximumBounds(self._volume.getBoundingBox())
+
             offset = machine.getSettingValueByKey('machine_platform_offset')
             if offset:
                 self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
