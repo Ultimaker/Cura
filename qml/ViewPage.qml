@@ -5,8 +5,13 @@ import QtQuick.Layouts 1.1
 import UM 1.0 as UM
 
 UM.PreferencesPage {
-    //: General configuration page title
+    //: View configuration page title
     title: qsTr("View");
+
+    function reset()
+    {
+        UM.Preferences.resetPreference('view/show_overhang');
+    }
 
     GridLayout {
         columns: 2;
@@ -15,7 +20,8 @@ UM.PreferencesPage {
             checked: UM.Preferences.getValue('view/show_overhang');
             onCheckedChanged: UM.Preferences.setValue('view/show_overhang', checked)
 
-            text: qsTr("Display overhang");
+            //: Display Overhang preference checkbox
+            text: qsTr("Display Overhang");
         }
 
         Item { Layout.fillHeight: true; Layout.columnSpan: 2 }
