@@ -1,0 +1,12 @@
+*.pyc
+*kdev*
+__pycache__
+docs/html
+*.lprof
+*.log
+*~
+build
+*.qm
+*.mo
+resources/i18n/en
+resources/i18n/x-test
