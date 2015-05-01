@@ -1,6 +1,6 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
-from PrinterApplication import PrinterApplication
+from src.PrinterApplication import PrinterApplication
 
 app = PrinterApplication.getInstance()
 app.run()
