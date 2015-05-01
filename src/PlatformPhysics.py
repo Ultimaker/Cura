@@ -9,8 +9,8 @@ from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
 
-from PlatformPhysicsOperation import PlatformPhysicsOperation
-from ConvexHullJob import ConvexHullJob
+from . import PlatformPhysicsOperation
+from . import ConvexHullJob
 
 import time
 import threading
@@ -54,7 +54,7 @@ class PlatformPhysics:
             # If there is no convex hull for the node, start calculating it and continue.
             if not hasattr(node, '_convex_hull'):
                 if not hasattr(node, '_convex_hull_job'):
-                    job = ConvexHullJob(node)
+                    job = ConvexHullJob.ConvexHullJob(node)
                     job.start()
                     node._convex_hull_job = job
             else:
@@ -81,7 +81,7 @@ class PlatformPhysics:
                     move_vector.setZ(-overlap[1])
 
             if move_vector != Vector():
-                op = PlatformPhysicsOperation(node, move_vector)
+                op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
             if node.getBoundingBox().intersectsBox(self._build_volume.getBoundingBox()) == AxisAlignedBox.IntersectionResult.FullIntersection:

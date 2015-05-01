@@ -4,7 +4,7 @@ from UM.Math.Polygon import Polygon
 
 import numpy
 
-from ConvexHullNode import ConvexHullNode
+from . import ConvexHullNode
 
 class ConvexHullJob(Job):
     def __init__(self, node):
@@ -26,7 +26,7 @@ class ConvexHullJob(Job):
         # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-1, -1], [-1, 1], [1, 1], [1, -1]], numpy.float32)))
 
-        hull_node = ConvexHullNode(self._node, hull, Application.getInstance().getController().getScene().getRoot())
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, hull, Application.getInstance().getController().getScene().getRoot())
 
         self._node._convex_hull = hull
         delattr(self._node, "_convex_hull_job")

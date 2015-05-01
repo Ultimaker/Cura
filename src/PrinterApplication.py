@@ -12,6 +12,7 @@ from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -21,14 +22,15 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
-from PlatformPhysics import PlatformPhysics
-from BuildVolume import BuildVolume
-from CameraAnimation import CameraAnimation
-from PrintInformation import PrintInformation
+from . import PlatformPhysics
+from . import BuildVolume
+from . import CameraAnimation
+from . import PrintInformation
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor
 
+import sys
 import os.path
 import numpy
 numpy.seterr(all='ignore')
@@ -36,6 +38,10 @@ numpy.seterr(all='ignore')
 class PrinterApplication(QtApplication):
     def __init__(self):
         super().__init__(name = 'cura', version = "14.2.1")
+
+        if not hasattr(sys, 'frozen'):
+            Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..'))
+
         self.setRequiredPlugins([
             'CuraEngineBackend',
             'MeshView',
@@ -68,6 +74,9 @@ class PrinterApplication(QtApplication):
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
+        if not hasattr(sys, 'frozen'):
+            self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'plugins'))
+
         self._plugin_registry.loadPlugins({ "type": "logger"})
         self._plugin_registry.loadPlugins({ "type": "storage_device" })
         self._plugin_registry.loadPlugins({ "type": "view" })
@@ -96,26 +105,26 @@ class PrinterApplication(QtApplication):
         root = controller.getScene().getRoot()
         self._platform = Platform(root)
 
-        self._volume = BuildVolume(root)
+        self._volume = BuildVolume.BuildVolume(root)
 
         self.getRenderer().setLightPosition(Vector(0, 150, 0))
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
-        self._physics = PlatformPhysics(controller, self._volume)
+        self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera('3d', root)
         camera.setPosition(Vector(-150, 150, 300))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
 
-        self._camera_animation = CameraAnimation()
+        self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool('CameraTool'))
 
         controller.getScene().setActiveCamera('3d')
 
         self.showSplashMessage('Loading interface...')
 
-        self.setMainQml(os.path.dirname(__file__), "qml/Printer.qml")
+        self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Printer.qml"))
         self.initializeEngine()
 
         self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
@@ -140,7 +149,7 @@ class PrinterApplication(QtApplication):
 
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty('Printer', self)
-        self._print_information = PrintInformation()
+        self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty('PrintInformation', self._print_information)
 
     def onSelectionChanged(self):
