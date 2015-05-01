@@ -2,7 +2,7 @@ from . import GCodeWriter
 
 from UM.i18n import i18nCatalog
 
-catalog = i18nCatalog('plugins')
+catalog = i18nCatalog('cura')
 
 def getMetaData():
     return {
@@ -21,4 +21,4 @@ def getMetaData():
     }
 
 def register(app):
-    return {"mesh_writer":GCodeWriter.GCodeWriter()}
+    return { "mesh_writer": GCodeWriter.GCodeWriter() }
