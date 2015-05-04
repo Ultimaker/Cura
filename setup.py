@@ -7,21 +7,20 @@ import re
 import shutil
 import site
 
-includes = ['sip', 'ctypes', 'UM', 'PyQt5.QtNetwork', 'PyQt5._QOpenGLFunctions_2_0', 'serial', 'Arcus', 'google', 'google.protobuf', 'google.protobuf.descriptor', 'xml.etree', 'xml.etree.ElementTree']
+includes = ['sip', 'ctypes', 'UM', 'PyQt5.QtNetwork', 'PyQt5._QOpenGLFunctions_2_0', 'serial', 'Arcus', 'google', 'google.protobuf', 'google.protobuf.descriptor', 'xml.etree', 'xml.etree.ElementTree', 'src']
 # Include all the UM modules in the includes. As py2exe fails to properly find all the dependencies due to the plugin architecture.
-for dirpath, dirnames, filenames in os.walk('../UM'):
+for dirpath, dirnames, filenames in os.walk(os.path.dirname(UM.__file__)):
     if '__' in dirpath:
         continue
-    dirpath = dirpath.split(os.path.sep)
-    dirpath[0] = 'UM'
-    module_name = '.'.join(dirpath)
-    if os.path.isfile('../' + os.path.sep.join(dirpath) + '/__init__.py'):
+    module_path = dirpath.replace(os.path.dirname(UM.__file__), 'UM')
+    module_path = module_path.split(os.path.sep)
+    module_name = '.'.join(module_path)
+    if os.path.isfile(dirpath + '/__init__.py'):
         includes += [module_name]
         for filename in filenames:
             if '__' in filename or not filename.endswith('.py'):
                 continue
             includes += [module_name + '.' + os.path.splitext(filename)[0]]
-
 
 print('Removing previous distribution package')
 shutil.rmtree('dist', True)
@@ -32,19 +31,21 @@ setup(name="Cura",
         author_email="d.braam@ultimaker.com",
         url="http://software.ultimaker.com/",
         license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
-        scripts=["printer.py", "PrinterApplication.py"],
+        scripts=["printer.py"],
         #windows=[{"script": "printer.py", "dest_name": "Cura"}],
         console=[{"script": "printer.py"}],
         options={"py2exe": {"skip_archive": False, "includes": includes}})
 
 print('Coping Cura plugins.')
-shutil.copytree('../plugins', 'dist/plugins')
-print('Coping Cura qml.')
-shutil.copytree('qml', 'dist/qml')
+shutil.copytree(os.path.dirname(UM.__file__) + '/../plugins', 'dist/plugins')
+for path in os.listdir('plugins'):
+	shutil.copytree('plugins/' + path, 'dist/plugins/' + path)
 print('Coping resources.')
-shutil.copytree('../resources', 'dist/resources')
-print('Coping resources.')
-shutil.copytree('../UM/Qt/qml/UM', 'dist/qml/UM')
+shutil.copytree(os.path.dirname(UM.__file__) + '/../resources', 'dist/resources')
+shutil.copytree('resources/qml', 'dist/resources/qml')
+shutil.copytree('resources/themes', 'dist/resources/themes')
+print('Coping Uranium QML.')
+shutil.copytree(os.path.dirname(UM.__file__) + '/Qt/qml/UM', 'dist/qml/UM')
 for site_package in site.getsitepackages():
     qt_origin_path = os.path.join(site_package, 'PyQt5')
     if os.path.isdir(qt_origin_path):
