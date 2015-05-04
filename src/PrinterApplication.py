@@ -37,10 +37,10 @@ numpy.seterr(all='ignore')
 
 class PrinterApplication(QtApplication):
     def __init__(self):
-        super().__init__(name = 'cura', version = "14.2.1")
-
         if not hasattr(sys, 'frozen'):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..'))
+
+        super().__init__(name = 'cura', version = "14.2.1")
 
         self.setRequiredPlugins([
             'CuraEngineBackend',
