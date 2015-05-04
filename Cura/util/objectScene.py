@@ -173,8 +173,8 @@ class Scene(object):
 				#print mode was changed by user. We need to reset that value to test with current scene content
 				self._lastResultOneAtATime = True
 
-			for obj in self._objectList:
-				if obj.getSize()[2] - objectSink > self._gantryHeight:
+			for objIter in self._objectList:
+				if objIter.getSize()[2] - objectSink > self._gantryHeight:
 					self._oneAtATime = False
 					if self._lastResultOneAtATime:
 						if self._sceneView:
