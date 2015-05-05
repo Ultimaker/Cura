@@ -599,7 +599,6 @@ class SceneView(openglGui.glGuiPanel):
 				break
 		if n <= cnt:
 			self.notification.message(_("Could not create more than %d items") % (n - 1))
-		self.notification.message(_("Could not create more than %d items") % (n - 1))
 		self._scene.remove(newObj)
 		if requestedArrangeAll == 2:
 			self._scene.centerAll()
