@@ -22,6 +22,8 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
+from UM.i18n import i18nCatalog
+
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -55,15 +57,7 @@ class PrinterApplication(QtApplication):
         self._physics = None
         self._volume = None
         self._platform = None
-        self._output_devices = {
-            'local_file': {
-                'id': 'local_file',
-                'function': self._writeToLocalFile,
-                'description': 'Save to Disk',
-                'icon': 'save',
-                'priority': 0
-            }
-        }
+        self._output_devices = {}
         self._print_information = None
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
@@ -88,7 +82,17 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugin('CuraEngineBackend')
 
     def run(self):
-        self.showSplashMessage('Setting up scene...')
+        i18n_catalog = i18nCatalog("cura");
+
+        self.addOutputDevice("local_file", {
+            "id": "local_file",
+            "function": self._writeToLocalFile,
+            "description": i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
+            "icon": "save",
+            "priority": 0
+        })
+
+        self.showSplashMessage(i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
 
         controller = self.getController()
 
@@ -122,7 +126,7 @@ class PrinterApplication(QtApplication):
 
         controller.getScene().setActiveCamera('3d')
 
-        self.showSplashMessage('Loading interface...')
+        self.showSplashMessage(i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
 
         self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Printer.qml"))
         self.initializeEngine()
@@ -363,11 +367,11 @@ class PrinterApplication(QtApplication):
         for drive in drives:
             if drive not in self._output_devices:
                 self.addOutputDevice(drive, {
-                    'id': drive,
-                    'function': self._writeToSD,
-                    'description': 'Save to SD Card {0}'.format(drive),
-                    'icon': 'save_sd',
-                    'priority': 1
+                    "id": drive,
+                    "function": self._writeToSD,
+                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}".format(drive)),
+                    "icon": "save_sd",
+                    "priority": 1
                 })
 
         drives_to_remove = []
@@ -413,8 +417,12 @@ class PrinterApplication(QtApplication):
                 self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     def _onWriteToSDFinished(self, job):
-        message = Message("Saved to SD Card {0} as {1}".format(job._sdcard, job.getFileName()))
-        message.addAction("Eject", "eject", "Eject SD Card {0}".format(job._sdcard))
+        message = Message(self._i18n_catalog.i18nc("Saved to SD message, {0} is sdcard, {1} is filename", "Saved to SD Card {0} as {1}").format(job._sdcard, job.getFileName()))
+        message.addAction(
+            "eject",
+            self._i18n_catalog.i18nc("Message action", "Eject"),
+            "eject",
+            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}".format(job._sdcard))
         message._sdcard = job._sdcard
         message.actionTriggered.connect(self._onMessageActionTriggered)
         message.show()
