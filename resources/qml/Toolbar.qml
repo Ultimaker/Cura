@@ -24,13 +24,15 @@ Item {
 
             model: UM.Models.toolModel
 
-            PrinterButton {
+            Button {
                 text: model.name;
                 iconSource: UM.Theme.icons[model.icon];
                 tooltip: model.description;
 
                 checkable: true;
                 checked: model.active;
+
+                style: UM.Theme.styles.tool_button;
 
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.

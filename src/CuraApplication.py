@@ -37,7 +37,7 @@ import os.path
 import numpy
 numpy.seterr(all="ignore")
 
-class PrinterApplication(QtApplication):
+class CuraApplication(QtApplication):
     def __init__(self):
         if not hasattr(sys, "frozen"):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
@@ -129,7 +129,7 @@ class PrinterApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
 
-        self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Printer.qml"))
+        self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Cura.qml"))
         self.initializeEngine()
 
         self.getStorageDevice("LocalFileStorage").removableDrivesChanged.connect(self._removableDrivesChanged)

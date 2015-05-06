@@ -190,10 +190,11 @@ UM.MainWindow {
                 source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
             }
 
-            PrinterButton {
+            Button {
                 id: openFileButton;
 
                 iconSource: UM.Theme.icons.open;
+                style: UM.Theme.styles.tool_button;
 
                 anchors {
                     top: parent.top;
@@ -220,7 +221,7 @@ UM.MainWindow {
                 sourceSize.height: height;
             }
 
-            PrinterButton {
+            Button {
                 anchors {
                     top: parent.top;
                     topMargin: UM.Theme.sizes.window_margin.height;
@@ -231,6 +232,8 @@ UM.MainWindow {
                 //: View Mode toolbar button
                 text: qsTr("View Mode");
                 iconSource: UM.Theme.icons.viewmode;
+
+                style: UM.Theme.styles.tool_button;
 
                 menu: Menu {
                     id: viewMenu;
@@ -251,7 +254,7 @@ UM.MainWindow {
                 }
             }
 
-            PrinterToolbar {
+            Toolbar {
                 id: toolbar;
 
                 anchors {
@@ -272,7 +275,7 @@ UM.MainWindow {
         }
     }
 
-    PrinterActions {
+    Actions {
         id: actions;
 
         open.onTriggered: openDialog.open();
