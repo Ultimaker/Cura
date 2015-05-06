@@ -190,11 +190,6 @@ UM.MainWindow {
                 source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
             }
 
-            DescriptionPane {
-                id: descriptionPane;
-                anchors.right: sidebar.left;
-            }
-
             PrinterButton {
                 id: openFileButton;
 
