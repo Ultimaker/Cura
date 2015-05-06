@@ -26,7 +26,7 @@ export BUILD_NAME=15.02.1
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Revision
-export REVISION=1.19
+export REVISION=1.00
 
 ##Git commit
 GIT_HASH=$(git rev-parse --short=4 HEAD)
