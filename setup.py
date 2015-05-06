@@ -7,23 +7,23 @@ import re
 import shutil
 import site
 
-includes = ['sip', 'ctypes', 'UM', 'PyQt5.QtNetwork', 'PyQt5._QOpenGLFunctions_2_0', 'serial', 'Arcus', 'google', 'google.protobuf', 'google.protobuf.descriptor', 'xml.etree', 'xml.etree.ElementTree', 'src']
+includes = ["sip", "ctypes", "UM", "PyQt5.QtNetwork", "PyQt5._QOpenGLFunctions_2_0", "serial", "Arcus", "google", "google.protobuf", "google.protobuf.descriptor", "xml.etree", "xml.etree.ElementTree", "src"]
 # Include all the UM modules in the includes. As py2exe fails to properly find all the dependencies due to the plugin architecture.
 for dirpath, dirnames, filenames in os.walk(os.path.dirname(UM.__file__)):
-    if '__' in dirpath:
+    if "__" in dirpath:
         continue
-    module_path = dirpath.replace(os.path.dirname(UM.__file__), 'UM')
+    module_path = dirpath.replace(os.path.dirname(UM.__file__), "UM")
     module_path = module_path.split(os.path.sep)
-    module_name = '.'.join(module_path)
-    if os.path.isfile(dirpath + '/__init__.py'):
+    module_name = ".".join(module_path)
+    if os.path.isfile(dirpath + "/__init__.py"):
         includes += [module_name]
         for filename in filenames:
-            if '__' in filename or not filename.endswith('.py'):
+            if "__" in filename or not filename.endswith(".py"):
                 continue
-            includes += [module_name + '.' + os.path.splitext(filename)[0]]
+            includes += [module_name + "." + os.path.splitext(filename)[0]]
 
-print('Removing previous distribution package')
-shutil.rmtree('dist', True)
+print("Removing previous distribution package")
+shutil.rmtree("dist", True)
 
 setup(name="Cura",
         version="2.0",
@@ -36,24 +36,24 @@ setup(name="Cura",
         console=[{"script": "printer.py"}],
         options={"py2exe": {"skip_archive": False, "includes": includes}})
 
-print('Coping Cura plugins.')
-shutil.copytree(os.path.dirname(UM.__file__) + '/../plugins', 'dist/plugins')
-for path in os.listdir('plugins'):
-	shutil.copytree('plugins/' + path, 'dist/plugins/' + path)
-print('Coping resources.')
-shutil.copytree(os.path.dirname(UM.__file__) + '/../resources', 'dist/resources')
-shutil.copytree('resources/qml', 'dist/resources/qml')
-shutil.copytree('resources/themes', 'dist/resources/themes')
-print('Coping Uranium QML.')
-shutil.copytree(os.path.dirname(UM.__file__) + '/Qt/qml/UM', 'dist/qml/UM')
+print("Coping Cura plugins.")
+shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins")
+for path in os.listdir("plugins"):
+	shutil.copytree("plugins/" + path, "dist/plugins/" + path)
+print("Coping resources.")
+shutil.copytree(os.path.dirname(UM.__file__) + "/../resources", "dist/resources")
+shutil.copytree("resources/qml", "dist/resources/qml")
+shutil.copytree("resources/themes", "dist/resources/themes")
+print("Coping Uranium QML.")
+shutil.copytree(os.path.dirname(UM.__file__) + "/Qt/qml/UM", "dist/qml/UM")
 for site_package in site.getsitepackages():
-    qt_origin_path = os.path.join(site_package, 'PyQt5')
+    qt_origin_path = os.path.join(site_package, "PyQt5")
     if os.path.isdir(qt_origin_path):
-        print('Coping PyQt5 plugins from: %s' % qt_origin_path)
-        shutil.copytree(os.path.join(qt_origin_path, 'plugins'), 'dist/PyQt5/plugins')
-        print('Coping PyQt5 QtQuick from: %s' % qt_origin_path)
-        shutil.copytree(os.path.join(qt_origin_path, 'qml/QtQuick'), 'dist/qml/QtQuick')
-        shutil.copytree(os.path.join(qt_origin_path, 'qml/QtQuick.2'), 'dist/qml/QtQuick.2')
-        print('Coping PyQt5 svg library from: %s' % qt_origin_path)
-        shutil.copy(os.path.join(qt_origin_path, 'Qt5Svg.dll'), 'dist/Qt5Svg.dll')
-os.rename('dist/printer.exe', 'dist/Cura.exe')
+        print("Coping PyQt5 plugins from: %s" % qt_origin_path)
+        shutil.copytree(os.path.join(qt_origin_path, "plugins"), "dist/PyQt5/plugins")
+        print("Coping PyQt5 QtQuick from: %s" % qt_origin_path)
+        shutil.copytree(os.path.join(qt_origin_path, "qml/QtQuick"), "dist/qml/QtQuick")
+        shutil.copytree(os.path.join(qt_origin_path, "qml/QtQuick.2"), "dist/qml/QtQuick.2")
+        print("Coping PyQt5 svg library from: %s" % qt_origin_path)
+        shutil.copy(os.path.join(qt_origin_path, "Qt5Svg.dll"), "dist/Qt5Svg.dll")
+os.rename("dist/printer.exe", "dist/Cura.exe")

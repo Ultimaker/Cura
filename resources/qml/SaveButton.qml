@@ -15,7 +15,7 @@ Button {
 
     enabled: progress >= 0.95;
 
-    property string currentDevice: 'local_file'
+    property string currentDevice: "local_file"
     property bool defaultOverride: false;
     property bool defaultAmbiguous: false;
 

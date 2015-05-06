@@ -10,12 +10,12 @@ class GCodeWriter(MeshWriter):
         self._gcode = None
 
     def write(self, file_name, storage_device, mesh_data):
-        if 'gcode' in file_name:
+        if "gcode" in file_name:
             scene = Application.getInstance().getController().getScene()
-            gcode_list = getattr(scene, 'gcode_list')
+            gcode_list = getattr(scene, "gcode_list")
             if gcode_list:
-                f = storage_device.openFile(file_name, 'wt')
-                Logger.log('d', "Writing GCode to file %s", file_name)
+                f = storage_device.openFile(file_name, "wt")
+                Logger.log("d", "Writing GCode to file %s", file_name)
                 for gcode in gcode_list:
                     f.write(gcode)
                 storage_device.closeFile(f)

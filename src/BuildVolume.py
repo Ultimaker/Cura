@@ -48,15 +48,15 @@ class BuildVolume(SceneNode):
 
         if not self._material:
             self._material = renderer.createMaterial(
-                Resources.getPath(Resources.ShadersLocation, 'basic.vert'),
-                Resources.getPath(Resources.ShadersLocation, 'vertexcolor.frag')
+                Resources.getPath(Resources.ShadersLocation, "basic.vert"),
+                Resources.getPath(Resources.ShadersLocation, "vertexcolor.frag")
             )
             self._grid_material = renderer.createMaterial(
-                Resources.getPath(Resources.ShadersLocation, 'basic.vert'),
-                Resources.getPath(Resources.ShadersLocation, 'grid.frag')
+                Resources.getPath(Resources.ShadersLocation, "basic.vert"),
+                Resources.getPath(Resources.ShadersLocation, "grid.frag")
             )
-            self._grid_material.setUniformValue('u_gridColor0', Color(245, 245, 245, 255))
-            self._grid_material.setUniformValue('u_gridColor1', Color(205, 202, 201, 255))
+            self._grid_material.setUniformValue("u_gridColor0", Color(245, 245, 245, 255))
+            self._grid_material.setUniformValue("u_gridColor1", Color(205, 202, 201, 255))
 
         renderer.queueNode(self, material = self._material, mode = Renderer.RenderLines)
         renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material)

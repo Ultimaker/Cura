@@ -17,7 +17,7 @@ class LayerView(View):
         renderer.setRenderSelection(False)
 
         if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, 'basic.vert'), Resources.getPath(Resources.ShadersLocation, 'vertexcolor.frag'))
+            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "vertexcolor.frag"))
             self._material.setUniformValue("u_color", [1.0, 0.0, 0.0, 1.0])
 
         for node in DepthFirstIterator(scene.getRoot()):

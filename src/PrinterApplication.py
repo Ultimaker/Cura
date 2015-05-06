@@ -35,41 +35,42 @@ from PyQt5.QtGui import QColor
 import sys
 import os.path
 import numpy
-numpy.seterr(all='ignore')
+numpy.seterr(all="ignore")
 
 class PrinterApplication(QtApplication):
     def __init__(self):
-        if not hasattr(sys, 'frozen'):
-            Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..'))
+        if not hasattr(sys, "frozen"):
+            Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = 'cura', version = "master")
+        super().__init__(name = "cura", version = "master")
 
         self.setRequiredPlugins([
-            'CuraEngineBackend',
-            'MeshView',
-            'LayerView',
-            'STLReader',
-            'SelectionTool',
-            'CameraTool',
-            'GCodeWriter',
-            'LocalFileStorage'
+            "CuraEngineBackend",
+            "MeshView",
+            "LayerView",
+            "STLReader",
+            "SelectionTool",
+            "CameraTool",
+            "GCodeWriter",
+            "LocalFileStorage"
         ])
         self._physics = None
         self._volume = None
         self._platform = None
         self._output_devices = {}
         self._print_information = None
+        self._i18n_catalog = None
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
-        Preferences.getInstance().addPreference('cura/active_machine', '')
-        Preferences.getInstance().addPreference('cura/active_mode', 'simple')
+        Preferences.getInstance().addPreference("cura/active_machine", "")
+        Preferences.getInstance().addPreference("cura/active_mode", "simple")
     
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
-        if not hasattr(sys, 'frozen'):
-            self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'plugins'))
+        if not hasattr(sys, "frozen"):
+            self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
 
         self._plugin_registry.loadPlugins({ "type": "logger"})
         self._plugin_registry.loadPlugins({ "type": "storage_device" })
@@ -79,20 +80,20 @@ class PrinterApplication(QtApplication):
         self._plugin_registry.loadPlugins({ "type": "tool" })
         self._plugin_registry.loadPlugins({ "type": "extension" })
 
-        self._plugin_registry.loadPlugin('CuraEngineBackend')
+        self._plugin_registry.loadPlugin("CuraEngineBackend")
 
     def run(self):
-        i18n_catalog = i18nCatalog("cura");
+        self._i18n_catalog = i18nCatalog("cura");
 
         self.addOutputDevice("local_file", {
             "id": "local_file",
             "function": self._writeToLocalFile,
-            "description": i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
+            "description": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
             "icon": "save",
             "priority": 0
         })
 
-        self.showSplashMessage(i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
+        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
 
         controller = self.getController()
 
@@ -100,7 +101,7 @@ class PrinterApplication(QtApplication):
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
-        t = controller.getTool('TranslateTool')
+        t = controller.getTool("TranslateTool")
         if t:
             t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.ZAxis])
 
@@ -116,25 +117,25 @@ class PrinterApplication(QtApplication):
 
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
-        camera = Camera('3d', root)
+        camera = Camera("3d", root)
         camera.setPosition(Vector(-150, 150, 300))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
 
         self._camera_animation = CameraAnimation.CameraAnimation()
-        self._camera_animation.setCameraTool(self.getController().getTool('CameraTool'))
+        self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
 
-        controller.getScene().setActiveCamera('3d')
+        controller.getScene().setActiveCamera("3d")
 
-        self.showSplashMessage(i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
+        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
 
         self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Printer.qml"))
         self.initializeEngine()
 
-        self.getStorageDevice('LocalFileStorage').removableDrivesChanged.connect(self._removableDrivesChanged)
+        self.getStorageDevice("LocalFileStorage").removableDrivesChanged.connect(self._removableDrivesChanged)
 
         if self.getMachines():
-            active_machine_pref = Preferences.getInstance().getValue('cura/active_machine')
+            active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
             if active_machine_pref:
                 for machine in self.getMachines():
                     if machine.getName() == active_machine_pref:
@@ -152,16 +153,16 @@ class PrinterApplication(QtApplication):
             self.exec_()
 
     def registerObjects(self, engine):
-        engine.rootContext().setContextProperty('Printer', self)
+        engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
-        engine.rootContext().setContextProperty('PrintInformation', self._print_information)
+        engine.rootContext().setContextProperty("PrintInformation", self._print_information)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
             if not self.getController().getActiveTool():
-                self.getController().setActiveTool('TranslateTool')
+                self.getController().setActiveTool("TranslateTool")
 
-            self._camera_animation.setStart(self.getController().getTool('CameraTool').getOrigin())
+            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
         else:
@@ -171,7 +172,7 @@ class PrinterApplication(QtApplication):
     requestAddPrinter = pyqtSignal()
 
     ##  Remove an object from the scene
-    @pyqtSlot('quint64')
+    @pyqtSlot("quint64")
     def deleteObject(self, object_id):
         object = self.getController().getScene().findObject(object_id)
 
@@ -180,7 +181,7 @@ class PrinterApplication(QtApplication):
             op.push()
     
     ##  Create a number of copies of existing object.
-    @pyqtSlot('quint64', int)
+    @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count):
         node = self.getController().getScene().findObject(object_id)
 
@@ -196,7 +197,7 @@ class PrinterApplication(QtApplication):
             op.push()
     
     ##  Center object on platform.
-    @pyqtSlot('quint64')
+    @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
 
@@ -290,15 +291,15 @@ class PrinterApplication(QtApplication):
 
     outputDevicesChanged = pyqtSignal()
     
-    @pyqtProperty('QVariantMap', notify = outputDevicesChanged)
+    @pyqtProperty("QVariantMap", notify = outputDevicesChanged)
     def outputDevices(self):
         return self._output_devices
 
-    @pyqtProperty('QStringList', notify = outputDevicesChanged)
+    @pyqtProperty("QStringList", notify = outputDevicesChanged)
     def outputDeviceNames(self):
         return self._output_devices.keys()
 
-    @pyqtSlot(str, result = 'QVariant')
+    @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
         if not self.getActiveMachine():
             return None
@@ -306,7 +307,7 @@ class PrinterApplication(QtApplication):
         return self.getActiveMachine().getSettingValueByKey(key)
     
     ##  Change setting by key value pair
-    @pyqtSlot(str, 'QVariant')
+    @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
         if not self.getActiveMachine():
             return
@@ -336,7 +337,7 @@ class PrinterApplication(QtApplication):
 
     @pyqtSlot(str)
     def writeToOutputDevice(self, device):
-        self._output_devices[device]['function'](device)
+        self._output_devices[device]["function"](device)
 
     writeToLocalFileRequested = pyqtSignal()
     
@@ -349,12 +350,12 @@ class PrinterApplication(QtApplication):
                 continue
 
             try:
-                path = self.getStorageDevice('LocalFileStorage').getRemovableDrives()[device]
+                path = self.getStorageDevice("LocalFileStorage").getRemovableDrives()[device]
             except KeyError:
-                Logger.log('e', 'Tried to write to unknown SD card %s', device)
+                Logger.log("e", "Tried to write to unknown SD card %s", device)
                 return
     
-            filename = os.path.join(path, node.getName()[0:node.getName().rfind('.')] + '.gcode')
+            filename = os.path.join(path, node.getName()[0:node.getName().rfind(".")] + ".gcode")
 
             job = WriteMeshJob(filename, node.getMeshData())
             job._sdcard = device
@@ -363,7 +364,7 @@ class PrinterApplication(QtApplication):
             return
 
     def _removableDrivesChanged(self):
-        drives = self.getStorageDevice('LocalFileStorage').getRemovableDrives()
+        drives = self.getStorageDevice("LocalFileStorage").getRemovableDrives()
         for drive in drives:
             if drive not in self._output_devices:
                 self.addOutputDevice(drive, {
@@ -377,7 +378,7 @@ class PrinterApplication(QtApplication):
         drives_to_remove = []
         for device in self._output_devices:
             if device not in drives:
-                if self._output_devices[device]['function'] == self._writeToSD:
+                if self._output_devices[device]["function"] == self._writeToSD:
                     drives_to_remove.append(device)
 
         for drive in drives_to_remove:
@@ -386,13 +387,13 @@ class PrinterApplication(QtApplication):
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
         if machine:
-            Preferences.getInstance().setValue('cura/active_machine', machine.getName())
+            Preferences.getInstance().setValue("cura/active_machine", machine.getName())
 
-            self._volume.setWidth(machine.getSettingValueByKey('machine_width'))
-            self._volume.setHeight(machine.getSettingValueByKey('machine_height'))
-            self._volume.setDepth(machine.getSettingValueByKey('machine_depth'))
+            self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
+            self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
+            self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
 
-            disallowed_areas = machine.getSettingValueByKey('machine_disallowed_areas')
+            disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
             areas = []
             if disallowed_areas:
 
@@ -407,10 +408,10 @@ class PrinterApplication(QtApplication):
 
             self._volume.rebuild()
 
-            if self.getController().getTool('ScaleTool'):
-                self.getController().getTool('ScaleTool').setMaximumBounds(self._volume.getBoundingBox())
+            if self.getController().getTool("ScaleTool"):
+                self.getController().getTool("ScaleTool").setMaximumBounds(self._volume.getBoundingBox())
 
-            offset = machine.getSettingValueByKey('machine_platform_offset')
+            offset = machine.getSettingValueByKey("machine_platform_offset")
             if offset:
                 self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
             else:
@@ -423,10 +424,11 @@ class PrinterApplication(QtApplication):
             self._i18n_catalog.i18nc("Message action", "Eject"),
             "eject",
             self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}".format(job._sdcard))
+        )
         message._sdcard = job._sdcard
         message.actionTriggered.connect(self._onMessageActionTriggered)
         message.show()
 
     def _onMessageActionTriggered(self, message, action):
-        if action == "Eject":
+        if action == "eject":
             self.getStorageDevice("LocalFileStorage").ejectRemovableDrive(message._sdcard)

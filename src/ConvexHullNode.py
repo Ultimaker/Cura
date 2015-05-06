@@ -47,9 +47,9 @@ class ConvexHullNode(SceneNode):
 
     def render(self, renderer):
         if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, 'basic.vert'), Resources.getPath(Resources.ShadersLocation, 'color.frag'))
+            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
 
-            self._material.setUniformValue('u_color', Color(35, 35, 35, 128))
+            self._material.setUniformValue("u_color", Color(35, 35, 35, 128))
 
         renderer.queueNode(self, material = self._material, transparent = True)
 

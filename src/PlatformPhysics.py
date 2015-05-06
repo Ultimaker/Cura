@@ -52,8 +52,8 @@ class PlatformPhysics:
                 move_vector.setY(-bbox.bottom)
 
             # If there is no convex hull for the node, start calculating it and continue.
-            if not hasattr(node, '_convex_hull'):
-                if not hasattr(node, '_convex_hull_job'):
+            if not hasattr(node, "_convex_hull"):
+                if not hasattr(node, "_convex_hull_job"):
                     job = ConvexHullJob.ConvexHullJob(node)
                     job.start()
                     node._convex_hull_job = job
@@ -65,7 +65,7 @@ class PlatformPhysics:
                         continue
 
                     # Ignore nodes that do not have the right properties set.
-                    if not hasattr(other_node, '_convex_hull') or not other_node.getBoundingBox():
+                    if not hasattr(other_node, "_convex_hull") or not other_node.getBoundingBox():
                         continue
 
                     # Check to see if the bounding boxes intersect. If not, we can ignore the node as there is no way the hull intersects.

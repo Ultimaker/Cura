@@ -17,7 +17,7 @@ from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.i18n import i18nCatalog
 
-i18n_catalog = i18nCatalog('plugins')
+i18n_catalog = i18nCatalog("plugins")
 
 
 class USBPrinterManager(QObject, SignalEmitter, Extension):
@@ -40,17 +40,17 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         ## Add menu item to top menu of the application.
         self.addMenuItem(i18n_catalog.i18n("Update firmware"), self.updateAllFirmware)
     
-    pyqtError = pyqtSignal(str, arguments = ['amount'])
-    processingProgress = pyqtSignal(float, arguments = ['amount'])
-    pyqtExtruderTemperature = pyqtSignal(float, arguments = ['amount'])
-    pyqtBedTemperature = pyqtSignal(float, arguments = ['amount'])
+    pyqtError = pyqtSignal(str, arguments = ["amount"])
+    processingProgress = pyqtSignal(float, arguments = ["amount"])
+    pyqtExtruderTemperature = pyqtSignal(float, arguments = ["amount"])
+    pyqtBedTemperature = pyqtSignal(float, arguments = ["amount"])
     
     ##  Show firmware interface.
     #   This will create the view if its not already created.
     def spawnFirmwareInterface(self, serial_port):
         if self._firmware_view is None:
             self._firmware_view = QQuickView()
-            self._firmware_view.engine().rootContext().setContextProperty('manager',self)
+            self._firmware_view.engine().rootContext().setContextProperty("manager",self)
             self._firmware_view.setSource(QUrl("plugins/USBPrinting/FirmwareUpdateWindow.qml"))
         self._firmware_view.show()
     
@@ -59,7 +59,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     def spawnControlInterface(self,serial_port):
         if self._control_view is None:
             self._control_view = QQuickView()
-            self._control_view.engine().rootContext().setContextProperty('manager',self)
+            self._control_view.engine().rootContext().setContextProperty("manager",self)
             self._control_view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
         self._control_view.show()
 
@@ -105,7 +105,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
                     if connection != None:
                         self._printer_connections.remove(connection)
                         connection.close()
-            time.sleep(5) # Throttle, as we don't need this information to be updated every single second.        
+            time.sleep(5) # Throttle, as we don"t need this information to be updated every single second.
     
     def updateAllFirmware(self):
         self.spawnFirmwareInterface("")
@@ -122,13 +122,13 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         machine_type = Application.getInstance().getActiveMachine().getTypeID()
         firmware_name = ""
         baudrate = 250000
-        if sys.platform.startswith('linux'):
+        if sys.platform.startswith("linux"):
                 baudrate = 115200
         if machine_type == "ultimaker_original":
-            firmware_name = 'MarlinUltimaker'
-            firmware_name += '-%d' % (baudrate)    
+            firmware_name = "MarlinUltimaker"
+            firmware_name += "-%d" % (baudrate)
         elif machine_type == "ultimaker_original_plus":
-            firmware_name = 'MarlinUltimaker-UMOP-%d' % (baudrate)
+            firmware_name = "MarlinUltimaker-UMOP-%d" % (baudrate)
         elif machine_type == "Witbox":
             return "MarlinWitbox.hex"
         elif machine_type == "ultimaker2go":
@@ -220,22 +220,22 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         connection = self.getConnectionByPort(serial_port)
         if connection.isConnected():
             Application.getInstance().addOutputDevice(serial_port, {
-                'id': serial_port,
-                'function': self.spawnControlInterface,
-                'description': 'Write to USB {0}'.format(serial_port),
-                'icon': 'print_usb',
-                'priority': 1
+                "id": serial_port,
+                "function": self.spawnControlInterface,
+                "description": "Write to USB {0}".format(serial_port),
+                "icon": "print_usb",
+                "priority": 1
             })
         else:
             Application.getInstance().removeOutputDevice(serial_port)
     
     @pyqtSlot()        
     def startPrint(self):
-        gcode_list = getattr(Application.getInstance().getController().getScene(), 'gcode_list', None)
+        gcode_list = getattr(Application.getInstance().getController().getScene(), "gcode_list", None)
         if gcode_list:
             final_list = []
             for gcode in gcode_list:
-                final_list += gcode.split('\n')
+                final_list += gcode.split("\n")
             self.sendGCodeToAllActive(gcode_list)
     
     ##  Get a list of printer connection objects that are connected.
@@ -260,15 +260,15 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
                 i = 0
                 while True:
                     values = winreg.EnumValue(key, i)
-                    if not base_list or 'USBSER' in values[0]:
+                    if not base_list or "USBSER" in values[0]:
                         base_list += [values[1]]
                     i += 1
             except Exception as e:
                 pass
         
         if base_list:
-            base_list = base_list + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.usb*")
-            base_list = filter(lambda s: 'Bluetooth' not in s, base_list) # Filter because mac sometimes puts them in the list
+            base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.usb*")
+            base_list = filter(lambda s: "Bluetooth" not in s, base_list) # Filter because mac sometimes puts them in the list
         else:
-            base_list = base_list + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyACM*') + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*") + glob.glob('/dev/serial/by-id/*')
+            base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
         return base_list

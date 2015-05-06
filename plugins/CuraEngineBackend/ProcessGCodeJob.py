@@ -10,4 +10,4 @@ class ProcessGCodeLayerJob(Job):
         self._message = message
 
     def run(self):
-        self._scene.gcode_list.append(self._message.data.decode('utf-8', 'replace'))
+        self._scene.gcode_list.append(self._message.data.decode("utf-8", "replace"))
