@@ -22,6 +22,7 @@ BUILD_TARGET=${1:-none}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
+
 export BUILD_NAME=15.02.1
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
@@ -30,6 +31,8 @@ export REVISION=1.00
 
 ##Git commit
 GIT_HASH=$(git rev-parse --short=4 HEAD)
+
+export FULL_VERSION=${BUILD_NAME}-${REVISION}-${GIT_HASH}
 
 ##Which versions of external programs to use
 WIN_PORTABLE_PY_VERSION=2.7.2.1
@@ -324,12 +327,12 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_i386.deb
+	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${FULL_VERSION}_i386.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
@@ -354,12 +357,12 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}_amd64.deb
+	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${FULL_VERSION}_amd64.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
@@ -384,7 +387,7 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${BUILD_NAME}/" | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -645,7 +648,7 @@ if (( ${ARCHIVE_FOR_DISTRIBUTION} )); then
 			ln -sf `pwd`/${TARGET_DIR} scripts/win32/dist
 			wine ~/.wine/drive_c/Program\ Files\ \(x86\)/NSIS/makensis.exe /DVERSION=${BUILD_NAME} scripts/win32/installer.nsi
             if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
-			mv scripts/win32/Cura_${BUILD_NAME}-${REVISION}-${GIT_HASH}.exe ./
+			mv scripts/win32/Cura_${FULL_VERSION}.exe ./
 		fi
 		if [ -f '/c/Program Files (x86)/NSIS/makensis.exe' ]; then
 			rm -rf scripts/win32/dist
