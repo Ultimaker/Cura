@@ -25,6 +25,7 @@ Rectangle
                     //: Firmware update status label
                     return qsTr("Updating firmware.")
                 }
+            }
         }
         ProgressBar 
         {
