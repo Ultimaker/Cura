@@ -34,7 +34,7 @@ Item {
     Action {
         id: undoAction;
         //: Undo action
-        text: qsTr("Undo");
+        text: qsTr("&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
     }
@@ -42,7 +42,7 @@ Item {
     Action {
         id: redoAction;
         //: Redo action
-        text: qsTr("Redo");
+        text: qsTr("&Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
     }
@@ -50,7 +50,7 @@ Item {
     Action {
         id: quitAction;
         //: Quit action
-        text: qsTr("Quit");
+        text: qsTr("&Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
     }
@@ -58,27 +58,27 @@ Item {
     Action {
         id: preferencesAction;
         //: Preferences action
-        text: qsTr("Preferences");
+        text: qsTr("&Preferences...");
         iconName: "configure";
     }
 
     Action {
         id: addMachineAction;
-        //: Add a Machine action
-        text: qsTr("Add Printer...");
+        //: Add Printer action
+        text: qsTr("&Add Printer...");
     }
 
     Action {
         id: settingsAction;
-        //: Manage Printers action
-        text: qsTr("Configure Printers");
+        //: Configure Printers action
+        text: qsTr("&Configure Printers");
         iconName: "configure";
     }
 
     Action {
         id: documentationAction;
         //: Show Online Documentation action
-        text: qsTr("Show Online Documentation");
+        text: qsTr("Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
     }
@@ -86,14 +86,14 @@ Item {
     Action {
         id: reportBugAction;
         //: Report a Bug Action
-        text: qsTr("Report a Bug");
+        text: qsTr("Report a &Bug");
         iconName: "tools-report-bug";
     }
 
     Action {
         id: aboutAction;
         //: About action
-        text: qsTr("About...");
+        text: qsTr("&About...");
         iconName: "help-about";
     }
 
@@ -159,7 +159,7 @@ Item {
     Action {
         id: openAction;
         //: Open file action
-        text: qsTr("Open...");
+        text: qsTr("&Open...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
@@ -167,7 +167,7 @@ Item {
     Action {
         id: saveAction;
         //: Save file action
-        text: qsTr("Save...");
+        text: qsTr("&Save...");
         iconName: "document-save";
         shortcut: StandardKey.Save;
     }
@@ -175,7 +175,7 @@ Item {
     Action {
         id: showEngineLogAction;
         //: Show engine log action
-        text: qsTr("Show engine log...");
+        text: qsTr("Show engine &log...");
         iconName: "view-list-text";
     }
 }

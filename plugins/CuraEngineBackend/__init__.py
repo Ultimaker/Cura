@@ -9,7 +9,7 @@ def getMetaData():
         "type": "backend",
         "plugin": {
             "name": "CuraEngine Backend",
-            "author": "Arjen Hiemstra",
+            "author": "Ultimaker",
             "description": catalog.i18nc("CuraEngine backend plugin description", "Provides the link to the CuraEngine slicing backend")
         }
     }

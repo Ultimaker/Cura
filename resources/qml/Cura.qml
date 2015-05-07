@@ -10,9 +10,7 @@ UM.MainWindow {
     id: base
     visible: true
 
-    //width: 1280
-    //height: 720
-
+    //: Cura application window title
     title: qsTr("Cura");
 
     Item {
@@ -271,6 +269,7 @@ UM.MainWindow {
         id: preferences
 
         Component.onCompleted: {
+            //: View preferences page title
             insertPage(1, qsTr("View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
         }
     }
@@ -322,7 +321,7 @@ UM.MainWindow {
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
 
         documentation.onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/support");
-        reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/PluggableCura/issues");
+        reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/issues");
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
     }

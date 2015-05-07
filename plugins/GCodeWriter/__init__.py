@@ -1,7 +1,6 @@
 from . import GCodeWriter
 
 from UM.i18n import i18nCatalog
-
 catalog = i18nCatalog("cura")
 
 def getMetaData():
@@ -9,7 +8,7 @@ def getMetaData():
         "type": "mesh_writer",
         "plugin": {
             "name": "GCode Writer",
-            "author": "Arjen Hiemstra",
+            "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("GCode Writer Plugin Description", "Writes GCode to a file")
         },

@@ -16,8 +16,7 @@ from PyQt5.QtQuick import QQuickView
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.i18n import i18nCatalog
-
-i18n_catalog = i18nCatalog("plugins")
+i18n_catalog = i18nCatalog("uranium")
 
 
 class USBPrinterManager(QObject, SignalEmitter, Extension):
@@ -38,7 +37,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         self._error_message = "" 
         
         ## Add menu item to top menu of the application.
-        self.addMenuItem(i18n_catalog.i18n("Update firmware"), self.updateAllFirmware)
+        self.addMenuItem(i18n_catalog.i18n("Update Firmware"), self.updateAllFirmware)
     
     pyqtError = pyqtSignal(str, arguments = ["amount"])
     processingProgress = pyqtSignal(float, arguments = ["amount"])

@@ -36,14 +36,17 @@ Item {
                 text: {
                     if (UM.Backend.progress < 0)
                     {
+                        //: Sidebar configuration label
                         return qsTr("No Model Loaded");
                     }
                     else if (!base.minimumPrintTime.valid || !base.maximumPrintTime.valid)
                     {
+                        //: Sidebar configuration label
                         return qsTr("Calculating...")
                     }
                     else
                     {
+                        //: Sidebar configuration label
                         return qsTr("Estimated Print Time");
                     }
                 }
@@ -79,6 +82,8 @@ Item {
             Label {
                 anchors.left: parent.left;
                 anchors.verticalCenter: parent.verticalCenter;
+
+                //: Quality slider label
                 text: qsTr("Minimum\nDraft");
                 color: UM.Theme.colors.text;
                 font: UM.Theme.fonts.default;
@@ -87,6 +92,8 @@ Item {
             Label {
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter;
+
+                //: Quality slider label
                 text: qsTr("Maximum\nQuality");
                 horizontalAlignment: Text.AlignRight;
                 color: UM.Theme.colors.text;
@@ -98,6 +105,7 @@ Item {
             Layout.fillWidth: true;
             Layout.preferredHeight: UM.Theme.sizes.section.height;
 
+            //: Setting checkbox
             text: qsTr("Enable Support");
 
             style: UM.Theme.styles.checkbox;

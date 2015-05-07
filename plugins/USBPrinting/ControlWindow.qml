@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
+
 Rectangle 
 {
     width: 300; height: 100
@@ -10,11 +11,13 @@ Rectangle
         {
             Text 
             {
-                text: "extruder temperature " + manager.extruderTemperature
+                //: USB Printing dialog label, %1 is head temperature
+                text: qsTr("Extruder Temperature %1").arg(manager.extruderTemperature)
             }
             Text 
             {
-                text: "bed temperature " + manager.bedTemperature
+                //: USB Printing dialog label, %1 is bed temperature
+                text: qsTr("Bed Temperature %1").arg(manager.bedTemperature)
             }
             Text 
             {
@@ -26,13 +29,15 @@ Rectangle
         {
             Button 
             {
-                text: "Print"  
+                //: USB Printing dialog start print button
+                text: qsTr("Print");
                 onClicked: { manager.startPrint() }
                 enabled: manager.progress == 0 ? true : false
             }
             Button
             {
-                text: "Cancel" 
+                //: USB Printing dialog cancel print button
+                text: qsTr("Cancel");
                 onClicked: { manager.cancelPrint() }
                 enabled: manager.progress == 0 ? false:  true
             }

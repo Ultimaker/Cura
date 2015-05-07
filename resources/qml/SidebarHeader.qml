@@ -22,6 +22,7 @@ Column {
         height: UM.Theme.sizes.line.height;
 
         Label {
+            //: Configuration mode label
             text: qsTr("Mode:");
 
             font: UM.Theme.fonts.sidebar_header;
@@ -65,6 +66,7 @@ Column {
         }
 
         Label {
+            //: Machine selection label
             text: qsTr("Machine:");
 
             font: UM.Theme.fonts.sidebar_header;
@@ -110,6 +112,8 @@ Column {
         height: UM.Theme.sizes.section.height;
 
         iconSource: UM.Theme.icons.printsetup;
+
+        //: Sidebar header label
         text: qsTr("Print Setup");
         enabled: false;
 

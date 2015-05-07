@@ -101,7 +101,9 @@ UM.AngledCornerRectangle {
 
     ListModel {
         id: modesListModel;
+        //: Simple configuration mode option
         ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
+        //: Advanced configuration mode option
         ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
     }
 }
