@@ -9,7 +9,22 @@ Rectangle
 
         Text 
         {
-            text: manager.progress == 0 ? "Starting firmware update, may take a while.": manager.progress > 99 ? "Firmware update completed.": "Updating firmware."
+            text: {
+                if (manager.progress == 0)
+                {
+                    //: Firmware update status label
+                    return qsTr("Starting firmware update, this may take a while.")
+                }
+                else if (manager.progress > 99)
+                {
+                    //: Firmware update status label
+                    return qsTr("Firmware update completed.")
+                }
+                else
+                {
+                    //: Firmware update status label
+                    return qsTr("Updating firmware.")
+                }
         }
         ProgressBar 
         {

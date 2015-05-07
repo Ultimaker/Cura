@@ -26,6 +26,7 @@ UM.Dialog {
     }
 
     rightButtons: Button {
+        //: Close engine log button
         text: qsTr("Close");
         onClicked: dialog.visible = false;
     }

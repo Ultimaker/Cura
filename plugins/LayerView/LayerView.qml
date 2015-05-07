@@ -9,27 +9,19 @@ Item
 {
     width: 250
     height: 250
-    /*Rectangle 
-    {
-        color: "blue"
-        width: 250  
-        height:250
-    }*/
+
     Slider 
     {
         width: 10
         height: 250
         anchors.right : parent.right
-        //anchors.fill: parent
-        //Layout.preferredHeight: UM.Theme.sizes.section.height;
         orientation: Qt.Vertical
         minimumValue: 0;
         maximumValue: 100;
 
-        value: 50;
+        value: 100;
         onValueChanged: UM.ActiveView.triggerAction("setLayer", value)
 
         style: UM.Theme.styles.slider;
-        //Component.onCompleted: {console.log(UM.Theme.styles.slider)}
     }
 }

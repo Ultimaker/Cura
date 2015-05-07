@@ -33,15 +33,17 @@ UM.Dialog {
         Label {
             Layout.alignment: Qt.AlignHCenter;
 
-            text: "Cura 15.06";
+            text: "Cura 15.06 Beta";
             font: UM.Theme.fonts.large;
         }
 
         Label {
+            //: About dialog application description
             text: qsTr("End-to-end solution for fused filament 3D printing.")
         }
 
         Label {
+            //: About dialog application author note
             text: qsTr("Cura has been developed by Ultimaker B.V. in cooperation with the community.")
         }
 

@@ -145,6 +145,7 @@ Button {
                 color: UM.Theme.colors.save_button_text;
                 font: UM.Theme.fonts.default;
 
+                //: Print material amount save button label
                 text: control.printMaterialAmount < 0 ? "" : qsTr("%1m material").arg(control.printMaterialAmount);
             }
         }
@@ -186,10 +187,13 @@ Button {
 
     text: {
         if(base.progress < 0) {
+            //: Save button label
             return qsTr("Please load a 3D model");
         } else if (base.progress < 0.95) {
+            //: Save button label
             return qsTr("Calculating Print-time");
         } else {
+            //: Save button label
             return qsTr("Estimated Print-time");
         }
     }

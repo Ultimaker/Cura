@@ -15,11 +15,13 @@ UM.Dialog {
         anchors.fill: parent;
 
         Label {
+            //: Add Printer wizard page title
             text: qsTr("Add Printer");
             font.pointSize: 18;
         }
 
         Label {
+            //: Add Printer wizard page description
             text: qsTr("Please select the type of printer:");
         }
 
@@ -34,6 +36,7 @@ UM.Dialog {
         }
 
         Label {
+            //: Add Printer wizard field label
             text: qsTr("Printer Name:");
         }
 
@@ -46,6 +49,7 @@ UM.Dialog {
 
     rightButtons: [
         Button {
+            //: Add Printer wizarad button
             text: qsTr("Next");
             onClicked: {
                 if(machineList.currentIndex != -1) {
@@ -55,6 +59,7 @@ UM.Dialog {
             }
         },
         Button {
+            //: Add Printer wizarad button
             text: qsTr("Cancel");
             onClicked: base.visible = false;
         }
