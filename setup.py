@@ -7,6 +7,18 @@ import re
 import shutil
 import site
 
+# work around the limitation that shutil.copytree does not allow the target directory to exist
+def copytree(src, dst, symlinks=False, ignore=None):
+    if not os.path.exists(dst):
+        os.makedirs(dst)
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
+
 includes = ["sip", "ctypes", "UM", "PyQt5.QtNetwork", "PyQt5._QOpenGLFunctions_2_0", "serial", "Arcus", "google", "google.protobuf", "google.protobuf.descriptor", "xml.etree", "xml.etree.ElementTree", "src"]
 # Include all the UM modules in the includes. As py2exe fails to properly find all the dependencies due to the plugin architecture.
 for dirpath, dirnames, filenames in os.walk(os.path.dirname(UM.__file__)):
@@ -42,8 +54,7 @@ for path in os.listdir("plugins"):
 	shutil.copytree("plugins/" + path, "dist/plugins/" + path)
 print("Coping resources.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/../resources", "dist/resources")
-shutil.copytree("resources/qml", "dist/resources/qml")
-shutil.copytree("resources/themes", "dist/resources/themes")
+copytree("resources", "dist/resources")
 print("Coping Uranium QML.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/Qt/qml/UM", "dist/qml/UM")
 for site_package in site.getsitepackages():
@@ -56,4 +67,3 @@ for site_package in site.getsitepackages():
         shutil.copytree(os.path.join(qt_origin_path, "qml/QtQuick.2"), "dist/qml/QtQuick.2")
         print("Coping PyQt5 svg library from: %s" % qt_origin_path)
         shutil.copy(os.path.join(qt_origin_path, "Qt5Svg.dll"), "dist/Qt5Svg.dll")
-os.rename("dist/printer.exe", "dist/Cura.exe")
