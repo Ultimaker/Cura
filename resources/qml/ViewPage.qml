@@ -10,15 +10,15 @@ UM.PreferencesPage {
 
     function reset()
     {
-        UM.Preferences.resetPreference('view/show_overhang');
+        UM.Preferences.resetPreference("view/show_overhang");
     }
 
     GridLayout {
         columns: 2;
 
         CheckBox {
-            checked: UM.Preferences.getValue('view/show_overhang');
-            onCheckedChanged: UM.Preferences.setValue('view/show_overhang', checked)
+            checked: UM.Preferences.getValue("view/show_overhang");
+            onCheckedChanged: UM.Preferences.setValue("view/show_overhang", checked)
 
             //: Display Overhang preference checkbox
             text: qsTr("Display Overhang");

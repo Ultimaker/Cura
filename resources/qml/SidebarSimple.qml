@@ -102,8 +102,8 @@ Item {
 
             style: UM.Theme.styles.checkbox;
 
-            checked: Printer.getSettingValue('support_enable');
-            onCheckedChanged: Printer.setSettingValue('support_enable', checked);
+            checked: Printer.getSettingValue("support_enable");
+            onCheckedChanged: Printer.setSettingValue("support_enable", checked);
         }
 
         Item { Layout.fillWidth: true; Layout.fillHeight: true; }

@@ -168,27 +168,27 @@ class PrintInformation(QObject):
 
         if not self._low_quality_settings:
             self._low_quality_settings = MachineSettings()
-            self._low_quality_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, self._current_settings.getTypeID() + '.json'))
-            self._low_quality_settings.loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'profiles', 'low_quality.conf'))
+            self._low_quality_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, self._current_settings.getTypeID() + ".json"))
+            self._low_quality_settings.loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, "profiles", "low_quality.conf"))
 
         if not self._high_quality_settings:
             self._high_quality_settings = MachineSettings()
-            self._high_quality_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, self._current_settings.getTypeID() + '.json'))
-            self._high_quality_settings.loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, 'profiles', 'high_quality.conf'))
+            self._high_quality_settings.loadSettingsFromFile(Resources.getPath(Resources.SettingsLocation, self._current_settings.getTypeID() + ".json"))
+            self._high_quality_settings.loadValuesFromFile(Resources.getPath(Resources.SettingsLocation, "profiles", "high_quality.conf"))
 
         for key, options in self._interpolation_settings.items():
             minimum_value = None
-            if options['minimum'] == 'low':
+            if options["minimum"] == "low":
                 minimum_value = self._low_quality_settings.getSettingValueByKey(key)
-            elif options['minimum'] == 'high':
+            elif options["minimum"] == "high":
                 minimum_value = self._high_quality_settings.getSettingValueByKey(key)
             else:
                 continue
 
             maximum_value = None
-            if options['maximum'] == 'low':
+            if options["maximum"] == "low":
                 maximum_value = self._low_quality_settings.getSettingValueByKey(key)
-            elif options['maximum'] == 'high':
+            elif options["maximum"] == "high":
                 maximum_value = self._high_quality_settings.getSettingValueByKey(key)
             else:
                 continue

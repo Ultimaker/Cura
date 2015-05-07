@@ -23,13 +23,13 @@ class CuraEngineBackend(Backend):
         super().__init__()
 
         # Find out where the engine is located, and how it is called. This depends on how Cura is packaged and which OS we are running on.
-        default_engine_location = '../PinkUnicornEngine/CuraEngine'
-        if hasattr(sys, 'frozen'):
-            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), 'CuraEngine')
-        if sys.platform == 'win32':
-            default_engine_location += '.exe'
+        default_engine_location = "../PinkUnicornEngine/CuraEngine"
+        if hasattr(sys, "frozen"):
+            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "CuraEngine")
+        if sys.platform == "win32":
+            default_engine_location += ".exe"
         default_engine_location = os.path.abspath(default_engine_location)
-        Preferences.getInstance().addPreference('backend/location', default_engine_location)
+        Preferences.getInstance().addPreference("backend/location", default_engine_location)
 
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
@@ -59,7 +59,7 @@ class CuraEngineBackend(Backend):
         self.backendConnected.connect(self._onBackendConnected)
 
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"), '-j', Resources.getPath(Resources.SettingsLocation, 'fdmprinter.json'), '-vv', '--connect', "127.0.0.1:{0}".format(self._port)]
+        return [Preferences.getInstance().getValue("backend/location"), "-j", Resources.getPath(Resources.SettingsLocation, "fdmprinter.json"), "-vv", "--connect", "127.0.0.1:{0}".format(self._port)]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
@@ -84,13 +84,13 @@ class CuraEngineBackend(Backend):
     #                 - report_progress: True if the slicing progress should be reported, False if not. Default is True.
     def slice(self, **kwargs):
         if self._slicing:
-            if not kwargs.get('force_restart', True):
+            if not kwargs.get("force_restart", True):
                 return
 
             self._slicing = False
             self._restart = True
             if self._process is not None:
-                Logger.log('d', "Killing engine process")
+                Logger.log("d", "Killing engine process")
                 try:
                     self._process.terminate()
                 except: # terminating a process that is already terminating causes an exception, silently ignore this.
@@ -101,7 +101,7 @@ class CuraEngineBackend(Backend):
         objects = []
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                if not getattr(node, '_outside_buildarea', False):
+                if not getattr(node, "_outside_buildarea", False):
                     objects.append(node)
 
         if not objects:
@@ -110,22 +110,22 @@ class CuraEngineBackend(Backend):
         self._slicing = True
         self.slicingStarted.emit()
 
-        self._report_progress = kwargs.get('report_progress', True)
+        self._report_progress = kwargs.get("report_progress", True)
         if self._report_progress:
             self.processingProgress.emit(0.0)
 
-        self._sendSettings(kwargs.get('settings', self._settings))
+        self._sendSettings(kwargs.get("settings", self._settings))
 
         self._scene.acquireLock()
 
         # Set the gcode as an empty list. This will be filled with strings by GCodeLayer messages.
         # This is done so the gcode can be fragmented in memory and does not need a continues memory space.
         # (AKA. This prevents MemoryErrors)
-        self._save_gcode = kwargs.get('save_gcode', True)
+        self._save_gcode = kwargs.get("save_gcode", True)
         if self._save_gcode:
-            setattr(self._scene, 'gcode_list', [])
+            setattr(self._scene, "gcode_list", [])
 
-        self._save_polygons = kwargs.get('save_polygons', True)
+        self._save_polygons = kwargs.get("save_polygons", True)
 
         msg = Cura_pb2.ObjectList()
 
@@ -194,7 +194,7 @@ class CuraEngineBackend(Backend):
 
     def _onGCodePrefixMessage(self, message):
         if self._save_gcode:
-            self._scene.gcode_list.insert(0, message.data.decode('utf-8', 'replace'))
+            self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
 
     def _onObjectPrintTimeMessage(self, message):
         self.printDurationMessage.emit(message.time, message.material_amount)
@@ -221,7 +221,7 @@ class CuraEngineBackend(Backend):
         for setting in settings.getAllSettings(include_machine=True):
             s = msg.settings.add()
             s.name = setting.getKey()
-            s.value = str(setting.getValue()).encode('utf-8')
+            s.value = str(setting.getValue()).encode("utf-8")
 
         self._socket.sendMessage(msg)
 

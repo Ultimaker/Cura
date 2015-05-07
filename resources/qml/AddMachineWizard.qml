@@ -13,7 +13,6 @@ UM.Dialog {
 
     ColumnLayout {
         anchors.fill: parent;
-        anchors.margins: UM.Styles.defaultMargin;
 
         Label {
             text: qsTr("Add Printer");

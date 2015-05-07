@@ -1,17 +1,17 @@
 from . import LayerView
 
 from UM.i18n import i18nCatalog
-catalog = i18nCatalog('cura')
+catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        'type': 'view',
-        'plugin': {
+        "type": "view",
+        "plugin": {
             "name": "Layer View"
         },
-        'view': {
-            'name': catalog.i18nc('Layers View mode', 'Layers'),
-            'view_panel': 'LayerView.qml'
+        "view": {
+            "name": catalog.i18nc("Layers View mode", "Layers"),
+            "view_panel": "LayerView.qml"
         }
     }
 

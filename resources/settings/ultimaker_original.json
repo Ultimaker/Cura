@@ -1,0 +1,24 @@
+{
+    "id": "ultimaker_original",
+    "name": "Ultimaker Original",
+    "icon": "icon_ultimaker.png",
+    "platform": "ultimaker_platform.stl",
+
+    "inherits": "fdmprinter.json",
+
+    "machine_settings": {
+        "machine_width": { "default": 205 },
+        "machine_height": { "default": 200 },
+        "machine_depth": { "default": 205 },
+        "machine_center_is_zero": { "default": false },
+        "machine_nozzle_size": { "default": 0.4 },
+        "machine_head_shape_min_x": { "default": 75 },
+        "machine_head_shape_min_y": { "default": 18 },
+        "machine_head_shape_max_x": { "default": 18 },
+        "machine_head_shape_max_y": { "default": 35 },
+        "machine_nozzle_gantry_distance": { "default": 55 },
+        "machine_nozzle_offset_x_1": { "default": 18.0 },
+        "machine_nozzle_offset_y_1": { "default": 0.0 },
+        "machine_gcode_flavor": { "default": "RepRap (Marlin/Sprinter)" }
+    }
+}
