@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-07 16:35+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:91
+msgctxt "Save button tooltip"
+msgid "Save to Disk"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:96
+msgctxt "Splash screen message"
+msgid "Setting up scene..."
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:130
+msgctxt "Splash screen message"
+msgid "Loading interface..."
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:373
+#, python-brace-format
+msgctxt "Save button tooltip. {0} is sd card name"
+msgid "Save to SD Card {0}"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:421
+#, python-brace-format
+msgctxt "Saved to SD message, {0} is sdcard, {1} is filename"
+msgid "Saved to SD Card {0} as {1}"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:424
+msgctxt "Message action"
+msgid "Eject"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:426
+#, python-brace-format
+msgctxt "Message action tooltip, {0} is sdcard"
+msgid "Eject SD Card {0}"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/CuraEngineBackend/__init__.py:13
+msgctxt "CuraEngine backend plugin description"
+msgid "Provides the link to the CuraEngine slicing backend"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/USBPrinting/USBPrinterManager.py:40
+msgid "Update Firmware"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/USBPrinting/__init__.py:13
+msgctxt "USB Printing plugin description"
+msgid ""
+"Accepts G-Code and sends them to a printer. Plugin can also update firmware"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/GCodeWriter/__init__.py:13
+msgctxt "GCode Writer Plugin Description"
+msgid "Writes GCode to a file"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/GCodeWriter/__init__.py:18
+msgctxt "GCode Writer File Description"
+msgid "GCode File"
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/LayerView/__init__.py:13
+msgctxt "Layer View plugin description"
+msgid "Provides the Layer view."
+msgstr ""
+
+#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/LayerView/__init__.py:16
+msgctxt "Layers View mode"
+msgid "Layers"
+msgstr ""
