@@ -7,7 +7,10 @@ def getMetaData():
     return {
         "type": "view",
         "plugin": {
-            "name": "Layer View"
+            "name": "Layer View",
+            "author": "Ultimaker",
+            "version": "1.0",
+            "description": catalog.i18nc("Layer View plugin description", "Provides the Layer view.")
         },
         "view": {
             "name": catalog.i18nc("Layers View mode", "Layers"),
