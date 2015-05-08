@@ -95,7 +95,7 @@ git clone https://github.com/daid/Cura.git
 
 sudo apt-get install python-opengl python-numpy python-serial python-setuptools python-wxgtk2.8 curl
 # Run this also if you're building for 32bit Debian
-sudo apt-get install gcc-multilib g++-4.7-multilib
+sudo apt-get install gcc-multilib g++-multilib
 
 cd Cura
 
