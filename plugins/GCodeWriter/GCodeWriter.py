@@ -1,3 +1,6 @@
+# Copyright (c) 2015 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application

@@ -1,3 +1,6 @@
+# Copyright (c) 2015 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from .avr_isp import stk500v2, ispBase, intelHex
 import serial
 import threading

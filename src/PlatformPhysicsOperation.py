@@ -1,3 +1,6 @@
+# Copyright (c) 2015 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.Operations.Operation import Operation
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation

@@ -1,3 +1,6 @@
+# Copyright (c) 2015 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from distutils.core import setup
 import py2exe
 import UM

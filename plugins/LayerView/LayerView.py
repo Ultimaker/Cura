@@ -1,3 +1,6 @@
+# Copyright (c) 2015 Ultimaker B.V.
+# Cura is released under the terms of the AGPLv3 or higher.
+
 from UM.View.View import View
 from UM.View.Renderer import Renderer
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
