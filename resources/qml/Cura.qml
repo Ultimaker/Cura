@@ -135,7 +135,7 @@ UM.MainWindow {
                 onDropped: {
                     if(drop.urls.length > 0) {
                         for(var i in drop.urls) {
-                            UM.Controller.addMesh(drop.urls[i]);
+                            UM.MeshFileHandler.readLocalFile(drop.urls[i]);
                         }
                     }
                 }
