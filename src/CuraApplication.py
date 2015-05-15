@@ -85,6 +85,9 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.loadPlugin("CuraEngineBackend")
 
+    def addCommandLineOptions(self, parser):
+        parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
+
     def run(self):
         self._i18n_catalog = i18nCatalog("cura");
 
@@ -152,6 +155,10 @@ class CuraApplication(QtApplication):
         self._removableDrivesChanged()
         if self._engine.rootObjects:
             self.closeSplash()
+
+            for file in self.getCommandLineOption("file", []):
+                job = ReadMeshJob(os.path.abspath(file))
+                job.start()
 
             self.exec_()
 
