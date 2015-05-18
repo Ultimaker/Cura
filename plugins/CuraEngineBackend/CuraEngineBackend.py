@@ -26,7 +26,7 @@ class CuraEngineBackend(Backend):
         super().__init__()
 
         # Find out where the engine is located, and how it is called. This depends on how Cura is packaged and which OS we are running on.
-        default_engine_location = "../PinkUnicornEngine/CuraEngine"
+        default_engine_location = os.path.join(Application.getInstallPrefix(), "bin", "CuraEngine")
         if hasattr(sys, "frozen"):
             default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "CuraEngine")
         if sys.platform == "win32":
