@@ -35,6 +35,7 @@ from . import PrintInformation
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor
 
+import platform
 import sys
 import os.path
 import numpy
@@ -42,6 +43,7 @@ numpy.seterr(all="ignore")
 
 class CuraApplication(QtApplication):
     def __init__(self):
+        Resources.addResourcePath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
         if not hasattr(sys, "frozen"):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
@@ -72,6 +74,7 @@ class CuraApplication(QtApplication):
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
+        self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
 
