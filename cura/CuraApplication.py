@@ -7,6 +7,7 @@ from UM.Scene.Camera import Camera
 from UM.Scene.Platform import Platform
 from UM.Math.Vector import Vector
 from UM.Math.Matrix import Matrix
+from UM.Math.Quaternion import Quaternion
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -215,9 +216,7 @@ class CuraApplication(QtApplication):
         node = self.getController().getScene().findObject(object_id)
 
         if node:
-            transform = node.getLocalTransformation()
-            transform.setTranslation(Vector(0, 0, 0))
-            op = SetTransformOperation(node, transform)
+            op = SetTransformOperation(node, Vector())
             op.push()
     
     ##  Delete all mesh data on the scene.
@@ -250,9 +249,7 @@ class CuraApplication(QtApplication):
             op = GroupedOperation()
 
             for node in nodes:
-                transform = node.getLocalTransformation()
-                transform.setTranslation(Vector(0, 0, 0))
-                op.addOperation(SetTransformOperation(node, transform))
+                op.addOperation(SetTransformOperation(node, Vector()))
 
             op.push()
     
@@ -269,8 +266,7 @@ class CuraApplication(QtApplication):
             op = GroupedOperation()
 
             for node in nodes:
-                transform = Matrix()
-                op.addOperation(SetTransformOperation(node, transform))
+                op.addOperation(SetTransformOperation(node, Vector(), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
@@ -284,12 +280,18 @@ class CuraApplication(QtApplication):
 
             nodes.append(node)
 
-        if nodes:
-            file_name = node.getMeshData().getFileName()
+        if not nodes:
+            return
 
-            job = ReadMeshJob(file_name)
-            job.finished.connect(lambda j: node.setMeshData(j.getResult()))
-            job.start()
+        for node in nodes:
+            if not node.getMeshData():
+                continue
+
+            file_name = node.getMeshData().getFileName()
+            if file_name:
+                job = ReadMeshJob(file_name)
+                job.finished.connect(lambda j: node.setMeshData(j.getResult()))
+                job.start()
     
     ##  Get logging data of the backend engine
     #   \returns \type{string} Logging data
