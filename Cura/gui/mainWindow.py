@@ -152,8 +152,8 @@ class mainWindow(wx.Frame):
 		toolsMenu.AppendSeparator()
 		self.allAtOnceItem = toolsMenu.Append(-1, _("Print all at once"), kind=wx.ITEM_RADIO)
 		self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.allAtOnceItem)
-		self.oneAtATime = toolsMenu.Append(-1, _("Print one at a time"), kind=wx.ITEM_RADIO)
-		self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.oneAtATime)
+		#self.oneAtATime = toolsMenu.Append(-1, _("Print one at a time"), kind=wx.ITEM_RADIO)
+		#self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.oneAtATime)
 		if profile.getPreference('oneAtATime') == 'True':
 			self.oneAtATime.Check(True)
 		else:
