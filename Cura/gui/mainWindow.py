@@ -152,8 +152,8 @@ class mainWindow(wx.Frame):
 		toolsMenu.AppendSeparator()
 		self.allAtOnceItem = toolsMenu.Append(-1, _("Print all at once"), kind=wx.ITEM_RADIO)
 		self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.allAtOnceItem)
-		#self.oneAtATime = toolsMenu.Append(-1, _("Print one at a time"), kind=wx.ITEM_RADIO)
-		#self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.oneAtATime)
+		self.oneAtATime = toolsMenu.Append(-1, _("Print one at a time"), kind=wx.ITEM_RADIO)
+		self.Bind(wx.EVT_MENU, self.onOneAtATimeSwitch, self.oneAtATime)
 		if profile.getPreference('oneAtATime') == 'True':
 			self.oneAtATime.Check(True)
 		else:
@@ -384,9 +384,19 @@ class mainWindow(wx.Frame):
 		   profile.getMachineSetting('machine_type').startswith('lulzbot_'):
 			self.bedLevelWizardMenuItem.Enable(False)
 			self.headOffsetWizardMenuItem.Enable(False)
+			self.oneAtATime.Enable(False)
+			self.allAtOnceItem.Check(True)
+			# Force the gantry height to 0 so we don't get a "info: print one at a time re-enabled"
+			# notification since we're disabling that option
+			profile.putMachineSetting('extruder_head_size_height', '0.0')
 		else:
 			self.bedLevelWizardMenuItem.Enable(True)
 			self.headOffsetWizardMenuItem.Enable(False)
+			self.oneAtATime.Enable(True)
+			if profile.getPreference('oneAtATime') == 'True':
+				self.oneAtATime.Check(True)
+			else:
+				self.allAtOnceItem.Check(True)
 		if int(profile.getMachineSetting('extruder_amount')) < 2:
 			self.headOffsetWizardMenuItem.Enable(False)
 		self.scene.updateProfileToControls()
