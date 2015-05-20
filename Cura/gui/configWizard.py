@@ -386,7 +386,7 @@ class MachineSelectPage(InfoPage):
 		self.LulzbotMiniRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.LulzbotMiniRadio.SetValue(True)
 		self.LulzbotTaz5Radio = self.AddRadioButton("LulzBot TAZ 5")
-		self.LulzbotTaz5Radio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
+		self.LulzbotTaz5Radio.Bind(wx.EVT_RADIOBUTTON, self.OnTaz5Select)
 		self.LulzbotTaz4Radio = self.AddRadioButton("LulzBot TAZ 4")
 		self.LulzbotTaz4Radio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.Ultimaker2Radio = self.AddRadioButton("Ultimaker2")
@@ -418,6 +418,9 @@ class MachineSelectPage(InfoPage):
 
 	def OnLulzbotSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+
+	def OnTaz5Select(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().taz5NozzleSelectPage)
 
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
@@ -995,11 +998,17 @@ class Ultimaker2ReadyPage(InfoPage):
 
 class LulzbotReadyPage(InfoPage):
 	def __init__(self, parent):
-		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ/Mini"))
+		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ4/Mini"))
 		self.AddText(_('Cura is now ready to be used with your LulzBot 3D printer.'))
 		self.AddSeperator()
 		self.AddText(_('For more information about using Cura with your LulzBot'))
 		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
+		self.AddSeperator()
+		
+class Taz5NozzleSelectPage(InfoPage):
+	def __init__(self, parent):
+		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
+		self.AddText(_('Please select nozzle size:'))
 		self.AddSeperator()
 
 class ConfigWizard(wx.wizard.Wizard):
@@ -1029,6 +1038,7 @@ class ConfigWizard(wx.wizard.Wizard):
 
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 		self.lulzbotReadyPage = LulzbotReadyPage(self)
+		self.taz5NozzleSelectPage = Taz5NozzleSelectPage(self)
 
 		#wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
