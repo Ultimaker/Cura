@@ -508,7 +508,6 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_width', '298')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
-				profile.putProfileSetting('nozzle_size', '0.35')
 				profile.putMachineSetting('machine_name', 'LulzBot TAZ 5')
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
 				profile.putMachineSetting('serial_baud', '115200')
@@ -1004,7 +1003,7 @@ class Ultimaker2ReadyPage(InfoPage):
 
 class LulzbotReadyPage(InfoPage):
 	def __init__(self, parent):
-		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ4/Mini"))
+		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ/Mini"))
 		self.AddText(_('Cura is now ready to be used with your LulzBot 3D printer.'))
 		self.AddSeperator()
 		self.AddText(_('For more information about using Cura with your LulzBot'))
@@ -1014,8 +1013,44 @@ class LulzbotReadyPage(InfoPage):
 class Taz5NozzleSelectPage(InfoPage):
 	def __init__(self, parent):
 		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
+		self._old_machine_index = int(profile.getPreferenceFloat('active_machine'))
+		
+		#self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
+		
 		self.AddText(_('Please select nozzle size:'))
+		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
+		self.Nozzle35Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
+		self.Nozzle50Radio = self.AddRadioButton("0.5 mm (after x date)")
+		self.Nozzle50Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
+		#self.Nozzle50Radio.SetValue(True)
 		self.AddSeperator()
+		
+	def OnNozzleSelect(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+	
+	def StoreData(self):
+		if self.Nozzle35Radio.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.35') #TODO: does more magic need to happen here?
+		else:
+			profile.putProfileSetting('nozzle_size', '0.5')
+	
+	def OnPageChanging(self, e):
+		e.GetPage().StoreData()
+
+# 	def OnPageChanged(self, e):
+# 		if e.GetPage().AllowNext():
+# 			self.FindWindowById(wx.ID_FORWARD).Enable()
+# 		else:
+# 			self.FindWindowById(wx.ID_FORWARD).Disable()
+# 		if e.GetPage().AllowBack():
+# 			self.FindWindowById(wx.ID_BACKWARD).Enable()
+# 		else:
+# 			self.FindWindowById(wx.ID_BACKWARD).Disable()
+
+	def OnCancel(self, e): #TODO: this is not being triggered
+		profile.setActiveMachine(self._old_machine_index)
 
 class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
