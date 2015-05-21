@@ -46,9 +46,9 @@ setup(name="Cura",
         author_email="d.braam@ultimaker.com",
         url="http://software.ultimaker.com/",
         license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
-        scripts=["cura.py"],
+        scripts=["cura_app.py"],
         #windows=[{"script": "printer.py", "dest_name": "Cura"}],
-        console=[{"script": "cura.py"}],
+        console=[{"script": "cura_app.py"}],
         options={"py2exe": {"skip_archive": False, "includes": includes}})
 
 print("Coping Cura plugins.")
