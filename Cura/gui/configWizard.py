@@ -517,6 +517,12 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_name', 'LulzBot Mini')
 				profile.putMachineSetting('machine_type', 'lulzbot_mini')
 				profile.putMachineSetting('serial_baud', '115200')
+				profile.putMachineSetting('extruder_head_size_min_x', '40')
+				profile.putMachineSetting('extruder_head_size_max_x', '75')
+				profile.putMachineSetting('extruder_head_size_min_y', '25')
+				profile.putMachineSetting('extruder_head_size_max_y', '55')
+				profile.putMachineSetting('extruder_head_size_height', '17')
+
 			profile.putMachineSetting('machine_center_is_zero', 'False')
 			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putMachineSetting('has_heated_bed', 'True')

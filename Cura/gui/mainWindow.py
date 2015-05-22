@@ -384,11 +384,6 @@ class mainWindow(wx.Frame):
 		   profile.getMachineSetting('machine_type').startswith('lulzbot_'):
 			self.bedLevelWizardMenuItem.Enable(False)
 			self.headOffsetWizardMenuItem.Enable(False)
-			self.oneAtATime.Enable(False)
-			self.allAtOnceItem.Check(True)
-			# Force the gantry height to 0 so we don't get a "info: print one at a time re-enabled"
-			# notification since we're disabling that option
-			profile.putMachineSetting('extruder_head_size_height', '0.0')
 		else:
 			self.bedLevelWizardMenuItem.Enable(True)
 			self.headOffsetWizardMenuItem.Enable(False)
