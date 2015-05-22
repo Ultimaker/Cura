@@ -308,6 +308,10 @@ class printWindowPlugin(wx.Frame):
 				   self._printerConnection.isActiveConnectionOpen():
 					button.Enable(self._printerConnection.isPrinting() or \
 								  self._printerConnection.isPaused())
+					if self._printerConnection.isPaused():
+						button.SetLabel(_("Resume"))
+					else:
+						button.SetLabel(_("Pause"))
 				else:
 					button.Enable(False)
 			elif button.command == self.script_startPrint:
