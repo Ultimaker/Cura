@@ -68,6 +68,10 @@ class serialComm(object):
 				self._comm.sendCommand(line[1])
 			elif line[0] == 'START':
 				self._comm.printGCode(self._gcodeList)
+			elif line[0] == 'PAUSE':
+				self._comm.setPause(True)
+			elif line[0] == 'RESUME':
+				self._comm.setPause(False)
 			else:
 				sys.stderr.write(str(line))
 
