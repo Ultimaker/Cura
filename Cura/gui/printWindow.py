@@ -374,7 +374,7 @@ class printWindowPlugin(wx.Frame):
 			return
 		self._lastUpdateTime = t
 
-		if extraInfo is not None:
+		if extraInfo is not None and len(extraInfo) > 0:
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
@@ -522,7 +522,7 @@ class printWindowBasic(wx.Frame):
 			return
 		self._lastUpdateTime = t
 
-		if extraInfo is not None:
+		if extraInfo is not None and len(extraInfo) > 0:
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
