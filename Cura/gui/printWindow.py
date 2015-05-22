@@ -226,7 +226,10 @@ class printWindowPlugin(wx.Frame):
 		self._printerConnection.openActiveConnection()
 
 	def script_startPrint(self, data = None):
-		self._printerConnection.startPrint()
+		if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
+			self._printerConnection.pause(not self._printerConnection.isPaused())
+		else:
+			self._printerConnection.startPrint()
 
 	def script_cancelPrint(self, e):
 		self._printerConnection.cancelPrint()
@@ -297,6 +300,12 @@ class printWindowPlugin(wx.Frame):
 			self._termLog.AppendText(line.encode('utf-8', 'replace'))
 
 	def _updateButtonStates(self):
+		hasPauseButton = False
+		for button in self._buttonList:
+			if button.command == self.script_pausePrint:
+				hasPauseButton = True
+				break
+
 		for button in self._buttonList:
 			if button.command == self.script_connect:
 				button.Show(self._printerConnection.hasActiveConnection())
@@ -315,12 +324,26 @@ class printWindowPlugin(wx.Frame):
 				else:
 					button.Enable(False)
 			elif button.command == self.script_startPrint:
-				if not self._printerConnection.hasActiveConnection() or \
-				   self._printerConnection.isActiveConnectionOpen():
-					button.Enable(not self._printerConnection.isPrinting() and \
-						  not self._printerConnection.isPaused())
+				if hasPauseButton or not self._printerConnection.hasPause():
+					if not self._printerConnection.hasActiveConnection() or \
+					   self._printerConnection.isActiveConnectionOpen():
+							button.Enable(not self._printerConnection.isPrinting() and \
+										  not self._printerConnection.isPaused())
+					else:
+						button.Enable(False)
 				else:
-					button.Enable(False)
+					if not self._printerConnection.hasActiveConnection() or \
+					   self._printerConnection.isActiveConnectionOpen():
+						if self._printerConnection.isPrinting():
+							button.SetLabel(_("Pause"))
+						else:
+							if self._printerConnection.isPaused():
+								button.SetLabel(_("Resume"))
+							else:
+								button.SetLabel(_("Print"))
+						button.Enable(True)
+					else:
+						button.Enable(False)
 			elif button.command == self.script_cancelPrint:
 				if not self._printerConnection.hasActiveConnection() or \
 				   self._printerConnection.isActiveConnectionOpen():
