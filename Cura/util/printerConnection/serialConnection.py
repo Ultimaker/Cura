@@ -103,7 +103,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._printProgress = 0
 
 	def isPrinting(self):
-		return self._commState == machineCom.MachineCom.STATE_PRINTING or self.isPaused()
+		return self._commState == machineCom.MachineCom.STATE_PRINTING
 
 	#Returns true if we have the ability to pause the file printing.
 	def hasPause(self):
@@ -114,7 +114,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	#Pause or unpause the printing depending on the value, if supported.
 	def pause(self, value):
-		if not self.isPrinting() or self._process is None:
+		if not (self.isPrinting() or self.isPaused) or self._process is None:
 			return
 		self._process.stdin.write('PAUSE\n' if value else "RESUME\n")
 
