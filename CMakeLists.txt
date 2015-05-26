@@ -56,6 +56,7 @@ set(PYTHON_SITE_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJO
 install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
 file(GLOB cura_plugins_SRCS plugins/*)
 install(DIRECTORY ${cura_plugins_SRCS} DESTINATION ${CMAKE_INSTALL_LIBDIR}/cura)
-file(GLOB cura_SRCS src/*)
+file(GLOB cura_SRCS cura/*)
 install(FILES ${cura_SRCS} DESTINATION ${PYTHON_SITE_PACKAGES_DIR}/cura)
 install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR})
+
