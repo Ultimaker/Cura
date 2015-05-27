@@ -1038,21 +1038,12 @@ class Taz5NozzleSelectPage(InfoPage):
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
 			#TODO: Use new profiles
+			
 	
 	def OnPageChanging(self, e):
 		e.GetPage().StoreData()
 
-# 	def OnPageChanged(self, e):
-# 		if e.GetPage().AllowNext():
-# 			self.FindWindowById(wx.ID_FORWARD).Enable()
-# 		else:
-# 			self.FindWindowById(wx.ID_FORWARD).Disable()
-# 		if e.GetPage().AllowBack():
-# 			self.FindWindowById(wx.ID_BACKWARD).Enable()
-# 		else:
-# 			self.FindWindowById(wx.ID_BACKWARD).Disable()
-
-	def OnCancel(self, e): #TODO: this is not being triggered
+	def OnCancel(self, e):
 		profile.setActiveMachine(self._old_machine_index)
 
 class ConfigWizard(wx.wizard.Wizard):
@@ -1092,6 +1083,8 @@ class ConfigWizard(wx.wizard.Wizard):
 		#wx.wizard.WizardPageSimple.Chain(self.ultimakerCalibrationPage, self.ultimakerCalibrateStepsPerEPage)
 		wx.wizard.WizardPageSimple.Chain(self.printrbotSelectType, self.otherMachineInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
+		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.taz5NozzleSelectPage)
+		wx.wizard.WizardPageSimple.Chain(self.taz5NozzleSelectPage, self.lulzbotReadyPage)
 
 		self.FitToPage(self.machineSelectPage)
 		self.GetPageAreaSizer().Add(self.machineSelectPage)
