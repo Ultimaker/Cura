@@ -16,10 +16,10 @@ UM.AngledCornerRectangle {
     property alias saveAction: saveButton.saveAction;
 
     cornerSize: UM.Theme.sizes.default_margin.width;
-    
+
     function showTooltip(item, position, text) {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y);
+        position = item.mapToItem(base, position.x, position.y / 2);
         tooltip.show(position);
     }
 
