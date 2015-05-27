@@ -41,8 +41,9 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
-                    "min_value": 0.06,
-                    "max_value": 2.0,
+                    "min_value": 0.00001,
+                    "min_value_warning": 0.04,
+                    "max_value_warning": 2.0,
                     "always_visible": true,
                     "children": {
                         "layer_height_0": {
@@ -51,8 +52,9 @@
                             "unit": "mm",
                             "type": "float",
                             "default": 0.3,
-                            "min_value": 0.06,
-                            "max_value": 2.0,
+                            "min_value": 0.0,
+                            "min_value_warning": 0.04,
+                            "max_value_warning": 2.0,
                             "visible": false
                         }
                     }
