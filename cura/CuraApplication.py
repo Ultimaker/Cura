@@ -48,7 +48,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "15.05.90")
+        super().__init__(name = "cura", version = "15.05.92")
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
