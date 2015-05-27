@@ -110,6 +110,9 @@ class CuraEngineBackend(Backend):
         if not objects:
             return #No point in slicing an empty build plate
 
+        if kwargs.get("settings", self._settings).hasErrorValue():
+            return #No slicing if we have error values since those are by definition illegal values.
+
         self._slicing = True
         self.slicingStarted.emit()
 
