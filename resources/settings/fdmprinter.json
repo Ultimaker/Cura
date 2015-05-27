@@ -912,7 +912,7 @@
                     "label": "Brim Line Count",
                     "description": "The amount of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
                     "type": "int",
-                    "default": 1,
+                    "default": 10,
                     "active_if": {
                         "setting": "adhesion_type",
                         "value": "Brim"
