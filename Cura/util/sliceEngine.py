@@ -566,6 +566,10 @@ class Engine(object):
 			settings['upSkinCount'] = 10000
 		else:
 			settings['sparseInfillLineDistance'] = int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density'))
+		if profile.getProfileSetting('perimeter_before_infill') == 'True':
+			settings['perimeterBeforeInfill'] = 1
+		else:
+			settings['perimeterBeforeInfill'] = 0
 		if profile.getProfileSetting('platform_adhesion') == 'Brim':
 			settings['skirtDistance'] = 0
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('brim_line_count'))
