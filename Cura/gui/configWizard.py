@@ -1004,22 +1004,32 @@ class LulzbotReadyPage(InfoPage):
 		self.AddSeperator()
 		
 class Taz5NozzleSelectPage(InfoPage):
+	url='http://lulzbot.com/fakeurl'
+	
 	def __init__(self, parent):
 		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
 		self._old_machine_index = int(profile.getPreferenceFloat('active_machine'))
 		
-		#self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
 		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
 		
+		self.AddText(_(' '))
 		self.AddText(_('Please select nozzle size:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
 		self.Nozzle35Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
-		self.Nozzle50Radio = self.AddRadioButton("0.5 mm (after x date)")
+		self.Nozzle50Radio = self.AddRadioButton("0.5 mm")
 		self.Nozzle50Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
-		#self.Nozzle50Radio.SetValue(True)
+		self.Nozzle50Radio.SetValue(True)
+		self.AddText(_(' '))
 		self.AddSeperator()
 		
+		self.AddText(_('If you are not sure which nozzle size you have please check this webpage: '))
+		button = self.AddButton(Taz5NozzleSelectPage.url)
+		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
+		
+	def OnUrlClick(self, e):
+		webbrowser.open(Taz5NozzleSelectPage.url)
+
 	def OnNozzleSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
 	
