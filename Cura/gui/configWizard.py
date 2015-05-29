@@ -386,7 +386,7 @@ class MachineSelectPage(InfoPage):
 		self.LulzbotMiniRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.LulzbotMiniRadio.SetValue(True)
 		self.LulzbotTaz5Radio = self.AddRadioButton("LulzBot TAZ 5")
-		self.LulzbotTaz5Radio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
+		self.LulzbotTaz5Radio.Bind(wx.EVT_RADIOBUTTON, self.OnTaz5Select)
 		self.LulzbotTaz4Radio = self.AddRadioButton("LulzBot TAZ 4")
 		self.LulzbotTaz4Radio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.Ultimaker2Radio = self.AddRadioButton("Ultimaker2")
@@ -419,11 +419,13 @@ class MachineSelectPage(InfoPage):
 	def OnLulzbotSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
 
+	def OnTaz5Select(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().taz5NozzleSelectPage)
+
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
 
 	def AllowNext(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
 		return True
 
 	def StoreData(self):
@@ -505,8 +507,6 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_width', '298')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
-				profile.putProfileSetting('nozzle_size', '0.35')
-				profile.putMachineSetting('machine_name', 'LulzBot TAZ 5')
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
 				profile.putMachineSetting('serial_baud', '115200')
 			else:
@@ -1008,6 +1008,46 @@ class LulzbotReadyPage(InfoPage):
 		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
 		self.AddSeperator()
 
+class Taz5NozzleSelectPage(InfoPage):
+	url='http://lulzbot.com/printer-identification'
+
+	def __init__(self, parent):
+		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+
+		self.AddText(_(' '))
+		self.AddText(_('Please select nozzle size:'))
+		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
+		self.Nozzle35Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
+		self.Nozzle50Radio = self.AddRadioButton("0.5 mm")
+		self.Nozzle50Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
+		self.Nozzle50Radio.SetValue(True)
+		self.AddText(_(' '))
+		self.AddSeperator()
+
+		self.AddText(_('If you are not sure which nozzle size you have please check this webpage: '))
+		button = self.AddButton(Taz5NozzleSelectPage.url)
+		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
+
+	def OnUrlClick(self, e):
+		webbrowser.open(Taz5NozzleSelectPage.url)
+
+	def OnNozzleSelect(self, e):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+
+	def StoreData(self):
+		if self.Nozzle35Radio.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.35')
+			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.35 nozzle)')
+			#TODO: Use existing profiles
+		else:
+			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
+			#TODO: Use new profiles
+
+	def OnPageChanging(self, e):
+		e.GetPage().StoreData()
+
 class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
 		super(ConfigWizard, self).__init__(None, -1, _("Configuration Wizard"))
@@ -1035,6 +1075,7 @@ class ConfigWizard(wx.wizard.Wizard):
 
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 		self.lulzbotReadyPage = LulzbotReadyPage(self)
+		self.taz5NozzleSelectPage = Taz5NozzleSelectPage(self)
 
 		#wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
@@ -1044,6 +1085,8 @@ class ConfigWizard(wx.wizard.Wizard):
 		#wx.wizard.WizardPageSimple.Chain(self.ultimakerCalibrationPage, self.ultimakerCalibrateStepsPerEPage)
 		wx.wizard.WizardPageSimple.Chain(self.printrbotSelectType, self.otherMachineInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
+		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.taz5NozzleSelectPage)
+		wx.wizard.WizardPageSimple.Chain(self.taz5NozzleSelectPage, self.lulzbotReadyPage)
 
 		self.FitToPage(self.machineSelectPage)
 		self.GetPageAreaSizer().Add(self.machineSelectPage)
@@ -1065,7 +1108,9 @@ class ConfigWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_BACKWARD).Disable()
 
 	def OnCancel(self, e):
+		new_machine_index = int(profile.getPreferenceFloat('active_machine'))
 		profile.setActiveMachine(self._old_machine_index)
+		profile.removeMachine(new_machine_index)
 
 class bedLevelWizardMain(InfoPage):
 	def __init__(self, parent):
