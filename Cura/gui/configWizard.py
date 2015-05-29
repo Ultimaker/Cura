@@ -426,7 +426,6 @@ class MachineSelectPage(InfoPage):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
 
 	def AllowNext(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
 		return True
 
 	def StoreData(self):
