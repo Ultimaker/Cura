@@ -1010,7 +1010,7 @@ class LulzbotReadyPage(InfoPage):
 		self.AddSeperator()
 		
 class Taz5NozzleSelectPage(InfoPage):
-	url='http://lulzbot.com/fakeurl'
+	url='http://lulzbot.com/printer-identification'
 	
 	def __init__(self, parent):
 		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
