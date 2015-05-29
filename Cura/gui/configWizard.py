@@ -1008,17 +1008,14 @@ class LulzbotReadyPage(InfoPage):
 		self.AddText(_('For more information about using Cura with your LulzBot'))
 		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
 		self.AddSeperator()
-		
+
 class Taz5NozzleSelectPage(InfoPage):
 	url='http://lulzbot.com/printer-identification'
-	
+
 	def __init__(self, parent):
 		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
-		self._old_machine_index = int(profile.getPreferenceFloat('active_machine'))
-		
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
-		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
-		
+
 		self.AddText(_(' '))
 		self.AddText(_('Please select nozzle size:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
@@ -1028,17 +1025,17 @@ class Taz5NozzleSelectPage(InfoPage):
 		self.Nozzle50Radio.SetValue(True)
 		self.AddText(_(' '))
 		self.AddSeperator()
-		
+
 		self.AddText(_('If you are not sure which nozzle size you have please check this webpage: '))
 		button = self.AddButton(Taz5NozzleSelectPage.url)
 		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
-		
+
 	def OnUrlClick(self, e):
 		webbrowser.open(Taz5NozzleSelectPage.url)
 
 	def OnNozzleSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
-	
+
 	def StoreData(self):
 		if self.Nozzle35Radio.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.35')
@@ -1048,13 +1045,9 @@ class Taz5NozzleSelectPage(InfoPage):
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
 			#TODO: Use new profiles
-			
-	
+
 	def OnPageChanging(self, e):
 		e.GetPage().StoreData()
-
-	def OnCancel(self, e):
-		profile.setActiveMachine(self._old_machine_index)
 
 class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
@@ -1116,7 +1109,9 @@ class ConfigWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_BACKWARD).Disable()
 
 	def OnCancel(self, e):
+		new_machine_index = int(profile.getPreferenceFloat('active_machine'))
 		profile.setActiveMachine(self._old_machine_index)
+		profile.removeMachine(new_machine_index)
 
 class bedLevelWizardMain(InfoPage):
 	def __init__(self, parent):
