@@ -122,6 +122,8 @@ QtObject {
                 Image {
                     anchors.verticalCenter: parent.verticalCenter;
                     source: control.iconSource;
+                    width: UM.Theme.sizes.section_icon.width;
+                    height: UM.Theme.sizes.section_icon.height;
                 }
 
                 Label {
