@@ -315,7 +315,7 @@ msgstr ""
 #: ../resources/qml/SaveButton.qml:149
 #, qt-format
 msgctxt "SaveButton|"
-msgid "%1m material"
+msgid "%1m of material"
 msgstr ""
 
 #. Save button label
