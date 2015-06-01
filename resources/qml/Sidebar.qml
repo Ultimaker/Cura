@@ -17,6 +17,8 @@ UM.AngledCornerRectangle {
 
     cornerSize: UM.Theme.sizes.default_margin.width;
 
+    color: UM.Theme.colors.sidebar;
+
     function showTooltip(item, position, text) {
         tooltip.text = text;
         position = item.mapToItem(base, position.x, position.y / 2);
