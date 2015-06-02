@@ -1027,7 +1027,8 @@ class Taz5NozzleSelectPage(InfoPage):
 		self.AddText(_(' '))
 		self.AddSeperator()
 
-		self.AddText(_('If you are not sure which nozzle size you have please check this webpage: '))
+		self.AddText(_('If you are not sure which nozzle size you have'))
+		self.AddText(_('please check this webpage: '))
 		button = self.AddButton(Taz5NozzleSelectPage.url)
 		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
 
