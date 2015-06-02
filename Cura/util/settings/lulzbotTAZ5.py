@@ -73,3 +73,24 @@ lulzbot_taz5_settings = [{'Ini': 'taz5'},
 						 {'Material': '2_abs', 'Profile': '3_high',
 						  'Settings': [('layer_height', '0.16'),
 									   ('solid_layer_thickness', '0.74')]}]
+
+lulzbot_taz5_05nozzle_settings = [ {'Material': '1_hips', 'Profile': '1_low',
+									'Ini': "hips_low"},
+								   {'Material': '1_hips', 'Profile': '2_normal',
+									'Ini': "hips_normal"},
+								   {'Material': '1_hips', 'Profile': '3_high',
+									'Ini': "hips_high"},
+
+								   {'Material': '2_abs', 'Profile': '1_low',
+									'Ini': "abs_low"},
+								   {'Material': '2_abs', 'Profile': '2_normal',
+									'Ini': "abs_normal"},
+								   {'Material': '2_abs', 'Profile': '3_high',
+									'Ini': "abs_high"},
+
+								   {'Material': '3_pla', 'Profile': '1_low',
+									'Ini': "pla_low"},
+								   {'Material': '3_pla', 'Profile': '2_normal',
+									'Ini': "pla_normal"},
+								   {'Material': '3_pla', 'Profile': '3_high',
+									'Ini': "pla_high"}]
