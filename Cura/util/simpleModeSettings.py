@@ -1,6 +1,7 @@
 from Cura.util.settings import lulzbot_mini_settings, \
 		lulzbot_taz4_settings, \
-		lulzbot_taz5_settings
+		lulzbot_taz5_settings, \
+		lulzbot_taz5_05nozzle_settings
 
 import ConfigParser as configparser
 from Cura.util import profile
@@ -45,6 +46,7 @@ class SimpleModeSettings(object):
 	settings = {"lulzbot_mini": lulzbot_mini_settings,
 				"lulzbot_TAZ_4": lulzbot_taz4_settings,
 				"lulzbot_TAZ_5": lulzbot_taz5_settings,
+				"lulzbot_TAZ_5_05nozzle": lulzbot_taz5_05nozzle_settings,
 				None: {}}
 
 
