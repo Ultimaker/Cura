@@ -421,6 +421,7 @@ class MachineSelectPage(InfoPage):
 
 	def OnTaz5Select(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().taz5NozzleSelectPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().taz5NozzleSelectPage, self.GetParent().lulzbotReadyPage)
 
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
@@ -1018,10 +1019,8 @@ class Taz5NozzleSelectPage(InfoPage):
 		self.AddText(_(' '))
 		self.AddText(_('Please select nozzle size:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
-		self.Nozzle35Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
 		self.Nozzle35Radio.SetValue(True)
 		self.Nozzle50Radio = self.AddRadioButton("0.5 mm")
-		self.Nozzle50Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
 		self.AddText(_(' '))
 		self.AddSeperator()
 
@@ -1031,9 +1030,6 @@ class Taz5NozzleSelectPage(InfoPage):
 
 	def OnUrlClick(self, e):
 		webbrowser.open(Taz5NozzleSelectPage.url)
-
-	def OnNozzleSelect(self, e):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
 
 	def StoreData(self):
 		if self.Nozzle35Radio.GetValue():
