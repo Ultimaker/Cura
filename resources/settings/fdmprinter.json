@@ -149,6 +149,13 @@
                                 }
                             }
                         },
+                        "alternate_extra_perimeter": {
+                            "label": "Alternate Extra Wall",
+                            "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
+                            "type": "boolean",
+                            "default": false,
+                            "visible": false
+                        },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
                             "description": "This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.",
@@ -174,7 +181,7 @@
                                         "top_layers": {
                                             "label": "Top Layers",
                                             "description": "This controls the amount of top layers.",
-                                            "default": 4,
+                                            "default": 8,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
@@ -193,7 +200,7 @@
                                         "bottom_layers": {
                                             "label": "Bottom Layers",
                                             "description": "This controls the amount of bottom layers.",
-                                            "default": 4,
+                                            "default": 8,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
@@ -210,6 +217,22 @@
                     "type": "boolean",
                     "default": true,
                     "visible": false
+                },
+                "fill_perimeter_gaps":{
+                    "label": "Fill Gaps Between Walls",
+                    "description": "Fill the gaps created by walls where they would otherwise be overlapping. This will also fill thin walls. Optionally only the gaps occurring within the top and bottom skin can be filled.",
+                    "type": "enum",
+                    "options": [
+                        "Nowhere",
+                        "Everywhere",
+                        "Skin"
+                    ],
+                    "default": "Everywhere",
+                    "visible": false,
+                    "active_if": {
+                        "setting": "wall_overlap_avoid_enabled",
+                        "value": true
+                    }
                 },
                 "top_bottom_pattern": {
                     "label": "Bottom/Top Pattern",
@@ -346,14 +369,22 @@
                             "visible": false,
                             "inherit": false
                         },
-                        "retraction_minimal_extrusion": {
-                            "label": "Minimal Extrusion Before Retraction",
-                            "description": "The minimum amount of extrusion that needs to happen between retractions.  If a retraction should happen before this minimum is reached, it will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.02,
+                        "retraction_count_max": {
+                            "label": "Maximal Retraction Count",
+                            "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
+                            "default": 6,
+                            "type": "int",
                             "visible": false,
                             "inherit": false
+                        },
+                        "retraction_extrusion_window": {
+                            "label": "Minimal Extrusion Distance Window",
+                            "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 4.5,
+                            "visible": false,
+                            "inherit_function": "retraction_amount"
                         },
                         "retraction_hop": {
                             "label": "Z Hop when Retracting",
@@ -647,12 +678,12 @@
                     "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
                     "type": "enum",
                     "options": [
-                        "None",
                         "Touching Buildplate",
                         "Everywhere"
                     ],
-                    "default": "Touching Buildplate",
+                    "default": "Everywhere",
                     "visible": true,
+                    "inherit_function": "'Everywhere' if support_enable else 'None'",
                     "active_if": {
                         "setting": "support_enable",
                         "value": true
@@ -700,11 +731,7 @@
                             "unit": "mm",
                             "default": 0.15,
                             "type": "float",
-                            "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            }
+                            "visible": false
                         },
                         "support_bottom_distance": {
                             "label": "Bottom Distance",
@@ -712,11 +739,7 @@
                             "unit": "mm",
                             "default": 0.15,
                             "type": "float",
-                            "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            }
+                            "visible": false
                         }
                     }
                 },
@@ -737,12 +760,8 @@
                     "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 0.7,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "default": 2.0,
+                    "visible": false
                 },
                 "support_area_smoothing": {
                     "label": "Area Smoothing",
@@ -750,22 +769,14 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.6,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "visible": false
                 },
                 "support_use_towers": {
                     "label": "Use towers.",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "boolean",
                     "default": true,
-                    "visible": true,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "visible": true
                 },
                 "support_minimal_diameter": {
                     "label": "Minimal Diameter",
@@ -812,7 +823,7 @@
                         "Lines",
                         "ZigZag"
                     ],
-                    "default": "Lines",
+                    "default": "ZigZag",
                     "visible": true,
                     "active_if": {
                         "setting": "support_enable",
@@ -841,7 +852,6 @@
                         "setting": "support_enable",
                         "value": true
                     },
-
                     "children": {
                         "support_line_distance": {
                             "label": "Line distance",
@@ -1315,5 +1325,3 @@
         }
     }
 }
-
-
