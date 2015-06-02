@@ -429,6 +429,9 @@ class MachineSelectPage(InfoPage):
 	def AllowNext(self):
 		return True
 
+	def AllowBack(self):
+		return False
+
 	def StoreData(self):
 		profile.putProfileSetting('retraction_enable', 'True')
 		if self.Ultimaker2Radio.GetValue() or self.Ultimaker2GoRadio.GetValue() or self.Ultimaker2ExtRadio.GetValue():
