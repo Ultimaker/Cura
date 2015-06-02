@@ -226,7 +226,10 @@ class printWindowPlugin(wx.Frame):
 		self._printerConnection.openActiveConnection()
 
 	def script_startPrint(self, data = None):
-		self._printerConnection.startPrint()
+		if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
+			self._printerConnection.pause(not self._printerConnection.isPaused())
+		else:
+			self._printerConnection.startPrint()
 
 	def script_cancelPrint(self, e):
 		self._printerConnection.cancelPrint()
@@ -253,7 +256,7 @@ class printWindowPlugin(wx.Frame):
 
 	def OnClose(self, e):
 		if self._printerConnection.hasActiveConnection():
-			if self._printerConnection.isPrinting():
+			if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
 				pass #TODO: Give warning that the close will kill the print.
 			self._printerConnection.closeActiveConnection()
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
@@ -297,24 +300,55 @@ class printWindowPlugin(wx.Frame):
 			self._termLog.AppendText(line.encode('utf-8', 'replace'))
 
 	def _updateButtonStates(self):
+		hasPauseButton = False
+		for button in self._buttonList:
+			if button.command == self.script_pausePrint:
+				hasPauseButton = True
+				break
+
 		for button in self._buttonList:
 			if button.command == self.script_connect:
 				button.Show(self._printerConnection.hasActiveConnection())
-				button.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
+				button.Enable(not self._printerConnection.isActiveConnectionOpen() and \
+							  not self._printerConnection.isActiveConnectionOpening())
 			elif button.command == self.script_pausePrint:
 				button.Show(self._printerConnection.hasPause())
-				if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-					button.Enable(self._printerConnection.isPrinting() or self._printerConnection.isPaused())
+				if not self._printerConnection.hasActiveConnection() or \
+				   self._printerConnection.isActiveConnectionOpen():
+					button.Enable(self._printerConnection.isPrinting() or \
+								  self._printerConnection.isPaused())
+					if self._printerConnection.isPaused():
+						button.SetLabel(_("Resume"))
+					else:
+						button.SetLabel(_("Pause"))
 				else:
 					button.Enable(False)
 			elif button.command == self.script_startPrint:
-				if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-					button.Enable(not self._printerConnection.isPrinting())
+				if hasPauseButton or not self._printerConnection.hasPause():
+					if not self._printerConnection.hasActiveConnection() or \
+					   self._printerConnection.isActiveConnectionOpen():
+							button.Enable(not self._printerConnection.isPrinting() and \
+										  not self._printerConnection.isPaused())
+					else:
+						button.Enable(False)
 				else:
-					button.Enable(False)
+					if not self._printerConnection.hasActiveConnection() or \
+					   self._printerConnection.isActiveConnectionOpen():
+						if self._printerConnection.isPrinting():
+							button.SetLabel(_("Pause"))
+						else:
+							if self._printerConnection.isPaused():
+								button.SetLabel(_("Resume"))
+							else:
+								button.SetLabel(_("Print"))
+						button.Enable(True)
+					else:
+						button.Enable(False)
 			elif button.command == self.script_cancelPrint:
-				if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-					button.Enable(self._printerConnection.isPrinting())
+				if not self._printerConnection.hasActiveConnection() or \
+				   self._printerConnection.isActiveConnectionOpen():
+					button.Enable(self._printerConnection.isPrinting() or \
+								  self._printerConnection.isPaused())
 				else:
 					button.Enable(False)
 			elif button.command == self.script_showErrorLog:
@@ -340,12 +374,13 @@ class printWindowPlugin(wx.Frame):
 			return
 		self._lastUpdateTime = t
 
-		if extraInfo is not None:
+		if extraInfo is not None and len(extraInfo) > 0:
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
+		isPrinting = connection.isPrinting() or connection.isPaused()
 		if self._progressBar is not None:
-			if connection.isPrinting():
+			if isPrinting:
 				self._progressBar.SetValue(connection.getPrintProgress() * 1000)
 			else:
 				self._progressBar.SetValue(0)
@@ -359,8 +394,8 @@ class printWindowPlugin(wx.Frame):
 			self._infoText.SetLabel(info)
 		else:
 			self.SetTitle(info.replace('\n', ', '))
-		if connection.isPrinting() != self._isPrinting:
-			self._isPrinting = connection.isPrinting()
+		if isPrinting != self._isPrinting:
+			self._isPrinting = isPrinting
 			preventComputerFromSleeping(self, self._isPrinting)
 
 class printWindowBasic(wx.Frame):
@@ -450,7 +485,7 @@ class printWindowBasic(wx.Frame):
 
 	def OnClose(self, e):
 		if self._printerConnection.hasActiveConnection():
-			if self._printerConnection.isPrinting():
+			if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
 				pass #TODO: Give warning that the close will kill the print.
 			self._printerConnection.closeActiveConnection()
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
@@ -487,11 +522,12 @@ class printWindowBasic(wx.Frame):
 			return
 		self._lastUpdateTime = t
 
-		if extraInfo is not None:
+		if extraInfo is not None and len(extraInfo) > 0:
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
-		if connection.isPrinting():
+		isPrinting = connection.isPrinting() or connection.isPaused()
+		if isPrinting:
 			self.progress.SetValue(connection.getPrintProgress() * 1000)
 		else:
 			self.progress.SetValue(0)
@@ -503,8 +539,8 @@ class printWindowBasic(wx.Frame):
 			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
 		info += '\n\n'
 		self.statsText.SetLabel(info)
-		if connection.isPrinting() != self._isPrinting:
-			self._isPrinting = connection.isPrinting()
+		if isPrinting != self._isPrinting:
+			self._isPrinting = isPrinting
 			preventComputerFromSleeping(self, self._isPrinting)
 
 
@@ -519,7 +555,8 @@ class printWindowBasic(wx.Frame):
 		self.connectButton.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
 		self.pauseButton.Show(self._printerConnection.hasPause())
 		if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-			self.printButton.Enable(not self._printerConnection.isPrinting())
+			self.printButton.Enable(not self._printerConnection.isPrinting() and \
+									not self._printerConnection.isPaused())
 			self.pauseButton.Enable(self._printerConnection.isPrinting())
 			self.cancelButton.Enable(self._printerConnection.isPrinting())
 		else:

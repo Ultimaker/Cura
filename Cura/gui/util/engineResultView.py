@@ -26,7 +26,7 @@ class engineResultView(object):
 		self._layer20VBOs = []
 
 		self.layerSelect = openglGui.glSlider(self._parent, 10000, 1, 1, (-1,-2), lambda : self._parent.QueueRefresh())
-		self.singleLayerToggle = openglGui.glButton(self._parent, 23, _("Single Layer"), (-1,-1.5), self.OnSingleLayerToggle, 0.5) #stay half size of the base size
+		self.singleLayerToggle = openglGui.glButton(self._parent, 27, _("Single Layer"), (-1.1,-1.4), self.OnSingleLayerToggle, 0.75) #stay at 75% size of the base size
 
 	def setResult(self, result):
 		if self._result == result:
