@@ -19,8 +19,6 @@ def main():
 	parser = OptionParser(usage="usage: %prog [options] <filename>.stl")
 	parser.add_option("-i", "--ini", action="store", type="string", dest="profileini",
 		help="Load settings from a profile ini file")
-	parser.add_option("-r", "--print", action="store", type="string", dest="printfile",
-		help="Open the printing interface, instead of the normal cura interface.")
 	parser.add_option("-p", "--profile", action="store", type="string", dest="profile",
 		help="Internal option, do not use!")
 	parser.add_option("-s", "--slice", action="store_true", dest="slice",
@@ -48,10 +46,7 @@ def main():
 	else:
 		profile.loadProfile(profile.getDefaultProfilePath(), True)
 
-	if options.printfile is not None:
-		from Cura.gui import printWindow
-		printWindow.startPrintInterface(options.printfile)
-	elif options.slice is not None:
+	if options.slice is not None:
 		from Cura.util import sliceEngine
 		from Cura.util import objectScene
 		from Cura.util import meshLoader
