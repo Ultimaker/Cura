@@ -241,7 +241,11 @@ class PrinterConnection(SignalEmitter):
     ##  Close the printer connection    
     def close(self):
         if self._connect_thread.isAlive():
-            self._connect_thread.join()
+            try:
+                self._connect_thread.join()
+            except Exception as e:
+                pass # This should work, but it does fail sometimes for some reason
+
         if self._serial is not None:
             self.setIsConnected(False)
             self._listen_thread.join()
