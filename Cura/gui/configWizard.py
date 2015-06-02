@@ -507,8 +507,8 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_width', '298')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
-				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
 				profile.putMachineSetting('serial_baud', '115200')
+				# Machine type and name are set in the nozzle select page
 			else:
 				profile.putMachineSetting('machine_width', '155')
 				profile.putMachineSetting('machine_depth', '155')
@@ -1039,11 +1039,12 @@ class Taz5NozzleSelectPage(InfoPage):
 		if self.Nozzle35Radio.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.35')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.35 nozzle)')
-			#TODO: Use existing profiles
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
+
 		else:
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
-			#TODO: Use new profiles
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_05nozzle')
 
 	def OnPageChanging(self, e):
 		e.GetPage().StoreData()
