@@ -1087,7 +1087,6 @@ class ConfigWizard(wx.wizard.Wizard):
 		wx.wizard.WizardPageSimple.Chain(self.printrbotSelectType, self.otherMachineInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.lulzbotReadyPage)
-		wx.wizard.WizardPageSimple.Chain(self.taz5NozzleSelectPage, self.lulzbotReadyPage)
 
 		self.FitToPage(self.machineSelectPage)
 		self.GetPageAreaSizer().Add(self.machineSelectPage)
