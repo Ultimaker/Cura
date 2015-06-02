@@ -1019,9 +1019,9 @@ class Taz5NozzleSelectPage(InfoPage):
 		self.AddText(_('Please select nozzle size:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
 		self.Nozzle35Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
+		self.Nozzle35Radio.SetValue(True)
 		self.Nozzle50Radio = self.AddRadioButton("0.5 mm")
 		self.Nozzle50Radio.Bind(wx.EVT_RADIOBUTTON, self.OnNozzleSelect)
-		self.Nozzle50Radio.SetValue(True)
 		self.AddText(_(' '))
 		self.AddSeperator()
 
