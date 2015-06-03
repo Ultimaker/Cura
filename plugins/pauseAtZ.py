@@ -2,11 +2,11 @@
 #Info: Pause the printer at a certain height
 #Depend: GCode
 #Type: postprocess
-#Param: pauseLevel(float:5.0) Pause height (mm)
-#Param: parkX(float:190) Head park X (mm)
-#Param: parkY(float:190) Head park Y (mm)
-#Param: moveZ(float:0) Head move Z (mm)
-#Param: retractAmount(float:5) Retraction amount (mm)
+#Param: pauseLevel(float:1.0) Pause height (mm)
+#Param: parkX(float:150) Head park X (mm)
+#Param: parkY(float:0) Head park Y (mm)
+#Param: moveZ(float:5) Head move Z (mm)
+#Param: retractAmount(float:1) Retraction amount (mm)
 
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import re
