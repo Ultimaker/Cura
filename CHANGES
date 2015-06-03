@@ -1,0 +1,127 @@
+Cura 15.06 Beta
+===============
+
+This is the *Beta* version of Cura 15.06.
+
+Cura 15.06 is a new release built from the ground up on a completely new
+framework called Uranium. This framework has been designed to make it easier to
+extend Cura with additional functionality as well as provide a cleaner UI.
+
+Changes since 15.05.91
+----------------------
+
+* There is now a working MacOSX version. Currently it supports OSX 10.7 and
+  higher.
+* Fixed: Need to deselect before selecting a different object.
+* Fixed: Object can be moved on Z axis.
+* Fixed: Error values should be considered invalid values and will not trigger a
+  slice.
+* Fixed: Text fields used a locale-aware validator while the underlying code did
+  not.
+* Fixed: Text fields will trigger a slice on text change, not only after focus
+  change/enter press.
+* Fixed: Rotate Tool snaps to incorrect value.
+
+Changes since 15.05.90
+----------------------
+
+* Fixed: Additional UI elements for tools and views not loading.
+* Fixed: Double click needed to change setting dialog page.
+* Fixed: Context menu entries (reload, center object, etc.) not working.
+* Fixed: "Open With" or passing files from command line not working.
+* Fixed: "Reload All" would not reload files.
+
+In addition, a lot of work has gone into getting a usable Mac OSX version.
+
+New Features
+------------
+
+* Plugin based system
+  The Uranium framework provides us with a plugin-based system
+  that provides additional flexibility when extending Cura. Think
+  of new views, tools, file formats, etc. This is probably the
+  biggest new feature.
+* Improved UI
+  The UI has received a complete overhaul.
+* Time-Quality Slider
+  The 4 static quick print profiles have been replaced with
+  a slider that should make it easier to find the right spot
+  between print time and print quality.
+* More Settings
+  The Advanced mode is now configurable and can show many
+  additional settings that were previously not available, while at
+  the same time not overwhelming new users with too many settings.
+  Custom set of visible settings can be created by the user.
+* Support for high-DPI screens
+  The refreshed UI has been designed with high-DPI screens in
+  mind which should improve the experience of Cura on such
+  devices.
+* Improved language support
+  (Not yet available for the Beta release.)
+* Improved support structure generation
+  The new version of the CuraEngine now features improved
+  support generation algorithms and additional options for support
+  structure generation.
+* Experimental Feature: Wire Printing
+  Wire Printing has been added as an experimental new feature. It
+  will print objects as a structure of lines. It can be enabled by
+  from Advanced Mode -> Fixes -> Wire Printing.
+* Undo/Redo
+  It is now possible to undo and redo most scene operations, like
+  moving or rotating objects.
+
+Features from earlier versions not (yet) in this release
+--------------------------------------------------------
+
+* The All-at-once/One-at-a-time toggle is not available.
+  We are working on an improved implementation of this mechanism
+  but it will not be available for this release.
+* No dual extrusion features are available yet.
+  We are working on a completely new workflow for this but this
+  needs additional time.
+* “Lay Flat” has been removed.
+  The existing implementation was unfortunately not salvageable.
+  We will be looking into an improved implementation for this
+  feature.
+* "Split Object Into Parts" has been removed.
+  Due to the same reason as Lay Flat.
+* Support for AMF and DAE file formats has been removed.
+  Both of these will be implemented as plugins in the future.
+* Support for directly loading a GCode file is not yet available.
+  This will be implemented as a plugin in the future.
+* Support for PNG, JPG and other image formats has been removed.
+  These can be supported by a plugin with an improved UI.
+* Support for loading Minecraft levels has been removed.
+  This can be implemented as a plugin.
+* Windows XP support has been dropped.
+  Microsoft is no longer supporting xp, so they no longer back
+  port certain features that we require.
+* X-Ray view is missing.
+  Will be implemented as a (you might have guessed it) plugin.
+* Infill display in the layer view is missing.
+  Like several other features, the existing implementation of this
+  functionality is not salvageable and will need to be reimplemented.
+
+
+Known Issues
+------------
+
+For an up to date list of all known issues, please see
+https://github.com/Ultimaker/Cura/issues and
+https://github.com/Ultimaker/Uranium/issues .
+
+* The application has no application icon yet.
+* The Windows version starts a console before starting the
+  application. This is intentional for the beta and it will be
+  removed for the final version.
+* Opening the machine preferences page will switch to the first
+  available machine instead of keeping the current machine
+  selected.
+* Some OBJ files are rendered as black objects due to missing
+  normals.
+* The developer documentation for Uranium (available at
+  http://software.ultimaker.com/uranium/index.html) is not yet
+  complete.
+* Disabling plugins does not work correctly yet.
+* Unicorn occasionally still requires feeding. Do not feed it
+  after midnight.

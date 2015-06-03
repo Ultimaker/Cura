@@ -22,10 +22,10 @@ Rectangle {
 
     function show(position) {
         if(position.y + base.height > parent.height) {
-            x = position.x;
+            x = position.x - base.width;
             y = parent.height - base.height;
         } else {
-            x = position.x;
+            x = position.x - base.width;
             y = position.y;
         }
         base.opacity = 1;

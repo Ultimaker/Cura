@@ -144,23 +144,6 @@ UM.MainWindow {
                 }
             }
 
-            Sidebar {
-                id: sidebar;
-
-                anchors {
-                    top: parent.top;
-                    bottom: parent.bottom;
-                    right: parent.right;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
-                }
-
-                width: UM.Theme.sizes.panel.width;
-
-                addMachineAction: actions.addMachine;
-                configureMachinesAction: actions.configureMachines;
-                saveAction: actions.save;
-            }
-
             UM.MessageStack {
                 anchors {
                     left: toolbar.right;
@@ -264,6 +247,23 @@ UM.MainWindow {
                     bottom: parent.bottom;
                     bottomMargin: UM.Theme.sizes.window_margin.height;
                 }
+            }
+
+            Sidebar {
+                id: sidebar;
+
+                anchors {
+                    top: parent.top;
+                    bottom: parent.bottom;
+                    right: parent.right;
+                    rightMargin: UM.Theme.sizes.window_margin.width;
+                }
+
+                width: UM.Theme.sizes.panel.width;
+
+                addMachineAction: actions.addMachine;
+                configureMachinesAction: actions.configureMachines;
+                saveAction: actions.save;
             }
         }
     }
