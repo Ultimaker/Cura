@@ -80,8 +80,8 @@ class PlatformPhysics:
                     if overlap is None:
                         continue
 
-                    move_vector.setX(-overlap[0])
-                    move_vector.setZ(-overlap[1])
+                    move_vector.setX(overlap[0] * 1.1)
+                    move_vector.setZ(overlap[1] * 1.1)
 
             if move_vector != Vector():
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
