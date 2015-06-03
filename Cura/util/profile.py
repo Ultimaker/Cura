@@ -1352,3 +1352,24 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		#Append the profile string to the end of the GCode, so we can load it from the GCode file later.
 		#postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
+
+def performVersionUpgrade():
+	for n in xrange(0, getMachineCount()):
+		# This is a hack around an issue where the machine type in the wizard
+		# changed and causes some people to have it set to lulzbot_TAZ and some
+		# people have it set to lulzbot_TAZ_4.
+		if getMachineSetting('machine_type', n) == 'lulzbot_TAZ':
+			putMachineSetting('machine_type', 'lulzbot_TAZ_4', n)
+
+		# Upgrade gantry settings for Lulzbot Mini if untouched by user
+		if getMachineSetting('machine_type', n) == 'lulzbot_mini' and \
+		   getMachineSetting('extruder_head_size_min_x', n) == '0.0' and \
+		   getMachineSetting('extruder_head_size_max_x', n) == '0.0' and \
+		   getMachineSetting('extruder_head_size_min_y', n) == '0.0' and \
+		   getMachineSetting('extruder_head_size_max_y', n) == '0.0' and \
+		   getMachineSetting('extruder_head_size_height', n) == '0.0':
+			putMachineSetting('extruder_head_size_min_x', '40', n)
+			putMachineSetting('extruder_head_size_max_x', '75', n)
+			putMachineSetting('extruder_head_size_min_y', '25', n)
+			putMachineSetting('extruder_head_size_max_y', '55', n)
+			putMachineSetting('extruder_head_size_height', '17', n)
