@@ -141,7 +141,7 @@ class ProfileIni(object):
 		try:
 			self.order = int(self._getProfileInfo(self.ini, 'order'))
 		except:
-			self.order = 0
+			self.order = 999
 
 	def _getProfileInfo(self, ini_file, key):
 		cp = configparser.ConfigParser()
