@@ -39,12 +39,13 @@ class simpleModePanel(wx.Panel):
 					selectedMaterial = button
 					break
 
-		if selectedMaterial is None and self._print_material_options > 0:
+		if selectedMaterial is None and len(self._print_material_options) > 0:
 			selectedMaterial = self._print_material_options[0]
 
 		# Decide to show the panel or not
 		if len(self._print_material_options) < 2:
-			self.printMaterialPanel.Show(self._print_material_options[0].profile.always_visible)
+			self.printMaterialPanel.Show(len(self._print_material_options) > 1 and \
+										 self._print_material_options[0].profile.always_visible)
 
 		self.printTypePanel = wx.Panel(self)
 
@@ -112,12 +113,13 @@ class simpleModePanel(wx.Panel):
 					selectedProfile = button
 					break
 
-		if selectedProfile is None and self._print_profile_options > 0:
+		if selectedProfile is None and len(self._print_profile_options) > 0:
 			selectedProfile = self._print_profile_options[0]
 
 		# Decide if we show the profile panel or not
 		if len(self._print_profile_options) < 2:
-			self.printProfilePanel.Show(self._print_profile_options[0].profile.always_visible)
+			self.printTypePanel.Show(len(self._print_profile_options) > 0 and \
+									 self._print_profile_options[0].profile.always_visible)
 
 		if selectedProfile:
 			selectedProfile.SetValue(True)
