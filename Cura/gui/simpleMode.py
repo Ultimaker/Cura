@@ -69,8 +69,8 @@ class simpleModePanel(wx.Panel):
 		sizer.Add(self.printTypePanel, (1,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
 
-		sb = wx.StaticBox(self, label=_("Other options:"))
-		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		self.printOptionsBox = wx.StaticBox(self, label=_("Other options:"))
+		boxsizer = wx.StaticBoxSizer(self.printOptionsBox, wx.VERTICAL)
 		boxsizer.SetMinSize((100, 20))
 		sizer.Add(boxsizer, (2,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 		self.printOptionsSizer = boxsizer
@@ -157,8 +157,7 @@ class simpleModePanel(wx.Panel):
 
 		# Decide if we show the profile panel or not
 		# The always_visible doesn't make sense for options since they are checkboxes, and not radio buttons
-		if len(self._print_other_options) < 1:
-			self.printOptionsPanel.Show(False)
+		self.printOptionsBox.Show(len(self._print_other_options) > 0)
 
 		# Add profiles to the UI
 		for button in self._print_other_options:
