@@ -543,14 +543,6 @@
                             "visible": false,
                             "inherit": false
                         },
-                        "retraction_combing": {
-                            "label": "Enable Combing",
-                            "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
-                            "type": "boolean",
-                            "default": true,
-                            "visible": false,
-                            "inherit": false
-                        },
                         "retraction_count_max": {
                             "label": "Maximal Retraction Count",
                             "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
@@ -576,6 +568,33 @@
                             "default": 0.0,
                             "visible": false,
                             "inherit": false
+                        }
+                    }
+                },
+                "retraction_combing": {
+                    "label": "Enable Combing",
+                    "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false,
+                    "children": {
+                        "travel_avoid_other_parts": {
+                            "label": "Avoid Printed Parts",
+                            "description": "Avoid other parts when traveling between parts.",
+                            "type": "boolean",
+                            "default": true,
+                            "visible": false,
+                            "children": {
+                                "travel_avoid_distance": {
+                                    "label": "Avoid Distance",
+                                    "description": "The distance to stay clear of parts which are avoided during travel.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default": 1.5,
+                                    "visible": false,
+                                    "inherit": false
+                                }
+                            }
                         }
                     }
                 }
