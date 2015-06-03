@@ -71,7 +71,7 @@ class simpleModePanel(wx.Panel):
 		for button in self._print_profile_options:
 			boxsizer.Add(button)
 		printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		printTypePanel.GetSizer().Add(boxsizer, border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 		sizer.Add(printTypePanel, (0,0), flag=wx.EXPAND)
 
 		sb = wx.StaticBox(printMaterialPanel, label=_("Material:"))
@@ -79,14 +79,14 @@ class simpleModePanel(wx.Panel):
 		for button in self._print_material_options:
 			boxsizer.Add(button)
 		printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		printMaterialPanel.GetSizer().Add(boxsizer, border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
 
 		sb = wx.StaticBox(self, label=_("Other:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		for button in self._print_other_options:
 			boxsizer.Add(button)
-		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
+		sizer.Add(boxsizer, (2,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
 		for button in self._print_profile_options:
 			button.Bind(wx.EVT_RADIOBUTTON, self._update)
