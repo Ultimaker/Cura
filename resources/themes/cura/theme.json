@@ -63,6 +63,7 @@
         "button_active_hover": [34, 150, 190, 255],
         "button_text": [255, 255, 255, 255],
         "button_disabled": [245, 245, 245, 255],
+        "button_tooltip_text": [35, 35, 35, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [205, 202, 201, 255],

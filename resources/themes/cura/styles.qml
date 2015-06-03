@@ -73,7 +73,7 @@ QtObject {
                         anchors.horizontalCenter: parent.horizontalCenter;
                         text: control.text;
                         font: UM.Theme.fonts.button_tooltip;
-                        color: UM.Theme.colors.button_text;
+                        color: UM.Theme.colors.button_tooltip_text;
                     }
                 }
             }
