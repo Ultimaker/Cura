@@ -211,7 +211,7 @@ class mainWindow(wx.Frame):
 		self.scene = sceneView.SceneView(self.rightPane)
 
 		##Gui components##
-		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, self.scene.sceneUpdated)
+		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, self.simpleModeUpdated)
 		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, self.scene.sceneUpdated)
 
 		self.leftSizer = wx.BoxSizer(wx.VERTICAL)
@@ -346,6 +346,14 @@ class mainWindow(wx.Frame):
 			print "Unable to read from clipboard"
 
 
+	def simpleModeUpdated(self):
+		self.leftPane.Layout()
+		if profile.getPreference('startMode') == 'Simple':
+			# Change location of sash to width of quick mode pane
+			(width, height) = self.simpleSettingsPanel.GetSizer().GetSize()
+			self.splitter.SetSashPosition(width, True)
+		self.scene.sceneUpdated()
+
 	def updateSliceMode(self, changedMode = True):
 		isSimple = profile.getPreference('startMode') == 'Simple'
 
@@ -467,7 +475,7 @@ class mainWindow(wx.Frame):
 		self.leftSizer.Detach(self.normalSettingsPanel)
 		self.simpleSettingsPanel.Destroy()
 		self.normalSettingsPanel.Destroy()
-		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, self.scene.sceneUpdated)
+		self.simpleSettingsPanel = simpleMode.simpleModePanel(self.leftPane, self.simpleModeUpdated)
 		self.normalSettingsPanel = normalSettingsPanel(self.leftPane, self.scene.sceneUpdated)
 		self.leftSizer.Add(self.simpleSettingsPanel, 1)
 		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)

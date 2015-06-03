@@ -6,7 +6,6 @@ import os.path
 
 from Cura.util import profile
 from Cura.util import resources
-from Cura.util.simpleModeSettings import SimpleModeSettings
 
 class simpleModePanel(wx.Panel):
 	"Main user interface window for Quickprint mode"
@@ -14,94 +13,168 @@ class simpleModePanel(wx.Panel):
 		super(simpleModePanel, self).__init__(parent)
 		self._callback = callback
 
-		self._print_profile_options = []
 		self._print_material_options = []
+		self._print_profile_options = []
 		self._print_other_options = []
 
-		printTypePanel = wx.Panel(self)
-		for filename in resources.getSimpleModeProfiles():
-			cp = configparser.ConfigParser()
-			cp.read(filename)
-			base_filename = os.path.splitext(os.path.basename(filename))[0]
-			name = base_filename
-			if cp.has_option('info', 'name'):
-				name = cp.get('info', 'name')
-			button = wx.RadioButton(printTypePanel, -1, name, style=wx.RB_GROUP if len(self._print_profile_options) == 0 else 0)
-			button.base_filename = base_filename
-			button.filename = filename
-			self._print_profile_options.append(button)
-			if profile.getProfileSetting('simpleModeProfile') == base_filename:
-				button.SetValue(True)
+		materials = resources.getSimpleModeMaterials()
 
-		printMaterialPanel = wx.Panel(self)
-		for filename in resources.getSimpleModeMaterials():
-			cp = configparser.ConfigParser()
-			cp.read(filename)
-			base_filename = os.path.splitext(os.path.basename(filename))[0]
-			name = base_filename
-			if cp.has_option('info', 'name'):
-				name = cp.get('info', 'name')
-			button = wx.RadioButton(printMaterialPanel, -1, name, style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
-			button.base_filename = base_filename
-			button.filename = filename
+		# Create material buttons
+		self.printMaterialPanel = wx.Panel(self)
+		selectedMaterial = None
+		for material in materials:
+			if material.disabled:
+				continue
+			button = wx.RadioButton(self.printMaterialPanel, -1, material.name,
+									style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
+			button.profile = material
 			self._print_material_options.append(button)
-			if profile.getProfileSetting('simpleModeMaterial') == base_filename:
-				button.SetValue(True)
+			if profile.getProfileSetting('simpleModeMaterial') == material.name:
+				selectedMaterial = button
 
-		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
-			printMaterialPanel.Show(False)
+		# Decide on the default selected material
+		if selectedMaterial is None:
+			for button in self._print_material_options:
+				if button.profile.default:
+					selectedMaterial = button
+					break
 
-		for filename in resources.getSimpleModeOptions():
-			cp = configparser.ConfigParser()
-			cp.read(filename)
-			base_filename = os.path.splitext(os.path.basename(filename))[0]
-			name = base_filename
-			if cp.has_option('info', 'name'):
-				name = cp.get('info', 'name')
-			button = wx.CheckBox(self, -1, name)
-			button.base_filename = base_filename
-			button.filename = filename
-			self._print_other_options.append(button)
+		if selectedMaterial is None and self._print_material_options > 0:
+			selectedMaterial = self._print_material_options[0]
+
+		# Decide to show the panel or not
+		if len(self._print_material_options) < 2:
+			self.printMaterialPanel.Show(self._print_material_options[0].profile.always_visible)
+
+		self.printTypePanel = wx.Panel(self)
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
 
-		sb = wx.StaticBox(printTypePanel, label=_("Select a quickprint profile:"))
+		sb = wx.StaticBox(self.printMaterialPanel, label=_("Material:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		for button in self._print_profile_options:
-			boxsizer.Add(button)
-		printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
-		sizer.Add(printTypePanel, (0,0), flag=wx.EXPAND)
-
-		sb = wx.StaticBox(printMaterialPanel, label=_("Material:"))
-		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		boxsizer.SetMinSize((80, 20))
 		for button in self._print_material_options:
 			boxsizer.Add(button)
-		printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
-		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
+		self.printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
+		self.printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		sizer.Add(self.printMaterialPanel, (0,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
-		sb = wx.StaticBox(self, label=_("Other:"))
+		sb = wx.StaticBox(self.printTypePanel, label=_("Select a quickprint profile:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		boxsizer.SetMinSize((180, 20))
+		self.printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
+		self.printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		sizer.Add(self.printTypePanel, (1,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
+
+
+		sb = wx.StaticBox(self, label=_("Other options:"))
+		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		boxsizer.SetMinSize((100, 20))
+		sizer.Add(boxsizer, (2,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
+		self.printOptionsSizer = boxsizer
+
+		for button in self._print_material_options:
+			button.Bind(wx.EVT_RADIOBUTTON, self._materialSelected)
+
+		if selectedMaterial:
+			selectedMaterial.SetValue(True)
+			self._materialSelected(None)
+		self.Layout()
+
+	def _materialSelected(self, e):
+		material = None
+		for button in self._print_material_options:
+			if button.GetValue():
+				material = button.profile
+
+		# Delete profile options
+		boxsizer = self.printTypePanel.GetSizer().GetItem(0).GetSizer()
+		boxsizer.Clear(True)
+		self._print_profile_options = []
+
+		# Add new profiles
+		selectedProfile = None
+		for print_profile in material.profiles:
+			if print_profile.disabled:
+				continue
+			button = wx.RadioButton(self.printTypePanel, -1, print_profile.name,
+									style=wx.RB_GROUP if len(self._print_profile_options) == 0 else 0)
+			button.profile = print_profile
+			self._print_profile_options.append(button)
+			if profile.getProfileSetting('simpleModeProfile') == print_profile.name:
+				selectedProfile = button
+
+		# Decide on the profile to be selected by default
+		if selectedProfile is None:
+			for button in self._print_profile_options:
+				if button.profile.default:
+					selectedProfile = button
+					break
+
+		if selectedProfile is None and self._print_profile_options > 0:
+			selectedProfile = self._print_profile_options[0]
+
+		# Decide if we show the profile panel or not
+		if len(self._print_profile_options) < 2:
+			self.printProfilePanel.Show(self._print_profile_options[0].profile.always_visible)
+
+		if selectedProfile:
+			selectedProfile.SetValue(True)
+
+		# Add profiles to the UI
+		for button in self._print_profile_options:
+			boxsizer.Add(button)
+			button.Bind(wx.EVT_RADIOBUTTON, self._update)
+
+		# Save current selected options
+		selected_options = []
+		deselected_options = []
+		for button in self._print_other_options:
+			if button.GetValue():
+				selected_options.append(button.profile.name)
+			else:
+				deselected_options.append(button.profile.name)
+
+		# Delete profile options
+		boxsizer = self.printOptionsSizer
+		boxsizer.Clear(True)
+		self._print_other_options = []
+
+		# Create new options
+		for option in material.options:
+			if option.disabled:
+				continue
+			button = wx.CheckBox(self, -1, option.name)
+			button.profile = option
+			self._print_other_options.append(button)
+			# Restore selection on similarly named options
+			if option.name in selected_options or \
+			   ((not option.name in deselected_options) and option.default):
+				button.SetValue(True)
+
+		# Decide if we show the profile panel or not
+		# The always_visible doesn't make sense for options since they are checkboxes, and not radio buttons
+		if len(self._print_other_options) < 1:
+			self.printOptionsPanel.Show(False)
+
+		# Add profiles to the UI
 		for button in self._print_other_options:
 			boxsizer.Add(button)
-		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
-
-		for button in self._print_profile_options:
-			button.Bind(wx.EVT_RADIOBUTTON, self._update)
-		for button in self._print_material_options:
-			button.Bind(wx.EVT_RADIOBUTTON, self._update)
-		for button in self._print_other_options:
 			button.Bind(wx.EVT_CHECKBOX, self._update)
+		self.Layout()
+
+		# Do not call the callback on the initial UI build
+		if e is not None:
+			self._update(e)
 
 	def _update(self, e):
-		for button in self._print_profile_options:
-			if button.GetValue():
-				profile.putProfileSetting('simpleModeProfile', button.base_filename)
 		for button in self._print_material_options:
 			if button.GetValue():
-				profile.putProfileSetting('simpleModeMaterial', button.base_filename)
+				profile.putProfileSetting('simpleModeMaterial', button.profile.name)
+		for button in self._print_profile_options:
+			if button.GetValue():
+				profile.putProfileSetting('simpleModeProfile', button.profile.name)
 		self._callback()
 
 	def getSettingOverrides(self):
@@ -110,51 +183,16 @@ class simpleModePanel(wx.Panel):
 			if setting.isProfile() or setting.isAlteration():
 				settings[setting.getName()] = setting.getDefault()
 
-		profile_setting = None
-		for button in self._print_profile_options:
-			if button.GetValue():
-				profile_setting = button.base_filename
-				break
-		material_setting = None
+		# Apply materials, profile, then options
 		for button in self._print_material_options:
 			if button.GetValue():
-				material_setting = button.base_filename
-				break
-		other_settings = []
-		for button in self._print_other_options:
-			if button.GetValue():
-				other_settings.append(button.base_filename)
-
-		simple_settings = SimpleModeSettings.getSimpleSettings(profile_setting, material_setting, other_settings)
-		for setting in simple_settings.keys():
-			settings[setting] = simple_settings[setting]
-
+				settings.update(button.profile.getProfileDict())
 		for button in self._print_profile_options:
 			if button.GetValue():
-				cp = configparser.ConfigParser()
-				cp.read(button.filename)
-				for setting in profile.settingsList:
-					if setting.isProfile() or setting.isAlteration():
-						if cp.has_option('profile', setting.getName()):
-							settings[setting.getName()] = cp.get('profile', setting.getName())
-		if profile.getMachineSetting('gcode_flavor') != 'UltiGCode':
-			for button in self._print_material_options:
-				if button.GetValue():
-					cp = configparser.ConfigParser()
-					cp.read(button.filename)
-					for setting in profile.settingsList:
-						if setting.isProfile() or setting.isAlteration():
-							if cp.has_option('profile', setting.getName()):
-								settings[setting.getName()] = cp.get('profile', setting.getName())
-
+				settings.update(button.profile.getProfileDict())
 		for button in self._print_other_options:
 			if button.GetValue():
-				cp = configparser.ConfigParser()
-				cp.read(button.filename)
-				for setting in profile.settingsList:
-					if setting.isProfile() or setting.isAlteration():
-						if cp.has_option('profile', setting.getName()):
-							settings[setting.getName()] = cp.get('profile', setting.getName())
+				settings.update(button.profile.getProfileDict())
 
 		return settings
 
