@@ -30,10 +30,10 @@
         "machine_nozzle_expansion_angle": { "default": 45 }
     },
     "categories": {
-        "resolution": {
-            "label": "Quality",
+        "layer_height": {
+            "label": "Layer Height",
             "visible": true,
-            "icon": "category_quality",
+            "icon": "category_layer_height",
             "settings": {
                 "layer_height": {
                     "label": "Layer Height",
@@ -46,8 +46,8 @@
                     "always_visible": true,
                     "children": {
                         "layer_height_0": {
-                            "label": "Initial Layer Thickness",
-                            "description": "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
+                            "label": "Initial Layer Height",
+                            "description": "The layer height of the bottom layer. A thicker bottom layer makes for better bed adhesion.",
                             "unit": "mm",
                             "type": "float",
                             "default": 0.3,
@@ -56,7 +56,14 @@
                             "visible": false
                         }
                     }
-                },
+                }
+            }
+        },
+        "shell": {
+            "label": "Shell",
+            "visible": true,
+            "icon": "category_shell",
+            "settings": {
                 "shell_thickness": {
                     "label": "Shell Thickness",
                     "description": "The thickness of the outside shell in the horizontal and vertical direction. This is used in combination with the nozzle size to define the number of perimeter lines and the thickness of those perimeter lines. This is also used to define the number of solid top and bottom layers.",
@@ -266,7 +273,73 @@
                 }
             }
         },
+        "infill": {
+            "label": "Infill",
+            "visible": true,
+            "icon": "category_infill",
+            "settings": {
+                "fill_sparse_density": {
+                    "label": "Infill Density",
+                    "description": "This controls how densely filled the insides of your print will be. For a solid part use 100%, for an hollow part use 0%. A value around 20% is usually enough. This won't affect the outside of the print and only adjusts how strong the part becomes.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 20.0,
 
+                    "children": {
+                        "fill_pattern": {
+                            "label": "Infill Pattern",
+                            "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
+                            "type": "enum",
+                            "visible": false,
+                            "options": [
+                                "Grid",
+                                "Lines",
+                                "Concentric",
+                                "ZigZag"
+                            ],
+                            "default": "Grid",
+                            "inherit_function": "'Lines' if parent_value > 25 else 'Grid'"
+                        },
+                        "infill_line_distance": {
+                            "label": "Line distance",
+                            "description": "Distance between the printed infill lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 2.0,
+                            "visible": false,
+                            "inherit_function": "(infill_line_width * 100) / parent_value"
+                        }
+                    }
+                },
+                "fill_overlap": {
+                    "label": "Infill Overlap",
+                    "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 15.0,
+                    "visible": false
+                },
+                "fill_sparse_thickness": {
+                    "label": "Infill Thickness",
+                    "description": "The thickness of the sparse infill. This is rounded to a multiple of the layerheight and used to print the sparse-infill in fewer, thicker layers to save printing time.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.1,
+                    "visible": false,
+
+                    "children": {
+                        "fill_sparse_combine": {
+                            "label": "Infill Layers",
+                            "description": "Amount of layers that are combined together to form sparse infill.",
+                            "type": "int",
+                            "default": 1,
+                            "visible": false,
+                            "inherit_function": "math.floor((parent_value + 0.001) / layer_height)"
+                        }
+                    }
+                }
+            }
+        },
         "material": {
             "label": "Material",
             "visible": true,
@@ -307,95 +380,6 @@
                     "type": "float",
                     "min_value": 5.0,
                     "max_value": 300.0
-                },
-                "retraction_enable": {
-                    "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
-                    "type": "boolean",
-                    "default": true,
-
-                    "children": {
-                        "retraction_speed": {
-                            "label": "Retraction Speed",
-                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 25.0,
-                            "visible": false,
-                            "inherit": false,
-                            
-                            "children": {
-                                "retraction_retract_speed": {
-                                    "label": "Retraction Retract Speed",
-                                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                                    "unit": "mm/s",
-                                    "type": "float",
-                                    "default": 25.0,
-                                    "visible": false
-                                },
-                                "retraction_prime_speed": {
-                                    "label": "Retraction Prime Speed",
-                                    "description": "The speed at which the filament is pushed back after retraction.",
-                                    "unit": "mm/s",
-                                    "type": "float",
-                                    "default": 25.0,
-                                    "visible": false
-                                }
-                            }
-                        },
-                        "retraction_amount": {
-                            "label": "Retraction Distance",
-                            "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 4.5,
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_min_travel": {
-                            "label": "Retraction Minimum Travel",
-                            "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 4.5,
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_combing": {
-                            "label": "Enable Combing",
-                            "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
-                            "type": "boolean",
-                            "default": true,
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_count_max": {
-                            "label": "Maximal Retraction Count",
-                            "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
-                            "default": 6,
-                            "type": "int",
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_extrusion_window": {
-                            "label": "Minimal Extrusion Distance Window",
-                            "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 4.5,
-                            "visible": false,
-                            "inherit_function": "retraction_amount"
-                        },
-                        "retraction_hop": {
-                            "label": "Z Hop when Retracting",
-                            "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.0,
-                            "visible": false,
-                            "inherit": false
-                        }
-                    }
                 }
             }
         },
@@ -501,68 +485,97 @@
                 }
             }
         },
-        "infill": {
-            "label": "Infill",
+        "travel": {
+            "label": "Travel",
             "visible": true,
-            "icon": "category_infill",
+            "icon": "category_travel",
             "settings": {
-                "fill_sparse_density": {
-                    "label": "Infill Density",
-                    "description": "This controls how densely filled the insides of your print will be. For a solid part use 100%, for an hollow part use 0%. A value around 20% is usually enough. This won't affect the outside of the print and only adjusts how strong the part becomes.",
-                    "unit": "%",
-                    "type": "float",
-                    "default": 20.0,
+                "retraction_enable": {
+                    "label": "Enable Retraction",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
+                    "type": "boolean",
+                    "default": true,
 
                     "children": {
-                        "fill_pattern": {
-                            "label": "Infill Pattern",
-                            "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
-                            "type": "enum",
+                        "retraction_speed": {
+                            "label": "Retraction Speed",
+                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 25.0,
                             "visible": false,
-                            "options": [
-                                "Grid",
-                                "Lines",
-                                "Concentric",
-                                "ZigZag"
-                            ],
-                            "default": "Grid",
-                            "inherit_function": "'Lines' if parent_value > 25 else 'Grid'"
+                            "inherit": false,
+                            
+                            "children": {
+                                "retraction_retract_speed": {
+                                    "label": "Retraction Retract Speed",
+                                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "default": 25.0,
+                                    "visible": false
+                                },
+                                "retraction_prime_speed": {
+                                    "label": "Retraction Prime Speed",
+                                    "description": "The speed at which the filament is pushed back after retraction.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "default": 25.0,
+                                    "visible": false
+                                }
+                            }
                         },
-                        "infill_line_distance": {
-                            "label": "Line distance",
-                            "description": "Distance between the printed infill lines.",
+                        "retraction_amount": {
+                            "label": "Retraction Distance",
+                            "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
                             "unit": "mm",
                             "type": "float",
-                            "default": 2.0,
+                            "default": 4.5,
                             "visible": false,
-                            "inherit_function": "(infill_line_width * 100) / parent_value"
-                        }
-                    }
-                },
-                "fill_overlap": {
-                    "label": "Infill Overlap",
-                    "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
-                    "unit": "%",
-                    "type": "float",
-                    "default": 15.0,
-                    "visible": false
-                },
-                "fill_sparse_thickness": {
-                    "label": "Infill Thickness",
-                    "description": "The thickness of the sparse infill. This is rounded to a multiple of the layerheight and used to print the sparse-infill in fewer, thicker layers to save printing time.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.1,
-                    "visible": false,
-
-                    "children": {
-                        "fill_sparse_combine": {
-                            "label": "Infill Layers",
-                            "description": "Amount of layers that are combined together to form sparse infill.",
+                            "inherit": false
+                        },
+                        "retraction_min_travel": {
+                            "label": "Retraction Minimum Travel",
+                            "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 4.5,
+                            "visible": false,
+                            "inherit": false
+                        },
+                        "retraction_combing": {
+                            "label": "Enable Combing",
+                            "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
+                            "type": "boolean",
+                            "default": true,
+                            "visible": false,
+                            "inherit": false
+                        },
+                        "retraction_count_max": {
+                            "label": "Maximal Retraction Count",
+                            "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
+                            "default": 6,
                             "type": "int",
-                            "default": 1,
                             "visible": false,
-                            "inherit_function": "math.floor((parent_value + 0.001) / layer_height)"
+                            "inherit": false
+                        },
+                        "retraction_extrusion_window": {
+                            "label": "Minimal Extrusion Distance Window",
+                            "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 4.5,
+                            "visible": false,
+                            "inherit_function": "retraction_amount"
+                        },
+                        "retraction_hop": {
+                            "label": "Z Hop when Retracting",
+                            "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.0,
+                            "visible": false,
+                            "inherit": false
                         }
                     }
                 }
@@ -659,6 +672,164 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false
+                }
+            }
+        },
+        "platform_adhesion": {
+            "label": "Platform Adhesion",
+            "visible": true,
+            "icon": "category_adhesion",
+            "settings": {
+                "adhesion_type": {
+                    "label": "Type",
+                    "description": "Different options that help in preventing corners from lifting due to warping. Brim adds a single-layer-thick flat area around your object which is easy to cut off afterwards, and it is the recommended option. Raft adds a thick grid below the object and a thin interface between this and your object. (Note that enabling the brim or raft disables the skirt.)",
+                    "type": "enum",
+                    "options": [
+                        "None",
+                        "Brim",
+                        "Raft"
+                    ],
+                    "default": "None"
+                },
+                "skirt_line_count": {
+                    "label": "Skirt Line Count",
+                    "description": "The skirt is a line drawn around the first layer of the. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
+                    "type": "int",
+                    "default": 1,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "None"
+                    }
+                },
+                "skirt_gap": {
+                    "label": "Skirt Distance",
+                    "description": "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance, multiple skirt lines will extend outwards from this distance.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 3.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "None"
+                    }
+                },
+                "skirt_minimal_length": {
+                    "label": "Skirt Minimum Length",
+                    "description": "The minimum length of the skirt. If this minimum length is not reached, more skirt lines will be added to reach this minimum length. Note: If the line count is set to 0 this is ignored.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 250,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "None"
+                    }
+                },
+                "brim_line_count": {
+                    "label": "Brim Line Count",
+                    "description": "The amount of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
+                    "type": "int",
+                    "default": 10,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Brim"
+                    }
+                },
+                "raft_margin": {
+                    "label": "Raft Extra Margin",
+                    "description": "If the raft is enabled, this is the extra raft area around the object which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 5.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_line_spacing": {
+                    "label": "Raft Line Spacing",
+                    "description": "The distance between the raft lines. The first 2 layers of the raft have this amount of spacing between the raft lines.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 5.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_thickness": {
+                    "label": "Raft Base Thickness",
+                    "description": "Layer thickness of the first raft layer. This should be a thick layer which sticks firmly to the printer bed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_linewidth": {
+                    "label": "Raft Base Line Width",
+                    "description": "Width of the lines in the first raft layer. These should be thick lines to assist in bed adhesion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_speed": {
+                    "label": "Raft Base Print Speed",
+                    "description": "The speed at which the first raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 15.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_interface_thickness": {
+                    "label": "Raft Interface Thickness",
+                    "description": "Thickness of the 2nd raft layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.27,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_interface_linewidth": {
+                    "label": "Raft Interface Line Width",
+                    "description": "Width of the 2nd raft layer lines. These lines should be thinner than the first layer, but strong enough to attach the object to.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.4,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_airgap": {
+                    "label": "Raft Air-gap",
+                    "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.22,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_surface_layers": {
+                    "label": "Raft Surface Layers",
+                    "description": "The number of surface layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers usually works fine.",
+                    "type": "int",
+                    "default": 2,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
                 }
             }
         },
@@ -870,168 +1041,45 @@
                 }
             }
         },
-        "platform_adhesion": {
-            "label": "Platform Adhesion",
+        "meshfix": {
+            "label": "Fixes",
             "visible": true,
-            "icon": "category_adhesion",
+            "icon": "category_fixes",
             "settings": {
-                "adhesion_type": {
-                    "label": "Type",
-                    "description": "Different options that help in preventing corners from lifting due to warping. Brim adds a single-layer-thick flat area around your object which is easy to cut off afterwards, and it is the recommended option. Raft adds a thick grid below the object and a thin interface between this and your object. (Note that enabling the brim or raft disables the skirt.)",
-                    "type": "enum",
-                    "options": [
-                        "None",
-                        "Brim",
-                        "Raft"
-                    ],
-                    "default": "None"
+                "meshfix_union_all": {
+                    "label": "Union Overlapping Volumes",
+                    "description": "Ignore the internal geometry arising from overlapping volumes and print the volumes as one. This may cause internal cavaties to disappear.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false
                 },
-                "skirt_line_count": {
-                    "label": "Skirt Line Count",
-                    "description": "The skirt is a line drawn around the first layer of the. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
-                    "type": "int",
-                    "default": 1,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "None"
-                    }
+                "meshfix_union_all_remove_holes": {
+                    "label": "Remove All Holes",
+                    "description": "Remove the holes in each layer and keep only the outside shape. This will ignore any invisible internal geometry. However, it also ignores layer holes which can be viewed from above or below.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
                 },
-                "skirt_gap": {
-                    "label": "Skirt Distance",
-                    "description": "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance, multiple skirt lines will extend outwards from this distance.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 3.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "None"
-                    }
+                "meshfix_extensive_stitching": {
+                    "label": "Extensive Stitching",
+                    "description": "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
                 },
-                "skirt_minimal_length": {
-                    "label": "Skirt Minimum Length",
-                    "description": "The minimum length of the skirt. If this minimum length is not reached, more skirt lines will be added to reach this minimum length. Note: If the line count is set to 0 this is ignored.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 250,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "None"
-                    }
-                },
-                "brim_line_count": {
-                    "label": "Brim Line Count",
-                    "description": "The amount of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
-                    "type": "int",
-                    "default": 10,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Brim"
-                    }
-                },
-                "raft_margin": {
-                    "label": "Raft Extra Margin",
-                    "description": "If the raft is enabled, this is the extra raft area around the object which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 5.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_line_spacing": {
-                    "label": "Raft Line Spacing",
-                    "description": "The distance between the raft lines. The first 2 layers of the raft have this amount of spacing between the raft lines.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 5.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_thickness": {
-                    "label": "Raft Base Thickness",
-                    "description": "Layer thickness of the first raft layer. This should be a thick layer which sticks firmly to the printer bed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.3,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_linewidth": {
-                    "label": "Raft Base Line Width",
-                    "description": "Width of the lines in the first raft layer. These should be thick lines to assist in bed adhesion.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_speed": {
-                    "label": "Raft Base Print Speed",
-                    "description": "The speed at which the first raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 15.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_interface_thickness": {
-                    "label": "Raft Interface Thickness",
-                    "description": "Thickness of the 2nd raft layer.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.27,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_interface_linewidth": {
-                    "label": "Raft Interface Line Width",
-                    "description": "Width of the 2nd raft layer lines. These lines should be thinner than the first layer, but strong enough to attach the object to.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.4,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_airgap": {
-                    "label": "Raft Air-gap",
-                    "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.22,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_surface_layers": {
-                    "label": "Raft Surface Layers",
-                    "description": "The number of surface layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers usually works fine.",
-                    "type": "int",
-                    "default": 2,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                "meshfix_keep_open_polygons": {
+                    "label": "Keep Disconnected Faces",
+                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when all else doesn produce proper GCode.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
                 }
             }
         },
         "blackmagic": {
-            "label": "Fixes",
+            "label": "Special Modes",
             "visible": true,
-            "icon": "category_fixes",
+            "icon": "category_blackmagic",
             "settings": {
                 "magic_spiralize": {
                     "label": "Spiralize the Outer Contour",
