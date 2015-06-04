@@ -248,7 +248,10 @@ class PrinterConnection(SignalEmitter):
 
         if self._serial is not None:
             self.setIsConnected(False)
-            self._listen_thread.join()
+            try:
+                self._listen_thread.join()
+            except:
+                pass
             self._serial.close()
             
         self._serial = None
