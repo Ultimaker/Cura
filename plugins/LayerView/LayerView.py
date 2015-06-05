@@ -8,6 +8,8 @@ from UM.Resources import Resources
 from UM.Event import Event, KeyEvent
 from UM.Signal import Signal
 from . import LayerViewProxy
+from UM.Scene.Selection import Selection
+from UM.Math.Color import Color
 
 ## View used to display g-code paths.
 class LayerView(View):
@@ -34,17 +36,20 @@ class LayerView(View):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
         renderer.setRenderSelection(False)
-        
-        ## Recalculate num max layers
-        #self.calculateMaxLayers()
 
         if not self._material:
             self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "vertexcolor.frag"))
             self._material.setUniformValue("u_color", [1.0, 0.0, 0.0, 1.0])
 
+            self._selection_material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
+            self._selection_material.setUniformValue("u_color", Color(35, 35, 35, 128))
+
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
+                    if Selection.isSelected(node):
+                        renderer.queueNode(node, material = self._selection_material, transparent = True)
+
                     try:
                         layer_data = node.getMeshData().layerData
                     except AttributeError:

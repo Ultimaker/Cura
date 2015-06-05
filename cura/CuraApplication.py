@@ -162,6 +162,7 @@ class CuraApplication(QtApplication):
 
             for file in self.getCommandLineOption("file", []):
                 job = ReadMeshJob(os.path.abspath(file))
+                job.finished.connect(self._onFileLoaded)
                 job.start()
 
             self.exec_()
@@ -447,3 +448,15 @@ class CuraApplication(QtApplication):
     def _onMessageActionTriggered(self, message, action):
         if action == "eject":
             self.getStorageDevice("LocalFileStorage").ejectRemovableDrive(message._sdcard)
+
+    def _onFileLoaded(self, job):
+        mesh = job.getResult()
+        if mesh != None:
+            node = SceneNode()
+
+            node.setSelectable(True)
+            node.setMeshData(mesh)
+            node.setName(os.path.basename(job.getFileName()))
+
+            op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
+            op.push()

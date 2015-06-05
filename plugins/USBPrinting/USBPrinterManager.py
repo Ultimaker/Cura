@@ -40,7 +40,8 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         self._error_message = "" 
         
         ## Add menu item to top menu of the application.
-        self.addMenuItem(i18n_catalog.i18n("Update Firmware"), self.updateAllFirmware)
+        self.setMenuName("Firmware")
+        self.addMenuItem(i18n_catalog.i18n("Update"), self.updateAllFirmware)
     
     pyqtError = pyqtSignal(str, arguments = ["amount"])
     processingProgress = pyqtSignal(float, arguments = ["amount"])
