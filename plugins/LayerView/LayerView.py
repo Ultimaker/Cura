@@ -39,6 +39,8 @@ class LayerView(View):
                         element_counts = layer_data.getElementCounts()
                         for layer, counts in element_counts.items():
                             end += sum(counts)
+                            ## Hack to ensure the end is correct. Not quite sure what causes this
+                            end += 2 * len(counts)
 
                             if layer >= end_layer:
                                 break
