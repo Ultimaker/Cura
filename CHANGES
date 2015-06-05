@@ -21,6 +21,12 @@ Changes since 15.05.91
 * Fixed: Text fields will trigger a slice on text change, not only after focus
   change/enter press.
 * Fixed: Rotate Tool snaps to incorrect value.
+* Fixed: Object Collision would only moved objects to the right.
+* Fixed: Object Collision would move the selected object when it should not.
+* Fixed: Camera panning now works correctly instead of doing nothing.
+* Fixed: Camera would flip around center point at maximum rotation.
+* Fixed: Build platform grid blocked view from below objects.
+* Fixed: Viewport on MacOSX with high-DPI screens was only taking 1/4th of the window
 
 Changes since 15.05.90
 ----------------------

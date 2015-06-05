@@ -11,6 +11,7 @@ from UM.Math.Float import Float
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
+from UM.Scene.Selection import Selection
 
 from . import PlatformPhysicsOperation
 from . import ConvexHullJob
@@ -60,6 +61,8 @@ class PlatformPhysics:
                     job = ConvexHullJob.ConvexHullJob(node)
                     job.start()
                     node._convex_hull_job = job
+            elif Selection.isSelected(node):
+                pass
             else:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
@@ -80,8 +83,8 @@ class PlatformPhysics:
                     if overlap is None:
                         continue
 
-                    move_vector.setX(-overlap[0])
-                    move_vector.setZ(-overlap[1])
+                    move_vector.setX(overlap[0] * 1.1)
+                    move_vector.setZ(overlap[1] * 1.1)
 
             if move_vector != Vector():
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)

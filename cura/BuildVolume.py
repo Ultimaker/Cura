@@ -62,7 +62,7 @@ class BuildVolume(SceneNode):
             self._grid_material.setUniformValue("u_gridColor1", Color(205, 202, 201, 255))
 
         renderer.queueNode(self, material = self._material, mode = Renderer.RenderLines)
-        renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material)
+        renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material, force_single_sided = True)
         if self._disallowed_area_mesh:
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, material = self._material)
         return True
@@ -99,10 +99,10 @@ class BuildVolume(SceneNode):
 
         mb = MeshBuilder()
         mb.addQuad(
-            Vector(minW, minH, maxD),
-            Vector(maxW, minH, maxD),
+            Vector(minW, minH, minD),
             Vector(maxW, minH, minD),
-            Vector(minW, minH, minD)
+            Vector(maxW, minH, maxD),
+            Vector(minW, minH, maxD)
         )
         self._grid_mesh = mb.getData()
         for n in range(0, 6):
