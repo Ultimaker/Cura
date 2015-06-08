@@ -24,15 +24,20 @@ ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
 
 
-file="./Cura/version"
+##Version
+version_file="./Cura/version"
 while IFS= read -r line
 do
     export BUILD_NAME="$line"
-done <"$file"
+done <"$version_file"
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Revision
-export REVISION=1.01
+revision_file="./Cura/revision"
+while IFS= read -r line
+do
+    export REVISION="$line"
+done <"$revision_file"
 
 ##Git commit
 GIT_HASH=$(git rev-parse --short=4 HEAD)
