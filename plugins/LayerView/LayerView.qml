@@ -20,10 +20,11 @@ Item
         anchors.right : parent.right
         orientation: Qt.Vertical
         minimumValue: 0;
-        maximumValue: 100;
+        maximumValue: UM.LayerView.numLayers;
+        stepSize: 1
 
-        value: 100;
-        onValueChanged: UM.ActiveView.triggerAction("setLayer", value)
+        value: UM.LayerView.currentLayer
+        onValueChanged: UM.LayerView.setCurrentLayer(value)
 
         style: UM.Theme.styles.slider;
     }

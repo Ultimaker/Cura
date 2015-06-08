@@ -5,8 +5,11 @@ from UM.View.View import View
 from UM.View.Renderer import Renderer
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
+from UM.Event import Event, KeyEvent
+from UM.Signal import Signal
 from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
+from . import LayerViewProxy
 
 ## View used to display g-code paths.
 class LayerView(View):
@@ -15,6 +18,19 @@ class LayerView(View):
         self._material = None
         self._num_layers = 0
         self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
+        self._proxy = LayerViewProxy.LayerViewProxy()
+        self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
+        self._max_layers = 10
+        self._current_layer_num = 10
+
+    def getCurrentLayer(self):
+        return self._current_layer_num
+    
+    def _onSceneChanged(self, node):
+        self.calculateMaxLayers()
+    
+    def getMaxLayers(self):
+        return self._max_layers
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -39,24 +55,69 @@ class LayerView(View):
                     except AttributeError:
                         continue
 
-                    if self._layer_percentage < 100:
-                        start = 0
-                        end_layer = round(len(layer_data.getLayers()) * (self._layer_percentage / 100))
-                        end = 0
+                    start = 0
+                    end = 0
 
-                        element_counts = layer_data.getElementCounts()
-                        for layer, counts in element_counts.items():
-                            end += sum(counts)
+                    element_counts = layer_data.getElementCounts()
+                    for layer, counts in element_counts.items():
+                        end += sum(counts)
+                        ## Hack to ensure the end is correct. Not quite sure what causes this
+                        end += 2 * len(counts)
 
-                            if layer >= end_layer:
-                                break
+                        if layer >= self._current_layer_num:
+                            break
 
-                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, start = start, end = end, overlay = True)
-                    else:
-                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, overlay = True)
-    
+                    renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, start = start, end = end)
+
     def setLayer(self, value):
-        self._layer_percentage = value
-        
+        if self._current_layer_num != value:
+            self._current_layer_num = value
+            if self._current_layer_num < 0:
+                self._current_layer_num = 0
+            if self._current_layer_num > self._max_layers:
+                self._current_layer_num = self._max_layers
+            self.currentLayerNumChanged.emit()
+    
+    currentLayerNumChanged = Signal()
+    
+    def calculateMaxLayers(self):
+        scene = self.getController().getScene()
+        renderer = self.getRenderer()
+        if renderer and self._material:
+            renderer.setRenderSelection(False)
+            self._old_max_layers = self._max_layers
+            ## Recalculate num max layers
+            new_max_layers = 0
+            for node in DepthFirstIterator(scene.getRoot()):
+                if not node.render(renderer):
+                    if node.getMeshData() and node.isVisible():
+                        try:
+                            layer_data = node.getMeshData().layerData
+                        except AttributeError:
+                            continue
+                        if new_max_layers < len(layer_data.getLayers()):
+                            new_max_layers = len(layer_data.getLayers())
+
+            if new_max_layers > 0 and new_max_layers != self._old_max_layers:
+                self._max_layers = new_max_layers
+                self.maxLayersChanged.emit()
+
+                # This makes sure we update the current layer
+                self.setLayer(int(self._max_layers * (self._current_layer_num / self._old_max_layers)))
+    
+    maxLayersChanged = Signal()
+    
+    ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
+    #   as this caused some issues. 
+    def getProxy(self, engine, script_engine):
+        return self._proxy
+    
     def endRendering(self):
         pass
+    
+    def event(self, event):
+        if event.type == Event.KeyPressEvent:
+            if event.key == KeyEvent.UpKey:
+                self.setLayer(self._current_layer_num + 1)
+            if event.key == KeyEvent.DownKey:
+                self.setLayer(self._current_layer_num - 1)

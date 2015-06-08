@@ -246,4 +246,32 @@ QtObject {
             }
         }
     }
+
+    property Component text_field: Component {
+        TextFieldStyle {
+            textColor: UM.Theme.colors.setting_control_text;
+            font: UM.Theme.fonts.default;
+
+            background: Rectangle
+            {
+                implicitHeight: control.height;
+                implicitWidth: control.width;
+
+                border.width: 1;
+                border.color: UM.Theme.colors.setting_control_border;
+
+                color: UM.Theme.colors.setting_validation_ok;
+
+                Label {
+                    anchors.right: parent.right;
+                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width;
+                    anchors.verticalCenter: parent.verticalCenter;
+
+                    text: control.unit ? control.unit : ""
+                    color: UM.Theme.colors.setting_unit;
+                    font: UM.Theme.fonts.default;
+                }
+            }
+        }
+    }
 }
