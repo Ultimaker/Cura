@@ -1,6 +1,6 @@
 Source: cura
 Package: cura
-Version: [BUILD_NAME]
+Version: [BUILD_VERSION]
 Maintainer: Aleph Objects, Inc. <info@alephobjects.com>
 Section: misc
 Priority: optional

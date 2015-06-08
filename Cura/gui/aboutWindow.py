@@ -2,6 +2,7 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import wx
 import platform
+from Cura.util import version
 
 class aboutWindow(wx.Frame):
 	def __init__(self, parent):
@@ -21,7 +22,8 @@ class aboutWindow(wx.Frame):
 		title.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
 		s.Add(title, flag=wx.ALIGN_CENTRE|wx.EXPAND|wx.BOTTOM, border=5)
 
-		s.Add(wx.StaticText(p, -1, 'Version 15.02.1-1.01'))
+ 		version_num = version.getVersion()
+ 		s.Add(wx.StaticText(p, -1, 'Version {}'.format(version_num)))
 		s.Add(wx.StaticText(p, -1, 'End solution for Open Source Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by David Braam and Ultimaker.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura LulzBot Edition has been modified and maintained by Aleph Objects, Inc.'))

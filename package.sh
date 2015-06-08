@@ -28,21 +28,14 @@ ARCHIVE_FOR_DISTRIBUTION=1
 version_file="./Cura/version"
 while IFS= read -r line
 do
-    export BUILD_NAME="$line"
+    export BUILD_VERSION="$line"
 done <"$version_file"
-TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
-
-##Revision
-revision_file="./Cura/revision"
-while IFS= read -r line
-do
-    export REVISION="$line"
-done <"$revision_file"
+TARGET_DIR=Cura-${BUILD_VERSION}-${BUILD_TARGET}
 
 ##Git commit
 GIT_HASH=$(git rev-parse --short=4 HEAD)
 
-export FULL_VERSION=${BUILD_NAME}-${REVISION}-${GIT_HASH}
+export FULL_VERSION=${BUILD_VERSION}-${GIT_HASH}
 
 ##Which versions of external programs to use
 WIN_PORTABLE_PY_VERSION=2.7.2.1
@@ -171,37 +164,37 @@ gitClone https://github.com/Ultimaker/Marlin.git _UltimakerMarlin
 cd _UltimakerMarlin/Marlin
 git checkout Marlin_v1
 git pull
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_single\"' BAUDRATE=250000 TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_single\"' BAUDRATE=115200 TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_dual\"' BAUDRATE=250000 TEMP_SENSOR_1=-1 EXTRUDERS=2"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_dual\"' BAUDRATE=115200 TEMP_SENSOR_1=-1 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"250000_single\"' BAUDRATE=250000 TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"115200_single\"' BAUDRATE=115200 TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"250000_dual\"' BAUDRATE=250000 TEMP_SENSOR_1=-1 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"115200_dual\"' BAUDRATE=115200 TEMP_SENSOR_1=-1 EXTRUDERS=2"
 git checkout Marlin_UM_HeatedBedUpgrade
 git pull
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_single_HB\"' BAUDRATE=250000 TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_single_HB\"' BAUDRATE=115200 TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_dual_HB\"' BAUDRATE=250000 TEMP_SENSOR_1=-1 EXTRUDERS=2"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_dual_HB\"' BAUDRATE=115200 TEMP_SENSOR_1=-1 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"250000_single_HB\"' BAUDRATE=250000 TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"115200_single_HB\"' BAUDRATE=115200 TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"250000_dual_HB\"' BAUDRATE=250000 TEMP_SENSOR_1=-1 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=7 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_HBK_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker:_${BUILD_VERSION}\"' 'VERSION_PROFILE=\"115200_dual_HB\"' BAUDRATE=115200 TEMP_SENSOR_1=-1 EXTRUDERS=2"
 git checkout Marlin_UM_Original_Plus
 git pull
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_250000 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_single\"' BAUDRATE=250000 TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_115200 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_single\"' BAUDRATE=115200 TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_NAME}\"' 'VERSION_PROFILE=\"250000_dual\"' BAUDRATE=250000 TEMP_SENSOR_1=20 EXTRUDERS=2"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_NAME}\"' 'VERSION_PROFILE=\"115200_dual\"' BAUDRATE=115200 TEMP_SENSOR_1=20 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_250000 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_VERSION}\"' 'VERSION_PROFILE=\"250000_single\"' BAUDRATE=250000 TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_115200 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_VERSION}\"' 'VERSION_PROFILE=\"115200_single\"' BAUDRATE=115200 TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_250000 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_VERSION}\"' 'VERSION_PROFILE=\"250000_dual\"' BAUDRATE=250000 TEMP_SENSOR_1=20 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_UltimakerMarlin_Plus_Dual_115200 DEFINES="'VERSION_BASE=\"Ultimaker+:${BUILD_VERSION}\"' 'VERSION_PROFILE=\"115200_dual\"' BAUDRATE=115200 TEMP_SENSOR_1=20 EXTRUDERS=2"
 cd -
 
 gitClone https://github.com/Ultimaker/Ultimaker2Marlin.git _Ultimaker2Marlin
 cd _Ultimaker2Marlin/Marlin
 git checkout master
 git pull
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2 DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_NAME}\"' TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2Dual DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_NAME}\"' TEMP_SENSOR_1=20 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2 DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_VERSION}\"' TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2Dual DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_VERSION}\"' TEMP_SENSOR_1=20 EXTRUDERS=2"
 git checkout UM2go
 git pull
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2go DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_NAME}go\"' TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2go DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_VERSION}go\"' TEMP_SENSOR_1=0 EXTRUDERS=1"
 git checkout UM2extended
 git pull
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2extended DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_NAME}ex\"' TEMP_SENSOR_1=0 EXTRUDERS=1"
-$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2extendedDual DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_NAME}ex\"' TEMP_SENSOR_1=20 EXTRUDERS=2"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2extended DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_VERSION}ex\"' TEMP_SENSOR_1=0 EXTRUDERS=1"
+$MAKE -j 3 HARDWARE_MOTHERBOARD=72 ARDUINO_INSTALL_DIR=${ARDUINO_PATH} ARDUINO_VERSION=${ARDUINO_VERSION} BUILD_DIR=_Ultimaker2extendedDual DEFINES="'STRING_CONFIG_H_AUTHOR=\"Version:_${BUILD_VERSION}ex\"' TEMP_SENSOR_1=20 EXTRUDERS=2"
 cd -
 
 cp _UltimakerMarlin/Marlin/_UltimakerMarlin_250000/Marlin.hex resources/firmware/MarlinUltimaker-250000.hex
@@ -227,7 +220,7 @@ cp _Ultimaker2Marlin/Marlin/_Ultimaker2extendedDual/Marlin.hex resources/firmwar
 #############################
 
 if [ "$BUILD_TARGET" = "darwin" ]; then
-    TARGET_DIR=Cura-${BUILD_NAME}-MacOS
+    TARGET_DIR=Cura-${BUILD_VERSION}-MacOS
 
 	rm -rf scripts/darwin/build
 	rm -rf scripts/darwin/dist
@@ -240,11 +233,11 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	fi
 
     #Add cura version file (should read the version from the bundle with pyobjc, but will figure that out later)
-    echo $BUILD_NAME > scripts/darwin/dist/Cura.app/Contents/Resources/version
+    echo $BUILD_VERSION > scripts/darwin/dist/Cura.app/Contents/Resources/version
 	rm -rf CuraEngine
 	gitClone ${CURA_ENGINE_REPO} CuraEngine
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_VERSION}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	cp CuraEngine/build/CuraEngine scripts/darwin/dist/Cura.app/Contents/Resources/CuraEngine
 
@@ -280,7 +273,7 @@ if [ "$BUILD_TARGET" = "freebsd" ]; then
 	gitClone https://github.com/GreatFruitOmsk/Power Power
 	gitClone ${CURA_ENGINE_REPO} CuraEngine
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	gmake -j4 -C CuraEngine VERSION=${BUILD_NAME}
+	gmake -j4 -C CuraEngine VERSION=${BUILD_VERSION}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/freebsd/dist
 	mkdir -p scripts/freebsd/dist/share/cura
@@ -294,7 +287,7 @@ if [ "$BUILD_TARGET" = "freebsd" ]; then
 	cp scripts/freebsd/cura.desktop scripts/freebsd/dist/share/applications/
 	cp scripts/freebsd/cura scripts/freebsd/dist/bin/
 	cp -a Power/power scripts/freebsd/dist/share/cura/
-	echo $BUILD_NAME > scripts/freebsd/dist/share/cura/Cura/version
+	echo $BUILD_VERSION > scripts/freebsd/dist/share/cura/Cura/version
 	#Create file list (pkg-plist)
 	cd scripts/freebsd/dist
 	find * -type f > ../pkg-plist
@@ -326,7 +319,7 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	gitClone https://github.com/GreatFruitOmsk/Power Power
 	gitClone ${CURA_ENGINE_REPO} CuraEngine
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_VERSION}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
@@ -336,8 +329,8 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	cp -a CuraEngine/build/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
-	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	echo $BUILD_VERSION > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	cat scripts/linux/debian_control | sed "s/\[BUILD_VERSION\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -356,7 +349,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	gitClone https://github.com/GreatFruitOmsk/Power Power
 	gitClone ${CURA_ENGINE_REPO} CuraEngine
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_VERSION}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
@@ -366,8 +359,8 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	cp -a CuraEngine/build/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
-	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	echo $BUILD_VERSION > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	cat scripts/linux/debian_control | sed "s/\[BUILD_VERSION\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
@@ -386,7 +379,7 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	gitClone https://github.com/GreatFruitOmsk/Power Power
 	gitClone ${CURA_ENGINE_REPO} CuraEngine
     if [ $? != 0 ]; then echo "Failed to clone CuraEngine"; exit 1; fi
-	$MAKE -C CuraEngine VERSION=${BUILD_NAME}
+	$MAKE -C CuraEngine VERSION=${BUILD_VERSION}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 	rm -rf scripts/linux/${BUILD_TARGET}/usr/share/cura
 	mkdir -p scripts/linux/${BUILD_TARGET}/usr/share/cura
@@ -396,13 +389,13 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	cp -a CuraEngine/build/CuraEngine scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp scripts/linux/cura.py scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
-	echo $BUILD_NAME > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
-	cat scripts/linux/debian_control | sed "s/\[BUILD_NAME\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
+	echo $BUILD_VERSION > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
+	cat scripts/linux/debian_control | sed "s/\[BUILD_VERSION\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
 	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_NAME}-${BUILD_TARGET}.deb
+	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_VERSION}-${BUILD_TARGET}.deb
 	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	exit
 fi
@@ -477,7 +470,7 @@ function fedoraCreateSRPM() {
 
 function buildFedora() {
   local _nameForRpm="Cura"
-  local _versionForRpm="$(sanitiseVersion "$BUILD_NAME")"
+  local _versionForRpm="$(sanitiseVersion "$BUILD_VERSION")"
 
   #
   # SRPM
@@ -623,7 +616,7 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf ${TARGET_DIR}/python/Lib/OpenGL/DLLS/gle*
 
     #Build the C++ engine
-	$MAKE -C CuraEngine VERSION=${BUILD_NAME} OS=Windows_NT CXX=${CXX}
+	$MAKE -C CuraEngine VERSION=${BUILD_VERSION} OS=Windows_NT CXX=${CXX}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 fi
 
@@ -633,7 +626,7 @@ cp -a Cura/* ${TARGET_DIR}/Cura
 cp -a resources/* ${TARGET_DIR}/resources
 cp -a plugins/* ${TARGET_DIR}/plugins
 #Add cura version file
-echo $BUILD_NAME > ${TARGET_DIR}/Cura/version
+echo $BUILD_VERSION > ${TARGET_DIR}/Cura/version
 
 #add script files
 if [ $BUILD_TARGET = "win32" ]; then
@@ -656,16 +649,16 @@ if (( ${ARCHIVE_FOR_DISTRIBUTION} )); then
 			#if we have wine, try to run our nsis script.
 			rm -rf scripts/win32/dist
 			ln -sf `pwd`/${TARGET_DIR} scripts/win32/dist
-			wine ~/.wine/drive_c/Program\ Files\ \(x86\)/NSIS/makensis.exe /DVERSION=${BUILD_NAME} scripts/win32/installer.nsi
+			wine ~/.wine/drive_c/Program\ Files\ \(x86\)/NSIS/makensis.exe /DVERSION=${BUILD_VERSION} scripts/win32/installer.nsi
             if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
 			mv scripts/win32/Cura_${FULL_VERSION}.exe ./
 		fi
 		if [ -f '/c/Program Files (x86)/NSIS/makensis.exe' ]; then
 			rm -rf scripts/win32/dist
 			mv "`pwd`/${TARGET_DIR}" scripts/win32/dist
-			'/c/Program Files (x86)/NSIS/makensis.exe' -DVERSION=${BUILD_NAME} 'scripts/win32/installer.nsi' >> log.txt
+			'/c/Program Files (x86)/NSIS/makensis.exe' -DVERSION=${BUILD_VERSION} 'scripts/win32/installer.nsi' >> log.txt
             if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
-			mv scripts/win32/Cura_${BUILD_NAME}.exe ./
+			mv scripts/win32/Cura_${BUILD_VERSION}.exe ./
 		fi
 	else
 		echo "Archiving to ${TARGET_DIR}.tar.gz"
