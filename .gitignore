@@ -34,3 +34,5 @@ output.txt
 *.bak
 CuraEngine
 Power
+power
+_*
