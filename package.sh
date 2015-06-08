@@ -23,7 +23,12 @@ BUILD_TARGET=${1:-none}
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
 
-export BUILD_NAME=15.02.1
+
+file="./Cura/version"
+while IFS= read -r line
+do
+    export BUILD_NAME="$line"
+done <"$file"
 TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 ##Revision
