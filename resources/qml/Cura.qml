@@ -25,11 +25,25 @@ UM.MainWindow {
             window: base
 
             Menu {
+                id: fileMenu
                 //: File menu
                 title: qsTr("&File");
 
                 MenuItem { action: actions.open; }
                 MenuItem { action: actions.save; }
+
+                MenuSeparator { }
+
+                Instantiator {
+                    model: Printer.recentFiles
+                    MenuItem {
+                        property url filePath: modelData;
+                        text: (index + 1) + ". " + modelData.slice(modelData.lastIndexOf("/") + 1);
+                        onTriggered: UM.MeshFileHandler.readLocalFile(filePath);
+                    }
+                    onObjectAdded: fileMenu.insertItem(index, object)
+                    onObjectRemoved: fileMenu.removeItem(object)
+                }
 
                 MenuSeparator { }
 
