@@ -307,7 +307,7 @@
                             "type": "float",
                             "default": 2.0,
                             "visible": false,
-                            "inherit_function": "(infill_line_width * 100) / parent_value"
+                            "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
                         }
                     }
                 },
