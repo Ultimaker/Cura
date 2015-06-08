@@ -18,10 +18,10 @@ class LayerView(View):
         self._material = None
         self._num_layers = 0
         self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
-        self._current_layer_num = 0
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
         self._max_layers = 10
+        self._current_layer_num = 10
 
     def getCurrentLayer(self):
         return self._current_layer_num
@@ -87,7 +87,7 @@ class LayerView(View):
             renderer.setRenderSelection(False)
             self._old_max_layers = self._max_layers
             ## Recalculate num max layers
-            self._max_layers = 0
+            new_max_layers = 0
             for node in DepthFirstIterator(scene.getRoot()):
                 if not node.render(renderer):
                     if node.getMeshData() and node.isVisible():
@@ -95,11 +95,15 @@ class LayerView(View):
                             layer_data = node.getMeshData().layerData
                         except AttributeError:
                             continue
-                        if self._max_layers < len(layer_data.getLayers()):
-                            self._max_layers = len(layer_data.getLayers())
-            
-            if self._max_layers != self._old_max_layers:
+                        if new_max_layers < len(layer_data.getLayers()):
+                            new_max_layers = len(layer_data.getLayers())
+
+            if new_max_layers > 0 and new_max_layers != self._old_max_layers:
+                self._max_layers = new_max_layers
                 self.maxLayersChanged.emit()
+
+                # This makes sure we update the current layer
+                self.setLayer(int(self._max_layers * (self._current_layer_num / self._old_max_layers)))
     
     maxLayersChanged = Signal()
     

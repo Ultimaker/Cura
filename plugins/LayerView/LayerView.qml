@@ -21,6 +21,7 @@ Item
         orientation: Qt.Vertical
         minimumValue: 0;
         maximumValue: UM.LayerView.numLayers;
+        stepSize: 1
 
         value: UM.LayerView.currentLayer
         onValueChanged: UM.LayerView.setCurrentLayer(value)
