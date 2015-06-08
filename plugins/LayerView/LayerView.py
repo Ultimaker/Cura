@@ -5,6 +5,8 @@ from UM.View.View import View
 from UM.View.Renderer import Renderer
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
+from UM.Scene.Selection import Selection
+from UM.Math.Color import Color
 
 ## View used to display g-code paths.
 class LayerView(View):
@@ -23,9 +25,15 @@ class LayerView(View):
             self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "vertexcolor.frag"))
             self._material.setUniformValue("u_color", [1.0, 0.0, 0.0, 1.0])
 
+            self._selection_material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
+            self._selection_material.setUniformValue("u_color", Color(35, 35, 35, 128))
+
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
+                    if Selection.isSelected(node):
+                        renderer.queueNode(node, material = self._selection_material, transparent = True)
+
                     try:
                         layer_data = node.getMeshData().layerData
                     except AttributeError:
@@ -43,9 +51,9 @@ class LayerView(View):
                             if layer >= end_layer:
                                 break
 
-                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, start = start, end = end)
+                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, start = start, end = end, overlay = True)
                     else:
-                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines)
+                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, overlay = True)
     
     def setLayer(self, value):
         self._layer_percentage = value
