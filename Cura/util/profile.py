@@ -737,11 +737,16 @@ def loadProfile(filename, allMachines = False):
 			section = 'profile'
 			if set.isAlteration():
 				section = 'alterations'
-			if profileParser.has_option(section, set.getName()):
-				set.setValue(unicode(profileParser.get(section, set.getName()), 'utf-8', 'replace'))
-	#Upgrade setting from older ini file
-	if getProfileSetting('retraction_combing') == '1':
-		putProfileSetting('retraction_combing', 'All')
+			setting_name = set.getName()
+			if profileParser.has_option(section, setting_name):
+				try:
+					setting = profileParser.get(section, setting_name)
+					if setting == "Invalid Value":
+						raise Exception
+					set.setValue(unicode(setting, 'utf-8', 'replace'))
+					pass
+				except:
+					set.setValue(set.getDefault())
 
 def saveProfile(filename, allMachines = False):
 	"""
