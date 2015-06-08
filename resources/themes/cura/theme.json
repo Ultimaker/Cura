@@ -110,7 +110,9 @@
         "save_button_text": [35, 35, 35, 255],
 
         "message": [205, 202, 201, 255],
-        "message_text": [35, 35, 35, 255]
+        "message_text": [35, 35, 35, 255],
+
+        "tool_panel_background": [255, 255, 255, 255]
     },
 
     "sizes": {
