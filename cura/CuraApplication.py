@@ -73,6 +73,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/active_machine", "")
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
+        Preferences.getInstance().addPreference("cura/categories_expanded", "")
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
@@ -321,6 +322,20 @@ class CuraApplication(QtApplication):
     @pyqtProperty("QStringList", notify = recentFilesChanged)
     def recentFiles(self):
         return self._recent_files
+
+    @pyqtSlot("QStringList")
+    def setExpandedCategories(self, categories):
+        categories = list(set(categories))
+        categories.sort()
+        joined = ";".join(categories)
+        if joined != Preferences.getInstance().getValue("cura/categories_expanded"):
+            Preferences.getInstance().setValue("cura/categories_expanded", joined)
+            self.expandedCategoriesChanged.emit()
+
+    expandedCategoriesChanged = pyqtSignal()
+    @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
+    def expandedCategories(self):
+        return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 
     outputDevicesChanged = pyqtSignal()
     
