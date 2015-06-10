@@ -35,6 +35,55 @@ QtObject {
         }
     }
 
+    property Component open_file_button: Component {
+        ButtonStyle {
+            background: UM.AngledCornerRectangle {
+                implicitWidth: UM.Theme.sizes.button.width;
+                implicitHeight: UM.Theme.sizes.button.height;
+                color: {
+                    if(control.hovered) {
+                        return UM.Theme.colors.button_active_hover;
+                    } else {
+                        return UM.Theme.colors.button_active;
+                    }
+                }
+                Behavior on color { ColorAnimation { duration: 50; } }
+                cornerSize: UM.Theme.sizes.default_margin.width;
+
+                Rectangle {
+                    anchors.bottom: parent.top;
+
+                    width: parent.width;
+                    height: control.hovered ? label.height : 0;
+                    Behavior on height { NumberAnimation { duration: 75; } }
+
+                    opacity: control.hovered ? 1.0 : 0.0;
+                    Behavior on opacity { NumberAnimation { duration: 75; } }
+
+                    Label {
+                        id: label
+                        anchors.horizontalCenter: parent.horizontalCenter;
+                        text: control.text;
+                        font: UM.Theme.fonts.button_tooltip;
+                        color: UM.Theme.colors.button_tooltip_text;
+                    }
+                }
+            }
+
+            label: Item {
+                Image {
+                    anchors.centerIn: parent;
+
+                    source: control.iconSource;
+                    width: UM.Theme.sizes.button_icon.width;
+                    height: UM.Theme.sizes.button_icon.height;
+
+                    sourceSize: UM.Theme.sizes.button_icon;
+                }
+            }
+        }
+    }
+
     property Component tool_button: Component {
         ButtonStyle {
             background: UM.AngledCornerRectangle {

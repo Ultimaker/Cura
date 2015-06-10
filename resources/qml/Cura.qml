@@ -192,7 +192,7 @@ UM.MainWindow {
                 id: openFileButton;
 
                 iconSource: UM.Theme.icons.open;
-                style: UM.Theme.styles.tool_button;
+                style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
 
                 anchors {
                     top: parent.top;
@@ -433,3 +433,4 @@ UM.MainWindow {
 
     Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
 }
+
