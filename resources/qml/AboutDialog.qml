@@ -3,7 +3,6 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
 import UM 1.0 as UM
@@ -12,48 +11,53 @@ UM.Dialog {
     id: base
 
     //: About dialog title
-    title: qsTr("About Cura");
+    title: qsTr("About Cura")
+    minimumWidth: 400
+    minimumHeight: 300
 
-    ColumnLayout {
-        anchors.fill: parent;
+    Image {
+        id: logo
+        width: parent.width * 0.75
+        height: width * (1/4.25)
 
-        Item {
-            Layout.fillWidth: true;
-            Layout.fillHeight: true;
-        }
+        source: UM.Theme.images.logo
 
-        Image {
-            Layout.alignment: Qt.AlignHCenter;
-            Layout.preferredWidth: parent.width * 0.75;
-            Layout.preferredHeight: width * (1/4.25);
+        sourceSize.width: width
+        sourceSize.height: height
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset : -(height * 0.5)
+    }
 
-            source: UM.Theme.images.logo;
+    Label {
+        id: version
 
-            sourceSize.width: width;
-            sourceSize.height: height;
-        }
+        text: "Cura 15.06 Beta"
+        font: UM.Theme.fonts.large
+        anchors.horizontalCenter : logo.horizontalCenter
+        anchors.horizontalCenterOffset : (logo.width * 0.25)
+        anchors.top: logo.bottom
+        anchors.topMargin : 5
+    }
 
-        Label {
-            Layout.alignment: Qt.AlignHCenter;
+    Label {
+        id: description
+        width: parent.width
 
-            text: "Cura 15.06 Beta";
-            font: UM.Theme.fonts.large;
-        }
+        //: About dialog application description
+        text: qsTr("End-to-end solution for fused filament 3D printing.")
+        wrapMode: Text.WordWrap
+        anchors.top: version.bottom
+        anchors.topMargin : 10
+    }
 
-        Label {
-            //: About dialog application description
-            text: qsTr("End-to-end solution for fused filament 3D printing.")
-        }
+    Label {
+        id: author_note
+        width: parent.width
 
-        Label {
-            //: About dialog application author note
-            text: qsTr("Cura has been developed by Ultimaker B.V. in cooperation with the community.")
-        }
-
-        Item {
-            Layout.fillWidth: true;
-            Layout.fillHeight: true;
-        }
+        //: About dialog application author note
+        text: qsTr("Cura has been developed by Ultimaker B.V. in cooperation with the community.")
+        wrapMode: Text.WordWrap
+        anchors.top: description.bottom
     }
 
     rightButtons: Button {

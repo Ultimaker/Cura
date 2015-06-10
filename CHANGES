@@ -7,6 +7,24 @@ Cura 15.06 is a new release built from the ground up on a completely new
 framework called Uranium. This framework has been designed to make it easier to
 extend Cura with additional functionality as well as provide a cleaner UI.
 
+Changes since 15.05.93
+----------------------
+
+* Fixed: No shortcuts for moving up/down layers in layer view.
+* Fixed: Last view layers could not be scrolled through in layer view.
+* Fixed: Files provided on command line would not actually show up on the build
+  platform.
+* Fixed: Render a ghost of the selection in Layer view to make the actual object
+  position clear.
+* Fixed: Showing a menu would clear the selection.
+* Fixed: Size and scaling factor display for scale tool.
+* Fixed: Missing background for additional tool controls.
+* Fixed: Loading message times out when loading large files.
+* Fixed: Show recent files in the file menu.
+* Fixed: Windows installer will now install MSVC 2010 redistributable, to
+  prevent issues with missing DLL's.
+* Fixed: Collapsed/expanded state of setting categories not stored.
+
 Changes since 15.05.91
 ----------------------
 
@@ -26,7 +44,8 @@ Changes since 15.05.91
 * Fixed: Camera panning now works correctly instead of doing nothing.
 * Fixed: Camera would flip around center point at maximum rotation.
 * Fixed: Build platform grid blocked view from below objects.
-* Fixed: Viewport on MacOSX with high-DPI screens was only taking 1/4th of the window
+* Fixed: Viewport on MacOSX with high-DPI screens was only taking 1/4th of the
+window
 
 Changes since 15.05.90
 ----------------------

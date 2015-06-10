@@ -17,6 +17,7 @@ from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
+from UM.JobQueue import JobQueue
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -71,6 +72,18 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
+        Preferences.getInstance().addPreference("cura/recent_files", "")
+        Preferences.getInstance().addPreference("cura/categories_expanded", "")
+
+        JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
+
+        self._recent_files = []
+        files = Preferences.getInstance().getValue("cura/recent_files").split(";")
+        for f in files:
+            if not os.path.isfile(f):
+                continue
+
+            self._recent_files.append(f)
     
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
@@ -305,6 +318,25 @@ class CuraApplication(QtApplication):
 
         return log
 
+    recentFilesChanged = pyqtSignal()
+    @pyqtProperty("QStringList", notify = recentFilesChanged)
+    def recentFiles(self):
+        return self._recent_files
+
+    @pyqtSlot("QStringList")
+    def setExpandedCategories(self, categories):
+        categories = list(set(categories))
+        categories.sort()
+        joined = ";".join(categories)
+        if joined != Preferences.getInstance().getValue("cura/categories_expanded"):
+            Preferences.getInstance().setValue("cura/categories_expanded", joined)
+            self.expandedCategoriesChanged.emit()
+
+    expandedCategoriesChanged = pyqtSignal()
+    @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
+    def expandedCategories(self):
+        return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
+
     outputDevicesChanged = pyqtSignal()
     
     @pyqtProperty("QVariantMap", notify = outputDevicesChanged)
@@ -460,3 +492,18 @@ class CuraApplication(QtApplication):
 
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
+
+    def _onJobFinished(self, job):
+        if type(job) is not ReadMeshJob:
+            return
+
+        f = job.getFileName()
+        if f in self._recent_files:
+            self._recent_files.remove(f)
+
+        self._recent_files.insert(0, f)
+        if len(self._recent_files) > 10:
+            del self._recent_files[10]
+
+        Preferences.getInstance().setValue("cura/recent_files", ";".join(self._recent_files))
+        self.recentFilesChanged.emit()
