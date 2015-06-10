@@ -57,10 +57,10 @@
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
 
-        "button": [205, 202, 201, 255],
-        "button_hover": [174, 174, 174, 255],
+        "button": [160, 163, 171, 255],
+        "button_hover": [140, 144, 154, 255],
         "button_active": [12, 169, 227, 255],
-        "button_active_hover": [34, 150, 190, 255],
+        "button_active_hover": [34, 150, 199, 255],
         "button_text": [255, 255, 255, 255],
         "button_disabled": [245, 245, 245, 255],
         "button_tooltip_text": [35, 35, 35, 255],

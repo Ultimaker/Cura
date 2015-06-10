@@ -86,44 +86,51 @@ QtObject {
 
     property Component tool_button: Component {
         ButtonStyle {
-            background: UM.AngledCornerRectangle {
-                property bool down: control.pressed || (control.checkable && control.checked);
-
+            background: Item {
                 implicitWidth: UM.Theme.sizes.button.width;
                 implicitHeight: UM.Theme.sizes.button.height;
-                color: {
-                    if(!control.enabled) {
-                        return UM.Theme.colors.button_disabled;
-                    } else if(control.checkable && control.checked && control.hovered) {
-                        return UM.Theme.colors.button_active_hover;
-                    } else if(control.pressed || (control.checkable && control.checked)) {
-                        return UM.Theme.colors.button_active;
-                    } else if(control.hovered) {
-                        return UM.Theme.colors.button_hover;
-                    } else {
-                        return UM.Theme.colors.button;
-                    }
-                }
-                Behavior on color { ColorAnimation { duration: 50; } }
-                cornerSize: UM.Theme.sizes.default_margin.width;
 
                 Rectangle {
-                    anchors.bottom: parent.top;
+                    anchors.bottom: parent.verticalCenter;
 
                     width: parent.width;
-                    height: control.hovered ? label.height : 0;
-                    Behavior on height { NumberAnimation { duration: 75; } }
+                    height: control.hovered ? parent.height / 2 + label.height : 0;
+                    Behavior on height { NumberAnimation { duration: 100; } }
 
                     opacity: control.hovered ? 1.0 : 0.0;
-                    Behavior on opacity { NumberAnimation { duration: 75; } }
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
 
                     Label {
                         id: label
                         anchors.horizontalCenter: parent.horizontalCenter;
-                        text: control.text;
+                        text: control.text.replace("&", "");
                         font: UM.Theme.fonts.button_tooltip;
                         color: UM.Theme.colors.button_tooltip_text;
                     }
+                }
+
+                UM.AngledCornerRectangle {
+                    id: buttonFace;
+
+                    anchors.fill: parent;
+
+                    property bool down: control.pressed || (control.checkable && control.checked);
+
+                    color: {
+                        if(!control.enabled) {
+                            return UM.Theme.colors.button_disabled;
+                        } else if(control.checkable && control.checked && control.hovered) {
+                            return UM.Theme.colors.button_active_hover;
+                        } else if(control.pressed || (control.checkable && control.checked)) {
+                            return UM.Theme.colors.button_active;
+                        } else if(control.hovered) {
+                            return UM.Theme.colors.button_hover;
+                        } else {
+                            return UM.Theme.colors.button;
+                        }
+                    }
+                    Behavior on color { ColorAnimation { duration: 50; } }
+                    cornerSize: UM.Theme.sizes.default_margin.width;
                 }
             }
 
