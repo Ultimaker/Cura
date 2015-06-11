@@ -193,7 +193,7 @@ UM.MainWindow {
 
                 iconSource: UM.Theme.icons.open;
                 style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
-
+                tooltip: '';
                 anchors {
                     top: parent.top;
                     topMargin: UM.Theme.sizes.window_margin.height;
@@ -232,7 +232,7 @@ UM.MainWindow {
                 iconSource: UM.Theme.icons.viewmode;
 
                 style: UM.Theme.styles.tool_button;
-
+                tooltip: '';
                 menu: Menu {
                     id: viewMenu;
                     Instantiator {
