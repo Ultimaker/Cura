@@ -51,14 +51,15 @@ QtObject {
                 cornerSize: UM.Theme.sizes.default_margin.width;
 
                 Rectangle {
-                    anchors.bottom: parent.top;
+                    anchors.verticalCenter: parent.top;
 
                     width: parent.width;
-                    height: control.hovered ? label.height : 0;
+                    height: control.hovered ? (label.height + 20) : 0;
                     Behavior on height { NumberAnimation { duration: 75; } }
 
                     opacity: control.hovered ? 1.0 : 0.0;
                     Behavior on opacity { NumberAnimation { duration: 75; } }
+                    z: -1;
 
                     Label {
                         id: label
@@ -106,16 +107,16 @@ QtObject {
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
                 cornerSize: UM.Theme.sizes.default_margin.width;
-
                 Rectangle {
-                    anchors.bottom: parent.top;
+                    anchors.verticalCenter: parent.top;
 
                     width: parent.width;
-                    height: control.hovered ? label.height : 0;
+                    height: control.hovered ? (label.height + 20) : 0;
                     Behavior on height { NumberAnimation { duration: 75; } }
 
                     opacity: control.hovered ? 1.0 : 0.0;
                     Behavior on opacity { NumberAnimation { duration: 75; } }
+                    z: -1;
 
                     Label {
                         id: label
