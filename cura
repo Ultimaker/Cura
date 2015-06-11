@@ -1,3 +1,0 @@
-## cura
-#!/bin/sh
-PYTHONPATH=. /usr/bin/python ./scripts/linux/cura.py "$@"
