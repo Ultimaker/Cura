@@ -254,6 +254,13 @@
                     "default": "Lines",
                     "visible": false
                 },
+                "skin_alternate_rotation": {
+                    "label": "Alternate Skin Rotation",
+                    "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve on the printing quality by reducing the pillowing effect.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
                 "skin_outline_count": {
                     "label": "Skin Perimeter Line Count",
                     "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve on roofs which would start in the middle of infill cells.",
