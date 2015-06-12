@@ -507,22 +507,12 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
 				profile.putMachineSetting('serial_baud', '115200')
-				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
-				profile.putMachineSetting('extruder_head_size_min_y', '0.0')
-				profile.putMachineSetting('extruder_head_size_max_x', '0.0')
-				profile.putMachineSetting('extruder_head_size_max_y', '0.0')
-				profile.putMachineSetting('extruder_head_size_height', '0.0')
 			elif self.LulzbotTaz5Radio.GetValue():
 				profile.putMachineSetting('machine_width', '298')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('serial_baud', '115200')
 				# Machine type and name are set in the nozzle select page
-				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
-				profile.putMachineSetting('extruder_head_size_min_y', '0.0')
-				profile.putMachineSetting('extruder_head_size_max_x', '0.0')
-				profile.putMachineSetting('extruder_head_size_max_y', '0.0')
-				profile.putMachineSetting('extruder_head_size_height', '0.0')
 			else:
 				profile.putMachineSetting('machine_width', '155')
 				profile.putMachineSetting('machine_depth', '155')
@@ -536,9 +526,15 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('extruder_head_size_min_y', '25')
 				profile.putMachineSetting('extruder_head_size_max_y', '55')
 				profile.putMachineSetting('extruder_head_size_height', '17')
+
 			profile.putMachineSetting('machine_center_is_zero', 'False')
 			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putMachineSetting('has_heated_bed', 'True')
+			profile.putMachineSetting('extruder_head_size_min_x', '0.0')
+			profile.putMachineSetting('extruder_head_size_min_y', '0.0')
+			profile.putMachineSetting('extruder_head_size_max_x', '0.0')
+			profile.putMachineSetting('extruder_head_size_max_y', '0.0')
+			profile.putMachineSetting('extruder_head_size_height', '0.0')
 			profile.putPreference('startMode', 'Simple')
 		else:
 			profile.putMachineSetting('machine_width', '80')
