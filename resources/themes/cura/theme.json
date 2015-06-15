@@ -140,7 +140,7 @@
 
         "progressbar": [26.0, 0.5],
         "progressbar_control": [8.0, 0.5],
-        "progressbar_margin": [0.0, 0.0],
+        "progressbar_padding": [0.0, 1.0],
 
         "scrollbar": [0.5, 0.5],
 
