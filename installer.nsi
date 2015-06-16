@@ -99,6 +99,15 @@ Function LaunchLink
   Exec '"$WINDIR\explorer.exe" "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk"'
 FunctionEnd
 
+Section "Install Visual Studio 2010 Redistributable"
+    SetOutPath "$INSTDIR"
+    File "vcredist_2010_x86.exe"
+    
+    IfSilent +2
+      ExecWait '"$INSTDIR\vcredist_2010_x86.exe"'
+
+SectionEnd
+
 ;Section "Install Arduino Drivers"
 ;  ; Set output path to the driver directory.
 ;  SetOutPath "$INSTDIR\drivers\"

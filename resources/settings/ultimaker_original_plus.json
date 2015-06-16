@@ -1,6 +1,6 @@
 {
     "id": "ultimaker_original_plus",
-    "name": "Ultimaker Original Plus",
+    "name": "Ultimaker Original+",
     "icon": "icon_ultimaker.png",
     "platform": "ultimaker2_platform.obj",
     "platform_texture": "UltimakerPlusbackplate.png",

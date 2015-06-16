@@ -47,7 +47,6 @@ Item {
             Button {
                 text: model.name;
                 iconSource: UM.Theme.icons[model.icon];
-                tooltip: model.description;
 
                 checkable: true;
                 checked: model.active;

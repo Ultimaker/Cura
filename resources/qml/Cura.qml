@@ -25,11 +25,25 @@ UM.MainWindow {
             window: base
 
             Menu {
+                id: fileMenu
                 //: File menu
                 title: qsTr("&File");
 
                 MenuItem { action: actions.open; }
                 MenuItem { action: actions.save; }
+
+                MenuSeparator { }
+
+                Instantiator {
+                    model: Printer.recentFiles
+                    MenuItem {
+                        property url filePath: modelData;
+                        text: (index + 1) + ". " + modelData.slice(modelData.lastIndexOf("/") + 1);
+                        onTriggered: UM.MeshFileHandler.readLocalFile(filePath);
+                    }
+                    onObjectAdded: fileMenu.insertItem(index, object)
+                    onObjectRemoved: fileMenu.removeItem(object)
+                }
 
                 MenuSeparator { }
 
@@ -178,8 +192,8 @@ UM.MainWindow {
                 id: openFileButton;
 
                 iconSource: UM.Theme.icons.open;
-                style: UM.Theme.styles.tool_button;
-
+                style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
+                tooltip: '';
                 anchors {
                     top: parent.top;
                     topMargin: UM.Theme.sizes.window_margin.height;
@@ -218,7 +232,7 @@ UM.MainWindow {
                 iconSource: UM.Theme.icons.viewmode;
 
                 style: UM.Theme.styles.tool_button;
-
+                tooltip: '';
                 menu: Menu {
                     id: viewMenu;
                     Instantiator {
@@ -419,3 +433,4 @@ UM.MainWindow {
 
     Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
 }
+
