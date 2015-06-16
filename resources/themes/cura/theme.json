@@ -88,6 +88,9 @@
         "setting_validation_warning": [255, 186, 15, 255],
         "setting_validation_ok": [255, 255, 255, 255],
 
+        "progressbar_background": [245, 245, 245, 255],
+        "progressbar_control": [12, 169, 227, 255],
+
         "slider_groove": [245, 245, 245, 255],
         "slider_groove_border": [205, 202, 201, 255],
         "slider_groove_fill": [205, 202, 201, 255],
@@ -134,6 +137,10 @@
 
         "button": [4.25, 4.25],
         "button_icon": [2.9, 2.9],
+
+        "progressbar": [26.0, 0.5],
+        "progressbar_control": [8.0, 0.5],
+        "progressbar_padding": [0.0, 1.0],
 
         "scrollbar": [0.5, 0.5],
 
