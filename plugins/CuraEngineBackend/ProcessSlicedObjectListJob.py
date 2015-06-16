@@ -57,8 +57,8 @@ class ProcessSlicedObjectListJob(Job):
                         center = [settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2]
                         points -= numpy.array(center)
 
+                    layerData.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
-                    layerData.addPolygon(layer.id, polygon.type, points)
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layerData.build()
         mesh.layerData = layerData

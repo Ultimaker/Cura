@@ -98,34 +98,26 @@ class Polygon():
     SkinType = 3
     SupportType = 4
     SkirtType = 5
+    InfillType = 6
+    SupportInfillType = 7
 
-    def __init__(self, mesh, type, data):
+    def __init__(self, mesh, type, data, line_width):
         super().__init__()
         self._mesh = mesh
         self._type = type
         self._data = data
+        self._line_width = line_width / 1000
 
     def build(self):
         self._begin = self._mesh._vertex_count
         self._mesh.addVertices(self._data)
         self._end = self._begin + len(self._data) - 1
 
-        color = None
-        if self._type == self.Inset0Type:
-            color = [1, 0, 0, 1]
-        elif self._type == self.InsetXType:
-            color = [0, 1, 0, 1]
-        elif self._type == self.SkinType:
-            color = [1, 1, 0, 1]
-        elif self._type == self.SupportType:
-            color = [0, 1, 1, 1]
-        elif self._type == self.SkirtType:
-            color = [0, 1, 1, 1]
-        else:
-            color = [1, 1, 1, 1]
+        color = self.getColor()
+        color[3] = 2.0
 
         colors = [color for i in range(len(self._data))]
-        self._mesh.addColors(numpy.array(colors, dtype=numpy.float32))
+        self._mesh.addColors(numpy.array(colors, dtype=numpy.float32) * 0.5)
 
         indices = []
         for i in range(self._begin, self._end):
@@ -135,6 +127,24 @@ class Polygon():
         indices.append(self._end)
         indices.append(self._begin)
         self._mesh.addIndices(numpy.array(indices, dtype=numpy.int32))
+
+    def getColor(self):
+        if self._type == self.Inset0Type:
+            return [1.0, 0.0, 0.0, 1.0]
+        elif self._type == self.InsetXType:
+            return [0.0, 1.0, 0.0, 1.0]
+        elif self._type == self.SkinType:
+            return [1.0, 1.0, 0.0, 1.0]
+        elif self._type == self.SupportType:
+            return [0.0, 1.0, 1.0, 1.0]
+        elif self._type == self.SkirtType:
+            return [0.0, 1.0, 1.0, 1.0]
+        elif self._type == self.InfillType:
+            return [1.0, 1.0, 0.0, 1.0]
+        elif self._type == self.SupportInfillType:
+            return [0.0, 1.0, 1.0, 1.0]
+        else:
+            return [1.0, 1.0, 1.0, 1.0]
 
     @property
     def type(self):
@@ -146,4 +156,8 @@ class Polygon():
 
     @property
     def elementCount(self):
-        return (self._end - self._begin) * 2 #The range of vertices multiplied by 2 since each vertex is used twice
+        return ((self._end - self._begin) + 1) * 2 #The range of vertices multiplied by 2 since each vertex is used twice
+
+    @property
+    def lineWidth(self):
+        return self._line_width
