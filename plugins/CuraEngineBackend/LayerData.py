@@ -2,7 +2,9 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Mesh.MeshData import MeshData
+from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Math.Color import Color
+from UM.Math.Vector import Vector
 
 import numpy
 import math
@@ -13,12 +15,19 @@ class LayerData(MeshData):
         self._layers = {}
         self._element_counts = {}
 
-    def addPolygon(self, layer, type, data):
+    def addLayer(self, layer):
         if layer not in self._layers:
-            self._layers[layer] = []
+            self._layers[layer] = Layer(layer)
 
-        p = Polygon(self, type, data)
-        self._layers[layer].append(p)
+    def addPolygon(self, layer, type, data, line_width):
+        if layer not in self._layers:
+            self.addLayer(layer)
+
+        p = Polygon(self, type, data, line_width)
+        self._layers[layer].polygons.append(p)
+
+    def getLayer(self, layer):
+        return self._layers[layer]
 
     def getLayers(self):
         return self._layers
@@ -26,14 +35,61 @@ class LayerData(MeshData):
     def getElementCounts(self):
         return self._element_counts
 
+    def setLayerHeight(self, layer, height):
+        if layer not in self._layers:
+            self.addLayer(layer)
+
+        self._layers[layer].setHeight(height)
+
+    def setLayerThickness(self, layer, thickness):
+        if layer not in self._layers:
+            self.addLayer(layer)
+
+        self._layers[layer].setThickness(thickness)
+
     def build(self):
         for layer, data in self._layers.items():
-            if layer not in self._element_counts:
-                self._element_counts[layer] = []
+            data.build()
 
-            for polygon in data:
-                polygon.build()
-                self._element_counts[layer].append(polygon.elementCount)
+            self._element_counts[layer] = data.elementCount
+
+class Layer():
+    def __init__(self, id):
+        self._id = id
+        self._height = 0.0
+        self._thickness = 0.0
+        self._polygons = []
+        self._element_count = 0
+
+    @property
+    def height(self):
+        return self._height
+
+    @property
+    def thickness(self):
+        return self._thickness
+
+    @property
+    def polygons(self):
+        return self._polygons
+
+    @property
+    def elementCount(self):
+        return self._element_count
+
+    def setHeight(self, height):
+        self._height = height
+
+    def setThickness(self, thickness):
+        self._thickness = thickness
+
+    def build(self):
+        for polygon in self._polygons:
+            if polygon._type == Polygon.InfillType or polygon._type == Polygon.SupportInfillType:
+                continue
+
+            polygon.build()
+            self._element_count += polygon.elementCount
 
 class Polygon():
     NoneType = 0
