@@ -11,6 +11,9 @@ from . import LayerViewProxy
 from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
 
+from cura.ConvexHullNode import ConvexHullNode
+
+
 ## View used to display g-code paths.
 class LayerView(View):
     def __init__(self):
@@ -45,6 +48,11 @@ class LayerView(View):
             self._selection_material.setUniformValue("u_color", Color(35, 35, 35, 128))
 
         for node in DepthFirstIterator(scene.getRoot()):
+            # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
+            # However, it is somewhat relevant when the node is selected, so do render it then.
+            if type(node) is ConvexHullNode and not Selection.isSelected(node.getWatchedNode()):
+                continue
+
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
                     if Selection.isSelected(node):

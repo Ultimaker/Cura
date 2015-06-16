@@ -48,6 +48,9 @@ class ConvexHullNode(SceneNode):
 
         self.setMeshData(mesh)
 
+    def getWatchedNode(self):
+        return self._node
+
     def render(self, renderer):
         if not self._material:
             self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
