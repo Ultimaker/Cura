@@ -32,22 +32,24 @@ class ProcessSlicedObjectListJob(Job):
         settings = Application.getInstance().getActiveMachine()
         layerHeight = settings.getSettingValueByKey("layer_height")
 
+        mesh = MeshData()
         for object in self._message.objects:
-            try:        
+            try:
                 node = objectIdMap[object.id]
             except KeyError:
                 continue
-            
-            mesh = MeshData()
 
             layerData = LayerData.LayerData()
             for layer in object.layers:
+                layerData.addLayer(layer.id)
+                layerData.setLayerHeight(layer.id, layer.height)
+                layerData.setLayerThickness(layer.id, layer.thickness)
                 for polygon in layer.polygons:
                     points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
                     points = numpy.asarray(points, dtype=numpy.float32)
                     points /= 1000
-                    points = numpy.insert(points, 1, layer.id * layerHeight, axis = 1)
+                    points = numpy.insert(points, 1, (layer.height / 1000), axis = 1)
 
                     points[:,2] *= -1
 
@@ -55,16 +57,11 @@ class ProcessSlicedObjectListJob(Job):
                         center = [settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2]
                         points -= numpy.array(center)
 
-                    #points = numpy.pad(points, ((0,0), (0,1)), "constant", constant_values=(0.0, 1.0))
-                    #inverse = node.getWorldTransformation().getInverse().getData()
-                    #points = points.dot(inverse)
-                    #points = points[:,0:3]
+                    layerData.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
-                    layerData.addPolygon(layer.id, polygon.type, points)
+        # We are done processing all the layers we got from the engine, now create a mesh out of the data
+        layerData.build()
+        mesh.layerData = layerData
 
-            # We are done processing all the layers we got from the engine, now create a mesh out of the data
-            layerData.build()
-            mesh.layerData = layerData
-            
         new_node.setMeshData(mesh)
         new_node.setParent(self._scene.getRoot())
