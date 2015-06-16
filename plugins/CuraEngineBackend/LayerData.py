@@ -91,6 +91,57 @@ class Layer():
             polygon.build()
             self._element_count += polygon.elementCount
 
+    def createMesh(self):
+        builder = MeshBuilder()
+
+        for polygon in self._polygons:
+            poly_color = polygon.getColor()
+            poly_color = Color(poly_color[0], poly_color[1], poly_color[2], poly_color[3])
+
+            points = numpy.copy(polygon.data)
+            if polygon.type == Polygon.InfillType or polygon.type == Polygon.SkinType or polygon.type == Polygon.SupportInfillType:
+                points[:,1] -= 0.01
+
+            # Calculate normals for the entire polygon using numpy.
+            normals = numpy.copy(points)
+            normals[:,1] = 0.0 # We are only interested in 2D normals
+
+            # Calculate the edges between points.
+            # The call to numpy.roll shifts the entire array by one so that
+            # we end up subtracting each next point from the current, wrapping
+            # around. This gives us the edges from the next point to the current
+            # point.
+            normals[:] = normals[:] - numpy.roll(normals, -1, axis = 0)
+            # Calculate the length of each edge using standard Pythagoras
+            lengths = numpy.sqrt(normals[:,0] ** 2 + normals[:,2] ** 2)
+            # The normal of a 2D vector is equal to its x and y coordinates swapped
+            # and then x inverted. This code does that.
+            normals[:,[0, 2]] = normals[:,[2, 0]]
+            normals[:,0] *= -1
+
+            # Normalize the normals.
+            normals[:,0] /= lengths
+            normals[:,2] /= lengths
+
+            # Scale all by the line width of the polygon so we can easily offset.
+            normals *= (polygon.lineWidth / 2)
+
+            #TODO: Use numpy magic to perform the vertex creation to speed up things.
+            for i in range(len(points)):
+                start = points[i - 1]
+                end = points[i]
+
+                normal = normals[i - 1]
+
+                point1 = Vector(data = start - normal)
+                point2 = Vector(data = start + normal)
+                point3 = Vector(data = end + normal)
+                point4 = Vector(data = end - normal)
+
+                builder.addQuad(point1, point2, point3, point4, color = poly_color)
+
+        return builder.getData()
+
 class Polygon():
     NoneType = 0
     Inset0Type = 1
