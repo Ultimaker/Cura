@@ -107,7 +107,7 @@
 
                                     "children": {
                                         "wall_line_width_0": {
-                                            "label": "First Wall Line Width",
+                                            "label": "Outer Wall Line Width",
                                             "description": "Width of the outermost shell line. By printing a thinner outermost wall line you can print higher details with a larger nozzle.",
                                             "unit": "mm",
                                             "default": 0.4,
@@ -132,7 +132,7 @@
                                         },
                                         "skin_line_width": {
                                             "label": "Top/bottom line width",
-                                            "description": "Width of a single top/bottom printed line. Which are used to fill up the top/bottom areas of a print.",
+                                            "description": "Width of a single top/bottom printed line, used to fill up the top/bottom areas of a print.",
                                             "unit": "mm",
                                             "default": 0.4,
                                             "type": "float",
@@ -152,7 +152,23 @@
                                             "unit": "mm",
                                             "default": 0.4,
                                             "type": "float",
-                                            "visible": false
+                                            "visible": false,
+                                            "active_if" : {
+                                                "setting": "support_enable",
+                                                "value": true
+                                            }
+                                        },
+                                        "support_roof_line_width": {
+                                            "label": "Support Hammock line width",
+                                            "description": "Width of a single hammock line, used to fill the roof of the support.",
+                                            "unit": "mm",
+                                            "default": 0.4,
+                                            "type": "float",
+                                            "visible": false,
+                                            "active_if" : {
+                                                "setting": "support_roof_enable",
+                                                "value": true
+                                            }
                                         }
                                     }
                                 }
@@ -455,7 +471,39 @@
                             "type": "float",
                             "default": 50.0,
                             "visible": false,
-                            "inherit_function": "speed_wall_0"
+                            "inherit_function": "speed_wall_0",
+                            "active_if" : {
+                                "setting": "support_enable",
+                                "value": true
+                            },
+                            "children": {
+                                "speed_support_lines": {
+                                    "label": "Support Wall Speed",
+                                    "description": "The speed at which the walls of exterior support are printed. Printing the walls at higher speeds can improve on the overall duration. ",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "default": 50.0,
+                                    "visible": false,
+                                    "inherit": true,
+                                    "active_if" : {
+                                        "setting": "support_roof_enable",
+                                        "value": true
+                                    }
+                                },
+                                "speed_support_roof": {
+                                    "label": "Support Hammock Speed",
+                                    "description": "The speed at which the roofs of exterior support are printed. Printing the hammock at lower speeds can improve on overhang quality. ",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "default": 40.0,
+                                    "visible": false,
+                                    "inherit": false,
+                                    "active_if" : {
+                                        "setting": "support_roof_enable",
+                                        "value": true
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -1054,7 +1102,7 @@
                 },
                 "support_angle": {
                     "label": "Overhang Angle",
-                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being horizontal, and 90 degrees being vertical.",
+                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
                     "unit": "°",
                     "type": "float",
                     "default": 60.0,
@@ -1111,7 +1159,7 @@
                     "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 0.5,
+                    "default": 1.0,
                     "visible": false,
                     "active_if": {
                         "setting": "support_type",
@@ -1133,6 +1181,25 @@
                     "type": "float",
                     "default": 0.6,
                     "visible": false
+                },
+                "support_roof_enable": {
+                    "label": "Enable Hammock",
+                    "description": "Generate a solid support roof on which the model sits.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": true
+                },
+                "support_roof_height": {
+                    "label": "Hammock Thickness",
+                    "description": "The height of the support roofs. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_roof_enable",
+                        "value": true
+                    }
                 },
                 "support_use_towers": {
                     "label": "Use towers.",
