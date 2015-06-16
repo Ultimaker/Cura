@@ -152,7 +152,30 @@ QtObject {
     }
 
 
-    property Component progressbar: Component{
+    property Component progressbar_regular: Component{
+        ProgressBarStyle {
+            background: Rectangle {
+                implicitWidth: UM.Theme.sizes.progressbar.width
+                implicitHeight: UM.Theme.sizes.progressbar.height
+                color: "transparent"
+                Item {
+                    anchors.fill: parent
+                    UM.AngledCornerRectangle {
+                        cornerSize: UM.Theme.sizes.progressbar_control.height
+                        color: UM.Theme.colors.progressbar_background
+                        width: UM.Theme.sizes.progressbar.width
+                        height: UM.Theme.sizes.progressbar.height
+                    }
+                }
+            }
+            progress: UM.AngledCornerRectangle {
+                cornerSize: UM.Theme.sizes.progressbar_control.height
+                color: UM.Theme.colors.progressbar_control
+            }
+        }
+    }
+
+    property Component progressbar_indeterminate: Component{
         ProgressBarStyle {
             background: UM.AngledCornerRectangle {
                 anchors.fill: parent
@@ -168,7 +191,6 @@ QtObject {
                 color: UM.Theme.colors.progressbar_background
                 Item {
                     anchors.fill: parent
-                    anchors.margins: UM.Theme.sizes.progressbar_margin.width
                     visible: control.indeterminate
                     Row {
                         Repeater {
