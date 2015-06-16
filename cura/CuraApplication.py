@@ -68,6 +68,7 @@ class CuraApplication(QtApplication):
         self._output_devices = {}
         self._print_information = None
         self._i18n_catalog = None
+        self._previous_active_tool = None
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
@@ -191,14 +192,21 @@ class CuraApplication(QtApplication):
     def onSelectionChanged(self):
         if Selection.hasSelection():
             if not self.getController().getActiveTool():
-                self.getController().setActiveTool("TranslateTool")
+                if self._previous_active_tool:
+                    self.getController().setActiveTool(self._previous_active_tool)
+                    self._previous_active_tool = None
+                else:
+                    self.getController().setActiveTool("TranslateTool")
 
             self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
+                self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
+            else:
+                self._previous_active_tool = None
 
     requestAddPrinter = pyqtSignal()
 
