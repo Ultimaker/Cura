@@ -7,12 +7,13 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
 from UM.Event import Event, KeyEvent
 from UM.Signal import Signal
-from . import LayerViewProxy
 from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
+from UM.Mesh.MeshData import MeshData
 
 from cura.ConvexHullNode import ConvexHullNode
 
+from . import LayerViewProxy
 
 ## View used to display g-code paths.
 class LayerView(View):
@@ -25,6 +26,9 @@ class LayerView(View):
         self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
         self._max_layers = 10
         self._current_layer_num = 10
+        self._current_layer_mesh = None
+
+        self._solid_layers = 5
 
     def getCurrentLayer(self):
         return self._current_layer_num
@@ -63,19 +67,39 @@ class LayerView(View):
                     except AttributeError:
                         continue
 
-                    start = 0
-                    end = 0
+                    # Render all layers below a certain number as line mesh instead of vertices.
+                    if self._current_layer_num - self._solid_layers > -1:
+                        start = 0
+                        end = 0
+                        element_counts = layer_data.getElementCounts()
+                        for layer, counts in element_counts.items():
+                            if layer + self._solid_layers > self._current_layer_num:
+                                break
+                            end += counts
 
-                    element_counts = layer_data.getElementCounts()
-                    for layer, counts in element_counts.items():
-                        end += sum(counts)
-                        ## Hack to ensure the end is correct. Not quite sure what causes this
-                        end += 2 * len(counts)
+                        # This uses glDrawRangeElements internally to only draw a certain range of lines.
+                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, start = start, end = end)
 
-                        if layer >= self._current_layer_num:
-                            break
+                    # We currently recreate the current "solid" layers every time a
+                    if not self._current_layer_mesh:
+                        self._current_layer_mesh = MeshData()
+                        for i in range(self._solid_layers):
+                            layer = self._current_layer_num - i
+                            if layer < 0:
+                                continue
 
-                    renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, start = start, end = end)
+                            layer_mesh = layer_data.getLayer(layer).createMesh()
+                            if not layer_mesh or layer_mesh.getVertices() is None:
+                                continue
+
+                            self._current_layer_mesh.addVertices(layer_mesh.getVertices())
+
+                            # Scale layer color by a brightness factor based on the current layer number
+                            # This will result in a range of 0.5 - 1.0 to multiply colors by.
+                            brightness = (2.0 - (i / self._solid_layers)) / 2.0
+                            self._current_layer_mesh.addColors(layer_mesh.getColors() * brightness)
+
+                    renderer.queueNode(node, mesh = self._current_layer_mesh, material = self._material)
 
     def setLayer(self, value):
         if self._current_layer_num != value:
@@ -84,6 +108,8 @@ class LayerView(View):
                 self._current_layer_num = 0
             if self._current_layer_num > self._max_layers:
                 self._current_layer_num = self._max_layers
+
+            self._current_layer_mesh = None
             self.currentLayerNumChanged.emit()
     
     currentLayerNumChanged = Signal()
@@ -104,7 +130,7 @@ class LayerView(View):
                         except AttributeError:
                             continue
                         if new_max_layers < len(layer_data.getLayers()):
-                            new_max_layers = len(layer_data.getLayers())
+                            new_max_layers = len(layer_data.getLayers()) - 1
 
             if new_max_layers > 0 and new_max_layers != self._old_max_layers:
                 self._max_layers = new_max_layers
