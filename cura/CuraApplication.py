@@ -33,6 +33,7 @@ from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
+from . import CuraActions
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor
@@ -184,6 +185,8 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
+        self._cura_actions = CuraActions.CuraActions(self)
+        engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():

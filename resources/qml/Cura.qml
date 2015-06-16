@@ -337,8 +337,8 @@ UM.MainWindow {
         preferences.onTriggered: preferences.visible = true;
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
 
-        documentation.onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/support");
-        reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/issues");
+        documentation.onTriggered: CuraActions.openDocumentation();
+        reportBug.onTriggered: CuraActions.openBugReportPage();
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
     }
