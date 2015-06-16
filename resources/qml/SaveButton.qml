@@ -149,7 +149,7 @@ Button {
                 font: UM.Theme.fonts.default;
 
                 //: Print material amount save button label
-                text: control.printMaterialAmount < 0 ? "" : qsTr("%1m material").arg(control.printMaterialAmount);
+                text: control.printMaterialAmount < 0 ? "" : qsTr("%1m of material").arg(control.printMaterialAmount);
             }
         }
     }
