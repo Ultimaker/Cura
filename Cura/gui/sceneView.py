@@ -39,7 +39,7 @@ class SceneView(openglGui.glGuiPanel):
 		self._yaw = 30
 		self._pitch = 60
 		self._zoom = 300
-		self._scene = objectScene.Scene()
+		self._scene = objectScene.Scene(self)
 		self._objectShader = None
 		self._objectLoadShader = None
 		self._focusObj = None
@@ -49,9 +49,12 @@ class SceneView(openglGui.glGuiPanel):
 		self._mouseY = -1
 		self._mouseState = None
 		self._viewTarget = numpy.array([0,0,0], numpy.float32)
+		self._mouse3Dpos = numpy.array([0,0,0], numpy.float32)
 		self._animView = None
 		self._animZoom = None
+		self._lastObjectSink = None
 		self._platformMesh = {}
+		self.glReleaseList = []
 		self._platformTexture = None
 		self._isSimpleMode = True
 		self._printerConnectionManager = printerConnectionManager.PrinterConnectionManager()
@@ -101,7 +104,7 @@ class SceneView(openglGui.glGuiPanel):
 		openglGui.glLabel(self.scaleForm, _("Uniform scale"), (0,8))
 		self.scaleUniform = openglGui.glCheckbox(self.scaleForm, True, (1,8), None)
 
-		self.viewSelection = openglGui.glComboButton(self, _("View mode"), 7, [26,19,11,15,23], [_("Normal"), _("Overhang"), _("Transparent"), _("X-Ray"), _("Layers")], (-1,0), self.OnViewChange)
+		self.viewSelection = openglGui.glComboButton(self, _("View mode"), 7, [26,19,11,15,23], [_("Normal"), _("Overhang"), _("Transparent"), _("X-Ray"), _("Layers")], (-1,0), self.OnViewChange, self.OnViewStateChange)
 		self.viewSelection.setDisabled(True)
 		#self.youMagineButton = openglGui.glButton(self, 26, _("Share on YouMagine"), (2,0), lambda button: youmagineGui.youmagineManager(self.GetTopLevelParent(), self._scene))
 		#self.youMagineButton.setDisabled(True)
@@ -119,6 +122,19 @@ class SceneView(openglGui.glGuiPanel):
 		self.OnToolSelect(0)
 		self.updateToolButtons()
 		self.updateProfileToControls()
+
+	def cleanup(self):
+		# Delete all objects first
+		self.OnDeleteAll(None)
+		self._engine.cleanup()
+		if self._objectShader is not None:
+			self._objectShader.release()
+		if self._objectLoadShader is not None:
+			self._objectLoadShader.release()
+		if self._objectOverhangShader is not None:
+			self._objectOverhangShader.release()
+		for obj in self.glReleaseList:
+			obj.release()
 
 	def loadGCodeFile(self, filename):
 		self.OnDeleteAll(None)
@@ -181,7 +197,7 @@ class SceneView(openglGui.glGuiPanel):
 			if ignored_types:
 				ignored_types = ignored_types.keys()
 				ignored_types.sort()
-				self.notification.message("ignored: " + " ".join("*" + type for type in ignored_types))
+				self.notification.message(_("ignored: ") + " ".join("*" + type for type in ignored_types))
 			mainWindow.updateProfileToAllControls()
 			# now process all the scene files
 			if scene_filenames:
@@ -195,10 +211,27 @@ class SceneView(openglGui.glGuiPanel):
 	def reloadScene(self, e):
 		# Copy the list before DeleteAll clears it
 		fileList = []
+		pms_transforms = [] #position, rotation matrix, scale
 		for obj in self._scene.objects():
 			fileList.append(obj.getOriginFilename())
+			pms_transforms.append((obj.getPosition(), obj.getMatrix(), obj.getScale()))
+
 		self.OnDeleteAll(None)
-		self.loadScene(fileList)
+		self.loadScene(fileList, pms_transforms)
+
+	def OnResetPositions(self, e):
+
+		self._scene.arrangeAll(True)
+		self._scene.centerAll()
+
+
+	def OnResetTransformations(self, e):
+		for obj in self._scene.objects():
+			obj.resetScale()
+			obj.resetRotation()
+
+		self._scene.arrangeAll()
+		self._scene.centerAll()
 
 	def showLoadModel(self, button = 1):
 		if button == 1:
@@ -245,22 +278,52 @@ class SceneView(openglGui.glGuiPanel):
 			if len(removableStorage.getPossibleSDcardDrives()) > 0 and (connectionGroup is None or connectionGroup.getPriority() < 0):
 				drives = removableStorage.getPossibleSDcardDrives()
 				if len(drives) > 1:
-					dlg = wx.SingleChoiceDialog(self, "Select SD drive", "Multiple removable drives have been found,\nplease select your SD card drive", map(lambda n: n[0], drives))
-					if dlg.ShowModal() != wx.ID_OK:
-						dlg.Destroy()
-						return
-					drive = drives[dlg.GetSelection()]
-					dlg.Destroy()
+					choices = map(lambda n: n[0], drives)
+					choices += (_("Custom file destination"), )
+					title = _("Multiple removable drives have been found")
 				else:
-					drive = drives[0]
-				filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
-				threading.Thread(target=self._saveGCode,args=(drive[1] + filename, drive[1])).start()
+					choices = [drives[0][0], _("Custom file destination")]
+					title = _("A removable drive has been found")
+
+				dlg = wx.SingleChoiceDialog(self, _("Select destination SD card drive\nYou can also select a custom file to save to"), title, choices)
+				if dlg.ShowModal() != wx.ID_OK:
+					dlg.Destroy()
+					return
+				try:
+					drive = drives[dlg.GetSelection()]
+				except:
+					drive = None
+				dlg.Destroy()
+
+				if drive is None:
+					self.showSaveGCode()
+				else:
+					filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
+
+					#check if the file is part of the root folder.
+					# If so, create folders on sd card to get the same folder hierarchy.
+					repDir = profile.getPreference("sdcard_rootfolder")
+					try:
+						if os.path.exists(repDir) and os.path.isdir(repDir):
+							repDir = os.path.abspath(repDir)
+							originFilename = os.path.abspath( self._scene._objectList[0].getOriginFilename() )
+							if os.path.dirname(originFilename).startswith(repDir):
+								new_filename = os.path.splitext(originFilename[len(repDir):])[0] + profile.getGCodeExtension()
+								sdPath = os.path.dirname(os.path.join( drive[1], new_filename))
+								if not os.path.exists(sdPath):
+									print "Creating replication directory:", sdPath
+									os.makedirs(sdPath)
+								filename = new_filename
+					except:
+						pass
+
+					threading.Thread(target=self._saveGCode,args=(drive[1] + filename, drive[1])).start()
 			elif connectionGroup is not None:
 				connections = connectionGroup.getAvailableConnections()
 				if len(connections) < 2:
 					connection = connections[0]
 				else:
-					dlg = wx.SingleChoiceDialog(self, "Select the %s connection to use" % (connectionGroup.getName()), "Multiple %s connections found" % (connectionGroup.getName()), map(lambda n: n.getName(), connections))
+					dlg = wx.SingleChoiceDialog(self, _("Select the %s connection to use") % (connectionGroup.getName()), _("Multiple %s connections found") % (connectionGroup.getName()), map(lambda n: n.getName(), connections))
 					if dlg.ShowModal() != wx.ID_OK:
 						dlg.Destroy()
 						return
@@ -294,14 +357,16 @@ class SceneView(openglGui.glGuiPanel):
 				connection.window = printWindow.printWindowBasic(self, connection)
 		connection.window.Show()
 		connection.window.Raise()
-		if not connection.loadGCodeData(StringIO.StringIO(self._engine.getResult().getGCode())):
+		if not connection.loadGCodeData(self._engine.getResult().getGCode()):
 			if connection.isPrinting():
-				self.notification.message("Cannot start print, because other print still running.")
+				self.notification.message(_("Cannot start print, because other print still running."))
 			else:
-				self.notification.message("Failed to start print...")
+				self.notification.message(_("Failed to start print..."))
 
 	def showSaveGCode(self):
 		if len(self._scene._objectList) < 1:
+			return
+		if not self._engine.getResult().isFinished():
 			return
 		dlg=wx.FileDialog(self, _("Save toolpath"), os.path.dirname(profile.getPreference('lastFile')), style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
 		filename = self._scene._objectList[0].getName() + profile.getGCodeExtension()
@@ -316,36 +381,37 @@ class SceneView(openglGui.glGuiPanel):
 		threading.Thread(target=self._saveGCode,args=(filename,)).start()
 
 	def _saveGCode(self, targetFilename, ejectDrive = False):
-		data = self._engine.getResult().getGCode()
+		gcode = self._engine.getResult().getGCode()
 		try:
-			size = float(len(data))
-			fsrc = StringIO.StringIO(data)
+			size = float(len(gcode))
+			read_pos = 0
 			with open(targetFilename, 'wb') as fdst:
 				while 1:
-					buf = fsrc.read(16*1024)
-					if not buf:
+					buf = gcode.read(16*1024)
+					if len(buf) < 1:
 						break
+					read_pos += len(buf)
 					fdst.write(buf)
-					self.printButton.setProgressBar(float(fsrc.tell()) / size)
+					self.printButton.setProgressBar(read_pos / size)
 					self._queueRefresh()
 		except:
 			import sys, traceback
 			traceback.print_exc()
-			self.notification.message("Failed to save")
+			self.notification.message(_("Failed to save"))
 		else:
 			if ejectDrive:
-				self.notification.message("Saved as %s" % (targetFilename), lambda : self._doEjectSD(ejectDrive), 31, 'Eject')
+				self.notification.message(_("Saved as %s") % (targetFilename), lambda : self._doEjectSD(ejectDrive), 31, 'Eject')
 			elif explorer.hasExplorer():
-				self.notification.message("Saved as %s" % (targetFilename), lambda : explorer.openExplorer(targetFilename), 4, 'Open folder')
+				self.notification.message(_("Saved as %s") % (targetFilename), lambda : explorer.openExplorer(targetFilename), 4, _('Open folder'))
 			else:
-				self.notification.message("Saved as %s" % (targetFilename))
+				self.notification.message(_("Saved as %s") % (targetFilename))
 		self.printButton.setProgressBar(None)
 
 	def _doEjectSD(self, drive):
 		if removableStorage.ejectDrive(drive):
-			self.notification.message('You can now eject the card.')
+			self.notification.message(_('You can now eject the card.'))
 		else:
-			self.notification.message('Safe remove failed...')
+			self.notification.message(_('Safe remove failed...'))
 
 	def _showEngineLog(self):
 		dlg = wx.TextEntryDialog(self, _("The slicing engine reported the following"), _("Engine log..."), '\n'.join(self._engine.getResult().getLog()), wx.TE_MULTILINE | wx.OK | wx.CENTRE)
@@ -398,6 +464,10 @@ class SceneView(openglGui.glGuiPanel):
 			self.viewMode = 'normal'
 		self._engineResultView.setEnabled(self.viewMode == 'gcode')
 		self.QueueRefresh()
+
+	def OnViewStateChange(self, state):
+		self._engineResultView.layerSelect.setHidden(self.viewMode != 'gcode' or state)
+		self._engineResultView.singleLayerToggle.setHidden(self.viewMode != 'gcode' or state)
 
 	def OnRotateReset(self, button):
 		if self._selectedObj is None:
@@ -495,20 +565,44 @@ class SceneView(openglGui.glGuiPanel):
 			return
 		cnt = dlg.GetValue()
 		dlg.Destroy()
+
+		# 0:unrequested arrange all. Objects should not move.
+		# 1:requested arrange all but refused.
+		# 2:arrange all and center from now on.
+		requestedArrangeAll = 0
+
 		n = 0
 		while True:
 			n += 1
 			newObj = obj.copy()
 			self._scene.add(newObj)
-			self._scene.centerAll()
+			if requestedArrangeAll == 2:
+				self._scene.centerAll()
+
 			if not self._scene.checkPlatform(newObj):
+				if requestedArrangeAll == 0:
+					requestedArrangeAll = 1
+					dlg = wx.MessageDialog(self, _("Cannot fit all the requested duplicates. Do you want to try and reset object positions?"), _("Reset Positions"), wx.YES_NO)
+
+					if dlg.ShowModal() == wx.ID_YES:
+						dlg.Destroy()
+						requestedArrangeAll = 2
+						self._scene.remove(newObj)
+						self.OnResetPositions(None)
+						n -= 1
+						continue
+
+					dlg.Destroy()
+
 				break
 			if n > cnt:
 				break
 		if n <= cnt:
-			self.notification.message("Could not create more than %d items" % (n - 1))
+			self.notification.message(_("Could not create more than %d items") % (n - 1))
 		self._scene.remove(newObj)
-		self._scene.centerAll()
+		if requestedArrangeAll == 2:
+			self._scene.centerAll()
+
 		self.sceneUpdated()
 
 	def OnSplitObject(self, e):
@@ -544,17 +638,22 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def sceneUpdated(self):
-		self._sceneUpdateTimer.Start(500, True)
+
+		objectSink = profile.getProfileSettingFloat("object_sink")
+		if self._lastObjectSink != objectSink:
+			self._lastObjectSink = objectSink
+			self._scene.updateHeadSize()
+
+		wx.CallAfter(self._sceneUpdateTimer.Start, 500, True)
 		self._engine.abortEngine()
 		self._scene.updateSizeOffsets()
 		self.QueueRefresh()
 
 	def _onRunEngine(self, e):
 		if self._isSimpleMode:
-			self.GetTopLevelParent().simpleSettingsPanel.setupSlice()
-		self._engine.runEngine(self._scene)
-		if self._isSimpleMode:
-			profile.resetTempOverride()
+			self._engine.runEngine(self._scene, self.GetTopLevelParent().simpleSettingsPanel.getSettingOverrides())
+		else:
+			self._engine.runEngine(self._scene)
 
 	def _updateEngineProgress(self, progressValue):
 		result = self._engine.getResult()
@@ -585,8 +684,10 @@ class SceneView(openglGui.glGuiPanel):
 			self.printButton.setBottomText('')
 		self.QueueRefresh()
 
-	def loadScene(self, fileList):
+	def loadScene(self, fileList, pms_transforms=None):
+		objIndex = -1
 		for filename in fileList:
+			objIndex += 1
 			try:
 				ext = os.path.splitext(filename)[1].lower()
 				if ext in imageToMesh.supportedExtensions():
@@ -603,11 +704,18 @@ class SceneView(openglGui.glGuiPanel):
 					else:
 						obj._loadAnim = None
 					self._scene.add(obj)
-					if not self._scene.checkPlatform(obj):
-						self._scene.centerAll()
-					self._selectObject(obj)
-					if obj.getScale()[0] < 1.0:
-						self.notification.message("Warning: Object scaled down.")
+					if pms_transforms is not None and len(pms_transforms) == len(fileList):
+						obj.setPosition(pms_transforms[objIndex][0])
+						obj.applyMatrix(pms_transforms[objIndex][1])
+						obj.setScale(pms_transforms[objIndex][2][0], 0, False)
+						obj.setScale(pms_transforms[objIndex][2][1], 1, False)
+						obj.setScale(pms_transforms[objIndex][2][2], 2, False)
+					else:
+						if not self._scene.checkPlatform(obj):
+							self._scene.centerAll()
+						self._selectObject(obj)
+						if obj.getScale()[0] < 1.0:
+							self.notification.message(_("Warning: Object scaled down."))
 		self.sceneUpdated()
 
 	def _deleteObject(self, obj):
@@ -654,6 +762,8 @@ class SceneView(openglGui.glGuiPanel):
 		self._objColors[2] = profile.getPreferenceColour('model_colour3')
 		self._objColors[3] = profile.getPreferenceColour('model_colour4')
 		self._scene.updateMachineDimensions()
+		if self._zoom > numpy.max(self._machineSize) * 3:
+			self._animZoom = openglGui.animation(self, self._zoom, numpy.max(self._machineSize) * 3, 0.5)
 		self.updateModelSettingsToControls()
 
 	def updateModelSettingsToControls(self):
@@ -787,11 +897,15 @@ class SceneView(openglGui.glGuiPanel):
 						self.Bind(wx.EVT_MENU, lambda e: self._deleteObject(self._focusObj), menu.Append(-1, _("Delete object")))
 						self.Bind(wx.EVT_MENU, self.OnMultiply, menu.Append(-1, _("Multiply object")))
 						self.Bind(wx.EVT_MENU, self.OnSplitObject, menu.Append(-1, _("Split object into parts")))
+
 					if ((self._selectedObj != self._focusObj and self._focusObj is not None and self._selectedObj is not None) or len(self._scene.objects()) == 2) and int(profile.getMachineSetting('extruder_amount')) > 1:
 						self.Bind(wx.EVT_MENU, self.OnMergeObjects, menu.Append(-1, _("Dual extrusion merge")))
 					if len(self._scene.objects()) > 0:
 						self.Bind(wx.EVT_MENU, self.OnDeleteAll, menu.Append(-1, _("Delete all objects")))
 						self.Bind(wx.EVT_MENU, self.reloadScene, menu.Append(-1, _("Reload all objects")))
+						self.Bind(wx.EVT_MENU, self.OnResetPositions, menu.Append(-1, _("Reset all objects positions")))
+						self.Bind(wx.EVT_MENU, self.OnResetTransformations, menu.Append(-1, _("Reset all objects transformations")))
+
 					if menu.MenuItemCount > 0:
 						self.PopupMenu(menu)
 					menu.Destroy()
@@ -1245,43 +1359,72 @@ class SceneView(openglGui.glGuiPanel):
 
 		size = [profile.getMachineSettingFloat('machine_width'), profile.getMachineSettingFloat('machine_depth'), profile.getMachineSettingFloat('machine_height')]
 
-		machine = profile.getMachineSetting('machine_type')
-	
 		#Due to NC licensing of the stl files, temporarily removing platform mesh loading for Ultimaker and Witbox
-		'''if machine.startswith('ultimaker'):
-			if machine not in self._platformMesh:
-				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
+		'''machine_type = profile.getMachineSetting('machine_type')
+		if machine_type not in self._platformMesh:
+			self._platformMesh[machine_type] = None
+
+			filename = None
+			texture_name = None
+			offset = [0,0,0]
+			texture_offset = [0,0,0]
+			texture_scale = 1.0
+			if machine_type == 'ultimaker2' or machine_type == 'ultimaker2extended':
+				filename = resources.getPathForMesh('ultimaker2_platform.stl')
+				offset = [-9,-37,145]
+				texture_name = 'Ultimaker2backplate.png'
+				texture_offset = [9,150,-5]
+			elif machine_type == 'ultimaker2go':
+				filename = resources.getPathForMesh('ultimaker2go_platform.stl')
+				offset = [0,-42,145]
+				texture_offset = [0,105,-5]
+				texture_name = 'Ultimaker2backplate.png'
+				texture_scale = 0.9
+			elif machine_type == 'ultimaker_plus':
+				filename = resources.getPathForMesh('ultimaker2_platform.stl')
+				offset = [0,-37,145]
+				texture_offset = [0,150,-5]
+				texture_name = 'UltimakerPlusbackplate.png'
+			elif machine_type == 'ultimaker':
+				filename = resources.getPathForMesh('ultimaker_platform.stl')
+				offset = [0,0,2.5]
+			elif machine_type == 'Witbox':
+				filename = resources.getPathForMesh('Witbox_platform.stl')
+				offset = [0,-37,145]
+
+			if filename is not None:
+				meshes = meshLoader.loadMeshes(filename)
 				if len(meshes) > 0:
-					self._platformMesh[machine] = meshes[0]
-				else:
-					self._platformMesh[machine] = None
-				if machine == 'ultimaker2' or machine == 'ultimaker_plus':
-					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
-				else:
-					self._platformMesh[machine]._drawOffset = numpy.array([0,0,2.5], numpy.float32)
+					self._platformMesh[machine_type] = meshes[0]
+					self._platformMesh[machine_type]._drawOffset = numpy.array(offset, numpy.float32)
+					self._platformMesh[machine_type].texture = None
+					if texture_name is not None:
+						self._platformMesh[machine_type].texture = openglHelpers.loadGLTexture(texture_name)
+						self._platformMesh[machine_type].texture_offset = texture_offset
+						self._platformMesh[machine_type].texture_scale = texture_scale
+		if self._platformMesh[machine_type] is not None:
+			mesh = self._platformMesh[machine_type]
 			glColor4f(1,1,1,0.5)
 			self._objectShader.bind()
-			self._renderObject(self._platformMesh[machine], False, False)
+			self._renderObject(mesh, False, False)
 			self._objectShader.unbind()
 
 			#For the Ultimaker 2 render the texture on the back plate to show the Ultimaker2 text.
-			if machine == 'ultimaker2' or machine == 'ultimaker_plus':
-				if not hasattr(self._platformMesh[machine], 'texture'):
-					if machine == 'ultimaker2':
-						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('Ultimaker2backplate.png')
-					else:
-						self._platformMesh[machine].texture = openglHelpers.loadGLTexture('UltimakerPlusbackplate.png')
-				glBindTexture(GL_TEXTURE_2D, self._platformMesh[machine].texture)
+			if mesh.texture is not None:
+				glBindTexture(GL_TEXTURE_2D, mesh.texture)
 				glEnable(GL_TEXTURE_2D)
 				glPushMatrix()
 				glColor4f(1,1,1,1)
 
-				glTranslate(0,150,-5)
+				glTranslate(mesh.texture_offset[0], mesh.texture_offset[1], mesh.texture_offset[2])
+				glScalef(mesh.texture_scale, mesh.texture_scale, mesh.texture_scale)
 				h = 50
 				d = 8
 				w = 100
 				glEnable(GL_BLEND)
-				glBlendFunc(GL_DST_COLOR, GL_ZERO)
+				glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA)
+				glEnable(GL_ALPHA_TEST)
+				glAlphaFunc(GL_GREATER, 0.0)
 				glBegin(GL_QUADS)
 				glTexCoord2f(1, 0)
 				glVertex3f( w, 0, h)
@@ -1302,24 +1445,11 @@ class SceneView(openglGui.glGuiPanel):
 				glVertex3f(-w, d, 0)
 				glEnd()
 				glDisable(GL_TEXTURE_2D)
+				glDisable(GL_ALPHA_TEST)
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 				glPopMatrix()
-				
-		elif machine.startswith('Witbox'):
-			if machine not in self._platformMesh:
-				meshes = meshLoader.loadMeshes(resources.getPathForMesh(machine + '_platform.stl'))
-				if len(meshes) > 0:
-					self._platformMesh[machine] = meshes[0]
-				else:
-					self._platformMesh[machine] = None
-				if machine == 'Witbox':
-					self._platformMesh[machine]._drawOffset = numpy.array([0,-37,145], numpy.float32)
-			glColor4f(1,1,1,0.5)
-			self._objectShader.bind()
-			self._renderObject(self._platformMesh[machine], False, False)
-			self._objectShader.unbind()
-		'''
-		
+		else:'''
+		# until glEnd() goes inside the else
 		glColor4f(0,0,0,1)
 		glLineWidth(3)
 		glBegin(GL_LINES)
@@ -1415,7 +1545,7 @@ class SceneView(openglGui.glGuiPanel):
 #TODO: Remove this or put it in a seperate file
 class shaderEditor(wx.Frame):
 	def __init__(self, parent, callback, v, f):
-		super(shaderEditor, self).__init__(parent, title="Shader editor", style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+		super(shaderEditor, self).__init__(parent, title=_("Shader editor"), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 		self._callback = callback
 		s = wx.BoxSizer(wx.VERTICAL)
 		self.SetSizer(s)

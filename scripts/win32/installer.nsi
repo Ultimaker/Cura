@@ -151,15 +151,12 @@ Section "Cura ${VERSION}"
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Uninstall Cura ${VERSION}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\python\pythonw.exe" '-m "Cura.cura"' "$INSTDIR\resources\cura.ico" 0
   
-  ; Give all users write permissions in the install directory, so they can read/write profile and preferences files.
-  AccessControl::GrantOnFile "$INSTDIR" "(S-1-5-32-545)" "FullAccess"
-  
 SectionEnd
 
 Function LaunchLink
   ; Write start menu entries for all users
   SetShellVarContext all
-  ExecShell "" "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk"
+  Exec '"$WINDIR\explorer.exe" "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk"'
 FunctionEnd
 
 Section "Install Arduino Drivers"
@@ -168,9 +165,11 @@ Section "Install Arduino Drivers"
   File /r "drivers\"
   
   ${If} ${RunningX64}
-    ExecWait '"$INSTDIR\drivers\dpinst64.exe" /lm'
+    IfSilent +2
+      ExecWait '"$INSTDIR\drivers\dpinst64.exe" /lm'
   ${Else}
-    ExecWait '"$INSTDIR\drivers\dpinst32.exe" /lm'
+    IfSilent +2
+      ExecWait '"$INSTDIR\drivers\dpinst32.exe" /lm'
   ${EndIf}
 SectionEnd
 
@@ -196,21 +195,6 @@ Section /o "Open AMF files with Cura"
 	WriteRegStr HKCR "Cura AMF model file\DefaultIcon" "" "$INSTDIR\resources\stl.ico,0"
 	WriteRegStr HKCR "Cura AMF model file\shell" "" "open"
 	WriteRegStr HKCR "Cura AMF model file\shell\open\command" "" '"$INSTDIR\python\pythonw.exe" -c "import os; os.chdir(\"$INSTDIR\"); import Cura.cura; Cura.cura.main()" "%1"'
-SectionEnd
-
-Section /o "Uninstall other Cura versions"
-	StrCpy $0 0
-	loop:
-		EnumRegKey $1 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall" $0
-		StrCmp $1 "" done
-		IntOp $0 $0 + 1
-		StrCmp $1 "Cura_${VERSION}" loop
-		${StrContains} $2 "Cura_" $1
-		StrCmp $2 "" loop
-		
-		ReadRegStr $3 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\$1" "UninstallString"
-		ExecWait '"$3" /S _?=$INSTDIR'
-	done:
 SectionEnd
 
 ;--------------------------------

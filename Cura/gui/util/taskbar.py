@@ -26,20 +26,20 @@ except:
 	ITaskbarList3 = None
 
 def setBusy(frame, busy):
-	if ITaskbarList3 is not None:
+	if ITaskbarList3 is not None and frame is not None:
 		if busy:
 			ITaskbarList3.SetProgressState(frame.GetHandle(), TBPF_INDETERMINATE)
 		else:
 			ITaskbarList3.SetProgressState(frame.GetHandle(), TBPF_NOPROGRESS)
 
 def setPause(frame, pause):
-	if ITaskbarList3 is not None:
+	if ITaskbarList3 is not None and frame is not None:
 		if pause:
 			ITaskbarList3.SetProgressState(frame.GetHandle(), TBPF_PAUSED)
 		else:
 			ITaskbarList3.SetProgressState(frame.GetHandle(), TBPF_NORMAL)
 
 def setProgress(frame, done, total):
-	if ITaskbarList3 is not None:
+	if ITaskbarList3 is not None and frame is not None:
 		ITaskbarList3.SetProgressState(frame.GetHandle(), TBPF_NORMAL)
 		ITaskbarList3.SetProgressValue(frame.GetHandle(), done, total)

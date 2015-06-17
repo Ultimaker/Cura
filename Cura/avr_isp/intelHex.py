@@ -15,6 +15,8 @@ def readHex(filename):
 	f = io.open(filename, "r")
 	for line in f:
 		line = line.strip()
+		if len(line) < 1:
+			continue
 		if line[0] != ':':
 			raise Exception("Hex file has a line not starting with ':'")
 		recLen = int(line[1:3], 16)

@@ -51,9 +51,9 @@ class gcode(object):
 		elif type(data) is list:
 			self._load(data)
 		else:
-			data = data.getvalue()
 			self._fileSize = len(data)
-			self._load(StringIO.StringIO(data))
+			data.seekStart()
+			self._load(data)
 
 	def calculateWeight(self):
 		#Calculates the weight of the filament in kg
@@ -120,20 +120,10 @@ class gcode(object):
 					if self.progressCallback is not None:
 						if self.progressCallback(float(gcodeFile.tell()) / float(self._fileSize)):
 							#Abort the loading, we can safely return as the results here will be discarded
-							gcodeFile.close()
 							return
 					currentLayer = [currentPath]
 				line = line[0:line.find(';')]
-			T = getCodeInt(line, 'T')
-			if T is not None:
-				if currentExtruder > 0:
-					posOffset[0] -= profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset[1] -= profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
-				currentExtruder = T
-				if currentExtruder > 0:
-					posOffset[0] += profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
-					posOffset[1] += profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
-			
+
 			G = getCodeInt(line, 'G')
 			if G is not None:
 				if G == 0 or G == 1:	#Move
@@ -160,7 +150,7 @@ class gcode(object):
 							pos[2] += z * scale
 					moveType = 'move'
 					if e is not None:
-						if absoluteE:
+						if absoluteE and posAbs:
 							e -= currentE
 						if e > 0.0:
 							moveType = 'extrude'
@@ -210,6 +200,8 @@ class gcode(object):
 							pos[1] = center[1]
 						if z is not None:
 							pos[2] = center[2]
+				elif G == 29:	#Probe Z
+					pos[2] = 0.0
 				elif G == 90:	#Absolute position
 					posAbs = True
 				elif G == 91:	#Relative position
@@ -276,12 +268,29 @@ class gcode(object):
 						pass
 					elif M == 190:	#Set bed temperature & wait
 						pass
+					elif M == 203:	#Set maximum feedrate
+						pass
+					elif M == 204:	#Set default acceleration
+						pass
+					elif M == 400:	#Wait for current moves to finish
+						pass
 					elif M == 221:	#Extrude amount multiplier
 						s = getCodeFloat(line, 'S')
 						if s is not None:
 							extrudeAmountMultiply = s / 100.0
 					else:
 						print "Unknown M code:" + str(M)
+				else:
+					T = getCodeInt(line, 'T')
+					if T is not None:
+						if currentExtruder > 0:
+							posOffset[0] -= profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
+							posOffset[1] -= profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
+						currentExtruder = T
+						if currentExtruder > 0:
+							posOffset[0] += profile.getMachineSettingFloat('extruder_offset_x%d' % (currentExtruder))
+							posOffset[1] += profile.getMachineSettingFloat('extruder_offset_y%d' % (currentExtruder))
+
 		for path in currentLayer:
 			path['points'] = numpy.array(path['points'], numpy.float32)
 			path['extrusion'] = numpy.array(path['extrusion'], numpy.float32)

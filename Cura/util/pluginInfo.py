@@ -79,6 +79,9 @@ def getPostProcessPluginConfig():
 def setPostProcessPluginConfig(config):
 	profile.putProfileSetting('plugin_config', pickle.dumps(config))
 
+def overridePostProcessPluginConfig(config):
+	profile.setTempOverride('plugin_config', pickle.dumps(config))
+
 def getPluginBasePaths():
 	ret = []
 	if platform.system() != "Windows":
@@ -111,8 +114,7 @@ def getPluginList(pluginType):
 			ret.append(plugin)
 	return ret
 
-def runPostProcessingPlugins(engineResult):
-	pluginConfigList = getPostProcessPluginConfig()
+def runPostProcessingPlugins(engineResult, pluginConfigList):
 	pluginList = getPluginList('postprocess')
 
 	tempfilename = None
@@ -129,8 +131,14 @@ def runPostProcessingPlugins(engineResult):
 		if tempfilename is None:
 			f = tempfile.NamedTemporaryFile(prefix='CuraPluginTemp', delete=False)
 			tempfilename = f.name
-			f.write(engineResult.getGCode())
+			gcode = engineResult.getGCode()
+			while True:
+				data = gcode.read(16 * 1024)
+				if len(data) == 0:
+					break
+				f.write(data)
 			f.close()
+			del gcode
 
 		locals = {'filename': tempfilename}
 		for param in plugin.getParams():
@@ -152,7 +160,13 @@ def runPostProcessingPlugins(engineResult):
 			return "%s: '%s' @ %s:%s:%d" % (str(sys.exc_info()[0].__name__), str(sys.exc_info()[1]), os.path.basename(locationInfo[0]), locationInfo[2], locationInfo[1])
 	if tempfilename is not None:
 		f = open(tempfilename, "r")
-		engineResult.setGCode(f.read())
+		engineResult.setGCode("")
+		import gc
+		gc.collect()
+		data = f.read(4096)
+		while len(data) > 0:
+			engineResult._gcodeData.write(data)
+			data = f.read(4096)
 		f.close()
 		os.unlink(tempfilename)
 	return None

@@ -1,0 +1,2 @@
+#!/bin/sh
+PYTHONPATH=$PYTHONPATH:/usr/share/cura/ /usr/bin/python /usr/share/cura/cura.py "$@"
