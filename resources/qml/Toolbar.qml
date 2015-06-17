@@ -18,6 +18,7 @@ Item {
         id: activeItemBackground;
 
         anchors.bottom: parent.bottom;
+        anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
 
         width: UM.Theme.sizes.button.width;
         height: UM.Theme.sizes.button.height * 2;
@@ -59,7 +60,6 @@ Item {
                 MouseArea {
                     anchors.fill: parent;
                     onClicked: parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
-
                 }
             }
         }
@@ -72,7 +72,7 @@ Item {
         anchors.bottom: buttons.top;
         anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
 
-        width: panel.item ? panel.width + 2 * UM.Theme.sizes.default_margin.width : 0;
+        width: panel.item ? Math.max(panel.width + 2 * UM.Theme.sizes.default_margin.width, activeItemBackground.x + activeItemBackground.width) : 0;
         height: panel.item ? panel.height + 2 * UM.Theme.sizes.default_margin.height : 0;
 
         opacity: panel.item ? 1 : 0
