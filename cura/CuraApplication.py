@@ -429,7 +429,7 @@ class CuraApplication(QtApplication):
                 self.addOutputDevice(drive, {
                     "id": drive,
                     "function": self._writeToSD,
-                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}".format(drive)),
+                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(drive),
                     "icon": "save_sd",
                     "priority": 1
                 })
@@ -482,7 +482,7 @@ class CuraApplication(QtApplication):
             "eject",
             self._i18n_catalog.i18nc("Message action", "Eject"),
             "eject",
-            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}".format(job._sdcard))
+            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}").format(job._sdcard)
         )
         message._sdcard = job._sdcard
         message.actionTriggered.connect(self._onMessageActionTriggered)
