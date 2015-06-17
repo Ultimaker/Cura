@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 2.8.12)
 
 set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
 
-if(${URANIUM_SCRIPTS_DIR})
+if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     # Extract Strings
     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
 
@@ -27,6 +27,12 @@ if(${URANIUM_SCRIPTS_DIR})
         set(languages
             en
             x-test
+            ru
+            fr
+            de
+            it
+            es
+            fi
         )
         foreach(lang ${languages})
             file(GLOB po_files resources/i18n/${lang}/*.po)
@@ -55,7 +61,6 @@ find_package(PythonInterp 3.4.0 REQUIRED)
 set(PYTHON_SITE_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages CACHE PATH "Install location of Python package")
 install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
 install(DIRECTORY plugins DESTINATION ${CMAKE_INSTALL_LIBDIR}/cura)
-file(GLOB cura_SRCS cura/*)
-install(FILES ${cura_SRCS} DESTINATION ${PYTHON_SITE_PACKAGES_DIR}/cura)
+install(DIRECTORY cura DESTINATION ${PYTHON_SITE_PACKAGES_DIR})
 install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR})
 
