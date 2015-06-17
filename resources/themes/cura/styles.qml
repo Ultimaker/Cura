@@ -103,12 +103,17 @@ QtObject {
                     opacity: control.hovered ? 1.0 : 0.0;
                     Behavior on opacity { NumberAnimation { duration: 100; } }
 
-                    Label {
-                        id: label
+                    Rectangle {
                         anchors.horizontalCenter: parent.horizontalCenter;
-                        text: control.text.replace("&", "");
-                        font: UM.Theme.fonts.button_tooltip;
-                        color: UM.Theme.colors.button_tooltip_text;
+                        width: childrenRect.width;
+                        height: childrenRect.height;
+
+                        Label {
+                            id: label
+                            text: control.text.replace("&", "");
+                            font: UM.Theme.fonts.button_tooltip;
+                            color: UM.Theme.colors.button_tooltip_text;
+                        }
                     }
                 }
 
