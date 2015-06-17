@@ -111,4 +111,11 @@ UM.AngledCornerRectangle {
         //: Advanced configuration mode option
         ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
     }
+
+    Component.onCompleted: {
+        for(var i = 0; i < modesListModel.count; ++i)
+        {
+            modesListModel.setProperty(i, "text", qsTr(modesListModel.get(i).text));
+        }
+    }
 }

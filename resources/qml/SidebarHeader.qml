@@ -33,7 +33,7 @@ Column {
         }
 
         ToolButton {
-            text: base.modesModel ? qsTr(base.modesModel.get(modeMenu.currentIndex).text) : "";
+            text: base.modesModel ? base.modesModel.get(modeMenu.currentIndex).text : "";
 
             style: UM.Theme.styles.sidebar_header_button;
 
@@ -48,7 +48,7 @@ Column {
                     model: base.modesModel;
 
                     MenuItem {
-                        text: qsTr(model.text);
+                        text: model.text;
                         checkable: true;
                         checked: modeMenu.currentIndex == index;
                         exclusiveGroup: modeMenuGroup;

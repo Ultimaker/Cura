@@ -155,44 +155,36 @@ QtObject {
     property Component progressbar: Component{
         ProgressBarStyle {
             background: UM.AngledCornerRectangle {
-                anchors.fill: parent
-                anchors.left: parent.left
+                cornerSize: UM.Theme.sizes.progressbar_control.height
                 implicitWidth: UM.Theme.sizes.progressbar.width
                 implicitHeight: UM.Theme.sizes.progressbar.height
-                color: "transparent"
+                color: UM.Theme.colors.progressbar_background
             }
             progress: UM.AngledCornerRectangle {
-                anchors.left: parent.left
-                anchors.fill: parent
                 cornerSize: UM.Theme.sizes.progressbar_control.height
-                color: UM.Theme.colors.progressbar_background
-                Item {
-                    anchors.fill: parent
-                    anchors.margins: UM.Theme.sizes.progressbar_margin.width
+                color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
+
+                UM.AngledCornerRectangle {
+                    cornerSize: UM.Theme.sizes.progressbar_control.height
+                    color: UM.Theme.colors.progressbar_control
+                    width: UM.Theme.sizes.progressbar_control.width
+                    height: UM.Theme.sizes.progressbar_control.height
                     visible: control.indeterminate
-                    Row {
-                        Repeater {
-                            UM.AngledCornerRectangle {
-                                cornerSize: UM.Theme.sizes.progressbar_control.height
-                                color: UM.Theme.colors.progressbar_control
-                                width: UM.Theme.sizes.progressbar_control.width
-                                height: UM.Theme.sizes.progressbar_control.height
-                            }
-                            model: 1
-                        }
-                        SequentialAnimation on x {
-                            id: xAnim
-                            property int animEndPoint: UM.Theme.sizes.progressbar.width - UM.Theme.sizes.progressbar_control.width
-                            running: control.indeterminate
-                            loops: Animation.Infinite
-                            NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
-                            NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
-                        }
+
+                    SequentialAnimation on x {
+                        id: xAnim
+                        property int animEndPoint: UM.Theme.sizes.progressbar.width - UM.Theme.sizes.progressbar_control.width
+                        running: control.indeterminate
+                        loops: Animation.Infinite
+                        NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
+                        NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
                     }
                 }
             }
         }
     }
+
+    
 
     property Component sidebar_category: Component {
         ButtonStyle {

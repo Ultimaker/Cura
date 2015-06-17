@@ -33,6 +33,7 @@ from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
+from . import CuraActions
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor
@@ -67,6 +68,7 @@ class CuraApplication(QtApplication):
         self._output_devices = {}
         self._print_information = None
         self._i18n_catalog = None
+        self._previous_active_tool = None
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
@@ -184,18 +186,27 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
+        self._cura_actions = CuraActions.CuraActions(self)
+        engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
             if not self.getController().getActiveTool():
-                self.getController().setActiveTool("TranslateTool")
+                if self._previous_active_tool:
+                    self.getController().setActiveTool(self._previous_active_tool)
+                    self._previous_active_tool = None
+                else:
+                    self.getController().setActiveTool("TranslateTool")
 
             self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
+                self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
+            else:
+                self._previous_active_tool = None
 
     requestAddPrinter = pyqtSignal()
 
@@ -418,7 +429,7 @@ class CuraApplication(QtApplication):
                 self.addOutputDevice(drive, {
                     "id": drive,
                     "function": self._writeToSD,
-                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}".format(drive)),
+                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(drive),
                     "icon": "save_sd",
                     "priority": 1
                 })
@@ -471,7 +482,7 @@ class CuraApplication(QtApplication):
             "eject",
             self._i18n_catalog.i18nc("Message action", "Eject"),
             "eject",
-            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}".format(job._sdcard))
+            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}").format(job._sdcard)
         )
         message._sdcard = job._sdcard
         message.actionTriggered.connect(self._onMessageActionTriggered)
