@@ -520,9 +520,6 @@ class printWindowBasic(wx.Frame):
 	def _addTermLog(self, msg):
 		pass
 
-	def _addTermLog(self, msg):
-		pass
-
 	def _updateButtonStates(self):
 		self.connectButton.Show(self._printerConnection.hasActiveConnection())
 		self.connectButton.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
