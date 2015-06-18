@@ -210,7 +210,7 @@
                     "label": "Avoid Overlapping Walls",
                     "description": "Remove parts of a wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners.",
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
                     "visible": false
                 },
                 "top_bottom_pattern": {
