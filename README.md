@@ -15,6 +15,13 @@ Dependencies
 * PySerial
   Only required for USB printing support.
 
+Configuring Cura
+----------------
+* link your CuraEngine backend by inserting the following line in home/.config/cura/config.cfg :
+[backend]
+location = /[path_to_the..]/CuraEngine/build/CuraEngine
+
+
 Build scripts
 -------------
 
