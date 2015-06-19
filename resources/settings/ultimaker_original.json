@@ -20,5 +20,15 @@
         "machine_nozzle_offset_x_1": { "default": 18.0 },
         "machine_nozzle_offset_y_1": { "default": 0.0 },
         "machine_gcode_flavor": { "default": "RepRap (Marlin/Sprinter)" }
+    },
+
+    "categories": {
+        "material": {
+            "settings": {
+                "material_bed_temperature": {
+                    "visible": false
+                }
+            }
+        }
     }
 }
