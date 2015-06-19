@@ -279,6 +279,19 @@ UM.MainWindow {
                 configureMachinesAction: actions.configureMachines;
                 saveAction: actions.save;
             }
+
+            Rectangle {
+                x: base.mouseX;
+                y: base.mouseY;
+
+                width: childrenRect.width;
+                height: childrenRect.height;
+                Label {
+                    text: UM.ActiveTool.properties.Rotation != undefined ? "%1°".arg(UM.ActiveTool.properties.Rotation) : "";
+                }
+
+                visible: UM.ActiveTool.valid && UM.ActiveTool.properties.Rotation != undefined;
+            }
         }
     }
 
