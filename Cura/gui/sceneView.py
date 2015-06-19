@@ -223,6 +223,7 @@ class SceneView(openglGui.glGuiPanel):
 
 		self._scene.arrangeAll(True)
 		self._scene.centerAll()
+		self.sceneUpdated()
 
 
 	def OnResetTransformations(self, e):
@@ -232,6 +233,7 @@ class SceneView(openglGui.glGuiPanel):
 
 		self._scene.arrangeAll()
 		self._scene.centerAll()
+		self.sceneUpdated()
 
 	def showLoadModel(self, button = 1):
 		if button == 1:
