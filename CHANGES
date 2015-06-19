@@ -7,6 +7,22 @@ Cura 15.06 is a new release built from the ground up on a completely new
 framework called Uranium. This framework has been designed to make it easier to
 extend Cura with additional functionality as well as provide a cleaner UI.
 
+Changes since 15.05.94
+----------------------
+
+* Added Russian translations
+* Fixed: Infill not displayed in layer view
+* Fixed: Cannot select/scale/rotate when first activating the tool and then trying to select a model.
+* Fixed: Improved font rendering on Windows
+* Fixed: Help > Show Documentation crashes Cura on Windows
+* Fixed: "There is no disk in the drive" repeating messages on Windows
+* Fixed: Retraction settings not visible for Ultimaker2
+* Fixed: Display rotation angle when rotating an object
+* Fixed: Time/Quality slider values are properly rounded
+* Fixed: Improved clarity of buttons and text
+* Fixed: No indication that anything is happening when loading a model
+* Fixed: Eject device now works on Windows
+
 Changes since 15.05.93
 ----------------------
 
@@ -123,10 +139,9 @@ Features from earlier versions not (yet) in this release
   port certain features that we require.
 * X-Ray view is missing.
   Will be implemented as a (you might have guessed it) plugin.
-* Infill display in the layer view is missing.
-  Like several other features, the existing implementation of this
-  functionality is not salvageable and will need to be reimplemented.
-
+* Fixes: Follow Mesh Surface
+  Has been removed from the engine, the same result can be
+  achieved using no infill or top/bottom layers.
 
 Known Issues
 ------------
