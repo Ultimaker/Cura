@@ -1,5 +1,5 @@
 !ifndef VERSION
-  !define VERSION 'BETA'
+  !define VERSION '15.05.95'
 !endif
 
 ; The name of the installer
@@ -43,6 +43,9 @@ SetCompressor /SOLID lzma
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT "Start Cura ${VERSION}"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
+
+;Add an option to show release notes
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\release_notes.txt"
 
 ; Pages
 ;!insertmacro MUI_PAGE_WELCOME
@@ -101,10 +104,10 @@ FunctionEnd
 
 Section "Install Visual Studio 2010 Redistributable"
     SetOutPath "$INSTDIR"
-    File "vcredist_2010_x86.exe"
+    File "vcredist_2010_20110908_x86.exe"
     
     IfSilent +2
-      ExecWait '"$INSTDIR\vcredist_2010_x86.exe"'
+      ExecWait '"$INSTDIR\vcredist_2010_20110908_x86.exe" /silent /norestart'
 
 SectionEnd
 
