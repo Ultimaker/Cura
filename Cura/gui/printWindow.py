@@ -46,12 +46,12 @@ elif sys.platform.startswith('darwin'):
 				preventComputerFromSleeping.assertionID = None
 else:
 	def preventComputerFromSleeping(frame, prevent):
-                if os.path.isfile("/usr/bin/xdg-screensaver"):
-                        try:
-                                cmd = ['xdg-screensaver', 'suspend' if prevent else 'resume', str(frame.GetHandle())]
-                                subprocess.call(cmd)
-                        except:
-                                pass
+		if os.path.isfile("/usr/bin/xdg-screensaver"):
+			try:
+				cmd = ['xdg-screensaver', 'suspend' if prevent else 'resume', str(frame.GetHandle())]
+				subprocess.call(cmd)
+			except:
+				pass
 
 class printWindowPlugin(wx.Frame):
 	def __init__(self, parent, printerConnection, filename):
