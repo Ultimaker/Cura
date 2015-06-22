@@ -259,6 +259,7 @@ class printWindowPlugin(wx.Frame):
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
 		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
 		preventComputerFromSleeping(self, False)
+		self._printerConnection.coolDown()
 		self.Destroy()
 
 	def OnTermEnterLine(self, e):

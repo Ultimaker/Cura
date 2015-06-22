@@ -95,12 +95,22 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._process.stdin.write('START\n')
 		self._printProgress = 0
 
+	def coolDown(self):
+		cooldown_toolhead = "M104 S0"
+		for i in range(0,3):
+			change_toolhead = "T%d".format(i)
+			self.sendCommand(change_toolhead)
+			self.sendCommand(cooldown_toolhead)
+		self.sendCommand("M140 S0") #Bed
+		pass
+
 	#Abort the previously loaded print file
 	def cancelPrint(self):
 		if not self.isPrinting()or self._process is None:
 			return
 		self._process.stdin.write('STOP\n')
 		self._printProgress = 0
+		self.coolDown()
 
 	def isPrinting(self):
 		return self._commState == machineCom.MachineCom.STATE_PRINTING
