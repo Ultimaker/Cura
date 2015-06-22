@@ -32,6 +32,12 @@ class ProcessSlicedObjectListJob(Job):
         settings = Application.getInstance().getActiveMachine()
         layerHeight = settings.getSettingValueByKey("layer_height")
 
+        center = None
+        if not settings.getSettingValueByKey("machine_center_is_zero"):
+            center = numpy.array([settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2])
+        else:
+            center = numpy.array([0.0, 0.0, 0.0])
+
         mesh = MeshData()
         for object in self._message.objects:
             try:
@@ -53,9 +59,7 @@ class ProcessSlicedObjectListJob(Job):
 
                     points[:,2] *= -1
 
-                    if not settings.getSettingValueByKey("machine_center_is_zero"):
-                        center = [settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2]
-                        points -= numpy.array(center)
+                    points -= numpy.array(center)
 
                     layerData.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
