@@ -22,7 +22,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
         else:
             shutil.copy2(s, d)
 
-includes = ["sip", "ctypes", "UM", "PyQt5.QtNetwork", "PyQt5._QOpenGLFunctions_2_0", "serial", "Arcus", "google", "google.protobuf", "google.protobuf.descriptor", "xml.etree", "xml.etree.ElementTree", "src"]
+includes = ["sip", "ctypes", "UM", "PyQt5.QtNetwork", "PyQt5._QOpenGLFunctions_2_0", "serial", "Arcus", "google", "google.protobuf", "google.protobuf.descriptor", "xml.etree", "xml.etree.ElementTree", "cura"]
 # Include all the UM modules in the includes. As py2exe fails to properly find all the dependencies due to the plugin architecture.
 for dirpath, dirnames, filenames in os.walk(os.path.dirname(UM.__file__)):
     if "__" in dirpath:
@@ -41,7 +41,7 @@ print("Removing previous distribution package")
 shutil.rmtree("dist", True)
 
 setup(name="Cura",
-        version="2.0",
+        version="15.05.95",
         author="Ultimaker",
         author_email="d.braam@ultimaker.com",
         url="http://software.ultimaker.com/",
@@ -54,7 +54,7 @@ setup(name="Cura",
 print("Coping Cura plugins.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins")
 for path in os.listdir("plugins"):
-	shutil.copytree("plugins/" + path, "dist/plugins/" + path)
+    shutil.copytree("plugins/" + path, "dist/plugins/" + path)
 print("Coping resources.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/../resources", "dist/resources")
 copytree("resources", "dist/resources")
@@ -70,3 +70,7 @@ for site_package in site.getsitepackages():
         shutil.copytree(os.path.join(qt_origin_path, "qml/QtQuick.2"), "dist/qml/QtQuick.2")
         print("Coping PyQt5 svg library from: %s" % qt_origin_path)
         shutil.copy(os.path.join(qt_origin_path, "Qt5Svg.dll"), "dist/Qt5Svg.dll")
+        print("Copying Angle libraries from %s" % qt_origin_path)
+        shutil.copy(os.path.join(qt_origin_path, "libEGL.dll"), "dist/libEGL.dll")
+        shutil.copy(os.path.join(qt_origin_path, "libGLESv2.dll"), "dist/libGLESv2.dll")
+os.rename("dist/cura_app.exe", "dist/Cura.exe")

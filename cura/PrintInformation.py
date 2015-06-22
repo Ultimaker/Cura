@@ -51,8 +51,8 @@ class PrintInformation(QObject):
         self._time_quality_changed_timer.timeout.connect(self._updateTimeQualitySettings)
 
         self._interpolation_settings = {
-            "layer_height": { "minimum": "low", "maximum": "high", "curve": "linear" },
-            "fill_sparse_density": { "minimum": "low", "maximum": "high", "curve": "linear" }
+            "layer_height": { "minimum": "low", "maximum": "high", "curve": "linear", "precision": 2 },
+            "fill_sparse_density": { "minimum": "low", "maximum": "high", "curve": "linear", "precision": 0 }
         }
 
         self._low_quality_settings = None
@@ -196,7 +196,7 @@ class PrintInformation(QObject):
             else:
                 continue
 
-            setting_value = minimum_value + (maximum_value - minimum_value) * (self._time_quality_value / 100)
+            setting_value = round(minimum_value + (maximum_value - minimum_value) * (self._time_quality_value / 100), options["precision"])
             self._current_settings.setSettingValueByKey(key, setting_value)
 
     def _onSceneChanged(self, source):

@@ -38,7 +38,20 @@
 
     "categories": {
         "material": {
-            "visible": false
+            "settings": {
+                "material_print_temperature": {
+                    "visible": false
+                },
+                "material_bed_temperature": {
+                    "visible": false
+                },
+                "material_diameter": {
+                    "visible": false
+                },
+                "material_flow": {
+                    "visible": false
+                }
+            }
         }
     }
 }
