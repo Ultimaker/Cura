@@ -8,6 +8,7 @@ from UM.Math.Vector import Vector
 
 import numpy
 import math
+import copy
 
 class LayerData(MeshData):
     def __init__(self):
@@ -48,10 +49,22 @@ class LayerData(MeshData):
         self._layers[layer].setThickness(thickness)
 
     def build(self):
+        vertex_count = 0
         for layer, data in self._layers.items():
-            data.build()
+            vertex_count += data.vertexCount()
 
+        vertices = numpy.empty((vertex_count, 3), numpy.float32)
+        colors = numpy.empty((vertex_count, 4), numpy.float32)
+        indices = numpy.empty((vertex_count, 2), numpy.int32)
+
+        offset = 0
+        for layer, data in self._layers.items():
+            offset = data.build(offset, vertices, colors, indices)
             self._element_counts[layer] = data.elementCount
+
+        self.addVertices(vertices)
+        self.addColors(colors)
+        self.addIndices(indices.flatten())
 
 class Layer():
     def __init__(self, id):
@@ -83,20 +96,30 @@ class Layer():
     def setThickness(self, thickness):
         self._thickness = thickness
 
-    def build(self):
+    def vertexCount(self):
+        result = 0
+        for polygon in self._polygons:
+            result += polygon.vertexCount()
+
+        return result
+
+    def build(self, offset, vertices, colors, indices):
+        result = offset
         for polygon in self._polygons:
             if polygon._type == Polygon.InfillType or polygon._type == Polygon.SupportInfillType:
                 continue
 
-            polygon.build()
+            polygon.build(result, vertices, colors, indices)
+            result += polygon.vertexCount()
             self._element_count += polygon.elementCount
+
+        return result
 
     def createMesh(self):
         builder = MeshBuilder()
 
         for polygon in self._polygons:
             poly_color = polygon.getColor()
-            poly_color = Color(poly_color[0], poly_color[1], poly_color[2], poly_color[3])
 
             points = numpy.copy(polygon.data)
             if polygon.type == Polygon.InfillType or polygon.type == Polygon.SkinType or polygon.type == Polygon.SupportInfillType:
@@ -159,43 +182,48 @@ class Polygon():
         self._data = data
         self._line_width = line_width / 1000
 
-    def build(self):
-        self._begin = self._mesh._vertex_count
-        self._mesh.addVertices(self._data)
-        self._end = self._begin + len(self._data) - 1
+    def build(self, offset, vertices, colors, indices):
+        self._begin = offset
 
         color = self.getColor()
-        color[3] = 2.0
+        color.setValues(color.r * 0.5, color.g * 0.5, color.b * 0.5, color.a)
 
-        colors = [color for i in range(len(self._data))]
-        self._mesh.addColors(numpy.array(colors, dtype=numpy.float32) * 0.5)
+        for i in range(len(self._data)):
+            vertices[offset + i, :] = self._data[i, :]
+            colors[offset + i, 0] = color.r
+            colors[offset + i, 1] = color.g
+            colors[offset + i, 2] = color.b
+            colors[offset + i, 3] = color.a
 
-        indices = []
+        self._end = self._begin + len(self._data) - 1
+
         for i in range(self._begin, self._end):
-            indices.append(i)
-            indices.append(i + 1)
+            indices[i, 0] = i
+            indices[i, 1] = i + 1
 
-        indices.append(self._end)
-        indices.append(self._begin)
-        self._mesh.addIndices(numpy.array(indices, dtype=numpy.int32))
+        indices[self._end, 0] = self._end
+        indices[self._end, 1] = self._begin
 
     def getColor(self):
         if self._type == self.Inset0Type:
-            return [1.0, 0.0, 0.0, 1.0]
+            return Color(1.0, 0.0, 0.0, 1.0)
         elif self._type == self.InsetXType:
-            return [0.0, 1.0, 0.0, 1.0]
+            return Color(0.0, 1.0, 0.0, 1.0)
         elif self._type == self.SkinType:
-            return [1.0, 1.0, 0.0, 1.0]
+            return Color(1.0, 1.0, 0.0, 1.0)
         elif self._type == self.SupportType:
-            return [0.0, 1.0, 1.0, 1.0]
+            return Color(0.0, 1.0, 1.0, 1.0)
         elif self._type == self.SkirtType:
-            return [0.0, 1.0, 1.0, 1.0]
+            return Color(0.0, 1.0, 1.0, 1.0)
         elif self._type == self.InfillType:
-            return [1.0, 1.0, 0.0, 1.0]
+            return Color(1.0, 1.0, 0.0, 1.0)
         elif self._type == self.SupportInfillType:
-            return [0.0, 1.0, 1.0, 1.0]
+            return Color(0.0, 1.0, 1.0, 1.0)
         else:
-            return [1.0, 1.0, 1.0, 1.0]
+            return Color(1.0, 1.0, 1.0, 1.0)
+
+    def vertexCount(self):
+        return len(self._data)
 
     @property
     def type(self):
