@@ -85,7 +85,7 @@ class CuraApplication(QtApplication):
             if not os.path.isfile(f):
                 continue
 
-            self._recent_files.append(f)
+            self._recent_files.append(QUrl.fromLocalFile(f))
     
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
@@ -330,7 +330,7 @@ class CuraApplication(QtApplication):
         return log
 
     recentFilesChanged = pyqtSignal()
-    @pyqtProperty("QStringList", notify = recentFilesChanged)
+    @pyqtProperty("QVariantList", notify = recentFilesChanged)
     def recentFiles(self):
         return self._recent_files
 
@@ -508,7 +508,7 @@ class CuraApplication(QtApplication):
         if type(job) is not ReadMeshJob:
             return
 
-        f = job.getFileName()
+        f = QUrl.fromLocalFile(job.getFileName())
         if f in self._recent_files:
             self._recent_files.remove(f)
 
@@ -516,5 +516,9 @@ class CuraApplication(QtApplication):
         if len(self._recent_files) > 10:
             del self._recent_files[10]
 
-        Preferences.getInstance().setValue("cura/recent_files", ";".join(self._recent_files))
+        pref = ""
+        for path in self._recent_files:
+            pref += path.toLocalFile() + ";"
+
+        Preferences.getInstance().setValue("cura/recent_files", pref)
         self.recentFilesChanged.emit()

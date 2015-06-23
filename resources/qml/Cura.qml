@@ -37,9 +37,11 @@ UM.MainWindow {
                 Instantiator {
                     model: Printer.recentFiles
                     MenuItem {
-                        property url filePath: modelData;
-                        text: (index + 1) + ". " + modelData.slice(modelData.lastIndexOf("/") + 1);
-                        onTriggered: UM.MeshFileHandler.readLocalFile(filePath);
+                        text: {
+                            var path = modelData.toString()
+                            return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
+                        }
+                        onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
                     }
                     onObjectAdded: fileMenu.insertItem(index, object)
                     onObjectRemoved: fileMenu.removeItem(object)
