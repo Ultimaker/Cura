@@ -7,10 +7,15 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
 
+from UM.Message import Message
+from UM.i18n import i18nCatalog
+
 from . import LayerData
 
 import numpy
 import struct
+
+catalog = i18nCatalog("cura")
 
 class ProcessSlicedObjectListJob(Job):
     def __init__(self, message):
@@ -18,7 +23,14 @@ class ProcessSlicedObjectListJob(Job):
         self._message = message
         self._scene = Application.getInstance().getController().getScene()
 
+        self._progress = None
+        Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
+
     def run(self):
+        if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
+            self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
+            self._progress.show()
+
         objectIdMap = {}
         new_node = SceneNode()
         ## Put all nodes in a dict identified by ID
@@ -37,6 +49,9 @@ class ProcessSlicedObjectListJob(Job):
             center = numpy.array([settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2])
         else:
             center = numpy.array([0.0, 0.0, 0.0])
+
+        if self._progress:
+            self._progress.setProgress(2)
 
         mesh = MeshData()
         for object in self._message.objects:
@@ -63,9 +78,33 @@ class ProcessSlicedObjectListJob(Job):
 
                     layerData.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
+        if self._progress:
+            self._progress.setProgress(50)
+
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layerData.build()
         mesh.layerData = layerData
 
+        if self._progress:
+            self._progress.setProgress(100)
+
         new_node.setMeshData(mesh)
         new_node.setParent(self._scene.getRoot())
+
+        view = Application.getInstance().getController().getActiveView()
+        if view.getPluginId() == "LayerView":
+            view.resetLayerData()
+
+        if self._progress:
+            self._progress.hide()
+
+    def _onActiveViewChanged(self):
+        if self.isRunning():
+            if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
+                if not self._progress:
+                    self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
+                    self._progress.show()
+            else:
+                if self._progress:
+                    self._progress.hide()
+
