@@ -477,7 +477,9 @@ class CuraApplication(QtApplication):
             self._volume.rebuild()
 
             if self.getController().getTool("ScaleTool"):
-                self.getController().getTool("ScaleTool").setMaximumBounds(self._volume.getBoundingBox())
+                bbox = self._volume.getBoundingBox()
+                bbox.setBottom(0.0)
+                self.getController().getTool("ScaleTool").setMaximumBounds(bbox)
 
             offset = machine.getSettingValueByKey("machine_platform_offset")
             if offset:
