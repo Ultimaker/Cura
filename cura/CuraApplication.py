@@ -215,6 +215,9 @@ class CuraApplication(QtApplication):
     def deleteObject(self, object_id):
         object = self.getController().getScene().findObject(object_id)
 
+        if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
+            object = Selection.getSelectedObject(0)
+
         if object:
             op = RemoveSceneNodeOperation(object)
             op.push()
@@ -223,6 +226,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count):
         node = self.getController().getScene().findObject(object_id)
+
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
 
         if node:
             op = GroupedOperation()
@@ -239,6 +245,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
+
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
 
         if node:
             op = SetTransformOperation(node, Vector())
