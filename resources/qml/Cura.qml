@@ -283,8 +283,8 @@ UM.MainWindow {
             }
 
             Rectangle {
-                x: base.mouseX;
-                y: base.mouseY;
+                x: base.mouseX + UM.Theme.sizes.default_margin.width;
+                y: base.mouseY + UM.Theme.sizes.default_margin.height;
 
                 width: childrenRect.width;
                 height: childrenRect.height;
