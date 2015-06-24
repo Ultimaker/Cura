@@ -167,7 +167,7 @@ class youmagineManager(object):
 
 class workingIndicatorWindow(wx.Frame):
 	def __init__(self, parent):
-		super(workingIndicatorWindow, self).__init__(parent, title='YouMagine', style=wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_NO_TASKBAR|wx.CAPTION)
+		super(workingIndicatorWindow, self).__init__(parent, title=_('YouMagine'), style=wx.FRAME_TOOL_WINDOW|wx.FRAME_FLOAT_ON_PARENT|wx.FRAME_NO_TASKBAR|wx.CAPTION)
 		self._panel = wx.Panel(self)
 		self.SetSizer(wx.BoxSizer())
 		self.GetSizer().Add(self._panel, 1, wx.EXPAND)
@@ -220,7 +220,7 @@ class workingIndicatorWindow(wx.Frame):
 
 class getAuthorizationWindow(wx.Frame):
 	def __init__(self, parent, ym):
-		super(getAuthorizationWindow, self).__init__(parent, title='YouMagine')
+		super(getAuthorizationWindow, self).__init__(parent, title=_('YouMagine'))
 		self._panel = wx.Panel(self)
 		self.SetSizer(wx.BoxSizer())
 		self.GetSizer().Add(self._panel, 1, wx.EXPAND)
@@ -262,7 +262,7 @@ class getAuthorizationWindow(wx.Frame):
 
 class newDesignWindow(wx.Frame):
 	def __init__(self, parent, manager, ym):
-		super(newDesignWindow, self).__init__(parent, title='Share on YouMagine')
+		super(newDesignWindow, self).__init__(parent, title=_('Share on YouMagine'))
 		p = wx.Panel(self)
 		self.SetSizer(wx.BoxSizer())
 		self.GetSizer().Add(p, 1, wx.EXPAND)
@@ -415,7 +415,7 @@ class newDesignWindow(wx.Frame):
 
 class webcamPhotoWindow(wx.Frame):
 	def __init__(self, parent):
-		super(webcamPhotoWindow, self).__init__(parent, title='YouMagine')
+		super(webcamPhotoWindow, self).__init__(parent, title=_('YouMagine'))
 		p = wx.Panel(self)
 		self.panel = p
 		self.SetSizer(wx.BoxSizer())

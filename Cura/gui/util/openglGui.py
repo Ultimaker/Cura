@@ -441,6 +441,9 @@ class glButton(glGuiControl):
 		if self._hidden:
 			return 0, 0
 		if self._buttonSize is not None:
+			if self._buttonSize > 0 and self._buttonSize < 1:
+				return self._base._buttonSize * self._buttonSize, self._base._buttonSize * self._buttonSize
+
 			return self._buttonSize, self._buttonSize
 		return self._base._buttonSize, self._base._buttonSize
 
@@ -570,11 +573,12 @@ class glRadioButton(glButton):
 		self._radioCallback(button)
 
 class glComboButton(glButton):
-	def __init__(self, parent, tooltip, defaultImageID, imageIDs, tooltips, pos, callback):
+	def __init__(self, parent, tooltip, defaultImageID, imageIDs, tooltips, pos, callback, stateCallback = None):
 		super(glComboButton, self).__init__(parent, defaultImageID, tooltip, pos, self._onComboOpenSelect)
 		self._imageIDs = imageIDs
 		self._tooltips = tooltips
 		self._comboCallback = callback
+		self._comboStateCallback = stateCallback
 		self._selection = 0
 		self._disabled = False
 
@@ -587,7 +591,11 @@ class glComboButton(glButton):
 	def draw(self):
 		if self._hidden:
 			return
+
+		if self._comboStateCallback is not None and self.hasFocus() != self._selected:
+			self._comboStateCallback(self.hasFocus())
 		self._selected = self.hasFocus()
+
 		super(glComboButton, self).draw()
 
 		bs = self._base._buttonSize / 1.3

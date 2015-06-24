@@ -5,10 +5,10 @@ import os
 if sys.platform.startswith('darwin'):
     from setuptools import setup
 
-    version = os.environ['BUILD_NAME']
+    version = os.environ['BUILD_VERSION']
 
     APP = ['Cura/cura.py']
-    DATA_FILES = ['Cura/LICENSE', 'resources/images', 'resources/meshes', 'resources/example', 'resources/firmware', 'resources/locale', 'resources/machine_profiles', 'plugins']
+    DATA_FILES = ['Cura/LICENSE', 'resources/images', 'resources/meshes', 'resources/example', 'resources/firmware', 'resources/locale', 'resources/machine_profiles', 'resources/quickprint', 'plugins']
     PLIST = {
         u'CFBundleName': u'Cura',
         u'CFBundleShortVersionString': version,

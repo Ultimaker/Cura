@@ -19,18 +19,24 @@ class engineResultView(object):
 		self._parent = parent
 		self._result = None
 		self._enabled = False
+		self._singleLayer = False
 		self._gcodeLoadProgress = 0
 		self._resultLock = threading.Lock()
 		self._layerVBOs = []
 		self._layer20VBOs = []
 
-		self.layerSelect = openglGui.glSlider(self._parent, 10000, 0, 1, (-1,-2), lambda : self._parent.QueueRefresh())
+		self.layerSelect = openglGui.glSlider(self._parent, 10000, 1, 1, (-1,-2), lambda : self._parent.QueueRefresh())
+		self.singleLayerToggle = openglGui.glButton(self._parent, 27, _("Single Layer"), (-1.1,-1.4), self.OnSingleLayerToggle, 0.75) #stay at 75% size of the base size
 
 	def setResult(self, result):
 		if self._result == result:
 			return
 		if result is None:
-			self.setEnabled(False)
+			self._singleLayer = False
+			self.layerSelect.setHidden(True)
+			self.singleLayerToggle.setHidden(True)
+		else:
+			self.setEnabled(self._enabled)
 
 		self._resultLock.acquire()
 		self._result = result
@@ -46,9 +52,19 @@ class engineResultView(object):
 		self._layer20VBOs = []
 		self._resultLock.release()
 
+	def OnSingleLayerToggle(self, button):
+		self._singleLayer = not self._singleLayer
+		if self._singleLayer:
+			self.singleLayerToggle._tooltip = "Multi Layer"
+		else:
+			self.singleLayerToggle._tooltip = "Single Layer"
+
 	def setEnabled(self, enabled):
 		self._enabled = enabled
+		self._singleLayer = False
 		self.layerSelect.setHidden(not enabled)
+		self.singleLayerToggle.setHidden(not enabled)
+		
 
 	def _gcodeLoadCallback(self, result, progress):
 		if result != self._result:
@@ -82,7 +98,7 @@ class engineResultView(object):
 		layerNr = self.layerSelect.getValue()
 		if layerNr == self.layerSelect.getMaxValue() and result is not None and len(result._polygons) > 0:
 			layerNr = max(layerNr, len(result._polygons))
-		if len(result._polygons) > layerNr-1 and 'inset0' in result._polygons[layerNr-1] and len(result._polygons[layerNr-1]['inset0']) > 0 and len(result._polygons[layerNr-1]['inset0'][0]) > 0:
+		if result is not None and len(result._polygons) > layerNr-1 and 'inset0' in result._polygons[layerNr-1] and len(result._polygons[layerNr-1]['inset0']) > 0 and len(result._polygons[layerNr-1]['inset0'][0]) > 0:
 			viewZ = result._polygons[layerNr-1]['inset0'][0][0][2]
 		else:
 			viewZ = (layerNr - 1) * profile.getProfileSettingFloat('layer_height') + profile.getProfileSettingFloat('bottom_thickness')
@@ -92,8 +108,8 @@ class engineResultView(object):
 			('inset0',     'WALL-OUTER', [1,0,0,1]),
 			('insetx',     'WALL-INNER', [0,1,0,1]),
 			('openoutline', None,        [1,0,0,1]),
-			('skin',       'FILL',       [1,1,0,1]),
-			('infill',      None,        [1,1,0,1]),
+			('skin',       'SKIN',       [1,1,0,1]),
+			('infill',     'FILL',       [1,1,0,1]),
 			('support',    'SUPPORT',    [0,1,1,1]),
 			('skirt',      'SKIRT',      [0,1,1,1]),
 			('outline',     None,        [0,0,0,1])
@@ -124,8 +140,10 @@ class engineResultView(object):
 											polygons += result._polygons[n + i][typeName]
 									layerVBOs[typeName] = self._polygonsToVBO_lines(polygons)
 									generatedVBO = True
-								glColor4f(color[0]*0.5,color[1]*0.5,color[2]*0.5,color[3])
-								layerVBOs[typeName].render()
+
+								if not self._singleLayer or n == layerNr - 1:
+									glColor4f(color[0]*0.5,color[1]*0.5,color[2]*0.5,color[3])
+									layerVBOs[typeName].render()
 					n -= 20
 				else:
 					c = 1.0 - ((layerNr - n) - 1) * 0.05
@@ -139,8 +157,10 @@ class engineResultView(object):
 								continue
 							if 'GCODE-' + typeName not in layerVBOs:
 								layerVBOs['GCODE-' + typeName] = self._gcodeToVBO_quads(gcodeLayers[n+1:n+2], typeName)
-							glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
-							layerVBOs['GCODE-' + typeName].render()
+
+							if not self._singleLayer or n == layerNr - 1:
+								glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
+								layerVBOs['GCODE-' + typeName].render()
 
 						if n == layerNr - 1:
 							if 'GCODE-MOVE' not in layerVBOs:
@@ -153,8 +173,10 @@ class engineResultView(object):
 							if typeName in polygons:
 								if typeName not in layerVBOs:
 									layerVBOs[typeName] = self._polygonsToVBO_lines(polygons[typeName])
-								glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
-								layerVBOs[typeName].render()
+
+								if not self._singleLayer or n == layerNr - 1:
+									glColor4f(color[0]*c,color[1]*c,color[2]*c,color[3])
+									layerVBOs[typeName].render()
 					n -= 1
 		glPopMatrix()
 		if generatedVBO:

@@ -9,6 +9,10 @@ from Cura.util import profile
 from Cura.util import pluginInfo
 from Cura.util import explorer
 
+class ListBoxEnh(wx.ListBox):
+	def GetValue(self):
+		return wx.ListBox.GetSelection(self)
+
 class pluginPanel(wx.Panel):
 	def __init__(self, parent, callback):
 		wx.Panel.__init__(self, parent,-1)
@@ -93,15 +97,33 @@ class pluginPanel(wx.Panel):
 		pluginPanel.paramCtrls = {}
 		i = 0
 		for param in plugin.getParams():
-			value = param['default']
+			if param['type'].lower() == 'bool': #check for type bool in plugin
+				if param['default'].lower() in ["true","false"]:
+					value = param['default'].lower()=="true" #sets default 'true'
+				else:
+					value = int(param['default'])
+			elif param['type'].lower() == 'list': #check for 'type' list in plugin
+				ListOfItems = param['default'].split(',') #prepares selection entries
+				value = 0 #sets default selection first entry
+			else:
+				value = param['default']
 			if param['name'] in pluginConfig['params']:
 				value = pluginConfig['params'][param['name']]
-
-			ctrl = wx.TextCtrl(pluginPanel, -1, value)
 			s.Add(wx.StaticText(pluginPanel, -1, param['description']), pos=(3+i,0), span=(1,2), flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER_VERTICAL,border=3)
-			s.Add(ctrl, pos=(3+i,2), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
-
-			ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
+			if param['type'].lower() == 'bool': #checks for type boolean, displays checkbox and sets stored value
+				ctrl = wx.CheckBox(pluginPanel, -1, "")
+				ctrl.SetValue(value in {"TRUE",True,1})
+				s.Add(ctrl, pos=(3+i,2), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
+				ctrl.Bind(wx.EVT_CHECKBOX, self.OnSettingChange) #bind the checkbox event to the same method as for the standard text boxes
+			elif param['type'].lower() == 'list': #checks for 'type' list, displays listbox and sets stored value (integer)
+				ctrl = ListBoxEnh(pluginPanel, -1, wx.DefaultPosition, (-1,(wx.SystemSettings.GetFont(wx.SYS_ANSI_VAR_FONT).GetPixelSize()[1]+1)*len(ListOfItems)+6), ListOfItems)
+				ctrl.Select(value)
+				s.Add(ctrl, pos=(3+i,2), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
+				ctrl.Bind(wx.EVT_LISTBOX, self.OnSettingChange) #bind the listbox event to the same method as for the standard text boxes (derived class necessary due to usage of SetValue method)
+			else: #standard text box
+				ctrl = wx.TextCtrl(pluginPanel, -1, value)
+				s.Add(ctrl, pos=(3+i,2), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
+				ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
 
 			pluginPanel.paramCtrls[param['name']] = ctrl
 
@@ -125,7 +147,10 @@ class pluginPanel(wx.Panel):
 		for panel in self.panelList:
 			idx = self.panelList.index(panel)
 			for k in panel.paramCtrls.keys():
-				self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
+				if type(panel.paramCtrls[k].GetValue()) == bool:
+					self.pluginConfig[idx]['params'][k] = int(panel.paramCtrls[k].GetValue())
+				else:
+					self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
 		pluginInfo.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
@@ -177,3 +202,14 @@ class pluginPanel(wx.Panel):
 		if not os.path.exists(pluginInfo.getPluginBasePaths()[0]):
 			os.mkdir(pluginInfo.getPluginBasePaths()[0])
 		explorer.openExplorerPath(pluginInfo.getPluginBasePaths()[0])
+
+	def GetActivePluginCount(self):
+		pluginCount = 0
+		for pluginConfig in self.pluginConfig:
+			self._buildPluginPanel(pluginConfig)
+
+			for pluginTest in self.pluginList:
+				if pluginTest.getFilename() == pluginConfig['filename']:
+					pluginCount += 1
+
+		return pluginCount

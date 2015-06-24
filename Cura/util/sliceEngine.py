@@ -8,19 +8,18 @@ import time
 import math
 import numpy
 import os
-import warnings
 import threading
 import traceback
 import platform
-import sys
 import urllib
 import urllib2
 import hashlib
 import socket
 import struct
 import errno
-import cStringIO as StringIO
+import inspect
 
+from Cura.util.bigDataStorage import BigDataStorage
 from Cura.util import profile
 from Cura.util import pluginInfo
 from Cura.util import version
@@ -31,20 +30,24 @@ def getEngineFilename():
 		Finds and returns the path to the current engine executable. This is OS depended.
 	:return: The full path to the engine executable.
 	"""
+	base_search_path = os.path.dirname(inspect.getfile(getEngineFilename))
+	search_filename = 'CuraEngine'
 	if platform.system() == 'Windows':
+		search_filename += '.exe'
 		if version.isDevVersion() and os.path.exists('C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'):
 			return 'C:/Software/Cura_SteamEngine/_bin/Release/Cura_SteamEngine.exe'
-		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine.exe'))
-	if hasattr(sys, 'frozen'):
-		return os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../..', 'CuraEngine'))
+	for n in xrange(0, 10):
+		full_filename = os.path.abspath(os.path.join(base_search_path, '/'.join(['..'] * n), search_filename))
+		if os.path.isfile(full_filename):
+			return full_filename
+		full_filename = os.path.abspath(os.path.join(base_search_path, '/'.join(['..'] * n), 'CuraEngine', search_filename))
+		if os.path.isfile(full_filename):
+			return full_filename
 	if os.path.isfile('/usr/bin/CuraEngine'):
 		return '/usr/bin/CuraEngine'
 	if os.path.isfile('/usr/local/bin/CuraEngine'):
 		return '/usr/local/bin/CuraEngine'
-	tempPath = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'CuraEngine'))
-	if os.path.isdir(tempPath):
-		tempPath = os.path.join(tempPath,'CuraEngine')
-	return tempPath
+	return ''
 
 class EngineResult(object):
 	"""
@@ -53,7 +56,7 @@ class EngineResult(object):
 	"""
 	def __init__(self):
 		self._engineLog = []
-		self._gcodeData = StringIO.StringIO()
+		self._gcodeData = BigDataStorage()
 		self._polygons = []
 		self._replaceInfo = {}
 		self._success = False
@@ -68,9 +71,12 @@ class EngineResult(object):
 
 	def getFilamentWeight(self, e=0):
 		#Calculates the weight of the filament in kg
-		radius = float(profile.getProfileSetting('filament_diameter')) / 2
-		volumeM3 = (self._filamentMM[e] * (math.pi * radius * radius)) / (1000*1000*1000)
-		return volumeM3 * profile.getPreferenceFloat('filament_physical_density')
+		try:
+			radius = float(profile.getProfileSetting('filament_diameter')) / 2
+			volumeM3 = (self._filamentMM[e] * (math.pi * radius * radius)) / (1000*1000*1000)
+			return volumeM3 * profile.getPreferenceFloat('filament_physical_density')
+		except:
+			return 0.0
 
 	def getFilamentCost(self, e=0):
 		cost_kg = profile.getPreferenceFloat('filament_cost_kg')
@@ -87,31 +93,29 @@ class EngineResult(object):
 		if self._printTimeSeconds is None:
 			return ''
 		if int(self._printTimeSeconds / 60 / 60) < 1:
-			return '%d minutes' % (int(self._printTimeSeconds / 60) % 60)
+			return _('%d minutes') % (int(self._printTimeSeconds / 60) % 60)
 		if int(self._printTimeSeconds / 60 / 60) == 1:
-			return '%d hour %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
-		return '%d hours %d minutes' % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
+			return _('%d hour %d minutes') % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
+		return _('%d hours %d minutes') % (int(self._printTimeSeconds / 60 / 60), int(self._printTimeSeconds / 60) % 60)
 
 	def getFilamentAmount(self, e=0):
 		if self._filamentMM[e] == 0.0:
 			return None
-		return '%0.2f meter %0.0f gram' % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
+		return _('%0.2f meter %0.0f gram') % (float(self._filamentMM[e]) / 1000.0, self.getFilamentWeight(e) * 1000.0)
+
+	def getFilamentAmountMeters(self, e=0):
+		return float(self._filamentMM[e]) / 1000.0
 
 	def getLog(self):
 		return self._engineLog
 
 	def getGCode(self):
-		data = self._gcodeData.getvalue()
-		if len(self._replaceInfo) > 0:
-			block0 = data[0:2048]
-			for k, v in self._replaceInfo.items():
-				v = (v + ' ' * len(k))[:len(k)]
-				block0 = block0.replace(k, v)
-			return block0 + data[2048:]
-		return data
+		self._gcodeData.seekStart()
+		return self._gcodeData
 
 	def setGCode(self, gcode):
-		self._gcodeData = StringIO.StringIO(gcode)
+		self._gcodeData = BigDataStorage()
+		self._gcodeData.write(gcode)
 		self._replaceInfo = {}
 
 	def addLog(self, line):
@@ -119,6 +123,12 @@ class EngineResult(object):
 
 	def setHash(self, hash):
 		self._modelHash = hash
+
+	def addReplaceTag(self, key, value):
+		self._replaceInfo[key] = value
+
+	def applyReplaceTags(self):
+		self._gcodeData.replaceAtStart(self._replaceInfo)
 
 	def setFinished(self, result):
 		self._finished = result
@@ -131,7 +141,7 @@ class EngineResult(object):
 			return None
 		if self._gcodeInterpreter.layerList is None and self._gcodeLoadThread is None:
 			self._gcodeInterpreter.progressCallback = self._gcodeInterpreterCallback
-			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData))
+			self._gcodeLoadThread = threading.Thread(target=lambda : self._gcodeInterpreter.load(self._gcodeData.clone()))
 			self._gcodeLoadCallback = loadCallback
 			self._gcodeLoadThread.daemon = True
 			self._gcodeLoadThread.start()
@@ -155,9 +165,11 @@ class EngineResult(object):
 			'preferences': self._preferencesString,
 			'modelhash': self._modelHash,
 			'version': version.getVersion(),
+			'printtime': self._printTimeSeconds,
+			'filament': ','.join(map(str, self._filamentMM)),
 		}
 		try:
-			f = urllib2.urlopen("https://www.youmagine.com/curastats/", data = urllib.urlencode(data), timeout = 1)
+			f = urllib2.urlopen("https://stats.youmagine.com/curastats/slice", data = urllib.urlencode(data), timeout = 1)
 			f.read()
 			f.close()
 		except:
@@ -182,19 +194,19 @@ class Engine(object):
 		self._objCount = 0
 		self._result = None
 
+		self._engine_executable = getEngineFilename()
 		self._serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self._serverPortNr = 0xC20A
-		while True:
+		for potential_port in xrange(0xC20A, 0xFFFF):
+			self._serverPortNr = potential_port
 			try:
 				self._serversocket.bind(('127.0.0.1', self._serverPortNr))
-			except:
-				print "Failed to listen on port: %d" % (self._serverPortNr)
-				self._serverPortNr += 1
-				if self._serverPortNr > 0xFFFF:
-					print "Failed to listen on any port..."
-					break
-			else:
 				break
+			except:
+				print("Failed to listen on port: %d" % (self._serverPortNr))
+		else:
+			print("Failed to listen on any port, this is a fatal error")
+			exit(10)
 		thread = threading.Thread(target=self._socketListenThread)
 		thread.daemon = True
 		thread.start()
@@ -262,6 +274,7 @@ class Engine(object):
 
 	def cleanup(self):
 		self.abortEngine()
+		self.wait()
 		self._serversocket.close()
 
 	def abortEngine(self):
@@ -270,9 +283,6 @@ class Engine(object):
 				self._process.terminate()
 			except:
 				pass
-		if self._thread is not None:
-			self._thread.join()
-		self._thread = None
 
 	def wait(self):
 		if self._thread is not None:
@@ -281,9 +291,23 @@ class Engine(object):
 	def getResult(self):
 		return self._result
 
-	def runEngine(self, scene):
+	def runEngine(self, scene, overrides = None):
 		if len(scene.objects()) < 1:
 			return
+		self._thread = threading.Thread(target=self._runEngine, args=(scene, overrides, self._thread, pluginInfo.getPostProcessPluginConfig()))
+		self._thread.daemon = True
+		self._thread.start()
+
+	def _runEngine(self, scene, overrides, old_thread, pluginConfig):
+		if old_thread is not None:
+			if self._process is not None:
+				try:
+					self._process.terminate()
+				except:
+					pass
+			old_thread.join()
+		self._callback(-1.0)
+
 		extruderCount = 1
 		for obj in scene.objects():
 			if scene.checkPlatform(obj):
@@ -291,10 +315,22 @@ class Engine(object):
 
 		extruderCount = max(extruderCount, profile.minimalExtruderCount())
 
-		commandList = [getEngineFilename(), '-v', '-p']
-		for k, v in self._engineSettings(extruderCount).iteritems():
+		if overrides is not None:
+			for k, v in overrides.items():
+				profile.setTempOverride(k, v)
+		commandList = [self._engine_executable, '-v', '-p']
+		try:
+			engineSettings = self._engineSettings(extruderCount)
+		except:
+			self._filamentMM = [0.0] * 4
+			self._callback(-1.0)
+			return
+
+		for k, v in engineSettings.iteritems():
 			commandList += ['-s', '%s=%s' % (k, str(v))]
 		commandList += ['-g', '%d' % (self._serverPortNr)]
+		if overrides is not None:
+			profile.resetTempOverride()
 		self._objCount = 0
 		engineModelData = []
 		hash = hashlib.sha512()
@@ -355,25 +391,17 @@ class Engine(object):
 				commandList += ['$' * len(obj._meshList)]
 				self._objCount += 1
 		modelHash = hash.hexdigest()
-		if self._objCount > 0:
-			self._thread = threading.Thread(target=self._watchProcess, args=(commandList, self._thread, engineModelData, modelHash))
-			self._thread.daemon = True
-			self._thread.start()
+		if self._objCount < 1:
+			return
+		if self._thread != threading.currentThread():
+			return
 
-	def _watchProcess(self, commandList, oldThread, engineModelData, modelHash):
-		if oldThread is not None:
-			if self._process is not None:
-				self._process.terminate()
-			oldThread.join()
-		self._callback(-1.0)
 		self._modelData = engineModelData
 		try:
 			self._process = self._runEngineProcess(commandList)
 		except OSError:
 			traceback.print_exc()
 			return
-		if self._thread != threading.currentThread():
-			self._process.terminate()
 
 		self._result = EngineResult()
 		self._result.addLog('Running: %s' % (' '.join(commandList)))
@@ -384,25 +412,45 @@ class Engine(object):
 		logThread.daemon = True
 		logThread.start()
 
-		data = self._process.stdout.read(4096)
-		while len(data) > 0:
-			self._result._gcodeData.write(data)
+		try:
 			data = self._process.stdout.read(4096)
+			while len(data) > 0:
+				if self._thread != threading.currentThread():
+					self._process.terminate()
+				self._result._gcodeData.write(data)
+				data = self._process.stdout.read(4096)
 
-		returnCode = self._process.wait()
-		logThread.join()
-		if returnCode == 0:
-			pluginError = pluginInfo.runPostProcessingPlugins(self._result)
-			if pluginError is not None:
-				print pluginError
-				self._result.addLog(pluginError)
-			self._result.setFinished(True)
-			self._callback(1.0)
-		else:
-			for line in self._result.getLog():
-				print line
+			returnCode = self._process.wait()
+			logThread.join()
+			self._result.addLog("Slicer process returned : %d" % returnCode)
+			if returnCode == 0:
+				try:
+					self._result.addReplaceTag('#P_TIME#', self._result.getPrintTime())
+					self._result.addReplaceTag('#F_AMNT#', self._result.getFilamentAmountMeters(0))
+					self._result.addReplaceTag('#F_WGHT#', math.floor(self._result.getFilamentWeight(0) * 1000.0))
+					self._result.addReplaceTag('#F_COST#', self._result.getFilamentCost(0))
+					self._result.applyReplaceTags()
+				except:
+					pass
+				plugin_error = pluginInfo.runPostProcessingPlugins(self._result, pluginConfig)
+				if plugin_error is not None:
+					self._result.addLog(plugin_error)
+				self._result.setFinished(True)
+				self._callback(1.0)
+			else:
+				self._callback(-1.0)
+			self._process = None
+		except MemoryError:
+			traceback.print_exc()
+			self._result.addLog("MemoryError")
 			self._callback(-1.0)
-		self._process = None
+		finally:
+			try:
+				with open(os.path.join(profile.getBasePath(), 'engine.log'), "w") as f:
+					for line in self._result.getLog():
+						f.write(line + "\n")
+			except:
+				pass
 
 	def _watchStderr(self, stderr):
 		objectNr = 0
@@ -437,7 +485,7 @@ class Engine(object):
 					radius = profile.getProfileSettingFloat('filament_diameter') / 2.0
 					self._result._filamentMM[1] /= (math.pi * radius * radius)
 			elif line.startswith('Replace:'):
-				self._result._replaceInfo[line.split(':')[1].strip()] = line.split(':')[2].strip()
+				self._result.addReplaceTag(line.split(':')[1].strip(), line.split(':')[2].strip())
 			else:
 				self._result.addLog(line)
 			line = stderr.readline()
@@ -460,6 +508,7 @@ class Engine(object):
 			'infillSpeed': int(profile.getProfileSettingFloat('infill_speed')) if int(profile.getProfileSettingFloat('infill_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
 			'inset0Speed': int(profile.getProfileSettingFloat('inset0_speed')) if int(profile.getProfileSettingFloat('inset0_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
 			'insetXSpeed': int(profile.getProfileSettingFloat('insetx_speed')) if int(profile.getProfileSettingFloat('insetx_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
+			'skinSpeed': int(profile.getProfileSettingFloat('solidarea_speed')) if int(profile.getProfileSettingFloat('solidarea_speed')) > 0 else int(profile.getProfileSettingFloat('print_speed')),
 			'moveSpeed': int(profile.getProfileSettingFloat('travel_speed')),
 			'fanSpeedMin': int(profile.getProfileSettingFloat('fan_speed')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
 			'fanSpeedMax': int(profile.getProfileSettingFloat('fan_speed_max')) if profile.getProfileSetting('fan_enabled') == 'True' else 0,
@@ -475,7 +524,6 @@ class Engine(object):
 			'retractionAmountExtruderSwitch': int(profile.getProfileSettingFloat('retraction_dual_amount') * 1000),
 			'retractionZHop': int(profile.getProfileSettingFloat('retraction_hop') * 1000),
 			'minimalExtrusionBeforeRetraction': int(profile.getProfileSettingFloat('retraction_minimal_extrusion') * 1000),
-			'enableCombing': 1 if profile.getProfileSetting('retraction_combing') == 'True' else 0,
 			'multiVolumeOverlap': int(profile.getProfileSettingFloat('overlap_dual') * 1000),
 			'objectSink': max(0, int(profile.getProfileSettingFloat('object_sink') * 1000)),
 			'minimalLayerTime': int(profile.getProfileSettingFloat('cool_min_layer_time')),
@@ -492,12 +540,19 @@ class Engine(object):
 			'extruderOffset[2].Y': int(profile.getMachineSettingFloat('extruder_offset_y2') * 1000),
 			'extruderOffset[3].X': int(profile.getMachineSettingFloat('extruder_offset_x3') * 1000),
 			'extruderOffset[3].Y': int(profile.getMachineSettingFloat('extruder_offset_y3') * 1000),
+			'zOffset': int(profile.getMachineSettingFloat('extruder_z_offset') * 1000),
 			'fixHorrible': 0,
 		}
 		fanFullHeight = int(profile.getProfileSettingFloat('fan_full_height') * 1000)
 		settings['fanFullOnLayerNr'] = (fanFullHeight - settings['initialLayerThickness'] - 1) / settings['layerThickness'] + 1
 		if settings['fanFullOnLayerNr'] < 0:
 			settings['fanFullOnLayerNr'] = 0
+		if profile.getProfileSetting('retraction_combing') == 'All':
+			settings['enableCombing'] = 1
+		elif profile.getProfileSetting('retraction_combing') == 'No Skin':
+			settings['enableCombing'] = 2
+		else:
+			settings['enableCombing'] = 0
 		if profile.getProfileSetting('support_type') == 'Lines':
 			settings['supportType'] = 1
 
@@ -511,6 +566,10 @@ class Engine(object):
 			settings['upSkinCount'] = 10000
 		else:
 			settings['sparseInfillLineDistance'] = int(100 * profile.calculateEdgeWidth() * 1000 / profile.getProfileSettingFloat('fill_density'))
+		if profile.getProfileSetting('perimeter_before_infill') == 'True':
+			settings['perimeterBeforeInfill'] = 1
+		else:
+			settings['perimeterBeforeInfill'] = 0
 		if profile.getProfileSetting('platform_adhesion') == 'Brim':
 			settings['skirtDistance'] = 0
 			settings['skirtLineCount'] = int(profile.getProfileSettingFloat('brim_line_count'))
@@ -524,12 +583,13 @@ class Engine(object):
 			settings['raftInterfaceThickness'] = int(profile.getProfileSettingFloat('raft_interface_thickness') * 1000)
 			settings['raftInterfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000)
 			settings['raftInterfaceLineSpacing'] = int(profile.getProfileSettingFloat('raft_interface_linewidth') * 1000 * 2.0)
-			settings['raftAirGapLayer0'] = int(profile.getProfileSettingFloat('raft_airgap') * 1000)
+			settings['raftAirGapLayer0'] = int(profile.getProfileSettingFloat('raft_airgap') * 1000 + profile.getProfileSettingFloat('raft_airgap_all') * 1000)
+			settings['raftAirGap'] = int(profile.getProfileSettingFloat('raft_airgap_all') * 1000)
 			settings['raftBaseSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
-			settings['raftFanSpeed'] = 100
-			settings['raftSurfaceThickness'] = settings['raftInterfaceThickness']
-			settings['raftSurfaceLinewidth'] = int(profile.calculateEdgeWidth() * 1000)
-			settings['raftSurfaceLineSpacing'] = int(profile.calculateEdgeWidth() * 1000 * 0.9)
+			settings['raftFanSpeed'] = 0
+			settings['raftSurfaceThickness'] = int(profile.getProfileSettingFloat('raft_surface_thickness') * 1000)
+			settings['raftSurfaceLinewidth'] = int(profile.getProfileSettingFloat('raft_surface_linewidth') * 1000)
+			settings['raftSurfaceLineSpacing'] = int(profile.getProfileSettingFloat('raft_surface_linewidth') * 1000)
 			settings['raftSurfaceLayers'] = int(profile.getProfileSettingFloat('raft_surface_layers'))
 			settings['raftSurfaceSpeed'] = int(profile.getProfileSettingFloat('bottom_layer_speed'))
 		else:
@@ -554,7 +614,7 @@ class Engine(object):
 			settings['gcodeFlavor'] = 2
 		elif profile.getMachineSetting('gcode_flavor') == 'BFB':
 			settings['gcodeFlavor'] = 3
-		elif profile.getMachineSetting('gcode_flavor') == 'Mach3':
+		elif profile.getMachineSetting('gcode_flavor') == 'Mach3/LinuxCNC':
 			settings['gcodeFlavor'] = 4
 		elif profile.getMachineSetting('gcode_flavor') == 'RepRap (Volumetric)':
 			settings['gcodeFlavor'] = 5

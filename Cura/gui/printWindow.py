@@ -6,10 +6,11 @@ import time
 import sys
 import os
 import ctypes
+import subprocess
 
 #TODO: This does not belong here!
 if sys.platform.startswith('win'):
-	def preventComputerFromSleeping(prevent):
+	def preventComputerFromSleeping(frame, prevent):
 		"""
 		Function used to prevent the computer from going into sleep mode.
 		:param prevent: True = Prevent the system from going to sleep from this point on.
@@ -34,7 +35,7 @@ elif sys.platform.startswith('darwin'):
 	frameworkPath=objc.pathForFramework("/System/Library/Frameworks/IOKit.framework"),
 	globals=globals())
 	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
-	def preventComputerFromSleeping(prevent):
+	def preventComputerFromSleeping(frame, prevent):
 		if prevent:
 			success, preventComputerFromSleeping.assertionID = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn, "Cura is printing", None)
 			if success != kIOReturnSuccess:
@@ -44,8 +45,13 @@ elif sys.platform.startswith('darwin'):
 				IOPMAssertionRelease(preventComputerFromSleeping.assertionID)
 				preventComputerFromSleeping.assertionID = None
 else:
-	def preventComputerFromSleeping(prevent):
-		pass
+	def preventComputerFromSleeping(frame, prevent):
+                if os.path.isfile("/usr/bin/xdg-screensaver"):
+                        try:
+                                cmd = ['xdg-screensaver', 'suspend' if prevent else 'resume', str(frame.GetHandle())]
+                                subprocess.call(cmd)
+                        except:
+                                pass
 
 class printWindowPlugin(wx.Frame):
 	def __init__(self, parent, printerConnection, filename):
@@ -247,12 +253,12 @@ class printWindowPlugin(wx.Frame):
 
 	def OnClose(self, e):
 		if self._printerConnection.hasActiveConnection():
-			if self._printerConnection.isPrinting():
+			if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
 				pass #TODO: Give warning that the close will kill the print.
 			self._printerConnection.closeActiveConnection()
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
 		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
-		preventComputerFromSleeping(False)
+		preventComputerFromSleeping(self, False)
 		self.Destroy()
 
 	def OnTermEnterLine(self, e):
@@ -294,21 +300,28 @@ class printWindowPlugin(wx.Frame):
 		for button in self._buttonList:
 			if button.command == self.script_connect:
 				button.Show(self._printerConnection.hasActiveConnection())
-				button.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
+				button.Enable(not self._printerConnection.isActiveConnectionOpen() and \
+							  not self._printerConnection.isActiveConnectionOpening())
 			elif button.command == self.script_pausePrint:
 				button.Show(self._printerConnection.hasPause())
-				if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-					button.Enable(self._printerConnection.isPrinting() or self._printerConnection.isPaused())
+				if not self._printerConnection.hasActiveConnection() or \
+				   self._printerConnection.isActiveConnectionOpen():
+					button.Enable(self._printerConnection.isPrinting() or \
+								  self._printerConnection.isPaused())
 				else:
 					button.Enable(False)
 			elif button.command == self.script_startPrint:
-				if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-					button.Enable(not self._printerConnection.isPrinting())
+				if not self._printerConnection.hasActiveConnection() or \
+				   self._printerConnection.isActiveConnectionOpen():
+					button.Enable(not self._printerConnection.isPrinting() and \
+						  not self._printerConnection.isPaused())
 				else:
 					button.Enable(False)
 			elif button.command == self.script_cancelPrint:
-				if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-					button.Enable(self._printerConnection.isPrinting())
+				if not self._printerConnection.hasActiveConnection() or \
+				   self._printerConnection.isActiveConnectionOpen():
+					button.Enable(self._printerConnection.isPrinting() or \
+								  self._printerConnection.isPaused())
 				else:
 					button.Enable(False)
 			elif button.command == self.script_showErrorLog:
@@ -334,12 +347,13 @@ class printWindowPlugin(wx.Frame):
 			return
 		self._lastUpdateTime = t
 
-		if extraInfo is not None:
+		if extraInfo is not None and len(extraInfo) > 0:
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
+		isPrinting = connection.isPrinting() or connection.isPaused()
 		if self._progressBar is not None:
-			if connection.isPrinting():
+			if isPrinting:
 				self._progressBar.SetValue(connection.getPrintProgress() * 1000)
 			else:
 				self._progressBar.SetValue(0)
@@ -353,9 +367,9 @@ class printWindowPlugin(wx.Frame):
 			self._infoText.SetLabel(info)
 		else:
 			self.SetTitle(info.replace('\n', ', '))
-		if connection.isPrinting() != self._isPrinting:
-			self._isPrinting = connection.isPrinting()
-			preventComputerFromSleeping(self._isPrinting)
+		if isPrinting != self._isPrinting:
+			self._isPrinting = isPrinting
+			preventComputerFromSleeping(self, self._isPrinting)
 
 class printWindowBasic(wx.Frame):
 	"""
@@ -444,12 +458,12 @@ class printWindowBasic(wx.Frame):
 
 	def OnClose(self, e):
 		if self._printerConnection.hasActiveConnection():
-			if self._printerConnection.isPrinting():
+			if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
 				pass #TODO: Give warning that the close will kill the print.
 			self._printerConnection.closeActiveConnection()
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
 		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
-		preventComputerFromSleeping(False)
+		preventComputerFromSleeping(self, False)
 		self.Destroy()
 
 	def OnConnect(self, e):
@@ -481,11 +495,12 @@ class printWindowBasic(wx.Frame):
 			return
 		self._lastUpdateTime = t
 
-		if extraInfo is not None:
+		if extraInfo is not None and len(extraInfo) > 0:
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
-		if connection.isPrinting():
+		isPrinting = connection.isPrinting() or connection.isPaused()
+		if isPrinting:
 			self.progress.SetValue(connection.getPrintProgress() * 1000)
 		else:
 			self.progress.SetValue(0)
@@ -497,17 +512,21 @@ class printWindowBasic(wx.Frame):
 			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
 		info += '\n\n'
 		self.statsText.SetLabel(info)
-		if connection.isPrinting() != self._isPrinting:
-			self._isPrinting = connection.isPrinting()
-			preventComputerFromSleeping(self._isPrinting)
+		if isPrinting != self._isPrinting:
+			self._isPrinting = isPrinting
+			preventComputerFromSleeping(self, self._isPrinting)
 
+
+	def _addTermLog(self, msg):
+		pass
 
 	def _updateButtonStates(self):
 		self.connectButton.Show(self._printerConnection.hasActiveConnection())
 		self.connectButton.Enable(not self._printerConnection.isActiveConnectionOpen() and not self._printerConnection.isActiveConnectionOpening())
 		self.pauseButton.Show(self._printerConnection.hasPause())
 		if not self._printerConnection.hasActiveConnection() or self._printerConnection.isActiveConnectionOpen():
-			self.printButton.Enable(not self._printerConnection.isPrinting())
+			self.printButton.Enable(not self._printerConnection.isPrinting() and \
+									not self._printerConnection.isPaused())
 			self.pauseButton.Enable(self._printerConnection.isPrinting())
 			self.cancelButton.Enable(self._printerConnection.isPrinting())
 		else:
@@ -647,7 +666,7 @@ class TemperatureGraph(wx.Panel):
 
 class LogWindow(wx.Frame):
 	def __init__(self, logText):
-		super(LogWindow, self).__init__(None, title="Error log")
+		super(LogWindow, self).__init__(None, title=_("Error log"))
 		self.textBox = wx.TextCtrl(self, -1, logText, style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.TE_READONLY)
 		self.SetSize((500, 400))
 		self.Show(True)

@@ -209,7 +209,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				line = line[1].split(':', 1)
 				self._commState = int(line[0])
 				self._commStateString = line[1]
-				self._doCallback()
+				self._doCallback('')
 			elif line[0] == 'progress':
 				self._printProgress = int(line[1])
 				self._doCallback()

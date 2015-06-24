@@ -5,19 +5,21 @@ import os
 import platform
 import shutil
 import glob
+import subprocess
 import warnings
 
 try:
-    #Only try to import the _core to save import time
-    import wx._core
+	#Only try to import the _core to save import time
+	import wx._core
 except ImportError:
-    import wx
+	import wx
 
 
 class CuraApp(wx.App):
 	def __init__(self, files):
 		if platform.system() == "Windows" and not 'PYCHARM_HOSTED' in os.environ:
-			super(CuraApp, self).__init__(redirect=True, filename='output.txt')
+			from Cura.util import profile
+			super(CuraApp, self).__init__(redirect=True, filename=os.path.join(profile.getBasePath(), 'output_log.txt'))
 		else:
 			super(CuraApp, self).__init__(redirect=False)
 
@@ -25,7 +27,8 @@ class CuraApp(wx.App):
 		self.splash = None
 		self.loadFiles = files
 
-		self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
+		if platform.system() == "Darwin":
+			self.Bind(wx.EVT_ACTIVATE_APP, self.OnActivate)
 
 		if sys.platform.startswith('win'):
 			#Check for an already running instance, if another instance is running load files in there
@@ -78,10 +81,9 @@ class CuraApp(wx.App):
 		pass
 
 	def OnActivate(self, e):
-		if platform.system() == "Darwin":
-			if e.GetActive():
-				self.GetTopWindow().Raise()
-			e.Skip()
+		if e.GetActive():
+			self.GetTopWindow().Raise()
+		e.Skip()
 
 	def Win32SocketListener(self, port):
 		import socket
@@ -90,7 +92,10 @@ class CuraApp(wx.App):
 			sock.bind(("127.0.0.1", port))
 			while True:
 				data, addr = sock.recvfrom(2048)
-				self.mainWindow.OnDropFiles(data.split('\0'))
+				try:
+					wx.CallAfter(self.mainWindow.OnDropFiles, data.split('\0'))
+				except Exception as e:
+					warnings.warn("File at {p} cannot be read: {e}".format(p=data, e=str(e)))
 		except:
 			pass
 
@@ -110,21 +115,21 @@ class CuraApp(wx.App):
 		if profile.getMachineSetting('machine_type') == 'unknown':
 			try:
 				otherCuraInstalls = profile.getAlternativeBasePaths()
-				otherCuraInstalls.sort()
-				if len(otherCuraInstalls) > 0:
-					profile.loadPreferences(os.path.join(otherCuraInstalls[-1], 'preferences.ini'))
-					profile.loadProfile(os.path.join(otherCuraInstalls[-1], 'current_profile.ini'))
+				for path in otherCuraInstalls[::-1]:
+					try:
+						print 'Loading old settings from %s' % (path)
+						profile.loadPreferences(os.path.join(path, 'preferences.ini'))
+						profile.loadProfile(os.path.join(path, 'current_profile.ini'))
+						break
+					except:
+						import traceback
+						print traceback.print_exc()
 			except:
 				import traceback
 				print traceback.print_exc()
 
 		#If we haven't run it before, run the configuration wizard.
 		if profile.getMachineSetting('machine_type') == 'unknown':
-			otherCuraInstalls = profile.getAlternativeBasePaths()
-			otherCuraInstalls.sort()
-			if len(otherCuraInstalls) > 0:
-				profile.loadPreferences(os.path.join(otherCuraInstalls[-1], 'preferences.ini'))
-				profile.loadProfile(os.path.join(otherCuraInstalls[-1], 'current_profile.ini'))
 			#Check if we need to copy our examples
 			exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'Rocktopus.stl'))
 
@@ -132,7 +137,7 @@ class CuraApp(wx.App):
 			if self.splash is not None:
 				self.splash.Show(False)
 				self.splash = None
-			configWizard.configWizard()
+			configWizard.ConfigWizard()
 
 		if profile.getPreference('check_for_updates') == 'True':
 			newVersion = version.checkForNewerVersion()
@@ -154,6 +159,7 @@ class CuraApp(wx.App):
 		self.mainWindow.OnDropFiles(self.loadFiles)
 		if profile.getPreference('last_run_version') != version.getVersion(False):
 			profile.putPreference('last_run_version', version.getVersion(False))
+			profile.performVersionUpgrade()
 			#newVersionDialog.newVersionDialog().Show()
 
 		setFullScreenCapable(self.mainWindow)
@@ -162,14 +168,12 @@ class CuraApp(wx.App):
 			wx.CallAfter(self.StupidMacOSWorkaround)
 
 	def StupidMacOSWorkaround(self):
-		"""
-		On MacOS for some magical reason opening new frames does not work until you opened a new modal dialog and closed it.
-		If we do this from software, then, as if by magic, the bug which prevents opening extra frames is gone.
-		"""
-		dlg = wx.Dialog(None)
-		wx.PostEvent(dlg, wx.CommandEvent(wx.EVT_CLOSE.typeId))
-		dlg.ShowModal()
-		dlg.Destroy()
+		subprocess.Popen(['osascript', '-e', '''\
+		tell application "System Events"
+		set procName to name of first process whose unix id is %s
+		end tell
+		tell application procName to activate
+		''' % os.getpid()])
 
 if platform.system() == "Darwin": #Mac magic. Dragons live here. THis sets full screen options.
 	try:

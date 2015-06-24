@@ -1,8 +1,12 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+import ConfigParser as configparser
+import os.path
 
 from Cura.util import profile
+from Cura.util import resources
+from Cura.util.simpleModeSettings import SimpleModeSettings
 
 class simpleModePanel(wx.Panel):
 	"Main user interface window for Quickprint mode"
@@ -10,19 +14,27 @@ class simpleModePanel(wx.Panel):
 		super(simpleModePanel, self).__init__(parent)
 		self._callback = callback
 
-		#toolsMenu = wx.Menu()
-		#i = toolsMenu.Append(-1, 'Switch to Normal mode...')
-		#self.Bind(wx.EVT_MENU, self.OnNormalSwitch, i)
-		#self.menubar.Insert(1, toolsMenu, 'Normal mode')
+		self._print_profile_options = []
+		self._print_material_options = []
+		self._print_other_options = []
 
 		printTypePanel = wx.Panel(self)
-		self.printTypeHigh = wx.RadioButton(printTypePanel, -1, _("High quality print"), style=wx.RB_GROUP)
-		self.printTypeNormal = wx.RadioButton(printTypePanel, -1, _("Normal quality print"))
-		self.printTypeLow = wx.RadioButton(printTypePanel, -1, _("Fast low quality print"))
-		self.printTypeJoris = wx.RadioButton(printTypePanel, -1, _("Thin walled cup or vase"))
-		self.printTypeJoris.Hide()
+		for filename in resources.getSimpleModeProfiles():
+			cp = configparser.ConfigParser()
+			cp.read(filename)
+			base_filename = os.path.splitext(os.path.basename(filename))[0]
+			name = base_filename
+			if cp.has_option('info', 'name'):
+				name = cp.get('info', 'name')
+			button = wx.RadioButton(printTypePanel, -1, name, style=wx.RB_GROUP if len(self._print_profile_options) == 0 else 0)
+			button.base_filename = base_filename
+			button.filename = filename
+			self._print_profile_options.append(button)
+			if profile.getProfileSetting('simpleModeProfile') == base_filename:
+				button.SetValue(True)
 
 		printMaterialPanel = wx.Panel(self)
+<<<<<<< HEAD
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or \
 		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or \
 		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
@@ -32,27 +44,51 @@ class simpleModePanel(wx.Panel):
 		else:
 			self.printMaterialABS = wx.RadioButton(printMaterialPanel, -1, 'ABS', style=wx.RB_GROUP)
 		self.printMaterialPLA = wx.RadioButton(printMaterialPanel, -1, 'PLA')
+=======
+		for filename in resources.getSimpleModeMaterials():
+			cp = configparser.ConfigParser()
+			cp.read(filename)
+			base_filename = os.path.splitext(os.path.basename(filename))[0]
+			name = base_filename
+			if cp.has_option('info', 'name'):
+				name = cp.get('info', 'name')
+			button = wx.RadioButton(printMaterialPanel, -1, name, style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
+			button.base_filename = base_filename
+			button.filename = filename
+			self._print_material_options.append(button)
+			if profile.getProfileSetting('simpleModeMaterial') == base_filename:
+				button.SetValue(True)
+
+>>>>>>> devel
 		if profile.getMachineSetting('gcode_flavor') == 'UltiGCode':
 			printMaterialPanel.Show(False)
-		
-		self.printSupport = wx.CheckBox(self, -1, _("Print support structure"))
-		self.printBrim = wx.CheckBox(self, -1, _("Print Brim"))
+
+		for filename in resources.getSimpleModeOptions():
+			cp = configparser.ConfigParser()
+			cp.read(filename)
+			base_filename = os.path.splitext(os.path.basename(filename))[0]
+			name = base_filename
+			if cp.has_option('info', 'name'):
+				name = cp.get('info', 'name')
+			button = wx.CheckBox(self, -1, name)
+			button.base_filename = base_filename
+			button.filename = filename
+			self._print_other_options.append(button)
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
 
 		sb = wx.StaticBox(printTypePanel, label=_("Select a quickprint profile:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		boxsizer.Add(self.printTypeHigh)
-		boxsizer.Add(self.printTypeNormal)
-		boxsizer.Add(self.printTypeLow)
-		boxsizer.Add(self.printTypeJoris, border=5, flag=wx.TOP)
+		for button in self._print_profile_options:
+			boxsizer.Add(button)
 		printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		printTypePanel.GetSizer().Add(boxsizer, border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 		sizer.Add(printTypePanel, (0,0), flag=wx.EXPAND)
 
 		sb = wx.StaticBox(printMaterialPanel, label=_("Material:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+<<<<<<< HEAD
 		if profile.getMachineSetting('machine_type') == 'lulzbot_mini' or \
 		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_5' or \
 		   profile.getMachineSetting('machine_type') == 'lulzbot_TAZ_4' or \
@@ -60,12 +96,17 @@ class simpleModePanel(wx.Panel):
 			boxsizer.Add(self.printMaterialHIPS)
 		boxsizer.Add(self.printMaterialABS)
 		boxsizer.Add(self.printMaterialPLA)
+=======
+		for button in self._print_material_options:
+			boxsizer.Add(button)
+>>>>>>> devel
 		printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		printMaterialPanel.GetSizer().Add(boxsizer, border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 		sizer.Add(printMaterialPanel, (1,0), flag=wx.EXPAND)
 
 		sb = wx.StaticBox(self, label=_("Other:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+<<<<<<< HEAD
 		boxsizer.Add(self.printSupport)
 		boxsizer.Add(self.printBrim)
 		sizer.Add(boxsizer, (2,0), flag=wx.EXPAND)
@@ -660,6 +701,81 @@ M117 TAZ Ready.
 				put('platform_adhesion', 'Brim')
 				put('filament_flow', '107')
 				put('print_temperature', '245')
+=======
+		for button in self._print_other_options:
+			boxsizer.Add(button)
+		sizer.Add(boxsizer, (2,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
+
+		for button in self._print_profile_options:
+			button.Bind(wx.EVT_RADIOBUTTON, self._update)
+		for button in self._print_material_options:
+			button.Bind(wx.EVT_RADIOBUTTON, self._update)
+		for button in self._print_other_options:
+			button.Bind(wx.EVT_CHECKBOX, self._update)
+
+	def _update(self, e):
+		for button in self._print_profile_options:
+			if button.GetValue():
+				profile.putProfileSetting('simpleModeProfile', button.base_filename)
+		for button in self._print_material_options:
+			if button.GetValue():
+				profile.putProfileSetting('simpleModeMaterial', button.base_filename)
+		self._callback()
+
+	def getSettingOverrides(self):
+		settings = {}
+		for setting in profile.settingsList:
+			if setting.isProfile() or setting.isAlteration():
+				settings[setting.getName()] = setting.getDefault()
+
+		profile_setting = None
+		for button in self._print_profile_options:
+			if button.GetValue():
+				profile_setting = button.base_filename
+				break
+		material_setting = None
+		for button in self._print_material_options:
+			if button.GetValue():
+				material_setting = button.base_filename
+				break
+		other_settings = []
+		for button in self._print_other_options:
+			if button.GetValue():
+				other_settings.append(button.base_filename)
+
+		simple_settings = SimpleModeSettings.getSimpleSettings(profile_setting, material_setting, other_settings)
+		for setting in simple_settings.keys():
+			settings[setting] = simple_settings[setting]
+
+		for button in self._print_profile_options:
+			if button.GetValue():
+				cp = configparser.ConfigParser()
+				cp.read(button.filename)
+				for setting in profile.settingsList:
+					if setting.isProfile() or setting.isAlteration():
+						if cp.has_option('profile', setting.getName()):
+							settings[setting.getName()] = cp.get('profile', setting.getName())
+		if profile.getMachineSetting('gcode_flavor') != 'UltiGCode':
+			for button in self._print_material_options:
+				if button.GetValue():
+					cp = configparser.ConfigParser()
+					cp.read(button.filename)
+					for setting in profile.settingsList:
+						if setting.isProfile() or setting.isAlteration():
+							if cp.has_option('profile', setting.getName()):
+								settings[setting.getName()] = cp.get('profile', setting.getName())
+
+		for button in self._print_other_options:
+			if button.GetValue():
+				cp = configparser.ConfigParser()
+				cp.read(button.filename)
+				for setting in profile.settingsList:
+					if setting.isProfile() or setting.isAlteration():
+						if cp.has_option('profile', setting.getName()):
+							settings[setting.getName()] = cp.get('profile', setting.getName())
+
+		return settings
+>>>>>>> devel
 
 	def updateProfileToControls(self):
 		pass
