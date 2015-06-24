@@ -107,7 +107,7 @@ Section "Install Visual Studio 2010 Redistributable"
     File "vcredist_2010_20110908_x86.exe"
     
     IfSilent +2
-      ExecWait '"$INSTDIR\vcredist_2010_20110908_x86.exe" /silent /norestart'
+      ExecWait '"$INSTDIR\vcredist_2010_20110908_x86.exe" /q /norestart'
 
 SectionEnd
 
