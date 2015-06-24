@@ -319,6 +319,7 @@
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
                     "type": "boolean",
                     "default": true,
+                    "always_visible": true,
 
                     "children": {
                         "retraction_speed": {
