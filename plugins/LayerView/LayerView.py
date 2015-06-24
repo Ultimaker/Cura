@@ -39,6 +39,9 @@ class LayerView(View):
     def getMaxLayers(self):
         return self._max_layers
 
+    def resetLayerData(self):
+        self._current_layer_mesh = None
+
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
