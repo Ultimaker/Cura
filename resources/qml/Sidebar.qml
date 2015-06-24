@@ -8,14 +8,12 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-UM.AngledCornerRectangle {
+Rectangle {
     id: base;
 
     property Action addMachineAction;
     property Action configureMachinesAction;
     property alias saveAction: saveButton.saveAction;
-
-    cornerSize: UM.Theme.sizes.default_margin.width;
 
     color: UM.Theme.colors.sidebar;
 
@@ -41,7 +39,6 @@ UM.AngledCornerRectangle {
     ColumnLayout {
         anchors.fill: parent;
         anchors.topMargin: UM.Theme.sizes.default_margin.height;
-        anchors.bottomMargin: UM.Theme.sizes.window_margin.height;
 
         spacing: UM.Theme.sizes.default_margin.height;
 
@@ -75,7 +72,7 @@ UM.AngledCornerRectangle {
             property Item sidebar: base;
 
             onLoaded:
-            { 
+            {
                 if(item)
                 {
                     item.configureSettings = base.configureMachinesAction;
@@ -93,13 +90,11 @@ UM.AngledCornerRectangle {
 
         SaveButton {
             id: saveButton;
-            Layout.preferredWidth: base.width - UM.Theme.sizes.default_margin.width * 2;
-            Layout.preferredHeight: UM.Theme.sizes.button.height;
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter;
+            implicitWidth: base.width
+            implicitHeight: UM.Theme.sizes.save_button_text_margin.height * 2 + UM.Theme.sizes.save_button_slicing_bar.height + UM.Theme.sizes.save_button_save_to_button.height +  UM.Theme.sizes.default_margin.height
         }
-        
     }
-    
+
     SidebarTooltip {
         id: tooltip;
     }
