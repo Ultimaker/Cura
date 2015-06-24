@@ -52,7 +52,7 @@ setup(name="Cura",
         options={"py2exe": {"skip_archive": False, "includes": includes}})
 
 print("Coping Cura plugins.")
-shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins")
+shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins", ignore = shutil.ignore_patterns("ConsoleLogger", "OBJWriter", "MLPWriter", "MLPReader"))
 for path in os.listdir("plugins"):
     shutil.copytree("plugins/" + path, "dist/plugins/" + path)
 print("Coping resources.")
