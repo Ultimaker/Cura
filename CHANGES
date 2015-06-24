@@ -7,6 +7,22 @@ Cura 15.06 is a new release built from the ground up on a completely new
 framework called Uranium. This framework has been designed to make it easier to
 extend Cura with additional functionality as well as provide a cleaner UI.
 
+Changes since 15.05.95
+----------------------
+
+* Fixed: Selection ghost remains visible after deleting an object
+* Fixed: Window does not show up immediately after starting application on OSX
+* Fixed: Added display of rotation angle during rotation
+* Fixed: Object changes position while rotating/scaling
+* Fixed: Loading improvements in the layer view
+* Fixed: Added application icons
+* Fixed: Improved feedback when loading models
+* Fixed: Eject device on MacOSX now provides proper feedback
+* Fixed: Make it possible to show retraction settings for UM2
+* Fixed: Opening the machine preferences page will switch to the first available machine
+* Fixed: Improved tool handle hit area size
+* Fixed: Render lines with a thickness based on screen DPI
+
 Changes since 15.05.94
 ----------------------
 
@@ -150,18 +166,8 @@ For an up to date list of all known issues, please see
 https://github.com/Ultimaker/Cura/issues and
 https://github.com/Ultimaker/Uranium/issues .
 
-* The application has no application icon yet.
-* The Windows version starts a console before starting the
-  application. This is intentional for the beta and it will be
-  removed for the final version.
-* Opening the machine preferences page will switch to the first
-  available machine instead of keeping the current machine
-  selected.
 * Some OBJ files are rendered as black objects due to missing
   normals.
-* The developer documentation for Uranium (available at
-  http://software.ultimaker.com/uranium/index.html) is not yet
-  complete.
 * Disabling plugins does not work correctly yet.
 * Unicorn occasionally still requires feeding. Do not feed it
   after midnight.
