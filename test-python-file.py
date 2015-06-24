@@ -1,0 +1,4 @@
+def doNothing():
+	pass
+
+doNothing()
