@@ -36,7 +36,7 @@ from . import PrintInformation
 from . import CuraActions
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QIcon
 
 import platform
 import sys
@@ -51,6 +51,8 @@ class CuraApplication(QtApplication):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
         super().__init__(name = "cura", version = "15.05.95")
+
+        self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
