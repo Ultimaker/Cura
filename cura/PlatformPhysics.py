@@ -24,7 +24,11 @@ class PlatformPhysics:
         super().__init__()
         self._controller = controller
         self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
+        self._controller.toolOperationStarted.connect(self._onToolOperationStarted)
+        self._controller.toolOperationStopped.connect(self._onToolOperationStopped)
         self._build_volume = volume
+
+        self._enabled = True
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(100)
@@ -35,6 +39,9 @@ class PlatformPhysics:
         self._change_timer.start()
 
     def _onChangeTimerFinished(self):
+        if not self._enabled:
+            return
+
         root = self._controller.getScene().getRoot()
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode:
@@ -93,3 +100,10 @@ class PlatformPhysics:
             if node.getBoundingBox().intersectsBox(self._build_volume.getBoundingBox()) == AxisAlignedBox.IntersectionResult.FullIntersection:
                 op = ScaleToBoundsOperation(node, self._build_volume.getBoundingBox())
                 op.push()
+
+    def _onToolOperationStarted(self, tool):
+        self._enabled = False
+
+    def _onToolOperationStopped(self, tool):
+        self._enabled = True
+        self._onChangeTimerFinished()

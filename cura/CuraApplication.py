@@ -85,7 +85,7 @@ class CuraApplication(QtApplication):
             if not os.path.isfile(f):
                 continue
 
-            self._recent_files.append(f)
+            self._recent_files.append(QUrl.fromLocalFile(f))
     
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
@@ -215,6 +215,9 @@ class CuraApplication(QtApplication):
     def deleteObject(self, object_id):
         object = self.getController().getScene().findObject(object_id)
 
+        if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
+            object = Selection.getSelectedObject(0)
+
         if object:
             op = RemoveSceneNodeOperation(object)
             op.push()
@@ -223,6 +226,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count):
         node = self.getController().getScene().findObject(object_id)
+
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
 
         if node:
             op = GroupedOperation()
@@ -239,6 +245,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
+
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
 
         if node:
             op = SetTransformOperation(node, Vector())
@@ -330,7 +339,7 @@ class CuraApplication(QtApplication):
         return log
 
     recentFilesChanged = pyqtSignal()
-    @pyqtProperty("QStringList", notify = recentFilesChanged)
+    @pyqtProperty("QVariantList", notify = recentFilesChanged)
     def recentFiles(self):
         return self._recent_files
 
@@ -468,7 +477,9 @@ class CuraApplication(QtApplication):
             self._volume.rebuild()
 
             if self.getController().getTool("ScaleTool"):
-                self.getController().getTool("ScaleTool").setMaximumBounds(self._volume.getBoundingBox())
+                bbox = self._volume.getBoundingBox()
+                bbox.setBottom(0.0)
+                self.getController().getTool("ScaleTool").setMaximumBounds(bbox)
 
             offset = machine.getSettingValueByKey("machine_platform_offset")
             if offset:
@@ -508,7 +519,7 @@ class CuraApplication(QtApplication):
         if type(job) is not ReadMeshJob:
             return
 
-        f = job.getFileName()
+        f = QUrl.fromLocalFile(job.getFileName())
         if f in self._recent_files:
             self._recent_files.remove(f)
 
@@ -516,5 +527,9 @@ class CuraApplication(QtApplication):
         if len(self._recent_files) > 10:
             del self._recent_files[10]
 
-        Preferences.getInstance().setValue("cura/recent_files", ";".join(self._recent_files))
+        pref = ""
+        for path in self._recent_files:
+            pref += path.toLocalFile() + ";"
+
+        Preferences.getInstance().setValue("cura/recent_files", pref)
         self.recentFilesChanged.emit()

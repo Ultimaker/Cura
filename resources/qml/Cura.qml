@@ -37,9 +37,11 @@ UM.MainWindow {
                 Instantiator {
                     model: Printer.recentFiles
                     MenuItem {
-                        property url filePath: modelData;
-                        text: (index + 1) + ". " + modelData.slice(modelData.lastIndexOf("/") + 1);
-                        onTriggered: UM.MeshFileHandler.readLocalFile(filePath);
+                        text: {
+                            var path = modelData.toString()
+                            return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
+                        }
+                        onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
                     }
                     onObjectAdded: fileMenu.insertItem(index, object)
                     onObjectRemoved: fileMenu.removeItem(object)
@@ -281,8 +283,8 @@ UM.MainWindow {
             }
 
             Rectangle {
-                x: base.mouseX;
-                y: base.mouseY;
+                x: base.mouseX + UM.Theme.sizes.default_margin.width;
+                y: base.mouseY + UM.Theme.sizes.default_margin.height;
 
                 width: childrenRect.width;
                 height: childrenRect.height;
