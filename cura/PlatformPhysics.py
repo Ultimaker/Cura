@@ -49,6 +49,7 @@ class PlatformPhysics:
 
             bbox = node.getBoundingBox()
             if not bbox or not bbox.isValid():
+                self._change_timer.start()
                 continue
 
             # Mark the node as outside the build volume if the bounding box test fails.
