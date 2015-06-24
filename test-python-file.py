@@ -1,4 +1,0 @@
-def doNothing():
-	pass
-
-doNothing()
