@@ -224,7 +224,8 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             Application.getInstance().addOutputDevice(serial_port, {
                 "id": serial_port,
                 "function": self.spawnControlInterface,
-                "description": "Write to USB {0}".format(serial_port),
+                "description": "Print through USB {0}".format(serial_port),
+                "shortDescription": "Print through USB",
                 "icon": "print_usb",
                 "priority": 1
             })

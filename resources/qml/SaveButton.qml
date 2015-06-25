@@ -147,7 +147,7 @@ Rectangle {
                         anchors.horizontalCenter: parent.horizontalCenter
                         color: UM.Theme.colors.save_button_safe_to_text;
                         font: UM.Theme.fonts.sidebar_save_to;
-                        text: Printer.outputDevices[base.currentDevice].description;
+                        text: Printer.outputDevices[base.currentDevice].shortDescription;
                     }
                 }
             }

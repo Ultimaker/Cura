@@ -117,6 +117,7 @@ class CuraApplication(QtApplication):
             "id": "local_file",
             "function": self._writeToLocalFile,
             "description": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
+            "shortDescription": "Save to Disk",
             "icon": "save",
             "priority": 0
         })
@@ -442,6 +443,7 @@ class CuraApplication(QtApplication):
                     "id": drive,
                     "function": self._writeToSD,
                     "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(drive),
+                    "shortDescription": "Save to SD Card",
                     "icon": "save_sd",
                     "priority": 1
                 })
