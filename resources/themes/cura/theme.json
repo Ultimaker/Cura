@@ -27,6 +27,10 @@
             "capitalize": true,
             "family": "Roboto"
         },
+        "sidebar_save_to": {
+            "size": 1.0,
+            "family": "Roboto"
+        },
         "timeslider_time": {
             "size": 1.0,
             "bold": true,
@@ -105,12 +109,15 @@
 
         "tooltip": [255, 225, 146, 255],
 
-        "save_button": [255, 255, 255, 255],
         "save_button_border": [205, 202, 201, 255],
         "save_button_inactive": [205, 202, 201, 255],
         "save_button_active": [12, 159, 227, 255],
         "save_button_active_hover": [34, 150, 190, 255],
-        "save_button_text": [35, 35, 35, 255],
+        "save_button_safe_to_text": [255, 255, 255, 255],
+        "save_button_estimated_text": [140, 144, 154, 255],
+        "save_button_estimated_text_background": [255, 255, 255, 255],
+        "save_button_printtime_text": [12, 169, 227, 255],
+        "save_button_background": [249, 249, 249, 255],
 
         "message": [205, 202, 201, 255],
         "message_text": [35, 35, 35, 255],
@@ -153,7 +160,10 @@
         "tooltip_margins": [1.0, 1.0],
 
         "save_button_border": [0.06, 0.06],
+        "save_button_text_margin": [0.6, 0.6],
+        "save_button_slicing_bar": [0.0, 2.2],
         "save_button_label_margin": [0.5, 0.5],
+        "save_button_save_to_button": [0.3, 2.7],
 
         "message": [30.0, 5.0],
         "message_close": [1.25, 1.25]

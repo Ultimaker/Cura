@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Button {
+Rectangle {
     id: base;
 
     property Action saveAction;
@@ -16,17 +16,12 @@ Button {
     property real progress: UM.Backend.progress;
     Behavior on progress { NumberAnimation { duration: 250; } }
 
-    enabled: progress >= 0.95;
-
     property string currentDevice: "local_file"
     property bool defaultOverride: false;
     property bool defaultAmbiguous: false;
 
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
-
-    iconSource: UM.Theme.icons[Printer.outputDevices[base.currentDevice].icon];
-    tooltip: Printer.outputDevices[base.currentDevice].description;
 
     Connections {
         target: Printer;
@@ -51,161 +46,183 @@ Button {
         }
     }
 
-    style: ButtonStyle {
-        background: UM.AngledCornerRectangle {
-            implicitWidth: control.width;
-            implicitHeight: control.height;
+    Rectangle{
+        id: background
+        implicitWidth: base.width;
+        implicitHeight: parent.height;
+        color: UM.Theme.colors.save_button_background;
+        border.width: UM.Theme.sizes.save_button_border.width
+        border.color: UM.Theme.colors.save_button_border
 
-            color: UM.Theme.colors.save_button_border;
-            cornerSize: UM.Theme.sizes.default_margin.width;
+        Rectangle {
+            id: infoBox
+            width: parent.width - UM.Theme.sizes.default_margin.width * 2;
+            height: UM.Theme.sizes.save_button_slicing_bar.height
 
-            UM.AngledCornerRectangle {
-                anchors.fill: parent;
-                anchors.margins: UM.Theme.sizes.save_button_border.width;
-                cornerSize: UM.Theme.sizes.default_margin.width;
-                color: UM.Theme.colors.save_button;
-            }
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.sizes.default_margin.height;
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
 
-            UM.AngledCornerRectangle {
-                anchors {
-                    left: parent.left;
-                    top: parent.top;
-                    bottom: parent.bottom;
-                }
-
-                width: Math.max(parent.height + (parent.width - parent.height) * control.progress, parent.height);
-                cornerSize: UM.Theme.sizes.default_margin.width;
-
-                color: !control.enabled ? UM.Theme.colors.save_button_inactive : control.hovered ? UM.Theme.colors.save_button_active_hover : UM.Theme.colors.save_button_active;
-                Behavior on color { ColorAnimation { duration: 50; } }
-            }
-
-            UM.AngledCornerRectangle {
-                anchors.left: parent.left;
-                width: parent.height + UM.Theme.sizes.save_button_border.width;
-                height: parent.height;
-                cornerSize: UM.Theme.sizes.default_margin.width;
-                color: UM.Theme.colors.save_button;
-            }
-
-            UM.AngledCornerRectangle {
-                anchors.left: parent.left;
-                width: parent.height + UM.Theme.sizes.save_button_border.width;
-                height: parent.height;
-                cornerSize: UM.Theme.sizes.default_margin.width;
-
-                color: UM.Theme.colors.save_button;
-            }
-
-            UM.AngledCornerRectangle {
-                id: icon;
-
-                anchors.left: parent.left;
-                width: parent.height;
-                height: parent.height;
-                cornerSize: UM.Theme.sizes.default_margin.width;
-                color: !control.enabled ? UM.Theme.colors.save_button_inactive : control.hovered ? UM.Theme.colors.save_button_active_hover : UM.Theme.colors.save_button_active;
-                Behavior on color { ColorAnimation { duration: 50; } }
-
-                Image {
-                    anchors.centerIn: parent;
-
-                    width: UM.Theme.sizes.button_icon.width;
-                    height: UM.Theme.sizes.button_icon.height;
-
-                    sourceSize.width: width;
-                    sourceSize.height: height;
-
-                    source: control.iconSource;
-                }
-            }
-        }
-
-        label: Column {
+            border.width: UM.Theme.sizes.save_button_border.width
+            border.color: UM.Theme.colors.save_button_border
+            color: UM.Theme.colors.save_button_estimated_text_background;
             Label {
                 id: label;
-                anchors.left: parent.left;
-                anchors.leftMargin: control.height + UM.Theme.sizes.save_button_label_margin.width;
-
-                color: UM.Theme.colors.save_button_text;
-                font: UM.Theme.fonts.default;
-
-                text: control.text;
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
+                visible: base.progress >= 0 && base.progress < 0.99 ? false : true
+                color: UM.Theme.colors.save_button_estimated_text;
+                font: UM.Theme.fonts.small;
+                text:
+                    if(base.progress < 0) {
+                        //: Save button label
+                        return qsTr("Please load a 3D model");
+                    } else if (base.progress < 0.99) {
+                        //: Save button label
+                        return qsTr("Calculating Print-time");
+                    } else if (base.progress > 0.99){
+                        //: Save button label
+                        return qsTr("Estimated Print-time");
+                    } else if (base.progress == null){
+                        return qsTr("");
+                    }
             }
             Label {
-                anchors.left: parent.left;
-                anchors.leftMargin: control.height + UM.Theme.sizes.save_button_label_margin.width;
-
-                color: UM.Theme.colors.save_button_text;
-                font: UM.Theme.fonts.default;
-
-                text: (!control.printDuration || !control.printDuration.valid) ? "" : control.printDuration.getDisplayString(UM.DurationFormat.Long)
+                id: printDurationLabel
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: label.right;
+                anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
+                color: UM.Theme.colors.save_button_printtime_text;
+                font: UM.Theme.fonts.small;
+                visible: base.progress < 0.99 ? false : true
+                text: (!base.printDuration || !base.printDuration.valid) ? "" : base.printDuration.getDisplayString(UM.DurationFormat.Long);
             }
             Label {
-                anchors.left: parent.left;
-                anchors.leftMargin: control.height + UM.Theme.sizes.save_button_label_margin.width;
-
-                color: UM.Theme.colors.save_button_text;
-                font: UM.Theme.fonts.default;
-
+                id: printMaterialLabel
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: printDurationLabel.right;
+                anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
+                color: UM.Theme.colors.save_button_printtime_text;
+                font: UM.Theme.fonts.small;
+                visible: base.progress < 0.99 ? false : true
                 //: Print material amount save button label
-                text: control.printMaterialAmount < 0 ? "" : qsTr("%1m material").arg(control.printMaterialAmount);
+                text: base.printMaterialAmount < 0 ? "" : qsTr("%1m material").arg(base.printMaterialAmount);
             }
         }
-    }
+        Rectangle {
+            id: infoBoxOverlay
+            anchors {
+                left: infoBox.left;
+                top: infoBox.top;
+                bottom: infoBox.bottom;
+            }
+            width: Math.max(infoBox.width * base.progress);
+            color: UM.Theme.colors.save_button_active
+            visible: base.progress > 0.99 ? false : true
+        }
 
-    MouseArea {
-        anchors.fill: parent;
+        Button {
+            id: saveToButton
+            anchors.top: infoBox.bottom
+            anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height;
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            tooltip: ''
+            enabled: progress >= 0.99;
 
-        acceptedButtons: Qt.RightButton;
-
-        onClicked: devicesMenu.popup();
-    }
-
-    Menu {
-        id: devicesMenu;
-
-        Instantiator {
-            model: Printer.outputDeviceNames;
-            MenuItem {
-                text: Printer.outputDevices[modelData].description;
-                checkable: true;
-                checked: base.defaultAmbiguous ? false : modelData == base.currentDevice;
-                exclusiveGroup: devicesMenuGroup;
-                onTriggered: {
-                    base.defaultOverride = true;
-                    base.currentDevice = modelData;
-                    if(base.defaultAmbiguous) {
-                        base.defaultAmbiguous = false;
-                        Printer.writeToOutputDevice(modelData);
+            width: infoBox.width/6*4.5
+            height: UM.Theme.sizes.save_button_save_to_button.height
+            style: ButtonStyle {
+                background: Rectangle {
+                    color: !control.enabled ? UM.Theme.colors.save_button_inactive : control.hovered ? UM.Theme.colors.save_button_active_hover : UM.Theme.colors.save_button_active;
+                    Label {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        color: UM.Theme.colors.save_button_safe_to_text;
+                        font: UM.Theme.fonts.sidebar_save_to;
+                        text: Printer.outputDevices[base.currentDevice].description;
                     }
                 }
             }
-            onObjectAdded: devicesMenu.insertItem(index, object)
-            onObjectRemoved: devicesMenu.removeItem(object)
+            onClicked:
+                if(base.defaultAmbiguous) {
+                    devicesMenu.popup();
+                } else {
+                    Printer.writeToOutputDevice(base.currentDevice);
+                }
         }
 
-        ExclusiveGroup { id: devicesMenuGroup; }
-    }
+        Button {
+            id: deviceSelectionMenu;
+            anchors.top: infoBox.bottom
+            anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
+            tooltip: ''
 
-    text: {
-        if(base.progress < 0) {
-            //: Save button label
-            return qsTr("Please load a 3D model");
-        } else if (base.progress < 0.95) {
-            //: Save button label
-            return qsTr("Calculating Print-time");
-        } else {
-            //: Save button label
-            return qsTr("Estimated Print-time");
-        }
-    }
+            width: infoBox.width/6*1.3 - UM.Theme.sizes.save_button_text_margin.height;
+            height: UM.Theme.sizes.save_button_save_to_button.height
 
-    onClicked: {
-        if(base.defaultAmbiguous) {
-            devicesMenu.popup();
-        } else {
-            Printer.writeToOutputDevice(base.currentDevice);
+            style: ButtonStyle {
+                background: Rectangle {
+                color: UM.Theme.colors.save_button_background;
+                border.width: control.hovered ? UM.Theme.sizes.save_button_border.width : 0
+                border.color: UM.Theme.colors.save_button_border
+                    Rectangle {
+                        id: deviceSelectionIcon
+                        color: UM.Theme.colors.save_button_background;
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width / 2;
+                        anchors.verticalCenter: parent.verticalCenter;
+                        width: parent.height - UM.Theme.sizes.save_button_text_margin.width ;
+                        height: parent.height - UM.Theme.sizes.save_button_text_margin.width;
+                        UM.RecolorImage {
+                            anchors.centerIn: parent;
+                            width: parent.width;
+                            height: parent.height;
+                            sourceSize.width: width;
+                            sourceSize.height: height;
+                            color:  UM.Theme.colors.save_button_active
+                            source: UM.Theme.icons[Printer.outputDevices[base.currentDevice].icon];
+                        }
+                    }
+                    Label {
+                        id: deviceSelectionArrow
+                        anchors.right: parent.right;
+                        anchors.rightMargin: UM.Theme.sizes.save_button_text_margin.height
+                        anchors.verticalCenter: parent.verticalCenter;
+                        text: "▼";
+                        font: UM.Theme.fonts.tiny;
+                        color: UM.Theme.colors.save_button_active;
+                    }
+                }
+            }
+
+            menu: Menu {
+                id: devicesMenu;
+                Instantiator {
+                    model: Printer.outputDeviceNames;
+                    MenuItem {
+                        text: Printer.outputDevices[modelData].description;
+                        checkable: true;
+                        checked: base.defaultAmbiguous ? false : modelData == base.currentDevice;
+                        exclusiveGroup: devicesMenuGroup;
+                        onTriggered: {
+                            base.defaultOverride = true;
+                            base.currentDevice = modelData;
+                            if(base.defaultAmbiguous) {
+                                base.defaultAmbiguous = false;
+                                Printer.writeToOutputDevice(modelData);
+                            }
+                        }
+                    }
+                    onObjectAdded: devicesMenu.insertItem(index, object)
+                    onObjectRemoved: devicesMenu.removeItem(object)
+                }
+                ExclusiveGroup { id: devicesMenuGroup; }
+            }
         }
     }
 }

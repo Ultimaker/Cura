@@ -1,5 +1,5 @@
 !ifndef VERSION
-  !define VERSION '15.05.95'
+  !define VERSION '15.05.96'
 !endif
 
 ; The name of the installer
@@ -92,7 +92,7 @@ Section "Cura ${VERSION}"
   
   CreateDirectory "$SMPROGRAMS\Cura ${VERSION}"
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Uninstall Cura ${VERSION}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\Cura.exe" '' "$INSTDIR\resources\cura.ico" 0
+  CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\Cura.exe" '' "$INSTDIR\Cura.exe" 0
   
 SectionEnd
 
@@ -107,7 +107,7 @@ Section "Install Visual Studio 2010 Redistributable"
     File "vcredist_2010_20110908_x86.exe"
     
     IfSilent +2
-      ExecWait '"$INSTDIR\vcredist_2010_20110908_x86.exe" /silent /norestart'
+      ExecWait '"$INSTDIR\vcredist_2010_20110908_x86.exe" /q /norestart'
 
 SectionEnd
 

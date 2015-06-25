@@ -38,6 +38,8 @@ class PrintInformation(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        self._enabled = False
+
         self._minimum_print_time = Duration(None, self)
         self._current_print_time = Duration(None, self)
         self._maximum_print_time = Duration(None, self)
@@ -103,6 +105,21 @@ class PrintInformation(QObject):
     def timeQualityValue(self):
         return self._time_quality_value
 
+    def setEnabled(self, enabled):
+        if enabled != self._enabled:
+            self._enabled = enabled
+
+            if self._enabled:
+                self._updateTimeQualitySettings()
+                self._onSlicingStarted()
+
+            self.enabledChanged.emit()
+
+    enabledChanged = pyqtSignal()
+    @pyqtProperty(bool, fset = setEnabled, notify = enabledChanged)
+    def enabled(self):
+        return self._enabled
+
     @pyqtSlot(int)
     def setTimeQualityValue(self, value):
         if value != self._time_quality_value:
@@ -132,7 +149,10 @@ class PrintInformation(QObject):
             self._material_amount = round(amount / 10) / 100
             self.materialAmountChanged.emit()
 
-            if self._slice_reason != self.SliceReason.SettingChanged:
+            if not self._enabled:
+                return
+
+            if self._slice_reason != self.SliceReason.SettingChanged or not self._minimum_print_time.valid or not self._maximum_print_time.valid:
                 self._slice_pass = self.SlicePass.LowQualitySettings
                 self._backend.slice(settings = self._low_quality_settings, save_gcode = False, save_polygons = False, force_restart = False, report_progress = False)
             else:
@@ -166,7 +186,7 @@ class PrintInformation(QObject):
             self._slice_reason = self.SliceReason.ActiveMachineChanged
 
     def _updateTimeQualitySettings(self):
-        if not self._current_settings:
+        if not self._current_settings or not self._enabled:
             return
 
         if not self._low_quality_settings:
