@@ -94,12 +94,17 @@ class PlatformPhysics:
                     move_vector.setX(overlap[0] * 1.1)
                     move_vector.setZ(overlap[1] * 1.1)
 
+            if hasattr(node, "_convex_hull"):
+                # Check for collisions between disallowed areas and the object
+                for area in self._build_volume.getDisallowedAreas():
+                    overlap = node._convex_hull.intersectsPolygon(area)
+                    if overlap is None:
+                        continue
+
+                    node._outside_buildarea = True
+
             if move_vector != Vector():
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
-                op.push()
-
-            if node.getBoundingBox().intersectsBox(self._build_volume.getBoundingBox()) == AxisAlignedBox.IntersectionResult.FullIntersection:
-                op = ScaleToBoundsOperation(node, self._build_volume.getBoundingBox())
                 op.push()
 
     def _onToolOperationStarted(self, tool):
