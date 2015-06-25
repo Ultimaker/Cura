@@ -41,7 +41,7 @@ print("Removing previous distribution package")
 shutil.rmtree("dist", True)
 
 setup(name="Cura",
-        version="15.05.95",
+        version="15.05.97",
         author="Ultimaker",
         author_email="d.braam@ultimaker.com",
         url="http://software.ultimaker.com/",

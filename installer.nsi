@@ -1,5 +1,5 @@
 !ifndef VERSION
-  !define VERSION '15.05.96'
+  !define VERSION '15.05.97'
 !endif
 
 ; The name of the installer
