@@ -82,11 +82,12 @@ Rectangle {
                     } else if (base.progress < 0.99) {
                         //: Save button label
                         return qsTr("Calculating Print-time");
-                    } else if (base.progress > 0.99){
+                    } else if (base.printDuration.days > 0 || base.progress == null){
+                        return qsTr("");
+                    }
+                    else if (base.progress > 0.99){
                         //: Save button label
                         return qsTr("Estimated Print-time");
-                    } else if (base.progress == null){
-                        return qsTr("");
                     }
             }
             Label {
@@ -104,8 +105,12 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: printDurationLabel.right;
                 anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
-                color: UM.Theme.colors.save_button_printtime_text;
+                color: base.printDuration.days > 0 ? UM.Theme.colors.save_button_estimated_text : UM.Theme.colors.save_button_printtime_text;
                 font: UM.Theme.fonts.small;
+
+                property bool mediumLengthDuration: base.printDuration.hours > 9 && base.printMaterialAmount > 9.99 && base.printDuration.days == 0
+                width: mediumLengthDuration ? 50 : undefined
+                elide: mediumLengthDuration ? Text.ElideRight : Text.ElideNone
                 visible: base.progress < 0.99 ? false : true
                 //: Print material amount save button label
                 text: base.printMaterialAmount < 0 ? "" : qsTr("%1m material").arg(base.printMaterialAmount);
