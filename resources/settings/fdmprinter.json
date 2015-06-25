@@ -44,20 +44,17 @@
                     "min_value": 0.0001,
                     "min_value_warning": 0.04,
                     "max_value_warning": 0.32,
-                    "always_visible": true,
-                    "children": {
-                        "layer_height_0": {
-                            "label": "Initial Layer Thickness",
-                            "description": "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.3,
-                            "min_value": 0.0001,
-                            "min_value_warning": 0.04,
-                            "max_value_warning": 0.32,
-                            "visible": false
-                        }
-                    }
+                },
+                "layer_height_0": {
+                    "label": "Initial Layer Thickness",
+                    "description": "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "min_value": 0.0001,
+                    "min_value_warning": 0.04,
+                    "max_value_warning": 0.32,
+                    "visible": false
                 },
                 "shell_thickness": {
                     "label": "Shell Thickness",
