@@ -47,12 +47,12 @@ setup(name="Cura",
         url="http://software.ultimaker.com/",
         license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
         scripts=["cura_app.py"],
-        #windows=[{"script": "printer.py", "dest_name": "Cura"}],
-        console=[{"script": "cura_app.py"}],
+        windows=[{"script": "cura_app.py", "dest_name": "Cura", "icon_resources": [(1, "icons/cura.ico")]}],
+        #console=[{"script": "cura_app.py"}],
         options={"py2exe": {"skip_archive": False, "includes": includes}})
 
 print("Coping Cura plugins.")
-shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins")
+shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins", ignore = shutil.ignore_patterns("ConsoleLogger", "OBJWriter", "MLPWriter", "MLPReader"))
 for path in os.listdir("plugins"):
     shutil.copytree("plugins/" + path, "dist/plugins/" + path)
 print("Coping resources.")

@@ -42,6 +42,9 @@ class BuildVolume(SceneNode):
     def setDepth(self, depth):
         self._depth = depth
 
+    def getDisallowedAreas(self):
+        return self._disallowed_areas
+
     def setDisallowedAreas(self, areas):
         self._disallowed_areas = areas
 
@@ -109,19 +112,43 @@ class BuildVolume(SceneNode):
             v = self._grid_mesh.getVertex(n)
             self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
 
+        disallowed_area_size = 0
         if self._disallowed_areas:
             mb = MeshBuilder()
-            for area in self._disallowed_areas:
+            for polygon in self._disallowed_areas:
+                points = polygon.getPoints()
                 mb.addQuad(
-                    area[0],
-                    area[1],
-                    area[2],
-                    area[3],
+                    Vector(points[0, 0], 0.1, points[0, 1]),
+                    Vector(points[1, 0], 0.1, points[1, 1]),
+                    Vector(points[2, 0], 0.1, points[2, 1]),
+                    Vector(points[3, 0], 0.1, points[3, 1]),
                     color = Color(174, 174, 174, 255)
                 )
+                # Find the largest disallowed area to exclude it from the maximum scale bounds
+                size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
+                disallowed_area_size = max(size, disallowed_area_size)
 
             self._disallowed_area_mesh = mb.getData()
         else:
             self._disallowed_area_mesh = None
 
         self._aabb = AxisAlignedBox(minimum = Vector(minW, minH - 1.0, minD), maximum = Vector(maxW, maxH, maxD))
+
+        settings = Application.getInstance().getActiveMachine()
+
+        skirt_size = 0.0
+        if settings.getSettingValueByKey("adhesion_type") == "None":
+            skirt_size = settings.getSettingValueByKey("skirt_line_count") * settings.getSettingValueByKey("skirt_line_width") + settings.getSettingValueByKey("skirt_gap")
+        elif settings.getSettingValueByKey("adhesion_type") == "Brim":
+            skirt_size = settings.getSettingValueByKey("brim_line_count") * settings.getSettingValueByKey("skirt_line_width")
+        else:
+            skirt_size = settings.getSettingValueByKey("skirt_line_width")
+
+        skirt_size += settings.getSettingValueByKey("skirt_line_width")
+
+        scale_to_max_bounds = AxisAlignedBox(
+            minimum = Vector(minW + skirt_size, minH, minD + skirt_size + disallowed_area_size),
+            maximum = Vector(maxW - skirt_size, maxH, maxD - skirt_size - disallowed_area_size)
+        )
+
+        Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds

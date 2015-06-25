@@ -18,6 +18,7 @@ from UM.Preferences import Preferences
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.JobQueue import JobQueue
+from UM.Math.Polygon import Polygon
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -36,7 +37,7 @@ from . import PrintInformation
 from . import CuraActions
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QIcon
 
 import platform
 import sys
@@ -50,7 +51,9 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "15.05.95")
+        super().__init__(name = "cura", version = "15.05.96")
+
+        self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
@@ -464,22 +467,12 @@ class CuraApplication(QtApplication):
             disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
             areas = []
             if disallowed_areas:
-
                 for area in disallowed_areas:
-                    polygon = []
-                    polygon.append(Vector(area[0][0], 0.2, area[0][1]))
-                    polygon.append(Vector(area[1][0], 0.2, area[1][1]))
-                    polygon.append(Vector(area[2][0], 0.2, area[2][1]))
-                    polygon.append(Vector(area[3][0], 0.2, area[3][1]))
-                    areas.append(polygon)
+                    areas.append(Polygon(numpy.array(area, numpy.float32)))
+
             self._volume.setDisallowedAreas(areas)
 
             self._volume.rebuild()
-
-            if self.getController().getTool("ScaleTool"):
-                bbox = self._volume.getBoundingBox()
-                bbox.setBottom(0.0)
-                self.getController().getTool("ScaleTool").setMaximumBounds(bbox)
 
             offset = machine.getSettingValueByKey("machine_platform_offset")
             if offset:

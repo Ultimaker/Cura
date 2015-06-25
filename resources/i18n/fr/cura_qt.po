@@ -1,0 +1,496 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Qt-Contexts: true\n"
+"X-Generator: Poedit 1.5.7\n"
+
+#. About dialog title
+#: ../resources/qml/AboutDialog.qml:12
+msgctxt "AboutDialog|"
+msgid "About Cura"
+msgstr ""
+
+#. About dialog application description
+#: ../resources/qml/AboutDialog.qml:42
+msgctxt "AboutDialog|"
+msgid "End-to-end solution for fused filament 3D printing."
+msgstr ""
+
+#. About dialog application author note
+#: ../resources/qml/AboutDialog.qml:47
+msgctxt "AboutDialog|"
+msgid ""
+"Cura has been developed by Ultimaker B.V. in cooperation with the community."
+msgstr ""
+
+#. Close about dialog button
+#: ../resources/qml/AboutDialog.qml:58
+msgctxt "AboutDialog|"
+msgid "Close"
+msgstr ""
+
+#. Undo action
+#: ../resources/qml/Actions.qml:37
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Undo"
+msgstr "Annuler"
+
+#. Redo action
+#: ../resources/qml/Actions.qml:45
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Redo"
+msgstr "Rétablir"
+
+#. Quit action
+#: ../resources/qml/Actions.qml:53
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Quit"
+msgstr "Quitter"
+
+#. Preferences action
+#: ../resources/qml/Actions.qml:61
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Preferences..."
+msgstr "Préférences"
+
+#. Add Printer action
+#: ../resources/qml/Actions.qml:68
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Add Printer..."
+msgstr "Ajouter une imprimante..."
+
+#. Configure Printers action
+#: ../resources/qml/Actions.qml:74
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Configure Printers"
+msgstr "Configurer les imprimantes"
+
+#. Show Online Documentation action
+#: ../resources/qml/Actions.qml:81
+msgctxt "Actions|"
+msgid "Show Online &Documentation"
+msgstr ""
+
+#. Report a Bug Action
+#: ../resources/qml/Actions.qml:89
+msgctxt "Actions|"
+msgid "Report a &Bug"
+msgstr ""
+
+#. About action
+#: ../resources/qml/Actions.qml:96
+#, fuzzy
+msgctxt "Actions|"
+msgid "&About..."
+msgstr "À propos de..."
+
+#. Delete selection action
+#: ../resources/qml/Actions.qml:103
+#, fuzzy
+msgctxt "Actions|"
+msgid "Delete Selection"
+msgstr "Supprimer la sélection"
+
+#. Delete object action
+#: ../resources/qml/Actions.qml:111
+#, fuzzy
+msgctxt "Actions|"
+msgid "Delete Object"
+msgstr "Supprimer l’objet"
+
+#. Center object action
+#: ../resources/qml/Actions.qml:118
+#, fuzzy
+msgctxt "Actions|"
+msgid "Center Object on Platform"
+msgstr "Centrer l’objet sur le plateau"
+
+#. Duplicate object action
+#: ../resources/qml/Actions.qml:124
+#, fuzzy
+msgctxt "Actions|"
+msgid "Duplicate Object"
+msgstr "Dupliquer l’objet"
+
+#. Split object action
+#: ../resources/qml/Actions.qml:130
+#, fuzzy
+msgctxt "Actions|"
+msgid "Split Object into Parts"
+msgstr "Diviser l’objet en plusieurs parties"
+
+#. Clear build platform action
+#: ../resources/qml/Actions.qml:137
+#, fuzzy
+msgctxt "Actions|"
+msgid "Clear Build Platform"
+msgstr "Effacer les éléments du plateau d’impression"
+
+#. Reload all objects action
+#: ../resources/qml/Actions.qml:144
+#, fuzzy
+msgctxt "Actions|"
+msgid "Reload All Objects"
+msgstr "Recharger tous les objets"
+
+#. Reset all positions action
+#: ../resources/qml/Actions.qml:150
+#, fuzzy
+msgctxt "Actions|"
+msgid "Reset All Object Positions"
+msgstr "Réinitialiser toutes les positions de l’objet"
+
+#. Reset all positions action
+#: ../resources/qml/Actions.qml:156
+#, fuzzy
+msgctxt "Actions|"
+msgid "Reset All Object Transformations"
+msgstr "Réinitialiser toutes les transformations de l’objet"
+
+#. Open file action
+#: ../resources/qml/Actions.qml:162
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Open..."
+msgstr "Ouvrir..."
+
+#. Save file action
+#: ../resources/qml/Actions.qml:170
+#, fuzzy
+msgctxt "Actions|"
+msgid "&Save..."
+msgstr "Enregistrer..."
+
+#. Show engine log action
+#: ../resources/qml/Actions.qml:178
+msgctxt "Actions|"
+msgid "Show engine &log..."
+msgstr ""
+
+#. Add Printer dialog title
+#. ----------
+#. Add Printer wizard page title
+#: ../resources/qml/AddMachineWizard.qml:12
+#: ../resources/qml/AddMachineWizard.qml:19
+msgctxt "AddMachineWizard|"
+msgid "Add Printer"
+msgstr "Ajouter une imprimante"
+
+#. Add Printer wizard page description
+#: ../resources/qml/AddMachineWizard.qml:25
+msgctxt "AddMachineWizard|"
+msgid "Please select the type of printer:"
+msgstr "Veuillez sélectionner le type d’imprimante :"
+
+#. Add Printer wizard field label
+#: ../resources/qml/AddMachineWizard.qml:40
+msgctxt "AddMachineWizard|"
+msgid "Printer Name:"
+msgstr "Nom de l’imprimante :"
+
+#. Add Printer wizarad button
+#: ../resources/qml/AddMachineWizard.qml:53
+msgctxt "AddMachineWizard|"
+msgid "Next"
+msgstr "Suivant"
+
+#. Add Printer wizarad button
+#: ../resources/qml/AddMachineWizard.qml:63
+msgctxt "AddMachineWizard|"
+msgid "Cancel"
+msgstr "Annuler"
+
+#. USB Printing dialog label, %1 is head temperature
+#: ../plugins/USBPrinting/ControlWindow.qml:15
+#, qt-format
+msgctxt "ControlWindow|"
+msgid "Extruder Temperature %1"
+msgstr ""
+
+#. USB Printing dialog label, %1 is bed temperature
+#: ../plugins/USBPrinting/ControlWindow.qml:20
+#, qt-format
+msgctxt "ControlWindow|"
+msgid "Bed Temperature %1"
+msgstr ""
+
+#. USB Printing dialog start print button
+#: ../plugins/USBPrinting/ControlWindow.qml:33
+#, fuzzy
+msgctxt "ControlWindow|"
+msgid "Print"
+msgstr "Ajouter une imprimante"
+
+#. USB Printing dialog cancel print button
+#: ../plugins/USBPrinting/ControlWindow.qml:40
+#, fuzzy
+msgctxt "ControlWindow|"
+msgid "Cancel"
+msgstr "Annuler"
+
+#. Cura application window title
+#: ../resources/qml/Cura.qml:14
+#, fuzzy
+msgctxt "Cura|"
+msgid "Cura"
+msgstr "Cura"
+
+#. File menu
+#: ../resources/qml/Cura.qml:26
+#, fuzzy
+msgctxt "Cura|"
+msgid "&File"
+msgstr "&Fichier"
+
+#. Edit menu
+#: ../resources/qml/Cura.qml:38
+#, fuzzy
+msgctxt "Cura|"
+msgid "&Edit"
+msgstr "M&odifier"
+
+#. Machine menu
+#: ../resources/qml/Cura.qml:50
+#, fuzzy
+msgctxt "Cura|"
+msgid "&Machine"
+msgstr "&Machine"
+
+#. Extensions menu
+#: ../resources/qml/Cura.qml:76
+#, fuzzy
+msgctxt "Cura|"
+msgid "E&xtensions"
+msgstr "&Extensions"
+
+#. Settings menu
+#: ../resources/qml/Cura.qml:107
+#, fuzzy
+msgctxt "Cura|"
+msgid "&Settings"
+msgstr "&Paramètres"
+
+#. Help menu
+#: ../resources/qml/Cura.qml:114
+#, fuzzy
+msgctxt "Cura|"
+msgid "&Help"
+msgstr "&Aide"
+
+#. View Mode toolbar button
+#: ../resources/qml/Cura.qml:231
+#, fuzzy
+msgctxt "Cura|"
+msgid "View Mode"
+msgstr "Mode d’affichage"
+
+#. View preferences page title
+#: ../resources/qml/Cura.qml:273
+#, fuzzy
+msgctxt "Cura|"
+msgid "View"
+msgstr "Afficher"
+
+#. File open dialog title
+#: ../resources/qml/Cura.qml:370
+#, fuzzy
+msgctxt "Cura|"
+msgid "Open File"
+msgstr "Ouvrir un fichier"
+
+#. File save dialog title
+#: ../resources/qml/Cura.qml:386
+#, fuzzy
+msgctxt "Cura|"
+msgid "Save File"
+msgstr "Enregistrer un fichier"
+
+#. Engine Log dialog title
+#: ../resources/qml/EngineLog.qml:11
+msgctxt "EngineLog|"
+msgid "Engine Log"
+msgstr ""
+
+#. Close engine log button
+#: ../resources/qml/EngineLog.qml:30
+msgctxt "EngineLog|"
+msgid "Close"
+msgstr ""
+
+#. Firmware update status label
+#: ../plugins/USBPrinting/FirmwareUpdateWindow.qml:16
+msgctxt "FirmwareUpdateWindow|"
+msgid "Starting firmware update, this may take a while."
+msgstr ""
+
+#. Firmware update status label
+#: ../plugins/USBPrinting/FirmwareUpdateWindow.qml:21
+msgctxt "FirmwareUpdateWindow|"
+msgid "Firmware update completed."
+msgstr ""
+
+#. Firmware update status label
+#: ../plugins/USBPrinting/FirmwareUpdateWindow.qml:26
+msgctxt "FirmwareUpdateWindow|"
+msgid "Updating firmware."
+msgstr ""
+
+#. Print material amount save button label
+#: ../resources/qml/SaveButton.qml:149
+#, fuzzy, qt-format
+msgctxt "SaveButton|"
+msgid "%1m material"
+msgstr "Matériel"
+
+#. Save button label
+#: ../resources/qml/SaveButton.qml:191
+msgctxt "SaveButton|"
+msgid "Please load a 3D model"
+msgstr ""
+
+#. Save button label
+#: ../resources/qml/SaveButton.qml:194
+msgctxt "SaveButton|"
+msgid "Calculating Print-time"
+msgstr ""
+
+#. Save button label
+#: ../resources/qml/SaveButton.qml:197
+msgctxt "SaveButton|"
+msgid "Estimated Print-time"
+msgstr ""
+
+#. Simple configuration mode option
+#: ../resources/qml/Sidebar.qml:105
+msgctxt "Sidebar|"
+msgid "Simple"
+msgstr ""
+
+#. Advanced configuration mode option
+#: ../resources/qml/Sidebar.qml:107
+msgctxt "Sidebar|"
+msgid "Advanced"
+msgstr ""
+
+#. Configuration mode label
+#: ../resources/qml/SidebarHeader.qml:26
+msgctxt "SidebarHeader|"
+msgid "Mode:"
+msgstr ""
+
+#. Machine selection label
+#: ../resources/qml/SidebarHeader.qml:70
+#, fuzzy
+msgctxt "SidebarHeader|"
+msgid "Machine:"
+msgstr "Machine"
+
+#. Sidebar header label
+#: ../resources/qml/SidebarHeader.qml:117
+#, fuzzy
+msgctxt "SidebarHeader|"
+msgid "Print Setup"
+msgstr "Paramètres d’impression"
+
+#. Sidebar configuration label
+#: ../resources/qml/SidebarSimple.qml:40
+msgctxt "SidebarSimple|"
+msgid "No Model Loaded"
+msgstr ""
+
+#. Sidebar configuration label
+#: ../resources/qml/SidebarSimple.qml:45
+msgctxt "SidebarSimple|"
+msgid "Calculating..."
+msgstr ""
+
+#. Sidebar configuration label
+#: ../resources/qml/SidebarSimple.qml:50
+msgctxt "SidebarSimple|"
+msgid "Estimated Print Time"
+msgstr ""
+
+#. Quality slider label
+#: ../resources/qml/SidebarSimple.qml:87
+msgctxt "SidebarSimple|"
+msgid ""
+"Minimum\n"
+"Draft"
+msgstr ""
+
+#. Quality slider label
+#: ../resources/qml/SidebarSimple.qml:97
+msgctxt "SidebarSimple|"
+msgid ""
+"Maximum\n"
+"Quality"
+msgstr ""
+
+#. Setting checkbox
+#: ../resources/qml/SidebarSimple.qml:109
+msgctxt "SidebarSimple|"
+msgid "Enable Support"
+msgstr ""
+
+#. View configuration page title
+#: ../resources/qml/ViewPage.qml:9
+msgctxt "ViewPage|"
+msgid "View"
+msgstr "Afficher"
+
+#. Display Overhang preference checkbox
+#: ../resources/qml/ViewPage.qml:24
+#, fuzzy
+msgctxt "ViewPage|"
+msgid "Display Overhang"
+msgstr "Dépassement de l’affichage"
+
+#~ msgctxt "OutputGCodeButton|"
+#~ msgid "Save"
+#~ msgstr "Enregistrer"
+
+#~ msgctxt "OutputGCodeButton|"
+#~ msgid "Write to SD"
+#~ msgstr "Enregistrer sur la carte SD"
+
+#~ msgctxt "OutputGCodeButton|"
+#~ msgid "Send over USB"
+#~ msgstr "Transférer vers le périphérique USB"
+
+#~ msgctxt "Printer|"
+#~ msgid "No extensions loaded"
+#~ msgstr "Aucune extension téléchargée"
+
+#~ msgctxt "Printer|"
+#~ msgid "Open File"
+#~ msgstr "Ouvrir un fichier"
+
+#~ msgctxt "PrinterActions|"
+#~ msgid "Show Manual"
+#~ msgstr "Afficher les instructions"
+
+#~ msgctxt "SettingsPane|"
+#~ msgid "Time"
+#~ msgstr "Heure"
+
+#~ msgctxt "SettingsPane|"
+#~ msgid "Low Quality"
+#~ msgstr "Basse qualité"
+
+#~ msgctxt "SettingsPane|"
+#~ msgid "High Quality"
+#~ msgstr "Haute qualité"
