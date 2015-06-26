@@ -82,6 +82,7 @@ class printWindowPlugin(wx.Frame):
 			'addTextButton': self.script_addTextButton,
 
 			'sendGCode': self.script_sendGCode,
+			'sendMovementGCode': self.script_sendMovementGCode,
 			'connect': self.script_connect,
 			'startPrint': self.script_startPrint,
 			'pausePrint': self.script_pausePrint,
@@ -221,6 +222,10 @@ class printWindowPlugin(wx.Frame):
 			line = line.strip()
 			if len(line) > 0:
 				self._printerConnection.sendCommand(line)
+
+	def script_sendMovementGCode(self, data = None):
+		if not self._printerConnection.isPaused() and not self._printerConnection.isPrinting():
+			self.script_sendGCode(data)
 
 	def script_connect(self, data = None):
 		self._printerConnection.openActiveConnection()
