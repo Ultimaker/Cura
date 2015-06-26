@@ -1359,4 +1359,14 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
 
 def performVersionUpgrade():
-	pass
+	for n in xrange(0, getMachineCount()):
+		# This is a hack around an issue where the machine type in the wizard
+		# changed and causes some people to have it set to lulzbot_TAZ and some
+		# people have it set to lulzbot_TAZ_4.
+		if getMachineSetting('machine_type', n) == 'lulzbot_TAZ':
+			putMachineSetting('machine_type', 'lulzbot_TAZ_4', n)
+
+		# Change TAZ print bed so prints are centered when scaled to the max
+		if getMachineSetting('machine_type', n).startswith('lulzbot_TAZ_') and
+		   getMachineSetting('machine_width', n) == '298':
+			profile.putMachineSetting('machine_width', '290')

@@ -500,7 +500,7 @@ class MachineSelectPage(InfoPage):
 			profile.putProfileSetting('retraction_enable', 'True')
 		elif self.LulzbotTaz4Radio.GetValue() or self.LulzbotTaz5Radio.GetValue() or self.LulzbotMiniRadio.GetValue():
 			if self.LulzbotTaz4Radio.GetValue():
-				profile.putMachineSetting('machine_width', '298')
+				profile.putMachineSetting('machine_width', '290')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putProfileSetting('nozzle_size', '0.35')
@@ -508,7 +508,7 @@ class MachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
 				profile.putMachineSetting('serial_baud', '115200')
 			elif self.LulzbotTaz5Radio.GetValue():
-				profile.putMachineSetting('machine_width', '298')
+				profile.putMachineSetting('machine_width', '290')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('serial_baud', '115200')
