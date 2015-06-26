@@ -102,7 +102,9 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			self.sendCommand(change_toolhead)
 			self.sendCommand(cooldown_toolhead)
 		self.sendCommand("M140 S0") #Bed
-		pass
+
+	def disableSteppers(self):
+		self.sendCommand("M18")
 
 	#Abort the previously loaded print file
 	def cancelPrint(self):
@@ -111,6 +113,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._process.stdin.write('STOP\n')
 		self._printProgress = 0
 		self.coolDown()
+		self.disableSteppers()
 
 	def isPrinting(self):
 		return self._commState == machineCom.MachineCom.STATE_PRINTING or self.isPaused()
