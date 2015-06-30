@@ -3,15 +3,30 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-Rectangle 
-{
-    width: 300; height: 100
-    ColumnLayout 
-    {
+import QtQuick.Window 2.1
 
-        Text 
+Rectangle
+{
+    id: base;
+
+    width: 500 * Screen.devicePixelRatio;
+    height: 100 * Screen.devicePixelRatio;
+
+    color: palette.window;
+
+    signal close();
+
+    Column
+    {
+        anchors.fill: parent;
+        anchors.margins: 8 * Screen.devicePixelRatio;
+        Label
         {
+            anchors {
+                left: parent.left;
+                right: parent.right;
+            }
+
             text: {
                 if (manager.progress == 0)
                 {
@@ -29,6 +44,8 @@ Rectangle
                     return qsTr("Updating firmware.")
                 }
             }
+
+            wrapMode: Text.Wrap;
         }
         ProgressBar 
         {
@@ -36,13 +53,20 @@ Rectangle
             value: manager.progress
             minimumValue: 0;
             maximumValue: 100;
-            Layout.maximumWidth:parent.width
-            Layout.preferredWidth:230
-            Layout.preferredHeight:25
-            Layout.minimumWidth:230
-            Layout.minimumHeight:25
-            width: 230
-            height: 25
+            anchors {
+                left: parent.left;
+                right: parent.right;
+            }
+
         }
+        Button {
+            anchors.right: parent.right;
+            text: qsTr("Close");
+            onClicked: base.close();
+        }
+    }
+
+    SystemPalette {
+        id: palette;
     }
 }
