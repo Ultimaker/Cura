@@ -429,10 +429,15 @@ class CuraApplication(QtApplication):
     
             filename = os.path.join(path, node.getName()[0:node.getName().rfind(".")] + ".gcode")
 
+            message = Message(self._output_devices[device]["description"], 0, False, -1)
+            message.show()
+
             job = WriteMeshJob(filename, node.getMeshData())
             job._sdcard = device
+            job._message = message
             job.start()
             job.finished.connect(self._onWriteToSDFinished)
+
             return
 
     def _removableDrivesChanged(self):
@@ -490,6 +495,9 @@ class CuraApplication(QtApplication):
             "eject",
             self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}").format(job._sdcard)
         )
+
+        job._message.hide()
+
         message._sdcard = job._sdcard
         message.actionTriggered.connect(self._onMessageActionTriggered)
         message.show()
