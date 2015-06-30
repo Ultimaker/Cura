@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-06 17:36+0200\n"
+"PO-Revision-Date: 2015-06-18 12:47+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Tapio <info@tapimex.fi>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fi_FI\n"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/LocalFileStorage/__init__.py:13
+msgctxt "Local File Storage plugin name"
+msgid "Local File Storage"
+msgstr "Paikallinen tiedostosäilö"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/LocalFileStorage/__init__.py:16
+msgctxt "Local File Storage plugin description"
+msgid "Provides access to local files."
+msgstr "Tarjoaa pääsyn paikalliseen tiedostosäilöön."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileLogger/__init__.py:14
+msgctxt "File Logger plugin name"
+msgid "File Logger"
+msgstr "Tiedonkeruuohjelma"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileLogger/__init__.py:17
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/ConsoleLogger/__init__.py:17
+msgctxt "Console Logger plugin description"
+msgid "Outputs log information to the console."
+msgstr "Lähettää lokitiedot konsoliin."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/OBJReader/__init__.py:17
+msgctxt "OBJ Reader plugin description"
+msgid "Makes it possbile to read Wavefront OBJ files."
+msgstr "Mahdollistaa Wavefront OBJ-tiedostojen lukemisen."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/OBJReader/__init__.py:21
+msgctxt "OBJ Reader file format"
+msgid "Wavefront OBJ File"
+msgstr "Wavefront OBJ-tiedosto"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/STLReader/__init__.py:16
+msgctxt "STL Reader plugin description"
+msgid "Provides support for reading STL files."
+msgstr "Tukee STL-tiedostojen lukemista."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/STLReader/__init__.py:20
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/STLWriter/__init__.py:20
+msgctxt "STL Reader plugin file type"
+msgid "STL File"
+msgstr "STL-tiedosto"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/STLWriter/__init__.py:16
+msgctxt "STL Writer plugin description"
+msgid "Provides support for writing STL files."
+msgstr "Tukee STL-tiedostojen kirjoittamista."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/OBJWriter/__init__.py:17
+msgctxt "OBJ Writer plugin description"
+msgid "Makes it possbile to write Wavefront OBJ files."
+msgstr "Mahdollistaa Wavefront OBJ-tiedostojen kirjoittamisen."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/FileHandlers/OBJWriter/__init__.py:21
+msgctxt "OBJ Writer file format"
+msgid "Wavefront OBJ File"
+msgstr "Wavefront OBJ-tiedosto"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Views/MeshView/__init__.py:16
+msgctxt "Mesh View plugin description"
+msgid "Provides a normal solid mesh view."
+msgstr "Normaali umpinainen verkkonäkymä."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Views/MeshView/__init__.py:19
+msgctxt "Mesh View plugin view name"
+msgid "Solid"
+msgstr "Umpinainen"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Views/WireframeView/__init__.py:16
+msgctxt "Wireframe View plugin description"
+msgid "Provides a simple wireframe view"
+msgstr "Yksinkertainen rautalankanäkymä"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Views/WireframeView/__init__.py:19
+msgctxt "Wireframe View plugin view name"
+msgid "Wireframe"
+msgstr "Rautalankamalli"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/RotateTool/__init__.py:16
+msgctxt "Rotate Tool plugin description"
+msgid "Provides the Rotate tool."
+msgstr "Pyöritystyökalu."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/RotateTool/__init__.py:19
+msgctxt "Rotate tool name"
+msgid "Rotate"
+msgstr "Pyöritä"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/RotateTool/__init__.py:20
+msgctxt "Rotate tool description"
+msgid "Rotate Object"
+msgstr "Pyöritä kohdetta"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/ScaleTool/__init__.py:16
+msgctxt "Scale Tool plugin description"
+msgid "Provides the Scale tool."
+msgstr "Skaalaustyökalu."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/ScaleTool/__init__.py:19
+msgctxt "Scale Tool name"
+msgid "Scale"
+msgstr "Skaalaa"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/ScaleTool/__init__.py:20
+msgctxt "Scale Tool description"
+msgid "Scale Object"
+msgstr "Skaalaa kohdetta"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/TranslateTool/__init__.py:16
+msgctxt "Translate Tool plugin description"
+msgid "Provides the Translate tool."
+msgstr "Käännöstyökalu."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/TranslateTool/__init__.py:19
+msgctxt "Translate Tool name"
+msgid "Translate"
+msgstr "Käännä"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/TranslateTool/__init__.py:20
+msgctxt "Translate Tool description"
+msgid "Translate Object"
+msgstr "Käännä kohde"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/CameraTool/__init__.py:16
+msgctxt "Camera Tool plugin description"
+msgid "Provides the tool to manipulate the camera."
+msgstr "Työkalu kameran käsittelyyn."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/SelectionTool/__init__.py:16
+msgctxt "Selection Tool plugin description"
+msgid "Provides the Selection tool."
+msgstr "Valintatyökalu."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/MirrorTool/__init__.py:16
+msgctxt "Mirror Tool plugin description"
+msgid "Provides the Mirror tool."
+msgstr "Peilityökalu."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/MirrorTool/__init__.py:19
+msgctxt "Mirror Tool name"
+msgid "Mirror"
+msgstr "Peili"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/Tools/MirrorTool/__init__.py:20
+msgctxt "Mirror Tool description"
+msgid "Mirror Object"
+msgstr "Peilaa kohde"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/UpdateChecker/__init__.py:16
+msgctxt "Update Checker plugin description"
+msgid "Checks for updates of the software."
+msgstr "Tarkistaa ohjelmistopäivityksiä."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/UpdateChecker/UpdateChecker.py:25
+msgid "Check for Updates"
+msgstr "Tarkista päivitykset"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/plugins/UpdateChecker/UpdateChecker.py:68
+msgid "A new version is available!"
+msgstr "Uusi versio on saatavilla!"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Mesh/ReadMeshJob.py:27
+#, python-brace-format
+msgctxt "Loading mesh message, {0} is file name"
+msgid "Loading {0}"
+msgstr "Ladataan {0}"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Mesh/ReadMeshJob.py:31
+#, python-brace-format
+msgctxt "Finished loading mesh message, {0} is file name"
+msgid "Loaded {0}"
+msgstr "Ladattu {0}"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Bindings/MeshFileHandlerProxy.py:39
+#, python-brace-format
+msgctxt "Open file dialog type option"
+msgid "All Supported Types ({0})"
+msgstr "Kaikki tuetut tyypit {0}"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Bindings/MeshFileHandlerProxy.py:40
+msgctxt "Open file dialog type option"
+msgid "All Files (*)"
+msgstr "Kaikki tiedostot (*)"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Bindings/MeshFileHandlerProxy.py:96
+#, python-brace-format
+msgctxt "Save file completed messsage. {0} is file name"
+msgid "Saved to {0}"
+msgstr "Tallennettu tiedostoon {0}"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Bindings/MeshFileHandlerProxy.py:97
+msgctxt "Open Folder message action"
+msgid "Open Folder"
+msgstr "Avaa kansio"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Bindings/MeshFileHandlerProxy.py:97
+msgid "Open the folder containing the saved file"
+msgstr "Avaa kansio, joka sisältää tallennetun tiedoston"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Duration.py:91
+#, python-brace-format
+msgctxt ""
+"Short days-hours-minutes format. {0} is days, {1} is hours, {2} is minutes"
+msgid "{0:0>2}d {1:0>2}:{2:0>2}"
+msgstr "{0:0>2}p {1:0>2}:{2:0>2}"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Duration.py:93
+#, python-brace-format
+msgctxt "Short hours-minutes format. {0} is hours, {1} is minutes"
+msgid "{0:0>2}:{1:0>2}"
+msgstr "{0:0>2}:{1:0>2}"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Duration.py:96
+#, python-brace-format
+msgctxt ""
+"Days-hours-minutes duration format. {0} is days, {1} is hours, {2} is minutes"
+msgid "{0} days {1} hours {2} minutes"
+msgstr "{0} päivää {1} tuntia {2} minuuttia"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Duration.py:98
+#, python-brace-format
+msgctxt "Hours-minutes duration fromat. {0} is hours, {1} is minutes"
+msgid "{0} hours {1} minutes"
+msgstr "{0} tuntia {1} minuuttia"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/Duration.py:100
+#, python-brace-format
+msgctxt "Minutes only duration format, {0} is minutes"
+msgid "{0} minutes"
+msgstr "{0} minuuttia"
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/QtApplication.py:61
+msgctxt "Splash screen message"
+msgid "Loading plugins..."
+msgstr "Ladataan lisäosia..."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/QtApplication.py:65
+msgctxt "Splash screen message"
+msgid "Loading machines..."
+msgstr "Ladataan laitteita..."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/QtApplication.py:68
+msgctxt "Splash screen message"
+msgid "Loading preferences..."
+msgstr "Ladataan suosikkiasetuksia..."
+
+#: /home/ahiemstra/Projects/Ultimaker/uranium/UM/Qt/QtApplication.py:77
+msgctxt "Splash screen message"
+msgid "Loading translations..."
+msgstr "Ladataan käännöksiä..."
