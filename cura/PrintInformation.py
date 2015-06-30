@@ -150,7 +150,7 @@ class PrintInformation(QObject):
 
             # Material amount is sent as an amount of mm^3, so calculate length from that
             r = self._current_settings.getSettingValueByKey("material_diameter") / 2
-            self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 1)
+            self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 2)
             self.materialAmountChanged.emit()
 
             if not self._enabled:
