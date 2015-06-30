@@ -119,10 +119,6 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             time.sleep(5) # Throttle, as we don"t need this information to be updated every single second.
     
     def updateAllFirmware(self):
-        if not self._printer_connections:
-            Logger.log("e", "No printer connected to update firmware of!")
-            return
-
         self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:
             try:
