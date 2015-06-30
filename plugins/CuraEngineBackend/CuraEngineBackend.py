@@ -209,6 +209,7 @@ class CuraEngineBackend(Backend):
 
     def _onObjectPrintTimeMessage(self, message):
         self.printDurationMessage.emit(message.time, message.material_amount)
+        self.processingProgress.emit(1.0)
 
     def _createSocket(self):
         super()._createSocket()
