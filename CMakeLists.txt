@@ -58,9 +58,9 @@ endif()
 include(GNUInstallDirs)
 find_package(PythonInterp 3.4.0 REQUIRED)
 
-set(PYTHON_SITE_PACKAGES_DIR ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages CACHE PATH "Install location of Python package")
+set(PYTHON_SITE_PACKAGES_DIR ${CMAKE_INSTALL_PREFIX}/lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages CACHE PATH "Install location of Python package")
 install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
-install(DIRECTORY plugins DESTINATION ${CMAKE_INSTALL_LIBDIR}/cura)
+install(DIRECTORY plugins DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cura)
 install(DIRECTORY cura DESTINATION ${PYTHON_SITE_PACKAGES_DIR})
 install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR})
 
