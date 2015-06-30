@@ -41,7 +41,9 @@ from PyQt5.QtGui import QColor, QIcon
 
 import platform
 import sys
+import os
 import os.path
+import configparser
 import numpy
 numpy.seterr(all="ignore")
 
@@ -50,6 +52,23 @@ class CuraApplication(QtApplication):
         Resources.addResourcePath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
         if not hasattr(sys, "frozen"):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+
+        # Reset the configuration files if they exist on the machine, only for 15.05.xx releases
+        try:
+            Resources.ApplicationIdentifier = "cura"
+            parser = configparser.ConfigParser()
+            parser.read(Resources.getStoragePath(Resources.PreferencesLocation, "cura.cfg"))
+        except FileNotFoundError:
+            pass
+        else:
+            if parser["general"]["version"] != "2":
+                Logger.log("i", "Found old settings files, removing them")
+
+                os.remove(Resources.getStoragePath(Resources.PreferencesLocation, "cura.cfg"))
+
+                path = Resources.getStorageLocation(Resources.SettingsLocation)
+                for file in os.listdir(path):
+                    os.remove(os.path.join(path, file))
 
         super().__init__(name = "cura", version = "15.06.00")
 
