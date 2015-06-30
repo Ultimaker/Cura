@@ -9,6 +9,8 @@ from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Qt.Duration import Duration
 
+import math
+
 ##  A class for processing and calculating minimum, currrent and maximum print time.
 #
 #   This class contains all the logic relating to calculation and slicing for the
@@ -146,7 +148,9 @@ class PrintInformation(QObject):
             self._current_print_time.setDuration(time)
             self.currentPrintTimeChanged.emit()
 
-            self._material_amount = round(amount / 10) / 100
+            # Material amount is sent as an amount of mm^3, so calculate length from that
+            r = self._current_settings.getSettingValueByKey("material_diameter") / 2
+            self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 1)
             self.materialAmountChanged.emit()
 
             if not self._enabled:
