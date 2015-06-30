@@ -7,6 +7,7 @@ from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
+from UM.Logger import Logger
 import threading
 import platform
 import glob
@@ -110,9 +111,16 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             time.sleep(5) # Throttle, as we don"t need this information to be updated every single second.
     
     def updateAllFirmware(self):
+        if not self._printer_connections:
+            Logger.log("e", "No printer connected to update firmware of!")
+            return
+
         self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:
-            printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+            try:
+                printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+            except FileNotFoundError:
+                continue
             
     def updateFirmwareBySerial(self, serial_port):
         printer_connection = self.getConnectionByPort(serial_port)
