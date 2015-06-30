@@ -51,7 +51,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "15.05.97")
+        super().__init__(name = "cura", version = "15.06.00")
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
 
