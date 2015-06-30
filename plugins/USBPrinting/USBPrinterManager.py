@@ -8,16 +8,18 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Logger import Logger
+
 import threading
 import platform
 import glob
 import time
 import os
+import os.path
 import sys
 from UM.Extension import Extension
 
 from PyQt5.QtQuick import QQuickView
-from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -53,8 +55,11 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     def spawnFirmwareInterface(self, serial_port):
         if self._firmware_view is None:
             self._firmware_view = QQuickView()
+            self._firmware_view.setFlags(Qt.Dialog)
+            self._firmware_view.setResizeMode(QQuickView.SizeRootObjectToView);
             self._firmware_view.engine().rootContext().setContextProperty("manager",self)
-            self._firmware_view.setSource(QUrl("plugins/USBPrinting/FirmwareUpdateWindow.qml"))
+            self._firmware_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")))
+            self._firmware_view.rootObject().close.connect(self._firmware_view.close)
         self._firmware_view.show()
     
     ##  Show control interface.
@@ -62,8 +67,10 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     def spawnControlInterface(self,serial_port):
         if self._control_view is None:
             self._control_view = QQuickView()
+            self._control_view.setFlags(Qt.Dialog)
+            self._control_view.setResizeMode(QQuickView.SizeRootObjectToView);
             self._control_view.engine().rootContext().setContextProperty("manager",self)
-            self._control_view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
+            self._control_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getPluginPath("USBPrinting"), "ControlWindow.qml")))
         self._control_view.show()
 
     @pyqtProperty(float,notify = processingProgress)
