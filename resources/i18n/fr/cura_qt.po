@@ -1,16 +1,18 @@
+# ahiemstra <a.hiemstra@ultimaker.com>, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: \n"
+"PO-Revision-Date: 2015-06-30 10:35+0100\n"
+"Last-Translator: ahiemstra <a.hiemstra@ultimaker.com>\n"
+"Language-Team: English <kde-i18n-doc@kde.org>\n"
+"Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Qt-Contexts: true\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Lokalize 2.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. About dialog title
 #: ../resources/qml/AboutDialog.qml:12
@@ -351,10 +353,10 @@ msgstr ""
 
 #. Print material amount save button label
 #: ../resources/qml/SaveButton.qml:149
-#, fuzzy, qt-format
+#, qt-format
 msgctxt "SaveButton|"
 msgid "%1m material"
-msgstr "Matériel"
+msgstr "%1m de matériel"
 
 #. Save button label
 #: ../resources/qml/SaveButton.qml:191
