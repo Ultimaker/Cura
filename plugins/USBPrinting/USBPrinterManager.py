@@ -8,6 +8,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
 
 import threading
 import platform
@@ -58,7 +59,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             self._firmware_view.setFlags(Qt.Dialog)
             self._firmware_view.setResizeMode(QQuickView.SizeRootObjectToView);
             self._firmware_view.engine().rootContext().setContextProperty("manager",self)
-            self._firmware_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")))
+            self._firmware_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")))
             self._firmware_view.rootObject().close.connect(self._firmware_view.close)
         self._firmware_view.show()
     
@@ -70,7 +71,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             self._control_view.setFlags(Qt.Dialog)
             self._control_view.setResizeMode(QQuickView.SizeRootObjectToView);
             self._control_view.engine().rootContext().setContextProperty("manager",self)
-            self._control_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getPluginPath("USBPrinting"), "ControlWindow.qml")))
+            self._control_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml")))
         self._control_view.show()
 
     @pyqtProperty(float,notify = processingProgress)
