@@ -53,24 +53,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        # Reset the configuration files if they exist on the machine, only for 15.05.xx releases
-        try:
-            Resources.ApplicationIdentifier = "cura"
-            parser = configparser.ConfigParser()
-            parser.read(Resources.getStoragePath(Resources.PreferencesLocation, "cura.cfg"))
-        except FileNotFoundError:
-            pass
-        else:
-            if parser["general"]["version"] != "2":
-                Logger.log("i", "Found old settings files, removing them")
-
-                os.remove(Resources.getStoragePath(Resources.PreferencesLocation, "cura.cfg"))
-
-                path = Resources.getStorageLocation(Resources.SettingsLocation)
-                for file in os.listdir(path):
-                    os.remove(os.path.join(path, file))
-
-        super().__init__(name = "cura", version = "15.06.00")
+        super().__init__(name = "cura", version = "15.06.01")
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
 
