@@ -20,6 +20,7 @@ import sys
 from UM.Extension import Extension
 
 from PyQt5.QtQuick import QQuickView
+from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 
 from UM.i18n import i18nCatalog
@@ -55,23 +56,27 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     #   This will create the view if its not already created.
     def spawnFirmwareInterface(self, serial_port):
         if self._firmware_view is None:
-            self._firmware_view = QQuickView()
-            self._firmware_view.setFlags(Qt.Dialog)
-            self._firmware_view.setResizeMode(QQuickView.SizeRootObjectToView);
-            self._firmware_view.engine().rootContext().setContextProperty("manager",self)
-            self._firmware_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml")))
-            self._firmware_view.rootObject().close.connect(self._firmware_view.close)
+            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml"))
+            component = QQmlComponent(Application.getInstance()._engine, path)
+
+            context = QQmlContext(Application.getInstance()._engine.rootContext())
+            context.setContextProperty("manager", self)
+            self._firmware_view = component.create(context)
+
         self._firmware_view.show()
-    
+        
     ##  Show control interface.
     #   This will create the view if its not already created.
     def spawnControlInterface(self,serial_port):
         if self._control_view is None:
-            self._control_view = QQuickView()
-            self._control_view.setFlags(Qt.Dialog)
-            self._control_view.setResizeMode(QQuickView.SizeRootObjectToView);
-            self._control_view.engine().rootContext().setContextProperty("manager",self)
-            self._control_view.setSource(QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml")))
+            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml"))
+
+            component = QQmlComponent(Application.getInstance()._engine, path)
+            context = QQmlContext(Application.getInstance()._engine.rootContext())
+            context.setContextProperty("manager", self)
+
+            self._control_view = component.create(context)
+
         self._control_view.show()
 
     @pyqtProperty(float,notify = processingProgress)

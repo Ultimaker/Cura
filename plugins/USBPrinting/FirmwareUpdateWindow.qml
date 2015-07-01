@@ -1,26 +1,27 @@
 // Copyright (c) 2015 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Window 2.1
+import QtQuick 2.2
+import QtQuick.Window 2.2
+import QtQuick.Controls 1.2
 
-Rectangle
+import UM 1.0 as UM
+
+UM.Dialog
 {
     id: base;
 
     width: 500 * Screen.devicePixelRatio;
     height: 100 * Screen.devicePixelRatio;
 
-    color: palette.window;
-
-    signal close();
+    visible: true;
+    modality: Qt.ApplicationModal;
 
     Column
     {
         anchors.fill: parent;
-        anchors.margins: 8 * Screen.devicePixelRatio;
-        Label
+ 
+        Text
         {
             anchors {
                 left: parent.left;
@@ -47,6 +48,7 @@ Rectangle
 
             wrapMode: Text.Wrap;
         }
+
         ProgressBar 
         {
             id: prog;
@@ -59,14 +61,15 @@ Rectangle
             }
 
         }
-        Button {
-            anchors.right: parent.right;
-            text: qsTr("Close");
-            onClicked: base.close();
+        
+        SystemPalette {
+           id: palette;
         }
     }
 
-    SystemPalette {
-        id: palette;
+    rightButtons: Button {
+        text: qsTr("Close");
+        
+        enabled: true;
     }
 }
