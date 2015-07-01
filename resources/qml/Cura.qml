@@ -272,7 +272,6 @@ UM.MainWindow {
                     top: parent.top;
                     bottom: parent.bottom;
                     right: parent.right;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
                 }
 
                 width: UM.Theme.sizes.panel.width;

@@ -41,23 +41,20 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
-                    "min_value": 0.00001,
+                    "min_value": 0.0001,
                     "min_value_warning": 0.04,
-                    "max_value_warning": 2.0,
-                    "always_visible": true,
-                    "children": {
-                        "layer_height_0": {
-                            "label": "Initial Layer Height",
-                            "description": "The layer height of the bottom layer. A thicker bottom layer makes for better bed adhesion.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.3,
-                            "min_value": 0.0,
-                            "min_value_warning": 0.04,
-                            "max_value_warning": 2.0,
-                            "visible": false
-                        }
-                    }
+                    "max_value_warning": 0.32
+                },
+                "layer_height_0": {
+                    "label": "Initial Layer Thickness",
+                    "description": "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "min_value": 0.0001,
+                    "min_value_warning": 0.04,
+                    "max_value_warning": 0.32,
+                    "visible": false
                 }
             }
         },
@@ -73,7 +70,8 @@
                     "type": "float",
                     "default": 0.8,
                     "min_value": 0.0,
-                    "max_value": 5.0,
+                    "min_value_warning": 0.2,
+                    "max_value_warning": 5.0,
                     "children": {
                         "wall_thickness": {
                             "label": "Wall Thickness",
@@ -81,9 +79,8 @@
                             "unit": "mm",
                             "default": 0.8,
                             "min_value": 0.0,
-                            "max_value": 5.0,
-                            "min_value_warning": 0.4,
-                            "max_value_warning": 2.0,
+                            "min_value_warning": 0.2,
+                            "max_value_warning": 5.0,
                             "type": "float",
                             "visible": false,
 
@@ -91,6 +88,7 @@
                                 "wall_line_count": {
                                     "label": "Wall Line Count",
                                     "description": "Number of shell lines. This these lines are called perimeter lines in other tools and impact the strength and structural integrity of your print.",
+                                    "min_value": 0,
                                     "default": 2,
                                     "type": "int",
                                     "visible": false,
@@ -100,6 +98,9 @@
                                     "label": "Wall Line Width",
                                     "description": "Width of a single shell line. Each  line of the shell will be printed with this width in mind.",
                                     "unit": "mm",
+                                    "min_value": 0.0,
+                                    "min_value_warning": 0.2,
+                                    "max_value_warning": 5.0,
                                     "default": 0.4,
                                     "type": "float",
                                     "visible": false,
@@ -110,6 +111,9 @@
                                             "label": "Outer Wall Line Width",
                                             "description": "Width of the outermost shell line. By printing a thinner outermost wall line you can print higher details with a larger nozzle.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -118,6 +122,9 @@
                                             "label": "Other Walls Line Width",
                                             "description": "Width of a single shell line for all shell lines except the outermost one.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -126,6 +133,9 @@
                                             "label": "Skirt line width",
                                             "description": "Width of a single skirt line.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -134,6 +144,9 @@
                                             "label": "Top/bottom line width",
                                             "description": "Width of a single top/bottom printed line, used to fill up the top/bottom areas of a print.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -142,6 +155,9 @@
                                             "label": "Infill line width",
                                             "description": "Width of the inner infill printed lines.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -150,6 +166,9 @@
                                             "label": "Support line width",
                                             "description": "Width of the printed support structures lines.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false,
@@ -198,6 +217,7 @@
                                     "label": "Top Thickness",
                                     "description": "This controls the thickness of the top layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it nearto your wall thickness to make an evenly strong part.",
                                     "unit": "mm",
+                                    "min_value": 0.0,
                                     "default": 0.8,
                                     "type": "float",
                                     "visible": false,
@@ -206,6 +226,7 @@
                                         "top_layers": {
                                             "label": "Top Layers",
                                             "description": "This controls the amount of top layers.",
+                                            "min_value": 0,
                                             "default": 8,
                                             "type": "int",
                                             "visible": false,
@@ -217,6 +238,7 @@
                                     "label": "Bottom Thickness",
                                     "description": "This controls the thickness of the bottom layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it near to your wall thickness to make an evenly strong part.",
                                     "unit": "mm",
+                                    "min_value": 0.0,
                                     "default": 0.8,
                                     "type": "float",
                                     "visible": false,
@@ -225,6 +247,7 @@
                                         "bottom_layers": {
                                             "label": "Bottom Layers",
                                             "description": "This controls the amount of bottom layers.",
+                                            "min_value": 0,
                                             "default": 8,
                                             "type": "int",
                                             "visible": false,
@@ -400,18 +423,18 @@
                     "description": "The temperature used for printing. Set at 0 to pre-heat yourself. For PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.",
                     "unit": "°C",
                     "type": "float",
-                    "default": 220,
-                    "min_value": 10,
-                    "max_value": 340
+                    "default": 210,
+                    "min_value": 0,
+                    "max_value_warning": 260
                 },
                 "material_bed_temperature": {
                     "label": "Bed Temperature",
                     "description": "The temperature used for the heated printer bed. Set at 0 to pre-heat it yourself.",
                     "unit": "°C",
                     "type": "float",
-                    "default": 70,
+                    "default": 60,
                     "min_value": 0,
-                    "max_value": 340
+                    "max_value_warning": 260
                 },
                 "material_diameter": {
                     "label": "Diameter",
@@ -419,8 +442,8 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 2.85,
-                    "min_value": 0.4,
-                    "max_value": 5.0
+                    "min_value_warning": 0.4,
+                    "max_value_warning": 3.5
                 },
                 "material_flow": {
                     "label": "Flow",
@@ -429,7 +452,8 @@
                     "default": 100.0,
                     "type": "float",
                     "min_value": 5.0,
-                    "max_value": 300.0
+                    "min_value_warning": 50.0,
+                    "max_value_warning": 150.0
                 }
             }
         },
@@ -443,6 +467,8 @@
                     "description": "The speed at which printing happens. A well-adjusted Ultimaker can reach 150mm/s, but for good quality prints you will want to print slower. Printing speed depends on a lot of factors, so you will need to experiment with optimal settings for this.",
                     "unit": "mm/s",
                     "type": "float",
+                    "min_value": 0.1,
+                    "max_value_warning": 150.0,
                     "default": 50.0,
 
                     "children": {
@@ -451,6 +477,8 @@
                             "description": "The speed at which infill parts are printed. Printing the infill faster can greatly reduce printing time, but this can negatively affect print quality.",
                             "unit": "mm/s",
                             "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
                             "default": 50.0,
                             "visible": false
                         },
@@ -459,6 +487,8 @@
                             "description": "The speed at which shell is printed. Printing the outer shell at a lower speed improves the final skin quality.",
                             "unit": "mm/s",
                             "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
                             "default": 50.0,
                             "visible": false,
 
@@ -468,6 +498,8 @@
                                     "description": "The speed at which outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way.",
                                     "unit": "mm/s",
                                     "type": "float",
+                                    "min_value": 0.1,
+                                    "max_value_warning": 150.0,
                                     "default": 50.0,
                                     "visible": false
                                 },
@@ -476,6 +508,8 @@
                                     "description": "The speed at which  all inner shells are printed. Printing the inner shell fasster than the outer shell will reduce printing time. It is good to set this in between the outer shell speed and the infill speed.",
                                     "unit": "mm/s",
                                     "type": "float",
+                                    "min_value": 0.1,
+                                    "max_value_warning": 150.0,
                                     "default": 50.0,
                                     "visible": false
                                 }
@@ -486,6 +520,8 @@
                             "description": "Speed at which top/bottom parts are printed. Printing the top/bottom faster can greatly reduce printing time, but this can negatively affect print quality.",
                             "unit": "mm/s",
                             "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
                             "default": 50.0,
                             "visible": false
                         },
@@ -494,6 +530,8 @@
                             "description": "The speed at which exterior support is printed. Printing exterior supports at higher speeds can greatly improve printing time. And the surface quality of exterior support is usually not important, so higher speeds can be used.",
                             "unit": "mm/s",
                             "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
                             "default": 50.0,
                             "visible": false,
                             "inherit_function": "speed_wall_0",
@@ -537,6 +575,8 @@
                     "description": "The speed at which travel moves are done. A well-built Ultimaker can reach speeds of 250mm/s. But some machines might have misaligned layers then.",
                     "unit": "mm/s",
                     "type": "float",
+                    "min_value": 0.1,
+                    "max_value_warning": 300.0,
                     "default": 150.0
                 },
                 "speed_layer_0": {
@@ -544,6 +584,7 @@
                     "description": "The print speed for the bottom layer: You want to print the first layer slower so it sticks to the printer bed better.",
                     "unit": "mm/s",
                     "type": "float",
+                    "min_value": 0.1,
                     "default": 15.0,
                     "visible": false,
 
@@ -553,6 +594,7 @@
                             "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
                             "unit": "mm/s",
                             "type": "float",
+                            "min_value": 0.1,
                             "default": 15.0,
                             "visible": false
                         }
@@ -562,6 +604,7 @@
                     "label": "Amount of Slower Layers",
                     "description": "The first few layers are printed slower then the rest of the object, this to get better adhesion to the printer bed and improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is generally right for most materials and printers.",
                     "type": "int",
+                    "min_value": 0,
                     "default": 4,
                     "visible": false
                 }
@@ -863,6 +906,8 @@
                             "description": "Fan speed used for the print cooling fan on the printer head.",
                             "unit": "%",
                             "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
                             "default": 100.0,
                             "visible": false,
                             "inherit_function": "100.0 if parent_value else 0.0",
@@ -873,6 +918,8 @@
                                     "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
                                     "unit": "%",
                                     "type": "float",
+                                    "min_value": 0.0,
+                                    "max_value": 100.0,
                                     "default": 100.0,
                                     "visible": false
                                 },
@@ -881,6 +928,8 @@
                                     "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
                                     "unit": "%",
                                     "type": "float",
+                                    "min_value": 0.0,
+                                    "max_value": 100.0,
                                     "default": 100.0,
                                     "visible": false
                                 }
@@ -893,6 +942,7 @@
                     "description": "The height at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off for the first layer.",
                     "unit": "mm",
                     "type": "float",
+                    "min_value": 0.0,
                     "default": 0.5,
                     "visible": false,
 
@@ -901,6 +951,7 @@
                             "label": "Fan Full on at Layer",
                             "description": "The layer number at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off for the first layer.",
                             "type": "int",
+                            "min_value": 0,
                             "default": 4,
                             "visible": false,
                             "inherit_function": "int((parent_value - layer_height_0 + 0.001) / layer_height)"
@@ -912,6 +963,7 @@
                     "description": "The minimum time spent in a layer: Gives the layer time to cool down before the next one is put on top. If a layer would print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer.",
                     "unit": "sec",
                     "type": "float",
+                    "min_value": 0.0,
                     "default": 5.0,
                     "visible": false
                 },
@@ -920,6 +972,7 @@
                     "description": "The minimum time spent in a layer which will cause the fan to be at minmum speed. The fan speed increases linearly from maximal fan speed for layers taking minimal layer time to minimal fan speed for layers taking the time specified here.",
                     "unit": "sec",
                     "type": "float",
+                    "min_value": 0.0,
                     "default": 10.0,
                     "visible": false
                 },
@@ -1130,6 +1183,8 @@
                     "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
                     "unit": "°",
                     "type": "float",
+                    "min_value": 0.0,
+                    "max_value": 90.0,
                     "default": 60.0,
                     "visible": false,
                     "active_if": {
@@ -1142,6 +1197,8 @@
                     "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
                     "unit": "mm",
                     "type": "float",
+                    "min_value": 0.0,
+                    "max_value_warning": 10.0,
                     "default": 0.7,
                     "visible": false,
                     "active_if": {
@@ -1154,6 +1211,8 @@
                     "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
                     "unit": "mm",
                     "type": "float",
+                    "min_value": 0.0,
+                    "max_value_warning": 10.0,
                     "default": 0.15,
                     "visible": false,
                     "active_if": {
@@ -1165,6 +1224,8 @@
                             "label": "Top Distance",
                             "description": "Distance from the top of the support to the print.",
                             "unit": "mm",
+                            "min_value": 0.0,
+                            "max_value_warning": 10.0,
                             "default": 0.15,
                             "type": "float",
                             "visible": false
@@ -1173,6 +1234,8 @@
                             "label": "Bottom Distance",
                             "description": "Distance from the print to the bottom of the support.",
                             "unit": "mm",
+                            "min_value": 0.0,
+                            "max_value_warning": 10.0,
                             "default": 0.15,
                             "type": "float",
                             "visible": false
@@ -1262,6 +1325,8 @@
                     "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
                     "unit": "°",
                     "type": "int",
+                    "min_value": 0,
+                    "max_value": 90,
                     "default": 65,
                     "visible": false,
                     "active_if": {
@@ -1301,6 +1366,8 @@
                     "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
                     "unit": "%",
                     "type": "float",
+                    "min_value": 0.0,
+                    "max_value": 100.0,
                     "default": 15,
                     "visible": false,
                     "active_if": {
@@ -1313,6 +1380,7 @@
                             "description": "Distance between the printed support lines.",
                             "unit": "mm",
                             "type": "float",
+                            "min_value": 0.0,
                             "default": 2.66,
                             "visible": false,
                             "active_if": {
