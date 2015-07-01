@@ -66,10 +66,4 @@ UM.Dialog
            id: palette;
         }
     }
-
-    rightButtons: Button {
-        text: qsTr("Close");
-        
-        enabled: true;
-    }
 }
