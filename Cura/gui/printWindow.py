@@ -523,17 +523,17 @@ class printWindowBasic(wx.Frame):
 		#self.temperatureGraph.addPoint(temp, [0], connection.getBedTemperature(), 0)
 
 	def __doPrinterConnectionUpdate(self, connection, extraInfo):
-		t = time.time()
-		if self._lastUpdateTime + 0.5 > t and extraInfo is None:
+		now = time.time()
+		if self._lastUpdateTime + 0.5 > now and extraInfo is None:
 			return
-		self._lastUpdateTime = t
+		self._lastUpdateTime = now
 
 		if extraInfo is not None and len(extraInfo) > 0:
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
-		isPrinting = connection.isPrinting() or connection.isPaused()
-		if isPrinting:
+		onGoingPrint = connection.isPrinting() or connection.isPaused()
+		if onGoingPrint:
 			self.progress.SetValue(connection.getPrintProgress() * 1000)
 		else:
 			self.progress.SetValue(0)
@@ -545,10 +545,9 @@ class printWindowBasic(wx.Frame):
 			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
 		info += '\n\n'
 		self.statsText.SetLabel(info)
-		if isPrinting != self._isPrinting:
-			self._isPrinting = isPrinting
+		if onGoingPrint != self._isPrinting:
+			self._isPrinting = onGoingPrint
 			preventComputerFromSleeping(self, self._isPrinting)
-
 
 	def _addTermLog(self, msg):
 		pass
