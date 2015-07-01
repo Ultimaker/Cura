@@ -92,6 +92,12 @@ class dummyConnection(printerConnectionBase.printerConnectionBase):
 	#  various information to the user.
 	def getStatusString(self):
 		return "DUMMY!:%i %i:%i" % (self._progressLine, self._lineCount, self._printing)
+	
+	def coolDown(self):
+		pass
+
+	def disableSteppers(self):
+		pass
 
 	def _dummyThread(self):
 		while True:
