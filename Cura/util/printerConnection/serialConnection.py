@@ -108,7 +108,8 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	#Abort the previously loaded print file
 	def cancelPrint(self):
-		if not self.isPrinting() or self._process is None:
+		if (not self.isPrinting() and not self.isPaused()) or \
+			self._process is None:
 			return
 		self._process.stdin.write('STOP\n')
 		self._printProgress = 0
