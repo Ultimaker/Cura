@@ -1062,72 +1062,6 @@
                         "value": "Raft"
                     }
                 },
-                "raft_line_spacing": {
-                    "label": "Raft Line Spacing",
-                    "description": "The distance between the raft lines. The first 2 layers of the raft have this amount of spacing between the raft lines.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 5.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_thickness": {
-                    "label": "Raft Base Thickness",
-                    "description": "Layer thickness of the first raft layer. This should be a thick layer which sticks firmly to the printer bed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.3,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_linewidth": {
-                    "label": "Raft Base Line Width",
-                    "description": "Width of the lines in the first raft layer. These should be thick lines to assist in bed adhesion.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_speed": {
-                    "label": "Raft Base Print Speed",
-                    "description": "The speed at which the first raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 15.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_interface_thickness": {
-                    "label": "Raft Interface Thickness",
-                    "description": "Thickness of the 2nd raft layer.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.27,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_interface_linewidth": {
-                    "label": "Raft Interface Line Width",
-                    "description": "Width of the 2nd raft layer lines. These lines should be thinner than the first layer, but strong enough to attach the object to.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.4,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
                 "raft_airgap": {
                     "label": "Raft Air-gap",
                     "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
@@ -1147,6 +1081,201 @@
                     "active_if": {
                         "setting": "adhesion_type",
                         "value": "Raft"
+                    }
+                },
+                "raft_surface_thickness": {
+                    "label": "Raft Surface Thickness",
+                    "description": "Layer thickness of the surface raft layers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.1,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_surface_line_width": {
+                    "label": "Raft Surface Line Width",
+                    "description": "Width of the lines in the surface raft layers. These can be thin lines so that the top of the raft becomes smooth.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_surface_line_spacing": {
+                    "label": "Raft Surface Spacing",
+                    "description": "The distance between the raft lines for the surface raft layers. The spacing of the interface should be equal to the line width, so that the surface is solid.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    },
+                    "inherit_function": "raft_surface_line_width"
+                },
+                "raft_interface_thickness": {
+                    "label": "Raft Interface Thickness",
+                    "description": "Layer thickness of the interface raft layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.27,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_interface_line_width": {
+                    "label": "Raft Interface Line Width",
+                    "description": "Width of the lines in the interface raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_interface_line_spacing": {
+                    "label": "Raft Interface Spacing",
+                    "description": "The distance between the raft lines for the interface raft layer. The spacing of the interface should be quite wide, while being dense enough to support the surface raft layers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_thickness": {
+                    "label": "Raft Base Thickness",
+                    "description": "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer bed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_line_width": {
+                    "label": "Raft Base Line Width",
+                    "description": "Width of the lines in the base raft layer. These should be thick lines to assist in bed adhesion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_line_spacing": {
+                    "label": "Raft Line Spacing",
+                    "description": "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 5.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_speed": {
+                    "label": "Raft Print Speed",
+                    "description": "The speed at which the raft is printed.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 30.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    },
+                    "inherit_function": "0.6 * speed_print",
+                    "children": {
+                        "raft_surface_speed": {
+                            "label": "Raft Surface Print Speed",
+                            "description": "The speed at which the surface raft layers are printed. This should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 30.0,
+                            "active_if": {
+                                "setting": "adhesion_type",
+                                "value": "Raft"
+                            },
+                            "inherit_function": "parent_value"
+                        },
+                        "raft_interface_speed": {
+                            "label": "Raft Interface Print Speed",
+                            "description": "The speed at which the interface raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 15.0,
+                            "active_if": {
+                                "setting": "adhesion_type",
+                                "value": "Raft"
+                            },
+                            "inherit_function": "0.5 * parent_value"
+                        },
+                        "raft_base_speed": {
+                            "label": "Raft Base Print Speed",
+                            "description": "The speed at which the base raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 15.0,
+                            "active_if": {
+                                "setting": "adhesion_type",
+                                "value": "Raft"
+                            },
+                            "inherit_function": "0.5 * parent_value"
+                        }
+                    }
+                },
+                "raft_fan_speed": {
+                    "label": "Raft Fan Speed",
+                    "description": "The fan speed for the raft.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value": 100.0,
+                    "default": 100.0,
+                    "visible": false,
+                    "children": {
+                        "raft_surface_fan_speed": {
+                            "label": "Raft Surface Fan Speed",
+                            "description": "The fan speed for the surface raft layers.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
+                            "default": 100.0,
+                            "visible": false,
+                            "inherit": true
+                        },
+                        "raft_interface_fan_speed": {
+                            "label": "Raft Interface Fan Speed",
+                            "description": "The fan speed for the interface raft layer.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
+                            "default": 100.0,
+                            "visible": false,
+                            "inherit": true
+                        },
+                        "raft_base_fan_speed": {
+                            "label": "Raft Base Fan Speed",
+                            "description": "The fan speed for the base raft layer.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
+                            "default": 100.0,
+                            "visible": false,
+                            "inherit": true
+                        }
                     }
                 }
             }
