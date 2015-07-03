@@ -173,6 +173,10 @@ class PrinterConnection(SignalEmitter):
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
+
+        if not self._serial or not programmer.serial:
+            self._is_connecting = False
+            return
         
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
@@ -241,10 +245,17 @@ class PrinterConnection(SignalEmitter):
     ##  Close the printer connection    
     def close(self):
         if self._connect_thread.isAlive():
-            self._connect_thread.join()
+            try:
+                self._connect_thread.join()
+            except Exception as e:
+                pass # This should work, but it does fail sometimes for some reason
+
         if self._serial is not None:
             self.setIsConnected(False)
-            self._listen_thread.join()
+            try:
+                self._listen_thread.join()
+            except:
+                pass
             self._serial.close()
             
         self._serial = None

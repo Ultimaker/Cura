@@ -30,10 +30,10 @@
         "machine_nozzle_expansion_angle": { "default": 45 }
     },
     "categories": {
-        "resolution": {
-            "label": "Quality",
+        "layer_height": {
+            "label": "Layer Height",
             "visible": true,
-            "icon": "category_quality",
+            "icon": "category_layer_height",
             "settings": {
                 "layer_height": {
                     "label": "Layer Height",
@@ -41,22 +41,28 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
-                    "min_value": 0.06,
-                    "max_value": 2.0,
-                    "always_visible": true,
-                    "children": {
-                        "layer_height_0": {
-                            "label": "Initial Layer Thickness",
-                            "description": "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.3,
-                            "min_value": 0.06,
-                            "max_value": 2.0,
-                            "visible": false
-                        }
-                    }
+                    "min_value": 0.0001,
+                    "min_value_warning": 0.04,
+                    "max_value_warning": 0.32
                 },
+                "layer_height_0": {
+                    "label": "Initial Layer Thickness",
+                    "description": "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "min_value": 0.0001,
+                    "min_value_warning": 0.04,
+                    "max_value_warning": 0.32,
+                    "visible": false
+                }
+            }
+        },
+        "shell": {
+            "label": "Shell",
+            "visible": true,
+            "icon": "category_shell",
+            "settings": {
                 "shell_thickness": {
                     "label": "Shell Thickness",
                     "description": "The thickness of the outside shell in the horizontal and vertical direction. This is used in combination with the nozzle size to define the number of perimeter lines and the thickness of those perimeter lines. This is also used to define the number of solid top and bottom layers.",
@@ -64,7 +70,8 @@
                     "type": "float",
                     "default": 0.8,
                     "min_value": 0.0,
-                    "max_value": 5.0,
+                    "min_value_warning": 0.2,
+                    "max_value_warning": 5.0,
                     "children": {
                         "wall_thickness": {
                             "label": "Wall Thickness",
@@ -72,9 +79,8 @@
                             "unit": "mm",
                             "default": 0.8,
                             "min_value": 0.0,
-                            "max_value": 5.0,
-                            "min_value_warning": 0.4,
-                            "max_value_warning": 2.0,
+                            "min_value_warning": 0.2,
+                            "max_value_warning": 5.0,
                             "type": "float",
                             "visible": false,
 
@@ -82,6 +88,7 @@
                                 "wall_line_count": {
                                     "label": "Wall Line Count",
                                     "description": "Number of shell lines. This these lines are called perimeter lines in other tools and impact the strength and structural integrity of your print.",
+                                    "min_value": 0,
                                     "default": 2,
                                     "type": "int",
                                     "visible": false,
@@ -91,6 +98,9 @@
                                     "label": "Wall Line Width",
                                     "description": "Width of a single shell line. Each  line of the shell will be printed with this width in mind.",
                                     "unit": "mm",
+                                    "min_value": 0.0,
+                                    "min_value_warning": 0.2,
+                                    "max_value_warning": 5.0,
                                     "default": 0.4,
                                     "type": "float",
                                     "visible": false,
@@ -98,9 +108,12 @@
 
                                     "children": {
                                         "wall_line_width_0": {
-                                            "label": "First Wall Line Width",
+                                            "label": "Outer Wall Line Width",
                                             "description": "Width of the outermost shell line. By printing a thinner outermost wall line you can print higher details with a larger nozzle.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -109,6 +122,9 @@
                                             "label": "Other Walls Line Width",
                                             "description": "Width of a single shell line for all shell lines except the outermost one.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -117,14 +133,20 @@
                                             "label": "Skirt line width",
                                             "description": "Width of a single skirt line.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
                                         },
                                         "skin_line_width": {
                                             "label": "Top/bottom line width",
-                                            "description": "Width of a single top/bottom printed line. Which are used to fill up the top/bottom areas of a print.",
+                                            "description": "Width of a single top/bottom printed line, used to fill up the top/bottom areas of a print.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -133,6 +155,9 @@
                                             "label": "Infill line width",
                                             "description": "Width of the inner infill printed lines.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
                                             "visible": false
@@ -141,13 +166,39 @@
                                             "label": "Support line width",
                                             "description": "Width of the printed support structures lines.",
                                             "unit": "mm",
+                                            "min_value": 0.0,
+                                            "min_value_warning": 0.2,
+                                            "max_value_warning": 5.0,
                                             "default": 0.4,
                                             "type": "float",
-                                            "visible": false
+                                            "visible": false,
+                                            "active_if" : {
+                                                "setting": "support_enable",
+                                                "value": true
+                                            }
+                                        },
+                                        "support_roof_line_width": {
+                                            "label": "Support Hammock line width",
+                                            "description": "Width of a single hammock line, used to fill the roof of the support.",
+                                            "unit": "mm",
+                                            "default": 0.4,
+                                            "type": "float",
+                                            "visible": false,
+                                            "active_if" : {
+                                                "setting": "support_roof_enable",
+                                                "value": true
+                                            }
                                         }
                                     }
                                 }
                             }
+                        },
+                        "alternate_extra_perimeter": {
+                            "label": "Alternate Extra Wall",
+                            "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
+                            "type": "boolean",
+                            "default": false,
+                            "visible": false
                         },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
@@ -166,6 +217,7 @@
                                     "label": "Top Thickness",
                                     "description": "This controls the thickness of the top layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it nearto your wall thickness to make an evenly strong part.",
                                     "unit": "mm",
+                                    "min_value": 0.0,
                                     "default": 0.8,
                                     "type": "float",
                                     "visible": false,
@@ -174,7 +226,8 @@
                                         "top_layers": {
                                             "label": "Top Layers",
                                             "description": "This controls the amount of top layers.",
-                                            "default": 4,
+                                            "min_value": 0,
+                                            "default": 8,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
@@ -185,6 +238,7 @@
                                     "label": "Bottom Thickness",
                                     "description": "This controls the thickness of the bottom layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it near to your wall thickness to make an evenly strong part.",
                                     "unit": "mm",
+                                    "min_value": 0.0,
                                     "default": 0.8,
                                     "type": "float",
                                     "visible": false,
@@ -193,7 +247,8 @@
                                         "bottom_layers": {
                                             "label": "Bottom Layers",
                                             "description": "This controls the amount of bottom layers.",
-                                            "default": 4,
+                                            "min_value": 0,
+                                            "default": 8,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
@@ -204,12 +259,53 @@
                         }
                     }
                 },
-                "wall_overlap_avoid_enabled": {
-                    "label": "Avoid Overlapping Walls",
+                "remove_overlapping_walls_enabled": {
+                    "label": "Remove Overlapping Wall Parts",
                     "description": "Remove parts of a wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners.",
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
+                    "visible": false,
+                    "children": {
+                        "remove_overlapping_walls_0_enabled": {
+                            "label": "Remove Overlapping Outer Wall Parts",
+                            "description": "Remove parts of an outer wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners.",
+                            "type": "boolean",
+                            "default": false,
+                            "visible": false,
+                            "inherit": true
+                        },
+                        "remove_overlapping_walls_x_enabled": {
+                            "label": "Remove Overlapping Other Wall Parts",
+                            "description": "Remove parts of an inner wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners.",
+                            "type": "boolean",
+                            "default": true,
+                            "visible": false,
+                            "inherit": false
+                        }
+                    }
+                },
+                "travel_compensate_overlapping_walls_enabled": {
+                    "label": "Compensate Wall Overlaps",
+                    "description": "Compensate the flow for parts of a wall being laid down where there already is a piece of a wall. These overlaps occur in thin pieces in a model. Gcode generation might be slowed down considerably.",
+                    "type": "boolean",
+                    "default": false,
                     "visible": false
+                },
+                "fill_perimeter_gaps":{
+                    "label": "Fill Gaps Between Walls",
+                    "description": "Fill the gaps created by walls where they would otherwise be overlapping. This will also fill thin walls. Optionally only the gaps occurring within the top and bottom skin can be filled.",
+                    "type": "enum",
+                    "options": [
+                        "Nowhere",
+                        "Everywhere",
+                        "Skin"
+                    ],
+                    "default": "Everywhere",
+                    "visible": false,
+                    "active_if": {
+                        "setting": "remove_overlapping_walls_x_enabled",
+                        "value": true
+                    }
                 },
                 "top_bottom_pattern": {
                     "label": "Bottom/Top Pattern",
@@ -220,6 +316,13 @@
                         "Concentric"
                     ],
                     "default": "Lines",
+                    "visible": false
+                },
+                "skin_alternate_rotation": {
+                    "label": "Alternate Skin Rotation",
+                    "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve on the printing quality by reducing the pillowing effect.",
+                    "type": "boolean",
+                    "default": false,
                     "visible": false
                 },
                 "skin_outline_count": {
@@ -239,233 +342,6 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.0,
-                    "visible": false
-                }
-            }
-        },
-
-        "material": {
-            "label": "Material",
-            "visible": true,
-            "icon": "category_material",
-            "settings": {
-                "material_print_temperature": {
-                    "label": "Printing Temperature",
-                    "description": "The temperature used for printing. Set at 0 to pre-heat yourself. For PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.",
-                    "unit": "°C",
-                    "type": "float",
-                    "default": 220,
-                    "min_value": 10,
-                    "max_value": 340
-                },
-                "material_bed_temperature": {
-                    "label": "Bed Temperature",
-                    "description": "The temperature used for the heated printer bed. Set at 0 to pre-heat it yourself.",
-                    "unit": "°C",
-                    "type": "float",
-                    "default": 70,
-                    "min_value": 0,
-                    "max_value": 340
-                },
-                "material_diameter": {
-                    "label": "Diameter",
-                    "description": "The diameter of your filament needs to be measured as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 2.85,
-                    "min_value": 0.4,
-                    "max_value": 5.0
-                },
-                "material_flow": {
-                    "label": "Flow",
-                    "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
-                    "unit": "%",
-                    "default": 100.0,
-                    "type": "float",
-                    "min_value": 5.0,
-                    "max_value": 300.0
-                },
-                "retraction_enable": {
-                    "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
-                    "type": "boolean",
-                    "default": true,
-
-                    "children": {
-                        "retraction_speed": {
-                            "label": "Retraction Speed",
-                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 25.0,
-                            "visible": false,
-                            "inherit": false,
-                            
-                            "children": {
-                                "retraction_retract_speed": {
-                                    "label": "Retraction Retract Speed",
-                                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                                    "unit": "mm/s",
-                                    "type": "float",
-                                    "default": 25.0,
-                                    "visible": false
-                                },
-                                "retraction_prime_speed": {
-                                    "label": "Retraction Prime Speed",
-                                    "description": "The speed at which the filament is pushed back after retraction.",
-                                    "unit": "mm/s",
-                                    "type": "float",
-                                    "default": 25.0,
-                                    "visible": false
-                                }
-                            }
-                        },
-                        "retraction_amount": {
-                            "label": "Retraction Distance",
-                            "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 4.5,
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_min_travel": {
-                            "label": "Retraction Minimum Travel",
-                            "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 4.5,
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_combing": {
-                            "label": "Enable Combing",
-                            "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
-                            "type": "boolean",
-                            "default": true,
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_minimal_extrusion": {
-                            "label": "Minimal Extrusion Before Retraction",
-                            "description": "The minimum amount of extrusion that needs to happen between retractions.  If a retraction should happen before this minimum is reached, it will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.02,
-                            "visible": false,
-                            "inherit": false
-                        },
-                        "retraction_hop": {
-                            "label": "Z Hop when Retracting",
-                            "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.0,
-                            "visible": false,
-                            "inherit": false
-                        }
-                    }
-                }
-            }
-        },
-        "speed": {
-            "label": "Speed",
-            "visible": true,
-            "icon": "category_speed",
-            "settings": {
-                "speed_print": {
-                    "label": "Print Speed",
-                    "description": "The speed at which printing happens. A well-adjusted Ultimaker can reach 150mm/s, but for good quality prints you will want to print slower. Printing speed depends on a lot of factors, so you will need to experiment with optimal settings for this.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 50.0,
-
-                    "children": {
-                        "speed_infill": {
-                            "label": "Infill Speed",
-                            "description": "The speed at which infill parts are printed. Printing the infill faster can greatly reduce printing time, but this can negatively affect print quality.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 50.0,
-                            "visible": false
-                        },
-                        "speed_wall": {
-                            "label": "Shell Speed",
-                            "description": "The speed at which shell is printed. Printing the outer shell at a lower speed improves the final skin quality.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 50.0,
-                            "visible": false,
-
-                            "children": {
-                                "speed_wall_0": {
-                                    "label": "Outer Shell Speed",
-                                    "description": "The speed at which outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way.",
-                                    "unit": "mm/s",
-                                    "type": "float",
-                                    "default": 50.0,
-                                    "visible": false
-                                },
-                                "speed_wall_x": {
-                                    "label": "Inner Shell Speed",
-                                    "description": "The speed at which  all inner shells are printed. Printing the inner shell fasster than the outer shell will reduce printing time. It is good to set this in between the outer shell speed and the infill speed.",
-                                    "unit": "mm/s",
-                                    "type": "float",
-                                    "default": 50.0,
-                                    "visible": false
-                                }
-                            }
-                        },
-                        "speed_topbottom": {
-                            "label": "Top/Bottom Speed",
-                            "description": "Speed at which top/bottom parts are printed. Printing the top/bottom faster can greatly reduce printing time, but this can negatively affect print quality.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 50.0,
-                            "visible": false
-                        },
-                        "speed_support": {
-                            "label": "Support Speed",
-                            "description": "The speed at which exterior support is printed. Printing exterior supports at higher speeds can greatly improve printing time. And the surface quality of exterior support is usually not important, so higher speeds can be used.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 50.0,
-                            "visible": false,
-                            "inherit_function": "speed_wall_0"
-                        }
-                    }
-                },
-                "speed_travel": {
-                    "label": "Travel Speed",
-                    "description": "The speed at which travel moves are done. A well-built Ultimaker can reach speeds of 250mm/s. But some machines might have misaligned layers then.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 150.0
-                },
-                "speed_layer_0": {
-                    "label": "Bottom Layer Speed",
-                    "description": "The print speed for the bottom layer: You want to print the first layer slower so it sticks to the printer bed better.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 15.0,
-                    "visible": false,
-
-                    "children": {
-                        "skirt_speed": {
-                            "label": "Skirt Speed",
-                            "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 15.0,
-                            "visible": false
-                        }
-                    }
-                },
-                "speed_slowdown_layers": {
-                    "label": "Amount of Slower Layers",
-                    "description": "The first few layers are printed slower then the rest of the object, this to get better adhesion to the printer bed and improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is generally right for most materials and printers.",
-                    "type": "int",
-                    "default": 4,
                     "visible": false
                 }
             }
@@ -504,7 +380,7 @@
                             "type": "float",
                             "default": 2.0,
                             "visible": false,
-                            "inherit_function": "(infill_line_width * 100) / parent_value"
+                            "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
                         }
                     }
                 },
@@ -537,6 +413,482 @@
                 }
             }
         },
+        "material": {
+            "label": "Material",
+            "visible": true,
+            "icon": "category_material",
+            "settings": {
+                "material_print_temperature": {
+                    "label": "Printing Temperature",
+                    "description": "The temperature used for printing. Set at 0 to pre-heat yourself. For PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 210,
+                    "min_value": 0,
+                    "max_value_warning": 260
+                },
+                "material_bed_temperature": {
+                    "label": "Bed Temperature",
+                    "description": "The temperature used for the heated printer bed. Set at 0 to pre-heat it yourself.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 60,
+                    "min_value": 0,
+                    "max_value_warning": 260
+                },
+                "material_diameter": {
+                    "label": "Diameter",
+                    "description": "The diameter of your filament needs to be measured as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2.85,
+                    "min_value_warning": 0.4,
+                    "max_value_warning": 3.5
+                },
+                "material_flow": {
+                    "label": "Flow",
+                    "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
+                    "unit": "%",
+                    "default": 100.0,
+                    "type": "float",
+                    "min_value": 5.0,
+                    "min_value_warning": 50.0,
+                    "max_value_warning": 150.0
+                }
+            }
+        },
+        "speed": {
+            "label": "Speed",
+            "visible": true,
+            "icon": "category_speed",
+            "settings": {
+                "speed_print": {
+                    "label": "Print Speed",
+                    "description": "The speed at which printing happens. A well-adjusted Ultimaker can reach 150mm/s, but for good quality prints you will want to print slower. Printing speed depends on a lot of factors, so you will need to experiment with optimal settings for this.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "min_value": 0.1,
+                    "max_value_warning": 150.0,
+                    "default": 50.0,
+
+                    "children": {
+                        "speed_infill": {
+                            "label": "Infill Speed",
+                            "description": "The speed at which infill parts are printed. Printing the infill faster can greatly reduce printing time, but this can negatively affect print quality.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
+                            "default": 50.0,
+                            "visible": false
+                        },
+                        "speed_wall": {
+                            "label": "Shell Speed",
+                            "description": "The speed at which shell is printed. Printing the outer shell at a lower speed improves the final skin quality.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
+                            "default": 50.0,
+                            "visible": false,
+
+                            "children": {
+                                "speed_wall_0": {
+                                    "label": "Outer Shell Speed",
+                                    "description": "The speed at which outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "min_value": 0.1,
+                                    "max_value_warning": 150.0,
+                                    "default": 50.0,
+                                    "visible": false
+                                },
+                                "speed_wall_x": {
+                                    "label": "Inner Shell Speed",
+                                    "description": "The speed at which  all inner shells are printed. Printing the inner shell fasster than the outer shell will reduce printing time. It is good to set this in between the outer shell speed and the infill speed.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "min_value": 0.1,
+                                    "max_value_warning": 150.0,
+                                    "default": 50.0,
+                                    "visible": false
+                                }
+                            }
+                        },
+                        "speed_topbottom": {
+                            "label": "Top/Bottom Speed",
+                            "description": "Speed at which top/bottom parts are printed. Printing the top/bottom faster can greatly reduce printing time, but this can negatively affect print quality.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
+                            "default": 50.0,
+                            "visible": false
+                        },
+                        "speed_support": {
+                            "label": "Support Speed",
+                            "description": "The speed at which exterior support is printed. Printing exterior supports at higher speeds can greatly improve printing time. And the surface quality of exterior support is usually not important, so higher speeds can be used.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150.0,
+                            "default": 50.0,
+                            "visible": false,
+                            "inherit_function": "speed_wall_0",
+                            "active_if" : {
+                                "setting": "support_enable",
+                                "value": true
+                            },
+                            "children": {
+                                "speed_support_lines": {
+                                    "label": "Support Wall Speed",
+                                    "description": "The speed at which the walls of exterior support are printed. Printing the walls at higher speeds can improve on the overall duration. ",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "default": 50.0,
+                                    "visible": false,
+                                    "inherit": true,
+                                    "active_if" : {
+                                        "setting": "support_roof_enable",
+                                        "value": true
+                                    }
+                                },
+                                "speed_support_roof": {
+                                    "label": "Support Hammock Speed",
+                                    "description": "The speed at which the roofs of exterior support are printed. Printing the hammock at lower speeds can improve on overhang quality. ",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "default": 40.0,
+                                    "visible": false,
+                                    "inherit": false,
+                                    "active_if" : {
+                                        "setting": "support_roof_enable",
+                                        "value": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "speed_travel": {
+                    "label": "Travel Speed",
+                    "description": "The speed at which travel moves are done. A well-built Ultimaker can reach speeds of 250mm/s. But some machines might have misaligned layers then.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "min_value": 0.1,
+                    "max_value_warning": 300.0,
+                    "default": 150.0
+                },
+                "speed_layer_0": {
+                    "label": "Bottom Layer Speed",
+                    "description": "The print speed for the bottom layer: You want to print the first layer slower so it sticks to the printer bed better.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "min_value": 0.1,
+                    "default": 15.0,
+                    "visible": false,
+
+                    "children": {
+                        "skirt_speed": {
+                            "label": "Skirt Speed",
+                            "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "min_value": 0.1,
+                            "default": 15.0,
+                            "visible": false
+                        }
+                    }
+                },
+                "speed_slowdown_layers": {
+                    "label": "Amount of Slower Layers",
+                    "description": "The first few layers are printed slower then the rest of the object, this to get better adhesion to the printer bed and improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is generally right for most materials and printers.",
+                    "type": "int",
+                    "min_value": 0,
+                    "default": 4,
+                    "visible": false
+                }
+            }
+        },
+        "travel": {
+            "label": "Travel",
+            "visible": true,
+            "icon": "category_travel",
+            "settings": {
+                "retraction_enable": {
+                    "label": "Enable Retraction",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "retraction_speed": {
+                    "label": "Retraction Speed",
+                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 25.0,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "retraction_retract_speed": {
+                            "label": "Retraction Retract Speed",
+                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 25.0,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        },
+                        "retraction_prime_speed": {
+                            "label": "Retraction Prime Speed",
+                            "description": "The speed at which the filament is pushed back after retraction.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 25.0,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        }
+                    }
+                },
+                "retraction_amount": {
+                    "label": "Retraction Distance",
+                    "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_min_travel": {
+                    "label": "Retraction Minimum Travel",
+                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_count_max": {
+                    "label": "Maximal Retraction Count",
+                    "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
+                    "default": 6,
+                    "type": "int",
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_extrusion_window": {
+                    "label": "Minimal Extrusion Distance Window",
+                    "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit_function": "retraction_amount",
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_hop": {
+                    "label": "Z Hop when Retracting",
+                    "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.0,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_combing": {
+                    "label": "Enable Combing",
+                    "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false
+                },
+                "travel_avoid_other_parts": {
+                    "label": "Avoid Printed Parts",
+                    "description": "Avoid other parts when traveling between parts.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "retraction_combing",
+                        "value": true
+                    },
+                    "children": {
+                        "travel_avoid_distance": {
+                            "label": "Avoid Distance",
+                            "description": "The distance to stay clear of parts which are avoided during travel.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 1.5,
+                            "visible": false,
+                            "inherit": false,
+                            "active_if": {
+                                "setting": "retraction_combing",
+                                "value": true
+                            }
+                        }
+                    }
+                },
+                "coasting_enable": {
+                    "label": "Enable Coasting",
+                    "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to lay down the last piece of the extrusion path in order to reduce stringing.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": true
+                },
+                "coasting_volume": {
+                    "label": "Coasting Volume",
+                    "description": "The volume otherwise oozed. This value should generally be close to the nozzle diameter cubed.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default": 0.064,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "coasting_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "coasting_volume_retract": {
+                            "label": "Retract-Coasting Volume",
+                            "description": "The volume otherwise oozed in a travel move with retraction.",
+                            "unit": "mm³",
+                            "type": "float",
+                            "default": 0.096,
+                            "visible": false,
+                            "inherit": true,
+                            "active_if": {
+                                "setting": "coasting_enable",
+                                "value": true
+                            }
+                        },
+                        "coasting_volume_move": {
+                            "label": "Move-Coasting Volume",
+                            "description": "The volume otherwise oozed in a travel move without retraction.",
+                            "unit": "mm³",
+                            "type": "float",
+                            "default": 0.064,
+                            "visible": false,
+                            "inherit": true,
+                            "active_if": {
+                                "setting": "coasting_enable",
+                                "value": true
+                            }
+                        }
+                    }
+                },                       
+                "coasting_min_volume": {
+                    "label": "Minimal Volume Before Coasting",
+                    "description": "The least volume an extrusion path should have to coast the full amount. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default": 0.8,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "coasting_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "coasting_min_volume_retract": {
+                            "label": "Min Volume Retract-Coasting",
+                            "description": "The minimal volume an extrusion path must have in order to coast the full amount before doing a retraction.",
+                            "unit": "mm³",
+                            "type": "float",
+                            "default": 0.6,
+                            "visible": false,
+                            "inherit": true,
+                            "active_if": {
+                                "setting": "coasting_enable",
+                                "value": true
+                            }
+                        },
+                        "coasting_min_volume_move": {
+                            "label": "Min Volume Move-Coasting",
+                            "description": "The minimal volume an extrusion path must have in order to coast the full amount before doing a travel move without retraction.",
+                            "unit": "mm³",
+                            "type": "float",
+                            "default": 0.8,
+                            "visible": false,
+                            "inherit": true,
+                            "active_if": {
+                                "setting": "coasting_enable",
+                                "value": true
+                            }
+                        }
+                    }
+                },
+                "coasting_speed": {
+                    "label": "Coasting Speed",
+                    "description": "The speed by which to move during coasting, relative to the speed of the extrusion path. A value slightly under 100% is advised, since during the coasting move, the pressure in the bowden tube drops.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 90.0,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "coasting_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "coasting_speed_retract": {
+                            "label": "Retract-Coasting Speed",
+                            "description": "The speed by which to move during coasting before a retraction, relative to the speed of the extrusion path.",
+                            "unit": "%",
+                            "type": "float",
+                            "default": 90.0,
+                            "visible": false,
+                            "inherit": true,
+                            "active_if": {
+                                "setting": "coasting_enable",
+                                "value": true
+                            }
+                        },
+                        "coasting_speed_move": {
+                            "label": "Move-Coasting Speed",
+                            "description": "The speed by which to move during coasting before a travel move without retraction, relative to the speed of the extrusion path.",
+                            "unit": "%",
+                            "type": "float",
+                            "default": 90.0,
+                            "visible": false,
+                            "inherit": true,
+                            "active_if": {
+                                "setting": "coasting_enable",
+                                "value": true
+                            }
+                        }                            
+                    }
+                }
+            }
+        },
         "cooling": {
             "label": "Cooling",
             "visible": true,
@@ -554,6 +906,8 @@
                             "description": "Fan speed used for the print cooling fan on the printer head.",
                             "unit": "%",
                             "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
                             "default": 100.0,
                             "visible": false,
                             "inherit_function": "100.0 if parent_value else 0.0",
@@ -564,6 +918,8 @@
                                     "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
                                     "unit": "%",
                                     "type": "float",
+                                    "min_value": 0.0,
+                                    "max_value": 100.0,
                                     "default": 100.0,
                                     "visible": false
                                 },
@@ -572,6 +928,8 @@
                                     "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
                                     "unit": "%",
                                     "type": "float",
+                                    "min_value": 0.0,
+                                    "max_value": 100.0,
                                     "default": 100.0,
                                     "visible": false
                                 }
@@ -584,6 +942,7 @@
                     "description": "The height at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off for the first layer.",
                     "unit": "mm",
                     "type": "float",
+                    "min_value": 0.0,
                     "default": 0.5,
                     "visible": false,
 
@@ -592,6 +951,7 @@
                             "label": "Fan Full on at Layer",
                             "description": "The layer number at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off for the first layer.",
                             "type": "int",
+                            "min_value": 0,
                             "default": 4,
                             "visible": false,
                             "inherit_function": "int((parent_value - layer_height_0 + 0.001) / layer_height)"
@@ -603,6 +963,7 @@
                     "description": "The minimum time spent in a layer: Gives the layer time to cool down before the next one is put on top. If a layer would print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer.",
                     "unit": "sec",
                     "type": "float",
+                    "min_value": 0.0,
                     "default": 5.0,
                     "visible": false
                 },
@@ -611,6 +972,7 @@
                     "description": "The minimum time spent in a layer which will cause the fan to be at minmum speed. The fan speed increases linearly from maximal fan speed for layers taking minimal layer time to minimal fan speed for layers taking the time specified here.",
                     "unit": "sec",
                     "type": "float",
+                    "min_value": 0.0,
                     "default": 10.0,
                     "visible": false
                 },
@@ -628,235 +990,6 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false
-                }
-            }
-        },
-        "support": {
-            "label": "Support",
-            "visible": true,
-            "icon": "category_support",
-            "settings": {
-                "support_enable": {
-                    "label": "Enable Support",
-                    "description": "Enable exterior support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "support_type": {
-                    "label": "Placement",
-                    "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
-                    "type": "enum",
-                    "options": [
-                        "None",
-                        "Touching Buildplate",
-                        "Everywhere"
-                    ],
-                    "default": "Touching Buildplate",
-                    "visible": true,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_angle": {
-                    "label": "Overhang Angle",
-                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being horizontal, and 90 degrees being vertical.",
-                    "unit": "°",
-                    "type": "float",
-                    "default": 60.0,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_xy_distance": {
-                    "label": "X/Y Distance",
-                    "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.7,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_z_distance": {
-                    "label": "Z Distance",
-                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.15,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
-                    "children": {
-                        "support_top_distance": {
-                            "label": "Top Distance",
-                            "description": "Distance from the top of the support to the print.",
-                            "unit": "mm",
-                            "default": 0.15,
-                            "type": "float",
-                            "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            }
-                        },
-                        "support_bottom_distance": {
-                            "label": "Bottom Distance",
-                            "description": "Distance from the print to the bottom of the support.",
-                            "unit": "mm",
-                            "default": 0.15,
-                            "type": "float",
-                            "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            }
-                        }
-                    }
-                },
-                "support_bottom_stair_step_height": {
-                    "label": "Stair Step Height",
-                    "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.5,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_type",
-                        "value": "Everywhere"
-                    }
-                },
-                "support_join_distance": {
-                    "label": "Join Distance",
-                    "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.7,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_area_smoothing": {
-                    "label": "Area Smoothing",
-                    "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.6,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_use_towers": {
-                    "label": "Use towers.",
-                    "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": true,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_minimal_diameter": {
-                    "label": "Minimal Diameter",
-                    "description": "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1.0,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_tower_diameter": {
-                    "label": "Tower Diameter",
-                    "description": "The diameter of a special tower. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1.0,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_tower_roof_angle": {
-                    "label": "Tower Roof Angle",
-                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
-                    "unit": "°",
-                    "type": "int",
-                    "default": 65,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_pattern": {
-                    "label": "Pattern",
-                    "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
-                    "type": "enum",
-                    "options": [
-                        "Grid",
-                        "Lines",
-                        "ZigZag"
-                    ],
-                    "default": "Lines",
-                    "visible": true,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_connect_zigzags": {
-                    "label": "Connect ZigZags",
-                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_pattern",
-                        "value": "ZigZag"
-                    }
-                },
-                "support_fill_rate": {
-                    "label": "Fill Amount",
-                    "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
-                    "unit": "%",
-                    "type": "float",
-                    "default": 15,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
-
-                    "children": {
-                        "support_line_distance": {
-                            "label": "Line distance",
-                            "description": "Distance between the printed support lines.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 2.66,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            },
-                            "inherit_function": "(support_line_width * 100) / parent_value"
-                        }
-                    }
                 }
             }
         },
@@ -929,72 +1062,6 @@
                         "value": "Raft"
                     }
                 },
-                "raft_line_spacing": {
-                    "label": "Raft Line Spacing",
-                    "description": "The distance between the raft lines. The first 2 layers of the raft have this amount of spacing between the raft lines.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 5.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_thickness": {
-                    "label": "Raft Base Thickness",
-                    "description": "Layer thickness of the first raft layer. This should be a thick layer which sticks firmly to the printer bed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.3,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_linewidth": {
-                    "label": "Raft Base Line Width",
-                    "description": "Width of the lines in the first raft layer. These should be thick lines to assist in bed adhesion.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_base_speed": {
-                    "label": "Raft Base Print Speed",
-                    "description": "The speed at which the first raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 15.0,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_interface_thickness": {
-                    "label": "Raft Interface Thickness",
-                    "description": "Thickness of the 2nd raft layer.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.27,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
-                "raft_interface_linewidth": {
-                    "label": "Raft Interface Line Width",
-                    "description": "Width of the 2nd raft layer lines. These lines should be thinner than the first layer, but strong enough to attach the object to.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.4,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
-                },
                 "raft_airgap": {
                     "label": "Raft Air-gap",
                     "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
@@ -1015,16 +1082,495 @@
                         "setting": "adhesion_type",
                         "value": "Raft"
                     }
+                },
+                "raft_surface_thickness": {
+                    "label": "Raft Surface Thickness",
+                    "description": "Layer thickness of the surface raft layers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.1,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_surface_line_width": {
+                    "label": "Raft Surface Line Width",
+                    "description": "Width of the lines in the surface raft layers. These can be thin lines so that the top of the raft becomes smooth.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_surface_line_spacing": {
+                    "label": "Raft Surface Spacing",
+                    "description": "The distance between the raft lines for the surface raft layers. The spacing of the interface should be equal to the line width, so that the surface is solid.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    },
+                    "inherit_function": "raft_surface_line_width"
+                },
+                "raft_interface_thickness": {
+                    "label": "Raft Interface Thickness",
+                    "description": "Layer thickness of the interface raft layer.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.27,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_interface_line_width": {
+                    "label": "Raft Interface Line Width",
+                    "description": "Width of the lines in the interface raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_interface_line_spacing": {
+                    "label": "Raft Interface Spacing",
+                    "description": "The distance between the raft lines for the interface raft layer. The spacing of the interface should be quite wide, while being dense enough to support the surface raft layers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_thickness": {
+                    "label": "Raft Base Thickness",
+                    "description": "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer bed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_line_width": {
+                    "label": "Raft Base Line Width",
+                    "description": "Width of the lines in the base raft layer. These should be thick lines to assist in bed adhesion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_base_line_spacing": {
+                    "label": "Raft Line Spacing",
+                    "description": "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 5.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    }
+                },
+                "raft_speed": {
+                    "label": "Raft Print Speed",
+                    "description": "The speed at which the raft is printed.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 30.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "Raft"
+                    },
+                    "inherit_function": "0.6 * speed_print",
+                    "children": {
+                        "raft_surface_speed": {
+                            "label": "Raft Surface Print Speed",
+                            "description": "The speed at which the surface raft layers are printed. This should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 30.0,
+                            "active_if": {
+                                "setting": "adhesion_type",
+                                "value": "Raft"
+                            },
+                            "inherit_function": "parent_value"
+                        },
+                        "raft_interface_speed": {
+                            "label": "Raft Interface Print Speed",
+                            "description": "The speed at which the interface raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 15.0,
+                            "active_if": {
+                                "setting": "adhesion_type",
+                                "value": "Raft"
+                            },
+                            "inherit_function": "0.5 * parent_value"
+                        },
+                        "raft_base_speed": {
+                            "label": "Raft Base Print Speed",
+                            "description": "The speed at which the base raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 15.0,
+                            "active_if": {
+                                "setting": "adhesion_type",
+                                "value": "Raft"
+                            },
+                            "inherit_function": "0.5 * parent_value"
+                        }
+                    }
+                },
+                "raft_fan_speed": {
+                    "label": "Raft Fan Speed",
+                    "description": "The fan speed for the raft.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value": 100.0,
+                    "default": 100.0,
+                    "visible": false,
+                    "children": {
+                        "raft_surface_fan_speed": {
+                            "label": "Raft Surface Fan Speed",
+                            "description": "The fan speed for the surface raft layers.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
+                            "default": 100.0,
+                            "visible": false,
+                            "inherit": true
+                        },
+                        "raft_interface_fan_speed": {
+                            "label": "Raft Interface Fan Speed",
+                            "description": "The fan speed for the interface raft layer.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
+                            "default": 100.0,
+                            "visible": false,
+                            "inherit": true
+                        },
+                        "raft_base_fan_speed": {
+                            "label": "Raft Base Fan Speed",
+                            "description": "The fan speed for the base raft layer.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": 0.0,
+                            "max_value": 100.0,
+                            "default": 100.0,
+                            "visible": false,
+                            "inherit": true
+                        }
+                    }
                 }
             }
         },
-        "blackmagic": {
+        "support": {
+            "label": "Support",
+            "visible": true,
+            "icon": "category_support",
+            "settings": {
+                "support_enable": {
+                    "label": "Enable Support",
+                    "description": "Enable exterior support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "support_type": {
+                    "label": "Placement",
+                    "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
+                    "type": "enum",
+                    "options": [
+                        "Touching Buildplate",
+                        "Everywhere"
+                    ],
+                    "default": "Everywhere",
+                    "visible": true,
+                    "inherit_function": "'Everywhere' if support_enable else 'None'",
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_angle": {
+                    "label": "Overhang Angle",
+                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value": 90.0,
+                    "default": 60.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_xy_distance": {
+                    "label": "X/Y Distance",
+                    "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value_warning": 10.0,
+                    "default": 0.7,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_z_distance": {
+                    "label": "Z Distance",
+                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value_warning": 10.0,
+                    "default": 0.15,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "support_top_distance": {
+                            "label": "Top Distance",
+                            "description": "Distance from the top of the support to the print.",
+                            "unit": "mm",
+                            "min_value": 0.0,
+                            "max_value_warning": 10.0,
+                            "default": 0.15,
+                            "type": "float",
+                            "visible": false
+                        },
+                        "support_bottom_distance": {
+                            "label": "Bottom Distance",
+                            "description": "Distance from the print to the bottom of the support.",
+                            "unit": "mm",
+                            "min_value": 0.0,
+                            "max_value_warning": 10.0,
+                            "default": 0.15,
+                            "type": "float",
+                            "visible": false
+                        }
+                    }
+                },
+                "support_bottom_stair_step_height": {
+                    "label": "Stair Step Height",
+                    "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_type",
+                        "value": "Everywhere"
+                    }
+                },
+                "support_join_distance": {
+                    "label": "Join Distance",
+                    "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2.0,
+                    "visible": false
+                },
+                "support_area_smoothing": {
+                    "label": "Area Smoothing",
+                    "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.6,
+                    "visible": false
+                },
+                "support_roof_enable": {
+                    "label": "Enable Hammock",
+                    "description": "Generate a solid support roof on which the model sits.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": true
+                },
+                "support_roof_height": {
+                    "label": "Hammock Thickness",
+                    "description": "The height of the support roofs. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_roof_enable",
+                        "value": true
+                    }
+                },
+                "support_use_towers": {
+                    "label": "Use towers.",
+                    "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": true
+                },
+                "support_minimal_diameter": {
+                    "label": "Minimal Diameter",
+                    "description": "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_tower_diameter": {
+                    "label": "Tower Diameter",
+                    "description": "The diameter of a special tower. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_tower_roof_angle": {
+                    "label": "Tower Roof Angle",
+                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
+                    "unit": "°",
+                    "type": "int",
+                    "min_value": 0,
+                    "max_value": 90,
+                    "default": 65,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_pattern": {
+                    "label": "Pattern",
+                    "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
+                    "type": "enum",
+                    "options": [
+                        "Grid",
+                        "Lines",
+                        "ZigZag"
+                    ],
+                    "default": "ZigZag",
+                    "visible": true,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_connect_zigzags": {
+                    "label": "Connect ZigZags",
+                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_pattern",
+                        "value": "ZigZag"
+                    }
+                },
+                "support_fill_rate": {
+                    "label": "Fill Amount",
+                    "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value": 100.0,
+                    "default": 15,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "support_line_distance": {
+                            "label": "Line distance",
+                            "description": "Distance between the printed support lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "min_value": 0.0,
+                            "default": 2.66,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "support_enable",
+                                "value": true
+                            },
+                            "inherit_function": "(support_line_width * 100) / parent_value"
+                        }
+                    }
+                }
+            }
+        },
+        "meshfix": {
             "label": "Fixes",
             "visible": true,
             "icon": "category_fixes",
             "settings": {
+                "meshfix_union_all": {
+                    "label": "Union Overlapping Volumes",
+                    "description": "Ignore the internal geometry arising from overlapping volumes and print the volumes as one. This may cause internal cavaties to disappear.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false
+                },
+                "meshfix_union_all_remove_holes": {
+                    "label": "Remove All Holes",
+                    "description": "Remove the holes in each layer and keep only the outside shape. This will ignore any invisible internal geometry. However, it also ignores layer holes which can be viewed from above or below.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
+                "meshfix_extensive_stitching": {
+                    "label": "Extensive Stitching",
+                    "description": "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
+                "meshfix_keep_open_polygons": {
+                    "label": "Keep Disconnected Faces",
+                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when all else doesn produce proper GCode.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                }
+            }
+        },
+        "blackmagic": {
+            "label": "Special Modes",
+            "visible": true,
+            "icon": "category_blackmagic",
+            "settings": {
+                "magic_mesh_surface_mode": {
+                    "label": "Surface Mode",
+                    "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
                 "magic_spiralize": {
-                    "label": "Spiralize the Outer Contour",
+                    "label": "Spiralize Outer Contour",
                     "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom. This feature used to be called ‘Joris’ in older versions.",
                     "type": "boolean",
                     "default": false,
@@ -1056,7 +1602,11 @@
                             "type": "float",
                             "default": 5.0,
                             "visible": false,
-                            "inherit":true
+                            "inherit":true,
+                            "active_if": {
+                                "setting": "wireframe_enabled",
+                                "value": true
+                            }
                         },
                         "wireframe_printspeed_up": {
                             "label": "Wire Upward Printing Speed",
@@ -1065,7 +1615,11 @@
                             "type": "float",
                             "default": 5.0,
                             "visible": false,
-                            "inherit":true
+                            "inherit":true,
+                            "active_if": {
+                                "setting": "wireframe_enabled",
+                                "value": true
+                            }
                         },
                         "wireframe_printspeed_down": {
                             "label": "Wire Downward Printing Speed",
@@ -1074,7 +1628,11 @@
                             "type": "float",
                             "default": 5.0,
                             "visible": false,
-                            "inherit":true
+                            "inherit":true,
+                            "active_if": {
+                                "setting": "wireframe_enabled",
+                                "value": true
+                            }
                         },
                         "wireframe_printspeed_flat": {
                             "label": "Wire Horizontal Printing Speed",
@@ -1083,7 +1641,11 @@
                             "type": "float",
                             "default": 5.0,
                             "visible": false,
-                            "inherit":true
+                            "inherit":true,
+                            "active_if": {
+                                "setting": "wireframe_enabled",
+                                "value": true
+                            }
                         }
                     }
                 },
@@ -1315,5 +1877,3 @@
         }
     }
 }
-
-

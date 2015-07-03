@@ -17,6 +17,8 @@ from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
+from UM.JobQueue import JobQueue
+from UM.Math.Polygon import Polygon
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -32,9 +34,10 @@ from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
+from . import CuraActions
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QIcon
 
 import platform
 import sys
@@ -49,6 +52,8 @@ class CuraApplication(QtApplication):
             Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
         super().__init__(name = "cura", version = "master")
+
+        self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
@@ -66,11 +71,24 @@ class CuraApplication(QtApplication):
         self._output_devices = {}
         self._print_information = None
         self._i18n_catalog = None
+        self._previous_active_tool = None
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
+        Preferences.getInstance().addPreference("cura/recent_files", "")
+        Preferences.getInstance().addPreference("cura/categories_expanded", "")
+
+        JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
+
+        self._recent_files = []
+        files = Preferences.getInstance().getValue("cura/recent_files").split(";")
+        for f in files:
+            if not os.path.isfile(f):
+                continue
+
+            self._recent_files.append(QUrl.fromLocalFile(f))
     
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
@@ -162,6 +180,7 @@ class CuraApplication(QtApplication):
 
             for file in self.getCommandLineOption("file", []):
                 job = ReadMeshJob(os.path.abspath(file))
+                job.finished.connect(self._onFileLoaded)
                 job.start()
 
             self.exec_()
@@ -170,18 +189,27 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
+        self._cura_actions = CuraActions.CuraActions(self)
+        engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
             if not self.getController().getActiveTool():
-                self.getController().setActiveTool("TranslateTool")
+                if self._previous_active_tool:
+                    self.getController().setActiveTool(self._previous_active_tool)
+                    self._previous_active_tool = None
+                else:
+                    self.getController().setActiveTool("TranslateTool")
 
             self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
+                self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
+            else:
+                self._previous_active_tool = None
 
     requestAddPrinter = pyqtSignal()
 
@@ -189,6 +217,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
         object = self.getController().getScene().findObject(object_id)
+
+        if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
+            object = Selection.getSelectedObject(0)
 
         if object:
             op = RemoveSceneNodeOperation(object)
@@ -198,6 +229,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count):
         node = self.getController().getScene().findObject(object_id)
+
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
 
         if node:
             op = GroupedOperation()
@@ -214,6 +248,9 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
+
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
 
         if node:
             op = SetTransformOperation(node, Vector())
@@ -304,6 +341,25 @@ class CuraApplication(QtApplication):
 
         return log
 
+    recentFilesChanged = pyqtSignal()
+    @pyqtProperty("QVariantList", notify = recentFilesChanged)
+    def recentFiles(self):
+        return self._recent_files
+
+    @pyqtSlot("QStringList")
+    def setExpandedCategories(self, categories):
+        categories = list(set(categories))
+        categories.sort()
+        joined = ";".join(categories)
+        if joined != Preferences.getInstance().getValue("cura/categories_expanded"):
+            Preferences.getInstance().setValue("cura/categories_expanded", joined)
+            self.expandedCategoriesChanged.emit()
+
+    expandedCategoriesChanged = pyqtSignal()
+    @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
+    def expandedCategories(self):
+        return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
+
     outputDevicesChanged = pyqtSignal()
     
     @pyqtProperty("QVariantMap", notify = outputDevicesChanged)
@@ -385,7 +441,7 @@ class CuraApplication(QtApplication):
                 self.addOutputDevice(drive, {
                     "id": drive,
                     "function": self._writeToSD,
-                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}".format(drive)),
+                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(drive),
                     "icon": "save_sd",
                     "priority": 1
                 })
@@ -411,20 +467,12 @@ class CuraApplication(QtApplication):
             disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
             areas = []
             if disallowed_areas:
-
                 for area in disallowed_areas:
-                    polygon = []
-                    polygon.append(Vector(area[0][0], 0.2, area[0][1]))
-                    polygon.append(Vector(area[1][0], 0.2, area[1][1]))
-                    polygon.append(Vector(area[2][0], 0.2, area[2][1]))
-                    polygon.append(Vector(area[3][0], 0.2, area[3][1]))
-                    areas.append(polygon)
+                    areas.append(Polygon(numpy.array(area, numpy.float32)))
+
             self._volume.setDisallowedAreas(areas)
 
             self._volume.rebuild()
-
-            if self.getController().getTool("ScaleTool"):
-                self.getController().getTool("ScaleTool").setMaximumBounds(self._volume.getBoundingBox())
 
             offset = machine.getSettingValueByKey("machine_platform_offset")
             if offset:
@@ -438,7 +486,7 @@ class CuraApplication(QtApplication):
             "eject",
             self._i18n_catalog.i18nc("Message action", "Eject"),
             "eject",
-            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}".format(job._sdcard))
+            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}").format(job._sdcard)
         )
         message._sdcard = job._sdcard
         message.actionTriggered.connect(self._onMessageActionTriggered)
@@ -447,3 +495,34 @@ class CuraApplication(QtApplication):
     def _onMessageActionTriggered(self, message, action):
         if action == "eject":
             self.getStorageDevice("LocalFileStorage").ejectRemovableDrive(message._sdcard)
+
+    def _onFileLoaded(self, job):
+        mesh = job.getResult()
+        if mesh != None:
+            node = SceneNode()
+
+            node.setSelectable(True)
+            node.setMeshData(mesh)
+            node.setName(os.path.basename(job.getFileName()))
+
+            op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
+            op.push()
+
+    def _onJobFinished(self, job):
+        if type(job) is not ReadMeshJob:
+            return
+
+        f = QUrl.fromLocalFile(job.getFileName())
+        if f in self._recent_files:
+            self._recent_files.remove(f)
+
+        self._recent_files.insert(0, f)
+        if len(self._recent_files) > 10:
+            del self._recent_files[10]
+
+        pref = ""
+        for path in self._recent_files:
+            pref += path.toLocalFile() + ";"
+
+        Preferences.getInstance().setValue("cura/recent_files", pref)
+        self.recentFilesChanged.emit()

@@ -27,6 +27,10 @@
             "capitalize": true,
             "family": "Roboto"
         },
+        "sidebar_save_to": {
+            "size": 1.0,
+            "family": "Roboto"
+        },
         "timeslider_time": {
             "size": 1.0,
             "bold": true,
@@ -44,23 +48,26 @@
     },
 
     "colors": {
+        "sidebar": [255, 255, 255, 255],
+
         "primary": [12, 169, 227, 255],
         "primary_hover": [34, 150, 190, 255],
         "primary_text": [255, 255, 255, 255],
         "border": [205, 202, 201, 255],
         "secondary": [205, 202, 201, 255],
 
-        "text": [174, 174, 174, 255],
-        "text_inactive": [205, 202, 201, 255],
+        "text": [140, 144, 154, 255],
+        "text_inactive": [174, 174, 174, 255],
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
 
-        "button": [205, 202, 201, 255],
-        "button_hover": [174, 174, 174, 255],
+        "button": [160, 163, 171, 255],
+        "button_hover": [140, 144, 154, 255],
         "button_active": [12, 169, 227, 255],
-        "button_active_hover": [34, 150, 190, 255],
+        "button_active_hover": [34, 150, 199, 255],
         "button_text": [255, 255, 255, 255],
         "button_disabled": [245, 245, 245, 255],
+        "button_tooltip_text": [35, 35, 35, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [205, 202, 201, 255],
@@ -74,7 +81,7 @@
         "setting_category_active_hover": [34, 150, 190, 255],
         "setting_category_text": [255, 255, 255, 255],
 
-        "setting_label": [174, 174, 174, 255],
+        "setting_label": [140, 144, 154, 255],
         "setting_control": [255, 255, 255, 255],
         "setting_control_highlight": [245, 245, 245, 255],
         "setting_control_border": [174, 174, 174, 255],
@@ -84,6 +91,9 @@
         "setting_validation_error": [255, 57, 14, 255],
         "setting_validation_warning": [255, 186, 15, 255],
         "setting_validation_ok": [255, 255, 255, 255],
+
+        "progressbar_background": [245, 245, 245, 255],
+        "progressbar_control": [12, 169, 227, 255],
 
         "slider_groove": [245, 245, 245, 255],
         "slider_groove_border": [205, 202, 201, 255],
@@ -95,19 +105,24 @@
         "checkbox_hover": [245, 245, 245, 255],
         "checkbox_border": [174, 174, 174, 255],
         "checkbox_mark": [35, 35, 35, 255],
-        "checkbox_text": [174, 174, 174, 255],
+        "checkbox_text": [140, 144, 154, 255],
 
         "tooltip": [255, 225, 146, 255],
 
-        "save_button": [255, 255, 255, 255],
         "save_button_border": [205, 202, 201, 255],
         "save_button_inactive": [205, 202, 201, 255],
         "save_button_active": [12, 159, 227, 255],
         "save_button_active_hover": [34, 150, 190, 255],
-        "save_button_text": [35, 35, 35, 255],
+        "save_button_safe_to_text": [255, 255, 255, 255],
+        "save_button_estimated_text": [140, 144, 154, 255],
+        "save_button_estimated_text_background": [255, 255, 255, 255],
+        "save_button_printtime_text": [12, 169, 227, 255],
+        "save_button_background": [249, 249, 249, 255],
 
         "message": [205, 202, 201, 255],
-        "message_text": [35, 35, 35, 255]
+        "message_text": [35, 35, 35, 255],
+
+        "tool_panel_background": [255, 255, 255, 255]
     },
 
     "sizes": {
@@ -128,7 +143,11 @@
         "setting_unit_margin": [0.5, 0.5],
 
         "button": [4.25, 4.25],
-        "button_icon": [3.57, 3.57],
+        "button_icon": [2.9, 2.9],
+
+        "progressbar": [26.0, 0.5],
+        "progressbar_control": [8.0, 0.5],
+        "progressbar_padding": [0.0, 1.0],
 
         "scrollbar": [0.5, 0.5],
 
@@ -141,7 +160,10 @@
         "tooltip_margins": [1.0, 1.0],
 
         "save_button_border": [0.06, 0.06],
+        "save_button_text_margin": [0.6, 0.6],
+        "save_button_slicing_bar": [0.0, 2.2],
         "save_button_label_margin": [0.5, 0.5],
+        "save_button_save_to_button": [0.3, 2.7],
 
         "message": [30.0, 5.0],
         "message_close": [1.25, 1.25]

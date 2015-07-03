@@ -11,6 +11,7 @@ from UM.Math.Float import Float
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
+from UM.Scene.Selection import Selection
 
 from . import PlatformPhysicsOperation
 from . import ConvexHullJob
@@ -23,7 +24,11 @@ class PlatformPhysics:
         super().__init__()
         self._controller = controller
         self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
+        self._controller.toolOperationStarted.connect(self._onToolOperationStarted)
+        self._controller.toolOperationStopped.connect(self._onToolOperationStopped)
         self._build_volume = volume
+
+        self._enabled = True
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(100)
@@ -34,6 +39,9 @@ class PlatformPhysics:
         self._change_timer.start()
 
     def _onChangeTimerFinished(self):
+        if not self._enabled:
+            return
+
         root = self._controller.getScene().getRoot()
         for node in BreadthFirstIterator(root):
             if node is root or type(node) is not SceneNode:
@@ -41,6 +49,7 @@ class PlatformPhysics:
 
             bbox = node.getBoundingBox()
             if not bbox or not bbox.isValid():
+                self._change_timer.start()
                 continue
 
             # Mark the node as outside the build volume if the bounding box test fails.
@@ -60,6 +69,8 @@ class PlatformPhysics:
                     job = ConvexHullJob.ConvexHullJob(node)
                     job.start()
                     node._convex_hull_job = job
+            elif Selection.isSelected(node):
+                pass
             else:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
@@ -80,13 +91,25 @@ class PlatformPhysics:
                     if overlap is None:
                         continue
 
-                    move_vector.setX(-overlap[0])
-                    move_vector.setZ(-overlap[1])
+                    move_vector.setX(overlap[0] * 1.1)
+                    move_vector.setZ(overlap[1] * 1.1)
+
+            if hasattr(node, "_convex_hull"):
+                # Check for collisions between disallowed areas and the object
+                for area in self._build_volume.getDisallowedAreas():
+                    overlap = node._convex_hull.intersectsPolygon(area)
+                    if overlap is None:
+                        continue
+
+                    node._outside_buildarea = True
 
             if move_vector != Vector():
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
-            if node.getBoundingBox().intersectsBox(self._build_volume.getBoundingBox()) == AxisAlignedBox.IntersectionResult.FullIntersection:
-                op = ScaleToBoundsOperation(node, self._build_volume.getBoundingBox())
-                op.push()
+    def _onToolOperationStarted(self, tool):
+        self._enabled = False
+
+    def _onToolOperationStopped(self, tool):
+        self._enabled = True
+        self._onChangeTimerFinished()

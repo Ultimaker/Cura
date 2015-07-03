@@ -20,6 +20,9 @@ Item {
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
 
+    Component.onCompleted: PrintInformation.enabled = true
+    Component.onDestruction: PrintInformation.enabled = false
+
     ColumnLayout {
         anchors.fill: parent;
 

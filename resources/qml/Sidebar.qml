@@ -8,18 +8,18 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-UM.AngledCornerRectangle {
+Rectangle {
     id: base;
 
     property Action addMachineAction;
     property Action configureMachinesAction;
     property alias saveAction: saveButton.saveAction;
 
-    cornerSize: UM.Theme.sizes.default_margin.width;
-    
+    color: UM.Theme.colors.sidebar;
+
     function showTooltip(item, position, text) {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y);
+        position = item.mapToItem(base, position.x, position.y / 2);
         tooltip.show(position);
     }
 
@@ -39,7 +39,6 @@ UM.AngledCornerRectangle {
     ColumnLayout {
         anchors.fill: parent;
         anchors.topMargin: UM.Theme.sizes.default_margin.height;
-        anchors.bottomMargin: UM.Theme.sizes.window_margin.height;
 
         spacing: UM.Theme.sizes.default_margin.height;
 
@@ -73,7 +72,7 @@ UM.AngledCornerRectangle {
             property Item sidebar: base;
 
             onLoaded:
-            { 
+            {
                 if(item)
                 {
                     item.configureSettings = base.configureMachinesAction;
@@ -91,13 +90,11 @@ UM.AngledCornerRectangle {
 
         SaveButton {
             id: saveButton;
-            Layout.preferredWidth: base.width - UM.Theme.sizes.default_margin.width * 2;
-            Layout.preferredHeight: UM.Theme.sizes.button.height;
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter;
+            implicitWidth: base.width
+            implicitHeight: UM.Theme.sizes.save_button_text_margin.height * 2 + UM.Theme.sizes.save_button_slicing_bar.height + UM.Theme.sizes.save_button_save_to_button.height +  UM.Theme.sizes.default_margin.height
         }
-        
     }
-    
+
     SidebarTooltip {
         id: tooltip;
     }
@@ -108,5 +105,12 @@ UM.AngledCornerRectangle {
         ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
         //: Advanced configuration mode option
         ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
+    }
+
+    Component.onCompleted: {
+        for(var i = 0; i < modesListModel.count; ++i)
+        {
+            modesListModel.setProperty(i, "text", qsTr(modesListModel.get(i).text));
+        }
     }
 }

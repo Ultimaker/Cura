@@ -1,0 +1,430 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Qt-Contexts: true\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Project-Id-Version: Cura\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"X-Generator: Poedit 1.8.1\n"
+
+#. About dialog title
+#: ../resources/qml/AboutDialog.qml:12
+msgctxt "AboutDialog|"
+msgid "About Cura"
+msgstr "О Кура"
+
+#. About dialog application description
+#: ../resources/qml/AboutDialog.qml:42
+msgctxt "AboutDialog|"
+msgid "End-to-end solution for fused filament 3D printing."
+msgstr "Комплексное решение для 3D печати по технологии послойного накладывание пластика."
+
+#. About dialog application author note
+#: ../resources/qml/AboutDialog.qml:47
+msgctxt "AboutDialog|"
+msgid "Cura has been developed by Ultimaker B.V. in cooperation with the community."
+msgstr "Кура была разработана компании Ultimaker BV в сотрудничестве с сообществом."
+
+#. Close about dialog button
+#: ../resources/qml/AboutDialog.qml:58
+msgctxt "AboutDialog|"
+msgid "Close"
+msgstr "Закрыть окно"
+
+#. Undo action
+#: ../resources/qml/Actions.qml:37
+msgctxt "Actions|"
+msgid "&Undo"
+msgstr "&Отмена"
+
+#. Redo action
+#: ../resources/qml/Actions.qml:45
+msgctxt "Actions|"
+msgid "&Redo"
+msgstr "&Повтор"
+
+#. Quit action
+#: ../resources/qml/Actions.qml:53
+msgctxt "Actions|"
+msgid "&Quit"
+msgstr "&Выход"
+
+#. Preferences action
+#: ../resources/qml/Actions.qml:61
+msgctxt "Actions|"
+msgid "&Preferences..."
+msgstr "&Настройки программы..."
+
+#. Add Printer action
+#: ../resources/qml/Actions.qml:68
+msgctxt "Actions|"
+msgid "&Add Printer..."
+msgstr "&Добавит новый принтер"
+
+#. Configure Printers action
+#: ../resources/qml/Actions.qml:74
+msgctxt "Actions|"
+msgid "&Configure Printers"
+msgstr "&Настройки принтера"
+
+#. Show Online Documentation action
+#: ../resources/qml/Actions.qml:81
+msgctxt "Actions|"
+msgid "Show Online &Documentation"
+msgstr "Показать онлайн &справку"
+
+#. Report a Bug Action
+#: ../resources/qml/Actions.qml:89
+msgctxt "Actions|"
+msgid "Report a &Bug"
+msgstr "Сообщить о &проблеме"
+
+#. About action
+#: ../resources/qml/Actions.qml:96
+msgctxt "Actions|"
+msgid "&About..."
+msgstr "&О Кура"
+
+#. Delete selection action
+#: ../resources/qml/Actions.qml:103
+msgctxt "Actions|"
+msgid "Delete Selection"
+msgstr "Удалить выбранное"
+
+#. Delete object action
+#: ../resources/qml/Actions.qml:111
+msgctxt "Actions|"
+msgid "Delete Object"
+msgstr "Удалить объект"
+
+#. Center object action
+#: ../resources/qml/Actions.qml:118
+msgctxt "Actions|"
+msgid "Center Object on Platform"
+msgstr "Расположить объект по центру"
+
+#. Duplicate object action
+#: ../resources/qml/Actions.qml:124
+msgctxt "Actions|"
+msgid "Duplicate Object"
+msgstr "Умножить объект"
+
+#. Split object action
+#: ../resources/qml/Actions.qml:130
+msgctxt "Actions|"
+msgid "Split Object into Parts"
+msgstr "Разбить объект на частей"
+
+#. Clear build platform action
+#: ../resources/qml/Actions.qml:137
+msgctxt "Actions|"
+msgid "Clear Build Platform"
+msgstr "Очистить печатающую платформу"
+
+#. Reload all objects action
+#: ../resources/qml/Actions.qml:144
+msgctxt "Actions|"
+msgid "Reload All Objects"
+msgstr "Перезагрузить все объекты"
+
+#. Reset all positions action
+#: ../resources/qml/Actions.qml:150
+msgctxt "Actions|"
+msgid "Reset All Object Positions"
+msgstr "Сбросить все позиции объектов"
+
+#. Reset all positions action
+#: ../resources/qml/Actions.qml:156
+msgctxt "Actions|"
+msgid "Reset All Object Transformations"
+msgstr "Сбросить все преобразования объектов"
+
+#. Open file action
+#: ../resources/qml/Actions.qml:162
+msgctxt "Actions|"
+msgid "&Open..."
+msgstr "&Открыть..."
+
+#. Save file action
+#: ../resources/qml/Actions.qml:170
+msgctxt "Actions|"
+msgid "&Save..."
+msgstr "&Сохранить..."
+
+#. Show engine log action
+#: ../resources/qml/Actions.qml:178
+msgctxt "Actions|"
+msgid "Show engine &log..."
+msgstr "Показать журнал &слайсера"
+
+#. Add Printer dialog title
+#. ----------
+#. Add Printer wizard page title
+#: ../resources/qml/AddMachineWizard.qml:12
+#: ../resources/qml/AddMachineWizard.qml:19
+msgctxt "AddMachineWizard|"
+msgid "Add Printer"
+msgstr "Добавить новый принтер"
+
+#. Add Printer wizard page description
+#: ../resources/qml/AddMachineWizard.qml:25
+msgctxt "AddMachineWizard|"
+msgid "Please select the type of printer:"
+msgstr "Выберите тип принтера:"
+
+#. Add Printer wizard field label
+#: ../resources/qml/AddMachineWizard.qml:40
+msgctxt "AddMachineWizard|"
+msgid "Printer Name:"
+msgstr "Название принтера:"
+
+#. Add Printer wizarad button
+#: ../resources/qml/AddMachineWizard.qml:53
+msgctxt "AddMachineWizard|"
+msgid "Next"
+msgstr "Дальше"
+
+#. Add Printer wizarad button
+#: ../resources/qml/AddMachineWizard.qml:63
+msgctxt "AddMachineWizard|"
+msgid "Cancel"
+msgstr "Отменить"
+
+#. USB Printing dialog label, %1 is head temperature
+#: ../plugins/USBPrinting/ControlWindow.qml:15
+#, qt-format
+msgctxt "ControlWindow|"
+msgid "Extruder Temperature %1"
+msgstr "Температура экструдера %1"
+
+#. USB Printing dialog label, %1 is bed temperature
+#: ../plugins/USBPrinting/ControlWindow.qml:20
+#, qt-format
+msgctxt "ControlWindow|"
+msgid "Bed Temperature %1"
+msgstr "Температура платформы %1"
+
+#. USB Printing dialog start print button
+#: ../plugins/USBPrinting/ControlWindow.qml:33
+msgctxt "ControlWindow|"
+msgid "Print"
+msgstr "Печать"
+
+#. USB Printing dialog cancel print button
+#: ../plugins/USBPrinting/ControlWindow.qml:40
+msgctxt "ControlWindow|"
+msgid "Cancel"
+msgstr "Отменить"
+
+#. Cura application window title
+#: ../resources/qml/Cura.qml:14
+msgctxt "Cura|"
+msgid "Cura"
+msgstr "Кура"
+
+#. File menu
+#: ../resources/qml/Cura.qml:26
+msgctxt "Cura|"
+msgid "&File"
+msgstr "&Файл"
+
+#. Edit menu
+#: ../resources/qml/Cura.qml:38
+msgctxt "Cura|"
+msgid "&Edit"
+msgstr "&Изменить"
+
+#. Machine menu
+#: ../resources/qml/Cura.qml:50
+msgctxt "Cura|"
+msgid "&Machine"
+msgstr "&Принтер"
+
+#. Extensions menu
+#: ../resources/qml/Cura.qml:76
+msgctxt "Cura|"
+msgid "E&xtensions"
+msgstr "&Расширения"
+
+#. Settings menu
+#: ../resources/qml/Cura.qml:107
+msgctxt "Cura|"
+msgid "&Settings"
+msgstr "&Настройки"
+
+#. Help menu
+#: ../resources/qml/Cura.qml:114
+msgctxt "Cura|"
+msgid "&Help"
+msgstr "&Помощь"
+
+#. View Mode toolbar button
+#: ../resources/qml/Cura.qml:231
+msgctxt "Cura|"
+msgid "View Mode"
+msgstr "Режим просмотра"
+
+#. View preferences page title
+#: ../resources/qml/Cura.qml:273
+msgctxt "Cura|"
+msgid "View"
+msgstr "Просмотр"
+
+#. File open dialog title
+#: ../resources/qml/Cura.qml:370
+msgctxt "Cura|"
+msgid "Open File"
+msgstr "Открыть файл"
+
+#. File save dialog title
+#: ../resources/qml/Cura.qml:386
+msgctxt "Cura|"
+msgid "Save File"
+msgstr "Сохранить файл"
+
+#. Engine Log dialog title
+#: ../resources/qml/EngineLog.qml:11
+msgctxt "EngineLog|"
+msgid "Engine Log"
+msgstr "Журнал слайсера"
+
+#. Close engine log button
+#: ../resources/qml/EngineLog.qml:30
+msgctxt "EngineLog|"
+msgid "Close"
+msgstr "Закрыть"
+
+#. Firmware update status label
+#: ../plugins/USBPrinting/FirmwareUpdateWindow.qml:16
+msgctxt "FirmwareUpdateWindow|"
+msgid "Starting firmware update, this may take a while."
+msgstr "Начинается обновление прошивки, это может занять некоторое время."
+
+#. Firmware update status label
+#: ../plugins/USBPrinting/FirmwareUpdateWindow.qml:21
+msgctxt "FirmwareUpdateWindow|"
+msgid "Firmware update completed."
+msgstr "Обновление прошивки завершено."
+
+#. Firmware update status label
+#: ../plugins/USBPrinting/FirmwareUpdateWindow.qml:26
+msgctxt "FirmwareUpdateWindow|"
+msgid "Updating firmware."
+msgstr "Обновление прошивки."
+
+#. Print material amount save button label
+#: ../resources/qml/SaveButton.qml:149
+#, qt-format
+msgctxt "SaveButton|"
+msgid "%1m material"
+msgstr "%1m материал"
+
+#. Save button label
+#: ../resources/qml/SaveButton.qml:191
+msgctxt "SaveButton|"
+msgid "Please load a 3D model"
+msgstr "Пожалуйста, загрузите 3D модель"
+
+#. Save button label
+#: ../resources/qml/SaveButton.qml:194
+msgctxt "SaveButton|"
+msgid "Calculating Print-time"
+msgstr "Вычисляется время печати"
+
+#. Save button label
+#: ../resources/qml/SaveButton.qml:197
+msgctxt "SaveButton|"
+msgid "Estimated Print-time"
+msgstr "Расчетное время печати"
+
+#. Simple configuration mode option
+#: ../resources/qml/Sidebar.qml:105
+msgctxt "Sidebar|"
+msgid "Simple"
+msgstr "Простой"
+
+#. Advanced configuration mode option
+#: ../resources/qml/Sidebar.qml:107
+msgctxt "Sidebar|"
+msgid "Advanced"
+msgstr "Продвинутый"
+
+#. Configuration mode label
+#: ../resources/qml/SidebarHeader.qml:26
+msgctxt "SidebarHeader|"
+msgid "Mode:"
+msgstr "Режим:"
+
+#. Machine selection label
+#: ../resources/qml/SidebarHeader.qml:70
+msgctxt "SidebarHeader|"
+msgid "Machine:"
+msgstr "Принтер:"
+
+#. Sidebar header label
+#: ../resources/qml/SidebarHeader.qml:117
+msgctxt "SidebarHeader|"
+msgid "Print Setup"
+msgstr "Настройка Печати"
+
+#. Sidebar configuration label
+#: ../resources/qml/SidebarSimple.qml:40
+msgctxt "SidebarSimple|"
+msgid "No Model Loaded"
+msgstr "Модель не загружена"
+
+#. Sidebar configuration label
+#: ../resources/qml/SidebarSimple.qml:45
+msgctxt "SidebarSimple|"
+msgid "Calculating..."
+msgstr "Высчитывается..."
+
+#. Sidebar configuration label
+#: ../resources/qml/SidebarSimple.qml:50
+msgctxt "SidebarSimple|"
+msgid "Estimated Print Time"
+msgstr "Расчетное время печати"
+
+#. Quality slider label
+#: ../resources/qml/SidebarSimple.qml:87
+msgctxt "SidebarSimple|"
+msgid ""
+"Minimum\n"
+"Draft"
+msgstr ""
+"Минимальная \n"
+"тяга"
+
+#. Quality slider label
+#: ../resources/qml/SidebarSimple.qml:97
+msgctxt "SidebarSimple|"
+msgid ""
+"Maximum\n"
+"Quality"
+msgstr ""
+"Максимальное\n"
+"Качество"
+
+#. Setting checkbox
+#: ../resources/qml/SidebarSimple.qml:109
+msgctxt "SidebarSimple|"
+msgid "Enable Support"
+msgstr "Включить Поддержку"
+
+#. View configuration page title
+#: ../resources/qml/ViewPage.qml:9
+msgctxt "ViewPage|"
+msgid "View"
+msgstr "Просмотр"
+
+#. Display Overhang preference checkbox
+#: ../resources/qml/ViewPage.qml:24
+msgctxt "ViewPage|"
+msgid "Display Overhang"
+msgstr "Показать где есть нависающие части"

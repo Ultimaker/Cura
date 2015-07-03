@@ -25,11 +25,27 @@ UM.MainWindow {
             window: base
 
             Menu {
+                id: fileMenu
                 //: File menu
                 title: qsTr("&File");
 
                 MenuItem { action: actions.open; }
                 MenuItem { action: actions.save; }
+
+                MenuSeparator { }
+
+                Instantiator {
+                    model: Printer.recentFiles
+                    MenuItem {
+                        text: {
+                            var path = modelData.toString()
+                            return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
+                        }
+                        onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
+                    }
+                    onObjectAdded: fileMenu.insertItem(index, object)
+                    onObjectRemoved: fileMenu.removeItem(object)
+                }
 
                 MenuSeparator { }
 
@@ -144,23 +160,6 @@ UM.MainWindow {
                 }
             }
 
-            Sidebar {
-                id: sidebar;
-
-                anchors {
-                    top: parent.top;
-                    bottom: parent.bottom;
-                    right: parent.right;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
-                }
-
-                width: UM.Theme.sizes.panel.width;
-
-                addMachineAction: actions.addMachine;
-                configureMachinesAction: actions.configureMachines;
-                saveAction: actions.save;
-            }
-
             UM.MessageStack {
                 anchors {
                     left: toolbar.right;
@@ -195,8 +194,8 @@ UM.MainWindow {
                 id: openFileButton;
 
                 iconSource: UM.Theme.icons.open;
-                style: UM.Theme.styles.tool_button;
-
+                style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
+                tooltip: '';
                 anchors {
                     top: parent.top;
                     topMargin: UM.Theme.sizes.window_margin.height;
@@ -235,7 +234,7 @@ UM.MainWindow {
                 iconSource: UM.Theme.icons.viewmode;
 
                 style: UM.Theme.styles.tool_button;
-
+                tooltip: '';
                 menu: Menu {
                     id: viewMenu;
                     Instantiator {
@@ -264,6 +263,35 @@ UM.MainWindow {
                     bottom: parent.bottom;
                     bottomMargin: UM.Theme.sizes.window_margin.height;
                 }
+            }
+
+            Sidebar {
+                id: sidebar;
+
+                anchors {
+                    top: parent.top;
+                    bottom: parent.bottom;
+                    right: parent.right;
+                }
+
+                width: UM.Theme.sizes.panel.width;
+
+                addMachineAction: actions.addMachine;
+                configureMachinesAction: actions.configureMachines;
+                saveAction: actions.save;
+            }
+
+            Rectangle {
+                x: base.mouseX + UM.Theme.sizes.default_margin.width;
+                y: base.mouseY + UM.Theme.sizes.default_margin.height;
+
+                width: childrenRect.width;
+                height: childrenRect.height;
+                Label {
+                    text: UM.ActiveTool.properties.Rotation != undefined ? "%1°".arg(UM.ActiveTool.properties.Rotation) : "";
+                }
+
+                visible: UM.ActiveTool.valid && UM.ActiveTool.properties.Rotation != undefined;
             }
         }
     }
@@ -323,8 +351,8 @@ UM.MainWindow {
         preferences.onTriggered: preferences.visible = true;
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
 
-        documentation.onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/support");
-        reportBug.onTriggered: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/issues");
+        documentation.onTriggered: CuraActions.openDocumentation();
+        reportBug.onTriggered: CuraActions.openBugReportPage();
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
     }
@@ -419,3 +447,4 @@ UM.MainWindow {
 
     Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
 }
+

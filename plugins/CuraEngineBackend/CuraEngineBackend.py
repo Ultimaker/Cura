@@ -59,6 +59,8 @@ class CuraEngineBackend(Backend):
         self._save_polygons = True
         self._report_progress = True
 
+        self._enabled = True
+
         self.backendConnected.connect(self._onBackendConnected)
 
     def getEngineCommand(self):
@@ -86,6 +88,9 @@ class CuraEngineBackend(Backend):
     #                                  If False, this method will do nothing when already slicing. True by default.
     #                 - report_progress: True if the slicing progress should be reported, False if not. Default is True.
     def slice(self, **kwargs):
+        if not self._enabled:
+            return
+
         if self._slicing:
             if not kwargs.get("force_restart", True):
                 return
@@ -109,6 +114,9 @@ class CuraEngineBackend(Backend):
 
         if not objects:
             return #No point in slicing an empty build plate
+
+        if kwargs.get("settings", self._settings).hasErrorValue():
+            return #No slicing if we have error values since those are by definition illegal values.
 
         self._slicing = True
         self.slicingStarted.emit()
@@ -232,3 +240,10 @@ class CuraEngineBackend(Backend):
         if self._restart:
             self._onChanged()
             self._restart = False
+
+    def _onToolOperationStarted(self, tool):
+        self._enabled = False
+
+    def _onToolOperationStopped(self, tool):
+        self._enabled = True
+        self._onChanged()

@@ -1,5 +1,5 @@
 !ifndef VERSION
-  !define VERSION 'BETA'
+  !define VERSION '15.05.96'
 !endif
 
 ; The name of the installer
@@ -43,6 +43,9 @@ SetCompressor /SOLID lzma
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT "Start Cura ${VERSION}"
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
+
+;Add an option to show release notes
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\release_notes.txt"
 
 ; Pages
 ;!insertmacro MUI_PAGE_WELCOME
@@ -89,7 +92,7 @@ Section "Cura ${VERSION}"
   
   CreateDirectory "$SMPROGRAMS\Cura ${VERSION}"
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Uninstall Cura ${VERSION}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\Cura.exe" '' "$INSTDIR\resources\cura.ico" 0
+  CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\Cura.exe" '' "$INSTDIR\Cura.exe" 0
   
 SectionEnd
 
@@ -98,6 +101,15 @@ Function LaunchLink
   SetShellVarContext all
   Exec '"$WINDIR\explorer.exe" "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk"'
 FunctionEnd
+
+Section "Install Visual Studio 2010 Redistributable"
+    SetOutPath "$INSTDIR"
+    File "vcredist_2010_20110908_x86.exe"
+    
+    IfSilent +2
+      ExecWait '"$INSTDIR\vcredist_2010_20110908_x86.exe" /q /norestart'
+
+SectionEnd
 
 ;Section "Install Arduino Drivers"
 ;  ; Set output path to the driver directory.
