@@ -96,8 +96,8 @@
         "progressbar_control": [12, 169, 227, 255],
 
         "slider_groove": [245, 245, 245, 255],
-        "slider_groove_border": [205, 202, 201, 255],
-        "slider_groove_fill": [205, 202, 201, 255],
+        "slider_groove_border": [160, 163, 171, 255],
+        "slider_groove_fill": [160, 163, 171, 255],
         "slider_handle": [12, 169, 227, 255],
         "slider_handle_hover": [34, 150, 190, 255],
 
