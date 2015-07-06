@@ -17,6 +17,8 @@ UM.Dialog
     visible: true;
     modality: Qt.ApplicationModal;
 
+    title: "Firmware Update";
+
     Column
     {
         anchors.fill: parent;
@@ -66,4 +68,12 @@ UM.Dialog
            id: palette;
         }
     }
+
+    rightButtons: [
+        Button {
+            text: "Close";
+            enabled: manager.progress >= 100;
+            onClicked: base.visible = false;
+        }
+    ]
 }
