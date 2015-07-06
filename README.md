@@ -1,16 +1,16 @@
 Cura
 ====
 
-This is the new, shiny, unreleased frontend for Cura. [daid/Cura](https://github.com/daid/Cura.git) is the old legacy Cura that everyone knows and loves/hates.
+This is the new, shiny frontend for Cura. [daid/Cura](https://github.com/daid/Cura.git) is the old legacy Cura that everyone knows and loves/hates.
 
 We re-worked the whole GUI code at Ultimaker, because the old code started to become a unmaintainable.
 
 Dependencies
 ------------
 
-* Uranium
+* [Uranium](https://github.com/Ultimaker/Uranium)
   Cura is built on top of the Uranium framework.
-* CuraEngine
+* [CuraEngine](https://github.com/Ultimaker/CuraEngine)
   This will be needed at runtime to perform the actual slicing.
 * PySerial
   Only required for USB printing support.
@@ -39,3 +39,5 @@ Use [this](https://github.com/Ultimaker/Cura/blob/master/resources/settings/ulti
 * Set the nozzle offset with machine_nozzle_offset_x_1 and machine_nozzle_offset_y1
 * Set the start and end gcode in machine_start_gcode and machine_end_gcode
 * If your printer has a heated bed, set visible to true under material_bed_temperature
+
+Once you are done, put the profile you have made into resources/settings.
