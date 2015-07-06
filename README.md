@@ -9,13 +9,10 @@ Dependencies
 ------------
 
 * [Uranium](https://github.com/Ultimaker/Uranium)
-
   Cura is built on top of the Uranium framework.
 * [CuraEngine](https://github.com/Ultimaker/CuraEngine)
-
   This will be needed at runtime to perform the actual slicing.
 * PySerial
-
   Only required for USB printing support.
 
 Configuring Cura
