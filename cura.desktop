@@ -1,11 +1,11 @@
 [Desktop Entry]
-Version=1.0
+Version=15.06.01
 Name=Cura
 GenericName=3D Printing Software
 Comment=
 Exec=/usr/bin/cura_app.py
 TryExec=/usr/bin/cura_app.py
-Icon=cura
+Icon=/usr/share/cura/resources/images/cura_icon.png
 Terminal=false
 Type=Application
 Categories=Graphics;
