@@ -99,6 +99,12 @@ class CuraApp(wx.App):
 		except:
 			pass
 
+	def destroySplashScreen(self):
+		if self.splash is not None:
+			self.splash.Show(False)
+			self.splash.Destroy()
+			self.splash = None
+
 	def afterSplashCallback(self):
 		#These imports take most of the time and thus should be done after showing the splashscreen
 		import webbrowser
@@ -134,26 +140,20 @@ class CuraApp(wx.App):
 			exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'Rocktopus.stl'))
 
 			self.loadFiles = [exampleFile]
-			if self.splash is not None:
-				self.splash.Show(False)
-				self.splash = None
+			self.destroySplashScreen()
 			configWizard.ConfigWizard()
 
 		if profile.getPreference('check_for_updates') == 'True':
 			newVersion = version.checkForNewerVersion()
 			if newVersion is not None:
-				if self.splash is not None:
-					self.splash.Show(False)
-					self.splash = None
+				self.destroySplashScreen()
 				if wx.MessageBox(_("A new version of Cura is available, would you like to download?"), _("New version available"), wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
 					webbrowser.open(newVersion)
 					return
 		if profile.getMachineSetting('machine_name') == '':
 			return
 		self.mainWindow = mainWindow.mainWindow()
-		if self.splash is not None:
-			self.splash.Show(False)
-			self.splash = None
+		self.destroySplashScreen()
 		self.SetTopWindow(self.mainWindow)
 		self.mainWindow.Show()
 		self.mainWindow.OnDropFiles(self.loadFiles)

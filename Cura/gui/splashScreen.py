@@ -14,13 +14,13 @@ class splashScreen(wx.SplashScreen):
 		# rectangle while the app is loading
 		self.Bind(wx.EVT_CLOSE, self.OnClose)
 
-	def DoDestroy(self):
-		self.Destroy()
 
 	def OnClose(self, e):
 		if self.callback:
 			# Avoid calling the callback twice
-			self.callback()
+			cb = self.callback
 			self.callback = None
-		wx.CallAfter(self.DoDestroy)
+			# The callback will destroy us
+			wx.CallAfter(cb)
+
 		e.Skip()
