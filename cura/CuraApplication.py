@@ -330,7 +330,8 @@ class CuraApplication(QtApplication):
             file_name = node.getMeshData().getFileName()
             if file_name:
                 job = ReadMeshJob(file_name)
-                job.finished.connect(lambda j: node.setMeshData(j.getResult()))
+                job._node = node
+                job.finished.connect(self._reloadMeshFinished)
                 job.start()
     
     ##  Get logging data of the backend engine
@@ -538,3 +539,6 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().setValue("cura/recent_files", pref)
         self.recentFilesChanged.emit()
+
+    def _reloadMeshFinished(self, job):
+        job._node.setMeshData(job.getResult())
