@@ -47,7 +47,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         self.setMenuName("Firmware")
         self.addMenuItem(i18n_catalog.i18n("Update Firmware"), self.updateAllFirmware)
     
-    pyqtError = pyqtSignal(str, arguments = ["amount"])
+    pyqtError = pyqtSignal(str, arguments = ["error"])
     processingProgress = pyqtSignal(float, arguments = ["amount"])
     pyqtExtruderTemperature = pyqtSignal(float, arguments = ["amount"])
     pyqtBedTemperature = pyqtSignal(float, arguments = ["amount"])
@@ -59,9 +59,9 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml"))
             component = QQmlComponent(Application.getInstance()._engine, path)
 
-            context = QQmlContext(Application.getInstance()._engine.rootContext())
-            context.setContextProperty("manager", self)
-            self._firmware_view = component.create(context)
+            self._firmware_context = QQmlContext(Application.getInstance()._engine.rootContext())
+            self._firmware_context.setContextProperty("manager", self)
+            self._firmware_view = component.create(self._firmware_context)
 
         self._firmware_view.show()
         
@@ -72,10 +72,10 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml"))
 
             component = QQmlComponent(Application.getInstance()._engine, path)
-            context = QQmlContext(Application.getInstance()._engine.rootContext())
-            context.setContextProperty("manager", self)
+            self._control_context = QQmlContext(Application.getInstance()._engine.rootContext())
+            self._control_context.setContextProperty("manager", self)
 
-            self._control_view = component.create(context)
+            self._control_view = component.create(self._control_context)
 
         self._control_view.show()
 
@@ -175,8 +175,8 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     
     ##  Callback for error
     def onError(self, error):
-        self._error_message = error
-        self.pyqtError.emit(error)
+        self._error_message = error if type(error) is str else error.decode("utf-8")
+        self.pyqtError.emit(self._error_message)
         
     ##  Callback for progress change
     def onProgress(self, progress, serial_port):
@@ -241,9 +241,9 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             Application.getInstance().addOutputDevice(serial_port, {
                 "id": serial_port,
                 "function": self.spawnControlInterface,
-                "description": "Print through USB {0}".format(serial_port),
-                "shortDescription": "Print through USB",
-                "icon": "print_usb",
+                "description": "Print with USB {0}".format(serial_port),
+                "shortDescription": "Print with USB",
+                "icon": "save",
                 "priority": 1
             })
         else:

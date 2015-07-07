@@ -58,7 +58,7 @@ class PrinterConnection(SignalEmitter):
         self._gcode_position = 0
         
         # List of gcode lines to be printed
-        self._gcode = None
+        self._gcode = []
         
         # Number of extruders
         self._extruder_count = 1
@@ -102,9 +102,13 @@ class PrinterConnection(SignalEmitter):
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
         if self.isPrinting() or not self._is_connected:
+            Logger.log("d", "Printer is busy or not connected, aborting print")
             return
-        self._gcode = gcode_list
-        
+
+        self._gcode.clear()
+        for layer in gcode_list:
+            self._gcode.extend(layer.split("\n"))
+
         #Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
@@ -130,23 +134,23 @@ class PrinterConnection(SignalEmitter):
         if self._is_connecting or  self._is_connected:
             self.close()
         hex_file = intelHex.readHex(self._firmware_file_name)
-        
+
         if len(hex_file) == 0:
             Logger.log("e", "Unable to read provided hex file. Could not update firmware")
             return 
-        
+
         programmer = stk500v2.Stk500v2()
         programmer.progressCallback = self.setProgress 
         programmer.connect(self._serial_port)
-        
+
         time.sleep(1) # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
-        
+
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
             return 
-        
+
         self._updating_firmware = True
-        
+
         try:
             programmer.programChip(hex_file)
             self._updating_firmware = False
@@ -155,15 +159,19 @@ class PrinterConnection(SignalEmitter):
             self._updating_firmware = False
             return
         programmer.close()
-    
+
+        self.setProgress(100, 100)
+
     ##  Upload new firmware to machine
     #   \param filename full path of firmware file to be uploaded
     def updateFirmware(self, file_name):
+        Logger.log("i", "Updating firmware of %s using %s", self._serial_port, file_name)
         self._firmware_file_name = file_name
         self._update_firmware_thread.start()
 
     ##  Private connect function run by thread. Can be started by calling connect.
-    def _connect(self): 
+    def _connect(self):
+        Logger.log("d", "Attempting to connect to %s", self._serial_port)
         self._is_connecting = True
         programmer = stk500v2.Stk500v2()    
         try:
@@ -174,8 +182,9 @@ class PrinterConnection(SignalEmitter):
         except Exception as e:
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
-        if not self._serial or not programmer.serial:
+        if not self._serial:
             self._is_connecting = False
+            Logger.log("i", "Could not establish connection on %s, unknown reasons.", self._serial_port)
             return
         
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
@@ -229,13 +238,14 @@ class PrinterConnection(SignalEmitter):
             self.connectionStateChanged.emit(self._serial_port)
             if self._is_connected: 
                 self._listen_thread.start() #Start listening
-                '''Application.getInstance().addOutputDevice(self._serial_port, {
-                    "id": self._serial_port,
-                    "function": self.printGCode,
-                    "description": "Print with USB {0}".format(self._serial_port),
-                    "icon": "print_usb",
-                    "priority": 1
-                })'''
+                #Application.getInstance().addOutputDevice(self._serial_port, {
+                    #"id": self._serial_port,
+                    #"function": self.printGCode,
+                    #"shortDescription": "Print with USB",
+                    #"description": "Print with USB {0}".format(self._serial_port),
+                    #"icon": "save",
+                    #"priority": 1
+                #})
                 
         else:
             Logger.log("w", "Printer connection state was not changed")
@@ -264,6 +274,7 @@ class PrinterConnection(SignalEmitter):
     def _sendCommand(self, cmd):
         if self._serial is None:
             return
+
         if "M109" in cmd or "M190" in cmd:
             self._heatup_wait_start_time = time.time()
         if "M104" in cmd or "M109" in cmd:
@@ -363,6 +374,7 @@ class PrinterConnection(SignalEmitter):
                 if b"Extruder switched off" in line or b"Temperature heated bed switched off" in line or b"Something is wrong, please turn off the printer." in line:
                     if not self.hasError():
                         self._setErrorState(line[6:])
+
             elif b" T:" in line or line.startswith(b"T:"): #Temperature message
                 try: 
                     self._setExtruderTemperature(self._temperature_requested_extruder_index,float(re.search(b"T: *([0-9\.]*)", line).group(1)))
@@ -416,7 +428,7 @@ class PrinterConnection(SignalEmitter):
         if self._gcode_position == 100:
             self._print_start_time_100 = time.time()
         line = self._gcode[self._gcode_position]
-        
+
         if ";" in line:
             line = line[:line.find(";")]
         line = line.strip()
@@ -442,7 +454,7 @@ class PrinterConnection(SignalEmitter):
     ##  Set the progress of the print. 
     #   It will be normalized (based on max_progress) to range 0 - 100
     def setProgress(self, progress, max_progress = 100):
-        self._progress  = progress / max_progress * 100 #Convert to scale of 0-100
+        self._progress  = (progress / max_progress) * 100 #Convert to scale of 0-100
         self.progressChanged.emit(self._progress, self._serial_port)
     
     ##  Cancel the current print. Printer connection wil continue to listen.
