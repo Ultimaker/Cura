@@ -18,6 +18,7 @@ Item
         width: 10
         height: 250
         anchors.right : parent.right
+        anchors.rightMargin: UM.Theme.sizes.default_margin.width * 2
         orientation: Qt.Vertical
         minimumValue: 0;
         maximumValue: UM.LayerView.numLayers;
@@ -26,6 +27,6 @@ Item
         value: UM.LayerView.currentLayer
         onValueChanged: UM.LayerView.setCurrentLayer(value)
 
-        style: UM.Theme.styles.slider;
+        style: UM.LayerView.getLayerActivity ? UM.Theme.styles.layerViewSlider : UM.Theme.styles.slider
     }
 }
