@@ -98,16 +98,12 @@ class CuraApplication(QtApplication):
         self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
+            self._plugin_registry.loadPlugin("ConsoleLogger")
 
-        self._plugin_registry.loadPlugins({ "type": "logger"})
-        self._plugin_registry.loadPlugins({ "type": "storage_device" })
-        self._plugin_registry.loadPlugins({ "type": "view" })
-        self._plugin_registry.loadPlugins({ "type": "mesh_reader" })
-        self._plugin_registry.loadPlugins({ "type": "mesh_writer" })
-        self._plugin_registry.loadPlugins({ "type": "tool" })
-        self._plugin_registry.loadPlugins({ "type": "extension" })
+        self._plugin_registry.loadPlugins()
 
-        self._plugin_registry.loadPlugin("CuraEngineBackend")
+        if self.getBackend() == None:
+            raise RuntimeError("Could not load the backend plugin!")
 
     def addCommandLineOptions(self, parser):
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
