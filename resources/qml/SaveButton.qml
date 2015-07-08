@@ -126,7 +126,7 @@ Rectangle {
                 }
                 label: Item { }
             }
-            onClicked: devicesModel.requestWriteToCurrentDevice()
+            onClicked: devicesModel.requestWriteToDevice(devicesModel.currentDevice.id)
         }
 
         Button {

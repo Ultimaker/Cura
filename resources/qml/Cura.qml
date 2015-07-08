@@ -55,11 +55,11 @@ UM.MainWindow {
                     title: "Save All"
 
                     Instantiator {
-                        model: UM.OutputDevicesModel { }
+                        model: UM.OutputDevicesModel { id: devicesModel; }
 
                         MenuItem {
                             text: model.description
-                            onTriggered: model.requestWriteToCurrentDevice();
+                            onTriggered: devicesModel.requestWriteToDevice(model.id);
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
