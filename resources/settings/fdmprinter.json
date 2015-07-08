@@ -1280,6 +1280,98 @@
                 }
             }
         },
+        "shield": {
+            "label": "Shielding",
+            "visible": true,
+            "icon": "category_shield",
+            "settings": {
+                "ooze_shield_enabled": {
+                    "label": "Enable Ooze Shield",
+                    "description": "Enable exterior ooze shield. This will create a shell around the object which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "ooze_shield_angle": {
+                    "label": "Ooze Shield Angle",
+                    "description": "The maximum angle a part in the ooze shield will have. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller angle leads to less failed ooze shields, but more material.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value": 90.0,
+                    "default": 60.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "ooze_shield_enabled",
+                        "value": true
+                    }
+                },
+                "ooze_shield_dist": {
+                    "label": "Ooze Shields Distance",
+                    "description": "Distance of the ooze shield from the print, in the X/Y directions.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value_warning": 30.0,
+                    "default": 2.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "ooze_shield_enabled",
+                        "value": true
+                    }
+                },
+                "draft_shield_enabled": {
+                    "label": "Enable Draft Shield",
+                    "description": "Enable exterior draft shield. This will create a wall around the object which traps (hot) air and shields against gusts of wind. Especially useful for materials which warp easily.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "draft_shield_dist": {
+                    "label": "Draft Shield X/Y Distance",
+                    "description": "Distance of the draft shield from the print, in the X/Y directions.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value_warning": 100.0,
+                    "default": 10.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "draft_shield_enabled",
+                        "value": true
+                    }
+                },
+                "draft_shield_height_limitation": {
+                    "label": "Draft Shield Limitation",
+                    "description": "Whether to limit the height of the draft shield",
+                    "type": "enum",
+                    "options": [
+                        "Full",
+                        "Limited"
+                    ],
+                    "default": "Full",
+                    "visible": false,
+                    "inherit_function": "Full",
+                    "active_if": {
+                        "setting": "draft_shield_enabled",
+                        "value": true
+                    }
+                },
+                "draft_shield_height": {
+                    "label": "Draft Shield Height",
+                    "description": "Height limitation on the draft shield. Above this height no draft shield will be printed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0.0,
+                    "max_value_warning": 30.0,
+                    "default": 0.0,
+                    "inherit_function": "9999 if draft_shield_height_limitation == 'Full' && draft_shield_enabled else 0.0",
+                    "visible": false,
+                    "active_if": {
+                        "setting": "draft_shield_height_limitation",
+                        "value": "Limited"
+                    }
+                }
+            }
+        },
         "support": {
             "label": "Support",
             "visible": true,
