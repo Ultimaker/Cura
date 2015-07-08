@@ -41,7 +41,9 @@ from PyQt5.QtGui import QColor, QIcon
 
 import platform
 import sys
+import os
 import os.path
+import configparser
 import numpy
 numpy.seterr(all="ignore")
 
@@ -117,6 +119,7 @@ class CuraApplication(QtApplication):
             "id": "local_file",
             "function": self._writeToLocalFile,
             "description": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
+            "shortDescription": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
             "icon": "save",
             "priority": 0
         })
@@ -327,7 +330,8 @@ class CuraApplication(QtApplication):
             file_name = node.getMeshData().getFileName()
             if file_name:
                 job = ReadMeshJob(file_name)
-                job.finished.connect(lambda j: node.setMeshData(j.getResult()))
+                job._node = node
+                job.finished.connect(self._reloadMeshFinished)
                 job.start()
     
     ##  Get logging data of the backend engine
@@ -428,10 +432,15 @@ class CuraApplication(QtApplication):
     
             filename = os.path.join(path, node.getName()[0:node.getName().rfind(".")] + ".gcode")
 
+            message = Message(self._output_devices[device]["description"], 0, False, -1)
+            message.show()
+
             job = WriteMeshJob(filename, node.getMeshData())
             job._sdcard = device
+            job._message = message
             job.start()
             job.finished.connect(self._onWriteToSDFinished)
+
             return
 
     def _removableDrivesChanged(self):
@@ -442,6 +451,7 @@ class CuraApplication(QtApplication):
                     "id": drive,
                     "function": self._writeToSD,
                     "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(drive),
+                    "shortDescription": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(""),
                     "icon": "save_sd",
                     "priority": 1
                 })
@@ -488,6 +498,9 @@ class CuraApplication(QtApplication):
             "eject",
             self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}").format(job._sdcard)
         )
+
+        job._message.hide()
+
         message._sdcard = job._sdcard
         message.actionTriggered.connect(self._onMessageActionTriggered)
         message.show()
@@ -526,3 +539,6 @@ class CuraApplication(QtApplication):
 
         Preferences.getInstance().setValue("cura/recent_files", pref)
         self.recentFilesChanged.emit()
+
+    def _reloadMeshFinished(self, job):
+        job._node.setMeshData(job.getResult())

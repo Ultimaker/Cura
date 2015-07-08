@@ -139,6 +139,16 @@ QtObject {
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     cornerSize: UM.Theme.sizes.default_margin.width;
+
+                    Label {
+                        anchors.right: parent.right;
+                        anchors.rightMargin: UM.Theme.sizes.default_margin.width / 2;
+                        anchors.verticalCenter: parent.verticalCenter;
+                        text: "▼";
+                        font: UM.Theme.fonts.small;
+                        visible: control.menu != null;
+                        color: "white";
+                    }
                 }
             }
 
@@ -213,23 +223,34 @@ QtObject {
                 Behavior on color { ColorAnimation { duration: 50; } }
                 cornerSize: UM.Theme.sizes.default_margin.width;
             }
-            label: Row {
+            label: Item {
                 anchors.fill: parent;
                 anchors.margins: UM.Theme.sizes.default_margin.width;
-                spacing: UM.Theme.sizes.default_margin.width;
 
                 Image {
+                    id: icon;
+
+                    anchors.left: parent.left;
                     anchors.verticalCenter: parent.verticalCenter;
+
                     source: control.iconSource;
                     width: UM.Theme.sizes.section_icon.width;
                     height: UM.Theme.sizes.section_icon.height;
                 }
 
                 Label {
-                    anchors.verticalCenter: parent.verticalCenter;
+                    anchors {
+                        left: icon.right;
+                        leftMargin: UM.Theme.sizes.default_margin.width;
+                        right: parent.right;
+                        verticalCenter: parent.verticalCenter;
+                    }
+
                     text: control.text;
                     font: UM.Theme.fonts.setting_category;
                     color: UM.Theme.colors.setting_category_text;
+                    fontSizeMode: Text.HorizontalFit;
+                    minimumPointSize: 8
                 }
             }
         }

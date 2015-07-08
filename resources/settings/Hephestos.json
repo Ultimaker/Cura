@@ -1,0 +1,41 @@
+{
+    "id": "hephestos",
+    "icon": "icon_ultimaker2.png",
+    "name": "Prusa i3 Hephestos",
+    "platform": "hephestos_platform.stl",
+
+    "inherits": "fdmprinter.json",
+
+    "machine_settings": {
+        "machine_width": { "default": 215 },
+        "machine_height": { "default": 210 },
+        "machine_depth": { "default": 180 },
+        "machine_center_is_zero": { "default": false },
+        "machine_nozzle_size": { "default": 0.4 },
+        "machine_head_shape_min_x": { "default": 75 },
+        "machine_head_shape_min_y": { "default": 18 },
+        "machine_head_shape_max_x": { "default": 18 },
+        "machine_head_shape_max_y": { "default": 35 },
+        "machine_nozzle_gantry_distance": { "default": 55 },
+        "machine_nozzle_offset_x_1": { "default": 0.0 },
+        "machine_nozzle_offset_y_1": { "default": 0.0 },
+        "machine_gcode_flavor": { "default": "RepRap (Marlin/Sprinter)" },
+
+        "machine_start_gcode": {
+            "default": "G21\nG90\nM107\nG28 X0 Y0\nG28 Z0\nG1 Z5.0 F1200\n; Purge extruder by drawing 2 lines\nM117\nG92 E0\nG1 X20.0 Y40 Z0.3 F3000.0\nG1 X200.0 Y40 Z0.3 F1500.0 E15\nG1 X200.0 Y41 Z0.3 F3000.0\nG1 X20.0 Y41 Z0.3 F1500.0 E30\nG1 E29.6 F3000\nG92 E0\nM117\nM106\nG1 F{travel_speed}\nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default": "M104 S0\nM140 S0\nG91\nG1 E-5 F300\nG1 Z2 F{travel_speed}\nG90\nG28 X5 Y5\nM84\nG90"
+        }
+    },
+
+    "categories": {
+        "material": {
+            "settings": {
+                "material_bed_temperature": {
+                    "visible": true
+                }
+            }
+        }
+    }
+}

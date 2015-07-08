@@ -7,16 +7,21 @@ from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
+from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
+
 import threading
 import platform
 import glob
 import time
 import os
+import os.path
 import sys
 from UM.Extension import Extension
 
 from PyQt5.QtQuick import QQuickView
-from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
@@ -42,7 +47,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         self.setMenuName("Firmware")
         self.addMenuItem(i18n_catalog.i18n("Update Firmware"), self.updateAllFirmware)
     
-    pyqtError = pyqtSignal(str, arguments = ["amount"])
+    pyqtError = pyqtSignal(str, arguments = ["error"])
     processingProgress = pyqtSignal(float, arguments = ["amount"])
     pyqtExtruderTemperature = pyqtSignal(float, arguments = ["amount"])
     pyqtBedTemperature = pyqtSignal(float, arguments = ["amount"])
@@ -51,18 +56,27 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     #   This will create the view if its not already created.
     def spawnFirmwareInterface(self, serial_port):
         if self._firmware_view is None:
-            self._firmware_view = QQuickView()
-            self._firmware_view.engine().rootContext().setContextProperty("manager",self)
-            self._firmware_view.setSource(QUrl("plugins/USBPrinting/FirmwareUpdateWindow.qml"))
+            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "FirmwareUpdateWindow.qml"))
+            component = QQmlComponent(Application.getInstance()._engine, path)
+
+            self._firmware_context = QQmlContext(Application.getInstance()._engine.rootContext())
+            self._firmware_context.setContextProperty("manager", self)
+            self._firmware_view = component.create(self._firmware_context)
+
         self._firmware_view.show()
-    
+        
     ##  Show control interface.
     #   This will create the view if its not already created.
     def spawnControlInterface(self,serial_port):
         if self._control_view is None:
-            self._control_view = QQuickView()
-            self._control_view.engine().rootContext().setContextProperty("manager",self)
-            self._control_view.setSource(QUrl("plugins/USBPrinting/ControlWindow.qml"))
+            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml"))
+
+            component = QQmlComponent(Application.getInstance()._engine, path)
+            self._control_context = QQmlContext(Application.getInstance()._engine.rootContext())
+            self._control_context.setContextProperty("manager", self)
+
+            self._control_view = component.create(self._control_context)
+
         self._control_view.show()
 
     @pyqtProperty(float,notify = processingProgress)
@@ -112,7 +126,10 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     def updateAllFirmware(self):
         self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:
-            printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+            try:
+                printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+            except FileNotFoundError:
+                continue
             
     def updateFirmwareBySerial(self, serial_port):
         printer_connection = self.getConnectionByPort(serial_port)
@@ -158,8 +175,8 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     
     ##  Callback for error
     def onError(self, error):
-        self._error_message = error
-        self.pyqtError.emit(error)
+        self._error_message = error if type(error) is str else error.decode("utf-8")
+        self.pyqtError.emit(self._error_message)
         
     ##  Callback for progress change
     def onProgress(self, progress, serial_port):
@@ -224,8 +241,9 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
             Application.getInstance().addOutputDevice(serial_port, {
                 "id": serial_port,
                 "function": self.spawnControlInterface,
-                "description": "Write to USB {0}".format(serial_port),
-                "icon": "print_usb",
+                "description": "Print with USB {0}".format(serial_port),
+                "shortDescription": "Print with USB",
+                "icon": "save",
                 "priority": 1
             })
         else:
