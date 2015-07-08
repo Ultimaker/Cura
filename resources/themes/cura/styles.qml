@@ -420,7 +420,7 @@ QtObject {
                     rotation: 90
                     Rectangle {
                         width: (parent.width + UM.Theme.sizes.tooltip_margins.width) < 35 ? 35 : parent.width + UM.Theme.sizes.tooltip_margins.width
-                        height: parent.height + UM.Theme.sizes.tooltip_margins.height
+                        height: parent.height + (UM.Theme.sizes.tooltip_margins.height / 2)
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         z: parent.z - 1
