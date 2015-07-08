@@ -6,45 +6,16 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 Rectangle {
     id: base;
 
-    property Action saveAction;
-
     property real progress: UM.Backend.progress;
     Behavior on progress { NumberAnimation { duration: 250; } }
 
-    property string currentDevice: "local_file"
-    property bool defaultOverride: false;
-    property bool defaultAmbiguous: false;
-
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
-
-    Connections {
-        target: Printer;
-        onOutputDevicesChanged: {
-            if(!base.defaultOverride) {
-                base.defaultAmbiguous = false;
-                var device = null;
-                for(var i in Printer.outputDevices) {
-                    if(device == null) {
-                        device = i;
-                    } else if(Printer.outputDevices[i].priority > Printer.outputDevices[device].priority) {
-                        device = i;
-                    } else if(Printer.outputDevices[i].priority == Printer.outputDevices[device].priority) {
-                        base.defaultAmbiguous = true;
-                    }
-                }
-
-                if(device != null) {
-                    base.currentDevice = device;
-                }
-            }
-        }
-    }
 
     Rectangle{
         id: background
@@ -113,7 +84,7 @@ Rectangle {
                 elide: mediumLengthDuration ? Text.ElideRight : Text.ElideNone
                 visible: base.progress < 0.99 ? false : true
                 //: Print material amount save button label
-                text: base.printMaterialAmount < 0 ? "" : qsTr("%1m material").arg(base.printMaterialAmount);
+                text: base.printMaterialAmount < 0 ? "" : qsTr("%1m of Material").arg(base.printMaterialAmount);
             }
         }
         Rectangle {
@@ -134,29 +105,28 @@ Rectangle {
             anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height;
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            tooltip: ''
+            tooltip: devicesModel.currentDevice.description;
             enabled: progress >= 0.99;
 
             width: infoBox.width/6*4.5
             height: UM.Theme.sizes.save_button_save_to_button.height
+
+            text: devicesModel.currentDevice.short_description;
+
             style: ButtonStyle {
                 background: Rectangle {
                     color: !control.enabled ? UM.Theme.colors.save_button_inactive : control.hovered ? UM.Theme.colors.save_button_active_hover : UM.Theme.colors.save_button_active;
+
                     Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.centerIn: parent
                         color: UM.Theme.colors.save_button_safe_to_text;
                         font: UM.Theme.fonts.sidebar_save_to;
-                        text: Printer.outputDevices[base.currentDevice].shortDescription;
+                        text: control.text;
                     }
                 }
+                label: Item { }
             }
-            onClicked:
-                if(base.defaultAmbiguous) {
-                    devicesMenu.popup();
-                } else {
-                    Printer.writeToOutputDevice(base.currentDevice);
-                }
+            onClicked: devicesModel.requestWriteToCurrentDevice()
         }
 
         Button {
@@ -165,16 +135,20 @@ Rectangle {
             anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
-            tooltip: ''
+
+            tooltip: qsTr("Select the active output device");
 
             width: infoBox.width/6*1.3 - UM.Theme.sizes.save_button_text_margin.height;
             height: UM.Theme.sizes.save_button_save_to_button.height
 
+            iconSource: UM.Theme.icons[devicesModel.currentDevice.icon_name];
+
             style: ButtonStyle {
                 background: Rectangle {
-                color: UM.Theme.colors.save_button_background;
-                border.width: control.hovered ? UM.Theme.sizes.save_button_border.width : 0
-                border.color: UM.Theme.colors.save_button_border
+                    color: UM.Theme.colors.save_button_background;
+                    border.width: control.hovered ? UM.Theme.sizes.save_button_border.width : 0
+                    border.color: UM.Theme.colors.save_button_border
+
                     Rectangle {
                         id: deviceSelectionIcon
                         color: UM.Theme.colors.save_button_background;
@@ -183,14 +157,13 @@ Rectangle {
                         anchors.verticalCenter: parent.verticalCenter;
                         width: parent.height - UM.Theme.sizes.save_button_text_margin.width ;
                         height: parent.height - UM.Theme.sizes.save_button_text_margin.width;
+
                         UM.RecolorImage {
-                            anchors.centerIn: parent;
-                            width: parent.width;
-                            height: parent.height;
+                            anchors.fill: parent;
                             sourceSize.width: width;
                             sourceSize.height: height;
                             color:  UM.Theme.colors.save_button_active
-                            source: UM.Theme.icons[Printer.outputDevices[base.currentDevice].icon];
+                            source: control.iconSource;
                         }
                     }
                     Label {
@@ -203,24 +176,20 @@ Rectangle {
                         color: UM.Theme.colors.save_button_active;
                     }
                 }
+                label: Item { }
             }
 
             menu: Menu {
                 id: devicesMenu;
                 Instantiator {
-                    model: Printer.outputDeviceNames;
+                    model: devicesModel;
                     MenuItem {
-                        text: Printer.outputDevices[modelData].description;
+                        text: model.description
                         checkable: true;
-                        checked: base.defaultAmbiguous ? false : modelData == base.currentDevice;
+                        checked: model.id == devicesModel.currentDevice.id;
                         exclusiveGroup: devicesMenuGroup;
                         onTriggered: {
-                            base.defaultOverride = true;
-                            base.currentDevice = modelData;
-                            if(base.defaultAmbiguous) {
-                                base.defaultAmbiguous = false;
-                                Printer.writeToOutputDevice(modelData);
-                            }
+                            devicesModel.setCurrentDevice(model.id);
                         }
                     }
                     onObjectAdded: devicesMenu.insertItem(index, object)
@@ -229,5 +198,9 @@ Rectangle {
                 ExclusiveGroup { id: devicesMenuGroup; }
             }
         }
+    }
+
+    UM.OutputDevicesModel {
+        id: devicesModel;
     }
 }
