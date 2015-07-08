@@ -1,0 +1,15 @@
+{
+    "id": "witbox",
+    "name": "Witbox",
+    "icon": "icon_ultimaker2.png",
+    "platform": "Witbox_platform.stl",
+    "platform_texture": "Ultimaker2backplate.png",
+
+    "inherits": "ultimaker2.json",
+
+    "machine_settings": {
+        "machine_width": { "default": 291 },
+        "machine_depth": { "default": 210 },
+        "machine_height": { "default": 200 }
+    }
+}
