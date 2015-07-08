@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 UM.MainWindow {
     id: base
@@ -30,21 +30,40 @@ UM.MainWindow {
                 title: qsTr("&File");
 
                 MenuItem { action: actions.open; }
-                MenuItem { action: actions.save; }
 
-                MenuSeparator { }
+                Menu {
+                    id: recentFilesMenu;
+                    title: "Open Recent"
 
-                Instantiator {
-                    model: Printer.recentFiles
-                    MenuItem {
-                        text: {
-                            var path = modelData.toString()
-                            return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
+                    Instantiator {
+                        model: Printer.recentFiles
+                        MenuItem {
+                            text: {
+                                var path = modelData.toString()
+                                return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
+                            }
+                            onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
                         }
-                        onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
+                        onObjectAdded: recentFilesMenu.insertItem(index, object)
+                        onObjectRemoved: recentFilesMenu.removeItem(object)
                     }
-                    onObjectAdded: fileMenu.insertItem(index, object)
-                    onObjectRemoved: fileMenu.removeItem(object)
+                }
+
+                MenuItem { text: "Save Selection" }
+                Menu {
+                    id: saveAllMenu
+                    title: "Save All"
+
+                    Instantiator {
+                        model: UM.OutputDevicesModel { }
+
+                        MenuItem {
+                            text: model.description
+                            onTriggered: model.requestWriteToCurrentDevice();
+                        }
+                        onObjectAdded: saveAllMenu.insertItem(index, object)
+                        onObjectRemoved: saveAllMenu.removeItem(object)
+                    }
                 }
 
                 MenuSeparator { }
@@ -278,7 +297,6 @@ UM.MainWindow {
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
-                saveAction: actions.save;
             }
 
             Rectangle {
@@ -411,22 +429,6 @@ UM.MainWindow {
         }
     }
 
-    FileDialog {
-        id: saveDialog;
-        //: File save dialog title
-        title: qsTr("Save File");
-        selectExisting: false;
-
-        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
-
-        nameFilters: UM.MeshFileHandler.supportedWriteFileTypes
-
-        onAccepted:
-        {
-            UM.MeshFileHandler.writeLocalFile(fileUrl);
-        }
-    }
-
     EngineLog {
         id: engineLog;
     }
@@ -442,7 +444,6 @@ UM.MainWindow {
     Connections {
         target: Printer
         onRequestAddPrinter: addMachine.visible = true;
-        onWriteToLocalFileRequested: saveDialog.open();
     }
 
     Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))

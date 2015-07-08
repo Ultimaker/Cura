@@ -13,7 +13,6 @@ Rectangle {
 
     property Action addMachineAction;
     property Action configureMachinesAction;
-    property alias saveAction: saveButton.saveAction;
 
     color: UM.Theme.colors.sidebar;
 
