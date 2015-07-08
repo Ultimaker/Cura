@@ -54,13 +54,13 @@ class ProcessSlicedObjectListJob(Job):
             self._progress.setProgress(2)
 
         mesh = MeshData()
+        layerData = LayerData.LayerData()
         for object in self._message.objects:
             try:
                 node = objectIdMap[object.id]
             except KeyError:
                 continue
 
-            layerData = LayerData.LayerData()
             for layer in object.layers:
                 layerData.addLayer(layer.id)
                 layerData.setLayerHeight(layer.id, layer.height)

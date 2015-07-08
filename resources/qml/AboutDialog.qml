@@ -31,7 +31,7 @@ UM.Dialog {
     Label {
         id: version
 
-        text: "Cura 15.06 Beta"
+        text: "Cura 15.06"
         font: UM.Theme.fonts.large
         anchors.horizontalCenter : logo.horizontalCenter
         anchors.horizontalCenterOffset : (logo.width * 0.25)

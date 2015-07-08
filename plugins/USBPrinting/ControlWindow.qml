@@ -4,60 +4,64 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.1
 
-Rectangle 
-{
-    width: 300; height: 100
-    ColumnLayout 
+import UM 1.0 as UM
+
+UM.Dialog {
+    width: 500 * Screen.devicePixelRatio;
+    height: 100 * Screen.devicePixelRatio;
+
+    title: "Print with USB"
+
+    Column
     {
-        RowLayout 
+        anchors.fill: parent;
+        Row
         {
-            Text 
+            spacing: UM.Theme.sizes.default_margin.width;
+            Text
             {
                 //: USB Printing dialog label, %1 is head temperature
                 text: qsTr("Extruder Temperature %1").arg(manager.extruderTemperature)
             }
-            Text 
+            Text
             {
                 //: USB Printing dialog label, %1 is bed temperature
                 text: qsTr("Bed Temperature %1").arg(manager.bedTemperature)
             }
-            Text 
+            Text
             {
                 text: "" + manager.error
             }
-        
+
         }
-        RowLayout 
-        {
-            Button 
-            {
-                //: USB Printing dialog start print button
-                text: qsTr("Print");
-                onClicked: { manager.startPrint() }
-                enabled: manager.progress == 0 ? true : false
-            }
-            Button
-            {
-                //: USB Printing dialog cancel print button
-                text: qsTr("Cancel");
-                onClicked: { manager.cancelPrint() }
-                enabled: manager.progress == 0 ? false:  true
-            }
-        }
-        ProgressBar 
+
+        ProgressBar
         {
             id: prog;
-            value: manager.progress
+            anchors.left: parent.left;
+            anchors.right: parent.right;
+
             minimumValue: 0;
             maximumValue: 100;
-            Layout.maximumWidth:parent.width
-            Layout.preferredWidth:230
-            Layout.preferredHeight:25
-            Layout.minimumWidth:230
-            Layout.minimumHeight:25
-            width: 230
-            height: 25
+            value: manager.progress
         }
     }
+
+    rightButtons: [
+        Button {
+            //: USB Printing dialog start print button
+            text: qsTr("Print");
+            onClicked: { manager.startPrint() }
+            enabled: manager.progress == 0 ? true : false
+        },
+        Button
+        {
+            //: USB Printing dialog cancel print button
+            text: qsTr("Cancel");
+            onClicked: { manager.cancelPrint() }
+            enabled: manager.progress == 0 ? false:  true
+        }
+    ]
 }

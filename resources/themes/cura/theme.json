@@ -96,8 +96,8 @@
         "progressbar_control": [12, 169, 227, 255],
 
         "slider_groove": [245, 245, 245, 255],
-        "slider_groove_border": [205, 202, 201, 255],
-        "slider_groove_fill": [205, 202, 201, 255],
+        "slider_groove_border": [160, 163, 171, 255],
+        "slider_groove_fill": [160, 163, 171, 255],
         "slider_handle": [12, 169, 227, 255],
         "slider_handle_hover": [34, 150, 190, 255],
 
@@ -141,6 +141,7 @@
         "setting_control": [6.0, 2.0],
         "setting_control_margin": [3.0, 3.0],
         "setting_unit_margin": [0.5, 0.5],
+        "setting_text_maxwidth": [40.0, 0.0],
 
         "button": [4.25, 4.25],
         "button_icon": [2.9, 2.9],
@@ -160,7 +161,7 @@
         "tooltip_margins": [1.0, 1.0],
 
         "save_button_border": [0.06, 0.06],
-        "save_button_text_margin": [0.6, 0.6],
+        "save_button_text_margin": [0.3, 0.6],
         "save_button_slicing_bar": [0.0, 2.2],
         "save_button_label_margin": [0.5, 0.5],
         "save_button_save_to_button": [0.3, 2.7],

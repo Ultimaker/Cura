@@ -1,0 +1,1580 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Uranium json setting files\n"
+"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
+"POT-Creation-Date: 2015-05-08 12:17+0000\n"
+"PO-Revision-Date: 2015-06-24 09:27+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Tapio <info@tapimex.fi>\n"
+"X-Generator: Poedit 1.8.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fi_FI\n"
+
+#: fdmprinter.json
+msgctxt "resolution label"
+msgid "Quality"
+msgstr "Laatu"
+
+#: fdmprinter.json
+msgctxt "layer_height label"
+msgid "Layer Height"
+msgstr "Kerroksen korkeus"
+
+#: fdmprinter.json
+msgctxt "layer_height description"
+msgid ""
+"The height of each layer, in mm. Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to 0.25mm with an "
+"Ultimaker for very fast prints at low quality. For most purposes, layer heights between 0.1 and 0.2mm give a good tradeoff "
+"of speed and surface finish."
+msgstr ""
+"Kunkin kerroksen korkeus millimetreissä. Normaalilaatuinen tulostus on 0,1 mm, hyvä laatu on 0,06 mm. Voit päästä "
+"Ultimakerilla aina 0,25 mm:iin tulostettaessa hyvin nopeasti alhaisella laadulla. Useimpia tarkoituksia varten 0,1 - 0,2 mm:"
+"n kerroskorkeudella saadaan hyvä kompromissi nopeuden ja pinnan viimeistelyn suhteen."
+
+#: fdmprinter.json
+msgctxt "layer_height_0 label"
+msgid "Initial Layer Thickness"
+msgstr "Alkukerroksen paksuus"
+
+#: fdmprinter.json
+msgctxt "layer_height_0 description"
+msgid "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier."
+msgstr "Pohjakerroksen kerrospaksuus. Paksumpi pohjakerros tarttuu paremmin alustaan."
+
+#: fdmprinter.json
+msgctxt "shell_thickness label"
+msgid "Shell Thickness"
+msgstr "Kuoren paksuus"
+
+#: fdmprinter.json
+msgctxt "shell_thickness description"
+msgid ""
+"The thickness of the outside shell in the horizontal and vertical direction. This is used in combination with the nozzle "
+"size to define the number of perimeter lines and the thickness of those perimeter lines. This is also used to define the "
+"number of solid top and bottom layers."
+msgstr ""
+"Ulkokuoren paksuus vaaka- ja pystysuunnassa. Yhdessä suutinkoon kanssa tällä määritetään reunalinjojen lukumäärä ja niiden "
+"paksuus. Tällä määritetään myös umpinaisten ylä- ja pohjakerrosten lukumäärä."
+
+#: fdmprinter.json
+msgctxt "wall_thickness label"
+msgid "Wall Thickness"
+msgstr "Seinämän paksuus"
+
+#: fdmprinter.json
+msgctxt "wall_thickness description"
+msgid ""
+"The thickness of the outside walls in the horizontal direction. This is used in combination with the nozzle size to define "
+"the number of perimeter lines and the thickness of those perimeter lines."
+msgstr ""
+"Ulkoseinämien paksuus vaakasuunnassa. Yhdessä suuttimen koon kanssa tällä määritetään reunalinjojen lukumäärä ja niiden "
+"paksuus."
+
+#: fdmprinter.json
+msgctxt "wall_line_count label"
+msgid "Wall Line Count"
+msgstr "Seinämälinjaluku"
+
+#: fdmprinter.json
+msgctxt "wall_line_count description"
+msgid ""
+"Number of shell lines. This these lines are called perimeter lines in other tools and impact the strength and structural "
+"integrity of your print."
+msgstr ""
+"Kuorilinjojen lukumäärä. Näitä linjoja kutsutaan reunalinjoiksi muissa työkaluissa ja ne vaikuttavat tulosteen vahvuuteen ja "
+"rakenteelliseen eheyteen."
+
+#: fdmprinter.json
+msgctxt "wall_line_width label"
+msgid "Wall Line Width"
+msgstr "Seinämälinjan paksuus"
+
+#: fdmprinter.json
+msgctxt "wall_line_width description"
+msgid "Width of a single shell line. Each  line of the shell will be printed with this width in mind."
+msgstr "Yhden kuorilinjan leveys. Jokainen kuoren linja tulostetaan tällä leveydellä."
+
+#: fdmprinter.json
+msgctxt "wall_line_width_0 label"
+msgid "First Wall Line Width"
+msgstr "Ensimmäisen seinämälinjan leveys"
+
+#: fdmprinter.json
+msgctxt "wall_line_width_0 description"
+msgid ""
+"Width of the outermost shell line. By printing a thinner outermost wall line you can print higher details with a larger "
+"nozzle."
+msgstr ""
+"Uloimman kuorilinjan leveys. Tulostamalla ohuemman uloimman seinämälinjan voit tulostaa tarkempia yksityiskohtia isommalla "
+"suuttimella."
+
+#: fdmprinter.json
+msgctxt "wall_line_width_x label"
+msgid "Other Walls Line Width"
+msgstr "Muiden seinämien linjaleveys"
+
+#: fdmprinter.json
+msgctxt "wall_line_width_x description"
+msgid "Width of a single shell line for all shell lines except the outermost one."
+msgstr "Yhden kuorilinjan leveys kaikilla kuorilinjoilla ulointa lukuun ottamatta."
+
+#: fdmprinter.json
+msgctxt "skirt_line_width label"
+msgid "Skirt line width"
+msgstr "Helmalinjan leveys"
+
+#: fdmprinter.json
+msgctxt "skirt_line_width description"
+msgid "Width of a single skirt line."
+msgstr "Yhden helmalinjan leveys."
+
+#: fdmprinter.json
+msgctxt "skin_line_width label"
+msgid "Top/bottom line width"
+msgstr "Ylä-/alalinjan leveys"
+
+#: fdmprinter.json
+msgctxt "skin_line_width description"
+msgid "Width of a single top/bottom printed line. Which are used to fill up the top/bottom areas of a print."
+msgstr "Yhden tulostetun ylä-/alalinjan leveys, jolla täytetään tulosteen ylä-/ala-alueet."
+
+#: fdmprinter.json
+msgctxt "infill_line_width label"
+msgid "Infill line width"
+msgstr "Täyttölinjan leveys"
+
+#: fdmprinter.json
+msgctxt "infill_line_width description"
+msgid "Width of the inner infill printed lines."
+msgstr "Tulostettujen sisempien täyttölinjojen leveys."
+
+#: fdmprinter.json
+msgctxt "support_line_width label"
+msgid "Support line width"
+msgstr "Tukilinjan leveys"
+
+#: fdmprinter.json
+msgctxt "support_line_width description"
+msgid "Width of the printed support structures lines."
+msgstr "Tulostettujen tukirakennelinjojen leveys."
+
+#: fdmprinter.json
+msgctxt "top_bottom_thickness label"
+msgid "Bottom/Top Thickness"
+msgstr "Ala-/yläosan paksuus"
+
+#: fdmprinter.json
+msgctxt "top_bottom_thickness description"
+msgid ""
+"This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer "
+"thickness and this value. Having this value a multiple of the layer thickness makes sense. And keep it near your wall "
+"thickness to make an evenly strong part."
+msgstr ""
+"Tällä säädetään ala- ja yläkerrosten paksuutta, umpinaisten kerrosten määrä lasketaan kerrospaksuudesta ja tästä arvosta. On "
+"järkevää pitää tämä arvo kerrospaksuuden kerrannaisena. Pitämällä se lähellä seinämäpaksuutta saadaan tasaisen vahva osa."
+
+#: fdmprinter.json
+msgctxt "top_thickness label"
+msgid "Top Thickness"
+msgstr "Yläosan paksuus"
+
+#: fdmprinter.json
+msgctxt "top_thickness description"
+msgid ""
+"This controls the thickness of the top layers. The number of solid layers printed is calculated from the layer thickness and "
+"this value. Having this value be a multiple of the layer thickness makes sense. And keep it nearto your wall thickness to "
+"make an evenly strong part."
+msgstr ""
+"Tällä säädetään yläkerrosten paksuutta. Tulostettavien umpinaisten kerrosten lukumäärä lasketaan kerrospaksuudesta ja tästä "
+"arvosta. On järkevää pitää tämä arvo kerrospaksuuden monikertana. Pitämällä se lähellä seinämäpaksuutta saadaan tasaisen "
+"vahva osa."
+
+#: fdmprinter.json
+msgctxt "top_layers label"
+msgid "Top Layers"
+msgstr "Yläkerrokset"
+
+#: fdmprinter.json
+msgctxt "top_layers description"
+msgid "This controls the amount of top layers."
+msgstr "Tällä säädetään yläkerrosten lukumäärä."
+
+#: fdmprinter.json
+msgctxt "bottom_thickness label"
+msgid "Bottom Thickness"
+msgstr "Alakerrosten paksuus"
+
+#: fdmprinter.json
+msgctxt "bottom_thickness description"
+msgid ""
+"This controls the thickness of the bottom layers. The number of solid layers printed is calculated from the layer thickness "
+"and this value. Having this value be a multiple of the layer thickness makes sense. And keep it near to your wall thickness "
+"to make an evenly strong part."
+msgstr ""
+"Tällä säädetään alakerrosten paksuus. Tulostettavien umpinaisten kerrosten lukumäärä lasketaan kerrospaksuudesta ja tästä "
+"arvosta. On järkevää pitää tämä arvo kerrospaksuuden monikertana. Pitämällä se lähellä seinämäpaksuutta saadaan tasaisen "
+"vahva osa."
+
+#: fdmprinter.json
+msgctxt "bottom_layers label"
+msgid "Bottom Layers"
+msgstr "Alakerrokset"
+
+#: fdmprinter.json
+msgctxt "bottom_layers description"
+msgid "This controls the amount of bottom layers."
+msgstr "Tällä säädetään alakerrosten lukumäärä."
+
+#: fdmprinter.json
+msgctxt "wall_overlap_avoid_enabled label"
+msgid "Avoid Overlapping Walls"
+msgstr "Vältä limittyviä seinämiä"
+
+#: fdmprinter.json
+msgctxt "wall_overlap_avoid_enabled description"
+msgid ""
+"Remove parts of a wall which share an overlap which would result in overextrusion in some places. These overlaps occur in "
+"thin pieces in a model and sharp corners."
+msgstr ""
+"Poista limittyvät seinämän osat, mikä voi johtaa ylipursotukseen paikka paikoin. Näitä limityksiä esiintyy mallin ohuissa "
+"kohdissa ja terävissä kulmissa."
+
+#: fdmprinter.json
+msgctxt "top_bottom_pattern label"
+msgid "Bottom/Top Pattern"
+msgstr "Ala-/yläkuvio"
+
+#: fdmprinter.json
+msgctxt "top_bottom_pattern description"
+msgid ""
+"Pattern of the top/bottom solid fill. This normally is done with lines to get the best possible finish, but in some cases a "
+"concentric fill gives a nicer end result."
+msgstr ""
+"Umpinaisen ylä-/alatäytön kuvio. Tämä tehdään yleensä linjoilla, jotta saadaan mahdollisimman hyvä viimeistely, mutta joskus "
+"samankeskinen täyttö antaa siistimmän lopputuloksen."
+
+#: fdmprinter.json
+msgctxt "skin_outline_count label"
+msgid "Skin Perimeter Line Count"
+msgstr "Pinnan reunalinjaluku"
+
+#: fdmprinter.json
+msgctxt "skin_outline_count description"
+msgid ""
+"Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve on roofs which would start in "
+"the middle of infill cells."
+msgstr ""
+"Linjojen lukumäärä pinta-alueilla. Käyttämällä yhtä tai kahta pinnan reunalinjaa voidaan parantaa \"katto-osia\", jotka "
+"alkaisivat täyttökennojen keskeltä."
+
+#: fdmprinter.json
+msgctxt "xy_offset label"
+msgid "Horizontal expansion"
+msgstr "Vaakalaajennus"
+
+#: fdmprinter.json
+msgctxt "xy_offset description"
+msgid ""
+"Amount of offset applied all polygons in each layer. Positive values can compensate for too big holes; negative values can "
+"compensate for too small holes."
+msgstr ""
+"Kaikkia monikulmioita kussakin kerroksessa koskeva siirtymien määrä. Positiivisilla arvoilla kompensoidaan liian suuria "
+"aukkoja ja negatiivisilla arvoilla kompensoidaan liian pieniä aukkoja."
+
+#: fdmprinter.json
+msgctxt "material label"
+msgid "Material"
+msgstr "Materiaali"
+
+#: fdmprinter.json
+msgctxt "material_print_temperature label"
+msgid "Printing Temperature"
+msgstr "Tulostuslämpötila"
+
+#: fdmprinter.json
+msgctxt "material_print_temperature description"
+msgid ""
+"The temperature used for printing. Set at 0 to pre-heat yourself. For PLA a value of 210C is usually used.\n"
+"For ABS a value of 230C or higher is required."
+msgstr ""
+"Tulostuksessa käytettävä lämpötila. Aseta nollaan, jos hoidat esilämmityksen itse. PLA:lla käytetään\n"
+"yleensä arvoa 210 C. ABS-muovilla tarvitaan arvo 230 C tai korkeampi."
+
+#: fdmprinter.json
+msgctxt "material_bed_temperature label"
+msgid "Bed Temperature"
+msgstr "Pöydän lämpötila"
+
+#: fdmprinter.json
+msgctxt "material_bed_temperature description"
+msgid "The temperature used for the heated printer bed. Set at 0 to pre-heat it yourself."
+msgstr "Lämmitettävässä tulostinpöydässä käytetty lämpötila. Aseta nollaan, jos hoidat esilämmityksen itse."
+
+#: fdmprinter.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Läpimitta"
+
+#: fdmprinter.json
+msgctxt "material_diameter description"
+msgid ""
+"The diameter of your filament needs to be measured as accurately as possible.\n"
+"If you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number "
+"generates more extrusion."
+msgstr ""
+"Tulostuslangan läpimitta on mitattava mahdollisimman tarkasti.\n"
+"Ellet voi mitata tätä arvoa, sinun on kalibroitava se, isompi luku tarkoittaa pienempää pursotusta, pienempi luku saa aikaan "
+"enemmän pursotusta."
+
+#: fdmprinter.json
+msgctxt "material_flow label"
+msgid "Flow"
+msgstr "Virtaus"
+
+#: fdmprinter.json
+msgctxt "material_flow description"
+msgid "Flow compensation: the amount of material extruded is multiplied by this value."
+msgstr "Virtauksen kompensointi: pursotettavan materiaalin määrä kerrotaan tällä arvolla."
+
+#: fdmprinter.json
+msgctxt "retraction_enable label"
+msgid "Enable Retraction"
+msgstr "Ota takaisinveto käyttöön"
+
+#: fdmprinter.json
+msgctxt "retraction_enable description"
+msgid ""
+"Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in "
+"the advanced tab."
+msgstr ""
+"Vetää tulostuslankaa takaisin, kun suutin liikkuu tulostamattoman alueen yli. Takaisinveto voidaan määritellä tarkemmin "
+"lisäasetusten välilehdellä. "
+
+#: fdmprinter.json
+msgctxt "retraction_speed label"
+msgid "Retraction Speed"
+msgstr "Takaisinvetonopeus"
+
+#: fdmprinter.json
+msgctxt "retraction_speed description"
+msgid ""
+"The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can "
+"lead to filament grinding."
+msgstr ""
+"Nopeus, jolla tulostuslankaa vedetään takaisin. Suurempi takaisinvetonopeus toimii paremmin, mutta hyvin suuri "
+"takaisinvetonopeus voi johtaa tulostuslangan hiertymiseen."
+
+#: fdmprinter.json
+msgctxt "retraction_retract_speed label"
+msgid "Retraction Retract Speed"
+msgstr "Takaisinvedon vetonopeus"
+
+#: fdmprinter.json
+msgctxt "retraction_retract_speed description"
+msgid ""
+"The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can "
+"lead to filament grinding."
+msgstr ""
+"Nopeus, jolla tulostuslankaa vedetään takaisin. Suurempi takaisinvetonopeus toimii paremmin, mutta hyvin suuri "
+"takaisinvetonopeus voi johtaa tulostuslangan hiertymiseen."
+
+#: fdmprinter.json
+msgctxt "retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr "Takaisinvedon paluunopeus"
+
+#: fdmprinter.json
+msgctxt "retraction_prime_speed description"
+msgid "The speed at which the filament is pushed back after retraction."
+msgstr "Nopeus, jolla tulostuslanka työnnetään takaisin takaisinvedon jälkeen."
+
+#: fdmprinter.json
+msgctxt "retraction_amount label"
+msgid "Retraction Distance"
+msgstr "Takaisinvetoetäisyys"
+
+#: fdmprinter.json
+msgctxt "retraction_amount description"
+msgid ""
+"The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm "
+"filament in Bowden-tube fed printers."
+msgstr ""
+"Takaisinvedon määrä. Aseta 0, jolloin takaisinvetoa ei tapahdu lainkaan. 4,5 mm:n arvo näyttää antavan hyviä tuloksia 3 mm:n "
+"tulostuslangalla Bowden-putkisyöttöisissä tulostimissa."
+
+#: fdmprinter.json
+msgctxt "retraction_min_travel label"
+msgid "Retraction Minimum Travel"
+msgstr "Takaisinvedon minimiliike"
+
+#: fdmprinter.json
+msgctxt "retraction_min_travel description"
+msgid ""
+"The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of "
+"retractions in a small area."
+msgstr ""
+"Tarvittavan liikematkan minimietäisyys, jotta takaisinveto yleensäkin tapahtuu. Tällä varmistetaan, ettei takaisinvetoja "
+"tapahdu runsaasti pienellä alueella."
+
+#: fdmprinter.json
+msgctxt "retraction_combing label"
+msgid "Enable Combing"
+msgstr "Ota pyyhkäisy käyttöön"
+
+# Target differs from the source here to convey the idea better.
+#: fdmprinter.json
+msgctxt "retraction_combing description"
+msgid ""
+"Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to "
+"another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end "
+"point and it will always retract."
+msgstr ""
+"Pyyhkäisy (combing) välttää tulosteessa olevia aukkoja mahdollisuuksien mukaan siiryttäessä tulosteen yhdestä paikasta "
+"toiseen käyttämättä takaisinvetoa. Jos pyyhkäisy on pois käytöstä, tulostuspää liikkuu suoraan alkupisteestä päätepisteeseen "
+"ja takaisinveto tapahtuu aina."
+
+#: fdmprinter.json
+msgctxt "retraction_minimal_extrusion label"
+msgid "Minimal Extrusion Before Retraction"
+msgstr "Minimipursotus ennen takaisinvetoa"
+
+#: fdmprinter.json
+msgctxt "retraction_minimal_extrusion description"
+msgid ""
+"The minimum amount of extrusion that needs to happen between retractions.  If a retraction should happen before this minimum "
+"is reached, it will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the "
+"filament and cause grinding issues."
+msgstr ""
+"Pursotuksen tarvittava minimimäärä ennen takaisinvetoja. Jos takaisinveto tapahtuisi ennen tämän minimimäärän saavuttamista, "
+"se jää pois. Tällä vältetään toistuvat takaisinvedot samalla tulostuslangan osalla, sillä tällöin lanka voi litistyä ja "
+"aiheuttaa hiertymisongelmia."
+
+#: fdmprinter.json
+msgctxt "retraction_hop label"
+msgid "Z Hop when Retracting"
+msgstr "Z-hyppy takaisinvedossa"
+
+#: fdmprinter.json
+msgctxt "retraction_hop description"
+msgid ""
+"Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This "
+"feature has a lot of positive effect on delta towers."
+msgstr ""
+"Aina kun takaisinveto tehdään, tulostuspäätä nostetaan tällä määrällä sen liikkuessa tulosteen yli. Arvo 0,075 toimii hyvin. "
+"Tällä toiminnolla on paljon positiivisia vaikutuksia deltatower-tyyppisiin tulostimiin."
+
+#: fdmprinter.json
+msgctxt "speed label"
+msgid "Speed"
+msgstr "Nopeus"
+
+#: fdmprinter.json
+msgctxt "speed_print label"
+msgid "Print Speed"
+msgstr "Tulostusnopeus"
+
+#: fdmprinter.json
+msgctxt "speed_print description"
+msgid ""
+"The speed at which printing happens. A well-adjusted Ultimaker can reach 150mm/s, but for good quality prints you will want "
+"to print slower. Printing speed depends on a lot of factors, so you will need to experiment with optimal settings for this."
+msgstr ""
+"Nopeus, jolla tulostus tapahtuu. Hyvin säädetty Ultimaker voi päästä 150 mm/s nopeuteen, mutta hyvälaatuisia tulosteita "
+"varten on syytä tulostaa hitaammin. Tulostusnopeus riippuu useista tekijöistä, joten sinun on tehtävä kokeiluja "
+"optimiasetuksilla."
+
+#: fdmprinter.json
+msgctxt "speed_infill label"
+msgid "Infill Speed"
+msgstr "Täyttönopeus"
+
+#: fdmprinter.json
+msgctxt "speed_infill description"
+msgid ""
+"The speed at which infill parts are printed. Printing the infill faster can greatly reduce printing time, but this can "
+"negatively affect print quality."
+msgstr ""
+"Nopeus, jolla täyttöosat tulostetaan. Täytön nopeampi tulostus voi lyhentää tulostusaikaa kovasti, mutta sillä on "
+"negatiivinen vaikutus tulostuslaatuun."
+
+#: fdmprinter.json
+msgctxt "speed_wall label"
+msgid "Shell Speed"
+msgstr "Kuoren nopeus"
+
+#: fdmprinter.json
+msgctxt "speed_wall description"
+msgid "The speed at which shell is printed. Printing the outer shell at a lower speed improves the final skin quality."
+msgstr "Nopeus, jolla kuori tulostetaan. Ulkokuoren tulostus hitaammalla nopeudella parantaa lopullisen pinnan laatua."
+
+#: fdmprinter.json
+msgctxt "speed_wall_0 label"
+msgid "Outer Shell Speed"
+msgstr "Ulkokuoren nopeus"
+
+#: fdmprinter.json
+msgctxt "speed_wall_0 description"
+msgid ""
+"The speed at which outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. "
+"However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative "
+"way."
+msgstr ""
+"Nopeus, jolla ulkokuori tulostetaan. Ulkokuoren tulostus hitaammalla nopeudella parantaa lopullisen pinnan laatua. Jos "
+"sisäkuoren nopeuden ja ulkokuoren nopeuden välillä on suuri ero, se vaikuttaa negatiivisesti laatuun."
+
+#: fdmprinter.json
+msgctxt "speed_wall_x label"
+msgid "Inner Shell Speed"
+msgstr "Sisäkuoren nopeus"
+
+#: fdmprinter.json
+msgctxt "speed_wall_x description"
+msgid ""
+"The speed at which  all inner shells are printed. Printing the inner shell fasster than the outer shell will reduce printing "
+"time. It is good to set this in between the outer shell speed and the infill speed."
+msgstr ""
+"Nopeus, jolla kaikki sisäkuoret tulostetaan. Sisäkuoren tulostus ulkokuorta nopeammin lyhentää tulostusaikaa. Tämä arvo "
+"kannattaa asettaa ulkokuoren nopeuden ja täyttönopeuden väliin."
+
+#: fdmprinter.json
+msgctxt "speed_topbottom label"
+msgid "Top/Bottom Speed"
+msgstr "Ylä-/alaosan nopeus"
+
+#: fdmprinter.json
+msgctxt "speed_topbottom description"
+msgid ""
+"Speed at which top/bottom parts are printed. Printing the top/bottom faster can greatly reduce printing time, but this can "
+"negatively affect print quality."
+msgstr ""
+"Nopeus, jolla ylä- tai alaosat tulostetaan. Ylä- tai alaosan tulostus nopeammin voi lyhentää tulostusaikaa kovasti, mutta "
+"sillä on negatiivinen vaikutus tulostuslaatuun."
+
+#: fdmprinter.json
+msgctxt "speed_support label"
+msgid "Support Speed"
+msgstr "Tukirakenteen nopeus"
+
+#: fdmprinter.json
+msgctxt "speed_support description"
+msgid ""
+"The speed at which exterior support is printed. Printing exterior supports at higher speeds can greatly improve printing "
+"time. And the surface quality of exterior support is usually not important, so higher speeds can be used."
+msgstr ""
+"Nopeus, jolla ulkopuolinen tuki tulostetaan. Ulkopuolisten tukien tulostus suurilla nopeuksilla voi parantaa tulostusaikaa "
+"kovasti. Lisäksi ulkopuolisen tuen pinnan laatu ei yleensä ole tärkeä, joten suuria nopeuksia voidaan käyttää."
+
+#: fdmprinter.json
+msgctxt "speed_travel label"
+msgid "Travel Speed"
+msgstr "Liikenopeus"
+
+#: fdmprinter.json
+msgctxt "speed_travel description"
+msgid ""
+"The speed at which travel moves are done. A well-built Ultimaker can reach speeds of 250mm/s. But some machines might have "
+"misaligned layers then."
+msgstr ""
+"Nopeus, jolla liikkeet tehdään. Hyvin rakennettu Ultimaker voi päästä 250 mm/s nopeuksiin. Joillakin laitteilla saattaa "
+"silloin tulla epätasaisia kerroksia."
+
+#: fdmprinter.json
+msgctxt "speed_layer_0 label"
+msgid "Bottom Layer Speed"
+msgstr "Pohjakerroksen nopeus"
+
+#: fdmprinter.json
+msgctxt "speed_layer_0 description"
+msgid "The print speed for the bottom layer: You want to print the first layer slower so it sticks to the printer bed better."
+msgstr ""
+"Pohjakerroksen tulostusnopeus. Ensimmäinen kerros on syytä tulostaa hitaammin, jotta se tarttuu tulostimen pöytään paremmin."
+
+#: fdmprinter.json
+msgctxt "skirt_speed label"
+msgid "Skirt Speed"
+msgstr "Helman nopeus"
+
+#: fdmprinter.json
+msgctxt "skirt_speed description"
+msgid ""
+"The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want "
+"to print the skirt at a different speed."
+msgstr ""
+"Nopeus, jolla helma ja reunus tulostetaan. Yleensä se tehdään alkukerroksen nopeudella. Joskus helma halutaan kuitenkin "
+"tulostaa eri nopeudella."
+
+#: fdmprinter.json
+msgctxt "speed_slowdown_layers label"
+msgid "Amount of Slower Layers"
+msgstr "Hitaampien kerrosten määrä"
+
+#: fdmprinter.json
+msgctxt "speed_slowdown_layers description"
+msgid ""
+"The first few layers are printed slower then the rest of the object, this to get better adhesion to the printer bed and "
+"improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is "
+"generally right for most materials and printers."
+msgstr ""
+"Muutama ensimmäinen kerros tulostetaan hitaammin kuin loput kohteesta, jolloin saadaan parempi tarttuvuus tulostinpöytään ja "
+"parannetaan tulosten yleistä onnistumista. Näiden kerrosten jälkeen nopeutta lisätään asteittain. Nopeuden nosto 4 kerroksen "
+"aikana sopii yleensä useimmille materiaalieille ja tulostimille."
+
+#: fdmprinter.json
+msgctxt "infill label"
+msgid "Infill"
+msgstr "Täyttö"
+
+#: fdmprinter.json
+msgctxt "fill_sparse_density label"
+msgid "Infill Density"
+msgstr "Täytön tiheys"
+
+#: fdmprinter.json
+msgctxt "fill_sparse_density description"
+msgid ""
+"This controls how densely filled the insides of your print will be. For a solid part use 100%, for an hollow part use 0%. A "
+"value around 20% is usually enough. This won't affect the outside of the print and only adjusts how strong the part becomes."
+msgstr ""
+"Tällä ohjataan kuinka tiheästi tulosteen sisäosat täytetään. Umpinaisella osalla käytetään arvoa 100 %, ontolla osalla 0 %. "
+"Noin 20 % on yleensä riittävä. Tämä ei vaikuta tulosteen ulkopuoleen vaan ainoastaan osan vahvuuteen."
+
+#: fdmprinter.json
+msgctxt "fill_pattern label"
+msgid "Infill Pattern"
+msgstr "Täyttökuvio"
+
+#: fdmprinter.json
+msgctxt "fill_pattern description"
+msgid ""
+"Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The "
+"line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of "
+"infill."
+msgstr ""
+"Curan oletuksena on vaihtelu ristikko- ja linjatäytön välillä. Kun tämä asetus on näkyvissä, voit ohjata sitä itse. "
+"Linjatäyttö vaihtaa suuntaa vuorottaisilla täyttökerroksilla, kun taas ristikkotäyttö tulostaa täyden ristikkokuvion täytön "
+"jokaiseen kerrokseen."
+
+#: fdmprinter.json
+msgctxt "infill_line_distance label"
+msgid "Line distance"
+msgstr "Linjan etäisyys"
+
+#: fdmprinter.json
+msgctxt "infill_line_distance description"
+msgid "Distance between the printed infill lines."
+msgstr "Etäisyys tulostettujen täyttölinjojen välillä."
+
+#: fdmprinter.json
+msgctxt "fill_overlap label"
+msgid "Infill Overlap"
+msgstr "Täytön limitys"
+
+#: fdmprinter.json
+msgctxt "fill_overlap description"
+msgid ""
+"The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Limityksen määrä täytön ja seinämien välillä. Pienellä limityksellä seinämät liittyvät tukevasti täyttöön."
+
+#: fdmprinter.json
+msgctxt "fill_sparse_thickness label"
+msgid "Infill Thickness"
+msgstr "Täytön paksuus"
+
+#: fdmprinter.json
+msgctxt "fill_sparse_thickness description"
+msgid ""
+"The thickness of the sparse infill. This is rounded to a multiple of the layerheight and used to print the sparse-infill in "
+"fewer, thicker layers to save printing time."
+msgstr ""
+"Harvan täytön paksuus. Tämä pyöristetään kerroskorkeuden monikertaan ja sillä täytetään harvaan vähemmillä, paksummilla "
+"kerroksilla tulostusajan säästämiseksi."
+
+#: fdmprinter.json
+msgctxt "fill_sparse_combine label"
+msgid "Infill Layers"
+msgstr "Täyttökerrokset"
+
+#: fdmprinter.json
+msgctxt "fill_sparse_combine description"
+msgid "Amount of layers that are combined together to form sparse infill."
+msgstr "Kerrosten määrä, jotka yhdistetään yhteen harvan täytön muodostamiseksi."
+
+#: fdmprinter.json
+msgctxt "cooling label"
+msgid "Cooling"
+msgstr "Jäähdytys"
+
+#: fdmprinter.json
+msgctxt "cool_fan_enabled label"
+msgid "Enable Cooling Fan"
+msgstr "Ota jäähdytystuuletin käyttöön"
+
+#: fdmprinter.json
+msgctxt "cool_fan_enabled description"
+msgid ""
+"Enable the cooling fan during the print. The extra cooling from the cooling fan helps parts with small cross sections that "
+"print each layer quickly."
+msgstr ""
+"Jäähdytystuuletin otetaan käyttöön tulostuksen ajaksi. Jäähdytystuulettimen lisäjäähdytys helpottaa poikkileikkaukseltaan "
+"pienten osien tulostusta, kun kukin kerros tulostuu nopeasti."
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed label"
+msgid "Fan Speed"
+msgstr "Tuulettimen nopeus"
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed description"
+msgid "Fan speed used for the print cooling fan on the printer head."
+msgstr "Tuulettimen nopeus, jolla tulostuspään jäähdytystuuletin toimii."
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_min label"
+msgid "Minimum Fan Speed"
+msgstr "Tuulettimen miniminopeus"
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_min description"
+msgid ""
+"Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts "
+"between minimum and maximum fan speed."
+msgstr ""
+"Yleensä tuuletin toimii miniminopeudella. Jos kerros hidastuu minimikerrosajasta johtuen, tuulettimen nopeus säätyy "
+"tuulettimen minimi- ja maksiminopeuksien välillä."
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_max label"
+msgid "Maximum Fan Speed"
+msgstr "Tuulettimen maksiminopeus"
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_max description"
+msgid ""
+"Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts "
+"between minimum and maximum fan speed."
+msgstr ""
+"Yleensä tuuletin toimii miniminopeudella. Jos kerros hidastuu minimikerrosajan takia, tuulettimen nopeus säätyy tuulettimen "
+"minimi- ja maksiminopeuksien välillä."
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_at_height label"
+msgid "Fan Full on at Height"
+msgstr "Tuuletin täysillä korkeusarvolla"
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_at_height description"
+msgid ""
+"The height at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan "
+"off for the first layer."
+msgstr ""
+"Korkeus, jolla tuuletin toimii täysillä. Tätä alemmilla kerroksilla tuulettimen nopeutta muutetaan lineaarisesti siten, että "
+"tuuletin on sammuksissa ensimmäisen kerroksen kohdalla."
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_layer label"
+msgid "Fan Full on at Layer"
+msgstr "Tuuletin täysillä kerroksessa"
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_layer description"
+msgid ""
+"The layer number at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with "
+"the fan off for the first layer."
+msgstr ""
+"Kerroksen numero, jossa tuuletin toimii täysillä. Tätä alemmilla kerroksilla tuulettimen nopeutta muutetaan lineaarisesti "
+"siten, että tuuletin on sammuksissa ensimmäisen kerroksen kohdalla."
+
+#: fdmprinter.json
+msgctxt "cool_min_layer_time label"
+msgid "Minimal Layer Time"
+msgstr "Kerroksen minimiaika"
+
+#: fdmprinter.json
+msgctxt "cool_min_layer_time description"
+msgid ""
+"The minimum time spent in a layer: Gives the layer time to cool down before the next one is put on top. If a layer would "
+"print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer."
+msgstr ""
+"Kerrokseen käytetty minimiaika. Antaa kerrokselle aikaa jäähtyä ennen kuin seuraava tulostetaan päälle. Jos kerros "
+"tulostuisi lyhyemmässä ajassa, silloin tulostin hidastaa sen varmistamiseksi, että se käyttää vähintään näin monta sekuntia "
+"kerroksen tulostamiseen."
+
+#: fdmprinter.json
+msgctxt "cool_min_layer_time_fan_speed_max label"
+msgid "Minimal Layer Time Full Fan Speed"
+msgstr "Kerroksen minimiaika tuulettimen täydellä nopeudella"
+
+# Source text is far too complicated for any normal person to understand! How does fan speed increase from maximum to minimum?
+#: fdmprinter.json
+msgctxt "cool_min_layer_time_fan_speed_max description"
+msgid ""
+"The minimum time spent in a layer which will cause the fan to be at minmum speed. The fan speed increases linearly from "
+"maximal fan speed for layers taking minimal layer time to minimal fan speed for layers taking the time specified here."
+msgstr ""
+"Kerrokseen käytetty minimiaika, jolloin tuuletin käy miniminopeudella. Tuulettimen nopeus muuttuu lineaarisesti kerroksiin "
+"käytetyn minimiajan maksiminopeudesta tässä määritellyn kerroksiin käytetyn ajan miniminopeuteen. "
+
+#: fdmprinter.json
+msgctxt "cool_min_speed label"
+msgid "Minimum Speed"
+msgstr "Miniminopeus"
+
+#: fdmprinter.json
+msgctxt "cool_min_speed description"
+msgid ""
+"The minimum layer time can cause the print to slow down so much it starts to droop. The minimum feedrate protects against "
+"this. Even if a print gets slowed down it will never be slower than this minimum speed."
+msgstr ""
+"Kerroksen minimiaika voi saada tulostuksen hidastumaan niin paljon, että se alkaa vuotaa hiljalleen. Syötön miniminopeus "
+"estää tämän. Vaikka tulostus hidastuu, se ei milloinkaan tule tätä miniminopeutta hitaammaksi."
+
+#: fdmprinter.json
+msgctxt "cool_lift_head label"
+msgid "Lift Head"
+msgstr "Pään nosto"
+
+#: fdmprinter.json
+msgctxt "cool_lift_head description"
+msgid ""
+"Lift the head away from the print if the minimum speed is hit because of cool slowdown, and wait the extra time away from "
+"the print surface until the minimum layer time is used up."
+msgstr ""
+"Nostaa tulostuspään irti tulosteesta, jos miniminopeus saavutetaan hitaan jäähtymisen takia, ja odottaa ylimääräisen ajan "
+"irti tulosteen pinnasta, kunnes kerroksen minimiaika on kulunut."
+
+#: fdmprinter.json
+msgctxt "support label"
+msgid "Support"
+msgstr "Tuki"
+
+#: fdmprinter.json
+msgctxt "support_enable label"
+msgid "Enable Support"
+msgstr "Ota tuki käyttöön"
+
+#: fdmprinter.json
+msgctxt "support_enable description"
+msgid ""
+"Enable exterior support structures. This will build up supporting structures below the model to prevent the model from "
+"sagging or printing in mid air."
+msgstr ""
+"Ottaa ulkopuoliset tukirakenteet käyttöön. Siinä mallin alle rakennetaan tukirakenteita estämään mallin riippuminen tai "
+"suoraan ilmaan tulostaminen."
+
+#: fdmprinter.json
+msgctxt "support_type label"
+msgid "Placement"
+msgstr "Sijoituspaikka"
+
+#: fdmprinter.json
+msgctxt "support_type description"
+msgid ""
+"Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, "
+"which could otherwise cause scarring."
+msgstr ""
+"Paikka mihin tukirakenteita asetetaan. Sijoituspaikka voi olla rajoitettu siten, että tukirakenteet eivät nojaa malliin, "
+"mikä voisi muutoin aiheuttaa arpeutumista."
+
+#: fdmprinter.json
+msgctxt "support_angle label"
+msgid "Overhang Angle"
+msgstr "Ulokkeen kulma"
+
+#: fdmprinter.json
+msgctxt "support_angle description"
+msgid ""
+"The maximum angle of overhangs for which support will be added. With 0 degrees being horizontal, and 90 degrees being "
+"vertical."
+msgstr "Maksimikulma ulokkeille, joihin tuki lisätään. 0 astetta on vaakasuora ja 90 astetta on pystysuora."
+
+#: fdmprinter.json
+msgctxt "support_xy_distance label"
+msgid "X/Y Distance"
+msgstr "X/Y-etäisyys"
+
+#: fdmprinter.json
+msgctxt "support_xy_distance description"
+msgid ""
+"Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the "
+"print so the support does not stick to the surface."
+msgstr ""
+"Tukirakenteen etäisyys tulosteesta X- ja Y-suunnissa. 0,7 mm on yleensä hyvä etäisyys tulosteesta, jottei tuki tartu pintaan."
+
+#: fdmprinter.json
+msgctxt "support_z_distance label"
+msgid "Z Distance"
+msgstr "Z-etäisyys"
+
+#: fdmprinter.json
+msgctxt "support_z_distance description"
+msgid ""
+"Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes "
+"the print a bit uglier. 0.15mm allows for easier separation of the support structure."
+msgstr ""
+"Etäisyys tuen ylä- tai alaosasta tulosteeseen. Tässä pieni rako helpottaa tuen poistamista, mutta rumentaa hieman "
+"tulostetta. 0,15 mm helpottaa tukirakenteen irrottamista."
+
+#: fdmprinter.json
+msgctxt "support_top_distance label"
+msgid "Top Distance"
+msgstr "Yläetäisyys"
+
+#: fdmprinter.json
+msgctxt "support_top_distance description"
+msgid "Distance from the top of the support to the print."
+msgstr "Etäisyys tuen yläosasta tulosteeseen."
+
+#: fdmprinter.json
+msgctxt "support_bottom_distance label"
+msgid "Bottom Distance"
+msgstr "Alaetäisyys"
+
+#: fdmprinter.json
+msgctxt "support_bottom_distance description"
+msgid "Distance from the print to the bottom of the support."
+msgstr "Etäisyys tulosteesta tuen alaosaan."
+
+#: fdmprinter.json
+msgctxt "support_bottom_stair_step_height label"
+msgid "Stair Step Height"
+msgstr "Porrasnousun korkeus"
+
+#: fdmprinter.json
+msgctxt "support_bottom_stair_step_height description"
+msgid ""
+"The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be "
+"hard to remove from the top of the model."
+msgstr "Malliin nojaavan porrasmaisen tuen nousukorkeus. Pienet portaat voivat vaikeuttaa tuen poistamista mallin yläosasta."
+
+#: fdmprinter.json
+msgctxt "support_join_distance label"
+msgid "Join Distance"
+msgstr "Liitosetäisyys"
+
+#: fdmprinter.json
+msgctxt "support_join_distance description"
+msgid ""
+"The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block."
+msgstr "Tukilohkojen välinen maksimietäisyys X- ja Y-suunnissa siten, että lohkot sulautuvat yhdeksi lohkoksi."
+
+#: fdmprinter.json
+msgctxt "support_area_smoothing label"
+msgid "Area Smoothing"
+msgstr "Alueen tasoitus"
+
+#: fdmprinter.json
+msgctxt "support_area_smoothing description"
+msgid ""
+"Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the "
+"join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break "
+"with the constraints, except it might change the overhang."
+msgstr ""
+"Tasoitettavan linjasegmentin maksimietäisyys X- ja Y-suunnissa. Hammaslinjat johtuvat liitosetäisyydestä ja tukisillasta, "
+"mikä saa laitteen resonoimaan. Tukialueiden tasoitus ei riko rajaehtoja, mutta uloke saattaa muuttua."
+
+#: fdmprinter.json
+msgctxt "support_use_towers label"
+msgid "Use towers."
+msgstr "Käytä torneja."
+
+#: fdmprinter.json
+msgctxt "support_use_towers description"
+msgid ""
+"Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. "
+"Near the overhang the towers' diameter decreases, forming a roof."
+msgstr ""
+"Käytä erikoistorneja pienten ulokealueiden tukemiseen. Näiden tornien läpimitta on niiden tukemaa aluetta suurempi. Ulokkeen "
+"lähellä tornien läpimitta pienenee muodostaen katon. "
+
+#: fdmprinter.json
+msgctxt "support_minimal_diameter label"
+msgid "Minimal Diameter"
+msgstr "Minimiläpimitta"
+
+#: fdmprinter.json
+msgctxt "support_minimal_diameter description"
+msgid "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. "
+msgstr "Pienen alueen maksimiläpimitta X- ja Y-suunnissa, mitä tuetaan erityisellä tukitornilla."
+
+#: fdmprinter.json
+msgctxt "support_tower_diameter label"
+msgid "Tower Diameter"
+msgstr "Tornin läpimitta"
+
+#: fdmprinter.json
+msgctxt "support_tower_diameter description"
+msgid "The diameter of a special tower. "
+msgstr "Erityistornin läpimitta."
+
+#: fdmprinter.json
+msgctxt "support_tower_roof_angle label"
+msgid "Tower Roof Angle"
+msgstr "Tornin kattokulma"
+
+#: fdmprinter.json
+msgctxt "support_tower_roof_angle description"
+msgid "The angle of the rooftop of a tower. Larger angles mean more pointy towers. "
+msgstr "Tornin katon kulma. Suurempi kulma tarkoittaa teräväpäisempiä torneja."
+
+#: fdmprinter.json
+msgctxt "support_pattern label"
+msgid "Pattern"
+msgstr "Kuvio"
+
+#: fdmprinter.json
+msgctxt "support_pattern description"
+msgid ""
+"Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be "
+"removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a "
+"structure in between the other two; it consists of lines which are connected in an accordeon fashion."
+msgstr ""
+"Cura tukee 3 selvää tukirakennetyyppiä. Ensimmäinen on ristikkomainen tukirakenne, joka on aika umpinainen ja voidaan "
+"poistaa yhtenä kappaleena. Toinen on linjamainen tukirakenne, joka on kuorittava linja linjalta. Kolmas on näiden kahden "
+"välillä oleva rakenne: siinä on linjoja, jotka liittyvät toisiinsa haitarimaisesti."
+
+#: fdmprinter.json
+msgctxt "support_connect_zigzags label"
+msgid "Connect ZigZags"
+msgstr "Yhdistä siksakit"
+
+#: fdmprinter.json
+msgctxt "support_connect_zigzags description"
+msgid "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags."
+msgstr "Yhdistää siksakit. Tekee niiden poistamisesta vaikeampaa, mutta estää irrotettavien siksakkien rihmoittumisen."
+
+#: fdmprinter.json
+msgctxt "support_fill_rate label"
+msgid "Fill Amount"
+msgstr "Täyttömäärä"
+
+#: fdmprinter.json
+msgctxt "support_fill_rate description"
+msgid "The amount of infill structure in the support, less infill gives weaker support which is easier to remove."
+msgstr "Täyttörakenteen määrä tuessa. Pienempi täyttö heikentää tukea, mikä on helpompi poistaa."
+
+#: fdmprinter.json
+msgctxt "support_line_distance label"
+msgid "Line distance"
+msgstr "Linjan etäisyys"
+
+#: fdmprinter.json
+msgctxt "support_line_distance description"
+msgid "Distance between the printed support lines."
+msgstr "Tulostettujen tukilinjojen välinen etäisyys."
+
+#: fdmprinter.json
+msgctxt "platform_adhesion label"
+msgid "Platform Adhesion"
+msgstr "Alustan tarttuvuus"
+
+#: fdmprinter.json
+msgctxt "adhesion_type label"
+msgid "Type"
+msgstr "Tyyppi"
+
+#: fdmprinter.json
+msgctxt "adhesion_type description"
+msgid ""
+"Different options that help in preventing corners from lifting due to warping. Brim adds a single-layer-thick flat area "
+"around your object which is easy to cut off afterwards, and it is the recommended option. Raft adds a thick grid below the "
+"object and a thin interface between this and your object. (Note that enabling the brim or raft disables the skirt.)"
+msgstr ""
+"Erilaisia vaihtoehtoja, joilla estetään nurkkien kohoaminen vääntymisen takia. Reunus eli lieri lisää yhden kerroksen "
+"paksuisen tasaisen alueen kohteen ympärille, mikä on helppo leikata pois jälkeen päin, ja se on suositeltu vaihtoehto. "
+"Pohjaristikko lisää paksun ristikon kohteen alle ja ohuen liittymän tämän ja kohteen väliin. (Huomaa, että reunuksen tai "
+"pohjaristikon käyttöönotto poistaa helman käytöstä.)"
+
+#: fdmprinter.json
+msgctxt "skirt_line_count label"
+msgid "Skirt Line Count"
+msgstr "Helman linjaluku"
+
+#: fdmprinter.json
+msgctxt "skirt_line_count description"
+msgid ""
+"The skirt is a line drawn around the first layer of the. This helps to prime your extruder, and to see if the object fits on "
+"your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for "
+"small objects."
+msgstr ""
+"Helma on kohteen ensimmäisen kerroksen ympärille vedetty linja. Se auttaa suulakkeen esitäytössä ja siinä nähdään mahtuuko "
+"kohde alustalle. Tämän arvon asettaminen nollaan poistaa helman käytöstä. Useat helmalinjat voivat auttaa suulakkeen "
+"esitäytössä pienten kohteiden osalta."
+
+#: fdmprinter.json
+msgctxt "skirt_gap label"
+msgid "Skirt Distance"
+msgstr "Helman etäisyys"
+
+#: fdmprinter.json
+msgctxt "skirt_gap description"
+msgid ""
+"The horizontal distance between the skirt and the first layer of the print.\n"
+"This is the minimum distance, multiple skirt lines will extend outwards from this distance."
+msgstr ""
+"Vaakasuora etäisyys helman ja tulosteen ensimmäisen kerroksen välillä.\n"
+"Tämä on minimietäisyys, useampia helmalinjoja käytettäessä ne ulottuvat tämän etäisyyden ulkopuolelle."
+
+#: fdmprinter.json
+msgctxt "skirt_minimal_length label"
+msgid "Skirt Minimum Length"
+msgstr "Helman minimipituus"
+
+#: fdmprinter.json
+msgctxt "skirt_minimal_length description"
+msgid ""
+"The minimum length of the skirt. If this minimum length is not reached, more skirt lines will be added to reach this minimum "
+"length. Note: If the line count is set to 0 this is ignored."
+msgstr ""
+"Helman minimipituus. Jos tätä minimipituutta ei saavuteta, lisätään useampia helmalinjoja, jotta tähän minimipituuteen "
+"päästään. Huomaa: Jos linjalukuna on 0, tämä jätetään huomiotta."
+
+#: fdmprinter.json
+msgctxt "brim_line_count label"
+msgid "Brim Line Count"
+msgstr "Reunuksen linjaluku"
+
+#: fdmprinter.json
+msgctxt "brim_line_count description"
+msgid ""
+"The amount of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective "
+"print area smaller."
+msgstr ""
+"Reunukseen eli lieriin käytettyjen linjojen määrä: linjojen lisääminen tarkoittaa suurempaa reunusta, mikä tarttuu paremmin, "
+"mutta tällöin myös tehokas tulostusalue pienenee."
+
+#: fdmprinter.json
+msgctxt "raft_margin label"
+msgid "Raft Extra Margin"
+msgstr "Pohjaristikon lisämarginaali"
+
+#: fdmprinter.json
+msgctxt "raft_margin description"
+msgid ""
+"If the raft is enabled, this is the extra raft area around the object which is also given a raft. Increasing this margin "
+"will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+"Jos pohjaristikko on otettu käyttöön, tämä on ylimääräinen ristikkoalue kohteen ympärillä, jolle myös annetaan "
+"pohjaristikko. Tämän marginaalin kasvattaminen vahvistaa pohjaristikkoa, jolloin käytetään enemmän materiaalia ja "
+"tulosteelle jää vähemmän tilaa. "
+
+#: fdmprinter.json
+msgctxt "raft_line_spacing label"
+msgid "Raft Line Spacing"
+msgstr "Pohjaristikon linjajako"
+
+#: fdmprinter.json
+msgctxt "raft_line_spacing description"
+msgid "The distance between the raft lines. The first 2 layers of the raft have this amount of spacing between the raft lines."
+msgstr ""
+"Pohjaristikon linjojen välinen etäisyys. Tämä jakoarvo on pohjaristikon linjojen välillä pohjaristikon kahdessa "
+"ensimmäisessä kerroksessa."
+
+#: fdmprinter.json
+msgctxt "raft_base_thickness label"
+msgid "Raft Base Thickness"
+msgstr "Pohjaristikon pohjan paksuus"
+
+#: fdmprinter.json
+msgctxt "raft_base_thickness description"
+msgid "Layer thickness of the first raft layer. This should be a thick layer which sticks firmly to the printer bed."
+msgstr "Pohjaristikon ensimmäisen kerroksen paksuus. Tämän tulisi olla ohut kerros, joka tarttuu lujasti tulostinpöytään."
+
+#: fdmprinter.json
+msgctxt "raft_base_linewidth label"
+msgid "Raft Base Line Width"
+msgstr "Pohjaristikon pohjalinjan leveys"
+
+#: fdmprinter.json
+msgctxt "raft_base_linewidth description"
+msgid "Width of the lines in the first raft layer. These should be thick lines to assist in bed adhesion."
+msgstr ""
+"Pohjaristikon ensimmäisen kerroksen linjojen leveys. Näiden tulisi olla paksuja linjoja auttamassa tarttuvuutta pöytään."
+
+#: fdmprinter.json
+msgctxt "raft_base_speed label"
+msgid "Raft Base Print Speed"
+msgstr "Pohjaristikon pohjan tulostusnopeus"
+
+#: fdmprinter.json
+msgctxt "raft_base_speed description"
+msgid ""
+"The speed at which the first raft layer is printed. This should be printed quite slowly, as the amount of material coming "
+"out of the nozzle is quite high."
+msgstr ""
+"Nopeus, jolla pohjaristikon ensimmäinen kerros tulostetaan. Tämä tulisi tulostaa aika hitaasti, sillä suuttimesta tulevan "
+"materiaalin määrä on melko suuri."
+
+#: fdmprinter.json
+msgctxt "raft_interface_thickness label"
+msgid "Raft Interface Thickness"
+msgstr "Pohjaristikon liitospaksuus"
+
+#: fdmprinter.json
+msgctxt "raft_interface_thickness description"
+msgid "Thickness of the 2nd raft layer."
+msgstr "Pohjaristikon toisen kerroksen paksuus."
+
+#: fdmprinter.json
+msgctxt "raft_interface_linewidth label"
+msgid "Raft Interface Line Width"
+msgstr "Pohjaristikon liitoslinjan leveys"
+
+#: fdmprinter.json
+msgctxt "raft_interface_linewidth description"
+msgid ""
+"Width of the 2nd raft layer lines. These lines should be thinner than the first layer, but strong enough to attach the "
+"object to."
+msgstr ""
+"Pohjaristikon toisen kerroksen linjojen leveys. Näiden linjojen tulisi olla ensimmäistä kerrosta ohuempia, mutta riittävän "
+"vahvoja kiinnittymään kohteeseen."
+
+#: fdmprinter.json
+msgctxt "raft_airgap label"
+msgid "Raft Air-gap"
+msgstr "Pohjaristikon ilmarako"
+
+#: fdmprinter.json
+msgctxt "raft_airgap description"
+msgid ""
+"The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to "
+"lower the bonding between the raft layer and the object. Makes it easier to peel off the raft."
+msgstr ""
+"Rako pohjaristikon viimeisen kerroksen ja kohteen ensimmäisen kerroksen välillä. Vain ensimmäistä kerrosta nostetaan tällä "
+"määrällä pohjaristikkokerroksen ja kohteen välisen sidoksen vähentämiseksi. Se helpottaa pohjaristikon irti kuorimista."
+
+#: fdmprinter.json
+msgctxt "raft_surface_layers label"
+msgid "Raft Surface Layers"
+msgstr "Pohjaristikon pintakerrokset"
+
+#: fdmprinter.json
+msgctxt "raft_surface_layers description"
+msgid ""
+"The number of surface layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers "
+"usually works fine."
+msgstr ""
+"Pohjaristikon toisen kerroksen päällä olevien pintakerrosten lukumäärä. Ne ovat täysin täytettyjä kerroksia, joilla kohde "
+"lepää. Yleensä 2 kerrosta toimii hyvin."
+
+#: fdmprinter.json
+msgctxt "blackmagic label"
+msgid "Fixes"
+msgstr "Korjaukset"
+
+#: fdmprinter.json
+msgctxt "magic_spiralize label"
+msgid "Spiralize the Outer Contour"
+msgstr "Kierukoi ulkopinta"
+
+#: fdmprinter.json
+msgctxt "magic_spiralize description"
+msgid ""
+"Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature "
+"turns a solid object into a single walled print with a solid bottom. This feature used to be called ‘Joris’ in older "
+"versions."
+msgstr ""
+"Kierukointi pehmentää ulkoreunan Z-liikettä. Se muodostaa tasaisen Z-lisän koko tulosteelle. Tämä toiminto muuttaa "
+"umpinaisen kohteen yksiseinäiseksi tulosteeksi, jossa on umpinainen pohja. Vanhemmissa versioissa tätä toimintoa kutsuttiin "
+"nimellä 'Joris'."
+
+#: fdmprinter.json
+msgctxt "wireframe_enabled label"
+msgid "Wire Printing"
+msgstr "Rautalankatulostus"
+
+#: fdmprinter.json
+msgctxt "wireframe_enabled description"
+msgid ""
+"Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally "
+"printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
+msgstr ""
+"Tulostetaan vain ulkopinta harvalla verkkorakenteella eli tulostetaan 'suoraan ilmaan'. Tämä toteutetaan tulostamalla mallin "
+"ääriviivat vaakasuoraan tietyin Z-välein, jotka yhdistetään ylöspäin menevillä linjoilla ja alaspäin menevillä "
+"diagonaalilinjoilla."
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed label"
+msgid "Wire Printing speed"
+msgstr "Rautalankatulostuksen nopeus"
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed description"
+msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
+msgstr "Nopeus, jolla suutin liikkuu materiaalia pursottaessaan. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_bottom label"
+msgid "Wire Bottom Printing Speed"
+msgstr "Rautalankapohjan tulostusnopeus"
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_bottom description"
+msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
+msgstr ""
+"Nopeus, jolla ensimmäinen kerros tulostetaan, joka on ainoa alustaa koskettava kerros. Koskee vain rautalankamallin "
+"tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_up label"
+msgid "Wire Upward Printing Speed"
+msgstr "Rautalangan tulostusnopeus ylöspäin"
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_up description"
+msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+msgstr "Nopeus, jolla tulostetaan linja ylöspäin 'suoraan ilmaan'. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_down label"
+msgid "Wire Downward Printing Speed"
+msgstr "Rautalangan tulostusnopeus alaspäin"
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_down description"
+msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
+msgstr "Nopeus, jolla tulostetaan linja diagonaalisesti alaspäin. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_flat label"
+msgid "Wire Horizontal Printing Speed"
+msgstr "Rautalangan tulostusnopeus vaakasuoraan"
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_flat description"
+msgid "Speed of printing the horizontal contours of the object. Only applies to Wire Printing."
+msgstr "Nopeus, jolla tulostetaan kohteen vaakasuorat ääriviivat. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_flow label"
+msgid "Wire Printing Flow"
+msgstr "Rautalankatulostuksen virtaus"
+
+#: fdmprinter.json
+msgctxt "wireframe_flow description"
+msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
+msgstr ""
+"Virtauksen kompensointi: pursotettavan materiaalin määrä kerrotaan tällä arvolla. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_connection label"
+msgid "Wire Connection Flow"
+msgstr "Rautalangan liitosvirtaus"
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_connection description"
+msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+msgstr "Virtauksen kompensointi ylös tai alas mentäessä. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_flat label"
+msgid "Wire Flat Flow"
+msgstr "Rautalangan virtaus tasaisella"
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_flat description"
+msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
+msgstr "Virtauksen kompensonti tulostettaessa tasalinjoja. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_top_delay label"
+msgid "Wire Printing Top Delay"
+msgstr "Rautalankatulostuksen viive ylhäällä"
+
+#: fdmprinter.json
+msgctxt "wireframe_top_delay description"
+msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
+msgstr "Viive nousuliikkeen jälkeen, jotta linja voi kovettua. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_bottom_delay label"
+msgid "Wire Printing Bottom Delay"
+msgstr "Rautalankatulostuksen viive alhaalla"
+
+#: fdmprinter.json
+msgctxt "wireframe_bottom_delay description"
+msgid "Delay time after a downward move. Only applies to Wire Printing. Only applies to Wire Printing."
+msgstr "Viive laskuliikkeen jälkeen. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_flat_delay label"
+msgid "Wire Printing Flat Delay"
+msgstr "Rautalankatulostuksen viive tasaisella"
+
+#: fdmprinter.json
+msgctxt "wireframe_flat_delay description"
+msgid ""
+"Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the "
+"connection points, while too large delay times cause sagging. Only applies to Wire Printing."
+msgstr ""
+"Viive kahden vaakasuoran segmentin välillä. Tämän viiveen käyttöönotto voi parantaa tarttuvuutta edellisiin kerroksiin "
+"liitoskohdissa, mutta liian suuret viiveet aiheuttavat riippumista. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_up_half_speed label"
+msgid "Wire Printing Ease Upward"
+msgstr "Rautalankatulostuksen hillintä ylöspäin"
+
+#: fdmprinter.json
+msgctxt "wireframe_up_half_speed description"
+msgid ""
+"Distance of an upward move which is extruded with half speed.\n"
+"This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to "
+"Wire Printing."
+msgstr ""
+"Puolella nopeudella pursotetun nousuliikkeen etäisyys.\n"
+"Se voi parantaa tarttuvuutta edellisiin kerroksiin kuumentamatta materiaalia noissa kerroksissa liikaa. Koskee vain "
+"rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_top_jump label"
+msgid "Wire Printing Knot Size"
+msgstr "Rautalankatulostuksen solmukoko"
+
+#: fdmprinter.json
+msgctxt "wireframe_top_jump description"
+msgid ""
+"Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect "
+"to it. Only applies to Wire Printing."
+msgstr ""
+"Tekee pienen solmun nousulinjan yläpäähän, jotta seuraava vaakasuora kerros pystyy paremmin liittymään siihen. Koskee vain "
+"rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_fall_down label"
+msgid "Wire Printing Fall Down"
+msgstr "Rautalankatulostuksen pudotus"
+
+#: fdmprinter.json
+msgctxt "wireframe_fall_down description"
+msgid ""
+"Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to "
+"Wire Printing."
+msgstr ""
+"Etäisyys, jonka materiaali putoaa ylöspäin menevän pursotuksen jälkeen. Tämä etäisyys kompensoidaan. Koskee vain "
+"rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_drag_along label"
+msgid "Wire Printing Drag along"
+msgstr "Rautalankatulostuksen laahaus"
+
+#: fdmprinter.json
+msgctxt "wireframe_drag_along description"
+msgid ""
+"Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This "
+"distance is compensated for. Only applies to Wire Printing."
+msgstr ""
+"Etäisyys, jonka ylöspäin pursotettu materiaali laahautuu diagonaalisen laskevan pursotuksen mukana. Tämä etäisyys "
+"kompensoidaan. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_strategy label"
+msgid "Wire Printing Strategy"
+msgstr "Rautalankatulostuksen strategia"
+
+#: fdmprinter.json
+msgctxt "wireframe_strategy description"
+msgid ""
+"Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in "
+"the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance "
+"of connecting to it and to let the line cool; however it may require slow printing speeds. Another strategy is to compensate "
+"for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
+msgstr ""
+"Strategia, jolla varmistetaan, että kaksi peräkkäistä kerrosta liittyy toisiinsa liitoskohdassa. Takaisinveto antaa "
+"nousulinjojen kovettua oikeaan asentoon, mutta voi aiheuttaa tulostuslangan hiertymistä. Solmu voidaan tehdä nousulinjan "
+"päähän, jolloin siihen liittyminen paranee ja linja jäähtyy, mutta se voi vaatia hitaampia tulostusnopeuksia. Toisena "
+"strategiana on kompensoida nousulinjan yläpään riippumista, mutta linjat eivät aina putoa ennustettavalla tavalla."
+
+#: fdmprinter.json
+msgctxt "wireframe_straight_before_down label"
+msgid "Wire Printing Straighten Downward Lines"
+msgstr "Rautalankatulostuksen laskulinjojen suoristus"
+
+#: fdmprinter.json
+msgctxt "wireframe_straight_before_down description"
+msgid ""
+"Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top "
+"most point of upward lines. Only applies to Wire Printing."
+msgstr ""
+"Prosenttiarvo diagonaalisesti laskevasta linjasta, jota peittää vaakalinjan kappale. Tämä voi estää nousulinjojen ylimmän "
+"kohdan riippumista. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_fall_down label"
+msgid "Wire Printing Roof Fall Down"
+msgstr "Rautalankatulostuksen katon pudotus"
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_fall_down description"
+msgid ""
+"The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated "
+"for. Only applies to Wire Printing."
+msgstr ""
+"Etäisyys, jolla 'suoraan ilmaan' tulostetut vaakasuorat kattolinjat putoavat tulostettaessa. Tämä etäisyys kompensoidaan. "
+"Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_drag_along label"
+msgid "Wire Printing Roof Drag Along"
+msgstr "Rautalankatulostuksen katon laahaus"
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_drag_along description"
+msgid ""
+"The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. "
+"This distance is compensated for. Only applies to Wire Printing."
+msgstr ""
+"Sisäpuolisen linjan päätyosan etäisyys ko. linjan laahautuessa mukana, kun mennään takaisin katon ulommalle ulkolinjalle. "
+"Tämä etäisyys kompensoidaan. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_outer_delay label"
+msgid "Wire Printing Roof Outer Delay"
+msgstr "Rautalankatulostuksen katon ulompi viive"
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_outer_delay description"
+msgid ""
+"Time spent at the outer perimeters of hole which is to become a roof. Larger times can ensure a better connection. Only "
+"applies to Wire Printing."
+msgstr ""
+"Katoksi tulevan aukon ulkoreunoihin käytetty aika. Pitemmät ajat varmistavat paremman liittymisen. Koskee vain "
+"rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_height label"
+msgid "Wire Printing Connection Height"
+msgstr "Rautalankatulostuksen liitoskorkeus"
+
+#: fdmprinter.json
+msgctxt "wireframe_height description"
+msgid "The height of the upward and diagonally downward lines between two horizontal parts. Only applies to Wire Printing."
+msgstr "Kahden vaakaosan välisen nousulinjan ja laskevan diagonaalilinjan korkeus. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_inset label"
+msgid "Wire Printing Roof Inset Distance"
+msgstr "Rautalankatulostuksen katon sisäetäisyys"
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_inset description"
+msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
+msgstr "Etäisyys, jolla tehdään liitos katon ulkolinjalta sisäänpäin. Koskee vain rautalankamallin tulostusta."
+
+#: fdmprinter.json
+msgctxt "wireframe_nozzle_clearance label"
+msgid "Wire Printing Nozzle Clearance"
+msgstr "Rautalankatulostuksen suutinväli"
+
+#: fdmprinter.json
+msgctxt "wireframe_nozzle_clearance description"
+msgid ""
+"Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a "
+"less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
+msgstr ""
+"Suuttimen ja vaakasuoraan laskevien linjojen välinen etäisyys. Suurempi väli aiheuttaa vähemmän jyrkän kulman "
+"diagonaalisesti laskeviin linjoihin, mikä puolestaan johtaa harvempiin yläliitoksiin seuraavan kerroksen kanssa. Koskee vain "
+"rautalankamallin tulostusta."
