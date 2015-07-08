@@ -1,19 +1,3 @@
-Skip to content
- This repository
-Explore
-Gist
-Blog
-Help
-aaronaskew aaronaskew
- 
-3  Unwatch 
-  Star 1
- Fork 245alephobjects/Cura
-forked from daid/Cura
- branch: SteamEngine  Cura / scripts / darwin / python.rb
-aaronaskewaaronaskew 14 hours ago Updated homebrew python formula to newest official and changed MACOSX…
-2 contributors Ilya Kulakovaaronaskew
-383 lines (324 sloc)  15.644 kb RawBlameHistory   
 require "formula"
 
 class Python < Formula
