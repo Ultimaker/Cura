@@ -46,6 +46,8 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         ## Add menu item to top menu of the application.
         self.setMenuName("Firmware")
         self.addMenuItem(i18n_catalog.i18n("Update Firmware"), self.updateAllFirmware)
+
+        Application.getInstance().applicationShuttingDown.connect(self._onApplicationShuttingDown)
     
     pyqtError = pyqtSignal(str, arguments = ["error"])
     processingProgress = pyqtSignal(float, arguments = ["amount"])
@@ -292,3 +294,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
         else:
             base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
         return base_list
+
+    def _onApplicationShuttingDown(self):
+        for connection in self._printer_connections:
+            connection.close()
