@@ -172,7 +172,7 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
     
     ##  Callback for bed temperature change    
     def onBedTemperature(self, serial_port,temperature):
-        self._bed_temperature = temperature
+        self._bed_temp = temperature
         self.pyqtBedTemperature.emit(temperature)
     
     ##  Callback for error
