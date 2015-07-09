@@ -282,17 +282,17 @@ class USBPrinterManager(QObject, SignalEmitter, Extension):
                 i = 0
                 while True:
                     values = winreg.EnumValue(key, i)
-                    if not base_list or "USBSER" in values[0]:
+                    if not only_list_usb or "USBSER" in values[0]:
                         base_list += [values[1]]
                     i += 1
             except Exception as e:
                 pass
-        
-        if base_list:
-            base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.usb*")
-            base_list = filter(lambda s: "Bluetooth" not in s, base_list) # Filter because mac sometimes puts them in the list
         else:
-            base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
+            if only_list_usb:
+                base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.usb*")
+                base_list = filter(lambda s: "Bluetooth" not in s, base_list) # Filter because mac sometimes puts them in the list
+            else:
+                base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
         return base_list
 
     def _onApplicationShuttingDown(self):
