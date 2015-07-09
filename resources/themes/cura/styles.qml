@@ -368,7 +368,7 @@ QtObject {
         }
     }
 
-        property Component layerViewSlider: Component {
+    property Component layerViewSlider: Component {
         SliderStyle {
             groove: Rectangle {
                 id: layerSliderGroove
@@ -389,19 +389,23 @@ QtObject {
                 }
                 Label {
                     id: maxValueLabel
+                    visible: UM.LayerView.getLayerActivity ? true : false
                     text: control.maximumValue + 1
+                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
                     transformOrigin: Item.BottomLeft
                     rotation: 90
                     x: parent.x + parent.width - maxValueLabel.height
-                    y: parent.y
+                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
                 }
                 Label {
                     id: minValueLabel
+                    visible: UM.LayerView.getLayerActivity ? true : false
                     text: '1'
+                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
                     transformOrigin: Item.BottomLeft
                     rotation: 90
                     x: parent.x
-                    y: parent.y
+                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
                 }
             }
             handle: Rectangle {
@@ -412,10 +416,12 @@ QtObject {
                 Behavior on color { ColorAnimation { duration: 50; } }
                 Label {
                     id: valueLabel
+                    visible: UM.LayerView.getLayerActivity ? true : false
                     text: control.value + 1
                     anchors.bottom: layerSliderControl.bottom
                     anchors.right: layerSliderControl.left
                     anchors.bottomMargin: parent.width + UM.Theme.sizes.default_margin.width
+                    font: UM.Theme.fonts.default
                     transformOrigin: Item.BottomRight
                     rotation: 90
                     Rectangle {

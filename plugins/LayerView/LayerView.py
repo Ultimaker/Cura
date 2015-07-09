@@ -146,9 +146,11 @@ class LayerView(View):
                 self._current_layer_num = self._max_layers
 
                 # This makes sure we update the current layer
-                self.setLayer(int(self._max_layers * (self._current_layer_num / self._old_max_layers)))
+                self.setLayer(int(self._max_layers))
+                self.currentLayerNumChanged.emit()
 
     maxLayersChanged = Signal()
+    currentLayerNumChanged = Signal()
     
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues. 

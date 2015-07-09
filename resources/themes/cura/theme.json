@@ -155,6 +155,10 @@
 
         "slider_groove": [0.5, 0.5],
         "slider_handle": [1.5, 1.5],
+        "slider_layerview_background": [6.0, 0.0],
+        "slider_layerview_smalltext_margin": [0.3, 0.00],
+        "slider_layerview_background_extension": [0.0, 2.2],
+        "slider_layerview_margin": [3.0, 3.0],
 
         "checkbox": [1.5, 1.5],
 
