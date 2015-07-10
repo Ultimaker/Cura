@@ -37,6 +37,12 @@ class CuraEngineBackend(Backend):
         self._scene = Application.getInstance().getController().getScene()
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
+        # Workaround to disable layer view processing if layer view is not active.
+        self._layer_view_active = False
+        Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
+        self._onActiveViewChanged()
+        self._stored_layer_data = None
+
         self._settings = None
         Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
         self._onActiveMachineChanged()
@@ -150,7 +156,7 @@ class CuraEngineBackend(Backend):
             obj = msg.objects.add()
             obj.id = id(object)
             
-            verts = numpy.array(mesh_data.getVertices(), copy=True)
+            verts = numpy.array(mesh_data.getVertices())
             verts[:,[1,2]] = verts[:,[2,1]]
             verts[:,1] *= -1
             obj.vertices = verts.tostring()
@@ -188,8 +194,11 @@ class CuraEngineBackend(Backend):
 
     def _onSlicedObjectListMessage(self, message):
         if self._save_polygons:
-            job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
-            job.start()
+            if self._layer_view_active:
+                job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+                job.start()
+            else :
+                self._stored_layer_data = message
 
     def _onProgressMessage(self, message):
         if message.amount >= 0.99:
@@ -248,3 +257,14 @@ class CuraEngineBackend(Backend):
     def _onToolOperationStopped(self, tool):
         self._enabled = True
         self._onChanged()
+
+    def _onActiveViewChanged(self):
+        if Application.getInstance().getController().getActiveView():
+            view = Application.getInstance().getController().getActiveView()
+            if view.getPluginId() == "LayerView":
+                self._layer_view_active = True
+                if self._stored_layer_data:
+                    job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
+                    job.start()
+            else:
+                self._layer_view_active = False

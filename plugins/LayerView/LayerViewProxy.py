@@ -11,7 +11,13 @@ class LayerViewProxy(QObject):
     
     currentLayerChanged = pyqtSignal()
     maxLayersChanged = pyqtSignal()
-    
+    activityChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = activityChanged)
+    def getLayerActivity(self):
+        active_view = self._controller.getActiveView()
+        return active_view.getActivity()
+
     @pyqtProperty(int, notify = maxLayersChanged)
     def numLayers(self):
         active_view = self._controller.getActiveView()
@@ -30,9 +36,13 @@ class LayerViewProxy(QObject):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.setLayer(layer_num)
+
+    def _layerActivityChanged(self):
+        self.activityChanged.emit()
             
     def _onLayerChanged(self):
         self.currentLayerChanged.emit()
+        self._layerActivityChanged()
         
     def _onMaxLayersChanged(self):
         self.maxLayersChanged.emit()
