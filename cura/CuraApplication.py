@@ -523,7 +523,7 @@ class CuraApplication(QtApplication):
             op.push()
 
     def _onJobFinished(self, job):
-        if type(job) is not ReadMeshJob:
+        if type(job) is not ReadMeshJob or not job.getResult():
             return
 
         f = QUrl.fromLocalFile(job.getFileName())
