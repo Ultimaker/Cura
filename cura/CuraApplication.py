@@ -74,6 +74,7 @@ class CuraApplication(QtApplication):
         self._print_information = None
         self._i18n_catalog = None
         self._previous_active_tool = None
+        self._platform_activity = False
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
@@ -215,6 +216,31 @@ class CuraApplication(QtApplication):
                 self._previous_active_tool = None
 
     requestAddPrinter = pyqtSignal()
+    activityChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = activityChanged)
+    def getPlatformActivity(self):
+        return self._platform_activity
+
+    @pyqtSlot(bool)
+    def setPlatformActivity(self, activity):
+        ##Sets the _platform_activity variable on true or false depending on whether there is a mesh on the platform
+        if activity == True:
+            self._platform_activity = activity
+        elif activity == False:
+            nodes = []
+            for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+                if type(node) is not SceneNode or not node.getMeshData():
+                    continue
+                nodes.append(node)
+            i = 0
+            for node in nodes:
+                if not node.getMeshData():
+                    continue
+                i += 1
+            if i <= 1: ## i == 0 when the meshes are removed using the deleteAll function; i == 1 when the last remaining mesh is removed using the deleteObject function
+                self._platform_activity = activity
+        self.activityChanged.emit()
 
     ##  Remove an object from the scene
     @pyqtSlot("quint64")
@@ -227,6 +253,7 @@ class CuraApplication(QtApplication):
         if object:
             op = RemoveSceneNodeOperation(object)
             op.push()
+            self.setPlatformActivity(False)
     
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
@@ -267,7 +294,6 @@ class CuraApplication(QtApplication):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
             nodes.append(node)
-
         if nodes:
             op = GroupedOperation()
 
@@ -275,6 +301,7 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
+        self.setPlatformActivity(False)
     
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
