@@ -255,7 +255,10 @@ class PrinterConnection(SignalEmitter):
     ##  Close the printer connection    
     def close(self):
         if self._connect_thread.isAlive():
-            self._connect_thread.join()
+            try:
+                self._connect_thread.join()
+            except:
+                pass
         if self._serial is not None:
             self.setIsConnected(False)
             try:
@@ -465,7 +468,7 @@ class PrinterConnection(SignalEmitter):
         
         # Turn of temperatures
         self._sendCommand("M140 S0")
-        self._sendCommand("M109 S0")
+        self._sendCommand("M104 S0")
         self._is_printing = False
 
     ##  Check if the process did not encounter an error yet.
