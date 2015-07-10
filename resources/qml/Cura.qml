@@ -41,7 +41,10 @@ UM.MainWindow {
                             var path = modelData.toString()
                             return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
                         }
-                        onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
+                        onTriggered: {
+                            UM.MeshFileHandler.readLocalFile(modelData);
+                            Printer.setPlatformActivity(true)
+                        }
                     }
                     onObjectAdded: fileMenu.insertItem(index, object)
                     onObjectRemoved: fileMenu.removeItem(object)
@@ -318,7 +321,11 @@ UM.MainWindow {
         redo.onTriggered: UM.OperationStack.redo();
         redo.enabled: UM.OperationStack.canRedo;
 
-        deleteSelection.onTriggered: UM.Controller.removeSelection();
+        deleteSelection.onTriggered: {
+            if(objectContextMenu.objectId != 0) {
+                Printer.deleteObject(objectContextMenu.objectId);
+            }
+        }
 
         deleteObject.onTriggered: {
             if(objectContextMenu.objectId != 0) {
@@ -408,6 +415,7 @@ UM.MainWindow {
         onAccepted:
         {
             UM.MeshFileHandler.readLocalFile(fileUrl)
+            Printer.setPlatformActivity(true)
         }
     }
 
