@@ -389,7 +389,15 @@
                     "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
                     "unit": "%",
                     "type": "float",
-                    "default": 15.0,
+                    "default": 10.0,
+                    "visible": false
+                },
+                "infill_wipe_dist": {
+                    "label": "Infill Wipe Distance",
+                    "description": "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is imilar to infill overlap, but without extrusion and only on one end of the infill line.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.04,
                     "visible": false
                 },
                 "fill_sparse_thickness": {
@@ -1376,7 +1384,7 @@
                     "min_value": 0.0,
                     "max_value_warning": 30.0,
                     "default": 0.0,
-                    "inherit_function": "9999 if draft_shield_height_limitation == 'Full' && draft_shield_enabled else 0.0",
+                    "inherit_function": "9999 if draft_shield_height_limitation == 'Full' and draft_shield_enabled else 0.0",
                     "visible": false,
                     "active_if": {
                         "setting": "draft_shield_height_limitation",
@@ -1688,8 +1696,33 @@
                     "default": false,
                     "visible": false
                 },
+                "wireframe_height": {
+                    "label": "WP Connection Height",
+                    "description": "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 3.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "wireframe_enabled",
+                        "value": true
+                    }
+                },
+                "wireframe_roof_inset": {
+                    "label": "WP Roof Inset Distance",
+                    "description": "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 3.0,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "wireframe_enabled",
+                        "value": true
+                    },
+                    "inherit_function": "wireframe_height"
+                },
                 "wireframe_printspeed": {
-                    "label": "Wire Printing speed",
+                    "label": "WP speed",
                     "description": "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing.",
                     "unit": "mm/s",
                     "type": "float",
@@ -1701,7 +1734,7 @@
                     },
                     "children": {
                         "wireframe_printspeed_bottom": {
-                            "label": "Wire Bottom Printing Speed",
+                            "label": "WP Bottom Printing Speed",
                             "description": "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing.",
                             "unit": "mm/s",
                             "type": "float",
@@ -1714,7 +1747,7 @@
                             }
                         },
                         "wireframe_printspeed_up": {
-                            "label": "Wire Upward Printing Speed",
+                            "label": "WP Upward Printing Speed",
                             "description": "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing.",
                             "unit": "mm/s",
                             "type": "float",
@@ -1727,7 +1760,7 @@
                             }
                         },
                         "wireframe_printspeed_down": {
-                            "label": "Wire Downward Printing Speed",
+                            "label": "WP Downward Printing Speed",
                             "description": "Speed of printing a line diagonally downward. Only applies to Wire Printing.",
                             "unit": "mm/s",
                             "type": "float",
@@ -1740,7 +1773,7 @@
                             }
                         },
                         "wireframe_printspeed_flat": {
-                            "label": "Wire Horizontal Printing Speed",
+                            "label": "WP Horizontal Printing Speed",
                             "description": "Speed of printing the horizontal contours of the object. Only applies to Wire Printing.",
                             "unit": "mm/s",
                             "type": "float",
@@ -1755,7 +1788,7 @@
                     }
                 },
                 "wireframe_flow": {
-                    "label": "Wire Printing Flow",
+                    "label": "WP Flow",
                     "description": "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing.",
                     "unit": "%",
                     "default": 100.0,
@@ -1767,7 +1800,7 @@
                     },
                     "children": {
                         "wireframe_flow_connection": {
-                            "label": "Wire Connection Flow",
+                            "label": "WP Connection Flow",
                             "description": "Flow compensation when going up or down. Only applies to Wire Printing.",
                             "unit": "%",
                             "default": 100.0,
@@ -1779,7 +1812,7 @@
                             }
                         },
                         "wireframe_flow_flat": {
-                            "label": "Wire Flat Flow",
+                            "label": "WP Flat Flow",
                             "description": "Flow compensation when printing flat lines. Only applies to Wire Printing.",
                             "unit": "%",
                             "default": 100.0,
@@ -1793,7 +1826,7 @@
                     }
                 },
                 "wireframe_top_delay": {
-                    "label": "Wire Printing Top Delay",
+                    "label": "WP Top Delay",
                     "description": "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing.",
                     "unit": "sec",
                     "type": "float",
@@ -1805,7 +1838,7 @@
                     }
                 },
                 "wireframe_bottom_delay": {
-                    "label": "Wire Printing Bottom Delay",
+                    "label": "WP Bottom Delay",
                     "description": "Delay time after a downward move. Only applies to Wire Printing. Only applies to Wire Printing.",
                     "unit": "sec",
                     "type": "float",
@@ -1817,7 +1850,7 @@
                     }
                 },
                 "wireframe_flat_delay": {
-                    "label": "Wire Printing Flat Delay",
+                    "label": "WP Flat Delay",
                     "description": "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too large delay times cause sagging. Only applies to Wire Printing.",
                     "unit": "sec",
                     "type": "float",
@@ -1829,7 +1862,7 @@
                     }
                 },
                 "wireframe_up_half_speed": {
-                    "label": "Wire Printing Ease Upward",
+                    "label": "WP Ease Upward",
                     "description": "Distance of an upward move which is extruded with half speed.\nThis can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
@@ -1841,7 +1874,7 @@
                     }
                 },
                 "wireframe_top_jump": {
-                    "label": "Wire Printing Knot Size",
+                    "label": "WP Knot Size",
                     "description": "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
@@ -1853,7 +1886,7 @@
                     }
                 },
                 "wireframe_fall_down": {
-                    "label": "Wire Printing Fall Down",
+                    "label": "WP Fall Down",
                     "description": "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
@@ -1865,7 +1898,7 @@
                     }
                 },
                 "wireframe_drag_along": {
-                    "label": "Wire Printing Drag along",
+                    "label": "WP Drag along",
                     "description": "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
@@ -1877,7 +1910,7 @@
                     }
                 },
                 "wireframe_strategy": {
-                    "label": "Wire Printing Strategy",
+                    "label": "WP Strategy",
                     "description": "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted.",
                     "type": "enum",
                     "options": [
@@ -1893,7 +1926,7 @@
                     }
                 },
                 "wireframe_straight_before_down": {
-                    "label": "Wire Printing Straighten Downward Lines",
+                    "label": "WP Straighten Downward Lines",
                     "description": "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "%",
@@ -1905,7 +1938,7 @@
                     }
                 },
                 "wireframe_roof_fall_down": {
-                    "label": "Wire Printing Roof Fall Down",
+                    "label": "WP Roof Fall Down",
                     "description": "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
@@ -1917,7 +1950,7 @@
                     }
                 },
                 "wireframe_roof_drag_along": {
-                    "label": "Wire Printing Roof Drag Along",
+                    "label": "WP Roof Drag Along",
                     "description": "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
@@ -1929,7 +1962,7 @@
                     }
                 },
                 "wireframe_roof_outer_delay": {
-                    "label": "Wire Printing Roof Outer Delay",
+                    "label": "WP Roof Outer Delay",
                     "description": "Time spent at the outer perimeters of hole which is to become a roof. Larger times can ensure a better connection. Only applies to Wire Printing.",
                     "type": "boolean",
                     "unit": "sec",
@@ -1941,33 +1974,8 @@
                         "value": true
                     }
                 },
-                "wireframe_height": {
-                    "label": "Wire Printing Connection Height",
-                    "description": "The height of the upward and diagonally downward lines between two horizontal parts. Only applies to Wire Printing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default": 3.0,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
-                },
-                "wireframe_roof_inset": {
-                    "label": "Wire Printing Roof Inset Distance",
-                    "description": "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default": 3.0,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    },
-                    "inherit_function": "wireframe_height"
-                },
                 "wireframe_nozzle_clearance": {
-                    "label": "Wire Printing Nozzle Clearance",
+                    "label": "WP Nozzle Clearance",
                     "description": "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
