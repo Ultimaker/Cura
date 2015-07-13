@@ -68,10 +68,8 @@ class LayerView(View):
                 if node.getMeshData() and node.isVisible():
                     if Selection.isSelected(node):
                         renderer.queueNode(node, material = self._selection_material, transparent = True)
-
-                    try:
-                        layer_data = node.getMeshData().layerData
-                    except AttributeError:
+                    layer_data = node.callDecoration("getLayerData")
+                    if not layer_data:
                         continue
 
                     # Render all layers below a certain number as line mesh instead of vertices.
@@ -133,10 +131,11 @@ class LayerView(View):
             for node in DepthFirstIterator(scene.getRoot()):
                 if not node.render(renderer):
                     if node.getMeshData() and node.isVisible():
-                        try:
-                            layer_data = node.getMeshData().layerData
-                        except AttributeError:
+                        
+                        layer_data = node.callDecoration("getLayerData")
+                        if not layer_data:
                             continue
+
                         if new_max_layers < len(layer_data.getLayers()):
                             new_max_layers = len(layer_data.getLayers()) - 1
 

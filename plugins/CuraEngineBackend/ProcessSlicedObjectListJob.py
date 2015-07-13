@@ -11,6 +11,7 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 
 from . import LayerData
+from . import LayerDataDecorator
 
 import numpy
 import struct
@@ -36,7 +37,8 @@ class ProcessSlicedObjectListJob(Job):
         ## Put all nodes in a dict identified by ID
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
-                if hasattr(node.getMeshData(), "layerData"):
+                if node.callDecoration("getLayerData"):
+                #if hasattr(node.getMeshData(), "layerData"):
                     self._scene.getRoot().removeChild(node)
                 else:
                     objectIdMap[id(node)] = node
@@ -83,14 +85,18 @@ class ProcessSlicedObjectListJob(Job):
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layerData.build()
-        mesh.layerData = layerData
 
         if self._progress:
             self._progress.setProgress(100)
-
+        
+        #Add layerdata decorator to scene node to indicate that the node has layerdata
+        decorator = LayerDataDecorator.LayerDataDecorator()
+        decorator.setLayerData(layerData)
+        new_node.addDecorator(decorator)
+        
         new_node.setMeshData(mesh)
         new_node.setParent(self._scene.getRoot())
-
+        
         view = Application.getInstance().getController().getActiveView()
         if view.getPluginId() == "LayerView":
             view.resetLayerData()
