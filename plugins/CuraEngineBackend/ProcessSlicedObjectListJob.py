@@ -22,14 +22,14 @@ class ProcessSlicedObjectListJob(Job):
         super().__init__()
         self._message = message
         self._scene = Application.getInstance().getController().getScene()
-
         self._progress = None
-        Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
     def run(self):
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
             self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
             self._progress.show()
+
+        Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
         objectIdMap = {}
         new_node = SceneNode()

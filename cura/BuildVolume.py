@@ -33,6 +33,7 @@ class BuildVolume(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
+
     def setWidth(self, width):
         self._width = width
 

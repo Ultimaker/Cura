@@ -469,7 +469,7 @@ class PrinterConnection(SignalEmitter):
         
         # Turn of temperatures
         self._sendCommand("M140 S0")
-        self._sendCommand("M109 S0")
+        self._sendCommand("M104 S0")
         self._is_printing = False
 
     ##  Check if the process did not encounter an error yet.
