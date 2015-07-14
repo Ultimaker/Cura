@@ -63,10 +63,10 @@ class ConvexHullNode(SceneNode):
 
     def _onNodePositionChanged(self, node):
         #self.setPosition(node.getWorldPosition())
-        if hasattr(node, "_convex_hull"):
-            delattr(node, "_convex_hull")
+        if node.callDecoration("getConvexHull"): 
+            node.callDecoration("setConvexHull", None)
+            node.callDecoration("setConvexHullNode", None)
             self.setParent(None)
-
 
         #self._node.transformationChanged.disconnect(self._onNodePositionChanged)
         #self._node.parentChanged.disconnect(self._onNodeParentChanged)
