@@ -20,9 +20,9 @@ class ConvexHullJob(Job):
             return
 
         mesh = self._node.getMeshData()
-        vertexData = mesh.getTransformed(self._node.getWorldTransformation()).getVertices()
+        vertex_data = mesh.getTransformed(self._node.getWorldTransformation()).getVertices()
 
-        hull = Polygon(numpy.rint(vertexData[:, [0, 2]]).astype(int))
+        hull = Polygon(numpy.rint(vertex_data[:, [0, 2]]).astype(int))
 
         # First, calculate the normal convex hull around the points
         hull = hull.getConvexHull()
