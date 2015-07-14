@@ -347,6 +347,11 @@ UM.MainWindow {
                 objectContextMenu.objectId = 0;
             }
         }
+        
+        groupObjects.onTriggered:
+        {
+            Printer.groupSelected()
+        }
 
         deleteAll.onTriggered: Printer.deleteAll()
         resetAllTranslation.onTriggered: Printer.resetAllTranslation()
@@ -373,6 +378,7 @@ UM.MainWindow {
         MenuItem { action: actions.deleteObject; }
         MenuItem { action: actions.multiplyObject; }
         MenuItem { action: actions.splitObject; }
+        MenuItem { action: actions.groupObjects;}
         MenuSeparator { }
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }

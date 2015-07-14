@@ -22,6 +22,7 @@ from UM.Math.Polygon import Polygon
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
+from UM.Scene.GroupDecorator import GroupDecorator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -416,6 +417,17 @@ class CuraApplication(QtApplication):
             return
 
         self.getActiveMachine().setSettingValueByKey(key, value)
+        
+        
+    @pyqtSlot()
+    def groupSelected(self):
+        group_node = SceneNode()
+        group_decorator = GroupDecorator()
+        group_node.addDecorator(group_decorator)
+        group_node.setParent(self.getController().getScene().getRoot())
+        for node in Selection.getAllSelectedObjects():
+            node.setParent(group_node)
+            
 
     ##  Add an output device that can be written to.
     #
