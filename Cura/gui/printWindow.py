@@ -1,6 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+from wx.lib.intctrl import IntCtrl
 import power
 import time
 import sys
@@ -648,10 +649,10 @@ class printWindowAdvanced(wx.Frame):
 				resources.getPathForImage('print-window.png'))), (0, 0))
 		self.temperatureBitmap = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(wx.Image(
 				resources.getPathForImage('print-window-temperature.png'))), (0, 0))
-		self.temperatureField = TemperatureField(self.panel)
+		self.temperatureField = TemperatureField(self.panel, self._setHotendTemperature)
 		self.temperatureBedBitmap = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(wx.Image(
 				resources.getPathForImage('print-window-temperature-bed.png'))), (0, 0))
-		self.temperatureBedField = TemperatureField(self.panel)
+		self.temperatureBedField = TemperatureField(self.panel, self._setBedTemperature)
 		self.temperatureGraph = TemperatureGraph(self.panel)
 		self.progress = wx.Gauge(self.panel, -1, range=1000)
 
@@ -673,10 +674,10 @@ class printWindowAdvanced(wx.Frame):
 		self.sizer.Add(self.motorsOffButton, pos=(1, 5), flag=wx.LEFT|wx.RIGHT, border=2)
 		self.sizer.Add(self.movementBitmap, pos=(2, 0), span=(2, 3))
 		self.sizer.Add(self.temperatureGraph, pos=(4, 0), span=(4, 2), flag=wx.EXPAND)
-		self.sizer.Add(self.temperatureBitmap, pos=(4, 2), span=(1, 1), flag=wx.EXPAND)
-		self.sizer.Add(self.temperatureField, pos=(5, 2), span=(1, 1), flag=wx.EXPAND)
-		self.sizer.Add(self.temperatureBedBitmap, pos=(6, 2), span=(1, 1), flag=wx.EXPAND)
-		self.sizer.Add(self.temperatureBedField, pos=(7, 2), span=(1, 1), flag=wx.EXPAND)
+		self.sizer.Add(self.temperatureBitmap, pos=(4, 2))
+		self.sizer.Add(self.temperatureField, pos=(5, 2))
+		self.sizer.Add(self.temperatureBedBitmap, pos=(6, 2))
+		self.sizer.Add(self.temperatureBedField, pos=(7, 2))
 		self.sizer.Add(self._termLog, pos=(2, 3), span=(5, 3), flag=wx.EXPAND)
 		self.sizer.Add(self._termInput, pos=(7, 3), span=(1, 3), flag=wx.EXPAND)
 		self.sizer.Add(self.progress, pos=(8, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
@@ -734,27 +735,6 @@ class printWindowAdvanced(wx.Frame):
 			self.Layout()
 			self.Fit()
 			self.Refresh()
-
-	def script_addTextButton(self, r_text, g_text, b_text, r_button, g_button, b_button, button_text, command, data):
-		x_text, y_text, w_text, h_text = self._getColoredRect(r_text, g_text, b_text)
-		if x_text < 0:
-			return
-		x_button, y_button, w_button, h_button = self._getColoredRect(r_button, g_button, b_button)
-		if x_button < 0:
-			return
-		from wx.lib.intctrl import IntCtrl
-		text = IntCtrl(self, -1)
-		text.SetBounds(0, 300)
-		text.SetPosition((x_text, y_text))
-		text.SetSize((w_text, h_text))
-
-		button = wx.Button(self, -1, _(button_text))
-		button.SetPosition((x_button, y_button))
-		button.SetSize((w_button, h_button))
-		button.command = command
-		button.data = data
-		self._buttonList.append(button)
-		self.Bind(wx.EVT_BUTTON, lambda e: command(data % text.GetValue()), button)
 
 	def OnConnect(self, e):
 		self._printerConnection.openActiveConnection()
@@ -953,19 +933,23 @@ class TemperatureField(wx.Panel):
 	def __init__(self, parent, callback):
 		super(TemperatureField, self).__init__(parent)
 		self.callback = callback
-		
+
 		self.SetBackgroundColour(wx.WHITE)
-		self.sizer = wx.BoxSizer()
-		self.SetSizer(self.sizer)
-		self.sizer.SetOrientation(wx.HORIZONTAL)
 
 		self.text = IntCtrl(self, -1)
 		self.text.SetBounds(0, 300)
-		self.sizer.Add(self.text, 1, flag=wx.EXPAND)
+		self.text.SetSize((60, 25))
+
+		self.unit = wx.StaticBitmap(self, -1, wx.BitmapFromImage(wx.Image(
+				resources.getPathForImage('print-window-temperature-unit.png'))), (0, 0))
 
 		self.button = wx.Button(self, -1, _("Set"))
-		self.sizer.Add(self.button, 0)
+		self.button.SetSize((35, 25))
 		self.Bind(wx.EVT_BUTTON, lambda e: self.callback(self.text.GetValue()), self.button)
+
+		self.text.SetPosition((0, 0))
+		self.unit.SetPosition((60, 0))
+		self.button.SetPosition((90, 0))
 
 
 class TemperatureGraph(wx.Panel):
