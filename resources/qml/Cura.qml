@@ -43,7 +43,6 @@ UM.MainWindow {
                         }
                         onTriggered: {
                             UM.MeshFileHandler.readLocalFile(modelData);
-                            Printer.setPlatformActivity(true)
                         }
                     }
                     onObjectAdded: fileMenu.insertItem(index, object)
@@ -415,7 +414,6 @@ UM.MainWindow {
         onAccepted:
         {
             UM.MeshFileHandler.readLocalFile(fileUrl)
-            Printer.setPlatformActivity(true)
         }
     }
 
