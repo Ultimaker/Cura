@@ -581,6 +581,8 @@ class printWindowAdvanced(wx.Frame):
 		self.sizer = wx.GridBagSizer(2, 2)
 		self.panel.SetSizer(self.sizer)
 		self.panel.SetBackgroundColour(wx.WHITE)
+
+		self._fullscreenTemperature = None
 		self._termHistory = []
 		self._termHistoryIdx = 0
 
@@ -681,7 +683,8 @@ class printWindowAdvanced(wx.Frame):
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 		self.Bind(wx.EVT_CLOSE, self.OnClose)
-		self.movementBitmap.Bind(wx.EVT_LEFT_DOWN, self.OnLeftClick)
+		self.movementBitmap.Bind(wx.EVT_LEFT_DOWN, self.OnMovementClick)
+		self.temperatureGraph.Bind(wx.EVT_LEFT_DOWN, self.OnTemperatureClick)
 		self.connectButton.Bind(wx.EVT_BUTTON, self.OnConnect)
 		self.printButton.Bind(wx.EVT_BUTTON, self.OnPrint)
 		self.cancelButton.Bind(wx.EVT_BUTTON, self.OnCancel)
@@ -777,7 +780,7 @@ class printWindowAdvanced(wx.Frame):
 		b = self._mapImage.GetBlue(x, y)
 		return (r, g, b)
 
-	def OnLeftClick(self, e):
+	def OnMovementClick(self, e):
 		(r, g, b) = self.GetMapRGB(e.GetX(), e.GetY())
 		if (r, g, b) in self._colorCommandMap:
 			command = self._colorCommandMap[(r, g, b)]
@@ -813,6 +816,31 @@ class printWindowAdvanced(wx.Frame):
 				self._printerConnection.sendCommand("G28")
 			else:
 				self._printerConnection.sendCommand("G28 %s0" % direction)
+
+	def _setHotendTemperature(self, value):
+		self._printerConnection.sendCommand("M104 S%d" % value)
+
+	def _setBedTemperature(self, value):
+		self._printerConnection.sendCommand("M140 S%d" % value)
+
+	def OnTemperatureClick(self, e):
+		wx.CallAfter(self.ToggleFullScreenTemperature)
+
+	def ToggleFullScreenTemperature(self):
+		sizer = self.GetSizer()
+		if self._fullscreenTemperature:
+			self._fullscreenTemperature.Show(False)
+			sizer.Detach(self._fullscreenTemperature)
+			self._fullscreenTemperature.Destroy()
+			self._fullscreenTemperature = None
+			self.panel.Show(True)
+		else:
+			self._fullscreenTemperature = self.temperatureGraph.Clone(self)
+			self._fullscreenTemperature.Bind(wx.EVT_LEFT_DOWN, self.OnTemperatureClick)
+			sizer.Add(self._fullscreenTemperature, 1, flag=wx.EXPAND)
+			self.panel.Show(False)
+		self.Layout()
+		self.Refresh()
 
 	def OnTermEnterLine(self, e):
 		if not self._printerConnection.isAbleToSendDirectCommand():
@@ -884,15 +912,16 @@ class printWindowAdvanced(wx.Frame):
 
 	def _doPrinterConnectionUpdate(self, connection, extraInfo = None):
 		wx.CallAfter(self.__doPrinterConnectionUpdate, connection, extraInfo)
-		if self.temperatureGraph is not None:
-			temp = []
-			for n in xrange(0, 4):
-				t = connection.getTemperature(0)
-				if t is not None:
-					temp.append(t)
-				else:
-					break
-			self.temperatureGraph.addPoint(temp, [0] * len(temp), connection.getBedTemperature(), 0)
+		temp = []
+		for n in xrange(0, 4):
+			t = connection.getTemperature(0)
+			if t is not None:
+				temp.append(t)
+			else:
+				break
+		self.temperatureGraph.addPoint(temp, [0] * len(temp), connection.getBedTemperature(), 0)
+		if self._fullscreenTemperature is not None:
+			self._fullscreenTemperature.addPoint(temp, [0] * len(temp), connection.getBedTemperature(), 0)
 
 	def __doPrinterConnectionUpdate(self, connection, extraInfo):
 		t = time.time()
@@ -951,6 +980,11 @@ class TemperatureGraph(wx.Panel):
 		self._points = []
 		self._backBuffer = None
 		self.addPoint([0]*16, [0]*16, 0, 0)
+
+	def Clone(self, parent):
+		clone = TemperatureGraph(parent)
+		clone._points = list(self._points)
+		return clone
 
 	def OnEraseBackground(self, e):
 		pass
