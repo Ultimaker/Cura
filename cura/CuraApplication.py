@@ -427,7 +427,24 @@ class CuraApplication(QtApplication):
         group_node.setParent(self.getController().getScene().getRoot())
         for node in Selection.getAllSelectedObjects():
             node.setParent(group_node)
-            
+    
+    @pyqtSlot()
+    def ungroupSelected(self):
+        ungrouped_nodes = []
+        for node in Selection.getAllSelectedObjects():
+            if node.callDecoration("isGroup" ):
+                children_to_move = []
+                for child in node.getChildren():
+                    if child.getMeshData() is not None:
+                        children_to_move.append(child)
+                       
+                for child in children_to_move:
+                    child.setParent(node.getParent())
+                    child.callDecoration("setConvexHull",None)
+                node.setParent(None)
+                ungrouped_nodes.append(node)
+        for node in ungrouped_nodes:
+            Selection.remove(node)
 
     ##  Add an output device that can be written to.
     #

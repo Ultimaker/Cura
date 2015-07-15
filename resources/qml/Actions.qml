@@ -18,6 +18,8 @@ Item {
     property alias deleteObject: deleteObjectAction;
     property alias centerObject: centerObjectAction;
     property alias groupObjects: groupObjectsAction;
+    property alias unGroupObjects:unGroupObjectsAction;
+    
     property alias multiplyObject: multiplyObjectAction;
     property alias splitObject: splitObjectAction;
 
@@ -130,6 +132,13 @@ Item {
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
 
+    Action
+    {
+        id: unGroupObjectsAction
+        text: qsTr("Ungroup objects");
+        enabled: UM.Scene.isGroupSelected
+    }
+    
     Action {
         id: multiplyObjectAction;
         //: Duplicate object action
