@@ -425,8 +425,14 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.setParent(self.getController().getScene().getRoot())
+        
         for node in Selection.getAllSelectedObjects():
             node.setParent(group_node)
+        
+        for node in group_node.getChildren():
+            Selection.remove(node)
+        
+        Selection.add(group_node)
     
     @pyqtSlot()
     def ungroupSelected(self):
@@ -440,6 +446,7 @@ class CuraApplication(QtApplication):
                        
                 for child in children_to_move:
                     child.setParent(node.getParent())
+                    Selection.add(child)
                     child.callDecoration("setConvexHull",None)
                 node.setParent(None)
                 ungrouped_nodes.append(node)
