@@ -161,8 +161,13 @@ class CuraApp(wx.App):
 			profile.putPreference('last_run_version', version.getVersion(False))
 			profile.performVersionUpgrade()
 			#newVersionDialog.newVersionDialog().Show()
+
 		if version.isDevVersion():
 			profile.performVersionUpgrade()
+
+			import wx.lib.inspection
+			# Show the WX widget inspection tool
+			#wx.lib.inspection.InspectionTool().Show()
 
 
 		setFullScreenCapable(self.mainWindow)
