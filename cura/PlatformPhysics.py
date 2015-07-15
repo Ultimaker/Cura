@@ -80,7 +80,7 @@ class PlatformPhysics:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
-                    if other_node is root or type(other_node) is not SceneNode or other_node is node or other_node in node.getChildren() or node in other_node.getChildren():
+                    if other_node is root or type(other_node) is not SceneNode or other_node is node or other_node in node.getAllChildren() or node in other_node.getAllChildren():
                         continue
                     
                     # Ignore nodes that do not have the right properties set.
