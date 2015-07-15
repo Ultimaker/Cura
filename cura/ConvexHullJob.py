@@ -49,8 +49,12 @@ class ConvexHullJob(Job):
         self._node.callDecoration("setConvexHullNode", hull_node)
         self._node.callDecoration("setConvexHull", hull)
         self._node.callDecoration("setConvexHullJob", None)
-        #if self._node.getParent().callDecoration("isGroup"):
-         #   if self._node.getParent().callDecoration("getConvexHull"):
+        if self._node.getParent().callDecoration("isGroup"):
+            if self._node.getParent().callDecoration("getConvexHull"):
+                job = self._node.getParent().callDecoration("getConvexJob")
+                if job:
+                    job.cancel()
+                self._node.getParent().callDecoration("setConvexHull", None) #Force recalculation
                
         #        self._node.getParent().callDecoration("getConvexHullNode").setParent(None)
         #        self._node.getParent().callDecoration("setConvexHull", None)
