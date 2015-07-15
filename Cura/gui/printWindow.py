@@ -638,7 +638,7 @@ class printWindowAdvanced(wx.Frame):
 		self.powerWarningTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self.OnPowerWarningChange, self.powerWarningTimer)
 		self.OnPowerWarningChange(None)
-		self.powerWarningTimer.Start(1000)
+		self.powerWarningTimer.Start(10000)
 
 		self.connectButton = wx.Button(self.panel, -1, _("Connect"), size=(125, 30))
 		self.printButton = wx.Button(self.panel, -1, _("Print"), size=(125, 30))
