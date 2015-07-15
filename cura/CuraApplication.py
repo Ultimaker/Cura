@@ -437,11 +437,12 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def ungroupSelected(self):
         ungrouped_nodes = []
-        for node in Selection.getAllSelectedObjects():
+        selected_objects = Selection.getAllSelectedObjects()[:] #clone the list
+        for node in selected_objects:
             if node.callDecoration("isGroup" ):
                 children_to_move = []
                 for child in node.getChildren():
-                    if child.getMeshData() is not None:
+                    if type(child) is SceneNode:
                         children_to_move.append(child)
                        
                 for child in children_to_move:
