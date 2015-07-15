@@ -608,12 +608,12 @@ class printWindowAdvanced(wx.Frame):
 		self._addMovementCommand(0, 120, 0, self._moveY, 100)
 
 		# Move Z
-		self._addMovementCommand(255, 0, 0, self._moveZ, -10)
-		self._addMovementCommand(220, 0, 0, self._moveZ, -1)
-		self._addMovementCommand(200, 0, 0, self._moveZ, -0.1)
-		self._addMovementCommand(180, 0, 0, self._moveZ, 0.1)
-		self._addMovementCommand(160, 0, 0, self._moveZ, 1)
-		self._addMovementCommand(140, 0, 0, self._moveZ, 10)
+		self._addMovementCommand(255, 0, 0, self._moveZ, 10)
+		self._addMovementCommand(220, 0, 0, self._moveZ, 1)
+		self._addMovementCommand(200, 0, 0, self._moveZ, 0.1)
+		self._addMovementCommand(180, 0, 0, self._moveZ, -0.1)
+		self._addMovementCommand(160, 0, 0, self._moveZ, -1)
+		self._addMovementCommand(140, 0, 0, self._moveZ, -10)
 
 		# Extrude/Retract
 		self._addMovementCommand(255, 80, 0, self._moveE, 10)
@@ -786,26 +786,26 @@ class printWindowAdvanced(wx.Frame):
 	def _addMovementCommand(self, r, g, b, command, step):
 		self._colorCommandMap[(r, g, b)] = (command, step)
 
-	def _moveXYZE(self, step, feedrate):
+	def _moveXYZE(self, motor, step, feedrate):
 		if (not self._printerConnection.hasActiveConnection() or \
 			self._printerConnection.isActiveConnectionOpen()) and \
 			(not self._printerConnection.isPaused() and \
 			 not self._printerConnection.isPrinting()):
 			self._printerConnection.sendCommand("G91")
-			self._printerConnection.sendCommand("G1 X%d F%d" % (step, feedrate))
+			self._printerConnection.sendCommand("G1 %s%.1f F%d" % (motor, step, feedrate))
 			self._printerConnection.sendCommand("G90")
 
 	def _moveX(self, step):
-		self._moveXYZE(step, 2000)
+		self._moveXYZE("X", step, 2000)
 
 	def _moveY(self, step):
-		self._moveXYZE(step, 2000)
+		self._moveXYZE("Y", step, 2000)
 
 	def _moveZ(self, step):
-		self._moveXYZE(step, 200)
+		self._moveXYZE("Z", step, 200)
 
 	def _moveE(self, step):
-		self._moveXYZE(step, 120)
+		self._moveXYZE("E", step, 120)
 
 	def _homeXYZ(self, direction):
 		if not self._printerConnection.isPaused() and not self._printerConnection.isPrinting():
