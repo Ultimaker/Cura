@@ -18,7 +18,10 @@ def getMetaData():
 
         "mesh_writer": {
             "extension": "gcode",
-            "description": catalog.i18nc("GCode Writer File Description", "GCode File")
+            "description": catalog.i18nc("GCode Writer File Description", "GCode File"),
+            "mime_types": [
+                "text/x-gcode"
+            ]
         }
     }
 
