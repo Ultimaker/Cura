@@ -46,8 +46,8 @@
                     "max_value_warning": 0.32
                 },
                 "layer_height_0": {
-                    "label": "Initial Layer Thickness",
-                    "description": "The layer thickness of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
+                    "label": "Initial Layer Height",
+                    "description": "The layer height of the bottom layer. A thicker bottom layer makes sticking to the bed easier.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
