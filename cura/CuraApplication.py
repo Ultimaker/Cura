@@ -251,9 +251,16 @@ class CuraApplication(QtApplication):
 
         if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
             object = Selection.getSelectedObject(0)
-
+        
         if object:
-            op = RemoveSceneNodeOperation(object)
+            if object.getParent():
+                group_node = object.getParent()
+                if not group_node.callDecoration("isGroup"):
+                    op = RemoveSceneNodeOperation(object)
+                else:
+                    while group_node.getParent().callDecoration("isGroup"):
+                        group_node = group_node.getParent()
+                    op = RemoveSceneNodeOperation(group_node)
             op.push()
             self.setPlatformActivity(False)
     
