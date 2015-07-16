@@ -56,10 +56,11 @@ class ConvexHullNode(SceneNode):
             self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
 
             self._material.setUniformValue("u_color", Color(35, 35, 35, 128))
-
-        renderer.queueNode(self, material = self._material, transparent = True)
+        if self.getParent():
+            renderer.queueNode(self, material = self._material, transparent = True)
 
         return True
+    
 
     def _onNodePositionChanged(self, node):
         #self.setPosition(node.getWorldPosition())

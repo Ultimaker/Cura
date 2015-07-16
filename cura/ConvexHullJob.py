@@ -49,7 +49,9 @@ class ConvexHullJob(Job):
         self._node.callDecoration("setConvexHullNode", hull_node)
         self._node.callDecoration("setConvexHull", hull)
         self._node.callDecoration("setConvexHullJob", None)
-        #if self._node.getParent().callDecoration("isGroup"):
+        
+        if self._node.getParent().callDecoration("isGroup"):
+            self._node.getParent().callDecoration("setConvexHull", None)
          #   if self._node.getParent().callDecoration("getConvexHull"):
                
         #        self._node.getParent().callDecoration("getConvexHullNode").setParent(None)
