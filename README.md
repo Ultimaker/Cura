@@ -1,3 +1,6 @@
+IMPORTANT: This may be the future definitive location for Aleph Object's Cura source code, but for now the real one can be found over here: https://github.com/alephobjects/Cura
+
+
 Cura
 ====
 
@@ -5,7 +8,7 @@ Read this, it's important!
 ===========================
 
 This is the development version of Cura for LulzBot 3D Printers by Aleph Objects, Inc. It is available here:
-https://github.com/alephobjects/Cura
+https://code.alephobjects.com/diffusion/CURA
 
 This branch is based on the upstream version maintained by daid and Ultimaker:
 https://github.com/daid/Cura
