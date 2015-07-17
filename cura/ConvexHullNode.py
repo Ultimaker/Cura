@@ -56,17 +56,18 @@ class ConvexHullNode(SceneNode):
             self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
 
             self._material.setUniformValue("u_color", Color(35, 35, 35, 128))
-
-        renderer.queueNode(self, material = self._material, transparent = True)
+        if self.getParent():
+            renderer.queueNode(self, material = self._material, transparent = True)
 
         return True
+    
 
     def _onNodePositionChanged(self, node):
         #self.setPosition(node.getWorldPosition())
-        if hasattr(node, "_convex_hull"):
-            delattr(node, "_convex_hull")
+        if node.callDecoration("getConvexHull"): 
+            node.callDecoration("setConvexHull", None)
+            node.callDecoration("setConvexHullNode", None)
             self.setParent(None)
-
 
         #self._node.transformationChanged.disconnect(self._onNodePositionChanged)
         #self._node.parentChanged.disconnect(self._onNodeParentChanged)

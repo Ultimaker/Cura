@@ -27,8 +27,12 @@ class LayerView(View):
         self._max_layers = 10
         self._current_layer_num = 10
         self._current_layer_mesh = None
+        self._activity = False
 
         self._solid_layers = 5
+
+    def getActivity(self):
+        return self._activity
 
     def getCurrentLayer(self):
         return self._current_layer_num
@@ -64,10 +68,8 @@ class LayerView(View):
                 if node.getMeshData() and node.isVisible():
                     if Selection.isSelected(node):
                         renderer.queueNode(node, material = self._selection_material, transparent = True)
-
-                    try:
-                        layer_data = node.getMeshData().layerData
-                    except AttributeError:
+                    layer_data = node.callDecoration("getLayerData")
+                    if not layer_data:
                         continue
 
                     # Render all layers below a certain number as line mesh instead of vertices.
@@ -114,13 +116,14 @@ class LayerView(View):
 
             self._current_layer_mesh = None
             self.currentLayerNumChanged.emit()
-    
+
     currentLayerNumChanged = Signal()
-    
+
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
         if renderer and self._material:
+            self._activity = True
             renderer.setRenderSelection(False)
             self._old_max_layers = self._max_layers
             ## Recalculate num max layers
@@ -128,21 +131,25 @@ class LayerView(View):
             for node in DepthFirstIterator(scene.getRoot()):
                 if not node.render(renderer):
                     if node.getMeshData() and node.isVisible():
-                        try:
-                            layer_data = node.getMeshData().layerData
-                        except AttributeError:
+                        
+                        layer_data = node.callDecoration("getLayerData")
+                        if not layer_data:
                             continue
+
                         if new_max_layers < len(layer_data.getLayers()):
                             new_max_layers = len(layer_data.getLayers()) - 1
 
             if new_max_layers > 0 and new_max_layers != self._old_max_layers:
                 self._max_layers = new_max_layers
                 self.maxLayersChanged.emit()
+                self._current_layer_num = self._max_layers
 
                 # This makes sure we update the current layer
-                self.setLayer(int(self._max_layers * (self._current_layer_num / self._old_max_layers)))
-    
+                self.setLayer(int(self._max_layers))
+                self.currentLayerNumChanged.emit()
+
     maxLayersChanged = Signal()
+    currentLayerNumChanged = Signal()
     
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues. 

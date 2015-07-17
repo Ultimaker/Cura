@@ -41,7 +41,10 @@ UM.MainWindow {
                             var path = modelData.toString()
                             return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
                         }
-                        onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
+                        onTriggered: {
+                            UM.MeshFileHandler.readLocalFile(modelData);
+                            Printer.setPlatformActivity(true)
+                        }
                     }
                     onObjectAdded: fileMenu.insertItem(index, object)
                     onObjectRemoved: fileMenu.removeItem(object)
@@ -318,7 +321,11 @@ UM.MainWindow {
         redo.onTriggered: UM.OperationStack.redo();
         redo.enabled: UM.OperationStack.canRedo;
 
-        deleteSelection.onTriggered: UM.Controller.removeSelection();
+        deleteSelection.onTriggered: {
+            if(objectContextMenu.objectId != 0) {
+                Printer.deleteObject(objectContextMenu.objectId);
+            }
+        }
 
         deleteObject.onTriggered: {
             if(objectContextMenu.objectId != 0) {
@@ -339,6 +346,16 @@ UM.MainWindow {
                 Printer.centerObject(objectContextMenu.objectId);
                 objectContextMenu.objectId = 0;
             }
+        }
+        
+        groupObjects.onTriggered:
+        {
+            Printer.groupSelected()
+        }
+        
+        unGroupObjects.onTriggered:
+        {
+            Printer.ungroupSelected()
         }
 
         deleteAll.onTriggered: Printer.deleteAll()
@@ -366,6 +383,8 @@ UM.MainWindow {
         MenuItem { action: actions.deleteObject; }
         MenuItem { action: actions.multiplyObject; }
         MenuItem { action: actions.splitObject; }
+        MenuItem { action: actions.groupObjects;}
+        MenuItem { action: actions.unGroupObjects;}
         MenuSeparator { }
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }
@@ -408,6 +427,7 @@ UM.MainWindow {
         onAccepted:
         {
             UM.MeshFileHandler.readLocalFile(fileUrl)
+            Printer.setPlatformActivity(true)
         }
     }
 

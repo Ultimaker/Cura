@@ -201,18 +201,18 @@ class PrinterConnection(SignalEmitter):
                     continue # Could not set the baud rate, go to the next
             time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 sec seems to be the magic number
             sucesfull_responses = 0
-            timeout_time = time.time() + 5  
+            timeout_time = time.time() + 15
             self._serial.write(b"\n")
             self._sendCommand("M105")  # Request temperature, as this should (if baudrate is correct) result in a command with "T:" in it
+
             while timeout_time > time.time():
-                line = self._readline() 
+                line = self._readline()
                 if line is None:
                     self.setIsConnected(False) # Something went wrong with reading, could be that close was called.
                     return
                 
                 if b"T:" in line:
                     self._serial.timeout = 0.5
-                    self._serial.write(b"\n")
                     self._sendCommand("M105")
                     sucesfull_responses += 1
                     if sucesfull_responses >= self._required_responses_auto_baud:
@@ -220,6 +220,8 @@ class PrinterConnection(SignalEmitter):
                         self.setIsConnected(True)
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
                         return 
+
+        Logger.log("e", "Baud rate detection for %s failed", self._serial_port)
         self.close() # Unable to connect, wrap up.
         self.setIsConnected(False)
 
@@ -469,7 +471,7 @@ class PrinterConnection(SignalEmitter):
         
         # Turn of temperatures
         self._sendCommand("M140 S0")
-        self._sendCommand("M109 S0")
+        self._sendCommand("M104 S0")
         self._is_printing = False
 
     ##  Check if the process did not encounter an error yet.

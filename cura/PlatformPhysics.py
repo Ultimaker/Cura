@@ -12,6 +12,7 @@ from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
 from UM.Scene.Selection import Selection
+from cura.ConvexHullDecorator import ConvexHullDecorator
 
 from . import PlatformPhysicsOperation
 from . import ConvexHullJob
@@ -64,22 +65,26 @@ class PlatformPhysics:
                 move_vector.setY(-bbox.bottom)
 
             # If there is no convex hull for the node, start calculating it and continue.
-            if not hasattr(node, "_convex_hull"):
-                if not hasattr(node, "_convex_hull_job"):
+            if not node.getDecorator(ConvexHullDecorator):
+                node.addDecorator(ConvexHullDecorator())
+            
+            if not node.callDecoration("getConvexHull"):
+                if not node.callDecoration("getConvexHullJob"):
                     job = ConvexHullJob.ConvexHullJob(node)
                     job.start()
-                    node._convex_hull_job = job
+                    node.callDecoration("setConvexHullJob", job)
+
             elif Selection.isSelected(node):
                 pass
             else:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
-                    if other_node is root or type(other_node) is not SceneNode or other_node is node:
+                    if other_node is root or type(other_node) is not SceneNode or other_node is node or other_node in node.getAllChildren() or node in other_node.getAllChildren():
                         continue
-
+                    
                     # Ignore nodes that do not have the right properties set.
-                    if not hasattr(other_node, "_convex_hull") or not other_node.getBoundingBox():
+                    if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
                         continue
 
                     # Check to see if the bounding boxes intersect. If not, we can ignore the node as there is no way the hull intersects.
@@ -87,17 +92,17 @@ class PlatformPhysics:
                         continue
 
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
-                    overlap = node._convex_hull.intersectsPolygon(other_node._convex_hull)
+                    overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
                     if overlap is None:
                         continue
 
                     move_vector.setX(overlap[0] * 1.1)
                     move_vector.setZ(overlap[1] * 1.1)
-
-            if hasattr(node, "_convex_hull"):
+            convex_hull = node.callDecoration("getConvexHull") 
+            if convex_hull:
                 # Check for collisions between disallowed areas and the object
                 for area in self._build_volume.getDisallowedAreas():
-                    overlap = node._convex_hull.intersectsPolygon(area)
+                    overlap = convex_hull.intersectsPolygon(area)
                     if overlap is None:
                         continue
 

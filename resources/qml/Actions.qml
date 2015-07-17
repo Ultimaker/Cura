@@ -3,6 +3,7 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import UM 1.0 as UM
 
 Item {
     property alias open: openAction;
@@ -16,6 +17,9 @@ Item {
 
     property alias deleteObject: deleteObjectAction;
     property alias centerObject: centerObjectAction;
+    property alias groupObjects: groupObjectsAction;
+    property alias unGroupObjects:unGroupObjectsAction;
+    
     property alias multiplyObject: multiplyObjectAction;
     property alias splitObject: splitObjectAction;
 
@@ -120,7 +124,21 @@ Item {
         //: Center object action
         text: qsTr("Center Object on Platform");
     }
+    
+    Action
+    {
+        id: groupObjectsAction
+        text: qsTr("Group objects");
+        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+    }
 
+    Action
+    {
+        id: unGroupObjectsAction
+        text: qsTr("Ungroup objects");
+        enabled: UM.Scene.isGroupSelected
+    }
+    
     Action {
         id: multiplyObjectAction;
         //: Duplicate object action
