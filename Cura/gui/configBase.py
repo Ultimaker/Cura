@@ -1,4 +1,5 @@
 from __future__ import division
+from Cura.gui.configWizard import ConfigWizard
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx, wx.lib.stattext, types
@@ -247,3 +248,99 @@ class SettingRow(object):
 			self.ctrl.SetValue(_(value))
 		else:
 			self.ctrl.SetValue(value)
+
+class ToolheadRow(object):
+	def __init__(self, panel, configName, valueOverride = None, index = None):
+		sizer = panel.GetSizer()
+		x = sizer.GetRows()
+		y = 0
+		flag = 0
+
+		self.setting = profile.settingsDictionary[configName]
+		self.settingIndex = index
+		self.validationMsg = ''
+		self.panel = panel
+
+		self.label = wx.lib.stattext.GenStaticText(panel, -1, self.setting.getLabel())
+		self.label.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+
+		self.ctrl = wx.TextCtrl(panel, -1, self.setting.getValue(self.settingIndex))
+		self.ctrl.Enable(False)
+
+		self.changeToolheadButton = wx.Button(panel, -1, "Change Toolhead")
+		self.changeToolheadButton.Bind(wx.EVT_BUTTON, self.OnChangeToolheadButton)
+		self.flashButton = wx.Button(panel, -1, "Re-flash Firmware")
+		self.flashButton.Bind(wx.EVT_BUTTON, self.OnFlashButton)
+		
+		flag = wx.EXPAND
+		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
+		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_CENTER_VERTICAL|flag)
+		sizer.Add(self.changeToolheadButton, (x,y+2), flag=wx.ALIGN_CENTER_VERTICAL|flag)
+		sizer.Add(self.flashButton, (x,y+3), flag=wx.ALIGN_CENTER_VERTICAL|flag)
+		sizer.SetRows(x+1)
+
+		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+		if isinstance(self.ctrl, floatspin.FloatSpin):
+			self.ctrl.GetTextCtrl().Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+			self.defaultBGColour = self.ctrl.GetTextCtrl().GetBackgroundColour()
+		else:
+			self.defaultBGColour = self.ctrl.GetBackgroundColour()
+		
+		panel.main.settingControlList.append(self)
+
+	def OnFlashButton(self, e):
+		framey = PopUp(parent=None, id=-1, text="flash firmware")
+		framey.Show()
+	
+	def OnChangeToolheadButton(self, e):
+		import configWizard
+		import wx.wizard
+		self.ToolheadSelectPage = configWizard.ToolheadSelectPage(self)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ToolheadSelectPage)
+		self.ToolheadSelectPage.test()
+		
+		#framey = PopUp(parent=None, id=-1, text="toolhead changer")
+		#framey.Show()
+	
+	def OnMouseEnter(self, e):
+		self.label.SetToolTipString(self.setting.getTooltip())
+		self.ctrl.SetToolTipString(self.setting.getTooltip())
+
+	def OnMouseExit(self, e):
+		self.label.SetToolTipString('')
+		self.ctrl.SetToolTipString('')
+		e.Skip()
+
+	def GetValue(self):
+		if isinstance(self.ctrl, wx.ColourPickerCtrl):
+			return str(self.ctrl.GetColour().GetAsString(wx.C2S_HTML_SYNTAX))
+		elif isinstance(self.ctrl, wx.ComboBox):
+			value = unicode(self.ctrl.GetValue())
+			for ret in self._englishChoices:
+				if _(ret) == value:
+					return ret
+			return value
+		else:
+			return str(self.ctrl.GetValue())
+
+	def SetValue(self, value):
+		if isinstance(self.ctrl, wx.CheckBox):
+			self.ctrl.SetValue(str(value) == "True")
+		elif isinstance(self.ctrl, wx.ColourPickerCtrl):
+			self.ctrl.SetColour(value)
+		elif isinstance(self.ctrl, floatspin.FloatSpin):
+			try:
+				self.ctrl.SetValue(float(value))
+			except ValueError:
+				pass
+		elif isinstance(self.ctrl, wx.ComboBox):
+			self.ctrl.SetValue(_(value))
+		else:
+			self.ctrl.SetValue(value)
+			
+class PopUp(wx.Frame):
+	def __init__(self, parent, id, text):
+		wx.Frame.__init__(self, parent, id, 'Frame title', size=(400,300))
+		panely = wx.Panel(self)		
+		wx.StaticText(panely, -1, text, (10,10))

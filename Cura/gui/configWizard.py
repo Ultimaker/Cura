@@ -1011,6 +1011,17 @@ class LulzbotReadyPage(InfoPage):
 		self.AddText(_('For more information about using Cura with your LulzBot'))
 		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
 		self.AddSeperator()
+		
+class ToolheadSelectPage(InfoPage):
+	def __init__(self, parent):
+		super(ToolheadSelectPage, self).__init__(parent, _("LulzBot Toolhead Selection"))
+		printer_name = profile.getMachineSetting('machine_type')
+		
+		self.AddText(_('Selected printer is ({}).'.format(printer_name)))
+		self.Show()
+		
+	def test(self):
+		print("This is a test!")
 
 class Taz5NozzleSelectPage(InfoPage):
 	url='http://lulzbot.com/printer-identification'

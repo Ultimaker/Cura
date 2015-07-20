@@ -122,6 +122,12 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(left, 'machine_shape', index=idx)
 			configBase.SettingRow(left, 'gcode_flavor', index=idx)
 
+			printer_type = profile.getMachineSetting('machine_type', idx)
+			isLulzBot = (printer_type.startswith('lulzbot_'))
+			if(isLulzBot):
+				configBase.TitleRow(right, _("Toolhead"))
+				configBase.ToolheadRow(right, 'toolhead', index=idx)
+
 			configBase.TitleRow(right, _("Printer head size"))
 			configBase.SettingRow(right, 'extruder_head_size_min_x', index=idx)
 			configBase.SettingRow(right, 'extruder_head_size_min_y', index=idx)
