@@ -26,6 +26,10 @@ Build scripts
 
 Please checkout [cura-build](https://github.com/Ultimaker/cura-build)
 
+Third party plugins
+-------------
+[Print time calculator](https://github.com/nallath/PrintCostCalculator)
+
 Making profiles for other printers
 ----------------------------------
 Use [this](https://github.com/Ultimaker/Cura/blob/master/resources/settings/ultimaker_original.json) as a template.
