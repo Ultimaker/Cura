@@ -5,11 +5,11 @@
     "inherits": "fdmprinter.json",
 
     "machine_settings": {
-		"machine_start_gcode": {
-            "default": "; -- START GCODE --\n;Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}\n;Print time: {print_time}\n;Filament used: {filament_amount}m {filament_weight}g\n;Filament cost: {filament_cost}\n;Uncomment to add your own temperature line\n;M109 S{print_temperature}\n;Uncomment to add your own bed temperature line\n;M190 S{print_bed_temperature}\nG21                     ;metric values\nG90                     ;absolute positioning\nM107                    ;start with the fan off\nG28 X0 Y0               ;move X/Y to min endstops\nG28 Z0                  ;move Z to min endstops\nG1 Z15.0 F1200          ;move the platform down 15mm\nG92 E0                  ;zero the extruded length\nG1 F200 E20             ;extrude 20mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F7200 \n;Uncomment to put a printing message on LCD screen\n;M117 Printing...\n; -- end of START GCODE --"
+        "machine_start_gcode": {
+            "default": "; -- START GCODE --\n;Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}\n;Print time: {print_time}\n;Filament used: {filament_amount}m {filament_weight}g\n;Filament cost: {filament_cost}\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z15.0 F1200          ;move Z to position 15.0 mm\nG92 E0                  ;zero the extruded length\nG1 E20 F200             ;extrude 20mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F7200                ;set feedrate to 120 mm/sec\n; -- end of START GCODE --"
         },
         "machine_end_gcode": {
-            "default": "; -- END GCODE --\nM104 S0                     ;extruder heater off\nG91                         ;relative positioning\nG1 E-20 F300                ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z10 F1200    ;move Z up\nG91                         ;absolute positioning\nG1 X0 Y180 F1200  ;move Z up a bit and retract filament even more the way\nM84                         ;steppers off\n; -- end of END GCODE --"
+            "default": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nG91                     ;set to relative positioning\nG1 E-20 F300            ;retract the filament a bit to release some of the pressure\nG90                     ;set to absolute positioning\nG1 Z180                 ;move extruder to the top\nG1 X0 Y180 F1200        ;expose the platform\nM84                     ;turn off steppers\n; -- end of END GCODE --"
         },
         "machine_width": {
             "default": 200
@@ -26,73 +26,41 @@
         "machine_center_is_zero": {
             "default": false
         },
-        "machine_nozzle_offset_x_1": {
-            "default": 18.0
-        },
-        "machine_nozzle_offset_y_1": {
-            "default": 0.0
-        },
         "machine_gcode_flavor": {
-            "default": "RepRap (Marlin/Sprinter)"
+            "default": "RepRap"
         },
-        "machine_disallowed_areas": {
-            "default": [
-            [[-115.0,  112.5], [ -82.0,  112.5], [ -84.0,  104.5], [-115.0,  104.5]],
-            [[ 115.0,  112.5], [ 115.0,  104.5], [ 110.0,  104.5], [ 108.0,  112.5]],
-            [[-115.0, -112.5], [-115.0, -104.5], [ -84.0, -104.5], [ -82.0, -112.5]],
-            [[ 115.0, -112.5], [ 108.0, -112.5], [ 110.0, -104.5], [ 115.0, -104.5]]
-        ]},
         "machine_platform_offset": {
             "default": [0.0, 100.0, 0.0]
-        },
-        "machine_nozzle_tip_outer_diameter": {
-            "default": 0.4
         }
     },
     "categories": {
-		"resolution": {
+        "layer_height": {
             "settings": {
                 "layer_height": {
                     "default": 0.2
                 },
                 "layer_height_0": {
-					"default": 0.2,
+                    "default": 0.2,
                     "visible": true
-                },
-				"shell_thickness": {
-                    "default": 1.2,                    
+                }
+            }
+        },
+        "shell": {
+            "settings": {
+                "shell_thickness": {
+                    "default": 1.2,
                     "children": {
                         "wall_thickness": {
                             "default": 1.2,
-                            "visible": false
-                        },
-                        "alternate_extra_perimeter": {
-                            "default": false,
                             "visible": false
                         },
                         "top_bottom_thickness": {
                             "default": 0.8,
                             "visible": false,
                             "children": {
-                                "top_thickness": {
-                                    "default": 0.8,
-                                    "visible": false,
-                                    "children": {
-                                        "top_layers": {
-                                            "default": 8,
-                                            "visible": false
-                                        }
-                                    }
-                                },
                                 "bottom_thickness": {
                                     "default": 0.4,
-                                    "visible": false,
-                                    "children": {
-                                        "bottom_layers": {
-                                            "default": 8,
-                                            "visible": false
-                                        }
-                                    }
+                                    "visible": false
                                 }
                             }
                         }
@@ -108,84 +76,49 @@
                 },
                 "material_bed_temperature": {
                     "default": 0,
-					"visible": false
+                    "visible": false
                 },
                 "material_diameter": {
                     "default": 1.75,
                     "visible": true
-                },
-                "material_flow": {
-                    "default": 100.0,
-                    "visible": true
-                },
-				"retraction_enable": {
-                    "default": true,
-					"children": {
-						"retraction_speed": {
-							"default": 10.0,
-							"visible": true,
-							"children": {
-								"retraction_retract_speed": {
-									"default": 10.0,
-									"visible": true
-								},
-								"retraction_prime_speed": {
-									"default": 10.0,
-									"visible": true
-								}
-							}	
-						},
-						"retraction_amount": {
-                            "default": 1.0,
-							"visible": true
-                        },
-						"retraction_minimal_extrusion": {
-                            "default": 0.01,
-							"visible": false
-						},
-						"retraction_hop": {
-                            "default": 0.75,
-							"visible": false
-                        }
-					}
-				}	
+                }
             }
         },
-		"speed": {
+        "speed": {
             "settings": {
                 "speed_print": {
-                    "default": 50.0,
+                    "default": 40.0,
                     "children": {
                         "speed_infill": {
-                            "default": 50.0,
+                            "default": 40.0,
                             "visible": false
                         },
                         "speed_wall": {
-                            "default":45.0,
+                            "default":35.0,
                             "visible": false,
                             "children": {
                                 "speed_wall_0": {
-                                    "default": 45.0,
+                                    "default": 35.0,
                                     "visible": false
                                 },
                                 "speed_wall_x": {
-                                    "default": 45.0,
+                                    "default": 35.0,
                                     "visible": false
                                 }
                             }
                         },
                         "speed_topbottom": {
-                            "default": 45.0,
+                            "default": 35.0,
                             "visible": false
                         },
                         "speed_support": {
-                            "default": 45.0,
+                            "default": 35.0,
                             "visible": false
                         }
                     }
                 },
                 "speed_travel": {
-                    "default": 120.0
+                    "default": 110.0
                 },
                 "speed_layer_0": {
                     "default": 20.0,
@@ -193,61 +126,57 @@
                 }
             }
         },
-		"cooling": {
+        "travel": {
             "settings": {
-                "cool_fan_full_at_height": {
-                    "default": 1,
+                "retraction_speed": {
+                    "default": 30.0,
+                    "visible": true,
+                    "children": {
+                        "retraction_retract_speed": {
+                            "default": 30.0,
+                            "visible": true
+                        },
+                        "retraction_prime_speed": {
+                            "default": 30.0,
+                            "visible": true
+                        }
+                    }
+                },
+                "retraction_amount": {
+                    "default": 2.0,
+                    "visible": true
+                },
+                "retraction_hop": {
+                    "default": 0.75,
                     "visible": false
                 }
             }
         },
-		"support": {
+        "platform_adhesion": {
+            "settings": {
+                "skirt_minimal_length": {
+                    "default": 150
+                },
+                "raft_base_line_width": {
+                    "default": 0.7
+                },
+                "raft_interface_thickness": {
+                    "default": 0.2
+                }
+            }
+        },
+        "support": {
             "settings": {
                 "support_enable": {
                     "default": false
-                },
-                "support_type": {
-                    "default": "Everywhere",
-                    "visible": true
                 },
                 "support_z_distance": {
                     "default": 0.2,
                     "visible": false
                 },
-                "support_bottom_stair_step_height": {
-                    "default": 1.0,
-                    "visible": false
-                },
-                "support_join_distance": {
-                    "default": 2.0,
-                    "visible": false
-                },
-                "support_pattern": {
-                    "default": "ZigZag",
-                    "visible": true
-                },
                 "support_fill_rate": {
                     "default": 10,
                     "visible": false
-                }
-            }
-        },
-		"platform_adhesion": {
-            "settings": {
-                "skirt_minimal_length": {
-                    "default": 150
-                },
-                "raft_line_spacing": {
-                    "default": 1.0
-                },
-                "raft_base_linewidth": {
-                    "default": 0.7
-                },
-                "raft_interface_thickness": {
-                    "default": 0.2
-                },
-                "raft_interface_linewidth": {
-                    "default": 0.2
                 }
             }
         }
