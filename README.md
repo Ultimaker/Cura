@@ -32,16 +32,6 @@ Third party plugins
 
 Making profiles for other printers
 ----------------------------------
-Use [this](https://github.com/Ultimaker/Cura/blob/master/resources/settings/ultimaker_original.json) as a template.
-
-* Change the machine ID to something unique
-* Change the machine_name to your printer's name
-* If you have a 3D model of your platform you can put it in resources/meshes and put its name under platform
-* Set your machine's dimensions with machine_width, machine_depth, and machine_height
-* If your printer's origin is in the center of the bed, set machine_center_is_zero to true.
-* Set your print head dimensions with the machine_head_shape parameters
-* Set the nozzle offset with machine_nozzle_offset_x_1 and machine_nozzle_offset_y1
-* Set the start and end gcode in machine_start_gcode and machine_end_gcode
-* If your printer has a heated bed, set visible to true under material_bed_temperature
+Fill in the settings about your printer [here](http://quillford.github.io/CuraProfileMaker/).
 
 Once you are done, put the profile you have made into resources/settings.
