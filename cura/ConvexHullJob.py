@@ -41,10 +41,15 @@ class ConvexHullJob(Job):
         
         # First, calculate the normal convex hull around the points
         hull = hull.getConvexHull()
-        #print("hull: " , self._node.callDecoration("isGroup"), " " , hull.getPoints())
+
         # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
+        # This is done because of rounding errors.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-1, -1], [-1, 1], [1, 1], [1, -1]], numpy.float32)))
-       
+        settings = Application.getInstance().getActiveMachine()
+        
+        if settings.getSettingValueByKey("print_sequence") == "One at a time" and not self._node.getParent().callDecoration("isGroup"):
+            # Printing one at a time and it's not an object in a group
+            hull = hull.getMinkowskiHull(Polygon(numpy.array(settings.getSettingValueByKey("machine_head_polygon"),numpy.float32)))
         hull_node = ConvexHullNode.ConvexHullNode(self._node, hull, Application.getInstance().getController().getScene().getRoot())
         self._node.callDecoration("setConvexHullNode", hull_node)
         self._node.callDecoration("setConvexHull", hull)
