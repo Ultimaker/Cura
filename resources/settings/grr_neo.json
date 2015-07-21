@@ -2,7 +2,7 @@
     "id": "GRRneo",
     "name": "German RepRap Neo",
     "icon": "icon_ultimaker.png",
-    "platform": "ultimaker_platform.stl",
+    "platform": "grr_neo_platform.stl",
 
     "inherits": "fdmprinter.json",
     "visible": "true",
