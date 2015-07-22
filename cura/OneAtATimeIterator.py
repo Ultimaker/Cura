@@ -3,6 +3,7 @@
 
 from UM.Scene.Iterator import Iterator
 from functools import cmp_to_key
+from UM.Application import Application
 
 ## Iterator that returns a list of nodes in the order that they need to be printed
 #  If there is no solution an empty list is returned.
@@ -16,11 +17,13 @@ class OneAtATimeIterator(Iterator.Iterator):
     def _fillStack(self):
         node_list = []
         for node in self._scene_node.getChildren():
+            if node.getBoundingBox().height > Application.getInstance().getActiveMachine().getSettingByKey("gantry_height"):
+                return
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)
         
         if len(node_list) < 2:
-            return node_list 
+            return 
         
         self._original_node_list = node_list[:]
         
@@ -31,7 +34,7 @@ class OneAtATimeIterator(Iterator.Iterator):
         for a in range(0,len(node_list)):
             for b in range(0,len(node_list)):
                 if a != b and self._hit_map[a][b] and self._hit_map[b][a]:
-                    return []
+                    return 
         
         # Sort the original list so that items that block the most other objects are at the beginning.
         # This does not decrease the worst case running time, but should improve it in most cases.
