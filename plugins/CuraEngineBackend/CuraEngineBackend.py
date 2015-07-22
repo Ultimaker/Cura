@@ -11,6 +11,7 @@ from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Resources import Resources
 
+from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
 from . import ProcessGCodeJob
@@ -147,6 +148,10 @@ class CuraEngineBackend(Backend):
         msg = Cura_pb2.ObjectList()
 
         #TODO: All at once/one at a time mode
+        #print("Iterator time! ", OneAtATimeIterator(self._scene.getRoot()))
+        #for item in OneAtATimeIterator(self._scene.getRoot()):
+        #    print(item)
+        
         center = Vector()
         for object in objects:
             center += object.getPosition()

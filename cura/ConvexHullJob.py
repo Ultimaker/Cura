@@ -6,7 +6,7 @@ from UM.Application import Application
 from UM.Math.Polygon import Polygon
 
 import numpy
-
+import copy
 from . import ConvexHullNode
 
 class ConvexHullJob(Job):
@@ -49,6 +49,9 @@ class ConvexHullJob(Job):
         
         if settings.getSettingValueByKey("print_sequence") == "One at a time" and not self._node.getParent().callDecoration("isGroup"):
             # Printing one at a time and it's not an object in a group
+            self._node.callDecoration("setConvexHullBoundary", copy.deepcopy(hull))
+            head_hull = hull.getMinkowskiHull(Polygon(numpy.array(settings.getSettingValueByKey("machine_head_with_fans_polygon"),numpy.float32)))
+            self._node.callDecoration("setConvexHullHead", head_hull)
             hull = hull.getMinkowskiHull(Polygon(numpy.array(settings.getSettingValueByKey("machine_head_polygon"),numpy.float32)))
         hull_node = ConvexHullNode.ConvexHullNode(self._node, hull, Application.getInstance().getController().getScene().getRoot())
         self._node.callDecoration("setConvexHullNode", hull_node)
