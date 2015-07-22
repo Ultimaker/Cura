@@ -32,7 +32,7 @@ Third party plugins
 
 Making profiles for other printers
 ----------------------------------
-Use [this](https://github.com/Ultimaker/Cura/blob/master/resources/settings/ultimaker_original.json) as a template.
+There are two ways of doing it. You can either use the generator [here](http://quillford.github.io/CuraProfileMaker/) or you can use [this](https://github.com/Ultimaker/Cura/blob/master/resources/settings/ultimaker_original.json) as a template.
 
 * Change the machine ID to something unique
 * Change the machine_name to your printer's name
