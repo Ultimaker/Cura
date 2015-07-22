@@ -893,7 +893,7 @@
                         "Lines",
                         "ZigZag"
                     ],
-                    "default": "Lines",
+                    "default": "ZigZag",
                     "visible": true,
                     "active_if": {
                         "setting": "support_enable",
