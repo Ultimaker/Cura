@@ -9,7 +9,7 @@
             "default": "; -- START GCODE --\n;Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}\n;Print time: {print_time}\n;Filament used: {filament_amount}m {filament_weight}g\n;Filament cost: {filament_cost}\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z15.0 F1200          ;move Z to position 15.0 mm\nG92 E0                  ;zero the extruded length\nG1 E20 F200             ;extrude 20mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F7200                ;set feedrate to 120 mm/sec\n; -- end of START GCODE --"
         },
         "machine_end_gcode": {
-            "default": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nG91                     ;set to relative positioning\nG1 E-20 F300            ;retract the filament a bit to release some of the pressure\nG90                     ;set to absolute positioning\nG1 Z180                 ;move extruder to the top\nG1 X0 Y180 F1200        ;expose the platform\nM84                     ;turn off steppers\n; -- end of END GCODE --"
+            "default": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nG91                     ;set to relative positioning\nG1 E-20 F300            ;retract the filament a bit to release some of the pressure\nG1 Z10                  ;move extruder up 10 mm\nG90                     ;set to absolute positioning\nG1 X0 Y180 F1200        ;expose the platform\nM84                     ;turn off steppers\n; -- end of END GCODE --"
         },
         "machine_width": {
             "default": 200
@@ -168,7 +168,7 @@
         "support": {
             "settings": {
                 "support_enable": {
-                    "default": false
+                    "default": true
                 },
                 "support_z_distance": {
                     "default": 0.2,
