@@ -260,24 +260,31 @@ class ToolheadRow(object):
 		self.settingIndex = index
 		self.validationMsg = ''
 		self.panel = panel
+        # We need a subpanel here because SettingRow always takes 2 grid spaces
+        # and we shouldn't take more than that.
+		self.subpanel = wx.Panel(self.panel)
+		subsizer = wx.BoxSizer(wx.HORIZONTAL)
+		self.subpanel.SetSizer(subsizer)
 
 		self.label = wx.lib.stattext.GenStaticText(panel, -1, self.setting.getLabel())
 		self.label.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
 
-		self.ctrl = wx.TextCtrl(panel, -1, self.setting.getValue(self.settingIndex))
+		self.ctrl = wx.TextCtrl(self.subpanel, -1, self.setting.getValue(self.settingIndex))
 		self.ctrl.Enable(False)
 
-		self.changeToolheadButton = wx.Button(panel, -1, "Change Toolhead")
+		self.changeToolheadButton = wx.Button(self.subpanel, -1, "Change Toolhead")
 		self.changeToolheadButton.Bind(wx.EVT_BUTTON, self.OnChangeToolheadButton)
-		self.flashButton = wx.Button(panel, -1, "Re-flash Firmware")
+		self.flashButton = wx.Button(self.subpanel, -1, "Re-flash Firmware")
 		self.flashButton.Bind(wx.EVT_BUTTON, self.OnFlashButton)
-		
+
 		flag = wx.EXPAND
 		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+		subsizer.Add(self.ctrl, 1, flag=wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)
+		subsizer.Add(self.changeToolheadButton, 0, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=2)
+		subsizer.Add(self.flashButton, 0, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=2)
+
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
-		sizer.Add(self.ctrl, (x,y+1), flag=wx.ALIGN_CENTER_VERTICAL|flag)
-		sizer.Add(self.changeToolheadButton, (x,y+2), flag=wx.ALIGN_CENTER_VERTICAL|flag)
-		sizer.Add(self.flashButton, (x,y+3), flag=wx.ALIGN_CENTER_VERTICAL|flag)
+		sizer.Add(self.subpanel, (x,y+1), flag=wx.ALIGN_CENTER_VERTICAL|flag)
 		sizer.SetRows(x+1)
 
 		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
@@ -286,13 +293,13 @@ class ToolheadRow(object):
 			self.defaultBGColour = self.ctrl.GetTextCtrl().GetBackgroundColour()
 		else:
 			self.defaultBGColour = self.ctrl.GetBackgroundColour()
-		
+
 		panel.main.settingControlList.append(self)
 
 	def OnFlashButton(self, e):
 		framey = PopUp(parent=None, id=-1, text="flash firmware")
 		framey.Show()
-	
+
 	def OnChangeToolheadButton(self, e):
 		import configWizard
 		import wx.wizard
