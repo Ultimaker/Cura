@@ -113,13 +113,31 @@ class CuraEngineBackend(Backend):
             self.slicingCancelled.emit()
             return
 
-        objects = []
-        for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                if not getattr(node, "_outside_buildarea", False):
-                    objects.append(node)
+        object_groups = []
+        if self._settings.getSettingValueByKey("print_sequence") == "One at a time":
+            for node in OneAtATimeIterator(self._scene.getRoot()):
+                temp_list = []
+                children = node.getAllChildren()
+                children.append(node)
+                for child_node in children:
+                    if type(child_node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                        temp_list.append(child_node)
+                object_groups.append(temp_list)
+        else:
+            temp_list = []
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                    if not getattr(node, "_outside_buildarea", False):
+                        temp_list.append(node)
+            if len(temp_list) == 0:
+                return
+            object_groups.append(temp_list)
+        #for node in DepthFirstIterator(self._scene.getRoot()):
+        #    if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+        #        if not getattr(node, "_outside_buildarea", False):
+        #            objects.append(node)
 
-        if not objects:
+        if len(object_groups) == 0:
             return #No point in slicing an empty build plate
 
         if kwargs.get("settings", self._settings).hasErrorValue():
@@ -145,36 +163,37 @@ class CuraEngineBackend(Backend):
 
         self._save_polygons = kwargs.get("save_polygons", True)
 
-        msg = Cura_pb2.ObjectList()
+        slice_message = Cura_pb2.Slice()
 
         #TODO: All at once/one at a time mode
         #print("Iterator time! ", OneAtATimeIterator(self._scene.getRoot()))
         #for item in OneAtATimeIterator(self._scene.getRoot()):
         #    print(item)
-        
         center = Vector()
-        for object in objects:
-            center += object.getPosition()
+        for group in object_groups:
+            group_message = slice_message.object_lists.add()
+            for object in group:
+                center += object.getPosition()
 
-            mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
+                mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
-            obj = msg.objects.add()
-            obj.id = id(object)
-            
-            verts = numpy.array(mesh_data.getVertices())
-            verts[:,[1,2]] = verts[:,[2,1]]
-            verts[:,1] *= -1
-            obj.vertices = verts.tostring()
+                obj = group_message.objects.add()
+                obj.id = id(object)
+                
+                verts = numpy.array(mesh_data.getVertices())
+                verts[:,[1,2]] = verts[:,[2,1]]
+                verts[:,1] *= -1
+                obj.vertices = verts.tostring()
 
-            #if meshData.hasNormals():
-                #obj.normals = meshData.getNormalsAsByteArray()
+                #if meshData.hasNormals():
+                    #obj.normals = meshData.getNormalsAsByteArray()
 
-            #if meshData.hasIndices():
-                #obj.indices = meshData.getIndicesAsByteArray()
+                #if meshData.hasIndices():
+                    #obj.indices = meshData.getIndicesAsByteArray()
 
         self._scene.releaseLock()
-
-        self._socket.sendMessage(msg)
+        print("sending slice message")
+        self._socket.sendMessage(slice_message)
 
     def _onSceneChanged(self, source):
         if (type(source) is not SceneNode) or (source is self._scene.getRoot()) or (source.getMeshData() is None):
@@ -228,7 +247,7 @@ class CuraEngineBackend(Backend):
     def _createSocket(self):
         super()._createSocket()
         
-        self._socket.registerMessageType(1, Cura_pb2.ObjectList)
+        self._socket.registerMessageType(1, Cura_pb2.Slice)
         self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
         self._socket.registerMessageType(3, Cura_pb2.Progress)
         self._socket.registerMessageType(4, Cura_pb2.GCodeLayer)

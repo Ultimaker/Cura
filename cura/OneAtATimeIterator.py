@@ -17,12 +17,13 @@ class OneAtATimeIterator(Iterator.Iterator):
     def _fillStack(self):
         node_list = []
         for node in self._scene_node.getChildren():
-            if node.getBoundingBox().height > Application.getInstance().getActiveMachine().getSettingByKey("gantry_height"):
+            if node.getBoundingBox().height > Application.getInstance().getActiveMachine().getSettingValueByKey("gantry_height"):
                 return
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)
         
         if len(node_list) < 2:
+            self._node_stack = node_list[:]
             return 
         
         self._original_node_list = node_list[:]
@@ -34,6 +35,7 @@ class OneAtATimeIterator(Iterator.Iterator):
         for a in range(0,len(node_list)):
             for b in range(0,len(node_list)):
                 if a != b and self._hit_map[a][b] and self._hit_map[b][a]:
+                    print("Derp")
                     return 
         
         # Sort the original list so that items that block the most other objects are at the beginning.
@@ -54,9 +56,9 @@ class OneAtATimeIterator(Iterator.Iterator):
                         # We have no more nodes to check, so quit looking.
                         todo_node_list = None
                         self._node_stack = new_order
+                        print(self._node_stack)
                         return
                     todo_node_list.append(_objectOrder(new_order, new_todo_list))
-
         self._node_stack = [] #No result found!        
 
     
