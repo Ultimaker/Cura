@@ -35,7 +35,6 @@ class OneAtATimeIterator(Iterator.Iterator):
         for a in range(0,len(node_list)):
             for b in range(0,len(node_list)):
                 if a != b and self._hit_map[a][b] and self._hit_map[b][a]:
-                    print("Derp")
                     return 
         
         # Sort the original list so that items that block the most other objects are at the beginning.

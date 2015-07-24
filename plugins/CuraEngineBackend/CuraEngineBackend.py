@@ -120,7 +120,7 @@ class CuraEngineBackend(Backend):
                 children = node.getAllChildren()
                 children.append(node)
                 for child_node in children:
-                    if type(child_node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                    if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
                         temp_list.append(child_node)
                 object_groups.append(temp_list)
         else:
@@ -169,12 +169,12 @@ class CuraEngineBackend(Backend):
         #print("Iterator time! ", OneAtATimeIterator(self._scene.getRoot()))
         #for item in OneAtATimeIterator(self._scene.getRoot()):
         #    print(item)
-        center = Vector()
+        print("Start sending objects to engine")
         for group in object_groups:
+            print("Start sending group")
             group_message = slice_message.object_lists.add()
             for object in group:
-                center += object.getPosition()
-
+                print("Added object to group")
                 mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
                 obj = group_message.objects.add()
@@ -192,7 +192,7 @@ class CuraEngineBackend(Backend):
                     #obj.indices = meshData.getIndicesAsByteArray()
 
         self._scene.releaseLock()
-        print("sending slice message")
+        print("Message completed. Sending...")
         self._socket.sendMessage(slice_message)
 
     def _onSceneChanged(self, source):
