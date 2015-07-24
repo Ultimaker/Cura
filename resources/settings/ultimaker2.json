@@ -8,6 +8,8 @@
     "inherits": "fdmprinter.json",
 
     "machine_settings": {
+        "machine_start_gcode" : { "default": "" },
+        "machine_end_gcode" : { "default": "" },
         "machine_width": { "default": 230 },
         "machine_depth": { "default": 225 },
         "machine_height": { "default": 205 },
