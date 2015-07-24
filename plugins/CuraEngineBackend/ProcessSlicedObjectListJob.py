@@ -56,7 +56,7 @@ class ProcessSlicedObjectListJob(Job):
             self._progress.setProgress(2)
 
         mesh = MeshData()
-        layerData = LayerData.LayerData()
+        layer_data = LayerData.LayerData()
         for object in self._message.objects:
             try:
                 node = objectIdMap[object.id]
@@ -64,9 +64,9 @@ class ProcessSlicedObjectListJob(Job):
                 continue
 
             for layer in object.layers:
-                layerData.addLayer(layer.id)
-                layerData.setLayerHeight(layer.id, layer.height)
-                layerData.setLayerThickness(layer.id, layer.thickness)
+                layer_data.addLayer(layer.id)
+                layer_data.setLayerHeight(layer.id, layer.height)
+                layer_data.setLayerThickness(layer.id, layer.thickness)
                 for polygon in layer.polygons:
                     points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
@@ -78,20 +78,20 @@ class ProcessSlicedObjectListJob(Job):
 
                     points -= numpy.array(center)
 
-                    layerData.addPolygon(layer.id, polygon.type, points, polygon.line_width)
+                    layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
         if self._progress:
             self._progress.setProgress(50)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
-        layerData.build()
+        layer_data.build()
 
         if self._progress:
             self._progress.setProgress(100)
         
         #Add layerdata decorator to scene node to indicate that the node has layerdata
         decorator = LayerDataDecorator.LayerDataDecorator()
-        decorator.setLayerData(layerData)
+        decorator.setLayerData(layer_data)
         new_node.addDecorator(decorator)
         
         new_node.setMeshData(mesh)
