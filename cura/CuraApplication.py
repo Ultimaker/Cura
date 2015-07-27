@@ -437,13 +437,12 @@ class CuraApplication(QtApplication):
         group_node.addDecorator(multi_material_decorator)
         # Reset the position of each node
         for node in group_node.getChildren():
-            new_position = node.getPosition()
-            new_position.setX(0)
-            new_position.setZ(0)
+            new_position = node.getMeshData().getCenterPosition()
+            new_position.setY(0)
             node.setPosition(new_position)
         
         # Use the previously found center of the group bounding box as the new location of the group
-        group_node.setPosition((group_node.getBoundingBox().maximum + group_node.getBoundingBox().minimum) / 2)
+        group_node.setPosition(group_node.getBoundingBox().center)
     
     @pyqtSlot()
     def groupSelected(self):
