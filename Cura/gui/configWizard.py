@@ -1039,7 +1039,6 @@ class Taz5NozzleSelectPage(InfoPage):
 
 	def __init__(self, parent):
 		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
-		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
 
 		self.AddText(_(' '))
 		self.AddText(_('Please select nozzle size:'))
@@ -1067,9 +1066,6 @@ class Taz5NozzleSelectPage(InfoPage):
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_05nozzle')
-
-	def OnPageChanging(self, e):
-		e.GetPage().StoreData()
 
 class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
