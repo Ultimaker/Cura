@@ -79,9 +79,9 @@
                 ]
             ]
         },
-	"machine_head_with_fans_polygon":
-	{
-	      "default": [
+        "machine_head_with_fans_polygon":
+        {
+            "default": [
                 [
                     -20,
                     10
@@ -99,12 +99,11 @@
                     -10
                 ]
             ]
-	},
-	"gantry_height":
-	{
-		"default":10
-	},
-	
+        },
+        "gantry_height":
+        {
+            "default":10
+        },
         "machine_nozzle_tip_outer_diameter": {
             "default": 1
         },
