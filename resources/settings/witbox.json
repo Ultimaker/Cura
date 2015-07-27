@@ -168,7 +168,7 @@
         "support": {
             "settings": {
                 "support_enable": {
-                    "default": false
+                    "default": true
                 },
                 "support_z_distance": {
                     "default": 0.2,
