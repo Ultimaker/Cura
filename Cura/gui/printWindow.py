@@ -709,6 +709,7 @@ class printWindowAdvanced(wx.Frame):
 		# will be bigger than it should be until a power warning change
 		self.Layout()
 		self.Fit()
+		e.Skip()
 
 	def OnClose(self, e):
 		if self._printerConnection.hasActiveConnection():
