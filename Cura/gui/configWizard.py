@@ -111,6 +111,7 @@ class InfoPage(wx.wizard.WizardPageSimple):
 	def __init__(self, parent, title):
 		wx.wizard.WizardPageSimple.__init__(self, parent)
 
+		parent.GetPageAreaSizer().Add(self)
 		sizer = wx.GridBagSizer(5, 5)
 		self.sizer = sizer
 		self.SetSizer(sizer)
@@ -1100,7 +1101,6 @@ class ConfigWizard(wx.wizard.Wizard):
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.lulzbotReadyPage)
 
 		self.FitToPage(self.machineSelectPage)
-		self.GetPageAreaSizer().Add(self.machineSelectPage)
 
 		self.RunWizard(self.machineSelectPage)
 		self.Destroy()
@@ -1582,7 +1582,6 @@ class bedLevelWizard(wx.wizard.Wizard):
 		self.headOffsetCalibration = None
 
 		self.FitToPage(self.mainPage)
-		self.GetPageAreaSizer().Add(self.mainPage)
 
 		self.RunWizard(self.mainPage)
 		self.Destroy()
@@ -1610,7 +1609,6 @@ class headOffsetWizard(wx.wizard.Wizard):
 		self.mainPage = headOffsetCalibrationPage(self)
 
 		self.FitToPage(self.mainPage)
-		self.GetPageAreaSizer().Add(self.mainPage)
 
 		self.RunWizard(self.mainPage)
 		self.Destroy()
