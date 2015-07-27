@@ -1106,8 +1106,6 @@ class ConfigWizard(wx.wizard.Wizard):
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.lulzbotReadyPage)
 
-		self.FitToPage(self.machineSelectPage)
-
 		self.RunWizard(self.machineSelectPage)
 		self.Destroy()
 
@@ -1587,8 +1585,6 @@ class bedLevelWizard(wx.wizard.Wizard):
 		self.mainPage = bedLevelWizardMain(self)
 		self.headOffsetCalibration = None
 
-		self.FitToPage(self.mainPage)
-
 		self.RunWizard(self.mainPage)
 		self.Destroy()
 
@@ -1613,8 +1609,6 @@ class headOffsetWizard(wx.wizard.Wizard):
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
 
 		self.mainPage = headOffsetCalibrationPage(self)
-
-		self.FitToPage(self.mainPage)
 
 		self.RunWizard(self.mainPage)
 		self.Destroy()
