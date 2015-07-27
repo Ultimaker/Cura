@@ -1,5 +1,3 @@
-==marlin_mini_2014Q4==The marlin_mini_2014Q4.hex firmware is built from https://github.com/alephobjects/marlin_mini and released under GPLv3.
-
 
 ==MarlinUltimaker==
 The MarlinUltimaker-*.hex firmware is build from https://github.com/Ultimaker/Marlin and released under GPLv3
