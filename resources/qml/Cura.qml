@@ -378,27 +378,28 @@ UM.MainWindow {
         id: objectContextMenu;
 
         property variant objectId: -1;
-
         MenuItem { action: actions.centerObject; }
         MenuItem { action: actions.deleteObject; }
         MenuItem { action: actions.multiplyObject; }
         MenuItem { action: actions.splitObject; }
-        MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.unGroupObjects;}
+        
         MenuSeparator { }
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
+        MenuItem { action: actions.groupObjects;}
+        MenuItem { action: actions.unGroupObjects;}
     }
 
     Menu {
         id: contextMenu;
-
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
+        MenuItem { action: actions.groupObjects;}
+        MenuItem { action: actions.unGroupObjects;}
     }
 
     Connections {
