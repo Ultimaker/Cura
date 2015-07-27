@@ -41,7 +41,7 @@ class PrinterConnection(SignalEmitter):
         self._listen_thread.daemon = True
         
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
-        self._update_firmware_thread.demon = True
+        self._update_firmware_thread.deamon = True
         
         self._heatup_wait_start_time = time.time()
         
@@ -85,6 +85,10 @@ class PrinterConnection(SignalEmitter):
         self._updating_firmware = False
         
         self._firmware_file_name = None
+
+        self.firmwareUpdateComplete.connect(self._onFirmwareUpdateComplete)
+
+    firmwareUpdateComplete = Signal()
         
     # TODO: Might need to add check that extruders can not be changed when it started printing or loading these settings from settings object    
     def setNumExtuders(self, num):
@@ -162,6 +166,8 @@ class PrinterConnection(SignalEmitter):
 
         self.setProgress(100, 100)
 
+        self.firmwareUpdateComplete.emit()
+
     ##  Upload new firmware to machine
     #   \param filename full path of firmware file to be uploaded
     def updateFirmware(self, file_name):
@@ -187,9 +193,11 @@ class PrinterConnection(SignalEmitter):
             Logger.log("i", "Could not establish connection on %s, unknown reasons.", self._serial_port)
             return
         
+        Logger.log("d", "Starting baud rate detection...")
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
-            
+            Logger.log("d", "Trying baud rate %s", baud_rate)
+
             if self._serial is None:
                 try:
                     self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout=3, writeTimeout=10000)
@@ -210,16 +218,17 @@ class PrinterConnection(SignalEmitter):
                 if line is None:
                     self.setIsConnected(False) # Something went wrong with reading, could be that close was called.
                     return
-                
+
                 if b"T:" in line:
                     self._serial.timeout = 0.5
-                    self._sendCommand("M105")
                     sucesfull_responses += 1
                     if sucesfull_responses >= self._required_responses_auto_baud:
                         self._serial.timeout = 2 #Reset serial timeout
                         self.setIsConnected(True)
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
                         return 
+
+                self._sendCommand("M105") # Send M105 as long as we are listening, otherwise we end up in an undefined state
 
         Logger.log("e", "Baud rate detection for %s failed", self._serial_port)
         self.close() # Unable to connect, wrap up.
@@ -240,15 +249,6 @@ class PrinterConnection(SignalEmitter):
             self.connectionStateChanged.emit(self._serial_port)
             if self._is_connected: 
                 self._listen_thread.start() #Start listening
-                #Application.getInstance().addOutputDevice(self._serial_port, {
-                    #"id": self._serial_port,
-                    #"function": self.printGCode,
-                    #"shortDescription": "Print with USB",
-                    #"description": "Print with USB {0}".format(self._serial_port),
-                    #"icon": "save",
-                    #"priority": 1
-                #})
-                
         else:
             Logger.log("w", "Printer connection state was not changed")
             
@@ -261,6 +261,9 @@ class PrinterConnection(SignalEmitter):
                 self._connect_thread.join()
             except:
                 pass
+
+        self._connect_thread = threading.Thread(target=self._connect)
+        self._connect_thread.daemon = True
         if self._serial is not None:
             self.setIsConnected(False)
             try:
@@ -268,7 +271,9 @@ class PrinterConnection(SignalEmitter):
             except:
                 pass
             self._serial.close()
-            
+
+        self._listen_thread = threading.Thread(target=self._listen)
+        self._listen_thread.daemon = True
         self._serial = None
     
     def isConnected(self):
@@ -495,3 +500,10 @@ class PrinterConnection(SignalEmitter):
     def _getBaudrateList(self):
         ret = [250000, 230400, 115200, 57600, 38400, 19200, 9600]
         return ret
+
+    def _onFirmwareUpdateComplete(self):
+        self._update_firmware_thread.join()
+        self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
+        self._update_firmware_thread.deamon = True
+
+        self.connect()
