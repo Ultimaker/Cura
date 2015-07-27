@@ -428,11 +428,11 @@ class MachineSelectPage(InfoPage):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().printrbotSelectType)
 
 	def OnLulzbotSelect(self, e):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotToolheadPage)
 
 	def OnTaz5Select(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().taz5NozzleSelectPage)
-		wx.wizard.WizardPageSimple.Chain(self.GetParent().taz5NozzleSelectPage, self.GetParent().lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().taz5NozzleSelectPage, self.GetParent().lulzbotToolheadPage)
 
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
@@ -1017,28 +1017,111 @@ class Ultimaker2ReadyPage(InfoPage):
 class LulzbotReadyPage(InfoPage):
 	def __init__(self, parent):
 		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ/Mini"))
+		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
 		self.AddText(_('Cura is now ready to be used with your LulzBot 3D printer.'))
 		self.AddSeperator()
 		self.AddText(_('For more information about using Cura with your LulzBot'))
 		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
 		self.AddSeperator()
-		
-class ToolheadSelectPage(InfoPage):
+
+class LulzbotToolheadSelectPage(InfoPage):
+	url='http://lulzbot.com/toolhead-identification'
+
 	def __init__(self, parent):
-		super(ToolheadSelectPage, self).__init__(parent, _("LulzBot Toolhead Selection"))
+		super(LulzbotToolheadSelectPage, self).__init__(parent, _("LulzBot Toolhead Selection"))
+
+		self.mini_choices = [_('Standard'), _('Flexystruder')]
+		self.taz_choices = [_('Standard v1'),
+					   _('Standard v2 0.35 mm nozzle'), _('Standard v2 0.5 mm nozzle'),
+					   _('Flexystruder v1'), _('Flexystruder v2'),
+					   _('Dually v1'), _('Dually v2'),
+					   _('FlexyDually v1'), _('FlexyDually v2')]
+		self.description_map = {
+				_('Standard'): _('This is the standard toolhead that comes with the Lulzbot Mini'),
+				_('Flexystruder'): _('This is the Flexystruder for the Lulzbot Mini\nIt is used for printing Flexible materials'),
+				_('Standard v1'): _('This is the standard toolhead that comes with the Lulzbot TAZ 1-2-3 and TAZ 4.\nIt uses the Budaschnozzle for the hotend'),
+				_('Standard v2 0.35 mm nozzle'): _('This is the standard toolhead that comes with the Lulzbot TAZ 5.\nIt uses the Hexagon hotend and a 0.35 mm nozzle'),
+				_('Standard v2 0.5 mm nozzle'): _('This is the standard toolhead that comes with the Lulzbot TAZ 5.\nIt uses the Hexagon hotend and a 0.5 mm nozzle'),
+				_('Flexystruder v1'): _('It\'s the flexy!'),
+				_('Flexystruder v2'): _('It\'s the flexy v2!'),
+				_('Dually v1'): _('It\'s the dualy v1!'),
+				_('Dually v2'): _('It\'s the dual v2!'),
+				_('FlexyDually v1'): _('It\'s the flexy dually v1!'),
+				_('FlexyDually v2'): _('It\'s the flexy dual v2!')
+		}
+		self.image_map = {
+				_('Standard'): 'Lulzbot_Toolhead_Mini_Standard.jpg',
+				_('Flexystruder'): 'Lulzbot_logo.png',
+				_('Standard v1'): 'Lulzbot_logo.png',
+				_('Standard v2 0.35 mm nozzle'): 'Lulzbot_Toolhead_TAZ_Single_v2.jpg',
+				_('Standard v2 0.5 mm nozzle'): 'Lulzbot_Toolhead_TAZ_Single_v2.jpg',
+				_('Flexystruder v1'): 'Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg',
+				_('Flexystruder v2'): 'Lulzbot_logo.png',
+				_('Dually v1'): 'Lulzbot_Toolhead_TAZ_Dually_v1.jpg',
+				_('Dually v2'): 'Lulzbot_logo.png',
+				_('FlexyDually v1'): 'Lulzbot_logo.png',
+				_('FlexyDually v2'): 'Lulzbot_logo.png'
+		}
+		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
 		printer_name = profile.getMachineSetting('machine_type')
-		
-		self.AddText(_('Selected printer is ({}).'.format(printer_name)))
-		self.Show()
-		
-	def test(self):
-		print("This is a test!")
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_SHOWN, self.OnPageShown)
+
+		self.AddText(_('Please select your currently installed Tool Head'))
+		txt = self.AddText(_('It is important to select the correct Tool head for your printer.\n' +
+							 'Flashing the wrong firmware on your printer can cause damage to your printer and to your toolhead\n' +
+							 'If you are not sure which toolhead you have, please refer to this webpage for more information: '))
+		txt.SetForegroundColour(wx.RED)
+		button = self.AddButton(self.url)
+		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
+
+		self.AddSeperator()
+		self.combo = self.AddCombo(_('Currently installed Toolhead'), [''])
+		self.combo.SetEditable(False)
+		self.combo.Bind(wx.EVT_COMBOBOX, self.OnToolheadSelected)
+		self.description = self.AddText('\n\n')
+		self.description.SetFont(wx.Font(11, wx.SWISS, wx.NORMAL, wx.BOLD))
+		self.image = self.AddBitmap(wx.Bitmap(resources.getPathForImage(self.image_map[self.mini_choices[0]])))
+
+	def OnPageShown(self, e):
+		printer_name = profile.getMachineSetting('machine_type')
+		if printer_name == 'lulzbot_mini':
+			choices = self.mini_choices
+			default = 0
+		else:
+			choices = self.taz_choices
+			if printer_name == 'lulzbot_TAZ_4':
+				default = 0
+			elif printer_name == 'lulzbot_TAZ_5':
+				default = 1
+			else:
+				default = 2
+
+		self.combo.Clear()
+		self.combo.AppendItems(choices)
+		self.combo.SetValue(choices[default])
+		self.OnToolheadSelected(e)
+
+	def OnUrlClick(self, e):
+		webbrowser.open(LulzbotToolheadSelectPage.url)
+
+	def OnToolheadSelected(self, e):
+		toolhead = self.combo.GetValue()
+		if self.description_map.has_key(toolhead):
+			self.image.SetBitmap(wx.Bitmap(resources.getPathForImage(self.image_map[toolhead])))
+			self.description.SetLabel(self.description_map[toolhead])
+		else:
+			self.image.SetBitmap(wx.NullBitmap)
+			self.description.SetLabel('\n\n')
+		self.Layout()
+		self.Fit()
+
 
 class Taz5NozzleSelectPage(InfoPage):
 	url='http://lulzbot.com/printer-identification'
 
 	def __init__(self, parent):
 		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
+		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
 
 		self.AddText(_(' '))
 		self.AddText(_('Please select nozzle size:'))
@@ -1094,6 +1177,7 @@ class ConfigWizard(wx.wizard.Wizard):
 
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 		self.lulzbotReadyPage = LulzbotReadyPage(self)
+		self.lulzbotToolheadPage = LulzbotToolheadSelectPage(self)
 		self.taz5NozzleSelectPage = Taz5NozzleSelectPage(self)
 
 		#wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
@@ -1104,7 +1188,8 @@ class ConfigWizard(wx.wizard.Wizard):
 		#wx.wizard.WizardPageSimple.Chain(self.ultimakerCalibrationPage, self.ultimakerCalibrateStepsPerEPage)
 		wx.wizard.WizardPageSimple.Chain(self.printrbotSelectType, self.otherMachineInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
-		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.lulzbotToolheadPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotToolheadPage, self.lulzbotReadyPage)
 
 		self.RunWizard(self.machineSelectPage)
 		self.Destroy()
