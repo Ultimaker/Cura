@@ -1,6 +1,10 @@
-setuptools
-py2app
+setuptools<3.5
+altgraph
+modulegraph
+macholib==1.5.1
+pyobjc==2.5.1
+py2app==0.8.1
+power
 pyserial
 PyOpenGL
 numpy
-power
