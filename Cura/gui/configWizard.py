@@ -116,9 +116,19 @@ class InfoPage(wx.wizard.WizardPageSimple):
 		self.sizer = sizer
 		self.SetSizer(sizer)
 
-		title = wx.StaticText(self, -1, title)
-		title.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
-		sizer.Add(title, pos=(0, 0), span=(1, 2), flag=wx.ALIGN_CENTRE | wx.ALL)
+		self.title = wx.StaticText(self, -1, title)
+		font = wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD)
+		self.title.SetFont(font)
+		# HACK ALERT: For some reason, the StaticText keeps its same size as if
+		# the font was not modified, this causes the text to wrap and to
+		# get out of bounds of the widgets area and hide other widgets.
+		# The only way I found for the widget to get its right size was to calculate
+		# the new font's extent and set the min size on the widget
+		dc = wx.ScreenDC()
+		dc.SetFont(font)
+		w,h = dc.GetTextExtent(title)
+		self.title.SetMinSize((w, h))
+		sizer.Add(self.title, pos=(0, 0), span=(1, 2), flag=wx.ALIGN_CENTRE | wx.ALL)
 		sizer.Add(wx.StaticLine(self, -1), pos=(1, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL)
 		sizer.AddGrowableCol(1)
 
