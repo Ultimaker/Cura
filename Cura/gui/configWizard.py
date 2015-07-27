@@ -1062,7 +1062,7 @@ class LulzbotToolheadSelectPage(InfoPage):
 				_('FlexyDually v1'): 'Lulzbot_logo.png',
 				_('FlexyDually v2'): 'Lulzbot_logo.png'
 		}
-		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
+		self.AddBitmap(wx.Bitmap(resources.getPathForImage('LulzBot_logo.png')))
 		printer_name = profile.getMachineSetting('machine_type')
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_SHOWN, self.OnPageShown)
 
