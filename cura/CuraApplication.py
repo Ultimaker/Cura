@@ -36,6 +36,7 @@ from . import BuildVolume
 from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
+from . import MultiMaterialDecorator
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
 from PyQt5.QtGui import QColor, QIcon
@@ -425,7 +426,25 @@ class CuraApplication(QtApplication):
 
         self.getActiveMachine().setSettingValueByKey(key, value)
         
+    @pyqtSlot()
+    def mergeSelected(self):
+        self.groupSelected()
+        try:
+            group_node = Selection.getAllSelectedObjects()[0]
+        except Exception as e:
+            return
+        multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
+        group_node.addDecorator(multi_material_decorator)
+        # Reset the position of each node
+        for node in group_node.getChildren():
+            new_position = node.getPosition()
+            new_position.setX(0)
+            new_position.setZ(0)
+            node.setPosition(new_position)
         
+        # Use the previously found center of the group bounding box as the new location of the group
+        group_node.setPosition((group_node.getBoundingBox().maximum + group_node.getBoundingBox().minimum) / 2)
+    
     @pyqtSlot()
     def groupSelected(self):
         group_node = SceneNode()

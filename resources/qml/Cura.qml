@@ -357,6 +357,11 @@ UM.MainWindow {
         {
             Printer.ungroupSelected()
         }
+        
+        mergeObjects.onTriggered:
+        {
+            Printer.mergeSelected()
+        }
 
         deleteAll.onTriggered: Printer.deleteAll()
         resetAllTranslation.onTriggered: Printer.resetAllTranslation()
@@ -390,6 +395,7 @@ UM.MainWindow {
         MenuItem { action: actions.resetAll; }
         MenuItem { action: actions.groupObjects;}
         MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: actions.mergeObjects;}
     }
 
     Menu {
@@ -400,6 +406,7 @@ UM.MainWindow {
         MenuItem { action: actions.resetAll; }
         MenuItem { action: actions.groupObjects;}
         MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: actions.mergeObjects;}
     }
 
     Connections {

@@ -80,8 +80,17 @@ class PlatformPhysics:
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
-                    if other_node is root or type(other_node) is not SceneNode or other_node is node or other_node in node.getAllChildren() or node in other_node.getAllChildren():
+                    if other_node is root or type(other_node) is not SceneNode or other_node is node:
                         continue
+                    
+                    # Ignore colissions of a group with it's own children
+                    if other_node in node.getAllChildren() or node in other_node.getAllChildren():
+                        continue
+                    
+                    # Ignore colissions within a group
+                    if other_node.getParent().callDecoration("isGroup") is not None:
+                        if node.getParent().callDecoration("isGroup") is other_node.getParent().callDecoration("isGroup"):
+                            continue
                     
                     # Ignore nodes that do not have the right properties set.
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
@@ -95,7 +104,7 @@ class PlatformPhysics:
                     overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
                     if overlap is None:
                         continue
-
+                    
                     move_vector.setX(overlap[0] * 1.1)
                     move_vector.setZ(overlap[1] * 1.1)
             convex_hull = node.callDecoration("getConvexHull") 
