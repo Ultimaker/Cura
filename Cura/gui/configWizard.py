@@ -221,8 +221,8 @@ class InfoPage(wx.wizard.WizardPageSimple):
 	def AddCombo(self, label, options):
 		combo = wx.ComboBox(self, -1, options[0], choices=options, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		text = wx.StaticText(self, -1, label)
-		self.GetSizer().Add(text, pos=(self.rowNr, 0), span=(1, 1), flag=wx.LEFT | wx.RIGHT)
-		self.GetSizer().Add(combo, pos=(self.rowNr, 1), span=(1, 1), flag=wx.LEFT | wx.RIGHT)
+		self.GetSizer().Add(text, pos=(self.rowNr, 0), span=(1, 1), flag=wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER)
+		self.GetSizer().Add(combo, pos=(self.rowNr, 1), span=(1, 1), flag=wx.LEFT | wx.RIGHT | wx.EXPAND)
 		self.rowNr += 1
 		return combo
 
