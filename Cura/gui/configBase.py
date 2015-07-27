@@ -272,16 +272,13 @@ class ToolheadRow(object):
 		self.ctrl = wx.TextCtrl(self.subpanel, -1, self.setting.getValue(self.settingIndex))
 		self.ctrl.Enable(False)
 
-		self.changeToolheadButton = wx.Button(self.subpanel, -1, "Change Toolhead")
+		self.changeToolheadButton = wx.Button(self.subpanel, -1, _("Change Toolhead"))
 		self.changeToolheadButton.Bind(wx.EVT_BUTTON, self.OnChangeToolheadButton)
-		self.flashButton = wx.Button(self.subpanel, -1, "Re-flash Firmware")
-		self.flashButton.Bind(wx.EVT_BUTTON, self.OnFlashButton)
 
 		flag = wx.EXPAND
 		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
 		subsizer.Add(self.ctrl, 1, flag=wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)
 		subsizer.Add(self.changeToolheadButton, 0, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=2)
-		subsizer.Add(self.flashButton, 0, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=2)
 
 		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
 		sizer.Add(self.subpanel, (x,y+1), flag=wx.ALIGN_CENTER_VERTICAL|flag)
@@ -296,20 +293,13 @@ class ToolheadRow(object):
 
 		panel.main.settingControlList.append(self)
 
-	def OnFlashButton(self, e):
-		framey = PopUp(parent=None, id=-1, text="flash firmware")
-		framey.Show()
-
 	def OnChangeToolheadButton(self, e):
 		import configWizard
 		import wx.wizard
 		self.ToolheadSelectPage = configWizard.ToolheadSelectPage(self)
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().ToolheadSelectPage)
 		self.ToolheadSelectPage.test()
-		
-		#framey = PopUp(parent=None, id=-1, text="toolhead changer")
-		#framey.Show()
-	
+
 	def OnMouseEnter(self, e):
 		self.label.SetToolTipString(self.setting.getTooltip())
 		self.ctrl.SetToolTipString(self.setting.getTooltip())

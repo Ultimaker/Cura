@@ -123,8 +123,7 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(left, 'gcode_flavor', index=idx)
 
 			printer_type = profile.getMachineSetting('machine_type', idx)
-			isLulzBot = (printer_type.startswith('lulzbot_'))
-			if(isLulzBot):
+			if printer_type.startswith('lulzbot_'):
 				configBase.TitleRow(right, _("Toolhead"))
 				configBase.ToolheadRow(right, 'toolhead', index=idx)
 
