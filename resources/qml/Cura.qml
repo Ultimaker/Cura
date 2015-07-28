@@ -357,6 +357,11 @@ UM.MainWindow {
         {
             Printer.ungroupSelected()
         }
+        
+        mergeObjects.onTriggered:
+        {
+            Printer.mergeSelected()
+        }
 
         deleteAll.onTriggered: Printer.deleteAll()
         resetAllTranslation.onTriggered: Printer.resetAllTranslation()
@@ -378,27 +383,30 @@ UM.MainWindow {
         id: objectContextMenu;
 
         property variant objectId: -1;
-
         MenuItem { action: actions.centerObject; }
         MenuItem { action: actions.deleteObject; }
         MenuItem { action: actions.multiplyObject; }
         MenuItem { action: actions.splitObject; }
-        MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.unGroupObjects;}
+        
         MenuSeparator { }
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
+        MenuItem { action: actions.groupObjects;}
+        MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: actions.mergeObjects;}
     }
 
     Menu {
         id: contextMenu;
-
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
+        MenuItem { action: actions.groupObjects;}
+        MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: actions.mergeObjects;}
     }
 
     Connections {

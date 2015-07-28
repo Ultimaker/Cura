@@ -19,6 +19,8 @@ Item {
     property alias centerObject: centerObjectAction;
     property alias groupObjects: groupObjectsAction;
     property alias unGroupObjects:unGroupObjectsAction;
+    property alias mergeObjects: mergeObjectsAction;
+    //property alias unMergeObjects: unMergeObjectsAction;
     
     property alias multiplyObject: multiplyObjectAction;
     property alias splitObject: splitObjectAction;
@@ -137,6 +139,13 @@ Item {
         id: unGroupObjectsAction
         text: qsTr("Ungroup objects");
         enabled: UM.Scene.isGroupSelected
+    }
+    
+    Action
+    {
+        id: mergeObjectsAction
+        text: qsTr("Merge objects");
+        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
     
     Action {

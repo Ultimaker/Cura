@@ -5,6 +5,17 @@ This is the new, shiny frontend for Cura. [daid/Cura](https://github.com/daid/Cu
 
 We re-worked the whole GUI code at Ultimaker, because the old code started to become a unmaintainable.
 
+
+Logging Issues
+------------
+Use [this](https://github.com/Ultimaker/Uranium/wiki/Bug-Reporting-Template) template to report issues. New issues that do not adhere to this template will take us a lot longer to handle and will therefore have a lower pirority. 
+
+For crashes and similar issues, please attach the following information:
+
+* (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
+* The Cura GUI log file, located at (Windows) $User/AppData/Local/cura/cura.log, (OSX) $User/.cura/cura.log
+* The Cura Engine log, using Help -> Show Engine Log
+
 Dependencies
 ------------
 
