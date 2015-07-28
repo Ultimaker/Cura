@@ -1154,12 +1154,22 @@ class LulzbotToolheadSelectPage(InfoPage):
 		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
 
 		self.AddSeperator()
-		self.combo = self.AddCombo(_('Currently installed Toolhead'), [''])
-		self.combo.SetEditable(False)
-		self.combo.Bind(wx.EVT_COMBOBOX, self.OnToolheadSelected)
-		self.description = self.AddText('\n\n')
-		self.description.SetFont(wx.Font(11, wx.SWISS, wx.NORMAL, wx.BOLD))
-		self.image = self.AddBitmap(wx.Bitmap(resources.getPathForImage(self.image_map[self.mini_choices[0]])))
+		#self.combo = self.AddCombo(_('Currently installed Toolhead'), [''])
+		#self.combo.SetEditable(False)
+		#self.combo.Bind(wx.EVT_COMBOBOX, self.OnToolheadSelected)
+		#self.description = self.AddText('\n\n')
+		#self.description.SetFont(wx.Font(11, wx.SWISS, wx.NORMAL, wx.BOLD))
+		#self.image = self.AddBitmap(wx.Bitmap(resources.getPathForImage(self.image_map[self.mini_choices[0]])))
+		self.panel = self.AddPanel()
+		ib1 = ImageButton(self.panel, "Mini", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg')), "Some description", style=ImageButton.IB_GROUP)
+		ib2 = ImageButton(self.panel, "TAZ 4 ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Single_v2.jpg')), "Some description 2")
+		ib3 = ImageButton(self.panel, "TAZ 5 ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg')), "Some description 3")
+		ib4 = ImageButton(self.panel, "Others ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Dually_v1.jpg')), "Some description\n4")
+		self.panel.GetSizer().Add(ib1, pos=(0, 0), flag=wx.EXPAND)
+		self.panel.GetSizer().Add(ib2, pos=(0, 1), flag=wx.EXPAND)
+		self.panel.GetSizer().Add(ib3, pos=(1, 0), flag=wx.EXPAND)
+		self.panel.GetSizer().Add(ib4, pos=(1, 1), flag=wx.EXPAND)
+
 
 	def OnPageShown(self, e):
 		printer_name = profile.getMachineSetting('machine_type')
