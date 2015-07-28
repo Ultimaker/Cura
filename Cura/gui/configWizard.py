@@ -1061,7 +1061,7 @@ class LulzbotMachineSelectPage(InfoPage):
 		self.LulzbotTaz5.OnSelected(self.OnLulzbotSelected)
 		self.LulzbotTaz4 = ImageButton(self.panel, _("LulzBot TAZ 4"), self.GetBitmap('Lulzbot_TAZ4.jpg'))
 		self.LulzbotTaz4.OnSelected(self.OnLulzbotSelected)
-		self.OtherPrinters = ImageButton(self.panel, _("Other printers"), self.GetBitmap('Other_Printers.jpg'))
+		self.OtherPrinters = ImageButton(self.panel, _("Non-LulzBot Printers"), self.GetBitmap('Other_Printers.jpg'))
 		self.OtherPrinters.OnSelected(self.OnOthersSelected)
 
 		self.panel.GetSizer().Add(self.LulzbotMini, pos=(0, 0))
