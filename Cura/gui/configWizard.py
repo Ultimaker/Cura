@@ -164,6 +164,7 @@ class ImageButton(wx.Panel):
 				if ib == self:
 					continue
 				ib.SetValue(False)
+		self.Layout()
 
 	def createOverlay(self, bitmap, overlay):
 		result = bitmap.GetSubBitmap(wx.Rect(0, 0, *bitmap.Size))
@@ -1163,8 +1164,8 @@ class LulzbotToolheadSelectPage(InfoPage):
 		self.panel = self.AddPanel()
 		ib1 = ImageButton(self.panel, "Mini", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg')), "Some description", style=ImageButton.IB_GROUP)
 		ib2 = ImageButton(self.panel, "TAZ 4 ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Single_v2.jpg')), "Some description 2")
-		ib3 = ImageButton(self.panel, "TAZ 5 ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg')), "Some description 3")
-		ib4 = ImageButton(self.panel, "Others ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Dually_v1.jpg')), "Some description\n4")
+		ib3 = ImageButton(self.panel, "TAZ 5 ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg')))
+		ib4 = ImageButton(self.panel, "Others ", wx.Bitmap(resources.getPathForImage('Lulzbot_Toolhead_TAZ_Dually_v1.jpg')))
 		self.panel.GetSizer().Add(ib1, pos=(0, 0), flag=wx.EXPAND)
 		self.panel.GetSizer().Add(ib2, pos=(0, 1), flag=wx.EXPAND)
 		self.panel.GetSizer().Add(ib3, pos=(1, 0), flag=wx.EXPAND)
