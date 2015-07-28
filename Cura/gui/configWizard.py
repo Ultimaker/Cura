@@ -281,6 +281,14 @@ class InfoPage(wx.wizard.WizardPageSimple):
 		self.rowNr += 1
 		return bitmap
 
+	def AddPanel(self):
+		panel = wx.Panel(self, -1)
+		sizer = wx.GridBagSizer(2, 2)
+		panel.SetSizer(sizer)
+		self.GetSizer().Add(panel, pos=(self.rowNr, 0), span=(1, 2), flag=wx.ALL | wx.EXPAND)
+		self.rowNr += 1
+		return panel
+
 	def AddCheckmark(self, label, bitmap):
 		check = wx.StaticBitmap(self, -1, bitmap)
 		text = wx.StaticText(self, -1, label)
