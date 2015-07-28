@@ -22,6 +22,9 @@
         "machine_center_is_zero": {
             "default": false
         },
+        "machine_extruder_count": {
+            "default": 1
+        },
         "machine_nozzle_size": {
             "default": 0.4
         },
