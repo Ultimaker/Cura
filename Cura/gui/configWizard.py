@@ -106,6 +106,77 @@ class InfoBox(wx.Panel):
 		self.busyState = None
 		self.bitmap.SetBitmap(self.attentionBitmap)
 
+class ImageButton(wx.Panel):
+	DefaultOverlay = wx.Bitmap(resources.getPathForImage('ImageButton_Overlay.png'))
+	IB_GROUP=1
+	__groups__ = {}
+	__last_group__ = None
+	def __init__(self, parent, label, bitmap, extra_label=None, overlay=DefaultOverlay, style=None):
+		super(ImageButton, self).__init__(parent)
+
+		if style is ImageButton.IB_GROUP:
+			ImageButton.__last_group__ = self
+			ImageButton.__groups__[self] = [self]
+			self.group = self
+		else:
+			if ImageButton.__last_group__:
+				ImageButton.__groups__[ImageButton.__last_group__].append(self)
+				self.group = ImageButton.__last_group__
+			else:
+				self.group = None
+		self.sizer = wx.BoxSizer(wx.VERTICAL)
+		self.SetSizer(self.sizer)
+		self.bitmap = bitmap
+		self.overlay = self.createOverlay(bitmap, overlay)
+		self.text = wx.StaticText(self, -1, label)
+		self.bmp = wx.StaticBitmap(self, -1, self.bitmap)
+		if extra_label:
+			self.extra_text = wx.StaticText(self, -1, extra_label)
+		self.selected = False
+
+		self.sizer.Add(self.text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=5)
+		self.sizer.Add(self.bmp, 1, flag=wx.ALL|wx.ALIGN_CENTER|wx.EXPAND, border=5)
+		if extra_label:
+			self.sizer.Add(self.extra_text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=5)
+		self.bmp.Bind(wx.EVT_LEFT_UP, self.OnLeftClick)
+
+	def __del__(self):
+		if self.group:
+			ImageButton.__groups__[self.group].remove(self)
+			if self == self.group:
+				for ib in ImageButton.__groups__[self.group]:
+					ib.group = None
+				del ImageButton.__groups__[self.group]
+				if ImageButton.__last_group__ == self:
+					ImageButton.__last_group__ = None
+
+	def OnLeftClick(self, e):
+		self.SetValue(True)
+
+	def GetValue(self):
+		return self.selected
+
+	def SetValue(self, value):
+		self.selected = bool(value)
+		self.bmp.SetBitmap(self.overlay if self.GetValue() else self.bitmap)
+		if self.selected and self.group:
+			for ib in ImageButton.__groups__[self.group]:
+				if ib == self:
+					continue
+				ib.SetValue(False)
+
+	def createOverlay(self, bitmap, overlay):
+		result = bitmap.GetSubBitmap(wx.Rect(0, 0, *bitmap.Size))
+		(width, height) = bitmap.GetSize()
+		overlay_image = wx.ImageFromBitmap(overlay)
+		overlay_image = overlay_image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
+		overlay_scaled = wx.BitmapFromImage(overlay_image)
+		dc = wx.MemoryDC()
+		dc.SelectObject(result)
+		dc.DrawBitmap(overlay_scaled, 0, 0)
+		dc.SelectObject(wx.NullBitmap)
+		return result
+
 
 class InfoPage(wx.wizard.WizardPageSimple):
 	def __init__(self, parent, title):
