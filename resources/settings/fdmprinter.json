@@ -1124,11 +1124,20 @@
                     "description": "Different options that help in preventing corners from lifting due to warping. Brim adds a single-layer-thick flat area around your object which is easy to cut off afterwards, and it is the recommended option. Raft adds a thick grid below the object and a thin interface between this and your object. (Note that enabling the brim or raft disables the skirt.)",
                     "type": "enum",
                     "options": [
-                        "None",
+                        "Skirt",
                         "Brim",
                         "Raft"
                     ],
-                    "default": "None"
+                    "default": "Skirt"
+                },
+                "adhesion_extruder_nr": {
+                    "label": "Platform Adhesion Extruder",
+                    "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
+                    "type": "int",
+                    "default": 0,
+                    "min_value": 0,
+                    "max_value": 16,
+                    "inherit_function": "extruder_nr"
                 },
                 "skirt_line_count": {
                     "label": "Skirt Line Count",
@@ -1137,7 +1146,7 @@
                     "default": 1,
                     "active_if": {
                         "setting": "adhesion_type",
-                        "value": "None"
+                        "value": "Skirt"
                     }
                 },
                 "skirt_gap": {
@@ -1148,7 +1157,7 @@
                     "default": 3,
                     "active_if": {
                         "setting": "adhesion_type",
-                        "value": "None"
+                        "value": "Skirt"
                     }
                 },
                 "skirt_minimal_length": {
@@ -1159,7 +1168,7 @@
                     "default": 250,
                     "active_if": {
                         "setting": "adhesion_type",
-                        "value": "None"
+                        "value": "Skirt"
                     }
                 },
                 "brim_line_count": {
