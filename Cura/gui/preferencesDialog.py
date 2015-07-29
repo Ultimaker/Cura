@@ -125,7 +125,8 @@ class machineSettingsDialog(wx.Dialog):
 			printer_type = profile.getMachineSetting('machine_type', idx)
 			if printer_type.startswith('lulzbot_'):
 				configBase.TitleRow(right, _("Toolhead"))
-				configBase.ToolheadRow(right, 'toolhead', index=idx)
+				row = configBase.ToolheadRow(right, 'toolhead', index=idx)
+				row.button.Bind(wx.EVT_BUTTON, self.OnChangeToolheadButton)
 
 			configBase.TitleRow(right, _("Printer head size"))
 			configBase.SettingRow(right, 'extruder_head_size_min_x', index=idx)
@@ -169,6 +170,22 @@ class machineSettingsDialog(wx.Dialog):
 
 		main.Fit()
 		self.Fit()
+
+	def OnChangeToolheadButton(self, e):
+		self.Hide()
+		self.parent.Hide()
+		old_active = int(profile.getPreferenceFloat('active_machine'))
+		profile.setActiveMachine(self.nb.GetSelection())
+		configWizard.LulzbotChangeToolheadWizard()
+		profile.setActiveMachine(old_active)
+		self.parent.Show()
+		self.parent.reloadSettingPanels()
+		self.parent.updateMachineMenu()
+
+		prefDialog = machineSettingsDialog(self.parent)
+		prefDialog.Centre()
+		prefDialog.Show()
+		wx.CallAfter(self.Close)
 
 	def OnAddMachine(self, e):
 		self.Hide()

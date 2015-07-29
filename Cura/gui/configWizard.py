@@ -1203,9 +1203,10 @@ class LulzbotToolheadSelectPage(InfoPage):
 		webbrowser.open(LulzbotMiniToolheadSelectPage.url)
 
 class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
-	def __init__(self, parent):
+	def __init__(self, parent, allowBack = True):
 		super(LulzbotMiniToolheadSelectPage, self).__init__(parent, _("LulzBot Mini Toolhead Selection"))
 
+		self.allowBack = allowBack
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
 		self.standard = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v2'),
@@ -1214,6 +1215,9 @@ class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
 		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v2'),
 											'Lulzbot_Toolhead_Mini_Flexystruder.jpg', image_size)
 		self.standard.SetValue(True)
+
+	def AllowBack(self):
+		return self.allowBack
 
 	def StoreData(self):
 		if self.standard.GetValue():
@@ -1316,9 +1320,10 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 
 
 class LulzbotHotendSelectPage(LulzbotToolheadSelectPage):
-	def __init__(self, parent):
+	def __init__(self, parent, allowBack = True):
 		super(LulzbotHotendSelectPage, self).__init__(parent, _("LulzBot Toolhead Hotend Selection"))
 
+		self.allowBack = allowBack
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
 		self.v1 = self.AddImageButton(self.panel, 0, 0, _('v1 (Budaschnozzle Hotends)'),
@@ -1327,6 +1332,9 @@ class LulzbotHotendSelectPage(LulzbotToolheadSelectPage):
 		self.v2 = self.AddImageButton(self.panel, 0, 1, _('v2 (Hexagon Hotends)'),
 											'Lulzbot_Toolhead_v2.jpg', image_size)
 		self.v1.SetValue(True)
+
+	def AllowBack(self):
+		return self.allowBack
 
 	def StoreData(self):
 		self.GetParent().lulzbotTazToolheadPage.SetVersion(1 if self.v1.GetValue() else 2)
@@ -1365,6 +1373,53 @@ class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 			profile.putMachineSetting('toolhead', 'Single Extruder V2 (0.5 nozzle)')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_05nozzle')
+
+class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
+	def __init__(self):
+		super(LulzbotChangeToolheadWizard, self).__init__(None, -1, _("Change Lulzbot Toolhead Wizard"))
+
+		self._nozzle_size = profile.getProfileSettingFloat('nozzle_size')
+		self._machine_name = profile.getMachineSetting('machine_name')
+		self._machine_type = profile.getMachineSetting('machine_type')
+		self._extruder_amount = int(profile.getMachineSettingFloat('extruder_amount'))
+
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
+
+		self.lulzbotReadyPage = LulzbotReadyPage(self)
+		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self, False)
+		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
+		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self, False)
+		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
+
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
+
+		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
+			self.RunWizard(self.lulzbotMiniToolheadPage)
+		else:
+			self.RunWizard(self.lulzbotTazHotendPage)
+		self.Destroy()
+
+	def OnPageChanging(self, e):
+		e.GetPage().StoreData()
+
+	def OnPageChanged(self, e):
+		if e.GetPage().AllowNext():
+			self.FindWindowById(wx.ID_FORWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_FORWARD).Disable()
+		if e.GetPage().AllowBack():
+			self.FindWindowById(wx.ID_BACKWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_BACKWARD).Disable()
+
+	def OnCancel(self, e):
+		profile.putProfileSetting('nozzle_size', self._nozzle_size)
+		profile.putMachineSetting('machine_name', self._machine_name)
+		profile.putMachineSetting('machine_type', self._machine_type)
+		profile.putMachineSetting('extruder_amount', self._extruder_amount)
 
 class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
