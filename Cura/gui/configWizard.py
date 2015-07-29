@@ -124,21 +124,20 @@ class ImageButton(wx.Panel):
 				self.group = ImageButton.__last_group__
 			else:
 				self.group = None
-		self.sizer = wx.BoxSizer(wx.VERTICAL)
+		self.sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
 		self.SetSizer(self.sizer)
 		self.bitmap = bitmap
+		self.original_overlay = overlay
 		self.overlay = self.createOverlay(bitmap, overlay)
 		self.text = wx.StaticText(self, -1, label)
 		self.bmp = wx.StaticBitmap(self, -1, self.bitmap)
-		if extra_label:
-			self.extra_text = wx.StaticText(self, -1, extra_label)
+		self.extra_text = wx.StaticText(self, -1, extra_label if extra_label else '')
 		self.selected = False
 		self.callback = None
 
 		self.sizer.Add(self.text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=5)
 		self.sizer.Add(self.bmp, 1, flag=wx.ALL|wx.ALIGN_CENTER|wx.EXPAND, border=5)
-		if extra_label:
-			self.sizer.Add(self.extra_text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=5)
+		self.sizer.Add(self.extra_text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=5)
 		self.bmp.Bind(wx.EVT_LEFT_UP, self.OnLeftClick)
 
 	def __del__(self):
@@ -169,6 +168,26 @@ class ImageButton(wx.Panel):
 		self.Layout()
 		if self.callback and not old_value and self.selected:
 			self.callback()
+
+	def SetLabel(self, label):
+		self.text.SetLabel(label)
+		self.Layout()
+
+	def SetExtraLabel(self, label):
+		self.extra_text.SetLabel(label)
+		self.Layout()
+
+	def SetBitmap(self, bitmap):
+		self.bitmap = bitmap
+		self.overlay = self.createOverlay(bitmap, self.original_overlay)
+		self.bmp.SetBitmap(self.overlay if self.GetValue() else self.bitmap)
+		self.Layout()
+
+	def SetOverlay(self, overlay):
+		self.original_overlay = overlay
+		self.overlay = self.createOverlay(self.bitmap, self.original_overlay)
+		self.bmp.SetBitmap(self.overlay if self.GetValue() else self.bitmap)
+		self.Layout()
 
 	def OnSelected(self, callback):
 		self.callback = callback
@@ -203,15 +222,18 @@ class InfoPage(wx.wizard.WizardPageSimple):
 		# get out of bounds of the widgets area and hide other widgets.
 		# The only way I found for the widget to get its right size was to calculate
 		# the new font's extent and set the min size on the widget
-		dc = wx.ScreenDC()
-		dc.SetFont(font)
-		w,h = dc.GetTextExtent(title)
-		self.title.SetMinSize((w, h))
+		self.title.SetMinSize(self.GetTextExtent(font, title))
 		sizer.Add(self.title, pos=(0, 0), span=(1, 2), flag=wx.ALIGN_CENTRE | wx.ALL)
 		sizer.Add(wx.StaticLine(self, -1), pos=(1, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL)
 		sizer.AddGrowableCol(1)
 
 		self.rowNr = 2
+
+	def GetTextExtent(self, font, text):
+		dc = wx.ScreenDC()
+		dc.SetFont(font)
+		w,h = dc.GetTextExtent(text)
+		return (w, h)
 
 	def AddText(self, info):
 		text = wx.StaticText(self, -1, info)
@@ -291,7 +313,7 @@ class InfoPage(wx.wizard.WizardPageSimple):
 
 	def AddPanel(self):
 		panel = wx.Panel(self, -1)
-		sizer = wx.GridBagSizer(2, 2)
+		sizer = wx.GridBagSizer(5, 5)
 		panel.SetSizer(sizer)
 		self.GetSizer().Add(panel, pos=(self.rowNr, 0), span=(1, 2), flag=wx.ALL | wx.EXPAND)
 		self.rowNr += 1
@@ -312,6 +334,20 @@ class InfoPage(wx.wizard.WizardPageSimple):
 		self.GetSizer().Add(combo, pos=(self.rowNr, 1), span=(1, 1), flag=wx.LEFT | wx.RIGHT | wx.EXPAND)
 		self.rowNr += 1
 		return combo
+
+	def AddImageButton(self, panel, x, y, label, filename, image_size=None,
+					   extra_label=None, overlay=ImageButton.DefaultOverlay, style=None):
+		ib = ImageButton(panel, label, self.GetBitmap(filename, image_size), extra_label, overlay, style)
+		panel.GetSizer().Add(ib, pos=(x, y), flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=10)
+		return ib
+
+	def GetBitmap(self, filename, image_size):
+		if image_size == None:
+			return wx.Bitmap(resources.getPathForImage(filename))
+		else:
+			image = wx.Image(resources.getPathForImage(filename))
+			image_scaled = image.Scale(image_size[0], image_size[1], wx.IMAGE_QUALITY_HIGH)
+			return wx.BitmapFromImage(image_scaled)
 
 	def AllowNext(self):
 		return True
