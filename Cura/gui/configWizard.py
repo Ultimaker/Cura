@@ -131,13 +131,17 @@ class ImageButton(wx.Panel):
 		self.overlay = self.createOverlay(bitmap, overlay)
 		self.text = wx.StaticText(self, -1, label)
 		self.bmp = wx.StaticBitmap(self, -1, self.bitmap)
-		self.extra_text = wx.StaticText(self, -1, extra_label if extra_label else '')
+		if extra_label:
+			self.extra_text = wx.StaticText(self, -1, extra_label)
+		else:
+			self.extra_text = None
 		self.selected = False
 		self.callback = None
 
-		self.sizer.Add(self.text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=5)
+		self.sizer.Add(self.text, 0, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, border=5)
 		self.sizer.Add(self.bmp, 1, flag=wx.ALL|wx.ALIGN_CENTER|wx.EXPAND, border=5)
-		self.sizer.Add(self.extra_text, 0, flag=wx.ALL|wx.ALIGN_CENTER, border=5)
+		if self.extra_text:
+			self.sizer.Add(self.extra_text, 0, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, border=5)
 		self.bmp.Bind(wx.EVT_LEFT_UP, self.OnLeftClick)
 
 	def __del__(self):
@@ -174,7 +178,11 @@ class ImageButton(wx.Panel):
 		self.Layout()
 
 	def SetExtraLabel(self, label):
-		self.extra_text.SetLabel(label)
+		if self.extra_text:
+			self.extra_text.SetLabel(label)
+		else:
+			self.extra_text = wx.StaticText(self, -1, label)
+			self.sizer.Add(self.extra_text, 0, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, border=5)
 		self.Layout()
 
 	def SetBitmap(self, bitmap):
@@ -313,7 +321,7 @@ class InfoPage(wx.wizard.WizardPageSimple):
 
 	def AddPanel(self):
 		panel = wx.Panel(self, -1)
-		sizer = wx.GridBagSizer(5, 5)
+		sizer = wx.GridBagSizer(2, 2)
 		panel.SetSizer(sizer)
 		self.GetSizer().Add(panel, pos=(self.rowNr, 0), span=(1, 2), flag=wx.ALL | wx.EXPAND)
 		self.rowNr += 1
@@ -1110,6 +1118,8 @@ class LulzbotMachineSelectPage(InfoPage):
 
 	def OnLulzbotMiniSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotMiniToolheadPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotMiniToolheadPage,
+										 self.GetParent().lulzbotReadyPage)
 
 	def OnLulzbotTazSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazHotendPage)
@@ -1182,13 +1192,8 @@ class LulzbotToolheadSelectPage(InfoPage):
 		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
 
 		self.AddText(_('Please select your currently installed Tool Head'))
-		txt = self.AddText(_("WARNING :"))
+		txt = self.AddText(_('WARNING: Carefully select the right Tool Head.\nFlashing the firmware with the wrong Tool Head can damage your LulzBot printer. Learn more here :'))
 		txt.SetForegroundColour(wx.RED)
-		font = wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD)
-		txt.SetFont(font)
-		txt.SetMinSize(self.GetTextExtent(font, _("WARNING :")))
-
-		self.AddText(_('Carefully select the right Tool Head. Flashing the firmware with the wrong Tool Head can damage your LulzBot.\nLearn more here:'))
 		button = self.AddButton(self.url)
 		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
 
@@ -1285,15 +1290,11 @@ class LulzbotHotendSelectPage(LulzbotToolheadSelectPage):
 											style=ImageButton.IB_GROUP)
 		self.v2 = self.AddImageButton(self.panel, 0, 1, _('v2 (Hexagon Hotends)'),
 											'Lulzbot_Toolhead_v2.jpg', image_size)
-		self.v1.OnSelected(self.OnV1Selected)
-		self.v2.OnSelected(self.OnV2Selected)
 		self.v1.SetValue(True)
 
-	def OnV1Selected(self):
-		self.GetParent().lulzbotTazToolheadPage.SetVersion(1)
+	def StoreData(self):
+		self.GetParent().lulzbotTazToolheadPage.SetVersion(1 if self.v1.GetValue() else 2)
 
-	def OnV2Selected(self):
-		self.GetParent().lulzbotTazToolheadPage.SetVersion(2)
 
 class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 	url2='http://lulzbot.com/printer-identification'
