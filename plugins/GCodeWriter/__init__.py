@@ -13,15 +13,17 @@ def getMetaData():
             "name": "GCode Writer",
             "author": "Ultimaker",
             "version": "1.0",
-            "description": catalog.i18nc("GCode Writer Plugin Description", "Writes GCode to a file")
+            "description": catalog.i18nc("GCode Writer Plugin Description", "Writes GCode to a file"),
+            "api": 2
         },
 
         "mesh_writer": {
-            "extension": "gcode",
-            "description": catalog.i18nc("GCode Writer File Description", "GCode File"),
-            "mime_types": [
-                "text/x-gcode"
-            ]
+            "output": [{
+                "extension": "gcode",
+                "description": catalog.i18nc("GCode Writer File Description", "GCode File"),
+                "mime_type": "text/x-gcode",
+                "mode": GCodeWriter.GCodeWriter.OutputMode.TextMode
+            }]
         }
     }
 
