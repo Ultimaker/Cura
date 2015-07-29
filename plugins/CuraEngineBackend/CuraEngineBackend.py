@@ -165,16 +165,9 @@ class CuraEngineBackend(Backend):
 
         slice_message = Cura_pb2.Slice()
 
-        #TODO: All at once/one at a time mode
-        #print("Iterator time! ", OneAtATimeIterator(self._scene.getRoot()))
-        #for item in OneAtATimeIterator(self._scene.getRoot()):
-        #    print(item)
-        print("Start sending objects to engine")
         for group in object_groups:
-            print("Start sending group")
             group_message = slice_message.object_lists.add()
             for object in group:
-                print("Added object to group")
                 mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
                 obj = group_message.objects.add()
@@ -185,14 +178,7 @@ class CuraEngineBackend(Backend):
                 verts[:,1] *= -1
                 obj.vertices = verts.tostring()
 
-                #if meshData.hasNormals():
-                    #obj.normals = meshData.getNormalsAsByteArray()
-
-                #if meshData.hasIndices():
-                    #obj.indices = meshData.getIndicesAsByteArray()
-
         self._scene.releaseLock()
-        print("Message completed. Sending...")
         self._socket.sendMessage(slice_message)
 
     def _onSceneChanged(self, source):
