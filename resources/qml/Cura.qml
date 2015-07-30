@@ -34,6 +34,9 @@ UM.MainWindow {
                 Menu {
                     id: recentFilesMenu;
                     title: "Open Recent"
+                    iconName: "document-open-recent";
+
+                    enabled: Printer.recentFiles.length > 0;
 
                     Instantiator {
                         model: Printer.recentFiles
