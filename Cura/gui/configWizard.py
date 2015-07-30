@@ -1110,7 +1110,7 @@ class LulzbotMachineSelectPage(InfoPage):
 											   'Lulzbot_TAZ4.jpg', image_size)
 		self.LulzbotTaz4.OnSelected(self.OnLulzbotTazSelected)
 		self.OtherPrinters = self.AddImageButton(self.panel, 1, 1, _("Other Printers"),
-												 'Other_Printers.jpg', image_size)
+												 'Generic-3D-Printer.png', image_size)
 		self.OtherPrinters.OnSelected(self.OnOthersSelected)
 
 	def OnOthersSelected(self):
