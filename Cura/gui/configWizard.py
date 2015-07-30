@@ -1139,17 +1139,20 @@ class LulzbotMachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
+				profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
 				profile.putMachineSetting('serial_baud', '115200')
 			elif self.LulzbotTaz5.GetValue():
 				# Nozzle size will be set in the toolhead selection page
 				# We set the machine_type here so later pages can differenciate between TAZ 4 and 5
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
+				profile.putMachineSetting('machine_name', 'LulzBot TAZ 5')
 				profile.putMachineSetting('machine_width', '290')
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('serial_baud', '115200')
 			else:
-				# Nozzle size and machine name/type will be set in the toolhead selection page
+				# Nozzle size and machine type will be set in the toolhead selection page
+				profile.putMachineSetting('machine_name', 'LulzBot Mini')
 				profile.putMachineSetting('machine_width', '155')
 				profile.putMachineSetting('machine_depth', '155')
 				profile.putMachineSetting('machine_height', '163')
@@ -1224,13 +1227,13 @@ class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Single Extruder V2')
-			profile.putMachineSetting('machine_name', 'LulzBot Mini')
+			profile.putMachineSetting('toolhead_shortname', '')
 			profile.putMachineSetting('machine_type', 'lulzbot_mini')
 		else:
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Flexystruder V2')
-			profile.putMachineSetting('machine_name', 'LulzBot Mini (Flexy)')
+			profile.putMachineSetting('toolhead_shortname', 'Flexy')
 			profile.putMachineSetting('machine_type', 'lulzbot_mini_flexy')
 
 
@@ -1297,25 +1300,25 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 			profile.putProfileSetting('nozzle_size', '0.5' if self.version == 2 else '0.35')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Single Extruder V%d' % self.version)
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ %d' % taz_version)
+			profile.putMachineSetting('toolhead_shortname', '')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_SingleV%d' % version)
 		elif self.flexy.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Flexystruder V%d' % self.version)
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ %d (Flexy v%d)' % version)
+			profile.putMachineSetting('toolhead_shortname', 'Flexy v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_flexyV%d' % version)
 		elif self.dually.GetValue():
-			profile.putMachineSetting('extruder_amount', '2')
 			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putMachineSetting('extruder_amount', '2')
 			profile.putMachineSetting('toolhead', 'Dual Extruder V%d' % self.version)
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ %d (Dually v%d)' % version)
+			profile.putMachineSetting('toolhead_shortname', 'Dually v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_DuallyV%d' % version)
 		elif self.flexydually.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '2')
 			profile.putMachineSetting('toolhead', 'FlexyDually V%d' % self.version)
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ %d (FlexyDually v%d)' % version)
+			profile.putMachineSetting('toolhead_shortname', 'FlexyDually v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_FlexyDuallyV%d' % version)
 
 
@@ -1364,14 +1367,14 @@ class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 	def StoreData(self):
 		if self.Nozzle35Radio.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.35')
-			profile.putMachineSetting('toolhead', 'Single Extruder V2 (0.35 nozzle)')
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.35 nozzle)')
+			profile.putMachineSetting('toolhead', 'Single Extruder V2 (0.35mm nozzle)')
+			profile.putMachineSetting('toolhead_shortname', '0.35 nozzle')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_035nozzle')
 
 		else:
 			profile.putProfileSetting('nozzle_size', '0.5')
-			profile.putMachineSetting('toolhead', 'Single Extruder V2 (0.5 nozzle)')
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
+			profile.putMachineSetting('toolhead', 'Single Extruder V2 (0.5mm nozzle)')
+			profile.putMachineSetting('toolhead_shortname', '0.5 nozzle')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_05nozzle')
 
 class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
