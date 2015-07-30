@@ -49,7 +49,26 @@ def getDefaultFirmware(machineIndex = None):
 			return resources.getPathForFirmware("MarlinUltimaker2-dual.hex")
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
 	if machine_type == 'lulzbot_mini':
-		return resources.getPathForFirmware("marlin_mini_2014Q4.hex")
+		return resources.getPathForFirmware("Mini_SingleV2_2014Q4.hex")
+	if machine_type == 'lulzbot_mini_flexy':
+		return resources.getPathForFirmware("Mini_FlexyV2_2014Q4.hex")
+	if machine_type == 'lulzbot_TAZ_4_SingleV1' or machine_type == 'lulzbot_TAZ_5_Single_V1':
+		return resources.getPathForFirmware("TAZ4-5_SingleV1_2014Q1.hex")
+	if machine_type == 'lulzbot_TAZ_4_05nozzle' or machine_type == 'lulzbot_TAZ_5_05nozzle' or \
+           machine_type == 'lulzbot_TAZ_4_035nozzle' or machine_type == 'lulzbot_TAZ_5_035nozzle':
+		return resources.getPathForFirmware("TAZ4-5_SingleV2_2015Q1.hex")
+	if machine_type == 'lulzbot_TAZ_4_FlexystruderV1' or machine_type == 'lulzbot_TAZ_5_FlexystruderV1':
+		return resources.getPathForFirmware("TAZ4-5_FlexystrderV1_2015Q3.hex")
+	if machine_type == 'lulzbot_TAZ_4_FlexystruderV2' or machine_type == 'lulzbot_TAZ_5_FlexystruderV2':
+		return resources.getPathForFirmware("TAZ4-5_FlexystrderV2_2015Q3.hex")
+	if machine_type == 'lulzbot_TAZ_4_DuallyV1' or machine_type == 'lulzbot_TAZ_5_DuallyV1':
+		return resources.getPathForFirmware("TAZ4-5_Dual-Extruder_V1_2015Q3.hex")
+	if machine_type == 'lulzbot_TAZ_4_DuallyV2' or machine_type == 'lulzbot_TAZ_5_DuallyV2':
+		return resources.getPathForFirmware("TAZ4-5_Dual-Extruder_V2_2015Q3.hex")
+	if machine_type == 'lulzbot_TAZ_4_FlexyDuallyV1' or machine_type == 'lulzbot_TAZ_5_FlexyDuallyV1':
+		return resources.getPathForFirmware("TAZ4-5_FlexyDually-V1_2015Q3.hex")
+	if machine_type == 'lulzbot_TAZ_4_FlexyDuallyV2' or machine_type == 'lulzbot_TAZ_5_FlexyDuallyV2':
+		return resources.getPathForFirmware("TAZ4-5_FlexyDually-V2_2015Q3.hex")
 	if machine_type == 'ultimaker2go':
 		return resources.getPathForFirmware("MarlinUltimaker2go.hex")
 	if machine_type == 'ultimaker2extended':
