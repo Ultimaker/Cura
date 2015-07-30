@@ -1104,7 +1104,7 @@ class LulzbotMachineSelectPage(InfoPage):
 		self.LulzbotMini.OnSelected(self.OnLulzbotMiniSelected)
 		self.LulzbotMini.SetValue(True)
 		self.LulzbotTaz5 = self.AddImageButton(self.panel, 0, 1, _("LulzBot TAZ 5"),
-											   'Lulzbot_TAZ5.jpg', image_size)
+											   'Lulzbot_TAZ5.png', image_size)
 		self.LulzbotTaz5.OnSelected(self.OnLulzbotTazSelected)
 		self.LulzbotTaz4 = self.AddImageButton(self.panel, 1, 0, _("LulzBot TAZ 4"),
 											   'Lulzbot_TAZ4.jpg', image_size)
