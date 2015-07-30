@@ -576,12 +576,18 @@ class printWindowAdvanced(wx.Frame):
 		self._lastUpdateTime = time.time()
 		self._isPrinting = False
 
-		self.SetSizer(wx.BoxSizer())
+		self.SetSizer(wx.BoxSizer(wx.VERTICAL))
+		self.toppanel = wx.Panel(self)
+		self.topsizer = wx.GridBagSizer(2, 2)
+		self.toppanel.SetSizer(self.topsizer)
+		self.toppanel.SetBackgroundColour(wx.WHITE)
+		self.topsizer.SetEmptyCellSize((125, 1))
 		self.panel = wx.Panel(self)
-		self.GetSizer().Add(self.panel, 1, flag=wx.EXPAND)
 		self.sizer = wx.GridBagSizer(2, 2)
 		self.panel.SetSizer(self.sizer)
 		self.panel.SetBackgroundColour(wx.WHITE)
+		self.GetSizer().Add(self.toppanel, 0, flag=wx.EXPAND)
+		self.GetSizer().Add(self.panel, 1, flag=wx.EXPAND)
 
 		self._fullscreenTemperature = None
 		self._termHistory = []
@@ -628,7 +634,7 @@ class printWindowAdvanced(wx.Frame):
 		self._addMovementCommand(220, 255, 0, self._homeXYZ, "Y")
 		self._addMovementCommand(200, 255, 0, self._homeXYZ, "Z")
 
-		self.powerWarningText = wx.StaticText(parent=self.panel,
+		self.powerWarningText = wx.StaticText(parent=self.toppanel,
 			id=-1,
 			label=_("Your computer is running on battery power.\nConnect your computer to AC power or your print might not finish."),
 			style=wx.ALIGN_CENTER)
@@ -640,11 +646,11 @@ class printWindowAdvanced(wx.Frame):
 		self.OnPowerWarningChange(None)
 		self.powerWarningTimer.Start(10000)
 
-		self.connectButton = wx.Button(self.panel, -1, _("Connect"), size=(125, 30))
-		self.printButton = wx.Button(self.panel, -1, _("Print"), size=(125, 30))
-		self.cancelButton = wx.Button(self.panel, -1, _("Cancel"), size=(125, 30))
-		self.errorLogButton = wx.Button(self.panel, -1, _("Error log"), size=(125, 30))
-		self.motorsOffButton = wx.Button(self.panel, -1, _("Motors off"), size=(125, 30))
+		self.connectButton = wx.Button(self.toppanel, -1, _("Connect"), size=(125, 30))
+		self.printButton = wx.Button(self.toppanel, -1, _("Print"), size=(125, 30))
+		self.cancelButton = wx.Button(self.toppanel, -1, _("Cancel"), size=(125, 30))
+		self.errorLogButton = wx.Button(self.toppanel, -1, _("Error log"), size=(125, 30))
+		self.motorsOffButton = wx.Button(self.toppanel, -1, _("Motors off"), size=(125, 30))
 		self.movementBitmap = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(wx.Image(
 				resources.getPathForImage('print-window.png'))), (0, 0))
 		self.temperatureBitmap = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(wx.Image(
@@ -660,27 +666,28 @@ class printWindowAdvanced(wx.Frame):
 		self._termLog = wx.TextCtrl(self.panel, style=wx.TE_MULTILINE | wx.TE_DONTWRAP)
 		self._termLog.SetFont(f)
 		self._termLog.SetEditable(0)
+		self._termLog.SetMinSize((385, -1))
 		self._termInput = wx.TextCtrl(self.panel, style=wx.TE_PROCESS_ENTER)
 		self._termInput.SetFont(f)
 
 		self.Bind(wx.EVT_TEXT_ENTER, self.OnTermEnterLine, self._termInput)
 		self._termInput.Bind(wx.EVT_CHAR, self.OnTermKey)
 
-		self.sizer.Add(self.powerWarningText, pos=(0, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM, border=5)
-		self.sizer.Add(self.connectButton, pos=(1, 0), flag=wx.LEFT, border=2)
-		self.sizer.Add(self.printButton, pos=(1, 1), flag=wx.LEFT, border=2)
-		self.sizer.Add(self.cancelButton, pos=(1, 2), flag=wx.LEFT, border=2)
-		self.sizer.Add(self.errorLogButton, pos=(1, 4), flag=wx.LEFT, border=2)
-		self.sizer.Add(self.motorsOffButton, pos=(1, 5), flag=wx.LEFT|wx.RIGHT, border=2)
-		self.sizer.Add(self.movementBitmap, pos=(2, 0), span=(2, 3))
-		self.sizer.Add(self.temperatureGraph, pos=(4, 0), span=(4, 2), flag=wx.EXPAND)
-		self.sizer.Add(self.temperatureBitmap, pos=(4, 2))
-		self.sizer.Add(self.temperatureField, pos=(5, 2))
-		self.sizer.Add(self.temperatureBedBitmap, pos=(6, 2))
-		self.sizer.Add(self.temperatureBedField, pos=(7, 2))
-		self.sizer.Add(self._termLog, pos=(2, 3), span=(5, 3), flag=wx.EXPAND)
-		self.sizer.Add(self._termInput, pos=(7, 3), span=(1, 3), flag=wx.EXPAND)
-		self.sizer.Add(self.progress, pos=(8, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
+		self.topsizer.Add(self.powerWarningText, pos=(0, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM, border=5)
+		self.topsizer.Add(self.connectButton, pos=(1, 0), flag=wx.LEFT, border=2)
+		self.topsizer.Add(self.printButton, pos=(1, 1), flag=wx.LEFT, border=2)
+		self.topsizer.Add(self.cancelButton, pos=(1, 2), flag=wx.LEFT, border=2)
+		self.topsizer.Add(self.errorLogButton, pos=(1, 4), flag=wx.LEFT, border=2)
+		self.topsizer.Add(self.motorsOffButton, pos=(1, 5), flag=wx.LEFT|wx.RIGHT, border=2)
+		self.sizer.Add(self.movementBitmap, pos=(0, 0), span=(2, 3))
+		self.sizer.Add(self.temperatureGraph, pos=(2, 0), span=(4, 2), flag=wx.EXPAND)
+		self.sizer.Add(self.temperatureBitmap, pos=(2, 2))
+		self.sizer.Add(self.temperatureField, pos=(3, 2))
+		self.sizer.Add(self.temperatureBedBitmap, pos=(4, 2))
+		self.sizer.Add(self.temperatureBedField, pos=(5, 2))
+		self.sizer.Add(self._termLog, pos=(0, 3), span=(5, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
+		self.sizer.Add(self._termInput, pos=(5, 3), span=(1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
+		self.sizer.Add(self.progress, pos=(6, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 		self.Bind(wx.EVT_CLOSE, self.OnClose)
@@ -726,13 +733,13 @@ class printWindowAdvanced(wx.Frame):
 		type = self.powerManagement.get_providing_power_source_type()
 		if type == power.POWER_TYPE_AC and self.powerWarningText.IsShown():
 			self.powerWarningText.Hide()
-			self.panel.Layout()
+			self.toppanel.Layout()
 			self.Layout()
 			self.Fit()
 			self.Refresh()
 		elif type != power.POWER_TYPE_AC and not self.powerWarningText.IsShown():
 			self.powerWarningText.Show()
-			self.panel.Layout()
+			self.toppanel.Layout()
 			self.Layout()
 			self.Fit()
 			self.Refresh()
