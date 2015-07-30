@@ -667,7 +667,7 @@ class SelectParts(InfoPage):
 class UltimakerFirmwareUpgradePage(InfoPage):
 	def __init__(self, parent):
 		super(UltimakerFirmwareUpgradePage, self).__init__(parent, _("Upgrade Ultimaker Firmware"))
-		self.AddText(_("Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the step motors, regulates the temperature\nand ultimately makes your printer work."))
+		self.AddText(_("Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the stepper motors, regulates the temperature\nand ultimately makes your printer work."))
 		self.AddHiddenSeperator()
 		self.AddText(_("The firmware shipping with new Ultimakers works, but upgrades\nhave been made to make better prints, and make calibration easier."))
 		self.AddHiddenSeperator()
@@ -1120,7 +1120,7 @@ class LulzbotMachineSelectPage(InfoPage):
 	def OnLulzbotMiniSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotMiniToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotMiniToolheadPage,
-										 self.GetParent().lulzbotReadyPage)
+										 self.GetParent().lulzbotFirmwarePage)
 
 	def OnLulzbotTazSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazHotendPage)
@@ -1272,7 +1272,7 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 			self.flexy.OnSelected(None)
 			self.dually.OnSelected(None)
 			self.flexydually.OnSelected(None)
-			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
 		elif version == 2:
 			self.single.OnSelected(self.OnSingleV2)
 			self.flexy.OnSelected(self.OnNonSingle)
@@ -1280,16 +1280,16 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 			self.flexydually.OnSelected(self.OnNonSingle)
 			if self.single.GetValue():
 				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
-				wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotReadyPage)
+				wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotFirmwarePage)
 			else:
-				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
 
 	def OnSingleV2(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
-		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotFirmwarePage)
 
 	def OnNonSingle(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
 
 	def StoreData(self):
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
@@ -1381,6 +1381,35 @@ class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 			profile.putMachineSetting('toolhead_shortname', '0.5 nozzle')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_05nozzle' % taz_version)
 
+class LulzbotFirmwareUpdatePage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotFirmwareUpdatePage, self).__init__(parent, _("LulzBot Firmware Update"))
+
+		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
+
+		self.AddText(_('Your Lulzbot printer\'s firmware will now be updated'))
+		self.AddSeperator()
+		self.AddText(_("Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the stepper motors, regulates the temperature\nand ultimately makes your printer work."))
+		self.AddHiddenSeperator()
+		self.AddText(_("The firmware shipping with new Lulzbot printers works, but upgrades may be available\nwhich improve the functionality of your printer.\nIf you changed your toolhead, you will also need to flash\na new firmware or you may risk damaging the toolhead."))
+		self.AddHiddenSeperator()
+		self.AddText(_("To avoid any possible confusion, make sure to disconnect all printers from your PC\nexpect the printer that you are currently configuring."))
+		self.AddHiddenSeperator()
+		upgradeButton, skipUpgradeButton = self.AddDualButton(_('Flash the firmware'), _('Skip upgrade'))
+		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
+		skipUpgradeButton.Bind(wx.EVT_BUTTON, self.OnSkipClick)
+
+	def AllowNext(self):
+		return False
+
+	def OnUpgradeClick(self, e):
+		if firmwareInstall.InstallFirmware():
+			self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+
+	def OnSkipClick(self, e):
+		self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+		self.GetParent().ShowPage(self.GetNext())
+
 class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 	def __init__(self):
 		super(LulzbotChangeToolheadWizard, self).__init__(None, -1, _("Change Lulzbot Toolhead Wizard"))
@@ -1395,12 +1424,14 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
 
 		self.lulzbotReadyPage = LulzbotReadyPage(self)
+		self.lulzbotFirmwarePage = LulzbotFirmwareUpdatePage(self)
 		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self, False)
 		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
 		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self, False)
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotFirmwarePage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotFirmwarePage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
@@ -1455,6 +1486,7 @@ class ConfigWizard(wx.wizard.Wizard):
 
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 		self.lulzbotReadyPage = LulzbotReadyPage(self)
+		self.lulzbotFirmwarePage = LulzbotFirmwareUpdatePage(self)
 		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self)
 		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
 		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self)
@@ -1462,7 +1494,8 @@ class ConfigWizard(wx.wizard.Wizard):
 		self.lulzbotMachineSelectPage = LulzbotMachineSelectPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMachineSelectPage, self.lulzbotMiniToolheadPage)
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotFirmwarePage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotFirmwarePage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerSelectParts, self.ultimakerFirmwareUpgradePage)
