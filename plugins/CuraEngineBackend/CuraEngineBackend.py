@@ -71,7 +71,7 @@ class CuraEngineBackend(Backend):
         self.backendConnected.connect(self._onBackendConnected)
 
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"), "-j", Resources.getPath(Resources.SettingsLocation, "fdmprinter.json"), "-vv", "--connect", "127.0.0.1:{0}".format(self._port)]
+        return [Preferences.getInstance().getValue("backend/location"),"connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.SettingsLocation, "fdmprinter.json"), "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
