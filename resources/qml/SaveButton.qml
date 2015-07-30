@@ -46,7 +46,7 @@ Rectangle {
                 visible: base.progress >= 0 && base.progress < 0.99 ? false : true
                 color: UM.Theme.colors.save_button_estimated_text;
                 font: UM.Theme.fonts.small;
-                text:
+                text: {
                     if(base.progress < 0) {
                         //: Save button label
                         return qsTr("Please load a 3D model");
@@ -60,6 +60,8 @@ Rectangle {
                         //: Save button label
                         return qsTr("Estimated Print-time");
                     }
+                    return "";
+                }
             }
             Label {
                 id: printDurationLabel
