@@ -163,9 +163,10 @@ class ProfileIni(object):
 		cp = configparser.ConfigParser()
 		cp.read(self.ini)
 		for setting in profile.settingsList:
+			section = 'profile' if setting.isProfile() else 'alterations'
 			if setting.isProfile() or setting.isAlteration():
-				if cp.has_option('profile', setting.getName()):
-					profile_dict[setting.getName()] = cp.get('profile', setting.getName())
+				if cp.has_option(section, setting.getName()):
+					profile_dict[setting.getName()] = cp.get(section, setting.getName())
 
 		return profile_dict
 
