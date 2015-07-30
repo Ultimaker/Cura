@@ -825,6 +825,7 @@ class printWindowAdvanced(wx.Frame):
 		else:
 			self._fullscreenTemperature = self.temperatureGraph.Clone(self)
 			self._fullscreenTemperature.Bind(wx.EVT_LEFT_UP, self.OnTemperatureClick)
+			self._fullscreenTemperature.SetMinSize(self.panel.GetSize())
 			sizer.Add(self._fullscreenTemperature, 1, flag=wx.EXPAND)
 			self.panel.Show(False)
 		self.Layout()
@@ -897,6 +898,7 @@ class printWindowAdvanced(wx.Frame):
 			self.cancelButton.Enable(False)
 		self.errorLogButton.Show(self._printerConnection.isInErrorState())
 		self._termInput.Enable(self._printerConnection.isAbleToSendDirectCommand())
+		self.Layout()
 
 	def _doPrinterConnectionUpdate(self, connection, extraInfo = None):
 		wx.CallAfter(self.__doPrinterConnectionUpdate, connection, extraInfo)
