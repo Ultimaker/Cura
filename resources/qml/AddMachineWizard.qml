@@ -8,12 +8,20 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
+<<<<<<< Updated upstream
 UM.Dialog 
 {
+=======
+UM.Wizard{
+>>>>>>> Stashed changes
     id: base
+    property bool printer: true
+    file: "ultimaker2.json"
+    firstRun: printer ? false : true
 
     //: Add Printer dialog title
     title: qsTr("Add Printer");
+<<<<<<< Updated upstream
 
     ColumnLayout 
     {
@@ -124,4 +132,6 @@ UM.Dialog
             onClicked: base.visible = false;
         }
     ]
+=======
+>>>>>>> Stashed changes
 }

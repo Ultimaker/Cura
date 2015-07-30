@@ -7,6 +7,13 @@
 
     "inherits": "fdmprinter.json",
 
+    "add_pages": [
+        {"page": "SelectUpgradedParts", "title": "Select Upgraded Parts"},
+        {"page": "UpgradeFirmware", "title": "Upgrade Ultimaker Firmware"},
+        {"page": "UltimakerCheckup", "title": "Ultimaker Checkup"},
+        {"page": "Bedleveling", "title": "Bedleveling Wizard"}
+    ],
+
     "machine_settings": {
         "machine_width": { "default": 205 },
         "machine_height": { "default": 200 },

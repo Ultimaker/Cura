@@ -368,7 +368,7 @@ UM.MainWindow {
         resetAll.onTriggered: Printer.resetAll()
         reloadAll.onTriggered: Printer.reloadAll()
 
-        addMachine.onTriggered: addMachine.visible = true;
+        addMachine.onTriggered: addMachineWizard.visible = true;
 
         preferences.onTriggered: preferences.visible = true;
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
@@ -460,8 +460,9 @@ UM.MainWindow {
     }
 
     AddMachineWizard {
-        id: addMachine;
+        id: addMachineWizard
     }
+
 
     AboutDialog {
         id: aboutDialog
@@ -469,7 +470,10 @@ UM.MainWindow {
 
     Connections {
         target: Printer
-        onRequestAddPrinter: addMachine.visible = true;
+        onRequestAddPrinter: {
+            addMachineWizard.visible = true
+            addMachineWizard.printer = false
+        }
         onWriteToLocalFileRequested: saveDialog.open();
     }
 
