@@ -49,7 +49,14 @@ UM.MainWindow {
                     }
                 }
 
-                MenuItem { text: "Save Selection" }
+                MenuSeparator { }
+
+                MenuItem {
+                    text: "Save Selection to File";
+                    enabled: UM.Selection.hasSelection;
+                    iconName: "document-save-as";
+                    onTriggered: devicesModel.requestWriteSelectionToDevice("local_file");
+                }
                 Menu {
                     id: saveAllMenu
                     title: "Save All"
