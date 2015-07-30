@@ -1,5 +1,6 @@
 {
-    "id": "prusa_i3",
+    "id": "Prusa i3",
+    "manufacturer": "ultimaker",
     "icon": "icon_ultimaker2.png",
     "name": "Prusa i3",
     "platform": "prusai3_platform.stl",

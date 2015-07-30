@@ -42,23 +42,65 @@ UM.Dialog
                 model: UM.Models.availableMachinesModel
                 delegate: RadioButton 
                 { 
+                    id:machine_button
                     exclusiveGroup: printerGroup; 
                     text: model.name; 
                     onClicked: ListView.view.currentIndex = index; 
+                    Component.onCompleted: 
+                    {
+                        if(index == 0)
+                        {
+                            machine_button.checked = true
+                            ListView.view.currentIndex = index; 
+                        }
+                    }
                 }
             }
         }
-
-        Label {
+        Label 
+        {
+            text: qsTr("Variation:");
+        }
+        
+        ScrollView
+        {
+            width: 50
+            height:150
+            
+            ListView 
+            {
+                Component.onCompleted:console.log(model)
+                id: variations_list
+                model: machineList.model.getItem(machineList.currentIndex).variations
+                delegate: RadioButton 
+                { 
+                    id: variation_radio_button
+                    exclusiveGroup: variationGroup; 
+                    text: model.name; 
+                    onClicked: ListView.view.currentIndex = index; 
+                    Component.onCompleted: 
+                    {
+                        if(index == 0)
+                        {
+                            variation_radio_button.checked = true
+                            ListView.view.currentIndex = index; 
+                        }
+                    }
+                }  
+            }
+            
+        }
+        Label 
+        {
             //: Add Printer wizard field label
             text: qsTr("Printer Name:");
         }
-
-        TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
+        TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).variations.getItem(variations_list.currentIndex).name }
 
         Item { Layout.fillWidth: true; Layout.fillHeight: true; }
 
         ExclusiveGroup { id: printerGroup; }
+        ExclusiveGroup { id: variationGroup; }
     }
 
     rightButtons: [
@@ -70,7 +112,7 @@ UM.Dialog
             {
                 if(machineList.currentIndex != -1) 
                 {
-                    UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
+                    UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, variations_list.currentIndex, machineName.text)
                     base.visible = false
                 }
             }
