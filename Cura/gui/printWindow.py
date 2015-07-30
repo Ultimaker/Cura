@@ -692,7 +692,7 @@ class printWindowAdvanced(wx.Frame):
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 		self.Bind(wx.EVT_CLOSE, self.OnClose)
 		self.movementBitmap.Bind(wx.EVT_LEFT_DOWN, self.OnMovementClick)
-		self.temperatureGraph.Bind(wx.EVT_LEFT_DOWN, self.OnTemperatureClick)
+		self.temperatureGraph.Bind(wx.EVT_LEFT_UP, self.OnTemperatureClick)
 		self.connectButton.Bind(wx.EVT_BUTTON, self.OnConnect)
 		self.printButton.Bind(wx.EVT_BUTTON, self.OnPrint)
 		self.cancelButton.Bind(wx.EVT_BUTTON, self.OnCancel)
@@ -824,7 +824,7 @@ class printWindowAdvanced(wx.Frame):
 			self.panel.Show(True)
 		else:
 			self._fullscreenTemperature = self.temperatureGraph.Clone(self)
-			self._fullscreenTemperature.Bind(wx.EVT_LEFT_DOWN, self.OnTemperatureClick)
+			self._fullscreenTemperature.Bind(wx.EVT_LEFT_UP, self.OnTemperatureClick)
 			sizer.Add(self._fullscreenTemperature, 1, flag=wx.EXPAND)
 			self.panel.Show(False)
 		self.Layout()
