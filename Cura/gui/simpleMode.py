@@ -164,6 +164,7 @@ class simpleModePanel(wx.Panel):
 			boxsizer.Add(button)
 			button.Bind(wx.EVT_CHECKBOX, self._update)
 		self.Layout()
+		self.GetParent().Fit()
 
 		# Do not call the callback on the initial UI build
 		if e is not None:
