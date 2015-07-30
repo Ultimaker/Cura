@@ -105,13 +105,13 @@ Rectangle {
             anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height;
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            tooltip: devicesModel.currentDevice.description;
+            tooltip: devicesModel.activeDevice.description;
             enabled: progress >= 0.99;
 
             width: infoBox.width/6*4.5
             height: UM.Theme.sizes.save_button_save_to_button.height
 
-            text: devicesModel.currentDevice.short_description;
+            text: devicesModel.activeDevice.short_description;
 
             style: ButtonStyle {
                 background: Rectangle {
@@ -126,7 +126,7 @@ Rectangle {
                 }
                 label: Item { }
             }
-            onClicked: devicesModel.requestWriteToDevice(devicesModel.currentDevice.id)
+            onClicked: devicesModel.requestWriteToDevice(devicesModel.activeDevice.id)
         }
 
         Button {
@@ -141,7 +141,7 @@ Rectangle {
             width: infoBox.width/6*1.3 - UM.Theme.sizes.save_button_text_margin.height;
             height: UM.Theme.sizes.save_button_save_to_button.height
 
-            iconSource: UM.Theme.icons[devicesModel.currentDevice.icon_name];
+            iconSource: UM.Theme.icons[devicesModel.activeDevice.icon_name];
 
             style: ButtonStyle {
                 background: Rectangle {
@@ -186,10 +186,10 @@ Rectangle {
                     MenuItem {
                         text: model.description
                         checkable: true;
-                        checked: model.id == devicesModel.currentDevice.id;
+                        checked: model.id == devicesModel.activeDevice.id;
                         exclusiveGroup: devicesMenuGroup;
                         onTriggered: {
-                            devicesModel.setCurrentDevice(model.id);
+                            devicesModel.setActiveDevice(model.id);
                         }
                     }
                     onObjectAdded: devicesMenu.insertItem(index, object)
