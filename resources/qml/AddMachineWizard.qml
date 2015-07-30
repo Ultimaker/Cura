@@ -8,33 +8,44 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
-UM.Dialog {
+UM.Dialog 
+{
     id: base
 
     //: Add Printer dialog title
     title: qsTr("Add Printer");
 
-    ColumnLayout {
+    ColumnLayout 
+    {
         anchors.fill: parent;
 
-        Label {
+        Label 
+        {
             //: Add Printer wizard page title
             text: qsTr("Add Printer");
             font.pointSize: 18;
         }
 
-        Label {
+        Label 
+        {
             //: Add Printer wizard page description
             text: qsTr("Please select the type of printer:");
         }
 
-        ScrollView {
+        ScrollView 
+        {
             Layout.fillWidth: true;
 
-            ListView {
+            ListView 
+            {
                 id: machineList;
                 model: UM.Models.availableMachinesModel
-                delegate: RadioButton { exclusiveGroup: printerGroup; text: model.name; onClicked: ListView.view.currentIndex = index; }
+                delegate: RadioButton 
+                { 
+                    exclusiveGroup: printerGroup; 
+                    text: model.name; 
+                    onClicked: ListView.view.currentIndex = index; 
+                }
             }
         }
 
@@ -51,17 +62,21 @@ UM.Dialog {
     }
 
     rightButtons: [
-        Button {
+        Button 
+        {
             //: Add Printer wizarad button
             text: qsTr("Next");
-            onClicked: {
-                if(machineList.currentIndex != -1) {
+            onClicked: 
+            {
+                if(machineList.currentIndex != -1) 
+                {
                     UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
                     base.visible = false
                 }
             }
         },
-        Button {
+        Button 
+        {
             //: Add Printer wizarad button
             text: qsTr("Cancel");
             onClicked: base.visible = false;
