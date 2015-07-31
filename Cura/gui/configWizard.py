@@ -1241,7 +1241,7 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v1'),
 											'Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg', image_size)
 		self.dually = self.AddImageButton(self.panel, 1, 0, _('Dual Extruder v1'),
-											'Lulzbot_Toolhead_TAZ_Dually_v1.jpg', image_size)
+											'Lulzbot_Toolhead_TAZ_Dual_Extruder_v1.jpg', image_size)
 		self.flexydually = self.AddImageButton(self.panel, 1, 1, _('FlexyDually v1'),
 											'Lulzbot_Toolhead_TAZ_FlexyDually_v1.jpg', image_size)
 		self.SetVersion(1)
@@ -1253,7 +1253,7 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 		self.single.SetLabel(_('Single Extruder v%d' % version))
 		self.flexy.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Flexystruder_v%d.jpg' % version, image_size))
 		self.flexy.SetLabel(_('Flexystruder v%d' % version))
-		self.dually.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Dually_v%d.jpg' % version, image_size))
+		self.dually.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Dual_Extruder_v%d.jpg' % version, image_size))
 		self.dually.SetLabel(_('Dual Extruder v%d' % version))
 		self.flexydually.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_FlexyDually_v%d.jpg' % version, image_size))
 		self.flexydually.SetLabel(_('FlexyDually v%d' % version))
