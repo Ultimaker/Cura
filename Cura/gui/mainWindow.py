@@ -203,6 +203,7 @@ class mainWindow(wx.Frame):
 		self.SetMenuBar(self.menubar)
 
 		self.splitter = wx.SplitterWindow(self, style = wx.SP_3D | wx.SP_LIVE_UPDATE)
+		self.splitter.SetMinimumPaneSize(100)
 		self.leftPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
 		self.rightPane = wx.Panel(self.splitter, style=wx.BORDER_NONE)
 		self.splitter.Bind(wx.EVT_SPLITTER_DCLICK, lambda evt: evt.Veto())
@@ -279,7 +280,7 @@ class mainWindow(wx.Frame):
 			self.SetSize((800,600))
 			self.Centre()
 
-		self.updateSliceMode()
+		self.updateSliceMode(False)
 		self.scene.SetFocus()
 		self.dialogframe = None
 		if Publisher is not None:
@@ -376,8 +377,13 @@ class mainWindow(wx.Frame):
 				self.normalSashPos = self.splitter.GetSashPosition()
 
 			# Change location of sash to width of quick mode pane
+			self.simpleSettingsPanel.Layout()
+			self.simpleSettingsPanel.Fit()
 			(width, height) = self.simpleSettingsPanel.GetSizer().GetSize()
-			self.splitter.SetSashPosition(width, True)
+			if width > 0:
+				self.splitter.SetSashPosition(width, True)
+			else:
+				self.splitter.SizeWindows()
 
 			# Disable sash
 			self.splitter.SetSashSize(0)
@@ -385,6 +391,7 @@ class mainWindow(wx.Frame):
 			# Only change the sash position if we changed mode from simple
 			if changedMode:
 				self.splitter.SetSashPosition(self.normalSashPos, True)
+
 			# Enabled sash
 			self.splitter.SetSashSize(4)
 		self.defaultFirmwareInstallMenuItem.Enable(firmwareInstall.getDefaultFirmware() is not None)
