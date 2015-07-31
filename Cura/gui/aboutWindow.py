@@ -45,6 +45,12 @@ class aboutWindow(wx.Frame):
 			self.addComponent('comtypes', 'Library to help with windows taskbar features on Windows 7', 'MIT', 'http://starship.python.net/crew/theller/comtypes/')
 			self.addComponent('EjectMedia', 'Utility to safe-remove SD cards', 'Freeware', 'http://www.uwe-sieber.de/english.html')
 		self.addComponent('Pymclevel', 'Python library for reading Minecraft levels.', 'ISC', 'https://github.com/mcedit/pymclevel')
+		
+		s.Add(wx.StaticText(p, -1, ""))
+		s.Add(wx.StaticText(p, -1, "Cura utilizes graphics from:"))
+		self.addComponent('3d-printer', 'by Toke Frello', 'CC BY 3.0 US', 'https://thenounproject.com/term/3d-printer/170216/')
+		self.addComponent('Check Mark', 'by Stefan Parnarov', 'CC BY 3.0', 'https://thenounproject.com/term/check-mark/63794/')
+		
 		s.Add(wx.StaticText(p, -1, "Copyright (C) 2014 Aleph Objects, Inc. - Released under terms of the AGPLv3 License"), flag=wx.TOP, border=10)
 		s.Add(wx.StaticText(p, -1, "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"))
 		#Translations done by:

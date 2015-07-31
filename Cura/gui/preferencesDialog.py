@@ -122,6 +122,12 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(left, 'machine_shape', index=idx)
 			configBase.SettingRow(left, 'gcode_flavor', index=idx)
 
+			printer_type = profile.getMachineSetting('machine_type', idx)
+			if printer_type.startswith('lulzbot_'):
+				configBase.TitleRow(right, _("Toolhead"))
+				row = configBase.ToolheadRow(right, 'toolhead', index=idx)
+				row.button.Bind(wx.EVT_BUTTON, self.OnChangeToolheadButton)
+
 			configBase.TitleRow(right, _("Printer head size"))
 			configBase.SettingRow(right, 'extruder_head_size_min_x', index=idx)
 			configBase.SettingRow(right, 'extruder_head_size_min_y', index=idx)
@@ -138,7 +144,7 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(right, 'serial_port', ['AUTO'] + machineCom.serialList(), index=idx)
 			configBase.SettingRow(right, 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()), index=idx)
 
-			self.nb.AddPage(main, profile.getMachineSetting('machine_name', idx).title())
+			self.nb.AddPage(main, profile.getMachineName(idx).title())
 
 		self.nb.SetSelection(int(profile.getPreferenceFloat('active_machine')))
 
@@ -164,6 +170,22 @@ class machineSettingsDialog(wx.Dialog):
 
 		main.Fit()
 		self.Fit()
+
+	def OnChangeToolheadButton(self, e):
+		self.Hide()
+		self.parent.Hide()
+		old_active = int(profile.getPreferenceFloat('active_machine'))
+		profile.setActiveMachine(self.nb.GetSelection())
+		configWizard.LulzbotChangeToolheadWizard()
+		profile.setActiveMachine(old_active)
+		self.parent.Show()
+		self.parent.reloadSettingPanels()
+		self.parent.updateMachineMenu()
+
+		prefDialog = machineSettingsDialog(self.parent)
+		prefDialog.Centre()
+		prefDialog.Show()
+		wx.CallAfter(self.Close)
 
 	def OnAddMachine(self, e):
 		self.Hide()
@@ -194,11 +216,12 @@ class machineSettingsDialog(wx.Dialog):
 		wx.CallAfter(self.Close)
 
 	def OnRenameMachine(self, e):
-		dialog = wx.TextEntryDialog(self, _("Enter the new name:"), _("Change machine name"), self.nb.GetPageText(self.nb.GetSelection()))
+		dialog = wx.TextEntryDialog(self, _("Enter the new name:"), _("Change machine name"),
+									profile.getMachineSetting('machine_name', self.nb.GetSelection()))
 		if dialog.ShowModal() != wx.ID_OK:
 			return
-		self.nb.SetPageText(self.nb.GetSelection(), dialog.GetValue())
 		profile.putMachineSetting('machine_name', dialog.GetValue(), self.nb.GetSelection())
+		self.nb.SetPageText(self.nb.GetSelection(), profile.getMachineName(self.nb.GetSelection()))
 		self.parent.updateMachineMenu()
 
 	def OnClose(self, e):
