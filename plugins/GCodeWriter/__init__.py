@@ -8,7 +8,6 @@ catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "type": "mesh_writer",
         "plugin": {
             "name": "GCode Writer",
             "author": "Ultimaker",
