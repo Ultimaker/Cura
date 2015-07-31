@@ -1188,23 +1188,13 @@ class LulzbotReadyPage(InfoPage):
 		self.AddSeperator()
 
 class LulzbotToolheadSelectPage(InfoPage):
-	url='http://lulzbot.com/toolhead-identification'
-
 	def __init__(self, parent, title):
 		super(LulzbotToolheadSelectPage, self).__init__(parent, title)
-
 		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
-
 		self.AddText(_('Please select your currently installed Tool Head'))
-		txt = self.AddText(_('WARNING: Carefully select the right Tool Head.\nFlashing the firmware with the wrong Tool Head can damage your LulzBot printer. Learn more here :'))
+		txt = self.AddText(_('WARNING: Carefully select the right Tool Head.\nFlashing the firmware with the wrong Tool Head can damage your LulzBot printer.'))
 		txt.SetForegroundColour(wx.RED)
-		button = self.AddButton(self.url)
-		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
-
 		self.AddSeperator()
-
-	def OnUrlClick(self, e):
-		webbrowser.open(LulzbotMiniToolheadSelectPage.url)
 
 class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
 	def __init__(self, parent, allowBack = True):
