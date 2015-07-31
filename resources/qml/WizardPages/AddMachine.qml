@@ -12,7 +12,6 @@ import ".."
 ColumnLayout {
     id: wizardPage
     property string title
-    anchors.fill: parent
     signal openFile(string fileName)
     signal closeWizard()
 
@@ -34,11 +33,11 @@ ColumnLayout {
     }
 
     ScrollView {
-        Layout.fillWidth: true;
         ListView {
             id: machineList;
             model: UM.Models.availableMachinesModel
             delegate: RadioButton {
+                id:machine_button
                 exclusiveGroup: printerGroup;
                 checked: ListView.view.currentIndex == index ? true : false
                 text: model.name;
@@ -51,38 +50,59 @@ ColumnLayout {
     }
 
     Label {
+        text: qsTr("Variation:");
+        }
+
+    ScrollView {
+        ListView {
+            id: variations_list
+            model: machineList.model.getItem(machineList.currentIndex).variations
+            delegate: RadioButton {
+                id: variation_radio_button
+                checked: ListView.view.currentIndex == index ? true : false
+                exclusiveGroup: variationGroup;
+                text: model.name;
+                onClicked: ListView.view.currentIndex = index;
+            }
+        }
+    }
+
+    Label {
         //: Add Printer wizard field label
         text: qsTr("Printer Name:");
     }
 
     TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
-
     Item { Layout.fillWidth: true; Layout.fillHeight: true; }
-
     ExclusiveGroup { id: printerGroup; }
+    ExclusiveGroup { id: variationGroup; }
 
     function getSpecialMachineType(machineId){
         for (var i = 0; i < UM.Models.addMachinesModel.rowCount(); i++) {
-            if (UM.Models.addMachinesModel.getItem(i).id == machineId){
-               return UM.Models.addMachinesModel.getItem(i).file
+            if (UM.Models.addMachinesModel.getItem(i).name == machineId){
+               return UM.Models.addMachinesModel.getItem(i).name
             }
         }
     }
 
     function saveMachine(){
         if(machineList.currentIndex != -1) {
-            UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
+            UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, variations_list.currentIndex, machineName.text)
 
-            var chosenMachineType = UM.Models.availableMachinesModel.getItem(machineList.currentIndex).type
-            var originalMachineType = getSpecialMachineType("ultimaker_original")
-            var orginalPlusMachineType = getSpecialMachineType("ultimaker_original_plus")
+            var originalString = "Ultimaker Original"
+            var originalPlusString = "Ultimaker Original+"
+            var originalMachineType = getSpecialMachineType(originalString)
 
-            if (chosenMachineType == originalMachineType)
-                wizardPage.openFile(originalMachineType)
-            if (chosenMachineType == orginalPlusMachineType)
-                wizardPage.openFile(orginalPlusMachineType)
-            else
+            if (UM.Models.availableMachinesModel.getItem(machineList.currentIndex).name == originalMachineType){
+                var variation = UM.Models.availableMachinesModel.getItem(machineList.currentIndex).variations.getItem(variations_list.currentIndex).name
+                if (variation == originalString || variation == originalPlusString){
+                    console.log(UM.Models.availableMachinesModel.getItem(machineList.currentIndex).variations.getItem(variations_list.currentIndex).type)
+                    wizardPage.openFile(UM.Models.availableMachinesModel.getItem(machineList.currentIndex).variations.getItem(variations_list.currentIndex).type)
+                }
+            }
+            else {
                 wizardPage.closeWizard()
+            }
         }
     }
 }
