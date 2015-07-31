@@ -356,7 +356,11 @@ class SceneView(openglGui.glGuiPanel):
 					connection.window = printWindow.printWindowPlugin(self, connection, p.getFullFilename())
 					break
 			if connection.window is None:
-				connection.window = printWindow.printWindowBasic(self, connection)
+				if windowType == "Basic":
+					connection.window = printWindow.printWindowBasic(self, connection)
+				else:
+					connection.window = printWindow.printWindowAdvanced(self, connection)
+
 		connection.window.Show()
 		connection.window.Raise()
 		if not connection.loadGCodeData(self._engine.getResult().getGCode()):

@@ -1359,6 +1359,7 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
 
 def performVersionUpgrade():
+	putPreference("printing_window", "Advanced")
 	for n in xrange(0, getMachineCount()):
 		# This is a hack around an issue where the machine type in the wizard
 		# changed and causes some people to have it set to lulzbot_TAZ and some
