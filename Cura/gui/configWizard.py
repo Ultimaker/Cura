@@ -15,6 +15,7 @@ from Cura.util import machineCom
 from Cura.util import profile
 from Cura.util import gcodeGenerator
 from Cura.util import resources
+from Cura.util import version
 
 
 class InfoBox(wx.Panel):
@@ -1394,7 +1395,7 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 		skipUpgradeButton.Bind(wx.EVT_BUTTON, self.OnSkipClick)
 
 	def AllowNext(self):
-		return False
+		return version.isDevVersion()
 
 	def OnUpgradeClick(self, e):
 		if firmwareInstall.InstallFirmware():
