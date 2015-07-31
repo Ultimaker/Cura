@@ -12,6 +12,7 @@ Rectangle {
     id: base;
 
     property real progress: UM.Backend.progress;
+    property bool activity: Printer.getPlatformActivity;
     Behavior on progress { NumberAnimation { duration: 250; } }
 
     property variant printDuration: PrintInformation.currentPrintTime;
@@ -47,7 +48,7 @@ Rectangle {
                 color: UM.Theme.colors.save_button_estimated_text;
                 font: UM.Theme.fonts.small;
                 text: {
-                    if(base.progress < 0) {
+                    if(base.activity == false) {
                         //: Save button label
                         return qsTr("Please load a 3D model");
                     } else if (base.progress < 0.99) {
@@ -70,7 +71,7 @@ Rectangle {
                 anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
                 color: UM.Theme.colors.save_button_printtime_text;
                 font: UM.Theme.fonts.small;
-                visible: base.progress < 0.99 ? false : true
+                visible: base.activity == false || base.progress < 0.99 ? false : true
                 text: (!base.printDuration || !base.printDuration.valid) ? "" : base.printDuration.getDisplayString(UM.DurationFormat.Long);
             }
             Label {
@@ -80,11 +81,10 @@ Rectangle {
                 anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
                 color: base.printDuration.days > 0 ? UM.Theme.colors.save_button_estimated_text : UM.Theme.colors.save_button_printtime_text;
                 font: UM.Theme.fonts.small;
-
                 property bool mediumLengthDuration: base.printDuration.hours > 9 && base.printMaterialAmount > 9.99 && base.printDuration.days == 0
                 width: mediumLengthDuration ? 50 : undefined
                 elide: mediumLengthDuration ? Text.ElideRight : Text.ElideNone
-                visible: base.progress < 0.99 ? false : true
+                visible: base.activity == false || base.progress < 0.99 ? false : true
                 //: Print material amount save button label
                 text: base.printMaterialAmount < 0 ? "" : qsTr("%1m of Material").arg(base.printMaterialAmount);
             }
@@ -98,7 +98,7 @@ Rectangle {
             }
             width: Math.max(infoBox.width * base.progress);
             color: UM.Theme.colors.save_button_active
-            visible: base.progress > 0.99 ? false : true
+            visible: progress > 0.99 ? false : true
         }
 
         Button {
@@ -108,7 +108,7 @@ Rectangle {
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             tooltip: devicesModel.activeDevice.description;
-            enabled: progress >= 0.99;
+            enabled: progress > 0.99 && base.activity == true
 
             width: infoBox.width/6*4.5
             height: UM.Theme.sizes.save_button_save_to_button.height

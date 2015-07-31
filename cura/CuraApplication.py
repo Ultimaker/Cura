@@ -22,6 +22,7 @@ from UM.Math.Polygon import Polygon
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
+from UM.Scene.GroupDecorator import GroupDecorator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -74,6 +75,7 @@ class CuraApplication(QtApplication):
         self._print_information = None
         self._i18n_catalog = None
         self._previous_active_tool = None
+        self._platform_activity = False
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
 
@@ -106,6 +108,7 @@ class CuraApplication(QtApplication):
             raise RuntimeError("Could not load the backend plugin!")
 
     def addCommandLineOptions(self, parser):
+        super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
 
     def run(self):
@@ -199,6 +202,31 @@ class CuraApplication(QtApplication):
                 self._previous_active_tool = None
 
     requestAddPrinter = pyqtSignal()
+    activityChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = activityChanged)
+    def getPlatformActivity(self):
+        return self._platform_activity
+
+    @pyqtSlot(bool)
+    def setPlatformActivity(self, activity):
+        ##Sets the _platform_activity variable on true or false depending on whether there is a mesh on the platform
+        if activity == True:
+            self._platform_activity = activity
+        elif activity == False:
+            nodes = []
+            for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+                if type(node) is not SceneNode or not node.getMeshData():
+                    continue
+                nodes.append(node)
+            i = 0
+            for node in nodes:
+                if not node.getMeshData():
+                    continue
+                i += 1
+            if i <= 1: ## i == 0 when the meshes are removed using the deleteAll function; i == 1 when the last remaining mesh is removed using the deleteObject function
+                self._platform_activity = activity
+        self.activityChanged.emit()
 
     ##  Remove an object from the scene
     @pyqtSlot("quint64")
@@ -211,6 +239,7 @@ class CuraApplication(QtApplication):
         if object:
             op = RemoveSceneNodeOperation(object)
             op.push()
+            self.setPlatformActivity(False)
     
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
@@ -251,7 +280,6 @@ class CuraApplication(QtApplication):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
             nodes.append(node)
-
         if nodes:
             op = GroupedOperation()
 
@@ -259,6 +287,7 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
+        self.setPlatformActivity(False)
     
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
@@ -362,6 +391,17 @@ class CuraApplication(QtApplication):
             return
 
         self.getActiveMachine().setSettingValueByKey(key, value)
+        
+        
+    @pyqtSlot()
+    def groupSelected(self):
+        group_node = SceneNode()
+        group_decorator = GroupDecorator()
+        group_node.addDecorator(group_decorator)
+        group_node.setParent(self.getController().getScene().getRoot())
+        for node in Selection.getAllSelectedObjects():
+            node.setParent(group_node)
+            
 
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
@@ -401,7 +441,7 @@ class CuraApplication(QtApplication):
             op.push()
 
     def _onJobFinished(self, job):
-        if type(job) is not ReadMeshJob:
+        if type(job) is not ReadMeshJob or not job.getResult():
             return
 
         f = QUrl.fromLocalFile(job.getFileName())
