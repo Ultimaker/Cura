@@ -1401,8 +1401,14 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 			self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
 
 	def OnSkipClick(self, e):
-		self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
-		self.GetParent().ShowPage(self.GetNext())
+		dlg = wx.MessageDialog(self, _("Are you sure you want to skip the firmware upgrade?\n" +
+									   "It could damage your printer if you changed your toolhead and have not updated thefirmware!"),
+							_('Skip firmware upgrade?'), wx.YES_NO | wx.ICON_EXCLAMATION)
+		skip = dlg.ShowModal() == wx.ID_YES
+		dlg.Destroy()
+		if skip:
+			self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+			self.GetParent().ShowPage(self.GetNext())
 
 class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 	def __init__(self):
