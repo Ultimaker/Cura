@@ -10,18 +10,17 @@ import io
 class GCodeWriter(MeshWriter):
     def __init__(self):
         super().__init__()
-        self._gcode = None
 
-    def write(self, file_name, storage_device, mesh_data):
-        if "gcode" in file_name:
-            scene = Application.getInstance().getController().getScene()
-            gcode_list = getattr(scene, "gcode_list")
-            if gcode_list:
-                f = storage_device.openFile(file_name, "wt")
-                Logger.log("d", "Writing GCode to file %s", file_name)
-                for gcode in gcode_list:
-                    f.write(gcode)
-                storage_device.closeFile(f)
-                return True
+    def write(self, stream, node, mode = MeshWriter.OutputMode.TextMode):
+        if mode != MeshWriter.OutputMode.TextMode:
+            Logger.log("e", "GCode Writer does not support non-text mode")
+            return False
+
+        scene = Application.getInstance().getController().getScene()
+        gcode_list = getattr(scene, "gcode_list")
+        if gcode_list:
+            for gcode in gcode_list:
+                stream.write(gcode)
+            return True
 
         return False

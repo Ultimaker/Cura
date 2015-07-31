@@ -7,7 +7,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 UM.MainWindow {
     id: base
@@ -30,24 +30,52 @@ UM.MainWindow {
                 title: qsTr("&File");
 
                 MenuItem { action: actions.open; }
-                MenuItem { action: actions.save; }
+
+                Menu {
+                    id: recentFilesMenu;
+                    title: "Open Recent"
+                    iconName: "document-open-recent";
+
+                    enabled: Printer.recentFiles.length > 0;
+
+                    Instantiator {
+                        model: Printer.recentFiles
+                        MenuItem {
+                            text: {
+                                var path = modelData.toString()
+                                return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
+                            }
+                            onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
+                        }
+                        onObjectAdded: recentFilesMenu.insertItem(index, object)
+                        onObjectRemoved: recentFilesMenu.removeItem(object)
+                    }
+                }
 
                 MenuSeparator { }
 
-                Instantiator {
-                    model: Printer.recentFiles
-                    MenuItem {
-                        text: {
-                            var path = modelData.toString()
-                            return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
+                MenuItem {
+                    text: "Save Selection to File";
+                    enabled: UM.Selection.hasSelection;
+                    iconName: "document-save-as";
+                    onTriggered: devicesModel.requestWriteSelectionToDevice("local_file");
+                }
+                Menu {
+                    id: saveAllMenu
+                    title: "Save All"
+                    iconName: "document-save";
+                    enabled: devicesModel.count > 0 && UM.Backend.progress > 0.99;
+
+                    Instantiator {
+                        model: UM.OutputDevicesModel { id: devicesModel; }
+
+                        MenuItem {
+                            text: model.description
+                            onTriggered: devicesModel.requestWriteToDevice(model.id);
                         }
-                        onTriggered: {
-                            UM.MeshFileHandler.readLocalFile(modelData);
-                            Printer.setPlatformActivity(true)
-                        }
+                        onObjectAdded: saveAllMenu.insertItem(index, object)
+                        onObjectRemoved: saveAllMenu.removeItem(object)
                     }
-                    onObjectAdded: fileMenu.insertItem(index, object)
-                    onObjectRemoved: fileMenu.removeItem(object)
                 }
 
                 MenuSeparator { }
@@ -300,7 +328,6 @@ UM.MainWindow {
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
-                saveAction: actions.save;
             }
 
             Rectangle {
@@ -458,22 +485,6 @@ UM.MainWindow {
         }
     }
 
-    FileDialog {
-        id: saveDialog;
-        //: File save dialog title
-        title: qsTr("Save File");
-        selectExisting: false;
-
-        modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
-
-        nameFilters: UM.MeshFileHandler.supportedWriteFileTypes
-
-        onAccepted:
-        {
-            UM.MeshFileHandler.writeLocalFile(fileUrl);
-        }
-    }
-
     EngineLog {
         id: engineLog;
     }
@@ -493,7 +504,6 @@ UM.MainWindow {
             addMachineWizard.visible = true
             addMachineWizard.printer = false
         }
-        onWriteToLocalFileRequested: saveDialog.open();
     }
 
     Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
