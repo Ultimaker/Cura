@@ -1,6 +1,8 @@
 {
-    "id": "German RepRap Neo",
+    "id": "grr_neo",
     "name": "German RepRap Neo",
+    "manufacturer": "German RepRap",
+    "author": "other",
     "icon": "icon_ultimaker.png",
     "platform": "grr_neo_platform.stl",
 

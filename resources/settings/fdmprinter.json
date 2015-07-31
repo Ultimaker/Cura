@@ -1,6 +1,7 @@
 {
     "visible": false,
     "manufacturer": "other",
+    "author": "other",
 
     "add_pages": [{"page": "AddMachine", "title": "Add new printer"}],
 

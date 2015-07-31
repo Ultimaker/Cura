@@ -1,6 +1,5 @@
 {
-    "id": "Ultimaker 2 Extended",
-    "manufacturer": "ultimaker",
+    "id": "ultimaker2_extended",
     "name": "Ultimaker 2 Extended",
     "icon": "icon_ultimaker2.png",
     "platform": "ultimaker2_platform.obj",

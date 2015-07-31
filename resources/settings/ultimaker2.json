@@ -1,7 +1,8 @@
 {
-    "id": "Ultimaker 2",
-    "manufacturer": "ultimaker",
+    "id": "ultimaker2",
     "name": "Ultimaker 2",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
     "icon": "icon_ultimaker2.png",
     "platform": "ultimaker2_platform.obj",
     "platform_texture": "Ultimaker2backplate.png",
