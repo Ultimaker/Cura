@@ -65,7 +65,26 @@ UM.MainWindow {
                 MenuItem { action: actions.deleteSelection; }
                 MenuItem { action: actions.deleteAll; }
             }
-
+            Menu
+            {
+                title: qsTr("&View");
+                id: top_view_menu
+                Instantiator 
+                {
+                    model: UM.Models.viewModel
+                    MenuItem 
+                    {
+                        text: model.name;
+                        checkable: true;
+                        checked: model.active;
+                        exclusiveGroup: view_menu_top_group;
+                        onTriggered: UM.Controller.setActiveView(model.id);
+                    }
+                    onObjectAdded: top_view_menu.insertItem(index, object)
+                    onObjectRemoved: top_view_menu.removeItem(object)
+                }
+                ExclusiveGroup { id: view_menu_top_group; }
+            }
             Menu {
                 id: machineMenu;
                 //: Machine menu
