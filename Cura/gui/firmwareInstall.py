@@ -81,9 +81,15 @@ def getDefaultFirmware(machineIndex = None):
 		return resources.getPathForFirmware("MarlinWitbox.hex")
 	return None
 
-class InstallFirmware(wx.Dialog):
+def InstallFirmware(parent = None, filename = None, port = None, machineIndex = None):
+	dlg = InstallFirmwareDialog(parent, filename, port, machineIndex)
+	result = dlg.Run()
+	dlg.Destroy()
+	return result
+
+class InstallFirmwareDialog(wx.Dialog):
 	def __init__(self, parent = None, filename = None, port = None, machineIndex = None):
-		super(InstallFirmware, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineName(machineIndex).title()), size=(250, 100))
+		super(InstallFirmwareDialog, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineName(machineIndex).title()), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
@@ -113,14 +119,16 @@ class InstallFirmware(wx.Dialog):
 
 		self.Layout()
 		self.Fit()
+		self.success = False
 
+	def Run(self):
+		self.success = False
 		self.thread = threading.Thread(target=self.OnRun)
 		self.thread.daemon = True
 		self.thread.start()
 
 		self.ShowModal()
-		self.Destroy()
-		return
+		return self.success
 
 	def OnRun(self):
 		wx.CallAfter(self.updateLabel, _("Reading firmware..."))
@@ -169,6 +177,7 @@ class InstallFirmware(wx.Dialog):
 		wx.CallAfter(self.updateLabel, _("Uploading firmware..."))
 		try:
 			programmer.programChip(hexFile)
+			self.success = True
 			wx.CallAfter(self.updateLabel, _("Done!\nInstalled firmware: %s") % (os.path.basename(self.filename)))
 		except ispBase.IspError as e:
 			wx.CallAfter(self.updateLabel, _("Failed to write firmware.\n") + str(e))
@@ -181,9 +190,10 @@ class InstallFirmware(wx.Dialog):
 		#self.Layout()
 
 	def OnProgress(self, value, max):
-		wx.CallAfter(self.progressGauge.SetRange, max)
-		wx.CallAfter(self.progressGauge.SetValue, value)
-		taskbar.setProgress(self.GetParent(), value, max)
+		if self:
+			wx.CallAfter(self.progressGauge.SetRange, max)
+			wx.CallAfter(self.progressGauge.SetValue, value)
+			taskbar.setProgress(self.GetParent(), value, max)
 
 	def OnOk(self, e):
 		self.Close()
