@@ -178,7 +178,7 @@ class Scene(object):
 					self._oneAtATime = False
 					if self._lastResultOneAtATime:
 						if self._sceneView:
-							self._sceneView.notification.message("Object must be shorter than {}mm for this printer/toolhead. Reduce object size or swap to \"All at once\" mode. ".format(self._gantryHeight))
+							self._sceneView.notification.message("Object must be shorter than {}mm for this printer/tool head. Reduce object size or swap to \"All at once\" mode. ".format(self._gantryHeight))
 						break
 
 		self._lastResultOneAtATime = self._oneAtATime

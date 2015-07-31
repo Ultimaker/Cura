@@ -249,7 +249,7 @@ class SettingRow(object):
 		else:
 			self.ctrl.SetValue(value)
 
-class ToolheadRow(object):
+class ToolHeadRow(object):
 	def __init__(self, panel, configName, index = None):
 		sizer = panel.GetSizer()
 		x = sizer.GetRows()
@@ -272,7 +272,7 @@ class ToolheadRow(object):
 		self.ctrl = wx.TextCtrl(self.subpanel, -1, self.setting.getValue(self.settingIndex))
 		self.ctrl.Enable(False)
 
-		self.button = wx.Button(self.subpanel, -1, _("Change Toolhead"))
+		self.button = wx.Button(self.subpanel, -1, _("Change Tool Head"))
 
 		flag = wx.EXPAND
 		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)

@@ -124,8 +124,8 @@ class machineSettingsDialog(wx.Dialog):
 
 			printer_type = profile.getMachineSetting('machine_type', idx)
 			if printer_type.startswith('lulzbot_'):
-				configBase.TitleRow(right, _("Toolhead"))
-				row = configBase.ToolheadRow(right, 'toolhead', index=idx)
+				configBase.TitleRow(right, _("Tool Head"))
+				row = configBase.ToolHeadRow(right, 'toolhead', index=idx)
 				row.button.Bind(wx.EVT_BUTTON, self.OnChangeToolheadButton)
 
 			configBase.TitleRow(right, _("Printer head size"))

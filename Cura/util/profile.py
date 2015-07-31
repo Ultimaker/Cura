@@ -552,7 +552,7 @@ setting('serial_port_auto', '', str, 'machine', 'hidden')
 setting('serial_baud', 'AUTO', str, 'machine', 'hidden').setLabel(_("Baudrate"), _("Speed of the serial port communication\nNeeds to match your firmware settings\nCommon values are 250000, 115200, 57600"))
 setting('serial_baud_auto', '', int, 'machine', 'hidden')
 
-setting('toolhead', 'Default', str, 'machine', 'hidden').setLabel(_("Installed toolhead"), _("Which toolhead is currently installed. This setting is only used by LulzBot machines."))
+setting('toolhead', 'Default', str, 'machine', 'hidden').setLabel(_("Installed Tool Head"), _("Which tool head is currently installed. This setting is only used by LulzBot machines."))
 setting('toolhead_shortname', '', str, 'machine', 'hidden')
 setting('extruder_head_size_min_x', '0.0', float, 'machine', 'hidden').setLabel(_("Head size towards X min (mm)"), _("The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head."))
 setting('extruder_head_size_min_y', '0.0', float, 'machine', 'hidden').setLabel(_("Head size towards Y min (mm)"), _("The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head."))

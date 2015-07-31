@@ -1199,7 +1199,7 @@ class LulzbotToolheadSelectPage(InfoPage):
 
 class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
 	def __init__(self, parent, allowBack = True):
-		super(LulzbotMiniToolheadSelectPage, self).__init__(parent, _("LulzBot Mini Toolhead Selection"))
+		super(LulzbotMiniToolheadSelectPage, self).__init__(parent, _("LulzBot Mini Tool Head Selection"))
 
 		self.allowBack = allowBack
 		self.panel = self.AddPanel()
@@ -1231,7 +1231,7 @@ class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
 
 class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 	def __init__(self, parent):
-		super(LulzbotTazToolheadSelectPage, self).__init__(parent, _("LulzBot TAZ Toolhead Selection"))
+		super(LulzbotTazToolheadSelectPage, self).__init__(parent, _("LulzBot TAZ Tool Head Selection"))
 
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
@@ -1320,15 +1320,15 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 
 class LulzbotHotendSelectPage(LulzbotToolheadSelectPage):
 	def __init__(self, parent, allowBack = True):
-		super(LulzbotHotendSelectPage, self).__init__(parent, _("LulzBot Toolhead Hotend Selection"))
+		super(LulzbotHotendSelectPage, self).__init__(parent, _("LulzBot Tool Head Hotend Selection"))
 
 		self.allowBack = allowBack
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
-		self.v1 = self.AddImageButton(self.panel, 0, 0, _('v1 (Budaschnozzle Hotends)'),
+		self.v1 = self.AddImageButton(self.panel, 0, 0, _('v1 (Budaschnozzle)'),
 											'Lulzbot_Toolhead_v1.jpg', image_size,
 											style=ImageButton.IB_GROUP)
-		self.v2 = self.AddImageButton(self.panel, 0, 1, _('v2 (Hexagon Hotends)'),
+		self.v2 = self.AddImageButton(self.panel, 0, 1, _('v2 (Hexagon)'),
 											'Lulzbot_Toolhead_v2.jpg', image_size)
 		self.v1.SetValue(True)
 
@@ -1386,7 +1386,7 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 		self.AddSeperator()
 		self.AddText(_("Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the stepper motors, regulates the temperature\nand ultimately makes your printer work."))
 		self.AddHiddenSeperator()
-		self.AddText(_("The firmware shipping with new Lulzbot printers works, but upgrades may be available\nwhich improve the functionality of your printer.\nIf you changed your toolhead, you will also need to flash\na new firmware or you may risk damaging the toolhead."))
+		self.AddText(_("The firmware shipping with new Lulzbot printers works, but upgrades may be available\nwhich improve the functionality of your printer.\nIf you changed your tool head, you will also need to flash\n new firmware or you risk damaging your printer."))
 		self.AddHiddenSeperator()
 		self.AddText(_("To avoid any possible confusion, make sure to disconnect all printers from your PC\nexpect the printer that you are currently configuring."))
 		self.AddHiddenSeperator()
@@ -1403,7 +1403,7 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 
 	def OnSkipClick(self, e):
 		dlg = wx.MessageDialog(self, _("Are you sure you want to skip the firmware upgrade?\n" +
-									   "It could damage your printer if you changed your toolhead and have not updated thefirmware!"),
+									   "It could damage your printer if you changed your tool head and have not updated thefirmware!"),
 							_('Skip firmware upgrade?'), wx.YES_NO | wx.ICON_EXCLAMATION)
 		skip = dlg.ShowModal() == wx.ID_YES
 		dlg.Destroy()
@@ -1413,7 +1413,7 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 
 class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 	def __init__(self):
-		super(LulzbotChangeToolheadWizard, self).__init__(None, -1, _("Change Lulzbot Toolhead Wizard"))
+		super(LulzbotChangeToolheadWizard, self).__init__(None, -1, _("Change Lulzbot Tool Head Wizard"))
 
 		self._nozzle_size = profile.getProfileSettingFloat('nozzle_size')
 		self._machine_name = profile.getMachineSetting('machine_name')
