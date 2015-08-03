@@ -1135,7 +1135,7 @@ class LulzbotMachineSelectPage(InfoPage):
 	def StoreData(self):
 		if self.LulzbotTaz4.GetValue() or self.LulzbotTaz5.GetValue() or self.LulzbotMini.GetValue():
 			if self.LulzbotTaz4.GetValue():
-				# Nozzle size will be set in the toolhead selection page
+				# Nozzle diameter will be set in the toolhead selection page
 				# We set the machine_type here so later pages can differenciate between TAZ 4 and 5
 				profile.putMachineSetting('machine_width', '290')
 				profile.putMachineSetting('machine_depth', '275')
@@ -1144,7 +1144,7 @@ class LulzbotMachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
 				profile.putMachineSetting('serial_baud', '115200')
 			elif self.LulzbotTaz5.GetValue():
-				# Nozzle size will be set in the toolhead selection page
+				# Nozzle diameter will be set in the toolhead selection page
 				# We set the machine_type here so later pages can differenciate between TAZ 4 and 5
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
 				profile.putMachineSetting('machine_name', 'LulzBot TAZ 5')
@@ -1153,7 +1153,7 @@ class LulzbotMachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('serial_baud', '115200')
 			else:
-				# Nozzle size and machine type will be set in the toolhead selection page
+				# Nozzle diameter and machine type will be set in the toolhead selection page
 				profile.putMachineSetting('machine_name', 'LulzBot Mini')
 				profile.putMachineSetting('machine_width', '155')
 				profile.putMachineSetting('machine_depth', '155')
@@ -1344,14 +1344,14 @@ class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 	def __init__(self, parent):
 		super(LulzbotTaz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ Single V2 Nozzle Selection"))
 
-		self.AddText(_('Please select your Hexagon hotend\'s nozzle size:'))
+		self.AddText(_('Please select your Hexagon hotend\'s nozzle diameter:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
 		self.Nozzle35Radio.SetValue(True)
 		self.Nozzle50Radio = self.AddRadioButton("0.5 mm")
 		self.AddText(_(' '))
 		self.AddSeperator()
 
-		self.AddText(_('If you are not sure which nozzle size you have'))
+		self.AddText(_('If you are not sure which nozzle diameter you have'))
 		self.AddText(_('please check this webpage: '))
 		button = self.AddButton(LulzbotTaz5NozzleSelectPage.url2)
 		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
