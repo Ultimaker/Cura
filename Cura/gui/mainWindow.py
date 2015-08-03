@@ -488,6 +488,7 @@ class mainWindow(wx.Frame):
 		self.leftSizer.Add(self.normalSettingsPanel, 1, wx.EXPAND)
 		self.updateSliceMode(changedSliceMode)
 		self.updateProfileToAllControls()
+		self.Layout()
 
 	def updateMachineMenu(self):
 		#Remove all items so we can rebuild the menu. Inserting items seems to cause crashes, so this is the safest way.
