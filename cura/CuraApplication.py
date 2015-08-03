@@ -67,7 +67,7 @@ class CuraApplication(QtApplication):
             "SelectionTool",
             "CameraTool",
             "GCodeWriter",
-            "LocalFileStorage"
+            "LocalFileOutputDevice"
         ])
         self._physics = None
         self._volume = None
@@ -101,16 +101,12 @@ class CuraApplication(QtApplication):
         self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
+            self._plugin_registry.loadPlugin("ConsoleLogger")
 
-        self._plugin_registry.loadPlugins({ "type": "logger"})
-        self._plugin_registry.loadPlugins({ "type": "storage_device" })
-        self._plugin_registry.loadPlugins({ "type": "view" })
-        self._plugin_registry.loadPlugins({ "type": "mesh_reader" })
-        self._plugin_registry.loadPlugins({ "type": "mesh_writer" })
-        self._plugin_registry.loadPlugins({ "type": "tool" })
-        self._plugin_registry.loadPlugins({ "type": "extension" })
+        self._plugin_registry.loadPlugins()
 
-        self._plugin_registry.loadPlugin("CuraEngineBackend")
+        if self.getBackend() == None:
+            raise RuntimeError("Could not load the backend plugin!")
 
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
@@ -118,15 +114,6 @@ class CuraApplication(QtApplication):
 
     def run(self):
         self._i18n_catalog = i18nCatalog("cura");
-
-        self.addOutputDevice("local_file", {
-            "id": "local_file",
-            "function": self._writeToLocalFile,
-            "description": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
-            "shortDescription": self._i18n_catalog.i18nc("Save button tooltip", "Save to Disk"),
-            "icon": "save",
-            "priority": 0
-        })
 
         self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
 
@@ -167,8 +154,6 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Cura.qml"))
         self.initializeEngine()
 
-        self.getStorageDevice("LocalFileStorage").removableDrivesChanged.connect(self._removableDrivesChanged)
-
         if self.getMachines():
             active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
             if active_machine_pref:
@@ -181,7 +166,6 @@ class CuraApplication(QtApplication):
         else:
             self.requestAddPrinter.emit()
 
-        self._removableDrivesChanged()
         if self._engine.rootObjects:
             self.closeSplash()
 
@@ -401,16 +385,6 @@ class CuraApplication(QtApplication):
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 
-    outputDevicesChanged = pyqtSignal()
-    
-    @pyqtProperty("QVariantMap", notify = outputDevicesChanged)
-    def outputDevices(self):
-        return self._output_devices
-
-    @pyqtProperty("QStringList", notify = outputDevicesChanged)
-    def outputDeviceNames(self):
-        return self._output_devices.keys()
-
     @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
         if not self.getActiveMachine():
@@ -479,82 +453,6 @@ class CuraApplication(QtApplication):
         for node in ungrouped_nodes:
             Selection.remove(node)
 
-    ##  Add an output device that can be written to.
-    #
-    #   \param id \type{string} The identifier used to identify the device.
-    #   \param device \type{StorageDevice} A dictionary of device information.
-    #                 It should contains the following:
-    #                 - function: A function to be called when trying to write to the device. Will be passed the device id as first parameter.
-    #                 - description: A translated string containing a description of what happens when writing to the device.
-    #                 - icon: The icon to use to represent the device.
-    #                 - priority: The priority of the device. The device with the highest priority will be used as the default device.
-    def addOutputDevice(self, id, device):
-        self._output_devices[id] = device
-        self.outputDevicesChanged.emit()
-    
-    ##  Remove output device
-    #   \param id \type{string} The identifier used to identify the device.
-    #   \sa PrinterApplication::addOutputDevice()
-    def removeOutputDevice(self, id):
-        if id in self._output_devices:
-            del self._output_devices[id]
-            self.outputDevicesChanged.emit()
-
-    @pyqtSlot(str)
-    def writeToOutputDevice(self, device):
-        self._output_devices[device]["function"](device)
-
-    writeToLocalFileRequested = pyqtSignal()
-    
-    def _writeToLocalFile(self, device):
-        self.writeToLocalFileRequested.emit()
-
-    def _writeToSD(self, device):
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
-                continue
-
-            try:
-                path = self.getStorageDevice("LocalFileStorage").getRemovableDrives()[device]
-            except KeyError:
-                Logger.log("e", "Tried to write to unknown SD card %s", device)
-                return
-    
-            filename = os.path.join(path, node.getName()[0:node.getName().rfind(".")] + ".gcode")
-
-            message = Message(self._output_devices[device]["description"], 0, False, -1)
-            message.show()
-
-            job = WriteMeshJob(filename, node.getMeshData())
-            job._sdcard = device
-            job._message = message
-            job.start()
-            job.finished.connect(self._onWriteToSDFinished)
-
-            return
-
-    def _removableDrivesChanged(self):
-        drives = self.getStorageDevice("LocalFileStorage").getRemovableDrives()
-        for drive in drives:
-            if drive not in self._output_devices:
-                self.addOutputDevice(drive, {
-                    "id": drive,
-                    "function": self._writeToSD,
-                    "description": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(drive),
-                    "shortDescription": self._i18n_catalog.i18nc("Save button tooltip. {0} is sd card name", "Save to SD Card {0}").format(""),
-                    "icon": "save_sd",
-                    "priority": 1
-                })
-
-        drives_to_remove = []
-        for device in self._output_devices:
-            if device not in drives:
-                if self._output_devices[device]["function"] == self._writeToSD:
-                    drives_to_remove.append(device)
-
-        for drive in drives_to_remove:
-            self.removeOutputDevice(drive)
-
     def _onActiveMachineChanged(self):
         machine = self.getActiveMachine()
         if machine:
@@ -579,25 +477,6 @@ class CuraApplication(QtApplication):
                 self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
             else:
                 self._platform.setPosition(Vector(0.0, 0.0, 0.0))
-
-    def _onWriteToSDFinished(self, job):
-        message = Message(self._i18n_catalog.i18nc("Saved to SD message, {0} is sdcard, {1} is filename", "Saved to SD Card {0} as {1}").format(job._sdcard, job.getFileName()))
-        message.addAction(
-            "eject",
-            self._i18n_catalog.i18nc("Message action", "Eject"),
-            "eject",
-            self._i18n_catalog.i18nc("Message action tooltip, {0} is sdcard", "Eject SD Card {0}").format(job._sdcard)
-        )
-
-        job._message.hide()
-
-        message._sdcard = job._sdcard
-        message.actionTriggered.connect(self._onMessageActionTriggered)
-        message.show()
-
-    def _onMessageActionTriggered(self, message, action):
-        if action == "eject":
-            self.getStorageDevice("LocalFileStorage").ejectRemovableDrive(message._sdcard)
 
     def _onFileLoaded(self, job):
         mesh = job.getResult()
