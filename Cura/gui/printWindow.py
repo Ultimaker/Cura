@@ -584,6 +584,7 @@ class printWindowAdvanced(wx.Frame):
 		self.topsizer.SetEmptyCellSize((125, 1))
 		self.panel = wx.Panel(self)
 		self.sizer = wx.GridBagSizer(2, 2)
+		self.sizer.SetEmptyCellSize((125, 1))
 		self.panel.SetSizer(self.sizer)
 		self.panel.SetBackgroundColour(wx.WHITE)
 		self.GetSizer().Add(self.toppanel, 0, flag=wx.EXPAND)
@@ -660,6 +661,7 @@ class printWindowAdvanced(wx.Frame):
 				resources.getPathForImage('print-window-temperature-bed.png'))), (0, 0))
 		self.temperatureBedField = TemperatureField(self.panel, self._setBedTemperature)
 		self.temperatureGraph = TemperatureGraph(self.panel)
+		self.temperatureGraph.SetMinSize((250, 100))
 		self.progress = wx.Gauge(self.panel, -1, range=1000)
 
 		f = wx.Font(8, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
