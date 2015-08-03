@@ -1192,7 +1192,7 @@ class LulzbotToolheadSelectPage(InfoPage):
 	def __init__(self, parent, title):
 		super(LulzbotToolheadSelectPage, self).__init__(parent, title)
 		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
-		txt = self.AddText(_('Picking the correct Tool Head is important.'))
+		self.AddText(_('Picking the correct Tool Head is important.'))
 		txt = self.AddText(_('WARNING: Printing with the incorrect firmware can damage your LulzBot printer!'))
 		txt.SetForegroundColour(wx.RED)
 		self.AddSeperator()
