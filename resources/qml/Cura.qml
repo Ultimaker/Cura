@@ -58,7 +58,7 @@ UM.MainWindow {
                     text: "Save Selection to File";
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: devicesModel.requestWriteSelectionToDevice("local_file");
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file");
                 }
                 Menu {
                     id: saveAllMenu
@@ -70,8 +70,8 @@ UM.MainWindow {
                         model: UM.OutputDevicesModel { id: devicesModel; }
 
                         MenuItem {
-                            text: model.description
-                            onTriggered: devicesModel.requestWriteToDevice(model.id);
+                            text: model.description;
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id);
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)

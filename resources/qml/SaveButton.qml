@@ -107,13 +107,13 @@ Rectangle {
             anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height;
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            tooltip: devicesModel.activeDevice.description;
+            tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: progress > 0.99 && base.activity == true
 
             width: infoBox.width/6*4.5
             height: UM.Theme.sizes.save_button_save_to_button.height
 
-            text: devicesModel.activeDevice.short_description;
+            text: UM.OutputDeviceManager.activeDeviceShortDescription;
 
             style: ButtonStyle {
                 background: Rectangle {
@@ -128,7 +128,7 @@ Rectangle {
                 }
                 label: Item { }
             }
-            onClicked: devicesModel.requestWriteToDevice(devicesModel.activeDevice.id)
+            onClicked: UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
         }
 
         Button {
@@ -143,7 +143,7 @@ Rectangle {
             width: infoBox.width/6*1.3 - UM.Theme.sizes.save_button_text_margin.height;
             height: UM.Theme.sizes.save_button_save_to_button.height
 
-            iconSource: UM.Theme.icons[devicesModel.activeDevice.icon_name];
+            iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
                 background: Rectangle {
@@ -188,10 +188,10 @@ Rectangle {
                     MenuItem {
                         text: model.description
                         checkable: true;
-                        checked: model.id == devicesModel.activeDevice.id;
+                        checked: model.id == UM.OutputDeviceManager.activeDevice;
                         exclusiveGroup: devicesMenuGroup;
                         onTriggered: {
-                            devicesModel.setActiveDevice(model.id);
+                            UM.OutputDeviceManager.setActiveDevice(model.id);
                         }
                     }
                     onObjectAdded: devicesMenu.insertItem(index, object)
