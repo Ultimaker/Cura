@@ -1,6 +1,9 @@
 {
     "id": "ultimaker_original_plus",
+    "version": 1, 
     "name": "Ultimaker Original+",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
     "icon": "icon_ultimaker.png",
     "platform": "ultimaker2_platform.obj",
     "platform_texture": "UltimakerPlusbackplate.png",

@@ -1,5 +1,6 @@
 {
     "id": "prusa_i3",
+    "version": 1, 
     "name": "Prusa i3",
     "manufacturer": "Prusa",
     "author": "other",

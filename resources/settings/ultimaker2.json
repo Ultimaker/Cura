@@ -1,5 +1,6 @@
 {
     "id": "ultimaker2",
+    "version": 1, 
     "name": "Ultimaker 2",
     "manufacturer": "Ultimaker",
     "author": "Ultimaker",

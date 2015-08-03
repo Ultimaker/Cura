@@ -1,5 +1,6 @@
 {
     "id": "grr_neo",
+    "version": 1, 
     "name": "German RepRap Neo",
     "manufacturer": "German RepRap",
     "author": "other",

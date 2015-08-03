@@ -1,5 +1,6 @@
 {
     "id": "hephestos",
+    "version": 1, 
     "name": "BQ Prusa i3 Hephestos",
     "manufacturer": "BQ",
     "author": "other",
