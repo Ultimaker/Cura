@@ -1192,8 +1192,8 @@ class LulzbotToolheadSelectPage(InfoPage):
 	def __init__(self, parent, title):
 		super(LulzbotToolheadSelectPage, self).__init__(parent, title)
 		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
-		self.AddText(_('Please select your currently installed Tool Head'))
-		txt = self.AddText(_('WARNING: Carefully select the right Tool Head.\nFlashing the firmware with the wrong Tool Head can damage your LulzBot printer.'))
+		txt = self.AddText(_('Picking the correct Tool Head is important.'))
+		txt = self.AddText(_('WARNING: Printing with the incorrect firmware can damage your LulzBot printer!'))
 		txt.SetForegroundColour(wx.RED)
 		self.AddSeperator()
 
