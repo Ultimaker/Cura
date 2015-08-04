@@ -22,12 +22,6 @@
         "machine_center_is_zero": {
             "default": false
         },
-        "machine_extruder_count": {
-            "default": 1
-        },
-        "machine_nozzle_size": {
-            "default": 0.4
-        },
         "machine_head_shape_min_x": {
             "default": 40
         },
@@ -42,6 +36,69 @@
         },
         "machine_nozzle_gantry_distance": {
             "default": 55
+        },
+        "machine_extruder_count": {
+            "default": 1
+        },
+        "extruder_nr": { "default": 0 },
+        "machine_nozzle_offset_x": { "default": 0, "SEE_machine_extruder_trains": true },
+        "machine_nozzle_offset_y": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_size": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_tip_outer_diameter": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_head_distance": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_expansion_angle": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_extruder_start_code": { "default": "", "SEE_machine_extruder_trains": true  },
+        "machine_extruder_end_code": { "default": "", "SEE_machine_extruder_trains": true  },
+        "machine_switch_extruder_retraction_amount": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_switch_extruder_retraction_speed": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_switch_extruder_prime_speed": { "default": 0, "SEE_machine_extruder_trains": true  },
+        "machine_extruder_trains": {
+            "default": [
+                {
+                    "extruder_nr": {
+                        "label": "Extruder",
+                        "description": "The extruder train used for printing. This is used in multi-extrusion.",
+                        "type": "int",
+                        "default": 0,
+                        "min_value": 0,
+                        "max_value": 16,
+                        "inherit_function": "extruder_nr"
+                    },
+                    "machine_nozzle_offset_x": {
+                        "default": 0
+                    },
+                    "machine_nozzle_offset_y": {
+                        "default": 0
+                    },
+                    "machine_nozzle_size": {
+                        "default": 0.4
+                    },
+                    "machine_nozzle_tip_outer_diameter": {
+                        "default": 1
+                    },
+                    "machine_nozzle_head_distance": {
+                        "default": 3
+                    },
+                    "machine_nozzle_expansion_angle": {
+                        "default": 45
+                    },
+                    "machine_extruder_start_code": { 
+                        "default": "" 
+                    },
+                    "machine_extruder_end_code": {
+                        "default": "" 
+                    },
+                    "machine_switch_extruder_retraction_amount": { 
+                        "default": 16 
+                    },
+                    "machine_switch_extruder_retraction_speed": { 
+                        "default": 20 
+                    },
+                    "machine_switch_extruder_prime_speed": { 
+                        "default": 20 
+                    }
+                }
+            ]
         },
         "machine_nozzle_offset_x_1": {
             "default": 0
@@ -106,15 +163,6 @@
         "gantry_height":
         {
             "default":99999999999
-        },
-        "machine_nozzle_tip_outer_diameter": {
-            "default": 1
-        },
-        "machine_nozzle_head_distance": {
-            "default": 3
-        },
-        "machine_nozzle_expansion_angle": {
-            "default": 45
         }
     },
     "categories": {
@@ -251,6 +299,21 @@
                                 "setting": "support_roof_enable",
                                 "value": true
                             }
+                        },
+                        "prime_tower_line_width": {
+                            "label": "Prime Tower Line Width",
+                            "description": "Width of a single prime tower line.",
+                            "unit": "mm",
+                            "min_value": 0.0001,
+                            "min_value_warning": 0.2,
+                            "max_value_warning": 5,
+                            "default": 0.4,
+                            "type": "float",
+                            "visible": false,
+                            "active_if": {
+                                "setting": "prime_tower_enable",
+                                "value": true
+                            }
                         }
                     }
                 }
@@ -258,32 +321,78 @@
         },
         "dual": {
             "label": "Dual Extrusion",
-            "visible": true,
+            "visible": false,
             "icon": "category_dual",
             "settings": {
-                "extruder_nr": {
-                    "label": "Extruder",
-                    "description": "The extruder train used for printing. This is used in multi-extrusion.",
-                    "type": "int",
-                    "default": 0,
-                    "min_value": 0,
-                    "max_value": 16,
-                    "inherit_function": "extruder_nr"
+                "prime_tower_enable": {
+                    "label": "Enable Prime Tower",
+                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
+                    "type": "boolean",
+                    "default": false
                 },
                 "prime_tower_size": {
                     "label": "Prime Tower Size",
-                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch. A size of 0 corresponds to no prime tower at all.",
+                    "description": "The width of the prime tower.",
+                    "visible": false,
                     "type": "float",
                     "unit": "mm",
                     "default": 15,
                     "min_value": 0,
-                    "max_value_warning": 20
+                    "max_value_warning": 20,
+                    "inherit_function": "0 if prime_tower_enable else 15",
+                    "active_if": {
+                        "setting": "prime_tower_enable",
+                        "value": true
+                    }
+                },
+                "prime_tower_position_x": {
+                    "label": "Prime Tower X Position",
+                    "description": "The x position of the prime tower.",
+                    "visible": false,
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 200,
+                    "active_if": {
+                        "setting": "prime_tower_enable",
+                        "value": true
+                    }
+                },
+                "prime_tower_position_y": {
+                    "label": "Prime Tower Y Position",
+                    "description": "The y position of the prime tower.",
+                    "visible": false,
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 200,
+                    "active_if": {
+                        "setting": "prime_tower_enable",
+                        "value": true
+                    }
+                },
+                "prime_tower_flow": {
+                    "label": "Prime Tower Flow",
+                    "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
+                    "visible": false,
+                    "unit": "%",
+                    "default": 100,
+                    "type": "float",
+                    "min_value": 5,
+                    "min_value_warning": 50,
+                    "max_value_warning": 150,
+                    "active_if": {
+                        "setting": "prime_tower_enable",
+                        "value": true
+                    }
                 },
                 "prime_tower_wipe_enabled": {
                     "label": "Wipe Nozzle on Prime tower",
                     "description": "After printing the prime tower with the one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "boolean",
-                    "default": false
+                    "default": false,
+                    "active_if": {
+                        "setting": "prime_tower_enable",
+                        "value": true
+                    }
                 }
             }
         },
@@ -698,6 +807,20 @@
                                         "value": true
                                     }
                                 }
+                            }
+                        },
+                        "speed_prime_tower": {
+                            "label": "Prime Tower Speed",
+                            "description": "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "min_value": 0.1,
+                            "max_value_warning": 150,
+                            "default": 50,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "prime_tower_enable",
+                                "value": true
                             }
                         }
                     }
