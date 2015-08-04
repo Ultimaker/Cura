@@ -17,6 +17,30 @@ from Cura.util import profile
 from Cura.util import resources
 
 def getDefaultFirmware(machineIndex = None):
+	firmwareDict = {
+			'ultimaker2go':"MarlinUltimaker2go.hex",
+			'Witbox':"MarlinWitbox.hex",
+			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2015Q2.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2015Q2.hex",
+			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_05nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_05nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q2.hex",
+			'lulzbot_TAZ_4_035nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_035nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q2.hex",
+			'lulzbot_TAZ_4_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex"
+	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
 	heated_bed = profile.getMachineSetting('has_heated_bed', machineIndex) == 'True'
@@ -41,44 +65,20 @@ def getDefaultFirmware(machineIndex = None):
 		if extruders > 1:
 			name += '-dual'
 		return resources.getPathForFirmware(name + '.hex')
-
 	if machine_type == 'ultimaker2':
 		if extruders > 2:
 			return None
 		if extruders > 1:
 			return resources.getPathForFirmware("MarlinUltimaker2-dual.hex")
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
-	if machine_type == 'lulzbot_mini':
-		return resources.getPathForFirmware("Mini_SingleV2_2014Q4.hex")
-	if machine_type == 'lulzbot_mini_flexy':
-		return resources.getPathForFirmware("Mini_FlexyV2_2014Q4.hex")
-	if machine_type == 'lulzbot_TAZ_4_SingleV1' or machine_type == 'lulzbot_TAZ_5_Single_V1':
-		return resources.getPathForFirmware("TAZ4-5_SingleV1_2014Q1.hex")
-	if machine_type == 'lulzbot_TAZ_4_05nozzle' or machine_type == 'lulzbot_TAZ_5_05nozzle' or \
-           machine_type == 'lulzbot_TAZ_4_035nozzle' or machine_type == 'lulzbot_TAZ_5_035nozzle':
-		return resources.getPathForFirmware("TAZ4-5_SingleV2_2015Q1.hex")
-	if machine_type == 'lulzbot_TAZ_4_FlexystruderV1' or machine_type == 'lulzbot_TAZ_5_FlexystruderV1':
-		return resources.getPathForFirmware("TAZ4-5_FlexystrderV1_2015Q3.hex")
-	if machine_type == 'lulzbot_TAZ_4_FlexystruderV2' or machine_type == 'lulzbot_TAZ_5_FlexystruderV2':
-		return resources.getPathForFirmware("TAZ4-5_FlexystrderV2_2015Q3.hex")
-	if machine_type == 'lulzbot_TAZ_4_DuallyV1' or machine_type == 'lulzbot_TAZ_5_DuallyV1':
-		return resources.getPathForFirmware("TAZ4-5_Dual-Extruder_V1_2015Q3.hex")
-	if machine_type == 'lulzbot_TAZ_4_DuallyV2' or machine_type == 'lulzbot_TAZ_5_DuallyV2':
-		return resources.getPathForFirmware("TAZ4-5_Dual-Extruder_V2_2015Q3.hex")
-	if machine_type == 'lulzbot_TAZ_4_FlexyDuallyV1' or machine_type == 'lulzbot_TAZ_5_FlexyDuallyV1':
-		return resources.getPathForFirmware("TAZ4-5_FlexyDually-V1_2015Q3.hex")
-	if machine_type == 'lulzbot_TAZ_4_FlexyDuallyV2' or machine_type == 'lulzbot_TAZ_5_FlexyDuallyV2':
-		return resources.getPathForFirmware("TAZ4-5_FlexyDually-V2_2015Q3.hex")
-	if machine_type == 'ultimaker2go':
-		return resources.getPathForFirmware("MarlinUltimaker2go.hex")
 	if machine_type == 'ultimaker2extended':
 		if extruders > 2:
 			return None
 		if extruders > 1:
 			return resources.getPathForFirmware("MarlinUltimaker2extended-dual.hex")
 		return resources.getPathForFirmware("MarlinUltimaker2extended.hex")
-	if machine_type == 'Witbox':
-		return resources.getPathForFirmware("MarlinWitbox.hex")
+	if firmwareDict.has_key(machine_type):
+		return resources.getPathForFirmware(firmwareDict[machine_type])
 	return None
 
 def InstallFirmware(parent = None, filename = None, port = None, machineIndex = None):
