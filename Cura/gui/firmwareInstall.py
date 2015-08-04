@@ -94,10 +94,6 @@ class InstallFirmwareDialog(wx.Dialog):
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
 			filename = getDefaultFirmware(machineIndex)
-		if filename is None:
-			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
-			self.Destroy()
-			return
 		self._machine_type = profile.getMachineSetting('machine_type', machineIndex)
 		if self._machine_type == 'reprap':
 			wx.MessageBox(_("Cura only supports firmware updates for ATMega2560 based hardware.\nSo updating your RepRap with Cura might or might not work."), _("Firmware update"), wx.OK | wx.ICON_INFORMATION)
@@ -122,6 +118,9 @@ class InstallFirmwareDialog(wx.Dialog):
 		self.success = False
 
 	def Run(self):
+		if self.filename is None:
+			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
+			return False
 		self.success = False
 		self.thread = threading.Thread(target=self.OnRun)
 		self.thread.daemon = True
