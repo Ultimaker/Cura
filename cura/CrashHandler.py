@@ -10,7 +10,7 @@ def show(type, value, tb):
     application = QCoreApplication.instance()
     if not application:
         traceback.print_exception(type, value, tb)
-        exit(1)
+        sys.exit(1)
 
     dialog = QDialog()
     dialog.setWindowTitle("Oops!")
@@ -44,4 +44,4 @@ def show(type, value, tb):
     buttons.helpRequested.connect(lambda: webbrowser.open("http://github.com/Ultimaker/Cura/issues"))
 
     dialog.exec_()
-    exit(1)
+    sys.exit(1)
