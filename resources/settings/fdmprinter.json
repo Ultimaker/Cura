@@ -47,7 +47,6 @@
         "machine_extruder_count": {
             "default": 1
         },
-        "extruder_nr": { "default": 0 },
         "machine_extruder_trains": {
             "default": [
                 {
