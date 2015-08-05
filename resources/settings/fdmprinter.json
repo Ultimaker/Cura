@@ -41,17 +41,6 @@
             "default": 1
         },
         "extruder_nr": { "default": 0 },
-        "machine_nozzle_offset_x": { "default": 0, "SEE_machine_extruder_trains": true },
-        "machine_nozzle_offset_y": { "default": 0, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_size": { "default": 0, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_tip_outer_diameter": { "default": 0, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_head_distance": { "default": 0, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_expansion_angle": { "default": 0, "SEE_machine_extruder_trains": true  },
-        "machine_extruder_start_code": { "default": "", "SEE_machine_extruder_trains": true  },
-        "machine_extruder_end_code": { "default": "", "SEE_machine_extruder_trains": true  },
-        "machine_switch_extruder_retraction_amount": { "default": 0, "SEE_machine_extruder_trains": true  },
-        "machine_switch_extruder_retraction_speed": { "default": 0, "SEE_machine_extruder_trains": true  },
-        "machine_switch_extruder_prime_speed": { "default": 0, "SEE_machine_extruder_trains": true  },
         "machine_extruder_trains": {
             "default": [
                 {
