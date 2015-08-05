@@ -192,7 +192,7 @@ class mainWindow(wx.Frame):
 		i = helpMenu.Append(-1, _("Online documentation..."))
 		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('http://lulzbot.com/cura'), i)
 		i = helpMenu.Append(-1, _("Report a problem..."))
-		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('https://github.com/alephobjects/Cura/issues'), i)
+		self.Bind(wx.EVT_MENU, lambda e: webbrowser.open('https://code.alephobjects.com/maniphest/task/create/'), i)
 		#i = helpMenu.Append(-1, _("Check for update..."))
 		#self.Bind(wx.EVT_MENU, self.OnCheckForUpdate, i)
 		#i = helpMenu.Append(-1, _("Open YouMagine website..."))
