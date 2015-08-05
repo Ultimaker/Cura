@@ -1382,13 +1382,14 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 
 		self.AddBitmap(wx.Bitmap(resources.getPathForImage('Lulzbot_logo.png')))
 
-		self.AddText(_('Your Lulzbot printer\'s firmware will now be updated'))
+		self.AddText(_('Your LulzBot printer\'s firmware will now be updated.'))
 		self.AddSeperator()
-		self.AddText(_("Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the stepper motors, regulates the temperature\nand ultimately makes your printer work."))
+		self.AddText(_("Firmware is the \"brain\" inside your 3D printer.\n" +
+					   "It controls motors/heaters, regulates temperature\n" +
+					   "and ultimately makes your printer work."))
 		self.AddHiddenSeperator()
-		self.AddText(_("The firmware shipping with new Lulzbot printers works, but upgrades may be available\nwhich improve the functionality of your printer.\nIf you changed your tool head, you will also need to flash\n new firmware or you risk damaging your printer."))
-		self.AddHiddenSeperator()
-		self.AddText(_("To avoid any possible confusion, make sure to disconnect all printers from your PC\nexpect the printer that you are currently configuring."))
+		self.AddText(_("When changing tool heads it is neccesary to update the firmware.\n" +
+					   "Please disconnect all 3D printers except for the one you are currently configuring."))
 		self.AddHiddenSeperator()
 		upgradeButton, skipUpgradeButton = self.AddDualButton(_('Flash the firmware'), _('Skip upgrade'))
 		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
@@ -1402,9 +1403,11 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 			self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
 
 	def OnSkipClick(self, e):
-		dlg = wx.MessageDialog(self, _("Are you sure you want to skip the firmware upgrade?\n" +
-									   "It could damage your printer if you changed your tool head and have not updated thefirmware!"),
-							_('Skip firmware upgrade?'), wx.YES_NO | wx.ICON_EXCLAMATION)
+		dlg = wx.MessageDialog(self,
+				_("WARNING: You risk serious damage to your printer by not updating the firmware. This is not a recommended course of action!\n\n" + 
+				  "Are you sure you want to skip the firmware upgrade?"),
+				_('Skip firmware upgrade?'),
+				wx.YES_NO | wx.ICON_EXCLAMATION)
 		skip = dlg.ShowModal() == wx.ID_YES
 		dlg.Destroy()
 		if skip:
