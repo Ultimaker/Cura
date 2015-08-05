@@ -506,6 +506,6 @@ UM.MainWindow {
         }
     }
 
-    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
+    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
 }
 

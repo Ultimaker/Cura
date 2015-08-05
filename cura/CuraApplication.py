@@ -38,7 +38,7 @@ from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
 
 import platform
@@ -50,14 +50,19 @@ import numpy
 numpy.seterr(all="ignore")
 
 class CuraApplication(QtApplication):
+    class ResourceTypes:
+        QmlFiles = Resources.UserType + 1
+        Firmware = Resources.UserType + 2
+    Q_ENUMS(ResourceTypes)
+
     def __init__(self):
-        Resources.addResourcePath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
+        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
         if not hasattr(sys, "frozen"):
-            Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
         super().__init__(name = "cura", version = "master")
 
-        self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
+        self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
@@ -79,6 +84,9 @@ class CuraApplication(QtApplication):
         self._platform_activity = False
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
+
+        Resources.addType(self.ResourceTypes.QmlFiles, "qml")
+        Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
@@ -151,7 +159,7 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
 
-        self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Cura.qml"))
+        self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
 
         if self.getMachines():
