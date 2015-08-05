@@ -1,6 +1,9 @@
 {
-    "id": "ultimaker2go",
+    "id": "ultimaker2_go",
+    "version": 1, 
     "name": "Ultimaker 2 Go",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
     "icon": "icon_ultimaker2.png",
     "platform": "ultimaker2go_platform.obj",
     "platform_texture": "Ultimaker2backplate.png",

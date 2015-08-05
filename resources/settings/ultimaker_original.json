@@ -1,10 +1,20 @@
 {
     "id": "ultimaker_original",
+    "version": 1, 
     "name": "Ultimaker Original",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
     "icon": "icon_ultimaker.png",
     "platform": "ultimaker_platform.stl",
 
     "inherits": "fdmprinter.json",
+
+    "add_pages": [
+        {"page": "SelectUpgradedParts", "title": "Select Upgraded Parts"},
+        {"page": "UpgradeFirmware", "title": "Upgrade Ultimaker Firmware"},
+        {"page": "UltimakerCheckup", "title": "Ultimaker Checkup"},
+        {"page": "Bedleveling", "title": "Bedleveling Wizard"}
+    ],
 
     "machine_settings": {
         "machine_width": { "default": 205 },

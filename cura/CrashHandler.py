@@ -3,10 +3,15 @@ import platform
 import traceback
 import webbrowser
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit
 
-def show():
+def show(type, value, tb):
+    application = QCoreApplication.instance()
+    if not application:
+        traceback.print_exception(type, value, tb)
+        sys.exit(1)
+
     dialog = QDialog()
     dialog.setWindowTitle("Oops!")
 
@@ -25,7 +30,7 @@ def show():
     except:
         version = "Unknown"
 
-    trace = "".join(traceback.format_exception(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]))
+    trace = "".join(traceback.format_exception(type, value, tb))
 
     crash_info = "Version: {0}\nPlatform: {1}\nQt: {2}\nPyQt: {3}\n\nException:\n{4}"
     crash_info = crash_info.format(version, platform.platform(), QT_VERSION_STR, PYQT_VERSION_STR, trace)
@@ -39,3 +44,4 @@ def show():
     buttons.helpRequested.connect(lambda: webbrowser.open("http://github.com/Ultimaker/Cura/issues"))
 
     dialog.exec_()
+    sys.exit(1)
