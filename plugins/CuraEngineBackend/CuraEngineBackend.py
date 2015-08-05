@@ -45,7 +45,7 @@ class CuraEngineBackend(Backend):
         self._stored_layer_data = None
 
         self._settings = None
-        Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self._onActiveMachineChanged()
 
         self._change_timer = QTimer()
@@ -71,7 +71,7 @@ class CuraEngineBackend(Backend):
         self.backendConnected.connect(self._onBackendConnected)
 
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.Settings, "fdmprinter.json"), "-vv"]
+        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.MachineDefinitions, "fdmprinter.json"), "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
@@ -194,7 +194,7 @@ class CuraEngineBackend(Backend):
         if self._settings:
             self._settings.settingChanged.disconnect(self._onSettingChanged)
 
-        self._settings = Application.getInstance().getActiveMachine()
+        self._settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
         if self._settings:
             self._settings.settingChanged.connect(self._onSettingChanged)
             self._onChanged()

@@ -83,7 +83,7 @@ class CuraApplication(QtApplication):
         self._previous_active_tool = None
         self._platform_activity = False
 
-        self.activeMachineChanged.connect(self._onActiveMachineChanged)
+        self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")

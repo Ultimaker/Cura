@@ -66,7 +66,7 @@ class PrintInformation(QObject):
         self._slice_pass = None
         self._slice_reason = None
 
-        Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self._onActiveMachineChanged()
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
@@ -179,7 +179,7 @@ class PrintInformation(QObject):
         if self._current_settings:
             self._current_settings.settingChanged.disconnect(self._onSettingChanged)
 
-        self._current_settings = Application.getInstance().getActiveMachine()
+        self._current_settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
 
         if self._current_settings:
             self._current_settings.settingChanged.connect(self._onSettingChanged)
