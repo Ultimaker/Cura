@@ -32,3 +32,15 @@ order = int -> The order to show this material or quality in the UI. Default is 
 Profile options are applied in the following order : Material -> Quality -> Options. This allows you to group common settings for materials or to have options override everything else.
 
 The quickprint profiles are searched for in the ~/.Cura/quickprint directory first, allowing users to override their machines quickprint settings.
+
+
+
+
+Importing profiles will require:
+Adding an [info] section
+Renamed into profile.ini and move inside a High-speed directory
+Create ABS/High/profile.ini, ABS/Low/profile.ini, ABS/Normal/profile.ini and ABS/Ulti/profile.ini files created, with their profile.ini only containing [info] disabled = true, so you would override and disable the global quickprint settings
+
+Example:
+lulzbot_TAZ_4_FlexyDuallyV2/ABS/profile.ini <-- only needs to contain an [info] section with 'name = ABS' and 'order = 0'
+lulzbot_TAZ_4_FlexyDuallyV2/ABS/High-speed/profile.ini <-- copy that file into it, add a [info] section with name = High Speed
