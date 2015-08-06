@@ -120,7 +120,7 @@
         "save_button_printtime_text": [12, 169, 227, 255],
         "save_button_background": [249, 249, 249, 255],
 
-        "message": [205, 202, 201, 255],
+        "message": [160, 163, 171, 255],
         "message_text": [35, 35, 35, 255],
 
         "tool_panel_background": [255, 255, 255, 255]
