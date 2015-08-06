@@ -16,6 +16,70 @@
         {"page": "Bedleveling", "title": "Bedleveling Wizard"}
     ],
 
+    "machine_extruder_trains": [
+        {
+            "extruder_nr": {
+                "label": "Extruder",
+                "description": "The extruder train used for printing. This is used in multi-extrusion.",
+                "type": "int",
+                "default": 0,
+                "min_value": 0,
+                "max_value": 16,
+                "inherit_function": "extruder_nr"
+            },
+            "machine_nozzle_offset_x": {
+                "default": 0
+            },
+            "machine_nozzle_offset_y": {
+                "default": 0
+            },
+            "machine_nozzle_size": {
+                "default": 0.4
+            },
+            "machine_nozzle_tip_outer_diameter": {
+                "default": 1
+            },
+            "machine_nozzle_head_distance": {
+                "default": 3
+            },
+            "machine_nozzle_expansion_angle": {
+                "default": 45
+            },
+            "machine_extruder_start_code": { 
+                "default": "" 
+            },
+            "machine_extruder_start_pos_abs": { 
+                "default": false 
+            },
+            "machine_extruder_start_pos_x": { 
+                "default": 0 
+            },
+            "machine_extruder_start_pos_y": { 
+                "default": 0 
+            },
+            "machine_extruder_end_pos_abs": { 
+                "default": false 
+            },
+            "machine_extruder_end_pos_x": { 
+                "default": 0 
+            },
+            "machine_extruder_end_pos_y": { 
+                "default": 0 
+            },
+            "machine_extruder_end_code": {
+                "default": "" 
+            },
+            "machine_switch_extruder_retraction_amount": { 
+                "default": 16 
+            },
+            "machine_switch_extruder_retraction_speed": { 
+                "default": 20 
+            },
+            "machine_switch_extruder_prime_speed": { 
+                "default": 20 
+            }
+        }
+    ],
     "machine_settings": {
         "machine_width": { "default": 205 },
         "machine_height": { "default": 200 },
