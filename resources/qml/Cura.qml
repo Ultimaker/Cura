@@ -170,6 +170,7 @@ UM.MainWindow {
                     rightMargin: UM.Theme.sizes.window_margin.width;
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
+                    bottomMargin: UM.Theme.sizes.window_margin.height;
                 }
             }
 
