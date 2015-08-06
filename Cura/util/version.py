@@ -33,7 +33,7 @@ def getVersion(getGitVersion = True):
 		except:
 			pass
 
-	gitHeadFile = gitPath + "/.git/refs/heads/SteamEngine"
+	gitHeadFile = gitPath + "/.git/refs/heads/master"
 	if os.path.isfile(gitHeadFile):
 		if not getGitVersion:
 			return "dev"
