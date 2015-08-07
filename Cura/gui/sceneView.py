@@ -349,17 +349,7 @@ class SceneView(openglGui.glGuiPanel):
 
 	def _openPrintWindowForConnection(self, connection):
 		if connection.window is None or not connection.window:
-			connection.window = None
-			windowType = profile.getPreference('printing_window')
-			for p in pluginInfo.getPluginList('printwindow'):
-				if p.getName() == windowType:
-					connection.window = printWindow.printWindowPlugin(self, connection, p.getFullFilename())
-					break
-			if connection.window is None:
-				if windowType == "Basic":
-					connection.window = printWindow.printWindowBasic(self, connection)
-				else:
-					connection.window = printWindow.printWindowAdvanced(self, connection)
+			connection.window = printWindow.printWindowAdvanced(self, connection)
 
 		connection.window.Show()
 		connection.window.Raise()

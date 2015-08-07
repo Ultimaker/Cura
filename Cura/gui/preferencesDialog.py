@@ -23,12 +23,6 @@ class preferencesDialog(wx.Dialog):
 
 		left, right, main = self.panel.CreateConfigPanel(self)
 
-		printWindowTypes = ['Basic', 'Advanced']
-		for p in pluginInfo.getPluginList('printwindow'):
-			printWindowTypes.append(p.getName())
-		configBase.TitleRow(left, _("Print window"))
-		configBase.SettingRow(left, 'printing_window', printWindowTypes)
-
 		configBase.TitleRow(left, _("Colours"))
 		configBase.SettingRow(left, 'model_colour', wx.Colour)
 		for i in xrange(1, extruderCount):
