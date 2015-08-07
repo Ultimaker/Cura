@@ -516,7 +516,6 @@ setting('model_colour', '#C9E240', str, 'preference', 'hidden').setLabel(_('Mode
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel(_('Model colour (2)'), _('Display color for second extruder'))
 setting('model_colour3', '#DDD93C', str, 'preference', 'hidden').setLabel(_('Model colour (3)'), _('Display color for third extruder'))
 setting('model_colour4', '#4550D3', str, 'preference', 'hidden').setLabel(_('Model colour (4)'), _('Display color for forth extruder'))
-setting('printing_window', 'Advanced', ['Basic'], 'preference', 'hidden').setLabel(_('Printing window type'), _('Select the interface used for USB printing.'))
 
 setting('window_maximized', 'True', bool, 'preference', 'hidden')
 setting('window_pos_x', '-1', float, 'preference', 'hidden')
@@ -1370,7 +1369,6 @@ def getAlterationFileContents(filename, extruderCount = 1):
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
 
 def performVersionUpgrade():
-	putPreference("printing_window", "Advanced")
 	for n in xrange(0, getMachineCount()):
 		# This is a hack around an issue where the machine type in the wizard
 		# changed and causes some people to have it set to lulzbot_TAZ and some
