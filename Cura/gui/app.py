@@ -152,11 +152,6 @@ class CuraApp(wx.App):
 					return
 		if profile.getMachineSetting('machine_name') == '':
 			return
-		self.mainWindow = mainWindow.mainWindow()
-		self.destroySplashScreen()
-		self.SetTopWindow(self.mainWindow)
-		self.mainWindow.Show()
-		self.mainWindow.OnDropFiles(self.loadFiles)
 		if profile.getPreference('last_run_version') != version.getVersion(False):
 			profile.putPreference('last_run_version', version.getVersion(False))
 			profile.performVersionUpgrade()
@@ -170,6 +165,11 @@ class CuraApp(wx.App):
 			#wx.lib.inspection.InspectionTool().Show()
 
 
+		self.mainWindow = mainWindow.mainWindow()
+		self.destroySplashScreen()
+		self.SetTopWindow(self.mainWindow)
+		self.mainWindow.Show()
+		self.mainWindow.OnDropFiles(self.loadFiles)
 		setFullScreenCapable(self.mainWindow)
 
 		if sys.platform.startswith('darwin'):
