@@ -1376,7 +1376,32 @@ def performVersionUpgrade():
 		if getMachineSetting('machine_type', n) == 'lulzbot_TAZ':
 			putMachineSetting('machine_type', 'lulzbot_TAZ_4', n)
 
+		machine_type = getMachineSetting('machine_type', n)
+		if machine_type.startswith('lulzbot_') and \
+		   getMachineSetting('toolhead', n) == 'Default':
+			if machine_type == 'lulzbot_mini':
+				putMachineSetting('toolhead', 'Single Extruder V2', n)
+				putMachineSetting('toolhead_shortname', '', n)
+			elif machine_type == 'lulzbot_TAZ_4':
+				putMachineSetting('toolhead', 'Single Extruder V1', n)
+				putMachineSetting('toolhead_shortname', '', n)
+				putMachineSetting('machine_type', 'lulzbot_TAZ_4_SingleV1', n)
+			elif machine_type == 'lulzbot_TAZ_5':
+				putMachineSetting('toolhead', 'Single Extruder V2 (0.35mm nozzle)', n)
+				putMachineSetting('toolhead_shortname', '0.35 nozzle', n)
+				putMachineSetting('machine_type', 'lulzbot_TAZ_5_035nozzle', n)
+				machine_name = getMachineSetting('machine_name', n)
+				if machine_name.endswith(" (0.35 nozzle)"):
+					putMachineSetting('machine_name', machine_name.replace(" (0.35 nozzle)", ""), n)
+			elif machine_type == 'lulzbot_TAZ_5_05nozzle':
+				putMachineSetting('toolhead', 'Single Extruder V2 (0.5mm nozzle)', n)
+				putMachineSetting('toolhead_shortname', '0.5 nozzle', n)
+				putMachineSetting('machine_type', 'lulzbot_TAZ_5_05nozzle', n)
+				machine_name = getMachineSetting('machine_name', n)
+				if machine_name.endswith(" (0.5 nozzle)"):
+					putMachineSetting('machine_name', machine_name.replace(" (0.5 nozzle)", ""), n)
+
 		# Change TAZ print bed so prints are centered when scaled to the max
-		if getMachineSetting('machine_type', n).startswith('lulzbot_TAZ_') and \
+		if machine_type.startswith('lulzbot_TAZ_') and \
 			getMachineSetting('machine_width', n) == '298':
 			putMachineSetting('machine_width', '290')
