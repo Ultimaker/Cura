@@ -487,11 +487,20 @@ class MachineCom(object):
 					else:
 						self._sendNext()
 				elif "resend" in line.lower() or "rs" in line:
+					newPos = self._gcodePos
 					try:
-						self._gcodePos = int(line.replace("N:"," ").replace("N"," ").replace(":"," ").split()[-1])
+						newPos = int(line.replace("N:"," ").replace("N"," ").replace(":"," ").split()[-1])
 					except:
 						if "rs" in line:
-							self._gcodePos = int(line.split()[1])
+							newPos = int(line.split()[1])
+					# If we need to resend more than 10 lines, we can assume that the machine
+					# was shut down and turned back on or something else that's weird just happened.
+					# In that case, it can be dangerous to restart the print, so we'd better kill it
+					if self._gcodePos > newPos + 10:
+						self.cancelPrint()
+					else:
+						self._gcodePos = newPos
+
 		self._log("Connection closed, closing down monitor")
 
 	def _setBaudrate(self, baudrate):
