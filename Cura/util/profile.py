@@ -1379,4 +1379,4 @@ def performVersionUpgrade():
 		# Change TAZ print bed so prints are centered when scaled to the max
 		if getMachineSetting('machine_type', n).startswith('lulzbot_TAZ_') and \
 			getMachineSetting('machine_width', n) == '298':
-			profile.putMachineSetting('machine_width', '290')
+			putMachineSetting('machine_width', '290')
