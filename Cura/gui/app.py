@@ -173,7 +173,7 @@ class CuraApp(wx.App):
 		if version.isDevVersion():
 			import wx.lib.inspection
 			# Show the WX widget inspection tool
-			wx.lib.inspection.InspectionTool().Show()
+			#wx.lib.inspection.InspectionTool().Show()
 
 		if sys.platform.startswith('darwin'):
 			wx.CallAfter(self.StupidMacOSWorkaround)

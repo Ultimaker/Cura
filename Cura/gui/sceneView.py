@@ -1,6 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+import wx.lib.inspection
 import numpy
 import time
 import os
@@ -837,6 +838,9 @@ class SceneView(openglGui.glGuiPanel):
 			self._beforeLeakTest = defaultdict(int)
 			for i in get_objects():
 				self._beforeLeakTest[type(i)] += 1
+		if keyCode == wx.WXK_F6 and wx.GetKeyState(wx.WXK_SHIFT):
+			# Show the WX widget inspection tool
+			wx.lib.inspection.InspectionTool().Show()
 		if keyCode == wx.WXK_F5 and wx.GetKeyState(wx.WXK_SHIFT):
 			from collections import defaultdict
 			from gc import get_objects
