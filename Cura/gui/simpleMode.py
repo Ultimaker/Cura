@@ -61,7 +61,7 @@ class simpleModePanel(wx.Panel):
 		self.printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 		sizer.Add(self.printMaterialPanel, (0,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
-		sb = wx.StaticBox(self.printTypePanel, label=_("Quality:"))
+		sb = wx.StaticBox(self.printTypePanel, label=_("Select a quickprint profile:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		boxsizer.SetMinSize((180, 20))
 		self.printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
