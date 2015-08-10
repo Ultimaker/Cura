@@ -187,6 +187,7 @@ class PrinterConnection(SignalEmitter):
             Logger.log("i", "Could not establish connection on %s, unknown reasons.", self._serial_port)
             return
         
+        time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 sec seems to be the magic number
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
             
@@ -199,9 +200,9 @@ class PrinterConnection(SignalEmitter):
             else:   
                 if not self.setBaudRate(baud_rate):
                     continue # Could not set the baud rate, go to the next
-            time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 sec seems to be the magic number
+            time.sleep(0.1) # Ensure that we are sending too many commands over USB
             sucesfull_responses = 0
-            timeout_time = time.time() + 15
+            timeout_time = time.time() + 1 #Set a 1sec time_out. 1 sec/ 0.1 sec = 10 commands sent per baud rate tested
             self._serial.write(b"\n")
             self._sendCommand("M105")  # Request temperature, as this should (if baudrate is correct) result in a command with "T:" in it
 
