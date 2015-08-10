@@ -1760,7 +1760,7 @@
                 },
                 "support_offset": {
                     "label": "Horizontal Expansion",
-                    "description": "Amount of offset applied all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
+                    "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1.0,
