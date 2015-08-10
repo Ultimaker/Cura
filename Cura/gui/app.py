@@ -157,13 +157,10 @@ class CuraApp(wx.App):
 			profile.performVersionUpgrade()
 			#newVersionDialog.newVersionDialog().Show()
 
+		# Must happen before the main window is created, in case there are changes
+		# that would affect it (such as machine name changes)
 		if version.isDevVersion():
 			profile.performVersionUpgrade()
-
-			import wx.lib.inspection
-			# Show the WX widget inspection tool
-			#wx.lib.inspection.InspectionTool().Show()
-
 
 		self.mainWindow = mainWindow.mainWindow()
 		self.destroySplashScreen()
@@ -171,6 +168,12 @@ class CuraApp(wx.App):
 		self.mainWindow.Show()
 		self.mainWindow.OnDropFiles(self.loadFiles)
 		setFullScreenCapable(self.mainWindow)
+
+		# Must come after creating the main window
+		if version.isDevVersion():
+			import wx.lib.inspection
+			# Show the WX widget inspection tool
+			wx.lib.inspection.InspectionTool().Show()
 
 		if sys.platform.startswith('darwin'):
 			wx.CallAfter(self.StupidMacOSWorkaround)
