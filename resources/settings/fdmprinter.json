@@ -1758,6 +1758,14 @@
                     "default": 2,
                     "visible": false
                 },
+                "support_offset": {
+                    "label": "Horizontal Expansion",
+                    "description": "Amount of offset applied all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "visible": false
+                },
                 "support_area_smoothing": {
                     "label": "Area Smoothing",
                     "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
