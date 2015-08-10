@@ -47,6 +47,7 @@
         "machine_extruder_count": {
             "default": 1
         },
+        "machine_use_extruder_offset_to_offset_coords": { "default": false },
         "extruder_nr": { "default": 0 },
         "machine_nozzle_offset_x": { "default": 0, "SEE_machine_extruder_trains": true },
         "machine_nozzle_offset_y": { "default": 0, "SEE_machine_extruder_trains": true  },
