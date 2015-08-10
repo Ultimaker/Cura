@@ -1668,13 +1668,6 @@
                         "value": true
                     }
                 },
-                "support_conical_enabled": {
-                    "label": "Conical Support",
-                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false
-                },
                 "support_angle": {
                     "label": "Overhang Angle",
                     "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
@@ -1737,6 +1730,44 @@
                             "type": "float",
                             "visible": false
                         }
+                    }
+                },
+                "support_conical_enabled": {
+                    "label": "Conical Support",
+                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_conical_angle": {
+                    "label": "Cone Angle",
+                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": -90,
+                    "max_value": 90,
+                    "default": 30,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
+                    }
+                },
+                "support_conical_min_width": {
+                    "label": "Minimal Width",
+                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as fundament for support above.",
+                    "unit": "mm",
+                    "min_value": 0,
+                    "default": 3.0,
+                    "type": "float",
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
                     }
                 },
                 "support_bottom_stair_step_height": {
