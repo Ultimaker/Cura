@@ -123,12 +123,14 @@ class ProfileIni(object):
 		self.ini = ini_file
 		self.path = os.path.split(self.ini)[0]
 		self.base_name = os.path.splitext(os.path.basename(self.ini))[0]
-		if self.base_name == 'profile':
+		if self.base_name == 'profile' or self.base_name == 'material':
 			self.base_name = os.path.basename(self.path)
 		# Name to show in the UI
 		self.name = self._getProfileInfo(ini_file, 'name')
 		if self.name is None:
 			self.name = self.base_name
+		# Finds the full path to the real profile_file
+		self.profile_file = self._findProfileFile()
 		# default = The default profile to select
 		self.default = self.str2bool(self._getProfileInfo(self.ini, 'default'))
 		# disabled = do not make available in the UI
@@ -142,6 +144,18 @@ class ProfileIni(object):
 			self.order = int(self._getProfileInfo(self.ini, 'order'))
 		except:
 			self.order = 999
+
+	def _findProfileFile(self):
+		profile_file = self._getProfileInfo(self.ini, 'profile_file')
+		if profile_file is None:
+			return self.ini
+		else:
+			if os.path.exists(profile_file):
+				return profile_file
+			elif os.path.exists(os.path.join(self.path, profile_file)):
+				return os.path.join(self.path, profile_file)
+			else:
+				return self.ini
 
 	def _getProfileInfo(self, ini_file, key):
 		cp = configparser.ConfigParser()
@@ -161,7 +175,7 @@ class ProfileIni(object):
 	def getProfileDict(self):
 		profile_dict = {}
 		cp = configparser.ConfigParser()
-		cp.read(self.ini)
+		cp.read(self.profile_file)
 		for setting in profile.settingsList:
 			section = 'profile' if setting.isProfile() else 'alterations'
 			if setting.isProfile() or setting.isAlteration():
@@ -239,7 +253,7 @@ def getSimpleModeMaterials():
 				if not option._isInList(global_options):
 					global_options.append(option)
 
-			material_files = sorted(glob.glob(os.path.join(path, '*/profile.ini')))
+			material_files = sorted(glob.glob(os.path.join(path, '*/material.ini')))
 			if len(material_files) > 0:
 				for material_file in material_files:
 					material = PrintMaterial(material_file)
