@@ -155,7 +155,7 @@ class CuraApp(wx.App):
 		if profile.getPreference('last_run_version') != version.getVersion(False):
 			profile.putPreference('last_run_version', version.getVersion(False))
 			profile.performVersionUpgrade()
-			#newVersionDialog.newVersionDialog().Show()
+			newVersionDialog.newVersionDialog().Show()
 
 		# Must happen before the main window is created, in case there are changes
 		# that would affect it (such as machine name changes)
