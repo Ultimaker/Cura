@@ -25,7 +25,7 @@ class simpleModePanel(wx.Panel):
 		for material in materials:
 			if material.disabled:
 				continue
-			button = wx.RadioButton(self.printMaterialPanel, -1, material.name,
+			button = wx.RadioButton(self.printMaterialPanel, -1, material.name.replace('&', '&&'),
 									style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
 			button.profile = material
 			self._print_material_options.append(button)
@@ -99,7 +99,7 @@ class simpleModePanel(wx.Panel):
 		for print_profile in material.profiles:
 			if print_profile.disabled:
 				continue
-			button = wx.RadioButton(self.printTypePanel, -1, print_profile.name,
+			button = wx.RadioButton(self.printTypePanel, -1, print_profile.name.replace('&', '&&'),
 									style=wx.RB_GROUP if len(self._print_profile_options) == 0 else 0)
 			button.profile = print_profile
 			self._print_profile_options.append(button)
@@ -147,7 +147,7 @@ class simpleModePanel(wx.Panel):
 		for option in material.options:
 			if option.disabled:
 				continue
-			button = wx.CheckBox(self, -1, option.name)
+			button = wx.CheckBox(self, -1, option.name.replace('&', '&&'))
 			button.profile = option
 			self._print_other_options.append(button)
 			# Restore selection on similarly named options
