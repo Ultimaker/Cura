@@ -497,7 +497,7 @@ class MachineCom(object):
 					# was shut down and turned back on or something else that's weird just happened.
 					# In that case, it can be dangerous to restart the print, so we'd better kill it
 					if newPos == 1 or self._gcodePos > newPos + 100:
-						self._callback.mcMessage(_("Print canceled due to loss of communication to printer (USB unplugged or power lost)"))
+						self._callback.mcMessage("Print canceled due to loss of communication to printer (USB unplugged or power lost)")
 						self.cancelPrint()
 					else:
 						self._gcodePos = newPos
