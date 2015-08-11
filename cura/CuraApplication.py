@@ -479,12 +479,9 @@ class CuraApplication(QtApplication):
                 self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     def _onFileLoaded(self, job):
-        mesh = job.getResult()
-        if mesh != None:
-            node = SceneNode()
-
+        node = job.getResult()
+        if node != None:
             node.setSelectable(True)
-            node.setMeshData(mesh)
             node.setName(os.path.basename(job.getFileName()))
 
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
@@ -510,4 +507,4 @@ class CuraApplication(QtApplication):
         self.recentFilesChanged.emit()
 
     def _reloadMeshFinished(self, job):
-        job._node.setMeshData(job.getResult())
+        job._node = job.getResult()
