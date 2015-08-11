@@ -47,6 +47,7 @@
         "machine_extruder_count": {
             "default": 1
         },
+        "machine_use_extruder_offset_to_offset_coords": { "default": false },
         "extruder_nr": { "default": 0 },
         "machine_nozzle_offset_x": { "default": 0, "SEE_machine_extruder_trains": true },
         "machine_nozzle_offset_y": { "default": 0, "SEE_machine_extruder_trains": true  },
@@ -1731,6 +1732,44 @@
                         }
                     }
                 },
+                "support_conical_enabled": {
+                    "label": "Conical Support",
+                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_conical_angle": {
+                    "label": "Cone Angle",
+                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": -90,
+                    "max_value": 90,
+                    "default": 30,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
+                    }
+                },
+                "support_conical_min_width": {
+                    "label": "Minimal Width",
+                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as fundament for support above.",
+                    "unit": "mm",
+                    "min_value": 0,
+                    "default": 3.0,
+                    "type": "float",
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
+                    }
+                },
                 "support_bottom_stair_step_height": {
                     "label": "Stair Step Height",
                     "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
@@ -1749,6 +1788,14 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 2,
+                    "visible": false
+                },
+                "support_offset": {
+                    "label": "Horizontal Expansion",
+                    "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
                     "visible": false
                 },
                 "support_area_smoothing": {

@@ -119,6 +119,7 @@ Item {
         //: Delete object action
         text: qsTr("Delete Object");
         iconName: "edit-delete";
+        shortcut: StandardKey.Backspace;
     }
 
     Action {
@@ -126,7 +127,7 @@ Item {
         //: Center object action
         text: qsTr("Center Object on Platform");
     }
-    
+
     Action
     {
         id: groupObjectsAction

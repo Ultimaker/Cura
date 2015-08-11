@@ -1,0 +1,263 @@
+{
+    "id": "rigidbotbig",
+    "version": 1, 
+    "name": "RigidBotBig",
+    "manufacturer": "Invent-A-Part",
+    "author": "RBC",
+    "platform": "rigidbotbig_platform.stl",
+	
+    "inherits": "fdmprinter.json",
+
+    "machine_settings": {
+
+        "machine_width": { "default": 400 },
+        "machine_depth": { "default": 300 },
+        "machine_height": { "default": 254 },
+        "machine_heated_bed": { "default": true },
+
+        "machine_nozzle_size": { "default": 0.4},
+        "machine_head_shape_min_x": { "default": 0 },
+        "machine_head_shape_min_y": { "default": 0 },
+        "machine_head_shape_max_x": { "default": 0 },
+        "machine_head_shape_max_y": { "default": 0 },
+        "machine_nozzle_gantry_distance": { "default": 0 },
+        "machine_gcode_flavor": { "default": "RepRap (Marlin/Sprinter)" },
+		
+        "machine_start_gcode": {
+            "default": ";Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density}\n;Print time: {print_time}\n;Filament used: {filament_amount}m {filament_weight}g\n;Filament cost: {filament_cost}\n;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line\n;M109 S{print_temperature} ;Uncomment to add your own temperature line\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nM205 X8 ;X/Y Jerk settings\nG1 Z15.0 F{travel_speed} ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E7 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F{travel_speed}\n;Put printing message on LCD screen\nM117 Rigibot Printing..."
+        },
+        "machine_end_gcode": {
+            "default": ";End GCode\nM104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+10 E-1 X-20 Y-20 F{travel_speed} ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nG1 Y230 F3000 ;move Y so the head is out of the way and Plate is moved forward\nM84 ;steppers off\nG90 ;absolute positioning\n;{profile_string}"
+        }
+    },
+
+    "categories": {
+		"resolution": {
+		"label": "Quality",
+            "settings": {
+                "layer_height": {
+                    "label": "Layer Height",
+                    "description": "The height of each layer, in mm. Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to 0.25mm with an Ultimaker for very fast prints at low quality. For most purposes, layer heights between 0.1 and 0.2mm give a good tradeoff of speed and surface finish.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.2
+                },
+                "shell_thickness": {
+                    "label": "Shell Thickness",
+                    "description": "The thickness of the outside shell in the horizontal and vertical direction. This is used in combination with the nozzle size to define the number of perimeter lines and the thickness of those perimeter lines. This is also used to define the number of solid top and bottom layers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.8,
+                    "children": {
+                        "wall_thickness": {
+                            "label": "Wall Thickness",
+                            "description": "The thickness of the outside walls in the horizontal direction. This is used in combination with the nozzle size to define the number of perimeter lines and the thickness of those perimeter lines.",
+                            "unit": "mm",
+                            "default": 0.8              
+                        },
+                        "top_bottom_thickness": {
+                            "label": "Bottom/Top Thickness",
+                            "description": "This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.",
+                            "unit": "mm",
+							"type": "float",
+                            "default": 0.3,
+							"visible": true   
+                        }
+                    }
+                }
+            }
+		},
+        "material": {
+		    "label": "Material",
+            "visible": true,
+            "icon": "category_material",
+            "settings": {
+                "material_print_temperature": {
+                    "label": "Printing Temperature",
+                    "description": "The temperature used for printing. Set at 0 to pre-heat yourself. For PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 195,
+					"visible": true
+                },
+                "material_bed_temperature": {
+                    "label": "Bed Temperature",
+                    "description": "The temperature used for the heated printer bed. Set at 0 to pre-heat it yourself.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 60,
+					"visible": true
+                },
+                "material_diameter": {
+                    "label": "Diameter",
+                    "description": "The diameter of your filament needs to be measured as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.75,
+					"visible": true
+                },
+                "retraction_enable": {
+                    "label": "Enable Retraction",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
+                    "type": "boolean",
+                    "default": true,
+                    "always_visible": true,
+
+                    "children": {
+                        "retraction_speed": {
+                            "label": "Retraction Speed",
+                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 50.0,
+							"visible": false
+                        },
+                        "retraction_amount": {
+                            "label": "Retraction Distance",
+                            "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.8,
+							"visible": false
+                        },
+                        "retraction_hop": {
+                            "label": "Z Hop when Retracting",
+                            "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.075,
+							"visible": false
+                        }
+                    }
+                }
+            }
+        },
+        "speed": {
+            "label": "Speed",
+            "visible": true,
+            "icon": "category_speed",
+            "settings": {
+                "speed_print": {
+                    "label": "Print Speed",
+                    "description": "The speed at which printing happens. A well-adjusted Ultimaker can reach 150mm/s, but for good quality prints you will want to print slower. Printing speed depends on a lot of factors, so you will need to experiment with optimal settings for this.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 60.0,
+					"visible": true,
+                    "children": {
+                        "speed_infill": {
+                            "label": "Infill Speed",
+                            "description": "The speed at which infill parts are printed. Printing the infill faster can greatly reduce printing time, but this can negatively affect print quality.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 100.0,
+							"visible": true
+                        },
+                        "speed_topbottom": {
+                            "label": "Top/Bottom Speed",
+                            "description": "Speed at which top/bottom parts are printed. Printing the top/bottom faster can greatly reduce printing time, but this can negatively affect print quality.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 15.0,
+							"visible": true
+                        }
+                    }
+                },
+                "speed_travel": {
+                    "label": "Travel Speed",
+                    "description": "The speed at which travel moves are done. A well-built Ultimaker can reach speeds of 250mm/s. But some machines might have misaligned layers then.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 150.0,
+					"visible": true
+                },
+                "speed_layer_0": {
+                    "label": "Bottom Layer Speed",
+                    "description": "The print speed for the bottom layer: You want to print the first layer slower so it sticks to the printer bed better.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "min_value": 0.1,
+                    "default": 15.0,
+                    "visible": true
+                }
+            }
+        },
+        "infill": {
+            "label": "Infill",
+            "visible": true,
+            "icon": "category_infill",
+            "settings": {
+                "fill_overlap": {
+                    "label": "Infill Overlap",
+                    "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 10.0
+                }
+            }
+        },
+        "cooling": {
+            "label": "Cooling",
+            "visible": true,
+            "icon": "category_cool",
+            "settings": {
+                "cool_fan_enabled": {
+                    "label": "Enable Cooling Fan",
+                    "description": "Enable the cooling fan during the print. The extra cooling from the cooling fan helps parts with small cross sections that print each layer quickly.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": true,
+                    "children": {
+                        "cool_fan_speed": {
+                            "label": "Fan Speed",
+                            "description": "Fan speed used for the print cooling fan on the printer head. Set to 0% to disable or if you do not have a cooling fan.",
+                            "unit": "%",
+                            "type": "float",
+                            "default": 0.0,
+                            "visible": true
+                        }
+                    }
+                }
+            }
+        },
+        "platform_adhesion": {
+            "label": "Platform Adhesion",
+            "visible": true,
+            "icon": "category_adhesion",
+            "settings": {
+                "skirt_line_count": {
+                    "label": "Skirt Line Count",
+                    "description": "The skirt is a line drawn around the first layer of the. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
+                    "type": "int",
+                    "default": 3,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "None"
+                    }
+                },
+                "skirt_gap": {
+                    "label": "Skirt Distance",
+                    "description": "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance, multiple skirt lines will extend outwards from this distance.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "None"
+                    }
+                },
+                "skirt_minimal_length": {
+                    "label": "Skirt Minimum Length",
+                    "description": "The minimum length of the skirt. If this minimum length is not reached, more skirt lines will be added to reach this minimum length. Note: If the line count is set to 0 this is ignored.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 200.0,
+                    "active_if": {
+                        "setting": "adhesion_type",
+                        "value": "None"
+                    }
+                }
+            }
+        }
+    }
+}
