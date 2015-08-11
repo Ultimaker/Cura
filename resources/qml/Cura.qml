@@ -135,6 +135,23 @@ UM.MainWindow {
 
                 MenuSeparator { }
 
+                Instantiator {
+                    model: UM.MachineVariantsModel { }
+                    MenuItem {
+                        text: model.name;
+                        checkable: true;
+                        checked: model.active;
+                        exclusiveGroup: machineVariantsGroup;
+                        onTriggered: UM.MachineManager.setActiveMachineVariant(model.name)
+                    }
+                    onObjectAdded: machineMenu.insertItem(index, object)
+                    onObjectRemoved: machineMenu.removeItem(object)
+                }
+
+                ExclusiveGroup { id: machineVariantsGroup; }
+
+                MenuSeparator { visible: UM.MachineManager.hasVariants; }
+
                 MenuItem { action: actions.addMachine; }
                 MenuItem { action: actions.configureMachines; }
             }

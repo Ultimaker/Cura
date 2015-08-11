@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 Rectangle {
     id: base;
@@ -64,6 +64,28 @@ Rectangle {
             Layout.fillWidth: true;
             implicitHeight: UM.Theme.sizes.setting.height;
 
+            visible: UM.MachineManager.hasVariants;
+
+            Row {
+                spacing: UM.Theme.sizes.default_margin.width;
+                Label {
+                    anchors.verticalCenter: parent.verticalCenter;
+                    text: "Variant";
+                }
+
+                ComboBox {
+                    anchors.verticalCenter: parent.verticalCenter;
+                    model: UM.MachineVariantsModel { }
+                    textRole: "name"
+                    onActivated: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name);
+                }
+            }
+        }
+
+        Item {
+            Layout.fillWidth: true;
+            implicitHeight: UM.Theme.sizes.setting.height;
+
             Row {
                 spacing: UM.Theme.sizes.default_margin.width;
                 Label {
@@ -83,6 +105,7 @@ Rectangle {
                 }
             }
         }
+
         Loader {
             id: sidebarContents;
 
