@@ -5,7 +5,7 @@ from Cura.util import version
 
 class newVersionDialog(wx.Dialog):
 	url = "code.alephobjects.com/w/cura/release-notes/"
-	
+
 	def __init__(self):
 		super(newVersionDialog, self).__init__(None, title="Welcome to the new version!")
 
@@ -19,8 +19,13 @@ class newVersionDialog(wx.Dialog):
 		s = wx.BoxSizer(wx.VERTICAL)
 		p.SetSizer(s)
 
-		title = wx.StaticText(p, -1, 'Cura - ' + version.getVersion())
-		title.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
+		title_text = 'Cura - ' + version.getVersion()
+		title = wx.StaticText(p, -1, title_text)
+		font = wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD)
+		title.SetFont(font)
+		dc = wx.ScreenDC()
+		dc.SetFont(font)
+		title.SetMinSize(dc.GetTextExtent(title_text))
 		s.Add(title, flag=wx.ALIGN_CENTRE|wx.EXPAND|wx.BOTTOM, border=5)
 		s.Add(wx.StaticText(p, -1, 'Welcome to the new version of Cura.'))
 		s.Add(wx.StaticText(p, -1, '(This dialog is only shown once)'))
@@ -35,6 +40,7 @@ class newVersionDialog(wx.Dialog):
 
 		self.Fit()
 		self.Centre()
+		self.Layout()
 
 	def OnOk(self, e):
 		self.Close()
