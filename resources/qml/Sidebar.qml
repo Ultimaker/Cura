@@ -60,6 +60,29 @@ Rectangle {
             onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
         }
 
+        Item {
+            Layout.fillWidth: true;
+            implicitHeight: UM.Theme.sizes.setting.height;
+
+            Row {
+                spacing: UM.Theme.sizes.default_margin.width;
+                Label {
+                    anchors.verticalCenter: parent.verticalCenter;
+                    text: "Global Profile";
+                }
+
+                ComboBox {
+                    anchors.verticalCenter: parent.verticalCenter;
+                    model: UM.ProfilesModel { }
+                    textRole: "name"
+                    onActivated: UM.MachineManager.setActiveProfile(model.getItem(index).name)
+                }
+
+                Button {
+                    text: "Save";
+                }
+            }
+        }
         Loader {
             id: sidebarContents;
 
