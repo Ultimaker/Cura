@@ -665,7 +665,7 @@ class printWindowAdvanced(wx.Frame):
 		self.progress = wx.Gauge(self.panel, -1, range=1000)
 
 		f = wx.Font(8, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
-		self._termLog = wx.TextCtrl(self.panel, style=wx.TE_MULTILINE | wx.TE_DONTWRAP)
+		self._termLog = wx.TextCtrl(self.panel, style=wx.TE_MULTILINE)
 		self._termLog.SetFont(f)
 		self._termLog.SetEditable(0)
 		self._termLog.SetMinSize((385, -1))
