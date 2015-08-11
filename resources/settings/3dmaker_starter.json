@@ -2,8 +2,7 @@
     "id": "makerstarter",
 	"name": "3DMaker Starter",
 	"icon": "icon_ultimaker2.png",
-	"platform": "ultimaker2_platform.obj",
-    "platform_texture": "MakerStarterbackplate.png",
+	"platform": "makerstarter_platform.stl",
 
 	"inherits": "fdmprinter.json",
 	
