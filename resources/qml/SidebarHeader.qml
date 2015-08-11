@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 Column {
     id: base;
@@ -78,8 +78,7 @@ Column {
 
         ToolButton {
             id: machineButton;
-            text: UM.Application.machineName;
-            tooltip: UM.Application.machineName;
+            text: UM.MachineManager.activeMachineInstance;
 
             style: UM.Theme.styles.sidebar_header_button;
 
@@ -88,13 +87,13 @@ Column {
             menu: Menu {
                 id: machineMenu;
                 Instantiator {
-                    model: UM.Models.machinesModel
+                    model: UM.MachineInstancesModel { }
                     MenuItem {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.Models.machinesModel.setActive(index)
+                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name);
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)

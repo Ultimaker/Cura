@@ -55,12 +55,12 @@ class BuildVolume(SceneNode):
 
         if not self._material:
             self._material = renderer.createMaterial(
-                Resources.getPath(Resources.ShadersLocation, "basic.vert"),
-                Resources.getPath(Resources.ShadersLocation, "vertexcolor.frag")
+                Resources.getPath(Resources.Shaders, "basic.vert"),
+                Resources.getPath(Resources.Shaders, "vertexcolor.frag")
             )
             self._grid_material = renderer.createMaterial(
-                Resources.getPath(Resources.ShadersLocation, "basic.vert"),
-                Resources.getPath(Resources.ShadersLocation, "grid.frag")
+                Resources.getPath(Resources.Shaders, "basic.vert"),
+                Resources.getPath(Resources.Shaders, "grid.frag")
             )
             self._grid_material.setUniformValue("u_gridColor0", Color(245, 245, 245, 255))
             self._grid_material.setUniformValue("u_gridColor1", Color(205, 202, 201, 255))
@@ -135,7 +135,7 @@ class BuildVolume(SceneNode):
 
         self._aabb = AxisAlignedBox(minimum = Vector(minW, minH - 1.0, minD), maximum = Vector(maxW, maxH, maxD))
 
-        settings = Application.getInstance().getActiveMachine()
+        settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
 
         skirt_size = 0.0
         if settings.getSettingValueByKey("adhesion_type") == "None":

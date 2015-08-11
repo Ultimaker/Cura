@@ -119,13 +119,13 @@ UM.MainWindow {
                 title: qsTr("&Machine");
 
                 Instantiator {
-                    model: UM.Models.machinesModel
+                    model: UM.MachineInstancesModel { }
                     MenuItem {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.Models.machinesModel.setActive(index)
+                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name)
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)

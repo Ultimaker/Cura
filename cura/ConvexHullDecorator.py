@@ -14,7 +14,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         
         self._convex_hull_node = None
         self._convex_hull_job = None
-        settings = Application.getInstance().getActiveMachine()
+        settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
         print_sequence_setting = settings.getSettingByKey("print_sequence")
         if print_sequence_setting:
             print_sequence_setting.valueChanged.connect(self._onPrintSequenceSettingChanged)

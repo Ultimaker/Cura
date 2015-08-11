@@ -162,17 +162,20 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
 
-        #if self.getMachines():
-            #active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
-            #if active_machine_pref:
-                #for machine in self.getMachines():
-                    #if machine.getName() == active_machine_pref:
-                        #self.setActiveMachine(machine)
+        manager = self.getMachineManager()
+        if manager.getMachineInstances():
+            active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
+            if active_machine_pref:
+                index = manager.findMachineInstance(active_machine_pref)
+                if index != -1:
+                    manager.setActiveMachineInstance(manager.getMachineInstance(index))
 
-            #if not self.getActiveMachine():
-                #self.setActiveMachine(self.getMachines()[0])
-        #else:
-            #self.requestAddPrinter.emit()
+            if not manager.getActiveMachineInstance():
+                manager.setActiveMachineInstance(manager.getMachineInstance(index))
+        else:
+            self.requestAddPrinter.emit()
+
+        manager.setActiveProfile(manager.getProfiles()[0])
 
         if self._engine.rootObjects:
             self.closeSplash()
@@ -462,7 +465,7 @@ class CuraApplication(QtApplication):
             Selection.remove(node)
 
     def _onActiveMachineChanged(self):
-        machine = self.getActiveMachine()
+        machine = self.getMachineManager().getActiveMachineInstance()
         if machine:
             Preferences.getInstance().setValue("cura/active_machine", machine.getName())
 
