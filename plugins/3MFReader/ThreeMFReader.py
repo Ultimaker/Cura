@@ -50,54 +50,58 @@ class ThreeMFReader(MeshReader):
                     node.setSelectable(True)
                     # Magical python comprehension; looks for the matching transformation
                     transformation = next((x for x in root.model.build.item if x["objectid"] == object["id"]), None)
-                    splitted_transformation = transformation["transform"].split()
-                    
-                    ## Transformation is saved as:
-                    ## M00 M01 M02 0.0
-                    ## M10 M11 M12 0.0
-                    ## M20 M21 M22 0.0
-                    ## M30 M31 M32 1.0
-                    ## We switch the row & cols as that is how everyone else uses matrices!
-                    temp_mat = Matrix()
-                    temp_mat._data[0,0] = splitted_transformation[0]
-                    temp_mat._data[1,0] = splitted_transformation[1]
-                    temp_mat._data[2,0] = splitted_transformation[2]
-                    
-                    temp_mat._data[0,1] = splitted_transformation[3]
-                    temp_mat._data[1,1] = splitted_transformation[4]
-                    temp_mat._data[2,1] = splitted_transformation[5]
-         
-                    temp_mat._data[0,2] = splitted_transformation[6]
-                    temp_mat._data[1,2] = splitted_transformation[7]
-                    temp_mat._data[2,2] = splitted_transformation[8]
-                    
-                    temp_mat._data[0,3] = splitted_transformation[9]
-                    temp_mat._data[1,3] = splitted_transformation[10]
-                    temp_mat._data[2,3] = splitted_transformation[11]
-                    
-                    node.setPosition(Vector(temp_mat.at(0,3), temp_mat.at(1,3), temp_mat.at(2,3)))
-                    
-                    temp_quaternion = Quaternion()
-                    temp_quaternion.setByMatrix(temp_mat)
-                    node.setOrientation(temp_quaternion)
-                    
-                    # Magical scale extraction
-                    S2 = temp_mat.getTransposed().multiply(temp_mat)
-                    scale_x = math.sqrt(S2.at(0,0))
-                    scale_y = math.sqrt(S2.at(1,1))
-                    scale_z = math.sqrt(S2.at(2,2))
-                    node.setScale(Vector(scale_x,scale_y,scale_z))
-                    
-                    
-                    # We use a different coordinate frame, so rotate.
-                    rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
-                    node.rotate(rotation)
+                    if transformation["transform"]:
+                        splitted_transformation = transformation["transform"].split()
+                        
+                        ## Transformation is saved as:
+                        ## M00 M01 M02 0.0
+                        ## M10 M11 M12 0.0
+                        ## M20 M21 M22 0.0
+                        ## M30 M31 M32 1.0
+                        ## We switch the row & cols as that is how everyone else uses matrices!
+                        temp_mat = Matrix()
+                        temp_mat._data[0,0] = splitted_transformation[0]
+                        temp_mat._data[1,0] = splitted_transformation[1]
+                        temp_mat._data[2,0] = splitted_transformation[2]
+                        
+                        temp_mat._data[0,1] = splitted_transformation[3]
+                        temp_mat._data[1,1] = splitted_transformation[4]
+                        temp_mat._data[2,1] = splitted_transformation[5]
+            
+                        temp_mat._data[0,2] = splitted_transformation[6]
+                        temp_mat._data[1,2] = splitted_transformation[7]
+                        temp_mat._data[2,2] = splitted_transformation[8]
+                        
+                        temp_mat._data[0,3] = splitted_transformation[9]
+                        temp_mat._data[1,3] = splitted_transformation[10]
+                        temp_mat._data[2,3] = splitted_transformation[11]
+                        
+                        node.setPosition(Vector(temp_mat.at(0,3), temp_mat.at(1,3), temp_mat.at(2,3)))
+                        
+                        temp_quaternion = Quaternion()
+                        temp_quaternion.setByMatrix(temp_mat)
+                        node.setOrientation(temp_quaternion)
+                        
+                        # Magical scale extraction
+                        S2 = temp_mat.getTransposed().multiply(temp_mat)
+                        scale_x = math.sqrt(S2.at(0,0))
+                        scale_y = math.sqrt(S2.at(1,1))
+                        scale_z = math.sqrt(S2.at(2,2))
+                        node.setScale(Vector(scale_x,scale_y,scale_z))
+                        
+                        
+                        # We use a different coordinate frame, so rotate.
+                        rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
+                        node.rotate(rotation)
                     result.addChild(node)
                 
                 #  If there is more then one object, group them.
-                if len(root.model.resources.object) > 1:  
-                    group_decorator = GroupDecorator()
-                    result.addDecorator(group_decorator)    
+                try:
+                    if len(root.model.resources.object) > 1:  
+                        group_decorator = GroupDecorator()
+                        result.addDecorator(group_decorator)
+                except:
+                    pass
             except Exception as e:
                 print("EXCEPTION: " ,e)      
         return result  
