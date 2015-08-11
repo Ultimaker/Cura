@@ -153,9 +153,7 @@ class CuraApp(wx.App):
 		if profile.getMachineSetting('machine_name') == '':
 			return
 		if profile.getPreference('last_run_version') != version.getVersion(False):
-			profile.putPreference('last_run_version', version.getVersion(False))
 			profile.performVersionUpgrade()
-			newVersionDialog.newVersionDialog().Show()
 
 		# Must happen before the main window is created, in case there are changes
 		# that would affect it (such as machine name changes)
@@ -168,6 +166,10 @@ class CuraApp(wx.App):
 		self.mainWindow.Show()
 		self.mainWindow.OnDropFiles(self.loadFiles)
 		setFullScreenCapable(self.mainWindow)
+
+		if profile.getPreference('last_run_version') != version.getVersion(False):
+			profile.putPreference('last_run_version', version.getVersion(False))
+			newVersionDialog.newVersionDialog().Show()
 
 		# Must come after creating the main window
 		if version.isDevVersion():
