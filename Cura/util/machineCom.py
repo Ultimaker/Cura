@@ -364,7 +364,7 @@ class MachineCom(object):
 			line = self._readline()
 			if line is None:
 				break
-			
+
 			#No matter the state, if we see an fatal error, goto the error state and store the error for reference.
 			# Only goto error on known fatal errors.
 			if line.startswith('Error:'):
@@ -496,7 +496,8 @@ class MachineCom(object):
 					# If we need to resend more than 10 lines, we can assume that the machine
 					# was shut down and turned back on or something else that's weird just happened.
 					# In that case, it can be dangerous to restart the print, so we'd better kill it
-					if self._gcodePos > newPos + 10:
+					if newPos == 1 or self._gcodePos > newPos + 100:
+						self._callback.mcMessage(_("Print canceled due to loss of communication to printer (USB unplugged or power lost)"))
 						self.cancelPrint()
 					else:
 						self._gcodePos = newPos
