@@ -270,6 +270,7 @@ class ToolHeadRow(object):
 		self.label.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
 
 		self.ctrl = wx.TextCtrl(self.subpanel, -1, self.setting.getValue(self.settingIndex))
+		self.ctrl.SetMinSize((300, 20))
 		self.ctrl.Enable(False)
 
 		self.button = wx.Button(self.subpanel, -1, _("Change Tool Head"))
