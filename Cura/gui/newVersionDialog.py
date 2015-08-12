@@ -27,10 +27,11 @@ class newVersionDialog(wx.Dialog):
 		dc.SetFont(font)
 		title.SetMinSize(dc.GetTextExtent(title_text))
 		s.Add(title, flag=wx.ALIGN_CENTRE|wx.EXPAND|wx.BOTTOM, border=5)
-		s.Add(wx.StaticText(p, -1, 'Welcome to the new version of Cura.'))
+		s.Add(wx.StaticText(p, -1, 'Welcome to the new release of Cura LulzBot Edition!'))
 		s.Add(wx.StaticText(p, -1, '(This dialog is only shown once)'))
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
-		s.Add(wx.StaticText(p, -1, 'Take a look at what is new and fixed here:'))
+		s.Add(wx.StaticText(p, -1, 'Want to know what is new and cool in this version?'))
+		s.Add(wx.StaticText(p, -1, 'Click here for a list of changes:'))
 		s.Add(wx.HyperlinkCtrl(p, -1, newVersionDialog.url))
 
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
