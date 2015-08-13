@@ -113,8 +113,10 @@ class PlatformPhysics:
                     
                     move_vector.setX(overlap[0] * 1.1)
                     move_vector.setZ(overlap[1] * 1.1)
-            convex_hull = node.callDecoration("getConvexHull") 
+            convex_hull = node.callDecoration("getConvexHull")
             if convex_hull:
+                if not convex_hull.isValid():
+                    return
                 # Check for collisions between disallowed areas and the object
                 for area in self._build_volume.getDisallowedAreas():
                     overlap = convex_hull.intersectsPolygon(area)
