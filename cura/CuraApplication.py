@@ -38,7 +38,7 @@ from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent
 from PyQt5.QtGui import QColor, QIcon
 
 import platform
@@ -170,11 +170,16 @@ class CuraApplication(QtApplication):
             self.closeSplash()
 
             for file in self.getCommandLineOption("file", []):
-                job = ReadMeshJob(os.path.abspath(file))
-                job.finished.connect(self._onFileLoaded)
-                job.start()
+                self._openFile(file)
 
             self.exec_()
+
+    #   Handle Qt events
+    def event(self, event):
+        if event.type() == QEvent.FileOpen:
+            self._openFile(event.file())
+
+        return super().event(event)
 
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
@@ -479,12 +484,9 @@ class CuraApplication(QtApplication):
                 self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     def _onFileLoaded(self, job):
-        mesh = job.getResult()
-        if mesh != None:
-            node = SceneNode()
-
+        node = job.getResult()
+        if node != None:
             node.setSelectable(True)
-            node.setMeshData(mesh)
             node.setName(os.path.basename(job.getFileName()))
 
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
@@ -510,4 +512,10 @@ class CuraApplication(QtApplication):
         self.recentFilesChanged.emit()
 
     def _reloadMeshFinished(self, job):
-        job._node.setMeshData(job.getResult())
+        job._node = job.getResult()
+
+    def _openFile(self, file):
+        job = ReadMeshJob(os.path.abspath(file))
+        job.finished.connect(self._onFileLoaded)
+        job.start()
+

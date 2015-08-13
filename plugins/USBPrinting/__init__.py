@@ -13,9 +13,10 @@ def getMetaData():
             "name": "USB printing",
             "author": "Ultimaker",
             "version": "1.0",
+            "api": 2,
             "description": i18n_catalog.i18nc("USB Printing plugin description","Accepts G-Code and sends them to a printer. Plugin can also update firmware")
         }
     }
-        
+
 def register(app):
-    return {"extension":USBPrinterManager.USBPrinterManager()}
+    return {"extension":USBPrinterManager.USBPrinterManager(),"output_device": USBPrinterManager.USBPrinterManager() }

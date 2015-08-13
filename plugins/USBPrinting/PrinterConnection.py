@@ -8,95 +8,142 @@ import time
 import queue
 import re
 import functools
+import os
+import os.path
 
 from UM.Application import Application
 from UM.Signal import Signal, SignalEmitter
 from UM.Resources import Resources
 from UM.Logger import Logger
+from UM.OutputDevice.OutputDevice import OutputDevice
+from UM.OutputDevice import OutputDeviceError
+from UM.PluginRegistry import PluginRegistry
 
-class PrinterConnection(SignalEmitter):
-    def __init__(self, serial_port):
-        super().__init__()
-        
+from PyQt5.QtQuick import QQuickView
+from PyQt5.QtQml import QQmlComponent, QQmlContext
+from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
+
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
+class PrinterConnection(OutputDevice, QObject, SignalEmitter):
+    def __init__(self, serial_port, parent = None):
+        QObject.__init__(self, parent)
+        OutputDevice.__init__(self, serial_port)
+        SignalEmitter.__init__(self)
+        #super().__init__(serial_port)
+        self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
+        self.setShortDescription(catalog.i18nc("@action:button", "Print with USB"))
+        self.setDescription(catalog.i18nc("@info:tooltip", "Print with USB"))
+        self.setIconName("print")
+
         self._serial = None
         self._serial_port = serial_port
         self._error_state = None
-        
+
         self._connect_thread = threading.Thread(target = self._connect)
         self._connect_thread.daemon = True
-        
+
         # Printer is connected
         self._is_connected = False
-        
+
         # Printer is in the process of connecting
         self._is_connecting = False
-        
+
         # The baud checking is done by sending a number of m105 commands to the printer and waiting for a readable
         # response. If the baudrate is correct, this should make sense, else we get giberish.
         self._required_responses_auto_baud = 10
-        
+
         self._progress = 0
-        
+
         self._listen_thread = threading.Thread(target=self._listen)
         self._listen_thread.daemon = True
-        
+
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
         self._update_firmware_thread.demon = True
-        
+
         self._heatup_wait_start_time = time.time()
-        
+
         ## Queue for commands that need to be send. Used when command is sent when a print is active.
         self._command_queue = queue.Queue()
-        
+
         self._is_printing = False
-        
+
         ## Set when print is started in order to check running time.
         self._print_start_time = None
         self._print_start_time_100 = None
-        
+
         ## Keep track where in the provided g-code the print is
         self._gcode_position = 0
-        
+
         # List of gcode lines to be printed
         self._gcode = []
-        
+
         # Number of extruders
         self._extruder_count = 1
-        
+
         # Temperatures of all extruders
         self._extruder_temperatures = [0] * self._extruder_count
-        
+
         # Target temperatures of all extruders
         self._target_extruder_temperatures = [0] * self._extruder_count
-        
+
         #Target temperature of the bed
         self._target_bed_temperature = 0 
-        
+
         # Temperature of the bed
         self._bed_temperature = 0
-        
+
         # Current Z stage location 
         self._current_z = 0
-        
+
         # In order to keep the connection alive we request the temperature every so often from a different extruder.
         # This index is the extruder we requested data from the last time.
         self._temperature_requested_extruder_index = 0 
-        
+
         self._updating_firmware = False
-        
+
         self._firmware_file_name = None
-        
+
+        self._control_view = None
+
+    onError = pyqtSignal()
+    progressChanged = pyqtSignal()
+    extruderTemperatureChanged = pyqtSignal()
+    bedTemperatureChanged = pyqtSignal()
+
+    @pyqtProperty(float, notify = progressChanged)
+    def progress(self):
+        return self._progress
+
+    @pyqtProperty(float, notify = extruderTemperatureChanged)
+    def extruderTemperature(self):
+        return self._extruder_temperatures[0]
+
+    @pyqtProperty(float, notify = bedTemperatureChanged)
+    def bedTemperature(self):
+        return self._bed_temperature
+
+    @pyqtProperty(str, notify = onError)
+    def error(self):
+        return self._error_state
+
     # TODO: Might need to add check that extruders can not be changed when it started printing or loading these settings from settings object    
     def setNumExtuders(self, num):
         self._extruder_count = num
         self._extruder_temperatures = [0] * self._extruder_count
         self._target_extruder_temperatures = [0] * self._extruder_count
-    
+
     ##  Is the printer actively printing
     def isPrinting(self):
         if not self._is_connected or self._serial is None:
             return False
         return self._is_printing
+
+    @pyqtSlot()
+    def startPrint(self):
+        gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
+        self.printGCode(gcode_list)
 
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
@@ -115,20 +162,20 @@ class PrinterConnection(SignalEmitter):
         self._print_start_time_100 = None
         self._is_printing = True
         self._print_start_time = time.time()
-        
+
         for i in range(0, 4): #Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
-    
+
     ##  Get the serial port string of this connection.
     #   \return serial port
     def getSerialPort(self):
         return self._serial_port
-    
+
     ##  Try to connect the serial. This simply starts the thread, which runs _connect.
     def connect(self):
         if not self._updating_firmware and not self._connect_thread.isAlive():
             self._connect_thread.start()
-    
+
     ##  Private fuction (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
         if self._is_connecting or  self._is_connected:
@@ -173,10 +220,10 @@ class PrinterConnection(SignalEmitter):
     def _connect(self):
         Logger.log("d", "Attempting to connect to %s", self._serial_port)
         self._is_connecting = True
-        programmer = stk500v2.Stk500v2()    
+        programmer = stk500v2.Stk500v2()
         try:
             programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it"s an arduino based usb device.
-            self._serial = programmer.leaveISP()    
+            self._serial = programmer.leaveISP()
         except ispBase.IspError as e:
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
@@ -186,31 +233,28 @@ class PrinterConnection(SignalEmitter):
             self._is_connecting = False
             Logger.log("i", "Could not establish connection on %s, unknown reasons.", self._serial_port)
             return
-        
+
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
-            
             if self._serial is None:
                 try:
-                    self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout=3, writeTimeout=10000)
+                    self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout = 3, writeTimeout = 10000)
                 except serial.SerialException:
                     Logger.log("i", "Could not open port %s" % self._serial_port)
                     return
-            else:   
+            else:
                 if not self.setBaudRate(baud_rate):
                     continue # Could not set the baud rate, go to the next
             time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 sec seems to be the magic number
             sucesfull_responses = 0
-            timeout_time = time.time() + 15
+            timeout_time = time.time() + 5
             self._serial.write(b"\n")
             self._sendCommand("M105")  # Request temperature, as this should (if baudrate is correct) result in a command with "T:" in it
-
             while timeout_time > time.time():
                 line = self._readline()
                 if line is None:
                     self.setIsConnected(False) # Something went wrong with reading, could be that close was called.
                     return
-                
                 if b"T:" in line:
                     self._serial.timeout = 0.5
                     self._sendCommand("M105")
@@ -240,21 +284,12 @@ class PrinterConnection(SignalEmitter):
             self.connectionStateChanged.emit(self._serial_port)
             if self._is_connected: 
                 self._listen_thread.start() #Start listening
-                #Application.getInstance().addOutputDevice(self._serial_port, {
-                    #"id": self._serial_port,
-                    #"function": self.printGCode,
-                    #"shortDescription": "Print with USB",
-                    #"description": "Print with USB {0}".format(self._serial_port),
-                    #"icon": "save",
-                    #"priority": 1
-                #})
-                
         else:
             Logger.log("w", "Printer connection state was not changed")
-            
-    connectionStateChanged = Signal()    
-    
-    ##  Close the printer connection    
+
+    connectionStateChanged = Signal()
+
+    ##  Close the printer connection
     def close(self):
         if self._connect_thread.isAlive():
             try:
@@ -269,12 +304,12 @@ class PrinterConnection(SignalEmitter):
             except:
                 pass
             self._serial.close()
-            
+
         self._serial = None
-    
+
     def isConnected(self):
         return self._is_connected 
-    
+
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
     def _sendCommand(self, cmd):
@@ -296,10 +331,9 @@ class PrinterConnection(SignalEmitter):
                 self._target_bed_temperature = float(re.search("S([0-9]+)", cmd).group(1))
             except:
                 pass
-        #Logger.log("i","Sending: %s" % (cmd))
         try:
             command = (cmd + "\n").encode()
-            #self._serial.write(b"\n")
+            self._serial.write(b"\n")
             self._serial.write(command)
         except serial.SerialTimeoutException:
             Logger.log("w","Serial timeout while writing to serial port, trying again.")
@@ -314,11 +348,26 @@ class PrinterConnection(SignalEmitter):
             Logger.log("e","Unexpected error while writing serial port %s" % e)
             self._setErrorState("Unexpected error while writing serial port %s " % e)
             self.close()
-    
+
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):
         self.close()
-    
+
+    def createControlInterface(self):
+        if self._control_view is None:
+            path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml"))
+            component = QQmlComponent(Application.getInstance()._engine, path)
+            self._control_context = QQmlContext(Application.getInstance()._engine.rootContext())
+            self._control_context.setContextProperty("manager", self)
+            self._control_view = component.create(self._control_context)
+
+    ##  Show control interface.
+    #   This will create the view if its not already created.
+    def showControlInterface(self):
+        if self._control_view is None:
+            self.createControlInterface()
+        self._control_view.show()
+
     ##  Send a command to printer. 
     #   \param cmd string with g-code
     def sendCommand(self, cmd):
@@ -326,37 +375,33 @@ class PrinterConnection(SignalEmitter):
             self._command_queue.put(cmd)
         elif self.isConnected():
             self._sendCommand(cmd)
-    
+
     ##  Set the error state with a message.
     #   \param error String with the error message.
     def _setErrorState(self, error):
         self._error_state = error
-        self.onError.emit(error)
-    
-    onError = Signal()
-    
+        self.onError.emit()
+
     ##  Private function to set the temperature of an extruder
     #   \param index index of the extruder
     #   \param temperature recieved temperature
     def _setExtruderTemperature(self, index, temperature):
         try: 
             self._extruder_temperatures[index] = temperature
-            self.onExtruderTemperatureChange.emit(self._serial_port, index, temperature)
+            self.extruderTemperatureChanged.emit()
         except Exception as e:
             pass
-    
-    onExtruderTemperatureChange = Signal()
-    
+
     ##  Private function to set the temperature of the bed.
     #   As all printers (as of time of writing) only support a single heated bed,
     #   these are not indexed as with extruders.
     def _setBedTemperature(self, temperature):
         self._bed_temperature = temperature
-        self.onBedTemperatureChange.emit(self._serial_port,temperature)
-        
-    onBedTemperatureChange = Signal()
-        
-    
+        self.bedTemperatureChanged.emit()
+
+    def requestWrite(self, node):
+        self.showControlInterface()
+
     ##  Listen thread function. 
     def _listen(self):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
@@ -364,10 +409,10 @@ class PrinterConnection(SignalEmitter):
         ok_timeout = time.time()
         while self._is_connected:
             line = self._readline()
-            
+
             if line is None: 
                 break # None is only returned when something went wrong. Stop listening
-            
+
             if line.startswith(b"Error:"):
                 # Oh YEAH, consistency.
                 # Marlin reports an MIN/MAX temp error as "Error:x\n: Extruder switched off. MAXTEMP triggered !\n"
@@ -401,10 +446,10 @@ class PrinterConnection(SignalEmitter):
                     else:
                         self.sendCommand("M105")
                     temperature_request_timeout = time.time() + 5
-                
+
                 if line == b"" and time.time() > ok_timeout:
                     line = b"ok" # Force a timeout (basicly, send next command)
-                
+
                 if b"ok" in line:
                     ok_timeout = time.time() + 5
                     if not self._command_queue.empty():
@@ -449,26 +494,25 @@ class PrinterConnection(SignalEmitter):
             Logger.log("e", "Unexpected error with printer connection: %s" % e)
             self._setErrorState("Unexpected error: %s" %e)
         checksum = functools.reduce(lambda x,y: x^y, map(ord, "N%d%s" % (self._gcode_position, line)))
-        
+
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
         self._gcode_position += 1 
         self.setProgress(( self._gcode_position / len(self._gcode)) * 100)
-        self.progressChanged.emit(self._progress, self._serial_port)
-        
-    progressChanged = Signal()
-    
+        self.progressChanged.emit()
+
     ##  Set the progress of the print. 
     #   It will be normalized (based on max_progress) to range 0 - 100
     def setProgress(self, progress, max_progress = 100):
         self._progress  = (progress / max_progress) * 100 #Convert to scale of 0-100
-        self.progressChanged.emit(self._progress, self._serial_port)
-    
+        self.progressChanged.emit()
+
     ##  Cancel the current print. Printer connection wil continue to listen.
+    @pyqtSlot()
     def cancelPrint(self):
         self._gcode_position = 0
         self.setProgress(0)
         self._gcode = []
-        
+
         # Turn of temperatures
         self._sendCommand("M140 S0")
         self._sendCommand("M104 S0")
@@ -477,7 +521,7 @@ class PrinterConnection(SignalEmitter):
     ##  Check if the process did not encounter an error yet.
     def hasError(self):
         return self._error_state != None
-    
+
     ##  private read line used by printer connection to listen for data on serial port.
     def _readline(self):
         if self._serial is None:
@@ -490,7 +534,7 @@ class PrinterConnection(SignalEmitter):
             self.close()
             return None
         return ret
-    
+
     ##  Create a list of baud rates at which we can communicate.
     #   \return list of int
     def _getBaudrateList(self):
