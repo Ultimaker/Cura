@@ -9,8 +9,25 @@ import QtQuick.Window 2.1
 import UM 1.0 as UM
 
 ColumnLayout {
+    id: wizardPage
     property string title
-    anchors.fill: parent;
+    property int pageWidth
+    property int pageHeight
+
+    SystemPalette{id: palette}
+    //signal openFile(string fileName)
+    //signal closeWizard()
+
+    width: wizardPage.pageWidth
+    height: wizardPage.pageHeight
+
+    Connections {
+        target: elementRoot
+        onResize: {
+            wizardPage.width = pageWidth
+            wizardPage.height = pageHeight
+        }
+    }
 
     Label {
         text: parent.title
