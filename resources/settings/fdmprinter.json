@@ -61,12 +61,6 @@
         "machine_switch_extruder_retraction_speed": { "default": 20, "SEE_machine_extruder_trains": true  },
         "machine_switch_extruder_prime_speed": { "default": 20, "SEE_machine_extruder_trains": true  },
         
-        "machine_nozzle_offset_x_1": {
-            "default": 0
-        },
-        "machine_nozzle_offset_y_1": {
-            "default": 0
-        },
         "machine_gcode_flavor": {
             "default": "RepRap"
         },
@@ -1000,7 +994,7 @@
                     "label": "Enable Coasting",
                     "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to lay down the last piece of the extrusion path in order to reduce stringing.",
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
                     "visible": true
                 },
                 "coasting_volume": {
@@ -1021,7 +1015,7 @@
                             "description": "The volume otherwise oozed in a travel move with retraction.",
                             "unit": "mm³",
                             "type": "float",
-                            "default": 0.096,
+                            "default": 0.064,
                             "visible": false,
                             "inherit": true,
                             "active_if": {
@@ -1034,7 +1028,7 @@
                             "description": "The volume otherwise oozed in a travel move without retraction.",
                             "unit": "mm³",
                             "type": "float",
-                            "default": 0.064,
+                            "default": 0.096,
                             "visible": false,
                             "inherit": true,
                             "active_if": {
@@ -1775,7 +1769,7 @@
                     "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 1,
+                    "default": 2,
                     "visible": false,
                     "active_if": {
                         "setting": "support_type",
