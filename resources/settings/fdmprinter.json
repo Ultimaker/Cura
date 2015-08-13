@@ -58,8 +58,6 @@
         "machine_extruder_start_code": { "default": "", "SEE_machine_extruder_trains": true  },
         "machine_extruder_end_code": { "default": "", "SEE_machine_extruder_trains": true  },
         "machine_switch_extruder_retraction_amount": { "default": 16, "SEE_machine_extruder_trains": true  },
-        "machine_switch_extruder_retraction_speed": { "default": 20, "SEE_machine_extruder_trains": true  },
-        "machine_switch_extruder_prime_speed": { "default": 20, "SEE_machine_extruder_trains": true  },
         
         "machine_gcode_flavor": {
             "default": "RepRap"
@@ -652,7 +650,14 @@
                     "min_value": 5,
                     "min_value_warning": 50,
                     "max_value_warning": 150
-                }
+                },
+                "machine_switch_extruder_retraction_speed": { 
+                    "label": "",
+                    "default": 20 
+                },
+                "machine_switch_extruder_prime_speed": { 
+                    "default": 20 
+                },
             }
         },
         "speed": {
@@ -824,22 +829,11 @@
             "visible": true,
             "icon": "category_travel",
             "settings": {
-                "retraction_enable": {
+                "ion_enable": {
                     "label": "Enable Retraction",
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
                     "type": "boolean",
                     "default": true
-                },
-                "print_sequence": {
-                    "label": "Print sequence",
-                    "description": "TODO",
-                    "type": "enum",
-                    "options": [
-                        "All at once",
-                        "One at a time"
-                    ],
-                    "default": "All at once",
-                    "visible": true
                 },
                 "retraction_speed": {
                     "label": "Retraction Speed",
@@ -1963,6 +1957,17 @@
             "visible": true,
             "icon": "category_blackmagic",
             "settings": {
+                "print_sequence": {
+                    "label": "Print sequence",
+                    "description": "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated such that the whole print head can move between and all models are lower than the distance between the nozzle and the X/Y axles.",
+                    "type": "enum",
+                    "options": [
+                        "All at once",
+                        "One at a time"
+                    ],
+                    "default": "All at once",
+                    "visible": true
+                },
                 "magic_mesh_surface_mode": {
                     "label": "Surface Mode",
                     "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh.",
