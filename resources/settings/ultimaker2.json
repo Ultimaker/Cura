@@ -64,14 +64,8 @@
             "machine_extruder_end_code": {
                 "default": "" 
             },
-            "machine_switch_extruder_retraction_amount": { 
-                "default": 16 
-            },
-            "machine_switch_extruder_retraction_speed": { 
-                "default": 20 
-            },
-            "machine_switch_extruder_prime_speed": { 
-                "default": 20 
+            "machine_heat_zone_length": { 
+                "default": 16
             }
         }
     ],
@@ -92,8 +86,6 @@
         "machine_head_shape_max_y": { "default": 30 },
         "machine_nozzle_gantry_distance": { "default": 55 },
         "machine_use_extruder_offset_to_offset_coords": { "default": true },
-        "machine_nozzle_offset_x_1": { "default": 18.0 },
-        "machine_nozzle_offset_y_1": { "default": 0.0 },
         "machine_gcode_flavor": { "default": "UltiGCode" },
         "machine_disallowed_areas": { "default": [
             [[-115.0,  112.5], [ -82.0,  112.5], [ -84.0,  104.5], [-115.0,  104.5]],
