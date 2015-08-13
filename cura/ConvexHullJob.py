@@ -25,20 +25,22 @@ class ConvexHullJob(Job):
                 child_hull = child.callDecoration("getConvexHull") 
                 if child_hull:
                     hull.setPoints(numpy.append(hull.getPoints(), child_hull.getPoints(), axis = 0))
-                    
+
                 if hull.getPoints().size < 3:
                     self._node.callDecoration("setConvexHull", None)
                     self._node.callDecoration("setConvexHullJob", None)
                     return
-                    
+
         else: 
             if not self._node.getMeshData():
                 return
             mesh = self._node.getMeshData()
             vertex_data = mesh.getTransformed(self._node.getWorldTransformation()).getVertices()
+            # Don't use data below 0. TODO; We need a better check for this as this gives poor results for meshes with long edges.
+            vertex_data = vertex_data[vertex_data[:,1]>0]
 
             hull = Polygon(numpy.rint(vertex_data[:, [0, 2]]).astype(int))
-        
+
         # First, calculate the normal convex hull around the points
         hull = hull.getConvexHull()
 

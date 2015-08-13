@@ -125,7 +125,7 @@ class CuraApplication(QtApplication):
 
         t = controller.getTool("TranslateTool")
         if t:
-            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.ZAxis])
+            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis,ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
