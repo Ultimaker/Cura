@@ -793,7 +793,7 @@
                         "value": true
                     }
                 },
-                "switch_extruder_retraction_speed": {
+                "switch_extruder_retraction_speeds": {
                     "label": "Nozzle Switch Retraction Speed",
                     "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
                     "unit": "mm/s",
