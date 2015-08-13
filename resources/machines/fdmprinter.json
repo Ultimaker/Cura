@@ -1,9 +1,10 @@
 {
+    "id": "fdmprinter",
     "visible": false,
     "version": 1, 
-    "author": "other",
-    "manufacturer": "other",
-    "author": "other",
+    "name": "FDM Printer Base Description",
+    "author": "Ultimaker B.V.",
+    "manufacturer": "Ultimaker",
 
     "add_pages": [{"page": "AddMachine", "title": "Add new printer"}],
 
