@@ -6,7 +6,6 @@
     "author": "Other",
     "icon": "icon_ultimaker2.png",
     "platform": "makerstarter_platform.stl",
-    "visible": true,
 
     "inherits": "fdmprinter.json",
 
@@ -33,6 +32,7 @@
         "machine_nozzle_head_distance": { "default": 3.0 },
         "machine_nozzle_expansion_angle": { "default": 45 }
     },
+
     "categories": {
         "resolution": {
             "label": "Quality",
