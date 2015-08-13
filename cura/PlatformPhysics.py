@@ -19,6 +19,7 @@ from . import ConvexHullJob
 
 import time
 import threading
+import copy
 
 class PlatformPhysics:
     def __init__(self, controller, volume):
@@ -53,16 +54,21 @@ class PlatformPhysics:
                 self._change_timer.start()
                 continue
 
+            build_volume_bounding_box = copy.deepcopy(self._build_volume.getBoundingBox())
+            build_volume_bounding_box.setBottom(-9001) # Ignore intersections with the bottom
+
             # Mark the node as outside the build volume if the bounding box test fails.
-            if self._build_volume.getBoundingBox().intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
+            if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
                 node._outside_buildarea = True
             else:
                 node._outside_buildarea = False
 
-            # Move the node upwards if the bottom is below the build platform.
+            # Move it downwards if bottom is above platform
             move_vector = Vector()
-            if not Float.fuzzyCompare(bbox.bottom, 0.0):
+            if bbox.bottom > 0:
                 move_vector.setY(-bbox.bottom)
+            #if not Float.fuzzyCompare(bbox.bottom, 0.0):
+            #   pass#move_vector.setY(-bbox.bottom)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
@@ -107,8 +113,10 @@ class PlatformPhysics:
                     
                     move_vector.setX(overlap[0] * 1.1)
                     move_vector.setZ(overlap[1] * 1.1)
-            convex_hull = node.callDecoration("getConvexHull") 
+            convex_hull = node.callDecoration("getConvexHull")
             if convex_hull:
+                if not convex_hull.isValid():
+                    return
                 # Check for collisions between disallowed areas and the object
                 for area in self._build_volume.getDisallowedAreas():
                     overlap = convex_hull.intersectsPolygon(area)

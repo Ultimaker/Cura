@@ -30,14 +30,14 @@ class ConvexHullNode(SceneNode):
         self._hull = hull
 
         hull_points = self._hull.getPoints()
-        center = (hull_points.min(0) + hull_points.max(0)) / 2.0
-
         mesh = MeshData()
-        mesh.addVertex(center[0], 0.1, center[1])
-
+        if len(hull_points) > 3:
+            center = (hull_points.min(0) + hull_points.max(0)) / 2.0
+            mesh.addVertex(center[0], 0.1, center[1])
+        else: #Hull has not enough points
+            return
         for point in hull_points:
             mesh.addVertex(point[0], 0.1, point[1])
-
         indices = []
         for i in range(len(hull_points) - 1):
             indices.append([0, i + 1, i + 2])
