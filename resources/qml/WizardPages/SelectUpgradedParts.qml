@@ -9,8 +9,25 @@ import QtQuick.Window 2.1
 import UM 1.0 as UM
 
 ColumnLayout {
+    id: wizardPage
     property string title
-    anchors.fill: parent;
+    property int pageWidth
+    property int pageHeight
+
+    SystemPalette{id: palette}
+    //signal openFile(string fileName)
+    //signal closeWizard()
+
+    width: wizardPage.pageWidth
+    height: wizardPage.pageHeight
+
+    Connections {
+        target: elementRoot
+        onResize: {
+            wizardPage.width = pageWidth
+            wizardPage.height = pageHeight
+        }
+    }
 
     Label {
         text: parent.title
@@ -18,23 +35,26 @@ ColumnLayout {
     }
 
     Label {
-        //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
+        //: Add UM Original wizard page description
+        width: 300
+
+        wrapMode: Text.WordWrap
+        text: qsTr("To assist you in having better default settings for your Ultimaker. Cura would like to know which upgrades you have in your machine:");
     }
 
     ScrollView {
         Layout.fillWidth: true;
-
-        ListView {
-            id: machineList;
-            model: UM.Models.availableMachinesModel
-            delegate: RadioButton {
-                exclusiveGroup: printerGroup;
-                text: model.name;
-                onClicked: {
-                    ListView.view.currentIndex = index;
-
-                }
+        Column {
+            CheckBox {
+                text: qsTr("Breakfast")
+                checked: true
+            }
+            CheckBox {
+                text: qsTr("Lunch")
+            }
+            CheckBox {
+                text: qsTr("Dinner")
+                checked: true
             }
         }
     }
@@ -44,7 +64,6 @@ ColumnLayout {
         text: qsTr("Printer Name:");
     }
 
-    TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
 
     Item { Layout.fillWidth: true; Layout.fillHeight: true; }
 

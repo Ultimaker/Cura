@@ -9,8 +9,18 @@ import QtQuick.Window 2.1
 import UM 1.0 as UM
 
 UM.Wizard{
-    id: base
+    // This part checks whether there is a printer -> if not some of the functions (delete for example) are disabled
+    // This part is optional
     property bool printer: true
-    file: "ultimaker2.json"
     firstRun: printer ? false : true
+
+    //: Add Printer dialog title
+    wizardTitle: qsTr("Add Printer")
+
+    wizardPages: [
+        {
+            title: "Add Printer",
+            page: "AddMachine.qml"
+        }
+    ]
 }

@@ -22,6 +22,11 @@
             "size": 0.5,
             "family": "Roboto"
         },
+        "caption": {
+            "size": 0.75,
+            "italic": true,
+            "family": "Roboto"
+        },
         "sidebar_header": {
             "size": 0.75,
             "capitalize": true,
@@ -120,7 +125,7 @@
         "save_button_printtime_text": [12, 169, 227, 255],
         "save_button_background": [249, 249, 249, 255],
 
-        "message": [205, 202, 201, 255],
+        "message": [160, 163, 171, 255],
         "message_text": [35, 35, 35, 255],
 
         "tool_panel_background": [255, 255, 255, 255]
@@ -143,6 +148,9 @@
         "setting_control_margin": [3.0, 3.0],
         "setting_unit_margin": [0.5, 0.5],
         "setting_text_maxwidth": [40.0, 0.0],
+
+        "standard_list_lineheight": [1.5, 1.5],
+        "standard_list_input": [20.0, 25.0],
 
         "button": [4.25, 4.25],
         "button_icon": [2.9, 2.9],
@@ -170,6 +178,9 @@
         "save_button_slicing_bar": [0.0, 2.2],
         "save_button_label_margin": [0.5, 0.5],
         "save_button_save_to_button": [0.3, 2.7],
+
+        "modal_window_minimum": [30.0, 30.0],
+        "wizard_progress": [10.0, 0.0],
 
         "message": [30.0, 5.0],
         "message_close": [1.25, 1.25]

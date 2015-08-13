@@ -9,9 +9,11 @@ import QtQuick.Window 2.1
 import UM 1.0 as UM
 
 ColumnLayout {
+    id: wizardPage
     property string title
+    property int pageWidth
+    property int pageHeight
     anchors.fill: parent;
-    signal openFile(string fileName)
 
     Label {
         text: parent.title
