@@ -3,7 +3,6 @@
     "version": 1, 
     "author": "other",
     "manufacturer": "other",
-    "author": "other",
 
     "add_pages": [{"page": "AddMachine", "title": "Add new printer"}],
 
