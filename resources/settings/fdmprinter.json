@@ -48,6 +48,7 @@
             "default": 1
         },
         "machine_use_extruder_offset_to_offset_coords": { "default": false },
+        
         "extruder_nr": { "default": 0 },
         "machine_nozzle_offset_x": { "default": 0, "SEE_machine_extruder_trains": true },
         "machine_nozzle_offset_y": { "default": 0, "SEE_machine_extruder_trains": true  },
@@ -55,9 +56,15 @@
         "machine_nozzle_tip_outer_diameter": { "default": 1, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_head_distance": { "default": 3, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_expansion_angle": { "default": 45, "SEE_machine_extruder_trains": true  },
+        "machine_heat_zone_length": { "default": 16, "SEE_machine_extruder_trains": true  },
         "machine_extruder_start_code": { "default": "", "SEE_machine_extruder_trains": true  },
+        "machine_extruder_start_pos_abs": { "default": false, "SEE_machine_extruder_trains": true   },
+        "machine_extruder_start_pos_x": { "default": 0, "SEE_machine_extruder_trains": true   },
+        "machine_extruder_start_pos_y": { "default": 0, "SEE_machine_extruder_trains": true   },
+        "machine_extruder_end_pos_abs": { "default": false, "SEE_machine_extruder_trains": true   },
+        "machine_extruder_end_pos_x": { "default": 0, "SEE_machine_extruder_trains": true   },
+        "machine_extruder_end_pos_y": { "default": 0, "SEE_machine_extruder_trains": true   },
         "machine_extruder_end_code": { "default": "", "SEE_machine_extruder_trains": true  },
-        "machine_switch_extruder_retraction_amount": { "default": 16, "SEE_machine_extruder_trains": true  },
         
         "machine_gcode_flavor": {
             "default": "RepRap"
@@ -651,13 +658,180 @@
                     "min_value_warning": 50,
                     "max_value_warning": 150
                 },
-                "machine_switch_extruder_retraction_speed": { 
-                    "label": "",
-                    "default": 20 
+                "retraction_enable": {
+                    "label": "Enable Retraction",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
+                    "type": "boolean",
+                    "default": true
                 },
-                "machine_switch_extruder_prime_speed": { 
-                    "default": 20 
+                "retraction_amount": {
+                    "label": "Retraction Distance",
+                    "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
                 },
+                "retraction_speed": {
+                    "label": "Retraction Speed",
+                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 25,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "retraction_retract_speed": {
+                            "label": "Retraction Retract Speed",
+                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 25,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        },
+                        "retraction_prime_speed": {
+                            "label": "Retraction Prime Speed",
+                            "description": "The speed at which the filament is pushed back after retraction.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 25,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        }
+                    }
+                },
+                "retraction_extra_prime_amount": {
+                    "label": "Retraction Extra Prime Amount",
+                    "description": "The amount of material extruded after unretracting. During a retracted travel material might get lost and so we need to compensate for this.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_min_travel": {
+                    "label": "Retraction Minimum Travel",
+                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_count_max": {
+                    "label": "Maximal Retraction Count",
+                    "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
+                    "default": 6,
+                    "type": "int",
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_extrusion_window": {
+                    "label": "Minimal Extrusion Distance Window",
+                    "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit_function": "retraction_amount",
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_hop": {
+                    "label": "Z Hop when Retracting",
+                    "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "machine_switch_extruder_retraction_amount": {
+                    "label": "Nozzle Switch Retraction Distance",
+                    "description": "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 16,
+                    "visible": false,
+                    "inherit_function": "machine_heat_zone_length",
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "machine_switch_extruder_retraction_speed": {
+                    "label": "Nozzle Switch Retraction Speed",
+                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 20,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "machine_switch_extruder_retraction_speed": {
+                            "label": "Nozzle Switch Retract Speed",
+                            "description": "The speed at which the filament is retracted during a nozzle switch retract. ",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 20,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        },
+                        "machine_switch_extruder_prime_speed": {
+                            "label": "Nozzle Switch Prime Speed",
+                            "description": "The speed at which the filament is pushed back after a nozzle switch retraction.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 20,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        }
+                    }
+                }
             }
         },
         "speed": {
@@ -829,128 +1003,6 @@
             "visible": true,
             "icon": "category_travel",
             "settings": {
-                "ion_enable": {
-                    "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "retraction_speed": {
-                    "label": "Retraction Speed",
-                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 25,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    },
-                    "children": {
-                        "retraction_retract_speed": {
-                            "label": "Retraction Retract Speed",
-                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 25,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
-                        },
-                        "retraction_prime_speed": {
-                            "label": "Retraction Prime Speed",
-                            "description": "The speed at which the filament is pushed back after retraction.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 25,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
-                        }
-                    }
-                },
-                "retraction_amount": {
-                    "label": "Retraction Distance",
-                    "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 4.5,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_extra_prime_amount": {
-                    "label": "Retraction Extra Prime Amount",
-                    "description": "The amount of material extruded after unretracting. During a retracted travel material might get lost and so we need to compensate for this.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_min_travel": {
-                    "label": "Retraction Minimum Travel",
-                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 4.5,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_count_max": {
-                    "label": "Maximal Retraction Count",
-                    "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
-                    "default": 6,
-                    "type": "int",
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_extrusion_window": {
-                    "label": "Minimal Extrusion Distance Window",
-                    "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 4.5,
-                    "visible": false,
-                    "inherit_function": "retraction_amount",
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_hop": {
-                    "label": "Z Hop when Retracting",
-                    "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
                 "retraction_combing": {
                     "label": "Enable Combing",
                     "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
