@@ -1143,6 +1143,11 @@ class LulzbotMachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
 				profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
 				profile.putMachineSetting('serial_baud', '115200')
+				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_min_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_height', '0.0')
 			elif self.LulzbotTaz5.GetValue():
 				# Nozzle diameter will be set in the toolhead selection page
 				# We set the machine_type here so later pages can differenciate between TAZ 4 and 5
@@ -1152,6 +1157,11 @@ class LulzbotMachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_depth', '275')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('serial_baud', '115200')
+				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_min_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_height', '0.0')
 			else:
 				# Nozzle diameter and machine type will be set in the toolhead selection page
 				profile.putMachineSetting('machine_name', 'LulzBot Mini')
@@ -1168,11 +1178,6 @@ class LulzbotMachineSelectPage(InfoPage):
 			profile.putMachineSetting('machine_center_is_zero', 'False')
 			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
 			profile.putMachineSetting('has_heated_bed', 'True')
-			profile.putMachineSetting('extruder_head_size_min_x', '0.0')
-			profile.putMachineSetting('extruder_head_size_max_x', '0.0')
-			profile.putMachineSetting('extruder_head_size_min_y', '0.0')
-			profile.putMachineSetting('extruder_head_size_max_y', '0.0')
-			profile.putMachineSetting('extruder_head_size_height', '0.0')
 			profile.putProfileSetting('retraction_enable', 'True')
 			profile.putPreference('startMode', 'Simple')
 			profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
