@@ -1,6 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+import wx.lib.scrolledpanel
 import platform
 from Cura.util import version
 
@@ -10,11 +11,18 @@ class aboutWindow(wx.Frame):
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
+		p2 = wx.lib.scrolledpanel.ScrolledPanel(self,-1, size=(600, 500), style=wx.SIMPLE_BORDER)
+		p2.SetBackgroundColour('#FFFFFF')
+		s2 = wx.BoxSizer(wx.VERTICAL)
+		p2.SetSizer(s2)
+		p2.SetupScrolling()
+		self.scrolledpanel = p2
 		p = wx.Panel(self)
 		self.panel = p
-		s = wx.BoxSizer()
+		s = wx.BoxSizer(wx.VERTICAL)
 		self.SetSizer(s)
-		s.Add(p, flag=wx.ALL, border=15)
+		s.Add(self.panel, flag=wx.ALL, border=15)
+		s.Add(self.scrolledpanel, flag=wx.EXPAND|wx.ALL, border=5)
 		s = wx.BoxSizer(wx.VERTICAL)
 		p.SetSizer(s)
 
@@ -24,18 +32,18 @@ class aboutWindow(wx.Frame):
 
 		version_num = version.getVersion()
 		s.Add(wx.StaticText(p, -1, 'Version {}'.format(version_num)))
-		
+
 		s.Add(wx.StaticText(p, -1, 'Release notes:'))
 		url = "code.alephobjects.com/w/cura/release-notes/"
 		s.Add(wx.HyperlinkCtrl(p, -1, url))
-		
+
 		s.Add(wx.StaticText(p, -1, ''))
 		s.Add(wx.StaticText(p, -1, 'End solution for Open Source Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by David Braam and Ultimaker.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura LulzBot Edition has been modified and maintained by Aleph Objects, Inc.'))
 		s.Add(wx.StaticText(p, -1, 'for use with LulzBot 3D printers.'))
 
-		s.Add(wx.StaticText(p, -1, 'Cura is built with the following components:'), flag=wx.TOP, border=10)
+		s2.Add(wx.StaticText(p2, -1, 'Cura is built with the following components:'), flag=wx.TOP, border=10)
 		self.addComponent('Cura', 'Graphical user interface', 'AGPLv3', 'https://github.com/daid/Cura')
 		self.addComponent('CuraEngine', 'GCode Generator', 'AGPLv3', 'https://github.com/Ultimaker/CuraEngine')
 		self.addComponent('Clipper', 'Polygon clipping library', 'Boost', 'http://www.angusj.com/delphi/clipper.php')
@@ -52,13 +60,13 @@ class aboutWindow(wx.Frame):
 			self.addComponent('EjectMedia', 'Utility to safe-remove SD cards', 'Freeware', 'http://www.uwe-sieber.de/english.html')
 		self.addComponent('Pymclevel', 'Python library for reading Minecraft levels.', 'ISC', 'https://github.com/mcedit/pymclevel')
 		
-		s.Add(wx.StaticText(p, -1, ""))
-		s.Add(wx.StaticText(p, -1, "Cura utilizes graphics from:"))
+		s2.Add(wx.StaticText(p2, -1, ""))
+		s2.Add(wx.StaticText(p2, -1, "Cura utilizes graphics from:"))
 		self.addComponent('3d-printer', 'by Toke Frello', 'CC BY 3.0 US', 'https://thenounproject.com/term/3d-printer/170216/')
 		self.addComponent('Check Mark', 'by Stefan Parnarov', 'CC BY 3.0', 'https://thenounproject.com/term/check-mark/63794/')
 		
-		s.Add(wx.StaticText(p, -1, "Copyright (C) 2014 Aleph Objects, Inc. - Released under terms of the AGPLv3 License"), flag=wx.TOP, border=10)
-		s.Add(wx.StaticText(p, -1, "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"))
+		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2014 Aleph Objects, Inc. - Released under terms of the AGPLv3 License"), flag=wx.TOP, border=10)
+		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"))
 		#Translations done by:
 		#Dutch: Charlotte Jansen
 		#German: Gregor Luetolf, Lars Potter
@@ -68,7 +76,7 @@ class aboutWindow(wx.Frame):
 		self.Fit()
 
 	def addComponent(self, name, description, license, url):
-		p = self.panel
+		p = self.scrolledpanel
 		s = p.GetSizer()
 		s.Add(wx.StaticText(p, -1, '* %s - %s' % (name, description)), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, '   License: %s - Website: %s' % (license, url)))
