@@ -60,9 +60,9 @@ material_order = {
 }
 
 profile_map = {
-    'high-quality': 'High Quality',
-    'medium-quality': 'Medium Quality',
-    'high-speed': 'Low Quality',
+    'high-quality': 'Fine Quality',
+    'medium-quality': 'Standard Quality',
+    'high-speed': 'Fast Speed',
 }
 
 profile_order = {
