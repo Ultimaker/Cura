@@ -1377,8 +1377,8 @@ def performVersionUpgrade():
 			putMachineSetting('machine_type', 'lulzbot_TAZ_4', n)
 
 		machine_type = getMachineSetting('machine_type', n)
-		if machine_type.startswith('lulzbot_') and \
-		   getMachineSetting('toolhead', n) == 'Default':
+		isLulzBot = machine_type.startswith('lulzbot_')
+		if isLulzBot and getMachineSetting('toolhead', n) == 'Default':
 			if machine_type == 'lulzbot_mini':
 				putMachineSetting('toolhead', 'Single Extruder V2', n)
 				putMachineSetting('toolhead_shortname', '', n)
