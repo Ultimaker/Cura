@@ -1368,6 +1368,13 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		#postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
 
+def hasEmptyHeadSizeSettings(n):
+	return getMachineSetting('extruder_head_size_min_x', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_max_x', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_min_y', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_max_y', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_height', n) == '0.0'
+
 def performVersionUpgrade():
 	for n in xrange(0, getMachineCount()):
 		# This is a hack around an issue where the machine type in the wizard
@@ -1405,3 +1412,11 @@ def performVersionUpgrade():
 		if machine_type.startswith('lulzbot_TAZ_') and \
 			getMachineSetting('machine_width', n) == '298':
 			putMachineSetting('machine_width', '290', n)
+			
+		#Set valid extruder head size numbers for Mini
+		if machine_type == 'lulzbot_mini' and hasEmptyHeadSizeSettings(n):
+			putMachineSetting('extruder_head_size_min_x', '40', n)
+			putMachineSetting('extruder_head_size_max_x', '75', n)
+			putMachineSetting('extruder_head_size_min_y', '25', n)
+			putMachineSetting('extruder_head_size_max_y', '55', n)
+			putMachineSetting('extruder_head_size_height', '17', n)
