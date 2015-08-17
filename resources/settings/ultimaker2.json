@@ -100,22 +100,10 @@
         "machine_nozzle_expansion_angle": { "default": 45 }
     },
 
-    "categories": {
-        "material": {
-            "settings": {
-                "material_print_temperature": {
-                    "visible": false
-                },
-                "material_bed_temperature": {
-                    "visible": false
-                },
-                "material_diameter": {
-                    "visible": false
-                },
-                "material_flow": {
-                    "visible": false
-                }
-            }
-        }
+    "overrides": {
+        "material_print_temperature": { "visible": false },
+        "material_bed_temperature": { "visible": false },
+        "material_diameter": { "visible": false },
+        "material_flow": { "visible": false }
     }
 }
