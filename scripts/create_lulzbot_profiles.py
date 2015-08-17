@@ -127,17 +127,17 @@ def create_machine_type(machine_type, path, dir):
 
 def main():
     if not os.path.exists(CURA_QUICKPRINT_DIR):
-	print "Cura path is wrong"
-	return -1
+        print "Cura path is wrong"
+    return -1
 
     dirs = glob.glob(os.path.join(CURA_QUICKPRINT_DIR, PROFILES_DIR, "*"))
 
     for d in dirs:
         dir = os.path.basename(d)
-	if dir_map.has_key(dir):
-	    for machine_type in dir_map[dir]:
-		create_machine_type(machine_type, d, dir)
+    if dir_map.has_key(dir):
+        for machine_type in dir_map[dir]:
+            create_machine_type(machine_type, d, dir)
 
 
 if __name__ == '__main__':
-	main()
+    main()
