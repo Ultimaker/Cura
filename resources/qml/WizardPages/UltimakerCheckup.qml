@@ -8,48 +8,64 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
-ColumnLayout {
+Column
+{
     id: wizardPage
     property string title
-    property int pageWidth
-    property int pageHeight
     anchors.fill: parent;
 
-    Label {
+    Label
+    {
         text: parent.title
         font.pointSize: 18;
     }
 
-    Label {
+    Label
+    {
         //: Add Printer wizard page description
         text: qsTr("Please select the type of printer:");
     }
 
-    ScrollView {
-        Layout.fillWidth: true;
-
-        ListView {
+    ScrollView
+    {
+        height: parent.height - 50
+        width: parent.width
+        ListView
+        {
             id: machineList;
             model: UM.Models.availableMachinesModel
-            delegate: RadioButton {
+            delegate: RadioButton
+            {
                 exclusiveGroup: printerGroup;
                 text: model.name;
-                onClicked: {
+                onClicked:
+                {
                     ListView.view.currentIndex = index;
-
                 }
             }
         }
     }
 
-    Label {
+    Label
+    {
         //: Add Printer wizard field label
         text: qsTr("Printer Name:");
     }
 
-    TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
+    TextField
+    {
+        id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name
 
-    Item { Layout.fillWidth: true; Layout.fillHeight: true; }
+    }
 
-    ExclusiveGroup { id: printerGroup; }
+    Item
+    {
+        Layout.fillWidth: true;
+        Layout.fillHeight: true;
+    }
+
+    ExclusiveGroup
+    {
+        id: printerGroup;
+    }
 }
