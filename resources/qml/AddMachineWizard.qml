@@ -8,7 +8,8 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
-UM.Wizard{
+UM.Wizard
+{
     //: Add Printer dialog title
     wizardTitle: qsTr("Add Printer")
     wizardPages: [
