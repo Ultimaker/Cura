@@ -406,7 +406,7 @@
                             "default": 0.8,
                             "min_value": 0,
                             "max_value": 5,
-                            "min_value_warning": 0.4,
+                            "min_value_warning": 0.6,
                             "max_value_warning": 1,
                             "type": "float",
                             "visible": false,
@@ -424,7 +424,7 @@
                                             "label": "Top Layers",
                                             "description": "This controls the amount of top layers.",
                                             "min_value": 0,
-                                            "default": 8,
+                                            "default": 6,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
@@ -436,7 +436,7 @@
                                     "description": "This controls the thickness of the bottom layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it near to your wall thickness to make an evenly strong part.",
                                     "unit": "mm",
                                     "min_value": 0,
-                                    "default": 0.8,
+                                    "default": 0.6,
                                     "type": "float",
                                     "visible": false,
                                     "children": {
@@ -444,7 +444,7 @@
                                             "label": "Bottom Layers",
                                             "description": "This controls the amount of bottom layers.",
                                             "min_value": 0,
-                                            "default": 8,
+                                            "default": 6,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
