@@ -33,13 +33,7 @@
         }
     },
 
-    "categories": {
-        "material": {
-            "settings": {
-                "material_bed_temperature": {
-                    "visible": false
-                }
-            }
-        }
+    "overrides": {
+        "material_bed_temperature": { "visible": false }
     }
 }

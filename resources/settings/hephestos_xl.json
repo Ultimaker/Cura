@@ -36,152 +36,36 @@
             "default": [0.0, 100.0, 0.0]
         }
     },
-    "categories": {
-        "layer_height": {
-            "settings": {
-                "layer_height": {
-                    "default": 0.2
-                },
-                "layer_height_0": {
-                    "default": 0.2,
-                    "visible": true
-                }
-            }
-        },
-        "shell": {
-            "settings": {
-                "shell_thickness": {
-                    "default": 1.2,
-                    "children": {
-                        "wall_thickness": {
-                            "default": 1.2,
-                            "visible": false
-                        },
-                        "top_bottom_thickness": {
-                            "default": 0.8,
-                            "visible": false,
-                            "children": {
-                                "bottom_thickness": {
-                                    "default": 0.4,
-                                    "visible": false
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "material": {
-            "settings": {
-                "material_print_temperature": {
-                    "default": 220,
-                    "visible": true
-                },
-                "material_bed_temperature": {
-                    "default": 0,
-                    "visible": false
-                },
-                "material_diameter": {
-                    "default": 1.75,
-                    "visible": true
-                }
-            }
-        },
-        "speed": {
-            "settings": {
-                "speed_print": {
-                    "default": 40.0,
-                    "children": {
-                        "speed_infill": {
-                            "default": 40.0,
-                            "visible": false
-                        },
-                        "speed_wall": {
-                            "default":35.0,
-                            "visible": false,
-                            "children": {
-                                "speed_wall_0": {
-                                    "default": 35.0,
-                                    "visible": false
-                                },
-                                "speed_wall_x": {
-                                    "default": 35.0,
-                                    "visible": false
-                                }
-                            }
-                        },
-                        "speed_topbottom": {
-                            "default": 35.0,
-                            "visible": false
-                        },
-                        "speed_support": {
-                            "default": 35.0,
-                            "visible": false
-                        }
-                    }
-                },
-                "speed_travel": {
-                    "default": 110.0
-                },
-                "speed_layer_0": {
-                    "default": 20.0,
-                    "visible": false
-                }
-            }
-        },
-        "travel": {
-            "settings": {
-                "retraction_speed": {
-                    "default": 30.0,
-                    "visible": true,
-                    "children": {
-                        "retraction_retract_speed": {
-                            "default": 30.0,
-                            "visible": true
-                        },
-                        "retraction_prime_speed": {
-                            "default": 30.0,
-                            "visible": true
-                        }
-                    }
-                },
-                "retraction_amount": {
-                    "default": 2.0,
-                    "visible": true
-                },
-                "retraction_hop": {
-                    "default": 0.75,
-                    "visible": false
-                }
-            }
-        },
-        "platform_adhesion": {
-            "settings": {
-                "skirt_minimal_length": {
-                    "default": 150
-                },
-                "raft_base_line_width": {
-                    "default": 0.7
-                },
-                "raft_interface_thickness": {
-                    "default": 0.2
-                }
-            }
-        },
-        "support": {
-            "settings": {
-                "support_enable": {
-                    "default": true
-                },
-                "support_z_distance": {
-                    "default": 0.2,
-                    "visible": false
-                },
-                "support_fill_rate": {
-                    "default": 10,
-                    "visible": false
-                }
-            }
-        }
+    
+    "overrides": {
+        "layer_height": { "default": 0.2 },
+        "layer_height_0": { "default": 0.2, "visible": true },
+        "shell_thickness": { "default": 1.2 },
+        "wall_thickness": { "default": 1.2, "visible": false },
+        "top_bottom_thickness": { "default": 0.8, "visible": false },
+        "bottom_thickness": { "default": 0.4, "visible": false },
+        "material_print_temperature": { "default": 220, "visible": true },
+        "material_bed_temperature": { "default": 0, "visible": false },
+        "material_diameter": { "default": 1.75, "visible": true },
+        "speed_print": { "default": 40.0 },
+        "speed_infill": { "default": 40.0, "visible": false },
+        "speed_wall": { "default":35.0, "visible": false },
+        "speed_wall_0": { "default": 35.0, "visible": false },
+        "speed_wall_x": { "default": 35.0, "visible": false },
+        "speed_topbottom": { "default": 35.0, "visible": false },
+        "speed_support": { "default": 35.0, "visible": false },
+        "speed_travel": { "default": 110.0 },
+        "speed_layer_0": { "default": 20.0, "visible": false },
+        "retraction_speed": { "default": 30.0, "visible": true },
+        "retraction_retract_speed": { "default": 30.0, "visible": true },
+        "retraction_prime_speed": { "default": 30.0, "visible": true },
+        "retraction_amount": { "default": 2.0, "visible": true },
+        "retraction_hop": { "default": 0.75, "visible": false },
+        "skirt_minimal_length": { "default": 150 },
+        "raft_base_line_width": { "default": 0.7 },
+        "raft_interface_thickness": { "default": 0.2 },
+        "support_enable": { "default": true },
+        "support_z_distance": { "default": 0.2, "visible": false },
+        "support_fill_rate": { "default": 10, "visible": false }
     }
 }
