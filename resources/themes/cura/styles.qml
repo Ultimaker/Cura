@@ -90,34 +90,32 @@ QtObject {
     property Component tool_button: Component {
         ButtonStyle {
             background: Item {
+                ///////////TODO CHANGE SIZES!!
                 implicitWidth: UM.Theme.sizes.button.width;
                 implicitHeight: UM.Theme.sizes.button.height;
 
                 Rectangle {
-                    anchors.bottom: parent.verticalCenter;
+                    id: tool_button_background
+                    anchors.top: parent.verticalCenter;
 
                     width: parent.width;
+                    ///////////TODO CHANGE LABELHEIGHT!!
                     height: control.hovered ? parent.height / 2 + label.height : 0;
                     Behavior on height { NumberAnimation { duration: 100; } }
 
                     opacity: control.hovered ? 1.0 : 0.0;
                     Behavior on opacity { NumberAnimation { duration: 100; } }
 
-                    Rectangle {
-                        anchors.horizontalCenter: parent.horizontalCenter;
-                        width: childrenRect.width;
-                        height: childrenRect.height;
-
-                        Label {
-                            id: label
-                            text: control.text.replace("&", "");
-                            font: UM.Theme.fonts.button_tooltip;
-                            color: UM.Theme.colors.button_tooltip_text;
-                        }
+                    Label {
+                        id: label
+                        anchors.bottom: parent.bottom
+                        text: control.text.replace("&", "");
+                        font: UM.Theme.fonts.button_tooltip;
+                        color: UM.Theme.colors.button_tooltip_text;
                     }
                 }
 
-                UM.AngledCornerRectangle {
+                Rectangle {
                     id: buttonFace;
 
                     anchors.fill: parent;
@@ -138,7 +136,6 @@ QtObject {
                         }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
-                    cornerSize: UM.Theme.sizes.default_margin.width;
 
                     Label {
                         anchors.right: parent.right;
