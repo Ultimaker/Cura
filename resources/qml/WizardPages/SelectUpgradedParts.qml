@@ -29,43 +29,64 @@ ColumnLayout {
         }
     }
 
-    Label {
-        text: parent.title
-        font.pointSize: 18;
-    }
-
-    Label {
-        //: Add UM Original wizard page description
-        width: 300
-
-        wrapMode: Text.WordWrap
-        text: qsTr("To assist you in having better default settings for your Ultimaker. Cura would like to know which upgrades you have in your machine:");
-    }
-
     ScrollView {
-        Layout.fillWidth: true;
-        Column {
-            CheckBox {
-                text: qsTr("Breakfast")
-                checked: true
+        implicitHeight: wizardPage.height
+        implicitWidth: wizardPage.width - (UM.Theme.sizes.default_margin.width * 4)
+        ColumnLayout {
+            width: wizardPage.width
+            Label {
+                id: pageTitle
+                width: parent.width
+                text: wizardPage.title
+                wrapMode: Text.WordWrap
+                font.pointSize: 18
             }
-            CheckBox {
-                text: qsTr("Lunch")
+            Label {
+                id: pageDescription
+                //: Add UM Original wizard page description
+                width: parent.width
+                //anchors.top: pageTitle.bottom
+                wrapMode: Text.WordWrap
+                text: qsTr("To assist you in having better default settings for your Ultimaker. Cura would like to know which upgrades you have in your machine:")
             }
-            CheckBox {
-                text: qsTr("Dinner")
-                checked: true
+
+            Column {
+                id: pageCheckboxes
+                width: parent.width
+                anchors.top: pageDescription.bottom
+
+                CheckBox {
+                    text: qsTr("Extruder driver ugrades")
+                }
+                CheckBox {
+                    text: qsTr("Heated printer bed (kit)")
+                }
+                CheckBox {
+                    text: qsTr("Heated printer bed (self built)")
+                }
+                CheckBox {
+                    text: qsTr("Dual extrusion (experimental)")
+                    checked: true
+                }
+            }
+
+            Label{
+                id: pageCaption1
+                anchors.top: pageCheckboxes.bottom
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: qsTr("If you have an Ultimaker bought after october 2012 you will have the Extruder drive upgrade. If you do not have this upgrade, it is highly recommended to improve reliability.");
+            }
+
+            Label {
+                id: pageCaption2
+                anchors.top: pageCaption1.bottom
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: qsTr("This upgrade can be bought from the Ultimaker webshop or found on thingiverse as thing:26094");
             }
         }
     }
-
-    Label {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
-    }
-
-
-    Item { Layout.fillWidth: true; Layout.fillHeight: true; }
 
     ExclusiveGroup { id: printerGroup; }
 }
