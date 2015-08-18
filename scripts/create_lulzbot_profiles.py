@@ -1,4 +1,13 @@
 #!/usr/bin/python
+#
+# This script is used to generate print profiles for lulzbot printers
+# based off of the lulzbot_profiles directory which contains common
+# profiles for multiple toolheads.
+# To generate profiles or update them, make sure there are no existing profiles
+# by doing a rm -rf resources/quickprint/lulzbot_mini* resources/quickprint/lulzbot_TAZ*
+# then run the script from the root Cura directory with ./scripts/create_lulzbot_profiles.py
+#
+
 
 import glob
 import os
