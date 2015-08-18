@@ -10,6 +10,7 @@ from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.Qt.ListModel import ListModel
 
 import threading
 import platform
@@ -35,6 +36,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         Extension.__init__(self)
         self._serial_port_list = []
         self._printer_connections = {}
+        self._printer_connections_model = None
         self._update_thread = threading.Thread(target = self._updateThread)
         self._update_thread.setDaemon(True)
 
@@ -49,6 +51,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self.addConnectionSignal.connect(self.addConnection) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
 
     addConnectionSignal = Signal()
+    printerConnectionStateChanged = pyqtSignal()
 
     def start(self):
         self._check_updates = True
@@ -88,11 +91,28 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
             except FileNotFoundError:
                 continue
 
+    @pyqtSlot(str, result = bool)
     def updateFirmwareBySerial(self, serial_port):
-        printer_connection = self.getConnectionByPort(serial_port)
-        if printer_connection is not None:
-            self.spawnFirmwareInterface(printer_connection.getSerialPort())
-            printer_connection.updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+        print("OMG ZOMG: ", serial_port)
+        if serial_port in self._printer_connections:
+            self.spawnFirmwareInterface(self._printer_connections[serial_port].getSerialPort())
+            try:
+                self._printer_connections[serial_port].updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+            except FileNotFoundError:
+                self._firmware_view.close()
+                Logger.log("e", "Could not find firmware required for this machine")
+                return False
+            return True
+        return False
+
+    ##  Return the singleton instance of the USBPrinterManager
+    @classmethod
+    def getInstance(cls, engine = None, script_engine = None):
+        # Note: Explicit use of class name to prevent issues with inheritance.
+        if USBPrinterManager._instance is None:
+            USBPrinterManager._instance = cls()
+
+        return USBPrinterManager._instance
 
     def _getDefaultFirmwareName(self):
         machine_type = Application.getInstance().getActiveMachine().getTypeID()
@@ -136,10 +156,23 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._printer_connections[serial_port] = connection
 
     def _onPrinterConnectionStateChanged(self, serial_port):
+        print("On state changed: ", self)
         if self._printer_connections[serial_port].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._printer_connections[serial_port])
         else:
             self.getOutputDeviceManager().removeOutputDevice(serial_port)
+        self.printerConnectionStateChanged.emit()
+
+    @pyqtProperty(QObject , notify = printerConnectionStateChanged)
+    def connectedPrinterList(self):
+        print("ConnectedPrinterList: ", self)
+        self._printer_connections_model  = ListModel()
+        self._printer_connections_model.addRoleName(Qt.UserRole + 1,"name")
+        self._printer_connections_model.addRoleName(Qt.UserRole + 2, "printer")
+        for connection in self._printer_connections:
+            if self._printer_connections[connection].isConnected():
+                self._printer_connections_model.appendItem({"name":connection, "printer": self._printer_connections[connection]})
+        return self._printer_connections_model
 
     ##  Create a list of serial ports on the system.
     #   \param only_list_usb If true, only usb ports are listed
@@ -164,3 +197,5 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
             else:
                 base_list = base_list + glob.glob("/dev/ttyUSB*") + glob.glob("/dev/ttyACM*") + glob.glob("/dev/cu.*") + glob.glob("/dev/tty.usb*") + glob.glob("/dev/rfcomm*") + glob.glob("/dev/serial/by-id/*")
         return list(base_list)
+
+    _instance = None

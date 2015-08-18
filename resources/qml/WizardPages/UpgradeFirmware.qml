@@ -13,13 +13,12 @@ Column
     id: wizardPage
     property string title
     anchors.fill: parent;
-
     Label
     {
         text: parent.title
         font.pointSize: 18;
     }
-
+    Component.onCompleted: console.log(UM.USBPrinterManager.connectedPrinterList.count)
     Label
     {
         //: Add Printer wizard page description
@@ -33,14 +32,26 @@ Column
         ListView
         {
             id: machineList;
-            model: UM.Models.availableMachinesModel
-            delegate: RadioButton
+            model: UM.USBPrinterManager.connectedPrinterList
+
+            delegate:Row
             {
-                exclusiveGroup: printerGroup;
-                text: model.name;
-                onClicked:
+                id: derp
+                Text
                 {
-                    ListView.view.currentIndex = index;
+                    id: text_area
+                    text: model.name
+                }
+                Button
+                {
+                    text: "Update";
+                    onClicked:
+                    {
+                        if(!UM.USBPrinterManager.updateFirmwareBySerial(text_area.text))
+                        {
+                            status_text.text = "ERROR"
+                        }
+                    }
                 }
             }
         }
@@ -48,15 +59,10 @@ Column
 
     Label
     {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
+        id: status_text
+        text: ""
     }
 
-    TextField
-    {
-        id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name
-
-    }
 
     Item
     {
@@ -64,8 +70,5 @@ Column
         Layout.fillHeight: true;
     }
 
-    ExclusiveGroup
-    {
-        id: printerGroup;
-    }
+
 }
