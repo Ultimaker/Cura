@@ -257,10 +257,12 @@ UM.MainWindow {
             }
 
             Image {
+                id: logo
                 anchors {
-                    verticalCenter: openFileButton.verticalCenter;
-                    left: openFileButton.right;
-                    leftMargin: UM.Theme.sizes.window_margin.width;
+                    left: parent.left
+                    leftMargin: UM.Theme.sizes.default_margin.width;
+                    bottom: parent.bottom
+                    bottomMargin: UM.Theme.sizes.default_margin.height;
                 }
 
                 source: UM.Theme.images.logo;
@@ -272,13 +274,12 @@ UM.MainWindow {
             }
 
             Button {
+                id: viewModeButton
                 anchors {
                     top: parent.top;
-                    topMargin: UM.Theme.sizes.window_margin.height;
                     right: sidebar.left;
                     rightMargin: UM.Theme.sizes.window_margin.width;
                 }
-                id: viewModeButton
                 //: View Mode toolbar button
                 text: qsTr("View Mode");
                 iconSource: UM.Theme.icons.viewmode;
@@ -308,10 +309,9 @@ UM.MainWindow {
                 id: toolbar;
 
                 anchors {
-                    left: parent.left;
-                    leftMargin: UM.Theme.sizes.window_margin.width;
-                    bottom: parent.bottom;
-                    bottomMargin: UM.Theme.sizes.window_margin.height;
+                    horizontalCenter: parent.horizontalCenter
+                    horizontalCenterOffset: -(UM.Theme.sizes.panel.width / 2)
+                    top: parent.top;
                 }
             }
 
