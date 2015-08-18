@@ -155,7 +155,6 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._printer_connections[serial_port] = connection
 
     def _onPrinterConnectionStateChanged(self, serial_port):
-        print("On state changed: ", self)
         if self._printer_connections[serial_port].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._printer_connections[serial_port])
         else:
@@ -164,7 +163,6 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
     @pyqtProperty(QObject , notify = printerConnectionStateChanged)
     def connectedPrinterList(self):
-        print("ConnectedPrinterList: ", self)
         self._printer_connections_model  = ListModel()
         self._printer_connections_model.addRoleName(Qt.UserRole + 1,"name")
         self._printer_connections_model.addRoleName(Qt.UserRole + 2, "printer")

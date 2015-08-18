@@ -18,7 +18,7 @@ Column
         text: parent.title
         font.pointSize: 18;
     }
-    Component.onCompleted: console.log(UM.USBPrinterManager.connectedPrinterList.count)
+    
     Label
     {
         //: Add Printer wizard page description
