@@ -634,9 +634,14 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene.merge(self._selectedObj, self._focusObj)
 		self.sceneUpdated()
 
-	def sceneUpdated(self):
+	def getObjectSink(self):
+		if self._isSimpleMode:
+			return float(profile.settingsDictionary["object_sink"].getDefault())
+		else:
+			return profile.getProfileSettingFloat("object_sink")
 
-		objectSink = profile.getProfileSettingFloat("object_sink")
+	def sceneUpdated(self):
+		objectSink = self.getObjectSink()
 		if self._lastObjectSink != objectSink:
 			self._lastObjectSink = objectSink
 			self._scene.updateHeadSize()
@@ -1331,7 +1336,7 @@ class SceneView(openglGui.glGuiPanel):
 	def _renderObject(self, obj, brightness = 0, addSink = True):
 		glPushMatrix()
 		if addSink:
-			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2 - profile.getProfileSettingFloat('object_sink'))
+			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2 - self.getObjectSink())
 		else:
 			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
 
@@ -1525,7 +1530,7 @@ class SceneView(openglGui.glGuiPanel):
 			return [0.0, 0.0, 0.0]
 		pos = self._selectedObj.getPosition()
 		size = self._selectedObj.getSize()
-		return [pos[0], pos[1], size[2]/2 - profile.getProfileSettingFloat('object_sink')]
+		return [pos[0], pos[1], size[2]/2 - self.getObjectSink()]
 
 	def getObjectBoundaryCircle(self):
 		if self._selectedObj is None:

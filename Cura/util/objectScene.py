@@ -159,6 +159,8 @@ class Scene(object):
 		yMax = profile.getMachineSettingFloat('extruder_head_size_max_y')
 		gantryHeight = profile.getMachineSettingFloat('extruder_head_size_height')
 		objectSink = profile.getProfileSettingFloat("object_sink")
+		if profile.getPreference('startMode') == 'Simple':
+			objectSink = float(profile.settingsDictionary["object_sink"].getDefault())
 
 		self._leftToRight = xMin < xMax
 		self._frontToBack = yMin < yMax
@@ -287,6 +289,8 @@ class Scene(object):
 
 	def checkPlatform(self, obj):
 		objectSink = profile.getProfileSettingFloat("object_sink")
+		if profile.getPreference('startMode') == 'Simple':
+			objectSink = float(profile.settingsDictionary["object_sink"].getDefault())
 
 		area = obj._printAreaHull + obj.getPosition()
 		if obj.getSize()[2] - objectSink > self._machineSize[2]:
