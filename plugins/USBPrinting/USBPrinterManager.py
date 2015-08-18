@@ -93,7 +93,6 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
     @pyqtSlot(str, result = bool)
     def updateFirmwareBySerial(self, serial_port):
-        print("OMG ZOMG: ", serial_port)
         if serial_port in self._printer_connections:
             self.spawnFirmwareInterface(self._printer_connections[serial_port].getSerialPort())
             try:
