@@ -45,7 +45,7 @@ class ConvexHullJob(Job):
         # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
         # This is done because of rounding errors.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-1, -1], [-1, 1], [1, 1], [1, -1]], numpy.float32)))
-        settings = Application.getInstance().getActiveMachine()
+        settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
         
         if settings.getSettingValueByKey("print_sequence") == "One at a time" and not self._node.getParent().callDecoration("isGroup"):
             # Printing one at a time and it's not an object in a group

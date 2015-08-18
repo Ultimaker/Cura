@@ -53,7 +53,7 @@ class ConvexHullNode(SceneNode):
 
     def render(self, renderer):
         if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
+            self._material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "color.frag"))
 
             self._material.setUniformValue("u_color", Color(35, 35, 35, 128))
         if self.getParent():
