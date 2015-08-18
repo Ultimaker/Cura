@@ -36,7 +36,7 @@
         "layer_height_0": { "default": 0.2, "visible": false },
         "wall_line_count": { "default": 2, "visible": true },
         "top_layers": { "default": 4, "visible": true },
-        "bottom_thickness": { "bottom_layers": { "default": 4, "visible": true },
+        "bottom_layers": { "default": 4, "visible": true },
         "material_print_temperature": { "visible": false },
         "material_bed_temperature": { "visible": false },
         "material_diameter": { "default": 1.75, "visible": false },
