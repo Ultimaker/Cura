@@ -469,14 +469,14 @@
             "visible": true,
             "icon": "category_infill",
             "settings": {
-                "fill_sparse_density": {
+                "infill_sparse_density": {
                     "label": "Infill Density",
                     "description": "This controls how densely filled the insides of your print will be. For a solid part use 100%, for an hollow part use 0%. A value around 20% is usually enough. This won't affect the outside of the print and only adjusts how strong the part becomes.",
                     "unit": "%",
                     "type": "float",
                     "default": 20,
                     "children": {
-                        "fill_pattern": {
+                        "infill_pattern": {
                             "label": "Infill Pattern",
                             "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
                             "type": "enum",
@@ -501,13 +501,13 @@
                         }
                     }
                 },
-                "fill_overlap": {
+                "infill_overlap": {
                     "label": "Infill Overlap",
                     "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
                     "unit": "%",
                     "type": "float",
                     "default": 10,
-                    "inherit_function": "10 if fill_sparse_density < 95 else 0",
+                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
                     "visible": false
                 },
                 "infill_wipe_dist": {
@@ -518,7 +518,7 @@
                     "default": 0.04,
                     "visible": false
                 },
-                "fill_sparse_thickness": {
+                "infill_sparse_thickness": {
                     "label": "Infill Thickness",
                     "description": "The thickness of the sparse infill. This is rounded to a multiple of the layerheight and used to print the sparse-infill in fewer, thicker layers to save printing time.",
                     "unit": "mm",
@@ -526,7 +526,7 @@
                     "default": 0.1,
                     "visible": false,
                     "children": {
-                        "fill_sparse_combine": {
+                        "infill_sparse_combine": {
                             "label": "Infill Layers",
                             "description": "Amount of layers that are combined together to form sparse infill.",
                             "type": "int",
@@ -1395,7 +1395,7 @@
                         "value": "ZigZag"
                     }
                 },
-                "support_fill_rate": {
+                "support_infill_rate": {
                     "label": "Fill Amount",
                     "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
                     "unit": "%",
