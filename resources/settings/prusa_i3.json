@@ -20,8 +20,6 @@
         "machine_head_shape_max_x": { "default": 18 },
         "machine_head_shape_max_y": { "default": 35 },
         "machine_nozzle_gantry_distance": { "default": 55 },
-        "machine_nozzle_offset_x_1": { "default": 0.0 },
-        "machine_nozzle_offset_y_1": { "default": 0.0 },
         "machine_gcode_flavor": { "default": "RepRap (Marlin/Sprinter)" },
 
         "machine_start_gcode": {
@@ -32,13 +30,7 @@
         }
     },
 
-    "categories": {
-        "material": {
-            "settings": {
-                "material_bed_temperature": {
-                    "visible": true
-                }
-            }
-        }
+    "overrides": {
+        "material_bed_temperature": { "visible": true }
     }
 }
