@@ -10,6 +10,7 @@ from UM.Math.Vector import Vector
 from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Resources import Resources
+from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import Cura_pb2
@@ -177,6 +178,33 @@ class CuraEngineBackend(Backend):
                 verts[:,[1,2]] = verts[:,[2,1]]
                 verts[:,1] *= -1
                 obj.vertices = verts.tostring()
+
+                if object.getDecorator(SettingOverrideDecorator):
+                    object_settings = object.callDecoration("getAllSettings")
+                    for key, value in object_settings.items():
+                        if key == "profile":
+                            for key, value in value.getChangedSettings().items():
+                                setting = obj.settings.add()
+                                setting.name = key
+                                setting.value = str(value).encode()
+                        else:
+                            setting = obj.settings.add()
+                            setting.name = key
+                            setting.value = str(value).encode()
+
+            first = group[0]
+            if first.getDecorator(SettingOverrideDecorator):
+                object_settings = first.callDecoration("getAllSettings")
+                for key, value in object_settings.items():
+                    if key == "profile":
+                        for key, value in value.getChangedSettings().items():
+                            setting = group_message.settings.add()
+                            setting.name = key
+                            setting.value = str(value).encode()
+                    else:
+                        setting = group_message.settings.add()
+                        setting.name = key
+                        setting.value = str(value).encode()
 
         self._scene.releaseLock()
         self._socket.sendMessage(slice_message)

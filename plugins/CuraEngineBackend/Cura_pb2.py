@@ -18,7 +18,8 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='Cura.proto',
   package='cura.proto',
-  serialized_pb=_b('\n\nCura.proto\x12\ncura.proto\"1\n\nObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.cura.proto.Object\"5\n\x05Slice\x12,\n\x0cobject_lists\x18\x01 \x03(\x0b\x32\x16.cura.proto.ObjectList\"o\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\x12%\n\x08settings\x18\x05 \x03(\x0b\x32\x13.cura.proto.Setting\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"=\n\x10SlicedObjectList\x12)\n\x07objects\x18\x01 \x03(\x0b\x32\x18.cura.proto.SlicedObject\"=\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12!\n\x06layers\x18\x02 \x03(\x0b\x32\x11.cura.proto.Layer\"]\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06height\x18\x02 \x01(\x02\x12\x11\n\tthickness\x18\x03 \x01(\x02\x12%\n\x08polygons\x18\x04 \x03(\x0b\x32\x13.cura.proto.Polygon\"\xe1\x01\n\x07Polygon\x12&\n\x04type\x18\x01 \x01(\x0e\x32\x18.cura.proto.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\x12\x12\n\nline_width\x18\x03 \x01(\x02\"\x89\x01\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\x12\x0e\n\nInfillType\x10\x06\x12\x15\n\x11SupportInfillType\x10\x07\"&\n\nGCodeLayer\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"D\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\x12\x17\n\x0fmaterial_amount\x18\x03 \x01(\x02\"4\n\x0bSettingList\x12%\n\x08settings\x18\x01 \x03(\x0b\x32\x13.cura.proto.Setting\"&\n\x07Setting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\"\x1b\n\x0bGCodePrefix\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x62\x06proto3')
+  syntax='proto3',
+  serialized_pb=_b('\n\nCura.proto\x12\ncura.proto\"X\n\nObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.cura.proto.Object\x12%\n\x08settings\x18\x02 \x03(\x0b\x32\x13.cura.proto.Setting\"5\n\x05Slice\x12,\n\x0cobject_lists\x18\x01 \x03(\x0b\x32\x16.cura.proto.ObjectList\"o\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\x12%\n\x08settings\x18\x05 \x03(\x0b\x32\x13.cura.proto.Setting\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"=\n\x10SlicedObjectList\x12)\n\x07objects\x18\x01 \x03(\x0b\x32\x18.cura.proto.SlicedObject\"=\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12!\n\x06layers\x18\x02 \x03(\x0b\x32\x11.cura.proto.Layer\"]\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06height\x18\x02 \x01(\x02\x12\x11\n\tthickness\x18\x03 \x01(\x02\x12%\n\x08polygons\x18\x04 \x03(\x0b\x32\x13.cura.proto.Polygon\"\xe1\x01\n\x07Polygon\x12&\n\x04type\x18\x01 \x01(\x0e\x32\x18.cura.proto.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\x12\x12\n\nline_width\x18\x03 \x01(\x02\"\x89\x01\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\x12\x0e\n\nInfillType\x10\x06\x12\x15\n\x11SupportInfillType\x10\x07\"&\n\nGCodeLayer\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"D\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\x12\x17\n\x0fmaterial_amount\x18\x03 \x01(\x02\"4\n\x0bSettingList\x12%\n\x08settings\x18\x01 \x03(\x0b\x32\x13.cura.proto.Setting\"&\n\x07Setting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\"\x1b\n\x0bGCodePrefix\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -65,8 +66,8 @@ _POLYGON_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=583,
-  serialized_end=720,
+  serialized_start=622,
+  serialized_end=759,
 )
 _sym_db.RegisterEnumDescriptor(_POLYGON_TYPE)
 
@@ -85,6 +86,13 @@ _OBJECTLIST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='settings', full_name='cura.proto.ObjectList.settings', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -93,11 +101,12 @@ _OBJECTLIST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=26,
-  serialized_end=75,
+  serialized_end=114,
 )
 
 
@@ -123,11 +132,12 @@ _SLICE = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=77,
-  serialized_end=130,
+  serialized_start=116,
+  serialized_end=169,
 )
 
 
@@ -181,11 +191,12 @@ _OBJECT = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=132,
-  serialized_end=243,
+  serialized_start=171,
+  serialized_end=282,
 )
 
 
@@ -211,11 +222,12 @@ _PROGRESS = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=245,
-  serialized_end=271,
+  serialized_start=284,
+  serialized_end=310,
 )
 
 
@@ -241,11 +253,12 @@ _SLICEDOBJECTLIST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=273,
-  serialized_end=334,
+  serialized_start=312,
+  serialized_end=373,
 )
 
 
@@ -278,11 +291,12 @@ _SLICEDOBJECT = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=336,
-  serialized_end=397,
+  serialized_start=375,
+  serialized_end=436,
 )
 
 
@@ -329,11 +343,12 @@ _LAYER = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=399,
-  serialized_end=492,
+  serialized_start=438,
+  serialized_end=531,
 )
 
 
@@ -374,11 +389,12 @@ _POLYGON = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=495,
-  serialized_end=720,
+  serialized_start=534,
+  serialized_end=759,
 )
 
 
@@ -411,11 +427,12 @@ _GCODELAYER = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=722,
-  serialized_end=760,
+  serialized_start=761,
+  serialized_end=799,
 )
 
 
@@ -455,11 +472,12 @@ _OBJECTPRINTTIME = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=762,
-  serialized_end=830,
+  serialized_start=801,
+  serialized_end=869,
 )
 
 
@@ -485,11 +503,12 @@ _SETTINGLIST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=832,
-  serialized_end=884,
+  serialized_start=871,
+  serialized_end=923,
 )
 
 
@@ -522,11 +541,12 @@ _SETTING = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=886,
-  serialized_end=924,
+  serialized_start=925,
+  serialized_end=963,
 )
 
 
@@ -552,14 +572,16 @@ _GCODEPREFIX = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=926,
-  serialized_end=953,
+  serialized_start=965,
+  serialized_end=992,
 )
 
 _OBJECTLIST.fields_by_name['objects'].message_type = _OBJECT
+_OBJECTLIST.fields_by_name['settings'].message_type = _SETTING
 _SLICE.fields_by_name['object_lists'].message_type = _OBJECTLIST
 _OBJECT.fields_by_name['settings'].message_type = _SETTING
 _SLICEDOBJECTLIST.fields_by_name['objects'].message_type = _SLICEDOBJECT
