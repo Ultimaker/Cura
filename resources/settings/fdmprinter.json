@@ -321,7 +321,7 @@
                                             "default": 6,
                                             "type": "int",
                                             "visible": false,
-                                            "inherit_function": "math.ceil(parent_value / layer_height)"
+                                            "inherit_function": "0 if support_infill_rate == 100 else math.ceil(parent_value / layer_height)"
                                         }
                                     }
                                 },
@@ -341,7 +341,7 @@
                                             "default": 6,
                                             "type": "int",
                                             "visible": false,
-                                            "inherit_function": "math.ceil(parent_value / layer_height)"
+                                            "inherit_function": "999999 if support_infill_rate == 100 else math.ceil(parent_value / layer_height)"
                                         }
                                     }
                                 }
