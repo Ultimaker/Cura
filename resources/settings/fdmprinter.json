@@ -46,24 +46,11 @@
         "machine_extruder_count": {
             "default": 1
         },
-        "machine_use_extruder_offset_to_offset_coords": { "default": false },
-
-        "machine_nozzle_offset_x": { "default": 0, "SEE_machine_extruder_trains": true },
-        "machine_nozzle_offset_y": { "default": 0, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_size": { "default": 0.4, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_tip_outer_diameter": { "default": 1, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_head_distance": { "default": 3, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_expansion_angle": { "default": 45, "SEE_machine_extruder_trains": true  },
         "machine_heat_zone_length": { "default": 16, "SEE_machine_extruder_trains": true  },
-        "machine_extruder_start_code": { "default": "", "SEE_machine_extruder_trains": true  },
-        "machine_extruder_start_pos_abs": { "default": false, "SEE_machine_extruder_trains": true   },
-        "machine_extruder_start_pos_x": { "default": 0, "SEE_machine_extruder_trains": true   },
-        "machine_extruder_start_pos_y": { "default": 0, "SEE_machine_extruder_trains": true   },
-        "machine_extruder_end_pos_abs": { "default": false, "SEE_machine_extruder_trains": true   },
-        "machine_extruder_end_pos_x": { "default": 0, "SEE_machine_extruder_trains": true   },
-        "machine_extruder_end_pos_y": { "default": 0, "SEE_machine_extruder_trains": true   },
-        "machine_extruder_end_code": { "default": "", "SEE_machine_extruder_trains": true  },
-        
         "machine_gcode_flavor": {
             "default": "RepRap"
         },
@@ -255,21 +242,6 @@
                             "visible": false,
                             "active_if": {
                                 "setting": "support_roof_enable",
-                                "value": true
-                            }
-                        },
-                        "prime_tower_line_width": {
-                            "label": "Prime Tower Line Width",
-                            "description": "Width of a single prime tower line.",
-                            "unit": "mm",
-                            "min_value": 0.0001,
-                            "min_value_warning": 0.2,
-                            "max_value_warning": 5,
-                            "default": 0.4,
-                            "type": "float",
-                            "visible": false,
-                            "active_if": {
-                                "setting": "prime_tower_enable",
                                 "value": true
                             }
                         }
@@ -811,20 +783,6 @@
                                         "value": true
                                     }
                                 }
-                            }
-                        },
-                        "speed_prime_tower": {
-                            "label": "Prime Tower Speed",
-                            "description": "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "min_value": 0.1,
-                            "max_value_warning": 150,
-                            "default": 50,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "prime_tower_enable",
-                                "value": true
                             }
                         }
                     }
