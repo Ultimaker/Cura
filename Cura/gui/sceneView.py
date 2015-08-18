@@ -1176,7 +1176,10 @@ class SceneView(openglGui.glGuiPanel):
 
 			if self.viewMode == 'overhang':
 				self._objectOverhangShader.bind()
-				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(90 - profile.getProfileSettingFloat('support_angle'))))
+				support_angle = profile.getProfileSettingFloat('support_angle')
+				if self._isSimpleMode:
+					support_angle = float(profile.settingsDictionary['support_angle'].getDefault())
+				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(90 - support_angle)))
 			else:
 				self._objectShader.bind()
 			for obj in self._scene.objects():
