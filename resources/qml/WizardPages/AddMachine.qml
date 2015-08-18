@@ -10,7 +10,8 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.0 as UM
 import ".."
 
-ColumnLayout {
+ColumnLayout
+{
     id: wizardPage
     property string title
     property int pageWidth
@@ -20,33 +21,34 @@ ColumnLayout {
 
     SystemPalette{id: palette}
     signal reloadModel(var newModel)
-    signal closeWizard()
 
     width: wizardPage.pageWidth
     height: wizardPage.pageHeight
 
-    Connections {
+    Connections
+    {
         target: elementRoot
-        onFinalClicked: {//You can add functions here that get triggered when the final button is clicked in the wizard-element
+        onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
+        {
             saveMachine()
-        }
-        onResize: {
-            wizardPage.width = pageWidth
-            wizardPage.height = pageHeight
         }
     }
 
-    function lineManufacturers(manufacturer){
+    function lineManufacturers(manufacturer)
+    {
         var manufacturers = []
-        for (var i = 0; i < UM.Models.availableMachinesModel.rowCount(); i++) {
-            if (UM.Models.availableMachinesModel.getItem(i).manufacturer != manufacturers[manufacturers.length - 1]){
+        for (var i = 0; i < UM.Models.availableMachinesModel.rowCount(); i++)
+        {
+            if (UM.Models.availableMachinesModel.getItem(i).manufacturer != manufacturers[manufacturers.length - 1])
+            {
                 manufacturers.push(UM.Models.availableMachinesModel.getItem(i).manufacturer)
             }
         }
         return manufacturers
     }
 
-    Label {
+    Label
+    {
         id: title
         anchors.left: parent.left
         anchors.top: parent.top
@@ -54,7 +56,8 @@ ColumnLayout {
         font.pointSize: 18;
     }
 
-    Label {
+    Label
+    {
         id: subTitle
         anchors.left: parent.left
         anchors.top: title.bottom
@@ -62,21 +65,25 @@ ColumnLayout {
         text: qsTr("Please select the type of printer:");
     }
 
-    ScrollView {
+    ScrollView
+    {
         id: machinesHolder
         anchors.left: parent.left
         anchors.top: subTitle.bottom
         implicitWidth: wizardPage.width- UM.Theme.sizes.default_margin.width
         implicitHeight: wizardPage.height - subTitle.height - title.height - (machineNameHolder.height * 2)
 
-        Component {
+        Component
+        {
             id: machineDelegate
-            ColumnLayout {
+            ColumnLayout
+            {
                 id: machineLayout
                 spacing: 0
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.width
-                function showManufacturer(){
+                function showManufacturer()
+                {
                     if (model.manufacturer == UM.Models.availableMachinesModel.getItem(index - 1).manufacturer){
                         return false
                     }
@@ -84,7 +91,8 @@ ColumnLayout {
                         return true
                     }
                 }
-                height: {
+                height:
+                {
                     if (machineLayout.showManufacturer() & wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer)
                         return UM.Theme.sizes.standard_list_lineheight.height * 2
                     if (wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer | machineLayout.showManufacturer())
@@ -92,31 +100,37 @@ ColumnLayout {
                     else
                          return 0
                 }
-                Behavior on height{
+                Behavior on height
+                {
                     NumberAnimation { target: machineLayout; property: "height"; duration: 200}
                 }
-                Button {
+                Button
+                {
                     id: manufacturer
                     property color backgroundColor: "transparent"
                     height: UM.Theme.sizes.standard_list_lineheight.height
                     visible: machineLayout.showManufacturer()
                     anchors.top: machineLayout.top
                     anchors.topMargin: 0
-                    text: {
+                    text:
+                    {
                         if (wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer)
                             return model.manufacturer + " ▼"
                         else
                             return model.manufacturer + " ►"
                     }
-                    style: ButtonStyle {
-                        background: Rectangle {
+                    style: ButtonStyle
+                    {
+                        background: Rectangle
+                        {
                             id: manufacturerBackground
                             opacity: 0.3
                             border.width: 0
                             color: manufacturer.backgroundColor
                             height: UM.Theme.sizes.standard_list_lineheight.height
                         }
-                        label: Text {
+                        label: Text
+                        {
                             renderType: Text.NativeRendering
                             horizontalAlignment: Text.AlignLeft
                             text: control.text
@@ -124,20 +138,23 @@ ColumnLayout {
                             font.bold: true
                         }
                     }
-                    MouseArea {
+                    MouseArea
+                    {
                         id: mousearea
                         hoverEnabled: true
                         anchors.fill: parent
                         onEntered: manufacturer.backgroundColor = palette.light
                         onExited: manufacturer.backgroundColor = "transparent"
-                        onClicked: {
+                        onClicked:
+                        {
                             wizardPage.manufacturerIndex = wizardPage.manufacturers.indexOf(model.manufacturer)
                             machineList.currentIndex = index
                         }
                     }
                 }
 
-                RadioButton {
+                RadioButton
+                {
                     id: machineButton
                     opacity: wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer ? 1 : 0
                     height: wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer ? UM.Theme.sizes.standard_list_lineheight.height : 0
@@ -149,13 +166,15 @@ ColumnLayout {
                     exclusiveGroup: printerGroup;
                     text: model.name
                     onClicked: machineList.currentIndex = index;
-                    function getAnimationTime(time){
+                    function getAnimationTime(time)
+                    {
                         if (machineButton.opacity == 0)
                             return time
                         else
                             return 0
                     }
-                    Label {
+                    Label
+                    {
                         id: author
                         visible: model.author != "Ultimaker" ? true : false
                         height: wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer ? UM.Theme.sizes.standard_list_lineheight.height : 0
@@ -169,8 +188,10 @@ ColumnLayout {
                         font: UM.Theme.fonts.caption;
                         color: palette.mid
                     }
-                    Behavior on opacity {
-                        SequentialAnimation {
+                    Behavior on opacity
+                    {
+                        SequentialAnimation
+                        {
                             PauseAnimation { duration: machineButton.getAnimationTime(100) }
                             NumberAnimation { properties:"opacity"; duration: machineButton.getAnimationTime(200) }
                         }
@@ -180,12 +201,16 @@ ColumnLayout {
             }
         }
 
-        ListView {
+        ListView
+        {
             id: machineList
             property int currentIndex: 0
-            property int otherMachinesIndex: {
-                for (var i = 0; i < UM.Models.availableMachinesModel.rowCount(); i++) {
-                    if (UM.Models.availableMachinesModel.getItem(i).manufacturer != "Ultimaker"){
+            property int otherMachinesIndex:
+            {
+                for (var i = 0; i < UM.Models.availableMachinesModel.rowCount(); i++)
+                {
+                    if (UM.Models.availableMachinesModel.getItem(i).manufacturer != "Ultimaker")
+                    {
                         return i
                     }
                 }
@@ -197,16 +222,19 @@ ColumnLayout {
         }
     }
 
-    Item{
+    Item
+    {
         id: machineNameHolder
         height: childrenRect.height
         anchors.top: machinesHolder.bottom
-        Label {
+        Label
+        {
             id: insertNameLabel
             //: Add Printer wizard field label
             text: qsTr("Printer Name:");
         }
-        TextField {
+        TextField
+        {
             id: machineName;
             anchors.top: insertNameLabel.bottom
             text: machineList.model.getItem(machineList.currentIndex).name
@@ -217,38 +245,30 @@ ColumnLayout {
     ExclusiveGroup { id: printerGroup; }
 
 
-    function saveMachine(){
-        if(machineList.currentIndex != -1) {
+    function saveMachine()
+    {
+        if(machineList.currentIndex != -1)
+        {
             UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
-
-            var chosenMachine = UM.Models.availableMachinesModel.getItem(machineList.currentIndex).name
-            var originalString = "Ultimaker Original"
-            var originalPlusString = "Ultimaker Original+"
-
-            if (chosenMachine == originalString | chosenMachine == originalPlusString ){
-                wizardPage.reloadModel([
-                    {
-                        title: "Select Upgraded Parts",
-                        page: "SelectUpgradedParts.qml"
-                    },
-                    {
-                        title: "Upgrade Ultimaker Firmware",
-                        page: "UpgradeFirmware.qml"
-                    },
-                    {
-                        title: "Ultimaker Checkup",
-                        page: "UltimakerCheckup.qml"
-                    },
-                    {
-                        title: "Bedleveling Wizard",
-                        page: "Bedleveling.qml"
-                    }
-                    ]
-                )
+            var pages = UM.Models.availableMachinesModel.getItem(machineList.currentIndex).pages
+            var old_page_count = elementRoot.getPageCount()
+            // Delete old pages (if any)
+            for (var i = old_page_count - 1; i >  0; i--)
+            {
+                elementRoot.removePage(i)
+                elementRoot.currentPage = 0
             }
 
-            else {
-                wizardPage.closeWizard()
+            // Insert new pages (if any)
+            for(var i = 0; i < pages.count; i++)
+            {
+                elementRoot.insertPage(pages.getItem(i).page + ".qml",pages.getItem(i).title,i + 1)
+            }
+
+            // Hack to ensure the current page is set correctly
+            if(old_page_count == 1)
+            {
+                elementRoot.currentPage += 1
             }
         }
     }

@@ -4,8 +4,6 @@
     "author": "other",
     "manufacturer": "other",
 
-    "add_pages": [{"page": "AddMachine", "title": "Add new printer"}],
-
     "machine_settings": {
         "machine_start_gcode": {
             "default": "G28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
