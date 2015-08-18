@@ -1139,6 +1139,294 @@
                 }
             }
         },
+        "support": {
+            "label": "Support",
+            "visible": true,
+            "icon": "category_support",
+            "settings": {
+                "support_enable": {
+                    "label": "Enable Support",
+                    "description": "Enable exterior support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "support_type": {
+                    "label": "Placement",
+                    "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
+                    "type": "enum",
+                    "options": [
+                        "Touching Buildplate",
+                        "Everywhere"
+                    ],
+                    "default": "Everywhere",
+                    "visible": true,
+                    "inherit_function": "'Everywhere' if support_enable else 'None'",
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_angle": {
+                    "label": "Overhang Angle",
+                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value": 90,
+                    "default": 60,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_xy_distance": {
+                    "label": "X/Y Distance",
+                    "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value_warning": 10,
+                    "default": 0.7,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_z_distance": {
+                    "label": "Z Distance",
+                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value_warning": 10,
+                    "default": 0.15,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "support_top_distance": {
+                            "label": "Top Distance",
+                            "description": "Distance from the top of the support to the print.",
+                            "unit": "mm",
+                            "min_value": 0,
+                            "max_value_warning": 10,
+                            "default": 0.15,
+                            "type": "float",
+                            "visible": false
+                        },
+                        "support_bottom_distance": {
+                            "label": "Bottom Distance",
+                            "description": "Distance from the print to the bottom of the support.",
+                            "unit": "mm",
+                            "min_value": 0,
+                            "max_value_warning": 10,
+                            "default": 0.15,
+                            "type": "float",
+                            "visible": false
+                        }
+                    }
+                },
+                "support_conical_enabled": {
+                    "label": "Conical Support",
+                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_conical_angle": {
+                    "label": "Cone Angle",
+                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": -90,
+                    "max_value": 90,
+                    "default": 30,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
+                    }
+                },
+                "support_conical_min_width": {
+                    "label": "Minimal Width",
+                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as fundament for support above.",
+                    "unit": "mm",
+                    "min_value": 0,
+                    "default": 3.0,
+                    "type": "float",
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
+                    }
+                },
+                "support_bottom_stair_step_height": {
+                    "label": "Stair Step Height",
+                    "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_type",
+                        "value": "Everywhere"
+                    }
+                },
+                "support_join_distance": {
+                    "label": "Join Distance",
+                    "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2,
+                    "visible": false
+                },
+                "support_offset": {
+                    "label": "Horizontal Expansion",
+                    "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.2,
+                    "visible": false
+                },
+                "support_area_smoothing": {
+                    "label": "Area Smoothing",
+                    "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.6,
+                    "visible": false
+                },
+                "support_roof_enable": {
+                    "label": "Enable Hammock",
+                    "description": "Generate a solid support roof on which the model sits.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": true
+                },
+                "support_roof_height": {
+                    "label": "Hammock Thickness",
+                    "description": "The height of the support roofs. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_roof_enable",
+                        "value": true
+                    }
+                },
+                "support_use_towers": {
+                    "label": "Use towers.",
+                    "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": true
+                },
+                "support_minimal_diameter": {
+                    "label": "Minimal Diameter",
+                    "description": "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_tower_diameter": {
+                    "label": "Tower Diameter",
+                    "description": "The diameter of a special tower. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_tower_roof_angle": {
+                    "label": "Tower Roof Angle",
+                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
+                    "unit": "°",
+                    "type": "int",
+                    "min_value": 0,
+                    "max_value": 90,
+                    "default": 65,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_pattern": {
+                    "label": "Pattern",
+                    "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
+                    "type": "enum",
+                    "options": [
+                        "Grid",
+                        "Lines",
+                        "ZigZag"
+                    ],
+                    "default": "ZigZag",
+                    "visible": true,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_connect_zigzags": {
+                    "label": "Connect ZigZags",
+                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_pattern",
+                        "value": "ZigZag"
+                    }
+                },
+                "support_fill_rate": {
+                    "label": "Fill Amount",
+                    "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value": 100,
+                    "default": 15,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "support_line_distance": {
+                            "label": "Line distance",
+                            "description": "Distance between the printed support lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "min_value": 0,
+                            "default": 2.66,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "support_enable",
+                                "value": true
+                            },
+                            "inherit_function": "(support_line_width * 100) / parent_value"
+                        }
+                    }
+                }
+            }
+        },
         "platform_adhesion": {
             "label": "Platform Adhesion",
             "visible": true,
@@ -1473,294 +1761,6 @@
                     "active_if": {
                         "setting": "draft_shield_height_limitation",
                         "value": "Limited"
-                    }
-                }
-            }
-        },
-        "support": {
-            "label": "Support",
-            "visible": true,
-            "icon": "category_support",
-            "settings": {
-                "support_enable": {
-                    "label": "Enable Support",
-                    "description": "Enable exterior support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "support_type": {
-                    "label": "Placement",
-                    "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
-                    "type": "enum",
-                    "options": [
-                        "Touching Buildplate",
-                        "Everywhere"
-                    ],
-                    "default": "Everywhere",
-                    "visible": true,
-                    "inherit_function": "'Everywhere' if support_enable else 'None'",
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_angle": {
-                    "label": "Overhang Angle",
-                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value": 90,
-                    "default": 60,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_xy_distance": {
-                    "label": "X/Y Distance",
-                    "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value_warning": 10,
-                    "default": 0.7,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_z_distance": {
-                    "label": "Z Distance",
-                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value_warning": 10,
-                    "default": 0.15,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
-                    "children": {
-                        "support_top_distance": {
-                            "label": "Top Distance",
-                            "description": "Distance from the top of the support to the print.",
-                            "unit": "mm",
-                            "min_value": 0,
-                            "max_value_warning": 10,
-                            "default": 0.15,
-                            "type": "float",
-                            "visible": false
-                        },
-                        "support_bottom_distance": {
-                            "label": "Bottom Distance",
-                            "description": "Distance from the print to the bottom of the support.",
-                            "unit": "mm",
-                            "min_value": 0,
-                            "max_value_warning": 10,
-                            "default": 0.15,
-                            "type": "float",
-                            "visible": false
-                        }
-                    }
-                },
-                "support_conical_enabled": {
-                    "label": "Conical Support",
-                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_conical_angle": {
-                    "label": "Cone Angle",
-                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": -90,
-                    "max_value": 90,
-                    "default": 30,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_conical_enabled",
-                        "value": true
-                    }
-                },
-                "support_conical_min_width": {
-                    "label": "Minimal Width",
-                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as fundament for support above.",
-                    "unit": "mm",
-                    "min_value": 0,
-                    "default": 3.0,
-                    "type": "float",
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_conical_enabled",
-                        "value": true
-                    }
-                },
-                "support_bottom_stair_step_height": {
-                    "label": "Stair Step Height",
-                    "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 2,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_type",
-                        "value": "Everywhere"
-                    }
-                },
-                "support_join_distance": {
-                    "label": "Join Distance",
-                    "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 2,
-                    "visible": false
-                },
-                "support_offset": {
-                    "label": "Horizontal Expansion",
-                    "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.2,
-                    "visible": false
-                },
-                "support_area_smoothing": {
-                    "label": "Area Smoothing",
-                    "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.6,
-                    "visible": false
-                },
-                "support_roof_enable": {
-                    "label": "Enable Hammock",
-                    "description": "Generate a solid support roof on which the model sits.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": true
-                },
-                "support_roof_height": {
-                    "label": "Hammock Thickness",
-                    "description": "The height of the support roofs. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_roof_enable",
-                        "value": true
-                    }
-                },
-                "support_use_towers": {
-                    "label": "Use towers.",
-                    "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": true
-                },
-                "support_minimal_diameter": {
-                    "label": "Minimal Diameter",
-                    "description": "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_tower_diameter": {
-                    "label": "Tower Diameter",
-                    "description": "The diameter of a special tower. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_tower_roof_angle": {
-                    "label": "Tower Roof Angle",
-                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
-                    "unit": "°",
-                    "type": "int",
-                    "min_value": 0,
-                    "max_value": 90,
-                    "default": 65,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_pattern": {
-                    "label": "Pattern",
-                    "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
-                    "type": "enum",
-                    "options": [
-                        "Grid",
-                        "Lines",
-                        "ZigZag"
-                    ],
-                    "default": "ZigZag",
-                    "visible": true,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_connect_zigzags": {
-                    "label": "Connect ZigZags",
-                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_pattern",
-                        "value": "ZigZag"
-                    }
-                },
-                "support_fill_rate": {
-                    "label": "Fill Amount",
-                    "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
-                    "unit": "%",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value": 100,
-                    "default": 15,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
-                    "children": {
-                        "support_line_distance": {
-                            "label": "Line distance",
-                            "description": "Distance between the printed support lines.",
-                            "unit": "mm",
-                            "type": "float",
-                            "min_value": 0,
-                            "default": 2.66,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            },
-                            "inherit_function": "(support_line_width * 100) / parent_value"
-                        }
                     }
                 }
             }
