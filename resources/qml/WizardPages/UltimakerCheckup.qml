@@ -55,7 +55,6 @@ Column
     TextField
     {
         id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name
-
     }
 
     Item

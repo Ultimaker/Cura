@@ -4,7 +4,7 @@
     "author": "other",
     "manufacturer": "other",
 
-    "add_pages": [{"page": "AddMachine", "title": "Add new printer"}],
+    "add_pages": [],
 
     "machine_settings": {
         "machine_start_gcode": {
