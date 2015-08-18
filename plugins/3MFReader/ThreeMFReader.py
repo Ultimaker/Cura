@@ -15,16 +15,21 @@ import os
 import struct
 import math
 from os import listdir
-import untangle
 import zipfile
 
+import xml.etree.ElementTree as ET
 
 ##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
     def __init__(self):
         super(ThreeMFReader, self).__init__()
         self._supported_extension = ".3mf"
-        
+
+        self._namespaces = {
+            "3mf": "http://schemas.microsoft.com/3dmanufacturing/core/2015/02",
+            "cura": "http://software.ultimaker.com/xml/cura/3mf/2015/10"
+        }
+
     def read(self, file_name):
         result = None
         extension = os.path.splitext(file_name)[1]
@@ -33,32 +38,39 @@ class ThreeMFReader(MeshReader):
             # The base object of 3mf is a zipped archive.
             archive = zipfile.ZipFile(file_name, 'r')
             try:
-                # The model is always stored in this place.
-                root = untangle.parse(archive.read("3D/3dmodel.model").decode("utf-8"))
-                for object in root.model.resources.object: # There can be multiple objects, try to load all of them.
+                root = ET.parse(archive.open("3D/3dmodel.model"))
+
+                # There can be multiple objects, try to load all of them.
+                objects = root.findall("./3mf:resources/3mf:object", self._namespaces)
+                for object in objects:
                     mesh = MeshData()
                     node = SceneNode()
                     vertex_list = []
-                    for vertex in object.mesh.vertices.vertex:
-                        vertex_list.append([vertex['x'],vertex['y'],vertex['z']])
+                    #for vertex in object.mesh.vertices.vertex:
+                    for vertex in object.findall(".//3mf:vertex", self._namespaces):
+                        vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
+
+                    triangles = object.findall(".//3mf:triangle", self._namespaces)
+
+                    mesh.reserveFaceCount(len(triangles))
                     
-                    mesh.reserveFaceCount(len(object.mesh.triangles.triangle))
-                    
-                    for triangle in object.mesh.triangles.triangle:
-                        v1 = int(triangle["v1"])
-                        v2 = int(triangle["v2"])
-                        v3 = int(triangle["v3"])
+                    #for triangle in object.mesh.triangles.triangle:
+                    for triangle in triangles:
+                        v1 = int(triangle.get("v1"))
+                        v2 = int(triangle.get("v2"))
+                        v3 = int(triangle.get("v3"))
                         mesh.addFace(vertex_list[v1][0],vertex_list[v1][1],vertex_list[v1][2],vertex_list[v2][0],vertex_list[v2][1],vertex_list[v2][2],vertex_list[v3][0],vertex_list[v3][1],vertex_list[v3][2])
                     #TODO: We currently do not check for normals and simply recalculate them. 
                     mesh.calculateNormals()
                     node.setMeshData(mesh)
                     node.setSelectable(True)
                     
-                    # Magical python comprehension; looks for the matching transformation
-                    transformation = next((x for x in root.model.build.item if x["objectid"] == object["id"]), None)
-                    
-                    if transformation["transform"]:
-                        splitted_transformation = transformation["transform"].split() 
+                    transformation = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(object.get("id")), self._namespaces)
+                    if transformation:
+                        transformation = transformation[0]
+
+                    if transformation.get("transform"):
+                        splitted_transformation = transformation.get("transform").split()
                         ## Transformation is saved as:
                         ## M00 M01 M02 0.0
                         ## M10 M11 M12 0.0
@@ -99,10 +111,10 @@ class ThreeMFReader(MeshReader):
                         rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
                         node.rotate(rotation)
                     result.addChild(node)
-                
-                # If there is more then one object, group them.
+
+                #If there is more then one object, group them.
                 try:
-                    if len(root.model.resources.object) > 1:  
+                    if len(objects) > 1:
                         group_decorator = GroupDecorator()
                         result.addDecorator(group_decorator)
                 except:
