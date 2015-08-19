@@ -43,7 +43,7 @@ Item {
     Action {
         id: undoAction;
         //: Undo action
-        text: qsTr("&Undo");
+        text: qsTr("Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
     }
@@ -51,7 +51,7 @@ Item {
     Action {
         id: redoAction;
         //: Redo action
-        text: qsTr("&Redo");
+        text: qsTr("Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
     }
@@ -59,7 +59,7 @@ Item {
     Action {
         id: quitAction;
         //: Quit action
-        text: qsTr("&Quit");
+        text: qsTr("Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
     }
@@ -67,20 +67,20 @@ Item {
     Action {
         id: preferencesAction;
         //: Preferences action
-        text: qsTr("&Preferences...");
+        text: qsTr("Preferences...");
         iconName: "configure";
     }
 
     Action {
         id: addMachineAction;
         //: Add Printer action
-        text: qsTr("&Add Printer...");
+        text: qsTr("Add Printer...");
     }
 
     Action {
         id: settingsAction;
         //: Configure Printers action
-        text: qsTr("&Configure Printers");
+        text: qsTr("Configure Printers");
         iconName: "configure";
     }
 
@@ -102,7 +102,7 @@ Item {
     Action {
         id: aboutAction;
         //: About action
-        text: qsTr("&About...");
+        text: qsTr("About...");
         iconName: "help-about";
     }
 
@@ -190,7 +190,7 @@ Item {
     Action {
         id: openAction;
         //: Open file action
-        text: qsTr("&Open...");
+        text: qsTr("Load file");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
@@ -198,7 +198,7 @@ Item {
     Action {
         id: saveAction;
         //: Save file action
-        text: qsTr("&Save...");
+        text: qsTr("Save...");
         iconName: "document-save";
         shortcut: StandardKey.Save;
     }
