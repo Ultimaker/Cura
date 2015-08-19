@@ -22,10 +22,13 @@ class ConvexHullNode(SceneNode):
         self._inherit_orientation = False
         self._inherit_scale = False
 
+        self._color = Color(35, 35, 35, 0.5)
+
         self._node = node
         self._node.transformationChanged.connect(self._onNodePositionChanged)
         self._node.parentChanged.connect(self._onNodeParentChanged)
-        #self._onNodePositionChanged(self._node)
+        self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
+        self._onNodeDecoratorsChanged(self._node)
 
         self._hull = hull
 
@@ -55,25 +58,32 @@ class ConvexHullNode(SceneNode):
         if not self._material:
             self._material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "color.frag"))
 
-            self._material.setUniformValue("u_color", Color(35, 35, 35, 128))
         if self.getParent():
+            self._material.setUniformValue("u_color", self._color)
             renderer.queueNode(self, material = self._material, transparent = True)
 
         return True
-    
 
     def _onNodePositionChanged(self, node):
-        #self.setPosition(node.getWorldPosition())
         if node.callDecoration("getConvexHull"): 
             node.callDecoration("setConvexHull", None)
             node.callDecoration("setConvexHullNode", None)
             self.setParent(None)
-
-        #self._node.transformationChanged.disconnect(self._onNodePositionChanged)
-        #self._node.parentChanged.disconnect(self._onNodeParentChanged)
 
     def _onNodeParentChanged(self, node):
         if node.getParent():
             self.setParent(self._original_parent)
         else:
             self.setParent(None)
+
+    def _onNodeDecoratorsChanged(self, node):
+        self._color = Color(35, 35, 35, 0.5)
+
+        if not node:
+            return
+
+        if node.hasDecoration("getProfile"):
+            self._color.setR(0.75)
+
+        if node.hasDecoration("getSetting"):
+            self._color.setG(0.75)
