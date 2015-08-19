@@ -19,8 +19,9 @@ Column
     property bool heater_works: false
     property int extruder_target_temp: 0
     property int bed_target_temp: 0
+    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
 
-    Component.onCompleted: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.startPollEndstop()
+    Component.onCompleted: printer_connection.startPollEndstop()
 
     Label
     {
@@ -88,7 +89,7 @@ Column
         }
         Label
         {
-            text: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature
+            text: printer_connection.extruderTemperature
         }
         Button
         {
@@ -96,7 +97,7 @@ Column
             onClicked:
             {
                 heater_status_label.text = qsTr("Checking")
-                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupNozzle(190)
+                printer_connection.heatupNozzle(190)
                 wizardPage.extruder_target_temp = 190
             }
         }
@@ -115,7 +116,7 @@ Column
         }
         Label
         {
-            text: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.bedTemperature
+            text: printer_connection.bedTemperature
         }
         Button
         {
@@ -123,7 +124,7 @@ Column
             onClicked:
             {
                 bed_status_label.text = qsTr("Checking")
-                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupBed(60)
+                printer_connection.printer.heatupBed(60)
                 wizardPage.bed_target_temp = 60
             }
         }
@@ -137,7 +138,7 @@ Column
 
     Connections
     {
-        target: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+        target: printer_connection
         onEndstopStateChanged:
         {
             if(key == "x_min")
@@ -155,18 +156,18 @@ Column
         }
         onExtruderTemperatureChanged:
         {
-            if(UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature > wizardPage.extruder_target_temp - 10 && UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature < wizardPage.extruder_target_temp + 10)
+            if(printer_connection.extruderTemperature > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperature < wizardPage.extruder_target_temp + 10)
             {
                 heater_status_label.text = qsTr("Works")
-                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupNozzle(0)
+                printer_connection.heatupNozzle(0)
             }
         }
         onBedTemperatureChanged:
         {
-            if(UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.bedTemperature > wizardPage.bed_target_temp - 5 && UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.bedTemperature < wizardPage.bed_target_temp + 5)
+            if(printer_connection.bedTemperature > wizardPage.bed_target_temp - 5 && printer_connection.bedTemperature < wizardPage.bed_target_temp + 5)
             {
                 bed_status_label.text = qsTr("Works")
-                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupBed(0)
+                printer_connection.heatupBed(0)
             }
         }
     }
