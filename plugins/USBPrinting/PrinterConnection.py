@@ -230,10 +230,15 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         Logger.log("i", "Updating firmware of %s using %s", self._serial_port, file_name)
         self._firmware_file_name = file_name
         self._update_firmware_thread.start()
+
     @pyqtSlot()
     def startPollEndstop(self):
         self._poll_endstop = True
         self._end_stop_thread.start()
+
+    @pyqtSlot()
+    def stopPollEndstop(self):
+        self._poll_endstop = False
 
     def _pollEndStop(self):
         while self._is_connected and self._poll_endstop:

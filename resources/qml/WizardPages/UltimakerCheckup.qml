@@ -22,6 +22,7 @@ Column
     property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
 
     Component.onCompleted: printer_connection.startPollEndstop()
+    Component.onDestruction: printer_connection.stopPollEndstop()
 
     Label
     {
