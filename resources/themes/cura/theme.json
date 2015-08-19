@@ -75,6 +75,10 @@
         "button_disabled": [245, 245, 245, 255],
         "button_tooltip_text": [35, 35, 35, 255],
 
+        "open_file_button": [0, 0, 0, 255],
+        "open_file_button_text": [255, 255, 255, 255],
+        "open_file_button_hover": [43, 45, 46, 255],
+
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [205, 202, 201, 255],
         "scrollbar_handle_hover": [174, 174, 174, 255],
@@ -139,6 +143,9 @@
         "logo": [9.5, 2.0],
         "toolbar_button": [2.0, 2.0],
         "toolbar_spacing": [1.0, 1.0],
+
+        "loadfile_button": [11.0, 2.4],
+        "loadfile_margin": [0.8, 0.4],
 
         "section": [22.0, 3.0],
         "section_icon": [2.14, 2.14],

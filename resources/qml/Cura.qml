@@ -239,17 +239,15 @@ UM.MainWindow {
 
             Button {
                 id: openFileButton;
-
-                iconSource: UM.Theme.icons.open;
-                style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
+                //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
+                style: UM.Theme.styles.open_file_button
                 tooltip: '';
                 anchors {
                     top: parent.top;
-                    topMargin: UM.Theme.sizes.window_margin.height;
+                    topMargin: UM.Theme.sizes.loadfile_margin.height
                     left: parent.left;
-                    leftMargin: UM.Theme.sizes.window_margin.width;
+                    leftMargin: UM.Theme.sizes.loadfile_margin.width
                 }
-
                 action: actions.open;
             }
 
