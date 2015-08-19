@@ -39,8 +39,8 @@ Please checkout [cura-build](https://github.com/Ultimaker/cura-build)
 
 Third party plugins
 -------------
-[Print time calculator](https://github.com/nallath/PrintCostCalculator)
-[Post processing plugin](https://github.com/nallath/PostProcessingPlugin)
+* [Print time calculator](https://github.com/nallath/PrintCostCalculator)
+* [Post processing plugin](https://github.com/nallath/PostProcessingPlugin)
 
 Making profiles for other printers
 ----------------------------------
