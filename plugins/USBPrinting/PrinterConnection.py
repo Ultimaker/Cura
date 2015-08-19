@@ -123,7 +123,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     extruderTemperatureChanged = pyqtSignal()
     bedTemperatureChanged = pyqtSignal()
 
-    endstopStateChanged = pyqtSignal(str,bool, arguments = ["key","state"])
+    endstopStateChanged = pyqtSignal(str ,bool, arguments = ["key","state"])
 
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
@@ -341,6 +341,14 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def isConnected(self):
         return self._is_connected 
 
+    @pyqtSlot(int)
+    def heatupNozzle(self, temperature):
+        self._sendCommand("M104 S%s" % temperature)
+
+    @pyqtSlot(int)
+    def heatupBed(self, temperature):
+        self._sendCommand("M109 S%s" % temperature)
+
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
     def _sendCommand(self, cmd):
@@ -458,6 +466,14 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
             if line is None: 
                 break # None is only returned when something went wrong. Stop listening
 
+            if time.time() > temperature_request_timeout: 
+                if self._extruder_count > 0:
+                    self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._extruder_count
+                    self.sendCommand("M105 T%d" % (self._temperature_requested_extruder_index))
+                else:
+                    self.sendCommand("M105")
+                temperature_request_timeout = time.time() + 5
+
             if line.startswith(b"Error:"):
                 # Oh YEAH, consistency.
                 # Marlin reports an MIN/MAX temp error as "Error:x\n: Extruder switched off. MAXTEMP triggered !\n"
@@ -487,14 +503,6 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                 self._setEndstopState(tag,(b'H' in value or b'TRIGGERED' in value))
 
             if self._is_printing:
-                if time.time() > temperature_request_timeout: # When printing, request temperature every 5 seconds.
-                    if self._extruder_count > 0:
-                        self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._extruder_count
-                        self.sendCommand("M105 T%d" % (self._temperature_requested_extruder_index))
-                    else:
-                        self.sendCommand("M105")
-                    temperature_request_timeout = time.time() + 5
-
                 if line == b"" and time.time() > ok_timeout:
                     line = b"ok" # Force a timeout (basicly, send next command)
 

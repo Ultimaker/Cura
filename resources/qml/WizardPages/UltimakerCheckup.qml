@@ -16,6 +16,8 @@ Column
     property bool x_min_pressed: false
     property bool y_min_pressed: false
     property bool z_min_pressed: false
+    property bool heater_works: false
+    property int extruder_target_temp: 0
 
     Component.onCompleted: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.startPollEndstop()
 
@@ -64,6 +66,7 @@ Column
             text: y_min_pressed ? qsTr("Works") : qsTr("Not checked")
         }
     }
+
     Row
     {
         Label
@@ -73,6 +76,34 @@ Column
         Label
         {
             text: z_min_pressed ? qsTr("Works") : qsTr("Not checked")
+        }
+    }
+
+    Row
+    {
+        Label
+        {
+            text: qsTr("Nozzle temperature check: ")
+        }
+        Label
+        {
+            text: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature
+        }
+        Button
+        {
+            text: "Start heating"
+            onClicked:
+            {
+                heater_status_label.text = qsTr("Checking")
+                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupNozzle(190)
+                wizardPage.extruder_target_temp = 190
+                console.log((UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature < wizardPage.extruder_target_temp + 10))
+            }
+        }
+        Label
+        {
+            id: heater_status_label
+            text: qsTr("Not checked")
         }
     }
 
@@ -93,6 +124,14 @@ Column
             if(key == "z_min")
             {
                 z_min_pressed = true
+            }
+        }
+        onExtruderTemperatureChanged:
+        {
+            if(UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature > wizardPage.extruder_target_temp - 10 && UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature < wizardPage.extruder_target_temp + 10)
+            {
+                heater_status_label.text = qsTr("Works")
+                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupNozzle(0)
             }
         }
     }
