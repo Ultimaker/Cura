@@ -347,7 +347,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     @pyqtSlot(int)
     def heatupBed(self, temperature):
-        self._sendCommand("M109 S%s" % temperature)
+        self._sendCommand("M140 S%s" % temperature)
 
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
@@ -466,7 +466,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
             if line is None: 
                 break # None is only returned when something went wrong. Stop listening
 
-            if time.time() > temperature_request_timeout: 
+            if time.time() > temperature_request_timeout:
                 if self._extruder_count > 0:
                     self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._extruder_count
                     self.sendCommand("M105 T%d" % (self._temperature_requested_extruder_index))

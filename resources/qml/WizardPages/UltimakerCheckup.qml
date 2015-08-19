@@ -18,6 +18,7 @@ Column
     property bool z_min_pressed: false
     property bool heater_works: false
     property int extruder_target_temp: 0
+    property int bed_target_temp: 0
 
     Component.onCompleted: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.startPollEndstop()
 
@@ -97,12 +98,38 @@ Column
                 heater_status_label.text = qsTr("Checking")
                 UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupNozzle(190)
                 wizardPage.extruder_target_temp = 190
-                console.log((UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.extruderTemperature < wizardPage.extruder_target_temp + 10))
             }
         }
         Label
         {
             id: heater_status_label
+            text: qsTr("Not checked")
+        }
+    }
+
+    Row
+    {
+        Label
+        {
+            text: qsTr("bed temperature check: ")
+        }
+        Label
+        {
+            text: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.bedTemperature
+        }
+        Button
+        {
+            text: "Start heating"
+            onClicked:
+            {
+                bed_status_label.text = qsTr("Checking")
+                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupBed(60)
+                wizardPage.bed_target_temp = 60
+            }
+        }
+        Label
+        {
+            id: bed_status_label
             text: qsTr("Not checked")
         }
     }
@@ -132,6 +159,14 @@ Column
             {
                 heater_status_label.text = qsTr("Works")
                 UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupNozzle(0)
+            }
+        }
+        onBedTemperatureChanged:
+        {
+            if(UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.bedTemperature > wizardPage.bed_target_temp - 5 && UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.bedTemperature < wizardPage.bed_target_temp + 5)
+            {
+                bed_status_label.text = qsTr("Works")
+                UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.heatupBed(0)
             }
         }
     }
