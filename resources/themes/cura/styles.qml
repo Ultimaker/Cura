@@ -45,9 +45,9 @@ QtObject {
                     height: parent.height
                     color: {
                         if(control.hovered) {
-                            return UM.Theme.colors.open_file_button_hover
+                            return UM.Theme.colors.load_save_button_hover
                         } else {
-                            return UM.Theme.colors.open_file_button
+                            return UM.Theme.colors.load_save_button
                         }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
@@ -55,7 +55,7 @@ QtObject {
                 Label {
                     anchors.centerIn: parent
                     text: control.text
-                    color: UM.Theme.colors.open_file_button_text
+                    color: UM.Theme.colors.load_save_button_text
                     font: UM.Theme.fonts.default
                 }
             }
@@ -68,7 +68,6 @@ QtObject {
     property Component tool_button: Component {
         ButtonStyle {
             background: Item {
-                ///////////TODO CHANGE SIZES!!
                 implicitWidth: UM.Theme.sizes.button.width;
                 implicitHeight: UM.Theme.sizes.button.height;
 
@@ -77,7 +76,6 @@ QtObject {
                     anchors.top: parent.verticalCenter;
 
                     width: parent.width;
-                    ///////////TODO CHANGE LABELHEIGHT!!
                     height: control.hovered ? parent.height / 2 + label.height : 0;
                     Behavior on height { NumberAnimation { duration: 100; } }
 
@@ -87,7 +85,7 @@ QtObject {
                     Label {
                         id: label
                         anchors.bottom: parent.bottom
-                        text: control.text.replace("&", "");
+                        text: control.text
                         font: UM.Theme.fonts.button_tooltip;
                         color: UM.Theme.colors.button_tooltip_text;
                     }
@@ -116,13 +114,90 @@ QtObject {
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     Label {
+                        id: tool_button_arrow
                         anchors.right: parent.right;
-                        anchors.rightMargin: UM.Theme.sizes.default_margin.width / 2;
+                        anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width - tool_button_arrow.width) / 2
                         anchors.verticalCenter: parent.verticalCenter;
                         text: "▼";
                         font: UM.Theme.fonts.small;
                         visible: control.menu != null;
-                        color: "white";
+                        color: UM.Theme.colors.button_text
+                    }
+                }
+            }
+
+            label: Item {
+                Image {
+                    anchors.centerIn: parent;
+
+                    source: control.iconSource;
+                    width: UM.Theme.sizes.button_icon.width;
+                    height: UM.Theme.sizes.button_icon.height;
+
+                    sourceSize: UM.Theme.sizes.button_icon;
+                }
+            }
+        }
+    }
+    property Component tool_button_panel: Component {
+        ButtonStyle {
+            background: Item {
+                implicitWidth: UM.Theme.sizes.button.width;
+                implicitHeight: UM.Theme.sizes.button.height;
+
+                Rectangle {
+                    id: tool_button_background
+                    anchors.top: parent.verticalCenter;
+
+                    width: parent.width;
+                    height: control.hovered ? parent.height / 2 + label.height : 0;
+                    Behavior on height { NumberAnimation { duration: 100; } }
+
+                    opacity: control.hovered ? 1.0 : 0.0;
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
+
+                    Label {
+                        id: label
+                        anchors.bottom: parent.bottom
+                        text: control.text
+                        width: UM.Theme.sizes.button.width;
+                        wrapMode: Text.WordWrap
+                        font: UM.Theme.fonts.button_tooltip;
+                        color: UM.Theme.colors.button_tooltip_text;
+                    }
+                }
+
+                Rectangle {
+                    id: buttonFace;
+
+                    anchors.fill: parent;
+
+                    property bool down: control.pressed || (control.checkable && control.checked);
+
+                    color: {
+                        if(!control.enabled) {
+                            return UM.Theme.colors.button_disabled;
+                        } else if(control.checkable && control.checked && control.hovered) {
+                            return UM.Theme.colors.button_active_hover;
+                        } else if(control.pressed || (control.checkable && control.checked)) {
+                            return UM.Theme.colors.button_active;
+                        } else if(control.hovered) {
+                            return UM.Theme.colors.button_hover;
+                        } else {
+                            return UM.Theme.colors.button;
+                        }
+                    }
+                    Behavior on color { ColorAnimation { duration: 50; } }
+
+                    Label {
+                        id: tool_button_arrow
+                        anchors.right: parent.right;
+                        anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width - tool_button_arrow.width) / 2
+                        anchors.verticalCenter: parent.verticalCenter;
+                        text: "▼";
+                        font: UM.Theme.fonts.small;
+                        visible: control.menu != null;
+                        color: UM.Theme.colors.button_text
                     }
                 }
             }
