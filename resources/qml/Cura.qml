@@ -212,11 +212,8 @@ UM.MainWindow {
 
             UM.MessageStack {
                 anchors {
-                    left: toolbar.right;
-                    leftMargin: UM.Theme.sizes.window_margin.width;
-                    right: sidebar.left;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
-                    top: parent.verticalCenter;
+                    horizontalCenter: parent.horizontalCenter
+                    horizontalCenterOffset: -(UM.Theme.sizes.logo.width/ 2)
                     bottom: parent.bottom;
                 }
             }
