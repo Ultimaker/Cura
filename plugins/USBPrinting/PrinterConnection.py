@@ -354,6 +354,15 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def heatupBed(self, temperature):
         self._sendCommand("M140 S%s" % temperature)
 
+    @pyqtSlot("long", "long","long")
+    def moveHead(self, x, y, z):
+        print("Moving head" , x , " ", y , " " , z)
+        self._sendCommand("G0 X%s Y%s Z%s"%(x,y,z))
+
+    @pyqtSlot()
+    def homeHead(self):
+       self._sendCommand("G28")
+
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
     def _sendCommand(self, cmd):

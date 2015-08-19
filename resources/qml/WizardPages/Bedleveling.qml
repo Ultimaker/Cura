@@ -8,62 +8,47 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
-ColumnLayout {
+Column
+{
     id: wizardPage
-    property string title
-    property int pageWidth
-    property int pageHeight
-
-    SystemPalette{id: palette}
-    //signal openFile(string fileName)
-    //signal closeWizard()
-
-    width: wizardPage.pageWidth
-    height: wizardPage.pageHeight
-
-    Connections {
-        target: elementRoot
-        onResize: {
-            wizardPage.width = pageWidth
-            wizardPage.height = pageHeight
-        }
+    property int leveling_state: 0
+    property bool three_point_leveling: true
+    property int platform_width: UM.Models.settingsModel.getMachineSetting("machine_width")
+    property int platform_height: UM.Models.settingsModel.getMachineSetting("machine_depth")
+    anchors.fill: parent;
+    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+    Component.onCompleted: printer_connection.homeHead()
+    Label
+    {
+        text: UM.Models.settingsModel.getItem(UM.Models.settingsModel.find("key", "machine_width")).toString()
+        //Component.onCompleted:console.log(UM.Models.settingsModel.getMachineSetting("machine_width"))
     }
-
-    Label {
-        text: parent.title
-        font.pointSize: 18;
-    }
-
-    Label {
-        //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
-    }
-
-    ScrollView {
-        Layout.fillWidth: true;
-
-        ListView {
-            id: machineList;
-            model: UM.Models.availableMachinesModel
-            delegate: RadioButton {
-                exclusiveGroup: printerGroup;
-                text: model.name;
-                onClicked: {
-                    ListView.view.currentIndex = index;
-
-                }
+    Button
+    {
+        text: "Move to next position"
+        onClicked:
+        {
+            if(wizardPage.leveling_state == 0)
+            {
+                printer_connection.moveHead(platform_width /2 , platform_height,0)
             }
+            if(wizardPage.leveling_state == 1)
+            {
+                printer_connection.moveHead(platform_width , 0,0)
+            }
+            if(wizardPage.leveling_state == 2)
+            {
+                printer_connection.moveHead(0, 0 ,0)
+            }
+
+            wizardPage.leveling_state++
+
         }
     }
 
-    Label {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
+    function threePointLeveling(width, height)
+    {
     }
 
-    TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
 
-    Item { Layout.fillWidth: true; Layout.fillHeight: true; }
-
-    ExclusiveGroup { id: printerGroup; }
 }
