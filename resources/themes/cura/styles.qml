@@ -188,17 +188,6 @@ QtObject {
                         }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
-
-                    Label {
-                        id: tool_button_arrow
-                        anchors.right: parent.right;
-                        anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width - tool_button_arrow.width) / 2
-                        anchors.verticalCenter: parent.verticalCenter;
-                        text: "▼";
-                        font: UM.Theme.fonts.small;
-                        visible: control.menu != null;
-                        color: UM.Theme.colors.button_text
-                    }
                 }
             }
 
