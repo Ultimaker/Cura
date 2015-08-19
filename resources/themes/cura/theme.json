@@ -3,52 +3,52 @@
         "large": {
             "size": 1.5,
             "bold": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "default": {
             "size": 1,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "default_allcaps": {
             "size": 1,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "small": {
             "size": 0.75,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "tiny": {
             "size": 0.5,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "caption": {
             "size": 0.75,
             "italic": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "sidebar_header": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "sidebar_save_to": {
             "size": 1.0,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "timeslider_time": {
             "size": 1.0,
             "bold": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "button_tooltip": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "setting_category": {
             "size": 1.5,
-            "family": "Roboto"
+            "family": "ProximaNova"
         }
     },
 
@@ -74,6 +74,10 @@
         "button_text": [255, 255, 255, 255],
         "button_disabled": [245, 245, 245, 255],
         "button_tooltip_text": [35, 35, 35, 255],
+
+        "open_file_button": [0, 0, 0, 255],
+        "open_file_button_text": [255, 255, 255, 255],
+        "open_file_button_hover": [43, 45, 46, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [205, 202, 201, 255],
@@ -139,6 +143,9 @@
         "logo": [9.5, 2.0],
         "toolbar_button": [2.0, 2.0],
         "toolbar_spacing": [1.0, 1.0],
+
+        "loadfile_button": [11.0, 2.4],
+        "loadfile_margin": [0.8, 0.4],
 
         "section": [22.0, 3.0],
         "section_icon": [2.14, 2.14],

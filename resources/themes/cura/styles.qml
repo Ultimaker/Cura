@@ -35,54 +35,32 @@ QtObject {
         }
     }
 
-     property Component open_file_button: Component {
+    property Component open_file_button: Component {
         ButtonStyle {
-            background: Item {
-                implicitWidth: UM.Theme.sizes.button.width;
-                implicitHeight: UM.Theme.sizes.button.height;
-
+            background: Item{
+                implicitWidth: UM.Theme.sizes.loadfile_button.width
+                implicitHeight: UM.Theme.sizes.loadfile_button.height
                 Rectangle {
-                    anchors.bottom: parent.verticalCenter;
-                    width: parent.width;
-                    height: control.hovered ? parent.height / 2 + label.height : 0;
-                    Behavior on height { NumberAnimation { duration: 100; } }
-
-                    opacity: control.hovered ? 1.0 : 0.0;
-                    Behavior on opacity { NumberAnimation { duration: 100; } }
-
-                    Label {
-                        id: label;
-                        anchors.horizontalCenter: parent.horizontalCenter;
-                        text: control.text.replace("&", "");
-                        font: UM.Theme.fonts.button_tooltip;
-                        color: UM.Theme.colors.button_tooltip_text;
-                    }
-                }
-
-                UM.AngledCornerRectangle {
-                    anchors.fill: parent;
+                    width: parent.width
+                    height: parent.height
                     color: {
                         if(control.hovered) {
-                            return UM.Theme.colors.button_active_hover;
+                            return UM.Theme.colors.open_file_button_hover
                         } else {
-                            return UM.Theme.colors.button_active;
+                            return UM.Theme.colors.open_file_button
                         }
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
-                    cornerSize: UM.Theme.sizes.default_margin.width;
+                }
+                Label {
+                    anchors.centerIn: parent
+                    text: control.text
+                    color: UM.Theme.colors.open_file_button_text
+                    font: UM.Theme.fonts.default
                 }
             }
-
-            label: Item {
-                Image {
-                    anchors.centerIn: parent;
-
-                    source: control.iconSource;
-                    width: UM.Theme.sizes.button_icon.width;
-                    height: UM.Theme.sizes.button_icon.height;
-
-                    sourceSize: UM.Theme.sizes.button_icon;
-                }
+            label: Label{
+                visible: false
             }
         }
     }
