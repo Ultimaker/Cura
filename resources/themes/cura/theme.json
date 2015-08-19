@@ -3,52 +3,52 @@
         "large": {
             "size": 1.5,
             "bold": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "default": {
             "size": 1,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "default_allcaps": {
             "size": 1,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "small": {
             "size": 0.75,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "tiny": {
             "size": 0.5,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "caption": {
             "size": 0.75,
             "italic": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "sidebar_header": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "sidebar_save_to": {
             "size": 1.0,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "timeslider_time": {
             "size": 1.0,
             "bold": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "button_tooltip": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "setting_category": {
             "size": 1.5,
-            "family": "Roboto"
+            "family": "ProximaNova"
         }
     },
 
