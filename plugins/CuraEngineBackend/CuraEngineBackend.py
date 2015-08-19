@@ -179,32 +179,11 @@ class CuraEngineBackend(Backend):
                 verts[:,1] *= -1
                 obj.vertices = verts.tostring()
 
-                if object.getDecorator(SettingOverrideDecorator):
-                    object_settings = object.callDecoration("getAllSettings")
-                    for key, value in object_settings.items():
-                        if key == "profile":
-                            for key, value in value.getChangedSettings().items():
-                                setting = obj.settings.add()
-                                setting.name = key
-                                setting.value = str(value).encode()
-                        else:
-                            setting = obj.settings.add()
-                            setting.name = key
-                            setting.value = str(value).encode()
+                self._handlePerObjectSettings(object, obj)
 
-            first = group[0]
-            if first.getDecorator(SettingOverrideDecorator):
-                object_settings = first.callDecoration("getAllSettings")
-                for key, value in object_settings.items():
-                    if key == "profile":
-                        for key, value in value.getChangedSettings().items():
-                            setting = group_message.settings.add()
-                            setting.name = key
-                            setting.value = str(value).encode()
-                    else:
-                        setting = group_message.settings.add()
-                        setting.name = key
-                        setting.value = str(value).encode()
+            # Hack to add per-object settings also to the "MeshGroup" in CuraEngine
+            # We really should come up with a better solution for this.
+            self._handlePerObjectSettings(group[0], group_message)
 
         self._scene.releaseLock()
         self._socket.sendMessage(slice_message)
@@ -306,3 +285,27 @@ class CuraEngineBackend(Backend):
                     job.start()
             else:
                 self._layer_view_active = False
+
+    def _handlePerObjectSettings(self, node, message):
+        profile = node.callDecoration("getProfile")
+        if profile:
+            for key, value in profile.getChangedSettings().items():
+                setting = message.settings.add()
+                setting.name = key
+                setting.value = str(value).encode()
+
+        object_settings = node.callDecoration("getAllSettings")
+        if not object_settings:
+            return
+
+        for key, value in object_settings.items():
+            setting = message.settings.add()
+            setting.name = key
+            setting.value = str(value.getValue()).encode()
+
+            for child in value.getAllChildren():
+                setting = message.settings.add()
+                setting.name = child.getKey()
+                setting.value = str(child.getValue()).encode()
+
+
