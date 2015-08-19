@@ -236,7 +236,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._poll_endstop = True
         self._end_stop_thread.start()
 
-    @pyqtSLot()
+    @pyqtSlot()
     def stopPollEndstop(self):
         self._poll_endstop = False
 
