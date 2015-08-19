@@ -13,6 +13,11 @@ Column
     id: wizardPage
     property string title
     anchors.fill: parent;
+    property bool x_min_pressed: false
+    property bool y_min_pressed: false
+    property bool z_min_pressed: false
+
+    Component.onCompleted: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer.startPollEndstop()
 
     Label
     {
@@ -23,44 +28,73 @@ Column
     Label
     {
         //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
+        text: qsTr("It's a good idea to do a few sanity checks on your Ultimaker. \n You can skip these if you know your machine is functional");
     }
 
-    ScrollView
+    Row
     {
-        height: parent.height - 50
-        width: parent.width
-        ListView
+        Label
         {
-            id: machineList;
-            model: UM.Models.availableMachinesModel
-            delegate: RadioButton
-            {
-                exclusiveGroup: printerGroup;
-                text: model.name;
-                onClicked:
-                {
-                    ListView.view.currentIndex = index;
-                }
-            }
+            text: qsTr("Connection: ")
+        }
+        Label
+        {
+            text: UM.USBPrinterManager.connectedPrinterList.count ? "Done":"Incomplete"
+        }
+    }
+    Row
+    {
+        Label
+        {
+            text: qsTr("Min endstop X: ")
+        }
+        Label
+        {
+            text: x_min_pressed ? qsTr("Works") : qsTr("Not checked")
+        }
+    }
+    Row
+    {
+        Label
+        {
+            text: qsTr("Min endstop Y: ")
+        }
+        Label
+        {
+            text: y_min_pressed ? qsTr("Works") : qsTr("Not checked")
+        }
+    }
+    Row
+    {
+        Label
+        {
+            text: qsTr("Min endstop Z: ")
+        }
+        Label
+        {
+            text: z_min_pressed ? qsTr("Works") : qsTr("Not checked")
         }
     }
 
-    Label
-    {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
-    }
 
-    TextField
+    Connections
     {
-        id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name
-    }
-
-    Item
-    {
-        Layout.fillWidth: true;
-        Layout.fillHeight: true;
+        target: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+        onEndstopStateChanged:
+        {
+            if(key == "x_min")
+            {
+                x_min_pressed = true
+            }
+            if(key == "y_min")
+            {
+                y_min_pressed = true
+            }
+            if(key == "z_min")
+            {
+                z_min_pressed = true
+            }
+        }
     }
 
     ExclusiveGroup

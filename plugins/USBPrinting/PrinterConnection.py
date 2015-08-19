@@ -44,6 +44,9 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._connect_thread = threading.Thread(target = self._connect)
         self._connect_thread.daemon = True
 
+        self._end_stop_thread = threading.Thread(target = self._pollEndStop)
+        self._end_stop_thread.deamon = True
+
         # Printer is connected
         self._is_connected = False
 
@@ -52,7 +55,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         # The baud checking is done by sending a number of m105 commands to the printer and waiting for a readable
         # response. If the baudrate is correct, this should make sense, else we get giberish.
-        self._required_responses_auto_baud = 10
+        self._required_responses_auto_baud = 3
 
         self._progress = 0
 
@@ -97,6 +100,14 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         # Current Z stage location 
         self._current_z = 0
 
+        self._x_min_endstop_pressed = False
+        self._y_min_endstop_pressed = False
+        self._z_min_endstop_pressed = False
+
+        self._x_max_endstop_pressed = False
+        self._y_max_endstop_pressed = False
+        self._z_max_endstop_pressed = False
+
         # In order to keep the connection alive we request the temperature every so often from a different extruder.
         # This index is the extruder we requested data from the last time.
         self._temperature_requested_extruder_index = 0 
@@ -111,6 +122,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     progressChanged = pyqtSignal()
     extruderTemperatureChanged = pyqtSignal()
     bedTemperatureChanged = pyqtSignal()
+
+    endstopStateChanged = pyqtSignal(str,bool, arguments = ["key","state"])
 
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
@@ -215,6 +228,15 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         Logger.log("i", "Updating firmware of %s using %s", self._serial_port, file_name)
         self._firmware_file_name = file_name
         self._update_firmware_thread.start()
+    @pyqtSlot()
+    def startPollEndstop(self):
+        self._poll_endstop = True
+        self._end_stop_thread.start()
+
+    def _pollEndStop(self):
+        while self._is_connected and self._poll_endstop:
+            self.sendCommand("M119")
+            time.sleep(0.5)
 
     ##  Private connect function run by thread. Can be started by calling connect.
     def _connect(self):
@@ -402,6 +424,20 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def requestWrite(self, node):
         self.showControlInterface()
 
+    def _setEndstopState(self, endstop_key, value):
+        if endstop_key == b'x_min':
+            if self._x_min_endstop_pressed != value:
+                self.endstopStateChanged.emit('x_min', value)
+            self._x_min_endstop_pressed = value
+        elif endstop_key == b'y_min':
+            if self._y_min_endstop_pressed != value:
+                self.endstopStateChanged.emit('y_min', value)
+            self._y_min_endstop_pressed = value
+        elif endstop_key == b'z_min':
+            if self._z_min_endstop_pressed != value:
+                self.endstopStateChanged.emit('z_min', value)
+            self._z_min_endstop_pressed = value
+
     ##  Listen thread function. 
     def _listen(self):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
@@ -437,6 +473,9 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                     except Exception as e:
                         pass
                 #TODO: temperature changed callback
+            elif b"_min" in line or b"_max" in line:
+                tag, value = line.split(b':', 1)
+                self._setEndstopState(tag,(b'H' in value or b'TRIGGERED' in value))
 
             if self._is_printing:
                 if time.time() > temperature_request_timeout: # When printing, request temperature every 5 seconds.

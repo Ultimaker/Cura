@@ -18,12 +18,6 @@ Column
         text: parent.title
         font.pointSize: 18;
     }
-    
-    Label
-    {
-        //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
-    }
 
     ScrollView
     {
