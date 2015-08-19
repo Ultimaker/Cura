@@ -63,8 +63,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._listen_thread.daemon = True
 
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
-        self._update_firmware_thread.demon = True
-
+        self._update_firmware_thread.deamon = True
+        
         self._heatup_wait_start_time = time.time()
 
         ## Queue for commands that need to be send. Used when command is sent when a print is active.
@@ -222,6 +222,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         self.setProgress(100, 100)
 
+        self.firmwareUpdateComplete.emit()
+
     ##  Upload new firmware to machine
     #   \param filename full path of firmware file to be uploaded
     def updateFirmware(self, file_name):
@@ -277,15 +279,17 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                 if line is None:
                     self.setIsConnected(False) # Something went wrong with reading, could be that close was called.
                     return
+                
                 if b"T:" in line:
                     self._serial.timeout = 0.5
-                    self._sendCommand("M105")
                     sucesfull_responses += 1
                     if sucesfull_responses >= self._required_responses_auto_baud:
                         self._serial.timeout = 2 #Reset serial timeout
                         self.setIsConnected(True)
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
                         return 
+
+                self._sendCommand("M105") # Send M105 as long as we are listening, otherwise we end up in an undefined state
 
         Logger.log("e", "Baud rate detection for %s failed", self._serial_port)
         self.close() # Unable to connect, wrap up.
@@ -319,6 +323,9 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
             except Exception as e:
                 pass # This should work, but it does fail sometimes for some reason
 
+        self._connect_thread = threading.Thread(target=self._connect)
+        self._connect_thread.daemon = True
+        
         if self._serial is not None:
             self.setIsConnected(False)
             try:
@@ -327,6 +334,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                 pass
             self._serial.close()
 
+        self._listen_thread = threading.Thread(target=self._listen)
+        self._listen_thread.daemon = True
         self._serial = None
 
     def isConnected(self):
@@ -579,3 +588,10 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def _getBaudrateList(self):
         ret = [250000, 230400, 115200, 57600, 38400, 19200, 9600]
         return ret
+
+    def _onFirmwareUpdateComplete(self):
+        self._update_firmware_thread.join()
+        self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
+        self._update_firmware_thread.deamon = True
+
+        self.connect()

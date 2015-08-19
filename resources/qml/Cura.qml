@@ -481,7 +481,6 @@ UM.MainWindow {
         onAccepted:
         {
             UM.MeshFileHandler.readLocalFile(fileUrl)
-            Printer.setPlatformActivity(true)
         }
     }
 
