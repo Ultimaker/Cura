@@ -66,18 +66,19 @@
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
 
-        "button": [160, 163, 171, 255],
-        "button_hover": [140, 144, 154, 255],
+        "button": [139, 143, 153, 255],
+        "button_hover": [116, 120, 127, 255],
         "button_active": [12, 169, 227, 255],
-        "button_active_hover": [34, 150, 199, 255],
-        "button_lining": [140, 144, 154, 255],
+        "button_active_hover": [77, 184, 226, 255],
+        "button_lining": [208, 210, 211, 255],
         "button_text": [255, 255, 255, 255],
         "button_disabled": [245, 245, 245, 255],
         "button_tooltip_text": [35, 35, 35, 255],
 
-        "open_file_button": [0, 0, 0, 255],
-        "open_file_button_text": [255, 255, 255, 255],
-        "open_file_button_hover": [43, 45, 46, 255],
+        "load_save_button": [0, 0, 0, 255],
+        "load_save_button_text": [255, 255, 255, 255],
+        "load_save_button_hover": [43, 45, 46, 255],
+        "load_save_button_active": [43, 45, 46, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [205, 202, 201, 255],
@@ -139,6 +140,7 @@
     "sizes": {
         "window_margin": [2.0, 2.0],
         "default_margin": [1.0, 1.0],
+        "default_lining": [0.1, 0.1],
         "panel": [22.0, 10.0],
         "logo": [9.5, 2.0],
         "toolbar_button": [2.0, 2.0],
@@ -160,8 +162,8 @@
         "standard_list_lineheight": [1.5, 1.5],
         "standard_list_input": [20.0, 25.0],
 
-        "button": [4.25, 4.25],
-        "button_icon": [2.9, 2.9],
+        "button": [3.2, 3.2],
+        "button_icon": [2.5, 2.5],
 
         "progressbar": [26.0, 0.5],
         "progressbar_control": [8.0, 0.5],
