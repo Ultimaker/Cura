@@ -12,6 +12,8 @@ from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
 from UM.Scene.Selection import Selection
+from UM.Preferences import Preferences
+
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
 from . import PlatformPhysicsOperation
@@ -36,6 +38,8 @@ class PlatformPhysics:
         self._change_timer.setInterval(100)
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._onChangeTimerFinished)
+
+        Preferences.getInstance().addPreference("physics/automatic_push_free", True)
 
     def _onSceneChanged(self, source):
         self._change_timer.start()
@@ -82,7 +86,7 @@ class PlatformPhysics:
 
             elif Selection.isSelected(node):
                 pass
-            else:
+            elif Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
