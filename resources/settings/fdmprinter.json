@@ -28,21 +28,6 @@
         "machine_center_is_zero": {
             "default": false
         },
-        "machine_head_shape_min_x": {
-            "default": 40
-        },
-        "machine_head_shape_min_y": {
-            "default": 10
-        },
-        "machine_head_shape_max_x": {
-            "default": 60
-        },
-        "machine_head_shape_max_y": {
-            "default": 30
-        },
-        "machine_nozzle_gantry_distance": {
-            "default": 55
-        },
         "machine_extruder_count": {
             "default": 1
         },
