@@ -12,7 +12,6 @@ import UM 1.1 as UM
 UM.MainWindow {
     id: base
     visible: true
-
     //: Cura application window title
     title: qsTr("Cura");
 
@@ -425,6 +424,8 @@ UM.MainWindow {
         reportBug.onTriggered: CuraActions.openBugReportPage();
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
+        toggleFullScreen.onTriggered: base.toggleFullscreen()
+
     }
 
     Menu {

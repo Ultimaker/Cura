@@ -40,6 +40,14 @@ Item {
     property alias reportBug: reportBugAction;
     property alias about: aboutAction;
 
+    property alias toggleFullScreen: toggleFullScreenAction;
+
+    Action
+    {
+        id:toggleFullScreenAction
+        shortcut: StandardKey.FullScreen;
+    }
+
     Action {
         id: undoAction;
         //: Undo action
