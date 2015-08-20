@@ -20,7 +20,7 @@ Column
     Component.onCompleted: printer_connection.homeHead()
     Label
     {
-        text: UM.Models.settingsModel.getItem(UM.Models.settingsModel.find("key", "machine_width")).toString()
+        text: ""
         //Component.onCompleted:console.log(UM.Models.settingsModel.getMachineSetting("machine_width"))
     }
     Button
