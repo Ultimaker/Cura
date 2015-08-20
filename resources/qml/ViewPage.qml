@@ -67,7 +67,7 @@ UM.PreferencesPage
 
             //: Display Overhang preference checkbox
             text: qsTr("Center camera when item is selected");
-            onClicked: overhangCheckbox.checked = !overhangCheckbox.checked
+            onClicked: centerCheckbox.checked = !centerCheckbox.checked
 
             //: Display Overhang preference tooltip
             tooltip: "Moves the camera so the object is in the center of the view when an object is selected"
