@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
 import UM 1.0 as UM
+import Cura 1.0 as Cura
 
 UM.Wizard
 {
@@ -15,7 +16,7 @@ UM.Wizard
     wizardPages: [
         {
             title: "Add Printer",
-            page: "AddMachine.qml"
+            page: UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/AddMachine.qml")
         }
     ]
 
