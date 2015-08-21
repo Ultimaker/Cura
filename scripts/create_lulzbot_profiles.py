@@ -69,14 +69,16 @@ material_order = {
 }
 
 profile_map = {
-    'high-quality': 'Fine',
-    'medium-quality': 'Normal',
-    'high-speed': 'Fast',
+	'medium-quality': 'Standard',
+	'high-quality': 'High Detail',
+	'high-speed': 'High Speed',
+    #High Clarity
+    #High Strength
 }
 
 profile_order = {
-    'high-quality': 0,
-    'medium-quality': 1,
+    'medium-quality': 0,
+    'high-quality': 1,
     'high-speed': 2,
 }
 
