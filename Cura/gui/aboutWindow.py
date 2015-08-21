@@ -35,7 +35,7 @@ class aboutWindow(wx.Frame):
 
 		s.Add(wx.StaticText(p, -1, 'Release notes:'))
 		url = "code.alephobjects.com/w/cura/release-notes/"
-		s.Add(wx.HyperlinkCtrl(p, -1, url))
+		s.Add(wx.HyperlinkCtrl(p, -1, url=url))
 
 		s.Add(wx.StaticText(p, -1, ''))
 		s.Add(wx.StaticText(p, -1, 'End solution for Open Source Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
