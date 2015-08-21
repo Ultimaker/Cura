@@ -38,11 +38,7 @@ from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
 
-<<<<<<< HEAD
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, Q_ENUMS
-=======
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent
->>>>>>> 3cb3cce31c821a56d2395607a90b51030fdf0916
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
 
 import platform
