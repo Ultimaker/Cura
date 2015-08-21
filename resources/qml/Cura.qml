@@ -12,7 +12,6 @@ import UM 1.1 as UM
 UM.MainWindow {
     id: base
     visible: true
-
     //: Cura application window title
     title: qsTr("Cura");
 
@@ -345,8 +344,15 @@ UM.MainWindow {
         id: preferences
 
         Component.onCompleted: {
+            //; Remove & re-add the general page as we want to use our own instead of uranium standard.
+            removePage(0);
+            insertPage(0, qsTr("General") , "" , Qt.resolvedUrl("./GeneralPage.qml"));
+
             //: View preferences page title
             insertPage(1, qsTr("View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
+
+            //Force refresh
+            setPage(0)
         }
     }
 
@@ -419,6 +425,8 @@ UM.MainWindow {
         reportBug.onTriggered: CuraActions.openBugReportPage();
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
+        toggleFullScreen.onTriggered: base.toggleFullscreen()
+
     }
 
     Menu {

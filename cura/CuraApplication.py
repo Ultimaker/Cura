@@ -85,6 +85,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
+        Preferences.getInstance().addPreference("view/center_on_select", True)
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
@@ -202,10 +203,10 @@ class CuraApplication(QtApplication):
                     self._previous_active_tool = None
                 else:
                     self.getController().setActiveTool("TranslateTool")
-
-            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
-            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
-            self._camera_animation.start()
+            if Preferences.getInstance().getValue("view/center_on_select"):
+                self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
+                self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
+                self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()

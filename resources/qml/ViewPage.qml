@@ -8,7 +8,8 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.0 as UM
 
-UM.PreferencesPage {
+UM.PreferencesPage
+{
     id: preferencesPage
 
     //: View configuration page title
@@ -17,22 +18,26 @@ UM.PreferencesPage {
     function reset()
     {
         UM.Preferences.resetPreference("view/show_overhang");
+        UM.Preferences.resetPreferences("view/center_on_select");
     }
 
-    GridLayout {
+    GridLayout
+    {
         columns: 2;
 
-        CheckBox {
-            id: viewCheckbox
+        CheckBox
+        {
+            id: overhangCheckbox
             checked: UM.Preferences.getValue("view/show_overhang")
             onCheckedChanged: UM.Preferences.setValue("view/show_overhang", checked)
         }
-        Button {
+        Button
+        {
             id: viewText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
             text: qsTr("Display Overhang");
-            onClicked: viewCheckbox.checked = !viewCheckbox.checked
+            onClicked: overhangCheckbox.checked = !overhangCheckbox.checked
 
             //: Display Overhang preference tooltip
             tooltip: "Highlight unsupported areas of the model in red. Without support these areas will nog print properly."
@@ -43,6 +48,39 @@ UM.PreferencesPage {
                     color: "transparent"
                 }
                 label: Text {
+                    renderType: Text.NativeRendering
+                    horizontalAlignment: Text.AlignLeft
+                    text: control.text
+                }
+            }
+        }
+
+        CheckBox
+        {
+            id: centerCheckbox
+            checked: UM.Preferences.getValue("view/center_on_select")
+            onCheckedChanged: UM.Preferences.setValue("view/center_on_select", checked)
+        }
+        Button
+        {
+            id: centerText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
+
+            //: Display Overhang preference checkbox
+            text: qsTr("Center camera when item is selected");
+            onClicked: centerCheckbox.checked = !centerCheckbox.checked
+
+            //: Display Overhang preference tooltip
+            tooltip: "Moves the camera so the object is in the center of the view when an object is selected"
+
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
+                    border.width: 0
+                    color: "transparent"
+                }
+                label: Text
+                {
                     renderType: Text.NativeRendering
                     horizontalAlignment: Text.AlignLeft
                     text: control.text
