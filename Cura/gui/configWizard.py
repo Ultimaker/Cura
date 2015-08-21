@@ -1394,7 +1394,8 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 					   "and ultimately makes your printer work."))
 		self.AddHiddenSeperator()
 		self.AddText(_("When changing tool heads it is neccesary to update the firmware.\n" +
-					   "Please disconnect all 3D printers except for the one you are currently configuring."))
+					   "Please connect (with a USB cable) the printer you are currently configuring and power it on.\n" +
+					   "Disconnecting all other 3D printers helps reduce confusion."))
 		self.AddHiddenSeperator()
 		upgradeButton, skipUpgradeButton = self.AddDualButton(_('Flash the firmware'), _('Skip upgrade'))
 		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
