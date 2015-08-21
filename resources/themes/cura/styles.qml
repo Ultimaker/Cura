@@ -43,13 +43,7 @@ QtObject {
                 Rectangle {
                     width: parent.width
                     height: parent.height
-                    color: {
-                        if(control.hovered) {
-                            return UM.Theme.colors.load_save_button_hover
-                        } else {
-                            return UM.Theme.colors.load_save_button
-                        }
-                    }
+                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                 }
                 Label {
@@ -208,30 +202,29 @@ QtObject {
 
     property Component progressbar: Component{
         ProgressBarStyle {
-            background: UM.AngledCornerRectangle {
-                cornerSize: UM.Theme.sizes.progressbar_control.height
-                implicitWidth: UM.Theme.sizes.progressbar.width
+            background:Rectangle {
+                implicitWidth: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2)
                 implicitHeight: UM.Theme.sizes.progressbar.height
+                x: UM.Theme.sizes.default_margin.width
                 color: UM.Theme.colors.progressbar_background
             }
-            progress: UM.AngledCornerRectangle {
-                cornerSize: UM.Theme.sizes.progressbar_control.height
+            progress: Rectangle {
                 color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
 
-                UM.AngledCornerRectangle {
-                    cornerSize: UM.Theme.sizes.progressbar_control.height
+                Rectangle{
                     color: UM.Theme.colors.progressbar_control
                     width: UM.Theme.sizes.progressbar_control.width
                     height: UM.Theme.sizes.progressbar_control.height
+                    x: UM.Theme.sizes.default_margin.width
                     visible: control.indeterminate
 
                     SequentialAnimation on x {
                         id: xAnim
-                        property int animEndPoint: UM.Theme.sizes.progressbar.width - UM.Theme.sizes.progressbar_control.width
+                        property int animEndPoint: UM.Theme.sizes.message.width - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.progressbar_control.width
                         running: control.indeterminate
                         loops: Animation.Infinite
-                        NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
-                        NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
+                        NumberAnimation { from: UM.Theme.sizes.default_margin.width; to: xAnim.animEndPoint; duration: 2000;}
+                        NumberAnimation { from: xAnim.animEndPoint; to: UM.Theme.sizes.default_margin.width; duration: 2000;}
                     }
                 }
             }

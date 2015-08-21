@@ -214,6 +214,7 @@ UM.MainWindow {
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     horizontalCenterOffset: -(UM.Theme.sizes.logo.width/ 2)
+                    top: parent.verticalCenter;
                     bottom: parent.bottom;
                 }
             }

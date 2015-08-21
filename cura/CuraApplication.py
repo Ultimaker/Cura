@@ -116,6 +116,11 @@ class CuraApplication(QtApplication):
     def run(self):
         self._i18n_catalog = i18nCatalog("cura");
 
+        i18nCatalog.setTagReplacements({
+            "filename": "font color=\"black\"",
+            "message": "font color=UM.Theme.colors.message_text;",
+        })
+
         self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
 
         controller = self.getController()

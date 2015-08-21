@@ -103,7 +103,7 @@
         "setting_validation_warning": [255, 186, 15, 255],
         "setting_validation_ok": [255, 255, 255, 255],
 
-        "progressbar_background": [245, 245, 245, 255],
+        "progressbar_background": [208, 210, 211, 255],
         "progressbar_control": [12, 169, 227, 255],
 
         "slider_groove": [245, 245, 245, 255],
@@ -131,8 +131,8 @@
         "save_button_printtime_text": [12, 169, 227, 255],
         "save_button_background": [249, 249, 249, 255],
 
-        "message": [160, 163, 171, 255],
-        "message_text": [35, 35, 35, 255],
+        "message_background": [255, 255, 255, 255],
+        "message_text": [12, 169, 227, 255],
 
         "tool_panel_background": [255, 255, 255, 255]
     },
@@ -165,8 +165,8 @@
         "button": [3.2, 3.2],
         "button_icon": [2.5, 2.5],
 
-        "progressbar": [26.0, 0.5],
-        "progressbar_control": [8.0, 0.5],
+        "progressbar": [26.0, 0.8],
+        "progressbar_control": [8.0, 0.8],
         "progressbar_padding": [0.0, 1.0],
 
         "scrollbar": [0.5, 0.5],
@@ -193,6 +193,7 @@
         "wizard_progress": [10.0, 0.0],
 
         "message": [30.0, 5.0],
-        "message_close": [1.25, 1.25]
+        "message_close": [1.25, 1.25],
+        "message_button": [6.0, 1.8]
     }
 }
