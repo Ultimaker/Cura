@@ -3,47 +3,52 @@
         "large": {
             "size": 1.5,
             "bold": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "default": {
             "size": 1,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "default_allcaps": {
             "size": 1,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "small": {
             "size": 0.75,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "tiny": {
             "size": 0.5,
-            "family": "Roboto"
+            "family": "ProximaNova"
+        },
+        "caption": {
+            "size": 0.75,
+            "italic": true,
+            "family": "ProximaNova"
         },
         "sidebar_header": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "sidebar_save_to": {
             "size": 1.0,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "timeslider_time": {
             "size": 1.0,
             "bold": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "button_tooltip": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "ProximaNova"
         },
         "setting_category": {
             "size": 1.5,
-            "family": "Roboto"
+            "family": "ProximaNova"
         }
     },
 
@@ -61,13 +66,19 @@
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
 
-        "button": [160, 163, 171, 255],
-        "button_hover": [140, 144, 154, 255],
+        "button": [139, 143, 153, 255],
+        "button_hover": [116, 120, 127, 255],
         "button_active": [12, 169, 227, 255],
-        "button_active_hover": [34, 150, 199, 255],
+        "button_active_hover": [77, 184, 226, 255],
+        "button_lining": [208, 210, 211, 255],
         "button_text": [255, 255, 255, 255],
         "button_disabled": [245, 245, 245, 255],
         "button_tooltip_text": [35, 35, 35, 255],
+
+        "load_save_button": [0, 0, 0, 255],
+        "load_save_button_text": [255, 255, 255, 255],
+        "load_save_button_hover": [43, 45, 46, 255],
+        "load_save_button_active": [43, 45, 46, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [205, 202, 201, 255],
@@ -92,7 +103,7 @@
         "setting_validation_warning": [255, 186, 15, 255],
         "setting_validation_ok": [255, 255, 255, 255],
 
-        "progressbar_background": [245, 245, 245, 255],
+        "progressbar_background": [208, 210, 211, 255],
         "progressbar_control": [12, 169, 227, 255],
 
         "slider_groove": [245, 245, 245, 255],
@@ -120,8 +131,8 @@
         "save_button_printtime_text": [12, 169, 227, 255],
         "save_button_background": [249, 249, 249, 255],
 
-        "message": [205, 202, 201, 255],
-        "message_text": [35, 35, 35, 255],
+        "message_background": [255, 255, 255, 255],
+        "message_text": [12, 169, 227, 255],
 
         "tool_panel_background": [255, 255, 255, 255]
     },
@@ -129,10 +140,14 @@
     "sizes": {
         "window_margin": [2.0, 2.0],
         "default_margin": [1.0, 1.0],
+        "default_lining": [0.1, 0.1],
         "panel": [22.0, 10.0],
         "logo": [9.5, 2.0],
         "toolbar_button": [2.0, 2.0],
         "toolbar_spacing": [1.0, 1.0],
+
+        "loadfile_button": [11.0, 2.4],
+        "loadfile_margin": [0.8, 0.4],
 
         "section": [22.0, 3.0],
         "section_icon": [2.14, 2.14],
@@ -144,11 +159,14 @@
         "setting_unit_margin": [0.5, 0.5],
         "setting_text_maxwidth": [40.0, 0.0],
 
-        "button": [4.25, 4.25],
-        "button_icon": [2.9, 2.9],
+        "standard_list_lineheight": [1.5, 1.5],
+        "standard_list_input": [20.0, 25.0],
 
-        "progressbar": [26.0, 0.5],
-        "progressbar_control": [8.0, 0.5],
+        "button": [3.2, 3.2],
+        "button_icon": [2.5, 2.5],
+
+        "progressbar": [26.0, 0.8],
+        "progressbar_control": [8.0, 0.8],
         "progressbar_padding": [0.0, 1.0],
 
         "scrollbar": [0.5, 0.5],
@@ -171,7 +189,11 @@
         "save_button_label_margin": [0.5, 0.5],
         "save_button_save_to_button": [0.3, 2.7],
 
+        "modal_window_minimum": [30.0, 30.0],
+        "wizard_progress": [10.0, 0.0],
+
         "message": [30.0, 5.0],
-        "message_close": [1.25, 1.25]
+        "message_close": [1.25, 1.25],
+        "message_button": [6.0, 1.8]
     }
 }

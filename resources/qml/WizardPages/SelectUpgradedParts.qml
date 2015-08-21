@@ -8,45 +8,76 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
-ColumnLayout {
+Item
+{
+    id: wizardPage
     property string title
-    anchors.fill: parent;
 
-    Label {
-        text: parent.title
-        font.pointSize: 18;
-    }
+    SystemPalette{id: palette}
 
-    Label {
-        //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
-    }
+    ScrollView
+    {
+        height: parent.height
+        width: parent.width
+        Column
+        {
+            width: wizardPage.width
+            Label
+            {
+                id: pageTitle
+                width: parent.width
+                text: wizardPage.title
+                wrapMode: Text.WordWrap
+                font.pointSize: 18
+            }
+            Label
+            {
+                id: pageDescription
+                //: Add UM Original wizard page description
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: qsTr("To assist you in having better default settings for your Ultimaker. Cura would like to know which upgrades you have in your machine:")
+            }
 
-    ScrollView {
-        Layout.fillWidth: true;
+            Column
+            {
+                id: pageCheckboxes
+                width: parent.width
 
-        ListView {
-            id: machineList;
-            model: UM.Models.availableMachinesModel
-            delegate: RadioButton {
-                exclusiveGroup: printerGroup;
-                text: model.name;
-                onClicked: {
-                    ListView.view.currentIndex = index;
-
+                CheckBox
+                {
+                    text: qsTr("Extruder driver ugrades")
                 }
+                CheckBox
+                {
+                    text: qsTr("Heated printer bed (kit)")
+                }
+                CheckBox
+                {
+                    text: qsTr("Heated printer bed (self built)")
+                }
+                CheckBox
+                {
+                    text: qsTr("Dual extrusion (experimental)")
+                    checked: true
+                }
+            }
+
+            Label
+            {
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: qsTr("If you have an Ultimaker bought after october 2012 you will have the Extruder drive upgrade. If you do not have this upgrade, it is highly recommended to improve reliability.");
+            }
+
+            Label
+            {
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: qsTr("This upgrade can be bought from the Ultimaker webshop or found on thingiverse as thing:26094");
             }
         }
     }
-
-    Label {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
-    }
-
-    TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
-
-    Item { Layout.fillWidth: true; Layout.fillHeight: true; }
 
     ExclusiveGroup { id: printerGroup; }
 }

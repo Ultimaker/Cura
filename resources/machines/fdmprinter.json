@@ -6,7 +6,7 @@
     "author": "Ultimaker B.V.",
     "manufacturer": "Ultimaker",
 
-    "add_pages": [{"page": "AddMachine", "title": "Add new printer"}],
+    "add_pages": [],
 
     "machine_settings": {
         "machine_start_gcode": {
@@ -30,78 +30,14 @@
         "machine_center_is_zero": {
             "default": false
         },
-        "machine_head_shape_min_x": {
-            "default": 40
-        },
-        "machine_head_shape_min_y": {
-            "default": 10
-        },
-        "machine_head_shape_max_x": {
-            "default": 60
-        },
-        "machine_head_shape_max_y": {
-            "default": 30
-        },
-        "machine_nozzle_gantry_distance": {
-            "default": 55
-        },
         "machine_extruder_count": {
             "default": 1
         },
-        "machine_extruder_trains": {
-            "default": [
-                {
-                    "extruder_nr": {
-                        "label": "Extruder",
-                        "description": "The extruder train used for printing. This is used in multi-extrusion.",
-                        "type": "int",
-                        "default": 0,
-                        "min_value": 0,
-                        "max_value": 16,
-                        "inherit_function": "extruder_nr"
-                    },
-                    "machine_nozzle_offset_x": {
-                        "default": 0
-                    },
-                    "machine_nozzle_offset_y": {
-                        "default": 0
-                    },
-                    "machine_nozzle_size": {
-                        "default": 0.4
-                    },
-                    "machine_nozzle_tip_outer_diameter": {
-                        "default": 1
-                    },
-                    "machine_nozzle_head_distance": {
-                        "default": 3
-                    },
-                    "machine_nozzle_expansion_angle": {
-                        "default": 45
-                    },
-                    "machine_extruder_start_code": { 
-                        "default": "" 
-                    },
-                    "machine_extruder_end_code": {
-                        "default": "" 
-                    },
-                    "machine_switch_extruder_retraction_amount": { 
-                        "default": 16 
-                    },
-                    "machine_switch_extruder_retraction_speed": { 
-                        "default": 20 
-                    },
-                    "machine_switch_extruder_prime_speed": { 
-                        "default": 20 
-                    }
-                }
-            ]
-        },
-        "machine_nozzle_offset_x_1": {
-            "default": 0
-        },
-        "machine_nozzle_offset_y_1": {
-            "default": 0
-        },
+        "machine_nozzle_size": { "default": 0.4, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_tip_outer_diameter": { "default": 1, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_head_distance": { "default": 3, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_expansion_angle": { "default": 45, "SEE_machine_extruder_trains": true  },
+        "machine_heat_zone_length": { "default": 16, "SEE_machine_extruder_trains": true  },
         "machine_gcode_flavor": {
             "default": "RepRap"
         },
@@ -118,20 +54,20 @@
         "machine_head_polygon": {
             "default": [
                 [
-                    -10,
-                    10
+                    -1,
+                    1
                 ],
                 [
-                    10,
-                    10
+                    -1,
+                    -1
                 ],
                 [
-                    10,
-                    -10
+                    1,
+                    -1
                 ],
                 [
-                    -10,
-                    -10
+                    1,
+                    1
                 ]
             ]
         },
@@ -162,8 +98,8 @@
         }
     },
     "categories": {
-        "layer_height": {
-            "label": "Line dimensions",
+        "resolution": {
+            "label": "Quality",
             "visible": true,
             "icon": "category_layer_height",
             "settings": {
@@ -295,99 +231,7 @@
                                 "setting": "support_roof_enable",
                                 "value": true
                             }
-                        },
-                        "prime_tower_line_width": {
-                            "label": "Prime Tower Line Width",
-                            "description": "Width of a single prime tower line.",
-                            "unit": "mm",
-                            "min_value": 0.0001,
-                            "min_value_warning": 0.2,
-                            "max_value_warning": 5,
-                            "default": 0.4,
-                            "type": "float",
-                            "visible": false,
-                            "active_if": {
-                                "setting": "prime_tower_enable",
-                                "value": true
-                            }
                         }
-                    }
-                }
-            }
-        },
-        "dual": {
-            "label": "Dual Extrusion",
-            "visible": false,
-            "icon": "category_dual",
-            "settings": {
-                "prime_tower_enable": {
-                    "label": "Enable Prime Tower",
-                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
-                    "type": "boolean",
-                    "default": false
-                },
-                "prime_tower_size": {
-                    "label": "Prime Tower Size",
-                    "description": "The width of the prime tower.",
-                    "visible": false,
-                    "type": "float",
-                    "unit": "mm",
-                    "default": 15,
-                    "min_value": 0,
-                    "max_value_warning": 20,
-                    "inherit_function": "0 if prime_tower_enable else 15",
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
-                },
-                "prime_tower_position_x": {
-                    "label": "Prime Tower X Position",
-                    "description": "The x position of the prime tower.",
-                    "visible": false,
-                    "type": "float",
-                    "unit": "mm",
-                    "default": 200,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
-                },
-                "prime_tower_position_y": {
-                    "label": "Prime Tower Y Position",
-                    "description": "The y position of the prime tower.",
-                    "visible": false,
-                    "type": "float",
-                    "unit": "mm",
-                    "default": 200,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
-                },
-                "prime_tower_flow": {
-                    "label": "Prime Tower Flow",
-                    "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
-                    "visible": false,
-                    "unit": "%",
-                    "default": 100,
-                    "type": "float",
-                    "min_value": 5,
-                    "min_value_warning": 50,
-                    "max_value_warning": 150,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
-                },
-                "prime_tower_wipe_enabled": {
-                    "label": "Wipe Nozzle on Prime tower",
-                    "description": "After printing the prime tower with the one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
-                    "type": "boolean",
-                    "default": false,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
                     }
                 }
             }
@@ -443,7 +287,7 @@
                             "default": 0.8,
                             "min_value": 0,
                             "max_value": 5,
-                            "min_value_warning": 0.4,
+                            "min_value_warning": 0.6,
                             "max_value_warning": 1,
                             "type": "float",
                             "visible": false,
@@ -461,7 +305,7 @@
                                             "label": "Top Layers",
                                             "description": "This controls the amount of top layers.",
                                             "min_value": 0,
-                                            "default": 8,
+                                            "default": 6,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
@@ -473,7 +317,7 @@
                                     "description": "This controls the thickness of the bottom layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it near to your wall thickness to make an evenly strong part.",
                                     "unit": "mm",
                                     "min_value": 0,
-                                    "default": 0.8,
+                                    "default": 0.6,
                                     "type": "float",
                                     "visible": false,
                                     "children": {
@@ -481,7 +325,7 @@
                                             "label": "Bottom Layers",
                                             "description": "This controls the amount of bottom layers.",
                                             "min_value": 0,
-                                            "default": 8,
+                                            "default": 6,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "math.ceil(parent_value / layer_height)"
@@ -584,14 +428,14 @@
             "visible": true,
             "icon": "category_infill",
             "settings": {
-                "fill_sparse_density": {
+                "infill_sparse_density": {
                     "label": "Infill Density",
                     "description": "This controls how densely filled the insides of your print will be. For a solid part use 100%, for an hollow part use 0%. A value around 20% is usually enough. This won't affect the outside of the print and only adjusts how strong the part becomes.",
                     "unit": "%",
                     "type": "float",
                     "default": 20,
                     "children": {
-                        "fill_pattern": {
+                        "infill_pattern": {
                             "label": "Infill Pattern",
                             "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
                             "type": "enum",
@@ -616,12 +460,13 @@
                         }
                     }
                 },
-                "fill_overlap": {
+                "infill_overlap": {
                     "label": "Infill Overlap",
                     "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
                     "unit": "%",
                     "type": "float",
                     "default": 10,
+                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
                     "visible": false
                 },
                 "infill_wipe_dist": {
@@ -632,7 +477,7 @@
                     "default": 0.04,
                     "visible": false
                 },
-                "fill_sparse_thickness": {
+                "infill_sparse_thickness": {
                     "label": "Infill Thickness",
                     "description": "The thickness of the sparse infill. This is rounded to a multiple of the layerheight and used to print the sparse-infill in fewer, thicker layers to save printing time.",
                     "unit": "mm",
@@ -640,7 +485,7 @@
                     "default": 0.1,
                     "visible": false,
                     "children": {
-                        "fill_sparse_combine": {
+                        "infill_sparse_combine": {
                             "label": "Infill Layers",
                             "description": "Amount of layers that are combined together to form sparse infill.",
                             "type": "int",
@@ -693,6 +538,128 @@
                     "min_value": 5,
                     "min_value_warning": 50,
                     "max_value_warning": 150
+                },
+                "retraction_enable": {
+                    "label": "Enable Retraction",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "retraction_amount": {
+                    "label": "Retraction Distance",
+                    "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_speed": {
+                    "label": "Retraction Speed",
+                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default": 25,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "retraction_retract_speed": {
+                            "label": "Retraction Retract Speed",
+                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 25,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        },
+                        "retraction_prime_speed": {
+                            "label": "Retraction Prime Speed",
+                            "description": "The speed at which the filament is pushed back after retraction.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default": 25,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "retraction_enable",
+                                "value": true
+                            }
+                        }
+                    }
+                },
+                "retraction_extra_prime_amount": {
+                    "label": "Retraction Extra Prime Amount",
+                    "description": "The amount of material extruded after unretracting. During a retracted travel material might get lost and so we need to compensate for this.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_min_travel": {
+                    "label": "Retraction Minimum Travel",
+                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_count_max": {
+                    "label": "Maximal Retraction Count",
+                    "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
+                    "default": 6,
+                    "type": "int",
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_extrusion_window": {
+                    "label": "Minimal Extrusion Distance Window",
+                    "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 4.5,
+                    "visible": false,
+                    "inherit_function": "retraction_amount",
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
+                },
+                "retraction_hop": {
+                    "label": "Z Hop when Retracting",
+                    "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0,
+                    "visible": false,
+                    "inherit": false,
+                    "active_if": {
+                        "setting": "retraction_enable",
+                        "value": true
+                    }
                 }
             }
         },
@@ -804,20 +771,6 @@
                                     }
                                 }
                             }
-                        },
-                        "speed_prime_tower": {
-                            "label": "Prime Tower Speed",
-                            "description": "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "min_value": 0.1,
-                            "max_value_warning": 150,
-                            "default": 50,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "prime_tower_enable",
-                                "value": true
-                            }
                         }
                     }
                 },
@@ -865,139 +818,6 @@
             "visible": true,
             "icon": "category_travel",
             "settings": {
-                "retraction_enable": {
-                    "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "print_sequence": {
-                    "label": "Print sequence",
-                    "description": "TODO",
-                    "type": "enum",
-                    "options": [
-                        "All at once",
-                        "One at a time"
-                    ],
-                    "default": "All at once",
-                    "visible": true
-                },
-                "retraction_speed": {
-                    "label": "Retraction Speed",
-                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default": 25,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    },
-                    "children": {
-                        "retraction_retract_speed": {
-                            "label": "Retraction Retract Speed",
-                            "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 25,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
-                        },
-                        "retraction_prime_speed": {
-                            "label": "Retraction Prime Speed",
-                            "description": "The speed at which the filament is pushed back after retraction.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default": 25,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
-                        }
-                    }
-                },
-                "retraction_amount": {
-                    "label": "Retraction Distance",
-                    "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 4.5,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_extra_prime_amount": {
-                    "label": "Retraction Extra Prime Amount",
-                    "description": "The amount of material extruded after unretracting. During a retracted travel material might get lost and so we need to compensate for this.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_min_travel": {
-                    "label": "Retraction Minimum Travel",
-                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 4.5,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_count_max": {
-                    "label": "Maximal Retraction Count",
-                    "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
-                    "default": 6,
-                    "type": "int",
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_extrusion_window": {
-                    "label": "Minimal Extrusion Distance Window",
-                    "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 4.5,
-                    "visible": false,
-                    "inherit_function": "retraction_amount",
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
-                "retraction_hop": {
-                    "label": "Z Hop when Retracting",
-                    "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0,
-                    "visible": false,
-                    "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
-                },
                 "retraction_combing": {
                     "label": "Enable Combing",
                     "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
@@ -1035,7 +855,7 @@
                     "label": "Enable Coasting",
                     "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to lay down the last piece of the extrusion path in order to reduce stringing.",
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
                     "visible": true
                 },
                 "coasting_volume": {
@@ -1056,7 +876,7 @@
                             "description": "The volume otherwise oozed in a travel move with retraction.",
                             "unit": "mm³",
                             "type": "float",
-                            "default": 0.096,
+                            "default": 0.064,
                             "visible": false,
                             "inherit": true,
                             "active_if": {
@@ -1069,7 +889,7 @@
                             "description": "The volume otherwise oozed in a travel move without retraction.",
                             "unit": "mm³",
                             "type": "float",
-                            "default": 0.064,
+                            "default": 0.096,
                             "visible": false,
                             "inherit": true,
                             "active_if": {
@@ -1264,6 +1084,294 @@
                 }
             }
         },
+        "support": {
+            "label": "Support",
+            "visible": true,
+            "icon": "category_support",
+            "settings": {
+                "support_enable": {
+                    "label": "Enable Support",
+                    "description": "Enable exterior support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.",
+                    "type": "boolean",
+                    "default": true
+                },
+                "support_type": {
+                    "label": "Placement",
+                    "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
+                    "type": "enum",
+                    "options": [
+                        "Touching Buildplate",
+                        "Everywhere"
+                    ],
+                    "default": "Everywhere",
+                    "visible": true,
+                    "inherit_function": "'Everywhere' if support_enable else 'None'",
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_angle": {
+                    "label": "Overhang Angle",
+                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value": 90,
+                    "default": 60,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_xy_distance": {
+                    "label": "X/Y Distance",
+                    "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value_warning": 10,
+                    "default": 0.7,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_z_distance": {
+                    "label": "Z Distance",
+                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value_warning": 10,
+                    "default": 0.15,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "support_top_distance": {
+                            "label": "Top Distance",
+                            "description": "Distance from the top of the support to the print.",
+                            "unit": "mm",
+                            "min_value": 0,
+                            "max_value_warning": 10,
+                            "default": 0.15,
+                            "type": "float",
+                            "visible": false
+                        },
+                        "support_bottom_distance": {
+                            "label": "Bottom Distance",
+                            "description": "Distance from the print to the bottom of the support.",
+                            "unit": "mm",
+                            "min_value": 0,
+                            "max_value_warning": 10,
+                            "default": 0.15,
+                            "type": "float",
+                            "visible": false
+                        }
+                    }
+                },
+                "support_conical_enabled": {
+                    "label": "Conical Support",
+                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_conical_angle": {
+                    "label": "Cone Angle",
+                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": -90,
+                    "max_value": 90,
+                    "default": 30,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
+                    }
+                },
+                "support_conical_min_width": {
+                    "label": "Minimal Width",
+                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as fundament for support above.",
+                    "unit": "mm",
+                    "min_value": 0,
+                    "default": 3.0,
+                    "type": "float",
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_conical_enabled",
+                        "value": true
+                    }
+                },
+                "support_bottom_stair_step_height": {
+                    "label": "Stair Step Height",
+                    "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_type",
+                        "value": "Everywhere"
+                    }
+                },
+                "support_join_distance": {
+                    "label": "Join Distance",
+                    "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 2,
+                    "visible": false
+                },
+                "support_offset": {
+                    "label": "Horizontal Expansion",
+                    "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.2,
+                    "visible": false
+                },
+                "support_area_smoothing": {
+                    "label": "Area Smoothing",
+                    "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.6,
+                    "visible": false
+                },
+                "support_roof_enable": {
+                    "label": "Enable Hammock",
+                    "description": "Generate a solid support roof on which the model sits.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": true
+                },
+                "support_roof_height": {
+                    "label": "Hammock Thickness",
+                    "description": "The height of the support roofs. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_roof_enable",
+                        "value": true
+                    }
+                },
+                "support_use_towers": {
+                    "label": "Use towers.",
+                    "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": true
+                },
+                "support_minimal_diameter": {
+                    "label": "Minimal Diameter",
+                    "description": "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_tower_diameter": {
+                    "label": "Tower Diameter",
+                    "description": "The diameter of a special tower. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_tower_roof_angle": {
+                    "label": "Tower Roof Angle",
+                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
+                    "unit": "°",
+                    "type": "int",
+                    "min_value": 0,
+                    "max_value": 90,
+                    "default": 65,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_use_towers",
+                        "value": true
+                    }
+                },
+                "support_pattern": {
+                    "label": "Pattern",
+                    "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
+                    "type": "enum",
+                    "options": [
+                        "Grid",
+                        "Lines",
+                        "ZigZag"
+                    ],
+                    "default": "ZigZag",
+                    "visible": true,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    }
+                },
+                "support_connect_zigzags": {
+                    "label": "Connect ZigZags",
+                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_pattern",
+                        "value": "ZigZag"
+                    }
+                },
+                "support_infill_rate": {
+                    "label": "Fill Amount",
+                    "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": 0,
+                    "max_value": 100,
+                    "default": 15,
+                    "visible": false,
+                    "active_if": {
+                        "setting": "support_enable",
+                        "value": true
+                    },
+                    "children": {
+                        "support_line_distance": {
+                            "label": "Line distance",
+                            "description": "Distance between the printed support lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "min_value": 0,
+                            "default": 2.66,
+                            "visible": false,
+                            "active_if": {
+                                "setting": "support_enable",
+                                "value": true
+                            },
+                            "inherit_function": "(support_line_width * 100) / parent_value"
+                        }
+                    }
+                }
+            }
+        },
         "platform_adhesion": {
             "label": "Platform Adhesion",
             "visible": true,
@@ -1279,15 +1387,6 @@
                         "Raft"
                     ],
                     "default": "Skirt"
-                },
-                "adhesion_extruder_nr": {
-                    "label": "Platform Adhesion Extruder",
-                    "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
-                    "type": "int",
-                    "default": 0,
-                    "min_value": 0,
-                    "max_value": 16,
-                    "inherit_function": "extruder_nr"
                 },
                 "skirt_line_count": {
                     "label": "Skirt Line Count",
@@ -1557,47 +1656,6 @@
                             "inherit": true
                         }
                     }
-                }
-            }
-        },
-        "shield": {
-            "label": "Shielding",
-            "visible": true,
-            "icon": "category_shield",
-            "settings": {
-                "ooze_shield_enabled": {
-                    "label": "Enable Ooze Shield",
-                    "description": "Enable exterior ooze shield. This will create a shell around the object which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
-                    "type": "boolean",
-                    "default": false
-                },
-                "ooze_shield_angle": {
-                    "label": "Ooze Shield Angle",
-                    "description": "The maximum angle a part in the ooze shield will have. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller angle leads to less failed ooze shields, but more material.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value": 90,
-                    "default": 60,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "ooze_shield_enabled",
-                        "value": true
-                    }
-                },
-                "ooze_shield_dist": {
-                    "label": "Ooze Shields Distance",
-                    "description": "Distance of the ooze shield from the print, in the X/Y directions.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value_warning": 30,
-                    "default": 2,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "ooze_shield_enabled",
-                        "value": true
-                    }
                 },
                 "draft_shield_enabled": {
                     "label": "Enable Draft Shield",
@@ -1652,274 +1710,8 @@
                 }
             }
         },
-        "support": {
-            "label": "Support",
-            "visible": true,
-            "icon": "category_support",
-            "settings": {
-                "support_enable": {
-                    "label": "Enable Support",
-                    "description": "Enable exterior support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.",
-                    "type": "boolean",
-                    "default": true
-                },
-                "support_extruder_nr": {
-                    "label": "Support Extruder",
-                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
-                    "type": "int",
-                    "default": 0,
-                    "min_value": 0,
-                    "max_value": 16,
-                    "inherit_function": "extruder_nr",
-                    "children": {
-                        "support_roof_extruder_nr": {
-                            "label": "Hammock Extruder",
-                            "description": "The extruder train to use for printing the hammock. This is used in multi-extrusion.",
-                            "type": "int",
-                            "default": 0,
-                            "min_value": 0,
-                            "max_value": 16,
-                            "inherit": true,
-                            "active_if": {
-                                "setting": "support_roof_enable",
-                                "value": true
-                            }
-                        }
-                    }
-                },
-                "support_type": {
-                    "label": "Placement",
-                    "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
-                    "type": "enum",
-                    "options": [
-                        "Touching Buildplate",
-                        "Everywhere"
-                    ],
-                    "default": "Everywhere",
-                    "visible": true,
-                    "inherit_function": "'Everywhere' if support_enable else 'None'",
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_angle": {
-                    "label": "Overhang Angle",
-                    "description": "The maximum angle of overhangs for which support will be added. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller overhang angle leads to more support.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value": 90,
-                    "default": 60,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_xy_distance": {
-                    "label": "X/Y Distance",
-                    "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value_warning": 10,
-                    "default": 0.7,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_z_distance": {
-                    "label": "Z Distance",
-                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value_warning": 10,
-                    "default": 0.15,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
-                    "children": {
-                        "support_top_distance": {
-                            "label": "Top Distance",
-                            "description": "Distance from the top of the support to the print.",
-                            "unit": "mm",
-                            "min_value": 0,
-                            "max_value_warning": 10,
-                            "default": 0.15,
-                            "type": "float",
-                            "visible": false
-                        },
-                        "support_bottom_distance": {
-                            "label": "Bottom Distance",
-                            "description": "Distance from the print to the bottom of the support.",
-                            "unit": "mm",
-                            "min_value": 0,
-                            "max_value_warning": 10,
-                            "default": 0.15,
-                            "type": "float",
-                            "visible": false
-                        }
-                    }
-                },
-                "support_bottom_stair_step_height": {
-                    "label": "Stair Step Height",
-                    "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_type",
-                        "value": "Everywhere"
-                    }
-                },
-                "support_join_distance": {
-                    "label": "Join Distance",
-                    "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 2,
-                    "visible": false
-                },
-                "support_area_smoothing": {
-                    "label": "Area Smoothing",
-                    "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 0.6,
-                    "visible": false
-                },
-                "support_roof_enable": {
-                    "label": "Enable Hammock",
-                    "description": "Generate a solid support roof on which the model sits.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": true
-                },
-                "support_roof_height": {
-                    "label": "Hammock Thickness",
-                    "description": "The height of the support roofs. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_roof_enable",
-                        "value": true
-                    }
-                },
-                "support_use_towers": {
-                    "label": "Use towers.",
-                    "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": true
-                },
-                "support_minimal_diameter": {
-                    "label": "Minimal Diameter",
-                    "description": "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_tower_diameter": {
-                    "label": "Tower Diameter",
-                    "description": "The diameter of a special tower. ",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_tower_roof_angle": {
-                    "label": "Tower Roof Angle",
-                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
-                    "unit": "°",
-                    "type": "int",
-                    "min_value": 0,
-                    "max_value": 90,
-                    "default": 65,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
-                },
-                "support_pattern": {
-                    "label": "Pattern",
-                    "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
-                    "type": "enum",
-                    "options": [
-                        "Grid",
-                        "Lines",
-                        "ZigZag"
-                    ],
-                    "default": "ZigZag",
-                    "visible": true,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
-                },
-                "support_connect_zigzags": {
-                    "label": "Connect ZigZags",
-                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_pattern",
-                        "value": "ZigZag"
-                    }
-                },
-                "support_fill_rate": {
-                    "label": "Fill Amount",
-                    "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
-                    "unit": "%",
-                    "type": "float",
-                    "min_value": 0,
-                    "max_value": 100,
-                    "default": 15,
-                    "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
-                    "children": {
-                        "support_line_distance": {
-                            "label": "Line distance",
-                            "description": "Distance between the printed support lines.",
-                            "unit": "mm",
-                            "type": "float",
-                            "min_value": 0,
-                            "default": 2.66,
-                            "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            },
-                            "inherit_function": "(support_line_width * 100) / parent_value"
-                        }
-                    }
-                }
-            }
-        },
         "meshfix": {
-            "label": "Fixes",
+            "label": "Mesh Fixes",
             "visible": true,
             "icon": "category_fixes",
             "settings": {
@@ -1958,6 +1750,17 @@
             "visible": true,
             "icon": "category_blackmagic",
             "settings": {
+                "print_sequence": {
+                    "label": "Print sequence",
+                    "description": "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated such that the whole print head can move between and all models are lower than the distance between the nozzle and the X/Y axles.",
+                    "type": "enum",
+                    "options": [
+                        "All at once",
+                        "One at a time"
+                    ],
+                    "default": "All at once",
+                    "visible": true
+                },
                 "magic_mesh_surface_mode": {
                     "label": "Surface Mode",
                     "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh.",

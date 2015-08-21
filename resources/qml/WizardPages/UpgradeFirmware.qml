@@ -8,45 +8,61 @@ import QtQuick.Window 2.1
 
 import UM 1.0 as UM
 
-ColumnLayout {
+Column
+{
+    id: wizardPage
     property string title
     anchors.fill: parent;
-    signal openFile(string fileName)
-
-    Label {
+    Label
+    {
         text: parent.title
         font.pointSize: 18;
     }
 
-    Label {
-        //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
-    }
-
-    ScrollView {
-        Layout.fillWidth: true;
-
-        ListView {
+    ScrollView
+    {
+        height: parent.height - 50
+        width: parent.width
+        ListView
+        {
             id: machineList;
-            model: UM.Models.availableMachinesModel
-            delegate: RadioButton {
-                exclusiveGroup: printerGroup;
-                text: model.name;
-                onClicked: {
-                    ListView.view.currentIndex = index;
+            model: UM.USBPrinterManager.connectedPrinterList
+
+            delegate:Row
+            {
+                id: derp
+                Text
+                {
+                    id: text_area
+                    text: model.name
+                }
+                Button
+                {
+                    text: "Update";
+                    onClicked:
+                    {
+                        if(!UM.USBPrinterManager.updateFirmwareBySerial(text_area.text))
+                        {
+                            status_text.text = "ERROR"
+                        }
+                    }
                 }
             }
         }
     }
 
-    Label {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
+    Label
+    {
+        id: status_text
+        text: ""
     }
 
-    TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
 
-    Item { Layout.fillWidth: true; Layout.fillHeight: true; }
+    Item
+    {
+        Layout.fillWidth: true;
+        Layout.fillHeight: true;
+    }
 
-    ExclusiveGroup { id: printerGroup; }
+
 }
