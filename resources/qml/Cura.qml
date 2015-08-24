@@ -12,7 +12,6 @@ import UM 1.1 as UM
 UM.MainWindow {
     id: base
     visible: true
-
     //: Cura application window title
     title: qsTr("Cura");
 
@@ -212,10 +211,8 @@ UM.MainWindow {
 
             UM.MessageStack {
                 anchors {
-                    left: toolbar.right;
-                    leftMargin: UM.Theme.sizes.window_margin.width;
-                    right: sidebar.left;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
+                    horizontalCenter: parent.horizontalCenter
+                    horizontalCenterOffset: -(UM.Theme.sizes.logo.width/ 2)
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
                 }
@@ -242,17 +239,15 @@ UM.MainWindow {
 
             Button {
                 id: openFileButton;
-
-                iconSource: UM.Theme.icons.open;
-                style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
+                //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
+                style: UM.Theme.styles.open_file_button
                 tooltip: '';
                 anchors {
                     top: parent.top;
-                    topMargin: UM.Theme.sizes.window_margin.height;
+                    topMargin: UM.Theme.sizes.loadfile_margin.height
                     left: parent.left;
-                    leftMargin: UM.Theme.sizes.window_margin.width;
+                    leftMargin: UM.Theme.sizes.loadfile_margin.width
                 }
-
                 action: actions.open;
             }
 
@@ -349,8 +344,15 @@ UM.MainWindow {
         id: preferences
 
         Component.onCompleted: {
+            //; Remove & re-add the general page as we want to use our own instead of uranium standard.
+            removePage(0);
+            insertPage(0, qsTr("General") , "" , Qt.resolvedUrl("./GeneralPage.qml"));
+
             //: View preferences page title
             insertPage(1, qsTr("View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
+
+            //Force refresh
+            setPage(0)
         }
     }
 
@@ -423,6 +425,8 @@ UM.MainWindow {
         reportBug.onTriggered: CuraActions.openBugReportPage();
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
+        toggleFullScreen.onTriggered: base.toggleFullscreen()
+
     }
 
     Menu {
@@ -481,7 +485,6 @@ UM.MainWindow {
         onAccepted:
         {
             UM.MeshFileHandler.readLocalFile(fileUrl)
-            Printer.setPlatformActivity(true)
         }
     }
 

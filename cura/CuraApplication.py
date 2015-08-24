@@ -79,11 +79,13 @@ class CuraApplication(QtApplication):
         self._platform_activity = False
 
         self.activeMachineChanged.connect(self._onActiveMachineChanged)
+        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
+        Preferences.getInstance().addPreference("view/center_on_select", True)
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
@@ -114,6 +116,11 @@ class CuraApplication(QtApplication):
 
     def run(self):
         self._i18n_catalog = i18nCatalog("cura");
+
+        i18nCatalog.setTagReplacements({
+            "filename": "font color=\"black\"",
+            "message": "font color=UM.Theme.colors.message_text;",
+        })
 
         self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
 
@@ -196,10 +203,10 @@ class CuraApplication(QtApplication):
                     self._previous_active_tool = None
                 else:
                     self.getController().setActiveTool("TranslateTool")
-
-            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
-            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
-            self._camera_animation.start()
+            if Preferences.getInstance().getValue("view/center_on_select"):
+                self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
+                self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
+                self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
@@ -214,24 +221,15 @@ class CuraApplication(QtApplication):
     def getPlatformActivity(self):
         return self._platform_activity
 
-    @pyqtSlot(bool)
-    def setPlatformActivity(self, activity):
-        ##Sets the _platform_activity variable on true or false depending on whether there is a mesh on the platform
-        if activity == True:
-            self._platform_activity = activity
-        elif activity == False:
-            nodes = []
-            for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-                if type(node) is not SceneNode or not node.getMeshData():
-                    continue
-                nodes.append(node)
-            i = 0
-            for node in nodes:
-                if not node.getMeshData():
-                    continue
-                i += 1
-            if i <= 1: ## i == 0 when the meshes are removed using the deleteAll function; i == 1 when the last remaining mesh is removed using the deleteObject function
-                self._platform_activity = activity
+    def updatePlatformActivity(self, node = None):
+        count = 0
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+
+            count += 1
+
+        self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
 
     ##  Remove an object from the scene
@@ -252,8 +250,7 @@ class CuraApplication(QtApplication):
                         group_node = group_node.getParent()
                     op = RemoveSceneNodeOperation(group_node)
             op.push()
-            self.setPlatformActivity(False)
-    
+
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count):
@@ -300,8 +297,7 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
-        self.setPlatformActivity(False)
-    
+
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
     def resetAllTranslation(self):

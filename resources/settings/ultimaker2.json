@@ -38,14 +38,30 @@
         "machine_height": { "default": 205 },
         "machine_heated_bed": { "default": true },
 
-        
+        "machine_head_with_fans_polygon":
+        {
+            "default": [
+                [
+                    -40,
+                    30
+                ],
+                [
+                    -40,
+                    -10
+                ],
+                [
+                    60,
+                    -10
+                ],
+                [
+                    60,
+                    30
+                ]
+            ]
+        },
         "machine_center_is_zero": { "default": false },
         "machine_nozzle_size": { "default": 0.4 },
-        "machine_head_shape_min_x": { "default": 40 },
-        "machine_head_shape_min_y": { "default": 10 },
-        "machine_head_shape_max_x": { "default": 60 },
-        "machine_head_shape_max_y": { "default": 30 },
-        "machine_nozzle_gantry_distance": { "default": 55 },
+        "gantry_height": { "default": 55 },
         "machine_use_extruder_offset_to_offset_coords": { "default": true },
         "machine_gcode_flavor": { "default": "UltiGCode" },
         "machine_disallowed_areas": { "default": [

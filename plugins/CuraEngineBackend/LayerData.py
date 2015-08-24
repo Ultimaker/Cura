@@ -28,7 +28,8 @@ class LayerData(MeshData):
         self._layers[layer].polygons.append(p)
 
     def getLayer(self, layer):
-        return self._layers[layer]
+        if layer in self._layers:
+            return self._layers[layer]
 
     def getLayers(self):
         return self._layers

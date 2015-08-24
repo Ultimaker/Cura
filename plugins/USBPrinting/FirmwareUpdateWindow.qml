@@ -22,7 +22,7 @@ UM.Dialog
     Column
     {
         anchors.fill: parent;
- 
+
         Text
         {
             anchors {

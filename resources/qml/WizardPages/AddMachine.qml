@@ -252,6 +252,10 @@ ColumnLayout
             UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
             var pages = UM.Models.availableMachinesModel.getItem(machineList.currentIndex).pages
             var old_page_count = elementRoot.getPageCount()
+            for(var i = 0; i < UM.Models.count; i++)
+            {
+                print(UM.Models.getItem(i))
+            }
             // Delete old pages (if any)
             for (var i = old_page_count - 1; i >  0; i--)
             {

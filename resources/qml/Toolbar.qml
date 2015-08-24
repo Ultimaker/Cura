@@ -19,7 +19,7 @@ Item {
 
         anchors.bottom: parent.bottom;
         anchors.left: parent.left;
-        spacing: 1
+        spacing: UM.Theme.sizes.default_lining.width
 
         Repeater {
             id: repeat
@@ -67,6 +67,8 @@ Item {
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         color: UM.Theme.colors.tool_panel_background;
+        border.width: UM.Theme.sizes.default_lining.width
+        border.color: UM.Theme.colors.button_lining
 
         Loader {
             id: panel

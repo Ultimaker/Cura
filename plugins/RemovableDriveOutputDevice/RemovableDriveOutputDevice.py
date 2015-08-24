@@ -17,8 +17,8 @@ class RemovableDriveOutputDevice(OutputDevice):
         super().__init__(device_id)
 
         self.setName(device_name)
-        self.setShortDescription(catalog.i18nc("", "Save to Removable Drive"))
-        self.setDescription(catalog.i18nc("", "Save to Removable Drive {0}").format(device_name))
+        self.setShortDescription(catalog.i18nc("@action:button", "Save to Removable Drive"))
+        self.setDescription(catalog.i18nc("@info:tooltip", "Save to Removable Drive {0}").format(device_name))
         self.setIconName("save_sd")
         self.setPriority(1)
 
@@ -49,7 +49,7 @@ class RemovableDriveOutputDevice(OutputDevice):
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
 
-            message = Message(catalog.i18nc("", "Saving to Removable Drive {0}").format(self.getName()), 0, False, -1)
+            message = Message(catalog.i18nc("@info:status", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1)
             message.show()
 
             job._message = message
