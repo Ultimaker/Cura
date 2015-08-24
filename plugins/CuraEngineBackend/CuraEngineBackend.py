@@ -241,6 +241,10 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(6, Cura_pb2.SettingList)
         self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
 
+    ##  Manually triggers a reslice
+    def forceSlice(self):
+        self._change_timer.start()
+
     def _onChanged(self):
         if not self._settings:
             return
