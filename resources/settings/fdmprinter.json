@@ -40,6 +40,7 @@
             "default": "RepRap"
         },
         "machine_disallowed_areas": {
+            "type": "polygons",
             "default": []
         },
         "machine_platform_offset": {
@@ -50,6 +51,7 @@
             ]
         },
         "machine_head_polygon": {
+            "type": "polygon",
             "default": [
                 [
                     -1,
@@ -71,6 +73,7 @@
         },
         "machine_head_with_fans_polygon":
         {
+            "type": "polygon",
             "default": [
                 [
                     -20,
