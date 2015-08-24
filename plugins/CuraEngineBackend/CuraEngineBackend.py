@@ -130,6 +130,7 @@ class CuraEngineBackend(Backend):
                     if not getattr(node, "_outside_buildarea", False):
                         temp_list.append(node)
             if len(temp_list) == 0:
+                self.processingProgress.emit(0.0)
                 return
             object_groups.append(temp_list)
         #for node in DepthFirstIterator(self._scene.getRoot()):
