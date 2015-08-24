@@ -306,7 +306,7 @@
                                             "default": 6,
                                             "type": "int",
                                             "visible": false,
-                                            "inherit_function": "math.ceil(parent_value / layer_height)"
+                                            "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
                                         }
                                     }
                                 },
@@ -326,7 +326,7 @@
                                             "default": 6,
                                             "type": "int",
                                             "visible": false,
-                                            "inherit_function": "math.ceil(parent_value / layer_height)"
+                                            "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
                                         }
                                     }
                                 }
@@ -417,6 +417,18 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0,
+                    "visible": false
+                },
+                "z_seam_type": {
+                    "label": "Z Seam Alignment",
+                    "description": "Starting point of each part in a layer. When parts in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the part start will be less noticable. When taking the shortest path the print will be more quick.",
+                    "type": "enum",
+                    "options": [
+                        "Back",
+                        "Shortest",
+                        "Random"
+                    ],
+                    "default": "Shortest",
                     "visible": false
                 }
             }

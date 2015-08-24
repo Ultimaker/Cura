@@ -4,7 +4,15 @@
     "inherits": "fdmprinter.json",
 
     "machine_settings": {
-        "extruder_nr": { "default": 0 },
+        "extruder_nr": {
+            "label": "Extruder",
+            "description": "The extruder train used for printing. This is used in multi-extrusion.",
+            "type": "int",
+            "default": 0,
+            "min_value": 0,
+            "max_value": 16,
+            "inherit_function": "extruder_nr"
+        },
         
         "machine_use_extruder_offset_to_offset_coords": { "default": false },
 
