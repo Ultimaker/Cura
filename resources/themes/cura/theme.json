@@ -132,7 +132,8 @@
         "save_button_background": [249, 249, 249, 255],
 
         "message_background": [255, 255, 255, 255],
-        "message_text": [12, 169, 227, 255],
+        "message_text": [32, 166, 219, 255],
+        "message_dismiss": [139, 143, 153, 255],
 
         "tool_panel_background": [255, 255, 255, 255]
     },

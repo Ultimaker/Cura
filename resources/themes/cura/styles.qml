@@ -205,26 +205,23 @@ QtObject {
             background:Rectangle {
                 implicitWidth: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2)
                 implicitHeight: UM.Theme.sizes.progressbar.height
-                x: UM.Theme.sizes.default_margin.width
                 color: UM.Theme.colors.progressbar_background
             }
             progress: Rectangle {
                 color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
-
                 Rectangle{
                     color: UM.Theme.colors.progressbar_control
                     width: UM.Theme.sizes.progressbar_control.width
                     height: UM.Theme.sizes.progressbar_control.height
-                    x: UM.Theme.sizes.default_margin.width
                     visible: control.indeterminate
 
                     SequentialAnimation on x {
                         id: xAnim
-                        property int animEndPoint: UM.Theme.sizes.message.width - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.progressbar_control.width
+                        property int animEndPoint: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2) - UM.Theme.sizes.progressbar_control.width
                         running: control.indeterminate
                         loops: Animation.Infinite
-                        NumberAnimation { from: UM.Theme.sizes.default_margin.width; to: xAnim.animEndPoint; duration: 2000;}
-                        NumberAnimation { from: xAnim.animEndPoint; to: UM.Theme.sizes.default_margin.width; duration: 2000;}
+                        NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
+                        NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
                     }
                 }
             }
