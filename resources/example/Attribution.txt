@@ -9,3 +9,4 @@ The below models, unless noted otherwise are shared under the CC BY-SA 3.0 licen
   http://www.thingiverse.com/thing:21596
 
 * Rocktopus.stl: Rocktopus by Kent Johnson is licensed under CC BY-SA 4.0 and derived from work by dietz1 and yeoldebrian.
+  http://www.lulzbot.com/rocktopus
