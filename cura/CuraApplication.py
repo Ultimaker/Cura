@@ -265,7 +265,7 @@ class CuraApplication(QtApplication):
                 new_node = SceneNode()
                 new_node.setMeshData(node.getMeshData())
 
-                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, 0, 0))
+                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, node.getPosition().y, 0))
                 new_node.setOrientation(node.getOrientation())
                 new_node.setScale(node.getScale())
                 new_node.setSelectable(True)
