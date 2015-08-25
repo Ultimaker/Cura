@@ -262,11 +262,6 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         except Exception as e:
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
-        if not self._serial:
-            self._is_connecting = False
-            Logger.log("i", "Could not establish connection on %s, unknown reasons.", self._serial_port)
-            return
-
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
             if self._serial is None:
