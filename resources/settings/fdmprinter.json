@@ -391,7 +391,10 @@
                     "type": "enum",
                     "options": [
                         "Lines",
-                        "Concentric"
+                        "Grid",
+                        "Triangles",
+                        "Concentric",
+                        "ZigZag"
                     ],
                     "default": "Lines",
                     "visible": false
@@ -465,8 +468,9 @@
                     "type": "enum",
                     "visible": false,
                     "options": [
-                        "Grid",
                         "Lines",
+                        "Grid",
+                        "Triangles",
                         "Concentric",
                         "ZigZag"
                     ],
@@ -1306,8 +1310,9 @@
                     "type": "enum",
                     "visible": false,
                     "options": [
-                        "Grid",
                         "Lines",
+                        "Grid",
+                        "Triangles",
                         "Concentric",
                         "ZigZag"
                     ],
@@ -1363,8 +1368,10 @@
                     "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
                     "type": "enum",
                     "options": [
-                        "Grid",
                         "Lines",
+                        "Grid",
+                        "Triangles",
+                        "Concentric",
                         "ZigZag"
                     ],
                     "default": "ZigZag",
