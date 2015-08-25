@@ -1410,10 +1410,14 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 
 	def OnSkipClick(self, e):
 		dlg = wx.MessageDialog(self,
-				_("WARNING: You risk serious damage to your printer by not updating the firmware. This is not a recommended course of action!\n\n" + 
-				  "Are you sure you want to skip the firmware upgrade?"),
-				_('Skip firmware upgrade?'),
-				wx.YES_NO | wx.ICON_EXCLAMATION)
+			_("CAUTION: Updating your firmware is strongly recommended and " \
+			  "critical to protecting your LulzBot with the latest updates " \
+			  "and settings. Expert users note that this will overwrite " \
+			  " firmware changes or customization; you can skip this step " \
+			  "at your discretion.\n\n" +
+			  "Are you sure you want to skip the firmware upgrade?"),
+			_('Skip firmware upgrade?'),
+			wx.YES_NO | wx.ICON_EXCLAMATION)
 		skip = dlg.ShowModal() == wx.ID_YES
 		dlg.Destroy()
 		if skip:
