@@ -6,22 +6,27 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 import Cura 1.0 as Cura
+
+import "WizardPages"
 
 UM.Wizard
 {
-    //: Add Printer dialog title
-    wizardTitle: qsTr("Add Printer")
-    wizardPages: [
-        {
-            title: "Add Printer",
-            page: UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/AddMachine.qml")
-        }
-    ]
+    id: base;
+
+    title: catalog.i18nc("@title", "Add Printer")
 
     // This part is optional
     // This part checks whether there is a printer -> if not: some of the functions (delete for example) are disabled
-    property bool printer: true
-    firstRun: printer ? false : true
+    firstRun: false
+
+    Component.onCompleted: {
+        base.appendPage(UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/AddMachine.qml"), catalog.i18nc("@title", "Add Printer"));
+        base.currentPage = 0;
+    }
+
+    Item {
+        UM.I18nCatalog { id: catalog; name: "cura"; }
+    }
 }
