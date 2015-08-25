@@ -188,6 +188,9 @@ class CuraApplication(QtApplication):
 
         return super().event(event)
 
+    def getPrintInformation(self):
+        return self._print_information
+
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
