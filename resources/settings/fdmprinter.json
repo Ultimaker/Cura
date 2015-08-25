@@ -1282,6 +1282,37 @@
                         "value": true
                     }
                 },
+                "support_roof_density": {
+                    "label": "Hammock Density",
+                    "description": "This controls how densely filled the roofs of the support will be. A higher percentage results in better overhangs, which are more difficult to remove.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 20,
+                    "children": {
+                        "support_roof_line_distance": {
+                            "label": "Hammock Line Distance",
+                            "description": "Distance between the printed hammock lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 2,
+                            "visible": false,
+                            "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value"
+                        }
+                    }
+                },
+                "support_roof_pattern": {
+                    "label": "Hammock Pattern",
+                    "description": "The pattern with which the hammock is printed.",
+                    "type": "enum",
+                    "visible": false,
+                    "options": [
+                        "Grid",
+                        "Lines",
+                        "Concentric",
+                        "ZigZag"
+                    ],
+                    "default": "Lines"
+                },
                 "support_use_towers": {
                     "label": "Use towers.",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
