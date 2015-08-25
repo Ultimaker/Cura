@@ -522,7 +522,7 @@ UM.MainWindow {
         target: Printer
         onRequestAddPrinter: {
             addMachineWizard.visible = true
-            addMachineWizard.printer = false
+            addMachineWizard.firstRun = true
         }
     }
 
