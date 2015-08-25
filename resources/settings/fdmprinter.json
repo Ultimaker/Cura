@@ -511,6 +511,13 @@
                             "inherit_function": "math.floor((parent_value + 0.001) / layer_height)"
                         }
                     }
+                },
+                "infill_before_walls": {
+                    "label": "Infill Before Walls",
+                    "description": "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false
                 }
             }
         },
