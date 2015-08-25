@@ -164,7 +164,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def printGCode(self, gcode_list):
         if self.isPrinting() or not self._is_connected:
             Logger.log("d", "Printer is busy or not connected, aborting print")
-            self.writeError.emit()
+            self.writeError.emit(self)
             return
 
         self._gcode.clear()
@@ -181,7 +181,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         for i in range(0, 4): #Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
 
-        self.writeFinished.emit()
+        self.writeFinished.emit(self)
 
     ##  Get the serial port string of this connection.
     #   \return serial port
