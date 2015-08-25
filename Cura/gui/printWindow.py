@@ -37,15 +37,17 @@ elif sys.platform.startswith('darwin'):
 	frameworkPath=objc.pathForFramework("/System/Library/Frameworks/IOKit.framework"),
 	globals=globals())
 	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
+	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionRelease", b"iI")])
 	def preventComputerFromSleeping(frame, prevent):
 		if prevent:
 			success, preventComputerFromSleeping.assertionID = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn, "Cura is printing", None)
 			if success != kIOReturnSuccess:
 				preventComputerFromSleeping.assertionID = None
 		else:
-			if preventComputerFromSleeping.assertionID is not None:
-				IOPMAssertionRelease(preventComputerFromSleeping.assertionID)
-				preventComputerFromSleeping.assertionID = None
+			if hasattr(preventComputerFromSleeping, "assertionID"):
+				if preventComputerFromSleeping.assertionID is not None:
+					IOPMAssertionRelease(preventComputerFromSleeping.assertionID)
+					preventComputerFromSleeping.assertionID = None
 else:
 	def preventComputerFromSleeping(frame, prevent):
 		if os.path.isfile("/usr/bin/xdg-screensaver"):
