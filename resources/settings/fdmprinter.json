@@ -448,20 +448,6 @@
                     "type": "float",
                     "default": 20,
                     "children": {
-                        "infill_pattern": {
-                            "label": "Infill Pattern",
-                            "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
-                            "type": "enum",
-                            "visible": false,
-                            "options": [
-                                "Grid",
-                                "Lines",
-                                "Concentric",
-                                "ZigZag"
-                            ],
-                            "default": "Grid",
-                            "inherit_function": "'Lines' if parent_value > 25 else 'Grid'"
-                        },
                         "infill_line_distance": {
                             "label": "Line distance",
                             "description": "Distance between the printed infill lines.",
@@ -472,6 +458,20 @@
                             "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
                         }
                     }
+                },
+                "infill_pattern": {
+                    "label": "Infill Pattern",
+                    "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
+                    "type": "enum",
+                    "visible": false,
+                    "options": [
+                        "Grid",
+                        "Lines",
+                        "Concentric",
+                        "ZigZag"
+                    ],
+                    "default": "Grid",
+                    "inherit_function": "'Lines' if parent_value > 25 else 'Grid'"
                 },
                 "infill_overlap": {
                     "label": "Infill Overlap",
@@ -556,7 +556,8 @@
                     "label": "Enable Retraction",
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
                     "type": "boolean",
-                    "default": true
+                    "default": true,
+                    "visible": true
                 },
                 "retraction_amount": {
                     "label": "Retraction Distance",
