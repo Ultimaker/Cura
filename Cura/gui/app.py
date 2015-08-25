@@ -172,8 +172,8 @@ class CuraApp(wx.App):
 			newVersionDialog.newVersionDialog().Show()
 
 		# Must come after creating the main window
-		if version.isDevVersion():
-			import wx.lib.inspection
+		#if version.isDevVersion():
+			#import wx.lib.inspection
 			# Show the WX widget inspection tool
 			#wx.lib.inspection.InspectionTool().Show()
 
