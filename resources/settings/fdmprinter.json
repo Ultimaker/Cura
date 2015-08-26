@@ -1085,7 +1085,7 @@
                 },
                 "cool_min_layer_time_fan_speed_max": {
                     "label": "Minimal Layer Time Full Fan Speed",
-                    "description": "The minimum time spent in a layer which will cause the fan to be at minmum speed. The fan speed increases linearly from maximal fan speed for layers taking minimal layer time to minimal fan speed for layers taking the time specified here.",
+                    "description": "The minimum time spent in a layer which will cause the fan to be at maximum speed. The fan speed increases linearly from minimal fan speed for layers taking minimal layer time to maximum fan speed for layers taking the time specified here.",
                     "unit": "sec",
                     "type": "float",
                     "min_value": 0,
