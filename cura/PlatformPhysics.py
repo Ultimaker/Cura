@@ -107,11 +107,12 @@ class PlatformPhysics:
                         continue
 
                     # Check to see if the bounding boxes intersect. If not, we can ignore the node as there is no way the hull intersects.
-                    if node.getBoundingBox().intersectsBox(other_node.getBoundingBox()) == AxisAlignedBox.IntersectionResult.NoIntersection:
-                        continue
+                    #if node.getBoundingBox().intersectsBox(other_node.getBoundingBox()) == AxisAlignedBox.IntersectionResult.NoIntersection:
+                    #    continue
 
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                    print("Overlap", overlap)
                     if overlap is None:
                         continue
                     
