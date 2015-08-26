@@ -1,0 +1,63 @@
+{
+  "id": "innovo-inventor",
+  "name": "Innovo INVENTOR",
+  "icon": "icon_ultimaker.png",
+  "platform": "",
+  "inherits": "fdmprinter.json",
+  "machine_settings": {
+    "machine_width": {
+      "default": 340
+    },
+    "machine_height": {
+      "default": 290
+    },
+    "machine_depth": {
+      "default": 300
+    },
+    "machine_center_is_zero": {
+      "default": false
+    },
+    "machine_nozzle_size": {
+      "default": 0.4
+    },
+    "machine_head_shape_min_x": {
+      "default": 43.7
+    },
+    "machine_head_shape_min_y": {
+      "default": 19.2
+    },
+    "machine_head_shape_max_x": {
+      "default": 43.7
+    },
+    "machine_head_shape_max_y": {
+      "default": 55
+    },
+    "machine_nozzle_gantry_distance": {
+      "default": 82.3
+    },
+    "machine_nozzle_offset_x_1": {
+      "default": 0
+    },
+    "machine_nozzle_offset_y_1": {
+      "default": 15
+    },
+    "machine_gcode_flavor": {
+      "default": "RepRap (Marlin/Sprinter)"
+    },
+    "machine_start_gcode": {
+      "default": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\n{IF_BED}M190 S{BED}\n{IF_EXT0}M104 T0 S{TEMP0}\n{IF_EXT0}M109 T0 S{TEMP0}\n{IF_EXT1}M104 T1 S{TEMP1}\n{IF_EXT1}M109 T1 S{TEMP1}\nG32 S3 ; auto level\nG92 E0 ; Reset extruder position"
+    },
+    "machine_end_gcode": {
+      "default": "M104 S0\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors"
+    }
+  },
+  "categories": {
+    "material": {
+      "settings": {
+        "material_bed_temperature": {
+          "visible": false
+        }
+      }
+    }
+  }
+}
