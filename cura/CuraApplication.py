@@ -45,7 +45,6 @@ import platform
 import sys
 import os
 import os.path
-import configparser
 import numpy
 numpy.seterr(all="ignore")
 
