@@ -87,9 +87,12 @@ class SliceInfo(Extension):
             "machine": platform.machine(),
             "platform": platform.platform(),
             "machine_settings": json.dumps(machine_settings),
-            "version": "15.10",#Application.getInstance().getVersion(),
-            "printtime": print_information.currentPrintTime,
-            "filament": material_used
+            "version": Application.getInstance().getVersion(),
+            "modelhash": "None",
+            "printtime": str(print_information.currentPrintTime),
+            "filament": material_used,
+            "language": Preferences.getInstance().getValue("general/language"),
+            "materials_profiles ": {}
         }
 
         # Convert data to bytes

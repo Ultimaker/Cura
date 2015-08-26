@@ -125,6 +125,39 @@ UM.PreferencesPage
                 }
             }
         }
+
+        CheckBox
+        {
+            id: sendDataCheckbox
+            checked: UM.Preferences.getValue("info/send_slice_info")
+            onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
+        }
+        Button
+        {
+            id: pushFreeText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
+
+            //: Display Overhang preference checkbox
+            text: qsTr("Send (anonymous) slice info");
+            onClicked: sendDataCheckbox.checked = !sendDataCheckbox.checked
+
+            //: Display Overhang preference tooltip
+            tooltip: "Should anonymous data about your slices be sent to Ultimaker. No models or IP's are sent / stored."
+
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
+                    border.width: 0
+                    color: "transparent"
+                }
+                label: Text
+                {
+                    renderType: Text.NativeRendering
+                    horizontalAlignment: Text.AlignLeft
+                    text: control.text
+                }
+            }
+        }
         Item { Layout.fillHeight: true; Layout.columnSpan: 2 }
     }
 }
