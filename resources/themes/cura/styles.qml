@@ -67,10 +67,10 @@ QtObject {
 
                 Rectangle {
                     id: tool_button_background
-                    anchors.top: parent.verticalCenter;
+                    anchors.top: parent.bottom
 
-                    width: parent.width;
-                    height: control.hovered ? parent.height / 2 + label.height : 0;
+                    width: label.width > parent.width ? label.width : parent.width
+                    height: control.hovered ? label.height : 0;
                     Behavior on height { NumberAnimation { duration: 100; } }
 
                     opacity: control.hovered ? 1.0 : 0.0;
@@ -205,26 +205,23 @@ QtObject {
             background:Rectangle {
                 implicitWidth: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2)
                 implicitHeight: UM.Theme.sizes.progressbar.height
-                x: UM.Theme.sizes.default_margin.width
                 color: UM.Theme.colors.progressbar_background
             }
             progress: Rectangle {
                 color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
-
                 Rectangle{
                     color: UM.Theme.colors.progressbar_control
                     width: UM.Theme.sizes.progressbar_control.width
                     height: UM.Theme.sizes.progressbar_control.height
-                    x: UM.Theme.sizes.default_margin.width
                     visible: control.indeterminate
 
                     SequentialAnimation on x {
                         id: xAnim
-                        property int animEndPoint: UM.Theme.sizes.message.width - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.progressbar_control.width
+                        property int animEndPoint: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2) - UM.Theme.sizes.progressbar_control.width
                         running: control.indeterminate
                         loops: Animation.Infinite
-                        NumberAnimation { from: UM.Theme.sizes.default_margin.width; to: xAnim.animEndPoint; duration: 2000;}
-                        NumberAnimation { from: xAnim.animEndPoint; to: UM.Theme.sizes.default_margin.width; duration: 2000;}
+                        NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
+                        NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
                     }
                 }
             }
@@ -419,26 +416,6 @@ QtObject {
                     color: UM.Theme.colors.slider_groove_fill;
                     width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
                 }
-                Label {
-                    id: maxValueLabel
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: control.maximumValue + 1
-                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
-                    transformOrigin: Item.BottomLeft
-                    rotation: 90
-                    x: parent.x + parent.width - maxValueLabel.height
-                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
-                }
-                Label {
-                    id: minValueLabel
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: '1'
-                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
-                    transformOrigin: Item.BottomLeft
-                    rotation: 90
-                    x: parent.x
-                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
-                }
             }
             handle: Rectangle {
                 id: layerSliderControl
@@ -446,26 +423,37 @@ QtObject {
                 height: UM.Theme.sizes.slider_handle.height;
                 color: control.hovered ? UM.Theme.colors.slider_handle_hover : UM.Theme.colors.slider_handle;
                 Behavior on color { ColorAnimation { duration: 50; } }
-                Label {
+                TextField {
                     id: valueLabel
+                    property int unremovableSpacing: 5
+                    property string maxValue: control.maximumValue + 1
+                    placeholderText: control.value + 1
+                    onEditingFinished: {
+                        if (valueLabel.text != ''){
+                            control.value = valueLabel.text - 1
+                            valueLabel.text = ''
+                            valueLabel.focus = false
+                        }
+
+                    }
+                    validator: IntValidator {bottom: 1; top: control.maximumValue + 1;}
                     visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: control.value + 1
                     anchors.bottom: layerSliderControl.bottom
                     anchors.right: layerSliderControl.left
-                    anchors.bottomMargin: parent.width + UM.Theme.sizes.default_margin.width
-                    font: UM.Theme.fonts.default
+                    anchors.rightMargin: valueLabel.unremovableSpacing / 2
+                    anchors.bottomMargin: parent.width + (UM.Theme.sizes.default_margin.width / 2)
                     transformOrigin: Item.BottomRight
                     rotation: 90
-                    Rectangle {
-                        width: (parent.width + UM.Theme.sizes.tooltip_margins.width) < 35 ? 35 : parent.width + UM.Theme.sizes.tooltip_margins.width
-                        height: parent.height + (UM.Theme.sizes.tooltip_margins.height / 2)
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        z: parent.z - 1
-                        color: UM.Theme.colors.slider_text_background
-                        border.width: 1
-                        border.color: UM.Theme.colors.slider_groove_fill;
-
+                    style: TextFieldStyle{
+                        textColor: UM.Theme.colors.setting_control_text;
+                        font: UM.Theme.fonts.default;
+                        background: Rectangle {
+                            radius: 0
+                            implicitWidth: control.maxValue.length * valueLabel.font.pixelSize
+                            implicitHeight: UM.Theme.sizes.slider_handle.height + valueLabel.unremovableSpacing
+                            border.width: 1;
+                            border.color: UM.Theme.colors.slider_groove_border;
+                        }
                     }
                 }
             }

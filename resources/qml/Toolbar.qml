@@ -51,7 +51,7 @@ Item {
             z: parent.z - 1
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            color: UM.Theme.colors.button_lining
+            color: UM.Theme.colors.lining
         }
 
     Rectangle {
@@ -68,7 +68,7 @@ Item {
 
         color: UM.Theme.colors.tool_panel_background;
         border.width: UM.Theme.sizes.default_lining.width
-        border.color: UM.Theme.colors.button_lining
+        border.color: UM.Theme.colors.lining
 
         Loader {
             id: panel

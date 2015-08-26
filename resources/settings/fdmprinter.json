@@ -391,7 +391,10 @@
                     "type": "enum",
                     "options": [
                         "Lines",
-                        "Concentric"
+                        "Grid",
+                        "Triangles",
+                        "Concentric",
+                        "ZigZag"
                     ],
                     "default": "Lines",
                     "visible": false
@@ -448,20 +451,6 @@
                     "type": "float",
                     "default": 20,
                     "children": {
-                        "infill_pattern": {
-                            "label": "Infill Pattern",
-                            "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
-                            "type": "enum",
-                            "visible": false,
-                            "options": [
-                                "Grid",
-                                "Lines",
-                                "Concentric",
-                                "ZigZag"
-                            ],
-                            "default": "Grid",
-                            "inherit_function": "'Lines' if parent_value > 25 else 'Grid'"
-                        },
                         "infill_line_distance": {
                             "label": "Line distance",
                             "description": "Distance between the printed infill lines.",
@@ -472,6 +461,21 @@
                             "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
                         }
                     }
+                },
+                "infill_pattern": {
+                    "label": "Infill Pattern",
+                    "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
+                    "type": "enum",
+                    "visible": false,
+                    "options": [
+                        "Lines",
+                        "Grid",
+                        "Triangles",
+                        "Concentric",
+                        "ZigZag"
+                    ],
+                    "default": "Grid",
+                    "inherit_function": "'Lines' if parent_value > 25 else 'Grid'"
                 },
                 "infill_overlap": {
                     "label": "Infill Overlap",
@@ -507,6 +511,13 @@
                             "inherit_function": "math.floor((parent_value + 0.001) / layer_height)"
                         }
                     }
+                },
+                "infill_before_walls": {
+                    "label": "Infill Before Walls",
+                    "description": "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false
                 }
             }
         },
@@ -556,7 +567,8 @@
                     "label": "Enable Retraction",
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
                     "type": "boolean",
-                    "default": true
+                    "default": true,
+                    "visible": true
                 },
                 "retraction_amount": {
                     "label": "Retraction Distance",
@@ -1281,6 +1293,38 @@
                         "value": true
                     }
                 },
+                "support_roof_density": {
+                    "label": "Hammock Density",
+                    "description": "This controls how densely filled the roofs of the support will be. A higher percentage results in better overhangs, which are more difficult to remove.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 100,
+                    "children": {
+                        "support_roof_line_distance": {
+                            "label": "Hammock Line Distance",
+                            "description": "Distance between the printed hammock lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.4,
+                            "visible": false,
+                            "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value"
+                        }
+                    }
+                },
+                "support_roof_pattern": {
+                    "label": "Hammock Pattern",
+                    "description": "The pattern with which the hammock is printed.",
+                    "type": "enum",
+                    "visible": false,
+                    "options": [
+                        "Lines",
+                        "Grid",
+                        "Triangles",
+                        "Concentric",
+                        "ZigZag"
+                    ],
+                    "default": "Concentric"
+                },
                 "support_use_towers": {
                     "label": "Use towers.",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
@@ -1331,8 +1375,10 @@
                     "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
                     "type": "enum",
                     "options": [
-                        "Grid",
                         "Lines",
+                        "Grid",
+                        "Triangles",
+                        "Concentric",
                         "ZigZag"
                     ],
                     "default": "ZigZag",
