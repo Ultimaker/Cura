@@ -17,6 +17,10 @@ UM.PreferencesPage
     {
         UM.Preferences.resetPreference("general/language")
         UM.Preferences.resetPreference("physics/automatic_push_free")
+        UM.Preferences.resetPreference("info/send_slice_info")
+        pushFreeCheckbox.checked = UM.Preferences.getValue("physics/automatic_push_free")
+        sendDataCheckbox.checked = UM.Preferences.getValue("info/send_slice_info")
+        languageComboBox.currentIndex = 0
     }
     GridLayout
     {
