@@ -782,9 +782,10 @@ class printWindowAdvanced(wx.Frame):
 		self._colorCommandMap[(r, g, b)] = (command, step)
 
 	def _moveXYZE(self, motor, step, feedrate):
+		# Prevent Z movement when paused and all moves when printing
 		if (not self._printerConnection.hasActiveConnection() or \
 			self._printerConnection.isActiveConnectionOpen()) and \
-			(not self._printerConnection.isPaused() and \
+			(not (self._printerConnection.isPaused() and motor == 'Z') and \
 			 not self._printerConnection.isPrinting()):
 			self._printerConnection.sendCommand("G91")
 			self._printerConnection.sendCommand("G1 %s%.1f F%d" % (motor, step, feedrate))
