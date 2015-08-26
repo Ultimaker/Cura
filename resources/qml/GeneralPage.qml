@@ -134,7 +134,7 @@ UM.PreferencesPage
         }
         Button
         {
-            id: pushFreeText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
+            id: sendDataText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
             text: qsTr("Send (anonymous) slice info");
