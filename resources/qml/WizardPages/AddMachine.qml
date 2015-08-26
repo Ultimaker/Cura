@@ -274,6 +274,11 @@ ColumnLayout
             {
                 elementRoot.currentPage += 1
             }
+
+            if (elementRoot.getPageCount() == elementRoot.currentPage)
+            {
+                elementRoot.visible = false
+            }
         }
     }
 }
