@@ -40,7 +40,7 @@ Rectangle
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter
-            font: UM.Theme.fonts.default;
+            //font: UM.Theme.fonts.default;
             color: UM.Theme.colors.text_white
         }
         TextField
