@@ -45,9 +45,10 @@ class CuraEngineBackend(Backend):
         self._onActiveViewChanged()
         self._stored_layer_data = None
 
-        self._settings = None
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
-        self._onActiveMachineChanged()
+
+        self._profile = None
+        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
+        self._onActiveProfileChanged()
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(500)
@@ -115,7 +116,7 @@ class CuraEngineBackend(Backend):
             return
 
         object_groups = []
-        if self._settings.getSettingValueByKey("print_sequence") == "One at a time":
+        if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
                 children = node.getAllChildren()
@@ -141,7 +142,7 @@ class CuraEngineBackend(Backend):
         if len(object_groups) == 0:
             return #No point in slicing an empty build plate
 
-        if kwargs.get("settings", self._settings).hasErrorValue():
+        if kwargs.get("profile", self._profile).hasErrorValue():
             return #No slicing if we have error values since those are by definition illegal values.
 
         self._slicing = True
@@ -151,7 +152,7 @@ class CuraEngineBackend(Backend):
         if self._report_progress:
             self.processingProgress.emit(0.0)
 
-        self._sendSettings(kwargs.get("settings", self._settings))
+        self._sendSettings(kwargs.get("profile", self._profile))
 
         self._scene.acquireLock()
 
@@ -197,13 +198,14 @@ class CuraEngineBackend(Backend):
 
         self._onChanged()
 
-    def _onActiveMachineChanged(self):
-        if self._settings:
-            self._settings.settingChanged.disconnect(self._onSettingChanged)
 
-        self._settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
-        if self._settings:
-            self._settings.settingChanged.connect(self._onSettingChanged)
+    def _onActiveProfileChanged(self):
+        if self._profile:
+            self._profile.settingValueChanged.disconnect(self._onSettingChanged)
+
+        self._profile = Application.getInstance().getMachineManager().getActiveProfile()
+        if self._profile:
+            self._profile.settingValueChanged.connect(self._onSettingChanged)
             self._onChanged()
 
     def _onSettingChanged(self, setting):
@@ -249,17 +251,17 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
 
     def _onChanged(self):
-        if not self._settings:
+        if not self._profile:
             return
 
         self._change_timer.start()
 
-    def _sendSettings(self, settings):
+    def _sendSettings(self, profile):
         msg = Cura_pb2.SettingList()
-        for setting in settings.getAllSettings(include_machine=True):
+        for key, value in profile.getAllSettingValues(include_machine = True).items():
             s = msg.settings.add()
-            s.name = setting.getKey()
-            s.value = str(setting.getValue()).encode("utf-8")
+            s.name = key
+            s.value = str(value).encode("utf-8")
 
         self._socket.sendMessage(msg)
 
