@@ -339,11 +339,13 @@ UM.MainWindow
             {
                 id: toolbar;
 
-                anchors
-                {
-                    horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.panel.width / 2)
-                    top: parent.top;
+                anchors {
+                    left: parent.left
+                    top: parent.top
+                    topMargin: 74
+                    //horizontalCenter: parent.horizontalCenter
+                    //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
+                    //top: parent.top;
                 }
             }
 
@@ -358,7 +360,7 @@ UM.MainWindow
                     right: parent.right;
                 }
 
-                width: UM.Theme.sizes.panel.width;
+                width: UM.Theme.sizes.sidebar.width;
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;

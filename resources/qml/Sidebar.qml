@@ -102,7 +102,7 @@ Rectangle
         {
             id: saveButton;
             implicitWidth: base.width
-            implicitHeight: UM.Theme.sizes.save_button_text_margin.height * 2 + UM.Theme.sizes.save_button_slicing_bar.height + UM.Theme.sizes.save_button_save_to_button.height +  UM.Theme.sizes.default_margin.height
+            implicitHeight: totalHeight
         }
     }
 
