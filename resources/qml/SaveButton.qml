@@ -8,7 +8,8 @@ import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
-Rectangle {
+Rectangle
+{
     id: base;
 
     property real progress: UM.Backend.progress;
@@ -17,8 +18,9 @@ Rectangle {
 
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
-
-    Rectangle{
+    UM.I18nCatalog { id: catalog; name:"cura"}
+    Rectangle
+    {
         id: background
         implicitWidth: base.width;
         implicitHeight: parent.height;
@@ -26,7 +28,8 @@ Rectangle {
         border.width: UM.Theme.sizes.save_button_border.width
         border.color: UM.Theme.colors.save_button_border
 
-        Rectangle {
+        Rectangle
+        {
             id: infoBox
             width: parent.width - UM.Theme.sizes.default_margin.width * 2;
             height: UM.Theme.sizes.save_button_slicing_bar.height
@@ -39,7 +42,8 @@ Rectangle {
             border.width: UM.Theme.sizes.save_button_border.width
             border.color: UM.Theme.colors.save_button_border
             color: UM.Theme.colors.save_button_estimated_text_background;
-            Label {
+            Label
+            {
                 id: label;
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -47,24 +51,27 @@ Rectangle {
                 visible: base.progress >= 0 && base.progress < 0.99 ? false : true
                 color: UM.Theme.colors.save_button_estimated_text;
                 font: UM.Theme.fonts.small;
-                text: {
-                    if(base.activity == false) {
-                        //: Save button label
-                        return qsTr("Please load a 3D model");
-                    } else if (base.progress < 0.99) {
-                        //: Save button label
-                        return qsTr("Calculating Print-time");
-                    } else if (base.printDuration.days > 0 || base.progress == null){
-                        return qsTr("");
+                text:
+                {
+                    if(base.activity == false)
+                    {
+                        return catalog.i18nc("@label","Please load a 3D model");
+                    } else if (base.progress < 0.99)
+                    {
+                        return catalog.i18nc("@label","Calculating Print-time");
+                    } else if (base.printDuration.days > 0 || base.progress == null)
+                    {
+                        return "";
                     }
-                    else if (base.progress > 0.99){
-                        //: Save button label
-                        return qsTr("Estimated Print-time");
+                    else if (base.progress > 0.99)
+                    {
+                        return catalog.i18nc("@label","Estimated Print-time");
                     }
                     return "";
                 }
             }
-            Label {
+            Label
+            {
                 id: printDurationLabel
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: label.right;
@@ -74,7 +81,8 @@ Rectangle {
                 visible: base.activity == false || base.progress < 0.99 ? false : true
                 text: (!base.printDuration || !base.printDuration.valid) ? "" : base.printDuration.getDisplayString(UM.DurationFormat.Long);
             }
-            Label {
+            Label
+            {
                 id: printMaterialLabel
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: printDurationLabel.right;
@@ -86,12 +94,14 @@ Rectangle {
                 elide: mediumLengthDuration ? Text.ElideRight : Text.ElideNone
                 visible: base.activity == false || base.progress < 0.99 ? false : true
                 //: Print material amount save button label
-                text: base.printMaterialAmount < 0 ? "" : qsTr("%1m of Material").arg(base.printMaterialAmount);
+                text: base.printMaterialAmount < 0 ? "" : catalog.i18nc("@label","%1m of Material").arg(base.printMaterialAmount);
             }
         }
-        Rectangle {
+        Rectangle
+        {
             id: infoBoxOverlay
-            anchors {
+            anchors
+            {
                 left: infoBox.left;
                 top: infoBox.top;
                 bottom: infoBox.bottom;
@@ -101,7 +111,8 @@ Rectangle {
             visible: progress > 0.99 ? false : true
         }
 
-        Button {
+        Button
+        {
             id: saveToButton
             anchors.top: infoBox.bottom
             anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height;
@@ -115,11 +126,14 @@ Rectangle {
 
             text: UM.OutputDeviceManager.activeDeviceShortDescription;
 
-            style: ButtonStyle {
-                background: Rectangle {
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
                     color: !control.enabled ? UM.Theme.colors.save_button_inactive : control.hovered ? UM.Theme.colors.save_button_active_hover : UM.Theme.colors.save_button_active;
 
-                    Label {
+                    Label
+                    {
                         anchors.centerIn: parent
                         color: UM.Theme.colors.save_button_safe_to_text;
                         font: UM.Theme.fonts.sidebar_save_to;
@@ -131,14 +145,15 @@ Rectangle {
             onClicked: UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
         }
 
-        Button {
+        Button
+        {
             id: deviceSelectionMenu;
             anchors.top: infoBox.bottom
             anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
 
-            tooltip: qsTr("Select the active output device");
+            tooltip: catalog.i18nc("@info:tooltip","Select the active output device");
 
             width: infoBox.width/6*1.3 - UM.Theme.sizes.save_button_text_margin.height;
             height: UM.Theme.sizes.save_button_save_to_button.height
@@ -146,12 +161,14 @@ Rectangle {
             iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
-                background: Rectangle {
+                background: Rectangle
+                {
                     color: UM.Theme.colors.save_button_background;
                     border.width: control.hovered ? UM.Theme.sizes.save_button_border.width : 0
                     border.color: UM.Theme.colors.save_button_border
 
-                    Rectangle {
+                    Rectangle
+                    {
                         id: deviceSelectionIcon
                         color: UM.Theme.colors.save_button_background;
                         anchors.left: parent.left
@@ -160,7 +177,8 @@ Rectangle {
                         width: parent.height - UM.Theme.sizes.save_button_text_margin.width ;
                         height: parent.height - UM.Theme.sizes.save_button_text_margin.width;
 
-                        UM.RecolorImage {
+                        UM.RecolorImage
+                        {
                             anchors.fill: parent;
                             sourceSize.width: width;
                             sourceSize.height: height;
@@ -168,7 +186,8 @@ Rectangle {
                             source: control.iconSource;
                         }
                     }
-                    Label {
+                    Label
+                    {
                         id: deviceSelectionArrow
                         anchors.right: parent.right;
                         anchors.rightMargin: UM.Theme.sizes.save_button_text_margin.height
@@ -181,18 +200,19 @@ Rectangle {
                 label: Item { }
             }
 
-            menu: Menu {
+            menu: Menu
+            {
                 id: devicesMenu;
-                Instantiator {
+                Instantiator
+                {
                     model: devicesModel;
-                    MenuItem {
+                    MenuItem
+                    {
                         text: model.description
                         checkable: true;
                         checked: model.id == UM.OutputDeviceManager.activeDevice;
                         exclusiveGroup: devicesMenuGroup;
-                        onTriggered: {
-                            UM.OutputDeviceManager.setActiveDevice(model.id);
-                        }
+                        onTriggered: UM.OutputDeviceManager.setActiveDevice(model.id);
                     }
                     onObjectAdded: devicesMenu.insertItem(index, object)
                     onObjectRemoved: devicesMenu.removeItem(object)
@@ -202,7 +222,8 @@ Rectangle {
         }
     }
 
-    UM.OutputDevicesModel {
+    UM.OutputDevicesModel
+    {
         id: devicesModel;
     }
 }

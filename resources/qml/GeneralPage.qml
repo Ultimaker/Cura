@@ -6,12 +6,12 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 UM.PreferencesPage
 {
     //: General configuration page title
-    title: qsTr("General");
+    title: catalog.i18nc("@title:wizard","General");
 
     function reset()
     {
@@ -26,10 +26,11 @@ UM.PreferencesPage
     {
         columns: 2;
         //: Language selection label
+        UM.I18nCatalog{id: catalog; name:"cura"}
         Label
         {
             id: languageLabel
-            text: qsTr("Language")
+            text: catalog.i18nc("@label","Language")
         }
 
         ComboBox
@@ -76,7 +77,7 @@ UM.PreferencesPage
                 // Because ListModel is stupid and does not allow using qsTr() for values.
                 for(var i = 0; i < languageList.count; ++i)
                 {
-                    languageList.setProperty(i, "text", qsTr(languageList.get(i).text));
+                    languageList.setProperty(i, "text", catalog.i18nc("@action:menu",languageList.get(i).text));
                 }
 
                 // Glorious hack time. ComboBox does not update the text properly after changing the
@@ -92,7 +93,7 @@ UM.PreferencesPage
             Layout.columnSpan: 2
 
             //: Language change warning
-            text: qsTr("You will need to restart the application for language changes to have effect.")
+            text: catalog.i18nc("@label","You will need to restart the application for language changes to have effect.")
             wrapMode: Text.WordWrap
             font.italic: true
         }
@@ -108,11 +109,11 @@ UM.PreferencesPage
             id: pushFreeText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: qsTr("Automatic push free");
+            text: catalog.i18nc("@action:checkbox","Automatic push free");
             onClicked: pushFreeCheckbox.checked = !pushFreeCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: "Are objects on the platform automatically moved so they no longer intersect"
+            tooltip: catalog.i18nc("@info:tooltip","Are objects on the platform automatically moved so they no longer intersect")
 
             style: ButtonStyle
             {
@@ -141,11 +142,11 @@ UM.PreferencesPage
             id: sendDataText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: qsTr("Send (anonymous) slice info");
+            text: catalog.i18nc("@action:checkbox","Send (anonymous) slice info");
             onClicked: sendDataCheckbox.checked = !sendDataCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: "Should anonymous data about your slices be sent to Ultimaker. No models or IP's are sent / stored."
+            tooltip: catalog.i18nc("@info:tooltip","Should anonymous data about your slices be sent to Ultimaker. No models or IP's are sent / stored.")
 
             style: ButtonStyle
             {

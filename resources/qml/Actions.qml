@@ -3,9 +3,10 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-Item {
+Item
+{
     property alias open: openAction;
     property alias save: saveAction;
     property alias quit: quitAction;
@@ -42,60 +43,69 @@ Item {
 
     property alias toggleFullScreen: toggleFullScreenAction;
 
+    UM.I18nCatalog{id: catalog; name:"cura"}
+
     Action
     {
         id:toggleFullScreenAction
         shortcut: StandardKey.FullScreen;
     }
 
-    Action {
+    Action
+    {
         id: undoAction;
         //: Undo action
-        text: qsTr("Undo");
+        text: catalog.i18nc("@action","Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
     }
 
-    Action {
+    Action
+    {
         id: redoAction;
         //: Redo action
-        text: qsTr("Redo");
+        text: catalog.i18nc("@action","Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
     }
 
-    Action {
+    Action
+    {
         id: quitAction;
         //: Quit action
-        text: qsTr("Quit");
+        text: catalog.i18nc("@action","Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
     }
 
-    Action {
+    Action
+    {
         id: preferencesAction;
         //: Preferences action
-        text: qsTr("Preferences...");
+        text: catalog.i18nc("@action","Preferences...");
         iconName: "configure";
     }
 
-    Action {
+    Action
+    {
         id: addMachineAction;
         //: Add Printer action
-        text: qsTr("Add Printer...");
+        text: catalog.i18nc("@action","Add Printer...");
     }
 
-    Action {
+    Action
+    {
         id: settingsAction;
         //: Configure Printers action
-        text: qsTr("Configure Printers");
+        text: catalog.i18nc("@action","Configure Printers");
         iconName: "configure";
     }
 
-    Action {
+    Action
+    {
         id: documentationAction;
         //: Show Online Documentation action
-        text: qsTr("Show Online &Documentation");
+        text: catalog.i18nc("@action","Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
     }
@@ -103,118 +113,131 @@ Item {
     Action {
         id: reportBugAction;
         //: Report a Bug Action
-        text: qsTr("Report a &Bug");
+        text: catalog.i18nc("@action","Report a &Bug");
         iconName: "tools-report-bug";
     }
 
-    Action {
+    Action
+    {
         id: aboutAction;
         //: About action
-        text: qsTr("About...");
+        text: catalog.i18nc("@action","About...");
         iconName: "help-about";
     }
 
-    Action {
+    Action
+    {
         id: deleteSelectionAction;
         //: Delete selection action
-        text: qsTr("Delete Selection");
+        text: catalog.i18nc("@action","Delete Selection");
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
     }
 
-    Action {
+    Action
+    {
         id: deleteObjectAction;
         //: Delete object action
-        text: qsTr("Delete Object");
+        text: catalog.i18nc("@action","Delete Object");
         iconName: "edit-delete";
         shortcut: StandardKey.Backspace;
     }
 
-    Action {
+    Action
+    {
         id: centerObjectAction;
         //: Center object action
-        text: qsTr("Center Object on Platform");
+        text: catalog.i18nc("@action","Center Object on Platform");
     }
 
     Action
     {
         id: groupObjectsAction
-        text: qsTr("Group objects");
+        text: catalog.i18nc("@action","Group objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
 
     Action
     {
         id: unGroupObjectsAction
-        text: qsTr("Ungroup objects");
+        text: catalog.i18nc("@action","Ungroup objects");
         enabled: UM.Scene.isGroupSelected
     }
     
     Action
     {
         id: mergeObjectsAction
-        text: qsTr("Merge objects");
+        text: catalog.i18nc("@action","Merge objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
     
-    Action {
+    Action
+    {
         id: multiplyObjectAction;
         //: Duplicate object action
-        text: qsTr("Duplicate Object");
+        text: catalog.i18nc("@action","Duplicate Object");
     }
 
-    Action {
+    Action
+    {
         id: splitObjectAction;
         //: Split object action
-        text: qsTr("Split Object into Parts");
+        text: catalog.i18nc("@action","Split Object into Parts");
         enabled: false;
     }
 
-    Action {
+    Action
+    {
         id: deleteAllAction;
         //: Clear build platform action
-        text: qsTr("Clear Build Platform");
+        text: catalog.i18nc("@action","Clear Build Platform");
         iconName: "edit-clear";
     }
 
-    Action {
+    Action
+    {
         id: reloadAllAction;
         //: Reload all objects action
-        text: qsTr("Reload All Objects");
+        text: catalog.i18nc("@action","Reload All Objects");
     }
 
-    Action {
+    Action
+    {
         id: resetAllTranslationAction;
         //: Reset all positions action
-        text: qsTr("Reset All Object Positions");
+        text: catalog.i18nc("@action","Reset All Object Positions");
     }
 
-    Action {
+    Action
+    {
         id: resetAllAction;
         //: Reset all positions action
-        text: qsTr("Reset All Object Transformations");
+        text: catalog.i18nc("@action","Reset All Object Transformations");
     }
 
-    Action {
+    Action
+    {
         id: openAction;
         //: Open file action
-        text: qsTr("Load file");
+        text: catalog.i18nc("@action","Load file");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
 
-    Action {
+    Action
+    {
         id: saveAction;
         //: Save file action
-        text: qsTr("Save...");
+        text: catalog.i18nc("@action","Save...");
         iconName: "document-save";
         shortcut: StandardKey.Save;
     }
 
-    Action {
+    Action
+    {
         id: showEngineLogAction;
         //: Show engine log action
-        text: qsTr("Show engine &log...");
+        text: catalog.i18nc("@action","Show engine &log...");
         iconName: "view-list-text";
     }
 }

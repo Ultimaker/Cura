@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 Column
 {
@@ -23,7 +23,7 @@ Column
 
     Component.onCompleted: printer_connection.startPollEndstop()
     Component.onDestruction: printer_connection.stopPollEndstop()
-
+    UM.I18nCatalog { id: catalog; name:"cura"}
     Label
     {
         text: parent.title
@@ -33,14 +33,14 @@ Column
     Label
     {
         //: Add Printer wizard page description
-        text: qsTr("It's a good idea to do a few sanity checks on your Ultimaker. \n You can skip these if you know your machine is functional");
+        text: catalog.i18nc("@label","It's a good idea to do a few sanity checks on your Ultimaker. \n You can skip these if you know your machine is functional");
     }
 
     Row
     {
         Label
         {
-            text: qsTr("Connection: ")
+            text: catalog.i18nc("@label","Connection: ")
         }
         Label
         {
@@ -51,34 +51,22 @@ Column
     {
         Label
         {
-            text: qsTr("Min endstop X: ")
+            text: catalog.i18nc("@label","Min endstop X: ")
         }
         Label
         {
-            text: x_min_pressed ? qsTr("Works") : qsTr("Not checked")
+            text: x_min_pressed ? catalog.i18nc("@label","Works") : catalog.i18nc("@label","Not checked")
         }
     }
     Row
     {
         Label
         {
-            text: qsTr("Min endstop Y: ")
+            text: catalog.i18nc("@label","Min endstop Y: ")
         }
         Label
         {
-            text: y_min_pressed ? qsTr("Works") : qsTr("Not checked")
-        }
-    }
-
-    Row
-    {
-        Label
-        {
-            text: qsTr("Min endstop Z: ")
-        }
-        Label
-        {
-            text: z_min_pressed ? qsTr("Works") : qsTr("Not checked")
+            text: y_min_pressed ? catalog.i18nc("@label","Works") : catalog.i18nc("@label","Not checked")
         }
     }
 
@@ -86,7 +74,19 @@ Column
     {
         Label
         {
-            text: qsTr("Nozzle temperature check: ")
+            text: catalog.i18nc("@label","Min endstop Z: ")
+        }
+        Label
+        {
+            text: z_min_pressed ? catalog.i18nc("@label","Works") : catalog.i18nc("@label","Not checked")
+        }
+    }
+
+    Row
+    {
+        Label
+        {
+            text: catalog.i18nc("@label","Nozzle temperature check: ")
         }
         Label
         {
@@ -94,10 +94,10 @@ Column
         }
         Button
         {
-            text: "Start heating"
+            text: catalog.i18nc("@action:button","Start heating")
             onClicked:
             {
-                heater_status_label.text = qsTr("Checking")
+                heater_status_label.text = catalog.i18nc("@label","Checking")
                 printer_connection.heatupNozzle(190)
                 wizardPage.extruder_target_temp = 190
             }
@@ -105,7 +105,7 @@ Column
         Label
         {
             id: heater_status_label
-            text: qsTr("Not checked")
+            text: catalog.i18nc("@label","Not checked")
         }
     }
 
@@ -113,7 +113,7 @@ Column
     {
         Label
         {
-            text: qsTr("bed temperature check: ")
+            text: catalog.i18nc("@label","bed temperature check: ")
         }
         Label
         {
@@ -121,10 +121,10 @@ Column
         }
         Button
         {
-            text: "Start heating"
+            text: catalog.i18nc("@action:button","Start heating")
             onClicked:
             {
-                bed_status_label.text = qsTr("Checking")
+                bed_status_label.text = catalog.i18nc("@label","Checking")
                 printer_connection.printer.heatupBed(60)
                 wizardPage.bed_target_temp = 60
             }
@@ -132,7 +132,7 @@ Column
         Label
         {
             id: bed_status_label
-            text: qsTr("Not checked")
+            text: catalog.i18nc("@label","Not checked")
         }
     }
 
@@ -159,7 +159,7 @@ Column
         {
             if(printer_connection.extruderTemperature > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperature < wizardPage.extruder_target_temp + 10)
             {
-                heater_status_label.text = qsTr("Works")
+                heater_status_label.text = catalog.i18nc("@label","Works")
                 printer_connection.heatupNozzle(0)
             }
         }
@@ -167,7 +167,7 @@ Column
         {
             if(printer_connection.bedTemperature > wizardPage.bed_target_temp - 5 && printer_connection.bedTemperature < wizardPage.bed_target_temp + 5)
             {
-                bed_status_label.text = qsTr("Works")
+                bed_status_label.text = catalog.i18nc("@label","Works")
                 printer_connection.heatupBed(0)
             }
         }

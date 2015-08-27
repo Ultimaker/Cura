@@ -6,18 +6,22 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 UM.Wizard
 {
     //: Add Printer dialog title
-    wizardTitle: qsTr("Add Printer")
+    wizardTitle: catalog.i18nc("@title:wizard","Add Printer")
     wizardPages: [
         {
             title: "Add Printer",
             page: "AddMachine.qml"
         }
     ]
+    Item
+    {
+        UM.I18nCatalog{id: catalog; name:"cura"}
+    }
 
     // This part is optional
     // This part checks whether there is a printer -> if not: some of the functions (delete for example) are disabled

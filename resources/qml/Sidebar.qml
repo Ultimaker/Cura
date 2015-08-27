@@ -6,42 +6,50 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-Rectangle {
+Rectangle
+{
     id: base;
 
     property Action addMachineAction;
     property Action configureMachinesAction;
 
     color: UM.Theme.colors.sidebar;
+    UM.I18nCatalog { id: catalog; name:"cura"}
 
-    function showTooltip(item, position, text) {
+    function showTooltip(item, position, text)
+    {
         tooltip.text = text;
         position = item.mapToItem(base, position.x, position.y / 2);
         tooltip.show(position);
     }
 
-    function hideTooltip() {
+    function hideTooltip()
+    {
         tooltip.hide();
     }
 
-    MouseArea {
+    MouseArea
+    {
         anchors.fill: parent
         acceptedButtons: Qt.AllButtons;
 
-        onWheel: {
+        onWheel:
+        {
             wheel.accepted = true;
         }
     }
 
-    ColumnLayout {
+    ColumnLayout
+    {
         anchors.fill: parent;
         anchors.topMargin: UM.Theme.sizes.default_margin.height;
 
         spacing: UM.Theme.sizes.default_margin.height;
 
-        SidebarHeader {
+        SidebarHeader
+        {
             id: header;
 
             Layout.fillWidth: true;
@@ -50,9 +58,11 @@ Rectangle {
             configureMachinesAction: base.configureMachinesAction;
             modesModel: modesListModel;
 
-            currentModeIndex: {
+            currentModeIndex:
+            {
                 var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-                if(index) {
+                if(index)
+                {
                     return index;
                 }
                 return 0;
@@ -60,7 +70,8 @@ Rectangle {
             onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
         }
 
-        Loader {
+        Loader
+        {
             id: sidebarContents;
 
             Layout.fillWidth: true;
@@ -87,18 +98,21 @@ Rectangle {
             }
         }
 
-        SaveButton {
+        SaveButton
+        {
             id: saveButton;
             implicitWidth: base.width
             implicitHeight: UM.Theme.sizes.save_button_text_margin.height * 2 + UM.Theme.sizes.save_button_slicing_bar.height + UM.Theme.sizes.save_button_save_to_button.height +  UM.Theme.sizes.default_margin.height
         }
     }
 
-    SidebarTooltip {
+    SidebarTooltip
+    {
         id: tooltip;
     }
 
-    ListModel {
+    ListModel
+    {
         id: modesListModel;
         //: Simple configuration mode option
         ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
@@ -106,10 +120,11 @@ Rectangle {
         ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
     }
 
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         for(var i = 0; i < modesListModel.count; ++i)
         {
-            modesListModel.setProperty(i, "text", qsTr(modesListModel.get(i).text));
+            modesListModel.setProperty(i, "text", catalog.i18nc("@label", modesListModel.get(i).text));
         }
     }
 }
