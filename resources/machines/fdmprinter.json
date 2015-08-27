@@ -372,12 +372,12 @@
                     "label": "Fill Gaps Between Walls",
                     "description": "Fill the gaps created by walls where they would otherwise be overlapping. This will also fill thin walls. Optionally only the gaps occurring within the top and bottom skin can be filled.",
                     "type": "enum",
-                    "options": [
-                        "Nowhere",
-                        "Everywhere",
-                        "Skin"
-                    ],
-                    "default": "Everywhere",
+                    "options": {
+                        "nowhere": "Nowhere",
+                        "everywhere": "Everywhere",
+                        "skin": "Skin"
+                    },
+                    "default": "everywhere",
                     "visible": false,
                     "active_if": {
                         "setting": "remove_overlapping_walls_x_enabled",
@@ -388,11 +388,11 @@
                     "label": "Bottom/Top Pattern",
                     "description": "Pattern of the top/bottom solid fill. This normally is done with lines to get the best possible finish, but in some cases a concentric fill gives a nicer end result.",
                     "type": "enum",
-                    "options": [
-                        "Lines",
-                        "Concentric"
-                    ],
-                    "default": "Lines",
+                    "options": {
+                        "lines": "Lines",
+                        "concentric": "Concentric"
+                    },
+                    "default": "lines",
                     "visible": false
                 },
                 "skin_alternate_rotation": {
@@ -440,14 +440,14 @@
                             "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
                             "type": "enum",
                             "visible": false,
-                            "options": [
-                                "Grid",
-                                "Lines",
-                                "Concentric",
-                                "ZigZag"
-                            ],
-                            "default": "Grid",
-                            "inherit_function": "'Lines' if parent_value > 25 else 'Grid'"
+                            "options": {
+                                "grid": "Grid",
+                                "lines": "Lines",
+                                "concentric": "Concentric",
+                                "zigzag": "Zig Zag"
+                            },
+                            "default": "grid",
+                            "inherit_function": "'lines' if parent_value > 25 else 'grid'"
                         },
                         "infill_line_distance": {
                             "label": "Line distance",
@@ -1099,13 +1099,11 @@
                     "label": "Placement",
                     "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
                     "type": "enum",
-                    "options": [
-                        "Touching Buildplate",
-                        "Everywhere"
-                    ],
-                    "default": "Everywhere",
-                    "visible": true,
-                    "inherit_function": "'Everywhere' if support_enable else 'None'",
+                    "options": {
+                        "buildplate": "Touching Buildplate",
+                        "everywhere": "Everywhere"
+                    },
+                    "default": "everywhere",
                     "active_if": {
                         "setting": "support_enable",
                         "value": true
@@ -1273,7 +1271,7 @@
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "boolean",
                     "default": true,
-                    "visible": true
+                    "visible": false
                 },
                 "support_minimal_diameter": {
                     "label": "Minimal Diameter",
@@ -1317,13 +1315,13 @@
                     "label": "Pattern",
                     "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
                     "type": "enum",
-                    "options": [
-                        "Grid",
-                        "Lines",
-                        "ZigZag"
-                    ],
-                    "default": "ZigZag",
-                    "visible": true,
+                    "options": {
+                        "grid": "Grid",
+                        "lines": "Lines",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default": "zigzag",
+                    "visible": false,
                     "active_if": {
                         "setting": "support_enable",
                         "value": true
@@ -1381,12 +1379,12 @@
                     "label": "Type",
                     "description": "Different options that help in preventing corners from lifting due to warping. Brim adds a single-layer-thick flat area around your object which is easy to cut off afterwards, and it is the recommended option. Raft adds a thick grid below the object and a thin interface between this and your object. (Note that enabling the brim or raft disables the skirt.)",
                     "type": "enum",
-                    "options": [
-                        "Skirt",
-                        "Brim",
-                        "Raft"
-                    ],
-                    "default": "Skirt"
+                    "options": {
+                        "skirt": "Skirt",
+                        "brim": "Brim",
+                        "raft": "Raft"
+                    },
+                    "default": "skirt"
                 },
                 "skirt_line_count": {
                     "label": "Skirt Line Count",
@@ -1681,13 +1679,12 @@
                     "label": "Draft Shield Limitation",
                     "description": "Whether to limit the height of the draft shield",
                     "type": "enum",
-                    "options": [
-                        "Full",
-                        "Limited"
-                    ],
-                    "default": "Full",
+                    "options": {
+                        "full": "Full",
+                        "limited": "Limited"
+                    },
+                    "default": "full",
                     "visible": false,
-                    "inherit_function": "Full",
                     "active_if": {
                         "setting": "draft_shield_enabled",
                         "value": true
@@ -1701,7 +1698,7 @@
                     "min_value": 0,
                     "max_value_warning": 30,
                     "default": 0,
-                    "inherit_function": "9999 if draft_shield_height_limitation == 'Full' and draft_shield_enabled else 0.0",
+                    "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
                     "visible": false,
                     "active_if": {
                         "setting": "draft_shield_height_limitation",
@@ -1754,11 +1751,11 @@
                     "label": "Print sequence",
                     "description": "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated such that the whole print head can move between and all models are lower than the distance between the nozzle and the X/Y axles.",
                     "type": "enum",
-                    "options": [
-                        "All at once",
-                        "One at a time"
-                    ],
-                    "default": "All at once",
+                    "options": {
+                        "all_at_once": "All at Once",
+                        "one_at_a_time": "One at a Time"
+                    },
+                    "default": "all_at_once",
                     "visible": true
                 },
                 "magic_mesh_surface_mode": {
@@ -1999,12 +1996,12 @@
                     "label": "WP Strategy",
                     "description": "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted.",
                     "type": "enum",
-                    "options": [
-                        "Compensate",
-                        "Knot",
-                        "Retract"
-                    ],
-                    "default": "Compensate",
+                    "options": {
+                        "compensate": "Compensate",
+                        "knot": "Knot",
+                        "retract": "Retract"
+                    },
+                    "default": "compensate",
                     "visible": false,
                     "active_if": {
                         "setting": "wireframe_enabled",
