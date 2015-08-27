@@ -1,6 +1,8 @@
 {
   "id": "innovo-inventor",
   "name": "Innovo INVENTOR",
+  "manufacturer": "INNOVO",
+  "author": "AR",
   "version": 1,
   "icon": "icon_ultimaker.png",
   "platform": "",
