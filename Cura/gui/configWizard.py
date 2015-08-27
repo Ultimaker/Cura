@@ -1121,7 +1121,7 @@ class LulzbotMachineSelectPage(InfoPage):
 	def OnLulzbotMiniSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotMiniToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotMiniToolheadPage,
-										 self.GetParent().lulzbotFirmwarePage)
+										 self.GetParent().lulzbotReadyPage)
 
 	def OnLulzbotTazSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazHotendPage)
@@ -1279,6 +1279,7 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 				wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotFirmwarePage)
 			else:
 				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotFirmwarePage, self.GetParent().lulzbotReadyPage)
 
 	def OnSingleV2(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
@@ -1445,7 +1446,7 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self, False)
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotFirmwarePage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotFirmwarePage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 
@@ -1509,8 +1510,7 @@ class ConfigWizard(wx.wizard.Wizard):
 		self.lulzbotMachineSelectPage = LulzbotMachineSelectPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMachineSelectPage, self.lulzbotMiniToolheadPage)
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotFirmwarePage)
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotFirmwarePage, self.lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerSelectParts, self.ultimakerFirmwareUpgradePage)
