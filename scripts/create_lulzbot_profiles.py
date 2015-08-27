@@ -149,6 +149,8 @@ def main():
             for machine_type in dir_map[dir]:
                 create_machine_type(machine_type, d, dir)
 
+    print "All done :D"
+
 
 if __name__ == '__main__':
     main()
