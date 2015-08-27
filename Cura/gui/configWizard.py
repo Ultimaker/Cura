@@ -1407,6 +1407,7 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 	def OnUpgradeClick(self, e):
 		if firmwareInstall.InstallFirmware():
 			self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+			self.GetParent().ShowPage(self.GetNext())
 
 	def OnSkipClick(self, e):
 		dlg = wx.MessageDialog(self,
