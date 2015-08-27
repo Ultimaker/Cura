@@ -1,6 +1,7 @@
 {
   "id": "innovo-inventor",
   "name": "Innovo INVENTOR",
+  "version": 1,
   "icon": "icon_ultimaker.png",
   "platform": "",
   "inherits": "fdmprinter.json",
