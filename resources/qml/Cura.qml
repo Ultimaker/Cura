@@ -304,9 +304,12 @@ UM.MainWindow {
                 id: toolbar;
 
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
-                    top: parent.top;
+                    left: parent.left
+                    top: parent.top
+                    topMargin: 74
+                    //horizontalCenter: parent.horizontalCenter
+                    //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
+                    //top: parent.top;
                 }
             }
 
