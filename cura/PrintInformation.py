@@ -176,6 +176,7 @@ class PrintInformation(QObject):
             self._slice_reason = None
 
     def _onActiveMachineChanged(self):
+        return
         if self._current_settings:
             self._current_settings.settingChanged.disconnect(self._onSettingChanged)
 

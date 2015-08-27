@@ -461,26 +461,28 @@ class CuraApplication(QtApplication):
     def _onActiveMachineChanged(self):
         machine = self.getMachineManager().getActiveMachineInstance()
         if machine:
+            pass
+            #Preferences.getInstance().setValue("cura/active_machine", machine.getName())
 
-            self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
-            self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
-            self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
+            #self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
+            #self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
+            #self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
 
-            disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
-            areas = []
-            if disallowed_areas:
-                for area in disallowed_areas:
-                    areas.append(Polygon(numpy.array(area, numpy.float32)))
+            #disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
+            #areas = []
+            #if disallowed_areas:
+                #for area in disallowed_areas:
+                    #areas.append(Polygon(numpy.array(area, numpy.float32)))
 
-            self._volume.setDisallowedAreas(areas)
+            #self._volume.setDisallowedAreas(areas)
 
-            self._volume.rebuild()
+            #self._volume.rebuild()
 
-            offset = machine.getSettingValueByKey("machine_platform_offset")
-            if offset:
-                self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
-            else:
-                self._platform.setPosition(Vector(0.0, 0.0, 0.0))
+            #offset = machine.getSettingValueByKey("machine_platform_offset")
+            #if offset:
+                #self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
+            #else:
+                #self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     def _onFileLoaded(self, job):
         node = job.getResult()
