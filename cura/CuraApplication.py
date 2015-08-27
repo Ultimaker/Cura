@@ -171,19 +171,9 @@ class CuraApplication(QtApplication):
         self.initializeEngine()
 
         manager = self.getMachineManager()
-        if manager.getMachineInstances():
-            active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
-            if active_machine_pref:
-                index = manager.findMachineInstance(active_machine_pref)
-                if index != -1:
-                    manager.setActiveMachineInstance(manager.getMachineInstance(index))
-
-            if not manager.getActiveMachineInstance():
-                manager.setActiveMachineInstance(manager.getMachineInstance(index))
-        else:
+        if not self.getMachineManager().getMachineInstances():
             self.requestAddPrinter.emit()
 
-        manager.setActiveProfile(manager.getProfiles()[0])
 
         if self._engine.rootObjects:
             self.closeSplash()
@@ -471,7 +461,6 @@ class CuraApplication(QtApplication):
     def _onActiveMachineChanged(self):
         machine = self.getMachineManager().getActiveMachineInstance()
         if machine:
-            Preferences.getInstance().setValue("cura/active_machine", machine.getName())
 
             self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
             self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
