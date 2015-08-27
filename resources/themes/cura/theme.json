@@ -32,10 +32,6 @@
             "capitalize": true,
             "family": "ProximaNova"
         },
-        "sidebar_save_to": {
-            "size": 1.0,
-            "family": "ProximaNova"
-        },
         "timeslider_time": {
             "size": 1.0,
             "bold": true,
@@ -64,8 +60,11 @@
 
         "text": [140, 144, 154, 255],
         "text_inactive": [174, 174, 174, 255],
+        "text_white": [255, 255, 255, 255],
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
+
+        "sidebar_header_bar": [12, 169, 227, 255],
 
         "button": [139, 143, 153, 255],
         "button_hover": [77, 184, 226, 255],
@@ -142,13 +141,19 @@
         "window_margin": [2.0, 2.0],
         "default_margin": [1.0, 1.0],
         "default_lining": [0.1, 0.1],
-        "panel": [22.0, 10.0],
         "logo": [9.5, 2.0],
         "toolbar_button": [2.0, 2.0],
         "toolbar_spacing": [1.0, 1.0],
 
+
         "loadfile_button": [11.0, 2.4],
         "loadfile_margin": [0.8, 0.4],
+
+        "sidebar": [24.0, 10.0],
+        "sidebar_header": [0.0, 3.2],
+        "sidebar_subParts": [0.0, 2.4],
+        "sidebar_specs_bar": [0.0, 2.2],
+        "sidebar_inputFields": [0.0, 1.9],
 
         "section": [22.0, 3.0],
         "section_icon": [2.14, 2.14],
@@ -162,6 +167,7 @@
 
         "standard_list_lineheight": [1.5, 1.5],
         "standard_list_input": [20.0, 25.0],
+        "standard_arrow": [0.6, 0.6],
 
         "button": [3.2, 3.2],
         "button_icon": [2.5, 2.5],
@@ -189,6 +195,7 @@
         "save_button_slicing_bar": [0.0, 2.2],
         "save_button_label_margin": [0.5, 0.5],
         "save_button_save_to_button": [0.3, 2.7],
+        "save_button_specs_icons": [1.4, 1.4],
 
         "modal_window_minimum": [30.0, 30.0],
         "wizard_progress": [10.0, 0.0],

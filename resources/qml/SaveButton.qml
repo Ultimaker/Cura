@@ -14,115 +14,149 @@ Rectangle {
     property real progress: UM.Backend.progress;
     property bool activity: Printer.getPlatformActivity;
     Behavior on progress { NumberAnimation { duration: 250; } }
+    property int totalHeight: childrenRect.height
 
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
     Rectangle{
-        id: background
+        id: printJobRow
         implicitWidth: base.width;
-        implicitHeight: parent.height;
-        color: UM.Theme.colors.save_button_background;
-        border.width: UM.Theme.sizes.save_button_border.width
-        border.color: UM.Theme.colors.save_button_border
-
-        Rectangle {
-            id: infoBox
-            width: parent.width - UM.Theme.sizes.default_margin.width * 2;
-            height: UM.Theme.sizes.save_button_slicing_bar.height
-
-            anchors.top: parent.top
-            anchors.topMargin: UM.Theme.sizes.default_margin.height;
+        implicitHeight: UM.Theme.sizes.sidebar_header.height
+        anchors.top: parent.top
+        color: UM.Theme.colors.sidebar_header_bar
+        Label{
+            id: printJobTextfieldLabel
+            //: insert filename textfield label
+            text: qsTr("Printjob name");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-
-            border.width: UM.Theme.sizes.save_button_border.width
-            border.color: UM.Theme.colors.save_button_border
-            color: UM.Theme.colors.save_button_estimated_text_background;
-            Label {
-                id: label;
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
-                visible: base.progress >= 0 && base.progress < 0.99 ? false : true
-                color: UM.Theme.colors.save_button_estimated_text;
-                font: UM.Theme.fonts.small;
-                text: {
-                    if(base.activity == false) {
-                        //: Save button label
-                        return qsTr("Please load a 3D model");
-                    } else if (base.progress < 0.99) {
-                        //: Save button label
-                        return qsTr("Calculating Print-time");
-                    } else if (base.printDuration.days > 0 || base.progress == null){
-                        return qsTr("");
-                    }
-                    else if (base.progress > 0.99){
-                        //: Save button label
-                        return qsTr("Estimated Print-time");
-                    }
-                    return "";
+            anchors.verticalCenter: parent.verticalCenter
+            font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text_white
+        }
+        TextField {
+            id: printJobTextfield
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width/100*55
+            height: UM.Theme.sizes.sidebar_inputFields.height
+            property int unremovableSpacing: 5
+            text: "UM2" + "_" + "filename" ///TODO KOMT NOG
+            onEditingFinished: {
+                if (printJobTextfield.text != ''){
+                    printJobTextfield.focus = false
                 }
             }
-            Label {
-                id: printDurationLabel
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: label.right;
-                anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
-                color: UM.Theme.colors.save_button_printtime_text;
-                font: UM.Theme.fonts.small;
-                visible: base.activity == false || base.progress < 0.99 ? false : true
-                text: (!base.printDuration || !base.printDuration.valid) ? "" : base.printDuration.getDisplayString(UM.DurationFormat.Long);
+            validator: RegExpValidator {
+                regExp: /^[0-9a-zA-Z\_\-]*$/
             }
-            Label {
-                id: printMaterialLabel
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: printDurationLabel.right;
-                anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width;
-                color: base.printDuration.days > 0 ? UM.Theme.colors.save_button_estimated_text : UM.Theme.colors.save_button_printtime_text;
-                font: UM.Theme.fonts.small;
-                property bool mediumLengthDuration: base.printDuration.hours > 9 && base.printMaterialAmount > 9.99 && base.printDuration.days == 0
-                width: mediumLengthDuration ? 50 : undefined
-                elide: mediumLengthDuration ? Text.ElideRight : Text.ElideNone
-                visible: base.activity == false || base.progress < 0.99 ? false : true
-                //: Print material amount save button label
-                text: base.printMaterialAmount < 0 ? "" : qsTr("%1m of Material").arg(base.printMaterialAmount);
+            style: TextFieldStyle{
+                textColor: UM.Theme.colors.setting_control_text;
+                font: UM.Theme.fonts.default;
+                background: Rectangle {
+                    radius: 0
+                    implicitWidth: parent.width
+                    implicitHeight: parent.height
+                    border.width: 1;
+                    border.color: UM.Theme.colors.slider_groove_border;
+                }
             }
         }
-        Rectangle {
-            id: infoBoxOverlay
-            anchors {
-                left: infoBox.left;
-                top: infoBox.top;
-                bottom: infoBox.bottom;
+    }
+
+    Rectangle {
+        id: specsRow
+        implicitWidth: base.width
+        implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
+        anchors.top: printJobRow.bottom
+        Item{
+            id: time
+            width: (parent.width / 100 * 45) - UM.Theme.sizes.default_margin.width * 2
+            height: parent.height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+            anchors.top: parent.top
+            visible: base.printMaterialAmount > 0 ? true : false
+            UM.RecolorImage {
+                id: timeIcon
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                width: UM.Theme.sizes.save_button_specs_icons.width
+                height: UM.Theme.sizes.save_button_specs_icons.height
+                sourceSize.width: width
+                sourceSize.height: width
+                color: UM.Theme.colors.text_hover
+                source: UM.Theme.icons.print_time;
             }
-            width: Math.max(infoBox.width * base.progress);
-            color: UM.Theme.colors.save_button_active
-            visible: progress > 0.99 ? false : true
+            Label{
+                id: timeSpec
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: timeIcon.right
+                anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
+                font: UM.Theme.fonts.default
+                color: UM.Theme.colors.text
+                text: (!base.printDuration || !base.printDuration.valid) ? "" : qsTr("%1 h:m").arg(base.printDuration.getDisplayString(UM.DurationFormat.Short))
+            }
         }
+        Item{
+            width: parent.width / 100 * 55
+            height: parent.height
+            anchors.left: time.right
+            anchors.top: parent.top
+            visible: base.printMaterialAmount > 0 ? true : false
+            UM.RecolorImage {
+                id: lengthIcon
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                width: UM.Theme.sizes.save_button_specs_icons.width
+                height: UM.Theme.sizes.save_button_specs_icons.height
+                sourceSize.width: width
+                sourceSize.height: width
+                color: UM.Theme.colors.text_hover
+                source: UM.Theme.icons.category_material;
+            }
+            Label{
+                id: lengthSpec
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: lengthIcon.right
+                anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
+                font: UM.Theme.fonts.default
+                color: UM.Theme.colors.text
+                text: base.printMaterialAmount <= 0 ? "" : qsTr("%1 m").arg(base.printMaterialAmount)
+            }
+        }
+    }
+
+    Item{
+        id: saveRow
+        implicitWidth: base.width / 100 * 55
+        implicitHeight: saveToButton.height + (UM.Theme.sizes.default_margin.height / 2) // height + bottomMargin
+        anchors.top: specsRow.bottom
+        anchors.right: parent.right
+        anchors.rightMargin: UM.Theme.sizes.default_margin.width
 
         Button {
             id: saveToButton
-            anchors.top: infoBox.bottom
-            anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height;
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: progress > 0.99 && base.activity == true
 
-            width: infoBox.width/6*4.5
+            width: parent.width - UM.Theme.sizes.save_button_save_to_button.height - 2
             height: UM.Theme.sizes.save_button_save_to_button.height
 
             text: UM.OutputDeviceManager.activeDeviceShortDescription;
 
             style: ButtonStyle {
                 background: Rectangle {
-                    color: !control.enabled ? UM.Theme.colors.save_button_inactive : control.hovered ? UM.Theme.colors.save_button_active_hover : UM.Theme.colors.save_button_active;
+                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    Behavior on color { ColorAnimation { duration: 50; } }
 
                     Label {
                         anchors.centerIn: parent
-                        color: UM.Theme.colors.save_button_safe_to_text;
-                        font: UM.Theme.fonts.sidebar_save_to;
+                        color: UM.Theme.colors.load_save_button_text
+                        font: UM.Theme.fonts.default
                         text: control.text;
                     }
                 }
@@ -133,52 +167,35 @@ Rectangle {
 
         Button {
             id: deviceSelectionMenu;
-            anchors.top: infoBox.bottom
-            anchors.topMargin: UM.Theme.sizes.save_button_text_margin.height
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
-
             tooltip: qsTr("Select the active output device");
-
-            width: infoBox.width/6*1.3 - UM.Theme.sizes.save_button_text_margin.height;
+            anchors.right: parent.right
+            width: UM.Theme.sizes.save_button_save_to_button.height
             height: UM.Theme.sizes.save_button_save_to_button.height
-
-            iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
+            //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
                 background: Rectangle {
-                    color: UM.Theme.colors.save_button_background;
-                    border.width: control.hovered ? UM.Theme.sizes.save_button_border.width : 0
-                    border.color: UM.Theme.colors.save_button_border
+                    id: deviceSelectionIcon
+                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    Behavior on color { ColorAnimation { duration: 50; } }
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width / 2;
+                    width: parent.height
+                    height: parent.height
 
-                    Rectangle {
-                        id: deviceSelectionIcon
-                        color: UM.Theme.colors.save_button_background;
-                        anchors.left: parent.left
-                        anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width / 2;
-                        anchors.verticalCenter: parent.verticalCenter;
-                        width: parent.height - UM.Theme.sizes.save_button_text_margin.width ;
-                        height: parent.height - UM.Theme.sizes.save_button_text_margin.width;
-
-                        UM.RecolorImage {
-                            anchors.fill: parent;
-                            sourceSize.width: width;
-                            sourceSize.height: height;
-                            color:  UM.Theme.colors.save_button_active
-                            source: control.iconSource;
-                        }
-                    }
-                    Label {
-                        id: deviceSelectionArrow
-                        anchors.right: parent.right;
-                        anchors.rightMargin: UM.Theme.sizes.save_button_text_margin.height
-                        anchors.verticalCenter: parent.verticalCenter;
-                        text: "▼";
-                        font: UM.Theme.fonts.tiny;
-                        color: UM.Theme.colors.save_button_active;
+                    UM.RecolorImage {
+                        id: lengthIcon
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: UM.Theme.sizes.standard_arrow.width
+                        height: UM.Theme.sizes.standard_arrow.height
+                        sourceSize.width: width
+                        sourceSize.height: width
+                        color: UM.Theme.colors.load_save_button_text
+                        source: UM.Theme.icons.arrow_bottom
                     }
                 }
-                label: Item { }
+                label: Label{ }
             }
 
             menu: Menu {
@@ -200,9 +217,6 @@ Rectangle {
                 ExclusiveGroup { id: devicesMenuGroup; }
             }
         }
-    }
-
-    UM.OutputDevicesModel {
-        id: devicesModel;
+        UM.OutputDevicesModel { id: devicesModel; }
     }
 }
