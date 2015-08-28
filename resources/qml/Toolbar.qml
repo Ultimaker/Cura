@@ -13,8 +13,9 @@ Item {
 
     width: buttons.width;
     height: buttons.height
+    property int activeY
 
-    RowLayout {
+    ColumnLayout {
         id: buttons;
 
         anchors.bottom: parent.bottom;
@@ -39,26 +40,30 @@ Item {
                 //just catch the click so we do not trigger that behaviour.
                 MouseArea {
                     anchors.fill: parent;
-                    onClicked: parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
+                    onClicked: {
+                        parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
+                        base.activeY = parent.y
+
+                    }
                 }
             }
         }
     }
 
     Rectangle {
-            width: base.width - 10
-            height: base.height
-            z: parent.z - 1
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: UM.Theme.colors.lining
-        }
+        width: base.width
+        height: base.height
+        z: parent.z - 1
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: UM.Theme.colors.lining
+    }
 
     Rectangle {
         id: panelBackground;
 
-        anchors.left: parent.left;
-        anchors.top: buttons.bottom;
+        anchors.left: parent.right;
+        y: base.activeY
 
         width: panel.item ? Math.max(panel.width + 2 * UM.Theme.sizes.default_margin.width) : 0;
         height: panel.item ? panel.height + 2 * UM.Theme.sizes.default_margin.height : 0;

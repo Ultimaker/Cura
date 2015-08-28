@@ -6,6 +6,8 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Message import Message
+from UM.i18n import i18nCatalog
 
 import collections
 import json
@@ -16,6 +18,8 @@ import math
 import urllib.request
 import urllib.parse
 
+catalog = i18nCatalog("cura")
+
 
 ##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
@@ -25,9 +29,19 @@ class SliceInfo(Extension):
         super().__init__()
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
         Preferences.getInstance().addPreference("info/send_slice_info", True)
+        Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
+
+        if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
+            self.send_slice_info_message = Message(catalog.i18nc("", "Cura automatically sends slice info. You can disable this in preferences"), lifetime = 0, dismissable = False)
+            self.send_slice_info_message.addAction("Dismiss","Dismiss", None, "Dismiss")
+            self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
+            self.send_slice_info_message.show()
+
+    def messageActionTriggered(self, message_id, action_id):
+        self.send_slice_info_message.hide()
+        Preferences.getInstance().setValue("info/asked_send_slice_info", True)
 
     def _onWriteStarted(self, output_device):
-        print("Starting sending")
         if not Preferences.getInstance().getValue("info/send_slice_info"):
             return # Do nothing, user does not want to send data
 
@@ -105,5 +119,4 @@ class SliceInfo(Extension):
         except Exception as e:
             print("Exception occured", e)
 
-        print("Result: ", f.read())
         f.close()

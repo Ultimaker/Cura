@@ -67,11 +67,14 @@ QtObject {
 
                 Rectangle {
                     id: tool_button_background
-                    anchors.top: parent.bottom
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    //anchors.top: parent.bottom
 
-                    width: label.width > parent.width ? label.width : parent.width
-                    height: control.hovered ? label.height : 0;
-                    Behavior on height { NumberAnimation { duration: 100; } }
+                    //width: label.width > parent.width ? label.width : parent.width
+                    width: control.hovered ? label.width : 0;
+                    height: label.height
+                    Behavior on width { NumberAnimation { duration: 100; } }
 
                     opacity: control.hovered ? 1.0 : 0.0;
                     Behavior on opacity { NumberAnimation { duration: 100; } }

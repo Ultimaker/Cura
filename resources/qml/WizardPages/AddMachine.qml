@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 import ".."
 
 ColumnLayout
@@ -19,12 +19,12 @@ ColumnLayout
     property var manufacturers: wizardPage.lineManufacturers()
     property int manufacturerIndex: 0
 
-    SystemPalette{id: palette}
+    SystemPalette {id: palette}
     signal reloadModel(var newModel)
 
     width: wizardPage.pageWidth
     height: wizardPage.pageHeight
-
+    UM.I18nCatalog { id: catalog; name: "cura"}
     Connections
     {
         target: elementRoot
@@ -62,7 +62,7 @@ ColumnLayout
         anchors.left: parent.left
         anchors.top: title.bottom
         //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
+        text: catalog.i18nc("@label","Please select the type of printer:");
     }
 
     ScrollView
@@ -179,7 +179,7 @@ ColumnLayout
                         visible: model.author != "Ultimaker" ? true : false
                         height: wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer ? UM.Theme.sizes.standard_list_lineheight.height : 0
                         //: Printer profile caption meaning: this profile is supported by the community
-                        text: qsTr("community supported profile");
+                        text: catalog.i18nc("@label","community supported profile");
                         opacity: wizardPage.manufacturers[wizardPage.manufacturerIndex] == model.manufacturer ? 1 : 0
                         anchors.left: machineButton.right
                         anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.height/2
@@ -231,7 +231,7 @@ ColumnLayout
         {
             id: insertNameLabel
             //: Add Printer wizard field label
-            text: qsTr("Printer Name:");
+            text: catalog.i18nc("@label","Printer Name:");
         }
         TextField
         {

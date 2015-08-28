@@ -6,9 +6,10 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-Column {
+Column
+{
     id: base;
 
     property variant modesModel;
@@ -17,37 +18,43 @@ Column {
     property Action configureMachinesAction;
 
     spacing: UM.Theme.sizes.default_margin.height;
-
-    RowLayout {
+    UM.I18nCatalog { id: catalog; name:"cura"}
+    RowLayout
+    {
         anchors.horizontalCenter: parent.horizontalCenter;
 
         width: parent.width - UM.Theme.sizes.default_margin.width * 2;
         height: UM.Theme.sizes.line.height;
 
-        Label {
+        Label
+        {
             //: Configuration mode label
-            text: qsTr("Mode:");
+            text: catalog.i18nc("@label","Mode:");
 
             font: UM.Theme.fonts.sidebar_header;
             color: UM.Theme.colors.text_inactive;
         }
 
-        ToolButton {
+        ToolButton
+        {
             text: base.modesModel ? base.modesModel.get(modeMenu.currentIndex).text : "";
 
             style: UM.Theme.styles.sidebar_header_button;
 
             Layout.preferredWidth: base.width * 0.25;
 
-            menu: Menu {
+            menu: Menu
+            {
                 id: modeMenu;
 
                 property int currentIndex: 0;
 
-                Instantiator {
+                Instantiator
+                {
                     model: base.modesModel;
 
-                    MenuItem {
+                    MenuItem
+                    {
                         text: model.text;
                         checkable: true;
                         checked: modeMenu.currentIndex == index;
@@ -62,21 +69,24 @@ Column {
             }
         }
 
-        Rectangle {
+        Rectangle
+        {
             width: 1;
             height: parent.height;
             color: UM.Theme.colors.border;
         }
 
-        Label {
+        Label
+        {
             //: Machine selection label
-            text: qsTr("Machine:");
+            text: catalog.i18nc("@label","Machine:");
 
             font: UM.Theme.fonts.sidebar_header;
             color: UM.Theme.colors.text_inactive;
         }
 
-        ToolButton {
+        ToolButton
+        {
             id: machineButton;
             text: UM.Application.machineName;
             tooltip: UM.Application.machineName;
@@ -85,11 +95,14 @@ Column {
 
             Layout.fillWidth: true;
 
-            menu: Menu {
+            menu: Menu
+            {
                 id: machineMenu;
-                Instantiator {
+                Instantiator
+                {
                     model: UM.Models.machinesModel
-                    MenuItem {
+                    MenuItem
+                    {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
@@ -110,14 +123,15 @@ Column {
         }
     }
 
-    UM.SidebarCategoryHeader {
+    UM.SidebarCategoryHeader
+    {
         width: parent.width;
         height: UM.Theme.sizes.section.height;
 
         iconSource: UM.Theme.icons.printsetup;
 
         //: Sidebar header label
-        text: qsTr("Print Setup");
+        text: catalog.i18nc("@label","Print Setup");
         enabled: false;
 
         color: UM.Theme.colors.primary;
