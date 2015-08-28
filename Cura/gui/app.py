@@ -24,7 +24,6 @@ class CuraApp(wx.App):
 			super(CuraApp, self).__init__(redirect=False)
 
 		self.mainWindow = None
-		self.splash = None
 		self.loadFiles = files
 
 		if platform.system() == "Darwin":
@@ -55,12 +54,7 @@ class CuraApp(wx.App):
 			socketListener.daemon = True
 			socketListener.start()
 
-		if sys.platform.startswith('darwin'):
-			#Do not show a splashscreen on OSX, as by Apple guidelines
-			self.afterSplashCallback()
-		else:
-			from Cura.gui import splashScreen
-			self.splash = splashScreen.splashScreen(self.afterSplashCallback)
+		self.afterSplashCallback()
 
 	def MacOpenFile(self, path):
 		try:
@@ -99,12 +93,6 @@ class CuraApp(wx.App):
 		except:
 			pass
 
-	def destroySplashScreen(self):
-		if self.splash is not None:
-			self.splash.Show(False)
-			self.splash.Destroy()
-			self.splash = None
-
 	def afterSplashCallback(self):
 		#These imports take most of the time and thus should be done after showing the splashscreen
 		import webbrowser
@@ -140,13 +128,11 @@ class CuraApp(wx.App):
 			exampleFile = os.path.normpath(os.path.join(resources.resourceBasePath, 'example', 'Rocktopus.stl'))
 
 			self.loadFiles = [exampleFile]
-			self.destroySplashScreen()
 			configWizard.ConfigWizard()
 
 		if profile.getPreference('check_for_updates') == 'True':
 			newVersion = version.checkForNewerVersion()
 			if newVersion is not None:
-				self.destroySplashScreen()
 				if wx.MessageBox(_("A new version of Cura is available, would you like to download?"), _("New version available"), wx.YES_NO | wx.ICON_INFORMATION) == wx.YES:
 					webbrowser.open(newVersion)
 					return
@@ -161,7 +147,6 @@ class CuraApp(wx.App):
 			profile.performVersionUpgrade()
 
 		self.mainWindow = mainWindow.mainWindow()
-		self.destroySplashScreen()
 		self.SetTopWindow(self.mainWindow)
 		self.mainWindow.Show()
 		self.mainWindow.OnDropFiles(self.loadFiles)
