@@ -17,9 +17,11 @@ UM.PreferencesPage
     {
         UM.Preferences.resetPreference("general/language")
         UM.Preferences.resetPreference("physics/automatic_push_free")
+        UM.Preferences.resetPreference("mesh/scale_to_fit")
         UM.Preferences.resetPreference("info/send_slice_info")
         pushFreeCheckbox.checked = UM.Preferences.getValue("physics/automatic_push_free")
         sendDataCheckbox.checked = UM.Preferences.getValue("info/send_slice_info")
+        scaleToFitCheckbox.checked = UM.Preferences.getValue("mesh/scale_to_fit")
         languageComboBox.currentIndex = 0
     }
     GridLayout
@@ -147,6 +149,38 @@ UM.PreferencesPage
 
             //: Display Overhang preference tooltip
             tooltip: catalog.i18nc("@info:tooltip","Should anonymous data about your slices be sent to Ultimaker. No models or IP's are sent / stored.")
+
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
+                    border.width: 0
+                    color: "transparent"
+                }
+                label: Text
+                {
+                    renderType: Text.NativeRendering
+                    horizontalAlignment: Text.AlignLeft
+                    text: control.text
+                }
+            }
+        }
+        CheckBox
+        {
+            id: scaleToFitCheckbox
+            checked: UM.Preferences.getValue("mesh/scale_to_fit")
+            onCheckedChanged: UM.Preferences.setValue("mesh/scale_to_fit", checked)
+        }
+        Button
+        {
+            id: scaleToFitText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
+
+            //: Display Overhang preference checkbox
+            text: catalog.i18nc("@action:checkbox","Scale loaded meshes when too large");
+            onClicked: scaleToFitCheckbox.checked = !scaleToFitCheckbox.checked
+
+            //: Display Overhang preference tooltip
+            tooltip: catalog.i18nc("@info:tooltip","Should loaded meshes be scaled to the max build volume if they are too large.")
 
             style: ButtonStyle
             {
