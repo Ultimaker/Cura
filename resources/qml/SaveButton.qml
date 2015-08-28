@@ -8,8 +8,7 @@ import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
-Rectangle
-{
+Rectangle {
     id: base;
 
     property real progress: UM.Backend.progress;
@@ -17,34 +16,27 @@ Rectangle
     Behavior on progress { NumberAnimation { duration: 250; } }
     property int totalHeight: childrenRect.height
 
+    UM.I18nCatalog { id: catalog; name:"cura"}
+
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
-    UM.I18nCatalog { id: catalog; name:"cura"}
-    Rectangle
-    {
-        id: background
+
+    Rectangle{
+        id: printJobRow
         implicitWidth: base.width;
-        implicitHeight: parent.height;
-        color: UM.Theme.colors.save_button_background;
-        border.width: UM.Theme.sizes.save_button_border.width
-        border.color: UM.Theme.colors.save_button_border
-
-        Rectangle
-        {
-            id: infoBox
-            width: parent.width - UM.Theme.sizes.default_margin.width * 2;
-            height: UM.Theme.sizes.save_button_slicing_bar.height
-
-            anchors.top: parent.top
-            anchors.topMargin: UM.Theme.sizes.default_margin.height;
+        implicitHeight: UM.Theme.sizes.sidebar_header.height
+        anchors.top: parent.top
+        color: UM.Theme.colors.sidebar_header_bar
+        Label{
+            id: printJobTextfieldLabel
+            text: catalog.i18nc("@label","Printjob name");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter
-            //font: UM.Theme.fonts.default;
+            font: UM.Theme.fonts.default;
             color: UM.Theme.colors.text_white
         }
-        TextField
-        {
+        TextField {
             id: printJobTextfield
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
@@ -53,23 +45,18 @@ Rectangle
             height: UM.Theme.sizes.sidebar_inputFields.height
             property int unremovableSpacing: 5
             text: "UM2" + "_" + "filename" ///TODO KOMT NOG
-            onEditingFinished:
-            {
-                if (printJobTextfield.text != '')
-                {
+            onEditingFinished: {
+                if (printJobTextfield.text != ''){
                     printJobTextfield.focus = false
                 }
             }
-            validator: RegExpValidator
-            {
+            validator: RegExpValidator {
                 regExp: /^[0-9a-zA-Z\_\-]*$/
             }
-            style: TextFieldStyle
-            {
+            style: TextFieldStyle{
                 textColor: UM.Theme.colors.setting_control_text;
                 font: UM.Theme.fonts.default;
-                background: Rectangle
-                {
+                background: Rectangle {
                     radius: 0
                     implicitWidth: parent.width
                     implicitHeight: parent.height
@@ -80,14 +67,12 @@ Rectangle
         }
     }
 
-    Rectangle
-    {
+    Rectangle {
         id: specsRow
         implicitWidth: base.width
         implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
         anchors.top: printJobRow.bottom
-        Item
-        {
+        Item{
             id: time
             width: (parent.width / 100 * 45) - UM.Theme.sizes.default_margin.width * 2
             height: parent.height
@@ -95,8 +80,7 @@ Rectangle
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
             anchors.top: parent.top
             visible: base.printMaterialAmount > 0 ? true : false
-            UM.RecolorImage
-            {
+            UM.RecolorImage {
                 id: timeIcon
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -107,26 +91,23 @@ Rectangle
                 color: UM.Theme.colors.text_hover
                 source: UM.Theme.icons.print_time;
             }
-            Label
-            {
+            Label{
                 id: timeSpec
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: timeIcon.right
                 anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
                 font: UM.Theme.fonts.default
                 color: UM.Theme.colors.text
-                text: (!base.printDuration || !base.printDuration.valid) ? "" : catalog.i18nc("@label","%1 h:m").arg(base.printDuration.getDisplayString(UM.DurationFormat.Short))
+                text: (!base.printDuration || !base.printDuration.valid) ? "" : catalog.i18nc("@label", "%1 m").arg(base.printDuration.getDisplayString(UM.DurationFormat.Short))
             }
         }
-        Item
-        {
+        Item{
             width: parent.width / 100 * 55
             height: parent.height
             anchors.left: time.right
             anchors.top: parent.top
             visible: base.printMaterialAmount > 0 ? true : false
-            UM.RecolorImage
-            {
+            UM.RecolorImage {
                 id: lengthIcon
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -137,8 +118,7 @@ Rectangle
                 color: UM.Theme.colors.text_hover
                 source: UM.Theme.icons.category_material;
             }
-            Label
-            {
+            Label{
                 id: lengthSpec
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: lengthIcon.right
@@ -150,8 +130,7 @@ Rectangle
         }
     }
 
-    Item
-    {
+    Item{
         id: saveRow
         implicitWidth: base.width / 100 * 55
         implicitHeight: saveToButton.height + (UM.Theme.sizes.default_margin.height / 2) // height + bottomMargin
@@ -159,8 +138,7 @@ Rectangle
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.sizes.default_margin.width
 
-        Button
-        {
+        Button {
             id: saveToButton
             anchors.left: parent.left
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
@@ -171,15 +149,12 @@ Rectangle
 
             text: UM.OutputDeviceManager.activeDeviceShortDescription;
 
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
+            style: ButtonStyle {
+                background: Rectangle {
                     color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
                     Behavior on color { ColorAnimation { duration: 50; } }
 
-                    Label
-                    {
+                    Label {
                         anchors.centerIn: parent
                         color: UM.Theme.colors.load_save_button_text
                         font: UM.Theme.fonts.default
@@ -191,10 +166,9 @@ Rectangle
             onClicked: UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
         }
 
-        Button
-        {
+        Button {
             id: deviceSelectionMenu;
-            tooltip: catalog.i18nc("@action:button","Select the active output device");
+            tooltip: catalog.i18nc("@info:tooltip","Select the active output device");
             anchors.right: parent.right
             width: UM.Theme.sizes.save_button_save_to_button.height
             height: UM.Theme.sizes.save_button_save_to_button.height
@@ -225,20 +199,16 @@ Rectangle
                 label: Label{ }
             }
 
-            menu: Menu
-            {
+            menu: Menu {
                 id: devicesMenu;
-                Instantiator
-                {
+                Instantiator {
                     model: devicesModel;
-                    MenuItem
-                    {
+                    MenuItem {
                         text: model.description
                         checkable: true;
                         checked: model.id == UM.OutputDeviceManager.activeDevice;
                         exclusiveGroup: devicesMenuGroup;
-                        onTriggered:
-                        {
+                        onTriggered: {
                             UM.OutputDeviceManager.setActiveDevice(model.id);
                         }
                     }
