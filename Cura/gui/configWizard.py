@@ -1209,10 +1209,10 @@ class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
 		self.allowBack = allowBack
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
-		self.standard = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v2'),
-											'Lulzbot_Toolhead_Mini_Standard.jpg', image_size,
+		self.standard = self.AddImageButton(self.panel, 0, 0, _('Standard LulzBot Mini'),
+											'Lulzbot_mini.jpg', image_size,
 											style=ImageButton.IB_GROUP)
-		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v2'),
+		self.flexy = self.AddImageButton(self.panel, 0, 1, _('LulzBot Mini with Flexystruder'),
 											'Lulzbot_Toolhead_Mini_Flexystruder.jpg', image_size)
 		self.standard.SetValue(True)
 
