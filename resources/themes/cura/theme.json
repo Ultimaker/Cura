@@ -43,7 +43,7 @@
             "family": "ProximaNova"
         },
         "setting_category": {
-            "size": 1.5,
+            "size": 1.0,
             "family": "ProximaNova"
         }
     },
@@ -80,23 +80,23 @@
         "load_save_button_active": [43, 45, 46, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
-        "scrollbar_handle": [205, 202, 201, 255],
+        "scrollbar_handle": [12, 159, 227, 255],
         "scrollbar_handle_hover": [174, 174, 174, 255],
         "scrollbar_handle_down": [12, 159, 227, 255],
 
-        "setting_category": [205, 202, 201, 255],
-        "setting_category_disabled": [245, 245, 245, 255],
-        "setting_category_hover": [174, 174, 174, 255],
-        "setting_category_active": [12, 169, 227, 255],
-        "setting_category_active_hover": [34, 150, 190, 255],
-        "setting_category_text": [255, 255, 255, 255],
+        "setting_category": [238, 238, 238, 255],
+        "setting_category_disabled": [238, 238, 238, 255],
+        "setting_category_hover": [240, 248, 255, 255],
+        "setting_category_active": [238, 238, 238, 255],
+        "setting_category_active_hover": [240, 248, 255, 255],
+        "setting_category_text": [35, 35, 35, 255],
 
-        "setting_label": [140, 144, 154, 255],
         "setting_control": [255, 255, 255, 255],
         "setting_control_highlight": [245, 245, 245, 255],
         "setting_control_border": [174, 174, 174, 255],
-        "setting_control_text": [35, 35, 35, 255],
-        "setting_control_hover": [35, 35, 35, 255],
+        "setting_control_text": [0, 0, 0, 255],
+        "setting_control_hover": [139, 143, 153, 255],
+        "setting_control_selected": [35, 35, 35, 255],
         "setting_unit": [174, 174, 174, 255],
         "setting_validation_error": [255, 57, 14, 255],
         "setting_validation_warning": [255, 186, 15, 255],
@@ -145,7 +145,6 @@
         "toolbar_button": [2.0, 2.0],
         "toolbar_spacing": [1.0, 1.0],
 
-
         "loadfile_button": [11.0, 2.4],
         "loadfile_margin": [0.8, 0.4],
 
@@ -155,11 +154,11 @@
         "sidebar_specs_bar": [0.0, 2.2],
         "sidebar_inputFields": [0.0, 1.9],
 
-        "section": [22.0, 3.0],
-        "section_icon": [2.14, 2.14],
-        "section_text_margin": [0.33, 0.33],
+        "section": [0.0, 1.8],
+        "section_icon": [1.2, 1.2],
+        "section_icon_column": [2.8, 0.0],
 
-        "setting": [21.0, 2.0],
+        "setting": [21.0, 1.8],
         "setting_control": [6.0, 2.0],
         "setting_control_margin": [3.0, 3.0],
         "setting_unit_margin": [0.5, 0.5],
@@ -176,7 +175,7 @@
         "progressbar_control": [8.0, 0.8],
         "progressbar_padding": [0.0, 1.0],
 
-        "scrollbar": [0.5, 0.5],
+        "scrollbar": [0.7, 0.5],
 
         "slider_groove": [0.5, 0.5],
         "slider_handle": [1.5, 1.5],
