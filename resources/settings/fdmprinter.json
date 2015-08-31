@@ -1820,9 +1820,14 @@
                 },
                 "magic_mesh_surface_mode": {
                     "label": "Surface Mode",
-                    "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh.",
-                    "type": "boolean",
-                    "default": false,
+                    "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh. It's also possible to do both: print the insides of a closed volume as normal, but print all polygons not part of a closed volume as surface.",
+                    "type": "enum",
+                    "options": [
+                        "Normal",
+                        "Surface",
+                        "Both"
+                    ],
+                    "default": "Normal",
                     "visible": false
                 },
                 "magic_spiralize": {
