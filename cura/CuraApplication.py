@@ -85,6 +85,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("view/center_on_select", True)
+        Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 

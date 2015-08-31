@@ -42,7 +42,7 @@ UM.PreferencesPage
             onClicked: overhangCheckbox.checked = !overhangCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will nog print properly."
+            tooltip: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will nog print properly.")
 
             style: ButtonStyle
             {
