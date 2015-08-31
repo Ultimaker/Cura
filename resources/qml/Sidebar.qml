@@ -41,69 +41,61 @@ Rectangle
         }
     }
 
-    ColumnLayout
-    {
-        anchors.fill: parent;
-        anchors.topMargin: UM.Theme.sizes.default_margin.height;
+    SidebarHeader {
+        id: header;
 
-        spacing: UM.Theme.sizes.default_margin.height;
+        width: parent.width
+        height: totalHeightHeader
 
-        SidebarHeader
+        addMachineAction: base.addMachineAction;
+        configureMachinesAction: base.configureMachinesAction;
+        modesModel: modesListModel;
+
+        currentModeIndex:
         {
-            id: header;
-
-            Layout.fillWidth: true;
-
-            addMachineAction: base.addMachineAction;
-            configureMachinesAction: base.configureMachinesAction;
-            modesModel: modesListModel;
-
-            currentModeIndex:
+            var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+            if(index)
             {
-                var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-                if(index)
-                {
-                    return index;
-                }
-                return 0;
+                return index;
             }
-            onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+            return 0;
         }
+        onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+    }
 
-        Loader
+    Loader{
+        id: sidebarContents;
+        anchors.bottom: saveButton.top
+        anchors.top: header.bottom
+        anchors.left: base.left
+        anchors.right: base.right
+
+        source: modesListModel.get(header.currentModeIndex).file;
+
+        property Item sidebar: base;
+
+        onLoaded:
         {
-            id: sidebarContents;
-
-            Layout.fillWidth: true;
-            Layout.fillHeight: true;
-
-            source: modesListModel.get(header.currentModeIndex).file;
-
-            property Item sidebar: base;
-
-            onLoaded:
+            if(item)
             {
-                if(item)
+                item.configureSettings = base.configureMachinesAction;
+                if(item.onShowTooltip != undefined)
                 {
-                    item.configureSettings = base.configureMachinesAction;
-                    if(item.onShowTooltip != undefined)
-                    {
-                        item.showTooltip.connect(base.showTooltip)
-                    }
-                    if(item.onHideTooltip != undefined)
-                    {
-                        item.hideTooltip.connect(base.hideTooltip)
-                    }
+                    item.showTooltip.connect(base.showTooltip)
+                }
+                if(item.onHideTooltip != undefined)
+                {
+                    item.hideTooltip.connect(base.hideTooltip)
                 }
             }
         }
+    }
 
-        SaveButton
-        {
-            id: saveButton;
-            implicitWidth: base.width
-            implicitHeight: totalHeight
-        }
+    SaveButton {
+        id: saveButton;
+        implicitWidth: base.width
+        implicitHeight: totalHeight
+        anchors.bottom: parent.bottom
     }
 
     SidebarTooltip
