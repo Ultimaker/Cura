@@ -32,7 +32,7 @@ class newVersionDialog(wx.Dialog):
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 		s.Add(wx.StaticText(p, -1, _('Want to know what is new and cool in this version?')))
 		s.Add(wx.StaticText(p, -1, _('Click here for a list of changes:')))
-		s.Add(wx.HyperlinkCtrl(p, -1, url=newVersionDialog.url))
+		s.Add(wx.HyperlinkCtrl(p, -1, newVersionDialog.url, newVersionDialog.url))
 
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 		button = wx.Button(p, -1, _('OK'))
