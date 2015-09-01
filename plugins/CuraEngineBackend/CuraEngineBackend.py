@@ -296,18 +296,11 @@ class CuraEngineBackend(Backend):
                 setting.name = key
                 setting.value = str(value).encode()
 
-        object_settings = node.callDecoration("getAllSettings")
+        object_settings = node.callDecoration("getAllSettingValues")
         if not object_settings:
             return
 
         for key, value in object_settings.items():
             setting = message.settings.add()
             setting.name = key
-            setting.value = str(value.getValue()).encode()
-
-            for child in value.getAllChildren():
-                setting = message.settings.add()
-                setting.name = child.getKey()
-                setting.value = str(child.getValue()).encode()
-
-
+            setting.value = str(value).encode()
