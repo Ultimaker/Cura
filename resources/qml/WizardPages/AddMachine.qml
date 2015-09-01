@@ -17,7 +17,7 @@ Item
 
     property string activeManufacturer: "Ultimaker";
 
-    property variant wizard;
+    property variant wizard: null;
 
     Connections
     {
