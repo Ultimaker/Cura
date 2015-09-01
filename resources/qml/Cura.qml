@@ -63,7 +63,7 @@ UM.MainWindow {
                     id: saveAllMenu
                     title: "Save All"
                     iconName: "document-save";
-                    enabled: devicesModel.count > 0 && UM.Backend.progress > 0.99;
+                    enabled: devicesModel.rowCount() > 0 && UM.Backend.progress > 0.99;
 
                     Instantiator {
                         model: UM.OutputDevicesModel { id: devicesModel; }
