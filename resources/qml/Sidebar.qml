@@ -78,6 +78,16 @@ Rectangle {
                     model: UM.MachineVariantsModel { }
                     textRole: "name"
                     onActivated: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name);
+
+                    currentIndex: {
+                        for(var i = 0; i < model.rowCount(); ++i) {
+                            if(model.getItem(i).name == UM.MachineManager.activeMachineVariant) {
+                                return i;
+                            }
+                        }
+
+                        return 0;
+                    }
                 }
             }
         }
@@ -98,6 +108,15 @@ Rectangle {
                     model: UM.ProfilesModel { }
                     textRole: "name"
                     onActivated: UM.MachineManager.setActiveProfile(model.getItem(index).name)
+
+                    currentIndex: {
+                        for(var i = 0; i < model.rowCount(); ++i) {
+                            if(model.getItem(i).name == UM.MachineManager.activeProfile)
+                                return i;
+                        }
+
+                        return 0;
+                    }
                 }
 
                 Button {
