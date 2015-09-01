@@ -106,7 +106,7 @@ ColumnLayout
             text: UM.MachineManager.activeMachineInstance;
             width: parent.width/100*55
             height: UM.Theme.sizes.sidebar_header.height
-            tooltip: UM.Application.machineName;
+            tooltip: UM.MachineManager.activeMachineInstance;
             //style: UM.Theme.styles.sidebar_header_button;
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
