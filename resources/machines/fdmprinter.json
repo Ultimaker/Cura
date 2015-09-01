@@ -1812,10 +1812,7 @@
                     "unit": "mm",
                     "default": 3,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_roof_inset": {
                     "label": "WP Roof Inset Distance",
@@ -1824,10 +1821,7 @@
                     "unit": "mm",
                     "default": 3,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    },
+                    "enabled": "wireframe_enabled",
                     "inherit_function": "wireframe_height"
                 },
                 "wireframe_printspeed": {
@@ -1837,10 +1831,7 @@
                     "type": "float",
                     "default": 5,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    },
+                    "enabled": "wireframe_enabled",
                     "children": {
                         "wireframe_printspeed_bottom": {
                             "label": "WP Bottom Printing Speed",
@@ -1850,10 +1841,7 @@
                             "default": 5,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "wireframe_enabled",
-                                "value": true
-                            }
+                            "enabled": "wireframe_enabled"
                         },
                         "wireframe_printspeed_up": {
                             "label": "WP Upward Printing Speed",
@@ -1863,10 +1851,7 @@
                             "default": 5,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "wireframe_enabled",
-                                "value": true
-                            }
+                            "enabled": "wireframe_enabled"
                         },
                         "wireframe_printspeed_down": {
                             "label": "WP Downward Printing Speed",
@@ -1876,10 +1861,7 @@
                             "default": 5,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "wireframe_enabled",
-                                "value": true
-                            }
+                            "enabled": "wireframe_enabled"
                         },
                         "wireframe_printspeed_flat": {
                             "label": "WP Horizontal Printing Speed",
@@ -1889,10 +1871,7 @@
                             "default": 5,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "wireframe_enabled",
-                                "value": true
-                            }
+                            "enabled": "wireframe_enabled"
                         }
                     }
                 },
@@ -1903,10 +1882,7 @@
                     "default": 100,
                     "type": "float",
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    },
+                    "enabled": "wireframe_enabled",
                     "children": {
                         "wireframe_flow_connection": {
                             "label": "WP Connection Flow",
@@ -1915,10 +1891,7 @@
                             "default": 100,
                             "type": "float",
                             "visible": false,
-                            "active_if": {
-                                "setting": "wireframe_enabled",
-                                "value": true
-                            }
+                            "enabled": "wireframe_enabled"
                         },
                         "wireframe_flow_flat": {
                             "label": "WP Flat Flow",
@@ -1927,10 +1900,7 @@
                             "default": 100,
                             "type": "float",
                             "visible": false,
-                            "active_if": {
-                                "setting": "wireframe_enabled",
-                                "value": true
-                            }
+                            "enabled": "wireframe_enabled"
                         }
                     }
                 },
@@ -1941,10 +1911,7 @@
                     "type": "float",
                     "default": 0,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_bottom_delay": {
                     "label": "WP Bottom Delay",
@@ -1953,10 +1920,7 @@
                     "type": "float",
                     "default": 0,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_flat_delay": {
                     "label": "WP Flat Delay",
@@ -1965,10 +1929,7 @@
                     "type": "float",
                     "default": 0.1,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_up_half_speed": {
                     "label": "WP Ease Upward",
@@ -1977,10 +1938,7 @@
                     "unit": "mm",
                     "default": 0.3,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_top_jump": {
                     "label": "WP Knot Size",
@@ -1989,10 +1947,7 @@
                     "unit": "mm",
                     "default": 0.6,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_fall_down": {
                     "label": "WP Fall Down",
@@ -2001,10 +1956,7 @@
                     "unit": "mm",
                     "default": 0.5,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_drag_along": {
                     "label": "WP Drag along",
@@ -2013,10 +1965,7 @@
                     "unit": "mm",
                     "default": 0.6,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_strategy": {
                     "label": "WP Strategy",
@@ -2029,10 +1978,7 @@
                     },
                     "default": "compensate",
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_straight_before_down": {
                     "label": "WP Straighten Downward Lines",
@@ -2041,10 +1987,7 @@
                     "unit": "%",
                     "default": 20,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_roof_fall_down": {
                     "label": "WP Roof Fall Down",
@@ -2053,10 +1996,7 @@
                     "unit": "mm",
                     "default": 2,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_roof_drag_along": {
                     "label": "WP Roof Drag Along",
@@ -2065,10 +2005,7 @@
                     "unit": "mm",
                     "default": 0.8,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_roof_outer_delay": {
                     "label": "WP Roof Outer Delay",
@@ -2077,10 +2014,7 @@
                     "unit": "sec",
                     "default": 0.2,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 },
                 "wireframe_nozzle_clearance": {
                     "label": "WP Nozzle Clearance",
@@ -2089,10 +2023,7 @@
                     "unit": "mm",
                     "default": 1,
                     "visible": false,
-                    "active_if": {
-                        "setting": "wireframe_enabled",
-                        "value": true
-                    }
+                    "enabled": "wireframe_enabled"
                 }
             }
         }
