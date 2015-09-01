@@ -10,6 +10,7 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Math.Vector import Vector
 from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Polygon import Polygon
 
 import numpy
 
@@ -33,6 +34,9 @@ class BuildVolume(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
+        self._active_instance = None
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveInstanceChanged)
+        self._onActiveInstanceChanged()
 
     def setWidth(self, width):
         self._width = width
@@ -135,17 +139,18 @@ class BuildVolume(SceneNode):
 
         self._aabb = AxisAlignedBox(minimum = Vector(minW, minH - 1.0, minD), maximum = Vector(maxW, maxH, maxD))
 
-        settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
-
         skirt_size = 0.0
-        if settings.getSettingValueByKey("adhesion_type") == "None":
-            skirt_size = settings.getSettingValueByKey("skirt_line_count") * settings.getSettingValueByKey("skirt_line_width") + settings.getSettingValueByKey("skirt_gap")
-        elif settings.getSettingValueByKey("adhesion_type") == "Brim":
-            skirt_size = settings.getSettingValueByKey("brim_line_count") * settings.getSettingValueByKey("skirt_line_width")
-        else:
-            skirt_size = settings.getSettingValueByKey("skirt_line_width")
 
-        skirt_size += settings.getSettingValueByKey("skirt_line_width")
+        #profile = Application.getInstance().getMachineManager().getActiveProfile()
+        #if profile:
+            #if profile.getSettingValue("adhesion_type") == "skirt":
+                #skirt_size = profile.getSettingValue("skirt_line_count") * profile.getSettingValue("skirt_line_width") + profile.getSettingValue("skirt_gap")
+            #elif profile.getSettingValue("adhesion_type") == "brim":
+                #skirt_size = profile.getSettingValue("brim_line_count") * profile.getSettingValue("skirt_line_width")
+            #else:
+                #skirt_size = profile.getSettingValue("skirt_line_width")
+
+            #skirt_size += profile.getSettingValue("skirt_line_width")
 
         scale_to_max_bounds = AxisAlignedBox(
             minimum = Vector(minW + skirt_size, minH, minD + skirt_size + disallowed_area_size),
@@ -153,3 +158,21 @@ class BuildVolume(SceneNode):
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
+
+    def _onActiveInstanceChanged(self):
+        self._active_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
+
+        if self._active_instance:
+            self._width = self._active_instance.getMachineSettingValue("machine_width")
+            self._height = self._active_instance.getMachineSettingValue("machine_height")
+            self._depth = self._active_instance.getMachineSettingValue("machine_depth")
+
+            disallowed_areas = self._active_instance.getMachineSettingValue("machine_disallowed_areas")
+            areas = []
+            if disallowed_areas:
+                for area in disallowed_areas:
+                    areas.append(Polygon(numpy.array(area, numpy.float32)))
+
+            self._disallowed_areas = areas
+
+            self.rebuild()
