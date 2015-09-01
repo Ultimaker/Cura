@@ -520,6 +520,7 @@
                     "default": 60,
                     "min_value": "0",
                     "max_value_warning": "260",
+                    "enabled": "machine_heated_bed"
                 },
                 "material_diameter": {
                     "label": "Diameter",
@@ -1105,10 +1106,7 @@
                         "everywhere": "Everywhere"
                     },
                     "default": "everywhere",
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_angle": {
                     "label": "Overhang Angle",
@@ -1119,10 +1117,7 @@
                     "max_value": "90",
                     "default": 60,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_xy_distance": {
                     "label": "X/Y Distance",
@@ -1133,10 +1128,7 @@
                     "max_value_warning": "10",
                     "default": 0.7,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_z_distance": {
                     "label": "Z Distance",
@@ -1147,10 +1139,8 @@
                     "max_value_warning": "10",
                     "default": 0.15,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
+                    "enabled": "support_enable",
+
                     "children": {
                         "support_top_distance": {
                             "label": "Top Distance",
@@ -1160,7 +1150,8 @@
                             "max_value_warning": "10",
                             "default": 0.15,
                             "type": "float",
-                            "visible": false
+                            "visible": false,
+                            "enabled": "support_enable"
                         },
                         "support_bottom_distance": {
                             "label": "Bottom Distance",
@@ -1170,7 +1161,8 @@
                             "max_value_warning": "10",
                             "default": 0.15,
                             "type": "float",
-                            "visible": false
+                            "visible": false,
+                            "enabled": "support_enable"
                         }
                     }
                 },
@@ -1180,10 +1172,7 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_conical_angle": {
                     "label": "Cone Angle",
@@ -1194,10 +1183,7 @@
                     "max_value": "90",
                     "default": 30,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_conical_enabled",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_conical_min_width": {
                     "label": "Minimal Width",
@@ -1207,10 +1193,7 @@
                     "default": 3.0,
                     "type": "float",
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_conical_enabled",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_bottom_stair_step_height": {
                     "label": "Stair Step Height",
@@ -1219,10 +1202,7 @@
                     "type": "float",
                     "default": 2,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_type",
-                        "value": "Everywhere"
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_join_distance": {
                     "label": "Join Distance",
@@ -1230,7 +1210,8 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 2,
-                    "visible": false
+                    "visible": false,
+                    "enabled": "support_enable"
                 },
                 "support_offset": {
                     "label": "Horizontal Expansion",
@@ -1238,7 +1219,8 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.2,
-                    "visible": false
+                    "visible": false,
+                    "enabled": "support_enable"
                 },
                 "support_area_smoothing": {
                     "label": "Area Smoothing",
@@ -1246,14 +1228,16 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.6,
-                    "visible": false
+                    "visible": false,
+                    "enabled": "support_enable"
                 },
                 "support_roof_enable": {
                     "label": "Enable Hammock",
                     "description": "Generate a solid support roof on which the model sits.",
                     "type": "boolean",
                     "default": false,
-                    "visible": true
+                    "visible": true,
+                    "enabled": "support_enable"
                 },
                 "support_roof_height": {
                     "label": "Hammock Thickness",
@@ -1262,17 +1246,15 @@
                     "type": "float",
                     "default": 1,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_roof_enable",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_use_towers": {
                     "label": "Use towers.",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "boolean",
                     "default": true,
-                    "visible": false
+                    "visible": false,
+                    "enabled": "support_enable"
                 },
                 "support_minimal_diameter": {
                     "label": "Minimal Diameter",
@@ -1281,10 +1263,7 @@
                     "type": "float",
                     "default": 1,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_tower_diameter": {
                     "label": "Tower Diameter",
@@ -1293,10 +1272,7 @@
                     "type": "float",
                     "default": 1,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_tower_roof_angle": {
                     "label": "Tower Roof Angle",
@@ -1307,10 +1283,7 @@
                     "max_value": "90",
                     "default": 65,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_use_towers",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_pattern": {
                     "label": "Pattern",
@@ -1323,10 +1296,7 @@
                     },
                     "default": "zigzag",
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_connect_zigzags": {
                     "label": "Connect ZigZags",
@@ -1334,10 +1304,7 @@
                     "type": "boolean",
                     "default": true,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_pattern",
-                        "value": "ZigZag"
-                    }
+                    "enabled": "support_enable"
                 },
                 "support_infill_rate": {
                     "label": "Fill Amount",
@@ -1348,10 +1315,8 @@
                     "max_value": "100",
                     "default": 15,
                     "visible": false,
-                    "active_if": {
-                        "setting": "support_enable",
-                        "value": true
-                    },
+                    "enabled": "support_enable",
+
                     "children": {
                         "support_line_distance": {
                             "label": "Line distance",
@@ -1361,10 +1326,7 @@
                             "min_value": "0",
                             "default": 2.66,
                             "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            },
+                            "enabled": "support_enable",
                             "inherit_function": "(support_line_width * 100) / parent_value"
                         }
                     }
