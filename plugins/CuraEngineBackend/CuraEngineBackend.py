@@ -132,6 +132,7 @@ class CuraEngineBackend(Backend):
                     if not getattr(node, "_outside_buildarea", False):
                         temp_list.append(node)
             if len(temp_list) == 0:
+                self.processingProgress.emit(0.0)
                 return
             object_groups.append(temp_list)
         #for node in DepthFirstIterator(self._scene.getRoot()):
@@ -249,6 +250,10 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
         self._socket.registerMessageType(6, Cura_pb2.SettingList)
         self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
+
+    ##  Manually triggers a reslice
+    def forceSlice(self):
+        self._change_timer.start()
 
     def _onChanged(self):
         if not self._profile:

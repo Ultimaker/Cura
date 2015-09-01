@@ -67,11 +67,14 @@ QtObject {
 
                 Rectangle {
                     id: tool_button_background
-                    anchors.top: parent.verticalCenter;
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    //anchors.top: parent.bottom
 
-                    width: parent.width;
-                    height: control.hovered ? parent.height / 2 + label.height : 0;
-                    Behavior on height { NumberAnimation { duration: 100; } }
+                    //width: label.width > parent.width ? label.width : parent.width
+                    width: control.hovered ? label.width : 0;
+                    height: label.height
+                    Behavior on width { NumberAnimation { duration: 100; } }
 
                     opacity: control.hovered ? 1.0 : 0.0;
                     Behavior on opacity { NumberAnimation { duration: 100; } }
@@ -205,26 +208,23 @@ QtObject {
             background:Rectangle {
                 implicitWidth: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2)
                 implicitHeight: UM.Theme.sizes.progressbar.height
-                x: UM.Theme.sizes.default_margin.width
                 color: UM.Theme.colors.progressbar_background
             }
             progress: Rectangle {
                 color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
-
                 Rectangle{
                     color: UM.Theme.colors.progressbar_control
                     width: UM.Theme.sizes.progressbar_control.width
                     height: UM.Theme.sizes.progressbar_control.height
-                    x: UM.Theme.sizes.default_margin.width
                     visible: control.indeterminate
 
                     SequentialAnimation on x {
                         id: xAnim
-                        property int animEndPoint: UM.Theme.sizes.message.width - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.progressbar_control.width
+                        property int animEndPoint: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2) - UM.Theme.sizes.progressbar_control.width
                         running: control.indeterminate
                         loops: Animation.Infinite
-                        NumberAnimation { from: UM.Theme.sizes.default_margin.width; to: xAnim.animEndPoint; duration: 2000;}
-                        NumberAnimation { from: xAnim.animEndPoint; to: UM.Theme.sizes.default_margin.width; duration: 2000;}
+                        NumberAnimation { from: 0; to: xAnim.animEndPoint; duration: 2000;}
+                        NumberAnimation { from: xAnim.animEndPoint; to: 0; duration: 2000;}
                     }
                 }
             }
@@ -235,7 +235,7 @@ QtObject {
 
     property Component sidebar_category: Component {
         ButtonStyle {
-            background: UM.AngledCornerRectangle {
+            background: Rectangle {
                 implicitHeight: UM.Theme.sizes.section.height;
                 color: {
                     if(control.color) {
@@ -253,36 +253,50 @@ QtObject {
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
-                cornerSize: UM.Theme.sizes.default_margin.width;
             }
             label: Item {
                 anchors.fill: parent;
-                anchors.margins: UM.Theme.sizes.default_margin.width;
-
-                Image {
+                anchors.left: parent.left
+                Item{
                     id: icon;
-
-                    anchors.left: parent.left;
-                    anchors.verticalCenter: parent.verticalCenter;
-
-                    source: control.iconSource;
-                    width: UM.Theme.sizes.section_icon.width;
-                    height: UM.Theme.sizes.section_icon.height;
+                    anchors.left: parent.left
+                    height: parent.height
+                    width: UM.Theme.sizes.section_icon_column.width
+                    UM.RecolorImage {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        color: UM.Theme.colors.setting_category_text
+                        source: control.iconSource;
+                        width: UM.Theme.sizes.section_icon.width;
+                        height: UM.Theme.sizes.section_icon.height;
+                        sourceSize.width: width + 15
+                        sourceSize.height: width + 15
+                    }
                 }
 
                 Label {
                     anchors {
                         left: icon.right;
-                        leftMargin: UM.Theme.sizes.default_margin.width;
                         right: parent.right;
                         verticalCenter: parent.verticalCenter;
                     }
-
                     text: control.text;
                     font: UM.Theme.fonts.setting_category;
                     color: UM.Theme.colors.setting_category_text;
                     fontSizeMode: Text.HorizontalFit;
                     minimumPointSize: 8
+                }
+                UM.RecolorImage {
+                    id: lengthIcon
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.sizes.default_margin.width * 2
+                    width: UM.Theme.sizes.standard_arrow.width
+                    height: UM.Theme.sizes.standard_arrow.height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: UM.Theme.colors.setting_category_text
+                    source: control.checked ? UM.Theme.icons.arrow_top : UM.Theme.icons.arrow_bottom
                 }
             }
         }
@@ -295,19 +309,14 @@ QtObject {
 
             transientScrollBars: false
 
-            scrollBarBackground: UM.AngledCornerRectangle {
-                implicitWidth: UM.Theme.sizes.scrollbar.width;
-
-                cornerSize: UM.Theme.sizes.scrollbar.width;
-
+            scrollBarBackground: Rectangle {
+                implicitWidth: UM.Theme.sizes.scrollbar.width
                 color: UM.Theme.colors.scrollbar_background;
             }
 
-            handle: UM.AngledCornerRectangle {
+            handle: Rectangle {
                 id: scrollViewHandle
                 implicitWidth: UM.Theme.sizes.scrollbar.width;
-
-                cornerSize: UM.Theme.sizes.scrollbar.width;
 
                 color: styleData.pressed ? UM.Theme.colors.scrollbar_handle_down : styleData.hovered ? UM.Theme.colors.scrollbar_handle_hover : UM.Theme.colors.scrollbar_handle;
                 Behavior on color { ColorAnimation { duration: 50; } }
@@ -317,14 +326,13 @@ QtObject {
 
     property variant setting_item: UM.SettingItemStyle {
         labelFont: UM.Theme.fonts.default;
-        labelColor: UM.Theme.colors.setting_label;
+        labelColor: UM.Theme.colors.setting_control_text;
 
-        spacing: UM.Theme.sizes.default_margin.width;
+        spacing: UM.Theme.sizes.default_lining.height;
         fixedHeight: UM.Theme.sizes.setting.height;
 
         controlWidth: UM.Theme.sizes.setting_control.width;
         controlRightMargin: UM.Theme.sizes.setting_control_margin.width;
-        controlBorderWidth: 1;
         controlColor: UM.Theme.colors.setting_control;
         controlHighlightColor: UM.Theme.colors.setting_control_highlight;
         controlBorderColor: UM.Theme.colors.setting_control_border;
@@ -419,26 +427,6 @@ QtObject {
                     color: UM.Theme.colors.slider_groove_fill;
                     width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
                 }
-                Label {
-                    id: maxValueLabel
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: control.maximumValue + 1
-                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
-                    transformOrigin: Item.BottomLeft
-                    rotation: 90
-                    x: parent.x + parent.width - maxValueLabel.height
-                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
-                }
-                Label {
-                    id: minValueLabel
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: '1'
-                    font: control.maximumValue > 998 ? UM.Theme.fonts.small : UM.Theme.fonts.default
-                    transformOrigin: Item.BottomLeft
-                    rotation: 90
-                    x: parent.x
-                    y: control.maximumValue > 998 ? parent.y + UM.Theme.sizes.slider_layerview_smalltext_margin.width : parent.y
-                }
             }
             handle: Rectangle {
                 id: layerSliderControl
@@ -446,26 +434,37 @@ QtObject {
                 height: UM.Theme.sizes.slider_handle.height;
                 color: control.hovered ? UM.Theme.colors.slider_handle_hover : UM.Theme.colors.slider_handle;
                 Behavior on color { ColorAnimation { duration: 50; } }
-                Label {
+                TextField {
                     id: valueLabel
+                    property int unremovableSpacing: 5
+                    property string maxValue: control.maximumValue + 1
+                    placeholderText: control.value + 1
+                    onEditingFinished: {
+                        if (valueLabel.text != ''){
+                            control.value = valueLabel.text - 1
+                            valueLabel.text = ''
+                            valueLabel.focus = false
+                        }
+
+                    }
+                    validator: IntValidator {bottom: 1; top: control.maximumValue + 1;}
                     visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    text: control.value + 1
                     anchors.bottom: layerSliderControl.bottom
                     anchors.right: layerSliderControl.left
-                    anchors.bottomMargin: parent.width + UM.Theme.sizes.default_margin.width
-                    font: UM.Theme.fonts.default
+                    anchors.rightMargin: valueLabel.unremovableSpacing / 2
+                    anchors.bottomMargin: parent.width + (UM.Theme.sizes.default_margin.width / 2)
                     transformOrigin: Item.BottomRight
                     rotation: 90
-                    Rectangle {
-                        width: (parent.width + UM.Theme.sizes.tooltip_margins.width) < 35 ? 35 : parent.width + UM.Theme.sizes.tooltip_margins.width
-                        height: parent.height + (UM.Theme.sizes.tooltip_margins.height / 2)
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        z: parent.z - 1
-                        color: UM.Theme.colors.slider_text_background
-                        border.width: 1
-                        border.color: UM.Theme.colors.slider_groove_fill;
-
+                    style: TextFieldStyle{
+                        textColor: UM.Theme.colors.setting_control_text;
+                        font: UM.Theme.fonts.default;
+                        background: Rectangle {
+                            radius: 0
+                            implicitWidth: control.maxValue.length * valueLabel.font.pixelSize
+                            implicitHeight: UM.Theme.sizes.slider_handle.height + valueLabel.unremovableSpacing
+                            border.width: 1;
+                            border.color: UM.Theme.colors.slider_groove_border;
+                        }
                     }
                 }
             }

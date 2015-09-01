@@ -42,6 +42,7 @@
             "default": "RepRap"
         },
         "machine_disallowed_areas": {
+            "type": "polygons",
             "default": []
         },
         "machine_platform_offset": {
@@ -52,6 +53,7 @@
             ]
         },
         "machine_head_polygon": {
+            "type": "polygon",
             "default": [
                 [
                     -1,
@@ -73,6 +75,7 @@
         },
         "machine_head_with_fans_polygon":
         {
+            "type": "polygon",
             "default": [
                 [
                     -20,
@@ -308,7 +311,7 @@
                                             "default": 6,
                                             "type": "int",
                                             "visible": false,
-                                            "inherit_function": "math.ceil(parent_value / layer_height)"
+                                            "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
                                         }
                                     }
                                 },
@@ -328,7 +331,7 @@
                                             "default": 6,
                                             "type": "int",
                                             "visible": false,
-                                            "inherit_function": "math.ceil(parent_value / layer_height)"
+                                            "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
                                         }
                                     }
                                 }
@@ -390,7 +393,8 @@
                     "type": "enum",
                     "options": {
                         "lines": "Lines",
-                        "concentric": "Concentric"
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
                     },
                     "default": "lines",
                     "visible": false
@@ -420,6 +424,18 @@
                     "type": "float",
                     "default": 0,
                     "visible": false
+                },
+                "z_seam_type": {
+                    "label": "Z Seam Alignment",
+                    "description": "Starting point of each part in a layer. When parts in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the part start will be less noticable. When taking the shortest path the print will be more quick.",
+                    "type": "enum",
+                    "options": [
+                        "Back",
+                        "Shortest",
+                        "Random"
+                    ],
+                    "default": "Shortest",
+                    "visible": false
                 }
             }
         },
@@ -436,20 +452,6 @@
                     "default": 20,
                     "max_value_warning": "100.0",
                     "children": {
-                        "infill_pattern": {
-                            "label": "Infill Pattern",
-                            "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
-                            "type": "enum",
-                            "visible": false,
-                            "options": {
-                                "grid": "Grid",
-                                "lines": "Lines",
-                                "concentric": "Concentric",
-                                "zigzag": "Zig Zag"
-                            },
-                            "default": "grid",
-                            "inherit_function": "'lines' if parent_value > 25 else 'grid'"
-                        },
                         "infill_line_distance": {
                             "label": "Line distance",
                             "description": "Distance between the printed infill lines.",
@@ -460,6 +462,20 @@
                             "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
                         }
                     }
+                },
+                "infill_pattern": {
+                    "label": "Infill Pattern",
+                    "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
+                    "type": "enum",
+                    "visible": false,
+                    "options": {
+                        "grid": "Grid",
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default": "grid",
+                    "inherit_function": "'lines' if parent_value > 25 else 'grid'"
                 },
                 "infill_overlap": {
                     "label": "Infill Overlap",
@@ -495,6 +511,13 @@
                             "inherit_function": "math.floor((parent_value + 0.001) / layer_height)"
                         }
                     }
+                },
+                "infill_before_walls": {
+                    "label": "Infill Before Walls",
+                    "description": "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false
                 }
             }
         },
@@ -545,7 +568,8 @@
                     "label": "Enable Retraction",
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. Details about the retraction can be configured in the advanced tab.",
                     "type": "boolean",
-                    "default": true
+                    "default": true,
+                    "visible": true
                 },
                 "retraction_amount": {
                     "label": "Retraction Distance",
@@ -1062,7 +1086,7 @@
                 },
                 "cool_min_layer_time_fan_speed_max": {
                     "label": "Minimal Layer Time Full Fan Speed",
-                    "description": "The minimum time spent in a layer which will cause the fan to be at minmum speed. The fan speed increases linearly from maximal fan speed for layers taking minimal layer time to minimal fan speed for layers taking the time specified here.",
+                    "description": "The minimum time spent in a layer which will cause the fan to be at maximum speed. The fan speed increases linearly from minimal fan speed for layers taking minimal layer time to maximum fan speed for layers taking the time specified here.",
                     "unit": "sec",
                     "type": "float",
                     "min_value": "0",
@@ -1248,6 +1272,38 @@
                     "visible": false,
                     "enabled": "support_enable"
                 },
+                "support_roof_density": {
+                    "label": "Hammock Density",
+                    "description": "This controls how densely filled the roofs of the support will be. A higher percentage results in better overhangs, which are more difficult to remove.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 100,
+                    "children": {
+                        "support_roof_line_distance": {
+                            "label": "Hammock Line Distance",
+                            "description": "Distance between the printed hammock lines.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.4,
+                            "visible": false,
+                            "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value"
+                        }
+                    }
+                },
+                "support_roof_pattern": {
+                    "label": "Hammock Pattern",
+                    "description": "The pattern with which the hammock is printed.",
+                    "type": "enum",
+                    "visible": false,
+                    "options": [
+                        "Lines",
+                        "Grid",
+                        "Triangles",
+                        "Concentric",
+                        "ZigZag"
+                    ],
+                    "default": "Concentric"
+                },
                 "support_use_towers": {
                     "label": "Use towers.",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
@@ -1290,8 +1346,10 @@
                     "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
                     "type": "enum",
                     "options": {
-                        "grid": "Grid",
                         "lines": "Lines",
+                        "grid": "Grid",
+                        "triangles": "Triangles",
+                        "concentric": "Concentric",
                         "zigzag": "Zig Zag"
                     },
                     "default": "zigzag",
@@ -1723,9 +1781,14 @@
                 },
                 "magic_mesh_surface_mode": {
                     "label": "Surface Mode",
-                    "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh.",
-                    "type": "boolean",
-                    "default": false,
+                    "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh. It's also possible to do both: print the insides of a closed volume as normal, but print all polygons not part of a closed volume as surface.",
+                    "type": "enum",
+                    "options": [
+                        "Normal",
+                        "Surface",
+                        "Both"
+                    ],
+                    "default": "Normal",
                     "visible": false
                 },
                 "magic_spiralize": {

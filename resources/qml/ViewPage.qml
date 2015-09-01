@@ -6,25 +6,27 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 UM.PreferencesPage
 {
     id: preferencesPage
 
     //: View configuration page title
-    title: qsTr("View");
+    title: catalog.i18nc("@title:window","View");
 
     function reset()
     {
         UM.Preferences.resetPreference("view/show_overhang");
-        UM.Preferences.resetPreferences("view/center_on_select");
+        UM.Preferences.resetPreference("view/center_on_select");
+        overhangCheckbox.checked = UM.Preferences.getValue("view/show_overhang")
+        centerCheckbox.checked = UM.Preferences.getValue("view/center_on_select")
     }
 
     GridLayout
     {
         columns: 2;
-
+        UM.I18nCatalog { id: catalog; name:"cura"}
         CheckBox
         {
             id: overhangCheckbox
@@ -36,18 +38,21 @@ UM.PreferencesPage
             id: viewText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: qsTr("Display Overhang");
+            text: catalog.i18nc("@action:button","Display Overhang");
             onClicked: overhangCheckbox.checked = !overhangCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: "Highlight unsupported areas of the model in red. Without support these areas will nog print properly."
+            tooltip: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will nog print properly.")
 
-            style: ButtonStyle {
-                background: Rectangle {
+            style: ButtonStyle
+            {
+                background: Rectangle
+                {
                     border.width: 0
                     color: "transparent"
                 }
-                label: Text {
+                label: Text
+                {
                     renderType: Text.NativeRendering
                     horizontalAlignment: Text.AlignLeft
                     text: control.text
@@ -66,11 +71,11 @@ UM.PreferencesPage
             id: centerText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: qsTr("Center camera when item is selected");
+            text: catalog.i18nc("@action:button","Center camera when item is selected");
             onClicked: centerCheckbox.checked = !centerCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: "Moves the camera so the object is in the center of the view when an object is selected"
+            tooltip: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
 
             style: ButtonStyle
             {

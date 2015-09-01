@@ -46,7 +46,6 @@ import platform
 import sys
 import os
 import os.path
-import configparser
 import numpy
 numpy.seterr(all="ignore")
 
@@ -96,6 +95,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("view/center_on_select", True)
+        Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
@@ -191,6 +191,9 @@ class CuraApplication(QtApplication):
 
         return super().event(event)
 
+    def getPrintInformation(self):
+        return self._print_information
+
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
@@ -269,8 +272,10 @@ class CuraApplication(QtApplication):
             for i in range(count):
                 new_node = SceneNode()
                 new_node.setMeshData(node.getMeshData())
+
+                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, node.getPosition().y, 0))
+                new_node.setOrientation(node.getOrientation())
                 new_node.setScale(node.getScale())
-                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, 0, 0))
                 new_node.setSelectable(True)
                 op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
             op.push()

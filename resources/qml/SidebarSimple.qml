@@ -6,9 +6,10 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-Item {
+Item
+{
     id: base;
 
     anchors.fill: parent;
@@ -22,44 +23,47 @@ Item {
 
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
-
-    ColumnLayout {
+    UM.I18nCatalog { id: catalog; name:"cura"}
+    ColumnLayout
+    {
         anchors.fill: parent;
 
-        Item {
+        Item
+        {
             Layout.fillWidth: true;
             Layout.preferredHeight: UM.Theme.sizes.section.height;
 
-            Label {
+            Label
+            {
                 anchors.left: parent.left;
                 anchors.verticalCenter: parent.verticalCenter;
                 text: base.minimumPrintTime.valid ? base.minimumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
                 font: UM.Theme.fonts.timeslider_time;
                 color: UM.Theme.colors.primary;
             }
-            Label {
+            Label
+            {
                 anchors.centerIn: parent;
-                text: {
+                text: //: Sidebar configuration label
+                {
                     if (UM.Backend.progress < 0)
                     {
-                        //: Sidebar configuration label
-                        return qsTr("No Model Loaded");
+                        return catalog.i18nc("@label","No Model Loaded");
                     }
                     else if (!base.minimumPrintTime.valid || !base.maximumPrintTime.valid)
                     {
-                        //: Sidebar configuration label
-                        return qsTr("Calculating...")
+                        return catalog.i18nc("@label","Calculating...")
                     }
                     else
                     {
-                        //: Sidebar configuration label
-                        return qsTr("Estimated Print Time");
+                        return catalog.i18nc("@label","Estimated Print Time");
                     }
                 }
                 color: UM.Theme.colors.text;
                 font: UM.Theme.fonts.default;
             }
-            Label {
+            Label
+            {
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter;
                 text: base.maximumPrintTime.valid ? base.maximumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
@@ -68,7 +72,8 @@ Item {
             }
         }
 
-        Slider {
+        Slider
+        {
             Layout.fillWidth: true;
             Layout.preferredHeight: UM.Theme.sizes.section.height;
 
@@ -81,38 +86,42 @@ Item {
             style: UM.Theme.styles.slider;
         }
 
-        Item {
+        Item
+        {
             Layout.fillWidth: true;
             Layout.preferredHeight: UM.Theme.sizes.section.height;
 
-            Label {
+            Label
+            {
                 anchors.left: parent.left;
                 anchors.verticalCenter: parent.verticalCenter;
 
                 //: Quality slider label
-                text: qsTr("Minimum\nDraft");
+                text: catalog.i18nc("@label","Minimum\nDraft");
                 color: UM.Theme.colors.text;
                 font: UM.Theme.fonts.default;
             }
 
-            Label {
+            Label
+            {
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter;
 
                 //: Quality slider label
-                text: qsTr("Maximum\nQuality");
+                text: catalog.i18nc("@label","Maximum\nQuality");
                 horizontalAlignment: Text.AlignRight;
                 color: UM.Theme.colors.text;
                 font: UM.Theme.fonts.default;
             }
         }
 
-        CheckBox {
+        CheckBox
+        {
             Layout.fillWidth: true;
             Layout.preferredHeight: UM.Theme.sizes.section.height;
 
             //: Setting checkbox
-            text: qsTr("Enable Support");
+            text: catalog.i18nc("@action:checkbox","Enable Support");
 
             style: UM.Theme.styles.checkbox;
 

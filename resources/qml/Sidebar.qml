@@ -8,162 +8,172 @@ import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
-Rectangle {
+Rectangle
+{
     id: base;
 
     property Action addMachineAction;
     property Action configureMachinesAction;
 
     color: UM.Theme.colors.sidebar;
+    UM.I18nCatalog { id: catalog; name:"cura"}
 
-    function showTooltip(item, position, text) {
+    function showTooltip(item, position, text)
+    {
         tooltip.text = text;
         position = item.mapToItem(base, position.x, position.y / 2);
         tooltip.show(position);
     }
 
-    function hideTooltip() {
+    function hideTooltip()
+    {
         tooltip.hide();
     }
 
-    MouseArea {
+    MouseArea
+    {
         anchors.fill: parent
         acceptedButtons: Qt.AllButtons;
 
-        onWheel: {
+        onWheel:
+        {
             wheel.accepted = true;
         }
     }
 
-    ColumnLayout {
-        anchors.fill: parent;
-        anchors.topMargin: UM.Theme.sizes.default_margin.height;
+    SidebarHeader {
+        id: header;
 
-        spacing: UM.Theme.sizes.default_margin.height;
+        width: parent.width
+        height: totalHeightHeader
 
-        SidebarHeader {
-            id: header;
+        addMachineAction: base.addMachineAction;
+        configureMachinesAction: base.configureMachinesAction;
+        modesModel: modesListModel;
 
-            Layout.fillWidth: true;
-
-            addMachineAction: base.addMachineAction;
-            configureMachinesAction: base.configureMachinesAction;
-            modesModel: modesListModel;
-
-            currentModeIndex: {
-                var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
-                if(index) {
-                    return index;
-                }
-                return 0;
-            }
-            onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
-        }
-
-        Item {
-            Layout.fillWidth: true;
-            implicitHeight: UM.Theme.sizes.setting.height;
-
-            visible: UM.MachineManager.hasVariants;
-
-            Row {
-                spacing: UM.Theme.sizes.default_margin.width;
-                Label {
-                    anchors.verticalCenter: parent.verticalCenter;
-                    text: "Variant";
-                }
-
-                ComboBox {
-                    anchors.verticalCenter: parent.verticalCenter;
-                    model: UM.MachineVariantsModel { }
-                    textRole: "name"
-                    onActivated: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name);
-
-                    currentIndex: {
-                        for(var i = 0; i < model.rowCount(); ++i) {
-                            if(model.getItem(i).name == UM.MachineManager.activeMachineVariant) {
-                                return i;
-                            }
-                        }
-
-                        return 0;
-                    }
-                }
-            }
-        }
-
-        Item {
-            Layout.fillWidth: true;
-            implicitHeight: UM.Theme.sizes.setting.height;
-
-            Row {
-                spacing: UM.Theme.sizes.default_margin.width;
-                Label {
-                    anchors.verticalCenter: parent.verticalCenter;
-                    text: "Global Profile";
-                }
-
-                ComboBox {
-                    anchors.verticalCenter: parent.verticalCenter;
-                    model: UM.ProfilesModel { }
-                    textRole: "name"
-                    onActivated: UM.MachineManager.setActiveProfile(model.getItem(index).name)
-
-                    currentIndex: {
-                        for(var i = 0; i < model.rowCount(); ++i) {
-                            if(model.getItem(i).name == UM.MachineManager.activeProfile)
-                                return i;
-                        }
-
-                        return 0;
-                    }
-                }
-
-                Button {
-                    text: "Save";
-                }
-            }
-        }
-
-        Loader {
-            id: sidebarContents;
-
-            Layout.fillWidth: true;
-            Layout.fillHeight: true;
-
-            source: modesListModel.get(header.currentModeIndex).file;
-
-            property Item sidebar: base;
-
-            onLoaded:
+        currentModeIndex:
+        {
+            var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+            if(index)
             {
-                if(item)
-                {
-                    item.configureSettings = base.configureMachinesAction;
-                    if(item.onShowTooltip != undefined)
-                    {
-                        item.showTooltip.connect(base.showTooltip)
+                return index;
+            }
+            return 0;
+        }
+        onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+    }
+
+    Item {
+        id: variantItem;
+
+        anchors.top: header.bottom;
+        height: UM.Theme.sizes.setting.height;
+
+        visible: UM.MachineManager.hasVariants;
+
+        Row {
+            spacing: UM.Theme.sizes.default_margin.width;
+            Label {
+                anchors.verticalCenter: parent.verticalCenter;
+                text: "Variant";
+            }
+
+            ComboBox {
+                anchors.verticalCenter: parent.verticalCenter;
+                model: UM.MachineVariantsModel { }
+                textRole: "name"
+                onActivated: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name);
+
+                currentIndex: {
+                    for(var i = 0; i < model.rowCount(); ++i) {
+                        if(model.getItem(i).name == UM.MachineManager.activeMachineVariant) {
+                            return i;
+                        }
                     }
-                    if(item.onHideTooltip != undefined)
-                    {
-                        item.hideTooltip.connect(base.hideTooltip)
-                    }
+
+                    return 0;
                 }
             }
-        }
-
-        SaveButton {
-            id: saveButton;
-            implicitWidth: base.width
-            implicitHeight: UM.Theme.sizes.save_button_text_margin.height * 2 + UM.Theme.sizes.save_button_slicing_bar.height + UM.Theme.sizes.save_button_save_to_button.height +  UM.Theme.sizes.default_margin.height
         }
     }
 
-    SidebarTooltip {
+    Item {
+        id: profileItem;
+
+        anchors.top: variantItem.bottom;
+        height: UM.Theme.sizes.setting.height;
+
+        Row {
+            spacing: UM.Theme.sizes.default_margin.width;
+            Label {
+                anchors.verticalCenter: parent.verticalCenter;
+                text: "Global Profile";
+            }
+
+            ComboBox {
+                anchors.verticalCenter: parent.verticalCenter;
+                model: UM.ProfilesModel { }
+                textRole: "name"
+                onActivated: UM.MachineManager.setActiveProfile(model.getItem(index).name)
+
+                currentIndex: {
+                    for(var i = 0; i < model.rowCount(); ++i) {
+                        if(model.getItem(i).name == UM.MachineManager.activeProfile)
+                            return i;
+                    }
+
+                    return 0;
+                }
+            }
+
+            Button {
+                text: "Save";
+            }
+        }
+    }
+
+    Loader {
+        id: sidebarContents;
+        anchors.bottom: saveButton.top
+        anchors.top: profileItem.bottom
+        anchors.left: base.left
+        anchors.right: base.right
+
+        source: modesListModel.get(header.currentModeIndex).file;
+
+        property Item sidebar: base;
+
+        onLoaded:
+        {
+            if(item)
+            {
+                item.configureSettings = base.configureMachinesAction;
+                if(item.onShowTooltip != undefined)
+                {
+                    item.showTooltip.connect(base.showTooltip)
+                }
+                if(item.onHideTooltip != undefined)
+                {
+                    item.hideTooltip.connect(base.hideTooltip)
+                }
+            }
+        }
+    }
+
+    SaveButton {
+        id: saveButton;
+        implicitWidth: base.width
+        implicitHeight: totalHeight
+        anchors.bottom: parent.bottom
+    }
+
+    SidebarTooltip
+    {
         id: tooltip;
     }
 
-    ListModel {
+    ListModel
+    {
         id: modesListModel;
         //: Simple configuration mode option
         ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
@@ -171,10 +181,11 @@ Rectangle {
         ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
     }
 
-    Component.onCompleted: {
+    Component.onCompleted:
+    {
         for(var i = 0; i < modesListModel.count; ++i)
         {
-            modesListModel.setProperty(i, "text", qsTr(modesListModel.get(i).text));
+            modesListModel.setProperty(i, "text", catalog.i18nc("@label", modesListModel.get(i).text));
         }
     }
 }

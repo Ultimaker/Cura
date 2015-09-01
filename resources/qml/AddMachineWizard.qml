@@ -15,7 +15,7 @@ UM.Wizard
 {
     id: base;
 
-    title: catalog.i18nc("@title", "Add Printer")
+    title: catalog.i18nc("@title:window", "Add Printer")
 
     // This part is optional
     // This part checks whether there is a printer -> if not: some of the functions (delete for example) are disabled

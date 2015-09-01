@@ -5,40 +5,48 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-UM.Dialog {
+UM.Dialog
+{
     id: dialog;
 
     //: Engine Log dialog title
-    title: qsTr("Engine Log");
+    title: catalog.i18nc("@title:window","Engine Log");
 
     modality: Qt.NonModal;
 
-    TextArea {
+    TextArea
+    {
         id: textArea
         anchors.fill: parent;
 
-        Timer {
+        Timer
+        {
             id: updateTimer;
             interval: 1000;
             running: false;
             repeat: true;
             onTriggered: textArea.text = Printer.getEngineLog();
         }
+        UM.I18nCatalog{id: catalog; name:"cura"}
     }
 
-    rightButtons: Button {
+    rightButtons: Button
+    {
         //: Close engine log button
-        text: qsTr("Close");
+        text: catalog.i18nc("@action:button","Close");
         onClicked: dialog.visible = false;
     }
 
-    onVisibleChanged: {
-        if(visible) {
+    onVisibleChanged:
+    {
+        if(visible)
+        {
             textArea.text = Printer.getEngineLog();
             updateTimer.start();
-        } else {
+        } else
+        {
             updateTimer.stop();
         }
     }

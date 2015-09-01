@@ -155,6 +155,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     @pyqtSlot()
     def startPrint(self):
+        self.writeStarted.emit(self)
         gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
         self.printGCode(gcode_list)
 
@@ -163,6 +164,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def printGCode(self, gcode_list):
         if self.isPrinting() or not self._is_connected:
             Logger.log("d", "Printer is busy or not connected, aborting print")
+            self.writeError.emit(self)
             return
 
         self._gcode.clear()
@@ -178,6 +180,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         for i in range(0, 4): #Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
+
+        self.writeFinished.emit(self)
 
     ##  Get the serial port string of this connection.
     #   \return serial port
@@ -257,11 +261,6 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
-
-        if not self._serial:
-            self._is_connecting = False
-            Logger.log("i", "Could not establish connection on %s, unknown reasons.", self._serial_port)
-            return
 
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)

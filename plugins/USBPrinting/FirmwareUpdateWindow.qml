@@ -17,7 +17,7 @@ UM.Dialog
     visible: true;
     modality: Qt.ApplicationModal;
 
-    title: "Firmware Update";
+    title: catalog.i18nc("@title:window","Firmware Update");
 
     Column
     {
@@ -25,7 +25,8 @@ UM.Dialog
 
         Text
         {
-            anchors {
+            anchors
+            {
                 left: parent.left;
                 right: parent.right;
             }
@@ -34,17 +35,17 @@ UM.Dialog
                 if (manager.progress == 0)
                 {
                     //: Firmware update status label
-                    return qsTr("Starting firmware update, this may take a while.")
+                    return catalog.i18nc("@label","Starting firmware update, this may take a while.")
                 }
                 else if (manager.progress > 99)
                 {
                     //: Firmware update status label
-                    return qsTr("Firmware update completed.")
+                    return catalog.i18nc("@label","Firmware update completed.")
                 }
                 else
                 {
                     //: Firmware update status label
-                    return qsTr("Updating firmware.")
+                    return catalog.i18nc("@label","Updating firmware.")
                 }
             }
 
@@ -57,20 +58,23 @@ UM.Dialog
             value: manager.progress
             minimumValue: 0;
             maximumValue: 100;
-            anchors {
+            anchors
+            {
                 left: parent.left;
                 right: parent.right;
             }
 
         }
         
-        SystemPalette {
+        SystemPalette
+        {
            id: palette;
         }
     }
 
     rightButtons: [
-        Button {
+        Button
+        {
             text: "Close";
             enabled: manager.progress >= 100;
             onClicked: base.visible = false;

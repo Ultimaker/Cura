@@ -19,6 +19,8 @@ Item
 
     property variant wizard: null;
 
+    UM.I18nCatalog { id: catalog; name: "cura"}
+
     Connections
     {
         target: base.wizard
@@ -220,6 +222,11 @@ Item
                     default:
                         break;
                 }
+            }
+
+            if (elementRoot.getPageCount() == elementRoot.currentPage)
+            {
+                elementRoot.visible = false
             }
         }
     }
