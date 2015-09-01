@@ -10,28 +10,46 @@ import UM 1.0 as UM
 QtObject {
     property Component sidebar_header_button: Component {
         ButtonStyle {
-            background: Item {
+            background: Rectangle {
+                color: UM.Theme.colors.setting_control
+                border.width: 1
+                border.color: UM.Theme.colors.setting_control_border
+                UM.RecolorImage {
+                    id: downArrow
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.sizes.default_margin.width
+                    width: UM.Theme.sizes.standard_arrow.width
+                    height: UM.Theme.sizes.standard_arrow.height
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: UM.Theme.colors.setting_category_text
+                    source: UM.Theme.icons.arrow_bottom
+                }
                 Label {
-                    anchors.right: parent.right;
-                    anchors.top: parent.top;
-
-                    text: "▼";
-
-                    property bool down: control.pressed || (control.checkable && control.checked);
-                    color: down ? UM.Theme.colors.text_pressed : control.hovered ? UM.Theme.colors.text_hover : UM.Theme.colors.text;
+                    id: sidebarComboBoxLabel
+                    //property bool down: control.pressed || (control.checkable && control.checked);
+                    color: UM.Theme.colors.setting_control_text
+                    text: control.text;
+                    elide: Text.ElideRight;
+                    anchors.left: parent.left;
+                    anchors.leftMargin: UM.Theme.sizes.setting_unit_margin.width
+                    anchors.right: downArrow.left;
+                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width
+                    anchors.verticalCenter: parent.verticalCenter;
+                    font: UM.Theme.fonts.default
+                }
+                Rectangle{
+                    width: 1
+                    height: UM.Theme.sizes.setting_control.height
+                    color: UM.Theme.colors.setting_control_border
+                    anchors.right: sidebarComboBoxLabel.right
+                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width
+                    anchors.top: parent.top
+                    z: parent.z + 1
                 }
             }
-
-            label: Label {
-                property bool down: control.pressed || (control.checkable && control.checked);
-
-                font: UM.Theme.fonts.sidebar_header;
-                color: down ? UM.Theme.colors.text_pressed : control.hovered ? UM.Theme.colors.text_hover : UM.Theme.colors.text;
-
-                text: control.text;
-
-                elide: Text.ElideRight;
-            }
+            label: Label{}
         }
     }
 

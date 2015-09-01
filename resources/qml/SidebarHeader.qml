@@ -4,11 +4,10 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
-ColumnLayout
+Item
 {
     id: base;
     // Machine Setup
@@ -18,7 +17,6 @@ ColumnLayout
     property Action configureMachinesAction;
     UM.I18nCatalog { id: catalog; name:"cura"}
     property int totalHeightHeader: childrenRect.height
-    spacing: 0
 
     Rectangle {
         id: settingsModeRow
@@ -45,7 +43,6 @@ ColumnLayout
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter
-            color: "red"
             Component{
                 id: wizardDelegate
                 Button {
@@ -56,13 +53,15 @@ ColumnLayout
                     anchors.top: parent.top
                     width: parent.width / 2
                     text: model.text
+                    exclusiveGroup: modeMenuGroup;
+                    onClicked: modesList.currentIndex = index
                     style: ButtonStyle {
                         background: Rectangle {
-                            color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                            color: modesList.currentIndex == index ? UM.Theme.colors.toggle_active : UM.Theme.colors.toggle_disabled
                             Behavior on color { ColorAnimation { duration: 50; } }
                             Label {
                                 anchors.centerIn: parent
-                                color: UM.Theme.colors.load_save_button_text
+                                color: modesList.currentIndex == index ? UM.Theme.colors.toggle_active_text : UM.Theme.colors.toggle_disabled_text
                                 font: UM.Theme.fonts.default
                                 text: control.text;
                             }
@@ -71,7 +70,7 @@ ColumnLayout
                     }
                 }
             }
-
+            ExclusiveGroup { id: modeMenuGroup; }
             ListView{
                 id: modesList
                 property var index: 0
@@ -87,7 +86,7 @@ ColumnLayout
 
     Rectangle {
         id: machineSelectionRow
-        width: base.width - (UM.Theme.sizes.default_margin.width * 2)
+        width: base.width
         height: UM.Theme.sizes.sidebar_header.height
         anchors.top: settingsModeRow.bottom
         anchors.horizontalCenter: parent.horizontalCenter
@@ -97,6 +96,7 @@ ColumnLayout
             //: Machine selection label
             text: catalog.i18nc("@label","Machine:");
             anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter
             font: UM.Theme.fonts.default;
         }
@@ -105,11 +105,12 @@ ColumnLayout
             id: machineSelection
             text: UM.Application.machineName;
             width: parent.width/100*55
-            height: UM.Theme.sizes.sidebar_header.height
+            height: UM.Theme.sizes.setting_control.height
             tooltip: UM.Application.machineName;
-            //style: UM.Theme.styles.sidebar_header_button;
             anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter
+            style: UM.Theme.styles.sidebar_header_button
 
             menu: Menu
             {
@@ -138,52 +139,4 @@ ColumnLayout
             }
         }
     }
-
-    /////////////////tot hier
-
-//     ToolButton
-//     {
-//         text: base.modesModel ? base.modesModel.get(modeMenu.currentIndex).text : "";
-//
-//         style: UM.Theme.styles.sidebar_header_button;
-//
-//         menu: Menu
-//         {
-//             id: modeMenu;
-//
-//             property int currentIndex: 0;
-//
-//             Instantiator
-//             {
-//                 model: base.modesModel;
-//
-//                 MenuItem
-//                 {
-//                     text: model.text;
-//                     checkable: true;
-//                     checked: modeMenu.currentIndex == index;
-//                     exclusiveGroup: modeMenuGroup;
-//                     onTriggered: modeMenu.currentIndex = index;
-//                 }
-//                 onObjectAdded: modeMenu.insertItem(index, object)
-//                 onObjectRemoved: modeMenu.removeItem(object)
-//             }
-//
-//             ExclusiveGroup { id: modeMenuGroup; }
-//         }
-//     }
-/*
-    UM.SidebarCategoryHeader
-    {
-        width: parent.width;
-        height: UM.Theme.sizes.section.height;
-
-        iconSource: UM.Theme.icons.printsetup;
-
-        //: Sidebar header label
-        text: catalog.i18nc("@label","Print Setup");
-        enabled: false;
-
-        color: UM.Theme.colors.primary;
-    }*/
 }
