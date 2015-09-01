@@ -35,13 +35,13 @@ class BuildVolume(SceneNode):
 
 
     def setWidth(self, width):
-        self._width = width
+        if width: self._width = width
 
     def setHeight(self, height):
-        self._height = height
+        if height: self._height = height
 
     def setDepth(self, depth):
-        self._depth = depth
+        if depth: self._depth = depth
 
     def getDisallowedAreas(self):
         return self._disallowed_areas
