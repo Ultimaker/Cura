@@ -68,6 +68,20 @@ material_order = {
     'PLA_PVA_support': 2,
 }
 
+material_types = {
+    'ABS': "Beginner",
+    'PLA': "Beginner|eSun",
+    'HIPS': "Beginner|eSun",
+    'ninjaflex': "Flexible|Fenner Drives",
+    'semiflex': "Flexible|Fenner Drives",
+    'ABS_ninjaflex': "Flexible|Fenner Drives",
+    'ABS_semiflex': "Flexible|Fenner Drives",
+    'PLA_PVA': "Beginner|With Support",
+    'ABS_dual_color': "Beginner",
+    'PLA_dual_color': "Beginner",
+    'PLA_PVA_support': "Beginner|With Support",
+}
+
 profile_map = {
     'medium-quality': 'Standard',
     'high-speed': 'High Speed',
@@ -116,6 +130,8 @@ def create_machine_type(machine_type, path, dir):
             f.write("[info]\n")
             f.write("name = %s\n" % material_map[material])
             f.write("order = %d\n" % material_order[material])
+            if material_types.has_key(material):
+                f.write("material_types = %s\n" % material_types[material])
         with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
             f.write("[info]\n")
             f.write("name = %s\n" % profile_map[profile])
