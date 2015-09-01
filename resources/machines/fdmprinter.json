@@ -429,12 +429,12 @@
                     "label": "Z Seam Alignment",
                     "description": "Starting point of each part in a layer. When parts in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the part start will be less noticable. When taking the shortest path the print will be more quick.",
                     "type": "enum",
-                    "options": [
-                        "Back",
-                        "Shortest",
-                        "Random"
-                    ],
-                    "default": "Shortest",
+                    "options": {
+                        "back": "Back",
+                        "shortest": "Shortest",
+                        "random": "Random"
+                    },
+                    "default": "shortest",
                     "visible": false
                 }
             }
@@ -1295,13 +1295,13 @@
                     "description": "The pattern with which the hammock is printed.",
                     "type": "enum",
                     "visible": false,
-                    "options": [
-                        "Lines",
-                        "Grid",
-                        "Triangles",
-                        "Concentric",
-                        "ZigZag"
-                    ],
+                    "options": {
+                        "lines": "Lines",
+                        "grid": "Grid",
+                        "triangles": "Triangles",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
                     "default": "Concentric"
                 },
                 "support_use_towers": {
@@ -1783,11 +1783,11 @@
                     "label": "Surface Mode",
                     "description": "Print the surface instead of the volume. No infill, no top/bottom skin, just a single wall of which the middle coincides with the surface of the mesh. It's also possible to do both: print the insides of a closed volume as normal, but print all polygons not part of a closed volume as surface.",
                     "type": "enum",
-                    "options": [
-                        "Normal",
-                        "Surface",
-                        "Both"
-                    ],
+                    "options": {
+                        "normal": "Normal",
+                        "surface": "Surface",
+                        "both": "Both"
+                    },
                     "default": "Normal",
                     "visible": false
                 },
