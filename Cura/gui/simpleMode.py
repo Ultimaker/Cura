@@ -19,6 +19,22 @@ class simpleModePanel(wx.Panel):
 
 		materials = resources.getSimpleModeMaterials()
 
+		self.material_types = {}
+		self.material_types[_("Others")] = []
+		for material in materials:
+			if material.disabled:
+				continue
+			if len(material.types) == 0:
+				self.material_types[_("Others")].append(material)
+			for type in material.types:
+				if self.material_types.has_key(type):
+					self.material_types[type].append(material)
+				else:
+					self.material_types[type] = [material]
+
+		if len(self.material_types[_("Others")]) == 0:
+			del self.material_types[_("Others")]
+
 		# Create material buttons
 		self.printMaterialPanel = wx.Panel(self)
 		selectedMaterial = None
@@ -47,10 +63,35 @@ class simpleModePanel(wx.Panel):
 			self.printMaterialPanel.Show(len(self._print_material_options) > 1 and \
 										 self._print_material_options[0].profile.always_visible)
 
+		# Create material types combobox
+		self.printMaterialTypesPanel = wx.Panel(self)
+		selectedMaterialType = None
+		for material_type in self.material_types:
+			if profile.getProfileSetting('simpleModeMaterialType') == material_type and \
+			   selectedMaterial.profile in self.material_types[material_type]:
+				selectedMaterialType = material_type
+
+		if selectedMaterialType is None:
+			if len(selectedMaterial.profile.types) == 0:
+				selectedMaterialType = _("Others")
+			else:
+				selectedMaterialType = selectedMaterial.profile.types[0]
+
+
 		self.printTypePanel = wx.Panel(self)
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
+
+		sb = wx.StaticBox(self.printMaterialTypesPanel, label=_("Material types:"))
+		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		boxsizer.SetMinSize((80, 20))
+		combobox = wx.ComboBox(self.printMaterialTypesPanel, -1, selectedMaterialType,
+							   choices=self.material_types.keys(), style=wx.CB_READONLY)
+		boxsizer.Add(combobox)
+		self.printMaterialTypesPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
+		self.printMaterialTypesPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		sizer.Add(self.printMaterialTypesPanel, (0,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
 		sb = wx.StaticBox(self.printMaterialPanel, label=_("Material:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
@@ -59,20 +100,20 @@ class simpleModePanel(wx.Panel):
 			boxsizer.Add(button)
 		self.printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		self.printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
-		sizer.Add(self.printMaterialPanel, (0,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
+		sizer.Add(self.printMaterialPanel, (1,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
 		sb = wx.StaticBox(self.printTypePanel, label=_("Select a quickprint profile:"))
 		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 		boxsizer.SetMinSize((180, 20))
 		self.printTypePanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 		self.printTypePanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
-		sizer.Add(self.printTypePanel, (1,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
+		sizer.Add(self.printTypePanel, (2,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
 
 		self.printOptionsBox = wx.StaticBox(self, label=_("Other options:"))
 		boxsizer = wx.StaticBoxSizer(self.printOptionsBox, wx.VERTICAL)
 		boxsizer.SetMinSize((100, 20))
-		sizer.Add(boxsizer, (2,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
+		sizer.Add(boxsizer, (3,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 		self.printOptionsSizer = boxsizer
 
 		for button in self._print_material_options:

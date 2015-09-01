@@ -204,7 +204,12 @@ class PrintMaterial(ProfileIni):
 
 		self.profiles = []
 		self.options = []
+		self.types = []
+		types = self._getProfileInfo(self.ini, 'material_types')
 
+		if types != None:
+			for type in types.split('|'):
+				self.types.append(type.strip())
 		self.parseDirectory(self.path)
 
 	def parseDirectory(self, path):
