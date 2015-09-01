@@ -74,6 +74,11 @@
         "button_disabled": [245, 245, 245, 255],
         "button_tooltip_text": [35, 35, 35, 255],
 
+        "toggle_active": [255, 255, 255, 255],
+        "toggle_active_text": [77, 184, 226, 255],
+        "toggle_disabled": [77, 184, 226, 255],
+        "toggle_disabled_text": [255, 255, 255, 255],
+
         "load_save_button": [0, 0, 0, 255],
         "load_save_button_text": [255, 255, 255, 255],
         "load_save_button_hover": [43, 45, 46, 255],
