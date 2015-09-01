@@ -19,8 +19,6 @@ Item
 
     property variant wizard: null;
 
-    UM.I18nCatalog { id: catalog; name: "cura"}
-
     Connections
     {
         target: base.wizard
