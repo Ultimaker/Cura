@@ -14,18 +14,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
         
         self._convex_hull_node = None
         self._convex_hull_job = None
-        settings = Application.getInstance().getMachineManager().getActiveMachineInstance()
-        print_sequence_setting = settings.getSettingByKey("print_sequence")
-        if print_sequence_setting:
-            print_sequence_setting.valueChanged.connect(self._onPrintSequenceSettingChanged)
-            
-    def _onPrintSequenceSettingChanged(self, setting):
-        if self._convex_hull_job:
-            self._convex_hull_job.cancel()
-        self.setConvexHull(None)
-        if self._convex_hull_node:
-            self._convex_hull_node.setParent(None)
-            self._convex_hull_node = None
+
+        self._profile = None
+        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
+        self._onActiveProfileChanged()
     
     def getConvexHull(self):
         return self._convex_hull
@@ -61,4 +53,20 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def setConvexHullNode(self, node):
         self._convex_hull_node = node
             
-    
+    def _onActiveProfileChanged(self):
+        if self._profile:
+            self._profile.settingValueChanged.disconnect(self._onSettingValueChanged)
+
+        self._profile = Application.getInstance().getMachineManager().getActiveProfile()
+
+        if self._profile:
+            self._profile.settingValueChanged.connect(self._onSettingValueChanged)
+
+    def _onSettingValueChanged(self, setting):
+        if setting == "print_sequence":
+            if self._convex_hull_job:
+                self._convex_hull_job.cancel()
+            self.setConvexHull(None)
+            if self._convex_hull_node:
+                self._convex_hull_node.setParent(None)
+                self._convex_hull_node = None
