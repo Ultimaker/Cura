@@ -85,6 +85,7 @@ class CuraApplication(QtApplication):
         self._platform_activity = False
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
+        self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
@@ -520,3 +521,5 @@ class CuraApplication(QtApplication):
         job.finished.connect(self._onFileLoaded)
         job.start()
 
+    def _onAddMachineRequested(self):
+        self.requestAddPrinter.emit()
