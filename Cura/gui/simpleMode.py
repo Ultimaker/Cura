@@ -132,6 +132,9 @@ class simpleModePanel(wx.Panel):
 			boxsizer.Add(label, flag=wx.EXPAND)
 			boxsizer.Add(self.materialCombo, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
 			self.printMaterialPanel.SetSizer(boxsizer)
+		self.materialHyperlink = wx.HyperlinkCtrl(self.printMaterialPanel, -1, label=_('Click here for more!'), url='')
+		self.materialHyperlink.Show(False)
+		boxsizer.Add(self.materialHyperlink, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
 		sizer.Add(self.printMaterialPanel, (1,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
 		sb = wx.StaticBox(self.printTypePanel, label=_("Select a quickprint profile:"))
@@ -230,6 +233,10 @@ class simpleModePanel(wx.Panel):
 			return
 		self.printOptionsBox.Show(True)
 		self.printTypePanel.Show(True)
+
+		if material.url:
+			self.materialHyperlink.SetURL(material.url)
+		self.materialHyperlink.Show(material.url is not None)
 
 		# Add new profiles
 		selectedProfile = None

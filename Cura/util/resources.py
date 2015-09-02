@@ -132,6 +132,8 @@ class ProfileIni(object):
 		self.full_name = self._getProfileInfo(ini_file, 'full_name')
 		if self.full_name is None:
 			self.full_name = self.name
+		# URL for the profile
+		self.url = self._getProfileInfo(ini_file, 'url')
 		# Finds the full path to the real profile_file
 		self.profile_file = self._findProfileFile()
 		# default = The default profile to select
