@@ -190,7 +190,7 @@ class simpleModePanel(wx.Panel):
 			selectedMaterial = materials[0]
 
 		self.materialCombo.Clear()
-		self.materialCombo.Set(choices)
+		self.materialCombo.AppendItems(choices)
 		if len(materials) == 0:
 			self.printMaterialTypesPanel.Show(False)
 		else:
