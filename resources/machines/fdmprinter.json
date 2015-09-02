@@ -218,10 +218,7 @@
                             "default": 0.4,
                             "type": "float",
                             "visible": false,
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            }
+                            "enabled": "support_enable"
                         },
                         "support_roof_line_width": {
                             "label": "Support Hammock line width",
@@ -230,10 +227,7 @@
                             "default": 0.4,
                             "type": "float",
                             "visible": false,
-                            "active_if": {
-                                "setting": "support_roof_enable",
-                                "value": true
-                            }
+                            "enabled": "support_roof_enable"
                         }
                     }
                 }
@@ -382,10 +376,7 @@
                     },
                     "default": "everywhere",
                     "visible": false,
-                    "active_if": {
-                        "setting": "remove_overlapping_walls_x_enabled",
-                        "value": true
-                    }
+                    "enabled": "remove_overlapping_walls_x_enabled"
                 },
                 "top_bottom_pattern": {
                     "label": "Bottom/Top Pattern",
@@ -412,10 +403,7 @@
                     "default": 0,
                     "type": "int",
                     "visible": false,
-                    "active_if": {
-                        "setting": "top_bottom_pattern",
-                        "value": "Lines"
-                    }
+                    "enabled": "top_bottom_pattern"
                 },
                 "xy_offset": {
                     "label": "Horizontal expansion",
@@ -579,10 +567,7 @@
                     "default": 4.5,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
+                    "enabled": "retraction_enable"
                 },
                 "retraction_speed": {
                     "label": "Retraction Speed",
@@ -592,10 +577,7 @@
                     "default": 25,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    },
+                    "enabled": "retraction_enable",
                     "children": {
                         "retraction_retract_speed": {
                             "label": "Retraction Retract Speed",
@@ -604,10 +586,7 @@
                             "type": "float",
                             "default": 25,
                             "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
+                            "enabled": "retraction_enable"
                         },
                         "retraction_prime_speed": {
                             "label": "Retraction Prime Speed",
@@ -616,10 +595,7 @@
                             "type": "float",
                             "default": 25,
                             "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
+                            "enabled": "retraction_enable"
                         }
                     }
                 },
@@ -631,10 +607,7 @@
                     "default": 0,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
+                    "enabled": "retraction_enable"
                 },
                 "retraction_min_travel": {
                     "label": "Retraction Minimum Travel",
@@ -644,10 +617,7 @@
                     "default": 4.5,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
+                    "enabled": "retraction_enable"
                 },
                 "retraction_count_max": {
                     "label": "Maximal Retraction Count",
@@ -656,10 +626,7 @@
                     "type": "int",
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
+                    "enabled": "retraction_enable"
                 },
                 "retraction_extrusion_window": {
                     "label": "Minimal Extrusion Distance Window",
@@ -669,10 +636,7 @@
                     "default": 4.5,
                     "visible": false,
                     "inherit_function": "retraction_amount",
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
+                    "enabled": "retraction_enable"
                 },
                 "retraction_hop": {
                     "label": "Z Hop when Retracting",
@@ -682,10 +646,7 @@
                     "default": 0,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
+                    "enabled": "retraction_enable"
                 }
             }
         },
@@ -765,10 +726,7 @@
                             "default": 50,
                             "visible": false,
                             "inherit_function": "speed_wall_0",
-                            "active_if": {
-                                "setting": "support_enable",
-                                "value": true
-                            },
+                            "enabled": "support_enable",
                             "children": {
                                 "speed_support_lines": {
                                     "label": "Support Wall Speed",
@@ -778,10 +736,7 @@
                                     "default": 50,
                                     "visible": false,
                                     "inherit": true,
-                                    "active_if": {
-                                        "setting": "support_roof_enable",
-                                        "value": true
-                                    }
+                                    "enabled": "support_roof_enable"
                                 },
                                 "speed_support_roof": {
                                     "label": "Support Hammock Speed",
@@ -791,10 +746,7 @@
                                     "default": 40,
                                     "visible": false,
                                     "inherit": false,
-                                    "active_if": {
-                                        "setting": "support_roof_enable",
-                                        "value": true
-                                    }
+                                    "enabled": "support_roof_enable"
                                 }
                             }
                         }
@@ -857,10 +809,7 @@
                     "type": "boolean",
                     "default": true,
                     "visible": false,
-                    "active_if": {
-                        "setting": "retraction_combing",
-                        "value": true
-                    },
+                    "enabled": "retraction_combing",
                     "children": {
                         "travel_avoid_distance": {
                             "label": "Avoid Distance",
@@ -870,10 +819,7 @@
                             "default": 1.5,
                             "visible": false,
                             "inherit": false,
-                            "active_if": {
-                                "setting": "retraction_combing",
-                                "value": true
-                            }
+                            "enabled": "retraction_combing"
                         }
                     }
                 },
@@ -892,10 +838,7 @@
                     "default": 0.064,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "coasting_enable",
-                        "value": true
-                    },
+                    "enabled": "coasting_enable",
                     "children": {
                         "coasting_volume_retract": {
                             "label": "Retract-Coasting Volume",
@@ -905,10 +848,7 @@
                             "default": 0.064,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "coasting_enable",
-                                "value": true
-                            }
+                            "enabled": "coasting_enable"
                         },
                         "coasting_volume_move": {
                             "label": "Move-Coasting Volume",
@@ -918,10 +858,7 @@
                             "default": 0.096,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "coasting_enable",
-                                "value": true
-                            }
+                            "enabled": "coasting_enable"
                         }
                     }
                 },
@@ -933,10 +870,7 @@
                     "default": 0.8,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "coasting_enable",
-                        "value": true
-                    },
+                    "enabled": "coasting_enable",
                     "children": {
                         "coasting_min_volume_retract": {
                             "label": "Min Volume Retract-Coasting",
@@ -946,10 +880,7 @@
                             "default": 0.6,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "coasting_enable",
-                                "value": true
-                            }
+                            "enabled": "coasting_enable"
                         },
                         "coasting_min_volume_move": {
                             "label": "Min Volume Move-Coasting",
@@ -959,10 +890,7 @@
                             "default": 0.8,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "coasting_enable",
-                                "value": true
-                            }
+                            "enabled": "coasting_enable"
                         }
                     }
                 },
@@ -974,10 +902,7 @@
                     "default": 90,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "coasting_enable",
-                        "value": true
-                    },
+                    "enabled": "coasting_enable",
                     "children": {
                         "coasting_speed_retract": {
                             "label": "Retract-Coasting Speed",
@@ -987,10 +912,7 @@
                             "default": 90,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "coasting_enable",
-                                "value": true
-                            }
+                            "enabled": "coasting_enable"
                         },
                         "coasting_speed_move": {
                             "label": "Move-Coasting Speed",
@@ -1000,10 +922,7 @@
                             "default": 90,
                             "visible": false,
                             "inherit": true,
-                            "active_if": {
-                                "setting": "coasting_enable",
-                                "value": true
-                            }
+                            "enabled": "coasting_enable"
                         }
                     }
                 }
@@ -1412,10 +1331,7 @@
                     "description": "The skirt is a line drawn around the first layer of the. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
                     "type": "int",
                     "default": 1,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Skirt"
-                    }
+                    "enabled": "adhesion_type == \"skirt\""
                 },
                 "skirt_gap": {
                     "label": "Skirt Distance",
@@ -1423,10 +1339,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 3,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Skirt"
-                    }
+                    "enabled": "adhesion_type == \"skirt\""
                 },
                 "skirt_minimal_length": {
                     "label": "Skirt Minimum Length",
@@ -1434,20 +1347,14 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 250,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Skirt"
-                    }
+                    "enabled": "adhesion_type == \"skirt\""
                 },
                 "brim_line_count": {
                     "label": "Brim Line Count",
                     "description": "The amount of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
                     "type": "int",
                     "default": 10,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Brim"
-                    }
+                    "enabled": "adhesion_type == \"brim\""
                 },
                 "raft_margin": {
                     "label": "Raft Extra Margin",
@@ -1455,10 +1362,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 5,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_airgap": {
                     "label": "Raft Air-gap",
@@ -1466,20 +1370,14 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.22,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_layers": {
                     "label": "Raft Surface Layers",
                     "description": "The number of surface layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers usually works fine.",
                     "type": "int",
                     "default": 2,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_thickness": {
                     "label": "Raft Surface Thickness",
@@ -1487,10 +1385,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_line_width": {
                     "label": "Raft Surface Line Width",
@@ -1498,10 +1393,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_line_spacing": {
                     "label": "Raft Surface Spacing",
@@ -1509,10 +1401,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    },
+                    "enabled": "adhesion_type == \"raft\"",
                     "inherit_function": "raft_surface_line_width"
                 },
                 "raft_interface_thickness": {
@@ -1521,10 +1410,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.27,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_interface_line_width": {
                     "label": "Raft Interface Line Width",
@@ -1532,10 +1418,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_interface_line_spacing": {
                     "label": "Raft Interface Spacing",
@@ -1543,10 +1426,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 2,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_base_thickness": {
                     "label": "Raft Base Thickness",
@@ -1554,10 +1434,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_base_line_width": {
                     "label": "Raft Base Line Width",
@@ -1565,10 +1442,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_base_line_spacing": {
                     "label": "Raft Line Spacing",
@@ -1576,10 +1450,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 5,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    }
+                    "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_speed": {
                     "label": "Raft Print Speed",
@@ -1587,10 +1458,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default": 30,
-                    "active_if": {
-                        "setting": "adhesion_type",
-                        "value": "Raft"
-                    },
+                    "enabled": "adhesion_type == \"raft\"",
                     "inherit_function": "0.6 * speed_print",
                     "children": {
                         "raft_surface_speed": {
@@ -1599,10 +1467,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default": 30,
-                            "active_if": {
-                                "setting": "adhesion_type",
-                                "value": "Raft"
-                            },
+                            "enabled": "adhesion_type == \"raft\"",
                             "inherit_function": "parent_value"
                         },
                         "raft_interface_speed": {
@@ -1611,10 +1476,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default": 15,
-                            "active_if": {
-                                "setting": "adhesion_type",
-                                "value": "Raft"
-                            },
+                            "enabled": "adhesion_type == \"raft\"",
                             "inherit_function": "0.5 * parent_value"
                         },
                         "raft_base_speed": {
@@ -1623,10 +1485,7 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default": 15,
-                            "active_if": {
-                                "setting": "adhesion_type",
-                                "value": "Raft"
-                            },
+                            "enabled": "adhesion_type == \"raft\"",
                             "inherit_function": "0.5 * parent_value"
                         }
                     }
@@ -1640,6 +1499,7 @@
                     "max_value": "100",
                     "default": 100,
                     "visible": false,
+                    "enabled": "adhesion_type == \"raft\"",
                     "children": {
                         "raft_surface_fan_speed": {
                             "label": "Raft Surface Fan Speed",
@@ -1650,7 +1510,8 @@
                             "max_value": "100",
                             "default": 100,
                             "visible": false,
-                            "inherit": true
+                            "inherit": true,
+                            "enabled": "adhesion_type == \"raft\""
                         },
                         "raft_interface_fan_speed": {
                             "label": "Raft Interface Fan Speed",
@@ -1661,7 +1522,8 @@
                             "max_value": "100",
                             "default": 100,
                             "visible": false,
-                            "inherit": true
+                            "inherit": true,
+                            "enabled": "adhesion_type == \"raft\""
                         },
                         "raft_base_fan_speed": {
                             "label": "Raft Base Fan Speed",
@@ -1672,7 +1534,8 @@
                             "max_value": "100",
                             "default": 100,
                             "visible": false,
-                            "inherit": true
+                            "inherit": true,
+                            "enabled": "adhesion_type == \"raft\""
                         }
                     }
                 },
@@ -1691,10 +1554,7 @@
                     "max_value_warning": "100",
                     "default": 10,
                     "visible": false,
-                    "active_if": {
-                        "setting": "draft_shield_enabled",
-                        "value": true
-                    }
+                    "enabled": "draft_shield_enabled"
                 },
                 "draft_shield_height_limitation": {
                     "label": "Draft Shield Limitation",
@@ -1706,10 +1566,7 @@
                     },
                     "default": "full",
                     "visible": false,
-                    "active_if": {
-                        "setting": "draft_shield_enabled",
-                        "value": true
-                    }
+                    "enabled": "draft_shield_enabled"
                 },
                 "draft_shield_height": {
                     "label": "Draft Shield Height",
@@ -1721,10 +1578,7 @@
                     "default": 0,
                     "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
                     "visible": false,
-                    "active_if": {
-                        "setting": "draft_shield_height_limitation",
-                        "value": "Limited"
-                    }
+                    "enabled": "draft_shield_height_limitation == \"limited\""
                 }
             }
         },
