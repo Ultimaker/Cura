@@ -398,7 +398,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
-        if not self.getActiveMachine():
+        if not self.getMachineManager().getActiveMachineInstance():
             return None
 
         return self.getActiveMachine().getSettingValueByKey(key)
