@@ -18,7 +18,6 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='Cura.proto',
   package='cura.proto',
-  syntax='proto3',
   serialized_pb=_b('\n\nCura.proto\x12\ncura.proto\"X\n\nObjectList\x12#\n\x07objects\x18\x01 \x03(\x0b\x32\x12.cura.proto.Object\x12%\n\x08settings\x18\x02 \x03(\x0b\x32\x13.cura.proto.Setting\"5\n\x05Slice\x12,\n\x0cobject_lists\x18\x01 \x03(\x0b\x32\x16.cura.proto.ObjectList\"o\n\x06Object\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x10\n\x08vertices\x18\x02 \x01(\x0c\x12\x0f\n\x07normals\x18\x03 \x01(\x0c\x12\x0f\n\x07indices\x18\x04 \x01(\x0c\x12%\n\x08settings\x18\x05 \x03(\x0b\x32\x13.cura.proto.Setting\"\x1a\n\x08Progress\x12\x0e\n\x06\x61mount\x18\x01 \x01(\x02\"=\n\x10SlicedObjectList\x12)\n\x07objects\x18\x01 \x03(\x0b\x32\x18.cura.proto.SlicedObject\"=\n\x0cSlicedObject\x12\n\n\x02id\x18\x01 \x01(\x03\x12!\n\x06layers\x18\x02 \x03(\x0b\x32\x11.cura.proto.Layer\"]\n\x05Layer\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0e\n\x06height\x18\x02 \x01(\x02\x12\x11\n\tthickness\x18\x03 \x01(\x02\x12%\n\x08polygons\x18\x04 \x03(\x0b\x32\x13.cura.proto.Polygon\"\xe1\x01\n\x07Polygon\x12&\n\x04type\x18\x01 \x01(\x0e\x32\x18.cura.proto.Polygon.Type\x12\x0e\n\x06points\x18\x02 \x01(\x0c\x12\x12\n\nline_width\x18\x03 \x01(\x02\"\x89\x01\n\x04Type\x12\x0c\n\x08NoneType\x10\x00\x12\x0e\n\nInset0Type\x10\x01\x12\x0e\n\nInsetXType\x10\x02\x12\x0c\n\x08SkinType\x10\x03\x12\x0f\n\x0bSupportType\x10\x04\x12\r\n\tSkirtType\x10\x05\x12\x0e\n\nInfillType\x10\x06\x12\x15\n\x11SupportInfillType\x10\x07\"&\n\nGCodeLayer\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"D\n\x0fObjectPrintTime\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04time\x18\x02 \x01(\x02\x12\x17\n\x0fmaterial_amount\x18\x03 \x01(\x02\"4\n\x0bSettingList\x12%\n\x08settings\x18\x01 \x03(\x0b\x32\x13.cura.proto.Setting\"&\n\x07Setting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\"\x1b\n\x0bGCodePrefix\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -101,7 +100,6 @@ _OBJECTLIST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -132,7 +130,6 @@ _SLICE = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -191,7 +188,6 @@ _OBJECT = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -222,7 +218,6 @@ _PROGRESS = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -253,7 +248,6 @@ _SLICEDOBJECTLIST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -291,7 +285,6 @@ _SLICEDOBJECT = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -343,7 +336,6 @@ _LAYER = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -389,7 +381,6 @@ _POLYGON = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -427,7 +418,6 @@ _GCODELAYER = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -472,7 +462,6 @@ _OBJECTPRINTTIME = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -503,7 +492,6 @@ _SETTINGLIST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -541,7 +529,6 @@ _SETTING = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -572,7 +559,6 @@ _GCODEPREFIX = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
-  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
