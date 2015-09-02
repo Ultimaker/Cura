@@ -16,24 +16,25 @@ class simpleModePanel(wx.Panel):
 		self._print_material_options = []
 		self._print_profile_options = []
 		self._print_other_options = []
+		self._print_material_types = {}
+		self._all_print_materials = []
 
 		materials = resources.getSimpleModeMaterials()
-
-		self.material_types = {}
-		self.material_types[_("Others")] = []
+		other_print_material_types = []
 		for material in materials:
 			if material.disabled:
 				continue
 			if len(material.types) == 0:
-				self.material_types[_("Others")].append(material)
-			for type in material.types:
-				if self.material_types.has_key(type):
-					self.material_types[type].append(material)
-				else:
-					self.material_types[type] = [material]
+				other_print_material_types.append(material)
+			else:
+				for type in material.types:
+					if self._print_material_types.has_key(type):
+						self._print_material_types[type].append(material)
+					else:
+						self._print_material_types[type] = [material]
 
-		if len(self.material_types[_("Others")]) == 0:
-			del self.material_types[_("Others")]
+		if len(self._print_material_types) == 0:
+			self._print_material_types = None
 
 		# Create material buttons
 		self.printMaterialPanel = wx.Panel(self)
@@ -41,65 +42,96 @@ class simpleModePanel(wx.Panel):
 		for material in materials:
 			if material.disabled:
 				continue
-			button = wx.RadioButton(self.printMaterialPanel, -1, material.name.replace('&', '&&'),
-									style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
-			button.profile = material
-			self._print_material_options.append(button)
+			# Show radio buttons if there are no material types
+			if self._print_material_types is None:
+				button = wx.RadioButton(self.printMaterialPanel, -1, material.name.replace('&', '&&'),
+										style=wx.RB_GROUP if len(self._print_material_options) == 0 else 0)
+				button.profile = material
+				button.Bind(wx.EVT_RADIOBUTTON, self._materialSelected)
+				self._print_material_options.append(button)
+			self._all_print_materials.append(material)
 			if profile.getProfileSetting('simpleModeMaterial') == material.name:
-				selectedMaterial = button
+				selectedMaterial = material
 
 		# Decide on the default selected material
 		if selectedMaterial is None:
-			for button in self._print_material_options:
-				if button.profile.default:
-					selectedMaterial = button
+			for material in self._all_print_materials:
+				if material.default:
+					selectedMaterial = material
 					break
 
-		if selectedMaterial is None and len(self._print_material_options) > 0:
-			selectedMaterial = self._print_material_options[0]
+		if selectedMaterial is None and len(self._all_print_materials) > 0:
+			selectedMaterial = self._all_print_materials[0]
 
 		# Decide to show the panel or not
-		if len(self._print_material_options) < 2:
+		if self._print_material_types is None and len(self._print_material_options) < 2:
 			self.printMaterialPanel.Show(len(self._print_material_options) > 1 and \
-										 self._print_material_options[0].profile.always_visible)
+										 self._print_material_options[0].always_visible)
 
 		# Create material types combobox
 		self.printMaterialTypesPanel = wx.Panel(self)
 		selectedMaterialType = None
-		for material_type in self.material_types:
-			if profile.getProfileSetting('simpleModeMaterialType') == material_type and \
-			   selectedMaterial.profile in self.material_types[material_type]:
-				selectedMaterialType = material_type
+		if self._print_material_types is not None:
+			for material_type in self._print_material_types:
+				if profile.getProfileSetting('simpleModeMaterialType') == material_type and \
+				   selectedMaterial in self._print_material_types[material_type]:
+					selectedMaterialType = material_type
 
-		if selectedMaterialType is None:
-			if len(selectedMaterial.profile.types) == 0:
-				selectedMaterialType = _("Others")
-			else:
-				selectedMaterialType = selectedMaterial.profile.types[0]
+			if selectedMaterialType is None:
+				if selectedMaterial is None or len(selectedMaterial.types) == 0:
+					selectedMaterialType = _("Others")
+				else:
+					selectedMaterialType = selectedMaterial.types[0]
 
+		# Decide to show the material types or not
+		if self._print_material_types is None:
+			self.printMaterialTypesPanel.Show(False)
 
 		self.printTypePanel = wx.Panel(self)
 
 		sizer = wx.GridBagSizer()
 		self.SetSizer(sizer)
 
-		sb = wx.StaticBox(self.printMaterialTypesPanel, label=_("Material types:"))
-		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+		boxsizer = wx.BoxSizer(wx.VERTICAL)
 		boxsizer.SetMinSize((80, 20))
-		combobox = wx.ComboBox(self.printMaterialTypesPanel, -1, selectedMaterialType,
-							   choices=self.material_types.keys(), style=wx.CB_READONLY)
-		boxsizer.Add(combobox)
-		self.printMaterialTypesPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		self.printMaterialTypesPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		if self._print_material_types is None:
+			self.materialTypeCombo = None
+		else:
+			choices = self._print_material_types.keys()
+			choices.sort(key=lambda type: sum([mat.order for mat in self._print_material_types[type]]))
+			# Now we can add Others, so it appears towards the end
+			if len(other_print_material_types) > 0:
+				self._print_material_types[_("Others")] = other_print_material_types
+				choices.append(_("Others"))
+			choices.append(_("All"))
+			label = wx.StaticText(self.printMaterialTypesPanel, label=_("Material types:"))
+			self.materialTypeCombo = wx.ComboBox(self.printMaterialTypesPanel, -1, selectedMaterialType,
+												 choices=choices, style=wx.CB_READONLY)
+			self.materialTypeCombo.Bind(wx.EVT_COMBOBOX, self._materialTypeSelected)
+			boxsizer.Add(label, flag=wx.EXPAND)
+			boxsizer.Add(self.materialTypeCombo, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
+		self.printMaterialTypesPanel.SetSizer(boxsizer)
 		sizer.Add(self.printMaterialTypesPanel, (0,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
-		sb = wx.StaticBox(self.printMaterialPanel, label=_("Material:"))
-		boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
-		boxsizer.SetMinSize((80, 20))
-		for button in self._print_material_options:
-			boxsizer.Add(button)
-		self.printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
-		self.printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+		if self._print_material_types is None:
+			sb = wx.StaticBox(self.printMaterialPanel, label=_("Material:"))
+			boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
+			boxsizer.SetMinSize((80, 20))
+			for button in self._print_material_options:
+				boxsizer.Add(button)
+			self.printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
+			self.printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
+			self.materialCombo = None
+		else:
+			boxsizer = wx.BoxSizer(wx.VERTICAL)
+			boxsizer.SetMinSize((80, 20))
+			label = wx.StaticText(self.printMaterialPanel, label=_("Material:"))
+			self.materialCombo = wx.ComboBox(self.printMaterialPanel, -1, selectedMaterial.name,
+											 choices=[], style=wx.CB_READONLY)
+			self.materialCombo.Bind(wx.EVT_COMBOBOX, self._materialSelected)
+			boxsizer.Add(label, flag=wx.EXPAND)
+			boxsizer.Add(self.materialCombo, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
+			self.printMaterialPanel.SetSizer(boxsizer)
 		sizer.Add(self.printMaterialPanel, (1,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 
 		sb = wx.StaticBox(self.printTypePanel, label=_("Select a quickprint profile:"))
@@ -116,19 +148,75 @@ class simpleModePanel(wx.Panel):
 		sizer.Add(boxsizer, (3,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
 		self.printOptionsSizer = boxsizer
 
-		for button in self._print_material_options:
-			button.Bind(wx.EVT_RADIOBUTTON, self._materialSelected)
-
+		if selectedMaterialType:
+			self.materialTypeCombo.SetValue(selectedMaterialType)
+			self._materialTypeSelected(None)
 		if selectedMaterial:
-			selectedMaterial.SetValue(True)
+			if self.materialCombo:
+				self.materialCombo.SetValue(selectedMaterial.name)
+			else:
+				for button in self._print_material_options:
+					if button.profile == selectedMaterial:
+						button.SetValue(True)
+						break
 			self._materialSelected(None)
 		self.Layout()
 
+	def _materialTypeSelected(self, e):
+		materialType = self.materialTypeCombo.GetValue()
+		selection = self.materialTypeCombo.GetSelection()
+		choices = []
+
+		if selection >= len(self._print_material_types.keys()):
+			materials = self._all_print_materials
+		else:
+			materials = self._print_material_types[materialType]
+
+		for material in materials:
+			choices.append(material.name)
+
+		# Decide on the default selected material
+		selectedMaterial = None
+		for material in materials:
+			if material.default:
+				selectedMaterial = material
+				break
+
+		if selectedMaterial is None and len(materials) > 0:
+			selectedMaterial = materials[0]
+
+		self.materialCombo.Clear()
+		self.materialCombo.Set(choices)
+		if len(materials) == 0:
+			self.printMaterialTypesPanel.Show(False)
+		else:
+			self.printMaterialTypesPanel.Show(True)
+			self.materialCombo.SetValue(selectedMaterial.name)
+
+		self._materialSelected(e)
+
+	def _getSelectedMaterial(self):
+		if self.materialCombo:
+			materialType = self.materialTypeCombo.GetValue()
+			selection = self.materialTypeCombo.GetSelection()
+
+			if selection >= len(self._print_material_types.keys()):
+				materials = self._all_print_materials
+			else:
+				materials = self._print_material_types[materialType]
+
+			selection = self.materialCombo.GetSelection()
+
+			return materials[selection]
+		else:
+			for button in self._print_material_options:
+				if button.GetValue():
+					return button.profile
+			return None
+
+
 	def _materialSelected(self, e):
-		material = None
-		for button in self._print_material_options:
-			if button.GetValue():
-				material = button.profile
+		material = self._getSelectedMaterial()
 
 		# Delete profile options
 		boxsizer = self.printTypePanel.GetSizer().GetItem(0).GetSizer()
@@ -212,9 +300,7 @@ class simpleModePanel(wx.Panel):
 			self._update(e)
 
 	def _update(self, e):
-		for button in self._print_material_options:
-			if button.GetValue():
-				profile.putProfileSetting('simpleModeMaterial', button.profile.name)
+		profile.putProfileSetting('simpleModeMaterial', self._getSelectedMaterial().name)
 		for button in self._print_profile_options:
 			if button.GetValue():
 				profile.putProfileSetting('simpleModeProfile', button.profile.name)
@@ -227,9 +313,7 @@ class simpleModePanel(wx.Panel):
 				settings[setting.getName()] = setting.getDefault()
 
 		# Apply materials, profile, then options
-		for button in self._print_material_options:
-			if button.GetValue():
-				settings.update(button.profile.getProfileDict())
+		settings.update(self._getSelectedMaterial().getProfileDict())
 		for button in self._print_profile_options:
 			if button.GetValue():
 				settings.update(button.profile.getProfileDict())
