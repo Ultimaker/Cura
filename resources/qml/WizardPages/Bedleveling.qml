@@ -13,8 +13,8 @@ Column
     id: wizardPage
     property int leveling_state: 0
     property bool three_point_leveling: true
-    property int platform_width: UM.Models.settingsModel.getMachineSetting("machine_width")
-    property int platform_height: UM.Models.settingsModel.getMachineSetting("machine_depth")
+    property int platform_width: UM.MachineManager.getSettingValue("machine_width")
+    property int platform_height: UM.MachineManager.getSettingValue("machine_depth")
     anchors.fill: parent;
     property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
     Component.onCompleted: printer_connection.homeHead()
