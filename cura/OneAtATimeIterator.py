@@ -17,7 +17,7 @@ class OneAtATimeIterator(Iterator.Iterator):
     def _fillStack(self):
         node_list = []
         for node in self._scene_node.getChildren():
-            if node.getBoundingBox().height > Application.getInstance().getActiveMachine().getSettingValueByKey("gantry_height"):
+            if node.getBoundingBox().height > Application.getInstance().getMachineManager().getActiveProfile().getSettingValue("gantry_height"):
                 return
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)

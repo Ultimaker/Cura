@@ -103,10 +103,11 @@ Item
 
         ToolButton {
             id: machineSelection
-            text: UM.Application.machineName;
+            text: UM.MachineManager.activeMachineInstance;
             width: parent.width/100*55
             height: UM.Theme.sizes.setting_control.height
-            tooltip: UM.Application.machineName;
+            tooltip: UM.MachineManager.activeMachineInstance;
+            //style: UM.Theme.styles.sidebar_header_button;
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter
@@ -117,17 +118,17 @@ Item
                 id: machineSelectionMenu
                 Instantiator
                 {
-                    model: UM.Models.machinesModel
+                    model: UM.MachineInstancesModel { }
                     MenuItem
                     {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
-                        exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.Models.machinesModel.setActive(index)
+                        exclusiveGroup: machineSelectionMenuGroup;
+                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name);
                     }
-                    onObjectAdded: machineMenu.insertItem(index, object)
-                    onObjectRemoved: machineMenu.removeItem(object)
+                    onObjectAdded: machineSelectionMenu.insertItem(index, object)
+                    onObjectRemoved: machineSelectionMenu.removeItem(object)
                 }
 
                 ExclusiveGroup { id: machineSelectionMenuGroup; }

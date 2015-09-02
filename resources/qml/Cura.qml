@@ -80,7 +80,7 @@ UM.MainWindow
                     id: saveAllMenu
                     title: catalog.i18nc("@title:menu","Save All")
                     iconName: "document-save";
-                    enabled: devicesModel.count > 0 && UM.Backend.progress > 0.99;
+                    enabled: devicesModel.rowCount() > 0 && UM.Backend.progress > 0.99;
 
                     Instantiator
                     {
@@ -131,6 +131,10 @@ UM.MainWindow
                     onObjectRemoved: top_view_menu.removeItem(object)
                 }
                 ExclusiveGroup { id: view_menu_top_group; }
+
+                MenuSeparator { }
+
+                MenuItem { action: actions.toggleFullScreen; }
             }
             Menu
             {
@@ -140,14 +144,14 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: UM.Models.machinesModel
+                    model: UM.MachineInstancesModel { }
                     MenuItem
                     {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.Models.machinesModel.setActive(index)
+                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name)
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)
@@ -156,6 +160,24 @@ UM.MainWindow
                 ExclusiveGroup { id: machineMenuGroup; }
 
                 MenuSeparator { }
+
+                Instantiator
+                {
+                    model: UM.MachineVariantsModel { }
+                    MenuItem {
+                        text: model.name;
+                        checkable: true;
+                        checked: model.active;
+                        exclusiveGroup: machineVariantsGroup;
+                        onTriggered: UM.MachineManager.setActiveMachineVariant(model.name)
+                    }
+                    onObjectAdded: machineMenu.insertItem(index, object)
+                    onObjectRemoved: machineMenu.removeItem(object)
+                }
+
+                ExclusiveGroup { id: machineVariantsGroup; }
+
+                MenuSeparator { visible: UM.MachineManager.hasVariants; }
 
                 MenuItem { action: actions.addMachine; }
                 MenuItem { action: actions.configureMachines; }
@@ -586,10 +608,10 @@ UM.MainWindow
         onRequestAddPrinter:
         {
             addMachineWizard.visible = true
-            addMachineWizard.printer = false
+            addMachineWizard.firstRun = true
         }
     }
 
-    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
+    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
 }
 

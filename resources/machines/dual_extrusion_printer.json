@@ -1,7 +1,11 @@
 {
-    "version": 1, 
+    "version": 1,
+    "id": "dual_extrusion",
+    "name": "Dual Extrusion Base File",
 
     "inherits": "fdmprinter.json",
+
+    "visible": false,
 
     "machine_settings": {
         "extruder_nr": {

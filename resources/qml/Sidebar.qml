@@ -63,10 +63,93 @@ Rectangle
         onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
     }
 
-    Loader{
+    Item
+    {
+        id: variantItem;
+
+        anchors.top: header.bottom;
+        height: UM.Theme.sizes.setting.height;
+
+        visible: UM.MachineManager.hasVariants;
+
+        Row
+        {
+            spacing: UM.Theme.sizes.default_margin.width;
+            Label
+            {
+                anchors.verticalCenter: parent.verticalCenter;
+                text: catalog.i18nc("@label","Variant");
+            }
+
+            ComboBox {
+                anchors.verticalCenter: parent.verticalCenter;
+                model: UM.MachineVariantsModel { }
+                textRole: "name"
+                onActivated: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name);
+
+                currentIndex:
+                {
+                    for(var i = 0; i < model.rowCount(); ++i)
+                    {
+                        if(model.getItem(i).name == UM.MachineManager.activeMachineVariant)
+                        {
+                            return i;
+                        }
+                    }
+
+                    return 0;
+                }
+            }
+        }
+    }
+
+    Item
+    {
+        id: profileItem;
+
+        anchors.top: variantItem.bottom;
+        height: UM.Theme.sizes.setting.height;
+
+        Row
+        {
+            spacing: UM.Theme.sizes.default_margin.width;
+            Label
+            {
+                anchors.verticalCenter: parent.verticalCenter;
+                text: catalog.i18nc("@label","Global Profile");
+            }
+
+            ComboBox
+            {
+                anchors.verticalCenter: parent.verticalCenter;
+                model: UM.ProfilesModel { }
+                textRole: "name"
+                onActivated: UM.MachineManager.setActiveProfile(model.getItem(index).name)
+
+                currentIndex:
+                {
+                    for(var i = 0; i < model.rowCount(); ++i)
+                    {
+                        if(model.getItem(i).name == UM.MachineManager.activeProfile)
+                            return i;
+                    }
+                    UM.MachineManager.setActiveProfile(model.getItem(0).name)
+                    return 0;
+                }
+            }
+
+            Button
+            {
+                text: catalog.i18nc("@action:button", "Save");
+            }
+        }
+    }
+
+    Loader
+    {
         id: sidebarContents;
         anchors.bottom: saveButton.top
-        anchors.top: header.bottom
+        anchors.top: profileItem.bottom
         anchors.left: base.left
         anchors.right: base.right
 
@@ -91,7 +174,8 @@ Rectangle
         }
     }
 
-    SaveButton {
+    SaveButton
+    {
         id: saveButton;
         implicitWidth: base.width
         implicitHeight: totalHeight

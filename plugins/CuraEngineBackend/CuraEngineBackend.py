@@ -10,6 +10,7 @@ from UM.Math.Vector import Vector
 from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Resources import Resources
+from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import Cura_pb2
@@ -44,9 +45,10 @@ class CuraEngineBackend(Backend):
         self._onActiveViewChanged()
         self._stored_layer_data = None
 
-        self._settings = None
-        Application.getInstance().activeMachineChanged.connect(self._onActiveMachineChanged)
-        self._onActiveMachineChanged()
+
+        self._profile = None
+        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
+        self._onActiveProfileChanged()
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(500)
@@ -71,7 +73,7 @@ class CuraEngineBackend(Backend):
         self.backendConnected.connect(self._onBackendConnected)
 
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"),"connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.SettingsLocation, "fdmprinter.json"), "-vv"]
+        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.MachineDefinitions, "fdmprinter.json"), "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
@@ -114,7 +116,7 @@ class CuraEngineBackend(Backend):
             return
 
         object_groups = []
-        if self._settings.getSettingValueByKey("print_sequence") == "One at a time":
+        if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
                 children = node.getAllChildren()
@@ -141,7 +143,8 @@ class CuraEngineBackend(Backend):
         if len(object_groups) == 0:
             return #No point in slicing an empty build plate
 
-        if kwargs.get("settings", self._settings).hasErrorValue():
+        if kwargs.get("profile", self._profile).hasErrorValue():
+            Logger.log('w', "Profile has error values. Aborting slicing")
             return #No slicing if we have error values since those are by definition illegal values.
 
         self._slicing = True
@@ -151,7 +154,7 @@ class CuraEngineBackend(Backend):
         if self._report_progress:
             self.processingProgress.emit(0.0)
 
-        self._sendSettings(kwargs.get("settings", self._settings))
+        self._sendSettings(kwargs.get("profile", self._profile))
 
         self._scene.acquireLock()
 
@@ -179,6 +182,12 @@ class CuraEngineBackend(Backend):
                 verts[:,1] *= -1
                 obj.vertices = verts.tostring()
 
+                self._handlePerObjectSettings(object, obj)
+
+            # Hack to add per-object settings also to the "MeshGroup" in CuraEngine
+            # We really should come up with a better solution for this.
+            self._handlePerObjectSettings(group[0], group_message)
+
         self._scene.releaseLock()
         self._socket.sendMessage(slice_message)
 
@@ -191,13 +200,14 @@ class CuraEngineBackend(Backend):
 
         self._onChanged()
 
-    def _onActiveMachineChanged(self):
-        if self._settings:
-            self._settings.settingChanged.disconnect(self._onSettingChanged)
 
-        self._settings = Application.getInstance().getActiveMachine()
-        if self._settings:
-            self._settings.settingChanged.connect(self._onSettingChanged)
+    def _onActiveProfileChanged(self):
+        if self._profile:
+            self._profile.settingValueChanged.disconnect(self._onSettingChanged)
+
+        self._profile = Application.getInstance().getMachineManager().getActiveProfile()
+        if self._profile:
+            self._profile.settingValueChanged.connect(self._onSettingChanged)
             self._onChanged()
 
     def _onSettingChanged(self, setting):
@@ -247,17 +257,17 @@ class CuraEngineBackend(Backend):
         self._change_timer.start()
 
     def _onChanged(self):
-        if not self._settings:
+        if not self._profile:
             return
 
         self._change_timer.start()
 
-    def _sendSettings(self, settings):
+    def _sendSettings(self, profile):
         msg = Cura_pb2.SettingList()
-        for setting in settings.getAllSettings(include_machine=True):
+        for key, value in profile.getAllSettingValues(include_machine = True).items():
             s = msg.settings.add()
-            s.name = setting.getKey()
-            s.value = str(setting.getValue()).encode("utf-8")
+            s.name = key
+            s.value = str(value).encode("utf-8")
 
         self._socket.sendMessage(msg)
 
@@ -283,3 +293,20 @@ class CuraEngineBackend(Backend):
                     job.start()
             else:
                 self._layer_view_active = False
+
+    def _handlePerObjectSettings(self, node, message):
+        profile = node.callDecoration("getProfile")
+        if profile:
+            for key, value in profile.getChangedSettings().items():
+                setting = message.settings.add()
+                setting.name = key
+                setting.value = str(value).encode()
+
+        object_settings = node.callDecoration("getAllSettingValues")
+        if not object_settings:
+            return
+
+        for key, value in object_settings.items():
+            setting = message.settings.add()
+            setting.name = key
+            setting.value = str(value).encode()

@@ -78,9 +78,9 @@
     },
 
     "overrides": {
-        "material_print_temperature": { "visible": false },
-        "material_bed_temperature": { "visible": false },
-        "material_diameter": { "visible": false },
-        "material_flow": { "visible": false }
+        "material_print_temperature": { "enabled": "False" },
+        "material_bed_temperature": { "enabled": "False" },
+        "material_diameter": { "enabled": "False" },
+        "material_flow": { "enabled": "False" }
     }
 }
