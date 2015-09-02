@@ -75,7 +75,7 @@ Rectangle
             spacing: UM.Theme.sizes.default_margin.width;
             Label {
                 anchors.verticalCenter: parent.verticalCenter;
-                text: "Variant";
+                text: catalog.i18nc("@label","Variant");
             }
 
             ComboBox {
@@ -126,8 +126,8 @@ Rectangle
                 }
             }
 
-            Button {
-                text: "Save";
+            Button{
+                text: catalog.i18nc("@action:button", "Save");
             }
         }
     }
