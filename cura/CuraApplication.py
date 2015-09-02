@@ -398,18 +398,18 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
-        if not self.getMachineManager().getActiveMachineInstance():
+        if not self.getMachineManager().getActiveProfile():
             return None
-
-        return self.getActiveMachine().getSettingValueByKey(key)
+        return self.getMachineManager().getActiveProfile().getSettingValueByKey(key)
+        #return self.getActiveMachine().getSettingValueByKey(key)
     
     ##  Change setting by key value pair
     @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
-        if not self.getActiveMachine():
+        if not self.getMachineManager().getActiveProfile():
             return
 
-        self.getActiveMachine().setSettingValueByKey(key, value)
+        self.getMachineManager().getActiveProfile().getSettingValueByKey(key, value)
         
     @pyqtSlot()
     def mergeSelected(self):
