@@ -15,33 +15,48 @@ Rectangle {
     property bool activity: Printer.getPlatformActivity;
     Behavior on progress { NumberAnimation { duration: 250; } }
     property int totalHeight: childrenRect.height
+    property string fileBaseName
+    property variant activeMachineInstance: UM.MachineManager.activeMachineInstance
+
+    onActiveMachineInstanceChanged:
+    {
+        base.createFileName()
+    }
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
-    function createFileName(baseName){
-        var splitMachineName = UM.Application.machineName.split(" ")
+    function createFileName(){
+        var splitMachineName = UM.MachineManager.activeMachineInstance.split(" ")
         var abbrMachine = ''
             for (var i = 0; i < splitMachineName.length; i++){
-                if (splitMachineName[i].search(/ultimaker/i) != -1)
+                if (splitMachineName[i].search(/ultimaker/i) != -1){
                     abbrMachine += 'UM'
-                else
-                    abbrMachine += splitMachineName[i].charAt(0)
-
+                }
+                else{
+                    if (splitMachineName[i].charAt(0).search(/[0-9]/g) == -1)
+                        abbrMachine += splitMachineName[i].charAt(0)
+                }
                 var regExpAdditives = /[0-9\+]/g;
                 var resultAdditives = splitMachineName[i].match(regExpAdditives);
                 if (resultAdditives != null){
-                    for (var j = 0; j < resultAdditives.length; j++){ abbrMachine += resultAdditives[j] }
+                    for (var j = 0; j < resultAdditives.length; j++){
+                        abbrMachine += resultAdditives[j]
+
+                    }
                 }
             }
-        printJobTextfield.text = abbrMachine + '_' + baseName
+        printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
     }
 
      Connections {
         target: openDialog
-        onHasMesh: base.createFileName(name)
+        onHasMesh: {
+            base.fileBaseName = name
+            base.createFileName()
+        }
     }
 
     Rectangle{
