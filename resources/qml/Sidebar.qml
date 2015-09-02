@@ -63,7 +63,8 @@ Rectangle
         onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
     }
 
-    Item {
+    Item
+    {
         id: variantItem;
 
         anchors.top: header.bottom;
@@ -71,9 +72,11 @@ Rectangle
 
         visible: UM.MachineManager.hasVariants;
 
-        Row {
+        Row
+        {
             spacing: UM.Theme.sizes.default_margin.width;
-            Label {
+            Label
+            {
                 anchors.verticalCenter: parent.verticalCenter;
                 text: catalog.i18nc("@label","Variant");
             }
@@ -84,9 +87,12 @@ Rectangle
                 textRole: "name"
                 onActivated: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name);
 
-                currentIndex: {
-                    for(var i = 0; i < model.rowCount(); ++i) {
-                        if(model.getItem(i).name == UM.MachineManager.activeMachineVariant) {
+                currentIndex:
+                {
+                    for(var i = 0; i < model.rowCount(); ++i)
+                    {
+                        if(model.getItem(i).name == UM.MachineManager.activeMachineVariant)
+                        {
                             return i;
                         }
                     }
@@ -97,27 +103,33 @@ Rectangle
         }
     }
 
-    Item {
+    Item
+    {
         id: profileItem;
 
         anchors.top: variantItem.bottom;
         height: UM.Theme.sizes.setting.height;
 
-        Row {
+        Row
+        {
             spacing: UM.Theme.sizes.default_margin.width;
-            Label {
+            Label
+            {
                 anchors.verticalCenter: parent.verticalCenter;
                 text: "Global Profile";
             }
 
-            ComboBox {
+            ComboBox
+            {
                 anchors.verticalCenter: parent.verticalCenter;
                 model: UM.ProfilesModel { }
                 textRole: "name"
                 onActivated: UM.MachineManager.setActiveProfile(model.getItem(index).name)
 
-                currentIndex: {
-                    for(var i = 0; i < model.rowCount(); ++i) {
+                currentIndex:
+                {
+                    for(var i = 0; i < model.rowCount(); ++i)
+                    {
                         if(model.getItem(i).name == UM.MachineManager.activeProfile)
                             return i;
                     }
@@ -126,13 +138,15 @@ Rectangle
                 }
             }
 
-            Button{
+            Button
+            {
                 text: catalog.i18nc("@action:button", "Save");
             }
         }
     }
 
-    Loader {
+    Loader
+    {
         id: sidebarContents;
         anchors.bottom: saveButton.top
         anchors.top: profileItem.bottom
@@ -160,7 +174,8 @@ Rectangle
         }
     }
 
-    SaveButton {
+    SaveButton
+    {
         id: saveButton;
         implicitWidth: base.width
         implicitHeight: totalHeight
