@@ -44,34 +44,33 @@ class SliceInfo(Extension):
     def _onWriteStarted(self, output_device):
         if not Preferences.getInstance().getValue("info/send_slice_info"):
             return # Do nothing, user does not want to send data
-
-        settings = Application.getInstance().getActiveMachine()
-        profile = settings.getActiveProfile()
-        profile_values = None
+        settings = Application.getInstance().getMachineManager().getActiveProfile()
 
         # Load all machine definitions and put them in machine_settings dict
-        setting_file_name = Application.getInstance().getActiveMachine()._json_file
+        #setting_file_name = Application.getInstance().getActiveMachineInstance().getMachineSettings()._json_file
         machine_settings = {}
-        with open(setting_file_name, "rt", -1, "utf-8") as f:
-            data = json.load(f, object_pairs_hook = collections.OrderedDict)
-        machine_settings[os.path.basename(setting_file_name)] = copy.deepcopy(data)
+        #with open(setting_file_name, "rt", -1, "utf-8") as f:
+        #    data = json.load(f, object_pairs_hook = collections.OrderedDict)
+        #machine_settings[os.path.basename(setting_file_name)] = copy.deepcopy(data)
+        active_machine_definition= Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition()
+        data = active_machine_definition._json_data
         # Loop through inherited json files
+        setting_file_name = active_machine_definition._path
         while True:
             if "inherits" in data:
                 inherited_setting_file_name = os.path.dirname(setting_file_name) + "/" + data["inherits"]
                 with open(inherited_setting_file_name, "rt", -1, "utf-8") as f:
                     data = json.load(f, object_pairs_hook = collections.OrderedDict)
                 machine_settings[os.path.basename(inherited_setting_file_name)] = copy.deepcopy(data)
-                print("Inherited:", os.path.basename(inherited_setting_file_name))
             else:
                 break
 
-        if profile:
-            profile_values = profile.getChangedSettings()
+
+        profile_values = settings.getChangedSettings()
 
         # Get total material used (in mm^3)
         print_information = Application.getInstance().getPrintInformation()
-        material_radius = 0.5 * settings.getSettingValueByKey("material_diameter")
+        material_radius = 0.5 * settings.getSettingValue("material_diameter")
         material_used = math.pi * material_radius * material_radius * print_information.materialAmount #Volume of material used
 
         # Get model information (bounding boxes, hashes and transformation matrix)
