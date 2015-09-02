@@ -16,6 +16,8 @@ UM.MainWindow
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
 
+
+
     Item
     {
         id: backgroundItem;
@@ -32,7 +34,9 @@ UM.MainWindow
                 //: File menu
                 title: catalog.i18nc("@title:menu","&File");
 
-                MenuItem { action: actions.open; }
+                MenuItem {
+                    action: actions.open;
+                }
 
                 Menu
                 {
@@ -52,7 +56,10 @@ UM.MainWindow
                                 var path = modelData.toString()
                                 return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
                             }
-                            onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
+                            onTriggered: {
+                                UM.MeshFileHandler.readLocalFile(modelData);
+                                openDialog.sendMeshName(modelData.toString())
+                            }
                         }
                         onObjectAdded: recentFilesMenu.insertItem(index, object)
                         onObjectRemoved: recentFilesMenu.removeItem(object)
@@ -563,11 +570,19 @@ UM.MainWindow
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
 
+        signal hasMesh(string name)
+
+        function sendMeshName(path){
+            var fileName = path.slice(path.lastIndexOf("/") + 1)
+            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
+            openDialog.hasMesh(fileBase)
+        }
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
 
         onAccepted:
         {
             UM.MeshFileHandler.readLocalFile(fileUrl)
+            openDialog.sendMeshName(fileUrl.toString())
         }
     }
 

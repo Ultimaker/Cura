@@ -21,6 +21,29 @@ Rectangle {
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
+    function createFileName(baseName){
+        var splitMachineName = UM.Application.machineName.split(" ")
+        var abbrMachine = ''
+            for (var i = 0; i < splitMachineName.length; i++){
+                if (splitMachineName[i].search(/ultimaker/i) != -1)
+                    abbrMachine += 'UM'
+                else
+                    abbrMachine += splitMachineName[i].charAt(0)
+
+                var regExpAdditives = /[0-9\+]/g;
+                var resultAdditives = splitMachineName[i].match(regExpAdditives);
+                if (resultAdditives != null){
+                    for (var j = 0; j < resultAdditives.length; j++){ abbrMachine += resultAdditives[j] }
+                }
+            }
+        printJobTextfield.text = abbrMachine + '_' + baseName
+    }
+
+     Connections {
+        target: openDialog
+        onHasMesh: base.createFileName(name)
+    }
+
     Rectangle{
         id: printJobRow
         implicitWidth: base.width;
@@ -44,14 +67,14 @@ Rectangle {
             width: parent.width/100*55
             height: UM.Theme.sizes.sidebar_inputFields.height
             property int unremovableSpacing: 5
-            text: "UM2" + "_" + "filename" ///TODO KOMT NOG
+            text: ''
             onEditingFinished: {
                 if (printJobTextfield.text != ''){
                     printJobTextfield.focus = false
                 }
             }
             validator: RegExpValidator {
-                regExp: /^[0-9a-zA-Z\_\-]*$/
+                regExp: /^[^\\ \/ \.]*$/
             }
             style: TextFieldStyle{
                 textColor: UM.Theme.colors.setting_control_text;
@@ -130,46 +153,56 @@ Rectangle {
         }
     }
 
-    Item{
+    Rectangle{
         id: saveRow
-        implicitWidth: base.width / 100 * 55
-        implicitHeight: saveToButton.height + (UM.Theme.sizes.default_margin.height / 2) // height + bottomMargin
+        width: base.width
+        height: saveToButton.height + (UM.Theme.sizes.default_margin.height / 2) // height + bottomMargin
         anchors.top: specsRow.bottom
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.sizes.default_margin.width
+        anchors.left: parent.left
 
         Button {
             id: saveToButton
-            anchors.left: parent.left
+            property int resizedWidth
+            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: progress > 0.99 && base.activity == true
-
-            width: parent.width - UM.Theme.sizes.save_button_save_to_button.height - 2
             height: UM.Theme.sizes.save_button_save_to_button.height
-
-            text: UM.OutputDeviceManager.activeDeviceShortDescription;
+            anchors.top:parent.top
+            text: UM.OutputDeviceManager.activeDeviceShortDescription
+            onClicked: UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
 
             style: ButtonStyle {
                 background: Rectangle {
                     color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
                     Behavior on color { ColorAnimation { duration: 50; } }
-
+                    width: {
+                        if (base.width*0.55 > actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)){
+                            saveToButton.resizedWidth = base.width*0.55
+                            return base.width*0.55
+                        }
+                        else {
+                            saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
+                            return actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
+                        }
+                    }
                     Label {
+                        id: actualLabel
                         anchors.centerIn: parent
                         color: UM.Theme.colors.load_save_button_text
                         font: UM.Theme.fonts.default
                         text: control.text;
                     }
                 }
-                label: Item { }
+            label: Item { }
             }
-            onClicked: UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
         }
 
         Button {
-            id: deviceSelectionMenu;
+            id: deviceSelectionMenu
             tooltip: catalog.i18nc("@info:tooltip","Select the active output device");
+            anchors.top:parent.top
             anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width
             width: UM.Theme.sizes.save_button_save_to_button.height
             height: UM.Theme.sizes.save_button_save_to_button.height
             //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
