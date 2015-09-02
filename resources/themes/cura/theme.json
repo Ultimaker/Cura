@@ -155,6 +155,7 @@
 
         "sidebar": [24.0, 10.0],
         "sidebar_header": [0.0, 3.2],
+        "sidebar_setup": [0.0, 2.8],
         "sidebar_subParts": [0.0, 2.4],
         "sidebar_specs_bar": [0.0, 2.2],
         "sidebar_inputFields": [0.0, 1.9],

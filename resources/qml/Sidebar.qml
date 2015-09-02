@@ -42,8 +42,7 @@ Rectangle
     }
 
     SidebarHeader {
-        id: header;
-
+        id: header
         width: parent.width
         height: totalHeightHeader
 
@@ -63,86 +62,11 @@ Rectangle
         onCurrentModeIndexChanged: UM.Preferences.setValue("cura/active_mode", currentModeIndex);
     }
 
-    Item
-    {
-        id: variantItem;
-
-        anchors.top: header.bottom;
-        height: UM.Theme.sizes.setting.height;
-
-        visible: UM.MachineManager.hasVariants;
-
-        Row
-        {
-            spacing: UM.Theme.sizes.default_margin.width;
-            Label
-            {
-                anchors.verticalCenter: parent.verticalCenter;
-                text: catalog.i18nc("@label","Variant");
-            }
-
-            ComboBox {
-                anchors.verticalCenter: parent.verticalCenter;
-                model: UM.MachineVariantsModel { }
-                textRole: "name"
-                onActivated: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name);
-
-                currentIndex:
-                {
-                    for(var i = 0; i < model.rowCount(); ++i)
-                    {
-                        if(model.getItem(i).name == UM.MachineManager.activeMachineVariant)
-                        {
-                            return i;
-                        }
-                    }
-
-                    return 0;
-                }
-            }
-        }
-    }
-
-    Item
-    {
-        id: profileItem;
-
-        anchors.top: variantItem.bottom;
-        height: UM.Theme.sizes.setting.height;
-
-        Row
-        {
-            spacing: UM.Theme.sizes.default_margin.width;
-            Label
-            {
-                anchors.verticalCenter: parent.verticalCenter;
-                text: catalog.i18nc("@label","Global Profile");
-            }
-
-            ComboBox
-            {
-                anchors.verticalCenter: parent.verticalCenter;
-                model: UM.ProfilesModel { }
-                textRole: "name"
-                onActivated: UM.MachineManager.setActiveProfile(model.getItem(index).name)
-
-                currentIndex:
-                {
-                    for(var i = 0; i < model.rowCount(); ++i)
-                    {
-                        if(model.getItem(i).name == UM.MachineManager.activeProfile)
-                            return i;
-                    }
-                    UM.MachineManager.setActiveProfile(model.getItem(0).name)
-                    return 0;
-                }
-            }
-
-            Button
-            {
-                text: catalog.i18nc("@action:button", "Save");
-            }
-        }
+    ProfileSetup {
+        id: profileItem
+        anchors.top: header.bottom
+        width: parent.width
+        height: totalHeightProfileSetup
     }
 
     Loader
