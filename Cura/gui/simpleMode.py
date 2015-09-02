@@ -159,7 +159,7 @@ class simpleModePanel(wx.Panel):
 					if button.profile == selectedMaterial:
 						button.SetValue(True)
 						break
-			self._materialSelected(None)
+		self._materialSelected(None)
 		self.Layout()
 
 	def _materialTypeSelected(self, e):
@@ -223,6 +223,13 @@ class simpleModePanel(wx.Panel):
 		boxsizer = self.printTypePanel.GetSizer().GetItem(0).GetSizer()
 		boxsizer.Clear(True)
 		self._print_profile_options = []
+
+		if material is None:
+			self.printOptionsBox.Show(False)
+			self.printTypePanel.Show(False)
+			return
+		self.printOptionsBox.Show(True)
+		self.printTypePanel.Show(True)
 
 		# Add new profiles
 		selectedProfile = None
@@ -301,7 +308,9 @@ class simpleModePanel(wx.Panel):
 			self._update(e)
 
 	def _update(self, e):
-		profile.putProfileSetting('simpleModeMaterial', self._getSelectedMaterial().name)
+		material = self._getSelectedMaterial()
+		if material:
+			profile.putProfileSetting('simpleModeMaterial', material.name)
 		for button in self._print_profile_options:
 			if button.GetValue():
 				profile.putProfileSetting('simpleModeProfile', button.profile.name)
@@ -314,7 +323,9 @@ class simpleModePanel(wx.Panel):
 				settings[setting.getName()] = setting.getDefault()
 
 		# Apply materials, profile, then options
-		settings.update(self._getSelectedMaterial().getProfileDict())
+		material = self._getSelectedMaterial()
+		if material:
+			settings.update(material.getProfileDict())
 		for button in self._print_profile_options:
 			if button.GetValue():
 				settings.update(button.profile.getProfileDict())
