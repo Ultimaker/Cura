@@ -124,11 +124,11 @@ Item
                         text: model.name;
                         checkable: true;
                         checked: model.active;
-                        exclusiveGroup: machineMenuGroup;
+                        exclusiveGroup: machineSelectionMenuGroup;
                         onTriggered: UM.MachineManager.setActiveMachineInstance(model.name);
                     }
-                    onObjectAdded: machineMenu.insertItem(index, object)
-                    onObjectRemoved: machineMenu.removeItem(object)
+                    onObjectAdded: machineSelectionMenu.insertItem(index, object)
+                    onObjectRemoved: machineSelectionMenu.removeItem(object)
                 }
 
                 ExclusiveGroup { id: machineSelectionMenuGroup; }
