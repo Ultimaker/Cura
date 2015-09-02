@@ -133,7 +133,7 @@ Rectangle
                         if(model.getItem(i).name == UM.MachineManager.activeProfile)
                             return i;
                     }
-
+                    UM.MachineManager.setActiveProfile(model.getItem(0).name)
                     return 0;
                 }
             }

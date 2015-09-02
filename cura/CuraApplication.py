@@ -400,7 +400,7 @@ class CuraApplication(QtApplication):
     def getSettingValue(self, key):
         if not self.getMachineManager().getActiveProfile():
             return None
-        return self.getMachineManager().getActiveProfile().getSettingValueByKey(key)
+        return self.getMachineManager().getActiveProfile().getSettingValue(key)
         #return self.getActiveMachine().getSettingValueByKey(key)
     
     ##  Change setting by key value pair
@@ -409,7 +409,7 @@ class CuraApplication(QtApplication):
         if not self.getMachineManager().getActiveProfile():
             return
 
-        self.getMachineManager().getActiveProfile().getSettingValueByKey(key, value)
+        self.getMachineManager().getActiveProfile().setSettingValue(key, value)
         
     @pyqtSlot()
     def mergeSelected(self):
