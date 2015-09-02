@@ -144,6 +144,7 @@ class CuraEngineBackend(Backend):
             return #No point in slicing an empty build plate
 
         if kwargs.get("profile", self._profile).hasErrorValue():
+            Logger.log('w', "Profile has error values. Aborting slicing")
             return #No slicing if we have error values since those are by definition illegal values.
 
         self._slicing = True
