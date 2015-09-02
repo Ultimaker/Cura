@@ -169,11 +169,12 @@ class simpleModePanel(wx.Panel):
 
 		if selection >= len(self._print_material_types.keys()):
 			materials = self._all_print_materials
+			for material in materials:
+				choices.append(material.full_name)
 		else:
 			materials = self._print_material_types[materialType]
-
-		for material in materials:
-			choices.append(material.name)
+			for material in materials:
+				choices.append(material.name)
 
 		# Decide on the default selected material
 		selectedMaterial = None
