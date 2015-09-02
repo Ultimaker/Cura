@@ -116,7 +116,7 @@ Rectangle
             Label
             {
                 anchors.verticalCenter: parent.verticalCenter;
-                text: "Global Profile";
+                text: catalog.i18nc("@label","Global Profile");
             }
 
             ComboBox
