@@ -266,8 +266,9 @@ def getSimpleModeMaterials():
 						materials.append(material)
 					else:
 						for ini in materials:
-							if ini.name == material.name:
+							if ini.base_name == material.base_name:
 								ini.parseDirectory(os.path.split(material_file)[0])
+								break
 
 	materials.sort()
 	for material in materials:
