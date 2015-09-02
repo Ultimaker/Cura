@@ -197,9 +197,6 @@ Item
 
             var pages = machineList.model.getItem(machineList.currentIndex).pages
 
-            console.log(pages)
-            console.log(pages.length)
-
             // Insert new pages (if any)
             for(var i = 0; i < pages.length; i++)
             {
@@ -220,11 +217,6 @@ Item
                     default:
                         break;
                 }
-            }
-
-            if (elementRoot.getPageCount() == elementRoot.currentPage)
-            {
-                elementRoot.visible = false
             }
         }
     }
