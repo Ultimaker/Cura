@@ -29,16 +29,24 @@ class ConvexHullNode(SceneNode):
         self._node.parentChanged.connect(self._onNodeParentChanged)
         self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
         self._onNodeDecoratorsChanged(self._node)
-
+        self.convexHullHeadMesh = None
         self._hull = hull
 
         hull_points = self._hull.getPoints()
+        hull_mesh = self.createHullMesh(self._hull.getPoints())
+        if hull_mesh:
+            self.setMeshData(hull_mesh)
+        convex_hull_head = self._node.callDecoration("getConvexHullHead")
+        if convex_hull_head:
+            self.convexHullHeadMesh = self.createHullMesh(convex_hull_head.getPoints())
+
+    def createHullMesh(self, hull_points):
         mesh = MeshData()
         if len(hull_points) > 3:
             center = (hull_points.min(0) + hull_points.max(0)) / 2.0
             mesh.addVertex(center[0], 0.1, center[1])
-        else: #Hull has not enough points
-            return
+        else:
+            return None
         for point in hull_points:
             mesh.addVertex(point[0], 0.1, point[1])
         indices = []
@@ -48,8 +56,7 @@ class ConvexHullNode(SceneNode):
         indices.append([0, mesh.getVertexCount() - 1, 1])
 
         mesh.addIndices(numpy.array(indices, numpy.int32))
-
-        self.setMeshData(mesh)
+        return mesh
 
     def getWatchedNode(self):
         return self._node
@@ -61,6 +68,8 @@ class ConvexHullNode(SceneNode):
         if self.getParent():
             self._material.setUniformValue("u_color", self._color)
             renderer.queueNode(self, material = self._material, transparent = True)
+            if self.convexHullHeadMesh:
+                renderer.queueNode(self, material = self._material,transparent = True, mesh = self.convexHullHeadMesh)
 
         return True
 
