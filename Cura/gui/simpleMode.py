@@ -132,7 +132,8 @@ class simpleModePanel(wx.Panel):
 			boxsizer.Add(label, flag=wx.EXPAND)
 			boxsizer.Add(self.materialCombo, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
 			self.printMaterialPanel.SetSizer(boxsizer)
-		self.materialHyperlink = wx.HyperlinkCtrl(self.printMaterialPanel, -1, label=_('Click here for more!'), url='')
+		self.materialHyperlink = wx.HyperlinkCtrl(self.printMaterialPanel, -1, label=_('Click here for more!'), url='',
+												  style=wx.HL_ALIGN_LEFT|wx.BORDER_NONE|wx.HL_CONTEXTMENU)
 		self.materialHyperlink.Show(False)
 		boxsizer.Add(self.materialHyperlink, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
 		sizer.Add(self.printMaterialPanel, (1,0), border=10, flag=wx.EXPAND|wx.RIGHT|wx.LEFT|wx.TOP)
