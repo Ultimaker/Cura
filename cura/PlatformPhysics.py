@@ -111,7 +111,11 @@ class PlatformPhysics:
 
                     # Get the overlap distance for both convex hulls. If this returns None, there is no intersection.
                     try:
-                        overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                        head_hull = node.callDecoration("getConvexHullHead")
+                        if head_hull:
+                            overlap = head_hull.intersectsPolygon(other_node.callDecoration("getConvexHull"))
+                        else:
+                            overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
                     except:
                         overlap = None #It can sometimes occur that the caclulated convex hull has no size, in which case there is no overlap.
 
