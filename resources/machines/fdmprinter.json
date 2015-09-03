@@ -1652,6 +1652,32 @@
                     "default": false,
                     "visible": false
                 },
+                "magic_fuzzy_skin_enabled": {
+                    "label": "Fuzzy Skin",
+                    "description": "Randomly jitter while printing the outer wall, so that the surface has a rough look.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
+                "magic_fuzzy_skin_thickness": {
+                    "label": "Fuzzy Skin Thickness",
+                    "description": "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 0.3,
+                    "visible": false,
+                    "enabled": "magic_fuzzy_skin_enabled"
+                },
+                "magic_fuzzy_skin_smoothness": {
+                    "label": "Fuzzy Skin Smoothness",
+                    "description": "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 0.8,
+                    "min_value_warning": "magic_fuzzy_skin_thickness/2",
+                    "visible": false,
+                    "enabled": "magic_fuzzy_skin_enabled"
+                },
                 "wireframe_enabled": {
                     "label": "Wire Printing",
                     "description": "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines.",
