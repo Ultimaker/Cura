@@ -45,7 +45,7 @@ SetCompressor /SOLID lzma
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
 
 ;Add an option to show release notes
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\release_notes.txt"
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\plugins\ChangeLogPlugin\changelog.txt"
 
 ; Pages
 ;!insertmacro MUI_PAGE_WELCOME
