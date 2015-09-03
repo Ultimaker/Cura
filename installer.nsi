@@ -128,7 +128,7 @@ SectionEnd
 Section "Open STL files with Cura"
 	WriteRegStr HKCR .stl "" "Cura STL model file"
 	DeleteRegValue HKCR .stl "Content Type"
-	WriteRegStr HKCR "Cura STL model file\DefaultIcon" "" "$INSTDIR\resources\stl.ico,0"
+	WriteRegStr HKCR "Cura STL model file\DefaultIcon" "" "$INSTDIR\Cura.exe,0"
 	WriteRegStr HKCR "Cura STL model file\shell" "" "open"
 	WriteRegStr HKCR "Cura STL model file\shell\open\command" "" '"$INSTDIR\Cura.exe" "%1"'
 SectionEnd
@@ -136,7 +136,7 @@ SectionEnd
 Section /o "Open OBJ files with Cura"
 	WriteRegStr HKCR .obj "" "Cura OBJ model file"
 	DeleteRegValue HKCR .obj "Content Type"
-	WriteRegStr HKCR "Cura OBJ model file\DefaultIcon" "" "$INSTDIR\resources\stl.ico,0"
+	WriteRegStr HKCR "Cura OBJ model file\DefaultIcon" "" "$INSTDIR\Cura.exe,0"
 	WriteRegStr HKCR "Cura OBJ model file\shell" "" "open"
 	WriteRegStr HKCR "Cura OBJ model file\shell\open\command" "" '"$INSTDIR\Cura.exe" "%1"'
 SectionEnd
