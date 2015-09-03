@@ -59,12 +59,14 @@ Rectangle {
         }
     }
 
-//     Rectangle{
-//         id: printJobRow
-//         implicitWidth: base.width;
-//         implicitHeight: UM.Theme.sizes.sidebar_header.height
-//         anchors.top: parent.top
-//         color: UM.Theme.colors.sidebar_header_bar
+    Rectangle{
+        id: printJobRow
+        implicitWidth: base.width;
+        //implicitHeight: UM.Theme.sizes.sidebar_header.height /////////////remove this TODO
+        implicitHeight: 1
+        anchors.top: parent.top
+        //color: UM.Theme.colors.sidebar_header_bar
+        color: UM.Theme.colors.setting_control_border
 //         Label{
 //             id: printJobTextfieldLabel
 //             text: catalog.i18nc("@label","Printjob name");
@@ -103,13 +105,13 @@ Rectangle {
 //                 }
 //             }
 //         }
-//     }
+    }
 
     Rectangle {
         id: specsRow
         implicitWidth: base.width
         implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
-        anchors.top: parent.top
+        anchors.top: printJobRow.bottom
         Item{
             id: time
             width: (parent.width / 100 * 45) - UM.Theme.sizes.default_margin.width * 2
