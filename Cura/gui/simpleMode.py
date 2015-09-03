@@ -135,7 +135,6 @@ class simpleModePanel(wx.Panel):
 		self.materialHyperlink = wx.HyperlinkCtrl(self.printMaterialPanel, -1, label=_('Click here for more!'), url='',
 												  style=wx.HL_ALIGN_LEFT|wx.BORDER_NONE|wx.HL_CONTEXTMENU)
 		self.materialHyperlink.Show(False)
-		#self.materialDescription = wx.TextCtrl(self.printMaterialPanel, -1, '', style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_NO_VSCROLL)
 		self.materialDescription = wx.StaticText(self.printMaterialPanel, -1, '')
 		self.materialDescription.Show(False)
 		boxsizer.Add(self.materialDescription, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
@@ -239,16 +238,12 @@ class simpleModePanel(wx.Panel):
 		self.printOptionsBox.Show(True)
 		self.printTypePanel.Show(True)
 
+		self.materialHyperlink.Show(material.url is not None)
 		if material.url:
 			self.materialHyperlink.SetURL(material.url)
-		self.materialHyperlink.Show(material.url is not None)
-		if material.description:
-			#self.materialDescription.SetValue(material.description)
-			self.materialDescription.SetLabel(material.description)
 		self.materialDescription.Show(material.description is not None)
-		self.materialDescription.Layout()
-		self.materialDescription.GetParent().Fit()
-		self.materialDescription.GetParent().Layout()
+		if material.description:
+			self.materialDescription.SetLabel(material.description)
 
 		# Add new profiles
 		selectedProfile = None
