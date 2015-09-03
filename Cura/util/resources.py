@@ -215,6 +215,9 @@ class PrintMaterial(ProfileIni):
 		if types != None:
 			for type in types.split('|'):
 				self.types.append(type.strip())
+		# Comment for the profile
+		self.description = self._getProfileInfo(ini_file, 'description')
+
 		self.parseDirectory(self.path)
 
 	def parseDirectory(self, path):
