@@ -15,79 +15,96 @@ Rectangle {
     property bool activity: Printer.getPlatformActivity;
     Behavior on progress { NumberAnimation { duration: 250; } }
     property int totalHeight: childrenRect.height
+    property string fileBaseName
+    property variant activeMachineInstance: UM.MachineManager.activeMachineInstance
+
+    onActiveMachineInstanceChanged:
+    {
+        base.createFileName()
+    }
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
-    function createFileName(baseName){
-        var splitMachineName = UM.Application.machineName.split(" ")
+    function createFileName(){
+        var splitMachineName = UM.MachineManager.activeMachineInstance.split(" ")
         var abbrMachine = ''
             for (var i = 0; i < splitMachineName.length; i++){
-                if (splitMachineName[i].search(/ultimaker/i) != -1)
+                if (splitMachineName[i].search(/ultimaker/i) != -1){
                     abbrMachine += 'UM'
-                else
-                    abbrMachine += splitMachineName[i].charAt(0)
-
+                }
+                else{
+                    if (splitMachineName[i].charAt(0).search(/[0-9]/g) == -1)
+                        abbrMachine += splitMachineName[i].charAt(0)
+                }
                 var regExpAdditives = /[0-9\+]/g;
                 var resultAdditives = splitMachineName[i].match(regExpAdditives);
                 if (resultAdditives != null){
-                    for (var j = 0; j < resultAdditives.length; j++){ abbrMachine += resultAdditives[j] }
+                    for (var j = 0; j < resultAdditives.length; j++){
+                        abbrMachine += resultAdditives[j]
+
+                    }
                 }
             }
-        printJobTextfield.text = abbrMachine + '_' + baseName
+        //printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
     }
 
      Connections {
         target: openDialog
-        onHasMesh: base.createFileName(name)
+        onHasMesh: {
+            base.fileBaseName = name
+            base.createFileName()
+        }
     }
 
     Rectangle{
         id: printJobRow
         implicitWidth: base.width;
-        implicitHeight: UM.Theme.sizes.sidebar_header.height
+        //implicitHeight: UM.Theme.sizes.sidebar_header.height /////////////remove this TODO
+        implicitHeight: 1
         anchors.top: parent.top
-        color: UM.Theme.colors.sidebar_header_bar
-        Label{
-            id: printJobTextfieldLabel
-            text: catalog.i18nc("@label","Printjob name");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text_white
-        }
-        TextField {
-            id: printJobTextfield
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*55
-            height: UM.Theme.sizes.sidebar_inputFields.height
-            property int unremovableSpacing: 5
-            text: ''
-            onEditingFinished: {
-                if (printJobTextfield.text != ''){
-                    printJobTextfield.focus = false
-                }
-            }
-            validator: RegExpValidator {
-                regExp: /^[^\\ \/ \.]*$/
-            }
-            style: TextFieldStyle{
-                textColor: UM.Theme.colors.setting_control_text;
-                font: UM.Theme.fonts.default;
-                background: Rectangle {
-                    radius: 0
-                    implicitWidth: parent.width
-                    implicitHeight: parent.height
-                    border.width: 1;
-                    border.color: UM.Theme.colors.slider_groove_border;
-                }
-            }
-        }
+        //color: UM.Theme.colors.sidebar_header_bar
+        color: UM.Theme.colors.setting_control_border
+//         Label{
+//             id: printJobTextfieldLabel
+//             text: catalog.i18nc("@label","Printjob name");
+//             anchors.left: parent.left
+//             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+//             anchors.verticalCenter: parent.verticalCenter
+//             font: UM.Theme.fonts.default;
+//             color: UM.Theme.colors.text_white
+//         }
+//         TextField {
+//             id: printJobTextfield
+//             anchors.right: parent.right
+//             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
+//             anchors.verticalCenter: parent.verticalCenter
+//             width: parent.width/100*55
+//             height: UM.Theme.sizes.sidebar_inputFields.height
+//             property int unremovableSpacing: 5
+//             text: ''
+//             onEditingFinished: {
+//                 if (printJobTextfield.text != ''){
+//                     printJobTextfield.focus = false
+//                 }
+//             }
+//             validator: RegExpValidator {
+//                 regExp: /^[^\\ \/ \.]*$/
+//             }
+//             style: TextFieldStyle{
+//                 textColor: UM.Theme.colors.setting_control_text;
+//                 font: UM.Theme.fonts.default;
+//                 background: Rectangle {
+//                     radius: 0
+//                     implicitWidth: parent.width
+//                     implicitHeight: parent.height
+//                     border.width: 1;
+//                     border.color: UM.Theme.colors.slider_groove_border;
+//                 }
+//             }
+//         }
     }
 
     Rectangle {

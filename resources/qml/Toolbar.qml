@@ -28,7 +28,7 @@ Item {
             model: UM.Models.toolModel
 
             Button {
-                text: model.name;
+                text: model.name
                 iconSource: UM.Theme.icons[model.icon];
 
                 checkable: true;

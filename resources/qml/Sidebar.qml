@@ -14,6 +14,7 @@ Rectangle
 
     property Action addMachineAction;
     property Action configureMachinesAction;
+    property Action manageProfilesAction;
 
     color: UM.Theme.colors.sidebar;
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -64,6 +65,7 @@ Rectangle
 
     ProfileSetup {
         id: profileItem
+        manageProfilesAction: base.manageProfilesAction
         anchors.top: header.bottom
         width: parent.width
         height: totalHeightProfileSetup

@@ -12,6 +12,7 @@ Column{
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
     property int totalHeightProfileSetup: childrenRect.height
+    property Action manageProfilesAction
     spacing: 0
 
     Rectangle{
@@ -87,17 +88,17 @@ Column{
         ToolButton {
             id: globalProfileSelection
             text: UM.MachineManager.activeProfile
-            width: parent.width/100*45
+            width: parent.width/100*55
             height: UM.Theme.sizes.setting_control.height
             anchors.right: parent.right
-            anchors.rightMargin: (UM.Theme.sizes.default_margin.width * 2) + saveProfileButton.width
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter
             tooltip: UM.MachineManager.activeProfile
             style: UM.Theme.styles.sidebar_header_button
 
             menu: Menu
             {
-                id: machineSelectionMenu
+                id: profileSelectionMenu
                 Instantiator
                 {
                     model: UM.ProfilesModel { }
@@ -109,36 +110,42 @@ Column{
                         exclusiveGroup: profileSelectionMenuGroup;
                         onTriggered: UM.MachineManager.setActiveProfile(model.name)
                     }
-                    onObjectAdded: machineSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: machineSelectionMenu.removeItem(object)
+                    onObjectAdded: profileSelectionMenu.insertItem(index, object)
+                    onObjectRemoved: profileSelectionMenu.removeItem(object)
                 }
                 ExclusiveGroup { id: profileSelectionMenuGroup; }
-            }
-            Button {
-                id: saveProfileButton
-                visible: true
-                anchors.top: parent.top
-                x: globalProfileSelection.width + 2
-                width: parent.width/100*25
-                text: catalog.i18nc("@action:button", "Save");
-                height: parent.height
 
-                style: ButtonStyle {
-                    background: Rectangle {
-                        color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
-                        Behavior on color { ColorAnimation { duration: 50; } }
-                        width: actualLabel.width + UM.Theme.sizes.default_margin.width
-                        Label {
-                            id: actualLabel
-                            anchors.centerIn: parent
-                            color: UM.Theme.colors.load_save_button_text
-                            font: UM.Theme.fonts.default
-                            text: control.text;
-                        }
-                    }
-                label: Item { }
+                MenuSeparator { }
+                MenuItem {
+                    action: base.manageProfilesAction;
+
                 }
             }
+//             Button {
+//                 id: saveProfileButton
+//                 visible: true
+//                 anchors.top: parent.top
+//                 x: globalProfileSelection.width + 2
+//                 width: parent.width/100*25
+//                 text: catalog.i18nc("@action:button", "Save");
+//                 height: parent.height
+//
+//                 style: ButtonStyle {
+//                     background: Rectangle {
+//                         color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+//                         Behavior on color { ColorAnimation { duration: 50; } }
+//                         width: actualLabel.width + UM.Theme.sizes.default_margin.width
+//                         Label {
+//                             id: actualLabel
+//                             anchors.centerIn: parent
+//                             color: UM.Theme.colors.load_save_button_text
+//                             font: UM.Theme.fonts.default
+//                             text: control.text;
+//                         }
+//                     }
+//                 label: Item { }
+//                 }
+//             }
         }
     }
     Rectangle{
