@@ -9,11 +9,11 @@
 
     "inherits": "fdmprinter.json",
 
-    "add_pages": [
-        {"page": "SelectUpgradedParts", "title": "Select Upgraded Parts"},
-        {"page": "UpgradeFirmware", "title": "Upgrade Ultimaker Firmware"},
-        {"page": "UltimakerCheckup", "title": "Ultimaker Checkup"},
-        {"page": "Bedleveling", "title": "Bedleveling Wizard"}
+    "pages": [
+        "SelectUpgradedParts",
+        "UpgradeFirmware",
+        "UltimakerCheckup",
+        "BedLeveling"
     ],
 
     "machine_extruder_trains": [
