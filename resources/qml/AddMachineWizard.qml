@@ -22,7 +22,7 @@ UM.Wizard
     firstRun: false
 
     Component.onCompleted: {
-        base.appendPage(UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/AddMachine.qml"), catalog.i18nc("@title", "Add Printer"));
+        base.appendPage(Qt.resolvedUrl("WizardPages/AddMachine.qml"), catalog.i18nc("@title", "Add Printer"));
         base.currentPage = 0;
     }
 
