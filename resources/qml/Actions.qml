@@ -33,6 +33,7 @@ Item
 
     property alias addMachine: addMachineAction;
     property alias configureMachines: settingsAction;
+    property alias manageProfiles: manageProfilesAction;
 
     property alias preferences: preferencesAction;
 
@@ -99,6 +100,13 @@ Item
         //: Configure Printers action
         text: catalog.i18nc("@action","Configure Printers");
         iconName: "configure";
+    }
+
+    Action
+    {
+        id: manageProfilesAction;
+        //: manage profiles action
+        text: catalog.i18nc("@action","Manage Profiles");
     }
 
     Action

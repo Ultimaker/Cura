@@ -301,9 +301,9 @@ UM.MainWindow
                 anchors
                 {
                     top: parent.top;
-                    topMargin: UM.Theme.sizes.loadfile_margin.height
+                    //topMargin: UM.Theme.sizes.loadfile_margin.height
                     left: parent.left;
-                    leftMargin: UM.Theme.sizes.loadfile_margin.width
+                    //leftMargin: UM.Theme.sizes.loadfile_margin.width
                 }
                 action: actions.open;
             }
@@ -393,6 +393,7 @@ UM.MainWindow
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
+                manageProfilesAction: actions.manageProfiles;
             }
 
             Rectangle
@@ -503,6 +504,7 @@ UM.MainWindow
 
         preferences.onTriggered: preferences.visible = true;
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
+        manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 
         documentation.onTriggered: CuraActions.openDocumentation();
         reportBug.onTriggered: CuraActions.openBugReportPage();
