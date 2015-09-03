@@ -48,7 +48,7 @@ Rectangle {
                     }
                 }
             }
-        printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
+        //printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
     }
 
      Connections {
@@ -59,57 +59,57 @@ Rectangle {
         }
     }
 
-    Rectangle{
-        id: printJobRow
-        implicitWidth: base.width;
-        implicitHeight: UM.Theme.sizes.sidebar_header.height
-        anchors.top: parent.top
-        color: UM.Theme.colors.sidebar_header_bar
-        Label{
-            id: printJobTextfieldLabel
-            text: catalog.i18nc("@label","Printjob name");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text_white
-        }
-        TextField {
-            id: printJobTextfield
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*55
-            height: UM.Theme.sizes.sidebar_inputFields.height
-            property int unremovableSpacing: 5
-            text: ''
-            onEditingFinished: {
-                if (printJobTextfield.text != ''){
-                    printJobTextfield.focus = false
-                }
-            }
-            validator: RegExpValidator {
-                regExp: /^[^\\ \/ \.]*$/
-            }
-            style: TextFieldStyle{
-                textColor: UM.Theme.colors.setting_control_text;
-                font: UM.Theme.fonts.default;
-                background: Rectangle {
-                    radius: 0
-                    implicitWidth: parent.width
-                    implicitHeight: parent.height
-                    border.width: 1;
-                    border.color: UM.Theme.colors.slider_groove_border;
-                }
-            }
-        }
-    }
+//     Rectangle{
+//         id: printJobRow
+//         implicitWidth: base.width;
+//         implicitHeight: UM.Theme.sizes.sidebar_header.height
+//         anchors.top: parent.top
+//         color: UM.Theme.colors.sidebar_header_bar
+//         Label{
+//             id: printJobTextfieldLabel
+//             text: catalog.i18nc("@label","Printjob name");
+//             anchors.left: parent.left
+//             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+//             anchors.verticalCenter: parent.verticalCenter
+//             font: UM.Theme.fonts.default;
+//             color: UM.Theme.colors.text_white
+//         }
+//         TextField {
+//             id: printJobTextfield
+//             anchors.right: parent.right
+//             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
+//             anchors.verticalCenter: parent.verticalCenter
+//             width: parent.width/100*55
+//             height: UM.Theme.sizes.sidebar_inputFields.height
+//             property int unremovableSpacing: 5
+//             text: ''
+//             onEditingFinished: {
+//                 if (printJobTextfield.text != ''){
+//                     printJobTextfield.focus = false
+//                 }
+//             }
+//             validator: RegExpValidator {
+//                 regExp: /^[^\\ \/ \.]*$/
+//             }
+//             style: TextFieldStyle{
+//                 textColor: UM.Theme.colors.setting_control_text;
+//                 font: UM.Theme.fonts.default;
+//                 background: Rectangle {
+//                     radius: 0
+//                     implicitWidth: parent.width
+//                     implicitHeight: parent.height
+//                     border.width: 1;
+//                     border.color: UM.Theme.colors.slider_groove_border;
+//                 }
+//             }
+//         }
+//     }
 
     Rectangle {
         id: specsRow
         implicitWidth: base.width
         implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
-        anchors.top: printJobRow.bottom
+        anchors.top: parent.top
         Item{
             id: time
             width: (parent.width / 100 * 45) - UM.Theme.sizes.default_margin.width * 2
