@@ -303,7 +303,7 @@ class simpleModePanel(wx.Panel):
 		for option in material.options:
 			if option.disabled:
 				continue
-			button = wx.CheckBox(self, -1, option.name.replace('&', '&&'))
+			button = wx.CheckBox(self.printOptionsBox, -1, option.name.replace('&', '&&'))
 			button.profile = option
 			self._print_other_options.append(button)
 			# Restore selection on similarly named options
