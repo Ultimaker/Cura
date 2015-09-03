@@ -5,6 +5,7 @@ from distutils.core import setup
 import py2exe
 import UM
 import UM.Qt
+import cura
 import os
 import re
 import shutil
@@ -22,7 +23,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
         else:
             shutil.copy2(s, d)
 
-includes = ["sip", "ctypes", "UM", "PyQt5.QtNetwork", "PyQt5._QOpenGLFunctions_2_0", "serial", "Arcus", "google", "google.protobuf", "google.protobuf.descriptor", "xml.etree", "xml.etree.ElementTree", "cura"]
+includes = ["sip", "ctypes", "UM", "PyQt5.QtNetwork", "PyQt5._QOpenGLFunctions_2_0", "serial", "Arcus", "google", "google.protobuf", "google.protobuf.descriptor", "xml.etree", "xml.etree.ElementTree", "cura", "cura.OneAtATimeIterator"]
 # Include all the UM modules in the includes. As py2exe fails to properly find all the dependencies due to the plugin architecture.
 for dirpath, dirnames, filenames in os.walk(os.path.dirname(UM.__file__)):
     if "__" in dirpath:
@@ -41,9 +42,9 @@ print("Removing previous distribution package")
 shutil.rmtree("dist", True)
 
 setup(name="Cura",
-        version="15.05.97",
+        version="15.09.80",
         author="Ultimaker",
-        author_email="d.braam@ultimaker.com",
+        author_email="a.hiemstra@ultimaker.com",
         url="http://software.ultimaker.com/",
         license="GNU AFFERO GENERAL PUBLIC LICENSE (AGPL)",
         scripts=["cura_app.py"],
@@ -54,9 +55,9 @@ setup(name="Cura",
 print("Coping Cura plugins.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/../plugins", "dist/plugins", ignore = shutil.ignore_patterns("ConsoleLogger", "OBJWriter", "MLPWriter", "MLPReader"))
 for path in os.listdir("plugins"):
-    shutil.copytree("plugins/" + path, "dist/plugins/" + path)
+    copytree("plugins/" + path, "dist/plugins/" + path)
 print("Coping resources.")
-shutil.copytree(os.path.dirname(UM.__file__) + "/../resources", "dist/resources")
+copytree(os.path.dirname(UM.__file__) + "/../resources", "dist/resources")
 copytree("resources", "dist/resources")
 print("Coping Uranium QML.")
 shutil.copytree(os.path.dirname(UM.__file__) + "/Qt/qml/UM", "dist/qml/UM")
