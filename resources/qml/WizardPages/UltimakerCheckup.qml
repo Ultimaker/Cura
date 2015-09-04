@@ -19,10 +19,18 @@ Column
     property bool heater_works: false
     property int extruder_target_temp: 0
     property int bed_target_temp: 0
-    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.rowCount() != 0 ? UM.USBPrinterManager.connectedPrinterList.getItem(0).printer: null
 
-    Component.onCompleted: printer_connection.startPollEndstop()
-    Component.onDestruction: printer_connection.stopPollEndstop()
+    Component.onCompleted:
+    {
+        if (printer_connection != null)
+            printer_connection.startPollEndstop()
+    }
+    Component.onDestruction:
+    {
+        if (printer_connection != null)
+            printer_connection.stopPollEndstop()
+    }
     UM.I18nCatalog { id: catalog; name:"cura"}
     Label
     {
@@ -90,16 +98,19 @@ Column
         }
         Label
         {
-            text: printer_connection.extruderTemperature
+            text: printer_connection != null ? printer_connection.extruderTemperature : "0"
         }
         Button
         {
             text: catalog.i18nc("@action:button","Start heating")
             onClicked:
             {
-                heater_status_label.text = catalog.i18nc("@label","Checking")
-                printer_connection.heatupNozzle(190)
-                wizardPage.extruder_target_temp = 190
+                if(printer_connection != null)
+                {
+                    heater_status_label.text = catalog.i18nc("@label","Checking")
+                    printer_connection.heatupNozzle(190)
+                    wizardPage.extruder_target_temp = 190
+                }
             }
         }
         Label
@@ -117,16 +128,19 @@ Column
         }
         Label
         {
-            text: printer_connection.bedTemperature
+            text: printer_connection != null ? printer_connection.bedTemperature : "0"
         }
         Button
         {
             text: catalog.i18nc("@action:button","Start heating")
             onClicked:
             {
-                bed_status_label.text = catalog.i18nc("@label","Checking")
-                printer_connection.printer.heatupBed(60)
-                wizardPage.bed_target_temp = 60
+                if(printer_connection != null)
+                {
+                    bed_status_label.text = catalog.i18nc("@label","Checking")
+                    printer_connection.printer.heatupBed(60)
+                    wizardPage.bed_target_temp = 60
+                }
             }
         }
         Label
@@ -159,8 +173,11 @@ Column
         {
             if(printer_connection.extruderTemperature > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperature < wizardPage.extruder_target_temp + 10)
             {
-                heater_status_label.text = catalog.i18nc("@label","Works")
-                printer_connection.heatupNozzle(0)
+                if(printer_connection != null)
+                {
+                    heater_status_label.text = catalog.i18nc("@label","Works")
+                    printer_connection.heatupNozzle(0)
+                }
             }
         }
         onBedTemperatureChanged:
