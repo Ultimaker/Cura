@@ -73,6 +73,12 @@ material_map = {
     'PLA_PVA': 'PLA_PVA_support',
     'ABS_ABS': 'ABS_dual_color',
     'PLA_PLA': 'PLA_dual_color',
+    # Flexystruder (Expert)
+    "ninjaflex" : "ninjaflex",
+    "semiflex" : "semiflex",
+    # Flexy Dually (Expert)
+    "ABS_ninjaflex" : "ABS_ninjaflex",
+    "ABS_semiflex" : "ABS_semiflex",
 }
 
 material_order = {
@@ -103,6 +109,12 @@ material_order = {
     'PLA_PVA': 2,
     'ABS_ABS': 1,
     'PLA_PLA': 0,
+    # Flexystruder (Expert)
+    "ninjaflex" : 0,
+    "semiflex" : 1,
+    # Flexy Dually (Expert)
+    "ABS_ninjaflex" : 0,
+    "ABS_semiflex" : 1,
 }
 
 material_types = {
@@ -133,6 +145,12 @@ material_types = {
     'PLA_PVA': "Expert",
     'ABS_ABS': "Expert",
     'PLA_PLA': "Expert",
+    # Flexystruder (Expert)
+    "ninjaflex" : "Expert",
+    "semiflex" : "Expert",
+    # Flexy Dually (Expert)
+    "ABS_ninjaflex" : "Expert",
+    "ABS_semiflex" : "Expert",
 }
 
 material_names = {
@@ -163,6 +181,12 @@ material_names = {
     'PLA_PVA': "PLA & PVA",
     'ABS_ABS': "ABS & ABS",
     'PLA_PLA': "ABS & ABS",
+    # Flexystruder (Expert)
+    "ninjaflex" : "NinjaFlex (Fenner Drives)",
+    "semiflex" : "SemiFlex (Fenner Drives)",
+    # Flexy Dually (Expert)
+    "ABS_ninjaflex" : "ABS & NinjaFlex",
+    "ABS_semiflex" : "ABS & SemiFlex",
 }
 
 material_url = {
@@ -190,7 +214,15 @@ material_url = {
     "618-Nylon": "https://www.lulzbot.com/products/taulman-618-nylon-3mm-filament-1-pound",
     "645-Nylon": "https://www.lulzbot.com/products/taulman-645-nylon-3mm-filament-1-pound",
     # Dual extruder (Expert)
+    'ABS_ABS': "https://www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
+    'PLA_PLA': "https://www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
     'PLA_PVA': "https://www.lulzbot.com/products/natural-pva-3mm-filament-05kg-reel-esun",
+    # Flexystruder (Expert)
+    "ninjaflex" : "https://www.lulzbot.com/ninjaflex",
+    "semiflex" : "https://www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
+    # Flexy Dually (Expert)
+    "ABS_ninjaflex" : "https://www.lulzbot.com/ninjaflex",
+    "ABS_semiflex" : "https://www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
 }
 
 profile_map = {
