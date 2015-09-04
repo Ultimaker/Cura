@@ -182,11 +182,15 @@ Rectangle {
             property int resizedWidth
             x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
-            enabled: progress > 0.99 && base.activity == true
+            enabled: base.progress > 0.99 && base.activity == true
             height: UM.Theme.sizes.save_button_save_to_button.height
+            width: 150
             anchors.top:parent.top
             text: UM.OutputDeviceManager.activeDeviceShortDescription
-            onClicked: UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
+            onClicked:
+            {
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
+            }
 
             style: ButtonStyle {
                 background: Rectangle {
