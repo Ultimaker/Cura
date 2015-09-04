@@ -55,6 +55,8 @@ class ConvexHullJob(Job):
                 head_hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_with_fans_polygon"),numpy.float32)))
                 self._node.callDecoration("setConvexHullHead", head_hull)
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_polygon"),numpy.float32)))
+            else:
+                self._node.callDecoration("setConvexHullHead", None)
         hull_node = ConvexHullNode.ConvexHullNode(self._node, hull, Application.getInstance().getController().getScene().getRoot())
         self._node.callDecoration("setConvexHullNode", hull_node)
         self._node.callDecoration("setConvexHull", hull)
