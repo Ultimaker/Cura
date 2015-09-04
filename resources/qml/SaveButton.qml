@@ -193,14 +193,21 @@ Rectangle {
                     color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                     width: {
+                        var w = 0;
                         if (base.width*0.55 > actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)){
                             saveToButton.resizedWidth = base.width*0.55
-                            return base.width*0.55
+                            w = base.width*0.55
                         }
                         else {
                             saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
-                            return actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
+                            w = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
                         }
+                        
+                        if(w < base.width * 0.55) {
+                            w = base.width * 0.55;
+                        }
+                        
+                        return w;
                     }
                     Label {
                         id: actualLabel

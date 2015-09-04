@@ -203,16 +203,16 @@ Item
                 console.log(pages[i])
                 switch(pages[i]) {
                     case "SelectUpgradedParts":
-                        base.wizard.appendPage(UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/SelectUpgradedParts.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
+                        base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedParts.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
                         break;
                     case "UpgradeFirmware":
-                        base.wizard.appendPage(UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/UpgradeFirmware.qml"), catalog.i18nc("@title", "Upgrade Firmware"));
+                        base.wizard.appendPage(Qt.resolvedUrl("UpgradeFirmware.qml"), catalog.i18nc("@title", "Upgrade Firmware"));
                         break;
                     case "UltimakerCheckup":
-                        base.wizard.appendPage(UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/UltimakerCheckup.qml"), catalog.i18nc("@title", "Check Printer"));
+                        base.wizard.appendPage(Qt.resolvedUrl("UltimakerCheckup.qml"), catalog.i18nc("@title", "Check Printer"));
                         break;
                     case "BedLeveling":
-                        base.wizard.appendPage(UM.Resources.getPath(Cura.ResourceTypes.QmlFiles, "WizardPages/Bedleveling.qml"), catalog.i18nc("@title", "Bed Levelling"));
+                        base.wizard.appendPage(Qt.resolvedUrl("Bedleveling.qml"), catalog.i18nc("@title", "Bed Levelling"));
                         break;
                     default:
                         break;
