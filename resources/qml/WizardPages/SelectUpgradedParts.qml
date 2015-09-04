@@ -47,6 +47,7 @@ Item
                 CheckBox
                 {
                     text: catalog.i18nc("@action:checkbox","Extruder driver ugrades")
+                    checked: true
                 }
                 CheckBox
                 {
@@ -59,7 +60,6 @@ Item
                 CheckBox
                 {
                     text: catalog.i18nc("@action:checkbox","Dual extrusion (experimental)")
-                    checked: true
                 }
             }
 
