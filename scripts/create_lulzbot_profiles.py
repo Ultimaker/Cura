@@ -41,45 +41,156 @@ dir_map = {
 }
 
 material_map = {
-    'ABS': 'ABS',
-    'PLA': 'PLA',
-    'HIPS': 'HIPS',
-    'ninjaflex': 'NinjaFlex',
-    'semiflex': 'SemiFlex',
-    'ABS_ninjaflex': 'ABS & NinjaFlex',
-    'ABS_semiflex': 'ABS & SemiFlex',
-    'PLA_PVA': 'PLA & PVA',
-    'ABS_dual_color': 'ABS & ABS',
-    'PLA_dual_color': 'PLA & PLA',
-    'PLA_PVA_support': 'PLA & PVA',
+    # Beginner
+    "HIPS_eSUN": "HIPS",
+    "PLA_eSUN": "PLA",
+    "PLA_VP": "PLA",
+    # Intermediate
+    "ABS_VP": "ABS",
+    "Laybrick" : "laybrick",
+    "PP_Iron": "PP-magnetic-iron",
+    "PP_Iron": "PP_magnetic_iron",
+    "PP_Steel": "PP-stainless-steel",
+    "PP_Steel": "PP_stainless_steel",
+    # Advanced
+    "Alloy910": "alloy910",
+    "Bridge": "bridge",
+    "Laywood": "laywood",
+    "n-vent": "n-vent",
+    "PCTPE": "PCTPE",
+    "PC-ABS": "PC-ABS",
+    "T-Glase": "T-Glase",
+    # Expert
+    "PP-Conductive": "PP_conductive",
+    "PP-Conductive": "PP-conductive",
+    "HIPS_VP" : "HIPS",
+    "PC_VP": "polycarbonate",
+    "618-Nylon": "nylon618-645",
+    "618-Nylon": "618-645_nylon",
+    "645-Nylon": "nylon618-645",
+    "645-Nylon": "618-645_nylon",
+    # Dual extruder (Expert)
+    'PLA_PVA': 'PLA_PVA_support',
+    'ABS_ABS': 'ABS_dual_color',
+    'PLA_PLA': 'PLA_dual_color',
 }
 
 material_order = {
-    'ABS': 2,
-    'PLA': 1,
-    'HIPS': 0,
-    'ninjaflex': 0,
-    'semiflex': 1,
-    'ABS_ninjaflex': 0,
-    'ABS_semiflex': 1,
+    # Beginner
+    "HIPS_eSUN": 0,
+    "PLA_eSUN": 1,
+    "PLA_VP": 2,
+    # Intermediate
+    "ABS_VP": 10,
+    "Laybrick" : 11,
+    "PP_Iron": 12,
+    "PP_Steel": 13,
+    # Advanced
+    "Alloy910": 50,
+    "Bridge": 51,
+    "Laywood": 52,
+    "n-vent": 53,
+    "PCTPE": 54,
+    "PC-ABS": 55,
+    "T-Glase": 56,
+    # Expert
+    "PP-Conductive": 500,
+    "HIPS_VP" : 501,
+    "PC_VP": 502,
+    "618-Nylon": 503,
+    "645-Nylon": 504,
+    # Dual extruder (Expert)
     'PLA_PVA': 2,
-    'ABS_dual_color': 0, 
-    'PLA_dual_color': 1,
-    'PLA_PVA_support': 2,
+    'ABS_ABS': 1,
+    'PLA_PLA': 0,
 }
 
 material_types = {
-    'ABS': "Beginner",
-    'PLA': "Beginner|eSun",
-    'HIPS': "Beginner|eSun",
-    'ninjaflex': "Flexible|Fenner Drives",
-    'semiflex': "Flexible|Fenner Drives",
-    'ABS_ninjaflex': "Flexible|Fenner Drives",
-    'ABS_semiflex': "Flexible|Fenner Drives",
-    'PLA_PVA': "Beginner|With Support",
-    'ABS_dual_color': "Beginner",
-    'PLA_dual_color': "Beginner",
-    'PLA_PVA_support': "Beginner|With Support",
+    # Beginner
+    "HIPS_eSUN": "Beginner",
+    "PLA_eSUN": "Beginner",
+    "PLA_VP": "Beginner",
+    # Intermediate
+    "ABS_VP": "Intermediate",
+    "Laybrick" : "Intermediate",
+    "PP_Iron": "Intermediate",
+    "PP_Steel": "Intermediate",
+    # Advanced
+    "Alloy910": "Advanced",
+    "Bridge": "Advanced",
+    "Laywood": "Advanced",
+    "n-vent": "Advanced",
+    "PCTPE": "Advanced",
+    "PC-ABS": "Advanced",
+    "T-Glase": "Advanced",
+    # Expert
+    "PP-Conductive": "Expert",
+    "HIPS_VP" : "Expert",
+    "PC_VP": "Expert",
+    "618-Nylon": "Expert",
+    "645-Nylon": "Expert",
+    # Dual extruder (Expert)
+    'PLA_PVA': "Expert",
+    'ABS_ABS': "Expert",
+    'PLA_PLA': "Expert",
+}
+
+material_names = {
+    # Beginner
+    "HIPS_eSUN": "HIPS (eSUN)",
+    "PLA_eSUN": "PLA (eSUN)",
+    "PLA_VP": "PLA (Village Plastics)",
+    # Intermediate
+    "ABS_VP": "ABS (Village Plastics)",
+    "Laybrick" : "Laybrick (CC-Products)",
+    "PP_Iron": "Iron PLA (Proto-pasta)",
+    "PP_Steel": "Steel PLA (Proto-pasta)",
+    # Advanced
+    "Alloy910": "Alloy 910 (Taulman)",
+    "Bridge": "Bridge Nylon (Taulman)",
+    "Laywood": "Laywoo-D3 (CC-Products)",
+    "n-vent": "n-vent (Taulman)",
+    "PCTPE": "PCTPE (Taulman)",
+    "PC-ABS": "PC-ABS (Proto-pasta",
+    "T-Glase": "t-glase (Taulman)",
+    # Expert
+    "PP-Conductive": "Conductive (Proto-pasta)",
+    "HIPS_VP" : "HIPS (Village Plastics)",
+    "PC_VP": "PC (Village Plastics)",
+    "618-Nylon": "618 Nylon (Taulman)",
+    "645-Nylon": "645 Nylon (Taulman)",
+    # Dual extruder (Expert)
+    'PLA_PVA': "PLA & PVA",
+    'ABS_ABS': "ABS & ABS",
+    'PLA_PLA': "ABS & ABS",
+}
+
+material_url = {
+    # Beginner
+    "HIPS_eSUN": "https://www.lulzbot.com/products/hips-3mm-filament-1kg-reel-esun",
+    "PLA_eSUN": "https://www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
+    "PLA_VP": "https://www.lulzbot.com/products/pla-3mm-filament-1kg-reel-village-plastics",
+    # Intermediate
+    "ABS_VP": "https://www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
+    "Laybrick" : "https://www.lulzbot.com/products/laybrick-filament-3mm",
+    "PP_Iron": "https://www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
+    "PP_Steel": "https://www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
+    # Advanced
+    "Alloy910": "https://www.lulzbot.com/products/alloy-910-3mm-filament-1lb-reel-taulman",
+    "Bridge": "https://www.lulzbot.com/products/taulman-bridge-nylon-3mm-filament-1-pound",
+    "Laywood": "https://www.lulzbot.com/products/laywoo-d3-cherry-laywood-3mm-250g-coil-cc-products",
+    "n-vent": "https://www.lulzbot.com/products/n-vent-3mm-filament-1lb-taulman",
+    "PCTPE": "https://www.lulzbot.com/products/taulman-pctpe-3mm-filament-1-pound",
+    "PC-ABS": "https://www.lulzbot.com/products/pc-abs-alloy-3mm-filament-500g-reel-proto-pasta",
+    "T-Glase": "https://www.lulzbot.com/products/t-glase-3mm-filament-1lb-reel",
+    # Expert
+    "PP-Conductive": "https://www.lulzbot.com/products/conductive-pla-3mm-filament-500g-reel-proto-pasta",
+    "HIPS_VP" : "https://www.lulzbot.com/products/hips-3mm-filament-1kg-or-5lb-reel-village-plastics",
+    "PC_VP": "https://www.lulzbot.com/products/polycarbonate-3mm-filament-1kg-reel",
+    "618-Nylon": "https://www.lulzbot.com/products/taulman-618-nylon-3mm-filament-1-pound",
+    "645-Nylon": "https://www.lulzbot.com/products/taulman-645-nylon-3mm-filament-1-pound",
+    # Dual extruder (Expert)
+    'PLA_PVA': "https://www.lulzbot.com/products/natural-pva-3mm-filament-05kg-reel-esun",
 }
 
 profile_map = {
@@ -102,36 +213,42 @@ disable_materials = {
     'ABS': ('High', 'Low', 'Normal', 'Ulti')
 }
 
-def split_profile(filename):
-    material = None
-    profile = None
-    for m in material_map.keys():
-        if filename.startswith(m):
-            material = m
+def find_file_for_profile(files, material):
+    for file in files:
+        filename = os.path.basename(file)
+        if filename.startswith(material):
             for p in profile_map.keys():
-                if filename.startswith(m + "_" + p):
+                if filename.startswith(material + "_" + p):
                     profile = p
-                    return (material, profile)
-                    
-    return (material, profile)
-
+                    return (file, material, profile)
+    return (None, None, None)
+    
 def create_machine_type(machine_type, path, dir):
     files = glob.glob(os.path.join(path, "*.ini"))
     path = os.path.join(CURA_QUICKPRINT_DIR, machine_type)
-    for file in files:
-        filename = os.path.basename(file)
-        (material, profile) = split_profile(filename)
-        if material is None or profile is None:
+    for m in material_map.keys():
+        (file, material, profile) = find_file_for_profile(files, material_map[m])
+        material = m
+        if file is None or material is None or profile is None:
             continue
+        filename = os.path.basename(file)
         profile_file = os.path.join("..", "..", "..", PROFILES_DIR, dir, filename)
         if not os.path.exists(os.path.join(path, material, profile)):
             os.makedirs(os.path.join(path, material, profile))
         with open(os.path.join(path, material, 'material.ini'), 'w') as f:
             f.write("[info]\n")
-            f.write("name = %s\n" % material_map[material])
-            f.write("order = %d\n" % material_order[material])
+            f.write("name = %s\n" % material_names[material])
+            order = material_order[material]
             if material_types.has_key(material):
-                f.write("material_types = %s\n" % material_types[material])
+                types = material_types[material]
+                if (material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
+                   (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ")):
+                    types = types + "|First Run"
+                    order = 0
+                f.write("material_types = %s\n" % types)
+            f.write("order = %d\n" % order)
+            if material_url.has_key(material):
+                f.write("url = %s\n" % material_url[material])
         with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
             f.write("[info]\n")
             f.write("name = %s\n" % profile_map[profile])
