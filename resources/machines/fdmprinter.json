@@ -1654,7 +1654,7 @@
                 },
                 "magic_fuzzy_skin_enabled": {
                     "label": "Fuzzy Skin",
-                    "description": "Randomly jitter while printing the outer wall, so that the surface has a rough look.",
+                    "description": "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look.",
                     "type": "boolean",
                     "default": false,
                     "visible": false
@@ -1668,15 +1668,26 @@
                     "visible": false,
                     "enabled": "magic_fuzzy_skin_enabled"
                 },
-                "magic_fuzzy_skin_smoothness": {
-                    "label": "Fuzzy Skin Smoothness",
-                    "description": "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness.",
+                "magic_fuzzy_skin_point_density": {
+                    "label": "Fuzzy Skin Density",
+                    "description": "The average density of points introduced on each polygon in a layer. Note that the original points of the polygon are discarded, so a low density results in a reduction of the resolution.",
                     "type": "float",
-                    "unit": "mm",
-                    "default": 0.8,
-                    "min_value_warning": "magic_fuzzy_skin_thickness/2",
+                    "unit": "1/mm",
+                    "default": 1.25,
                     "visible": false,
-                    "enabled": "magic_fuzzy_skin_enabled"
+                    "enabled": "magic_fuzzy_skin_enabled",
+                    "children": {
+                        "magic_fuzzy_skin_point_dist": {
+                            "label": "Fuzzy Skin Density",
+                            "description": "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness.",
+                            "type": "float",
+                            "unit": "mm",
+                            "default": 0.8,
+                            "inherit_function": "1/parent_value",
+                            "visible": false,
+                            "enabled": "magic_fuzzy_skin_enabled"
+                        }
+                    }
                 },
                 "wireframe_enabled": {
                     "label": "Wire Printing",
