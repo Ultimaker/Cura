@@ -438,7 +438,7 @@
                     "unit": "%",
                     "type": "float",
                     "default": 20,
-                    "max_value_warning": "100.0",
+                    "max_value_error": "100.0",
                     "children": {
                         "infill_line_distance": {
                             "label": "Line distance",
