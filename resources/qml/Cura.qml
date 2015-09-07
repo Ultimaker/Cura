@@ -9,42 +9,57 @@ import QtQuick.Dialogs 1.1
 
 import UM 1.1 as UM
 
-UM.MainWindow {
+UM.MainWindow
+{
     id: base
     visible: true
     //: Cura application window title
-    title: qsTr("Cura");
+    title: catalog.i18nc("@title:window","Cura");
 
-    Item {
+
+
+    Item
+    {
         id: backgroundItem;
         anchors.fill: parent;
-
-        UM.ApplicationMenu {
+        UM.I18nCatalog{id: catalog; name:"cura"}
+        UM.ApplicationMenu
+        {
             id: menu
             window: base
 
-            Menu {
+            Menu
+            {
                 id: fileMenu
                 //: File menu
-                title: qsTr("&File");
+                title: catalog.i18nc("@title:menu","&File");
 
-                MenuItem { action: actions.open; }
+                MenuItem {
+                    action: actions.open;
+                }
 
-                Menu {
+                Menu
+                {
                     id: recentFilesMenu;
-                    title: "Open Recent"
+                    title: catalog.i18nc("@title:menu","Open Recent")
                     iconName: "document-open-recent";
 
                     enabled: Printer.recentFiles.length > 0;
 
-                    Instantiator {
+                    Instantiator
+                    {
                         model: Printer.recentFiles
-                        MenuItem {
-                            text: {
+                        MenuItem
+                        {
+                            text:
+                            {
                                 var path = modelData.toString()
                                 return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
                             }
-                            onTriggered: UM.MeshFileHandler.readLocalFile(modelData);
+                            onTriggered: {
+                                UM.MeshFileHandler.readLocalFile(modelData);
+                                openDialog.sendMeshName(modelData.toString())
+                            }
                         }
                         onObjectAdded: recentFilesMenu.insertItem(index, object)
                         onObjectRemoved: recentFilesMenu.removeItem(object)
@@ -53,22 +68,26 @@ UM.MainWindow {
 
                 MenuSeparator { }
 
-                MenuItem {
-                    text: "Save Selection to File";
+                MenuItem
+                {
+                    text: catalog.i18nc("@action:menu", "Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
                     onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file");
                 }
-                Menu {
+                Menu
+                {
                     id: saveAllMenu
-                    title: "Save All"
+                    title: catalog.i18nc("@title:menu","Save All")
                     iconName: "document-save";
-                    enabled: devicesModel.count > 0 && UM.Backend.progress > 0.99;
+                    enabled: devicesModel.rowCount() > 0 && UM.Backend.progress > 0.99;
 
-                    Instantiator {
+                    Instantiator
+                    {
                         model: UM.OutputDevicesModel { id: devicesModel; }
 
-                        MenuItem {
+                        MenuItem
+                        {
                             text: model.description;
                             onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id);
                         }
@@ -82,9 +101,10 @@ UM.MainWindow {
                 MenuItem { action: actions.quit; }
             }
 
-            Menu {
+            Menu
+            {
                 //: Edit menu
-                title: qsTr("&Edit");
+                title: catalog.i18nc("@title:menu","&Edit");
 
                 MenuItem { action: actions.undo; }
                 MenuItem { action: actions.redo; }
@@ -94,7 +114,7 @@ UM.MainWindow {
             }
             Menu
             {
-                title: qsTr("&View");
+                title: catalog.i18nc("@title:menu","&View");
                 id: top_view_menu
                 Instantiator 
                 {
@@ -111,20 +131,27 @@ UM.MainWindow {
                     onObjectRemoved: top_view_menu.removeItem(object)
                 }
                 ExclusiveGroup { id: view_menu_top_group; }
+
+                MenuSeparator { }
+
+                MenuItem { action: actions.toggleFullScreen; }
             }
-            Menu {
+            Menu
+            {
                 id: machineMenu;
                 //: Machine menu
-                title: qsTr("&Machine");
+                title: catalog.i18nc("@title:menu","&Machine");
 
-                Instantiator {
-                    model: UM.Models.machinesModel
-                    MenuItem {
+                Instantiator
+                {
+                    model: UM.MachineInstancesModel { }
+                    MenuItem
+                    {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.Models.machinesModel.setActive(index)
+                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name)
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)
@@ -134,14 +161,33 @@ UM.MainWindow {
 
                 MenuSeparator { }
 
+                Instantiator
+                {
+                    model: UM.MachineVariantsModel { }
+                    MenuItem {
+                        text: model.name;
+                        checkable: true;
+                        checked: model.active;
+                        exclusiveGroup: machineVariantsGroup;
+                        onTriggered: UM.MachineManager.setActiveMachineVariant(model.name)
+                    }
+                    onObjectAdded: machineMenu.insertItem(index, object)
+                    onObjectRemoved: machineMenu.removeItem(object)
+                }
+
+                ExclusiveGroup { id: machineVariantsGroup; }
+
+                MenuSeparator { visible: UM.MachineManager.hasVariants; }
+
                 MenuItem { action: actions.addMachine; }
                 MenuItem { action: actions.configureMachines; }
             }
 
-            Menu {
+            Menu
+            {
                 id: extension_menu
                 //: Extensions menu
-                title: qsTr("E&xtensions");
+                title: catalog.i18nc("@title:menu","E&xtensions");
 
                 Instantiator 
                 {
@@ -170,16 +216,18 @@ UM.MainWindow {
                 }
             }
 
-            Menu {
+            Menu
+            {
                 //: Settings menu
-                title: qsTr("&Settings");
+                title: catalog.i18nc("@title:menu","&Settings");
 
                 MenuItem { action: actions.preferences; }
             }
 
-            Menu {
+            Menu
+            {
                 //: Help menu
-                title: qsTr("&Help");
+                title: catalog.i18nc("@title:menu","&Help");
 
                 MenuItem { action: actions.showEngineLog; }
                 MenuItem { action: actions.documentation; }
@@ -189,7 +237,8 @@ UM.MainWindow {
             }
         }
 
-        Item {
+        Item
+        {
             id: contentItem;
 
             y: menu.height
@@ -198,19 +247,25 @@ UM.MainWindow {
 
             Keys.forwardTo: menu
 
-            DropArea {
+            DropArea
+            {
                 anchors.fill: parent;
-                onDropped: {
-                    if(drop.urls.length > 0) {
-                        for(var i in drop.urls) {
+                onDropped:
+                {
+                    if(drop.urls.length > 0)
+                    {
+                        for(var i in drop.urls)
+                        {
                             UM.MeshFileHandler.readLocalFile(drop.urls[i]);
                         }
                     }
                 }
             }
 
-            UM.MessageStack {
-                anchors {
+            UM.MessageStack
+            {
+                anchors
+                {
                     horizontalCenter: parent.horizontalCenter
                     horizontalCenterOffset: -(UM.Theme.sizes.logo.width/ 2)
                     top: parent.verticalCenter;
@@ -237,23 +292,27 @@ UM.MainWindow {
                 source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
             }
 
-            Button {
+            Button
+            {
                 id: openFileButton;
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
                 style: UM.Theme.styles.open_file_button
                 tooltip: '';
-                anchors {
+                anchors
+                {
                     top: parent.top;
-                    topMargin: UM.Theme.sizes.loadfile_margin.height
+                    //topMargin: UM.Theme.sizes.loadfile_margin.height
                     left: parent.left;
-                    leftMargin: UM.Theme.sizes.loadfile_margin.width
+                    //leftMargin: UM.Theme.sizes.loadfile_margin.width
                 }
                 action: actions.open;
             }
 
-            Image {
+            Image
+            {
                 id: logo
-                anchors {
+                anchors
+                {
                     left: parent.left
                     leftMargin: UM.Theme.sizes.default_margin.width;
                     bottom: parent.bottom
@@ -268,24 +327,29 @@ UM.MainWindow {
                 sourceSize.height: height;
             }
 
-            Button {
+            Button
+            {
                 id: viewModeButton
-                anchors {
+                anchors
+                {
                     top: parent.top;
                     right: sidebar.left;
                     rightMargin: UM.Theme.sizes.window_margin.width;
                 }
                 //: View Mode toolbar button
-                text: qsTr("View Mode");
+                text: catalog.i18nc("@action:button","View Mode");
                 iconSource: UM.Theme.icons.viewmode;
 
                 style: UM.Theme.styles.tool_button;
                 tooltip: '';
-                menu: Menu {
+                menu: Menu
+                {
                     id: viewMenu;
-                    Instantiator {
+                    Instantiator
+                    {
                         model: UM.Models.viewModel;
-                        MenuItem {
+                        MenuItem
+                        {
                             text: model.name;
                             checkable: true;
                             checked: model.active;
@@ -300,38 +364,47 @@ UM.MainWindow {
                 }
             }
 
-            Toolbar {
+            Toolbar
+            {
                 id: toolbar;
 
                 anchors {
-                    horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.panel.width / 2)
-                    top: parent.top;
+                    left: parent.left
+                    top: parent.top
+                    topMargin: 74
+                    //horizontalCenter: parent.horizontalCenter
+                    //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
+                    //top: parent.top;
                 }
             }
 
-            Sidebar {
+            Sidebar
+            {
                 id: sidebar;
 
-                anchors {
+                anchors
+                {
                     top: parent.top;
                     bottom: parent.bottom;
                     right: parent.right;
                 }
 
-                width: UM.Theme.sizes.panel.width;
+                width: UM.Theme.sizes.sidebar.width;
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
+                manageProfilesAction: actions.manageProfiles;
             }
 
-            Rectangle {
+            Rectangle
+            {
                 x: base.mouseX + UM.Theme.sizes.default_margin.width;
                 y: base.mouseY + UM.Theme.sizes.default_margin.height;
 
                 width: childrenRect.width;
                 height: childrenRect.height;
-                Label {
+                Label
+                {
                     text: UM.ActiveTool.properties.Rotation != undefined ? "%1°".arg(UM.ActiveTool.properties.Rotation) : "";
                 }
 
@@ -340,23 +413,26 @@ UM.MainWindow {
         }
     }
 
-    UM.PreferencesDialog {
+    UM.PreferencesDialog
+    {
         id: preferences
 
-        Component.onCompleted: {
+        Component.onCompleted:
+        {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, qsTr("General") , "" , Qt.resolvedUrl("./GeneralPage.qml"));
+            insertPage(0, catalog.i18nc("@title:tab","General") , "" , Qt.resolvedUrl("./GeneralPage.qml"));
 
             //: View preferences page title
-            insertPage(1, qsTr("View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
+            insertPage(1, catalog.i18nc("@title:tab","View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
 
             //Force refresh
             setPage(0)
         }
     }
 
-    Actions {
+    Actions
+    {
         id: actions;
 
         open.onTriggered: openDialog.open();
@@ -369,28 +445,36 @@ UM.MainWindow {
         redo.onTriggered: UM.OperationStack.redo();
         redo.enabled: UM.OperationStack.canRedo;
 
-        deleteSelection.onTriggered: {
-            if(objectContextMenu.objectId != 0) {
+        deleteSelection.onTriggered:
+        {
+            if(objectContextMenu.objectId != 0)
+            {
                 Printer.deleteObject(objectContextMenu.objectId);
             }
         }
 
-        deleteObject.onTriggered: {
-            if(objectContextMenu.objectId != 0) {
+        deleteObject.onTriggered:
+        {
+            if(objectContextMenu.objectId != 0)
+            {
                 Printer.deleteObject(objectContextMenu.objectId);
                 objectContextMenu.objectId = 0;
             }
         }
 
-        multiplyObject.onTriggered: {
-            if(objectContextMenu.objectId != 0) {
+        multiplyObject.onTriggered:
+        {
+            if(objectContextMenu.objectId != 0)
+            {
                 Printer.multiplyObject(objectContextMenu.objectId, 1);
                 objectContextMenu.objectId = 0;
             }
         }
 
-        centerObject.onTriggered: {
-            if(objectContextMenu.objectId != 0) {
+        centerObject.onTriggered:
+        {
+            if(objectContextMenu.objectId != 0)
+            {
                 Printer.centerObject(objectContextMenu.objectId);
                 objectContextMenu.objectId = 0;
             }
@@ -420,6 +504,7 @@ UM.MainWindow {
 
         preferences.onTriggered: preferences.visible = true;
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
+        manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 
         documentation.onTriggered: CuraActions.openDocumentation();
         reportBug.onTriggered: CuraActions.openBugReportPage();
@@ -429,7 +514,8 @@ UM.MainWindow {
 
     }
 
-    Menu {
+    Menu
+    {
         id: objectContextMenu;
 
         property variant objectId: -1;
@@ -448,7 +534,8 @@ UM.MainWindow {
         MenuItem { action: actions.mergeObjects;}
     }
 
-    Menu {
+    Menu
+    {
         id: contextMenu;
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }
@@ -459,56 +546,74 @@ UM.MainWindow {
         MenuItem { action: actions.mergeObjects;}
     }
 
-    Connections {
+    Connections
+    {
         target: UM.Controller
-        onContextMenuRequested: {
-            if(objectId == 0) {
+        onContextMenuRequested:
+        {
+            if(objectId == 0)
+            {
                 contextMenu.popup();
-            } else {
+            } else
+            {
                 objectContextMenu.objectId = objectId;
                 objectContextMenu.popup();
             }
         }
     }
 
-    FileDialog {
+    FileDialog
+    {
         id: openDialog;
 
         //: File open dialog title
-        title: qsTr("Open File")
+        title: catalog.i18nc("@title:window","Open File")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
 
+        signal hasMesh(string name)
+
+        function sendMeshName(path){
+            var fileName = path.slice(path.lastIndexOf("/") + 1)
+            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
+            openDialog.hasMesh(fileBase)
+        }
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
 
         onAccepted:
         {
             UM.MeshFileHandler.readLocalFile(fileUrl)
+            openDialog.sendMeshName(fileUrl.toString())
         }
     }
 
-    EngineLog {
+    EngineLog
+    {
         id: engineLog;
     }
 
-    AddMachineWizard {
+    AddMachineWizard
+    {
         id: addMachineWizard
     }
 
 
-    AboutDialog {
+    AboutDialog
+    {
         id: aboutDialog
     }
 
-    Connections {
+    Connections
+    {
         target: Printer
-        onRequestAddPrinter: {
+        onRequestAddPrinter:
+        {
             addMachineWizard.visible = true
-            addMachineWizard.printer = false
+            addMachineWizard.firstRun = true
         }
     }
 
-    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.ThemesLocation, "cura"))
+    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
 }
 

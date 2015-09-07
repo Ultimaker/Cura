@@ -46,14 +46,14 @@ class ConvexHullJob(Job):
         # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
         # This is done because of rounding errors.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-1, -1], [-1, 1], [1, 1], [1, -1]], numpy.float32)))
-        settings = Application.getInstance().getActiveMachine()
-        
-        if settings.getSettingValueByKey("print_sequence") == "One at a time" and not self._node.getParent().callDecoration("isGroup"):
+
+        profile = Application.getInstance().getMachineManager().getActiveProfile()
+        if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
             # Printing one at a time and it's not an object in a group
             self._node.callDecoration("setConvexHullBoundary", copy.deepcopy(hull))
-            head_hull = hull.getMinkowskiHull(Polygon(numpy.array(settings.getSettingValueByKey("machine_head_with_fans_polygon"),numpy.float32)))
+            head_hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_with_fans_polygon"),numpy.float32)))
             self._node.callDecoration("setConvexHullHead", head_hull)
-            hull = hull.getMinkowskiHull(Polygon(numpy.array(settings.getSettingValueByKey("machine_head_polygon"),numpy.float32)))
+            hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_polygon"),numpy.float32)))
         hull_node = ConvexHullNode.ConvexHullNode(self._node, hull, Application.getInstance().getController().getScene().getRoot())
         self._node.callDecoration("setConvexHullNode", hull_node)
         self._node.callDecoration("setConvexHull", hull)
@@ -67,4 +67,3 @@ class ConvexHullJob(Job):
             hull_node = self._node.getParent().callDecoration("getConvexHullNode")
             if hull_node:
                 hull_node.setParent(None)
-            

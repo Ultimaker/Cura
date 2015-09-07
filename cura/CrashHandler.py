@@ -7,9 +7,11 @@ from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit
 
 def show(type, value, tb):
+    if not hasattr(sys, "frozen"):
+        traceback.print_exception(type, value, tb)
+
     application = QCoreApplication.instance()
     if not application:
-        traceback.print_exception(type, value, tb)
         sys.exit(1)
 
     dialog = QDialog()

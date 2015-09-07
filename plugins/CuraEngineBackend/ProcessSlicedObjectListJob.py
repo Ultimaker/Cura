@@ -43,12 +43,12 @@ class ProcessSlicedObjectListJob(Job):
                 else:
                     objectIdMap[id(node)] = node
 
-        settings = Application.getInstance().getActiveMachine()
-        layerHeight = settings.getSettingValueByKey("layer_height")
+        settings = Application.getInstance().getMachineManager().getActiveProfile()
+        layerHeight = settings.getSettingValue("layer_height")
 
         center = None
-        if not settings.getSettingValueByKey("machine_center_is_zero"):
-            center = numpy.array([settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2])
+        if not settings.getSettingValue("machine_center_is_zero"):
+            center = numpy.array([settings.getSettingValue("machine_width") / 2, 0.0, -settings.getSettingValue("machine_depth") / 2])
         else:
             center = numpy.array([0.0, 0.0, 0.0])
 

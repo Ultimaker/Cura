@@ -38,8 +38,9 @@ from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
+from PyQt5.QtQml import qmlRegisterUncreatableType
 
 import platform
 import sys
@@ -49,14 +50,19 @@ import numpy
 numpy.seterr(all="ignore")
 
 class CuraApplication(QtApplication):
+    class ResourceTypes:
+        QmlFiles = Resources.UserType + 1
+        Firmware = Resources.UserType + 2
+    Q_ENUMS(ResourceTypes)
+
     def __init__(self):
-        Resources.addResourcePath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
+        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
         if not hasattr(sys, "frozen"):
-            Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
         super().__init__(name = "cura", version = "master")
 
-        self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
+        self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
@@ -77,14 +83,19 @@ class CuraApplication(QtApplication):
         self._previous_active_tool = None
         self._platform_activity = False
 
-        self.activeMachineChanged.connect(self._onActiveMachineChanged)
+        self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
+        self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+
+        Resources.addType(self.ResourceTypes.QmlFiles, "qml")
+        Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("view/center_on_select", True)
+        Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
@@ -157,20 +168,13 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
 
-        self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Cura.qml"))
+        self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
 
-        if self.getMachines():
-            active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
-            if active_machine_pref:
-                for machine in self.getMachines():
-                    if machine.getName() == active_machine_pref:
-                        self.setActiveMachine(machine)
-
-            if not self.getActiveMachine():
-                self.setActiveMachine(self.getMachines()[0])
-        else:
+        manager = self.getMachineManager()
+        if not self.getMachineManager().getMachineInstances():
             self.requestAddPrinter.emit()
+
 
         if self._engine.rootObjects:
             self.closeSplash()
@@ -196,6 +200,8 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         self._cura_actions = CuraActions.CuraActions(self)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
+
+        qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
@@ -392,18 +398,18 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
-        if not self.getActiveMachine():
+        if not self.getMachineManager().getActiveProfile():
             return None
-
-        return self.getActiveMachine().getSettingValueByKey(key)
+        return self.getMachineManager().getActiveProfile().getSettingValue(key)
+        #return self.getActiveMachine().getSettingValueByKey(key)
     
     ##  Change setting by key value pair
     @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
-        if not self.getActiveMachine():
+        if not self.getMachineManager().getActiveProfile():
             return
 
-        self.getActiveMachine().setSettingValueByKey(key, value)
+        self.getMachineManager().getActiveProfile().setSettingValue(key, value)
         
     @pyqtSlot()
     def mergeSelected(self):
@@ -459,29 +465,30 @@ class CuraApplication(QtApplication):
             Selection.remove(node)
 
     def _onActiveMachineChanged(self):
-        machine = self.getActiveMachine()
+        machine = self.getMachineManager().getActiveMachineInstance()
         if machine:
-            Preferences.getInstance().setValue("cura/active_machine", machine.getName())
+            pass
+            #Preferences.getInstance().setValue("cura/active_machine", machine.getName())
 
-            self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
-            self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
-            self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
+            #self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
+            #self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
+            #self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
 
-            disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
-            areas = []
-            if disallowed_areas:
-                for area in disallowed_areas:
-                    areas.append(Polygon(numpy.array(area, numpy.float32)))
+            #disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
+            #areas = []
+            #if disallowed_areas:
+                #for area in disallowed_areas:
+                    #areas.append(Polygon(numpy.array(area, numpy.float32)))
 
-            self._volume.setDisallowedAreas(areas)
+            #self._volume.setDisallowedAreas(areas)
 
-            self._volume.rebuild()
+            #self._volume.rebuild()
 
-            offset = machine.getSettingValueByKey("machine_platform_offset")
-            if offset:
-                self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
-            else:
-                self._platform.setPosition(Vector(0.0, 0.0, 0.0))
+            #offset = machine.getSettingValueByKey("machine_platform_offset")
+            #if offset:
+                #self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
+            #else:
+                #self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     def _onFileLoaded(self, job):
         node = job.getResult()
@@ -519,3 +526,5 @@ class CuraApplication(QtApplication):
         job.finished.connect(self._onFileLoaded)
         job.start()
 
+    def _onAddMachineRequested(self):
+        self.requestAddPrinter.emit()

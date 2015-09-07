@@ -10,6 +10,12 @@
 
     "inherits": "ultimaker_original.json",
 
+    "pages": [
+        "UpgradeFirmware",
+        "UltimakerCheckup",
+        "BedLeveling"
+    ],
+
     "machine_settings": {
         "machine_heated_bed": { "default": true }
     }

@@ -6,6 +6,8 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Message import Message
+from UM.i18n import i18nCatalog
 
 import collections
 import json
@@ -16,6 +18,8 @@ import math
 import urllib.request
 import urllib.parse
 
+catalog = i18nCatalog("cura")
+
 
 ##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
 #       The data is only sent when the user in question gave permission to do so. All data is anonymous and
@@ -25,39 +29,48 @@ class SliceInfo(Extension):
         super().__init__()
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
         Preferences.getInstance().addPreference("info/send_slice_info", True)
+        Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
+
+        if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
+            self.send_slice_info_message = Message(catalog.i18nc("", "Cura automatically sends slice info. You can disable this in preferences"), lifetime = 0, dismissable = False)
+            self.send_slice_info_message.addAction("Dismiss","Dismiss", None, "Dismiss")
+            self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
+            self.send_slice_info_message.show()
+
+    def messageActionTriggered(self, message_id, action_id):
+        self.send_slice_info_message.hide()
+        Preferences.getInstance().setValue("info/asked_send_slice_info", True)
 
     def _onWriteStarted(self, output_device):
-        print("Starting sending")
         if not Preferences.getInstance().getValue("info/send_slice_info"):
             return # Do nothing, user does not want to send data
-
-        settings = Application.getInstance().getActiveMachine()
-        profile = settings.getActiveProfile()
-        profile_values = None
+        settings = Application.getInstance().getMachineManager().getActiveProfile()
 
         # Load all machine definitions and put them in machine_settings dict
-        setting_file_name = Application.getInstance().getActiveMachine()._json_file
+        #setting_file_name = Application.getInstance().getActiveMachineInstance().getMachineSettings()._json_file
         machine_settings = {}
-        with open(setting_file_name, "rt", -1, "utf-8") as f:
-            data = json.load(f, object_pairs_hook = collections.OrderedDict)
-        machine_settings[os.path.basename(setting_file_name)] = copy.deepcopy(data)
+        #with open(setting_file_name, "rt", -1, "utf-8") as f:
+        #    data = json.load(f, object_pairs_hook = collections.OrderedDict)
+        #machine_settings[os.path.basename(setting_file_name)] = copy.deepcopy(data)
+        active_machine_definition= Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition()
+        data = active_machine_definition._json_data
         # Loop through inherited json files
+        setting_file_name = active_machine_definition._path
         while True:
             if "inherits" in data:
                 inherited_setting_file_name = os.path.dirname(setting_file_name) + "/" + data["inherits"]
                 with open(inherited_setting_file_name, "rt", -1, "utf-8") as f:
                     data = json.load(f, object_pairs_hook = collections.OrderedDict)
                 machine_settings[os.path.basename(inherited_setting_file_name)] = copy.deepcopy(data)
-                print("Inherited:", os.path.basename(inherited_setting_file_name))
             else:
                 break
 
-        if profile:
-            profile_values = profile.getChangedSettings()
+
+        profile_values = settings.getChangedSettings()
 
         # Get total material used (in mm^3)
         print_information = Application.getInstance().getPrintInformation()
-        material_radius = 0.5 * settings.getSettingValueByKey("material_diameter")
+        material_radius = 0.5 * settings.getSettingValue("material_diameter")
         material_used = math.pi * material_radius * material_radius * print_information.materialAmount #Volume of material used
 
         # Get model information (bounding boxes, hashes and transformation matrix)
@@ -105,5 +118,4 @@ class SliceInfo(Extension):
         except Exception as e:
             print("Exception occured", e)
 
-        print("Result: ", f.read())
         f.close()
