@@ -154,7 +154,13 @@ Item
                     text: catalog.i18nc("@action:checkbox","Enable Skirt Adhesion");
                     style: UM.Theme.styles.checkbox;
                     checked: Printer.getSettingValue("skirt_line_count");
-                    onCheckedChanged: Printer.setSettingValue("skirt_line_count", checked);
+                    onCheckedChanged:
+                    {
+                        if(checked != Printer.getSettingValue("skirt_line_count"))
+                        {
+                            Printer.setSettingValue("skirt_line_count", checked)
+                        }
+                    }
                 }
                 CheckBox{
                     Layout.preferredHeight: UM.Theme.sizes.section.height;
@@ -165,7 +171,13 @@ Item
                     style: UM.Theme.styles.checkbox;
 
                     checked: Printer.getSettingValue("support_enable");
-                    onCheckedChanged: Printer.setSettingValue("support_enable", checked);
+                    onCheckedChanged:
+                    {
+                        if(checked != Printer.getSettingValue("support_enable"))
+                        {
+                            Printer.setSettingValue("support_enable", checked)
+                        }
+                    }
                 }
             }
         }
