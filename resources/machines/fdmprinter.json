@@ -438,7 +438,8 @@
                     "unit": "%",
                     "type": "float",
                     "default": 20,
-                    "max_value_error": "100.0",
+                    "min_value": "0",
+                    "max_value": "100",
                     "children": {
                         "infill_line_distance": {
                             "label": "Line distance",
@@ -471,6 +472,8 @@
                     "unit": "%",
                     "type": "float",
                     "default": 10,
+                    "min_value": "0",
+                    "max_value": "100",
                     "inherit_function": "10 if infill_sparse_density < 95 else 0",
                     "visible": false
                 },
@@ -1771,6 +1774,8 @@
                     "description": "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing.",
                     "unit": "%",
                     "default": 100,
+		    "min_value": "0",
+                    "max_value": "100",
                     "type": "float",
                     "visible": false,
                     "enabled": "wireframe_enabled",
@@ -1876,6 +1881,8 @@
                     "description": "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "%",
+		    "min_value": "0",
+                    "max_value": "100",
                     "default": 20,
                     "visible": false,
                     "enabled": "wireframe_enabled"
