@@ -4,8 +4,9 @@
     "manufacturer": "INNOVO",
     "author": "AR",
     "version": 1,
-    "icon": "icon_ultimaker.png",
-    "platform": "",
+    "icon": "",
+    "platform": "inventor_platform.obj",
+    "platform_texture": "",
     "inherits": "fdmprinter.json",
     "machine_settings": {
         "machine_width": {"default": 340},
