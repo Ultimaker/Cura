@@ -1,4 +1,4 @@
-IMPORTANT: This may be the future definitive location for Aleph Object's Cura source code, but for now the real one can be found over here: https://github.com/alephobjects/Cura
+IMPORTANT: The definitive location for Aleph Object's Cura source code is here: https://code.alephobjects.com/diffusion/CURA
 
 
 Cura
