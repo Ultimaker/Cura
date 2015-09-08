@@ -297,8 +297,12 @@ class CuraApplication(QtApplication):
     def deleteAll(self):
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode:
                 continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue #Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
             nodes.append(node)
         if nodes:
             op = GroupedOperation()
