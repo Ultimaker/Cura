@@ -1223,13 +1223,13 @@ class LulzbotMiniToolheadSelectPage(LulzbotToolheadSelectPage):
 		if self.standard.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('extruder_amount', '1')
-			profile.putMachineSetting('toolhead', 'Single Extruder V2')
+			profile.putMachineSetting('toolhead', 'Single Extruder v2')
 			profile.putMachineSetting('toolhead_shortname', '')
 			profile.putMachineSetting('machine_type', 'lulzbot_mini')
 		else:
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '1')
-			profile.putMachineSetting('toolhead', 'Flexystruder V2')
+			profile.putMachineSetting('toolhead', 'Flexystruder v2')
 			profile.putMachineSetting('toolhead_shortname', 'Flexystruder')
 			profile.putMachineSetting('machine_type', 'lulzbot_mini_flexystruder')
 
@@ -1348,7 +1348,7 @@ class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 	url2='http://lulzbot.com/printer-identification'
 
 	def __init__(self, parent):
-		super(LulzbotTaz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ Single V2 Nozzle Selection"))
+		super(LulzbotTaz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ Single v2 Nozzle Selection"))
 
 		self.AddText(_('Please select your Hexagon hotend\'s nozzle diameter:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
@@ -1372,13 +1372,13 @@ class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 			taz_version = 5
 		if self.Nozzle35Radio.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.35')
-			profile.putMachineSetting('toolhead', 'Single Extruder V2 (0.35mm nozzle)')
+			profile.putMachineSetting('toolhead', 'Single Extruder v2 (0.35mm nozzle)')
 			profile.putMachineSetting('toolhead_shortname', '0.35 nozzle')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_035nozzle' % taz_version)
 
 		else:
 			profile.putProfileSetting('nozzle_size', '0.5')
-			profile.putMachineSetting('toolhead', 'Single Extruder V2 (0.5mm nozzle)')
+			profile.putMachineSetting('toolhead', 'Single Extruder v2 (0.5mm nozzle)')
 			profile.putMachineSetting('toolhead_shortname', '0.5 nozzle')
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_05nozzle' % taz_version)
 
