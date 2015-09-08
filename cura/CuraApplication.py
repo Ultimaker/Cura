@@ -284,10 +284,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
-
+        if node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
         if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
-
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
@@ -321,10 +321,9 @@ class CuraApplication(QtApplication):
                 continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
 
             nodes.append(node)
-
+        print(nodes)
         if nodes:
             op = GroupedOperation()
-
             for node in nodes:
                 op.addOperation(SetTransformOperation(node, Vector()))
 
