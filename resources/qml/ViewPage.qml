@@ -19,8 +19,8 @@ UM.PreferencesPage
     {
         UM.Preferences.resetPreference("view/show_overhang");
         UM.Preferences.resetPreference("view/center_on_select");
-        overhangCheckbox.checked = UM.Preferences.getValue("view/show_overhang") == "True"
-        centerCheckbox.checked = UM.Preferences.getValue("view/center_on_select") == "True"
+        overhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
+        centerCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
     }
 
     GridLayout
