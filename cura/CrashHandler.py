@@ -5,6 +5,7 @@ import webbrowser
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit
+from UM.i18n import i18nCatalog
 
 def show(type, value, tb):
     if not hasattr(sys, "frozen"):
@@ -15,13 +16,13 @@ def show(type, value, tb):
         sys.exit(1)
 
     dialog = QDialog()
-    dialog.setWindowTitle("Oops!")
+    dialog.setWindowTitle(self._i18n_catalog.i18nc("@title:errormessage", "Oops!"))
 
     layout = QVBoxLayout(dialog)
 
     label = QLabel(dialog)
     layout.addWidget(label)
-    label.setText("<p>An uncaught exception has occurred!</p><p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>")
+    label.setText(self._i18n_catalog.i18nc("@info:errormessage", "<p>An uncaught exception has occurred!</p><p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"))
 
     textarea = QTextEdit(dialog)
     layout.addWidget(textarea)
@@ -41,7 +42,7 @@ def show(type, value, tb):
 
     buttons = QDialogButtonBox(QDialogButtonBox.Close, dialog)
     layout.addWidget(buttons)
-    buttons.addButton("Open Web Page", QDialogButtonBox.HelpRole)
+    buttons.addButton(self._i18n_catalog.i18nc("action:button", "Open Web Page"), QDialogButtonBox.HelpRole)
     buttons.rejected.connect(lambda: dialog.close())
     buttons.helpRequested.connect(lambda: webbrowser.open("http://github.com/Ultimaker/Cura/issues"))
 

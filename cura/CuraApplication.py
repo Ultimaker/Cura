@@ -132,7 +132,7 @@ class CuraApplication(QtApplication):
             "message": "font color=UM.Theme.colors.message_text;",
         })
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:splashscreen", "Setting up scene..."))
 
         controller = self.getController()
 
@@ -166,7 +166,7 @@ class CuraApplication(QtApplication):
 
         controller.getScene().setActiveCamera("3d")
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:splashscreen", "Loading interface..."))
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
