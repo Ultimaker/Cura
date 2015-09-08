@@ -229,14 +229,16 @@ profile_map = {
     'medium-quality': 'Standard',
     'high-speed': 'High Speed',
     'high-quality': 'High Detail',
-    #High Clarity
-    #High Strength
+    'high-clarity': 'High Clarity',
+    'high-strength': 'High Strength'
 }
 
 profile_order = {
     'medium-quality': 0,
-    'high-quality': 2,
     'high-speed': 1,
+    'high-quality': 2,
+    'high-clarity': 3,
+    'high-strength': 4
 }
 
 disable_materials = {
