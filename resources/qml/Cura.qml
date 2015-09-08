@@ -197,7 +197,8 @@ UM.MainWindow
                     {
                         id: sub_menu
                         title: model.name;
-
+                        visible: actions != null
+                        enabled:actions != null
                         Instantiator
                         {
                             model: actions
