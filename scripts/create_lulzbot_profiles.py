@@ -48,10 +48,8 @@ material_map = {
     # Intermediate
     "ABS_VP": "ABS",
     "Laybrick" : "laybrick",
-    "PP_Iron": "PP-magnetic-iron",
-    "PP_Iron": "PP_magnetic_iron",
-    "PP_Steel": "PP-stainless-steel",
-    "PP_Steel": "PP_stainless_steel",
+    "PP-Iron": "protopasta-magnetic-iron",
+    "PP-Steel": "protopasta-stainless-steel",
     # Advanced
     "Alloy910": "alloy910",
     "Bridge": "bridge",
@@ -59,26 +57,31 @@ material_map = {
     "n-vent": "n-vent",
     "PCTPE": "PCTPE",
     "PC-ABS": "PC-ABS",
-    "T-Glase": "T-Glase",
+    "T-Glase": "t-glase",
     # Expert
-    "PP-Conductive": "PP_conductive",
-    "PP-Conductive": "PP-conductive",
+    "PP-Conductive": "protopasta-conductive-PLA",
     "HIPS_VP" : "HIPS",
     "PC_VP": "polycarbonate",
-    "618-Nylon": "nylon618-645",
-    "618-Nylon": "618-645_nylon",
-    "645-Nylon": "nylon618-645",
-    "645-Nylon": "618-645_nylon",
+    "618-Nylon": "618-645-nylon",
+    "645-Nylon": "618-645-nylon",
     # Dual extruder (Expert)
-    'PLA_PVA': 'PLA_PVA_support',
-    'ABS_ABS': 'ABS_dual_color',
-    'PLA_PLA': 'PLA_dual_color',
+    'PLA_PVA': 'PLA-PVA-support',
+    'ABS_ABS': 'ABS-ABS',
+    'PLA_PLA': 'PLA-PLA',
     # Flexystruder (Expert)
     "ninjaflex" : "ninjaflex",
     "semiflex" : "semiflex",
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "ABS_ninjaflex",
-    "ABS_semiflex" : "ABS_semiflex",
+    "ABS_ninjaflex" : "ABS-ninjaflex",
+    "ABS_semiflex" : "ABS-semiflex",
+
+    # Others
+    # bamboofill
+    # b-pet
+    # bronzefill
+    # copperfill
+    # tritan
+    # PLA-protopasta-conductive-PLA
 }
 
 material_order = {
@@ -89,8 +92,8 @@ material_order = {
     # Intermediate
     "ABS_VP": 10,
     "Laybrick" : 11,
-    "PP_Iron": 12,
-    "PP_Steel": 13,
+    "PP-Iron": 12,
+    "PP-Steel": 13,
     # Advanced
     "Alloy910": 50,
     "Bridge": 51,
@@ -125,8 +128,8 @@ material_types = {
     # Intermediate
     "ABS_VP": "Intermediate",
     "Laybrick" : "Intermediate",
-    "PP_Iron": "Intermediate",
-    "PP_Steel": "Intermediate",
+    "PP-Iron": "Intermediate",
+    "PP-Steel": "Intermediate",
     # Advanced
     "Alloy910": "Advanced",
     "Bridge": "Advanced",
@@ -161,8 +164,8 @@ material_names = {
     # Intermediate
     "ABS_VP": "ABS (Village Plastics)",
     "Laybrick" : "Laybrick (CC-Products)",
-    "PP_Iron": "Iron PLA (Proto-pasta)",
-    "PP_Steel": "Steel PLA (Proto-pasta)",
+    "PP-Iron": "Iron PLA (Proto-pasta)",
+    "PP-Steel": "Steel PLA (Proto-pasta)",
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
@@ -197,8 +200,8 @@ material_url = {
     # Intermediate
     "ABS_VP": "https://www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
     "Laybrick" : "https://www.lulzbot.com/products/laybrick-filament-3mm",
-    "PP_Iron": "https://www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
-    "PP_Steel": "https://www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
+    "PP-Iron": "https://www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
+    "PP-Steel": "https://www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
     # Advanced
     "Alloy910": "https://www.lulzbot.com/products/alloy-910-3mm-filament-1lb-reel-taulman",
     "Bridge": "https://www.lulzbot.com/products/taulman-bridge-nylon-3mm-filament-1-pound",
@@ -247,47 +250,49 @@ disable_materials = {
     'ABS': ('High', 'Low', 'Normal', 'Ulti')
 }
 
-def find_file_for_profile(files, material):
+def find_files_for_material(files, material):
+    result = []
     for file in files:
         filename = os.path.basename(file)
         if filename.startswith(material):
             for p in profile_map.keys():
                 if filename.startswith(material + "_" + p):
                     profile = p
-                    return (file, material, profile)
-    return (None, None, None)
+                    result.append((file, material, profile))
+    return result
     
 def create_machine_type(machine_type, path, dir):
     files = glob.glob(os.path.join(path, "*.ini"))
     path = os.path.join(CURA_QUICKPRINT_DIR, machine_type)
     for m in material_map.keys():
-        (file, material, profile) = find_file_for_profile(files, material_map[m])
-        material = m
-        if file is None or material is None or profile is None:
-            continue
-        filename = os.path.basename(file)
-        profile_file = os.path.join("..", "..", "..", PROFILES_DIR, dir, filename)
-        if not os.path.exists(os.path.join(path, material, profile)):
-            os.makedirs(os.path.join(path, material, profile))
-        with open(os.path.join(path, material, 'material.ini'), 'w') as f:
-            f.write("[info]\n")
-            f.write("name = %s\n" % material_names[material])
-            order = material_order[material]
-            if material_types.has_key(material):
-                types = material_types[material]
-                if (material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
-                   (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ")):
-                    types = types + "|First Run"
-                    order = 0
-                f.write("material_types = %s\n" % types)
-            f.write("order = %d\n" % order)
-            if material_url.has_key(material):
-                f.write("url = %s\n" % material_url[material])
-        with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
-            f.write("[info]\n")
-            f.write("name = %s\n" % profile_map[profile])
-            f.write("order = %d\n" % profile_order[profile])
-            f.write("profile_file = %s\n" % profile_file)
+        result = find_files_for_material(files, material_map[m])
+        for (file, material, profile) in result:
+            material = m
+            if file is None or material is None or profile is None:
+                continue
+            filename = os.path.basename(file)
+            profile_file = os.path.join("..", "..", "..", PROFILES_DIR, dir, filename)
+            if not os.path.exists(os.path.join(path, material, profile)):
+                os.makedirs(os.path.join(path, material, profile))
+            with open(os.path.join(path, material, 'material.ini'), 'w') as f:
+                f.write("[info]\n")
+                f.write("name = %s\n" % material_names[material])
+                order = material_order[material]
+                if material_types.has_key(material):
+                    types = material_types[material]
+                    if (material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
+                       (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ")):
+                        types = types + "|First Run"
+                        order = 0
+                    f.write("material_types = %s\n" % types)
+                f.write("order = %d\n" % order)
+                if material_url.has_key(material):
+                    f.write("url = %s\n" % material_url[material])
+            with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
+                f.write("[info]\n")
+                f.write("name = %s\n" % profile_map[profile])
+                f.write("order = %d\n" % profile_order[profile])
+                f.write("profile_file = %s\n" % profile_file)
     for material in disable_materials.keys():
         if os.path.exists(os.path.join(path, material)):
             for profile in disable_materials[material]:
