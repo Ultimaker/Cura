@@ -38,7 +38,7 @@ UM.PreferencesPage
             id: viewText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@action:button","Display Overhang");
+            text: catalog.i18nc("@option:check","Display Overhang");
             onClicked: overhangCheckbox.checked = !overhangCheckbox.checked
 
             //: Display Overhang preference tooltip

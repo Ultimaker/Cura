@@ -138,7 +138,7 @@ Rectangle {
                 anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
                 font: UM.Theme.fonts.default
                 color: UM.Theme.colors.text
-                text: (!base.printDuration || !base.printDuration.valid) ? "" : catalog.i18nc("@label", "%1 m").arg(base.printDuration.getDisplayString(UM.DurationFormat.Short))
+                text: (!base.printDuration || !base.printDuration.valid) ? "" : catalog.i18nc("@label", "%1 h:m").arg(base.printDuration.getDisplayString(UM.DurationFormat.Short))
             }
         }
         Item{

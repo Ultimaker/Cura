@@ -41,7 +41,7 @@ UM.MainWindow
                 Menu
                 {
                     id: recentFilesMenu;
-                    title: catalog.i18nc("@title:menu","Open Recent")
+                    title: catalog.i18nc("@title:menu", "Open Recent")
                     iconName: "document-open-recent";
 
                     enabled: Printer.recentFiles.length > 0;
@@ -70,7 +70,7 @@ UM.MainWindow
 
                 MenuItem
                 {
-                    text: catalog.i18nc("@action:menu", "Save Selection to File");
+                    text: catalog.i18nc("@action:inmenu", "Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
                     onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file");

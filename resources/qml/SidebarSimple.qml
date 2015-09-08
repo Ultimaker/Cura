@@ -138,7 +138,7 @@ Item
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.sizes.default_margin.width
                 //: Helpers selection label
-                text: catalog.i18nc("@label","Helpers:");
+                text: catalog.i18nc("@label:listbox","Helpers:");
                 font: UM.Theme.fonts.default;
             }
         }
@@ -151,7 +151,7 @@ Item
                 CheckBox{
                     Layout.preferredHeight: UM.Theme.sizes.section.height;
                     //: Setting enable skirt adhesion checkbox
-                    text: catalog.i18nc("@action:checkbox","Enable Skirt Adhesion");
+                    text: catalog.i18nc("@option:check","Enable Skirt Adhesion");
                     style: UM.Theme.styles.checkbox;
                     checked: Printer.getSettingValue("skirt_line_count") == null ? false: Printer.getSettingValue("skirt_line_count");
                     onCheckedChanged:
@@ -166,7 +166,7 @@ Item
                     Layout.preferredHeight: UM.Theme.sizes.section.height;
 
                     //: Setting enable support checkbox
-                    text: catalog.i18nc("@action:checkbox","Enable Support");
+                    text: catalog.i18nc("@option:check","Enable Support");
 
                     style: UM.Theme.styles.checkbox;
 

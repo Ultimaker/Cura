@@ -177,7 +177,7 @@ Item
         Label
         {
             id: insertNameLabel
-            text: catalog.i18nc("@label", "Printer Name:");
+            text: catalog.i18nc("@label:textbox", "Printer Name:");
         }
         TextField
         {

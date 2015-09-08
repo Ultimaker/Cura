@@ -126,7 +126,7 @@ Rectangle
     {
         for(var i = 0; i < modesListModel.count; ++i)
         {
-            modesListModel.setProperty(i, "text", catalog.i18nc("@label", modesListModel.get(i).text));
+            modesListModel.setProperty(i, "text", modesListModel.get(i).text);
         }
     }
 }

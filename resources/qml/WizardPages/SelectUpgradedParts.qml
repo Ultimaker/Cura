@@ -46,20 +46,20 @@ Item
 
                 CheckBox
                 {
-                    text: catalog.i18nc("@action:checkbox","Extruder driver ugrades")
+                    text: catalog.i18nc("@option:check","Extruder driver ugrades")
                     checked: true
                 }
                 CheckBox
                 {
-                    text: catalog.i18nc("@action:checkbox","Heated printer bed (kit)")
+                    text: catalog.i18nc("@option:check","Heated printer bed (kit)")
                 }
                 CheckBox
                 {
-                    text: catalog.i18nc("@action:checkbox","Heated printer bed (self built)")
+                    text: catalog.i18nc("@option:check","Heated printer bed (self built)")
                 }
                 CheckBox
                 {
-                    text: catalog.i18nc("@action:checkbox","Dual extrusion (experimental)")
+                    text: catalog.i18nc("@option:check","Dual extrusion (experimental)")
                 }
             }
 

@@ -27,7 +27,7 @@ Item
 
         Label{
             id: settingsModeLabel
-            text: catalog.i18nc("@label","Print setup: ");
+            text: catalog.i18nc("@label:listbox","Print setup: ");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter
@@ -94,7 +94,7 @@ Item
         Label{
             id: machineSelectionLabel
             //: Machine selection label
-            text: catalog.i18nc("@label","Machine:");
+            text: catalog.i18nc("@label:listbox","Machine:");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter
