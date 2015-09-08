@@ -10,11 +10,11 @@ def getMetaData():
     return {
         "type": "extension",
         "plugin": {
-            "name": "USB printing",
+            "name": i18n_catalog.i18nc("@label", "USB printing"),
             "author": "Ultimaker",
             "version": "1.0",
             "api": 2,
-            "description": i18n_catalog.i18nc("USB Printing plugin description","Accepts G-Code and sends them to a printer. Plugin can also update firmware")
+            "description": i18n_catalog.i18nc("@info:whatsthis","Accepts G-Code and sends them to a printer. Plugin can also update firmware.")
         }
     }
 

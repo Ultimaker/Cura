@@ -75,7 +75,7 @@ UM.Dialog
     rightButtons: [
         Button
         {
-            text: "Close";
+            text: catalog.i18nc("@action:button","Close");
             enabled: manager.progress >= 100;
             onClicked: base.visible = false;
         }

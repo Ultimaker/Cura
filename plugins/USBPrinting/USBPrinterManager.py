@@ -24,7 +24,6 @@ from UM.Extension import Extension
 from PyQt5.QtQuick import QQuickView
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
-
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
@@ -44,8 +43,12 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._firmware_view = None
 
         ## Add menu item to top menu of the application.
-        self.setMenuName("Firmware")
-        self.addMenuItem(i18n_catalog.i18n("Update Firmware"), self.updateAllFirmware)
+        #self.setMenuName(self._i18n_catalog.i18n("@title:menu", "Firmware"))
+        #self.addMenuItem(self._i18n_catalog.i18n("@item:inmenu", "Update Firmware"), self.updateAllFirmware)
+
+        #self.setMenuName("Firmware")
+        self.setMenuName(i18n_catalog.i18nc("@title:menu","Firmware"))
+        self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Update Firmware"), self.updateAllFirmware)
 
         Application.getInstance().applicationShuttingDown.connect(self.stop)
         self.addConnectionSignal.connect(self.addConnection) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.

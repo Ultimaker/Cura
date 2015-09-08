@@ -120,5 +120,5 @@ class ThreeMFReader(MeshReader):
                 except:
                     pass
             except Exception as e:
-                Logger.log("e" ,"exception occured in 3mf reader: %s" , e)      
+                Logger.log("e" ,"exception occured in 3mf reader: %s" , e)
         return result  

@@ -9,9 +9,9 @@ catalog = i18nCatalog("uranium")
 def getMetaData():
     return {
         "plugin": {
-            "name": catalog.i18nc("Removable Drive Output Device Plugin name", "Removable Drive Output Device Plugin"),
+            "name": catalog.i18nc("@label", "Removable Drive Output Device Plugin"),
             "author": "Ultimaker B.V.",
-            "description": catalog.i18nc("Removable Drive Output Device Plugin description", "Provides removable drive hotplugging and writing support"),
+            "description": catalog.i18nc("@info:whatsthis", "Provides removable drive hotplugging and writing support"),
             "version": "1.0",
             "api": 2
         }
