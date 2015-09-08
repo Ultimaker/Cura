@@ -19,11 +19,12 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("physics/automatic_push_free")
         UM.Preferences.resetPreference("mesh/scale_to_fit")
         UM.Preferences.resetPreference("info/send_slice_info")
-        pushFreeCheckbox.checked = UM.Preferences.getValue("physics/automatic_push_free")
-        sendDataCheckbox.checked = UM.Preferences.getValue("info/send_slice_info")
-        scaleToFitCheckbox.checked = UM.Preferences.getValue("mesh/scale_to_fit")
+        pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
+        sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+        scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
         languageComboBox.currentIndex = 0
     }
+
     GridLayout
     {
         columns: 2;
@@ -103,7 +104,7 @@ UM.PreferencesPage
         CheckBox
         {
             id: pushFreeCheckbox
-            checked: UM.Preferences.getValue("physics/automatic_push_free")
+            checked: boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
             onCheckedChanged: UM.Preferences.setValue("physics/automatic_push_free", checked)
         }
         Button
@@ -136,7 +137,7 @@ UM.PreferencesPage
         CheckBox
         {
             id: sendDataCheckbox
-            checked: UM.Preferences.getValue("info/send_slice_info")
+            checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
             onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
         }
         Button
@@ -168,7 +169,7 @@ UM.PreferencesPage
         CheckBox
         {
             id: scaleToFitCheckbox
-            checked: UM.Preferences.getValue("mesh/scale_to_fit")
+            checked: boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
             onCheckedChanged: UM.Preferences.setValue("mesh/scale_to_fit", checked)
         }
         Button
