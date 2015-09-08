@@ -325,7 +325,6 @@ class CuraApplication(QtApplication):
                 continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
 
             nodes.append(node)
-        print(nodes)
         if nodes:
             op = GroupedOperation()
             for node in nodes:
