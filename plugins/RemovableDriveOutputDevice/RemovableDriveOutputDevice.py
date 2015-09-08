@@ -10,7 +10,7 @@ from UM.OutputDevice.OutputDevice import OutputDevice
 from UM.OutputDevice import OutputDeviceError
 
 from UM.i18n import i18nCatalog
-catalog = i18nCatalog("uranium")
+catalog = i18nCatalog("cura")
 
 class RemovableDriveOutputDevice(OutputDevice):
     def __init__(self, device_id, device_name):
@@ -18,7 +18,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         self.setName(device_name)
         self.setShortDescription(catalog.i18nc("@action:button", "Save to Removable Drive"))
-        self.setDescription(catalog.i18nc("@info:tooltip", "Save to Removable Drive {0}").format(device_name))
+        self.setDescription(catalog.i18nc("@item:inlistbox", "Save to Removable Drive {0}").format(device_name))
         self.setIconName("save_sd")
         self.setPriority(1)
 
@@ -49,7 +49,7 @@ class RemovableDriveOutputDevice(OutputDevice):
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
 
-            message = Message(catalog.i18nc("@info:status", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1)
+            message = Message(catalog.i18nc("@info:progress", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1)
             message.show()
 
             job._message = message
@@ -70,13 +70,13 @@ class RemovableDriveOutputDevice(OutputDevice):
             job._message = None
         self.writeFinished.emit(self)
         if job.getResult():
-            message = Message(catalog.i18nc("", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())))
-            message.addAction("eject", catalog.i18nc("", "Eject"), "eject", catalog.i18nc("", "Eject removable device {0}").format(self.getName()))
+            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())))
+            message.addAction("eject", catalog.i18nc("@action:button", "Eject"), "eject", catalog.i18nc("@action", "Eject removable device {0}").format(self.getName()))
             message.actionTriggered.connect(self._onActionTriggered)
             message.show()
             self.writeSuccess.emit(self)
         else:
-            message = Message(catalog.i18nc("", "Could not save to removable drive {0}: {1}").format(self.getName(), str(job.getError())))
+            message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(), str(job.getError())))
             message.show()
             self.writeError.emit(self)
         job.getStream().close()

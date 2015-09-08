@@ -22,7 +22,6 @@ UM.Dialog
             text: manager.getChangeLogString()
             width:base.width - 35
             wrapMode: Text.Wrap;
-            //Component.onCompleted: console.log()
         }
     }
 }

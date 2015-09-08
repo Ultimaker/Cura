@@ -10,14 +10,14 @@ catalog = i18nCatalog("cura")
 def getMetaData():
     return {
         "plugin": {
-            "name": "Layer View",
+            "name": catalog.i18nc("@label", "Layer View"),
             "author": "Ultimaker",
             "version": "1.0",
-            "description": catalog.i18nc("Layer View plugin description", "Provides the Layer view."),
+            "description": catalog.i18nc("@info:whatsthis", "Provides the Layer view."),
             "api": 2
         },
         "view": {
-            "name": catalog.i18nc("Layers View mode", "Layers"),
+            "name": catalog.i18nc("@item:inlistbox", "Layers"),
             "view_panel": "LayerView.qml"
         }
     }

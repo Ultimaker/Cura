@@ -7,10 +7,10 @@ catalog = i18nCatalog("cura")
 def getMetaData():
     return {
         "plugin": {
-            "name": "Slice Info",
+            "name": catalog.i18nc("@label", "Slice info"),
             "author": "Ultimaker",
             "version": "1.0",
-            "description": catalog.i18nc("Slice Info plugin description", "Submits anonymous slice info. Can be disabled through preferences."),
+            "description": catalog.i18nc("@info:whatsthis", "Submits anonymous slice info. Can be disabled through preferences."),
             "api": 2
         }
     }

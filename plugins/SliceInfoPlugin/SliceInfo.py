@@ -32,8 +32,8 @@ class SliceInfo(Extension):
         Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
 
         if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("", "Cura automatically sends slice info. You can disable this in preferences"), lifetime = 0, dismissable = False)
-            self.send_slice_info_message.addAction("Dismiss","Dismiss", None, "Dismiss")
+            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura automatically sends slice info. You can disable this in preferences"), lifetime = 0, dismissable = False)
+            self.send_slice_info_message.addAction("Dismiss", catalog.i18nc("@action:button", "Dismiss"), None, catalog.i18nc("@action", "Dismiss"))
             self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
             self.send_slice_info_message.show()
 

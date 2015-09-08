@@ -27,7 +27,7 @@ class ProcessSlicedObjectListJob(Job):
 
     def run(self):
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
-            self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
+            self._progress = Message(catalog.i18nc("@info", "Layers"), 0, False, 0)
             self._progress.show()
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
