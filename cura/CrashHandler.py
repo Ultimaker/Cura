@@ -6,6 +6,7 @@ import webbrowser
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit
 from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 def show(type, value, tb):
     if not hasattr(sys, "frozen"):
@@ -16,13 +17,13 @@ def show(type, value, tb):
         sys.exit(1)
 
     dialog = QDialog()
-    dialog.setWindowTitle(self._i18n_catalog.i18nc("@title:errormessage", "Oops!"))
+    dialog.setWindowTitle(catalog.i18nc("@title:window", "Oops!"))
 
     layout = QVBoxLayout(dialog)
 
     label = QLabel(dialog)
     layout.addWidget(label)
-    label.setText(self._i18n_catalog.i18nc("@info:errormessage", "<p>An uncaught exception has occurred!</p><p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"))
+    label.setText(catalog.i18nc("@info", "<p>An uncaught exception has occurred!</p><p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"))
 
     textarea = QTextEdit(dialog)
     layout.addWidget(textarea)
