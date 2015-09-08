@@ -297,7 +297,7 @@ class CuraEngineBackend(Backend):
     def _handlePerObjectSettings(self, node, message):
         profile = node.callDecoration("getProfile")
         if profile:
-            for key, value in profile.getChangedSettings().items():
+            for key, value in profile.getChangedSettingValues().items():
                 setting = message.settings.add()
                 setting.name = key
                 setting.value = str(value).encode()
