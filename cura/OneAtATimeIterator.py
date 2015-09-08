@@ -59,7 +59,7 @@ class OneAtATimeIterator(Iterator.Iterator):
                         # We have no more nodes to check, so quit looking.
                         todo_node_list = None
                         self._node_stack = new_order
-                        print(self._node_stack)
+                        
                         return
                     todo_node_list.append(_objectOrder(new_order, new_todo_list))
         self._node_stack = [] #No result found!        
