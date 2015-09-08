@@ -1,7 +1,0 @@
-ALL CURA CONFIGS FOUND HERE ARE EXPERIMENTAL. USE AT YOUR OWN RISK!
-
-This directory is tracked with git. Use 'git log' to see previous commits.
-
-
-lulzbot-mini_cura_abs-hips_02.ini
-	2014-08-21: Nozzle cleaning and auto leveling is working as expected. Even with the first print the quality is generally good. The top layer infill is a bit overfilled. This config needs a little further tweaking but is easily usable.
