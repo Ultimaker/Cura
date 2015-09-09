@@ -14,14 +14,23 @@ UM.Dialog
     width: 300 * Screen.devicePixelRatio;
     height: 500 * Screen.devicePixelRatio;
     title: "Changelog"
+
     ScrollView
     {
-        anchors.fill:parent
+        width: parent.width
+        height: parent.height - 25
         Text
         {
             text: manager.getChangeLogString()
             width:base.width - 35
             wrapMode: Text.Wrap;
         }
+    }
+    Button
+    {
+        anchors.bottom:parent.bottom
+        text: "close"
+        onClicked: base.hide()
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 }
