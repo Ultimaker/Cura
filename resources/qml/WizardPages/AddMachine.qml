@@ -24,6 +24,12 @@ Item
         target: base.wizard
         onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
         {
+            var old_page_count = base.wizard.getPageCount()
+            // Delete old pages (if any)
+            for (var i = old_page_count - 1; i > 0; i--)
+            {
+                base.wizard.removePage(i)
+            }
             saveMachine()
         }
         onBackClicked:

@@ -1231,7 +1231,7 @@
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag"
                     },
-                    "default": "Concentric"
+                    "default": "concentric"
                 },
                 "support_use_towers": {
                     "label": "Use towers.",
