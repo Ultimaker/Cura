@@ -43,10 +43,6 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._firmware_view = None
 
         ## Add menu item to top menu of the application.
-        #self.setMenuName(self._i18n_catalog.i18n("@title:menu", "Firmware"))
-        #self.addMenuItem(self._i18n_catalog.i18n("@item:inmenu", "Update Firmware"), self.updateAllFirmware)
-
-        #self.setMenuName("Firmware")
         self.setMenuName(i18n_catalog.i18nc("@title:menu","Firmware"))
         self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Update Firmware"), self.updateAllFirmware)
 
