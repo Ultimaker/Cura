@@ -390,6 +390,13 @@
                     "default": "lines",
                     "visible": false
                 },
+                "skin_no_small_gaps_heuristic": {
+                    "label": "Model has small Z gaps",
+                    "description": "When the model has small vertical gaps about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
                 "skin_alternate_rotation": {
                     "label": "Alternate Skin Rotation",
                     "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve on the printing quality by reducing the pillowing effect.",

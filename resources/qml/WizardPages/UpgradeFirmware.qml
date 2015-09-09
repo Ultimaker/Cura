@@ -13,6 +13,7 @@ Column
     id: wizardPage
     property string title
     anchors.fill: parent;
+    UM.I18nCatalog { id: catalog; name:"cura"}
     Label
     {
         text: parent.title
@@ -38,12 +39,13 @@ Column
                 }
                 Button
                 {
-                    text: "Update";
+                    text: catalog.i18nc("@action:button","Update")
+
                     onClicked:
                     {
                         if(!UM.USBPrinterManager.updateFirmwareBySerial(text_area.text))
                         {
-                            status_text.text = "ERROR"
+                            status_text.text = catalog.i18nc("@info:status","ERROR")
                         }
                     }
                 }

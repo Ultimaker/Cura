@@ -63,7 +63,7 @@ UM.Dialog
         width: parent.width
 
         //: About dialog application author note
-        text: catalog.i18nc("@label","Cura has been developed by Ultimaker B.V. in cooperation with the community.")
+        text: catalog.i18nc("@info:credit","Cura has been developed by Ultimaker B.V. in cooperation with the community.")
         wrapMode: Text.WordWrap
         anchors.top: description.bottom
     }

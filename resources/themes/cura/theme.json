@@ -139,7 +139,10 @@
         "message_text": [32, 166, 219, 255],
         "message_dismiss": [139, 143, 153, 255],
 
-        "tool_panel_background": [255, 255, 255, 255]
+        "tool_panel_background": [255, 255, 255, 255],
+
+        "per_object_settings_panel_background": [255, 255, 255, 255],
+        "per_object_settings_panel_border": [208, 210, 211, 255]
     },
 
     "sizes": {
@@ -207,6 +210,10 @@
 
         "message": [30.0, 5.0],
         "message_close": [1.25, 1.25],
-        "message_button": [6.0, 1.8]
+        "message_button": [6.0, 1.8],
+
+        "per_object_settings_button": [2.0, 2.0],
+        "per_object_settings_panel": [24.0, 10.0],
+        "per_object_settings_panel_border": [0.1, 0.1]
     }
 }

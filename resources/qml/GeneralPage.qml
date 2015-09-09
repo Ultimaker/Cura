@@ -11,7 +11,7 @@ import UM 1.1 as UM
 UM.PreferencesPage
 {
     //: General configuration page title
-    title: catalog.i18nc("@title:wizard","General");
+    title: catalog.i18nc("@title","General");
 
     function reset()
     {
@@ -80,7 +80,8 @@ UM.PreferencesPage
                 // Because ListModel is stupid and does not allow using qsTr() for values.
                 for(var i = 0; i < languageList.count; ++i)
                 {
-                    languageList.setProperty(i, "text", catalog.i18nc("@action:menu",languageList.get(i).text));
+                    //languageList.setProperty(i, "text", catalog.i18nc("@action:menu",languageList.get(i).text));
+                    languageList.setProperty(i, "text", languageList.get(i).text);
                 }
 
                 // Glorious hack time. ComboBox does not update the text properly after changing the
@@ -112,7 +113,7 @@ UM.PreferencesPage
             id: pushFreeText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@action:checkbox","Automatic push free");
+            text: catalog.i18nc("@option:check","Automatic push free");
             onClicked: pushFreeCheckbox.checked = !pushFreeCheckbox.checked
 
             //: Display Overhang preference tooltip
@@ -145,7 +146,7 @@ UM.PreferencesPage
             id: sendDataText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@action:checkbox","Send (anonymous) slice info");
+            text: catalog.i18nc("@option:check","Send (anonymous) slice info");
             onClicked: sendDataCheckbox.checked = !sendDataCheckbox.checked
 
             //: Display Overhang preference tooltip
@@ -177,7 +178,7 @@ UM.PreferencesPage
             id: scaleToFitText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@action:checkbox","Scale loaded meshes when too large");
+            text: catalog.i18nc("@option:check","Scale loaded meshes when too large");
             onClicked: scaleToFitCheckbox.checked = !scaleToFitCheckbox.checked
 
             //: Display Overhang preference tooltip

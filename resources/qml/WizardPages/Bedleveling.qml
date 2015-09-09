@@ -18,6 +18,7 @@ Column
     anchors.fill: parent;
     property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
     Component.onCompleted: printer_connection.homeHead()
+    UM.I18nCatalog { id: catalog; name:"cura"}
     Label
     {
         text: ""
@@ -25,7 +26,7 @@ Column
     }
     Button
     {
-        text: "Move to next position"
+        text: catalog.i18nc("@action:button","Move to next position");
         onClicked:
         {
             if(wizardPage.leveling_state == 0)
