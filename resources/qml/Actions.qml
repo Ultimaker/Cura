@@ -50,6 +50,7 @@ Item
     {
         id:toggleFullScreenAction
         shortcut: StandardKey.FullScreen;
+        text: catalog.i18nc("@action","Toggle Full Screen");
     }
 
     Action
@@ -178,7 +179,7 @@ Item
         text: catalog.i18nc("@action","Merge objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
-    
+
     Action
     {
         id: multiplyObjectAction;
