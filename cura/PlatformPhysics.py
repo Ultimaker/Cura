@@ -68,8 +68,9 @@ class PlatformPhysics:
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()
-            if bbox.bottom > 0:
-                move_vector.setY(-bbox.bottom)
+            if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
+                if bbox.bottom > 0:
+                    move_vector.setY(-bbox.bottom)
             #if not Float.fuzzyCompare(bbox.bottom, 0.0):
             #   pass#move_vector.setY(-bbox.bottom)
 
