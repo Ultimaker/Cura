@@ -194,38 +194,38 @@ material_names = {
 
 material_url = {
     # Beginner
-    "HIPS_eSUN": "https://www.lulzbot.com/products/hips-3mm-filament-1kg-reel-esun",
-    "PLA_eSUN": "https://www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
-    "PLA_VP": "https://www.lulzbot.com/products/pla-3mm-filament-1kg-reel-village-plastics",
+    "HIPS_eSUN": "www.lulzbot.com/products/hips-3mm-filament-1kg-reel-esun",
+    "PLA_eSUN": "www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
+    "PLA_VP": "www.lulzbot.com/products/pla-3mm-filament-1kg-reel-village-plastics",
     # Intermediate
-    "ABS_VP": "https://www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
-    "Laybrick" : "https://www.lulzbot.com/products/laybrick-filament-3mm",
-    "PP-Iron": "https://www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
-    "PP-Steel": "https://www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
+    "ABS_VP": "www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
+    "Laybrick" : "www.lulzbot.com/products/laybrick-filament-3mm",
+    "PP-Iron": "www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
+    "PP-Steel": "www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
     # Advanced
-    "Alloy910": "https://www.lulzbot.com/products/alloy-910-3mm-filament-1lb-reel-taulman",
-    "Bridge": "https://www.lulzbot.com/products/taulman-bridge-nylon-3mm-filament-1-pound",
-    "Laywood": "https://www.lulzbot.com/products/laywoo-d3-cherry-laywood-3mm-250g-coil-cc-products",
-    "n-vent": "https://www.lulzbot.com/products/n-vent-3mm-filament-1lb-taulman",
-    "PCTPE": "https://www.lulzbot.com/products/taulman-pctpe-3mm-filament-1-pound",
-    "PC-ABS": "https://www.lulzbot.com/products/pc-abs-alloy-3mm-filament-500g-reel-proto-pasta",
-    "T-Glase": "https://www.lulzbot.com/products/t-glase-3mm-filament-1lb-reel",
+    "Alloy910": "www.lulzbot.com/products/alloy-910-3mm-filament-1lb-reel-taulman",
+    "Bridge": "www.lulzbot.com/products/taulman-bridge-nylon-3mm-filament-1-pound",
+    "Laywood": "www.lulzbot.com/products/laywoo-d3-cherry-laywood-3mm-250g-coil-cc-products",
+    "n-vent": "www.lulzbot.com/products/n-vent-3mm-filament-1lb-taulman",
+    "PCTPE": "www.lulzbot.com/products/taulman-pctpe-3mm-filament-1-pound",
+    "PC-ABS": "www.lulzbot.com/products/pc-abs-alloy-3mm-filament-500g-reel-proto-pasta",
+    "T-Glase": "www.lulzbot.com/products/t-glase-3mm-filament-1lb-reel",
     # Expert
-    "PP-Conductive": "https://www.lulzbot.com/products/conductive-pla-3mm-filament-500g-reel-proto-pasta",
-    "HIPS_VP" : "https://www.lulzbot.com/products/hips-3mm-filament-1kg-or-5lb-reel-village-plastics",
-    "PC_VP": "https://www.lulzbot.com/products/polycarbonate-3mm-filament-1kg-reel",
-    "618-Nylon": "https://www.lulzbot.com/products/taulman-618-nylon-3mm-filament-1-pound",
-    "645-Nylon": "https://www.lulzbot.com/products/taulman-645-nylon-3mm-filament-1-pound",
+    "PP-Conductive": "www.lulzbot.com/products/conductive-pla-3mm-filament-500g-reel-proto-pasta",
+    "HIPS_VP" : "www.lulzbot.com/products/hips-3mm-filament-1kg-or-5lb-reel-village-plastics",
+    "PC_VP": "www.lulzbot.com/products/polycarbonate-3mm-filament-1kg-reel",
+    "618-Nylon": "www.lulzbot.com/products/taulman-618-nylon-3mm-filament-1-pound",
+    "645-Nylon": "www.lulzbot.com/products/taulman-645-nylon-3mm-filament-1-pound",
     # Dual extruder (Expert)
-    'ABS_ABS': "https://www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
-    'PLA_PLA': "https://www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
-    'PLA_PVA': "https://www.lulzbot.com/products/natural-pva-3mm-filament-05kg-reel-esun",
+    'ABS_ABS': "www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
+    'PLA_PLA': "www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
+    'PLA_PVA': "www.lulzbot.com/products/natural-pva-3mm-filament-05kg-reel-esun",
     # Flexystruder (Expert)
-    "ninjaflex" : "https://www.lulzbot.com/ninjaflex",
-    "semiflex" : "https://www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
+    "ninjaflex" : "www.lulzbot.com/ninjaflex",
+    "semiflex" : "www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "https://www.lulzbot.com/ninjaflex",
-    "ABS_semiflex" : "https://www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
+    "ABS_ninjaflex" : "www.lulzbot.com/ninjaflex",
+    "ABS_semiflex" : "www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
 }
 
 profile_map = {
