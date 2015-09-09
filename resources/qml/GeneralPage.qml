@@ -80,8 +80,7 @@ UM.PreferencesPage
                 // Because ListModel is stupid and does not allow using qsTr() for values.
                 for(var i = 0; i < languageList.count; ++i)
                 {
-                    //languageList.setProperty(i, "text", catalog.i18nc("@action:menu",languageList.get(i).text));
-                    languageList.setProperty(i, "text", languageList.get(i).text);
+                    languageList.setProperty(i, "text", catalog.i18nc("@action:inmenu",languageList.get(i).text));
                 }
 
                 // Glorious hack time. ComboBox does not update the text properly after changing the
@@ -113,11 +112,11 @@ UM.PreferencesPage
             id: pushFreeText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@option:check","Automatic push free");
+            text: catalog.i18nc("@option:check","Automatically arrange the distancing between objects");
             onClicked: pushFreeCheckbox.checked = !pushFreeCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Are objects on the platform automatically moved so they no longer intersect")
+            tooltip: catalog.i18nc("@info:tooltip","Are objects on the platform automatically moved so that they no longer intersect")
 
             style: ButtonStyle
             {

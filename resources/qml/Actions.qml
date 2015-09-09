@@ -50,12 +50,12 @@ Item
     {
         id:toggleFullScreenAction
         shortcut: StandardKey.FullScreen;
+        text: catalog.i18nc("@action","Toggle Full Screen");
     }
 
     Action
     {
         id: undoAction;
-        //: Undo action
         text: catalog.i18nc("@action","Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
@@ -64,7 +64,6 @@ Item
     Action
     {
         id: redoAction;
-        //: Redo action
         text: catalog.i18nc("@action","Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
@@ -73,7 +72,6 @@ Item
     Action
     {
         id: quitAction;
-        //: Quit action
         text: catalog.i18nc("@action","Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
@@ -82,7 +80,6 @@ Item
     Action
     {
         id: preferencesAction;
-        //: Preferences action
         text: catalog.i18nc("@action","Preferences...");
         iconName: "configure";
     }
@@ -90,14 +87,12 @@ Item
     Action
     {
         id: addMachineAction;
-        //: Add Printer action
         text: catalog.i18nc("@action","Add Printer...");
     }
 
     Action
     {
         id: settingsAction;
-        //: Configure Printers action
         text: catalog.i18nc("@action","Configure Printers");
         iconName: "configure";
     }
@@ -105,14 +100,12 @@ Item
     Action
     {
         id: manageProfilesAction;
-        //: manage profiles action
         text: catalog.i18nc("@action","Manage Profiles");
     }
 
     Action
     {
         id: documentationAction;
-        //: Show Online Documentation action
         text: catalog.i18nc("@action","Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
@@ -120,7 +113,6 @@ Item
 
     Action {
         id: reportBugAction;
-        //: Report a Bug Action
         text: catalog.i18nc("@action","Report a &Bug");
         iconName: "tools-report-bug";
     }
@@ -128,7 +120,6 @@ Item
     Action
     {
         id: aboutAction;
-        //: About action
         text: catalog.i18nc("@action","About...");
         iconName: "help-about";
     }
@@ -136,7 +127,6 @@ Item
     Action
     {
         id: deleteSelectionAction;
-        //: Delete selection action
         text: catalog.i18nc("@action","Delete Selection");
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
@@ -145,7 +135,6 @@ Item
     Action
     {
         id: deleteObjectAction;
-        //: Delete object action
         text: catalog.i18nc("@action","Delete Object");
         iconName: "edit-delete";
         shortcut: StandardKey.Backspace;
@@ -154,7 +143,6 @@ Item
     Action
     {
         id: centerObjectAction;
-        //: Center object action
         text: catalog.i18nc("@action","Center Object on Platform");
     }
 
@@ -178,18 +166,16 @@ Item
         text: catalog.i18nc("@action","Merge objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
-    
+
     Action
     {
         id: multiplyObjectAction;
-        //: Duplicate object action
         text: catalog.i18nc("@action","Duplicate Object");
     }
 
     Action
     {
         id: splitObjectAction;
-        //: Split object action
         text: catalog.i18nc("@action","Split Object into Parts");
         enabled: false;
     }
@@ -197,7 +183,6 @@ Item
     Action
     {
         id: deleteAllAction;
-        //: Clear build platform action
         text: catalog.i18nc("@action","Clear Build Platform");
         iconName: "edit-clear";
     }
@@ -205,28 +190,24 @@ Item
     Action
     {
         id: reloadAllAction;
-        //: Reload all objects action
         text: catalog.i18nc("@action","Reload All Objects");
     }
 
     Action
     {
         id: resetAllTranslationAction;
-        //: Reset all positions action
         text: catalog.i18nc("@action","Reset All Object Positions");
     }
 
     Action
     {
         id: resetAllAction;
-        //: Reset all positions action
         text: catalog.i18nc("@action","Reset All Object Transformations");
     }
 
     Action
     {
         id: openAction;
-        //: Open file action
         text: catalog.i18nc("@action","Load file");
         iconName: "document-open";
         shortcut: StandardKey.Open;
@@ -235,7 +216,6 @@ Item
     Action
     {
         id: saveAction;
-        //: Save file action
         text: catalog.i18nc("@action","Save...");
         iconName: "document-save";
         shortcut: StandardKey.Save;
@@ -244,7 +224,6 @@ Item
     Action
     {
         id: showEngineLogAction;
-        //: Show engine log action
         text: catalog.i18nc("@action","Show engine &log...");
         iconName: "view-list-text";
     }
