@@ -164,7 +164,7 @@ material_names = {
     # Intermediate
     "ABS_VP": "ABS (Village Plastics)",
     "Laybrick" : "Laybrick (CC-Products)",
-    "PP-Iron": "Iron PLA (Proto-pasta)",
+    "PP-Iron": "Magnetic (Proto-pasta)",
     "PP-Steel": "Steel PLA (Proto-pasta)",
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
