@@ -1326,7 +1326,7 @@ class LulzbotTazToolheadSelectPage(LulzbotToolheadSelectPage):
 
 class LulzbotHotendSelectPage(LulzbotToolheadSelectPage):
 	def __init__(self, parent, allowBack = True):
-		super(LulzbotHotendSelectPage, self).__init__(parent, _("LulzBot Tool Head Hotend Selection"))
+		super(LulzbotHotendSelectPage, self).__init__(parent, _("LulzBot Tool Head Hot end Selection"))
 
 		self.allowBack = allowBack
 		self.panel = self.AddPanel()
@@ -1350,7 +1350,7 @@ class LulzbotTaz5NozzleSelectPage(LulzbotToolheadSelectPage):
 	def __init__(self, parent):
 		super(LulzbotTaz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ Single v2 Nozzle Selection"))
 
-		self.AddText(_('Please select your Hexagon hotend\'s nozzle diameter:'))
+		self.AddText(_('Please select your Hexagon hot end\'s nozzle diameter:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
 		self.Nozzle35Radio.SetValue(True)
 		self.Nozzle50Radio = self.AddRadioButton("0.5 mm")
