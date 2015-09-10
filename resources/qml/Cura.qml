@@ -301,7 +301,7 @@ UM.MainWindow
                 //style: UM.Theme.styles.open_file_button
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.icons.open
-                style: UM.Theme.styles.tool_button;
+                style: UM.Theme.styles.open_file_button
                 tooltip: '';
                 anchors
                 {

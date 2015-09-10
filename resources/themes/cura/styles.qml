@@ -56,23 +56,39 @@ QtObject {
     property Component open_file_button: Component {
         ButtonStyle {
             background: Item{
-                implicitWidth: UM.Theme.sizes.loadfile_button.width
-                implicitHeight: UM.Theme.sizes.loadfile_button.height
+                implicitWidth: UM.Theme.sizes.button.width;
+                implicitHeight: UM.Theme.sizes.button.width;
                 Rectangle {
-                    width: parent.width
-                    height: parent.height
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "white"
+                    width: control.hovered ? openFileLabel.width : 0;
+                    height: openFileLabel.height
+                    Behavior on width { NumberAnimation { duration: 100; } }
+                    opacity: control.hovered ? 1.0 : 0.0;
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
+                    Label {
+                        id: openFileLabel
+                        anchors.bottom: parent.bottom
+                        text: control.text
+                        font: UM.Theme.fonts.button_tooltip;
+                        color: UM.Theme.colors.button_tooltip_text;
+                    }
+                }
+                Rectangle {
+                    anchors.fill: parent;
                     color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                 }
-                Label {
-                    anchors.centerIn: parent
-                    text: control.text
-                    color: UM.Theme.colors.load_save_button_text
-                    font: UM.Theme.fonts.default
-                }
             }
-            label: Label{
-                visible: false
+            label: Item {
+                Image {
+                    anchors.centerIn: parent;
+                    source: control.iconSource;
+                    width: UM.Theme.sizes.button_icon.width;
+                    height: UM.Theme.sizes.button_icon.height;
+                    sourceSize: UM.Theme.sizes.button_icon;
+                }
             }
         }
     }
