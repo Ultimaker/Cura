@@ -67,7 +67,7 @@ Rectangle {
         color: UM.Theme.colors.sidebar_header_bar
         Label{
             id: printJobTextfieldLabel
-            text: catalog.i18nc("@label:textbox", "Printjob name");
+            text: catalog.i18nc("@label:textbox", "Printjob Name");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter

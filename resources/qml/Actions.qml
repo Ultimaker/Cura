@@ -93,7 +93,7 @@ Item
     Action
     {
         id: settingsAction;
-        text: catalog.i18nc("@action","Configure Printers");
+        text: catalog.i18nc("@action","Manage Printers");
         iconName: "configure";
     }
 
@@ -149,21 +149,21 @@ Item
     Action
     {
         id: groupObjectsAction
-        text: catalog.i18nc("@action","Group objects");
+        text: catalog.i18nc("@action","Group Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
 
     Action
     {
         id: unGroupObjectsAction
-        text: catalog.i18nc("@action","Ungroup objects");
+        text: catalog.i18nc("@action","Ungroup Objects");
         enabled: UM.Scene.isGroupSelected
     }
     
     Action
     {
         id: mergeObjectsAction
-        text: catalog.i18nc("@action","Merge objects");
+        text: catalog.i18nc("@action","Merge Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
     }
 
@@ -208,7 +208,7 @@ Item
     Action
     {
         id: openAction;
-        text: catalog.i18nc("@action","Load file");
+        text: catalog.i18nc("@action","Open File");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
@@ -224,7 +224,7 @@ Item
     Action
     {
         id: showEngineLogAction;
-        text: catalog.i18nc("@action","Show engine &log...");
+        text: catalog.i18nc("@action","Show Engine &Log...");
         iconName: "view-list-text";
     }
 }
