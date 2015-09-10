@@ -221,8 +221,8 @@
                             "enabled": "support_enable"
                         },
                         "support_roof_line_width": {
-                            "label": "Support Hammock line width",
-                            "description": "Width of a single hammock line, used to fill the roof of the support.",
+                            "label": "Support Roof line width",
+                            "description": "Width of a single support roof line, used to fill the top of the support.",
                             "unit": "mm",
                             "default": 0.4,
                             "type": "float",
@@ -749,8 +749,8 @@
                                     "enabled": "support_roof_enable"
                                 },
                                 "speed_support_roof": {
-                                    "label": "Support Hammock Speed",
-                                    "description": "The speed at which the roofs of exterior support are printed. Printing the hammock at lower speeds can improve on overhang quality. ",
+                                    "label": "Support Roof Speed",
+                                    "description": "The speed at which the roofs of exterior support are printed. Printing the support roof at lower speeds can improve on overhang quality. ",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default": 40,
@@ -1185,15 +1185,15 @@
                     "enabled": "support_enable"
                 },
                 "support_roof_enable": {
-                    "label": "Enable Hammock",
-                    "description": "Generate a solid support roof on which the model sits.",
+                    "label": "Enable Support Roof",
+                    "description": "Generate a dense top skin at the top of the support on which the model sits.",
                     "type": "boolean",
                     "default": false,
                     "visible": true,
                     "enabled": "support_enable"
                 },
                 "support_roof_height": {
-                    "label": "Hammock Thickness",
+                    "label": "Support Roof Thickness",
                     "description": "The height of the support roofs. ",
                     "unit": "mm",
                     "type": "float",
@@ -1202,15 +1202,15 @@
                     "enabled": "support_enable"
                 },
                 "support_roof_density": {
-                    "label": "Hammock Density",
+                    "label": "Support Roof Density",
                     "description": "This controls how densely filled the roofs of the support will be. A higher percentage results in better overhangs, which are more difficult to remove.",
                     "unit": "%",
                     "type": "float",
                     "default": 100,
                     "children": {
                         "support_roof_line_distance": {
-                            "label": "Hammock Line Distance",
-                            "description": "Distance between the printed hammock lines.",
+                            "label": "Support Roof Line Distance",
+                            "description": "Distance between the printed support roof lines.",
                             "unit": "mm",
                             "type": "float",
                             "default": 0.4,
@@ -1220,8 +1220,8 @@
                     }
                 },
                 "support_roof_pattern": {
-                    "label": "Hammock Pattern",
-                    "description": "The pattern with which the hammock is printed.",
+                    "label": "Support Roof Pattern",
+                    "description": "The pattern with which the top of the support is printed.",
                     "type": "enum",
                     "visible": false,
                     "options": {
