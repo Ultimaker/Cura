@@ -41,7 +41,7 @@ UM.MainWindow
                 Menu
                 {
                     id: recentFilesMenu;
-                    title: catalog.i18nc("@title:menu", "Open Recent")
+                    title: catalog.i18nc("@title:menu", "Open &Recent")
                     iconName: "document-open-recent";
 
                     enabled: Printer.recentFiles.length > 0;
@@ -70,7 +70,7 @@ UM.MainWindow
 
                 MenuItem
                 {
-                    text: catalog.i18nc("@action:inmenu", "Save Selection to File");
+                    text: catalog.i18nc("@action:inmenu", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
                     onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file");
@@ -78,8 +78,8 @@ UM.MainWindow
                 Menu
                 {
                     id: saveAllMenu
-                    title: catalog.i18nc("@title:menu","Save All")
-                    iconName: "document-save";
+                    title: catalog.i18nc("@title:menu","Save &All")
+                    iconName: "document-save-all";
                     enabled: devicesModel.rowCount() > 0 && UM.Backend.progress > 0.99;
 
                     Instantiator
@@ -96,6 +96,8 @@ UM.MainWindow
                     }
                 }
 
+                MenuItem { action: actions.reloadAll; }
+
                 MenuSeparator { }
 
                 MenuItem { action: actions.quit; }
@@ -111,6 +113,12 @@ UM.MainWindow
                 MenuSeparator { }
                 MenuItem { action: actions.deleteSelection; }
                 MenuItem { action: actions.deleteAll; }
+                MenuItem { action: actions.resetAllTranslation; }
+                MenuItem { action: actions.resetAll; }
+                MenuSeparator { }
+                MenuItem { action: actions.groupObjects;}
+                MenuItem { action: actions.mergeObjects;}
+                MenuItem { action: actions.unGroupObjects;}
             }
 
             Menu
@@ -119,7 +127,7 @@ UM.MainWindow
                 id: top_view_menu
                 Instantiator 
                 {
-                    model: UM.Models.viewModel
+                    model: UM.ViewModel { }
                     MenuItem 
                     {
                         text: model.name;
@@ -182,6 +190,32 @@ UM.MainWindow
 
                 MenuItem { action: actions.addMachine; }
                 MenuItem { action: actions.configureMachines; }
+            }
+
+            Menu
+            {
+                id: profileMenu
+                title: catalog.i18nc("@title:menu", "&Profile")
+
+                Instantiator
+                {
+                    model: UM.ProfilesModel { }
+                    MenuItem {
+                        text: model.name;
+                        checkable: true;
+                        checked: model.active;
+                        exclusiveGroup: profileMenuGroup;
+                        onTriggered: UM.MachineManager.setActiveProfile(model.name)
+                    }
+                    onObjectAdded: profileMenu.insertItem(index, object)
+                    onObjectRemoved: profileMenu.removeItem(object)
+                }
+
+                ExclusiveGroup { id: profileMenuGroup; }
+
+                MenuSeparator { }
+
+                MenuItem { action: actions.manageProfiles; }
             }
 
             Menu
@@ -351,7 +385,7 @@ UM.MainWindow
                     id: viewMenu;
                     Instantiator
                     {
-                        model: UM.Models.viewModel;
+                        model: UM.ViewModel { }
                         MenuItem
                         {
                             text: model.name;
@@ -515,7 +549,6 @@ UM.MainWindow
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
         toggleFullScreen.onTriggered: base.toggleFullscreen()
-
     }
 
     Menu
@@ -526,16 +559,14 @@ UM.MainWindow
         MenuItem { action: actions.centerObject; }
         MenuItem { action: actions.deleteObject; }
         MenuItem { action: actions.multiplyObject; }
-        MenuItem { action: actions.splitObject; }
-        
         MenuSeparator { }
         MenuItem { action: actions.deleteAll; }
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
         MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.unGroupObjects;}
         MenuItem { action: actions.mergeObjects;}
+        MenuItem { action: actions.unGroupObjects;}
     }
 
     Menu
@@ -546,8 +577,8 @@ UM.MainWindow
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
         MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.unGroupObjects;}
         MenuItem { action: actions.mergeObjects;}
+        MenuItem { action: actions.unGroupObjects;}
     }
 
     Connections
