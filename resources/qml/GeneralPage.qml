@@ -42,20 +42,17 @@ UM.PreferencesPage
             model: ListModel
             {
                 id: languageList
-                //: English language combo box option
+
                 ListElement { text: QT_TR_NOOP("English"); code: "en" }
-                //: German language combo box option
                 ListElement { text: QT_TR_NOOP("German"); code: "de" }
-                //: French language combo box option
-    //            ListElement { text: QT_TR_NOOP("French"); code: "fr" }
-                //: Spanish language combo box option
+                ListElement { text: QT_TR_NOOP("French"); code: "fr" }
                 ListElement { text: QT_TR_NOOP("Spanish"); code: "es" }
-                //: Italian language combo box option
-    //             ListElement { text: QT_TR_NOOP("Italian"); code: "it" }
-                //: Finnish language combo box option
+                ListElement { text: QT_TR_NOOP("Italian"); code: "it" }
                 ListElement { text: QT_TR_NOOP("Finnish"); code: "fi" }
-                //: Russian language combo box option
                 ListElement { text: QT_TR_NOOP("Russian"); code: "ru" }
+                ListElement { text: QT_TR_NOOP("Polish"); code: "pl" }
+                ListElement { text: QT_TR_NOOP("Czech"); code: "cs" }
+                ListElement { text: QT_TR_NOOP("Bulgarian"); code: "bg" }
             }
 
             currentIndex:
@@ -80,7 +77,7 @@ UM.PreferencesPage
                 // Because ListModel is stupid and does not allow using qsTr() for values.
                 for(var i = 0; i < languageList.count; ++i)
                 {
-                    languageList.setProperty(i, "text", catalog.i18nc("@action:inmenu",languageList.get(i).text));
+                    languageList.setProperty(i, "text", catalog.i18n(languageList.get(i).text));
                 }
 
                 // Glorious hack time. ComboBox does not update the text properly after changing the
@@ -96,7 +93,7 @@ UM.PreferencesPage
             Layout.columnSpan: 2
 
             //: Language change warning
-            text: catalog.i18nc("@label","You will need to restart the application for language changes to have effect.")
+            text: catalog.i18nc("@label", "You will need to restart the application for language changes to have effect.")
             wrapMode: Text.WordWrap
             font.italic: true
         }
@@ -112,11 +109,11 @@ UM.PreferencesPage
             id: pushFreeText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@option:check","Automatically arrange the distancing between objects");
+            text: catalog.i18nc("@option:check", "Ensure objects are kept apart");
             onClicked: pushFreeCheckbox.checked = !pushFreeCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Are objects on the platform automatically moved so that they no longer intersect")
+            tooltip: catalog.i18nc("@info:tooltip", "Should objects on the platform be moved so that they no longer intersect.")
 
             style: ButtonStyle
             {
@@ -145,11 +142,11 @@ UM.PreferencesPage
             id: sendDataText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@option:check","Send (anonymous) slice info");
+            text: catalog.i18nc("@option:check","Send (Anonymous) Print Information");
             onClicked: sendDataCheckbox.checked = !sendDataCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Should anonymous data about your slices be sent to Ultimaker. No models or IP's are sent / stored.")
+            tooltip: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
             style: ButtonStyle
             {
@@ -177,11 +174,11 @@ UM.PreferencesPage
             id: scaleToFitText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
-            text: catalog.i18nc("@option:check","Scale loaded meshes when too large");
+            text: catalog.i18nc("@option:check","Scale Too Large Files");
             onClicked: scaleToFitCheckbox.checked = !scaleToFitCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Should loaded meshes be scaled to the max build volume if they are too large.")
+            tooltip: catalog.i18nc("@info:tooltip","Should opened files be scaled to the build volume when they are too large?")
 
             style: ButtonStyle
             {
