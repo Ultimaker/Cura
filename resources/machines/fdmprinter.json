@@ -1688,7 +1688,7 @@
                     "enabled": "magic_fuzzy_skin_enabled",
                     "children": {
                         "magic_fuzzy_skin_point_dist": {
-                            "label": "Fuzzy Skin Density",
+                            "label": "Fuzzy Skin Point Distance",
                             "description": "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness.",
                             "type": "float",
                             "unit": "mm",
