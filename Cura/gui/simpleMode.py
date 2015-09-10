@@ -104,7 +104,7 @@ class simpleModePanel(wx.Panel):
 				self._print_material_types[_("Others")] = other_print_material_types
 				choices.append(_("Others"))
 			choices.append(_("All"))
-			label = wx.StaticText(self.printMaterialTypesPanel, label=_("Material types:"))
+			label = wx.StaticText(self.printMaterialTypesPanel, label=_("Material ease of use:"))
 			self.materialTypeCombo = wx.ComboBox(self.printMaterialTypesPanel, -1, selectedMaterialType,
 												 choices=choices, style=wx.CB_READONLY)
 			self.materialTypeCombo.Bind(wx.EVT_COMBOBOX, self._materialTypeSelected)
@@ -132,7 +132,7 @@ class simpleModePanel(wx.Panel):
 			boxsizer.Add(label, flag=wx.EXPAND)
 			boxsizer.Add(self.materialCombo, border=5, flag=wx.BOTTOM|wx.TOP|wx.EXPAND)
 			self.printMaterialPanel.SetSizer(boxsizer)
-		self.materialHyperlink = wx.HyperlinkCtrl(self.printMaterialPanel, -1, label=_('Click here for more!'), url='',
+		self.materialHyperlink = wx.HyperlinkCtrl(self.printMaterialPanel, -1, label=_('Material Information'), url='',
 												  style=wx.HL_ALIGN_LEFT|wx.BORDER_NONE|wx.HL_CONTEXTMENU)
 		self.materialHyperlink.Show(False)
 		self.materialDescription = wx.StaticText(self.printMaterialPanel, -1, '')

@@ -192,6 +192,19 @@ material_names = {
     "ABS_semiflex" : "ABS & SemiFlex",
 }
 
+bed_prep_materials = {
+    "ninjaflex",
+    "semiflex",
+    "Alloy910",
+    "Bridge",
+    "n-vent",
+	"PCTPE",
+	"T-Glase",
+	"618-Nylon",
+	"645-Nylon",
+	"PC-ABS"
+}
+
 material_url = {
     # Beginner
     "HIPS_eSUN": "www.lulzbot.com/products/hips-3mm-filament-1kg-reel-esun",
@@ -230,10 +243,10 @@ material_url = {
 
 profile_map = {
     'medium-quality': 'Standard',
-    'high-speed': 'High Speed',
-    'high-quality': 'High Detail',
-    'high-clarity': 'High Clarity',
-    'high-strength': 'High Strength'
+    'high-speed': 'High speed',
+    'high-quality': 'High detail',
+    'high-clarity': 'High clarity',
+    'high-strength': 'High strength'
 }
 
 profile_order = {
@@ -286,6 +299,11 @@ def create_machine_type(machine_type, path, dir):
                         order = 0
                     f.write("material_types = %s\n" % types)
                 f.write("order = %d\n" % order)
+                if material in bed_prep_materials:
+                    f.write("description = \
+                    Bed preparation required: \n\
+                    Apply a PVA-based glue stick \n\
+                    to bed surface before printing.\n")
                 if material_url.has_key(material):
                     f.write("url = %s\n" % material_url[material])
             with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
