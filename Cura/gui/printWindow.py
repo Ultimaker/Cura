@@ -1003,6 +1003,7 @@ class TemperatureGraph(wx.Panel):
 		self._lastDraw = now
 		dc = wx.MemoryDC()
 		dc.SelectObject(self._backBuffer)
+		dc.SetBackground(wx.Brush(wx.WHITE))
 		dc.Clear()
 		dc.SetFont(wx.SystemSettings.GetFont(wx.SYS_SYSTEM_FONT))
 		w, h = self.GetSizeTuple()
