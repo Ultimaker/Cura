@@ -27,7 +27,7 @@ Item
 
         Label{
             id: settingsModeLabel
-            text: catalog.i18nc("@label:listbox","Print setup: ");
+            text: catalog.i18nc("@label:listbox","Print Setup: ");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter

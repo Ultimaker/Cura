@@ -112,6 +112,7 @@ UM.MainWindow
                 MenuItem { action: actions.deleteSelection; }
                 MenuItem { action: actions.deleteAll; }
             }
+
             Menu
             {
                 title: catalog.i18nc("@title:menu","&View");
@@ -297,6 +298,9 @@ UM.MainWindow
             {
                 id: openFileButton;
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
+                //style: UM.Theme.styles.open_file_button
+                text: catalog.i18nc("@action:button","Open File");
+                iconSource: UM.Theme.icons.open
                 style: UM.Theme.styles.open_file_button
                 tooltip: '';
                 anchors
@@ -337,7 +341,6 @@ UM.MainWindow
                     right: sidebar.left;
                     rightMargin: UM.Theme.sizes.window_margin.width;
                 }
-                //: View Mode toolbar button
                 text: catalog.i18nc("@action:button","View Mode");
                 iconSource: UM.Theme.icons.viewmode;
 
