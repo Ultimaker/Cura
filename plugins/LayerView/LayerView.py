@@ -92,9 +92,11 @@ class LayerView(View):
                             layer = self._current_layer_num - i
                             if layer < 0:
                                 continue
-
-                            layer_mesh = layer_data.getLayer(layer).createMesh()
-                            if not layer_mesh or layer_mesh.getVertices() is None:
+                            try:
+                                layer_mesh = layer_data.getLayer(layer).createMesh()
+                                if not layer_mesh or layer_mesh.getVertices() is None:
+                                    continue
+                            except:
                                 continue
 
                             self._current_layer_mesh.addVertices(layer_mesh.getVertices())
