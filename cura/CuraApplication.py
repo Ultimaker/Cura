@@ -468,6 +468,12 @@ class CuraApplication(QtApplication):
                        
                 for child in children_to_move:
                     child.setParent(node.getParent())
+                    print(node.getPosition())
+                    child.translate(node.getPosition())
+                    child.setPosition(child.getPosition().scale(node.getScale()))
+                    child.scale(node.getScale())
+                    child.rotate(node.getOrientation())
+
                     Selection.add(child)
                     child.callDecoration("setConvexHull",None)
                 node.setParent(None)
