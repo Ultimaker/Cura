@@ -86,7 +86,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:
             try:
-                self._printer_connections[printer_connection].updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+                self._printer_connections[printer_connection].updateFirmware(Resources.getPath(Application.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
                 continue
 
@@ -95,7 +95,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         if serial_port in self._printer_connections:
             self.spawnFirmwareInterface(self._printer_connections[serial_port].getSerialPort())
             try:
-                self._printer_connections[serial_port].updateFirmware(Resources.getPath(Resources.FirmwareLocation, self._getDefaultFirmwareName()))
+                self._printer_connections[serial_port].updateFirmware(Resources.getPath(Application.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
                 self._firmware_view.close()
                 Logger.log("e", "Could not find firmware required for this machine")
