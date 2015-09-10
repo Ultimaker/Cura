@@ -953,7 +953,7 @@ class TemperatureField(wx.Panel):
 
 		self.text = IntCtrl(self, -1)
 		self.text.SetBounds(0, 300)
-		self.text.SetSize((60, 25))
+		self.text.SetSize((60, 28))
 
 		self.unit = wx.StaticBitmap(self, -1, wx.BitmapFromImage(wx.Image(
 				resources.getPathForImage('print-window-temperature-unit.png'))), (0, 0))
