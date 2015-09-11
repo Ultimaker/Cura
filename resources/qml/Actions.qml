@@ -24,7 +24,6 @@ Item
     //property alias unMergeObjects: unMergeObjectsAction;
     
     property alias multiplyObject: multiplyObjectAction;
-    property alias splitObject: splitObjectAction;
 
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
@@ -51,6 +50,7 @@ Item
         id:toggleFullScreenAction
         shortcut: StandardKey.FullScreen;
         text: catalog.i18nc("@action","Toggle Full Screen");
+        iconName: "view-fullscreen";
     }
 
     Action
@@ -93,14 +93,15 @@ Item
     Action
     {
         id: settingsAction;
-        text: catalog.i18nc("@action","Manage Printers");
+        text: catalog.i18nc("@action","Manage Printers...");
         iconName: "configure";
     }
 
     Action
     {
         id: manageProfilesAction;
-        text: catalog.i18nc("@action","Manage Profiles");
+        text: catalog.i18nc("@action","Manage Profiles...");
+        iconName: "configure";
     }
 
     Action
@@ -151,6 +152,7 @@ Item
         id: groupObjectsAction
         text: catalog.i18nc("@action","Group Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        iconName: "object-group"
     }
 
     Action
@@ -158,6 +160,7 @@ Item
         id: unGroupObjectsAction
         text: catalog.i18nc("@action","Ungroup Objects");
         enabled: UM.Scene.isGroupSelected
+        iconName: "object-ungroup"
     }
     
     Action
@@ -165,32 +168,28 @@ Item
         id: mergeObjectsAction
         text: catalog.i18nc("@action","Merge Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        iconName: "merge";
     }
 
     Action
     {
         id: multiplyObjectAction;
         text: catalog.i18nc("@action","Duplicate Object");
-    }
-
-    Action
-    {
-        id: splitObjectAction;
-        text: catalog.i18nc("@action","Split Object into Parts");
-        enabled: false;
+        iconName: "edit-duplicate"
     }
 
     Action
     {
         id: deleteAllAction;
         text: catalog.i18nc("@action","Clear Build Platform");
-        iconName: "edit-clear";
+        iconName: "edit-delete";
     }
 
     Action
     {
         id: reloadAllAction;
         text: catalog.i18nc("@action","Reload All Objects");
+        iconName: "document-revert";
     }
 
     Action

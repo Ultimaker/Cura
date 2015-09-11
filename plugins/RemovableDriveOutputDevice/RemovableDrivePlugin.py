@@ -39,10 +39,10 @@ class RemovableDrivePlugin(OutputDevicePlugin):
     def ejectDevice(self, device):
         result = self.performEjectDevice(device)
         if result:
-            message = Message(catalog.i18n("@info:status", "Ejected {0}. You can now safely remove the drive.").format(device.getName()))
+            message = Message(catalog.i18nc("@info:status", "Ejected {0}. You can now safely remove the drive.").format(device.getName()))
             message.show()
         else:
-            message = Message(catalog.i18n("@info:status", "Failed to eject {0}. Maybe it is still in use?").format(device.getName()))
+            message = Message(catalog.i18nc("@info:status", "Failed to eject {0}. Maybe it is still in use?").format(device.getName()))
             message.show()
 
     def performEjectDevice(self, device):
