@@ -118,7 +118,13 @@ class simpleModePanel(wx.Panel):
 			boxsizer = wx.StaticBoxSizer(sb, wx.VERTICAL)
 			boxsizer.SetMinSize((80, 20))
 			for button in self._print_material_options:
-				boxsizer.Add(button)
+				# wxpython 2.8 gives a 13 pixel high radio/checkbutton but wxpython 3.0
+				# gives it a 25 pixels height, so we add a border to compensate for the ugliness
+				if button.GetBestSize()[1] < 20:
+					border = 5
+				else:
+					border = 0
+				boxsizer.Add(button, border=border, flag=wx.ALL)
 			self.printMaterialPanel.SetSizer(wx.BoxSizer(wx.VERTICAL))
 			self.printMaterialPanel.GetSizer().Add(boxsizer, flag=wx.EXPAND)
 			self.materialCombo = None
@@ -277,7 +283,13 @@ class simpleModePanel(wx.Panel):
 
 		# Add profiles to the UI
 		for button in self._print_profile_options:
-			boxsizer.Add(button)
+			# wxpython 2.8 gives a 13 pixel high radio/checkbutton but wxpython 3.0
+			# gives it a 25 pixels height, so we add a border to compensate for the ugliness
+			if button.GetBestSize()[1] < 20:
+				border = 5
+			else:
+				border = 0
+			boxsizer.Add(button, border=border, flag=wx.ALL)
 			button.Bind(wx.EVT_RADIOBUTTON, self._update)
 
 		# Save current selected options
@@ -312,7 +324,13 @@ class simpleModePanel(wx.Panel):
 
 		# Add profiles to the UI
 		for button in self._print_other_options:
-			boxsizer.Add(button)
+			# wxpython 2.8 gives a 13 pixel high radio/checkbutton but wxpython 3.0
+			# gives it a 25 pixels height, so we add a border to compensate for the ugliness
+			if button.GetBestSize()[1] < 20:
+				border = 5
+			else:
+				border = 0
+			boxsizer.Add(button, border=border, flag=wx.ALL)
 			button.Bind(wx.EVT_CHECKBOX, self._update)
 		self.Layout()
 		self.GetParent().Fit()
