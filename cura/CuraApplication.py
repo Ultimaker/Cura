@@ -449,7 +449,8 @@ class CuraApplication(QtApplication):
         
         for node in Selection.getAllSelectedObjects():
             node.setParent(group_node)
-        
+        group_node.setCenterPosition(group_node.getBoundingBox().center)
+        group_node.translate(Vector(0,group_node.getBoundingBox().center.y,0))
         for node in group_node.getChildren():
             Selection.remove(node)
         
