@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 Column
 {
@@ -19,14 +19,29 @@ Column
     property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
     Component.onCompleted: printer_connection.homeHead()
     UM.I18nCatalog { id: catalog; name:"cura"}
+
     Label
     {
-        text: ""
-        //Component.onCompleted:console.log(UM.Models.settingsModel.getMachineSetting("machine_width"))
+        text: catalog.i18nc("@title", "Bed Leveling")
+        font.pointSize: 18;
+    }
+
+    Label
+    {
+        id: pageDescription
+        width: parent.width
+        wrapMode: Text.WordWrap
+        text: catalog.i18nc("@label","To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted.")
+    }
+    Label
+    {
+        width: parent.width
+        wrapMode: Text.WordWrap
+        text: catalog.i18nc("@label", "For every postition; insert a piece of paper under the nozzle and adjust the print bed height. The print bed height is right when the paper is slightly gripped by the tip of the nozzle.")
     }
     Button
     {
-        text: catalog.i18nc("@action:button","Move to next position");
+        text: catalog.i18nc("@action:button","Move to Next Position");
         onClicked:
         {
             if(wizardPage.leveling_state == 0)
@@ -41,15 +56,18 @@ Column
             {
                 printer_connection.moveHead(0, 0 ,0)
             }
-
             wizardPage.leveling_state++
 
         }
     }
 
-    function threePointLeveling(width, height)
+    Button
     {
+        text: catalog.i18nc("@action:button","Skip Bedleveling");
     }
 
+    function threePointLeveling(width, height)
+    {
 
+    }
 }

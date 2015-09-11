@@ -6,65 +6,59 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-Column
+Item
 {
     id: wizardPage
     property string title
-    anchors.fill: parent;
-    UM.I18nCatalog { id: catalog; name:"cura"}
-    Label
-    {
-        text: parent.title
-        font.pointSize: 18;
-    }
 
+    SystemPalette{id: palette}
+    UM.I18nCatalog { id: catalog; name:"cura"}
     ScrollView
     {
-        height: parent.height - 50
+        height: parent.height
         width: parent.width
-        ListView
+        Column
         {
-            id: machineList;
-            model: UM.USBPrinterManager.connectedPrinterList
-
-            delegate:Row
+            width: wizardPage.width
+            Label
             {
-                id: derp
-                Text
-                {
-                    id: text_area
-                    text: model.name
-                }
-                Button
-                {
-                    text: catalog.i18nc("@action:button","Update")
+                id: pageTitle
+                width: parent.width
+                text: catalog.i18nc("@title", "Upgrade Firmware")
+                wrapMode: Text.WordWrap
+                font.pointSize: 18
+            }
+            Label
+            {
+                id: pageDescription
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label","Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work.")
+            }
 
-                    onClicked:
-                    {
-                        if(!UM.USBPrinterManager.updateFirmwareBySerial(text_area.text))
-                        {
-                            status_text.text = catalog.i18nc("@info:status","ERROR")
-                        }
-                    }
-                }
+            Label
+            {
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label","The firmware shipping with new Ultimakers works, but upgrades have been made to make better prints, and make calibration easier.");
+            }
+
+            Label
+            {
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: catalog.i18nc("@label","Cura requires these new features and thus your firmware will most likely need to be upgraded. You can do so now.");
+            }
+            Button {
+                text: catalog.i18nc("@action:button","Upgrade to Marlin Firmware");
+            }
+            Button {
+                text: catalog.i18nc("@action:button","Skip Upgrade");
             }
         }
     }
 
-    Label
-    {
-        id: status_text
-        text: ""
-    }
-
-
-    Item
-    {
-        Layout.fillWidth: true;
-        Layout.fillHeight: true;
-    }
-
-
+    ExclusiveGroup { id: printerGroup; }
 }

@@ -26,7 +26,7 @@ Item
             {
                 id: pageTitle
                 width: parent.width
-                text: wizardPage.title
+                text: catalog.i18nc("@title", "Select Upgraded Parts")
                 wrapMode: Text.WordWrap
                 font.pointSize: 18
             }
@@ -51,7 +51,7 @@ Item
                 }
                 CheckBox
                 {
-                    text: catalog.i18nc("@option:check","Heated printer bed (kit)")
+                    text: catalog.i18nc("@option:check","Heated printer bed (standard kit)")
                 }
                 CheckBox
                 {
@@ -67,14 +67,7 @@ Item
             {
                 width: parent.width
                 wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","If you have an Ultimaker bought after october 2012 you will have the Extruder drive upgrade. If you do not have this upgrade, it is highly recommended to improve reliability.");
-            }
-
-            Label
-            {
-                width: parent.width
-                wrapMode: Text.WordWrap
-                text: catalog.i18nc("@label","This upgrade can be bought from the Ultimaker webshop or found on thingiverse as thing:26094");
+                text: catalog.i18nc("@label","If you bought your Ultimaker after october 2012 you will have the Extruder drive upgrade. If you do not have this upgrade, it is highly recommended to improve reliability. This upgrade can be bought from the Ultimaker webshop or found on thingiverse as thing:26094");
             }
         }
     }

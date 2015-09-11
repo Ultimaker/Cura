@@ -206,7 +206,6 @@ Item
             // Insert new pages (if any)
             for(var i = 0; i < pages.length; i++)
             {
-                console.log(pages[i])
                 switch(pages[i]) {
                     case "SelectUpgradedParts":
                         base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedParts.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));

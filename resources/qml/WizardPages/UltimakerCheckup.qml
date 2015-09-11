@@ -34,14 +34,28 @@ Column
     }
     Label
     {
-        text: parent.title
+        text: catalog.i18nc("@title", "Check Printer")
         font.pointSize: 18;
     }
 
     Label
     {
         //: Add Printer wizard page description
-        text: catalog.i18nc("@label","It's a good idea to do a few sanity checks on your Ultimaker. \n You can skip these if you know your machine is functional");
+        text: catalog.i18nc("@label","It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional");
+    }
+
+    Button
+    {
+        text: catalog.i18nc("@action:button","Start Printer Check");
+        enabled: manager.progress >= 100;
+        onClicked: base.visible = false;
+    }
+
+    Button
+    {
+        text: catalog.i18nc("@action:button","Skip Printer Check");
+        enabled: manager.progress >= 100;
+        onClicked: base.visible = false;
     }
 
     Row
@@ -102,7 +116,7 @@ Column
         }
         Button
         {
-            text: catalog.i18nc("@action:button","Start heating")
+            text: catalog.i18nc("@action:button","Start Heating")
             onClicked:
             {
                 if(printer_connection != null)
@@ -124,7 +138,7 @@ Column
     {
         Label
         {
-            text: catalog.i18nc("@label","bed temperature check: ")
+            text: catalog.i18nc("@label","bed temperature check:")
         }
         Label
         {
@@ -132,7 +146,7 @@ Column
         }
         Button
         {
-            text: catalog.i18nc("@action:button","Start heating")
+            text: catalog.i18nc("@action:button","Start Heating")
             onClicked:
             {
                 if(printer_connection != null)
