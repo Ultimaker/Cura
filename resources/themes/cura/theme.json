@@ -172,6 +172,7 @@
         "setting_control_margin": [3.0, 3.0],
         "setting_unit_margin": [0.5, 0.5],
         "setting_text_maxwidth": [40.0, 0.0],
+        "simple_mode_infill_caption": [0.0, 5.0],
 
         "standard_list_lineheight": [1.5, 1.5],
         "standard_list_input": [20.0, 25.0],
