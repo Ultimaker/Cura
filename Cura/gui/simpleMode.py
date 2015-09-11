@@ -207,6 +207,8 @@ class simpleModePanel(wx.Panel):
 			self.printMaterialTypesPanel.Show(True)
 			self.materialCombo.SetValue(selectedMaterial.name)
 
+		self.materialCombo.Layout()
+		self.printMaterialPanel.Layout()
 		self._materialSelected(e)
 
 	def _getSelectedMaterial(self):
@@ -332,6 +334,8 @@ class simpleModePanel(wx.Panel):
 				border = 0
 			boxsizer.Add(button, border=border, flag=wx.ALL)
 			button.Bind(wx.EVT_CHECKBOX, self._update)
+
+		self.printTypePanel.Layout()
 		self.Layout()
 		self.GetParent().Fit()
 
