@@ -13,6 +13,7 @@ from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, pyqtSlot, QObject
 
 import os.path
+import collections
 
 catalog = i18nCatalog("cura")
 
@@ -55,7 +56,7 @@ class ChangeLog(Extension, QObject,):
         return result
 
     def loadChangeLogs(self):
-        self._change_logs = {}
+        self._change_logs = collections.OrderedDict()
         with open(os.path.join(PluginRegistry.getInstance().getPluginPath("ChangeLogPlugin"), "ChangeLog.txt"), 'r',-1, "utf-8") as f:
             open_version = None
             open_header = None
@@ -65,7 +66,7 @@ class ChangeLog(Extension, QObject,):
                     line = line.replace("[","")
                     line = line.replace("]","")
                     open_version = Version(line)
-                    self._change_logs[Version(line)] = {}
+                    self._change_logs[Version(line)] = collections.OrderedDict()
                 elif line.startswith("*"):
                     open_header = line.replace("*","")
                     self._change_logs[open_version][open_header] = []
