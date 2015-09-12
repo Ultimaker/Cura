@@ -35,14 +35,14 @@ UM.PreferencesPage
         }
         Button
         {
-            id: viewText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
+            id: viewText //is a button so the user doesn't have to click inconveniently precise to enable or disable the checkbox
 
             //: Display Overhang preference checkbox
             text: catalog.i18nc("@option:check","Display Overhang");
             onClicked: overhangCheckbox.checked = !overhangCheckbox.checked
 
             //: Display Overhang preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will nog print properly.")
+            tooltip: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
 
             style: ButtonStyle
             {
@@ -68,13 +68,13 @@ UM.PreferencesPage
         }
         Button
         {
-            id: centerText //is a button so the user doesn't have te click inconvenientley precise to enable or disable the checkbox
+            id: centerText //is a button so the user doesn't have to click inconveniently precise to enable or disable the checkbox
 
-            //: Display Overhang preference checkbox
+            //: Display Center camera preference checkbox
             text: catalog.i18nc("@action:button","Center camera when item is selected");
             onClicked: centerCheckbox.checked = !centerCheckbox.checked
 
-            //: Display Overhang preference tooltip
+            //: Display Center camera preference tooltip
             tooltip: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
 
             style: ButtonStyle
