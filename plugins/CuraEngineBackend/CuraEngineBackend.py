@@ -11,6 +11,7 @@ from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+from UM.Message import Message
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import Cura_pb2
@@ -22,6 +23,9 @@ import sys
 import numpy
 
 from PyQt5.QtCore import QTimer
+
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 class CuraEngineBackend(Backend):
     def __init__(self):
@@ -69,6 +73,8 @@ class CuraEngineBackend(Backend):
         self._report_progress = True
 
         self._enabled = True
+
+        self._message = None
 
         self.backendConnected.connect(self._onBackendConnected)
 
@@ -141,10 +147,16 @@ class CuraEngineBackend(Backend):
         #            objects.append(node)
 
         if len(object_groups) == 0:
+            if self._message:
+                self._message.hide()
+                self._message = None
             return #No point in slicing an empty build plate
 
         if kwargs.get("profile", self._profile).hasErrorValue():
             Logger.log('w', "Profile has error values. Aborting slicing")
+            if self._message:
+                self._message.hide()
+                self._message = None
             return #No slicing if we have error values since those are by definition illegal values.
 
         self._slicing = True
@@ -153,6 +165,11 @@ class CuraEngineBackend(Backend):
         self._report_progress = kwargs.get("report_progress", True)
         if self._report_progress:
             self.processingProgress.emit(0.0)
+            if not self._message:
+                self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
+                self._message.show()
+            else:
+                self._message.setProgress(-1)
 
         self._sendSettings(kwargs.get("profile", self._profile))
 
@@ -224,6 +241,14 @@ class CuraEngineBackend(Backend):
     def _onProgressMessage(self, message):
         if message.amount >= 0.99:
             self._slicing = False
+
+            if self._message:
+                self._message.setProgress(100)
+                self._message.hide()
+                self._message = None
+
+        if self._message:
+            self._message.setProgress(round(message.amount * 100))
 
         if self._report_progress:
             self.processingProgress.emit(message.amount)
