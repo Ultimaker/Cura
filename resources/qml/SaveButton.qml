@@ -112,7 +112,7 @@ Rectangle {
         anchors.top: printJobRow.bottom
         Item{
             id: time
-            width: (parent.width / 100 * 45) - UM.Theme.sizes.default_margin.width * 2
+            width: childrenRect.width;
             height: parent.height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
@@ -136,13 +136,14 @@ Rectangle {
                 anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
                 font: UM.Theme.fonts.default
                 color: UM.Theme.colors.text
-                text: (!base.printDuration || !base.printDuration.valid) ? "" : catalog.i18nc("@label h:m (abbreviation for hours:minutes) is added to the expected printtime (%1)", "%1 h:m").arg(base.printDuration.getDisplayString(UM.DurationFormat.Short))
+                text: (!base.printDuration || !base.printDuration.valid) ? "" : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
         }
         Item{
             width: parent.width / 100 * 55
             height: parent.height
             anchors.left: time.right
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             anchors.top: parent.top
             visible: base.printMaterialAmount > 0 ? true : false
             UM.RecolorImage {
@@ -163,7 +164,7 @@ Rectangle {
                 anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
                 font: UM.Theme.fonts.default
                 color: UM.Theme.colors.text
-                text: base.printMaterialAmount <= 0 ? "" : catalog.i18nc("@label m (abbreviation for meters) is added to the expected length of filament (%1) ","%1 m").arg(base.printMaterialAmount)
+                text: base.printMaterialAmount <= 0 ? "" : catalog.i18nc("@label %1 is length of filament","%1 m").arg(base.printMaterialAmount)
             }
         }
     }

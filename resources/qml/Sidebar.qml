@@ -116,17 +116,12 @@ Rectangle
     ListModel
     {
         id: modesListModel;
-        //: Simple configuration mode option
-        ListElement { text: QT_TR_NOOP("Simple"); file: "SidebarSimple.qml" }
-        //: Advanced configuration mode option
-        ListElement { text: QT_TR_NOOP("Advanced"); file: "SidebarAdvanced.qml" }
     }
 
     Component.onCompleted:
     {
-        for(var i = 0; i < modesListModel.count; ++i)
-        {
-            modesListModel.setProperty(i, "text", catalog.i18nc("@label", modesListModel.get(i).text));
-        }
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), file: "SidebarSimple.qml" })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), file: "SidebarAdvanced.qml" })
+        sidebarContents.setSource(modesListModel.get(header.currentModeIndex).file)
     }
 }

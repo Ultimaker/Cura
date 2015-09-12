@@ -17,7 +17,7 @@ def getMetaData():
         },
         "mesh_reader": {
             "extension": "3mf",
-            "description": catalog.i18nc("@item:inlistbox displays the fileformat in a list", "3MF File")
+            "description": catalog.i18nc("@item:inlistbox", "3MF File")
         }
     }
 

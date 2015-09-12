@@ -11,7 +11,7 @@ import UM 1.1 as UM
 UM.PreferencesPage
 {
     //: General configuration page title
-    title: catalog.i18nc("@title","General");
+    title: catalog.i18nc("@title:tab","General");
 
     function reset()
     {
@@ -43,16 +43,18 @@ UM.PreferencesPage
             {
                 id: languageList
 
-                ListElement { text: QT_TR_NOOP("English"); code: "en" }
-                ListElement { text: QT_TR_NOOP("German"); code: "de" }
-                ListElement { text: QT_TR_NOOP("French"); code: "fr" }
-                ListElement { text: QT_TR_NOOP("Spanish"); code: "es" }
-                ListElement { text: QT_TR_NOOP("Italian"); code: "it" }
-                ListElement { text: QT_TR_NOOP("Finnish"); code: "fi" }
-                ListElement { text: QT_TR_NOOP("Russian"); code: "ru" }
-                ListElement { text: QT_TR_NOOP("Polish"); code: "pl" }
-                ListElement { text: QT_TR_NOOP("Czech"); code: "cs" }
-                ListElement { text: QT_TR_NOOP("Bulgarian"); code: "bg" }
+                Component.onCompleted: {
+                    append({ text: catalog.i18nc("@item:inlistbox", "Bulgarian"), code: "bg" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Czech"), code: "cs" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "English"), code: "en" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Finnish"), code: "fi" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "French"), code: "fr" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "German"), code: "de" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Italian"), code: "it" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Polish"), code: "pl" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Russian"), code: "ru" })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Spanish"), code: "es" })
+                }
             }
 
             currentIndex:

@@ -113,23 +113,26 @@ Item
         ListModel {
             id: infillModel
 
-            ListElement {
-                name: "Sparse"
-                percentage: 20
-                text: "Sparse (20%) infill will give your model an average strength"
-                icon: "sparse"
-            }
-            ListElement {
-                name: "Dense"
-                percentage: 50
-                text: "Dense (50%) infill will give your model an above average strength"
-                icon: "dense"
-            }
-            ListElement {
-                name: "Solid"
-                percentage: 100;
-                text: "Solid (100%) infill will make your model completely solid"
-                icon: "solid"
+            Component.onCompleted:
+            {
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Sparse"),
+                    percentage: 20,
+                    text: catalog.i18nc("@label", "Sparse (20%) infill will give your model an average strength"),
+                    icon: "sparse"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Dense"),
+                    percentage: 50,
+                    text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
+                    icon: "dense"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Solid"),
+                    percentage: 100,
+                    text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
+                    icon: "solid"
+                })
             }
         }
     }
