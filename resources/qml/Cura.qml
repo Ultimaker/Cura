@@ -12,7 +12,6 @@ import UM 1.1 as UM
 UM.MainWindow
 {
     id: base
-    visible: true
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
 
@@ -474,7 +473,6 @@ UM.MainWindow
         id: actions;
 
         open.onTriggered: openDialog.open();
-        save.onTriggered: saveDialog.open();
 
         quit.onTriggered: base.visible = false;
 
@@ -649,6 +647,10 @@ UM.MainWindow
         }
     }
 
-    Component.onCompleted: UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
+    Component.onCompleted:
+    {
+        UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
+        base.visible = true;
+    }
 }
 
