@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-11 13:40+0200\n"
+"POT-Creation-Date: 2015-09-12 18:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,16 +16,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:135
-msgctxt "@info:progress"
-msgid "Setting up scene..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:169
-msgctxt "@info:progress"
-msgid "Loading interface..."
-msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:20
 msgctxt "@title:window"
@@ -45,6 +35,16 @@ msgctxt "@action:button"
 msgid "Open Web Page"
 msgstr ""
 
+#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:135
+msgctxt "@info:progress"
+msgid "Setting up scene..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:169
+msgctxt "@info:progress"
+msgid "Loading interface..."
+msgstr ""
+
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:12
 msgctxt "@label"
 msgid "3MF Reader"
@@ -56,7 +56,7 @@ msgid "Provides support for reading 3MF files."
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:20
-msgctxt "@item:inlistbox displays the fileformat in a list"
+msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr ""
 
@@ -86,6 +86,11 @@ msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr ""
 
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
+msgctxt "@info:status"
+msgid "Slicing..."
+msgstr ""
+
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:12
 msgctxt "@label"
 msgid "GCode Writer"
@@ -97,7 +102,7 @@ msgid "Writes GCode to a file"
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:22
-msgctxt "@item:inlistbox displays the fileformat in a list"
+msgctxt "@item:inlistbox"
 msgid "GCode File"
 msgstr ""
 
@@ -156,14 +161,21 @@ msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:42
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:45
-msgid "@info:status"
-msgstr ""
-
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:58
 msgctxt "@item:intext"
 msgid "Removable Drive"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:42
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Ejected {0}. You can now safely remove the drive."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:45
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed to eject {0}. Maybe it is still in use?"
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/__init__.py:12
@@ -176,6 +188,16 @@ msgctxt "@info:whatsthis"
 msgid "Provides removable drive hotplugging and writing support"
 msgstr ""
 
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:10
+msgctxt "@label"
+msgid "Slice info"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr ""
+
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:35
 msgctxt "@info"
 msgid ""
@@ -185,21 +207,6 @@ msgstr ""
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:36
 msgctxt "@action:button"
 msgid "Dismiss"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:36
-msgctxt "@action"
-msgid "Dismiss"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:10
-msgctxt "@label"
-msgid "Slice info"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:13
-msgctxt "@info:whatsthis"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:35
@@ -496,21 +503,6 @@ msgid ""
 "Cura has been developed by Ultimaker B.V. in cooperation with the community."
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:141
-msgctxt "@label:listbox"
-msgid "Helpers:"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:154
-msgctxt "@option:check"
-msgid "Enable Skirt Adhesion"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:169
-msgctxt "@option:check"
-msgid "Enable Support"
-msgstr ""
-
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:16
 msgctxt "@title:window"
 msgid "View"
@@ -545,248 +537,290 @@ msgctxt "@label:textbox"
 msgid "Printjob Name"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:139
-msgctxt ""
-"@label h:m (abbreviation for hours:minutes) is added to the expected "
-"printtime (%1)"
-msgid "%1 h:m"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:166
-msgctxt ""
-"@label m (abbreviation for meters) is added to the expected length of "
-"filament (%1) "
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:167
+msgctxt "@label %1 is length of filament"
 msgid "%1 m"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:228
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:229
 msgctxt "@info:tooltip"
 msgid "Select the active output device"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:30
-msgctxt "@label:listbox"
-msgid "Print Setup: "
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:34
+msgctxt "@label"
+msgid "Infill:"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:97
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:119
+msgctxt "@label"
+msgid "Sparse"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:121
+msgctxt "@label"
+msgid "Sparse (20%) infill will give your model an average strength"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:125
+msgctxt "@label"
+msgid "Dense"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:127
+msgctxt "@label"
+msgid "Dense (50%) infill will give your model an above average strength"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:131
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:133
+msgctxt "@label"
+msgid "Solid (100%) infill will make your model completely solid"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:151
+msgctxt "@label:listbox"
+msgid "Helpers:"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:169
+msgctxt "@option:check"
+msgid "Enable Skirt Adhesion"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:187
+msgctxt "@option:check"
+msgid "Enable Support"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:51
+msgctxt "@action:inmenu"
+msgid "Toggle Fu&ll Screen"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:58
+msgctxt "@action:inmenu"
+msgid "&Undo"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:66
+msgctxt "@action:inmenu"
+msgid "&Redo"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:74
+msgctxt "@action:inmenu"
+msgid "&Quit"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:82
+msgctxt "@action:inmenu"
+msgid "&Preferences..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:89
+msgctxt "@action:inmenu"
+msgid "&Add Printer..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:95
+msgctxt "@action:inmenu"
+msgid "Manage Pr&inters..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:102
+msgctxt "@action:inmenu"
+msgid "Manage Profiles..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:109
+msgctxt "@action:inmenu"
+msgid "Show Online &Documentation"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:116
+msgctxt "@action:inmenu"
+msgid "Report a &Bug"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:123
+msgctxt "@action:inmenu"
+msgid "&About..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:130
+msgctxt "@action:inmenu"
+msgid "Delete &Selection"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:138
+msgctxt "@action:inmenu"
+msgid "Delete Object"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:146
+msgctxt "@action:inmenu"
+msgid "Ce&nter Object on Platform"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:152
+msgctxt "@action:inmenu"
+msgid "&Group Objects"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:160
+msgctxt "@action:inmenu"
+msgid "Ungroup Objects"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:168
+msgctxt "@action:inmenu"
+msgid "&Merge Objects"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:176
+msgctxt "@action:inmenu"
+msgid "&Duplicate Object"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:183
+msgctxt "@action:inmenu"
+msgid "&Clear Build Platform"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:190
+msgctxt "@action:inmenu"
+msgid "Re&load All Objects"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:197
+msgctxt "@action:inmenu"
+msgid "Reset All Object Positions"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:203
+msgctxt "@action:inmenu"
+msgid "Reset All Object &Transformations"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:209
+msgctxt "@action:inmenu"
+msgid "&Open File..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:217
+msgctxt "@action:inmenu"
+msgid "Show Engine &Log..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:126
+msgctxt "@title:tab"
+msgid "Simple"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:127
+msgctxt "@title:tab"
+msgid "Advanced"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:30
+msgctxt "@label:listbox"
+msgid "Print Setup"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:100
 msgctxt "@label:listbox"
 msgid "Machine:"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:52
-msgctxt "@action"
-msgid "Toggle Full Screen"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:59
-msgctxt "@action"
-msgid "Undo"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:67
-msgctxt "@action"
-msgid "Redo"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:75
-msgctxt "@action"
-msgid "Quit"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:83
-msgctxt "@action"
-msgid "Preferences..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:90
-msgctxt "@action"
-msgid "Add Printer..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:96
-msgctxt "@action"
-msgid "Manage Printers..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:103
-msgctxt "@action"
-msgid "Manage Profiles..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:110
-msgctxt "@action"
-msgid "Show Online &Documentation"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:117
-msgctxt "@action"
-msgid "Report a &Bug"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:124
-msgctxt "@action"
-msgid "About..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:131
-msgctxt "@action"
-msgid "Delete Selection"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:139
-msgctxt "@action"
-msgid "Delete Object"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:147
-msgctxt "@action"
-msgid "Center Object on Platform"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:153
-msgctxt "@action"
-msgid "Group Objects"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:161
-msgctxt "@action"
-msgid "Ungroup Objects"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:169
-msgctxt "@action"
-msgid "Merge Objects"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:177
-msgctxt "@action"
-msgid "Duplicate Object"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:184
-msgctxt "@action"
-msgid "Clear Build Platform"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:191
-msgctxt "@action"
-msgid "Reload All Objects"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:198
-msgctxt "@action"
-msgid "Reset All Object Positions"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:204
-msgctxt "@action"
-msgid "Reset All Object Transformations"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:210
-msgctxt "@action"
-msgid "Open File"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:218
-msgctxt "@action"
-msgid "Save..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:226
-msgctxt "@action"
-msgid "Show Engine &Log..."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:17
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:16
 msgctxt "@title:window"
 msgid "Cura"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:35
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:34
 msgctxt "@title:menu"
 msgid "&File"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:44
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:43
 msgctxt "@title:menu"
 msgid "Open &Recent"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:73
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:72
 msgctxt "@action:inmenu"
 msgid "&Save Selection to File"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:81
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:80
 msgctxt "@title:menu"
 msgid "Save &All"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:109
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:108
 msgctxt "@title:menu"
 msgid "&Edit"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:126
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:125
 msgctxt "@title:menu"
 msgid "&View"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:152
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:151
 msgctxt "@title:menu"
 msgid "&Machine"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:198
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:197
 msgctxt "@title:menu"
 msgid "&Profile"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:225
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:224
 msgctxt "@title:menu"
 msgid "E&xtensions"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:258
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:257
 msgctxt "@title:menu"
 msgid "&Settings"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:266
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:265
 msgctxt "@title:menu"
 msgid "&Help"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:336
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:335
 msgctxt "@action:button"
 msgid "Open File"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:378
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:377
 msgctxt "@action:button"
 msgid "View Mode"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:462
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:461
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:14
 msgctxt "@title:tab"
 msgid "General"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:465
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:464
 msgctxt "@title:tab"
 msgid "View"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:605
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:603
 msgctxt "@title:window"
 msgid "Open File"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:14
-msgctxt "@title"
-msgid "General"
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:36
@@ -794,29 +828,79 @@ msgctxt "@label"
 msgid "Language"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:96
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:47
+msgctxt "@item:inlistbox"
+msgid "Bulgarian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:48
+msgctxt "@item:inlistbox"
+msgid "Czech"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:49
+msgctxt "@item:inlistbox"
+msgid "English"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:50
+msgctxt "@item:inlistbox"
+msgid "Finnish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:51
+msgctxt "@item:inlistbox"
+msgid "French"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:52
+msgctxt "@item:inlistbox"
+msgid "German"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:53
+msgctxt "@item:inlistbox"
+msgid "Italian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:54
+msgctxt "@item:inlistbox"
+msgid "Polish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:55
+msgctxt "@item:inlistbox"
+msgid "Russian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:56
+msgctxt "@item:inlistbox"
+msgid "Spanish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:98
 msgctxt "@label"
 msgid ""
 "You will need to restart the application for language changes to have effect."
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:112
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:114
 msgctxt "@option:check"
 msgid "Ensure objects are kept apart"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:116
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:118
 msgctxt "@info:tooltip"
 msgid ""
 "Should objects on the platform be moved so that they no longer intersect."
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:145
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:147
 msgctxt "@option:check"
 msgid "Send (Anonymous) Print Information"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:149
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:151
 msgctxt "@info:tooltip"
 msgid ""
 "Should anonymous data about your print be sent to Ultimaker? Note, no "
@@ -824,12 +908,12 @@ msgid ""
 "stored."
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:177
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:179
 msgctxt "@option:check"
 msgid "Scale Too Large Files"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:181
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:183
 msgctxt "@info:tooltip"
 msgid ""
 "Should opened files be scaled to the build volume when they are too large?"

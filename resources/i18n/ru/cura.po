@@ -7,85 +7,1008 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-07 16:35+0200\n"
+"POT-Creation-Date: 2015-09-12 18:40+0200\n"
 "PO-Revision-Date: 2015-06-01 18:29+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.8.1\n"
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:91
-msgctxt "Save button tooltip"
-msgid "Save to Disk"
-msgstr "Сохранить на диск"
+#: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:20
+msgctxt "@title:window"
+msgid "Oops!"
+msgstr ""
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:96
-msgctxt "Splash screen message"
+#: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:26
+msgctxt "@label"
+msgid ""
+"<p>An uncaught exception has occurred!</p><p>Please use the information "
+"below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/"
+"issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:46
+msgctxt "@action:button"
+msgid "Open Web Page"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:135
+#, fuzzy
+msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Настройка сцены ..."
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:130
-msgctxt "Splash screen message"
+#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:169
+#, fuzzy
+msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Загрузка интерфейса ..."
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:373
-#, python-brace-format
-msgctxt "Save button tooltip. {0} is sd card name"
-msgid "Save to SD Card {0}"
-msgstr "Сохранить на SD карту {0}"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:12
+msgctxt "@label"
+msgid "3MF Reader"
+msgstr ""
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:421
-#, python-brace-format
-msgctxt "Saved to SD message, {0} is sdcard, {1} is filename"
-msgid "Saved to SD Card {0} as {1}"
-msgstr "Сохранено на SD карту {0} как {1}"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for reading 3MF files."
+msgstr ""
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:424
-msgctxt "Message action"
-msgid "Eject"
-msgstr "Извлечь"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:20
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "3MF File"
+msgstr "&Файл"
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/src/CuraApplication.py:426
-#, python-brace-format
-msgctxt "Message action tooltip, {0} is sdcard"
-msgid "Eject SD Card {0}"
-msgstr "Извлечь SD карту {0}"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/ChangeLogPlugin/__init__.py:12
+#, fuzzy
+msgctxt "@label"
+msgid "Change Log"
+msgstr "Журнал слайсера"
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/CuraEngineBackend/__init__.py:13
-msgctxt "CuraEngine backend plugin description"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/ChangeLogPlugin/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Shows changes since latest checked version"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/__init__.py:13
+msgctxt "@label"
+msgid "CuraEngine Backend"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
 msgid "Provides the link to the CuraEngine slicing backend"
 msgstr "Обеспечивает связь с Кура слайсинг сервером"
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/USBPrinting/USBPrinterManager.py:40
-msgid "Update Firmware"
-msgstr "Обновление прошивки"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:30
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:111
+msgctxt "@info:status"
+msgid "Processing Layers"
+msgstr ""
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/USBPrinting/__init__.py:13
-msgctxt "USB Printing plugin description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware"
-msgstr "Принимает G-коды и отправляет их на принтер. Плагин также может обновить прошивку."
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
+#, fuzzy
+msgctxt "@info:status"
+msgid "Slicing..."
+msgstr "Высчитывается..."
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/GCodeWriter/__init__.py:13
-msgctxt "GCode Writer Plugin Description"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:12
+#, fuzzy
+msgctxt "@label"
+msgid "GCode Writer"
+msgstr "G-код"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
 msgid "Writes GCode to a file"
 msgstr "Записывает G-код в файл "
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/GCodeWriter/__init__.py:18
-msgctxt "GCode Writer File Description"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:22
+#, fuzzy
+msgctxt "@item:inlistbox"
 msgid "GCode File"
 msgstr "G-код"
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/LayerView/__init__.py:13
-msgctxt "Layer View plugin description"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:13
+#, fuzzy
+msgctxt "@label"
+msgid "Layer View"
+msgstr "Слой"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:16
+#, fuzzy
+msgctxt "@info:whatsthis"
 msgid "Provides the Layer view."
 msgstr "Обеспечивает просмотр слоев."
 
-#: /home/ahiemstra/Projects/Ultimaker/cura/plugins/LayerView/__init__.py:16
-msgctxt "Layers View mode"
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:20
+#, fuzzy
+msgctxt "@item:inlistbox"
 msgid "Layers"
 msgstr "Слой"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:20
+msgctxt "@action:button"
+msgid "Save to Removable Drive"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:21
+#, fuzzy, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "Save to Removable Drive {0}"
+msgstr "Сохранить на SD карту {0}"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:52
+#, python-brace-format
+msgctxt "@info:progress"
+msgid "Saving to Removable Drive <filename>{0}</filename>"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:73
+#, fuzzy, python-brace-format
+msgctxt "@info:status"
+msgid "Saved to Removable Drive {0} as {1}"
+msgstr "Сохранено на SD карту {0} как {1}"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:74
+#, fuzzy
+msgctxt "@action:button"
+msgid "Eject"
+msgstr "Извлечь"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:74
+#, python-brace-format
+msgctxt "@action"
+msgid "Eject removable device {0}"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:79
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Could not save to removable drive {0}: {1}"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:58
+msgctxt "@item:intext"
+msgid "Removable Drive"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:42
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Ejected {0}. You can now safely remove the drive."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:45
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed to eject {0}. Maybe it is still in use?"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/__init__.py:12
+msgctxt "@label"
+msgid "Removable Drive Output Device Plugin"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/__init__.py:14
+msgctxt "@info:whatsthis"
+msgid "Provides removable drive hotplugging and writing support"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:10
+msgctxt "@label"
+msgid "Slice info"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:35
+msgctxt "@info"
+msgid ""
+"Cura automatically sends slice info. You can disable this in preferences"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:36
+msgctxt "@action:button"
+msgid "Dismiss"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:35
+msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:36
+msgctxt "@action:button"
+msgid "Print with USB"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:37
+msgctxt "@info:tooltip"
+msgid "Print with USB"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/__init__.py:13
+msgctxt "@label"
+msgid "USB printing"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/__init__.py:17
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid ""
+"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr ""
+"Принимает G-коды и отправляет их на принтер. Плагин также может обновить "
+"прошивку."
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/USBPrinterManager.py:46
+#, fuzzy
+msgctxt "@title:menu"
+msgid "Firmware"
+msgstr "Обновление прошивки"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/USBPrinterManager.py:47
+#, fuzzy
+msgctxt "@item:inmenu"
+msgid "Update Firmware"
+msgstr "Обновление прошивки"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:17
+msgctxt "@title:window"
+msgid "Print with USB"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:28
+#, fuzzy
+msgctxt "@label"
+msgid "Extruder Temperature %1"
+msgstr "Температура экструдера %1"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:33
+#, fuzzy
+msgctxt "@label"
+msgid "Bed Temperature %1"
+msgstr "Температура платформы %1"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:60
+#, fuzzy
+msgctxt "@action:button"
+msgid "Print"
+msgstr "Печать"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:67
+#, fuzzy
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Отменить"
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:20
+#, fuzzy
+msgctxt "@title:window"
+msgid "Firmware Update"
+msgstr "Обновление прошивки завершено."
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:38
+#, fuzzy
+msgctxt "@label"
+msgid "Starting firmware update, this may take a while."
+msgstr "Начинается обновление прошивки, это может занять некоторое время."
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:43
+#, fuzzy
+msgctxt "@label"
+msgid "Firmware update completed."
+msgstr "Обновление прошивки завершено."
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:48
+#, fuzzy
+msgctxt "@label"
+msgid "Updating firmware."
+msgstr "Обновление прошивки."
+
+#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:78
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/EngineLog.qml:38
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:74
+#, fuzzy
+msgctxt "@action:button"
+msgid "Close"
+msgstr "Закрыть окно"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AddMachineWizard.qml:18
+#, fuzzy
+msgctxt "@title:window"
+msgid "Add Printer"
+msgstr "Добавить новый принтер"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AddMachineWizard.qml:25
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:51
+#, fuzzy
+msgctxt "@title"
+msgid "Add Printer"
+msgstr "Добавить новый принтер"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/EngineLog.qml:15
+#, fuzzy
+msgctxt "@title:window"
+msgid "Engine Log"
+msgstr "Журнал слайсера"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ProfileSetup.qml:31
+msgctxt "@label"
+msgid "Variant:"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ProfileSetup.qml:82
+msgctxt "@label"
+msgid "Global Profile:"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:29
+msgctxt "@action:button"
+msgid "Move to next position"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:39
+msgctxt "@label"
+msgid ""
+"To assist you in having better default settings for your Ultimaker. Cura "
+"would like to know which upgrades you have in your machine:"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:49
+#, fuzzy
+msgctxt "@option:check"
+msgid "Extruder driver ugrades"
+msgstr "Температура экструдера %1"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:54
+msgctxt "@option:check"
+msgid "Heated printer bed (kit)"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:58
+msgctxt "@option:check"
+msgid "Heated printer bed (self built)"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:62
+msgctxt "@option:check"
+msgid "Dual extrusion (experimental)"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:70
+msgctxt "@label"
+msgid ""
+"If you have an Ultimaker bought after october 2012 you will have the "
+"Extruder drive upgrade. If you do not have this upgrade, it is highly "
+"recommended to improve reliability."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:77
+msgctxt "@label"
+msgid ""
+"This upgrade can be bought from the Ultimaker webshop or found on "
+"thingiverse as thing:26094"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:44
+msgctxt "@label"
+msgid ""
+"It's a good idea to do a few sanity checks on your Ultimaker. \n"
+" You can skip these if you know your machine is functional"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:51
+msgctxt "@label"
+msgid "Connection: "
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:55
+msgctxt "@info:status"
+msgid "Done"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:55
+msgctxt "@info:status"
+msgid "Incomplete"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:62
+msgctxt "@label"
+msgid "Min endstop X: "
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:66
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:77
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:89
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:178
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:187
+msgctxt "@info:status"
+msgid "Works"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:66
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:77
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:89
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:119
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:149
+msgctxt "@info:status"
+msgid "Not checked"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:73
+msgctxt "@label"
+msgid "Min endstop Y: "
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:85
+msgctxt "@label"
+msgid "Min endstop Z: "
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:97
+msgctxt "@label"
+msgid "Nozzle temperature check: "
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:105
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:135
+msgctxt "@action:button"
+msgid "Start heating"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:110
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:140
+msgctxt "@info:progress"
+msgid "Checking"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:127
+#, fuzzy
+msgctxt "@label"
+msgid "bed temperature check: "
+msgstr "Температура платформы %1"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:42
+msgctxt "@action:button"
+msgid "Update"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:48
+msgctxt "@info:status"
+msgid "ERROR"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:60
+#, fuzzy
+msgctxt "@label"
+msgid "Please select the type of printer:"
+msgstr "Выберите тип принтера:"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:186
+#, fuzzy
+msgctxt "@label:textbox"
+msgid "Printer Name:"
+msgstr "Название принтера:"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:212
+msgctxt "@title"
+msgid "Select Upgraded Parts"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:215
+#, fuzzy
+msgctxt "@title"
+msgid "Upgrade Firmware"
+msgstr "Обновление прошивки"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:218
+#, fuzzy
+msgctxt "@title"
+msgid "Check Printer"
+msgstr "Добавить новый принтер"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:221
+msgctxt "@title"
+msgid "Bed Levelling"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:15
+#, fuzzy
+msgctxt "@title:window"
+msgid "About Cura"
+msgstr "О Кура"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:54
+#, fuzzy
+msgctxt "@label"
+msgid "End-to-end solution for fused filament 3D printing."
+msgstr ""
+"Комплексное решение для 3D печати по технологии послойного накладывание "
+"пластика."
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:66
+#, fuzzy
+msgctxt "@info:credit"
+msgid ""
+"Cura has been developed by Ultimaker B.V. in cooperation with the community."
+msgstr ""
+"Кура была разработана компании Ultimaker BV в сотрудничестве с сообществом."
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:16
+#, fuzzy
+msgctxt "@title:window"
+msgid "View"
+msgstr "Просмотр"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:41
+#, fuzzy
+msgctxt "@option:check"
+msgid "Display Overhang"
+msgstr "Показать где есть нависающие части"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:45
+msgctxt "@info:tooltip"
+msgid ""
+"Highlight unsupported areas of the model in red. Without support these areas "
+"will nog print properly."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:74
+msgctxt "@action:button"
+msgid "Center camera when item is selected"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:78
+msgctxt "@info:tooltip"
+msgid ""
+"Moves the camera so the object is in the center of the view when an object "
+"is selected"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:70
+#, fuzzy
+msgctxt "@label:textbox"
+msgid "Printjob Name"
+msgstr "Название принтера:"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:167
+msgctxt "@label %1 is length of filament"
+msgid "%1 m"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:229
+msgctxt "@info:tooltip"
+msgid "Select the active output device"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:34
+msgctxt "@label"
+msgid "Infill:"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:119
+msgctxt "@label"
+msgid "Sparse"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:121
+msgctxt "@label"
+msgid "Sparse (20%) infill will give your model an average strength"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:125
+msgctxt "@label"
+msgid "Dense"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:127
+msgctxt "@label"
+msgid "Dense (50%) infill will give your model an above average strength"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:131
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:133
+msgctxt "@label"
+msgid "Solid (100%) infill will make your model completely solid"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:151
+#, fuzzy
+msgctxt "@label:listbox"
+msgid "Helpers:"
+msgstr "&Помощь"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:169
+msgctxt "@option:check"
+msgid "Enable Skirt Adhesion"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:187
+#, fuzzy
+msgctxt "@option:check"
+msgid "Enable Support"
+msgstr "Включить Поддержку"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:51
+msgctxt "@action:inmenu"
+msgid "Toggle Fu&ll Screen"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:58
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Undo"
+msgstr "&Отмена"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:66
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Redo"
+msgstr "&Повтор"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:74
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Quit"
+msgstr "&Выход"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:82
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Preferences..."
+msgstr "&Настройки программы..."
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:89
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Add Printer..."
+msgstr "&Добавит новый принтер"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:95
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Manage Pr&inters..."
+msgstr "&Добавит новый принтер"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:102
+msgctxt "@action:inmenu"
+msgid "Manage Profiles..."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:109
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Show Online &Documentation"
+msgstr "Показать онлайн &справку"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:116
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Report a &Bug"
+msgstr "Сообщить о &проблеме"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:123
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&About..."
+msgstr "&О Кура"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:130
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Delete &Selection"
+msgstr "Удалить выбранное"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:138
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Delete Object"
+msgstr "Удалить объект"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:146
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Ce&nter Object on Platform"
+msgstr "Расположить объект по центру"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:152
+msgctxt "@action:inmenu"
+msgid "&Group Objects"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:160
+msgctxt "@action:inmenu"
+msgid "Ungroup Objects"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:168
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Merge Objects"
+msgstr "Удалить объект"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:176
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Duplicate Object"
+msgstr "Умножить объект"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:183
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Clear Build Platform"
+msgstr "Очистить печатающую платформу"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:190
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Re&load All Objects"
+msgstr "Перезагрузить все объекты"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:197
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Reset All Object Positions"
+msgstr "Сбросить все позиции объектов"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:203
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Reset All Object &Transformations"
+msgstr "Сбросить все преобразования объектов"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:209
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "&Open File..."
+msgstr "Открыть файл"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:217
+#, fuzzy
+msgctxt "@action:inmenu"
+msgid "Show Engine &Log..."
+msgstr "Показать журнал &слайсера"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:126
+#, fuzzy
+msgctxt "@title:tab"
+msgid "Simple"
+msgstr "Простой"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:127
+#, fuzzy
+msgctxt "@title:tab"
+msgid "Advanced"
+msgstr "Продвинутый"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:30
+#, fuzzy
+msgctxt "@label:listbox"
+msgid "Print Setup"
+msgstr "Настройка Печати"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:100
+#, fuzzy
+msgctxt "@label:listbox"
+msgid "Machine:"
+msgstr "Принтер:"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:16
+#, fuzzy
+msgctxt "@title:window"
+msgid "Cura"
+msgstr "Кура"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:34
+#, fuzzy
+msgctxt "@title:menu"
+msgid "&File"
+msgstr "&Файл"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:43
+msgctxt "@title:menu"
+msgid "Open &Recent"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:72
+msgctxt "@action:inmenu"
+msgid "&Save Selection to File"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:80
+#, fuzzy
+msgctxt "@title:menu"
+msgid "Save &All"
+msgstr "Сохранить файл"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:108
+#, fuzzy
+msgctxt "@title:menu"
+msgid "&Edit"
+msgstr "&Изменить"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:125
+#, fuzzy
+msgctxt "@title:menu"
+msgid "&View"
+msgstr "Просмотр"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:151
+#, fuzzy
+msgctxt "@title:menu"
+msgid "&Machine"
+msgstr "&Принтер"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:197
+msgctxt "@title:menu"
+msgid "&Profile"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:224
+#, fuzzy
+msgctxt "@title:menu"
+msgid "E&xtensions"
+msgstr "&Расширения"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:257
+#, fuzzy
+msgctxt "@title:menu"
+msgid "&Settings"
+msgstr "&Настройки"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:265
+#, fuzzy
+msgctxt "@title:menu"
+msgid "&Help"
+msgstr "&Помощь"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:335
+#, fuzzy
+msgctxt "@action:button"
+msgid "Open File"
+msgstr "Открыть файл"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:377
+#, fuzzy
+msgctxt "@action:button"
+msgid "View Mode"
+msgstr "Режим просмотра"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:461
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:14
+msgctxt "@title:tab"
+msgid "General"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:464
+#, fuzzy
+msgctxt "@title:tab"
+msgid "View"
+msgstr "Просмотр"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:603
+#, fuzzy
+msgctxt "@title:window"
+msgid "Open File"
+msgstr "Открыть файл"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:36
+msgctxt "@label"
+msgid "Language"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:47
+msgctxt "@item:inlistbox"
+msgid "Bulgarian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:48
+msgctxt "@item:inlistbox"
+msgid "Czech"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:49
+msgctxt "@item:inlistbox"
+msgid "English"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:50
+msgctxt "@item:inlistbox"
+msgid "Finnish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:51
+msgctxt "@item:inlistbox"
+msgid "French"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:52
+msgctxt "@item:inlistbox"
+msgid "German"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:53
+msgctxt "@item:inlistbox"
+msgid "Italian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:54
+msgctxt "@item:inlistbox"
+msgid "Polish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:55
+msgctxt "@item:inlistbox"
+msgid "Russian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:56
+msgctxt "@item:inlistbox"
+msgid "Spanish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:98
+msgctxt "@label"
+msgid ""
+"You will need to restart the application for language changes to have effect."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:114
+msgctxt "@option:check"
+msgid "Ensure objects are kept apart"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:118
+msgctxt "@info:tooltip"
+msgid ""
+"Should objects on the platform be moved so that they no longer intersect."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:147
+msgctxt "@option:check"
+msgid "Send (Anonymous) Print Information"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:151
+msgctxt "@info:tooltip"
+msgid ""
+"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"models, IP addresses or other personally identifiable information is sent or "
+"stored."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:179
+msgctxt "@option:check"
+msgid "Scale Too Large Files"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:183
+msgctxt "@info:tooltip"
+msgid ""
+"Should opened files be scaled to the build volume when they are too large?"
+msgstr ""
+
+#~ msgctxt "Save button tooltip"
+#~ msgid "Save to Disk"
+#~ msgstr "Сохранить на диск"
+
+#~ msgctxt "Message action tooltip, {0} is sdcard"
+#~ msgid "Eject SD Card {0}"
+#~ msgstr "Извлечь SD карту {0}"
