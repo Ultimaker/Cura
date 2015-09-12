@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-12 18:40+0200\n"
+"POT-Creation-Date: 2015-09-12 20:10+0200\n"
 "PO-Revision-Date: 2015-06-30 18:02+0300\n"
 "Last-Translator: Tapio <info@tapimex.fi>\n"
 "Language-Team: \n"
@@ -354,9 +354,72 @@ msgctxt "@label"
 msgid "Global Profile:"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:29
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:60
+#, fuzzy
+msgctxt "@label"
+msgid "Please select the type of printer:"
+msgstr "Valitse tulostimen tyyppi:"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:186
+#, fuzzy
+msgctxt "@label:textbox"
+msgid "Printer Name:"
+msgstr "Tulostimen nimi:"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:211
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:29
+msgctxt "@title"
+msgid "Select Upgraded Parts"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:214
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:29
+#, fuzzy
+msgctxt "@title"
+msgid "Upgrade Firmware"
+msgstr "Päivitä laiteohjelmisto"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:217
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:37
+#, fuzzy
+msgctxt "@title"
+msgid "Check Printer"
+msgstr "Lisää tulostin"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:220
+msgctxt "@title"
+msgid "Bed Levelling"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:25
+msgctxt "@title"
+msgid "Bed Leveling"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:34
+msgctxt "@label"
+msgid ""
+"To make sure your prints will come out great, you can now adjust your "
+"buildplate. When you click 'Move to Next Position' the nozzle will move to "
+"the different positions that can be adjusted."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:40
+msgctxt "@label"
+msgid ""
+"For every postition; insert a piece of paper under the nozzle and adjust the "
+"print bed height. The print bed height is right when the paper is slightly "
+"gripped by the tip of the nozzle."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:44
 msgctxt "@action:button"
-msgid "Move to next position"
+msgid "Move to Next Position"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:66
+msgctxt "@action:button"
+msgid "Skip Bedleveling"
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:39
@@ -374,7 +437,7 @@ msgstr "Suulakkeen lämpötila %1"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:54
 msgctxt "@option:check"
-msgid "Heated printer bed (kit)"
+msgid "Heated printer bed (standard kit)"
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:58
@@ -390,138 +453,131 @@ msgstr ""
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:70
 msgctxt "@label"
 msgid ""
-"If you have an Ultimaker bought after october 2012 you will have the "
-"Extruder drive upgrade. If you do not have this upgrade, it is highly "
-"recommended to improve reliability."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:77
-msgctxt "@label"
-msgid ""
-"This upgrade can be bought from the Ultimaker webshop or found on "
-"thingiverse as thing:26094"
+"If you bought your Ultimaker after october 2012 you will have the Extruder "
+"drive upgrade. If you do not have this upgrade, it is highly recommended to "
+"improve reliability. This upgrade can be bought from the Ultimaker webshop "
+"or found on thingiverse as thing:26094"
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:44
 msgctxt "@label"
 msgid ""
-"It's a good idea to do a few sanity checks on your Ultimaker. \n"
-" You can skip these if you know your machine is functional"
+"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
+"this step if you know your machine is functional"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:51
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:49
+msgctxt "@action:button"
+msgid "Start Printer Check"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:56
+msgctxt "@action:button"
+msgid "Skip Printer Check"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:65
 msgctxt "@label"
 msgid "Connection: "
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:55
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:69
 msgctxt "@info:status"
 msgid "Done"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:55
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:69
 msgctxt "@info:status"
 msgid "Incomplete"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:62
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:76
 msgctxt "@label"
 msgid "Min endstop X: "
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:66
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:77
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:89
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:178
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:187
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:80
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:91
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:103
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:192
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:201
 msgctxt "@info:status"
 msgid "Works"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:66
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:77
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:89
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:119
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:149
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:80
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:91
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:103
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:133
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:163
 msgctxt "@info:status"
 msgid "Not checked"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:73
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:87
 msgctxt "@label"
 msgid "Min endstop Y: "
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:85
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:99
 msgctxt "@label"
 msgid "Min endstop Z: "
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:97
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:111
 msgctxt "@label"
 msgid "Nozzle temperature check: "
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:105
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:135
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:119
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:149
 msgctxt "@action:button"
-msgid "Start heating"
+msgid "Start Heating"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:110
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:140
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:124
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:154
 msgctxt "@info:progress"
 msgid "Checking"
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:127
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:141
 #, fuzzy
 msgctxt "@label"
-msgid "bed temperature check: "
+msgid "bed temperature check:"
 msgstr "Pöydän lämpötila %1"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:42
-msgctxt "@action:button"
-msgid "Update"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:48
-msgctxt "@info:status"
-msgid "ERROR"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:60
-#, fuzzy
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:38
 msgctxt "@label"
-msgid "Please select the type of printer:"
-msgstr "Valitse tulostimen tyyppi:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:186
-#, fuzzy
-msgctxt "@label:textbox"
-msgid "Printer Name:"
-msgstr "Tulostimen nimi:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:212
-msgctxt "@title"
-msgid "Select Upgraded Parts"
+msgid ""
+"Firmware is the piece of software running directly on your 3D printer. This "
+"firmware controls the step motors, regulates the temperature and ultimately "
+"makes your printer work."
 msgstr ""
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:215
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:45
+msgctxt "@label"
+msgid ""
+"The firmware shipping with new Ultimakers works, but upgrades have been made "
+"to make better prints, and make calibration easier."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:52
+msgctxt "@label"
+msgid ""
+"Cura requires these new features and thus your firmware will most likely "
+"need to be upgraded. You can do so now."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:55
 #, fuzzy
-msgctxt "@title"
-msgid "Upgrade Firmware"
+msgctxt "@action:button"
+msgid "Upgrade to Marlin Firmware"
 msgstr "Päivitä laiteohjelmisto"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:218
-#, fuzzy
-msgctxt "@title"
-msgid "Check Printer"
-msgstr "Lisää tulostin"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:221
-msgctxt "@title"
-msgid "Bed Levelling"
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:58
+msgctxt "@action:button"
+msgid "Skip Upgrade"
 msgstr ""
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:15
@@ -574,74 +630,6 @@ msgid ""
 "Moves the camera so the object is in the center of the view when an object "
 "is selected"
 msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:70
-#, fuzzy
-msgctxt "@label:textbox"
-msgid "Printjob Name"
-msgstr "Tulostimen nimi:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:167
-msgctxt "@label %1 is length of filament"
-msgid "%1 m"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:229
-msgctxt "@info:tooltip"
-msgid "Select the active output device"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:34
-msgctxt "@label"
-msgid "Infill:"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:119
-msgctxt "@label"
-msgid "Sparse"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:121
-msgctxt "@label"
-msgid "Sparse (20%) infill will give your model an average strength"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:125
-msgctxt "@label"
-msgid "Dense"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:127
-msgctxt "@label"
-msgid "Dense (50%) infill will give your model an above average strength"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:131
-msgctxt "@label"
-msgid "Solid"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:133
-msgctxt "@label"
-msgid "Solid (100%) infill will make your model completely solid"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:151
-#, fuzzy
-msgctxt "@label:listbox"
-msgid "Helpers:"
-msgstr "&Ohje"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:169
-msgctxt "@option:check"
-msgid "Enable Skirt Adhesion"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:187
-#, fuzzy
-msgctxt "@option:check"
-msgid "Enable Support"
-msgstr "Ota tuki käyttöön"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:51
 msgctxt "@action:inmenu"
@@ -783,13 +771,183 @@ msgctxt "@action:inmenu"
 msgid "Show Engine &Log..."
 msgstr "Näytä moottorin l&oki"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:126
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:14
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:461
+msgctxt "@title:tab"
+msgid "General"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:36
+msgctxt "@label"
+msgid "Language"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:47
+msgctxt "@item:inlistbox"
+msgid "Bulgarian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:48
+msgctxt "@item:inlistbox"
+msgid "Czech"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:49
+msgctxt "@item:inlistbox"
+msgid "English"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:50
+msgctxt "@item:inlistbox"
+msgid "Finnish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:51
+msgctxt "@item:inlistbox"
+msgid "French"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:52
+msgctxt "@item:inlistbox"
+msgid "German"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:53
+msgctxt "@item:inlistbox"
+msgid "Italian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:54
+msgctxt "@item:inlistbox"
+msgid "Polish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:55
+msgctxt "@item:inlistbox"
+msgid "Russian"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:56
+msgctxt "@item:inlistbox"
+msgid "Spanish"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:98
+msgctxt "@label"
+msgid ""
+"You will need to restart the application for language changes to have effect."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:114
+msgctxt "@option:check"
+msgid "Ensure objects are kept apart"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:118
+msgctxt "@info:tooltip"
+msgid ""
+"Should objects on the platform be moved so that they no longer intersect."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:147
+msgctxt "@option:check"
+msgid "Send (Anonymous) Print Information"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:151
+msgctxt "@info:tooltip"
+msgid ""
+"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"models, IP addresses or other personally identifiable information is sent or "
+"stored."
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:179
+msgctxt "@option:check"
+msgid "Scale Too Large Files"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:183
+msgctxt "@info:tooltip"
+msgid ""
+"Should opened files be scaled to the build volume when they are too large?"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:70
+#, fuzzy
+msgctxt "@label:textbox"
+msgid "Printjob Name"
+msgstr "Tulostimen nimi:"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:167
+msgctxt "@label %1 is length of filament"
+msgid "%1 m"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:229
+msgctxt "@info:tooltip"
+msgid "Select the active output device"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:34
+msgctxt "@label"
+msgid "Infill:"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:119
+msgctxt "@label"
+msgid "Sparse"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:121
+msgctxt "@label"
+msgid "Sparse (20%) infill will give your model an average strength"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:125
+msgctxt "@label"
+msgid "Dense"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:127
+msgctxt "@label"
+msgid "Dense (50%) infill will give your model an above average strength"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:131
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:133
+msgctxt "@label"
+msgid "Solid (100%) infill will make your model completely solid"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:151
+#, fuzzy
+msgctxt "@label:listbox"
+msgid "Helpers:"
+msgstr "&Ohje"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:169
+msgctxt "@option:check"
+msgid "Enable Skirt Adhesion"
+msgstr ""
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:187
+#, fuzzy
+msgctxt "@option:check"
+msgid "Enable Support"
+msgstr "Ota tuki käyttöön"
+
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:123
 #, fuzzy
 msgctxt "@title:tab"
 msgid "Simple"
 msgstr "Perusasetukset"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:127
+#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:124
 #, fuzzy
 msgctxt "@title:tab"
 msgid "Advanced"
@@ -888,12 +1046,6 @@ msgctxt "@action:button"
 msgid "View Mode"
 msgstr "Näyttötapa"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:461
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:14
-msgctxt "@title:tab"
-msgid "General"
-msgstr ""
-
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:464
 #, fuzzy
 msgctxt "@title:tab"
@@ -905,102 +1057,6 @@ msgstr "Näytä"
 msgctxt "@title:window"
 msgid "Open File"
 msgstr "Avaa tiedosto"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:36
-msgctxt "@label"
-msgid "Language"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:47
-msgctxt "@item:inlistbox"
-msgid "Bulgarian"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:48
-msgctxt "@item:inlistbox"
-msgid "Czech"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:49
-msgctxt "@item:inlistbox"
-msgid "English"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:50
-msgctxt "@item:inlistbox"
-msgid "Finnish"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:51
-msgctxt "@item:inlistbox"
-msgid "French"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:52
-msgctxt "@item:inlistbox"
-msgid "German"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:53
-msgctxt "@item:inlistbox"
-msgid "Italian"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:54
-msgctxt "@item:inlistbox"
-msgid "Polish"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:55
-msgctxt "@item:inlistbox"
-msgid "Russian"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:56
-msgctxt "@item:inlistbox"
-msgid "Spanish"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:98
-msgctxt "@label"
-msgid ""
-"You will need to restart the application for language changes to have effect."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:114
-msgctxt "@option:check"
-msgid "Ensure objects are kept apart"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:118
-msgctxt "@info:tooltip"
-msgid ""
-"Should objects on the platform be moved so that they no longer intersect."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:147
-msgctxt "@option:check"
-msgid "Send (Anonymous) Print Information"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:151
-msgctxt "@info:tooltip"
-msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
-"models, IP addresses or other personally identifiable information is sent or "
-"stored."
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:179
-msgctxt "@option:check"
-msgid "Scale Too Large Files"
-msgstr ""
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:183
-msgctxt "@info:tooltip"
-msgid ""
-"Should opened files be scaled to the build volume when they are too large?"
-msgstr ""
 
 #~ msgctxt "Save button tooltip"
 #~ msgid "Save to Disk"
