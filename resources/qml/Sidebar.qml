@@ -79,7 +79,7 @@ Rectangle
         anchors.left: base.left
         anchors.right: base.right
 
-        source: modesListModel.get(header.currentModeIndex).file;
+        source: modesListModel.count > header.currentModeIndex ? modesListModel.get(header.currentModeIndex).file : "";
 
         property Item sidebar: base;
 

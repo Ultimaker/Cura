@@ -12,7 +12,7 @@ Item
     id: base;
     // Machine Setup
     property variant modesModel;
-    property alias currentModeIndex: modesList.currentIndex;
+    property int currentModeIndex: 0;
     property Action addMachineAction;
     property Action configureMachinesAction;
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -54,14 +54,16 @@ Item
                     width: parent.width / 2
                     text: model.text
                     exclusiveGroup: modeMenuGroup;
-                    onClicked: modesList.currentIndex = index
+                    checkable: true;
+                    checked: base.currentModeIndex == index
+                    onClicked: base.currentModeIndex = index
                     style: ButtonStyle {
                         background: Rectangle {
-                            color: modesList.currentIndex == index ? UM.Theme.colors.toggle_active : UM.Theme.colors.toggle_disabled
+                            color: control.checked ? UM.Theme.colors.toggle_active : UM.Theme.colors.toggle_disabled
                             Behavior on color { ColorAnimation { duration: 50; } }
                             Label {
                                 anchors.centerIn: parent
-                                color: modesList.currentIndex == index ? UM.Theme.colors.toggle_active_text : UM.Theme.colors.toggle_disabled_text
+                                color: control.checked ? UM.Theme.colors.toggle_active_text : UM.Theme.colors.toggle_disabled_text
                                 font: UM.Theme.fonts.default
                                 text: control.text;
                             }
@@ -80,6 +82,7 @@ Item
                 anchors.left: parent.left
                 width: parent.width
                 height: UM.Theme.sizes.sidebar_header.height
+                currentIndex: base.currentIndex;
             }
         }
     }
