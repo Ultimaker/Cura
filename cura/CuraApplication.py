@@ -47,6 +47,7 @@ import sys
 import os
 import os.path
 import numpy
+import copy
 numpy.seterr(all="ignore")
 
 class CuraApplication(QtApplication):
@@ -270,14 +271,22 @@ class CuraApplication(QtApplication):
         if node:
             op = GroupedOperation()
             for i in range(count):
-                new_node = SceneNode()
-                new_node.setMeshData(node.getMeshData())
+                if node.getParent() and node.getParent().callDecoration("isGroup"):
+                    new_node = copy.deepcopy(node.getParent()) #Copy the group node.
+                    new_node.callDecoration("setConvexHull",None)
 
-                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, node.getPosition().y, 0))
-                new_node.setOrientation(node.getOrientation())
-                new_node.setScale(node.getScale())
-                new_node.setSelectable(True)
-                op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
+                    op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
+
+                    pass
+                else:
+                    new_node = SceneNode()
+                    new_node.setMeshData(node.getMeshData())
+
+                    new_node.translate(Vector((i + 1) * node.getBoundingBox().width, node.getPosition().y, 0))
+                    new_node.setOrientation(node.getOrientation())
+                    new_node.setScale(node.getScale())
+                    new_node.setSelectable(True)
+                    op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
             op.push()
     
     ##  Center object on platform.
@@ -450,7 +459,8 @@ class CuraApplication(QtApplication):
         for node in Selection.getAllSelectedObjects():
             node.setParent(group_node)
         group_node.setCenterPosition(group_node.getBoundingBox().center)
-        group_node.translate(Vector(0,group_node.getBoundingBox().center.y,0))
+        #group_node.translate(Vector(0,group_node.getBoundingBox().center.y,0))
+        group_node.translate(group_node.getBoundingBox().center)
         for node in group_node.getChildren():
             Selection.remove(node)
         

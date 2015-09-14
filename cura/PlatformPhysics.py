@@ -98,9 +98,10 @@ class PlatformPhysics:
                         continue
                     
                     # Ignore colissions within a group
-                    if other_node.getParent().callDecoration("isGroup") is not None:
-                        if node.getParent().callDecoration("isGroup") is other_node.getParent().callDecoration("isGroup"):
-                            continue
+                    if other_node.getParent().callDecoration("isGroup") is not None or node.getParent().callDecoration("isGroup") is not None:
+                        continue
+                        #if node.getParent().callDecoration("isGroup") is other_node.getParent().callDecoration("isGroup"):
+                        #    continue
                     
                     # Ignore nodes that do not have the right properties set.
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
@@ -126,9 +127,9 @@ class PlatformPhysics:
 
                     if overlap is None:
                         continue
-                    
-                    move_vector.setX(overlap[0] * 1.1)
-                    move_vector.setZ(overlap[1] * 1.1)
+                    print(overlap)
+                    move_vector.setX(overlap[0] * 1.01)
+                    move_vector.setZ(overlap[1] * 1.01)
             convex_hull = node.callDecoration("getConvexHull")
             if convex_hull:
                 if not convex_hull.isValid():
