@@ -337,7 +337,10 @@ class CuraApplication(QtApplication):
         if nodes:
             op = GroupedOperation()
             for node in nodes:
-                op.addOperation(SetTransformOperation(node, Vector()))
+                move_distance = node.getBoundingBox().center.y
+                if move_distance <= 0:
+                    move_distance = -node.getBoundingBox().bottom
+                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0)))
 
             op.push()
     
@@ -358,7 +361,10 @@ class CuraApplication(QtApplication):
             op = GroupedOperation()
 
             for node in nodes:
-                op.addOperation(SetTransformOperation(node, Vector(), Quaternion(), Vector(1, 1, 1)))
+                move_distance = node.getBoundingBox().center.y
+                if move_distance <= 0:
+                    move_distance = -node.getBoundingBox().bottom
+                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
