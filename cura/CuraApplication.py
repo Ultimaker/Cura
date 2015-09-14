@@ -337,6 +337,7 @@ class CuraApplication(QtApplication):
         if nodes:
             op = GroupedOperation()
             for node in nodes:
+                # Ensure that the object is above the build platform
                 move_distance = node.getBoundingBox().center.y
                 if move_distance <= 0:
                     move_distance = -node.getBoundingBox().bottom
@@ -361,6 +362,7 @@ class CuraApplication(QtApplication):
             op = GroupedOperation()
 
             for node in nodes:
+                # Ensure that the object is above the build platform
                 move_distance = node.getBoundingBox().center.y
                 if move_distance <= 0:
                     move_distance = -node.getBoundingBox().bottom
