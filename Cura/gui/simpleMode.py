@@ -223,6 +223,14 @@ class simpleModePanel(wx.Panel):
 
 			selection = self.materialCombo.GetSelection()
 
+			# This is needed to avoid a wxpython 2.8 bug which returns -1
+			# when the selection is made with SetValue
+			if selection == -1:
+				material_name = self.materialCombo.GetValue()
+				for material in materials:
+					if material.name == material_name:
+						return material
+
 			return materials[selection]
 		else:
 			for button in self._print_material_options:
