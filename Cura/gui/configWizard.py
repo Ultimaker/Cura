@@ -1516,6 +1516,8 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_BACKWARD).Enable()
 		else:
 			self.FindWindowById(wx.ID_BACKWARD).Disable()
+		if hasattr(e.GetPage(), 'OnPageShown'):
+			e.GetPage().OnPageShown()
 
 	def OnCancel(self, e):
 		profile.putProfileSetting('nozzle_size', self._nozzle_size)
@@ -1533,7 +1535,6 @@ class ConfigWizard(wx.wizard.Wizard):
 
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
-		self.Bind(wx.wizard.EVT_WIZARD_PAGE_SHOWN, self.OnPageShown)
 		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
 
 		self.machineSelectPage = MachineSelectPage(self)
@@ -1573,11 +1574,6 @@ class ConfigWizard(wx.wizard.Wizard):
 		self.RunWizard(self.lulzbotMachineSelectPage)
 		self.Destroy()
 
-	def OnPageShown(self, e):
-		page = e.GetPage()
-		if hasattr(page, 'OnPageShown'):
-			page.OnPageShown()
-
 	def OnPageChanging(self, e):
 		e.GetPage().StoreData()
 
@@ -1590,6 +1586,8 @@ class ConfigWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_BACKWARD).Enable()
 		else:
 			self.FindWindowById(wx.ID_BACKWARD).Disable()
+		if hasattr(e.GetPage(), 'OnPageShown'):
+			e.GetPage().OnPageShown()
 
 	def OnCancel(self, e):
 		new_machine_index = int(profile.getPreferenceFloat('active_machine'))
