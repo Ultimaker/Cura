@@ -12,6 +12,8 @@ from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Qt.ListModel import ListModel
 
+from cura.CuraApplication import CuraApplication
+
 import threading
 import platform
 import glob
@@ -86,7 +88,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:
             try:
-                self._printer_connections[printer_connection].updateFirmware(Resources.getPath(Application.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
+                self._printer_connections[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
                 continue
 
@@ -95,7 +97,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         if serial_port in self._printer_connections:
             self.spawnFirmwareInterface(self._printer_connections[serial_port].getSerialPort())
             try:
-                self._printer_connections[serial_port].updateFirmware(Resources.getPath(Application.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
+                self._printer_connections[serial_port].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
                 self._firmware_view.close()
                 Logger.log("e", "Could not find firmware required for this machine")
@@ -113,7 +115,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         return USBPrinterManager._instance
 
     def _getDefaultFirmwareName(self):
-        machine_type = Application.getInstance().getActiveMachine().getTypeID()
+        machine_type = Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getId()
         firmware_name = ""
         baudrate = 250000
         if sys.platform.startswith("linux"):
