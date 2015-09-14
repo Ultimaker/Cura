@@ -172,7 +172,7 @@ material_names = {
     "Laywood": "Laywoo-D3 (CC-Products)",
     "n-vent": "n-vent (Taulman)",
     "PCTPE": "PCTPE (Taulman)",
-    "PC-ABS": "PC-ABS (Proto-pasta",
+    "PC-ABS": "PC-ABS (Proto-pasta)",
     "T-Glase": "t-glase (Taulman)",
     # Expert
     "PP-Conductive": "Conductive (Proto-pasta)",
