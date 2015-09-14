@@ -1220,11 +1220,11 @@ class LulzbotTazSelectPage(InfoPage):
 
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
-		self.taz5 = self.AddImageButton(self.panel, 0, 0, _('Stock TAZ 5 (PEI and v2)'),
+		self.taz5 = self.AddImageButton(self.panel, 0, 0, _('Stock TAZ 5 (PEI && v2)'),
 										'Lulzbot_TAZ_5_Hex_and_PEI.jpg', image_size,
 										style=ImageButton.IB_GROUP)
 		self.taz5.OnSelected(self.OnTaz5Selected)
-		self.taz4 = self.AddImageButton(self.panel, 0, 1, _('Stock TAZ 4 (PET and v1)'),
+		self.taz4 = self.AddImageButton(self.panel, 0, 1, _('Stock TAZ 4 (PET && v1)'),
 										'Lulzbot_TAZ_4_Buda_and_PET.jpg', image_size)
 		self.taz4.OnSelected(self.OnTaz4Selected)
 		self.modified = self.AddImageButton(self.panel, 1, 0, _('Modified LulzBot TAZ 4 or 5'),
