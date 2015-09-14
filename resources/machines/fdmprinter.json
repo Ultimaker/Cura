@@ -1199,7 +1199,7 @@
                     "type": "float",
                     "default": 1,
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_roof_enable"
                 },
                 "support_roof_density": {
                     "label": "Support Roof Density",
@@ -1207,6 +1207,7 @@
                     "unit": "%",
                     "type": "float",
                     "default": 100,
+                    "enabled":"support_roof_enable",
                     "children": {
                         "support_roof_line_distance": {
                             "label": "Support Roof Line Distance",
@@ -1215,7 +1216,8 @@
                             "type": "float",
                             "default": 0.4,
                             "visible": false,
-                            "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value"
+                            "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value",
+                            "enabled": "support_roof_enable"
                         }
                     }
                 },
@@ -1231,7 +1233,8 @@
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag"
                     },
-                    "default": "concentric"
+                    "default": "concentric",
+                    "enabled": "support_roof_enable"
                 },
                 "support_use_towers": {
                     "label": "Use towers.",
