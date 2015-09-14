@@ -13,6 +13,8 @@ from UM.Mesh.MeshData import MeshData
 
 from cura.ConvexHullNode import ConvexHullNode
 
+from PyQt5 import QtCore, QtWidgets
+
 from . import LayerViewProxy
 
 ## View used to display g-code paths.
@@ -162,8 +164,12 @@ class LayerView(View):
         pass
     
     def event(self, event):
-        if event.type == Event.KeyPressEvent:
+        modifiers = QtWidgets.QApplication.keyboardModifiers()
+        ctrl_is_active = modifiers == QtCore.Qt.ControlModifier
+        if event.type == Event.KeyPressEvent and ctrl_is_active:
             if event.key == KeyEvent.UpKey:
                 self.setLayer(self._current_layer_num + 1)
+                return True
             if event.key == KeyEvent.DownKey:
                 self.setLayer(self._current_layer_num - 1)
+                return True
