@@ -1438,15 +1438,14 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 	def __init__(self, parent):
 		super(LulzbotFirmwareUpdatePage, self).__init__(parent, _("LulzBot Firmware Update"))
 
-		self.AddText(_('Your LulzBot printer\'s firmware will now be updated.'))
+		self.AddText(_("Your LulzBot printer\'s firmware will now be updated.\n" +
+		"Note: this will overwrite your existing firmware."))
 		self.AddSeperator()
-		self.AddText(_("Firmware is the \"brain\" inside your 3D printer.\n" +
-					   "It controls motors/heaters, regulates temperature\n" +
-					   "and ultimately makes your printer work."))
-		self.AddHiddenSeperator()
-		self.AddText(_("When changing tool heads it is neccesary to update the firmware.\n" +
-					   "Please connect (with a USB cable) the printer you are currently configuring and power it on.\n" +
-					   "Disconnecting all other 3D printers helps reduce confusion."))
+		self.AddText(_("Follow these steps to prevent writing firmware to the wrong device:\n" +
+					   "    1) Unplug all USB devices from your computer\n" +
+					   "    2) Plug your 3D Printer into the computer with a USB cable\n" +
+					   "    3) Turn on your 3D Printer\n" +
+					   "    4) Click \"Flash the firmware\""))
 		self.AddHiddenSeperator()
 		upgradeButton, skipUpgradeButton = self.AddDualButton(_('Flash the firmware'), _('Skip upgrade'))
 		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
@@ -1462,13 +1461,11 @@ class LulzbotFirmwareUpdatePage(InfoPage):
 
 	def OnSkipClick(self, e):
 		dlg = wx.MessageDialog(self,
-			_("CAUTION: Updating your firmware is strongly recommended and " \
-			  "critical to protecting your LulzBot with the latest updates " \
-			  "and settings. Expert users note that this will overwrite " \
-			  " firmware changes or customization; you can skip this step " \
-			  "at your discretion.\n\n" +
-			  "Are you sure you want to skip the firmware upgrade?"),
-			_('Skip firmware upgrade?'),
+			_("CAUTION: Updating firmware is necessary when changing the\n" \
+			  "tool head on your LulzBot desktop 3D Printer." \
+			  "\n\n" +
+			  "Are you sure you want to skip the firmware update?"),
+			_('Skip firmware update?'),
 			wx.YES_NO | wx.ICON_EXCLAMATION)
 		skip = dlg.ShowModal() == wx.ID_YES
 		dlg.Destroy()
