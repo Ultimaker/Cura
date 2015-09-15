@@ -555,7 +555,11 @@ class CuraApplication(QtApplication):
         self.recentFilesChanged.emit()
 
     def _reloadMeshFinished(self, job):
-        job._node = job.getResult()
+        # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
+        job._node.setMeshData(job.getResult().getMeshData())
+        #job.getResult().setParent(self.getController().getScene().getRoot())
+        #job._node.setParent(self.getController().getScene().getRoot())
+        #job._node.meshDataChanged.emit(job._node)
 
     def _openFile(self, file):
         job = ReadMeshJob(os.path.abspath(file))
