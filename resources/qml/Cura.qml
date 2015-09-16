@@ -368,6 +368,7 @@ UM.MainWindow
             Button
             {
                 id: viewModeButton
+                property bool verticalTooltip: true
                 anchors
                 {
                     top: parent.top;

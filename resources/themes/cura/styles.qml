@@ -101,16 +101,29 @@ QtObject {
 
                 Rectangle {
                     id: tool_button_background
-                    anchors.left: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    //anchors.top: parent.bottom
-
-                    //width: label.width > parent.width ? label.width : parent.width
-                    width: control.hovered ? label.width : 0;
-                    height: label.height
-                    Behavior on width { NumberAnimation { duration: 100; } }
-
+                    anchors.left: control.verticalTooltip ? parent.left : parent.right
+                    anchors.verticalCenter: control.verticalTooltip ?  undefined : parent.verticalCenter
+                    anchors.top: control.verticalTooltip ? parent.bottom : undefined
                     opacity: control.hovered ? 1.0 : 0.0;
+
+                    width: {
+                        if (control.verticalTooltip == true){
+                            if (label.width > parent.width)
+                                return label.width
+                            else
+                                return parent.width
+                        }
+                        else {
+                            if (control.hovered)
+                                return label.width
+                            else
+                                return 0
+                        }
+                    }
+                    height: !control.verticalTooltip ? label.height : control.hovered ? label.height: 0
+
+                    Behavior on width { NumberAnimation { duration: 100; } }
+                    Behavior on height { NumberAnimation { duration: 100; } }
                     Behavior on opacity { NumberAnimation { duration: 100; } }
 
                     Label {
