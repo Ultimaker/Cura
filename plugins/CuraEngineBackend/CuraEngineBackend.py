@@ -158,7 +158,13 @@ class CuraEngineBackend(Backend):
                 self._message.hide()
                 self._message = None
             return #No slicing if we have error values since those are by definition illegal values.
-
+        # Remove existing layer data (if any)
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if type(node) is SceneNode and node.getMeshData():
+                if node.callDecoration("getLayerData"):
+                    Application.getInstance().getController().getScene().getRoot().removeChild(node)
+                    break
+        Application.getInstance().getController().getScene().gcode_list = None
         self._slicing = True
         self.slicingStarted.emit()
 
