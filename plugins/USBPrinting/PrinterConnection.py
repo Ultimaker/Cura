@@ -273,6 +273,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
             else:
                 if not self.setBaudRate(baud_rate):
                     continue # Could not set the baud rate, go to the next
+            Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
             time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 sec seems to be the magic number
             sucesfull_responses = 0
             timeout_time = time.time() + 5
@@ -609,7 +610,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     ##  Create a list of baud rates at which we can communicate.
     #   \return list of int
     def _getBaudrateList(self):
-        ret = [250000, 230400, 115200, 57600, 38400, 19200, 9600]
+        ret = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
         return ret
 
     def _onFirmwareUpdateComplete(self):
