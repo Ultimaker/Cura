@@ -120,7 +120,7 @@ class CuraEngineBackend(Backend):
                     pass
             self.slicingCancelled.emit()
             return
-
+        Logger.log("d", "Preparing to send slice data to engine.")
         object_groups = []
         if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
             for node in OneAtATimeIterator(self._scene.getRoot()):
@@ -214,6 +214,7 @@ class CuraEngineBackend(Backend):
             self._handlePerObjectSettings(group[0], group_message)
 
         self._scene.releaseLock()
+        Logger.log("d", "Sending data to engine for slicing.")
         self._socket.sendMessage(slice_message)
 
     def _onSceneChanged(self, source):
@@ -224,7 +225,6 @@ class CuraEngineBackend(Backend):
             return
 
         self._onChanged()
-
 
     def _onActiveProfileChanged(self):
         if self._profile:
