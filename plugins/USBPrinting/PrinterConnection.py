@@ -347,15 +347,17 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     @pyqtSlot(int)
     def heatupNozzle(self, temperature):
+        Logger.log("d", "Setting nozzle temperature to %s", temperature)
         self._sendCommand("M104 S%s" % temperature)
 
     @pyqtSlot(int)
     def heatupBed(self, temperature):
+        Logger.log("d", "Setting bed temperature to %s", temperature)
         self._sendCommand("M140 S%s" % temperature)
 
     @pyqtSlot("long", "long","long")
     def moveHead(self, x, y, z):
-        print("Moving head" , x , " ", y , " " , z)
+        Logger.log("d","Moving head to %s, %s , %s", x, y, z)
         self._sendCommand("G0 X%s Y%s Z%s"%(x,y,z))
 
     @pyqtSlot()

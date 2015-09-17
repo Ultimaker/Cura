@@ -157,6 +157,8 @@ class CuraEngineBackend(Backend):
             if self._message:
                 self._message.hide()
                 self._message = None
+            self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
+            self._message.show()
             return #No slicing if we have error values since those are by definition illegal values.
         # Remove existing layer data (if any)
         for node in DepthFirstIterator(self._scene.getRoot()):

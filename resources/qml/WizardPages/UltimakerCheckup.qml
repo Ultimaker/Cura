@@ -262,7 +262,7 @@ Item
                     if(printer_connection != null)
                     {
                         bedTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.printer.heatupBed(60)
+                        printer_connection.heatupBed(60)
                         wizardPage.bed_target_temp = 60
                     }
                 }
