@@ -403,7 +403,7 @@ class printWindowPlugin(wx.Frame):
 		if self._infoText is not None:
 			self._infoText.SetLabel(info)
 		else:
-			self.SetTitle(info.replace('\n', ', '))
+			self.SetTitle(info.replace('\n', ', ').strip().strip(','))
 		if isPrinting != self._isPrinting:
 			self._isPrinting = isPrinting
 			preventComputerFromSleeping(self, self._isPrinting)
@@ -939,7 +939,7 @@ class printWindowAdvanced(wx.Frame):
 			info += 'Temperature: %d' % (self._printerConnection.getTemperature(0))
 		if self._printerConnection.getBedTemperature() > 0:
 			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
-		self.SetTitle(info.replace('\n', ', '))
+		self.SetTitle(info.replace('\n', ', ').strip().strip(','))
 		if isPrinting != self._isPrinting:
 			self._isPrinting = isPrinting
 			preventComputerFromSleeping(self, self._isPrinting)
