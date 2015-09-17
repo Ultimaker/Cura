@@ -333,7 +333,7 @@ UM.MainWindow
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
                 //style: UM.Theme.styles.open_file_button
                 text: catalog.i18nc("@action:button","Open File");
-                iconSource: UM.Theme.icons.open
+                iconSource: UM.Theme.icons.load
                 style: UM.Theme.styles.open_file_button
                 tooltip: '';
                 anchors
