@@ -285,7 +285,6 @@
                             "min_value": "0",
                             "max_value": "5",
                             "min_value_warning": "0.6",
-                            "max_value_warning": "1",
                             "type": "float",
                             "visible": false,
                             "children": {
