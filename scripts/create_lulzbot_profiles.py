@@ -183,7 +183,7 @@ material_names = {
     # Dual extruder (Expert)
     'PLA_PVA': "PLA & PVA",
     'ABS_ABS': "ABS & ABS",
-    'PLA_PLA': "ABS & ABS",
+    'PLA_PLA': "PLA & PLA",
     # Flexystruder (Expert)
     "ninjaflex" : "NinjaFlex (Fenner Drives)",
     "semiflex" : "SemiFlex (Fenner Drives)",
