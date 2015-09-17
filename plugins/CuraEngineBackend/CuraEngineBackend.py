@@ -78,6 +78,9 @@ class CuraEngineBackend(Backend):
 
         self.backendConnected.connect(self._onBackendConnected)
 
+    ##  Get the command that is used to call the engine.
+    #   This is usefull for debugging and used to actually start the engine
+    #   \return list of commands and args / parameters.
     def getEngineCommand(self):
         return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.MachineDefinitions, "fdmprinter.json"), "-vv"]
 
@@ -310,10 +313,10 @@ class CuraEngineBackend(Backend):
             self._restart = False
 
     def _onToolOperationStarted(self, tool):
-        self._enabled = False
+        self._enabled = False # Do not reslice when a tool is doing it's 'thing'
 
     def _onToolOperationStopped(self, tool):
-        self._enabled = True
+        self._enabled = True # Tool stop, start listening for changes again.
         self._onChanged()
 
     def _onActiveViewChanged(self):
