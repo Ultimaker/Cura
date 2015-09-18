@@ -127,7 +127,6 @@ class PlatformPhysics:
 
                     if overlap is None:
                         continue
-                    print(overlap)
                     move_vector.setX(overlap[0] * 1.01)
                     move_vector.setZ(overlap[1] * 1.01)
             convex_hull = node.callDecoration("getConvexHull")
