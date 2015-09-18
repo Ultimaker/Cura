@@ -276,19 +276,13 @@ class CuraApplication(QtApplication):
                     new_node.callDecoration("setConvexHull",None)
 
                     op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
-
-                    pass
                 else:
-                    new_node = SceneNode()
-                    new_node.setMeshData(node.getMeshData())
-
-                    new_node.translate(Vector((i + 1) * node.getBoundingBox().width, node.getPosition().y, 0))
-                    new_node.setOrientation(node.getOrientation())
-                    new_node.setScale(node.getScale())
-                    new_node.setSelectable(True)
+                    new_node = copy.deepcopy(node)
+                    new_node.callDecoration("setConvexHull", None)
                     op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
+
             op.push()
-    
+
     ##  Center object on platform.
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
