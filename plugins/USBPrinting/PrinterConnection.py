@@ -264,16 +264,17 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
+            Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
             if self._serial is None:
                 try:
                     self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout = 3, writeTimeout = 10000)
                 except serial.SerialException:
-                    Logger.log("i", "Could not open port %s" % self._serial_port)
-                    return
+                    #Logger.log("i", "Could not open port %s" % self._serial_port)
+                    continue
             else:
                 if not self.setBaudRate(baud_rate):
                     continue # Could not set the baud rate, go to the next
-            Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
+
             time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 sec seems to be the magic number
             sucesfull_responses = 0
             timeout_time = time.time() + 5
