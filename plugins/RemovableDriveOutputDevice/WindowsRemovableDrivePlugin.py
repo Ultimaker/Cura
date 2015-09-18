@@ -88,10 +88,13 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
 
         result = None
         # Then, try and tell it to eject
-        if not windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, None, None, None, None, None):
+        try:
+            if not windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, None, None, None, None, None):
+                result = False
+            else:
+                result = True
+        except Exception as e:
             result = False
-        else:
-            result = True
 
         # Finally, close the handle
         windll.kernel32.CloseHandle(handle)
