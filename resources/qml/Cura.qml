@@ -292,6 +292,10 @@ UM.MainWindow
                         for(var i in drop.urls)
                         {
                             UM.MeshFileHandler.readLocalFile(drop.urls[i]);
+                            if (i == drop.urls.length - 1)
+                            {
+                                openDialog.sendMeshName(drop.urls[i].toString())
+                            }
                         }
                     }
                 }
