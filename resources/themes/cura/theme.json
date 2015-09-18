@@ -102,6 +102,7 @@
         "setting_control_text": [0, 0, 0, 255],
         "setting_control_hover": [139, 143, 153, 255],
         "setting_control_selected": [35, 35, 35, 255],
+        "setting_control_revert": [85, 85, 85, 255],
         "setting_unit": [174, 174, 174, 255],
         "setting_validation_error": [255, 57, 14, 255],
         "setting_validation_warning": [255, 186, 15, 255],
