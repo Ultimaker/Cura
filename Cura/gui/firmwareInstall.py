@@ -186,7 +186,7 @@ class InstallFirmwareDialog(wx.Dialog):
 
 	def updateLabel(self, text):
 		self.progressLabel.SetLabel(text)
-		#self.Layout()
+		self.Layout()
 
 	def OnProgress(self, value, max):
 		if self:
@@ -339,7 +339,7 @@ class AutoUpdateFirmware(wx.Dialog):
 
 	def updateLabel(self, text):
 		self.progressLabel.SetLabel(text)
-		#self.Layout()
+		self.Layout()
 
 	def OnProgress(self, value, max):
 		wx.CallAfter(self.progressGauge.SetRange, max)
