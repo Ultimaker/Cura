@@ -264,15 +264,17 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
+            Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
             if self._serial is None:
                 try:
                     self._serial = serial.Serial(str(self._serial_port), baud_rate, timeout = 3, writeTimeout = 10000)
                 except serial.SerialException:
-                    Logger.log("i", "Could not open port %s" % self._serial_port)
-                    return
+                    #Logger.log("i", "Could not open port %s" % self._serial_port)
+                    continue
             else:
                 if not self.setBaudRate(baud_rate):
                     continue # Could not set the baud rate, go to the next
+
             time.sleep(1.5) # Ensure that we are not talking to the bootloader. 1.5 sec seems to be the magic number
             sucesfull_responses = 0
             timeout_time = time.time() + 5
@@ -347,15 +349,17 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     @pyqtSlot(int)
     def heatupNozzle(self, temperature):
+        Logger.log("d", "Setting nozzle temperature to %s", temperature)
         self._sendCommand("M104 S%s" % temperature)
 
     @pyqtSlot(int)
     def heatupBed(self, temperature):
+        Logger.log("d", "Setting bed temperature to %s", temperature)
         self._sendCommand("M140 S%s" % temperature)
 
     @pyqtSlot("long", "long","long")
     def moveHead(self, x, y, z):
-        print("Moving head" , x , " ", y , " " , z)
+        Logger.log("d","Moving head to %s, %s , %s", x, y, z)
         self._sendCommand("G0 X%s Y%s Z%s"%(x,y,z))
 
     @pyqtSlot()
@@ -607,7 +611,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     ##  Create a list of baud rates at which we can communicate.
     #   \return list of int
     def _getBaudrateList(self):
-        ret = [250000, 230400, 115200, 57600, 38400, 19200, 9600]
+        ret = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
         return ret
 
     def _onFirmwareUpdateComplete(self):

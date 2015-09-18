@@ -4,7 +4,6 @@
 from UM.Job import Job
 from UM.Application import Application
 
-
 class ProcessGCodeLayerJob(Job):
     def __init__(self, message):
         super().__init__()

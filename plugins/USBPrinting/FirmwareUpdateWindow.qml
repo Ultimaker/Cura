@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
 UM.Dialog
 {
@@ -23,7 +23,7 @@ UM.Dialog
     {
         anchors.fill: parent;
 
-        Text
+        Label
         {
             anchors
             {
@@ -70,6 +70,8 @@ UM.Dialog
         {
            id: palette;
         }
+
+        UM.I18nCatalog { id: catalog; name: "cura"; }
     }
 
     rightButtons: [

@@ -292,6 +292,10 @@ UM.MainWindow
                         for(var i in drop.urls)
                         {
                             UM.MeshFileHandler.readLocalFile(drop.urls[i]);
+                            if (i == drop.urls.length - 1)
+                            {
+                                openDialog.sendMeshName(drop.urls[i].toString())
+                            }
                         }
                     }
                 }
@@ -333,7 +337,7 @@ UM.MainWindow
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
                 //style: UM.Theme.styles.open_file_button
                 text: catalog.i18nc("@action:button","Open File");
-                iconSource: UM.Theme.icons.open
+                iconSource: UM.Theme.icons.load
                 style: UM.Theme.styles.open_file_button
                 tooltip: '';
                 anchors
@@ -368,6 +372,7 @@ UM.MainWindow
             Button
             {
                 id: viewModeButton
+                property bool verticalTooltip: true
                 anchors
                 {
                     top: parent.top;

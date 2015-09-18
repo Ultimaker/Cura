@@ -3,7 +3,6 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 import QtQuick.Controls.Styles 1.1
 
@@ -80,13 +79,7 @@ Item
 
             section.property: "manufacturer"
             section.delegate: Button {
-                text: {
-                    if (base,activeManufacturer == section)
-                        return section + " ▼"
-                    else
-                        return section + " ►"
-                }
-
+                text: section + " "
                 style: ButtonStyle {
                     background: Rectangle {
                         id: manufacturerBackground
@@ -100,6 +93,17 @@ Item
                         text: control.text
                         color: palette.windowText
                         font.bold: true
+                        UM.RecolorImage {
+                            id: downArrow
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.right
+                            width: UM.Theme.sizes.standard_arrow.width
+                            height: UM.Theme.sizes.standard_arrow.height
+                            sourceSize.width: width
+                            sourceSize.height: width
+                            color: palette.windowText
+                            source: base,activeManufacturer == section ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
+                        }
                     }
                 }
 
@@ -136,9 +140,6 @@ Item
                 Label
                 {
                     id: author
-//                         visible: model.author != "Ultimaker" ? true : false
-                    //: Printer profile caption meaning: this profile is supported by the community
-//                         text: qsTr("community supported profile");
                     text: model.author;
                     anchors.left: machineButton.right
                     anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.height/2
