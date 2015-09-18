@@ -13,9 +13,6 @@ class newVersionDialog(wx.Dialog):
 
 		p = wx.Panel(self)
 		self.panel = p
-		s = wx.BoxSizer()
-		self.SetSizer(s)
-		s.Add(p, flag=wx.ALL, border=15)
 		s = wx.BoxSizer(wx.VERTICAL)
 		p.SetSizer(s)
 
@@ -39,9 +36,12 @@ class newVersionDialog(wx.Dialog):
 		self.Bind(wx.EVT_BUTTON, self.OnOk, button)
 		s.Add(button, flag=wx.TOP|wx.ALIGN_RIGHT, border=5)
 
-		self.Fit()
-		self.Centre()
+		s = wx.BoxSizer()
+		s.Add(p, flag=wx.ALL, border=15)
+
 		self.Layout()
+		self.SetSizerAndFit(s)
+		self.Centre()
 
 	def OnOk(self, e):
 		self.Close()
