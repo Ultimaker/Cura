@@ -16,7 +16,7 @@ import os
 import subprocess
 
 from UM.i18n import i18nCatalog
-catalog = i18nCatalog("uranium")
+catalog = i18nCatalog("cura")
 
 # WinAPI Constants that we need
 # Hardcoded here due to stupid WinDLL stuff that does not give us access to these values.
@@ -55,7 +55,7 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
                     volume_name = name_buffer.value
 
                 if not volume_name:
-                    volume_name = catalog.i18nc("Default name for removable device", "Removable Drive")
+                    volume_name = catalog.i18nc("@item:intext", "Removable Drive")
 
                 # Certain readers will report themselves as a volume even when there is no card inserted, but will show an
                 # "No volume in drive" warning when trying to call GetDiskFreeSpace. However, they will not report a valid
@@ -88,10 +88,13 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
 
         result = None
         # Then, try and tell it to eject
-        if not windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, None, None, None, None, None):
+        try:
+            if not windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, None, None, None, None, None):
+                result = False
+            else:
+                result = True
+        except Exception as e:
             result = False
-        else:
-            result = True
 
         # Finally, close the handle
         windll.kernel32.CloseHandle(handle)

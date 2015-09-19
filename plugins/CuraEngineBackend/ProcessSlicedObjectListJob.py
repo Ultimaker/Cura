@@ -27,7 +27,7 @@ class ProcessSlicedObjectListJob(Job):
 
     def run(self):
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
-            self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
+            self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
             self._progress.show()
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
@@ -43,17 +43,14 @@ class ProcessSlicedObjectListJob(Job):
                 else:
                     objectIdMap[id(node)] = node
 
-        settings = Application.getInstance().getActiveMachine()
-        layerHeight = settings.getSettingValueByKey("layer_height")
+        settings = Application.getInstance().getMachineManager().getActiveProfile()
+        layerHeight = settings.getSettingValue("layer_height")
 
         center = None
-        if not settings.getSettingValueByKey("machine_center_is_zero"):
-            center = numpy.array([settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2])
+        if not settings.getSettingValue("machine_center_is_zero"):
+            center = numpy.array([settings.getSettingValue("machine_width") / 2, 0.0, -settings.getSettingValue("machine_depth") / 2])
         else:
             center = numpy.array([0.0, 0.0, 0.0])
-
-        if self._progress:
-            self._progress.setProgress(2)
 
         mesh = MeshData()
         layer_data = LayerData.LayerData()
@@ -80,14 +77,10 @@ class ProcessSlicedObjectListJob(Job):
 
                     layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
-        if self._progress:
-            self._progress.setProgress(50)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layer_data.build()
 
-        if self._progress:
-            self._progress.setProgress(100)
         
         #Add layerdata decorator to scene node to indicate that the node has layerdata
         decorator = LayerDataDecorator.LayerDataDecorator()
@@ -108,7 +101,7 @@ class ProcessSlicedObjectListJob(Job):
         if self.isRunning():
             if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
                 if not self._progress:
-                    self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
+                    self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0)
                     self._progress.show()
             else:
                 if self._progress:

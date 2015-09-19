@@ -22,22 +22,33 @@ class ConvexHullNode(SceneNode):
         self._inherit_orientation = False
         self._inherit_scale = False
 
+        self._color = Color(35, 35, 35, 0.5)
+
         self._node = node
         self._node.transformationChanged.connect(self._onNodePositionChanged)
         self._node.parentChanged.connect(self._onNodeParentChanged)
-        #self._onNodePositionChanged(self._node)
-
+        self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
+        self._onNodeDecoratorsChanged(self._node)
+        self.convexHullHeadMesh = None
         self._hull = hull
 
         hull_points = self._hull.getPoints()
-        center = (hull_points.min(0) + hull_points.max(0)) / 2.0
+        hull_mesh = self.createHullMesh(self._hull.getPoints())
+        if hull_mesh:
+            self.setMeshData(hull_mesh)
+        convex_hull_head = self._node.callDecoration("getConvexHullHead")
+        if convex_hull_head:
+            self.convexHullHeadMesh = self.createHullMesh(convex_hull_head.getPoints())
 
+    def createHullMesh(self, hull_points):
         mesh = MeshData()
-        mesh.addVertex(center[0], 0.1, center[1])
-
+        if len(hull_points) > 3:
+            center = (hull_points.min(0) + hull_points.max(0)) / 2.0
+            mesh.addVertex(center[0], 0.1, center[1])
+        else:
+            return None
         for point in hull_points:
             mesh.addVertex(point[0], 0.1, point[1])
-
         indices = []
         for i in range(len(hull_points) - 1):
             indices.append([0, i + 1, i + 2])
@@ -45,35 +56,43 @@ class ConvexHullNode(SceneNode):
         indices.append([0, mesh.getVertexCount() - 1, 1])
 
         mesh.addIndices(numpy.array(indices, numpy.int32))
-
-        self.setMeshData(mesh)
+        return mesh
 
     def getWatchedNode(self):
         return self._node
 
     def render(self, renderer):
         if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
+            self._material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "color.frag"))
 
-            self._material.setUniformValue("u_color", Color(35, 35, 35, 128))
         if self.getParent():
+            self._material.setUniformValue("u_color", self._color)
             renderer.queueNode(self, material = self._material, transparent = True)
+            if self.convexHullHeadMesh:
+                renderer.queueNode(self, material = self._material,transparent = True, mesh = self.convexHullHeadMesh)
 
         return True
-    
 
     def _onNodePositionChanged(self, node):
-        #self.setPosition(node.getWorldPosition())
         if node.callDecoration("getConvexHull"): 
             node.callDecoration("setConvexHull", None)
             node.callDecoration("setConvexHullNode", None)
             self.setParent(None)
-
-        #self._node.transformationChanged.disconnect(self._onNodePositionChanged)
-        #self._node.parentChanged.disconnect(self._onNodeParentChanged)
 
     def _onNodeParentChanged(self, node):
         if node.getParent():
             self.setParent(self._original_parent)
         else:
             self.setParent(None)
+
+    def _onNodeDecoratorsChanged(self, node):
+        self._color = Color(35, 35, 35, 0.5)
+
+        if not node:
+            return
+
+        if node.hasDecoration("getProfile"):
+            self._color.setR(0.75)
+
+        if node.hasDecoration("getSetting"):
+            self._color.setG(0.75)

@@ -13,8 +13,8 @@ import os
 import plistlib
 
 ## Support for removable devices on Mac OSX
-class OSXRemovableDrives(RemovableDrivePlugin.RemovableDrivePlugin):
-    def run(self):
+class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
+    def checkRemovableDrives(self):
         drives = {}
         p = subprocess.Popen(["system_profiler", "SPUSBDataType", "-xml"], stdout=subprocess.PIPE)
         plist = plistlib.loads(p.communicate()[0])
@@ -40,6 +40,8 @@ class OSXRemovableDrives(RemovableDrivePlugin.RemovableDrivePlugin):
                                 if "mount_point" in vol:
                                     volume = vol["mount_point"]
                                     drives[volume] = os.path.basename(volume)
+
+        return drives
 
     def performEjectDevice(self, device):
         p = subprocess.Popen(["diskutil", "eject", path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

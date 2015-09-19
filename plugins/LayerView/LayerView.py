@@ -13,6 +13,8 @@ from UM.Mesh.MeshData import MeshData
 
 from cura.ConvexHullNode import ConvexHullNode
 
+from PyQt5 import QtCore, QtWidgets
+
 from . import LayerViewProxy
 
 ## View used to display g-code paths.
@@ -52,10 +54,10 @@ class LayerView(View):
         renderer.setRenderSelection(False)
 
         if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "vertexcolor.frag"))
+            self._material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "vertexcolor.frag"))
             self._material.setUniformValue("u_color", [1.0, 0.0, 0.0, 1.0])
 
-            self._selection_material = renderer.createMaterial(Resources.getPath(Resources.ShadersLocation, "basic.vert"), Resources.getPath(Resources.ShadersLocation, "color.frag"))
+            self._selection_material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "color.frag"))
             self._selection_material.setUniformValue("u_color", Color(35, 35, 35, 128))
 
         for node in DepthFirstIterator(scene.getRoot()):
@@ -92,9 +94,11 @@ class LayerView(View):
                             layer = self._current_layer_num - i
                             if layer < 0:
                                 continue
-
-                            layer_mesh = layer_data.getLayer(layer).createMesh()
-                            if not layer_mesh or layer_mesh.getVertices() is None:
+                            try:
+                                layer_mesh = layer_data.getLayer(layer).createMesh()
+                                if not layer_mesh or layer_mesh.getVertices() is None:
+                                    continue
+                            except:
                                 continue
 
                             self._current_layer_mesh.addVertices(layer_mesh.getVertices())
@@ -160,8 +164,12 @@ class LayerView(View):
         pass
     
     def event(self, event):
-        if event.type == Event.KeyPressEvent:
+        modifiers = QtWidgets.QApplication.keyboardModifiers()
+        ctrl_is_active = modifiers == QtCore.Qt.ControlModifier
+        if event.type == Event.KeyPressEvent and ctrl_is_active:
             if event.key == KeyEvent.UpKey:
                 self.setLayer(self._current_layer_num + 1)
+                return True
             if event.key == KeyEvent.DownKey:
                 self.setLayer(self._current_layer_num - 1)
+                return True

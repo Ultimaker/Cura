@@ -3,50 +3,75 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-ColumnLayout {
+Item
+{
+    id: wizardPage
     property string title
-    anchors.fill: parent;
 
-    Label {
-        text: parent.title
-        font.pointSize: 18;
+    SystemPalette{id: palette}
+    UM.I18nCatalog { id: catalog; name:"cura"}
+    Label
+    {
+        id: pageTitle
+        width: parent.width
+        text: catalog.i18nc("@title", "Select Upgraded Parts")
+        wrapMode: Text.WordWrap
+        font.pointSize: 18
+    }
+    Label
+    {
+        id: pageDescription
+        anchors.top: pageTitle.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        width: parent.width
+        wrapMode: Text.WordWrap
+        text: catalog.i18nc("@label","To assist you in having better default settings for your Ultimaker. Cura would like to know which upgrades you have in your machine:")
     }
 
-    Label {
-        //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
-    }
-
-    ScrollView {
-        Layout.fillWidth: true;
-
-        ListView {
-            id: machineList;
-            model: UM.Models.availableMachinesModel
-            delegate: RadioButton {
-                exclusiveGroup: printerGroup;
-                text: model.name;
-                onClicked: {
-                    ListView.view.currentIndex = index;
-
-                }
-            }
+    Item
+    {
+        id: pageCheckboxes
+        height: childrenRect.height
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.sizes.default_margin.width
+        anchors.top: pageDescription.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        width: parent.width - UM.Theme.sizes.default_margin.width
+        CheckBox
+        {
+            id: checkBox
+            text: catalog.i18nc("@option:check","Extruder driver ugrades")
+            checked: true
+        }
+        CheckBox
+        {
+            text: catalog.i18nc("@option:check","Heated printer bed (standard kit)")
+            y: checkBox.height * 1
+        }
+        CheckBox
+        {
+            text: catalog.i18nc("@option:check","Heated printer bed (self built)")
+            y: checkBox.height * 2
+        }
+        CheckBox
+        {
+            text: catalog.i18nc("@option:check","Dual extrusion (experimental)")
+            y: checkBox.height * 3
         }
     }
 
-    Label {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
+    Label
+    {
+        width: parent.width
+        anchors.top: pageCheckboxes.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        wrapMode: Text.WordWrap
+        text: catalog.i18nc("@label","If you bought your Ultimaker after october 2012 you will have the Extruder drive upgrade. If you do not have this upgrade, it is highly recommended to improve reliability. This upgrade can be bought from the Ultimaker webshop or found on thingiverse as thing:26094");
     }
-
-    TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
-
-    Item { Layout.fillWidth: true; Layout.fillHeight: true; }
 
     ExclusiveGroup { id: printerGroup; }
 }

@@ -1,0 +1,18 @@
+{
+    "id": "ultimaker2_extended",
+    "version": 1, 
+    "name": "Ultimaker 2 Extended",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
+    "icon": "icon_ultimaker2.png",
+    "platform": "ultimaker2_platform.obj",
+    "platform_texture": "Ultimaker2Extendedbackplate.png",
+
+    "inherits": "ultimaker2.json",
+
+    "machine_settings": {
+        "machine_width": { "default": 230 },
+        "machine_depth": { "default": 225 },
+        "machine_height": { "default": 315 }
+    }
+}

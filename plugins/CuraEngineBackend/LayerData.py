@@ -28,7 +28,8 @@ class LayerData(MeshData):
         self._layers[layer].polygons.append(p)
 
     def getLayer(self, layer):
-        return self._layers[layer]
+        if layer in self._layers:
+            return self._layers[layer]
 
     def getLayers(self):
         return self._layers
@@ -216,7 +217,7 @@ class Polygon():
         elif self._type == self.SkirtType:
             return Color(0.0, 1.0, 1.0, 1.0)
         elif self._type == self.InfillType:
-            return Color(1.0, 1.0, 0.0, 1.0)
+            return Color(1.0, 0.74, 0.0, 1.0)
         elif self._type == self.SupportInfillType:
             return Color(0.0, 1.0, 1.0, 1.0)
         else:

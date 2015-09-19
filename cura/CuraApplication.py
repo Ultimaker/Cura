@@ -1,6 +1,13 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+import platform
+
+if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
+    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
+    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
+        from OpenGL import GL
+
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -38,26 +45,32 @@ from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
+from PyQt5.QtQml import qmlRegisterUncreatableType
 
 import platform
 import sys
 import os
 import os.path
-import configparser
 import numpy
+import copy
 numpy.seterr(all="ignore")
 
 class CuraApplication(QtApplication):
+    class ResourceTypes:
+        QmlFiles = Resources.UserType + 1
+        Firmware = Resources.UserType + 2
+    Q_ENUMS(ResourceTypes)
+
     def __init__(self):
-        Resources.addResourcePath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
+        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
         if not hasattr(sys, "frozen"):
-            Resources.addResourcePath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "master")
+        super().__init__(name = "cura", version = "15.09.82")
 
-        self.setWindowIcon(QIcon(Resources.getPath(Resources.ImagesLocation, "cura-icon.png")))
+        self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
             "CuraEngineBackend",
@@ -78,12 +91,19 @@ class CuraApplication(QtApplication):
         self._previous_active_tool = None
         self._platform_activity = False
 
-        self.activeMachineChanged.connect(self._onActiveMachineChanged)
+        self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
+        self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
+        self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+
+        Resources.addType(self.ResourceTypes.QmlFiles, "qml")
+        Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
+        Preferences.getInstance().addPreference("view/center_on_select", True)
+        Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
@@ -115,7 +135,12 @@ class CuraApplication(QtApplication):
     def run(self):
         self._i18n_catalog = i18nCatalog("cura");
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Setting up scene..."))
+        i18nCatalog.setTagReplacements({
+            "filename": "font color=\"black\"",
+            "message": "font color=UM.Theme.colors.message_text;",
+        })
+
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
 
@@ -125,7 +150,7 @@ class CuraApplication(QtApplication):
 
         t = controller.getTool("TranslateTool")
         if t:
-            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.ZAxis])
+            t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis,ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
@@ -149,32 +174,33 @@ class CuraApplication(QtApplication):
 
         controller.getScene().setActiveCamera("3d")
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("Splash screen message", "Loading interface..."))
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        self.setMainQml(Resources.getPath(Resources.QmlFilesLocation, "Cura.qml"))
+        self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
 
-        if self.getMachines():
-            active_machine_pref = Preferences.getInstance().getValue("cura/active_machine")
-            if active_machine_pref:
-                for machine in self.getMachines():
-                    if machine.getName() == active_machine_pref:
-                        self.setActiveMachine(machine)
-
-            if not self.getActiveMachine():
-                self.setActiveMachine(self.getMachines()[0])
-        else:
+        manager = self.getMachineManager()
+        if not self.getMachineManager().getMachineInstances():
             self.requestAddPrinter.emit()
+
 
         if self._engine.rootObjects:
             self.closeSplash()
 
             for file in self.getCommandLineOption("file", []):
-                job = ReadMeshJob(os.path.abspath(file))
-                job.finished.connect(self._onFileLoaded)
-                job.start()
+                self._openFile(file)
 
             self.exec_()
+
+    #   Handle Qt events
+    def event(self, event):
+        if event.type() == QEvent.FileOpen:
+            self._openFile(event.file())
+
+        return super().event(event)
+
+    def getPrintInformation(self):
+        return self._print_information
 
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
@@ -182,6 +208,8 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         self._cura_actions = CuraActions.CuraActions(self)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
+
+        qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
@@ -191,10 +219,10 @@ class CuraApplication(QtApplication):
                     self._previous_active_tool = None
                 else:
                     self.getController().setActiveTool("TranslateTool")
-
-            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
-            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
-            self._camera_animation.start()
+            if Preferences.getInstance().getValue("view/center_on_select"):
+                self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
+                self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
+                self._camera_animation.start()
         else:
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
@@ -209,24 +237,15 @@ class CuraApplication(QtApplication):
     def getPlatformActivity(self):
         return self._platform_activity
 
-    @pyqtSlot(bool)
-    def setPlatformActivity(self, activity):
-        ##Sets the _platform_activity variable on true or false depending on whether there is a mesh on the platform
-        if activity == True:
-            self._platform_activity = activity
-        elif activity == False:
-            nodes = []
-            for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-                if type(node) is not SceneNode or not node.getMeshData():
-                    continue
-                nodes.append(node)
-            i = 0
-            for node in nodes:
-                if not node.getMeshData():
-                    continue
-                i += 1
-            if i <= 1: ## i == 0 when the meshes are removed using the deleteAll function; i == 1 when the last remaining mesh is removed using the deleteObject function
-                self._platform_activity = activity
+    def updatePlatformActivity(self, node = None):
+        count = 0
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if type(node) is not SceneNode or not node.getMeshData():
+                continue
+
+            count += 1
+
+        self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
 
     ##  Remove an object from the scene
@@ -247,8 +266,7 @@ class CuraApplication(QtApplication):
                         group_node = group_node.getParent()
                     op = RemoveSceneNodeOperation(group_node)
             op.push()
-            self.setPlatformActivity(False)
-    
+
     ##  Create a number of copies of existing object.
     @pyqtSlot("quint64", int)
     def multiplyObject(self, object_id, count):
@@ -260,22 +278,26 @@ class CuraApplication(QtApplication):
         if node:
             op = GroupedOperation()
             for i in range(count):
-                new_node = SceneNode()
-                new_node.setMeshData(node.getMeshData())
-                new_node.setScale(node.getScale())
-                new_node.translate(Vector((i + 1) * node.getBoundingBox().width, 0, 0))
-                new_node.setSelectable(True)
-                op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
+                if node.getParent() and node.getParent().callDecoration("isGroup"):
+                    new_node = copy.deepcopy(node.getParent()) #Copy the group node.
+                    new_node.callDecoration("setConvexHull",None)
+
+                    op.addOperation(AddSceneNodeOperation(new_node,node.getParent().getParent()))
+                else:
+                    new_node = copy.deepcopy(node)
+                    new_node.callDecoration("setConvexHull", None)
+                    op.addOperation(AddSceneNodeOperation(new_node, node.getParent()))
+
             op.push()
-    
+
     ##  Center object on platform.
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
-
+        if node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
         if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
-
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
@@ -285,8 +307,12 @@ class CuraApplication(QtApplication):
     def deleteAll(self):
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode:
                 continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue #Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
             nodes.append(node)
         if nodes:
             op = GroupedOperation()
@@ -295,22 +321,28 @@ class CuraApplication(QtApplication):
                 op.addOperation(RemoveSceneNodeOperation(node))
 
             op.push()
-        self.setPlatformActivity(False)
-    
+
     ## Reset all translation on nodes with mesh data. 
     @pyqtSlot()
     def resetAllTranslation(self):
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode:
                 continue
-            nodes.append(node)
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue #Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
 
+            nodes.append(node)
         if nodes:
             op = GroupedOperation()
-
             for node in nodes:
-                op.addOperation(SetTransformOperation(node, Vector()))
+                # Ensure that the object is above the build platform
+                move_distance = node.getBoundingBox().center.y
+                if move_distance <= 0:
+                    move_distance = -node.getBoundingBox().bottom
+                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0)))
 
             op.push()
     
@@ -319,15 +351,23 @@ class CuraApplication(QtApplication):
     def resetAll(self):
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
-            if type(node) is not SceneNode or not node.getMeshData():
+            if type(node) is not SceneNode:
                 continue
+            if not node.getMeshData() and not node.callDecoration("isGroup"):
+                continue #Node that doesnt have a mesh and is not a group.
+            if node.getParent() and node.getParent().callDecoration("isGroup"):
+                continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
             nodes.append(node)
 
         if nodes:
             op = GroupedOperation()
 
             for node in nodes:
-                op.addOperation(SetTransformOperation(node, Vector(), Quaternion(), Vector(1, 1, 1)))
+                # Ensure that the object is above the build platform
+                move_distance = node.getBoundingBox().center.y
+                if move_distance <= 0:
+                    move_distance = -node.getBoundingBox().bottom
+                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
@@ -387,18 +427,18 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
-        if not self.getActiveMachine():
+        if not self.getMachineManager().getActiveProfile():
             return None
-
-        return self.getActiveMachine().getSettingValueByKey(key)
+        return self.getMachineManager().getActiveProfile().getSettingValue(key)
+        #return self.getActiveMachine().getSettingValueByKey(key)
     
     ##  Change setting by key value pair
     @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
-        if not self.getActiveMachine():
+        if not self.getMachineManager().getActiveProfile():
             return
 
-        self.getActiveMachine().setSettingValueByKey(key, value)
+        self.getMachineManager().getActiveProfile().setSettingValue(key, value)
         
     @pyqtSlot()
     def mergeSelected(self):
@@ -412,7 +452,7 @@ class CuraApplication(QtApplication):
         # Reset the position of each node
         for node in group_node.getChildren():
             new_position = node.getMeshData().getCenterPosition()
-            new_position.setY(0)
+            new_position = new_position.scale(node.getScale())
             node.setPosition(new_position)
         
         # Use the previously found center of the group bounding box as the new location of the group
@@ -427,7 +467,9 @@ class CuraApplication(QtApplication):
         
         for node in Selection.getAllSelectedObjects():
             node.setParent(group_node)
-        
+        group_node.setCenterPosition(group_node.getBoundingBox().center)
+        #group_node.translate(Vector(0,group_node.getBoundingBox().center.y,0))
+        group_node.translate(group_node.getBoundingBox().center)
         for node in group_node.getChildren():
             Selection.remove(node)
         
@@ -446,6 +488,12 @@ class CuraApplication(QtApplication):
                        
                 for child in children_to_move:
                     child.setParent(node.getParent())
+                    print(node.getPosition())
+                    child.translate(node.getPosition())
+                    child.setPosition(child.getPosition().scale(node.getScale()))
+                    child.scale(node.getScale())
+                    child.rotate(node.getOrientation())
+
                     Selection.add(child)
                     child.callDecoration("setConvexHull",None)
                 node.setParent(None)
@@ -454,37 +502,35 @@ class CuraApplication(QtApplication):
             Selection.remove(node)
 
     def _onActiveMachineChanged(self):
-        machine = self.getActiveMachine()
+        machine = self.getMachineManager().getActiveMachineInstance()
         if machine:
-            Preferences.getInstance().setValue("cura/active_machine", machine.getName())
+            pass
+            #Preferences.getInstance().setValue("cura/active_machine", machine.getName())
 
-            self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
-            self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
-            self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
+            #self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
+            #self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
+            #self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
 
-            disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
-            areas = []
-            if disallowed_areas:
-                for area in disallowed_areas:
-                    areas.append(Polygon(numpy.array(area, numpy.float32)))
+            #disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
+            #areas = []
+            #if disallowed_areas:
+                #for area in disallowed_areas:
+                    #areas.append(Polygon(numpy.array(area, numpy.float32)))
 
-            self._volume.setDisallowedAreas(areas)
+            #self._volume.setDisallowedAreas(areas)
 
-            self._volume.rebuild()
+            #self._volume.rebuild()
 
-            offset = machine.getSettingValueByKey("machine_platform_offset")
-            if offset:
-                self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
-            else:
-                self._platform.setPosition(Vector(0.0, 0.0, 0.0))
+            #offset = machine.getSettingValueByKey("machine_platform_offset")
+            #if offset:
+                #self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
+            #else:
+                #self._platform.setPosition(Vector(0.0, 0.0, 0.0))
 
     def _onFileLoaded(self, job):
-        mesh = job.getResult()
-        if mesh != None:
-            node = SceneNode()
-
+        node = job.getResult()
+        if node != None:
             node.setSelectable(True)
-            node.setMeshData(mesh)
             node.setName(os.path.basename(job.getFileName()))
 
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
@@ -510,4 +556,16 @@ class CuraApplication(QtApplication):
         self.recentFilesChanged.emit()
 
     def _reloadMeshFinished(self, job):
-        job._node.setMeshData(job.getResult())
+        # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
+        job._node.setMeshData(job.getResult().getMeshData())
+        #job.getResult().setParent(self.getController().getScene().getRoot())
+        #job._node.setParent(self.getController().getScene().getRoot())
+        #job._node.meshDataChanged.emit(job._node)
+
+    def _openFile(self, file):
+        job = ReadMeshJob(os.path.abspath(file))
+        job.finished.connect(self._onFileLoaded)
+        job.start()
+
+    def _onAddMachineRequested(self):
+        self.requestAddPrinter.emit()

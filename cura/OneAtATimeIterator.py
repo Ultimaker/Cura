@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Scene.Iterator import Iterator
+from UM.Scene.SceneNode import SceneNode
 from functools import cmp_to_key
 from UM.Application import Application
 
@@ -10,14 +11,17 @@ from UM.Application import Application
 #  Take note that the list of nodes can have children (that may or may not contain mesh data)
 class OneAtATimeIterator(Iterator.Iterator):
     def __init__(self, scene_node):
-        super(OneAtATimeIterator, self).__init__(scene_node) # Call super to make multiple inheritence work.
+        super().__init__(scene_node) # Call super to make multiple inheritence work.
         self._hit_map = [[]]
         self._original_node_list = []
     
     def _fillStack(self):
         node_list = []
         for node in self._scene_node.getChildren():
-            if node.getBoundingBox().height > Application.getInstance().getActiveMachine().getSettingValueByKey("gantry_height"):
+            if not type(node) is SceneNode:
+                continue
+
+            if node.getBoundingBox().height > Application.getInstance().getMachineManager().getActiveProfile().getSettingValue("gantry_height"):
                 return
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)
@@ -55,7 +59,7 @@ class OneAtATimeIterator(Iterator.Iterator):
                         # We have no more nodes to check, so quit looking.
                         todo_node_list = None
                         self._node_stack = new_order
-                        print(self._node_stack)
+                        
                         return
                     todo_node_list.append(_objectOrder(new_order, new_todo_list))
         self._node_stack = [] #No result found!        

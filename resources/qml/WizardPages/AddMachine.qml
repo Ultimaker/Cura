@@ -3,107 +3,231 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
+import QtQuick.Controls.Styles 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
+import Cura 1.0 as Cura
 import ".."
 
-ColumnLayout {
-    id: wizardPage
-    property string title
-    signal openFile(string fileName)
-    signal closeWizard()
+Item
+{
+    id: base
 
-    Connections {
-        target: rootElement
-        onFinalClicked: {//You can add functions here that get triggered when the final button is clicked in the wizard-element
+    property string activeManufacturer: "Ultimaker";
+
+    property variant wizard: null;
+
+    Connections
+    {
+        target: base.wizard
+        onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
+        {
+            var old_page_count = base.wizard.getPageCount()
+            // Delete old pages (if any)
+            for (var i = old_page_count - 1; i > 0; i--)
+            {
+                base.wizard.removePage(i)
+            }
             saveMachine()
+        }
+        onBackClicked:
+        {
+            var old_page_count = base.wizard.getPageCount()
+            // Delete old pages (if any)
+            for (var i = old_page_count - 1; i > 0; i--)
+            {
+                base.wizard.removePage(i)
+            }
         }
     }
 
-    Label {
-        text: parent.title
+    Label
+    {
+        id: title
+        anchors.left: parent.left
+        anchors.top: parent.top
+        text: catalog.i18nc("@title", "Add Printer")
         font.pointSize: 18;
     }
 
-    Label {
-        //: Add Printer wizard page description
-        text: qsTr("Please select the type of printer:");
+    Label
+    {
+        id: subTitle
+        anchors.left: parent.left
+        anchors.top: title.bottom
+        text: catalog.i18nc("@label", "Please select the type of printer:");
     }
 
-    ScrollView {
-        ListView {
-            id: machineList;
-            model: UM.Models.availableMachinesModel
+    ScrollView
+    {
+        id: machinesHolder
+
+        anchors{
+            left: parent.left;
+            top: subTitle.bottom;
+            right: parent.right;
+            bottom: machineNameHolder.top;
+        }
+
+        ListView
+        {
+            id: machineList
+
+            model: UM.MachineDefinitionsModel { id: machineDefinitionsModel; showVariants: false; }
+            focus: true
+
+            section.property: "manufacturer"
+            section.delegate: Button {
+                text: section + " "
+                style: ButtonStyle {
+                    background: Rectangle {
+                        id: manufacturerBackground
+                        opacity: 0.3
+                        border.width: 0
+                        color: control.hovered ? palette.light : "transparent";
+                        height: UM.Theme.sizes.standard_list_lineheight.height
+                    }
+                    label: Text {
+                        horizontalAlignment: Text.AlignLeft
+                        text: control.text
+                        color: palette.windowText
+                        font.bold: true
+                        UM.RecolorImage {
+                            id: downArrow
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.right
+                            width: UM.Theme.sizes.standard_arrow.width
+                            height: UM.Theme.sizes.standard_arrow.height
+                            sourceSize.width: width
+                            sourceSize.height: width
+                            color: palette.windowText
+                            source: base,activeManufacturer == section ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
+                        }
+                    }
+                }
+
+                onClicked: {
+                    base.activeManufacturer = section;
+                    machineList.currentIndex = machineList.model.find("manufacturer", section)
+                }
+            }
+
             delegate: RadioButton {
-                id:machine_button
+                id: machineButton
+
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.width
+
+                opacity: 1;
+                height: UM.Theme.sizes.standard_list_lineheight.height;
+
+                checked: ListView.isCurrentItem;
+
                 exclusiveGroup: printerGroup;
-                checked: ListView.view.currentIndex == index ? true : false
-                text: model.name;
+
+                text: model.name
+
                 onClicked: {
                     ListView.view.currentIndex = index;
+                    if(model.pages.length > 0) {
+                        base.wizard.nextAvailable = true;
+                    } else {
+                        base.wizard.nextAvailable = false;
+                    }
+                }
 
+                Label
+                {
+                    id: author
+                    text: model.author;
+                    anchors.left: machineButton.right
+                    anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.height/2
+                    anchors.verticalCenter: machineButton.verticalCenter
+                    anchors.verticalCenterOffset: UM.Theme.sizes.standard_list_lineheight.height / 4
+                    font: UM.Theme.fonts.caption;
+                    color: palette.mid
+                }
+
+                states: State {
+                    name: "collapsed";
+                    when: base.activeManufacturer != model.manufacturer;
+
+                    PropertyChanges { target: machineButton; opacity: 0; height: 0; }
+                }
+
+                transitions: [
+                    Transition {
+                        to: "collapsed";
+                        SequentialAnimation {
+                            NumberAnimation { property: "opacity"; duration: 75; }
+                            NumberAnimation { property: "height"; duration: 75; }
+                        }
+                    },
+                    Transition {
+                        from: "collapsed";
+                        SequentialAnimation {
+                            NumberAnimation { property: "height"; duration: 75; }
+                            NumberAnimation { property: "opacity"; duration: 75; }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+    Item
+    {
+        id: machineNameHolder
+        height: childrenRect.height
+        anchors.bottom: parent.bottom;
+        Label
+        {
+            id: insertNameLabel
+            text: catalog.i18nc("@label:textbox", "Printer Name:");
+        }
+        TextField
+        {
+            id: machineName;
+            anchors.top: insertNameLabel.bottom
+            text: machineList.model.getItem(machineList.currentIndex).name
+            implicitWidth: UM.Theme.sizes.standard_list_input.width
+        }
+    }
+
+    function saveMachine()
+    {
+        if(machineList.currentIndex != -1)
+        {
+            var item = machineList.model.getItem(machineList.currentIndex);
+            machineList.model.createInstance(machineName.text, item.id)
+
+            var pages = machineList.model.getItem(machineList.currentIndex).pages
+
+            // Insert new pages (if any)
+            for(var i = 0; i < pages.length; i++)
+            {
+                switch(pages[i]) {
+                    case "SelectUpgradedParts":
+                        base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedParts.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
+                        break;
+                    case "UpgradeFirmware":
+                        base.wizard.appendPage(Qt.resolvedUrl("UpgradeFirmware.qml"), catalog.i18nc("@title", "Upgrade Firmware"));
+                        break;
+                    case "UltimakerCheckup":
+                        base.wizard.appendPage(Qt.resolvedUrl("UltimakerCheckup.qml"), catalog.i18nc("@title", "Check Printer"));
+                        break;
+                    case "BedLeveling":
+                        base.wizard.appendPage(Qt.resolvedUrl("Bedleveling.qml"), catalog.i18nc("@title", "Bed Levelling"));
+                        break;
+                    default:
+                        break;
                 }
             }
         }
     }
 
-    Label {
-        text: qsTr("Variation:");
-        }
-
-    ScrollView {
-        ListView {
-            id: variations_list
-            model: machineList.model.getItem(machineList.currentIndex).variations
-            delegate: RadioButton {
-                id: variation_radio_button
-                checked: ListView.view.currentIndex == index ? true : false
-                exclusiveGroup: variationGroup;
-                text: model.name;
-                onClicked: ListView.view.currentIndex = index;
-            }
-        }
-    }
-
-    Label {
-        //: Add Printer wizard field label
-        text: qsTr("Printer Name:");
-    }
-
-    TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
-    Item { Layout.fillWidth: true; Layout.fillHeight: true; }
     ExclusiveGroup { id: printerGroup; }
-    ExclusiveGroup { id: variationGroup; }
-
-    function getSpecialMachineType(machineId){
-        for (var i = 0; i < UM.Models.addMachinesModel.rowCount(); i++) {
-            if (UM.Models.addMachinesModel.getItem(i).name == machineId){
-               return UM.Models.addMachinesModel.getItem(i).name
-            }
-        }
-    }
-
-    function saveMachine(){
-        if(machineList.currentIndex != -1) {
-            UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, variations_list.currentIndex, machineName.text)
-
-            var originalString = "Ultimaker Original"
-            var originalPlusString = "Ultimaker Original+"
-            var originalMachineType = getSpecialMachineType(originalString)
-
-            if (UM.Models.availableMachinesModel.getItem(machineList.currentIndex).name == originalMachineType){
-                var variation = UM.Models.availableMachinesModel.getItem(machineList.currentIndex).variations.getItem(variations_list.currentIndex).name
-                if (variation == originalString || variation == originalPlusString){
-                    console.log(UM.Models.availableMachinesModel.getItem(machineList.currentIndex).variations.getItem(variations_list.currentIndex).type)
-                    wizardPage.openFile(UM.Models.availableMachinesModel.getItem(machineList.currentIndex).variations.getItem(variations_list.currentIndex).type)
-                }
-            }
-            else {
-                wizardPage.closeWizard()
-            }
-        }
-    }
+    UM.I18nCatalog { id: catalog; name: "cura"; }
+    SystemPalette { id: palette }
 }
-

@@ -4,103 +4,137 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
 
-Column {
+Item
+{
     id: base;
-
+    // Machine Setup
     property variant modesModel;
-    property alias currentModeIndex: modeMenu.currentIndex;
+    property int currentModeIndex: 0;
     property Action addMachineAction;
     property Action configureMachinesAction;
+    UM.I18nCatalog { id: catalog; name:"cura"}
+    property int totalHeightHeader: childrenRect.height
 
-    spacing: UM.Theme.sizes.default_margin.height;
+    Rectangle {
+        id: settingsModeRow
+        width: base.width
+        height: UM.Theme.sizes.sidebar_header.height
+        anchors.top: parent.top
+        color: UM.Theme.colors.sidebar_header_bar
 
-    RowLayout {
-        anchors.horizontalCenter: parent.horizontalCenter;
-
-        width: parent.width - UM.Theme.sizes.default_margin.width * 2;
-        height: UM.Theme.sizes.line.height;
-
-        Label {
-            //: Configuration mode label
-            text: qsTr("Mode:");
-
-            font: UM.Theme.fonts.sidebar_header;
-            color: UM.Theme.colors.text_inactive;
+        Label{
+            id: settingsModeLabel
+            text: catalog.i18nc("@label:listbox","Print Setup");
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width/100*45
+            font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text_white
         }
 
-        ToolButton {
-            text: base.modesModel ? base.modesModel.get(modeMenu.currentIndex).text : "";
-
-            style: UM.Theme.styles.sidebar_header_button;
-
-            Layout.preferredWidth: base.width * 0.25;
-
-            menu: Menu {
-                id: modeMenu;
-
-                property int currentIndex: 0;
-
-                Instantiator {
-                    model: base.modesModel;
-
-                    MenuItem {
-                        text: model.text;
-                        checkable: true;
-                        checked: modeMenu.currentIndex == index;
-                        exclusiveGroup: modeMenuGroup;
-                        onTriggered: modeMenu.currentIndex = index;
+        Rectangle{
+            id: settingsModeSelection
+            width: parent.width/100*55
+            height: childrenRect.height - UM.Theme.sizes.default_margin.width;
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
+            anchors.verticalCenter: parent.verticalCenter
+            Component{
+                id: wizardDelegate
+                Button {
+                    id: simpleModeButton
+                    height: settingsModeSelection.height
+                    anchors.left: parent.left
+                    anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
+                    anchors.top: parent.top
+                    width: parent.width / 2
+                    text: model.text
+                    exclusiveGroup: modeMenuGroup;
+                    checkable: true;
+                    checked: base.currentModeIndex == index
+                    onClicked: base.currentModeIndex = index
+                    style: ButtonStyle {
+                        background: Rectangle {
+                            color: control.checked ? UM.Theme.colors.toggle_active : UM.Theme.colors.toggle_disabled
+                            Behavior on color { ColorAnimation { duration: 50; } }
+                            Label {
+                                anchors.centerIn: parent
+                                color: control.checked ? UM.Theme.colors.toggle_active_text : UM.Theme.colors.toggle_disabled_text
+                                font: UM.Theme.fonts.default
+                                text: control.text;
+                            }
+                        }
+                        label: Item { }
                     }
-                    onObjectAdded: modeMenu.insertItem(index, object)
-                    onObjectRemoved: modeMenu.removeItem(object)
                 }
-
-                ExclusiveGroup { id: modeMenuGroup; }
+            }
+            ExclusiveGroup { id: modeMenuGroup; }
+            ListView{
+                id: modesList
+                property var index: 0
+                model: base.modesModel
+                delegate: wizardDelegate
+                anchors.top: parent.top
+                anchors.left: parent.left
+                width: parent.width
+                height: UM.Theme.sizes.sidebar_header.height
+                currentIndex: base.currentIndex;
             }
         }
+    }
 
-        Rectangle {
-            width: 1;
-            height: parent.height;
-            color: UM.Theme.colors.border;
-        }
+    Rectangle {
+        id: machineSelectionRow
+        width: base.width
+        height: UM.Theme.sizes.sidebar_header.height
+        anchors.top: settingsModeRow.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
 
-        Label {
+        Label{
+            id: machineSelectionLabel
             //: Machine selection label
-            text: qsTr("Machine:");
-
-            font: UM.Theme.fonts.sidebar_header;
-            color: UM.Theme.colors.text_inactive;
+            text: catalog.i18nc("@label:listbox","Machine:");
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+            anchors.verticalCenter: parent.verticalCenter
+            font: UM.Theme.fonts.default;
         }
 
         ToolButton {
-            id: machineButton;
-            text: UM.Application.machineName;
-            tooltip: UM.Application.machineName;
+            id: machineSelection
+            text: UM.MachineManager.activeMachineInstance;
+            width: parent.width/100*55
+            height: UM.Theme.sizes.setting_control.height
+            tooltip: UM.MachineManager.activeMachineInstance;
+            //style: UM.Theme.styles.sidebar_header_button;
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.verticalCenter: parent.verticalCenter
+            style: UM.Theme.styles.sidebar_header_button
 
-            style: UM.Theme.styles.sidebar_header_button;
-
-            Layout.fillWidth: true;
-
-            menu: Menu {
-                id: machineMenu;
-                Instantiator {
-                    model: UM.Models.machinesModel
-                    MenuItem {
+            menu: Menu
+            {
+                id: machineSelectionMenu
+                Instantiator
+                {
+                    model: UM.MachineInstancesModel { }
+                    MenuItem
+                    {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
-                        exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.Models.machinesModel.setActive(index)
+                        exclusiveGroup: machineSelectionMenuGroup;
+                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name);
                     }
-                    onObjectAdded: machineMenu.insertItem(index, object)
-                    onObjectRemoved: machineMenu.removeItem(object)
+                    onObjectAdded: machineSelectionMenu.insertItem(index, object)
+                    onObjectRemoved: machineSelectionMenu.removeItem(object)
                 }
 
-                ExclusiveGroup { id: machineMenuGroup; }
+                ExclusiveGroup { id: machineSelectionMenuGroup; }
 
                 MenuSeparator { }
 
@@ -108,18 +142,5 @@ Column {
                 MenuItem { action: base.configureMachinesAction; }
             }
         }
-    }
-
-    UM.SidebarCategoryHeader {
-        width: parent.width;
-        height: UM.Theme.sizes.section.height;
-
-        iconSource: UM.Theme.icons.printsetup;
-
-        //: Sidebar header label
-        text: qsTr("Print Setup");
-        enabled: false;
-
-        color: UM.Theme.colors.primary;
     }
 }
