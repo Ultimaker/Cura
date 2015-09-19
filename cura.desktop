@@ -8,5 +8,6 @@ TryExec=/usr/bin/cura_app.py
 Icon=/usr/share/cura/resources/images/cura-icon.png
 Terminal=false
 Type=Application
+MimeType=application/sla
 Categories=Graphics;
 Keywords=3D;Printing;
