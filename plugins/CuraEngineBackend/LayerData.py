@@ -136,6 +136,8 @@ class Layer():
             points = numpy.copy(polygon.data)
             if polygon.type == Polygon.InfillType or polygon.type == Polygon.SkinType or polygon.type == Polygon.SupportInfillType:
                 points[:,1] -= 0.01
+            if polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType:
+                points[:,1] += 0.01
 
             # Calculate normals for the entire polygon using numpy.
             normals = numpy.copy(points)
@@ -236,7 +238,7 @@ class Polygon():
         elif self._type == self.MoveCombingType:
             return Color(0.0, 0.0, 1.0, 1.0)
         elif self._type == self.MoveRetractionType:
-            return Color(0.5, 0.5, 1.0, 1.0)
+            return Color(0.0, 1.0, 1.0, 1.0)
         else:
             return Color(1.0, 1.0, 1.0, 1.0)
 
