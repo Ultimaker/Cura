@@ -233,6 +233,10 @@ class Polygon():
             return Color(1.0, 0.74, 0.0, 1.0)
         elif self._type == self.SupportInfillType:
             return Color(0.0, 1.0, 1.0, 1.0)
+        elif self._type == self.MoveCombingType:
+            return Color(0.0, 0.0, 1.0, 1.0)
+        elif self._type == self.MoveRetractionType:
+            return Color(0.5, 0.5, 1.0, 1.0)
         else:
             return Color(1.0, 1.0, 1.0, 1.0)
 
