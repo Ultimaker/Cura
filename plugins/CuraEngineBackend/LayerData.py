@@ -117,9 +117,20 @@ class Layer():
         return result
 
     def createMesh(self):
+        return self.createMeshOrJumps(True)
+        
+    def createJumps(self):
+        return self.createMeshOrJumps(False)
+        
+    def createMeshOrJumps(self, make_mesh):
         builder = MeshBuilder()
 
         for polygon in self._polygons:
+            if make_mesg and (polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType):
+                continue
+            if not make_mesg and not (polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType):
+                continue
+            
             poly_color = polygon.getColor()
 
             points = numpy.copy(polygon.data)
@@ -175,6 +186,8 @@ class Polygon():
     SkirtType = 5
     InfillType = 6
     SupportInfillType = 7
+    MoveCombingType = 8
+    MoveRetractionType = 9
 
     def __init__(self, mesh, type, data, line_width):
         super().__init__()
