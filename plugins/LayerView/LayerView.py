@@ -29,6 +29,7 @@ class LayerView(View):
         self._max_layers = 10
         self._current_layer_num = 10
         self._current_layer_mesh = None
+        self._current_layer_jumps = None
         self._activity = False
 
         self._solid_layers = 5
@@ -47,6 +48,7 @@ class LayerView(View):
 
     def resetLayerData(self):
         self._current_layer_mesh = None
+        self._current_layer_jumps = None
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -110,6 +112,28 @@ class LayerView(View):
 
                     renderer.queueNode(node, mesh = self._current_layer_mesh, material = self._material)
 
+                    if not self._current_layer_jumps:
+                        self._current_layer_jumps = MeshData()
+                        for i in range(1):
+                            layer = self._current_layer_num - i
+                            if layer < 0:
+                                continue
+                            try:
+                                layer_mesh = layer_data.getLayer(layer).createJumps()
+                                if not layer_mesh or layer_mesh.getVertices() is None:
+                                    continue
+                            except:
+                                continue
+
+                            self._current_layer_jumps.addVertices(layer_mesh.getVertices())
+
+                            # Scale layer color by a brightness factor based on the current layer number
+                            # This will result in a range of 0.5 - 1.0 to multiply colors by.
+                            brightness = (2.0 - (i / self._solid_layers)) / 2.0
+                            self._current_layer_jumps.addColors(layer_mesh.getColors() * brightness)
+
+                    renderer.queueNode(node, mesh = self._current_layer_jumps, material = self._material)
+
     def setLayer(self, value):
         if self._current_layer_num != value:
             self._current_layer_num = value
@@ -119,6 +143,7 @@ class LayerView(View):
                 self._current_layer_num = self._max_layers
 
             self._current_layer_mesh = None
+            self._current_layer_jumps = None
             self.currentLayerNumChanged.emit()
 
     currentLayerNumChanged = Signal()
