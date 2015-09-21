@@ -59,13 +59,13 @@ class ThreeMFReader(MeshReader):
                         v1 = int(triangle.get("v1"))
                         v2 = int(triangle.get("v2"))
                         v3 = int(triangle.get("v3"))
-                        mesh.addFace(vertex_list[v1][0],vertex_list[v1][1],vertex_list[v1][2],vertex_list[v2][0],vertex_list[v2][1],vertex_list[v2][2],vertex_list[v3][0],vertex_list[v3][1],vertex_list[v3][2])
+                        mesh.addFace(vertex_list[v1][0],vertex_list[v1][2],vertex_list[v1][1],vertex_list[v2][0],vertex_list[v2][2],vertex_list[v2][1],vertex_list[v3][0],vertex_list[v3][2],vertex_list[v3][1])
                     #TODO: We currently do not check for normals and simply recalculate them. 
                     mesh.calculateNormals()
                     node.setMeshData(mesh)
                     node.setSelectable(True)
                     Logger.log("d", "Loaded a mesh with %s vertices", mesh.getVertexCount())
-                    
+
                     transformation = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(object.get("id")), self._namespaces)
                     if transformation:
                         transformation = transformation[0]
@@ -107,10 +107,10 @@ class ThreeMFReader(MeshReader):
                         scale_y = math.sqrt(S2.at(1,1))
                         scale_z = math.sqrt(S2.at(2,2))
                         node.setScale(Vector(scale_x,scale_y,scale_z))
-                        
+
                         # We use a different coordinate frame, so rotate.
-                        rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
-                        node.rotate(rotation)
+                        #rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
+                        #node.rotate(rotation)
                     result.addChild(node)
 
                 #If there is more then one object, group them.
