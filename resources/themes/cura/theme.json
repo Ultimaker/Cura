@@ -91,9 +91,9 @@
 
         "setting_category": [238, 238, 238, 255],
         "setting_category_disabled": [238, 238, 238, 255],
-        "setting_category_hover": [240, 248, 255, 255],
-        "setting_category_active": [238, 238, 238, 255],
-        "setting_category_active_hover": [240, 248, 255, 255],
+        "setting_category_hover": [231, 231, 231, 255],
+        "setting_category_active": [240, 248, 255, 255],
+        "setting_category_active_hover": [233, 244, 245, 255],
         "setting_category_text": [35, 35, 35, 255],
 
         "setting_control": [255, 255, 255, 255],
@@ -157,15 +157,16 @@
         "loadfile_button": [11.0, 2.4],
         "loadfile_margin": [0.8, 0.4],
 
-        "sidebar": [27.0, 10.0],
+        "sidebar": [26.0, 10.0],
         "sidebar_header": [0.0, 3.2],
         "sidebar_setup": [0.0, 2.8],
         "sidebar_subParts": [0.0, 2.4],
         "sidebar_specs_bar": [0.0, 2.2],
         "sidebar_inputFields": [0.0, 1.9],
+        "simple_mode_infill_caption": [0.0, 5.0],
 
-        "section": [0.0, 1.8],
-        "section_icon": [1.2, 1.2],
+        "section": [0.0, 2.0],
+        "section_icon": [1.6, 1.6],
         "section_icon_column": [2.8, 0.0],
 
         "setting": [21.0, 1.8],
@@ -173,7 +174,6 @@
         "setting_control_margin": [3.0, 3.0],
         "setting_unit_margin": [0.5, 0.5],
         "setting_text_maxwidth": [40.0, 0.0],
-        "simple_mode_infill_caption": [0.0, 5.0],
 
         "standard_list_lineheight": [1.5, 1.5],
         "standard_list_input": [20.0, 25.0],
