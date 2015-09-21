@@ -34,17 +34,17 @@ QtObject {
                     elide: Text.ElideRight;
                     anchors.left: parent.left;
                     anchors.leftMargin: UM.Theme.sizes.setting_unit_margin.width
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width
+                    anchors.right: separationLine.left;
                     anchors.verticalCenter: parent.verticalCenter;
                     font: UM.Theme.fonts.default
                 }
                 Rectangle{
+                    id: separationLine
                     width: 1
                     height: UM.Theme.sizes.setting_control.height
                     color: UM.Theme.colors.setting_control_border
-                    anchors.right: sidebarComboBoxLabel.right
-                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width
+                    anchors.right: downArrow.left
+                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width + downArrow.width/2
                     anchors.top: parent.top
                     z: parent.z + 1
                 }

@@ -155,7 +155,7 @@
         "sidebar": [26.0, 10.0],
         "sidebar_header": [0.0, 3.8],
         "sidebar_header_mode_toggle": [0.0, 2.4],
-        "sidebar_setup": [0.0, 2.8],
+        "sidebar_setup": [0.0, 2.6],
         "sidebar_subParts": [0.0, 2.4],
         "sidebar_specs_bar": [0.0, 2.2],
         "sidebar_inputFields": [0.0, 1.9],
@@ -166,7 +166,7 @@
         "section_icon_column": [2.8, 0.0],
 
         "setting": [21.0, 1.8],
-        "setting_control": [6.0, 2.0],
+        "setting_control": [7.5, 2.0],
         "setting_control_margin": [3.0, 3.0],
         "setting_unit_margin": [0.5, 0.5],
         "setting_text_maxwidth": [40.0, 0.0],
