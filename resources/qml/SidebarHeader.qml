@@ -39,18 +39,17 @@ Item
         Rectangle{
             id: settingsModeSelection
             width: parent.width/100*55
-            height: childrenRect.height - UM.Theme.sizes.default_margin.width;
+            height: UM.Theme.sizes.sidebar_header_mode_toggle.height
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter
             Component{
                 id: wizardDelegate
                 Button {
-                    id: simpleModeButton
                     height: settingsModeSelection.height
                     anchors.left: parent.left
                     anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
-                    anchors.top: parent.top
+                    anchors.verticalCenter: parent.verticalCenter
                     width: parent.width / 2
                     text: model.text
                     exclusiveGroup: modeMenuGroup;

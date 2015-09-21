@@ -147,13 +147,14 @@
     },
 
     "sizes": {
-        "window_margin": [2.0, 2.0],
+        "window_margin": [1.5, 1.5],
         "default_margin": [1.0, 1.0],
         "default_lining": [0.1, 0.1],
         "logo": [9.5, 2.0],
 
         "sidebar": [26.0, 10.0],
-        "sidebar_header": [0.0, 3.2],
+        "sidebar_header": [0.0, 3.8],
+        "sidebar_header_mode_toggle": [0.0, 2.4],
         "sidebar_setup": [0.0, 2.8],
         "sidebar_subParts": [0.0, 2.4],
         "sidebar_specs_bar": [0.0, 2.2],
@@ -196,6 +197,7 @@
         "tooltip_margins": [1.0, 1.0],
 
         "save_button_border": [0.06, 0.06],
+        "save_button_header": [0.0, 3.2],
         "save_button_text_margin": [0.3, 0.6],
         "save_button_slicing_bar": [0.0, 2.2],
         "save_button_label_margin": [0.5, 0.5],

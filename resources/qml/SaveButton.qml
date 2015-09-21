@@ -62,7 +62,7 @@ Rectangle {
     Rectangle{
         id: printJobRow
         implicitWidth: base.width;
-        implicitHeight: UM.Theme.sizes.sidebar_header.height
+        implicitHeight: UM.Theme.sizes.save_button_header.height
         anchors.top: parent.top
         color: UM.Theme.colors.sidebar_header_bar
         Label{
