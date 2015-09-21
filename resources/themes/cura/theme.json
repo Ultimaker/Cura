@@ -100,6 +100,7 @@
         "setting_control_highlight": [245, 245, 245, 255],
         "setting_control_border": [174, 174, 174, 255],
         "setting_control_text": [0, 0, 0, 255],
+        "setting_control_depth_line": [162, 192, 227, 255],
         "setting_control_hover": [139, 143, 153, 255],
         "setting_control_selected": [35, 35, 35, 255],
         "setting_control_revert": [85, 85, 85, 255],
@@ -166,8 +167,9 @@
         "section_icon_column": [2.8, 0.0],
 
         "setting": [21.0, 1.8],
-        "setting_control": [7.5, 2.0],
-        "setting_control_margin": [3.0, 3.0],
+        "setting_control": [7.0, 2.0],
+        "setting_control_depth_margin": [1.4, 0.0],
+        "setting_control_margin": [0.0, 0.0],
         "setting_unit_margin": [0.5, 0.5],
         "setting_text_maxwidth": [40.0, 0.0],
 
