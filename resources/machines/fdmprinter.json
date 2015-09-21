@@ -623,7 +623,7 @@
                     "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 4.5,
+                    "default": 1.5,
                     "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable"
