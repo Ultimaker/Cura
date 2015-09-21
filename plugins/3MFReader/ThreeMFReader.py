@@ -64,6 +64,7 @@ class ThreeMFReader(MeshReader):
                     mesh.calculateNormals()
                     node.setMeshData(mesh)
                     node.setSelectable(True)
+                    Logger.log("d", "Loaded a mesh with %s vertices", mesh.getVertexCount())
                     
                     transformation = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(object.get("id")), self._namespaces)
                     if transformation:
