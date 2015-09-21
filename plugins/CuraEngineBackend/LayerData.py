@@ -107,7 +107,7 @@ class Layer():
     def build(self, offset, vertices, colors, indices):
         result = offset
         for polygon in self._polygons:
-            if polygon._type == Polygon.InfillType or polygon._type == Polygon.SupportInfillType:
+            if polygon._type == Polygon.InfillType or polygon._type == Polygon.SupportInfillType or polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType:
                 continue
 
             polygon.build(result, vertices, colors, indices)
@@ -117,14 +117,27 @@ class Layer():
         return result
 
     def createMesh(self):
+        return self.createMeshOrJumps(True)
+        
+    def createJumps(self):
+        return self.createMeshOrJumps(False)
+        
+    def createMeshOrJumps(self, make_mesh):
         builder = MeshBuilder()
 
         for polygon in self._polygons:
+            if make_mesh and (polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType):
+                continue
+            if not make_mesh and not (polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType):
+                continue
+            
             poly_color = polygon.getColor()
 
             points = numpy.copy(polygon.data)
             if polygon.type == Polygon.InfillType or polygon.type == Polygon.SkinType or polygon.type == Polygon.SupportInfillType:
                 points[:,1] -= 0.01
+            if polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType:
+                points[:,1] += 0.01
 
             # Calculate normals for the entire polygon using numpy.
             normals = numpy.copy(points)
@@ -175,6 +188,8 @@ class Polygon():
     SkirtType = 5
     InfillType = 6
     SupportInfillType = 7
+    MoveCombingType = 8
+    MoveRetractionType = 9
 
     def __init__(self, mesh, type, data, line_width):
         super().__init__()
@@ -219,6 +234,10 @@ class Polygon():
         elif self._type == self.InfillType:
             return Color(1.0, 0.74, 0.0, 1.0)
         elif self._type == self.SupportInfillType:
+            return Color(0.0, 1.0, 1.0, 1.0)
+        elif self._type == self.MoveCombingType:
+            return Color(0.0, 0.0, 1.0, 1.0)
+        elif self._type == self.MoveRetractionType:
             return Color(0.0, 1.0, 1.0, 1.0)
         else:
             return Color(1.0, 1.0, 1.0, 1.0)
