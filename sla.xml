@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/sla">
+        <comment>stereolithography file</comment>
+        <icon name="application-sla"/>
+        <glob-deleteall/>
+        <glob pattern="*.stl"/>
+    </mime-type>
+</mime-info>

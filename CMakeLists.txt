@@ -62,6 +62,7 @@ install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR} PERMISSIONS OWNER_
 if(NOT APPLE AND NOT WIN32)
     install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages)
     install(FILES cura.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+    install(FILES sla.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/)
 else()
     install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
 endif()
