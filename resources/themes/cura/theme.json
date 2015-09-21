@@ -151,11 +151,6 @@
         "default_margin": [1.0, 1.0],
         "default_lining": [0.1, 0.1],
         "logo": [9.5, 2.0],
-        "toolbar_button": [2.0, 2.0],
-        "toolbar_spacing": [1.0, 1.0],
-
-        "loadfile_button": [11.0, 2.4],
-        "loadfile_margin": [0.8, 0.4],
 
         "sidebar": [26.0, 10.0],
         "sidebar_header": [0.0, 3.2],
@@ -179,8 +174,8 @@
         "standard_list_input": [20.0, 25.0],
         "standard_arrow": [0.6, 0.6],
 
-        "button": [3.2, 3.2],
-        "button_icon": [2.5, 2.5],
+        "button": [3.8, 3.8],
+        "button_icon": [2.6, 2.6],
 
         "progressbar": [26.0, 0.8],
         "progressbar_control": [8.0, 0.8],

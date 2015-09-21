@@ -413,7 +413,7 @@ UM.MainWindow
                 anchors {
                     left: parent.left
                     top: parent.top
-                    topMargin: 74
+                    topMargin: UM.Theme.sizes.default_margin.height + UM.Theme.sizes.button.height
                     //horizontalCenter: parent.horizontalCenter
                     //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
                     //top: parent.top;

@@ -57,11 +57,11 @@ QtObject {
         ButtonStyle {
             background: Item{
                 implicitWidth: UM.Theme.sizes.button.width;
-                implicitHeight: UM.Theme.sizes.button.width;
+                implicitHeight: UM.Theme.sizes.button.height;
                 Rectangle {
                     anchors.left: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "white"
+                    color: UM.Theme.colors.button_text
                     width: control.hovered ? openFileLabel.width : 0;
                     height: openFileLabel.height
                     Behavior on width { NumberAnimation { duration: 100; } }
@@ -87,7 +87,7 @@ QtObject {
                     source: control.iconSource;
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;
-                    sourceSize: UM.Theme.sizes.button_icon;
+                    sourceSize: UM.Theme.sizes.button_icon
                 }
             }
         }
@@ -178,7 +178,7 @@ QtObject {
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;
 
-                    sourceSize: UM.Theme.sizes.button_icon;
+                    sourceSize: UM.Theme.sizes.button_icon
                 }
             }
         }
@@ -243,7 +243,7 @@ QtObject {
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;
 
-                    sourceSize: UM.Theme.sizes.button_icon;
+                    sourceSize: UM.Theme.sizes.button_icon
                 }
             }
         }
