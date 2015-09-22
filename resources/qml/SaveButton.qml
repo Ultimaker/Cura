@@ -110,6 +110,7 @@ Rectangle {
         implicitWidth: base.width
         implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
         anchors.top: printJobRow.bottom
+        visible: base.progress > 0.99 && base.activity == true
         Item{
             id: time
             width: childrenRect.width;
@@ -193,7 +194,15 @@ Rectangle {
 
             style: ButtonStyle {
                 background: Rectangle {
-                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    opacity: control.enabled ? 1.0 : 0.5
+                    //Behavior on opacity { NumberAnimation { duration: 50; } }
+                    color: {
+                        if(control.enabled && control.hovered) {
+                            return UM.Theme.colors.load_save_button_hover
+                        } else {
+                            return UM.Theme.colors.load_save_button
+                        }
+                    }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     width: {
                         var w = 0;
@@ -205,17 +214,17 @@ Rectangle {
                             saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
                             w = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
                         }
-                        
                         if(w < base.width * 0.55) {
                             w = base.width * 0.55;
                         }
-                        
                         return w;
                     }
                     Label {
                         id: actualLabel
+                        opacity: control.enabled ? 1.0 : 0.5
+                        //Behavior on opacity { NumberAnimation { duration: 50; } }
                         anchors.centerIn: parent
-                        color: UM.Theme.colors.load_save_button_text
+                        color:  UM.Theme.colors.load_save_button_text
                         font: UM.Theme.fonts.default
                         text: control.text;
                     }

@@ -373,6 +373,9 @@ UM.MainWindow
             {
                 id: viewModeButton
                 property bool verticalTooltip: true
+                property bool activity: Printer.getPlatformActivity;
+
+                enabled: viewModeButton.activity
                 anchors
                 {
                     top: parent.top;
@@ -389,12 +392,13 @@ UM.MainWindow
                     id: viewMenu;
                     Instantiator
                     {
+                        id: viewMenuInstantiator
                         model: UM.ViewModel { }
                         MenuItem
                         {
-                            text: model.name;
+                            text: model.name
                             checkable: true;
-                            checked: model.active;
+                            checked: model.active
                             exclusiveGroup: viewMenuGroup;
                             onTriggered: UM.Controller.setActiveView(model.id);
                         }

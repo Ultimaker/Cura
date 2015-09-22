@@ -139,13 +139,10 @@ QtObject {
                     id: buttonFace;
 
                     anchors.fill: parent;
-
                     property bool down: control.pressed || (control.checkable && control.checked);
 
                     color: {
-                        if(!control.enabled) {
-                            return UM.Theme.colors.button_disabled;
-                        } else if(control.checkable && control.checked && control.hovered) {
+                        if(control.checkable && control.checked && control.hovered) {
                             return UM.Theme.colors.button_active_hover;
                         } else if(control.pressed || (control.checkable && control.checked)) {
                             return UM.Theme.colors.button_active;
@@ -159,6 +156,7 @@ QtObject {
 
                     Label {
                         id: tool_button_arrow
+                        opacity: !control.enabled ? 0.6 : 1.0
                         anchors.right: parent.right;
                         anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width - tool_button_arrow.width) / 2
                         anchors.verticalCenter: parent.verticalCenter;
@@ -173,7 +171,7 @@ QtObject {
             label: Item {
                 Image {
                     anchors.centerIn: parent;
-
+                    opacity: !control.enabled ? 0.6 : 1.0
                     source: control.iconSource;
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;
