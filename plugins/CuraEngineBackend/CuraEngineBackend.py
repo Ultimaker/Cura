@@ -77,6 +77,8 @@ class CuraEngineBackend(Backend):
         self._message = None
 
         self.backendConnected.connect(self._onBackendConnected)
+        Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
+        Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
     ##  Get the command that is used to call the engine.
     #   This is usefull for debugging and used to actually start the engine
