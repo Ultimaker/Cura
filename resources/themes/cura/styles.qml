@@ -334,6 +334,7 @@ QtObject {
                     minimumPointSize: 8
                 }
                 UM.RecolorImage {
+                    id: category_arrow
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.sizes.default_margin.width * 2 - width / 2

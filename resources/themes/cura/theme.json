@@ -169,6 +169,7 @@
         "setting": [21.0, 1.8],
         "setting_control": [7.0, 2.0],
         "setting_control_depth_margin": [1.4, 0.0],
+        "setting_preferences_button_margin": [3.3, 0.0],
         "setting_control_margin": [0.0, 0.0],
         "setting_unit_margin": [0.5, 0.5],
         "setting_text_maxwidth": [40.0, 0.0],
