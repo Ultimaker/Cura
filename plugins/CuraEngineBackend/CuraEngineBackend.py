@@ -223,10 +223,16 @@ class CuraEngineBackend(Backend):
         self._socket.sendMessage(slice_message)
 
     def _onSceneChanged(self, source):
-        if (type(source) is not SceneNode) or (source is self._scene.getRoot()) or (source.getMeshData() is None):
+        if type(source) is not SceneNode:
             return
 
-        if(source.getMeshData().getVertices() is None):
+        if source is self._scene.getRoot():
+            return
+
+        if source.getMeshData() is None:
+            return
+
+        if source.getMeshData().getVertices() is None:
             return
 
         self._onChanged()
