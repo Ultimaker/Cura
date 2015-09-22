@@ -194,10 +194,13 @@ Rectangle {
 
             style: ButtonStyle {
                 background: Rectangle {
-                    opacity: control.enabled ? 1.0 : 0.5
+                    //opacity: control.enabled ? 1.0 : 0.5
                     //Behavior on opacity { NumberAnimation { duration: 50; } }
                     color: {
-                        if(control.enabled && control.hovered) {
+                        if(!control.enabled){
+                            return UM.Theme.colors.button;
+                        }
+                        else if(control.enabled && control.hovered) {
                             return UM.Theme.colors.load_save_button_hover
                         } else {
                             return UM.Theme.colors.load_save_button
@@ -221,7 +224,7 @@ Rectangle {
                     }
                     Label {
                         id: actualLabel
-                        opacity: control.enabled ? 1.0 : 0.5
+                        opacity: control.enabled ? 1.0 : 0.4
                         //Behavior on opacity { NumberAnimation { duration: 50; } }
                         anchors.centerIn: parent
                         color:  UM.Theme.colors.load_save_button_text
