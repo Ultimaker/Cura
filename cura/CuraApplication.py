@@ -529,6 +529,8 @@ class CuraApplication(QtApplication):
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
 
+            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
+
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():
             return
