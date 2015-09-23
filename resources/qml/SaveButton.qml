@@ -83,6 +83,7 @@ Rectangle {
             height: UM.Theme.sizes.sidebar_inputFields.height
             property int unremovableSpacing: 5
             text: ''
+            onTextChanged: Printer.setJobName(text)
             onEditingFinished: {
                 if (printJobTextfield.text != ''){
                     printJobTextfield.focus = false
@@ -189,7 +190,7 @@ Rectangle {
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, Printer.jobName)
             }
 
             style: ButtonStyle {
