@@ -71,7 +71,7 @@
         "button_active": [32, 166, 219, 255],
         "button_active_hover": [77, 184, 226, 255],
         "button_text": [255, 255, 255, 255],
-        "button_disabled": [245, 245, 245, 255],
+        "button_disabled": [0, 0, 0, 255],
         "button_tooltip_text": [35, 35, 35, 255],
 
         "toggle_active": [255, 255, 255, 255],
@@ -82,7 +82,8 @@
         "load_save_button": [0, 0, 0, 255],
         "load_save_button_text": [255, 255, 255, 255],
         "load_save_button_hover": [43, 45, 46, 255],
-        "load_save_button_active": [43, 45, 46, 255],
+        "load_save_button_inactive": [176, 184, 191, 255],
+        "load_save_button_inactive_text": [209, 214, 219, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [12, 159, 227, 255],
@@ -126,16 +127,6 @@
         "checkbox_text": [0, 0, 0, 255],
 
         "tooltip": [255, 225, 146, 255],
-
-        "save_button_border": [205, 202, 201, 255],
-        "save_button_inactive": [205, 202, 201, 255],
-        "save_button_active": [12, 159, 227, 255],
-        "save_button_active_hover": [34, 150, 190, 255],
-        "save_button_safe_to_text": [255, 255, 255, 255],
-        "save_button_estimated_text": [140, 144, 154, 255],
-        "save_button_estimated_text_background": [255, 255, 255, 255],
-        "save_button_printtime_text": [12, 169, 227, 255],
-        "save_button_background": [249, 249, 249, 255],
 
         "message_background": [255, 255, 255, 255],
         "message_text": [32, 166, 219, 255],

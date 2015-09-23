@@ -19,7 +19,8 @@ Item{
         anchors.top: base.top
         width: base.width
         height: UM.Theme.sizes.sidebar_setup.height
-        visible: UM.MachineManager.hasVariants;
+        //visible: UM.MachineManager.hasVariants;
+        visible: true
 
         Label{
             id: variantLabel
