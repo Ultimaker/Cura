@@ -10,8 +10,8 @@ from UM.Mesh.MeshData import MeshData
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 
-from . import LayerData
-from . import LayerDataDecorator
+from cura import LayerData
+from cura import LayerDataDecorator
 
 import numpy
 import struct
