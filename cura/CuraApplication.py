@@ -83,6 +83,7 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
+        self._job_name = None
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
@@ -240,6 +241,17 @@ class CuraApplication(QtApplication):
 
         self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
+
+    @pyqtSlot(str)
+    def setJobName(self, name):
+        if self._job_name != name:
+            self._job_name = name
+            self.jobNameChanged.emit()
+
+    jobNameChanged = pyqtSignal()
+    @pyqtProperty(str, notify = jobNameChanged)
+    def jobName(self):
+        return self._job_name
 
     ##  Remove an object from the scene
     @pyqtSlot("quint64")
