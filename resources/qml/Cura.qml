@@ -652,14 +652,30 @@ UM.MainWindow
         onRequestAddPrinter:
         {
             addMachineWizard.visible = true
-            addMachineWizard.firstRun = true
+            addMachineWizard.firstRun = false
         }
     }
 
     Component.onCompleted:
     {
         UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
-        base.visible = true;
+        visible = true;
+        addMachineTimer.start();
+    }
+
+    Timer
+    {
+        id: addMachineTimer;
+        interval: 100;
+        repeat: false;
+        onTriggered:
+        {
+            if(UM.MachineManager.activeMachineInstance == "")
+            {
+                addMachineWizard.firstRun = true;
+                addMachineWizard.open();
+            }
+        }
     }
 }
 

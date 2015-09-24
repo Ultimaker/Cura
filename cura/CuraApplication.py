@@ -173,11 +173,6 @@ class CuraApplication(QtApplication):
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
 
-        manager = self.getMachineManager()
-        if not self.getMachineManager().getMachineInstances():
-            self.requestAddPrinter.emit()
-
-
         if self._engine.rootObjects:
             self.closeSplash()
 
