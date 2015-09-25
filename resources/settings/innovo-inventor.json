@@ -12,6 +12,7 @@
         "machine_width": {"default": 340},
         "machine_height": {"default": 290},
         "machine_depth": {"default": 300},
+        "machine_heated_bed": { "default": true }
         "machine_center_is_zero": {"default": false},
         "machine_nozzle_size": {"default": 0.4},
         "machine_head_shape_min_x": {"default": 43.7},
