@@ -3,7 +3,7 @@
     "version": 1, 
     "name": "German RepRap Neo",
     "manufacturer": "Other",
-    "author": "other",
+    "author": "Other",
     "icon": "icon_ultimaker.png",
     "platform": "grr_neo_platform.stl",
 
