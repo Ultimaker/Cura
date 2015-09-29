@@ -15,8 +15,8 @@ import cura.CuraApplication
 
 if sys.platform == "win32" and hasattr(sys, "frozen"):
     from UM.Resources import Resources
-    sys.stdout = open(Resources.getPath(Resources.Resources, "stdout.log"), "w")
-    sys.stderr = open(Resources.getPath(Resources.Resources, "stderr.log"), "w")
+    sys.stdout = open(Resources.getStoragePath(Resources.Resources, "stdout.log"), "w")
+    sys.stderr = open(Resources.getStoragePath(Resources.Resources, "stderr.log"), "w")
 
 app = cura.CuraApplication.CuraApplication.getInstance()
 app.run()
