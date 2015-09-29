@@ -221,6 +221,7 @@ Item
                         base.wizard.appendPage(Qt.resolvedUrl("Bedleveling.qml"), catalog.i18nc("@title", "Bed Levelling"));
                         break;
                     default:
+                        base.wizard.appendPage(Qt.resolvedUrl("%1.qml".arg(pages[i])), pages[i])
                         break;
                 }
             }
