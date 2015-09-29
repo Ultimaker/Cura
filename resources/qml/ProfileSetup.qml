@@ -57,6 +57,8 @@ Item{
                         exclusiveGroup: variantSelectionMenuGroup;
                         onTriggered: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name)
                     }
+                    onObjectAdded: variantsSelectionMenu.insertItem(index, object)
+                    onObjectRemoved: variantsSelectionMenu.removeItem(object)
                 }
 
                 ExclusiveGroup { id: variantSelectionMenuGroup; }
