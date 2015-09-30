@@ -256,6 +256,7 @@
                             "min_value_warning": "0.2",
                             "max_value_warning": "5",
                             "type": "float",
+                            "inherit_function": "parent_value",
                             "visible": false,
                             "children": {
                                 "wall_line_count": {
@@ -407,8 +408,7 @@
                     "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve on roofs which would start in the middle of infill cells.",
                     "default": 0,
                     "type": "int",
-                    "visible": false,
-                    "enabled": "top_bottom_pattern"
+                    "visible": false
                 },
                 "xy_offset": {
                     "label": "Horizontal expansion",
@@ -776,18 +776,17 @@
                     "type": "float",
                     "min_value": "0.1",
                     "default": 15,
+                    "visible": false
+                },
+                "skirt_speed": {
+                    "label": "Skirt Speed",
+                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "min_value": "0.1",
+                    "default": 15,
                     "visible": false,
-                    "children": {
-                        "skirt_speed": {
-                            "label": "Skirt Speed",
-                            "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "min_value": "0.1",
-                            "default": 15,
-                            "visible": false
-                        }
-                    }
+                    "inherit_function": "speed_layer_0"
                 },
                 "speed_slowdown_layers": {
                     "label": "Amount of Slower Layers",
