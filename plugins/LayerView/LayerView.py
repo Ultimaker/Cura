@@ -102,15 +102,16 @@ class LayerView(View):
                                     continue
                             except:
                                 continue
-
-                            self._current_layer_mesh.addVertices(layer_mesh.getVertices())
+                            if self._current_layer_mesh: #Threading thing; Switching between views can cause the current layer mesh to be deleted.
+                                self._current_layer_mesh.addVertices(layer_mesh.getVertices())
 
                             # Scale layer color by a brightness factor based on the current layer number
                             # This will result in a range of 0.5 - 1.0 to multiply colors by.
                             brightness = (2.0 - (i / self._solid_layers)) / 2.0
-                            self._current_layer_mesh.addColors(layer_mesh.getColors() * brightness)
-
-                    renderer.queueNode(node, mesh = self._current_layer_mesh, material = self._material)
+                            if self._current_layer_mesh:
+                                self._current_layer_mesh.addColors(layer_mesh.getColors() * brightness)
+                    if self._current_layer_mesh:
+                        renderer.queueNode(node, mesh = self._current_layer_mesh, material = self._material)
 
                     if not self._current_layer_jumps:
                         self._current_layer_jumps = MeshData()

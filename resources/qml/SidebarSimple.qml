@@ -25,7 +25,7 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width/100*55 - UM.Theme.sizes.default_margin.width
+        width: base.width/100* 55 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height < UM.Theme.sizes.simple_mode_infill_caption.height ? UM.Theme.sizes.simple_mode_infill_caption.height : childrenRect.height
 
         Label{
@@ -41,7 +41,7 @@ Item
         Label{
             id: infillCaption
             width: infillCellLeft.width - UM.Theme.sizes.default_margin.width
-            text: infillModel.get(infillListView.activeIndex).text
+            text: infillModel.count > 0 && infillListView.activeIndex != -1 ? infillModel.get(infillListView.activeIndex).text : ""
             font: UM.Theme.fonts.caption
             wrapMode: Text.Wrap
             color: UM.Theme.colors.text
@@ -51,65 +51,80 @@ Item
         }
     }
 
-    Rectangle{
+    Flow {
         id: infillCellRight
-        height: 100
-        width: base.width/100*45
+
+        height: childrenRect.height;
+        width: base.width / 100 * 45
+
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.sizes.default_margin.width  - (UM.Theme.sizes.default_margin.width/4)
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.sizes.default_margin.height
-        Component{
-            id: infillDelegate
-            Item{
-                width: infillCellRight.width/3
-                x: index * (infillCellRight.width/3)
-                anchors.top: parent.top
+
+        Repeater {
+            id: infillListView
+            property int activeIndex: {
+                if(!UM.ActiveProfile.valid)
+                {
+                    return -1;
+                }
+
+                var density = parseInt(UM.ActiveProfile.settingValues.infill_sparse_density);
+                for(var i = 0; i < infillModel.count; ++i)
+                {
+                    if(infillModel.get(i).percentage == density)
+                    {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+            model: infillModel;
+
+            Item {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
                 Rectangle{
                     id: infillIconLining
-                    anchors.top: parent.top
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width - (UM.Theme.sizes.default_margin.width/2)
-                    height: parent.width - (UM.Theme.sizes.default_margin.width/2)
+
+                    width: infillCellRight.width / 3 - UM.Theme.sizes.default_margin.width;
+                    height: width
+
                     border.color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_text : UM.Theme.colors.setting_control_border
                     border.width: infillListView.activeIndex == index ? 2 : 1
                     color: infillListView.activeIndex == index ? UM.Theme.colors.setting_category_active : "transparent"
-                    UM.RecolorImage {
+
+                    Image {
                         id: infillIcon
-                        z: parent.z + 1
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        width: parent.width - UM.Theme.sizes.default_margin.width
-                        height: parent.width - UM.Theme.sizes.default_margin.width
+                        anchors.fill: parent;
+                        anchors.margins: UM.Theme.sizes.default_margin.width / 2
+
                         sourceSize.width: width
                         sourceSize.height: width
-                        color: UM.Theme.colors.setting_control_text
                         source: UM.Theme.icons[model.icon];
                     }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
                             infillListView.activeIndex = index
+                            UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
                         }
                     }
                 }
                 Label{
                     id: infillLabel
                     anchors.top: infillIconLining.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.horizontalCenter: infillIconLining.horizontalCenter
                     color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_text : UM.Theme.colors.setting_control_border
                     text: name
-                    //font.bold: infillListView.activeIndex == index ? true : false
                 }
             }
         }
-        ListView{
-            id: infillListView
-            property int activeIndex: 0
-            model: infillModel
-            delegate: infillDelegate
-            anchors.fill: parent
-        }
+
         ListModel {
             id: infillModel
 
@@ -139,11 +154,12 @@ Item
 
     Rectangle {
         id: helpersCellLeft
-        anchors.top: infillCellLeft.bottom
+        anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
         width: parent.width/100*45 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
+
         Label{
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
@@ -155,7 +171,6 @@ Item
     Rectangle {
         id: helpersCellRight
         anchors.top: helpersCellLeft.top
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: helpersCellLeft.right
         width: parent.width/100*55 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
@@ -164,37 +179,31 @@ Item
             id: skirtCheckBox
             anchors.top: parent.top
             anchors.left: parent.left
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
+
             //: Setting enable skirt adhesion checkbox
             text: catalog.i18nc("@option:check","Enable Skirt Adhesion");
             style: UM.Theme.styles.checkbox;
-            checked: Printer.getSettingValue("skirt_line_count") == null ? false: Printer.getSettingValue("skirt_line_count");
-            onCheckedChanged:
+
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
+            onClicked:
             {
-                if(checked != Printer.getSettingValue("skirt_line_count"))
-                {
-                    Printer.setSettingValue("skirt_line_count", checked)
-                }
+                UM.MachineManager.setSettingValue("adhesion_type", "brim")
             }
         }
         CheckBox{
             anchors.top: skirtCheckBox.bottom
             anchors.topMargin: UM.Theme.sizes.default_lining.height
             anchors.left: parent.left
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
 
             //: Setting enable support checkbox
             text: catalog.i18nc("@option:check","Enable Support");
 
             style: UM.Theme.styles.checkbox;
 
-            checked: Printer.getSettingValue("support_enable") == null? false: Printer.getSettingValue("support_enable");
-            onCheckedChanged:
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.support_enable : false;
+            onClicked:
             {
-                if(checked != Printer.getSettingValue("support_enable"))
-                {
-                    Printer.setSettingValue("support_enable", checked)
-                }
+                UM.MachineManager.setSettingValue("support_enable", checked)
             }
         }
     }

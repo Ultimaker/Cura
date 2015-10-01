@@ -37,7 +37,11 @@ class RemovableDrivePlugin(OutputDevicePlugin):
         raise NotImplementedError()
 
     def ejectDevice(self, device):
-        result = self.performEjectDevice(device)
+        try:
+            result = self.performEjectDevice(device)
+        except Exception as e:
+            result = False
+
         if result:
             message = Message(catalog.i18nc("@info:status", "Ejected {0}. You can now safely remove the drive.").format(device.getName()))
             message.show()

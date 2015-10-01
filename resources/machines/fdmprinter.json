@@ -149,7 +149,6 @@
                             "default": 0.4,
                             "type": "float",
                             "visible": false,
-                            "inherit_function": "max(machine_nozzle_size, (wall_thickness / (int(wall_thickness / (machine_nozzle_size - 0.0001) + 1))) if (wall_thickness / (int(wall_thickness / (machine_nozzle_size - 0.0001))) > machine_nozzle_size * 1.5) else (wall_thickness / int(wall_thickness / (machine_nozzle_size - 0.0001))))",
                             "children": {
                                 "wall_line_width_0": {
                                     "label": "Outer Wall Line Width",
@@ -257,6 +256,7 @@
                             "min_value_warning": "0.2",
                             "max_value_warning": "5",
                             "type": "float",
+                            "inherit_function": "parent_value",
                             "visible": false,
                             "children": {
                                 "wall_line_count": {
@@ -266,7 +266,7 @@
                                     "default": 2,
                                     "type": "int",
                                     "visible": false,
-                                    "inherit_function": "max(1, (int(parent_value / (machine_nozzle_size - 0.0001) + 1) if (parent_value / max(1, int(parent_value / (machine_nozzle_size - 0.0001))) > machine_nozzle_size) * 1.5 else int(parent_value / (machine_nozzle_size - 0.0001))))"
+                                    "inherit_function": "max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
                                 }
                             }
                         },
@@ -408,8 +408,7 @@
                     "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve on roofs which would start in the middle of infill cells.",
                     "default": 0,
                     "type": "int",
-                    "visible": false,
-                    "enabled": "top_bottom_pattern"
+                    "visible": false
                 },
                 "xy_offset": {
                     "label": "Horizontal expansion",
@@ -777,18 +776,17 @@
                     "type": "float",
                     "min_value": "0.1",
                     "default": 15,
+                    "visible": false
+                },
+                "skirt_speed": {
+                    "label": "Skirt Speed",
+                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "min_value": "0.1",
+                    "default": 15,
                     "visible": false,
-                    "children": {
-                        "skirt_speed": {
-                            "label": "Skirt Speed",
-                            "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "min_value": "0.1",
-                            "default": 15,
-                            "visible": false
-                        }
-                    }
+                    "inherit_function": "speed_layer_0"
                 },
                 "speed_slowdown_layers": {
                     "label": "Amount of Slower Layers",

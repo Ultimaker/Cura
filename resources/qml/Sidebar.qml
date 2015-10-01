@@ -76,6 +76,7 @@ Rectangle
         id: sidebarContents;
         anchors.bottom: saveButton.top
         anchors.top: profileItem.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: base.left
         anchors.right: base.right
 

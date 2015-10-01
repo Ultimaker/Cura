@@ -68,7 +68,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "15.09.82")
+        super().__init__(name = "cura", version = "15.09.85")
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
@@ -90,6 +90,7 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
+        self._job_name = None
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
@@ -165,24 +166,20 @@ class CuraApplication(QtApplication):
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera("3d", root)
-        camera.setPosition(Vector(-150, 150, 300))
+        camera.setPosition(Vector(0, 250, 900))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
+        controller.getScene().setActiveCamera("3d")
+
+        self.getController().getTool("CameraTool").setOrigin(Vector(0, 100, 0))
 
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
-
-        controller.getScene().setActiveCamera("3d")
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
-
-        manager = self.getMachineManager()
-        if not self.getMachineManager().getMachineInstances():
-            self.requestAddPrinter.emit()
-
 
         if self._engine.rootObjects:
             self.closeSplash()
@@ -247,6 +244,17 @@ class CuraApplication(QtApplication):
 
         self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
+
+    @pyqtSlot(str)
+    def setJobName(self, name):
+        if self._job_name != name:
+            self._job_name = name
+            self.jobNameChanged.emit()
+
+    jobNameChanged = pyqtSignal()
+    @pyqtProperty(str, notify = jobNameChanged)
+    def jobName(self):
+        return self._job_name
 
     ##  Remove an object from the scene
     @pyqtSlot("quint64")
@@ -535,6 +543,8 @@ class CuraApplication(QtApplication):
 
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
+
+            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():

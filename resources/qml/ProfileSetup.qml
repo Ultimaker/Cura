@@ -8,69 +8,68 @@ import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
-Column{
+Item{
     id: base;
     UM.I18nCatalog { id: catalog; name:"cura"}
     property int totalHeightProfileSetup: childrenRect.height
     property Action manageProfilesAction
-    spacing: 0
 
-    Rectangle{
-        id: variantItem;
-        height:  UM.Theme.sizes.sidebar_setup.height
+    Rectangle {
+        id: variantRow
+        anchors.top: base.top
         width: base.width
-        visible: UM.MachineManager.hasVariants;
+        height: UM.Theme.sizes.sidebar_setup.height
+        //visible: UM.MachineManager.hasVariants;
+        visible: true
 
-        Rectangle {
-            id: variantRow
-            width: base.width
-            height: parent.heigth
+        Label{
+            id: variantLabel
+            text: catalog.i18nc("@label","Variant:");
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width/100*45
+            font: UM.Theme.fonts.default;
+        }
 
-            Label{
-                id: variantLabel
-                text: catalog.i18nc("@label","Variant:");
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width/100*45
-                font: UM.Theme.fonts.default;
-            }
+        ToolButton {
+            id: variantSelection
+            text: UM.MachineManager.activeMachineVariant
+            width: parent.width/100*55
+            height: UM.Theme.sizes.setting_control.height
+            tooltip: UM.MachineManager.activeMachineInstance;
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.verticalCenter: parent.verticalCenter
+            style: UM.Theme.styles.sidebar_header_button
 
-            ToolButton {
-                id: variantSelection
-                text: UM.MachineManager.activeMachineVariant
-                width: parent.width/100*55
-                height: UM.Theme.sizes.setting_control.height
-                tooltip: UM.MachineManager.activeMachineInstance;
-                anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.sizes.default_margin.width
-                anchors.verticalCenter: parent.verticalCenter
-                style: UM.Theme.styles.sidebar_header_button
-
-                menu: Menu
+            menu: Menu
+            {
+                id: variantsSelectionMenu
+                Instantiator
                 {
-                    id: variantsSelectionMenu
-                    Instantiator
+                    model: UM.MachineVariantsModel { }
+                    MenuItem
                     {
-                        model: UM.MachineVariantsModel { }
-                        MenuItem
-                        {
-                            text: model.name;
-                            checkable: true;
-                            checked: model.active;
-                            exclusiveGroup: variantSelectionMenuGroup;
-                            onTriggered: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name)
-                        }
+                        text: model.name;
+                        checkable: true;
+                        checked: model.active;
+                        exclusiveGroup: variantSelectionMenuGroup;
+                        onTriggered: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name)
                     }
-
-                    ExclusiveGroup { id: variantSelectionMenuGroup; }
+                    onObjectAdded: variantsSelectionMenu.insertItem(index, object)
+                    onObjectRemoved: variantsSelectionMenu.removeItem(object)
                 }
+
+                ExclusiveGroup { id: variantSelectionMenuGroup; }
             }
         }
     }
 
     Rectangle{
         id: globalProfileRow;
+        anchors.top: UM.MachineManager.hasVariants ? variantRow.bottom : base.top
+        //anchors.top: variantRow.bottom
         height: UM.Theme.sizes.sidebar_setup.height
         width: base.width
 
@@ -147,9 +146,5 @@ Column{
 //                 }
 //             }
         }
-    }
-    Rectangle{
-        width: base.width
-        height: UM.Theme.sizes.default_margin.width/2
     }
 }

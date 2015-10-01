@@ -72,7 +72,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file");
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName);
                 }
                 Menu
                 {
@@ -88,7 +88,7 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id);
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName);
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
@@ -373,6 +373,7 @@ UM.MainWindow
             {
                 id: viewModeButton
                 property bool verticalTooltip: true
+
                 anchors
                 {
                     top: parent.top;
@@ -389,12 +390,13 @@ UM.MainWindow
                     id: viewMenu;
                     Instantiator
                     {
+                        id: viewMenuInstantiator
                         model: UM.ViewModel { }
                         MenuItem
                         {
-                            text: model.name;
+                            text: model.name
                             checkable: true;
-                            checked: model.active;
+                            checked: model.active
                             exclusiveGroup: viewMenuGroup;
                             onTriggered: UM.Controller.setActiveView(model.id);
                         }
@@ -413,7 +415,7 @@ UM.MainWindow
                 anchors {
                     left: parent.left
                     top: parent.top
-                    topMargin: 74
+                    topMargin: UM.Theme.sizes.window_margin.height + UM.Theme.sizes.button.height
                     //horizontalCenter: parent.horizontalCenter
                     //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
                     //top: parent.top;
@@ -543,8 +545,8 @@ UM.MainWindow
 
         addMachine.onTriggered: addMachineWizard.visible = true;
 
-        preferences.onTriggered: preferences.visible = true;
-        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
+        preferences.onTriggered: { preferences.visible = true; }
+        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
         manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 
         documentation.onTriggered: CuraActions.openDocumentation();
@@ -648,14 +650,30 @@ UM.MainWindow
         onRequestAddPrinter:
         {
             addMachineWizard.visible = true
-            addMachineWizard.firstRun = true
+            addMachineWizard.firstRun = false
         }
     }
 
     Component.onCompleted:
     {
         UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
-        base.visible = true;
+        visible = true;
+        addMachineTimer.start();
+    }
+
+    Timer
+    {
+        id: addMachineTimer;
+        interval: 100;
+        repeat: false;
+        onTriggered:
+        {
+            if(UM.MachineManager.activeMachineInstance == "")
+            {
+                addMachineWizard.firstRun = true;
+                addMachineWizard.open();
+            }
+        }
     }
 }
 

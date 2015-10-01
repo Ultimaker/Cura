@@ -323,6 +323,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     ##  Close the printer connection
     def close(self):
+        Logger.log("d", "Closing the printer connection.")
         if self._connect_thread.isAlive():
             try:
                 self._connect_thread.join()
@@ -411,6 +412,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     def createControlInterface(self):
         if self._control_view is None:
+            Logger.log("d", "Creating control interface for printer connection")
             path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml"))
             component = QQmlComponent(Application.getInstance()._engine, path)
             self._control_context = QQmlContext(Application.getInstance()._engine.rootContext())
@@ -455,7 +457,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._bed_temperature = temperature
         self.bedTemperatureChanged.emit()
 
-    def requestWrite(self, node):
+    def requestWrite(self, node, file_name = None):
         self.showControlInterface()
 
     def _setEndstopState(self, endstop_key, value):
