@@ -373,9 +373,7 @@ UM.MainWindow
             {
                 id: viewModeButton
                 property bool verticalTooltip: true
-                property bool activity: Printer.getPlatformActivity;
 
-                enabled: viewModeButton.activity
                 anchors
                 {
                     top: parent.top;
