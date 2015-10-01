@@ -159,14 +159,15 @@ class CuraApplication(QtApplication):
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera("3d", root)
-        camera.setPosition(Vector(-150, 150, 300))
+        camera.setPosition(Vector(0, 250, 900))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
+        controller.getScene().setActiveCamera("3d")
+
+        self.getController().getTool("CameraTool").setOrigin(Vector(0, 100, 0))
 
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
-
-        controller.getScene().setActiveCamera("3d")
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
