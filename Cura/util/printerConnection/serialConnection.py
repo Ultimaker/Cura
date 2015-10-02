@@ -95,15 +95,42 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._process.stdin.write('START\n')
 		self._printProgress = 0
 
+	def coolDown(self):
+		cooldown_toolhead = "M104 S0"
+		for i in range(0,3):
+			change_toolhead = "T%d".format(i)
+			self.sendCommand(change_toolhead)
+			self.sendCommand(cooldown_toolhead)
+		self.sendCommand("M140 S0") #Bed
+
+	def disableSteppers(self):
+		self.sendCommand("M18")
+
 	#Abort the previously loaded print file
 	def cancelPrint(self):
-		if not self.isPrinting()or self._process is None:
+		if (not self.isPrinting() and not self.isPaused()) or \
+			self._process is None:
 			return
 		self._process.stdin.write('STOP\n')
 		self._printProgress = 0
+		self.coolDown()
+		self.disableSteppers()
 
 	def isPrinting(self):
 		return self._commState == machineCom.MachineCom.STATE_PRINTING
+
+	#Returns true if we have the ability to pause the file printing.
+	def hasPause(self):
+		return False
+
+	def isPaused(self):
+		return self._commState == machineCom.MachineCom.STATE_PAUSED
+
+	#Pause or unpause the printing depending on the value, if supported.
+	def pause(self, value):
+		if not (self.isPrinting() or self.isPaused()) or self._process is None:
+			return
+		self._process.stdin.write('PAUSE\n' if value else "RESUME\n")
 
 	#Amount of progression of the current print file. 0.0 to 1.0
 	def getPrintProgress(self):

@@ -17,6 +17,30 @@ from Cura.util import profile
 from Cura.util import resources
 
 def getDefaultFirmware(machineIndex = None):
+	firmwareDict = {
+			'ultimaker2go':"MarlinUltimaker2go.hex",
+			'Witbox':"MarlinWitbox.hex",
+			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2015Q2.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2015Q2.hex",
+			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_05nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_05nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_035nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_035nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex"
+	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
 	heated_bed = profile.getMachineSetting('has_heated_bed', machineIndex) == 'True'
@@ -41,38 +65,35 @@ def getDefaultFirmware(machineIndex = None):
 		if extruders > 1:
 			name += '-dual'
 		return resources.getPathForFirmware(name + '.hex')
-
 	if machine_type == 'ultimaker2':
 		if extruders > 2:
 			return None
 		if extruders > 1:
 			return resources.getPathForFirmware("MarlinUltimaker2-dual.hex")
 		return resources.getPathForFirmware("MarlinUltimaker2.hex")
-	if machine_type == 'lulzbot_mini':
-		return resources.getPathForFirmware("marlin_mini_2014Q4.hex")
-	if machine_type == 'ultimaker2go':
-		return resources.getPathForFirmware("MarlinUltimaker2go.hex")
 	if machine_type == 'ultimaker2extended':
 		if extruders > 2:
 			return None
 		if extruders > 1:
 			return resources.getPathForFirmware("MarlinUltimaker2extended-dual.hex")
 		return resources.getPathForFirmware("MarlinUltimaker2extended.hex")
-	if machine_type == 'Witbox':
-		return resources.getPathForFirmware("MarlinWitbox.hex")
+	if firmwareDict.has_key(machine_type):
+		return resources.getPathForFirmware(firmwareDict[machine_type])
 	return None
 
-class InstallFirmware(wx.Dialog):
+def InstallFirmware(parent = None, filename = None, port = None, machineIndex = None):
+	dlg = InstallFirmwareDialog(parent, filename, port, machineIndex)
+	result = dlg.Run()
+	dlg.Destroy()
+	return result
+
+class InstallFirmwareDialog(wx.Dialog):
 	def __init__(self, parent = None, filename = None, port = None, machineIndex = None):
-		super(InstallFirmware, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineSetting('machine_name', machineIndex).title()), size=(250, 100))
+		super(InstallFirmwareDialog, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineName(machineIndex).title()), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
 			filename = getDefaultFirmware(machineIndex)
-		if filename is None:
-			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
-			self.Destroy()
-			return
 		self._machine_type = profile.getMachineSetting('machine_type', machineIndex)
 		if self._machine_type == 'reprap':
 			wx.MessageBox(_("Cura only supports firmware updates for ATMega2560 based hardware.\nSo updating your RepRap with Cura might or might not work."), _("Firmware update"), wx.OK | wx.ICON_INFORMATION)
@@ -94,14 +115,19 @@ class InstallFirmware(wx.Dialog):
 
 		self.Layout()
 		self.Fit()
+		self.success = False
 
+	def Run(self):
+		if self.filename is None:
+			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
+			return False
+		self.success = False
 		self.thread = threading.Thread(target=self.OnRun)
 		self.thread.daemon = True
 		self.thread.start()
 
 		self.ShowModal()
-		self.Destroy()
-		return
+		return self.success
 
 	def OnRun(self):
 		wx.CallAfter(self.updateLabel, _("Reading firmware..."))
@@ -110,7 +136,7 @@ class InstallFirmware(wx.Dialog):
 		programmer = stk500v2.Stk500v2()
 		programmer.progressCallback = self.OnProgress
 		if self.port == 'AUTO':
-			wx.CallAfter(self.updateLabel, _("Please connect the printer to\nyour computer with the USB cable."))
+			wx.CallAfter(self.updateLabel, _("Please connect the printer to your\ncomputer with a USB cable and power it on."))
 			while not programmer.isConnected():
 				for self.port in machineCom.serialList(True):
 					try:
@@ -150,6 +176,7 @@ class InstallFirmware(wx.Dialog):
 		wx.CallAfter(self.updateLabel, _("Uploading firmware..."))
 		try:
 			programmer.programChip(hexFile)
+			self.success = True
 			wx.CallAfter(self.updateLabel, _("Done!\nInstalled firmware: %s") % (os.path.basename(self.filename)))
 		except ispBase.IspError as e:
 			wx.CallAfter(self.updateLabel, _("Failed to write firmware.\n") + str(e))
@@ -159,12 +186,13 @@ class InstallFirmware(wx.Dialog):
 
 	def updateLabel(self, text):
 		self.progressLabel.SetLabel(text)
-		#self.Layout()
+		self.Layout()
 
 	def OnProgress(self, value, max):
-		wx.CallAfter(self.progressGauge.SetRange, max)
-		wx.CallAfter(self.progressGauge.SetValue, value)
-		taskbar.setProgress(self.GetParent(), value, max)
+		if self:
+			wx.CallAfter(self.progressGauge.SetRange, max)
+			wx.CallAfter(self.progressGauge.SetValue, value)
+			taskbar.setProgress(self.GetParent(), value, max)
 
 	def OnOk(self, e):
 		self.Close()
@@ -311,7 +339,7 @@ class AutoUpdateFirmware(wx.Dialog):
 
 	def updateLabel(self, text):
 		self.progressLabel.SetLabel(text)
-		#self.Layout()
+		self.Layout()
 
 	def OnProgress(self, value, max):
 		wx.CallAfter(self.progressGauge.SetRange, max)

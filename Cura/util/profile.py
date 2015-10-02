@@ -482,8 +482,9 @@ setting('postSwitchExtruder.gcode', """;Switch between the current extruder and 
 """, str, 'alteration', 'alteration')
 
 setting('startMode', 'Simple', ['Simple', 'Normal'], 'preference', 'hidden')
-setting('simpleModeProfile', '2_normal', str, 'hidden', 'hidden')
-setting('simpleModeMaterial', '1_pla', str, 'hidden', 'hidden')
+setting('simpleModeProfile', 'Standard', str, 'hidden', 'hidden')
+setting('simpleModeMaterial', 'PLA', str, 'hidden', 'hidden')
+setting('simpleModeMaterialType', 'Beginner', str, 'hidden', 'hidden')
 setting('oneAtATime', 'False', bool, 'preference', 'hidden')
 setting('lastFile', os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'resources', 'example', 'Rocktopus.stl')), str, 'preference', 'hidden')
 setting('save_profile', 'False', bool, 'preference', 'hidden').setLabel(_("Save profile on slice"), _("When slicing save the profile as [stl_file]_profile.ini next to the model."))
@@ -516,7 +517,6 @@ setting('model_colour', '#C9E240', str, 'preference', 'hidden').setLabel(_('Mode
 setting('model_colour2', '#CB3030', str, 'preference', 'hidden').setLabel(_('Model colour (2)'), _('Display color for second extruder'))
 setting('model_colour3', '#DDD93C', str, 'preference', 'hidden').setLabel(_('Model colour (3)'), _('Display color for third extruder'))
 setting('model_colour4', '#4550D3', str, 'preference', 'hidden').setLabel(_('Model colour (4)'), _('Display color for forth extruder'))
-setting('printing_window', 'Pronterface UI', ['Basic'], 'preference', 'hidden').setLabel(_('Printing window type'), _('Select the interface used for USB printing.'))
 
 setting('window_maximized', 'True', bool, 'preference', 'hidden')
 setting('window_pos_x', '-1', float, 'preference', 'hidden')
@@ -552,6 +552,8 @@ setting('serial_port_auto', '', str, 'machine', 'hidden')
 setting('serial_baud', 'AUTO', str, 'machine', 'hidden').setLabel(_("Baudrate"), _("Speed of the serial port communication\nNeeds to match your firmware settings\nCommon values are 250000, 115200, 57600"))
 setting('serial_baud_auto', '', int, 'machine', 'hidden')
 
+setting('toolhead', 'Default', str, 'machine', 'hidden').setLabel(_("Installed Tool Head"), _("Which tool head is currently installed. This setting is only used by LulzBot machines."))
+setting('toolhead_shortname', '', str, 'machine', 'hidden')
 setting('extruder_head_size_min_x', '0.0', float, 'machine', 'hidden').setLabel(_("Head size towards X min (mm)"), _("The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head."))
 setting('extruder_head_size_min_y', '0.0', float, 'machine', 'hidden').setLabel(_("Head size towards Y min (mm)"), _("The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head."))
 setting('extruder_head_size_max_x', '0.0', float, 'machine', 'hidden').setLabel(_("Head size towards X max (mm)"), _("The head size when printing multiple objects, measured from the tip of the nozzle towards the outer part of the head."))
@@ -1103,6 +1105,15 @@ def getMachineCount():
 		return 1
 	return n
 
+def getMachineName(index = None):
+	name = getMachineSetting('machine_name', index)
+	type = getMachineSetting('machine_type', index)
+	if type.startswith('lulzbot_'):
+		toolhead = getMachineSetting('toolhead_shortname', index)
+		if toolhead != '':
+			return "%s (%s)" % (name, toolhead)
+	return name
+
 def setActiveMachine(index):
 	global _selectedMachineIndex
 	_selectedMachineIndex = index
@@ -1358,6 +1369,13 @@ def getAlterationFileContents(filename, extruderCount = 1):
 		#postfix = ';CURA_PROFILE_STRING:%s\n' % (getProfileString())
 	return unicode(prefix + re.sub("(.)\{([^\}]*)\}", replaceTagMatch, alterationContents).rstrip() + '\n' + postfix).strip().encode('utf-8') + '\n'
 
+def hasEmptyHeadSizeSettings(n):
+	return getMachineSetting('extruder_head_size_min_x', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_max_x', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_min_y', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_max_y', n) == '0.0' and \
+    	   getMachineSetting('extruder_head_size_height', n) == '0.0'
+
 def performVersionUpgrade():
 	for n in xrange(0, getMachineCount()):
 		# This is a hack around an issue where the machine type in the wizard
@@ -1366,13 +1384,38 @@ def performVersionUpgrade():
 		if getMachineSetting('machine_type', n) == 'lulzbot_TAZ':
 			putMachineSetting('machine_type', 'lulzbot_TAZ_4', n)
 
-		# Upgrade gantry settings for Lulzbot Mini if untouched by user
-		if getMachineSetting('machine_type', n) == 'lulzbot_mini' and \
-		   getMachineSetting('extruder_head_size_min_x', n) == '0.0' and \
-		   getMachineSetting('extruder_head_size_max_x', n) == '0.0' and \
-		   getMachineSetting('extruder_head_size_min_y', n) == '0.0' and \
-		   getMachineSetting('extruder_head_size_max_y', n) == '0.0' and \
-		   getMachineSetting('extruder_head_size_height', n) == '0.0':
+		machine_type = getMachineSetting('machine_type', n)
+		isLulzBot = machine_type.startswith('lulzbot_')
+		if isLulzBot and getMachineSetting('toolhead', n) == 'Default':
+			if machine_type == 'lulzbot_mini':
+				putMachineSetting('toolhead', 'Single Extruder V2', n)
+				putMachineSetting('toolhead_shortname', '', n)
+			elif machine_type == 'lulzbot_TAZ_4':
+				putMachineSetting('toolhead', 'Single Extruder V1', n)
+				putMachineSetting('toolhead_shortname', '', n)
+				putMachineSetting('machine_type', 'lulzbot_TAZ_4_SingleV1', n)
+			elif machine_type == 'lulzbot_TAZ_5':
+				putMachineSetting('toolhead', 'Single Extruder V2 (0.35mm nozzle)', n)
+				putMachineSetting('toolhead_shortname', '0.35 nozzle', n)
+				putMachineSetting('machine_type', 'lulzbot_TAZ_5_035nozzle', n)
+				machine_name = getMachineSetting('machine_name', n)
+				if machine_name.endswith(" (0.35 nozzle)"):
+					putMachineSetting('machine_name', machine_name.replace(" (0.35 nozzle)", ""), n)
+			elif machine_type == 'lulzbot_TAZ_5_05nozzle':
+				putMachineSetting('toolhead', 'Single Extruder V2 (0.5mm nozzle)', n)
+				putMachineSetting('toolhead_shortname', '0.5 nozzle', n)
+				putMachineSetting('machine_type', 'lulzbot_TAZ_5_05nozzle', n)
+				machine_name = getMachineSetting('machine_name', n)
+				if machine_name.endswith(" (0.5 nozzle)"):
+					putMachineSetting('machine_name', machine_name.replace(" (0.5 nozzle)", ""), n)
+
+		# Change TAZ print bed so prints are centered when scaled to the max
+		if machine_type.startswith('lulzbot_TAZ_') and \
+			getMachineSetting('machine_width', n) == '298':
+			putMachineSetting('machine_width', '290', n)
+			
+		#Set valid extruder head size numbers for Mini
+		if machine_type == 'lulzbot_mini' and hasEmptyHeadSizeSettings(n):
 			putMachineSetting('extruder_head_size_min_x', '40', n)
 			putMachineSetting('extruder_head_size_max_x', '75', n)
 			putMachineSetting('extruder_head_size_min_y', '25', n)

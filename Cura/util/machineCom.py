@@ -364,7 +364,7 @@ class MachineCom(object):
 			line = self._readline()
 			if line is None:
 				break
-			
+
 			#No matter the state, if we see an fatal error, goto the error state and store the error for reference.
 			# Only goto error on known fatal errors.
 			if line.startswith('Error:'):
@@ -487,11 +487,21 @@ class MachineCom(object):
 					else:
 						self._sendNext()
 				elif "resend" in line.lower() or "rs" in line:
+					newPos = self._gcodePos
 					try:
-						self._gcodePos = int(line.replace("N:"," ").replace("N"," ").replace(":"," ").split()[-1])
+						newPos = int(line.replace("N:"," ").replace("N"," ").replace(":"," ").split()[-1])
 					except:
 						if "rs" in line:
-							self._gcodePos = int(line.split()[1])
+							newPos = int(line.split()[1])
+					# If we need to resend more than 10 lines, we can assume that the machine
+					# was shut down and turned back on or something else that's weird just happened.
+					# In that case, it can be dangerous to restart the print, so we'd better kill it
+					if newPos == 1 or self._gcodePos > newPos + 100:
+						self._callback.mcMessage("Print canceled due to loss of communication to printer (USB unplugged or power lost)")
+						self.cancelPrint()
+					else:
+						self._gcodePos = newPos
+
 		self._log("Connection closed, closing down monitor")
 
 	def _setBaudrate(self, baudrate):

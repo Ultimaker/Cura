@@ -1,0 +1,47 @@
+Global print profiles are defined here. The format is :
+option_*.ini
+Material/material.ini
+Material/option_*.ini
+Material/Profile/profile.ini
+
+All options must have 'option_' as prefix in their filename, and any subdirectory with a material.ini file in it will be considered a material. In that material directory, any option files will be specific to that material and any subdirectory with a profile.ini file will be considered a material profile (high quality, low quality, high strength, High clarity, etc..).
+
+These global options and profiles will apply to all machines. For a machine specific quickprint settings, you need a directory with the machine_type as name and then the same format of files as above.
+Those new machine specific materials and options will only override global materials and options if they are similarly named, so it can be used to add a single material for a machine without duplicating all of the global options and materials. In order to override a material or an option, the directory name (or filename for options) must match.
+
+For example :
+option_support.ini
+option_brim.ini
+ABS/material.ini
+ABS/Low/profile.ini
+ABS/High/profile.ini
+my_machine_type/PLA/material.ini
+my_machine_type/PLA/Normal/profile.ini
+
+This would cause 'my_machine_type' typed machines to have both ABS (with Low and High quality) and PLA (with Normal quality only) materials, as well as support and brim options, while every other machine will only get the ABS material with both optins.
+If the machine needs to override the ABS material, you can simply add a file :
+my_machine_type/ABS/material.ini
+to override the ABS setting, where you can either control the content of the material.ini, or add new options, or override global options for that specific material, or add new or override existing quality settings for ABS.
+
+The profile.ini and material.ini files can contain 3 sections : [info], [profile] and [alterations] in which the [profile] and [alterations] sections contain respectively profile and alteration settings for printing, while the [info] section can contain the following keys :
+name = string -> The name of the profile to show in the UI
+disabled = true/false -> Disables this profile. Can be used to override a quality or material and disable it entirely. Default is False
+always_visible = true/false -> If set to True and the profile.ini belongs to the single quality of a material, or to the single material of a machine, it will allow the quality or material to always be visible in the UI. Otherwise, the material or quality section will be hidden from the UI. Default is True
+order = int -> The order to show this material or quality in the UI. Default is 999
+profile_file = Relative path to a file which will be used for fetching the [profile] and [alterations] sections. In that case, the [profile] and [alterations] sections in the material.ini or profile.ini file are ignored
+
+Profile options are applied in the following order : Material -> Quality -> Options. This allows you to group common settings for materials or to have options override everything else.
+
+The quickprint profiles are searched for in the ~/.Cura/quickprint directory first, allowing users to override their machines quickprint settings.
+
+
+
+
+Importing profiles will require:
+Adding an [info] section
+Renamed into profile.ini and move inside a High-speed directory
+Create ABS/High/profile.ini, ABS/Low/profile.ini, ABS/Normal/profile.ini and ABS/Ulti/profile.ini files created, with their profile.ini only containing [info] disabled = true, so you would override and disable the global quickprint settings
+
+Example:
+lulzbot_TAZ_4_FlexyDuallyV2/ABS/profile.ini <-- only needs to contain an [info] section with 'name = ABS' and 'order = 0'
+lulzbot_TAZ_4_FlexyDuallyV2/ABS/High-speed/profile.ini <-- copy that file into it, add a [info] section with name = High Speed

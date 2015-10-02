@@ -6,6 +6,7 @@ from wx.lib.agw import floatspin
 
 from Cura.util import validators
 from Cura.util import profile
+from Cura.gui import configWizard
 
 class configPanelBase(wx.Panel):
 	"A base class for configuration dialogs. Handles creation of settings, and popups"
@@ -247,3 +248,66 @@ class SettingRow(object):
 			self.ctrl.SetValue(_(value))
 		else:
 			self.ctrl.SetValue(value)
+
+class ToolHeadRow(object):
+	def __init__(self, panel, configName, index = None):
+		sizer = panel.GetSizer()
+		x = sizer.GetRows()
+		y = 0
+		flag = 0
+
+		self.setting = profile.settingsDictionary[configName]
+		self.settingIndex = index
+		self.validationMsg = ''
+		self.panel = panel
+		# We need a subpanel here because SettingRow always takes 2 grid spaces
+		# and we shouldn't take more than that.
+		self.subpanel = wx.Panel(self.panel)
+		subsizer = wx.BoxSizer(wx.HORIZONTAL)
+		self.subpanel.SetSizer(subsizer)
+
+		self.label = wx.lib.stattext.GenStaticText(panel, -1, self.setting.getLabel())
+		self.label.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+
+		self.ctrl = wx.TextCtrl(self.subpanel, -1, self.setting.getValue(self.settingIndex))
+		self.ctrl.SetMinSize((300, 20))
+		self.ctrl.Enable(False)
+
+		self.button = wx.Button(self.subpanel, -1, _("Change Tool Head"))
+
+		flag = wx.EXPAND
+		self.ctrl.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnter)
+		subsizer.Add(self.ctrl, 1, flag=wx.ALIGN_CENTER_VERTICAL|wx.EXPAND)
+		subsizer.Add(self.button, 0, flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=2)
+
+		sizer.Add(self.label, (x,y), flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT,border=10)
+		sizer.Add(self.subpanel, (x,y+1), flag=wx.ALIGN_CENTER_VERTICAL|flag)
+		sizer.SetRows(x+1)
+
+		panel.main.settingControlList.append(self)
+
+	def OnMouseEnter(self, e):
+		self.label.SetToolTipString(self.setting.getTooltip())
+		self.ctrl.SetToolTipString(self.setting.getTooltip())
+		e.Skip()
+
+	def OnMouseExit(self, e):
+		self.label.SetToolTipString('')
+		self.ctrl.SetToolTipString('')
+		e.Skip()
+
+	def GetValue(self):
+		return str(self.ctrl.GetValue())
+
+	def SetValue(self, value):
+		self.ctrl.SetValue(value)
+
+	def _validate(self):
+		pass
+
+
+class PopUp(wx.Frame):
+	def __init__(self, parent, id, text):
+		wx.Frame.__init__(self, parent, id, 'Frame title', size=(400,300))
+		panely = wx.Panel(self)		
+		wx.StaticText(panely, -1, text, (10,10))

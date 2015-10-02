@@ -1,4 +1,5 @@
-IMPORTANT: The definitive source code for LulzBot Cura Edition is now located at https://code.alephobjects.com/diffusion/CURA/
+IMPORTANT: The definitive location for Aleph Object's Cura source code is here: https://code.alephobjects.com/diffusion/CURA
+
 
 Cura
 ====

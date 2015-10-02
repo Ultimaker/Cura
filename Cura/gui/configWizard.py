@@ -15,6 +15,7 @@ from Cura.util import machineCom
 from Cura.util import profile
 from Cura.util import gcodeGenerator
 from Cura.util import resources
+from Cura.util import version
 
 
 class InfoBox(wx.Panel):
@@ -62,7 +63,8 @@ class InfoBox(wx.Panel):
 		self.extraInfoUrl = extraInfoUrl
 		self.SetBackgroundColour('#FF8080')
 		self.text.SetLabel(info)
-		self.extraInfoButton.Show(True)
+		if extraInfoUrl:
+			self.extraInfoButton.Show(True)
 		self.Layout()
 		self.SetErrorIndicator()
 		self.Refresh()
@@ -106,22 +108,152 @@ class InfoBox(wx.Panel):
 		self.busyState = None
 		self.bitmap.SetBitmap(self.attentionBitmap)
 
+class ImageButton(wx.Panel):
+	DefaultOverlay = wx.Bitmap(resources.getPathForImage('ImageButton_Overlay.png'))
+	IB_GROUP=1
+	__groups__ = {}
+	__last_group__ = None
+	def __init__(self, parent, label, bitmap, extra_label=None, overlay=DefaultOverlay, style=None):
+		super(ImageButton, self).__init__(parent)
+
+		if style is ImageButton.IB_GROUP:
+			ImageButton.__last_group__ = self
+			ImageButton.__groups__[self] = [self]
+			self.group = self
+		else:
+			if ImageButton.__last_group__:
+				ImageButton.__groups__[ImageButton.__last_group__].append(self)
+				self.group = ImageButton.__last_group__
+			else:
+				self.group = None
+		self.sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
+		self.SetSizer(self.sizer)
+		self.bitmap = bitmap
+		self.original_overlay = overlay
+		self.overlay = self.createOverlay(bitmap, overlay)
+		self.text = wx.StaticText(self, -1, label)
+		self.bmp = wx.StaticBitmap(self, -1, self.bitmap)
+		if extra_label:
+			self.extra_text = wx.StaticText(self, -1, extra_label)
+		else:
+			self.extra_text = None
+		self.selected = False
+		self.callback = None
+
+		self.sizer.Add(self.text, 0, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, border=5)
+		self.sizer.Add(self.bmp, 1, flag=wx.ALL|wx.ALIGN_CENTER|wx.EXPAND, border=5)
+		if self.extra_text:
+			self.sizer.Add(self.extra_text, 0, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, border=5)
+		self.bmp.Bind(wx.EVT_LEFT_UP, self.OnLeftClick)
+
+	def __del__(self):
+		if self.group:
+			ImageButton.__groups__[self.group].remove(self)
+			if self == self.group:
+				for ib in ImageButton.__groups__[self.group]:
+					ib.group = None
+				del ImageButton.__groups__[self.group]
+				if ImageButton.__last_group__ == self:
+					ImageButton.__last_group__ = None
+
+	def TriggerGroupCallbacks(self):
+		if self.group:
+			for ib in ImageButton.__groups__[self.group]:
+				if ib.GetValue() and ib.callback:
+					ib.callback()
+					break
+		else:
+			if self.GetValue() and self.callback:
+				self.callback()
+
+	def OnLeftClick(self, e):
+		self.SetValue(True)
+
+	def GetValue(self):
+		return self.selected
+
+	def SetValue(self, value):
+		old_value = self.selected
+		self.selected = bool(value)
+		self.bmp.SetBitmap(self.overlay if self.GetValue() else self.bitmap)
+		if self.selected and self.group:
+			for ib in ImageButton.__groups__[self.group]:
+				if ib == self:
+					continue
+				ib.SetValue(False)
+		self.Layout()
+		if self.callback and not old_value and self.selected:
+			self.callback()
+
+	def SetLabel(self, label):
+		self.text.SetLabel(label)
+		self.Layout()
+
+	def SetExtraLabel(self, label):
+		if self.extra_text:
+			self.extra_text.SetLabel(label)
+		else:
+			self.extra_text = wx.StaticText(self, -1, label)
+			self.sizer.Add(self.extra_text, 0, flag=wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, border=5)
+		self.Layout()
+
+	def SetBitmap(self, bitmap):
+		self.bitmap = bitmap
+		self.overlay = self.createOverlay(bitmap, self.original_overlay)
+		self.bmp.SetBitmap(self.overlay if self.GetValue() else self.bitmap)
+		self.Layout()
+
+	def SetOverlay(self, overlay):
+		self.original_overlay = overlay
+		self.overlay = self.createOverlay(self.bitmap, self.original_overlay)
+		self.bmp.SetBitmap(self.overlay if self.GetValue() else self.bitmap)
+		self.Layout()
+
+	def OnSelected(self, callback):
+		self.callback = callback
+
+	def createOverlay(self, bitmap, overlay):
+		result = bitmap.GetSubBitmap(wx.Rect(0, 0, *bitmap.Size))
+		(width, height) = bitmap.GetSize()
+		overlay_image = wx.ImageFromBitmap(overlay)
+		overlay_image = overlay_image.Scale(width, height, wx.IMAGE_QUALITY_HIGH)
+		overlay_scaled = wx.BitmapFromImage(overlay_image)
+		dc = wx.MemoryDC()
+		dc.SelectObject(result)
+		dc.DrawBitmap(overlay_scaled, 0, 0)
+		dc.SelectObject(wx.NullBitmap)
+		return result
+
 
 class InfoPage(wx.wizard.WizardPageSimple):
 	def __init__(self, parent, title):
 		wx.wizard.WizardPageSimple.__init__(self, parent)
 
+		parent.GetPageAreaSizer().Add(self)
 		sizer = wx.GridBagSizer(5, 5)
 		self.sizer = sizer
 		self.SetSizer(sizer)
 
-		title = wx.StaticText(self, -1, title)
-		title.SetFont(wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD))
-		sizer.Add(title, pos=(0, 0), span=(1, 2), flag=wx.ALIGN_CENTRE | wx.ALL)
+		self.title = wx.StaticText(self, -1, title)
+		font = wx.Font(18, wx.SWISS, wx.NORMAL, wx.BOLD)
+		self.title.SetFont(font)
+		# HACK ALERT: For some reason, the StaticText keeps its same size as if
+		# the font was not modified, this causes the text to wrap and to
+		# get out of bounds of the widgets area and hide other widgets.
+		# The only way I found for the widget to get its right size was to calculate
+		# the new font's extent and set the min size on the widget
+		self.title.SetMinSize(self.GetTextExtent(font, title))
+		sizer.Add(self.title, pos=(0, 0), span=(1, 2), flag=wx.ALIGN_CENTRE | wx.ALL)
 		sizer.Add(wx.StaticLine(self, -1), pos=(1, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL)
 		sizer.AddGrowableCol(1)
 
 		self.rowNr = 2
+
+	def GetTextExtent(self, font, text):
+		dc = wx.ScreenDC()
+		dc.SetFont(font)
+		w,h = dc.GetTextExtent(text)
+		return (w, h)
 
 	def AddText(self, info):
 		text = wx.StaticText(self, -1, info)
@@ -199,6 +331,14 @@ class InfoPage(wx.wizard.WizardPageSimple):
 		self.rowNr += 1
 		return bitmap
 
+	def AddPanel(self):
+		panel = wx.Panel(self, -1)
+		sizer = wx.GridBagSizer(2, 2)
+		panel.SetSizer(sizer)
+		self.GetSizer().Add(panel, pos=(self.rowNr, 0), span=(1, 2), flag=wx.ALL | wx.EXPAND)
+		self.rowNr += 1
+		return panel
+
 	def AddCheckmark(self, label, bitmap):
 		check = wx.StaticBitmap(self, -1, bitmap)
 		text = wx.StaticText(self, -1, label)
@@ -210,10 +350,24 @@ class InfoPage(wx.wizard.WizardPageSimple):
 	def AddCombo(self, label, options):
 		combo = wx.ComboBox(self, -1, options[0], choices=options, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 		text = wx.StaticText(self, -1, label)
-		self.GetSizer().Add(text, pos=(self.rowNr, 0), span=(1, 1), flag=wx.LEFT | wx.RIGHT)
-		self.GetSizer().Add(combo, pos=(self.rowNr, 1), span=(1, 1), flag=wx.LEFT | wx.RIGHT)
+		self.GetSizer().Add(text, pos=(self.rowNr, 0), span=(1, 1), flag=wx.LEFT | wx.RIGHT | wx.ALIGN_CENTER)
+		self.GetSizer().Add(combo, pos=(self.rowNr, 1), span=(1, 1), flag=wx.LEFT | wx.RIGHT | wx.EXPAND)
 		self.rowNr += 1
 		return combo
+
+	def AddImageButton(self, panel, x, y, label, filename, image_size=None,
+					   extra_label=None, overlay=ImageButton.DefaultOverlay, style=None):
+		ib = ImageButton(panel, label, self.GetBitmap(filename, image_size), extra_label, overlay, style)
+		panel.GetSizer().Add(ib, pos=(x, y), flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=10)
+		return ib
+
+	def GetBitmap(self, filename, image_size):
+		if image_size == None:
+			return wx.Bitmap(resources.getPathForImage(filename))
+		else:
+			image = wx.Image(resources.getPathForImage(filename))
+			image_scaled = image.Scale(image_size[0], image_size[1], wx.IMAGE_QUALITY_HIGH)
+			return wx.BitmapFromImage(image_scaled)
 
 	def AllowNext(self):
 		return True
@@ -382,13 +536,6 @@ class MachineSelectPage(InfoPage):
 		super(MachineSelectPage, self).__init__(parent, _("Select your machine"))
 		self.AddText(_("What kind of machine do you have:"))
 
-		self.LulzbotMiniRadio = self.AddRadioButton("LulzBot Mini", style=wx.RB_GROUP)
-		self.LulzbotMiniRadio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
-		self.LulzbotMiniRadio.SetValue(True)
-		self.LulzbotTaz5Radio = self.AddRadioButton("LulzBot TAZ 5")
-		self.LulzbotTaz5Radio.Bind(wx.EVT_RADIOBUTTON, self.OnTaz5Select)
-		self.LulzbotTaz4Radio = self.AddRadioButton("LulzBot TAZ 4")
-		self.LulzbotTaz4Radio.Bind(wx.EVT_RADIOBUTTON, self.OnLulzbotSelect)
 		self.Ultimaker2Radio = self.AddRadioButton("Ultimaker2")
 		self.Ultimaker2Radio.Bind(wx.EVT_RADIOBUTTON, self.OnUltimaker2Select)
 		self.Ultimaker2ExtRadio = self.AddRadioButton("Ultimaker2extended")
@@ -416,21 +563,8 @@ class MachineSelectPage(InfoPage):
 	def OnPrintrbotSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().printrbotSelectType)
 
-	def OnLulzbotSelect(self, e):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
-
-	def OnTaz5Select(self, e):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().taz5NozzleSelectPage)
-		wx.wizard.WizardPageSimple.Chain(self.GetParent().taz5NozzleSelectPage, self.GetParent().lulzbotReadyPage)
-
 	def OnOtherSelect(self, e):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().otherMachineSelectPage)
-
-	def AllowNext(self):
-		return True
-
-	def AllowBack(self):
-		return False
 
 	def StoreData(self):
 		profile.putProfileSetting('retraction_enable', 'True')
@@ -498,44 +632,6 @@ class MachineSelectPage(InfoPage):
 			profile.putMachineSetting('has_heated_bed', 'True')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putProfileSetting('retraction_enable', 'True')
-		elif self.LulzbotTaz4Radio.GetValue() or self.LulzbotTaz5Radio.GetValue() or self.LulzbotMiniRadio.GetValue():
-			if self.LulzbotTaz4Radio.GetValue():
-				profile.putMachineSetting('machine_width', '298')
-				profile.putMachineSetting('machine_depth', '275')
-				profile.putMachineSetting('machine_height', '250')
-				profile.putProfileSetting('nozzle_size', '0.35')
-				profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
-				profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
-				profile.putMachineSetting('serial_baud', '115200')
-			elif self.LulzbotTaz5Radio.GetValue():
-				profile.putMachineSetting('machine_width', '298')
-				profile.putMachineSetting('machine_depth', '275')
-				profile.putMachineSetting('machine_height', '250')
-				profile.putMachineSetting('serial_baud', '115200')
-				# Machine type and name are set in the nozzle select page
-			else:
-				profile.putMachineSetting('machine_width', '155')
-				profile.putMachineSetting('machine_depth', '155')
-				profile.putMachineSetting('machine_height', '163')
-				profile.putProfileSetting('nozzle_size', '0.5')
-				profile.putMachineSetting('machine_name', 'LulzBot Mini')
-				profile.putMachineSetting('machine_type', 'lulzbot_mini')
-				profile.putMachineSetting('serial_baud', '115200')
-				profile.putMachineSetting('extruder_head_size_min_x', '40')
-				profile.putMachineSetting('extruder_head_size_max_x', '75')
-				profile.putMachineSetting('extruder_head_size_min_y', '25')
-				profile.putMachineSetting('extruder_head_size_max_y', '55')
-				profile.putMachineSetting('extruder_head_size_height', '17')
-
-			profile.putMachineSetting('machine_center_is_zero', 'False')
-			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
-			profile.putMachineSetting('has_heated_bed', 'True')
-			profile.putMachineSetting('extruder_head_size_min_x', '0.0')
-			profile.putMachineSetting('extruder_head_size_min_y', '0.0')
-			profile.putMachineSetting('extruder_head_size_max_x', '0.0')
-			profile.putMachineSetting('extruder_head_size_max_y', '0.0')
-			profile.putMachineSetting('extruder_head_size_height', '0.0')
-			profile.putPreference('startMode', 'Simple')
 		else:
 			profile.putMachineSetting('machine_width', '80')
 			profile.putMachineSetting('machine_depth', '80')
@@ -582,7 +678,7 @@ class SelectParts(InfoPage):
 class UltimakerFirmwareUpgradePage(InfoPage):
 	def __init__(self, parent):
 		super(UltimakerFirmwareUpgradePage, self).__init__(parent, _("Upgrade Ultimaker Firmware"))
-		self.AddText(_("Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the step motors, regulates the temperature\nand ultimately makes your printer work."))
+		self.AddText(_("Firmware is the piece of software running directly on your 3D printer.\nThis firmware controls the stepper motors, regulates the temperature\nand ultimately makes your printer work."))
 		self.AddHiddenSeperator()
 		self.AddText(_("The firmware shipping with new Ultimakers works, but upgrades\nhave been made to make better prints, and make calibration easier."))
 		self.AddHiddenSeperator()
@@ -1003,6 +1099,80 @@ class Ultimaker2ReadyPage(InfoPage):
 		self.AddText(_('Cura is now ready to be used with your Ultimaker2.'))
 		self.AddSeperator()
 
+class LulzbotMachineSelectPage(InfoPage):
+	IMAGE_WIDTH=300
+	IMAGE_HEIGHT=200
+
+	def __init__(self, parent):
+		super(LulzbotMachineSelectPage, self).__init__(parent, _("Select your machine"))
+
+		self.panel = self.AddPanel()
+
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.LulzbotMini = self.AddImageButton(self.panel, 0, 0, _("LulzBot Mini"),
+											   'Lulzbot_mini.jpg', image_size, style=ImageButton.IB_GROUP)
+		self.LulzbotMini.OnSelected(self.OnLulzbotMiniSelected)
+		self.LulzbotTaz = self.AddImageButton(self.panel, 0, 1, _("LulzBot TAZ 4 or 5"),
+											   'Lulzbot_TAZ5.jpg', image_size)
+		self.LulzbotTaz.OnSelected(self.OnLulzbotTazSelected)
+		self.OtherPrinters = self.AddImageButton(self.panel, 1, 0, _("Other Printers"),
+												 'Generic-3D-Printer.png', image_size)
+		self.OtherPrinters.OnSelected(self.OnOthersSelected)
+		self.LulzbotMini.SetValue(True)
+
+	def OnPageShown(self):
+		self.LulzbotMini.TriggerGroupCallbacks()
+
+	def OnOthersSelected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().machineSelectPage)
+
+	def OnLulzbotMiniSelected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotMiniToolheadPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotMiniToolheadPage,
+										 self.GetParent().lulzbotReadyPage)
+
+	def OnLulzbotTazSelected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazSelectPage)
+
+	def AllowNext(self):
+		return True
+
+	def AllowBack(self):
+		return False
+
+	def StoreData(self):
+		if self.LulzbotTaz.GetValue() or self.LulzbotMini.GetValue():
+			if self.LulzbotTaz.GetValue():
+				profile.putMachineSetting('machine_width', '290')
+				profile.putMachineSetting('machine_depth', '275')
+				profile.putMachineSetting('machine_height', '250')
+				profile.putMachineSetting('serial_baud', '115200')
+				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_min_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_height', '0.0')
+			else:
+				# Nozzle diameter and machine type will be set in the toolhead selection page
+				profile.putMachineSetting('machine_name', 'LulzBot Mini')
+				profile.putMachineSetting('machine_width', '155')
+				profile.putMachineSetting('machine_depth', '155')
+				profile.putMachineSetting('machine_height', '163')
+				profile.putMachineSetting('serial_baud', '115200')
+				profile.putMachineSetting('extruder_head_size_min_x', '40')
+				profile.putMachineSetting('extruder_head_size_max_x', '75')
+				profile.putMachineSetting('extruder_head_size_min_y', '25')
+				profile.putMachineSetting('extruder_head_size_max_y', '55')
+				profile.putMachineSetting('extruder_head_size_height', '17')
+
+			profile.putMachineSetting('machine_center_is_zero', 'False')
+			profile.putMachineSetting('gcode_flavor', 'RepRap (Marlin/Sprinter)')
+			profile.putMachineSetting('has_heated_bed', 'True')
+			profile.putProfileSetting('retraction_enable', 'True')
+			profile.putPreference('startMode', 'Simple')
+			profile.putProfileSetting('wall_thickness', float(profile.getProfileSetting('nozzle_size')) * 2)
+			profile.checkAndUpdateMachineName()
+
 class LulzbotReadyPage(InfoPage):
 	def __init__(self, parent):
 		super(LulzbotReadyPage, self).__init__(parent, _("LulzBot TAZ/Mini"))
@@ -1012,42 +1182,348 @@ class LulzbotReadyPage(InfoPage):
 		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
 		self.AddSeperator()
 
-class Taz5NozzleSelectPage(InfoPage):
-	url='http://lulzbot.com/printer-identification'
+class LulzbotMiniToolheadSelectPage(InfoPage):
+	def __init__(self, parent, allowBack = True):
+		super(LulzbotMiniToolheadSelectPage, self).__init__(parent, _("LulzBot Mini Tool Head Selection"))
+
+		self.allowBack = allowBack
+		self.panel = self.AddPanel()
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.standard = self.AddImageButton(self.panel, 0, 0, _('Standard LulzBot Mini'),
+											'Lulzbot_mini.jpg', image_size,
+											style=ImageButton.IB_GROUP)
+		self.flexy = self.AddImageButton(self.panel, 0, 1, _('LulzBot Mini with Flexystruder'),
+											'Lulzbot_Toolhead_Mini_Flexystruder.jpg', image_size)
+		self.standard.SetValue(True)
+
+	def AllowBack(self):
+		return self.allowBack
+
+	def StoreData(self):
+		if self.standard.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Single Extruder v2')
+			profile.putMachineSetting('toolhead_shortname', '')
+			profile.putMachineSetting('machine_type', 'lulzbot_mini')
+		else:
+			profile.putProfileSetting('nozzle_size', '0.6')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Flexystruder v2')
+			profile.putMachineSetting('toolhead_shortname', 'Flexystruder')
+			profile.putMachineSetting('machine_type', 'lulzbot_mini_flexystruder')
+
+
+class LulzbotTazSelectPage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotTazSelectPage, self).__init__(parent, _("LulzBot TAZ Selection"))
+
+		self.panel = self.AddPanel()
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.taz5 = self.AddImageButton(self.panel, 0, 0, _('Stock TAZ 5 (PEI && v2)'),
+										'Lulzbot_TAZ_5_Hex_and_PEI.jpg', image_size,
+										style=ImageButton.IB_GROUP)
+		self.taz5.OnSelected(self.OnTaz5Selected)
+		self.taz4 = self.AddImageButton(self.panel, 0, 1, _('Stock TAZ 4 (PET && v1)'),
+										'Lulzbot_TAZ_4_Buda_and_PET.jpg', image_size)
+		self.taz4.OnSelected(self.OnTaz4Selected)
+		self.modified = self.AddImageButton(self.panel, 1, 0, _('Modified LulzBot TAZ 4 or 5'),
+											'Lulzbot_TAZ5.jpg', image_size)
+		self.modified.OnSelected(self.OnModifiedSelected)
+		self.taz5.SetValue(True)
+
+	def OnPageShown(self):
+		self.taz5.TriggerGroupCallbacks()
+
+	def OnTaz5Selected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage,
+										 self.GetParent().lulzbotReadyPage)
+
+	def OnTaz4Selected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+
+	def OnModifiedSelected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazBedSelectPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTazBedSelectPage,
+										 self.GetParent().lulzbotTazHotendPage)
+
+	def StoreData(self):
+		if self.taz5.GetValue():
+			profile.putProfileSetting('nozzle_size',  '0.5')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Single Extruder V2')
+			profile.putMachineSetting('toolhead_shortname', '')
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_SingleV2')
+			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5')
+		elif self.taz4.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.35')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Single Extruder V1')
+			profile.putMachineSetting('toolhead_shortname', '')
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4_SingleV1')
+			profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
+
+class LulzbotTazBedSelectPage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotTazBedSelectPage, self).__init__(parent, _("Bed Surface"))
+
+		self.panel = self.AddPanel()
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.pei = self.AddImageButton(self.panel, 0, 0, _('PEI'),
+									   'Lulzbot_TAZ_PEI_Bed.jpg', image_size,
+									   style=ImageButton.IB_GROUP)
+		self.pet = self.AddImageButton(self.panel, 0, 1, _('PET'),
+									   'Lulzbot_TAZ_PET_Bed.jpg', image_size)
+		self.pei.SetValue(True)
+
+	def StoreData(self):
+		if self.pei.GetValue():
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
+			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5')
+		else:
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
+			profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
+
+
+class LulzbotTazToolheadSelectPage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotTazToolheadSelectPage, self).__init__(parent, _("LulzBot TAZ Tool Head Selection"))
+
+		self.panel = self.AddPanel()
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.single = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v1'),
+											'Lulzbot_Toolhead_TAZ_Single_v1.jpg', image_size,
+											style=ImageButton.IB_GROUP)
+		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v1'),
+											'Lulzbot_Toolhead_TAZ_Flexystruder_v1.jpg', image_size)
+		self.dually = self.AddImageButton(self.panel, 1, 0, _('Dual Extruder v1'),
+											'Lulzbot_Toolhead_TAZ_Dual_Extruder_v1.jpg', image_size)
+		self.flexydually = self.AddImageButton(self.panel, 1, 1, _('FlexyDually v1'),
+											'Lulzbot_Toolhead_TAZ_FlexyDually_v1.jpg', image_size)
+		self.SetVersion(1)
+		self.single.SetValue(True)
+
+	def SetVersion(self, version):
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.single.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Single_v%d.jpg' % version, image_size))
+		self.single.SetLabel(_('Single Extruder v%d' % version))
+		self.flexy.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Flexystruder_v%d.jpg' % version, image_size))
+		self.flexy.SetLabel(_('Flexystruder v%d' % version))
+		self.dually.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_Dual_Extruder_v%d.jpg' % version, image_size))
+		self.dually.SetLabel(_('Dual Extruder v%d' % version))
+		self.flexydually.SetBitmap(self.GetBitmap('Lulzbot_Toolhead_TAZ_FlexyDually_v%d.jpg' % version, image_size))
+		self.flexydually.SetLabel(_('FlexyDually v%d' % version))
+		self.version = version
+		if version == 1:
+			self.single.OnSelected(None)
+			self.flexy.OnSelected(None)
+			self.dually.OnSelected(None)
+			self.flexydually.OnSelected(None)
+			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
+		elif version == 2:
+			self.single.OnSelected(self.OnSingleV2)
+			self.flexy.OnSelected(self.OnNonSingle)
+			self.dually.OnSelected(self.OnNonSingle)
+			self.flexydually.OnSelected(self.OnNonSingle)
+			if self.single.GetValue():
+				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
+				wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotFirmwarePage)
+			else:
+				wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotFirmwarePage, self.GetParent().lulzbotReadyPage)
+
+	def OnSingleV2(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
+		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage, self.GetParent().lulzbotFirmwarePage)
+
+	def OnNonSingle(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
+
+	def StoreData(self):
+		if profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
+			taz_version = 4
+		else:
+			taz_version = 5
+		version = (taz_version, self.version)
+		if self.single.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.5' if self.version == 2 else '0.35')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Single Extruder V%d' % self.version)
+			profile.putMachineSetting('toolhead_shortname', '')
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_SingleV%d' % version)
+		elif self.flexy.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.6')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Flexystruder V%d' % self.version)
+			profile.putMachineSetting('toolhead_shortname', 'Flexystruder v%d' % self.version)
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_FlexystruderV%d' % version)
+		elif self.dually.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putMachineSetting('extruder_amount', '2')
+			profile.putMachineSetting('extruder_offset_x1', '0.0')
+			profile.putMachineSetting('extruder_offset_y1', '-50.0' if self.version == 2 else '-52.00')
+			profile.putMachineSetting('toolhead', 'Dual Extruder V%d' % self.version)
+			profile.putMachineSetting('toolhead_shortname', 'Dual v%d' % self.version)
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_DualV%d' % version)
+		elif self.flexydually.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.6')
+			profile.putMachineSetting('extruder_amount', '2')
+			profile.putMachineSetting('extruder_offset_x1', '0.0')
+			profile.putMachineSetting('extruder_offset_y1', '-50.0' if self.version == 2 else '-52.00')
+			profile.putMachineSetting('toolhead', 'FlexyDually V%d' % self.version)
+			profile.putMachineSetting('toolhead_shortname', 'FlexyDually v%d' % self.version)
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_FlexyDuallyV%d' % version)
+
+
+class LulzbotHotendSelectPage(InfoPage):
+	def __init__(self, parent, allowBack = True):
+		super(LulzbotHotendSelectPage, self).__init__(parent, _("LulzBot Tool Head Hot end Selection"))
+
+		self.allowBack = allowBack
+		self.panel = self.AddPanel()
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.v1 = self.AddImageButton(self.panel, 0, 0, _('v1 (Budaschnozzle)'),
+											'Lulzbot_Toolhead_v1.jpg', image_size,
+											style=ImageButton.IB_GROUP)
+		self.v2 = self.AddImageButton(self.panel, 0, 1, _('v2 (LulzBot Hexagon)'),
+											'Lulzbot_Toolhead_v2.jpg', image_size)
+		self.v1.SetValue(True)
+
+	def AllowBack(self):
+		return self.allowBack
+
+	def StoreData(self):
+		self.GetParent().lulzbotTazToolheadPage.SetVersion(1 if self.v1.GetValue() else 2)
+
+class LulzbotTaz5NozzleSelectPage(InfoPage):
+	url2='http://lulzbot.com/printer-identification'
 
 	def __init__(self, parent):
-		super(Taz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ5"))
-		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+		super(LulzbotTaz5NozzleSelectPage, self).__init__(parent, _("LulzBot TAZ Single v2 Nozzle Selection"))
 
-		self.AddText(_(' '))
-		self.AddText(_('Please select nozzle size:'))
+		self.AddText(_('Please select your LulzBot Hexagon Hot End\'s nozzle diameter:'))
 		self.Nozzle35Radio = self.AddRadioButton("0.35 mm", style=wx.RB_GROUP)
 		self.Nozzle35Radio.SetValue(True)
 		self.Nozzle50Radio = self.AddRadioButton("0.5 mm")
 		self.AddText(_(' '))
 		self.AddSeperator()
 
-		self.AddText(_('If you are not sure which nozzle size you have'))
+		self.AddText(_('If you are not sure which nozzle diameter you have,'))
 		self.AddText(_('please check this webpage: '))
-		button = self.AddButton(Taz5NozzleSelectPage.url)
+		button = self.AddButton(LulzbotTaz5NozzleSelectPage.url2)
 		button.Bind(wx.EVT_BUTTON, self.OnUrlClick)
 
 	def OnUrlClick(self, e):
-		webbrowser.open(Taz5NozzleSelectPage.url)
+		webbrowser.open(LulzbotTaz5NozzleSelectPage.url2)
 
 	def StoreData(self):
+		if profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
+			taz_version = 4
+		else:
+			taz_version = 5
 		if self.Nozzle35Radio.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.35')
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.35 nozzle)')
-			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5')
+			profile.putMachineSetting('toolhead', 'Single Extruder v2 (0.35mm nozzle)')
+			profile.putMachineSetting('toolhead_shortname', '0.35 nozzle')
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_035nozzle' % taz_version)
 
 		else:
 			profile.putProfileSetting('nozzle_size', '0.5')
-			profile.putMachineSetting('machine_name', 'LulzBot TAZ 5 (0.5 nozzle)')
-			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_5_05nozzle')
+			profile.putMachineSetting('toolhead', 'Single Extruder v2 (0.5mm nozzle)')
+			profile.putMachineSetting('toolhead_shortname', '0.5 nozzle')
+			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_05nozzle' % taz_version)
+
+class LulzbotFirmwareUpdatePage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotFirmwareUpdatePage, self).__init__(parent, _("LulzBot Firmware Update"))
+
+		self.AddText(_("Your LulzBot printer\'s firmware will now be updated.\n" +
+		"Note: this will overwrite your existing firmware."))
+		self.AddSeperator()
+		self.AddText(_("Follow these steps to prevent writing firmware to the wrong device:\n" +
+					   "    1) Unplug all USB devices from your computer\n" +
+					   "    2) Plug your 3D Printer into the computer with a USB cable\n" +
+					   "    3) Turn on your 3D Printer\n" +
+					   "    4) Click \"Flash the firmware\""))
+		self.AddHiddenSeperator()
+		upgradeButton, skipUpgradeButton = self.AddDualButton(_('Flash the firmware'), _('Skip upgrade'))
+		upgradeButton.Bind(wx.EVT_BUTTON, self.OnUpgradeClick)
+		skipUpgradeButton.Bind(wx.EVT_BUTTON, self.OnSkipClick)
+
+	def AllowNext(self):
+		return version.isDevVersion()
+
+	def OnUpgradeClick(self, e):
+		if firmwareInstall.InstallFirmware():
+			self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+			self.GetParent().ShowPage(self.GetNext())
+
+	def OnSkipClick(self, e):
+		dlg = wx.MessageDialog(self,
+			_("CAUTION: Updating firmware is necessary when changing the\n" \
+			  "tool head on your LulzBot desktop 3D Printer." \
+			  "\n\n" +
+			  "Are you sure you want to skip the firmware update?"),
+			_('Skip firmware update?'),
+			wx.YES_NO | wx.ICON_EXCLAMATION)
+		skip = dlg.ShowModal() == wx.ID_YES
+		dlg.Destroy()
+		if skip:
+			self.GetParent().FindWindowById(wx.ID_FORWARD).Enable()
+			self.GetParent().ShowPage(self.GetNext())
+
+class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
+	def __init__(self):
+		super(LulzbotChangeToolheadWizard, self).__init__(None, -1, _("Change LulzBot Tool Head Wizard"))
+
+		self._nozzle_size = profile.getProfileSettingFloat('nozzle_size')
+		self._machine_name = profile.getMachineSetting('machine_name')
+		self._machine_type = profile.getMachineSetting('machine_type')
+		self._extruder_amount = int(profile.getMachineSettingFloat('extruder_amount'))
+
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGED, self.OnPageChanged)
+		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
+		self.Bind(wx.wizard.EVT_WIZARD_CANCEL, self.OnCancel)
+
+		self.lulzbotReadyPage = LulzbotReadyPage(self)
+		self.lulzbotFirmwarePage = LulzbotFirmwareUpdatePage(self)
+		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self, False)
+		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
+		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self, False)
+		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
+		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
+		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
+
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
+
+		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
+			self.RunWizard(self.lulzbotMiniToolheadPage)
+		else:
+			self.RunWizard(self.lulzbotTazHotendPage)
+		self.Destroy()
 
 	def OnPageChanging(self, e):
 		e.GetPage().StoreData()
+
+	def OnPageChanged(self, e):
+		if e.GetPage().AllowNext():
+			self.FindWindowById(wx.ID_FORWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_FORWARD).Disable()
+		if e.GetPage().AllowBack():
+			self.FindWindowById(wx.ID_BACKWARD).Enable()
+		else:
+			self.FindWindowById(wx.ID_BACKWARD).Disable()
+		if hasattr(e.GetPage(), 'OnPageShown'):
+			e.GetPage().OnPageShown()
+
+	def OnCancel(self, e):
+		profile.putProfileSetting('nozzle_size', self._nozzle_size)
+		profile.putMachineSetting('machine_name', self._machine_name)
+		profile.putMachineSetting('machine_type', self._machine_type)
+		profile.putMachineSetting('extruder_amount', self._extruder_amount)
 
 class ConfigWizard(wx.wizard.Wizard):
 	def __init__(self, addNew = False):
@@ -1076,22 +1552,26 @@ class ConfigWizard(wx.wizard.Wizard):
 
 		self.ultimaker2ReadyPage = Ultimaker2ReadyPage(self)
 		self.lulzbotReadyPage = LulzbotReadyPage(self)
-		self.taz5NozzleSelectPage = Taz5NozzleSelectPage(self)
+		self.lulzbotFirmwarePage = LulzbotFirmwareUpdatePage(self)
+		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self)
+		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
+		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self)
+		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
+		self.lulzbotMachineSelectPage = LulzbotMachineSelectPage(self)
+		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
+		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
 
-		#wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimaker2ReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMachineSelectPage, self.lulzbotMiniToolheadPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerSelectParts, self.ultimakerFirmwareUpgradePage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerFirmwareUpgradePage, self.ultimakerCheckupPage)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerCheckupPage, self.bedLevelPage)
-		#wx.wizard.WizardPageSimple.Chain(self.ultimakerCalibrationPage, self.ultimakerCalibrateStepsPerEPage)
 		wx.wizard.WizardPageSimple.Chain(self.printrbotSelectType, self.otherMachineInfoPage)
 		wx.wizard.WizardPageSimple.Chain(self.otherMachineSelectPage, self.customRepRapInfoPage)
-		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.lulzbotReadyPage)
 
-		self.FitToPage(self.machineSelectPage)
-		self.GetPageAreaSizer().Add(self.machineSelectPage)
-
-		self.RunWizard(self.machineSelectPage)
+		self.RunWizard(self.lulzbotMachineSelectPage)
 		self.Destroy()
 
 	def OnPageChanging(self, e):
@@ -1106,6 +1586,8 @@ class ConfigWizard(wx.wizard.Wizard):
 			self.FindWindowById(wx.ID_BACKWARD).Enable()
 		else:
 			self.FindWindowById(wx.ID_BACKWARD).Disable()
+		if hasattr(e.GetPage(), 'OnPageShown'):
+			e.GetPage().OnPageShown()
 
 	def OnCancel(self, e):
 		new_machine_index = int(profile.getPreferenceFloat('active_machine'))
@@ -1570,9 +2052,6 @@ class bedLevelWizard(wx.wizard.Wizard):
 		self.mainPage = bedLevelWizardMain(self)
 		self.headOffsetCalibration = None
 
-		self.FitToPage(self.mainPage)
-		self.GetPageAreaSizer().Add(self.mainPage)
-
 		self.RunWizard(self.mainPage)
 		self.Destroy()
 
@@ -1597,9 +2076,6 @@ class headOffsetWizard(wx.wizard.Wizard):
 		self.Bind(wx.wizard.EVT_WIZARD_PAGE_CHANGING, self.OnPageChanging)
 
 		self.mainPage = headOffsetCalibrationPage(self)
-
-		self.FitToPage(self.mainPage)
-		self.GetPageAreaSizer().Add(self.mainPage)
 
 		self.RunWizard(self.mainPage)
 		self.Destroy()

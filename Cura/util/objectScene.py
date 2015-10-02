@@ -159,6 +159,8 @@ class Scene(object):
 		yMax = profile.getMachineSettingFloat('extruder_head_size_max_y')
 		gantryHeight = profile.getMachineSettingFloat('extruder_head_size_height')
 		objectSink = profile.getProfileSettingFloat("object_sink")
+		if profile.getPreference('startMode') == 'Simple':
+			objectSink = float(profile.settingsDictionary["object_sink"].getDefault())
 
 		self._leftToRight = xMin < xMax
 		self._frontToBack = yMin < yMax
@@ -178,12 +180,8 @@ class Scene(object):
 					self._oneAtATime = False
 					if self._lastResultOneAtATime:
 						if self._sceneView:
-							self._sceneView.notification.message("Info: Print one at a time mode disabled. Object too tall.")
+							self._sceneView.notification.message("Object must be shorter than {}mm for this printer/tool head. Reduce object size or swap to \"All at once\" mode. ".format(self._gantryHeight))
 						break
-
-		if self._lastOneAtATime and self._oneAtATime and not self._lastResultOneAtATime:
-			if self._sceneView:
-				self._sceneView.notification.message("Info: Print one at a time mode re-enabled.")
 
 		self._lastResultOneAtATime = self._oneAtATime
 		self._lastOneAtATime = printOneAtATime
@@ -291,6 +289,8 @@ class Scene(object):
 
 	def checkPlatform(self, obj):
 		objectSink = profile.getProfileSettingFloat("object_sink")
+		if profile.getPreference('startMode') == 'Simple':
+			objectSink = float(profile.settingsDictionary["object_sink"].getDefault())
 
 		area = obj._printAreaHull + obj.getPosition()
 		if obj.getSize()[2] - objectSink > self._machineSize[2]:

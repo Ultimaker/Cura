@@ -1,6 +1,7 @@
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 
 import wx
+import wx.lib.inspection
 import numpy
 import time
 import os
@@ -159,7 +160,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.loadScene(filenames)
 
 	def loadFiles(self, filenames):
-		mainWindow = self.GetParent().GetParent().GetParent()
+		mainWindow = self.GetTopLevelParent()
 		# only one GCODE file can be active
 		# so if single gcode file, process this
 		# otherwise ignore all gcode files
@@ -349,14 +350,8 @@ class SceneView(openglGui.glGuiPanel):
 
 	def _openPrintWindowForConnection(self, connection):
 		if connection.window is None or not connection.window:
-			connection.window = None
-			windowType = profile.getPreference('printing_window')
-			for p in pluginInfo.getPluginList('printwindow'):
-				if p.getName() == windowType:
-					connection.window = printWindow.printWindowPlugin(self, connection, p.getFullFilename())
-					break
-			if connection.window is None:
-				connection.window = printWindow.printWindowBasic(self, connection)
+			connection.window = printWindow.printWindowAdvanced(self, connection)
+
 		connection.window.Show()
 		connection.window.Raise()
 		if not connection.loadGCodeData(self._engine.getResult().getGCode()):
@@ -639,9 +634,14 @@ class SceneView(openglGui.glGuiPanel):
 		self._scene.merge(self._selectedObj, self._focusObj)
 		self.sceneUpdated()
 
-	def sceneUpdated(self):
+	def getObjectSink(self):
+		if self._isSimpleMode:
+			return float(profile.settingsDictionary["object_sink"].getDefault())
+		else:
+			return profile.getProfileSettingFloat("object_sink")
 
-		objectSink = profile.getProfileSettingFloat("object_sink")
+	def sceneUpdated(self):
+		objectSink = self.getObjectSink()
 		if self._lastObjectSink != objectSink:
 			self._lastObjectSink = objectSink
 			self._scene.updateHeadSize()
@@ -843,6 +843,9 @@ class SceneView(openglGui.glGuiPanel):
 			self._beforeLeakTest = defaultdict(int)
 			for i in get_objects():
 				self._beforeLeakTest[type(i)] += 1
+		if keyCode == wx.WXK_F6 and wx.GetKeyState(wx.WXK_SHIFT):
+			# Show the WX widget inspection tool
+			wx.lib.inspection.InspectionTool().Show()
 		if keyCode == wx.WXK_F5 and wx.GetKeyState(wx.WXK_SHIFT):
 			from collections import defaultdict
 			from gc import get_objects
@@ -1173,7 +1176,10 @@ class SceneView(openglGui.glGuiPanel):
 
 			if self.viewMode == 'overhang':
 				self._objectOverhangShader.bind()
-				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(90 - profile.getProfileSettingFloat('support_angle'))))
+				support_angle = profile.getProfileSettingFloat('support_angle')
+				if self._isSimpleMode:
+					support_angle = float(profile.settingsDictionary['support_angle'].getDefault())
+				self._objectOverhangShader.setUniform('cosAngle', math.cos(math.radians(90 - support_angle)))
 			else:
 				self._objectShader.bind()
 			for obj in self._scene.objects():
@@ -1333,7 +1339,7 @@ class SceneView(openglGui.glGuiPanel):
 	def _renderObject(self, obj, brightness = 0, addSink = True):
 		glPushMatrix()
 		if addSink:
-			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2 - profile.getProfileSettingFloat('object_sink'))
+			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2 - self.getObjectSink())
 		else:
 			glTranslate(obj.getPosition()[0], obj.getPosition()[1], obj.getSize()[2] / 2)
 
@@ -1527,7 +1533,7 @@ class SceneView(openglGui.glGuiPanel):
 			return [0.0, 0.0, 0.0]
 		pos = self._selectedObj.getPosition()
 		size = self._selectedObj.getSize()
-		return [pos[0], pos[1], size[2]/2 - profile.getProfileSettingFloat('object_sink')]
+		return [pos[0], pos[1], size[2]/2 - self.getObjectSink()]
 
 	def getObjectBoundaryCircle(self):
 		if self._selectedObj is None:
