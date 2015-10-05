@@ -5,14 +5,13 @@ import webbrowser
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit
-from UM.Application import Application
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 debug_mode = False
 
 def show(exception_type, value, tb):
-    if Application.getInstance().getCommandLineOption("debug-mode", False):
+    if QCoreApplication.instance() and QCoreApplication.instance().getCommandLineOption("debug-mode", False):
         debug_mode = True
 
     traceback.print_exception(exception_type, value, tb)

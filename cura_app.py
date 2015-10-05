@@ -14,9 +14,11 @@ sys.excepthook = exceptHook
 import cura.CuraApplication
 
 if sys.platform == "win32" and hasattr(sys, "frozen"):
-    import os.path
-    sys.stdout = open(os.path.expanduser("~/AppData/Local/cura/stdout.log"), "w")
-    sys.stderr = open(os.path.expanduser("~/AppData/Local/cura/stderr.log"), "w")
+    import os
+    dirpath = os.path.expanduser("~/AppData/Local/cura/")
+    os.makedirs(dirpath, exist_ok = True)
+    sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w")
+    sys.stderr = open(os.path.join(dirpath, "stderr.log"), "w")
 
 app = cura.CuraApplication.CuraApplication.getInstance()
 app.run()
