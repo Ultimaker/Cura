@@ -5,12 +5,20 @@ import webbrowser
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit
+from UM.Application import Application
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-def show(type, value, tb):
-    if not hasattr(sys, "frozen"):
-        traceback.print_exception(type, value, tb)
+debug_mode = False
+
+def show(exception_type, value, tb):
+    if Application.getInstance().getCommandLineOption("debug-mode", False):
+        debug_mode = True
+
+    traceback.print_exception(exception_type, value, tb)
+
+    if not debug_mode:
+        return
 
     application = QCoreApplication.instance()
     if not application:
@@ -34,7 +42,7 @@ def show(type, value, tb):
     except:
         version = "Unknown"
 
-    trace = "".join(traceback.format_exception(type, value, tb))
+    trace = "".join(traceback.format_exception(exception_type, value, tb))
 
     crash_info = "Version: {0}\nPlatform: {1}\nQt: {2}\nPyQt: {3}\n\nException:\n{4}"
     crash_info = crash_info.format(version, platform.platform(), QT_VERSION_STR, PYQT_VERSION_STR, trace)
@@ -44,7 +52,7 @@ def show(type, value, tb):
     buttons = QDialogButtonBox(QDialogButtonBox.Close, dialog)
     layout.addWidget(buttons)
     buttons.addButton(catalog.i18nc("@action:button", "Open Web Page"), QDialogButtonBox.HelpRole)
-    buttons.rejected.connect(lambda: dialog.close())
+    buttons.rejected.connect(dialog.close)
     buttons.helpRequested.connect(lambda: webbrowser.open("http://github.com/Ultimaker/Cura/issues"))
 
     dialog.exec_()
