@@ -252,16 +252,16 @@ class CuraApplication(QtApplication):
     ##  Remove an object from the scene
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
-        object = self.getController().getScene().findObject(object_id)
+        node = self.getController().getScene().findObject(object_id)
 
-        if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
-            object = Selection.getSelectedObject(0)
-        
-        if object:
-            if object.getParent():
-                group_node = object.getParent()
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
+
+        if node:
+            if node.getParent():
+                group_node = node.getParent()
                 if not group_node.callDecoration("isGroup"):
-                    op = RemoveSceneNodeOperation(object)
+                    op = RemoveSceneNodeOperation(node)
                 else:
                     while group_node.getParent().callDecoration("isGroup"):
                         group_node = group_node.getParent()
@@ -295,10 +295,15 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
-        if node.getParent() and node.getParent().callDecoration("isGroup"):
-            node = node.getParent()
         if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
+
+        if not node:
+            return
+
+        if node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
+
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
