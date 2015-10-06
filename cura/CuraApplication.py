@@ -68,7 +68,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "15.09.85")
+        super().__init__(name = "cura", version = "15.09.90")
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
@@ -132,6 +132,7 @@ class CuraApplication(QtApplication):
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
+        parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
         self._i18n_catalog = i18nCatalog("cura");
@@ -259,16 +260,16 @@ class CuraApplication(QtApplication):
     ##  Remove an object from the scene
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
-        object = self.getController().getScene().findObject(object_id)
+        node = self.getController().getScene().findObject(object_id)
 
-        if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
-            object = Selection.getSelectedObject(0)
-        
-        if object:
-            if object.getParent():
-                group_node = object.getParent()
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
+
+        if node:
+            if node.getParent():
+                group_node = node.getParent()
                 if not group_node.callDecoration("isGroup"):
-                    op = RemoveSceneNodeOperation(object)
+                    op = RemoveSceneNodeOperation(node)
                 else:
                     while group_node.getParent().callDecoration("isGroup"):
                         group_node = group_node.getParent()
@@ -302,10 +303,15 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
-        if node.getParent() and node.getParent().callDecoration("isGroup"):
-            node = node.getParent()
         if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
+
+        if not node:
+            return
+
+        if node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
+
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()

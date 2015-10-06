@@ -335,6 +335,7 @@ class CuraEngineBackend(Backend):
                 if self._stored_layer_data:
                     job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
                     job.start()
+                    self._stored_layer_data = None
             else:
                 self._layer_view_active = False
 
