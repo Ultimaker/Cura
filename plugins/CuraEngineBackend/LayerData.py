@@ -107,7 +107,7 @@ class Layer():
     def build(self, offset, vertices, colors, indices):
         result = offset
         for polygon in self._polygons:
-            if polygon._type == Polygon.InfillType or polygon._type == Polygon.SupportInfillType:
+            if polygon._type == Polygon.InfillType:
                 continue
 
             polygon.build(result, vertices, colors, indices)
