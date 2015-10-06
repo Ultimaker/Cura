@@ -80,11 +80,13 @@ class CuraEngineBackend(Backend):
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
         Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
+
     ##  Get the command that is used to call the engine.
     #   This is usefull for debugging and used to actually start the engine
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.MachineDefinitions, "dual_extrusion_printer.json"), "-vv"]
+        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getPath(), "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
@@ -125,6 +127,7 @@ class CuraEngineBackend(Backend):
                     pass
             self.slicingCancelled.emit()
             return
+
         Logger.log("d", "Preparing to send slice data to engine.")
         object_groups = []
         if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
@@ -355,3 +358,14 @@ class CuraEngineBackend(Backend):
             setting = message.settings.add()
             setting.name = key
             setting.value = str(value).encode()
+
+    def _onInstanceChanged(self):
+        self._slicing = False
+        self._restart = True
+        if self._process is not None:
+            Logger.log("d", "Killing engine process")
+            try:
+                self._process.terminate()
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
+        self.slicingCancelled.emit()
