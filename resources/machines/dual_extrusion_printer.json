@@ -8,16 +8,6 @@
     "visible": false,
 
     "machine_settings": {
-        "extruder_nr": {
-            "label": "Extruder",
-            "description": "The extruder train used for printing. This is used in multi-extrusion.",
-            "type": "int",
-            "default": 0,
-            "min_value": 0,
-            "max_value": 16,
-            "inherit_function": "extruder_nr"
-        },
-        
         "machine_use_extruder_offset_to_offset_coords": { "default": false },
 
         "machine_nozzle_offset_x": { "default": 0, "SEE_machine_extruder_trains": true },
@@ -39,14 +29,11 @@
                     "description": "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal.",
                     "unit": "mm/s",
                     "type": "float",
-                    "min_value": 0.1,
-                    "max_value_warning": 150,
+                    "min_value": "0.1",
+                    "max_value_warning": "150",
                     "default": 50,
                     "visible": false,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
+                    "enabled": "prime_tower_enable"
                 }
             }
         },
@@ -56,16 +43,13 @@
                     "label": "Prime Tower Line Width",
                     "description": "Width of a single prime tower line.",
                     "unit": "mm",
-                    "min_value": 0.0001,
-                    "min_value_warning": 0.2,
-                    "max_value_warning": 5,
+                    "min_value": "0.0001",
+                    "min_value_warning": "0.2",
+                    "max_value_warning": "5",
                     "default": 0.4,
                     "type": "float",
                     "visible": false,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
+                    "enabled": "prime_tower_enable"
                 }
             }
         }
@@ -73,9 +57,56 @@
     "categories": {
         "dual": {
             "label": "Dual Extrusion",
-            "visible": false,
+            "visible": true,
             "icon": "category_dual",
             "settings": {
+                "extruder_nr": {
+                    "label": "Extruder",
+                    "description": "The extruder train used for printing. This is used in multi-extrusion.",
+                    "type": "int",
+                    "default": 0,
+                    "min_value": "0",
+                    "max_value": "16",
+                    "always_visible": true,
+
+                    "children": {
+                        "adhesion_extruder_nr": {
+                            "label": "Platform Adhesion Extruder",
+                            "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
+                            "type": "int",
+                            "default": 0,
+                            "min_value": "0",
+                            "max_value": "16"
+                        },
+                        "support_extruder_nr": {
+                            "label": "Support Extruder",
+                            "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
+                            "type": "int",
+                            "default": 0,
+                            "min_value": "0",
+                            "max_value": "16",
+                            "children": {
+                                "support_extruder_nr_layer_0": {
+                                    "label": "First Layer Support Extruder",
+                                    "description": "The extruder train to use for printing the first layer of support. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16"
+                                },
+                                "support_roof_extruder_nr": {
+                                    "label": "Hammock Extruder",
+                                    "description": "The extruder train to use for printing the hammock. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16",
+                                    "enabled": "support_roof_enable"
+                                }
+                            }
+                        }
+                    }
+                },
                 "prime_tower_enable": {
                     "label": "Enable Prime Tower",
                     "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
@@ -89,13 +120,10 @@
                     "type": "float",
                     "unit": "mm",
                     "default": 15,
-                    "min_value": 0,
-                    "max_value_warning": 20,
+                    "min_value": "0",
+                    "max_value_warning": "20",
                     "inherit_function": "0 if prime_tower_enable else 15",
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
+                    "enabled": "prime_tower_enable"
                 },
                 "prime_tower_position_x": {
                     "label": "Prime Tower X Position",
@@ -104,10 +132,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default": 200,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
+                    "enabled": "prime_tower_enable"
                 },
                 "prime_tower_position_y": {
                     "label": "Prime Tower Y Position",
@@ -116,10 +141,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default": 200,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
+                    "enabled": "prime_tower_enable"
                 },
                 "prime_tower_flow": {
                     "label": "Prime Tower Flow",
@@ -128,23 +150,17 @@
                     "unit": "%",
                     "default": 100,
                     "type": "float",
-                    "min_value": 5,
-                    "min_value_warning": 50,
-                    "max_value_warning": 150,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
+                    "min_value": "5",
+                    "min_value_warning": "50",
+                    "max_value_warning": "150",
+                    "enabled": "prime_tower_enable"
                 },
                 "prime_tower_wipe_enabled": {
                     "label": "Wipe Nozzle on Prime tower",
                     "description": "After printing the prime tower with the one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "boolean",
                     "default": false,
-                    "active_if": {
-                        "setting": "prime_tower_enable",
-                        "value": true
-                    }
+                    "enabled": "prime_tower_enable"
                 },
                 "ooze_shield_enabled": {
                     "label": "Enable Ooze Shield",
@@ -157,41 +173,22 @@
                     "description": "The maximum angle a part in the ooze shield will have. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller angle leads to less failed ooze shields, but more material.",
                     "unit": "°",
                     "type": "float",
-                    "min_value": 0,
-                    "max_value": 90,
+                    "min_value": "0",
+                    "max_value": "90",
                     "default": 60,
                     "visible": false,
-                    "active_if": {
-                        "setting": "ooze_shield_enabled",
-                        "value": true
-                    }
+                    "enabled": "ooze_shield_enabled"
                 },
                 "ooze_shield_dist": {
                     "label": "Ooze Shields Distance",
                     "description": "Distance of the ooze shield from the print, in the X/Y directions.",
                     "unit": "mm",
                     "type": "float",
-                    "min_value": 0,
-                    "max_value_warning": 30,
+                    "min_value": "0",
+                    "max_value_warning": "30",
                     "default": 2,
                     "visible": false,
-                    "active_if": {
-                        "setting": "ooze_shield_enabled",
-                        "value": true
-                    }
-                }
-            }
-        },
-        "platform_adhesion": {
-            "settings": {
-                "adhesion_extruder_nr": {
-                    "label": "Platform Adhesion Extruder",
-                    "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
-                    "type": "int",
-                    "default": 0,
-                    "min_value": 0,
-                    "max_value": 16,
-                    "inherit_function": "extruder_nr"
+                    "enabled": "ooze_shield_enabled"
                 }
             }
         },
@@ -205,10 +202,7 @@
                     "default": 16,
                     "visible": false,
                     "inherit_function": "machine_heat_zone_length",
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    }
+                    "enabled": "retraction_enable"
                 },
                 "switch_extruder_retraction_speeds": {
                     "label": "Nozzle Switch Retraction Speed",
@@ -218,10 +212,7 @@
                     "default": 20,
                     "visible": false,
                     "inherit": false,
-                    "active_if": {
-                        "setting": "retraction_enable",
-                        "value": true
-                    },
+                    "enabled": "retraction_enable",
                     "children": {
                         "switch_extruder_retraction_speed": {
                             "label": "Nozzle Switch Retract Speed",
@@ -230,10 +221,7 @@
                             "type": "float",
                             "default": 20,
                             "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
+                            "enabled": "retraction_enable"
                         },
                         "switch_extruder_prime_speed": {
                             "label": "Nozzle Switch Prime Speed",
@@ -242,47 +230,7 @@
                             "type": "float",
                             "default": 20,
                             "visible": false,
-                            "active_if": {
-                                "setting": "retraction_enable",
-                                "value": true
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "support": {
-            "settings": {
-                "support_extruder_nr": {
-                    "label": "Support Extruder",
-                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
-                    "type": "int",
-                    "default": 0,
-                    "min_value": 0,
-                    "max_value": 16,
-                    "inherit_function": "extruder_nr",
-                    "children": {
-                        "support_extruder_nr_layer_0": {
-                            "label": "First Layer Support Extruder",
-                            "description": "The extruder train to use for printing the first layer of support. This is used in multi-extrusion.",
-                            "type": "int",
-                            "default": 0,
-                            "min_value": 0,
-                            "max_value": 16,
-                            "inherit": true
-                        },
-                        "support_roof_extruder_nr": {
-                            "label": "Hammock Extruder",
-                            "description": "The extruder train to use for printing the hammock. This is used in multi-extrusion.",
-                            "type": "int",
-                            "default": 0,
-                            "min_value": 0,
-                            "max_value": 16,
-                            "inherit": true,
-                            "active_if": {
-                                "setting": "support_roof_enable",
-                                "value": true
-                            }
+                            "enabled": "retraction_enable"
                         }
                     }
                 }
