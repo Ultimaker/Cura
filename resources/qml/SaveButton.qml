@@ -245,12 +245,22 @@ Rectangle {
             anchors.rightMargin: UM.Theme.sizes.default_margin.width
             width: UM.Theme.sizes.save_button_save_to_button.height
             height: UM.Theme.sizes.save_button_save_to_button.height
+            enabled: base.progress > 0.99 && base.activity == true
             //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
                 background: Rectangle {
                     id: deviceSelectionIcon
-                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    color: {
+                        if(!control.enabled){
+                            return UM.Theme.colors.button;
+                        }
+                        else if(control.enabled && control.hovered) {
+                            return UM.Theme.colors.load_save_button_hover
+                        } else {
+                            return UM.Theme.colors.load_save_button
+                        }
+                    }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width / 2;

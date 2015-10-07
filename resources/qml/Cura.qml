@@ -373,9 +373,7 @@ UM.MainWindow
             {
                 id: viewModeButton
                 property bool verticalTooltip: true
-                property bool activity: Printer.getPlatformActivity;
 
-                enabled: viewModeButton.activity
                 anchors
                 {
                     top: parent.top;
@@ -467,13 +465,26 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General") , "" , Qt.resolvedUrl("./GeneralPage.qml"));
+            insertPage(0, catalog.i18nc("@title:tab","General"), generalPage);
 
             //: View preferences page title
-            insertPage(1, catalog.i18nc("@title:tab","View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
+            insertPage(1, catalog.i18nc("@title:tab","View"), viewPage);
 
             //Force refresh
             setPage(0)
+        }
+
+        Item {
+            visible: false
+            GeneralPage
+            {
+                id: generalPage
+            }
+
+            ViewPage
+            {
+                id: viewPage
+            }
         }
     }
 

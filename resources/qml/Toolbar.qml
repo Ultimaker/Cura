@@ -14,7 +14,6 @@ Item {
     width: buttons.width;
     height: buttons.height
     property int activeY
-    property bool activity: Printer.getPlatformActivity;
 
     ColumnLayout {
         id: buttons;
@@ -34,7 +33,7 @@ Item {
 
                 checkable: true;
                 checked: model.active;
-                enabled: base.activity
+                enabled: UM.Selection.hasSelection;
 
                 style: UM.Theme.styles.tool_button;
 
@@ -43,10 +42,8 @@ Item {
                 MouseArea {
                     anchors.fill: parent;
                     onClicked: {
-                        if (base.activity){
-                            parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
-                            base.activeY = parent.y
-                        }
+                        parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
+                        base.activeY = parent.y
                     }
                 }
             }
