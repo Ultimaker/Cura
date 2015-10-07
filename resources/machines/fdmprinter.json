@@ -301,7 +301,7 @@
                                             "label": "Top Layers",
                                             "description": "This controls the amount of top layers.",
                                             "min_value": "0",
-                                            "default": 6,
+                                            "default": 8,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
