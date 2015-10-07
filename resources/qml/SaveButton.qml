@@ -54,8 +54,10 @@ Rectangle {
      Connections {
         target: openDialog
         onHasMesh: {
-            base.fileBaseName = name
-            base.createFileName()
+            if(base.fileBaseName == ''){
+                base.fileBaseName = name
+                base.createFileName()
+            }
         }
     }
 
