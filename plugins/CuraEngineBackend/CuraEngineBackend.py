@@ -86,7 +86,11 @@ class CuraEngineBackend(Backend):
     #   This is usefull for debugging and used to actually start the engine
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getPath(), "-vv"]
+        active_machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
+        if not active_machine:
+            return None
+
+        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", active_machine.getMachineDefinition().getPath(), "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
