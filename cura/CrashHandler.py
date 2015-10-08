@@ -8,11 +8,10 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTex
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-debug_mode = False
-
 def show(exception_type, value, tb):
-    if QCoreApplication.instance() and QCoreApplication.instance().getCommandLineOption("debug-mode", False):
-        debug_mode = True
+    debug_mode = False
+    if QCoreApplication.instance():
+        debug_mode = QCoreApplication.instance().getCommandLineOption("debug-mode", False)
 
     traceback.print_exception(exception_type, value, tb)
 
