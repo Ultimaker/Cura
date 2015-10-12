@@ -124,7 +124,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	#Returns true if we have the ability to pause the file printing.
 	def hasPause(self):
-		return False
+		return True
 
 	def isPaused(self):
 		return self._commState == machineCom.MachineCom.STATE_PAUSED
