@@ -50,15 +50,25 @@ Item
         }
         CheckBox
         {
+            id: heatedBedCheckBox1
             text: catalog.i18nc("@option:check","Heated printer bed (standard kit)")
             y: checkBox.height * 1
-            onClicked: UM.MachineManager.setMachineSettingValue("machine_heated_bed", true)
+            onClicked: {
+                UM.MachineManager.setMachineSettingValue("machine_heated_bed", true)
+                if (heatedBedCheckBox2.checked == true)
+                    heatedBedCheckBox2.checked = false
+            }
         }
         CheckBox
         {
+            id: heatedBedCheckBox2
             text: catalog.i18nc("@option:check","Heated printer bed (self built)")
             y: checkBox.height * 2
-            onClicked: UM.MachineManager.setMachineSettingValue("machine_heated_bed", true)
+            onClicked: {
+                UM.MachineManager.setMachineSettingValue("machine_heated_bed", true)
+                if (heatedBedCheckBox1.checked == true)
+                    heatedBedCheckBox1.checked = false
+            }
         }
         CheckBox
         {

@@ -128,14 +128,7 @@ Item
 
                 text: model.name
 
-                onClicked: {
-                    ListView.view.currentIndex = index;
-                    if(model.pages.length > 0) {
-                        base.wizard.nextAvailable = true;
-                    } else {
-                        base.wizard.nextAvailable = false;
-                    }
-                }
+                onClicked: ListView.view.currentIndex = index;
 
                 Label
                 {
