@@ -45,7 +45,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._connect_thread.daemon = True
 
         self._end_stop_thread = threading.Thread(target = self._pollEndStop)
-        self._end_stop_thread.deamon = True
+        self._end_stop_thread.daemon = True
 
         # Printer is connected
         self._is_connected = False
@@ -63,7 +63,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._listen_thread.daemon = True
 
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
-        self._update_firmware_thread.deamon = True
+        self._update_firmware_thread.daemon = True
         
         self._heatup_wait_start_time = time.time()
 
@@ -619,6 +619,6 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def _onFirmwareUpdateComplete(self):
         self._update_firmware_thread.join()
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
-        self._update_firmware_thread.deamon = True
+        self._update_firmware_thread.daemon = True
 
         self.connect()
