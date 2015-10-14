@@ -70,12 +70,6 @@ Item
                     heatedBedCheckBox1.checked = false
             }
         }
-        CheckBox
-        {
-            text: catalog.i18nc("@option:check","Dual extrusion (experimental)")
-            y: checkBox.height * 3
-            enabled: false;
-        }
     }
 
     Label

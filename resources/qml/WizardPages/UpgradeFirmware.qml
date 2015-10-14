@@ -14,6 +14,7 @@ Item
 
     SystemPalette{id: palette}
     UM.I18nCatalog { id: catalog; name:"cura"}
+    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.rowCount() != 0 ? UM.USBPrinterManager.connectedPrinterList.getItem(0).printer : null
     Label
     {
         id: pageTitle
@@ -61,6 +62,9 @@ Item
             anchors.top: parent.top
             anchors.left: parent.left
             text: catalog.i18nc("@action:button","Upgrade to Marlin Firmware");
+            onClicked: {
+                printer_connection.updateAllFirmware
+            }
         }
         Button {
             id: skipUpgradeButton
