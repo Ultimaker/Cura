@@ -61,6 +61,13 @@ Rectangle {
         }
     }
 
+    onActivityChanged: {
+        if (activity == false){
+            base.fileBaseName = ''
+            base.createFileName()
+        }
+    }
+
     Rectangle{
         id: printJobRow
         implicitWidth: base.width;
