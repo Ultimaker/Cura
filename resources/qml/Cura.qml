@@ -670,18 +670,22 @@ UM.MainWindow
     Component.onCompleted:
     {
         UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
-        visible = true;
-        addMachineTimer.start();
     }
 
     Timer
     {
-        id: addMachineTimer;
+        id: startupTimer;
         interval: 100;
         repeat: false;
+        running: true;
         onTriggered:
         {
-            if(UM.MachineManager.activeMachineInstance == "")
+            if(!base.visible)
+            {
+                base.visible = true;
+                restart();
+            }
+            else if(UM.MachineManager.activeMachineInstance == "")
             {
                 addMachineWizard.firstRun = true;
                 addMachineWizard.open();
