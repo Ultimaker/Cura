@@ -62,9 +62,7 @@ Item
             anchors.top: parent.top
             anchors.left: parent.left
             text: catalog.i18nc("@action:button","Upgrade to Marlin Firmware");
-            onClicked: {
-                printer_connection.updateAllFirmware
-            }
+            onClicked: UM.USBPrinterManager.updateAllFirmware()
         }
         Button {
             id: skipUpgradeButton
