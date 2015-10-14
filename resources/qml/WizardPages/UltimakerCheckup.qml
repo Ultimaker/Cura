@@ -137,7 +137,7 @@ Item
             anchors.left: connectionLabel.right
             anchors.top: parent.top
             wrapMode: Text.WordWrap
-            text: UM.USBPrinterManager.connectedPrinterList.rowCount() > 0 || alreadyTested ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
+            text: UM.USBPrinterManager.connectedPrinterList.rowCount() > 0 || base.addOriginalProgress.checkUp[0] ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
         }
         //////////////////////////////////////////////////////////
         Label
@@ -156,7 +156,7 @@ Item
             anchors.left: endstopXLabel.right
             anchors.top: connectionLabel.bottom
             wrapMode: Text.WordWrap
-            text: x_min_pressed || alreadyTested ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
+            text: x_min_pressed || base.addOriginalProgress.checkUp[1] ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
         }
         //////////////////////////////////////////////////////////////
         Label
@@ -175,7 +175,7 @@ Item
             anchors.left: endstopYLabel.right
             anchors.top: endstopXLabel.bottom
             wrapMode: Text.WordWrap
-            text: y_min_pressed || alreadyTested ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
+            text: y_min_pressed || base.addOriginalProgress.checkUp[2] ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
         }
         /////////////////////////////////////////////////////////////////////
         Label
@@ -194,7 +194,7 @@ Item
             anchors.left: endstopZLabel.right
             anchors.top: endstopYLabel.bottom
             wrapMode: Text.WordWrap
-            text: z_min_pressed || alreadyTested ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
+            text: z_min_pressed || base.addOriginalProgress.checkUp[3] ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
         }
         ////////////////////////////////////////////////////////////
         Label
