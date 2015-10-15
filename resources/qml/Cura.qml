@@ -636,6 +636,11 @@ UM.MainWindow
 
         onAccepted:
         {
+            //Because several implementations of the file dialog only update the folder
+            //when it is explicitly set.
+            var f = folder;
+            folder = f;
+
             UM.MeshFileHandler.readLocalFile(fileUrl)
             openDialog.sendMeshName(fileUrl.toString())
         }
