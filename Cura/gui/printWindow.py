@@ -801,7 +801,13 @@ class printWindowAdvanced(wx.Frame):
 		self._moveXYZE("Z", step, 200)
 
 	def _moveE(self, step):
-		self._moveXYZE("E", step, 120)
+		feedrate = 120
+		from Cura.util import profile
+		toolhead_name = profile.getMachineSetting("toolhead")
+		toolhead_name = toolhead_name.lower()
+		if "flexy" in toolhead_name:
+			feedrate=30
+		self._moveXYZE("E", step, feedrate)
 
 	def _homeXYZ(self, direction):
 		if not self._printerConnection.isPaused() and not self._printerConnection.isPrinting():
