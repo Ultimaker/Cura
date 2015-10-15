@@ -9,6 +9,7 @@ import os
 import ctypes
 import subprocess
 from Cura.util import resources
+from Cura.util import profile
 
 #TODO: This does not belong here!
 if sys.platform.startswith('win'):
@@ -802,11 +803,11 @@ class printWindowAdvanced(wx.Frame):
 
 	def _moveE(self, step):
 		feedrate = 120
-		from Cura.util import profile
-		toolhead_name = profile.getMachineSetting("toolhead")
-		toolhead_name = toolhead_name.lower()
-		if "flexy" in toolhead_name:
-			feedrate=30
+		if "lulzbot_" in profile.getMachineSetting("machine_type"):
+			toolhead_name = profile.getMachineSetting("toolhead")
+			toolhead_name = toolhead_name.lower()
+			if "flexy" in toolhead_name:
+				feedrate = 30
 		self._moveXYZE("E", step, feedrate)
 
 	def _homeXYZ(self, direction):
