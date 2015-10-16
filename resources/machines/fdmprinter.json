@@ -1379,7 +1379,7 @@
                     "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 0.22,
+                    "default": 0.35,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_layers": {
@@ -1435,7 +1435,7 @@
                     "description": "The distance between the raft lines for the interface raft layer. The spacing of the interface should be quite wide, while being dense enough to support the surface raft layers.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 2,
+                    "default": 1.0,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_base_thickness": {
@@ -1459,7 +1459,7 @@
                     "description": "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 5,
+                    "default": 3.0,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_speed": {
