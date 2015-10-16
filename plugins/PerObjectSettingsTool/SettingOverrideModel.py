@@ -15,6 +15,9 @@ class SettingOverrideModel(ListModel):
     TypeRole = Qt.UserRole + 5
     UnitRole = Qt.UserRole + 6
     ValidRole = Qt.UserRole + 7
+    OptionsRole = Qt.UserRole + 8
+    WarningDescriptionRole = Qt.UserRole + 9
+    ErrorDescriptionRole = Qt.UserRole + 10
 
     def __init__(self, node, parent = None):
         super().__init__(parent)
@@ -32,6 +35,9 @@ class SettingOverrideModel(ListModel):
         self.addRoleName(self.TypeRole, "type")
         self.addRoleName(self.UnitRole, "unit")
         self.addRoleName(self.ValidRole, "valid")
+        self.addRoleName(self.OptionsRole, "options")
+        self.addRoleName(self.WarningDescriptionRole, "warning_description")
+        self.addRoleName(self.ErrorDescriptionRole, "error_description")
 
     @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
@@ -53,24 +59,44 @@ class SettingOverrideModel(ListModel):
         self._decorator.settingValueChanged.connect(self._onSettingValueChanged)
         self._onSettingsChanged()
 
+    def _createOptionsModel(self, options):
+        if not options:
+            return None
+
+        model = ListModel()
+        model.addRoleName(Qt.UserRole + 1, "value")
+        model.addRoleName(Qt.UserRole + 2, "name")
+        for value, name in options.items():
+            model.appendItem({"value": str(value), "name": str(name)})
+        return model
+
     def _onSettingsChanged(self):
         self.clear()
 
+        items = []
         for key, setting in self._decorator.getAllSettings().items():
             value = self._decorator.getSettingValue(key)
-            self.appendItem({
+            items.append({
                 "key": key,
                 "label": setting.getLabel(),
                 "description": setting.getDescription(),
                 "value": str(value),
                 "type": setting.getType(),
                 "unit": setting.getUnit(),
-                "valid": setting.validate(value)
+                "valid": setting.validate(value),
+                "options": self._createOptionsModel(setting.getOptions()),
+                "warning_description": setting.getWarningDescription(),
+                "error_description": setting.getErrorDescription()
             })
+
+        items.sort(key = lambda i: i["key"])
+
+        for item in items:
+            self.appendItem(item)
 
     def _onSettingValueChanged(self, setting):
         index = self.find("key", setting.getKey())
+        value = self._decorator.getSettingValue(setting.getKey())
         if index != -1 and self._ignore_setting_change != setting.getKey():
-            value = self._decorator.getSettingValue(setting.getKey())
             self.setProperty(index, "value", str(value))
-            self.setProperty(index, "valid", setting.validate(value))
+        self.setProperty(index, "valid", setting.validate(value))

@@ -90,6 +90,7 @@ Item {
                     valid: model.valid;
                     perObjectSetting: true
                     dismissable: true
+                    options: model.options
 
                     style: UM.Theme.styles.setting_item;
 
@@ -120,7 +121,9 @@ Item {
 
             Button
             {
+                id: customise_settings_button;
                 anchors.right: profileSelection.right;
+                visible: parseInt(UM.Preferences.getValue("cura/active_mode")) == 1
 
                 text: catalog.i18nc("@action:button", "Customize Settings");
 
@@ -140,6 +143,16 @@ Item {
                 }
 
                 onClicked: settingPickDialog.visible = true;
+
+                Connections
+                {
+                    target: UM.Preferences;
+
+                    onPreferenceChanged:
+                    {
+                        customise_settings_button.visible = parseInt(UM.Preferences.getValue("cura/active_mode"))
+                    }
+                }
             }
         }
 
