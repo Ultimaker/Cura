@@ -137,7 +137,6 @@ Item
         id: deleteObjectAction;
         text: catalog.i18nc("@action:inmenu","Delete Object");
         iconName: "edit-delete";
-        shortcut: StandardKey.Backspace;
     }
 
     Action
@@ -216,5 +215,6 @@ Item
         id: showEngineLogAction;
         text: catalog.i18nc("@action:inmenu","Show Engine &Log...");
         iconName: "view-list-text";
+        shortcut: StandardKey.WhatsThis;
     }
 }

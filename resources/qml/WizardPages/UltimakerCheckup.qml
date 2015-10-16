@@ -14,24 +14,51 @@ Item
     property int leftRow: wizardPage.width*0.40
     property int rightRow: wizardPage.width*0.60
     anchors.fill: parent;
+    property bool alreadyTested: base.addOriginalProgress.checkUp[base.addOriginalProgress.checkUp.length-1]
     property bool x_min_pressed: false
     property bool y_min_pressed: false
     property bool z_min_pressed: false
     property bool heater_works: false
     property int extruder_target_temp: 0
     property int bed_target_temp: 0
-    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.rowCount() != 0 ? UM.USBPrinterManager.connectedPrinterList.getItem(0).printer: null
+    property variant printer_connection: {
+        if (UM.USBPrinterManager.connectedPrinterList.rowCount() != 0){
+            base.addOriginalProgress.checkUp[0] = true
+            checkTotalCheckUp()
+            return UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+        }
+        else {
+            return null
+        }
+    }
+    //property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
     UM.I18nCatalog { id: catalog; name:"cura"}
+
+    function checkTotalCheckUp(){
+        var allDone = true
+        for (var i = 0; i < (base.addOriginalProgress.checkUp.length - 1); i++){
+            if (base.addOriginalProgress.checkUp[i] == false){
+                allDone = false
+            }
+        }
+        if (allDone == true){
+            base.addOriginalProgress.checkUp[base.addOriginalProgress.checkUp.length] = true
+            skipCheckButton.enabled = false
+            resultText.visible = true
+        }
+    }
 
     Component.onCompleted:
     {
-        if (printer_connection != null)
+        if (printer_connection != null){
             printer_connection.startPollEndstop()
+        }
     }
     Component.onDestruction:
     {
-        if (printer_connection != null)
+        if (printer_connection != null){
             printer_connection.stopPollEndstop()
+        }
     }
     Label
     {
@@ -64,11 +91,12 @@ Item
             id: startCheckButton
             anchors.top: parent.top
             anchors.left: parent.left
+            enabled: !alreadyTested
             text: catalog.i18nc("@action:button","Start Printer Check");
-            enabled: manager.progress >= 100;
             onClicked: {
                 checkupContent.visible = true
                 startCheckButton.enabled = false
+                printer_connection.homeHead()
             }
         }
 
@@ -79,8 +107,8 @@ Item
             anchors.topMargin: parent.width < wizardPage.width ? 0 : UM.Theme.sizes.default_margin.height/2
             anchors.left: parent.width < wizardPage.width ? startCheckButton.right : parent.left
             anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.sizes.default_margin.width : 0
+            enabled: !alreadyTested
             text: catalog.i18nc("@action:button","Skip Printer Check");
-            enabled: manager.progress >= 100;
             onClicked: {
                 base.currentPage += 1
             }
@@ -91,7 +119,7 @@ Item
         id: checkupContent
         anchors.top: startStopButtons.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
-        visible: false
+        visible: alreadyTested
         //////////////////////////////////////////////////////////
         Label
         {
@@ -109,7 +137,7 @@ Item
             anchors.left: connectionLabel.right
             anchors.top: parent.top
             wrapMode: Text.WordWrap
-            text: UM.USBPrinterManager.connectedPrinterList.count ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
+            text: UM.USBPrinterManager.connectedPrinterList.rowCount() > 0 || base.addOriginalProgress.checkUp[0] ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
         }
         //////////////////////////////////////////////////////////
         Label
@@ -128,7 +156,7 @@ Item
             anchors.left: endstopXLabel.right
             anchors.top: connectionLabel.bottom
             wrapMode: Text.WordWrap
-            text: x_min_pressed ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
+            text: x_min_pressed || base.addOriginalProgress.checkUp[1] ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
         }
         //////////////////////////////////////////////////////////////
         Label
@@ -147,7 +175,7 @@ Item
             anchors.left: endstopYLabel.right
             anchors.top: endstopXLabel.bottom
             wrapMode: Text.WordWrap
-            text: y_min_pressed ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
+            text: y_min_pressed || base.addOriginalProgress.checkUp[2] ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
         }
         /////////////////////////////////////////////////////////////////////
         Label
@@ -166,7 +194,7 @@ Item
             anchors.left: endstopZLabel.right
             anchors.top: endstopYLabel.bottom
             wrapMode: Text.WordWrap
-            text: z_min_pressed ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
+            text: z_min_pressed || base.addOriginalProgress.checkUp[3] ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
         }
         ////////////////////////////////////////////////////////////
         Label
@@ -205,9 +233,14 @@ Item
                 {
                     if(printer_connection != null)
                     {
-                        heater_status_label.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.heatupNozzle(190)
-                        wizardPage.extruder_target_temp = 190
+                        if (alreadyTested){
+                            nozzleTempStatus.text = catalog.i18nc("@info:status","Works")
+                        }
+                        else {
+                            nozzleTempStatus.text = catalog.i18nc("@info:progress","Checking")
+                            printer_connection.heatupNozzle(190)
+                            wizardPage.extruder_target_temp = 190
+                        }
                     }
                 }
             }
@@ -261,9 +294,14 @@ Item
                 {
                     if(printer_connection != null)
                     {
-                        bedTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.heatupBed(60)
-                        wizardPage.bed_target_temp = 60
+                        if (alreadyTested){
+                            bedTempStatus.text = catalog.i18nc("@info:status","Works")
+                        }
+                        else {
+                            bedTempStatus.text = catalog.i18nc("@info:progress","Checking")
+                            printer_connection.heatupBed(60)
+                            wizardPage.bed_target_temp = 60
+                        }
                     }
                 }
             }
@@ -279,6 +317,17 @@ Item
             text: printer_connection != null ? printer_connection.bedTemperature + "°C": "0°C"
             font.bold: true
         }
+        Label
+        {
+            id: resultText
+            visible: base.addOriginalProgress.checkUp[base.addOriginalProgress.checkUp.length-1]
+            anchors.top: bedTemp.bottom
+            anchors.topMargin: UM.Theme.sizes.default_margin.height
+            anchors.left: parent.left
+            width: parent.width
+            wrapMode: Text.WordWrap
+            text: catalog.i18nc("@label", "Everything is in order! You're done with your CheckUp.")
+        }
     }
 
 
@@ -289,24 +338,33 @@ Item
         {
             if(key == "x_min")
             {
+                base.addOriginalProgress.checkUp[1] = true
                 x_min_pressed = true
+                checkTotalCheckUp()
             }
             if(key == "y_min")
             {
+                base.addOriginalProgress.checkUp[2] = true
                 y_min_pressed = true
+                checkTotalCheckUp()
             }
             if(key == "z_min")
             {
+                base.addOriginalProgress.checkUp[3] = true
                 z_min_pressed = true
+                checkTotalCheckUp()
             }
         }
+
         onExtruderTemperatureChanged:
         {
             if(printer_connection.extruderTemperature > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperature < wizardPage.extruder_target_temp + 10)
             {
                 if(printer_connection != null)
                 {
-                    heater_status_label.text = catalog.i18nc("@info:status","Works")
+                    nozzleTempStatus.text = catalog.i18nc("@info:status","Works")
+                    base.addOriginalProgress.checkUp[4] = true
+                    checkTotalCheckUp()
                     printer_connection.heatupNozzle(0)
                 }
             }
@@ -315,7 +373,9 @@ Item
         {
             if(printer_connection.bedTemperature > wizardPage.bed_target_temp - 5 && printer_connection.bedTemperature < wizardPage.bed_target_temp + 5)
             {
-                bed_status_label.text = catalog.i18nc("@info:status","Works")
+                bedTempStatus.text = catalog.i18nc("@info:status","Works")
+                base.addOriginalProgress.checkUp[5] = true
+                checkTotalCheckUp()
                 printer_connection.heatupBed(0)
             }
         }

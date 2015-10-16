@@ -22,6 +22,19 @@ UM.MainWindow
         id: backgroundItem;
         anchors.fill: parent;
         UM.I18nCatalog{id: catalog; name:"cura"}
+
+        //DeleteSelection on the keypress backspace event
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Backspace)
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.deleteObject(objectContextMenu.objectId);
+                }
+            }
+        }
+
+
         UM.ApplicationMenu
         {
             id: menu
@@ -636,6 +649,11 @@ UM.MainWindow
 
         onAccepted:
         {
+            //Because several implementations of the file dialog only update the folder
+            //when it is explicitly set.
+            var f = folder;
+            folder = f;
+
             UM.MeshFileHandler.readLocalFile(fileUrl)
             openDialog.sendMeshName(fileUrl.toString())
         }
@@ -670,18 +688,22 @@ UM.MainWindow
     Component.onCompleted:
     {
         UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
-        visible = true;
-        addMachineTimer.start();
     }
 
     Timer
     {
-        id: addMachineTimer;
+        id: startupTimer;
         interval: 100;
         repeat: false;
+        running: true;
         onTriggered:
         {
-            if(UM.MachineManager.activeMachineInstance == "")
+            if(!base.visible)
+            {
+                base.visible = true;
+                restart();
+            }
+            else if(UM.MachineManager.activeMachineInstance == "")
             {
                 addMachineWizard.firstRun = true;
                 addMachineWizard.open();

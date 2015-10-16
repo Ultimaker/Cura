@@ -19,79 +19,51 @@ UM.PreferencesPage
     {
         UM.Preferences.resetPreference("view/show_overhang");
         UM.Preferences.resetPreference("view/center_on_select");
-        overhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
-        centerCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
     }
 
-    GridLayout
+    Column
     {
-        columns: 2;
         UM.I18nCatalog { id: catalog; name:"cura"}
-        CheckBox
+
+        UM.TooltipArea
         {
-            id: overhangCheckbox
-            checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
-            onCheckedChanged: UM.Preferences.setValue("view/show_overhang",  checked ? "True" : "False")
-        }
-        Button
-        {
-            id: viewText //is a button so the user doesn't have to click inconveniently precise to enable or disable the checkbox
+            width: childrenRect.width;
+            height: childrenRect.height;
 
-            //: Display Overhang preference checkbox
-            text: catalog.i18nc("@option:check","Display Overhang");
-            onClicked: overhangCheckbox.checked = !overhangCheckbox.checked
+            text: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will nog print properly.")
 
-            //: Display Overhang preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
-
-            style: ButtonStyle
+            CheckBox
             {
-                background: Rectangle
-                {
-                    border.width: 0
-                    color: "transparent"
-                }
-                label: Text
-                {
-                    renderType: Text.NativeRendering
-                    horizontalAlignment: Text.AlignLeft
-                    text: control.text
-                }
+                id: overhangCheckbox
+
+                checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
+                onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
+
+                text: catalog.i18nc("@option:check","Display Overhang");
             }
         }
 
-        CheckBox
-        {
-            id: centerCheckbox
-            checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
-            onCheckedChanged: UM.Preferences.setValue("view/center_on_select",  checked ? "True" : "False")
-        }
-        Button
-        {
-            id: centerText //is a button so the user doesn't have to click inconveniently precise to enable or disable the checkbox
+        UM.TooltipArea {
+            width: childrenRect.width;
+            height: childrenRect.height;
+            text: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
 
-            //: Display Center camera preference checkbox
-            text: catalog.i18nc("@action:button","Center camera when item is selected");
-            onClicked: centerCheckbox.checked = !centerCheckbox.checked
-
-            //: Display Center camera preference tooltip
-            tooltip: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
-
-            style: ButtonStyle
+            CheckBox
             {
-                background: Rectangle
-                {
-                    border.width: 0
-                    color: "transparent"
-                }
-                label: Text
-                {
-                    renderType: Text.NativeRendering
-                    horizontalAlignment: Text.AlignLeft
-                    text: control.text
-                }
+                id: centerCheckbox
+                text: catalog.i18nc("@action:button","Center camera when item is selected");
+                checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
+                onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
             }
         }
-        Item { Layout.fillHeight: true; Layout.columnSpan: 2 }
+
+        Connections {
+            target: UM.Preferences
+            onPreferenceChanged:
+            {
+                overhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
+                centerCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
+            }
+        }
     }
 }

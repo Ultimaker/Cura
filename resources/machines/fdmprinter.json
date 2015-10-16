@@ -256,7 +256,6 @@
                             "min_value_warning": "0.2",
                             "max_value_warning": "5",
                             "type": "float",
-                            "inherit_function": "parent_value",
                             "visible": false,
                             "children": {
                                 "wall_line_count": {
@@ -275,7 +274,8 @@
                             "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
                             "type": "boolean",
                             "default": false,
-                            "visible": false
+                            "visible": false,
+                            "inherit": false
                         },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
@@ -453,7 +453,7 @@
                             "type": "float",
                             "default": 2,
                             "visible": false,
-                            "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
+                            "inherit_function": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density"
                         }
                     }
                 },
@@ -469,7 +469,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default": "grid",
-                    "inherit_function": "'lines' if parent_value > 25 else 'grid'"
+                    "inherit_function": "'lines' if infill_sparse_density > 25 else 'grid'"
                 },
                 "infill_overlap": {
                     "label": "Infill Overlap",
@@ -504,7 +504,7 @@
                             "type": "int",
                             "default": 1,
                             "visible": false,
-                            "inherit_function": "math.floor((parent_value + 0.001) / layer_height)"
+                            "inherit_function": "math.floor((   parent_value + 0.001) / layer_height)"
                         }
                     }
                 },

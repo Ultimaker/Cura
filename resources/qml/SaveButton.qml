@@ -54,7 +54,16 @@ Rectangle {
      Connections {
         target: openDialog
         onHasMesh: {
-            base.fileBaseName = name
+            if(base.fileBaseName == ''){
+                base.fileBaseName = name
+                base.createFileName()
+            }
+        }
+    }
+
+    onActivityChanged: {
+        if (activity == false){
+            base.fileBaseName = ''
             base.createFileName()
         }
     }
@@ -268,7 +277,6 @@ Rectangle {
                     height: parent.height
 
                     UM.RecolorImage {
-                        id: lengthIcon
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: UM.Theme.sizes.standard_arrow.width
