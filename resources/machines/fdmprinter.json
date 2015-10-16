@@ -275,7 +275,8 @@
                             "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
                             "type": "boolean",
                             "default": false,
-                            "visible": false
+                            "visible": false,
+                            "inherit": false
                         },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
@@ -455,32 +456,32 @@
                             "visible": false,
                             "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
                         }
-                    },
-                    "infill_pattern": {
-                        "label": "Infill Pattern",
-                        "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
-                        "type": "enum",
-                        "visible": false,
-                        "options": {
-                            "grid": "Grid",
-                            "lines": "Lines",
-                            "concentric": "Concentric",
-                            "zigzag": "Zig Zag"
-                        },
-                        "default": "grid",
-                        "inherit_function": "'lines' if parent_value > 25 else 'grid'"
-                    },
-                    "infill_overlap": {
-                        "label": "Infill Overlap",
-                        "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
-                        "unit": "%",
-                        "type": "float",
-                        "default": 10,
-                        "min_value": "0",
-                        "max_value": "100",
-                        "inherit_function": "10 if infill_sparse_density < 95 else 0",
-                        "visible": false
                     }
+                },
+                "infill_pattern": {
+                    "label": "Infill Pattern",
+                    "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
+                    "type": "enum",
+                    "visible": false,
+                    "options": {
+                        "grid": "Grid",
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default": "grid",
+                    "inherit_function": "'lines' if infill_sparse_density > 25 else 'grid'"
+                },
+                "infill_overlap": {
+                    "label": "Infill Overlap",
+                    "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 10,
+                    "min_value": "0",
+                    "max_value": "100",
+                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
+                    "visible": false
                 },
                 "infill_wipe_dist": {
                     "label": "Infill Wipe Distance",
