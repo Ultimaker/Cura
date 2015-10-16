@@ -22,6 +22,19 @@ UM.MainWindow
         id: backgroundItem;
         anchors.fill: parent;
         UM.I18nCatalog{id: catalog; name:"cura"}
+
+        //DeleteSelection on the keypress backspace event
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Backspace)
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.deleteObject(objectContextMenu.objectId);
+                }
+            }
+        }
+
+
         UM.ApplicationMenu
         {
             id: menu

@@ -137,7 +137,6 @@ Item
         id: deleteObjectAction;
         text: catalog.i18nc("@action:inmenu","Delete Object");
         iconName: "edit-delete";
-        shortcut: StandardKey.Backspace;
     }
 
     Action
