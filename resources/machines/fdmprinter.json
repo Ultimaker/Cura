@@ -1383,31 +1383,31 @@
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_layers": {
-                    "label": "Raft Surface Layers",
-                    "description": "The number of surface layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers usually works fine.",
+                    "label": "Raft Top Layers",
+                    "description": "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers result in a smoother top surface than 1.",
                     "type": "int",
                     "default": 2,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_thickness": {
-                    "label": "Raft Surface Thickness",
-                    "description": "Layer thickness of the surface raft layers.",
+                    "label": "Raft Top Layer Thickness",
+                    "description": "Layer thickness of the top raft layers.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_line_width": {
-                    "label": "Raft Surface Line Width",
-                    "description": "Width of the lines in the surface raft layers. These can be thin lines so that the top of the raft becomes smooth.",
+                    "label": "Raft Top Line Width",
+                    "description": "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_line_spacing": {
-                    "label": "Raft Surface Spacing",
-                    "description": "The distance between the raft lines for the surface raft layers. The spacing of the interface should be equal to the line width, so that the surface is solid.",
+                    "label": "Raft Top Spacing",
+                    "description": "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
@@ -1415,24 +1415,24 @@
                     "inherit_function": "raft_surface_line_width"
                 },
                 "raft_interface_thickness": {
-                    "label": "Raft Interface Thickness",
-                    "description": "Layer thickness of the interface raft layer.",
+                    "label": "Raft Middle Thickness",
+                    "description": "Layer thickness of the middle raft layer.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.27,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_interface_line_width": {
-                    "label": "Raft Interface Line Width",
-                    "description": "Width of the lines in the interface raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
+                    "label": "Raft Middle Line Width",
+                    "description": "Width of the lines in the middle raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_interface_line_spacing": {
-                    "label": "Raft Interface Spacing",
-                    "description": "The distance between the raft lines for the interface raft layer. The spacing of the interface should be quite wide, while being dense enough to support the surface raft layers.",
+                    "label": "Raft Middle Spacing",
+                    "description": "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1.0,
