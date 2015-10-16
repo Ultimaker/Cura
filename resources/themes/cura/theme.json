@@ -32,10 +32,11 @@
             "capitalize": true,
             "family": "Roboto"
         },
-        "timeslider_time": {
+        "default_header": {
             "size": 1.0,
             "bold": true,
-            "family": "Roboto"
+            "family": "Roboto",
+            "letterSpacing": 2.0
         },
         "button_tooltip": {
             "size": 0.75,

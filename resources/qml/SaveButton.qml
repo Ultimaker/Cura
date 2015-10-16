@@ -61,6 +61,13 @@ Rectangle {
         }
     }
 
+    onActivityChanged: {
+        if (activity == false){
+            base.fileBaseName = ''
+            base.createFileName()
+        }
+    }
+
     Rectangle{
         id: printJobRow
         implicitWidth: base.width;
@@ -270,7 +277,6 @@ Rectangle {
                     height: parent.height
 
                     UM.RecolorImage {
-                        id: lengthIcon
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: UM.Theme.sizes.standard_arrow.width

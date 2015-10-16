@@ -84,6 +84,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
         self._firmware_view.show()
 
+    @pyqtSlot()
     def updateAllFirmware(self):
         self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:

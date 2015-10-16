@@ -275,7 +275,8 @@
                             "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
                             "type": "boolean",
                             "default": false,
-                            "visible": false
+                            "visible": false,
+                            "inherit": false
                         },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
@@ -469,7 +470,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default": "grid",
-                    "inherit_function": "'lines' if parent_value > 25 else 'grid'"
+                    "inherit_function": "'lines' if infill_sparse_density > 25 else 'grid'"
                 },
                 "infill_overlap": {
                     "label": "Infill Overlap",

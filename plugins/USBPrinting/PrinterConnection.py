@@ -46,6 +46,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         self._end_stop_thread = threading.Thread(target = self._pollEndStop)
         self._end_stop_thread.deamon = True
+        self._poll_endstop = -1
 
         # Printer is connected
         self._is_connected = False
@@ -237,8 +238,9 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     @pyqtSlot()
     def startPollEndstop(self):
-        self._poll_endstop = True
-        self._end_stop_thread.start()
+        if self._poll_endstop == -1:
+            self._poll_endstop = True
+            self._end_stop_thread.start()
 
     @pyqtSlot()
     def stopPollEndstop(self):
@@ -346,7 +348,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._serial = None
 
     def isConnected(self):
-        return self._is_connected 
+        return self._is_connected
 
     @pyqtSlot(int)
     def heatupNozzle(self, temperature):
