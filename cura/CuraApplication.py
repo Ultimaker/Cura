@@ -471,17 +471,20 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.setParent(self.getController().getScene().getRoot())
-        
+        center = Selection.getSelectionCenter()
+        group_node.setPosition(center)
+        group_node.setCenterPosition(center)
+
         for node in Selection.getAllSelectedObjects():
+            world = node.getWorldPosition()
             node.setParent(group_node)
-        group_node.setCenterPosition(group_node.getBoundingBox().center)
-        #group_node.translate(Vector(0,group_node.getBoundingBox().center.y,0))
-        group_node.translate(group_node.getBoundingBox().center)
+            node.setPosition(world - center)
+
         for node in group_node.getChildren():
             Selection.remove(node)
-        
+
         Selection.add(group_node)
-    
+
     @pyqtSlot()
     def ungroupSelected(self):
         ungrouped_nodes = []
@@ -492,12 +495,11 @@ class CuraApplication(QtApplication):
                 for child in node.getChildren():
                     if type(child) is SceneNode:
                         children_to_move.append(child)
-                       
+
                 for child in children_to_move:
+                    position = child.getWorldPosition()
                     child.setParent(node.getParent())
-                    print(node.getPosition())
-                    child.translate(node.getPosition())
-                    child.setPosition(child.getPosition().scale(node.getScale()))
+                    child.setPosition(position - node.getParent().getWorldPosition())
                     child.scale(node.getScale())
                     child.rotate(node.getOrientation())
 
