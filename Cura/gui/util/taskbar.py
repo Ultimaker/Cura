@@ -5,11 +5,11 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 try:
 	import comtypes.client as cc
-	cc.GetModule('taskbarlib.tlb')
+	foo = cc.GetModule('taskbarlib.tlb')
 	import comtypes.gen.TaskbarLib as tbl
 
 	ITaskbarList3 = cc.CreateObject("{56FDF344-FD6D-11d0-958A-006097C9A090}", interface=tbl.ITaskbarList3)
-	ITaskbarList3.HrInit()
+	foo = ITaskbarList3.HrInit()
 
 	#Stops displaying progress and returns the button to its normal state. Call this method with this flag to dismiss the progress bar when the operation is complete or canceled.
 	TBPF_NOPROGRESS = 0x00000000

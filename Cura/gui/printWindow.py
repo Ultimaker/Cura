@@ -37,8 +37,8 @@ elif sys.platform.startswith('darwin'):
 	frameworkIdentifier="com.apple.iokit",
 	frameworkPath=objc.pathForFramework("/System/Library/Frameworks/IOKit.framework"),
 	globals=globals())
-	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
-	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionRelease", b"iI")])
+	foo = objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
+	foo = objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionRelease", b"iI")])
 	def preventComputerFromSleeping(frame, prevent):
 		if prevent:
 			success, preventComputerFromSleeping.assertionID = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn, "Cura is printing", None)
