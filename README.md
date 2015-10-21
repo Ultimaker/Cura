@@ -21,24 +21,24 @@ Recommended for alpha testers and software developers contributing patches or pu
 ## Get the source code
   git clone https://code.alephobjects.com/diffusion/CURA/cura.git
 
-#Install dependencies for your platform
-Run the ``` sudo apt-get install ... ``` or ``` sudo yum install ...``` line from the below platform dependant sections.
+##Install dependencies for your platform
+Run the `sudo apt-get install ...` or `sudo yum install ...` line from the below platform dependant sections.
 
-#Build CuraEngine
+##Build CuraEngine
 Easily done by running package.sh once
 ```
 cd cura
 package.sh <platform name here>
 ```
 
-#Link CuraEngine
+##Link CuraEngine
 For *nix OSes you can create a symbolic link. This can be placed in the directory above where you cloned cura.
 ```
 cd ..
 ln -s ./cura/CuraEngine/build/CuraEngine CuraEngine
 ```
 
-#Run
+##Run
 ``` ./dev-cura ```
 
 == Packaging ==
@@ -49,19 +49,12 @@ Cura development comes with a script "package.sh", this script has been designed
 
 == Fedora ==
 
-Fedora builds Cura by using ``` mock ```, thereby enabling it to build RPMs for every distribution that ```mock``` has a configuration file for. In pratice this means that Fedora can build RPMs for several versions of Fedora, CentOS and RHEL.
-
-Cura can be built under a regular user account, there is no need to have root privileges. In fact, having root privileges is very much discouraged.
-
-However, the user account under which the build is performed needs to be a member of the 'mock' group. This is accomplished as follows:
-
+Fedora builds Cura by using `mock`, thereby enabling it to build RPMs for every distribution that `mock` has a configuration file for. In pratice this means that Fedora can build RPMs for several versions of Fedora, CentOS and RHEL. Cura can be built under a regular user account, there is no need to have root privileges. In fact, having root privileges is very much discouraged. However, the user account under which the build is performed needs to be a member of the 'mock' group. This is accomplished as follows:
 ```bash
 sudo usermod -a -G mock "$(whoami)"
 ```
 
-To install the software that is required to build Cura, run the following
-commands:
-
+To install the software that is required to build Cura, run the following commands:
 ```bash
 sudo yum install -y git rpmdevtools rpm-build mock arduino
 
@@ -116,9 +109,7 @@ sudo dpkg -i ./scripts/linux/cura*.deb
 
 == FreeBSD ==
 
-On FreeBSD simply use the Port Tree (`cd /usr/ports/cad/cura`) to create (`make package`) and install (`make install`) the package as root. Port will check for all necessary dependencies. You can also use the provided binary package with `pkg install Cura`.
-
-If you want to create an archive for local use the `package.sh freebsd` script (as an ordinary user) will give you a tarball with the program.
+On FreeBSD simply use the Port Tree (`cd /usr/ports/cad/cura`) to create (`make package`) and install (`make install`) the package as root. Port will check for all necessary dependencies. You can also use the provided binary package with `pkg install Cura`. If you want to create an archive for local use the `package.sh freebsd` script (as an ordinary user) will give you a tarball with the program.
 
 == Mac OS X ==
 
@@ -127,7 +118,7 @@ The following section describes how to prepare working environment for developin
 We assume you already have Apple hardware with [64bit processor](http://support.apple.com/kb/HT3696) and you are familiar with tools like [virtualenv](http://pypi.python.org/pypi/virtualenv), [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/) and [pip](http://www.pip-installer.org/en/latest/). Also ensure you have modern compiler installed.
 
 
-###Install Python
+##Install Python
 You'll need **non-system**, **framework-based**, **universal** with **deployment target set to 10.6** build of Python 2.7
 
 **non-system**: Output of
