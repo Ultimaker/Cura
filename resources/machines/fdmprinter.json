@@ -1338,7 +1338,7 @@
                 },
                 "skirt_line_count": {
                     "label": "Skirt Line Count",
-                    "description": "The skirt is a line drawn around the first layer of the. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
+                    "description": "The skirt is a line drawn around the first layer of the print. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
                     "type": "int",
                     "default": 1,
                     "enabled": "adhesion_type == \"skirt\""
