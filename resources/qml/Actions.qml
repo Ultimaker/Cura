@@ -181,6 +181,7 @@ Item
         id: deleteAllAction;
         text: catalog.i18nc("@action:inmenu","&Clear Build Platform");
         iconName: "edit-delete";
+        shortcut: "Ctrl+D";
     }
 
     Action
