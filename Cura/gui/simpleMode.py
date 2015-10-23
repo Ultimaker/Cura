@@ -78,7 +78,10 @@ class simpleModePanel(wx.Panel):
 					selectedMaterialType = material_type
 
 			if selectedMaterialType is None:
-				if selectedMaterial is None or len(selectedMaterial.types) == 0:
+				if profile.getProfileSetting('simpleModeMaterialType') == _("Others") or \
+				   profile.getProfileSetting('simpleModeMaterialType') == _("All"):
+					selectedMaterialType = profile.getProfileSetting('simpleModeMaterialType')
+				elif selectedMaterial is None or len(selectedMaterial.types) == 0:
 					selectedMaterialType = _("Others")
 				else:
 					selectedMaterialType = selectedMaterial.types[0]
@@ -352,6 +355,9 @@ class simpleModePanel(wx.Panel):
 			self._update(e)
 
 	def _update(self, e):
+		if self.materialTypeCombo:
+			materialType = self.materialTypeCombo.GetValue()
+			profile.putProfileSetting('simpleModeMaterialType', materialType)
 		material = self._getSelectedMaterial()
 		if material:
 			profile.putProfileSetting('simpleModeMaterial', material.name)
