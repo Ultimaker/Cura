@@ -183,14 +183,15 @@ class simpleModePanel(wx.Panel):
 		selection = self.materialTypeCombo.GetSelection()
 		choices = []
 
-		if selection >= len(self._print_material_types.keys()):
+		if selection >= len(self._print_material_types.keys()) or \
+		   selection == -1:
 			materials = self._all_print_materials
 			for material in materials:
 				choices.append(material.full_name)
 		else:
 			materials = self._print_material_types[materialType]
 			for material in materials:
-				choices.append(material.name)
+				choices.append(material.name)				
 
 		# Decide on the default selected material
 		selectedMaterial = None
@@ -219,7 +220,8 @@ class simpleModePanel(wx.Panel):
 			materialType = self.materialTypeCombo.GetValue()
 			selection = self.materialTypeCombo.GetSelection()
 
-			if selection >= len(self._print_material_types.keys()):
+			if selection >= len(self._print_material_types.keys()) or \
+			   selection == -1:
 				materials = self._all_print_materials
 			else:
 				materials = self._print_material_types[materialType]
