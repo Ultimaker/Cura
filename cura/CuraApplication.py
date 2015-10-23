@@ -37,6 +37,7 @@ from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
+from . import ZOffsetDecorator
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -342,14 +343,12 @@ class CuraApplication(QtApplication):
                 continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
 
             nodes.append(node)
+
         if nodes:
             op = GroupedOperation()
             for node in nodes:
-                # Ensure that the object is above the build platform
-                move_distance = node.getBoundingBox().center.y
-                if move_distance <= 0:
-                    move_distance = -node.getBoundingBox().bottom
-                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0)))
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
 
             op.push()
     
@@ -371,10 +370,8 @@ class CuraApplication(QtApplication):
 
             for node in nodes:
                 # Ensure that the object is above the build platform
-                move_distance = node.getBoundingBox().center.y
-                if move_distance <= 0:
-                    move_distance = -node.getBoundingBox().bottom
-                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0), Quaternion(), Vector(1, 1, 1)))
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
