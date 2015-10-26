@@ -1152,7 +1152,7 @@ class SceneView(openglGui.glGuiPanel):
 
 		if self._mouseX > -1: # mouse has not passed over the opengl window.
 			glFlush()
-			n = glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8)[0][0] >> 8
+			n = int(glReadPixels(self._mouseX, self.GetSize().GetHeight() - 1 - self._mouseY, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE)[2].encode('hex'), 16)
 			if n < len(self._scene.objects()):
 				self._focusObj = self._scene.objects()[n]
 			else:
