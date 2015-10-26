@@ -496,7 +496,8 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
-                    "visible": false
+                    "visible": false,
+                    "inherit_function": "layer_height"
                 },
                 "infill_before_walls": {
                     "label": "Infill Before Walls",
