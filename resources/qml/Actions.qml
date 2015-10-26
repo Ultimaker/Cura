@@ -47,7 +47,6 @@ Item
     Action
     {
         id:toggleFullScreenAction
-        shortcut: StandardKey.FullScreen;
         text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
         iconName: "view-fullscreen";
     }
