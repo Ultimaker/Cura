@@ -81,4 +81,15 @@ def main():
 		app.CuraApp(args).MainLoop()
 
 if __name__ == '__main__':
+	import os
+	import sys
+
+	# On Windows, the PATH variable can cause the search path for dlls
+	# to give priority to dlls from other applications and it will cause
+	# the bundled python dlls not to be loaded.
+	# More specifically, anyone with Haskell Platform installed will not
+	# be able to launch Cura because glut32.dll from Haskell is incompatible
+	# with the bundled py-opengl and will cause Cura to crash
+	if sys.platform.startswith('win'):
+		os.environ['PATH'] = ''
 	main()
