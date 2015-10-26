@@ -123,6 +123,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     progressChanged = pyqtSignal()
     extruderTemperatureChanged = pyqtSignal()
     bedTemperatureChanged = pyqtSignal()
+    firmwareUpdateComplete = pyqtSignal()
 
     endstopStateChanged = pyqtSignal(str ,bool, arguments = ["key","state"])
 
