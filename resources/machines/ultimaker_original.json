@@ -21,6 +21,12 @@
             "machine_nozzle_size": {
                 "default": 0.4
             },
+            "machine_nozzle_heat_up_speed": { 
+                "default": 2.0 
+            },
+            "machine_nozzle_cool_down_speed": { 
+                "default": 2.0 
+            },
             "machine_nozzle_tip_outer_diameter": {
                 "default": 1
             },
@@ -41,6 +47,8 @@
         "machine_depth": { "default": 205 },
         "machine_center_is_zero": { "default": false },
         "machine_nozzle_size": { "default": 0.4 },
+        "machine_nozzle_heat_up_speed": { "default": 2.0 },
+        "machine_nozzle_cool_down_speed": { "default": 2.0 },
         "machine_head_with_fans_polygon":
         {
             "default": [
