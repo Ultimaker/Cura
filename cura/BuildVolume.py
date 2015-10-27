@@ -34,9 +34,13 @@ class BuildVolume(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
+        self._active_profile = None
         self._active_instance = None
         Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveInstanceChanged)
         self._onActiveInstanceChanged()
+
+        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
+        self._onActiveProfileChanged()
 
     def setWidth(self, width):
         if width: self._width = width
@@ -72,7 +76,7 @@ class BuildVolume(SceneNode):
         renderer.queueNode(self, material = self._material, mode = Renderer.RenderLines)
         renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material, force_single_sided = True)
         if self._disallowed_area_mesh:
-            renderer.queueNode(self, mesh = self._disallowed_area_mesh, material = self._material)
+            renderer.queueNode(self, mesh = self._disallowed_area_mesh, material = self._material, transparent = True)
         return True
 
     def rebuild(self):
@@ -117,18 +121,20 @@ class BuildVolume(SceneNode):
             v = self._grid_mesh.getVertex(n)
             self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
 
+        disallowed_area_height = 0.2
         disallowed_area_size = 0
         if self._disallowed_areas:
             mb = MeshBuilder()
+            color = Color(0.0, 0.0, 0.0, 0.15)
             for polygon in self._disallowed_areas:
                 points = polygon.getPoints()
-                mb.addQuad(
-                    Vector(points[0, 0], 0.1, points[0, 1]),
-                    Vector(points[1, 0], 0.1, points[1, 1]),
-                    Vector(points[2, 0], 0.1, points[2, 1]),
-                    Vector(points[3, 0], 0.1, points[3, 1]),
-                    color = Color(174, 174, 174, 255)
-                )
+                first = Vector(self._clamp(points[0][0], minW, maxW), disallowed_area_height, self._clamp(points[0][1], minD, maxD))
+                previous_point = Vector(self._clamp(points[0][0], minW, maxW), disallowed_area_height, self._clamp(points[0][1], minD, maxD))
+                for point in points:
+                    new_point = Vector(self._clamp(point[0], minW, maxW), disallowed_area_height, self._clamp(point[1], minD, maxD))
+                    mb.addFace(first, previous_point, new_point, color = color)
+                    previous_point = new_point
+
                 # Find the largest disallowed area to exclude it from the maximum scale bounds
                 size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
                 disallowed_area_size = max(size, disallowed_area_size)
@@ -141,16 +147,9 @@ class BuildVolume(SceneNode):
 
         skirt_size = 0.0
 
-        #profile = Application.getInstance().getMachineManager().getActiveProfile()
-        #if profile:
-            #if profile.getSettingValue("adhesion_type") == "skirt":
-                #skirt_size = profile.getSettingValue("skirt_line_count") * profile.getSettingValue("skirt_line_width") + profile.getSettingValue("skirt_gap")
-            #elif profile.getSettingValue("adhesion_type") == "brim":
-                #skirt_size = profile.getSettingValue("brim_line_count") * profile.getSettingValue("skirt_line_width")
-            #else:
-                #skirt_size = profile.getSettingValue("skirt_line_width")
-
-            #skirt_size += profile.getSettingValue("skirt_line_width")
+        profile = Application.getInstance().getMachineManager().getActiveProfile()
+        if profile:
+            skirt_size = self._getSkirtSize(profile)
 
         scale_to_max_bounds = AxisAlignedBox(
             minimum = Vector(minW + skirt_size, minH, minD + skirt_size + disallowed_area_size),
@@ -167,12 +166,105 @@ class BuildVolume(SceneNode):
             self._height = self._active_instance.getMachineSettingValue("machine_height")
             self._depth = self._active_instance.getMachineSettingValue("machine_depth")
 
-            disallowed_areas = self._active_instance.getMachineSettingValue("machine_disallowed_areas")
-            areas = []
-            if disallowed_areas:
-                for area in disallowed_areas:
-                    areas.append(Polygon(numpy.array(area, numpy.float32)))
-
-            self._disallowed_areas = areas
+            self._updateDisallowedAreas()
 
             self.rebuild()
+
+    def _onActiveProfileChanged(self):
+        if self._active_profile:
+            self._active_profile.settingValueChanged.disconnect(self._onSettingValueChanged)
+
+        self._active_profile = Application.getInstance().getMachineManager().getActiveProfile()
+        if self._active_profile:
+            self._active_profile.settingValueChanged.connect(self._onSettingValueChanged)
+            self._updateDisallowedAreas()
+            self.rebuild()
+
+    def _onSettingValueChanged(self, setting):
+        if setting in self._skirt_settings:
+            self._updateDisallowedAreas()
+            self.rebuild()
+
+    def _updateDisallowedAreas(self):
+        disallowed_areas = self._active_instance.getMachineSettingValue("machine_disallowed_areas")
+        areas = []
+
+        skirt_size = 0.0
+        if self._active_profile:
+            skirt_size = self._getSkirtSize(self._active_profile)
+
+        if disallowed_areas:
+            for area in disallowed_areas:
+                poly = Polygon(numpy.array(area, numpy.float32))
+                poly = poly.getMinkowskiHull(Polygon(numpy.array([
+                    [-skirt_size, 0],
+                    [-skirt_size * 0.707, skirt_size * 0.707],
+                    [0, skirt_size],
+                    [skirt_size * 0.707, skirt_size * 0.707],
+                    [skirt_size, 0],
+                    [skirt_size * 0.707, -skirt_size * 0.707],
+                    [0, -skirt_size],
+                    [-skirt_size * 0.707, -skirt_size * 0.707]
+                ], numpy.float32)))
+
+                areas.append(poly)
+
+        if skirt_size > 0:
+            half_machine_width = self._active_instance.getMachineSettingValue("machine_width") / 2
+            half_machine_depth = self._active_instance.getMachineSettingValue("machine_depth") / 2
+
+            areas.append(Polygon(numpy.array([
+                [-half_machine_width, -half_machine_depth],
+                [-half_machine_width, half_machine_depth],
+                [-half_machine_width + skirt_size, half_machine_depth - skirt_size],
+                [-half_machine_width + skirt_size, -half_machine_depth + skirt_size]
+            ], numpy.float32)))
+
+            areas.append(Polygon(numpy.array([
+                [half_machine_width, half_machine_depth],
+                [half_machine_width, -half_machine_depth],
+                [half_machine_width - skirt_size, -half_machine_depth + skirt_size],
+                [half_machine_width - skirt_size, half_machine_depth - skirt_size]
+            ], numpy.float32)))
+
+            areas.append(Polygon(numpy.array([
+                [-half_machine_width, half_machine_depth],
+                [half_machine_width, half_machine_depth],
+                [half_machine_width - skirt_size, half_machine_depth - skirt_size],
+                [-half_machine_width + skirt_size, half_machine_depth - skirt_size]
+            ], numpy.float32)))
+
+            areas.append(Polygon(numpy.array([
+                [half_machine_width, -half_machine_depth],
+                [-half_machine_width, -half_machine_depth],
+                [-half_machine_width + skirt_size, -half_machine_depth + skirt_size],
+                [half_machine_width - skirt_size, -half_machine_depth + skirt_size]
+            ], numpy.float32)))
+
+            areas.append(poly)
+
+        self._disallowed_areas = areas
+
+    def _getSkirtSize(self, profile):
+        skirt_size = 0.0
+
+        adhesion_type = profile.getSettingValue("adhesion_type")
+        if adhesion_type == "skirt":
+            skirt_distance = profile.getSettingValue("skirt_gap")
+            skirt_line_count = profile.getSettingValue("skirt_line_count")
+            skirt_size = skirt_distance + (skirt_line_count * profile.getSettingValue("skirt_line_width"))
+        elif adhesion_type == "brim":
+            brim_line_count = profile.getSettingValue("brim_line_count")
+            skirt_size = brim_line_count * profile.getSettingValue("skirt_line_width")
+        elif adhesion_type == "raft":
+            skirt_size = profile.getSettingValue("raft_margin")
+
+        if profile.getSettingValue("draft_shield_enabled"):
+            skirt_size += profile.getSettingValue("draft_shield_dist")
+
+        return skirt_size
+
+    def _clamp(self, value, min_value, max_value):
+        return max(min(value, max_value), min_value)
+
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_line_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist"]
