@@ -725,21 +725,44 @@ class glFrame(glGuiContainer):
 class glNotification(glFrame):
 	def __init__(self, parent, pos):
 		self._anim = None
+		self._previous_base_size = None
 		super(glNotification, self).__init__(parent, pos)
 		glGuiLayoutGrid(self)._alignBottom = False
-		self._label = glLabel(self, "Notification", (0, 0))
+		self._label_text = "Notification"
+		self._label = glLabel(self, self._label_text, (0, 0))
 		self._buttonExtra = glButton(self, 31, "???", (1, 0), self.onExtraButton, 25)
 		self._button = glButton(self, 30, "", (2, 0), self.onClose, 25)
 		self._padding = glLabel(self, "", (0, 1))
+		self.updateLabelSize()
 		self.setHidden(True)
 
 	def setSize(self, x, y, w, h):
 		w, h = self._layout.getLayoutSize()
 		baseSize = self._base.GetSizeTuple()
+		if self._previous_base_size and self._previous_base_size != baseSize:
+			self.updateLabelSize()
+			w, h = self._layout.getLayoutSize()
+
 		if self._anim is not None:
 			super(glNotification, self).setSize(baseSize[0] / 2 - w / 2, baseSize[1] - self._anim.getPosition() - self._base._buttonSize * 0.2, 1, 1)
 		else:
 			super(glNotification, self).setSize(baseSize[0] / 2 - w / 2, baseSize[1] - self._base._buttonSize * 0.2, 1, 1)
+
+	def updateLabelSize(self):
+		self._previous_base_size = self._base.GetSizeTuple()
+		self._label.setLabel(self._label_text)
+		self.updateLayout()
+		w, h = self._layout.getLayoutSize()
+		baseSize = self._base.GetSizeTuple()
+		crop = -1
+		while baseSize[0] < w:
+			text = self._label_text[:crop]
+			crop = crop - 1
+			self._label.setLabel(text + "...")
+			self.updateLayout()
+			w, h = self._layout.getLayoutSize()
+			if len(text) == 0:
+				break
 
 	def draw(self):
 		self.setSize(0,0,0,0)
@@ -749,13 +772,14 @@ class glNotification(glFrame):
 	def message(self, text, extraButtonCallback = None, extraButtonIcon = None, extraButtonTooltip = None):
 		self._anim = animation(self._base, -20, 25, 1)
 		self.setHidden(False)
-		self._label.setLabel(text)
+		self._label_text = text
 		self._buttonExtra.setHidden(extraButtonCallback is None)
 		self._buttonExtra._imageID = extraButtonIcon
 		self._buttonExtra._tooltip = extraButtonTooltip
 		self._extraButtonCallback = extraButtonCallback
 		self._base._queueRefresh()
-		self.updateLayout()
+		self.updateLabelSize()
+		self.setSize(0,0,0,0)
 
 	def onExtraButton(self, button):
 		self.onClose(button)
