@@ -33,7 +33,7 @@
             "default": "RepRap"
         },
         "machine_platform_offset": {
-            "default": [0, 100, 0]
+            "default": [0, -82, 0]
         }
     },
     "overrides": {
