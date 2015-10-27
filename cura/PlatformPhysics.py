@@ -17,6 +17,7 @@ from cura.ConvexHullDecorator import ConvexHullDecorator
 
 from . import PlatformPhysicsOperation
 from . import ConvexHullJob
+from . import ZOffsetDecorator
 
 import time
 import threading
@@ -69,8 +70,12 @@ class PlatformPhysics:
             # Move it downwards if bottom is above platform
             move_vector = Vector()
             if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
+                z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 if bbox.bottom > 0:
-                    move_vector.setY(-bbox.bottom)
+                    move_vector.setY(-bbox.bottom + z_offset)
+                elif bbox.bottom < z_offset:
+                    move_vector.setY((-bbox.bottom) - z_offset)
+
             #if not Float.fuzzyCompare(bbox.bottom, 0.0):
             #   pass#move_vector.setY(-bbox.bottom)
 
@@ -149,5 +154,16 @@ class PlatformPhysics:
         self._enabled = False
 
     def _onToolOperationStopped(self, tool):
+        if tool.getPluginId() == "TranslateTool":
+            for node in Selection.getAllSelectedObjects():
+                if node.getBoundingBox().bottom < 0:
+                    if not node.getDecorator(ZOffsetDecorator.ZOffsetDecorator):
+                        node.addDecorator(ZOffsetDecorator.ZOffsetDecorator())
+
+                    node.callDecoration("setZOffset", node.getBoundingBox().bottom)
+                else:
+                    if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator):
+                        node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+
         self._enabled = True
         self._onChangeTimerFinished()

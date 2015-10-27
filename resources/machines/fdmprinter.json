@@ -497,16 +497,7 @@
                     "type": "float",
                     "default": 0.1,
                     "visible": false,
-                    "children": {
-                        "infill_sparse_combine": {
-                            "label": "Infill Layers",
-                            "description": "Amount of layers that are combined together to form sparse infill.",
-                            "type": "int",
-                            "default": 1,
-                            "visible": false,
-                            "inherit_function": "math.floor((   parent_value + 0.001) / layer_height)"
-                        }
-                    }
+                    "inherit_function": "layer_height"
                 },
                 "infill_before_walls": {
                     "label": "Infill Before Walls",

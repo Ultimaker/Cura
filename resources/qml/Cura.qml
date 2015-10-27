@@ -152,10 +152,6 @@ UM.MainWindow
                     onObjectRemoved: top_view_menu.removeItem(object)
                 }
                 ExclusiveGroup { id: view_menu_top_group; }
-
-                MenuSeparator { }
-
-                MenuItem { action: actions.toggleFullScreen; }
             }
             Menu
             {
