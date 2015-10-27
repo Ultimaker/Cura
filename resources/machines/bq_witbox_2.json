@@ -4,7 +4,7 @@
     "name": "BQ Witbox 2",
     "manufacturer": "Other",
     "author": "BQ",
-    "platform": "witbox_platform.stl",
+    "platform": "bq_witbox_platform.stl",
     "inherits": "fdmprinter.json",
 
     "machine_settings": {
