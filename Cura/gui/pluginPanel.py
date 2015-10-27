@@ -147,10 +147,13 @@ class pluginPanel(wx.Panel):
 		for panel in self.panelList:
 			idx = self.panelList.index(panel)
 			for k in panel.paramCtrls.keys():
-				if type(panel.paramCtrls[k].GetValue()) == bool:
-					self.pluginConfig[idx]['params'][k] = int(panel.paramCtrls[k].GetValue())
-				else:
-					self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
+				try:
+					if type(panel.paramCtrls[k].GetValue()) == bool:
+						self.pluginConfig[idx]['params'][k] = int(panel.paramCtrls[k].GetValue())
+					else:
+						self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
+				except wx._core.PyDeadObjectError:
+					pass
 		pluginInfo.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
