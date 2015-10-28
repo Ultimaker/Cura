@@ -4,7 +4,7 @@ To support more chips add the relevant data to the avrChipDB list.
 This is a python 3 conversion of the code created by David Braam for the Cura project.
 """
 
-avrChipDB = {
+avr_chip_db = {
     "ATMega1280": {
             "signature": [0x1E, 0x97, 0x03],
             "pageSize": 128,
@@ -18,7 +18,7 @@ avrChipDB = {
 }
 
 def getChipFromDB(sig):
-    for chip in avrChipDB.values():
+    for chip in avr_chip_db.values():
         if chip["signature"] == sig:
             return chip
     return False

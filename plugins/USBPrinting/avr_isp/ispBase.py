@@ -45,13 +45,13 @@ class IspBase():
         """
         self.sendISP([0xAC, 0x80, 0x00, 0x00])
 
-    def writeFlash(self, flashData):
+    def writeFlash(self, flash_data):
         """
         Write the flash data, needs to be implemented in a subclass.
         """
         raise IspError("Called undefined writeFlash")
 
-    def verifyFlash(self, flashData):
+    def verifyFlash(self, flash_data):
         """
         Verify the flash data, needs to be implemented in a subclass.
         """
