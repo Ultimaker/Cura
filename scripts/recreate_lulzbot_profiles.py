@@ -3,7 +3,7 @@
 # This script is used to generate print profiles for lulzbot printers
 # based off of the lulzbot_profiles directory which contains common
 # profiles for multiple toolheads.
-# To generate profiles or update them, run the script from the root Cura
+# To update profiles, run the script from the root Cura
 # directory with ./scripts/recreate_lulzbot_profiles.py
 #
 
@@ -49,14 +49,19 @@ material_map = {
     "Laybrick" : "laybrick",
     "PP-Iron": "protopasta-magnetic-iron",
     "PP-Steel": "protopasta-stainless-steel",
+    "Bamboofill": "bamboofill",
+    "Woodfill": "woodfill",
     # Advanced
     "Alloy910": "alloy910",
     "Bridge": "bridge",
     "Laywood": "laywood",
     "n-vent": "n-vent",
+    "XT": "XT",
     "PCTPE": "PCTPE",
     "PC-ABS": "PC-ABS",
     "T-Glase": "t-glase",
+    "Bronzefill": "bronzefill",
+    "Copperfill": "copperfill",
     # Expert
     "PP-Conductive": "protopasta-conductive-PLA",
     "HIPS_VP" : "HIPS",
@@ -75,10 +80,7 @@ material_map = {
     "ABS_semiflex" : "ABS-semiflex",
 
     # Others
-    # bamboofill
     # b-pet
-    # bronzefill
-    # copperfill
     # tritan
     # PLA-protopasta-conductive-PLA
 }
@@ -93,14 +95,19 @@ material_order = {
     "Laybrick" : 11,
     "PP-Iron": 12,
     "PP-Steel": 13,
+    "Bamboofill":14,
+    "Woodfill":15,
     # Advanced
     "Alloy910": 50,
     "Bridge": 51,
     "Laywood": 52,
     "n-vent": 53,
-    "PCTPE": 54,
-    "PC-ABS": 55,
-    "T-Glase": 56,
+    "XT": 54,
+    "PCTPE": 55,
+    "PC-ABS": 56,
+    "T-Glase": 57,
+    "Bronzefill":58,
+    "Copperfill":59,
     # Expert
     "PP-Conductive": 500,
     "HIPS_VP" : 501,
@@ -129,14 +136,19 @@ material_types = {
     "Laybrick" : "Intermediate",
     "PP-Iron": "Intermediate",
     "PP-Steel": "Intermediate",
+    "Bamboofill": "Intermediate",
+    "Woodfill": "Intermediate",
     # Advanced
     "Alloy910": "Advanced",
     "Bridge": "Advanced",
     "Laywood": "Advanced",
     "n-vent": "Advanced",
+    "XT": "Advanced",
     "PCTPE": "Advanced",
     "PC-ABS": "Advanced",
     "T-Glase": "Advanced",
+    "Bronzefill": "Advanced",
+    "Copperfill": "Advanced",
     # Expert
     "PP-Conductive": "Expert",
     "HIPS_VP" : "Expert",
@@ -165,14 +177,19 @@ material_names = {
     "Laybrick" : "Laybrick (CC-Products)",
     "PP-Iron": "Magnetic (Proto-pasta)",
     "PP-Steel": "Steel PLA (Proto-pasta)",
+    "Bamboofill": "Bamboofill (Colorfabb)",
+    "Woodfill": "Woodfill (Colorfabb)",
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
     "Laywood": "Laywoo-D3 (CC-Products)",
     "n-vent": "n-vent (Taulman)",
+    "XT": "XT (Colorfabb)",
     "PCTPE": "PCTPE (Taulman)",
     "PC-ABS": "PC-ABS (Proto-pasta)",
     "T-Glase": "t-glase (Taulman)",
+    "Bronzefill": "Bronzefill (Colorfabb)",
+    "Copperfill": "Copperfill (Colorfabb)",
     # Expert
     "PP-Conductive": "Conductive (Proto-pasta)",
     "HIPS_VP" : "HIPS (Village Plastics)",
@@ -197,6 +214,7 @@ bed_prep_materials = {
     "Alloy910",
     "Bridge",
     "n-vent",
+    "XT",
 	"PCTPE",
 	"T-Glase",
 	"618-Nylon",
@@ -214,14 +232,19 @@ material_url = {
     "Laybrick" : "www.lulzbot.com/products/laybrick-filament-3mm",
     "PP-Iron": "www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
     "PP-Steel": "www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
+#    "Bamboofill": "",
+#    "Woodfill": "",
     # Advanced
     "Alloy910": "www.lulzbot.com/products/alloy-910-3mm-filament-1lb-reel-taulman",
     "Bridge": "www.lulzbot.com/products/taulman-bridge-nylon-3mm-filament-1-pound",
     "Laywood": "www.lulzbot.com/products/laywoo-d3-cherry-laywood-3mm-250g-coil-cc-products",
     "n-vent": "www.lulzbot.com/products/n-vent-3mm-filament-1lb-taulman",
+#    "XT": "",
     "PCTPE": "www.lulzbot.com/products/taulman-pctpe-3mm-filament-1-pound",
     "PC-ABS": "www.lulzbot.com/products/pc-abs-alloy-3mm-filament-500g-reel-proto-pasta",
     "T-Glase": "www.lulzbot.com/products/t-glase-3mm-filament-1lb-reel",
+#    "Bronzefill": "",
+#    "Copperfill": "",
     # Expert
     "PP-Conductive": "www.lulzbot.com/products/conductive-pla-3mm-filament-500g-reel-proto-pasta",
     "HIPS_VP" : "www.lulzbot.com/products/hips-3mm-filament-1kg-or-5lb-reel-village-plastics",
