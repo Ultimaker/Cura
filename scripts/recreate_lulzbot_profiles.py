@@ -3,15 +3,14 @@
 # This script is used to generate print profiles for lulzbot printers
 # based off of the lulzbot_profiles directory which contains common
 # profiles for multiple toolheads.
-# To generate profiles or update them, make sure there are no existing profiles
-# by doing a rm -rf resources/quickprint/lulzbot_mini* resources/quickprint/lulzbot_TAZ*
-# then run the script from the root Cura directory with ./scripts/create_lulzbot_profiles.py
+# To generate profiles or update them, run the script from the root Cura
+# directory with ./scripts/recreate_lulzbot_profiles.py
 #
 
 
 import glob
 import os
-import sys
+import shutil
 
 
 CURA_QUICKPRINT_DIR="resources/quickprint/"
@@ -324,22 +323,42 @@ def create_machine_type(machine_type, path, dir):
             with open(os.path.join(path, material, 'material.ini'), 'w') as f:
                 f.write("[info]\n")
                 f.write("disabled = true\n")
-                
+
+def clear_quickprint_folders():
+    here = os.getcwd()
+    quickprint_path = os.path.join(here,CURA_QUICKPRINT_DIR)
+    candidates = os.listdir(quickprint_path)
+    
+    folder_paths = []
+    for candidate in candidates:
+        if "lulzbot_mini" in candidate or \
+           "lulzbot_TAZ" in candidate:
+            candidate_path = os.path.join(quickprint_path, candidate)
+            if os.path.isdir(candidate_path):
+                folder_paths.append(candidate_path)
+    for path in folder_paths:
+        shutil.rmtree(path)
+    if not folder_paths:
+        print("No Quickprint folders to delete")
+    else:
+        print("Quickprint folders deleted")
 
 def main():
     if not os.path.exists(CURA_QUICKPRINT_DIR):
         print "Cura path is wrong"
         return -1
 
-    dirs = glob.glob(os.path.join(CURA_QUICKPRINT_DIR, PROFILES_DIR, "*"))
+    clear_quickprint_folders()
 
+    dirs = glob.glob(os.path.join(CURA_QUICKPRINT_DIR, PROFILES_DIR, "*"))
+ 
     for d in dirs:
         dir = os.path.basename(d)
         if dir_map.has_key(dir):
             for machine_type in dir_map[dir]:
                 create_machine_type(machine_type, d, dir)
 
-    print "All done :D"
+    print "Quickprint profiles regenerated"
 
 
 if __name__ == '__main__':
