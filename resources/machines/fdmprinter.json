@@ -112,7 +112,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
-                    "min_value": "0.0001",
+                    "min_value": "0.001",
                     "min_value_warning": "0.04",
                     "max_value_warning": "0.32"
                 },
@@ -122,7 +122,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
-                    "min_value": "0.0001",
+                    "min_value": "0.001",
                     "min_value_warning": "0.04",
                     "max_value_warning": "0.32",
                     "visible": false
