@@ -33,6 +33,7 @@ Item
             //: Infill selection label
             text: catalog.i18nc("@label","Infill:");
             font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text_default;
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.sizes.default_margin.height
             anchors.left: parent.left
@@ -166,6 +167,7 @@ Item
             //: Helpers selection label
             text: catalog.i18nc("@label:listbox","Helpers:");
             font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text_default;
         }
     }
     Rectangle {
