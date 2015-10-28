@@ -46,6 +46,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         self._end_stop_thread = threading.Thread(target = self._pollEndStop)
         self._end_stop_thread.deamon = True
+        self._poll_endstop = -1
 
         # Printer is connected
         self._is_connected = False
@@ -63,7 +64,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._listen_thread.daemon = True
 
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
-        self._update_firmware_thread.deamon = True
+        self._update_firmware_thread.daemon = True
         
         self._heatup_wait_start_time = time.time()
 
@@ -122,6 +123,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     progressChanged = pyqtSignal()
     extruderTemperatureChanged = pyqtSignal()
     bedTemperatureChanged = pyqtSignal()
+    firmwareUpdateComplete = pyqtSignal()
 
     endstopStateChanged = pyqtSignal(str ,bool, arguments = ["key","state"])
 
@@ -237,8 +239,9 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     @pyqtSlot()
     def startPollEndstop(self):
-        self._poll_endstop = True
-        self._end_stop_thread.start()
+        if self._poll_endstop == -1:
+            self._poll_endstop = True
+            self._end_stop_thread.start()
 
     @pyqtSlot()
     def stopPollEndstop(self):
@@ -323,6 +326,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     ##  Close the printer connection
     def close(self):
+        Logger.log("d", "Closing the printer connection.")
         if self._connect_thread.isAlive():
             try:
                 self._connect_thread.join()
@@ -345,7 +349,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._serial = None
 
     def isConnected(self):
-        return self._is_connected 
+        return self._is_connected
 
     @pyqtSlot(int)
     def heatupNozzle(self, temperature):
@@ -411,6 +415,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     def createControlInterface(self):
         if self._control_view is None:
+            Logger.log("d", "Creating control interface for printer connection")
             path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("USBPrinting"), "ControlWindow.qml"))
             component = QQmlComponent(Application.getInstance()._engine, path)
             self._control_context = QQmlContext(Application.getInstance()._engine.rootContext())
@@ -455,7 +460,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._bed_temperature = temperature
         self.bedTemperatureChanged.emit()
 
-    def requestWrite(self, node):
+    def requestWrite(self, node, file_name = None):
         self.showControlInterface()
 
     def _setEndstopState(self, endstop_key, value):
@@ -617,6 +622,6 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def _onFirmwareUpdateComplete(self):
         self._update_firmware_thread.join()
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
-        self._update_firmware_thread.deamon = True
+        self._update_firmware_thread.daemon = True
 
         self.connect()

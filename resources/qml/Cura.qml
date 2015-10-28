@@ -22,6 +22,19 @@ UM.MainWindow
         id: backgroundItem;
         anchors.fill: parent;
         UM.I18nCatalog{id: catalog; name:"cura"}
+
+        //DeleteSelection on the keypress backspace event
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Backspace)
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.deleteObject(objectContextMenu.objectId);
+                }
+            }
+        }
+
+
         UM.ApplicationMenu
         {
             id: menu
@@ -72,7 +85,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file");
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName);
                 }
                 Menu
                 {
@@ -88,7 +101,7 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id);
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName);
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
@@ -139,10 +152,6 @@ UM.MainWindow
                     onObjectRemoved: top_view_menu.removeItem(object)
                 }
                 ExclusiveGroup { id: view_menu_top_group; }
-
-                MenuSeparator { }
-
-                MenuItem { action: actions.toggleFullScreen; }
             }
             Menu
             {
@@ -373,6 +382,7 @@ UM.MainWindow
             {
                 id: viewModeButton
                 property bool verticalTooltip: true
+
                 anchors
                 {
                     top: parent.top;
@@ -389,12 +399,13 @@ UM.MainWindow
                     id: viewMenu;
                     Instantiator
                     {
+                        id: viewMenuInstantiator
                         model: UM.ViewModel { }
                         MenuItem
                         {
-                            text: model.name;
+                            text: model.name
                             checkable: true;
-                            checked: model.active;
+                            checked: model.active
                             exclusiveGroup: viewMenuGroup;
                             onTriggered: UM.Controller.setActiveView(model.id);
                         }
@@ -413,7 +424,7 @@ UM.MainWindow
                 anchors {
                     left: parent.left
                     top: parent.top
-                    topMargin: 74
+                    topMargin: UM.Theme.sizes.window_margin.height + UM.Theme.sizes.button.height
                     //horizontalCenter: parent.horizontalCenter
                     //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
                     //top: parent.top;
@@ -463,13 +474,26 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General") , "" , Qt.resolvedUrl("./GeneralPage.qml"));
+            insertPage(0, catalog.i18nc("@title:tab","General"), generalPage);
 
             //: View preferences page title
-            insertPage(1, catalog.i18nc("@title:tab","View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
+            insertPage(1, catalog.i18nc("@title:tab","View"), viewPage);
 
             //Force refresh
             setPage(0)
+        }
+
+        Item {
+            visible: false
+            GeneralPage
+            {
+                id: generalPage
+            }
+
+            ViewPage
+            {
+                id: viewPage
+            }
         }
     }
 
@@ -543,8 +567,8 @@ UM.MainWindow
 
         addMachine.onTriggered: addMachineWizard.visible = true;
 
-        preferences.onTriggered: preferences.visible = true;
-        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
+        preferences.onTriggered: { preferences.visible = true; }
+        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
         manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 
         documentation.onTriggered: CuraActions.openDocumentation();
@@ -621,6 +645,11 @@ UM.MainWindow
 
         onAccepted:
         {
+            //Because several implementations of the file dialog only update the folder
+            //when it is explicitly set.
+            var f = folder;
+            folder = f;
+
             UM.MeshFileHandler.readLocalFile(fileUrl)
             openDialog.sendMeshName(fileUrl.toString())
         }
@@ -648,14 +677,34 @@ UM.MainWindow
         onRequestAddPrinter:
         {
             addMachineWizard.visible = true
-            addMachineWizard.firstRun = true
+            addMachineWizard.firstRun = false
         }
     }
 
     Component.onCompleted:
     {
         UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
-        base.visible = true;
+    }
+
+    Timer
+    {
+        id: startupTimer;
+        interval: 100;
+        repeat: false;
+        running: true;
+        onTriggered:
+        {
+            if(!base.visible)
+            {
+                base.visible = true;
+                restart();
+            }
+            else if(UM.MachineManager.activeMachineInstance == "")
+            {
+                addMachineWizard.firstRun = true;
+                addMachineWizard.open();
+            }
+        }
     }
 }
 

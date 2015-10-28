@@ -107,7 +107,7 @@ class Layer():
     def build(self, offset, vertices, colors, indices):
         result = offset
         for polygon in self._polygons:
-            if polygon._type == Polygon.InfillType or polygon._type == Polygon.SupportInfillType or polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType:
+            if polygon.type == Polygon.InfillType or polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType:
                 continue
 
             polygon.build(result, vertices, colors, indices)
@@ -238,7 +238,7 @@ class Polygon():
         elif self._type == self.MoveCombingType:
             return Color(0.0, 0.0, 1.0, 1.0)
         elif self._type == self.MoveRetractionType:
-            return Color(0.0, 1.0, 1.0, 1.0)
+            return Color(0.5, 0.5, 1.0, 1.0)
         else:
             return Color(1.0, 1.0, 1.0, 1.0)
 

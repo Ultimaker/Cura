@@ -2,7 +2,7 @@
     "id": "rigidbotbig",
     "version": 1, 
     "name": "RigidBotBig",
-    "manufacturer": "Invent-A-Part",
+    "manufacturer": "Other",
     "author": "RBC",
     "platform": "rigidbotbig_platform.stl",
 	
@@ -16,6 +16,8 @@
         "machine_heated_bed": { "default": true },
 
         "machine_nozzle_size": { "default": 0.4},
+        "machine_nozzle_heat_up_speed": { "default": 2.0 },
+        "machine_nozzle_cool_down_speed": { "default": 2.0 },
         "machine_head_shape_min_x": { "default": 0 },
         "machine_head_shape_min_y": { "default": 0 },
         "machine_head_shape_max_x": { "default": 0 },

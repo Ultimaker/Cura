@@ -54,7 +54,16 @@ Rectangle {
      Connections {
         target: openDialog
         onHasMesh: {
-            base.fileBaseName = name
+            if(base.fileBaseName == ''){
+                base.fileBaseName = name
+                base.createFileName()
+            }
+        }
+    }
+
+    onActivityChanged: {
+        if (activity == false){
+            base.fileBaseName = ''
             base.createFileName()
         }
     }
@@ -62,7 +71,7 @@ Rectangle {
     Rectangle{
         id: printJobRow
         implicitWidth: base.width;
-        implicitHeight: UM.Theme.sizes.sidebar_header.height
+        implicitHeight: UM.Theme.sizes.save_button_header.height
         anchors.top: parent.top
         color: UM.Theme.colors.sidebar_header_bar
         Label{
@@ -83,6 +92,7 @@ Rectangle {
             height: UM.Theme.sizes.sidebar_inputFields.height
             property int unremovableSpacing: 5
             text: ''
+            onTextChanged: Printer.setJobName(text)
             onEditingFinished: {
                 if (printJobTextfield.text != ''){
                     printJobTextfield.focus = false
@@ -110,6 +120,7 @@ Rectangle {
         implicitWidth: base.width
         implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
         anchors.top: printJobRow.bottom
+        visible: base.progress > 0.99 && base.activity == true
         Item{
             id: time
             width: childrenRect.width;
@@ -188,12 +199,23 @@ Rectangle {
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, Printer.jobName)
             }
 
             style: ButtonStyle {
                 background: Rectangle {
-                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    //opacity: control.enabled ? 1.0 : 0.5
+                    //Behavior on opacity { NumberAnimation { duration: 50; } }
+                    color: {
+                        if(!control.enabled){
+                            return UM.Theme.colors.button;
+                        }
+                        else if(control.enabled && control.hovered) {
+                            return UM.Theme.colors.load_save_button_hover
+                        } else {
+                            return UM.Theme.colors.load_save_button
+                        }
+                    }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     width: {
                         var w = 0;
@@ -205,17 +227,17 @@ Rectangle {
                             saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
                             w = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
                         }
-                        
                         if(w < base.width * 0.55) {
                             w = base.width * 0.55;
                         }
-                        
                         return w;
                     }
                     Label {
                         id: actualLabel
+                        opacity: control.enabled ? 1.0 : 0.4
+                        //Behavior on opacity { NumberAnimation { duration: 50; } }
                         anchors.centerIn: parent
-                        color: UM.Theme.colors.load_save_button_text
+                        color:  UM.Theme.colors.load_save_button_text
                         font: UM.Theme.fonts.default
                         text: control.text;
                     }
@@ -232,12 +254,22 @@ Rectangle {
             anchors.rightMargin: UM.Theme.sizes.default_margin.width
             width: UM.Theme.sizes.save_button_save_to_button.height
             height: UM.Theme.sizes.save_button_save_to_button.height
+            enabled: base.progress > 0.99 && base.activity == true
             //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
                 background: Rectangle {
                     id: deviceSelectionIcon
-                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    color: {
+                        if(!control.enabled){
+                            return UM.Theme.colors.button;
+                        }
+                        else if(control.enabled && control.hovered) {
+                            return UM.Theme.colors.load_save_button_hover
+                        } else {
+                            return UM.Theme.colors.load_save_button
+                        }
+                    }
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width / 2;
@@ -245,7 +277,6 @@ Rectangle {
                     height: parent.height
 
                     UM.RecolorImage {
-                        id: lengthIcon
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: UM.Theme.sizes.standard_arrow.width

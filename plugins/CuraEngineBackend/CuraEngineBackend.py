@@ -77,12 +77,20 @@ class CuraEngineBackend(Backend):
         self._message = None
 
         self.backendConnected.connect(self._onBackendConnected)
+        Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
+        Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
+
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
 
     ##  Get the command that is used to call the engine.
     #   This is usefull for debugging and used to actually start the engine
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
-        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port),  "-j", Resources.getPath(Resources.MachineDefinitions, "fdmprinter.json"), "-vv"]
+        active_machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
+        if not active_machine:
+            return None
+
+        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", active_machine.getMachineDefinition().getPath(), "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
@@ -123,6 +131,7 @@ class CuraEngineBackend(Backend):
                     pass
             self.slicingCancelled.emit()
             return
+
         Logger.log("d", "Preparing to send slice data to engine.")
         object_groups = []
         if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
@@ -221,10 +230,16 @@ class CuraEngineBackend(Backend):
         self._socket.sendMessage(slice_message)
 
     def _onSceneChanged(self, source):
-        if (type(source) is not SceneNode) or (source is self._scene.getRoot()) or (source.getMeshData() is None):
+        if type(source) is not SceneNode:
             return
 
-        if(source.getMeshData().getVertices() is None):
+        if source is self._scene.getRoot():
+            return
+
+        if source.getMeshData() is None:
+            return
+
+        if source.getMeshData().getVertices() is None:
             return
 
         self._onChanged()
@@ -327,6 +342,7 @@ class CuraEngineBackend(Backend):
                 if self._stored_layer_data:
                     job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
                     job.start()
+                    self._stored_layer_data = None
             else:
                 self._layer_view_active = False
 
@@ -346,3 +362,14 @@ class CuraEngineBackend(Backend):
             setting = message.settings.add()
             setting.name = key
             setting.value = str(value).encode()
+
+    def _onInstanceChanged(self):
+        self._slicing = False
+        self._restart = True
+        if self._process is not None:
+            Logger.log("d", "Killing engine process")
+            try:
+                self._process.terminate()
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
+        self.slicingCancelled.emit()

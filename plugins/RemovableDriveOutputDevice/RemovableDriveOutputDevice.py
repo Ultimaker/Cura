@@ -22,18 +22,18 @@ class RemovableDriveOutputDevice(OutputDevice):
         self.setIconName("save_sd")
         self.setPriority(1)
 
-    def requestWrite(self, node):
+    def requestWrite(self, node, file_name = None):
         gcode_writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType("text/x-gcode")
         if not gcode_writer:
             Logger.log("e", "Could not find GCode writer, not writing to removable drive %s", self.getName())
             raise OutputDeviceError.WriteRequestFailedError()
 
-        file_name = None
-        for n in BreadthFirstIterator(node):
-            if n.getMeshData():
-                file_name = n.getName()
-                if file_name:
-                    break
+        if file_name == None:
+            for n in BreadthFirstIterator(node):
+                if n.getMeshData():
+                    file_name = n.getName()
+                    if file_name:
+                        break
 
         if not file_name:
             Logger.log("e", "Could not determine a proper file name when trying to write to %s, aborting", self.getName())

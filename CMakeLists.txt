@@ -66,3 +66,4 @@ else()
     install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
 endif()
 
+include(CPackConfig.cmake)

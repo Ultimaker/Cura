@@ -38,6 +38,8 @@
         "machine_nozzle_head_distance": { "default": 3, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_expansion_angle": { "default": 45, "SEE_machine_extruder_trains": true  },
         "machine_heat_zone_length": { "default": 16, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_heat_up_speed": { "default": 2.0, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_cool_down_speed": { "default": 2.0, "SEE_machine_extruder_trains": true  },
         "machine_gcode_flavor": {
             "default": "RepRap"
         },
@@ -149,7 +151,6 @@
                             "default": 0.4,
                             "type": "float",
                             "visible": false,
-                            "inherit_function": "max(machine_nozzle_size, (wall_thickness / (int(wall_thickness / (machine_nozzle_size - 0.0001) + 1))) if (wall_thickness / (int(wall_thickness / (machine_nozzle_size - 0.0001))) > machine_nozzle_size * 1.5) else (wall_thickness / int(wall_thickness / (machine_nozzle_size - 0.0001))))",
                             "children": {
                                 "wall_line_width_0": {
                                     "label": "Outer Wall Line Width",
@@ -266,7 +267,7 @@
                                     "default": 2,
                                     "type": "int",
                                     "visible": false,
-                                    "inherit_function": "max(1, (int(parent_value / (machine_nozzle_size - 0.0001) + 1) if (parent_value / max(1, int(parent_value / (machine_nozzle_size - 0.0001))) > machine_nozzle_size) * 1.5 else int(parent_value / (machine_nozzle_size - 0.0001))))"
+                                    "inherit_function": "max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
                                 }
                             }
                         },
@@ -275,7 +276,8 @@
                             "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
                             "type": "boolean",
                             "default": false,
-                            "visible": false
+                            "visible": false,
+                            "inherit": false
                         },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
@@ -301,7 +303,7 @@
                                             "label": "Top Layers",
                                             "description": "This controls the amount of top layers.",
                                             "min_value": "0",
-                                            "default": 6,
+                                            "default": 8,
                                             "type": "int",
                                             "visible": false,
                                             "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
@@ -408,8 +410,7 @@
                     "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve on roofs which would start in the middle of infill cells.",
                     "default": 0,
                     "type": "int",
-                    "visible": false,
-                    "enabled": "top_bottom_pattern"
+                    "visible": false
                 },
                 "xy_offset": {
                     "label": "Horizontal expansion",
@@ -454,7 +455,7 @@
                             "type": "float",
                             "default": 2,
                             "visible": false,
-                            "inherit_function": "0 if parent_value == 0 else (infill_line_width * 100) / parent_value"
+                            "inherit_function": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density"
                         }
                     }
                 },
@@ -470,7 +471,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default": "grid",
-                    "inherit_function": "'lines' if parent_value > 25 else 'grid'"
+                    "inherit_function": "'lines' if infill_sparse_density > 25 else 'grid'"
                 },
                 "infill_overlap": {
                     "label": "Infill Overlap",
@@ -498,16 +499,7 @@
                     "type": "float",
                     "default": 0.1,
                     "visible": false,
-                    "children": {
-                        "infill_sparse_combine": {
-                            "label": "Infill Layers",
-                            "description": "Amount of layers that are combined together to form sparse infill.",
-                            "type": "int",
-                            "default": 1,
-                            "visible": false,
-                            "inherit_function": "math.floor((parent_value + 0.001) / layer_height)"
-                        }
-                    }
+                    "inherit_function": "layer_height"
                 },
                 "infill_before_walls": {
                     "label": "Infill Before Walls",
@@ -523,6 +515,13 @@
             "visible": true,
             "icon": "category_material",
             "settings": {
+                "material_flow_dependent_temperature": {
+                    "label": "Auto Temperature",
+                    "description": "Change the temperature each layer automatically with the average flow speed of that layer.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": true
+                },
                 "material_print_temperature": {
                     "label": "Printing Temperature",
                     "description": "The temperature used for printing. Set at 0 to pre-heat yourself. For PLA a value of 210C is usually used.\nFor ABS a value of 230C or higher is required.",
@@ -530,7 +529,34 @@
                     "type": "float",
                     "default": 210,
                     "min_value": "0",
+                    "max_value_warning": "260",
+                    "enabled": "not (material_flow_dependent_temperature)"
+                },
+                "material_flow_temp_graph": {
+                    "label": "Flow Temperature Graph",
+                    "description": "Data linking material flow (in mm³/s) to temperature (°C).",
+                    "unit": "",
+                    "type": "string",
+                    "default": "[[0.1,180],[20,230]]",
+                    "enabled": "material_flow_dependent_temperature"
+                },
+                "material_standby_temperature": {
+                    "label": "Standby Temperature",
+                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 150,
+                    "min_value": "0",
                     "max_value_warning": "260"
+                },
+                "material_extrusion_cool_down_speed": {
+                    "label": "Extrusion Cool Down Speed Modifier",
+                    "description": "The extra speed by which the nozzle cools when while extruding. The same value is used to signify the heat up speed lost when heating up while extruding.",
+                    "unit": "°C/s",
+                    "type": "float",
+                    "default": 0.5,
+                    "min_value": "0",
+                    "max_value_warning": "10.0"
                 },
                 "material_bed_temperature": {
                     "label": "Bed Temperature",
@@ -777,18 +803,17 @@
                     "type": "float",
                     "min_value": "0.1",
                     "default": 15,
+                    "visible": false
+                },
+                "skirt_speed": {
+                    "label": "Skirt Speed",
+                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "min_value": "0.1",
+                    "default": 15,
                     "visible": false,
-                    "children": {
-                        "skirt_speed": {
-                            "label": "Skirt Speed",
-                            "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "min_value": "0.1",
-                            "default": 15,
-                            "visible": false
-                        }
-                    }
+                    "inherit_function": "speed_layer_0"
                 },
                 "speed_slowdown_layers": {
                     "label": "Amount of Slower Layers",
@@ -1340,7 +1365,7 @@
                 },
                 "skirt_line_count": {
                     "label": "Skirt Line Count",
-                    "description": "The skirt is a line drawn around the first layer of the. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
+                    "description": "The skirt is a line drawn around the first layer of the print. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
                     "type": "int",
                     "default": 1,
                     "enabled": "adhesion_type == \"skirt\""
@@ -1381,35 +1406,35 @@
                     "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 0.22,
+                    "default": 0.35,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_layers": {
-                    "label": "Raft Surface Layers",
-                    "description": "The number of surface layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers usually works fine.",
+                    "label": "Raft Top Layers",
+                    "description": "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the object sits on. 2 layers result in a smoother top surface than 1.",
                     "type": "int",
                     "default": 2,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_thickness": {
-                    "label": "Raft Surface Thickness",
-                    "description": "Layer thickness of the surface raft layers.",
+                    "label": "Raft Top Layer Thickness",
+                    "description": "Layer thickness of the top raft layers.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_line_width": {
-                    "label": "Raft Surface Line Width",
-                    "description": "Width of the lines in the surface raft layers. These can be thin lines so that the top of the raft becomes smooth.",
+                    "label": "Raft Top Line Width",
+                    "description": "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_surface_line_spacing": {
-                    "label": "Raft Surface Spacing",
-                    "description": "The distance between the raft lines for the surface raft layers. The spacing of the interface should be equal to the line width, so that the surface is solid.",
+                    "label": "Raft Top Spacing",
+                    "description": "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.3,
@@ -1417,27 +1442,27 @@
                     "inherit_function": "raft_surface_line_width"
                 },
                 "raft_interface_thickness": {
-                    "label": "Raft Interface Thickness",
-                    "description": "Layer thickness of the interface raft layer.",
+                    "label": "Raft Middle Thickness",
+                    "description": "Layer thickness of the middle raft layer.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.27,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_interface_line_width": {
-                    "label": "Raft Interface Line Width",
-                    "description": "Width of the lines in the interface raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
+                    "label": "Raft Middle Line Width",
+                    "description": "Width of the lines in the middle raft layer. Making the second layer extrude more causes the lines to stick to the bed.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_interface_line_spacing": {
-                    "label": "Raft Interface Spacing",
-                    "description": "The distance between the raft lines for the interface raft layer. The spacing of the interface should be quite wide, while being dense enough to support the surface raft layers.",
+                    "label": "Raft Middle Spacing",
+                    "description": "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 2,
+                    "default": 1.0,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_base_thickness": {
@@ -1461,7 +1486,7 @@
                     "description": "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 5,
+                    "default": 3.0,
                     "enabled": "adhesion_type == \"raft\""
                 },
                 "raft_speed": {

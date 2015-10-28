@@ -34,17 +34,17 @@ QtObject {
                     elide: Text.ElideRight;
                     anchors.left: parent.left;
                     anchors.leftMargin: UM.Theme.sizes.setting_unit_margin.width
-                    anchors.right: downArrow.left;
-                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width
+                    anchors.right: separationLine.left;
                     anchors.verticalCenter: parent.verticalCenter;
                     font: UM.Theme.fonts.default
                 }
                 Rectangle{
+                    id: separationLine
                     width: 1
                     height: UM.Theme.sizes.setting_control.height
                     color: UM.Theme.colors.setting_control_border
-                    anchors.right: sidebarComboBoxLabel.right
-                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width
+                    anchors.right: downArrow.left
+                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width + downArrow.width/2
                     anchors.top: parent.top
                     z: parent.z + 1
                 }
@@ -57,11 +57,11 @@ QtObject {
         ButtonStyle {
             background: Item{
                 implicitWidth: UM.Theme.sizes.button.width;
-                implicitHeight: UM.Theme.sizes.button.width;
+                implicitHeight: UM.Theme.sizes.button.height;
                 Rectangle {
                     anchors.left: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "white"
+                    color: UM.Theme.colors.button_text
                     width: control.hovered ? openFileLabel.width : 0;
                     height: openFileLabel.height
                     Behavior on width { NumberAnimation { duration: 100; } }
@@ -87,7 +87,7 @@ QtObject {
                     source: control.iconSource;
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;
-                    sourceSize: UM.Theme.sizes.button_icon;
+                    sourceSize: UM.Theme.sizes.button_icon
                 }
             }
         }
@@ -139,13 +139,10 @@ QtObject {
                     id: buttonFace;
 
                     anchors.fill: parent;
-
                     property bool down: control.pressed || (control.checkable && control.checked);
 
                     color: {
-                        if(!control.enabled) {
-                            return UM.Theme.colors.button_disabled;
-                        } else if(control.checkable && control.checked && control.hovered) {
+                        if(control.checkable && control.checked && control.hovered) {
                             return UM.Theme.colors.button_active_hover;
                         } else if(control.pressed || (control.checkable && control.checked)) {
                             return UM.Theme.colors.button_active;
@@ -159,6 +156,7 @@ QtObject {
 
                     Label {
                         id: tool_button_arrow
+                        opacity: !control.enabled ? 0.4 : 1.0
                         anchors.right: parent.right;
                         anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width - tool_button_arrow.width) / 2
                         anchors.verticalCenter: parent.verticalCenter;
@@ -173,12 +171,12 @@ QtObject {
             label: Item {
                 Image {
                     anchors.centerIn: parent;
-
+                    opacity: !control.enabled ? 0.4 : 1.0
                     source: control.iconSource;
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;
 
-                    sourceSize: UM.Theme.sizes.button_icon;
+                    sourceSize: UM.Theme.sizes.button_icon
                 }
             }
         }
@@ -243,7 +241,7 @@ QtObject {
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;
 
-                    sourceSize: UM.Theme.sizes.button_icon;
+                    sourceSize: UM.Theme.sizes.button_icon
                 }
             }
         }
@@ -334,10 +332,10 @@ QtObject {
                     minimumPointSize: 8
                 }
                 UM.RecolorImage {
-                    id: lengthIcon
+                    id: category_arrow
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.sizes.default_margin.width * 2
+                    anchors.rightMargin: UM.Theme.sizes.default_margin.width * 2 - width / 2
                     width: UM.Theme.sizes.standard_arrow.width
                     height: UM.Theme.sizes.standard_arrow.height
                     sourceSize.width: width

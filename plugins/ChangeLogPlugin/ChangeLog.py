@@ -31,6 +31,7 @@ class ChangeLog(Extension, QObject,):
         self._change_logs = None
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
         Preferences.getInstance().addPreference("general/latest_version_changelog_shown", "15.05.90") #First version of CURA with uranium
+        self.addMenuItem(catalog.i18nc("@item:inmenu", "Show Changelog"), self.showChangelog)
         #self.showChangelog()
 
     def getChangeLogs(self):
@@ -77,8 +78,8 @@ class ChangeLog(Extension, QObject,):
     def _onEngineCreated(self):
         if not self._version:
             return #We're on dev branch.
-        if self._version > Preferences.getInstance().getValue("general/latest_version_changelog_shown"):
-            self.showChangelog()
+        #if self._version > Preferences.getInstance().getValue("general/latest_version_changelog_shown"):
+            #self.showChangelog()
 
     def showChangelog(self):
         if not self._changelog_window:

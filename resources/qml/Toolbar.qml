@@ -33,6 +33,7 @@ Item {
 
                 checkable: true;
                 checked: model.active;
+                enabled: UM.Selection.hasSelection;
 
                 style: UM.Theme.styles.tool_button;
 
@@ -43,7 +44,6 @@ Item {
                     onClicked: {
                         parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
                         base.activeY = parent.y
-
                     }
                 }
             }
@@ -65,7 +65,14 @@ Item {
         anchors.left: parent.right;
         y: base.activeY
 
-        width: panel.item ? Math.max(panel.width + 2 * UM.Theme.sizes.default_margin.width) : 0;
+        width: {
+            if (panel.item && panel.width > 0){
+                 return Math.max(panel.width + 2 * UM.Theme.sizes.default_margin.width)
+            }
+            else {
+                return 0
+            }
+        }
         height: panel.item ? panel.height + 2 * UM.Theme.sizes.default_margin.height : 0;
 
         opacity: panel.item ? 1 : 0

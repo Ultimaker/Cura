@@ -39,18 +39,17 @@ Item
         Rectangle{
             id: settingsModeSelection
             width: parent.width/100*55
-            height: childrenRect.height - UM.Theme.sizes.default_margin.width;
+            height: UM.Theme.sizes.sidebar_header_mode_toggle.height
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter
             Component{
                 id: wizardDelegate
                 Button {
-                    id: simpleModeButton
                     height: settingsModeSelection.height
                     anchors.left: parent.left
                     anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
-                    anchors.top: parent.top
+                    anchors.verticalCenter: parent.verticalCenter
                     width: parent.width / 2
                     text: model.text
                     exclusiveGroup: modeMenuGroup;
@@ -81,8 +80,6 @@ Item
                 anchors.top: parent.top
                 anchors.left: parent.left
                 width: parent.width
-                height: UM.Theme.sizes.sidebar_header.height
-                currentIndex: base.currentIndex;
             }
         }
     }
@@ -90,8 +87,9 @@ Item
     Rectangle {
         id: machineSelectionRow
         width: base.width
-        height: UM.Theme.sizes.sidebar_header.height
+        height: UM.Theme.sizes.sidebar_setup.height
         anchors.top: settingsModeRow.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.horizontalCenter: parent.horizontalCenter
 
         Label{
@@ -110,7 +108,6 @@ Item
             width: parent.width/100*55
             height: UM.Theme.sizes.setting_control.height
             tooltip: UM.MachineManager.activeMachineInstance;
-            //style: UM.Theme.styles.sidebar_header_button;
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter

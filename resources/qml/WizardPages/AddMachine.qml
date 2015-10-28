@@ -128,14 +128,7 @@ Item
 
                 text: model.name
 
-                onClicked: {
-                    ListView.view.currentIndex = index;
-                    if(model.pages.length > 0) {
-                        base.wizard.nextAvailable = true;
-                    } else {
-                        base.wizard.nextAvailable = false;
-                    }
-                }
+                onClicked: ListView.view.currentIndex = index;
 
                 Label
                 {
@@ -221,6 +214,7 @@ Item
                         base.wizard.appendPage(Qt.resolvedUrl("Bedleveling.qml"), catalog.i18nc("@title", "Bed Levelling"));
                         break;
                     default:
+                        base.wizard.appendPage(Qt.resolvedUrl("%1.qml".arg(pages[i])), pages[i])
                         break;
                 }
             }

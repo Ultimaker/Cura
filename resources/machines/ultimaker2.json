@@ -16,6 +16,12 @@
             "machine_nozzle_size": {
                 "default": 0.4
             },
+            "machine_nozzle_heat_up_speed": { 
+                "default": 2.0 
+            },
+            "machine_nozzle_cool_down_speed": { 
+                "default": 2.0 
+            },
             "machine_nozzle_tip_outer_diameter": {
                 "default": 1
             },
@@ -43,24 +49,26 @@
             "default": [
                 [
                     -40,
-                    30
+                    10
                 ],
                 [
                     -40,
-                    -10
+                    -30
                 ],
                 [
                     60,
-                    -10
+                    10
                 ],
                 [
                     60,
-                    30
+                    -30
                 ]
             ]
         },
         "machine_center_is_zero": { "default": false },
         "machine_nozzle_size": { "default": 0.4 },
+        "machine_nozzle_heat_up_speed": { "default": 2.0 },
+        "machine_nozzle_cool_down_speed": { "default": 2.0 },
         "gantry_height": { "default": 55 },
         "machine_use_extruder_offset_to_offset_coords": { "default": true },
         "machine_gcode_flavor": { "default": "UltiGCode" },

@@ -47,7 +47,6 @@ Item
     Action
     {
         id:toggleFullScreenAction
-        shortcut: StandardKey.FullScreen;
         text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
         iconName: "view-fullscreen";
     }
@@ -137,7 +136,6 @@ Item
         id: deleteObjectAction;
         text: catalog.i18nc("@action:inmenu","Delete Object");
         iconName: "edit-delete";
-        shortcut: StandardKey.Backspace;
     }
 
     Action
@@ -182,6 +180,7 @@ Item
         id: deleteAllAction;
         text: catalog.i18nc("@action:inmenu","&Clear Build Platform");
         iconName: "edit-delete";
+        shortcut: "Ctrl+D";
     }
 
     Action
@@ -216,5 +215,6 @@ Item
         id: showEngineLogAction;
         text: catalog.i18nc("@action:inmenu","Show Engine &Log...");
         iconName: "view-list-text";
+        shortcut: StandardKey.WhatsThis;
     }
 }
