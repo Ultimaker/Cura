@@ -9,7 +9,7 @@ catalog = i18nCatalog("cura")
 def getMetaData():
     return {
         "plugin": {
-            "name": catalog.i18nc("@label", "Change Log"),
+            "name": catalog.i18nc("@label", "Changelog"),
             "author": "Ultimaker",
             "version": "1.0",
             "description":  catalog.i18nc("@info:whatsthis", "Shows changes since latest checked version"),

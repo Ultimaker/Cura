@@ -81,6 +81,7 @@ Item{
             text: catalog.i18nc("@label","Global Profile:");
             width: parent.width/100*45
             font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text_default;
         }
 
 

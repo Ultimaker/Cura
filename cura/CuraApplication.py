@@ -44,6 +44,7 @@ from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
+from . import ZOffsetDecorator
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -349,14 +350,12 @@ class CuraApplication(QtApplication):
                 continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
 
             nodes.append(node)
+
         if nodes:
             op = GroupedOperation()
             for node in nodes:
-                # Ensure that the object is above the build platform
-                move_distance = node.getBoundingBox().center.y
-                if move_distance <= 0:
-                    move_distance = -node.getBoundingBox().bottom
-                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0)))
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
 
             op.push()
     
@@ -378,10 +377,8 @@ class CuraApplication(QtApplication):
 
             for node in nodes:
                 # Ensure that the object is above the build platform
-                move_distance = node.getBoundingBox().center.y
-                if move_distance <= 0:
-                    move_distance = -node.getBoundingBox().bottom
-                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0), Quaternion(), Vector(1, 1, 1)))
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
@@ -478,17 +475,20 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.setParent(self.getController().getScene().getRoot())
-        
+        center = Selection.getSelectionCenter()
+        group_node.setPosition(center)
+        group_node.setCenterPosition(center)
+
         for node in Selection.getAllSelectedObjects():
+            world = node.getWorldPosition()
             node.setParent(group_node)
-        group_node.setCenterPosition(group_node.getBoundingBox().center)
-        #group_node.translate(Vector(0,group_node.getBoundingBox().center.y,0))
-        group_node.translate(group_node.getBoundingBox().center)
+            node.setPosition(world - center)
+
         for node in group_node.getChildren():
             Selection.remove(node)
-        
+
         Selection.add(group_node)
-    
+
     @pyqtSlot()
     def ungroupSelected(self):
         ungrouped_nodes = []
@@ -499,12 +499,11 @@ class CuraApplication(QtApplication):
                 for child in node.getChildren():
                     if type(child) is SceneNode:
                         children_to_move.append(child)
-                       
+
                 for child in children_to_move:
+                    position = child.getWorldPosition()
                     child.setParent(node.getParent())
-                    print(node.getPosition())
-                    child.translate(node.getPosition())
-                    child.setPosition(child.getPosition().scale(node.getScale()))
+                    child.setPosition(position - node.getParent().getWorldPosition())
                     child.scale(node.getScale())
                     child.rotate(node.getOrientation())
 

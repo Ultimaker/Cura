@@ -14,18 +14,18 @@ class IspBase():
     Base class for ISP based AVR programmers.
     Functions in this class raise an IspError when something goes wrong.
     """
-    def programChip(self, flashData):
+    def programChip(self, flash_data):
         """ Program a chip with the given flash data. """
-        self.curExtAddr = -1
+        self.cur_ext_addr = -1
         self.chip = chipDB.getChipFromDB(self.getSignature())
         if not self.chip:
             raise IspError("Chip with signature: " + str(self.getSignature()) + "not found")
         self.chipErase()
         
-        print("Flashing %i bytes" % len(flashData))
-        self.writeFlash(flashData)
-        print("Verifying %i bytes" % len(flashData))
-        self.verifyFlash(flashData)
+        print("Flashing %i bytes" % len(flash_data))
+        self.writeFlash(flash_data)
+        print("Verifying %i bytes" % len(flash_data))
+        self.verifyFlash(flash_data)
         print("Completed")
 
     def getSignature(self):
@@ -45,13 +45,13 @@ class IspBase():
         """
         self.sendISP([0xAC, 0x80, 0x00, 0x00])
 
-    def writeFlash(self, flashData):
+    def writeFlash(self, flash_data):
         """
         Write the flash data, needs to be implemented in a subclass.
         """
         raise IspError("Called undefined writeFlash")
 
-    def verifyFlash(self, flashData):
+    def verifyFlash(self, flash_data):
         """
         Verify the flash data, needs to be implemented in a subclass.
         """
