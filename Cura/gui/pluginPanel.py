@@ -125,6 +125,7 @@ class pluginPanel(wx.Panel):
 				s.Add(ctrl, pos=(3+i,2), span=(1,2), flag=wx.EXPAND|wx.LEFT|wx.RIGHT,border=3)
 				ctrl.Bind(wx.EVT_TEXT, self.OnSettingChange)
 
+			ctrl.Bind(wx.EVT_WINDOW_DESTROY, self.OnCtrlDestroyed)
 			pluginPanel.paramCtrls[param['name']] = ctrl
 
 			i += 1
@@ -143,17 +144,23 @@ class pluginPanel(wx.Panel):
 		self.panelList.append(pluginPanel)
 		return True
 
+	# This is needed because on wx 2.8, a SettingChange event
+	# is sent right after the ctrl gets destroyed which causes a PyDeadCode exception
+	def OnCtrlDestroyed(self, e):
+		ctrl = e.GetWindow()
+		for panel in self.panelList:
+			for k in panel.paramCtrls.keys():
+				if panel.paramCtrls[k] == ctrl:
+					del panel.paramCtrls[k]
+
 	def OnSettingChange(self, e):
 		for panel in self.panelList:
 			idx = self.panelList.index(panel)
 			for k in panel.paramCtrls.keys():
-				try:
-					if type(panel.paramCtrls[k].GetValue()) == bool:
-						self.pluginConfig[idx]['params'][k] = int(panel.paramCtrls[k].GetValue())
-					else:
-						self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
-				except wx._core.PyDeadObjectError:
-					pass
+				if type(panel.paramCtrls[k].GetValue()) == bool:
+					self.pluginConfig[idx]['params'][k] = int(panel.paramCtrls[k].GetValue())
+				else:
+					self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
 		pluginInfo.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
@@ -177,6 +184,7 @@ class pluginPanel(wx.Panel):
 		panel.Show(False)
 		for p in self.panelList:
 			sizer.Detach(p)
+			p.Destroy()
 		self.panelList.pop(idx)
 		for p in self.panelList:
 				sizer.Add(p, flag=wx.EXPAND)
