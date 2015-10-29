@@ -78,8 +78,7 @@ class simpleModePanel(wx.Panel):
 					selectedMaterialType = material_type
 
 			if selectedMaterialType is None:
-				if profile.getProfileSetting('simpleModeMaterialType') == _("Others") or \
-				   profile.getProfileSetting('simpleModeMaterialType') == _("All"):
+				if profile.getProfileSetting('simpleModeMaterialType') == _("All"):
 					selectedMaterialType = profile.getProfileSetting('simpleModeMaterialType')
 				elif selectedMaterial is None or len(selectedMaterial.types) == 0:
 					selectedMaterialType = _("Others")
@@ -191,7 +190,7 @@ class simpleModePanel(wx.Panel):
 		else:
 			materials = self._print_material_types[materialType]
 			for material in materials:
-				choices.append(material.name)				
+				choices.append(material.name)
 
 		# Decide on the default selected material
 		selectedMaterial = None
@@ -227,14 +226,6 @@ class simpleModePanel(wx.Panel):
 				materials = self._print_material_types[materialType]
 
 			selection = self.materialCombo.GetSelection()
-
-			# This is needed to avoid a wxpython 2.8 bug which returns -1
-			# when the selection is made with SetValue
-			if selection == -1:
-				material_name = self.materialCombo.GetValue()
-				for material in materials:
-					if material.name == material_name:
-						return material
 
 			return materials[selection]
 		else:
