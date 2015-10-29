@@ -114,8 +114,14 @@ class CuraApp(wx.App):
 		from Cura.util import profile
 		from Cura.util import resources
 		from Cura.util import version
+		from distutils.version import LooseVersion
 
 		resources.setupLocalization(profile.getPreference('language'))  # it's important to set up localization at very beginning to install _
+
+		if LooseVersion(wx.__version__) < LooseVersion('3.0'):
+			wx.MessageBox(_("This version of Cura requires WxPython version 3.0 or newer.\nYour current WxPython version is %s.") % wx.__version__,
+						  _("WxPython version is too old"), wx.OK | wx.ICON_ERROR)
+			return
 
 		#If we do not have preferences yet, try to load it from a previous Cura install
 		if profile.getMachineSetting('machine_type') == 'unknown':
