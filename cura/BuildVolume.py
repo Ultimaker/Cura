@@ -186,6 +186,9 @@ class BuildVolume(SceneNode):
             self.rebuild()
 
     def _updateDisallowedAreas(self):
+        if not self._active_instance or not self._active_profile:
+            return
+
         disallowed_areas = self._active_instance.getMachineSettingValue("machine_disallowed_areas")
         areas = []
 
