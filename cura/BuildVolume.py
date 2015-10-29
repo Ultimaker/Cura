@@ -241,8 +241,6 @@ class BuildVolume(SceneNode):
                 [half_machine_width - skirt_size, -half_machine_depth + skirt_size]
             ], numpy.float32)))
 
-            areas.append(poly)
-
         self._disallowed_areas = areas
 
     def _getSkirtSize(self, profile):
