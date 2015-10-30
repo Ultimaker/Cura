@@ -356,7 +356,8 @@ UM.MainWindow
                     left: parent.left;
                     //leftMargin: UM.Theme.sizes.loadfile_margin.width
                 }
-                action: actions.open;
+                //action: actions.open;
+                onClicked: UM.Models.extensionModel.subMenuTriggered('Firmware', 'Update Firmware')
             }
 
             Image
