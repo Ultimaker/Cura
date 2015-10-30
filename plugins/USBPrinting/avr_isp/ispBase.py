@@ -58,7 +58,7 @@ class IspBase():
         raise IspError("Called undefined verifyFlash")
 
 
-class IspError(BaseException):
+class IspError(Exception):
     def __init__(self, value):
         self.value = value
 
