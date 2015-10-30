@@ -11,6 +11,7 @@ from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Qt.ListModel import ListModel
+from UM.Message import Message
 
 from cura.CuraApplication import CuraApplication
 
@@ -162,6 +163,16 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
                 self.addConnectionSignal.emit(serial_port) #Hack to ensure its created in main thread
                 continue
         self._serial_port_list = list(serial_ports)
+
+        connections_to_remove = []
+        for port, connection in self._printer_connections.items():
+            if port not in self._serial_port_list:
+                connection.close()
+                connections_to_remove.append(port)
+
+        for port in connections_to_remove:
+            del self._printer_connections[port]
+
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addConnection(self, serial_port):
