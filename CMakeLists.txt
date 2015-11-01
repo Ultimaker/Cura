@@ -68,6 +68,6 @@ if(NOT APPLE AND NOT WIN32)
     install(FILES cura.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 else()
     install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py DESTINATION lib/python${PYTHON_VERSION_MAJOR}/site-packages/cura)
+    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
 endif()
 
