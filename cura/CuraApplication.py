@@ -51,6 +51,11 @@ import numpy
 import copy
 numpy.seterr(all="ignore")
 
+try:
+    from cura.CuraVersion import CuraVersion
+except ImportError:
+    CuraVersion = "master"
+
 class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -62,7 +67,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "15.09.91")
+        super().__init__(name = "cura", version = CuraVersion)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
