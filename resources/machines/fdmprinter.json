@@ -493,6 +493,7 @@
                     "options": {
                         "grid": "Grid",
                         "lines": "Lines",
+                        "triangles": "Triangles",
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag"
                     },
