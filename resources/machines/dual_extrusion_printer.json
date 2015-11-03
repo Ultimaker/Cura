@@ -95,8 +95,8 @@
                                     "max_value": "16"
                                 },
                                 "support_roof_extruder_nr": {
-                                    "label": "Hammock Extruder",
-                                    "description": "The extruder train to use for printing the hammock. This is used in multi-extrusion.",
+                                    "label": "Support Roof Extruder",
+                                    "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
                                     "type": "int",
                                     "default": 0,
                                     "min_value": "0",
