@@ -313,7 +313,7 @@ class AutoUpdateFirmware(wx.Dialog):
 		programmer = stk500v2.Stk500v2()
 		programmer.progressCallback = self.OnProgress
 		if self.port == 'AUTO':
-			wx.CallAfter(self.updateLabel, _("Please connect the printer to\nyour computer with the USB cable."))
+			wx.CallAfter(self.updateLabel, _("Please connect the printer to your\ncomputer with a USB cable and power it on."))
 			while not programmer.isConnected():
 				for self.port in machineCom.serialList(True):
 					try:
