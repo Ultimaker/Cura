@@ -10,44 +10,69 @@
 
     "machine_settings": {
         "machine_start_gcode": {
+            "description": "Gcode commands to be executed at the very start - separated by \\n.",
             "default": "G28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
         },
         "machine_end_gcode": {
+            "description": "Gcode commands to be executed at the very end - separated by \\n.",
             "default": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
         },
         "machine_width": {
+            "description": "The width (X-direction) of the printable area.",
             "default": 100
         },
         "machine_depth": {
+            "description": "The depth (Y-direction) of the printable area.",
             "default": 100
         },
         "machine_height": {
+            "description": "The height (Z-direction) of the printable area.",
             "default": 100
         },
         "machine_heated_bed": {
+            "description": "Whether the machine has a heated bed present.",
             "default": false
         },
         "machine_center_is_zero": {
+            "description": "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area.",
             "default": false
         },
         "machine_extruder_count": {
+            "description": "Number of extruder trains.",
             "default": 1
         },
-        "machine_nozzle_size": { "default": 0.4, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_tip_outer_diameter": { "default": 1, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_head_distance": { "default": 3, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_expansion_angle": { "default": 45, "SEE_machine_extruder_trains": true  },
-        "machine_heat_zone_length": { "default": 16, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_heat_up_speed": { "default": 2.0, "SEE_machine_extruder_trains": true  },
-        "machine_nozzle_cool_down_speed": { "default": 2.0, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_size": { 
+            "description": "The inner diameter of the hole in the nozzle.",
+            "default": 0.4, "SEE_machine_extruder_trains": true },
+        "machine_nozzle_tip_outer_diameter": { 
+            "description": "The outer diameter of the tip of the nozzle.",
+            "default": 1, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_head_distance": {
+            "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
+            "default": 3, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_expansion_angle": {
+            "description": "The angle between the horizontal plane and the conical part right above the tip of the nozzle.",
+            "default": 45, "SEE_machine_extruder_trains": true  },
+        "machine_heat_zone_length": {
+            "description": "The distance from the tip of the nozzle in which heat from the nozzle is transfered to the filament.",
+            "default": 16, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_heat_up_speed": {
+            "description": "The speed (*C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
+            "default": 2.0, "SEE_machine_extruder_trains": true  },
+        "machine_nozzle_cool_down_speed": { 
+            "description": "The speed (*C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
+            "default": 2.0, "SEE_machine_extruder_trains": true  },
         "machine_gcode_flavor": {
+            "description": "The type of gcode to be generated.",
             "default": "RepRap"
         },
         "machine_disallowed_areas": {
+            "description": "A list of polygons with areas the print head is not allowed to enter.",
             "type": "polygons",
             "default": []
         },
         "machine_platform_offset": {
+            "description": "Where to display the platform mesh.",
             "default": [
                 0,
                 0,
@@ -55,6 +80,7 @@
             ]
         },
         "machine_head_polygon": {
+            "description": "A 2D silhouette of the print head.",
             "type": "polygon",
             "default": [
                 [
@@ -75,8 +101,8 @@
                 ]
             ]
         },
-        "machine_head_with_fans_polygon":
-        {
+        "machine_head_with_fans_polygon": {
+            "description": "A 2D silhouette of the print head.",
             "type": "polygon",
             "default": [
                 [
@@ -97,8 +123,8 @@
                 ]
             ]
         },
-        "gantry_height":
-        {
+        "gantry_height": {
+            "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axles).",
             "default":99999999999
         }
     },
