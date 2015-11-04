@@ -38,10 +38,10 @@ class ProcessSlicedObjectListJob(Job):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
                 if node.callDecoration("getLayerData"):
-                #if hasattr(node.getMeshData(), "layerData"):
                     self._scene.getRoot().removeChild(node)
                 else:
                     objectIdMap[id(node)] = node
+            Job.yieldThread()
 
         settings = Application.getInstance().getMachineManager().getActiveProfile()
         layerHeight = settings.getSettingValue("layer_height")
@@ -90,6 +90,8 @@ class ProcessSlicedObjectListJob(Job):
                     points -= center
 
                     layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
+
+                Job.yieldThread()
 
                 current_layer += 1
                 progress = (current_layer / layer_count) * 100

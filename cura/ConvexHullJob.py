@@ -31,6 +31,8 @@ class ConvexHullJob(Job):
                     self._node.callDecoration("setConvexHullJob", None)
                     return
 
+                Job.yieldThread()
+
         else: 
             if not self._node.getMeshData():
                 return
