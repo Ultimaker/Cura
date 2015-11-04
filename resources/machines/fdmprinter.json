@@ -1163,7 +1163,7 @@
                             "unit": "mm",
                             "min_value": "0",
                             "max_value_warning": "10",
-                            "default": 0.15,
+                            "default": 0.1,
                             "type": "float",
                             "visible": false,
                             "enabled": "support_enable"
@@ -1204,7 +1204,7 @@
                     "description": "The height of the steps of the stair-like bottom of support resting on the model. Small steps can cause the support to be hard to remove from the top of the model.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 2,
+                    "default": 0.3,
                     "visible": false,
                     "enabled": "support_enable"
                 },
