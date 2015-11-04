@@ -17,6 +17,7 @@ from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
 from . import ProcessGCodeJob
+from . import StartSliceJob
 
 import os
 import sys
@@ -67,12 +68,8 @@ class CuraEngineBackend(Backend):
 
         self._slicing = False
         self._restart = False
-
-        self._save_gcode = True
-        self._save_polygons = True
-        self._report_progress = True
-
         self._enabled = True
+        self._always_restart = True
 
         self._message = None
 
@@ -97,24 +94,12 @@ class CuraEngineBackend(Backend):
     ##  Emitted whne the slicing process is aborted forcefully.
     slicingCancelled = Signal()
 
-    ##  Perform a slice of the scene with the given set of settings.
-    #
-    #   \param kwargs Keyword arguments.
-    #                 Valid values are:
-    #                 - settings: The settings to use for the slice. The default is the active machine.
-    #                 - save_gcode: True if the generated gcode should be saved, False if not. True by default.
-    #                 - save_polygons: True if the generated polygon data should be saved, False if not. True by default.
-    #                 - force_restart: True if the slicing process should be forcefully restarted if it is already slicing.
-    #                                  If False, this method will do nothing when already slicing. True by default.
-    #                 - report_progress: True if the slicing progress should be reported, False if not. Default is True.
-    def slice(self, **kwargs):
+    ##  Perform a slice of the scene.
+    def slice(self):
         if not self._enabled:
             return
 
         if self._slicing:
-            if not kwargs.get("force_restart", True):
-                return
-
             self._slicing = False
             self._restart = True
             if self._process is not None:
@@ -123,41 +108,15 @@ class CuraEngineBackend(Backend):
                     self._process.terminate()
                 except: # terminating a process that is already terminating causes an exception, silently ignore this.
                     pass
-            self.slicingCancelled.emit()
-            return
-        Logger.log("d", "Preparing to send slice data to engine.")
-        object_groups = []
-        if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
-            for node in OneAtATimeIterator(self._scene.getRoot()):
-                temp_list = []
-                children = node.getAllChildren()
-                children.append(node)
-                for child_node in children:
-                    if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
-                        temp_list.append(child_node)
-                object_groups.append(temp_list)
-        else:
-            temp_list = []
-            for node in DepthFirstIterator(self._scene.getRoot()):
-                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                    if not getattr(node, "_outside_buildarea", False):
-                        temp_list.append(node)
-            if len(temp_list) == 0:
-                self.processingProgress.emit(0.0)
-                return
-            object_groups.append(temp_list)
-        #for node in DepthFirstIterator(self._scene.getRoot()):
-        #    if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-        #        if not getattr(node, "_outside_buildarea", False):
-        #            objects.append(node)
 
-        if len(object_groups) == 0:
             if self._message:
                 self._message.hide()
                 self._message = None
-            return #No point in slicing an empty build plate
 
-        if kwargs.get("profile", self._profile).hasErrorValue():
+            self.slicingCancelled.emit()
+            return
+
+        if self._profile.hasErrorValue():
             Logger.log('w', "Profile has error values. Aborting slicing")
             if self._message:
                 self._message.hide()
@@ -165,62 +124,27 @@ class CuraEngineBackend(Backend):
             self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
             self._message.show()
             return #No slicing if we have error values since those are by definition illegal values.
-        # Remove existing layer data (if any)
-        for node in DepthFirstIterator(self._scene.getRoot()):
-            if type(node) is SceneNode and node.getMeshData():
-                if node.callDecoration("getLayerData"):
-                    Application.getInstance().getController().getScene().getRoot().removeChild(node)
-                    break
-        Application.getInstance().getController().getScene().gcode_list = None
+
+        self.processingProgress.emit(0.0)
+        if not self._message:
+            self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
+            self._message.show()
+        else:
+            self._message.setProgress(-1)
+
+        self._scene.gcode_list = []
         self._slicing = True
-        self.slicingStarted.emit()
 
-        self._report_progress = kwargs.get("report_progress", True)
-        if self._report_progress:
-            self.processingProgress.emit(0.0)
-            if not self._message:
-                self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
-                self._message.show()
-            else:
-                self._message.setProgress(-1)
+        job = StartSliceJob.StartSliceJob(self._profile, self._socket)
+        job.start()
+        job.finished.connect(self._onStartSliceCompleted)
 
-        self._sendSettings(kwargs.get("profile", self._profile))
-
-        self._scene.acquireLock()
-
-        # Set the gcode as an empty list. This will be filled with strings by GCodeLayer messages.
-        # This is done so the gcode can be fragmented in memory and does not need a continues memory space.
-        # (AKA. This prevents MemoryErrors)
-        self._save_gcode = kwargs.get("save_gcode", True)
-        if self._save_gcode:
-            setattr(self._scene, "gcode_list", [])
-
-        self._save_polygons = kwargs.get("save_polygons", True)
-
-        slice_message = Cura_pb2.Slice()
-
-        for group in object_groups:
-            group_message = slice_message.object_lists.add()
-            for object in group:
-                mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
-
-                obj = group_message.objects.add()
-                obj.id = id(object)
-                
-                verts = numpy.array(mesh_data.getVertices())
-                verts[:,[1,2]] = verts[:,[2,1]]
-                verts[:,1] *= -1
-                obj.vertices = verts.tostring()
-
-                self._handlePerObjectSettings(object, obj)
-
-            # Hack to add per-object settings also to the "MeshGroup" in CuraEngine
-            # We really should come up with a better solution for this.
-            self._handlePerObjectSettings(group[0], group_message)
-
-        self._scene.releaseLock()
-        Logger.log("d", "Sending data to engine for slicing.")
-        self._socket.sendMessage(slice_message)
+    def _onStartSliceCompleted(self, job):
+        if job.getError() or job.getResult() != True:
+            if self._message:
+                self._message.hide()
+                self._message = None
+            return
 
     def _onSceneChanged(self, source):
         if type(source) is not SceneNode:
@@ -250,40 +174,41 @@ class CuraEngineBackend(Backend):
         self._onChanged()
 
     def _onSlicedObjectListMessage(self, message):
-        if self._save_polygons:
-            if self._layer_view_active:
-                job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
-                job.start()
-            else :
-                self._stored_layer_data = message
+        if self._layer_view_active:
+            job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+            job.start()
+        else :
+            self._stored_layer_data = message
 
     def _onProgressMessage(self, message):
-        if message.amount >= 0.99:
-            self._slicing = False
-
-            if self._message:
-                self._message.setProgress(100)
-                self._message.hide()
-                self._message = None
-
         if self._message:
             self._message.setProgress(round(message.amount * 100))
 
-        if self._report_progress:
-            self.processingProgress.emit(message.amount)
+        self.processingProgress.emit(message.amount)
 
     def _onGCodeLayerMessage(self, message):
-        if self._save_gcode:
-            job = ProcessGCodeJob.ProcessGCodeLayerJob(message)
-            job.start()
+        self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
 
     def _onGCodePrefixMessage(self, message):
-        if self._save_gcode:
-            self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
+        self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
 
     def _onObjectPrintTimeMessage(self, message):
         self.printDurationMessage.emit(message.time, message.material_amount)
         self.processingProgress.emit(1.0)
+
+        self._slicing = False
+
+        if self._message:
+            self._message.setProgress(100)
+            self._message.hide()
+            self._message = None
+
+        if self._always_restart:
+            try:
+                self._process.terminate()
+                self._createSocket()
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
 
     def _createSocket(self):
         super()._createSocket()
@@ -305,15 +230,6 @@ class CuraEngineBackend(Backend):
             return
 
         self._change_timer.start()
-
-    def _sendSettings(self, profile):
-        msg = Cura_pb2.SettingList()
-        for key, value in profile.getAllSettingValues(include_machine = True).items():
-            s = msg.settings.add()
-            s.name = key
-            s.value = str(value).encode("utf-8")
-
-        self._socket.sendMessage(msg)
 
     def _onBackendConnected(self):
         if self._restart:
@@ -338,20 +254,3 @@ class CuraEngineBackend(Backend):
                     self._stored_layer_data = None
             else:
                 self._layer_view_active = False
-
-    def _handlePerObjectSettings(self, node, message):
-        profile = node.callDecoration("getProfile")
-        if profile:
-            for key, value in profile.getChangedSettingValues().items():
-                setting = message.settings.add()
-                setting.name = key
-                setting.value = str(value).encode()
-
-        object_settings = node.callDecoration("getAllSettingValues")
-        if not object_settings:
-            return
-
-        for key, value in object_settings.items():
-            setting = message.settings.add()
-            setting.name = key
-            setting.value = str(value).encode()

@@ -15,6 +15,7 @@ from cura.OneAtATimeIterator import OneAtATimeIterator
 
 from . import Cura_pb2
 
+##  Job class that handles sending the current scene data to CuraEngine
 class StartSliceJob(Job):
     def __init__(self, profile, socket):
         super().__init__()
@@ -45,7 +46,8 @@ class StartSliceJob(Job):
                     if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
                         temp_list.append(child_node)
 
-                object_groups.append(temp_list)
+                if temp_list:
+                    object_groups.append(temp_list)
                 Job.yieldThread()
         else:
             temp_list = []
@@ -54,7 +56,9 @@ class StartSliceJob(Job):
                     if not getattr(node, "_outside_buildarea", False):
                         temp_list.append(node)
                 Job.yieldThread()
-            object_groups.append(temp_list)
+
+            if temp_list:
+                object_groups.append(temp_list)
 
         self._scene.releaseLock()
 
@@ -68,7 +72,6 @@ class StartSliceJob(Job):
         for group in object_groups:
             group_message = slice_message.object_lists.add()
             for object in group:
-                print(object)
                 mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
                 obj = group_message.objects.add()
