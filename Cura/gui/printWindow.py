@@ -392,7 +392,11 @@ class printWindowPlugin(wx.Frame):
 		isPrinting = connection.isPrinting() or connection.isPaused()
 		if self._progressBar is not None:
 			if isPrinting:
-				self._progressBar.SetValue(connection.getPrintProgress() * 1000)
+				(current, total, z) = connection.getPrintProgress()
+				progress = 0.0
+				if total > 0:
+					progress = float(current) / float(total)
+				self._progressBar.SetValue(progress * 1000)
 			else:
 				self._progressBar.SetValue(0)
 		info = connection.getStatusString()
@@ -539,7 +543,11 @@ class printWindowBasic(wx.Frame):
 		self._updateButtonStates()
 		onGoingPrint = connection.isPrinting() or connection.isPaused()
 		if onGoingPrint:
-			self.progress.SetValue(connection.getPrintProgress() * 1000)
+			(current, total, z) = connection.getPrintProgress()
+			progress = 0.0
+			if total > 0:
+				progress = float(current) / float(total)
+			self.progress.SetValue(progress * 1000)
 		else:
 			self.progress.SetValue(0)
 		info = connection.getStatusString()
@@ -665,6 +673,7 @@ class printWindowAdvanced(wx.Frame):
 		self.temperatureBedField = TemperatureField(self.panel, self._setBedTemperature)
 		self.temperatureGraph = TemperatureGraph(self.panel)
 		self.temperatureGraph.SetMinSize((250, 100))
+		self.printStatus = wx.StaticText(parent=self.panel, id=-1, label="");
 		self.progress = wx.Gauge(self.panel, -1, range=1000)
 
 		f = wx.Font(8, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
@@ -692,7 +701,8 @@ class printWindowAdvanced(wx.Frame):
 		self.sizer.Add(self.temperatureBedField, pos=(5, 2))
 		self.sizer.Add(self._termLog, pos=(0, 3), span=(5, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
 		self.sizer.Add(self._termInput, pos=(5, 3), span=(1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
-		self.sizer.Add(self.progress, pos=(6, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
+		self.sizer.Add(self.printStatus, pos=(6, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM|wx.TOP, border=5)
+		self.sizer.Add(self.progress, pos=(7, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 		self.Bind(wx.EVT_CLOSE, self.OnClose)
@@ -937,7 +947,12 @@ class printWindowAdvanced(wx.Frame):
 		self._updateButtonStates()
 		isPrinting = connection.isPrinting() or connection.isPaused()
 		if isPrinting:
-			self.progress.SetValue(connection.getPrintProgress() * 1000)
+			(current, total, z) = connection.getPrintProgress()
+			progress = 0.0
+			if total > 0:
+				progress = float(current) / float(total)
+			self.progress.SetValue(progress * 1000)
+			self.printStatus.SetLabel(_("Printing %.2f%% | Line %d of %d lines | Z: %.3f mm") % (progress * 100, current, total, z))
 		else:
 			self.progress.SetValue(0)
 		info = connection.getStatusString()

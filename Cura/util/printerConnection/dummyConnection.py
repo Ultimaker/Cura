@@ -80,9 +80,7 @@ class dummyConnection(printerConnectionBase.printerConnectionBase):
 
 	#Amount of progression of the current print file. 0.0 to 1.0
 	def getPrintProgress(self):
-		if self._lineCount < 1:
-			return 0.0
-		return float(self._progressLine) / float(self._lineCount)
+		return (self._progressLine, self._lineCount, 0.0)
 
 	# Return if the printer with this connection type is available
 	def isAvailable(self):

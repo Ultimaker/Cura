@@ -67,6 +67,8 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._commState = None
 		self._commStateString = None
 		self._gcodeData = []
+		self._printProgress = 0
+		self._ZPosition = 0
 
 	#Load the data into memory for printing, returns True on success
 	def loadGCodeData(self, dataStream):
@@ -94,6 +96,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			self._process.stdin.write('G:%s\n' % (line))
 		self._process.stdin.write('START\n')
 		self._printProgress = 0
+		self._ZPosition = 0
 
 	def coolDown(self):
 		cooldown_toolhead = "M104 S0"
@@ -130,13 +133,14 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 	def pause(self, value):
 		if not (self.isPrinting() or self.isPaused()) or self._process is None:
 			return
-		self._process.stdin.write('PAUSE\n' if value else "RESUME\n")
+		if value:
+			self._process.stdin.write("PAUSE\n")
+		else:
+			self._process.stdin.write("RESUME\n")
 
 	#Amount of progression of the current print file. 0.0 to 1.0
 	def getPrintProgress(self):
-		if len(self._gcodeData) < 1:
-			return 0.0
-		return float(self._printProgress) / float(len(self._gcodeData))
+		return (self._printProgress, len(self._gcodeData), self._ZPosition)
 
 	# Return if the printer with this connection type is available
 	def isAvailable(self):
@@ -239,6 +243,9 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				self._doCallback('')
 			elif line[0] == 'progress':
 				self._printProgress = int(line[1])
+				self._doCallback()
+			elif line[0] == 'changeZ':
+				self._ZPosition = float(line[1])
 				self._doCallback()
 			else:
 				print line
