@@ -50,6 +50,7 @@ class CuraEngineBackend(Backend):
         self._onActiveViewChanged()
         self._stored_layer_data = None
 
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onChanged)
 
         self._profile = None
         Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
