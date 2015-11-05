@@ -758,7 +758,8 @@
                     "type": "float",
                     "min_value": "0.1",
                     "max_value_warning": "300",
-                    "default": 150
+                    "default": 150,
+                    "inherit_function": "speed_print if magic_spiralize else 150"
                 },
                 "speed_layer_0": {
                     "label": "Bottom Layer Speed",
