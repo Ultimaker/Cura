@@ -7,8 +7,6 @@ import QtQuick.Window 2.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
-import Cura 1.0 as Cura
-import ".."
 
 Item
 {
@@ -80,7 +78,6 @@ Item
                     base.wizard.removePage(i)
                 }
                 saveMachine()
-                base.wizard.visible = false
             }
         }
         onBackClicked:
@@ -295,6 +292,9 @@ Item
                         base.wizard.appendPage(Qt.resolvedUrl("%1.qml".arg(pages[i])), pages[i])
                         break;
                 }
+            }
+            if(base.wizard.lastPage ==  true){
+                base.wizard.visible = false
             }
         }
     }
