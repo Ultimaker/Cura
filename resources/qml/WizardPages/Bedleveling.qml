@@ -7,6 +7,8 @@ import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
+import ".."
 
 Item
 {
@@ -15,11 +17,22 @@ Item
     property bool three_point_leveling: true
     property int platform_width: UM.MachineManager.getSettingValue("machine_width")
     property int platform_height: UM.MachineManager.getSettingValue("machine_depth")
-    property bool alreadyTested: base.addOriginalProgress.bedLeveling
     anchors.fill: parent;
     property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
     Component.onCompleted: printer_connection.homeHead()
     UM.I18nCatalog { id: catalog; name:"cura"}
+    property variant wizard: null;
+
+    Connections
+    {
+        target: wizardPage.wizard
+        onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
+        {
+            if(wizardPage.wizard.lastPage ==  true){
+                wizardPage.wizard.visible = false
+            }
+        }
+    }
 
     Label
     {
@@ -61,7 +74,6 @@ Item
             id: bedlevelingButton
             anchors.top: parent.top
             anchors.left: parent.left
-            enabled: !alreadyTested
             text: catalog.i18nc("@action:button","Move to Next Position");
             onClicked:
             {
@@ -79,7 +91,6 @@ Item
                 }
                 wizardPage.leveling_state++
                 if (wizardPage.leveling_state >= 3){
-                    base.addOriginalProgress.bedLeveling = true
                     resultText.visible = true
                     skipBedlevelingButton.enabled = false
                     bedlevelingButton.enabled = false
@@ -91,7 +102,6 @@ Item
         Button
         {
             id: skipBedlevelingButton
-            enabled: !alreadyTested
             anchors.top: parent.width < wizardPage.width ? parent.top : bedlevelingButton.bottom
             anchors.topMargin: parent.width < wizardPage.width ? 0 : UM.Theme.sizes.default_margin.height/2
             anchors.left: parent.width < wizardPage.width ? bedlevelingButton.right : parent.left
@@ -104,7 +114,7 @@ Item
     Label
     {
         id: resultText
-        visible: alreadyTested
+        visible: false
         anchors.top: bedlevelingWrapper.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
