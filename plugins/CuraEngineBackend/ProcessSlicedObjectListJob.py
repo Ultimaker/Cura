@@ -55,14 +55,6 @@ class ProcessSlicedObjectListJob(Job):
         mesh = MeshData()
         layer_data = LayerData.LayerData()
 
-        #Add layerdata decorator to scene node to indicate that the node has layerdata
-        decorator = LayerDataDecorator.LayerDataDecorator()
-        decorator.setLayerData(layer_data)
-        new_node.addDecorator(decorator)
-
-        new_node.setMeshData(mesh)
-        new_node.setParent(self._scene.getRoot())
-
         layer_count = 0
         for object in self._message.objects:
             layer_count += len(object.layers)
@@ -103,6 +95,14 @@ class ProcessSlicedObjectListJob(Job):
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layer_data.build()
+
+        #Add layerdata decorator to scene node to indicate that the node has layerdata
+        decorator = LayerDataDecorator.LayerDataDecorator()
+        decorator.setLayerData(layer_data)
+        new_node.addDecorator(decorator)
+
+        new_node.setMeshData(mesh)
+        new_node.setParent(self._scene.getRoot())
 
         if self._progress:
             self._progress.setProgress(100)
