@@ -263,6 +263,8 @@ class BuildVolume(SceneNode):
         if profile.getSettingValue("draft_shield_enabled"):
             skirt_size += profile.getSettingValue("draft_shield_dist")
 
+        skirt_size += profile.getSettingValue("xy_offset")
+
         return skirt_size
 
     def _clamp(self, value, min_value, max_value):
