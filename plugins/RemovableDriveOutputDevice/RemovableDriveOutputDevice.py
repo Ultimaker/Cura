@@ -52,6 +52,8 @@ class RemovableDriveOutputDevice(OutputDevice):
             message = Message(catalog.i18nc("@info:progress", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1)
             message.show()
 
+            self.writeStarted.emit(self)
+
             job._message = message
             job.start()
         except PermissionError as e:
