@@ -95,7 +95,7 @@ To build and install Cura, run the following commands:
 ```bash
 git clone https://code.alephobjects.com/diffusion/CURA/cura.git
 
-sudo apt-get install python-opengl python-numpy python-serial python-setuptools python-wxgtk2.8 curl python-power
+sudo apt-get install python-opengl python-numpy python-serial python-setuptools python-wxgtk3.0 curl python-power
 # Run this also if you're building for 32bit Debian
 sudo apt-get install gcc-multilib g++-multilib
 
