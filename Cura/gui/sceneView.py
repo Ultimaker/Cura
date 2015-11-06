@@ -623,7 +623,7 @@ class SceneView(openglGui.glGuiPanel):
 		self.sceneUpdated()
 
 	def _splitCallback(self, progress):
-		print progress
+		pass
 
 	def OnMergeObjects(self, e):
 		if self._selectedObj is None or self._focusObj is None or self._selectedObj == self._focusObj:
