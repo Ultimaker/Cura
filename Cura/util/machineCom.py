@@ -501,6 +501,11 @@ class MachineCom(object):
 						self.cancelPrint()
 					else:
 						self._gcodePos = newPos
+			elif self._state == self.STATE_PAUSED:
+				if 'ok' in line:
+					timeout = time.time() + 5
+					if not self._commandQueue.empty():
+						self._sendCommand(self._commandQueue.get())
 
 		self._log("Connection closed, closing down monitor")
 
@@ -584,7 +589,7 @@ class MachineCom(object):
 			self._log("Unexpected error while writing serial port: %s" % (getExceptionString()))
 			self._errorValue = getExceptionString()
 			self.close(True)
-	
+
 	def _sendNext(self):
 		if self._gcodePos >= len(self._gcodeList):
 			self._changeState(self.STATE_OPERATIONAL)
@@ -612,14 +617,14 @@ class MachineCom(object):
 		self._sendCommand("N%d%s*%d" % (self._gcodePos, line, checksum))
 		self._gcodePos += 1
 		self._callback.mcProgress(self._gcodePos)
-	
+
 	def sendCommand(self, cmd):
 		cmd = cmd.encode('ascii', 'replace')
 		if self.isPrinting():
 			self._commandQueue.put(cmd)
 		elif self.isOperational():
 			self._sendCommand(cmd)
-	
+
 	def printGCode(self, gcodeList):
 		if not self.isOperational() or self.isPrinting():
 			return
