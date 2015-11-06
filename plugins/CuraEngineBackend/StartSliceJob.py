@@ -107,7 +107,7 @@ class StartSliceJob(Job):
     def _handlePerObjectSettings(self, node, message):
         profile = node.callDecoration("getProfile")
         if profile:
-            for key, value in profile.getChangedSettingValues().items():
+            for key, value in profile.getAllSettingValues().items():
                 setting = message.settings.add()
                 setting.name = key
                 setting.value = str(value).encode()
