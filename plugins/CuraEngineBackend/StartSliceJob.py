@@ -86,10 +86,6 @@ class StartSliceJob(Job):
 
                 Job.yieldThread()
 
-            # Hack to add per-object settings also to the "MeshGroup" in CuraEngine
-            # We really should come up with a better solution for this.
-            self._handlePerObjectSettings(group[0], group_message)
-
         Logger.log("d", "Sending data to engine for slicing.")
         self._socket.sendMessage(slice_message)
 
