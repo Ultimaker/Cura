@@ -952,9 +952,10 @@ class printWindowAdvanced(wx.Frame):
 			if total > 0:
 				progress = float(current) / float(total)
 			self.progress.SetValue(progress * 1000)
-			self.printStatus.SetLabel(_("Printing %.1f%% | Line %d of %d lines | Z: %.3f mm") % (progress * 100, current, total, z))
+			self.printStatus.SetLabel(_("Printing %.1f%% | Z: %.3f mm") % (progress * 100, z))
 		else:
 			self.progress.SetValue(0)
+			self.printStatus.SetLabel("")
 		info = connection.getStatusString()
 		info += '\n'
 		if self._printerConnection.getTemperature(0) is not None:
