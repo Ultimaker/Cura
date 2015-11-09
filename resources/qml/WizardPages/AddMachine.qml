@@ -52,7 +52,7 @@ Item
         var name = machineList.model.getItem(machineList.currentIndex).name
 
         //if the automatically assigned name is not unique, the editMachineName function keeps editing it untill it is.
-        while (UM.MachineManager.getNameUniqueness(name) == false)
+        while (UM.MachineManager.checkInstanceExists(name) != false)
         {
             name = editMachineName(name)
         }
@@ -65,7 +65,7 @@ Item
         onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
         {
             var name = machineName.text
-            if (UM.MachineManager.getNameUniqueness(name) == false)
+            if (UM.MachineManager.checkInstanceExists(name) != false)
             {
                 errorMessage.show = true
             }
