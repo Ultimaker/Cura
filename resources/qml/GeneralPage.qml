@@ -13,6 +13,15 @@ UM.PreferencesPage
     //: General configuration page title
     title: catalog.i18nc("@title:tab","General");
 
+    function setDefaultLanguage(languageCode){
+        //loops trough the languageList and sets the language using the languageCode
+        for(var i = 0; i < languageList.count; i++){
+            if (languageComboBox.model.get(i).code == languageCode){
+                languageComboBox.currentIndex = i
+            }
+        }
+    }
+
     function reset()
     {
         UM.Preferences.resetPreference("general/language")
@@ -22,7 +31,8 @@ UM.PreferencesPage
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
-        languageComboBox.currentIndex = 0
+        var defaultLanguage = UM.Preferences.getValue("general/language")
+        setDefaultLanguage(defaultLanguage)
     }
 
     GridLayout
