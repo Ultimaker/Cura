@@ -202,9 +202,10 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				retract_amount = profile.getProfileSettingFloat('retraction_amount')
 				# Set E relative positioning
 				self.sendCommand("M83")
-				#Push the filament back, and retract again, the properly primes the nozzle when changing filament.
-				self.sendCommand("G1 E%f F120\n" % (retract_amount + 10))
-				self.sendCommand("G1 E-%f F120\n" % (retract_amount))
+				
+				#Prime the nozzle when changing filament
+				self.sendCommand("G1 E%f F120\n" % (retract_amount + 10)) #Push the filament out
+				self.sendCommand("G1 E-%f F120\n" % (retract_amount)) #retract again
 
 				# Position the toolhead to the correct position again
 				self.sendCommand("G1 X%f Y%f Z%f F%d\n" % self._pausePosition[0:4])
