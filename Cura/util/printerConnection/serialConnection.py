@@ -204,7 +204,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				self.sendCommand("M83")
 				
 				#Prime the nozzle when changing filament
-				self.sendCommand("G1 E%f F120\n" % (retract_amount + 10)) #Push the filament out
+				self.sendCommand("G1 E%f F120\n" % (retract_amount)) #Push the filament out
 				self.sendCommand("G1 E-%f F120\n" % (retract_amount)) #retract again
 
 				# Position the toolhead to the correct position again
