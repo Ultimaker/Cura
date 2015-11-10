@@ -171,15 +171,21 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				if x is not None and y is not None:
 					# Set E relative positioning
 					self.sendCommand("M83")
+					
 					# Retract 1mm
-					self.sendCommand("G1 E-%f F120" % retract_amount)
+					retract = ("E-%f" % retract_amount)
 
 					#Move the toolhead up
 					newZ = self._ZPosition + moveZ
 					if maxZ < newZ:
 						newZ = maxZ
+						
 					if newZ > self._ZPosition:
-						self.sendCommand("G1 Z%f F200\n" % (newZ))
+						move = ("Z%f " % (newZ))
+					else: #No z movement, too close to max height 
+						move = ""
+					retract_and_move = "G1 {} {}F120\n".format(retract, move)
+					self.sendCommand(retract_and_move)
 
 					#Move the head away
 					self.sendCommand("G1 X%f Y%f F9000\n" % (parkX, parkY))
