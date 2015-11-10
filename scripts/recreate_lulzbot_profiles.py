@@ -327,7 +327,8 @@ def create_machine_type(machine_type, path, dir):
                     Apply a PVA-based glue stick \n\
                     to bed surface before printing.\n")
                 if material_url.has_key(material):
-                    f.write("url = %s\n" % material_url[material])
+                    referer = "?pk_campaign=software-cura"
+                    f.write("url = %s%s\n" %(material_url[material], referer) )
             with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % profile_map[profile])
