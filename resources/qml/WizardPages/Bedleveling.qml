@@ -120,7 +120,7 @@ Item
         anchors.left: parent.left
         width: parent.width
         wrapMode: Text.WordWrap
-        text: catalog.i18nc("@label", "Everythink is in order! You're done with bedeleveling.")
+        text: catalog.i18nc("@label", "Everything is in order! You're done with bedleveling.")
     }
 
     function threePointLeveling(width, height)
