@@ -13,10 +13,13 @@ UM.PreferencesPage
     //: General configuration page title
     title: catalog.i18nc("@title:tab","General");
 
-    function setDefaultLanguage(languageCode){
+    function setDefaultLanguage(languageCode)
+    {
         //loops trough the languageList and sets the language using the languageCode
-        for(var i = 0; i < languageList.count; i++){
-            if (languageComboBox.model.get(i).code == languageCode){
+        for(var i = 0; i < languageList.count; i++)
+        {
+            if (languageComboBox.model.get(i).code == languageCode)
+            {
                 languageComboBox.currentIndex = i
             }
         }
