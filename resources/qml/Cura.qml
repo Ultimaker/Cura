@@ -330,8 +330,7 @@ UM.MainWindow
                 //anchors.bottom: parent.bottom
                 anchors.top: viewModeButton.bottom
                 anchors.topMargin: UM.Theme.sizes.default_margin.height;
-                anchors.right: sidebar.left;
-                anchors.rightMargin: UM.Theme.sizes.window_margin.width;
+                anchors.left: viewModeButton.left;
                 //anchors.bottom: buttons.top;
                 //anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
 
@@ -386,8 +385,8 @@ UM.MainWindow
                 anchors
                 {
                     top: parent.top;
-                    right: sidebar.left;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
+                    left: toolbar.right;
+                    leftMargin: UM.Theme.sizes.window_margin.width;
                 }
                 text: catalog.i18nc("@action:button","View Mode");
                 iconSource: UM.Theme.icons.viewmode;

@@ -77,7 +77,7 @@ QtObject {
                 }
                 Rectangle {
                     anchors.fill: parent;
-                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    color: control.hovered ? UM.Theme.colors.button_hover : UM.Theme.colors.button
                     Behavior on color { ColorAnimation { duration: 50; } }
                 }
             }

@@ -20,7 +20,7 @@ Item {
 
         anchors.bottom: parent.bottom;
         anchors.left: parent.left;
-        spacing: UM.Theme.sizes.default_lining.width
+        spacing: UM.Theme.sizes.button_lining.width
 
         Repeater {
             id: repeat

@@ -3,49 +3,49 @@
         "large": {
             "size": 1.5,
             "bold": true,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "default": {
             "size": 1,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "default_allcaps": {
             "size": 1,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "small": {
             "size": 0.75,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "tiny": {
             "size": 0.5,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "caption": {
             "size": 0.75,
             "italic": true,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "sidebar_header": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "default_header": {
             "size": 1.0,
             "bold": true,
-            "family": "Roboto",
+            "family": "Proxima Nova Rg",
             "letterSpacing": 2.0
         },
         "button_tooltip": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         },
         "setting_category": {
             "size": 1.0,
-            "family": "Roboto"
+            "family": "Proxima Nova Rg"
         }
     },
 
@@ -69,12 +69,13 @@
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [12, 169, 227, 255],
 
-        "button": [139, 143, 153, 255],
-        "button_hover": [77, 184, 226, 255],
+        "button": [24, 41, 77, 255],
+        "button_hover": [70, 84, 113, 255],
         "button_active": [32, 166, 219, 255],
-        "button_active_hover": [77, 184, 226, 255],
+        "button_active_hover": [12, 169, 227, 255],
         "button_text": [255, 255, 255, 255],
-        "button_disabled": [0, 0, 0, 255],
+        "button_disabled": [24, 41, 77, 255],
+        "button_disabled_text": [70, 84, 113, 255],
         "button_tooltip_text": [35, 35, 35, 255],
 
         "toggle_active": [255, 255, 255, 255],
@@ -142,13 +143,13 @@
     },
 
     "sizes": {
-        "window_margin": [1.5, 1.5],
+        "window_margin": [1.0, 1.0],
         "default_margin": [1.0, 1.0],
         "default_lining": [0.1, 0.1],
         "logo": [9.5, 2.0],
 
-        "sidebar": [26.0, 10.0],
-        "sidebar_header": [0.0, 3.8],
+        "sidebar": [30.0, 10.0],
+        "sidebar_header": [0.0, 4.0],
         "sidebar_header_mode_toggle": [0.0, 2.4],
         "sidebar_setup": [0.0, 2.6],
         "sidebar_subParts": [0.0, 2.4],
@@ -161,8 +162,8 @@
         "section_icon": [1.6, 1.6],
         "section_icon_column": [2.8, 0.0],
 
-        "setting": [21.0, 1.8],
-        "setting_control": [7.0, 2.0],
+        "setting": [19.0, 1.8],
+        "setting_control": [10.0, 2.0],
         "setting_control_depth_margin": [1.4, 0.0],
         "setting_preferences_button_margin": [3.3, 0.0],
         "setting_control_margin": [0.0, 0.0],
@@ -173,8 +174,9 @@
         "standard_list_input": [20.0, 25.0],
         "standard_arrow": [0.6, 0.6],
 
-        "button": [3.8, 3.8],
-        "button_icon": [2.6, 2.6],
+        "button": [4, 4],
+        "button_icon": [3, 3],
+        "button_lining": [0, 0],
 
         "progressbar": [26.0, 0.8],
         "progressbar_control": [8.0, 0.8],
