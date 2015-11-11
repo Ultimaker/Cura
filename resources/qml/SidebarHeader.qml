@@ -11,8 +11,6 @@ Item
 {
     id: base;
     // Machine Setup
-    property variant modesModel;
-    property int currentModeIndex: 0;
     property Action addMachineAction;
     property Action configureMachinesAction;
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -24,71 +22,25 @@ Item
         height: UM.Theme.sizes.sidebar_header.height
         anchors.top: parent.top
         color: UM.Theme.colors.sidebar_header_bar
+    }
 
-        Label{
-            id: settingsModeLabel
-            text: catalog.i18nc("@label:listbox","Print Setup");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*45
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text_white
-        }
-
-        Rectangle{
-            id: settingsModeSelection
-            width: parent.width/100*55
-            height: UM.Theme.sizes.sidebar_header_mode_toggle.height
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            Component{
-                id: wizardDelegate
-                Button {
-                    height: settingsModeSelection.height
-                    anchors.left: parent.left
-                    anchors.leftMargin: model.index * (settingsModeSelection.width / 2)
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: parent.width / 2
-                    text: model.text
-                    exclusiveGroup: modeMenuGroup;
-                    checkable: true;
-                    checked: base.currentModeIndex == index
-                    onClicked: base.currentModeIndex = index
-                    style: ButtonStyle {
-                        background: Rectangle {
-                            color: control.checked ? UM.Theme.colors.toggle_active : UM.Theme.colors.toggle_disabled
-                            Behavior on color { ColorAnimation { duration: 50; } }
-                            Label {
-                                anchors.centerIn: parent
-                                color: control.checked ? UM.Theme.colors.toggle_active_text : UM.Theme.colors.toggle_disabled_text
-                                font: UM.Theme.fonts.default
-                                text: control.text;
-                            }
-                        }
-                        label: Item { }
-                    }
-                }
-            }
-            ExclusiveGroup { id: modeMenuGroup; }
-            ListView{
-                id: modesList
-                property var index: 0
-                model: base.modesModel
-                delegate: wizardDelegate
-                anchors.top: parent.top
-                anchors.left: parent.left
-                width: parent.width
-            }
-        }
+    Label{
+        id: printjobTabLabel
+        text: catalog.i18nc("@label:listbox","Print Job");
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+        anchors.top: settingsModeRow.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        width: parent.width/100*45
+        font: UM.Theme.fonts.large;
+        color: UM.Theme.colors.text
     }
 
     Rectangle {
         id: machineSelectionRow
         width: base.width
         height: UM.Theme.sizes.sidebar_setup.height
-        anchors.top: settingsModeRow.bottom
+        anchors.top: printjobTabLabel.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.horizontalCenter: parent.horizontalCenter
 

@@ -77,7 +77,8 @@ QtObject {
                 }
                 Rectangle {
                     anchors.fill: parent;
-                    color: control.hovered ? UM.Theme.colors.button_hover : UM.Theme.colors.button
+                    color: control.pressed ? UM.Theme.colors.button_active :
+                               control.hovered ? UM.Theme.colors.button_hover : UM.Theme.colors.button
                     Behavior on color { ColorAnimation { duration: 50; } }
                 }
             }
@@ -156,7 +157,7 @@ QtObject {
 
                     Label {
                         id: tool_button_arrow
-                        opacity: !control.enabled ? 0.4 : 1.0
+                        opacity: !control.enabled ? 0.2 : 1.0
                         anchors.right: parent.right;
                         anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width - tool_button_arrow.width) / 2
                         anchors.verticalCenter: parent.verticalCenter;
@@ -171,7 +172,7 @@ QtObject {
             label: Item {
                 Image {
                     anchors.centerIn: parent;
-                    opacity: !control.enabled ? 0.4 : 1.0
+                    opacity: !control.enabled ? 0.2 : 1.0
                     source: control.iconSource;
                     width: UM.Theme.sizes.button_icon.width;
                     height: UM.Theme.sizes.button_icon.height;

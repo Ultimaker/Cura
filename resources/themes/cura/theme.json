@@ -1,12 +1,12 @@
 {
     "fonts": {
         "large": {
-            "size": 1.5,
+            "size": 1.25,
             "bold": true,
             "family": "Proxima Nova Rg"
         },
         "default": {
-            "size": 1,
+            "size": 1.15,
             "family": "Proxima Nova Rg"
         },
         "default_allcaps": {
@@ -60,14 +60,14 @@
         "border": [205, 202, 201, 255],
         "secondary": [205, 202, 201, 255],
 
-        "text": [140, 144, 154, 255],
+        "text": [24, 41, 77, 255],
         "text_inactive": [174, 174, 174, 255],
         "text_white": [255, 255, 255, 255],
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
 
         "error": [255, 140, 0, 255],
-        "sidebar_header_bar": [12, 169, 227, 255],
+        "sidebar_header_bar": [24, 41, 77, 255],
 
         "button": [24, 41, 77, 255],
         "button_hover": [70, 84, 113, 255],
@@ -78,10 +78,18 @@
         "button_disabled_text": [70, 84, 113, 255],
         "button_tooltip_text": [35, 35, 35, 255],
 
-        "toggle_active": [255, 255, 255, 255],
-        "toggle_active_text": [77, 184, 226, 255],
-        "toggle_disabled": [77, 184, 226, 255],
-        "toggle_disabled_text": [255, 255, 255, 255],
+        "toggle_checked": [24, 41, 77, 255],
+        "toggle_checked_border": [24, 41, 77, 255],
+        "toggle_checked_text": [255, 255, 255, 255],
+        "toggle_unchecked": [255, 255, 255, 255],
+        "toggle_unchecked_border": [127, 127, 127, 255],
+        "toggle_unchecked_text": [24, 41, 77, 255],
+        "toggle_hovered": [255, 255, 255, 255],
+        "toggle_hovered_border": [32, 166, 219, 255],
+        "toggle_hovered_text": [24, 41, 77, 255],
+        "toggle_active": [32, 166, 219, 255],
+        "toggle_active_border": [32, 166, 219, 255],
+        "toggle_active_text": [255, 255, 255, 255],
 
         "load_save_button": [0, 0, 0, 255],
         "load_save_button_text": [255, 255, 255, 255],
