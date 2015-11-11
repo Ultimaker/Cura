@@ -664,7 +664,7 @@
                 "retraction_extra_prime_amount": {
                     "label": "Retraction Extra Prime Amount",
                     "description": "The amount of material extruded after unretracting. During a retracted travel material might get lost and so we need to compensate for this.",
-                    "unit": "mm",
+                    "unit": "mm³",
                     "type": "float",
                     "default": 0,
                     "visible": false,
