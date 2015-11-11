@@ -700,7 +700,6 @@ class printWindowAdvanced(wx.Frame):
 		self.temperatureBedField = TemperatureField(self.panel, self._setBedTemperature)
 		self.temperatureGraph = TemperatureGraph(self.panel)
 		self.temperatureGraph.SetMinSize((250, 100))
-		self.printStatus = wx.StaticText(parent=self.panel, id=-1, label="");
 		self.progress = wx.Gauge(self.panel, -1, range=1000)
 
 		f = wx.Font(8, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL, False)
@@ -728,7 +727,6 @@ class printWindowAdvanced(wx.Frame):
 		self.sizer.Add(self.temperatureBedField, pos=(5, 2))
 		self.sizer.Add(self._termLog, pos=(0, 3), span=(5, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
 		self.sizer.Add(self._termInput, pos=(5, 3), span=(1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
-		self.sizer.Add(self.printStatus, pos=(6, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM|wx.TOP, border=5)
 		self.sizer.Add(self.progress, pos=(7, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
@@ -993,6 +991,8 @@ class printWindowAdvanced(wx.Frame):
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
+		
+		info = connection.getStatusString()
 		isPrinting = connection.isPrinting() or connection.isPaused()
 		if isPrinting:
 			(current, total, z) = connection.getPrintProgress()
@@ -1000,16 +1000,15 @@ class printWindowAdvanced(wx.Frame):
 			if total > 0:
 				progress = float(current) / float(total)
 			self.progress.SetValue(progress * 1000)
-			self.printStatus.SetLabel(_("Printing %.1f%% | Z: %.3f mm") % (progress * 100, z))
+			info += (" {:3.1f}% | ".format(progress * 100))
+			info += (("Z: %.3fmm") % (z))
 		else:
 			self.progress.SetValue(0)
-			self.printStatus.SetLabel("")
-		info = connection.getStatusString()
-		info += '\n'
+
 		if self._printerConnection.getTemperature(0) is not None:
-			info += 'Temperature: %d' % (self._printerConnection.getTemperature(0))
+			info += ' | Temperature: %d ' % (self._printerConnection.getTemperature(0))
 		if self._printerConnection.getBedTemperature() > 0:
-			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
+			info += 'Bed: %d' % (self._printerConnection.getBedTemperature())
 		self.SetTitle(info.replace('\n', ', ').strip(', '))
 		if isPrinting != self._isPrinting:
 			self._isPrinting = isPrinting
