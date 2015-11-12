@@ -45,7 +45,7 @@ Item
             text: infillModel.count > 0 && infillListView.activeIndex != -1 ? infillModel.get(infillListView.activeIndex).text : ""
             font: UM.Theme.fonts.caption
             wrapMode: Text.Wrap
-            color: UM.Theme.colors.text
+            color: UM.Theme.colors.text_subtext
             anchors.top: infillLabel.bottom
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width

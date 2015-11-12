@@ -23,8 +23,7 @@
             "family": "Proxima Nova Rg"
         },
         "caption": {
-            "size": 0.75,
-            "italic": true,
+            "size": 1.0,
             "family": "Proxima Nova Rg"
         },
         "sidebar_header": {
@@ -46,6 +45,11 @@
         "setting_category": {
             "size": 1.0,
             "family": "Proxima Nova Rg"
+        },
+        "action_button": {
+            "size": 1.15,
+            "bold": true,
+            "family": "Proxima Nova Rg"
         }
     },
 
@@ -65,6 +69,7 @@
         "text_white": [255, 255, 255, 255],
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
+        "text_subtext": [127, 127, 127, 255],
 
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [24, 41, 77, 255],

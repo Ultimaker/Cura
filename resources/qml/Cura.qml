@@ -310,6 +310,17 @@ UM.MainWindow
                 }
             }
 
+            JobSpecs
+            {
+                anchors
+                {
+                    bottom: parent.bottom;
+                    right: sidebar.left;
+                    bottomMargin: UM.Theme.sizes.default_margin.height;
+                    rightMargin: UM.Theme.sizes.default_margin.width;
+                }
+            }
+
             UM.MessageStack
             {
                 anchors
