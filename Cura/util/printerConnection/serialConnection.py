@@ -171,7 +171,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				if x is not None and y is not None:
 					# Set E relative positioning
 					self.sendCommand("M83")
-					
+
 					# Retract 1mm
 					retract = ("E-%f" % retract_amount)
 
@@ -179,21 +179,21 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 					newZ = self._ZPosition + moveZ
 					if maxZ < newZ:
 						newZ = maxZ
-						
+
 					if newZ > self._ZPosition:
 						move = ("Z%f " % (newZ))
 					else: #No z movement, too close to max height 
 						move = ""
-					retract_and_move = "G1 {} {}F120\n".format(retract, move)
+					retract_and_move = "G1 {} {}F120".format(retract, move)
 					self.sendCommand(retract_and_move)
 
 					#Move the head away
-					self.sendCommand("G1 X%f Y%f F9000\n" % (parkX, parkY))
+					self.sendCommand("G1 X%f Y%f F9000" % (parkX, parkY))
 
 					#Disable the E steppers
-					self.sendCommand("M84 E0\n")
+					self.sendCommand("M84 E0")
 					# Set E absolute positioning
-					self.sendCommand("M82\n")
+					self.sendCommand("M82")
 
 					self._pausePosition = (x, y, self._ZPosition, f, e)
 			self._process.stdin.write("PAUSE\n")
@@ -202,22 +202,22 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				retract_amount = profile.getProfileSettingFloat('retraction_amount')
 				# Set E relative positioning
 				self.sendCommand("M83")
-				
+
 				#Prime the nozzle when changing filament
-				self.sendCommand("G1 E%f F120\n" % (retract_amount)) #Push the filament out
-				self.sendCommand("G1 E-%f F120\n" % (retract_amount)) #retract again
+				self.sendCommand("G1 E%f F120" % (retract_amount)) #Push the filament out
+				self.sendCommand("G1 E-%f F120" % (retract_amount)) #retract again
 
 				# Position the toolhead to the correct position again
-				self.sendCommand("G1 X%f Y%f Z%f F%d\n" % self._pausePosition[0:4])
+				self.sendCommand("G1 X%f Y%f Z%f F%d" % self._pausePosition[0:4])
 
 				# Prime the nozzle again
-				self.sendCommand("G1 E%f F120\n" % (retract_amount))
+				self.sendCommand("G1 E%f F120" % (retract_amount))
 				# Set proper feedrate
-				self.sendCommand("G1 F%d\n" % (self._pausePosition[3]))
+				self.sendCommand("G1 F%d" % (self._pausePosition[3]))
 				# Set E absolute position to cancel out any extrude/retract that occured
-				self.sendCommand("G92 E%f\n" % (self._pausePosition[4]))
+				self.sendCommand("G92 E%f" % (self._pausePosition[4]))
 				# Set E absolute positioning
-				self.sendCommand("M82\n")
+				self.sendCommand("M82")
 			self._process.stdin.write("RESUME\n")
 			self._pausePosition = None
 
