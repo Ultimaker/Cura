@@ -25,7 +25,7 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width/100* 55 - UM.Theme.sizes.default_margin.width
+        width: base.width/100* 45 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height < UM.Theme.sizes.simple_mode_infill_caption.height ? UM.Theme.sizes.simple_mode_infill_caption.height : childrenRect.height
 
         Label{
@@ -56,12 +56,14 @@ Item
         id: infillCellRight
 
         height: childrenRect.height;
-        width: base.width / 100 * 45
+        width: base.width / 100 * 55
+        spacing: 12
 
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.sizes.default_margin.width  - (UM.Theme.sizes.default_margin.width/4)
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.fill: width
 
         Repeater {
             id: infillListView

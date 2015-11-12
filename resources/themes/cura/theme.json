@@ -57,7 +57,7 @@
         "primary": [12, 169, 227, 255],
         "primary_hover": [34, 150, 190, 255],
         "primary_text": [255, 255, 255, 255],
-        "border": [205, 202, 201, 255],
+        "border": [127, 127, 127, 255],
         "secondary": [205, 202, 201, 255],
 
         "text": [24, 41, 77, 255],
@@ -91,11 +91,18 @@
         "toggle_active_border": [32, 166, 219, 255],
         "toggle_active_text": [255, 255, 255, 255],
 
-        "load_save_button": [0, 0, 0, 255],
-        "load_save_button_text": [255, 255, 255, 255],
-        "load_save_button_hover": [43, 45, 46, 255],
-        "load_save_button_inactive": [176, 184, 191, 255],
-        "load_save_button_inactive_text": [209, 214, 219, 255],
+        "action_button": [255, 255, 255, 255],
+        "action_button_text": [24, 41, 77, 255],
+        "action_button_border": [127, 127, 127, 255],
+        "action_button_hovered": [255, 255, 255, 255],
+        "action_button_hovered_text": [24, 41, 77, 255],
+        "action_button_hovered_border": [12, 169, 227, 255],
+        "action_button_active": [12, 169, 227, 255],
+        "action_button_active_text": [255, 255, 255, 255],
+        "action_button_active_border": [12, 169, 227, 255],
+        "action_button_disabled": [245, 245, 245, 255],
+        "action_button_disabled_text": [127, 127, 127, 255],
+        "action_button_disabled_border": [127, 127, 127, 255],
 
         "scrollbar_background": [245, 245, 245, 255],
         "scrollbar_handle": [12, 159, 227, 255],
@@ -111,19 +118,19 @@
 
         "setting_control": [255, 255, 255, 255],
         "setting_control_highlight": [245, 245, 245, 255],
-        "setting_control_border": [174, 174, 174, 255],
-        "setting_control_text": [0, 0, 0, 255],
+        "setting_control_border": [127, 127, 127, 255],
+        "setting_control_text": [24,41,77, 255],
         "setting_control_depth_line": [162, 192, 227, 255],
         "setting_control_hover": [139, 143, 153, 255],
         "setting_control_selected": [35, 35, 35, 255],
-        "setting_control_revert": [85, 85, 85, 255],
+        "setting_control_revert": [127, 127, 127, 255],
         "setting_unit": [174, 174, 174, 255],
         "setting_validation_error": [255, 57, 14, 255],
         "setting_validation_warning": [255, 186, 15, 255],
         "setting_validation_ok": [255, 255, 255, 255],
 
-        "progressbar_background": [208, 210, 211, 255],
-        "progressbar_control": [12, 169, 227, 255],
+        "progressbar_background": [245, 245, 245, 255],
+        "progressbar_control": [24, 41, 77, 255],
 
         "slider_groove": [245, 245, 245, 255],
         "slider_groove_border": [139, 143, 153, 255],
@@ -134,9 +141,9 @@
 
         "checkbox": [255, 255, 255, 255],
         "checkbox_hover": [245, 245, 245, 255],
-        "checkbox_border": [174, 174, 174, 255],
-        "checkbox_mark": [35, 35, 35, 255],
-        "checkbox_text": [0, 0, 0, 255],
+        "checkbox_border": [127, 127, 127, 255],
+        "checkbox_mark": [24, 41, 77, 255],
+        "checkbox_text": [24, 41, 77, 255],
 
         "tooltip": [255, 225, 146, 255],
 
@@ -153,12 +160,12 @@
     "sizes": {
         "window_margin": [1.0, 1.0],
         "default_margin": [1.0, 1.0],
-        "default_lining": [0.1, 0.1],
+        "default_lining": [0.25, 0.25],
         "logo": [9.5, 2.0],
 
         "sidebar": [30.0, 10.0],
         "sidebar_header": [0.0, 4.0],
-        "sidebar_header_mode_toggle": [0.0, 2.4],
+        "sidebar_header_mode_toggle": [0.0, 2.0],
         "sidebar_setup": [0.0, 2.6],
         "sidebar_subParts": [0.0, 2.4],
         "sidebar_specs_bar": [0.0, 2.2],
@@ -199,7 +206,7 @@
         "slider_layerview_background_extension": [0.0, 2.2],
         "slider_layerview_margin": [3.0, 3.0],
 
-        "checkbox": [1.5, 1.5],
+        "checkbox": [2.0, 2.0],
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],

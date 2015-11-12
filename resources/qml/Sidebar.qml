@@ -55,7 +55,8 @@ Rectangle
     ProfileSetup {
         id: profileItem
         manageProfilesAction: base.manageProfilesAction
-        anchors.top: header.bottom
+        anchors.top: settingsModeSelection.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height 
         width: parent.width
         height: totalHeightProfileSetup
     }
@@ -76,13 +77,13 @@ Rectangle
 
     Label {
         id: settingsModeLabel
-        text: catalog.i18nc("@label:listbox","Print Setup:");
+        text: catalog.i18nc("@label:listbox","Setup");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-        anchors.top: profileItem.bottom
+        anchors.top: header.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         width: parent.width/100*45
-        font: UM.Theme.fonts.default;
+        font: UM.Theme.fonts.large;
         color: UM.Theme.colors.text
     }
 
@@ -92,7 +93,7 @@ Rectangle
         height: UM.Theme.sizes.sidebar_header_mode_toggle.height
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.sizes.default_margin.width
-        anchors.top: profileItem.bottom
+        anchors.top: header.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         Component{
             id: wizardDelegate
@@ -145,7 +146,7 @@ Rectangle
     {
         id: sidebarContents;
         anchors.bottom: saveButton.top
-        anchors.top: settingsModeSelection.bottom
+        anchors.top: profileItem.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: base.left
         anchors.right: base.right

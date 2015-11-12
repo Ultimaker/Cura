@@ -407,13 +407,16 @@ QtObject {
                 border.width: 1
                 border.color: UM.Theme.colors.checkbox_border;
 
-                Label {
-                    anchors.centerIn: parent;
-                    color: UM.Theme.colors.checkbox_mark;
-
-                    text: "✓";
-
-                    opacity: control.checked ? 1 : 0;
+                UM.RecolorImage {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width/2.5
+                    height: parent.height/2.5
+                    sourceSize.width: width
+                    sourceSize.height: width
+                    color: UM.Theme.colors.checkbox_mark
+                    source: UM.Theme.icons.check
+                    opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }
             }

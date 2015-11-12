@@ -14,7 +14,7 @@ Rectangle {
     property real progress: UM.Backend.progress;
     property bool activity: Printer.getPlatformActivity;
     Behavior on progress { NumberAnimation { duration: 250; } }
-    property int totalHeight: childrenRect.height
+    property int totalHeight: childrenRect.height + UM.Theme.sizes.default_margin.height*1.5
     property string fileBaseName
     property variant activeMachineInstance: UM.MachineManager.activeMachineInstance
 
@@ -48,7 +48,7 @@ Rectangle {
                     }
                 }
             }
-        printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
+        //printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
     }
 
      Connections {
@@ -67,7 +67,7 @@ Rectangle {
             base.createFileName()
         }
     }
-
+/*
     Rectangle{
         id: printJobRow
         implicitWidth: base.width;
@@ -179,12 +179,13 @@ Rectangle {
             }
         }
     }
-
+*/
     Rectangle{
         id: saveRow
         width: base.width
         height: saveToButton.height + (UM.Theme.sizes.default_margin.height / 2) // height + bottomMargin
-        anchors.top: specsRow.bottom
+        anchors.top: parent.top
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
 
         Button {
@@ -206,16 +207,12 @@ Rectangle {
                 background: Rectangle {
                     //opacity: control.enabled ? 1.0 : 0.5
                     //Behavior on opacity { NumberAnimation { duration: 50; } }
-                    color: {
-                        if(!control.enabled){
-                            return UM.Theme.colors.button;
-                        }
-                        else if(control.enabled && control.hovered) {
-                            return UM.Theme.colors.load_save_button_hover
-                        } else {
-                            return UM.Theme.colors.load_save_button
-                        }
-                    }
+                    border.color: !control.enabled ? UM.Theme.colors.action_button_disabled_border : 
+                                      control.pressed ? UM.Theme.colors.action_button_active_border :
+                                      control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border
+                    color: !control.enabled ? UM.Theme.colors.action_button_disabled : 
+                               control.pressed ? UM.Theme.colors.action_button_active :
+                               control.hovered ? UM.Theme.colors.action_button_hovered : UM.Theme.colors.action_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                     width: {
                         var w = 0;
@@ -234,10 +231,11 @@ Rectangle {
                     }
                     Label {
                         id: actualLabel
-                        opacity: control.enabled ? 1.0 : 0.4
                         //Behavior on opacity { NumberAnimation { duration: 50; } }
                         anchors.centerIn: parent
-                        color:  UM.Theme.colors.load_save_button_text
+                        color: !control.enabled ? UM.Theme.colors.action_button_disabled_text : 
+                                   control.pressed ? UM.Theme.colors.action_button_active_text :
+                                   control.hovered ? UM.Theme.colors.action_button_hovered_text : UM.Theme.colors.action_button_text
                         font: UM.Theme.fonts.default
                         text: control.text;
                     }
@@ -260,16 +258,12 @@ Rectangle {
             style: ButtonStyle {
                 background: Rectangle {
                     id: deviceSelectionIcon
-                    color: {
-                        if(!control.enabled){
-                            return UM.Theme.colors.button;
-                        }
-                        else if(control.enabled && control.hovered) {
-                            return UM.Theme.colors.load_save_button_hover
-                        } else {
-                            return UM.Theme.colors.load_save_button
-                        }
-                    }
+                    border.color: !control.enabled ? UM.Theme.colors.action_button_disabled_border : 
+                                      control.pressed ? UM.Theme.colors.action_button_active_border :
+                                      control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border
+                    color: !control.enabled ? UM.Theme.colors.action_button_disabled : 
+                               control.pressed ? UM.Theme.colors.action_button_active :
+                               control.hovered ? UM.Theme.colors.action_button_hovered : UM.Theme.colors.action_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width / 2;
@@ -282,9 +276,11 @@ Rectangle {
                         width: UM.Theme.sizes.standard_arrow.width
                         height: UM.Theme.sizes.standard_arrow.height
                         sourceSize.width: width
-                        sourceSize.height: width
-                        color: UM.Theme.colors.load_save_button_text
-                        source: UM.Theme.icons.arrow_bottom
+                        sourceSize.height: height
+                        color: !control.enabled ? UM.Theme.colors.action_button_disabled_text : 
+                                   control.pressed ? UM.Theme.colors.action_button_active_text :
+                                   control.hovered ? UM.Theme.colors.action_button_hovered_text : UM.Theme.colors.action_button_text;
+                        source: UM.Theme.icons.arrow_bottom;
                     }
                 }
                 label: Label{ }
