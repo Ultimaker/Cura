@@ -229,44 +229,43 @@ bed_prep_materials = {
 
 material_url = {
     # Beginner
-    "HIPS_eSUN": "www.lulzbot.com/products/hips-3mm-filament-1kg-reel-esun",
-    "PLA_eSUN": "www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
-    "PLA_VP": "www.lulzbot.com/products/pla-3mm-filament-1kg-reel-village-plastics",
+    "HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
+    "PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
+    "PLA_VP": "lulzbot.com/store/filament/pla-village",
     # Intermediate
-    "ABS_VP": "www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
-    "Laybrick" : "www.lulzbot.com/products/laybrick-filament-3mm",
-    "PP-Iron": "www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
-    "PP-Steel": "www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
+    "ABS_VP": "lulzbot.com/store/filament/abs",
+    "Laybrick" : "lulzbot.com/store/filament/laybrick",
+    "PP-Iron": "lulzbot.com/store/filament/magnetic-iron-pla",
+    "PP-Steel": "lulzbot.com/store/filament/stainless-steel-pla",
 #    "Bamboofill": "",
 #    "Woodfill": "",
     # Advanced
-    "Alloy910": "www.lulzbot.com/products/alloy-910-3mm-filament-1lb-reel-taulman",
-    "Bridge": "www.lulzbot.com/products/taulman-bridge-nylon-3mm-filament-1-pound",
-    "Laywood": "www.lulzbot.com/products/laywoo-d3-cherry-laywood-3mm-250g-coil-cc-products",
-    "n-vent": "www.lulzbot.com/products/n-vent-3mm-filament-1lb-taulman",
+    "Alloy910": "lulzbot.com/store/filament/alloy-910",
+    "Bridge": "lulzbot.com/store/filament/bridge-nylon",
+    "Laywood": "lulzbot.com/store/filament/laywoo-d3-laywood",
+    "n-vent": "lulzbot.com/store/filament/n-vent",
 #    "XT": "",
-#    "INOVA-1800": "",
-    "PCTPE": "www.lulzbot.com/products/taulman-pctpe-3mm-filament-1-pound",
-    "PC-ABS": "www.lulzbot.com/products/pc-abs-alloy-3mm-filament-500g-reel-proto-pasta",
-    "T-Glase": "www.lulzbot.com/products/t-glase-3mm-filament-1lb-reel",
+    "PCTPE": "lulzbot.com/store/filament/pctpe",
+    "PC-ABS": "lulzbot.com/store/filament/pc-abs-alloy",
+    "T-Glase": "lulzbot.com/store/filament/t-glase",
 #    "Bronzefill": "",
 #    "Copperfill": "",
     # Expert
-    "PP-Conductive": "www.lulzbot.com/products/conductive-pla-3mm-filament-500g-reel-proto-pasta",
-    "HIPS_VP" : "www.lulzbot.com/products/hips-3mm-filament-1kg-or-5lb-reel-village-plastics",
-    "PC_VP": "www.lulzbot.com/products/polycarbonate-3mm-filament-1kg-reel",
-    "618-Nylon": "www.lulzbot.com/products/taulman-618-nylon-3mm-filament-1-pound",
-    "645-Nylon": "www.lulzbot.com/products/taulman-645-nylon-3mm-filament-1-pound",
+    "PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
+    "HIPS_VP" : "lulzbot.com/store/filament/hips",
+    "PC_VP": "lulzbot.com/store/filament/polycarbonate",
+    "618-Nylon": "lulzbot.com/store/filament/nylon-618",
+    "645-Nylon": "lulzbot.com/store/filament/nylon-645",
     # Dual extruder (Expert)
-    'ABS_ABS': "www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
-    'PLA_PLA': "www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
-    'PLA_PVA': "www.lulzbot.com/products/natural-pva-3mm-filament-05kg-reel-esun",
+    'ABS_ABS': "lulzbot.com/store/filament/abs",
+    'PLA_PLA': "lulzbot.com/store/filament/pla-esun",
+    'PLA_PVA': "lulzbot.com/store/filament/natural-pva",
     # Flexystruder (Expert)
-    "ninjaflex" : "www.lulzbot.com/ninjaflex",
-    "semiflex" : "www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
+    "ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
+    "semiflex" : "lulzbot.com/store/filament/semiflex",
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "www.lulzbot.com/ninjaflex",
-    "ABS_semiflex" : "www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
+    "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
+    "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
 }
 
 profile_map = {
@@ -333,7 +332,8 @@ def create_machine_type(machine_type, path, dir):
                     Apply a PVA-based glue stick \n\
                     to bed surface before printing.\n")
                 if material_url.has_key(material):
-                    f.write("url = %s\n" % material_url[material])
+                    referer = "?pk_campaign=software-cura"
+                    f.write("url = %s%s\n" %(material_url[material], referer) )
             with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % profile_map[profile])
