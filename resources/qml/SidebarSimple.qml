@@ -63,7 +63,6 @@ Item
         anchors.rightMargin: UM.Theme.sizes.default_margin.width  - (UM.Theme.sizes.default_margin.width/4)
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.sizes.default_margin.height
-        anchors.fill: width
 
         Repeater {
             id: infillListView

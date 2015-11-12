@@ -191,7 +191,7 @@ Rectangle {
         Button {
             id: saveToButton
             property int resizedWidth
-            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height
+            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height + 2
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: base.progress > 0.99 && base.activity == true
             height: UM.Theme.sizes.save_button_save_to_button.height
@@ -215,19 +215,8 @@ Rectangle {
                                control.hovered ? UM.Theme.colors.action_button_hovered : UM.Theme.colors.action_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                     width: {
-                        var w = 0;
-                        if (base.width*0.55 > actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)){
-                            saveToButton.resizedWidth = base.width*0.55
-                            w = base.width*0.55
-                        }
-                        else {
-                            saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
-                            w = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
-                        }
-                        if(w < base.width * 0.55) {
-                            w = base.width * 0.55;
-                        }
-                        return w;
+                        saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
+                        return saveToButton.resizedWidth
                     }
                     Label {
                         id: actualLabel
