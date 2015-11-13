@@ -31,7 +31,7 @@
                     "type": "float",
                     "min_value": "0.1",
                     "max_value_warning": "150",
-                    "default": 50,
+                    "default": 60,
                     "visible": false,
                     "enabled": "prime_tower_enable"
                 }

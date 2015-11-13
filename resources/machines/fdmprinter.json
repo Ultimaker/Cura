@@ -724,7 +724,7 @@
                     "type": "float",
                     "min_value": "0.1",
                     "max_value_warning": "150",
-                    "default": 50,
+                    "default": 60,
                     "children": {
                         "speed_infill": {
                             "label": "Infill Speed",
@@ -733,7 +733,7 @@
                             "type": "float",
                             "min_value": "0.1",
                             "max_value_warning": "150",
-                            "default": 50,
+                            "default": 60,
                             "visible": false
                         },
                         "speed_wall": {
@@ -743,8 +743,9 @@
                             "type": "float",
                             "min_value": "0.1",
                             "max_value_warning": "150",
-                            "default": 50,
+                            "default": 30,
                             "visible": false,
+                            "inherit_function": "parent_value / 60 * 30",
                             "children": {
                                 "speed_wall_0": {
                                     "label": "Outer Shell Speed",
@@ -753,7 +754,7 @@
                                     "type": "float",
                                     "min_value": "0.1",
                                     "max_value_warning": "150",
-                                    "default": 50,
+                                    "default": 30,
                                     "visible": false
                                 },
                                 "speed_wall_x": {
@@ -763,8 +764,9 @@
                                     "type": "float",
                                     "min_value": "0.1",
                                     "max_value_warning": "150",
-                                    "default": 50,
-                                    "visible": false
+                                    "default": 60,
+                                    "visible": false,
+                                    "inherit_function": "speed_print"
                                 }
                             }
                         },
@@ -775,8 +777,9 @@
                             "type": "float",
                             "min_value": "0.1",
                             "max_value_warning": "150",
-                            "default": 50,
-                            "visible": false
+                            "default": 30,
+                            "visible": false,
+                            "inherit_function": "parent_value / 60 * 30"
                         },
                         "speed_support": {
                             "label": "Support Speed",
@@ -785,9 +788,9 @@
                             "type": "float",
                             "min_value": "0.1",
                             "max_value_warning": "150",
-                            "default": 50,
+                            "default": 60,
                             "visible": false,
-                            "inherit_function": "speed_wall_0",
+                            "inherit_function": "speed_print",
                             "enabled": "support_enable",
                             "children": {
                                 "speed_support_lines": {
@@ -795,7 +798,7 @@
                                     "description": "The speed at which the walls of exterior support are printed. Printing the walls at higher speeds can improve on the overall duration. ",
                                     "unit": "mm/s",
                                     "type": "float",
-                                    "default": 50,
+                                    "default": 60,
                                     "visible": false,
                                     "inherit": true,
                                     "enabled": "support_roof_enable"
@@ -808,7 +811,8 @@
                                     "default": 40,
                                     "visible": false,
                                     "inherit": false,
-                                    "enabled": "support_roof_enable"
+                                    "enabled": "support_roof_enable",
+                                    "inherit_function": "parent_value / 60 * 40"
                                 }
                             }
                         }
@@ -829,7 +833,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "min_value": "0.1",
-                    "default": 15,
+                    "default": 30,
                     "visible": false
                 },
                 "skirt_speed": {
@@ -838,7 +842,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "min_value": "0.1",
-                    "default": 15,
+                    "default": 30,
                     "visible": false,
                     "inherit_function": "speed_layer_0"
                 },
@@ -1523,7 +1527,7 @@
                     "type": "float",
                     "default": 30,
                     "enabled": "adhesion_type == \"raft\"",
-                    "inherit_function": "0.6 * speed_print",
+                    "inherit_function": "speed_print / 60 * 30",
                     "children": {
                         "raft_surface_speed": {
                             "label": "Raft Surface Print Speed",
