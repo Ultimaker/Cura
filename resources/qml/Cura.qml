@@ -567,7 +567,7 @@ UM.MainWindow
 
         addMachine.onTriggered: addMachineWizard.visible = true;
 
-        preferences.onTriggered: { preferences.visible = true; }
+        preferences.onTriggered: { preferences.visible = true; preferences.setPage(0); }
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
         manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 

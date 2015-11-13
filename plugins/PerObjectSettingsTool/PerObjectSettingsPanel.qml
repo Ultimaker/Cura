@@ -41,6 +41,33 @@ Item {
             anchors.fill: parent;
         }
 
+        Button {
+            id: closeButton;
+            width: UM.Theme.sizes.message_close.width;
+            height: UM.Theme.sizes.message_close.height;
+            anchors {
+                right: parent.right;
+                rightMargin: UM.Theme.sizes.default_margin.width / 2;
+                top: parent.top;
+                topMargin: UM.Theme.sizes.default_margin.width / 2;
+            }
+            UM.RecolorImage {
+                anchors.fill: parent;
+                sourceSize.width: width
+                sourceSize.height: width
+                color: UM.Theme.colors.message_dismiss
+                source: UM.Theme.icons.cross2;
+            }
+
+            onClicked: settingsPanel.opacity = 0
+
+            style: ButtonStyle {
+                background: Rectangle {
+                    color: UM.Theme.colors.message_background
+                }
+            }
+        }
+
         Column {
             id: items
             anchors.top: parent.top;
@@ -58,7 +85,6 @@ Item {
 
                 name: catalog.i18nc("@label", "Profile")
                 type: "enum"
-                perObjectSetting: true
 
                 style: UM.Theme.styles.setting_item;
 
@@ -88,8 +114,6 @@ Item {
                     description: model.description;
                     unit: model.unit;
                     valid: model.valid;
-                    perObjectSetting: true
-                    dismissable: true
                     options: model.options
 
                     style: UM.Theme.styles.setting_item;
@@ -98,18 +122,36 @@ Item {
                         settings.model.setSettingValue(model.key, value)
                     }
 
-//                     Button {
-//                         anchors.left: parent.right;
-//                         text: "x";
-//
-//                         width: UM.Theme.sizes.setting.height;
-//                         height: UM.Theme.sizes.setting.height;
-//
-//                         opacity: parent.hovered || hovered ? 1 : 0;
-//                         onClicked: UM.ActiveTool.properties.Model.removeSettingOverride(UM.ActiveTool.properties.Model.getItem(base.currentIndex).id, model.key)
-//
-//                         style: ButtonStyle { }
-//                     }
+                    Button
+                    {
+                        anchors.left: parent.horizontalCenter;
+                        anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+
+                        width: UM.Theme.sizes.setting.height;
+                        height: UM.Theme.sizes.setting.height;
+
+                        opacity: parent.hovered || hovered ? 1 : 0;
+                        onClicked: UM.ActiveTool.properties.Model.removeSettingOverride(UM.ActiveTool.properties.Model.getItem(base.currentIndex).id, model.key)
+
+                        style: ButtonStyle
+                        {
+                            background: Rectangle
+                            {
+                                color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
+                                UM.RecolorImage
+                                {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    width: parent.width/2
+                                    height: parent.height/2
+                                    sourceSize.width: width
+                                    sourceSize.height: width
+                                    color: UM.Theme.colors.setting_control_revert
+                                    source: UM.Theme.icons.cross1
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -172,12 +214,19 @@ Item {
 
             checkable: true;
             onClicked: {
-                base.currentIndex = index;
+                if(settingsPanel.opacity < 0.5) //Per-object panel is not currently displayed.
+                {
+                    base.currentIndex = index;
 
-                settingsPanel.anchors.left = right;
-                settingsPanel.anchors.top = top;
+                    settingsPanel.anchors.left = right;
+                    settingsPanel.anchors.top = top;
 
-                settingsPanel.opacity = 1;
+                    settingsPanel.opacity = 1;
+                }
+                else //Per-object panel is already displayed. Deactivate it (same behaviour as the close button).
+                {
+                    settingsPanel.opacity = 0;
+                }
             }
 
             style: ButtonStyle

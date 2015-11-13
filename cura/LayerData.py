@@ -63,6 +63,7 @@ class LayerData(MeshData):
             offset = data.build(offset, vertices, colors, indices)
             self._element_counts[layer] = data.elementCount
 
+        self.clear()
         self.addVertices(vertices)
         self.addColors(colors)
         self.addIndices(indices.flatten())
@@ -200,18 +201,14 @@ class Polygon():
 
     def build(self, offset, vertices, colors, indices):
         self._begin = offset
+        self._end = self._begin + len(self._data) - 1
 
         color = self.getColor()
         color.setValues(color.r * 0.5, color.g * 0.5, color.b * 0.5, color.a)
+        color = numpy.array([color.r, color.g, color.b, color.a], numpy.float32)
 
-        for i in range(len(self._data)):
-            vertices[offset + i, :] = self._data[i, :]
-            colors[offset + i, 0] = color.r
-            colors[offset + i, 1] = color.g
-            colors[offset + i, 2] = color.b
-            colors[offset + i, 3] = color.a
-
-        self._end = self._begin + len(self._data) - 1
+        vertices[self._begin:self._end + 1, :] = self._data[:, :]
+        colors[self._begin:self._end + 1, :] = color
 
         for i in range(self._begin, self._end):
             indices[i, 0] = i

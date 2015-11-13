@@ -38,10 +38,10 @@ class ProcessSlicedObjectListJob(Job):
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
                 if node.callDecoration("getLayerData"):
-                #if hasattr(node.getMeshData(), "layerData"):
                     self._scene.getRoot().removeChild(node)
                 else:
                     objectIdMap[id(node)] = node
+            Job.yieldThread()
 
         settings = Application.getInstance().getMachineManager().getActiveProfile()
         layerHeight = settings.getSettingValue("layer_height")
@@ -54,6 +54,12 @@ class ProcessSlicedObjectListJob(Job):
 
         mesh = MeshData()
         layer_data = LayerData.LayerData()
+
+        layer_count = 0
+        for object in self._message.objects:
+            layer_count += len(object.layers)
+
+        current_layer = 0
         for object in self._message.objects:
             try:
                 node = objectIdMap[object.id]
@@ -73,23 +79,34 @@ class ProcessSlicedObjectListJob(Job):
 
                     points[:,2] *= -1
 
-                    points -= numpy.array(center)
+                    points -= center
 
                     layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
+                Job.yieldThread()
+
+                current_layer += 1
+                progress = (current_layer / layer_count) * 100
+                # TODO: Rebuild the layer data mesh once the layer has been processed.
+                # This needs some work in LayerData so we can add the new layers instead of recreating the entire mesh.
+
+                if self._progress:
+                    self._progress.setProgress(progress)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layer_data.build()
 
-        
         #Add layerdata decorator to scene node to indicate that the node has layerdata
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_data)
         new_node.addDecorator(decorator)
-        
+
         new_node.setMeshData(mesh)
         new_node.setParent(self._scene.getRoot())
-        
+
+        if self._progress:
+            self._progress.setProgress(100)
+
         view = Application.getInstance().getController().getActiveView()
         if view.getPluginId() == "LayerView":
             view.resetLayerData()
