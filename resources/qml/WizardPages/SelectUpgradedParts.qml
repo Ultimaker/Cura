@@ -17,11 +17,8 @@ Item
 
     Component.onDestruction:
     {
-        base.addOriginalProgress.upgrades[0] = extruderCheckBox.checked
-        base.addOriginalProgress.upgrades[1] = heatedBedCheckBox1.checked
-        base.addOriginalProgress.upgrades[2] = heatedBedCheckBox2.checked
         if (extruderCheckBox.checked == true){
-            UM.MachineManager.setMachineSettingValue("machine_extruder_drive_upgrade", true);
+            UM.MachineManager.setMachineSettingValue("machine_extruder_drive_upgrade", true)
         }
         if (heatedBedCheckBox1.checked == true || heatedBedCheckBox2.checked == true){
             UM.MachineManager.setMachineSettingValue("machine_heated_bed", true)
@@ -58,14 +55,14 @@ Item
         {
             id: extruderCheckBox
             text: catalog.i18nc("@option:check","Extruder driver ugrades")
-            checked: base.addOriginalProgress.upgrades[0]
+            checked: true
         }
         CheckBox
         {
             id: heatedBedCheckBox1
-            text: catalog.i18nc("@option:check","Heated printer bed (standard kit)")
+            text: catalog.i18nc("@option:check","Heated printer bed")
             y: extruderCheckBox.height * 1
-            checked: base.addOriginalProgress.upgrades[1]
+            checked: false
             onClicked: {
                 if (heatedBedCheckBox2.checked == true)
                     heatedBedCheckBox2.checked = false
@@ -76,7 +73,7 @@ Item
             id: heatedBedCheckBox2
             text: catalog.i18nc("@option:check","Heated printer bed (self built)")
             y: extruderCheckBox.height * 2
-            checked: base.addOriginalProgress.upgrades[2]
+            checked: false
             onClicked: {
                 if (heatedBedCheckBox1.checked == true)
                     heatedBedCheckBox1.checked = false

@@ -58,6 +58,11 @@ import numpy
 import copy
 numpy.seterr(all="ignore")
 
+try:
+    from cura.CuraVersion import CuraVersion
+except ImportError:
+    CuraVersion = "master"
+
 class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -69,7 +74,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "master")
+        super().__init__(name = "cura", version = CuraVersion)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
@@ -136,6 +141,9 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
+        if not "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION" in os.environ or os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] != "cpp":
+            Logger.log("w", "Using Python implementation of Protobuf, expect bad performance!")
+
         self._i18n_catalog = i18nCatalog("cura");
 
         i18nCatalog.setTagReplacements({
@@ -168,7 +176,7 @@ class CuraApplication(QtApplication):
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera("3d", root)
-        camera.setPosition(Vector(0, 250, 900))
+        camera.setPosition(Vector(-80, 250, 700))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
