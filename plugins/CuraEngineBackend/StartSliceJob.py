@@ -2,6 +2,8 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import numpy
+from string import Formatter
+import traceback
 
 from UM.Job import Job
 from UM.Application import Application
@@ -13,6 +15,19 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from cura.OneAtATimeIterator import OneAtATimeIterator
 
 from . import Cura_pb2
+
+##  Formatter class that handles token expansion in start/end gcod
+class GcodeStartEndFormatter(Formatter):
+    def get_value(self, key, args, kwargs):
+        if isinstance(key, str):
+            try:
+                return kwargs[key]
+            except KeyError:
+                Logger.log("w", "Unable to replace '%s' placeholder in start/end gcode", key)
+                return "{" + key + "}"
+        else:
+            Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
+            return "{" + str(key) + "}"
 
 ##  Job class that handles sending the current scene data to CuraEngine
 class StartSliceJob(Job):
@@ -90,12 +105,28 @@ class StartSliceJob(Job):
 
         self.setResult(True)
 
+    def _expandGcodeTokens(self, key, value, settings):
+        try:
+            # any setting can be used as a token
+            fmt = GcodeStartEndFormatter()
+            return str(fmt.format(value, **settings)).encode("utf-8")
+        except:
+            Logger.log("w", "Unabled to do token replacement on start/end gcode %s", traceback.format_exc())
+            return str(value).encode("utf-8")
+
     def _sendSettings(self, profile):
         msg = Cura_pb2.SettingList()
-        for key, value in profile.getAllSettingValues(include_machine = True).items():
+        settings = profile.getAllSettingValues(include_machine = True)
+        start_gcode = settings["machine_start_gcode"]
+        settings["material_bed_temp_prepend"] = not "{material_bed_temperature}" in start_gcode
+        settings["material_print_temp_prepend"] = not "{material_print_temperature" in start_gcode
+        for key, value in settings.items():
             s = msg.settings.add()
             s.name = key
-            s.value = str(value).encode("utf-8")
+            if key == "machine_start_gcode" or key == "machine_end_gcode":
+                s.value = self._expandGcodeTokens(key, value, settings)
+            else:
+                s.value = str(value).encode("utf-8")
 
         self._socket.sendMessage(msg)
 
