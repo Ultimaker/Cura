@@ -25,6 +25,14 @@
             "description": "Whether to insert a command to wait until the nozzle temperatures are reached at the start.",
             "default": true
         },
+        "material_print_temp_prepend": {
+            "description": "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting.",
+            "default": true
+        },
+        "material_bed_temp_prepend": {
+            "description": "Whether to include bed temperature commands at the start of the gcode. When the start_gcode already contains bed temperature commands Cura frontend will automatically disable this setting.",
+            "default": true
+        },
         "machine_width": {
             "description": "The width (X-direction) of the printable area.",
             "default": 100
