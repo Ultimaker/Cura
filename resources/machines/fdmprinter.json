@@ -18,9 +18,11 @@
             "default": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
         },
         "material_bed_temp_wait": {
+            "description": "Whether to insert a command to wait until the bed temperature is reached at the start.",
             "default": true
         },
         "material_print_temp_wait": {
+            "description": "Whether to insert a command to wait until the nozzle temperatures are reached at the start.",
             "default": true
         },
         "machine_width": {
