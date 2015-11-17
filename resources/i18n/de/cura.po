@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-12 20:10+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2015-09-30 11:41+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -20,7 +20,7 @@ msgstr ""
 #: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:20
 msgctxt "@title:window"
 msgid "Oops!"
-msgstr ""
+msgstr "Hoppla!"
 
 #: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:26
 msgctxt "@label"
@@ -28,12 +28,12 @@ msgid ""
 "<p>An uncaught exception has occurred!</p><p>Please use the information "
 "below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/"
 "issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
-msgstr ""
+msgstr "<p>Ein unerwarteter Ausnahmezustand ist aufgetreten!</p><p>Bitte senden Sie einen Fehlerbericht an untenstehende URL.<a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
 
 #: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:46
 msgctxt "@action:button"
 msgid "Open Web Page"
-msgstr ""
+msgstr "Webseite öffnen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:135
 #, fuzzy
@@ -50,111 +50,111 @@ msgstr "Die Benutzeroberfläche wird geladen..."
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:12
 msgctxt "@label"
 msgid "3MF Reader"
-msgstr ""
+msgstr "3MF-Reader"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:15
 msgctxt "@info:whatsthis"
 msgid "Provides support for reading 3MF files."
-msgstr ""
+msgstr "Bietet Unterstützung für das Lesen von 3MF-Dateien."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:20
 #, fuzzy
 msgctxt "@item:inlistbox"
 msgid "3MF File"
-msgstr "&Datei"
+msgstr "3MF-Datei"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/ChangeLogPlugin/__init__.py:12
 #, fuzzy
 msgctxt "@label"
 msgid "Change Log"
-msgstr "Engine-Protokoll"
+msgstr "Änderungs-Protokoll"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/ChangeLogPlugin/__init__.py:15
 msgctxt "@info:whatsthis"
 msgid "Shows changes since latest checked version"
-msgstr ""
+msgstr "Zeigt die Änderungen seit der letzten aktivierten Version an"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/__init__.py:13
 msgctxt "@label"
 msgid "CuraEngine Backend"
-msgstr ""
+msgstr "CuraEngine Backend"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/__init__.py:15
 #, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the link to the CuraEngine slicing backend"
-msgstr "Gibt den Link für das Slicing-Backend der CuraEngine an."
+msgstr "Gibt den Link für das Slicing-Backend der CuraEngine an"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:30
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:111
 msgctxt "@info:status"
 msgid "Processing Layers"
-msgstr ""
+msgstr "Die Schichten werden verarbeitet"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
 #, fuzzy
 msgctxt "@info:status"
 msgid "Slicing..."
-msgstr "Die Berechnung läuft..."
+msgstr "Das Slicing läuft..."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:12
 #, fuzzy
 msgctxt "@label"
 msgid "GCode Writer"
-msgstr "GCode-Datei"
+msgstr "G-Code-Writer"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:15
 #, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Writes GCode to a file"
-msgstr "Schreibt GCode in eine Datei"
+msgstr "Schreibt G-Code in eine Datei"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:22
 #, fuzzy
 msgctxt "@item:inlistbox"
 msgid "GCode File"
-msgstr "GCode-Datei"
+msgstr "G-Code-Datei"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:13
 #, fuzzy
 msgctxt "@label"
 msgid "Layer View"
-msgstr "Ebenen"
+msgstr "Schichten-Ansicht"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:16
 #, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the Layer view."
-msgstr "Zeigt die Ebenen-Ansicht an."
+msgstr "Zeigt die Schichten-Ansicht an."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:20
 #, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Layers"
-msgstr "Ebenen"
+msgstr "Schichten"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:20
 msgctxt "@action:button"
 msgid "Save to Removable Drive"
-msgstr ""
+msgstr "Auf Wechseldatenträger speichern"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:21
 #, fuzzy, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
-msgstr "Auf SD-Karte speichern {0}"
+msgstr "Auf Wechseldatenträger speichern {0}"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:52
 #, python-brace-format
 msgctxt "@info:progress"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
-msgstr ""
+msgstr "Wird auf Wechseldatenträger gespeichert <filename>{0}</filename>"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:73
 #, fuzzy, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
-msgstr "Auf SD-Karte gespeichert {0} als {1}"
+msgstr "Auf Wechseldatenträger gespeichert {0} als {1}"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:74
 #, fuzzy
@@ -166,96 +166,94 @@ msgstr "Auswerfen"
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr ""
+msgstr "Wechseldatenträger auswerfen {0}"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:79
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
-msgstr ""
+msgstr "Konnte nicht auf dem Wechseldatenträger gespeichert werden {0}: {1}"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:58
 msgctxt "@item:intext"
 msgid "Removable Drive"
-msgstr ""
+msgstr "Wechseldatenträger"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:42
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
-msgstr ""
+msgstr "Auswerfen {0}. Sie können den Datenträger jetzt sicher entfernen."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:45
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Maybe it is still in use?"
-msgstr ""
+msgstr "Auswerfen nicht möglich. {0} Vielleicht wird der Datenträger noch verwendet?"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/__init__.py:12
 msgctxt "@label"
 msgid "Removable Drive Output Device Plugin"
-msgstr ""
+msgstr "Ausgabegerät-Plugin für Wechseldatenträger"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/__init__.py:14
 msgctxt "@info:whatsthis"
 msgid "Provides removable drive hotplugging and writing support"
-msgstr ""
+msgstr "Ermöglicht Hot-Plug des Wechseldatenträgers und Support beim Beschreiben"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:10
 msgctxt "@label"
 msgid "Slice info"
-msgstr ""
+msgstr "Slice-Informationen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:13
 msgctxt "@info:whatsthis"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr ""
+msgstr "Sendet anonymisierte Slice-Informationen. Kann in den Einstellungen deaktiviert werden."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:35
 msgctxt "@info"
 msgid ""
 "Cura automatically sends slice info. You can disable this in preferences"
-msgstr ""
+msgstr "Cura sendet automatisch Slice-Informationen. Sie können dies in den Einstellungen deaktivieren."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:36
 msgctxt "@action:button"
 msgid "Dismiss"
-msgstr ""
+msgstr "Verwerfen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:35
 msgctxt "@item:inmenu"
 msgid "USB printing"
-msgstr ""
+msgstr "USB-Drucken"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:36
 msgctxt "@action:button"
 msgid "Print with USB"
-msgstr ""
+msgstr "Über USB drucken"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:37
 msgctxt "@info:tooltip"
 msgid "Print with USB"
-msgstr ""
+msgstr "Über USB drucken"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/__init__.py:13
 msgctxt "@label"
 msgid "USB printing"
-msgstr ""
+msgstr "USB-Drucken"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/__init__.py:17
 #, fuzzy
 msgctxt "@info:whatsthis"
 msgid ""
 "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr ""
-"Akzeptiert den G-Code und sendet diesen an einen Drucker. Das Plug-In kann "
-"auch die Firmware aktualisieren"
+msgstr "Akzeptiert den G-Code und sendet diesen an einen Drucker. Das Plugin kann auch die Firmware aktualisieren."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/USBPrinterManager.py:46
 #, fuzzy
 msgctxt "@title:menu"
 msgid "Firmware"
-msgstr "Firmware aktualisieren"
+msgstr "Firmware"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/USBPrinterManager.py:47
 #, fuzzy
@@ -266,7 +264,7 @@ msgstr "Firmware aktualisieren"
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:17
 msgctxt "@title:window"
 msgid "Print with USB"
-msgstr ""
+msgstr "Über USB drucken"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:28
 #, fuzzy
@@ -296,7 +294,7 @@ msgstr "Abbrechen"
 #, fuzzy
 msgctxt "@title:window"
 msgid "Firmware Update"
-msgstr "Firmware-Update abgeschlossen."
+msgstr "Firmware-Update"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:38
 #, fuzzy
@@ -346,12 +344,12 @@ msgstr "Engine-Protokoll"
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ProfileSetup.qml:31
 msgctxt "@label"
 msgid "Variant:"
-msgstr ""
+msgstr "Variante:"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ProfileSetup.qml:82
 msgctxt "@label"
 msgid "Global Profile:"
-msgstr ""
+msgstr "Globales Profil:"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:60
 #, fuzzy
@@ -369,7 +367,7 @@ msgstr "Druckername:"
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:29
 msgctxt "@title"
 msgid "Select Upgraded Parts"
-msgstr ""
+msgstr "Wählen Sie die aktualisierten Teile"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:214
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:29
@@ -383,17 +381,17 @@ msgstr "Firmware aktualisieren"
 #, fuzzy
 msgctxt "@title"
 msgid "Check Printer"
-msgstr "Drucker hinzufügen"
+msgstr "Drucker prüfen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:220
 msgctxt "@title"
 msgid "Bed Levelling"
-msgstr ""
+msgstr "Druckbett-Nivellierung"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:25
 msgctxt "@title"
 msgid "Bed Leveling"
-msgstr ""
+msgstr "Druckbett-Nivellierung"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:34
 msgctxt "@label"
@@ -401,7 +399,7 @@ msgid ""
 "To make sure your prints will come out great, you can now adjust your "
 "buildplate. When you click 'Move to Next Position' the nozzle will move to "
 "the different positions that can be adjusted."
-msgstr ""
+msgstr "Um sicherzustellen, dass Ihre Drucke hervorragend werden, können Sie nun Ihre Bauplatte justieren. Wenn Sie auf „Gehe zur nächsten Position“ klicken, bewegt sich die Düse zu den verschiedenen Positionen, die justiert werden können."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:40
 msgctxt "@label"
@@ -409,45 +407,45 @@ msgid ""
 "For every postition; insert a piece of paper under the nozzle and adjust the "
 "print bed height. The print bed height is right when the paper is slightly "
 "gripped by the tip of the nozzle."
-msgstr ""
+msgstr "Für jede Position; legen Sie ein Blatt Papier unter die Düse und stellen Sie die Höhe des Druckbetts ein. Die Höhe des Druckbetts ist korrekt, wenn das Papier von der Spitze der Düse leicht berührt wird."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:44
 msgctxt "@action:button"
 msgid "Move to Next Position"
-msgstr ""
+msgstr "Gehe zur nächsten Position"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:66
 msgctxt "@action:button"
 msgid "Skip Bedleveling"
-msgstr ""
+msgstr "Druckbett-Nivellierung überspringen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:39
 msgctxt "@label"
 msgid ""
 "To assist you in having better default settings for your Ultimaker. Cura "
 "would like to know which upgrades you have in your machine:"
-msgstr ""
+msgstr "Um Ihnen dabei zu helfen, bessere Standardeinstellungen für Ihren Ultimaker festzulegen, würde Cura gerne erfahren, welche Upgrades auf Ihrem Gerät vorhanden sind:"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:49
 #, fuzzy
 msgctxt "@option:check"
 msgid "Extruder driver ugrades"
-msgstr "Extruder-Temperatur %1"
+msgstr "Upgrades des Extruderantriebs"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:54
 msgctxt "@option:check"
 msgid "Heated printer bed (standard kit)"
-msgstr ""
+msgstr "Heizbares Druckbett (Standard-Kit)"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:58
 msgctxt "@option:check"
 msgid "Heated printer bed (self built)"
-msgstr ""
+msgstr "Heizbares Druckbett (Selbst gebaut)"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:62
 msgctxt "@option:check"
 msgid "Dual extrusion (experimental)"
-msgstr ""
+msgstr "Dual-Extruder (experimental)"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:70
 msgctxt "@label"
@@ -456,44 +454,44 @@ msgid ""
 "drive upgrade. If you do not have this upgrade, it is highly recommended to "
 "improve reliability. This upgrade can be bought from the Ultimaker webshop "
 "or found on thingiverse as thing:26094"
-msgstr ""
+msgstr "Wenn Sie Ihren Ultimaker nach Oktober 2012 erworben haben, besitzen Sie das Upgrade des Extruderantriebs. Dieses Upgrade ist äußerst empfehlenswert, um die Zuverlässigkeit zu erhöhen. Falls Sie es noch nicht besitzen, können Sie es im Ultimaker-Webshop kaufen. Außerdem finden Sie es im Thingiverse als Thing: 26094"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:44
 msgctxt "@label"
 msgid ""
 "It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
 "this step if you know your machine is functional"
-msgstr ""
+msgstr "Sie sollten einige Sanity-Checks bei Ihrem Ultimaker durchzuführen. Sie können diesen Schritt überspringen, wenn Sie wissen, dass Ihr Gerät funktionsfähig ist."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:49
 msgctxt "@action:button"
 msgid "Start Printer Check"
-msgstr ""
+msgstr "Überprüfung des Druckers starten"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:56
 msgctxt "@action:button"
 msgid "Skip Printer Check"
-msgstr ""
+msgstr "Überprüfung des Druckers überspringen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:65
 msgctxt "@label"
 msgid "Connection: "
-msgstr ""
+msgstr "Verbindung: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:69
 msgctxt "@info:status"
 msgid "Done"
-msgstr ""
+msgstr "Fertig"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:69
 msgctxt "@info:status"
 msgid "Incomplete"
-msgstr ""
+msgstr "Unvollständig"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:76
 msgctxt "@label"
 msgid "Min endstop X: "
-msgstr ""
+msgstr "Min. Endstop X: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:80
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:91
@@ -502,7 +500,7 @@ msgstr ""
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:201
 msgctxt "@info:status"
 msgid "Works"
-msgstr ""
+msgstr "Funktioniert"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:80
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:91
@@ -511,40 +509,40 @@ msgstr ""
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:163
 msgctxt "@info:status"
 msgid "Not checked"
-msgstr ""
+msgstr "Nicht überprüft"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:87
 msgctxt "@label"
 msgid "Min endstop Y: "
-msgstr ""
+msgstr "Min. Endstop Y: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:99
 msgctxt "@label"
 msgid "Min endstop Z: "
-msgstr ""
+msgstr "Min. Endstop Z: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:111
 msgctxt "@label"
 msgid "Nozzle temperature check: "
-msgstr ""
+msgstr "Temperaturprüfung der Düse: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:119
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:149
 msgctxt "@action:button"
 msgid "Start Heating"
-msgstr ""
+msgstr "Aufheizen starten"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:124
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:154
 msgctxt "@info:progress"
 msgid "Checking"
-msgstr ""
+msgstr "Wird überprüft"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:141
 #, fuzzy
 msgctxt "@label"
 msgid "bed temperature check:"
-msgstr "Druckbett-Temperatur %1"
+msgstr "Temperaturprüfung des Druckbetts:"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:38
 msgctxt "@label"
@@ -552,32 +550,32 @@ msgid ""
 "Firmware is the piece of software running directly on your 3D printer. This "
 "firmware controls the step motors, regulates the temperature and ultimately "
 "makes your printer work."
-msgstr ""
+msgstr "Die Firmware ist der Teil der Software, der direkt auf Ihrem 3D-Drucker läuft. Diese Firmware kontrolliert die Schrittmotoren, reguliert die Temperatur und sorgt letztlich dafür, dass Ihr Drucker funktioniert."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:45
 msgctxt "@label"
 msgid ""
 "The firmware shipping with new Ultimakers works, but upgrades have been made "
 "to make better prints, and make calibration easier."
-msgstr ""
+msgstr "Die Firmware, die mit neuen Ultimakers ausgeliefert wird funktioniert, aber es gibt bereits Upgrades, um bessere Drucke zu erzeugen und die Kalibrierung zu vereinfachen."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:52
 msgctxt "@label"
 msgid ""
 "Cura requires these new features and thus your firmware will most likely "
 "need to be upgraded. You can do so now."
-msgstr ""
+msgstr "Cura benötigt diese neuen Funktionen und daher ist es sehr wahrscheinlich, dass Ihre Firmware aktualisiert werden muss. Sie können dies jetzt erledigen."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:55
 #, fuzzy
 msgctxt "@action:button"
 msgid "Upgrade to Marlin Firmware"
-msgstr "Firmware aktualisieren"
+msgstr "Auf Marlin-Firmware aktualisieren"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:58
 msgctxt "@action:button"
 msgid "Skip Upgrade"
-msgstr ""
+msgstr "Aktualisierung überspringen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:15
 #, fuzzy
@@ -596,9 +594,7 @@ msgstr "Komplettlösung für den 3D-Druck mit geschmolzenem Filament."
 msgctxt "@info:credit"
 msgid ""
 "Cura has been developed by Ultimaker B.V. in cooperation with the community."
-msgstr ""
-"Cura wurde von Ultimaker B.V. in Zusammenarbeit mit der Gemeinschaft "
-"entwickelt."
+msgstr "Cura wurde von Ultimaker B.V. in Zusammenarbeit mit der Community entwickelt."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:16
 #, fuzzy
@@ -617,24 +613,24 @@ msgctxt "@info:tooltip"
 msgid ""
 "Highlight unsupported areas of the model in red. Without support these areas "
 "will nog print properly."
-msgstr ""
+msgstr "Nicht gestützte Bereiche des Modells in rot hervorheben. Ohne Stützstruktur werden diese Bereiche nicht korrekt gedruckt."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:74
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
-msgstr ""
+msgstr "Zentrieren Sie die Kamera, wenn das Element ausgewählt wurde"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:78
 msgctxt "@info:tooltip"
 msgid ""
 "Moves the camera so the object is in the center of the view when an object "
 "is selected"
-msgstr ""
+msgstr "Bewegen Sie die Kamera bis sich das Objekt im Mittelpunkt der Ansicht befindet, wenn ein Objekt ausgewählt ist"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:51
 msgctxt "@action:inmenu"
 msgid "Toggle Fu&ll Screen"
-msgstr ""
+msgstr "Umschalten auf Vo&llbild-Modus"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:58
 #, fuzzy
@@ -670,12 +666,12 @@ msgstr "&Drucker hinzufügen..."
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "Manage Pr&inters..."
-msgstr "&Drucker hinzufügen..."
+msgstr "Dr&ucker verwalten..."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:102
 msgctxt "@action:inmenu"
 msgid "Manage Profiles..."
-msgstr ""
+msgstr "Profile verwalten..."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:109
 #, fuzzy
@@ -699,7 +695,7 @@ msgstr "&Über..."
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "Delete &Selection"
-msgstr "Auswahl löschen"
+msgstr "&Auswahl löschen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:138
 #, fuzzy
@@ -711,41 +707,41 @@ msgstr "Objekt löschen"
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "Ce&nter Object on Platform"
-msgstr "Objekt auf Plattform zentrieren"
+msgstr "Objekt auf Druckplatte ze&ntrieren"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:152
 msgctxt "@action:inmenu"
 msgid "&Group Objects"
-msgstr ""
+msgstr "Objekte &gruppieren"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:160
 msgctxt "@action:inmenu"
 msgid "Ungroup Objects"
-msgstr ""
+msgstr "Gruppierung für Objekte aufheben"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:168
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "&Merge Objects"
-msgstr "Objekt löschen"
+msgstr "Objekt &zusammenführen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:176
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "&Duplicate Object"
-msgstr "Objekt duplizieren"
+msgstr "Objekt &duplizieren"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:183
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "&Clear Build Platform"
-msgstr "Druckplatte reinigen"
+msgstr "Druckplatte &reinigen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:190
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "Re&load All Objects"
-msgstr "Alle Objekte neu laden"
+msgstr "Alle Objekte neu &laden"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:197
 #, fuzzy
@@ -757,13 +753,13 @@ msgstr "Alle Objektpositionen zurücksetzen"
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "Reset All Object &Transformations"
-msgstr "Alle Objektumwandlungen zurücksetzen"
+msgstr "Alle Objekte & Umwandlungen zurücksetzen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:209
 #, fuzzy
 msgctxt "@action:inmenu"
 msgid "&Open File..."
-msgstr "Datei öffnen"
+msgstr "&Datei öffnen..."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:217
 #, fuzzy
@@ -775,84 +771,84 @@ msgstr "Engine-&Protokoll anzeigen..."
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:461
 msgctxt "@title:tab"
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:36
 msgctxt "@label"
 msgid "Language"
-msgstr ""
+msgstr "Sprache"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:47
 msgctxt "@item:inlistbox"
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgarisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:48
 msgctxt "@item:inlistbox"
 msgid "Czech"
-msgstr ""
+msgstr "Tschechisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:49
 msgctxt "@item:inlistbox"
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:50
 msgctxt "@item:inlistbox"
 msgid "Finnish"
-msgstr ""
+msgstr "Finnisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:51
 msgctxt "@item:inlistbox"
 msgid "French"
-msgstr ""
+msgstr "Französisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:52
 msgctxt "@item:inlistbox"
 msgid "German"
-msgstr ""
+msgstr "Deutsch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:53
 msgctxt "@item:inlistbox"
 msgid "Italian"
-msgstr ""
+msgstr "Italienisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:54
 msgctxt "@item:inlistbox"
 msgid "Polish"
-msgstr ""
+msgstr "Polnisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:55
 msgctxt "@item:inlistbox"
 msgid "Russian"
-msgstr ""
+msgstr "Russisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:56
 msgctxt "@item:inlistbox"
 msgid "Spanish"
-msgstr ""
+msgstr "Spanisch"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:98
 msgctxt "@label"
 msgid ""
 "You will need to restart the application for language changes to have effect."
-msgstr ""
+msgstr "Die Anwendung muss neu gestartet werden, um die Spracheinstellungen zu übernehmen."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:114
 msgctxt "@option:check"
 msgid "Ensure objects are kept apart"
-msgstr ""
+msgstr "Stellen Sie sicher, dass die Objekte getrennt gehalten werden"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:118
 msgctxt "@info:tooltip"
 msgid ""
 "Should objects on the platform be moved so that they no longer intersect."
-msgstr ""
+msgstr "Objekte auf der Druckplatte sollten so verschoben werden, dass sie sich nicht länger überschneiden."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:147
 msgctxt "@option:check"
 msgid "Send (Anonymous) Print Information"
-msgstr ""
+msgstr "Druck-Informationen (anonym) senden"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:151
 msgctxt "@info:tooltip"
@@ -860,80 +856,80 @@ msgid ""
 "Should anonymous data about your print be sent to Ultimaker? Note, no "
 "models, IP addresses or other personally identifiable information is sent or "
 "stored."
-msgstr ""
+msgstr "Sollen anonyme Daten über Ihren Drucker an Ultimaker gesendet werden? Beachten Sie, dass keine Modelle, IP-Adressen oder andere personenbezogene Daten gesendet oder gespeichert werden."
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:179
 msgctxt "@option:check"
 msgid "Scale Too Large Files"
-msgstr ""
+msgstr "Zu große Dateien anpassen"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:183
 msgctxt "@info:tooltip"
 msgid ""
 "Should opened files be scaled to the build volume when they are too large?"
-msgstr ""
+msgstr "Sollen offene Dateien an das Erstellungsvolumen angepasste werden, wenn Sie zu groß sind?"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:70
 #, fuzzy
 msgctxt "@label:textbox"
 msgid "Printjob Name"
-msgstr "Druckername:"
+msgstr "Name des Druckauftrags"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:167
 msgctxt "@label %1 is length of filament"
 msgid "%1 m"
-msgstr ""
+msgstr "%1 m"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:229
 msgctxt "@info:tooltip"
 msgid "Select the active output device"
-msgstr ""
+msgstr "Wählen Sie das aktive Ausgabegerät"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:34
 msgctxt "@label"
 msgid "Infill:"
-msgstr ""
+msgstr "Füllung:"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:119
 msgctxt "@label"
 msgid "Sparse"
-msgstr ""
+msgstr "Dünn"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:121
 msgctxt "@label"
 msgid "Sparse (20%) infill will give your model an average strength"
-msgstr ""
+msgstr "Eine dünne (20 %) Füllung gibt Ihrem Modell eine durchschnittliche Festigkeit"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:125
 msgctxt "@label"
 msgid "Dense"
-msgstr ""
+msgstr "Dicht"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:127
 msgctxt "@label"
 msgid "Dense (50%) infill will give your model an above average strength"
-msgstr ""
+msgstr "Eine dichte (50 %) Füllung gibt Ihrem Modell eine überdurchschnittliche Festigkeit"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:131
 msgctxt "@label"
 msgid "Solid"
-msgstr ""
+msgstr "Solide"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:133
 msgctxt "@label"
 msgid "Solid (100%) infill will make your model completely solid"
-msgstr ""
+msgstr "Eine solide (100 %) Füllung macht Ihr Modell vollständig massiv"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:151
 #, fuzzy
 msgctxt "@label:listbox"
 msgid "Helpers:"
-msgstr "&Hilfe"
+msgstr "Helfer:"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:169
 msgctxt "@option:check"
 msgid "Enable Skirt Adhesion"
-msgstr ""
+msgstr "Adhäsion der Unterlage aktivieren"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:187
 #, fuzzy
@@ -963,7 +959,7 @@ msgstr "Druckkonfiguration"
 #, fuzzy
 msgctxt "@label:listbox"
 msgid "Machine:"
-msgstr "Maschine:"
+msgstr "Gerät:"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:16
 #, fuzzy
@@ -980,18 +976,18 @@ msgstr "&Datei"
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:43
 msgctxt "@title:menu"
 msgid "Open &Recent"
-msgstr ""
+msgstr "&Zuletzt geöffnet"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:72
 msgctxt "@action:inmenu"
 msgid "&Save Selection to File"
-msgstr ""
+msgstr "Auswahl als Datei &speichern"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:80
 #, fuzzy
 msgctxt "@title:menu"
 msgid "Save &All"
-msgstr "Datei speichern"
+msgstr "&Alles speichern"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:108
 #, fuzzy
@@ -1003,18 +999,18 @@ msgstr "&Bearbeiten"
 #, fuzzy
 msgctxt "@title:menu"
 msgid "&View"
-msgstr "Ansicht"
+msgstr "&Ansicht"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:151
 #, fuzzy
 msgctxt "@title:menu"
 msgid "&Machine"
-msgstr "&Maschine"
+msgstr "&Gerät"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:197
 msgctxt "@title:menu"
 msgid "&Profile"
-msgstr ""
+msgstr "&Profil"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:224
 #, fuzzy
