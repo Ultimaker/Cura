@@ -38,6 +38,7 @@ from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
+from . import CuraSplashScreen
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -514,6 +515,9 @@ class CuraApplication(QtApplication):
                 ungrouped_nodes.append(node)
         for node in ungrouped_nodes:
             Selection.remove(node)
+
+    def _createSplashScreen(self):
+        return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
         machine = self.getMachineManager().getActiveMachineInstance()
