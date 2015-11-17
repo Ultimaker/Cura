@@ -14,23 +14,42 @@ Rectangle {
     property real progress: UM.Backend.progress;
     property bool activity: Printer.getPlatformActivity;
     Behavior on progress { NumberAnimation { duration: 250; } }
-    property int totalHeight: childrenRect.height + UM.Theme.sizes.default_margin.height*1.5
+    property int totalHeight: childrenRect.height + UM.Theme.sizes.default_margin.height
     property string fileBaseName
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     Rectangle{
+        id: progressBar
+        width: parent.width - 2 * UM.Theme.sizes.default_margin.width
+        height: UM.Theme.sizes.progressbar.height
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.sizes.default_margin.width
+        radius: UM.Theme.sizes.progressbar_radius.width
+        color: UM.Theme.colors.progressbar_background
+
+        Rectangle{
+            width: Math.max(parent.width * base.progress)
+            height: parent.height
+            color: UM.Theme.colors.progressbar_control
+            radius: UM.Theme.sizes.progressbar_radius.width
+            visible: base.progress > 0.99 ? false : true
+        }
+    }
+
+    Rectangle{
         id: saveRow
         width: base.width
-        height: saveToButton.height + (UM.Theme.sizes.default_margin.height / 2) // height + bottomMargin
-        anchors.top: parent.top
+        height: saveToButton.height
+        anchors.top: progressBar.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
 
         Button {
             id: saveToButton
             property int resizedWidth
-            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height + 2
+            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height + 3
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: base.progress > 0.99 && base.activity == true
             height: UM.Theme.sizes.save_button_save_to_button.height

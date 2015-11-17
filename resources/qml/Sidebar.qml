@@ -52,6 +52,15 @@ Rectangle
         configureMachinesAction: base.configureMachinesAction;
     }
 
+    Rectangle {
+        id: headerSeparator
+        width: parent.width
+        height: UM.Theme.sizes.sidebar_lining.height
+        color: UM.Theme.colors.sidebar_lining
+        anchors.top: header.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height 
+    }
+
     ProfileSetup {
         id: profileItem
         manageProfilesAction: base.manageProfilesAction
@@ -80,7 +89,7 @@ Rectangle
         text: catalog.i18nc("@label:listbox","Setup");
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-        anchors.top: header.bottom
+        anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         width: parent.width/100*45
         font: UM.Theme.fonts.large;
@@ -93,7 +102,7 @@ Rectangle
         height: UM.Theme.sizes.sidebar_header_mode_toggle.height
         anchors.right: parent.right
         anchors.rightMargin: UM.Theme.sizes.default_margin.width
-        anchors.top: header.bottom
+        anchors.top: headerSeparator.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         Component{
             id: wizardDelegate
@@ -145,7 +154,7 @@ Rectangle
     Loader
     {
         id: sidebarContents;
-        anchors.bottom: saveButton.top
+        anchors.bottom: footerSeparator.top
         anchors.top: profileItem.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: base.left
@@ -170,6 +179,15 @@ Rectangle
                 }
             }
         }
+    }
+
+    Rectangle {
+        id: footerSeparator
+        width: parent.width
+        height: UM.Theme.sizes.sidebar_lining.height
+        color: UM.Theme.colors.sidebar_lining
+        anchors.bottom: saveButton.top
+        anchors.bottomMargin: UM.Theme.sizes.default_margin.height 
     }
 
     SaveButton

@@ -45,7 +45,7 @@
     },
 
     "colors": {
-		"text_default": [0, 0, 0, 255],
+        "text_default": [0, 0, 0, 255],
         "sidebar": [255, 255, 255, 255],
         "lining": [208, 210, 211, 255],
 
@@ -64,6 +64,7 @@
 
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [24, 41, 77, 255],
+        "sidebar_lining": [245, 245, 245, 255],
 
         "button": [24, 41, 77, 255],
         "button_hover": [70, 84, 113, 255],
@@ -156,16 +157,15 @@
     "sizes": {
         "window_margin": [1.0, 1.0],
         "default_margin": [1.0, 1.0],
-        "default_lining": [0.25, 0.25],
+        "default_lining": [0.08, 0.08],
         "logo": [9.5, 2.0],
 
         "sidebar": [30.0, 10.0],
         "sidebar_header": [0.0, 4.0],
         "sidebar_header_mode_toggle": [0.0, 2.0],
-        "sidebar_setup": [0.0, 2.6],
-        "sidebar_subParts": [0.0, 2.4],
-        "sidebar_specs_bar": [0.0, 2.2],
-        "sidebar_inputFields": [0.0, 1.9],
+        "sidebar_lining": [0.5, 0.5],
+        "sidebar_setup": [0.0, 2.0],
+        "sidebar_inputfields": [0.0, 2.0],
         "simple_mode_infill_caption": [0.0, 5.0],
         "simple_mode_infill_height": [0.0, 8.0],
 
@@ -190,10 +190,11 @@
         "button_lining": [0, 0],
 
         "progressbar": [26.0, 0.8],
+        "progressbar_radius": [0.4, 0.4],
         "progressbar_control": [8.0, 0.8],
         "progressbar_padding": [0.0, 1.0],
 
-        "scrollbar": [0.7, 0.5],
+        "scrollbar": [0.75, 0.5],
 
         "slider_groove": [0.5, 0.5],
         "slider_handle": [1.5, 1.5],
@@ -207,8 +208,6 @@
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
 
-        "save_button_border": [0.06, 0.06],
-        "save_button_header": [0.0, 3.2],
         "save_button_text_margin": [0.3, 0.6],
         "save_button_slicing_bar": [0.0, 2.2],
         "save_button_label_margin": [0.5, 0.5],

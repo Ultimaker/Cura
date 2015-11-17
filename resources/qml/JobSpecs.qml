@@ -76,7 +76,7 @@ Rectangle {
     TextField {
         id: printJobTextfield
         anchors.right: parent.right
-        height: UM.Theme.sizes.sidebar_inputFields.height
+        height: UM.Theme.sizes.sidebar_inputfields.height
         width: base.width
         property int unremovableSpacing: 5
         text: ''
