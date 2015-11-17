@@ -119,7 +119,7 @@ class StartSliceJob(Job):
         settings = profile.getAllSettingValues(include_machine = True)
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = not "{material_bed_temperature}" in start_gcode
-        settings["material_print_temp_prepend"] = not "{material_print_temperature" in start_gcode
+        settings["material_print_temp_prepend"] = not "{material_print_temperature}" in start_gcode
         for key, value in settings.items():
             s = msg.settings.add()
             s.name = key
