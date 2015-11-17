@@ -28,8 +28,8 @@ Rectangle {
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
-    width: 240
-    height: 50
+    width: 200
+    height: 55
     color: "transparent"
 
     function createFileName(){
@@ -76,7 +76,6 @@ Rectangle {
     TextField {
         id: printJobTextfield
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.sizes.default_margin.width;
         height: UM.Theme.sizes.sidebar_inputFields.height
         width: base.width
         property int unremovableSpacing: 5
@@ -101,68 +100,61 @@ Rectangle {
         }
     }
 
+    Label{
+        id: boundingSpec
+        anchors.top: printJobTextfield.bottom
+        anchors.right: parent.right
+        font: UM.Theme.fonts.small
+        color: UM.Theme.colors.text_subtext
+        text: "0.0 x 0.0 x 0.0 mm"
+    }
+
     Rectangle {
         id: specsRow
-        implicitWidth: base.width
-        implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
-        anchors.top: printJobTextfield.bottom
+        anchors.top: boundingSpec.bottom
+        anchors.right: parent.right
         color: "transparent"
-        visible: base.progress > 0.99 && base.activity == true
+        //visible: base.progress > 0.99 && base.activity == true
         Item{
-            id: time
-            width: childrenRect.width;
+            width: parent.width
             height: parent.height
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
-            anchors.top: parent.top
-            visible: base.printMaterialAmount > 0 ? true : false
+
             UM.RecolorImage {
                 id: timeIcon
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
+                anchors.right: timeSpec.left
+                anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
                 width: UM.Theme.sizes.save_button_specs_icons.width
                 height: UM.Theme.sizes.save_button_specs_icons.height
                 sourceSize.width: width
                 sourceSize.height: width
-                color: UM.Theme.colors.text_hover
+                color: UM.Theme.colors.text_subtext
                 source: UM.Theme.icons.print_time;
             }
             Label{
                 id: timeSpec
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: timeIcon.right
-                anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
-                font: UM.Theme.fonts.default
-                color: UM.Theme.colors.text
-                text: (!base.printDuration || !base.printDuration.valid) ? "" : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+                anchors.right: lengthIcon.left
+                anchors.rightMargin: UM.Theme.sizes.default_margin.width
+                font: UM.Theme.fonts.small
+                color: UM.Theme.colors.text_subtext
+                text: (!base.printDuration || !base.printDuration.valid) ? "00h 00min" : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
-        }
-        Item{
-            width: parent.width / 100 * 55
-            height: parent.height
-            anchors.left: time.right
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.top: parent.top
-            visible: base.printMaterialAmount > 0 ? true : false
             UM.RecolorImage {
                 id: lengthIcon
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
+                anchors.right: lengthSpec.left
+                anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
                 width: UM.Theme.sizes.save_button_specs_icons.width
                 height: UM.Theme.sizes.save_button_specs_icons.height
                 sourceSize.width: width
                 sourceSize.height: width
-                color: UM.Theme.colors.text_hover
+                color: UM.Theme.colors.text_subtext
                 source: UM.Theme.icons.category_material;
             }
             Label{
                 id: lengthSpec
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: lengthIcon.right
-                anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
-                font: UM.Theme.fonts.default
-                color: UM.Theme.colors.text
-                text: base.printMaterialAmount <= 0 ? "" : catalog.i18nc("@label %1 is length of filament","%1 m").arg(base.printMaterialAmount)
+                anchors.right: parent.right
+                font: UM.Theme.fonts.small
+                color: UM.Theme.colors.text_subtext
+                text: base.printMaterialAmount <= 0 ? "0.0 m" : catalog.i18nc("@label %1 is length of filament","%1 m").arg(base.printMaterialAmount)
             }
         }
     }

@@ -9,17 +9,8 @@
             "size": 1.15,
             "family": "Proxima Nova Rg"
         },
-        "default_allcaps": {
-            "size": 1,
-            "capitalize": true,
-            "family": "Proxima Nova Rg"
-        },
         "small": {
-            "size": 0.75,
-            "family": "Proxima Nova Rg"
-        },
-        "tiny": {
-            "size": 0.5,
+            "size": 1.0,
             "family": "Proxima Nova Rg"
         },
         "caption": {
