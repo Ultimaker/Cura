@@ -59,18 +59,22 @@ QtObject {
                 implicitWidth: UM.Theme.sizes.button.width;
                 implicitHeight: UM.Theme.sizes.button.height;
                 Rectangle {
-                    anchors.left: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: UM.Theme.colors.button_text
-                    width: control.hovered ? openFileLabel.width : 0;
-                    height: openFileLabel.height
-                    Behavior on width { NumberAnimation { duration: 100; } }
+                    id: tool_button_background
+                    anchors.top: parent.verticalCenter;
+
+                    width: parent.width;
+                    height: control.hovered ? parent.height / 2 + label.height : 0;
+                    Behavior on height { NumberAnimation { duration: 100; } }
+
                     opacity: control.hovered ? 1.0 : 0.0;
                     Behavior on opacity { NumberAnimation { duration: 100; } }
+
                     Label {
-                        id: openFileLabel
+                        id: label
                         anchors.bottom: parent.bottom
                         text: control.text
+                        width: UM.Theme.sizes.button.width;
+                        wrapMode: Text.WordWrap
                         font: UM.Theme.fonts.button_tooltip;
                         color: UM.Theme.colors.button_tooltip_text;
                     }
@@ -357,12 +361,14 @@ QtObject {
 
             scrollBarBackground: Rectangle {
                 implicitWidth: UM.Theme.sizes.scrollbar.width
+                radius: implicitWidth / 2
                 color: UM.Theme.colors.scrollbar_background;
             }
 
             handle: Rectangle {
                 id: scrollViewHandle
                 implicitWidth: UM.Theme.sizes.scrollbar.width;
+                radius: implicitWidth / 2
 
                 color: styleData.pressed ? UM.Theme.colors.scrollbar_handle_down : styleData.hovered ? UM.Theme.colors.scrollbar_handle_hover : UM.Theme.colors.scrollbar_handle;
                 Behavior on color { ColorAnimation { duration: 50; } }
@@ -463,9 +469,10 @@ QtObject {
                 id: layerSliderGroove
                 implicitWidth: control.width;
                 implicitHeight: UM.Theme.sizes.slider_groove.height;
+                radius: width/2;
 
                 color: UM.Theme.colors.slider_groove;
-                border.width: 1;
+                border.width: UM.Theme.sizes.default_lining;
                 border.color: UM.Theme.colors.slider_groove_border;
                 Rectangle {
                     anchors {
@@ -475,6 +482,7 @@ QtObject {
                     }
                     color: UM.Theme.colors.slider_groove_fill;
                     width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
+                    radius: width/2
                 }
             }
             handle: Rectangle {
@@ -485,7 +493,6 @@ QtObject {
                 Behavior on color { ColorAnimation { duration: 50; } }
                 TextField {
                     id: valueLabel
-                    property int unremovableSpacing: 5
                     property string maxValue: control.maximumValue + 1
                     placeholderText: control.value + 1
                     onEditingFinished: {
@@ -498,19 +505,16 @@ QtObject {
                     }
                     validator: IntValidator {bottom: 1; top: control.maximumValue + 1;}
                     visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    anchors.bottom: layerSliderControl.bottom
-                    anchors.right: layerSliderControl.left
-                    anchors.rightMargin: valueLabel.unremovableSpacing / 2
-                    anchors.bottomMargin: parent.width + (UM.Theme.sizes.default_margin.width / 2)
-                    transformOrigin: Item.BottomRight
+                    anchors.top: layerSliderControl.bottom
+                    anchors.topMargin: UM.Theme.sizes.default_margin.width
+                    anchors.horizontalCenter: layerSliderControl.horizontalCenter
                     rotation: 90
                     style: TextFieldStyle{
                         textColor: UM.Theme.colors.setting_control_text;
                         font: UM.Theme.fonts.default;
                         background: Rectangle {
-                            radius: 0
                             implicitWidth: control.maxValue.length * valueLabel.font.pixelSize
-                            implicitHeight: UM.Theme.sizes.slider_handle.height + valueLabel.unremovableSpacing
+                            implicitHeight: UM.Theme.sizes.slider_handle.height + UM.Theme.sizes.default_margin.width
                             border.width: 1;
                             border.color: UM.Theme.colors.slider_groove_border;
                         }

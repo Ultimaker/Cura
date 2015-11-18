@@ -47,6 +47,6 @@ Rectangle {
         }
         wrapMode: Text.Wrap;
         font: UM.Theme.fonts.default;
-        color: UM.Theme.colors.text_default;
+        color: UM.Theme.colors.text;
     }
 }

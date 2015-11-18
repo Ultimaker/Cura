@@ -10,14 +10,14 @@ import UM 1.0 as UM
 
 Item 
 {
-    width: 250
-    height: 250
+    width: UM.Theme.sizes.button.width
+    height: UM.Theme.sizes.slider_layerview_size.height
 
     Slider 
     {
         id: slider
-        width: 10
-        height: 250
+        width: UM.Theme.sizes.slider_layerview_size.width
+        height: UM.Theme.sizes.slider_layerview_size.height
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.sizes.slider_layerview_margin.width/2
         orientation: Qt.Vertical
@@ -29,14 +29,6 @@ Item
         onValueChanged: UM.LayerView.setCurrentLayer(value)
 
         style: UM.Theme.styles.layerViewSlider
-    }
-    Rectangle {
-        anchors.left: parent.left
-        y: -UM.Theme.sizes.slider_layerview_background_extension.height
-        z: slider.z - 1
-        width: UM.Theme.sizes.button.width
-        height: UM.Theme.sizes.slider_layerview_background_extension.height
-        color: UM.Theme.colors.slider_text_background
     }
     Rectangle {
         anchors.left: parent.left

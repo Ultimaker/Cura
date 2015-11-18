@@ -45,21 +45,20 @@
     },
 
     "colors": {
-        "text_default": [0, 0, 0, 255],
         "sidebar": [255, 255, 255, 255],
-        "lining": [208, 210, 211, 255],
+        "lining": [127, 127, 127, 255],
 
         "primary": [12, 169, 227, 255],
-        "primary_hover": [34, 150, 190, 255],
+        "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 255],
         "border": [127, 127, 127, 255],
-        "secondary": [205, 202, 201, 255],
+        "secondary": [245, 245, 245, 255],
 
         "text": [24, 41, 77, 255],
         "text_inactive": [174, 174, 174, 255],
-        "text_white": [255, 255, 255, 255],
         "text_hover": [35, 35, 35, 255],
         "text_pressed": [12, 169, 227, 255],
+        "text_white": [255, 255, 255, 255],
         "text_subtext": [127, 127, 127, 255],
 
         "error": [255, 140, 0, 255],
@@ -118,10 +117,10 @@
         "setting_control_border": [127, 127, 127, 255],
         "setting_control_text": [24,41,77, 255],
         "setting_control_depth_line": [162, 192, 227, 255],
-        "setting_control_hover": [139, 143, 153, 255],
+        "setting_control_hover": [127, 127, 127, 255],
         "setting_control_selected": [35, 35, 35, 255],
         "setting_control_revert": [127, 127, 127, 255],
-        "setting_unit": [174, 174, 174, 255],
+        "setting_unit": [127, 127, 127, 255],
         "setting_validation_error": [255, 57, 14, 255],
         "setting_validation_warning": [255, 186, 15, 255],
         "setting_validation_ok": [255, 255, 255, 255],
@@ -130,8 +129,8 @@
         "progressbar_control": [24, 41, 77, 255],
 
         "slider_groove": [245, 245, 245, 255],
-        "slider_groove_border": [139, 143, 153, 255],
-        "slider_groove_fill": [139, 143, 153, 255],
+        "slider_groove_border": [127, 127, 127, 255],
+        "slider_groove_fill": [127, 127, 127, 255],
         "slider_handle": [32, 166, 219, 255],
         "slider_handle_hover": [77, 182, 226, 255],
         "slider_text_background": [255, 255, 255, 255],
@@ -146,12 +145,12 @@
 
         "message_background": [255, 255, 255, 255],
         "message_text": [32, 166, 219, 255],
-        "message_dismiss": [139, 143, 153, 255],
+        "message_dismiss": [127, 127, 127, 255],
 
         "tool_panel_background": [255, 255, 255, 255],
 
         "per_object_settings_panel_background": [255, 255, 255, 255],
-        "per_object_settings_panel_border": [208, 210, 211, 255]
+        "per_object_settings_panel_border": [127, 127, 127, 255]
     },
 
     "sizes": {
@@ -198,9 +197,9 @@
 
         "slider_groove": [0.5, 0.5],
         "slider_handle": [1.5, 1.5],
+        "slider_layerview_size": [1.0, 20.0],
         "slider_layerview_background": [4.0, 0.0],
         "slider_layerview_smalltext_margin": [0.3, 0.00],
-        "slider_layerview_background_extension": [0.0, 2.2],
         "slider_layerview_margin": [3.0, 3.0],
 
         "checkbox": [2.0, 2.0],

@@ -52,7 +52,7 @@ Item
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter
             font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text_default;
+            color: UM.Theme.colors.text;
         }
 
         ToolButton {
