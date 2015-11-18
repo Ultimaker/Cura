@@ -10,6 +10,7 @@ from UM.Scene.Platform import Platform
 from UM.Math.Vector import Vector
 from UM.Math.Matrix import Matrix
 from UM.Math.Quaternion import Quaternion
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -97,6 +98,7 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
+        self._scene_boundingbox = AxisAlignedBox()
         self._job_name = None
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
@@ -240,18 +242,29 @@ class CuraApplication(QtApplication):
 
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
+    sceneBoundingBoxChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def getPlatformActivity(self):
         return self._platform_activity
 
+    @pyqtProperty(str, notify = sceneBoundingBoxChanged)
+    def getSceneBoundingBoxString(self):
+        return self._i18n_catalog.i18nc("@info", "%.1f x %.1f x %.1f mm") % (self._scene_boundingbox.width.item(), self._scene_boundingbox.depth.item(), self._scene_boundingbox.height.item())
+
     def updatePlatformActivity(self, node = None):
         count = 0
+        scene_boundingbox = AxisAlignedBox()
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
 
             count += 1
+            scene_boundingbox += node.getBoundingBox()
+
+        if repr(self._scene_boundingbox) != repr(scene_boundingbox):
+            self._scene_boundingbox = scene_boundingbox
+            self.sceneBoundingBoxChanged.emit()
 
         self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()

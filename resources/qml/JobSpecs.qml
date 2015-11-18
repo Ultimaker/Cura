@@ -106,7 +106,7 @@ Rectangle {
         anchors.right: parent.right
         font: UM.Theme.fonts.small
         color: UM.Theme.colors.text_subtext
-        text: "0.0 x 0.0 x 0.0 mm"
+        text: Printer.getSceneBoundingBoxString
     }
 
     Rectangle {
