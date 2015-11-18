@@ -163,8 +163,9 @@ QtObject {
                         id: tool_button_arrow
                         opacity: !control.enabled ? 0.2 : 1.0
                         anchors.right: parent.right;
-                        anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width - tool_button_arrow.width) / 2
-                        anchors.verticalCenter: parent.verticalCenter;
+                        anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width) / 4
+                        anchors.bottom: parent.bottom;
+                        anchors.bottomMargin: (UM.Theme.sizes.button.height - UM.Theme.sizes.button_icon.height) / 4
                         text: "▼";
                         font: UM.Theme.fonts.small;
                         visible: control.menu != null;

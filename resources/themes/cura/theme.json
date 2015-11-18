@@ -105,12 +105,12 @@
         "scrollbar_handle_hover": [174, 174, 174, 255],
         "scrollbar_handle_down": [12, 159, 227, 255],
 
-        "setting_category": [238, 238, 238, 255],
-        "setting_category_disabled": [238, 238, 238, 255],
-        "setting_category_hover": [231, 231, 231, 255],
+        "setting_category": [255, 255, 255, 255],
+        "setting_category_disabled": [255, 255, 255, 255],
+        "setting_category_hover": [245, 245, 245, 255],
         "setting_category_active": [240, 248, 255, 255],
         "setting_category_active_hover": [233, 244, 245, 255],
-        "setting_category_text": [35, 35, 35, 255],
+        "setting_category_text": [24, 41, 77, 255],
 
         "setting_control": [255, 255, 255, 255],
         "setting_control_highlight": [245, 245, 245, 255],
