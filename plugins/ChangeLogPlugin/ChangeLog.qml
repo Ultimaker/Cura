@@ -11,8 +11,8 @@ import UM 1.1 as UM
 UM.Dialog
 {
     id: base
-    width: 300 * Screen.devicePixelRatio;
-    height: 500 * Screen.devicePixelRatio;
+    minimumWidth: 400
+    minimumHeight: 300;
     title: "Changelog"
 
     ScrollView
