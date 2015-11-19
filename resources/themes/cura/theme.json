@@ -113,12 +113,11 @@
         "setting_category_text": [24, 41, 77, 255],
 
         "setting_control": [255, 255, 255, 255],
-        "setting_control_highlight": [245, 245, 245, 255],
+        "setting_control_highlight": [255, 255, 255, 0],
         "setting_control_border": [127, 127, 127, 255],
-        "setting_control_text": [24,41,77, 255],
+        "setting_control_border_highlight": [12, 169, 227, 255],
+        "setting_control_text": [24, 41, 77, 255],
         "setting_control_depth_line": [162, 192, 227, 255],
-        "setting_control_hover": [127, 127, 127, 255],
-        "setting_control_selected": [35, 35, 35, 255],
         "setting_control_revert": [127, 127, 127, 255],
         "setting_unit": [127, 127, 127, 255],
         "setting_validation_error": [255, 57, 14, 255],
@@ -136,8 +135,9 @@
         "slider_text_background": [255, 255, 255, 255],
 
         "checkbox": [255, 255, 255, 255],
-        "checkbox_hover": [245, 245, 245, 255],
+        "checkbox_hover": [255, 255, 255, 255],
         "checkbox_border": [127, 127, 127, 255],
+        "checkbox_border_hover": [12, 169, 227, 255],
         "checkbox_mark": [24, 41, 77, 255],
         "checkbox_text": [24, 41, 77, 255],
 
@@ -182,7 +182,7 @@
 
         "standard_list_lineheight": [1.5, 1.5],
         "standard_list_input": [20.0, 25.0],
-        "standard_arrow": [0.6, 0.6],
+        "standard_arrow": [0.8, 0.8],
 
         "button": [4, 4],
         "button_icon": [3, 3],

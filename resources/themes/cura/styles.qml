@@ -34,10 +34,11 @@ QtObject {
                     elide: Text.ElideRight;
                     anchors.left: parent.left;
                     anchors.leftMargin: UM.Theme.sizes.setting_unit_margin.width
-                    anchors.right: separationLine.left;
+                    anchors.right: downArrow.left;
                     anchors.verticalCenter: parent.verticalCenter;
                     font: UM.Theme.fonts.default
                 }
+/*
                 Rectangle{
                     id: separationLine
                     width: 1
@@ -48,6 +49,7 @@ QtObject {
                     anchors.top: parent.top
                     z: parent.z + 1
                 }
+*/
             }
             label: Label{}
         }
@@ -60,14 +62,11 @@ QtObject {
                 implicitHeight: UM.Theme.sizes.button.height;
                 Rectangle {
                     id: tool_button_background
-                    anchors.top: parent.verticalCenter;
+                    anchors.top: parent.bottom;
 
                     width: parent.width;
-                    height: control.hovered ? parent.height / 2 + label.height : 0;
+                    height: control.hovered ? label.height : 0;
                     Behavior on height { NumberAnimation { duration: 100; } }
-
-                    opacity: control.hovered ? 1.0 : 0.0;
-                    Behavior on opacity { NumberAnimation { duration: 100; } }
 
                     Label {
                         id: label
@@ -159,17 +158,21 @@ QtObject {
                     }
                     Behavior on color { ColorAnimation { duration: 50; } }
 
-                    Label {
+
+                    UM.RecolorImage {
                         id: tool_button_arrow
                         opacity: !control.enabled ? 0.2 : 1.0
                         anchors.right: parent.right;
                         anchors.rightMargin: (UM.Theme.sizes.button.width - UM.Theme.sizes.button_icon.width) / 4
                         anchors.bottom: parent.bottom;
                         anchors.bottomMargin: (UM.Theme.sizes.button.height - UM.Theme.sizes.button_icon.height) / 4
-                        text: "▼";
-                        font: UM.Theme.fonts.small;
+                        width: UM.Theme.sizes.standard_arrow.width
+                        height: UM.Theme.sizes.standard_arrow.height
+                        sourceSize.width: width
+                        sourceSize.height: width
                         visible: control.menu != null;
                         color: UM.Theme.colors.button_text
+                        source: UM.Theme.icons.arrow_bottom
                     }
                 }
             }
@@ -347,7 +350,7 @@ QtObject {
                     sourceSize.width: width
                     sourceSize.height: width
                     color: UM.Theme.colors.setting_category_text
-                    source: control.checked ? UM.Theme.icons.arrow_top : UM.Theme.icons.arrow_bottom
+                    source: control.checked ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
                 }
             }
         }
@@ -389,6 +392,7 @@ QtObject {
         controlColor: UM.Theme.colors.setting_control;
         controlHighlightColor: UM.Theme.colors.setting_control_highlight;
         controlBorderColor: UM.Theme.colors.setting_control_border;
+        controlBorderHighlightColor: UM.Theme.colors.setting_control_border_highlight;
         controlTextColor: UM.Theme.colors.setting_control_text;
         controlFont: UM.Theme.fonts.default;
 
@@ -411,8 +415,8 @@ QtObject {
                 color: control.hovered ? UM.Theme.colors.checkbox_hover : UM.Theme.colors.checkbox;
                 Behavior on color { ColorAnimation { duration: 50; } }
 
-                border.width: 1
-                border.color: UM.Theme.colors.checkbox_border;
+                border.width: UM.Theme.sizes.default_lining.width;
+                border.color: control.hovered ? UM.Theme.colors.checkbox_border_hover : UM.Theme.colors.checkbox_border;
 
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
@@ -442,7 +446,7 @@ QtObject {
                 implicitHeight: UM.Theme.sizes.slider_groove.height;
 
                 color: UM.Theme.colors.slider_groove;
-                border.width: 1;
+                border.width: UM.Theme.sizes.default_lining.width;
                 border.color: UM.Theme.colors.slider_groove_border;
 
                 Rectangle {
@@ -516,7 +520,7 @@ QtObject {
                         background: Rectangle {
                             implicitWidth: control.maxValue.length * valueLabel.font.pixelSize
                             implicitHeight: UM.Theme.sizes.slider_handle.height + UM.Theme.sizes.default_margin.width
-                            border.width: 1;
+                            border.width: UM.Theme.sizes.default_lining.width;
                             border.color: UM.Theme.colors.slider_groove_border;
                         }
                     }
@@ -535,8 +539,8 @@ QtObject {
                 implicitHeight: control.height;
                 implicitWidth: control.width;
 
-                border.width: 1;
-                border.color: UM.Theme.colors.setting_control_border;
+                border.width: UM.Theme.sizes.default_lining.width;
+                border.color: control.hovered ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border;
 
                 color: UM.Theme.colors.setting_validation_ok;
 
