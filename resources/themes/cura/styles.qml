@@ -13,7 +13,7 @@ QtObject {
             background: Rectangle {
                 color: UM.Theme.colors.setting_control
                 border.width: 1
-                border.color: UM.Theme.colors.setting_control_border
+                border.color: control.hovered ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border
                 UM.RecolorImage {
                     id: downArrow
                     anchors.verticalCenter: parent.verticalCenter

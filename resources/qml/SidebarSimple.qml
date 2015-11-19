@@ -41,7 +41,7 @@ Item
         }
         Label{
             id: infillCaption
-            width: infillCellLeft.width - UM.Theme.sizes.default_margin.width
+            width: infillCellLeft.width - UM.Theme.sizes.default_margin.width * 2
             text: infillModel.count > 0 && infillListView.activeIndex != -1 ? infillModel.get(infillListView.activeIndex).text : ""
             font: UM.Theme.fonts.caption
             wrapMode: Text.Wrap
@@ -57,10 +57,9 @@ Item
 
         height: childrenRect.height;
         width: base.width / 100 * 55
-        spacing: 12
+        spacing: UM.Theme.sizes.default_margin.width
 
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.sizes.default_margin.width  - (UM.Theme.sizes.default_margin.width/4)
+        anchors.left: infillCellLeft.right
         anchors.top: parent.top
         anchors.topMargin: UM.Theme.sizes.default_margin.height
 
@@ -92,29 +91,35 @@ Item
                 Rectangle{
                     id: infillIconLining
 
-                    width: infillCellRight.width / 3 - UM.Theme.sizes.default_margin.width;
+                    width: (infillCellRight.width - 2 * UM.Theme.sizes.default_margin.width) / 3;
                     height: width
 
-                    border.color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_text : UM.Theme.colors.setting_control_border
-                    border.width: infillListView.activeIndex == index ? 2 : 1
-                    color: infillListView.activeIndex == index ? UM.Theme.colors.setting_category_active : "transparent"
+                    border.color: (infillListView.activeIndex == index) ? UM.Theme.colors.setting_control_selected : 
+                                      (parent.hovered ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border)
+                    border.width: UM.Theme.sizes.default_lining.width
+                    color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_selected : "transparent"
 
-                    Image {
+                    UM.RecolorImage {
                         id: infillIcon
                         anchors.fill: parent;
-                        anchors.margins: UM.Theme.sizes.default_margin.width / 2
+                        anchors.margins: UM.Theme.sizes.default_margin.width
 
                         sourceSize.width: width
                         sourceSize.height: width
                         source: UM.Theme.icons[model.icon];
+                        color: (infillListView.activeIndex == index) ? UM.Theme.colors.text_white : UM.Theme.colors.text
                     }
 
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            infillListView.activeIndex = index
-                            UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
+                            if (infillListView.activeIndex != index)
+                            {
+                                infillListView.activeIndex = index
+                                UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
+                            }
                         }
+                        cursorShape: (infillListView.activeIndex != index) ? Qt.PointingHandCursor : Qt.ArrowCursor
                     }
                 }
                 Label{
