@@ -323,7 +323,7 @@
                         },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
-                            "description": "This controls the thickness of the bottom and top layers, the amount of solid layers put down is calculated by the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. And keep it near your wall thickness to make an evenly strong part.",
+                            "description": "This controls the thickness of the bottom and top layers. The amount of solid layers put down is calculated by the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. Keep it near your wall thickness to make an evenly strong part.",
                             "unit": "mm",
                             "default": 0.8,
                             "min_value": "0",
@@ -334,7 +334,7 @@
                             "children": {
                                 "top_thickness": {
                                     "label": "Top Thickness",
-                                    "description": "This controls the thickness of the top layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it nearto your wall thickness to make an evenly strong part.",
+                                    "description": "This controls the thickness of the top layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. Keep it near your wall thickness to make an evenly strong part.",
                                     "unit": "mm",
                                     "min_value": "0",
                                     "default": 0.8,
@@ -423,7 +423,7 @@
                 },
                 "top_bottom_pattern": {
                     "label": "Bottom/Top Pattern",
-                    "description": "Pattern of the top/bottom solid fill. This normally is done with lines to get the best possible finish, but in some cases a concentric fill gives a nicer end result.",
+                    "description": "Pattern of the top/bottom solid fill. This is normally done with lines to get the best possible finish, but in some cases a concentric fill gives a nicer end result.",
                     "type": "enum",
                     "options": {
                         "lines": "Lines",
@@ -434,29 +434,29 @@
                     "visible": false
                 },
                 "skin_no_small_gaps_heuristic": {
-                    "label": "Ingore small Z gaps",
-                    "description": "When the model has small vertical gaps about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such a case set this setting to false.",
+                    "label": "Ignore small Z gaps",
+                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such a case set this setting to false.",
                     "type": "boolean",
                     "default": true,
                     "visible": false
                 },
                 "skin_alternate_rotation": {
                     "label": "Alternate Skin Rotation",
-                    "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve on the printing quality by reducing the pillowing effect.",
+                    "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve the printing quality by reducing the pillowing effect.",
                     "type": "boolean",
                     "default": false,
                     "visible": false
                 },
                 "skin_outline_count": {
                     "label": "Skin Perimeter Line Count",
-                    "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve on roofs which would start in the middle of infill cells.",
+                    "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve roofs which would start in the middle of infill cells.",
                     "default": 0,
                     "type": "int",
                     "visible": false
                 },
                 "xy_offset": {
                     "label": "Horizontal expansion",
-                    "description": "Amount of offset applied all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
+                    "description": "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0,
@@ -464,7 +464,7 @@
                 },
                 "z_seam_type": {
                     "label": "Z Seam Alignment",
-                    "description": "Starting point of each part in a layer. When parts in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the part start will be less noticable. When taking the shortest path the print will be more quick.",
+                    "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
                     "type": "enum",
                     "options": {
                         "back": "Back",
@@ -483,7 +483,7 @@
             "settings": {
                 "infill_sparse_density": {
                     "label": "Infill Density",
-                    "description": "This controls how densely filled the insides of your print will be. For a solid part use 100%, for an hollow part use 0%. A value around 20% is usually enough. This won't affect the outside of the print and only adjusts how strong the part becomes.",
+                    "description": "This controls how densely filled the insides of your print will be. For a solid part use 100%, for a hollow part use 0%. A value around 20% is usually enough. This setting won't affect the outside of the print and only adjusts how strong the part becomes.",
                     "unit": "%",
                     "type": "float",
                     "default": 20,
@@ -503,7 +503,7 @@
                 },
                 "infill_pattern": {
                     "label": "Infill Pattern",
-                    "description": "Cura defaults to switching between grid and line infill. But with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
+                    "description": "Cura defaults to switching between grid and line infill, but with this setting visible you can control this yourself. The line infill swaps direction on alternate layers of infill, while the grid prints the full cross-hatching on each layer of infill.",
                     "type": "enum",
                     "visible": false,
                     "options": {
@@ -529,7 +529,7 @@
                 },
                 "infill_wipe_dist": {
                     "label": "Infill Wipe Distance",
-                    "description": "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is imilar to infill overlap, but without extrusion and only on one end of the infill line.",
+                    "description": "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.04,
@@ -613,7 +613,7 @@
                 },
                 "material_diameter": {
                     "label": "Diameter",
-                    "description": "The diameter of your filament needs to be measured as accurately as possible.\nIf you cannot measure this value you will have to calibrate it, a higher number means less extrusion, a smaller number generates more extrusion.",
+                    "description": "The diameter of your filament needs to be measured as accurately as possible.\nIf you cannot measure this value you will have to calibrate it; a higher number means less extrusion, a smaller number generates more extrusion.",
                     "unit": "mm",
                     "type": "float",
                     "default": 2.85,
@@ -639,7 +639,7 @@
                 },
                 "retraction_amount": {
                     "label": "Retraction Distance",
-                    "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in Bowden-tube fed printers.",
+                    "description": "The amount of retraction: Set at 0 for no retraction at all. A value of 4.5mm seems to generate good results for 3mm filament in bowden tube fed printers.",
                     "unit": "mm",
                     "type": "float",
                     "default": 4.5,
@@ -679,7 +679,7 @@
                 },
                 "retraction_extra_prime_amount": {
                     "label": "Retraction Extra Prime Amount",
-                    "description": "The amount of material extruded after unretracting. During a retracted travel material might get lost and so we need to compensate for this.",
+                    "description": "The amount of material extruded after a retraction. During a travel move, some material might get lost and so we need to compensate for this.",
                     "unit": "mm³",
                     "type": "float",
                     "default": 0,
@@ -689,7 +689,7 @@
                 },
                 "retraction_min_travel": {
                     "label": "Retraction Minimum Travel",
-                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps ensure you do not get a lot of retractions in a small area.",
+                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps to ensure you do not get a lot of retractions in a small area.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1.5,
@@ -698,8 +698,8 @@
                     "enabled": "retraction_enable"
                 },
                 "retraction_count_max": {
-                    "label": "Maximal Retraction Count",
-                    "description": "This settings limits the number of retractions occuring within the Minimal Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament as that can flatten the filament and cause grinding issues.",
+                    "label": "Maximum Retraction Count",
+                    "description": "This settings limits the number of retractions occurring within the Minimum Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
                     "default": 6,
                     "type": "int",
                     "visible": false,
@@ -707,8 +707,8 @@
                     "enabled": "retraction_enable"
                 },
                 "retraction_extrusion_window": {
-                    "label": "Minimal Extrusion Distance Window",
-                    "description": "The window in which the Maximal Retraction Count is enforced. This window should be approximately the size of the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
+                    "label": "Minimum Extrusion Distance Window",
+                    "description": "The window in which the Maximum Retraction Count is enforced. This value should be approximately the same as the Retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
                     "unit": "mm",
                     "type": "float",
                     "default": 4.5,
@@ -754,7 +754,7 @@
                         },
                         "speed_wall": {
                             "label": "Shell Speed",
-                            "description": "The speed at which shell is printed. Printing the outer shell at a lower speed improves the final skin quality.",
+                            "description": "The speed at which the shell is printed. Printing the outer shell at a lower speed improves the final skin quality.",
                             "unit": "mm/s",
                             "type": "float",
                             "min_value": "0.1",
@@ -765,7 +765,7 @@
                             "children": {
                                 "speed_wall_0": {
                                     "label": "Outer Shell Speed",
-                                    "description": "The speed at which outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way.",
+                                    "description": "The speed at which the outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "min_value": "0.1",
@@ -775,7 +775,7 @@
                                 },
                                 "speed_wall_x": {
                                     "label": "Inner Shell Speed",
-                                    "description": "The speed at which  all inner shells are printed. Printing the inner shell fasster than the outer shell will reduce printing time. It is good to set this in between the outer shell speed and the infill speed.",
+                                    "description": "The speed at which all inner shells are printed. Printing the inner shell faster than the outer shell will reduce printing time. It works well to set this in between the outer shell speed and the infill speed.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "min_value": "0.1",
@@ -799,7 +799,7 @@
                         },
                         "speed_support": {
                             "label": "Support Speed",
-                            "description": "The speed at which exterior support is printed. Printing exterior supports at higher speeds can greatly improve printing time. And the surface quality of exterior support is usually not important, so higher speeds can be used.",
+                            "description": "The speed at which exterior support is printed. Printing exterior supports at higher speeds can greatly improve printing time. The surface quality of exterior support is usually not important anyway, so higher speeds can be used.",
                             "unit": "mm/s",
                             "type": "float",
                             "min_value": "0.1",
@@ -811,7 +811,7 @@
                             "children": {
                                 "speed_support_lines": {
                                     "label": "Support Wall Speed",
-                                    "description": "The speed at which the walls of exterior support are printed. Printing the walls at higher speeds can improve on the overall duration. ",
+                                    "description": "The speed at which the walls of exterior support are printed. Printing the walls at higher speeds can improve the overall duration.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default": 60,
@@ -821,7 +821,7 @@
                                 },
                                 "speed_support_roof": {
                                     "label": "Support Roof Speed",
-                                    "description": "The speed at which the roofs of exterior support are printed. Printing the support roof at lower speeds can improve on overhang quality. ",
+                                    "description": "The speed at which the roofs of exterior support are printed. Printing the support roof at lower speeds can improve overhang quality.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default": 40,
@@ -836,7 +836,7 @@
                 },
                 "speed_travel": {
                     "label": "Travel Speed",
-                    "description": "The speed at which travel moves are done. A well-built Ultimaker can reach speeds of 250mm/s. But some machines might have misaligned layers then.",
+                    "description": "The speed at which travel moves are done. A well-built Ultimaker can reach speeds of 250mm/s, but some machines might have misaligned layers then.",
                     "unit": "mm/s",
                     "type": "float",
                     "min_value": "0.1",
@@ -846,7 +846,7 @@
                 },
                 "speed_layer_0": {
                     "label": "Bottom Layer Speed",
-                    "description": "The print speed for the bottom layer: You want to print the first layer slower so it sticks to the printer bed better.",
+                    "description": "The print speed for the bottom layer: You want to print the first layer slower so it sticks better to the printer bed.",
                     "unit": "mm/s",
                     "type": "float",
                     "min_value": "0.1",
@@ -855,7 +855,7 @@
                 },
                 "skirt_speed": {
                     "label": "Skirt Speed",
-                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed. But sometimes you want to print the skirt at a different speed.",
+                    "description": "The speed at which the skirt and brim are printed. Normally this is done at the initial layer speed, but sometimes you might want to print the skirt at a different speed.",
                     "unit": "mm/s",
                     "type": "float",
                     "min_value": "0.1",
@@ -865,7 +865,7 @@
                 },
                 "speed_slowdown_layers": {
                     "label": "Amount of Slower Layers",
-                    "description": "The first few layers are printed slower then the rest of the object, this to get better adhesion to the printer bed and improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is generally right for most materials and printers.",
+                    "description": "The first few layers are printed slower than the rest of the object, this to get better adhesion to the printer bed and improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is generally right for most materials and printers.",
                     "type": "int",
                     "min_value": "0",
                     "default": 4,
@@ -880,7 +880,7 @@
             "settings": {
                 "retraction_combing": {
                     "label": "Enable Combing",
-                    "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another, and does not use retraction. If combing is disabled the printer head moves straight from the start point to the end point and it will always retract.",
+                    "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another and does not use retraction. If combing is disabled, the print head moves straight from the start point to the end point and it will always retract.",
                     "type": "boolean",
                     "default": true,
                     "visible": false
@@ -907,7 +907,7 @@
                 },
                 "coasting_enable": {
                     "label": "Enable Coasting",
-                    "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to lay down the last piece of the extrusion path in order to reduce stringing.",
+                    "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve the printing quality by reducing the pillowing effect.",
                     "type": "boolean",
                     "default": false,
                     "visible": true
@@ -956,7 +956,7 @@
                     "children": {
                         "coasting_min_volume_retract": {
                             "label": "Min Volume Retract-Coasting",
-                            "description": "The minimal volume an extrusion path must have in order to coast the full amount before doing a retraction.",
+                            "description": "The minimum volume an extrusion path must have in order to coast the full amount before doing a retraction.",
                             "unit": "mm³",
                             "type": "float",
                             "default": 0.6,
@@ -966,7 +966,7 @@
                         },
                         "coasting_min_volume_move": {
                             "label": "Min Volume Move-Coasting",
-                            "description": "The minimal volume an extrusion path must have in order to coast the full amount before doing a travel move without retraction.",
+                            "description": "The minimum volume an extrusion path must have in order to coast the full amount before doing a travel move without retraction.",
                             "unit": "mm³",
                             "type": "float",
                             "default": 0.8,
@@ -978,7 +978,7 @@
                 },
                 "coasting_speed": {
                     "label": "Coasting Speed",
-                    "description": "The speed by which to move during coasting, relative to the speed of the extrusion path. A value slightly under 100% is advised, since during the coasting move, the pressure in the bowden tube drops.",
+                    "description": "The speed by which to move during coasting, relative to the speed of the extrusion path. A value slightly under 100% is advised, since during the coasting move the pressure in the bowden tube drops.",
                     "unit": "%",
                     "type": "float",
                     "default": 90,
@@ -1077,7 +1077,7 @@
                     }
                 },
                 "cool_min_layer_time": {
-                    "label": "Minimal Layer Time",
+                    "label": "Minimum Layer Time",
                     "description": "The minimum time spent in a layer: Gives the layer time to cool down before the next one is put on top. If a layer would print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer.",
                     "unit": "sec",
                     "type": "float",
@@ -1086,8 +1086,8 @@
                     "visible": false
                 },
                 "cool_min_layer_time_fan_speed_max": {
-                    "label": "Minimal Layer Time Full Fan Speed",
-                    "description": "The minimum time spent in a layer which will cause the fan to be at maximum speed. The fan speed increases linearly from minimal fan speed for layers taking minimal layer time to maximum fan speed for layers taking the time specified here.",
+                    "label": "Minimum Layer Time Full Fan Speed",
+                    "description": "The minimum time spent in a layer which will cause the fan to be at maximum speed. The fan speed increases linearly from minimum fan speed for layers taking the minimum layer time to maximum fan speed for layers taking the time specified here.",
                     "unit": "sec",
                     "type": "float",
                     "min_value": "0",
@@ -1124,7 +1124,7 @@
                 },
                 "support_type": {
                     "label": "Placement",
-                    "description": "Where to place support structures. The placement can be restricted such that the support structures won't rest on the model, which could otherwise cause scarring.",
+                    "description": "Where to place support structures. The placement can be restricted so that the support structures won't rest on the model, which could otherwise cause scarring.",
                     "type": "enum",
                     "options": {
                         "buildplate": "Touching Buildplate",
@@ -1146,7 +1146,7 @@
                 },
                 "support_xy_distance": {
                     "label": "X/Y Distance",
-                    "description": "Distance of the support structure from the print, in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
+                    "description": "Distance of the support structure from the print in the X/Y directions. 0.7mm typically gives a nice distance from the print so the support does not stick to the surface.",
                     "unit": "mm",
                     "type": "float",
                     "min_value": "0",
@@ -1212,7 +1212,7 @@
                 },
                 "support_conical_min_width": {
                     "label": "Minimal Width",
-                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as fundament for support above.",
+                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
                     "unit": "mm",
                     "min_value": "0",
                     "default": 3.0,
@@ -1231,7 +1231,7 @@
                 },
                 "support_join_distance": {
                     "label": "Join Distance",
-                    "description": "The maximum distance between support blocks, in the X/Y directions, such that the blocks will merge into a single block.",
+                    "description": "The maximum distance between support blocks in the X/Y directions, so that the blocks will merge into a single block.",
                     "unit": "mm",
                     "type": "float",
                     "default": 2,
@@ -1249,7 +1249,7 @@
                 },
                 "support_area_smoothing": {
                     "label": "Area Smoothing",
-                    "description": "Maximal distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
+                    "description": "Maximum distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.6,
@@ -1266,7 +1266,7 @@
                 },
                 "support_roof_height": {
                     "label": "Support Roof Thickness",
-                    "description": "The height of the support roofs. ",
+                    "description": "The height of the support roofs.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
@@ -1275,7 +1275,7 @@
                 },
                 "support_roof_density": {
                     "label": "Support Roof Density",
-                    "description": "This controls how densely filled the roofs of the support will be. A higher percentage results in better overhangs, which are more difficult to remove.",
+                    "description": "This controls how densely filled the roofs of the support will be. A higher percentage results in better overhangs, but makes the support more difficult to remove.",
                     "unit": "%",
                     "type": "float",
                     "default": 100,
@@ -1317,8 +1317,8 @@
                     "enabled": "support_enable"
                 },
                 "support_minimal_diameter": {
-                    "label": "Minimal Diameter",
-                    "description": "Maximal diameter in the X/Y directions of a small area which is to be supported by a specialized support tower. ",
+                    "label": "Minimum Diameter",
+                    "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
@@ -1327,7 +1327,7 @@
                 },
                 "support_tower_diameter": {
                     "label": "Tower Diameter",
-                    "description": "The diameter of a special tower. ",
+                    "description": "The diameter of a special tower.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
@@ -1336,7 +1336,7 @@
                 },
                 "support_tower_roof_angle": {
                     "label": "Tower Roof Angle",
-                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers. ",
+                    "description": "The angle of the rooftop of a tower. Larger angles mean more pointy towers.",
                     "unit": "°",
                     "type": "int",
                     "min_value": "0",
@@ -1347,7 +1347,7 @@
                 },
                 "support_pattern": {
                     "label": "Pattern",
-                    "description": "Cura supports 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed as 1 piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordeon fashion.",
+                    "description": "Cura can generate 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed in one piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordion fashion.",
                     "type": "enum",
                     "options": {
                         "lines": "Lines",
@@ -1370,7 +1370,7 @@
                 },
                 "support_infill_rate": {
                     "label": "Fill Amount",
-                    "description": "The amount of infill structure in the support, less infill gives weaker support which is easier to remove.",
+                    "description": "The amount of infill structure in the support; less infill gives weaker support which is easier to remove.",
                     "unit": "%",
                     "type": "float",
                     "min_value": "0",
@@ -1548,7 +1548,7 @@
                     "children": {
                         "raft_surface_speed": {
                             "label": "Raft Surface Print Speed",
-                            "description": "The speed at which the surface raft layers are printed. This should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines.",
+                            "description": "The speed at which the surface raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines.",
                             "unit": "mm/s",
                             "type": "float",
                             "default": 30,
@@ -1643,7 +1643,7 @@
                 },
                 "draft_shield_height_limitation": {
                     "label": "Draft Shield Limitation",
-                    "description": "Whether to limit the height of the draft shield",
+                    "description": "Whether or not to limit the height of the draft shield.",
                     "type": "enum",
                     "options": {
                         "full": "Full",
@@ -1674,7 +1674,7 @@
             "settings": {
                 "meshfix_union_all": {
                     "label": "Union Overlapping Volumes",
-                    "description": "Ignore the internal geometry arising from overlapping volumes and print the volumes as one. This may cause internal cavaties to disappear.",
+                    "description": "Ignore the internal geometry arising from overlapping volumes and print the volumes as one. This may cause internal cavities to disappear.",
                     "type": "boolean",
                     "default": true,
                     "visible": false
@@ -1695,7 +1695,7 @@
                 },
                 "meshfix_keep_open_polygons": {
                     "label": "Keep Disconnected Faces",
-                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when all else doesn produce proper GCode.",
+                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when all else doesn't produce proper GCode.",
                     "type": "boolean",
                     "default": false,
                     "visible": false
@@ -1709,7 +1709,7 @@
             "settings": {
                 "print_sequence": {
                     "label": "Print sequence",
-                    "description": "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated such that the whole print head can move between and all models are lower than the distance between the nozzle and the X/Y axles.",
+                    "description": "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
                     "type": "enum",
                     "options": {
                         "all_at_once": "All at Once",
@@ -1893,7 +1893,7 @@
                 },
                 "wireframe_bottom_delay": {
                     "label": "WP Bottom Delay",
-                    "description": "Delay time after a downward move. Only applies to Wire Printing. Only applies to Wire Printing.",
+                    "description": "Delay time after a downward move. Only applies to Wire Printing.",
                     "unit": "sec",
                     "type": "float",
                     "default": 0,
@@ -1902,7 +1902,7 @@
                 },
                 "wireframe_flat_delay": {
                     "label": "WP Flat Delay",
-                    "description": "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too large delay times cause sagging. Only applies to Wire Printing.",
+                    "description": "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing.",
                     "unit": "sec",
                     "type": "float",
                     "default": 0.1,
@@ -1947,7 +1947,7 @@
                 },
                 "wireframe_strategy": {
                     "label": "WP Strategy",
-                    "description": "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted.",
+                    "description": "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted.",
                     "type": "enum",
                     "options": {
                         "compensate": "Compensate",
@@ -1989,7 +1989,7 @@
                 },
                 "wireframe_roof_outer_delay": {
                     "label": "WP Roof Outer Delay",
-                    "description": "Time spent at the outer perimeters of hole which is to become a roof. Larger times can ensure a better connection. Only applies to Wire Printing.",
+                    "description": "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "sec",
                     "default": 0.2,
