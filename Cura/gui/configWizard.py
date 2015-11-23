@@ -1150,10 +1150,20 @@ class LulzbotMachineSelectPage(InfoPage):
 		return False
 
 	def StoreData(self):
-		if self.LulzbotTaz.GetValue() or self.LulzbotMini.GetValue():
+		if self.LulzbotTaz.GetValue() or self.LulzbotMini.GetValue() or self.LulzbotTaz6.GetValue():
 			if self.LulzbotTaz.GetValue():
 				profile.putMachineSetting('machine_width', '290')
 				profile.putMachineSetting('machine_depth', '275')
+				profile.putMachineSetting('machine_height', '250')
+				profile.putMachineSetting('serial_baud', '115200')
+				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_x', '0.0')
+				profile.putMachineSetting('extruder_head_size_min_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_max_y', '0.0')
+				profile.putMachineSetting('extruder_head_size_height', '0.0')
+			elif self.LulzbotTaz6.GetValue():
+				profile.putMachineSetting('machine_width', '280')
+				profile.putMachineSetting('machine_depth', '280')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('serial_baud', '115200')
 				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
@@ -1318,7 +1328,6 @@ class LulzbotTazBedSelectPage(InfoPage):
 		else:
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_4')
 			profile.putMachineSetting('machine_name', 'LulzBot TAZ 4')
-
 
 class LulzbotTazToolheadSelectPage(InfoPage):
 	def __init__(self, parent):
