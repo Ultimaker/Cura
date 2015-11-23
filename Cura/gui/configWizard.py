@@ -1112,10 +1112,16 @@ class LulzbotMachineSelectPage(InfoPage):
 		self.LulzbotMini = self.AddImageButton(self.panel, 0, 0, _("LulzBot Mini"),
 											   'Lulzbot_mini.jpg', image_size, style=ImageButton.IB_GROUP)
 		self.LulzbotMini.OnSelected(self.OnLulzbotMiniSelected)
-		self.LulzbotTaz = self.AddImageButton(self.panel, 0, 1, _("LulzBot TAZ 4 or 5"),
+		
+		self.LulzbotTaz6 = self.AddImageButton(self.panel, 0, 1, _("LulzBot TAZ 6"),
+											   'Lulzbot_TAZ6.jpg', image_size)
+		self.LulzbotTaz6.OnSelected(self.OnLulzbotTaz6Selected)
+		
+		self.LulzbotTaz = self.AddImageButton(self.panel, 1, 0, _("LulzBot TAZ 4 or 5"),
 											   'Lulzbot_TAZ5.jpg', image_size)
 		self.LulzbotTaz.OnSelected(self.OnLulzbotTazSelected)
-		self.OtherPrinters = self.AddImageButton(self.panel, 1, 0, _("Other Printers"),
+		
+		self.OtherPrinters = self.AddImageButton(self.panel, 1, 1, _("Other Printers"),
 												 'Generic-3D-Printer.png', image_size)
 		self.OtherPrinters.OnSelected(self.OnOthersSelected)
 		self.LulzbotMini.SetValue(True)
@@ -1130,6 +1136,9 @@ class LulzbotMachineSelectPage(InfoPage):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotMiniToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotMiniToolheadPage,
 										 self.GetParent().lulzbotReadyPage)
+
+	def OnLulzbotTaz6Selected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz6SelectPage)
 
 	def OnLulzbotTazSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazSelectPage)
@@ -1213,10 +1222,35 @@ class LulzbotMiniToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead_shortname', 'Flexystruder')
 			profile.putMachineSetting('machine_type', 'lulzbot_mini_flexystruder')
 
+class LulzbotTaz6SelectPage(InfoPage):
+	def __init__(self, parent):
+		super(LulzbotTaz6SelectPage, self).__init__(parent, _("LulzBot TAZ 6 Selection"))
+
+		self.panel = self.AddPanel()
+		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
+		self.taz6 = self.AddImageButton(self.panel, 0, 0, _('Tilapia'),
+										'Lulzbot_Toolhead_TAZ_Tilapia.jpg', image_size,
+										style=ImageButton.IB_GROUP)
+		self.taz6.OnSelected(self.OnTilapiaSelected)
+		self.taz6.SetValue(True)
+
+	def OnPageShown(self):
+		self.taz6.TriggerGroupCallbacks()
+
+	def OnTilapiaSelected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+
+	def StoreData(self):
+		profile.putProfileSetting('nozzle_size',  '0.5')
+		profile.putMachineSetting('extruder_amount', '1')
+		profile.putMachineSetting('toolhead', 'Single Extruder Tilapia')
+		profile.putMachineSetting('toolhead_shortname', 'Tilapia')
+		profile.putMachineSetting('machine_type', 'lulzbot_TAZ_6_Single_Tilapia')
+		profile.putMachineSetting('machine_name', 'LulzBot TAZ 6')
 
 class LulzbotTazSelectPage(InfoPage):
 	def __init__(self, parent):
-		super(LulzbotTazSelectPage, self).__init__(parent, _("LulzBot TAZ Selection"))
+		super(LulzbotTazSelectPage, self).__init__(parent, _("LulzBot TAZ 4-5 Selection"))
 
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
@@ -1494,6 +1528,7 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
 		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
+		self.lulzbotTaz6SelectPage = LulzbotTaz6SelectPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)

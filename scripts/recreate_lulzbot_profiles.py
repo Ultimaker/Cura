@@ -37,6 +37,7 @@ dir_map = {
                             'lulzbot_TAZ_5_FlexyDuallyV1'),
     'TAZ_flexy_dually_v2': ('lulzbot_TAZ_4_FlexyDuallyV2',
                             'lulzbot_TAZ_5_FlexyDuallyV2'),
+    'TAZ6_single_tilapia': ('lulzbot_TAZ_6_SingleTilapia',),
 }
 
 material_map = {

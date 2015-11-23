@@ -1213,8 +1213,10 @@ def calculateObjectSizeOffsets():
 def getMachineCenterCoords():
 	if getMachineSetting('machine_center_is_zero') == 'True':
 		return [0, 0]
-	elif getMachineSetting('machine_type') == 'lulzbot_mini':
-		return [(getMachineSettingFloat('machine_width') / 2) + 2.5, (getMachineSettingFloat('machine_width') / 2) + 0.5]
+	elif getMachineSetting('machine_type') == 'lulzbot_mini' or \
+		 getMachineSetting('machine_type') == 'lulzbot_TAZ_6':
+		return [(getMachineSettingFloat('machine_width') / 2) + 2.5,
+			    (getMachineSettingFloat('machine_width') / 2) + 0.5]
 	return [getMachineSettingFloat('machine_width') / 2, getMachineSettingFloat('machine_depth') / 2]
 
 #Returns a list of convex polygons, first polygon is the allowed area of the machine,
