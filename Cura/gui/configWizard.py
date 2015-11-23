@@ -1544,7 +1544,8 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
 			self.RunWizard(self.lulzbotMiniToolheadPage)
-		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5'):
+		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5') or /
+                     profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
 			self.RunWizard(self.lulzbotTazHotendPage)
 		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_6'):
 			self.RunWizard(self.lulzbotTaz6ToolheadPage)
