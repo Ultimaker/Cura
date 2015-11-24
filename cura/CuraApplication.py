@@ -171,7 +171,6 @@ class CuraApplication(QtApplication):
 
         self._volume = BuildVolume.BuildVolume(root)
 
-        self.getRenderer().setLightPosition(Vector(0, 150, 0))
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
