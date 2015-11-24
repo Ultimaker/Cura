@@ -10,20 +10,45 @@ import UM 1.1 as UM
 
 Rectangle {
     id: base;
+    UM.I18nCatalog { id: catalog; name:"cura"}
 
     property real progress: UM.Backend.progress;
     property bool activity: Printer.getPlatformActivity;
-    Behavior on progress { NumberAnimation { duration: 250; } }
+    //Behavior on progress { NumberAnimation { duration: 250; } }
     property int totalHeight: childrenRect.height + UM.Theme.sizes.default_margin.height
     property string fileBaseName
+    property string statusText: {
+        if(progress == 0) {
+            if(!activity) {
+                return catalog.i18nc("@label:PrintjobStatus","Please load a 3d model");
+            } else {
+                return catalog.i18nc("@label:PrintjobStatus","Preparing to slice...");
+            }
+        } else if(base.progress < 0.99) {
+            return catalog.i18nc("@label:PrintjobStatus","Slicing...");
+        } else {
+            return catalog.i18nc("@label:PrintjobStatus","Ready to ") + UM.OutputDeviceManager.activeDeviceShortDescription;
+        }
+    }
 
-    UM.I18nCatalog { id: catalog; name:"cura"}
+    Label {
+        id: statusLabel
+        width: parent.width - 2 * UM.Theme.sizes.default_margin.width
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.sizes.default_margin.width
+
+        color: UM.Theme.colors.text
+        font: UM.Theme.fonts.large
+        text: statusText;
+    }
 
     Rectangle{
         id: progressBar
         width: parent.width - 2 * UM.Theme.sizes.default_margin.width
         height: UM.Theme.sizes.progressbar.height
-        anchors.top: parent.top
+        anchors.top: statusLabel.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height/4
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.sizes.default_margin.width
         radius: UM.Theme.sizes.progressbar_radius.width
