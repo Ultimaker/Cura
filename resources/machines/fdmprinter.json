@@ -1856,7 +1856,7 @@
                     "description": "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing.",
                     "unit": "%",
                     "default": 100,
-		    "min_value": "0",
+                    "min_value": "0",
                     "max_value": "100",
                     "type": "float",
                     "visible": false,
