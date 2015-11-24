@@ -140,7 +140,7 @@
             ]
         },
         "gantry_height": {
-            "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axles).",
+            "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
             "default":99999999999
         }
     },
@@ -304,7 +304,7 @@
                             "children": {
                                 "wall_line_count": {
                                     "label": "Wall Line Count",
-                                    "description": "Number of shell lines. This these lines are called perimeter lines in other tools and impact the strength and structural integrity of your print.",
+                                    "description": "Number of shell lines. These lines are called perimeter lines in other tools and impact the strength and structural integrity of your print.",
                                     "min_value": "0",
                                     "default": 2,
                                     "type": "int",
@@ -323,7 +323,7 @@
                         },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
-                            "description": "This controls the thickness of the bottom and top layers. The amount of solid layers put down is calculated by the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. Keep it near your wall thickness to make an evenly strong part.",
+                            "description": "This controls the thickness of the bottom and top layers. The number of solid layers put down is calculated from the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. Keep it near your wall thickness to make an evenly strong part.",
                             "unit": "mm",
                             "default": 0.8,
                             "min_value": "0",
@@ -343,7 +343,7 @@
                                     "children": {
                                         "top_layers": {
                                             "label": "Top Layers",
-                                            "description": "This controls the amount of top layers.",
+                                            "description": "This controls the number of top layers.",
                                             "min_value": "0",
                                             "default": 8,
                                             "type": "int",
@@ -560,7 +560,7 @@
             "settings": {
                 "material_flow_dependent_temperature": {
                     "label": "Auto Temperature",
-                    "description": "Change the temperature each layer automatically with the average flow speed of that layer.",
+                    "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
                     "type": "boolean",
                     "default": false,
                     "visible": true
@@ -594,7 +594,7 @@
                 },
                 "material_extrusion_cool_down_speed": {
                     "label": "Extrusion Cool Down Speed Modifier",
-                    "description": "The extra speed by which the nozzle cools when while extruding. The same value is used to signify the heat up speed lost when heating up while extruding.",
+                    "description": "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding.",
                     "unit": "°C/s",
                     "type": "float",
                     "default": 0.5,
@@ -689,7 +689,7 @@
                 },
                 "retraction_min_travel": {
                     "label": "Retraction Minimum Travel",
-                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps to ensure you do not get a lot of retractions in a small area.",
+                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1.5,
@@ -699,7 +699,7 @@
                 },
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
-                    "description": "This settings limits the number of retractions occurring within the Minimum Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
+                    "description": "This setting limits the number of retractions occurring within the Minimum Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
                     "default": 6,
                     "type": "int",
                     "visible": false,
@@ -718,7 +718,7 @@
                 },
                 "retraction_hop": {
                     "label": "Z Hop when Retracting",
-                    "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a lot of positive effect on delta towers.",
+                    "description": "Whenever a retraction is done, the head is lifted by this amount to travel over the print. A value of 0.075 works well. This feature has a large positive effect on delta towers.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0,
@@ -864,7 +864,7 @@
                     "inherit_function": "speed_layer_0"
                 },
                 "speed_slowdown_layers": {
-                    "label": "Amount of Slower Layers",
+                    "label": "Number of Slower Layers",
                     "description": "The first few layers are printed slower than the rest of the object, this to get better adhesion to the printer bed and improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is generally right for most materials and printers.",
                     "type": "int",
                     "min_value": "0",
@@ -907,7 +907,7 @@
                 },
                 "coasting_enable": {
                     "label": "Enable Coasting",
-                    "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve the printing quality by reducing the pillowing effect.",
+                    "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to lay down the last piece of the extrusion path in order to reduce stringing.",
                     "type": "boolean",
                     "default": false,
                     "visible": true
@@ -1318,7 +1318,7 @@
                 },
                 "support_minimal_diameter": {
                     "label": "Minimum Diameter",
-                    "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
                     "default": 1,
@@ -1402,7 +1402,7 @@
             "settings": {
                 "adhesion_type": {
                     "label": "Type",
-                    "description": "Different options that help in preventing corners from lifting due to warping. Brim adds a single-layer-thick flat area around your object which is easy to cut off afterwards, and it is the recommended option. Raft adds a thick grid below the object and a thin interface between this and your object. (Note that enabling the brim or raft disables the skirt.)",
+                    "description": "Different options that help to improve priming your extrusion.\nBrim and Raft help in preventing corners from lifting due to warping. Brim adds a single-layer-thick flat area around your object which is easy to cut off afterwards, and it is the recommended option.\nRaft adds a thick grid below the object and a thin interface between this and your object.\nThe skirt is a line drawn around the first layer of the print, this helps to prime your extrusion and to see if the object fits on your platform.",
                     "type": "enum",
                     "options": {
                         "skirt": "Skirt",
@@ -1413,7 +1413,7 @@
                 },
                 "skirt_line_count": {
                     "label": "Skirt Line Count",
-                    "description": "The skirt is a line drawn around the first layer of the print. This helps to prime your extruder, and to see if the object fits on your platform. Setting this to 0 will disable the skirt. Multiple skirt lines can help to prime your extruder better for small objects.",
+                    "description": "Multiple skirt lines help to prime your extrusion better for small objects. Setting this to 0 will disable the skirt.",
                     "type": "int",
                     "default": 1,
                     "enabled": "adhesion_type == \"skirt\""
@@ -1436,7 +1436,7 @@
                 },
                 "brim_line_count": {
                     "label": "Brim Line Count",
-                    "description": "The amount of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
+                    "description": "The number of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
                     "type": "int",
                     "default": 10,
                     "enabled": "adhesion_type == \"brim\""
@@ -1557,7 +1557,7 @@
                         },
                         "raft_interface_speed": {
                             "label": "Raft Interface Print Speed",
-                            "description": "The speed at which the interface raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
+                            "description": "The speed at which the interface raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high.",
                             "unit": "mm/s",
                             "type": "float",
                             "default": 15,
@@ -1566,7 +1566,7 @@
                         },
                         "raft_base_speed": {
                             "label": "Raft Base Print Speed",
-                            "description": "The speed at which the base raft layer is printed. This should be printed quite slowly, as the amount of material coming out of the nozzle is quite high.",
+                            "description": "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high.",
                             "unit": "mm/s",
                             "type": "float",
                             "default": 15,
@@ -1695,7 +1695,7 @@
                 },
                 "meshfix_keep_open_polygons": {
                     "label": "Keep Disconnected Faces",
-                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when all else doesn't produce proper GCode.",
+                    "description": "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper GCode.",
                     "type": "boolean",
                     "default": false,
                     "visible": false
