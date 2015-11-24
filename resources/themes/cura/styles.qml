@@ -307,6 +307,24 @@ QtObject {
                     }
                 }
                 Behavior on color { ColorAnimation { duration: 50; } }
+                Rectangle {
+                    height: UM.Theme.sizes.default_lining.height
+                    width: parent.width
+                    anchors.bottom: parent.bottom
+                    color: {
+                        if(!control.enabled) {
+                            return UM.Theme.colors.setting_category_disabled_border;
+                        } else if(control.hovered && control.checkable && control.checked) {
+                            return UM.Theme.colors.setting_category_active_hover_border;
+                        } else if(control.pressed || (control.checkable && control.checked)) {
+                            return UM.Theme.colors.setting_category_active_border;
+                        } else if(control.hovered) {
+                            return UM.Theme.colors.setting_category_hover_border;
+                        } else {
+                            return UM.Theme.colors.setting_category_border;
+                        }
+                    }
+                }
             }
             label: Item {
                 anchors.fill: parent;
@@ -350,7 +368,7 @@ QtObject {
                     sourceSize.width: width
                     sourceSize.height: width
                     color: UM.Theme.colors.setting_category_text
-                    source: control.checked ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
+                    source: control.checked ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_left
                 }
             }
         }

@@ -111,6 +111,11 @@
         "setting_category_active": [255, 255, 255, 255],
         "setting_category_active_hover": [245, 245, 245, 255],
         "setting_category_text": [24, 41, 77, 255],
+        "setting_category_border": [127, 127, 127, 255],
+        "setting_category_disabled_border": [127, 127, 127, 255],
+        "setting_category_hover_border": [12, 159, 227, 255],
+        "setting_category_active_border": [245, 245, 245, 255],
+        "setting_category_active_hover_border": [12, 159, 227, 255],
 
         "setting_control": [255, 255, 255, 255],
         "setting_control_selected": [24, 41, 77, 255],
