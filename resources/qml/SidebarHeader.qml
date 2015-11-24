@@ -19,7 +19,7 @@ Item
     Rectangle {
         id: settingsModeRow
         width: base.width
-        height: UM.Theme.sizes.sidebar_header.height
+        height: 0
         anchors.top: parent.top
         color: UM.Theme.colors.sidebar_header_bar
     }
