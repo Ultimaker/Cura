@@ -95,7 +95,7 @@ Item
                     height: width
 
                     border.color: (infillListView.activeIndex == index) ? UM.Theme.colors.setting_control_selected : 
-                                      (parent.hovered ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border)
+                                      (mousearea.containsMouse ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border)
                     border.width: UM.Theme.sizes.default_lining.width
                     color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_selected : "transparent"
 
@@ -111,6 +111,7 @@ Item
                     }
 
                     MouseArea {
+                        id: mousearea
                         anchors.fill: parent
                         onClicked: {
                             if (infillListView.activeIndex != index)
@@ -119,6 +120,7 @@ Item
                                 UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
                             }
                         }
+                        hoverEnabled: true
                         cursorShape: (infillListView.activeIndex != index) ? Qt.PointingHandCursor : Qt.ArrowCursor
                     }
                 }
