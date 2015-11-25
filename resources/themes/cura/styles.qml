@@ -290,6 +290,11 @@ QtObject {
     property Component sidebar_category: Component {
         ButtonStyle {
             background: Rectangle {
+                anchors.fill: parent;
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.sizes.default_margin.width
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.sizes.default_margin.width
                 implicitHeight: UM.Theme.sizes.section.height;
                 color: {
                     if(control.color) {
