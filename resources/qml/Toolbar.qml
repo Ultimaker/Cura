@@ -15,7 +15,7 @@ Item {
     height: buttons.height
     property int activeY
 
-    ColumnLayout {
+    RowLayout {
         id: buttons;
 
         anchors.bottom: parent.bottom;
@@ -35,12 +35,14 @@ Item {
                 checked: model.active;
                 enabled: UM.Selection.hasSelection;
 
+                property bool verticalTooltip: true;
                 style: UM.Theme.styles.tool_button;
 
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.
                 MouseArea {
                     anchors.fill: parent;
+                    cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
                         base.activeY = parent.y
@@ -62,7 +64,9 @@ Item {
     Rectangle {
         id: panelBackground;
 
-        anchors.left: parent.right;
+        anchors.left: parent.left;
+        anchors.top: parent.bottom;
+        anchors.topMargin: UM.Theme.sizes.default_margin.width;
         y: base.activeY
 
         width: {

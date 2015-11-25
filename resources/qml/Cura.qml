@@ -326,9 +326,8 @@ UM.MainWindow
                 anchors
                 {
                     horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.logo.width/ 2)
-                    top: parent.verticalCenter;
-                    bottom: parent.bottom;
+                    horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width/ 2)
+                    verticalCenter: parent.verticalCenter;
                 }
             }
 
@@ -432,9 +431,9 @@ UM.MainWindow
                 id: toolbar;
 
                 anchors {
-                    left: parent.left
+                    left: openFileButton.right
+                    leftMargin: UM.Theme.sizes.window_margin.width
                     top: parent.top
-                    topMargin: UM.Theme.sizes.window_margin.height + UM.Theme.sizes.button.height
                     //horizontalCenter: parent.horizontalCenter
                     //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
                     //top: parent.top;
