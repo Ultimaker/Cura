@@ -82,6 +82,7 @@ Rectangle {
         text: ''
         horizontalAlignment: TextInput.AlignRight
         onTextChanged: Printer.setJobName(text)
+        visible: base.activity
         onEditingFinished: {
             if (printJobTextfield.text != ''){
                 printJobTextfield.focus = false
