@@ -394,9 +394,9 @@ UM.MainWindow
 
                 anchors
                 {
-                    top: parent.top;
-                    left: toolbar.right;
-                    leftMargin: UM.Theme.sizes.window_margin.width;
+                    top: openFileButton.bottom;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    left: parent.left;
                 }
                 text: catalog.i18nc("@action:button","View Mode");
                 iconSource: UM.Theme.icons.viewmode;
