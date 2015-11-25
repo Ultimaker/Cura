@@ -366,6 +366,11 @@ UM.MainWindow
                     //leftMargin: UM.Theme.sizes.loadfile_margin.width
                 }
                 action: actions.open;
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
             }
 
             Image
@@ -423,6 +428,11 @@ UM.MainWindow
                     }
 
                     ExclusiveGroup { id: viewMenuGroup; }
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
                 }
             }
 
