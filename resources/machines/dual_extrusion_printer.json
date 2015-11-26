@@ -122,7 +122,7 @@
                     "default": 15,
                     "min_value": "0",
                     "max_value_warning": "20",
-                    "inherit_function": "0 if prime_tower_enable else 15",
+                    "inherit_function": "15 if prime_tower_enable else 0",
                     "enabled": "prime_tower_enable"
                 },
                 "prime_tower_position_x": {
