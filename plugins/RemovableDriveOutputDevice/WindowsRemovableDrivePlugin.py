@@ -65,11 +65,11 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
                     continue
 
                 # Check for the free space. Some card readers show up as a drive with 0 space free when there is no card inserted.
-                freeBytes = ctypes.c_longlong(0)
-                if windll.kernel32.GetDiskFreeSpaceExA(drive.encode("ascii"), ctypes.byref(freeBytes), None, None) == 0:
+                free_bytes = ctypes.c_longlong(0)
+                if windll.kernel32.GetDiskFreeSpaceExA(drive.encode("ascii"), ctypes.byref(free_bytes), None, None) == 0:
                     continue
 
-                if freeBytes.value < 1:
+                if free_bytes.value < 1:
                     continue
 
                 drives[drive] = "{0} ({1}:)".format(volume_name, letter)
