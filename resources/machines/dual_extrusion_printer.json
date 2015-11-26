@@ -111,6 +111,7 @@
                     "label": "Enable Prime Tower",
                     "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
                     "type": "boolean",
+                    "visible": true,
                     "default": false
                 },
                 "prime_tower_size": {
