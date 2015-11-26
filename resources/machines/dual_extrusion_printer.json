@@ -163,6 +163,16 @@
                     "default": false,
                     "enabled": "prime_tower_enable"
                 },
+                "multiple_mesh_overlap": {
+                    "label": "Dual Extrusion Overlap",
+                    "description": "Make the objects printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
+                    "visible": false,
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 0.15,
+                    "min_value": "0",
+                    "max_value_warning": "1.0"
+                },
                 "ooze_shield_enabled": {
                     "label": "Enable Ooze Shield",
                     "description": "Enable exterior ooze shield. This will create a shell around the object which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
