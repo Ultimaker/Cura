@@ -15,7 +15,7 @@ Item {
     height: buttons.height
     property int activeY
 
-    RowLayout {
+    ColumnLayout {
         id: buttons;
 
         anchors.bottom: parent.bottom;
@@ -35,7 +35,6 @@ Item {
                 checked: model.active;
                 enabled: UM.Selection.hasSelection;
 
-                property bool verticalTooltip: true;
                 style: UM.Theme.styles.tool_button;
 
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
@@ -64,9 +63,9 @@ Item {
     Rectangle {
         id: panelBackground;
 
-        anchors.left: parent.left;
-        anchors.top: parent.bottom;
-        anchors.topMargin: UM.Theme.sizes.default_margin.width;
+        anchors.left: parent.right;
+        anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+        anchors.top: parent.top;
         y: base.activeY
 
         width: {

@@ -387,6 +387,7 @@ UM.MainWindow
                 source: UM.Theme.images.logo;
                 width: UM.Theme.sizes.logo.width;
                 height: UM.Theme.sizes.logo.height;
+                z: -1;
 
                 sourceSize.width: width;
                 sourceSize.height: height;
@@ -395,11 +396,10 @@ UM.MainWindow
             Button
             {
                 id: viewModeButton
-                property bool verticalTooltip: true
 
                 anchors
                 {
-                    top: openFileButton.bottom;
+                    top: toolbar.bottom;
                     topMargin: UM.Theme.sizes.window_margin.height;
                     left: parent.left;
                 }
@@ -441,12 +441,9 @@ UM.MainWindow
                 id: toolbar;
 
                 anchors {
-                    left: openFileButton.right
-                    leftMargin: UM.Theme.sizes.window_margin.width
-                    top: parent.top
-                    //horizontalCenter: parent.horizontalCenter
-                    //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
-                    //top: parent.top;
+                    top: openFileButton.bottom;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    left: parent.left;
                 }
             }
 

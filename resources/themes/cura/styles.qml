@@ -28,7 +28,6 @@ QtObject {
                 }
                 Label {
                     id: sidebarComboBoxLabel
-                    //property bool down: control.pressed || (control.checkable && control.checked);
                     color: UM.Theme.colors.setting_control_text
                     text: control.text;
                     elide: Text.ElideRight;
@@ -38,18 +37,6 @@ QtObject {
                     anchors.verticalCenter: parent.verticalCenter;
                     font: UM.Theme.fonts.default
                 }
-/*
-                Rectangle{
-                    id: separationLine
-                    width: 1
-                    height: UM.Theme.sizes.setting_control.height
-                    color: UM.Theme.colors.setting_control_border
-                    anchors.right: downArrow.left
-                    anchors.rightMargin: UM.Theme.sizes.setting_unit_margin.width + downArrow.width/2
-                    anchors.top: parent.top
-                    z: parent.z + 1
-                }
-*/
             }
             label: Label{}
         }
@@ -62,18 +49,21 @@ QtObject {
                 implicitHeight: UM.Theme.sizes.button.height;
                 Rectangle {
                     id: tool_button_background
-                    anchors.top: parent.bottom;
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    opacity: control.hovered ? 1.0 : 0.0;
 
-                    width: parent.width;
-                    height: control.hovered ? label.height : 0;
+                    width: control.hovered ? label.width : 0;
+                    height: label.height
+
+                    Behavior on width { NumberAnimation { duration: 100; } }
                     Behavior on height { NumberAnimation { duration: 100; } }
+                    Behavior on opacity { NumberAnimation { duration: 100; } }
 
                     Label {
                         id: label
                         anchors.bottom: parent.bottom
                         text: control.text
-                        width: UM.Theme.sizes.button.width;
-                        wrapMode: Text.WordWrap
                         font: UM.Theme.fonts.button_tooltip;
                         color: UM.Theme.colors.button_tooltip_text;
                     }
@@ -105,26 +95,12 @@ QtObject {
 
                 Rectangle {
                     id: tool_button_background
-                    anchors.left: control.verticalTooltip ? parent.left : parent.right
-                    anchors.verticalCenter: control.verticalTooltip ?  undefined : parent.verticalCenter
-                    anchors.top: control.verticalTooltip ? parent.bottom : undefined
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
                     opacity: control.hovered ? 1.0 : 0.0;
 
-                    width: {
-                        if (control.verticalTooltip == true){
-                            if (label.width > parent.width)
-                                return label.width
-                            else
-                                return parent.width
-                        }
-                        else {
-                            if (control.hovered)
-                                return label.width
-                            else
-                                return 0
-                        }
-                    }
-                    height: !control.verticalTooltip ? label.height : control.hovered ? label.height: 0
+                    width: control.hovered ? label.width : 0;
+                    height: label.height
 
                     Behavior on width { NumberAnimation { duration: 100; } }
                     Behavior on height { NumberAnimation { duration: 100; } }
@@ -198,21 +174,21 @@ QtObject {
 
                 Rectangle {
                     id: tool_button_background
-                    anchors.top: parent.verticalCenter;
-
-                    width: parent.width;
-                    height: control.hovered ? parent.height / 2 + label.height : 0;
-                    Behavior on height { NumberAnimation { duration: 100; } }
-
+                    anchors.left: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
                     opacity: control.hovered ? 1.0 : 0.0;
+
+                    width: control.hovered ? label.width : 0;
+                    height: label.height
+
+                    Behavior on width { NumberAnimation { duration: 100; } }
+                    Behavior on height { NumberAnimation { duration: 100; } }
                     Behavior on opacity { NumberAnimation { duration: 100; } }
 
                     Label {
                         id: label
                         anchors.bottom: parent.bottom
                         text: control.text
-                        width: UM.Theme.sizes.button.width;
-                        wrapMode: Text.WordWrap
                         font: UM.Theme.fonts.button_tooltip;
                         color: UM.Theme.colors.button_tooltip_text;
                     }
