@@ -448,7 +448,7 @@
                     "visible": false
                 },
                 "skin_outline_count": {
-                    "label": "Skin Perimeter Line Count",
+                    "label": "Extra Skin Wall Count",
                     "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve roofs which would start in the middle of infill cells.",
                     "default": 0,
                     "type": "int",
