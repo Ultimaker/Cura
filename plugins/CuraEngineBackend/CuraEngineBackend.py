@@ -125,7 +125,7 @@ class CuraEngineBackend(Backend):
             return
 
         if self._profile.hasErrorValue():
-            Logger.log('w', "Profile has error values. Aborting slicing")
+            Logger.log("w", "Profile has error values. Aborting slicing")
             if self._message:
                 self._message.hide()
                 self._message = None

@@ -1,6 +1,8 @@
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 from UM.Application import Application
+
 import LayerView
+
 class LayerViewProxy(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)

@@ -37,7 +37,7 @@ class ThreeMFReader(MeshReader):
         if extension.lower() == self._supported_extension:
             result = SceneNode()
             # The base object of 3mf is a zipped archive.
-            archive = zipfile.ZipFile(file_name, 'r')
+            archive = zipfile.ZipFile(file_name, "r")
             try:
                 root = ET.parse(archive.open("3D/3dmodel.model"))
 
