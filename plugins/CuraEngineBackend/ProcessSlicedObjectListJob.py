@@ -32,7 +32,7 @@ class ProcessSlicedObjectListJob(Job):
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
-        objectIdMap = {}
+        object_id_map = {}
         new_node = SceneNode()
         ## Put all nodes in a dict identified by ID
         for node in DepthFirstIterator(self._scene.getRoot()):
@@ -40,11 +40,10 @@ class ProcessSlicedObjectListJob(Job):
                 if node.callDecoration("getLayerData"):
                     self._scene.getRoot().removeChild(node)
                 else:
-                    objectIdMap[id(node)] = node
+                    object_id_map[id(node)] = node
             Job.yieldThread()
 
         settings = Application.getInstance().getMachineManager().getActiveProfile()
-        layerHeight = settings.getSettingValue("layer_height")
 
         center = None
         if not settings.getSettingValue("machine_center_is_zero"):
@@ -62,7 +61,7 @@ class ProcessSlicedObjectListJob(Job):
         current_layer = 0
         for object in self._message.objects:
             try:
-                node = objectIdMap[object.id]
+                node = object_id_map[object.id]
             except KeyError:
                 continue
 

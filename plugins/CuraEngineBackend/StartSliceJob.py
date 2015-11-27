@@ -115,12 +115,17 @@ class StartSliceJob(Job):
             return str(value).encode("utf-8")
 
     def _sendSettings(self, profile):
+        Application.getInstance().getMachineManager().getActiveMachineInstance().setMachineSettingValue("machine_gcode_flavor", "RepRap")
+
         msg = Cura_pb2.SettingList()
         settings = profile.getAllSettingValues(include_machine = True)
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
         for key, value in settings.items():
+            if key == "machine_gcode_flavor":
+                print("machine_gcode_flavor", value)
+
             s = msg.settings.add()
             s.name = key
             if key == "machine_start_gcode" or key == "machine_end_gcode":
