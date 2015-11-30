@@ -1165,7 +1165,7 @@ class LulzbotMachineSelectPage(InfoPage):
 				profile.putMachineSetting('machine_width', '280')
 				profile.putMachineSetting('machine_depth', '280')
 				profile.putMachineSetting('machine_height', '250')
-				profile.putMachineSetting('serial_baud', '115200')
+				profile.putMachineSetting('serial_baud', '250000')
 				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
 				profile.putMachineSetting('extruder_head_size_max_x', '0.0')
 				profile.putMachineSetting('extruder_head_size_min_y', '0.0')
