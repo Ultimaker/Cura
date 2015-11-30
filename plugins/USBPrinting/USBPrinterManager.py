@@ -56,6 +56,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     printerConnectionStateChanged = pyqtSignal()
 
     progressChanged = pyqtSignal()
+
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
         progress = 0
