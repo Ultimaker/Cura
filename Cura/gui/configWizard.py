@@ -1232,9 +1232,9 @@ class LulzbotMiniToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead_shortname', 'Flexystruder')
 			profile.putMachineSetting('machine_type', 'lulzbot_mini_flexystruder')
 
-class LulzbotTaz6SelectPage(InfoPage):
-	def __init__(self, parent):
-		super(LulzbotTaz6SelectPage, self).__init__(parent, _("LulzBot TAZ 6 Selection"))
+class LulzbotTaz6ToolheadSelectPage(InfoPage):
+	def __init__(self, parent, allowBack = True):
+		super(LulzbotTaz6ToolheadSelectPage, self).__init__(parent, _("LulzBot TAZ 6 Tool Head Selection"))
 
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
@@ -1418,7 +1418,6 @@ class LulzbotTazToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead_shortname', 'FlexyDually v%d' % self.version)
 			profile.putMachineSetting('machine_type', 'lulzbot_TAZ_%d_FlexyDuallyV%d' % version)
 
-
 class LulzbotHotendSelectPage(InfoPage):
 	def __init__(self, parent, allowBack = True):
 		super(LulzbotHotendSelectPage, self).__init__(parent, _("LulzBot Tool Head Hot end Selection"))
@@ -1533,6 +1532,7 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.lulzbotFirmwarePage = LulzbotFirmwareUpdatePage(self)
 		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self, False)
 		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
+		self.lulzbotTaz6ToolheadPage = LulzbotTaz6ToolheadSelectPage(self, False)
 		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self, False)
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
@@ -1543,8 +1543,10 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
 			self.RunWizard(self.lulzbotMiniToolheadPage)
-		else:
+		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5'):
 			self.RunWizard(self.lulzbotTazHotendPage)
+		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_6'):
+			self.RunWizard(self.lulzbotTaz6ToolheadPage)
 		self.Destroy()
 
 	def OnPageChanging(self, e):
@@ -1603,7 +1605,8 @@ class ConfigWizard(wx.wizard.Wizard):
 		self.lulzbotMachineSelectPage = LulzbotMachineSelectPage(self)
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
 		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
-		self.lulzbotTaz6SelectPage = LulzbotTaz6SelectPage(self)
+		self.lulzbotTaz6SelectPage = LulzbotTaz6ToolheadSelectPage(self)
+		self.lulzbotTaz6ToolheadPage = LulzbotTaz6ToolheadSelectPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMachineSelectPage, self.lulzbotMiniToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
