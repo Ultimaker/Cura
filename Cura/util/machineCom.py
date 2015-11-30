@@ -15,7 +15,7 @@ import threading
 import platform
 import Queue as queue
 
-from Cura.util import serialWrapper as serial
+import serial
 
 from Cura.avr_isp import stk500v2
 from Cura.avr_isp import ispBase
