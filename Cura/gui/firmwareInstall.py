@@ -5,7 +5,8 @@ import wx
 import threading
 import sys
 import time
-import serial
+
+from Cura.util import serialWrapper as serial
 
 from Cura.avr_isp import stk500v2
 from Cura.avr_isp import ispBase
