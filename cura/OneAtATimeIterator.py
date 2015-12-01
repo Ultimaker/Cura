@@ -45,7 +45,7 @@ class OneAtATimeIterator(Iterator.Iterator):
         # This does not decrease the worst case running time, but should improve it in most cases.
         sorted(node_list, key = cmp_to_key(self._calculateScore))
 
-        todo_node_list = [_objectOrder([], node_list)]
+        todo_node_list = [_ObjectOrder([], node_list)]
         while len(todo_node_list) > 0:
             current = todo_node_list.pop()
             for node in current.todo:
@@ -61,7 +61,7 @@ class OneAtATimeIterator(Iterator.Iterator):
                         self._node_stack = new_order
                         
                         return
-                    todo_node_list.append(_objectOrder(new_order, new_todo_list))
+                    todo_node_list.append(_ObjectOrder(new_order, new_todo_list))
         self._node_stack = [] #No result found!        
 
     
@@ -99,7 +99,7 @@ class OneAtATimeIterator(Iterator.Iterator):
         
 
 ## Internal object used to keep track of a possible order in which to print objects.      
-class _objectOrder():
+class _ObjectOrder():
     def __init__(self, order, todo):
         """
         :param order:   List of indexes in which to print objects, ordered by printing order.

@@ -471,17 +471,17 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self.showControlInterface()
 
     def _setEndstopState(self, endstop_key, value):
-        if endstop_key == b'x_min':
+        if endstop_key == b"x_min":
             if self._x_min_endstop_pressed != value:
-                self.endstopStateChanged.emit('x_min', value)
+                self.endstopStateChanged.emit("x_min", value)
             self._x_min_endstop_pressed = value
-        elif endstop_key == b'y_min':
+        elif endstop_key == b"y_min":
             if self._y_min_endstop_pressed != value:
-                self.endstopStateChanged.emit('y_min', value)
+                self.endstopStateChanged.emit("y_min", value)
             self._y_min_endstop_pressed = value
-        elif endstop_key == b'z_min':
+        elif endstop_key == b"z_min":
             if self._z_min_endstop_pressed != value:
-                self.endstopStateChanged.emit('z_min', value)
+                self.endstopStateChanged.emit("z_min", value)
             self._z_min_endstop_pressed = value
 
     ##  Listen thread function. 
@@ -528,8 +528,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                         pass
                 #TODO: temperature changed callback
             elif b"_min" in line or b"_max" in line:
-                tag, value = line.split(b':', 1)
-                self._setEndstopState(tag,(b'H' in value or b'TRIGGERED' in value))
+                tag, value = line.split(b":", 1)
+                self._setEndstopState(tag,(b"H" in value or b"TRIGGERED" in value))
 
             if self._is_printing:
                 if line == b"" and time.time() > ok_timeout:

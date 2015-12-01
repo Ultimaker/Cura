@@ -1,10 +1,10 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from . import ThreeMFReader
+
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
-
-from . import ThreeMFReader
 
 def getMetaData():
     return {

@@ -83,38 +83,38 @@ class BuildVolume(SceneNode):
         if self._width == 0 or self._height == 0 or self._depth == 0:
             return
 
-        minW = -self._width / 2
-        maxW = self._width / 2
-        minH = 0.0
-        maxH = self._height
-        minD = -self._depth / 2
-        maxD = self._depth / 2
+        min_w = -self._width / 2
+        max_w = self._width / 2
+        min_h = 0.0
+        max_h = self._height
+        min_d = -self._depth / 2
+        max_d = self._depth / 2
 
         mb = MeshBuilder()
 
-        mb.addLine(Vector(minW, minH, minD), Vector(maxW, minH, minD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(minW, minH, minD), Vector(minW, maxH, minD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(minW, maxH, minD), Vector(maxW, maxH, minD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(maxW, minH, minD), Vector(maxW, maxH, minD), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self.VolumeOutlineColor)
 
-        mb.addLine(Vector(minW, minH, maxD), Vector(maxW, minH, maxD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(minW, minH, maxD), Vector(minW, maxH, maxD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(minW, maxH, maxD), Vector(maxW, maxH, maxD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(maxW, minH, maxD), Vector(maxW, maxH, maxD), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        mb.addLine(Vector(minW, minH, minD), Vector(minW, minH, maxD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(maxW, minH, minD), Vector(maxW, minH, maxD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(minW, maxH, minD), Vector(minW, maxH, maxD), color = self.VolumeOutlineColor)
-        mb.addLine(Vector(maxW, maxH, minD), Vector(maxW, maxH, maxD), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
+        mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
         self.setMeshData(mb.getData())
 
         mb = MeshBuilder()
         mb.addQuad(
-            Vector(minW, minH, minD),
-            Vector(maxW, minH, minD),
-            Vector(maxW, minH, maxD),
-            Vector(minW, minH, maxD)
+            Vector(min_w, min_h, min_d),
+            Vector(max_w, min_h, min_d),
+            Vector(max_w, min_h, max_d),
+            Vector(min_w, min_h, max_d)
         )
         self._grid_mesh = mb.getData()
         for n in range(0, 6):
@@ -128,10 +128,10 @@ class BuildVolume(SceneNode):
             color = Color(0.0, 0.0, 0.0, 0.15)
             for polygon in self._disallowed_areas:
                 points = polygon.getPoints()
-                first = Vector(self._clamp(points[0][0], minW, maxW), disallowed_area_height, self._clamp(points[0][1], minD, maxD))
-                previous_point = Vector(self._clamp(points[0][0], minW, maxW), disallowed_area_height, self._clamp(points[0][1], minD, maxD))
+                first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
+                previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
                 for point in points:
-                    new_point = Vector(self._clamp(point[0], minW, maxW), disallowed_area_height, self._clamp(point[1], minD, maxD))
+                    new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height, self._clamp(point[1], min_d, max_d))
                     mb.addFace(first, previous_point, new_point, color = color)
                     previous_point = new_point
 
@@ -143,7 +143,7 @@ class BuildVolume(SceneNode):
         else:
             self._disallowed_area_mesh = None
 
-        self._aabb = AxisAlignedBox(minimum = Vector(minW, minH - 1.0, minD), maximum = Vector(maxW, maxH, maxD))
+        self._aabb = AxisAlignedBox(minimum = Vector(min_w, min_h - 1.0, min_d), maximum = Vector(max_w, max_h, max_d))
 
         skirt_size = 0.0
 
@@ -152,8 +152,8 @@ class BuildVolume(SceneNode):
             skirt_size = self._getSkirtSize(profile)
 
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(minW + skirt_size, minH, minD + skirt_size + disallowed_area_size),
-            maximum = Vector(maxW - skirt_size, maxH, maxD - skirt_size - disallowed_area_size)
+            minimum = Vector(min_w + skirt_size, min_h, min_d + skirt_size + disallowed_area_size),
+            maximum = Vector(max_w - skirt_size, max_h, max_d - skirt_size - disallowed_area_size)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds

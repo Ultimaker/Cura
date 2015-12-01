@@ -18,7 +18,7 @@ from . import Cura_pb2
 
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
-    def get_value(self, key, args, kwargs):
+    def get_value(self, key, args, kwargs): # [CodeStyle: get_value is an overridden function from the Formatter class]
         if isinstance(key, str):
             try:
                 return kwargs[key]
@@ -118,8 +118,8 @@ class StartSliceJob(Job):
         msg = Cura_pb2.SettingList()
         settings = profile.getAllSettingValues(include_machine = True)
         start_gcode = settings["machine_start_gcode"]
-        settings["material_bed_temp_prepend"] = not "{material_bed_temperature}" in start_gcode
-        settings["material_print_temp_prepend"] = not "{material_print_temperature}" in start_gcode
+        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
+        settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
         for key, value in settings.items():
             s = msg.settings.add()
             s.name = key

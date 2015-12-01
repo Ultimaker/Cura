@@ -37,7 +37,7 @@ class ThreeMFReader(MeshReader):
         if extension.lower() == self._supported_extension:
             result = SceneNode()
             # The base object of 3mf is a zipped archive.
-            archive = zipfile.ZipFile(file_name, 'r')
+            archive = zipfile.ZipFile(file_name, "r")
             try:
                 root = ET.parse(archive.open("3D/3dmodel.model"))
 
@@ -109,10 +109,10 @@ class ThreeMFReader(MeshReader):
                         node.setOrientation(temp_quaternion)
 
                         # Magical scale extraction
-                        S2 = temp_mat.getTransposed().multiply(temp_mat)
-                        scale_x = math.sqrt(S2.at(0,0))
-                        scale_y = math.sqrt(S2.at(1,1))
-                        scale_z = math.sqrt(S2.at(2,2))
+                        scale = temp_mat.getTransposed().multiply(temp_mat)
+                        scale_x = math.sqrt(scale.at(0,0))
+                        scale_y = math.sqrt(scale.at(1,1))
+                        scale_z = math.sqrt(scale.at(2,2))
                         node.setScale(Vector(scale_x,scale_y,scale_z))
 
                         # We use a different coordinate frame, so rotate.

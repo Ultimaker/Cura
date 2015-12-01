@@ -3,11 +3,6 @@
 
 import platform
 
-if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
-    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
-        from OpenGL import GL
-
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -59,10 +54,15 @@ import numpy
 import copy
 numpy.seterr(all="ignore")
 
+if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
+    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
+    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
+        from OpenGL import GL
+
 try:
     from cura.CuraVersion import CuraVersion
 except ImportError:
-    CuraVersion = "master"
+    CuraVersion = "master" # [CodeStyle: Reflecting imported value]
 
 class CuraApplication(QtApplication):
     class ResourceTypes:
@@ -142,7 +142,7 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
-        if not "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION" in os.environ or os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] != "cpp":
+        if "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION" not in os.environ or os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] != "cpp":
             Logger.log("w", "Using Python implementation of Protobuf, expect bad performance!")
 
         self._i18n_catalog = i18nCatalog("cura");
@@ -263,6 +263,7 @@ class CuraApplication(QtApplication):
             self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
+
     @pyqtProperty(str, notify = jobNameChanged)
     def jobName(self):
         return self._job_name
@@ -427,6 +428,7 @@ class CuraApplication(QtApplication):
         return log
 
     recentFilesChanged = pyqtSignal()
+
     @pyqtProperty("QVariantList", notify = recentFilesChanged)
     def recentFiles(self):
         return self._recent_files
@@ -441,6 +443,7 @@ class CuraApplication(QtApplication):
             self.expandedCategoriesChanged.emit()
 
     expandedCategoriesChanged = pyqtSignal()
+
     @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")

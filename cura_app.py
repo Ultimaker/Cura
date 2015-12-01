@@ -19,7 +19,8 @@ except ImportError:
 else:
     os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "cpp"
 
-import cura.CuraApplication
+if True: # To make the code style checker stop complaining
+    import cura.CuraApplication
 
 if sys.platform == "win32" and hasattr(sys, "frozen"):
     import os
