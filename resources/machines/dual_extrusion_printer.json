@@ -84,26 +84,34 @@
                             "type": "int",
                             "default": 0,
                             "min_value": "0",
-                            "max_value": "16"
-                        },
-                        "support_extruder_nr_layer_0": {
-                            "label": "First Layer Support Extruder",
-                            "description": "The extruder train to use for printing the first layer of support. This is used in multi-extrusion.",
-                            "type": "int",
-                            "default": 0,
-                            "min_value": "0",
                             "max_value": "16",
-                            "inherit_function": "support_extruder_nr"
-                        },
-                        "support_roof_extruder_nr": {
-                            "label": "Support Roof Extruder",
-                            "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
-                            "type": "int",
-                            "default": 0,
-                            "min_value": "0",
-                            "max_value": "16",
-                            "inherit_function": "support_extruder_nr",
-                            "enabled": "support_roof_enable"
+                            "children": {
+                                "support_infill_extruder_nr": {
+                                    "label": "Support Infill Extruder",
+                                    "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16"
+                                },
+                                "support_extruder_nr_layer_0": {
+                                    "label": "First Layer Support Extruder",
+                                    "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16"
+                                },
+                                "support_roof_extruder_nr": {
+                                    "label": "Support Roof Extruder",
+                                    "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16",
+                                    "enabled": "support_roof_enable"
+                                }
+                            }
                         }
                     }
                 },
