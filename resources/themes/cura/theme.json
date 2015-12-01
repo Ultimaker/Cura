@@ -149,7 +149,8 @@
         "checkbox_mark": [24, 41, 77, 255],
         "checkbox_text": [24, 41, 77, 255],
 
-        "tooltip": [255, 225, 146, 255],
+        "tooltip": [12, 169, 227, 255],
+        "tooltip_text": [255, 255, 255, 255],
 
         "message_background": [255, 255, 255, 255],
         "message_text": [32, 166, 219, 255],
@@ -218,6 +219,7 @@
 
         "tooltip": [20.0, 10.0],
         "tooltip_margins": [1.0, 1.0],
+        "tooltip_arrow_margins": [2.0, 2.0],
 
         "save_button_text_margin": [0.3, 0.6],
         "save_button_slicing_bar": [0.0, 2.2],

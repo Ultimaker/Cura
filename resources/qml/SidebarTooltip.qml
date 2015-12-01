@@ -8,12 +8,14 @@ import QtQuick.Layouts 1.1
 
 import UM 1.0 as UM
 
-Rectangle {
+UM.PointingRectangle {
     id: base;
 
     width: UM.Theme.sizes.tooltip.width;
     height: label.height + UM.Theme.sizes.tooltip_margins.height * 2;
     color: UM.Theme.colors.tooltip;
+
+    arrowSize: UM.Theme.sizes.default_arrow.width
 
     opacity: 0;
     Behavior on opacity { NumberAnimation { duration: 100; } }
@@ -26,9 +28,10 @@ Rectangle {
             y = parent.height - base.height;
         } else {
             x = position.x - base.width;
-            y = position.y;
+            y = position.y - UM.Theme.sizes.tooltip_arrow_margins.height;
         }
         base.opacity = 1;
+        target = Qt.point(40 , position.y)
     }
 
     function hide() {
@@ -47,6 +50,6 @@ Rectangle {
         }
         wrapMode: Text.Wrap;
         font: UM.Theme.fonts.default;
-        color: UM.Theme.colors.text;
+        color: UM.Theme.colors.tooltip_text;
     }
 }
