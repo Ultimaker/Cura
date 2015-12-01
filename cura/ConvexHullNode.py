@@ -7,6 +7,8 @@ from UM.Math.Color import Color
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshData import MeshData
 
+from UM.View.GL.OpenGL import OpenGL
+
 import numpy
 
 class ConvexHullNode(SceneNode):
@@ -62,14 +64,14 @@ class ConvexHullNode(SceneNode):
         return self._node
 
     def render(self, renderer):
-        if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "color.frag"))
+        if not self._shader:
+            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
 
         if self.getParent():
             self._material.setUniformValue("u_color", self._color)
-            renderer.queueNode(self, material = self._material, transparent = True)
+            renderer.queueNode(self, transparent = True, shader = self._shader)
             if self._convex_hull_head_mesh:
-                renderer.queueNode(self, material = self._material,transparent = True, mesh = self._convex_hull_head_mesh)
+                renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh)
 
         return True
 
