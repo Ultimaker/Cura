@@ -73,10 +73,10 @@
             "description": "The distance from the tip of the nozzle in which heat from the nozzle is transfered to the filament.",
             "default": 16, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_heat_up_speed": {
-            "description": "The speed (*C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
+            "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
             "default": 2.0, "SEE_machine_extruder_trains": true  },
         "machine_nozzle_cool_down_speed": { 
-            "description": "The speed (*C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
+            "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
             "default": 2.0, "SEE_machine_extruder_trains": true  },
         "machine_gcode_flavor": {
             "description": "The type of gcode to be generated.",
