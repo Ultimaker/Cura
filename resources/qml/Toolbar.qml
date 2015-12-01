@@ -13,7 +13,7 @@ Item {
 
     width: buttons.width;
     height: buttons.height
-    property int activeY
+    //property int activeY
 
     ColumnLayout {
         id: buttons;
@@ -44,20 +44,11 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
-                        base.activeY = parent.y
+                        //base.activeY = parent.y
                     }
                 }
             }
         }
-    }
-
-    Rectangle {
-        width: base.width
-        height: base.height
-        z: parent.z - 1
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        color: UM.Theme.colors.lining
     }
 
     Rectangle {
@@ -66,7 +57,8 @@ Item {
         anchors.left: parent.right;
         anchors.leftMargin: UM.Theme.sizes.default_margin.width;
         anchors.top: parent.top;
-        y: base.activeY
+        //y: base.activeY
+        z: buttons.z -1
 
         width: {
             if (panel.item && panel.width > 0){

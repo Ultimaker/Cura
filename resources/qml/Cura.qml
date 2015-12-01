@@ -353,10 +353,9 @@ UM.MainWindow
             {
                 id: openFileButton;
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
-                //style: UM.Theme.styles.open_file_button
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.icons.load
-                style: UM.Theme.styles.open_file_button
+                style: UM.Theme.styles.tool_button
                 tooltip: '';
                 anchors
                 {
@@ -368,6 +367,14 @@ UM.MainWindow
                 action: actions.open;
                 MouseArea {
                     anchors.fill: parent
+                    onEntered: {
+                        buttonTooltip.targetId = parent;
+                        mouse.accepted = false;
+                    }
+                    onExited: {
+                        buttonTooltip.targetId = undefined;
+                        mouse.accepted = false;
+                    }
                     cursorShape: Qt.PointingHandCursor
                     acceptedButtons: Qt.NoButton
                 }
@@ -645,7 +652,7 @@ UM.MainWindow
         id: openDialog;
 
         //: File open dialog title
-        title: catalog.i18nc("@title:window","Open File")
+        title: catalog.i18nc("@title:window","Open file")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true

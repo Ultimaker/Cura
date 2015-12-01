@@ -29,8 +29,7 @@
             "letterSpacing": 2.0
         },
         "button_tooltip": {
-            "size": 0.75,
-            "capitalize": true,
+            "size": 1.0,
             "family": "Proxima Nova Rg"
         },
         "setting_category": {
@@ -72,7 +71,10 @@
         "button_text": [255, 255, 255, 255],
         "button_disabled": [24, 41, 77, 255],
         "button_disabled_text": [70, 84, 113, 255],
-        "button_tooltip_text": [35, 35, 35, 255],
+
+        "button_tooltip": [24, 41, 77, 255],
+        "button_tooltip_border": [245, 245, 245, 255],
+        "button_tooltip_text": [255, 255, 255, 255],
 
         "toggle_checked": [24, 41, 77, 255],
         "toggle_checked_border": [24, 41, 77, 255],
@@ -123,7 +125,7 @@
         "setting_control_border": [127, 127, 127, 255],
         "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [24, 41, 77, 255],
-        "setting_control_depth_line": [162, 192, 227, 255],
+        "setting_control_depth_line": [127, 127, 127, 255],
         "setting_control_revert": [127, 127, 127, 255],
         "setting_unit": [127, 127, 127, 255],
         "setting_validation_error": [255, 57, 14, 255],
@@ -193,6 +195,9 @@
         "button": [4, 4],
         "button_icon": [3, 3],
         "button_lining": [0, 0],
+
+        "button_tooltip": [1.2, 1.2],
+        "button_tooltip_arrow": [0.25, 0.25],
 
         "progressbar": [26.0, 0.8],
         "progressbar_radius": [0.4, 0.4],

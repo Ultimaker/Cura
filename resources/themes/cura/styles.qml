@@ -42,6 +42,7 @@ QtObject {
         }
     }
 
+/*
     property Component open_file_button: Component {
         ButtonStyle {
             background: Item{
@@ -86,6 +87,7 @@ QtObject {
             }
         }
     }
+*/
 
     property Component tool_button: Component {
         ButtonStyle {
@@ -93,23 +95,31 @@ QtObject {
                 implicitWidth: UM.Theme.sizes.button.width;
                 implicitHeight: UM.Theme.sizes.button.height;
 
-                Rectangle {
-                    id: tool_button_background
+                UM.PointingRectangle {
+                    id: button_tooltip
+
                     anchors.left: parent.right
+                    anchors.leftMargin: UM.Theme.sizes.button_tooltip_arrow.width * 2
                     anchors.verticalCenter: parent.verticalCenter
+
+                    target: Qt.point(parent.x, y + height/2)
+                    arrowSize: UM.Theme.sizes.button_tooltip_arrow.width
+                    color: UM.Theme.colors.button_tooltip
                     opacity: control.hovered ? 1.0 : 0.0;
 
-                    width: control.hovered ? label.width : 0;
-                    height: label.height
+                    width: control.hovered ? button_tip.width + UM.Theme.sizes.button_tooltip.width : 0
+                    height: UM.Theme.sizes.button_tooltip.height
 
                     Behavior on width { NumberAnimation { duration: 100; } }
-                    Behavior on height { NumberAnimation { duration: 100; } }
                     Behavior on opacity { NumberAnimation { duration: 100; } }
 
                     Label {
-                        id: label
-                        anchors.bottom: parent.bottom
-                        text: control.text
+                        id: button_tip
+
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter;
+
+                        text: control.text;
                         font: UM.Theme.fonts.button_tooltip;
                         color: UM.Theme.colors.button_tooltip_text;
                     }
@@ -166,6 +176,8 @@ QtObject {
             }
         }
     }
+
+/*
     property Component tool_button_panel: Component {
         ButtonStyle {
             background: Item {
@@ -231,7 +243,7 @@ QtObject {
             }
         }
     }
-
+*/
 
     property Component progressbar: Component{
         ProgressBarStyle {
