@@ -121,7 +121,6 @@ Item
                             }
                         }
                         hoverEnabled: true
-                        cursorShape: (infillListView.activeIndex != index) ? Qt.PointingHandCursor : Qt.ArrowCursor
                     }
                 }
                 Label{
@@ -194,12 +193,6 @@ Item
             text: catalog.i18nc("@option:check","Enable Skirt Adhesion");
             style: UM.Theme.styles.checkbox;
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
             onClicked:
             {
@@ -214,12 +207,6 @@ Item
             //: Setting enable support checkbox
             text: catalog.i18nc("@option:check","Enable Support");
             style: UM.Theme.styles.checkbox;
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
 
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.support_enable : false;
             onClicked:

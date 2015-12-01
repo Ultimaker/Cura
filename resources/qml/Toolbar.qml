@@ -41,7 +41,6 @@ Item {
                 //just catch the click so we do not trigger that behaviour.
                 MouseArea {
                     anchors.fill: parent;
-                    cursorShape: Qt.PointingHandCursor
                     onClicked: {
                         parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
                         //base.activeY = parent.y

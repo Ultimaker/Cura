@@ -118,12 +118,6 @@ Rectangle
                 checked: base.currentModeIndex == index
                 onClicked: base.currentModeIndex = index
 
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: checked ? Qt.ArrowCursor : Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-
                 style: ButtonStyle {
                     background: Rectangle {
                         border.color: control.checked ? UM.Theme.colors.toggle_checked_border : 

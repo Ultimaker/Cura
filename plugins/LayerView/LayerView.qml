@@ -29,12 +29,6 @@ Item
         onValueChanged: UM.LayerView.setCurrentLayer(value)
 
         style: UM.Theme.styles.layerViewSlider
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-
     }
     Rectangle {
         anchors.left: parent.left

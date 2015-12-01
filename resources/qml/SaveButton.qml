@@ -86,12 +86,6 @@ Rectangle {
                 UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, Printer.jobName)
             }
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
             style: ButtonStyle {
                 background: Rectangle {
                     //opacity: control.enabled ? 1.0 : 0.5
@@ -132,12 +126,6 @@ Rectangle {
             height: UM.Theme.sizes.save_button_save_to_button.height
             enabled: base.progress > 0.99 && base.activity == true
             //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
 
             style: ButtonStyle {
                 background: Rectangle {
