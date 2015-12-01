@@ -117,7 +117,7 @@ QtObject {
                         color: UM.Theme.colors.button_tooltip;
                         anchors.fill: parent
                         anchors.margins: UM.Theme.sizes.default_lining.width
-                        target: Qt.point(- UM.Theme.sizes.default_lining.width, parent.height/2)
+                        target: Qt.point(-UM.Theme.sizes.default_lining.width, parent.height/2)
                         arrowSize: parent.arrowSize
                     }
 

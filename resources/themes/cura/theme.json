@@ -165,6 +165,7 @@
         "window_margin": [1.0, 1.0],
         "default_margin": [1.0, 1.0],
         "default_lining": [0.08, 0.08],
+        "default_arrow": [0.8, 0.8],
         "logo": [9.5, 2.0],
 
         "sidebar": [30.0, 10.0],
