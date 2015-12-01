@@ -811,9 +811,9 @@
                             "inherit_function": "speed_print",
                             "enabled": "support_enable",
                             "children": {
-                                "speed_support_lines": {
-                                    "label": "Support Wall Speed",
-                                    "description": "The speed at which the walls of exterior support are printed. Printing the walls at higher speeds can improve the overall duration.",
+                                "speed_support_infill": {
+                                    "label": "Support Infill Speed",
+                                    "description": "The speed at which the infill of exterior support is printed. Printing the infill at higher speeds can improve the overall print time.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default": 60,
