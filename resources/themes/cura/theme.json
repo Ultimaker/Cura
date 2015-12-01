@@ -72,9 +72,9 @@
         "button_disabled": [24, 41, 77, 255],
         "button_disabled_text": [70, 84, 113, 255],
 
-        "button_tooltip": [24, 41, 77, 255],
-        "button_tooltip_border": [245, 245, 245, 255],
-        "button_tooltip_text": [255, 255, 255, 255],
+        "button_tooltip": [255, 255, 255, 255],
+        "button_tooltip_border": [24, 41, 77, 255],
+        "button_tooltip_text": [24, 41, 77, 255],
 
         "toggle_checked": [24, 41, 77, 255],
         "toggle_checked_border": [24, 41, 77, 255],
@@ -196,7 +196,7 @@
         "button_icon": [3, 3],
         "button_lining": [0, 0],
 
-        "button_tooltip": [1.2, 1.2],
+        "button_tooltip": [1.0, 1.3],
         "button_tooltip_arrow": [0.25, 0.25],
 
         "progressbar": [26.0, 0.8],

@@ -104,7 +104,7 @@ QtObject {
 
                     target: Qt.point(parent.x, y + height/2)
                     arrowSize: UM.Theme.sizes.button_tooltip_arrow.width
-                    color: UM.Theme.colors.button_tooltip
+                    color: UM.Theme.colors.button_tooltip_border
                     opacity: control.hovered ? 1.0 : 0.0;
 
                     width: control.hovered ? button_tip.width + UM.Theme.sizes.button_tooltip.width : 0
@@ -112,6 +112,14 @@ QtObject {
 
                     Behavior on width { NumberAnimation { duration: 100; } }
                     Behavior on opacity { NumberAnimation { duration: 100; } }
+
+                    UM.PointingRectangle {
+                        color: UM.Theme.colors.button_tooltip;
+                        anchors.fill: parent
+                        anchors.margins: UM.Theme.sizes.default_lining.width
+                        target: Qt.point(- UM.Theme.sizes.default_lining.width, parent.height/2)
+                        arrowSize: parent.arrowSize
+                    }
 
                     Label {
                         id: button_tip
