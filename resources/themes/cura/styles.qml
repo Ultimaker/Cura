@@ -250,11 +250,13 @@ QtObject {
             background:Rectangle {
                 implicitWidth: UM.Theme.sizes.message.width - (UM.Theme.sizes.default_margin.width * 2)
                 implicitHeight: UM.Theme.sizes.progressbar.height
+                radius: UM.Theme.sizes.progressbar_radius.width
                 color: UM.Theme.colors.progressbar_background
             }
             progress: Rectangle {
                 color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
                 Rectangle{
+                    radius: UM.Theme.sizes.progressbar_radius.width
                     color: UM.Theme.colors.progressbar_control
                     width: UM.Theme.sizes.progressbar_control.width
                     height: UM.Theme.sizes.progressbar_control.height
