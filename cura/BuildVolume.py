@@ -12,6 +12,9 @@ from UM.Math.Color import Color
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
 
+from UM.View.RenderBatch import RenderBatch
+from UM.View.GL.OpenGL import OpenGL
+
 import numpy
 
 class BuildVolume(SceneNode):
@@ -24,10 +27,10 @@ class BuildVolume(SceneNode):
         self._height = 0
         self._depth = 0
 
-        self._material = None
+        self._shader = None
 
         self._grid_mesh = None
-        self._grid_material = None
+        self._grid_shader = None
 
         self._disallowed_areas = []
         self._disallowed_area_mesh = None
@@ -61,22 +64,14 @@ class BuildVolume(SceneNode):
         if not self.getMeshData():
             return True
 
-        if not self._material:
-            self._material = renderer.createMaterial(
-                Resources.getPath(Resources.Shaders, "basic.vert"),
-                Resources.getPath(Resources.Shaders, "vertexcolor.frag")
-            )
-            self._grid_material = renderer.createMaterial(
-                Resources.getPath(Resources.Shaders, "basic.vert"),
-                Resources.getPath(Resources.Shaders, "grid.frag")
-            )
-            self._grid_material.setUniformValue("u_gridColor0", Color(245, 245, 245, 255))
-            self._grid_material.setUniformValue("u_gridColor1", Color(205, 202, 201, 255))
+        if not self._shader:
+            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
+            self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
 
-        renderer.queueNode(self, material = self._material, mode = Renderer.RenderLines)
-        renderer.queueNode(self, mesh = self._grid_mesh, material = self._grid_material, force_single_sided = True)
+        renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
+        renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader)
         if self._disallowed_area_mesh:
-            renderer.queueNode(self, mesh = self._disallowed_area_mesh, material = self._material, transparent = True)
+            renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True)
         return True
 
     def rebuild(self):
