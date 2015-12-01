@@ -96,7 +96,7 @@
             ]
         },
         "machine_head_polygon": {
-            "description": "A 2D silhouette of the print head.",
+            "description": "A 2D silhouette of the print head (fan caps excluded).",
             "type": "polygon",
             "default": [
                 [
@@ -118,7 +118,7 @@
             ]
         },
         "machine_head_with_fans_polygon": {
-            "description": "A 2D silhouette of the print head.",
+            "description": "A 2D silhouette of the print head (fan caps included).",
             "type": "polygon",
             "default": [
                 [
