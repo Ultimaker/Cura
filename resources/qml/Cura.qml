@@ -367,14 +367,6 @@ UM.MainWindow
                 action: actions.open;
                 MouseArea {
                     anchors.fill: parent
-                    onEntered: {
-                        buttonTooltip.targetId = parent;
-                        mouse.accepted = false;
-                    }
-                    onExited: {
-                        buttonTooltip.targetId = undefined;
-                        mouse.accepted = false;
-                    }
                     cursorShape: Qt.PointingHandCursor
                     acceptedButtons: Qt.NoButton
                 }
