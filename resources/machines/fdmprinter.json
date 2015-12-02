@@ -580,7 +580,7 @@
                     "description": "Data linking material flow (in mm³/s) to temperature (°C).",
                     "unit": "",
                     "type": "string",
-                    "default": "[[0.1,180],[20,230]]",
+                    "default": "[[2.5,200],[7.0,240]]",
                     "enabled": "material_flow_dependent_temperature"
                 },
                 "material_standby_temperature": {
