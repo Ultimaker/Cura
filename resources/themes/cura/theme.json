@@ -236,6 +236,9 @@
 
         "per_object_settings_button": [2.0, 2.0],
         "per_object_settings_panel": [24.0, 10.0],
-        "per_object_settings_panel_border": [0.1, 0.1]
+        "per_object_settings_panel_border": [0.1, 0.1], 
+
+        "jobspecs": [20, 0],
+        "jobspecs_line": [2.0, 2.0]
     }
 }

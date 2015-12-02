@@ -11,10 +11,7 @@ import UM 1.1 as UM
 Rectangle {
     id: base;
 
-    property real progress: UM.Backend.progress;
     property bool activity: Printer.getPlatformActivity;
-    Behavior on progress { NumberAnimation { duration: 250; } }
-    property int totalHeight: childrenRect.height + UM.Theme.sizes.default_margin.height*1.5
     property string fileBaseName
     property variant activeMachineInstance: UM.MachineManager.activeMachineInstance
 
@@ -28,8 +25,8 @@ Rectangle {
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
-    width: 200
-    height: 55
+    width: UM.Theme.sizes.jobspecs.width
+    height: childrenRect.height
     color: "transparent"
 
     function createFileName(){
@@ -76,7 +73,7 @@ Rectangle {
     TextField {
         id: printJobTextfield
         anchors.right: parent.right
-        height: UM.Theme.sizes.sidebar_inputfields.height
+        height: UM.Theme.sizes.jobspecs_line.height
         width: base.width
         property int unremovableSpacing: 5
         text: ''
@@ -105,6 +102,8 @@ Rectangle {
         id: boundingSpec
         anchors.top: printJobTextfield.bottom
         anchors.right: parent.right
+        height: UM.Theme.sizes.jobspecs_line.height
+        verticalAlignment: Text.AlignVCenter
         font: UM.Theme.fonts.small
         color: UM.Theme.colors.text_subtext
         text: Printer.getSceneBoundingBoxString
@@ -114,8 +113,8 @@ Rectangle {
         id: specsRow
         anchors.top: boundingSpec.bottom
         anchors.right: parent.right
-        color: "transparent"
-        //visible: base.progress > 0.99 && base.activity == true
+        height: UM.Theme.sizes.jobspecs_line.height
+
         Item{
             width: parent.width
             height: parent.height
@@ -124,6 +123,7 @@ Rectangle {
                 id: timeIcon
                 anchors.right: timeSpec.left
                 anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
+                anchors.verticalCenter: parent.verticalCenter
                 width: UM.Theme.sizes.save_button_specs_icons.width
                 height: UM.Theme.sizes.save_button_specs_icons.height
                 sourceSize.width: width
@@ -135,6 +135,7 @@ Rectangle {
                 id: timeSpec
                 anchors.right: lengthIcon.left
                 anchors.rightMargin: UM.Theme.sizes.default_margin.width
+                anchors.verticalCenter: parent.verticalCenter
                 font: UM.Theme.fonts.small
                 color: UM.Theme.colors.text_subtext
                 text: (!base.printDuration || !base.printDuration.valid) ? "00h 00min" : base.printDuration.getDisplayString(UM.DurationFormat.Short)
@@ -143,6 +144,7 @@ Rectangle {
                 id: lengthIcon
                 anchors.right: lengthSpec.left
                 anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
+                anchors.verticalCenter: parent.verticalCenter
                 width: UM.Theme.sizes.save_button_specs_icons.width
                 height: UM.Theme.sizes.save_button_specs_icons.height
                 sourceSize.width: width
@@ -153,6 +155,7 @@ Rectangle {
             Label{
                 id: lengthSpec
                 anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
                 font: UM.Theme.fonts.small
                 color: UM.Theme.colors.text_subtext
                 text: base.printMaterialAmount <= 0 ? "0.0 m" : catalog.i18nc("@label %1 is length of filament","%1 m").arg(base.printMaterialAmount)
