@@ -425,11 +425,13 @@ QtObject {
                 implicitWidth:  UM.Theme.sizes.checkbox.width;
                 implicitHeight: UM.Theme.sizes.checkbox.height;
 
-                color: control.hovered ? UM.Theme.colors.checkbox_hover : UM.Theme.colors.checkbox;
+                color: (control.hovered || control.hovered_ex) ? UM.Theme.colors.checkbox_hover : UM.Theme.colors.checkbox;
                 Behavior on color { ColorAnimation { duration: 50; } }
 
+                radius: control.exclusiveGroup ? UM.Theme.sizes.checkbox.width / 2 : 0
+
                 border.width: UM.Theme.sizes.default_lining.width;
-                border.color: control.hovered ? UM.Theme.colors.checkbox_border_hover : UM.Theme.colors.checkbox_border;
+                border.color: (control.hovered || control.hovered_ex) ? UM.Theme.colors.checkbox_border_hover : UM.Theme.colors.checkbox_border;
 
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
@@ -439,7 +441,7 @@ QtObject {
                     sourceSize.width: width
                     sourceSize.height: width
                     color: UM.Theme.colors.checkbox_mark
-                    source: UM.Theme.icons.check
+                    source: control.exclusiveGroup ? UM.Theme.icons.dot : UM.Theme.icons.check
                     opacity: control.checked
                     Behavior on opacity { NumberAnimation { duration: 100; } }
                 }

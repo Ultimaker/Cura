@@ -28,7 +28,7 @@ Item
         id: speedCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width/100* 45 - UM.Theme.sizes.default_margin.width
+        width: base.width/100*35 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
 
         Label{
@@ -49,11 +49,13 @@ Item
         anchors.left: speedCellLeft.right
         anchors.top: speedCellLeft.top
         anchors.topMargin: UM.Theme.sizes.default_margin.height
-        width: parent.width/100*55 - UM.Theme.sizes.default_margin.width
+        width: parent.width/100*65 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
 
         CheckBox{
             id: normalSpeedCheckBox
+            property bool hovered_ex: false
+
             anchors.top: parent.top
             anchors.left: parent.left
 
@@ -63,25 +65,30 @@ Item
 
             exclusiveGroup: speedCheckBoxGroup
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print <= 60 : true;
-            onClicked:
-            {
-                UM.MachineManager.setSettingValue("speed_print", 60)
-            }
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.NoButton
                 hoverEnabled: true
-                onEntered: {
-                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height), 
+                onClicked:
+                {
+                    UM.MachineManager.setSettingValue("speed_print", 60)
+                }
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height),
                         catalog.i18nc("@label", "Use normal printing speed. This will result in high quality prints."));
                 }
-                onExited: {
+                onExited:
+                {
+                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
         }
         CheckBox{
             id: highSpeedCheckBox
+            property bool hovered_ex: false
+
             anchors.top: parent.top
             anchors.left: normalSpeedCheckBox.right
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
@@ -92,19 +99,22 @@ Item
 
             exclusiveGroup: speedCheckBoxGroup
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print > 60 : true;
-            onClicked:
-            {
-                UM.MachineManager.setSettingValue("speed_print", 100)
-            }
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.NoButton
                 hoverEnabled: true
-                onEntered: {
-                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height), 
-                        catalog.i18nc("@label", "Use high printing speed. This will reduce printing time, but may affect the quality of the print.")); 
+                onClicked:
+                {
+                    UM.MachineManager.setSettingValue("speed_print", 100)
                 }
-                onExited: {
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height),
+                        catalog.i18nc("@label", "Use high printing speed. This will reduce printing time, but may affect the quality of the print."));
+                }
+                onExited:
+                {
+                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
@@ -117,7 +127,7 @@ Item
         anchors.top: speedCellRight.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
-        width: base.width/100* 45 - UM.Theme.sizes.default_margin.width
+        width: base.width/100* 35 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height < UM.Theme.sizes.simple_mode_infill_caption.height ? UM.Theme.sizes.simple_mode_infill_caption.height : childrenRect.height
 
         Label{
@@ -148,7 +158,7 @@ Item
         id: infillCellRight
 
         height: childrenRect.height;
-        width: base.width / 100 * 55
+        width: base.width / 100 * 65
         spacing: UM.Theme.sizes.default_margin.width
 
         anchors.left: infillCellLeft.right
@@ -183,10 +193,10 @@ Item
                 Rectangle{
                     id: infillIconLining
 
-                    width: (infillCellRight.width - 2 * UM.Theme.sizes.default_margin.width) / 3;
+                    width: (infillCellRight.width - 3 * UM.Theme.sizes.default_margin.width) / 4;
                     height: width
 
-                    border.color: (infillListView.activeIndex == index) ? UM.Theme.colors.setting_control_selected : 
+                    border.color: (infillListView.activeIndex == index) ? UM.Theme.colors.setting_control_selected :
                                       (mousearea.containsMouse ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border)
                     border.width: UM.Theme.sizes.default_lining.width
                     color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_selected : "transparent"
@@ -194,7 +204,7 @@ Item
                     UM.RecolorImage {
                         id: infillIcon
                         anchors.fill: parent;
-                        anchors.margins: UM.Theme.sizes.default_margin.width
+                        anchors.margins: UM.Theme.sizes.infill_button_margin.width
 
                         sourceSize.width: width
                         sourceSize.height: width
@@ -214,7 +224,7 @@ Item
                             }
                         }
                         onEntered: {
-                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text); 
+                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text);
                         }
                         onExited: {
                             base.hideTooltip();
@@ -237,9 +247,15 @@ Item
             Component.onCompleted:
             {
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Sparse"),
+                    name: catalog.i18nc("@label", "Hollow"),
+                    percentage: 0,
+                    text: catalog.i18nc("@label", "No (0%) infill will leave your model hollow at the cost of low strength"),
+                    icon: "hollow"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Light"),
                     percentage: 20,
-                    text: catalog.i18nc("@label", "Sparse (20%) infill will give your model an average strength"),
+                    text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
                     icon: "sparse"
                 })
                 infillModel.append({
@@ -263,7 +279,7 @@ Item
         anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
-        width: parent.width/100*45 - UM.Theme.sizes.default_margin.width
+        width: parent.width/100*35 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
 
         Label{
@@ -279,11 +295,13 @@ Item
         id: helpersCellRight
         anchors.top: helpersCellLeft.top
         anchors.left: helpersCellLeft.right
-        width: parent.width/100*55 - UM.Theme.sizes.default_margin.width
+        width: parent.width/100*65 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
 
         CheckBox{
             id: brimCheckBox
+            property bool hovered_ex: false
+
             anchors.top: parent.top
             anchors.left: parent.left
 
@@ -292,25 +310,31 @@ Item
             style: UM.Theme.styles.checkbox;
 
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
-            onClicked:
-            {
-                UM.MachineManager.setSettingValue("adhesion_type", "brim")
-            }
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.NoButton
                 hoverEnabled: true
-                onEntered: {
-                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
+                onClicked:
+                {
+                    parent.checked = !parent.checked
+                    UM.MachineManager.setSettingValue("adhesion_type", parent.checked?"brim":"skirt")
+                }
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height),
                         catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
                 }
-                onExited: {
+                onExited:
+                {
+                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
         }
         CheckBox{
             id: supportCheckBox
+            property bool hovered_ex: false
+
             anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.sizes.default_lining.height
             anchors.left: parent.left
@@ -320,19 +344,23 @@ Item
             style: UM.Theme.styles.checkbox;
 
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.support_enable : false;
-            onClicked:
-            {
-                UM.MachineManager.setSettingValue("support_enable", checked)
-            }
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.NoButton
                 hoverEnabled: true
-                onEntered: {
-                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
-                        catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.")); 
+                onClicked:
+                {
+                    parent.checked = !parent.checked
+                    UM.MachineManager.setSettingValue("support_enable", parent.checked)
                 }
-                onExited: {
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                        catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited:
+                {
+                    parent.hovered_ex = false
                     base.hideTooltip();
                 }
             }
