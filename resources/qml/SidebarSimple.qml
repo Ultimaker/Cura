@@ -125,22 +125,10 @@ Item
                             }
                         }
                         onEntered: {
-                            hoverTimer.start();
+                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text); 
                         }
                         onExited: {
-                            hoverTimer.stop();
                             base.hideTooltip();
-                        }
-
-                        Timer {
-                            id: hoverTimer;
-                            interval: 500;
-                            repeat: false;
-
-                            onTriggered: 
-                            { 
-                                base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text); 
-                            }
                         }
                     }
                 }
@@ -224,23 +212,11 @@ Item
                 acceptedButtons: Qt.NoButton
                 hoverEnabled: true
                 onEntered: {
-                    brimHoverTimer.start();
+                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
+                        catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
                 }
                 onExited: {
-                    brimHoverTimer.stop();
                     base.hideTooltip();
-                }
-
-                Timer {
-                    id: brimHoverTimer;
-                    interval: 500;
-                    repeat: false;
-
-                    onTriggered: 
-                    {
-                        base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
-                            catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
-                    }
                 }
             }
         }
@@ -264,23 +240,11 @@ Item
                 acceptedButtons: Qt.NoButton
                 hoverEnabled: true
                 onEntered: {
-                    supportHoverTimer.start();
+                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
+                        catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.")); 
                 }
                 onExited: {
-                    supportHoverTimer.stop();
                     base.hideTooltip();
-                }
-
-                Timer {
-                    id: supportHoverTimer;
-                    interval: 500;
-                    repeat: false;
-
-                    onTriggered: 
-                    {
-                        base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
-                            catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.")); 
-                    }
                 }
             }
         }
