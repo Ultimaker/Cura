@@ -25,8 +25,97 @@ Item
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     Rectangle{
-        id: infillCellLeft
+        id: speedCellLeft
         anchors.top: parent.top
+        anchors.left: parent.left
+        width: base.width/100* 45 - UM.Theme.sizes.default_margin.width
+        height: childrenRect.height
+
+        Label{
+            id: speedLabel
+            //: Speed selection label
+            text: catalog.i18nc("@label","Speed:");
+            font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text;
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.sizes.default_margin.height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+        }
+    }
+
+    Rectangle {
+        id: speedCellRight
+        anchors.left: speedCellLeft.right
+        anchors.top: speedCellLeft.top
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        width: parent.width/100*55 - UM.Theme.sizes.default_margin.width
+        height: childrenRect.height
+
+        CheckBox{
+            id: normalSpeedCheckBox
+            anchors.top: parent.top
+            anchors.left: parent.left
+
+            //: Normal speed checkbox
+            text: catalog.i18nc("@option:check","Normal");
+            style: UM.Theme.styles.checkbox;
+
+            exclusiveGroup: speedCheckBoxGroup
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print <= 60 : true;
+            onClicked:
+            {
+                UM.MachineManager.setSettingValue("speed_print", 60)
+            }
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                hoverEnabled: true
+                onEntered: {
+                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height), 
+                        catalog.i18nc("@label", "Use normal printing speed. This will result in high quality prints."));
+                }
+                onExited: {
+                    base.hideTooltip();
+                }
+            }
+        }
+        CheckBox{
+            id: highSpeedCheckBox
+            anchors.top: parent.top
+            anchors.left: normalSpeedCheckBox.right
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+
+            //: High speed checkbox
+            text: catalog.i18nc("@option:check","Fast");
+            style: UM.Theme.styles.checkbox;
+
+            exclusiveGroup: speedCheckBoxGroup
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print > 60 : true;
+            onClicked:
+            {
+                UM.MachineManager.setSettingValue("speed_print", 100)
+            }
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                hoverEnabled: true
+                onEntered: {
+                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height), 
+                        catalog.i18nc("@label", "Use high printing speed. This will reduce printing time, but may affect the quality of the print.")); 
+                }
+                onExited: {
+                    base.hideTooltip();
+                }
+            }
+        }
+        ExclusiveGroup { id: speedCheckBoxGroup; }
+    }
+
+    Rectangle{
+        id: infillCellLeft
+        anchors.top: speedCellRight.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
         width: base.width/100* 45 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height < UM.Theme.sizes.simple_mode_infill_caption.height ? UM.Theme.sizes.simple_mode_infill_caption.height : childrenRect.height
@@ -63,7 +152,7 @@ Item
         spacing: UM.Theme.sizes.default_margin.width
 
         anchors.left: infillCellLeft.right
-        anchors.top: parent.top
+        anchors.top: infillCellLeft.top
         anchors.topMargin: UM.Theme.sizes.default_margin.height
 
         Repeater {
