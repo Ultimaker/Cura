@@ -13,6 +13,9 @@ Item
     id: base;
     anchors.fill: parent;
 
+    signal showTooltip(Item item, point location, string text);
+    signal hideTooltip();
+
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
@@ -39,7 +42,7 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
         }
-        Label{
+/*        Label{
             id: infillCaption
             width: infillCellLeft.width - UM.Theme.sizes.default_margin.width * 2
             text: infillModel.count > 0 && infillListView.activeIndex != -1 ? infillModel.get(infillListView.activeIndex).text : ""
@@ -49,7 +52,7 @@ Item
             anchors.top: infillLabel.bottom
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
-        }
+        } */
     }
 
     Flow {
@@ -113,6 +116,7 @@ Item
                     MouseArea {
                         id: mousearea
                         anchors.fill: parent
+                        hoverEnabled: true
                         onClicked: {
                             if (infillListView.activeIndex != index)
                             {
@@ -120,7 +124,24 @@ Item
                                 UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
                             }
                         }
-                        hoverEnabled: true
+                        onEntered: {
+                            hoverTimer.start();
+                        }
+                        onExited: {
+                            hoverTimer.stop();
+                            base.hideTooltip();
+                        }
+
+                        Timer {
+                            id: hoverTimer;
+                            interval: 500;
+                            repeat: false;
+
+                            onTriggered: 
+                            { 
+                                base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text); 
+                            }
+                        }
                     }
                 }
                 Label{
@@ -185,12 +206,12 @@ Item
         height: childrenRect.height
 
         CheckBox{
-            id: skirtCheckBox
+            id: brimCheckBox
             anchors.top: parent.top
             anchors.left: parent.left
 
             //: Setting enable skirt adhesion checkbox
-            text: catalog.i18nc("@option:check","Enable Skirt Adhesion");
+            text: catalog.i18nc("@option:check","Enable Brim Adhesion");
             style: UM.Theme.styles.checkbox;
 
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
@@ -198,9 +219,34 @@ Item
             {
                 UM.MachineManager.setSettingValue("adhesion_type", "brim")
             }
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                hoverEnabled: true
+                onEntered: {
+                    brimHoverTimer.start();
+                }
+                onExited: {
+                    brimHoverTimer.stop();
+                    base.hideTooltip();
+                }
+
+                Timer {
+                    id: brimHoverTimer;
+                    interval: 500;
+                    repeat: false;
+
+                    onTriggered: 
+                    {
+                        base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
+                            catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
+                    }
+                }
+            }
         }
         CheckBox{
-            anchors.top: skirtCheckBox.bottom
+            id: supportCheckBox
+            anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.sizes.default_lining.height
             anchors.left: parent.left
 
@@ -212,6 +258,30 @@ Item
             onClicked:
             {
                 UM.MachineManager.setSettingValue("support_enable", checked)
+            }
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                hoverEnabled: true
+                onEntered: {
+                    supportHoverTimer.start();
+                }
+                onExited: {
+                    supportHoverTimer.stop();
+                    base.hideTooltip();
+                }
+
+                Timer {
+                    id: supportHoverTimer;
+                    interval: 500;
+                    repeat: false;
+
+                    onTriggered: 
+                    {
+                        base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height), 
+                            catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.")); 
+                    }
+                }
             }
         }
     }
