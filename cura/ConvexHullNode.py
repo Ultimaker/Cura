@@ -17,7 +17,7 @@ class ConvexHullNode(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
-        self._material = None
+        self._shader = None
 
         self._original_parent = parent
 
@@ -68,7 +68,7 @@ class ConvexHullNode(SceneNode):
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
 
         if self.getParent():
-            self._material.setUniformValue("u_color", self._color)
+            self._shader.setUniformValue("u_color", self._color)
             renderer.queueNode(self, transparent = True, shader = self._shader)
             if self._convex_hull_head_mesh:
                 renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh)
