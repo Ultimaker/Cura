@@ -920,29 +920,7 @@
                     "default": 0.064,
                     "visible": false,
                     "inherit": false,
-                    "enabled": "coasting_enable",
-                    "children": {
-                        "coasting_volume_retract": {
-                            "label": "Retract-Coasting Volume",
-                            "description": "The volume otherwise oozed in a travel move with retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.064,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        },
-                        "coasting_volume_move": {
-                            "label": "Move-Coasting Volume",
-                            "description": "The volume otherwise oozed in a travel move without retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.096,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        }
-                    }
+                    "enabled": "coasting_enable"
                 },
                 "coasting_min_volume": {
                     "label": "Minimal Volume Before Coasting",
@@ -952,29 +930,7 @@
                     "default": 0.8,
                     "visible": false,
                     "inherit": false,
-                    "enabled": "coasting_enable",
-                    "children": {
-                        "coasting_min_volume_retract": {
-                            "label": "Min Volume Retract-Coasting",
-                            "description": "The minimum volume an extrusion path must have in order to coast the full amount before doing a retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.6,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        },
-                        "coasting_min_volume_move": {
-                            "label": "Min Volume Move-Coasting",
-                            "description": "The minimum volume an extrusion path must have in order to coast the full amount before doing a travel move without retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.8,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        }
-                    }
+                    "enabled": "coasting_enable"
                 },
                 "coasting_speed": {
                     "label": "Coasting Speed",
@@ -984,29 +940,7 @@
                     "default": 90,
                     "visible": false,
                     "inherit": false,
-                    "enabled": "coasting_enable",
-                    "children": {
-                        "coasting_speed_retract": {
-                            "label": "Retract-Coasting Speed",
-                            "description": "The speed by which to move during coasting before a retraction, relative to the speed of the extrusion path.",
-                            "unit": "%",
-                            "type": "float",
-                            "default": 90,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        },
-                        "coasting_speed_move": {
-                            "label": "Move-Coasting Speed",
-                            "description": "The speed by which to move during coasting before a travel move without retraction, relative to the speed of the extrusion path.",
-                            "unit": "%",
-                            "type": "float",
-                            "default": 90,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        }
-                    }
+                    "enabled": "coasting_enable"
                 }
             }
         },
