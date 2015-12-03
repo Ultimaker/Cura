@@ -407,6 +407,7 @@ QtObject {
         controlBorderColor: UM.Theme.colors.setting_control_border;
         controlBorderHighlightColor: UM.Theme.colors.setting_control_border_highlight;
         controlTextColor: UM.Theme.colors.setting_control_text;
+        controlBorderWidth: UM.Theme.sizes.default_lining.width;
         controlFont: UM.Theme.fonts.default;
 
         validationErrorColor: UM.Theme.colors.setting_validation_error;
