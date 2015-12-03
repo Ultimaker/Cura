@@ -306,7 +306,7 @@ Item
             anchors.left: parent.left
 
             //: Setting enable skirt adhesion checkbox
-            text: catalog.i18nc("@option:check","Enable Brim Adhesion");
+            text: catalog.i18nc("@option:check","Generate Brim");
             style: UM.Theme.styles.checkbox;
 
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
@@ -340,7 +340,7 @@ Item
             anchors.left: parent.left
 
             //: Setting enable support checkbox
-            text: catalog.i18nc("@option:check","Enable Support");
+            text: catalog.i18nc("@option:check","Generate Support Structure");
             style: UM.Theme.styles.checkbox;
 
             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.support_enable : false;
