@@ -1243,7 +1243,7 @@
                     "enabled": "support_roof_enable"
                 },
                 "support_use_towers": {
-                    "label": "Use towers.",
+                    "label": "Use towers",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "boolean",
                     "default": true,
