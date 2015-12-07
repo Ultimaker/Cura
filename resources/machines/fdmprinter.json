@@ -1370,11 +1370,22 @@
                     "enabled": "adhesion_type == \"skirt\""
                 },
                 "brim_line_count": {
-                    "label": "Brim Line Count",
-                    "description": "The number of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
-                    "type": "int",
-                    "default": 10,
-                    "enabled": "adhesion_type == \"brim\""
+                    "label": "Brim Width",
+                    "description": "The distance from the model to the end of the brim. A larger brim sticks better to the build platform, but also makes your effective print area smaller.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 0.8,
+                    "enabled": "adhesion_type == \"brim\"",
+                    "children": {
+                        "brim_line_count": {
+                            "label": "Brim Line Count",
+                            "description": "The number of lines used for a brim. More lines means a larger brim which sticks better to the build plate, but this also makes your effective print area smaller.",
+                            "type": "int",
+                            "default": 10,
+                            "inherit_function": "parent_value / skirt_line_width"
+                            "enabled": "adhesion_type == \"brim\""
+                        }
+                    }
                 },
                 "raft_margin": {
                     "label": "Raft Extra Margin",
