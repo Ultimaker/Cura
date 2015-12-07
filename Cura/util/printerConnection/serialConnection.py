@@ -104,7 +104,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 	def coolDown(self):
 		cooldown_toolhead = "M104 S0"
 		for i in range(0,3):
-			change_toolhead = "T%d".format(i)
+			change_toolhead = "T{}".format(i)
 			self.sendCommand(change_toolhead)
 			self.sendCommand(cooldown_toolhead)
 		self.sendCommand("M140 S0") #Bed
