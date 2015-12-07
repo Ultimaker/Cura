@@ -924,10 +924,11 @@
                 },
                 "coasting_min_volume": {
                     "label": "Minimal Volume Before Coasting",
-                    "description": "The least volume an extrusion path should have to coast the full amount. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly.",
+                    "description": "The least volume an extrusion path should have to coast the full amount. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
                     "unit": "mm³",
                     "type": "float",
                     "default": 0.8,
+                    "min_value": "coasting_volume",
                     "visible": false,
                     "inherit": false,
                     "enabled": "coasting_enable"
