@@ -22,6 +22,7 @@ from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.JobQueue import JobQueue
 from UM.Math.Polygon import Polygon
+from UM.Event import MouseEvent
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
@@ -231,15 +232,24 @@ class CuraApplication(QtApplication):
                 else:
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
-                self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
-                self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
-                self._camera_animation.start()
+                print("connect")
+                print(self.getController().getInputDevice("qt_mouse").event)
+                self.getController().getInputDevice("qt_mouse").event.connect(self.onMouseEventAfterSelectionChanged)
         else:
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
             else:
                 self._previous_active_tool = None
+
+    def onMouseEventAfterSelectionChanged(self, event):
+        print("event")
+        if event.type == MouseEvent.MouseReleaseEvent:
+            print("disconnect")
+            self.getController().getInputDevice("qt_mouse").event.disconnect(self.onMouseEventAfterSelectionChanged)
+            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
+            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
+            self._camera_animation.start()
 
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
