@@ -69,9 +69,9 @@ class BuildVolume(SceneNode):
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
-        renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader)
+        renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
-            renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True)
+            renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True)
         return True
 
     def rebuild(self):
