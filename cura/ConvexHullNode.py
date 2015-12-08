@@ -24,7 +24,7 @@ class ConvexHullNode(SceneNode):
         self._inherit_orientation = False
         self._inherit_scale = False
 
-        self._color = Color(35, 35, 35, 0.5)
+        self._color = Color(35, 35, 35, 128)
 
         self._node = node
         self._node.transformationChanged.connect(self._onNodePositionChanged)
@@ -66,9 +66,9 @@ class ConvexHullNode(SceneNode):
     def render(self, renderer):
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
+            self._shader.setUniformValue("u_color", self._color)
 
         if self.getParent():
-            self._shader.setUniformValue("u_color", self._color)
             renderer.queueNode(self, transparent = True, shader = self._shader)
             if self._convex_hull_head_mesh:
                 renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh)
