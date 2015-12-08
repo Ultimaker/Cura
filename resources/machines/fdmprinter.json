@@ -158,7 +158,8 @@
                     "default": 0.1,
                     "min_value": "0.001",
                     "min_value_warning": "0.04",
-                    "max_value_warning": "0.32"
+                    "max_value_warning": "0.32",
+                    "global_only": "print_sequence != \"one_at_a_time\""
                 },
                 "layer_height_0": {
                     "label": "Initial Layer Height",
@@ -580,7 +581,7 @@
                     "description": "Data linking material flow (in mm³/s) to temperature (°C).",
                     "unit": "",
                     "type": "string",
-                    "default": "[[0.1,180],[20,230]]",
+                    "default": "[[3.5,200],[7.0,240]]",
                     "enabled": "material_flow_dependent_temperature"
                 },
                 "material_standby_temperature": {
@@ -922,61 +923,17 @@
                     "default": 0.064,
                     "visible": false,
                     "inherit": false,
-                    "enabled": "coasting_enable",
-                    "children": {
-                        "coasting_volume_retract": {
-                            "label": "Retract-Coasting Volume",
-                            "description": "The volume otherwise oozed in a travel move with retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.064,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        },
-                        "coasting_volume_move": {
-                            "label": "Move-Coasting Volume",
-                            "description": "The volume otherwise oozed in a travel move without retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.096,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        }
-                    }
+                    "enabled": "coasting_enable"
                 },
                 "coasting_min_volume": {
                     "label": "Minimal Volume Before Coasting",
-                    "description": "The least volume an extrusion path should have to coast the full amount. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly.",
+                    "description": "The least volume an extrusion path should have to coast the full amount. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
                     "unit": "mm³",
                     "type": "float",
                     "default": 0.8,
+                    "min_value": "0",
                     "visible": false,
-                    "inherit": false,
-                    "enabled": "coasting_enable",
-                    "children": {
-                        "coasting_min_volume_retract": {
-                            "label": "Min Volume Retract-Coasting",
-                            "description": "The minimum volume an extrusion path must have in order to coast the full amount before doing a retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.6,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        },
-                        "coasting_min_volume_move": {
-                            "label": "Min Volume Move-Coasting",
-                            "description": "The minimum volume an extrusion path must have in order to coast the full amount before doing a travel move without retraction.",
-                            "unit": "mm³",
-                            "type": "float",
-                            "default": 0.8,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        }
-                    }
+                    "enabled": "coasting_enable"
                 },
                 "coasting_speed": {
                     "label": "Coasting Speed",
@@ -986,29 +943,7 @@
                     "default": 90,
                     "visible": false,
                     "inherit": false,
-                    "enabled": "coasting_enable",
-                    "children": {
-                        "coasting_speed_retract": {
-                            "label": "Retract-Coasting Speed",
-                            "description": "The speed by which to move during coasting before a retraction, relative to the speed of the extrusion path.",
-                            "unit": "%",
-                            "type": "float",
-                            "default": 90,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        },
-                        "coasting_speed_move": {
-                            "label": "Move-Coasting Speed",
-                            "description": "The speed by which to move during coasting before a travel move without retraction, relative to the speed of the extrusion path.",
-                            "unit": "%",
-                            "type": "float",
-                            "default": 90,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "coasting_enable"
-                        }
-                    }
+                    "enabled": "coasting_enable"
                 }
             }
         },
@@ -1311,7 +1246,7 @@
                     "enabled": "support_roof_enable"
                 },
                 "support_use_towers": {
-                    "label": "Use towers.",
+                    "label": "Use towers",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "boolean",
                     "default": true,
@@ -1436,12 +1371,23 @@
                     "default": 250,
                     "enabled": "adhesion_type == \"skirt\""
                 },
-                "brim_line_count": {
-                    "label": "Brim Line Count",
-                    "description": "The number of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
-                    "type": "int",
-                    "default": 10,
-                    "enabled": "adhesion_type == \"brim\""
+                "brim_width": {
+                    "label": "Brim Width",
+                    "description": "The distance from the model to the end of the brim. A larger brim sticks better to the build platform, but also makes your effective print area smaller.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 5.0,
+                    "enabled": "adhesion_type == \"brim\"",
+                    "children": {
+                        "brim_line_count": {
+                            "label": "Brim Line Count",
+                            "description": "The number of lines used for a brim. More lines means a larger brim which sticks better to the build plate, but this also makes your effective print area smaller.",
+                            "type": "int",
+                            "default": 13,
+                            "inherit_function": "math.ceil(parent_value / skirt_line_width)",
+                            "enabled": "adhesion_type == \"brim\""
+                        }
+                    }
                 },
                 "raft_margin": {
                     "label": "Raft Extra Margin",
@@ -1718,7 +1664,8 @@
                         "one_at_a_time": "One at a Time"
                     },
                     "default": "all_at_once",
-                    "visible": true
+                    "visible": true,
+                    "global_only": true
                 },
                 "magic_mesh_surface_mode": {
                     "label": "Surface Mode",
