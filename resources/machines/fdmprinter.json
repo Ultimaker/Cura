@@ -701,7 +701,7 @@
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
                     "description": "This setting limits the number of retractions occurring within the Minimum Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
-                    "default": 4,
+                    "default": 8,
                     "type": "int",
                     "visible": false,
                     "inherit": false,
@@ -925,12 +925,12 @@
                 },
                 "coasting_min_volume": {
                     "label": "Minimal Volume Before Coasting",
-                    "description": "The least volume an extrusion path should have to coast the full amount. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly.",
+                    "description": "The least volume an extrusion path should have to coast the full amount. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
                     "unit": "mm³",
                     "type": "float",
                     "default": 0.8,
+                    "min_value": "0",
                     "visible": false,
-                    "inherit": false,
                     "enabled": "coasting_enable"
                 },
                 "coasting_speed": {
@@ -1244,7 +1244,7 @@
                     "enabled": "support_roof_enable"
                 },
                 "support_use_towers": {
-                    "label": "Use towers.",
+                    "label": "Use towers",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "boolean",
                     "default": true,
@@ -1369,12 +1369,23 @@
                     "default": 250,
                     "enabled": "adhesion_type == \"skirt\""
                 },
-                "brim_line_count": {
-                    "label": "Brim Line Count",
-                    "description": "The number of lines used for a brim: More lines means a larger brim which sticks better, but this also makes your effective print area smaller.",
-                    "type": "int",
-                    "default": 10,
-                    "enabled": "adhesion_type == \"brim\""
+                "brim_width": {
+                    "label": "Brim Width",
+                    "description": "The distance from the model to the end of the brim. A larger brim sticks better to the build platform, but also makes your effective print area smaller.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 5.0,
+                    "enabled": "adhesion_type == \"brim\"",
+                    "children": {
+                        "brim_line_count": {
+                            "label": "Brim Line Count",
+                            "description": "The number of lines used for a brim. More lines means a larger brim which sticks better to the build plate, but this also makes your effective print area smaller.",
+                            "type": "int",
+                            "default": 13,
+                            "inherit_function": "math.ceil(parent_value / skirt_line_width)",
+                            "enabled": "adhesion_type == \"brim\""
+                        }
+                    }
                 },
                 "raft_margin": {
                     "label": "Raft Extra Margin",

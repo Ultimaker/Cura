@@ -255,8 +255,7 @@ class BuildVolume(SceneNode):
             skirt_line_count = profile.getSettingValue("skirt_line_count")
             skirt_size = skirt_distance + (skirt_line_count * profile.getSettingValue("skirt_line_width"))
         elif adhesion_type == "brim":
-            brim_line_count = profile.getSettingValue("brim_line_count")
-            skirt_size = brim_line_count * profile.getSettingValue("skirt_line_width")
+            skirt_size = profile.getSettingValue("brim_width")
         elif adhesion_type == "raft":
             skirt_size = profile.getSettingValue("raft_margin")
 
@@ -270,4 +269,4 @@ class BuildVolume(SceneNode):
     def _clamp(self, value, min_value, max_value):
         return max(min(value, max_value), min_value)
 
-    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_line_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
+    _skirt_settings = ["adhesion_type", "skirt_gap", "skirt_line_count", "skirt_line_width", "brim_width", "brim_line_count", "raft_margin", "draft_shield_enabled", "draft_shield_dist", "xy_offset"]
