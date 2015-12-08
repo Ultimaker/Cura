@@ -11,6 +11,9 @@ from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
 from UM.Mesh.MeshData import MeshData
 
+from UM.View.RenderBatch import RenderBatch
+from UM.View.GL.OpenGL import OpenGL
+
 from cura.ConvexHullNode import ConvexHullNode
 
 from PyQt5 import QtCore, QtWidgets
@@ -21,7 +24,8 @@ from . import LayerViewProxy
 class LayerView(View):
     def __init__(self):
         super().__init__()
-        self._material = None
+        self._shader = None
+        self._selection_shader = None
         self._num_layers = 0
         self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
@@ -53,14 +57,10 @@ class LayerView(View):
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
-        renderer.setRenderSelection(False)
 
-        if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "vertexcolor.frag"))
-            self._material.setUniformValue("u_color", [1.0, 0.0, 0.0, 1.0])
-
-            self._selection_material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "color.frag"))
-            self._selection_material.setUniformValue("u_color", Color(35, 35, 35, 128))
+        if not self._selection_shader:
+            self._selection_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
+            self._selection_shader.setUniformValue("u_color", Color(32, 32, 32, 128))
 
         for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
@@ -71,7 +71,7 @@ class LayerView(View):
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
                     if Selection.isSelected(node):
-                        renderer.queueNode(node, material = self._selection_material, transparent = True)
+                        renderer.queueNode(node, transparent = True, shader = self._selection_shader)
                     layer_data = node.callDecoration("getLayerData")
                     if not layer_data:
                         continue
@@ -87,7 +87,7 @@ class LayerView(View):
                             end += counts
 
                         # This uses glDrawRangeElements internally to only draw a certain range of lines.
-                        renderer.queueNode(node, mesh = layer_data, material = self._material, mode = Renderer.RenderLines, start = start, end = end)
+                        renderer.queueNode(node, mesh = layer_data, mode = RenderBatch.RenderMode.Lines, range = (start, end))
 
                     # We currently recreate the current "solid" layers every time a
                     if not self._current_layer_mesh:
@@ -111,7 +111,7 @@ class LayerView(View):
                             if self._current_layer_mesh:
                                 self._current_layer_mesh.addColors(layer_mesh.getColors() * brightness)
                     if self._current_layer_mesh:
-                        renderer.queueNode(node, mesh = self._current_layer_mesh, material = self._material)
+                        renderer.queueNode(node, mesh = self._current_layer_mesh)
 
                     if not self._current_layer_jumps:
                         self._current_layer_jumps = MeshData()
@@ -133,7 +133,7 @@ class LayerView(View):
                             brightness = (2.0 - (i / self._solid_layers)) / 2.0
                             self._current_layer_jumps.addColors(layer_mesh.getColors() * brightness)
 
-                    renderer.queueNode(node, mesh = self._current_layer_jumps, material = self._material)
+                    renderer.queueNode(node, mesh = self._current_layer_jumps)
 
     def setLayer(self, value):
         if self._current_layer_num != value:
@@ -152,31 +152,27 @@ class LayerView(View):
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
-        if renderer and self._material:
-            self._activity = True
-            renderer.setRenderSelection(False)
-            self._old_max_layers = self._max_layers
-            ## Recalculate num max layers
-            new_max_layers = 0
-            for node in DepthFirstIterator(scene.getRoot()):
-                if not node.render(renderer):
-                    if node.getMeshData() and node.isVisible():
-                        
-                        layer_data = node.callDecoration("getLayerData")
-                        if not layer_data:
-                            continue
+        self._activity = True
 
-                        if new_max_layers < len(layer_data.getLayers()):
-                            new_max_layers = len(layer_data.getLayers()) - 1
+        self._old_max_layers = self._max_layers
+        ## Recalculate num max layers
+        new_max_layers = 0
+        for node in DepthFirstIterator(scene.getRoot()):
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
 
-            if new_max_layers > 0 and new_max_layers != self._old_max_layers:
-                self._max_layers = new_max_layers
-                self.maxLayersChanged.emit()
-                self._current_layer_num = self._max_layers
+            if new_max_layers < len(layer_data.getLayers()):
+                new_max_layers = len(layer_data.getLayers()) - 1
 
-                # This makes sure we update the current layer
-                self.setLayer(int(self._max_layers))
-                self.currentLayerNumChanged.emit()
+        if new_max_layers > 0 and new_max_layers != self._old_max_layers:
+            self._max_layers = new_max_layers
+            self.maxLayersChanged.emit()
+            self._current_layer_num = self._max_layers
+
+            # This makes sure we update the current layer
+            self.setLayer(int(self._max_layers))
+            self.currentLayerNumChanged.emit()
 
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
