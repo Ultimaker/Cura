@@ -103,7 +103,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	def coolDown(self):
 		cooldown_toolhead = "M104 S0"
-		for i in range(0,3):
+		for i in range(0, int(profile.getMachineSetting('extruder_amount'))):
 			change_toolhead = "T{}".format(i)
 			self.sendCommand(change_toolhead)
 			self.sendCommand(cooldown_toolhead)
