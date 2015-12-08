@@ -13,6 +13,7 @@ import ctypes
 import subprocess
 from Cura.util import resources
 from Cura.util import profile
+from Cura.util import version
 
 #TODO: This does not belong here!
 if sys.platform.startswith('win'):
@@ -972,7 +973,13 @@ class printWindowAdvanced(wx.Frame):
 									 self._printerConnection.isPaused())
 		else:
 			self.cancelButton.Enable(False)
-		self.errorLogButton.Show(self._printerConnection.isInErrorState())
+		if version.isDevVersion():
+			if self._printerConnection.isInErrorState():
+				self.errorLogButton.SetLabel(_("Error Log"))
+			else:
+				self.errorLogButton.SetLabel(_("Show Log"))
+		else:
+			self.errorLogButton.Show(self._printerConnection.isInErrorState())
 		self._termInput.Enable(self._printerConnection.isAbleToSendDirectCommand())
 		self.Layout()
 
