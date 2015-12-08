@@ -929,6 +929,7 @@
                     "type": "float",
                     "default": 0.8,
                     "min_value": "coasting_volume",
+                    "inherit_function": "coasting_volume * 8",
                     "visible": false,
                     "inherit": false,
                     "enabled": "coasting_enable"
