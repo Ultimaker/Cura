@@ -148,6 +148,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			retract_amount = 5.0
 			moveZ = 10.0
 
+			self._process.stdin.write("PAUSE\n")
 			if self._printProgress - 5 > start_gcode_lines: # Substract 5 because of the marlin queue
 				x = None
 				y = None
@@ -196,7 +197,6 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 					self.sendCommand("M82")
 
 					self._pausePosition = (x, y, self._ZPosition, f, e)
-			self._process.stdin.write("PAUSE\n")
 		else:
 			if self._pausePosition:
 				retract_amount = profile.getProfileSettingFloat('retraction_amount')
