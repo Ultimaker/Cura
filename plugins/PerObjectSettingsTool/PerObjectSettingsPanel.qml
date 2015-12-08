@@ -15,11 +15,20 @@ Item {
     height: 0;
 
     property variant position: mapToItem(null, 0, 0)
+    property var settingOverrideModel: UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings
 
     property real viewportWidth: UM.Application.mainWindow.width * UM.Application.mainWindow.viewportRect.width;
     property real viewportHeight: UM.Application.mainWindow.height * UM.Application.mainWindow.viewportRect.height;
 
     property int currentIndex;
+
+    onSettingOverrideModelChanged:{
+        console.log(UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings)
+//         UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings.refresh()
+//         if (UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings == undefined){
+//
+//         }
+    }
 
     Rectangle {
         id: settingsPanel;
@@ -40,7 +49,6 @@ Item {
         DropArea {
             anchors.fill: parent;
         }
-
         Button {
             id: closeButton;
             width: UM.Theme.sizes.message_close.width;
@@ -101,25 +109,26 @@ Item {
             Repeater {
                 id: settings;
 
-                model: UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings
+                model: base.settingOverrideModel
 
                 UM.SettingItem {
                     width: UM.Theme.sizes.setting.width;
                     height: UM.Theme.sizes.setting.height;
                     x: UM.Theme.sizes.per_object_settings_panel_border.width + 1
-
                     name: model.label;
+                    visible: !model.global_only;
                     type: model.type;
                     value: model.value;
                     description: model.description;
                     unit: model.unit;
                     valid: model.valid;
-                    options: model.options
+                    options: model.options;
 
                     style: UM.Theme.styles.setting_item;
 
                     onItemValueChanged: {
                         settings.model.setSettingValue(model.key, value)
+                         base.settingOverrideModel = UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings
                     }
 
                     Button
@@ -184,7 +193,10 @@ Item {
                     }
                 }
 
-                onClicked: settingPickDialog.visible = true;
+                onClicked: {
+                    settingPickDialog.settingCategoriesModel.reload()
+                    settingPickDialog.visible = true;
+                }
 
                 Connections
                 {
@@ -249,153 +261,17 @@ Item {
         }
     }
 
-    UM.Dialog {
+    PerObjectSettingsDialog{
         id: settingPickDialog
+        settingCategoriesModel: UM.SettingCategoriesModel { id: settingCategoriesModel; }
 
-        title: catalog.i18nc("@title:window", "Pick a Setting to Customize")
-
-        TextField {
-            id: filter;
-
-            anchors {
-                top: parent.top;
-                left: parent.left;
-                right: parent.right;
-            }
-
-            placeholderText: catalog.i18nc("@label:textbox", "Filter...");
-
-            onTextChanged: settingCategoriesModel.filter(text);
-        }
-
-        ScrollView {
-            id: view;
-            anchors {
-                top: filter.bottom;
-                left: parent.left;
-                right: parent.right;
-                bottom: parent.bottom;
-            }
-
-            Column {
-                width: view.width - UM.Theme.sizes.default_margin.width * 2;
-                height: childrenRect.height;
-
-                Repeater {
-                    id: settingList;
-
-                    model: UM.SettingCategoriesModel { id: settingCategoriesModel; }
-
-                    delegate: Item {
-                        id: delegateItem;
-
-                        width: parent.width;
-                        height: childrenRect.height;
-
-                        ToolButton {
-                            id: categoryHeader;
-                            text: model.name;
-                            checkable: true;
-                            width: parent.width;
-                            onCheckedChanged: settingsColumn.state != "" ? settingsColumn.state = "" : settingsColumn.state = "collapsed";
-
-                            style: ButtonStyle {
-                                background: Rectangle
-                                {
-                                    width: control.width;
-                                    height: control.height;
-                                    color: control.hovered ? palette.highlight : "transparent";
-                                }
-                                label: Row
-                                {
-                                    spacing: UM.Theme.sizes.default_margin.width;
-                                    Image
-                                    {
-                                        anchors.verticalCenter: parent.verticalCenter;
-                                        source: control.checked ? UM.Theme.icons.arrow_right : UM.Theme.icons.arrow_bottom;
-                                    }
-                                    Label
-                                    {
-                                        text: control.text;
-                                        font.bold: true;
-                                        color: control.hovered ? palette.highlightedText : palette.text;
-                                    }
-                                }
-                            }
-                        }
-
-                        property variant settingsModel: model.settings;
-
-                        visible: model.visible;
-
-                        Column {
-                            id: settingsColumn;
-
-                            anchors.top: categoryHeader.bottom;
-
-                            property real childrenHeight:
-                            {
-                                var h = 0.0;
-                                for(var i in children)
-                                {
-                                    var item = children[i];
-                                    h += children[i].height;
-                                    if(item.settingVisible)
-                                    {
-                                        if(i > 0)
-                                        {
-                                            h += spacing;
-                                        }
-                                    }
-                                }
-                                return h;
-                            }
-
-                            width: childrenRect.width;
-                            height: childrenHeight;
-                            Repeater {
-                                model: delegateItem.settingsModel;
-
-                                delegate: ToolButton {
-                                    id: button;
-                                    x: model.depth * UM.Theme.sizes.default_margin.width;
-                                    text: model.name;
-                                    tooltip: model.description;
-
-                                    onClicked: {
-                                        var object_id = UM.ActiveTool.properties.Model.getItem(base.currentIndex).id;
-                                        UM.ActiveTool.properties.Model.addSettingOverride(object_id, model.key);
-                                        settingPickDialog.visible = false;
-                                    }
-
-                                    states: State {
-                                        name: "filtered"
-                                        when: model.filtered || !model.visible || !model.enabled
-                                        PropertyChanges { target: button; height: 0; opacity: 0; }
-                                    }
-                                }
-                            }
-
-                            states: State {
-                                name: "collapsed";
-
-                                PropertyChanges { target: settingsColumn; opacity: 0; height: 0; }
-                            }
-                        }
-                    }
-                }
+        onVisibilityChanged:{
+            if (settingPickDialog.visibility == false){
+                base.settingOverrideModel = UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings
             }
         }
-
-        rightButtons: [
-            Button {
-                text: catalog.i18nc("@action:button", "Cancel");
-                onClicked: {
-                    settingPickDialog.visible = false;
-                }
-            }
-        ]
     }
+
 
     SystemPalette { id: palette; }
 }
