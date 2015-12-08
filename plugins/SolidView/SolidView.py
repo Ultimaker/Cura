@@ -32,28 +32,11 @@ class SolidView(View):
         renderer = self.getRenderer()
 
         if not self._enabled_shader:
-            #if Preferences.getInstance().getValue("view/show_overhang"):
-                #self._enabled_material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "default.vert"), Resources.getPath(Resources.Shaders, "overhang.frag"))
-            #else:
-                #self._enabled_material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "default.vert"), Resources.getPath(Resources.Shaders, "default.frag"))
-
             self._enabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
-
-            #self._enabled_material.setUniformValue("u_ambientColor", Color(0.3, 0.3, 0.3, 1.0))
-            #self._enabled_material.setUniformValue("u_diffuseColor", self.EnabledColor)
-            #self._enabled_material.setUniformValue("u_specularColor", Color(0.4, 0.4, 0.4, 1.0))
-            #self._enabled_material.setUniformValue("u_overhangColor", Color(1.0, 0.0, 0.0, 1.0))
-            #self._enabled_material.setUniformValue("u_shininess", 20.)
 
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
             self._disabled_shader.setUniformValue("u_diffuseColor", [0.68, 0.68, 0.68, 1.0])
-            #self._disabled_material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "default.vert"), Resources.getPath(Resources.Shaders, "default.frag"))
-            #self._disabled_material.setUniformValue("u_ambientColor", Color(0.3, 0.3, 0.3, 1.0))
-            #self._disabled_material.setUniformValue("u_diffuseColor", self.DisabledColor)
-            #self._disabled_material.setUniformValue("u_specularColor", Color(0.4, 0.4, 0.4, 1.0))
-            #self._disabled_material.setUniformValue("u_overhangColor", Color(1.0, 0.0, 0.0, 1.0))
-            #self._disabled_material.setUniformValue("u_shininess", 20.)
 
         if Application.getInstance().getMachineManager().getActiveProfile():
             profile = Application.getInstance().getMachineManager().getActiveProfile()
