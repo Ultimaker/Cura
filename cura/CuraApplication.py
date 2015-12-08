@@ -158,7 +158,7 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
-        controller.setActiveView("MeshView")
+        controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
