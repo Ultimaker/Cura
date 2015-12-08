@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Uranium is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSlot, QUrl
+from PyQt5.QtCore import Qt, pyqtSlot, QUrl, pyqtSignal
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
@@ -18,6 +18,7 @@ class SettingOverrideModel(ListModel):
     OptionsRole = Qt.UserRole + 8
     WarningDescriptionRole = Qt.UserRole + 9
     ErrorDescriptionRole = Qt.UserRole + 10
+    GlobalOnlyRole = Qt.UserRole + 11
 
     def __init__(self, node, parent = None):
         super().__init__(parent)
@@ -38,6 +39,7 @@ class SettingOverrideModel(ListModel):
         self.addRoleName(self.OptionsRole, "options")
         self.addRoleName(self.WarningDescriptionRole, "warning_description")
         self.addRoleName(self.ErrorDescriptionRole, "error_description")
+        self.addRoleName(self.GlobalOnlyRole, "global_only")
 
     @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
@@ -50,7 +52,6 @@ class SettingOverrideModel(ListModel):
         if not self._node.getDecorator(SettingOverrideDecorator):
             self.clear()
             return
-
         self._decorator = self._node.getDecorator(SettingOverrideDecorator)
         self._decorator.settingAdded.connect(self._onSettingsChanged)
         self._decorator.settingRemoved.connect(self._onSettingsChanged)
@@ -68,6 +69,20 @@ class SettingOverrideModel(ListModel):
             model.appendItem({"value": str(value), "name": str(name)})
         return model
 
+    @pyqtSlot()
+    def reload(self):
+        self.clear()
+        #if self._machine_instance:
+            #for category in self._machine_instance.getMachineDefinition().getAllCategories():
+                #self.appendItem({
+                    #"id": category.getKey(),
+                    #"name": category.getLabel(),
+                    #"icon": category.getIcon(),
+                    #"visible": category.isVisible(),
+                    #"settings": SettingsFromCategoryModel.SettingsFromCategoryModel(category),
+                    #"hiddenValuesCount": category.getHiddenValuesCount()
+                #})
+
     def _onSettingsChanged(self):
         self.clear()
 
@@ -84,9 +99,9 @@ class SettingOverrideModel(ListModel):
                 "valid": setting.validate(value),
                 "options": self._createOptionsModel(setting.getOptions()),
                 "warning_description": setting.getWarningDescription(),
-                "error_description": setting.getErrorDescription()
+                "error_description": setting.getErrorDescription(),
+                "global_only": setting.getGlobalOnly()
             })
-
         items.sort(key = lambda i: i["key"])
 
         for item in items:
