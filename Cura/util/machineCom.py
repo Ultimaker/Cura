@@ -530,6 +530,14 @@ class MachineCom(object):
 					else:
 						self._gcodePos = newPos
 			elif self._state == self.STATE_PAUSED:
+				#Even when printing request the temperature every 5 seconds.
+				if time.time() > tempRequestTimeout:
+					if self._extruderCount > 0:
+						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
+						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
+					else:
+						self.sendCommand("M105")
+					tempRequestTimeout = time.time() + 5
 				if line == '' and time.time() > timeout:
 					line = 'ok'
 				if 'ok' in line:
