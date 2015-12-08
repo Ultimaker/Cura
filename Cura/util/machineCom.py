@@ -203,7 +203,8 @@ class MachineCom(object):
 		self._heatupWaitTimeLost = 0.0
 		self._printStartTime100 = None
 		self._currentCommands = []
-		
+
+		self._thread_lock = threading.Lock()
 		self.thread = threading.Thread(target=self._monitor)
 		self.thread.daemon = True
 		self.thread.start()
@@ -589,7 +590,9 @@ class MachineCom(object):
 		self.close()
 	
 	def _sendCommand(self, cmd):
+		self._thread_lock.acquire(True)
 		if self._serial is None:
+			self._thread_lock.release()
 			return
 		if 'M109' in cmd or 'M190' in cmd:
 			self._heatupWaitStartTime = time.time()
@@ -624,6 +627,7 @@ class MachineCom(object):
 			self._log("Unexpected error while writing serial port: %s" % (getExceptionString()))
 			self._errorValue = getExceptionString()
 			self.close(True)
+		self._thread_lock.release()
 
 	def _sendNext(self):
 		if self._gcodePos >= len(self._gcodeList):
