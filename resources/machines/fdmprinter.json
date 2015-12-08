@@ -158,7 +158,8 @@
                     "default": 0.1,
                     "min_value": "0.001",
                     "min_value_warning": "0.04",
-                    "max_value_warning": "0.32"
+                    "max_value_warning": "0.32",
+                    "global_only": "print_sequence != \"one_at_a_time\""
                 },
                 "layer_height_0": {
                     "label": "Initial Layer Height",
@@ -1650,7 +1651,8 @@
                         "one_at_a_time": "One at a Time"
                     },
                     "default": "all_at_once",
-                    "visible": true
+                    "visible": true,
+                    "global_only": true
                 },
                 "magic_mesh_surface_mode": {
                     "label": "Surface Mode",
