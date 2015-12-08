@@ -1382,7 +1382,7 @@
                             "label": "Brim Line Count",
                             "description": "The number of lines used for a brim. More lines means a larger brim which sticks better to the build plate, but this also makes your effective print area smaller.",
                             "type": "int",
-                            "default": 10,
+                            "default": 20,
                             "inherit_function": "parent_value / skirt_line_width",
                             "enabled": "adhesion_type == \"brim\""
                         }
