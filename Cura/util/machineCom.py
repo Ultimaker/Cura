@@ -380,6 +380,7 @@ class MachineCom(object):
 						self._errorValue = line[6:]
 						self._changeState(self.STATE_ERROR)
 			if ' T:' in line or line.startswith('T:'):
+				tempRequestTimeout = time.time() + 5
 				try:
 					self._temp[self._temperatureRequestExtruder] = float(re.search("T: *([0-9\.]*)", line).group(1))
 				except:
