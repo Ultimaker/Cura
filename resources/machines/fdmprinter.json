@@ -931,7 +931,6 @@
                     "min_value": "coasting_volume",
                     "inherit_function": "0.8 + coasting_volume",
                     "visible": false,
-                    "inherit": false,
                     "enabled": "coasting_enable"
                 },
                 "coasting_speed": {
