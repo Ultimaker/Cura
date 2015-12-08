@@ -23,7 +23,7 @@ Item
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name:"cura"}
-
+/*
     Rectangle{
         id: speedCellLeft
         anchors.top: parent.top
@@ -121,11 +121,10 @@ Item
         }
         ExclusiveGroup { id: speedCheckBoxGroup; }
     }
-
+*/
     Rectangle{
         id: infillCellLeft
-        anchors.top: speedCellRight.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.top: parent.top
         anchors.left: parent.left
         width: base.width/100* 35 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height < UM.Theme.sizes.simple_mode_infill_caption.height ? UM.Theme.sizes.simple_mode_infill_caption.height : childrenRect.height
