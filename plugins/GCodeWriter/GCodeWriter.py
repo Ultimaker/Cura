@@ -36,6 +36,9 @@ class GCodeWriter(MeshWriter):
     #   \param profile The profile to serialise.
     #   \return A serialised string of the profile.
     def _serialiseProfile(self, profile):
+        version = 1 #IF YOU CHANGE THIS FUNCTION IN A WAY THAT BREAKS REVERSE COMPATIBILITY, INCREMENT THIS VERSION NUMBER!
+        prefix = ";SETTING_" + str(version) + " " #The prefix to put before each line.
+        
         serialised = profile.serialise()
         
         #Escape characters that have a special meaning in g-code comments.
@@ -43,12 +46,16 @@ class GCodeWriter(MeshWriter):
                               #Note: The keys are regex strings. Values are not.
             "\\": "\\\\", #The escape character.
             "\n": "\\n",  #Newlines. They break off the comment.
-            "\r": "\\r",  #Carriage return. Windows users may need this for visualisation in their editors.
+            "\r": "\\r"   #Carriage return. Windows users may need this for visualisation in their editors.
         }
+        escape_characters = dict((re.escape(key), value) for key, value in escape_characters.items())
         pattern = re.compile("|".join(escape_characters.keys()))
-        serialised = pattern.sub(lambda m: escape_characters[m.group(0)], serialised) #Perform the replacement with a regular expression.
+        serialised = pattern.sub(lambda m: escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
         
-        #TODO: Introduce line breaks so that each comment is no longer than 80 characters.
-        #TODO: Prepend a prefix that includes the keyword "SETTING" and a serialised version number.
+        #Introduce line breaks so that each comment is no longer than 80 characters. Prepend each line with the prefix.
+        result = ""
+        for pos in range(0, len(serialised), 80 - len(prefix)): #Lines have 80 characters, so the payload of each line is 80 - prefix.
+            result += prefix + serialised[pos : pos + 80 - len(prefix)] + "\n"
+        serialised = result
         
-        return ";" + serialised
+        return serialised
