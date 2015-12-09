@@ -46,11 +46,11 @@ class ConvexHullNode(SceneNode):
         mesh = MeshData()
         if len(hull_points) > 3:
             center = (hull_points.min(0) + hull_points.max(0)) / 2.0
-            mesh.addVertex(center[0], 0.1, center[1])
+            mesh.addVertex(center[0], -0.1, center[1])
         else:
             return None
         for point in hull_points:
-            mesh.addVertex(point[0], 0.1, point[1])
+            mesh.addVertex(point[0], -0.1, point[1])
         indices = []
         for i in range(len(hull_points) - 1):
             indices.append([0, i + 1, i + 2])
@@ -69,9 +69,9 @@ class ConvexHullNode(SceneNode):
             self._shader.setUniformValue("u_color", self._color)
 
         if self.getParent():
-            renderer.queueNode(self, transparent = True, shader = self._shader)
+            renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
             if self._convex_hull_head_mesh:
-                renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh)
+                renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 
