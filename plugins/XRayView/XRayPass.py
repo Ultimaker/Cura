@@ -25,7 +25,7 @@ class XRayPass(RenderPass):
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray.shader"))
 
-        batch = RenderBatch(self._shader, type = RenderBatch.RenderType.NoType, backface_cull = False)
+        batch = RenderBatch(self._shader, type = RenderBatch.RenderType.NoType, backface_cull = False, blend_mode = RenderBatch.BlendMode.Additive)
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData() and node.isVisible():
                 batch.addItem(node.getWorldTransformation(), node.getMeshData())
@@ -33,8 +33,6 @@ class XRayPass(RenderPass):
         self.bind()
 
         self._gl.glDisable(self._gl.GL_DEPTH_TEST)
-        self._gl.glEnable(self._gl.GL_BLEND)
-        self._gl.glBlendFunc(self._gl.GL_SRC_ALPHA, self._gl.GL_ONE)
         batch.render(self._scene.getActiveCamera())
         self._gl.glEnable(self._gl.GL_DEPTH_TEST)
 
