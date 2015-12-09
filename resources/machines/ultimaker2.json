@@ -11,8 +11,8 @@
     "inherits": "fdmprinter.json",
 
     
-    "machine_extruder_trains": [
-        {
+    "machine_extruder_trains": {
+        "0": {
             "machine_nozzle_size": {
                 "default": 0.4
             },
@@ -35,7 +35,7 @@
                 "default": 16
             }
         }
-    ],
+    },
     "overrides": {
         "machine_start_gcode" : { "default": "" },
         "machine_end_gcode" : { "default": "" },
