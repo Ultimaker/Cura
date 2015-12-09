@@ -71,7 +71,7 @@ class BuildVolume(SceneNode):
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
         if self._disallowed_area_mesh:
-            renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True)
+            renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
         return True
 
     def rebuild(self):
@@ -106,17 +106,17 @@ class BuildVolume(SceneNode):
 
         mb = MeshBuilder()
         mb.addQuad(
-            Vector(minW, minH, minD),
-            Vector(maxW, minH, minD),
-            Vector(maxW, minH, maxD),
-            Vector(minW, minH, maxD)
+            Vector(minW, minH - 0.2, minD),
+            Vector(maxW, minH - 0.2, minD),
+            Vector(maxW, minH - 0.2, maxD),
+            Vector(minW, minH - 0.2, maxD)
         )
         self._grid_mesh = mb.getData()
         for n in range(0, 6):
             v = self._grid_mesh.getVertex(n)
             self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
 
-        disallowed_area_height = 0.2
+        disallowed_area_height = 0.1
         disallowed_area_size = 0
         if self._disallowed_areas:
             mb = MeshBuilder()
