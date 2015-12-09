@@ -10,7 +10,7 @@
 
     "inherits": "ultimaker2.json",
 
-    "machine_settings": {
+    "overrides": {
         "machine_width": { "default": 230 },
         "machine_depth": { "default": 225 },
         "machine_height": { "default": 315 }

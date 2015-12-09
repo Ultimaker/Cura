@@ -16,7 +16,7 @@
         "BedLeveling"
     ],
 
-    "machine_settings": {
+    "overrides": {
         "machine_heated_bed": { "default": true }
     }
 }

@@ -41,7 +41,7 @@
             }
         }
     ],
-    "machine_settings": {
+    "overrides": {
         "machine_width": { "default": 205 },
         "machine_height": { "default": 200 },
         "machine_depth": { "default": 205 },
