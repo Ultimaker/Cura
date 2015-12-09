@@ -20,7 +20,7 @@ Item {
         anchors.top: parent.top;
         anchors.left: parent.left;
 
-        spacing: UM.Theme.sizes.default_lining.height;
+        spacing: UM.Theme.sizes.default_margin.height;
 
         UM.SettingItem {
             id: profileSelection
@@ -28,7 +28,7 @@ Item {
             width: UM.Theme.sizes.setting.width;
             height: UM.Theme.sizes.setting.height;
 
-            name: catalog.i18nc("@label", "Profile")
+            name: catalog.i18nc("@label", "Object profile")
             type: "enum"
             indent: false
 
@@ -44,73 +44,65 @@ Item {
             }
         }
 
-        Item
-        {
-            height: UM.Theme.sizes.default_margin.height
-            width: parent.width
-        }
+        Column {
+            id: customisedSettings
+            spacing: UM.Theme.sizes.default_lining.height;
+            width: UM.Theme.sizes.setting.width + UM.Theme.sizes.setting.height/2;
 
-        Repeater {
-            id: settings;
+            Repeater {
+                id: settings;
 
-            model: UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings
+                model: UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings
 
-            UM.SettingItem {
-                width: UM.Theme.sizes.setting.width;
-                height: UM.Theme.sizes.setting.height;
-
-                name: model.label;
-                type: model.type;
-                value: model.value;
-                description: model.description;
-                unit: model.unit;
-                valid: model.valid;
-                options: model.options
-                indent: false
-
-                style: UM.Theme.styles.setting_item;
-
-                onItemValueChanged: {
-                    settings.model.setSettingValue(model.key, value)
-                }
-
-                Button
-                {
-                    anchors.left: parent.left;
-                    anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-
-                    width: UM.Theme.sizes.setting.height;
+                UM.SettingItem {
+                    width: UM.Theme.sizes.setting.width;
                     height: UM.Theme.sizes.setting.height;
 
-                    opacity: parent.hovered || hovered ? 1 : 0;
-                    onClicked: UM.ActiveTool.properties.Model.removeSettingOverride(UM.ActiveTool.properties.Model.getItem(base.currentIndex).id, model.key)
+                    name: model.label;
+                    type: model.type;
+                    value: model.value;
+                    description: model.description;
+                    unit: model.unit;
+                    valid: model.valid;
+                    options: model.options
+                    indent: false
 
-                    style: ButtonStyle
+                    style: UM.Theme.styles.setting_item;
+
+                    onItemValueChanged: {
+                        settings.model.setSettingValue(model.key, value)
+                    }
+
+                    Button
                     {
-                        background: Rectangle
+                        anchors.left: parent.right;
+
+                        width: UM.Theme.sizes.setting.height;
+                        height: UM.Theme.sizes.setting.height;
+
+                        onClicked: UM.ActiveTool.properties.Model.removeSettingOverride(UM.ActiveTool.properties.Model.getItem(base.currentIndex).id, model.key)
+
+                        style: ButtonStyle
                         {
-                            color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
-                            UM.RecolorImage
+                            background: Rectangle
                             {
-                                anchors.verticalCenter: parent.verticalCenter
-                                anchors.horizontalCenter: parent.horizontalCenter
-                                width: parent.width/2
-                                height: parent.height/2
-                                sourceSize.width: width
-                                sourceSize.height: width
-                                color: UM.Theme.colors.setting_control_revert
-                                source: UM.Theme.icons.cross1
+                                color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
+                                UM.RecolorImage
+                                {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    width: parent.width/2
+                                    height: parent.height/2
+                                    sourceSize.width: width
+                                    sourceSize.height: width
+                                    color: UM.Theme.colors.setting_control_revert
+                                    source: UM.Theme.icons.cross1
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-
-        Item
-        {
-            height: UM.Theme.sizes.default_margin.height
-            width: parent.width
         }
 
         Button
