@@ -7,6 +7,18 @@
 
     "visible": false,
 
+    
+    "machine_extruder_trains": {
+        "1": {
+            "extruder_nr": { "default": 0 },
+            "machine_nozzle_offset_x": { "default": 0.0 },
+            "machine_nozzle_offset_y": { "default": 0.0 }
+        },
+        "0": {
+            "extruder_nr": { "default": 1 }
+        }
+    },
+    
     "machine_settings": {
         "machine_use_extruder_offset_to_offset_coords": { "default": false },
 
