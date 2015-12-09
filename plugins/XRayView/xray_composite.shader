@@ -42,14 +42,11 @@ fragment =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        vec4 layer2 = texture2D(u_layer2, v_uvs);
-
-        float intersection_count = (layer2.r * 255.0) / 5.0;
+        float intersection_count = (texture2D(u_layer2, v_uvs).r * 255.0) / 5.0;
         if(mod(intersection_count, 2.0) == 1.0)
         {
-            layer2 = u_error_color;
+            result = u_error_color;
         }
-        result = layer2 * layer2.a + result * (1.0 - layer2.a);
 
         vec4 sum = vec4(0.0);
         for (int i = 0; i < 9; i++)

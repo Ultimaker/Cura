@@ -6,8 +6,9 @@ import os.path
 from UM.PluginRegistry import PluginRegistry
 from UM.Event import Event
 from UM.View.View import View
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 
+from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
 from . import XRayPass
@@ -16,8 +17,8 @@ from . import XRayPass
 class XRayView(View):
     def __init__(self):
         super().__init__()
-        self._shader = None
 
+        self._xray_shader = None
         self._xray_pass = None
         self._xray_composite_shader = None
         self._composite_pass = None
@@ -28,24 +29,36 @@ class XRayView(View):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
 
-        for node in DepthFirstIterator(scene.getRoot()):
-            node.render(renderer)
+        if not self._xray_shader:
+            self._xray_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray.shader"))
+            self._xray_shader.setUniformValue("u_color", [0.1, 0.1, 0.2, 1.0])
+
+        for node in BreadthFirstIterator(scene.getRoot()):
+            if not node.render(renderer):
+                if node.getMeshData() and node.isVisible():
+                    renderer.queueNode(node,
+                                       shader = self._xray_shader,
+                                       type = RenderBatch.RenderType.Solid,
+                                       blend_mode = RenderBatch.BlendMode.Additive,
+                                       sort = -10,
+                                       state_setup_callback = lambda gl: gl.glDepthFunc(gl.GL_ALWAYS),
+                                       state_teardown_callback = lambda gl: gl.glDepthFunc(gl.GL_LESS)
+                    )
 
     def endRendering(self):
         pass
 
     def event(self, event):
-        renderer = self.getRenderer()
         if event.type == Event.ViewActivateEvent:
             if not self._xray_pass:
                 self._xray_pass = XRayPass.XRayPass(1280, 720)
-                renderer.addRenderPass(self._xray_pass)
+                self.getRenderer().addRenderPass(self._xray_pass)
 
             if not self._xray_composite_shader:
                 self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray_composite.shader"))
 
             if not self._composite_pass:
-                self._composite_pass = renderer.getRenderPass("composite")
+                self._composite_pass = self.getRenderer().getRenderPass("composite")
 
             self._old_layer_bindings = self._composite_pass.getLayerBindings()
             self._composite_pass.setLayerBindings(["default", "selection", "xray"])
