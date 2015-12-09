@@ -9,12 +9,6 @@ import re #For escaping characters in the settings.
 
 
 class GCodeWriter(MeshWriter):
-    ##  Serialisation version ID of the settings that get serialised in g-code.
-    #
-    #   If the format of settings is modified in any way that breaks backwards
-    #   compatibility, this version number must be incremented.
-    settings_version_id = 1
-    
     def __init__(self):
         super().__init__()
 
@@ -42,8 +36,8 @@ class GCodeWriter(MeshWriter):
     #   \param profile The profile to serialise.
     #   \return A serialised string of the profile.
     def _serialiseProfile(self, profile):
-        #IF YOU CHANGE THIS FUNCTION IN A WAY THAT BREAKS REVERSE COMPATIBILITY, INCREMENT settings_version_id!
-        prefix = ";SETTING_" + str(self.settings_version_id) + " " #The prefix to put before each line.
+        version = 1 #IF YOU CHANGE THIS FUNCTION IN A WAY THAT BREAKS REVERSE COMPATIBILITY, INCREMENT THIS VERSION NUMBER!
+        prefix = ";SETTING_" + str(version) + " " #The prefix to put before each line.
         
         serialised = profile.serialise()
         
