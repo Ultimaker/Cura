@@ -26,10 +26,10 @@ class GCodeReader(MeshReader):
             with open(file_name) as f:
                 for line in f:
                     if line.startswith(prefix):
-                        serialised += line[len(prefix):] #Remove the prefix from the line, and add it to the rest.
+                        serialised += line[len(prefix):-1] #Remove the prefix and the newline from the line, and add it to the rest.
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
-        
+
         #Unescape the serialised profile.
         escape_characters = { #Which special characters (keys) are replaced by what escape character (values).
                               #Note: The keys are regex strings. Values are not.
