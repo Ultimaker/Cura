@@ -310,14 +310,24 @@ UM.MainWindow
                 }
             }
 
+            JobSpecs
+            {
+                anchors
+                {
+                    bottom: parent.bottom;
+                    right: sidebar.left;
+                    bottomMargin: UM.Theme.sizes.default_margin.height;
+                    rightMargin: UM.Theme.sizes.default_margin.width;
+                }
+            }
+
             UM.MessageStack
             {
                 anchors
                 {
                     horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.logo.width/ 2)
-                    top: parent.verticalCenter;
-                    bottom: parent.bottom;
+                    horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width/ 2)
+                    verticalCenter: parent.verticalCenter;
                 }
             }
 
@@ -330,8 +340,7 @@ UM.MainWindow
                 //anchors.bottom: parent.bottom
                 anchors.top: viewModeButton.bottom
                 anchors.topMargin: UM.Theme.sizes.default_margin.height;
-                anchors.right: sidebar.left;
-                anchors.rightMargin: UM.Theme.sizes.window_margin.width;
+                anchors.left: viewModeButton.left;
                 //anchors.bottom: buttons.top;
                 //anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
 
@@ -344,10 +353,9 @@ UM.MainWindow
             {
                 id: openFileButton;
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
-                //style: UM.Theme.styles.open_file_button
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.icons.load
-                style: UM.Theme.styles.open_file_button
+                style: UM.Theme.styles.tool_button
                 tooltip: '';
                 anchors
                 {
@@ -373,6 +381,7 @@ UM.MainWindow
                 source: UM.Theme.images.logo;
                 width: UM.Theme.sizes.logo.width;
                 height: UM.Theme.sizes.logo.height;
+                z: -1;
 
                 sourceSize.width: width;
                 sourceSize.height: height;
@@ -381,13 +390,12 @@ UM.MainWindow
             Button
             {
                 id: viewModeButton
-                property bool verticalTooltip: true
 
                 anchors
                 {
-                    top: parent.top;
-                    right: sidebar.left;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
+                    top: toolbar.bottom;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    left: parent.left;
                 }
                 text: catalog.i18nc("@action:button","View Mode");
                 iconSource: UM.Theme.icons.viewmode;
@@ -422,12 +430,9 @@ UM.MainWindow
                 id: toolbar;
 
                 anchors {
-                    left: parent.left
-                    top: parent.top
-                    topMargin: UM.Theme.sizes.window_margin.height + UM.Theme.sizes.button.height
-                    //horizontalCenter: parent.horizontalCenter
-                    //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
-                    //top: parent.top;
+                    top: openFileButton.bottom;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    left: parent.left;
                 }
             }
 
@@ -629,7 +634,7 @@ UM.MainWindow
         id: openDialog;
 
         //: File open dialog title
-        title: catalog.i18nc("@title:window","Open File")
+        title: catalog.i18nc("@title:window","Open file")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true

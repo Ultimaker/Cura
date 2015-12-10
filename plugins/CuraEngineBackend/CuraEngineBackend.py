@@ -134,11 +134,11 @@ class CuraEngineBackend(Backend):
             return #No slicing if we have error values since those are by definition illegal values.
 
         self.processingProgress.emit(0.0)
-        if not self._message:
-            self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
-            self._message.show()
-        else:
+        if self._message:
             self._message.setProgress(-1)
+        #else:
+        #    self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
+        #    self._message.show()
 
         self._scene.gcode_list = []
         self._slicing = True
