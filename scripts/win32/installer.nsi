@@ -149,7 +149,7 @@ Section "Cura ${VERSION}"
   
   CreateDirectory "$SMPROGRAMS\Cura ${VERSION}"
   CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Uninstall Cura ${VERSION}.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\python\pythonw.exe" '-m "Cura.cura"' "$INSTDIR\resources\cura.ico" 0
+  CreateShortCut "$SMPROGRAMS\Cura ${VERSION}\Cura ${VERSION}.lnk" "$INSTDIR\python\pythonw.exe" '-E -m "Cura.cura"' "$INSTDIR\resources\cura.ico" 0
   
 SectionEnd
 
