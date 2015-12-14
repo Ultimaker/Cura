@@ -19,10 +19,10 @@ class CuraSplashScreen(QSplashScreen):
 
         version = Application.getInstance().getVersion().split("-")
 
-        painter.setFont(QFont("Roboto", 20))
+        painter.setFont(QFont("Proxima Nova Rg", 20))
         painter.drawText(0, 0, 203, 230, Qt.AlignRight | Qt.AlignBottom, version[0])
         if len(version) > 1:
-            painter.setFont(QFont("Roboto", 12))
+            painter.setFont(QFont("Proxima Nova Rg", 12))
             painter.drawText(0, 0, 203, 255, Qt.AlignRight | Qt.AlignBottom, version[1])
 
         painter.restore()
