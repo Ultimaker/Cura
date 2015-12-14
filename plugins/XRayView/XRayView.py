@@ -13,7 +13,7 @@ from UM.View.GL.OpenGL import OpenGL
 
 from . import XRayPass
 
-## View used to display g-code paths.
+## View used to display a see-through version of objects with errors highlighted.
 class XRayView(View):
     def __init__(self):
         super().__init__()
@@ -51,7 +51,9 @@ class XRayView(View):
     def event(self, event):
         if event.type == Event.ViewActivateEvent:
             if not self._xray_pass:
-                self._xray_pass = XRayPass.XRayPass(1280, 720)
+                # Currently the RenderPass constructor requires a size > 0
+                # This should be fixed in RenderPass's constructor.
+                self._xray_pass = XRayPass.XRayPass(1, 1)
                 self.getRenderer().addRenderPass(self._xray_pass)
 
             if not self._xray_composite_shader:
