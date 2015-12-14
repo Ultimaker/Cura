@@ -9,12 +9,12 @@
 
     
     "machine_extruder_trains": {
-        "1": {
+        "0": {
             "extruder_nr": { "default": 0 },
             "machine_nozzle_offset_x": { "default": 0.0 },
             "machine_nozzle_offset_y": { "default": 0.0 }
         },
-        "0": {
+        "1": {
             "extruder_nr": { "default": 1 }
         }
     },
