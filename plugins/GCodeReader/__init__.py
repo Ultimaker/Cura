@@ -15,13 +15,11 @@ def getMetaData():
             "description": catalog.i18nc("@info:whatsthis", "Provides support for reading GCode files."),
             "api": 2
         },
-        "mesh_reader": [
-            {
-                "extension": "gcode",
-                "description": catalog.i18nc("@item:inlistbox", "Gcode File")
-            }
-        ]
+        "profile_reader": {
+            "extension": "gcode",
+            "description": catalog.i18nc("@item:inlistbox", "Gcode File")
+        }
     }
 
 def register(app):
-    return { "mesh_reader": GCodeReader.GCodeReader() }
+    return { "profile_reader": GCodeReader.GCodeReader() }
