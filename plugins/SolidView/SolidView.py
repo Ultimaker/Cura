@@ -1,5 +1,5 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Uranium is released under the terms of the AGPLv3 or higher.
+# Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -15,14 +15,10 @@ import math
 
 ## Standard view for mesh models. 
 class SolidView(View):
-    #EnabledColor = Color(1.0, 0.79, 0.14, 1.0)
-    #DisabledColor = Color(0.68, 0.68, 0.68, 1.0)
-
     def __init__(self):
         super().__init__()
 
         Preferences.getInstance().addPreference("view/show_overhang", True)
-        #Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
 
         self._enabled_shader = None
         self._disabled_shader = None
