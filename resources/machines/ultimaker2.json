@@ -87,7 +87,6 @@
         "material_print_temperature": { "enabled": "False" },
         "material_bed_temperature": { "enabled": "False" },
         "material_diameter": { "enabled": "False" },
-        "material_flow": { "enabled": "False" },
-        "line_width": { "description": "The inner diameter of your printer's nozzle. If you are using an Olsson Block with a non-standard nozzle size then change this field to match the nozzle size you are using. Each line will be printed with this width in mind. The outer wall and top/bottom surface line widths may be set to a smaller value for higher surface quality. This field was previously named Line Width." }
+        "material_flow": { "enabled": "False" }
     }
 }
