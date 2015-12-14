@@ -9,10 +9,10 @@ catalog = i18nCatalog("cura")
 def getMetaData():
     return {
         "plugin": {
-            "name": catalog.i18nc("@label", "GCode Reader"),
+            "name": catalog.i18nc("@label", "GCode Profile Reader"),
             "author": "Ultimaker",
             "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Provides support for reading GCode files."),
+            "description": catalog.i18nc("@info:whatsthis", "Provides support for importing profiles from g-code files."),
             "api": 2
         },
         "profile_reader": {
