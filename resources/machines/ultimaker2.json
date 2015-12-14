@@ -13,9 +13,6 @@
     
     "machine_extruder_trains": {
         "0": {
-            "machine_nozzle_size": {
-                "default": 0.4
-            },
             "machine_nozzle_heat_up_speed": { 
                 "default": 2.0 
             },
@@ -66,7 +63,7 @@
             ]
         },
         "machine_center_is_zero": { "default": false },
-        "machine_nozzle_size": { "default": 0.4 },
+        "machine_nozzle_size": { "default": 0.4, "description": "The inner diameter of the hole in the nozzle. If you are using an Olsson Block with a non-standard nozzle then set this field to the nozzle size you are using." },
         "machine_nozzle_heat_up_speed": { "default": 2.0 },
         "machine_nozzle_cool_down_speed": { "default": 2.0 },
         "gantry_height": { "default": 55 },
