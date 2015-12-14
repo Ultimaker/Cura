@@ -7,6 +7,18 @@
 
     "visible": false,
 
+    
+    "machine_extruder_trains": {
+        "0": {
+            "extruder_nr": { "default": 0 },
+            "machine_nozzle_offset_x": { "default": 0.0 },
+            "machine_nozzle_offset_y": { "default": 0.0 }
+        },
+        "1": {
+            "extruder_nr": { "default": 1 }
+        }
+    },
+    
     "machine_settings": {
         "machine_use_extruder_offset_to_offset_coords": { "default": false },
 
@@ -31,7 +43,7 @@
                     "type": "float",
                     "min_value": "0.1",
                     "max_value_warning": "150",
-                    "default": 50,
+                    "default": 60,
                     "visible": false,
                     "enabled": "prime_tower_enable"
                 }
@@ -86,17 +98,25 @@
                             "min_value": "0",
                             "max_value": "16",
                             "children": {
+                                "support_infill_extruder_nr": {
+                                    "label": "Support Infill Extruder",
+                                    "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16"
+                                },
                                 "support_extruder_nr_layer_0": {
                                     "label": "First Layer Support Extruder",
-                                    "description": "The extruder train to use for printing the first layer of support. This is used in multi-extrusion.",
+                                    "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
                                     "type": "int",
                                     "default": 0,
                                     "min_value": "0",
                                     "max_value": "16"
                                 },
                                 "support_roof_extruder_nr": {
-                                    "label": "Hammock Extruder",
-                                    "description": "The extruder train to use for printing the hammock. This is used in multi-extrusion.",
+                                    "label": "Support Roof Extruder",
+                                    "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
                                     "type": "int",
                                     "default": 0,
                                     "min_value": "0",
@@ -111,6 +131,7 @@
                     "label": "Enable Prime Tower",
                     "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
                     "type": "boolean",
+                    "visible": true,
                     "default": false
                 },
                 "prime_tower_size": {
@@ -122,7 +143,7 @@
                     "default": 15,
                     "min_value": "0",
                     "max_value_warning": "20",
-                    "inherit_function": "0 if prime_tower_enable else 15",
+                    "inherit_function": "15 if prime_tower_enable else 0",
                     "enabled": "prime_tower_enable"
                 },
                 "prime_tower_position_x": {
@@ -161,6 +182,16 @@
                     "type": "boolean",
                     "default": false,
                     "enabled": "prime_tower_enable"
+                },
+                "multiple_mesh_overlap": {
+                    "label": "Dual Extrusion Overlap",
+                    "description": "Make the objects printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
+                    "visible": false,
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 0.15,
+                    "min_value": "0",
+                    "max_value_warning": "1.0"
                 },
                 "ooze_shield_enabled": {
                     "label": "Enable Ooze Shield",

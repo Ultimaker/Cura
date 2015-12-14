@@ -48,14 +48,14 @@ Item{
                 id: variantsSelectionMenu
                 Instantiator
                 {
-                    model: UM.MachineVariantsModel { }
+                    model: UM.MachineVariantsModel { id: variantsModel }
                     MenuItem
                     {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: variantSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineVariant(model.getItem(index).name)
+                        onTriggered: UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name)
                     }
                     onObjectAdded: variantsSelectionMenu.insertItem(index, object)
                     onObjectRemoved: variantsSelectionMenu.removeItem(object)
@@ -81,6 +81,7 @@ Item{
             text: catalog.i18nc("@label","Global Profile:");
             width: parent.width/100*45
             font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text;
         }
 
 

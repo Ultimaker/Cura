@@ -1,4 +1,15 @@
-[15.10.0]
+[2.0.0]
+
+*Naming changes
+Infill prints after perimeters          →   Infill Before Walls
+Initial layer thickness                 →   Initial Layer Height
+Structure type                          →   Pattern
+Cool head lift                          →   Lift Head
+Combine everything (Type-A)             →   Union Overlapping Volumes
+Combine everything (Type-B)             →   Remove All Holes
+Keep open faces Keep Disconnected       →   Faces
+Only follow mesh surface                →   Surface Mode
+
 *All at Once/One at a Time
 Cura’s default mode is set to All At Once. You can print multiple objects faster with the option print objects One At A Time. This can be changed in Advanced Settings. Please note that in One At A Time mode, grouped objects will still be printed as a single object.
 

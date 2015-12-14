@@ -7,6 +7,8 @@ from UM.Math.Color import Color
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshData import MeshData
 
+from UM.View.GL.OpenGL import OpenGL
+
 import numpy
 
 class ConvexHullNode(SceneNode):
@@ -15,21 +17,21 @@ class ConvexHullNode(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
-        self._material = None
+        self._shader = None
 
         self._original_parent = parent
 
         self._inherit_orientation = False
         self._inherit_scale = False
 
-        self._color = Color(35, 35, 35, 0.5)
+        self._color = Color(35, 35, 35, 128)
 
         self._node = node
         self._node.transformationChanged.connect(self._onNodePositionChanged)
         self._node.parentChanged.connect(self._onNodeParentChanged)
         self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
         self._onNodeDecoratorsChanged(self._node)
-        self.convexHullHeadMesh = None
+        self._convex_hull_head_mesh = None
         self._hull = hull
 
         hull_points = self._hull.getPoints()
@@ -38,17 +40,17 @@ class ConvexHullNode(SceneNode):
             self.setMeshData(hull_mesh)
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
-            self.convexHullHeadMesh = self.createHullMesh(convex_hull_head.getPoints())
+            self._convex_hull_head_mesh = self.createHullMesh(convex_hull_head.getPoints())
 
     def createHullMesh(self, hull_points):
         mesh = MeshData()
         if len(hull_points) > 3:
             center = (hull_points.min(0) + hull_points.max(0)) / 2.0
-            mesh.addVertex(center[0], 0.1, center[1])
+            mesh.addVertex(center[0], -0.1, center[1])
         else:
             return None
         for point in hull_points:
-            mesh.addVertex(point[0], 0.1, point[1])
+            mesh.addVertex(point[0], -0.1, point[1])
         indices = []
         for i in range(len(hull_points) - 1):
             indices.append([0, i + 1, i + 2])
@@ -62,14 +64,14 @@ class ConvexHullNode(SceneNode):
         return self._node
 
     def render(self, renderer):
-        if not self._material:
-            self._material = renderer.createMaterial(Resources.getPath(Resources.Shaders, "basic.vert"), Resources.getPath(Resources.Shaders, "color.frag"))
+        if not self._shader:
+            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
+            self._shader.setUniformValue("u_color", self._color)
 
         if self.getParent():
-            self._material.setUniformValue("u_color", self._color)
-            renderer.queueNode(self, material = self._material, transparent = True)
-            if self.convexHullHeadMesh:
-                renderer.queueNode(self, material = self._material,transparent = True, mesh = self.convexHullHeadMesh)
+            renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
+            if self._convex_hull_head_mesh:
+                renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 

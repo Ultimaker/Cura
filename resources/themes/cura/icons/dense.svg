@@ -3,17 +3,12 @@
 <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 	 x="0px" y="0px" viewBox="0 0 30 30" xml:space="preserve">
 <g>
-	<g>
-		<rect x="0" y="0" width="1.2" height="30"/>
-		<rect x="28.8" y="0" width="1.2" height="30"/>
-		<rect x="0" y="28.8" width="30" height="1.2"/>
-		<rect x="0" y="0" width="30" height="1.2"/>
-	</g>
-	<rect x="14.4" y="-5.4" transform="matrix(0.7071 0.7071 -0.7071 0.7071 14.9999 -6.2122)" width="1.2" height="40.8"/>
-	<polygon points="0.7,10 0.1,8.9 9,0.1 9.8,0.9 	"/>
-	<rect x="24.5" y="19" transform="matrix(0.7071 0.7071 -0.7071 0.7071 25.0689 -10.4098)" width="1.2" height="12.2"/>
-	<rect x="14.4" y="-5.4" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.2136 14.9987)" width="1.2" height="40.8"/>
-	<polyline points="0.8,20.1 9.6,29 8.8,29.8 0,21 	"/>
-	<rect x="24.5" y="-1.2" transform="matrix(0.7071 -0.7071 0.7071 0.7071 3.8484 19.2136)" width="1.2" height="12.2"/>
+	<path d="M30,0L30,0L0,0v30h0h30V0z M12.4,28.8L1.2,17.6v-0.2L12.5,6.1l11.4,11.4L12.6,28.8H12.4z M1.2,7l4.4,4.4l-4.4,4.4V7z
+		 M1.2,19.3l4.4,4.4L1.2,28V19.3z M28.8,8.6l-7.4-7.4h7.4L28.8,8.6z M19.8,1.2l4.1,4.1l-5.3,5.3l-5.3-5.3l4.2-4.2H19.8z M15.8,1.2
+		l-3.3,3.3L9.2,1.2H15.8z M1.2,1.2h6.4l4.2,4.2l-5.3,5.3L1.2,5.4V1.2z M2,28.8l4.4-4.4l4.4,4.4H2z M14.2,28.8l4.4-4.4l4.4,4.4H14.2z
+		 M28.8,28.8h-4.2l-5.2-5.2l5.3-5.3l4.1,4.1V28.8z M28.8,20.8l-3.3-3.3l3.3-3.3V20.8z M24.7,16.7l-5.3-5.3l5.3-5.3l4.1,4.1v2.3
+		L24.7,16.7z"/>
+	<rect x="12.7" y="3.3" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -9.0598 14.7879)" width="1.2" height="30"/>
+	<rect x="15.1" y="-5.1" transform="matrix(0.7071 0.7071 -0.7071 0.7071 14.7286 -6.8835)" width="1.2" height="38.9"/>
 </g>
 </svg>

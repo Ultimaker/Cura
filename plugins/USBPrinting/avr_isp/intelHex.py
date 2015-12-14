@@ -11,36 +11,36 @@ def readHex(filename):
     Read an verify an intel hex file. Return the data as an list of bytes.
     """
     data = []
-    extraAddr = 0
+    extra_addr = 0
     f = io.open(filename, "r")
     for line in f:
         line = line.strip()
         if len(line) < 1:
             continue
-        if line[0] != ':':
+        if line[0] != ":":
             raise Exception("Hex file has a line not starting with ':'")
-        recLen = int(line[1:3], 16)
-        addr = int(line[3:7], 16) + extraAddr
-        recType = int(line[7:9], 16)
-        if len(line) != recLen * 2 + 11:
+        rec_len = int(line[1:3], 16)
+        addr = int(line[3:7], 16) + extra_addr
+        rec_type = int(line[7:9], 16)
+        if len(line) != rec_len * 2 + 11:
             raise Exception("Error in hex file: " + line)
-        checkSum = 0
-        for i in range(0, recLen + 5):
-            checkSum += int(line[i*2+1:i*2+3], 16)
-        checkSum &= 0xFF
-        if checkSum != 0:
+        check_sum = 0
+        for i in range(0, rec_len + 5):
+            check_sum += int(line[i*2+1:i*2+3], 16)
+        check_sum &= 0xFF
+        if check_sum != 0:
             raise Exception("Checksum error in hex file: " + line)
         
-        if recType == 0:#Data record
-            while len(data) < addr + recLen:
+        if rec_type == 0:#Data record
+            while len(data) < addr + rec_len:
                 data.append(0)
-            for i in range(0, recLen):
+            for i in range(0, rec_len):
                 data[addr + i] = int(line[i*2+9:i*2+11], 16)
-        elif recType == 1:	#End Of File record
+        elif rec_type == 1:	#End Of File record
             pass
-        elif recType == 2:	#Extended Segment Address Record
-            extraAddr = int(line[9:13], 16) * 16
+        elif rec_type == 2:	#Extended Segment Address Record
+            extra_addr = int(line[9:13], 16) * 16
         else:
-            print(recType, recLen, addr, checkSum, line)
+            print(rec_type, rec_len, addr, check_sum, line)
     f.close()
     return data

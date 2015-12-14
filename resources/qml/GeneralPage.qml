@@ -13,6 +13,18 @@ UM.PreferencesPage
     //: General configuration page title
     title: catalog.i18nc("@title:tab","General");
 
+    function setDefaultLanguage(languageCode)
+    {
+        //loops trough the languageList and sets the language using the languageCode
+        for(var i = 0; i < languageList.count; i++)
+        {
+            if (languageComboBox.model.get(i).code == languageCode)
+            {
+                languageComboBox.currentIndex = i
+            }
+        }
+    }
+
     function reset()
     {
         UM.Preferences.resetPreference("general/language")
@@ -22,7 +34,8 @@ UM.PreferencesPage
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
-        languageComboBox.currentIndex = 0
+        var defaultLanguage = UM.Preferences.getValue("general/language")
+        setDefaultLanguage(defaultLanguage)
     }
 
     GridLayout
@@ -44,16 +57,16 @@ UM.PreferencesPage
                 id: languageList
 
                 Component.onCompleted: {
-                    append({ text: catalog.i18nc("@item:inlistbox", "Bulgarian"), code: "bg" })
-                    append({ text: catalog.i18nc("@item:inlistbox", "Czech"), code: "cs" })
+//                     append({ text: catalog.i18nc("@item:inlistbox", "Bulgarian"), code: "bg" })
+//                     append({ text: catalog.i18nc("@item:inlistbox", "Czech"), code: "cs" })
                     append({ text: catalog.i18nc("@item:inlistbox", "English"), code: "en" })
                     append({ text: catalog.i18nc("@item:inlistbox", "Finnish"), code: "fi" })
                     append({ text: catalog.i18nc("@item:inlistbox", "French"), code: "fr" })
                     append({ text: catalog.i18nc("@item:inlistbox", "German"), code: "de" })
-                    append({ text: catalog.i18nc("@item:inlistbox", "Italian"), code: "it" })
+//                     append({ text: catalog.i18nc("@item:inlistbox", "Italian"), code: "it" })
                     append({ text: catalog.i18nc("@item:inlistbox", "Polish"), code: "pl" })
-                    append({ text: catalog.i18nc("@item:inlistbox", "Russian"), code: "ru" })
-                    append({ text: catalog.i18nc("@item:inlistbox", "Spanish"), code: "es" })
+//                     append({ text: catalog.i18nc("@item:inlistbox", "Russian"), code: "ru" })
+//                     append({ text: catalog.i18nc("@item:inlistbox", "Spanish"), code: "es" })
                 }
             }
 

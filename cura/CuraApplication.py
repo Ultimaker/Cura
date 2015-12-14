@@ -3,11 +3,6 @@
 
 import platform
 
-if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
-    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
-        from OpenGL import GL
-
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -15,6 +10,7 @@ from UM.Scene.Platform import Platform
 from UM.Math.Vector import Vector
 from UM.Math.Matrix import Matrix
 from UM.Math.Quaternion import Quaternion
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -45,6 +41,7 @@ from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
+from . import CuraSplashScreen
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -58,6 +55,16 @@ import numpy
 import copy
 numpy.seterr(all="ignore")
 
+if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
+    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
+    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
+        from OpenGL import GL
+
+try:
+    from cura.CuraVersion import CuraVersion
+except ImportError:
+    CuraVersion = "master" # [CodeStyle: Reflecting imported value]
+
 class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -69,7 +76,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "master")
+        super().__init__(name = "cura", version = CuraVersion)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
@@ -91,6 +98,7 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
+        self._scene_boundingbox = AxisAlignedBox()
         self._job_name = None
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
@@ -136,6 +144,9 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
+        if "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION" not in os.environ or os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] != "cpp":
+            Logger.log("w", "Using Python implementation of Protobuf, expect bad performance!")
+
         self._i18n_catalog = i18nCatalog("cura");
 
         i18nCatalog.setTagReplacements({
@@ -147,7 +158,7 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
-        controller.setActiveView("MeshView")
+        controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
@@ -162,13 +173,12 @@ class CuraApplication(QtApplication):
 
         self._volume = BuildVolume.BuildVolume(root)
 
-        self.getRenderer().setLightPosition(Vector(0, 150, 0))
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera("3d", root)
-        camera.setPosition(Vector(0, 250, 900))
+        camera.setPosition(Vector(-80, 250, 700))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
@@ -231,18 +241,29 @@ class CuraApplication(QtApplication):
 
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
+    sceneBoundingBoxChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def getPlatformActivity(self):
         return self._platform_activity
 
+    @pyqtProperty(str, notify = sceneBoundingBoxChanged)
+    def getSceneBoundingBoxString(self):
+        return self._i18n_catalog.i18nc("@info", "%.1f x %.1f x %.1f mm") % (self._scene_boundingbox.width.item(), self._scene_boundingbox.depth.item(), self._scene_boundingbox.height.item())
+
     def updatePlatformActivity(self, node = None):
         count = 0
+        scene_boundingbox = AxisAlignedBox()
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
 
             count += 1
+            scene_boundingbox += node.getBoundingBox()
+
+        if repr(self._scene_boundingbox) != repr(scene_boundingbox):
+            self._scene_boundingbox = scene_boundingbox
+            self.sceneBoundingBoxChanged.emit()
 
         self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
@@ -254,6 +275,7 @@ class CuraApplication(QtApplication):
             self.jobNameChanged.emit()
 
     jobNameChanged = pyqtSignal()
+
     @pyqtProperty(str, notify = jobNameChanged)
     def jobName(self):
         return self._job_name
@@ -418,6 +440,7 @@ class CuraApplication(QtApplication):
         return log
 
     recentFilesChanged = pyqtSignal()
+
     @pyqtProperty("QVariantList", notify = recentFilesChanged)
     def recentFiles(self):
         return self._recent_files
@@ -432,6 +455,7 @@ class CuraApplication(QtApplication):
             self.expandedCategoriesChanged.emit()
 
     expandedCategoriesChanged = pyqtSignal()
+
     @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
@@ -513,6 +537,9 @@ class CuraApplication(QtApplication):
                 ungrouped_nodes.append(node)
         for node in ungrouped_nodes:
             Selection.remove(node)
+
+    def _createSplashScreen(self):
+        return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
         machine = self.getMachineManager().getActiveMachineInstance()

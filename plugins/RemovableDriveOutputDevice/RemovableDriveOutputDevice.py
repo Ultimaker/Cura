@@ -22,7 +22,12 @@ class RemovableDriveOutputDevice(OutputDevice):
         self.setIconName("save_sd")
         self.setPriority(1)
 
+        self._writing = False
+
     def requestWrite(self, node, file_name = None):
+        if self._writing:
+            raise OutputDeviceError.DeviceBusyError()
+
         gcode_writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType("text/x-gcode")
         if not gcode_writer:
             Logger.log("e", "Could not find GCode writer, not writing to removable drive %s", self.getName())
@@ -52,11 +57,16 @@ class RemovableDriveOutputDevice(OutputDevice):
             message = Message(catalog.i18nc("@info:progress", "Saving to Removable Drive <filename>{0}</filename>").format(self.getName()), 0, False, -1)
             message.show()
 
+            self.writeStarted.emit(self)
+
             job._message = message
+            self._writing = True
             job.start()
         except PermissionError as e:
+            Logger.log("e", "Permission denied when trying to write to %s: %s", file_name, str(e))
             raise OutputDeviceError.PermissionDeniedError() from e
         except OSError as e:
+            Logger.log("e", "Operating system would not let us write to %s: %s", file_name, str(e))
             raise OutputDeviceError.WriteRequestFailedError() from e
 
     def _onProgress(self, job, progress):
@@ -68,6 +78,8 @@ class RemovableDriveOutputDevice(OutputDevice):
         if hasattr(job, "_message"):
             job._message.hide()
             job._message = None
+
+        self._writing = False
         self.writeFinished.emit(self)
         if job.getResult():
             message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())))

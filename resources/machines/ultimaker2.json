@@ -11,8 +11,8 @@
     "inherits": "fdmprinter.json",
 
     
-    "machine_extruder_trains": [
-        {
+    "machine_extruder_trains": {
+        "0": {
             "machine_nozzle_size": {
                 "default": 0.4
             },
@@ -35,8 +35,8 @@
                 "default": 16
             }
         }
-    ],
-    "machine_settings": {
+    },
+    "overrides": {
         "machine_start_gcode" : { "default": "" },
         "machine_end_gcode" : { "default": "" },
         "machine_width": { "default": 230 },
@@ -48,20 +48,20 @@
         {
             "default": [
                 [
-                    -40,
-                    10
+                    -42,
+                    12
                 ],
                 [
-                    -40,
-                    -30
+                    -42,
+                    -32
                 ],
                 [
-                    60,
-                    10
+                    62,
+                    12
                 ],
                 [
-                    60,
-                    -30
+                    62,
+                    -32
                 ]
             ]
         },
@@ -82,13 +82,12 @@
         
         "machine_nozzle_tip_outer_diameter": { "default": 1.0 },
         "machine_nozzle_head_distance": { "default": 3.0 },
-        "machine_nozzle_expansion_angle": { "default": 45 }
-    },
-
-    "overrides": {
+        "machine_nozzle_expansion_angle": { "default": 45 },
+        
         "material_print_temperature": { "enabled": "False" },
         "material_bed_temperature": { "enabled": "False" },
         "material_diameter": { "enabled": "False" },
-        "material_flow": { "enabled": "False" }
+        "material_flow": { "enabled": "False" },
+        "line_width": { "description": "The inner diameter of your printer's nozzle. If you are using an Olsson Block with a non-standard nozzle size then change this field to match the nozzle size you are using. Each line will be printed with this width in mind. The outer wall and top/bottom surface line widths may be set to a smaller value for higher surface quality. This field was previously named Line Width." }
     }
 }

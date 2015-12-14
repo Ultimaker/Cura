@@ -20,17 +20,17 @@ catalog = i18nCatalog("cura")
 
 # WinAPI Constants that we need
 # Hardcoded here due to stupid WinDLL stuff that does not give us access to these values.
-DRIVE_REMOVABLE = 2
+DRIVE_REMOVABLE = 2 # [CodeStyle: Windows Enum value]
 
-GENERIC_READ = 2147483648
-GENERIC_WRITE = 1073741824
+GENERIC_READ = 2147483648 # [CodeStyle: Windows Enum value]
+GENERIC_WRITE = 1073741824 # [CodeStyle: Windows Enum value]
 
-FILE_SHARE_READ = 1
-FILE_SHARE_WRITE = 2
+FILE_SHARE_READ = 1 # [CodeStyle: Windows Enum value]
+FILE_SHARE_WRITE = 2 # [CodeStyle: Windows Enum value]
 
-IOCTL_STORAGE_EJECT_MEDIA = 2967560
+IOCTL_STORAGE_EJECT_MEDIA = 2967560 # [CodeStyle: Windows Enum value]
 
-OPEN_EXISTING = 3
+OPEN_EXISTING = 3 # [CodeStyle: Windows Enum value]
 
 ## Removable drive support for windows
 class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
@@ -65,11 +65,11 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
                     continue
 
                 # Check for the free space. Some card readers show up as a drive with 0 space free when there is no card inserted.
-                freeBytes = ctypes.c_longlong(0)
-                if windll.kernel32.GetDiskFreeSpaceExA(drive.encode("ascii"), ctypes.byref(freeBytes), None, None) == 0:
+                free_bytes = ctypes.c_longlong(0)
+                if windll.kernel32.GetDiskFreeSpaceExA(drive.encode("ascii"), ctypes.byref(free_bytes), None, None) == 0:
                     continue
 
-                if freeBytes.value < 1:
+                if free_bytes.value < 1:
                     continue
 
                 drives[drive] = "{0} ({1}:)".format(volume_name, letter)

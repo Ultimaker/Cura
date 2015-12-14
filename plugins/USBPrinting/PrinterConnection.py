@@ -45,7 +45,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._connect_thread.daemon = True
 
         self._end_stop_thread = threading.Thread(target = self._pollEndStop)
-        self._end_stop_thread.deamon = True
+        self._end_stop_thread.daemon = True
         self._poll_endstop = -1
 
         # Printer is connected
@@ -65,6 +65,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
         self._update_firmware_thread.daemon = True
+        self.firmwareUpdateComplete.connect(self._onFirmwareUpdateComplete)
         
         self._heatup_wait_start_time = time.time()
 
@@ -197,6 +198,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     ##  Private fuction (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
+        self.setProgress(0, 100)
+
         if self._is_connecting or  self._is_connected:
             self.close()
         hex_file = intelHex.readHex(self._firmware_file_name)
@@ -207,7 +210,11 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
         programmer = stk500v2.Stk500v2()
         programmer.progressCallback = self.setProgress 
-        programmer.connect(self._serial_port)
+
+        try:
+            programmer.connect(self._serial_port)
+        except Exception:
+            pass
 
         time.sleep(1) # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
 
@@ -336,8 +343,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._connect_thread = threading.Thread(target=self._connect)
         self._connect_thread.daemon = True
         
+        self.setIsConnected(False)
         if self._serial is not None:
-            self.setIsConnected(False)
             try:
                 self._listen_thread.join()
             except:
@@ -464,17 +471,17 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self.showControlInterface()
 
     def _setEndstopState(self, endstop_key, value):
-        if endstop_key == b'x_min':
+        if endstop_key == b"x_min":
             if self._x_min_endstop_pressed != value:
-                self.endstopStateChanged.emit('x_min', value)
+                self.endstopStateChanged.emit("x_min", value)
             self._x_min_endstop_pressed = value
-        elif endstop_key == b'y_min':
+        elif endstop_key == b"y_min":
             if self._y_min_endstop_pressed != value:
-                self.endstopStateChanged.emit('y_min', value)
+                self.endstopStateChanged.emit("y_min", value)
             self._y_min_endstop_pressed = value
-        elif endstop_key == b'z_min':
+        elif endstop_key == b"z_min":
             if self._z_min_endstop_pressed != value:
-                self.endstopStateChanged.emit('z_min', value)
+                self.endstopStateChanged.emit("z_min", value)
             self._z_min_endstop_pressed = value
 
     ##  Listen thread function. 
@@ -521,8 +528,8 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                         pass
                 #TODO: temperature changed callback
             elif b"_min" in line or b"_max" in line:
-                tag, value = line.split(b':', 1)
-                self._setEndstopState(tag,(b'H' in value or b'TRIGGERED' in value))
+                tag, value = line.split(b":", 1)
+                self._setEndstopState(tag,(b"H" in value or b"TRIGGERED" in value))
 
             if self._is_printing:
                 if line == b"" and time.time() > ok_timeout:

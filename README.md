@@ -41,6 +41,7 @@ Third party plugins
 -------------
 * [Print time calculator](https://github.com/nallath/PrintCostCalculator)
 * [Post processing plugin](https://github.com/nallath/PostProcessingPlugin)
+* [Barbarian Plugin](https://github.com/nallath/BarbarianPlugin) Simple scale tool for imperial to metric.
 
 Making profiles for other printers
 ----------------------------------
