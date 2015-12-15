@@ -1,5 +1,6 @@
 *.pyc
 *kdev*
+*.kate-swp
 __pycache__
 docs/html
 *.lprof
