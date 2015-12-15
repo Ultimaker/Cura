@@ -16,7 +16,8 @@ def getMetaData():
             "api": 2
         },
         "view": {
-            "name": i18n_catalog.i18nc("@item:inmenu", "Solid")
+            "name": i18n_catalog.i18nc("@item:inmenu", "Solid"),
+            "weight": 0
         }
     }
 
