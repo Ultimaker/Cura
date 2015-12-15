@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Application import Application #To get the current profile that should be updated with the settings from the g-code.
+from UM.Application import Application #To get the machine manager to create the new profile in.
 from UM.Settings.Profile import Profile
 from UM.Settings.ProfileReader import ProfileReader
 import re #Regular expressions for parsing escape characters in the settings.
