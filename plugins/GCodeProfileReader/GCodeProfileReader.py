@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Application import Application #To get the current profile that should be updated with the settings from the g-code.
-from UM.Mesh.MeshReader import MeshReader
+from UM.Settings.ProfileReader import ProfileReader
 import re #Regular expressions for parsing escape characters in the settings.
 
 ##  A class that reads profile data from g-code files.
@@ -10,7 +10,7 @@ import re #Regular expressions for parsing escape characters in the settings.
 #   It reads the profile data from g-code files and stores the profile as a new
 #   profile, and then immediately activates that profile.
 #   This class currently does not process the rest of the g-code in any way.
-class GCodeReader(MeshReader):
+class GCodeProfileReader(ProfileReader):
     ##  Initialises the g-code reader as a mesh reader.
     def __init__(self):
         super().__init__()
