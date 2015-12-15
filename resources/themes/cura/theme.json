@@ -9,6 +9,11 @@
             "size": 1.15,
             "family": "Proxima Nova Rg"
         },
+        "default_bold": {
+            "size": 1.15,
+            "bold": true,
+            "family": "Proxima Nova Rg"
+        },
         "small": {
             "size": 1.0,
             "family": "Proxima Nova Rg"
