@@ -8,15 +8,19 @@ import re #Regular expressions for parsing escape characters in the settings.
 
 ##  A class that reads profile data from g-code files.
 #
-#   It reads the profile data from g-code files and stores the profile as a new
-#   profile, and then immediately activates that profile.
+#   It reads the profile data from g-code files and stores it in a new profile.
 #   This class currently does not process the rest of the g-code in any way.
 class GCodeProfileReader(ProfileReader):
-    ##  Initialises the g-code reader as a mesh reader.
+    ##  Initialises the g-code reader as a profile reader.
     def __init__(self):
         super().__init__()
 
     ##  Reads a g-code file, loading the profile from it.
+    #
+    #   \param file_name The name of the file to read the profile from.
+    #   \return The profile that was in the specified file, if any. If the
+    #   specified file was no g-code or contained no parsable profile, \code
+    #   None \endcode is returned.
     def read(self, file_name):
         version = 1 #IF YOU CHANGE THIS FUNCTION IN A WAY THAT BREAKS REVERSE COMPATIBILITY, INCREMENT THIS VERSION NUMBER!
         prefix = ";SETTING_" + str(version) + " "
