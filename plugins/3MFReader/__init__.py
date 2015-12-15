@@ -15,10 +15,12 @@ def getMetaData():
             "description": catalog.i18nc("@info:whatsthis", "Provides support for reading 3MF files."),
             "api": 2
         },
-        "mesh_reader": {
-            "extension": "3mf",
-            "description": catalog.i18nc("@item:inlistbox", "3MF File")
-        }
+        "mesh_reader": [
+            {
+                "extension": "3mf",
+                "description": catalog.i18nc("@item:inlistbox", "3MF File")
+            }
+        ]
     }
 
 def register(app):
