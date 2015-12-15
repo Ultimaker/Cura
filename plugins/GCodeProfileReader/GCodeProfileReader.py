@@ -2,6 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Application import Application #To get the current profile that should be updated with the settings from the g-code.
+from UM.Settings.Profile import Profile
 from UM.Settings.ProfileReader import ProfileReader
 import re #Regular expressions for parsing escape characters in the settings.
 
@@ -29,6 +30,7 @@ class GCodeProfileReader(ProfileReader):
                         serialised += line[len(prefix):-1] #Remove the prefix and the newline from the line, and add it to the rest.
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
+            return None
 
         #Unescape the serialised profile.
         escape_characters = { #Which special characters (keys) are replaced by what escape character (values).
@@ -42,5 +44,9 @@ class GCodeProfileReader(ProfileReader):
         serialised = pattern.sub(lambda m: escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
         
         #Apply the changes to the current profile.
-        profile = Application.getInstance().getMachineManager().getActiveProfile()
-        profile.unserialise(serialised)
+        profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
+        try:
+            profile.unserialise(serialised)
+        except Exception as e: #Not a valid g-code file.
+            return None
+        return profile
