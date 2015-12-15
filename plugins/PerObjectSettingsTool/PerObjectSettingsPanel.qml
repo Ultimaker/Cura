@@ -104,7 +104,7 @@ Item {
                                     height: parent.height/2
                                     sourceSize.width: width
                                     sourceSize.height: width
-                                    color: UM.Theme.colors.setting_control_revert
+                                    color: control.hovered ? UM.Theme.colors.setting_control_button_hover : UM.Theme.colors.setting_control_button
                                     source: UM.Theme.icons.cross1
                                 }
                             }

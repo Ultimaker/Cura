@@ -106,7 +106,7 @@ Rectangle {
                             height: UM.Theme.sizes.save_button_specs_icons.height
                             sourceSize.width: width
                             sourceSize.height: width
-                            color: UM.Theme.colors.setting_control_text
+                            color: control.hovered ? UM.Theme.colors.setting_control_button_hover : UM.Theme.colors.text
                             source: UM.Theme.icons.pencil;
                         }
                     }

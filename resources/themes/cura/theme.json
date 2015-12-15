@@ -64,7 +64,7 @@
 
         "text": [24, 41, 77, 255],
         "text_inactive": [174, 174, 174, 255],
-        "text_hover": [35, 35, 35, 255],
+        "text_hover": [70, 84, 113, 255],
         "text_pressed": [12, 169, 227, 255],
         "text_white": [255, 255, 255, 255],
         "text_subtext": [127, 127, 127, 255],
@@ -135,7 +135,8 @@
         "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [24, 41, 77, 255],
         "setting_control_depth_line": [127, 127, 127, 255],
-        "setting_control_revert": [127, 127, 127, 255],
+        "setting_control_button": [127, 127, 127, 255],
+        "setting_control_button_hover": [70, 84, 113, 255],
         "setting_unit": [127, 127, 127, 255],
         "setting_validation_error": [255, 57, 14, 255],
         "setting_validation_warning": [255, 186, 15, 255],
