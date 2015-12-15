@@ -15,10 +15,12 @@ def getMetaData():
             "description": catalog.i18nc("@info:whatsthis", "Provides support for importing profiles from g-code files."),
             "api": 2
         },
-        "profile_reader": {
-            "extension": "gcode",
-            "description": catalog.i18nc("@item:inlistbox", "G-code File")
-        }
+        "profile_reader": [
+            {
+                "extension": "gcode",
+                "description": catalog.i18nc("@item:inlistbox", "G-code File")
+            }
+        ]
     }
 
 def register(app):

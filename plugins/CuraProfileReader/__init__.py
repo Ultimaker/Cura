@@ -15,10 +15,12 @@ def getMetaData():
             "description": catalog.i18nc("@info:whatsthis", "Provides support for importing Cura profiles."),
             "api": 2
         },
-        "profile_reader": {
-            "extension": "curaprofile",
-            "description": catalog.i18nc("@item:inlistbox", "Cura Profile")
-        }
+        "profile_reader": [
+            {
+                "extension": "curaprofile",
+                "description": catalog.i18nc("@item:inlistbox", "Cura Profile")
+            }
+         ]
     }
 
 def register(app):
