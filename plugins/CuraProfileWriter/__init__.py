@@ -1,21 +1,21 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Uranium is released under the terms of the AGPLv3 or higher.
 
-from . import CuraProfileReader
+from . import CuraProfileWriter
 
 from UM.i18n import i18nCatalog
-catalog = i18nCatalog("cura")
+catalog = i18nCatalog("uranium")
 
 def getMetaData():
     return {
         "plugin": {
-            "name": catalog.i18nc("@label", "Cura Profile Reader"),
+            "name": catalog.i18nc("@label", "Cura Profile Writer"),
             "author": "Ultimaker",
             "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Provides support for importing Cura profiles."),
+            "description": catalog.i18nc("@info:whatsthis", "Provides support for exporting Cura profiles."),
             "api": 2
         },
-        "profile_reader": [
+        "profile_writer": [
             {
                 "extension": "curaprofile",
                 "description": catalog.i18nc("@item:inlistbox", "Cura Profile")
@@ -24,4 +24,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "profile_reader": CuraProfileReader.CuraProfileReader() }
+    return { "profile_writer": CuraProfileWriter.CuraProfileWriter() }
