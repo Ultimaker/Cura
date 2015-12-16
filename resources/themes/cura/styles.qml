@@ -331,7 +331,8 @@ QtObject {
                     width: UM.Theme.sizes.section_icon_column.width
                     UM.RecolorImage {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.sizes.default_margin.width
                         color: UM.Theme.colors.setting_category_text
                         source: control.iconSource;
                         width: UM.Theme.sizes.section_icon.width;
@@ -344,6 +345,7 @@ QtObject {
                 Label {
                     anchors {
                         left: icon.right;
+                        leftMargin: UM.Theme.sizes.default_lining.width;
                         right: parent.right;
                         verticalCenter: parent.verticalCenter;
                     }
