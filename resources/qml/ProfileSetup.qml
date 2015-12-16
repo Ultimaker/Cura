@@ -69,6 +69,7 @@ Item{
     Rectangle{
         id: globalProfileRow;
         anchors.top: UM.MachineManager.hasVariants ? variantRow.bottom : base.top
+        anchors.topMargin: UM.MachineManager.hasVariants ? UM.Theme.sizes.default_lining.height : 0
         //anchors.top: variantRow.bottom
         height: UM.Theme.sizes.sidebar_setup.height
         width: base.width
