@@ -30,14 +30,15 @@ class GCodeProfileReader(ProfileReader):
     #   None \endcode is returned.
     def read(self, file_name):
         prefix = ";SETTING_" + str(version) + " "
-        
+        prefix_length = len(prefix)
+
         #Loading all settings from the file. They are all at the end, but Python has no reverse seek any more since Python3. TODO: Consider moving settings to the start?
         serialised = "" #Will be filled with the serialised profile.
         try:
             with open(file_name) as f:
                 for line in f:
                     if line.startswith(prefix):
-                        serialised += line[len(prefix):-1] #Remove the prefix and the newline from the line, and add it to the rest.
+                        serialised += line[prefix_length : -1] #Remove the prefix and the newline from the line, and add it to the rest.
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
             return None
