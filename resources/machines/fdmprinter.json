@@ -61,9 +61,6 @@
             "description": "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle.",
             "default": 1
         },
-        "machine_nozzle_size": { 
-            "description": "The inner diameter of the hole in the nozzle.",
-            "default": 0.4, "SEE_machine_extruder_trains": true },
         "machine_nozzle_tip_outer_diameter": { 
             "description": "The outer diameter of the tip of the nozzle.",
             "default": 1, "SEE_machine_extruder_trains": true  },
@@ -154,6 +151,15 @@
             "visible": true,
             "icon": "category_layer_height",
             "settings": {
+                "machine_nozzle_size": {
+                    "label": "Nozzle Diameter",
+                    "description": "The inner diameter of the hole in the nozzle.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.4,
+                    "min_value": "0.001",
+                    "visible": false
+                },
                 "layer_height": {
                     "label": "Layer Height",
                     "description": "The height of each layer, in mm. Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to 0.25mm with an Ultimaker for very fast prints at low quality. For most purposes, layer heights between 0.1 and 0.2mm give a good tradeoff of speed and surface finish.",
@@ -177,8 +183,8 @@
                     "visible": false
                 },
                 "line_width": {
-                    "label": "Nozzle Diameter",
-                    "description": "The inner diameter of your printer's nozzle. Each line will be printed with this width in mind. The outer wall and top/bottom surface line widths may be set to a smaller value for higher surface quality. This field was previously named Line Width.",
+                    "label": "Line Width",
+                    "description": "Width of a single line. Each line will be printed with this width in mind. Generally the width of each line should correspond to the width of your nozzle, but for the outer wall and top/bottom surface smaller line widths may be chosen, for higher quality.",
                     "unit": "mm",
                     "min_value": "0.0001",
                     "min_value_warning": "0.2",
@@ -190,7 +196,7 @@
                     "children": {
                         "wall_line_width": {
                             "label": "Wall Line Width",
-                            "description": "Width of a single shell line. This value will be used instead of Nozzle Diameter when printing shell lines.",
+                            "description": "Width of a single shell line. Each line of the shell will be printed with this width in mind.",
                             "unit": "mm",
                             "min_value": "0.0001",
                             "min_value_warning": "0.2",
@@ -201,7 +207,7 @@
                             "children": {
                                 "wall_line_width_0": {
                                     "label": "Outer Wall Line Width",
-                                    "description": "Width of the outermost shell line. By printing a thinner outermost wall line you can print higher details with a larger nozzle. This value will be used instead of Nozzle Diameter when printing outermost shell lines.",
+                                    "description": "Width of the outermost shell line. By printing a thinner outermost wall line you can print higher details with a larger nozzle.",
                                     "unit": "mm",
                                     "min_value": "0.0001",
                                     "min_value_warning": "0.2",
@@ -212,7 +218,7 @@
                                 },
                                 "wall_line_width_x": {
                                     "label": "Other Walls Line Width",
-                                    "description": "Width of a single shell line for all shell lines except the outermost one. This value will be used instead of Nozzle Diameter when printing all shell lines except the outermost one.",
+                                    "description": "Width of a single shell line for all shell lines except the outermost one.",
                                     "unit": "mm",
                                     "min_value": "0.0001",
                                     "min_value_warning": "0.2",
@@ -225,7 +231,7 @@
                         },
                         "skirt_line_width": {
                             "label": "Skirt line width",
-                            "description": "Width of a single skirt line. This value will be used instead of Nozzle Diameter when printing skirts.",
+                            "description": "Width of a single skirt line.",
                             "unit": "mm",
                             "min_value": "0.0001",
                             "min_value_warning": "0.2",
@@ -236,7 +242,7 @@
                         },
                         "skin_line_width": {
                             "label": "Top/bottom line width",
-                            "description": "Width of a single top/bottom printed line, used to fill up the top/bottom areas of a print. This value will be used instead of Nozzle Diameter when printing top/bottom lines.",
+                            "description": "Width of a single top/bottom printed line, used to fill up the top/bottom areas of a print.",
                             "unit": "mm",
                             "min_value": "0.0001",
                             "min_value_warning": "0.2",
@@ -247,7 +253,7 @@
                         },
                         "infill_line_width": {
                             "label": "Infill line width",
-                            "description": "Width of the inner infill printed lines. This value will be used instead of Nozzle Diameter when infill lines.",
+                            "description": "Width of the inner infill printed lines.",
                             "unit": "mm",
                             "min_value": "0.0001",
                             "min_value_warning": "0.2",
@@ -258,7 +264,7 @@
                         },
                         "support_line_width": {
                             "label": "Support line width",
-                            "description": "Width of the printed support structures lines. This value will be used instead of Nozzle Diameter when printing support structure lines.",
+                            "description": "Width of the printed support structures lines.",
                             "unit": "mm",
                             "min_value": "0.0001",
                             "min_value_warning": "0.2",
@@ -270,7 +276,7 @@
                         },
                         "support_roof_line_width": {
                             "label": "Support Roof line width",
-                            "description": "Width of a single support roof line, used to fill the top of the support. This value will be used instead of Nozzle Diameter when printing support roof lines.",
+                            "description": "Width of a single support roof line, used to fill the top of the support.",
                             "unit": "mm",
                             "default": 0.4,
                             "type": "float",
