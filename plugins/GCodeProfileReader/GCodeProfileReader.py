@@ -24,9 +24,9 @@ class GCodeProfileReader(ProfileReader):
     #   Note that the keys of this dictionary are regex strings. The values are
     #   not.
     escape_characters = {
-        "\\\\": "\\", #The escape character.
-        "\\n": "\n",  #Newlines. They break off the comment.
-        "\\r": "\r"   #Carriage return. Windows users may need this for visualisation in their editors.
+        re.escape("\\\\"): "\\", #The escape character.
+        re.escape("\\n"): "\n",  #Newlines. They break off the comment.
+        re.escape("\\r"): "\r"   #Carriage return. Windows users may need this for visualisation in their editors.
     }
 
     ##  Initialises the g-code reader as a profile reader.
@@ -40,7 +40,7 @@ class GCodeProfileReader(ProfileReader):
     #   specified file was no g-code or contained no parsable profile, \code
     #   None \endcode is returned.
     def read(self, file_name):
-        prefix = ";SETTING_" + str(version) + " "
+        prefix = ";SETTING_" + str(GCodeProfileReader.version) + " "
         prefix_length = len(prefix)
 
         #Loading all settings from the file. They are all at the end, but Python has no reverse seek any more since Python3. TODO: Consider moving settings to the start?
@@ -55,10 +55,9 @@ class GCodeProfileReader(ProfileReader):
             return None
 
         #Unescape the serialised profile.
-        escape_characters = dict((re.escape(key), value) for key, value in escape_characters.items())
-        pattern = re.compile("|".join(escape_characters.keys()))
-        serialised = pattern.sub(lambda m: escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
-        
+        pattern = re.compile("|".join(GCodeProfileReader.escape_characters.keys()))
+        serialised = pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
+
         #Apply the changes to the current profile.
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
         try:

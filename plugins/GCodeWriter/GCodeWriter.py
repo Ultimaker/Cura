@@ -22,9 +22,9 @@ class GCodeWriter(MeshWriter):
     #   Note that the keys of this dictionary are regex strings. The values are
     #   not.
     escape_characters = {
-        "\\": "\\\\", #The escape character.
-        "\n": "\\n",  #Newlines. They break off the comment.
-        "\r": "\\r"   #Carriage return. Windows users may need this for visualisation in their editors.
+        re.escape("\\"): "\\\\", #The escape character.
+        re.escape("\n"): "\\n",  #Newlines. They break off the comment.
+        re.escape("\r"): "\\r"   #Carriage return. Windows users may need this for visualisation in their editors.
     }
 
     def __init__(self):
@@ -54,15 +54,14 @@ class GCodeWriter(MeshWriter):
     #   \param profile The profile to serialise.
     #   \return A serialised string of the profile.
     def _serialiseProfile(self, profile):
-        prefix = ";SETTING_" + str(version) + " " #The prefix to put before each line.
+        prefix = ";SETTING_" + str(GCodeWriter.version) + " " #The prefix to put before each line.
         prefix_length = len(prefix)
         
         serialised = profile.serialise()
         
         #Escape characters that have a special meaning in g-code comments.
-        escape_characters = dict((re.escape(key), value) for key, value in escape_characters.items())
-        pattern = re.compile("|".join(escape_characters.keys()))
-        serialised = pattern.sub(lambda m: escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
+        pattern = re.compile("|".join(GCodeWriter.escape_characters.keys()))
+        serialised = pattern.sub(lambda m: GCodeWriter.escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
         
         #Introduce line breaks so that each comment is no longer than 80 characters. Prepend each line with the prefix.
         result = ""
