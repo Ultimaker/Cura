@@ -16,6 +16,17 @@ class GCodeWriter(MeshWriter):
     #   compatibility, increment this version number!
     version = 1
 
+    ##  Dictionary that defines how characters are escaped when embedded in
+    #   g-code.
+    #
+    #   Note that the keys of this dictionary are regex strings. The values are
+    #   not.
+    escape_characters = {
+        "\\": "\\\\", #The escape character.
+        "\n": "\\n",  #Newlines. They break off the comment.
+        "\r": "\\r"   #Carriage return. Windows users may need this for visualisation in their editors.
+    }
+
     def __init__(self):
         super().__init__()
 
@@ -49,12 +60,6 @@ class GCodeWriter(MeshWriter):
         serialised = profile.serialise()
         
         #Escape characters that have a special meaning in g-code comments.
-        escape_characters = { #Which special characters (keys) are replaced by what escape character (values).
-                              #Note: The keys are regex strings. Values are not.
-            "\\": "\\\\", #The escape character.
-            "\n": "\\n",  #Newlines. They break off the comment.
-            "\r": "\\r"   #Carriage return. Windows users may need this for visualisation in their editors.
-        }
         escape_characters = dict((re.escape(key), value) for key, value in escape_characters.items())
         pattern = re.compile("|".join(escape_characters.keys()))
         serialised = pattern.sub(lambda m: escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
