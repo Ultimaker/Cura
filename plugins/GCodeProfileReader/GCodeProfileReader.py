@@ -11,6 +11,13 @@ import re #Regular expressions for parsing escape characters in the settings.
 #   It reads the profile data from g-code files and stores it in a new profile.
 #   This class currently does not process the rest of the g-code in any way.
 class GCodeProfileReader(ProfileReader):
+    ##  The file format version of the serialised g-code.
+    #
+    #   It can only read settings with the same version as the version it was
+    #   written with. If the file format is changed in a way that breaks reverse
+    #   compatibility, increment this version number!
+    version = 1
+    
     ##  Initialises the g-code reader as a profile reader.
     def __init__(self):
         super().__init__()
@@ -22,7 +29,6 @@ class GCodeProfileReader(ProfileReader):
     #   specified file was no g-code or contained no parsable profile, \code
     #   None \endcode is returned.
     def read(self, file_name):
-        version = 1 #IF YOU CHANGE THIS FUNCTION IN A WAY THAT BREAKS REVERSE COMPATIBILITY, INCREMENT THIS VERSION NUMBER!
         prefix = ";SETTING_" + str(version) + " "
         
         #Loading all settings from the file. They are all at the end, but Python has no reverse seek any more since Python3. TODO: Consider moving settings to the start?
