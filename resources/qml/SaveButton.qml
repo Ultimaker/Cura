@@ -90,6 +90,7 @@ Rectangle {
                 background: Rectangle {
                     //opacity: control.enabled ? 1.0 : 0.5
                     //Behavior on opacity { NumberAnimation { duration: 50; } }
+                    border.width: UM.Theme.sizes.default_lining.width
                     border.color: !control.enabled ? UM.Theme.colors.action_button_disabled_border : 
                                       control.pressed ? UM.Theme.colors.action_button_active_border :
                                       control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border

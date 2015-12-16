@@ -12,7 +12,7 @@ QtObject {
         ButtonStyle {
             background: Rectangle {
                 color: UM.Theme.colors.setting_control
-                border.width: 1
+                border.width: UM.Theme.sizes.default_lining.width
                 border.color: control.hovered ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border
                 UM.RecolorImage {
                     id: downArrow
