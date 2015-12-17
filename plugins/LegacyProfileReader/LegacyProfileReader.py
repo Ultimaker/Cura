@@ -19,6 +19,25 @@ class LegacyProfileReader(ProfileReader):
     def __init__(self):
         super().__init__()
 
+    ##  Prepares the local variables that can be used in evaluation of computing
+    #   new setting values from the old ones.
+    #
+    #   This fills a dictionary with all settings from the legacy Cura version
+    #   and their values, so that they can be used in evaluating the new setting
+    #   values as Python code.
+    #
+    #   \param parser The ConfigParser that finds the settings in the legacy
+    #   profile.
+    #   \param section The section in the profile where the settings should be
+    #   found.
+    #   \return A set of local variables, one for each setting in the legacy
+    #   profile.
+    def prepareLocals(self, parser, section):
+        locals = {}
+        for option in parser.options():
+            locals[option] = parser.get(section, option)
+        return locals
+
     ##  Reads a legacy Cura profile from a file and returns it.
     #
     #   \param file_name The file to read the legacy Cura profile from.
@@ -41,13 +60,13 @@ class LegacyProfileReader(ProfileReader):
         #Since importing multiple machine profiles is out of scope, just import the first section we find.
         section = ""
         for found_section in parser.sections():
-            if found_section.startsWith("profile"):
+            if found_section.startswith("profile"):
                 section = found_section
                 break
         if not section: #No section starting with "profile" was found. Probably not a proper INI file.
             return None
 
-        legacy_settings = prepareLocals(parser, section) #Gets the settings from the legacy profile.
+        legacy_settings = self.prepareLocals(parser, section) #Gets the settings from the legacy profile.
 
         try:
             with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
@@ -68,22 +87,3 @@ class LegacyProfileReader(ProfileReader):
             profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
 
         return profile
-    
-    ##  Prepares the local variables that can be used in evaluation of computing
-    #   new setting values from the old ones.
-    #
-    #   This fills a dictionary with all settings from the legacy Cura version
-    #   and their values, so that they can be used in evaluating the new setting
-    #   values as Python code.
-    #
-    #   \param parser The ConfigParser that finds the settings in the legacy
-    #   profile.
-    #   \param section The section in the profile where the settings should be
-    #   found.
-    #   \return A set of local variables, one for each setting in the legacy
-    #   profile.
-    def prepareLocals(self, parser, section):
-        locals = {}
-        for option in parser.options():
-            locals[option] = parser.get(section, option)
-        return locals
