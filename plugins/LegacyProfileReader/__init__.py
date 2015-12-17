@@ -24,4 +24,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "profile_reader": CuraProfileReader.CuraProfileReader() }
+    return { "profile_reader": LegacyProfileReader.LegacyProfileReader() }
