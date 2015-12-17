@@ -1,6 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+import configparser #For reading the legacy profile INI files.
 import json #For reading the Dictionary of Doom.
 
 from UM.Application import Application #To get the machine manager to create the new profile in.
@@ -27,10 +28,14 @@ class LegacyProfileReader(ProfileReader):
     def read(self, file_name):
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False) #Create an empty profile.
         profile.setName("Imported Legacy Profile")
-        
-        stream = io.StringIO(serialised) #ConfigParser needs to read from a stream.
+
         parser = configparser.ConfigParser(interpolation = None)
-        parser.readfp(stream)
+        try:
+            with open(file_name) as f:
+                parser.readfp(f) #Parse the INI file.
+        except Exception as e:
+            Logger.log("e", "Unable to open legacy profile %s: %s", file_name, str(e))
+            return None
 
         #Legacy Cura saved the profile under the section "profile_N" where N is the ID of a machine, except when you export in which case it saves it in the section "profile".
         #Since importing multiple machine profiles is out of scope, just import the first section we find.
@@ -41,9 +46,9 @@ class LegacyProfileReader(ProfileReader):
                 break
         if not section: #No section starting with "profile" was found. Probably not a proper INI file.
             return None
-        
+
         legacy_settings = prepareLocals(parser, section) #Gets the settings from the legacy profile.
-        
+
         try:
             with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
                 dict_of_doom = json.load(f) #Parse the Dictionary of Doom.    
@@ -53,7 +58,7 @@ class LegacyProfileReader(ProfileReader):
         except Exception as e:
             Logger.log("e", "Could not parse DictionaryOfDoom.json: %s", str(e))
             return None
-        
+
         if "translations" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translations. Is it the correct JSON file?")
             return None
