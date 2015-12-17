@@ -268,12 +268,14 @@ if [ "$BUILD_TARGET" = "debian_i386" ]; then
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_VERSION > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
 	cat scripts/linux/debian_control | sed "s/\[BUILD_VERSION\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/i386/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
-	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
-	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
-	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
-	cd scripts/linux
-	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${FULL_VERSION}_i386.deb
-	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+	fakeroot sh -ec "
+	 chown root:root scripts/linux/${BUILD_TARGET} -R
+	 chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
+	 chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
+	 cd scripts/linux
+	 dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${FULL_VERSION}_i386.deb
+	 chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+        "
 	exit
 fi
 
@@ -298,12 +300,14 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_VERSION > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
 	cat scripts/linux/debian_control | sed "s/\[BUILD_VERSION\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/amd64/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
-	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
-	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
-	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
-	cd scripts/linux
-	dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${FULL_VERSION}_amd64.deb
-	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+	fakeroot sh -ec "
+	 chown root:root scripts/linux/${BUILD_TARGET} -R
+	 chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
+	 chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
+	 cd scripts/linux
+	 dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${FULL_VERSION}_amd64.deb
+	 chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+	"
 	exit
 fi
 
@@ -328,12 +332,14 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	cp -a Power/power scripts/linux/${BUILD_TARGET}/usr/share/cura/
 	echo $BUILD_VERSION > scripts/linux/${BUILD_TARGET}/usr/share/cura/Cura/version
 	cat scripts/linux/debian_control | sed "s/\[BUILD_VERSION\]/${FULL_VERSION}/" | sed 's/\[ARCH\]/armhf/' > scripts/linux/${BUILD_TARGET}/DEBIAN/control
-	sudo chown root:root scripts/linux/${BUILD_TARGET} -R
-	sudo chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
-	sudo chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
-	cd scripts/linux
-	dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_VERSION}-${BUILD_TARGET}.deb
-	sudo chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+	fakeroot sh -ec "
+	 chown root:root scripts/linux/${BUILD_TARGET} -R
+	 chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
+	 chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
+	 cd scripts/linux
+	 dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_VERSION}-${BUILD_TARGET}.deb
+	 chown `id -un`:`id -gn` ${BUILD_TARGET} -R
+	"
 	exit
 fi
 
