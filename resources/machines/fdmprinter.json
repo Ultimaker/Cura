@@ -1143,7 +1143,7 @@
                     "max_value": "90",
                     "default": 30,
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_conical_min_width": {
                     "label": "Minimal Width",
