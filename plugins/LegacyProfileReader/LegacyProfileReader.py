@@ -84,7 +84,8 @@ class LegacyProfileReader(ProfileReader):
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
-        for new_setting, old_setting_expression in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
+        for new_setting in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
+            old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
             new_value = eval(compiled, {}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
             profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
