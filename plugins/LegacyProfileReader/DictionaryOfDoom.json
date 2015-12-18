@@ -39,7 +39,7 @@
         "cool_min_speed": "cool_min_feedrate",
         "cool_lift_head": "cool_head_lift",
         "support_enable": "False if (support == \"None\") else True",
-        "support_type": "support == \"Touching buildplate\" ? \"buildplate\" : \"everywhere\"",
+        "support_type": "\"buildplate\" if (support == \"Touching buildplate\") else \"everywhere\"",
         "support_angle": "support_angle",
         "support_xy_distance": "support_xy_distance",
         "support_z_distance": "support_z_distance",
