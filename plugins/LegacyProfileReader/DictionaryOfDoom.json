@@ -45,7 +45,7 @@
         "support_z_distance": "support_z_distance",
         "support_pattern": "support_type.lower()",
         "support_infill_rate": "support_fill_rate",
-        "platform_adhesion": "platform_adhesion.lower()",
+        "adhesion_type": "\"skirt\" if (platform_adhesion == \"None\") else platform_adhesion.lower()",
         "skirt_line_count": "skirt_line_count",
         "skirt_gap": "skirt_gap",
         "skirt_minimal_length": "skirt_minimal_length",
