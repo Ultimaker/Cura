@@ -327,7 +327,8 @@ UM.MainWindow
                 {
                     horizontalCenter: parent.horizontalCenter
                     horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width/ 2)
-                    verticalCenter: parent.verticalCenter;
+                    top: parent.verticalCenter;
+                    bottom: parent.bottom;
                 }
             }
 
