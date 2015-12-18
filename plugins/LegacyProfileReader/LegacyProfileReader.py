@@ -3,6 +3,7 @@
 
 import configparser #For reading the legacy profile INI files.
 import json #For reading the Dictionary of Doom.
+import math #For mathematical operations included in the Dictionary of Doom.
 import os.path #For concatenating the path to the plugin and the relative path to the Dictionary of Doom.
 
 from UM.Application import Application #To get the machine manager to create the new profile in.
@@ -87,7 +88,7 @@ class LegacyProfileReader(ProfileReader):
         for new_setting in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
-            new_value = eval(compiled, {}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
+            new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
             profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
 
         return profile
