@@ -38,7 +38,7 @@
         "cool_min_layer_time": "cool_min_layer_time",
         "cool_min_speed": "cool_min_feedrate",
         "cool_lift_head": "cool_head_lift",
-        "support_enable": "support == \"None\" ? False : True",
+        "support_enable": "False if (support == \"None\") else True",
         "support_type": "support == \"Touching buildplate\" ? \"buildplate\" : \"everywhere\"",
         "support_angle": "support_angle",
         "support_xy_distance": "support_xy_distance",
