@@ -34,7 +34,7 @@ class LegacyProfileReader(ProfileReader):
     #   profile.
     def prepareLocals(self, parser, section):
         locals = {}
-        for option in parser.options():
+        for option in parser.options(section):
             locals[option] = parser.get(section, option)
         return locals
 
