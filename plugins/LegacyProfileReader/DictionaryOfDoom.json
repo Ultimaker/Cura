@@ -1,6 +1,6 @@
 {
     "source_version": "15.04",
-    "target_version": "2.1",
+    "target_version": 1,
     
     "translation": {
         "line_width": "nozzle_size",

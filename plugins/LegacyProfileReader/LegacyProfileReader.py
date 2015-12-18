@@ -82,6 +82,14 @@ class LegacyProfileReader(ProfileReader):
             Logger.log("e", "Could not parse DictionaryOfDoom.json: %s", str(e))
             return None
 
+        #Check the target version in the Dictionary of Doom with this application version.
+        if "target_version" not in dict_of_doom:
+            Logger.log("e", "Dictionary of Doom has no target version. Is it the correct JSON file?")
+            return None
+        if Profile.ProfileVersion != dict_of_doom["target_version"]:
+            Logger.log("e", "Dictionary of Doom of legacy profile reader (version %s) is not in sync with the profile version (version %s)!", dict_of_doom["target_version"], str(Profile.ProfileVersion))
+            return None
+
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
