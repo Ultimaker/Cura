@@ -3,8 +3,11 @@
 
 import configparser #For reading the legacy profile INI files.
 import json #For reading the Dictionary of Doom.
+import os.path #For concatenating the path to the plugin and the relative path to the Dictionary of Doom.
 
 from UM.Application import Application #To get the machine manager to create the new profile in.
+from UM.Logger import Logger #Logging errors.
+from UM.PluginRegistry import PluginRegistry #For getting the path to this plugin's directory.
 from UM.Settings.Profile import Profile
 from UM.Settings.ProfileReader import ProfileReader
 
