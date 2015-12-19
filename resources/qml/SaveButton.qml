@@ -10,176 +10,71 @@ import UM 1.1 as UM
 
 Rectangle {
     id: base;
+    UM.I18nCatalog { id: catalog; name:"cura"}
 
     property real progress: UM.Backend.progress;
     property bool activity: Printer.getPlatformActivity;
-    Behavior on progress { NumberAnimation { duration: 250; } }
-    property int totalHeight: childrenRect.height
+    //Behavior on progress { NumberAnimation { duration: 250; } }
+    property int totalHeight: childrenRect.height + UM.Theme.sizes.default_margin.height
     property string fileBaseName
-    property variant activeMachineInstance: UM.MachineManager.activeMachineInstance
-
-    onActiveMachineInstanceChanged:
-    {
-        base.createFileName()
-    }
-
-    UM.I18nCatalog { id: catalog; name:"cura"}
-
-    property variant printDuration: PrintInformation.currentPrintTime;
-    property real printMaterialAmount: PrintInformation.materialAmount;
-
-    function createFileName(){
-        var splitMachineName = UM.MachineManager.activeMachineInstance.split(" ")
-        var abbrMachine = ''
-            for (var i = 0; i < splitMachineName.length; i++){
-                if (splitMachineName[i].search(/ultimaker/i) != -1){
-                    abbrMachine += 'UM'
-                }
-                else{
-                    if (splitMachineName[i].charAt(0).search(/[0-9]/g) == -1)
-                        abbrMachine += splitMachineName[i].charAt(0)
-                }
-                var regExpAdditives = /[0-9\+]/g;
-                var resultAdditives = splitMachineName[i].match(regExpAdditives);
-                if (resultAdditives != null){
-                    for (var j = 0; j < resultAdditives.length; j++){
-                        abbrMachine += resultAdditives[j]
-
-                    }
-                }
+    property string statusText: {
+        if(progress == 0) {
+            if(!activity) {
+                return catalog.i18nc("@label:PrintjobStatus","Please load a 3d model");
+            } else {
+                return catalog.i18nc("@label:PrintjobStatus","Preparing to slice...");
             }
-        printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
+        } else if(base.progress < 0.99) {
+            return catalog.i18nc("@label:PrintjobStatus","Slicing...");
+        } else {
+            return catalog.i18nc("@label:PrintjobStatus","Ready to ") + UM.OutputDeviceManager.activeDeviceShortDescription;
+        }
     }
 
-     Connections {
-        target: openDialog
-        onHasMesh: {
-            base.fileBaseName = name
-            base.createFileName()
-        }
+    Label {
+        id: statusLabel
+        width: parent.width - 2 * UM.Theme.sizes.default_margin.width
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.sizes.default_margin.width
+
+        color: UM.Theme.colors.text
+        font: UM.Theme.fonts.large
+        text: statusText;
     }
 
     Rectangle{
-        id: printJobRow
-        implicitWidth: base.width;
-        implicitHeight: UM.Theme.sizes.sidebar_header.height
-        anchors.top: parent.top
-        color: UM.Theme.colors.sidebar_header_bar
-        Label{
-            id: printJobTextfieldLabel
-            text: catalog.i18nc("@label:textbox", "Printjob Name");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text_white
-        }
-        TextField {
-            id: printJobTextfield
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*55
-            height: UM.Theme.sizes.sidebar_inputFields.height
-            property int unremovableSpacing: 5
-            text: ''
-            onEditingFinished: {
-                if (printJobTextfield.text != ''){
-                    printJobTextfield.focus = false
-                }
-            }
-            validator: RegExpValidator {
-                regExp: /^[^\\ \/ \.]*$/
-            }
-            style: TextFieldStyle{
-                textColor: UM.Theme.colors.setting_control_text;
-                font: UM.Theme.fonts.default;
-                background: Rectangle {
-                    radius: 0
-                    implicitWidth: parent.width
-                    implicitHeight: parent.height
-                    border.width: 1;
-                    border.color: UM.Theme.colors.slider_groove_border;
-                }
-            }
-        }
-    }
+        id: progressBar
+        width: parent.width - 2 * UM.Theme.sizes.default_margin.width
+        height: UM.Theme.sizes.progressbar.height
+        anchors.top: statusLabel.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height/4
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.sizes.default_margin.width
+        radius: UM.Theme.sizes.progressbar_radius.width
+        color: UM.Theme.colors.progressbar_background
 
-    Rectangle {
-        id: specsRow
-        implicitWidth: base.width
-        implicitHeight: UM.Theme.sizes.sidebar_specs_bar.height
-        anchors.top: printJobRow.bottom
-        Item{
-            id: time
-            width: childrenRect.width;
+        Rectangle{
+            width: Math.max(parent.width * base.progress)
             height: parent.height
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
-            anchors.top: parent.top
-            visible: base.printMaterialAmount > 0 ? true : false
-            UM.RecolorImage {
-                id: timeIcon
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                width: UM.Theme.sizes.save_button_specs_icons.width
-                height: UM.Theme.sizes.save_button_specs_icons.height
-                sourceSize.width: width
-                sourceSize.height: width
-                color: UM.Theme.colors.text_hover
-                source: UM.Theme.icons.print_time;
-            }
-            Label{
-                id: timeSpec
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: timeIcon.right
-                anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
-                font: UM.Theme.fonts.default
-                color: UM.Theme.colors.text
-                text: (!base.printDuration || !base.printDuration.valid) ? "" : base.printDuration.getDisplayString(UM.DurationFormat.Short)
-            }
-        }
-        Item{
-            width: parent.width / 100 * 55
-            height: parent.height
-            anchors.left: time.right
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.top: parent.top
-            visible: base.printMaterialAmount > 0 ? true : false
-            UM.RecolorImage {
-                id: lengthIcon
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                width: UM.Theme.sizes.save_button_specs_icons.width
-                height: UM.Theme.sizes.save_button_specs_icons.height
-                sourceSize.width: width
-                sourceSize.height: width
-                color: UM.Theme.colors.text_hover
-                source: UM.Theme.icons.category_material;
-            }
-            Label{
-                id: lengthSpec
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: lengthIcon.right
-                anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
-                font: UM.Theme.fonts.default
-                color: UM.Theme.colors.text
-                text: base.printMaterialAmount <= 0 ? "" : catalog.i18nc("@label %1 is length of filament","%1 m").arg(base.printMaterialAmount)
-            }
+            color: UM.Theme.colors.progressbar_control
+            radius: UM.Theme.sizes.progressbar_radius.width
+            visible: base.progress > 0.99 ? false : true
         }
     }
 
     Rectangle{
         id: saveRow
         width: base.width
-        height: saveToButton.height + (UM.Theme.sizes.default_margin.height / 2) // height + bottomMargin
-        anchors.top: specsRow.bottom
+        height: saveToButton.height
+        anchors.top: progressBar.bottom
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
 
         Button {
             id: saveToButton
             property int resizedWidth
-            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height
+            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height + 3
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: base.progress > 0.99 && base.activity == true
             height: UM.Theme.sizes.save_button_save_to_button.height
@@ -188,35 +83,32 @@ Rectangle {
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice)
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, Printer.jobName)
             }
 
             style: ButtonStyle {
                 background: Rectangle {
-                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    //opacity: control.enabled ? 1.0 : 0.5
+                    //Behavior on opacity { NumberAnimation { duration: 50; } }
+                    border.color: !control.enabled ? UM.Theme.colors.action_button_disabled_border : 
+                                      control.pressed ? UM.Theme.colors.action_button_active_border :
+                                      control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border
+                    color: !control.enabled ? UM.Theme.colors.action_button_disabled : 
+                               control.pressed ? UM.Theme.colors.action_button_active :
+                               control.hovered ? UM.Theme.colors.action_button_hovered : UM.Theme.colors.action_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                     width: {
-                        var w = 0;
-                        if (base.width*0.55 > actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)){
-                            saveToButton.resizedWidth = base.width*0.55
-                            w = base.width*0.55
-                        }
-                        else {
-                            saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
-                            w = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
-                        }
-                        
-                        if(w < base.width * 0.55) {
-                            w = base.width * 0.55;
-                        }
-                        
-                        return w;
+                        saveToButton.resizedWidth = actualLabel.width + (UM.Theme.sizes.default_margin.width * 2)
+                        return saveToButton.resizedWidth
                     }
                     Label {
                         id: actualLabel
+                        //Behavior on opacity { NumberAnimation { duration: 50; } }
                         anchors.centerIn: parent
-                        color: UM.Theme.colors.load_save_button_text
-                        font: UM.Theme.fonts.default
+                        color: !control.enabled ? UM.Theme.colors.action_button_disabled_text : 
+                                   control.pressed ? UM.Theme.colors.action_button_active_text :
+                                   control.hovered ? UM.Theme.colors.action_button_hovered_text : UM.Theme.colors.action_button_text
+                        font: UM.Theme.fonts.action_button
                         text: control.text;
                     }
                 }
@@ -232,12 +124,18 @@ Rectangle {
             anchors.rightMargin: UM.Theme.sizes.default_margin.width
             width: UM.Theme.sizes.save_button_save_to_button.height
             height: UM.Theme.sizes.save_button_save_to_button.height
+            enabled: base.progress > 0.99 && base.activity == true
             //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
                 background: Rectangle {
                     id: deviceSelectionIcon
-                    color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
+                    border.color: !control.enabled ? UM.Theme.colors.action_button_disabled_border : 
+                                      control.pressed ? UM.Theme.colors.action_button_active_border :
+                                      control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border
+                    color: !control.enabled ? UM.Theme.colors.action_button_disabled : 
+                               control.pressed ? UM.Theme.colors.action_button_active :
+                               control.hovered ? UM.Theme.colors.action_button_hovered : UM.Theme.colors.action_button
                     Behavior on color { ColorAnimation { duration: 50; } }
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.sizes.save_button_text_margin.width / 2;
@@ -245,15 +143,16 @@ Rectangle {
                     height: parent.height
 
                     UM.RecolorImage {
-                        id: lengthIcon
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                         width: UM.Theme.sizes.standard_arrow.width
                         height: UM.Theme.sizes.standard_arrow.height
                         sourceSize.width: width
-                        sourceSize.height: width
-                        color: UM.Theme.colors.load_save_button_text
-                        source: UM.Theme.icons.arrow_bottom
+                        sourceSize.height: height
+                        color: !control.enabled ? UM.Theme.colors.action_button_disabled_text : 
+                                   control.pressed ? UM.Theme.colors.action_button_active_text :
+                                   control.hovered ? UM.Theme.colors.action_button_hovered_text : UM.Theme.colors.action_button_text;
+                        source: UM.Theme.icons.arrow_bottom;
                     }
                 }
                 label: Label{ }

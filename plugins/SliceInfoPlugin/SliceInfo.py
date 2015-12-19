@@ -110,7 +110,7 @@ class SliceInfo(Extension):
 
         # Convert data to bytes
         submitted_data = urllib.parse.urlencode(submitted_data)
-        binary_data = submitted_data.encode('utf-8')
+        binary_data = submitted_data.encode("utf-8")
 
         # Submit data
         try:

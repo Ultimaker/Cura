@@ -6,6 +6,9 @@ include(GNUInstallDirs)
 
 set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
 
+set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
+configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
+
 if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     # Extract Strings
     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
@@ -60,9 +63,12 @@ install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
 install(DIRECTORY plugins DESTINATION lib/cura)
 install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 if(NOT APPLE AND NOT WIN32)
-    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages)
+    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages FILES_MATCHING PATTERN *.py)
+    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
     install(FILES cura.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
 else()
-    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
+    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages FILES_MATCHING PATTERN *.py)
+    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
 endif()
 
+include(CPackConfig.cmake)

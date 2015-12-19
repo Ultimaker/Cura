@@ -22,6 +22,19 @@ UM.MainWindow
         id: backgroundItem;
         anchors.fill: parent;
         UM.I18nCatalog{id: catalog; name:"cura"}
+
+        //DeleteSelection on the keypress backspace event
+        Keys.onPressed: {
+            if (event.key == Qt.Key_Backspace)
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.deleteObject(objectContextMenu.objectId);
+                }
+            }
+        }
+
+
         UM.ApplicationMenu
         {
             id: menu
@@ -72,7 +85,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file");
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName);
                 }
                 Menu
                 {
@@ -88,7 +101,7 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id);
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName);
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
@@ -139,10 +152,6 @@ UM.MainWindow
                     onObjectRemoved: top_view_menu.removeItem(object)
                 }
                 ExclusiveGroup { id: view_menu_top_group; }
-
-                MenuSeparator { }
-
-                MenuItem { action: actions.toggleFullScreen; }
             }
             Menu
             {
@@ -301,14 +310,24 @@ UM.MainWindow
                 }
             }
 
+            JobSpecs
+            {
+                anchors
+                {
+                    bottom: parent.bottom;
+                    right: sidebar.left;
+                    bottomMargin: UM.Theme.sizes.default_margin.height;
+                    rightMargin: UM.Theme.sizes.default_margin.width;
+                }
+            }
+
             UM.MessageStack
             {
                 anchors
                 {
                     horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.logo.width/ 2)
-                    top: parent.verticalCenter;
-                    bottom: parent.bottom;
+                    horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width/ 2)
+                    verticalCenter: parent.verticalCenter;
                 }
             }
 
@@ -321,8 +340,7 @@ UM.MainWindow
                 //anchors.bottom: parent.bottom
                 anchors.top: viewModeButton.bottom
                 anchors.topMargin: UM.Theme.sizes.default_margin.height;
-                anchors.right: sidebar.left;
-                anchors.rightMargin: UM.Theme.sizes.window_margin.width;
+                anchors.left: viewModeButton.left;
                 //anchors.bottom: buttons.top;
                 //anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
 
@@ -335,10 +353,9 @@ UM.MainWindow
             {
                 id: openFileButton;
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
-                //style: UM.Theme.styles.open_file_button
                 text: catalog.i18nc("@action:button","Open File");
                 iconSource: UM.Theme.icons.load
-                style: UM.Theme.styles.open_file_button
+                style: UM.Theme.styles.tool_button
                 tooltip: '';
                 anchors
                 {
@@ -364,6 +381,7 @@ UM.MainWindow
                 source: UM.Theme.images.logo;
                 width: UM.Theme.sizes.logo.width;
                 height: UM.Theme.sizes.logo.height;
+                z: -1;
 
                 sourceSize.width: width;
                 sourceSize.height: height;
@@ -372,12 +390,12 @@ UM.MainWindow
             Button
             {
                 id: viewModeButton
-                property bool verticalTooltip: true
+
                 anchors
                 {
-                    top: parent.top;
-                    right: sidebar.left;
-                    rightMargin: UM.Theme.sizes.window_margin.width;
+                    top: toolbar.bottom;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    left: parent.left;
                 }
                 text: catalog.i18nc("@action:button","View Mode");
                 iconSource: UM.Theme.icons.viewmode;
@@ -389,12 +407,13 @@ UM.MainWindow
                     id: viewMenu;
                     Instantiator
                     {
+                        id: viewMenuInstantiator
                         model: UM.ViewModel { }
                         MenuItem
                         {
-                            text: model.name;
+                            text: model.name
                             checkable: true;
-                            checked: model.active;
+                            checked: model.active
                             exclusiveGroup: viewMenuGroup;
                             onTriggered: UM.Controller.setActiveView(model.id);
                         }
@@ -411,12 +430,9 @@ UM.MainWindow
                 id: toolbar;
 
                 anchors {
-                    left: parent.left
-                    top: parent.top
-                    topMargin: 74
-                    //horizontalCenter: parent.horizontalCenter
-                    //horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width / 2)
-                    //top: parent.top;
+                    top: openFileButton.bottom;
+                    topMargin: UM.Theme.sizes.window_margin.height;
+                    left: parent.left;
                 }
             }
 
@@ -463,13 +479,26 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General") , "" , Qt.resolvedUrl("./GeneralPage.qml"));
+            insertPage(0, catalog.i18nc("@title:tab","General"), generalPage);
 
             //: View preferences page title
-            insertPage(1, catalog.i18nc("@title:tab","View"), "view-preview", Qt.resolvedUrl("./ViewPage.qml"));
+            insertPage(1, catalog.i18nc("@title:tab","View"), viewPage);
 
             //Force refresh
             setPage(0)
+        }
+
+        Item {
+            visible: false
+            GeneralPage
+            {
+                id: generalPage
+            }
+
+            ViewPage
+            {
+                id: viewPage
+            }
         }
     }
 
@@ -543,8 +572,8 @@ UM.MainWindow
 
         addMachine.onTriggered: addMachineWizard.visible = true;
 
-        preferences.onTriggered: preferences.visible = true;
-        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(2); }
+        preferences.onTriggered: { preferences.visible = true; preferences.setPage(0); }
+        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
         manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 
         documentation.onTriggered: CuraActions.openDocumentation();
@@ -605,7 +634,7 @@ UM.MainWindow
         id: openDialog;
 
         //: File open dialog title
-        title: catalog.i18nc("@title:window","Open File")
+        title: catalog.i18nc("@title:window","Open file")
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
@@ -621,6 +650,11 @@ UM.MainWindow
 
         onAccepted:
         {
+            //Because several implementations of the file dialog only update the folder
+            //when it is explicitly set.
+            var f = folder;
+            folder = f;
+
             UM.MeshFileHandler.readLocalFile(fileUrl)
             openDialog.sendMeshName(fileUrl.toString())
         }
@@ -648,14 +682,34 @@ UM.MainWindow
         onRequestAddPrinter:
         {
             addMachineWizard.visible = true
-            addMachineWizard.firstRun = true
+            addMachineWizard.firstRun = false
         }
     }
 
     Component.onCompleted:
     {
         UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
-        base.visible = true;
+    }
+
+    Timer
+    {
+        id: startupTimer;
+        interval: 100;
+        repeat: false;
+        running: true;
+        onTriggered:
+        {
+            if(!base.visible)
+            {
+                base.visible = true;
+                restart();
+            }
+            else if(UM.MachineManager.activeMachineInstance == "")
+            {
+                addMachineWizard.firstRun = true;
+                addMachineWizard.open();
+            }
+        }
     }
 }
 

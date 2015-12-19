@@ -10,16 +10,16 @@ import UM 1.0 as UM
 
 Item 
 {
-    width: 250
-    height: 250
+    width: UM.Theme.sizes.button.width
+    height: UM.Theme.sizes.slider_layerview_size.height
 
     Slider 
     {
         id: slider
-        width: 10
-        height: 250
-        anchors.right : parent.right
-        anchors.rightMargin: UM.Theme.sizes.slider_layerview_margin.width/2
+        width: UM.Theme.sizes.slider_layerview_size.width
+        height: UM.Theme.sizes.slider_layerview_size.height
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.sizes.slider_layerview_margin.width/2
         orientation: Qt.Vertical
         minimumValue: 0;
         maximumValue: UM.LayerView.numLayers;
@@ -31,15 +31,7 @@ Item
         style: UM.Theme.styles.layerViewSlider
     }
     Rectangle {
-        anchors.right: parent.right
-        y: -UM.Theme.sizes.slider_layerview_background_extension.height
-        z: slider.z - 1
-        width: UM.Theme.sizes.button.width
-        height: UM.Theme.sizes.slider_layerview_background_extension.height
-        color: UM.Theme.colors.slider_text_background
-    }
-    Rectangle {
-        anchors.right : parent.right
+        anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         z: slider.z - 1
         width: UM.Theme.sizes.slider_layerview_background.width

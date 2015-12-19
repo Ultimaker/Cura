@@ -13,6 +13,9 @@ Item
     id: base;
     anchors.fill: parent;
 
+    signal showTooltip(Item item, point location, string text);
+    signal hideTooltip();
+
     property Action configureSettings;
     property variant minimumPrintTime: PrintInformation.minimumPrintTime;
     property variant maximumPrintTime: PrintInformation.maximumPrintTime;
@@ -20,12 +23,110 @@ Item
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name:"cura"}
+/*
+    Rectangle{
+        id: speedCellLeft
+        anchors.top: parent.top
+        anchors.left: parent.left
+        width: base.width/100*35 - UM.Theme.sizes.default_margin.width
+        height: childrenRect.height
 
+        Label{
+            id: speedLabel
+            //: Speed selection label
+            text: catalog.i18nc("@label","Speed:");
+            font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text;
+            anchors.top: parent.top
+            anchors.topMargin: UM.Theme.sizes.default_margin.height
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+        }
+    }
+
+    Rectangle {
+        id: speedCellRight
+        anchors.left: speedCellLeft.right
+        anchors.top: speedCellLeft.top
+        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        width: parent.width/100*65 - UM.Theme.sizes.default_margin.width
+        height: childrenRect.height
+
+        CheckBox{
+            id: normalSpeedCheckBox
+            property bool hovered_ex: false
+
+            anchors.top: parent.top
+            anchors.left: parent.left
+
+            //: Normal speed checkbox
+            text: catalog.i18nc("@option:check","Normal");
+            style: UM.Theme.styles.checkbox;
+
+            exclusiveGroup: speedCheckBoxGroup
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print <= 60 : true;
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked:
+                {
+                    UM.MachineManager.setSettingValue("speed_print", 60)
+                }
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height),
+                        catalog.i18nc("@label", "Use normal printing speed. This will result in high quality prints."));
+                }
+                onExited:
+                {
+                    parent.hovered_ex = false
+                    base.hideTooltip();
+                }
+            }
+        }
+        CheckBox{
+            id: highSpeedCheckBox
+            property bool hovered_ex: false
+
+            anchors.top: parent.top
+            anchors.left: normalSpeedCheckBox.right
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+
+            //: High speed checkbox
+            text: catalog.i18nc("@option:check","Fast");
+            style: UM.Theme.styles.checkbox;
+
+            exclusiveGroup: speedCheckBoxGroup
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print > 60 : true;
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked:
+                {
+                    UM.MachineManager.setSettingValue("speed_print", 100)
+                }
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height),
+                        catalog.i18nc("@label", "Use high printing speed. This will reduce printing time, but may affect the quality of the print."));
+                }
+                onExited:
+                {
+                    parent.hovered_ex = false
+                    base.hideTooltip();
+                }
+            }
+        }
+        ExclusiveGroup { id: speedCheckBoxGroup; }
+    }
+*/
     Rectangle{
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width/100*55 - UM.Theme.sizes.default_margin.width
+        width: base.width/100* 35 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height < UM.Theme.sizes.simple_mode_infill_caption.height ? UM.Theme.sizes.simple_mode_infill_caption.height : childrenRect.height
 
         Label{
@@ -33,92 +134,127 @@ Item
             //: Infill selection label
             text: catalog.i18nc("@label","Infill:");
             font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text;
             anchors.top: parent.top
             anchors.topMargin: UM.Theme.sizes.default_margin.height
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
         }
-        Label{
+/*        Label{
             id: infillCaption
-            width: infillCellLeft.width - UM.Theme.sizes.default_margin.width
-            text: infillModel.get(infillListView.activeIndex).text
+            width: infillCellLeft.width - UM.Theme.sizes.default_margin.width * 2
+            text: infillModel.count > 0 && infillListView.activeIndex != -1 ? infillModel.get(infillListView.activeIndex).text : ""
             font: UM.Theme.fonts.caption
             wrapMode: Text.Wrap
-            color: UM.Theme.colors.text
+            color: UM.Theme.colors.text_subtext
             anchors.top: infillLabel.bottom
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
-        }
+        } */
     }
 
-    Rectangle{
+    Flow {
         id: infillCellRight
-        height: 100
-        width: base.width/100*45
-        anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.sizes.default_margin.width  - (UM.Theme.sizes.default_margin.width/4)
-        anchors.top: parent.top
+
+        height: childrenRect.height;
+        width: base.width / 100 * 65
+        spacing: UM.Theme.sizes.default_margin.width
+
+        anchors.left: infillCellLeft.right
+        anchors.top: infillCellLeft.top
         anchors.topMargin: UM.Theme.sizes.default_margin.height
-        Component{
-            id: infillDelegate
-            Item{
-                width: infillCellRight.width/3
-                x: index * (infillCellRight.width/3)
-                anchors.top: parent.top
+
+        Repeater {
+            id: infillListView
+            property int activeIndex: {
+                if(!UM.ActiveProfile.valid)
+                {
+                    return -1;
+                }
+
+                var density = parseInt(UM.ActiveProfile.settingValues.infill_sparse_density);
+                for(var i = 0; i < infillModel.count; ++i)
+                {
+                    if(infillModel.get(i).percentage == density)
+                    {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+            model: infillModel;
+
+            Item {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
                 Rectangle{
                     id: infillIconLining
-                    anchors.top: parent.top
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width - (UM.Theme.sizes.default_margin.width/2)
-                    height: parent.width - (UM.Theme.sizes.default_margin.width/2)
-                    border.color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_text : UM.Theme.colors.setting_control_border
-                    border.width: infillListView.activeIndex == index ? 2 : 1
-                    color: infillListView.activeIndex == index ? UM.Theme.colors.setting_category_active : "transparent"
+
+                    width: (infillCellRight.width - 3 * UM.Theme.sizes.default_margin.width) / 4;
+                    height: width
+
+                    border.color: (infillListView.activeIndex == index) ? UM.Theme.colors.setting_control_selected :
+                                      (mousearea.containsMouse ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border)
+                    border.width: UM.Theme.sizes.default_lining.width
+                    color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_selected : "transparent"
+
                     UM.RecolorImage {
                         id: infillIcon
-                        z: parent.z + 1
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        width: parent.width - UM.Theme.sizes.default_margin.width
-                        height: parent.width - UM.Theme.sizes.default_margin.width
+                        anchors.fill: parent;
+                        anchors.margins: UM.Theme.sizes.infill_button_margin.width
+
                         sourceSize.width: width
                         sourceSize.height: width
-                        color: UM.Theme.colors.setting_control_text
                         source: UM.Theme.icons[model.icon];
+                        color: (infillListView.activeIndex == index) ? UM.Theme.colors.text_white : UM.Theme.colors.text
                     }
+
                     MouseArea {
+                        id: mousearea
                         anchors.fill: parent
+                        hoverEnabled: true
                         onClicked: {
-                            infillListView.activeIndex = index
+                            if (infillListView.activeIndex != index)
+                            {
+                                infillListView.activeIndex = index
+                                UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
+                            }
+                        }
+                        onEntered: {
+                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text);
+                        }
+                        onExited: {
+                            base.hideTooltip();
                         }
                     }
                 }
                 Label{
                     id: infillLabel
                     anchors.top: infillIconLining.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.horizontalCenter: infillIconLining.horizontalCenter
                     color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_text : UM.Theme.colors.setting_control_border
                     text: name
-                    //font.bold: infillListView.activeIndex == index ? true : false
                 }
             }
         }
-        ListView{
-            id: infillListView
-            property int activeIndex: 0
-            model: infillModel
-            delegate: infillDelegate
-            anchors.fill: parent
-        }
+
         ListModel {
             id: infillModel
 
             Component.onCompleted:
             {
                 infillModel.append({
-                    name: catalog.i18nc("@label", "Sparse"),
+                    name: catalog.i18nc("@label", "Hollow"),
+                    percentage: 0,
+                    text: catalog.i18nc("@label", "No (0%) infill will leave your model hollow at the cost of low strength"),
+                    icon: "hollow"
+                })
+                infillModel.append({
+                    name: catalog.i18nc("@label", "Light"),
                     percentage: 20,
-                    text: catalog.i18nc("@label", "Sparse (20%) infill will give your model an average strength"),
+                    text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
                     icon: "sparse"
                 })
                 infillModel.append({
@@ -139,61 +275,92 @@ Item
 
     Rectangle {
         id: helpersCellLeft
-        anchors.top: infillCellLeft.bottom
+        anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: parent.left
-        width: parent.width/100*45 - UM.Theme.sizes.default_margin.width
+        width: parent.width/100*35 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
+
         Label{
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
             //: Helpers selection label
             text: catalog.i18nc("@label:listbox","Helpers:");
             font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text;
         }
     }
     Rectangle {
         id: helpersCellRight
         anchors.top: helpersCellLeft.top
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: helpersCellLeft.right
-        width: parent.width/100*55 - UM.Theme.sizes.default_margin.width
+        width: parent.width/100*65 - UM.Theme.sizes.default_margin.width
         height: childrenRect.height
 
         CheckBox{
-            id: skirtCheckBox
+            id: brimCheckBox
+            property bool hovered_ex: false
+
             anchors.top: parent.top
             anchors.left: parent.left
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
+
             //: Setting enable skirt adhesion checkbox
-            text: catalog.i18nc("@option:check","Enable Skirt Adhesion");
+            text: catalog.i18nc("@option:check","Generate Brim");
             style: UM.Theme.styles.checkbox;
-            checked: Printer.getSettingValue("skirt_line_count") == null ? false: Printer.getSettingValue("skirt_line_count");
-            onCheckedChanged:
-            {
-                if(checked != Printer.getSettingValue("skirt_line_count"))
+
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked:
                 {
-                    Printer.setSettingValue("skirt_line_count", checked)
+                    parent.checked = !parent.checked
+                    UM.MachineManager.setSettingValue("adhesion_type", parent.checked?"brim":"skirt")
+                }
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                        catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
+                }
+                onExited:
+                {
+                    parent.hovered_ex = false
+                    base.hideTooltip();
                 }
             }
         }
         CheckBox{
-            anchors.top: skirtCheckBox.bottom
+            id: supportCheckBox
+            property bool hovered_ex: false
+
+            anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.sizes.default_lining.height
             anchors.left: parent.left
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
 
             //: Setting enable support checkbox
-            text: catalog.i18nc("@option:check","Enable Support");
-
+            text: catalog.i18nc("@option:check","Generate Support Structure");
             style: UM.Theme.styles.checkbox;
 
-            checked: Printer.getSettingValue("support_enable") == null? false: Printer.getSettingValue("support_enable");
-            onCheckedChanged:
-            {
-                if(checked != Printer.getSettingValue("support_enable"))
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.support_enable : false;
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked:
                 {
-                    Printer.setSettingValue("support_enable", checked)
+                    parent.checked = !parent.checked
+                    UM.MachineManager.setSettingValue("support_enable", parent.checked)
+                }
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                        catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited:
+                {
+                    parent.hovered_ex = false
+                    base.hideTooltip();
                 }
             }
         }

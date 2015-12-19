@@ -9,7 +9,7 @@
 
     "inherits": "fdmprinter.json",
 
-    "machine_settings": {
+    "overrides": { 
         "machine_width": { "default": 210 },
         "machine_depth": { "default": 185 },
         "machine_height": { "default": 200 },
@@ -17,6 +17,8 @@
 
         "machine_center_is_zero": { "default": false },
         "machine_nozzle_size": { "default": 0.4 },
+        "machine_nozzle_heat_up_speed": { "default": 2.0 },
+        "machine_nozzle_cool_down_speed": { "default": 2.0 },
         "machine_head_shape_min_x": { "default": 0 },
         "machine_head_shape_min_y": { "default": 0 },
         "machine_head_shape_max_x": { "default": 0 },
@@ -28,10 +30,8 @@
 
         "machine_nozzle_tip_outer_diameter": { "default": 1.0 },
         "machine_nozzle_head_distance": { "default": 3.0 },
-        "machine_nozzle_expansion_angle": { "default": 45 }
-    },
+        "machine_nozzle_expansion_angle": { "default": 45 },
 
-    "overrides": { 
         "layer_height": { "default": 0.2 },
         "layer_height_0": { "default": 0.2, "visible": false },
         "wall_line_count": { "default": 2, "visible": true },

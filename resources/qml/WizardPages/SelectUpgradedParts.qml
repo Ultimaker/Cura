@@ -14,6 +14,16 @@ Item
 
     SystemPalette{id: palette}
     UM.I18nCatalog { id: catalog; name:"cura"}
+
+    Component.onDestruction:
+    {
+        if (extruderCheckBox.checked == true){
+            UM.MachineManager.setMachineSettingValue("machine_extruder_drive_upgrade", true)
+        }
+        if (heatedBedCheckBox1.checked == true || heatedBedCheckBox2.checked == true){
+            UM.MachineManager.setMachineSettingValue("machine_heated_bed", true)
+        }
+    }
     Label
     {
         id: pageTitle
@@ -43,24 +53,31 @@ Item
         width: parent.width - UM.Theme.sizes.default_margin.width
         CheckBox
         {
-            id: checkBox
+            id: extruderCheckBox
             text: catalog.i18nc("@option:check","Extruder driver ugrades")
             checked: true
         }
         CheckBox
         {
-            text: catalog.i18nc("@option:check","Heated printer bed (standard kit)")
-            y: checkBox.height * 1
+            id: heatedBedCheckBox1
+            text: catalog.i18nc("@option:check","Heated printer bed")
+            y: extruderCheckBox.height * 1
+            checked: false
+            onClicked: {
+                if (heatedBedCheckBox2.checked == true)
+                    heatedBedCheckBox2.checked = false
+            }
         }
         CheckBox
         {
+            id: heatedBedCheckBox2
             text: catalog.i18nc("@option:check","Heated printer bed (self built)")
-            y: checkBox.height * 2
-        }
-        CheckBox
-        {
-            text: catalog.i18nc("@option:check","Dual extrusion (experimental)")
-            y: checkBox.height * 3
+            y: extruderCheckBox.height * 2
+            checked: false
+            onClicked: {
+                if (heatedBedCheckBox1.checked == true)
+                    heatedBedCheckBox1.checked = false
+            }
         }
     }
 

@@ -7,8 +7,6 @@ import QtQuick.Window 2.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.1 as UM
-import Cura 1.0 as Cura
-import ".."
 
 Item
 {
@@ -18,18 +16,69 @@ Item
 
     property variant wizard: null;
 
+    property bool visibility: base.wizard.visible
+    onVisibilityChanged:
+    {
+        machineName.text = getMachineName()
+        errorMessage.show = false
+    }
+
+    function editMachineName(word)
+    {
+        //Adds '#2' at the end or increases the number by 1 if the word ends with '#' and 1 or more digits
+        var regEx = /[#][\d]+$///ends with '#' and then 1 or more digit
+        var result = word.match(regEx)
+
+        if (result != null)
+        {
+            result = result[0].split('')
+
+            var numberString = ''
+            for (var i = 1; i < result.length; i++){//starting at 1, makes it ignore the '#'
+                numberString += result[i]
+            }
+            var newNumber = Number(numberString) + 1
+
+            var newWord = word.replace(/[\d]+$/, newNumber)//replaces the last digits in the string by the same number + 1
+            return newWord
+        }
+        else {
+            return word + ' #2'
+        }
+    }
+
+    function getMachineName()
+    {
+        var name = machineList.model.getItem(machineList.currentIndex).name
+
+        //if the automatically assigned name is not unique, the editMachineName function keeps editing it untill it is.
+        while (UM.MachineManager.checkInstanceExists(name) != false)
+        {
+            name = editMachineName(name)
+        }
+        return name
+    }
+
     Connections
     {
         target: base.wizard
         onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
         {
-            var old_page_count = base.wizard.getPageCount()
-            // Delete old pages (if any)
-            for (var i = old_page_count - 1; i > 0; i--)
+            var name = machineName.text
+            if (UM.MachineManager.checkInstanceExists(name) != false)
             {
-                base.wizard.removePage(i)
+                errorMessage.show = true
             }
-            saveMachine()
+            else
+            {
+                var old_page_count = base.wizard.getPageCount()
+                // Delete old pages (if any)
+                for (var i = old_page_count - 1; i > 0; i--)
+                {
+                    base.wizard.removePage(i)
+                }
+                saveMachine()
+            }
         }
         onBackClicked:
         {
@@ -63,7 +112,8 @@ Item
     {
         id: machinesHolder
 
-        anchors{
+        anchors
+        {
             left: parent.left;
             top: subTitle.bottom;
             right: parent.right;
@@ -110,6 +160,7 @@ Item
                 onClicked: {
                     base.activeManufacturer = section;
                     machineList.currentIndex = machineList.model.find("manufacturer", section)
+                    machineName.text = getMachineName()
                 }
             }
 
@@ -130,11 +181,7 @@ Item
 
                 onClicked: {
                     ListView.view.currentIndex = index;
-                    if(model.pages.length > 0) {
-                        base.wizard.nextAvailable = true;
-                    } else {
-                        base.wizard.nextAvailable = false;
-                    }
+                    machineName.text = getMachineName()
                 }
 
                 Label
@@ -176,11 +223,33 @@ Item
         }
     }
 
-    Item
+
+
+    Column
     {
         id: machineNameHolder
-        height: childrenRect.height
         anchors.bottom: parent.bottom;
+        //height: insertNameLabel.lineHeight * (2 + errorMessage.lineCount)
+
+        Item
+        {
+            height: errorMessage.lineHeight
+            anchors.bottom: insertNameLabel.top
+            anchors.bottomMargin: insertNameLabel.height * errorMessage.lineCount
+            Label
+            {
+                id: errorMessage
+                property bool show: false
+                width: base.width
+                height: errorMessage.show ? errorMessage.lineHeight : 0
+                visible: errorMessage.show
+                text: catalog.i18nc("@label", "This printer name has already been used. Please choose a different printer name.");
+                wrapMode: Text.WordWrap
+                Behavior on height {NumberAnimation {duration: 75; }}
+                color: UM.Theme.colors.error
+            }
+        }
+
         Label
         {
             id: insertNameLabel
@@ -189,8 +258,7 @@ Item
         TextField
         {
             id: machineName;
-            anchors.top: insertNameLabel.bottom
-            text: machineList.model.getItem(machineList.currentIndex).name
+            text: getMachineName()
             implicitWidth: UM.Theme.sizes.standard_list_input.width
         }
     }
@@ -221,8 +289,12 @@ Item
                         base.wizard.appendPage(Qt.resolvedUrl("Bedleveling.qml"), catalog.i18nc("@title", "Bed Levelling"));
                         break;
                     default:
+                        base.wizard.appendPage(Qt.resolvedUrl("%1.qml".arg(pages[i])), pages[i])
                         break;
                 }
+            }
+            if(base.wizard.lastPage ==  true){
+                base.wizard.visible = false
             }
         }
     }

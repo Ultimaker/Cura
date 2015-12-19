@@ -10,6 +10,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Math.Quaternion import Quaternion
 
+from UM.Job import Job
 
 import os
 import struct
@@ -36,12 +37,16 @@ class ThreeMFReader(MeshReader):
         if extension.lower() == self._supported_extension:
             result = SceneNode()
             # The base object of 3mf is a zipped archive.
-            archive = zipfile.ZipFile(file_name, 'r')
+            archive = zipfile.ZipFile(file_name, "r")
             try:
                 root = ET.parse(archive.open("3D/3dmodel.model"))
 
                 # There can be multiple objects, try to load all of them.
                 objects = root.findall("./3mf:resources/3mf:object", self._namespaces)
+                if len(objects) == 0:
+                    Logger.log("w", "No objects found in 3MF file %s, either the file is corrupt or you are using an outdated format", file_name)
+                    return None
+
                 for object in objects:
                     mesh = MeshData()
                     node = SceneNode()
@@ -49,22 +54,25 @@ class ThreeMFReader(MeshReader):
                     #for vertex in object.mesh.vertices.vertex:
                     for vertex in object.findall(".//3mf:vertex", self._namespaces):
                         vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
+                        Job.yieldThread()
 
                     triangles = object.findall(".//3mf:triangle", self._namespaces)
 
                     mesh.reserveFaceCount(len(triangles))
-                    
+
                     #for triangle in object.mesh.triangles.triangle:
                     for triangle in triangles:
                         v1 = int(triangle.get("v1"))
                         v2 = int(triangle.get("v2"))
                         v3 = int(triangle.get("v3"))
                         mesh.addFace(vertex_list[v1][0],vertex_list[v1][1],vertex_list[v1][2],vertex_list[v2][0],vertex_list[v2][1],vertex_list[v2][2],vertex_list[v3][0],vertex_list[v3][1],vertex_list[v3][2])
-                    #TODO: We currently do not check for normals and simply recalculate them. 
+                        Job.yieldThread()
+
+                    #TODO: We currently do not check for normals and simply recalculate them.
                     mesh.calculateNormals()
                     node.setMeshData(mesh)
                     node.setSelectable(True)
-                    
+
                     transformation = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(object.get("id")), self._namespaces)
                     if transformation:
                         transformation = transformation[0]
@@ -88,29 +96,31 @@ class ThreeMFReader(MeshReader):
                         temp_mat._data[0,2] = splitted_transformation[6]
                         temp_mat._data[1,2] = splitted_transformation[7]
                         temp_mat._data[2,2] = splitted_transformation[8]
-                        
+
                         # Translation
                         temp_mat._data[0,3] = splitted_transformation[9]
                         temp_mat._data[1,3] = splitted_transformation[10]
                         temp_mat._data[2,3] = splitted_transformation[11]
-                        
+
                         node.setPosition(Vector(temp_mat.at(0,3), temp_mat.at(1,3), temp_mat.at(2,3)))
-                        
+
                         temp_quaternion = Quaternion()
                         temp_quaternion.setByMatrix(temp_mat)
                         node.setOrientation(temp_quaternion)
-                        
+
                         # Magical scale extraction
-                        S2 = temp_mat.getTransposed().multiply(temp_mat)
-                        scale_x = math.sqrt(S2.at(0,0))
-                        scale_y = math.sqrt(S2.at(1,1))
-                        scale_z = math.sqrt(S2.at(2,2))
+                        scale = temp_mat.getTransposed().multiply(temp_mat)
+                        scale_x = math.sqrt(scale.at(0,0))
+                        scale_y = math.sqrt(scale.at(1,1))
+                        scale_z = math.sqrt(scale.at(2,2))
                         node.setScale(Vector(scale_x,scale_y,scale_z))
-                        
+
                         # We use a different coordinate frame, so rotate.
-                        rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
-                        node.rotate(rotation)
+                        #rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
+                        #node.rotate(rotation)
                     result.addChild(node)
+
+                    Job.yieldThread()
 
                 #If there is more then one object, group them.
                 try:

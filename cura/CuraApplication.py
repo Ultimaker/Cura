@@ -3,11 +3,6 @@
 
 import platform
 
-if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
-    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
-        from OpenGL import GL
-
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
@@ -15,6 +10,7 @@ from UM.Scene.Platform import Platform
 from UM.Math.Vector import Vector
 from UM.Math.Matrix import Matrix
 from UM.Math.Quaternion import Quaternion
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -44,6 +40,8 @@ from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
 from . import MultiMaterialDecorator
+from . import ZOffsetDecorator
+from . import CuraSplashScreen
 
 from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
@@ -57,6 +55,16 @@ import numpy
 import copy
 numpy.seterr(all="ignore")
 
+if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
+    # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
+    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
+        from OpenGL import GL
+
+try:
+    from cura.CuraVersion import CuraVersion
+except ImportError:
+    CuraVersion = "master" # [CodeStyle: Reflecting imported value]
+
 class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
@@ -68,7 +76,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        super().__init__(name = "cura", version = "15.09.82")
+        super().__init__(name = "cura", version = CuraVersion)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
@@ -90,6 +98,8 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
+        self._scene_boundingbox = AxisAlignedBox()
+        self._job_name = None
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
@@ -131,8 +141,12 @@ class CuraApplication(QtApplication):
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
+        parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
+        if "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION" not in os.environ or os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] != "cpp":
+            Logger.log("w", "Using Python implementation of Protobuf, expect bad performance!")
+
         self._i18n_catalog = i18nCatalog("cura");
 
         i18nCatalog.setTagReplacements({
@@ -144,7 +158,7 @@ class CuraApplication(QtApplication):
 
         controller = self.getController()
 
-        controller.setActiveView("MeshView")
+        controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
@@ -159,30 +173,25 @@ class CuraApplication(QtApplication):
 
         self._volume = BuildVolume.BuildVolume(root)
 
-        self.getRenderer().setLightPosition(Vector(0, 150, 0))
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
         camera = Camera("3d", root)
-        camera.setPosition(Vector(-150, 150, 300))
+        camera.setPosition(Vector(-80, 250, 700))
         camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
+        controller.getScene().setActiveCamera("3d")
+
+        self.getController().getTool("CameraTool").setOrigin(Vector(0, 100, 0))
 
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
-
-        controller.getScene().setActiveCamera("3d")
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
-
-        manager = self.getMachineManager()
-        if not self.getMachineManager().getMachineInstances():
-            self.requestAddPrinter.emit()
-
 
         if self._engine.rootObjects:
             self.closeSplash()
@@ -232,35 +241,58 @@ class CuraApplication(QtApplication):
 
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
+    sceneBoundingBoxChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = activityChanged)
     def getPlatformActivity(self):
         return self._platform_activity
 
+    @pyqtProperty(str, notify = sceneBoundingBoxChanged)
+    def getSceneBoundingBoxString(self):
+        return self._i18n_catalog.i18nc("@info", "%.1f x %.1f x %.1f mm") % (self._scene_boundingbox.width.item(), self._scene_boundingbox.depth.item(), self._scene_boundingbox.height.item())
+
     def updatePlatformActivity(self, node = None):
         count = 0
+        scene_boundingbox = AxisAlignedBox()
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
 
             count += 1
+            scene_boundingbox += node.getBoundingBox()
+
+        if repr(self._scene_boundingbox) != repr(scene_boundingbox):
+            self._scene_boundingbox = scene_boundingbox
+            self.sceneBoundingBoxChanged.emit()
 
         self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
 
+    @pyqtSlot(str)
+    def setJobName(self, name):
+        if self._job_name != name:
+            self._job_name = name
+            self.jobNameChanged.emit()
+
+    jobNameChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = jobNameChanged)
+    def jobName(self):
+        return self._job_name
+
     ##  Remove an object from the scene
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
-        object = self.getController().getScene().findObject(object_id)
+        node = self.getController().getScene().findObject(object_id)
 
-        if not object and object_id != 0: #Workaround for tool handles overlapping the selected object
-            object = Selection.getSelectedObject(0)
-        
-        if object:
-            if object.getParent():
-                group_node = object.getParent()
+        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+            node = Selection.getSelectedObject(0)
+
+        if node:
+            if node.getParent():
+                group_node = node.getParent()
                 if not group_node.callDecoration("isGroup"):
-                    op = RemoveSceneNodeOperation(object)
+                    op = RemoveSceneNodeOperation(node)
                 else:
                     while group_node.getParent().callDecoration("isGroup"):
                         group_node = group_node.getParent()
@@ -294,10 +326,15 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
-        if node.getParent() and node.getParent().callDecoration("isGroup"):
-            node = node.getParent()
         if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
+
+        if not node:
+            return
+
+        if node.getParent() and node.getParent().callDecoration("isGroup"):
+            node = node.getParent()
+
         if node:
             op = SetTransformOperation(node, Vector())
             op.push()
@@ -335,14 +372,12 @@ class CuraApplication(QtApplication):
                 continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
 
             nodes.append(node)
+
         if nodes:
             op = GroupedOperation()
             for node in nodes:
-                # Ensure that the object is above the build platform
-                move_distance = node.getBoundingBox().center.y
-                if move_distance <= 0:
-                    move_distance = -node.getBoundingBox().bottom
-                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0)))
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0)))
 
             op.push()
     
@@ -364,10 +399,8 @@ class CuraApplication(QtApplication):
 
             for node in nodes:
                 # Ensure that the object is above the build platform
-                move_distance = node.getBoundingBox().center.y
-                if move_distance <= 0:
-                    move_distance = -node.getBoundingBox().bottom
-                op.addOperation(SetTransformOperation(node, Vector(0,move_distance,0), Quaternion(), Vector(1, 1, 1)))
+                node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
+                op.addOperation(SetTransformOperation(node, Vector(0,0,0), Quaternion(), Vector(1, 1, 1)))
 
             op.push()
             
@@ -407,6 +440,7 @@ class CuraApplication(QtApplication):
         return log
 
     recentFilesChanged = pyqtSignal()
+
     @pyqtProperty("QVariantList", notify = recentFilesChanged)
     def recentFiles(self):
         return self._recent_files
@@ -421,6 +455,7 @@ class CuraApplication(QtApplication):
             self.expandedCategoriesChanged.emit()
 
     expandedCategoriesChanged = pyqtSignal()
+
     @pyqtProperty("QStringList", notify = expandedCategoriesChanged)
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
@@ -464,17 +499,20 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.setParent(self.getController().getScene().getRoot())
-        
+        center = Selection.getSelectionCenter()
+        group_node.setPosition(center)
+        group_node.setCenterPosition(center)
+
         for node in Selection.getAllSelectedObjects():
+            world = node.getWorldPosition()
             node.setParent(group_node)
-        group_node.setCenterPosition(group_node.getBoundingBox().center)
-        #group_node.translate(Vector(0,group_node.getBoundingBox().center.y,0))
-        group_node.translate(group_node.getBoundingBox().center)
+            node.setPosition(world - center)
+
         for node in group_node.getChildren():
             Selection.remove(node)
-        
+
         Selection.add(group_node)
-    
+
     @pyqtSlot()
     def ungroupSelected(self):
         ungrouped_nodes = []
@@ -485,12 +523,11 @@ class CuraApplication(QtApplication):
                 for child in node.getChildren():
                     if type(child) is SceneNode:
                         children_to_move.append(child)
-                       
+
                 for child in children_to_move:
+                    position = child.getWorldPosition()
                     child.setParent(node.getParent())
-                    print(node.getPosition())
-                    child.translate(node.getPosition())
-                    child.setPosition(child.getPosition().scale(node.getScale()))
+                    child.setPosition(position - node.getParent().getWorldPosition())
                     child.scale(node.getScale())
                     child.rotate(node.getOrientation())
 
@@ -500,6 +537,9 @@ class CuraApplication(QtApplication):
                 ungrouped_nodes.append(node)
         for node in ungrouped_nodes:
             Selection.remove(node)
+
+    def _createSplashScreen(self):
+        return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
         machine = self.getMachineManager().getActiveMachineInstance()
@@ -535,6 +575,8 @@ class CuraApplication(QtApplication):
 
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
+
+            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():

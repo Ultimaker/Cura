@@ -11,6 +11,7 @@ from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.Qt.ListModel import ListModel
+from UM.Message import Message
 
 from cura.CuraApplication import CuraApplication
 
@@ -54,6 +55,16 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     addConnectionSignal = Signal()
     printerConnectionStateChanged = pyqtSignal()
 
+    progressChanged = pyqtSignal()
+
+    @pyqtProperty(float, notify = progressChanged)
+    def progress(self):
+        progress = 0
+        for name, connection in self._printer_connections.items():
+            progress += connection.progress
+
+        return progress / len(self._printer_connections)
+
     def start(self):
         self._check_updates = True
         self._update_thread.start()
@@ -84,12 +95,18 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
         self._firmware_view.show()
 
+    @pyqtSlot()
     def updateAllFirmware(self):
+        if not self._printer_connections:
+            Message("Cannot update firmware, there were no connected printers found.").show()
+            return
+
         self.spawnFirmwareInterface("")
         for printer_connection in self._printer_connections:
             try:
                 self._printer_connections[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
+                Logger.log("w", "No firmware found for printer %s", printer_connection)
                 continue
 
     @pyqtSlot(str, result = bool)
@@ -148,11 +165,22 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
                 continue
         self._serial_port_list = list(serial_ports)
 
+        connections_to_remove = []
+        for port, connection in self._printer_connections.items():
+            if port not in self._serial_port_list:
+                connection.close()
+                connections_to_remove.append(port)
+
+        for port in connections_to_remove:
+            del self._printer_connections[port]
+
+
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addConnection(self, serial_port):
         connection = PrinterConnection.PrinterConnection(serial_port)
         connection.connect()
         connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+        connection.progressChanged.connect(self.progressChanged)
         self._printer_connections[serial_port] = connection
 
     def _onPrinterConnectionStateChanged(self, serial_port):

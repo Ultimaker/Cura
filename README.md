@@ -13,7 +13,7 @@ Use [this](https://github.com/Ultimaker/Uranium/wiki/Bug-Reporting-Template) tem
 For crashes and similar issues, please attach the following information:
 
 * (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
-* The Cura GUI log file, located at (Windows) $User/AppData/Local/cura/cura.log, (OSX) $User/.cura/cura.log
+* The Cura GUI log file, located at (Windows) $User/AppData/Local/cura/cura.log, (OSX) $User/.cura/cura.log, (Ubuntu) $USER/.local/share/cura
 * The Cura Engine log, using Help -> Show Engine Log
 
 Dependencies
@@ -41,6 +41,7 @@ Third party plugins
 -------------
 * [Print time calculator](https://github.com/nallath/PrintCostCalculator)
 * [Post processing plugin](https://github.com/nallath/PostProcessingPlugin)
+* [Barbarian Plugin](https://github.com/nallath/BarbarianPlugin) Simple scale tool for imperial to metric.
 
 Making profiles for other printers
 ----------------------------------
