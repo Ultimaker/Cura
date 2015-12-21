@@ -21,8 +21,12 @@ class CuraSplashScreen(QSplashScreen):
 
         painter.setFont(QFont("Roboto", 20))
         painter.drawText(0, 0, 203, 230, Qt.AlignRight | Qt.AlignBottom, version[0])
-        painter.setFont(QFont("Roboto", 12))
-        painter.drawText(0, 0, 203, 255, Qt.AlignRight | Qt.AlignBottom, version[1])
+
+        # "master" release does not have an second entry in variable version.
+        # In this case skip to load version[1]...
+        if len(version) > 1:
+            painter.setFont(QFont("Roboto", 12))
+            painter.drawText(0, 0, 203, 255, Qt.AlignRight | Qt.AlignBottom, version[1])
 
         painter.restore()
         super().drawContents(painter)
