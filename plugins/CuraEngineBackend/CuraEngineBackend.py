@@ -147,6 +147,17 @@ class CuraEngineBackend(Backend):
         job.start()
         job.finished.connect(self._onStartSliceCompleted)
 
+    def _terminate(self):
+        if self._slicing:
+            self._slicing = False
+            self._restart = True
+            if self._process is not None:
+                Logger.log("d", "Killing engine process")
+                try:
+                    self._process.terminate()
+                except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                    pass
+        
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
             if self._message:
@@ -245,6 +256,7 @@ class CuraEngineBackend(Backend):
             self._restart = False
 
     def _onToolOperationStarted(self, tool):
+        self._terminate() # Do not continue slicing once a tool has started
         self._enabled = False # Do not reslice when a tool is doing it's 'thing'
 
     def _onToolOperationStopped(self, tool):
