@@ -107,15 +107,7 @@ class CuraEngineBackend(Backend):
             return
 
         if self._slicing:
-            self._slicing = False
-            self._restart = True
-            if self._process is not None:
-                Logger.log("d", "Killing engine process")
-                try:
-                    self._process.terminate()
-                except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                    pass
-
+            self._terminate()
 
             if self._message:
                 self._message.hide()
@@ -146,6 +138,16 @@ class CuraEngineBackend(Backend):
         job = StartSliceJob.StartSliceJob(self._profile, self._socket)
         job.start()
         job.finished.connect(self._onStartSliceCompleted)
+
+    def _terminate(self):
+        self._slicing = False
+        self._restart = True
+        if self._process is not None:
+            Logger.log("d", "Killing engine process")
+            try:
+                self._process.terminate()
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
 
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
@@ -245,6 +247,7 @@ class CuraEngineBackend(Backend):
             self._restart = False
 
     def _onToolOperationStarted(self, tool):
+        self._terminate() # Do not continue slicing once a tool has started
         self._enabled = False # Do not reslice when a tool is doing it's 'thing'
 
     def _onToolOperationStopped(self, tool):
@@ -265,12 +268,5 @@ class CuraEngineBackend(Backend):
 
 
     def _onInstanceChanged(self):
-        self._slicing = False
-        self._restart = True
-        if self._process is not None:
-            Logger.log("d", "Killing engine process")
-            try:
-                self._process.terminate()
-            except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                pass
+        self._terminate()
         self.slicingCancelled.emit()
