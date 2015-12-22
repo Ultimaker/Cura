@@ -107,15 +107,7 @@ class CuraEngineBackend(Backend):
             return
 
         if self._slicing:
-            self._slicing = False
-            self._restart = True
-            if self._process is not None:
-                Logger.log("d", "Killing engine process")
-                try:
-                    self._process.terminate()
-                except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                    pass
-
+            self._terminate()
 
             if self._message:
                 self._message.hide()
@@ -148,16 +140,15 @@ class CuraEngineBackend(Backend):
         job.finished.connect(self._onStartSliceCompleted)
 
     def _terminate(self):
-        if self._slicing:
-            self._slicing = False
-            self._restart = True
-            if self._process is not None:
-                Logger.log("d", "Killing engine process")
-                try:
-                    self._process.terminate()
-                except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                    pass
-        
+        self._slicing = False
+        self._restart = True
+        if self._process is not None:
+            Logger.log("d", "Killing engine process")
+            try:
+                self._process.terminate()
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
+
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
             if self._message:
@@ -277,12 +268,5 @@ class CuraEngineBackend(Backend):
 
 
     def _onInstanceChanged(self):
-        self._slicing = False
-        self._restart = True
-        if self._process is not None:
-            Logger.log("d", "Killing engine process")
-            try:
-                self._process.terminate()
-            except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                pass
+        self._terminate()
         self.slicingCancelled.emit()
