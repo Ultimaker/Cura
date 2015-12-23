@@ -1,5 +1,4 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Copyright (c) 2013 David Braam
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import os
@@ -21,28 +20,17 @@ class ImageReader(MeshReader):
         super(ImageReader, self).__init__()
         self._supported_extensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"]
         self._ui = ImageReaderUI(self)
-        self._wait = False
-        self._canceled = False
+
+    def preRead(self, file_name):
+        self._ui.showConfigUI()
+        self._ui.waitForUIToClose()
+
+        if self._ui.getCancelled():
+            return MeshReader.PreReadResult.cancelled
+        return MeshReader.PreReadResult.accepted
 
     def read(self, file_name):
-        extension = os.path.splitext(file_name)[1]
-        if extension.lower() in self._supported_extensions:
-            self._ui.showConfigUI()
-            self._wait = True
-            self._canceled = True
-
-            while self._wait:
-                pass
-                # this causes the config window to not repaint...
-                # Job.yieldThread()
-
-            result = None
-            if not self._canceled:
-                result = self._generateSceneNode(file_name, self._ui.size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512)
-
-            return result
-
-        return None
+        return self._generateSceneNode(file_name, self._ui.size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512)
 
     def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size):
         mesh = None
@@ -99,15 +87,20 @@ class ImageReader(MeshReader):
         Job.yieldThread()
 
         for i in range(0, blur_iterations):
-            ii = blur_iterations-i
-            copy = numpy.copy(height_data)
+            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode='edge')
 
-            height_data += numpy.roll(copy, ii, axis=0)
-            height_data += numpy.roll(copy, -ii, axis=0)
-            height_data += numpy.roll(copy, ii, axis=1)
-            height_data += numpy.roll(copy, -ii, axis=1)
+            height_data += copy[1:-1, 2:]
+            height_data += copy[1:-1, :-2]
+            height_data += copy[2:, 1:-1]
+            height_data += copy[:-2, 1:-1]
 
-            height_data /= 5
+            height_data += copy[2:, 2:]
+            height_data += copy[:-2, 2:]
+            height_data += copy[2:, :-2]
+            height_data += copy[:-2, :-2]
+
+            height_data /= 9
+
             Job.yieldThread()
 
         height_data *= scale_vector.y
@@ -118,8 +111,9 @@ class ImageReader(MeshReader):
 
         mesh.reserveFaceCount(total_face_count)
 
-        # initialize to texel space vertex offsets
-        heightmap_vertices = numpy.zeros(((width - 1) * (height - 1), 6, 3), dtype=numpy.float32)
+        # initialize to texel space vertex offsets.
+        # 6 is for 6 vertices for each texel quad.
+        heightmap_vertices = numpy.zeros((width_minus_one * height_minus_one, 6, 3), dtype=numpy.float32)
         heightmap_vertices = heightmap_vertices + numpy.array([[
             [0, base_height, 0],
             [0, base_height, texel_height],

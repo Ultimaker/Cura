@@ -1,8 +1,8 @@
 # Copyright (c) 2015 Ultimaker B.V.
-# Copyright (c) 2013 David Braam
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import os
+import threading
 
 from PyQt5.QtCore import Qt, QUrl, pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtQml import QQmlComponent, QQmlContext
@@ -23,12 +23,27 @@ class ImageReaderUI(QObject):
         self.image_reader = image_reader
         self._ui_view = None
         self.show_config_ui_trigger.connect(self._actualShowConfigUI)
-        self.size = 120
+
+	# There are corresponding values for these fields in ConfigUI.qml. 
+	# If you change the values here, consider updating ConfigUI.qml as well.
+        self.size = 120	
         self.base_height = 2
         self.peak_height = 12
         self.smoothing = 1
 
+        self._ui_lock = threading.Lock()
+        self._cancelled = False
+
+    def getCancelled(self):
+        return self._cancelled
+
+    def waitForUIToClose(self):
+        self._ui_lock.acquire()
+        self._ui_lock.release()
+
     def showConfigUI(self):
+        self._ui_lock.acquire()
+        self._cancelled = False
         self.show_config_ui_trigger.emit()
 
     def _actualShowConfigUI(self):
@@ -49,15 +64,15 @@ class ImageReaderUI(QObject):
 
     @pyqtSlot()
     def onOkButtonClicked(self):
-        self.image_reader._canceled = False
-        self.image_reader._wait = False
+        self._cancelled = False
         self._ui_view.close()
+        self._ui_lock.release()
 
     @pyqtSlot()
     def onCancelButtonClicked(self):
-        self.image_reader._canceled = True
-        self.image_reader._wait = False
+        self._cancelled = True
         self._ui_view.close()
+        self._ui_lock.release()
 
     @pyqtSlot(str)
     def onSizeChanged(self, value):
@@ -80,9 +95,6 @@ class ImageReaderUI(QObject):
         else:
             self.peak_height = 0
 
-    @pyqtSlot(str)
+    @pyqtSlot(float)
     def onSmoothingChanged(self, value):
-        if (len(value) > 0):
-            self.smoothing = int(value)
-        else:
-            self.smoothing = 0
+        self.smoothing = int(value)
