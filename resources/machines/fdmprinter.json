@@ -146,20 +146,27 @@
         }
     },
     "categories": {
-        "resolution": {
-            "label": "Quality",
+        "machine": {
+            "label": "Machine",
             "visible": true,
             "icon": "category_layer_height",
             "settings": {
                 "machine_nozzle_size": {
                     "label": "Nozzle Diameter",
-                    "description": "The inner diameter of the hole in the nozzle.",
+                    "description": "The inner diameter of the nozzle.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.4,
                     "min_value": "0.001",
                     "visible": false
-                },
+                }
+            }
+        },
+        "resolution": {
+            "label": "Quality",
+            "visible": true,
+            "icon": "category_layer_height",
+            "settings": {
                 "layer_height": {
                     "label": "Layer Height",
                     "description": "The height of each layer, in mm. Normal quality prints are 0.1mm, high quality is 0.06mm. You can go up to 0.25mm with an Ultimaker for very fast prints at low quality. For most purposes, layer heights between 0.1 and 0.2mm give a good tradeoff of speed and surface finish.",
