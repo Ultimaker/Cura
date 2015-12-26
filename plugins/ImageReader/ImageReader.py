@@ -12,6 +12,7 @@ from UM.Mesh.MeshData import MeshData
 from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Job import Job
+from UM.Logger import Logger
 from .ImageReaderUI import ImageReaderUI
 
 
@@ -42,6 +43,11 @@ class ImageReader(MeshReader):
         scene_node.setMeshData(mesh)
 
         img = QImage(file_name)
+
+        if img.isNull():
+            Logger.log("e", "Image is corrupt.")
+            return None
+
         width = max(img.width(), 2)
         height = max(img.height(), 2)
         aspect = height / width
