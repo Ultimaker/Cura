@@ -129,30 +129,31 @@ Item
 
             section.property: "manufacturer"
             section.delegate: Button {
-                text: section + " "
+                text: section
                 style: ButtonStyle {
                     background: Rectangle {
-                        id: manufacturerBackground
-                        opacity: 0.3
                         border.width: 0
-                        color: control.hovered ? palette.light : "transparent";
+                        color: "transparent";
                         height: UM.Theme.sizes.standard_list_lineheight.height
+                        width: machineList.width
                     }
                     label: Text {
-                        horizontalAlignment: Text.AlignLeft
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.sizes.standard_arrow.width + UM.Theme.sizes.default_margin.width
                         text: control.text
                         color: palette.windowText
                         font.bold: true
                         UM.RecolorImage {
                             id: downArrow
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.right
+                            anchors.right: parent.left
+                            anchors.rightMargin: UM.Theme.sizes.default_margin.width
                             width: UM.Theme.sizes.standard_arrow.width
                             height: UM.Theme.sizes.standard_arrow.height
                             sourceSize.width: width
                             sourceSize.height: width
                             color: palette.windowText
-                            source: base,activeManufacturer == section ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
+                            source: base.activeManufacturer == section ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
                         }
                     }
                 }
@@ -183,7 +184,7 @@ Item
                     ListView.view.currentIndex = index;
                     machineName.text = getMachineName()
                 }
-
+/*
                 Label
                 {
                     id: author
@@ -195,7 +196,7 @@ Item
                     anchors.baselineOffset: -UM.Theme.sizes.standard_list_lineheight.height / 16
                     color: palette.mid
                 }
-
+*/
                 states: State {
                     name: "collapsed";
                     when: base.activeManufacturer != model.manufacturer;
