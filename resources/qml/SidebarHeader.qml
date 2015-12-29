@@ -47,7 +47,7 @@ Item
         Label{
             id: machineSelectionLabel
             //: Machine selection label
-            text: catalog.i18nc("@label:listbox","Machine:");
+            text: catalog.i18nc("@label:listbox","Printer:");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter
@@ -118,7 +118,7 @@ Item
             text: UM.MachineManager.activeMachineVariant
             width: parent.width/100*55
             height: UM.Theme.sizes.setting_control.height
-            tooltip: UM.MachineManager.activeMachineInstance;
+            tooltip: UM.MachineManager.activeMachineVariant;
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.sizes.default_margin.width
             anchors.verticalCenter: parent.verticalCenter

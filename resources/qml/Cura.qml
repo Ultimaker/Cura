@@ -157,7 +157,7 @@ UM.MainWindow
             {
                 id: machineMenu;
                 //: Machine menu
-                title: catalog.i18nc("@title:menu","&Machine");
+                title: catalog.i18nc("@title:menu","&Printer");
 
                 Instantiator
                 {
@@ -203,7 +203,7 @@ UM.MainWindow
             Menu
             {
                 id: profileMenu
-                title: catalog.i18nc("@title:menu", "&Profile")
+                title: catalog.i18nc("@title:menu", "P&rofile")
 
                 Instantiator
                 {
