@@ -13,6 +13,10 @@
             "size": 1.0,
             "family": "Proxima Nova Rg"
         },
+        "very_small": {
+            "size": 0.75,
+            "family": "Proxima Nova Rg"
+        },
         "caption": {
             "size": 1.0,
             "family": "Proxima Nova Rg"

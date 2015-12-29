@@ -187,12 +187,12 @@ Item
                 Label
                 {
                     id: author
-                    text: model.author;
+                    text: model.author
+                    font: UM.Theme.fonts.very_small
                     anchors.left: machineButton.right
                     anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.height/2
-                    anchors.verticalCenter: machineButton.verticalCenter
-                    anchors.verticalCenterOffset: UM.Theme.sizes.standard_list_lineheight.height / 4
-                    font: UM.Theme.fonts.caption;
+                    anchors.baseline: machineButton.baseline
+                    anchors.baselineOffset: -UM.Theme.sizes.standard_list_lineheight.height / 16
                     color: palette.mid
                 }
 
