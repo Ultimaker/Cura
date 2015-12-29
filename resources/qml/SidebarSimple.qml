@@ -127,7 +127,7 @@ Item
         anchors.top: parent.top
         anchors.left: parent.left
         width: base.width/100* 35 - UM.Theme.sizes.default_margin.width
-        height: childrenRect.height < UM.Theme.sizes.simple_mode_infill_caption.height ? UM.Theme.sizes.simple_mode_infill_caption.height : childrenRect.height
+        height: childrenRect.height
 
         Label{
             id: infillLabel
@@ -140,17 +140,6 @@ Item
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width
         }
-/*        Label{
-            id: infillCaption
-            width: infillCellLeft.width - UM.Theme.sizes.default_margin.width * 2
-            text: infillModel.count > 0 && infillListView.activeIndex != -1 ? infillModel.get(infillListView.activeIndex).text : ""
-            font: UM.Theme.fonts.caption
-            wrapMode: Text.Wrap
-            color: UM.Theme.colors.text_subtext
-            anchors.top: infillLabel.bottom
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
-        } */
     }
 
     Flow {
@@ -162,7 +151,6 @@ Item
 
         anchors.left: infillCellLeft.right
         anchors.top: infillCellLeft.top
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
 
         Repeater {
             id: infillListView
@@ -335,7 +323,7 @@ Item
             property bool hovered_ex: false
 
             anchors.top: brimCheckBox.bottom
-            anchors.topMargin: UM.Theme.sizes.default_lining.height
+            anchors.topMargin: UM.Theme.sizes.default_margin.height
             anchors.left: parent.left
 
             //: Setting enable support checkbox
