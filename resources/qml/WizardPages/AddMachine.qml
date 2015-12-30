@@ -184,19 +184,7 @@ Item
                     ListView.view.currentIndex = index;
                     machineName.text = getMachineName()
                 }
-/*
-                Label
-                {
-                    id: author
-                    text: model.author
-                    font: UM.Theme.fonts.very_small
-                    anchors.left: machineButton.right
-                    anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.height/2
-                    anchors.baseline: machineButton.baseline
-                    anchors.baselineOffset: -UM.Theme.sizes.standard_list_lineheight.height / 16
-                    color: palette.mid
-                }
-*/
+
                 states: State {
                     name: "collapsed";
                     when: base.activeManufacturer != model.manufacturer;
