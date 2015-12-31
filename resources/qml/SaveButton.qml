@@ -74,7 +74,7 @@ Rectangle {
         Button {
             id: saveToButton
             property int resizedWidth
-            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height + 3
+            x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height + UM.Theme.sizes.save_button_save_to_button.width
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: base.progress > 0.99 && base.activity == true
             height: UM.Theme.sizes.save_button_save_to_button.height
@@ -90,6 +90,7 @@ Rectangle {
                 background: Rectangle {
                     //opacity: control.enabled ? 1.0 : 0.5
                     //Behavior on opacity { NumberAnimation { duration: 50; } }
+                    border.width: UM.Theme.sizes.default_lining.width
                     border.color: !control.enabled ? UM.Theme.colors.action_button_disabled_border : 
                                       control.pressed ? UM.Theme.colors.action_button_active_border :
                                       control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border
@@ -130,6 +131,7 @@ Rectangle {
             style: ButtonStyle {
                 background: Rectangle {
                     id: deviceSelectionIcon
+                    border.width: UM.Theme.sizes.default_lining.width
                     border.color: !control.enabled ? UM.Theme.colors.action_button_disabled_border : 
                                       control.pressed ? UM.Theme.colors.action_button_active_border :
                                       control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border

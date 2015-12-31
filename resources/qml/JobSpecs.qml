@@ -69,38 +69,84 @@ Rectangle {
         }
     }
 
-
-    TextField {
-        id: printJobTextfield
+    Rectangle 
+    {
+        id: jobNameRow
+        anchors.top: parent.top
         anchors.right: parent.right
         height: UM.Theme.sizes.jobspecs_line.height
-        width: base.width
-        property int unremovableSpacing: 5
-        text: ''
-        horizontalAlignment: TextInput.AlignRight
-        onTextChanged: Printer.setJobName(text)
         visible: base.activity
-        onEditingFinished: {
-            if (printJobTextfield.text != ''){
-                printJobTextfield.focus = false
+
+        Item
+        {
+            width: parent.width
+            height: parent.height
+
+            Button
+            {
+                id: printJobPencilIcon
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                width: UM.Theme.sizes.save_button_specs_icons.width
+                height: UM.Theme.sizes.save_button_specs_icons.height
+
+                onClicked: 
+                {
+                    printJobTextfield.selectAll()
+                    printJobTextfield.focus = true
+                }
+                style: ButtonStyle
+                {
+                    background: Rectangle
+                    {
+                        color: "transparent"
+                        UM.RecolorImage 
+                        {
+                            width: UM.Theme.sizes.save_button_specs_icons.width
+                            height: UM.Theme.sizes.save_button_specs_icons.height
+                            sourceSize.width: width
+                            sourceSize.height: width
+                            color: control.hovered ? UM.Theme.colors.setting_control_button_hover : UM.Theme.colors.text
+                            source: UM.Theme.icons.pencil;
+                        }
+                    }
+                }
             }
-        }
-        validator: RegExpValidator {
-            regExp: /^[^\\ \/ \.]*$/
-        }
-        style: TextFieldStyle{
-            textColor: UM.Theme.colors.setting_control_text;
-            font: UM.Theme.fonts.default;
-            background: Rectangle {
-                opacity: 0
-                border.width: 0
+
+            TextField 
+            {
+                id: printJobTextfield
+                anchors.right: printJobPencilIcon.left
+                anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
+                height: UM.Theme.sizes.jobspecs_line.height
+                width: base.width
+                property int unremovableSpacing: 5
+                text: ''
+                horizontalAlignment: TextInput.AlignRight
+                onTextChanged: Printer.setJobName(text)
+                onEditingFinished: {
+                    if (printJobTextfield.text != ''){
+                        printJobTextfield.focus = false
+                    }
+                }
+                validator: RegExpValidator {
+                    regExp: /^[^\\ \/ \.]*$/
+                }
+                style: TextFieldStyle{
+                    textColor: UM.Theme.colors.setting_control_text;
+                    font: UM.Theme.fonts.default_bold;
+                    background: Rectangle {
+                        opacity: 0
+                        border.width: 0
+                    }
+                }
             }
         }
     }
 
     Label{
         id: boundingSpec
-        anchors.top: printJobTextfield.bottom
+        anchors.top: jobNameRow.bottom
         anchors.right: parent.right
         height: UM.Theme.sizes.jobspecs_line.height
         verticalAlignment: Text.AlignVCenter

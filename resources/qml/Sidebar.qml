@@ -120,6 +120,7 @@ Rectangle
 
                 style: ButtonStyle {
                     background: Rectangle {
+                        border.width: UM.Theme.sizes.default_lining.width
                         border.color: control.checked ? UM.Theme.colors.toggle_checked_border : 
                                           control.pressed ? UM.Theme.colors.toggle_active_border :
                                           control.hovered ? UM.Theme.colors.toggle_hovered_border : UM.Theme.colors.toggle_unchecked_border

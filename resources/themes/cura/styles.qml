@@ -12,7 +12,7 @@ QtObject {
         ButtonStyle {
             background: Rectangle {
                 color: UM.Theme.colors.setting_control
-                border.width: 1
+                border.width: UM.Theme.sizes.default_lining.width
                 border.color: control.hovered ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border
                 UM.RecolorImage {
                     id: downArrow
@@ -331,7 +331,8 @@ QtObject {
                     width: UM.Theme.sizes.section_icon_column.width
                     UM.RecolorImage {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.sizes.default_margin.width
                         color: UM.Theme.colors.setting_category_text
                         source: control.iconSource;
                         width: UM.Theme.sizes.section_icon.width;
@@ -344,6 +345,7 @@ QtObject {
                 Label {
                     anchors {
                         left: icon.right;
+                        leftMargin: UM.Theme.sizes.default_lining.width;
                         right: parent.right;
                         verticalCenter: parent.verticalCenter;
                     }
@@ -493,7 +495,7 @@ QtObject {
                 radius: width/2;
 
                 color: UM.Theme.colors.slider_groove;
-                border.width: UM.Theme.sizes.default_lining;
+                border.width: UM.Theme.sizes.default_lining.width;
                 border.color: UM.Theme.colors.slider_groove_border;
                 Rectangle {
                     anchors {
@@ -515,26 +517,24 @@ QtObject {
                 TextField {
                     id: valueLabel
                     property string maxValue: control.maximumValue + 1
-                    placeholderText: control.value + 1
+                    text: control.value + 1
+                    horizontalAlignment: TextInput.AlignHCenter
                     onEditingFinished: {
                         if (valueLabel.text != ''){
                             control.value = valueLabel.text - 1
-                            valueLabel.text = ''
-                            valueLabel.focus = false
                         }
-
                     }
                     validator: IntValidator {bottom: 1; top: control.maximumValue + 1;}
                     visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
                     anchors.top: layerSliderControl.bottom
-                    anchors.topMargin: UM.Theme.sizes.default_margin.width
+                    anchors.topMargin: width/2 - UM.Theme.sizes.default_margin.width/2
                     anchors.horizontalCenter: layerSliderControl.horizontalCenter
                     rotation: 90
                     style: TextFieldStyle{
                         textColor: UM.Theme.colors.setting_control_text;
                         font: UM.Theme.fonts.default;
                         background: Rectangle {
-                            implicitWidth: control.maxValue.length * valueLabel.font.pixelSize
+                            implicitWidth: control.maxValue.length * valueLabel.font.pixelSize + UM.Theme.sizes.default_margin.width
                             implicitHeight: UM.Theme.sizes.slider_handle.height + UM.Theme.sizes.default_margin.width
                             border.width: UM.Theme.sizes.default_lining.width;
                             border.color: UM.Theme.colors.slider_groove_border;
