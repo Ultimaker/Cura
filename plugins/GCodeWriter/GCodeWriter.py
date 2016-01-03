@@ -1,14 +1,14 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Mesh.MeshWriter import MeshWriter
+from UM.Backend.OutputWriter import OutputWriter
 from UM.Logger import Logger
 from UM.Application import Application
 import io
 import re #For escaping characters in the settings.
 
 
-class GCodeWriter(MeshWriter):
+class GCodeWriter(OutputWriter):
     ##  The file format version of the serialised g-code.
     #
     #   It can only read settings with the same version as the version it was
@@ -30,12 +30,8 @@ class GCodeWriter(MeshWriter):
     def __init__(self):
         super().__init__()
 
-    def write(self, stream, node, mode = MeshWriter.OutputMode.TextMode):
-        if mode != MeshWriter.OutputMode.TextMode:
-            Logger.log("e", "GCode Writer does not support non-text mode")
-            return False
-
-        scene = Application.getInstance().getController().getScene()
+    def write(self, stream, scene):
+        #scene = Application.getInstance().getController().getScene()
         gcode_list = getattr(scene, "gcode_list")
         if gcode_list:
             for gcode in gcode_list:
