@@ -6,65 +6,27 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.0 as UM
+import UM 1.1 as UM
+import Cura 1.0 as Cura
 
-UM.Dialog {
-    id: base
+import "WizardPages"
 
-    //: Add Printer dialog title
-    title: qsTr("Add Printer");
+UM.Wizard
+{
+    id: base;
 
-    ColumnLayout {
-        anchors.fill: parent;
+    title: catalog.i18nc("@title:window", "Add Printer")
 
-        Label {
-            //: Add Printer wizard page title
-            text: qsTr("Add Printer");
-            font.pointSize: 18;
-        }
+    // This part is optional
+    // This part checks whether there is a printer -> if not: some of the functions (delete for example) are disabled
+    firstRun: false
 
-        Label {
-            //: Add Printer wizard page description
-            text: qsTr("Please select the type of printer:");
-        }
-
-        ScrollView {
-            Layout.fillWidth: true;
-
-            ListView {
-                id: machineList;
-                model: UM.Models.availableMachinesModel
-                delegate: RadioButton { exclusiveGroup: printerGroup; text: model.name; onClicked: ListView.view.currentIndex = index; }
-            }
-        }
-
-        Label {
-            //: Add Printer wizard field label
-            text: qsTr("Printer Name:");
-        }
-
-        TextField { id: machineName; Layout.fillWidth: true; text: machineList.model.getItem(machineList.currentIndex).name }
-
-        Item { Layout.fillWidth: true; Layout.fillHeight: true; }
-
-        ExclusiveGroup { id: printerGroup; }
+    Component.onCompleted: {
+        base.appendPage(Qt.resolvedUrl("WizardPages/AddMachine.qml"), catalog.i18nc("@title", "Add Printer"));
+        base.currentPage = 0;
     }
 
-    rightButtons: [
-        Button {
-            //: Add Printer wizarad button
-            text: qsTr("Next");
-            onClicked: {
-                if(machineList.currentIndex != -1) {
-                    UM.Models.availableMachinesModel.createMachine(machineList.currentIndex, machineName.text)
-                    base.visible = false
-                }
-            }
-        },
-        Button {
-            //: Add Printer wizarad button
-            text: qsTr("Cancel");
-            onClicked: base.visible = false;
-        }
-    ]
+    Item {
+        UM.I18nCatalog { id: catalog; name: "cura"; }
+    }
 }

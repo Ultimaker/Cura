@@ -19,10 +19,10 @@ class Stk500v2(ispBase.IspBase):
     def __init__(self):
         self.serial = None
         self.seq = 1
-        self.lastAddr = -1
-        self.progressCallback = None
+        self.last_addr = -1
+        self.progress_callback = None
         
-    def connect(self, port = 'COM22', speed = 115200):
+    def connect(self, port = "COM22", speed = 115200):
         if self.serial is not None:
             self.close()
         try:
@@ -82,49 +82,49 @@ class Stk500v2(ispBase.IspBase):
     
     def writeFlash(self, flash_data):
         #Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
-        page_size = self.chip['pageSize'] * 2
-        flashSize = page_size * self.chip['pageCount']
+        page_size = self.chip["pageSize"] * 2
+        flash_size = page_size * self.chip["pageCount"]
         print("Writing flash")
-        if flashSize > 0xFFFF:
+        if flash_size > 0xFFFF:
             self.sendMessage([0x06, 0x80, 0x00, 0x00, 0x00])
         else:
             self.sendMessage([0x06, 0x00, 0x00, 0x00, 0x00])
         load_count = (len(flash_data) + page_size - 1) / page_size   
         for i in range(0, int(load_count)):
             recv = self.sendMessage([0x13, page_size >> 8, page_size & 0xFF, 0xc1, 0x0a, 0x40, 0x4c, 0x20, 0x00, 0x00] + flash_data[(i * page_size):(i * page_size + page_size)])
-            if self.progressCallback is not None:
+            if self.progress_callback is not None:
                 if self._has_checksum:
-                    self.progressCallback(i + 1, load_count)
+                    self.progress_callback(i + 1, load_count)
                 else:
-                    self.progressCallback(i + 1, load_count*2)
+                    self.progress_callback(i + 1, load_count*2)
     
-    def verifyFlash(self, flashData):
+    def verifyFlash(self, flash_data):
         if self._has_checksum:
-            self.sendMessage([0x06, 0x00, (len(flashData) >> 17) & 0xFF, (len(flashData) >> 9) & 0xFF, (len(flashData) >> 1) & 0xFF])
+            self.sendMessage([0x06, 0x00, (len(flash_data) >> 17) & 0xFF, (len(flash_data) >> 9) & 0xFF, (len(flash_data) >> 1) & 0xFF])
             res = self.sendMessage([0xEE])
             checksum_recv = res[2] | (res[3] << 8)
             checksum = 0
-            for d in flashData:
+            for d in flash_data:
                 checksum += d
             checksum &= 0xFFFF
             if hex(checksum) != hex(checksum_recv):
-                raise ispBase.IspError('Verify checksum mismatch: 0x%x != 0x%x' % (checksum & 0xFFFF, checksum_recv))
+                raise ispBase.IspError("Verify checksum mismatch: 0x%x != 0x%x" % (checksum & 0xFFFF, checksum_recv))
         else:
             #Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
-            flashSize = self.chip['pageSize'] * 2 * self.chip['pageCount']
-            if flashSize > 0xFFFF:
+            flash_size = self.chip["pageSize"] * 2 * self.chip["pageCount"]
+            if flash_size > 0xFFFF:
                 self.sendMessage([0x06, 0x80, 0x00, 0x00, 0x00])
             else:
                 self.sendMessage([0x06, 0x00, 0x00, 0x00, 0x00])
 
-            loadCount = (len(flashData) + 0xFF) / 0x100
-            for i in range(0, int(loadCount)):
+            load_count = (len(flash_data) + 0xFF) / 0x100
+            for i in range(0, int(load_count)):
                 recv = self.sendMessage([0x14, 0x01, 0x00, 0x20])[2:0x102]
-                if self.progressCallback is not None:
-                    self.progressCallback(loadCount + i + 1, loadCount*2)
+                if self.progress_callback is not None:
+                    self.progress_callback(load_count + i + 1, load_count*2)
                 for j in range(0, 0x100):
-                    if i * 0x100 + j < len(flashData) and flashData[i * 0x100 + j] != recv[j]:
-                        raise ispBase.IspError('Verify error at: 0x%x' % (i * 0x100 + j))
+                    if i * 0x100 + j < len(flash_data) and flash_data[i * 0x100 + j] != recv[j]:
+                        raise ispBase.IspError("Verify error at: 0x%x" % (i * 0x100 + j))
 
     def sendMessage(self, data):
         message = struct.pack(">BBHB", 0x1B, self.seq, len(data), 0x0E)
@@ -138,12 +138,12 @@ class Stk500v2(ispBase.IspBase):
             self.serial.write(message)
             self.serial.flush()
         except SerialTimeoutException:
-            raise ispBase.IspError('Serial send timeout')
+            raise ispBase.IspError("Serial send timeout")
         self.seq = (self.seq + 1) & 0xFF
         return self.recvMessage()
     
     def recvMessage(self):
-        state = 'Start'
+        state = "Start"
         checksum = 0
         while True:
             s = self.serial.read()
@@ -152,31 +152,31 @@ class Stk500v2(ispBase.IspBase):
             b = struct.unpack(">B", s)[0]
             checksum ^= b
             #print(hex(b))
-            if state == 'Start':
+            if state == "Start":
                 if b == 0x1B:
-                    state = 'GetSeq'
+                    state = "GetSeq"
                     checksum = 0x1B
-            elif state == 'GetSeq':
-                state = 'MsgSize1'
-            elif state == 'MsgSize1':
-                msgSize = b << 8
-                state = 'MsgSize2'
-            elif state == 'MsgSize2':
-                msgSize |= b
-                state = 'Token'
-            elif state == 'Token':
+            elif state == "GetSeq":
+                state = "MsgSize1"
+            elif state == "MsgSize1":
+                msg_size = b << 8
+                state = "MsgSize2"
+            elif state == "MsgSize2":
+                msg_size |= b
+                state = "Token"
+            elif state == "Token":
                 if b != 0x0E:
-                    state = 'Start'
+                    state = "Start"
                 else:
-                    state = 'Data'
+                    state = "Data"
                     data = []
-            elif state == 'Data':
+            elif state == "Data":
                 data.append(b)
-                if len(data) == msgSize:
-                    state = 'Checksum'
-            elif state == 'Checksum':
+                if len(data) == msg_size:
+                    state = "Checksum"
+            elif state == "Checksum":
                 if checksum != 0:
-                    state = 'Start'
+                    state = "Start"
                 else:
                     return data
 
@@ -190,7 +190,7 @@ def portList():
             values = _winreg.EnumValue(key, i)
         except:
             return ret
-        if 'USBSER' in values[0]:
+        if "USBSER" in values[0]:
             ret.append(values[1])
         i+=1
     return ret
@@ -205,7 +205,7 @@ def runProgrammer(port, filename):
 def main():
     """ Entry point to call the stk500v2 programmer from the commandline. """
     import threading
-    if sys.argv[1] == 'AUTO':
+    if sys.argv[1] == "AUTO":
         print(portList())
         for port in portList():
             threading.Thread(target=runProgrammer, args=(port,sys.argv[2])).start()
@@ -216,5 +216,5 @@ def main():
         programmer.programChip(intelHex.readHex(sys.argv[2]))
         sys.exit(1)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

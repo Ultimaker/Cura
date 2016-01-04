@@ -1,5 +1,5 @@
 !ifndef VERSION
-  !define VERSION '15.05.97'
+  !define VERSION '15.09.80'
 !endif
 
 ; The name of the installer
@@ -45,7 +45,7 @@ SetCompressor /SOLID lzma
 !define MUI_FINISHPAGE_RUN_FUNCTION "LaunchLink"
 
 ;Add an option to show release notes
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\release_notes.txt"
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\plugins\ChangeLogPlugin\changelog.txt"
 
 ; Pages
 ;!insertmacro MUI_PAGE_WELCOME
@@ -111,24 +111,24 @@ Section "Install Visual Studio 2010 Redistributable"
 
 SectionEnd
 
-;Section "Install Arduino Drivers"
-;  ; Set output path to the driver directory.
-;  SetOutPath "$INSTDIR\drivers\"
-;  File /r "drivers\"
-;  
-;  ${If} ${RunningX64}
-;    IfSilent +2
-;      ExecWait '"$INSTDIR\drivers\dpinst64.exe" /lm'
-;  ${Else}
-;    IfSilent +2
-;      ExecWait '"$INSTDIR\drivers\dpinst32.exe" /lm'
-;  ${EndIf}
-;SectionEnd
+Section "Install Arduino Drivers"
+  ; Set output path to the driver directory.
+  SetOutPath "$INSTDIR\drivers\"
+  File /r "drivers\"
+  
+  ${If} ${RunningX64}
+    IfSilent +2
+      ExecWait '"$INSTDIR\drivers\dpinst64.exe" /lm'
+  ${Else}
+    IfSilent +2
+      ExecWait '"$INSTDIR\drivers\dpinst32.exe" /lm'
+  ${EndIf}
+SectionEnd
 
 Section "Open STL files with Cura"
 	WriteRegStr HKCR .stl "" "Cura STL model file"
 	DeleteRegValue HKCR .stl "Content Type"
-	WriteRegStr HKCR "Cura STL model file\DefaultIcon" "" "$INSTDIR\resources\stl.ico,0"
+	WriteRegStr HKCR "Cura STL model file\DefaultIcon" "" "$INSTDIR\Cura.exe,0"
 	WriteRegStr HKCR "Cura STL model file\shell" "" "open"
 	WriteRegStr HKCR "Cura STL model file\shell\open\command" "" '"$INSTDIR\Cura.exe" "%1"'
 SectionEnd
@@ -136,7 +136,7 @@ SectionEnd
 Section /o "Open OBJ files with Cura"
 	WriteRegStr HKCR .obj "" "Cura OBJ model file"
 	DeleteRegValue HKCR .obj "Content Type"
-	WriteRegStr HKCR "Cura OBJ model file\DefaultIcon" "" "$INSTDIR\resources\stl.ico,0"
+	WriteRegStr HKCR "Cura OBJ model file\DefaultIcon" "" "$INSTDIR\Cura.exe,0"
 	WriteRegStr HKCR "Cura OBJ model file\shell" "" "open"
 	WriteRegStr HKCR "Cura OBJ model file\shell\open\command" "" '"$INSTDIR\Cura.exe" "%1"'
 SectionEnd

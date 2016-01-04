@@ -9,11 +9,11 @@ catalog = i18nCatalog("cura")
 
 def getMetaData():
     return {
-        "type": "backend",
         "plugin": {
-            "name": "CuraEngine Backend",
+            "name": catalog.i18nc("@label", "CuraEngine Backend"),
             "author": "Ultimaker",
-            "description": catalog.i18nc("CuraEngine backend plugin description", "Provides the link to the CuraEngine slicing backend")
+            "description": catalog.i18nc("@info:whatsthis", "Provides the link to the CuraEngine slicing backend"),
+            "api": 2
         }
     }
 

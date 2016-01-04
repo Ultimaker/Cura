@@ -10,7 +10,8 @@ from UM.Mesh.MeshData import MeshData
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 
-from . import LayerData
+from cura import LayerData
+from cura import LayerDataDecorator
 
 import numpy
 import struct
@@ -26,45 +27,48 @@ class ProcessSlicedObjectListJob(Job):
 
     def run(self):
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
-            self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
+            self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
             self._progress.show()
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
-        objectIdMap = {}
+        object_id_map = {}
         new_node = SceneNode()
         ## Put all nodes in a dict identified by ID
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
-                if hasattr(node.getMeshData(), "layerData"):
+                if node.callDecoration("getLayerData"):
                     self._scene.getRoot().removeChild(node)
                 else:
-                    objectIdMap[id(node)] = node
+                    object_id_map[id(node)] = node
+            Job.yieldThread()
 
-        settings = Application.getInstance().getActiveMachine()
-        layerHeight = settings.getSettingValueByKey("layer_height")
+        settings = Application.getInstance().getMachineManager().getActiveProfile()
 
         center = None
-        if not settings.getSettingValueByKey("machine_center_is_zero"):
-            center = numpy.array([settings.getSettingValueByKey("machine_width") / 2, 0.0, -settings.getSettingValueByKey("machine_depth") / 2])
+        if not settings.getSettingValue("machine_center_is_zero"):
+            center = numpy.array([settings.getSettingValue("machine_width") / 2, 0.0, -settings.getSettingValue("machine_depth") / 2])
         else:
             center = numpy.array([0.0, 0.0, 0.0])
 
-        if self._progress:
-            self._progress.setProgress(2)
-
         mesh = MeshData()
-        layerData = LayerData.LayerData()
+        layer_data = LayerData.LayerData()
+
+        layer_count = 0
+        for object in self._message.objects:
+            layer_count += len(object.layers)
+
+        current_layer = 0
         for object in self._message.objects:
             try:
-                node = objectIdMap[object.id]
+                node = object_id_map[object.id]
             except KeyError:
                 continue
 
             for layer in object.layers:
-                layerData.addLayer(layer.id)
-                layerData.setLayerHeight(layer.id, layer.height)
-                layerData.setLayerThickness(layer.id, layer.thickness)
+                layer_data.addLayer(layer.id)
+                layer_data.setLayerHeight(layer.id, layer.height)
+                layer_data.setLayerThickness(layer.id, layer.thickness)
                 for polygon in layer.polygons:
                     points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
@@ -74,22 +78,33 @@ class ProcessSlicedObjectListJob(Job):
 
                     points[:,2] *= -1
 
-                    points -= numpy.array(center)
+                    points -= center
 
-                    layerData.addPolygon(layer.id, polygon.type, points, polygon.line_width)
+                    layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
 
-        if self._progress:
-            self._progress.setProgress(50)
+                Job.yieldThread()
+
+                current_layer += 1
+                progress = (current_layer / layer_count) * 100
+                # TODO: Rebuild the layer data mesh once the layer has been processed.
+                # This needs some work in LayerData so we can add the new layers instead of recreating the entire mesh.
+
+                if self._progress:
+                    self._progress.setProgress(progress)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
-        layerData.build()
-        mesh.layerData = layerData
+        layer_data.build()
 
-        if self._progress:
-            self._progress.setProgress(100)
+        #Add layerdata decorator to scene node to indicate that the node has layerdata
+        decorator = LayerDataDecorator.LayerDataDecorator()
+        decorator.setLayerData(layer_data)
+        new_node.addDecorator(decorator)
 
         new_node.setMeshData(mesh)
         new_node.setParent(self._scene.getRoot())
+
+        if self._progress:
+            self._progress.setProgress(100)
 
         view = Application.getInstance().getController().getActiveView()
         if view.getPluginId() == "LayerView":
@@ -102,7 +117,7 @@ class ProcessSlicedObjectListJob(Job):
         if self.isRunning():
             if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
                 if not self._progress:
-                    self._progress = Message(catalog.i18nc("Layers View mode", "Layers"), 0, False, 0)
+                    self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, 0)
                     self._progress.show()
             else:
                 if self._progress:

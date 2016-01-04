@@ -3,10 +3,11 @@
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
+import UM 1.1 as UM
 
-Item {
+Item
+{
     property alias open: openAction;
-    property alias save: saveAction;
     property alias quit: quitAction;
 
     property alias undo: undoAction;
@@ -16,8 +17,12 @@ Item {
 
     property alias deleteObject: deleteObjectAction;
     property alias centerObject: centerObjectAction;
+    property alias groupObjects: groupObjectsAction;
+    property alias unGroupObjects:unGroupObjectsAction;
+    property alias mergeObjects: mergeObjectsAction;
+    //property alias unMergeObjects: unMergeObjectsAction;
+    
     property alias multiplyObject: multiplyObjectAction;
-    property alias splitObject: splitObjectAction;
 
     property alias deleteAll: deleteAllAction;
     property alias reloadAll: reloadAllAction;
@@ -26,6 +31,7 @@ Item {
 
     property alias addMachine: addMachineAction;
     property alias configureMachines: settingsAction;
+    property alias manageProfiles: manageProfilesAction;
 
     property alias preferences: preferencesAction;
 
@@ -34,151 +40,181 @@ Item {
     property alias reportBug: reportBugAction;
     property alias about: aboutAction;
 
-    Action {
+    property alias toggleFullScreen: toggleFullScreenAction;
+
+    UM.I18nCatalog{id: catalog; name:"cura"}
+
+    Action
+    {
+        id:toggleFullScreenAction
+        text: catalog.i18nc("@action:inmenu","Toggle Fu&ll Screen");
+        iconName: "view-fullscreen";
+    }
+
+    Action
+    {
         id: undoAction;
-        //: Undo action
-        text: qsTr("&Undo");
+        text: catalog.i18nc("@action:inmenu","&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
     }
 
-    Action {
+    Action
+    {
         id: redoAction;
-        //: Redo action
-        text: qsTr("&Redo");
+        text: catalog.i18nc("@action:inmenu","&Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
     }
 
-    Action {
+    Action
+    {
         id: quitAction;
-        //: Quit action
-        text: qsTr("&Quit");
+        text: catalog.i18nc("@action:inmenu","&Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
     }
 
-    Action {
+    Action
+    {
         id: preferencesAction;
-        //: Preferences action
-        text: qsTr("&Preferences...");
+        text: catalog.i18nc("@action:inmenu","&Preferences...");
         iconName: "configure";
     }
 
-    Action {
+    Action
+    {
         id: addMachineAction;
-        //: Add Printer action
-        text: qsTr("&Add Printer...");
+        text: catalog.i18nc("@action:inmenu","&Add Printer...");
     }
 
-    Action {
+    Action
+    {
         id: settingsAction;
-        //: Configure Printers action
-        text: qsTr("&Configure Printers");
+        text: catalog.i18nc("@action:inmenu","Manage Pr&inters...");
         iconName: "configure";
     }
 
-    Action {
+    Action
+    {
+        id: manageProfilesAction;
+        text: catalog.i18nc("@action:inmenu","Manage Profiles...");
+        iconName: "configure";
+    }
+
+    Action
+    {
         id: documentationAction;
-        //: Show Online Documentation action
-        text: qsTr("Show Online &Documentation");
+        text: catalog.i18nc("@action:inmenu","Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
     }
 
     Action {
         id: reportBugAction;
-        //: Report a Bug Action
-        text: qsTr("Report a &Bug");
+        text: catalog.i18nc("@action:inmenu","Report a &Bug");
         iconName: "tools-report-bug";
     }
 
-    Action {
+    Action
+    {
         id: aboutAction;
-        //: About action
-        text: qsTr("&About...");
+        text: catalog.i18nc("@action:inmenu","&About...");
         iconName: "help-about";
     }
 
-    Action {
+    Action
+    {
         id: deleteSelectionAction;
-        //: Delete selection action
-        text: qsTr("Delete Selection");
+        text: catalog.i18nc("@action:inmenu","Delete &Selection");
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
     }
 
-    Action {
+    Action
+    {
         id: deleteObjectAction;
-        //: Delete object action
-        text: qsTr("Delete Object");
+        text: catalog.i18nc("@action:inmenu","Delete Object");
         iconName: "edit-delete";
     }
 
-    Action {
+    Action
+    {
         id: centerObjectAction;
-        //: Center object action
-        text: qsTr("Center Object on Platform");
+        text: catalog.i18nc("@action:inmenu","Ce&nter Object on Platform");
     }
 
-    Action {
+    Action
+    {
+        id: groupObjectsAction
+        text: catalog.i18nc("@action:inmenu","&Group Objects");
+        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        iconName: "object-group"
+    }
+
+    Action
+    {
+        id: unGroupObjectsAction
+        text: catalog.i18nc("@action:inmenu","Ungroup Objects");
+        enabled: UM.Scene.isGroupSelected
+        iconName: "object-ungroup"
+    }
+    
+    Action
+    {
+        id: mergeObjectsAction
+        text: catalog.i18nc("@action:inmenu","&Merge Objects");
+        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        iconName: "merge";
+    }
+
+    Action
+    {
         id: multiplyObjectAction;
-        //: Duplicate object action
-        text: qsTr("Duplicate Object");
+        text: catalog.i18nc("@action:inmenu","&Duplicate Object");
+        iconName: "edit-duplicate"
     }
 
-    Action {
-        id: splitObjectAction;
-        //: Split object action
-        text: qsTr("Split Object into Parts");
-        enabled: false;
-    }
-
-    Action {
+    Action
+    {
         id: deleteAllAction;
-        //: Clear build platform action
-        text: qsTr("Clear Build Platform");
-        iconName: "edit-clear";
+        text: catalog.i18nc("@action:inmenu","&Clear Build Platform");
+        iconName: "edit-delete";
+        shortcut: "Ctrl+D";
     }
 
-    Action {
+    Action
+    {
         id: reloadAllAction;
-        //: Reload all objects action
-        text: qsTr("Reload All Objects");
+        text: catalog.i18nc("@action:inmenu","Re&load All Objects");
+        iconName: "document-revert";
     }
 
-    Action {
+    Action
+    {
         id: resetAllTranslationAction;
-        //: Reset all positions action
-        text: qsTr("Reset All Object Positions");
+        text: catalog.i18nc("@action:inmenu","Reset All Object Positions");
     }
 
-    Action {
+    Action
+    {
         id: resetAllAction;
-        //: Reset all positions action
-        text: qsTr("Reset All Object Transformations");
+        text: catalog.i18nc("@action:inmenu","Reset All Object &Transformations");
     }
 
-    Action {
+    Action
+    {
         id: openAction;
-        //: Open file action
-        text: qsTr("&Open...");
+        text: catalog.i18nc("@action:inmenu","&Open File...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
 
-    Action {
-        id: saveAction;
-        //: Save file action
-        text: qsTr("&Save...");
-        iconName: "document-save";
-        shortcut: StandardKey.Save;
-    }
-
-    Action {
+    Action
+    {
         id: showEngineLogAction;
-        //: Show engine log action
-        text: qsTr("Show engine &log...");
+        text: catalog.i18nc("@action:inmenu","Show Engine &Log...");
         iconName: "view-list-text";
+        shortcut: StandardKey.WhatsThis;
     }
 }
