@@ -182,14 +182,14 @@ Item
                 id: materialSelectionMenu
                 Instantiator
                 {
-                    model: UM.MaterialsModel { id: materialsModel }
+                    model: UM.MachineMaterialsModel { id: machineMaterialsModel }
                     MenuItem
                     {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: materialSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMaterial(materialsModel.getItem(index).name)
+                        onTriggered: UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name)
                     }
                     onObjectAdded: materialSelectionMenu.insertItem(index, object)
                     onObjectRemoved: materialSelectionMenu.removeItem(object)
