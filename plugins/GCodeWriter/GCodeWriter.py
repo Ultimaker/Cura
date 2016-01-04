@@ -30,8 +30,8 @@ class GCodeWriter(OutputWriter):
     def __init__(self):
         super().__init__()
 
-    def write(self, stream, scene):
-        #scene = Application.getInstance().getController().getScene()
+    def write(self, stream):
+        scene = Application.getInstance().getController().getScene()
         gcode_list = getattr(scene, "gcode_list")
         if gcode_list:
             for gcode in gcode_list:

@@ -101,7 +101,7 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName);
+                            onTriggered: UM.OutputDeviceManager.requestWriteMeshToDevice(model.id, Printer.jobName);
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
