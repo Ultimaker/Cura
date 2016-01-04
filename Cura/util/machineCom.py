@@ -202,7 +202,9 @@ class MachineCom(object):
 		self._heatupWaitStartTime = 0
 		self._heatupWaitTimeLost = 0.0
 		self._printStartTime100 = None
-		
+		self._currentCommands = []
+
+		self._thread_lock = threading.Lock()
 		self.thread = threading.Thread(target=self._monitor)
 		self.thread.daemon = True
 		self.thread.start()
@@ -296,7 +298,19 @@ class MachineCom(object):
 		for line in ret:
 			self._logQueue.put(line, False)
 		return ret
-	
+
+	def receivedOK(self):
+		if len(self._currentCommands) > 0:
+			# Marlin will answer 'ok' immediatly to G[0-3] commands
+			for i in xrange(0, len(self._currentCommands)):
+				if "G0 " in self._currentCommands[i] or \
+				   "G1 " in self._currentCommands[i] or \
+				   "G2 " in self._currentCommands[i] or \
+				   "G3 " in self._currentCommands[i]:
+					self._currentCommands.pop(i)
+					return
+			self._currentCommands.pop(0)
+
 	def _monitor(self):
 		#Open the serial port.
 		if self._port == 'AUTO':
@@ -380,6 +394,7 @@ class MachineCom(object):
 						self._errorValue = line[6:]
 						self._changeState(self.STATE_ERROR)
 			if ' T:' in line or line.startswith('T:'):
+				tempRequestTimeout = time.time() + 5
 				try:
 					self._temp[self._temperatureRequestExtruder] = float(re.search("T: *([0-9\.]*)", line).group(1))
 				except:
@@ -453,7 +468,7 @@ class MachineCom(object):
 				else:
 					self._testingBaudrate = False
 			elif self._state == self.STATE_CONNECTING:
-				if line == '' or 'wait' in line:        # 'wait' needed for Repetier (kind of watchdog)
+				if line == '' or 'wait' in line or 'start' in line:        # 'wait' needed for Repetier (kind of watchdog)
 					self._sendCommand("M105")
 				elif 'ok' in line:
 					self._changeState(self.STATE_OPERATIONAL)
@@ -468,6 +483,10 @@ class MachineCom(object):
 					else:
 						self.sendCommand("M105")
 					tempRequestTimeout = time.time() + 5
+				elif 'ok' in line:
+					self.receivedOK()
+				elif 'start' in line:
+					self._currentCommands = []
 			elif self._state == self.STATE_PRINTING:
 				#Even when printing request the temperature every 5 seconds.
 				if time.time() > tempRequestTimeout:
@@ -481,11 +500,20 @@ class MachineCom(object):
 					self._log("Communication timeout during printing, forcing a line")
 					line = 'ok'
 				if 'ok' in line:
+					self.receivedOK()
 					timeout = time.time() + 5
 					if not self._commandQueue.empty():
 						self._sendCommand(self._commandQueue.get())
 					else:
 						self._sendNext()
+					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
+						# Long command detected. Timeout is now set to 60s to avoid forcing 'ok'
+						# every 5 seconds while it's not needed
+						timeout = time.time() + 60
+
+				elif 'start' in line:
+					self._currentCommands = []
 				elif "resend" in line.lower() or "rs" in line:
 					newPos = self._gcodePos
 					try:
@@ -501,6 +529,24 @@ class MachineCom(object):
 						self.cancelPrint()
 					else:
 						self._gcodePos = newPos
+			elif self._state == self.STATE_PAUSED:
+				#Even when printing request the temperature every 5 seconds.
+				if time.time() > tempRequestTimeout:
+					if self._extruderCount > 0:
+						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
+						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
+					else:
+						self.sendCommand("M105")
+					tempRequestTimeout = time.time() + 5
+				if line == '' and time.time() > timeout:
+					line = 'ok'
+				if 'ok' in line:
+					self.receivedOK()
+					timeout = time.time() + 5
+					if not self._commandQueue.empty():
+						self._sendCommand(self._commandQueue.get())
+				elif 'start' in line:
+					self._currentCommands = []
 
 		self._log("Connection closed, closing down monitor")
 
@@ -511,6 +557,7 @@ class MachineCom(object):
 			print getExceptionString()
 
 	def _log(self, message):
+		#sys.stderr.write(message + "\n");
 		self._callback.mcLog(message)
 		try:
 			self._logQueue.put(message, False)
@@ -551,7 +598,9 @@ class MachineCom(object):
 		self.close()
 	
 	def _sendCommand(self, cmd):
+		self._thread_lock.acquire(True)
 		if self._serial is None:
+			self._thread_lock.release()
 			return
 		if 'M109' in cmd or 'M190' in cmd:
 			self._heatupWaitStartTime = time.time()
@@ -569,6 +618,8 @@ class MachineCom(object):
 			except:
 				pass
 		self._log('Send: %s' % (cmd))
+		if self.isOperational():
+			self._currentCommands.append(cmd)
 		try:
 			self._serial.write(cmd + '\n')
 		except serial.SerialTimeoutException:
@@ -584,7 +635,8 @@ class MachineCom(object):
 			self._log("Unexpected error while writing serial port: %s" % (getExceptionString()))
 			self._errorValue = getExceptionString()
 			self.close(True)
-	
+		self._thread_lock.release()
+
 	def _sendNext(self):
 		if self._gcodePos >= len(self._gcodeList):
 			self._changeState(self.STATE_OPERATIONAL)
@@ -597,31 +649,34 @@ class MachineCom(object):
 			line = line[0]
 		try:
 			if line == 'M0' or line == 'M1':
-				#self.setPause(True)
+				self.setPause(True)
 				line = 'M105'	#Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
 			if self._printSection in self._feedRateModifier:
 				line = re.sub('F([0-9]*)', lambda m: 'F' + str(int(int(m.group(1)) * self._feedRateModifier[self._printSection])), line)
 			if ('G0' in line or 'G1' in line) and 'Z' in line:
-				z = float(re.search('Z([0-9\.]*)', line).group(1))
+				z = float(re.search('Z(-?[0-9\.]*)', line).group(1))
 				if self._currentZ != z:
 					self._currentZ = z
 					self._callback.mcZChange(z)
 		except:
 			self._log("Unexpected error: %s" % (getExceptionString()))
 		checksum = reduce(lambda x,y:x^y, map(ord, "N%d%s" % (self._gcodePos, line)))
-		self._sendCommand("N%d%s*%d" % (self._gcodePos, line, checksum))
+		pos = self._gcodePos
 		self._gcodePos += 1
+		self._sendCommand("N%d%s*%d" % (pos, line, checksum))
 		self._callback.mcProgress(self._gcodePos)
-	
+
 	def sendCommand(self, cmd):
 		cmd = cmd.encode('ascii', 'replace')
-		if self.isPrinting():
+		if self.isPrinting() or self.isPaused():
 			self._commandQueue.put(cmd)
+			if len(self._currentCommands) == 0:
+				self._sendCommand(self._commandQueue.get())
 		elif self.isOperational():
 			self._sendCommand(cmd)
-	
+
 	def printGCode(self, gcodeList):
-		if not self.isOperational() or self.isPrinting():
+		if not self.isOperational() or self.isPrinting() or self.isPaused():
 			return
 		self._gcodeList = gcodeList
 		self._gcodePos = 0
@@ -629,7 +684,7 @@ class MachineCom(object):
 		self._printSection = 'CUSTOM'
 		self._changeState(self.STATE_PRINTING)
 		self._printStartTime = time.time()
-		for i in xrange(0, 2):
+		for i in xrange(0, 4):
 			self._sendNext()
 	
 	def cancelPrint(self):
@@ -639,8 +694,11 @@ class MachineCom(object):
 	def setPause(self, pause):
 		if not pause and self.isPaused():
 			self._changeState(self.STATE_PRINTING)
-			for i in xrange(0, 2):
-				self._sendNext()
+			for i in xrange(0, 4):
+				if not self._commandQueue.empty():
+					self._sendCommand(self._commandQueue.get())
+				else:
+					self._sendNext()
 		if pause and self.isPrinting():
 			self._changeState(self.STATE_PAUSED)
 	

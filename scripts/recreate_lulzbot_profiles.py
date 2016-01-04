@@ -3,15 +3,14 @@
 # This script is used to generate print profiles for lulzbot printers
 # based off of the lulzbot_profiles directory which contains common
 # profiles for multiple toolheads.
-# To generate profiles or update them, make sure there are no existing profiles
-# by doing a rm -rf resources/quickprint/lulzbot_mini* resources/quickprint/lulzbot_TAZ*
-# then run the script from the root Cura directory with ./scripts/create_lulzbot_profiles.py
+# To update profiles, run the script from the root Cura
+# directory with ./scripts/recreate_lulzbot_profiles.py
 #
 
 
 import glob
 import os
-import sys
+import shutil
 
 
 CURA_QUICKPRINT_DIR="resources/quickprint/"
@@ -50,14 +49,20 @@ material_map = {
     "Laybrick" : "laybrick",
     "PP-Iron": "protopasta-magnetic-iron",
     "PP-Steel": "protopasta-stainless-steel",
+    "Bamboofill": "bamboofill",
+    "Woodfill": "woodfill",
     # Advanced
     "Alloy910": "alloy910",
     "Bridge": "bridge",
     "Laywood": "laywood",
     "n-vent": "n-vent",
+    "XT": "XT",
+    "INOVA-1800": "CS-INOVA-1800",
     "PCTPE": "PCTPE",
     "PC-ABS": "PC-ABS",
     "T-Glase": "t-glase",
+    "Bronzefill": "bronzefill",
+    "Copperfill": "copperfill",
     # Expert
     "PP-Conductive": "protopasta-conductive-PLA",
     "HIPS_VP" : "HIPS",
@@ -76,10 +81,7 @@ material_map = {
     "ABS_semiflex" : "ABS-semiflex",
 
     # Others
-    # bamboofill
     # b-pet
-    # bronzefill
-    # copperfill
     # tritan
     # PLA-protopasta-conductive-PLA
 }
@@ -94,14 +96,20 @@ material_order = {
     "Laybrick" : 11,
     "PP-Iron": 12,
     "PP-Steel": 13,
+    "Bamboofill":14,
+    "Woodfill":15,
     # Advanced
     "Alloy910": 50,
     "Bridge": 51,
     "Laywood": 52,
     "n-vent": 53,
-    "PCTPE": 54,
-    "PC-ABS": 55,
-    "T-Glase": 56,
+    "XT": 54,
+    "INOVA-1800": 55,
+    "PCTPE": 56,
+    "PC-ABS": 57,
+    "T-Glase": 58,
+    "Bronzefill":59,
+    "Copperfill":60,
     # Expert
     "PP-Conductive": 500,
     "HIPS_VP" : 501,
@@ -130,14 +138,20 @@ material_types = {
     "Laybrick" : "Intermediate",
     "PP-Iron": "Intermediate",
     "PP-Steel": "Intermediate",
+    "Bamboofill": "Intermediate",
+    "Woodfill": "Intermediate",
     # Advanced
     "Alloy910": "Advanced",
     "Bridge": "Advanced",
     "Laywood": "Advanced",
     "n-vent": "Advanced",
+    "XT": "Advanced",
+    "INOVA-1800": "Advanced",
     "PCTPE": "Advanced",
     "PC-ABS": "Advanced",
     "T-Glase": "Advanced",
+    "Bronzefill": "Advanced",
+    "Copperfill": "Advanced",
     # Expert
     "PP-Conductive": "Expert",
     "HIPS_VP" : "Expert",
@@ -166,14 +180,20 @@ material_names = {
     "Laybrick" : "Laybrick (CC-Products)",
     "PP-Iron": "Magnetic (Proto-pasta)",
     "PP-Steel": "Steel PLA (Proto-pasta)",
+    "Bamboofill": "Bamboofill (colorFabb)",
+    "Woodfill": "Woodfill (colorFabb)",
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
     "Laywood": "Laywoo-D3 (CC-Products)",
     "n-vent": "n-vent (Taulman)",
+    "XT": "XT (colorFabb)",
+    "INOVA-1800": "INOVA-1800 (ChromaStrand)",
     "PCTPE": "PCTPE (Taulman)",
     "PC-ABS": "PC-ABS (Proto-pasta)",
     "T-Glase": "t-glase (Taulman)",
+    "Bronzefill": "Bronzefill (colorFabb)",
+    "Copperfill": "Copperfill (colorFabb)",
     # Expert
     "PP-Conductive": "Conductive (Proto-pasta)",
     "HIPS_VP" : "HIPS (Village Plastics)",
@@ -198,6 +218,8 @@ bed_prep_materials = {
     "Alloy910",
     "Bridge",
     "n-vent",
+    "XT",
+    "INOVA-1800",
 	"PCTPE",
 	"T-Glase",
 	"618-Nylon",
@@ -207,38 +229,43 @@ bed_prep_materials = {
 
 material_url = {
     # Beginner
-    "HIPS_eSUN": "www.lulzbot.com/products/hips-3mm-filament-1kg-reel-esun",
-    "PLA_eSUN": "www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
-    "PLA_VP": "www.lulzbot.com/products/pla-3mm-filament-1kg-reel-village-plastics",
+    "HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
+    "PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
+    "PLA_VP": "lulzbot.com/store/filament/pla-village",
     # Intermediate
-    "ABS_VP": "www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
-    "Laybrick" : "www.lulzbot.com/products/laybrick-filament-3mm",
-    "PP-Iron": "www.lulzbot.com/products/magnetic-iron-pla-3mm-filament-500g-reel-proto-pasta",
-    "PP-Steel": "www.lulzbot.com/products/stainless-steel-pla-3mm-filament-500g-reel-proto-pasta",
+    "ABS_VP": "lulzbot.com/store/filament/abs",
+    "Laybrick" : "lulzbot.com/store/filament/laybrick",
+    "PP-Iron": "lulzbot.com/store/filament/magnetic-iron-pla",
+    "PP-Steel": "lulzbot.com/store/filament/stainless-steel-pla",
+#    "Bamboofill": "",
+#    "Woodfill": "",
     # Advanced
-    "Alloy910": "www.lulzbot.com/products/alloy-910-3mm-filament-1lb-reel-taulman",
-    "Bridge": "www.lulzbot.com/products/taulman-bridge-nylon-3mm-filament-1-pound",
-    "Laywood": "www.lulzbot.com/products/laywoo-d3-cherry-laywood-3mm-250g-coil-cc-products",
-    "n-vent": "www.lulzbot.com/products/n-vent-3mm-filament-1lb-taulman",
-    "PCTPE": "www.lulzbot.com/products/taulman-pctpe-3mm-filament-1-pound",
-    "PC-ABS": "www.lulzbot.com/products/pc-abs-alloy-3mm-filament-500g-reel-proto-pasta",
-    "T-Glase": "www.lulzbot.com/products/t-glase-3mm-filament-1lb-reel",
+    "Alloy910": "lulzbot.com/store/filament/alloy-910",
+    "Bridge": "lulzbot.com/store/filament/bridge-nylon",
+    "Laywood": "lulzbot.com/store/filament/laywoo-d3-laywood",
+    "n-vent": "lulzbot.com/store/filament/n-vent",
+#    "XT": "",
+    "PCTPE": "lulzbot.com/store/filament/pctpe",
+    "PC-ABS": "lulzbot.com/store/filament/pc-abs-alloy",
+    "T-Glase": "lulzbot.com/store/filament/t-glase",
+#    "Bronzefill": "",
+#    "Copperfill": "",
     # Expert
-    "PP-Conductive": "www.lulzbot.com/products/conductive-pla-3mm-filament-500g-reel-proto-pasta",
-    "HIPS_VP" : "www.lulzbot.com/products/hips-3mm-filament-1kg-or-5lb-reel-village-plastics",
-    "PC_VP": "www.lulzbot.com/products/polycarbonate-3mm-filament-1kg-reel",
-    "618-Nylon": "www.lulzbot.com/products/taulman-618-nylon-3mm-filament-1-pound",
-    "645-Nylon": "www.lulzbot.com/products/taulman-645-nylon-3mm-filament-1-pound",
+    "PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
+    "HIPS_VP" : "lulzbot.com/store/filament/hips",
+    "PC_VP": "lulzbot.com/store/filament/polycarbonate",
+    "618-Nylon": "lulzbot.com/store/filament/nylon-618",
+    "645-Nylon": "lulzbot.com/store/filament/nylon-645",
     # Dual extruder (Expert)
-    'ABS_ABS': "www.lulzbot.com/products/abs-3mm-filament-1kg-reel",
-    'PLA_PLA': "www.lulzbot.com/products/pla-3mm-filament-1kg-or-500g-reel-esun",
-    'PLA_PVA': "www.lulzbot.com/products/natural-pva-3mm-filament-05kg-reel-esun",
+    'ABS_ABS': "lulzbot.com/store/filament/abs",
+    'PLA_PLA': "lulzbot.com/store/filament/pla-esun",
+    'PLA_PVA': "lulzbot.com/store/filament/natural-pva",
     # Flexystruder (Expert)
-    "ninjaflex" : "www.lulzbot.com/ninjaflex",
-    "semiflex" : "www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
+    "ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
+    "semiflex" : "lulzbot.com/store/filament/semiflex",
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "www.lulzbot.com/ninjaflex",
-    "ABS_semiflex" : "www.lulzbot.com/products/semiflex-tpe-thermoplastic-elastomer-3mm-075kg",
+    "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
+    "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
 }
 
 profile_map = {
@@ -305,7 +332,8 @@ def create_machine_type(machine_type, path, dir):
                     Apply a PVA-based glue stick \n\
                     to bed surface before printing.\n")
                 if material_url.has_key(material):
-                    f.write("url = %s\n" % material_url[material])
+                    referer = "?pk_campaign=software-cura"
+                    f.write("url = %s%s\n" %(material_url[material], referer) )
             with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % profile_map[profile])
@@ -324,22 +352,42 @@ def create_machine_type(machine_type, path, dir):
             with open(os.path.join(path, material, 'material.ini'), 'w') as f:
                 f.write("[info]\n")
                 f.write("disabled = true\n")
-                
+
+def clear_quickprint_folders():
+    here = os.getcwd()
+    quickprint_path = os.path.join(here,CURA_QUICKPRINT_DIR)
+    candidates = os.listdir(quickprint_path)
+    
+    folder_paths = []
+    for candidate in candidates:
+        if "lulzbot_mini" in candidate or \
+           "lulzbot_TAZ" in candidate:
+            candidate_path = os.path.join(quickprint_path, candidate)
+            if os.path.isdir(candidate_path):
+                folder_paths.append(candidate_path)
+    for path in folder_paths:
+        shutil.rmtree(path)
+    if not folder_paths:
+        print("No Quickprint folders to delete")
+    else:
+        print("Quickprint folders deleted")
 
 def main():
     if not os.path.exists(CURA_QUICKPRINT_DIR):
         print "Cura path is wrong"
         return -1
 
-    dirs = glob.glob(os.path.join(CURA_QUICKPRINT_DIR, PROFILES_DIR, "*"))
+    clear_quickprint_folders()
 
+    dirs = glob.glob(os.path.join(CURA_QUICKPRINT_DIR, PROFILES_DIR, "*"))
+ 
     for d in dirs:
         dir = os.path.basename(d)
         if dir_map.has_key(dir):
             for machine_type in dir_map[dir]:
                 create_machine_type(machine_type, d, dir)
 
-    print "All done :D"
+    print "Quickprint profiles regenerated"
 
 
 if __name__ == '__main__':

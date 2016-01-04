@@ -78,7 +78,9 @@ class simpleModePanel(wx.Panel):
 					selectedMaterialType = material_type
 
 			if selectedMaterialType is None:
-				if selectedMaterial is None or len(selectedMaterial.types) == 0:
+				if profile.getProfileSetting('simpleModeMaterialType') == _("All"):
+					selectedMaterialType = profile.getProfileSetting('simpleModeMaterialType')
+				elif selectedMaterial is None or len(selectedMaterial.types) == 0:
 					selectedMaterialType = _("Others")
 				else:
 					selectedMaterialType = selectedMaterial.types[0]
@@ -180,7 +182,8 @@ class simpleModePanel(wx.Panel):
 		selection = self.materialTypeCombo.GetSelection()
 		choices = []
 
-		if selection >= len(self._print_material_types.keys()):
+		if selection >= len(self._print_material_types.keys()) or \
+		   selection == -1:
 			materials = self._all_print_materials
 			for material in materials:
 				choices.append(material.full_name)
@@ -216,20 +219,13 @@ class simpleModePanel(wx.Panel):
 			materialType = self.materialTypeCombo.GetValue()
 			selection = self.materialTypeCombo.GetSelection()
 
-			if selection >= len(self._print_material_types.keys()):
+			if selection >= len(self._print_material_types.keys()) or \
+			   selection == -1:
 				materials = self._all_print_materials
 			else:
 				materials = self._print_material_types[materialType]
 
 			selection = self.materialCombo.GetSelection()
-
-			# This is needed to avoid a wxpython 2.8 bug which returns -1
-			# when the selection is made with SetValue
-			if selection == -1:
-				material_name = self.materialCombo.GetValue()
-				for material in materials:
-					if material.name == material_name:
-						return material
 
 			return materials[selection]
 		else:
@@ -352,6 +348,9 @@ class simpleModePanel(wx.Panel):
 			self._update(e)
 
 	def _update(self, e):
+		if self.materialTypeCombo:
+			materialType = self.materialTypeCombo.GetValue()
+			profile.putProfileSetting('simpleModeMaterialType', materialType)
 		material = self._getSelectedMaterial()
 		if material:
 			profile.putProfileSetting('simpleModeMaterial', material.name)

@@ -37,6 +37,10 @@ class aboutWindow(wx.Frame):
 		url = "code.alephobjects.com/w/cura/release-notes/"
 		s.Add(wx.HyperlinkCtrl(p, -1, url, url))
 
+		s.Add(wx.StaticText(p, -1, 'Source Code:'))
+		url2 = "code.alephobjects.com/diffusion/CURA/"
+		s.Add(wx.HyperlinkCtrl(p, -1, url2, url2))
+
 		s.Add(wx.StaticText(p, -1, ''))
 		s.Add(wx.StaticText(p, -1, 'End solution for Open Source Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by David Braam and Ultimaker.'), flag=wx.TOP, border=5)

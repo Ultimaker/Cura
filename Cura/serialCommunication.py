@@ -48,7 +48,7 @@ class serialComm(object):
 		sys.stdout.write('progress:%d\n' % (lineNr))
 
 	def mcZChange(self, newZ):
-		pass
+		sys.stdout.write('changeZ:%f\n' % (newZ))
 
 	def monitorStdin(self):
 		while not (self._comm.isClosed() or sys.stdin.closed):

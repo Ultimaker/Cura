@@ -65,9 +65,9 @@ class printerConnectionBase(object):
 	def isPrinting(self):
 		return False
 
-	#Amount of progression of the current print file. 0.0 to 1.0
+	#Amount of progression of the current print file. Returns (current line, total lines, current Z position)
 	def getPrintProgress(self):
-		return 0.0
+		return (0, 0, 0.0)
 
 	#Returns true if we need to establish an active connection.
 	# Depending on the type of the connection some types do not need an active connection (Doodle3D WiFi Box for example)

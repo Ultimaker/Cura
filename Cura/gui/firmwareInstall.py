@@ -116,6 +116,7 @@ class InstallFirmwareDialog(wx.Dialog):
 		self.Layout()
 		self.Fit()
 		self.success = False
+		self.show_connect_error_dialog = False
 
 	def Run(self):
 		if self.filename is None:
@@ -127,6 +128,11 @@ class InstallFirmwareDialog(wx.Dialog):
 		self.thread.start()
 
 		self.ShowModal()
+		# Creating a MessageBox in a separate thread while main thread is locked inside a ShowModal
+		# will cause Python to crash with X errors. So we need to show the dialog here instead
+		if self.show_connect_dialog:
+			wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
+						  _("Firmware update"), wx.OK | wx.ICON_ERROR)
 		return self.success
 
 	def OnRun(self):
@@ -153,10 +159,12 @@ class InstallFirmwareDialog(wx.Dialog):
 				programmer.connect(self.port)
 			except ispBase.IspError:
 				programmer.close()
+			if not self:
+				#Window destroyed
+				return
 
 		if not programmer.isConnected():
-			wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
-						  _("Firmware update"), wx.OK | wx.ICON_ERROR)
+			self.show_connect_dialog = True
 			wx.CallAfter(self.Close)
 			return
 
@@ -305,7 +313,7 @@ class AutoUpdateFirmware(wx.Dialog):
 		programmer = stk500v2.Stk500v2()
 		programmer.progressCallback = self.OnProgress
 		if self.port == 'AUTO':
-			wx.CallAfter(self.updateLabel, _("Please connect the printer to\nyour computer with the USB cable."))
+			wx.CallAfter(self.updateLabel, _("Please connect the printer to your\ncomputer with a USB cable and power it on."))
 			while not programmer.isConnected():
 				for self.port in machineCom.serialList(True):
 					try:

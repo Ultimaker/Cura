@@ -11,6 +11,7 @@ import os
 import sys
 import subprocess
 import json
+import re
 
 from Cura.util import profile
 from Cura.util import machineCom
@@ -67,6 +68,9 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._commState = None
 		self._commStateString = None
 		self._gcodeData = []
+		self._printProgress = 0
+		self._ZPosition = 0
+		self._pausePosition = None
 
 	#Load the data into memory for printing, returns True on success
 	def loadGCodeData(self, dataStream):
@@ -94,11 +98,13 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			self._process.stdin.write('G:%s\n' % (line))
 		self._process.stdin.write('START\n')
 		self._printProgress = 0
+		self._ZPosition = 0
+		self._pausePosition = None
 
 	def coolDown(self):
 		cooldown_toolhead = "M104 S0"
-		for i in range(0,3):
-			change_toolhead = "T%d".format(i)
+		for i in range(0, int(profile.getMachineSetting('extruder_amount'))):
+			change_toolhead = "T{}".format(i)
 			self.sendCommand(change_toolhead)
 			self.sendCommand(cooldown_toolhead)
 		self.sendCommand("M140 S0") #Bed
@@ -113,6 +119,8 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 			return
 		self._process.stdin.write('STOP\n')
 		self._printProgress = 0
+		self._ZPosition = 0
+		self._pausePosition = None
 		self.coolDown()
 		self.disableSteppers()
 
@@ -121,7 +129,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	#Returns true if we have the ability to pause the file printing.
 	def hasPause(self):
-		return False
+		return True
 
 	def isPaused(self):
 		return self._commState == machineCom.MachineCom.STATE_PAUSED
@@ -130,13 +138,92 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 	def pause(self, value):
 		if not (self.isPrinting() or self.isPaused()) or self._process is None:
 			return
-		self._process.stdin.write('PAUSE\n' if value else "RESUME\n")
+		if value:
+			start_gcode = profile.getAlterationFileContents('start.gcode')
+			start_gcode_lines = len(start_gcode.split("\n"))
+			parkX = profile.getMachineSettingFloat('machine_width') - 10
+			parkY = profile.getMachineSettingFloat('machine_depth') - 10
+			maxZ = profile.getMachineSettingFloat('machine_height') - 10
+			#retract_amount = profile.getProfileSettingFloat('retraction_amount')
+			retract_amount = 5.0
+			moveZ = 10.0
+
+			self._process.stdin.write("PAUSE\n")
+			if self._printProgress - 5 > start_gcode_lines: # Substract 5 because of the marlin queue
+				x = None
+				y = None
+				e = None
+				f = None
+				for i in xrange(self._printProgress - 1, start_gcode_lines, -1):
+					line = self._gcodeData[i]
+					if ('G0' in line or 'G1' in line) and 'X' in line and x is None:
+						x = float(re.search('X(-?[0-9\.]*)', line).group(1))
+					if ('G0' in line or 'G1' in line) and 'Y' in line and y is None:
+						y = float(re.search('Y(-?[0-9\.]*)', line).group(1))
+					if ('G0' in line or 'G1' in line) and 'E' in line and e is None:
+						e = float(re.search('E(-?[0-9\.]*)', line).group(1))
+					if ('G0' in line or 'G1' in line) and 'F' in line and f is None:
+						f = int(re.search('F(-?[0-9\.]*)', line).group(1))
+					if x is not None and y is not None and f is not None and e is not None:
+						break
+				if f is None:
+					f = 1200
+
+				if x is not None and y is not None:
+					# Set E relative positioning
+					self.sendCommand("M83")
+
+					# Retract 1mm
+					retract = ("E-%f" % retract_amount)
+
+					#Move the toolhead up
+					newZ = self._ZPosition + moveZ
+					if maxZ < newZ:
+						newZ = maxZ
+
+					if newZ > self._ZPosition:
+						move = ("Z%f " % (newZ))
+					else: #No z movement, too close to max height 
+						move = ""
+					retract_and_move = "G1 {} {}F120".format(retract, move)
+					self.sendCommand(retract_and_move)
+
+					#Move the head away
+					self.sendCommand("G1 X%f Y%f F9000" % (parkX, parkY))
+
+					#Disable the E steppers
+					self.sendCommand("M84 E0")
+					# Set E absolute positioning
+					self.sendCommand("M82")
+
+					self._pausePosition = (x, y, self._ZPosition, f, e)
+		else:
+			if self._pausePosition:
+				retract_amount = profile.getProfileSettingFloat('retraction_amount')
+				# Set E relative positioning
+				self.sendCommand("M83")
+
+				#Prime the nozzle when changing filament
+				self.sendCommand("G1 E%f F120" % (retract_amount)) #Push the filament out
+				self.sendCommand("G1 E-%f F120" % (retract_amount)) #retract again
+
+				# Position the toolhead to the correct position again
+				self.sendCommand("G1 X%f Y%f Z%f F%d" % self._pausePosition[0:4])
+
+				# Prime the nozzle again
+				self.sendCommand("G1 E%f F120" % (retract_amount))
+				# Set proper feedrate
+				self.sendCommand("G1 F%d" % (self._pausePosition[3]))
+				# Set E absolute position to cancel out any extrude/retract that occured
+				self.sendCommand("G92 E%f" % (self._pausePosition[4]))
+				# Set E absolute positioning
+				self.sendCommand("M82")
+			self._process.stdin.write("RESUME\n")
+			self._pausePosition = None
 
 	#Amount of progression of the current print file. 0.0 to 1.0
 	def getPrintProgress(self):
-		if len(self._gcodeData) < 1:
-			return 0.0
-		return float(self._printProgress) / float(len(self._gcodeData))
+		return (self._printProgress, len(self._gcodeData), self._ZPosition)
 
 	# Return if the printer with this connection type is available
 	def isAvailable(self):
@@ -239,6 +326,9 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				self._doCallback('')
 			elif line[0] == 'progress':
 				self._printProgress = int(line[1])
+				self._doCallback()
+			elif line[0] == 'changeZ':
+				self._ZPosition = float(line[1])
 				self._doCallback()
 			else:
 				print line

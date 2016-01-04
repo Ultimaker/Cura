@@ -2,13 +2,18 @@ __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AG
 
 import wx
 from wx.lib.intctrl import IntCtrl
-import power
+try:
+	import power
+except:
+	power = None
 import time
 import sys
 import os
 import ctypes
 import subprocess
 from Cura.util import resources
+from Cura.util import profile
+from Cura.util import version
 
 #TODO: This does not belong here!
 if sys.platform.startswith('win'):
@@ -36,8 +41,8 @@ elif sys.platform.startswith('darwin'):
 	frameworkIdentifier="com.apple.iokit",
 	frameworkPath=objc.pathForFramework("/System/Library/Frameworks/IOKit.framework"),
 	globals=globals())
-	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
-	objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionRelease", b"iI")])
+	foo = objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionCreateWithName", b"i@I@o^I")])
+	foo = objc.loadBundleFunctions(bundle, globals(), [("IOPMAssertionRelease", b"iI")])
 	def preventComputerFromSleeping(frame, prevent):
 		if prevent:
 			success, preventComputerFromSleeping.assertionID = IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep, kIOPMAssertionLevelOn, "Cura is printing", None)
@@ -345,13 +350,24 @@ class printWindowPlugin(wx.Frame):
 					if not self._printerConnection.hasActiveConnection() or \
 					   self._printerConnection.isActiveConnectionOpen():
 						if self._printerConnection.isPrinting():
-							button.SetLabel(_("Pause"))
+							if self.pauseTimer.IsRunning():
+								self.printButton.Enable(False)
+								self.printButton.SetLabel(_("Please wait..."))
+							else:
+								self.printButton.Enable(True)
+								button.SetLabel(_("Pause"))
 						else:
 							if self._printerConnection.isPaused():
-								button.SetLabel(_("Resume"))
+								if self.pauseTimer.IsRunning():
+									self.printButton.Enable(False)
+									self.printButton.SetLabel(_("Please wait..."))
+								else:
+									self.printButton.Enable(True)
+									button.SetLabel(_("Resume"))
 							else:
 								button.SetLabel(_("Print"))
-						button.Enable(True)
+								button.Enable(True)
+								self.pauseTimer.Stop()
 					else:
 						button.Enable(False)
 			elif button.command == self.script_cancelPrint:
@@ -391,7 +407,11 @@ class printWindowPlugin(wx.Frame):
 		isPrinting = connection.isPrinting() or connection.isPaused()
 		if self._progressBar is not None:
 			if isPrinting:
-				self._progressBar.SetValue(connection.getPrintProgress() * 1000)
+				(current, total, z) = connection.getPrintProgress()
+				progress = 0.0
+				if total > 0:
+					progress = float(current) / float(total)
+				self._progressBar.SetValue(progress * 1000)
 			else:
 				self._progressBar.SetValue(0)
 		info = connection.getStatusString()
@@ -431,7 +451,10 @@ class printWindowBasic(wx.Frame):
 			style=wx.ALIGN_CENTER)
 		self.powerWarningText.SetBackgroundColour('red')
 		self.powerWarningText.SetForegroundColour('white')
-		self.powerManagement = power.PowerManagement()
+		if power:
+			self.powerManagement = power.PowerManagement()
+		else:
+			self.powerManagement = None
 		self.powerWarningTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self.OnPowerWarningChange, self.powerWarningTimer)
 		self.OnPowerWarningChange(None)
@@ -446,6 +469,9 @@ class printWindowBasic(wx.Frame):
 		self.cancelButton = wx.Button(self.panel, -1, _("Cancel print"))
 		self.errorLogButton = wx.Button(self.panel, -1, _("Error log"))
 		self.progress = wx.Gauge(self.panel, -1, range=1000)
+
+		self.pauseTimer = wx.Timer(self)
+		self.Bind(wx.EVT_TIMER, self.OnPauseTimer, self.pauseTimer)
 
 		self.sizer.Add(self.powerWarningText, pos=(0, 0), span=(1, 5), flag=wx.EXPAND|wx.BOTTOM, border=5)
 		self.sizer.Add(self.statsText, pos=(1, 0), span=(1, 5), flag=wx.LEFT, border=5)
@@ -479,6 +505,8 @@ class printWindowBasic(wx.Frame):
 			self._printerConnection.openActiveConnection()
 
 	def OnPowerWarningChange(self, e):
+		if self.powerManagement is None:
+			return
 		type = self.powerManagement.get_providing_power_source_type()
 		if type == power.POWER_TYPE_AC and self.powerWarningText.IsShown():
 			self.powerWarningText.Hide()
@@ -501,6 +529,8 @@ class printWindowBasic(wx.Frame):
 		self._printerConnection.removeCallback(self._doPrinterConnectionUpdate)
 		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
 		preventComputerFromSleeping(self, False)
+		self.powerWarningTimer.Stop()
+		self.pauseTimer.Stop()
 		self.Destroy()
 
 	def OnConnect(self, e):
@@ -517,6 +547,14 @@ class printWindowBasic(wx.Frame):
 
 	def OnPause(self, e):
 		self._printerConnection.pause(not self._printerConnection.isPaused())
+		self.pauseButton.Enable(False)
+		self.pauseTimer.Stop()
+		self.pauseTimer.Start(10000)
+
+	def OnPauseTimer(self, e):
+		self.pauseButton.Enable(True)
+		self.pauseTimer.Stop()
+		self._updateButtonStates()
 
 	def OnErrorLog(self, e):
 		LogWindow(self._printerConnection.getErrorLog())
@@ -538,7 +576,11 @@ class printWindowBasic(wx.Frame):
 		self._updateButtonStates()
 		onGoingPrint = connection.isPrinting() or connection.isPaused()
 		if onGoingPrint:
-			self.progress.SetValue(connection.getPrintProgress() * 1000)
+			(current, total, z) = connection.getPrintProgress()
+			progress = 0.0
+			if total > 0:
+				progress = float(current) / float(total)
+			self.progress.SetValue(progress * 1000)
 		else:
 			self.progress.SetValue(0)
 		info = connection.getStatusString()
@@ -649,6 +691,9 @@ class printWindowAdvanced(wx.Frame):
 		self.OnPowerWarningChange(None)
 		self.powerWarningTimer.Start(10000)
 
+		self.pauseTimer = wx.Timer(self)
+		self.Bind(wx.EVT_TIMER, self.OnPauseTimer, self.pauseTimer)
+
 		self.connectButton = wx.Button(self.toppanel, -1, _("Connect"), size=(125, 30))
 		self.printButton = wx.Button(self.toppanel, -1, _("Print"), size=(125, 30))
 		self.cancelButton = wx.Button(self.toppanel, -1, _("Cancel"), size=(125, 30))
@@ -691,7 +736,7 @@ class printWindowAdvanced(wx.Frame):
 		self.sizer.Add(self.temperatureBedField, pos=(5, 2))
 		self.sizer.Add(self._termLog, pos=(0, 3), span=(5, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
 		self.sizer.Add(self._termInput, pos=(5, 3), span=(1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
-		self.sizer.Add(self.progress, pos=(6, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
+		self.sizer.Add(self.progress, pos=(7, 0), span=(1, 6), flag=wx.EXPAND|wx.BOTTOM)
 
 		self.Bind(wx.EVT_SIZE, self.OnSize)
 		self.Bind(wx.EVT_CLOSE, self.OnClose)
@@ -731,6 +776,8 @@ class printWindowAdvanced(wx.Frame):
 		#TODO: When multiple printer windows are open, closing one will enable sleeping again.
 		preventComputerFromSleeping(self, False)
 		self._printerConnection.cancelPrint()
+		self.powerWarningTimer.Stop()
+		self.pauseTimer.Stop()
 		self.Destroy()
 
 	def OnPowerWarningChange(self, e):
@@ -754,8 +801,16 @@ class printWindowAdvanced(wx.Frame):
 	def OnPrint(self, e):
 		if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
 			self._printerConnection.pause(not self._printerConnection.isPaused())
+			self.pauseTimer.Stop()
+			self.printButton.Enable(False)
+			self.pauseTimer.Start(10000)
 		else:
 			self._printerConnection.startPrint()
+
+	def OnPauseTimer(self, e):
+		self.printButton.Enable(True)
+		self.pauseTimer.Stop()
+		self._updateButtonStates()
 
 	def OnCancel(self, e):
 		self._printerConnection.cancelPrint()
@@ -785,7 +840,7 @@ class printWindowAdvanced(wx.Frame):
 		# Prevent Z movement when paused and all moves when printing
 		if (not self._printerConnection.hasActiveConnection() or \
 			self._printerConnection.isActiveConnectionOpen()) and \
-			(not (self._printerConnection.isPaused() and motor == 'Z') and \
+			(not (self._printerConnection.isPaused() and motor != 'E') and \
 			 not self._printerConnection.isPrinting()):
 			self._printerConnection.sendCommand("G91")
 			self._printerConnection.sendCommand("G1 %s%.1f F%d" % (motor, step, feedrate))
@@ -801,7 +856,13 @@ class printWindowAdvanced(wx.Frame):
 		self._moveXYZE("Z", step, 200)
 
 	def _moveE(self, step):
-		self._moveXYZE("E", step, 120)
+		feedrate = 120
+		if "lulzbot_" in profile.getMachineSetting("machine_type"):
+			toolhead_name = profile.getMachineSetting("toolhead")
+			toolhead_name = toolhead_name.lower()
+			if "flexy" in toolhead_name:
+				feedrate = 30
+		self._moveXYZE("E", step, feedrate)
 
 	def _homeXYZ(self, direction):
 		if not self._printerConnection.isPaused() and not self._printerConnection.isPrinting():
@@ -886,13 +947,24 @@ class printWindowAdvanced(wx.Frame):
 			if not self._printerConnection.hasActiveConnection() or \
 			   self._printerConnection.isActiveConnectionOpen():
 				if self._printerConnection.isPrinting():
-					self.printButton.SetLabel(_("Pause"))
+					if self.pauseTimer.IsRunning():
+						self.printButton.Enable(False)
+						self.printButton.SetLabel(_("Please wait..."))
+					else:
+						self.printButton.Enable(True)
+						self.printButton.SetLabel(_("Pause"))
 				else:
 					if self._printerConnection.isPaused():
-						self.printButton.SetLabel(_("Resume"))
+						if self.pauseTimer.IsRunning():
+							self.printButton.Enable(False)
+							self.printButton.SetLabel(_("Please wait..."))
+						else:
+							self.printButton.SetLabel(_("Resume"))
+							self.printButton.Enable(True)
 					else:
 						self.printButton.SetLabel(_("Print"))
-				self.printButton.Enable(True)
+						self.printButton.Enable(True)
+						self.pauseTimer.Stop()
 			else:
 				self.printButton.Enable(False)
 		if not self._printerConnection.hasActiveConnection() or \
@@ -901,7 +973,13 @@ class printWindowAdvanced(wx.Frame):
 									 self._printerConnection.isPaused())
 		else:
 			self.cancelButton.Enable(False)
-		self.errorLogButton.Show(self._printerConnection.isInErrorState())
+		if version.isDevVersion():
+			if self._printerConnection.isInErrorState():
+				self.errorLogButton.SetLabel(_("Error Log"))
+			else:
+				self.errorLogButton.SetLabel(_("Show Log"))
+		else:
+			self.errorLogButton.Show(self._printerConnection.isInErrorState())
 		self._termInput.Enable(self._printerConnection.isAbleToSendDirectCommand())
 		self.Layout()
 
@@ -928,17 +1006,24 @@ class printWindowAdvanced(wx.Frame):
 			self._addTermLog('< %s\n' % (extraInfo))
 
 		self._updateButtonStates()
+		
+		info = connection.getStatusString()
 		isPrinting = connection.isPrinting() or connection.isPaused()
 		if isPrinting:
-			self.progress.SetValue(connection.getPrintProgress() * 1000)
+			(current, total, z) = connection.getPrintProgress()
+			progress = 0.0
+			if total > 0:
+				progress = float(current) / float(total)
+			self.progress.SetValue(progress * 1000)
+			info += (" {:3.1f}% | ".format(progress * 100))
+			info += (("Z: %.3fmm") % (z))
 		else:
 			self.progress.SetValue(0)
-		info = connection.getStatusString()
-		info += '\n'
+
 		if self._printerConnection.getTemperature(0) is not None:
-			info += 'Temperature: %d' % (self._printerConnection.getTemperature(0))
+			info += ' | Temperature: %d ' % (self._printerConnection.getTemperature(0))
 		if self._printerConnection.getBedTemperature() > 0:
-			info += ' Bed: %d' % (self._printerConnection.getBedTemperature())
+			info += 'Bed: %d' % (self._printerConnection.getBedTemperature())
 		self.SetTitle(info.replace('\n', ', ').strip(', '))
 		if isPrinting != self._isPrinting:
 			self._isPrinting = isPrinting

@@ -84,7 +84,10 @@ class convertImageDialog(wx.Dialog):
 		except ValueError:
 			return
 		h = w / self.aspectRatio
-		self.depthInput.SetValue(str(h))
+		new_h = str(h)
+		old_h = str(self.depthInput.GetValue())
+		if new_h != old_h:
+			self.depthInput.SetValue(new_h)
 
 	def OnDepthEnter(self, e):
 		try:
@@ -92,7 +95,10 @@ class convertImageDialog(wx.Dialog):
 		except ValueError:
 			return
 		w = h * self.aspectRatio
-		self.widthInput.SetValue(str(w))
+		new_w = str(w)
+		old_w = str(self.widthInput.GetValue())
+		if new_w != old_w:
+			self.widthInput.SetValue(new_w)
 
 def convertImage(filename, height=20.0, width=100.0, blur=0, invert=False, baseHeight=1.0):
 	image = wx.Image(filename)

@@ -164,7 +164,13 @@ class printSpeedValidator(object):
 		try:
 			nozzleSize = profile.getProfileSettingFloat('nozzle_size')
 			layerHeight = profile.getProfileSettingFloat('layer_height')
-			printSpeed = float(eval(self.setting.getValue().replace(',','.'), {}, {}))
+			raw_user_input = self.setting.getValue()
+			new_print_speed = raw_user_input.replace(',', '.')
+			try:
+				evaluated = eval(new_print_speed, {}, {}) #Converts unicode into numeric
+			except SyntaxError: #Caused by unicode string being empty
+				evaluated = 0.0
+			printSpeed = float(evaluated)
 			if printSpeed == 0.0:
 				printSpeed = profile.getProfileSettingFloat('print_speed')
 			

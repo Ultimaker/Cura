@@ -147,10 +147,11 @@ class pluginPanel(wx.Panel):
 		for panel in self.panelList:
 			idx = self.panelList.index(panel)
 			for k in panel.paramCtrls.keys():
-				if type(panel.paramCtrls[k].GetValue()) == bool:
-					self.pluginConfig[idx]['params'][k] = int(panel.paramCtrls[k].GetValue())
-				else:
-					self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
+				if panel.paramCtrls[k] == e.GetEventObject():
+					if type(panel.paramCtrls[k].GetValue()) == bool:
+						self.pluginConfig[idx]['params'][k] = int(panel.paramCtrls[k].GetValue())
+					else:
+						self.pluginConfig[idx]['params'][k] = panel.paramCtrls[k].GetValue()
 		pluginInfo.setPostProcessPluginConfig(self.pluginConfig)
 		self.callback()
 
@@ -174,6 +175,7 @@ class pluginPanel(wx.Panel):
 		panel.Show(False)
 		for p in self.panelList:
 			sizer.Detach(p)
+			p.Destroy()
 		self.panelList.pop(idx)
 		for p in self.panelList:
 				sizer.Add(p, flag=wx.EXPAND)
