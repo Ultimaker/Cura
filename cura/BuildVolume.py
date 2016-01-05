@@ -129,12 +129,13 @@ class BuildVolume(SceneNode):
                     new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height, self._clamp(point[1], min_d, max_d))
                     mb.addFace(first, previous_point, new_point, color = color)
                     previous_point = new_point
-
                 # Find the largest disallowed area to exclude it from the maximum scale bounds.
                 # This is a very nasty hack. This pretty much only works for UM machines. This disallowed area_size needs
                 # A -lot- of rework at some point in the future: TODO
                 if numpy.min(points[:, 1]) >= 0: # This filters out all areas that have points to the left of the centre. This is done to filter the skirt area.
                     size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
+                else:
+                    size = 0
                 disallowed_area_size = max(size, disallowed_area_size)
 
             self._disallowed_area_mesh = mb.getData()
