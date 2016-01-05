@@ -199,15 +199,22 @@ class machineSettingsDialog(wx.Dialog):
 			wx.MessageBox(_("Cannot remove the last machine configuration in Cura"), _("Machine remove error"), wx.OK | wx.ICON_ERROR)
 			return
 
-		self.Hide()
-		profile.removeMachine(self.nb.GetSelection())
-		self.parent.reloadSettingPanels()
-		self.parent.updateMachineMenu()
+		dlg = wx.MessageDialog(self,
+			_("Are you sure you want to remove the selected machine?"),
+			_('Remove machine?'),
+			wx.YES_NO | wx.ICON_EXCLAMATION)
+		remove = dlg.ShowModal() == wx.ID_YES
+		dlg.Destroy()
+		if remove:
+			self.Hide()
+			profile.removeMachine(self.nb.GetSelection())
+			self.parent.reloadSettingPanels()
+			self.parent.updateMachineMenu()
 
-		prefDialog = machineSettingsDialog(self.parent)
-		prefDialog.Centre()
-		prefDialog.Show()
-		wx.CallAfter(self.Close)
+			prefDialog = machineSettingsDialog(self.parent)
+			prefDialog.Centre()
+			prefDialog.Show()
+			wx.CallAfter(self.Close)
 
 	def OnRenameMachine(self, e):
 		dialog = wx.TextEntryDialog(self, _("Enter the new name:"), _("Change machine name"),
