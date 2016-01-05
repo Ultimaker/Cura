@@ -25,7 +25,6 @@ class newVersionDialog(wx.Dialog):
 		title.SetMinSize(dc.GetTextExtent(title_text))
 		s.Add(title, flag=wx.ALIGN_CENTRE|wx.EXPAND|wx.BOTTOM, border=5)
 		s.Add(wx.StaticText(p, -1, _('Welcome to the new release of Cura LulzBot Edition!')))
-		s.Add(wx.StaticText(p, -1, _('(This dialog is only shown once)')))
 		s.Add(wx.StaticLine(p), flag=wx.EXPAND|wx.TOP|wx.BOTTOM, border=10)
 		s.Add(wx.StaticText(p, -1, _('Want to know what is new and cool in this version?')))
 		s.Add(wx.StaticText(p, -1, _('Click here for a list of changes:')))
