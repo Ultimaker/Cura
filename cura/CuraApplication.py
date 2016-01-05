@@ -281,7 +281,20 @@ class CuraApplication(QtApplication):
     def jobName(self):
         return self._job_name
 
-    ##  Remove an object from the scene
+    # Remove all selected objects from the scene.
+    @pyqtSlot()
+    def deleteSelection(self):
+        op = GroupedOperation()
+        nodes = Selection.getAllSelectedObjects()
+        for node in nodes:
+            op.addOperation(RemoveSceneNodeOperation(node))
+
+        op.push()
+
+        pass
+
+    ##  Remove an object from the scene.
+    #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)

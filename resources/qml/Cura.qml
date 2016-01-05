@@ -518,10 +518,7 @@ UM.MainWindow
 
         deleteSelection.onTriggered:
         {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.deleteObject(objectContextMenu.objectId);
-            }
+            Printer.deleteSelection()
         }
 
         deleteObject.onTriggered:
