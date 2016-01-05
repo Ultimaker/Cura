@@ -2,7 +2,7 @@
     "id": "m180",
     "version": 1,
     "name": "Malyan M180",
-    "manufacturer": "Malyan",
+    "manufacturer": "Other",
     "icon": "icon_ultimaker.png",
     "platform": "",
     "inherits": "fdmprinter.json",
