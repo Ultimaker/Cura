@@ -116,7 +116,7 @@ class InstallFirmwareDialog(wx.Dialog):
 		self.Layout()
 		self.Fit()
 		self.success = False
-		self.show_connect_error_dialog = False
+		self.show_connect_dialog = False
 
 	def Run(self):
 		if self.filename is None:
