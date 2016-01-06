@@ -1,14 +1,14 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Backend.OutputWriter import OutputWriter
+from UM.Backend.BackendOutputWriter import BackendOutputWriter
 from UM.Logger import Logger
 from UM.Application import Application
 import io
 import re #For escaping characters in the settings.
 
 
-class GCodeWriter(OutputWriter):
+class GCodeWriter(BackendOutputWriter):
     ##  The file format version of the serialised g-code.
     #
     #   It can only read settings with the same version as the version it was

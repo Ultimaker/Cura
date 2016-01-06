@@ -16,7 +16,7 @@ def getMetaData():
             "api": 2
         },
 
-        "output_writer": {
+        "backend_output_writer": {
             "output": [{
                 "extension": "gcode",
                 "description": catalog.i18nc("@item:inlistbox", "GCode File"),
@@ -26,4 +26,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "output_writer": GCodeWriter.GCodeWriter() }
+    return { "backend_output_writer": GCodeWriter.GCodeWriter() }
