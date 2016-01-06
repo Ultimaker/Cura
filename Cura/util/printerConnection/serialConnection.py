@@ -111,6 +111,11 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	def disableSteppers(self):
 		self.sendCommand("M18")
+		
+	def setLCDmessage(self):
+		cancel_text = "Print canceled"
+		formatted_command = "M117 {}".format(cancel_text)
+		self.sendCommand(formatted_command)
 
 	#Abort the previously loaded print file
 	def cancelPrint(self):
@@ -123,6 +128,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._pausePosition = None
 		self.coolDown()
 		self.disableSteppers()
+		self.setLCDmessage()
 
 	def isPrinting(self):
 		return self._commState == machineCom.MachineCom.STATE_PRINTING
