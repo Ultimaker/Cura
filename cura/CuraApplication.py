@@ -250,7 +250,7 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
-        return self._i18n_catalog.i18nc("@info", "%.1f x %.1f x %.1f mm") % (self._scene_boundingbox.width.item(), self._scene_boundingbox.depth.item(), self._scene_boundingbox.height.item())
+        return self._i18n_catalog.i18nc("@info", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_boundingbox.width.item(), 'depth': self._scene_boundingbox.depth.item(), 'height' : self._scene_boundingbox.height.item()}
 
     def updatePlatformActivity(self, node = None):
         count = 0
