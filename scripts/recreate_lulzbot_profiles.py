@@ -45,6 +45,7 @@ material_map = {
     "HIPS_eSUN": "HIPS",
     "PLA_eSUN": "PLA",
     "PLA_VP": "PLA",
+    "nGen": "nGen",
     # Intermediate
     "ABS_VP": "ABS",
     "Laybrick" : "laybrick",
@@ -92,6 +93,7 @@ material_order = {
     "HIPS_eSUN":            0,
     "PLA_eSUN":             1,
     "PLA_VP":               2,
+    "nGen":                 3,
     # Intermediate
     "ABS_VP":              10,
     "Laybrick":            11,
@@ -134,6 +136,7 @@ material_types = {
     "HIPS_eSUN": "Beginner",
     "PLA_eSUN": "Beginner",
     "PLA_VP": "Beginner",
+    "nGen": "Beginner",
     # Intermediate
     "ABS_VP": "Intermediate",
     "Laybrick" : "Intermediate",
@@ -176,6 +179,7 @@ material_names = {
     "HIPS_eSUN": "HIPS (eSUN)",
     "PLA_eSUN": "PLA (eSUN)",
     "PLA_VP": "PLA (Village Plastics)",
+    "nGen": "nGen (colorFabb)",
     # Intermediate
     "ABS_VP": "ABS (Village Plastics)",
     "Laybrick" : "Laybrick (CC-Products)",
@@ -233,6 +237,7 @@ material_url = {
     "HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
     "PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
     "PLA_VP": "lulzbot.com/store/filament/pla-village",
+#    "nGen": "",
     # Intermediate
     "ABS_VP": "lulzbot.com/store/filament/abs",
     "Laybrick" : "lulzbot.com/store/filament/laybrick",
