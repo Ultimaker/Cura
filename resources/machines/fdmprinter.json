@@ -480,7 +480,7 @@
                     "description": "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
                     "unit": "mm",
                     "type": "float",
-                    "min_value_warning": "10",
+                    "min_value_warning": "-10",
                     "max_value_warning": "10",
                     "default": 0,
                     "visible": false
@@ -901,6 +901,8 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default": 30,
+                    "min_value": "0.1",
+                    "max_value_warning": "300",
                     "visible": false
                 },
                 "skirt_speed": {
