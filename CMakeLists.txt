@@ -24,9 +24,8 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
         # build directory to the source resources directory. This is mostly a convenience
         # during development, normally you want to simply use the install target to install
         # the files along side the rest of the application.
-        add_custom_target(copy-translations)
 
-        #TODO: Properly install the built files. This should be done after we move the applications out of the Uranium repo.
+        #TODO: Find a way to get a rid of this list of languages.
         set(languages
             en
             x-test
@@ -41,19 +40,13 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
             bg
         )
         foreach(lang ${languages})
-            file(GLOB po_files resources/i18n/${lang}/*.po)
-            foreach(file ${po_files})
-                string(REGEX REPLACE ".*/(.*).po" "${lang}/\\1.mo" mofile ${file})
-                add_custom_command(TARGET translations POST_BUILD COMMAND mkdir ARGS -p ${lang} COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ARGS ${file} -o ${mofile})
+            file(GLOB po_files ${CMAKE_SOURCE_DIR}/resources/i18n/${lang}/*.po)
+            foreach(po_file ${po_files})
+                string(REGEX REPLACE ".*/(.*).po" "${CMAKE_BINARY_DIR}/resources/i18n/${lang}/LC_MESSAGES/\\1.mo" mo_file ${po_file})
+                add_custom_command(TARGET translations POST_BUILD COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/resources/i18n/${lang}/LC_MESSAGES/ COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ARGS ${po_file} -o ${mo_file})
             endforeach()
-
-            file(GLOB mo_files ${CMAKE_BINARY_DIR}/${lang}/*.mo)
-            foreach(file ${mo_files})
-                add_custom_command(TARGET copy-translations POST_BUILD COMMAND mkdir ARGS -p ${CMAKE_SOURCE_DIR}/resources/i18n/${lang}/LC_MESSAGES/ COMMAND cp ARGS ${file} ${CMAKE_SOURCE_DIR}/resources/i18n/${lang}/LC_MESSAGES/ COMMENT "Copying ${file}...")
-            endforeach()
-
-            install(FILES ${mo_files} DESTINATION ${CMAKE_INSTALL_DATADIR}/uranium/resources/i18n/${lang}/LC_MESSAGES/)
         endforeach()
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
     endif()
 endif()
 
