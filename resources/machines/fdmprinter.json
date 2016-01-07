@@ -591,7 +591,7 @@
                 },
                 "material_flow_temp_graph": {
                     "label": "Flow Temperature Graph",
-                    "description": "Data linking material flow (in mm/s) to temperature (degrees Celsius).",
+                    "description": "Data linking material flow (in mm³/s) to temperature (°C).",
                     "unit": "",
                     "type": "string",
                     "default": "[[3.5,200],[7.0,240]]",
@@ -1695,7 +1695,7 @@
                 },
                 "magic_spiralize": {
                     "label": "Spiralize Outer Contour",
-                    "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom. This feature used to be called Joris in older versions.",
+                    "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom. This feature used to be called ‘Joris’ in older versions.",
                     "type": "boolean",
                     "default": false,
                     "visible": false
