@@ -1388,6 +1388,8 @@
                     "type": "float",
                     "unit": "mm",
                     "default": 5.0,
+                    "min_value": "0.0",
+                    "max_value_warning": "100.0",
                     "enabled": "adhesion_type == \"brim\"",
                     "children": {
                         "brim_line_count": {
@@ -1395,6 +1397,7 @@
                             "description": "The number of lines used for a brim. More lines means a larger brim which sticks better to the build plate, but this also makes your effective print area smaller.",
                             "type": "int",
                             "default": 13,
+                            "min_value": "0",
                             "inherit_function": "math.ceil(parent_value / skirt_line_width)",
                             "enabled": "adhesion_type == \"brim\""
                         }
