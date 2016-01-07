@@ -152,10 +152,10 @@ class BuildVolume(SceneNode):
 
         # As this works better for UM machines, we only add the dissallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
-        # The +2 and -2 is added as there is always a bit of extra room required to work properly.
+        # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + skirt_size + 2, min_h, min_d + disallowed_area_size),
-            maximum = Vector(max_w - skirt_size - 2, max_h, max_d - disallowed_area_size)
+            minimum = Vector(min_w + skirt_size + 1, min_h, min_d + disallowed_area_size - skirt_size + 1),
+            maximum = Vector(max_w - skirt_size - 1, max_h, max_d - disallowed_area_size + skirt_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
