@@ -133,6 +133,8 @@
                     "type": "float",
                     "unit": "mm",
                     "default": 200,
+                    "min_value_warning": "-1000",
+                    "max_value_warning": "1000",
                     "enabled": "prime_tower_enable"
                 },
                 "prime_tower_position_y": {
@@ -142,6 +144,8 @@
                     "type": "float",
                     "unit": "mm",
                     "default": 200,
+                    "min_value_warning": "-1000",
+                    "max_value_warning": "1000",
                     "enabled": "prime_tower_enable"
                 },
                 "prime_tower_flow": {
@@ -201,6 +205,8 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 16,
+                    "min_value_warning": "0",
+                    "max_value_warning": "100",
                     "visible": false,
                     "inherit_function": "machine_heat_zone_length",
                     "enabled": "retraction_enable"
@@ -211,6 +217,8 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default": 20,
+                    "min_value": "0.1",
+                    "max_value_warning": "300",
                     "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable",
@@ -221,6 +229,8 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default": 20,
+                            "min_value": "0.1",
+                            "max_value_warning": "300",
                             "visible": false,
                             "enabled": "retraction_enable"
                         },
@@ -230,6 +240,8 @@
                             "unit": "mm/s",
                             "type": "float",
                             "default": 20,
+                            "min_value": "0.1",
+                            "max_value_warning": "300",
                             "visible": false,
                             "enabled": "retraction_enable"
                         }
