@@ -1138,7 +1138,7 @@ class LulzbotMachineSelectPage(InfoPage):
 										 self.GetParent().lulzbotReadyPage)
 
 	def OnLulzbotTaz6Selected(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz6SelectPage)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().LulzbotTaz6ToolheadSelectPage)
 
 	def OnLulzbotTazSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazSelectPage)
@@ -1537,14 +1537,13 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
 		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
-		self.lulzbotTaz6SelectPage = LulzbotTaz6SelectPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
 			self.RunWizard(self.lulzbotMiniToolheadPage)
-		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5') or /
+		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5') or \
                      profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
 			self.RunWizard(self.lulzbotTazHotendPage)
 		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_6'):
@@ -1607,7 +1606,6 @@ class ConfigWizard(wx.wizard.Wizard):
 		self.lulzbotMachineSelectPage = LulzbotMachineSelectPage(self)
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
 		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
-		self.lulzbotTaz6SelectPage = LulzbotTaz6SelectPage(self)
 		self.lulzbotTaz6ToolheadPage = LulzbotTaz6ToolheadSelectPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMachineSelectPage, self.lulzbotMiniToolheadPage)
