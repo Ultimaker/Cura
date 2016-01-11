@@ -1215,6 +1215,10 @@ def getMachineCenterCoords():
 		return [0, 0]
 	elif getMachineSetting('machine_type') == 'lulzbot_mini':
 		return [(getMachineSettingFloat('machine_width') / 2) + 2.5, (getMachineSettingFloat('machine_width') / 2) + 0.5]
+	elif getMachineSetting('machine_type').startswith('lulzbot_TAZ_5') or \
+	     getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
+		return [(getMachineSettingFloat('machine_width') / 2) - 10, #X
+                (getMachineSettingFloat('machine_width') / 2) - 15] #Y
 	return [getMachineSettingFloat('machine_width') / 2, getMachineSettingFloat('machine_depth') / 2]
 
 #Returns a list of convex polygons, first polygon is the allowed area of the machine,
@@ -1376,6 +1380,11 @@ def hasEmptyHeadSizeSettings(n):
     	   getMachineSetting('extruder_head_size_max_y', n) == '0.0' and \
     	   getMachineSetting('extruder_head_size_height', n) == '0.0'
 
+def updateMachineSizeSettings(n):
+	putMachineSetting('machine_width', '300', n)
+	putMachineSetting('machine_depth', '277', n)
+	putMachineSetting('machine_height', '250', n)
+
 def performVersionUpgrade():
 	for n in xrange(0, getMachineCount()):
 		# This is a hack around an issue where the machine type in the wizard
@@ -1408,11 +1417,9 @@ def performVersionUpgrade():
 				machine_name = getMachineSetting('machine_name', n)
 				if machine_name.endswith(" (0.5 nozzle)"):
 					putMachineSetting('machine_name', machine_name.replace(" (0.5 nozzle)", ""), n)
-
-		# Change TAZ print bed so prints are centered when scaled to the max
-		if machine_type.startswith('lulzbot_TAZ_') and \
-			getMachineSetting('machine_width', n) == '298':
-			putMachineSetting('machine_width', '290', n)
+		if (getMachineSetting('machine_type', n).startswith('lulzbot_TAZ_5') or \
+	        getMachineSetting('machine_type', n).startswith('lulzbot_TAZ_4')):
+			updateMachineSizeSettings(n)
 			
 		#Set valid extruder head size numbers for Mini
 		if machine_type == 'lulzbot_mini' and hasEmptyHeadSizeSettings(n):

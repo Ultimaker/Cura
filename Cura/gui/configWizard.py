@@ -1143,8 +1143,8 @@ class LulzbotMachineSelectPage(InfoPage):
 	def StoreData(self):
 		if self.LulzbotTaz.GetValue() or self.LulzbotMini.GetValue():
 			if self.LulzbotTaz.GetValue():
-				profile.putMachineSetting('machine_width', '290')
-				profile.putMachineSetting('machine_depth', '275')
+				profile.putMachineSetting('machine_width', '300')
+				profile.putMachineSetting('machine_depth', '277')
 				profile.putMachineSetting('machine_height', '250')
 				profile.putMachineSetting('serial_baud', '115200')
 				profile.putMachineSetting('extruder_head_size_min_x', '0.0')
