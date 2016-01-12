@@ -254,13 +254,19 @@ class CuraApplication(QtApplication):
 
     def updatePlatformActivity(self, node = None):
         count = 0
-        scene_boundingbox = AxisAlignedBox()
+        scene_boundingbox = None
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
 
             count += 1
-            scene_boundingbox += node.getBoundingBox()
+            if not scene_boundingbox:
+                scene_boundingbox = node.getBoundingBox()
+            else:
+                scene_boundingbox += node.getBoundingBox()
+
+        if not scene_boundingbox:
+            scene_boundingbox = AxisAlignedBox()
 
         if repr(self._scene_boundingbox) != repr(scene_boundingbox):
             self._scene_boundingbox = scene_boundingbox
