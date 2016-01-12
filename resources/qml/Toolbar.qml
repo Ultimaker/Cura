@@ -97,6 +97,7 @@ Item {
             y: UM.Theme.sizes.default_margin.height;
 
             source: UM.ActiveTool.valid ? UM.ActiveTool.activeToolPanel : "";
+            enabled: UM.Controller.toolsEnabled;
         }
     }
 }
