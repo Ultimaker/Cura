@@ -184,7 +184,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 font: UM.Theme.fonts.small
                 color: UM.Theme.colors.text_subtext
-                text: (!base.printDuration || !base.printDuration.valid) ? "00h 00min" : base.printDuration.getDisplayString(UM.DurationFormat.Short)
+                text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
             UM.RecolorImage {
                 id: lengthIcon
@@ -204,7 +204,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 font: UM.Theme.fonts.small
                 color: UM.Theme.colors.text_subtext
-                text: base.printMaterialAmount <= 0 ? "0.0 m" : catalog.i18nc("@label %1 is length of filament","%1 m").arg(base.printMaterialAmount)
+                text: base.printMaterialAmount <= 0 ? catalog.i18nc("@label", "0.0 m") : catalog.i18nc("@label", "%1 m").arg(base.printMaterialAmount)
             }
         }
     }

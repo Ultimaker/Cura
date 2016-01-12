@@ -13,6 +13,8 @@ Item {
     property int currentIndex: UM.ActiveTool.properties.SelectedIndex;
     property string printSequence: UM.ActiveTool.properties.PrintSequence;
 
+    UM.I18nCatalog { id: catalog; name: "cura"; }
+
     width: childrenRect.width;
     height: childrenRect.height;
 
@@ -157,7 +159,6 @@ Item {
         }
     }
 
-    UM.I18nCatalog { id: catalog; name: "uranium"; }
 
     UM.Dialog {
         id: settingPickDialog

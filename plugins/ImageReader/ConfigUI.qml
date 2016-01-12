@@ -18,12 +18,14 @@ UM.Dialog
     minimumHeight: 200*Screen.devicePixelRatio;
     maximumHeight: 200*Screen.devicePixelRatio;
 
+
     modality: Qt.Modal
 
     title: catalog.i18nc("@title:window", "Convert Image...")
 
     GridLayout 
     {
+        UM.I18nCatalog{id: catalog; name:"cura"}
         anchors.fill: parent;
         Layout.fillWidth: true
         columnSpacing: 16
@@ -82,8 +84,6 @@ UM.Dialog
                 onValueChanged: { manager.onSmoothingChanged(value) }
             }
         }
-
-        UM.I18nCatalog{id: catalog; name:"ultimaker"}
     }
 
     rightButtons: [
