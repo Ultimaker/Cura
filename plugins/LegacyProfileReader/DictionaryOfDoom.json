@@ -1,7 +1,7 @@
 {
     "source_version": "15.04",
     "target_version": 1,
-    
+
     "translation": {
         "line_width": "nozzle_size",
         "layer_height": "layer_height",
@@ -24,11 +24,11 @@
         "retraction_min_travel": "retraction_min_travel",
         "retraction_hop": "retraction_hop",
         "speed_print": "print_speed",
-        "speed_infill": "infill_speed",
-        "speed_wall_0": "inset0_speed",
-        "speed_wall_x": "insetx_speed",
-        "speed_topbottom": "solidarea_speed",
-        "speed_travel": "travel_speed",
+        "speed_infill": "infill_speed if (infill_speed != 0) else print_speed",
+        "speed_wall_0": "inset0_speed if (inset0_speed != 0) else print_speed",
+        "speed_wall_x": "insetx_speed if (insetx_speed != 0) else print_speed",
+        "speed_topbottom": "solidarea_speed if (solidarea_speed != 0) else print_speed",
+        "speed_travel": "travel_speed if (travel_speed != 0) else travel_speed",
         "speed_layer_0": "bottom_layer_speed",
         "retraction_combing": "retraction_combing",
         "cool_fan_enabled": "fan_enabled",
