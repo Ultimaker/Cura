@@ -74,7 +74,7 @@ class LegacyProfileReader(ProfileReader):
 
         try:
             with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
-                dict_of_doom = json.load(f) #Parse the Dictionary of Doom.    
+                dict_of_doom = json.load(f) #Parse the Dictionary of Doom.
         except IOError as e:
             Logger.log("e", "Could not open DictionaryOfDoom.json for reading: %s", str(e))
             return None
@@ -97,6 +97,7 @@ class LegacyProfileReader(ProfileReader):
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
             new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
-            profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
+            if profile.getSettingValue(new_setting) != new_value: #Not equal to the default.
+                profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
 
         return profile
