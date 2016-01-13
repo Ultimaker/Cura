@@ -10,7 +10,6 @@
         "top_bottom_thickness": "solid_layer_thickness",
         "top_thickness": "0 if (solid_top == \"False\") else solid_layer_thickness",
         "bottom_thickness": "0 if (solid_bottom == \"False\") else solid_layer_thickness",
-        "skin_no_small_gaps_heuristic": "fix_horrible_extensive_stitching",
         "infill_sparse_density": "fill_density",
         "infill_overlap": "fill_overlap",
         "infill_before_walls": "perimeter_before_infill",
