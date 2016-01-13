@@ -74,7 +74,7 @@ class LegacyProfileReader(ProfileReader):
 
         try:
             with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
-                dict_of_doom = json.load(f) #Parse the Dictionary of Doom.    
+                dict_of_doom = json.load(f) #Parse the Dictionary of Doom.
         except IOError as e:
             Logger.log("e", "Could not open DictionaryOfDoom.json for reading: %s", str(e))
             return None
@@ -96,7 +96,11 @@ class LegacyProfileReader(ProfileReader):
         for new_setting in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
-            new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
-            profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
+            try:
+                new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
+                if profile.getSettingValue(new_setting) != new_value: #Not equal to the default.
+                    profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
+            except Exception as e: #Probably some setting name that was missing or something else that went wrong in the ini file.
+                Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
 
         return profile
