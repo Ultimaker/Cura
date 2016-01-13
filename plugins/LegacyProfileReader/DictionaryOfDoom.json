@@ -12,7 +12,7 @@
         "bottom_thickness": "0 if (solid_bottom == \"False\") else solid_layer_thickness",
         "infill_sparse_density": "fill_density",
         "infill_overlap": "fill_overlap",
-        "infill_before_walls": "perimeter_before_infill",
+        "infill_before_walls": "False if (perimeter_before_infill == \"True\") else True",
         "material_print_temperature": "print_temperature",
         "material_bed_temperature": "print_bed_temperature",
         "material_diameter": "filament_diameter",
