@@ -2,12 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-08 14:40+0100\n"
+"POT-Creation-Date: 2016-01-13 13:43+0100\n"
 "PO-Revision-Date: 2015-09-30 11:41+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -496,33 +497,33 @@ msgstr "Drucken"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:67
 #: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:100
-#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:302
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:303
 #, fuzzy
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:23
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:24
 msgctxt "@title:window"
 msgid "Convert Image..."
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:34
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:36
 msgctxt "@action:label"
 msgid "Size (mm)"
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:46
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:48
 msgctxt "@action:label"
 msgid "Base Height (mm)"
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:57
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:59
 msgctxt "@action:label"
 msgid "Peak Height (mm)"
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:68
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:70
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr ""
@@ -532,36 +533,47 @@ msgctxt "@action:button"
 msgid "OK"
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:29
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:31
 msgctxt "@label"
 msgid ""
 "Per Object Settings behavior may be unexpected when 'Print sequence' is set "
 "to 'All at Once'."
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:40
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:42
 msgctxt "@label"
 msgid "Object profile"
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:124
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:126
 #, fuzzy
 msgctxt "@action:button"
 msgid "Add Setting"
 msgstr "&Einstellungen"
 
-#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:165
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:166
 msgctxt "@title:window"
 msgid "Pick a Setting to Customize"
 msgstr ""
 
-#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:176
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:177
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr ""
 
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:187
+msgctxt "@label"
+msgid "00h 00min"
+msgstr ""
+
 #: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:207
-msgctxt "@label %1 is length of filament"
+msgctxt "@label"
+msgid "0.0 m"
+msgstr ""
+
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:207
+#, fuzzy
+msgctxt "@label"
 msgid "%1 m"
 msgstr "%1 m"
 
@@ -632,66 +644,67 @@ msgstr "Umschalten auf Vo&llbild-Modus"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:57
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "&Rückgängig machen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:65
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Wiederholen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:73
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "&Beenden"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:81
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:settings"
 msgid "&Preferences..."
 msgstr "&Einstellungen..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:88
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "&Drucker hinzufügen..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:94
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Dr&ucker verwalten..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:101
-msgctxt "@action:inmenu"
+#, fuzzy
+msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Profile verwalten..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:108
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Online-&Dokumentation anzeigen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:115
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "&Fehler berichten"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:122
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:help"
 msgid "&About..."
 msgstr "&Über..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:129
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:edit"
 msgid "Delete &Selection"
 msgstr "&Auswahl löschen"
 
@@ -708,18 +721,20 @@ msgid "Ce&nter Object on Platform"
 msgstr "Objekt auf Druckplatte ze&ntrieren"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:150
-msgctxt "@action:inmenu"
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Objects"
 msgstr "Objekte &gruppieren"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:158
-msgctxt "@action:inmenu"
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Objects"
 msgstr "Gruppierung für Objekte aufheben"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:166
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Objects"
 msgstr "Objekt &zusammenführen"
 
@@ -731,37 +746,37 @@ msgstr "Objekt &duplizieren"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:181
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:edit"
 msgid "&Clear Build Platform"
 msgstr "Druckplatte &reinigen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:189
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:file"
 msgid "Re&load All Objects"
 msgstr "Alle Objekte neu &laden"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:196
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Object Positions"
 msgstr "Alle Objektpositionen zurücksetzen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:202
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Object &Transformations"
 msgstr "Alle Objekte & Umwandlungen zurücksetzen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:208
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:file"
 msgid "&Open File..."
 msgstr "&Datei öffnen..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:216
 #, fuzzy
-msgctxt "@action:inmenu"
+msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
 msgstr "Engine-&Protokoll anzeigen..."
 
@@ -1290,65 +1305,67 @@ msgstr "Cura"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:47
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&Datei"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:56
-msgctxt "@title:menu"
+#, fuzzy
+msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "&Zuletzt geöffnet"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:85
-msgctxt "@action:inmenu"
+#, fuzzy
+msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
 msgstr "Auswahl als Datei &speichern"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:93
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:file"
 msgid "Save &All"
 msgstr "&Alles speichern"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:121
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:138
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Ansicht"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:160
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&Printer"
 msgstr "Drucken"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:206
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "P&rofile"
 msgstr "&Profil"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:233
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "Er&weiterungen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:266
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Einstellungen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:274
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "&Hilfe"
 
