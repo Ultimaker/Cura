@@ -11,7 +11,7 @@ class aboutWindow(wx.Frame):
 
 		wx.EVT_CLOSE(self, self.OnClose)
 
-		p2 = wx.lib.scrolledpanel.ScrolledPanel(self,-1, size=(600, 500), style=wx.SIMPLE_BORDER)
+		p2 = wx.lib.scrolledpanel.ScrolledPanel(self,-1, size=(600, 300), style=wx.SIMPLE_BORDER)
 		p2.SetBackgroundColour('#FFFFFF')
 		s2 = wx.BoxSizer(wx.VERTICAL)
 		p2.SetSizer(s2)
