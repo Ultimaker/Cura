@@ -10,13 +10,13 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
-    width: 250*Screen.devicePixelRatio;
-    minimumWidth: 250*Screen.devicePixelRatio;
-    maximumWidth: 250*Screen.devicePixelRatio;
+    width: 350*Screen.devicePixelRatio;
+    minimumWidth: 350*Screen.devicePixelRatio;
+    maximumWidth: 350*Screen.devicePixelRatio;
 
-    height: 200*Screen.devicePixelRatio;
-    minimumHeight: 200*Screen.devicePixelRatio;
-    maximumHeight: 200*Screen.devicePixelRatio;
+    height: 220*Screen.devicePixelRatio;
+    minimumHeight: 220*Screen.devicePixelRatio;
+    maximumHeight: 220*Screen.devicePixelRatio;
 
 
     modality: Qt.Modal
@@ -30,58 +30,158 @@ UM.Dialog
         Layout.fillWidth: true
         columnSpacing: 16
         rowSpacing: 4
-        columns: 2
+        columns: 1
 
-        Text {
-            text: catalog.i18nc("@action:label","Size (mm)")
+        UM.TooltipArea {
             Layout.fillWidth:true
-        }
-        TextField {
-            id: size
-            focus: true
-            validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 1; top: 500;}
-            text: "120"
-            onTextChanged: { manager.onSizeChanged(text) }
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","The maximum distance of each pixel from \"Base.\"")
+            Row {
+                width: parent.width
+                height: childrenRect.height
+
+                Text {
+                    text: catalog.i18nc("@action:label","Height (mm)")
+                    width: 150
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                TextField {
+                    id: peak_height
+                    objectName: "Peak_Height"
+                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: -500; top: 500;}
+                    width: 180
+                    onTextChanged: { manager.onPeakHeightChanged(text) }
+                }
+            }
         }
 
-        Text {
-            text: catalog.i18nc("@action:label","Base Height (mm)")
+        UM.TooltipArea {
             Layout.fillWidth:true
-        }
-        TextField {
-            id: base_height
-            validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 0; top: 500;}
-            text: "2"
-            onTextChanged: { manager.onBaseHeightChanged(text) }
-        }
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","The base height from the build plate in millimeters.")
+            Row {
+                width: parent.width
+                height: childrenRect.height
 
-        Text {
-            text: catalog.i18nc("@action:label","Peak Height (mm)")
+                Text {
+                    text: catalog.i18nc("@action:label","Base (mm)")
+                    width: 150
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                TextField {
+                    id: base_height
+                    objectName: "Base_Height"
+                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 0; top: 500;}
+                    width: 180
+                    onTextChanged: { manager.onBaseHeightChanged(text) }
+                }
+            }
+        }
+        
+        UM.TooltipArea {
             Layout.fillWidth:true
-        }
-        TextField {
-            id: peak_height
-            validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 0; top: 500;}
-            text: "12"
-            onTextChanged: { manager.onPeakHeightChanged(text) }
-        }
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","The width in millimeters on the build plate.")
+            Row {
+                width: parent.width
+                height: childrenRect.height
 
-        Text {
-            text: catalog.i18nc("@action:label","Smoothing")
+                Text {
+                    text: catalog.i18nc("@action:label","Width (mm)")
+                    width: 150
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                TextField {
+                    id: width
+                    objectName: "Width"
+                    focus: true
+                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 1; top: 500;}
+                    width: 180
+                    onTextChanged: { manager.onWidthChanged(text) }
+                }
+            }
+        }
+        
+        UM.TooltipArea {
             Layout.fillWidth:true
-        }
-        Rectangle {
-            width: 100
-            height: 20
-            color: "transparent"
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","The depth in millimeters on the build plate")
+            Row {
+                width: parent.width
+                height: childrenRect.height
 
-            Slider {
-                id: smoothing
-                maximumValue: 100.0
-                stepSize: 1.0
-                value: 1
-                width: 100
-                onValueChanged: { manager.onSmoothingChanged(value) }
+                Text {
+                    text: catalog.i18nc("@action:label","Depth (mm)")
+                    width: 150
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                TextField {
+                    id: depth
+                    objectName: "Depth"
+                    focus: true
+                    validator: DoubleValidator {notation: DoubleValidator.StandardNotation; bottom: 1; top: 500;}
+                    width: 180
+                    onTextChanged: { manager.onDepthChanged(text) }
+                }
+            }
+        }
+        
+        UM.TooltipArea {
+            Layout.fillWidth:true
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh.")
+            Row {
+                width: parent.width
+                height: childrenRect.height
+
+                //Empty label so 2 column layout works.
+                Text {
+                    text: ""
+                    width: 150
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ComboBox {
+                    id: image_color_invert
+                    objectName: "Image_Color_Invert"
+                    model: [ catalog.i18nc("@action:label","Lighter is higher"), catalog.i18nc("@action:label","Darker is higher") ]
+                    width: 180
+                    onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
+                }
+            }
+        }
+
+        UM.TooltipArea {
+            Layout.fillWidth:true
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","The amount of smoothing to apply to the image.")
+            Row {
+                width: parent.width
+                height: childrenRect.height
+
+                Text {
+                    text: catalog.i18nc("@action:label","Smoothing")
+                    width: 150
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Rectangle {
+                    width: 180
+                    height: 20
+                    Layout.fillWidth:true
+                    color: "transparent"
+
+                    Slider {
+                        id: smoothing
+                        objectName: "Smoothing"
+                        maximumValue: 100.0
+                        stepSize: 1.0
+                        width: 180
+                        onValueChanged: { manager.onSmoothingChanged(value) }
+                    }
+                }
             }
         }
     }

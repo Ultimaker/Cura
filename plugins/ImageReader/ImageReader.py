@@ -23,6 +23,20 @@ class ImageReader(MeshReader):
         self._ui = ImageReaderUI(self)
 
     def preRead(self, file_name):
+        img = QImage(file_name)
+
+        if img.isNull():
+            Logger.log("e", "Image is corrupt.")
+            return MeshReader.PreReadResult.failed
+
+        width = img.width()
+        depth = img.height()
+
+        largest = max(width, depth)
+        width = width/largest*self._ui.defaultWidth
+        depth = depth/largest*self._ui.defaultDepth
+
+        self._ui.setWidthAndDepth(width, depth)
         self._ui.showConfigUI()
         self._ui.waitForUIToClose()
 
@@ -31,9 +45,10 @@ class ImageReader(MeshReader):
         return MeshReader.PreReadResult.accepted
 
     def read(self, file_name):
-        return self._generateSceneNode(file_name, self._ui.size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512)
+        size = max(self._ui.getWidth(), self._ui.getDepth())
+        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.image_color_invert)
 
-    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size):
+    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, image_color_invert):
         mesh = None
         scene_node = None
 
@@ -56,9 +71,10 @@ class ImageReader(MeshReader):
             img = img.scaled(width, height, Qt.IgnoreAspectRatio)
 
         base_height = max(base_height, 0)
+        peak_height = max(peak_height, -base_height)
 
         xz_size = max(xz_size, 1)
-        scale_vector = Vector(xz_size, max(peak_height - base_height, -base_height), xz_size)
+        scale_vector = Vector(xz_size, peak_height, xz_size)
 
         if width > height:
             scale_vector.setZ(scale_vector.z * aspect)
@@ -91,6 +107,9 @@ class ImageReader(MeshReader):
                 height_data[y, x] = avg
 
         Job.yieldThread()
+
+        if image_color_invert:
+            height_data = 1-height_data
 
         for i in range(0, blur_iterations):
             copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode='edge')

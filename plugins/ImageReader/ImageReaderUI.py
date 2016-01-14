@@ -24,15 +24,32 @@ class ImageReaderUI(QObject):
         self._ui_view = None
         self.show_config_ui_trigger.connect(self._actualShowConfigUI)
 
-	# There are corresponding values for these fields in ConfigUI.qml. 
-	# If you change the values here, consider updating ConfigUI.qml as well.
-        self.size = 120	
-        self.base_height = 2
-        self.peak_height = 12
+        self.defaultWidth = 120
+        self.defaultDepth = 120
+
+        self._aspect = 1
+        self._width = self.defaultWidth
+        self._depth = self.defaultDepth
+
+        self.base_height = 1
+        self.peak_height = 10
         self.smoothing = 1
+        self.image_color_invert = False;
 
         self._ui_lock = threading.Lock()
         self._cancelled = False
+        self._disable_size_callbacks = False
+
+    def setWidthAndDepth(self, width, depth):
+        self._aspect = width/depth
+        self._width = width
+        self._depth = depth
+
+    def getWidth(self):
+        return self._width
+
+    def getDepth(self):
+        return self._depth
 
     def getCancelled(self):
         return self._cancelled
@@ -47,9 +64,19 @@ class ImageReaderUI(QObject):
         self.show_config_ui_trigger.emit()
 
     def _actualShowConfigUI(self):
+        self._disable_size_callbacks = True
+
         if self._ui_view is None:
             self._createConfigUI()
         self._ui_view.show()
+
+        self._ui_view.findChild(QObject, "Width").setProperty("text", str(self._width))
+        self._ui_view.findChild(QObject, "Depth").setProperty("text", str(self._depth))
+        self._disable_size_callbacks = False
+
+        self._ui_view.findChild(QObject, "Base_Height").setProperty("text", str(self.base_height))
+        self._ui_view.findChild(QObject, "Peak_Height").setProperty("text", str(self.peak_height))
+        self._ui_view.findChild(QObject, "Smoothing").setProperty("value", self.smoothing)
 
     def _createConfigUI(self):
         if self._ui_view is None:
@@ -61,6 +88,8 @@ class ImageReaderUI(QObject):
             self._ui_view = component.create(self._ui_context)
 
             self._ui_view.setFlags(self._ui_view.flags() & ~Qt.WindowCloseButtonHint & ~Qt.WindowMinimizeButtonHint & ~Qt.WindowMaximizeButtonHint);
+
+            self._disable_size_callbacks = False
 
     @pyqtSlot()
     def onOkButtonClicked(self):
@@ -75,11 +104,30 @@ class ImageReaderUI(QObject):
         self._ui_lock.release()
 
     @pyqtSlot(str)
-    def onSizeChanged(self, value):
-        if (len(value) > 0):
-            self.size = float(value)
-        else:
-            self.size = 0
+    def onWidthChanged(self, value):
+        if self._ui_view and not self._disable_size_callbacks:
+            if (len(value) > 0):
+                self._width = float(value)
+            else:
+                self._width = 0
+
+            self._depth = self._width/self._aspect
+            self._disable_size_callbacks = True
+            self._ui_view.findChild(QObject, "Depth").setProperty("text", str(self._depth))
+            self._disable_size_callbacks = False
+
+    @pyqtSlot(str)
+    def onDepthChanged(self, value):
+        if self._ui_view and not self._disable_size_callbacks:
+            if (len(value) > 0):
+                self._depth = float(value)
+            else:
+                self._depth = 0
+
+            self._width = self._depth*self._aspect
+            self._disable_size_callbacks = True
+            self._ui_view.findChild(QObject, "Width").setProperty("text", str(self._width))
+            self._disable_size_callbacks = False
 
     @pyqtSlot(str)
     def onBaseHeightChanged(self, value):
@@ -98,3 +146,10 @@ class ImageReaderUI(QObject):
     @pyqtSlot(float)
     def onSmoothingChanged(self, value):
         self.smoothing = int(value)
+
+    @pyqtSlot(int)
+    def onImageColorInvertChanged(self, value):
+        if (value == 1):
+            self.image_color_invert = True
+        else:
+            self.image_color_invert = False
