@@ -69,7 +69,7 @@ class aboutWindow(wx.Frame):
 		self.addComponent('3d-printer', 'by Toke Frello', 'CC BY 3.0 US', 'https://thenounproject.com/term/3d-printer/170216/')
 		self.addComponent('Check Mark', 'by Stefan Parnarov', 'CC BY 3.0', 'https://thenounproject.com/term/check-mark/63794/')
 		
-		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2014 Aleph Objects, Inc. - Released under terms of the AGPLv3 License"), flag=wx.TOP, border=10)
+		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2014-2016 Aleph Objects, Inc. - Released under terms of the AGPLv3 License"), flag=wx.TOP, border=10)
 		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"))
 		#Translations done by:
 		#Dutch: Charlotte Jansen
