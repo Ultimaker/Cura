@@ -38,7 +38,7 @@ GIT_HASH=$(git rev-parse --short=4 HEAD)
 export FULL_VERSION=${BUILD_VERSION}-${GIT_HASH}
 
 ##Which versions of external programs to use
-WIN_PORTABLE_PY_VERSION=2.7.2.1
+WIN_PORTABLE_PY_VERSION=2.7.6.1
 
 ##Which CuraEngine to use
 if [ -z ${CURA_ENGINE_REPO:-} ] ; then
@@ -469,9 +469,7 @@ fi
 if [ $BUILD_TARGET = "win32" ]; then
 	#Get portable python for windows and extract it. (Linux and Mac need to install python themselfs)
 	downloadURL http://ftp.nluug.nl/languages/python/portablepython/v2.7/PortablePython_${WIN_PORTABLE_PY_VERSION}.exe
-	downloadURL http://sourceforge.net/projects/pyserial/files/pyserial/2.5/pyserial-2.5.win32.exe
 	downloadURL http://sourceforge.net/projects/pyopengl/files/PyOpenGL/3.0.1/PyOpenGL-3.0.1.win32.exe
-	downloadURL http://sourceforge.net/projects/numpy/files/NumPy/1.6.2/numpy-1.6.2-win32-superpack-python2.7.exe
 	downloadURL http://videocapture.sourceforge.net/VideoCapture-0.9-5.zip
 	#downloadURL http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-20120927-git-13f0cd6-win32-static.7z
 	downloadURL http://sourceforge.net/projects/comtypes/files/comtypes/0.6.2/comtypes-0.6.2.win32.exe
@@ -498,12 +496,8 @@ if [ $BUILD_TARGET = "win32" ]; then
 	fi
 	
 	#For windows extract portable python to include it.
-	extract PortablePython_${WIN_PORTABLE_PY_VERSION}.exe \$_OUTDIR/App
-	extract PortablePython_${WIN_PORTABLE_PY_VERSION}.exe \$_OUTDIR/Lib/site-packages
-	extract pyserial-2.5.win32.exe PURELIB
+	extract PortablePython_${WIN_PORTABLE_PY_VERSION}.exe App
 	extract PyOpenGL-3.0.1.win32.exe PURELIB
-	extract numpy-1.6.2-win32-superpack-python2.7.exe numpy-1.6.2-sse2.exe
-	extract numpy-1.6.2-sse2.exe PLATLIB
 	extract VideoCapture-0.9-5.zip VideoCapture-0.9-5/Python27/DLLs/vidcap.pyd
 	#extract ffmpeg-20120927-git-13f0cd6-win32-static.7z ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe
 	#extract ffmpeg-20120927-git-13f0cd6-win32-static.7z ffmpeg-20120927-git-13f0cd6-win32-static/licenses
@@ -512,12 +506,16 @@ if [ $BUILD_TARGET = "win32" ]; then
 
 	mkdir -p ${TARGET_DIR}/python
 	mkdir -p ${TARGET_DIR}/Cura/
-	mv \$_OUTDIR/App/* ${TARGET_DIR}/python
-	mv \$_OUTDIR/Lib/site-packages/wx* ${TARGET_DIR}/python/Lib/site-packages/
-	mv PURELIB/serial ${TARGET_DIR}/python/Lib
+	mv App/Lib/site-packages/ PURELIB/
+	mv App/* ${TARGET_DIR}/python
+	mkdir -p ${TARGET_DIR}/python/Lib/site-packages/
+	mv PURELIB/site-packages/setuptools* PURELIB/site-packages/site.py PURELIB/site-packages/easy_install.py ${TARGET_DIR}/python/Lib/site-packages/
+	mv PURELIB/site-packages/numpy* ${TARGET_DIR}/python/Lib/site-packages/
+	mv PURELIB/site-packages/serial* ${TARGET_DIR}/python/Lib/site-packages/
+	mv PURELIB/site-packages/pyserial* ${TARGET_DIR}/python/Lib/site-packages/
+	mv PURELIB/site-packages/wx* ${TARGET_DIR}/python/Lib/site-packages/
 	mv PURELIB/OpenGL ${TARGET_DIR}/python/Lib
 	mv PURELIB/comtypes ${TARGET_DIR}/python/Lib
-	mv PLATLIB/numpy ${TARGET_DIR}/python/Lib
 	mv Power/power ${TARGET_DIR}/python/Lib
 	mv VideoCapture-0.9-5/Python27/DLLs/vidcap.pyd ${TARGET_DIR}/python/DLLs
 	#mv ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe ${TARGET_DIR}/Cura/
@@ -527,11 +525,9 @@ if [ $BUILD_TARGET = "win32" ]; then
 	cp -a scripts/win32/nsisPlugins/libstdc++-6.dll ${TARGET_DIR}
 	
 	rm -rf Power/
-	rm -rf \$_OUTDIR
+	rm -rf App
 	rm -rf PURELIB
-	rm -rf PLATLIB
 	rm -rf VideoCapture-0.9-5
-	rm -rf numpy-1.6.2-sse2.exe
 	#rm -rf ffmpeg-20120927-git-13f0cd6-win32-static
 
 	#Clean up portable python a bit, to keep the package size down.
@@ -541,12 +537,17 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf ${TARGET_DIR}/python/tcl
 	rm -rf ${TARGET_DIR}/python/Lib/test
 	rm -rf ${TARGET_DIR}/python/Lib/distutils
-	rm -rf ${TARGET_DIR}/python/Lib/site-packages/wx-2.8-msw-unicode/wx/tools
-	rm -rf ${TARGET_DIR}/python/Lib/site-packages/wx-2.8-msw-unicode/wx/locale
+	rm -rf ${TARGET_DIR}/python/Lib/site-packages/wx-3.0-msw/wx/tools
+	rm -rf ${TARGET_DIR}/python/Lib/site-packages/wx-3.0-msw/wx/locale
 	#Remove the gle files because they require MSVCR71.dll, which is not included. We also don't need gle, so it's safe to remove it.
 	rm -rf ${TARGET_DIR}/python/Lib/OpenGL/DLLS/gle*
 
-    #Build the C++ engine
+	# New in 2.7.6.1
+	rm -rf ${TARGET_DIR}/python/PyCharm/
+	rm -rf ${TARGET_DIR}/python/share/
+	rm -rf ${TARGET_DIR}/python/qt.conf
+
+	#Build the C++ engine
 	$MAKE -C CuraEngine VERSION=${BUILD_VERSION} OS=Windows_NT CXX=${CXX}
     if [ $? != 0 ]; then echo "Failed to build CuraEngine"; exit 1; fi
 fi
@@ -561,11 +562,11 @@ echo $BUILD_VERSION > ${TARGET_DIR}/Cura/version
 
 #add script files
 if [ $BUILD_TARGET = "win32" ]; then
-    cp -a scripts/${BUILD_TARGET}/*.bat $TARGET_DIR/
+    cp -a scripts/win32/cura.bat $TARGET_DIR/
     cp CuraEngine/build/CuraEngine.exe $TARGET_DIR
-	cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll $TARGET_DIR
-    cp /usr/i686-w64-mingw32/lib/libwinpthread-1.dll $TARGET_DIR
-    cp /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll $TARGET_DIR
+    #cp /usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll $TARGET_DIR
+    #cp /usr/i686-w64-mingw32/lib/libwinpthread-1.dll $TARGET_DIR
+    #cp /usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++-6.dll $TARGET_DIR
 fi
 
 #package the result
@@ -581,14 +582,14 @@ if (( ${ARCHIVE_FOR_DISTRIBUTION} )); then
 			rm -rf scripts/win32/dist
 			ln -sf `pwd`/${TARGET_DIR} scripts/win32/dist
 			wine ~/.wine/drive_c/Program\ Files\ \(x86\)/NSIS/makensis.exe /DVERSION=${BUILD_VERSION} scripts/win32/installer.nsi
-            if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
+			if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
 			mv scripts/win32/Cura_${FULL_VERSION}.exe ./
 		fi
 		if [ -f '/c/Program Files (x86)/NSIS/makensis.exe' ]; then
 			rm -rf scripts/win32/dist
 			mv "`pwd`/${TARGET_DIR}" scripts/win32/dist
 			'/c/Program Files (x86)/NSIS/makensis.exe' -DVERSION=${BUILD_VERSION} 'scripts/win32/installer.nsi' >> log.txt
-            if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
+			if [ $? != 0 ]; then echo "Failed to package NSIS installer"; exit 1; fi
 			mv scripts/win32/Cura_${BUILD_VERSION}.exe ./
 		fi
 	else
