@@ -75,7 +75,7 @@ function extract
 {
 	echo "Extracting $*"
 	echo "7z x -y $*" >> log.txt
-	7z x -y $* >> log.txt
+	$EXTRACT x -y $* >> log.txt
 	if [ $? != 0 ]; then
         echo "Failed to extract $*"
         exit 1
@@ -118,6 +118,12 @@ else
 	MAKE=make
 fi
 
+if [ -z `which 7za` ]; then
+	EXTRACT=7z
+else
+	EXTRACT=7za
+fi
+
 # Change working directory to the directory the script is in
 # http://stackoverflow.com/a/246128
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -128,7 +134,7 @@ checkTool curl "curl: http://curl.haxx.se/"
 if [ $BUILD_TARGET = "win32" ]; then
 	checkTool avr-gcc "avr-gcc: http://winavr.sourceforge.net/ "
 	#Check if we have 7zip, needed to extract and packup a bunch of packages for windows.
-	checkTool 7z "7zip: http://www.7-zip.org/"
+	checkTool $EXTRACT "7zip: http://www.7-zip.org/"
 	checkTool $MAKE "mingw: http://www.mingw.org/"
 fi
 #For building under MacOS we need gnutar instead of tar
