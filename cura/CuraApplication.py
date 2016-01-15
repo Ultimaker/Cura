@@ -271,6 +271,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str)
     def setJobName(self, name):
+        name = os.path.splitext(name)[0] #when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its extension. This cuts the extension off if nescessary.
         if self._job_name != name:
             self._job_name = name
             self.jobNameChanged.emit()
@@ -584,9 +585,9 @@ class CuraApplication(QtApplication):
     def _onFileLoaded(self, job):
         node = job.getResult()
         if node != None:
+            self.setJobName(os.path.basename(job.getFileName()))
             node.setSelectable(True)
             node.setName(os.path.basename(job.getFileName()))
-
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
 
