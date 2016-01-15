@@ -146,7 +146,7 @@ UM.Dialog
                 ComboBox {
                     id: image_color_invert
                     objectName: "Image_Color_Invert"
-                    model: [ catalog.i18nc("@action:label","Lighter is higher"), catalog.i18nc("@action:label","Darker is higher") ]
+                    model: [ catalog.i18nc("@item:inlistbox","Lighter is higher"), catalog.i18nc("@item:inlistbox","Darker is higher") ]
                     width: 180
                     onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
                 }
