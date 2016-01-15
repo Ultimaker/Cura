@@ -53,19 +53,25 @@ Rectangle {
     }
 
      Connections {
-        target: openDialog
+        target: backgroundItem
         onHasMesh: {
-            if(base.fileBaseName == ''){
-                base.fileBaseName = name
-                base.createFileName()
-            }
+            base.fileBaseName = name
         }
     }
 
     onActivityChanged: {
-        if (activity == false){
-            base.fileBaseName = ''
+        if (activity == true && base.fileBaseName == ''){
+            //this only runs when you open a file from the terminal (or something that works the same way; for example when you drag a file on the icon in MacOS or use 'open with' on Windows)
+            base.fileBaseName = Printer.jobName //it gets the fileBaseName from CuraApplication.py because this saves the filebase when the file is opened using the terminal (or something alike)
             base.createFileName()
+        }
+        if (activity == true && base.fileBaseName != ''){
+            //this runs in all other cases where there is a mesh on the buildplate (activity == true). It uses the fileBaseName from the hasMesh signal
+            base.createFileName()
+        }
+        if (activity == false){
+            //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
+            printJobTextfield.text = ''
         }
     }
 
@@ -123,7 +129,12 @@ Rectangle {
                 property int unremovableSpacing: 5
                 text: ''
                 horizontalAlignment: TextInput.AlignRight
-                onTextChanged: Printer.setJobName(text)
+                onTextChanged: {
+                    if(text != ''){
+                        //this prevent that is sets an empty string as jobname 
+                        Printer.setJobName(text)
+                    }
+                }
                 onEditingFinished: {
                     if (printJobTextfield.text != ''){
                         printJobTextfield.focus = false
