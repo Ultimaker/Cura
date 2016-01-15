@@ -93,11 +93,6 @@ class engineResultView(object):
 		glEnable(GL_BLEND)
 		if profile.getMachineSetting('machine_center_is_zero') != 'True':
 			glTranslate(-profile.getMachineSettingFloat('machine_width') / 2, -profile.getMachineSettingFloat('machine_depth') / 2, 0)
-		
-		if profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5') or \
-	       profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
-			glTranslate(+10, +3.5, 0)
-
 		glLineWidth(2)
 
 		layerNr = self.layerSelect.getValue()
