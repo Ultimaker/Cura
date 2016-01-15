@@ -9,6 +9,20 @@ set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
+# Macro needed to list all sub-directory of a directory.
+# There is no function in cmake as far as I know.
+# Found at: http://stackoverflow.com/a/7788165
+MACRO(SUBDIRLIST result curdir)
+  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+  SET(dirlist "")
+  FOREACH(child ${children})
+    IF(IS_DIRECTORY ${curdir}/${child})
+        LIST(APPEND dirlist ${child})
+    ENDIF()
+  ENDFOREACH()
+  SET(${result} ${dirlist})
+ENDMACRO()
+
 if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     # Extract Strings
     add_custom_target(extract-messages ${URANIUM_SCRIPTS_DIR}/extract-messages ${CMAKE_SOURCE_DIR} cura)
@@ -25,20 +39,7 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
         # during development, normally you want to simply use the install target to install
         # the files along side the rest of the application.
 
-        #TODO: Find a way to get a rid of this list of languages.
-        set(languages
-            en
-            x-test
-            ru
-            fr
-            de
-            it
-            es
-            fi
-            pl
-            cs
-            bg
-        )
+        SUBDIRLIST(languages ${CMAKE_SOURCE_DIR}/resources/i18n/)
         foreach(lang ${languages})
             file(GLOB po_files ${CMAKE_SOURCE_DIR}/resources/i18n/${lang}/*.po)
             foreach(po_file ${po_files})
