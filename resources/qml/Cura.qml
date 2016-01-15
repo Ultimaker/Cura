@@ -14,7 +14,6 @@ UM.MainWindow
     id: base
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
-
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
 
     Item
@@ -22,6 +21,14 @@ UM.MainWindow
         id: backgroundItem;
         anchors.fill: parent;
         UM.I18nCatalog{id: catalog; name:"cura"}
+
+        signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
+        function getMeshName(path){
+            //takes the path the complete path of the meshname and returns only the filebase
+            var fileName = path.slice(path.lastIndexOf("/") + 1)
+            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
+            return fileBase
+        }
 
         //DeleteSelection on the keypress backspace event
         Keys.onPressed: {
@@ -33,7 +40,6 @@ UM.MainWindow
                 }
             }
         }
-
 
         UM.ApplicationMenu
         {
@@ -70,7 +76,8 @@ UM.MainWindow
                             }
                             onTriggered: {
                                 UM.MeshFileHandler.readLocalFile(modelData);
-                                openDialog.sendMeshName(modelData.toString())
+                                var meshName = backgroundItem.getMeshName(modelData.toString())
+                                backgroundItem.hasMesh(meshName)
                             }
                         }
                         onObjectAdded: recentFilesMenu.insertItem(index, object)
@@ -303,7 +310,8 @@ UM.MainWindow
                             UM.MeshFileHandler.readLocalFile(drop.urls[i]);
                             if (i == drop.urls.length - 1)
                             {
-                                openDialog.sendMeshName(drop.urls[i].toString())
+                                var meshName = backgroundItem.getMeshName(drop.urls[i].toString())
+                                backgroundItem.hasMesh(meshName)
                             }
                         }
                     }
@@ -312,6 +320,7 @@ UM.MainWindow
 
             JobSpecs
             {
+                id: jobSpecs
                 anchors
                 {
                     bottom: parent.bottom;
@@ -636,14 +645,6 @@ UM.MainWindow
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
-
-        signal hasMesh(string name)
-
-        function sendMeshName(path){
-            var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
-            openDialog.hasMesh(fileBase)
-        }
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
 
         onAccepted:
@@ -654,7 +655,8 @@ UM.MainWindow
             folder = f;
 
             UM.MeshFileHandler.readLocalFile(fileUrl)
-            openDialog.sendMeshName(fileUrl.toString())
+            var meshName = backgroundItem.getMeshName(fileUrl.toString())
+            backgroundItem.hasMesh(meshName)
         }
     }
 
