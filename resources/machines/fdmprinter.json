@@ -605,7 +605,7 @@
                 },
                 "material_flow_temp_graph": {
                     "label": "Flow Temperature Graph",
-                    "description": "Data linking material flow (in mm/s) to temperature (degrees Celsius).",
+                    "description": "Data linking material flow (in mm3 per second) to temperature (degrees Celsius).",
                     "unit": "",
                     "type": "string",
                     "default": "[[3.5,200],[7.0,240]]",
