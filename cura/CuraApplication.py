@@ -114,6 +114,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
+        Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
