@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 2.1 json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2016-01-13 13:43+0000\n"
+"POT-Creation-Date: 2016-01-18 11:54+0000\n"
 "PO-Revision-Date: 2015-09-30 11:37+0300\n"
 "Last-Translator: Tapio <info@tapimex.fi>\n"
 "Language-Team: \n"
@@ -749,7 +749,9 @@ msgstr "Pöydän lämpötila"
 
 #: fdmprinter.json
 msgctxt "material_flow_temp_graph description"
-msgid "Data linking material flow (in mm/s) to temperature (degrees Celsius)."
+msgid ""
+"Data linking material flow (in mm3 per second) to temperature (degrees "
+"Celsius)."
 msgstr ""
 
 #: fdmprinter.json
