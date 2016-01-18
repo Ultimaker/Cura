@@ -13,6 +13,7 @@ Item{
     UM.I18nCatalog { id: catalog; name:"cura"}
     property int totalHeightProfileSetup: childrenRect.height
     property Action manageProfilesAction
+    property Action addProfileAction
 
     Rectangle{
         id: globalProfileRow
@@ -64,35 +65,12 @@ Item{
 
                 MenuSeparator { }
                 MenuItem {
+                    action: base.addProfileAction;
+                }
+                MenuItem {
                     action: base.manageProfilesAction;
-
                 }
             }
-//             Button {
-//                 id: saveProfileButton
-//                 visible: true
-//                 anchors.top: parent.top
-//                 x: globalProfileSelection.width + 2
-//                 width: parent.width/100*25
-//                 text: catalog.i18nc("@action:button", "Save");
-//                 height: parent.height
-//
-//                 style: ButtonStyle {
-//                     background: Rectangle {
-//                         color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
-//                         Behavior on color { ColorAnimation { duration: 50; } }
-//                         width: actualLabel.width + UM.Theme.sizes.default_margin.width
-//                         Label {
-//                             id: actualLabel
-//                             anchors.centerIn: parent
-//                             color: UM.Theme.colors.load_save_button_text
-//                             font: UM.Theme.fonts.default
-//                             text: control.text;
-//                         }
-//                     }
-//                 label: Item { }
-//                 }
-//             }
         }
     }
 }
