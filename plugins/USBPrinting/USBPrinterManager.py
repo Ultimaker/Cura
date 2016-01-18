@@ -98,7 +98,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     @pyqtSlot()
     def updateAllFirmware(self):
         if not self._printer_connections:
-            Message("Cannot update firmware, there were no connected printers found.").show()
+            Message(i18n_catalog.i18nc("@info","Cannot update firmware, there were no connected printers found.")).show()
             return
 
         self.spawnFirmwareInterface("")

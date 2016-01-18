@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2016-01-13 13:43+0000\n"
+"POT-Creation-Date: 2016-01-18 11:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -624,7 +624,9 @@ msgstr ""
 
 #: fdmprinter.json
 msgctxt "material_flow_temp_graph description"
-msgid "Data linking material flow (in mm/s) to temperature (degrees Celsius)."
+msgid ""
+"Data linking material flow (in mm3 per second) to temperature (degrees "
+"Celsius)."
 msgstr ""
 
 #: fdmprinter.json

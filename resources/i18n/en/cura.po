@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-13 13:43+0100\n"
-"PO-Revision-Date: 2016-01-13 13:43+0100\n"
+"POT-Creation-Date: 2016-01-18 11:54+0100\n"
+"PO-Revision-Date: 2016-01-18 11:54+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en\n"
@@ -228,6 +228,11 @@ msgctxt "@item:inmenu"
 msgid "Update Firmware"
 msgstr "Update Firmware"
 
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/USBPrinterManager.py:101
+msgctxt "@info"
+msgid "Cannot update firmware, there were no connected printers found."
+msgstr "Cannot update firmware, there were no connected printers found."
+
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/PrinterConnection.py:35
 msgctxt "@item:inmenu"
 msgid "USB printing"
@@ -367,6 +372,16 @@ msgctxt "@item:inlistbox"
 msgid "Layers"
 msgstr "Layers"
 
+#: /home/tamara/2.1/Cura/plugins/AutoSave/__init__.py:12
+msgctxt "@label"
+msgid "Auto Save"
+msgstr "Auto Save"
+
+#: /home/tamara/2.1/Cura/plugins/AutoSave/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Automatically saves Preferences, Machines and Profiles after changes."
+msgstr "Automatically saves Preferences, Machines and Profiles after changes."
+
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:12
 msgctxt "@label"
 msgid "Per Object Settings Tool"
@@ -450,8 +465,9 @@ msgid "Print"
 msgstr "Print"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:67
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:100
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:200
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:303
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:58
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Cancel"
@@ -461,27 +477,80 @@ msgctxt "@title:window"
 msgid "Convert Image..."
 msgstr "Convert Image..."
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:36
-msgctxt "@action:label"
-msgid "Size (mm)"
-msgstr "Size (mm)"
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:38
+msgctxt "@info:tooltip"
+msgid "The maximum distance of each pixel from \"Base.\""
+msgstr "The maximum distance of each pixel from \"Base.\""
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:48
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:44
 msgctxt "@action:label"
-msgid "Base Height (mm)"
-msgstr "Base Height (mm)"
+msgid "Height (mm)"
+msgstr "Height (mm)"
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:59
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:62
+msgctxt "@info:tooltip"
+msgid "The base height from the build plate in millimeters."
+msgstr "The base height from the build plate in millimeters."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:68
 msgctxt "@action:label"
-msgid "Peak Height (mm)"
-msgstr "Peak Height (mm)"
+msgid "Base (mm)"
+msgstr "Base (mm)"
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:70
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:86
+msgctxt "@info:tooltip"
+msgid "The width in millimeters on the build plate."
+msgstr "The width in millimeters on the build plate."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:92
+msgctxt "@action:label"
+msgid "Width (mm)"
+msgstr "Width (mm)"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:111
+msgctxt "@info:tooltip"
+msgid "The depth in millimeters on the build plate"
+msgstr "The depth in millimeters on the build plate"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:117
+msgctxt "@action:label"
+msgid "Depth (mm)"
+msgstr "Depth (mm)"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:135
+msgctxt "@info:tooltip"
+msgid ""
+"By default, white pixels represent high points on the mesh and black pixels "
+"represent low points on the mesh. Change this option to reverse the behavior "
+"such that black pixels represent high points on the mesh and white pixels "
+"represent low points on the mesh."
+msgstr ""
+"By default, white pixels represent high points on the mesh and black pixels "
+"represent low points on the mesh. Change this option to reverse the behavior "
+"such that black pixels represent high points on the mesh and white pixels "
+"represent low points on the mesh."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:149
+msgctxt "@item:inlistbox"
+msgid "Lighter is higher"
+msgstr "Lighter is higher"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:149
+msgctxt "@item:inlistbox"
+msgid "Darker is higher"
+msgstr "Darker is higher"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:159
+msgctxt "@info:tooltip"
+msgid "The amount of smoothing to apply to the image."
+msgstr "The amount of smoothing to apply to the image."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:165
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Smoothing"
 
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:93
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:193
 msgctxt "@action:button"
 msgid "OK"
 msgstr "OK"
@@ -515,17 +584,17 @@ msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "Filter..."
 
-#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:187
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:198
 msgctxt "@label"
 msgid "00h 00min"
 msgstr "00h 00min"
 
-#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:207
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:218
 msgctxt "@label"
 msgid "0.0 m"
 msgstr "0.0 m"
 
-#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:207
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:218
 msgctxt "@label"
 msgid "%1 m"
 msgstr "%1 m"
@@ -570,6 +639,37 @@ msgstr "Add Printer"
 msgctxt "@title"
 msgid "Add Printer"
 msgstr "Add Printer"
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:15
+msgctxt "@title:window"
+msgid "Load profile"
+msgstr "Load profile"
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:24
+msgctxt "@label"
+msgid ""
+"Selecting this profile overwrites some of your customised settings. Do you "
+"want to merge the new settings into your current profile or do you want to "
+"load a clean copy of the profile?"
+msgstr ""
+"Selecting this profile overwrites some of your customised settings. Do you "
+"want to merge the new settings into your current profile or do you want to "
+"load a clean copy of the profile?"
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:38
+msgctxt "@label"
+msgid "Show details."
+msgstr "Show details."
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:50
+msgctxt "@action:button"
+msgid "Merge settings"
+msgstr "Merge settings"
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:54
+msgctxt "@action:button"
+msgid "Reset profile"
+msgstr "Reset profile"
 
 #: /home/tamara/2.1/Cura/resources/qml/ProfileSetup.qml:28
 msgctxt "@label"
@@ -781,7 +881,7 @@ msgstr ""
 "below the model to prevent the model from sagging or printing in mid air."
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:14
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:483
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:492
 msgctxt "@title:tab"
 msgid "General"
 msgstr "General"
@@ -1197,77 +1297,77 @@ msgctxt "@title:window"
 msgid "Cura"
 msgstr "Cura"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:47
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:53
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&File"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:56
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:62
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "Open &Recent"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:85
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:92
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
 msgstr "&Save Selection to File"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:93
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:100
 msgctxt "@title:menu menubar:file"
 msgid "Save &All"
 msgstr "Save &All"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:121
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:128
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "&Edit"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:138
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:145
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&View"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:160
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:167
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Printer"
 msgstr "&Printer"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:206
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:213
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&rofile"
 msgstr "P&rofile"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:233
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:240
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "E&xtensions"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:266
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:273
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Settings"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:274
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:281
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "&Help"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:357
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:366
 msgctxt "@action:button"
 msgid "Open File"
 msgstr "Open File"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:401
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:410
 msgctxt "@action:button"
 msgid "View Mode"
 msgstr "View Mode"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:486
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:495
 msgctxt "@title:tab"
 msgid "View"
 msgstr "View"
 
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:635
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:644
 msgctxt "@title:window"
 msgid "Open file"
 msgstr "Open file"
