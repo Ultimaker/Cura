@@ -10,15 +10,12 @@
 
     "inherits": "ultimaker2.json",
 
-    "machine_settings": {
+    "overrides": {
         "machine_width": { "default": 230 },
         "machine_depth": { "default": 225 },
         "machine_height": { "default": 200 },
         "machine_show_variants": { "default": true },
-        "gantry_height": { "default": 50 }
-    },
-
-    "overrides": {
+        "gantry_height": { "default": 50 },
         "shell_thickness": { "default": 1.2 },
         "top_bottom_thickness": { "inherit_function": "(parent_value / 3) * 2" },
         "travel_compensate_overlapping_walls_enabled": { "default": true },

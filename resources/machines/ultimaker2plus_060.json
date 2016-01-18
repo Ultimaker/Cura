@@ -11,11 +11,9 @@
 
     "variant": "0.60mm Nozzle",
 
-    "machine_settings": {
-        "machine_nozzle_size": { "default": 0.60 }
-    },
-
     "overrides": {
+        "machine_nozzle_size": { "default": 0.60 },
+
         "layer_height": { "default": 0.15 },
         "layer_height_0": { "default": 0.4 },
 
