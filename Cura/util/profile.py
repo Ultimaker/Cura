@@ -1415,10 +1415,14 @@ def performVersionUpgrade():
 			getMachineSetting('machine_width', n) == '298':
 			putMachineSetting('machine_width', '290', n)
 			
-		#Set valid extruder head size numbers for Mini
-		if machine_type == 'lulzbot_mini' and hasEmptyHeadSizeSettings(n):
-			putMachineSetting('extruder_head_size_min_x', '40', n)
-			putMachineSetting('extruder_head_size_max_x', '75', n)
-			putMachineSetting('extruder_head_size_min_y', '25', n)
-			putMachineSetting('extruder_head_size_max_y', '55', n)
-			putMachineSetting('extruder_head_size_height', '17', n)
+		if machine_type == 'lulzbot_mini':
+			if getMachineSetting('machine_height', n) == '163':
+				putMachineSetting('machine_height', '158', n)
+				
+			#Set valid extruder head size numbers
+			if hasEmptyHeadSizeSettings(n): 
+				putMachineSetting('extruder_head_size_min_x', '40', n)
+				putMachineSetting('extruder_head_size_max_x', '75', n)
+				putMachineSetting('extruder_head_size_min_y', '25', n)
+				putMachineSetting('extruder_head_size_max_y', '55', n)
+				putMachineSetting('extruder_head_size_height', '17', n)
