@@ -2,7 +2,7 @@
 version = 1
 name = Normal Quality
 machine_type = ultimaker2plus
-machine_variant = 0.4mm Nozzle
+machine_variant = 0.4 mm
 material = PLA
 
 [settings]

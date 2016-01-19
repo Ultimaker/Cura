@@ -9,7 +9,7 @@
 
     "inherits": "ultimaker2plus.json",
 
-    "variant": "0.60mm Nozzle",
+    "variant": "0.6 mm",
 
     "overrides": {
         "machine_nozzle_size": { "default": 0.60 },
