@@ -16,15 +16,14 @@ def getMetaData():
             "api": 2
         },
 
-        "mesh_writer": {
+        "backend_output_writer": {
             "output": [{
                 "extension": "gcode",
                 "description": catalog.i18nc("@item:inlistbox", "GCode File"),
-                "mime_type": "text/x-gcode",
-                "mode": GCodeWriter.GCodeWriter.OutputMode.TextMode
+                "mime_type": "text/x-gcode"
             }]
         }
     }
 
 def register(app):
-    return { "mesh_writer": GCodeWriter.GCodeWriter() }
+    return { "backend_output_writer": GCodeWriter.GCodeWriter() }
