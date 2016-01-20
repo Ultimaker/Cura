@@ -314,7 +314,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				pass
 			elif line[0] == 'log':
 				self._log.append(line[1])
-				if len(self._log) > 30:
+				if len(self._log) > 200:
 					self._log.pop(0)
 			elif line[0] == 'temp':
 				line = line[1].split(':')
