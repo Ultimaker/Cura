@@ -98,9 +98,10 @@ class LegacyProfileReader(ProfileReader):
             compiled = compile(old_setting_expression, new_setting, "eval")
             try:
                 new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
-                if profile.getSettingValue(new_setting) != new_value: #Not equal to the default.
-                    profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
             except Exception as e: #Probably some setting name that was missing or something else that went wrong in the ini file.
                 Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
+                continue
+            if profile.getSettingValue(new_setting) != new_value: #Not equal to the default.
+                profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
 
         return profile
