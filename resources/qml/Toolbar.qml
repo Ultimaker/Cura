@@ -33,7 +33,7 @@ Item {
 
                 checkable: true;
                 checked: model.active;
-                enabled: UM.Selection.hasSelection;
+                enabled: UM.Selection.hasSelection && UM.Controller.toolsEnabled;
 
                 style: UM.Theme.styles.tool_button;
 
