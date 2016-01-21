@@ -5,7 +5,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Math.Color import Color
 from UM.Math.Vector import Vector
-from UM.Mesh.MeshData import MeshData
+from UM.Mesh.MeshBuilder import MeshBuilder #To create a mesh to display the convex hull with.
 
 from UM.View.GL.OpenGL import OpenGL
 
@@ -25,6 +25,7 @@ class ConvexHullNode(SceneNode):
         self._inherit_scale = False
 
         self._color = Color(35, 35, 35, 128)
+        self._mesh_height = 0.1 #The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
 
         self._node = node
         self._node.transformationChanged.connect(self._onNodePositionChanged)
@@ -43,22 +44,19 @@ class ConvexHullNode(SceneNode):
             self._convex_hull_head_mesh = self.createHullMesh(convex_hull_head.getPoints())
 
     def createHullMesh(self, hull_points):
-        mesh = MeshData()
-        if len(hull_points) > 3:
-            center = (hull_points.min(0) + hull_points.max(0)) / 2.0
-            mesh.addVertex(center[0], -0.1, center[1])
-        else:
+        #Input checking.
+        if len(hull_points) < 3:
             return None
-        for point in hull_points:
-            mesh.addVertex(point[0], -0.1, point[1])
-        indices = []
-        for i in range(len(hull_points) - 1):
-            indices.append([0, i + 1, i + 2])
 
-        indices.append([0, mesh.getVertexCount() - 1, 1])
+        mesh_builder = MeshBuilder() #Create a mesh using the mesh builder.
+        point_first = Vector(hull_points[0][0], self._mesh_height, hull_points[0][1])
+        point_previous = Vector(hull_points[1][0], self._mesh_height, hull_points[1][1])
+        for point in hull_points[2:]: #Add the faces in the order of a triangle fan.
+            point_new = Vector(point[0], self._mesh_height, point[1])
+            mesh_builder.addFace(point_first, point_previous, point_new, color = self._color)
+            point_previous = point_new #Prepare point_previous for the next triangle.
 
-        mesh.addIndices(numpy.array(indices, numpy.int32))
-        return mesh
+        return mesh_builder.getData()
 
     def getWatchedNode(self):
         return self._node
