@@ -127,6 +127,7 @@ Item
     {
         id: deleteSelectionAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Delete &Selection");
+        enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
     }
@@ -135,6 +136,7 @@ Item
     {
         id: deleteObjectAction;
         text: catalog.i18nc("@action:inmenu","Delete Object");
+        enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
     }
 
@@ -179,6 +181,7 @@ Item
     {
         id: deleteAllAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","&Clear Build Platform");
+        enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
     }
