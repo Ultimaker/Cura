@@ -21,27 +21,27 @@ Item
         width: base.width
         height: 0
         anchors.top: parent.top
-        color: UM.Theme.colors.sidebar_header_bar
+        color: UM.Theme.getColor("sidebar_header_bar")
     }
 
     Label{
         id: printjobTabLabel
         text: catalog.i18nc("@label:listbox","Print Job");
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: sidebarTabRow.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width/100*45
-        font: UM.Theme.fonts.large;
-        color: UM.Theme.colors.text
+        font: UM.Theme.getFont("large");
+        color: UM.Theme.getColor("text")
     }
 
     Rectangle {
         id: machineSelectionRow
         width: base.width
-        height: UM.Theme.sizes.sidebar_setup.height
+        height: UM.Theme.getSize("sidebar_setup").height
         anchors.top: printjobTabLabel.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
 
         Label{
@@ -49,20 +49,20 @@ Item
             //: Machine selection label
             text: catalog.i18nc("@label:listbox","Printer:");
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
         }
 
         ToolButton {
             id: machineSelection
             text: UM.MachineManager.activeMachineInstance;
             width: parent.width/100*55
-            height: UM.Theme.sizes.setting_control.height
+            height: UM.Theme.getSize("setting_control").height
             tooltip: UM.MachineManager.activeMachineInstance;
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             style: UM.Theme.styles.sidebar_header_button
 
@@ -97,30 +97,30 @@ Item
     Rectangle {
         id: variantRow
         anchors.top: machineSelectionRow.bottom
-        anchors.topMargin: UM.MachineManager.hasVariants ? UM.Theme.sizes.default_margin.height : 0
+        anchors.topMargin: UM.MachineManager.hasVariants ? UM.Theme.getSize("default_margin").height : 0
         width: base.width
-        height: UM.MachineManager.hasVariants ? UM.Theme.sizes.sidebar_setup.height : 0
+        height: UM.MachineManager.hasVariants ? UM.Theme.getSize("sidebar_setup").height : 0
         visible: UM.MachineManager.hasVariants
 
         Label{
             id: variantLabel
             text: catalog.i18nc("@label","Nozzle:");
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width/100*45
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
         }
 
         ToolButton {
             id: variantSelection
             text: UM.MachineManager.activeMachineVariant
             width: parent.width/100*55
-            height: UM.Theme.sizes.setting_control.height
+            height: UM.Theme.getSize("setting_control").height
             tooltip: UM.MachineManager.activeMachineVariant;
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             style: UM.Theme.styles.sidebar_header_button
 

@@ -20,7 +20,7 @@ Item {
 
         anchors.bottom: parent.bottom;
         anchors.left: parent.left;
-        spacing: UM.Theme.sizes.button_lining.width
+        spacing: UM.Theme.getSize("button_lining").width
 
         Repeater {
             id: repeat
@@ -54,47 +54,47 @@ Item {
         id: panelBorder;
 
         anchors.left: parent.right;
-        anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: base.top;
         anchors.topMargin: base.activeY
         z: buttons.z -1
 
-        target: Qt.point(parent.right, base.activeY +  UM.Theme.sizes.button.height/2)
-        arrowSize: UM.Theme.sizes.default_arrow.width
+        target: Qt.point(parent.right, base.activeY +  UM.Theme.getSize("button").height/2)
+        arrowSize: UM.Theme.getSize("default_arrow").width
 
         width: {
             if (panel.item && panel.width > 0){
-                 return Math.max(panel.width + 2 * UM.Theme.sizes.default_margin.width)
+                 return Math.max(panel.width + 2 * UM.Theme.getSize("default_margin").width)
             }
             else {
                 return 0
             }
         }
-        height: panel.item ? panel.height + 2 * UM.Theme.sizes.default_margin.height : 0;
+        height: panel.item ? panel.height + 2 * UM.Theme.getSize("default_margin").height : 0;
 
         opacity: panel.item ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
-        color: UM.Theme.colors.lining;
-        //border.width: UM.Theme.sizes.default_lining.width
-        //border.color: UM.Theme.colors.lining
+        color: UM.Theme.getColor("lining");
+        //border.width: UM.Theme.getSize("default_lining").width
+        //border.color: UM.Theme.getColor("lining")
 
         UM.PointingRectangle {
             id: panelBackground;
 
-            color: UM.Theme.colors.tool_panel_background;
+            color: UM.Theme.getColor("tool_panel_background");
             anchors.fill: parent
-            anchors.margins: UM.Theme.sizes.default_lining.width
+            anchors.margins: UM.Theme.getSize("default_lining").width
 
-            target: Qt.point(-UM.Theme.sizes.default_margin.width, UM.Theme.sizes.button.height/2)
+            target: Qt.point(-UM.Theme.getSize("default_margin").width, UM.Theme.getSize("button").height/2)
             arrowSize: parent.arrowSize 
         }
 
         Loader {
             id: panel
 
-            x: UM.Theme.sizes.default_margin.width;
-            y: UM.Theme.sizes.default_margin.height;
+            x: UM.Theme.getSize("default_margin").width;
+            y: UM.Theme.getSize("default_margin").height;
 
             source: UM.ActiveTool.valid ? UM.ActiveTool.activeToolPanel : "";
             enabled: UM.Controller.toolsEnabled;

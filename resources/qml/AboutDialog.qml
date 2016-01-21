@@ -38,7 +38,7 @@ UM.Dialog
         id: version
 
         text: "Cura %1".arg(UM.Application.version)
-        font: UM.Theme.fonts.large
+        font: UM.Theme.getFont("large")
         anchors.horizontalCenter : logo.horizontalCenter
         anchors.horizontalCenterOffset : (logo.width * 0.25)
         anchors.top: logo.bottom

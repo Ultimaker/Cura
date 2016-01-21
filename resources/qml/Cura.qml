@@ -337,8 +337,8 @@ UM.MainWindow
                 {
                     bottom: parent.bottom;
                     right: sidebar.left;
-                    bottomMargin: UM.Theme.sizes.default_margin.height;
-                    rightMargin: UM.Theme.sizes.default_margin.width;
+                    bottomMargin: UM.Theme.getSize("default_margin").height;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
                 }
             }
 
@@ -347,7 +347,7 @@ UM.MainWindow
                 anchors
                 {
                     horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width/ 2)
+                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
                 }
@@ -361,10 +361,10 @@ UM.MainWindow
                 //anchors.right: parent.right;
                 //anchors.bottom: parent.bottom
                 anchors.top: viewModeButton.bottom
-                anchors.topMargin: UM.Theme.sizes.default_margin.height;
+                anchors.topMargin: UM.Theme.getSize("default_margin").height;
                 anchors.left: viewModeButton.left;
                 //anchors.bottom: buttons.top;
-                //anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
+                //anchors.bottomMargin: UM.Theme.getSize("default_margin").height;
 
                 height: childrenRect.height;
 
@@ -376,15 +376,15 @@ UM.MainWindow
                 id: openFileButton;
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
                 text: catalog.i18nc("@action:button","Open File");
-                iconSource: UM.Theme.icons.load
+                iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
                 tooltip: '';
                 anchors
                 {
                     top: parent.top;
-                    //topMargin: UM.Theme.sizes.loadfile_margin.height
+                    //topMargin: UM.Theme.getSize("loadfile_margin").height
                     left: parent.left;
-                    //leftMargin: UM.Theme.sizes.loadfile_margin.width
+                    //leftMargin: UM.Theme.getSize("loadfile_margin").width
                 }
                 action: actions.open;
             }
@@ -395,14 +395,14 @@ UM.MainWindow
                 anchors
                 {
                     left: parent.left
-                    leftMargin: UM.Theme.sizes.default_margin.width;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
                     bottom: parent.bottom
-                    bottomMargin: UM.Theme.sizes.default_margin.height;
+                    bottomMargin: UM.Theme.getSize("default_margin").height;
                 }
 
                 source: UM.Theme.images.logo;
-                width: UM.Theme.sizes.logo.width;
-                height: UM.Theme.sizes.logo.height;
+                width: UM.Theme.getSize("logo").width;
+                height: UM.Theme.getSize("logo").height;
                 z: -1;
 
                 sourceSize.width: width;
@@ -416,11 +416,11 @@ UM.MainWindow
                 anchors
                 {
                     top: toolbar.bottom;
-                    topMargin: UM.Theme.sizes.window_margin.height;
+                    topMargin: UM.Theme.getSize("window_margin").height;
                     left: parent.left;
                 }
                 text: catalog.i18nc("@action:button","View Mode");
-                iconSource: UM.Theme.icons.viewmode;
+                iconSource: UM.Theme.getIcon("viewmode");
 
                 style: UM.Theme.styles.tool_button;
                 tooltip: '';
@@ -453,7 +453,7 @@ UM.MainWindow
 
                 anchors {
                     top: openFileButton.bottom;
-                    topMargin: UM.Theme.sizes.window_margin.height;
+                    topMargin: UM.Theme.getSize("window_margin").height;
                     left: parent.left;
                 }
             }
@@ -469,7 +469,7 @@ UM.MainWindow
                     right: parent.right;
                 }
 
-                width: UM.Theme.sizes.sidebar.width;
+                width: UM.Theme.getSize("sidebar").width;
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
@@ -479,8 +479,8 @@ UM.MainWindow
 
             Rectangle
             {
-                x: base.mouseX + UM.Theme.sizes.default_margin.width;
-                y: base.mouseY + UM.Theme.sizes.default_margin.height;
+                x: base.mouseX + UM.Theme.getSize("default_margin").width;
+                y: base.mouseY + UM.Theme.getSize("default_margin").height;
 
                 width: childrenRect.width;
                 height: childrenRect.height;
