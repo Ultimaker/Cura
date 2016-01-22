@@ -41,7 +41,7 @@ class ImageReaderUI(QObject):
         self._disable_size_callbacks = False
 
     def setWidthAndDepth(self, width, depth):
-        self._aspect = width/depth
+        self._aspect = width / depth
         self._width = width
         self._depth = depth
 
@@ -106,12 +106,12 @@ class ImageReaderUI(QObject):
     @pyqtSlot(str)
     def onWidthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
-            if (len(value) > 0):
+            if len(value) > 0:
                 self._width = float(value)
             else:
                 self._width = 0
 
-            self._depth = self._width/self._aspect
+            self._depth = self._width / self._aspect
             self._disable_size_callbacks = True
             self._ui_view.findChild(QObject, "Depth").setProperty("text", str(self._depth))
             self._disable_size_callbacks = False
@@ -119,12 +119,12 @@ class ImageReaderUI(QObject):
     @pyqtSlot(str)
     def onDepthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
-            if (len(value) > 0):
+            if len(value) > 0:
                 self._depth = float(value)
             else:
                 self._depth = 0
 
-            self._width = self._depth*self._aspect
+            self._width = self._depth * self._aspect
             self._disable_size_callbacks = True
             self._ui_view.findChild(QObject, "Width").setProperty("text", str(self._width))
             self._disable_size_callbacks = False
