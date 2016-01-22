@@ -1138,7 +1138,7 @@ class LulzbotMachineSelectPage(InfoPage):
 										 self.GetParent().lulzbotReadyPage)
 
 	def OnLulzbotTaz6Selected(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().LulzbotTaz6ToolheadSelectPage)
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz6ToolheadPage)
 
 	def OnLulzbotTazSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazSelectPage)
