@@ -1,7 +1,9 @@
 [Desktop Entry]
 Version=15.06.01
 Name=Cura
+Name[de]=Cura
 GenericName=3D Printing Software
+GenericName[de]=3D-Druck-Software
 Comment=
 Exec=/usr/bin/cura_app.py
 TryExec=/usr/bin/cura_app.py
