@@ -42,7 +42,7 @@ class aboutWindow(wx.Frame):
 		s.Add(wx.HyperlinkCtrl(p, -1, url2, url2))
 
 		s.Add(wx.StaticText(p, -1, ''))
-		s.Add(wx.StaticText(p, -1, 'End solution for Open Source Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, 'End solution for Free Software Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by David Braam and Ultimaker.'), flag=wx.TOP, border=5)
 		s.Add(wx.StaticText(p, -1, 'Cura LulzBot Edition has been modified and maintained by Aleph Objects, Inc.'))
 		s.Add(wx.StaticText(p, -1, 'for use with LulzBot 3D printers.'))
