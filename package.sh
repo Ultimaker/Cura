@@ -439,7 +439,9 @@ function buildFedora() {
     fi
 
     mkdir -pv "$_dstRpmDir/$_mockRelease"
-    mock \
+    # Need to use /usr/bin/mock because depending on $PATH, if /usr/sbin/mock is
+    # run instead, it will give an error.
+    /usr/bin/mock \
       $_mockReleaseArg \
       --resultdir="$_dstRpmDir/$_mockRelease" \
       "$_srpmFile"
