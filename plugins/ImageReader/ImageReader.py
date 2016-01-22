@@ -33,8 +33,8 @@ class ImageReader(MeshReader):
         depth = img.height()
 
         largest = max(width, depth)
-        width = width/largest*self._ui.defaultWidth
-        depth = depth/largest*self._ui.defaultDepth
+        width = width / largest * self._ui.defaultWidth
+        depth = depth / largest * self._ui.defaultDepth
 
         self._ui.setWidthAndDepth(width, depth)
         self._ui.showConfigUI()
@@ -109,7 +109,7 @@ class ImageReader(MeshReader):
         Job.yieldThread()
 
         if image_color_invert:
-            height_data = 1-height_data
+            height_data = 1 - height_data
 
         for i in range(0, blur_iterations):
             copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode='edge')
