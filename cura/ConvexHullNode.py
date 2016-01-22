@@ -48,7 +48,7 @@ class ConvexHullNode(SceneNode):
         if len(hull_points) < 3:
             return None
 
-        mesh_builder = MeshBuilder() #Create a mesh using the mesh builder.
+        mesh_builder = MeshBuilder()
         point_first = Vector(hull_points[0][0], self._mesh_height, hull_points[0][1])
         point_previous = Vector(hull_points[1][0], self._mesh_height, hull_points[1][1])
         for point in hull_points[2:]: #Add the faces in the order of a triangle fan.
