@@ -33,7 +33,7 @@ Item {
 
                 checkable: true;
                 checked: model.active;
-                enabled: UM.Selection.hasSelection;
+                enabled: UM.Selection.hasSelection && UM.Controller.toolsEnabled;
 
                 style: UM.Theme.styles.tool_button;
 
@@ -97,6 +97,7 @@ Item {
             y: UM.Theme.sizes.default_margin.height;
 
             source: UM.ActiveTool.valid ? UM.ActiveTool.activeToolPanel : "";
+            enabled: UM.Controller.toolsEnabled;
         }
     }
 }

@@ -292,6 +292,9 @@ class CuraApplication(QtApplication):
     # Remove all selected objects from the scene.
     @pyqtSlot()
     def deleteSelection(self):
+        if not self.getController().getToolsEnabled():
+            return
+
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
@@ -305,6 +308,9 @@ class CuraApplication(QtApplication):
     #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
+        if not self.getController().getToolsEnabled():
+            return
+
         node = self.getController().getScene().findObject(object_id)
 
         if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
@@ -364,6 +370,9 @@ class CuraApplication(QtApplication):
     ##  Delete all mesh data on the scene.
     @pyqtSlot()
     def deleteAll(self):
+        if not self.getController().getToolsEnabled():
+            return
+
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
