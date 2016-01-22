@@ -1,0 +1,14 @@
+{
+    "id": "ultimaker2_extended_plus",
+    "version": 1, 
+    "name": "Ultimaker 2 Extended+",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
+    "platform": "ultimaker2_platform.obj",
+    "platform_texture": "ultimaker2plus_backplate.png",
+    "inherits": "ultimaker2_extended_plus.json",
+    "variant": "0.80mm Nozzle",
+    "machine_settings": {
+        "machine_nozzle_size": { "default": 0.80 }
+    }
+}
