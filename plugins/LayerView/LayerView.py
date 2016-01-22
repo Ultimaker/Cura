@@ -59,7 +59,7 @@ class LayerView(View):
         renderer = self.getRenderer()
 
         if not self._selection_shader:
-            self._selection_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
+            self._selection_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
             self._selection_shader.setUniformValue("u_color", Color(32, 32, 32, 128))
 
         for node in DepthFirstIterator(scene.getRoot()):
