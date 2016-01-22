@@ -134,6 +134,7 @@ class CuraEngineBackend(Backend):
 
         self._scene.gcode_list = []
         self._slicing = True
+        self.slicingStarted.emit()
 
         job = StartSliceJob.StartSliceJob(self._profile, self._socket)
         job.start()
@@ -142,6 +143,7 @@ class CuraEngineBackend(Backend):
     def _terminate(self):
         self._slicing = False
         self._restart = True
+        self.slicingCancelled.emit()
         if self._process is not None:
             Logger.log("d", "Killing engine process")
             try:
@@ -259,7 +261,9 @@ class CuraEngineBackend(Backend):
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
                 self._layer_view_active = True
-                if self._stored_layer_data:
+                # There is data and we're not slicing at the moment
+                # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
+                if self._stored_layer_data and not self._slicing:
                     job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
                     job.start()
                     self._stored_layer_data = None
