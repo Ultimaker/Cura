@@ -21,7 +21,7 @@ class AutoSave(Extension):
         machine_manager.activeProfileChanged.connect(self._onActiveProfileChanged)
         machine_manager.profileNameChanged.connect(self._onProfilesChanged)
         machine_manager.profilesChanged.connect(self._onProfilesChanged)
-        machine_manager.machineInstanceNameChanged.connect(self._onInstancesChanged)
+        machine_manager.machineInstanceNameChanged.connect(self._onInstanceNameChanged)
         machine_manager.machineInstancesChanged.connect(self._onInstancesChanged)
         Application
         self._onActiveProfileChanged()
@@ -55,6 +55,9 @@ class AutoSave(Extension):
     def _onProfilesChanged(self):
         self._save_profiles = True
         self._change_timer.start()
+
+    def _onInstanceNameChanged(self, name):
+        self._onInstancesChanged()
 
     def _onInstancesChanged(self):
         self._save_instances = True
