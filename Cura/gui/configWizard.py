@@ -1238,7 +1238,7 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
-		self.taz6 = self.AddImageButton(self.panel, 0, 0, _('Tilapia'),
+		self.taz6 = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v2.1'),
 										'Lulzbot_Toolhead_TAZ_Tilapia.jpg', image_size,
 										style=ImageButton.IB_GROUP)
 		self.taz6.OnSelected(self.OnTilapiaSelected)
@@ -1253,9 +1253,9 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 	def StoreData(self):
 		profile.putProfileSetting('nozzle_size',  '0.5')
 		profile.putMachineSetting('extruder_amount', '1')
-		profile.putMachineSetting('toolhead', 'Single Extruder Tilapia')
-		profile.putMachineSetting('toolhead_shortname', 'Tilapia')
-		profile.putMachineSetting('machine_type', 'lulzbot_TAZ_6_Single_Tilapia')
+		profile.putMachineSetting('toolhead', 'Single Extruder v2.1')
+		profile.putMachineSetting('toolhead_shortname', 'Single v2.1')
+		profile.putMachineSetting('machine_type', 'lulzbot_TAZ_6_Single_v2.1')
 		profile.putMachineSetting('machine_name', 'LulzBot TAZ 6')
 
 class LulzbotTazSelectPage(InfoPage):

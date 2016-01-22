@@ -1409,6 +1409,11 @@ def performVersionUpgrade():
 				machine_name = getMachineSetting('machine_name', n)
 				if machine_name.endswith(" (0.5 nozzle)"):
 					putMachineSetting('machine_name', machine_name.replace(" (0.5 nozzle)", ""), n)
+		
+		if machine_type == 'lulzbot_TAZ_6_Single_Tilapia':
+			putMachineSetting('toolhead', 'Single Extruder v2.1', n)
+			putMachineSetting('toolhead_shortname', 'Single v2.1', n)
+			putMachineSetting('machine_type', 'lulzbot_TAZ_6_Single_v2.1', n)
 
 		# Change TAZ print bed so prints are centered when scaled to the max
 		if (machine_type.startswith('lulzbot_TAZ_4') or \
