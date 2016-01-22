@@ -41,7 +41,7 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_5_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 			'lulzbot_TAZ_4_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex",
 			'lulzbot_TAZ_5_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex",
-			'lulzbot_TAZ_6_SingleTilapia': "Taz6-Single-Tilapia-2015-Q4.hex"
+			'lulzbot_TAZ_6_Single_v2.1': "Marlin_v1.0.2.13.hex"
 	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
