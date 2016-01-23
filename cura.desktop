@@ -8,6 +8,6 @@ TryExec=/usr/bin/cura_app.py
 Icon=/usr/share/cura/resources/images/cura-icon.png
 Terminal=false
 Type=Application
-MimeType=application/sla;image/bmp;image/gif;image/jpeg;image/png
+MimeType=application/sla;application/vnd.ms-3mfdocument;application/prs.wavefront-obj;image/bmp;image/gif;image/jpeg;image/png
 Categories=Graphics;
 Keywords=3D;Printing;
