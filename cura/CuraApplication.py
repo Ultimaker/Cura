@@ -22,7 +22,6 @@ from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.JobQueue import JobQueue
 from UM.Math.Polygon import Polygon
-from UM.Event import MouseEvent
 
 from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
