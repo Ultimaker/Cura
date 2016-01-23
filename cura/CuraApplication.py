@@ -101,10 +101,12 @@ class CuraApplication(QtApplication):
         self._platform_activity = False
         self._scene_boundingbox = AxisAlignedBox()
         self._job_name = None
+        self._center_after_select = False
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+        self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -232,9 +234,7 @@ class CuraApplication(QtApplication):
                 else:
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
-                print("connect")
-                print(self.getController().getInputDevice("qt_mouse").event)
-                self.getController().getInputDevice("qt_mouse").event.connect(self.onMouseEventAfterSelectionChanged)
+                self._center_after_select = True
         else:
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
@@ -242,11 +242,9 @@ class CuraApplication(QtApplication):
             else:
                 self._previous_active_tool = None
 
-    def onMouseEventAfterSelectionChanged(self, event):
-        print("event")
-        if event.type == MouseEvent.MouseReleaseEvent:
-            print("disconnect")
-            self.getController().getInputDevice("qt_mouse").event.disconnect(self.onMouseEventAfterSelectionChanged)
+    def _onToolOperationStopped(self, event):
+        if self._center_after_select:
+            self._center_after_select = False
             self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
