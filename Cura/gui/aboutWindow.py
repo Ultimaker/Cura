@@ -43,9 +43,9 @@ class aboutWindow(wx.Frame):
 
 		s.Add(wx.StaticText(p, -1, ''))
 		s.Add(wx.StaticText(p, -1, 'End solution for Free Software Fused Filament Fabrication 3D printing.'), flag=wx.TOP, border=5)
-		s.Add(wx.StaticText(p, -1, 'Cura is currently developed and maintained by David Braam and Ultimaker.'), flag=wx.TOP, border=5)
-		s.Add(wx.StaticText(p, -1, 'Cura LulzBot Edition has been modified and maintained by Aleph Objects, Inc.'))
-		s.Add(wx.StaticText(p, -1, 'for use with LulzBot 3D printers.'))
+		s.Add(wx.StaticText(p, -1, 'Cura LulzBot Edition is maintained by Aleph Objects, Inc. for use with'), flag=wx.TOP, border=5)
+		s.Add(wx.StaticText(p, -1, 'LulzBot 3D printers. It is derived from Cura, which was created'))
+		s.Add(wx.StaticText(p, -1, 'by David Braam and Ultimaker.'))
 
 		s2.Add(wx.StaticText(p2, -1, 'Cura is built with the following components:'), flag=wx.TOP, border=10)
 		self.addComponent('Cura', 'Graphical user interface', 'AGPLv3', 'https://github.com/daid/Cura')
@@ -69,7 +69,8 @@ class aboutWindow(wx.Frame):
 		self.addComponent('3d-printer', 'by Toke Frello', 'CC BY 3.0 US', 'https://thenounproject.com/term/3d-printer/170216/')
 		self.addComponent('Check Mark', 'by Stefan Parnarov', 'CC BY 3.0', 'https://thenounproject.com/term/check-mark/63794/')
 		
-		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2014-2016 Aleph Objects, Inc. - Released under terms of the AGPLv3 License"), flag=wx.TOP, border=10)
+		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2014, 2015, 2016 Aleph Objects, Inc."), flag=wx.TOP, border=10)
+		s2.Add(wx.StaticText(p2, -1, " - Released under terms of the AGPLv3 License"))
 		s2.Add(wx.StaticText(p2, -1, "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"))
 		#Translations done by:
 		#Dutch: Charlotte Jansen
