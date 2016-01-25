@@ -29,7 +29,7 @@ Item {
 
             Button {
                 text: model.name
-                iconSource: UM.Theme.icons[model.icon];
+                iconSource: UM.Theme.getIcon(model.icon);
 
                 checkable: true;
                 checked: model.active;
