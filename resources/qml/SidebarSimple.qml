@@ -84,10 +84,19 @@ Item
                     width: (infillCellRight.width - 3 * UM.Theme.getSize("default_margin").width) / 4;
                     height: width
 
-                    border.color: (infillListView.activeIndex == index) ? UM.Theme.getColor("setting_control_selected :")
-                                      (mousearea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight : UM").Theme.getColor("setting_control_border)")
+                    border.color: {
+                        if(infillListView.activeIndex == index)
+                        {
+                            return UM.Theme.getColor("setting_control_selected")
+                        }
+                        else if(mousearea.containsMouse)
+                        {
+                            return UM.Theme.getColor("setting_control_border_highlight")
+                        }
+                        return UM.Theme.getColor("setting_control_border")
+                    }
                     border.width: UM.Theme.getSize("default_lining").width
-                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_selected : "transparent"")
+                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_selected") : "transparent"
 
                     UM.RecolorImage {
                         id: infillIcon
@@ -96,8 +105,8 @@ Item
 
                         sourceSize.width: width
                         sourceSize.height: width
-                        source: UM.Theme.icons[model.icon];
-                        color: (infillListView.activeIndex == index) ? UM.Theme.getColor("text_white : UM").Theme.getColor("text")
+                        source: UM.Theme.getIcon(model.icon);
+                        color: (infillListView.activeIndex == index) ? UM.Theme.getColor("text_white") : UM.Theme.getColor("text")
                     }
 
                     MouseArea {
@@ -122,7 +131,7 @@ Item
                     id: infillLabel
                     anchors.top: infillIconLining.bottom
                     anchors.horizontalCenter: infillIconLining.horizontalCenter
-                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_text : UM").Theme.getColor("setting_control_border")
+                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_border")
                     text: name
                 }
             }
