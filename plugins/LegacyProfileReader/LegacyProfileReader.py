@@ -63,6 +63,7 @@ class LegacyProfileReader(ProfileReader):
     #   file could not be read or didn't contain a valid profile, \code None
     #   \endcode is returned.
     def read(self, file_name):
+        Logger.log("i", "Importing legacy profile from file " + file_name + ".")
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False) #Create an empty profile.
         profile.setName("Imported Legacy Profile")
 
@@ -119,5 +120,8 @@ class LegacyProfileReader(ProfileReader):
                 continue
             if new_value != value_using_defaults and profile.getSettingValue(new_setting) != new_value: #Not equal to the default in the new Cura OR the default in the legacy Cura.
                 profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
+
+        if len(profile.getChangedSettings()) == 0:
+            Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
 
         return profile
