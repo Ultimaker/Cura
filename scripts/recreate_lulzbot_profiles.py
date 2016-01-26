@@ -329,7 +329,7 @@ def create_machine_type(machine_type, path, dir):
                     if ((material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
                         (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_4")) or \
                         (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_5")) or \
-                        (material == "PLA_eSUN" and machine_type.startswith("lulzbot_TAZ_6"))):
+                        (material == "PLA_VP" and machine_type.startswith("lulzbot_TAZ_6"))):
                         types = types + "|First Run"
                         order = 0
                     f.write("material_types = %s\n" % types)
