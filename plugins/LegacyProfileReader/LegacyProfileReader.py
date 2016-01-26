@@ -42,7 +42,6 @@ class LegacyProfileReader(ProfileReader):
         locals = {}
         for key in json["defaults"]: #We have to copy over all defaults from the JSON handle to a normal dict.
             locals[key] = json["defaults"][key]
-            print("Setting " + key + " to " + json["defaults"][key])
         for option in config_parser.options(config_section):
             locals[option] = config_parser.get(config_section, option)
         return locals
@@ -104,7 +103,7 @@ class LegacyProfileReader(ProfileReader):
             try:
                 new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
             except Exception as e: #Probably some setting name that was missing or something else that went wrong in the ini file.
-                Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed (" + old_setting_expression + "). Something is probably missing from the imported legacy profile.")
+                Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
                 continue
             if profile.getSettingValue(new_setting) != new_value: #Not equal to the default.
                 profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
