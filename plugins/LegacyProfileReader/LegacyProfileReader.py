@@ -30,16 +30,21 @@ class LegacyProfileReader(ProfileReader):
     #   and their values, so that they can be used in evaluating the new setting
     #   values as Python code.
     #
-    #   \param parser The ConfigParser that finds the settings in the legacy
-    #   profile.
-    #   \param section The section in the profile where the settings should be
-    #   found.
+    #   \param config_parser The ConfigParser that finds the settings in the
+    #   legacy profile.
+    #   \param config_section The section in the profile where the settings
+    #   should be found.
+    #   \param json The JSON file to load the default setting values from. This
+    #   should not be an URL but a pre-loaded JSON handle.
     #   \return A set of local variables, one for each setting in the legacy
     #   profile.
-    def prepareLocals(self, parser, section):
+    def prepareLocals(self, config_parser, config_section, json):
         locals = {}
-        for option in parser.options(section):
-            locals[option] = parser.get(section, option)
+        for key in json["defaults"]: #We have to copy over all defaults from the JSON handle to a normal dict.
+            locals[key] = json["defaults"][key]
+            print("Setting " + key + " to " + json["defaults"][key])
+        for option in config_parser.options(config_section):
+            locals[option] = config_parser.get(config_section, option)
         return locals
 
     ##  Reads a legacy Cura profile from a file and returns it.
@@ -70,8 +75,6 @@ class LegacyProfileReader(ProfileReader):
         if not section: #No section starting with "profile" was found. Probably not a proper INI file.
             return None
 
-        legacy_settings = self.prepareLocals(parser, section) #Gets the settings from the legacy profile.
-
         try:
             with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
                 dict_of_doom = json.load(f) #Parse the Dictionary of Doom.
@@ -81,6 +84,8 @@ class LegacyProfileReader(ProfileReader):
         except Exception as e:
             Logger.log("e", "Could not parse DictionaryOfDoom.json: %s", str(e))
             return None
+
+        legacy_settings = self.prepareLocals(parser, section, dict_of_doom) #Gets the settings from the legacy profile.
 
         #Check the target version in the Dictionary of Doom with this application version.
         if "target_version" not in dict_of_doom:
@@ -99,7 +104,7 @@ class LegacyProfileReader(ProfileReader):
             try:
                 new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
             except Exception as e: #Probably some setting name that was missing or something else that went wrong in the ini file.
-                Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
+                Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed (" + old_setting_expression + "). Something is probably missing from the imported legacy profile.")
                 continue
             if profile.getSettingValue(new_setting) != new_value: #Not equal to the default.
                 profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
