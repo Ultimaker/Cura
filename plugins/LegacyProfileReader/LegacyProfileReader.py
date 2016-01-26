@@ -23,6 +23,19 @@ class LegacyProfileReader(ProfileReader):
     def __init__(self):
         super().__init__()
 
+    ##  Prepares the default values of all legacy settings.
+    #
+    #   These are loaded from the Dictionary of Doom.
+    #
+    #   \param json The JSON file to load the default setting values from. This
+    #   should not be a URL but a pre-loaded JSON handle.
+    #   \return A dictionary of the default values of the legacy Cura version.
+    def prepareDefaults(self, json):
+        defaults = {}
+        for key in json["defaults"]: #We have to copy over all defaults from the JSON handle to a normal dict.
+            defaults[key] = json["defaults"][key]
+        return defaults
+
     ##  Prepares the local variables that can be used in evaluation of computing
     #   new setting values from the old ones.
     #
@@ -30,16 +43,17 @@ class LegacyProfileReader(ProfileReader):
     #   and their values, so that they can be used in evaluating the new setting
     #   values as Python code.
     #
-    #   \param parser The ConfigParser that finds the settings in the legacy
-    #   profile.
-    #   \param section The section in the profile where the settings should be
-    #   found.
+    #   \param config_parser The ConfigParser that finds the settings in the
+    #   legacy profile.
+    #   \param config_section The section in the profile where the settings
+    #   should be found.
+    #   \param defaults The default values for all settings in the legacy Cura.
     #   \return A set of local variables, one for each setting in the legacy
     #   profile.
-    def prepareLocals(self, parser, section):
-        locals = {}
-        for option in parser.options(section):
-            locals[option] = parser.get(section, option)
+    def prepareLocals(self, config_parser, config_section, defaults):
+        locals = defaults.copy() #Don't edit the original!
+        for option in config_parser.options(config_section):
+            locals[option] = config_parser.get(config_section, option)
         return locals
 
     ##  Reads a legacy Cura profile from a file and returns it.
@@ -49,6 +63,7 @@ class LegacyProfileReader(ProfileReader):
     #   file could not be read or didn't contain a valid profile, \code None
     #   \endcode is returned.
     def read(self, file_name):
+        Logger.log("i", "Importing legacy profile from file " + file_name + ".")
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False) #Create an empty profile.
         profile.setName("Imported Legacy Profile")
 
@@ -70,8 +85,6 @@ class LegacyProfileReader(ProfileReader):
         if not section: #No section starting with "profile" was found. Probably not a proper INI file.
             return None
 
-        legacy_settings = self.prepareLocals(parser, section) #Gets the settings from the legacy profile.
-
         try:
             with open(os.path.join(PluginRegistry.getInstance().getPluginPath("LegacyProfileReader"), "DictionaryOfDoom.json"), "r", -1, "utf-8") as f:
                 dict_of_doom = json.load(f) #Parse the Dictionary of Doom.
@@ -81,6 +94,9 @@ class LegacyProfileReader(ProfileReader):
         except Exception as e:
             Logger.log("e", "Could not parse DictionaryOfDoom.json: %s", str(e))
             return None
+
+        defaults = self.prepareDefaults(dict_of_doom)
+        legacy_settings = self.prepareLocals(parser, section, defaults) #Gets the settings from the legacy profile.
 
         #Check the target version in the Dictionary of Doom with this application version.
         if "target_version" not in dict_of_doom:
@@ -98,10 +114,14 @@ class LegacyProfileReader(ProfileReader):
             compiled = compile(old_setting_expression, new_setting, "eval")
             try:
                 new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
+                value_using_defaults = eval(compiled, {"math": math}, defaults) #Evaluate again using only the default values to try to see if they are default.
             except Exception as e: #Probably some setting name that was missing or something else that went wrong in the ini file.
                 Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
                 continue
-            if profile.getSettingValue(new_setting) != new_value: #Not equal to the default.
+            if new_value != value_using_defaults and profile.getSettingValue(new_setting) != new_value: #Not equal to the default in the new Cura OR the default in the legacy Cura.
                 profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
+
+        if len(profile.getChangedSettings()) == 0:
+            Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
 
         return profile
