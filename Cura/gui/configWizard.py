@@ -1199,6 +1199,9 @@ class LulzbotReadyPage(InfoPage):
 		self.AddSeperator()
 		self.AddText(_('For more information about using Cura with your LulzBot'))
 		self.AddText(_('3D printer, please visit www.LulzBot.com/cura'))
+		self.AddText('')
+		self.AddText(_('Please contact support if you have problems operating'))
+		self.AddText(_('your LulzBot 3D Printer www.LulzBot.com/support'))
 		self.AddSeperator()
 
 class LulzbotMiniToolheadSelectPage(InfoPage):
