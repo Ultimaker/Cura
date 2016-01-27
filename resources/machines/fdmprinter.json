@@ -511,7 +511,7 @@
                     "type": "float",
                     "default": 20,
                     "min_value": "0",
-                    "max_value": "100",
+                    "max_value_warning": "100",
                     "children": {
                         "infill_line_distance": {
                             "label": "Line distance",
@@ -547,7 +547,7 @@
                     "type": "float",
                     "default": 10,
                     "min_value": "0",
-                    "max_value": "100",
+                    "max_value_warning": "100",
                     "inherit_function": "10 if infill_sparse_density < 95 else 0",
                     "visible": false
                 },
@@ -1436,7 +1436,7 @@
                     "unit": "%",
                     "type": "float",
                     "min_value": "0",
-                    "max_value": "100",
+                    "max_value_warning": "100",
                     "default": 15,
                     "visible": false,
                     "enabled": "support_enable",
