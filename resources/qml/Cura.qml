@@ -580,7 +580,7 @@ UM.MainWindow
         reloadAll.onTriggered: Printer.reloadAll()
 
         addMachine.onTriggered: addMachineWizard.visible = true;
-        addProfile.onTriggered: addProfileDialog.visible = true;
+        addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.visible = true; preferences.setPage(4); }
 
         preferences.onTriggered: { preferences.visible = true; preferences.setPage(0); }
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
@@ -671,16 +671,6 @@ UM.MainWindow
     AddMachineWizard
     {
         id: addMachineWizard
-    }
-
-    AddProfileDialog
-    {
-        id: addProfileDialog
-    }
-
-    LoadProfileDialog
-    {
-        id: loadProfileDialog
     }
 
     AboutDialog
