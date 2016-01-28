@@ -49,7 +49,7 @@ class ConvexHullJob(Job):
         # This is done because of rounding errors.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-1, -1], [-1, 1], [1, 1], [1, -1]], numpy.float32)))
 
-        profile = Application.getInstance().getMachineManager().getActiveProfile()
+        profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if profile:
             if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 # Printing one at a time and it's not an object in a group
