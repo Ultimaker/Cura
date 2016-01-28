@@ -14,7 +14,6 @@ UM.MainWindow
     id: base
     //: Cura application window title
     title: catalog.i18nc("@title:window","Cura");
-
     viewportRect: Qt.rect(0, 0, (base.width - sidebar.width) / base.width, 1.0)
 
     Item
@@ -22,6 +21,14 @@ UM.MainWindow
         id: backgroundItem;
         anchors.fill: parent;
         UM.I18nCatalog{id: catalog; name:"cura"}
+
+        signal hasMesh(string name) //this signal sends the filebase name so it can be used for the JobSpecs.qml
+        function getMeshName(path){
+            //takes the path the complete path of the meshname and returns only the filebase
+            var fileName = path.slice(path.lastIndexOf("/") + 1)
+            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
+            return fileBase
+        }
 
         //DeleteSelection on the keypress backspace event
         Keys.onPressed: {
@@ -34,7 +41,6 @@ UM.MainWindow
             }
         }
 
-
         UM.ApplicationMenu
         {
             id: menu
@@ -44,7 +50,7 @@ UM.MainWindow
             {
                 id: fileMenu
                 //: File menu
-                title: catalog.i18nc("@title:menu","&File");
+                title: catalog.i18nc("@title:menu menubar:toplevel","&File");
 
                 MenuItem {
                     action: actions.open;
@@ -53,7 +59,7 @@ UM.MainWindow
                 Menu
                 {
                     id: recentFilesMenu;
-                    title: catalog.i18nc("@title:menu", "Open &Recent")
+                    title: catalog.i18nc("@title:menu menubar:file", "Open &Recent")
                     iconName: "document-open-recent";
 
                     enabled: Printer.recentFiles.length > 0;
@@ -70,7 +76,8 @@ UM.MainWindow
                             }
                             onTriggered: {
                                 UM.MeshFileHandler.readLocalFile(modelData);
-                                openDialog.sendMeshName(modelData.toString())
+                                var meshName = backgroundItem.getMeshName(modelData.toString())
+                                backgroundItem.hasMesh(meshName)
                             }
                         }
                         onObjectAdded: recentFilesMenu.insertItem(index, object)
@@ -82,7 +89,7 @@ UM.MainWindow
 
                 MenuItem
                 {
-                    text: catalog.i18nc("@action:inmenu", "&Save Selection to File");
+                    text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
                     onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName);
@@ -90,7 +97,7 @@ UM.MainWindow
                 Menu
                 {
                     id: saveAllMenu
-                    title: catalog.i18nc("@title:menu","Save &All")
+                    title: catalog.i18nc("@title:menu menubar:file","Save &All")
                     iconName: "document-save-all";
                     enabled: devicesModel.rowCount() > 0 && UM.Backend.progress > 0.99;
 
@@ -118,7 +125,7 @@ UM.MainWindow
             Menu
             {
                 //: Edit menu
-                title: catalog.i18nc("@title:menu","&Edit");
+                title: catalog.i18nc("@title:menu menubar:toplevel","&Edit");
 
                 MenuItem { action: actions.undo; }
                 MenuItem { action: actions.redo; }
@@ -135,7 +142,7 @@ UM.MainWindow
 
             Menu
             {
-                title: catalog.i18nc("@title:menu","&View");
+                title: catalog.i18nc("@title:menu menubar:toplevel","&View");
                 id: top_view_menu
                 Instantiator 
                 {
@@ -157,7 +164,7 @@ UM.MainWindow
             {
                 id: machineMenu;
                 //: Machine menu
-                title: catalog.i18nc("@title:menu","&Machine");
+                title: catalog.i18nc("@title:menu menubar:toplevel","&Printer");
 
                 Instantiator
                 {
@@ -203,7 +210,7 @@ UM.MainWindow
             Menu
             {
                 id: profileMenu
-                title: catalog.i18nc("@title:menu", "&Profile")
+                title: catalog.i18nc("@title:menu menubar:toplevel", "P&rofile")
 
                 Instantiator
                 {
@@ -230,7 +237,7 @@ UM.MainWindow
             {
                 id: extension_menu
                 //: Extensions menu
-                title: catalog.i18nc("@title:menu","E&xtensions");
+                title: catalog.i18nc("@title:menu menubar:toplevel","E&xtensions");
 
                 Instantiator 
                 {
@@ -263,7 +270,7 @@ UM.MainWindow
             Menu
             {
                 //: Settings menu
-                title: catalog.i18nc("@title:menu","&Settings");
+                title: catalog.i18nc("@title:menu menubar:toplevel","&Settings");
 
                 MenuItem { action: actions.preferences; }
             }
@@ -271,7 +278,7 @@ UM.MainWindow
             Menu
             {
                 //: Help menu
-                title: catalog.i18nc("@title:menu","&Help");
+                title: catalog.i18nc("@title:menu menubar:toplevel","&Help");
 
                 MenuItem { action: actions.showEngineLog; }
                 MenuItem { action: actions.documentation; }
@@ -303,7 +310,8 @@ UM.MainWindow
                             UM.MeshFileHandler.readLocalFile(drop.urls[i]);
                             if (i == drop.urls.length - 1)
                             {
-                                openDialog.sendMeshName(drop.urls[i].toString())
+                                var meshName = backgroundItem.getMeshName(drop.urls[i].toString())
+                                backgroundItem.hasMesh(meshName)
                             }
                         }
                     }
@@ -312,6 +320,7 @@ UM.MainWindow
 
             JobSpecs
             {
+                id: jobSpecs
                 anchors
                 {
                     bottom: parent.bottom;
@@ -327,7 +336,8 @@ UM.MainWindow
                 {
                     horizontalCenter: parent.horizontalCenter
                     horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width/ 2)
-                    verticalCenter: parent.verticalCenter;
+                    top: parent.verticalCenter;
+                    bottom: parent.bottom;
                 }
             }
 
@@ -517,10 +527,7 @@ UM.MainWindow
 
         deleteSelection.onTriggered:
         {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.deleteObject(objectContextMenu.objectId);
-            }
+            Printer.deleteSelection()
         }
 
         deleteObject.onTriggered:
@@ -638,14 +645,6 @@ UM.MainWindow
         modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
-
-        signal hasMesh(string name)
-
-        function sendMeshName(path){
-            var fileName = path.slice(path.lastIndexOf("/") + 1)
-            var fileBase = fileName.slice(0, fileName.lastIndexOf("."))
-            openDialog.hasMesh(fileBase)
-        }
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
 
         onAccepted:
@@ -656,7 +655,8 @@ UM.MainWindow
             folder = f;
 
             UM.MeshFileHandler.readLocalFile(fileUrl)
-            openDialog.sendMeshName(fileUrl.toString())
+            var meshName = backgroundItem.getMeshName(fileUrl.toString())
+            backgroundItem.hasMesh(meshName)
         }
     }
 

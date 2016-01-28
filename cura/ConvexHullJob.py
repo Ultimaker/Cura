@@ -54,7 +54,12 @@ class ConvexHullJob(Job):
             if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 # Printing one at a time and it's not an object in a group
                 self._node.callDecoration("setConvexHullBoundary", copy.deepcopy(hull))
-                head_hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_with_fans_polygon"),numpy.float32)))
+                head_and_fans = Polygon(numpy.array(profile.getSettingValue("machine_head_with_fans_polygon"), numpy.float32))
+                mirrored = copy.deepcopy(head_and_fans)
+                mirrored.mirror([0, 0], [0, 1]) #Mirror horizontally.
+                mirrored.mirror([0, 0], [1, 0]) #Mirror vertically.
+                head_and_fans = head_and_fans.intersectionConvexHulls(mirrored)
+                head_hull = hull.getMinkowskiHull(head_and_fans)
                 self._node.callDecoration("setConvexHullHead", head_hull)
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_polygon"),numpy.float32)))
             else:

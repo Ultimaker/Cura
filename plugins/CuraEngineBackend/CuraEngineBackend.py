@@ -107,15 +107,7 @@ class CuraEngineBackend(Backend):
             return
 
         if self._slicing:
-            self._slicing = False
-            self._restart = True
-            if self._process is not None:
-                Logger.log("d", "Killing engine process")
-                try:
-                    self._process.terminate()
-                except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                    pass
-
+            self._terminate()
 
             if self._message:
                 self._message.hide()
@@ -142,10 +134,22 @@ class CuraEngineBackend(Backend):
 
         self._scene.gcode_list = []
         self._slicing = True
+        self.slicingStarted.emit()
 
         job = StartSliceJob.StartSliceJob(self._profile, self._socket)
         job.start()
         job.finished.connect(self._onStartSliceCompleted)
+
+    def _terminate(self):
+        self._slicing = False
+        self._restart = True
+        self.slicingCancelled.emit()
+        if self._process is not None:
+            Logger.log("d", "Killing engine process")
+            try:
+                self._process.terminate()
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
 
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
@@ -245,6 +249,7 @@ class CuraEngineBackend(Backend):
             self._restart = False
 
     def _onToolOperationStarted(self, tool):
+        self._terminate() # Do not continue slicing once a tool has started
         self._enabled = False # Do not reslice when a tool is doing it's 'thing'
 
     def _onToolOperationStopped(self, tool):
@@ -256,7 +261,9 @@ class CuraEngineBackend(Backend):
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
                 self._layer_view_active = True
-                if self._stored_layer_data:
+                # There is data and we're not slicing at the moment
+                # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
+                if self._stored_layer_data and not self._slicing:
                     job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
                     job.start()
                     self._stored_layer_data = None
@@ -265,12 +272,5 @@ class CuraEngineBackend(Backend):
 
 
     def _onInstanceChanged(self):
-        self._slicing = False
-        self._restart = True
-        if self._process is not None:
-            Logger.log("d", "Killing engine process")
-            try:
-                self._process.terminate()
-            except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                pass
+        self._terminate()
         self.slicingCancelled.emit()

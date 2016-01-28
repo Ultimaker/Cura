@@ -14,62 +14,9 @@ Item{
     property int totalHeightProfileSetup: childrenRect.height
     property Action manageProfilesAction
 
-    Rectangle {
-        id: variantRow
-        anchors.top: base.top
-        width: base.width
-        height: UM.Theme.sizes.sidebar_setup.height
-        //visible: UM.MachineManager.hasVariants;
-        visible: true
-
-        Label{
-            id: variantLabel
-            text: catalog.i18nc("@label","Variant:");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*45
-            font: UM.Theme.fonts.default;
-        }
-
-        ToolButton {
-            id: variantSelection
-            text: UM.MachineManager.activeMachineVariant
-            width: parent.width/100*55
-            height: UM.Theme.sizes.setting_control.height
-            tooltip: UM.MachineManager.activeMachineInstance;
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width
-            anchors.verticalCenter: parent.verticalCenter
-            style: UM.Theme.styles.sidebar_header_button
-
-            menu: Menu
-            {
-                id: variantsSelectionMenu
-                Instantiator
-                {
-                    model: UM.MachineVariantsModel { id: variantsModel }
-                    MenuItem
-                    {
-                        text: model.name;
-                        checkable: true;
-                        checked: model.active;
-                        exclusiveGroup: variantSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name)
-                    }
-                    onObjectAdded: variantsSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: variantsSelectionMenu.removeItem(object)
-                }
-
-                ExclusiveGroup { id: variantSelectionMenuGroup; }
-            }
-        }
-    }
-
     Rectangle{
-        id: globalProfileRow;
-        anchors.top: UM.MachineManager.hasVariants ? variantRow.bottom : base.top
-        //anchors.top: variantRow.bottom
+        id: globalProfileRow
+        anchors.top: base.top
         height: UM.Theme.sizes.sidebar_setup.height
         width: base.width
 
@@ -78,7 +25,7 @@ Item{
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.sizes.default_margin.width;
             anchors.verticalCenter: parent.verticalCenter
-            text: catalog.i18nc("@label","Global Profile:");
+            text: catalog.i18nc("@label","Profile:");
             width: parent.width/100*45
             font: UM.Theme.fonts.default;
             color: UM.Theme.colors.text;

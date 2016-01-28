@@ -18,7 +18,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._profile = None
         Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
         self._onActiveProfileChanged()
-    
+
+    ## Force that a new (empty) object is created upon copy.
+    def __deepcopy__(self, memo):
+        copy = ConvexHullDecorator()
+        return copy
+
     def getConvexHull(self):
         return self._convex_hull
     

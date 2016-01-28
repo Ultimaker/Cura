@@ -114,6 +114,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
         Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
+        Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
@@ -132,6 +133,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
             self._plugin_registry.loadPlugin("ConsoleLogger")
+            self._plugin_registry.loadPlugin("CuraEngineBackend")
 
         self._plugin_registry.loadPlugins()
 
@@ -249,17 +251,23 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
-        return self._i18n_catalog.i18nc("@info", "%.1f x %.1f x %.1f mm") % (self._scene_boundingbox.width.item(), self._scene_boundingbox.depth.item(), self._scene_boundingbox.height.item())
+        return self._i18n_catalog.i18nc("@info", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_boundingbox.width.item(), 'depth': self._scene_boundingbox.depth.item(), 'height' : self._scene_boundingbox.height.item()}
 
     def updatePlatformActivity(self, node = None):
         count = 0
-        scene_boundingbox = AxisAlignedBox()
+        scene_boundingbox = None
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
 
             count += 1
-            scene_boundingbox += node.getBoundingBox()
+            if not scene_boundingbox:
+                scene_boundingbox = node.getBoundingBox()
+            else:
+                scene_boundingbox += node.getBoundingBox()
+
+        if not scene_boundingbox:
+            scene_boundingbox = AxisAlignedBox()
 
         if repr(self._scene_boundingbox) != repr(scene_boundingbox):
             self._scene_boundingbox = scene_boundingbox
@@ -270,6 +278,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str)
     def setJobName(self, name):
+        name = os.path.splitext(name)[0] #when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its extension. This cuts the extension off if nescessary.
         if self._job_name != name:
             self._job_name = name
             self.jobNameChanged.emit()
@@ -280,9 +289,28 @@ class CuraApplication(QtApplication):
     def jobName(self):
         return self._job_name
 
-    ##  Remove an object from the scene
+    # Remove all selected objects from the scene.
+    @pyqtSlot()
+    def deleteSelection(self):
+        if not self.getController().getToolsEnabled():
+            return
+
+        op = GroupedOperation()
+        nodes = Selection.getAllSelectedObjects()
+        for node in nodes:
+            op.addOperation(RemoveSceneNodeOperation(node))
+
+        op.push()
+
+        pass
+
+    ##  Remove an object from the scene.
+    #   Note that this only removes an object if it is selected.
     @pyqtSlot("quint64")
     def deleteObject(self, object_id):
+        if not self.getController().getToolsEnabled():
+            return
+
         node = self.getController().getScene().findObject(object_id)
 
         if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
@@ -342,6 +370,9 @@ class CuraApplication(QtApplication):
     ##  Delete all mesh data on the scene.
     @pyqtSlot()
     def deleteAll(self):
+        if not self.getController().getToolsEnabled():
+            return
+
         nodes = []
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode:
@@ -570,9 +601,9 @@ class CuraApplication(QtApplication):
     def _onFileLoaded(self, job):
         node = job.getResult()
         if node != None:
+            self.setJobName(os.path.basename(job.getFileName()))
             node.setSelectable(True)
             node.setName(os.path.basename(job.getFileName()))
-
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
 

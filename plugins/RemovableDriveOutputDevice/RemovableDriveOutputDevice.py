@@ -8,6 +8,7 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.OutputDevice.OutputDevice import OutputDevice
 from UM.OutputDevice import OutputDeviceError
+from UM.Preferences import Preferences
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -22,15 +23,18 @@ class RemovableDriveOutputDevice(OutputDevice):
         self.setIconName("save_sd")
         self.setPriority(1)
 
+        Preferences.getInstance().addPreference("removable_drive/file_type", "text/x-gcode") #Add a preference that says in what file type we should store the file.
+
         self._writing = False
 
     def requestWrite(self, node, file_name = None):
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
-        gcode_writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType("text/x-gcode")
+        file_type = Preferences.getInstance().getValue("removable_drive/file_type")
+        gcode_writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_type)
         if not gcode_writer:
-            Logger.log("e", "Could not find GCode writer, not writing to removable drive %s", self.getName())
+            Logger.log("e", "Could not find writer for MIME type %s, not writing to removable drive %s", file_type, self.getName())
             raise OutputDeviceError.WriteRequestFailedError()
 
         if file_name == None:

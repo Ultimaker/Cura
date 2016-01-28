@@ -13,6 +13,8 @@ Item {
     property int currentIndex: UM.ActiveTool.properties.SelectedIndex;
     property string printSequence: UM.ActiveTool.properties.PrintSequence;
 
+    UM.I18nCatalog { id: catalog; name: "cura"; }
+
     width: childrenRect.width;
     height: childrenRect.height;
 
@@ -104,7 +106,7 @@ Item {
                                     height: parent.height/2
                                     sourceSize.width: width
                                     sourceSize.height: width
-                                    color: UM.Theme.colors.setting_control_revert
+                                    color: control.hovered ? UM.Theme.colors.setting_control_button_hover : UM.Theme.colors.setting_control_button
                                     source: UM.Theme.icons.cross1
                                 }
                             }
@@ -157,7 +159,6 @@ Item {
         }
     }
 
-    UM.I18nCatalog { id: catalog; name: "uranium"; }
 
     UM.Dialog {
         id: settingPickDialog

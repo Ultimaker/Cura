@@ -33,7 +33,7 @@
             "default": "RepRap"
         },
         "machine_platform_offset": {
-            "default": [-6, 1320, 0]
+            "default": [6, 1320, 0]
         }
         "material_print_temperature": { "default": 210.0, "visible": true },
         "material_bed_temperature": { "default": 0 },
