@@ -94,7 +94,8 @@ class StartSliceJob(Job):
                 verts = numpy.array(mesh_data.getVertices())
                 verts[:,[1,2]] = verts[:,[2,1]]
                 verts[:,1] *= -1
-                obj.vertices = verts.tostring()
+
+                obj.vertices = verts
 
                 self._handlePerObjectSettings(object, obj)
 

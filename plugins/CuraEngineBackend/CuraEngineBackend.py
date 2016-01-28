@@ -62,11 +62,11 @@ class CuraEngineBackend(Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self.slice)
 
-        self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
-        self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
-        self._message_handlers[Cura_pb2.GCodeLayer] = self._onGCodeLayerMessage
-        self._message_handlers[Cura_pb2.GCodePrefix] = self._onGCodePrefixMessage
-        self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
+        self._message_handlers["cura.proto.SlicedObjectList"] = self._onSlicedObjectListMessage
+        self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
+        self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
+        self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
+        self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
 
         self._slicing = False
         self._restart = False

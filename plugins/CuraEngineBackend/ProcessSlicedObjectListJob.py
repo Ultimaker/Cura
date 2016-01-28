@@ -55,21 +55,27 @@ class ProcessSlicedObjectListJob(Job):
         layer_data = LayerData.LayerData()
 
         layer_count = 0
-        for object in self._message.objects:
-            layer_count += len(object.layers)
+        for i in range(self._message.repeatedMessageCount("objects")):
+            layer_count += self._message.getRepeatedMessage("objects", i).repeatedMessageCount("layers")
 
         current_layer = 0
-        for object in self._message.objects:
+        for i in range(self._message.repeatedMessageCount("objects")):
+            object = self._message.getRepeatedMessage("objects", i)
             try:
                 node = object_id_map[object.id]
             except KeyError:
                 continue
 
-            for layer in object.layers:
+            for l in range(object.repeatedMessageCount("layers")):
+                layer = object.getRepeatedMessage("layers", i)
+
                 layer_data.addLayer(layer.id)
                 layer_data.setLayerHeight(layer.id, layer.height)
                 layer_data.setLayerThickness(layer.id, layer.thickness)
-                for polygon in layer.polygons:
+
+                for p in range(layer.repeatedMessageCount("polygons")):
+                    polygon = layer.getRepeatedMessage("polygons", i)
+
                     points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
                     points = numpy.asarray(points, dtype=numpy.float32)
