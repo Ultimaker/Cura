@@ -12,6 +12,7 @@ from UM.Logger import Logger
 from UM.Resources import Resources
 from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import Cura_pb2
@@ -221,15 +222,7 @@ class CuraEngineBackend(Backend):
                 pass
 
     def _createSocket(self):
-        super()._createSocket()
-        
-        self._socket.registerMessageType(1, Cura_pb2.Slice)
-        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
-        self._socket.registerMessageType(3, Cura_pb2.Progress)
-        self._socket.registerMessageType(4, Cura_pb2.GCodeLayer)
-        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
-        self._socket.registerMessageType(6, Cura_pb2.SettingList)
-        self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
+        super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
 
     ##  Manually triggers a reslice
     def forceSlice(self):
@@ -265,7 +258,6 @@ class CuraEngineBackend(Backend):
                     self._stored_layer_data = None
             else:
                 self._layer_view_active = False
-
 
     def _onInstanceChanged(self):
         self._terminate()
