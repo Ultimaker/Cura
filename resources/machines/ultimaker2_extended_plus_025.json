@@ -7,7 +7,8 @@
     "platform": "ultimaker2_platform.obj",
     "platform_texture": "ultimaker2plus_backplate.png",
     "inherits": "ultimaker2_extended_plus.json",
-    "variant": "0.25mm Nozzle",
+    "variant": "0.25 mm",
+    "profiles_machine": "ultimaker2plus",
     "machine_settings": {
         "machine_nozzle_size": { "default": 0.25 }
     }
