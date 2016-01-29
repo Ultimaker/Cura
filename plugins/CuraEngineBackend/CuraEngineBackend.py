@@ -213,12 +213,12 @@ class CuraEngineBackend(Backend):
             self._message.hide()
             self._message = None
 
-        #if self._always_restart:
-            #try:
-                #self._process.terminate()
-                #self._createSocket()
-            #except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                #pass
+        if self._always_restart:
+            try:
+                self._process.terminate()
+                self._createSocket()
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
 
     def _onGCodeLayerMessage(self, message):
         self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
