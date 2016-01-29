@@ -685,7 +685,10 @@ class printWindowAdvanced(wx.Frame):
 			style=wx.ALIGN_CENTER)
 		self.powerWarningText.SetBackgroundColour('red')
 		self.powerWarningText.SetForegroundColour('white')
-		self.powerManagement = power.PowerManagement()
+		if power:
+			self.powerManagement = power.PowerManagement()
+		else:
+			self.powerManagement = None
 		self.powerWarningTimer = wx.Timer(self)
 		self.Bind(wx.EVT_TIMER, self.OnPowerWarningChange, self.powerWarningTimer)
 		self.OnPowerWarningChange(None)
@@ -781,6 +784,8 @@ class printWindowAdvanced(wx.Frame):
 		self.Destroy()
 
 	def OnPowerWarningChange(self, e):
+		if self.powerManagement is None:
+			return
 		type = self.powerManagement.get_providing_power_source_type()
 		if type == power.POWER_TYPE_AC and self.powerWarningText.IsShown():
 			self.powerWarningText.Hide()
