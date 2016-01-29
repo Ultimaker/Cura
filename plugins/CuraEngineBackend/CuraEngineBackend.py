@@ -9,6 +9,7 @@ from UM.Preferences import Preferences
 from UM.Math.Vector import Vector
 from UM.Signal import Signal
 from UM.Logger import Logger
+from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of the slicing job.
 from UM.Resources import Resources
 from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Message import Message
@@ -66,6 +67,7 @@ class CuraEngineBackend(Backend):
         self._message_handlers[Cura_pb2.GCodeLayer] = self._onGCodeLayerMessage
         self._message_handlers[Cura_pb2.GCodePrefix] = self._onGCodePrefixMessage
         self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
+        self._message_handlers[Cura_pb2.SlicingFinished] = self._onSlicingFinishedMessage
 
         self._slicing = False
         self._restart = False
@@ -126,6 +128,7 @@ class CuraEngineBackend(Backend):
             return #No slicing if we have error values since those are by definition illegal values.
 
         self.processingProgress.emit(0.0)
+        self.backendStateChange.emit(BackendState.NOT_STARTED)
         if self._message:
             self._message.setProgress(-1)
         #else:
@@ -197,15 +200,10 @@ class CuraEngineBackend(Backend):
             self._message.setProgress(round(message.amount * 100))
 
         self.processingProgress.emit(message.amount)
+        self.backendStateChange.emit(BackendState.PROCESSING)
 
-    def _onGCodeLayerMessage(self, message):
-        self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
-
-    def _onGCodePrefixMessage(self, message):
-        self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
-
-    def _onObjectPrintTimeMessage(self, message):
-        self.printDurationMessage.emit(message.time, message.material_amount)
+    def _onSlicingFinishedMessage(self, message):
+        self.backendStateChange.emit(BackendState.DONE)
         self.processingProgress.emit(1.0)
 
         self._slicing = False
@@ -215,16 +213,25 @@ class CuraEngineBackend(Backend):
             self._message.hide()
             self._message = None
 
-        if self._always_restart:
-            try:
-                self._process.terminate()
-                self._createSocket()
-            except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                pass
+        #if self._always_restart:
+            #try:
+                #self._process.terminate()
+                #self._createSocket()
+            #except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                #pass
+
+    def _onGCodeLayerMessage(self, message):
+        self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
+
+    def _onGCodePrefixMessage(self, message):
+        self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
+
+    def _onObjectPrintTimeMessage(self, message):
+        self.printDurationMessage.emit(message.time, message.material_amount)
 
     def _createSocket(self):
         super()._createSocket()
-        
+
         self._socket.registerMessageType(1, Cura_pb2.Slice)
         self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
         self._socket.registerMessageType(3, Cura_pb2.Progress)
@@ -232,6 +239,7 @@ class CuraEngineBackend(Backend):
         self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
         self._socket.registerMessageType(6, Cura_pb2.SettingList)
         self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
+        self._socket.registerMessageType(8, Cura_pb2.SlicingFinished)
 
     ##  Manually triggers a reslice
     def forceSlice(self):

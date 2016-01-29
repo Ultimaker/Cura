@@ -13,18 +13,19 @@ Rectangle {
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     property real progress: UM.Backend.progress;
+    property int backendState: UM.Backend.state;
     property bool activity: Printer.getPlatformActivity;
     //Behavior on progress { NumberAnimation { duration: 250; } }
     property int totalHeight: childrenRect.height + UM.Theme.sizes.default_margin.height
     property string fileBaseName
     property string statusText: {
-        if(progress == 0) {
+        if(base.backendState == 0) {
             if(!activity) {
                 return catalog.i18nc("@label:PrintjobStatus","Please load a 3d model");
             } else {
                 return catalog.i18nc("@label:PrintjobStatus","Preparing to slice...");
             }
-        } else if(base.progress < 0.99) {
+        } else if(base.backendState == 1) {
             return catalog.i18nc("@label:PrintjobStatus","Slicing...");
         } else {
             return catalog.i18nc("@label:PrintjobStatus","Ready to ") + UM.OutputDeviceManager.activeDeviceShortDescription;
@@ -59,7 +60,7 @@ Rectangle {
             height: parent.height
             color: UM.Theme.colors.progressbar_control
             radius: UM.Theme.sizes.progressbar_radius.width
-            visible: base.progress > 0.99 ? false : true
+            visible: base.backendState == 1 ? true : false
         }
     }
 
@@ -76,7 +77,7 @@ Rectangle {
             property int resizedWidth
             x: base.width - saveToButton.resizedWidth - UM.Theme.sizes.default_margin.width - UM.Theme.sizes.save_button_save_to_button.height + UM.Theme.sizes.save_button_save_to_button.width
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
-            enabled: base.progress > 0.99 && base.activity == true
+            enabled: base.backendState == 2 && base.activity == true
             height: UM.Theme.sizes.save_button_save_to_button.height
             width: 150
             anchors.top:parent.top
@@ -125,7 +126,7 @@ Rectangle {
             anchors.rightMargin: UM.Theme.sizes.default_margin.width
             width: UM.Theme.sizes.save_button_save_to_button.height
             height: UM.Theme.sizes.save_button_save_to_button.height
-            enabled: base.progress > 0.99 && base.activity == true
+            enabled: base.backendState == 2 && base.activity == true
             //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
