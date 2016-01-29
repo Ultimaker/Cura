@@ -511,7 +511,7 @@
                     "type": "float",
                     "default": 20,
                     "min_value": "0",
-                    "max_value": "100",
+                    "max_value_warning": "100",
                     "children": {
                         "infill_line_distance": {
                             "label": "Line distance",
@@ -547,7 +547,7 @@
                     "type": "float",
                     "default": 10,
                     "min_value": "0",
-                    "max_value": "100",
+                    "max_value_warning": "100",
                     "inherit_function": "10 if infill_sparse_density < 95 else 0",
                     "visible": false
                 },
@@ -1109,6 +1109,47 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false
+                },
+                "draft_shield_enabled": {
+                    "label": "Enable Draft Shield",
+                    "description": "Enable exterior draft shield. This will create a wall around the object which traps (hot) air and shields against gusts of wind. Especially useful for materials which warp easily.",
+                    "type": "boolean",
+                    "default": false
+                },
+                "draft_shield_dist": {
+                    "label": "Draft Shield X/Y Distance",
+                    "description": "Distance of the draft shield from the print, in the X/Y directions.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value_warning": "100",
+                    "default": 10,
+                    "visible": false,
+                    "enabled": "draft_shield_enabled"
+                },
+                "draft_shield_height_limitation": {
+                    "label": "Draft Shield Limitation",
+                    "description": "Whether or not to limit the height of the draft shield.",
+                    "type": "enum",
+                    "options": {
+                        "full": "Full",
+                        "limited": "Limited"
+                    },
+                    "default": "full",
+                    "visible": false,
+                    "enabled": "draft_shield_enabled"
+                },
+                "draft_shield_height": {
+                    "label": "Draft Shield Height",
+                    "description": "Height limitation on the draft shield. Above this height no draft shield will be printed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value_warning": "30",
+                    "default": 0,
+                    "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
+                    "visible": false,
+                    "enabled": "draft_shield_height_limitation == \"limited\""
                 }
             }
         },
@@ -1395,7 +1436,7 @@
                     "unit": "%",
                     "type": "float",
                     "min_value": "0",
-                    "max_value": "100",
+                    "max_value_warning": "100",
                     "default": 15,
                     "visible": false,
                     "enabled": "support_enable",
@@ -1698,47 +1739,6 @@
                             "enabled": "adhesion_type == \"raft\""
                         }
                     }
-                },
-                "draft_shield_enabled": {
-                    "label": "Enable Draft Shield",
-                    "description": "Enable exterior draft shield. This will create a wall around the object which traps (hot) air and shields against gusts of wind. Especially useful for materials which warp easily.",
-                    "type": "boolean",
-                    "default": false
-                },
-                "draft_shield_dist": {
-                    "label": "Draft Shield X/Y Distance",
-                    "description": "Distance of the draft shield from the print, in the X/Y directions.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": "0",
-                    "max_value_warning": "100",
-                    "default": 10,
-                    "visible": false,
-                    "enabled": "draft_shield_enabled"
-                },
-                "draft_shield_height_limitation": {
-                    "label": "Draft Shield Limitation",
-                    "description": "Whether or not to limit the height of the draft shield.",
-                    "type": "enum",
-                    "options": {
-                        "full": "Full",
-                        "limited": "Limited"
-                    },
-                    "default": "full",
-                    "visible": false,
-                    "enabled": "draft_shield_enabled"
-                },
-                "draft_shield_height": {
-                    "label": "Draft Shield Height",
-                    "description": "Height limitation on the draft shield. Above this height no draft shield will be printed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": "0",
-                    "max_value_warning": "30",
-                    "default": 0,
-                    "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
-                    "visible": false,
-                    "enabled": "draft_shield_height_limitation == \"limited\""
                 }
             }
         },
