@@ -148,7 +148,7 @@ fi
 # Build the required firmwares
 #############################
 
-gitClone "https://github.com/Ultimaker/cura-binary-data" _cura_binary_data
+gitClone "https://code.alephobjects.com/diffusion/CBD/cura-binary-data.git" _cura_binary_data
 
 cp -v _cura_binary_data/cura/resources/firmware/* resources/firmware/
 
