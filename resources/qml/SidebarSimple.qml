@@ -11,7 +11,6 @@ import UM 1.1 as UM
 Item
 {
     id: base;
-    anchors.fill: parent;
 
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();

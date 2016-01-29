@@ -47,7 +47,7 @@ Item {
 
             options: UM.ProfilesModel { addUseGlobal: true }
 
-            value: UM.ActiveTool.properties.Model.getItem(base.currentIndex).profile
+            value: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).profile
 
             onItemValueChanged: {
                 var item = UM.ActiveTool.properties.Model.getItem(base.currentIndex);
@@ -63,7 +63,7 @@ Item {
             Repeater {
                 id: settings;
 
-                model: UM.ActiveTool.properties.Model.getItem(base.currentIndex).settings
+                model: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).settings
 
                 UM.SettingItem {
                     width: UM.Theme.sizes.setting.width;
@@ -91,7 +91,7 @@ Item {
                         width: UM.Theme.sizes.setting.height;
                         height: UM.Theme.sizes.setting.height;
 
-                        onClicked: UM.ActiveTool.properties.Model.removeSettingOverride(UM.ActiveTool.properties.Model.getItem(base.currentIndex).id, model.key)
+                        onClicked: UM.ActiveTool.properties.getValue("Model").removeSettingOverride(UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id, model.key)
 
                         style: ButtonStyle
                         {
