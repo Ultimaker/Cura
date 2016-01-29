@@ -2,20 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-18 11:54+0100\n"
-"PO-Revision-Date: 2016-01-27 08:41+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2016-01-29 19:11+0100\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Thomas Karl Pietrowski <thopiekar@googlemail.com>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.4\n"
 
 #: /home/tamara/2.1/Cura/cura/CrashHandler.py:26
 msgctxt "@title:window"
@@ -24,10 +24,7 @@ msgstr "Oups !"
 
 #: /home/tamara/2.1/Cura/cura/CrashHandler.py:32
 msgctxt "@label"
-msgid ""
-"<p>An uncaught exception has occurred!</p><p>Please use the information "
-"below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/"
-"issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
+msgid "<p>An uncaught exception has occurred!</p><p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
 msgstr "<p>Une erreur inhabituelle s'est produite !<p><p>Veuillez utiliser les informations ci-dessous pour envoyer un rapport d'erreur à <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
 
 #: /home/tamara/2.1/Cura/cura/CrashHandler.py:52
@@ -51,7 +48,7 @@ msgstr "Chargement de l'interface..."
 #, python-format
 msgctxt "@info"
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
-msgstr "%(largeur).1f x %(profondeur).1f x %(hauteur).1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:12
 msgctxt "@label"
@@ -64,8 +61,7 @@ msgctxt "@info:whatsthis"
 msgid "Provides support for importing Cura profiles."
 msgstr "Fournit la prise en charge de l'importation de profils Cura."
 
-#: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:21
-#: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:21
+#: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:21 /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:21
 #, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
@@ -194,8 +190,7 @@ msgctxt "@info:status"
 msgid "Unable to slice. Please check your setting values for errors."
 msgstr "Impossible de couper. Vérifiez qu'il n'y a pas d'erreur dans vos valeurs de configuration."
 
-#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:30
-#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:120
+#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:30 /home/tamara/2.1/Cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:120
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "Traitement des couches"
@@ -269,14 +264,12 @@ msgstr "Impression par USB"
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/__init__.py:17
 #, fuzzy
 msgctxt "@info:whatsthis"
-msgid ""
-"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
 msgstr "Accepte les G-Code et les envoie à une imprimante. Ce plugin peut aussi mettre à jour le firmware."
 
 #: /home/tamara/2.1/Cura/plugins/SliceInfoPlugin/SliceInfo.py:35
 msgctxt "@info"
-msgid ""
-"Cura automatically sends slice info. You can disable this in preferences"
+msgid "Cura automatically sends slice info. You can disable this in preferences"
 msgstr "Cura envoie automatiquement des informations sur le découpage. Vous pouvez désactiver cette fonctionnalité dans les préférences."
 
 #: /home/tamara/2.1/Cura/plugins/SliceInfoPlugin/SliceInfo.py:36
@@ -468,9 +461,7 @@ msgctxt "@label"
 msgid "Updating firmware."
 msgstr "Mise à jour du firmware en cours."
 
-#: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:80
-#: /home/tamara/2.1/Cura/resources/qml/EngineLog.qml:38
-#: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:74
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:80 /home/tamara/2.1/Cura/resources/qml/EngineLog.qml:38 /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:74
 #, fuzzy
 msgctxt "@action:button"
 msgid "Close"
@@ -499,10 +490,7 @@ msgctxt "@action:button"
 msgid "Print"
 msgstr "Imprimer"
 
-#: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:67
-#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:200
-#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:303
-#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:58
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:67 /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:200 /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:303 /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:58
 #, fuzzy
 msgctxt "@action:button"
 msgid "Cancel"
@@ -555,11 +543,7 @@ msgstr "Profondeur (mm)"
 
 #: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:135
 msgctxt "@info:tooltip"
-msgid ""
-"By default, white pixels represent high points on the mesh and black pixels "
-"represent low points on the mesh. Change this option to reverse the behavior "
-"such that black pixels represent high points on the mesh and white pixels "
-"represent low points on the mesh."
+msgid "By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh."
 msgstr "Par défaut, les pixels blancs représentent les points hauts sur la maille tandis que les pixels noirs représentent les points bas sur la maille. Modifiez cette option pour inverser le comportement de manière à ce que les pixels noirs représentent les points hauts sur la maille et les pixels blancs les points bas."
 
 #: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:149
@@ -589,9 +573,7 @@ msgstr "OK"
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:31
 msgctxt "@label"
-msgid ""
-"Per Object Settings behavior may be unexpected when 'Print sequence' is set "
-"to 'All at Once'."
+msgid "Per Object Settings behavior may be unexpected when 'Print sequence' is set to 'All at Once'."
 msgstr "Le comportement de Paramètres par objet peut être imprévisible lorsque la « Séquence d'impression » est définie sur « Tout en une fois »."
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:42
@@ -672,8 +654,7 @@ msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Ajouter une imprimante"
 
-#: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:25
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:99
+#: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:25 /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:99
 #, fuzzy
 msgctxt "@title"
 msgid "Add Printer"
@@ -687,10 +668,7 @@ msgstr "Charger un profil"
 
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:24
 msgctxt "@label"
-msgid ""
-"Selecting this profile overwrites some of your customised settings. Do you "
-"want to merge the new settings into your current profile or do you want to "
-"load a clean copy of the profile?"
+msgid "Selecting this profile overwrites some of your customised settings. Do you want to merge the new settings into your current profile or do you want to load a clean copy of the profile?"
 msgstr "Si vous choisissez ce profil, certains de vos paramètres personnalisés seront remplacés. Souhaitez-vous intégrer les nouveaux paramètres à votre profil actuel ou charger une copie vierge du profil ?"
 
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:38
@@ -924,9 +902,7 @@ msgstr "Générer un bord"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:312
 msgctxt "@label"
-msgid ""
-"Enable printing a brim. This will add a single-layer-thick flat area around "
-"your object which is easy to cut off afterwards."
+msgid "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."
 msgstr "Activez l'impression d'un bord. Cela ajoutera une zone plate d'une seule couche d'épaisseur autour de votre objet qui est facile à découper par la suite."
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:330
@@ -936,13 +912,10 @@ msgstr "Générer une structure de support"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:346
 msgctxt "@label"
-msgid ""
-"Enable printing support structures. This will build up supporting structures "
-"below the model to prevent the model from sagging or printing in mid air."
+msgid "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."
 msgstr "Activez l'impression des structures de support. Cela créera des structures de support sous le modèle afin de l'empêcher de s'affaisser ou de s'imprimer dans les airs."
 
-#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:14
-#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:492
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:14 /home/tamara/2.1/Cura/resources/qml/Cura.qml:492
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Général"
@@ -980,14 +953,12 @@ msgstr "Polonais"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:109
 msgctxt "@label"
-msgid ""
-"You will need to restart the application for language changes to have effect."
+msgid "You will need to restart the application for language changes to have effect."
 msgstr "Vous devez redémarrer l'application pour que les changements de langue prennent effet."
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:117
 msgctxt "@info:tooltip"
-msgid ""
-"Should objects on the platform be moved so that they no longer intersect."
+msgid "Should objects on the platform be moved so that they no longer intersect."
 msgstr "Les objets sur la plateforme doivent être déplacés afin de ne plus se croiser."
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:122
@@ -998,8 +969,7 @@ msgstr "Veillez à ce que les objets restent séparés"
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:131
 #, fuzzy
 msgctxt "@info:tooltip"
-msgid ""
-"Should opened files be scaled to the build volume if they are too large?"
+msgid "Should opened files be scaled to the build volume if they are too large?"
 msgstr "Les fichiers ouverts doivent-ils être mis à l'échelle du volume d'impression s'ils sont trop grands ?"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:136
@@ -1010,10 +980,7 @@ msgstr "Réduire la taille des fichiers trop grands"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:145
 msgctxt "@info:tooltip"
-msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
-"models, IP addresses or other personally identifiable information is sent or "
-"stored."
+msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "Les données anonymes de votre impression doivent-elles être envoyées à Ultimaker ? Notez qu'aucun modèle, aucune adresse IP ni aucune autre information permettant de vous identifier personnellement ne seront envoyés ou stockés."
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:150
@@ -1030,9 +997,7 @@ msgstr "Visualisation"
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:33
 msgctxt "@info:tooltip"
-msgid ""
-"Highlight unsupported areas of the model in red. Without support these areas "
-"will nog print properly."
+msgid "Highlight unsupported areas of the model in red. Without support these areas will nog print properly."
 msgstr "Surligne les parties non supportées du modèle en rouge. Sans ajouter de support, ces zones ne s'imprimeront pas correctement."
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:42
@@ -1043,9 +1008,7 @@ msgstr "Mettre en surbrillance les porte-à-faux"
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:49
 msgctxt "@info:tooltip"
-msgid ""
-"Moves the camera so the object is in the center of the view when an object "
-"is selected"
+msgid "Moves the camera so the object is in the center of the view when an object is selected"
 msgstr "Bouge la caméra afin qu'un objet sélectionné se trouve au centre de la vue."
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:54
@@ -1053,8 +1016,7 @@ msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "Centrer la caméra lorsqu'un élément est sélectionné"
 
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:72
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:275
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:72 /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:275
 #, fuzzy
 msgctxt "@title"
 msgid "Check Printer"
@@ -1062,9 +1024,7 @@ msgstr "Tester l'imprimante"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:84
 msgctxt "@label"
-msgid ""
-"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
-"this step if you know your machine is functional"
+msgid "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
 msgstr "Il est préférable de procéder à quelques tests de fonctionnement sur votre Ultimaker. Vous pouvez passer cette étape si vous savez que votre machine est fonctionnelle"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:100
@@ -1097,19 +1057,13 @@ msgctxt "@label"
 msgid "Min endstop X: "
 msgstr "Fin de course X : "
 
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:164
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:183
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:202
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:357
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:164 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:183 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:202 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:357
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:368
 msgctxt "@info:status"
 msgid "Works"
 msgstr "Fonctionne"
 
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:164
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:183
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:202
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:221
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:164 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:183 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:202 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:221
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:277
 msgctxt "@info:status"
 msgid "Not checked"
@@ -1130,14 +1084,12 @@ msgctxt "@label"
 msgid "Nozzle temperature check: "
 msgstr "Test de la température de la buse : "
 
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:236
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:292
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:236 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:292
 msgctxt "@action:button"
 msgid "Start Heating"
 msgstr "Démarrer le chauffage"
 
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:241
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:297
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:241 /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:297
 msgctxt "@info:progress"
 msgid "Checking"
 msgstr "Vérification en cours"
@@ -1153,17 +1105,14 @@ msgctxt "@label"
 msgid "Everything is in order! You're done with your CheckUp."
 msgstr "Tout est en ordre ! Vous avez terminé votre check-up."
 
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:31
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:269
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:31 /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:269
 msgctxt "@title"
 msgid "Select Upgraded Parts"
 msgstr "Sélectionner les parties mises à jour"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:42
 msgctxt "@label"
-msgid ""
-"To assist you in having better default settings for your Ultimaker. Cura "
-"would like to know which upgrades you have in your machine:"
+msgid "To assist you in having better default settings for your Ultimaker. Cura would like to know which upgrades you have in your machine:"
 msgstr "Afin de vous aider à créer de meilleurs réglages par défaut pour votre Ultimaker, Cura doit savoir quelles améliorations vous avez installées sur votre machine :"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:57
@@ -1185,11 +1134,7 @@ msgstr "Plateau d'imprimante chauffant (fait maison)"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:90
 msgctxt "@label"
-msgid ""
-"If you bought your Ultimaker after october 2012 you will have the Extruder "
-"drive upgrade. If you do not have this upgrade, it is highly recommended to "
-"improve reliability. This upgrade can be bought from the Ultimaker webshop "
-"or found on thingiverse as thing:26094"
+msgid "If you bought your Ultimaker after october 2012 you will have the Extruder drive upgrade. If you do not have this upgrade, it is highly recommended to improve reliability. This upgrade can be bought from the Ultimaker webshop or found on thingiverse as thing:26094"
 msgstr "Si vous avez acheté votre Ultimaker après octobre 2012, la mise à jour du système d'entraînement est déjà installée. Si vous n'avez pas encore cette amélioration, sachez qu'elle est fortement recommandée pour améliorer la fiabilité. Cette amélioration peut être achetée sur l'e-shop Ultimaker ou téléchargée sur thingiverse, sous la référence : thing:26094"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:108
@@ -1200,9 +1145,7 @@ msgstr "Veuillez sélectionner le type d’imprimante :"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:235
 msgctxt "@label"
-msgid ""
-"This printer name has already been used. Please choose a different printer "
-"name."
+msgid "This printer name has already been used. Please choose a different printer name."
 msgstr "Ce nom d'imprimante a déjà été utilisé. Veuillez choisir un autre nom d'imprimante."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:245
@@ -1211,8 +1154,7 @@ msgctxt "@label:textbox"
 msgid "Printer Name:"
 msgstr "Nom de l'imprimante :"
 
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:272
-#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:22
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:272 /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:22
 #, fuzzy
 msgctxt "@title"
 msgid "Upgrade Firmware"
@@ -1230,18 +1172,12 @@ msgstr "Calibration du plateau"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:53
 msgctxt "@label"
-msgid ""
-"To make sure your prints will come out great, you can now adjust your "
-"buildplate. When you click 'Move to Next Position' the nozzle will move to "
-"the different positions that can be adjusted."
+msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
 msgstr "Pour obtenir des résultats d'impression optimaux, vous pouvez maintenant régler votre plateau. Quand vous cliquez sur 'Aller à la position suivante', la buse se déplacera vers les différentes positions pouvant être réglées."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:62
 msgctxt "@label"
-msgid ""
-"For every postition; insert a piece of paper under the nozzle and adjust the "
-"print bed height. The print bed height is right when the paper is slightly "
-"gripped by the tip of the nozzle."
+msgid "For every postition; insert a piece of paper under the nozzle and adjust the print bed height. The print bed height is right when the paper is slightly gripped by the tip of the nozzle."
 msgstr "Pour chacune des positions, glissez un bout de papier sous la buse et ajustez la hauteur du plateau d'impression. Le plateau est bien réglé lorsque la pointe de la buse gratte légèrement le papier."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:77
@@ -1261,24 +1197,17 @@ msgstr "Tout est en ordre ! Vous avez terminé la calibration du plateau."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:33
 msgctxt "@label"
-msgid ""
-"Firmware is the piece of software running directly on your 3D printer. This "
-"firmware controls the step motors, regulates the temperature and ultimately "
-"makes your printer work."
+msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
 msgstr "Le firmware est le logiciel fonctionnant directement dans votre imprimante 3D. Ce firmware contrôle les moteurs pas à pas, régule la température et surtout, fait que votre machine fonctionne."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:43
 msgctxt "@label"
-msgid ""
-"The firmware shipping with new Ultimakers works, but upgrades have been made "
-"to make better prints, and make calibration easier."
+msgid "The firmware shipping with new Ultimakers works, but upgrades have been made to make better prints, and make calibration easier."
 msgstr "Le firmware fourni avec votre Ultimaker neuve fonctionne, mais les mises à niveau permettent d'obtenir de meilleurs résultats et facilitent la calibration."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:53
 msgctxt "@label"
-msgid ""
-"Cura requires these new features and thus your firmware will most likely "
-"need to be upgraded. You can do so now."
+msgid "Cura requires these new features and thus your firmware will most likely need to be upgraded. You can do so now."
 msgstr "Cura a besoin de ces nouvelles fonctionnalités et par conséquent, votre firmware a besoin d'être mis à jour. Vous pouvez procéder à la mise à jour maintenant."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:64
@@ -1333,8 +1262,7 @@ msgstr "Solution complète pour l'impression 3D par dépôt de filament fondu."
 #: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:66
 #, fuzzy
 msgctxt "@info:credit"
-msgid ""
-"Cura has been developed by Ultimaker B.V. in cooperation with the community."
+msgid "Cura has been developed by Ultimaker B.V. in cooperation with the community."
 msgstr "Cura a été développé par Ultimaker B.V. en coopération avec la communauté Ultimaker."
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:16
