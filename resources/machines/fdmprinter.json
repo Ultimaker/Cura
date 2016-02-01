@@ -582,12 +582,12 @@
                 "infill_overlap": {
                     "label": "Infill Overlap",
                     "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
-                    "unit": "%",
+                    "unit": "mm",
                     "type": "float",
-                    "default": 10,
-                    "min_value": "0",
-                    "max_value_warning": "100",
-                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
+                    "default": 0.04,
+                    "min_value_warning": "0",
+                    "max_value_warning": "machine_nozzle_size",
+                    "inherit_function": "0.1 * line_width if infill_sparse_density < 95 else 0.0",
                     "visible": false
                 },
                 "infill_wipe_dist": {
