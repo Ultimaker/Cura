@@ -228,7 +228,7 @@ material_names = {
     "618-Nylon": "618 Nylon (Taulman)",
     "645-Nylon": "645 Nylon (Taulman)",
     # Dual extruder (Expert)
-    'PLA_PVA': "PLA & PVA",
+    'PLA_PVA': "PLA & PVA Support",
     'ABS_ABS': "ABS & ABS",
     'PLA_PLA': "PLA & PLA",
     '910_PVA': '910 & PVA Support',
