@@ -64,12 +64,17 @@ class ConvexHullJob(Job):
                 hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_polygon"),numpy.float32)))
             else:
                 self._node.callDecoration("setConvexHullHead", None)
+        if self._node.getParent() is None: #Node was already deleted before job is done.
+            self._node.callDecoration("setConvexHullNode",None)
+            self._node.callDecoration("setConvexHull", None)
+            self._node.callDecoration("setConvexHullJob", None)
+            return
         hull_node = ConvexHullNode.ConvexHullNode(self._node, hull, Application.getInstance().getController().getScene().getRoot())
         self._node.callDecoration("setConvexHullNode", hull_node)
         self._node.callDecoration("setConvexHull", hull)
         self._node.callDecoration("setConvexHullJob", None)
 
-        if self._node.getParent().callDecoration("isGroup"):
+        if self._node.getParent() and self._node.getParent().callDecoration("isGroup"):
             job = self._node.getParent().callDecoration("getConvexHullJob")
             if job:
                 job.cancel()
