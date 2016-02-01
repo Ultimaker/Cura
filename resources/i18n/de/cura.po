@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-18 11:54+0100\n"
-"PO-Revision-Date: 2016-02-01 17:40+0100\n"
+"PO-Revision-Date: 2016-02-01 17:47+0100\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +39,6 @@ msgid "Setting up scene..."
 msgstr "Die Szene wird eingerichtet..."
 
 #: /home/tamara/2.1/Cura/cura/CuraApplication.py:192
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Die Benutzeroberfläche wird geladen..."
@@ -94,7 +93,6 @@ msgid "Provides support for reading 3MF files."
 msgstr "Ermöglicht das Lesen von 3MF-Dateien."
 
 #: /home/tamara/2.1/Cura/plugins/3MFReader/__init__.py:21
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF-Datei"
@@ -105,7 +103,7 @@ msgid "Save to Removable Drive"
 msgstr "Auf Wechseldatenträger speichern"
 
 #: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:21
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Auf Wechseldatenträger speichern {0}"
@@ -117,13 +115,12 @@ msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Wird auf Wechseldatenträger gespeichert <filename>{0}</filename>"
 
 #: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:85
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Auf Wechseldatenträger gespeichert {0} als {1}"
 
 #: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:86
-#, fuzzy
 msgctxt "@action:button"
 msgid "Eject"
 msgstr "Auswerfen"
@@ -168,13 +165,11 @@ msgid "Provides removable drive hotplugging and writing support"
 msgstr "Ermöglicht Hotplugging des Wechseldatenträgers und Beschreiben"
 
 #: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/ChangeLog.py:34
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Show Changelog"
 msgstr "Änderungsprotokoll anzeigen"
 
 #: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Changelog"
 msgstr "Änderungsprotokoll"
@@ -348,31 +343,26 @@ msgid "Provides support for importing profiles from g-code files."
 msgstr "Ermöglicht das Importieren von Profilen aus G-Code-Dateien."
 
 #: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:21
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-Code-Datei"
 
 #: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Solid View"
 msgstr "Solide Ansicht"
 
 #: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides a normal solid mesh view."
 msgstr "Bietet eine normale, solide Netzansicht."
 
 #: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:19
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Solid"
 msgstr "Solide"
 
 #: /home/tamara/2.1/Cura/plugins/LayerView/__init__.py:13
-#, fuzzy
 msgctxt "@label"
 msgid "Layer View"
 msgstr "Schichtenansicht"
@@ -487,7 +477,6 @@ msgid "Bed Temperature %1"
 msgstr "Druckbett-Temperatur %1"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:60
-#, fuzzy
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Drucken"
@@ -496,7 +485,6 @@ msgstr "Drucken"
 #: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:200
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:303
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:58
-#, fuzzy
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Abbrechen"
