@@ -67,14 +67,14 @@ class ProcessSlicedObjectListJob(Job):
                 continue
 
             for l in range(object.repeatedMessageCount("layers")):
-                layer = object.getRepeatedMessage("layers", i)
+                layer = object.getRepeatedMessage("layers", l)
 
                 layer_data.addLayer(layer.id)
                 layer_data.setLayerHeight(layer.id, layer.height)
                 layer_data.setLayerThickness(layer.id, layer.thickness)
 
                 for p in range(layer.repeatedMessageCount("polygons")):
-                    polygon = layer.getRepeatedMessage("polygons", i)
+                    polygon = layer.getRepeatedMessage("polygons", p)
 
                     points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
@@ -87,8 +87,6 @@ class ProcessSlicedObjectListJob(Job):
                     points -= center
 
                     layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
-
-                Job.yieldThread()
 
                 current_layer += 1
                 progress = (current_layer / layer_count) * 100
