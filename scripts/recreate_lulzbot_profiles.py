@@ -47,6 +47,7 @@ material_map = {
     "PLA_VP": "PLA",
     "nGen": "nGen",
     "PLA_PHA": "PLA_PHA",
+    
     # Intermediate
     "ABS_VP": "ABS",
     "Laybrick" : "laybrick",
@@ -57,6 +58,7 @@ material_map = {
     "Corkfill": "corkfill",
     "PP-Coffee": "protopasta-aromatic-coffee-PLA",
     "PP-HT-PLA": "protopasta-high-temp-PLA",
+    
     # Advanced
     "Alloy910": "alloy910",
     "Bridge": "bridge",
@@ -69,29 +71,28 @@ material_map = {
     "T-Glase": "t-glase",
     "Bronzefill": "bronzefill",
     "Copperfill": "copperfill",
+    
     # Expert
     "PP-Conductive": "protopasta-conductive-PLA",
     "HIPS_VP" : "HIPS",
     "PC_VP": "polycarbonate",
     "618-Nylon": "618-645-nylon",
     "645-Nylon": "618-645-nylon",
+    
+    # Flexystruder (Expert)
+    "ninjaflex" : "ninjaflex",
+    "cheetah" : "cheetah",
+    "semiflex" : "semiflex",
+
     # Dual extruder (Expert)
     'PLA_PVA': 'PLA-PVA-support',
     'ABS_ABS': 'ABS-ABS',
     'PLA_PLA': 'PLA-PLA',
     '910_PVA': '910-PVA-support',
-    # Flexystruder (Expert)
-    "ninjaflex" : "ninjaflex",
-    "cheetah" : "cheetah",
-    "semiflex" : "semiflex",
+
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS-ninjaflex",
     "ABS_semiflex" : "ABS-semiflex",
-
-    # Others
-    # b-pet
-    # tritan
-    # PLA-protopasta-conductive-PLA
 }
 
 material_order = {
@@ -101,6 +102,7 @@ material_order = {
     "PLA_VP":               2,
     "nGen":                 3,
     "PLA_PHA":              4,
+    
     # Intermediate
     "ABS_VP":              10,
     "Laybrick":            11,
@@ -111,6 +113,7 @@ material_order = {
     "Corkfill":            16,
     "PP-Coffee":           17,
     "PP-HT-PLA":           18,
+    
     # Advanced
     "Alloy910":            50,
     "Bridge":              51,
@@ -123,24 +126,28 @@ material_order = {
     "T-Glase":             58,
     "Bronzefill":          59,
     "Copperfill":          60,
+    
     # Expert
     "PP-Conductive":      500,
     "HIPS_VP" :           501,
     "PC_VP":              502,
     "618-Nylon":          503,
     "645-Nylon":          504,
-    # Dual extruder (Expert)
-    'PLA_PVA':              2,
-    'ABS_ABS':              1,
-    'PLA_PLA':              0,
-    '910_PVA':              3,
+    
     # Flexystruder (Expert)
     "ninjaflex":            0,
     "cheetah":              1,
     "semiflex":             2,
+    
+    # Dual extruder (Expert)
+    'PLA_PLA':              0,
+    'ABS_ABS':              1,
+    'PLA_PVA':              2,
+    '910_PVA':              3,
+
     # Flexy Dually (Expert)
-    "ABS_ninjaflex":        0,
-    "ABS_semiflex":         1,
+    "ABS_ninjaflex":        10,
+    "ABS_semiflex":         11,
 }
 
 material_types = {
@@ -150,6 +157,7 @@ material_types = {
     "PLA_VP": "Beginner",
     "nGen": "Beginner",
     "PLA_PHA": "Beginner",
+    
     # Intermediate
     "ABS_VP": "Intermediate",
     "Laybrick" : "Intermediate",
@@ -160,6 +168,7 @@ material_types = {
     "Corkfill": "Intermediate",
     "PP-Coffee": "Intermediate",
     "PP-HT-PLA": "Intermediate",
+    
     # Advanced
     "Alloy910": "Advanced",
     "Bridge": "Advanced",
@@ -172,21 +181,25 @@ material_types = {
     "T-Glase": "Advanced",
     "Bronzefill": "Advanced",
     "Copperfill": "Advanced",
+    
     # Expert
     "PP-Conductive": "Expert",
     "HIPS_VP" : "Expert",
     "PC_VP": "Expert",
     "618-Nylon": "Expert",
     "645-Nylon": "Expert",
+    
+    # Flexystruder (Expert)
+    "ninjaflex" : "Expert",
+    "cheetah" : "Expert",
+    "semiflex" : "Expert",
+        
     # Dual extruder (Expert)
     'PLA_PVA': "Expert",
     'ABS_ABS': "Expert",
     'PLA_PLA': "Expert",
     '910_PVA': 'Expert',
-    # Flexystruder (Expert)
-    "ninjaflex" : "Expert",
-    "cheetah" : "Expert",
-    "semiflex" : "Expert",
+    
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "Expert",
     "ABS_semiflex" : "Expert",
@@ -199,6 +212,7 @@ material_names = {
     "PLA_VP": "PLA (Village Plastics)",
     "nGen": "nGen (colorFabb)",
     "PLA_PHA": "(colorFabb)",
+    
     # Intermediate
     "ABS_VP": "ABS (Village Plastics)",
     "Laybrick" : "Laybrick (CC-Products)",
@@ -209,6 +223,7 @@ material_names = {
     "Corkfill": "corkFill (colorFabb)",
     "PP-Coffee": "Coffee PLA (Proto-pasta)",
     "PP-HT-PLA": "High Temp PLA (Proto-pasta)",
+    
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
@@ -221,21 +236,25 @@ material_names = {
     "T-Glase": "t-glase (Taulman)",
     "Bronzefill": "bronzeFill (colorFabb)",
     "Copperfill": "copperFill (colorFabb)",
+    
     # Expert
     "PP-Conductive": "Conductive (Proto-pasta)",
     "HIPS_VP" : "HIPS (Village Plastics)",
     "PC_VP": "PC (Village Plastics)",
     "618-Nylon": "618 Nylon (Taulman)",
     "645-Nylon": "645 Nylon (Taulman)",
+    
+    # Flexystruder (Expert)
+    "ninjaflex" : "NinjaFlex (Fenner Drives)",
+    "cheetah" : "Cheetah (Fenner Drives)",
+    "semiflex" : "SemiFlex (Fenner Drives)",
+    
     # Dual extruder (Expert)
     'PLA_PVA': "PLA & PVA Support",
     'ABS_ABS': "ABS & ABS",
     'PLA_PLA': "PLA & PLA",
     '910_PVA': '910 & PVA Support',
-    # Flexystruder (Expert)
-    "ninjaflex" : "NinjaFlex (Fenner Drives)",
-    "cheetah" : "Cheetah (Fenner Drives)",
-    "semiflex" : "SemiFlex (Fenner Drives)",
+
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS & NinjaFlex",
     "ABS_semiflex" : "ABS & SemiFlex",
@@ -263,7 +282,8 @@ material_url = {
     "PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
     "PLA_VP": "lulzbot.com/store/filament/pla-village",
 #    "nGen": "",
-#    "PLA_PHA": "", 
+#    "PLA_PHA": "",
+
     # Intermediate
     "ABS_VP": "lulzbot.com/store/filament/abs",
     "Laybrick" : "lulzbot.com/store/filament/laybrick",
@@ -273,7 +293,8 @@ material_url = {
     "Woodfill": "lulzbot.com/store/filament/woodfill",
 #    "Corkfill": "",
 #    "PP-Coffee": "",
-#    "PP-HT-PLA": "", 
+#    "PP-HT-PLA": "",
+
     # Advanced
     "Alloy910": "lulzbot.com/store/filament/alloy-910",
     "Bridge": "lulzbot.com/store/filament/bridge-nylon",
@@ -285,22 +306,26 @@ material_url = {
     "T-Glase": "lulzbot.com/store/filament/t-glase",
 #    "Bronzefill": "",
 #    "Copperfill": "",
+
     # Expert
     "PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
     "HIPS_VP" : "lulzbot.com/store/filament/hips",
     "PC_VP": "lulzbot.com/store/filament/polycarbonate",
     "618-Nylon": "lulzbot.com/store/filament/nylon-618",
     "645-Nylon": "lulzbot.com/store/filament/nylon-645",
+
+    # Flexystruder (Expert)
+    "ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
+#    "cheetah" : "",
+    "semiflex" : "lulzbot.com/store/filament/semiflex",
+    
     # Dual extruder (Expert)
     'ABS_ABS': "lulzbot.com/store/filament/abs",
     'PLA_PLA': "lulzbot.com/store/filament/pla-esun",
     'PLA_PVA': "lulzbot.com/store/filament/natural-pva",
-    # Flexystruder (Expert)
-    "ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
-    "semiflex" : "lulzbot.com/store/filament/semiflex",
+
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
-#    "cheetah" : "",
     "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
 }
 
