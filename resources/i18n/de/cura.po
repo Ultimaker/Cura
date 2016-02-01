@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-18 11:54+0100\n"
-"PO-Revision-Date: 2016-02-01 17:33+0100\n"
+"PO-Revision-Date: 2016-02-01 17:40+0100\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -143,7 +143,7 @@ msgstr "Konnte nicht auf dem Wechseldatenträger gespeichert werden {0}: {1}"
 #: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:58
 msgctxt "@item:intext"
 msgid "Removable Drive"
-msgstr "Wechsellaufwerk"
+msgstr "Wechseldatenträger"
 
 #: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:46
 #, python-brace-format
