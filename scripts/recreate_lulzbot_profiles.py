@@ -81,6 +81,7 @@ material_map = {
     'PLA_PLA': 'PLA-PLA',
     # Flexystruder (Expert)
     "ninjaflex" : "ninjaflex",
+    "cheetah" : "cheetah",
     "semiflex" : "semiflex",
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS-ninjaflex",
@@ -133,7 +134,8 @@ material_order = {
     'PLA_PLA':              0,
     # Flexystruder (Expert)
     "ninjaflex":            0,
-    "semiflex":             1,
+    "cheetah":              1,
+    "semiflex":             2,
     # Flexy Dually (Expert)
     "ABS_ninjaflex":        0,
     "ABS_semiflex":         1,
@@ -180,6 +182,7 @@ material_types = {
     'PLA_PLA': "Expert",
     # Flexystruder (Expert)
     "ninjaflex" : "Expert",
+    "cheetah" : "Expert",
     "semiflex" : "Expert",
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "Expert",
@@ -227,6 +230,7 @@ material_names = {
     'PLA_PLA': "PLA & PLA",
     # Flexystruder (Expert)
     "ninjaflex" : "NinjaFlex (Fenner Drives)",
+    "cheetah" : "Cheetah (Fenner Drives)",
     "semiflex" : "SemiFlex (Fenner Drives)",
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS & NinjaFlex",
@@ -235,6 +239,7 @@ material_names = {
 
 bed_prep_materials = {
     "ninjaflex",
+    "cheetah",
     "semiflex",
     "Alloy910",
     "Bridge",
@@ -291,6 +296,7 @@ material_url = {
     "semiflex" : "lulzbot.com/store/filament/semiflex",
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
+#    "cheetah" : "",
     "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
 }
 
