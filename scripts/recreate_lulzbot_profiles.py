@@ -56,6 +56,7 @@ material_map = {
     "Woodfill": "woodfill",
     "Corkfill": "corkfill",
     "PP-Coffee": "protopasta-aromatic-coffee-PLA",
+    "PP-HT-PLA": "protopasta-high-temp-PLA",
     # Advanced
     "Alloy910": "alloy910",
     "Bridge": "bridge",
@@ -107,6 +108,7 @@ material_order = {
     "Woodfill":            15,
     "Corkfill":            16,
     "PP-Coffee":           17,
+    "PP-HT-PLA":           18,
     # Advanced
     "Alloy910":            50,
     "Bridge":              51,
@@ -153,6 +155,7 @@ material_types = {
     "Woodfill": "Intermediate",
     "Corkfill": "Intermediate",
     "PP-Coffee": "Intermediate",
+    "PP-HT-PLA": "Intermediate",
     # Advanced
     "Alloy910": "Advanced",
     "Bridge": "Advanced",
@@ -199,6 +202,7 @@ material_names = {
     "Woodfill": "woodFill (colorFabb)",
     "Corkfill": "corkFill (colorFabb)",
     "PP-Coffee": "Coffee PLA (Proto-pasta)",
+    "PP-HT-PLA": "High Temp PLA (Proto-pasta)",
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
@@ -260,6 +264,7 @@ material_url = {
     "Woodfill": "lulzbot.com/store/filament/woodfill",
 #    "Corkfill": "",
 #    "PP-Coffee": "",
+#    "PP-HT-PLA": "", 
     # Advanced
     "Alloy910": "lulzbot.com/store/filament/alloy-910",
     "Bridge": "lulzbot.com/store/filament/bridge-nylon",
