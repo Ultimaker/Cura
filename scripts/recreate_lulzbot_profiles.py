@@ -55,6 +55,7 @@ material_map = {
     "Bamboofill": "bamboofill",
     "Woodfill": "woodfill",
     "Corkfill": "corkfill",
+    "PP-Coffee": "protopasta-aromatic-coffee-PLA",
     # Advanced
     "Alloy910": "alloy910",
     "Bridge": "bridge",
@@ -105,6 +106,7 @@ material_order = {
     "Bamboofill":          14,
     "Woodfill":            15,
     "Corkfill":            16,
+    "PP-Coffee":           17,
     # Advanced
     "Alloy910":            50,
     "Bridge":              51,
@@ -150,6 +152,7 @@ material_types = {
     "Bamboofill": "Intermediate",
     "Woodfill": "Intermediate",
     "Corkfill": "Intermediate",
+    "PP-Coffee": "Intermediate",
     # Advanced
     "Alloy910": "Advanced",
     "Bridge": "Advanced",
@@ -195,6 +198,7 @@ material_names = {
     "Bamboofill": "bambooFill (colorFabb)",
     "Woodfill": "woodFill (colorFabb)",
     "Corkfill": "corkFill (colorFabb)",
+    "PP-Coffee": "Coffee PLA (Proto-pasta)",
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
@@ -255,6 +259,7 @@ material_url = {
     "Bamboofill": "lulzbot.com/store/filament/bamboofill",
     "Woodfill": "lulzbot.com/store/filament/woodfill",
 #    "Corkfill": "",
+#    "PP-Coffee": "",
     # Advanced
     "Alloy910": "lulzbot.com/store/filament/alloy-910",
     "Bridge": "lulzbot.com/store/filament/bridge-nylon",
