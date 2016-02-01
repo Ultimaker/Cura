@@ -79,6 +79,7 @@ material_map = {
     'PLA_PVA': 'PLA-PVA-support',
     'ABS_ABS': 'ABS-ABS',
     'PLA_PLA': 'PLA-PLA',
+    '910_PVA': '910-PVA-support',
     # Flexystruder (Expert)
     "ninjaflex" : "ninjaflex",
     "cheetah" : "cheetah",
@@ -132,6 +133,7 @@ material_order = {
     'PLA_PVA':              2,
     'ABS_ABS':              1,
     'PLA_PLA':              0,
+    '910_PVA':              3,
     # Flexystruder (Expert)
     "ninjaflex":            0,
     "cheetah":              1,
@@ -180,6 +182,7 @@ material_types = {
     'PLA_PVA': "Expert",
     'ABS_ABS': "Expert",
     'PLA_PLA': "Expert",
+    '910_PVA': 'Expert',
     # Flexystruder (Expert)
     "ninjaflex" : "Expert",
     "cheetah" : "Expert",
@@ -228,6 +231,7 @@ material_names = {
     'PLA_PVA': "PLA & PVA",
     'ABS_ABS': "ABS & ABS",
     'PLA_PLA': "PLA & PLA",
+    '910_PVA': '910 & PVA Support',
     # Flexystruder (Expert)
     "ninjaflex" : "NinjaFlex (Fenner Drives)",
     "cheetah" : "Cheetah (Fenner Drives)",
