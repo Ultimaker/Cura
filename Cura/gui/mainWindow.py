@@ -537,7 +537,7 @@ class mainWindow(wx.Frame):
 			f = open(gcodeFile, 'r')
 			hasProfile = False
 			for line in f:
-				if line.startswith(';CURA_PROFILE_STRING:'):
+				if 'CURA_PROFILE_STRING:' in line:
 					profile.setProfileFromString(line[line.find(':')+1:].strip())
 					if ';{profile_string}' not in profile.getAlterationFile('end.gcode'):
 						profile.setAlterationFile('end.gcode', profile.getAlterationFile('end.gcode') + '\n;{profile_string}')
