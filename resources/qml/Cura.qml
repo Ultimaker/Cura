@@ -473,7 +473,7 @@ UM.MainWindow
                 height: childrenRect.height;
                 Label
                 {
-                    text: UM.ActiveTool.properties.Rotation != undefined ? "%1°".arg(UM.ActiveTool.properties.Rotation) : "";
+                    text: UM.ActiveTool.properties.getValue("Rotation") != undefined ? "%1°".arg(UM.ActiveTool.properties.Rotation) : "";
                 }
 
                 visible: UM.ActiveTool.valid && UM.ActiveTool.properties.Rotation != undefined;
