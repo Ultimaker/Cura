@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-18 11:54+0100\n"
-"PO-Revision-Date: 2016-02-01 17:49+0100\n"
+"PO-Revision-Date: 2016-02-01 17:57+0100\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -606,13 +606,11 @@ msgid "%1 m"
 msgstr "%1 m"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarHeader.qml:29
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Print Job"
 msgstr "Druckerauftrag"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarHeader.qml:50
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Printer:"
 msgstr "Drucker:"
@@ -628,32 +626,27 @@ msgid "Setup"
 msgstr "Konfiguration"
 
 #: /home/tamara/2.1/Cura/resources/qml/Sidebar.qml:215
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Simple"
 msgstr "Einfach"
 
 #: /home/tamara/2.1/Cura/resources/qml/Sidebar.qml:216
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Advanced"
 msgstr "Erweitert"
 
 #: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:18
-#, fuzzy
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Drucker hinzufügen"
 
 #: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:25
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:99
-#, fuzzy
 msgctxt "@title"
 msgid "Add Printer"
 msgstr "Drucker hinzufügen"
 
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:15
-#, fuzzy
 msgctxt "@title:window"
 msgid "Load profile"
 msgstr "Profil laden"
@@ -669,7 +662,6 @@ msgid "Show details."
 msgstr "Details anzeigen."
 
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:50
-#, fuzzy
 msgctxt "@action:button"
 msgid "Merge settings"
 msgstr "Einstellungen zusammenführen"
@@ -680,7 +672,6 @@ msgid "Reset profile"
 msgstr "Profil zurücksetzen"
 
 #: /home/tamara/2.1/Cura/resources/qml/ProfileSetup.qml:28
-#, fuzzy
 msgctxt "@label"
 msgid "Profile:"
 msgstr "Profil:"
@@ -914,7 +905,6 @@ msgid "General"
 msgstr "Allgemein"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:51
-#, fuzzy
 msgctxt "@label"
 msgid "Language:"
 msgstr "Sprache:"
@@ -966,7 +956,6 @@ msgid "Should opened files be scaled to the build volume if they are too large?"
 msgstr "Sollen offene Dateien an das Erstellungsvolumen angepasst werden, wenn Sie zu groß sind?"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:136
-#, fuzzy
 msgctxt "@option:check"
 msgid "Scale large files"
 msgstr "Zu große Dateien anpassen"
@@ -977,13 +966,11 @@ msgid "Should anonymous data about your print be sent to Ultimaker? Note, no mod
 msgstr "Sollen anonyme Daten über Ihren Druck an Ultimaker gesendet werden? Beachten Sie, dass keine Modelle, IP-Adressen oder andere personenbezogene Daten gesendet oder gespeichert werden."
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:150
-#, fuzzy
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "(Anonyme) Druckinformationen senden"
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:16
-#, fuzzy
 msgctxt "@title:window"
 msgid "View"
 msgstr "Ansicht"
@@ -1011,7 +998,6 @@ msgstr "Zentrieren Sie die Kamera, wenn das Element ausgewählt wurde"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:72
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:275
-#, fuzzy
 msgctxt "@title"
 msgid "Check Printer"
 msgstr "Drucker prüfen"
@@ -1141,7 +1127,6 @@ msgid "If you bought your Ultimaker after october 2012 you will have the Extrude
 msgstr "Wenn Sie Ihren Ultimaker nach Oktober 2012 erworben haben, besitzen Sie das Upgrade für den Extruder-Driver. Dieses Upgrade ist äußerst empfehlenswert, um die Zuverlässigkeit zu erhöhen. Falls Sie es noch nicht besitzen, können Sie es im Ultimaker-Webshop kaufen. Außerdem finden Sie es im Thingiverse als Thing: 26094"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:108
-#, fuzzy
 msgctxt "@label"
 msgid "Please select the type of printer:"
 msgstr "Wählen Sie den Druckertyp:"
@@ -1152,14 +1137,12 @@ msgid "This printer name has already been used. Please choose a different printe
 msgstr "Der Druckername wird bereits verwendet. Bitte wählen Sie einen anderen Druckernamen."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:245
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Printer Name:"
 msgstr "Druckername:"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:272
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:22
-#, fuzzy
 msgctxt "@title"
 msgid "Upgrade Firmware"
 msgstr "Firmware aktualisieren"
