@@ -13,6 +13,7 @@ from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of 
 from UM.Resources import Resources
 from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import Cura_pb2
@@ -62,12 +63,12 @@ class CuraEngineBackend(Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self.slice)
 
-        self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
-        self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
-        self._message_handlers[Cura_pb2.GCodeLayer] = self._onGCodeLayerMessage
-        self._message_handlers[Cura_pb2.GCodePrefix] = self._onGCodePrefixMessage
-        self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
-        self._message_handlers[Cura_pb2.SlicingFinished] = self._onSlicingFinishedMessage
+        self._message_handlers["cura.proto.SlicedObjectList"] = self._onSlicedObjectListMessage
+        self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
+        self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
+        self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
+        self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
+        self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
         self._slicing = False
         self._restart = False
@@ -230,16 +231,7 @@ class CuraEngineBackend(Backend):
         self.printDurationMessage.emit(message.time, message.material_amount)
 
     def _createSocket(self):
-        super()._createSocket()
-
-        self._socket.registerMessageType(1, Cura_pb2.Slice)
-        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
-        self._socket.registerMessageType(3, Cura_pb2.Progress)
-        self._socket.registerMessageType(4, Cura_pb2.GCodeLayer)
-        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
-        self._socket.registerMessageType(6, Cura_pb2.SettingList)
-        self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
-        self._socket.registerMessageType(8, Cura_pb2.SlicingFinished)
+        super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
 
     ##  Manually triggers a reslice
     def forceSlice(self):
@@ -277,7 +269,6 @@ class CuraEngineBackend(Backend):
                     self._stored_layer_data = None
             else:
                 self._layer_view_active = False
-
 
     def _onInstanceChanged(self):
         self._terminate()
