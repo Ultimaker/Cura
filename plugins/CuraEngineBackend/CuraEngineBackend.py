@@ -16,7 +16,6 @@ from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
-from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
 from . import ProcessGCodeJob
 from . import StartSliceJob
