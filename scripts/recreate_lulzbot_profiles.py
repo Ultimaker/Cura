@@ -234,7 +234,7 @@ material_names = {
     "PLA_eSUN": "PLA (eSUN)",
     "PLA_VP": "PLA (Village Plastics)",
     "nGen": "nGen (colorFabb)",
-    "PLA_PHA": "(colorFabb)",
+    "PLA_PHA": "PLA/PHA (colorFabb)",
     
     # Intermediate
     "ABS_VP": "ABS (Village Plastics)",
