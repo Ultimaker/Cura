@@ -50,7 +50,7 @@ material_map = {
     
     # Intermediate
     "ABS_VP": "ABS",
-    "Laybrick" : "laybrick",
+    "Laybrick": "laybrick",
     "PP-Iron": "protopasta-magnetic-iron",
     "PP-Steel": "protopasta-stainless-steel",
     "Bamboofill": "bamboofill",
@@ -74,15 +74,15 @@ material_map = {
     
     # Expert
     "PP-Conductive": "protopasta-conductive-PLA",
-    "HIPS_VP" : "HIPS",
+    "HIPS_VP": "HIPS",
     "PC_VP": "polycarbonate",
     "618-Nylon": "618-645-nylon",
     "645-Nylon": "618-645-nylon",
     
     # Flexystruder (Expert)
-    "ninjaflex" : "ninjaflex",
-    "cheetah" : "cheetah",
-    "semiflex" : "semiflex",
+    "ninjaflex": "ninjaflex",
+    "cheetah": "cheetah",
+    "semiflex": "semiflex",
 
     # Dual extruder (Expert)
     "PLA_PVA": "PLA-PVA-support",
@@ -94,13 +94,13 @@ material_map = {
     "PCTPE_PVA": "PCTPE-PVA",
 
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "ABS-ninjaflex",
-    "ABS_semiflex" : "ABS-semiflex",
-    "ABS_cheetah" : "ABS-cheetah",
-    "HIPS_cheetah" : "HIPS-cheetah",
-    "HIPS_ninjaflex" : "HIPS-ninjaflex",
-    "HIPS_semiflex" : "HIPS-semiflex",
-    "PLA_PVA" : "PLA-PVA",
+    "ABS_ninjaflex": "ABS-ninjaflex",
+    "ABS_semiflex": "ABS-semiflex",
+    "ABS_cheetah": "ABS-cheetah",
+    "HIPS_cheetah": "HIPS-cheetah",
+    "HIPS_ninjaflex": "HIPS-ninjaflex",
+    "HIPS_semiflex": "HIPS-semiflex",
+    "PLA_PVA": "PLA-PVA",
 }
 
 material_order = {
@@ -137,7 +137,7 @@ material_order = {
     
     # Expert
     "PP-Conductive":      500,
-    "HIPS_VP" :           501,
+    "HIPS_VP":            501,
     "PC_VP":              502,
     "618-Nylon":          503,
     "645-Nylon":          504,
@@ -157,13 +157,13 @@ material_order = {
     "PCTPE_PVA":            6,
 
     # Flexy Dually (Expert)
-    "ABS_ninjaflex":        10,
-    "ABS_semiflex":         11,
-    "ABS_cheetah" :         12,
-    "HIPS_cheetah" :         13,
-    "HIPS_ninjaflex" :      14,
-    "HIPS_semiflex" :       15,
-    "PLA_PVA" :             16,
+    "ABS_ninjaflex":       10,
+    "ABS_semiflex":        11,
+    "ABS_cheetah":         12,
+    "HIPS_cheetah":        13,
+    "HIPS_ninjaflex":      14,
+    "HIPS_semiflex":       15,
+    "PLA_PVA":             16,
 }
 
 material_types = {
@@ -176,7 +176,7 @@ material_types = {
     
     # Intermediate
     "ABS_VP": "Intermediate",
-    "Laybrick" : "Intermediate",
+    "Laybrick": "Intermediate",
     "PP-Iron": "Intermediate",
     "PP-Steel": "Intermediate",
     "Bamboofill": "Intermediate",
@@ -200,15 +200,15 @@ material_types = {
     
     # Expert
     "PP-Conductive": "Expert",
-    "HIPS_VP" : "Expert",
+    "HIPS_VP": "Expert",
     "PC_VP": "Expert",
     "618-Nylon": "Expert",
     "645-Nylon": "Expert",
     
     # Flexystruder (Expert)
-    "ninjaflex" : "Expert",
-    "cheetah" : "Expert",
-    "semiflex" : "Expert",
+    "ninjaflex": "Expert",
+    "cheetah": "Expert",
+    "semiflex": "Expert",
         
     # Dual extruder (Expert)
     "PLA_PVA": "Expert",
@@ -220,12 +220,12 @@ material_types = {
     "PCTPE_PVA": "Expert",
     
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "Expert",
-    "ABS_semiflex" : "Expert",
-    "ABS_cheetah" : "Expert",
-    "HIPS_cheetah" : "Expert",
-    "HIPS_semiflex" : "Expert",
-    "PLA_PVA" : "Expert",
+    "ABS_ninjaflex": "Expert",
+    "ABS_semiflex": "Expert",
+    "ABS_cheetah": "Expert",
+    "HIPS_cheetah": "Expert",
+    "HIPS_semiflex": "Expert",
+    "PLA_PVA": "Expert",
 }
 
 material_names = {
@@ -238,7 +238,7 @@ material_names = {
     
     # Intermediate
     "ABS_VP": "ABS (Village Plastics)",
-    "Laybrick" : "Laybrick (CC-Products)",
+    "Laybrick": "Laybrick (CC-Products)",
     "PP-Iron": "Magnetic (Proto-pasta)",
     "PP-Steel": "Steel PLA (Proto-pasta)",
     "Bamboofill": "bambooFill (colorFabb)",
@@ -262,15 +262,15 @@ material_names = {
     
     # Expert
     "PP-Conductive": "Conductive (Proto-pasta)",
-    "HIPS_VP" : "HIPS (Village Plastics)",
+    "HIPS_VP": "HIPS (Village Plastics)",
     "PC_VP": "PC (Village Plastics)",
     "618-Nylon": "618 Nylon (Taulman)",
     "645-Nylon": "645 Nylon (Taulman)",
     
     # Flexystruder (Expert)
-    "ninjaflex" : "NinjaFlex (Fenner Drives)",
-    "cheetah" : "Cheetah (Fenner Drives)",
-    "semiflex" : "SemiFlex (Fenner Drives)",
+    "ninjaflex": "NinjaFlex (Fenner Drives)",
+    "cheetah": "Cheetah (Fenner Drives)",
+    "semiflex": "SemiFlex (Fenner Drives)",
     
     # Dual extruder (Expert)
     "PLA_PVA": "PLA & PVA Support",
@@ -282,13 +282,13 @@ material_names = {
     "PCTPE_PVA": "PCTPE & PVA Support",
 
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "ABS & NinjaFlex",
-    "ABS_semiflex" : "ABS & SemiFlex",
-    "ABS_cheetah" : "ABS & Cheetah",
-    "HIPS_cheetah" : "HIPS & Cheetah",
-    "HIPS_ninjaflex" : "HIPS & Ninjaflex",
-    "HIPS_semiflex" : "HIPS & Semiflex",
-    "PLA_PVA" : "PLA & PVA Support",
+    "ABS_ninjaflex": "ABS & NinjaFlex",
+    "ABS_semiflex": "ABS & SemiFlex",
+    "ABS_cheetah": "ABS & Cheetah",
+    "HIPS_cheetah": "HIPS & Cheetah",
+    "HIPS_ninjaflex": "HIPS & Ninjaflex",
+    "HIPS_semiflex": "HIPS & Semiflex",
+    "PLA_PVA": "PLA & PVA Support",
 }
 
 material_url = {
@@ -301,7 +301,7 @@ material_url = {
 
     # Intermediate
     "ABS_VP": "lulzbot.com/store/filament/abs",
-    "Laybrick" : "lulzbot.com/store/filament/laybrick",
+    "Laybrick": "lulzbot.com/store/filament/laybrick",
     "PP-Iron": "lulzbot.com/store/filament/magnetic-iron-pla",
     "PP-Steel": "lulzbot.com/store/filament/stainless-steel-pla",
     "Bamboofill": "lulzbot.com/store/filament/bamboofill",
@@ -324,15 +324,15 @@ material_url = {
 
     # Expert
     "PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
-    "HIPS_VP" : "lulzbot.com/store/filament/hips",
+    "HIPS_VP": "lulzbot.com/store/filament/hips",
     "PC_VP": "lulzbot.com/store/filament/polycarbonate",
     "618-Nylon": "lulzbot.com/store/filament/nylon-618",
     "645-Nylon": "lulzbot.com/store/filament/nylon-645",
 
     # Flexystruder (Expert)
-    "ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
-#    "cheetah" : "",
-    "semiflex" : "lulzbot.com/store/filament/semiflex",
+    "ninjaflex": "lulzbot.com/store/filament/ninjaflex",
+#    "cheetah": "",
+    "semiflex": "lulzbot.com/store/filament/semiflex",
     
     # Dual extruder (Expert)
     "ABS_ABS": "lulzbot.com/store/filament/abs",
@@ -343,13 +343,13 @@ material_url = {
 #    "PCTPE_PVA": "",
 
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
-    "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
-#    "ABS_cheetah" : "",
-#    "HIPS_cheetah" : "",
-    "HIPS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
-    "HIPS_semiflex" : "lulzbot.com/store/filament/semiflex",
-#    "PLA_PVA" : "",
+    "ABS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
+    "ABS_semiflex": "lulzbot.com/store/filament/semiflex",
+#    "ABS_cheetah": "",
+#    "HIPS_cheetah": "",
+    "HIPS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
+    "HIPS_semiflex": "lulzbot.com/store/filament/semiflex",
+#    "PLA_PVA": "",
 }
 
 bed_prep_materials = {
