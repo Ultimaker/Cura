@@ -17,27 +17,27 @@ CURA_QUICKPRINT_DIR="resources/quickprint/"
 PROFILES_DIR="lulzbot_profiles"
 
 dir_map = {
-    'Mini_single_extruder_v2': ('lulzbot_mini',),
-    'Mini_flexystruder_v2': ('lulzbot_mini_flexystruder',),
-    'TAZ_single_extruder_0.35nozzle': ('lulzbot_TAZ_4_SingleV1',
-                                       'lulzbot_TAZ_5_SingleV1',
-                                       'lulzbot_TAZ_4_035nozzle',
-                                       'lulzbot_TAZ_5_035nozzle'),
-    'TAZ_single_extruder_0.5nozzle': ('lulzbot_TAZ_4_05nozzle',
-                                      'lulzbot_TAZ_5_05nozzle'),
-    'TAZ_dual_extruder_v1': ('lulzbot_TAZ_4_DualV1',
-                             'lulzbot_TAZ_5_DualV1'),
-    'TAZ_dual_extruder_v2': ('lulzbot_TAZ_4_DualV2',
-                             'lulzbot_TAZ_5_DualV2'),
-    'TAZ_flexystruder_v1': ('lulzbot_TAZ_4_FlexystruderV1',
-                            'lulzbot_TAZ_5_FlexystruderV1'),
-    'TAZ_flexystruder_v2': ('lulzbot_TAZ_4_FlexystruderV2',
-                            'lulzbot_TAZ_5_FlexystruderV2'),
-    'TAZ_flexy_dually_v1': ('lulzbot_TAZ_4_FlexyDuallyV1',
-                            'lulzbot_TAZ_5_FlexyDuallyV1'),
-    'TAZ_flexy_dually_v2': ('lulzbot_TAZ_4_FlexyDuallyV2',
-                            'lulzbot_TAZ_5_FlexyDuallyV2'),
-    'TAZ6_single_v2.1': ('lulzbot_TAZ_6_Single_v2.1',),
+    "Mini_single_extruder_v2": ("lulzbot_mini",),
+    "Mini_flexystruder_v2": ("lulzbot_mini_flexystruder",),
+    "TAZ_single_extruder_0.35nozzle": ("lulzbot_TAZ_4_SingleV1",
+                                       "lulzbot_TAZ_5_SingleV1",
+                                       "lulzbot_TAZ_4_035nozzle",
+                                       "lulzbot_TAZ_5_035nozzle"),
+    "TAZ_single_extruder_0.5nozzle": ("lulzbot_TAZ_4_05nozzle",
+                                      "lulzbot_TAZ_5_05nozzle"),
+    "TAZ_dual_extruder_v1": ("lulzbot_TAZ_4_DualV1",
+                             "lulzbot_TAZ_5_DualV1"),
+    "TAZ_dual_extruder_v2": ("lulzbot_TAZ_4_DualV2",
+                             "lulzbot_TAZ_5_DualV2"),
+    "TAZ_flexystruder_v1": ("lulzbot_TAZ_4_FlexystruderV1",
+                            "lulzbot_TAZ_5_FlexystruderV1"),
+    "TAZ_flexystruder_v2": ("lulzbot_TAZ_4_FlexystruderV2",
+                            "lulzbot_TAZ_5_FlexystruderV2"),
+    "TAZ_flexy_dually_v1": ("lulzbot_TAZ_4_FlexyDuallyV1",
+                            "lulzbot_TAZ_5_FlexyDuallyV1"),
+    "TAZ_flexy_dually_v2": ("lulzbot_TAZ_4_FlexyDuallyV2",
+                            "lulzbot_TAZ_5_FlexyDuallyV2"),
+    "TAZ6_single_v2.1": ("lulzbot_TAZ_6_Single_v2.1",),
 }
 
 material_map = {
@@ -85,11 +85,11 @@ material_map = {
     "semiflex" : "semiflex",
 
     # Dual extruder (Expert)
-    'PLA_PVA': 'PLA-PVA-support',
-    'ABS_ABS': 'ABS-ABS',
-    'PLA_PLA': 'PLA-PLA',
-    '910_PVA': '910-PVA-support',
-    'ABS_HIPS': 'ABS-HIPS',
+    "PLA_PVA": "PLA-PVA-support",
+    "ABS_ABS": "ABS-ABS",
+    "PLA_PLA": "PLA-PLA",
+    "910_PVA": "910-PVA-support",
+    "ABS_HIPS": "ABS-HIPS",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS-ninjaflex",
@@ -141,11 +141,11 @@ material_order = {
     "semiflex":             2,
     
     # Dual extruder (Expert)
-    'PLA_PLA':              0,
-    'ABS_ABS':              1,
-    'PLA_PVA':              2,
-    '910_PVA':              3,
-    'ABS_HIPS':             4,
+    "PLA_PLA":              0,
+    "ABS_ABS":              1,
+    "PLA_PVA":              2,
+    "910_PVA":              3,
+    "ABS_HIPS":             4,
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex":        10,
@@ -197,11 +197,11 @@ material_types = {
     "semiflex" : "Expert",
         
     # Dual extruder (Expert)
-    'PLA_PVA': "Expert",
-    'ABS_ABS': "Expert",
-    'PLA_PLA': "Expert",
-    '910_PVA': 'Expert',
-    'ABS_HIPS': "Expert",
+    "PLA_PVA": "Expert",
+    "ABS_ABS": "Expert",
+    "PLA_PLA": "Expert",
+    "910_PVA": "Expert",
+    "ABS_HIPS": "Expert",
     
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "Expert",
@@ -253,11 +253,11 @@ material_names = {
     "semiflex" : "SemiFlex (Fenner Drives)",
     
     # Dual extruder (Expert)
-    'PLA_PVA': "PLA & PVA Support",
-    'ABS_ABS': "ABS & ABS",
-    'PLA_PLA': "PLA & PLA",
-    '910_PVA': '910 & PVA Support',
-    'ABS_HIPS': 'ABS & HIPS',
+    "PLA_PVA": "PLA & PVA Support",
+    "ABS_ABS": "ABS & ABS",
+    "PLA_PLA": "PLA & PLA",
+    "910_PVA": "910 & PVA Support",
+    "ABS_HIPS": "ABS & HIPS",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS & NinjaFlex",
@@ -324,10 +324,10 @@ material_url = {
     "semiflex" : "lulzbot.com/store/filament/semiflex",
     
     # Dual extruder (Expert)
-    'ABS_ABS': "lulzbot.com/store/filament/abs",
-    'PLA_PLA': "lulzbot.com/store/filament/pla-esun",
-    'PLA_PVA': "lulzbot.com/store/filament/natural-pva",
-#    'ABS_HIPS': '',
+    "ABS_ABS": "lulzbot.com/store/filament/abs",
+    "PLA_PLA": "lulzbot.com/store/filament/pla-esun",
+    "PLA_PVA": "lulzbot.com/store/filament/natural-pva",
+#    "ABS_HIPS": "",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
@@ -335,25 +335,25 @@ material_url = {
 }
 
 profile_map = {
-    'medium-quality': 'Standard',
-    'high-speed': 'High speed',
-    'high-quality': 'High detail',
-    'high-clarity': 'High clarity',
-    'high-strength': 'High strength'
+    "medium-quality": "Standard",
+    "high-speed": "High speed",
+    "high-quality": "High detail",
+    "high-clarity": "High clarity",
+    "high-strength": "High strength"
 }
 
 profile_order = {
-    'medium-quality': 0,
-    'high-speed': 1,
-    'high-quality': 2,
-    'high-clarity': 3,
-    'high-strength': 4
+    "medium-quality": 0,
+    "high-speed": 1,
+    "high-quality": 2,
+    "high-clarity": 3,
+    "high-strength": 4
 }
 
 disable_materials = {
-    'PET': ('High', 'Low', 'Normal', 'Ulti'),
-    'PLA': ('High', 'Low', 'Normal', 'Ulti'),
-    'ABS': ('High', 'Low', 'Normal', 'Ulti')
+    "PET": ("High", "Low", "Normal", "Ulti"),
+    "PLA": ("High", "Low", "Normal", "Ulti"),
+    "ABS": ("High", "Low", "Normal", "Ulti")
 }
 
 def find_files_for_material(files, material):
@@ -380,7 +380,7 @@ def create_machine_type(machine_type, path, dir):
             profile_file = os.path.join("..", "..", "..", PROFILES_DIR, dir, filename)
             if not os.path.exists(os.path.join(path, material, profile)):
                 os.makedirs(os.path.join(path, material, profile))
-            with open(os.path.join(path, material, 'material.ini'), 'w') as f:
+            with open(os.path.join(path, material, "material.ini"), "w") as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % material_names[material])
                 order = material_order[material]
@@ -402,7 +402,7 @@ def create_machine_type(machine_type, path, dir):
                 if material_url.has_key(material):
                     referer = "?pk_campaign=software-cura"
                     f.write("url = %s%s\n" %(material_url[material], referer) )
-            with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
+            with open(os.path.join(path, material, profile, "profile.ini"), "w") as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % profile_map[profile])
                 f.write("order = %d\n" % profile_order[profile])
@@ -412,12 +412,12 @@ def create_machine_type(machine_type, path, dir):
             for profile in disable_materials[material]:
                 if not os.path.exists(os.path.join(path, material, profile)):
                     os.makedirs(os.path.join(path, material, profile))
-                    with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
+                    with open(os.path.join(path, material, profile, "profile.ini"), "w") as f:
                         f.write("[info]\n")
                         f.write("disabled = true\n")
         else:
             os.makedirs(os.path.join(path, material))
-            with open(os.path.join(path, material, 'material.ini'), 'w') as f:
+            with open(os.path.join(path, material, "material.ini"), "w") as f:
                 f.write("[info]\n")
                 f.write("disabled = true\n")
 
@@ -458,5 +458,5 @@ def main():
     print "Quickprint profiles regenerated"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
