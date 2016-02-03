@@ -135,7 +135,12 @@ class machineSettingsDialog(wx.Dialog):
 				configBase.SettingRow(left, 'extruder_offset_y%d' % (i), index=idx)
 
 			configBase.TitleRow(right, _("Communication settings"))
-			configBase.SettingRow(right, 'serial_port', ['AUTO'] + machineCom.serialList(), index=idx)
+			serial_list = ['AUTO'] + machineCom.serialList()
+			serial_list_labels = serial_list[:]
+			if profile.getMachineSetting('serial_port') not in serial_list:
+				serial_list.append(profile.getMachineSetting('serial_port'))
+				serial_list_labels.append(profile.getMachineSetting('serial_port') + _(" (Currently unavailable)"))
+			configBase.SettingRow(right, 'serial_port', serial_list, serial_list_labels, index=idx)
 			configBase.SettingRow(right, 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()), index=idx)
 
 			self.nb.AddPage(main, profile.getMachineName(idx).title())

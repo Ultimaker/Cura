@@ -110,7 +110,7 @@ class TitleRow(object):
 		sizer.SetRows(x + 2)
 
 class SettingRow(object):
-	def __init__(self, panel, configName, valueOverride = None, index = None):
+	def __init__(self, panel, configName, valueOverride = None, valueOverrideLabels = None, index = None):
 		"Add a setting to the configuration panel"
 		sizer = panel.GetSizer()
 		x = sizer.GetRows()
@@ -150,9 +150,14 @@ class SettingRow(object):
 			self._englishChoices = choices[:]
 			if value not in choices and len(choices) > 0:
 				value = choices[0]
+
+			self._overrideChoices = self._englishChoices[:]
+			if valueOverrideLabels is not None and len(valueOverrideLabels) == len(choices):
+				choices = valueOverrideLabels[:]
+				self._overrideChoices = choices[:]
 			for n in xrange(0, len(choices)):
 				choices[n] = _(choices[n])
-			value = _(value)
+			value = _(self._overrideChoices[self._englishChoices.index(value)])
 			self.ctrl = wx.ComboBox(panel, -1, value, choices=choices, style=wx.CB_DROPDOWN|wx.CB_READONLY)
 			self.ctrl.Bind(wx.EVT_COMBOBOX, self.OnSettingChange)
 			self.ctrl.Bind(wx.EVT_LEFT_DOWN, self.OnMouseExit)
@@ -228,7 +233,7 @@ class SettingRow(object):
 		elif isinstance(self.ctrl, wx.ComboBox):
 			value = unicode(self.ctrl.GetValue())
 			for ret in self._englishChoices:
-				if _(ret) == value:
+				if _(self._overrideChoices[self._englishChoices.index(ret)]) == value:
 					return ret
 			return value
 		else:
