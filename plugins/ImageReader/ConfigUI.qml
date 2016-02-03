@@ -18,9 +18,6 @@ UM.Dialog
     minimumHeight: 220 * Screen.devicePixelRatio;
     maximumHeight: 220 * Screen.devicePixelRatio;
 
-
-    modality: Qt.Modal
-
     title: catalog.i18nc("@title:window", "Convert Image...")
 
     GridLayout 
