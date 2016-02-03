@@ -174,6 +174,7 @@ class glGuiPanel(glcanvas.GLCanvas):
 			self.Refresh()
 		else:
 			self.OnKeyChar(e.GetKeyCode())
+		e.Skip()
 
 	def OnFocusLost(self, e):
 		self._focus = None
@@ -185,17 +186,20 @@ class glGuiPanel(glcanvas.GLCanvas):
 			self.Refresh()
 			return
 		self.OnMouseDown(e)
+		e.Skip()
 
 	def _OnGuiMouseUp(self, e):
 		if self._container.OnMouseUp(e.GetX(), e.GetY()):
 			self.Refresh()
 			return
 		self.OnMouseUp(e)
+		e.Skip()
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
 		if not self._container.OnMouseMotion(e.GetX(), e.GetY()):
 			self.OnMouseMotion(e)
+		e.Skip()
 
 	def _OnGuiPaint(self, e):
 		self._idleCalled = False
