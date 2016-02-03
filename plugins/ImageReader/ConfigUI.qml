@@ -10,13 +10,13 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
-    width: 350*Screen.devicePixelRatio;
-    minimumWidth: 350*Screen.devicePixelRatio;
-    maximumWidth: 350*Screen.devicePixelRatio;
+    width: 350 * Screen.devicePixelRatio;
+    minimumWidth: 350 * Screen.devicePixelRatio;
+    maximumWidth: 350 * Screen.devicePixelRatio;
 
-    height: 220*Screen.devicePixelRatio;
-    minimumHeight: 220*Screen.devicePixelRatio;
-    maximumHeight: 220*Screen.devicePixelRatio;
+    height: 220 * Screen.devicePixelRatio;
+    minimumHeight: 220 * Screen.devicePixelRatio;
+    maximumHeight: 220 * Screen.devicePixelRatio;
 
 
     modality: Qt.Modal
