@@ -91,6 +91,7 @@ material_map = {
     "910_PVA": "910-PVA-support",
     "ABS_HIPS": "ABS-HIPS",
     "HIPS_HIPS": "HIPS-HIPS",
+    "PCTPE_PVA": "PCTPE-PVA",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS-ninjaflex",
@@ -148,6 +149,7 @@ material_order = {
     "910_PVA":              3,
     "ABS_HIPS":             4,
     "HIPS_HIPS":            5,
+    "PCTPE_PVA":            6,
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex":        10,
@@ -205,6 +207,7 @@ material_types = {
     "910_PVA": "Expert",
     "ABS_HIPS": "Expert",
     "HIPS_HIPS": "Expert",
+    "PCTPE_PVA": "Expert",
     
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "Expert",
@@ -262,6 +265,7 @@ material_names = {
     "910_PVA": "910 & PVA Support",
     "ABS_HIPS": "ABS & HIPS",
     "HIPS_HIPS": "HIPS & HIPS",
+    "PCTPE_PVA": "PCTPE & PVA Support",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS & NinjaFlex",
@@ -333,6 +337,7 @@ material_url = {
     "PLA_PVA": "lulzbot.com/store/filament/natural-pva",
 #    "ABS_HIPS": "",
     "HIPS_HIPS": "lulzbot.com/store/filament/hips",
+#    "PCTPE_PVA": "",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
