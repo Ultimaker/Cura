@@ -96,6 +96,7 @@ material_map = {
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS-ninjaflex",
     "ABS_semiflex" : "ABS-semiflex",
+    "ABS_cheetah" : "ABS-cheetah",
 }
 
 material_order = {
@@ -154,6 +155,7 @@ material_order = {
     # Flexy Dually (Expert)
     "ABS_ninjaflex":        10,
     "ABS_semiflex":         11,
+    "ABS_cheetah" :         12,
 }
 
 material_types = {
@@ -212,6 +214,7 @@ material_types = {
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "Expert",
     "ABS_semiflex" : "Expert",
+    "ABS_cheetah" : "Expert",
 }
 
 material_names = {
@@ -270,6 +273,7 @@ material_names = {
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "ABS & NinjaFlex",
     "ABS_semiflex" : "ABS & SemiFlex",
+    "ABS_cheetah" : "ABS & Cheetah",
 }
 
 material_url = {
@@ -326,6 +330,7 @@ material_url = {
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
     "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
+#    "ABS_cheetah" : "",
 }
 
 bed_prep_materials = {
