@@ -100,6 +100,7 @@ material_map = {
     "HIPS_cheetah" : "HIPS-cheetah",
     "HIPS_ninjaflex" : "HIPS-ninjaflex",
     "HIPS_semiflex" : "HIPS-semiflex",
+    "PLA_PVA" : "PLA-PVA",
 }
 
 material_order = {
@@ -162,6 +163,7 @@ material_order = {
     "HIPS_cheetah" :         13,
     "HIPS_ninjaflex" :      14,
     "HIPS_semiflex" :       15,
+    "PLA_PVA" :             16,
 }
 
 material_types = {
@@ -223,6 +225,7 @@ material_types = {
     "ABS_cheetah" : "Expert",
     "HIPS_cheetah" : "Expert",
     "HIPS_semiflex" : "Expert",
+    "PLA_PVA" : "Expert",
 }
 
 material_names = {
@@ -285,6 +288,7 @@ material_names = {
     "HIPS_cheetah" : "HIPS & Cheetah",
     "HIPS_ninjaflex" : "HIPS & Ninjaflex",
     "HIPS_semiflex" : "HIPS & Semiflex",
+    "PLA_PVA" : "PLA & PVA Support",
 }
 
 material_url = {
@@ -345,6 +349,7 @@ material_url = {
 #    "HIPS_cheetah" : "",
     "HIPS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
     "HIPS_semiflex" : "lulzbot.com/store/filament/semiflex",
+#    "PLA_PVA" : "",
 }
 
 bed_prep_materials = {
