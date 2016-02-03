@@ -272,22 +272,6 @@ material_names = {
     "ABS_semiflex" : "ABS & SemiFlex",
 }
 
-bed_prep_materials = {
-    "ninjaflex",
-    "cheetah",
-    "semiflex",
-    "Alloy910",
-    "Bridge",
-    "n-vent",
-    "XT",
-    "INOVA-1800",
-	"PCTPE",
-	"T-Glase",
-	"618-Nylon",
-	"645-Nylon",
-	"PC-ABS"
-}
-
 material_url = {
     # Beginner
     "HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
@@ -342,6 +326,22 @@ material_url = {
     # Flexy Dually (Expert)
     "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
     "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
+}
+
+bed_prep_materials = {
+    "ninjaflex",
+    "cheetah",
+    "semiflex",
+    "Alloy910",
+    "Bridge",
+    "n-vent",
+    "XT",
+    "INOVA-1800",
+    "PCTPE",
+    "T-Glase",
+    "618-Nylon",
+    "645-Nylon",
+    "PC-ABS"
 }
 
 profile_map = {
