@@ -1,0 +1,749 @@
+# English translations for PACKAGE package.
+# Copyright (C) 2016 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-18 11:15+0100\n"
+"PO-Revision-Date: 2016-02-01 15:02+0100\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/RotateTool/__init__.py:12
+msgctxt "@label"
+msgid "Rotate Tool"
+msgstr "Strumento di rotazione"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/RotateTool/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides the Rotate tool."
+msgstr "Fornisce lo strumento di rotazione."
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/RotateTool/__init__.py:19
+msgctxt "@label"
+msgid "Rotate"
+msgstr "Rotazione"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/RotateTool/__init__.py:20
+msgctxt "@info:tooltip"
+msgid "Rotate Object"
+msgstr "Ruota oggetto"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/CameraTool/__init__.py:12
+msgctxt "@label"
+msgid "Camera Tool"
+msgstr "Strumento fotocamera"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/CameraTool/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides the tool to manipulate the camera."
+msgstr "Fornisce lo strumento per manipolare la fotocamera."
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/SelectionTool/__init__.py:13
+msgctxt "@label"
+msgid "Selection Tool"
+msgstr "Strumento selezione"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/SelectionTool/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides the Selection tool."
+msgstr "Fornisce lo strumento di selezione."
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/__init__.py:13
+msgctxt "@label"
+msgid "Scale Tool"
+msgstr "Strumento scala"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides the Scale tool."
+msgstr "Fornisce lo strumento scala."
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/__init__.py:20
+msgctxt "@label"
+msgid "Scale"
+msgstr "Scala"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/__init__.py:21
+msgctxt "@info:tooltip"
+msgid "Scale Object"
+msgstr "Modifica scala oggetto"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/MirrorTool/__init__.py:12
+msgctxt "@label"
+msgid "Mirror Tool"
+msgstr "Strumento immagine speculare"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/MirrorTool/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides the Mirror tool."
+msgstr "Fornisce lo strumento immagine speculare."
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/MirrorTool/__init__.py:19
+msgctxt "@label"
+msgid "Mirror"
+msgstr "Immagine speculare"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/MirrorTool/__init__.py:20
+msgctxt "@info:tooltip"
+msgid "Mirror Object"
+msgstr "Immagine speculare oggetto"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/TranslateTool/__init__.py:13
+msgctxt "@label"
+msgid "Translate Tool"
+msgstr "Strumento traslazione"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/TranslateTool/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides the Translate tool."
+msgstr "Fornisce lo strumento traslazione."
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/TranslateTool/__init__.py:20
+msgctxt "@action:button"
+msgid "Translate"
+msgstr "Traslazione"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/TranslateTool/__init__.py:21
+msgctxt "@info:tooltip"
+msgid "Translate Object"
+msgstr "Trasla oggetto"
+
+#: /home/tamara/2.1/Uranium/plugins/Views/SimpleView/__init__.py:12
+msgctxt "@label"
+msgid "Simple View"
+msgstr "Visualizzazione semplice"
+
+#: /home/tamara/2.1/Uranium/plugins/Views/SimpleView/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides a simple solid mesh view."
+msgstr "Fornisce una semplice visualizzazione a griglia continua."
+
+#: /home/tamara/2.1/Uranium/plugins/Views/SimpleView/__init__.py:19
+msgctxt "@item:inmenu"
+msgid "Simple"
+msgstr "Semplice"
+
+#: /home/tamara/2.1/Uranium/plugins/Views/WireframeView/__init__.py:13
+msgctxt "@label"
+msgid "Wireframe View"
+msgstr "Visualizzazione a reticolo (Wireframe)"
+
+#: /home/tamara/2.1/Uranium/plugins/Views/WireframeView/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides a simple wireframe view"
+msgstr "Fornisce una semplice visualizzazione a reticolo"
+
+#: /home/tamara/2.1/Uranium/plugins/ConsoleLogger/__init__.py:13
+msgctxt "@label"
+msgid "Console Logger"
+msgstr "Logger di console"
+
+#: /home/tamara/2.1/Uranium/plugins/ConsoleLogger/__init__.py:16
+#: /home/tamara/2.1/Uranium/plugins/FileLogger/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Outputs log information to the console."
+msgstr "Invia informazioni registro alla console."
+
+#: /home/tamara/2.1/Uranium/plugins/FileLogger/__init__.py:13
+msgctxt "@label"
+msgid "File Logger"
+msgstr "Logger di file"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:44
+msgctxt "@item:inmenu"
+msgid "Local File"
+msgstr "File locale"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:45
+msgctxt "@action:button"
+msgid "Save to File"
+msgstr "Salva su file"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:46
+msgctxt "@info:tooltip"
+msgid "Save to File"
+msgstr "Salva su file"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:56
+msgctxt "@title:window"
+msgid "Save to File"
+msgstr "Salva su file"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:101
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Il file esiste già"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:101
+#, python-brace-format
+msgctxt "@label"
+msgid ""
+"The file <filename>{0}</filename> already exists. Are you sure you want to "
+"overwrite it?"
+msgstr "Il file <filename>{0}</filename> esiste già. Sei sicuro di voler sovrascrivere?"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:121
+#, python-brace-format
+msgctxt "@info:progress"
+msgid "Saving to <filename>{0}</filename>"
+msgstr "Salvataggio su <filename>{0}</filename>"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:129
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Permission denied when trying to save <filename>{0}</filename>"
+msgstr "Autorizzazione negata quando si tenta di salvare <filename>{0}</filename>"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:132
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:154
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Impossibile salvare <filename>{0}</filename>: <message>{1}</message>"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:148
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Saved to <filename>{0}</filename>"
+msgstr "Salvato su <filename>{0}</filename>"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:149
+msgctxt "@action:button"
+msgid "Open Folder"
+msgstr "Apri cartella"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/LocalFileOutputDevicePlugin.py:149
+msgctxt "@info:tooltip"
+msgid "Open the folder containing the file"
+msgstr "Apri la cartella contenente il file"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/__init__.py:12
+msgctxt "@label"
+msgid "Local File Output Device"
+msgstr "Periferica di output file locale"
+
+#: /home/tamara/2.1/Uranium/plugins/LocalFileOutputDevice/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Enables saving to local files"
+msgstr "Consente il salvataggio su file locali"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/OBJReader/__init__.py:13
+msgctxt "@label"
+msgid "Wavefront OBJ Reader"
+msgstr "Lettore Wavefront OBJ"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/OBJReader/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Makes it possbile to read Wavefront OBJ files."
+msgstr "Rende possibile leggere file Wavefront OBJ."
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/OBJReader/__init__.py:22
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/OBJWriter/__init__.py:22
+msgctxt "@item:inlistbox"
+msgid "Wavefront OBJ File"
+msgstr "File Wavefront OBJ"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/STLReader/__init__.py:12
+msgctxt "@label"
+msgid "STL Reader"
+msgstr "Lettore STL"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/STLReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for reading STL files."
+msgstr "Fornisce il supporto per la lettura di file STL."
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/STLReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "STL File"
+msgstr "File STL"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/STLWriter/__init__.py:13
+msgctxt "@label"
+msgid "STL Writer"
+msgstr "Writer STL"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/STLWriter/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides support for writing STL files."
+msgstr "Fornisce il supporto per la scrittura di file STL."
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/STLWriter/__init__.py:25
+msgctxt "@item:inlistbox"
+msgid "STL File (Ascii)"
+msgstr "File STL (Ascii)"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/STLWriter/__init__.py:31
+msgctxt "@item:inlistbox"
+msgid "STL File (Binary)"
+msgstr "File STL (Binario)"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/3MFWriter/__init__.py:12
+msgctxt "@label"
+msgid "3MF Writer"
+msgstr "Writer 3MF"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/3MFWriter/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Provides support for writing 3MF files."
+msgstr "Fornisce il supporto per la scrittura di file 3MF."
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/3MFWriter/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "3MF file"
+msgstr "File 3MF"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/OBJWriter/__init__.py:13
+msgctxt "@label"
+msgid "Wavefront OBJ Writer"
+msgstr "Writer Wavefront OBJ"
+
+#: /home/tamara/2.1/Uranium/plugins/FileHandlers/OBJWriter/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Makes it possbile to write Wavefront OBJ files."
+msgstr "Rende possibile scrivere file Wavefront OBJ."
+
+#: /home/tamara/2.1/Uranium/plugins/UpdateChecker/UpdateChecker.py:27
+msgctxt "@item:inmenu"
+msgid "Check for Updates"
+msgstr "Controlla aggiornamenti"
+
+#: /home/tamara/2.1/Uranium/plugins/UpdateChecker/UpdateChecker.py:73
+msgctxt "@info"
+msgid "A new version is available!"
+msgstr "È disponibile una nuova versione!"
+
+#: /home/tamara/2.1/Uranium/plugins/UpdateChecker/UpdateChecker.py:74
+msgctxt "@action:button"
+msgid "Download"
+msgstr "Download"
+
+#: /home/tamara/2.1/Uranium/plugins/UpdateChecker/__init__.py:12
+msgctxt "@label"
+msgid "Update Checker"
+msgstr "Controllo aggiornamenti"
+
+#: /home/tamara/2.1/Uranium/plugins/UpdateChecker/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Checks for updates of the software."
+msgstr "Verifica la disponibilità di aggiornamenti del software."
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Duration.py:91
+#, python-brace-format
+msgctxt ""
+"@label Short days-hours-minutes format. {0} is days, {1} is hours, {2} is "
+"minutes"
+msgid "{0:0>2}d {1:0>2}h {2:0>2}min"
+msgstr "{0:0>2}g {1:0>2}h {2:0>2}min"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Duration.py:93
+#, python-brace-format
+msgctxt "@label Short hours-minutes format. {0} is hours, {1} is minutes"
+msgid "{0:0>2}h {1:0>2}min"
+msgstr "{0:0>2}h {1:0>2}min"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Duration.py:96
+#, python-brace-format
+msgctxt ""
+"@label Days-hours-minutes duration format. {0} is days, {1} is hours, {2} is "
+"minutes"
+msgid "{0} days {1} hours {2} minutes"
+msgstr "{0} giorni {1} ore {2} minuti"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Duration.py:98
+#, python-brace-format
+msgctxt "@label Hours-minutes duration fromat. {0} is hours, {1} is minutes"
+msgid "{0} hours {1} minutes"
+msgstr "{0} ore {1} minuti"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Duration.py:100
+#, python-brace-format
+msgctxt "@label Minutes only duration format, {0} is minutes"
+msgid "{0} minutes"
+msgstr "{0} minuti"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/SettingsFromCategoryModel.py:80
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/MachineManagerProxy.py:104
+#, python-brace-format
+msgctxt ""
+"@item:intext appended to customised profiles ({0} is old profile name)"
+msgid "{0} (Customised)"
+msgstr "{0} (Personalizzato)"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/MeshFileHandlerProxy.py:45
+#, python-brace-format
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Tutti i tipi supportati ({0})"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/MeshFileHandlerProxy.py:46
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:179
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:192
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Tutti i file (*)"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:93
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Failed to import profile from <filename>{0}</filename>: <message>{1}</"
+"message>"
+msgstr "Impossibile importare profilo da <filename>{0}</filename>: <message>{1}</message>"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:106
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Profile was imported as {0}"
+msgstr "Il profilo è stato importato come {0}"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:108
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Successfully imported profile {0}"
+msgstr "Profilo importato correttamente {0}"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:111
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Profile {0} has an unknown file type."
+msgstr "Il profilo {0} ha un tipo di file sconosciuto."
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:155
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Impossibile esportare profilo su <filename>{0}</filename>: <message>{1}</message>"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:160
+#, python-brace-format
+msgctxt "@info:status"
+msgid ""
+"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
+"failure."
+msgstr "Impossibile esportare profilo su <filename>{0}</filename>: Errore di plugin writer."
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:163
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Exported profile to <filename>{0}</filename>"
+msgstr "Profilo esportato su <filename>{0}</filename>"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:178
+msgctxt "@item:inlistbox"
+msgid "All supported files"
+msgstr "Tutti i file supportati"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/Bindings/ProfilesModel.py:201
+msgctxt "@item:inlistbox"
+msgid "- Use Global Profile -"
+msgstr "- Utilizza Profilo Globale -"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/QtApplication.py:78
+msgctxt "@info:progress"
+msgid "Loading plugins..."
+msgstr "Caricamento plugin in corso..."
+
+#: /home/tamara/2.1/Uranium/UM/Qt/QtApplication.py:82
+msgctxt "@info:progress"
+msgid "Loading machines..."
+msgstr "Caricamento macchine in corso..."
+
+#: /home/tamara/2.1/Uranium/UM/Qt/QtApplication.py:86
+msgctxt "@info:progress"
+msgid "Loading preferences..."
+msgstr "Caricamento preferenze in corso..."
+
+#: /home/tamara/2.1/Uranium/UM/Mesh/ReadMeshJob.py:35
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Cannot open file type <filename>{0}</filename>"
+msgstr "Impossibile aprire il file tipo <filename>{0}</filename>"
+
+#: /home/tamara/2.1/Uranium/UM/Mesh/ReadMeshJob.py:44
+#: /home/tamara/2.1/Uranium/UM/Mesh/ReadMeshJob.py:66
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed to load <filename>{0}</filename>"
+msgstr "Impossibile caricare <filename>{0}</filename>"
+
+#: /home/tamara/2.1/Uranium/UM/Mesh/ReadMeshJob.py:48
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Loading <filename>{0}</filename>"
+msgstr "Caricamento <filename>{0}</filename>"
+
+#: /home/tamara/2.1/Uranium/UM/Mesh/ReadMeshJob.py:94
+#, python-format, python-brace-format
+msgctxt "@info:status"
+msgid "Auto scaled object to {0}% of original size"
+msgstr "Ridimensionamento automatico dell'oggetto a {0}% della dimensione originale"
+
+#: /home/tamara/2.1/Uranium/UM/Settings/MachineDefinition.py:115
+msgctxt "@label"
+msgid "Unknown Manufacturer"
+msgstr "Produttore sconosciuto"
+
+#: /home/tamara/2.1/Uranium/UM/Settings/MachineDefinition.py:116
+msgctxt "@label"
+msgid "Unknown Author"
+msgstr "Autore sconosciuto"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/RotateTool/RotateTool.qml:22
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/ScaleTool.qml:29
+msgctxt "@action:button"
+msgid "Reset"
+msgstr "Reset"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/RotateTool/RotateTool.qml:39
+msgctxt "@action:button"
+msgid "Lay flat"
+msgstr "Posiziona in piano"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/RotateTool/RotateTool.qml:55
+msgctxt "@action:checkbox"
+msgid "Snap Rotation"
+msgstr "Rotazione di aggancio (Snap)"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/ScaleTool.qml:42
+msgctxt "@action:button"
+msgid "Scale to Max"
+msgstr "Scala max."
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/ScaleTool.qml:67
+msgctxt "@option:check"
+msgid "Snap Scaling"
+msgstr "Ridimensionamento aggancio (Snap)"
+
+#: /home/tamara/2.1/Uranium/plugins/Tools/ScaleTool/ScaleTool.qml:85
+msgctxt "@option:check"
+msgid "Uniform Scaling"
+msgstr "Ridimensionamento uniforme"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/RenameDialog.qml:20
+msgctxt "@title:window"
+msgid "Rename"
+msgstr "Rinomina"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/RenameDialog.qml:49
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Wizard.qml:222
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Annulla"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/RenameDialog.qml:53
+msgctxt "@action:button"
+msgid "Ok"
+msgstr "Ok"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ConfirmRemoveDialog.qml:16
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Conferma rimozione"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ConfirmRemoveDialog.qml:17
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Sei sicuro di voler rimuovere %1? Questa operazione non può essere annullata!"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/MachinesPage.qml:12
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:116
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Stampanti"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/MachinesPage.qml:32
+msgctxt "@label"
+msgid "Type"
+msgstr "Tipo"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PluginsPage.qml:19
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:118
+msgctxt "@title:tab"
+msgid "Plugins"
+msgstr "Plugin"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PluginsPage.qml:90
+msgctxt "@label"
+msgid "No text available"
+msgstr "Nessun testo disponibile"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PluginsPage.qml:96
+msgctxt "@title:window"
+msgid "About %1"
+msgstr "Circa %1"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PluginsPage.qml:128
+msgctxt "@label"
+msgid "Author:"
+msgstr "Autore:"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PluginsPage.qml:150
+msgctxt "@label"
+msgid "Version:"
+msgstr "Versione:"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PluginsPage.qml:168
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:87
+msgctxt "@action:button"
+msgid "Close"
+msgstr "Chiudi"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/SettingVisibilityPage.qml:11
+msgctxt "@title:tab"
+msgid "Setting Visibility"
+msgstr "Impostazione visibilità"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/SettingVisibilityPage.qml:29
+msgctxt "@label:textbox"
+msgid "Filter..."
+msgstr "Filtro..."
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:14
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:117
+msgctxt "@title:tab"
+msgid "Profiles"
+msgstr "Profili"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:22
+msgctxt "@action:button"
+msgid "Import"
+msgstr "Importa"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:37
+msgctxt "@label"
+msgid "Profile type"
+msgstr "Tipo profilo"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:38
+msgctxt "@label"
+msgid "Starter profile (protected)"
+msgstr "Profilo di base (protetto)"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:38
+msgctxt "@label"
+msgid "Custom profile"
+msgstr "Profilo personalizzato"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:57
+msgctxt "@action:button"
+msgid "Export"
+msgstr "Esporta"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:83
+msgctxt "@window:title"
+msgid "Import Profile"
+msgstr "Importa profilo"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:91
+msgctxt "@title:window"
+msgid "Import Profile"
+msgstr "Importa profilo"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ProfilesPage.qml:118
+msgctxt "@title:window"
+msgid "Export Profile"
+msgstr "Esporta profilo"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ManagementPage.qml:47
+msgctxt "@action:button"
+msgid "Add"
+msgstr "Aggiungi"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ManagementPage.qml:54
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingsConfigurationPage.qml:52
+msgctxt "@action:button"
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/ManagementPage.qml:61
+msgctxt "@action:button"
+msgid "Rename"
+msgstr "Rinomina"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:18
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "Preferenze"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:80
+msgctxt "@action:button"
+msgid "Defaults"
+msgstr "Valori predefiniti"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:114
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Generale"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Preferences/PreferencesDialog.qml:115
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Wizard.qml:179
+msgctxt "@action:button"
+msgid "Back"
+msgstr "Indietro"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Wizard.qml:195
+msgctxt "@action:button"
+msgid "Finish"
+msgstr "Fine"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Wizard.qml:195
+msgctxt "@action:button"
+msgid "Next"
+msgstr "Avanti"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingItem.qml:114
+msgctxt "@info:tooltip"
+msgid "Reset to Default"
+msgstr "Ripristina valore predefinito"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingView.qml:80
+msgctxt "@label"
+msgid "{0} hidden setting uses a custom value"
+msgid_plural "{0} hidden settings use custom values"
+msgstr[0] "{0} l'impostazione nascosta utilizza un valore personalizzato"
+msgstr[1] "{0} le impostazioni nascoste utilizzano valori personalizzati"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingView.qml:166
+msgctxt "@action:menu"
+msgid "Hide this setting"
+msgstr "Nascondi questa impostazione"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingView.qml:172
+msgctxt "@action:menu"
+msgid "Configure setting visiblity..."
+msgstr "Configurazione visibilità delle impostazioni in corso..."
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingsConfigurationPage.qml:18
+msgctxt "@title:tab"
+msgid "Machine"
+msgstr "Macchina"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingsConfigurationPage.qml:29
+msgctxt "@label:listbox"
+msgid "Active Machine:"
+msgstr "Macchina attiva:"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingsConfigurationPage.qml:112
+msgctxt "@title:window"
+msgid "Confirm Machine Deletion"
+msgstr "Conferma cancellazione macchina"
+
+#: /home/tamara/2.1/Uranium/UM/Qt/qml/UM/Settings/SettingsConfigurationPage.qml:114
+msgctxt "@label"
+msgid "Are you sure you wish to remove the machine?"
+msgstr "Sei sicuro di voler rimuovere la macchina?"
