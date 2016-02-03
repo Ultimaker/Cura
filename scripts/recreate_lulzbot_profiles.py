@@ -185,8 +185,8 @@ material_names = {
     "Laybrick" : "Laybrick (CC-Products)",
     "PP-Iron": "Magnetic (Proto-pasta)",
     "PP-Steel": "Steel PLA (Proto-pasta)",
-    "Bamboofill": "Bamboofill (colorFabb)",
-    "Woodfill": "Woodfill (colorFabb)",
+    "Bamboofill": "bambooFill (colorFabb)",
+    "Woodfill": "woodFill (colorFabb)",
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
@@ -197,8 +197,8 @@ material_names = {
     "PCTPE": "PCTPE (Taulman)",
     "PC-ABS": "PC-ABS (Proto-pasta)",
     "T-Glase": "t-glase (Taulman)",
-    "Bronzefill": "Bronzefill (colorFabb)",
-    "Copperfill": "Copperfill (colorFabb)",
+    "Bronzefill": "bronzeFill (colorFabb)",
+    "Copperfill": "copperFill (colorFabb)",
     # Expert
     "PP-Conductive": "Conductive (Proto-pasta)",
     "HIPS_VP" : "HIPS (Village Plastics)",
@@ -243,8 +243,8 @@ material_url = {
     "Laybrick" : "lulzbot.com/store/filament/laybrick",
     "PP-Iron": "lulzbot.com/store/filament/magnetic-iron-pla",
     "PP-Steel": "lulzbot.com/store/filament/stainless-steel-pla",
-#    "Bamboofill": "",
-#    "Woodfill": "",
+    "Bamboofill": "lulzbot.com/store/filament/bamboofill",
+    "Woodfill": "lulzbot.com/store/filament/woodfill",
     # Advanced
     "Alloy910": "lulzbot.com/store/filament/alloy-910",
     "Bridge": "lulzbot.com/store/filament/bridge-nylon",
@@ -254,8 +254,8 @@ material_url = {
     "PCTPE": "lulzbot.com/store/filament/pctpe",
     "PC-ABS": "lulzbot.com/store/filament/pc-abs-alloy",
     "T-Glase": "lulzbot.com/store/filament/t-glase",
-#    "Bronzefill": "",
-#    "Copperfill": "",
+    "Bronzefill": "lulzbot.com/store/filament/bronzefill",
+    "Copperfill": "lulzbot.com/store/filament/copperfill",
     # Expert
     "PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
     "HIPS_VP" : "lulzbot.com/store/filament/hips",
