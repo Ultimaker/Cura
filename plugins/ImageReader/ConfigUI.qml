@@ -38,7 +38,6 @@ UM.Dialog
             text: catalog.i18nc("@info:tooltip","The maximum distance of each pixel from \"Base.\"")
             Row {
                 width: parent.width
-                height: childrenRect.height
 
                 Text {
                     text: catalog.i18nc("@action:label","Height (mm)")
@@ -62,7 +61,6 @@ UM.Dialog
             text: catalog.i18nc("@info:tooltip","The base height from the build plate in millimeters.")
             Row {
                 width: parent.width
-                height: childrenRect.height
 
                 Text {
                     text: catalog.i18nc("@action:label","Base (mm)")
@@ -86,7 +84,6 @@ UM.Dialog
             text: catalog.i18nc("@info:tooltip","The width in millimeters on the build plate.")
             Row {
                 width: parent.width
-                height: childrenRect.height
 
                 Text {
                     text: catalog.i18nc("@action:label","Width (mm)")
@@ -111,7 +108,6 @@ UM.Dialog
             text: catalog.i18nc("@info:tooltip","The depth in millimeters on the build plate")
             Row {
                 width: parent.width
-                height: childrenRect.height
 
                 Text {
                     text: catalog.i18nc("@action:label","Depth (mm)")
@@ -135,7 +131,6 @@ UM.Dialog
             text: catalog.i18nc("@info:tooltip","By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh.")
             Row {
                 width: parent.width
-                height: childrenRect.height
 
                 //Empty label so 2 column layout works.
                 Text {
@@ -159,7 +154,6 @@ UM.Dialog
             text: catalog.i18nc("@info:tooltip","The amount of smoothing to apply to the image.")
             Row {
                 width: parent.width
-                height: childrenRect.height
 
                 Text {
                     text: catalog.i18nc("@action:label","Smoothing")
