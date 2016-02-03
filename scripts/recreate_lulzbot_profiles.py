@@ -319,8 +319,8 @@ material_url = {
     "PCTPE": "lulzbot.com/store/filament/pctpe",
     "PC-ABS": "lulzbot.com/store/filament/pc-abs-alloy",
     "T-Glase": "lulzbot.com/store/filament/t-glase",
-#    "Bronzefill": "",
-#    "Copperfill": "",
+    "Bronzefill": "lulzbot.com/store/filament/bronzefill",
+    "Copperfill": "lulzbot.com/store/filament/copperfill",
 
     # Expert
     "PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
@@ -338,9 +338,9 @@ material_url = {
     "ABS_ABS": "lulzbot.com/store/filament/abs",
     "PLA_PLA": "lulzbot.com/store/filament/pla-esun",
     "PLA_PVA": "lulzbot.com/store/filament/natural-pva",
-#    "ABS_HIPS": "",
+    "ABS_HIPS": "lulzbot.com/store/filament/abs",
     "HIPS_HIPS": "lulzbot.com/store/filament/hips",
-#    "PCTPE_PVA": "",
+    "PCTPE_PVA": "lulzbot.com/store/filament/pctpe",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
@@ -349,7 +349,7 @@ material_url = {
 #    "HIPS_cheetah": "",
     "HIPS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
     "HIPS_semiflex": "lulzbot.com/store/filament/semiflex",
-#    "PLA_PVA": "",
+    "PLA_PVA": "lulzbot.com/store/filament/natural-pva",
 }
 
 bed_prep_materials = {
