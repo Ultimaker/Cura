@@ -14,8 +14,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 
-from . import Cura_pb2
-
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
     def get_value(self, key, args, kwargs): # [CodeStyle: get_value is an overridden function from the Formatter class]
