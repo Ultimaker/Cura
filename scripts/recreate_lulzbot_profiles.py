@@ -98,6 +98,7 @@ material_map = {
     "ABS_semiflex" : "ABS-semiflex",
     "ABS_cheetah" : "ABS-cheetah",
     "HIPS_cheetah" : "HIPS-cheetah",
+    "HIPS_ninjaflex" : "HIPS-ninjaflex",
 }
 
 material_order = {
@@ -158,6 +159,7 @@ material_order = {
     "ABS_semiflex":         11,
     "ABS_cheetah" :         12,
     "HIPS_cheetah" :         13,
+    "HIPS_ninjaflex" :      14,
 }
 
 material_types = {
@@ -278,6 +280,7 @@ material_names = {
     "ABS_semiflex" : "ABS & SemiFlex",
     "ABS_cheetah" : "ABS & Cheetah",
     "HIPS_cheetah" : "HIPS & Cheetah",
+    "HIPS_ninjaflex" : "HIPS & Ninjaflex",
 }
 
 material_url = {
@@ -336,6 +339,7 @@ material_url = {
     "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
 #    "ABS_cheetah" : "",
 #    "HIPS_cheetah" : "",
+    "HIPS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
 }
 
 bed_prep_materials = {
