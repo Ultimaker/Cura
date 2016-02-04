@@ -1,6 +1,6 @@
 {
     "id": "ultimaker2",
-    "version": 1, 
+    "version": 1,
     "name": "Ultimaker 2",
     "manufacturer": "Ultimaker",
     "author": "Ultimaker",
@@ -11,14 +11,17 @@
 
     "inherits": "fdmprinter.json",
 
-    
+    "pages": [
+        "SelectUpgradedPartsUM2"
+    ],
+
     "machine_extruder_trains": [
         {
-            "machine_nozzle_heat_up_speed": { 
-                "default": 2.0 
+            "machine_nozzle_heat_up_speed": {
+                "default": 2.0
             },
-            "machine_nozzle_cool_down_speed": { 
-                "default": 2.0 
+            "machine_nozzle_cool_down_speed": {
+                "default": 2.0
             },
             "machine_nozzle_tip_outer_diameter": {
                 "default": 1
@@ -29,7 +32,7 @@
             "machine_nozzle_expansion_angle": {
                 "default": 45
             },
-            "machine_heat_zone_length": { 
+            "machine_heat_zone_length": {
                 "default": 16
             }
         }
@@ -77,7 +80,7 @@
             [[ 115.0, -112.5], [ 108.0, -112.5], [ 110.0, -104.5], [ 115.0, -104.5]]
         ]},
         "machine_platform_offset": { "default": [9.0, 0.0, 0.0] },
-        
+
         "machine_nozzle_tip_outer_diameter": { "default": 1.0 },
         "machine_nozzle_head_distance": { "default": 3.0 },
         "machine_nozzle_expansion_angle": { "default": 45 }
