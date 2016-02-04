@@ -781,11 +781,12 @@ class SceneView(openglGui.glGuiPanel):
 
 	def OnKeyChar(self, keyCode):
 		if self._engineResultView.OnKeyChar(keyCode):
-			return
+			return True
 		if keyCode == wx.WXK_DELETE or keyCode == wx.WXK_NUMPAD_DELETE or (keyCode == wx.WXK_BACK and sys.platform.startswith("darwin")):
 			if self._selectedObj is not None:
 				self._deleteObject(self._selectedObj)
 				self.QueueRefresh()
+			return True
 		if keyCode == wx.WXK_UP:
 			if wx.GetKeyState(wx.WXK_SHIFT):
 				self._zoom /= 1.2
@@ -794,6 +795,7 @@ class SceneView(openglGui.glGuiPanel):
 			else:
 				self._pitch -= 15
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_DOWN:
 			if wx.GetKeyState(wx.WXK_SHIFT):
 				self._zoom *= 1.2
@@ -802,50 +804,62 @@ class SceneView(openglGui.glGuiPanel):
 			else:
 				self._pitch += 15
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_LEFT:
 			self._yaw -= 15
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_RIGHT:
 			self._yaw += 15
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_NUMPAD_ADD or keyCode == wx.WXK_ADD or keyCode == ord('+') or keyCode == ord('='):
 			self._zoom /= 1.2
 			if self._zoom < 1:
 				self._zoom = 1
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_NUMPAD_SUBTRACT or keyCode == wx.WXK_SUBTRACT or keyCode == ord('-'):
 			self._zoom *= 1.2
 			if self._zoom > numpy.max(self._machineSize) * 3:
 				self._zoom = numpy.max(self._machineSize) * 3
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_HOME:
 			self._yaw = 30
 			self._pitch = 60
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_PAGEUP:
 			self._yaw = 0
 			self._pitch = 0
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_PAGEDOWN:
 			self._yaw = 0
 			self._pitch = 90
 			self.QueueRefresh()
+			return True
 		elif keyCode == wx.WXK_END:
 			self._yaw = 90
 			self._pitch = 90
 			self.QueueRefresh()
+			return True
 
 		if keyCode == wx.WXK_F3 and wx.GetKeyState(wx.WXK_SHIFT):
 			shaderEditor(self, self.ShaderUpdate, self._objectLoadShader.getVertexShader(), self._objectLoadShader.getFragmentShader())
+			return True
 		if keyCode == wx.WXK_F4 and wx.GetKeyState(wx.WXK_SHIFT):
 			from collections import defaultdict
 			from gc import get_objects
 			self._beforeLeakTest = defaultdict(int)
 			for i in get_objects():
 				self._beforeLeakTest[type(i)] += 1
+			return True
 		if keyCode == wx.WXK_F6 and wx.GetKeyState(wx.WXK_SHIFT):
 			# Show the WX widget inspection tool
 			wx.lib.inspection.InspectionTool().Show()
+			return True
 		if keyCode == wx.WXK_F5 and wx.GetKeyState(wx.WXK_SHIFT):
 			from collections import defaultdict
 			from gc import get_objects
@@ -855,6 +869,7 @@ class SceneView(openglGui.glGuiPanel):
 			for k in self._afterLeakTest:
 				if self._afterLeakTest[k]-self._beforeLeakTest[k]:
 					print k, self._afterLeakTest[k], self._beforeLeakTest[k], self._afterLeakTest[k] - self._beforeLeakTest[k]
+			return True
 
 	def ShaderUpdate(self, v, f):
 		s = openglHelpers.GLShader(v, f)

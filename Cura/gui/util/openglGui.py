@@ -169,12 +169,11 @@ class glGuiPanel(glcanvas.GLCanvas):
 			self.Refresh()
 
 	def _OnGuiKeyChar(self, e):
-		if self._focus is not None:
-			self._focus.OnKeyChar(e.GetKeyCode())
+		if (self._focus is not None and self._focus.OnKeyChar(e.GetKeyCode())) or \
+		   self.OnKeyChar(e.GetKeyCode()):
 			self.Refresh()
 		else:
-			self.OnKeyChar(e.GetKeyCode())
-		e.Skip()
+			e.Skip()
 
 	def OnFocusLost(self, e):
 		self._focus = None
@@ -186,20 +185,17 @@ class glGuiPanel(glcanvas.GLCanvas):
 			self.Refresh()
 			return
 		self.OnMouseDown(e)
-		e.Skip()
 
 	def _OnGuiMouseUp(self, e):
 		if self._container.OnMouseUp(e.GetX(), e.GetY()):
 			self.Refresh()
 			return
 		self.OnMouseUp(e)
-		e.Skip()
 
 	def _OnGuiMouseMotion(self,e):
 		self.Refresh()
 		if not self._container.OnMouseMotion(e.GetX(), e.GetY()):
 			self.OnMouseMotion(e)
-		e.Skip()
 
 	def _OnGuiPaint(self, e):
 		self._idleCalled = False
@@ -909,12 +905,15 @@ class glNumberCtrl(glGuiControl):
 
 	def OnKeyChar(self, c):
 		self._inCallback = True
+		ret = False
 		if c == wx.WXK_LEFT:
 			self._selectPos -= 1
 			self._selectPos = max(0, self._selectPos)
+			ret = True
 		if c == wx.WXK_RIGHT:
 			self._selectPos += 1
 			self._selectPos = min(self._selectPos, len(self._value))
+			ret = True
 		if c == wx.WXK_UP:
 			try:
 				value = float(self._value)
@@ -924,6 +923,7 @@ class glNumberCtrl(glGuiControl):
 				value += 0.1
 				self._value = str(value)
 				self._callback(self._value)
+			ret = True
 		if c == wx.WXK_DOWN:
 			try:
 				value = float(self._value)
@@ -934,23 +934,29 @@ class glNumberCtrl(glGuiControl):
 				if value > 0:
 					self._value = str(value)
 					self._callback(self._value)
+			ret = True
 		if c == wx.WXK_BACK and self._selectPos > 0:
 			self._value = self._value[0:self._selectPos - 1] + self._value[self._selectPos:]
 			self._selectPos -= 1
 			self._callback(self._value)
+			ret = True
 		if c == wx.WXK_DELETE:
 			self._value = self._value[0:self._selectPos] + self._value[self._selectPos + 1:]
 			self._callback(self._value)
+			ret = True
 		if c == wx.WXK_TAB or c == wx.WXK_NUMPAD_ENTER or c == wx.WXK_RETURN:
 			if wx.GetKeyState(wx.WXK_SHIFT):
 				self.focusPrevious()
 			else:
 				self.focusNext()
+			ret = True
 		if (ord('0') <= c <= ord('9') or c == ord('.')) and len(self._value) < self._maxLen:
 			self._value = self._value[0:self._selectPos] + chr(c) + self._value[self._selectPos:]
 			self._selectPos += 1
 			self._callback(self._value)
+			ret = True
 		self._inCallback = False
+		return ret
 
 	def setFocus(self):
 		self._base._focus = self
