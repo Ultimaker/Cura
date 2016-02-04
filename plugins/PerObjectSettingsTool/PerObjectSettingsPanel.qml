@@ -11,7 +11,6 @@ import UM 1.1 as UM
 Item {
     id: base;
     property int currentIndex: UM.ActiveTool.properties.SelectedIndex;
-    property string printSequence: UM.ActiveTool.properties.PrintSequence;
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
@@ -24,14 +23,6 @@ Item {
         anchors.left: parent.left;
 
         spacing: UM.Theme.sizes.default_margin.height;
-
-        Label {
-            width: UM.Theme.sizes.setting.width;
-            wrapMode: Text.Wrap;
-            text: catalog.i18nc("@label", "Per Object Settings behavior may be unexpected when 'Print sequence' is set to 'All at Once'.")
-            color: UM.Theme.colors.text;
-            visible: base.printSequence == "all_at_once"
-        }
 
         UM.SettingItem {
             id: profileSelection
