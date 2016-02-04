@@ -31,7 +31,14 @@ Item
     Component.onDestruction:
     {
         if (hotendCheckBox.checked == true){
-            UM.MachineManager.setMachineDefinitionType("ultimaker2_olsson")
+            switch(UM.MachineManager.getMachineDefinitionType()) {
+                case "ultimaker2":
+                    UM.MachineManager.setMachineDefinitionType("ultimaker2_olsson")
+                    break;
+                case "ultimaker2_extended":
+                    UM.MachineManager.setMachineDefinitionType("ultimaker2_extended_olsson")
+                    break;
+            }
         }
     }
     Label
