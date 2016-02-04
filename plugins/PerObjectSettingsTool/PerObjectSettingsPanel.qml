@@ -10,7 +10,7 @@ import UM 1.1 as UM
 
 Item {
     id: base;
-    property int currentIndex: UM.ActiveTool.properties.SelectedIndex;
+    property int currentIndex: UM.ActiveTool.properties.getValue("SelectedIndex")
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
@@ -41,8 +41,8 @@ Item {
             value: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).profile
 
             onItemValueChanged: {
-                var item = UM.ActiveTool.properties.Model.getItem(base.currentIndex);
-                UM.ActiveTool.properties.Model.setObjectProfile(item.id, value)
+                var item = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex);
+                UM.ActiveTool.properties.getValue("Model").setObjectProfile(item.id, value)
             }
         }
 
@@ -266,8 +266,8 @@ Item {
                                     height: model.global_only ? 0 : undefined
 
                                     onClicked: {
-                                        var object_id = UM.ActiveTool.properties.Model.getItem(base.currentIndex).id;
-                                        UM.ActiveTool.properties.Model.addSettingOverride(object_id, model.key);
+                                        var object_id = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id;
+                                        UM.ActiveTool.properties.getValue("Model").addSettingOverride(object_id, model.key);
                                         settingPickDialog.visible = false;
                                     }
 
