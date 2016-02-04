@@ -202,6 +202,7 @@ Item {
 
                         width: parent.width;
                         height: childrenRect.height;
+                        visible: model.visible && settingsColumn.height != 0 //If all children are hidden, the height is 0, and then the category header must also be hidden.
 
                         ToolButton {
                             id: categoryHeader;
@@ -237,8 +238,6 @@ Item {
 
                         property variant settingsModel: model.settings;
 
-                        visible: model.visible;
-
                         Column {
                             id: settingsColumn;
 
@@ -272,6 +271,8 @@ Item {
                                     x: model.depth * UM.Theme.sizes.default_margin.width;
                                     text: model.name;
                                     tooltip: model.description;
+                                    visible: !model.global_only
+                                    height: model.global_only ? 0 : undefined
 
                                     onClicked: {
                                         var object_id = UM.ActiveTool.properties.Model.getItem(base.currentIndex).id;
