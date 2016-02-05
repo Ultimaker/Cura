@@ -395,7 +395,7 @@ class MachineCom(object):
 				if re.match('Error:[0-9]\n', line):
 					line = line.rstrip() + self._readline()
 				#Skip the communication errors, as those get corrected.
-				if 'Extruder switched off' in line or 'Temperature heated bed switched off' in line or 'Something is wrong, please turn off the printer.' in line:
+				if 'Extruder switched off' in line or 'Temperature heated bed switched off' in line or 'Something is wrong, please turn off the printer.' in line or 'PROBE FAIL' in line:
 					if not self.isError():
 						self._errorValue = line[6:]
 						self._changeState(self.STATE_ERROR)
