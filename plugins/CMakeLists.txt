@@ -1,0 +1,13 @@
+
+subdirs( 3MFReader )
+subdirs( ChangeLogPlugin )
+subdirs( CuraEngineBackend )
+subdirs( GCodeReader )
+subdirs( GCodeWriter )
+subdirs( LayerView )
+subdirs( PerObjectSettingsTool )
+subdirs( RemovableDriveOutputDevice )
+subdirs( SliceInfoPlugin )
+subdirs( SolidView )
+subdirs( USBPrinting )
+subdirs( XRayView )

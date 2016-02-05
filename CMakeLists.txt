@@ -4,6 +4,13 @@ cmake_minimum_required(VERSION 2.8.12)
 
 include(GNUInstallDirs)
 
+####################
+subdirs( cura )
+subdirs( icons )
+subdirs( plugins )
+subdirs( resources)
+####################
+
 set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
 
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
