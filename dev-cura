@@ -1,3 +1,3 @@
 #!/bin/sh
 ## cura
-PYTHONPATH=$PYTHONPATH:. python ./scripts/linux/cura.py "$@"
+PYTHONPATH=$PYTHONPATH:. exec python ./scripts/linux/cura.py "$@"
