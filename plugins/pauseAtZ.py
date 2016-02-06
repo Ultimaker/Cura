@@ -6,6 +6,7 @@
 #Param: parkX(float:150) Head park X (mm)
 #Param: parkY(float:0) Head park Y (mm)
 #Param: moveZ(float:5) Head move Z (mm)
+#Param: parkMinZ(float:15) Minimum head park Z (mm, abs)
 #Param: retractAmount(float:1) Retraction amount (mm)
 
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
@@ -87,9 +88,9 @@ with open(filename, "w") as f:
 
 				zChanged = False
 				#Change z before doing the move because the nozzle can hit the glass lock on the UM2
-				if z + moveZ < 15:
+				if z + moveZ < parkMinZ:
 					zChanged = True
-					f.write("G1 Z15 F300\n")
+					f.write("G1 Z%f F300\n" % (parkMinZ))
 
 				elif moveZ > 0:
 					newZ = z + moveZ
