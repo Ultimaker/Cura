@@ -10,8 +10,7 @@ import UM 1.1 as UM
 
 Item {
     id: base;
-    property int currentIndex: UM.ActiveTool.properties.SelectedIndex;
-    property string printSequence: UM.ActiveTool.properties.PrintSequence;
+    property int currentIndex: UM.ActiveTool.properties.getValue("SelectedIndex")
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
@@ -24,14 +23,6 @@ Item {
         anchors.left: parent.left;
 
         spacing: UM.Theme.sizes.default_margin.height;
-
-        Label {
-            width: UM.Theme.sizes.setting.width;
-            wrapMode: Text.Wrap;
-            text: catalog.i18nc("@label", "Per Object Settings behavior may be unexpected when 'Print sequence' is set to 'All at Once'.")
-            color: UM.Theme.colors.text;
-            visible: base.printSequence == "all_at_once"
-        }
 
         UM.SettingItem {
             id: profileSelection
@@ -50,8 +41,8 @@ Item {
             value: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).profile
 
             onItemValueChanged: {
-                var item = UM.ActiveTool.properties.Model.getItem(base.currentIndex);
-                UM.ActiveTool.properties.Model.setObjectProfile(item.id, value)
+                var item = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex);
+                UM.ActiveTool.properties.getValue("Model").setObjectProfile(item.id, value)
             }
         }
 
@@ -202,6 +193,7 @@ Item {
 
                         width: parent.width;
                         height: childrenRect.height;
+                        visible: model.visible && settingsColumn.height != 0 //If all children are hidden, the height is 0, and then the category header must also be hidden.
 
                         ToolButton {
                             id: categoryHeader;
@@ -237,8 +229,6 @@ Item {
 
                         property variant settingsModel: model.settings;
 
-                        visible: model.visible;
-
                         Column {
                             id: settingsColumn;
 
@@ -272,10 +262,12 @@ Item {
                                     x: model.depth * UM.Theme.sizes.default_margin.width;
                                     text: model.name;
                                     tooltip: model.description;
+                                    visible: !model.global_only
+                                    height: model.global_only ? 0 : undefined
 
                                     onClicked: {
-                                        var object_id = UM.ActiveTool.properties.Model.getItem(base.currentIndex).id;
-                                        UM.ActiveTool.properties.Model.addSettingOverride(object_id, model.key);
+                                        var object_id = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id;
+                                        UM.ActiveTool.properties.getValue("Model").addSettingOverride(object_id, model.key);
                                         settingPickDialog.visible = false;
                                     }
 

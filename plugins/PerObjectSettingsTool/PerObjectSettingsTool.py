@@ -11,7 +11,7 @@ class PerObjectSettingsTool(Tool):
     def __init__(self):
         super().__init__()
 
-        self.setExposedProperties("Model", "SelectedIndex", "PrintSequence")
+        self.setExposedProperties("Model", "SelectedIndex")
 
     def event(self, event):
         return False
@@ -23,7 +23,3 @@ class PerObjectSettingsTool(Tool):
         selected_object_id = id(Selection.getSelectedObject(0))
         index = self.getModel().find("id", selected_object_id)
         return index
-
-    def getPrintSequence(self):
-        settings = Application.getInstance().getMachineManager().getActiveProfile()
-        return settings.getSettingValue("print_sequence")
