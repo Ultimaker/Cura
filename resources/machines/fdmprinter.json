@@ -1204,7 +1204,7 @@
                 },
                 "support_z_distance": {
                     "label": "Z Distance",
-                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure.",
+                    "description": "Distance from the top/bottom of the support to the print. A small gap here makes it easier to remove the support but makes the print a bit uglier. 0.15mm allows for easier separation of the support structure. The value is rounded down to the nearest multiple of the layer height",
                     "unit": "mm",
                     "type": "float",
                     "min_value": "0",
