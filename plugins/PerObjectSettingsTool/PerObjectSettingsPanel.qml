@@ -193,7 +193,7 @@ Item {
 
                         width: parent.width;
                         height: childrenRect.height;
-                        visible: model.visible && settingsColumn.height != 0 //If all children are hidden, the height is 0, and then the category header must also be hidden.
+                        visible: model.visible && settingsColumn.childrenHeight != 0 //If all children are hidden, the height is 0, and then the category header must also be hidden.
 
                         ToolButton {
                             id: categoryHeader;
