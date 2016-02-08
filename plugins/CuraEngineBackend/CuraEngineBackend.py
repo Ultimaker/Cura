@@ -76,6 +76,8 @@ class CuraEngineBackend(Backend):
 
         self._message = None
 
+        self.backendQuit.connect(self._onBackendQuit)
+
         self.backendConnected.connect(self._onBackendConnected)
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
         Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
@@ -151,6 +153,7 @@ class CuraEngineBackend(Backend):
             Logger.log("d", "Killing engine process")
             try:
                 self._process.terminate()
+                self._process = None
             except: # terminating a process that is already terminating causes an exception, silently ignore this.
                 pass
 
@@ -265,3 +268,8 @@ class CuraEngineBackend(Backend):
     def _onInstanceChanged(self):
         self._terminate()
         self.slicingCancelled.emit()
+
+    def _onBackendQuit(self):
+        if not self._restart and self._process:
+            self._process = None
+            self._createSocket()
