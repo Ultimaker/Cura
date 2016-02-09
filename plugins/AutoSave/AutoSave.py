@@ -26,8 +26,10 @@ class AutoSave(Extension):
         Application
         self._onActiveProfileChanged()
 
+        Preferences.getInstance().addPreference("cura/autosave_delay", 1000 * 10)
+
         self._change_timer = QTimer()
-        self._change_timer.setInterval(1000 * 60)
+        self._change_timer.setInterval(Preferences.getInstance().getValue("cura/autosave_delay"))
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self._onTimeout)
 
