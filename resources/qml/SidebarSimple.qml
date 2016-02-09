@@ -162,7 +162,7 @@ Item
                 var density = parseInt(UM.ActiveProfile.settingValues.infill_sparse_density);
                 for(var i = 0; i < infillModel.count; ++i)
                 {
-                    if(infillModel.get(i).percentage == density)
+                    if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
                     {
                         return i;
                     }
@@ -235,24 +235,32 @@ Item
                 infillModel.append({
                     name: catalog.i18nc("@label", "Hollow"),
                     percentage: 0,
+                    percentageMin: -1,
+                    percentageMax: 0,
                     text: catalog.i18nc("@label", "No (0%) infill will leave your model hollow at the cost of low strength"),
                     icon: "hollow"
                 })
                 infillModel.append({
                     name: catalog.i18nc("@label", "Light"),
                     percentage: 20,
+                    percentageMin: 0,
+                    percentageMax: 30,
                     text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
                     icon: "sparse"
                 })
                 infillModel.append({
                     name: catalog.i18nc("@label", "Dense"),
                     percentage: 50,
+                    percentageMin: 30,
+                    percentageMax: 70,
                     text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
                     icon: "dense"
                 })
                 infillModel.append({
                     name: catalog.i18nc("@label", "Solid"),
                     percentage: 100,
+                    percentageMin: 70,
+                    percentageMax: 100,
                     text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
                     icon: "solid"
                 })

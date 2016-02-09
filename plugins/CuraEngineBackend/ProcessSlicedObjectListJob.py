@@ -44,7 +44,7 @@ class ProcessSlicedObjectListJob(Job):
                     object_id_map[id(node)] = node
             Job.yieldThread()
 
-        settings = Application.getInstance().getMachineManager().getActiveProfile()
+        settings = Application.getInstance().getMachineManager().getWorkingProfile()
 
         center = None
         if not settings.getSettingValue("machine_center_is_zero"):

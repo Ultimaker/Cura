@@ -40,7 +40,7 @@ class GCodeWriter(MeshWriter):
         if gcode_list:
             for gcode in gcode_list:
                 stream.write(gcode)
-            profile = self._serialiseProfile(Application.getInstance().getMachineManager().getActiveProfile()) #Serialise the profile and put them at the end of the file.
+            profile = self._serialiseProfile(Application.getInstance().getMachineManager().getWorkingProfile()) #Serialise the profile and put them at the end of the file.
             stream.write(profile)
             return True
 

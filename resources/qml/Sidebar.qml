@@ -14,6 +14,7 @@ Rectangle
 
     property Action addMachineAction;
     property Action configureMachinesAction;
+    property Action addProfileAction;
     property Action manageProfilesAction;
     property int currentModeIndex;
 
@@ -63,6 +64,7 @@ Rectangle
 
     ProfileSetup {
         id: profileItem
+        addProfileAction: base.addProfileAction
         manageProfilesAction: base.manageProfilesAction
         anchors.top: settingsModeSelection.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height 

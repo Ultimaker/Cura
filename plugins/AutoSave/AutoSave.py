@@ -19,7 +19,7 @@ class AutoSave(Extension):
 
         self._profile = None
         machine_manager.activeProfileChanged.connect(self._onActiveProfileChanged)
-        machine_manager.profileNameChanged.connect(self._onProfilesChanged)
+        machine_manager.profileNameChanged.connect(self._onProfileNameChanged)
         machine_manager.profilesChanged.connect(self._onProfilesChanged)
         machine_manager.machineInstanceNameChanged.connect(self._onInstanceNameChanged)
         machine_manager.machineInstancesChanged.connect(self._onInstancesChanged)
@@ -47,10 +47,13 @@ class AutoSave(Extension):
         if self._profile:
             self._profile.settingValueChanged.disconnect(self._onSettingValueChanged)
 
-        self._profile = Application.getInstance().getMachineManager().getActiveProfile()
+        self._profile = Application.getInstance().getMachineManager().getWorkingProfile()
 
         if self._profile:
             self._profile.settingValueChanged.connect(self._onSettingValueChanged)
+
+    def _onProfileNameChanged(self, name):
+        self._onProfilesChanged()
 
     def _onProfilesChanged(self):
         self._save_profiles = True

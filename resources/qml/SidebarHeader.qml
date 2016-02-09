@@ -146,4 +146,57 @@ Item
             }
         }
     }
+
+    Rectangle {
+        id: materialSelectionRow
+        anchors.top: variantRow.bottom
+        anchors.topMargin: UM.MachineManager.hasMaterials ? UM.Theme.sizes.default_margin.height : 0
+        width: base.width
+        height: UM.MachineManager.hasMaterials ? UM.Theme.sizes.sidebar_setup.height : 0
+        visible: UM.MachineManager.hasMaterials
+
+        Label{
+            id: materialSelectionLabel
+            text: catalog.i18nc("@label","Material:");
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width/100*45
+            font: UM.Theme.fonts.default;
+            color: UM.Theme.colors.text;
+        }
+
+        ToolButton {
+            id: materialSelection
+            text: UM.MachineManager.activeMaterial
+            width: parent.width/100*55
+            height: UM.Theme.sizes.setting_control.height
+            tooltip: UM.MachineManager.activeMaterial;
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.verticalCenter: parent.verticalCenter
+            style: UM.Theme.styles.sidebar_header_button
+
+            menu: Menu
+            {
+                id: materialSelectionMenu
+                Instantiator
+                {
+                    model: UM.MachineMaterialsModel { id: machineMaterialsModel }
+                    MenuItem
+                    {
+                        text: model.name;
+                        checkable: true;
+                        checked: model.active;
+                        exclusiveGroup: materialSelectionMenuGroup;
+                        onTriggered: UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name)
+                    }
+                    onObjectAdded: materialSelectionMenu.insertItem(index, object)
+                    onObjectRemoved: materialSelectionMenu.removeItem(object)
+                }
+
+                ExclusiveGroup { id: materialSelectionMenuGroup; }
+            }
+        }
+    }
 }

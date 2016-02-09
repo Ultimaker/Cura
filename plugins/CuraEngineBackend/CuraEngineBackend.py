@@ -183,7 +183,7 @@ class CuraEngineBackend(Backend):
         if self._profile:
             self._profile.settingValueChanged.disconnect(self._onSettingChanged)
 
-        self._profile = Application.getInstance().getMachineManager().getActiveProfile()
+        self._profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if self._profile:
             self._profile.settingValueChanged.connect(self._onSettingChanged)
             self._onChanged()

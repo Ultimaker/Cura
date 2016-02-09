@@ -230,6 +230,7 @@ UM.MainWindow
 
                 MenuSeparator { }
 
+                MenuItem { action: actions.addProfile; }
                 MenuItem { action: actions.manageProfiles; }
             }
 
@@ -461,6 +462,7 @@ UM.MainWindow
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
+                addProfileAction: actions.addProfile;
                 manageProfilesAction: actions.manageProfiles;
             }
 
@@ -578,6 +580,7 @@ UM.MainWindow
         reloadAll.onTriggered: Printer.reloadAll()
 
         addMachine.onTriggered: addMachineWizard.visible = true;
+        addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.visible = true; preferences.setPage(4); }
 
         preferences.onTriggered: { preferences.visible = true; preferences.setPage(0); }
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
@@ -669,7 +672,6 @@ UM.MainWindow
     {
         id: addMachineWizard
     }
-
 
     AboutDialog
     {

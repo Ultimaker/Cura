@@ -146,7 +146,7 @@ class BuildVolume(SceneNode):
 
         skirt_size = 0.0
 
-        profile = Application.getInstance().getMachineManager().getActiveProfile()
+        profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if profile:
             skirt_size = self._getSkirtSize(profile)
 
@@ -176,7 +176,7 @@ class BuildVolume(SceneNode):
         if self._active_profile:
             self._active_profile.settingValueChanged.disconnect(self._onSettingValueChanged)
 
-        self._active_profile = Application.getInstance().getMachineManager().getActiveProfile()
+        self._active_profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if self._active_profile:
             self._active_profile.settingValueChanged.connect(self._onSettingValueChanged)
             self._updateDisallowedAreas()
