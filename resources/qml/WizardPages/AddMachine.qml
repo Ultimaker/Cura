@@ -20,42 +20,12 @@ Item
     onVisibilityChanged:
     {
         machineName.text = getMachineName()
-        errorMessage.show = false
-    }
-
-    function editMachineName(word)
-    {
-        //Adds '#2' at the end or increases the number by 1 if the word ends with '#' and 1 or more digits
-        var regEx = /[#][\d]+$///ends with '#' and then 1 or more digit
-        var result = word.match(regEx)
-
-        if (result != null)
-        {
-            result = result[0].split('')
-
-            var numberString = ''
-            for (var i = 1; i < result.length; i++){//starting at 1, makes it ignore the '#'
-                numberString += result[i]
-            }
-            var newNumber = Number(numberString) + 1
-
-            var newWord = word.replace(/[\d]+$/, newNumber)//replaces the last digits in the string by the same number + 1
-            return newWord
-        }
-        else {
-            return word + ' #2'
-        }
     }
 
     function getMachineName()
     {
         var name = machineList.model.getItem(machineList.currentIndex).name
 
-        //if the automatically assigned name is not unique, the editMachineName function keeps editing it untill it is.
-        while (UM.MachineManager.checkInstanceExists(name) != false)
-        {
-            name = editMachineName(name)
-        }
         return name
     }
 
@@ -65,20 +35,14 @@ Item
         onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
         {
             var name = machineName.text
-            if (UM.MachineManager.checkInstanceExists(name) != false)
+
+            var old_page_count = base.wizard.getPageCount()
+            // Delete old pages (if any)
+            for (var i = old_page_count - 1; i > 0; i--)
             {
-                errorMessage.show = true
+                base.wizard.removePage(i)
             }
-            else
-            {
-                var old_page_count = base.wizard.getPageCount()
-                // Delete old pages (if any)
-                for (var i = old_page_count - 1; i > 0; i--)
-                {
-                    base.wizard.removePage(i)
-                }
-                saveMachine()
-            }
+            saveMachine()
         }
         onBackClicked:
         {
@@ -218,26 +182,6 @@ Item
     {
         id: machineNameHolder
         anchors.bottom: parent.bottom;
-        //height: insertNameLabel.lineHeight * (2 + errorMessage.lineCount)
-
-        Item
-        {
-            height: errorMessage.lineHeight
-            anchors.bottom: insertNameLabel.top
-            anchors.bottomMargin: insertNameLabel.height * errorMessage.lineCount
-            Label
-            {
-                id: errorMessage
-                property bool show: false
-                width: base.width
-                height: errorMessage.show ? errorMessage.lineHeight : 0
-                visible: errorMessage.show
-                text: catalog.i18nc("@label", "This printer name has already been used. Please choose a different printer name.");
-                wrapMode: Text.WordWrap
-                Behavior on height {NumberAnimation {duration: 75; }}
-                color: UM.Theme.colors.error
-            }
-        }
 
         Label
         {
