@@ -23,18 +23,21 @@ class RemovableDriveOutputDevice(OutputDevice):
         self.setIconName("save_sd")
         self.setPriority(1)
 
-        Preferences.getInstance().addPreference("removable_drive/file_type", "text/x-gcode") #Add a preference that says in what file type we should store the file.
-
         self._writing = False
 
     def requestWrite(self, node, file_name = None):
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
-        file_type = Preferences.getInstance().getValue("removable_drive/file_type")
-        gcode_writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_type)
-        if not gcode_writer:
-            Logger.log("e", "Could not find writer for MIME type %s, not writing to removable drive %s", file_type, self.getName())
+        file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite() #Formats supported by this application.
+        machine_file_formats = Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getFileFormats()
+        for file_format in file_formats:
+            if file_format["mime_type"] in machine_file_formats:
+                writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_format["mime_type"])
+                extension = file_format["extension"]
+                break #We have a valid mesh writer, supported by the machine. Just pick the first one.
+        else:
+            Logger.log("e", "None of the file formats supported by this machine are supported by the application!")
             raise OutputDeviceError.WriteRequestFailedError()
 
         if file_name == None:
@@ -48,12 +51,14 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("e", "Could not determine a proper file name when trying to write to %s, aborting", self.getName())
             raise OutputDeviceError.WriteRequestFailedError()
 
-        file_name = os.path.join(self.getId(), os.path.splitext(file_name)[0] + ".gcode")
+        if extension: #Not empty string.
+            extension = "." + extension
+        file_name = os.path.join(self.getId(), os.path.splitext(file_name)[0] + extension)
 
         try:
             Logger.log("d", "Writing to %s", file_name)
             stream = open(file_name, "wt")
-            job = WriteMeshJob(gcode_writer, stream, node, MeshWriter.OutputMode.TextMode)
+            job = WriteMeshJob(writer, stream, node, MeshWriter.OutputMode.TextMode)
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
