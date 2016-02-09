@@ -76,8 +76,8 @@ material_map = {
     "PP-Conductive": "protopasta-conductive-PLA",
     "HIPS_VP": "HIPS",
     "PC_VP": "polycarbonate",
-    "618-Nylon": "618-645-nylon",
-    "645-Nylon": "618-645-nylon",
+    "618-Nylon": "618-nylon",
+    "645-Nylon": "645-nylon",
     
     # Flexystruder (Expert)
     "ninjaflex": "ninjaflex",
