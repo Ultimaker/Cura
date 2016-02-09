@@ -2,7 +2,7 @@
     "version": 1,
     "id": "dual_extrusion",
     "name": "Dual Extrusion Base File",
-    "file_formats": "text/x-gcode;application/sla;prs.wavefront-obj;application/octet-stream",
+    "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
     "inherits": "fdmprinter.json",
 
     "visible": false,

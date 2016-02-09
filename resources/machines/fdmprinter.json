@@ -5,7 +5,7 @@
     "name": "FDM Printer Base Description",
     "author": "Ultimaker B.V.",
     "manufacturer": "Ultimaker",
-    "file_formats": "text/x-gcode;application/sla;prs.wavefront-obj;application/octet-stream",
+    "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
 
     "add_pages": [],
 

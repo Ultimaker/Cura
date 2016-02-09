@@ -6,7 +6,7 @@
     "author": "Other",
     "icon": "icon_ultimaker2.png",
     "platform": "makerstarter_platform.stl",
-    "file_formats": "text/x-gcode;application/sla;prs.wavefront-obj",
+    "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
     "inherits": "fdmprinter.json",
 
     "machine_settings": {
