@@ -5,6 +5,7 @@
     "name": "FDM Printer Base Description",
     "author": "Ultimaker B.V.",
     "manufacturer": "Ultimaker",
+    "file_formats": "text/x-gcode;application/sla;prs.wavefront-obj;application/octet-stream",
 
     "add_pages": [],
 
@@ -174,12 +175,6 @@
         "gantry_height": {
             "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
             "default": 99999999999,
-            "global_only": true
-        },
-        "machine_file_formats": {
-            "description": "The file formats that this printer is able to read.",
-            "type": "string",
-            "default": "text/x-gcode;application/sla;prs.wavefront-obj;application/octet-stream",
             "global_only": true
         }
     },

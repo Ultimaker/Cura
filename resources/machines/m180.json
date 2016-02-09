@@ -5,6 +5,7 @@
     "manufacturer": "Other",
     "icon": "icon_ultimaker.png",
     "platform": "",
+    "file_formats": "text/x-gcode",
     "inherits": "fdmprinter.json",
 
     "machine_settings": {
@@ -24,10 +25,7 @@
         "gantry_height": { "default": 55 },
         "machine_gcode_flavor": { "default": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": { "default": "M136\nM73 P0\nM103\nG21\nG90\nM320\n;(**** begin homing ****)\nG162 X Y F4000\nG161 Z F3500\nG92 Z-5\nG1 Z0.0\nG161 Z F100\nM132 X Y Z A B\n;(**** end homing ****)\nG92 X147 Y66 Z5\nG1 X105 Y-60 Z10 F4000.0\nG130 X127 Y127 A127 B127\nG0 X105 Y-60\nG1 Z0.3 F300\nG92 E0\nG1 X100 E10 F300\nG92 E0\nG1 Z0.0 F300\nM320" },
-        "machine_end_gcode": { "default": "G92 Z0\nG1 Z10 F400\nM18\nM109 S0 T0\nM104 S0 T0\nM73 P100 (end  build progress)\nG162 X Y F3000\nM18" },
-        "machine_file_formats": {
-            "default": "application/octet-stream",
-        }
+        "machine_end_gcode": { "default": "G92 Z0\nG1 Z10 F400\nM18\nM109 S0 T0\nM104 S0 T0\nM73 P100 (end  build progress)\nG162 X Y F3000\nM18" }
     },
 
     "overrides": {

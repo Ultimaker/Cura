@@ -6,7 +6,7 @@
     "author": "Ultimaker",
     "platform": "ultimaker2_platform.obj",
     "platform_texture": "ultimaker2plus_backplate.png",
-
+    "file_formats": "text/x-gcode",
     "inherits": "ultimaker2plus.json",
 
     "variant": "0.25 mm",
