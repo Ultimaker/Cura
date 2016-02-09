@@ -46,7 +46,7 @@ material_map = {
     "PLA_eSUN": "PLA",
     "PLA_VP": "PLA",
     "nGen": "nGen",
-    "PLA_PHA": "PLA_PHA",
+    "PLA_PHA": "PLA",
     
     # Intermediate
     "ABS_VP": "ABS",
