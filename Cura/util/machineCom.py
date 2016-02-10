@@ -483,14 +483,16 @@ class MachineCom(object):
 				if time.time() > timeout:
 					self.close()
 			elif self._state == self.STATE_OPERATIONAL:
-				#Request the temperature on comm timeout (every 2 seconds) when we are not printing.
-				if line == '':
+				# Request the temperature on comm timeout (every 2 seconds) when we are not printing.
+				# unless we had a temperature feedback (from M109 or M190 for example)
+				if line == '' and time.time() > tempRequestTimeout:
 					if self._extruderCount > 0:
 						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
 						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
 					else:
 						self.sendCommand("M105")
-					tempRequestTimeout = time.time() + 5
+					# set timeout to less than 2 seconds to make sure it always triggers when comm times out
+					tempRequestTimeout = time.time() + 1.5
 				elif 'ok' in line:
 					self.receivedOK()
 				elif 'start' in line:
