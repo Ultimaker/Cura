@@ -25,20 +25,19 @@ class RemovableDriveOutputDevice(OutputDevice):
 
         self._writing = False
 
-    def requestWrite(self, node, file_name = None):
+    def requestWrite(self, node, file_name = None, filter_by_machine = False):
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
         file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite() #Formats supported by this application.
-        machine_file_formats = Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getFileFormats()
-        for file_format in file_formats:
-            if file_format["mime_type"] in machine_file_formats:
-                writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_format["mime_type"])
-                extension = file_format["extension"]
-                break #We have a valid mesh writer, supported by the machine. Just pick the first one.
-        else:
-            Logger.log("e", "None of the file formats supported by this machine are supported by the application!")
+        if filter_by_machine:
+            machine_file_formats = Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getFileFormats()
+            file_formats = list(filter(lambda file_format: file_format["mime_type"] in machine_file_formats, file_formats)) #Take the intersection between file_formats and machine_file_formats.
+        if len(file_formats) == 0:
+            Logger.log("e", "There are no file formats available to write with!")
             raise OutputDeviceError.WriteRequestFailedError()
+        writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"]) #Just take the first file format available.
+        extension = file_format[0]["extension"]
 
         if file_name == None:
             for n in BreadthFirstIterator(node):
