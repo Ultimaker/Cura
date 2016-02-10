@@ -150,9 +150,6 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
-        if "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION" not in os.environ or os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] != "cpp":
-            Logger.log("w", "Using Python implementation of Protobuf, expect bad performance!")
-
         self._i18n_catalog = i18nCatalog("cura");
 
         i18nCatalog.setTagReplacements({
