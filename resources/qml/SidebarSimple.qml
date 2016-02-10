@@ -159,7 +159,7 @@ Item
                     return -1;
                 }
 
-                var density = parseInt(UM.ActiveProfile.settingValues.infill_sparse_density);
+                var density = parseInt(UM.ActiveProfile.settingValues.getValue("infill_sparse_density"));
                 for(var i = 0; i < infillModel.count; ++i)
                 {
                     if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
@@ -303,7 +303,7 @@ Item
             text: catalog.i18nc("@option:check","Generate Brim");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("adhesion_type") == "brim" : false;
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
@@ -337,7 +337,7 @@ Item
             text: catalog.i18nc("@option:check","Generate Support Structure");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.support_enable : false;
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_enable") : false;
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
