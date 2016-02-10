@@ -8,7 +8,7 @@
 #Param: moveZ(float:5) Head move Z (mm)
 #Param: parkMinZ(float:15) Minimum head park Z (mm, abs)
 #Param: retractAmount(float:1) Retraction amount (mm)
-#Param: homeX(bool:true) Re-home X on restart
+#Param: homeX(bool:false) Re-home X on restart
 #Param: homeY(bool:false) Re-home Y on restart
 
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
