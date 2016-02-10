@@ -67,6 +67,7 @@ class pluginPanel(wx.Panel):
 		for p in self.panelList:
 			p.Show(False)
 			self.pluginEnabledPanel.GetSizer().Detach(p)
+			p.Destroy()
 		self.panelList = []
 		for pluginConfig in self.pluginConfig:
 			self._buildPluginPanel(pluginConfig)
@@ -175,10 +176,11 @@ class pluginPanel(wx.Panel):
 		panel.Show(False)
 		for p in self.panelList:
 			sizer.Detach(p)
-			p.Destroy()
-		self.panelList.pop(idx)
+
+		p = self.panelList.pop(idx)
+		p.Destroy()
 		for p in self.panelList:
-				sizer.Add(p, flag=wx.EXPAND)
+			sizer.Add(p, flag=wx.EXPAND)
 
 		self.pluginEnabledPanel.Layout()
 		self.pluginEnabledPanel.SetSize((1,1))
