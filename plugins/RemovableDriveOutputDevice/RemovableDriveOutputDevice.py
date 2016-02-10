@@ -37,7 +37,7 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("e", "There are no file formats available to write with!")
             raise OutputDeviceError.WriteRequestFailedError()
         writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"]) #Just take the first file format available.
-        extension = file_format[0]["extension"]
+        extension = file_formats[0]["extension"]
 
         if file_name == None:
             for n in BreadthFirstIterator(node):
