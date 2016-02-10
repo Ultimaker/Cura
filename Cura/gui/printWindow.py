@@ -298,11 +298,13 @@ class printWindowPlugin(wx.Frame):
 				if self._termHistoryIdx < 0:
 					self._termHistoryIdx = len(self._termHistory) - 1
 				self._termInput.SetValue(self._termHistory[self._termHistoryIdx])
+				return
 			if e.GetKeyCode() == wx.WXK_DOWN:
 				self._termHistoryIdx -= 1
 				if self._termHistoryIdx >= len(self._termHistory):
 					self._termHistoryIdx = 0
 				self._termInput.SetValue(self._termHistory[self._termHistoryIdx])
+				return
 		e.Skip()
 
 	def _addTermLog(self, line):
@@ -921,11 +923,13 @@ class printWindowAdvanced(wx.Frame):
 				if self._termHistoryIdx < 0:
 					self._termHistoryIdx = len(self._termHistory) - 1
 				self._termInput.SetValue(self._termHistory[self._termHistoryIdx])
+				return
 			if e.GetKeyCode() == wx.WXK_DOWN:
 				self._termHistoryIdx -= 1
 				if self._termHistoryIdx >= len(self._termHistory):
 					self._termHistoryIdx = 0
 				self._termInput.SetValue(self._termHistory[self._termHistoryIdx])
+				return
 		e.Skip()
 
 	def _addTermLog(self, line):
