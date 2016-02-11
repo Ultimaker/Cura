@@ -14,24 +14,24 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
 
     addConnectionSignal = Signal()
 
+    ##  Start looking for devices on network.
     def start(self):
         self._browser = ServiceBrowser(Zeroconf(), u'_ultimaker._tcp.local.', [self._onServiceChanged])
 
+    ##  Stop looking for devices on network.
     def stop(self):
         self._zero_conf.close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addConnection(self, name, address, properties):
-        connection = WifiConnection.WifiConnection(address, properties)
-        connection.connect()
-        self._connections[address] = connection
-        if address == "10.180.1.23": #DEBUG
-        #if address == "10.180.0.249": #DEBUG
-            connection.startPrint()
+        if address == "10.180.1.30": #DEBUG
+            connection = WifiConnection.WifiConnection(address, properties)
+            connection.connect()
+            self._connections[address] = connection
             connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
     def _onPrinterConnectionStateChanged(self, address):
-        print(self._connections[address].isConnected())
+        print("_onPrinterConnectionStateChanged" , self._connections[address].isConnected())
         if self._connections[address].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._connections[address])
         else:
@@ -49,5 +49,6 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
                     self.addConnectionSignal.emit(str(name), address, info.properties)
 
         elif state_change == ServiceStateChange.Removed:
-            print("Device disconnected")
-        #print("HERP DERP")
+            info = zeroconf.get_service_info(service_type, name)
+            address = '.'.join(map(lambda n: str(n), info.address))
+            print("Device disconnected: ", address)
