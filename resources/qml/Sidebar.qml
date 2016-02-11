@@ -229,7 +229,11 @@ Rectangle
     {
         id: sidebarSimple;
         visible: false;
+
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
     }
+
     SidebarAdvanced
     {
         id: sidebarAdvanced;
