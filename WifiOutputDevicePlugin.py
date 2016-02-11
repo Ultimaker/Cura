@@ -31,7 +31,6 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
             connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
     def _onPrinterConnectionStateChanged(self, address):
-        print("_onPrinterConnectionStateChanged" , self._connections[address].isConnected())
         if self._connections[address].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._connections[address])
         else:
@@ -51,4 +50,3 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
         elif state_change == ServiceStateChange.Removed:
             info = zeroconf.get_service_info(service_type, name)
             address = '.'.join(map(lambda n: str(n), info.address))
-            print("Device disconnected: ", address)
