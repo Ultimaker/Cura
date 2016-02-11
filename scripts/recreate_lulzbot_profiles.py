@@ -296,7 +296,7 @@ material_url = {
     "HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
     "PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
     "PLA_VP": "lulzbot.com/store/filament/pla-village",
-#    "nGen": "",
+    "nGen": "lulzbot.com/store/filament/ngen",
 #    "PLA_PHA": "",
 
     # Intermediate
@@ -307,7 +307,7 @@ material_url = {
     "Bamboofill": "lulzbot.com/store/filament/bamboofill",
     "Woodfill": "lulzbot.com/store/filament/woodfill",
 #    "Corkfill": "",
-#    "PP-Coffee": "",
+    "PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
 #    "PP-HT-PLA": "",
 
     # Advanced
