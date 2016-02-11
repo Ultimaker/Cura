@@ -84,7 +84,7 @@ Rectangle {
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
-                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, Printer.jobName)
+                UM.OutputDeviceManager.requestWriteToDevice(UM.OutputDeviceManager.activeDevice, Printer.jobName, true)
             }
 
             style: ButtonStyle {

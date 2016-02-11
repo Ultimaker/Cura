@@ -249,7 +249,6 @@ class CuraEngineBackend(Backend):
 
     def _onToolOperationStopped(self, tool):
         self._enabled = True # Tool stop, start listening for changes again.
-        self._onChanged()
 
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
