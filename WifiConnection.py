@@ -14,9 +14,10 @@ from UM.Logger import Logger
 i18n_catalog = i18nCatalog("cura")
 
 class WifiConnection(OutputDevice, SignalEmitter):
-    def __init__(self, address, info):
-        super().__init__(address)
+    def __init__(self, key, address, info):
+        super().__init__(key)
         self._address = address
+        self._key = key
         self._info = info
         self._http_lock = threading.Lock()
         self._http_connection = None
@@ -30,13 +31,15 @@ class WifiConnection(OutputDevice, SignalEmitter):
 
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
-        self.connect()
-        self.setName(address)
+        self.setName(key)
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print with WIFI"))
         self.setDescription(i18n_catalog.i18nc("@info:tooltip", "Print with WIFI"))
         self.setIconName("print")
 
     connectionStateChanged = Signal()
+
+    def getKey(self):
+        return self._key
 
     def isConnected(self):
         return self._is_connected
@@ -54,12 +57,15 @@ class WifiConnection(OutputDevice, SignalEmitter):
     def _update(self):
         while self._thread:
             self.setConnectionState(True)
-            reply = self._httpGet("printer")
-            if reply.status_code == 200:
-                self._json_printer_state = reply.json()
-                if not self._is_connected:
-                    self.setConnectionState(True)
-            else:
+            try:
+                reply = self._httpGet("printer")
+                if reply.status_code == 200:
+                    self._json_printer_state = reply.json()
+                    if not self._is_connected:
+                        self.setConnectionState(True)
+                else:
+                    self.setConnectionState(False)
+            except:
                 self.setConnectionState(False)
             time.sleep(1)
 

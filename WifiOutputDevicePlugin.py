@@ -3,6 +3,7 @@ from . import WifiConnection
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange
 from UM.Signal import Signal, SignalEmitter
+from UM.Application import Application
 
 class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def __init__(self):
@@ -11,7 +12,7 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
         self._browser = None
         self._connections = {}
         self.addConnectionSignal.connect(self.addConnection) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineInstanceChanged)
     addConnectionSignal = Signal()
 
     ##  Start looking for devices on network.
@@ -22,13 +23,23 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def stop(self):
         self._zero_conf.close()
 
+    def _onActiveMachineInstanceChanged(self):
+        active_machine_key = Application.getInstance().getMachineManager().getActiveMachineInstance().getKey()
+        for address in self._connections:
+            if self._connections[address].getKey() == active_machine_key:
+                self._connections[address].connect()
+                self._connections[address].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+            else:
+                self._connections[address].close()
+        print("on active machine instance changed" , active_machine_key)
+
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addConnection(self, name, address, properties):
-        if address == "10.180.1.30": #DEBUG
-            connection = WifiConnection.WifiConnection(address, properties)
-            connection.connect()
-            self._connections[address] = connection
-            connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+        connection = WifiConnection.WifiConnection(name, address, properties)
+        self._connections[address] = connection
+        if connection.getKey() == Application.getInstance().getMachineManager().getActiveMachineInstance().getKey():
+            self._connections[address].connect()
+        connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
     def _onPrinterConnectionStateChanged(self, address):
         if self._connections[address].isConnected():
