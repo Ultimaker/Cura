@@ -697,7 +697,7 @@ class MachineCom(object):
 		self._printSection = 'CUSTOM'
 		self._changeState(self.STATE_PRINTING)
 		self._printStartTime = time.time()
-		for i in xrange(0, 4):
+		for i in xrange(len(self._currentCommands), 4):
 			self._sendNext()
 	
 	def cancelPrint(self):
@@ -707,7 +707,7 @@ class MachineCom(object):
 	def setPause(self, pause):
 		if not pause and self.isPaused():
 			self._changeState(self.STATE_PRINTING)
-			for i in xrange(0, 4):
+			for i in xrange(len(self._currentCommands), 4):
 				if not self._commandQueue.empty():
 					self._sendCommand(self._commandQueue.get())
 				else:
