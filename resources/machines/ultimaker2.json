@@ -87,6 +87,10 @@
         "material_print_temperature": { "enabled": "False" },
         "material_bed_temperature": { "enabled": "False" },
         "material_diameter": { "enabled": "False" },
-        "material_flow": { "enabled": "False" }
+        "material_flow": { "enabled": "False" },
+        "retraction_amount": { "enabled": "False" },
+        "retraction_speed": { "enabled": "False" },
+        "retraction_retract_speed": { "enabled": "False" },
+        "retraction_prime_speed": { "enabled": "False" }
     }
 }
