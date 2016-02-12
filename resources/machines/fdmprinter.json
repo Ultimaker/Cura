@@ -1437,7 +1437,7 @@
                     "min_value": "0",
                     "max_value_warning": "10",
                     "visible": false,
-                    "enabled": "support_enable",
+                    "enabled": "support_enable and support_use_towers",
                     "children": {
                         "support_minimal_diameter": {
                             "label": "Minimum Diameter",
@@ -1450,7 +1450,7 @@
                             "max_value": "support_tower_diameter",
                             "inherit": true,
                             "visible": false,
-                            "enabled": "support_enable"
+                            "enabled": "support_enable and support_use_towers"
                         }
                     }
                 },
