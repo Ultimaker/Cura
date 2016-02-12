@@ -497,6 +497,7 @@ class MachineCom(object):
 					self.receivedOK()
 				elif 'start' in line:
 					self._currentCommands = []
+					timeout = time.time() + 30
 			elif self._state == self.STATE_PRINTING:
 				#Even when printing request the temperature every 5 seconds.
 				if time.time() > tempRequestTimeout:
@@ -511,19 +512,20 @@ class MachineCom(object):
 					line = 'ok'
 				if 'ok' in line:
 					self.receivedOK()
-					timeout = time.time() + 5
+					timeout = time.time() + 30
 					if not self._commandQueue.empty():
 						self._sendCommand(self._commandQueue.get())
 					else:
 						self._sendNext()
 					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
 					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
-						# Long command detected. Timeout is now set to 60s to avoid forcing 'ok'
-						# every 5 seconds while it's not needed
-						timeout = time.time() + 60
+						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
+						# every 30 seconds while it's not needed
+						timeout = time.time() + 600
 
 				elif 'start' in line:
 					self._currentCommands = []
+					timeout = time.time() + 30
 				elif "resend" in line.lower() or "rs" in line:
 					newPos = self._gcodePos
 					try:
@@ -552,11 +554,12 @@ class MachineCom(object):
 					line = 'ok'
 				if 'ok' in line:
 					self.receivedOK()
-					timeout = time.time() + 5
+					timeout = time.time() + 30
 					if not self._commandQueue.empty():
 						self._sendCommand(self._commandQueue.get())
 				elif 'start' in line:
 					self._currentCommands = []
+					timeout = time.time() + 30
 
 		self._log("Connection closed, closing down monitor")
 
