@@ -37,10 +37,12 @@ class SolidView(View):
         if Application.getInstance().getMachineManager().getWorkingProfile():
             profile = Application.getInstance().getMachineManager().getWorkingProfile()
 
-            if profile.getSettingValue("support_enable") or not Preferences.getInstance().getValue("view/show_overhang"):
+            if Preferences.getInstance().getValue("view/show_overhang"):
                 angle = profile.getSettingValue("support_angle")
                 if angle != None:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
+                else:
+                    self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
