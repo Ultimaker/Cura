@@ -92,7 +92,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName);
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName, false);
                 }
                 Menu
                 {
@@ -108,7 +108,7 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName);
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName, false);
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
@@ -230,6 +230,7 @@ UM.MainWindow
 
                 MenuSeparator { }
 
+                MenuItem { action: actions.addProfile; }
                 MenuItem { action: actions.manageProfiles; }
             }
 
@@ -461,6 +462,7 @@ UM.MainWindow
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
+                addProfileAction: actions.addProfile;
                 manageProfilesAction: actions.manageProfiles;
             }
 
@@ -473,7 +475,7 @@ UM.MainWindow
                 height: childrenRect.height;
                 Label
                 {
-                    text: UM.ActiveTool.properties.Rotation != undefined ? "%1°".arg(UM.ActiveTool.properties.Rotation) : "";
+                    text: UM.ActiveTool.properties.getValue("Rotation") != undefined ? "%1°".arg(UM.ActiveTool.properties.getValue("Rotation")) : "";
                 }
 
                 visible: UM.ActiveTool.valid && UM.ActiveTool.properties.Rotation != undefined;
@@ -578,6 +580,7 @@ UM.MainWindow
         reloadAll.onTriggered: Printer.reloadAll()
 
         addMachine.onTriggered: addMachineWizard.visible = true;
+        addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.visible = true; preferences.setPage(4); }
 
         preferences.onTriggered: { preferences.visible = true; preferences.setPage(0); }
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
@@ -669,7 +672,6 @@ UM.MainWindow
     {
         id: addMachineWizard
     }
-
 
     AboutDialog
     {

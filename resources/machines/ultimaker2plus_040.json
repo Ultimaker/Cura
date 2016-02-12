@@ -6,16 +6,14 @@
     "author": "Ultimaker",
     "platform": "ultimaker2_platform.obj",
     "platform_texture": "ultimaker2plus_backplate.png",
-
+    "file_formats": "text/x-gcode",
     "inherits": "ultimaker2plus.json",
 
-    "variant": "0.40mm Nozzle",
-
-    "machine_settings": {
-        "machine_nozzle_size": { "default": 0.40 }
-    },
+    "variant": "0.4 mm",
 
     "overrides": {
+        "machine_nozzle_size": { "default": 0.40 },
+
         "wall_line_width_0": { "inherit_function": "parent_value * 0.875" },
         "skin_line_width": { "inherit_function": "parent_value * 0.875" }
     }

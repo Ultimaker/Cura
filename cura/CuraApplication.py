@@ -57,8 +57,10 @@ numpy.seterr(all="ignore")
 
 if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
-    if platform.linux_distribution()[0] in ("Ubuntu", ): # Just in case it also happens on Debian, so it can be added
-        from OpenGL import GL
+    if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
+        import ctypes
+        from ctypes.util import find_library
+        ctypes.CDLL(find_library('GL'), ctypes.RTLD_GLOBAL)
 
 try:
     from cura.CuraVersion import CuraVersion
@@ -100,10 +102,12 @@ class CuraApplication(QtApplication):
         self._platform_activity = False
         self._scene_boundingbox = AxisAlignedBox()
         self._job_name = None
+        self._center_after_select = False
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
+        self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -146,9 +150,6 @@ class CuraApplication(QtApplication):
         parser.add_argument("--debug", dest="debug-mode", action="store_true", default=False, help="Enable detailed crash reports.")
 
     def run(self):
-        if "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION" not in os.environ or os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] != "cpp":
-            Logger.log("w", "Using Python implementation of Protobuf, expect bad performance!")
-
         self._i18n_catalog = i18nCatalog("cura");
 
         i18nCatalog.setTagReplacements({
@@ -231,15 +232,20 @@ class CuraApplication(QtApplication):
                 else:
                     self.getController().setActiveTool("TranslateTool")
             if Preferences.getInstance().getValue("view/center_on_select"):
-                self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
-                self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
-                self._camera_animation.start()
+                self._center_after_select = True
         else:
             if self.getController().getActiveTool():
                 self._previous_active_tool = self.getController().getActiveTool().getPluginId()
                 self.getController().setActiveTool(None)
             else:
                 self._previous_active_tool = None
+
+    def _onToolOperationStopped(self, event):
+        if self._center_after_select:
+            self._center_after_select = False
+            self._camera_animation.setStart(self.getController().getTool("CameraTool").getOrigin())
+            self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
+            self._camera_animation.start()
 
     requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
@@ -493,18 +499,18 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
-        if not self.getMachineManager().getActiveProfile():
+        if not self.getMachineManager().getWorkingProfile():
             return None
-        return self.getMachineManager().getActiveProfile().getSettingValue(key)
+        return self.getMachineManager().getWorkingProfile().getSettingValue(key)
         #return self.getActiveMachine().getSettingValueByKey(key)
     
     ##  Change setting by key value pair
     @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
-        if not self.getMachineManager().getActiveProfile():
+        if not self.getMachineManager().getWorkingProfile():
             return
 
-        self.getMachineManager().getActiveProfile().setSettingValue(key, value)
+        self.getMachineManager().getWorkingProfile().setSettingValue(key, value)
         
     @pyqtSlot()
     def mergeSelected(self):

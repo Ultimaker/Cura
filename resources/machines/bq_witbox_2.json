@@ -5,6 +5,7 @@
     "manufacturer": "Other",
     "author": "BQ",
     "platform": "bq_witbox_platform.stl",
+    "file_formats": "text/x-gcode",
     "inherits": "fdmprinter.json",
 
     "overrides": {

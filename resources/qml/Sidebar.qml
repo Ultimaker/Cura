@@ -14,6 +14,7 @@ Rectangle
 
     property Action addMachineAction;
     property Action configureMachinesAction;
+    property Action addProfileAction;
     property Action manageProfilesAction;
     property int currentModeIndex;
 
@@ -63,6 +64,7 @@ Rectangle
 
     ProfileSetup {
         id: profileItem
+        addProfileAction: base.addProfileAction
         manageProfilesAction: base.manageProfilesAction
         anchors.top: settingsModeSelection.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height 
@@ -82,6 +84,10 @@ Rectangle
     onCurrentModeIndexChanged:
     {
         UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+        if(modesListModel.count > base.currentModeIndex)
+        {
+            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
+        }
     }
 
     Label {
@@ -153,31 +159,40 @@ Rectangle
         }
     }
 
-    Loader
+    StackView
     {
-        id: sidebarContents;
+        id: sidebarContents
+
         anchors.bottom: footerSeparator.top
         anchors.top: profileItem.bottom
         anchors.topMargin: UM.Theme.sizes.default_margin.height
         anchors.left: base.left
         anchors.right: base.right
 
-        source: modesListModel.count > base.currentModeIndex ? modesListModel.get(base.currentModeIndex).file : "";
-
-        property Item sidebar: base;
-
-        onLoaded:
+        delegate: StackViewDelegate
         {
-            if(item)
+            function transitionFinished(properties)
             {
-                item.configureSettings = base.configureMachinesAction;
-                if(item.onShowTooltip != undefined)
+                properties.exitItem.opacity = 1
+            }
+
+            pushTransition: StackViewTransition
+            {
+                PropertyAnimation
                 {
-                    item.showTooltip.connect(base.showTooltip)
+                    target: enterItem
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 100
                 }
-                if(item.onHideTooltip != undefined)
+                PropertyAnimation
                 {
-                    item.hideTooltip.connect(base.hideTooltip)
+                    target: exitItem
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 100
                 }
             }
         }
@@ -210,10 +225,29 @@ Rectangle
         id: modesListModel;
     }
 
+    SidebarSimple
+    {
+        id: sidebarSimple;
+        visible: false;
+
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
+
+    SidebarAdvanced
+    {
+        id: sidebarAdvanced;
+        visible: false;
+
+        configureSettings: base.configureMachinesAction;
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
+
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), file: "SidebarSimple.qml" })
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), file: "SidebarAdvanced.qml" })
-        sidebarContents.setSource(modesListModel.get(base.currentModeIndex).file)
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), item: sidebarSimple })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), item: sidebarAdvanced })
+        sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
     }
 }

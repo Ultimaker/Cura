@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package cura.proto;
+
+
+message ObjectList
+{
+    repeated Object objects = 1;
+    repeated Setting settings = 2;
+}
+
+// typeid 1
+message Slice
+{
+    repeated ObjectList object_lists = 1;
+}
+
+message Object
+{
+    int64 id = 1;
+    bytes vertices = 2; //An array of 3 floats.
+    bytes normals = 3; //An array of 3 floats.
+    bytes indices = 4; //An array of ints.
+    repeated Setting settings = 5; // Setting override per object, overruling the global settings.
+}
+
+// typeid 3
+message Progress
+{
+    float amount = 1;
+}
+
+// typeid 2
+message SlicedObjectList
+{
+    repeated SlicedObject objects = 1;
+}
+
+message SlicedObject
+{
+    int64 id = 1;
+
+    repeated Layer layers = 2;
+}
+
+message Layer {
+    int32 id = 1;
+
+    float height = 2;
+    float thickness = 3;
+
+    repeated Polygon polygons = 4;
+}
+
+message Polygon {
+    enum Type {
+        NoneType = 0;
+        Inset0Type = 1;
+        InsetXType = 2;
+        SkinType = 3;
+        SupportType = 4;
+        SkirtType = 5;
+        InfillType = 6;
+        SupportInfillType = 7;
+        MoveCombingType = 8;
+        MoveRetractionType = 9;
+    }
+    Type type = 1;
+    bytes points = 2;
+    float line_width = 3;
+}
+
+// typeid 4
+message GCodeLayer {
+    int64 id = 1;
+    bytes data = 2;
+}
+
+// typeid 5
+message ObjectPrintTime {
+    int64 id = 1;
+    float time = 2;
+    float material_amount = 3;
+}
+
+// typeid 6
+message SettingList {
+    repeated Setting settings = 1;
+}
+
+message Setting {
+    string name = 1;
+
+    bytes value = 2;
+}
+
+// typeid 7
+message GCodePrefix {
+    bytes data = 2;
+}
+
+// typeid 8
+message SlicingFinished {
+}

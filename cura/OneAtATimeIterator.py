@@ -21,7 +21,7 @@ class OneAtATimeIterator(Iterator.Iterator):
             if not type(node) is SceneNode:
                 continue
 
-            if node.getBoundingBox().height > Application.getInstance().getMachineManager().getActiveProfile().getSettingValue("gantry_height"):
+            if node.getBoundingBox().height > Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height"):
                 return
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)

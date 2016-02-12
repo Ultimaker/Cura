@@ -31,6 +31,7 @@ Item
 
     property alias addMachine: addMachineAction;
     property alias configureMachines: settingsAction;
+    property alias addProfile: addProfileAction;
     property alias manageProfiles: manageProfilesAction;
 
     property alias preferences: preferencesAction;
@@ -93,6 +94,12 @@ Item
         id: settingsAction;
         text: catalog.i18nc("@action:inmenu menubar:printer","Manage Pr&inters...");
         iconName: "configure";
+    }
+
+    Action
+    {
+        id: addProfileAction;
+        text: catalog.i18nc("@action:inmenu menubar:profile","&Add Profile...");
     }
 
     Action

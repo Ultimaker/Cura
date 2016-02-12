@@ -167,12 +167,16 @@ class LayerView(View):
 
         if new_max_layers > 0 and new_max_layers != self._old_max_layers:
             self._max_layers = new_max_layers
-            self.maxLayersChanged.emit()
-            self._current_layer_num = self._max_layers
 
-            # This makes sure we update the current layer
-            self.setLayer(int(self._max_layers))
-            self.currentLayerNumChanged.emit()
+            # The qt slider has a bit of weird behavior that if the maxvalue needs to be changed first
+            # if it's the largest value. If we don't do this, we can have a slider block outside of the
+            # slider. 
+            if new_max_layers > self._current_layer_num:
+                self.maxLayersChanged.emit()
+                self.setLayer(int(self._max_layers))
+            else:
+                self.setLayer(int(self._max_layers))
+                self.maxLayersChanged.emit()
 
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()

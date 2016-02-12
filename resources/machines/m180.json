@@ -5,6 +5,7 @@
     "manufacturer": "Other",
     "icon": "icon_ultimaker.png",
     "platform": "",
+    "file_formats": "application/x3g",
     "inherits": "fdmprinter.json",
 
     "machine_settings": {

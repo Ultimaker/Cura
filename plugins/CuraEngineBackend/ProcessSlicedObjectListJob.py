@@ -44,7 +44,7 @@ class ProcessSlicedObjectListJob(Job):
                     object_id_map[id(node)] = node
             Job.yieldThread()
 
-        settings = Application.getInstance().getMachineManager().getActiveProfile()
+        settings = Application.getInstance().getMachineManager().getWorkingProfile()
 
         center = None
         if not settings.getSettingValue("machine_center_is_zero"):
@@ -56,21 +56,27 @@ class ProcessSlicedObjectListJob(Job):
         layer_data = LayerData.LayerData()
 
         layer_count = 0
-        for object in self._message.objects:
-            layer_count += len(object.layers)
+        for i in range(self._message.repeatedMessageCount("objects")):
+            layer_count += self._message.getRepeatedMessage("objects", i).repeatedMessageCount("layers")
 
         current_layer = 0
-        for object in self._message.objects:
+        for i in range(self._message.repeatedMessageCount("objects")):
+            object = self._message.getRepeatedMessage("objects", i)
             try:
                 node = object_id_map[object.id]
             except KeyError:
                 continue
 
-            for layer in object.layers:
+            for l in range(object.repeatedMessageCount("layers")):
+                layer = object.getRepeatedMessage("layers", l)
+
                 layer_data.addLayer(layer.id)
                 layer_data.setLayerHeight(layer.id, layer.height)
                 layer_data.setLayerThickness(layer.id, layer.thickness)
-                for polygon in layer.polygons:
+
+                for p in range(layer.repeatedMessageCount("polygons")):
+                    polygon = layer.getRepeatedMessage("polygons", p)
+
                     points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
                     points = numpy.asarray(points, dtype=numpy.float32)
@@ -82,8 +88,6 @@ class ProcessSlicedObjectListJob(Job):
                     points -= center
 
                     layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
-
-                Job.yieldThread()
 
                 current_layer += 1
                 progress = (current_layer / layer_count) * 100

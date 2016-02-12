@@ -11,7 +11,6 @@ import UM 1.1 as UM
 Item
 {
     id: base;
-    anchors.fill: parent;
 
     signal showTooltip(Item item, point location, string text);
     signal hideTooltip();
@@ -23,105 +22,7 @@ Item
     Component.onCompleted: PrintInformation.enabled = true
     Component.onDestruction: PrintInformation.enabled = false
     UM.I18nCatalog { id: catalog; name:"cura"}
-/*
-    Rectangle{
-        id: speedCellLeft
-        anchors.top: parent.top
-        anchors.left: parent.left
-        width: base.width/100*35 - UM.Theme.sizes.default_margin.width
-        height: childrenRect.height
 
-        Label{
-            id: speedLabel
-            //: Speed selection label
-            text: catalog.i18nc("@label","Speed:");
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
-            anchors.top: parent.top
-            anchors.topMargin: UM.Theme.sizes.default_margin.height
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
-        }
-    }
-
-    Rectangle {
-        id: speedCellRight
-        anchors.left: speedCellLeft.right
-        anchors.top: speedCellLeft.top
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
-        width: parent.width/100*65 - UM.Theme.sizes.default_margin.width
-        height: childrenRect.height
-
-        CheckBox{
-            id: normalSpeedCheckBox
-            property bool hovered_ex: false
-
-            anchors.top: parent.top
-            anchors.left: parent.left
-
-            //: Normal speed checkbox
-            text: catalog.i18nc("@option:check","Normal");
-            style: UM.Theme.styles.checkbox;
-
-            exclusiveGroup: speedCheckBoxGroup
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print <= 60 : true;
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked:
-                {
-                    UM.MachineManager.setSettingValue("speed_print", 60)
-                }
-                onEntered:
-                {
-                    parent.hovered_ex = true
-                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height),
-                        catalog.i18nc("@label", "Use normal printing speed. This will result in high quality prints."));
-                }
-                onExited:
-                {
-                    parent.hovered_ex = false
-                    base.hideTooltip();
-                }
-            }
-        }
-        CheckBox{
-            id: highSpeedCheckBox
-            property bool hovered_ex: false
-
-            anchors.top: parent.top
-            anchors.left: normalSpeedCheckBox.right
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
-
-            //: High speed checkbox
-            text: catalog.i18nc("@option:check","Fast");
-            style: UM.Theme.styles.checkbox;
-
-            exclusiveGroup: speedCheckBoxGroup
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.speed_print > 60 : true;
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked:
-                {
-                    UM.MachineManager.setSettingValue("speed_print", 100)
-                }
-                onEntered:
-                {
-                    parent.hovered_ex = true
-                    base.showTooltip(normalSpeedCheckBox, Qt.point(-speedCellRight.x, parent.height),
-                        catalog.i18nc("@label", "Use high printing speed. This will reduce printing time, but may affect the quality of the print."));
-                }
-                onExited:
-                {
-                    parent.hovered_ex = false
-                    base.hideTooltip();
-                }
-            }
-        }
-        ExclusiveGroup { id: speedCheckBoxGroup; }
-    }
-*/
     Rectangle{
         id: infillCellLeft
         anchors.top: parent.top
@@ -160,10 +61,10 @@ Item
                     return -1;
                 }
 
-                var density = parseInt(UM.ActiveProfile.settingValues.infill_sparse_density);
+                var density = parseInt(UM.ActiveProfile.settingValues.getValue("infill_sparse_density"));
                 for(var i = 0; i < infillModel.count; ++i)
                 {
-                    if(infillModel.get(i).percentage == density)
+                    if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
                     {
                         return i;
                     }
@@ -236,24 +137,32 @@ Item
                 infillModel.append({
                     name: catalog.i18nc("@label", "Hollow"),
                     percentage: 0,
+                    percentageMin: -1,
+                    percentageMax: 0,
                     text: catalog.i18nc("@label", "No (0%) infill will leave your model hollow at the cost of low strength"),
                     icon: "hollow"
                 })
                 infillModel.append({
                     name: catalog.i18nc("@label", "Light"),
                     percentage: 20,
+                    percentageMin: 0,
+                    percentageMax: 30,
                     text: catalog.i18nc("@label", "Light (20%) infill will give your model an average strength"),
                     icon: "sparse"
                 })
                 infillModel.append({
                     name: catalog.i18nc("@label", "Dense"),
                     percentage: 50,
+                    percentageMin: 30,
+                    percentageMax: 70,
                     text: catalog.i18nc("@label", "Dense (50%) infill will give your model an above average strength"),
                     icon: "dense"
                 })
                 infillModel.append({
                     name: catalog.i18nc("@label", "Solid"),
                     percentage: 100,
+                    percentageMin: 70,
+                    percentageMax: 100,
                     text: catalog.i18nc("@label", "Solid (100%) infill will make your model completely solid"),
                     icon: "solid"
                 })
@@ -296,7 +205,7 @@ Item
             text: catalog.i18nc("@option:check","Generate Brim");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.adhesion_type == "brim" : false;
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("adhesion_type") == "brim" : false;
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
@@ -330,7 +239,7 @@ Item
             text: catalog.i18nc("@option:check","Generate Support Structure");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.support_enable : false;
+            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_enable") : false;
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
@@ -353,109 +262,4 @@ Item
             }
         }
     }
-
-/*
-        Item
-        {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
-
-            Label
-            {
-                anchors.left: parent.left;
-                anchors.verticalCenter: parent.verticalCenter;
-                text: base.minimumPrintTime.valid ? base.minimumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
-                font: UM.Theme.fonts.timeslider_time;
-                color: UM.Theme.colors.primary;
-            }
-            Label
-            {
-                anchors.centerIn: parent;
-                text: //: Sidebar configuration label
-                {
-                    if (UM.Backend.progress < 0)
-                    {
-                        return catalog.i18nc("@label","No Model Loaded");
-                    }
-                    else if (!base.minimumPrintTime.valid || !base.maximumPrintTime.valid)
-                    {
-                        return catalog.i18nc("@label","Calculating...")
-                    }
-                    else
-                    {
-                        return catalog.i18nc("@label","Estimated Print Time");
-                    }
-                }
-                color: UM.Theme.colors.text;
-                font: UM.Theme.fonts.default;
-            }
-            Label
-            {
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter;
-                text: base.maximumPrintTime.valid ? base.maximumPrintTime.getDisplayString(UM.DurationFormat.Short) : "??:??";
-                font: UM.Theme.fonts.timeslider_time;
-                color: UM.Theme.colors.primary;
-            }
-        }
-
-        Slider
-        {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
-
-            minimumValue: 0;
-            maximumValue: 100;
-
-            value: PrintInformation.timeQualityValue;
-            onValueChanged: PrintInformation.setTimeQualityValue(value);
-
-            style: UM.Theme.styles.slider;
-        }
-
-        Item
-        {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
-
-            Label
-            {
-                anchors.left: parent.left;
-                anchors.verticalCenter: parent.verticalCenter;
-
-                //: Quality slider label
-                text: catalog.i18nc("@label","Minimum\nDraft");
-                color: UM.Theme.colors.text;
-                font: UM.Theme.fonts.default;
-            }
-
-            Label
-            {
-                anchors.right: parent.right;
-                anchors.verticalCenter: parent.verticalCenter;
-
-                //: Quality slider label
-                text: catalog.i18nc("@label","Maximum\nQuality");
-                horizontalAlignment: Text.AlignRight;
-                color: UM.Theme.colors.text;
-                font: UM.Theme.fonts.default;
-            }
-        }
-
-        CheckBox
-        {
-            Layout.fillWidth: true;
-            Layout.preferredHeight: UM.Theme.sizes.section.height;
-
-            //: Setting checkbox
-            text: catalog.i18nc("@action:checkbox","Enable Support");
-
-            style: UM.Theme.styles.checkbox;
-
-            checked: Printer.getSettingValue("support_enable");
-            onCheckedChanged: Printer.setSettingValue("support_enable", checked);
-        }
-
-        Item { Layout.fillWidth: true; Layout.fillHeight: true; }
-    }*/
 }
