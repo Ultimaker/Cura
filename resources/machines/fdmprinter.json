@@ -210,7 +210,7 @@
                     "default": 0.1,
                     "min_value": "0.001",
                     "min_value_warning": "0.04",
-                    "max_value_warning": "0.32",
+                    "max_value_warning": "0.8 * machine_nozzle_size",
                     "global_only": "print_sequence != \"one_at_a_time\""
                 },
                 "layer_height_0": {
@@ -221,7 +221,7 @@
                     "default": 0.3,
                     "min_value": "0.001",
                     "min_value_warning": "0.04",
-                    "max_value_warning": "0.32",
+                    "max_value_warning": "0.8 * machine_nozzle_size",
                     "visible": false,
                     "global_only": "print_sequence != \"one_at_a_time\""
                 },
@@ -231,7 +231,7 @@
                     "unit": "mm",
                     "min_value": "0.0001",
                     "min_value_warning": "0.2",
-                    "max_value_warning": "5",
+                    "max_value_warning": "2 * machine_nozzle_size",
                     "default": 0.4,
                     "type": "float",
                     "visible": false,
@@ -630,7 +630,7 @@
                     "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
                     "type": "boolean",
                     "default": false,
-                    "visible": true
+                    "visible": false
                 },
                 "material_print_temperature": {
                     "label": "Printing Temperature",
@@ -658,7 +658,8 @@
                     "default": 150,
                     "min_value": "0",
                     "max_value_warning": "260",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "visible": false
                 },
                 "material_extrusion_cool_down_speed": {
                     "label": "Extrusion Cool Down Speed Modifier",
@@ -668,7 +669,8 @@
                     "default": 0.5,
                     "min_value": "0",
                     "max_value_warning": "10.0",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "visible": false
                 },
                 "material_bed_temperature": {
                     "label": "Bed Temperature",
@@ -1011,7 +1013,7 @@
                     "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to lay down the last piece of the extrusion path in order to reduce stringing.",
                     "type": "boolean",
                     "default": false,
-                    "visible": true
+                    "visible": false
                 },
                 "coasting_volume": {
                     "label": "Coasting Volume",
@@ -1303,7 +1305,7 @@
                     "type": "float",
                     "min_value": "-90",
                     "max_value": "90",
-                    "default": 30,
+                    "default": -30,
                     "visible": false,
                     "enabled": "support_conical_enabled and support_enable"
                 },
@@ -1428,28 +1430,31 @@
                     "visible": false,
                     "enabled": "support_enable"
                 },
-                "support_minimal_diameter": {
-                    "label": "Minimum Diameter",
-                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "min_value": "0",
-                    "max_value_warning": "10",
-                    "visible": false,
-                    "enabled": "support_enable"
-                },
                 "support_tower_diameter": {
                     "label": "Tower Diameter",
                     "description": "The diameter of a special tower.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 1,
+                    "default": 3.0,
                     "min_value": "0",
-                    "min_value_warning": "support_minimal_diameter",
                     "max_value_warning": "10",
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_enable and support_use_towers",
+                    "children": {
+                        "support_minimal_diameter": {
+                            "label": "Minimum Diameter",
+                            "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 3.0,
+                            "min_value": "0",
+                            "max_value_warning": "10",
+                            "max_value": "support_tower_diameter",
+                            "inherit": true,
+                            "visible": false,
+                            "enabled": "support_enable and support_use_towers"
+                        }
+                    }
                 },
                 "support_tower_roof_angle": {
                     "label": "Tower Roof Angle",
@@ -1536,7 +1541,8 @@
                     "min_value": "0",
                     "max_value_warning": "10",
                     "enabled": "adhesion_type == \"skirt\"",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "visible": false
                 },
                 "skirt_gap": {
                     "label": "Skirt Distance",
@@ -1547,7 +1553,8 @@
                     "min_value_warning": "0",
                     "max_value_warning": "100",
                     "enabled": "adhesion_type == \"skirt\"",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "visible": false
                 },
                 "skirt_minimal_length": {
                     "label": "Skirt Minimum Length",
@@ -1559,7 +1566,8 @@
                     "min_value_warning": "25",
                     "max_value_warning": "2500",
                     "enabled": "adhesion_type == \"skirt\"",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "visible": false
                 },
                 "brim_width": {
                     "label": "Brim Width",
