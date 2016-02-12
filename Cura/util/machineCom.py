@@ -493,8 +493,18 @@ class MachineCom(object):
 						self.sendCommand("M105")
 					# set timeout to less than 2 seconds to make sure it always triggers when comm times out
 					tempRequestTimeout = time.time() + 1.5
-				elif 'ok' in line:
+				if line == '' and time.time() > timeout:
+					line = 'ok'
+				if 'ok' in line:
 					self.receivedOK()
+					timeout = time.time() + 30
+					if not self._commandQueue.empty():
+						self._sendCommand(self._commandQueue.get())
+					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
+						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
+						# every 30 seconds while it's not needed
+						timeout = time.time() + 600
 				elif 'start' in line:
 					self._currentCommands = []
 					timeout = time.time() + 30
@@ -557,6 +567,11 @@ class MachineCom(object):
 					timeout = time.time() + 30
 					if not self._commandQueue.empty():
 						self._sendCommand(self._commandQueue.get())
+					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
+						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
+						# every 30 seconds while it's not needed
+						timeout = time.time() + 600
 				elif 'start' in line:
 					self._currentCommands = []
 					timeout = time.time() + 30
@@ -681,12 +696,10 @@ class MachineCom(object):
 
 	def sendCommand(self, cmd):
 		cmd = cmd.encode('ascii', 'replace')
-		if self.isPrinting() or self.isPaused():
+		if self.isPrinting() or self.isPaused() or self.isOperational():
 			self._commandQueue.put(cmd)
 			if len(self._currentCommands) == 0:
 				self._sendCommand(self._commandQueue.get())
-		elif self.isOperational():
-			self._sendCommand(cmd)
 
 	def printGCode(self, gcodeList):
 		if not self.isOperational() or self.isPrinting() or self.isPaused():
