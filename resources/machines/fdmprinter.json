@@ -210,7 +210,7 @@
                     "default": 0.1,
                     "min_value": "0.001",
                     "min_value_warning": "0.04",
-                    "max_value_warning": "0.32",
+                    "max_value_warning": "0.8 * machine_nozzle_size",
                     "global_only": "print_sequence != \"one_at_a_time\""
                 },
                 "layer_height_0": {
@@ -221,7 +221,7 @@
                     "default": 0.3,
                     "min_value": "0.001",
                     "min_value_warning": "0.04",
-                    "max_value_warning": "0.32",
+                    "max_value_warning": "0.8 * machine_nozzle_size",
                     "visible": false,
                     "global_only": "print_sequence != \"one_at_a_time\""
                 },
