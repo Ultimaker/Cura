@@ -133,29 +133,33 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
     def _getDefaultFirmwareName(self):
         machine_type = Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getId()
-        firmware_name = ""
         baudrate = 250000
         if sys.platform.startswith("linux"):
                 baudrate = 115200
         if machine_type == "ultimaker_original":
             firmware_name = "MarlinUltimaker"
             firmware_name += "-%d" % (baudrate)
+            return firmware_name + ".hex"
         elif machine_type == "ultimaker_original_plus":
             firmware_name = "MarlinUltimaker-UMOP-%d" % (baudrate)
-        elif machine_type == "Witbox":
+            return firmware_name + ".hex"
+        elif machine_type == "bq_witbox":
             return "MarlinWitbox.hex"
-        elif machine_type == "ultimaker2go":
+        elif machine_type == "ultimaker2_go":
             return "MarlinUltimaker2go.hex"
-        elif machine_type == "ultimaker2extended":
+        elif machine_type == "ultimaker2_extended":
             return "MarlinUltimaker2extended.hex"
         elif machine_type == "ultimaker2":
             return "MarlinUltimaker2.hex"
+        elif machine_type == "ultimaker2plus":
+            return "MarlinUltimaker2plus.hex"
+        elif machine_type == "ultimaker2_extended_plus":
+            return "MarlinUltimaker2extended-plus.hex"
+        else:
+            Logger.log("e", "I don't know of any firmware for machine %s.", machine_type)
+            raise FileNotFoundError()
 
         ##TODO: Add check for multiple extruders
-
-        if firmware_name != "":
-            firmware_name += ".hex"
-        return firmware_name
 
     def _addRemovePorts(self, serial_ports):
         # First, find and add all new or changed keys
