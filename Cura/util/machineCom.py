@@ -500,8 +500,9 @@ class MachineCom(object):
 					timeout = time.time() + 30
 					if not self._commandQueue.empty():
 						self._sendCommand(self._commandQueue.get())
-					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
-					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
+					if len(self._currentCommands) > 0 and \
+					   ("G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+						"M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]):
 						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
 						# every 30 seconds while it's not needed
 						timeout = time.time() + 600
@@ -527,8 +528,9 @@ class MachineCom(object):
 						self._sendCommand(self._commandQueue.get())
 					else:
 						self._sendNext()
-					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
-					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
+					if len(self._currentCommands) > 0 and \
+					   ("G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+						"M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]):
 						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
 						# every 30 seconds while it's not needed
 						timeout = time.time() + 600
@@ -567,8 +569,9 @@ class MachineCom(object):
 					timeout = time.time() + 30
 					if not self._commandQueue.empty():
 						self._sendCommand(self._commandQueue.get())
-					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
-					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
+					if len(self._currentCommands) > 0 and \
+					   ("G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+						"M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]):
 						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
 						# every 30 seconds while it's not needed
 						timeout = time.time() + 600
