@@ -102,6 +102,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._pausePosition = None
 
 	def coolDown(self):
+		self.sendCommand("M108") #Cancel heatup
 		cooldown_toolhead = "M104 S0"
 		for i in range(0, int(profile.getMachineSetting('extruder_amount'))):
 			change_toolhead = "T{}".format(i)
@@ -111,7 +112,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	def disableSteppers(self):
 		self.sendCommand("M18")
-		
+
 	def setLCDmessage(self):
 		cancel_text = "Print canceled"
 		formatted_command = "M117 {}".format(cancel_text)
