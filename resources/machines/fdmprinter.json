@@ -1428,17 +1428,6 @@
                     "visible": false,
                     "enabled": "support_enable"
                 },
-                "support_minimal_diameter": {
-                    "label": "Minimum Diameter",
-                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "min_value": "0",
-                    "max_value_warning": "10",
-                    "visible": false,
-                    "enabled": "support_enable"
-                },
                 "support_tower_diameter": {
                     "label": "Tower Diameter",
                     "description": "The diameter of a special tower.",
@@ -1446,10 +1435,24 @@
                     "type": "float",
                     "default": 1,
                     "min_value": "0",
-                    "min_value_warning": "support_minimal_diameter",
                     "max_value_warning": "10",
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_enable",
+                    "children": {
+                        "support_minimal_diameter": {
+                            "label": "Minimum Diameter",
+                            "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 1,
+                            "min_value": "0",
+                            "max_value_warning": "10",
+                            "max_value": "support_tower_diameter",
+                            "inherit": true,
+                            "visible": false,
+                            "enabled": "support_enable"
+                        }
+                    }
                 },
                 "support_tower_roof_angle": {
                     "label": "Tower Roof Angle",
