@@ -231,7 +231,7 @@
                     "unit": "mm",
                     "min_value": "0.0001",
                     "min_value_warning": "0.2",
-                    "max_value_warning": "5",
+                    "max_value_warning": "2 * machine_nozzle_size",
                     "default": 0.4,
                     "type": "float",
                     "visible": false,
