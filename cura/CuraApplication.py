@@ -268,7 +268,7 @@ class CuraApplication(QtApplication):
 
             count += 1
             if not scene_boundingbox:
-                scene_boundingbox = node.getBoundingBox()
+                scene_boundingbox = copy.deepcopy(node.getBoundingBox())
             else:
                 scene_boundingbox += node.getBoundingBox()
 
