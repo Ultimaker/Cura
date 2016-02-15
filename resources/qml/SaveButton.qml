@@ -58,15 +58,9 @@ Rectangle {
         Rectangle{
             width: Math.max(parent.width * base.progress)
             height: parent.height
-<<<<<<< 041fa2b3592e015eebe779169c9d7f4565b3a788
-            color: UM.Theme.colors.progressbar_control
-            radius: UM.Theme.sizes.progressbar_radius.width
-            visible: base.backendState == 1 ? true : false
-=======
             color: UM.Theme.getColor("progressbar_control")
             radius: UM.Theme.getSize("progressbar_radius").width
-            visible: base.progress > 0.99 ? false : true
->>>>>>> Replace Theme property accessors with getThing calls
+            visible: base.backendState == 1 ? true : false
         }
     }
 
