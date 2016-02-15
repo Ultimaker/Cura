@@ -33,8 +33,8 @@ class ImageReader(MeshReader):
         depth = img.height()
 
         largest = max(width, depth)
-        width = width / largest * self._ui.defaultWidth
-        depth = depth / largest * self._ui.defaultDepth
+        width = width / largest * self._ui.default_width
+        depth = depth / largest * self._ui.default_depth
 
         self._ui.setWidthAndDepth(width, depth)
         self._ui.showConfigUI()
@@ -112,7 +112,7 @@ class ImageReader(MeshReader):
             height_data = 1 - height_data
 
         for i in range(0, blur_iterations):
-            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode='edge')
+            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode= "edge")
 
             height_data += copy[1:-1, 2:]
             height_data += copy[1:-1, :-2]
