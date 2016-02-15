@@ -129,6 +129,7 @@ Item
                 id: variantsSelectionMenu
                 Instantiator
                 {
+                    id: variantSelectionInstantiator
                     model: UM.MachineVariantsModel { id: variantsModel }
                     MenuItem
                     {
@@ -136,7 +137,17 @@ Item
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: variantSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name)
+                        onTriggered:
+                        {
+                            UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name);
+                            if (typeof(model) !== "undefined" && !model.active) {
+                                //Selecting a variant was canceled; undo menu selection
+                                checked = false;
+                                var activeMachineVariantName = UM.MachineManager.activeMachineVariant;
+                                var activeMachineVariantIndex = variantSelectionInstantiator.model.find("name", activeMachineVariantName);
+                                variantSelectionInstantiator.model.setProperty(activeMachineVariantIndex, "active", true);
+                            }
+                        }
                     }
                     onObjectAdded: variantsSelectionMenu.insertItem(index, object)
                     onObjectRemoved: variantsSelectionMenu.removeItem(object)
@@ -182,6 +193,7 @@ Item
                 id: materialSelectionMenu
                 Instantiator
                 {
+                    id: materialSelectionInstantiator
                     model: UM.MachineMaterialsModel { id: machineMaterialsModel }
                     MenuItem
                     {
@@ -189,7 +201,17 @@ Item
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: materialSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name)
+                        onTriggered:
+                        {
+                            UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name);
+                            if (typeof(model) !== "undefined" && !model.active) {
+                                //Selecting a material was canceled; undo menu selection
+                                checked = false;
+                                var activeMaterialName = UM.MachineManager.activeMaterial;
+                                var activeMaterialIndex = materialSelectionInstantiator.model.find("name", activeMaterialName);
+                                materialSelectionInstantiator.model.setProperty(activeMaterialIndex, "active", true);
+                            }
+                        }
                     }
                     onObjectAdded: materialSelectionMenu.insertItem(index, object)
                     onObjectRemoved: materialSelectionMenu.removeItem(object)

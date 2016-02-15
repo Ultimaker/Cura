@@ -214,13 +214,24 @@ UM.MainWindow
 
                 Instantiator
                 {
+                    id: profileMenuInstantiator
                     model: UM.ProfilesModel { }
                     MenuItem {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: profileMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveProfile(model.name)
+                        onTriggered:
+                        {
+                            UM.MachineManager.setActiveProfile(model.name);
+                            if (!model.active) {
+                                //Selecting a profile was canceled; undo menu selection
+                                checked = false;
+                                var activeProfileName = UM.MachineManager.activeProfile;
+                                var activeProfileIndex = profileMenuInstantiator.model.find("name", activeProfileName);
+                                profileMenuInstantiator.model.setProperty(activeProfileIndex, "active", true);
+                            }
+                        }
                     }
                     onObjectAdded: profileMenu.insertItem(index, object)
                     onObjectRemoved: profileMenu.removeItem(object)
