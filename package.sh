@@ -87,6 +87,7 @@ function gitClone
 	echo "Cloning $1 into $2"
 	if [ -d $2 ]; then
 		cd $2
+		git remote set-url origin $1
 		git clean -dfx
 		git reset --hard
 		git pull
