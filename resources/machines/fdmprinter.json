@@ -346,6 +346,7 @@
                     "min_value": "0",
                     "min_value_warning": "0.2",
                     "max_value_warning": "5",
+                    "visible": false,
                     "children": {
                         "wall_thickness": {
                             "label": "Wall Thickness",
@@ -356,7 +357,7 @@
                             "min_value_warning": "0.2",
                             "max_value_warning": "5",
                             "type": "float",
-                            "visible": false,
+                            "visible": true,
                             "children": {
                                 "wall_line_count": {
                                     "label": "Wall Line Count",
@@ -386,7 +387,7 @@
                             "max_value": "5",
                             "min_value_warning": "0.6",
                             "type": "float",
-                            "visible": false,
+                            "visible": true,
                             "children": {
                                 "top_thickness": {
                                     "label": "Top Thickness",
@@ -1295,7 +1296,7 @@
                     "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
                     "type": "boolean",
                     "default": false,
-                    "visible": false,
+                    "visible": true,
                     "enabled": "support_enable"
                 },
                 "support_conical_angle": {
@@ -1579,6 +1580,7 @@
                     "max_value_warning": "100.0",
                     "enabled": "adhesion_type == \"brim\"",
                     "global_only": "print_sequence != \"one_at_a_time\"",
+                    "visible": true,
                     "children": {
                         "brim_line_count": {
                             "label": "Brim Line Count",
@@ -1589,7 +1591,8 @@
                             "max_value_warning": "300",
                             "inherit_function": "math.ceil(parent_value / skirt_line_width)",
                             "enabled": "adhesion_type == \"brim\"",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "print_sequence != \"one_at_a_time\"",
+                            "visible": false
                         }
                     }
                 },
@@ -1601,7 +1604,8 @@
                     "default": 5,
                     "min_value_warning": "0",
                     "max_value_warning": "10",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_airgap": {
                     "label": "Raft Air-gap",
@@ -1611,7 +1615,8 @@
                     "default": 0.35,
                     "min_value": "0",
                     "max_value_warning": "1.0",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": true
                 },
                 "raft_surface_layers": {
                     "label": "Raft Top Layers",
@@ -1620,7 +1625,8 @@
                     "default": 2,
                     "min_value": "0",
                     "max_value_warning": "20",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": true
                 },
                 "raft_surface_thickness": {
                     "label": "Raft Top Layer Thickness",
@@ -1630,7 +1636,8 @@
                     "default": 0.1,
                     "min_value": "0",
                     "max_value_warning": "2.0",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_surface_line_width": {
                     "label": "Raft Top Line Width",
@@ -1640,7 +1647,8 @@
                     "default": 0.3,
                     "min_value": "0.0001",
                     "max_value_warning": "machine_nozzle_size * 2",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_surface_line_spacing": {
                     "label": "Raft Top Spacing",
@@ -1651,7 +1659,8 @@
                     "min_value": "0.0001",
                     "max_value_warning": "5.0",
                     "enabled": "adhesion_type == \"raft\"",
-                    "inherit_function": "raft_surface_line_width"
+                    "inherit_function": "raft_surface_line_width",
+                    "visible": false
                 },
                 "raft_interface_thickness": {
                     "label": "Raft Middle Thickness",
@@ -1661,7 +1670,8 @@
                     "default": 0.27,
                     "min_value": "0",
                     "max_value_warning": "5.0",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_interface_line_width": {
                     "label": "Raft Middle Line Width",
@@ -1671,7 +1681,8 @@
                     "default": 1,
                     "min_value": "0.0001",
                     "max_value_warning": "machine_nozzle_size * 2",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_interface_line_spacing": {
                     "label": "Raft Middle Spacing",
@@ -1681,7 +1692,8 @@
                     "default": 1.0,
                     "min_value": "0",
                     "max_value_warning": "15.0",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_base_thickness": {
                     "label": "Raft Base Thickness",
@@ -1691,7 +1703,8 @@
                     "default": 0.3,
                     "min_value": "0",
                     "max_value_warning": "5.0",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_base_line_width": {
                     "label": "Raft Base Line Width",
@@ -1701,7 +1714,8 @@
                     "default": 1,
                     "min_value": "0.0001",
                     "max_value_warning": "machine_nozzle_size * 2",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_base_line_spacing": {
                     "label": "Raft Line Spacing",
@@ -1711,7 +1725,8 @@
                     "default": 3.0,
                     "min_value": "0.0001",
                     "max_value_warning": "100",
-                    "enabled": "adhesion_type == \"raft\""
+                    "enabled": "adhesion_type == \"raft\"",
+                    "visible": false
                 },
                 "raft_speed": {
                     "label": "Raft Print Speed",
@@ -1723,6 +1738,7 @@
                     "max_value_warning": "200",
                     "enabled": "adhesion_type == \"raft\"",
                     "inherit_function": "speed_print / 60 * 30",
+                    "visible": false,
                     "children": {
                         "raft_surface_speed": {
                             "label": "Raft Surface Print Speed",
@@ -1733,7 +1749,8 @@
                             "min_value": "0.1",
                             "max_value_warning": "100",
                             "enabled": "adhesion_type == \"raft\"",
-                            "inherit_function": "parent_value"
+                            "inherit_function": "parent_value",
+                            "visible": false
                         },
                         "raft_interface_speed": {
                             "label": "Raft Interface Print Speed",
@@ -1744,7 +1761,8 @@
                             "min_value": "0.1",
                             "max_value_warning": "150",
                             "enabled": "adhesion_type == \"raft\"",
-                            "inherit_function": "0.5 * parent_value"
+                            "inherit_function": "0.5 * parent_value",
+                            "visible": false
                         },
                         "raft_base_speed": {
                             "label": "Raft Base Print Speed",
@@ -1755,7 +1773,8 @@
                             "min_value": "0.1",
                             "max_value_warning": "200",
                             "enabled": "adhesion_type == \"raft\"",
-                            "inherit_function": "0.5 * parent_value"
+                            "inherit_function": "0.5 * parent_value",
+                            "visible": false
                         }
                     }
                 },
