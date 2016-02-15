@@ -475,6 +475,16 @@ UM.MainWindow
                 configureMachinesAction: actions.configureMachines;
                 addProfileAction: actions.addProfile;
                 manageProfilesAction: actions.manageProfiles;
+
+                configureSettingsAction: Action
+                {
+                    onTriggered:
+                    {
+                        preferences.visible = true;
+                        preferences.setPage(2);
+                        preferences.getCurrentItem().scrollToSection(source);
+                    }
+                }
             }
 
             Rectangle
@@ -593,7 +603,7 @@ UM.MainWindow
         addMachine.onTriggered: addMachineWizard.visible = true;
         addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.visible = true; preferences.setPage(4); }
 
-        preferences.onTriggered: { preferences.visible = true; preferences.setPage(0); }
+        preferences.onTriggered: { preferences.visible = true; }
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
         manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 

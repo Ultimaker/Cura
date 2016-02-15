@@ -16,6 +16,7 @@ Rectangle
     property Action configureMachinesAction;
     property Action addProfileAction;
     property Action manageProfilesAction;
+    property Action configureSettingsAction;
     property int currentModeIndex;
 
     color: UM.Theme.getColor("sidebar");
@@ -239,7 +240,7 @@ Rectangle
         id: sidebarAdvanced;
         visible: false;
 
-        configureSettings: base.configureMachinesAction;
+        configureSettings: base.configureSettingsAction;
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
     }
