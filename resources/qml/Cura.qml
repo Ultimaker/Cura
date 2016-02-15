@@ -512,25 +512,22 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General"), generalPage);
+            insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("GeneralPage.qml"));
 
             //: View preferences page title
-            insertPage(1, catalog.i18nc("@title:tab","View"), viewPage);
+            insertPage(1, catalog.i18nc("@title:tab","View"), Qt.resolvedUrl("ViewPage.qml"));
 
             //Force refresh
             setPage(0)
         }
 
-        Item {
-            visible: false
-            GeneralPage
+        onVisibleChanged:
+        {
+            if(!visible)
             {
-                id: generalPage
-            }
-
-            ViewPage
-            {
-                id: viewPage
+                // When the dialog closes, switch to the General page.
+                // This prevents us from having a heavy page like Setting Visiblity active in the background.
+                setPage(0);
             }
         }
     }
