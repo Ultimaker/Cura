@@ -74,13 +74,14 @@ Rectangle {
 
         Button {
             id: saveToButton
-            property int resizedWidth
-            x: base.width - saveToButton.resizedWidth - UM.Theme.getSize("default_margin").width - UM.Theme.getSize("save_button_save_to_button").height + UM.Theme.getSize("save_button_save_to_button").width
+
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
             enabled: base.backendState == 2 && base.activity == true
             height: UM.Theme.getSize("save_button_save_to_button").height
-            width: 150
+
             anchors.top:parent.top
+            anchors.right: deviceSelectionMenu.left;
+
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
             {
@@ -88,9 +89,9 @@ Rectangle {
             }
 
             style: ButtonStyle {
-                background: Rectangle {
-                    //opacity: control.enabled ? 1.0 : 0.5
-                    //Behavior on opacity { NumberAnimation { duration: 50; } }
+                background:
+                Rectangle
+                {
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: !control.enabled ? UM.Theme.getColor("action_button_disabled_border") :
                                       control.pressed ? UM.Theme.getColor("action_button_active_border") :
@@ -99,13 +100,11 @@ Rectangle {
                                control.pressed ? UM.Theme.getColor("action_button_active") :
                                control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                     Behavior on color { ColorAnimation { duration: 50; } }
-                    width: {
-                        saveToButton.resizedWidth = actualLabel.width + (UM.Theme.getSize("default_margin").width * 2)
-                        return saveToButton.resizedWidth
-                    }
+
+                    implicitWidth: actualLabel.contentWidth + (UM.Theme.getSize("default_margin").width * 2)
+
                     Label {
                         id: actualLabel
-                        //Behavior on opacity { NumberAnimation { duration: 50; } }
                         anchors.centerIn: parent
                         color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :
                                    control.pressed ? UM.Theme.getColor("action_button_active_text") :
@@ -155,7 +154,8 @@ Rectangle {
                         sourceSize.width: width
                         sourceSize.height: height
                         color: !control.enabled ? UM.Theme.getColor("action_button_disabled_text") :
-                                   control.pressed ? UM.Theme.getColor("action_button_active_text") :                                   control.hovered ? UM.Theme.getColor("action_button_hovered_text") : UM.Theme.getColor("action_button_text");
+                                   control.pressed ? UM.Theme.getColor("action_button_active_text") :
+                                   control.hovered ? UM.Theme.getColor("action_button_hovered_text") : UM.Theme.getColor("action_button_text");
                         source: UM.Theme.getIcon("arrow_bottom");
                     }
                 }
