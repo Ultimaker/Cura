@@ -42,56 +42,6 @@ QtObject {
         }
     }
 
-<<<<<<< HEAD
-=======
-/*
-    property Component open_file_button: Component {
-        ButtonStyle {
-            background: Item{
-                implicitWidth: UM.Theme.getSize("button").width;
-                implicitHeight: UM.Theme.getSize("button").height;
-                Rectangle {
-                    id: tool_button_background
-                    anchors.left: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    opacity: control.hovered ? 1.0 : 0.0;
-
-                    width: control.hovered ? label.width : 0;
-                    height: label.height
-
-                    Behavior on width { NumberAnimation { duration: 100; } }
-                    Behavior on height { NumberAnimation { duration: 100; } }
-                    Behavior on opacity { NumberAnimation { duration: 100; } }
-
-                    Label {
-                        id: label
-                        anchors.bottom: parent.bottom
-                        text: control.text
-                        font: UM.Theme.getFont("button_tooltip");
-                        color: UM.Theme.getColor("button_tooltip_text");
-                    }
-                }
-                Rectangle {
-                    anchors.fill: parent;
-                    color: control.pressed ? UM.Theme.getColor("button_active") :
-                               control.hovered ? UM.Theme.getColor("button_hover") : UM.Theme.getColor("button")
-                    Behavior on color { ColorAnimation { duration: 50; } }
-                }
-            }
-            label: Item {
-                Image {
-                    anchors.centerIn: parent;
-                    source: control.iconSource;
-                    width: UM.Theme.getSize("button_icon").width;
-                    height: UM.Theme.getSize("button_icon").height;
-                    sourceSize: UM.Theme.getSize("button_icon")
-                }
-            }
-        }
-    }
-*/
-
->>>>>>> Convert Toolbar.qml and styles.qml to Theme getThing style
     property Component tool_button: Component {
         ButtonStyle {
             background: Item {
