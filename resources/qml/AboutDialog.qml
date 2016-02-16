@@ -24,7 +24,7 @@ UM.Dialog
         width: parent.width * 0.75
         height: width * (1/4.25)
 
-        source: UM.Theme.images.logo
+        source: UM.Theme.getImage("logo")
 
         sourceSize.width: width
         sourceSize.height: height

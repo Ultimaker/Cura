@@ -161,30 +161,30 @@ Item
     Rectangle {
         id: materialSelectionRow
         anchors.top: variantRow.bottom
-        anchors.topMargin: UM.MachineManager.hasMaterials ? UM.Theme.sizes.default_margin.height : 0
+        anchors.topMargin: UM.MachineManager.hasMaterials ? UM.Theme.getSize("default_margin").height : 0
         width: base.width
-        height: UM.MachineManager.hasMaterials ? UM.Theme.sizes.sidebar_setup.height : 0
+        height: UM.MachineManager.hasMaterials ? UM.Theme.getSize("sidebar_setup").height : 0
         visible: UM.MachineManager.hasMaterials
 
         Label{
             id: materialSelectionLabel
             text: catalog.i18nc("@label","Material:");
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width/100*45
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
         }
 
         ToolButton {
             id: materialSelection
             text: UM.MachineManager.activeMaterial
             width: parent.width/100*55
-            height: UM.Theme.sizes.setting_control.height
+            height: UM.Theme.getSize("setting_control").height
             tooltip: UM.MachineManager.activeMaterial;
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             style: UM.Theme.styles.sidebar_header_button
 

@@ -10,16 +10,16 @@ import UM 1.0 as UM
 
 Item 
 {
-    width: UM.Theme.sizes.button.width
-    height: UM.Theme.sizes.slider_layerview_size.height
+    width: UM.Theme.getSize("button").width
+    height: UM.Theme.getSize("slider_layerview_size").height
 
     Slider 
     {
         id: slider
-        width: UM.Theme.sizes.slider_layerview_size.width
-        height: UM.Theme.sizes.slider_layerview_size.height
+        width: UM.Theme.getSize("slider_layerview_size").width
+        height: UM.Theme.getSize("slider_layerview_size").height
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.sizes.slider_layerview_margin.width/2
+        anchors.leftMargin: UM.Theme.getSize("slider_layerview_margin").width/2
         orientation: Qt.Vertical
         minimumValue: 0;
         maximumValue: UM.LayerView.numLayers;
@@ -34,11 +34,11 @@ Item
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         z: slider.z - 1
-        width: UM.Theme.sizes.slider_layerview_background.width
-        height: slider.height + UM.Theme.sizes.default_margin.height * 2
-        color: UM.Theme.colors.tool_panel_background;
-        border.width: UM.Theme.sizes.default_lining.width
-        border.color: UM.Theme.colors.lining
+        width: UM.Theme.getSize("slider_layerview_background").width
+        height: slider.height + UM.Theme.getSize("default_margin").height * 2
+        color: UM.Theme.getColor("tool_panel_background");
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: UM.Theme.getColor("lining")
 
         MouseArea {
             id: sliderMouseArea
