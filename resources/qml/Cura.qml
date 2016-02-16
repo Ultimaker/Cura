@@ -482,7 +482,7 @@ UM.MainWindow
                     {
                         preferences.visible = true;
                         preferences.setPage(2);
-                        preferences.getCurrentItem().scrollToSection(source);
+                        preferences.getCurrentItem().scrollToSection(source.key);
                     }
                 }
             }
