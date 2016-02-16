@@ -497,7 +497,11 @@ class mainWindow(wx.Frame):
 
 		#Add a menu item for each machine configuration.
 		for n in xrange(0, profile.getMachineCount()):
-			i = self.machineMenu.Append(n + 0x1000, profile.getMachineName(n).title(), kind=wx.ITEM_RADIO)
+			machine_name = profile.getMachineName(n)
+			machine_title = machine_name.title()                    
+			machine_title = machine_title.replace('Taz', 'TAZ')
+			machine_title = machine_title.replace('Lulzbot', 'LulzBot')
+			i = self.machineMenu.Append(n + 0x1000, machine_title, kind=wx.ITEM_RADIO)
 			if n == int(profile.getPreferenceFloat('active_machine')):
 				i.Check(True)
 			self.Bind(wx.EVT_MENU, lambda e: self.OnSelectMachine(e.GetId() - 0x1000), i)
