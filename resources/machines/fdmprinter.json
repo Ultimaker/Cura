@@ -182,7 +182,7 @@
         "machine": {
             "label": "Machine",
             "visible": true,
-            "icon": "category_layer_height",
+            "icon": "category_machine",
             "settings": {
                 "machine_nozzle_size": {
                     "label": "Nozzle Diameter",
