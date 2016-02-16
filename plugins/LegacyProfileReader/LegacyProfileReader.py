@@ -65,7 +65,6 @@ class LegacyProfileReader(ProfileReader):
     def read(self, file_name):
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False) #Create an empty profile.
-        profile.setName("Imported Legacy Profile")
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
