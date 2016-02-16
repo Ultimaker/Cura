@@ -706,11 +706,6 @@ UM.MainWindow
         }
     }
 
-    Component.onCompleted:
-    {
-        UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
-    }
-
     Timer
     {
         id: startupTimer;
