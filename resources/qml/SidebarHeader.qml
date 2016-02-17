@@ -142,7 +142,7 @@ Item
                             UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name);
                             if (typeof(model) !== "undefined" && !model.active) {
                                 //Selecting a variant was canceled; undo menu selection
-                                checked = false;
+                                variantSelectionInstantiator.model.setProperty(index, "active", false);
                                 var activeMachineVariantName = UM.MachineManager.activeMachineVariant;
                                 var activeMachineVariantIndex = variantSelectionInstantiator.model.find("name", activeMachineVariantName);
                                 variantSelectionInstantiator.model.setProperty(activeMachineVariantIndex, "active", true);
@@ -206,7 +206,7 @@ Item
                             UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name);
                             if (typeof(model) !== "undefined" && !model.active) {
                                 //Selecting a material was canceled; undo menu selection
-                                checked = false;
+                                materialSelectionInstantiator.model.setProperty(index, "active", false);
                                 var activeMaterialName = UM.MachineManager.activeMaterial;
                                 var activeMaterialIndex = materialSelectionInstantiator.model.find("name", activeMaterialName);
                                 materialSelectionInstantiator.model.setProperty(activeMaterialIndex, "active", true);

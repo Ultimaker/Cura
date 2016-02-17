@@ -226,7 +226,7 @@ UM.MainWindow
                             UM.MachineManager.setActiveProfile(model.name);
                             if (!model.active) {
                                 //Selecting a profile was canceled; undo menu selection
-                                checked = false;
+                                profileMenuInstantiator.model.setProperty(index, "active", false);
                                 var activeProfileName = UM.MachineManager.activeProfile;
                                 var activeProfileIndex = profileMenuInstantiator.model.find("name", activeProfileName);
                                 profileMenuInstantiator.model.setProperty(activeProfileIndex, "active", true);
