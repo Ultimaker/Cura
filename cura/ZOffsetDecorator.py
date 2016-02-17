@@ -6,7 +6,6 @@ class ZOffsetDecorator(SceneNodeDecorator):
         self._z_offset = 0
 
     def setZOffset(self, offset):
-        print("setZOffset", offset)
         self._z_offset = offset
 
     def getZOffset(self):
