@@ -631,7 +631,8 @@
                     "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
                     "type": "boolean",
                     "default": false,
-                    "visible": false
+                    "visible": false,
+                    "enabled": "False"
                 },
                 "material_print_temperature": {
                     "label": "Printing Temperature",
