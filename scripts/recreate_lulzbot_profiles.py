@@ -316,6 +316,7 @@ material_url = {
     "Laywood": "lulzbot.com/store/filament/laywoo-d3-laywood",
     "n-vent": "lulzbot.com/store/filament/n-vent",
 #    "XT": "",
+    "INOVA-1800": "lulzbot.com/store/filament/inova-1800",
     "PCTPE": "lulzbot.com/store/filament/pctpe",
     "PC-ABS": "lulzbot.com/store/filament/pc-abs-alloy",
     "T-Glase": "lulzbot.com/store/filament/t-glase",
