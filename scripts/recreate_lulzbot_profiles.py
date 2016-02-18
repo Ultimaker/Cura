@@ -268,9 +268,9 @@ material_names = {
     "645-Nylon": "645 Nylon (Taulman)",
     
     # Flexystruder (Expert)
-    "ninjaflex": "NinjaFlex (Fenner Drives)",
-    "cheetah": "Cheetah (Fenner Drives)",
-    "semiflex": "SemiFlex (Fenner Drives)",
+    "ninjaflex": "NinjaFlex (NinjaTek)",
+    "cheetah": "Cheetah (NinjaTek)",
+    "semiflex": "SemiFlex (NinjaTek)",
     
     # Dual extruder (Expert)
     "PLA_PVA": "PLA & PVA Support",
