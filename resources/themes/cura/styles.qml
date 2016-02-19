@@ -42,53 +42,6 @@ QtObject {
         }
     }
 
-/*
-    property Component open_file_button: Component {
-        ButtonStyle {
-            background: Item{
-                implicitWidth: UM.Theme.sizes.button.width;
-                implicitHeight: UM.Theme.sizes.button.height;
-                Rectangle {
-                    id: tool_button_background
-                    anchors.left: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    opacity: control.hovered ? 1.0 : 0.0;
-
-                    width: control.hovered ? label.width : 0;
-                    height: label.height
-
-                    Behavior on width { NumberAnimation { duration: 100; } }
-                    Behavior on height { NumberAnimation { duration: 100; } }
-                    Behavior on opacity { NumberAnimation { duration: 100; } }
-
-                    Label {
-                        id: label
-                        anchors.bottom: parent.bottom
-                        text: control.text
-                        font: UM.Theme.fonts.button_tooltip;
-                        color: UM.Theme.colors.button_tooltip_text;
-                    }
-                }
-                Rectangle {
-                    anchors.fill: parent;
-                    color: control.pressed ? UM.Theme.colors.button_active :
-                               control.hovered ? UM.Theme.colors.button_hover : UM.Theme.colors.button
-                    Behavior on color { ColorAnimation { duration: 50; } }
-                }
-            }
-            label: Item {
-                Image {
-                    anchors.centerIn: parent;
-                    source: control.iconSource;
-                    width: UM.Theme.sizes.button_icon.width;
-                    height: UM.Theme.sizes.button_icon.height;
-                    sourceSize: UM.Theme.sizes.button_icon
-                }
-            }
-        }
-    }
-*/
-
     property Component tool_button: Component {
         ButtonStyle {
             background: Item {
@@ -177,73 +130,6 @@ QtObject {
         }
     }
 
-/*
-    property Component tool_button_panel: Component {
-        ButtonStyle {
-            background: Item {
-                implicitWidth: UM.Theme.sizes.button.width;
-                implicitHeight: UM.Theme.sizes.button.height;
-
-                Rectangle {
-                    id: tool_button_background
-                    anchors.left: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    opacity: control.hovered ? 1.0 : 0.0;
-
-                    width: control.hovered ? label.width : 0;
-                    height: label.height
-
-                    Behavior on width { NumberAnimation { duration: 100; } }
-                    Behavior on height { NumberAnimation { duration: 100; } }
-                    Behavior on opacity { NumberAnimation { duration: 100; } }
-
-                    Label {
-                        id: label
-                        anchors.bottom: parent.bottom
-                        text: control.text
-                        font: UM.Theme.fonts.button_tooltip;
-                        color: UM.Theme.colors.button_tooltip_text;
-                    }
-                }
-
-                Rectangle {
-                    id: buttonFace;
-
-                    anchors.fill: parent;
-
-                    property bool down: control.pressed || (control.checkable && control.checked);
-
-                    color: {
-                        if(!control.enabled) {
-                            return UM.Theme.colors.button_disabled;
-                        } else if(control.checkable && control.checked && control.hovered) {
-                            return UM.Theme.colors.button_active_hover;
-                        } else if(control.pressed || (control.checkable && control.checked)) {
-                            return UM.Theme.colors.button_active;
-                        } else if(control.hovered) {
-                            return UM.Theme.colors.button_hover;
-                        } else {
-                            return UM.Theme.colors.button;
-                        }
-                    }
-                    Behavior on color { ColorAnimation { duration: 50; } }
-                }
-            }
-
-            label: Item {
-                Image {
-                    anchors.centerIn: parent;
-
-                    source: control.iconSource;
-                    width: UM.Theme.sizes.button_icon.width;
-                    height: UM.Theme.sizes.button_icon.height;
-
-                    sourceSize: UM.Theme.sizes.button_icon
-                }
-            }
-        }
-    }
-*/
 
     property Component progressbar: Component{
         ProgressBarStyle {
@@ -255,6 +141,7 @@ QtObject {
             }
             progress: Rectangle {
                 color: control.indeterminate ? "transparent" : UM.Theme.colors.progressbar_control
+                radius: UM.Theme.sizes.progressbar_radius.width
                 Rectangle{
                     radius: UM.Theme.sizes.progressbar_radius.width
                     color: UM.Theme.colors.progressbar_control
@@ -275,7 +162,7 @@ QtObject {
         }
     }
 
-    
+
 
     property Component sidebar_category: Component {
         ButtonStyle {
