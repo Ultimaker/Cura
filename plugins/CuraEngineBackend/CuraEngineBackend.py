@@ -179,6 +179,12 @@ class CuraEngineBackend(Backend):
 
         self._onChanged()
 
+    def _onSocketError(self, error):
+        super()._onSocketError(error)
+        self._slicing = False
+        self.processingProgress.emit(0)
+        Logger.log("e", "A socket error caused the connection to be reset")
+
     def _onActiveProfileChanged(self):
         if self._profile:
             self._profile.settingValueChanged.disconnect(self._onSettingChanged)
