@@ -24,12 +24,26 @@ class ProcessSlicedObjectListJob(Job):
         self._message = message
         self._scene = Application.getInstance().getController().getScene()
         self._progress = None
+        self._abortRequested = False
+
+    ##  Aborts the processing of layers.
+    #
+    #   This abort is made on a best-effort basis, meaning that the actual
+    #   job thread will check once in a while to see whether an abort is
+    #   requested and then stop processing by itself. There is no guarantee
+    #   that the abort will stop the job any time soon or even at all.
+    def abort(self):
+        self._abortRequested = True
 
     def run(self):
         if Application.getInstance().getController().getActiveView().getPluginId() == "LayerView":
             self._progress = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
             self._progress.show()
             Job.yieldThread()
+            if self._abortRequested:
+                if self._progress:
+                    self._progress.hide()
+                return
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
@@ -43,6 +57,10 @@ class ProcessSlicedObjectListJob(Job):
                 else:
                     object_id_map[id(node)] = node
             Job.yieldThread()
+            if self._abortRequested:
+                if self._progress:
+                    self._progress.hide()
+                return
 
         settings = Application.getInstance().getMachineManager().getWorkingProfile()
 
@@ -94,11 +112,20 @@ class ProcessSlicedObjectListJob(Job):
                 # TODO: Rebuild the layer data mesh once the layer has been processed.
                 # This needs some work in LayerData so we can add the new layers instead of recreating the entire mesh.
 
+                if self._abortRequested:
+                    if self._progress:
+                        self._progress.hide()
+                    return
                 if self._progress:
                     self._progress.setProgress(progress)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layer_data.build()
+
+        if self._abortRequested:
+            if self._progress:
+                self._progress.hide()
+            return
 
         #Add layerdata decorator to scene node to indicate that the node has layerdata
         decorator = LayerDataDecorator.LayerDataDecorator()
@@ -106,7 +133,7 @@ class ProcessSlicedObjectListJob(Job):
         new_node.addDecorator(decorator)
 
         new_node.setMeshData(mesh)
-        new_node.setParent(self._scene.getRoot())
+        new_node.setParent(self._scene.getRoot()) #Note: After this we can no longer abort!
 
         if self._progress:
             self._progress.setProgress(100)

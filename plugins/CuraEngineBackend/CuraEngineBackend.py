@@ -73,6 +73,7 @@ class CuraEngineBackend(Backend):
         self._restart = False
         self._enabled = True
         self._always_restart = True
+        self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
         self._message = None
 
@@ -119,6 +120,10 @@ class CuraEngineBackend(Backend):
 
             self.slicingCancelled.emit()
             return
+
+        if self._process_layers_job:
+            self._process_layers_job.abort()
+            self._process_layers_job = None
 
         if self._profile.hasErrorValue():
             Logger.log("w", "Profile has error values. Aborting slicing")
@@ -193,8 +198,8 @@ class CuraEngineBackend(Backend):
 
     def _onSlicedObjectListMessage(self, message):
         if self._layer_view_active:
-            job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
-            job.start()
+            self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+            self._process_layers_job.start()
         else :
             self._stored_layer_data = message
 
