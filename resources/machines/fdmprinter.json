@@ -672,6 +672,7 @@
                     "min_value": "0",
                     "max_value_warning": "10.0",
                     "global_only": "print_sequence != \"one_at_a_time\"",
+                    "enabled": "material_flow_dependent_temperature or machine_extruder_count > 1",
                     "visible": false
                 },
                 "material_bed_temperature": {
