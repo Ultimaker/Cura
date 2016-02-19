@@ -13,7 +13,6 @@ class AutoSave(Extension):
     def __init__(self):
         super().__init__()
 
-        #Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
         Preferences.getInstance().preferenceChanged.connect(self._triggerTimer)
 
         machine_manager = Application.getInstance().getMachineManager()
@@ -52,8 +51,11 @@ class AutoSave(Extension):
         self._saving = True # To prevent the save process from triggering another autosave.
         Logger.log("d", "Autosaving preferences, instances and profiles")
 
+        machine_manager = Application.getInstance().getMachineManager()
+
+        machine_manager.saveVisibility()
+        machine_manager.saveMachineInstances()
+        machine_manager.saveProfiles()
         Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences, Application.getInstance().getApplicationName() + ".cfg"))
-        Application.getInstance().getMachineManager().saveMachineInstances()
-        Application.getInstance().getMachineManager().saveProfiles()
 
         self._saving = False

@@ -92,7 +92,7 @@ UM.MainWindow
                     text: catalog.i18nc("@action:inmenu menubar:file", "&Save Selection to File");
                     enabled: UM.Selection.hasSelection;
                     iconName: "document-save-as";
-                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName, filter_by_machine = false);
+                    onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", Printer.jobName, { "filter_by_machine": false });
                 }
                 Menu
                 {
@@ -108,7 +108,7 @@ UM.MainWindow
                         MenuItem
                         {
                             text: model.description;
-                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName, filter_by_machine = false);
+                            onTriggered: UM.OutputDeviceManager.requestWriteToDevice(model.id, Printer.jobName, { "filter_by_machine": false });
                         }
                         onObjectAdded: saveAllMenu.insertItem(index, object)
                         onObjectRemoved: saveAllMenu.removeItem(object)
@@ -226,7 +226,7 @@ UM.MainWindow
                             UM.MachineManager.setActiveProfile(model.name);
                             if (!model.active) {
                                 //Selecting a profile was canceled; undo menu selection
-                                checked = false;
+                                profileMenuInstantiator.model.setProperty(index, "active", false);
                                 var activeProfileName = UM.MachineManager.activeProfile;
                                 var activeProfileIndex = profileMenuInstantiator.model.find("name", activeProfileName);
                                 profileMenuInstantiator.model.setProperty(activeProfileIndex, "active", true);
