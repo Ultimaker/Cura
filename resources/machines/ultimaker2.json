@@ -9,7 +9,7 @@
     "platform_texture": "Ultimaker2backplate.png",
     "file_formats": "text/x-gcode",
 
-    "inherits": "fdmprinter.json",
+    "inherits": "ultimaker.json",
 
     "pages": [
         "SelectUpgradedPartsUM2"
