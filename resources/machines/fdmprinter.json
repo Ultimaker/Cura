@@ -652,17 +652,6 @@
                     "default": "[[3.5,200],[7.0,240]]",
                     "enabled": "material_flow_dependent_temperature"
                 },
-                "material_standby_temperature": {
-                    "label": "Standby Temperature",
-                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
-                    "unit": "°C",
-                    "type": "float",
-                    "default": 150,
-                    "min_value": "0",
-                    "max_value_warning": "260",
-                    "global_only": "print_sequence != \"one_at_a_time\"",
-                    "visible": false
-                },
                 "material_extrusion_cool_down_speed": {
                     "label": "Extrusion Cool Down Speed Modifier",
                     "description": "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding.",

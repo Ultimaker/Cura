@@ -198,7 +198,18 @@
             }
         },
         "material": {
-            "settings": {
+            "settings": {                
+                "material_standby_temperature": {
+                    "label": "Standby Temperature",
+                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 150,
+                    "min_value": "0",
+                    "max_value_warning": "260",
+                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "visible": false
+                },
                 "switch_extruder_retraction_amount": {
                     "label": "Nozzle Switch Retraction Distance",
                     "description": "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
