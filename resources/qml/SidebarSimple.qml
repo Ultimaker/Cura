@@ -107,7 +107,6 @@ Item
                         onClicked: {
                             if (infillListView.activeIndex != index)
                             {
-                                infillListView.activeIndex = index
                                 UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
                             }
                         }
@@ -211,8 +210,7 @@ Item
                 hoverEnabled: true
                 onClicked:
                 {
-                    parent.checked = !parent.checked
-                    UM.MachineManager.setSettingValue("adhesion_type", parent.checked?"brim":"skirt")
+                    UM.MachineManager.setSettingValue("adhesion_type", !parent.checked?"brim":"skirt")
                 }
                 onEntered:
                 {
@@ -245,8 +243,7 @@ Item
                 hoverEnabled: true
                 onClicked:
                 {
-                    parent.checked = !parent.checked
-                    UM.MachineManager.setSettingValue("support_enable", parent.checked)
+                    UM.MachineManager.setSettingValue("support_enable", !parent.checked)
                 }
                 onEntered:
                 {
