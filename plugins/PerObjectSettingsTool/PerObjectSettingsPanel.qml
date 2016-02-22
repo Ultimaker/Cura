@@ -66,6 +66,7 @@ Item {
                     description: model.description;
                     unit: model.unit;
                     valid: model.valid;
+                    visible: !model.global_only
                     options: model.options
                     indent: false
 
