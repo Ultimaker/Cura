@@ -38,6 +38,7 @@ dir_map = {
     "TAZ_flexy_dually_v2": ("lulzbot_TAZ_4_FlexyDuallyV2",
                             "lulzbot_TAZ_5_FlexyDuallyV2"),
     "TAZ6_single_extruder_v2.1": ("lulzbot_TAZ_6_Single_v2.1",),
+    "TAZ6_flexystruder_v2": ("lulzbot_TAZ_6_Flexystruder_v2",),
 }
 
 material_map = {
