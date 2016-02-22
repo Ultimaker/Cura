@@ -107,7 +107,18 @@ Item
             anchors.left: parent.width < wizardPage.width ? bedlevelingButton.right : parent.left
             anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.sizes.default_margin.width : 0
             text: catalog.i18nc("@action:button","Skip Bedleveling");
-            onClicked: base.visible = false;
+            onClicked: {
+                if(wizardPage.wizard.lastPage ==  true){
+                    var old_page_count = wizardPage.wizard.getPageCount()
+                    // Delete old pages (if any)
+                    for (var i = old_page_count - 1; i > 0; i--)
+                    {
+                        wizardPage.wizard.removePage(i)
+                    }
+                    wizardPage.wizard.currentPage = 0
+                    wizardPage.wizard.visible = false
+                }
+            }
         }
     }
 
