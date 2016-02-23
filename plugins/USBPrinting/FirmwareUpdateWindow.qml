@@ -58,7 +58,7 @@ UM.Dialog
             value: manager.progress
             minimumValue: 0
             maximumValue: 100
-            indeterminate: true
+            indeterminate: manager.progress < 100
             anchors
             {
                 left: parent.left;
