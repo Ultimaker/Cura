@@ -24,28 +24,6 @@ Item {
 
         spacing: UM.Theme.getSize("default_margin").height;
 
-        UM.SettingItem {
-            id: profileSelection
-
-            width: UM.Theme.getSize("setting").width;
-            height: UM.Theme.getSize("setting").height;
-
-            name: catalog.i18nc("@label", "Object profile")
-            type: "enum"
-            indent: false
-
-            style: UM.Theme.styles.setting_item;
-
-            options: UM.ProfilesModel { addUseGlobal: true }
-
-            value: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).profile
-
-            onItemValueChanged: {
-                var item = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex);
-                UM.ActiveTool.properties.getValue("Model").setObjectProfile(item.id, value)
-            }
-        }
-
         Column {
             id: customisedSettings
             spacing: UM.Theme.getSize("default_lining").height;

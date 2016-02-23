@@ -33,7 +33,7 @@ Item {
 
                 checkable: true;
                 checked: model.active;
-                enabled: UM.Selection.hasSelection && UM.Controller.toolsEnabled;
+                enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled;
 
                 style: UM.Theme.styles.tool_button;
 
@@ -72,7 +72,7 @@ Item {
         }
         height: panel.item ? panel.height + 2 * UM.Theme.getSize("default_margin").height : 0;
 
-        opacity: panel.item ? 1 : 0
+        opacity: panel.item && panel.width > 0 ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         color: UM.Theme.getColor("lining");
