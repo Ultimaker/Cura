@@ -211,7 +211,7 @@
                     "min_value": "0.001",
                     "min_value_warning": "0.04",
                     "max_value_warning": "0.8 * machine_nozzle_size",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "layer_height_0": {
                     "label": "Initial Layer Height",
@@ -223,7 +223,7 @@
                     "min_value_warning": "0.04",
                     "max_value_warning": "0.8 * machine_nozzle_size",
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "line_width": {
                     "label": "Line Width",
@@ -660,7 +660,7 @@
                     "default": 0.5,
                     "min_value": "0",
                     "max_value_warning": "10.0",
-                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "global_only": "True",
                     "enabled": "material_flow_dependent_temperature or machine_extruder_count > 1",
                     "visible": false
                 },
@@ -673,7 +673,7 @@
                     "min_value": "0",
                     "max_value_warning": "260",
                     "enabled": "machine_heated_bed",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "material_diameter": {
                     "label": "Diameter",
@@ -684,7 +684,7 @@
                     "min_value": "0.0001",
                     "min_value_warning": "0.4",
                     "max_value_warning": "3.5",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "material_flow": {
                     "label": "Flow",
@@ -983,7 +983,7 @@
                     "default": true,
                     "visible": false,
                     "enabled": "retraction_combing",
-                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "global_only": "True",
                     "children": {
                         "travel_avoid_distance": {
                             "label": "Avoid Distance",
@@ -996,7 +996,7 @@
                             "visible": false,
                             "inherit": false,
                             "enabled": "retraction_combing",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         }
                     }
                 },
@@ -1054,7 +1054,7 @@
                     "description": "Enable the cooling fan during the print. The extra cooling from the cooling fan helps parts with small cross sections that print each layer quickly.",
                     "type": "boolean",
                     "default": true,
-                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "global_only": "True",
                     "children": {
                         "cool_fan_speed": {
                             "label": "Fan Speed",
@@ -1066,7 +1066,7 @@
                             "default": 100,
                             "visible": false,
                             "inherit_function": "100.0 if parent_value else 0.0",
-                            "global_only": "print_sequence != \"one_at_a_time\"",
+                            "global_only": "True",
                             "children": {
                                 "cool_fan_speed_min": {
                                     "label": "Minimum Fan Speed",
@@ -1077,7 +1077,7 @@
                                     "max_value": "100",
                                     "default": 100,
                                     "visible": false,
-                                    "global_only": "print_sequence != \"one_at_a_time\""
+                                    "global_only": "True"
                                 },
                                 "cool_fan_speed_max": {
                                     "label": "Maximum Fan Speed",
@@ -1088,7 +1088,7 @@
                                     "max_value": "100",
                                     "default": 100,
                                     "visible": false,
-                                    "global_only": "print_sequence != \"one_at_a_time\""
+                                    "global_only": "True"
                                 }
                             }
                         }
@@ -1103,7 +1103,7 @@
                     "min_value": "0",
                     "max_value_warning": "10.0",
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "global_only": "True",
                     "children": {
                         "cool_fan_full_layer": {
                             "label": "Fan Full on at Layer",
@@ -1114,7 +1114,7 @@
                             "max_value_warning": "100",
                             "visible": false,
                             "inherit_function": "int((parent_value - layer_height_0 + 0.001) / layer_height)",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         }
                     }
                 },
@@ -1127,7 +1127,7 @@
                     "min_value": "0",
                     "max_value_warning": "600",
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "cool_min_layer_time_fan_speed_max": {
                     "label": "Minimum Layer Time Full Fan Speed",
@@ -1138,7 +1138,7 @@
                     "min_value": "cool_min_layer_time",
                     "max_value_warning": "600",
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "cool_min_speed": {
                     "label": "Minimum Speed",
@@ -1149,7 +1149,7 @@
                     "min_value": "0",
                     "max_value_warning": "100",
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "cool_lift_head": {
                     "label": "Lift Head",
@@ -1157,7 +1157,7 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "draft_shield_enabled": {
                     "label": "Enable Draft Shield",
@@ -1913,7 +1913,7 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "magic_fuzzy_skin_enabled": {
                     "label": "Fuzzy Skin",
@@ -1965,7 +1965,7 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false,
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_height": {
                     "label": "WP Connection Height",
@@ -1977,7 +1977,7 @@
                     "max_value_warning": "20",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_roof_inset": {
                     "label": "WP Roof Inset Distance",
@@ -1991,7 +1991,7 @@
                     "visible": false,
                     "enabled": "wireframe_enabled",
                     "inherit_function": "wireframe_height",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_printspeed": {
                     "label": "WP speed",
@@ -2003,7 +2003,7 @@
                     "max_value_warning": "50",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "global_only": "True",
                     "children": {
                         "wireframe_printspeed_bottom": {
                             "label": "WP Bottom Printing Speed",
@@ -2016,7 +2016,7 @@
                             "visible": false,
                             "inherit": true,
                             "enabled": "wireframe_enabled",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         },
                         "wireframe_printspeed_up": {
                             "label": "WP Upward Printing Speed",
@@ -2029,7 +2029,7 @@
                             "visible": false,
                             "inherit": true,
                             "enabled": "wireframe_enabled",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         },
                         "wireframe_printspeed_down": {
                             "label": "WP Downward Printing Speed",
@@ -2042,7 +2042,7 @@
                             "visible": false,
                             "inherit": true,
                             "enabled": "wireframe_enabled",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         },
                         "wireframe_printspeed_flat": {
                             "label": "WP Horizontal Printing Speed",
@@ -2055,7 +2055,7 @@
                             "visible": false,
                             "inherit": true,
                             "enabled": "wireframe_enabled",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         }
                     }
                 },
@@ -2069,7 +2069,7 @@
                     "type": "float",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "global_only": "True",
                     "children": {
                         "wireframe_flow_connection": {
                             "label": "WP Connection Flow",
@@ -2081,7 +2081,7 @@
                             "type": "float",
                             "visible": false,
                             "enabled": "wireframe_enabled",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         },
                         "wireframe_flow_flat": {
                             "label": "WP Flat Flow",
@@ -2093,7 +2093,7 @@
                             "type": "float",
                             "visible": false,
                             "enabled": "wireframe_enabled",
-                            "global_only": "print_sequence != \"one_at_a_time\""
+                            "global_only": "True"
                         }
                     }
                 },
@@ -2107,7 +2107,7 @@
                     "max_value_warning": "1",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_bottom_delay": {
                     "label": "WP Bottom Delay",
@@ -2119,7 +2119,7 @@
                     "max_value_warning": "1",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_flat_delay": {
                     "label": "WP Flat Delay",
@@ -2131,7 +2131,7 @@
                     "max_value_warning": "0.5",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_up_half_speed": {
                     "label": "WP Ease Upward",
@@ -2143,7 +2143,7 @@
                     "max_value_warning": "5.0",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_top_jump": {
                     "label": "WP Knot Size",
@@ -2155,7 +2155,7 @@
                     "max_value_warning": "2.0",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_fall_down": {
                     "label": "WP Fall Down",
@@ -2167,7 +2167,7 @@
                     "max_value_warning": "wireframe_height",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_drag_along": {
                     "label": "WP Drag along",
@@ -2179,7 +2179,7 @@
                     "max_value_warning": "wireframe_height",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_strategy": {
                     "label": "WP Strategy",
@@ -2193,7 +2193,7 @@
                     "default": "compensate",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_straight_before_down": {
                     "label": "WP Straighten Downward Lines",
@@ -2205,7 +2205,7 @@
                     "max_value": "100",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_roof_fall_down": {
                     "label": "WP Roof Fall Down",
@@ -2217,7 +2217,7 @@
                     "max_value_warning": "wireframe_roof_inset",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_roof_drag_along": {
                     "label": "WP Roof Drag Along",
@@ -2229,7 +2229,7 @@
                     "max_value_warning": "10",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_roof_outer_delay": {
                     "label": "WP Roof Outer Delay",
@@ -2241,7 +2241,7 @@
                     "max_value_warning": "2.0",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 },
                 "wireframe_nozzle_clearance": {
                     "label": "WP Nozzle Clearance",
@@ -2253,7 +2253,7 @@
                     "max_value_warning": "10.0",
                     "visible": false,
                     "enabled": "wireframe_enabled",
-                    "global_only": "print_sequence != \"one_at_a_time\""
+                    "global_only": "True"
                 }
             }
         }

@@ -207,7 +207,7 @@
                     "default": 150,
                     "min_value": "0",
                     "max_value_warning": "260",
-                    "global_only": "print_sequence != \"one_at_a_time\"",
+                    "global_only": "True",
                     "visible": false
                 },
                 "switch_extruder_retraction_amount": {
