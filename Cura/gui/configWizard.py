@@ -1238,28 +1238,52 @@ class LulzbotMiniToolheadSelectPage(InfoPage):
 class LulzbotTaz6ToolheadSelectPage(InfoPage):
 	def __init__(self, parent, allowBack = True):
 		super(LulzbotTaz6ToolheadSelectPage, self).__init__(parent, _("LulzBot TAZ 6 Tool Head Selection"))
+		self.allowBack = allowBack
 
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
-		self.taz6 = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v2.1'),
+		self.standard = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v2.1'),
 										'Lulzbot_Toolhead_TAZ_Tilapia.jpg', image_size,
 										style=ImageButton.IB_GROUP)
-		self.taz6.OnSelected(self.OnTilapiaSelected)
-		self.taz6.SetValue(True)
-
-	def OnPageShown(self):
-		self.taz6.TriggerGroupCallbacks()
-
-	def OnTilapiaSelected(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v2'),
+										'Lulzbot_Toolhead_TAZ_Flexystruder_v2.jpg', image_size)
+# 		self.dual = self.AddImageButton(self.panel, 1, 0, _('Dual Label'),
+# 										'Lulzbot_Dual_picture.jpg', image_size)
+# 		self.flexydual = self.AddImageButton(self.panel, 1, 1, _('FlexyDual Label'),
+# 										'Lulzbot_FlexyDual_picture.jpg', image_size)
+		self.standard.SetValue(True) #Set the default selection
 
 	def StoreData(self):
-		profile.putProfileSetting('nozzle_size',  '0.5')
-		profile.putMachineSetting('extruder_amount', '1')
-		profile.putMachineSetting('toolhead', 'Single Extruder v2.1')
-		profile.putMachineSetting('toolhead_shortname', 'Single v2.1')
-		profile.putMachineSetting('machine_type', 'lulzbot_TAZ_6_Single_v2.1')
 		profile.putMachineSetting('machine_name', 'LulzBot TAZ 6')
+		machine_type = 'lulzbot_TAZ_6'
+		if self.standard.GetValue():
+			profile.putProfileSetting('nozzle_size',  '0.5')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Single Extruder V2.1')
+			profile.putMachineSetting('toolhead_shortname', 'Single v2.1')
+			profile.putMachineSetting('machine_type', machine_type + '_Single_v2.1')
+		else: #elif self.flexy.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.6')
+			profile.putMachineSetting('extruder_amount', '1')
+			profile.putMachineSetting('toolhead', 'Flexystruder V2')
+			profile.putMachineSetting('toolhead_shortname', 'Flexystruder v2')
+			profile.putMachineSetting('machine_type', machine_type + '_Flexystruder_v2')
+# 		elif self.dual.GetValue():
+# 			profile.putProfileSetting('nozzle_size', '0.5')
+# 			profile.putMachineSetting('extruder_amount', '2')
+# 			profile.putMachineSetting('extruder_offset_x1', '0.0')
+# 			profile.putMachineSetting('extruder_offset_y1', '-52.00')
+# 			profile.putMachineSetting('toolhead', 'Dual Extruder V2')
+# 			profile.putMachineSetting('toolhead_shortname', 'Dual v2')
+# 			profile.putMachineSetting('machine_type', machine_type + '_DualV2')
+# 		elif self.flexydual.GetValue():
+# 			profile.putProfileSetting('nozzle_size', '0.6')
+# 			profile.putMachineSetting('extruder_amount', '2')
+# 			profile.putMachineSetting('extruder_offset_x1', '0.0')
+# 			profile.putMachineSetting('extruder_offset_y1', '-52.00')
+# 			profile.putMachineSetting('toolhead', 'FlexyDually V2')
+# 			profile.putMachineSetting('toolhead_shortname', 'FlexyDually v2')
+# 			profile.putMachineSetting('machine_type', machine_type + '_FlexyDuallyV2')
 
 class LulzbotTazSelectPage(InfoPage):
 	def __init__(self, parent):
