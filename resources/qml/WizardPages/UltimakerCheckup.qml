@@ -78,7 +78,7 @@ Item
     {
         id: pageDescription
         anchors.top: pageTitle.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width
         wrapMode: Text.WordWrap
         text: catalog.i18nc("@label","It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional");
@@ -87,10 +87,10 @@ Item
     Item{
         id: startStopButtons
         anchors.top: pageDescription.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         height: childrenRect.height
-        width: startCheckButton.width + skipCheckButton.width + UM.Theme.sizes.default_margin.height < wizardPage.width ? startCheckButton.width + skipCheckButton.width + UM.Theme.sizes.default_margin.height : wizardPage.width
+        width: startCheckButton.width + skipCheckButton.width + UM.Theme.getSize("default_margin").height < wizardPage.width ? startCheckButton.width + skipCheckButton.width + UM.Theme.getSize("default_margin").height : wizardPage.width
         Button
         {
             id: startCheckButton
@@ -109,9 +109,9 @@ Item
         {
             id: skipCheckButton
             anchors.top: parent.width < wizardPage.width ? parent.top : startCheckButton.bottom
-            anchors.topMargin: parent.width < wizardPage.width ? 0 : UM.Theme.sizes.default_margin.height/2
+            anchors.topMargin: parent.width < wizardPage.width ? 0 : UM.Theme.getSize("default_margin").height/2
             anchors.left: parent.width < wizardPage.width ? startCheckButton.right : parent.left
-            anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.sizes.default_margin.width : 0
+            anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.getSize("default_margin").width : 0
             //enabled: !alreadyTested
             text: catalog.i18nc("@action:button","Skip Printer Check");
             onClicked: {
@@ -123,7 +123,7 @@ Item
     Item{
         id: checkupContent
         anchors.top: startStopButtons.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: false
         //////////////////////////////////////////////////////////
         Label
@@ -227,7 +227,7 @@ Item
             height: nozzleTemp.height
             anchors.top: nozzleTempLabel.top
             anchors.left: bedTempStatus.right
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
             Button
             {
                 height: nozzleTemp.height - 2
@@ -250,7 +250,7 @@ Item
             id: nozzleTemp
             anchors.top: nozzleTempLabel.top
             anchors.left: nozzleTempButton.right
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             width: wizardPage.rightRow * 0.2
             wrapMode: Text.WordWrap
             text: printer_connection != null ? printer_connection.extruderTemperature + "°C" : "0°C"
@@ -283,7 +283,7 @@ Item
             height: bedTemp.height
             anchors.top: bedTempLabel.top
             anchors.left: bedTempStatus.right
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width/2
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width/2
             Button
             {
                 height: bedTemp.height - 2
@@ -307,7 +307,7 @@ Item
             width: wizardPage.rightRow * 0.2
             anchors.top: bedTempLabel.top
             anchors.left: bedTempButton.right
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             wrapMode: Text.WordWrap
             text: printer_connection != null ? printer_connection.bedTemperature + "°C": "0°C"
             font.bold: true
@@ -317,7 +317,7 @@ Item
             id: resultText
             visible: false
             anchors.top: bedTemp.bottom
-            anchors.topMargin: UM.Theme.sizes.default_margin.height
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             width: parent.width
             wrapMode: Text.WordWrap

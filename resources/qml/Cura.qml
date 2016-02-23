@@ -337,8 +337,8 @@ UM.MainWindow
                 {
                     bottom: parent.bottom;
                     right: sidebar.left;
-                    bottomMargin: UM.Theme.sizes.default_margin.height;
-                    rightMargin: UM.Theme.sizes.default_margin.width;
+                    bottomMargin: UM.Theme.getSize("default_margin").height;
+                    rightMargin: UM.Theme.getSize("default_margin").width;
                 }
             }
 
@@ -347,7 +347,7 @@ UM.MainWindow
                 anchors
                 {
                     horizontalCenter: parent.horizontalCenter
-                    horizontalCenterOffset: -(UM.Theme.sizes.sidebar.width/ 2)
+                    horizontalCenterOffset: -(UM.Theme.getSize("sidebar").width/ 2)
                     top: parent.verticalCenter;
                     bottom: parent.bottom;
                 }
@@ -361,10 +361,10 @@ UM.MainWindow
                 //anchors.right: parent.right;
                 //anchors.bottom: parent.bottom
                 anchors.top: viewModeButton.bottom
-                anchors.topMargin: UM.Theme.sizes.default_margin.height;
+                anchors.topMargin: UM.Theme.getSize("default_margin").height;
                 anchors.left: viewModeButton.left;
                 //anchors.bottom: buttons.top;
-                //anchors.bottomMargin: UM.Theme.sizes.default_margin.height;
+                //anchors.bottomMargin: UM.Theme.getSize("default_margin").height;
 
                 height: childrenRect.height;
 
@@ -376,15 +376,15 @@ UM.MainWindow
                 id: openFileButton;
                 //style: UM.Backend.progress < 0 ? UM.Theme.styles.open_file_button : UM.Theme.styles.tool_button;
                 text: catalog.i18nc("@action:button","Open File");
-                iconSource: UM.Theme.icons.load
+                iconSource: UM.Theme.getIcon("load")
                 style: UM.Theme.styles.tool_button
                 tooltip: '';
                 anchors
                 {
                     top: parent.top;
-                    //topMargin: UM.Theme.sizes.loadfile_margin.height
+                    //topMargin: UM.Theme.getSize("loadfile_margin").height
                     left: parent.left;
-                    //leftMargin: UM.Theme.sizes.loadfile_margin.width
+                    //leftMargin: UM.Theme.getSize("loadfile_margin").width
                 }
                 action: actions.open;
             }
@@ -395,14 +395,14 @@ UM.MainWindow
                 anchors
                 {
                     left: parent.left
-                    leftMargin: UM.Theme.sizes.default_margin.width;
+                    leftMargin: UM.Theme.getSize("default_margin").width;
                     bottom: parent.bottom
-                    bottomMargin: UM.Theme.sizes.default_margin.height;
+                    bottomMargin: UM.Theme.getSize("default_margin").height;
                 }
 
-                source: UM.Theme.images.logo;
-                width: UM.Theme.sizes.logo.width;
-                height: UM.Theme.sizes.logo.height;
+                source: UM.Theme.getImage("logo");
+                width: UM.Theme.getSize("logo").width;
+                height: UM.Theme.getSize("logo").height;
                 z: -1;
 
                 sourceSize.width: width;
@@ -416,11 +416,11 @@ UM.MainWindow
                 anchors
                 {
                     top: toolbar.bottom;
-                    topMargin: UM.Theme.sizes.window_margin.height;
+                    topMargin: UM.Theme.getSize("window_margin").height;
                     left: parent.left;
                 }
                 text: catalog.i18nc("@action:button","View Mode");
-                iconSource: UM.Theme.icons.viewmode;
+                iconSource: UM.Theme.getIcon("viewmode");
 
                 style: UM.Theme.styles.tool_button;
                 tooltip: '';
@@ -453,7 +453,7 @@ UM.MainWindow
 
                 anchors {
                     top: openFileButton.bottom;
-                    topMargin: UM.Theme.sizes.window_margin.height;
+                    topMargin: UM.Theme.getSize("window_margin").height;
                     left: parent.left;
                 }
             }
@@ -469,18 +469,28 @@ UM.MainWindow
                     right: parent.right;
                 }
 
-                width: UM.Theme.sizes.sidebar.width;
+                width: UM.Theme.getSize("sidebar").width;
 
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
                 addProfileAction: actions.addProfile;
                 manageProfilesAction: actions.manageProfiles;
+
+                configureSettingsAction: Action
+                {
+                    onTriggered:
+                    {
+                        preferences.visible = true;
+                        preferences.setPage(2);
+                        preferences.getCurrentItem().scrollToSection(source.key);
+                    }
+                }
             }
 
             Rectangle
             {
-                x: base.mouseX + UM.Theme.sizes.default_margin.width;
-                y: base.mouseY + UM.Theme.sizes.default_margin.height;
+                x: base.mouseX + UM.Theme.getSize("default_margin").width;
+                y: base.mouseY + UM.Theme.getSize("default_margin").height;
 
                 width: childrenRect.width;
                 height: childrenRect.height;
@@ -502,25 +512,22 @@ UM.MainWindow
         {
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General"), generalPage);
+            insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("GeneralPage.qml"));
 
             //: View preferences page title
-            insertPage(1, catalog.i18nc("@title:tab","View"), viewPage);
+            insertPage(1, catalog.i18nc("@title:tab","View"), Qt.resolvedUrl("ViewPage.qml"));
 
             //Force refresh
             setPage(0)
         }
 
-        Item {
-            visible: false
-            GeneralPage
+        onVisibleChanged:
+        {
+            if(!visible)
             {
-                id: generalPage
-            }
-
-            ViewPage
-            {
-                id: viewPage
+                // When the dialog closes, switch to the General page.
+                // This prevents us from having a heavy page like Setting Visiblity active in the background.
+                setPage(0);
             }
         }
     }
@@ -593,7 +600,7 @@ UM.MainWindow
         addMachine.onTriggered: addMachineWizard.visible = true;
         addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.visible = true; preferences.setPage(4); }
 
-        preferences.onTriggered: { preferences.visible = true; preferences.setPage(0); }
+        preferences.onTriggered: { preferences.visible = true; }
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
         manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
 
@@ -697,11 +704,6 @@ UM.MainWindow
             addMachineWizard.visible = true
             addMachineWizard.firstRun = false
         }
-    }
-
-    Component.onCompleted:
-    {
-        UM.Theme.load(UM.Resources.getPath(UM.Resources.Themes, "cura"))
     }
 
     Timer

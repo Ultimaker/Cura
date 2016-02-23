@@ -27,19 +27,19 @@ Item
         id: infillCellLeft
         anchors.top: parent.top
         anchors.left: parent.left
-        width: base.width/100* 35 - UM.Theme.sizes.default_margin.width
+        width: base.width/100* 35 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
         Label{
             id: infillLabel
             //: Infill selection label
             text: catalog.i18nc("@label","Infill:");
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
             anchors.top: parent.top
-            anchors.topMargin: UM.Theme.sizes.default_margin.height
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
         }
     }
 
@@ -48,7 +48,7 @@ Item
 
         height: childrenRect.height;
         width: base.width / 100 * 65
-        spacing: UM.Theme.sizes.default_margin.width
+        spacing: UM.Theme.getSize("default_margin").width
 
         anchors.left: infillCellLeft.right
         anchors.top: infillCellLeft.top
@@ -81,23 +81,32 @@ Item
                 Rectangle{
                     id: infillIconLining
 
-                    width: (infillCellRight.width - 3 * UM.Theme.sizes.default_margin.width) / 4;
+                    width: (infillCellRight.width - 3 * UM.Theme.getSize("default_margin").width) / 4;
                     height: width
 
-                    border.color: (infillListView.activeIndex == index) ? UM.Theme.colors.setting_control_selected :
-                                      (mousearea.containsMouse ? UM.Theme.colors.setting_control_border_highlight : UM.Theme.colors.setting_control_border)
-                    border.width: UM.Theme.sizes.default_lining.width
-                    color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_selected : "transparent"
+                    border.color: {
+                        if(infillListView.activeIndex == index)
+                        {
+                            return UM.Theme.getColor("setting_control_selected")
+                        }
+                        else if(mousearea.containsMouse)
+                        {
+                            return UM.Theme.getColor("setting_control_border_highlight")
+                        }
+                        return UM.Theme.getColor("setting_control_border")
+                    }
+                    border.width: UM.Theme.getSize("default_lining").width
+                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_selected") : "transparent"
 
                     UM.RecolorImage {
                         id: infillIcon
                         anchors.fill: parent;
-                        anchors.margins: UM.Theme.sizes.infill_button_margin.width
+                        anchors.margins: UM.Theme.getSize("infill_button_margin").width
 
                         sourceSize.width: width
                         sourceSize.height: width
-                        source: UM.Theme.icons[model.icon];
-                        color: (infillListView.activeIndex == index) ? UM.Theme.colors.text_white : UM.Theme.colors.text
+                        source: UM.Theme.getIcon(model.icon);
+                        color: (infillListView.activeIndex == index) ? UM.Theme.getColor("text_white") : UM.Theme.getColor("text")
                     }
 
                     MouseArea {
@@ -122,7 +131,7 @@ Item
                     id: infillLabel
                     anchors.top: infillIconLining.bottom
                     anchors.horizontalCenter: infillIconLining.horizontalCenter
-                    color: infillListView.activeIndex == index ? UM.Theme.colors.setting_control_text : UM.Theme.colors.setting_control_border
+                    color: infillListView.activeIndex == index ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_border")
                     text: name
                 }
             }
@@ -172,25 +181,25 @@ Item
     Rectangle {
         id: helpersCellLeft
         anchors.top: infillCellRight.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
-        width: parent.width/100*35 - UM.Theme.sizes.default_margin.width
+        width: parent.width/100*35 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
         Label{
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             //: Helpers selection label
             text: catalog.i18nc("@label:listbox","Helpers:");
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
         }
     }
     Rectangle {
         id: helpersCellRight
         anchors.top: helpersCellLeft.top
         anchors.left: helpersCellLeft.right
-        width: parent.width/100*65 - UM.Theme.sizes.default_margin.width
+        width: parent.width/100*65 - UM.Theme.getSize("default_margin").width
         height: childrenRect.height
 
         CheckBox{
@@ -230,7 +239,7 @@ Item
             property bool hovered_ex: false
 
             anchors.top: brimCheckBox.bottom
-            anchors.topMargin: UM.Theme.sizes.default_margin.height
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
 
             //: Setting enable support checkbox

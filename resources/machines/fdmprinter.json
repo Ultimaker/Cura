@@ -1221,7 +1221,7 @@
                         "buildplate": "Touching Buildplate",
                         "everywhere": "Everywhere"
                     },
-                    "default": "everywhere",
+                    "default": "buildplate",
                     "enabled": "support_enable"
                 },
                 "support_angle": {
@@ -1231,7 +1231,7 @@
                     "type": "float",
                     "min_value": "0",
                     "max_value": "90",
-                    "default": 60,
+                    "default": 50,
                     "visible": false,
                     "enabled": "support_enable"
                 },
