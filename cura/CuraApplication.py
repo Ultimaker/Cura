@@ -536,6 +536,7 @@ class CuraApplication(QtApplication):
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
         group_node.setParent(self.getController().getScene().getRoot())
+        group_node.setSelectable(True)
         center = Selection.getSelectionCenter()
         group_node.setPosition(center)
         group_node.setCenterPosition(center)

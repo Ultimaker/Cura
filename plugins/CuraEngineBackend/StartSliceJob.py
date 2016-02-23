@@ -79,14 +79,16 @@ class StartSliceJob(Job):
 
         self._sendSettings(self._profile)
 
-        slice_message = self._socket.createMessage("cura.proto.Slice");
+        slice_message = self._socket.createMessage("cura.proto.Slice")
 
         for group in object_groups:
-            group_message = slice_message.addRepeatedMessage("object_lists");
+            group_message = slice_message.addRepeatedMessage("object_lists")
+            if group[0].getParent().callDecoration("isGroup"):
+                self._handlePerObjectSettings(group[0].getParent(), group_message)
             for object in group:
                 mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
-                obj = group_message.addRepeatedMessage("objects");
+                obj = group_message.addRepeatedMessage("objects")
                 obj.id = id(object)
 
                 verts = numpy.array(mesh_data.getVertices())
@@ -142,7 +144,6 @@ class StartSliceJob(Job):
         object_settings = node.callDecoration("getAllSettingValues")
         if not object_settings:
             return
-
         for key, value in object_settings.items():
             setting = message.addRepeatedMessage("settings")
             setting.name = key
