@@ -1296,8 +1296,10 @@
                     "unit": "°",
                     "type": "float",
                     "min_value": "-90",
+                    "min_value_warning": "-45",
+                    "max_value_warning": "45",
                     "max_value": "90",
-                    "default": -30,
+                    "default": 30,
                     "visible": false,
                     "enabled": "support_conical_enabled and support_enable"
                 },

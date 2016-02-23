@@ -106,7 +106,8 @@ class ProcessSlicedObjectListJob(Job):
                     points -= center
 
                     layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
-
+                    Job.yieldThread()
+                Job.yieldThread()
                 current_layer += 1
                 progress = (current_layer / layer_count) * 100
                 # TODO: Rebuild the layer data mesh once the layer has been processed.
