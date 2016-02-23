@@ -27,6 +27,12 @@ class PerObjectSettingsTool(Tool):
         return PerObjectSettingsModel.PerObjectSettingsModel(self._model)
 
     def getSelectedIndex(self):
-        selected_object_id = id(Selection.getSelectedObject(0))
+        try:
+            selected_object = Selection.getSelectedObject(0)
+            if selected_object.getParent().callDecoration("isGroup"):
+                selected_object = selected_object.getParent()
+        except:
+            selected_object = None
+        selected_object_id = id(selected_object)
         index = self.getModel().find("id", selected_object_id)
         return index
