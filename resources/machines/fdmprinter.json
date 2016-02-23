@@ -1526,7 +1526,7 @@
                         "raft": "Raft"
                     },
                     "default": "skirt",
-                    "global_only": "False"
+                    "global_only": "True"
                 },
                 "skirt_line_count": {
                     "label": "Skirt Line Count",
@@ -1536,7 +1536,7 @@
                     "min_value": "0",
                     "max_value_warning": "10",
                     "enabled": "adhesion_type == \"skirt\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "skirt_gap": {
@@ -1548,7 +1548,7 @@
                     "min_value_warning": "0",
                     "max_value_warning": "100",
                     "enabled": "adhesion_type == \"skirt\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "skirt_minimal_length": {
@@ -1561,7 +1561,7 @@
                     "min_value_warning": "25",
                     "max_value_warning": "2500",
                     "enabled": "adhesion_type == \"skirt\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "brim_width": {
@@ -1573,7 +1573,7 @@
                     "min_value": "0.0",
                     "max_value_warning": "100.0",
                     "enabled": "adhesion_type == \"brim\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": true,
                     "children": {
                         "brim_line_count": {
@@ -1585,7 +1585,7 @@
                             "max_value_warning": "300",
                             "inherit_function": "math.ceil(parent_value / skirt_line_width)",
                             "enabled": "adhesion_type == \"brim\"",
-                            "global_only": "False",
+                            "global_only": "True",
                             "visible": false
                         }
                     }
@@ -1599,7 +1599,7 @@
                     "min_value_warning": "0",
                     "max_value_warning": "10",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_airgap": {
@@ -1611,7 +1611,7 @@
                     "min_value": "0",
                     "max_value_warning": "1.0",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": true
                 },
                 "raft_surface_layers": {
@@ -1622,7 +1622,7 @@
                     "min_value": "0",
                     "max_value_warning": "20",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": true
                 },
                 "raft_surface_thickness": {
@@ -1634,7 +1634,7 @@
                     "min_value": "0",
                     "max_value_warning": "2.0",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_surface_line_width": {
@@ -1646,7 +1646,7 @@
                     "min_value": "0.0001",
                     "max_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_surface_line_spacing": {
@@ -1659,7 +1659,7 @@
                     "max_value_warning": "5.0",
                     "enabled": "adhesion_type == \"raft\"",
                     "inherit_function": "raft_surface_line_width",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_interface_thickness": {
@@ -1671,7 +1671,7 @@
                     "min_value": "0",
                     "max_value_warning": "5.0",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_interface_line_width": {
@@ -1683,7 +1683,7 @@
                     "min_value": "0.0001",
                     "max_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_interface_line_spacing": {
@@ -1695,7 +1695,7 @@
                     "min_value": "0",
                     "max_value_warning": "15.0",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_base_thickness": {
@@ -1707,7 +1707,7 @@
                     "min_value": "0",
                     "max_value_warning": "5.0",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_base_line_width": {
@@ -1719,7 +1719,7 @@
                     "min_value": "0.0001",
                     "max_value_warning": "machine_nozzle_size * 2",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_base_line_spacing": {
@@ -1731,7 +1731,7 @@
                     "min_value": "0.0001",
                     "max_value_warning": "100",
                     "enabled": "adhesion_type == \"raft\"",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false
                 },
                 "raft_speed": {
@@ -1744,7 +1744,7 @@
                     "max_value_warning": "200",
                     "enabled": "adhesion_type == \"raft\"",
                     "inherit_function": "speed_print / 60 * 30",
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false,
                     "children": {
                         "raft_surface_speed": {
@@ -1757,7 +1757,7 @@
                             "max_value_warning": "100",
                             "enabled": "adhesion_type == \"raft\"",
                             "inherit_function": "parent_value",
-                            "global_only": "False",
+                            "global_only": "True",
                             "visible": false
                         },
                         "raft_interface_speed": {
@@ -1770,7 +1770,7 @@
                             "max_value_warning": "150",
                             "enabled": "adhesion_type == \"raft\"",
                             "inherit_function": "0.5 * parent_value",
-                            "global_only": "False",
+                            "global_only": "True",
                             "visible": false
                         },
                         "raft_base_speed": {
@@ -1783,7 +1783,7 @@
                             "max_value_warning": "200",
                             "enabled": "adhesion_type == \"raft\"",
                             "inherit_function": "0.5 * parent_value",
-                            "global_only": "False",
+                            "global_only": "True",
                             "visible": false
                         }
                     }
@@ -1796,7 +1796,7 @@
                     "min_value": "0",
                     "max_value": "100",
                     "default": 100,
-                    "global_only": "False",
+                    "global_only": "True",
                     "visible": false,
                     "enabled": "adhesion_type == \"raft\"",
                     "children": {
@@ -1808,7 +1808,7 @@
                             "min_value": "0",
                             "max_value": "100",
                             "default": 100,
-                            "global_only": "False",
+                            "global_only": "True",
                             "visible": false,
                             "inherit": true,
                             "enabled": "adhesion_type == \"raft\""
@@ -1821,7 +1821,7 @@
                             "min_value": "0",
                             "max_value": "100",
                             "default": 100,
-                            "global_only": "False",
+                            "global_only": "True",
                             "visible": false,
                             "inherit": true,
                             "enabled": "adhesion_type == \"raft\""
@@ -1834,7 +1834,7 @@
                             "min_value": "0",
                             "max_value": "100",
                             "default": 100,
-                            "global_only": "False",
+                            "global_only": "True",
                             "visible": false,
                             "inherit": true,
                             "enabled": "adhesion_type == \"raft\""
