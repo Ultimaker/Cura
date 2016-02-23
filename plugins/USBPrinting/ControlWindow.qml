@@ -21,7 +21,7 @@ UM.Dialog
         anchors.fill: parent;
         Row
         {
-            spacing: UM.Theme.sizes.default_margin.width;
+            spacing: UM.Theme.getSize("default_margin").width;
             Text
             {
                 //: USB Printing dialog label, %1 is head temperature

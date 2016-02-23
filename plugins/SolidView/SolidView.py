@@ -33,6 +33,7 @@ class SolidView(View):
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
             self._disabled_shader.setUniformValue("u_diffuseColor", [0.68, 0.68, 0.68, 1.0])
+            self._disabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
         if Application.getInstance().getMachineManager().getWorkingProfile():
             profile = Application.getInstance().getMachineManager().getWorkingProfile()

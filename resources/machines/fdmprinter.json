@@ -1221,7 +1221,7 @@
                         "buildplate": "Touching Buildplate",
                         "everywhere": "Everywhere"
                     },
-                    "default": "everywhere",
+                    "default": "buildplate",
                     "enabled": "support_enable"
                 },
                 "support_angle": {
@@ -1231,7 +1231,7 @@
                     "type": "float",
                     "min_value": "0",
                     "max_value": "90",
-                    "default": 60,
+                    "default": 50,
                     "visible": false,
                     "enabled": "support_enable"
                 },
@@ -1296,8 +1296,10 @@
                     "unit": "°",
                     "type": "float",
                     "min_value": "-90",
+                    "min_value_warning": "-45",
+                    "max_value_warning": "45",
                     "max_value": "90",
-                    "default": -30,
+                    "default": 30,
                     "visible": false,
                     "enabled": "support_conical_enabled and support_enable"
                 },
