@@ -83,9 +83,13 @@ class SettingOverrideModel(ListModel):
     def _onProfileChanged(self):
         if self._activeProfile: #Unlink from the old profile.
             self._activeProfile.settingValueChanged.disconnect(self._onProfileSettingValueChanged)
+        old_profile = self._activeProfile
         self._activeProfile = Application.getInstance().getMachineManager().getWorkingProfile()
         self._activeProfile.settingValueChanged.connect(self._onProfileSettingValueChanged) #Re-link to the new profile.
-        self._onProfileSettingValueChanged() #Also update the settings for the new profile!
+        for setting_name in old_profile.getChangedSettings().keys(): #Update all changed settings in the old and new profiles.
+            self._onProfileSettingValueChanged(setting_name)
+        for setting_name in self._activeProfile.getChangedSettings().keys():
+            self._onProfileSettingValueChanged(setting_name)
 
     ##  Updates the global_only property of a setting once a setting value
     #   changes.
