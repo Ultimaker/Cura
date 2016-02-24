@@ -231,6 +231,9 @@ Item
                     case "SelectUpgradedParts":
                         base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedParts.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
                         break;
+                    case "SelectUpgradedPartsUM2":
+                        base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedPartsUM2.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
+                        break;
                     case "UpgradeFirmware":
                         base.wizard.appendPage(Qt.resolvedUrl("UpgradeFirmware.qml"), catalog.i18nc("@title", "Upgrade Firmware"));
                         break;

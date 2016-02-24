@@ -7,7 +7,7 @@
     "icon": "icon_ultimaker.png",
     "platform": "ultimaker_platform.stl",
     "file_formats": "text/x-gcode",
-    "inherits": "fdmprinter.json",
+    "inherits": "ultimaker.json",
 
     "pages": [
         "SelectUpgradedParts",
