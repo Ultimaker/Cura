@@ -26,6 +26,8 @@ import numpy
 
 from PyQt5.QtCore import QTimer
 
+import Arcus
+
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -186,9 +188,12 @@ class CuraEngineBackend(Backend):
 
     def _onSocketError(self, error):
         super()._onSocketError(error)
+
         self._slicing = False
         self.processingProgress.emit(0)
-        Logger.log("e", "A socket error caused the connection to be reset")
+
+        if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
+            Logger.log("e", "A socket error caused the connection to be reset")
 
     def _onActiveProfileChanged(self):
         if self._profile:
