@@ -198,7 +198,7 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	hdiutil attach Cura.dmg.sparseimage
 	cp -a dist/Cura.app /Volumes/Cura\ -\ Lulzbot/Cura/
 	hdiutil detach /Volumes/Cura\ -\ Lulzbot
-	hdiutil convert Cura.dmg.sparseimage -format UDZO -imagekey zlib-level=9 -ov -o ../../${TARGET_DIR}.dmg
+	hdiutil convert Cura.dmg.sparseimage -format UDZO -imagekey zlib-level=9 -ov -o ../../Cura-${FULL_VERSION}-MacOS.dmg
 	exit
 fi
 
