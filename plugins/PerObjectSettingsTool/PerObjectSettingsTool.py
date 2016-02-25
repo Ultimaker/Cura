@@ -16,7 +16,6 @@ class PerObjectSettingsTool(Tool):
 
         self.setExposedProperties("Model", "SelectedIndex")
 
-        Application.getInstance().getController().toolEnabledStateRequest.connect(self._onToolEnabledStateRequested)
         Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
 
     def event(self, event):
@@ -40,9 +39,6 @@ class PerObjectSettingsTool(Tool):
         selected_object_id = id(selected_object)
         index = self.getModel().find("id", selected_object_id)
         return index
-
-    def _onToolEnabledStateRequested(self):
-        self._onPreferenceChanged("cura/active_mode")
 
     def _onPreferenceChanged(self, preference):
         if preference == "cura/active_mode":
