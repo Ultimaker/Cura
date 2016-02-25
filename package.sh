@@ -338,7 +338,7 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	 chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	 chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	 cd scripts/linux
-	 dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_VERSION}-${BUILD_TARGET}.deb
+	 dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/Cura-${FULL_VERSION}-${BUILD_TARGET}.deb
 	 chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	"
 	exit
