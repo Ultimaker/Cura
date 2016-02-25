@@ -306,7 +306,7 @@ if [ "$BUILD_TARGET" = "debian_amd64" ]; then
 	 chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	 chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	 cd scripts/linux
-	 dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${FULL_VERSION}_amd64.deb
+	 dpkg-deb -Zgzip --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/Cura-${FULL_VERSION}-amd64.deb
 	 chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	"
 	exit
