@@ -53,7 +53,7 @@ Item
     {
         id: pageDescription
         anchors.top: pageTitle.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width
         wrapMode: Text.WordWrap
         text: catalog.i18nc("@label","To assist you in having better default settings for your Ultimaker. Cura would like to know which upgrades you have in your machine:")
@@ -64,10 +64,10 @@ Item
         id: pageCheckboxes
         height: childrenRect.height
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.sizes.default_margin.width
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         anchors.top: pageDescription.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
-        width: parent.width - UM.Theme.sizes.default_margin.width
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        width: parent.width - UM.Theme.getSize("default_margin").width
         CheckBox
         {
             id: hotendCheckBox
