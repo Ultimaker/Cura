@@ -1,6 +1,6 @@
 [general]
 version = 1
-name = Fast Prints
+name = Fast Print
 machine_type = ultimaker2plus
 machine_variant = 0.4 mm
 material = CPE
