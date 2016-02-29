@@ -159,6 +159,8 @@ class LayerView(View):
                 self.setLayer(int(self._max_layers))
                 self.maxLayersChanged.emit()
 
+        self._top_layer_timer.start()
+
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
 
