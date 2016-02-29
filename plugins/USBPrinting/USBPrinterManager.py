@@ -106,6 +106,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
             try:
                 self._printer_connections[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
+                self._printer_connections[printer_connection].setProgress(100, 100)
                 Logger.log("w", "No firmware found for printer %s", printer_connection)
                 continue
 

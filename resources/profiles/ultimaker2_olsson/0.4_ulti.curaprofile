@@ -1,19 +1,19 @@
 [general]
 version = 1
-name = High Quality
+name = Ulti Quality
 machine_type = ultimaker2_olsson
 machine_variant = 0.4 mm
 
 [settings]
 machine_nozzle_size = 0.35
-layer_height = 0.06
+layer_height = 0.04
 layer_height_0 = 0.26
-shell_thickness = 1.05
-top_bottom_thickness = 0.84
+shell_thickness = 1.4
+top_bottom_thickness = 1.12
 travel_compensate_overlapping_walls_enabled = True
 skin_no_small_gaps_heuristic = False
 top_bottom_pattern = lines
-infill_sparse_density = 22
+infill_sparse_density = 25
 infill_overlap = 0.035
 infill_wipe_dist = 0.2
 retraction_amount = 5.5
