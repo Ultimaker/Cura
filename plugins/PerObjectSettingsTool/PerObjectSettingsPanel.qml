@@ -89,7 +89,6 @@ Item {
         Button
         {
             id: customise_settings_button;
-            anchors.right: profileSelection.right;
             height: UM.Theme.getSize("setting").height;
             visible: parseInt(UM.Preferences.getValue("cura/active_mode")) == 1
 
