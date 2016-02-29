@@ -281,7 +281,8 @@
                             "max_value_warning": "5",
                             "default": 0.4,
                             "type": "float",
-                            "visible": false
+                            "visible": false, 
+                            "global_only": true
                         },
                         "skin_line_width": {
                             "label": "Top/bottom line width",
@@ -315,7 +316,8 @@
                             "default": 0.4,
                             "type": "float",
                             "visible": false,
-                            "enabled": "support_enable"
+                            "enabled": "support_enable",
+                            "global_only": true
                         },
                         "support_roof_line_width": {
                             "label": "Support Roof line width",
@@ -326,7 +328,8 @@
                             "max_value_warning": "machine_nozzle_size * 2",
                             "type": "float",
                             "visible": false,
-                            "enabled": "support_roof_enable"
+                            "enabled": "support_roof_enable",
+                            "global_only": true
                         }
                     }
                 }
@@ -631,7 +634,8 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false,
-                    "enabled": "False"
+                    "enabled": "False",
+                    "global_only": true
                 },
                 "material_print_temperature": {
                     "label": "Printing Temperature",
@@ -649,7 +653,8 @@
                     "unit": "",
                     "type": "string",
                     "default": "[[3.5,200],[7.0,240]]",
-                    "enabled": "material_flow_dependent_temperature"
+                    "enabled": "material_flow_dependent_temperature",
+                    "global_only": true
                 },
                 "material_extrusion_cool_down_speed": {
                     "label": "Extrusion Cool Down Speed Modifier",
@@ -902,7 +907,8 @@
                                     "max_value_warning": "150",
                                     "visible": false,
                                     "inherit": true,
-                                    "enabled": "support_roof_enable"
+                                    "enabled": "support_roof_enable",
+                                    "global_only": true
                                 },
                                 "speed_support_roof": {
                                     "label": "Support Roof Speed",
@@ -915,7 +921,8 @@
                                     "visible": false,
                                     "inherit": false,
                                     "enabled": "support_roof_enable",
-                                    "inherit_function": "parent_value / 60 * 40"
+                                    "inherit_function": "parent_value / 60 * 40",
+                                    "global_only": true
                                 }
                             }
                         }
@@ -929,7 +936,8 @@
                     "default": 120,
                     "min_value": "0.1",
                     "max_value_warning": "300",
-                    "inherit_function": "speed_print if magic_spiralize else 120"
+                    "inherit_function": "speed_print if magic_spiralize else 120",
+                    "global_only": true
                 },
                 "speed_layer_0": {
                     "label": "Bottom Layer Speed",
@@ -950,7 +958,8 @@
                     "min_value": "0.1",
                     "max_value_warning": "300",
                     "visible": false,
-                    "inherit_function": "speed_layer_0"
+                    "inherit_function": "speed_layer_0",
+                    "global_only": true
                 },
                 "speed_slowdown_layers": {
                     "label": "Number of Slower Layers",
@@ -959,7 +968,8 @@
                     "default": 4,
                     "min_value": "0",
                     "max_value_warning": "300",
-                    "visible": false
+                    "visible": false,
+                    "global_only": true
                 }
             }
         },
@@ -973,7 +983,8 @@
                     "description": "Combing keeps the head within the interior of the print whenever possible when traveling from one part of the print to another and does not use retraction. If combing is disabled, the print head moves straight from the start point to the end point and it will always retract.",
                     "type": "boolean",
                     "default": true,
-                    "visible": false
+                    "visible": false, 
+                    "global_only": true
                 },
                 "travel_avoid_other_parts": {
                     "label": "Avoid Printed Parts",
@@ -1004,7 +1015,8 @@
                     "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to lay down the last piece of the extrusion path in order to reduce stringing.",
                     "type": "boolean",
                     "default": false,
-                    "visible": false
+                    "visible": false,
+                    "global_only": true
                 },
                 "coasting_volume": {
                     "label": "Coasting Volume",
@@ -1016,7 +1028,8 @@
                     "max_value_warning": "2.0",
                     "visible": false,
                     "inherit": false,
-                    "enabled": "coasting_enable"
+                    "enabled": "coasting_enable",
+                    "global_only": true
                 },
                 "coasting_min_volume": {
                     "label": "Minimal Volume Before Coasting",
@@ -1027,7 +1040,8 @@
                     "min_value": "0",
                     "max_value_warning": "10.0",
                     "visible": false,
-                    "enabled": "coasting_enable"
+                    "enabled": "coasting_enable",
+                    "global_only": true
                 },
                 "coasting_speed": {
                     "label": "Coasting Speed",
@@ -1039,7 +1053,8 @@
                     "max_value_warning": "100",
                     "visible": false,
                     "inherit": false,
-                    "enabled": "coasting_enable"
+                    "enabled": "coasting_enable",
+                    "global_only": true
                 }
             }
         },
@@ -1162,7 +1177,8 @@
                     "label": "Enable Draft Shield",
                     "description": "Enable exterior draft shield. This will create a wall around the object which traps (hot) air and shields against gusts of wind. Especially useful for materials which warp easily.",
                     "type": "boolean",
-                    "default": false
+                    "default": false,
+                    "global_only": true
                 },
                 "draft_shield_dist": {
                     "label": "Draft Shield X/Y Distance",
@@ -1173,7 +1189,8 @@
                     "max_value_warning": "100",
                     "default": 10,
                     "visible": false,
-                    "enabled": "draft_shield_enabled"
+                    "enabled": "draft_shield_enabled",
+                    "global_only": true
                 },
                 "draft_shield_height_limitation": {
                     "label": "Draft Shield Limitation",
@@ -1185,7 +1202,8 @@
                     },
                     "default": "full",
                     "visible": false,
-                    "enabled": "draft_shield_enabled"
+                    "enabled": "draft_shield_enabled",
+                    "global_only": true
                 },
                 "draft_shield_height": {
                     "label": "Draft Shield Height",
@@ -1197,7 +1215,8 @@
                     "default": 0,
                     "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
                     "visible": false,
-                    "enabled": "draft_shield_height_limitation == \"limited\""
+                    "enabled": "draft_shield_height_limitation == \"limited\"",
+                    "global_only": true
                 }
             }
         },
@@ -1386,6 +1405,7 @@
                     "min_value": "0",
                     "max_value_warning": "100",
                     "enabled":"support_roof_enable",
+                    "global_only": true,
                     "children": {
                         "support_roof_line_distance": {
                             "label": "Support Roof Line Distance",
@@ -1396,7 +1416,8 @@
                             "min_value": "0",
                             "visible": false,
                             "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value",
-                            "enabled": "support_roof_enable"
+                            "enabled": "support_roof_enable",
+                            "global_only": true
                         }
                     }
                 },
@@ -1413,7 +1434,8 @@
                         "zigzag": "Zig Zag"
                     },
                     "default": "concentric",
-                    "enabled": "support_roof_enable"
+                    "enabled": "support_roof_enable",
+                    "global_only": true
                 },
                 "support_use_towers": {
                     "label": "Use towers",
@@ -1473,7 +1495,8 @@
                     },
                     "default": "zigzag",
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_enable",
+                    "global_only": true
                 },
                 "support_connect_zigzags": {
                     "label": "Connect ZigZags",
@@ -1481,7 +1504,8 @@
                     "type": "boolean",
                     "default": true,
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_enable",
+                    "global_only": true
                 },
                 "support_infill_rate": {
                     "label": "Fill Amount",
@@ -1493,7 +1517,7 @@
                     "default": 15,
                     "visible": false,
                     "enabled": "support_enable",
-
+                    "global_only": true,
                     "children": {
                         "support_line_distance": {
                             "label": "Line distance",
@@ -1504,7 +1528,8 @@
                             "default": 2.66,
                             "visible": false,
                             "enabled": "support_enable",
-                            "inherit_function": "(support_line_width * 100) / parent_value"
+                            "inherit_function": "(support_line_width * 100) / parent_value",
+                            "global_only": true
                         }
                     }
                 }
