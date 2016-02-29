@@ -15,7 +15,6 @@ travel_compensate_overlapping_walls_enabled = True
 skin_no_small_gaps_heuristic = False
 top_bottom_pattern = lines
 infill_sparse_density = 25
-infill_overlap = 0.035
 infill_wipe_dist = 0.2
 retraction_amount = 5.5
 retraction_min_travel = 0.5
