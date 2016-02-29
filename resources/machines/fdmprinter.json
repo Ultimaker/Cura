@@ -588,7 +588,6 @@
                     "default": 10,
                     "min_value": "0",
                     "max_value_warning": "100",
-                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
                     "visible": false
                 },
                 "infill_wipe_dist": {
