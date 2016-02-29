@@ -11,6 +11,7 @@ from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
 from UM.Mesh.MeshData import MeshData
 from UM.Job import Job
+from UM.Message import Message
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
@@ -21,6 +22,10 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QApplication
 
 from . import LayerViewProxy
+
+import time
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 ## View used to display g-code paths.
 class LayerView(View):
@@ -210,13 +215,23 @@ class _CreateTopLayersJob(Job):
         if self._cancel or not layer_data:
             return
 
+        message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
+
+        start_time = time.clock()
+
         layer_mesh = MeshData()
         for i in range(self._solid_layers):
             layer_number = self._layer_number - i
             if layer_number < 0:
                 continue
-            #try:
-            layer = layer_data.getLayer(layer_number).createMesh()
+
+            try:
+                layer = layer_data.getLayer(layer_number).createMesh()
+            except Exception as e:
+                print(e)
+                message.hide()
+                return
+
             if not layer or layer.getVertices() is None:
                 continue
 
@@ -228,9 +243,16 @@ class _CreateTopLayersJob(Job):
             layer_mesh.addColors(layer.getColors() * brightness)
 
             if self._cancel:
+                message.hide()
                 return
 
+            now = time.clock()
+            if now - start_time > 0.5:
+                # If the entire process takes longer than 500ms, display a message indicating that we're busy.
+                message.show()
+
         if self._cancel:
+            message.hide()
             return
 
         jump_mesh = layer_data.getLayer(self._layer_number).createJumps()
@@ -238,6 +260,7 @@ class _CreateTopLayersJob(Job):
             jump_mesh = None
 
         self.setResult({ "layers": layer_mesh, "jumps": jump_mesh })
+        message.hide()
 
     def cancel(self):
         self._cancel = True
