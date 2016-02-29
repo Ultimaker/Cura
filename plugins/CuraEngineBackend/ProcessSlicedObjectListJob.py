@@ -97,15 +97,17 @@ class ProcessSlicedObjectListJob(Job):
 
                     points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
-                    points = numpy.asarray(points, dtype=numpy.float32)
-                    points /= 1000
-                    points = numpy.insert(points, 1, (layer.height / 1000), axis = 1)
 
-                    points[:,2] *= -1
+                    # Create a new 3D-array, copy the 2D points over and insert the right height.
+                    new_points = numpy.empty((len(points), 3), numpy.float32)
+                    new_points[:,0] = points[:,0]
+                    new_points[:,1] = layer.height
+                    new_points[:,2] = -points[:,1]
 
-                    points -= center
+                    new_points /= 1000
+                    new_points -= center
 
-                    layer_data.addPolygon(layer.id, polygon.type, points, polygon.line_width)
+                    layer_data.addPolygon(layer.id, polygon.type, new_points, polygon.line_width)
                     Job.yieldThread()
                 Job.yieldThread()
                 current_layer += 1
