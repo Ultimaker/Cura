@@ -366,7 +366,7 @@
                                     "min_value": "0",   
                                     "type": "int",
                                     "visible": false,
-                                    "inherit_function": "max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
+                                    "inherit_function": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
                                 }
                             }
                         },
