@@ -10,6 +10,8 @@ from UM.Mesh.MeshData import MeshData
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 
+from UM.Math.Vector import Vector
+
 from cura import LayerData
 from cura import LayerDataDecorator
 
@@ -64,12 +66,6 @@ class ProcessSlicedObjectListJob(Job):
 
         settings = Application.getInstance().getMachineManager().getWorkingProfile()
 
-        center = None
-        if not settings.getSettingValue("machine_center_is_zero"):
-            center = numpy.array([settings.getSettingValue("machine_width") / 2, 0.0, -settings.getSettingValue("machine_depth") / 2])
-        else:
-            center = numpy.array([0.0, 0.0, 0.0])
-
         mesh = MeshData()
         layer_data = LayerData.LayerData()
 
@@ -105,7 +101,6 @@ class ProcessSlicedObjectListJob(Job):
                     new_points[:,2] = -points[:,1]
 
                     new_points /= 1000
-                    new_points -= center
 
                     layer_data.addPolygon(layer.id, polygon.type, new_points, polygon.line_width)
                     Job.yieldThread()
@@ -137,6 +132,9 @@ class ProcessSlicedObjectListJob(Job):
 
         new_node.setMeshData(mesh)
         new_node.setParent(self._scene.getRoot()) #Note: After this we can no longer abort!
+
+        if not settings.getSettingValue("machine_center_is_zero"):
+            new_node.setPosition(Vector(-settings.getSettingValue("machine_width") / 2, 0.0, settings.getSettingValue("machine_depth") / 2))
 
         if self._progress:
             self._progress.setProgress(100)
