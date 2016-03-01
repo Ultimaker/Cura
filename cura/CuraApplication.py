@@ -78,7 +78,12 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
+        self._open_file_queue = [] #Files to open when plug-ins are loaded.
+
         super().__init__(name = "cura", version = CuraVersion)
+
+        for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
+            self._openFile(file_name)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
@@ -148,6 +153,8 @@ class CuraApplication(QtApplication):
         if self.getBackend() == None:
             raise RuntimeError("Could not load the backend plugin!")
 
+        self._plugins_loaded = True
+
     def addCommandLineOptions(self, parser):
         super().addCommandLineOptions(parser)
         parser.add_argument("file", nargs="*", help="Files to load after starting the application.")
@@ -211,8 +218,10 @@ class CuraApplication(QtApplication):
     #   Handle Qt events
     def event(self, event):
         if event.type() == QEvent.FileOpen:
-            Logger.log("i", "File open via Qt event: %s", event.file())
-            self._openFile(event.file())
+            if self._plugins_loaded:
+                self._openFile(event.file())
+            else:
+                self._open_file_queue.append(event.file())
 
         return super().event(event)
 
