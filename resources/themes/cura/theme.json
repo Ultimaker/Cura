@@ -3,52 +3,52 @@
         "large": {
             "size": 1.25,
             "bold": true,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "default": {
             "size": 1.15,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "default_bold": {
             "size": 1.15,
             "bold": true,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "small": {
             "size": 1.0,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "very_small": {
             "size": 0.75,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "caption": {
             "size": 1.0,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "sidebar_header": {
             "size": 0.75,
             "capitalize": true,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "default_header": {
             "size": 1.0,
             "bold": true,
-            "family": "Proxima Nova Rg",
+            "family": "Open Sans",
             "letterSpacing": 2.0
         },
         "button_tooltip": {
             "size": 1.0,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "setting_category": {
             "size": 1.15,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         },
         "action_button": {
             "size": 1.15,
             "bold": true,
-            "family": "Proxima Nova Rg"
+            "family": "Open Sans"
         }
     },
 
