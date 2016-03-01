@@ -82,9 +82,6 @@ class CuraApplication(QtApplication):
 
         super().__init__(name = "cura", version = CuraVersion)
 
-        for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
-            self._openFile(file_name)
-
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
         self.setRequiredPlugins([
@@ -212,6 +209,8 @@ class CuraApplication(QtApplication):
 
             for file in self.getCommandLineOption("file", []):
                 self._openFile(file)
+            for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
+                self._openFile(file_name)
 
             self.exec_()
 
