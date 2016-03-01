@@ -131,7 +131,7 @@ class CuraApplication(QtApplication):
             self._recent_files.append(QUrl.fromLocalFile(f))
 
     @pyqtSlot(result = QUrl)
-    def getDefaultSavePath(self):
+    def getDefaultPath(self):
         return QUrl.fromLocalFile(os.path.expanduser("~/"))
     
     ##  Handle loading of all plugin types (and the backend explicitly)

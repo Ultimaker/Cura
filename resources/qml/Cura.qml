@@ -667,7 +667,7 @@ UM.MainWindow
         //TODO: Support multiple file selection, workaround bug in KDE file dialog
         //selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: Printer.getDefaultSavePath()
+        folder: Printer.getDefaultPath()
         onAccepted:
         {
             //Because several implementations of the file dialog only update the folder
