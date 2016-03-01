@@ -351,6 +351,8 @@ QtObject {
                 border.width: Theme.getSize("default_lining").width;
                 border.color: Theme.getColor("slider_groove_border");
 
+                radius: width / 2;
+
                 Rectangle {
                     anchors {
                         left: parent.left;
@@ -359,6 +361,7 @@ QtObject {
                     }
                     color: Theme.getColor("slider_groove_fill");
                     width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
+                    radius: width / 2;
                 }
             }
             handle: Rectangle {
@@ -366,65 +369,6 @@ QtObject {
                 height: Theme.getSize("slider_handle").height;
                 color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
                 Behavior on color { ColorAnimation { duration: 50; } }
-            }
-        }
-    }
-
-    property Component layerViewSlider: Component {
-        SliderStyle {
-            groove: Rectangle {
-                id: layerSliderGroove
-                implicitWidth: control.width;
-                implicitHeight: Theme.getSize("slider_groove").height;
-                radius: width/2;
-
-                color: Theme.getColor("slider_groove");
-                border.width: Theme.getSize("default_lining").width;
-                border.color: Theme.getColor("slider_groove_border");
-                Rectangle {
-                    anchors {
-                        left: parent.left;
-                        top: parent.top;
-                        bottom: parent.bottom;
-                    }
-                    color: Theme.getColor("slider_groove_fill");
-                    width: (control.value / (control.maximumValue - control.minimumValue)) * parent.width;
-                    radius: width/2
-                }
-            }
-            handle: Rectangle {
-                id: layerSliderControl
-                width: Theme.getSize("slider_handle").width;
-                height: Theme.getSize("slider_handle").height;
-                color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
-                Behavior on color { ColorAnimation { duration: 50; } }
-                TextField {
-                    id: valueLabel
-                    property string maxValue: control.maximumValue + 1
-                    text: control.value + 1
-                    horizontalAlignment: TextInput.AlignHCenter
-                    onEditingFinished: {
-                        if (valueLabel.text != ''){
-                            control.value = valueLabel.text - 1
-                        }
-                    }
-                    validator: IntValidator {bottom: 1; top: control.maximumValue + 1;}
-                    visible: UM.LayerView.getLayerActivity && Printer.getPlatformActivity ? true : false
-                    anchors.top: layerSliderControl.bottom
-                    anchors.topMargin: width/2 - Theme.getSize("default_margin").width/2
-                    anchors.horizontalCenter: layerSliderControl.horizontalCenter
-                    rotation: 90
-                    style: TextFieldStyle{
-                        textColor: Theme.getColor("setting_control_text");
-                        font: Theme.getFont("default");
-                        background: Rectangle {
-                            implicitWidth: control.maxValue.length * valueLabel.font.pixelSize + Theme.getSize("default_margin").width
-                            implicitHeight: Theme.getSize("slider_handle").height + Theme.getSize("default_margin").width
-                            border.width: Theme.getSize("default_lining").width;
-                            border.color: Theme.getColor("slider_groove_border");
-                        }
-                    }
-                }
             }
         }
     }

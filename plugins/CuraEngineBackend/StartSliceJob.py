@@ -61,6 +61,8 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
                 Job.yieldThread()
+            if len(object_groups) == 0:
+                Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
         else:
             temp_list = []
             for node in DepthFirstIterator(self._scene.getRoot()):
