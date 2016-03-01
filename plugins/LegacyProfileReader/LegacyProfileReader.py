@@ -124,5 +124,5 @@ class LegacyProfileReader(ProfileReader):
 
         if len(profile.getChangedSettings()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
-
+        profile.setDirty(True)
         return profile

@@ -66,7 +66,10 @@ class GCodeProfileReader(ProfileReader):
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
         try:
             profile.unserialise(serialised)
-        except Exception as e: #Not a valid g-code file.
+            profile.setType(None) #Force type to none so it's correctly added.
+            profile.setReadOnly(False)
+            profile.setDirty(True)
+        except Exception as e: #Not a valid g-comachine_instance_profilede file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
         return profile
