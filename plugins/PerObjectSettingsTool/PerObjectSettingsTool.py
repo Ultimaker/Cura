@@ -17,6 +17,7 @@ class PerObjectSettingsTool(Tool):
         self.setExposedProperties("Model", "SelectedIndex")
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
+        self._onPreferenceChanged("cura/active_mode")
 
     def event(self, event):
         return False
