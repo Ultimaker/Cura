@@ -211,6 +211,7 @@ class CuraApplication(QtApplication):
     #   Handle Qt events
     def event(self, event):
         if event.type() == QEvent.FileOpen:
+            Logger.log("i", "File open via Qt event: %s", event.file())
             self._openFile(event.file())
 
         return super().event(event)
