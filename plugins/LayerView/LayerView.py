@@ -51,6 +51,8 @@ class LayerView(View):
         self._top_layer_timer.setSingleShot(True)
         self._top_layer_timer.timeout.connect(self._startUpdateTopLayers)
 
+        self._busy = False
+
     def getActivity(self):
         return self._activity
 
@@ -62,6 +64,16 @@ class LayerView(View):
 
     def getMaxLayers(self):
         return self._max_layers
+
+    busyChanged = Signal()
+
+    def isBusy(self):
+        return self._busy
+
+    def setBusy(self, busy):
+        if busy != self._busy:
+            self._busy = busy
+            self.busyChanged.emit()
 
     def resetLayerData(self):
         self._current_layer_mesh = None
@@ -183,11 +195,15 @@ class LayerView(View):
                 return True
 
     def _startUpdateTopLayers(self):
+        self.setBusy(True)
+
         self._top_layers_job = _CreateTopLayersJob(self._controller.getScene(), self._current_layer_num, self._solid_layers)
         self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)
         self._top_layers_job.start()
 
     def _updateCurrentLayerMesh(self, job):
+        self.setBusy(False)
+
         if not job.getResult():
             return
 
