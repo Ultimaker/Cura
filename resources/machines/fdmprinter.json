@@ -1305,7 +1305,7 @@
                     "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
                     "type": "boolean",
                     "default": false,
-                    "visible": false,
+                    "visible": true,
                     "enabled": "support_enable"
                 },
                 "support_conical_angle": {
