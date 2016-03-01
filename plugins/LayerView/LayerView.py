@@ -36,7 +36,7 @@ class LayerView(View):
         self._num_layers = 0
         self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
-        self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
+        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
         self._max_layers = 10
         self._current_layer_num = 10
         self._current_layer_mesh = None
@@ -51,6 +51,8 @@ class LayerView(View):
         self._top_layer_timer.setSingleShot(True)
         self._top_layer_timer.timeout.connect(self._startUpdateTopLayers)
 
+        self._busy = False
+
     def getActivity(self):
         return self._activity
 
@@ -62,6 +64,16 @@ class LayerView(View):
 
     def getMaxLayers(self):
         return self._max_layers
+
+    busyChanged = Signal()
+
+    def isBusy(self):
+        return self._busy
+
+    def setBusy(self, busy):
+        if busy != self._busy:
+            self._busy = busy
+            self.busyChanged.emit()
 
     def resetLayerData(self):
         self._current_layer_mesh = None
@@ -121,11 +133,6 @@ class LayerView(View):
 
             self._top_layer_timer.start()
 
-            if self._top_layers_job:
-                self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
-                self._top_layers_job.cancel()
-                self._top_layers_job = None
-
             self.currentLayerNumChanged.emit()
 
     currentLayerNumChanged = Signal()
@@ -183,11 +190,19 @@ class LayerView(View):
                 return True
 
     def _startUpdateTopLayers(self):
+        if self._top_layers_job:
+            self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
+            self._top_layers_job.cancel()
+
+        self.setBusy(True)
+
         self._top_layers_job = _CreateTopLayersJob(self._controller.getScene(), self._current_layer_num, self._solid_layers)
         self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)
         self._top_layers_job.start()
 
     def _updateCurrentLayerMesh(self, job):
+        self.setBusy(False)
+
         if not job.getResult():
             return
 
@@ -216,10 +231,6 @@ class _CreateTopLayersJob(Job):
         if self._cancel or not layer_data:
             return
 
-        message = Message(catalog.i18nc("@info:status", "Processing Layers"), 0, False, -1)
-
-        start_time = time.clock()
-
         layer_mesh = MeshData()
         for i in range(self._solid_layers):
             layer_number = self._layer_number - i
@@ -230,7 +241,6 @@ class _CreateTopLayersJob(Job):
                 layer = layer_data.getLayer(layer_number).createMesh()
             except Exception as e:
                 print(e)
-                message.hide()
                 return
 
             if not layer or layer.getVertices() is None:
@@ -244,24 +254,19 @@ class _CreateTopLayersJob(Job):
             layer_mesh.addColors(layer.getColors() * brightness)
 
             if self._cancel:
-                message.hide()
                 return
 
-            now = time.clock()
-            if now - start_time > 0.5:
-                # If the entire process takes longer than 500ms, display a message indicating that we're busy.
-                message.show()
+            Job.yieldThread()
 
         if self._cancel:
-            message.hide()
             return
 
+        Job.yieldThread()
         jump_mesh = layer_data.getLayer(self._layer_number).createJumps()
         if not jump_mesh or jump_mesh.getVertices() is None:
             jump_mesh = None
 
         self.setResult({ "layers": layer_mesh, "jumps": jump_mesh })
-        message.hide()
 
     def cancel(self):
         self._cancel = True
