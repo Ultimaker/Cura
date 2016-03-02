@@ -784,7 +784,7 @@
                     "description": "This setting limits the number of retractions occurring within the Minimum Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
                     "default": 8,
                     "min_value": "0",
-                    "max_value_warning": "20",
+                    "max_value_warning": "100",
                     "type": "int",
                     "visible": false,
                     "inherit": false,
