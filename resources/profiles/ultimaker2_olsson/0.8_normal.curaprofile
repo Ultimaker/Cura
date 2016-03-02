@@ -10,7 +10,6 @@ layer_height = 0.2
 layer_height_0 = 0.5
 shell_thickness = 2.1
 top_bottom_thickness = 1.6
-travel_compensate_overlapping_walls_enabled = True
 top_bottom_pattern = lines
 infill_sparse_density = 20
 infill_overlap = 0.07
