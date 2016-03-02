@@ -29,4 +29,3 @@ travel_avoid_distance = 1.2
 cool_fan_full_layer = 2
 cool_min_layer_time_fan_speed_max = 20
 adhesion_type = brim
-brim_width = 7

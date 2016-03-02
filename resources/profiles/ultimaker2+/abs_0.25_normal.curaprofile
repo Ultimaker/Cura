@@ -9,7 +9,6 @@ material = ABS
 layer_height = 0.06
 top_bottom_thickness = 0.72
 layer_height_0 = 0.15
-brim_line_count = 32
 speed_wall_x = 25
 wall_thickness = 0.88
 speed_infill = 30
