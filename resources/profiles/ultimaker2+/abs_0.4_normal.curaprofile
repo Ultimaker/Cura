@@ -16,7 +16,6 @@ brim_line_count = 20
 material_flow = 100.0
 cool_lift_head = True
 speed_print = 30
-retraction_hop = 0.0
 machine_nozzle_size = 0.35
 speed_wall_0 = 20
 raft_interface_line_spacing = 3.0

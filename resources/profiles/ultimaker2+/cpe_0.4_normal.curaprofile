@@ -6,7 +6,6 @@ machine_variant = 0.4 mm
 material = CPE
 
 [settings]
-retraction_hop = 0.0
 support_enable = False
 raft_airgap = 0.0
 raft_surface_thickness = 0.27
