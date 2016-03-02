@@ -467,7 +467,7 @@
                     "label": "Compensate Wall Overlaps",
                     "description": "Compensate the flow for parts of a wall being laid down where there already is a piece of a wall. These overlaps occur in thin pieces in a model. Gcode generation might be slowed down considerably.",
                     "type": "boolean",
-                    "default": false,
+                    "default": true,
                     "visible": false
                 },
                 "fill_perimeter_gaps": {
