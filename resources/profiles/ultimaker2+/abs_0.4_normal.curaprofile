@@ -24,7 +24,6 @@ speed_topbottom = 20
 speed_infill = 45
 infill_before_walls = False
 retraction_speed = 40.0
-skin_no_small_gaps_heuristic = False
 shell_thickness = 1.05
 cool_fan_speed_max = 100
 raft_airgap = 0.0

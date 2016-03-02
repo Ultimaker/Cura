@@ -27,7 +27,6 @@ speed_topbottom = 20
 speed_infill = 30
 infill_before_walls = False
 retraction_speed = 40.0
-skin_no_small_gaps_heuristic = False
 infill_sparse_density = 22
 shell_thickness = 0.88
 cool_fan_speed_max = 100

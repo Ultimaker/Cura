@@ -8,7 +8,6 @@ material = CPE
 [settings]
 cool_fan_speed_min = 50
 retraction_hop = 0.0
-skin_no_small_gaps_heuristic = False
 raft_airgap = 0.0
 speed_travel = 150
 raft_surface_thickness = 0.27

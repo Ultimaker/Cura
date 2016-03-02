@@ -12,7 +12,6 @@ layer_height_0 = 0.26
 shell_thickness = 1.4
 top_bottom_thickness = 1.12
 travel_compensate_overlapping_walls_enabled = True
-skin_no_small_gaps_heuristic = False
 top_bottom_pattern = lines
 infill_sparse_density = 25
 infill_wipe_dist = 0.2
