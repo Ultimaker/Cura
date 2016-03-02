@@ -4,7 +4,6 @@
 from PyQt5.QtCore import QObject, QDateTime, QTimer, pyqtSignal, pyqtSlot, pyqtProperty
 
 from UM.Application import Application
-from UM.Settings.MachineSettings import MachineSettings
 from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Qt.Duration import Duration
