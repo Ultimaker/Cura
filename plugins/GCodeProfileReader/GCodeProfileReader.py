@@ -69,7 +69,7 @@ class GCodeProfileReader(ProfileReader):
             profile.setType(None) #Force type to none so it's correctly added.
             profile.setReadOnly(False)
             profile.setDirty(True)
-        except Exception as e: #Not a valid g-comachine_instance_profilede file.
+        except Exception as e: #Not a valid g-code file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
         return profile
