@@ -1229,7 +1229,7 @@
                     "label": "Enable Support",
                     "description": "Enable exterior support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air.",
                     "type": "boolean",
-                    "default": true
+                    "default": false
                 },
                 "support_type": {
                     "label": "Placement",
