@@ -14,7 +14,6 @@ support_pattern = lines
 raft_interface_line_spacing = 3.0
 raft_surface_line_width = 0.4
 cool_fan_speed_min = 50
-retraction_combing = All
 adhesion_type = brim
 cool_min_layer_time = 3
 infill_before_walls = False

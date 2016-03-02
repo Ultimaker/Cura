@@ -11,7 +11,6 @@ raft_base_line_width = 1.0
 raft_margin = 5.0
 cool_min_layer_time = 3
 support_enable = False
-retraction_combing = All
 cool_min_speed = 15
 brim_line_count = 10
 top_thickness = 1.2

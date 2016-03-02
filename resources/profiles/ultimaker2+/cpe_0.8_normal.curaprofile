@@ -14,7 +14,6 @@ raft_surface_thickness = 0.27
 raft_interface_line_spacing = 3.0
 bottom_thickness = 1.2
 support_pattern = lines
-retraction_combing = All
 adhesion_type = brim
 cool_min_layer_time = 3
 layer_height = 0.2

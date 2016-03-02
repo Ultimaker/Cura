@@ -10,7 +10,7 @@ raft_surface_thickness = 0.27
 raft_base_line_width = 1.0
 raft_margin = 5.0
 support_enable = False
-retraction_combing = All
+
 cool_min_speed = 20
 brim_line_count = 20
 material_flow = 100.0
