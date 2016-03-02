@@ -212,6 +212,7 @@ Item
             id: machineName;
             text: getMachineName()
             implicitWidth: UM.Theme.getSize("standard_list_input").width
+            maximumLength: 120
         }
     }
 

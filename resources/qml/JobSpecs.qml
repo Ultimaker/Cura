@@ -25,7 +25,6 @@ Rectangle {
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
-    width: UM.Theme.getSize("jobspecs").width
     height: childrenRect.height
     color: "transparent"
 
@@ -119,19 +118,20 @@ Rectangle {
                 }
             }
 
-            TextField 
+            TextField
             {
                 id: printJobTextfield
                 anchors.right: printJobPencilIcon.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
                 height: UM.Theme.getSize("jobspecs_line").height
-                width: base.width
+                width: __contentWidth + UM.Theme.getSize("default_margin").width
+                maximumLength: 120
                 property int unremovableSpacing: 5
                 text: ''
                 horizontalAlignment: TextInput.AlignRight
                 onTextChanged: {
                     if(text != ''){
-                        //this prevent that is sets an empty string as jobname 
+                        //Prevent that jobname is set to an empty string 
                         Printer.setJobName(text)
                     }
                 }
