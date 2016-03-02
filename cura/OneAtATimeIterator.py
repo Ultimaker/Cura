@@ -94,7 +94,7 @@ class OneAtATimeIterator(Iterator.Iterator):
         if a == b:
             return False
 
-        overlap = a.callDecoration("getConvexHullBoundary").intersectsPolygon(b.callDecoration("getConvexHullHead"))
+        overlap = a.callDecoration("getConvexHullBoundary").intersectsPolygon(b.callDecoration("getConvexHullHeadFull"))
         if overlap:
             return True
         else: 
