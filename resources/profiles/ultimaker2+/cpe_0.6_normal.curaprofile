@@ -24,7 +24,6 @@ brim_line_count = 14
 cool_lift_head = True
 retraction_speed = 40.0
 cool_fan_speed_max = 100
-magic_mesh_surface_mode = False
 speed_print = 20
 shell_thickness = 1.59
 speed_wall_0 = 20

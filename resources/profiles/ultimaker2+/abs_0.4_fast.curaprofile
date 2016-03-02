@@ -38,7 +38,6 @@ speed_wall_x = 40
 skirt_minimal_length = 150.0
 bottom_thickness = 0.75
 layer_height_0 = 0.26
-magic_mesh_surface_mode = False
 cool_fan_speed_min = 50
 top_bottom_thickness = 0.75
 skirt_gap = 3.0

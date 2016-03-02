@@ -37,7 +37,6 @@ skirt_minimal_length = 150.0
 speed_layer_0 = 20
 bottom_thickness = 1.2
 layer_height_0 = 0.39
-magic_mesh_surface_mode = False
 cool_fan_speed_min = 50
 top_bottom_thickness = 1.2
 skirt_gap = 3.0
