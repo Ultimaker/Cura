@@ -274,8 +274,8 @@ class CuraEngineBackend(Backend):
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
                 if self._stored_layer_data and not self._slicing:
-                    job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
-                    job.start()
+                    self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
+                    self._process_layers_job.start()
                     self._stored_layer_data = None
             else:
                 self._layer_view_active = False
