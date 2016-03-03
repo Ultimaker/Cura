@@ -1928,7 +1928,7 @@
                         "surface": "Surface",
                         "both": "Both"
                     },
-                    "default": "Normal",
+                    "default": "normal",
                     "visible": false
                 },
                 "magic_spiralize": {
