@@ -21,7 +21,7 @@ def getDefaultFirmware(machineIndex = None):
 	firmwareDict = {
 			'ultimaker2go':"MarlinUltimaker2go.hex",
 			'Witbox':"MarlinWitbox.hex",
-			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
 			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2015Q3.hex",
 			'lulzbot_TAZ_4_SingleV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			'lulzbot_TAZ_5_SingleV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
