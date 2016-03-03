@@ -22,9 +22,7 @@ class Stk500v2(ispBase.IspBase):
 		if self.serial is not None:
 			self.close()
 		try:
-			self.serial = Serial(str(port), speed, timeout=1)
-			# Need to set writeTimeout separately in order to be compatible with pyserial 3.0
-			self.serial.writeTimeout=10000
+			self.serial = Serial(str(port), speed, timeout=1, writeTimeout=10000)
 		except SerialException as e:
 			raise ispBase.IspError("Failed to open serial port")
 		except:
