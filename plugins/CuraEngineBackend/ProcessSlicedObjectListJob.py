@@ -95,6 +95,8 @@ class ProcessSlicedObjectListJob(Job):
                     points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
                     # Create a new 3D-array, copy the 2D points over and insert the right height.
+                    # This uses manual array creation + copy rather than numpy.insert since this is
+                    # faster.
                     new_points = numpy.empty((len(points), 3), numpy.float32)
                     new_points[:,0] = points[:,0]
                     new_points[:,1] = layer.height
