@@ -22,7 +22,7 @@
         "skin_alternate_rotation": { "default": true },
         "skin_outline_count": { "default": 2 },
         "infill_sparse_density": { "default": 10 },
-        "infill_overlap": { "default": 14, "inherit_function": "14 if infill_sparse_density < 95 else 0" },
+        "infill_overlap": { "default": 0.056, "inherit_function": "0.14 * line_width if infill_sparse_density < 95 else 0" },
         "infill_wipe_dist": { "default": 0.35, "inherit_function": "wall_line_width_0" },
         "retraction_amount": { "default": 6 },
         "retraction_min_travel": { "default": 4.5 },

@@ -12,7 +12,7 @@
         "machine_width": {"default": 340},
         "machine_height": {"default": 290},
         "machine_depth": {"default": 300},
-        "machine_heated_bed": { "default": true }
+        "machine_heated_bed": { "default": true },
         "machine_center_is_zero": {"default": false},
         "machine_nozzle_size": {"default": 0.4},
         "machine_head_shape_min_x": {"default": 43.7},
@@ -44,6 +44,6 @@
         "speed_topbottom": { "default": 30.0, "visible": true },
         "speed_travel": { "default": 150.0, "visible": true },
         "speed_layer_0": { "min_value": 0.1, "default": 30.0, "visible": true },
-        "infill_overlap": { "default": 10.0 }
+        "infill_overlap": { "default": 0.04, "inherit_function": "0.1 * line_width if infill_sparse_density < 95 else 0" }
     }
 }
