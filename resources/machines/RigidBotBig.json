@@ -49,7 +49,7 @@
         "speed_infill": { "default": 100.0, "visible": true },
         "speed_topbottom": { "default": 15.0, "visible": true },
         "speed_travel": { "default": 150.0, "visible": true },
-        "speed_layer_0": { "min_value": 0.1, "default": 15.0, "visible": true },
+        "speed_layer_0": { "min_value": "0.1", "default": 15.0, "visible": true },
         "infill_overlap": { "default": 10.0 },
         "cool_fan_enabled": { "default": false, "visible": true},
         "cool_fan_speed": { "default": 0.0, "visible": true },
