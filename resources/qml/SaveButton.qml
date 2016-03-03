@@ -79,8 +79,9 @@ Rectangle {
             enabled: base.backendState == 2 && base.activity == true
             height: UM.Theme.getSize("save_button_save_to_button").height
 
-            anchors.top:parent.top
+            anchors.top: parent.top
             anchors.right: deviceSelectionMenu.left;
+            anchors.rightMargin: -3 * UM.Theme.getSize("default_lining").width;
 
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
@@ -120,7 +121,7 @@ Rectangle {
         Button {
             id: deviceSelectionMenu
             tooltip: catalog.i18nc("@info:tooltip","Select the active output device");
-            anchors.top:parent.top
+            anchors.top: parent.top
             anchors.right: parent.right
 
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
