@@ -225,8 +225,8 @@ class _CreateTopLayersJob(Job):
         layer_data = None
         for node in DepthFirstIterator(self._scene.getRoot()):
             layer_data = node.callDecoration("getLayerData")
-            if not layer_data:
-                continue
+            if layer_data:
+                break
 
         if self._cancel or not layer_data:
             return
