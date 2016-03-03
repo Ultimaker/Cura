@@ -368,6 +368,7 @@ QtObject {
                 width: Theme.getSize("slider_handle").width;
                 height: Theme.getSize("slider_handle").height;
                 color: control.hovered ? Theme.getColor("slider_handle_hover") : Theme.getColor("slider_handle");
+                radius: Theme.getSize("slider_handle").width/2;
                 Behavior on color { ColorAnimation { duration: 50; } }
             }
         }

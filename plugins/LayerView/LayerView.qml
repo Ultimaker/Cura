@@ -8,12 +8,12 @@ import QtQuick.Controls.Styles 1.1
 
 import UM 1.0 as UM
 
-Item 
+Item
 {
     width: UM.Theme.getSize("button").width
     height: UM.Theme.getSize("slider_layerview_size").height
 
-    Slider 
+    Slider
     {
         id: slider
         width: UM.Theme.getSize("slider_layerview_size").width
@@ -34,11 +34,11 @@ Item
 
         Rectangle
         {
-            x: parent.width + UM.Theme.getSize("default_margin").width;
+            x: parent.width + UM.Theme.getSize("slider_layerview_background").width / 2;
             y: parent.height - (parent.value * parent.pixelsPerStep) - UM.Theme.getSize("slider_handle").height * 1.25;
 
             height: UM.Theme.getSize("slider_handle").height + UM.Theme.getSize("default_margin").height
-            width: valueLabel.width + (busyIndicator.visible ? busyIndicator.width : 0) + UM.Theme.getSize("default_margin").width
+            width: valueLabel.width + UM.Theme.getSize("default_margin").width
             Behavior on height { NumberAnimation { duration: 50; } }
 
             border.width: UM.Theme.getSize("default_lining").width;
@@ -78,8 +78,8 @@ Item
             BusyIndicator
             {
                 id: busyIndicator;
-                anchors.right: parent.right;
-                anchors.rightMargin: UM.Theme.getSize("default_margin").width / 2;
+                anchors.left: parent.right;
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2;
                 anchors.verticalCenter: parent.verticalCenter;
 
                 width: UM.Theme.getSize("slider_handle").height;
