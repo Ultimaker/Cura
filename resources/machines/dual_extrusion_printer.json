@@ -7,7 +7,6 @@
 
     "visible": false,
 
-    
     "machine_extruder_trains": {
         "0": {
             "extruder_nr": { "default": 0 },
@@ -18,7 +17,7 @@
             "extruder_nr": { "default": 1 }
         }
     },
-    
+
     "machine_settings": {
         "machine_use_extruder_offset_to_offset_coords": { "default": false },
 
@@ -109,7 +108,7 @@
                                     "default": 0,
                                     "min_value": "0",
                                     "max_value": "16",
-				    "global_only": true
+                                    "global_only": true
                                 },
                                 "support_extruder_nr_layer_0": {
                                     "label": "First Layer Support Extruder",
@@ -118,7 +117,7 @@
                                     "default": 0,
                                     "min_value": "0",
                                     "max_value": "16",
-				    "global_only": true
+                                    "global_only": true
                                 },
                                 "support_roof_extruder_nr": {
                                     "label": "Support Roof Extruder",
@@ -127,8 +126,8 @@
                                     "default": 0,
                                     "min_value": "0",
                                     "max_value": "16",
-                                    "enabled": "support_roof_enable"
-				    "global_only": true
+                                    "enabled": "support_roof_enable",
+                                    "global_only": true
                                 }
                             }
                         }
@@ -198,7 +197,7 @@
                     "type": "boolean",
                     "default": false,
                     "enabled": "prime_tower_enable",
-	   	    "global_only": true
+                    "global_only": true
                 },
                 "multiple_mesh_overlap": {
                     "label": "Dual Extrusion Overlap",
@@ -209,7 +208,7 @@
                     "default": 0.15,
                     "min_value": "0",
                     "max_value_warning": "1.0",
-		    "global_only": true
+                    "global_only": true
                 },
                 "ooze_shield_enabled": {
                     "label": "Enable Ooze Shield",
@@ -245,7 +244,7 @@
             }
         },
         "material": {
-            "settings": {                
+            "settings": {
                 "material_standby_temperature": {
                     "label": "Standby Temperature",
                     "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
