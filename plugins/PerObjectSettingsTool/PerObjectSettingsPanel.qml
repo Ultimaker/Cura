@@ -22,34 +22,12 @@ Item {
         anchors.top: parent.top;
         anchors.left: parent.left;
 
-        spacing: UM.Theme.sizes.default_margin.height;
-
-        UM.SettingItem {
-            id: profileSelection
-
-            width: UM.Theme.sizes.setting.width;
-            height: UM.Theme.sizes.setting.height;
-
-            name: catalog.i18nc("@label", "Object profile")
-            type: "enum"
-            indent: false
-
-            style: UM.Theme.styles.setting_item;
-
-            options: UM.ProfilesModel { addUseGlobal: true }
-
-            value: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).profile
-
-            onItemValueChanged: {
-                var item = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex);
-                UM.ActiveTool.properties.getValue("Model").setObjectProfile(item.id, value)
-            }
-        }
+        spacing: UM.Theme.getSize("default_margin").height;
 
         Column {
             id: customisedSettings
-            spacing: UM.Theme.sizes.default_lining.height;
-            width: UM.Theme.sizes.setting.width + UM.Theme.sizes.setting.height/2;
+            spacing: UM.Theme.getSize("default_lining").height;
+            width: UM.Theme.getSize("setting").width + UM.Theme.getSize("setting").height/2;
 
             Repeater {
                 id: settings;
@@ -57,8 +35,8 @@ Item {
                 model: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).settings
 
                 UM.SettingItem {
-                    width: UM.Theme.sizes.setting.width;
-                    height: UM.Theme.sizes.setting.height;
+                    width: UM.Theme.getSize("setting").width;
+                    height: UM.Theme.getSize("setting").height;
 
                     name: model.label;
                     type: model.type;
@@ -66,6 +44,7 @@ Item {
                     description: model.description;
                     unit: model.unit;
                     valid: model.valid;
+                    visible: !model.global_only
                     options: model.options
                     indent: false
 
@@ -79,8 +58,8 @@ Item {
                     {
                         anchors.left: parent.right;
 
-                        width: UM.Theme.sizes.setting.height;
-                        height: UM.Theme.sizes.setting.height;
+                        width: UM.Theme.getSize("setting").height;
+                        height: UM.Theme.getSize("setting").height;
 
                         onClicked: UM.ActiveTool.properties.getValue("Model").removeSettingOverride(UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id, model.key)
 
@@ -97,8 +76,8 @@ Item {
                                     height: parent.height/2
                                     sourceSize.width: width
                                     sourceSize.height: width
-                                    color: control.hovered ? UM.Theme.colors.setting_control_button_hover : UM.Theme.colors.setting_control_button
-                                    source: UM.Theme.icons.cross1
+                                    color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                    source: UM.Theme.getIcon("cross1")
                                 }
                             }
                         }
@@ -110,8 +89,7 @@ Item {
         Button
         {
             id: customise_settings_button;
-            anchors.right: profileSelection.right;
-            height: UM.Theme.sizes.setting.height;
+            height: UM.Theme.getSize("setting").height;
             visible: parseInt(UM.Preferences.getValue("cura/active_mode")) == 1
 
             text: catalog.i18nc("@action:button", "Add Setting");
@@ -122,16 +100,16 @@ Item {
                 {
                     width: control.width;
                     height: control.height;
-                    border.width: UM.Theme.sizes.default_lining.width;
-                    border.color: control.pressed ? UM.Theme.colors.action_button_active_border :
-                                  control.hovered ? UM.Theme.colors.action_button_hovered_border : UM.Theme.colors.action_button_border
-                    color: control.pressed ? UM.Theme.colors.action_button_active :
-                           control.hovered ? UM.Theme.colors.action_button_hovered : UM.Theme.colors.action_button
+                    border.width: UM.Theme.getSize("default_lining").width;
+                    border.color: control.pressed ? UM.Theme.getColor("action_button_active_border") :
+                                  control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
+                    color: control.pressed ? UM.Theme.getColor("action_button_active") :
+                           control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                 }
                 label: Label
                 {
                     text: control.text;
-                    color: UM.Theme.colors.setting_control_text;
+                    color: UM.Theme.getColor("setting_control_text");
                     anchors.centerIn: parent
                 }
             }
@@ -180,7 +158,7 @@ Item {
             }
 
             Column {
-                width: view.width - UM.Theme.sizes.default_margin.width * 2;
+                width: view.width - UM.Theme.getSize("default_margin").width * 2;
                 height: childrenRect.height;
 
                 Repeater {
@@ -211,11 +189,11 @@ Item {
                                 }
                                 label: Row
                                 {
-                                    spacing: UM.Theme.sizes.default_margin.width;
+                                    spacing: UM.Theme.getSize("default_margin").width;
                                     Image
                                     {
                                         anchors.verticalCenter: parent.verticalCenter;
-                                        source: control.checked ? UM.Theme.icons.arrow_right : UM.Theme.icons.arrow_bottom;
+                                        source: control.checked ? UM.Theme.getIcon("arrow_right") : UM.Theme.getIcon("arrow_bottom");
                                     }
                                     Label
                                     {
@@ -259,7 +237,7 @@ Item {
 
                                 delegate: ToolButton {
                                     id: button;
-                                    x: model.depth * UM.Theme.sizes.default_margin.width;
+                                    x: model.depth * UM.Theme.getSize("default_margin").width;
                                     text: model.name;
                                     tooltip: model.description;
                                     visible: !model.global_only

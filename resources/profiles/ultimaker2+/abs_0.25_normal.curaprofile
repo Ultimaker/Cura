@@ -1,0 +1,26 @@
+[general]
+version = 1
+name = Normal Quality
+machine_type = ultimaker2plus
+machine_variant = 0.25 mm
+material = ABS
+
+[settings]
+layer_height = 0.06
+top_bottom_thickness = 0.72
+layer_height_0 = 0.15
+speed_wall_x = 25
+wall_thickness = 0.88
+speed_infill = 30
+speed_topbottom = 20
+adhesion_type = brim
+speed_print = 20
+cool_min_speed = 25
+line_width = 0.22
+infill_sparse_density = 22
+machine_nozzle_size = 0.22
+speed_wall_0 = 20
+cool_min_layer_time = 2
+cool_lift_head = True
+cool_fan_speed_min = 50
+

@@ -33,6 +33,15 @@ class LayerViewProxy(QObject):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             return active_view.getCurrentLayer()
+
+    busyChanged = pyqtSignal()
+    @pyqtProperty(bool, notify = busyChanged)
+    def busy(self):
+        active_view = self._controller.getActiveView()
+        if type(active_view) == LayerView.LayerView.LayerView:
+            return active_view.isBusy()
+
+        return False
     
     @pyqtSlot(int)
     def setCurrentLayer(self, layer_num):
@@ -49,9 +58,13 @@ class LayerViewProxy(QObject):
         
     def _onMaxLayersChanged(self):
         self.maxLayersChanged.emit()
+
+    def _onBusyChanged(self):
+        self.busyChanged.emit()
         
     def _onActiveViewChanged(self):
         active_view = self._controller.getActiveView()
         if type(active_view) == LayerView.LayerView.LayerView:
             active_view.currentLayerNumChanged.connect(self._onLayerChanged)
             active_view.maxLayersChanged.connect(self._onMaxLayersChanged)
+            active_view.busyChanged.connect(self._onBusyChanged)

@@ -45,7 +45,8 @@
                     "max_value_warning": "150",
                     "default": 60,
                     "visible": false,
-                    "enabled": "prime_tower_enable"
+                    "enabled": "prime_tower_enable",
+                    "global_only": true
                 }
             }
         },
@@ -61,7 +62,8 @@
                     "default": 0.4,
                     "type": "float",
                     "visible": false,
-                    "enabled": "prime_tower_enable"
+                    "enabled": "prime_tower_enable",
+                    "global_only": true
                 }
             }
         }
@@ -88,7 +90,8 @@
                             "type": "int",
                             "default": 0,
                             "min_value": "0",
-                            "max_value": "16"
+                            "max_value": "16",
+                            "global_only": true
                         },
                         "support_extruder_nr": {
                             "label": "Support Extruder",
@@ -97,6 +100,7 @@
                             "default": 0,
                             "min_value": "0",
                             "max_value": "16",
+                            "global_only": true,
                             "children": {
                                 "support_infill_extruder_nr": {
                                     "label": "Support Infill Extruder",
@@ -104,7 +108,8 @@
                                     "type": "int",
                                     "default": 0,
                                     "min_value": "0",
-                                    "max_value": "16"
+                                    "max_value": "16",
+				    "global_only": true
                                 },
                                 "support_extruder_nr_layer_0": {
                                     "label": "First Layer Support Extruder",
@@ -112,7 +117,8 @@
                                     "type": "int",
                                     "default": 0,
                                     "min_value": "0",
-                                    "max_value": "16"
+                                    "max_value": "16",
+				    "global_only": true
                                 },
                                 "support_roof_extruder_nr": {
                                     "label": "Support Roof Extruder",
@@ -122,6 +128,7 @@
                                     "min_value": "0",
                                     "max_value": "16",
                                     "enabled": "support_roof_enable"
+				    "global_only": true
                                 }
                             }
                         }
@@ -132,7 +139,8 @@
                     "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
                     "type": "boolean",
                     "visible": true,
-                    "default": false
+                    "default": false,
+                    "global_only": true
                 },
                 "prime_tower_size": {
                     "label": "Prime Tower Size",
@@ -144,7 +152,8 @@
                     "min_value": "0",
                     "max_value_warning": "20",
                     "inherit_function": "15 if prime_tower_enable else 0",
-                    "enabled": "prime_tower_enable"
+                    "enabled": "prime_tower_enable",
+                    "global_only": true
                 },
                 "prime_tower_position_x": {
                     "label": "Prime Tower X Position",
@@ -155,7 +164,8 @@
                     "default": 200,
                     "min_value_warning": "-1000",
                     "max_value_warning": "1000",
-                    "enabled": "prime_tower_enable"
+                    "enabled": "prime_tower_enable",
+                    "global_only": true
                 },
                 "prime_tower_position_y": {
                     "label": "Prime Tower Y Position",
@@ -166,7 +176,8 @@
                     "default": 200,
                     "min_value_warning": "-1000",
                     "max_value_warning": "1000",
-                    "enabled": "prime_tower_enable"
+                    "enabled": "prime_tower_enable",
+                    "global_only": true
                 },
                 "prime_tower_flow": {
                     "label": "Prime Tower Flow",
@@ -178,14 +189,16 @@
                     "min_value": "5",
                     "min_value_warning": "50",
                     "max_value_warning": "150",
-                    "enabled": "prime_tower_enable"
+                    "enabled": "prime_tower_enable",
+                    "global_only": true
                 },
                 "prime_tower_wipe_enabled": {
                     "label": "Wipe Nozzle on Prime tower",
                     "description": "After printing the prime tower with the one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "boolean",
                     "default": false,
-                    "enabled": "prime_tower_enable"
+                    "enabled": "prime_tower_enable",
+	   	    "global_only": true
                 },
                 "multiple_mesh_overlap": {
                     "label": "Dual Extrusion Overlap",
@@ -195,13 +208,15 @@
                     "unit": "mm",
                     "default": 0.15,
                     "min_value": "0",
-                    "max_value_warning": "1.0"
+                    "max_value_warning": "1.0",
+		    "global_only": true
                 },
                 "ooze_shield_enabled": {
                     "label": "Enable Ooze Shield",
                     "description": "Enable exterior ooze shield. This will create a shell around the object which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
                     "type": "boolean",
-                    "default": false
+                    "default": false,
+                    "global_only": true
                 },
                 "ooze_shield_angle": {
                     "label": "Ooze Shield Angle",
@@ -212,7 +227,8 @@
                     "max_value": "90",
                     "default": 60,
                     "visible": false,
-                    "enabled": "ooze_shield_enabled"
+                    "enabled": "ooze_shield_enabled",
+                    "global_only": true
                 },
                 "ooze_shield_dist": {
                     "label": "Ooze Shields Distance",
@@ -223,12 +239,24 @@
                     "max_value_warning": "30",
                     "default": 2,
                     "visible": false,
-                    "enabled": "ooze_shield_enabled"
+                    "enabled": "ooze_shield_enabled",
+                    "global_only": true
                 }
             }
         },
         "material": {
-            "settings": {
+            "settings": {                
+                "material_standby_temperature": {
+                    "label": "Standby Temperature",
+                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 150,
+                    "min_value": "0",
+                    "max_value_warning": "260",
+                    "global_only": "True",
+                    "visible": false
+                },
                 "switch_extruder_retraction_amount": {
                     "label": "Nozzle Switch Retraction Distance",
                     "description": "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
@@ -239,7 +267,8 @@
                     "max_value_warning": "100",
                     "visible": false,
                     "inherit_function": "machine_heat_zone_length",
-                    "enabled": "retraction_enable"
+                    "enabled": "retraction_enable",
+                    "global_only": true
                 },
                 "switch_extruder_retraction_speeds": {
                     "label": "Nozzle Switch Retraction Speed",
@@ -252,6 +281,7 @@
                     "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable",
+                    "global_only": true,
                     "children": {
                         "switch_extruder_retraction_speed": {
                             "label": "Nozzle Switch Retract Speed",
@@ -262,7 +292,8 @@
                             "min_value": "0.1",
                             "max_value_warning": "300",
                             "visible": false,
-                            "enabled": "retraction_enable"
+                            "enabled": "retraction_enable",
+                            "global_only": true
                         },
                         "switch_extruder_prime_speed": {
                             "label": "Nozzle Switch Prime Speed",
@@ -273,7 +304,8 @@
                             "min_value": "0.1",
                             "max_value_warning": "300",
                             "visible": false,
-                            "enabled": "retraction_enable"
+                            "enabled": "retraction_enable",
+                            "global_only": true
                         }
                     }
                 }

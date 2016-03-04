@@ -33,8 +33,8 @@ class ImageReader(MeshReader):
         depth = img.height()
 
         largest = max(width, depth)
-        width = width / largest * self._ui.defaultWidth
-        depth = depth / largest * self._ui.defaultDepth
+        width = width / largest * self._ui.default_width
+        depth = depth / largest * self._ui.default_depth
 
         self._ui.setWidthAndDepth(width, depth)
         self._ui.showConfigUI()
@@ -112,7 +112,7 @@ class ImageReader(MeshReader):
             height_data = 1 - height_data
 
         for i in range(0, blur_iterations):
-            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode='edge')
+            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode= "edge")
 
             height_data += copy[1:-1, 2:]
             height_data += copy[1:-1, :-2]
@@ -138,7 +138,7 @@ class ImageReader(MeshReader):
 
         # initialize to texel space vertex offsets.
         # 6 is for 6 vertices for each texel quad.
-        heightmap_vertices = numpy.zeros((width_minus_one * height_minus_one, 6, 3), dtype=numpy.float32)
+        heightmap_vertices = numpy.zeros((width_minus_one * height_minus_one, 6, 3), dtype = numpy.float32)
         heightmap_vertices = heightmap_vertices + numpy.array([[
             [0, base_height, 0],
             [0, base_height, texel_height],
@@ -146,9 +146,9 @@ class ImageReader(MeshReader):
             [texel_width, base_height, texel_height],
             [texel_width, base_height, 0],
             [0, base_height, 0]
-        ]], dtype=numpy.float32)
+        ]], dtype = numpy.float32)
 
-        offsetsz, offsetsx = numpy.mgrid[0:height_minus_one, 0:width-1]
+        offsetsz, offsetsx = numpy.mgrid[0: height_minus_one, 0: width - 1]
         offsetsx = numpy.array(offsetsx, numpy.float32).reshape(-1, 1) * texel_width
         offsetsz = numpy.array(offsetsz, numpy.float32).reshape(-1, 1) * texel_height
 

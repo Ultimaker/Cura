@@ -52,12 +52,13 @@ UM.Dialog
             wrapMode: Text.Wrap;
         }
 
-        ProgressBar 
+        ProgressBar
         {
-            id: prog;
+            id: prog
             value: manager.progress
-            minimumValue: 0;
-            maximumValue: 100;
+            minimumValue: 0
+            maximumValue: 100
+            indeterminate: manager.progress < 100
             anchors
             {
                 left: parent.left;
@@ -65,7 +66,7 @@ UM.Dialog
             }
 
         }
-        
+
         SystemPalette
         {
            id: palette;

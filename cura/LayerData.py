@@ -174,32 +174,12 @@ class Polygon():
     MoveRetractionType = 9
 
     def __init__(self, mesh, type, data, line_width):
-        super().__init__()
         self._mesh = mesh
         self._type = type
         self._data = data
         self._line_width = line_width / 1000
 
-        if type == self.Inset0Type:
-            self._color = Color(1.0, 0.0, 0.0, 1.0)
-        elif self._type == self.InsetXType:
-            self._color = Color(0.0, 1.0, 0.0, 1.0)
-        elif self._type == self.SkinType:
-            self._color = Color(1.0, 1.0, 0.0, 1.0)
-        elif self._type == self.SupportType:
-            self._color = Color(0.0, 1.0, 1.0, 1.0)
-        elif self._type == self.SkirtType:
-            self._color = Color(0.0, 1.0, 1.0, 1.0)
-        elif self._type == self.InfillType:
-            self._color = Color(1.0, 0.74, 0.0, 1.0)
-        elif self._type == self.SupportInfillType:
-            self._color = Color(0.0, 1.0, 1.0, 1.0)
-        elif self._type == self.MoveCombingType:
-            self._color = Color(0.0, 0.0, 1.0, 1.0)
-        elif self._type == self.MoveRetractionType:
-            self._color = Color(0.5, 0.5, 1.0, 1.0)
-        else:
-            self._color = Color(1.0, 1.0, 1.0, 1.0)
+        self._color = self.__color_map[type]
 
     def build(self, offset, vertices, colors, indices):
         self._begin = offset
@@ -260,3 +240,16 @@ class Polygon():
         normals[:,2] /= lengths
 
         return normals
+
+    __color_map = {
+        NoneType: Color(1.0, 1.0, 1.0, 1.0),
+        Inset0Type: Color(1.0, 0.0, 0.0, 1.0),
+        InsetXType: Color(0.0, 1.0, 0.0, 1.0),
+        SkinType: Color(1.0, 1.0, 0.0, 1.0),
+        SupportType: Color(0.0, 1.0, 1.0, 1.0),
+        SkirtType: Color(0.0, 1.0, 1.0, 1.0),
+        InfillType: Color(1.0, 0.74, 0.0, 1.0),
+        SupportInfillType: Color(0.0, 1.0, 1.0, 1.0),
+        MoveCombingType: Color(0.0, 0.0, 1.0, 1.0),
+        MoveRetractionType: Color(0.5, 0.5, 1.0, 1.0),
+    }

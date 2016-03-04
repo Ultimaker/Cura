@@ -5,7 +5,7 @@
     "manufacturer": "Ultimaker",
     "author": "Ultimaker",
     "platform": "ultimaker2_platform.obj",
-    "platform_texture": "ultimaker2plus_backplate.png",
+    "platform_texture": "Ultimaker2ExtendedPlusbackplate.png",
     "visible": false,
     "file_formats": "text/x-gcode",
     "inherits": "ultimaker2plus.json",

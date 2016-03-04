@@ -25,7 +25,6 @@ Rectangle {
     property variant printDuration: PrintInformation.currentPrintTime;
     property real printMaterialAmount: PrintInformation.materialAmount;
 
-    width: UM.Theme.sizes.jobspecs.width
     height: childrenRect.height
     color: "transparent"
 
@@ -80,7 +79,7 @@ Rectangle {
         id: jobNameRow
         anchors.top: parent.top
         anchors.right: parent.right
-        height: UM.Theme.sizes.jobspecs_line.height
+        height: UM.Theme.getSize("jobspecs_line").height
         visible: base.activity
 
         Item
@@ -93,8 +92,8 @@ Rectangle {
                 id: printJobPencilIcon
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                width: UM.Theme.sizes.save_button_specs_icons.width
-                height: UM.Theme.sizes.save_button_specs_icons.height
+                width: UM.Theme.getSize("save_button_specs_icons").width
+                height: UM.Theme.getSize("save_button_specs_icons").height
 
                 onClicked: 
                 {
@@ -108,30 +107,31 @@ Rectangle {
                         color: "transparent"
                         UM.RecolorImage 
                         {
-                            width: UM.Theme.sizes.save_button_specs_icons.width
-                            height: UM.Theme.sizes.save_button_specs_icons.height
+                            width: UM.Theme.getSize("save_button_specs_icons").width
+                            height: UM.Theme.getSize("save_button_specs_icons").height
                             sourceSize.width: width
                             sourceSize.height: width
-                            color: control.hovered ? UM.Theme.colors.setting_control_button_hover : UM.Theme.colors.text
-                            source: UM.Theme.icons.pencil;
+                            color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("text");
+                            source: UM.Theme.getIcon("pencil");
                         }
                     }
                 }
             }
 
-            TextField 
+            TextField
             {
                 id: printJobTextfield
                 anchors.right: printJobPencilIcon.left
-                anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
-                height: UM.Theme.sizes.jobspecs_line.height
-                width: base.width
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
+                height: UM.Theme.getSize("jobspecs_line").height
+                width: __contentWidth + UM.Theme.getSize("default_margin").width
+                maximumLength: 120
                 property int unremovableSpacing: 5
                 text: ''
                 horizontalAlignment: TextInput.AlignRight
                 onTextChanged: {
                     if(text != ''){
-                        //this prevent that is sets an empty string as jobname 
+                        //Prevent that jobname is set to an empty string 
                         Printer.setJobName(text)
                     }
                 }
@@ -144,8 +144,8 @@ Rectangle {
                     regExp: /^[^\\ \/ \.]*$/
                 }
                 style: TextFieldStyle{
-                    textColor: UM.Theme.colors.setting_control_text;
-                    font: UM.Theme.fonts.default_bold;
+                    textColor: UM.Theme.getColor("setting_control_text");
+                    font: UM.Theme.getFont("default_bold");
                     background: Rectangle {
                         opacity: 0
                         border.width: 0
@@ -159,10 +159,10 @@ Rectangle {
         id: boundingSpec
         anchors.top: jobNameRow.bottom
         anchors.right: parent.right
-        height: UM.Theme.sizes.jobspecs_line.height
+        height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
-        font: UM.Theme.fonts.small
-        color: UM.Theme.colors.text_subtext
+        font: UM.Theme.getFont("small")
+        color: UM.Theme.getColor("text_subtext")
         text: Printer.getSceneBoundingBoxString
     }
 
@@ -170,7 +170,7 @@ Rectangle {
         id: specsRow
         anchors.top: boundingSpec.bottom
         anchors.right: parent.right
-        height: UM.Theme.sizes.jobspecs_line.height
+        height: UM.Theme.getSize("jobspecs_line").height
 
         Item{
             width: parent.width
@@ -179,42 +179,42 @@ Rectangle {
             UM.RecolorImage {
                 id: timeIcon
                 anchors.right: timeSpec.left
-                anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
                 anchors.verticalCenter: parent.verticalCenter
-                width: UM.Theme.sizes.save_button_specs_icons.width
-                height: UM.Theme.sizes.save_button_specs_icons.height
+                width: UM.Theme.getSize("save_button_specs_icons").width
+                height: UM.Theme.getSize("save_button_specs_icons").height
                 sourceSize.width: width
                 sourceSize.height: width
-                color: UM.Theme.colors.text_subtext
-                source: UM.Theme.icons.print_time;
+                color: UM.Theme.getColor("text_subtext")
+                source: UM.Theme.getIcon("print_time");
             }
             Label{
                 id: timeSpec
                 anchors.right: lengthIcon.left
-                anchors.rightMargin: UM.Theme.sizes.default_margin.width
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: parent.verticalCenter
-                font: UM.Theme.fonts.small
-                color: UM.Theme.colors.text_subtext
+                font: UM.Theme.getFont("small")
+                color: UM.Theme.getColor("text_subtext")
                 text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
             UM.RecolorImage {
                 id: lengthIcon
                 anchors.right: lengthSpec.left
-                anchors.rightMargin: UM.Theme.sizes.default_margin.width/2
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
                 anchors.verticalCenter: parent.verticalCenter
-                width: UM.Theme.sizes.save_button_specs_icons.width
-                height: UM.Theme.sizes.save_button_specs_icons.height
+                width: UM.Theme.getSize("save_button_specs_icons").width
+                height: UM.Theme.getSize("save_button_specs_icons").height
                 sourceSize.width: width
                 sourceSize.height: width
-                color: UM.Theme.colors.text_subtext
-                source: UM.Theme.icons.category_material;
+                color: UM.Theme.getColor("text_subtext")
+                source: UM.Theme.getIcon("category_material");
             }
             Label{
                 id: lengthSpec
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                font: UM.Theme.fonts.small
-                color: UM.Theme.colors.text_subtext
+                font: UM.Theme.getFont("small")
+                color: UM.Theme.getColor("text_subtext")
                 text: base.printMaterialAmount <= 0 ? catalog.i18nc("@label", "0.0 m") : catalog.i18nc("@label", "%1 m").arg(base.printMaterialAmount)
             }
         }

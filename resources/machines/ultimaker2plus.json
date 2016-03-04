@@ -5,7 +5,7 @@
     "manufacturer": "Ultimaker",
     "author": "Ultimaker",
     "platform": "ultimaker2_platform.obj",
-    "platform_texture": "ultimaker2plus_backplate.png",
+    "platform_texture": "Ultimaker2Plusbackplate.png",
     "visible": false,
     "file_formats": "text/x-gcode",
     "inherits": "ultimaker2.json",
@@ -16,28 +16,26 @@
         "machine_height": { "default": 200 },
         "machine_show_variants": { "default": true },
         "gantry_height": { "default": 50 },
-        "shell_thickness": { "default": 1.2 },
-        "top_bottom_thickness": { "inherit_function": "(parent_value / 3) * 2" },
-        "travel_compensate_overlapping_walls_enabled": { "default": true },
-        "skin_alternate_rotation": { "default": true },
-        "skin_outline_count": { "default": 2 },
-        "infill_sparse_density": { "default": 10 },
-        "infill_overlap": { "default": 0.056, "inherit_function": "0.14 * line_width if infill_sparse_density < 95 else 0" },
-        "infill_wipe_dist": { "default": 0.35, "inherit_function": "wall_line_width_0" },
-        "retraction_amount": { "default": 6 },
-        "retraction_min_travel": { "default": 4.5 },
-        "retraction_count_max": { "default": 6 },
-        "retraction_extrusion_window": { "default": 6.0 },
-        "speed_print": { "default": 50 },
-        "speed_wall": { "inherit_function": "parent_value / 50 * 30" },
-        "speed_wall_x": { "inherit_function": "speed_print / 50 * 40" },
-        "speed_topbottom": { "inherit_function": "parent_value / 50 * 20" },
-        "speed_layer_0": { "default": 20 },
-        "skirt_speed": { "default": 20 },
-        "travel_avoid_distance": { "default": 1.0 },
-        "coasting_enable": { "default": true },
-        "coasting_volume": { "default": 0.4 },
-        "support_angle": { "default": 50 },
-        "adhesion_type": { "default": "brim" }
+        "machine_head_with_fans_polygon":
+        {
+            "default": [
+                [
+                    -44,
+                    14
+                ],
+                [
+                    -44,
+                    -34
+                ],
+                [
+                    64,
+                    14
+                ],
+                [
+                    64,
+                    -34
+                ]
+            ]
+        }
     }
 }

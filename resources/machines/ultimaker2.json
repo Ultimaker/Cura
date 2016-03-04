@@ -1,6 +1,6 @@
 {
     "id": "ultimaker2",
-    "version": 1, 
+    "version": 1,
     "name": "Ultimaker 2",
     "manufacturer": "Ultimaker",
     "author": "Ultimaker",
@@ -9,16 +9,19 @@
     "platform_texture": "Ultimaker2backplate.png",
     "file_formats": "text/x-gcode",
 
-    "inherits": "fdmprinter.json",
+    "inherits": "ultimaker.json",
 
-    
-    "machine_extruder_trains": {
-        "0": {
-            "machine_nozzle_heat_up_speed": { 
-                "default": 2.0 
+    "pages": [
+        "SelectUpgradedPartsUM2"
+    ],
+
+    "machine_extruder_trains": [
+        {
+            "machine_nozzle_heat_up_speed": {
+                "default": 2.0
             },
-            "machine_nozzle_cool_down_speed": { 
-                "default": 2.0 
+            "machine_nozzle_cool_down_speed": {
+                "default": 2.0
             },
             "machine_nozzle_tip_outer_diameter": {
                 "default": 1
@@ -29,12 +32,12 @@
             "machine_nozzle_expansion_angle": {
                 "default": 45
             },
-            "machine_heat_zone_length": { 
+            "machine_heat_zone_length": {
                 "default": 16
             }
         }
-    },
-    "overrides": {
+    ],
+    "machine_settings": {
         "machine_start_gcode" : { "default": "" },
         "machine_end_gcode" : { "default": "" },
         "machine_width": { "default": 230 },
@@ -77,14 +80,20 @@
             [[ 115.0, -112.5], [ 108.0, -112.5], [ 110.0, -104.5], [ 115.0, -104.5]]
         ]},
         "machine_platform_offset": { "default": [9.0, 0.0, 0.0] },
-        
+
         "machine_nozzle_tip_outer_diameter": { "default": 1.0 },
         "machine_nozzle_head_distance": { "default": 3.0 },
-        "machine_nozzle_expansion_angle": { "default": 45 },
-        
+        "machine_nozzle_expansion_angle": { "default": 45 }
+    },
+
+    "overrides": {
         "material_print_temperature": { "enabled": "False" },
         "material_bed_temperature": { "enabled": "False" },
         "material_diameter": { "enabled": "False" },
-        "material_flow": { "enabled": "False" }
+        "material_flow": { "enabled": "False" },
+        "retraction_amount": { "enabled": "False" },
+        "retraction_speed": { "enabled": "False" },
+        "retraction_retract_speed": { "enabled": "False" },
+        "retraction_prime_speed": { "enabled": "False" }
     }
 }

@@ -63,9 +63,10 @@ class LegacyProfileReader(ProfileReader):
     #   file could not be read or didn't contain a valid profile, \code None
     #   \endcode is returned.
     def read(self, file_name):
+        if file_name.split(".")[-1] != "ini":
+            return None
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False) #Create an empty profile.
-        profile.setName("Imported Legacy Profile")
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
@@ -123,5 +124,5 @@ class LegacyProfileReader(ProfileReader):
 
         if len(profile.getChangedSettings()) == 0:
             Logger.log("i", "A legacy profile was imported but everything evaluates to the defaults, creating an empty profile.")
-
+        profile.setDirty(True)
         return profile

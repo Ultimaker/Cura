@@ -9,8 +9,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # In case of printing all at once this is the same as the convex hull. For one at the time this is the area without the head.
         self._convex_hull_boundary = None 
         
-        # In case of printing all at once this is the same as the convex hull. For one at the time this is area with full head
+        # In case of printing all at once this is the same as the convex hull. For one at the time this is area with intersection of mirrored head
         self._convex_hull_head = None
+        # In case of printing all at once this is the same as the convex hull. For one at the time this is area with intersection of full head
+        self._convex_hull_head_full = None
         
         self._convex_hull_node = None
         self._convex_hull_job = None
@@ -28,6 +30,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def getConvexHull(self):
         return self._convex_hull
     
+    def getConvexHullHeadFull(self):
+        if not self._convex_hull_head_full:
+            return self.getConvexHull()
+        return self._convex_hull_head_full
+
     def getConvexHullHead(self):
         if not self._convex_hull_head:
             return self.getConvexHull()
@@ -40,7 +47,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
     
     def setConvexHullBoundary(self, hull):
         self._convex_hull_boundary = hull
-        
+
+    def setConvexHullHeadFull(self, hull):
+        self._convex_hull_head_full = hull
+
     def setConvexHullHead(self, hull):
         self._convex_hull_head = hull
     

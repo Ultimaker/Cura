@@ -70,7 +70,7 @@ class PerObjectSettingsModel(ListModel):
     def _updateModel(self):
         self.clear()
         for node in BreadthFirstIterator(self._root):
-            if type(node) is not SceneNode or not node.getMeshData() or not node.isSelectable():
+            if type(node) is not SceneNode or not node.isSelectable():
                 continue
             node_profile = node.callDecoration("getProfile")
             if not node_profile:

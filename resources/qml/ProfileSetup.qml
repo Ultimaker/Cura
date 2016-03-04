@@ -18,18 +18,18 @@ Item{
     Rectangle{
         id: globalProfileRow
         anchors.top: base.top
-        height: UM.Theme.sizes.sidebar_setup.height
+        height: UM.Theme.getSize("sidebar_setup").height
         width: base.width
 
         Label{
             id: globalProfileLabel
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
             anchors.verticalCenter: parent.verticalCenter
             text: catalog.i18nc("@label","Profile:");
             width: parent.width/100*45
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
         }
 
 
@@ -37,9 +37,9 @@ Item{
             id: globalProfileSelection
             text: UM.MachineManager.activeProfile
             width: parent.width/100*55
-            height: UM.Theme.sizes.setting_control.height
+            height: UM.Theme.getSize("setting_control").height
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             tooltip: UM.MachineManager.activeProfile
             style: UM.Theme.styles.sidebar_header_button
@@ -49,6 +49,7 @@ Item{
                 id: profileSelectionMenu
                 Instantiator
                 {
+                    id: profileSelectionInstantiator
                     model: UM.ProfilesModel { }
                     MenuItem
                     {
@@ -56,7 +57,17 @@ Item{
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: profileSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveProfile(model.name)
+                        onTriggered:
+                        {
+                            UM.MachineManager.setActiveProfile(model.name);
+                            if (!model.active) {
+                                //Selecting a profile was canceled; undo menu selection
+                                profileSelectionInstantiator.model.setProperty(index, "active", false);
+                                var activeProfileName = UM.MachineManager.activeProfile;
+                                var activeProfileIndex = profileSelectionInstantiator.model.find("name", activeProfileName);
+                                profileSelectionInstantiator.model.setProperty(activeProfileIndex, "active", true);
+                            }
+                        }
                     }
                     onObjectAdded: profileSelectionMenu.insertItem(index, object)
                     onObjectRemoved: profileSelectionMenu.removeItem(object)

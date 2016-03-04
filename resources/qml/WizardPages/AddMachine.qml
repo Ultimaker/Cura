@@ -98,12 +98,12 @@ Item
                     background: Rectangle {
                         border.width: 0
                         color: "transparent";
-                        height: UM.Theme.sizes.standard_list_lineheight.height
+                        height: UM.Theme.getSize("standard_list_lineheight").height
                         width: machineList.width
                     }
                     label: Text {
                         anchors.left: parent.left
-                        anchors.leftMargin: UM.Theme.sizes.standard_arrow.width + UM.Theme.sizes.default_margin.width
+                        anchors.leftMargin: UM.Theme.getSize("standard_arrow").width + UM.Theme.getSize("default_margin").width
                         text: control.text
                         color: palette.windowText
                         font.bold: true
@@ -111,13 +111,13 @@ Item
                             id: downArrow
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.right: parent.left
-                            anchors.rightMargin: UM.Theme.sizes.default_margin.width
-                            width: UM.Theme.sizes.standard_arrow.width
-                            height: UM.Theme.sizes.standard_arrow.height
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            width: UM.Theme.getSize("standard_arrow").width
+                            height: UM.Theme.getSize("standard_arrow").height
                             sourceSize.width: width
                             sourceSize.height: width
                             color: palette.windowText
-                            source: base.activeManufacturer == section ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
+                            source: base.activeManufacturer == section ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
                         }
                     }
                 }
@@ -133,10 +133,10 @@ Item
                 id: machineButton
 
                 anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.width
+                anchors.leftMargin: UM.Theme.getSize("standard_list_lineheight").width
 
                 opacity: 1;
-                height: UM.Theme.sizes.standard_list_lineheight.height;
+                height: UM.Theme.getSize("standard_list_lineheight").height;
 
                 checked: ListView.isCurrentItem;
 
@@ -183,6 +183,25 @@ Item
         id: machineNameHolder
         anchors.bottom: parent.bottom;
 
+        Item
+        {
+            height: errorMessage.lineHeight
+            anchors.bottom: insertNameLabel.top
+            anchors.bottomMargin: insertNameLabel.height * errorMessage.lineCount
+            Label
+            {
+                id: errorMessage
+                property bool show: false
+                width: base.width
+                height: errorMessage.show ? errorMessage.lineHeight : 0
+                visible: errorMessage.show
+                text: catalog.i18nc("@label", "This printer name has already been used. Please choose a different printer name.");
+                wrapMode: Text.WordWrap
+                Behavior on height {NumberAnimation {duration: 75; }}
+                color: UM.Theme.getColor("error")
+            }
+        }
+
         Label
         {
             id: insertNameLabel
@@ -192,7 +211,8 @@ Item
         {
             id: machineName;
             text: getMachineName()
-            implicitWidth: UM.Theme.sizes.standard_list_input.width
+            implicitWidth: UM.Theme.getSize("standard_list_input").width
+            maximumLength: 120
         }
     }
 
@@ -211,6 +231,9 @@ Item
                 switch(pages[i]) {
                     case "SelectUpgradedParts":
                         base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedParts.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
+                        break;
+                    case "SelectUpgradedPartsUM2":
+                        base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedPartsUM2.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
                         break;
                     case "UpgradeFirmware":
                         base.wizard.appendPage(Qt.resolvedUrl("UpgradeFirmware.qml"), catalog.i18nc("@title", "Upgrade Firmware"));

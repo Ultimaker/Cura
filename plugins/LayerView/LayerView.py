@@ -10,15 +10,22 @@ from UM.Signal import Signal
 from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
 from UM.Mesh.MeshData import MeshData
+from UM.Job import Job
+from UM.Message import Message
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.ConvexHullNode import ConvexHullNode
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QApplication
 
 from . import LayerViewProxy
+
+import time
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 ## View used to display g-code paths.
 class LayerView(View):
@@ -29,26 +36,44 @@ class LayerView(View):
         self._num_layers = 0
         self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
-        self._controller.getScene().sceneChanged.connect(self._onSceneChanged)
+        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
         self._max_layers = 10
         self._current_layer_num = 10
         self._current_layer_mesh = None
         self._current_layer_jumps = None
+        self._top_layers_job = None
         self._activity = False
 
         self._solid_layers = 5
+
+        self._top_layer_timer = QTimer()
+        self._top_layer_timer.setInterval(50)
+        self._top_layer_timer.setSingleShot(True)
+        self._top_layer_timer.timeout.connect(self._startUpdateTopLayers)
+
+        self._busy = False
 
     def getActivity(self):
         return self._activity
 
     def getCurrentLayer(self):
         return self._current_layer_num
-    
+
     def _onSceneChanged(self, node):
         self.calculateMaxLayers()
-    
+
     def getMaxLayers(self):
         return self._max_layers
+
+    busyChanged = Signal()
+
+    def isBusy(self):
+        return self._busy
+
+    def setBusy(self, busy):
+        if busy != self._busy:
+            self._busy = busy
+            self.busyChanged.emit()
 
     def resetLayerData(self):
         self._current_layer_mesh = None
@@ -89,51 +114,11 @@ class LayerView(View):
                         # This uses glDrawRangeElements internally to only draw a certain range of lines.
                         renderer.queueNode(node, mesh = layer_data, mode = RenderBatch.RenderMode.Lines, range = (start, end))
 
-                    # We currently recreate the current "solid" layers every time a
-                    if not self._current_layer_mesh:
-                        self._current_layer_mesh = MeshData()
-                        for i in range(self._solid_layers):
-                            layer = self._current_layer_num - i
-                            if layer < 0:
-                                continue
-                            try:
-                                layer_mesh = layer_data.getLayer(layer).createMesh()
-                                if not layer_mesh or layer_mesh.getVertices() is None:
-                                    continue
-                            except:
-                                continue
-                            if self._current_layer_mesh: #Threading thing; Switching between views can cause the current layer mesh to be deleted.
-                                self._current_layer_mesh.addVertices(layer_mesh.getVertices())
-
-                            # Scale layer color by a brightness factor based on the current layer number
-                            # This will result in a range of 0.5 - 1.0 to multiply colors by.
-                            brightness = (2.0 - (i / self._solid_layers)) / 2.0
-                            if self._current_layer_mesh:
-                                self._current_layer_mesh.addColors(layer_mesh.getColors() * brightness)
                     if self._current_layer_mesh:
                         renderer.queueNode(node, mesh = self._current_layer_mesh)
 
-                    if not self._current_layer_jumps:
-                        self._current_layer_jumps = MeshData()
-                        for i in range(1):
-                            layer = self._current_layer_num - i
-                            if layer < 0:
-                                continue
-                            try:
-                                layer_mesh = layer_data.getLayer(layer).createJumps()
-                                if not layer_mesh or layer_mesh.getVertices() is None:
-                                    continue
-                            except:
-                                continue
-
-                            self._current_layer_jumps.addVertices(layer_mesh.getVertices())
-
-                            # Scale layer color by a brightness factor based on the current layer number
-                            # This will result in a range of 0.5 - 1.0 to multiply colors by.
-                            brightness = (2.0 - (i / self._solid_layers)) / 2.0
-                            self._current_layer_jumps.addColors(layer_mesh.getColors() * brightness)
-
-                    renderer.queueNode(node, mesh = self._current_layer_jumps)
+                    if self._current_layer_jumps:
+                        renderer.queueNode(node, mesh = self._current_layer_jumps)
 
     def setLayer(self, value):
         if self._current_layer_num != value:
@@ -145,6 +130,9 @@ class LayerView(View):
 
             self._current_layer_mesh = None
             self._current_layer_jumps = None
+
+            self._top_layer_timer.start()
+
             self.currentLayerNumChanged.emit()
 
     currentLayerNumChanged = Signal()
@@ -177,21 +165,22 @@ class LayerView(View):
             else:
                 self.setLayer(int(self._max_layers))
                 self.maxLayersChanged.emit()
+        self._top_layer_timer.start()
 
     maxLayersChanged = Signal()
     currentLayerNumChanged = Signal()
-    
+
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues. 
     def getProxy(self, engine, script_engine):
         return self._proxy
-    
+
     def endRendering(self):
         pass
-    
+
     def event(self, event):
-        modifiers = QtWidgets.QApplication.keyboardModifiers()
-        ctrl_is_active = modifiers == QtCore.Qt.ControlModifier
+        modifiers = QApplication.keyboardModifiers()
+        ctrl_is_active = modifiers == Qt.ControlModifier
         if event.type == Event.KeyPressEvent and ctrl_is_active:
             if event.key == KeyEvent.UpKey:
                 self.setLayer(self._current_layer_num + 1)
@@ -199,3 +188,86 @@ class LayerView(View):
             if event.key == KeyEvent.DownKey:
                 self.setLayer(self._current_layer_num - 1)
                 return True
+
+    def _startUpdateTopLayers(self):
+        if self._top_layers_job:
+            self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
+            self._top_layers_job.cancel()
+
+        self.setBusy(True)
+
+        self._top_layers_job = _CreateTopLayersJob(self._controller.getScene(), self._current_layer_num, self._solid_layers)
+        self._top_layers_job.finished.connect(self._updateCurrentLayerMesh)
+        self._top_layers_job.start()
+
+    def _updateCurrentLayerMesh(self, job):
+        self.setBusy(False)
+
+        if not job.getResult():
+            return
+
+        self._current_layer_mesh = job.getResult().get("layers")
+        self._current_layer_jumps = job.getResult().get("jumps")
+        self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
+
+        self._top_layers_job = None
+
+class _CreateTopLayersJob(Job):
+    def __init__(self, scene, layer_number, solid_layers):
+        super().__init__()
+
+        self._scene = scene
+        self._layer_number = layer_number
+        self._solid_layers = solid_layers
+        self._cancel = False
+
+    def run(self):
+        layer_data = None
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            layer_data = node.callDecoration("getLayerData")
+            if layer_data:
+                break
+
+        if self._cancel or not layer_data:
+            return
+
+        layer_mesh = MeshData()
+        for i in range(self._solid_layers):
+            layer_number = self._layer_number - i
+            if layer_number < 0:
+                continue
+
+            try:
+                layer = layer_data.getLayer(layer_number).createMesh()
+            except Exception as e:
+                print(e)
+                return
+
+            if not layer or layer.getVertices() is None:
+                continue
+
+            layer_mesh.addVertices(layer.getVertices())
+
+            # Scale layer color by a brightness factor based on the current layer number
+            # This will result in a range of 0.5 - 1.0 to multiply colors by.
+            brightness = (2.0 - (i / self._solid_layers)) / 2.0
+            layer_mesh.addColors(layer.getColors() * brightness)
+
+            if self._cancel:
+                return
+
+            Job.yieldThread()
+
+        if self._cancel:
+            return
+
+        Job.yieldThread()
+        jump_mesh = layer_data.getLayer(self._layer_number).createJumps()
+        if not jump_mesh or jump_mesh.getVertices() is None:
+            jump_mesh = None
+
+        self.setResult({ "layers": layer_mesh, "jumps": jump_mesh })
+
+    def cancel(self):
+        self._cancel = True
+        super().cancel()

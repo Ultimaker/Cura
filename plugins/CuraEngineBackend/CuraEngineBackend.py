@@ -26,6 +26,8 @@ import numpy
 
 from PyQt5.QtCore import QTimer
 
+import Arcus
+
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -73,6 +75,7 @@ class CuraEngineBackend(Backend):
         self._restart = False
         self._enabled = True
         self._always_restart = True
+        self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
         self._message = None
 
@@ -119,6 +122,10 @@ class CuraEngineBackend(Backend):
 
             self.slicingCancelled.emit()
             return
+
+        if self._process_layers_job:
+            self._process_layers_job.abort()
+            self._process_layers_job = None
 
         if self._profile.hasErrorValue():
             Logger.log("w", "Profile has error values. Aborting slicing")
@@ -179,6 +186,15 @@ class CuraEngineBackend(Backend):
 
         self._onChanged()
 
+    def _onSocketError(self, error):
+        super()._onSocketError(error)
+
+        self._slicing = False
+        self.processingProgress.emit(0)
+
+        if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
+            Logger.log("e", "A socket error caused the connection to be reset")
+
     def _onActiveProfileChanged(self):
         if self._profile:
             self._profile.settingValueChanged.disconnect(self._onSettingChanged)
@@ -193,8 +209,8 @@ class CuraEngineBackend(Backend):
 
     def _onSlicedObjectListMessage(self, message):
         if self._layer_view_active:
-            job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
-            job.start()
+            self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+            self._process_layers_job.start()
         else :
             self._stored_layer_data = message
 
@@ -258,8 +274,8 @@ class CuraEngineBackend(Backend):
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
                 if self._stored_layer_data and not self._slicing:
-                    job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
-                    job.start()
+                    self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
+                    self._process_layers_job.start()
                     self._stored_layer_data = None
             else:
                 self._layer_view_active = False

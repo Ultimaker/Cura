@@ -6,6 +6,7 @@ from UM.Logger import Logger
 from UM.Application import Application
 import io
 import re #For escaping characters in the settings.
+import copy
 
 
 class GCodeWriter(MeshWriter):
@@ -56,17 +57,18 @@ class GCodeWriter(MeshWriter):
     def _serialiseProfile(self, profile):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " " #The prefix to put before each line.
         prefix_length = len(prefix)
-        
-        serialised = profile.serialise()
-        
+
+        #Serialise a deepcopy to remove the defaults from the profile
+        serialised = copy.deepcopy(profile).serialise()
+
         #Escape characters that have a special meaning in g-code comments.
         pattern = re.compile("|".join(GCodeWriter.escape_characters.keys()))
         serialised = pattern.sub(lambda m: GCodeWriter.escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
-        
+
         #Introduce line breaks so that each comment is no longer than 80 characters. Prepend each line with the prefix.
         result = ""
         for pos in range(0, len(serialised), 80 - prefix_length): #Lines have 80 characters, so the payload of each line is 80 - prefix.
             result += prefix + serialised[pos : pos + 80 - prefix_length] + "\n"
         serialised = result
-        
+
         return serialised

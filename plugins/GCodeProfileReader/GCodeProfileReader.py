@@ -4,6 +4,7 @@
 from UM.Application import Application #To get the machine manager to create the new profile in.
 from UM.Settings.Profile import Profile
 from UM.Settings.ProfileReader import ProfileReader
+from UM.Logger import Logger
 import re #Regular expressions for parsing escape characters in the settings.
 
 ##  A class that reads profile data from g-code files.
@@ -40,6 +41,9 @@ class GCodeProfileReader(ProfileReader):
     #   specified file was no g-code or contained no parsable profile, \code
     #   None \endcode is returned.
     def read(self, file_name):
+        if file_name.split(".")[-1] != "gcode":
+            return None
+
         prefix = ";SETTING_" + str(GCodeProfileReader.version) + " "
         prefix_length = len(prefix)
 
@@ -62,6 +66,10 @@ class GCodeProfileReader(ProfileReader):
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
         try:
             profile.unserialise(serialised)
+            profile.setType(None) #Force type to none so it's correctly added.
+            profile.setReadOnly(False)
+            profile.setDirty(True)
         except Exception as e: #Not a valid g-code file.
+            Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
         return profile

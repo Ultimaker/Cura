@@ -33,14 +33,17 @@ class SolidView(View):
         if not self._disabled_shader:
             self._disabled_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "overhang.shader"))
             self._disabled_shader.setUniformValue("u_diffuseColor", [0.68, 0.68, 0.68, 1.0])
+            self._disabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
         if Application.getInstance().getMachineManager().getWorkingProfile():
             profile = Application.getInstance().getMachineManager().getWorkingProfile()
 
-            if profile.getSettingValue("support_enable") or not Preferences.getInstance().getValue("view/show_overhang"):
+            if Preferences.getInstance().getValue("view/show_overhang"):
                 angle = profile.getSettingValue("support_angle")
                 if angle != None:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
+                else:
+                    self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 

@@ -24,12 +24,12 @@ class ImageReaderUI(QObject):
         self._ui_view = None
         self.show_config_ui_trigger.connect(self._actualShowConfigUI)
 
-        self.defaultWidth = 120
-        self.defaultDepth = 120
+        self.default_width = 120
+        self.default_depth = 120
 
         self._aspect = 1
-        self._width = self.defaultWidth
-        self._depth = self.defaultDepth
+        self._width = self.default_width
+        self._depth = self.default_depth
 
         self.base_height = 1
         self.peak_height = 10

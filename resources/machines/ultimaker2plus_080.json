@@ -5,7 +5,7 @@
     "manufacturer": "Ultimaker",
     "author": "Ultimaker",
     "platform": "ultimaker2_platform.obj",
-    "platform_texture": "ultimaker2plus_backplate.png",
+    "platform_texture": "Ultimaker2Plusbackplate.png",
     "file_formats": "text/x-gcode",
     "inherits": "ultimaker2plus.json",
 
@@ -13,19 +13,6 @@
 
     "overrides": {
         "machine_nozzle_size": { "default": 0.80 },
-
-        "layer_height": { "default": 0.2 },
-        "layer_height_0": { "default": 0.5 },
-
-        "shell_thickness": { "default": 2.4 },
-        "top_bottom_thickness": { "inherit_function": "parent_value / 2" },
-
-        "infill_sparse_density": { "default": 16 },
-        "speed_print": { "default": 40 },
-        "speed_wall": { "inherit_function": "parent_value / 40 * 20" },
-        "speed_wall_x": { "inherit_function": "speed_print / 40 * 30" },
-        "speed_topbottom": { "inherit_function": "parent_value / 40 * 20" },
-
         "coasting_volume": { "default": 3.22 }
     }
 }
