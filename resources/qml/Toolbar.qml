@@ -36,14 +36,19 @@ Item {
                 enabled: model.enabled && UM.Selection.hasSelection && UM.Controller.toolsEnabled;
 
                 style: UM.Theme.styles.tool_button;
-
+                onCheckedChanged:
+                {
+                    if(checked)
+                    {
+                        base.activeY = y
+                    }
+                }
                 //Workaround since using ToolButton"s onClicked would break the binding of the checked property, instead
                 //just catch the click so we do not trigger that behaviour.
                 MouseArea {
                     anchors.fill: parent;
                     onClicked: {
                         parent.checked ? UM.Controller.setActiveTool(null) : UM.Controller.setActiveTool(model.id);
-                        base.activeY = parent.y
                     }
                 }
             }
