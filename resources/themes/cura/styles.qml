@@ -34,6 +34,7 @@ QtObject {
                     anchors.left: parent.left;
                     anchors.leftMargin: Theme.getSize("setting_unit_margin").width
                     anchors.right: downArrow.left;
+                    anchors.rightMargin: control.rightMargin;
                     anchors.verticalCenter: parent.verticalCenter;
                     font: Theme.getFont("default")
                 }
