@@ -268,4 +268,26 @@ Item
             }
         }
     }
+
+    Rectangle {
+        id: tipsCell
+        anchors.top: helpersCellRight.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.left: parent.left
+        width: parent.width
+        height: childrenRect.height
+
+        Label{
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            width: parent.width
+            wrapMode: Text.WordWrap
+            //: Tips label
+            text: catalog.i18nc("@label","Need help improving your prints? Read the <a href='%1'>Ultimaker Troubleshooting Guides</a>").arg("https://ultimaker.com/en/troubleshooting");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            linkColor: UM.Theme.getColor("text_link")
+            onLinkActivated: Qt.openUrlExternally(link)
+        }
+    }
 }
