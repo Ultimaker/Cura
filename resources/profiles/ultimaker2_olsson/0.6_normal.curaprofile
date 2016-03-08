@@ -3,6 +3,7 @@ version = 1
 name = Normal Quality
 machine_type = ultimaker2_olsson
 machine_variant = 0.6 mm
+weight = -2
 
 [settings]
 machine_nozzle_size = 0.53

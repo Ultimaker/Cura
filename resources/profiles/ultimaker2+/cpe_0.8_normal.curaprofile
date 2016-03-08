@@ -4,6 +4,7 @@ name = Normal Quality
 machine_type = ultimaker2plus
 machine_variant = 0.8 mm
 material = CPE
+weight = -2
 
 [settings]
 infill_overlap = 17
