@@ -4,6 +4,7 @@ name = High Quality
 machine_type = ultimaker2plus
 machine_variant = 0.25 mm
 material = ABS
+weight = -3
 
 [settings]
 raft_surface_thickness = 0.27
