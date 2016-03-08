@@ -8,7 +8,7 @@
     "file_formats": "text/x-gcode",
     "inherits": "fdmprinter.json",
 
-    "machine_settings": {
+    "machine_settings": { 
 
         "machine_width": { "default": 400 },
         "machine_depth": { "default": 300 },

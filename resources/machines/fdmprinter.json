@@ -586,11 +586,12 @@
                 "infill_overlap": {
                     "label": "Infill Overlap",
                     "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
-                    "unit": "%",
+                    "unit": "mm",
                     "type": "float",
-                    "default": 10,
-                    "min_value": "0",
-                    "max_value_warning": "100",
+                    "default": 0.04,
+                    "min_value_warning": "0",
+                    "max_value_warning": "machine_nozzle_size",
+                    "inherit_function": "0.1 * line_width if infill_sparse_density < 95 else 0.0",
                     "visible": false
                 },
                 "infill_wipe_dist": {
@@ -654,6 +655,16 @@
                     "type": "string",
                     "default": "[[3.5,200],[7.0,240]]",
                     "enabled": "material_flow_dependent_temperature",
+		    "global_only": true
+                },
+                "material_standby_temperature": {
+                    "label": "Standby Temperature",
+                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default": 150,
+                    "min_value": "0",
+                    "max_value_warning": "260",
                     "global_only": true
                 },
                 "material_extrusion_cool_down_speed": {
@@ -1088,7 +1099,8 @@
                                     "unit": "%",
                                     "type": "float",
                                     "min_value": "0",
-                                    "max_value": "100",
+                                    "max_value": "min(100, cool_fan_speed_max)",
+                                    "inherit_function": "parent_value",
                                     "default": 100,
                                     "visible": false,
                                     "global_only": "True"
@@ -1098,8 +1110,9 @@
                                     "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
                                     "unit": "%",
                                     "type": "float",
-                                    "min_value": "0",
+                                    "min_value": "max(0, cool_fan_speed_min)",
                                     "max_value": "100",
+                                    "inherit": false,
                                     "default": 100,
                                     "visible": false,
                                     "global_only": "True"
@@ -1134,7 +1147,7 @@
                 },
                 "cool_min_layer_time": {
                     "label": "Minimum Layer Time",
-                    "description": "The minimum time spent in a layer: Gives the layer time to cool down before the next one is put on top. If a layer would print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer.",
+                    "description": "The minimum time spent in a layer. Gives fast layers extra time to cool down before printing the next layer. If a layer would print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer.",
                     "unit": "sec",
                     "type": "float",
                     "default": 5,
@@ -1156,7 +1169,7 @@
                 },
                 "cool_min_speed": {
                     "label": "Minimum Speed",
-                    "description": "The minimum layer time can cause the print to slow down so much it starts to droop. The minimum feedrate protects against this. Even if a print gets slowed down it will never be slower than this minimum speed.",
+                    "description": "The minimum layer time can cause the print to slow down so much it starts to droop. The Minimum Speed protects against this. Even if a print gets slowed down it will never be slower than this minimum speed.",
                     "unit": "mm/s",
                     "type": "float",
                     "default": 10,
@@ -1167,7 +1180,7 @@
                 },
                 "cool_lift_head": {
                     "label": "Lift Head",
-                    "description": "Lift the head away from the print if the minimum speed is hit because of cool slowdown, and wait the extra time away from the print surface until the minimum layer time is used up.",
+                    "description": "When the Minimum Speed is hit because of Minimum Layer Time, lift the head away from the print and wait the extra time until the minimum layer time is reached.",
                     "type": "boolean",
                     "default": false,
                     "visible": false,
@@ -1305,7 +1318,7 @@
                     "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
                     "type": "boolean",
                     "default": false,
-                    "visible": true,
+                    "visible": false,
                     "enabled": "support_enable"
                 },
                 "support_conical_angle": {
@@ -1445,6 +1458,17 @@
                     "visible": false,
                     "enabled": "support_enable"
                 },
+                "support_minimal_diameter": {
+                    "label": "Minimum Diameter",
+                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1,
+                    "min_value": "0",
+                    "max_value_warning": "10",
+                    "visible": false,
+                    "enabled": "support_enable"
+                },
                 "support_tower_diameter": {
                     "label": "Tower Diameter",
                     "description": "The diameter of a special tower.",
@@ -1452,6 +1476,7 @@
                     "type": "float",
                     "default": 3.0,
                     "min_value": "0",
+                    "min_value_warning": "support_minimal_diameter",
                     "max_value_warning": "10",
                     "visible": false,
                     "enabled": "support_enable and support_use_towers",

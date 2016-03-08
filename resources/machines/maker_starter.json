@@ -9,7 +9,7 @@
     "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
     "inherits": "fdmprinter.json",
 
-    "machine_settings": {
+    "overrides": { 
         "machine_width": { "default": 210 },
         "machine_depth": { "default": 185 },
         "machine_height": { "default": 200 },
@@ -30,10 +30,8 @@
 
         "machine_nozzle_tip_outer_diameter": { "default": 1.0 },
         "machine_nozzle_head_distance": { "default": 3.0 },
-        "machine_nozzle_expansion_angle": { "default": 45 }
-    },
+        "machine_nozzle_expansion_angle": { "default": 45 },
 
-    "overrides": { 
         "layer_height": { "default": 0.2 },
         "layer_height_0": { "default": 0.2, "visible": false },
         "wall_line_count": { "default": 2, "visible": true },

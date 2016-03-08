@@ -7,6 +7,17 @@
 
     "visible": false,
 
+    "machine_extruder_trains": {
+        "0": {
+            "extruder_nr": { "default": 0 },
+            "machine_nozzle_offset_x": { "default": 0.0 },
+            "machine_nozzle_offset_y": { "default": 0.0 }
+        },
+        "1": {
+            "extruder_nr": { "default": 1 }
+        }
+    },
+
     "machine_settings": {
         "machine_use_extruder_offset_to_offset_coords": { "default": false },
 
@@ -88,28 +99,37 @@
                             "default": 0,
                             "min_value": "0",
                             "max_value": "16",
-                            "global_only": true
-                        },
-                        "support_extruder_nr_layer_0": {
-                            "label": "First Layer Support Extruder",
-                            "description": "The extruder train to use for printing the first layer of support. This is used in multi-extrusion.",
-                            "type": "int",
-                            "default": 0,
-                            "min_value": "0",
-                            "max_value": "16",
-                            "inherit_function": "support_extruder_nr",
-                            "global_only": true
-                        },
-                        "support_roof_extruder_nr": {
-                            "label": "Support Roof Extruder",
-                            "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
-                            "type": "int",
-                            "default": 0,
-                            "min_value": "0",
-                            "max_value": "16",
-                            "inherit_function": "support_extruder_nr",
-                            "enabled": "support_roof_enable",
-                            "global_only": true
+                            "global_only": true,
+                            "children": {
+                                "support_infill_extruder_nr": {
+                                    "label": "Support Infill Extruder",
+                                    "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16",
+                                    "global_only": true
+                                },
+                                "support_extruder_nr_layer_0": {
+                                    "label": "First Layer Support Extruder",
+                                    "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16",
+                                    "global_only": true
+                                },
+                                "support_roof_extruder_nr": {
+                                    "label": "Support Roof Extruder",
+                                    "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
+                                    "type": "int",
+                                    "default": 0,
+                                    "min_value": "0",
+                                    "max_value": "16",
+                                    "enabled": "support_roof_enable",
+                                    "global_only": true
+                                }
+                            }
                         }
                     }
                 },
@@ -179,6 +199,17 @@
                     "enabled": "prime_tower_enable",
                     "global_only": true
                 },
+                "multiple_mesh_overlap": {
+                    "label": "Dual Extrusion Overlap",
+                    "description": "Make the objects printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
+                    "visible": false,
+                    "type": "float",
+                    "unit": "mm",
+                    "default": 0.15,
+                    "min_value": "0",
+                    "max_value_warning": "1.0",
+                    "global_only": true
+                },
                 "ooze_shield_enabled": {
                     "label": "Enable Ooze Shield",
                     "description": "Enable exterior ooze shield. This will create a shell around the object which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
@@ -213,7 +244,7 @@
             }
         },
         "material": {
-            "settings": {                
+            "settings": {
                 "material_standby_temperature": {
                     "label": "Standby Temperature",
                     "description": "The temperature of the nozzle when another nozzle is currently used for printing.",

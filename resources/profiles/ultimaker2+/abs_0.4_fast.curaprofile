@@ -24,4 +24,3 @@ speed_wall_0 = 30
 adhesion_type = brim
 cool_lift_head = True
 cool_fan_speed_min = 50
-

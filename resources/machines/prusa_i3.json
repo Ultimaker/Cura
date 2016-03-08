@@ -9,7 +9,7 @@
     "file_formats": "text/x-gcode",
     "inherits": "fdmprinter.json",
 
-    "machine_settings": {
+    "overrides": {
         "machine_heated_bed": { "default": true },
         "machine_width": { "default": 200 },
         "machine_height": { "default": 200 },

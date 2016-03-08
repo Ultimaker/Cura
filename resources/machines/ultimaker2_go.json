@@ -10,7 +10,7 @@
     "file_formats": "text/x-gcode",
     "inherits": "ultimaker2.json",
 
-    "machine_settings": {
+    "overrides": {
         "machine_width": { "default": 120 },
         "machine_depth": { "default": 120 },
         "machine_height": { "default": 115 },
