@@ -1243,7 +1243,7 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
 		self.standard = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v2.1'),
-										'Lulzbot_Toolhead_TAZ_Tilapia.jpg', image_size,
+										'Lulzbot_Toolhead_TAZ6_Single-v2.1.jpg', image_size,
 										style=ImageButton.IB_GROUP)
 		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v2'),
 										'Lulzbot_Toolhead_TAZ_Flexystruder_v2.jpg', image_size)
