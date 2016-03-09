@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Cura 2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-18 11:54+0100\n"
-"PO-Revision-Date: 2016-02-07 16:01+0100\n"
+"PO-Revision-Date: 2016-03-09 15:28+0100\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Last-Translator: Thomas Karl Pietrowski <thopiekar@googlemail.com>\n"
 "Language-Team: \n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: /home/tamara/2.1/Cura/cura/CrashHandler.py:26
 msgctxt "@title:window"
@@ -249,7 +249,7 @@ msgstr "Über USB drucken"
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/PrinterConnection.py:37
 msgctxt "@info:tooltip"
 msgid "Print with USB"
-msgstr "Über USB drucken"
+msgstr "Drucken über USB"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/__init__.py:13
 msgctxt "@label"
