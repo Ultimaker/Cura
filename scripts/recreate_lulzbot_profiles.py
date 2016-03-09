@@ -124,12 +124,12 @@ material_order = {
     "PP-HT-PLA":           18,
     
     # Advanced
-    "Alloy910":            50,
-    "Bridge":              51,
-    "Laywood":             52,
-    "n-vent":              53,
-    "XT":                  54,
-    "INOVA-1800":          55,
+    "INOVA-1800":          50,
+    "Alloy910":            51,
+    "Bridge":              52,
+    "Laywood":             53,
+    "n-vent":              54,
+    "XT":                  55,
     "PCTPE":               56,
     "PC-ABS":              57,
     "T-Glase":             58,
