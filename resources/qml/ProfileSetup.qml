@@ -32,8 +32,9 @@ Item{
             color: UM.Theme.getColor("text");
         }
 
-
         ToolButton {
+            property int rightMargin: customisedSettings.visible ? customisedSettings.width + UM.Theme.getSize("default_margin").width / 2 : 0
+
             id: globalProfileSelection
             text: UM.MachineManager.activeProfile
             width: parent.width/100*55
@@ -82,6 +83,22 @@ Item{
                     action: base.manageProfilesAction;
                 }
             }
+        }
+        UM.SimpleButton {
+            id: customisedSettings
+
+            visible: UM.ActiveProfile.hasCustomisedValues
+            height: parent.height * 0.6
+            width: parent.height * 0.6
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
+
+            color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+            iconSource: UM.Theme.getIcon("star");
+
+            onClicked: base.manageProfilesAction.trigger()
         }
     }
 }
