@@ -106,10 +106,10 @@ material_map = {
 
 material_order = {
     # Beginner
-    "HIPS_eSUN":            0,
-    "PLA_eSUN":             1,
-    "PLA_VP":               2,
-    "nGen":                 3,
+    "nGen":                 0,
+    "PLA_VP":               1,
+    "HIPS_eSUN":            2,
+    "PLA_eSUN":             3,
     "PLA_PHA":              4,
     
     # Intermediate
