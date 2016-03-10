@@ -467,7 +467,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._bed_temperature = temperature
         self.bedTemperatureChanged.emit()
 
-    def requestWrite(self, node, file_name = None):
+    def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self.showControlInterface()
 
     def _setEndstopState(self, endstop_key, value):
