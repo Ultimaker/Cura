@@ -51,29 +51,47 @@ Item{
                 Instantiator
                 {
                     id: profileSelectionInstantiator
-                    model: UM.ProfilesModel { }
+                    model: UM.ProfilesModel { addSeparators: true }
+                    Loader {
+                        property QtObject model_data: model
+                        property int model_index: index
+                        sourceComponent: model.separator ? menuSeparatorDelegate : menuItemDelegate
+                    }
+                    onObjectAdded: profileSelectionMenu.insertItem(index, object.item)
+                    onObjectRemoved: profileSelectionMenu.removeItem(object.item)
+                }
+                ExclusiveGroup { id: profileSelectionMenuGroup; }
+                Component
+                {
+                    id: menuSeparatorDelegate
+                    MenuSeparator {
+                        id: item
+                    }
+                }
+                Component
+                {
+                    id: menuItemDelegate
                     MenuItem
                     {
-                        text: model.name
+                        id: item
+                        text: model_data.name
                         checkable: true;
-                        checked: model.active;
+                        checked: model_data.active;
                         exclusiveGroup: profileSelectionMenuGroup;
                         onTriggered:
                         {
-                            UM.MachineManager.setActiveProfile(model.name);
-                            if (!model.active) {
+                            UM.MachineManager.setActiveProfile(model_data.name);
+                            if (!model_data.active) {
                                 //Selecting a profile was canceled; undo menu selection
-                                profileSelectionInstantiator.model.setProperty(index, "active", false);
+                                profileSelectionInstantiator.model.setProperty(model_index, "active", false);
                                 var activeProfileName = UM.MachineManager.activeProfile;
                                 var activeProfileIndex = profileSelectionInstantiator.model.find("name", activeProfileName);
                                 profileSelectionInstantiator.model.setProperty(activeProfileIndex, "active", true);
                             }
                         }
                     }
-                    onObjectAdded: profileSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: profileSelectionMenu.removeItem(object)
                 }
-                ExclusiveGroup { id: profileSelectionMenuGroup; }
+
 
                 MenuSeparator { }
                 MenuItem {
