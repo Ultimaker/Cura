@@ -350,6 +350,7 @@
                     "min_value_warning": "0.2",
                     "max_value_warning": "5",
                     "visible": false,
+                    "enabled": false,
                     "children": {
                         "wall_thickness": {
                             "label": "Wall Thickness",
@@ -391,6 +392,7 @@
                             "min_value_warning": "0.6",
                             "type": "float",
                             "visible": true,
+                            "enabled": false,
                             "children": {
                                 "top_thickness": {
                                     "label": "Top Thickness",
@@ -444,6 +446,7 @@
                     "type": "boolean",
                     "default": false,
                     "visible": false,
+                    "enabled": false,
                     "children": {
                         "remove_overlapping_walls_0_enabled": {
                             "label": "Remove Overlapping Outer Wall Parts",
@@ -451,7 +454,8 @@
                             "type": "boolean",
                             "default": false,
                             "visible": false,
-                            "inherit": true
+                            "inherit": true,
+                            "enabled": false,
                         },
                         "remove_overlapping_walls_x_enabled": {
                             "label": "Remove Overlapping Other Wall Parts",
