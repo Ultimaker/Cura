@@ -22,8 +22,5 @@
             [[ 60.0, -60.0], [ 33.0, -60.0], [ 35.0, -52.0], [ 60.0, -52.0]]
         ]},
         "machine_platform_offset": { "default": [0.0, 0.0, 0.0] }
-    },
-    "overrides": {
-        "adhesion_type":{"default": "brim"}
     }
 }

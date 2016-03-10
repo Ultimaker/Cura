@@ -79,8 +79,5 @@
         },
 
         "machine_extruder_drive_upgrade": { "default": false }
-    },
-    "overrides": {
-        "adhesion_type":{"default": "brim"}
     }
 }
