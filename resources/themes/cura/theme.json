@@ -49,6 +49,7 @@
         },
         "setting_category": {
             "size": 1.15,
+            "bold": true,
             "family": "Open Sans"
         },
         "action_button": {
