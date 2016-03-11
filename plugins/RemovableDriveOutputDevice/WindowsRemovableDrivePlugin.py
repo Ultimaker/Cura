@@ -99,7 +99,7 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
             raise ctypes.WinError()
 
         # The DeviceIoControl requires a bytes_returned pointer to be a valid pointer.
-        # So create a ctypes DWORD to reference. (Without this pointer the DeviceIoControl function will crash with an access violation after doing it's job.
+        # So create a ctypes DWORD to reference. (Without this pointer the DeviceIoControl function will crash with an access violation after doing its job.
         bytes_returned = wintypes.DWORD(0)
 
         error = None
