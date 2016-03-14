@@ -15,7 +15,7 @@ sys.excepthook = exceptHook
 # is a race condition between Arcus and PyQt. Importing Arcus
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
-import Arcus
+import Arcus #@UnusedImport
 import cura.CuraApplication
 
 if sys.platform == "win32" and hasattr(sys, "frozen"):
