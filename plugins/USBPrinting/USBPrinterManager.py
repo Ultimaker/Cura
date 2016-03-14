@@ -135,7 +135,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     def _getDefaultFirmwareName(self):
         machine_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
         machine_type = machine_instance.getMachineDefinition().getId()
-        if sys.platform.startswith("linux"):
+        if platform.system() == "Linux":
             baudrate = 115200
         else:
             baudrate = 250000
