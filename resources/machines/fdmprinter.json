@@ -392,7 +392,6 @@
                             "min_value_warning": "0.6",
                             "type": "float",
                             "visible": true,
-                            "enabled": "False",
                             "children": {
                                 "top_thickness": {
                                     "label": "Top Thickness",
