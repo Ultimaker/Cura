@@ -159,9 +159,9 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         ##TODO: Add check for multiple extruders
         hex_file = None
         if  machine_type in machine_without_extras.keys(): # The machine needs to be defined here!
-            if  machine_type in machine_with_heated_bed.keys(): # Return firmware with heated bed enabled
+            if  machine_type in machine_with_heated_bed.keys() and machine_instance.getMachineSettingValue("machine_heated_bed"):
                 Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_type)
-                hex_file = machine_with_heated_bed[machine_type]
+                hex_file = machine_with_heated_bed[machine_type] # Return firmware with heated bed enabled
             else:
                 Logger.log("d", "Choosing basic firmware for machine %s.", machine_type)
                 hex_file = machine_without_extras[machine_type] # Return "basic" firmware
