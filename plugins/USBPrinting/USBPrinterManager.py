@@ -149,7 +149,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
                                       "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
                                       "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
                                       }
-        machine_with_heated_bed    = {"ultimaker_original-HBK-{baudrate}.hex",
+        machine_with_heated_bed    = {"ultimaker_original"       : "ultimaker_original-HBK-{baudrate}.hex",
                                       }
 
         ##TODO: Add check for multiple extruders
