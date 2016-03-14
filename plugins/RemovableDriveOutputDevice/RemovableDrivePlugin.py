@@ -4,9 +4,9 @@
 import threading
 import time
 
-from UM.Signal import Signal
 from UM.Message import Message
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.Logger import Logger
 
 from . import RemovableDriveOutputDevice
 from UM.Logger import Logger
