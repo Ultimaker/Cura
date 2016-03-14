@@ -140,6 +140,8 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         else:
             baudrate = 250000
 
+        # Note the keyword here is the id of the machine. You can find the id of your machine in the *.json file, eg.
+        # https://github.com/Ultimaker/Cura/blob/master/resources/machines/ultimaker_original.json#L2
         machine_without_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
                                       "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
                                       "bq_witbox"                : "MarlinWitbox.hex",
