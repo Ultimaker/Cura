@@ -6,10 +6,7 @@ from . import RemovableDrivePlugin
 
 from UM.Logger import Logger
 
-import threading
-
 import subprocess
-import time
 import os
 
 import plistlib
