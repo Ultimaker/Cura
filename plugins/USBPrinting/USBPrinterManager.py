@@ -98,7 +98,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     @pyqtSlot()
     def updateAllFirmware(self):
         if not self._printer_connections:
-            Message("Cannot update firmware, there were no connected printers found.").show()
+            Message(i18n_catalog.i18nc("@info","Cannot update firmware, there were no connected printers found.")).show()
             return
 
         self.spawnFirmwareInterface("")
@@ -106,6 +106,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
             try:
                 self._printer_connections[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
+                self._printer_connections[printer_connection].setProgress(100, 100)
                 Logger.log("w", "No firmware found for printer %s", printer_connection)
                 continue
 
@@ -132,30 +133,37 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         return USBPrinterManager._instance
 
     def _getDefaultFirmwareName(self):
-        machine_type = Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getId()
-        firmware_name = ""
+        machine_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
+        machine_type = machine_instance.getMachineDefinition().getId()
         baudrate = 250000
         if sys.platform.startswith("linux"):
                 baudrate = 115200
         if machine_type == "ultimaker_original":
             firmware_name = "MarlinUltimaker"
+            if machine_instance.getMachineSettingValue("machine_heated_bed"): #Has heated bed upgrade kit?
+                firmware_name += "-HBK"
             firmware_name += "-%d" % (baudrate)
+            return firmware_name + ".hex"
         elif machine_type == "ultimaker_original_plus":
             firmware_name = "MarlinUltimaker-UMOP-%d" % (baudrate)
-        elif machine_type == "Witbox":
+            return firmware_name + ".hex"
+        elif machine_type == "bq_witbox":
             return "MarlinWitbox.hex"
-        elif machine_type == "ultimaker2go":
+        elif machine_type == "ultimaker2_go":
             return "MarlinUltimaker2go.hex"
-        elif machine_type == "ultimaker2extended":
+        elif machine_type == "ultimaker2_extended":
             return "MarlinUltimaker2extended.hex"
         elif machine_type == "ultimaker2":
             return "MarlinUltimaker2.hex"
+        elif machine_type == "ultimaker2plus":
+            return "MarlinUltimaker2plus.hex"
+        elif machine_type == "ultimaker2_extended_plus":
+            return "MarlinUltimaker2extended-plus.hex"
+        else:
+            Logger.log("e", "I don't know of any firmware for machine %s.", machine_type)
+            raise FileNotFoundError()
 
         ##TODO: Add check for multiple extruders
-
-        if firmware_name != "":
-            firmware_name += ".hex"
-        return firmware_name
 
     def _addRemovePorts(self, serial_ports):
         # First, find and add all new or changed keys

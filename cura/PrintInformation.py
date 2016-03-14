@@ -4,7 +4,6 @@
 from PyQt5.QtCore import QObject, QDateTime, QTimer, pyqtSignal, pyqtSlot, pyqtProperty
 
 from UM.Application import Application
-from UM.Settings.MachineSettings import MachineSettings
 from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Qt.Duration import Duration
@@ -66,6 +65,6 @@ class PrintInformation(QObject):
         self.currentPrintTimeChanged.emit()
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
-        r =  Application.getInstance().getMachineManager().getActiveProfile().getSettingValue("material_diameter") / 2
+        r =  Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("material_diameter") / 2
         self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 2)
         self.materialAmountChanged.emit()

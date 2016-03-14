@@ -16,7 +16,8 @@ def getMetaData():
             "api": 2
         },
         "view": {
-            "name": catalog.i18nc("@item:inlistbox", "X-Ray")
+            "name": catalog.i18nc("@item:inlistbox", "X-Ray"),
+            "weight": 1
         }
     }
 

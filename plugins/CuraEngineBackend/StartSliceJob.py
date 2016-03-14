@@ -14,8 +14,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 
-from . import Cura_pb2
-
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
     def get_value(self, key, args, kwargs): # [CodeStyle: get_value is an overridden function from the Formatter class]
@@ -63,6 +61,8 @@ class StartSliceJob(Job):
                 if temp_list:
                     object_groups.append(temp_list)
                 Job.yieldThread()
+            if len(object_groups) == 0:
+                Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
         else:
             temp_list = []
             for node in DepthFirstIterator(self._scene.getRoot()):
@@ -81,20 +81,23 @@ class StartSliceJob(Job):
 
         self._sendSettings(self._profile)
 
-        slice_message = Cura_pb2.Slice()
+        slice_message = self._socket.createMessage("cura.proto.Slice")
 
         for group in object_groups:
-            group_message = slice_message.object_lists.add()
+            group_message = slice_message.addRepeatedMessage("object_lists")
+            if group[0].getParent().callDecoration("isGroup"):
+                self._handlePerObjectSettings(group[0].getParent(), group_message)
             for object in group:
                 mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
-                obj = group_message.objects.add()
+                obj = group_message.addRepeatedMessage("objects")
                 obj.id = id(object)
 
                 verts = numpy.array(mesh_data.getVertices())
                 verts[:,[1,2]] = verts[:,[2,1]]
                 verts[:,1] *= -1
-                obj.vertices = verts.tostring()
+
+                obj.vertices = verts
 
                 self._handlePerObjectSettings(object, obj)
 
@@ -115,13 +118,13 @@ class StartSliceJob(Job):
             return str(value).encode("utf-8")
 
     def _sendSettings(self, profile):
-        msg = Cura_pb2.SettingList()
+        msg = self._socket.createMessage("cura.proto.SettingList");
         settings = profile.getAllSettingValues(include_machine = True)
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
         for key, value in settings.items():
-            s = msg.settings.add()
+            s = msg.addRepeatedMessage("settings")
             s.name = key
             if key == "machine_start_gcode" or key == "machine_end_gcode":
                 s.value = self._expandGcodeTokens(key, value, settings)
@@ -134,7 +137,7 @@ class StartSliceJob(Job):
         profile = node.callDecoration("getProfile")
         if profile:
             for key, value in profile.getAllSettingValues().items():
-                setting = message.settings.add()
+                setting = message.addRepeatedMessage("settings")
                 setting.name = key
                 setting.value = str(value).encode()
 
@@ -143,9 +146,8 @@ class StartSliceJob(Job):
         object_settings = node.callDecoration("getAllSettingValues")
         if not object_settings:
             return
-
         for key, value in object_settings.items():
-            setting = message.settings.add()
+            setting = message.addRepeatedMessage("settings")
             setting.name = key
             setting.value = str(value).encode()
 

@@ -1,0 +1,16 @@
+{
+    "id": "ultimaker2_olsson_base",
+    "version": 1,
+    "name": "Ultimaker 2 with Olsson Block",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
+    "platform": "ultimaker2_platform.obj",
+    "platform_texture": "Ultimaker2backplate.png",
+    "visible": false,
+    "file_formats": "text/x-gcode",
+    "inherits": "ultimaker2.json",
+
+    "overrides": {
+        "machine_show_variants": { "default": true }
+    }
+}

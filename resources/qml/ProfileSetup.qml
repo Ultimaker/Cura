@@ -13,85 +13,34 @@ Item{
     UM.I18nCatalog { id: catalog; name:"cura"}
     property int totalHeightProfileSetup: childrenRect.height
     property Action manageProfilesAction
-
-    Rectangle {
-        id: variantRow
-        anchors.top: base.top
-        width: base.width
-        height: UM.Theme.sizes.sidebar_setup.height
-        //visible: UM.MachineManager.hasVariants;
-        visible: true
-
-        Label{
-            id: variantLabel
-            text: catalog.i18nc("@label","Variant:");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*45
-            font: UM.Theme.fonts.default;
-        }
-
-        ToolButton {
-            id: variantSelection
-            text: UM.MachineManager.activeMachineVariant
-            width: parent.width/100*55
-            height: UM.Theme.sizes.setting_control.height
-            tooltip: UM.MachineManager.activeMachineInstance;
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width
-            anchors.verticalCenter: parent.verticalCenter
-            style: UM.Theme.styles.sidebar_header_button
-
-            menu: Menu
-            {
-                id: variantsSelectionMenu
-                Instantiator
-                {
-                    model: UM.MachineVariantsModel { id: variantsModel }
-                    MenuItem
-                    {
-                        text: model.name;
-                        checkable: true;
-                        checked: model.active;
-                        exclusiveGroup: variantSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name)
-                    }
-                    onObjectAdded: variantsSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: variantsSelectionMenu.removeItem(object)
-                }
-
-                ExclusiveGroup { id: variantSelectionMenuGroup; }
-            }
-        }
-    }
+    property Action addProfileAction
 
     Rectangle{
-        id: globalProfileRow;
-        anchors.top: UM.MachineManager.hasVariants ? variantRow.bottom : base.top
-        //anchors.top: variantRow.bottom
-        height: UM.Theme.sizes.sidebar_setup.height
+        id: globalProfileRow
+        anchors.top: base.top
+        height: UM.Theme.getSize("sidebar_setup").height
         width: base.width
 
         Label{
             id: globalProfileLabel
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
             anchors.verticalCenter: parent.verticalCenter
-            text: catalog.i18nc("@label","Global Profile:");
+            text: catalog.i18nc("@label","Profile:");
             width: parent.width/100*45
-            font: UM.Theme.fonts.default;
-            color: UM.Theme.colors.text;
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
         }
 
-
         ToolButton {
+            property int rightMargin: customisedSettings.visible ? customisedSettings.width + UM.Theme.getSize("default_margin").width / 2 : 0
+
             id: globalProfileSelection
             text: UM.MachineManager.activeProfile
             width: parent.width/100*55
-            height: UM.Theme.sizes.setting_control.height
+            height: UM.Theme.getSize("setting_control").height
             anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.sizes.default_margin.width
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             tooltip: UM.MachineManager.activeProfile
             style: UM.Theme.styles.sidebar_header_button
@@ -101,51 +50,73 @@ Item{
                 id: profileSelectionMenu
                 Instantiator
                 {
-                    model: UM.ProfilesModel { }
-                    MenuItem
-                    {
-                        text: model.name
-                        checkable: true;
-                        checked: model.active;
-                        exclusiveGroup: profileSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveProfile(model.name)
+                    id: profileSelectionInstantiator
+                    model: UM.ProfilesModel { addSeparators: true }
+                    Loader {
+                        property QtObject model_data: model
+                        property int model_index: index
+                        sourceComponent: model.separator ? menuSeparatorDelegate : menuItemDelegate
                     }
-                    onObjectAdded: profileSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: profileSelectionMenu.removeItem(object)
+                    onObjectAdded: profileSelectionMenu.insertItem(index, object.item)
+                    onObjectRemoved: profileSelectionMenu.removeItem(object.item)
                 }
                 ExclusiveGroup { id: profileSelectionMenuGroup; }
+                Component
+                {
+                    id: menuSeparatorDelegate
+                    MenuSeparator {
+                        id: item
+                    }
+                }
+                Component
+                {
+                    id: menuItemDelegate
+                    MenuItem
+                    {
+                        id: item
+                        text: model_data.name
+                        checkable: true;
+                        checked: model_data.active;
+                        exclusiveGroup: profileSelectionMenuGroup;
+                        onTriggered:
+                        {
+                            UM.MachineManager.setActiveProfile(model_data.name);
+                            if (!model_data.active) {
+                                //Selecting a profile was canceled; undo menu selection
+                                profileSelectionInstantiator.model.setProperty(model_index, "active", false);
+                                var activeProfileName = UM.MachineManager.activeProfile;
+                                var activeProfileIndex = profileSelectionInstantiator.model.find("name", activeProfileName);
+                                profileSelectionInstantiator.model.setProperty(activeProfileIndex, "active", true);
+                            }
+                        }
+                    }
+                }
+
 
                 MenuSeparator { }
                 MenuItem {
+                    action: base.addProfileAction;
+                }
+                MenuItem {
                     action: base.manageProfilesAction;
-
                 }
             }
-//             Button {
-//                 id: saveProfileButton
-//                 visible: true
-//                 anchors.top: parent.top
-//                 x: globalProfileSelection.width + 2
-//                 width: parent.width/100*25
-//                 text: catalog.i18nc("@action:button", "Save");
-//                 height: parent.height
-//
-//                 style: ButtonStyle {
-//                     background: Rectangle {
-//                         color: control.hovered ? UM.Theme.colors.load_save_button_hover : UM.Theme.colors.load_save_button
-//                         Behavior on color { ColorAnimation { duration: 50; } }
-//                         width: actualLabel.width + UM.Theme.sizes.default_margin.width
-//                         Label {
-//                             id: actualLabel
-//                             anchors.centerIn: parent
-//                             color: UM.Theme.colors.load_save_button_text
-//                             font: UM.Theme.fonts.default
-//                             text: control.text;
-//                         }
-//                     }
-//                 label: Item { }
-//                 }
-//             }
+        }
+        UM.SimpleButton {
+            id: customisedSettings
+
+            visible: UM.ActiveProfile.hasCustomisedValues
+            height: parent.height * 0.6
+            width: parent.height * 0.6
+
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width
+
+            color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+            iconSource: UM.Theme.getIcon("star");
+
+            onClicked: base.manageProfilesAction.trigger()
         }
     }
 }

@@ -31,6 +31,7 @@ Item
 
     property alias addMachine: addMachineAction;
     property alias configureMachines: settingsAction;
+    property alias addProfile: addProfileAction;
     property alias manageProfiles: manageProfilesAction;
 
     property alias preferences: preferencesAction;
@@ -54,7 +55,7 @@ Item
     Action
     {
         id: undoAction;
-        text: catalog.i18nc("@action:inmenu","&Undo");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
     }
@@ -62,7 +63,7 @@ Item
     Action
     {
         id: redoAction;
-        text: catalog.i18nc("@action:inmenu","&Redo");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
     }
@@ -70,7 +71,7 @@ Item
     Action
     {
         id: quitAction;
-        text: catalog.i18nc("@action:inmenu","&Quit");
+        text: catalog.i18nc("@action:inmenu menubar:file","&Quit");
         iconName: "application-exit";
         shortcut: StandardKey.Quit;
     }
@@ -78,55 +79,62 @@ Item
     Action
     {
         id: preferencesAction;
-        text: catalog.i18nc("@action:inmenu","&Preferences...");
+        text: catalog.i18nc("@action:inmenu menubar:settings","&Preferences...");
         iconName: "configure";
     }
 
     Action
     {
         id: addMachineAction;
-        text: catalog.i18nc("@action:inmenu","&Add Printer...");
+        text: catalog.i18nc("@action:inmenu menubar:printer","&Add Printer...");
     }
 
     Action
     {
         id: settingsAction;
-        text: catalog.i18nc("@action:inmenu","Manage Pr&inters...");
+        text: catalog.i18nc("@action:inmenu menubar:printer","Manage Pr&inters...");
         iconName: "configure";
     }
 
     Action
     {
+        id: addProfileAction;
+        text: catalog.i18nc("@action:inmenu menubar:profile","&Add Profile...");
+    }
+
+    Action
+    {
         id: manageProfilesAction;
-        text: catalog.i18nc("@action:inmenu","Manage Profiles...");
+        text: catalog.i18nc("@action:inmenu menubar:profile","Manage Profiles...");
         iconName: "configure";
     }
 
     Action
     {
         id: documentationAction;
-        text: catalog.i18nc("@action:inmenu","Show Online &Documentation");
+        text: catalog.i18nc("@action:inmenu menubar:help","Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
     }
 
     Action {
         id: reportBugAction;
-        text: catalog.i18nc("@action:inmenu","Report a &Bug");
+        text: catalog.i18nc("@action:inmenu menubar:help","Report a &Bug");
         iconName: "tools-report-bug";
     }
 
     Action
     {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu","&About...");
+        text: catalog.i18nc("@action:inmenu menubar:help","&About...");
         iconName: "help-about";
     }
 
     Action
     {
         id: deleteSelectionAction;
-        text: catalog.i18nc("@action:inmenu","Delete &Selection");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Delete &Selection");
+        enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
     }
@@ -135,6 +143,7 @@ Item
     {
         id: deleteObjectAction;
         text: catalog.i18nc("@action:inmenu","Delete Object");
+        enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
     }
 
@@ -147,7 +156,7 @@ Item
     Action
     {
         id: groupObjectsAction
-        text: catalog.i18nc("@action:inmenu","&Group Objects");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Group Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "object-group"
     }
@@ -155,7 +164,7 @@ Item
     Action
     {
         id: unGroupObjectsAction
-        text: catalog.i18nc("@action:inmenu","Ungroup Objects");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Objects");
         enabled: UM.Scene.isGroupSelected
         iconName: "object-ungroup"
     }
@@ -163,7 +172,7 @@ Item
     Action
     {
         id: mergeObjectsAction
-        text: catalog.i18nc("@action:inmenu","&Merge Objects");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "merge";
     }
@@ -178,7 +187,8 @@ Item
     Action
     {
         id: deleteAllAction;
-        text: catalog.i18nc("@action:inmenu","&Clear Build Platform");
+        text: catalog.i18nc("@action:inmenu menubar:edit","&Clear Build Platform");
+        enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
     }
@@ -186,26 +196,26 @@ Item
     Action
     {
         id: reloadAllAction;
-        text: catalog.i18nc("@action:inmenu","Re&load All Objects");
+        text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Objects");
         iconName: "document-revert";
     }
 
     Action
     {
         id: resetAllTranslationAction;
-        text: catalog.i18nc("@action:inmenu","Reset All Object Positions");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Object Positions");
     }
 
     Action
     {
         id: resetAllAction;
-        text: catalog.i18nc("@action:inmenu","Reset All Object &Transformations");
+        text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Object &Transformations");
     }
 
     Action
     {
         id: openAction;
-        text: catalog.i18nc("@action:inmenu","&Open File...");
+        text: catalog.i18nc("@action:inmenu menubar:file","&Open File...");
         iconName: "document-open";
         shortcut: StandardKey.Open;
     }
@@ -213,7 +223,7 @@ Item
     Action
     {
         id: showEngineLogAction;
-        text: catalog.i18nc("@action:inmenu","Show Engine &Log...");
+        text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
         iconName: "view-list-text";
         shortcut: StandardKey.WhatsThis;
     }

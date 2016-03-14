@@ -18,7 +18,8 @@ def getMetaData():
         },
         "view": {
             "name": catalog.i18nc("@item:inlistbox", "Layers"),
-            "view_panel": "LayerView.qml"
+            "view_panel": "LayerView.qml",
+            "weight": 2
         }
     }
 

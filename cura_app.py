@@ -12,15 +12,12 @@ def exceptHook(type, value, traceback):
 
 sys.excepthook = exceptHook
 
-try:
-    from google.protobuf.pyext import _message
-except ImportError:
-    pass
-else:
-    os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "cpp"
-
-if True: # To make the code style checker stop complaining
-    import cura.CuraApplication
+# Workaround for a race condition on certain systems where there
+# is a race condition between Arcus and PyQt. Importing Arcus
+# first seems to prevent Sip from going into a state where it
+# tries to create PyQt objects on a non-main thread.
+import Arcus
+import cura.CuraApplication
 
 if sys.platform == "win32" and hasattr(sys, "frozen"):
     import os

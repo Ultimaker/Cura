@@ -24,16 +24,11 @@ class PerObjectSettingsModel(ListModel):
         super().__init__(parent)
         self._scene = Application.getInstance().getController().getScene()
         self._root = self._scene.getRoot()
-        self._root.transformationChanged.connect(self._updatePositions)
-        self._root.childrenChanged.connect(self._updateNodes)
-        self._updateNodes(None)
-
         self.addRoleName(self.IdRole,"id")
-        self.addRoleName(self.XRole,"x")
-        self.addRoleName(self.YRole,"y")
         self.addRoleName(self.MaterialRole, "material")
         self.addRoleName(self.ProfileRole, "profile")
         self.addRoleName(self.SettingsRole, "settings")
+        self._updateModel()
 
     @pyqtSlot("quint64", str)
     def setObjectProfile(self, object_id, profile_name):
@@ -72,27 +67,11 @@ class PerObjectSettingsModel(ListModel):
         if len(node.callDecoration("getAllSettings")) == 0:
             node.removeDecorator(SettingOverrideDecorator)
 
-    def _updatePositions(self, source):
-        camera =  Application.getInstance().getController().getScene().getActiveCamera()
-        for node in BreadthFirstIterator(self._root):
-            if type(node) is not SceneNode or not node.getMeshData():
-                continue
-
-            projected_position = camera.project(node.getWorldPosition())
-
-            index = self.find("id", id(node))
-            self.setProperty(index, "x", float(projected_position[0]))
-            self.setProperty(index, "y", float(projected_position[1]))
-
-    def _updateNodes(self, source):
+    def _updateModel(self):
         self.clear()
-        camera =  Application.getInstance().getController().getScene().getActiveCamera()
         for node in BreadthFirstIterator(self._root):
-            if type(node) is not SceneNode or not node.getMeshData() or not node.isSelectable():
+            if type(node) is not SceneNode or not node.isSelectable():
                 continue
-
-            projected_position = camera.project(node.getWorldPosition())
-
             node_profile = node.callDecoration("getProfile")
             if not node_profile:
                 node_profile = "global"
@@ -101,8 +80,6 @@ class PerObjectSettingsModel(ListModel):
 
             self.appendItem({
                 "id": id(node),
-                "x": float(projected_position[0]),
-                "y": float(projected_position[1]),
                 "material": "",
                 "profile": node_profile,
                 "settings": SettingOverrideModel.SettingOverrideModel(node)

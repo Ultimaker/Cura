@@ -6,8 +6,8 @@
     "author": "Ultimaker",
     "icon": "icon_ultimaker.png",
     "platform": "ultimaker_platform.stl",
-
-    "inherits": "fdmprinter.json",
+    "file_formats": "text/x-gcode",
+    "inherits": "ultimaker.json",
 
     "pages": [
         "SelectUpgradedParts",

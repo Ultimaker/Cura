@@ -9,12 +9,13 @@ from UM.Preferences import Preferences
 from UM.Math.Vector import Vector
 from UM.Signal import Signal
 from UM.Logger import Logger
+from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of the slicing job.
 from UM.Resources import Resources
 from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
-from . import Cura_pb2
 from . import ProcessSlicedObjectListJob
 from . import ProcessGCodeJob
 from . import StartSliceJob
@@ -24,6 +25,8 @@ import sys
 import numpy
 
 from PyQt5.QtCore import QTimer
+
+import Arcus
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -61,18 +64,22 @@ class CuraEngineBackend(Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self.slice)
 
-        self._message_handlers[Cura_pb2.SlicedObjectList] = self._onSlicedObjectListMessage
-        self._message_handlers[Cura_pb2.Progress] = self._onProgressMessage
-        self._message_handlers[Cura_pb2.GCodeLayer] = self._onGCodeLayerMessage
-        self._message_handlers[Cura_pb2.GCodePrefix] = self._onGCodePrefixMessage
-        self._message_handlers[Cura_pb2.ObjectPrintTime] = self._onObjectPrintTimeMessage
+        self._message_handlers["cura.proto.SlicedObjectList"] = self._onSlicedObjectListMessage
+        self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
+        self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
+        self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
+        self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
+        self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
         self._slicing = False
         self._restart = False
         self._enabled = True
         self._always_restart = True
+        self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
         self._message = None
+
+        self.backendQuit.connect(self._onBackendQuit)
 
         self.backendConnected.connect(self._onBackendConnected)
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
@@ -107,15 +114,7 @@ class CuraEngineBackend(Backend):
             return
 
         if self._slicing:
-            self._slicing = False
-            self._restart = True
-            if self._process is not None:
-                Logger.log("d", "Killing engine process")
-                try:
-                    self._process.terminate()
-                except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                    pass
-
+            self._terminate()
 
             if self._message:
                 self._message.hide()
@@ -123,6 +122,10 @@ class CuraEngineBackend(Backend):
 
             self.slicingCancelled.emit()
             return
+
+        if self._process_layers_job:
+            self._process_layers_job.abort()
+            self._process_layers_job = None
 
         if self._profile.hasErrorValue():
             Logger.log("w", "Profile has error values. Aborting slicing")
@@ -134,6 +137,7 @@ class CuraEngineBackend(Backend):
             return #No slicing if we have error values since those are by definition illegal values.
 
         self.processingProgress.emit(0.0)
+        self.backendStateChange.emit(BackendState.NOT_STARTED)
         if self._message:
             self._message.setProgress(-1)
         #else:
@@ -142,10 +146,23 @@ class CuraEngineBackend(Backend):
 
         self._scene.gcode_list = []
         self._slicing = True
+        self.slicingStarted.emit()
 
         job = StartSliceJob.StartSliceJob(self._profile, self._socket)
         job.start()
         job.finished.connect(self._onStartSliceCompleted)
+
+    def _terminate(self):
+        self._slicing = False
+        self._restart = True
+        self.slicingCancelled.emit()
+        if self._process is not None:
+            Logger.log("d", "Killing engine process")
+            try:
+                self._process.terminate()
+                self._process = None
+            except: # terminating a process that is already terminating causes an exception, silently ignore this.
+                pass
 
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
@@ -169,11 +186,20 @@ class CuraEngineBackend(Backend):
 
         self._onChanged()
 
+    def _onSocketError(self, error):
+        super()._onSocketError(error)
+
+        self._slicing = False
+        self.processingProgress.emit(0)
+
+        if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
+            Logger.log("e", "A socket error caused the connection to be reset")
+
     def _onActiveProfileChanged(self):
         if self._profile:
             self._profile.settingValueChanged.disconnect(self._onSettingChanged)
 
-        self._profile = Application.getInstance().getMachineManager().getActiveProfile()
+        self._profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if self._profile:
             self._profile.settingValueChanged.connect(self._onSettingChanged)
             self._onChanged()
@@ -183,8 +209,8 @@ class CuraEngineBackend(Backend):
 
     def _onSlicedObjectListMessage(self, message):
         if self._layer_view_active:
-            job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
-            job.start()
+            self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
+            self._process_layers_job.start()
         else :
             self._stored_layer_data = message
 
@@ -193,15 +219,10 @@ class CuraEngineBackend(Backend):
             self._message.setProgress(round(message.amount * 100))
 
         self.processingProgress.emit(message.amount)
+        self.backendStateChange.emit(BackendState.PROCESSING)
 
-    def _onGCodeLayerMessage(self, message):
-        self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
-
-    def _onGCodePrefixMessage(self, message):
-        self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
-
-    def _onObjectPrintTimeMessage(self, message):
-        self.printDurationMessage.emit(message.time, message.material_amount)
+    def _onSlicingFinishedMessage(self, message):
+        self.backendStateChange.emit(BackendState.DONE)
         self.processingProgress.emit(1.0)
 
         self._slicing = False
@@ -211,23 +232,17 @@ class CuraEngineBackend(Backend):
             self._message.hide()
             self._message = None
 
-        if self._always_restart:
-            try:
-                self._process.terminate()
-                self._createSocket()
-            except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                pass
+    def _onGCodeLayerMessage(self, message):
+        self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
+
+    def _onGCodePrefixMessage(self, message):
+        self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
+
+    def _onObjectPrintTimeMessage(self, message):
+        self.printDurationMessage.emit(message.time, message.material_amount)
 
     def _createSocket(self):
-        super()._createSocket()
-        
-        self._socket.registerMessageType(1, Cura_pb2.Slice)
-        self._socket.registerMessageType(2, Cura_pb2.SlicedObjectList)
-        self._socket.registerMessageType(3, Cura_pb2.Progress)
-        self._socket.registerMessageType(4, Cura_pb2.GCodeLayer)
-        self._socket.registerMessageType(5, Cura_pb2.ObjectPrintTime)
-        self._socket.registerMessageType(6, Cura_pb2.SettingList)
-        self._socket.registerMessageType(7, Cura_pb2.GCodePrefix)
+        super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
 
     ##  Manually triggers a reslice
     def forceSlice(self):
@@ -245,32 +260,31 @@ class CuraEngineBackend(Backend):
             self._restart = False
 
     def _onToolOperationStarted(self, tool):
+        self._terminate() # Do not continue slicing once a tool has started
         self._enabled = False # Do not reslice when a tool is doing it's 'thing'
 
     def _onToolOperationStopped(self, tool):
         self._enabled = True # Tool stop, start listening for changes again.
-        self._onChanged()
 
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
             view = Application.getInstance().getController().getActiveView()
             if view.getPluginId() == "LayerView":
                 self._layer_view_active = True
-                if self._stored_layer_data:
-                    job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
-                    job.start()
+                # There is data and we're not slicing at the moment
+                # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
+                if self._stored_layer_data and not self._slicing:
+                    self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
+                    self._process_layers_job.start()
                     self._stored_layer_data = None
             else:
                 self._layer_view_active = False
 
-
     def _onInstanceChanged(self):
-        self._slicing = False
-        self._restart = True
-        if self._process is not None:
-            Logger.log("d", "Killing engine process")
-            try:
-                self._process.terminate()
-            except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                pass
+        self._terminate()
         self.slicingCancelled.emit()
+
+    def _onBackendQuit(self):
+        if not self._restart and self._process:
+            self._process = None
+            self._createSocket()

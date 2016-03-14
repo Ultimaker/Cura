@@ -14,10 +14,12 @@ Rectangle
 
     property Action addMachineAction;
     property Action configureMachinesAction;
+    property Action addProfileAction;
     property Action manageProfilesAction;
+    property Action configureSettingsAction;
     property int currentModeIndex;
 
-    color: UM.Theme.colors.sidebar;
+    color: UM.Theme.getColor("sidebar");
     UM.I18nCatalog { id: catalog; name:"cura"}
 
     function showTooltip(item, position, text)
@@ -55,17 +57,18 @@ Rectangle
     Rectangle {
         id: headerSeparator
         width: parent.width
-        height: UM.Theme.sizes.sidebar_lining.height
-        color: UM.Theme.colors.sidebar_lining
+        height: UM.Theme.getSize("sidebar_lining").height
+        color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height 
+        anchors.topMargin: UM.Theme.getSize("default_margin").height 
     }
 
     ProfileSetup {
         id: profileItem
+        addProfileAction: base.addProfileAction
         manageProfilesAction: base.manageProfilesAction
         anchors.top: settingsModeSelection.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height 
+        anchors.topMargin: UM.Theme.getSize("default_margin").height 
         width: parent.width
         height: totalHeightProfileSetup
     }
@@ -82,28 +85,32 @@ Rectangle
     onCurrentModeIndexChanged:
     {
         UM.Preferences.setValue("cura/active_mode", currentModeIndex);
+        if(modesListModel.count > base.currentModeIndex)
+        {
+            sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "replace": true });
+        }
     }
 
     Label {
         id: settingsModeLabel
         text: catalog.i18nc("@label:listbox","Setup");
         anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.sizes.default_margin.width;
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
         anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width/100*45
-        font: UM.Theme.fonts.large;
-        color: UM.Theme.colors.text
+        font: UM.Theme.getFont("large");
+        color: UM.Theme.getColor("text")
     }
 
     Rectangle {
         id: settingsModeSelection
         width: parent.width/100*55
-        height: UM.Theme.sizes.sidebar_header_mode_toggle.height
+        height: UM.Theme.getSize("sidebar_header_mode_toggle").height
         anchors.right: parent.right
-        anchors.rightMargin: UM.Theme.sizes.default_margin.width
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.top: headerSeparator.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         Component{
             id: wizardDelegate
             Button {
@@ -120,19 +127,20 @@ Rectangle
 
                 style: ButtonStyle {
                     background: Rectangle {
-                        border.color: control.checked ? UM.Theme.colors.toggle_checked_border : 
-                                          control.pressed ? UM.Theme.colors.toggle_active_border :
-                                          control.hovered ? UM.Theme.colors.toggle_hovered_border : UM.Theme.colors.toggle_unchecked_border
-                        color: control.checked ? UM.Theme.colors.toggle_checked : 
-                                   control.pressed ? UM.Theme.colors.toggle_active :
-                                   control.hovered ? UM.Theme.colors.toggle_hovered : UM.Theme.colors.toggle_unchecked
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
+                                          control.pressed ? UM.Theme.getColor("toggle_active_border") :
+                                          control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
+                        color: control.checked ? UM.Theme.getColor("toggle_checked") :
+                                   control.pressed ? UM.Theme.getColor("toggle_active") :
+                                   control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
                         Behavior on color { ColorAnimation { duration: 50; } }
                         Label {
                             anchors.centerIn: parent
-                            color: control.checked ? UM.Theme.colors.toggle_checked_text : 
-                                       control.pressed ? UM.Theme.colors.toggle_active_text :
-                                       control.hovered ? UM.Theme.colors.toggle_hovered_text : UM.Theme.colors.toggle_unchecked_text
-                            font: UM.Theme.fonts.default
+                            color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
+                                       control.pressed ? UM.Theme.getColor("toggle_active_text") :
+                                       control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+                            font: UM.Theme.getFont("default")
                             text: control.text;
                         }
                     }
@@ -152,31 +160,40 @@ Rectangle
         }
     }
 
-    Loader
+    StackView
     {
-        id: sidebarContents;
+        id: sidebarContents
+
         anchors.bottom: footerSeparator.top
         anchors.top: profileItem.bottom
-        anchors.topMargin: UM.Theme.sizes.default_margin.height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.right: base.right
 
-        source: modesListModel.count > base.currentModeIndex ? modesListModel.get(base.currentModeIndex).file : "";
-
-        property Item sidebar: base;
-
-        onLoaded:
+        delegate: StackViewDelegate
         {
-            if(item)
+            function transitionFinished(properties)
             {
-                item.configureSettings = base.configureMachinesAction;
-                if(item.onShowTooltip != undefined)
+                properties.exitItem.opacity = 1
+            }
+
+            pushTransition: StackViewTransition
+            {
+                PropertyAnimation
                 {
-                    item.showTooltip.connect(base.showTooltip)
+                    target: enterItem
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 100
                 }
-                if(item.onHideTooltip != undefined)
+                PropertyAnimation
                 {
-                    item.hideTooltip.connect(base.hideTooltip)
+                    target: exitItem
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 100
                 }
             }
         }
@@ -185,10 +202,10 @@ Rectangle
     Rectangle {
         id: footerSeparator
         width: parent.width
-        height: UM.Theme.sizes.sidebar_lining.height
-        color: UM.Theme.colors.sidebar_lining
+        height: UM.Theme.getSize("sidebar_lining").height
+        color: UM.Theme.getColor("sidebar_lining")
         anchors.bottom: saveButton.top
-        anchors.bottomMargin: UM.Theme.sizes.default_margin.height 
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height 
     }
 
     SaveButton
@@ -209,10 +226,29 @@ Rectangle
         id: modesListModel;
     }
 
+    SidebarSimple
+    {
+        id: sidebarSimple;
+        visible: false;
+
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
+
+    SidebarAdvanced
+    {
+        id: sidebarAdvanced;
+        visible: false;
+
+        configureSettings: base.configureSettingsAction;
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
+    }
+
     Component.onCompleted:
     {
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), file: "SidebarSimple.qml" })
-        modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), file: "SidebarAdvanced.qml" })
-        sidebarContents.setSource(modesListModel.get(base.currentModeIndex).file)
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Simple"), item: sidebarSimple })
+        modesListModel.append({ text: catalog.i18nc("@title:tab", "Advanced"), item: sidebarAdvanced })
+        sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
     }
 }

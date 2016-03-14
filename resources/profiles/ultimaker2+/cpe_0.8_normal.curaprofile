@@ -1,0 +1,26 @@
+[general]
+version = 1
+name = Normal Quality
+machine_type = ultimaker2plus
+machine_variant = 0.8 mm
+material = CPE
+weight = -2
+
+[settings]
+infill_overlap = 17
+layer_height = 0.2
+top_bottom_thickness = 1.2
+layer_height_0 = 0.5
+speed_wall_x = 30
+wall_thickness = 2.1
+speed_infill = 40
+speed_topbottom = 20
+cool_min_layer_time = 3
+speed_print = 20
+line_width = 0.7
+machine_nozzle_size = 0.7
+speed_wall_0 = 20
+adhesion_type = brim
+cool_lift_head = True
+cool_fan_speed_min = 50
+

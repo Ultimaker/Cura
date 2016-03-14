@@ -1,0 +1,41 @@
+{
+    "id": "ultimaker2plus_base",
+    "version": 1, 
+    "name": "Ultimaker 2+",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
+    "platform": "ultimaker2_platform.obj",
+    "platform_texture": "Ultimaker2Plusbackplate.png",
+    "visible": false,
+    "file_formats": "text/x-gcode",
+    "inherits": "ultimaker2.json",
+
+    "overrides": {
+        "machine_width": { "default": 230 },
+        "machine_depth": { "default": 225 },
+        "machine_height": { "default": 200 },
+        "machine_show_variants": { "default": true },
+        "gantry_height": { "default": 50 },
+        "machine_head_with_fans_polygon":
+        {
+            "default": [
+                [
+                    -44,
+                    14
+                ],
+                [
+                    -44,
+                    -34
+                ],
+                [
+                    64,
+                    14
+                ],
+                [
+                    64,
+                    -34
+                ]
+            ]
+        }
+    }
+}

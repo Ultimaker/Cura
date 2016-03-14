@@ -39,7 +39,7 @@ UM.PreferencesPage
                 checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
                 onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
 
-                text: catalog.i18nc("@option:check","Display Overhang");
+                text: catalog.i18nc("@option:check","Display overhang");
             }
         }
 

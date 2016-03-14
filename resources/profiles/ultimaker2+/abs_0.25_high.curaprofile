@@ -1,0 +1,52 @@
+[general]
+version = 1
+name = High Quality
+machine_type = ultimaker2plus
+machine_variant = 0.25 mm
+material = ABS
+weight = -3
+
+[settings]
+raft_surface_thickness = 0.27
+raft_base_line_width = 1.0
+raft_margin = 5.0
+cool_min_layer_time = 2
+support_enable = False
+retraction_combing = All
+cool_min_speed = 25
+brim_line_count = 32
+top_thickness = 0.72
+material_flow = 100.0
+cool_lift_head = True
+speed_print = 20
+retraction_hop = 0.0
+machine_nozzle_size = 0.22
+layer_height = 0.06
+speed_wall_0 = 20
+raft_interface_line_spacing = 3.0
+speed_topbottom = 20
+speed_infill = 30
+infill_before_walls = False
+retraction_speed = 40.0
+skin_no_small_gaps_heuristic = False
+infill_sparse_density = 22
+shell_thickness = 0.88
+cool_fan_speed_max = 100
+raft_airgap = 0.0
+material_bed_temperature = 70
+infill_overlap = 0.022
+speed_wall_x = 25
+skirt_minimal_length = 150.0
+speed_layer_0 = 20
+bottom_thickness = 0.72
+layer_height_0 = 0.15
+magic_mesh_surface_mode = False
+cool_fan_speed_min = 50
+top_bottom_thickness = 0.72
+skirt_gap = 3.0
+raft_interface_line_width = 0.4
+adhesion_type = brim
+support_pattern = lines
+raft_surface_line_width = 0.4
+raft_surface_line_spacing = 3.0
+

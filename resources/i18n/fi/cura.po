@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Cura 2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-12 20:10+0200\n"
-"PO-Revision-Date: 2015-09-28 14:08+0300\n"
+"POT-Creation-Date: 2016-01-18 11:54+0100\n"
+"PO-Revision-Date: 2016-01-26 13:21+0100\n"
 "Last-Translator: Tapio <info@tapimex.fi>\n"
 "Language-Team: \n"
 "Language: fi_FI\n"
@@ -18,1046 +19,1457 @@ msgstr ""
 "X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:20
+#: /home/tamara/2.1/Cura/cura/CrashHandler.py:26
 msgctxt "@title:window"
 msgid "Oops!"
 msgstr "Hups!"
 
-#: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:26
+#: /home/tamara/2.1/Cura/cura/CrashHandler.py:32
 msgctxt "@label"
 msgid ""
 "<p>An uncaught exception has occurred!</p><p>Please use the information "
 "below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/"
 "issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
-msgstr ""
-"<p>Tapahtui epätavallinen poikkeus!</p><p>Lähetä virheraportti alla olevin "
-"tiedoin osoitteella <a href=\"http://github.com/Ultimaker/Cura/issues"
-"\">http://github.com/Ultimaker/Cura/issues</a></p>"
+msgstr "<p>Tapahtui epätavallinen poikkeus!</p><p>Lähetä virheraportti alla olevin tiedoin osoitteella <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
 
-#: /home/ahiemstra/dev/15.10/src/cura/cura/CrashHandler.py:46
+#: /home/tamara/2.1/Cura/cura/CrashHandler.py:52
 msgctxt "@action:button"
 msgid "Open Web Page"
 msgstr "Avaa verkkosivu"
 
-#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:135
+#: /home/tamara/2.1/Cura/cura/CuraApplication.py:158
 #, fuzzy
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Asetetaan näkymää..."
 
-#: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:169
+#: /home/tamara/2.1/Cura/cura/CuraApplication.py:192
 #, fuzzy
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Ladataan käyttöliittymää..."
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:12
+#: /home/tamara/2.1/Cura/cura/CuraApplication.py:253
+#, python-format
+msgctxt "@info"
+msgid "%(width).1f x %(depth).1f x %(height).1f mm"
+msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
+
+#: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:12
+msgctxt "@label"
+msgid "Cura Profile Reader"
+msgstr "Cura-profiilin lukija"
+
+#: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid "Provides support for importing Cura profiles."
+msgstr "Tukee Cura-profiilien tuontia."
+
+#: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:21
+#: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:21
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "Cura Profile"
+msgstr "Cura-profiili"
+
+#: /home/tamara/2.1/Cura/plugins/XRayView/__init__.py:12
+#, fuzzy
+msgctxt "@label"
+msgid "X-Ray View"
+msgstr "Kerrosnäkymä"
+
+#: /home/tamara/2.1/Cura/plugins/XRayView/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid "Provides the X-Ray view."
+msgstr "Näyttää kerrosnäkymän."
+
+#: /home/tamara/2.1/Cura/plugins/XRayView/__init__.py:19
+msgctxt "@item:inlistbox"
+msgid "X-Ray"
+msgstr "Kerros"
+
+#: /home/tamara/2.1/Cura/plugins/3MFReader/__init__.py:12
 msgctxt "@label"
 msgid "3MF Reader"
-msgstr "3MF Reader"
+msgstr "3MF-lukija"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:15
+#: /home/tamara/2.1/Cura/plugins/3MFReader/__init__.py:15
 msgctxt "@info:whatsthis"
 msgid "Provides support for reading 3MF files."
 msgstr "Tukee 3MF-tiedostojen lukemista."
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:20
+#: /home/tamara/2.1/Cura/plugins/3MFReader/__init__.py:21
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF-tiedosto"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/ChangeLogPlugin/__init__.py:12
-msgctxt "@label"
-msgid "Change Log"
-msgstr "Muutosloki"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/ChangeLogPlugin/__init__.py:15
-msgctxt "@info:whatsthis"
-msgid "Shows changes since latest checked version"
-msgstr "Näyttää viimeisimmän tarkistetun version jälkeen tapahtuneet muutokset"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/__init__.py:13
-msgctxt "@label"
-msgid "CuraEngine Backend"
-msgstr "CuraEngine-taustaosa"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/__init__.py:15
-#, fuzzy
-msgctxt "@info:whatsthis"
-msgid "Provides the link to the CuraEngine slicing backend"
-msgstr "Linkki CuraEngine-viipalointiin taustalla"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:30
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:111
-msgctxt "@info:status"
-msgid "Processing Layers"
-msgstr "Käsitellään kerroksia"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/CuraEngineBackend.py:169
-msgctxt "@info:status"
-msgid "Slicing..."
-msgstr "Viipaloidaan..."
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:12
-msgctxt "@label"
-msgid "GCode Writer"
-msgstr "GCode Writer"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:15
-msgctxt "@info:whatsthis"
-msgid "Writes GCode to a file"
-msgstr "Kirjoittaa GCodea tiedostoon"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/GCodeWriter/__init__.py:22
-#, fuzzy
-msgctxt "@item:inlistbox"
-msgid "GCode File"
-msgstr "GCode-tiedosto"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:13
-msgctxt "@label"
-msgid "Layer View"
-msgstr "Kerrosnäkymä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:16
-msgctxt "@info:whatsthis"
-msgid "Provides the Layer view."
-msgstr "Näyttää kerrosnäkymän."
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/LayerView/__init__.py:20
-msgctxt "@item:inlistbox"
-msgid "Layers"
-msgstr "Kerrokset"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:20
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:20
 msgctxt "@action:button"
 msgid "Save to Removable Drive"
 msgstr "Tallenna siirrettävälle asemalle"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:21
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:21
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Tallenna siirrettävälle asemalle {0}"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:52
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:57
 #, python-brace-format
 msgctxt "@info:progress"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Tallennetaan siirrettävälle asemalle <filename>{0}</filename>"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:73
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:85
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Tallennettu siirrettävälle asemalle {0} nimellä {1}"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:74
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:86
 msgctxt "@action:button"
 msgid "Eject"
 msgstr "Poista"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:74
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:86
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "Poista siirrettävä asema {0}"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:79
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:91
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Ei voitu tallentaa siirrettävälle asemalle {0}: {1}"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:58
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:58
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Siirrettävä asema"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:42
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:46
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "Poistettu {0}. Voit nyt poistaa aseman turvallisesti."
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:45
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:49
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Maybe it is still in use?"
 msgstr "{0} poisto epäonnistui. Onko se vielä käytössä?"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/__init__.py:12
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/__init__.py:12
 msgctxt "@label"
 msgid "Removable Drive Output Device Plugin"
-msgstr "Irrotettavan aseman lisäosa"
+msgstr "Irrotettavan aseman tulostusvälineen lisäosa"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/__init__.py:14
+#: /home/tamara/2.1/Cura/plugins/RemovableDriveOutputDevice/__init__.py:14
 msgctxt "@info:whatsthis"
 msgid "Provides removable drive hotplugging and writing support"
 msgstr "Tukee irrotettavan aseman kytkemistä lennossa ja sille kirjoittamista"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:10
-msgctxt "@label"
-msgid "Slice info"
-msgstr "Viipalointitiedot"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/__init__.py:13
-msgctxt "@info:whatsthis"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr ""
-"Lähettää anonyymiä viipalointitietoa. Voidaan lisäasetuksista kytkeä pois "
-"käytöstä."
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:35
-msgctxt "@info"
-msgid ""
-"Cura automatically sends slice info. You can disable this in preferences"
-msgstr ""
-"Cura lähettää automaattisesti viipalointitietoa. Voit lisäasetuksista kytkeä "
-"sen pois käytöstä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/SliceInfoPlugin/SliceInfo.py:36
-msgctxt "@action:button"
-msgid "Dismiss"
-msgstr "Ohita"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:35
+#: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/ChangeLog.py:34
+#, fuzzy
 msgctxt "@item:inmenu"
-msgid "USB printing"
-msgstr "USB-tulostus"
+msgid "Show Changelog"
+msgstr "Näytä muutosloki"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:36
-msgctxt "@action:button"
-msgid "Print with USB"
-msgstr "Tulosta USB:llä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/PrinterConnection.py:37
-msgctxt "@info:tooltip"
-msgid "Print with USB"
-msgstr "Tulostus USB:n kautta"
-
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/__init__.py:13
+#: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/__init__.py:12
+#, fuzzy
 msgctxt "@label"
-msgid "USB printing"
-msgstr "USB-tulostus"
+msgid "Changelog"
+msgstr "Muutosloki"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/__init__.py:17
+#: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/__init__.py:15
 msgctxt "@info:whatsthis"
-msgid ""
-"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr ""
-"Hyväksyy G-Code-määrittelyt ja lähettää ne tulostimeen. Lisäosa voi myös "
-"päivittää laiteohjelmiston."
+msgid "Shows changes since latest checked version"
+msgstr "Näyttää viimeisimmän tarkistetun version jälkeen tapahtuneet muutokset"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/USBPrinterManager.py:46
+#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:124
+msgctxt "@info:status"
+msgid "Unable to slice. Please check your setting values for errors."
+msgstr "Viipalointi ei onnistu. Tarkista, että asetusarvoissa ei ole virheitä."
+
+#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:30
+#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:120
+msgctxt "@info:status"
+msgid "Processing Layers"
+msgstr "Käsitellään kerroksia"
+
+#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/__init__.py:13
+msgctxt "@label"
+msgid "CuraEngine Backend"
+msgstr "CuraEngine-taustaosa"
+
+#: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid "Provides the link to the CuraEngine slicing backend"
+msgstr "Linkki CuraEngine-viipalointiin taustalla"
+
+#: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:12
+msgctxt "@label"
+msgid "GCode Writer"
+msgstr "GCode-kirjoitin"
+
+#: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Writes GCode to a file"
+msgstr "Kirjoittaa GCodea tiedostoon"
+
+#: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:22
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "GCode File"
+msgstr "GCode-tiedosto"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/USBPrinterManager.py:49
 msgctxt "@title:menu"
 msgid "Firmware"
 msgstr "Laiteohjelmisto"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/USBPrinterManager.py:47
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/USBPrinterManager.py:50
 #, fuzzy
 msgctxt "@item:inmenu"
 msgid "Update Firmware"
 msgstr "Päivitä laiteohjelmisto"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:17
-msgctxt "@title:window"
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/USBPrinterManager.py:101
+msgctxt "@info"
+msgid "Cannot update firmware, there were no connected printers found."
+msgstr "Laiteohjelmistoa ei voida päivittää, koska liitettyjä tulostimia ei löytynyt."
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/PrinterConnection.py:35
+msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr "USB-tulostus"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/PrinterConnection.py:36
+msgctxt "@action:button"
 msgid "Print with USB"
 msgstr "Tulostus USB:n kautta"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:28
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/PrinterConnection.py:37
+msgctxt "@info:tooltip"
+msgid "Print with USB"
+msgstr "Tulostus USB:n kautta"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/__init__.py:13
+msgctxt "@label"
+msgid "USB printing"
+msgstr "USB-tulostus"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/__init__.py:17
+msgctxt "@info:whatsthis"
+msgid ""
+"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "Hyväksyy GCode-määrittelyt ja lähettää ne tulostimeen. Lisäosa voi myös päivittää laiteohjelmiston."
+
+#: /home/tamara/2.1/Cura/plugins/SliceInfoPlugin/SliceInfo.py:35
+msgctxt "@info"
+msgid ""
+"Cura automatically sends slice info. You can disable this in preferences"
+msgstr "Cura lähettää automaattisesti viipalointitietoa. Voit lisäasetuksista kytkeä sen pois käytöstä"
+
+#: /home/tamara/2.1/Cura/plugins/SliceInfoPlugin/SliceInfo.py:36
+msgctxt "@action:button"
+msgid "Dismiss"
+msgstr "Ohita"
+
+#: /home/tamara/2.1/Cura/plugins/SliceInfoPlugin/__init__.py:10
+msgctxt "@label"
+msgid "Slice info"
+msgstr "Viipalointitiedot"
+
+#: /home/tamara/2.1/Cura/plugins/SliceInfoPlugin/__init__.py:13
+msgctxt "@info:whatsthis"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "Lähettää anonyymiä viipalointitietoa. Voidaan lisäasetuksista kytkeä pois käytöstä."
+
+#: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:12
 #, fuzzy
 msgctxt "@label"
-msgid "Extruder Temperature %1"
-msgstr "Suulakkeen lämpötila %1"
+msgid "Cura Profile Writer"
+msgstr "Cura-profiilin kirjoitin"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:33
+#: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Tukee Cura-profiilien vientiä."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:12
 #, fuzzy
 msgctxt "@label"
-msgid "Bed Temperature %1"
-msgstr "Pöydän lämpötila %1"
+msgid "Image Reader"
+msgstr "Kuvanlukija"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:60
+#: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "Mahdollistaa tulostettavien geometrioiden luomisen 2D-kuvatiedostoista."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "JPG Image"
+msgstr "JPG-kuva"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:25
+msgctxt "@item:inlistbox"
+msgid "JPEG Image"
+msgstr "JPEG-kuva"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:29
+msgctxt "@item:inlistbox"
+msgid "PNG Image"
+msgstr "PNG-kuva"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:33
+msgctxt "@item:inlistbox"
+msgid "BMP Image"
+msgstr "BMP-kuva"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:37
+msgctxt "@item:inlistbox"
+msgid "GIF Image"
+msgstr "GIF-kuva"
+
+#: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:12
 #, fuzzy
-msgctxt "@action:button"
-msgid "Print"
-msgstr "Tulosta"
+msgctxt "@label"
+msgid "GCode Profile Reader"
+msgstr "GCode-profiilin lukija"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/ControlWindow.qml:67
+#: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:15
 #, fuzzy
-msgctxt "@action:button"
-msgid "Cancel"
-msgstr "Peruuta"
+msgctxt "@info:whatsthis"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "Tukee profiilien tuontia GCode-tiedostoista."
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:20
+#: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:21
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "G-code File"
+msgstr "GCode-tiedosto"
+
+#: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:12
+#, fuzzy
+msgctxt "@label"
+msgid "Solid View"
+msgstr "Kiinteä näkymä"
+
+#: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid "Provides a normal solid mesh view."
+msgstr "Näyttää normaalin kiinteän verkkonäkymän."
+
+#: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:19
+#, fuzzy
+msgctxt "@item:inmenu"
+msgid "Solid"
+msgstr "Kiinteä"
+
+#: /home/tamara/2.1/Cura/plugins/LayerView/__init__.py:13
+msgctxt "@label"
+msgid "Layer View"
+msgstr "Kerrosnäkymä"
+
+#: /home/tamara/2.1/Cura/plugins/LayerView/__init__.py:16
+msgctxt "@info:whatsthis"
+msgid "Provides the Layer view."
+msgstr "Näyttää kerrosnäkymän."
+
+#: /home/tamara/2.1/Cura/plugins/LayerView/__init__.py:20
+msgctxt "@item:inlistbox"
+msgid "Layers"
+msgstr "Kerrokset"
+
+#: /home/tamara/2.1/Cura/plugins/AutoSave/__init__.py:12
+msgctxt "@label"
+msgid "Auto Save"
+msgstr "Automaattitallennus"
+
+#: /home/tamara/2.1/Cura/plugins/AutoSave/__init__.py:15
+msgctxt "@info:whatsthis"
+msgid "Automatically saves Preferences, Machines and Profiles after changes."
+msgstr "Tallentaa automaattisesti lisäasetukset, koneet ja profiilit muutosten jälkeen."
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:12
+msgctxt "@label"
+msgid "Per Object Settings Tool"
+msgstr "Kappalekohtaisten asetusten työkalu"
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid "Provides the Per Object Settings."
+msgstr "Näyttää kappalekohtaiset asetukset."
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:19
+#, fuzzy
+msgctxt "@label"
+msgid "Per Object Settings"
+msgstr "Kappalekohtaiset asetukset"
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:20
+msgctxt "@info:tooltip"
+msgid "Configure Per Object Settings"
+msgstr "Määritä kappalekohtaiset asetukset"
+
+#: /home/tamara/2.1/Cura/plugins/LegacyProfileReader/__init__.py:12
+msgctxt "@label"
+msgid "Legacy Cura Profile Reader"
+msgstr "Aikaisempien Cura-profiilien lukija"
+
+#: /home/tamara/2.1/Cura/plugins/LegacyProfileReader/__init__.py:15
+#, fuzzy
+msgctxt "@info:whatsthis"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "Tukee profiilien tuontia aikaisemmista Cura-versioista."
+
+#: /home/tamara/2.1/Cura/plugins/LegacyProfileReader/__init__.py:21
+msgctxt "@item:inlistbox"
+msgid "Cura 15.04 profiles"
+msgstr "Cura 15.04 -profiilit"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:20
 msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "Laiteohjelmiston päivitys"
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:38
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:38
 #, fuzzy
 msgctxt "@label"
 msgid "Starting firmware update, this may take a while."
 msgstr "Käynnistetään laiteohjelmiston päivitystä, mikä voi kestää hetken."
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:43
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:43
 #, fuzzy
 msgctxt "@label"
 msgid "Firmware update completed."
 msgstr "Laiteohjelmiston päivitys suoritettu."
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:48
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:48
 #, fuzzy
 msgctxt "@label"
 msgid "Updating firmware."
 msgstr "Päivitetään laiteohjelmistoa."
 
-#: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:78
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/EngineLog.qml:38
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:74
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:80
+#: /home/tamara/2.1/Cura/resources/qml/EngineLog.qml:38
+#: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:74
 #, fuzzy
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Sulje"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AddMachineWizard.qml:18
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:17
+msgctxt "@title:window"
+msgid "Print with USB"
+msgstr "Tulostus USB:n kautta"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:28
+#, fuzzy
+msgctxt "@label"
+msgid "Extruder Temperature %1"
+msgstr "Suulakkeen lämpötila %1"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:33
+#, fuzzy
+msgctxt "@label"
+msgid "Bed Temperature %1"
+msgstr "Pöydän lämpötila %1"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:60
+#, fuzzy
+msgctxt "@action:button"
+msgid "Print"
+msgstr "Tulosta"
+
+#: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:67
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:200
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:303
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:58
+#, fuzzy
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Peruuta"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:24
+msgctxt "@title:window"
+msgid "Convert Image..."
+msgstr "Muunna kuva..."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:38
+msgctxt "@info:tooltip"
+msgid "The maximum distance of each pixel from \"Base.\""
+msgstr "Kunkin pikselin suurin etäisyys \"Pohja\"-arvosta."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:44
+msgctxt "@action:label"
+msgid "Height (mm)"
+msgstr "Korkeus (mm)"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:62
+msgctxt "@info:tooltip"
+msgid "The base height from the build plate in millimeters."
+msgstr "Pohjan korkeus alustasta millimetreinä."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:68
+msgctxt "@action:label"
+msgid "Base (mm)"
+msgstr "Pohja (mm)"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:86
+msgctxt "@info:tooltip"
+msgid "The width in millimeters on the build plate."
+msgstr "Leveys millimetreinä alustalla."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:92
+msgctxt "@action:label"
+msgid "Width (mm)"
+msgstr "Leveys (mm)"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:111
+msgctxt "@info:tooltip"
+msgid "The depth in millimeters on the build plate"
+msgstr "Syvyys millimetreinä alustalla"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:117
+msgctxt "@action:label"
+msgid "Depth (mm)"
+msgstr "Syvyys (mm)"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:135
+msgctxt "@info:tooltip"
+msgid ""
+"By default, white pixels represent high points on the mesh and black pixels "
+"represent low points on the mesh. Change this option to reverse the behavior "
+"such that black pixels represent high points on the mesh and white pixels "
+"represent low points on the mesh."
+msgstr "Oletuksena valkoiset pikselit edustavat verkossa korkeita pisteitä ja mustat pikselit edustavat verkossa matalia pisteitä. Muuta asetus, jos haluat, että mustat pikselit edustavat verkossa korkeita pisteitä ja valkoiset pikselit edustavat verkossa matalia pisteitä."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:149
+msgctxt "@item:inlistbox"
+msgid "Lighter is higher"
+msgstr "Vaaleampi on korkeampi"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:149
+msgctxt "@item:inlistbox"
+msgid "Darker is higher"
+msgstr "Tummempi on korkeampi"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:159
+msgctxt "@info:tooltip"
+msgid "The amount of smoothing to apply to the image."
+msgstr "Kuvassa käytettävän tasoituksen määrä."
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:165
+msgctxt "@action:label"
+msgid "Smoothing"
+msgstr "Tasoitus"
+
+#: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:193
+msgctxt "@action:button"
+msgid "OK"
+msgstr "OK"
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:31
+msgctxt "@label"
+msgid ""
+"Per Object Settings behavior may be unexpected when 'Print sequence' is set "
+"to 'All at Once'."
+msgstr "Kappalekohtaiset asetukset voivat toimia odottamattomalla tavalla, jos \"Tulostusjärjestys\"-asetus on \"Kaikki kerralla\"."
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:42
+msgctxt "@label"
+msgid "Object profile"
+msgstr "Kappaleprofiili"
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:126
+#, fuzzy
+msgctxt "@action:button"
+msgid "Add Setting"
+msgstr "Lisää asetus"
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:166
+msgctxt "@title:window"
+msgid "Pick a Setting to Customize"
+msgstr "Valitse mukautettava asetus"
+
+#: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:177
+msgctxt "@label:textbox"
+msgid "Filter..."
+msgstr "Suodatin..."
+
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:198
+msgctxt "@label"
+msgid "00h 00min"
+msgstr "00 h 00 min"
+
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:218
+msgctxt "@label"
+msgid "0.0 m"
+msgstr "0,0 m"
+
+#: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:218
+#, fuzzy
+msgctxt "@label"
+msgid "%1 m"
+msgstr "%1 m"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarHeader.qml:29
+#, fuzzy
+msgctxt "@label:listbox"
+msgid "Print Job"
+msgstr "Tulostustyö"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarHeader.qml:50
+#, fuzzy
+msgctxt "@label:listbox"
+msgid "Printer:"
+msgstr "Tulostin:"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarHeader.qml:107
+msgctxt "@label"
+msgid "Nozzle:"
+msgstr "Suutin:"
+
+#: /home/tamara/2.1/Cura/resources/qml/Sidebar.qml:89
+#, fuzzy
+msgctxt "@label:listbox"
+msgid "Setup"
+msgstr "Asetukset"
+
+#: /home/tamara/2.1/Cura/resources/qml/Sidebar.qml:215
+msgctxt "@title:tab"
+msgid "Simple"
+msgstr "Yksinkertainen"
+
+#: /home/tamara/2.1/Cura/resources/qml/Sidebar.qml:216
+msgctxt "@title:tab"
+msgid "Advanced"
+msgstr "Laajennettu"
+
+#: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:18
 #, fuzzy
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Lisää tulostin"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AddMachineWizard.qml:25
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:51
+#: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:25
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:99
 #, fuzzy
 msgctxt "@title"
 msgid "Add Printer"
 msgstr "Lisää tulostin"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/EngineLog.qml:15
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:15
+#, fuzzy
+msgctxt "@title:window"
+msgid "Load profile"
+msgstr "Lataa profiili"
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:24
+msgctxt "@label"
+msgid ""
+"Selecting this profile overwrites some of your customised settings. Do you "
+"want to merge the new settings into your current profile or do you want to "
+"load a clean copy of the profile?"
+msgstr "Tämän profiilin valitseminen korvaa jotkin mukautetut asetukset. Haluatko yhdistää uudet asetukset osaksi nykyistä profiilia vai haluatko ladata puhtaan kopion profiilista?"
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:38
+msgctxt "@label"
+msgid "Show details."
+msgstr "Näytä tiedot."
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:50
+#, fuzzy
+msgctxt "@action:button"
+msgid "Merge settings"
+msgstr "Yhdistä asetukset"
+
+#: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:54
+msgctxt "@action:button"
+msgid "Reset profile"
+msgstr "Nollaa profiili"
+
+#: /home/tamara/2.1/Cura/resources/qml/ProfileSetup.qml:28
+#, fuzzy
+msgctxt "@label"
+msgid "Profile:"
+msgstr "Profiili:"
+
+#: /home/tamara/2.1/Cura/resources/qml/EngineLog.qml:15
 #, fuzzy
 msgctxt "@title:window"
 msgid "Engine Log"
 msgstr "Moottorin loki"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ProfileSetup.qml:31
-msgctxt "@label"
-msgid "Variant:"
-msgstr "Variantti:"
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:50
+msgctxt "@action:inmenu"
+msgid "Toggle Fu&ll Screen"
+msgstr "Vaihda &koko näyttöön"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ProfileSetup.qml:82
-msgctxt "@label"
-msgid "Global Profile:"
-msgstr "Yleisprofiili:"
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:57
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Undo"
+msgstr "&Kumoa"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:60
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:65
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Redo"
+msgstr "Tee &uudelleen"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:73
+#, fuzzy
+msgctxt "@action:inmenu menubar:file"
+msgid "&Quit"
+msgstr "&Lopeta"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:81
+#, fuzzy
+msgctxt "@action:inmenu menubar:settings"
+msgid "&Preferences..."
+msgstr "&Lisäasetukset..."
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:88
+#, fuzzy
+msgctxt "@action:inmenu menubar:printer"
+msgid "&Add Printer..."
+msgstr "L&isää tulostin..."
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:94
+#, fuzzy
+msgctxt "@action:inmenu menubar:printer"
+msgid "Manage Pr&inters..."
+msgstr "Tulostinten &hallinta..."
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:101
+#, fuzzy
+msgctxt "@action:inmenu menubar:profile"
+msgid "Manage Profiles..."
+msgstr "Profiilien hallinta..."
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:108
+#, fuzzy
+msgctxt "@action:inmenu menubar:help"
+msgid "Show Online &Documentation"
+msgstr "Näytä sähköinen &dokumentaatio"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:115
+#, fuzzy
+msgctxt "@action:inmenu menubar:help"
+msgid "Report a &Bug"
+msgstr "Ilmoita &virheestä"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:122
+#, fuzzy
+msgctxt "@action:inmenu menubar:help"
+msgid "&About..."
+msgstr "Ti&etoja..."
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:129
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "Delete &Selection"
+msgstr "&Poista valinta"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:137
+msgctxt "@action:inmenu"
+msgid "Delete Object"
+msgstr "Poista kappale"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:144
+msgctxt "@action:inmenu"
+msgid "Ce&nter Object on Platform"
+msgstr "K&eskitä kappale alustalle"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:150
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Group Objects"
+msgstr "&Ryhmitä kappaleet"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:158
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "Ungroup Objects"
+msgstr "Pura kappaleiden ryhmitys"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:166
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Merge Objects"
+msgstr "&Yhdistä kappaleet"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:174
+msgctxt "@action:inmenu"
+msgid "&Duplicate Object"
+msgstr "&Monista kappale"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:181
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "&Clear Build Platform"
+msgstr "&Tyhjennä alusta"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:189
+#, fuzzy
+msgctxt "@action:inmenu menubar:file"
+msgid "Re&load All Objects"
+msgstr "&Lataa kaikki kappaleet uudelleen"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:196
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "Reset All Object Positions"
+msgstr "Nollaa kaikkien kappaleiden sijainnit"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:202
+#, fuzzy
+msgctxt "@action:inmenu menubar:edit"
+msgid "Reset All Object &Transformations"
+msgstr "Nollaa kaikkien kappaleiden m&uunnokset"
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:208
+#, fuzzy
+msgctxt "@action:inmenu menubar:file"
+msgid "&Open File..."
+msgstr "&Avaa tiedosto..."
+
+#: /home/tamara/2.1/Cura/resources/qml/Actions.qml:216
+#, fuzzy
+msgctxt "@action:inmenu menubar:help"
+msgid "Show Engine &Log..."
+msgstr "Näytä moottorin l&oki"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:135
+msgctxt "@label"
+msgid "Infill:"
+msgstr "Täyttö:"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:237
+msgctxt "@label"
+msgid "Hollow"
+msgstr "Ontto"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:239
 #, fuzzy
 msgctxt "@label"
-msgid "Please select the type of printer:"
-msgstr "Valitse tulostimen tyyppi:"
+msgid "No (0%) infill will leave your model hollow at the cost of low strength"
+msgstr "Ei (0 %) täyttöä jättää mallin ontoksi ja lujuudeltaan alhaiseksi"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:186
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:243
+msgctxt "@label"
+msgid "Light"
+msgstr "Harva"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:245
 #, fuzzy
-msgctxt "@label:textbox"
-msgid "Printer Name:"
-msgstr "Tulostimen nimi:"
+msgctxt "@label"
+msgid "Light (20%) infill will give your model an average strength"
+msgstr "Harva (20 %) täyttö antaa mallille keskimääräisen lujuuden"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:211
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:29
-msgctxt "@title"
-msgid "Select Upgraded Parts"
-msgstr "Valitse päivitettävät osat"
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:249
+msgctxt "@label"
+msgid "Dense"
+msgstr "Tiheä"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:214
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:29
-msgctxt "@title"
-msgid "Upgrade Firmware"
-msgstr "Laiteohjelmiston päivitys"
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:251
+msgctxt "@label"
+msgid "Dense (50%) infill will give your model an above average strength"
+msgstr "Tiheä (50 %) täyttö antaa mallille keskimääräistä paremman lujuuden"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:217
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:37
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:255
+msgctxt "@label"
+msgid "Solid"
+msgstr "Kiinteä"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:257
+msgctxt "@label"
+msgid "Solid (100%) infill will make your model completely solid"
+msgstr "Kiinteä (100 %) täyttö tekee mallista täysin umpinaisen"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:276
+msgctxt "@label:listbox"
+msgid "Helpers:"
+msgstr "Avustimet:"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:296
+msgctxt "@option:check"
+msgid "Generate Brim"
+msgstr "Muodosta reunus"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:312
+msgctxt "@label"
+msgid ""
+"Enable printing a brim. This will add a single-layer-thick flat area around "
+"your object which is easy to cut off afterwards."
+msgstr "Ota reunuksen tulostus käyttöön. Tämä lisää kappaleen ympärille yksikerroksisen tasaisen alueen, joka on helppo leikata pois myöhemmin."
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:330
+msgctxt "@option:check"
+msgid "Generate Support Structure"
+msgstr "Muodosta tukirakenne"
+
+#: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:346
+msgctxt "@label"
+msgid ""
+"Enable printing support structures. This will build up supporting structures "
+"below the model to prevent the model from sagging or printing in mid air."
+msgstr "Ottaa tukirakenteiden tulostuksen käyttöön. Siinä mallin alle rakennetaan tukirakenteita estämään mallin riippuminen tai suoraan ilmaan tulostaminen."
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:14
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:492
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Yleiset"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:51
+#, fuzzy
+msgctxt "@label"
+msgid "Language:"
+msgstr "Kieli:"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:64
+msgctxt "@item:inlistbox"
+msgid "English"
+msgstr "englanti"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:65
+msgctxt "@item:inlistbox"
+msgid "Finnish"
+msgstr "suomi"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:66
+msgctxt "@item:inlistbox"
+msgid "French"
+msgstr "ranska"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:67
+msgctxt "@item:inlistbox"
+msgid "German"
+msgstr "saksa"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:69
+msgctxt "@item:inlistbox"
+msgid "Polish"
+msgstr "puola"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:109
+msgctxt "@label"
+msgid ""
+"You will need to restart the application for language changes to have effect."
+msgstr "Sovellus on käynnistettävä uudelleen, jotta kielimuutokset tulevat voimaan."
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:117
+msgctxt "@info:tooltip"
+msgid ""
+"Should objects on the platform be moved so that they no longer intersect."
+msgstr "Pitäisikö kappaleita alustalla siirtää niin, etteivät ne enää leikkaa toisiaan?"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:122
+msgctxt "@option:check"
+msgid "Ensure objects are kept apart"
+msgstr "Pidä kappaleet erillään"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:131
+#, fuzzy
+msgctxt "@info:tooltip"
+msgid ""
+"Should opened files be scaled to the build volume if they are too large?"
+msgstr "Pitäisikö avoimia tiedostoja skaalata rakennustilavuuteen, jos ne ovat liian isoja?"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:136
+#, fuzzy
+msgctxt "@option:check"
+msgid "Scale large files"
+msgstr "Skaalaa isot tiedostot"
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:145
+msgctxt "@info:tooltip"
+msgid ""
+"Should anonymous data about your print be sent to Ultimaker? Note, no "
+"models, IP addresses or other personally identifiable information is sent or "
+"stored."
+msgstr "Pitäisikö anonyymejä tietoja tulosteesta lähettää Ultimakerille? Huomaa, että malleja, IP-osoitteita tai muita henkilökohtaisia tietoja ei lähetetä eikä tallenneta."
+
+#: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:150
+#, fuzzy
+msgctxt "@option:check"
+msgid "Send (anonymous) print information"
+msgstr "Lähetä (anonyymit) tulostustiedot"
+
+#: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:16
+#, fuzzy
+msgctxt "@title:window"
+msgid "View"
+msgstr "Näytä"
+
+#: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:33
+msgctxt "@info:tooltip"
+msgid ""
+"Highlight unsupported areas of the model in red. Without support these areas "
+"will nog print properly."
+msgstr "Korostaa mallin vailla tukea olevat alueet punaisella. Ilman tukea nämä alueet eivät tulostu kunnolla."
+
+#: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:42
+#, fuzzy
+msgctxt "@option:check"
+msgid "Display overhang"
+msgstr "Näytä uloke"
+
+#: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:49
+msgctxt "@info:tooltip"
+msgid ""
+"Moves the camera so the object is in the center of the view when an object "
+"is selected"
+msgstr "Siirtää kameraa siten, että kappale on näkymän keskellä, kun kappale on valittu"
+
+#: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:54
+msgctxt "@action:button"
+msgid "Center camera when item is selected"
+msgstr "Keskitä kamera kun kohde on valittu"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:72
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:275
 msgctxt "@title"
 msgid "Check Printer"
 msgstr "Tarkista tulostin"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/AddMachine.qml:220
-msgctxt "@title"
-msgid "Bed Levelling"
-msgstr "Pöydän tasaaminen"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:25
-msgctxt "@title"
-msgid "Bed Leveling"
-msgstr "Pöydän tasaaminen"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:34
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:84
 msgctxt "@label"
 msgid ""
-"To make sure your prints will come out great, you can now adjust your "
-"buildplate. When you click 'Move to Next Position' the nozzle will move to "
-"the different positions that can be adjusted."
-msgstr ""
-"Voit säätää alustaa, jotta tulosteista tulisi hyviä. Kun napsautat 'Siirry "
-"seuraavaan positioon', suutin siirtyy eri positioihin, joita voidaan säätää."
+"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
+"this step if you know your machine is functional"
+msgstr "Ultimakerille on hyvä tehdä muutamia toimintatarkastuksia. Voit jättää tämän vaiheen väliin, jos tiedät laitteesi olevan toimintakunnossa"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:40
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:100
+msgctxt "@action:button"
+msgid "Start Printer Check"
+msgstr "Aloita tulostintarkistus"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:116
+msgctxt "@action:button"
+msgid "Skip Printer Check"
+msgstr "Ohita tulostintarkistus"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:136
 msgctxt "@label"
-msgid ""
-"For every postition; insert a piece of paper under the nozzle and adjust the "
-"print bed height. The print bed height is right when the paper is slightly "
-"gripped by the tip of the nozzle."
-msgstr ""
-"Laita paperinpala kussakin positiossa suuttimen alle ja säädä tulostuspöydän "
-"korkeus. Tulostuspöydän korkeus on oikea, kun suuttimen kärki juuri ja juuri "
-"osuu paperiin."
+msgid "Connection: "
+msgstr "Yhteys:"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:44
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:145
+msgctxt "@info:status"
+msgid "Done"
+msgstr "Valmis"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:145
+msgctxt "@info:status"
+msgid "Incomplete"
+msgstr "Kesken"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:155
+msgctxt "@label"
+msgid "Min endstop X: "
+msgstr "Min. päätyraja X:"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:164
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:183
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:202
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:357
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:368
+msgctxt "@info:status"
+msgid "Works"
+msgstr "Toimii"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:164
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:183
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:202
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:221
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:277
+msgctxt "@info:status"
+msgid "Not checked"
+msgstr "Ei tarkistettu"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:174
+msgctxt "@label"
+msgid "Min endstop Y: "
+msgstr "Min. päätyraja Y:"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:193
+msgctxt "@label"
+msgid "Min endstop Z: "
+msgstr "Min. päätyraja Z:"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:212
+msgctxt "@label"
+msgid "Nozzle temperature check: "
+msgstr "Suuttimen lämpötilatarkistus:"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:236
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:292
 msgctxt "@action:button"
-msgid "Move to Next Position"
-msgstr "Siirry seuraavaan positioon"
+msgid "Start Heating"
+msgstr "Aloita lämmitys"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/Bedleveling.qml:66
-msgctxt "@action:button"
-msgid "Skip Bedleveling"
-msgstr "Ohita pöydän tasaus"
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:241
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:297
+msgctxt "@info:progress"
+msgid "Checking"
+msgstr "Tarkistetaan"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:39
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:267
+msgctxt "@label"
+msgid "bed temperature check:"
+msgstr "Pöydän lämpötilan tarkistus:"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UltimakerCheckup.qml:324
+msgctxt "@label"
+msgid "Everything is in order! You're done with your CheckUp."
+msgstr "Kaikki on kunnossa! CheckUp on valmis."
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:31
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:269
+msgctxt "@title"
+msgid "Select Upgraded Parts"
+msgstr "Valitse päivitettävät osat"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:42
 msgctxt "@label"
 msgid ""
 "To assist you in having better default settings for your Ultimaker. Cura "
 "would like to know which upgrades you have in your machine:"
-msgstr ""
-"Saat paremmat oletusasetukset Ultimakeriin. Cura haluaisi tietää, mitä "
-"päivityksiä laitteessasi on:"
+msgstr "Saat paremmat oletusasetukset Ultimakeriin. Cura haluaisi tietää, mitä päivityksiä laitteessasi on:"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:49
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:57
 msgctxt "@option:check"
 msgid "Extruder driver ugrades"
 msgstr "Suulakekäytön päivitykset"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:54
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:63
+#, fuzzy
 msgctxt "@option:check"
-msgid "Heated printer bed (standard kit)"
-msgstr "Lämmitetty tulostinpöytä (normaali sarja)"
+msgid "Heated printer bed"
+msgstr "Lämmitetty tulostinpöytä"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:58
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:74
 msgctxt "@option:check"
 msgid "Heated printer bed (self built)"
 msgstr "Lämmitetty tulostinpöytä (itse rakennettu)"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:62
-msgctxt "@option:check"
-msgid "Dual extrusion (experimental)"
-msgstr "Kaksoispursotus (kokeellinen)"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/SelectUpgradedParts.qml:70
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:90
 msgctxt "@label"
 msgid ""
 "If you bought your Ultimaker after october 2012 you will have the Extruder "
 "drive upgrade. If you do not have this upgrade, it is highly recommended to "
 "improve reliability. This upgrade can be bought from the Ultimaker webshop "
 "or found on thingiverse as thing:26094"
-msgstr ""
-"Jos olet hankkinut Ultimakerin lokakuun 2012 jälkeen, sinulla on "
-"suulakekäytön päivityspaketti (Extruder drive). Ellei sinulla ole tätä "
-"päivitystä, sitä suositellaan kovasti luotettavuuden parantamiseksi. Tämä "
-"päivityspaketti voidaan ostaa Ultimakerin verkkokaupasta tai se löytyy "
-"thingiverse-sivustolta numerolla: 26094"
+msgstr "Jos olet hankkinut Ultimakerin lokakuun 2012 jälkeen, sinulla on suulakekäytön päivityspaketti (Extruder drive). Ellei sinulla ole tätä päivitystä, sitä suositellaan luotettavuuden parantamiseksi. Tämä päivityspaketti voidaan ostaa Ultimakerin verkkokaupasta, ja se löytyy thingiverse-sivustolta numerolla 26094"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:44
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:108
+#, fuzzy
+msgctxt "@label"
+msgid "Please select the type of printer:"
+msgstr "Valitse tulostimen tyyppi:"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:235
 msgctxt "@label"
 msgid ""
-"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
-"this step if you know your machine is functional"
-msgstr ""
-"Ultimakerille on hyvä tehdä muutamia toimintatarkastuksia. Voit jättää tämän "
-"vaiheen väliin, jos tiedät laitteesi olevan toimintakunnossa"
+"This printer name has already been used. Please choose a different printer "
+"name."
+msgstr "Tämä tulostimen nimi on jo käytössä. Valitse toinen tulostimen nimi."
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:49
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:245
+#, fuzzy
+msgctxt "@label:textbox"
+msgid "Printer Name:"
+msgstr "Tulostimen nimi:"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:272
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:22
+msgctxt "@title"
+msgid "Upgrade Firmware"
+msgstr "Laiteohjelmiston päivitys"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:278
+msgctxt "@title"
+msgid "Bed Levelling"
+msgstr "Pöydän tasaaminen"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:41
+msgctxt "@title"
+msgid "Bed Leveling"
+msgstr "Pöydän tasaaminen"
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:53
+msgctxt "@label"
+msgid ""
+"To make sure your prints will come out great, you can now adjust your "
+"buildplate. When you click 'Move to Next Position' the nozzle will move to "
+"the different positions that can be adjusted."
+msgstr "Voit säätää alustaa, jotta tulosteista tulisi hyviä. Kun napsautat \"Siirry seuraavaan positioon\", suutin siirtyy eri positioihin, joita voidaan säätää."
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:62
+msgctxt "@label"
+msgid ""
+"For every postition; insert a piece of paper under the nozzle and adjust the "
+"print bed height. The print bed height is right when the paper is slightly "
+"gripped by the tip of the nozzle."
+msgstr "Laita paperinpala kussakin positiossa suuttimen alle ja säädä tulostuspöydän korkeus. Tulostuspöydän korkeus on oikea, kun suuttimen kärki juuri ja juuri osuu paperiin."
+
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:77
 msgctxt "@action:button"
-msgid "Start Printer Check"
-msgstr "Aloita tulostintarkistus"
+msgid "Move to Next Position"
+msgstr "Siirry seuraavaan positioon"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:56
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:109
 msgctxt "@action:button"
-msgid "Skip Printer Check"
-msgstr "Ohita tulostintarkistus"
+msgid "Skip Bedleveling"
+msgstr "Ohita pöydän tasaus"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:65
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/Bedleveling.qml:123
 msgctxt "@label"
-msgid "Connection: "
-msgstr "Yhteys:"
+msgid "Everything is in order! You're done with bedleveling."
+msgstr "Kaikki on kunnossa! Pöydän tasaus on valmis."
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:69
-msgctxt "@info:status"
-msgid "Done"
-msgstr "Valmis"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:69
-msgctxt "@info:status"
-msgid "Incomplete"
-msgstr "Kesken"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:76
-msgctxt "@label"
-msgid "Min endstop X: "
-msgstr "Min. päätyraja X:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:80
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:91
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:103
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:192
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:201
-msgctxt "@info:status"
-msgid "Works"
-msgstr "Toimii"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:80
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:91
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:103
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:133
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:163
-msgctxt "@info:status"
-msgid "Not checked"
-msgstr "Ei tarkistettu"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:87
-msgctxt "@label"
-msgid "Min endstop Y: "
-msgstr "Min. päätyraja Y:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:99
-msgctxt "@label"
-msgid "Min endstop Z: "
-msgstr "Min. päätyraja Z:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:111
-msgctxt "@label"
-msgid "Nozzle temperature check: "
-msgstr "Suuttimen lämpötilatarkistus:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:119
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:149
-msgctxt "@action:button"
-msgid "Start Heating"
-msgstr "Aloita lämmitys"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:124
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:154
-msgctxt "@info:progress"
-msgid "Checking"
-msgstr "Tarkistetaan"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:141
-msgctxt "@label"
-msgid "bed temperature check:"
-msgstr "Pöydän lämpötilan tarkistus:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:38
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:33
 msgctxt "@label"
 msgid ""
 "Firmware is the piece of software running directly on your 3D printer. This "
 "firmware controls the step motors, regulates the temperature and ultimately "
 "makes your printer work."
-msgstr ""
-"Laiteohjelmisto on suoraan 3D-tulostimessa toimiva ohjelma. Laiteohjelmisto "
-"ohjaa askelmoottoreita, säätää lämpötilaa ja loppujen lopuksi saa tulostimen "
-"toimimaan."
+msgstr "Laiteohjelmisto on suoraan 3D-tulostimessa toimiva ohjelma. Laiteohjelmisto ohjaa askelmoottoreita, säätää lämpötilaa ja saa tulostimen toimimaan."
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:45
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:43
 msgctxt "@label"
 msgid ""
 "The firmware shipping with new Ultimakers works, but upgrades have been made "
 "to make better prints, and make calibration easier."
-msgstr ""
-"Uusien Ultimakerien mukana toimitettu laiteohjelmisto toimii, mutta "
-"päivityksillä saadaan parempia tulosteita ja kalibrointi helpottuu."
+msgstr "Uusien Ultimakerien mukana toimitettu laiteohjelmisto toimii, mutta päivityksillä saadaan parempia tulosteita ja kalibrointi helpottuu."
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:52
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:53
 msgctxt "@label"
 msgid ""
 "Cura requires these new features and thus your firmware will most likely "
 "need to be upgraded. You can do so now."
-msgstr ""
-"Cura tarvitsee näitä uusia ominaisuuksia ja siten laiteohjelmisto on "
-"todennäköisesti päivitettävä. Voit tehdä sen nyt."
+msgstr "Cura tarvitsee näitä uusia ominaisuuksia, joten laiteohjelmisto on todennäköisesti päivitettävä. Voit tehdä sen nyt."
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:55
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:64
 msgctxt "@action:button"
 msgid "Upgrade to Marlin Firmware"
 msgstr "Päivitä Marlin-laiteohjelmistoon"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UpgradeFirmware.qml:58
+#: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:73
 msgctxt "@action:button"
 msgid "Skip Upgrade"
 msgstr "Ohita päivitys"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:15
+#: /home/tamara/2.1/Cura/resources/qml/SaveButton.qml:23
+msgctxt "@label:PrintjobStatus"
+msgid "Please load a 3d model"
+msgstr "Ole hyvä ja lataa 3D-malli"
+
+#: /home/tamara/2.1/Cura/resources/qml/SaveButton.qml:25
+msgctxt "@label:PrintjobStatus"
+msgid "Preparing to slice..."
+msgstr "Valmistellaan viipalointia..."
+
+#: /home/tamara/2.1/Cura/resources/qml/SaveButton.qml:28
+#, fuzzy
+msgctxt "@label:PrintjobStatus"
+msgid "Slicing..."
+msgstr "Viipaloidaan..."
+
+#: /home/tamara/2.1/Cura/resources/qml/SaveButton.qml:30
+msgctxt "@label:PrintjobStatus"
+msgid "Ready to "
+msgstr "Valmis "
+
+#: /home/tamara/2.1/Cura/resources/qml/SaveButton.qml:122
+msgctxt "@info:tooltip"
+msgid "Select the active output device"
+msgstr "Valitse aktiivinen tulostusväline"
+
+#: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:15
 msgctxt "@title:window"
 msgid "About Cura"
 msgstr "Tietoja Curasta"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:54
+#: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:54
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Kokonaisvaltainen sulatettavan tulostuslangan 3D-tulostusratkaisu."
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/AboutDialog.qml:66
+#: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:66
 msgctxt "@info:credit"
 msgid ""
 "Cura has been developed by Ultimaker B.V. in cooperation with the community."
-msgstr ""
-"Cura-ohjelman on kehittänyt Ultimaker B.V. yhteistyössä käyttäjäyhteisön "
-"kanssa."
+msgstr "Cura-ohjelman on kehittänyt Ultimaker B.V. yhteistyössä käyttäjäyhteisön kanssa."
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:16
-#, fuzzy
-msgctxt "@title:window"
-msgid "View"
-msgstr "Näytä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:41
-#, fuzzy
-msgctxt "@option:check"
-msgid "Display Overhang"
-msgstr "Näytä uloke"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:45
-msgctxt "@info:tooltip"
-msgid ""
-"Highlight unsupported areas of the model in red. Without support these areas "
-"will nog print properly."
-msgstr ""
-"Korostaa mallin vailla tukea olevat alueet punaisella. Ilman tukea nämä "
-"alueet eivät tulostu kunnolla."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:74
-msgctxt "@action:button"
-msgid "Center camera when item is selected"
-msgstr "Keskitä kamera kun kohde on valittu"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/ViewPage.qml:78
-msgctxt "@info:tooltip"
-msgid ""
-"Moves the camera so the object is in the center of the view when an object "
-"is selected"
-msgstr ""
-"Siirtää kameraa siten, että kappale on näkymän keskellä, kun kappale on "
-"valittu"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:51
-msgctxt "@action:inmenu"
-msgid "Toggle Fu&ll Screen"
-msgstr "Vaihda &koko näyttöön"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:58
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "&Undo"
-msgstr "&Kumoa"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:66
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "&Redo"
-msgstr "Tee &uudelleen"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:74
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "&Quit"
-msgstr "&Lopeta"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:82
-msgctxt "@action:inmenu"
-msgid "&Preferences..."
-msgstr "&Lisäasetukset..."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:89
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "&Add Printer..."
-msgstr "L&isää tulostin..."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:95
-msgctxt "@action:inmenu"
-msgid "Manage Pr&inters..."
-msgstr "Tulostinten &hallinta..."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:102
-msgctxt "@action:inmenu"
-msgid "Manage Profiles..."
-msgstr "Profiilien hallinta..."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:109
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "Show Online &Documentation"
-msgstr "Näytä sähköinen &dokumentaatio"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:116
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "Report a &Bug"
-msgstr "Ilmoita &virheestä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:123
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "&About..."
-msgstr "Ti&etoja..."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:130
-msgctxt "@action:inmenu"
-msgid "Delete &Selection"
-msgstr "&Poista valinta"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:138
-msgctxt "@action:inmenu"
-msgid "Delete Object"
-msgstr "Poista kappale"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:146
-msgctxt "@action:inmenu"
-msgid "Ce&nter Object on Platform"
-msgstr "K&eskitä kappale alustalle"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:152
-msgctxt "@action:inmenu"
-msgid "&Group Objects"
-msgstr "&Ryhmitä kappaleet"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:160
-msgctxt "@action:inmenu"
-msgid "Ungroup Objects"
-msgstr "Pura kappaleiden ryhmitys"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:168
-msgctxt "@action:inmenu"
-msgid "&Merge Objects"
-msgstr "&Yhdistä kappaleet"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:176
-msgctxt "@action:inmenu"
-msgid "&Duplicate Object"
-msgstr "&Monista kappale"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:183
-msgctxt "@action:inmenu"
-msgid "&Clear Build Platform"
-msgstr "&Tyhjennä alusta"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:190
-msgctxt "@action:inmenu"
-msgid "Re&load All Objects"
-msgstr "&Lataa kaikki kappaleet uudelleen"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:197
-msgctxt "@action:inmenu"
-msgid "Reset All Object Positions"
-msgstr "Nollaa kaikkien kappaleiden sijainnit"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:203
-msgctxt "@action:inmenu"
-msgid "Reset All Object &Transformations"
-msgstr "Nollaa kaikkien kappaleiden m&uunnokset"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:209
-msgctxt "@action:inmenu"
-msgid "&Open File..."
-msgstr "&Avaa tiedosto..."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Actions.qml:217
-#, fuzzy
-msgctxt "@action:inmenu"
-msgid "Show Engine &Log..."
-msgstr "Näytä moottorin l&oki"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:14
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:461
-msgctxt "@title:tab"
-msgid "General"
-msgstr "Yleiset"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:36
-msgctxt "@label"
-msgid "Language"
-msgstr "Kieli"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:47
-msgctxt "@item:inlistbox"
-msgid "Bulgarian"
-msgstr "bulgaria"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:48
-msgctxt "@item:inlistbox"
-msgid "Czech"
-msgstr "tsekki"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:49
-msgctxt "@item:inlistbox"
-msgid "English"
-msgstr "englanti"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:50
-msgctxt "@item:inlistbox"
-msgid "Finnish"
-msgstr "suomi"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:51
-msgctxt "@item:inlistbox"
-msgid "French"
-msgstr "ranska"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:52
-msgctxt "@item:inlistbox"
-msgid "German"
-msgstr "saksa"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:53
-msgctxt "@item:inlistbox"
-msgid "Italian"
-msgstr "italia"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:54
-msgctxt "@item:inlistbox"
-msgid "Polish"
-msgstr "puola"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:55
-msgctxt "@item:inlistbox"
-msgid "Russian"
-msgstr "venäjä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:56
-msgctxt "@item:inlistbox"
-msgid "Spanish"
-msgstr "espanja"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:98
-msgctxt "@label"
-msgid ""
-"You will need to restart the application for language changes to have effect."
-msgstr ""
-"Sovellus on käynnistettävä uudelleen, jotta kielimuutokset tulevat voimaan."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:114
-msgctxt "@option:check"
-msgid "Ensure objects are kept apart"
-msgstr "Pidä kappaleet erillään"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:118
-msgctxt "@info:tooltip"
-msgid ""
-"Should objects on the platform be moved so that they no longer intersect."
-msgstr ""
-"Pitäisikö kappaleita alustalla siirtää niin, etteivät ne enää leikkaa "
-"toisiaan?"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:147
-msgctxt "@option:check"
-msgid "Send (Anonymous) Print Information"
-msgstr "Lähetä (anonyymit) tulostustiedot"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:151
-msgctxt "@info:tooltip"
-msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
-"models, IP addresses or other personally identifiable information is sent or "
-"stored."
-msgstr ""
-"Pitäisikö anonyymejä tietoja tulosteesta lähettää Ultimakerille? Huomaa, "
-"että malleja, IP-osoitteita tai muita henkilökohtaisia tietoja ei lähetetä "
-"eikä tallenneta."
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:179
-msgctxt "@option:check"
-msgid "Scale Too Large Files"
-msgstr "Skaalaa liian isot tiedostot"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/GeneralPage.qml:183
-msgctxt "@info:tooltip"
-msgid ""
-"Should opened files be scaled to the build volume when they are too large?"
-msgstr ""
-"Pitäisikö avoimia tiedostoja skaalata rakennustilavuuteen, jos ne ovat liian "
-"isoja?"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:70
-msgctxt "@label:textbox"
-msgid "Printjob Name"
-msgstr "Tulostustyön nimi"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:167
-msgctxt "@label %1 is length of filament"
-msgid "%1 m"
-msgstr "%1 m"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SaveButton.qml:229
-msgctxt "@info:tooltip"
-msgid "Select the active output device"
-msgstr "Valitse aktiivinen oheislaite"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:34
-msgctxt "@label"
-msgid "Infill:"
-msgstr "Täyttö:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:119
-msgctxt "@label"
-msgid "Sparse"
-msgstr "Harva"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:121
-msgctxt "@label"
-msgid "Sparse (20%) infill will give your model an average strength"
-msgstr "Harva (20 %) täyttö antaa mallille keskimääräistä lujuutta"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:125
-msgctxt "@label"
-msgid "Dense"
-msgstr "Tiheä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:127
-msgctxt "@label"
-msgid "Dense (50%) infill will give your model an above average strength"
-msgstr "Tiheä (50 %) täyttö antaa mallille keskimääräistä paremman lujuuden"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:131
-msgctxt "@label"
-msgid "Solid"
-msgstr "Kiinteä"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:133
-msgctxt "@label"
-msgid "Solid (100%) infill will make your model completely solid"
-msgstr "Kiinteä (100 %) täyttö tekee mallista täysin umpinaisen"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:151
-msgctxt "@label:listbox"
-msgid "Helpers:"
-msgstr "Avustimet:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:169
-msgctxt "@option:check"
-msgid "Enable Skirt Adhesion"
-msgstr "Ota helman tarttuvuus käyttöön"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:187
-msgctxt "@option:check"
-msgid "Enable Support"
-msgstr "Ota tuki käyttöön"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:123
-msgctxt "@title:tab"
-msgid "Simple"
-msgstr "Suppea"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Sidebar.qml:124
-msgctxt "@title:tab"
-msgid "Advanced"
-msgstr "Laajennettu"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:30
-msgctxt "@label:listbox"
-msgid "Print Setup"
-msgstr "Tulostusasetukset"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarHeader.qml:100
-#, fuzzy
-msgctxt "@label:listbox"
-msgid "Machine:"
-msgstr "Laite:"
-
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:16
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:16
 #, fuzzy
 msgctxt "@title:window"
 msgid "Cura"
 msgstr "Cura"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:34
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:53
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&Tiedosto"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:43
-msgctxt "@title:menu"
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:62
+#, fuzzy
+msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "Avaa &viimeisin"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:72
-msgctxt "@action:inmenu"
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:92
+#, fuzzy
+msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
 msgstr "&Tallenna valinta tiedostoon"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:80
-msgctxt "@title:menu"
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:100
+#, fuzzy
+msgctxt "@title:menu menubar:file"
 msgid "Save &All"
 msgstr "Tallenna &kaikki"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:108
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:128
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "&Muokkaa"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:125
-msgctxt "@title:menu"
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:145
+#, fuzzy
+msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Näytä"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:151
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:167
 #, fuzzy
-msgctxt "@title:menu"
-msgid "&Machine"
-msgstr "&Laite"
+msgctxt "@title:menu menubar:toplevel"
+msgid "&Printer"
+msgstr "&Tulostin"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:197
-msgctxt "@title:menu"
-msgid "&Profile"
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:213
+#, fuzzy
+msgctxt "@title:menu menubar:toplevel"
+msgid "P&rofile"
 msgstr "&Profiili"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:224
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:240
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "Laa&jennukset"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:257
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:273
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Asetukset"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:265
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:281
 #, fuzzy
-msgctxt "@title:menu"
+msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "&Ohje"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:335
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:366
 #, fuzzy
 msgctxt "@action:button"
 msgid "Open File"
 msgstr "Avaa tiedosto"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:377
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:410
 #, fuzzy
 msgctxt "@action:button"
 msgid "View Mode"
 msgstr "Näyttötapa"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:464
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:495
 #, fuzzy
 msgctxt "@title:tab"
 msgid "View"
 msgstr "Näytä"
 
-#: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:603
+#: /home/tamara/2.1/Cura/resources/qml/Cura.qml:644
 #, fuzzy
 msgctxt "@title:window"
-msgid "Open File"
+msgid "Open file"
 msgstr "Avaa tiedosto"
+
+#~ msgctxt "@label"
+#~ msgid "Variant:"
+#~ msgstr "Variantti:"
+
+#~ msgctxt "@label"
+#~ msgid "Global Profile:"
+#~ msgstr "Yleisprofiili:"
+
+#~ msgctxt "@option:check"
+#~ msgid "Heated printer bed (standard kit)"
+#~ msgstr "Lämmitetty tulostinpöytä (normaali sarja)"
+
+#~ msgctxt "@option:check"
+#~ msgid "Dual extrusion (experimental)"
+#~ msgstr "Kaksoispursotus (kokeellinen)"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Bulgarian"
+#~ msgstr "bulgaria"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Czech"
+#~ msgstr "tsekki"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Italian"
+#~ msgstr "italia"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Russian"
+#~ msgstr "venäjä"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Spanish"
+#~ msgstr "espanja"
+
+#~ msgctxt "@label:textbox"
+#~ msgid "Printjob Name"
+#~ msgstr "Tulostustyön nimi"
+
+#~ msgctxt "@label"
+#~ msgid "Sparse"
+#~ msgstr "Harva"
+
+#~ msgctxt "@option:check"
+#~ msgid "Enable Skirt Adhesion"
+#~ msgstr "Ota helman tarttuvuus käyttöön"
+
+#~ msgctxt "@option:check"
+#~ msgid "Enable Support"
+#~ msgstr "Ota tuki käyttöön"
+
+#~ msgctxt "@label:listbox"
+#~ msgid "Machine:"
+#~ msgstr "Laite:"
+
+#~ msgctxt "@title:menu"
+#~ msgid "&Machine"
+#~ msgstr "&Laite"
 
 #~ msgctxt "Save button tooltip"
 #~ msgid "Save to Disk"

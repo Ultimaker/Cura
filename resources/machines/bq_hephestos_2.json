@@ -5,6 +5,7 @@
     "manufacturer": "Other",
     "author": "BQ",
     "platform": "bq_hephestos_2_platform.stl",
+    "file_formats": "text/x-gcode",
     "inherits": "fdmprinter.json",
 
     "overrides": {
@@ -33,8 +34,8 @@
             "default": "RepRap"
         },
         "machine_platform_offset": {
-            "default": [-6, 1320, 0]
-        }
+            "default": [6, 1320, 0]
+        },
         "material_print_temperature": { "default": 210.0, "visible": true },
         "material_bed_temperature": { "default": 0 },
         "material_diameter": { "default": 1.75 },
@@ -45,7 +46,7 @@
         "wall_thickness": { "default": 1.2, "visible": false },
         "top_bottom_thickness": { "default": 1.2, "visible": false },
         "infill_sparse_density": { "default": 20.0 },
-        "infill_overlap": { "default": 15.0, "visible": false },
+        "infill_overlap": { "default": 0.06, "inherit_function": "0.15 * line_width if infill_sparse_density < 95 else 0", "visible": false },
         "speed_print": { "default": 60.0 },
         "speed_travel": { "default": 160.0 },
         "speed_layer_0": { "default": 30.0, "visible": true },

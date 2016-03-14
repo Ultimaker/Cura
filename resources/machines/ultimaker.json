@@ -1,0 +1,15 @@
+{
+    "id": "ultimaker_base",
+    "version": 1,
+    "visible": false,
+    "name": "Ultimaker",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
+    "inherits": "fdmprinter.json",
+
+    "machine_preferences": {
+        "prefered_profile": "Normal Quality",
+        "prefered_variant": "0.4 mm",
+        "prefered_material": "PLA"
+    }
+}

@@ -20,42 +20,12 @@ Item
     onVisibilityChanged:
     {
         machineName.text = getMachineName()
-        errorMessage.show = false
-    }
-
-    function editMachineName(word)
-    {
-        //Adds '#2' at the end or increases the number by 1 if the word ends with '#' and 1 or more digits
-        var regEx = /[#][\d]+$///ends with '#' and then 1 or more digit
-        var result = word.match(regEx)
-
-        if (result != null)
-        {
-            result = result[0].split('')
-
-            var numberString = ''
-            for (var i = 1; i < result.length; i++){//starting at 1, makes it ignore the '#'
-                numberString += result[i]
-            }
-            var newNumber = Number(numberString) + 1
-
-            var newWord = word.replace(/[\d]+$/, newNumber)//replaces the last digits in the string by the same number + 1
-            return newWord
-        }
-        else {
-            return word + ' #2'
-        }
     }
 
     function getMachineName()
     {
         var name = machineList.model.getItem(machineList.currentIndex).name
 
-        //if the automatically assigned name is not unique, the editMachineName function keeps editing it untill it is.
-        while (UM.MachineManager.checkInstanceExists(name) != false)
-        {
-            name = editMachineName(name)
-        }
         return name
     }
 
@@ -65,20 +35,14 @@ Item
         onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
         {
             var name = machineName.text
-            if (UM.MachineManager.checkInstanceExists(name) != false)
+
+            var old_page_count = base.wizard.getPageCount()
+            // Delete old pages (if any)
+            for (var i = old_page_count - 1; i > 0; i--)
             {
-                errorMessage.show = true
+                base.wizard.removePage(i)
             }
-            else
-            {
-                var old_page_count = base.wizard.getPageCount()
-                // Delete old pages (if any)
-                for (var i = old_page_count - 1; i > 0; i--)
-                {
-                    base.wizard.removePage(i)
-                }
-                saveMachine()
-            }
+            saveMachine()
         }
         onBackClicked:
         {
@@ -129,30 +93,31 @@ Item
 
             section.property: "manufacturer"
             section.delegate: Button {
-                text: section + " "
+                text: section
                 style: ButtonStyle {
                     background: Rectangle {
-                        id: manufacturerBackground
-                        opacity: 0.3
                         border.width: 0
-                        color: control.hovered ? palette.light : "transparent";
-                        height: UM.Theme.sizes.standard_list_lineheight.height
+                        color: "transparent";
+                        height: UM.Theme.getSize("standard_list_lineheight").height
+                        width: machineList.width
                     }
                     label: Text {
-                        horizontalAlignment: Text.AlignLeft
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("standard_arrow").width + UM.Theme.getSize("default_margin").width
                         text: control.text
                         color: palette.windowText
                         font.bold: true
                         UM.RecolorImage {
                             id: downArrow
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: parent.right
-                            width: UM.Theme.sizes.standard_arrow.width
-                            height: UM.Theme.sizes.standard_arrow.height
+                            anchors.right: parent.left
+                            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                            width: UM.Theme.getSize("standard_arrow").width
+                            height: UM.Theme.getSize("standard_arrow").height
                             sourceSize.width: width
                             sourceSize.height: width
                             color: palette.windowText
-                            source: base,activeManufacturer == section ? UM.Theme.icons.arrow_bottom : UM.Theme.icons.arrow_right
+                            source: base.activeManufacturer == section ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
                         }
                     }
                 }
@@ -168,10 +133,10 @@ Item
                 id: machineButton
 
                 anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.width
+                anchors.leftMargin: UM.Theme.getSize("standard_list_lineheight").width
 
                 opacity: 1;
-                height: UM.Theme.sizes.standard_list_lineheight.height;
+                height: UM.Theme.getSize("standard_list_lineheight").height;
 
                 checked: ListView.isCurrentItem;
 
@@ -182,18 +147,6 @@ Item
                 onClicked: {
                     ListView.view.currentIndex = index;
                     machineName.text = getMachineName()
-                }
-
-                Label
-                {
-                    id: author
-                    text: model.author;
-                    anchors.left: machineButton.right
-                    anchors.leftMargin: UM.Theme.sizes.standard_list_lineheight.height/2
-                    anchors.verticalCenter: machineButton.verticalCenter
-                    anchors.verticalCenterOffset: UM.Theme.sizes.standard_list_lineheight.height / 4
-                    font: UM.Theme.fonts.caption;
-                    color: palette.mid
                 }
 
                 states: State {
@@ -229,7 +182,6 @@ Item
     {
         id: machineNameHolder
         anchors.bottom: parent.bottom;
-        //height: insertNameLabel.lineHeight * (2 + errorMessage.lineCount)
 
         Item
         {
@@ -246,7 +198,7 @@ Item
                 text: catalog.i18nc("@label", "This printer name has already been used. Please choose a different printer name.");
                 wrapMode: Text.WordWrap
                 Behavior on height {NumberAnimation {duration: 75; }}
-                color: UM.Theme.colors.error
+                color: UM.Theme.getColor("error")
             }
         }
 
@@ -259,7 +211,8 @@ Item
         {
             id: machineName;
             text: getMachineName()
-            implicitWidth: UM.Theme.sizes.standard_list_input.width
+            implicitWidth: UM.Theme.getSize("standard_list_input").width
+            maximumLength: 120
         }
     }
 
@@ -278,6 +231,9 @@ Item
                 switch(pages[i]) {
                     case "SelectUpgradedParts":
                         base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedParts.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
+                        break;
+                    case "SelectUpgradedPartsUM2":
+                        base.wizard.appendPage(Qt.resolvedUrl("SelectUpgradedPartsUM2.qml"), catalog.i18nc("@title", "Select Upgraded Parts"));
                         break;
                     case "UpgradeFirmware":
                         base.wizard.appendPage(Qt.resolvedUrl("UpgradeFirmware.qml"), catalog.i18nc("@title", "Upgrade Firmware"));

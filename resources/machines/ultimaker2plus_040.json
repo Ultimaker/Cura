@@ -1,0 +1,17 @@
+{
+    "id": "ultimaker2plus",
+    "version": 1,
+    "name": "Ultimaker 2+",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
+    "platform": "ultimaker2_platform.obj",
+    "platform_texture": "Ultimaker2Plusbackplate.png",
+    "file_formats": "text/x-gcode",
+    "inherits": "ultimaker2plus.json",
+
+    "variant": "0.4 mm",
+
+    "overrides": {
+        "machine_nozzle_size": { "default": 0.40 }
+    }
+}

@@ -18,6 +18,7 @@ class SettingOverrideModel(ListModel):
     OptionsRole = Qt.UserRole + 8
     WarningDescriptionRole = Qt.UserRole + 9
     ErrorDescriptionRole = Qt.UserRole + 10
+    GlobalOnlyRole = Qt.UserRole + 11
 
     def __init__(self, node, parent = None):
         super().__init__(parent)
@@ -27,6 +28,10 @@ class SettingOverrideModel(ListModel):
         self._node = node
         self._node.decoratorsChanged.connect(self._onDecoratorsChanged)
         self._onDecoratorsChanged(None)
+
+        self._activeProfile = Application.getInstance().getMachineManager().getWorkingProfile() #To be able to get notified when a setting changes.
+        self._activeProfile.settingValueChanged.connect(self._onProfileSettingValueChanged)
+        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onProfileChanged)
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
@@ -38,6 +43,7 @@ class SettingOverrideModel(ListModel):
         self.addRoleName(self.OptionsRole, "options")
         self.addRoleName(self.WarningDescriptionRole, "warning_description")
         self.addRoleName(self.ErrorDescriptionRole, "error_description")
+        self.addRoleName(self.GlobalOnlyRole, "global_only")
 
     @pyqtSlot(str, "QVariant")
     def setSettingValue(self, key, value):
@@ -68,6 +74,35 @@ class SettingOverrideModel(ListModel):
             model.appendItem({"value": str(value), "name": str(name)})
         return model
 
+    ##  Updates the active profile in this model if the active profile is
+    #   changed.
+    #
+    #   This links the settingValueChanged of the new profile to this model's
+    #   _onSettingValueChanged function, so that it properly listens to those
+    #   events again.
+    def _onProfileChanged(self):
+        if self._activeProfile: #Unlink from the old profile.
+            self._activeProfile.settingValueChanged.disconnect(self._onProfileSettingValueChanged)
+        old_profile = self._activeProfile
+        self._activeProfile = Application.getInstance().getMachineManager().getWorkingProfile()
+        self._activeProfile.settingValueChanged.connect(self._onProfileSettingValueChanged) #Re-link to the new profile.
+        for setting_name in old_profile.getChangedSettings().keys(): #Update all changed settings in the old and new profiles.
+            self._onProfileSettingValueChanged(setting_name)
+        for setting_name in self._activeProfile.getChangedSettings().keys():
+            self._onProfileSettingValueChanged(setting_name)
+
+    ##  Updates the global_only property of a setting once a setting value
+    #   changes.
+    #
+    #   This method should only get called on settings that are dependent on the
+    #   changed setting.
+    #
+    #   \param setting_name The setting that needs to be updated.
+    def _onProfileSettingValueChanged(self, setting_name):
+        index = self.find("key", setting_name)
+        if index != -1:
+            self.setProperty(index, "global_only", Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getSetting(setting_name).getGlobalOnly())
+
     def _onSettingsChanged(self):
         self.clear()
 
@@ -84,7 +119,8 @@ class SettingOverrideModel(ListModel):
                 "valid": setting.validate(value),
                 "options": self._createOptionsModel(setting.getOptions()),
                 "warning_description": setting.getWarningDescription(),
-                "error_description": setting.getErrorDescription()
+                "error_description": setting.getErrorDescription(),
+                "global_only": setting.getGlobalOnly()
             })
 
         items.sort(key = lambda i: i["key"])
@@ -98,3 +134,4 @@ class SettingOverrideModel(ListModel):
         if index != -1:
             self.setProperty(index, "value", str(value))
             self.setProperty(index, "valid", setting.validate(value))
+            self.setProperty(index, "global_only", setting.getGlobalOnly())

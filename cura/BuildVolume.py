@@ -129,9 +129,13 @@ class BuildVolume(SceneNode):
                     new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height, self._clamp(point[1], min_d, max_d))
                     mb.addFace(first, previous_point, new_point, color = color)
                     previous_point = new_point
-
-                # Find the largest disallowed area to exclude it from the maximum scale bounds
-                size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
+                # Find the largest disallowed area to exclude it from the maximum scale bounds.
+                # This is a very nasty hack. This pretty much only works for UM machines. This disallowed area_size needs
+                # A -lot- of rework at some point in the future: TODO
+                if numpy.min(points[:, 1]) >= 0: # This filters out all areas that have points to the left of the centre. This is done to filter the skirt area.
+                    size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
+                else:
+                    size = 0
                 disallowed_area_size = max(size, disallowed_area_size)
 
             self._disallowed_area_mesh = mb.getData()
@@ -142,13 +146,16 @@ class BuildVolume(SceneNode):
 
         skirt_size = 0.0
 
-        profile = Application.getInstance().getMachineManager().getActiveProfile()
+        profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if profile:
             skirt_size = self._getSkirtSize(profile)
 
+        # As this works better for UM machines, we only add the dissallowed_area_size for the z direction.
+        # This is probably wrong in all other cases. TODO!
+        # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + skirt_size, min_h, min_d + skirt_size + disallowed_area_size),
-            maximum = Vector(max_w - skirt_size, max_h, max_d - skirt_size - disallowed_area_size)
+            minimum = Vector(min_w + skirt_size + 1, min_h, min_d + disallowed_area_size - skirt_size + 1),
+            maximum = Vector(max_w - skirt_size - 1, max_h, max_d - disallowed_area_size + skirt_size - 1)
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
@@ -169,7 +176,7 @@ class BuildVolume(SceneNode):
         if self._active_profile:
             self._active_profile.settingValueChanged.disconnect(self._onSettingValueChanged)
 
-        self._active_profile = Application.getInstance().getMachineManager().getActiveProfile()
+        self._active_profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if self._active_profile:
             self._active_profile.settingValueChanged.connect(self._onSettingValueChanged)
             self._updateDisallowedAreas()
@@ -192,6 +199,7 @@ class BuildVolume(SceneNode):
             skirt_size = self._getSkirtSize(self._active_profile)
 
         if disallowed_areas:
+            # Extend every area already in the disallowed_areas with the skirt size.
             for area in disallowed_areas:
                 poly = Polygon(numpy.array(area, numpy.float32))
                 poly = poly.getMinkowskiHull(Polygon(numpy.array([
@@ -207,6 +215,7 @@ class BuildVolume(SceneNode):
 
                 areas.append(poly)
 
+        # Add the skirt areas arround the borders of the build plate.
         if skirt_size > 0:
             half_machine_width = self._active_instance.getMachineSettingValue("machine_width") / 2
             half_machine_depth = self._active_instance.getMachineSettingValue("machine_depth") / 2
@@ -257,7 +266,8 @@ class BuildVolume(SceneNode):
         if profile.getSettingValue("draft_shield_enabled"):
             skirt_size += profile.getSettingValue("draft_shield_dist")
 
-        skirt_size += profile.getSettingValue("xy_offset")
+        if profile.getSettingValue("xy_offset"):
+            skirt_size += profile.getSettingValue("xy_offset")
 
         return skirt_size
 

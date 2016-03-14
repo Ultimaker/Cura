@@ -1,0 +1,18 @@
+{
+    "id": "ultimaker2_olsson",
+    "version": 1,
+    "name": "Ultimaker 2 with Olsson Block",
+    "manufacturer": "Ultimaker",
+    "author": "Ultimaker",
+    "platform": "ultimaker2_platform.obj",
+    "platform_texture": "Ultimaker2backplate.png",
+    "visible": false,
+    "file_formats": "text/x-gcode",
+    "inherits": "ultimaker2_olsson.json",
+
+    "variant": "0.4 mm",
+
+    "overrides": {
+        "machine_nozzle_size": { "default": 0.40 }
+    }
+}

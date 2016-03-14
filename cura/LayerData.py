@@ -131,7 +131,7 @@ class Layer():
                 continue
             if not make_mesh and not (polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType):
                 continue
-            
+
             poly_color = polygon.getColor()
 
             points = numpy.copy(polygon.data)
@@ -140,26 +140,7 @@ class Layer():
             if polygon.type == Polygon.MoveCombingType or polygon.type == Polygon.MoveRetractionType:
                 points[:,1] += 0.01
 
-            # Calculate normals for the entire polygon using numpy.
-            normals = numpy.copy(points)
-            normals[:,1] = 0.0 # We are only interested in 2D normals
-
-            # Calculate the edges between points.
-            # The call to numpy.roll shifts the entire array by one so that
-            # we end up subtracting each next point from the current, wrapping
-            # around. This gives us the edges from the next point to the current
-            # point.
-            normals[:] = normals[:] - numpy.roll(normals, -1, axis = 0)
-            # Calculate the length of each edge using standard Pythagoras
-            lengths = numpy.sqrt(normals[:,0] ** 2 + normals[:,2] ** 2)
-            # The normal of a 2D vector is equal to its x and y coordinates swapped
-            # and then x inverted. This code does that.
-            normals[:,[0, 2]] = normals[:,[2, 0]]
-            normals[:,0] *= -1
-
-            # Normalize the normals.
-            normals[:,0] /= lengths
-            normals[:,2] /= lengths
+            normals = polygon.getNormals()
 
             # Scale all by the line width of the polygon so we can easily offset.
             normals *= (polygon.lineWidth / 2)
@@ -193,22 +174,19 @@ class Polygon():
     MoveRetractionType = 9
 
     def __init__(self, mesh, type, data, line_width):
-        super().__init__()
         self._mesh = mesh
         self._type = type
         self._data = data
         self._line_width = line_width / 1000
 
+        self._color = self.__color_map[type]
+
     def build(self, offset, vertices, colors, indices):
         self._begin = offset
         self._end = self._begin + len(self._data) - 1
 
-        color = self.getColor()
-        color.setValues(color.r * 0.5, color.g * 0.5, color.b * 0.5, color.a)
-        color = numpy.array([color.r, color.g, color.b, color.a], numpy.float32)
-
         vertices[self._begin:self._end + 1, :] = self._data[:, :]
-        colors[self._begin:self._end + 1, :] = color
+        colors[self._begin:self._end + 1, :] = numpy.array([self._color.r * 0.5, self._color.g * 0.5, self._color.b * 0.5, self._color.a], numpy.float32)
 
         for i in range(self._begin, self._end):
             indices[i, 0] = i
@@ -218,26 +196,7 @@ class Polygon():
         indices[self._end, 1] = self._begin
 
     def getColor(self):
-        if self._type == self.Inset0Type:
-            return Color(1.0, 0.0, 0.0, 1.0)
-        elif self._type == self.InsetXType:
-            return Color(0.0, 1.0, 0.0, 1.0)
-        elif self._type == self.SkinType:
-            return Color(1.0, 1.0, 0.0, 1.0)
-        elif self._type == self.SupportType:
-            return Color(0.0, 1.0, 1.0, 1.0)
-        elif self._type == self.SkirtType:
-            return Color(0.0, 1.0, 1.0, 1.0)
-        elif self._type == self.InfillType:
-            return Color(1.0, 0.74, 0.0, 1.0)
-        elif self._type == self.SupportInfillType:
-            return Color(0.0, 1.0, 1.0, 1.0)
-        elif self._type == self.MoveCombingType:
-            return Color(0.0, 0.0, 1.0, 1.0)
-        elif self._type == self.MoveRetractionType:
-            return Color(0.5, 0.5, 1.0, 1.0)
-        else:
-            return Color(1.0, 1.0, 1.0, 1.0)
+        return self._color
 
     def vertexCount(self):
         return len(self._data)
@@ -257,3 +216,40 @@ class Polygon():
     @property
     def lineWidth(self):
         return self._line_width
+
+    # Calculate normals for the entire polygon using numpy.
+    def getNormals(self):
+        normals = numpy.copy(self._data)
+        normals[:,1] = 0.0 # We are only interested in 2D normals
+
+        # Calculate the edges between points.
+        # The call to numpy.roll shifts the entire array by one so that
+        # we end up subtracting each next point from the current, wrapping
+        # around. This gives us the edges from the next point to the current
+        # point.
+        normals[:] = normals[:] - numpy.roll(normals, -1, axis = 0)
+        # Calculate the length of each edge using standard Pythagoras
+        lengths = numpy.sqrt(normals[:,0] ** 2 + normals[:,2] ** 2)
+        # The normal of a 2D vector is equal to its x and y coordinates swapped
+        # and then x inverted. This code does that.
+        normals[:,[0, 2]] = normals[:,[2, 0]]
+        normals[:,0] *= -1
+
+        # Normalize the normals.
+        normals[:,0] /= lengths
+        normals[:,2] /= lengths
+
+        return normals
+
+    __color_map = {
+        NoneType: Color(1.0, 1.0, 1.0, 1.0),
+        Inset0Type: Color(1.0, 0.0, 0.0, 1.0),
+        InsetXType: Color(0.0, 1.0, 0.0, 1.0),
+        SkinType: Color(1.0, 1.0, 0.0, 1.0),
+        SupportType: Color(0.0, 1.0, 1.0, 1.0),
+        SkirtType: Color(0.0, 1.0, 1.0, 1.0),
+        InfillType: Color(1.0, 0.74, 0.0, 1.0),
+        SupportInfillType: Color(0.0, 1.0, 1.0, 1.0),
+        MoveCombingType: Color(0.0, 0.0, 1.0, 1.0),
+        MoveRetractionType: Color(0.5, 0.5, 1.0, 1.0),
+    }
