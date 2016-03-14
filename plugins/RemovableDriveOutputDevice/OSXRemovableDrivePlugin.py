@@ -43,7 +43,7 @@ class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
         return drives
 
     def performEjectDevice(self, device):
-        p = subprocess.Popen(["diskutil", "eject", path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen(["diskutil", "eject", device.getId()], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = p.communicate()
         Logger.log("d", "umount returned: %s.", repr(output))
 
