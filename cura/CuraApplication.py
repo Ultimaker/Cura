@@ -47,7 +47,6 @@ from PyQt5.QtQml import qmlRegisterUncreatableType
 
 import platform
 import sys
-import os
 import os.path
 import numpy
 import copy
