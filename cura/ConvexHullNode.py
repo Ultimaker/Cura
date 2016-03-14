@@ -9,8 +9,6 @@ from UM.Mesh.MeshBuilder import MeshBuilder #To create a mesh to display the con
 
 from UM.View.GL.OpenGL import OpenGL
 
-import numpy
-
 class ConvexHullNode(SceneNode):
     def __init__(self, node, hull, parent = None):
         super().__init__(parent)
