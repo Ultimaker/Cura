@@ -4,6 +4,8 @@
 
 from . import RemovableDrivePlugin
 
+from UM.Logger import Logger
+
 import glob
 import os
 import subprocess
@@ -33,6 +35,7 @@ class LinuxRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
     def performEjectDevice(self, device):
         p = subprocess.Popen(["umount", device.getId()], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = p.communicate()
+        Logger.log("d", "umount returned: %s.", repr(output))
 
         return_code = p.wait()
         if return_code != 0:
