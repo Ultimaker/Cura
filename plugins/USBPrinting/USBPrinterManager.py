@@ -142,38 +142,35 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
         # NOTE: The keyword used here is the id of the machine. You can find the id of your machine in the *.json file, eg.
         # https://github.com/Ultimaker/Cura/blob/master/resources/machines/ultimaker_original.json#L2
-        machine_without_heated_bed = {"bq_witbox"                : "MarlinWitbox.hex",
-                                      "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
-                                      "ultimaker2_go"            : "MarlinUltimaker2go.hex",
-                                      }
-        machine_with_heated_bed    = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
-                                      "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
-                                      "ultimaker2"               : "MarlinUltimaker2.hex",
-                                      "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
-                                      "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
-                                      "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
-                                      }
+        machine_without_extras  = {"bq_witbox"                : "MarlinWitbox.hex",
+                                   "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
+                                   "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
+                                   "ultimaker2"               : "MarlinUltimaker2.hex",
+                                   "ultimaker2_go"            : "MarlinUltimaker2go.hex",
+                                   "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
+                                   "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
+                                   "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
+                                   }
+        machine_with_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
+                                   }
 
         ##TODO: Add check for multiple extruders
-
         hex_file = None
-        if not machine_instance.getMachineSettingValue("machine_heated_bed"):
-            if  machine_type in machine_without_heated_bed.keys():
-                hex_file = machine_without_heated_bed[machine_type]
-            else:
-                Logger.log("e", "There is no firmware for machine %s.", machine_type)
-        else:
-            if  machine_type in machine_with_heated_bed.keys():
+        if  machine_type in machine_without_extras.keys(): # The machine needs to be defined here!
+            if  machine_type in machine_with_heated_bed.keys(): # Return firmware with heated bed enabled
+                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_type)
                 hex_file = machine_with_heated_bed[machine_type]
             else:
-                Logger.log("e", "There is no firmware for machine %s with heated bed.", machine_type)
+                Logger.log("d", "Choosing basic firmware for machine %s.", machine_type)
+                hex_file = machine_without_extras[machine_type] # Return "basic" firmware
+        else:
+            Logger.log("e", "There is no firmware for machine %s.", machine_type)
 
         if hex_file:
             return hex_file.format(baudrate=baudrate)
         else:
             Logger.log("e", "Could not find any firmware for machine %s.", machine_type)
             raise FileNotFoundError()
-
 
     def _addRemovePorts(self, serial_ports):
         # First, find and add all new or changed keys
