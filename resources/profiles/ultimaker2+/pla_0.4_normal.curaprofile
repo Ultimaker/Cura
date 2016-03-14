@@ -18,7 +18,6 @@ infill_wipe_dist = 0.2
 retraction_amount = 5.5
 retraction_min_travel = 0.5
 retraction_count_max = 30
-retraction_extrusion_window = 6
 speed_infill = 50
 speed_wall_0 = 30
 speed_wall_x = 40
