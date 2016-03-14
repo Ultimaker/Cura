@@ -162,7 +162,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
                 Logger.log("e", "There is no firmware for machine %s.", machine_type)
         else:
             if  machine_type in machine_with_heated_bed.keys():
-                hex_file = machine_without_heated_bed[machine_type]
+                hex_file = machine_with_heated_bed[machine_type]
             else:
                 Logger.log("e", "There is no firmware for machine %s with heated bed.", machine_type)
 
