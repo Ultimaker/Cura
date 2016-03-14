@@ -135,9 +135,10 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     def _getDefaultFirmwareName(self):
         machine_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
         machine_type = machine_instance.getMachineDefinition().getId()
-        baudrate = 250000
         if sys.platform.startswith("linux"):
-                baudrate = 115200
+            baudrate = 115200
+        else:
+            baudrate = 250000
         if machine_type == "ultimaker_original":
             firmware_name = "MarlinUltimaker"
             if machine_instance.getMachineSettingValue("machine_heated_bed"): #Has heated bed upgrade kit?
