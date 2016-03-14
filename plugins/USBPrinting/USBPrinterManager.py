@@ -135,35 +135,44 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     def _getDefaultFirmwareName(self):
         machine_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
         machine_type = machine_instance.getMachineDefinition().getId()
-        baudrate = 250000
-        if sys.platform.startswith("linux"):
-                baudrate = 115200
-        if machine_type == "ultimaker_original":
-            firmware_name = "MarlinUltimaker"
-            if machine_instance.getMachineSettingValue("machine_heated_bed"): #Has heated bed upgrade kit?
-                firmware_name += "-HBK"
-            firmware_name += "-%d" % (baudrate)
-            return firmware_name + ".hex"
-        elif machine_type == "ultimaker_original_plus":
-            firmware_name = "MarlinUltimaker-UMOP-%d" % (baudrate)
-            return firmware_name + ".hex"
-        elif machine_type == "bq_witbox":
-            return "MarlinWitbox.hex"
-        elif machine_type == "ultimaker2_go":
-            return "MarlinUltimaker2go.hex"
-        elif machine_type == "ultimaker2_extended":
-            return "MarlinUltimaker2extended.hex"
-        elif machine_type == "ultimaker2":
-            return "MarlinUltimaker2.hex"
-        elif machine_type == "ultimaker2plus":
-            return "MarlinUltimaker2plus.hex"
-        elif machine_type == "ultimaker2_extended_plus":
-            return "MarlinUltimaker2extended-plus.hex"
+        if platform.system() == "Linux":
+            baudrate = 115200
         else:
-            Logger.log("e", "I don't know of any firmware for machine %s.", machine_type)
-            raise FileNotFoundError()
+            baudrate = 250000
+
+        # NOTE: The keyword used here is the id of the machine. You can find the id of your machine in the *.json file, eg.
+        # https://github.com/Ultimaker/Cura/blob/master/resources/machines/ultimaker_original.json#L2
+        # The *.hex files are stored at a seperate repository:
+        # https://github.com/Ultimaker/cura-binary-data/tree/master/cura/resources/firmware
+        machine_without_extras  = {"bq_witbox"                : "MarlinWitbox.hex",
+                                   "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
+                                   "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
+                                   "ultimaker2"               : "MarlinUltimaker2.hex",
+                                   "ultimaker2_go"            : "MarlinUltimaker2go.hex",
+                                   "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
+                                   "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
+                                   "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
+                                   }
+        machine_with_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
+                                   }
 
         ##TODO: Add check for multiple extruders
+        hex_file = None
+        if  machine_type in machine_without_extras.keys(): # The machine needs to be defined here!
+            if  machine_type in machine_with_heated_bed.keys() and machine_instance.getMachineSettingValue("machine_heated_bed"):
+                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_type)
+                hex_file = machine_with_heated_bed[machine_type] # Return firmware with heated bed enabled
+            else:
+                Logger.log("d", "Choosing basic firmware for machine %s.", machine_type)
+                hex_file = machine_without_extras[machine_type] # Return "basic" firmware
+        else:
+            Logger.log("e", "There is no firmware for machine %s.", machine_type)
+
+        if hex_file:
+            return hex_file.format(baudrate=baudrate)
+        else:
+            Logger.log("e", "Could not find any firmware for machine %s.", machine_type)
+            raise FileNotFoundError()
 
     def _addRemovePorts(self, serial_ports):
         # First, find and add all new or changed keys
