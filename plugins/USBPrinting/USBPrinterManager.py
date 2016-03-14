@@ -19,7 +19,6 @@ import threading
 import platform
 import glob
 import time
-import os
 import os.path
 import sys
 from UM.Extension import Extension
