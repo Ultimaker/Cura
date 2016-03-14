@@ -156,15 +156,15 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
         hex_file = None
         if not machine_instance.getMachineSettingValue("machine_heated_bed"):
-           if  machine_type in machine_without_heated_bed.keys():
-               hex_file = machine_without_heated_bed[machine_type]
-           else:
-               Logger.log("e", "There is no firmware for machine %s.", machine_type)
+            if  machine_type in machine_without_heated_bed.keys():
+                hex_file = machine_without_heated_bed[machine_type]
+            else:
+                Logger.log("e", "There is no firmware for machine %s.", machine_type)
         else:
             if  machine_type in machine_with_heated_bed.keys():
-               hex_file = machine_without_heated_bed[machine_type]
-           else:
-               Logger.log("e", "There is no firmware for machine %s with heated bed.", machine_type)
+                hex_file = machine_without_heated_bed[machine_type]
+            else:
+                Logger.log("e", "There is no firmware for machine %s with heated bed.", machine_type)
 
         if hex_file:
             return hex_file.format(baudrate=baudrate)
