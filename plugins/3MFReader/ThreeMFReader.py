@@ -32,8 +32,6 @@ class ThreeMFReader(MeshReader):
         }
 
     def read(self, file_name):
-        result = None
-
         result = SceneNode()
         # The base object of 3mf is a zipped archive.
         archive = zipfile.ZipFile(file_name, "r")
