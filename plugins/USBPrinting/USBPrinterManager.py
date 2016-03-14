@@ -139,32 +139,39 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
             baudrate = 115200
         else:
             baudrate = 250000
-        if machine_type == "ultimaker_original":
-            firmware_name = "MarlinUltimaker"
-            if machine_instance.getMachineSettingValue("machine_heated_bed"): #Has heated bed upgrade kit?
-                firmware_name += "-HBK"
-            firmware_name += "-%d" % (baudrate)
-            return firmware_name + ".hex"
-        elif machine_type == "ultimaker_original_plus":
-            firmware_name = "MarlinUltimaker-UMOP-%d" % (baudrate)
-            return firmware_name + ".hex"
-        elif machine_type == "bq_witbox":
-            return "MarlinWitbox.hex"
-        elif machine_type == "ultimaker2_go":
-            return "MarlinUltimaker2go.hex"
-        elif machine_type == "ultimaker2_extended":
-            return "MarlinUltimaker2extended.hex"
-        elif machine_type == "ultimaker2":
-            return "MarlinUltimaker2.hex"
-        elif machine_type == "ultimaker2plus":
-            return "MarlinUltimaker2plus.hex"
-        elif machine_type == "ultimaker2_extended_plus":
-            return "MarlinUltimaker2extended-plus.hex"
-        else:
-            Logger.log("e", "I don't know of any firmware for machine %s.", machine_type)
-            raise FileNotFoundError()
+
+        machine_without_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
+                                      "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
+                                      "bq_witbox"                : "MarlinWitbox.hex",
+                                      "ultimaker2_go"            : "MarlinUltimaker2go.hex",
+                                      "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
+                                      "ultimaker2"               : "MarlinUltimaker2.hex",
+                                      "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
+                                      "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
+                                      }
+        machine_with_heated_bed    = {"ultimaker_original-HBK-{baudrate}.hex",
+                                      }
 
         ##TODO: Add check for multiple extruders
+
+        hex_file = None
+        if not machine_instance.getMachineSettingValue("machine_heated_bed"):
+           if  machine_type in machine_without_heated_bed.keys():
+               hex_file = machine_without_heated_bed[machine_type]
+           else:
+               Logger.log("e", "There is no firmware for machine %s.", machine_type)
+        else:
+            if  machine_type in machine_with_heated_bed.keys():
+               hex_file = machine_without_heated_bed[machine_type]
+           else:
+               Logger.log("e", "There is no firmware for machine %s with heated bed.", machine_type)
+
+        if hex_file:
+            return hex_file.format(baudrate=baudrate)
+        else:
+            Logger.log("e", "Could not find any firmware for machine %s.", machine_type)
+            raise FileNotFoundError()
+
 
     def _addRemovePorts(self, serial_ports):
         # First, find and add all new or changed keys
