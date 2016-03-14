@@ -142,6 +142,8 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
         # NOTE: The keyword used here is the id of the machine. You can find the id of your machine in the *.json file, eg.
         # https://github.com/Ultimaker/Cura/blob/master/resources/machines/ultimaker_original.json#L2
+        # The *.hex files are stored at a seperate repository:
+        # https://github.com/Ultimaker/cura-binary-data/tree/master/cura/resources/firmware
         machine_without_extras  = {"bq_witbox"                : "MarlinWitbox.hex",
                                    "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
                                    "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
