@@ -140,16 +140,16 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         else:
             baudrate = 250000
 
-        machine_without_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
-                                      "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
-                                      "bq_witbox"                : "MarlinWitbox.hex",
+        machine_without_heated_bed = {"bq_witbox"                : "MarlinWitbox.hex",
+                                      "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
                                       "ultimaker2_go"            : "MarlinUltimaker2go.hex",
-                                      "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
-                                      "ultimaker2"               : "MarlinUltimaker2.hex",
-                                      "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
-                                      "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
                                       }
         machine_with_heated_bed    = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
+                                      "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
+                                      "ultimaker2"               : "MarlinUltimaker2.hex",
+                                      "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
+                                      "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
+                                      "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
                                       }
 
         ##TODO: Add check for multiple extruders
