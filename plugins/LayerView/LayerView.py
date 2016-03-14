@@ -2,7 +2,6 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.View.View import View
-from UM.View.Renderer import Renderer
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
 from UM.Event import Event, KeyEvent
@@ -11,7 +10,6 @@ from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
 from UM.Mesh.MeshData import MeshData
 from UM.Job import Job
-from UM.Message import Message
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
@@ -23,7 +21,6 @@ from PyQt5.QtWidgets import QApplication
 
 from . import LayerViewProxy
 
-import time
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -139,7 +136,7 @@ class LayerView(View):
 
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
-        renderer = self.getRenderer()
+        renderer = self.getRenderer() # TODO: Unused variable
         self._activity = True
 
         self._old_max_layers = self._max_layers
