@@ -5,9 +5,9 @@
 
 import sys
 
-def exceptHook(type, value, traceback):
+def exceptHook(hook_type, value, traceback):
     import cura.CrashHandler
-    cura.CrashHandler.show(type, value, traceback)
+    cura.CrashHandler.show(hook_type, value, traceback)
 
 sys.excepthook = exceptHook
 
