@@ -4,8 +4,6 @@
 from UM.Signal import Signal, SignalEmitter
 from . import PrinterConnection
 from UM.Application import Application
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
@@ -20,7 +18,6 @@ import platform
 import glob
 import time
 import os.path
-import sys
 from UM.Extension import Extension
 
 from PyQt5.QtQuick import QQuickView
@@ -59,7 +56,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
         progress = 0
-        for printer_name, connection in self._printer_connections.items():
+        for printer_name, connection in self._printer_connections.items(): # TODO: @UnusedVariable "printer_name"
             progress += connection.progress
 
         return progress / len(self._printer_connections)
@@ -231,6 +228,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
                         base_list += [values[1]]
                     i += 1
             except Exception as e:
+                Logger.log("d", "USBPrinterManager.getSerialPortList: ", e)
                 pass
         else:
             if only_list_usb:
