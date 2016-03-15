@@ -58,7 +58,7 @@ class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
         if type(t) is dict:
             if "_name" in t and t["_name"] == n:
                 ret.append(t)
-            for k, v in t.items():
+            for k, v in t.items(): # TODO: @UnusedVariable "k"
                 ret += self._findInTree(v, n)
         if type(t) is list:
             for v in t:
