@@ -19,7 +19,6 @@ import threading
 import platform
 import glob
 import time
-import os
 import os.path
 import sys
 from UM.Extension import Extension
@@ -60,7 +59,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
         progress = 0
-        for name, connection in self._printer_connections.items():
+        for printer_name, connection in self._printer_connections.items():
             progress += connection.progress
 
         return progress / len(self._printer_connections)
