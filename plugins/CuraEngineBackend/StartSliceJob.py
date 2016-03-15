@@ -105,7 +105,7 @@ class StartSliceJob(Job):
 
         Logger.log("d", "Sending data to engine for slicing.")
         self._socket.sendMessage(slice_message)
-
+        Logger.log("d", "Sending data to engine is completed")
         self.setResult(True)
 
     def _expandGcodeTokens(self, key, value, settings):

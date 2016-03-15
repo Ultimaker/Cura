@@ -163,6 +163,7 @@ class CuraEngineBackend(Backend):
                 self._process = None
             except: # terminating a process that is already terminating causes an exception, silently ignore this.
                 pass
+            Logger.log("d", "Engine process is killed")
 
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
