@@ -1350,7 +1350,7 @@
                     "label": "Minimal Width",
                     "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
                     "unit": "mm",
-                    "default": 3.0,
+                    "default": 5.0,
                     "min_value": "0",
                     "min_value_warning": "machine_nozzle_size * 3",
                     "max_value_warning": "100.0",
