@@ -1356,7 +1356,7 @@
                     "max_value_warning": "100.0",
                     "type": "float",
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_bottom_stair_step_height": {
                     "label": "Stair Step Height",
