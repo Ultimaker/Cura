@@ -1081,7 +1081,7 @@
                     "max_value": "100",
                     "default": 100,
                     "visible": false,
-                    "inherit_function": "100.0 if parent_value else 0.0",
+                    "inherit_function": "100.0 if cool_fan_enabled else 0.0",
                     "enabled": "cool_fan_enabled",
                     "global_only": "True",
                     "children": {
