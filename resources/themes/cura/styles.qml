@@ -295,6 +295,9 @@ QtObject {
         controlBorderHighlightColor: Theme.getColor("setting_control_border_highlight");
         controlTextColor: Theme.getColor("setting_control_text");
         controlBorderWidth: Theme.getSize("default_lining").width;
+        controlDisabledColor: Theme.getColor("setting_control_disabled");
+        controlDisabledTextColor: Theme.getColor("setting_control_disabled_text");
+        controlDisabledBorderColor: Theme.getColor("setting_control_disabled_border");
         controlFont: Theme.getFont("default");
 
         validationErrorColor: Theme.getColor("setting_validation_error");
