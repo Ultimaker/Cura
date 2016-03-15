@@ -1,7 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import os
 import numpy
 
 from PyQt5.QtGui import QImage, qRed, qGreen, qBlue
@@ -49,8 +48,8 @@ class ImageReader(MeshReader):
         return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.image_color_invert)
 
     def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, image_color_invert):
-        mesh = None
-        scene_node = None
+        mesh = None # TODO: @UnusedVariable
+        scene_node = None # TODO: @UnusedVariable
 
         scene_node = SceneNode()
 
@@ -111,7 +110,7 @@ class ImageReader(MeshReader):
         if image_color_invert:
             height_data = 1 - height_data
 
-        for i in range(0, blur_iterations):
+        for _ in range(0, blur_iterations):
             copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode= "edge")
 
             height_data += copy[1:-1, 2:]
