@@ -33,7 +33,7 @@ class ConvexHullNode(SceneNode):
         self._convex_hull_head_mesh = None
         self._hull = hull
 
-        hull_points = self._hull.getPoints()
+        hull_points = self._hull.getPoints() # TODO: @UnusedVariable
         hull_mesh = self.createHullMesh(self._hull.getPoints())
         if hull_mesh:
             self.setMeshData(hull_mesh)
