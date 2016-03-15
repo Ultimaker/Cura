@@ -3,11 +3,10 @@
 
 from distutils.core import setup
 import py2exe
-import UM
-import UM.Qt
-import cura
+import UM    #@UnusedImport
+import UM.Qt #@UnusedImport
+import cura  #@UnusedImport
 import os
-import re
 import shutil
 import site
 
