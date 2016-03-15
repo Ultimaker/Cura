@@ -358,8 +358,8 @@
                             "unit": "mm",
                             "default": 0.8,
                             "min_value": "0",
-                            "min_value_warning": "0.2",
-                            "max_value_warning": "5",
+                            "min_value_warning": "line_width",
+                            "max_value_warning": "5 * line_width",
                             "type": "float",
                             "visible": true,
                             "children": {
