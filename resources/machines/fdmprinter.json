@@ -1318,9 +1318,10 @@
                             "min_value": "0",
                             "max_value_warning": "10",
                             "default": 0.1,
+                            "inherit_function": "0.1 if support_type == 'everywhere' else 0",
                             "type": "float",
                             "visible": false,
-                            "enabled": "support_enable"
+                            "enabled": "support_enable and support_type == 'everywhere'"
                         }
                     }
                 },
