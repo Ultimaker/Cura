@@ -74,9 +74,9 @@ Item{
                     MenuItem
                     {
                         id: item
-                        text: model_data.name
+                        text: model_data ? model_data.name : ""
                         checkable: true;
-                        checked: model_data.active;
+                        checked: model_data ? model_data.active : false;
                         exclusiveGroup: profileSelectionMenuGroup;
                         onTriggered:
                         {
