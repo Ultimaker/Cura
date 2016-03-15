@@ -8,7 +8,6 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.OutputDevice.OutputDevice import OutputDevice
 from UM.OutputDevice import OutputDeviceError
-from UM.Preferences import Preferences
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")

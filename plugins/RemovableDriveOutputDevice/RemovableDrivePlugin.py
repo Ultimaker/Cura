@@ -4,7 +4,6 @@
 import threading
 import time
 
-from UM.Signal import Signal
 from UM.Message import Message
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 
