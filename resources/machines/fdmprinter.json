@@ -374,14 +374,6 @@
                                 }
                             }
                         },
-                        "alternate_extra_perimeter": {
-                            "label": "Alternate Extra Wall",
-                            "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
-                            "type": "boolean",
-                            "default": false,
-                            "visible": false,
-                            "inherit": false
-                        },
                         "top_bottom_thickness": {
                             "label": "Bottom/Top Thickness",
                             "description": "This controls the thickness of the bottom and top layers. The number of solid layers put down is calculated from the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. Keep it near your wall thickness to make an evenly strong part.",
@@ -438,6 +430,15 @@
                             }
                         }
                     }
+                },
+                
+                "alternate_extra_perimeter": {
+                    "label": "Alternate Extra Wall",
+                    "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false,
+                    "inherit": false
                 },
                 "remove_overlapping_walls_enabled": {
                     "label": "Remove Overlapping Wall Parts",
@@ -996,22 +997,20 @@
                     "default": true,
                     "visible": false,
                     "enabled": "retraction_combing",
-                    "global_only": "True",
-                    "children": {
-                        "travel_avoid_distance": {
-                            "label": "Avoid Distance",
-                            "description": "The distance to stay clear of parts which are avoided during travel.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 1.5,
-                            "min_value": "0",
-                            "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
-                            "visible": false,
-                            "inherit": false,
-                            "enabled": "retraction_combing",
-                            "global_only": "True"
-                        }
-                    }
+                    "global_only": "True"
+                },
+                "travel_avoid_distance": {
+                    "label": "Avoid Distance",
+                    "description": "The distance to stay clear of parts which are avoided during travel.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.5,
+                    "min_value": "0",
+                    "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
+                    "visible": false,
+                    "inherit": false,
+                    "enabled": "retraction_combing and travel_avoid_other_parts",
+                    "global_only": "True"
                 },
                 "coasting_enable": {
                     "label": "Enable Coasting",
@@ -1071,43 +1070,44 @@
                     "description": "Enable the cooling fan during the print. The extra cooling from the cooling fan helps parts with small cross sections that print each layer quickly.",
                     "type": "boolean",
                     "default": true,
+                    "global_only": "True"
+                },
+                "cool_fan_speed": {
+                    "label": "Fan Speed",
+                    "description": "Fan speed used for the print cooling fan on the printer head.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value": "100",
+                    "default": 100,
+                    "visible": false,
+                    "inherit_function": "100.0 if cool_fan_enabled else 0.0",
+                    "enabled": "cool_fan_enabled",
                     "global_only": "True",
                     "children": {
-                        "cool_fan_speed": {
-                            "label": "Fan Speed",
-                            "description": "Fan speed used for the print cooling fan on the printer head.",
+                        "cool_fan_speed_min": {
+                            "label": "Minimum Fan Speed",
+                            "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
                             "unit": "%",
                             "type": "float",
                             "min_value": "0",
                             "max_value": "100",
                             "default": 100,
                             "visible": false,
-                            "inherit_function": "100.0 if parent_value else 0.0",
-                            "global_only": "True",
-                            "children": {
-                                "cool_fan_speed_min": {
-                                    "label": "Minimum Fan Speed",
-                                    "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
-                                    "unit": "%",
-                                    "type": "float",
-                                    "min_value": "0",
-                                    "max_value": "100",
-                                    "default": 100,
-                                    "visible": false,
-                                    "global_only": "True"
-                                },
-                                "cool_fan_speed_max": {
-                                    "label": "Maximum Fan Speed",
-                                    "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
-                                    "unit": "%",
-                                    "type": "float",
-                                    "min_value": "0",
-                                    "max_value": "100",
-                                    "default": 100,
-                                    "visible": false,
-                                    "global_only": "True"
-                                }
-                            }
+                            "enabled": "cool_fan_enabled",
+                            "global_only": "True"
+                        },
+                        "cool_fan_speed_max": {
+                            "label": "Maximum Fan Speed",
+                            "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": "0",
+                            "max_value": "100",
+                            "default": 100,
+                            "visible": false,
+                            "enabled": "cool_fan_enabled",
+                            "global_only": "True"
                         }
                     }
                 },
@@ -1457,22 +1457,20 @@
                     "min_value": "0",
                     "max_value_warning": "10",
                     "visible": false,
-                    "enabled": "support_enable and support_use_towers",
-                    "children": {
-                        "support_minimal_diameter": {
-                            "label": "Minimum Diameter",
-                            "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 3.0,
-                            "min_value": "0",
-                            "max_value_warning": "10",
-                            "max_value": "support_tower_diameter",
-                            "inherit": true,
-                            "visible": false,
-                            "enabled": "support_enable and support_use_towers"
-                        }
-                    }
+                    "enabled": "support_enable and support_use_towers"
+                },
+                "support_minimal_diameter": {
+                    "label": "Minimum Diameter",
+                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 3.0,
+                    "min_value": "0",
+                    "max_value_warning": "10",
+                    "max_value": "support_tower_diameter",
+                    "inherit": true,
+                    "visible": false,
+                    "enabled": "support_enable and support_use_towers"
                 },
                 "support_tower_roof_angle": {
                     "label": "Tower Roof Angle",
