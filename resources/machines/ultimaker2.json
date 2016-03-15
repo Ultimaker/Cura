@@ -40,8 +40,8 @@
     "machine_settings": {
         "machine_start_gcode" : { "default": "" },
         "machine_end_gcode" : { "default": "" },
-        "machine_width": { "default": 230 },
-        "machine_depth": { "default": 225 },
+        "machine_width": { "default": 223 },
+        "machine_depth": { "default": 223 },
         "machine_height": { "default": 205 },
         "machine_heated_bed": { "default": true },
 
