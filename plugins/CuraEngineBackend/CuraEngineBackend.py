@@ -4,25 +4,19 @@
 from UM.Backend.Backend import Backend
 from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Preferences import Preferences
-from UM.Math.Vector import Vector
 from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of the slicing job.
-from UM.Resources import Resources
-from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 
-from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedObjectListJob
 from . import ProcessGCodeJob
 from . import StartSliceJob
 
 import os
 import sys
-import numpy
 
 from PyQt5.QtCore import QTimer
 
