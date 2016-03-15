@@ -4,7 +4,6 @@
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
-import io
 import re #For escaping characters in the settings.
 import copy
 
