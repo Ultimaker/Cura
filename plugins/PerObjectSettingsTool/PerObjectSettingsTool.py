@@ -4,7 +4,6 @@
 from UM.Tool import Tool
 from UM.Scene.Selection import Selection
 from UM.Application import Application
-from UM.Qt.ListModel import ListModel
 from UM.Preferences import Preferences
 
 from . import PerObjectSettingsModel

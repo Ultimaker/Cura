@@ -12,10 +12,7 @@ from UM.Math.Quaternion import Quaternion
 
 from UM.Job import Job
 
-import os
-import struct
 import math
-from os import listdir
 import zipfile
 
 import xml.etree.ElementTree as ET
@@ -32,8 +29,6 @@ class ThreeMFReader(MeshReader):
         }
 
     def read(self, file_name):
-        result = None
-
         result = SceneNode()
         # The base object of 3mf is a zipped archive.
         archive = zipfile.ZipFile(file_name, "r")
@@ -46,16 +41,16 @@ class ThreeMFReader(MeshReader):
                 Logger.log("w", "No objects found in 3MF file %s, either the file is corrupt or you are using an outdated format", file_name)
                 return None
 
-            for object in objects:
+            for entry in objects:
                 mesh = MeshData()
                 node = SceneNode()
                 vertex_list = []
-                #for vertex in object.mesh.vertices.vertex:
-                for vertex in object.findall(".//3mf:vertex", self._namespaces):
+                #for vertex in entry.mesh.vertices.vertex:
+                for vertex in entry.findall(".//3mf:vertex", self._namespaces):
                     vertex_list.append([vertex.get("x"), vertex.get("y"), vertex.get("z")])
                     Job.yieldThread()
 
-                triangles = object.findall(".//3mf:triangle", self._namespaces)
+                triangles = entry.findall(".//3mf:triangle", self._namespaces)
 
                 mesh.reserveFaceCount(len(triangles))
 
@@ -72,7 +67,7 @@ class ThreeMFReader(MeshReader):
                 node.setMeshData(mesh)
                 node.setSelectable(True)
 
-                transformation = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(object.get("id")), self._namespaces)
+                transformation = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(entry.get("id")), self._namespaces)
                 if transformation:
                     transformation = transformation[0]
 

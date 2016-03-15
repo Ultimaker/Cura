@@ -8,7 +8,6 @@ import time
 import queue
 import re
 import functools
-import os
 import os.path
 
 from UM.Application import Application

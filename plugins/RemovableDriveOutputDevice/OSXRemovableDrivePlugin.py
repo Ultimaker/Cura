@@ -4,10 +4,9 @@
 
 from . import RemovableDrivePlugin
 
-import threading
+from UM.Logger import Logger
 
 import subprocess
-import time
 import os
 
 import plistlib
@@ -44,8 +43,9 @@ class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
         return drives
 
     def performEjectDevice(self, device):
-        p = subprocess.Popen(["diskutil", "eject", path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen(["diskutil", "eject", device.getId()], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output = p.communicate()
+        Logger.log("d", "umount returned: %s.", repr(output))
 
         return_code = p.wait()
         if return_code != 0:
