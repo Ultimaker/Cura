@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, QUrl
+from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from UM.Event import CallFunctionEvent
