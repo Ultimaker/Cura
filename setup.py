@@ -3,7 +3,7 @@
 
 from distutils.core import setup
 import py2exe
-import UM    #@UnusedImport
+import UM
 import UM.Qt #@UnusedImport
 import cura  #@UnusedImport
 import os
