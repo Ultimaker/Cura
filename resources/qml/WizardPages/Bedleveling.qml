@@ -21,7 +21,6 @@ Item
     property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
     Component.onCompleted:
     {
-        printer_connection.
         printer_connection.homeHead()
     }
     UM.I18nCatalog { id: catalog; name:"cura"}
