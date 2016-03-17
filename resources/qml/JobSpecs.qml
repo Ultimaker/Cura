@@ -158,7 +158,7 @@ Rectangle {
         anchors.right: parent.right
         height: UM.Theme.getSize("jobspecs_line").height
         verticalAlignment: Text.AlignVCenter
-        font: UM.Theme.getFont("small_bold")
+        font: UM.Theme.getFont("small")
         color: UM.Theme.getColor("text_subtext")
         text: Printer.getSceneBoundingBoxString
     }
@@ -190,7 +190,7 @@ Rectangle {
                 anchors.right: lengthIcon.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: parent.verticalCenter
-                font: UM.Theme.getFont("small_bold")
+                font: UM.Theme.getFont("small")
                 color: UM.Theme.getColor("text_subtext")
                 text: (!base.printDuration || !base.printDuration.valid) ? catalog.i18nc("@label", "00h 00min") : base.printDuration.getDisplayString(UM.DurationFormat.Short)
             }
@@ -210,7 +210,7 @@ Rectangle {
                 id: lengthSpec
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                font: UM.Theme.getFont("small_bold")
+                font: UM.Theme.getFont("small")
                 color: UM.Theme.getColor("text_subtext")
                 text: base.printMaterialAmount <= 0 ? catalog.i18nc("@label", "0.0 m") : catalog.i18nc("@label", "%1 m").arg(base.printMaterialAmount)
             }
