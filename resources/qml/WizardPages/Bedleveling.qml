@@ -22,6 +22,7 @@ Item
     Component.onCompleted:
     {
         printer_connection.homeBed()
+        printer_connection.moveHeadRelative(0, 0, 3)
         printer_connection.homeHead()
     }
     UM.I18nCatalog { id: catalog; name:"cura"}
