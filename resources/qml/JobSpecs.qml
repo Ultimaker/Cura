@@ -130,10 +130,7 @@ Rectangle {
                 text: ''
                 horizontalAlignment: TextInput.AlignRight
                 onTextChanged: {
-                    if(text != ''){
-                        //Prevent that jobname is set to an empty string 
-                        Printer.setJobName(text)
-                    }
+                    Printer.setJobName(text)
                 }
                 onEditingFinished: {
                     if (printJobTextfield.text != ''){
