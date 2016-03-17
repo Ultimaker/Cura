@@ -5,8 +5,6 @@ from PyQt5.QtCore import QTimer
 
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
-from UM.Operations.TranslateOperation import TranslateOperation
-from UM.Math.Float import Float
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application

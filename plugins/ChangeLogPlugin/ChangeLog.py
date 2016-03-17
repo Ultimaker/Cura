@@ -42,7 +42,7 @@ class ChangeLog(Extension, QObject,):
     @pyqtSlot(result = str)
     def getChangeLogString(self):
         logs = self.getChangeLogs()
-        latest_version = Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown"))
+        latest_version = Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) #TODO: @UnusedVariable
         result = ""
         for version in logs:
             result += "<h1>" + str(version) + "</h1><br>"

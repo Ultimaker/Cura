@@ -4,7 +4,6 @@
 
 from UM.Logger import Logger
 from UM.SaveFile import SaveFile
-from UM.Settings.Profile import Profile
 from UM.Settings.ProfileWriter import ProfileWriter
 
 ##  Writes profiles to Cura's own profile format with config files.

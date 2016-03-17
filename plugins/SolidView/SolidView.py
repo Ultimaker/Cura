@@ -5,7 +5,6 @@ from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Resources import Resources
 from UM.Application import Application
-from UM.Math.Color import Color
 from UM.Preferences import Preferences
 from UM.View.Renderer import Renderer
 

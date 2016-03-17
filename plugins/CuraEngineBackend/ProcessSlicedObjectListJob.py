@@ -16,7 +16,6 @@ from cura import LayerData
 from cura import LayerDataDecorator
 
 import numpy
-import struct
 
 catalog = i18nCatalog("cura")
 
@@ -51,7 +50,7 @@ class ProcessSlicedObjectListJob(Job):
 
         object_id_map = {}
         new_node = SceneNode()
-        ## Put all nodes in a dict identified by ID
+        ## Put all nodes in a dictionary identified by ID
         for node in DepthFirstIterator(self._scene.getRoot()):
             if type(node) is SceneNode and node.getMeshData():
                 if node.callDecoration("getLayerData"):
@@ -74,15 +73,15 @@ class ProcessSlicedObjectListJob(Job):
             layer_count += self._message.getRepeatedMessage("objects", i).repeatedMessageCount("layers")
 
         current_layer = 0
-        for i in range(self._message.repeatedMessageCount("objects")):
-            object = self._message.getRepeatedMessage("objects", i)
+        for object_position in range(self._message.repeatedMessageCount("objects")):
+            current_object = self._message.getRepeatedMessage("objects", object_position)
             try:
-                node = object_id_map[object.id]
+                node = object_id_map[current_object.id]
             except KeyError:
                 continue
 
-            for l in range(object.repeatedMessageCount("layers")):
-                layer = object.getRepeatedMessage("layers", l)
+            for l in range(current_object.repeatedMessageCount("layers")):
+                layer = current_object.getRepeatedMessage("layers", l)
 
                 layer_data.addLayer(layer.id)
                 layer_data.setLayerHeight(layer.id, layer.height)

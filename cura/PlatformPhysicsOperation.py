@@ -2,8 +2,6 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Operations.Operation import Operation
-from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
-from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 
 ##  A specialised operation designed specifically to modify the previous operation.

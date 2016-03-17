@@ -87,11 +87,11 @@ class StartSliceJob(Job):
             group_message = slice_message.addRepeatedMessage("object_lists")
             if group[0].getParent().callDecoration("isGroup"):
                 self._handlePerObjectSettings(group[0].getParent(), group_message)
-            for object in group:
-                mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
+            for current_object in group:
+                mesh_data = current_object.getMeshData().getTransformed(current_object.getWorldTransformation())
 
                 obj = group_message.addRepeatedMessage("objects")
-                obj.id = id(object)
+                obj.id = id(current_object)
 
                 verts = numpy.array(mesh_data.getVertices())
                 verts[:,[1,2]] = verts[:,[2,1]]
@@ -99,7 +99,7 @@ class StartSliceJob(Job):
 
                 obj.vertices = verts
 
-                self._handlePerObjectSettings(object, obj)
+                self._handlePerObjectSettings(current_object, obj)
 
                 Job.yieldThread()
 

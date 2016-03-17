@@ -136,7 +136,7 @@ class LayerView(View):
 
     def calculateMaxLayers(self):
         scene = self.getController().getScene()
-        renderer = self.getRenderer() # TODO: Unused variable
+        renderer = self.getRenderer() # TODO: @UnusedVariable
         self._activity = True
 
         self._old_max_layers = self._max_layers
