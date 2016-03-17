@@ -18,6 +18,12 @@
             "size": 1.0,
             "family": "Open Sans"
         },
+        "small_bold":
+        {
+            "size": 1.0,
+            "family": "Open Sans",
+            "bold": true
+        },
         "very_small": {
             "size": 0.75,
             "family": "Open Sans"
@@ -68,7 +74,7 @@
         "text_hover": [70, 84, 113, 255],
         "text_pressed": [12, 169, 227, 255],
         "text_white": [255, 255, 255, 255],
-        "text_subtext": [127, 127, 127, 255],
+        "text_subtext": [100, 100, 100, 255],
 
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [24, 41, 77, 255],

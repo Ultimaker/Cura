@@ -237,7 +237,7 @@ Item {
 
                                 delegate: ToolButton {
                                     id: button;
-                                    x: model.depth * UM.Theme.getSize("default_margin").width;
+                                    x: model.visible_depth * UM.Theme.getSize("default_margin").width;
                                     text: model.name;
                                     tooltip: model.description;
                                     visible: !model.global_only

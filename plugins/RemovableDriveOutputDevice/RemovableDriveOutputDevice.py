@@ -25,6 +25,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         self._writing = False
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
+        filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 

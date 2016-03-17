@@ -6,9 +6,10 @@ import time
 
 from UM.Message import Message
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.Logger import Logger
 
 from . import RemovableDriveOutputDevice
-
+from UM.Logger import Logger
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -37,11 +38,14 @@ class RemovableDrivePlugin(OutputDevicePlugin):
 
     def ejectDevice(self, device):
         try:
+            Logger.log("i", "Attempting to eject the device")
             result = self.performEjectDevice(device)
         except Exception as e:
+            Logger.log("e", "Ejection failed due to: %s" % str(e))
             result = False
 
         if result:
+            Logger.log("i", "Succesfully ejected the device")
             message = Message(catalog.i18nc("@info:status", "Ejected {0}. You can now safely remove the drive.").format(device.getName()))
             message.show()
         else:

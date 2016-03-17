@@ -10,6 +10,9 @@ from . import RemovableDrivePlugin
 import string
 import ctypes
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 # WinAPI Constants that we need
 # Hardcoded here due to stupid WinDLL stuff that does not give us access to these values.
 DRIVE_REMOVABLE = 2 # [CodeStyle: Windows Enum value]
@@ -23,6 +26,21 @@ FILE_SHARE_WRITE = 2 # [CodeStyle: Windows Enum value]
 IOCTL_STORAGE_EJECT_MEDIA = 2967560 # [CodeStyle: Windows Enum value]
 
 OPEN_EXISTING = 3 # [CodeStyle: Windows Enum value]
+
+# Setup the DeviceIoControl function arguments and return type.
+# See ctypes documentation for details on how to call C functions from python, and why this is important.
+windll.kernel32.DeviceIoControl.argtypes = [
+    wintypes.HANDLE,                    # _In_          HANDLE hDevice
+    wintypes.DWORD,                     # _In_          DWORD dwIoControlCode
+    wintypes.LPVOID,                    # _In_opt_      LPVOID lpInBuffer
+    wintypes.DWORD,                     # _In_          DWORD nInBufferSize
+    wintypes.LPVOID,                    # _Out_opt_     LPVOID lpOutBuffer
+    wintypes.DWORD,                     # _In_          DWORD nOutBufferSize
+    ctypes.POINTER(wintypes.DWORD),     # _Out_opt_     LPDWORD lpBytesReturned
+    wintypes.LPVOID                     # _Inout_opt_   LPOVERLAPPED lpOverlapped
+]
+windll.kernel32.DeviceIoControl.restype = wintypes.BOOL
+
 
 ## Removable drive support for windows
 class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
@@ -75,16 +93,31 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
         handle = ctypes.windll.kernel32.CreateFileA("\\\\.\\{0}".format(device.getId()[:-1]).encode("ascii"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, None, OPEN_EXISTING, 0, None )
 
         if handle == -1:
-            print(ctypes.windll.kernel32.GetLastError())
-            return
+            # ctypes.WinError sets up an GetLastError API call for windows as an Python OSError exception.
+            # So we use this to raise the error to our caller.
+            raise ctypes.WinError()
 
-        result = None
+        # The DeviceIoControl requires a bytes_returned pointer to be a valid pointer.
+        # So create a ctypes DWORD to reference. (Without this pointer the DeviceIoControl function will crash with an access violation after doing its job.
+        bytes_returned = wintypes.DWORD(0)
+
+        error = None
+
         # Then, try and tell it to eject
-        if not ctypes.windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, None, None, None, None, None):
-            result = False
-        else:
-            result = True
+        return_code = windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, 0, None, 0, ctypes.pointer(bytes_returned), None)
+        # DeviceIoControl with IOCTL_STORAGE_EJECT_MEDIA return 0 on error.
+        if return_code == 0:
+            # ctypes.WinError sets up an GetLastError API call for windows as an Python OSError exception.
+            # So we use this to raise the error to our caller.
+            error = ctypes.WinError()
+            # Do not raise an error here yet, so we can properly close the handle.
 
         # Finally, close the handle
-        ctypes.windll.kernel32.CloseHandle(handle)
-        return result
+        windll.kernel32.CloseHandle(handle)
+
+        # If an error happened in the DeviceIoControl, raise it now.
+        if error:
+            raise error
+
+        # Return success
+        return True
