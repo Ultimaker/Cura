@@ -379,7 +379,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     @pyqtSlot("long", "long","long")
     def moveHead(self, x, y, z):
         Logger.log("d","Moving head to %s, %s , %s", x, y, z)
-        self._sendCommand("G0 X%s Y%s Z%s F3000"%(x,y,z))
+        self._sendCommand("G0 X%s Y%s Z%s F3000" % (x, y, z))
 
     @pyqtSlot("long", "long","long")
     def moveHeadRelative(self, x, y, z):
