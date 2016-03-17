@@ -391,6 +391,10 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def homeHead(self):
         self._sendCommand("G28")
 
+    @pyqtSlot()
+    def homeBed(self):
+        self._sendCommand("G28 Z")
+
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
     def _sendCommand(self, cmd):

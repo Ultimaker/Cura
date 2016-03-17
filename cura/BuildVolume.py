@@ -259,7 +259,7 @@ class BuildVolume(SceneNode):
             skirt_line_count = profile.getSettingValue("skirt_line_count")
             skirt_size = skirt_distance + (skirt_line_count * profile.getSettingValue("skirt_line_width"))
         elif adhesion_type == "brim":
-            skirt_size = profile.getSettingValue("brim_width")
+            skirt_size = profile.getSettingValue("brim_line_count") * profile.getSettingValue("skirt_line_width")
         elif adhesion_type == "raft":
             skirt_size = profile.getSettingValue("raft_margin")
 
