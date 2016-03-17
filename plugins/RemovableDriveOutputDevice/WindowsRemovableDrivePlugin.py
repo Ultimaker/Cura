@@ -9,6 +9,7 @@ from . import RemovableDrivePlugin
 
 import string
 import ctypes
+from ctypes import wintypes # Using ctypes.wintypes in the code below does not seem to work
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -29,7 +30,7 @@ OPEN_EXISTING = 3 # [CodeStyle: Windows Enum value]
 
 # Setup the DeviceIoControl function arguments and return type.
 # See ctypes documentation for details on how to call C functions from python, and why this is important.
-windll.kernel32.DeviceIoControl.argtypes = [
+ctypes.windll.kernel32.DeviceIoControl.argtypes = [
     wintypes.HANDLE,                    # _In_          HANDLE hDevice
     wintypes.DWORD,                     # _In_          DWORD dwIoControlCode
     wintypes.LPVOID,                    # _In_opt_      LPVOID lpInBuffer
@@ -39,7 +40,7 @@ windll.kernel32.DeviceIoControl.argtypes = [
     ctypes.POINTER(wintypes.DWORD),     # _Out_opt_     LPDWORD lpBytesReturned
     wintypes.LPVOID                     # _Inout_opt_   LPOVERLAPPED lpOverlapped
 ]
-windll.kernel32.DeviceIoControl.restype = wintypes.BOOL
+ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL
 
 
 ## Removable drive support for windows
@@ -104,7 +105,7 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
         error = None
 
         # Then, try and tell it to eject
-        return_code = windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, 0, None, 0, ctypes.pointer(bytes_returned), None)
+        return_code = ctypes.windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, 0, None, 0, ctypes.pointer(bytes_returned), None)
         # DeviceIoControl with IOCTL_STORAGE_EJECT_MEDIA return 0 on error.
         if return_code == 0:
             # ctypes.WinError sets up an GetLastError API call for windows as an Python OSError exception.
@@ -113,7 +114,7 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
             # Do not raise an error here yet, so we can properly close the handle.
 
         # Finally, close the handle
-        windll.kernel32.CloseHandle(handle)
+        ctypes.windll.kernel32.CloseHandle(handle)
 
         # If an error happened in the DeviceIoControl, raise it now.
         if error:
