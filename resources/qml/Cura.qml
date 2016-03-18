@@ -696,7 +696,7 @@ UM.MainWindow
             folder = f;
 
             UM.MeshFileHandler.readLocalFile(fileUrl)
-            var meshName = backgroundItem.getMeshName(fileUrl.toString(0x0))
+            var meshName = backgroundItem.getMeshName(fileUrl.toString())
             backgroundItem.hasMesh(decodeURIComponent(meshName))
         }
     }
