@@ -110,6 +110,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+
         if not self._enabled:
             return
 
@@ -120,7 +121,6 @@ class CuraEngineBackend(Backend):
                 self._message.hide()
                 self._message = None
 
-            self.slicingCancelled.emit()
             return
 
         if self._process_layers_job:
@@ -156,6 +156,7 @@ class CuraEngineBackend(Backend):
         self._slicing = False
         self._restart = True
         self.slicingCancelled.emit()
+        Logger.log("d", "Attempting to kill the engine process")
         if self._process is not None:
             Logger.log("d", "Killing engine process")
             try:
@@ -283,9 +284,9 @@ class CuraEngineBackend(Backend):
 
     def _onInstanceChanged(self):
         self._terminate()
-        self.slicingCancelled.emit()
 
     def _onBackendQuit(self):
         if not self._restart and self._process:
+            Logger.log("d", "Backend quitted. Resetting process and socket.")
             self._process = None
             self._createSocket()
