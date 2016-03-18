@@ -4,8 +4,6 @@
 from UM.Signal import Signal, SignalEmitter
 from . import PrinterConnection
 from UM.Application import Application
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
@@ -19,9 +17,7 @@ import threading
 import platform
 import glob
 import time
-import os
 import os.path
-import sys
 from UM.Extension import Extension
 
 from PyQt5.QtQuick import QQuickView
@@ -60,7 +56,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
         progress = 0
-        for name, connection in self._printer_connections.items():
+        for printer_name, connection in self._printer_connections.items(): # TODO: @UnusedVariable "printer_name"
             progress += connection.progress
 
         return progress / len(self._printer_connections)
@@ -140,38 +136,39 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         else:
             baudrate = 250000
 
-        machine_without_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
-                                      "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
-                                      "bq_witbox"                : "MarlinWitbox.hex",
-                                      "ultimaker2_go"            : "MarlinUltimaker2go.hex",
-                                      "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
-                                      "ultimaker2"               : "MarlinUltimaker2.hex",
-                                      "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
-                                      "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
-                                      }
-        machine_with_heated_bed    = {"ultimaker_original-HBK-{baudrate}.hex",
-                                      }
+        # NOTE: The keyword used here is the id of the machine. You can find the id of your machine in the *.json file, eg.
+        # https://github.com/Ultimaker/Cura/blob/master/resources/machines/ultimaker_original.json#L2
+        # The *.hex files are stored at a seperate repository:
+        # https://github.com/Ultimaker/cura-binary-data/tree/master/cura/resources/firmware
+        machine_without_extras  = {"bq_witbox"                : "MarlinWitbox.hex",
+                                   "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
+                                   "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
+                                   "ultimaker2"               : "MarlinUltimaker2.hex",
+                                   "ultimaker2_go"            : "MarlinUltimaker2go.hex",
+                                   "ultimaker2plus"           : "MarlinUltimaker2plus.hex",
+                                   "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
+                                   "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
+                                   }
+        machine_with_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
+                                   }
 
         ##TODO: Add check for multiple extruders
-
         hex_file = None
-        if not machine_instance.getMachineSettingValue("machine_heated_bed"):
-           if  machine_type in machine_without_heated_bed.keys():
-               hex_file = machine_without_heated_bed[machine_type]
-           else:
-               Logger.log("e", "There is no firmware for machine %s.", machine_type)
+        if  machine_type in machine_without_extras.keys(): # The machine needs to be defined here!
+            if  machine_type in machine_with_heated_bed.keys() and machine_instance.getMachineSettingValue("machine_heated_bed"):
+                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_type)
+                hex_file = machine_with_heated_bed[machine_type] # Return firmware with heated bed enabled
+            else:
+                Logger.log("d", "Choosing basic firmware for machine %s.", machine_type)
+                hex_file = machine_without_extras[machine_type] # Return "basic" firmware
         else:
-            if  machine_type in machine_with_heated_bed.keys():
-               hex_file = machine_without_heated_bed[machine_type]
-           else:
-               Logger.log("e", "There is no firmware for machine %s with heated bed.", machine_type)
+            Logger.log("e", "There is no firmware for machine %s.", machine_type)
 
         if hex_file:
             return hex_file.format(baudrate=baudrate)
         else:
             Logger.log("e", "Could not find any firmware for machine %s.", machine_type)
             raise FileNotFoundError()
-
 
     def _addRemovePorts(self, serial_ports):
         # First, find and add all new or changed keys

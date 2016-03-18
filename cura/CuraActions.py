@@ -1,10 +1,8 @@
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QUrl
+from PyQt5.QtCore import QObject, pyqtSlot, QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from UM.Event import CallFunctionEvent
 from UM.Application import Application
-
-import webbrowser
 
 class CuraActions(QObject):
     def __init__(self, parent = None):

@@ -2,18 +2,14 @@
 # Copyright (c) 2013 David Braam
 # Uranium is released under the terms of the AGPLv3 or higher.
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 from . import RemovableDrivePlugin
 
-import threading
 import string
-
-from ctypes import windll
-from ctypes import wintypes
-
 import ctypes
-import time
-import os
-import subprocess
+from ctypes import wintypes # Using ctypes.wintypes in the code below does not seem to work
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -32,12 +28,27 @@ IOCTL_STORAGE_EJECT_MEDIA = 2967560 # [CodeStyle: Windows Enum value]
 
 OPEN_EXISTING = 3 # [CodeStyle: Windows Enum value]
 
+# Setup the DeviceIoControl function arguments and return type.
+# See ctypes documentation for details on how to call C functions from python, and why this is important.
+ctypes.windll.kernel32.DeviceIoControl.argtypes = [
+    wintypes.HANDLE,                    # _In_          HANDLE hDevice
+    wintypes.DWORD,                     # _In_          DWORD dwIoControlCode
+    wintypes.LPVOID,                    # _In_opt_      LPVOID lpInBuffer
+    wintypes.DWORD,                     # _In_          DWORD nInBufferSize
+    wintypes.LPVOID,                    # _Out_opt_     LPVOID lpOutBuffer
+    wintypes.DWORD,                     # _In_          DWORD nOutBufferSize
+    ctypes.POINTER(wintypes.DWORD),     # _Out_opt_     LPDWORD lpBytesReturned
+    wintypes.LPVOID                     # _Inout_opt_   LPOVERLAPPED lpOverlapped
+]
+ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL
+
+
 ## Removable drive support for windows
 class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
     def checkRemovableDrives(self):
         drives = {}
 
-        bitmask = windll.kernel32.GetLogicalDrives()
+        bitmask = ctypes.windll.kernel32.GetLogicalDrives()
         # Check possible drive letters, from A to Z
         # Note: using ascii_uppercase because we do not want this to change with locale!
         for letter in string.ascii_uppercase:
@@ -45,11 +56,11 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
 
             # Do we really want to skip A and B?
             # GetDriveTypeA explicitly wants a byte array of type ascii. It will accept a string, but this wont work
-            if bitmask & 1 and windll.kernel32.GetDriveTypeA(drive.encode("ascii")) == DRIVE_REMOVABLE:
+            if bitmask & 1 and ctypes.windll.kernel32.GetDriveTypeA(drive.encode("ascii")) == DRIVE_REMOVABLE:
                 volume_name = ""
                 name_buffer = ctypes.create_unicode_buffer(1024)
                 filesystem_buffer = ctypes.create_unicode_buffer(1024)
-                error = windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(drive), name_buffer, ctypes.sizeof(name_buffer), None, None, None, filesystem_buffer, ctypes.sizeof(filesystem_buffer))
+                error = ctypes.windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(drive), name_buffer, ctypes.sizeof(name_buffer), None, None, None, filesystem_buffer, ctypes.sizeof(filesystem_buffer))
 
                 if error != 0:
                     volume_name = name_buffer.value
@@ -66,7 +77,7 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
 
                 # Check for the free space. Some card readers show up as a drive with 0 space free when there is no card inserted.
                 free_bytes = ctypes.c_longlong(0)
-                if windll.kernel32.GetDiskFreeSpaceExA(drive.encode("ascii"), ctypes.byref(free_bytes), None, None) == 0:
+                if ctypes.windll.kernel32.GetDiskFreeSpaceExA(drive.encode("ascii"), ctypes.byref(free_bytes), None, None) == 0:
                     continue
 
                 if free_bytes.value < 1:
@@ -80,19 +91,34 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
     def performEjectDevice(self, device):
         # Magic WinAPI stuff
         # First, open a handle to the Device
-        handle = windll.kernel32.CreateFileA("\\\\.\\{0}".format(device.getId()[:-1]).encode("ascii"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, None, OPEN_EXISTING, 0, None )
+        handle = ctypes.windll.kernel32.CreateFileA("\\\\.\\{0}".format(device.getId()[:-1]).encode("ascii"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, None, OPEN_EXISTING, 0, None )
 
         if handle == -1:
-            print(windll.kernel32.GetLastError())
-            return
+            # ctypes.WinError sets up an GetLastError API call for windows as an Python OSError exception.
+            # So we use this to raise the error to our caller.
+            raise ctypes.WinError()
 
-        result = None
+        # The DeviceIoControl requires a bytes_returned pointer to be a valid pointer.
+        # So create a ctypes DWORD to reference. (Without this pointer the DeviceIoControl function will crash with an access violation after doing its job.
+        bytes_returned = wintypes.DWORD(0)
+
+        error = None
+
         # Then, try and tell it to eject
-        if not windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, None, None, None, None, None):
-            result = False
-        else:
-            result = True
+        return_code = ctypes.windll.kernel32.DeviceIoControl(handle, IOCTL_STORAGE_EJECT_MEDIA, None, 0, None, 0, ctypes.pointer(bytes_returned), None)
+        # DeviceIoControl with IOCTL_STORAGE_EJECT_MEDIA return 0 on error.
+        if return_code == 0:
+            # ctypes.WinError sets up an GetLastError API call for windows as an Python OSError exception.
+            # So we use this to raise the error to our caller.
+            error = ctypes.WinError()
+            # Do not raise an error here yet, so we can properly close the handle.
 
         # Finally, close the handle
-        windll.kernel32.CloseHandle(handle)
-        return result
+        ctypes.windll.kernel32.CloseHandle(handle)
+
+        # If an error happened in the DeviceIoControl, raise it now.
+        if error:
+            raise error
+
+        # Return success
+        return True

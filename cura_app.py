@@ -4,11 +4,10 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 import sys
-import os
 
-def exceptHook(type, value, traceback):
+def exceptHook(hook_type, value, traceback):
     import cura.CrashHandler
-    cura.CrashHandler.show(type, value, traceback)
+    cura.CrashHandler.show(hook_type, value, traceback)
 
 sys.excepthook = exceptHook
 
@@ -16,7 +15,7 @@ sys.excepthook = exceptHook
 # is a race condition between Arcus and PyQt. Importing Arcus
 # first seems to prevent Sip from going into a state where it
 # tries to create PyQt objects on a non-main thread.
-import Arcus
+import Arcus #@UnusedImport
 import cura.CuraApplication
 
 if sys.platform == "win32" and hasattr(sys, "frozen"):

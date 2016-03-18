@@ -124,16 +124,13 @@ Rectangle {
                 anchors.right: printJobPencilIcon.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width/2
                 height: UM.Theme.getSize("jobspecs_line").height
-                width: __contentWidth + UM.Theme.getSize("default_margin").width
+                width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
                 maximumLength: 120
                 property int unremovableSpacing: 5
                 text: ''
                 horizontalAlignment: TextInput.AlignRight
                 onTextChanged: {
-                    if(text != ''){
-                        //Prevent that jobname is set to an empty string 
-                        Printer.setJobName(text)
-                    }
+                    Printer.setJobName(text)
                 }
                 onEditingFinished: {
                     if (printJobTextfield.text != ''){

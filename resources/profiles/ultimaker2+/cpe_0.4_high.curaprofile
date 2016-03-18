@@ -18,7 +18,6 @@ speed_topbottom = 20
 adhesion_type = brim
 line_width = 0.35
 infill_sparse_density = 22
-machine_nozzle_size = 0.35
 speed_wall_0 = 20
 cool_min_layer_time = 3
 cool_lift_head = True

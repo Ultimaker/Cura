@@ -51,10 +51,10 @@ class LegacyProfileReader(ProfileReader):
     #   \return A set of local variables, one for each setting in the legacy
     #   profile.
     def prepareLocals(self, config_parser, config_section, defaults):
-        locals = defaults.copy() #Don't edit the original!
+        copied_locals = defaults.copy() #Don't edit the original!
         for option in config_parser.options(config_section):
-            locals[option] = config_parser.get(config_section, option)
-        return locals
+            copied_locals[option] = config_parser.get(config_section, option)
+        return copied_locals
 
     ##  Reads a legacy Cura profile from a file and returns it.
     #

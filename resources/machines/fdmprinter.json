@@ -350,6 +350,7 @@
                     "min_value_warning": "0.2",
                     "max_value_warning": "5",
                     "visible": false,
+                    "enabled": "False",
                     "children": {
                         "wall_thickness": {
                             "label": "Wall Thickness",
@@ -357,8 +358,8 @@
                             "unit": "mm",
                             "default": 0.8,
                             "min_value": "0",
-                            "min_value_warning": "0.2",
-                            "max_value_warning": "5",
+                            "min_value_warning": "line_width",
+                            "max_value_warning": "5 * line_width",
                             "type": "float",
                             "visible": true,
                             "children": {
@@ -372,6 +373,17 @@
                                     "inherit_function": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
                                 }
                             }
+                        },
+                        "wall_0_inset": {
+                            "label": "Outer Wall Inset",
+                            "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the object.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.0,
+                            "inherit_function": "(machine_nozzle_size - wall_line_width_0) / 2 if wall_line_width_0 < machine_nozzle_size else 0",
+                            "min_value_warning": "0",
+                            "max_value_warning": "machine_nozzle_size",
+                            "visible": false
                         },
                         "alternate_extra_perimeter": {
                             "label": "Alternate Extra Wall",
@@ -438,12 +450,22 @@
                         }
                     }
                 },
+                
+                "alternate_extra_perimeter": {
+                    "label": "Alternate Extra Wall",
+                    "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false,
+                    "inherit": false
+                },
                 "remove_overlapping_walls_enabled": {
                     "label": "Remove Overlapping Wall Parts",
                     "description": "Remove parts of a wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners.",
                     "type": "boolean",
                     "default": false,
                     "visible": false,
+                    "enabled": "False",
                     "children": {
                         "remove_overlapping_walls_0_enabled": {
                             "label": "Remove Overlapping Outer Wall Parts",
@@ -451,7 +473,8 @@
                             "type": "boolean",
                             "default": false,
                             "visible": false,
-                            "inherit": true
+                            "inherit": true,
+                            "enabled": "False"
                         },
                         "remove_overlapping_walls_x_enabled": {
                             "label": "Remove Overlapping Other Wall Parts",
@@ -655,7 +678,7 @@
                     "type": "string",
                     "default": "[[3.5,200],[7.0,240]]",
                     "enabled": "material_flow_dependent_temperature",
-		    "global_only": true
+                    "global_only": true
                 },
                 "material_standby_temperature": {
                     "label": "Standby Temperature",
@@ -665,6 +688,8 @@
                     "default": 150,
                     "min_value": "0",
                     "max_value_warning": "260",
+                    "enabled": "False",
+                    "enabled_before_removal": "material_flow_dependent_temperature",
                     "global_only": true
                 },
                 "material_extrusion_cool_down_speed": {
@@ -676,7 +701,8 @@
                     "min_value": "0",
                     "max_value_warning": "10.0",
                     "global_only": "True",
-                    "enabled": "material_flow_dependent_temperature or machine_extruder_count > 1",
+                    "enabled": "False",
+                    "enabled_before_removal": "material_flow_dependent_temperature or machine_extruder_count > 1",
                     "visible": false
                 },
                 "material_bed_temperature": {
@@ -1004,22 +1030,20 @@
                     "default": true,
                     "visible": false,
                     "enabled": "retraction_combing",
-                    "global_only": "True",
-                    "children": {
-                        "travel_avoid_distance": {
-                            "label": "Avoid Distance",
-                            "description": "The distance to stay clear of parts which are avoided during travel.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 1.5,
-                            "min_value": "0",
-                            "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
-                            "visible": false,
-                            "inherit": false,
-                            "enabled": "retraction_combing",
-                            "global_only": "True"
-                        }
-                    }
+                    "global_only": "True"
+                },
+                "travel_avoid_distance": {
+                    "label": "Avoid Distance",
+                    "description": "The distance to stay clear of parts which are avoided during travel.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.5,
+                    "min_value": "0",
+                    "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
+                    "visible": false,
+                    "inherit": false,
+                    "enabled": "retraction_combing and travel_avoid_other_parts",
+                    "global_only": "True"
                 },
                 "coasting_enable": {
                     "label": "Enable Coasting",
@@ -1079,45 +1103,44 @@
                     "description": "Enable the cooling fan during the print. The extra cooling from the cooling fan helps parts with small cross sections that print each layer quickly.",
                     "type": "boolean",
                     "default": true,
+                    "global_only": "True"
+                },
+                "cool_fan_speed": {
+                    "label": "Fan Speed",
+                    "description": "Fan speed used for the print cooling fan on the printer head.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value": "100",
+                    "default": 100,
+                    "visible": false,
+                    "inherit_function": "100.0 if cool_fan_enabled else 0.0",
+                    "enabled": "cool_fan_enabled",
                     "global_only": "True",
                     "children": {
-                        "cool_fan_speed": {
-                            "label": "Fan Speed",
-                            "description": "Fan speed used for the print cooling fan on the printer head.",
+                        "cool_fan_speed_min": {
+                            "label": "Minimum Fan Speed",
+                            "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
                             "unit": "%",
                             "type": "float",
                             "min_value": "0",
                             "max_value": "100",
                             "default": 100,
                             "visible": false,
-                            "inherit_function": "100.0 if parent_value else 0.0",
-                            "global_only": "True",
-                            "children": {
-                                "cool_fan_speed_min": {
-                                    "label": "Minimum Fan Speed",
-                                    "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
-                                    "unit": "%",
-                                    "type": "float",
-                                    "min_value": "0",
-                                    "max_value": "min(100, cool_fan_speed_max)",
-                                    "inherit_function": "parent_value",
-                                    "default": 100,
-                                    "visible": false,
-                                    "global_only": "True"
-                                },
-                                "cool_fan_speed_max": {
-                                    "label": "Maximum Fan Speed",
-                                    "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
-                                    "unit": "%",
-                                    "type": "float",
-                                    "min_value": "max(0, cool_fan_speed_min)",
-                                    "max_value": "100",
-                                    "inherit": false,
-                                    "default": 100,
-                                    "visible": false,
-                                    "global_only": "True"
-                                }
-                            }
+                            "enabled": "cool_fan_enabled",
+                            "global_only": "True"
+                        },
+                        "cool_fan_speed_max": {
+                            "label": "Maximum Fan Speed",
+                            "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
+                            "unit": "%",
+                            "type": "float",
+                            "min_value": "0",
+                            "max_value": "100",
+                            "default": 100,
+                            "visible": false,
+                            "enabled": "cool_fan_enabled",
+                            "global_only": "True"
                         }
                     }
                 },
@@ -1307,9 +1330,10 @@
                             "min_value": "0",
                             "max_value_warning": "10",
                             "default": 0.1,
+                            "inherit_function": "0.1 if support_type == 'everywhere' else 0",
                             "type": "float",
                             "visible": false,
-                            "enabled": "support_enable"
+                            "enabled": "support_enable and support_type == 'everywhere'"
                         }
                     }
                 },
@@ -1338,13 +1362,13 @@
                     "label": "Minimal Width",
                     "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
                     "unit": "mm",
-                    "default": 3.0,
+                    "default": 5.0,
                     "min_value": "0",
                     "min_value_warning": "machine_nozzle_size * 3",
                     "max_value_warning": "100.0",
                     "type": "float",
                     "visible": false,
-                    "enabled": "support_enable"
+                    "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_bottom_stair_step_height": {
                     "label": "Stair Step Height",
@@ -1458,17 +1482,6 @@
                     "visible": false,
                     "enabled": "support_enable"
                 },
-                "support_minimal_diameter": {
-                    "label": "Minimum Diameter",
-                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default": 1,
-                    "min_value": "0",
-                    "max_value_warning": "10",
-                    "visible": false,
-                    "enabled": "support_enable"
-                },
                 "support_tower_diameter": {
                     "label": "Tower Diameter",
                     "description": "The diameter of a special tower.",
@@ -1476,25 +1489,22 @@
                     "type": "float",
                     "default": 3.0,
                     "min_value": "0",
-                    "min_value_warning": "support_minimal_diameter",
                     "max_value_warning": "10",
                     "visible": false,
-                    "enabled": "support_enable and support_use_towers",
-                    "children": {
-                        "support_minimal_diameter": {
-                            "label": "Minimum Diameter",
-                            "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 3.0,
-                            "min_value": "0",
-                            "max_value_warning": "10",
-                            "max_value": "support_tower_diameter",
-                            "inherit": true,
-                            "visible": false,
-                            "enabled": "support_enable and support_use_towers"
-                        }
-                    }
+                    "enabled": "support_enable and support_use_towers"
+                },
+                "support_minimal_diameter": {
+                    "label": "Minimum Diameter",
+                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 3.0,
+                    "min_value": "0",
+                    "max_value_warning": "10",
+                    "max_value": "support_tower_diameter",
+                    "inherit": true,
+                    "visible": false,
+                    "enabled": "support_enable and support_use_towers"
                 },
                 "support_tower_roof_angle": {
                     "label": "Tower Roof Angle",
@@ -1575,6 +1585,7 @@
                         "raft": "Raft"
                     },
                     "default": "skirt",
+                    "inherit_function": "\"skirt\" if machine_heated_bed else \"brim\"",
                     "global_only": "True"
                 },
                 "skirt_line_count": {

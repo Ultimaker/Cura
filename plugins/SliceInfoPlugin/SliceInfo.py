@@ -66,7 +66,7 @@ class SliceInfo(Extension):
                 break
 
 
-        profile_values = settings.getChangedSettings()
+        profile_values = settings.getChangedSettings() # TODO: @UnusedVariable
 
         # Get total material used (in mm^3)
         print_information = Application.getInstance().getPrintInformation()

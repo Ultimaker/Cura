@@ -8,15 +8,12 @@ import time
 import queue
 import re
 import functools
-import os
 import os.path
 
 from UM.Application import Application
 from UM.Signal import Signal, SignalEmitter
-from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.OutputDevice.OutputDevice import OutputDevice
-from UM.OutputDevice import OutputDeviceError
 from UM.PluginRegistry import PluginRegistry
 
 from PyQt5.QtQuick import QQuickView
@@ -338,6 +335,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
             try:
                 self._connect_thread.join()
             except Exception as e:
+                Logger.log("d", "PrinterConnection.close: %s (expected)", e)
                 pass # This should work, but it does fail sometimes for some reason
 
         self._connect_thread = threading.Thread(target=self._connect)
@@ -368,14 +366,32 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         Logger.log("d", "Setting bed temperature to %s", temperature)
         self._sendCommand("M140 S%s" % temperature)
 
+    @pyqtSlot()
+    def setMoveToRelative(self):
+        self._sendCommand("G91")
+
+    @pyqtSlot()
+    def setMoveToAbsolute(self):
+        self._sendCommand("G90")
+
     @pyqtSlot("long", "long","long")
     def moveHead(self, x, y, z):
         Logger.log("d","Moving head to %s, %s , %s", x, y, z)
-        self._sendCommand("G0 X%s Y%s Z%s"%(x,y,z))
+        self._sendCommand("G0 X%s Y%s Z%s F3000" % (x, y, z))
+
+    @pyqtSlot("long", "long","long")
+    def moveHeadRelative(self, x, y, z):
+        self.setMoveToRelative()
+        self.moveHead(x,y,z)
+        self.setMoveToAbsolute()
 
     @pyqtSlot()
     def homeHead(self):
-       self._sendCommand("G28")
+        self._sendCommand("G28")
+
+    @pyqtSlot()
+    def homeBed(self):
+        self._sendCommand("G28 Z")
 
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
@@ -458,6 +474,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
             self._extruder_temperatures[index] = temperature
             self.extruderTemperatureChanged.emit()
         except Exception as e:
+            Logger.log("d", "PrinterConnection._setExtruderTemperature: ", e)
             pass
 
     ##  Private function to set the temperature of the bed.
@@ -467,7 +484,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._bed_temperature = temperature
         self.bedTemperatureChanged.emit()
 
-    def requestWrite(self, node, file_name = None):
+    def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self.showControlInterface()
 
     def _setEndstopState(self, endstop_key, value):

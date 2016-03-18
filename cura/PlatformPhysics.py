@@ -5,8 +5,6 @@ from PyQt5.QtCore import QTimer
 
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
-from UM.Operations.TranslateOperation import TranslateOperation
-from UM.Math.Float import Float
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Application import Application
@@ -19,8 +17,6 @@ from . import PlatformPhysicsOperation
 from . import ConvexHullJob
 from . import ZOffsetDecorator
 
-import time
-import threading
 import copy
 
 class PlatformPhysics:
@@ -92,9 +88,7 @@ class PlatformPhysics:
                     job = ConvexHullJob.ConvexHullJob(node)
                     job.start()
                     node.callDecoration("setConvexHullJob", job)
-
-            elif Selection.isSelected(node):
-                pass
+                    
             elif Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
@@ -132,7 +126,7 @@ class PlatformPhysics:
                         else:
                             overlap = node.callDecoration("getConvexHull").intersectsPolygon(other_node.callDecoration("getConvexHull"))
                     except:
-                        overlap = None #It can sometimes occur that the caclulated convex hull has no size, in which case there is no overlap.
+                        overlap = None #It can sometimes occur that the calculated convex hull has no size, in which case there is no overlap.
 
                     if overlap is None:
                         continue

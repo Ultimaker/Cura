@@ -1,29 +1,21 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import platform
-
 from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Scene.Platform import Platform
 from UM.Math.Vector import Vector
-from UM.Math.Matrix import Matrix
 from UM.Math.Quaternion import Quaternion
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Resources import Resources
 from UM.Scene.ToolHandle import ToolHandle
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Mesh.WriteMeshJob import WriteMeshJob
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
-from UM.Message import Message
-from UM.PluginRegistry import PluginRegistry
 from UM.JobQueue import JobQueue
-from UM.Math.Polygon import Polygon
 
-from UM.Scene.BoxRenderer import BoxRenderer
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 
@@ -43,13 +35,12 @@ from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
 
-from PyQt5.QtCore import pyqtSlot, QUrl, Qt, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
+from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtQml import qmlRegisterUncreatableType
 
 import platform
 import sys
-import os
 import os.path
 import numpy
 import copy
@@ -356,7 +347,7 @@ class CuraApplication(QtApplication):
 
         if node:
             op = GroupedOperation()
-            for i in range(count):
+            for _ in range(count):
                 if node.getParent() and node.getParent().callDecoration("isGroup"):
                     new_node = copy.deepcopy(node.getParent()) #Copy the group node.
                     new_node.callDecoration("setConvexHull",None)
@@ -531,6 +522,7 @@ class CuraApplication(QtApplication):
         try:
             group_node = Selection.getAllSelectedObjects()[0]
         except Exception as e:
+            Logger.log("d", "mergeSelected: Exception:", e)
             return
         multi_material_decorator = MultiMaterialDecorator.MultiMaterialDecorator()
         group_node.addDecorator(multi_material_decorator)

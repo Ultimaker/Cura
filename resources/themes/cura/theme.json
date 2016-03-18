@@ -16,26 +16,8 @@
         },
         "small": {
             "size": 1.0,
-            "family": "Open Sans"
-        },
-        "very_small": {
-            "size": 0.75,
-            "family": "Open Sans"
-        },
-        "caption": {
-            "size": 1.0,
-            "family": "Open Sans"
-        },
-        "sidebar_header": {
-            "size": 0.75,
-            "capitalize": true,
-            "family": "Open Sans"
-        },
-        "default_header": {
-            "size": 1.0,
             "bold": true,
-            "family": "Open Sans",
-            "letterSpacing": 2.0
+            "family": "Open Sans"
         },
         "button_tooltip": {
             "size": 1.0,
@@ -43,6 +25,7 @@
         },
         "setting_category": {
             "size": 1.15,
+            "bold": true,
             "family": "Open Sans"
         },
         "action_button": {
@@ -68,7 +51,7 @@
         "text_hover": [70, 84, 113, 255],
         "text_pressed": [12, 169, 227, 255],
         "text_white": [255, 255, 255, 255],
-        "text_subtext": [127, 127, 127, 255],
+        "text_subtext": [70, 84, 113, 255],
 
         "error": [255, 140, 0, 255],
         "sidebar_header_bar": [24, 41, 77, 255],
@@ -138,6 +121,9 @@
         "setting_control_depth_line": [127, 127, 127, 255],
         "setting_control_button": [127, 127, 127, 255],
         "setting_control_button_hover": [70, 84, 113, 255],
+        "setting_control_disabled": [245, 245, 245, 255],
+        "setting_control_disabled_text": [127, 127, 127, 255],
+        "setting_control_disabled_border": [127, 127, 127, 255],
         "setting_unit": [127, 127, 127, 255],
         "setting_validation_error": [255, 57, 14, 255],
         "setting_validation_warning": [255, 186, 15, 255],
@@ -167,10 +153,7 @@
         "message_text": [32, 166, 219, 255],
         "message_dismiss": [127, 127, 127, 255],
 
-        "tool_panel_background": [255, 255, 255, 255],
-
-        "per_object_settings_panel_background": [255, 255, 255, 255],
-        "per_object_settings_panel_border": [127, 127, 127, 255]
+        "tool_panel_background": [255, 255, 255, 255]
     },
 
     "sizes": {
@@ -215,7 +198,6 @@
         "progressbar": [26.0, 0.8],
         "progressbar_radius": [0.4, 0.4],
         "progressbar_control": [8.0, 0.8],
-        "progressbar_padding": [0.0, 1.0],
 
         "scrollbar": [0.75, 0.5],
 
@@ -223,7 +205,6 @@
         "slider_handle": [1.5, 1.5],
         "slider_layerview_size": [1.0, 16.0],
         "slider_layerview_background": [4.0, 0.0],
-        "slider_layerview_smalltext_margin": [0.3, 0.00],
         "slider_layerview_margin": [3.0, 3.0],
 
         "checkbox": [2.0, 2.0],
@@ -233,8 +214,6 @@
         "tooltip_arrow_margins": [2.0, 2.0],
 
         "save_button_text_margin": [0.3, 0.6],
-        "save_button_slicing_bar": [0.0, 2.2],
-        "save_button_label_margin": [0.5, 0.5],
         "save_button_save_to_button": [0.3, 2.7],
         "save_button_specs_icons": [1.4, 1.4],
 
@@ -247,11 +226,6 @@
 
         "infill_button_margin": [0.5, 0.5],
 
-        "per_object_settings_button": [2.0, 2.0],
-        "per_object_settings_panel": [24.0, 10.0],
-        "per_object_settings_panel_border": [0.1, 0.1], 
-
-        "jobspecs": [20, 0],
         "jobspecs_line": [2.0, 2.0]
     }
 }

@@ -77,7 +77,7 @@ UM.MainWindow
                             onTriggered: {
                                 UM.MeshFileHandler.readLocalFile(modelData);
                                 var meshName = backgroundItem.getMeshName(modelData.toString())
-                                backgroundItem.hasMesh(meshName)
+                                backgroundItem.hasMesh(decodeURIComponent(meshName))
                             }
                         }
                         onObjectAdded: recentFilesMenu.insertItem(index, object)
@@ -343,7 +343,7 @@ UM.MainWindow
                             if (i == drop.urls.length - 1)
                             {
                                 var meshName = backgroundItem.getMeshName(drop.urls[i].toString())
-                                backgroundItem.hasMesh(meshName)
+                                backgroundItem.hasMesh(decodeURIComponent(meshName))
                             }
                         }
                     }
@@ -697,7 +697,7 @@ UM.MainWindow
 
             UM.MeshFileHandler.readLocalFile(fileUrl)
             var meshName = backgroundItem.getMeshName(fileUrl.toString())
-            backgroundItem.hasMesh(meshName)
+            backgroundItem.hasMesh(decodeURIComponent(meshName))
         }
     }
 

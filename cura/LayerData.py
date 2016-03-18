@@ -7,8 +7,6 @@ from UM.Math.Color import Color
 from UM.Math.Vector import Vector
 
 import numpy
-import math
-import copy
 
 class LayerData(MeshData):
     def __init__(self):
@@ -20,11 +18,11 @@ class LayerData(MeshData):
         if layer not in self._layers:
             self._layers[layer] = Layer(layer)
 
-    def addPolygon(self, layer, type, data, line_width):
+    def addPolygon(self, layer, polygon_type, data, line_width):
         if layer not in self._layers:
             self.addLayer(layer)
 
-        p = Polygon(self, type, data, line_width)
+        p = Polygon(self, polygon_type, data, line_width)
         self._layers[layer].polygons.append(p)
 
     def getLayer(self, layer):
@@ -69,8 +67,8 @@ class LayerData(MeshData):
         self.addIndices(indices.flatten())
 
 class Layer():
-    def __init__(self, id):
-        self._id = id
+    def __init__(self, layer_id):
+        self._id = layer_id
         self._height = 0.0
         self._thickness = 0.0
         self._polygons = []
@@ -173,9 +171,9 @@ class Polygon():
     MoveCombingType = 8
     MoveRetractionType = 9
 
-    def __init__(self, mesh, type, data, line_width):
+    def __init__(self, mesh, polygon_type, data, line_width):
         self._mesh = mesh
-        self._type = type
+        self._type = polygon_type
         self._data = data
         self._line_width = line_width / 1000
 
