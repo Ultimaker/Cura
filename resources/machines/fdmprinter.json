@@ -1489,7 +1489,6 @@
                     "type": "float",
                     "default": 3.0,
                     "min_value": "0",
-                    "min_value_warning": "support_minimal_diameter",
                     "max_value_warning": "10",
                     "visible": false,
                     "enabled": "support_enable and support_use_towers"
