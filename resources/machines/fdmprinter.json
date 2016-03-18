@@ -1552,8 +1552,7 @@
                         "brim": "Brim",
                         "raft": "Raft"
                     },
-                    "default": "skirt",
-                    "inherit_function": "\"skirt\" if machine_heated_bed else \"brim\"",
+                    "default": "brim",
                     "global_only": "True"
                 },
                 "skirt_line_count": {

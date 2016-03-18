@@ -20,7 +20,6 @@ speed_print = 20
 line_width = 0.22
 infill_sparse_density = 22
 speed_wall_0 = 20
-adhesion_type = brim
 cool_lift_head = True
 cool_fan_speed_min = 50
 

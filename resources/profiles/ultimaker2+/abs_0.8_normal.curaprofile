@@ -15,7 +15,6 @@ speed_wall_x = 30
 wall_thickness = 2.1
 speed_infill = 40
 speed_topbottom = 20
-adhesion_type = brim
 cool_min_speed = 15
 line_width = 0.7
 speed_wall_0 = 20

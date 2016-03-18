@@ -21,7 +21,6 @@ speed_travel = 150
 line_width = 0.35
 infill_sparse_density = 18
 speed_wall_0 = 30
-adhesion_type = brim
 cool_lift_head = True
 cool_fan_speed_min = 50
 

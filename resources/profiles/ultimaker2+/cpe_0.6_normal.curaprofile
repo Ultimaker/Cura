@@ -19,7 +19,6 @@ cool_min_layer_time = 3
 speed_print = 20
 line_width = 0.53
 speed_wall_0 = 20
-adhesion_type = brim
 cool_lift_head = True
 cool_fan_speed_min = 50
 
