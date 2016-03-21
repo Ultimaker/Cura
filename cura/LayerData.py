@@ -177,7 +177,7 @@ class Polygon():
         self._data = data
         self._line_width = line_width / 1000
 
-        self._color = self.__color_map[type]
+        self._color = self.__color_map[polygon_type]
 
     def build(self, offset, vertices, colors, indices):
         self._begin = offset
