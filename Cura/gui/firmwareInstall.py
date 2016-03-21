@@ -44,8 +44,8 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_5_05nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
 			'lulzbot_TAZ_5_035nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
 
-			'lulzbot_TAZ_4_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
-			'lulzbot_TAZ_5_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.1.hex",
+			'lulzbot_TAZ_5_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.1.hex",
 			
 			'lulzbot_TAZ_4_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
 			'lulzbot_TAZ_5_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
