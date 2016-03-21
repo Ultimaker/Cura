@@ -156,6 +156,7 @@ class CuraEngineBackend(Backend):
         self._slicing = False
         self._restart = True
         self.slicingCancelled.emit()
+        self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
         if self._process is not None:
             Logger.log("d", "Killing engine process")
@@ -191,8 +192,7 @@ class CuraEngineBackend(Backend):
     def _onSocketError(self, error):
         super()._onSocketError(error)
 
-        self._slicing = False
-        self.processingProgress.emit(0)
+        self._terminate()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("e", "A socket error caused the connection to be reset")
