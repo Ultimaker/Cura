@@ -1,0 +1,2490 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Uranium json setting files\n"
+"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
+"POT-Creation-Date: 2015-09-12 20:10+0000\n"
+"PO-Revision-Date: 2015-12-01 13:33+0300\n"
+"Last-Translator: Sane Schio <saneschio@gmail.com>\n"
+"Language-Team: Sane Schio <saneschio@gmail.com> | Revison: Carlos Eduardo <email@email.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: fdmprinter.json
+msgctxt "resolution label"
+msgid "Quality"
+msgstr "Qualidade"
+
+#: fdmprinter.json
+msgctxt "layer_height label"
+msgid "Layer Height"
+msgstr "Altura da Camada"
+
+#: fdmprinter.json
+msgctxt "layer_height description"
+msgid ""
+"The height of each layer, in mm. Normal quality prints are 0.1mm, high "
+"quality is 0.06mm. You can go up to 0.25mm with an Ultimaker for very fast "
+"prints at low quality. For most purposes, layer heights between 0.1 and "
+"0.2mm give a good tradeoff of speed and surface finish."
+msgstr "A altura de cada camada, em mm. Impressões normais de qualidade são 0.1 mm, alta"
+"a qualidade é 0.06 mm. Você pode ir até 0.25 mm com um Ultimaker para uma impressão muito rápida"
+"com baixa qualidade. Para a maioria dos fins, alturas da camada de entre 0.1 e"
+"0.2 mm dar uma balanço de velocidade e acabamento de superfície."
+
+#: fdmprinter.json
+msgctxt "layer_height_0 label"
+msgid "Initial Layer Height"
+msgstr "Altura da Camada Inicial"
+
+#: fdmprinter.json
+msgctxt "layer_height_0 description"
+msgid ""
+"The layer height of the bottom layer. A thicker bottom layer makes sticking "
+"to the bed easier."
+msgstr "A Altura da camada de fundo. A camada do fundo mais espessa torna mais facil"
+"a aderencia na mesa aquecida."
+
+#: fdmprinter.json
+msgctxt "line_width label"
+msgid "Line Width"
+msgstr "Largura da Linha"
+
+#: fdmprinter.json
+msgctxt "line_width description"
+msgid ""
+"Width of a single line. Each line will be printed with this width in mind. "
+"Generally the width of each line should correspond to the width of your "
+"nozzle, but for the outer wall and top/bottom surface smaller line widths "
+"may be chosen, for higher quality."
+msgstr "Largura de uma única linha. Cada linha será impresso com essa largura em mente."
+"Em geral, a largura de cada linha deve corresponder à largura do seu"
+"bico, mas para a parede exterior e superfície superior/inferior menores larguras de linha"
+"pode ser escolhidas, para uma maior qualidade."
+
+#: fdmprinter.json
+msgctxt "wall_line_width label"
+msgid "Wall Line Width"
+msgstr "Largura da Linha nas Paredes"
+
+#: fdmprinter.json
+msgctxt "wall_line_width description"
+msgid ""
+"Width of a single shell line. Each line of the shell will be printed with "
+"this width in mind."
+msgstr "Largura de uma única linha na borda. Cada linha da boarda será impresso com"
+"esta largura em mente."
+
+#: fdmprinter.json
+msgctxt "wall_line_width_0 label"
+msgid "Outer Wall Line Width"
+msgstr "Largura da Linha nas Paredes Externas"
+
+#: fdmprinter.json
+msgctxt "wall_line_width_0 description"
+msgid ""
+"Width of the outermost shell line. By printing a thinner outermost wall line "
+"you can print higher details with a larger nozzle."
+msgstr "Largura da linha camada mais externa. Ao imprimir uma linha parede mais externa mais fina"
+"você pode imprimir detalhes superiores com um bico maior."
+
+#: fdmprinter.json
+msgctxt "wall_line_width_x label"
+msgid "Other Walls Line Width"
+msgstr "Largura da Linha em Outras Paredes"
+
+#: fdmprinter.json
+msgctxt "wall_line_width_x description"
+msgid ""
+"Width of a single shell line for all shell lines except the outermost one."
+msgstr "Largura de uma única linha na borda para todas as linhas, exceto a da camada mais externa."
+
+#: fdmprinter.json
+msgctxt "skirt_line_width label"
+msgid "Skirt line width"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_line_width description"
+msgid "Width of a single skirt line."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skin_line_width label"
+msgid "Top/bottom line width"
+msgstr "Largura da Linha Inferior/Superior"
+
+#: fdmprinter.json
+msgctxt "skin_line_width description"
+msgid ""
+"Width of a single top/bottom printed line, used to fill up the top/bottom "
+"areas of a print."
+msgstr "Largura de uma única linha inferiro/superior impressa, usada no preenchimento das areas"
+"inferior/superior "
+
+#: fdmprinter.json
+msgctxt "infill_line_width label"
+msgid "Infill line width"
+msgstr "Largura da linha de preenchimento"
+
+#: fdmprinter.json
+msgctxt "infill_line_width description"
+msgid "Width of the inner infill printed lines."
+msgstr "Largura da linha de preenchimento interno na impressão"
+
+#: fdmprinter.json
+msgctxt "support_line_width label"
+msgid "Support line width"
+msgstr "Largura Das Linhas de Suporte"
+
+#: fdmprinter.json
+msgctxt "support_line_width description"
+msgid "Width of the printed support structures lines."
+msgstr "Largura das linhas da estrutura de suporte."
+
+#: fdmprinter.json
+msgctxt "support_roof_line_width label"
+msgid "Support Roof line width"
+msgstr "Largura Das Linhas no Topo do Suporte"
+
+#: fdmprinter.json
+msgctxt "support_roof_line_width description"
+msgid ""
+"Width of a single support roof line, used to fill the top of the support."
+msgstr "Largura de uma unica linha de suporte, usada para preencher o topo do suporte."
+
+#: fdmprinter.json
+msgctxt "shell label"
+msgid "Shell"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "shell_thickness label"
+msgid "Shell Thickness"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "shell_thickness description"
+msgid ""
+"The thickness of the outside shell in the horizontal and vertical direction. "
+"This is used in combination with the nozzle size to define the number of "
+"perimeter lines and the thickness of those perimeter lines. This is also "
+"used to define the number of solid top and bottom layers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wall_thickness label"
+msgid "Wall Thickness"
+msgstr "Espessura da Parede"
+
+#: fdmprinter.json
+msgctxt "wall_thickness description"
+msgid ""
+"The thickness of the outside walls in the horizontal direction. This is used "
+"in combination with the nozzle size to define the number of perimeter lines "
+"and the thickness of those perimeter lines."
+msgstr "A espessura das paredes exteriores na direção horizontal. Isto é usado"
+"em combinação com o tamanho do bico para definir o número de linhas do perímetro"
+"e a espessura destas linhas de perímetro."
+
+#: fdmprinter.json
+msgctxt "wall_line_count label"
+msgid "Wall Line Count"
+msgstr "Contagem das Linhas da Parede"
+
+#: fdmprinter.json
+msgctxt "wall_line_count description"
+msgid ""
+"Number of shell lines. This these lines are called perimeter lines in other "
+"tools and impact the strength and structural integrity of your print."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "alternate_extra_perimeter label"
+msgid "Alternate Extra Wall"
+msgstr "Parede Extra Alternada"
+
+#: fdmprinter.json
+msgctxt "alternate_extra_perimeter description"
+msgid ""
+"Make an extra wall at every second layer, so that infill will be caught "
+"between an extra wall above and one below. This results in a better cohesion "
+"between infill and walls, but might have an impact on the surface quality."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "top_bottom_thickness label"
+msgid "Bottom/Top Thickness"
+msgstr "Espessura Inferior/Superior"
+
+#: fdmprinter.json
+msgctxt "top_bottom_thickness description"
+msgid ""
+"This controls the thickness of the bottom and top layers, the amount of "
+"solid layers put down is calculated by the layer thickness and this value. "
+"Having this value a multiple of the layer thickness makes sense. And keep it "
+"near your wall thickness to make an evenly strong part."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "top_thickness label"
+msgid "Top Thickness"
+msgstr "Espessura Superior"
+
+#: fdmprinter.json
+msgctxt "top_thickness description"
+msgid ""
+"This controls the thickness of the top layers. The number of solid layers "
+"printed is calculated from the layer thickness and this value. Having this "
+"value be a multiple of the layer thickness makes sense. And keep it nearto "
+"your wall thickness to make an evenly strong part."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "top_layers label"
+msgid "Top Layers"
+msgstr "Camadas Superiores"
+
+#: fdmprinter.json
+msgctxt "top_layers description"
+msgid "This controls the amount of top layers."
+msgstr "Isto controla a quantidade de camadas superiores"
+
+#: fdmprinter.json
+msgctxt "bottom_thickness label"
+msgid "Bottom Thickness"
+msgstr "Espessura Inferior"
+
+#: fdmprinter.json
+msgctxt "bottom_thickness description"
+msgid ""
+"This controls the thickness of the bottom layers. The number of solid layers "
+"printed is calculated from the layer thickness and this value. Having this "
+"value be a multiple of the layer thickness makes sense. And keep it near to "
+"your wall thickness to make an evenly strong part."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "bottom_layers label"
+msgid "Bottom Layers"
+msgstr "Camadas Inferiores"
+
+#: fdmprinter.json
+msgctxt "bottom_layers description"
+msgid "This controls the amount of bottom layers."
+msgstr "Isso controla a quantidade de camadas inferiores"
+
+#: fdmprinter.json
+msgctxt "remove_overlapping_walls_enabled label"
+msgid "Remove Overlapping Wall Parts"
+msgstr "Remover Partes Sobrepostas da Parede"
+
+#: fdmprinter.json
+msgctxt "remove_overlapping_walls_enabled description"
+msgid ""
+"Remove parts of a wall which share an overlap which would result in "
+"overextrusion in some places. These overlaps occur in thin pieces in a model "
+"and sharp corners."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "remove_overlapping_walls_0_enabled label"
+msgid "Remove Overlapping Outer Wall Parts"
+msgstr "Remover Partes Sobrepostas da Parede Externa"
+
+#: fdmprinter.json
+msgctxt "remove_overlapping_walls_0_enabled description"
+msgid ""
+"Remove parts of an outer wall which share an overlap which would result in "
+"overextrusion in some places. These overlaps occur in thin pieces in a model "
+"and sharp corners."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "remove_overlapping_walls_x_enabled label"
+msgid "Remove Overlapping Other Wall Parts"
+msgstr "Remover Partes Sobrepostas de Outras Parede"
+
+#: fdmprinter.json
+msgctxt "remove_overlapping_walls_x_enabled description"
+msgid ""
+"Remove parts of an inner wall which share an overlap which would result in "
+"overextrusion in some places. These overlaps occur in thin pieces in a model "
+"and sharp corners."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "travel_compensate_overlapping_walls_enabled label"
+msgid "Compensate Wall Overlaps"
+msgstr "Compensar Sobreposição da Parede"
+
+#: fdmprinter.json
+msgctxt "travel_compensate_overlapping_walls_enabled description"
+msgid ""
+"Compensate the flow for parts of a wall being laid down where there already "
+"is a piece of a wall. These overlaps occur in thin pieces in a model. Gcode "
+"generation might be slowed down considerably."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "fill_perimeter_gaps label"
+msgid "Fill Gaps Between Walls"
+msgstr "Preencher Lacunas Entre Paredes"
+
+#: fdmprinter.json
+msgctxt "fill_perimeter_gaps description"
+msgid ""
+"Fill the gaps created by walls where they would otherwise be overlapping. "
+"This will also fill thin walls. Optionally only the gaps occurring within "
+"the top and bottom skin can be filled."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "fill_perimeter_gaps option nowhere"
+msgid "Nowhere"
+msgstr "Em Nenhuma Parte"
+
+#: fdmprinter.json
+msgctxt "fill_perimeter_gaps option everywhere"
+msgid "Everywhere"
+msgstr "Em Todas As Partes"
+
+#: fdmprinter.json
+msgctxt "fill_perimeter_gaps option skin"
+msgid "Skin"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "top_bottom_pattern label"
+msgid "Bottom/Top Pattern"
+msgstr "Padrão Superior/Inferior"
+
+#: fdmprinter.json
+msgctxt "top_bottom_pattern description"
+msgid ""
+"Pattern of the top/bottom solid fill. This normally is done with lines to "
+"get the best possible finish, but in some cases a concentric fill gives a "
+"nicer end result."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "top_bottom_pattern option lines"
+msgid "Lines"
+msgstr "Linhas"
+
+#: fdmprinter.json
+msgctxt "top_bottom_pattern option concentric"
+msgid "Concentric"
+msgstr "Concêntrico"
+
+#: fdmprinter.json
+msgctxt "top_bottom_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Zig Zag"
+
+#: fdmprinter.json
+msgctxt "skin_no_small_gaps_heuristic label"
+msgid "Ingore small Z gaps"
+msgstr "Ignorar pequenas laucas Z"
+
+#: fdmprinter.json
+msgctxt "skin_no_small_gaps_heuristic description"
+msgid ""
+"When the model has small vertical gaps about 5% extra computation time can "
+"be spent on generating top and bottom skin in these narrow spaces. In such a "
+"case set this setting to false."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skin_alternate_rotation label"
+msgid "Alternate Skin Rotation"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skin_alternate_rotation description"
+msgid ""
+"Alternate between diagonal skin fill and horizontal + vertical skin fill. "
+"Although the diagonal directions can print quicker, this option can improve "
+"on the printing quality by reducing the pillowing effect."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skin_outline_count label"
+msgid "Skin Perimeter Line Count"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skin_outline_count description"
+msgid ""
+"Number of lines around skin regions. Using one or two skin perimeter lines "
+"can greatly improve on roofs which would start in the middle of infill cells."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "xy_offset label"
+msgid "Horizontal expansion"
+msgstr "Expansão Horizontal"
+
+#: fdmprinter.json
+msgctxt "xy_offset description"
+msgid ""
+"Amount of offset applied all polygons in each layer. Positive values can "
+"compensate for too big holes; negative values can compensate for too small "
+"holes."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "z_seam_type label"
+msgid "Z Seam Alignment"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "z_seam_type description"
+msgid ""
+"Starting point of each part in a layer. When parts in consecutive layers "
+"start at the same point a vertical seam may show on the print. When aligning "
+"these at the back, the seam is easiest to remove. When placed randomly the "
+"inaccuracies at the part start will be less noticable. When taking the "
+"shortest path the print will be more quick."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "z_seam_type option back"
+msgid "Back"
+msgstr "Voltar"
+
+#: fdmprinter.json
+msgctxt "z_seam_type option shortest"
+msgid "Shortest"
+msgstr "Mais Curto"
+
+#: fdmprinter.json
+msgctxt "z_seam_type option random"
+msgid "Random"
+msgstr "Aleatorio"
+
+#: fdmprinter.json
+msgctxt "infill label"
+msgid "Infill"
+msgstr "Preenchimento"
+
+#: fdmprinter.json
+msgctxt "infill_sparse_density label"
+msgid "Infill Density"
+msgstr "Densidade do Preenchimento"
+
+#: fdmprinter.json
+msgctxt "infill_sparse_density description"
+msgid ""
+"This controls how densely filled the insides of your print will be. For a "
+"solid part use 100%, for an hollow part use 0%. A value around 20% is "
+"usually enough. This won't affect the outside of the print and only adjusts "
+"how strong the part becomes."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_line_distance label"
+msgid "Line distance"
+msgstr "Distancia de Linhas"
+
+#: fdmprinter.json
+msgctxt "infill_line_distance description"
+msgid "Distance between the printed infill lines."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_pattern label"
+msgid "Infill Pattern"
+msgstr "Padrão de Preenchimento"
+
+#: fdmprinter.json
+msgctxt "infill_pattern description"
+msgid ""
+"Cura defaults to switching between grid and line infill. But with this "
+"setting visible you can control this yourself. The line infill swaps "
+"direction on alternate layers of infill, while the grid prints the full "
+"cross-hatching on each layer of infill."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_pattern option grid"
+msgid "Grid"
+msgstr "Grade"
+
+#: fdmprinter.json
+msgctxt "infill_pattern option lines"
+msgid "Lines"
+msgstr "Linhas"
+
+#: fdmprinter.json
+msgctxt "infill_pattern option concentric"
+msgid "Concentric"
+msgstr "Concêntrico"
+
+#: fdmprinter.json
+msgctxt "infill_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Zig Zag"
+
+#: fdmprinter.json
+msgctxt "infill_overlap label"
+msgid "Infill Overlap"
+msgstr "Sobreposição de Preenchimento"
+
+#: fdmprinter.json
+msgctxt "infill_overlap description"
+msgid ""
+"The amount of overlap between the infill and the walls. A slight overlap "
+"allows the walls to connect firmly to the infill."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_wipe_dist label"
+msgid "Infill Wipe Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_wipe_dist description"
+msgid ""
+"Distance of a travel move inserted after every infill line, to make the "
+"infill stick to the walls better. This option is imilar to infill overlap, "
+"but without extrusion and only on one end of the infill line."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_sparse_thickness label"
+msgid "Infill Thickness"
+msgstr "Espessura do Preenchimento"
+
+#: fdmprinter.json
+msgctxt "infill_sparse_thickness description"
+msgid ""
+"The thickness of the sparse infill. This is rounded to a multiple of the "
+"layerheight and used to print the sparse-infill in fewer, thicker layers to "
+"save printing time."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_sparse_combine label"
+msgid "Infill Layers"
+msgstr "Preenchimento das Camadas"
+
+#: fdmprinter.json
+msgctxt "infill_sparse_combine description"
+msgid "Amount of layers that are combined together to form sparse infill."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "infill_before_walls label"
+msgid "Infill Before Walls"
+msgstr "Preenchimento antes da Paredes"
+
+#: fdmprinter.json
+msgctxt "infill_before_walls description"
+msgid ""
+"Print the infill before printing the walls. Printing the walls first may "
+"lead to more accurate walls, but overhangs print worse. Printing the infill "
+"first leads to sturdier walls, but the infill pattern might sometimes show "
+"through the surface."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "material label"
+msgid "Material"
+msgstr "Material"
+
+#: fdmprinter.json
+msgctxt "material_print_temperature label"
+msgid "Printing Temperature"
+msgstr "Temperatura de Impressão"
+
+#: fdmprinter.json
+msgctxt "material_print_temperature description"
+msgid ""
+"The temperature used for printing. Set at 0 to pre-heat yourself. For PLA a "
+"value of 210C is usually used.\n"
+"For ABS a value of 230C or higher is required."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "material_bed_temperature label"
+msgid "Bed Temperature"
+msgstr "Temperatura da Mesa Aquecida"
+
+#: fdmprinter.json
+msgctxt "material_bed_temperature description"
+msgid ""
+"The temperature used for the heated printer bed. Set at 0 to pre-heat it "
+"yourself."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Diametro"
+
+#: fdmprinter.json
+msgctxt "material_diameter description"
+msgid ""
+"The diameter of your filament needs to be measured as accurately as "
+"possible.\n"
+"If you cannot measure this value you will have to calibrate it, a higher "
+"number means less extrusion, a smaller number generates more extrusion."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "material_flow label"
+msgid "Flow"
+msgstr "Fluxo"
+
+#: fdmprinter.json
+msgctxt "material_flow description"
+msgid ""
+"Flow compensation: the amount of material extruded is multiplied by this "
+"value."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_enable label"
+msgid "Enable Retraction"
+msgstr "Habilitar Retração"
+
+#: fdmprinter.json
+msgctxt "retraction_enable description"
+msgid ""
+"Retract the filament when the nozzle is moving over a non-printed area. "
+"Details about the retraction can be configured in the advanced tab."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_amount label"
+msgid "Retraction Distance"
+msgstr "Distrancia de Retração"
+
+#: fdmprinter.json
+msgctxt "retraction_amount description"
+msgid ""
+"The amount of retraction: Set at 0 for no retraction at all. A value of "
+"4.5mm seems to generate good results for 3mm filament in Bowden-tube fed "
+"printers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_speed label"
+msgid "Retraction Speed"
+msgstr "Velocidade de Retração"
+
+#: fdmprinter.json
+msgctxt "retraction_speed description"
+msgid ""
+"The speed at which the filament is retracted. A higher retraction speed "
+"works better, but a very high retraction speed can lead to filament grinding."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_retract_speed label"
+msgid "Retraction Retract Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_retract_speed description"
+msgid ""
+"The speed at which the filament is retracted. A higher retraction speed "
+"works better, but a very high retraction speed can lead to filament grinding."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_prime_speed description"
+msgid "The speed at which the filament is pushed back after retraction."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_extra_prime_amount label"
+msgid "Retraction Extra Prime Amount"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_extra_prime_amount description"
+msgid ""
+"The amount of material extruded after unretracting. During a retracted "
+"travel material might get lost and so we need to compensate for this."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_min_travel label"
+msgid "Retraction Minimum Travel"
+msgstr "Retração Minima de Deslocamento"
+
+#: fdmprinter.json
+msgctxt "retraction_min_travel description"
+msgid ""
+"The minimum distance of travel needed for a retraction to happen at all. "
+"This helps ensure you do not get a lot of retractions in a small area."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_count_max label"
+msgid "Maximal Retraction Count"
+msgstr "Contagem de Retração Maxima"
+
+#: fdmprinter.json
+msgctxt "retraction_count_max description"
+msgid ""
+"This settings limits the number of retractions occuring within the Minimal "
+"Extrusion Distance Window. Further retractions within this window will be "
+"ignored. This avoids retracting repeatedly on the same piece of filament as "
+"that can flatten the filament and cause grinding issues."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_extrusion_window label"
+msgid "Minimal Extrusion Distance Window"
+msgstr "Distancia Minima da Janela de Extrusão"
+
+#: fdmprinter.json
+msgctxt "retraction_extrusion_window description"
+msgid ""
+"The window in which the Maximal Retraction Count is enforced. This window "
+"should be approximately the size of the Retraction distance, so that "
+"effectively the number of times a retraction passes the same patch of "
+"material is limited."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_hop label"
+msgid "Z Hop when Retracting"
+msgstr "Salto Z durante Retração"
+
+#: fdmprinter.json
+msgctxt "retraction_hop description"
+msgid ""
+"Whenever a retraction is done, the head is lifted by this amount to travel "
+"over the print. A value of 0.075 works well. This feature has a lot of "
+"positive effect on delta towers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed label"
+msgid "Speed"
+msgstr "Velocidade"
+
+#: fdmprinter.json
+msgctxt "speed_print label"
+msgid "Print Speed"
+msgstr "Velocidade de Impressão"
+
+#: fdmprinter.json
+msgctxt "speed_print description"
+msgid ""
+"The speed at which printing happens. A well-adjusted Ultimaker can reach "
+"150mm/s, but for good quality prints you will want to print slower. Printing "
+"speed depends on a lot of factors, so you will need to experiment with "
+"optimal settings for this."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_infill label"
+msgid "Infill Speed"
+msgstr "Velocidade de Preenchimento"
+
+#: fdmprinter.json
+msgctxt "speed_infill description"
+msgid ""
+"The speed at which infill parts are printed. Printing the infill faster can "
+"greatly reduce printing time, but this can negatively affect print quality."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_wall label"
+msgid "Shell Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_wall description"
+msgid ""
+"The speed at which shell is printed. Printing the outer shell at a lower "
+"speed improves the final skin quality."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_wall_0 label"
+msgid "Outer Shell Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_wall_0 description"
+msgid ""
+"The speed at which outer shell is printed. Printing the outer shell at a "
+"lower speed improves the final skin quality. However, having a large "
+"difference between the inner shell speed and the outer shell speed will "
+"effect quality in a negative way."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_wall_x label"
+msgid "Inner Shell Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_wall_x description"
+msgid ""
+"The speed at which  all inner shells are printed. Printing the inner shell "
+"fasster than the outer shell will reduce printing time. It is good to set "
+"this in between the outer shell speed and the infill speed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_topbottom label"
+msgid "Top/Bottom Speed"
+msgstr "Velocidade Inferior/Superior"
+
+#: fdmprinter.json
+msgctxt "speed_topbottom description"
+msgid ""
+"Speed at which top/bottom parts are printed. Printing the top/bottom faster "
+"can greatly reduce printing time, but this can negatively affect print "
+"quality."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_support label"
+msgid "Support Speed"
+msgstr "Velocidade de Suporte"
+
+#: fdmprinter.json
+msgctxt "speed_support description"
+msgid ""
+"The speed at which exterior support is printed. Printing exterior supports "
+"at higher speeds can greatly improve printing time. And the surface quality "
+"of exterior support is usually not important, so higher speeds can be used."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_support_lines label"
+msgid "Support Wall Speed"
+msgstr "Velocidade da Parede de Suporte"
+
+#: fdmprinter.json
+msgctxt "speed_support_lines description"
+msgid ""
+"The speed at which the walls of exterior support are printed. Printing the "
+"walls at higher speeds can improve on the overall duration. "
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_support_roof label"
+msgid "Support Roof Speed"
+msgstr "Velocidade do Teto do Suporte"
+
+#: fdmprinter.json
+msgctxt "speed_support_roof description"
+msgid ""
+"The speed at which the roofs of exterior support are printed. Printing the "
+"support roof at lower speeds can improve on overhang quality. "
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_travel label"
+msgid "Travel Speed"
+msgstr "Velocidade de Deslocamento"
+
+#: fdmprinter.json
+msgctxt "speed_travel description"
+msgid ""
+"The speed at which travel moves are done. A well-built Ultimaker can reach "
+"speeds of 250mm/s. But some machines might have misaligned layers then."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_layer_0 label"
+msgid "Bottom Layer Speed"
+msgstr "Velocidade da Camada Inferior"
+
+#: fdmprinter.json
+msgctxt "speed_layer_0 description"
+msgid ""
+"The print speed for the bottom layer: You want to print the first layer "
+"slower so it sticks to the printer bed better."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_speed label"
+msgid "Skirt Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_speed description"
+msgid ""
+"The speed at which the skirt and brim are printed. Normally this is done at "
+"the initial layer speed. But sometimes you want to print the skirt at a "
+"different speed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "speed_slowdown_layers label"
+msgid "Amount of Slower Layers"
+msgstr "Quantidade de Camadas Lentas"
+
+#: fdmprinter.json
+msgctxt "speed_slowdown_layers description"
+msgid ""
+"The first few layers are printed slower then the rest of the object, this to "
+"get better adhesion to the printer bed and improve the overall success rate "
+"of prints. The speed is gradually increased over these layers. 4 layers of "
+"speed-up is generally right for most materials and printers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "travel label"
+msgid "Travel"
+msgstr "Deslocamento"
+
+#: fdmprinter.json
+msgctxt "retraction_combing label"
+msgid "Enable Combing"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "retraction_combing description"
+msgid ""
+"Combing keeps the head within the interior of the print whenever possible "
+"when traveling from one part of the print to another, and does not use "
+"retraction. If combing is disabled the printer head moves straight from the "
+"start point to the end point and it will always retract."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "travel_avoid_other_parts label"
+msgid "Avoid Printed Parts"
+msgstr "Evitar Partes Impressas"
+
+#: fdmprinter.json
+msgctxt "travel_avoid_other_parts description"
+msgid "Avoid other parts when traveling between parts."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "travel_avoid_distance label"
+msgid "Avoid Distance"
+msgstr "Evitar Distancias"
+
+#: fdmprinter.json
+msgctxt "travel_avoid_distance description"
+msgid "The distance to stay clear of parts which are avoided during travel."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_enable label"
+msgid "Enable Coasting"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_enable description"
+msgid ""
+"Coasting replaces the last part of an extrusion path with a travel path. The "
+"oozed material is used to lay down the last piece of the extrusion path in "
+"order to reduce stringing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_volume label"
+msgid "Coasting Volume"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_volume description"
+msgid ""
+"The volume otherwise oozed. This value should generally be close to the "
+"nozzle diameter cubed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_volume_retract label"
+msgid "Retract-Coasting Volume"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_volume_retract description"
+msgid "The volume otherwise oozed in a travel move with retraction."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_volume_move label"
+msgid "Move-Coasting Volume"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_volume_move description"
+msgid "The volume otherwise oozed in a travel move without retraction."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_min_volume label"
+msgid "Minimal Volume Before Coasting"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_min_volume description"
+msgid ""
+"The least volume an extrusion path should have to coast the full amount. For "
+"smaller extrusion paths, less pressure has been built up in the bowden tube "
+"and so the coasted volume is scaled linearly."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_min_volume_retract label"
+msgid "Min Volume Retract-Coasting"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_min_volume_retract description"
+msgid ""
+"The minimal volume an extrusion path must have in order to coast the full "
+"amount before doing a retraction."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_min_volume_move label"
+msgid "Min Volume Move-Coasting"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_min_volume_move description"
+msgid ""
+"The minimal volume an extrusion path must have in order to coast the full "
+"amount before doing a travel move without retraction."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_speed label"
+msgid "Coasting Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_speed description"
+msgid ""
+"The speed by which to move during coasting, relative to the speed of the "
+"extrusion path. A value slightly under 100% is advised, since during the "
+"coasting move, the pressure in the bowden tube drops."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_speed_retract label"
+msgid "Retract-Coasting Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_speed_retract description"
+msgid ""
+"The speed by which to move during coasting before a retraction, relative to "
+"the speed of the extrusion path."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_speed_move label"
+msgid "Move-Coasting Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "coasting_speed_move description"
+msgid ""
+"The speed by which to move during coasting before a travel move without "
+"retraction, relative to the speed of the extrusion path."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cooling label"
+msgid "Cooling"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_enabled label"
+msgid "Enable Cooling Fan"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_enabled description"
+msgid ""
+"Enable the cooling fan during the print. The extra cooling from the cooling "
+"fan helps parts with small cross sections that print each layer quickly."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed label"
+msgid "Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed description"
+msgid "Fan speed used for the print cooling fan on the printer head."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_min label"
+msgid "Minimum Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_min description"
+msgid ""
+"Normally the fan runs at the minimum fan speed. If the layer is slowed down "
+"due to minimum layer time, the fan speed adjusts between minimum and maximum "
+"fan speed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_max label"
+msgid "Maximum Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_speed_max description"
+msgid ""
+"Normally the fan runs at the minimum fan speed. If the layer is slowed down "
+"due to minimum layer time, the fan speed adjusts between minimum and maximum "
+"fan speed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_at_height label"
+msgid "Fan Full on at Height"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_at_height description"
+msgid ""
+"The height at which the fan is turned on completely. For the layers below "
+"this the fan speed is scaled linearly with the fan off for the first layer."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_layer label"
+msgid "Fan Full on at Layer"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_fan_full_layer description"
+msgid ""
+"The layer number at which the fan is turned on completely. For the layers "
+"below this the fan speed is scaled linearly with the fan off for the first "
+"layer."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_min_layer_time label"
+msgid "Minimal Layer Time"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_min_layer_time description"
+msgid ""
+"The minimum time spent in a layer: Gives the layer time to cool down before "
+"the next one is put on top. If a layer would print in less time, then the "
+"printer will slow down to make sure it has spent at least this many seconds "
+"printing the layer."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_min_layer_time_fan_speed_max label"
+msgid "Minimal Layer Time Full Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_min_layer_time_fan_speed_max description"
+msgid ""
+"The minimum time spent in a layer which will cause the fan to be at maximum "
+"speed. The fan speed increases linearly from minimal fan speed for layers "
+"taking minimal layer time to maximum fan speed for layers taking the time "
+"specified here."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_min_speed label"
+msgid "Minimum Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_min_speed description"
+msgid ""
+"The minimum layer time can cause the print to slow down so much it starts to "
+"droop. The minimum feedrate protects against this. Even if a print gets "
+"slowed down it will never be slower than this minimum speed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_lift_head label"
+msgid "Lift Head"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "cool_lift_head description"
+msgid ""
+"Lift the head away from the print if the minimum speed is hit because of "
+"cool slowdown, and wait the extra time away from the print surface until the "
+"minimum layer time is used up."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support label"
+msgid "Support"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_enable label"
+msgid "Enable Support"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_enable description"
+msgid ""
+"Enable exterior support structures. This will build up supporting structures "
+"below the model to prevent the model from sagging or printing in mid air."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_type label"
+msgid "Placement"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_type description"
+msgid ""
+"Where to place support structures. The placement can be restricted such that "
+"the support structures won't rest on the model, which could otherwise cause "
+"scarring."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_type option buildplate"
+msgid "Touching Buildplate"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_type option everywhere"
+msgid "Everywhere"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_angle label"
+msgid "Overhang Angle"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_angle description"
+msgid ""
+"The maximum angle of overhangs for which support will be added. With 0 "
+"degrees being vertical, and 90 degrees being horizontal. A smaller overhang "
+"angle leads to more support."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_xy_distance label"
+msgid "X/Y Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_xy_distance description"
+msgid ""
+"Distance of the support structure from the print, in the X/Y directions. "
+"0.7mm typically gives a nice distance from the print so the support does not "
+"stick to the surface."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_z_distance label"
+msgid "Z Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_z_distance description"
+msgid ""
+"Distance from the top/bottom of the support to the print. A small gap here "
+"makes it easier to remove the support but makes the print a bit uglier. "
+"0.15mm allows for easier separation of the support structure."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_top_distance label"
+msgid "Top Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_top_distance description"
+msgid "Distance from the top of the support to the print."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_bottom_distance label"
+msgid "Bottom Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_bottom_distance description"
+msgid "Distance from the print to the bottom of the support."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_conical_enabled label"
+msgid "Conical Support"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_conical_enabled description"
+msgid ""
+"Experimental feature: Make support areas smaller at the bottom than at the "
+"overhang."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_conical_angle label"
+msgid "Cone Angle"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_conical_angle description"
+msgid ""
+"The angle of the tilt of conical support. With 0 degrees being vertical, and "
+"90 degrees being horizontal. Smaller angles cause the support to be more "
+"sturdy, but consist of more material. Negative angles cause the base of the "
+"support to be wider than the top."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_conical_min_width label"
+msgid "Minimal Width"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_conical_min_width description"
+msgid ""
+"Minimal width to which conical support reduces the support areas. Small "
+"widths can cause the base of the support to not act well as fundament for "
+"support above."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_bottom_stair_step_height label"
+msgid "Stair Step Height"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_bottom_stair_step_height description"
+msgid ""
+"The height of the steps of the stair-like bottom of support resting on the "
+"model. Small steps can cause the support to be hard to remove from the top "
+"of the model."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_join_distance label"
+msgid "Join Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_join_distance description"
+msgid ""
+"The maximum distance between support blocks, in the X/Y directions, such "
+"that the blocks will merge into a single block."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_offset label"
+msgid "Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_offset description"
+msgid ""
+"Amount of offset applied to all support polygons in each layer. Positive "
+"values can smooth out the support areas and result in more sturdy support."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_area_smoothing label"
+msgid "Area Smoothing"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_area_smoothing description"
+msgid ""
+"Maximal distance in the X/Y directions of a line segment which is to be "
+"smoothed out. Ragged lines are introduced by the join distance and support "
+"bridge, which cause the machine to resonate. Smoothing the support areas "
+"won't cause them to break with the constraints, except it might change the "
+"overhang."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_enable label"
+msgid "Enable Support Roof"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_enable description"
+msgid ""
+"Generate a dense top skin at the top of the support on which the model sits."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_height label"
+msgid "Support Roof Thickness"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_height description"
+msgid "The height of the support roofs. "
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_density label"
+msgid "Support Roof Density"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_density description"
+msgid ""
+"This controls how densely filled the roofs of the support will be. A higher "
+"percentage results in better overhangs, which are more difficult to remove."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_line_distance label"
+msgid "Support Roof Line Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_line_distance description"
+msgid "Distance between the printed support roof lines."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_pattern label"
+msgid "Support Roof Pattern"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_pattern description"
+msgid "The pattern with which the top of the support is printed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_pattern option lines"
+msgid "Lines"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_pattern option grid"
+msgid "Grid"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_pattern option triangles"
+msgid "Triangles"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_pattern option concentric"
+msgid "Concentric"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_roof_pattern option zigzag"
+msgid "Zig Zag"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_use_towers label"
+msgid "Use towers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_use_towers description"
+msgid ""
+"Use specialized towers to support tiny overhang areas. These towers have a "
+"larger diameter than the region they support. Near the overhang the towers' "
+"diameter decreases, forming a roof."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_minimal_diameter label"
+msgid "Minimal Diameter"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_minimal_diameter description"
+msgid ""
+"Maximal diameter in the X/Y directions of a small area which is to be "
+"supported by a specialized support tower. "
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_tower_diameter label"
+msgid "Tower Diameter"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_tower_diameter description"
+msgid "The diameter of a special tower. "
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_tower_roof_angle label"
+msgid "Tower Roof Angle"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_tower_roof_angle description"
+msgid ""
+"The angle of the rooftop of a tower. Larger angles mean more pointy towers. "
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_pattern label"
+msgid "Pattern"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_pattern description"
+msgid ""
+"Cura supports 3 distinct types of support structure. First is a grid based "
+"support structure which is quite solid and can be removed as 1 piece. The "
+"second is a line based support structure which has to be peeled off line by "
+"line. The third is a structure in between the other two; it consists of "
+"lines which are connected in an accordeon fashion."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_pattern option lines"
+msgid "Lines"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_pattern option grid"
+msgid "Grid"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_pattern option triangles"
+msgid "Triangles"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_pattern option concentric"
+msgid "Concentric"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_pattern option zigzag"
+msgid "Zig Zag"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_connect_zigzags label"
+msgid "Connect ZigZags"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_connect_zigzags description"
+msgid ""
+"Connect the ZigZags. Makes them harder to remove, but prevents stringing of "
+"disconnected zigzags."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_infill_rate label"
+msgid "Fill Amount"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_infill_rate description"
+msgid ""
+"The amount of infill structure in the support, less infill gives weaker "
+"support which is easier to remove."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_line_distance label"
+msgid "Line distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_line_distance description"
+msgid "Distance between the printed support lines."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "platform_adhesion label"
+msgid "Platform Adhesion"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "adhesion_type label"
+msgid "Type"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "adhesion_type description"
+msgid ""
+"Different options that help in preventing corners from lifting due to "
+"warping. Brim adds a single-layer-thick flat area around your object which "
+"is easy to cut off afterwards, and it is the recommended option. Raft adds a "
+"thick grid below the object and a thin interface between this and your "
+"object. (Note that enabling the brim or raft disables the skirt.)"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "adhesion_type option skirt"
+msgid "Skirt"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "adhesion_type option brim"
+msgid "Brim"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "adhesion_type option raft"
+msgid "Raft"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_line_count label"
+msgid "Skirt Line Count"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_line_count description"
+msgid ""
+"The skirt is a line drawn around the first layer of the. This helps to prime "
+"your extruder, and to see if the object fits on your platform. Setting this "
+"to 0 will disable the skirt. Multiple skirt lines can help to prime your "
+"extruder better for small objects."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_gap label"
+msgid "Skirt Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_gap description"
+msgid ""
+"The horizontal distance between the skirt and the first layer of the print.\n"
+"This is the minimum distance, multiple skirt lines will extend outwards from "
+"this distance."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_minimal_length label"
+msgid "Skirt Minimum Length"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "skirt_minimal_length description"
+msgid ""
+"The minimum length of the skirt. If this minimum length is not reached, more "
+"skirt lines will be added to reach this minimum length. Note: If the line "
+"count is set to 0 this is ignored."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "brim_line_count label"
+msgid "Brim Line Count"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "brim_line_count description"
+msgid ""
+"The amount of lines used for a brim: More lines means a larger brim which "
+"sticks better, but this also makes your effective print area smaller."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_margin label"
+msgid "Raft Extra Margin"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_margin description"
+msgid ""
+"If the raft is enabled, this is the extra raft area around the object which "
+"is also given a raft. Increasing this margin will create a stronger raft "
+"while using more material and leaving less area for your print."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_airgap label"
+msgid "Raft Air-gap"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_airgap description"
+msgid ""
+"The gap between the final raft layer and the first layer of the object. Only "
+"the first layer is raised by this amount to lower the bonding between the "
+"raft layer and the object. Makes it easier to peel off the raft."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_layers label"
+msgid "Raft Surface Layers"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_layers description"
+msgid ""
+"The number of surface layers on top of the 2nd raft layer. These are fully "
+"filled layers that the object sits on. 2 layers usually works fine."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_thickness label"
+msgid "Raft Surface Thickness"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_thickness description"
+msgid "Layer thickness of the surface raft layers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_line_width label"
+msgid "Raft Surface Line Width"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_line_width description"
+msgid ""
+"Width of the lines in the surface raft layers. These can be thin lines so "
+"that the top of the raft becomes smooth."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_line_spacing label"
+msgid "Raft Surface Spacing"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_line_spacing description"
+msgid ""
+"The distance between the raft lines for the surface raft layers. The spacing "
+"of the interface should be equal to the line width, so that the surface is "
+"solid."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_thickness label"
+msgid "Raft Interface Thickness"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_thickness description"
+msgid "Layer thickness of the interface raft layer."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_line_width label"
+msgid "Raft Interface Line Width"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_line_width description"
+msgid ""
+"Width of the lines in the interface raft layer. Making the second layer "
+"extrude more causes the lines to stick to the bed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_line_spacing label"
+msgid "Raft Interface Spacing"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_line_spacing description"
+msgid ""
+"The distance between the raft lines for the interface raft layer. The "
+"spacing of the interface should be quite wide, while being dense enough to "
+"support the surface raft layers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_thickness label"
+msgid "Raft Base Thickness"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_thickness description"
+msgid ""
+"Layer thickness of the base raft layer. This should be a thick layer which "
+"sticks firmly to the printer bed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_line_width label"
+msgid "Raft Base Line Width"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_line_width description"
+msgid ""
+"Width of the lines in the base raft layer. These should be thick lines to "
+"assist in bed adhesion."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_line_spacing label"
+msgid "Raft Line Spacing"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_line_spacing description"
+msgid ""
+"The distance between the raft lines for the base raft layer. Wide spacing "
+"makes for easy removal of the raft from the build plate."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_speed label"
+msgid "Raft Print Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_speed description"
+msgid "The speed at which the raft is printed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_speed label"
+msgid "Raft Surface Print Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_speed description"
+msgid ""
+"The speed at which the surface raft layers are printed. This should be "
+"printed a bit slower, so that the nozzle can slowly smooth out adjacent "
+"surface lines."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_speed label"
+msgid "Raft Interface Print Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_speed description"
+msgid ""
+"The speed at which the interface raft layer is printed. This should be "
+"printed quite slowly, as the amount of material coming out of the nozzle is "
+"quite high."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_speed label"
+msgid "Raft Base Print Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_speed description"
+msgid ""
+"The speed at which the base raft layer is printed. This should be printed "
+"quite slowly, as the amount of material coming out of the nozzle is quite "
+"high."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_fan_speed label"
+msgid "Raft Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_fan_speed description"
+msgid "The fan speed for the raft."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_fan_speed label"
+msgid "Raft Surface Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_surface_fan_speed description"
+msgid "The fan speed for the surface raft layers."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_fan_speed label"
+msgid "Raft Interface Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_interface_fan_speed description"
+msgid "The fan speed for the interface raft layer."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_fan_speed label"
+msgid "Raft Base Fan Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "raft_base_fan_speed description"
+msgid "The fan speed for the base raft layer."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_enabled label"
+msgid "Enable Draft Shield"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_enabled description"
+msgid ""
+"Enable exterior draft shield. This will create a wall around the object "
+"which traps (hot) air and shields against gusts of wind. Especially useful "
+"for materials which warp easily."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_dist label"
+msgid "Draft Shield X/Y Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_dist description"
+msgid "Distance of the draft shield from the print, in the X/Y directions."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation label"
+msgid "Draft Shield Limitation"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation description"
+msgid "Whether to limit the height of the draft shield"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation option full"
+msgid "Full"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation option limited"
+msgid "Limited"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height label"
+msgid "Draft Shield Height"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height description"
+msgid ""
+"Height limitation on the draft shield. Above this height no draft shield "
+"will be printed."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix label"
+msgid "Mesh Fixes"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_union_all label"
+msgid "Union Overlapping Volumes"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_union_all description"
+msgid ""
+"Ignore the internal geometry arising from overlapping volumes and print the "
+"volumes as one. This may cause internal cavaties to disappear."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_union_all_remove_holes label"
+msgid "Remove All Holes"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_union_all_remove_holes description"
+msgid ""
+"Remove the holes in each layer and keep only the outside shape. This will "
+"ignore any invisible internal geometry. However, it also ignores layer holes "
+"which can be viewed from above or below."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_extensive_stitching label"
+msgid "Extensive Stitching"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_extensive_stitching description"
+msgid ""
+"Extensive stitching tries to stitch up open holes in the mesh by closing the "
+"hole with touching polygons. This option can introduce a lot of processing "
+"time."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_keep_open_polygons label"
+msgid "Keep Disconnected Faces"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "meshfix_keep_open_polygons description"
+msgid ""
+"Normally Cura tries to stitch up small holes in the mesh and remove parts of "
+"a layer with big holes. Enabling this option keeps those parts which cannot "
+"be stitched. This option should be used as a last resort option when all "
+"else doesn produce proper GCode."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "blackmagic label"
+msgid "Special Modes"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "print_sequence label"
+msgid "Print sequence"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "print_sequence description"
+msgid ""
+"Whether to print all objects one layer at a time or to wait for one object "
+"to finish, before moving on to the next. One at a time mode is only possible "
+"if all models are separated such that the whole print head can move between "
+"and all models are lower than the distance between the nozzle and the X/Y "
+"axles."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "print_sequence option all_at_once"
+msgid "All at Once"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "print_sequence option one_at_a_time"
+msgid "One at a Time"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_mesh_surface_mode label"
+msgid "Surface Mode"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_mesh_surface_mode description"
+msgid ""
+"Print the surface instead of the volume. No infill, no top/bottom skin, just "
+"a single wall of which the middle coincides with the surface of the mesh. "
+"It's also possible to do both: print the insides of a closed volume as "
+"normal, but print all polygons not part of a closed volume as surface."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_mesh_surface_mode option normal"
+msgid "Normal"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_mesh_surface_mode option surface"
+msgid "Surface"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_mesh_surface_mode option both"
+msgid "Both"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_spiralize label"
+msgid "Spiralize Outer Contour"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_spiralize description"
+msgid ""
+"Spiralize smooths out the Z move of the outer edge. This will create a "
+"steady Z increase over the whole print. This feature turns a solid object "
+"into a single walled print with a solid bottom. This feature used to be "
+"called ‘Joris’ in older versions."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_enabled label"
+msgid "Fuzzy Skin"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_enabled description"
+msgid ""
+"Randomly jitter while printing the outer wall, so that the surface has a "
+"rough and fuzzy look."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_thickness label"
+msgid "Fuzzy Skin Thickness"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_thickness description"
+msgid ""
+"The width within which to jitter. It's advised to keep this below the outer "
+"wall width, since the inner walls are unaltered."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_point_density label"
+msgid "Fuzzy Skin Density"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_point_density description"
+msgid ""
+"The average density of points introduced on each polygon in a layer. Note "
+"that the original points of the polygon are discarded, so a low density "
+"results in a reduction of the resolution."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_point_dist label"
+msgid "Fuzzy Skin Point Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "magic_fuzzy_skin_point_dist description"
+msgid ""
+"The average distance between the random points introduced on each line "
+"segment. Note that the original points of the polygon are discarded, so a "
+"high smoothness results in a reduction of the resolution. This value must be "
+"higher than half the Fuzzy Skin Thickness."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_enabled label"
+msgid "Wire Printing"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_enabled description"
+msgid ""
+"Print only the outside surface with a sparse webbed structure, printing 'in "
+"thin air'. This is realized by horizontally printing the contours of the "
+"model at given Z intervals which are connected via upward and diagonally "
+"downward lines."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_height label"
+msgid "WP Connection Height"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_height description"
+msgid ""
+"The height of the upward and diagonally downward lines between two "
+"horizontal parts. This determines the overall density of the net structure. "
+"Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_inset label"
+msgid "WP Roof Inset Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_inset description"
+msgid ""
+"The distance covered when making a connection from a roof outline inward. "
+"Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed label"
+msgid "WP speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed description"
+msgid ""
+"Speed at which the nozzle moves when extruding material. Only applies to "
+"Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_bottom label"
+msgid "WP Bottom Printing Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_bottom description"
+msgid ""
+"Speed of printing the first layer, which is the only layer touching the "
+"build platform. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_up label"
+msgid "WP Upward Printing Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_up description"
+msgid ""
+"Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_down label"
+msgid "WP Downward Printing Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_down description"
+msgid ""
+"Speed of printing a line diagonally downward. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_flat label"
+msgid "WP Horizontal Printing Speed"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_printspeed_flat description"
+msgid ""
+"Speed of printing the horizontal contours of the object. Only applies to "
+"Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flow label"
+msgid "WP Flow"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flow description"
+msgid ""
+"Flow compensation: the amount of material extruded is multiplied by this "
+"value. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_connection label"
+msgid "WP Connection Flow"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_connection description"
+msgid "Flow compensation when going up or down. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_flat label"
+msgid "WP Flat Flow"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flow_flat description"
+msgid ""
+"Flow compensation when printing flat lines. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_top_delay label"
+msgid "WP Top Delay"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_top_delay description"
+msgid ""
+"Delay time after an upward move, so that the upward line can harden. Only "
+"applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_bottom_delay label"
+msgid "WP Bottom Delay"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_bottom_delay description"
+msgid ""
+"Delay time after a downward move. Only applies to Wire Printing. Only "
+"applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flat_delay label"
+msgid "WP Flat Delay"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_flat_delay description"
+msgid ""
+"Delay time between two horizontal segments. Introducing such a delay can "
+"cause better adhesion to previous layers at the connection points, while too "
+"large delay times cause sagging. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_up_half_speed label"
+msgid "WP Ease Upward"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_up_half_speed description"
+msgid ""
+"Distance of an upward move which is extruded with half speed.\n"
+"This can cause better adhesion to previous layers, while not heating the "
+"material in those layers too much. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_top_jump label"
+msgid "WP Knot Size"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_top_jump description"
+msgid ""
+"Creates a small knot at the top of an upward line, so that the consecutive "
+"horizontal layer has a better chance to connect to it. Only applies to Wire "
+"Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_fall_down label"
+msgid "WP Fall Down"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_fall_down description"
+msgid ""
+"Distance with which the material falls down after an upward extrusion. This "
+"distance is compensated for. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_drag_along label"
+msgid "WP Drag along"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_drag_along description"
+msgid ""
+"Distance with which the material of an upward extrusion is dragged along "
+"with the diagonally downward extrusion. This distance is compensated for. "
+"Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_strategy label"
+msgid "WP Strategy"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_strategy description"
+msgid ""
+"Strategy for making sure two consecutive layers connect at each connection "
+"point. Retraction lets the upward lines harden in the right position, but "
+"may cause filament grinding. A knot can be made at the end of an upward line "
+"to heighten the chance of connecting to it and to let the line cool; however "
+"it may require slow printing speeds. Another strategy is to compensate for "
+"the sagging of the top of an upward line; however, the lines won't always "
+"fall down as predicted."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_strategy option compensate"
+msgid "Compensate"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_strategy option knot"
+msgid "Knot"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_strategy option retract"
+msgid "Retract"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_straight_before_down label"
+msgid "WP Straighten Downward Lines"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_straight_before_down description"
+msgid ""
+"Percentage of a diagonally downward line which is covered by a horizontal "
+"line piece. This can prevent sagging of the top most point of upward lines. "
+"Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_fall_down label"
+msgid "WP Roof Fall Down"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_fall_down description"
+msgid ""
+"The distance which horizontal roof lines printed 'in thin air' fall down "
+"when being printed. This distance is compensated for. Only applies to Wire "
+"Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_drag_along label"
+msgid "WP Roof Drag Along"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_drag_along description"
+msgid ""
+"The distance of the end piece of an inward line which gets dragged along "
+"when going back to the outer outline of the roof. This distance is "
+"compensated for. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_outer_delay label"
+msgid "WP Roof Outer Delay"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_roof_outer_delay description"
+msgid ""
+"Time spent at the outer perimeters of hole which is to become a roof. Larger "
+"times can ensure a better connection. Only applies to Wire Printing."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_nozzle_clearance label"
+msgid "WP Nozzle Clearance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "wireframe_nozzle_clearance description"
+msgid ""
+"Distance between the nozzle and horizontally downward lines. Larger "
+"clearance results in diagonally downward lines with a less steep angle, "
+"which in turn results in less upward connections with the next layer. Only "
+"applies to Wire Printing."
+msgstr ""
