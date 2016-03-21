@@ -20,24 +20,35 @@ def getDefaultFirmware(machineIndex = None):
 	firmwareDict = {
 			'ultimaker2go':"MarlinUltimaker2go.hex",
 			'Witbox':"MarlinWitbox.hex",
+			
+			#Mini
 			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
 			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2015Q2.hex",
+			
+			#TAZ Budaschnozzle
 			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			'lulzbot_TAZ_5_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_4_05nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
-			'lulzbot_TAZ_5_05nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
-			'lulzbot_TAZ_4_035nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
-			'lulzbot_TAZ_5_035nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
 			'lulzbot_TAZ_4_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			'lulzbot_TAZ_5_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_4_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
-			'lulzbot_TAZ_5_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			
 			'lulzbot_TAZ_4_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 			'lulzbot_TAZ_5_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_4_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
-			'lulzbot_TAZ_5_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
 			'lulzbot_TAZ_4_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 			'lulzbot_TAZ_5_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+
+			#TAZ Hexagon
+			'lulzbot_TAZ_4_05nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_4_035nozzle': "Taz4-Single-Extruder-LBHexagon-2015Q3.hex",
+			
+			'lulzbot_TAZ_5_05nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_035nozzle': "Taz5-Single-Extruder-LBHexagon-2015Q3.hex",
+
+			'lulzbot_TAZ_4_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_FlexystruderV2': "Taz4-5-Flexystruder-LBHexagon-2015Q3.hex",
+			
+			'lulzbot_TAZ_4_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
+			'lulzbot_TAZ_5_DualV2': "Taz4-5-Dual-LBHexagon-2015Q3.hex",
+			
 			'lulzbot_TAZ_4_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex",
 			'lulzbot_TAZ_5_FlexyDuallyV2': "Taz4-5-FlexyDually-LBHexagon-2015Q3.hex"
 	}
