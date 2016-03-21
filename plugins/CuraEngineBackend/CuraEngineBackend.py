@@ -163,6 +163,7 @@ class CuraEngineBackend(Backend):
             try:
                 self._process.terminate()
                 self._process = None
+                self._createSocket() # Re create the socket
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occured while trying to kill the engine %s", str(e))
             Logger.log("d", "Engine process is killed")
