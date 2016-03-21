@@ -24,7 +24,7 @@ def getDefaultFirmware(machineIndex = None):
 			
 			#Mini
 			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
-			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2015Q3.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
 			
 			#TAZ Budaschnozzle
 			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
