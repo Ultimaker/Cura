@@ -380,7 +380,7 @@ msgstr "Einstellungstool pro Objekt"
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:15
 msgctxt "@info:whatsthis"
 msgid "Provides the Per Object Settings."
-msgstr "Bietet die Einstellungen pro Objekt"
+msgstr "Bietet die Einstellungen pro Objekt."
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:19
 msgctxt "@label"
