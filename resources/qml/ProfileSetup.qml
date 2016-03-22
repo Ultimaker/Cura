@@ -15,6 +15,9 @@ Item{
     property Action manageProfilesAction
     property Action addProfileAction
 
+    signal showTooltip(Item item, point location, string text)
+    signal hideTooltip()
+
     Rectangle{
         id: globalProfileRow
         anchors.top: base.top
@@ -133,6 +136,12 @@ Item{
             iconSource: UM.Theme.getIcon("star");
 
             onClicked: base.manageProfilesAction.trigger()
+            onEntered:
+            {
+                var content = catalog.i18nc("@tooltip","Some setting values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                base.showTooltip(globalProfileRow, Qt.point(0, globalProfileRow.height / 2),  content)
+            }
+            onExited: base.hideTooltip()
         }
     }
 }
