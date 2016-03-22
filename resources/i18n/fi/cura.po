@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 2.1\n"
@@ -38,13 +37,11 @@ msgid "Open Web Page"
 msgstr "Avaa verkkosivu"
 
 #: /home/tamara/2.1/Cura/cura/CuraApplication.py:158
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Asetetaan näkymää..."
 
 #: /home/tamara/2.1/Cura/cura/CuraApplication.py:192
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Ladataan käyttöliittymää..."
@@ -61,26 +58,22 @@ msgid "Cura Profile Reader"
 msgstr "Cura-profiilin lukija"
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for importing Cura profiles."
 msgstr "Tukee Cura-profiilien tuontia."
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:21
 #: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:21
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura-profiili"
 
 #: /home/tamara/2.1/Cura/plugins/XRayView/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "X-Ray View"
 msgstr "Kerrosnäkymä"
 
 #: /home/tamara/2.1/Cura/plugins/XRayView/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the X-Ray view."
 msgstr "Näyttää kerrosnäkymän."
@@ -173,13 +166,11 @@ msgid "Provides removable drive hotplugging and writing support"
 msgstr "Tukee irrotettavan aseman kytkemistä lennossa ja sille kirjoittamista"
 
 #: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/ChangeLog.py:34
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Show Changelog"
 msgstr "Näytä muutosloki"
 
 #: /home/tamara/2.1/Cura/plugins/ChangeLogPlugin/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Changelog"
 msgstr "Muutosloki"
@@ -206,7 +197,6 @@ msgid "CuraEngine Backend"
 msgstr "CuraEngine-taustaosa"
 
 #: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the link to the CuraEngine slicing backend"
 msgstr "Linkki CuraEngine-viipalointiin taustalla"
@@ -222,7 +212,6 @@ msgid "Writes GCode to a file"
 msgstr "Kirjoittaa GCodea tiedostoon"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:22
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "GCode File"
 msgstr "GCode-tiedosto"
@@ -233,7 +222,6 @@ msgid "Firmware"
 msgstr "Laiteohjelmisto"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/USBPrinterManager.py:50
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Update Firmware"
 msgstr "Päivitä laiteohjelmisto"
@@ -291,19 +279,16 @@ msgid "Submits anonymous slice info. Can be disabled through preferences."
 msgstr "Lähettää anonyymiä viipalointitietoa. Voidaan lisäasetuksista kytkeä pois käytöstä."
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Cura Profile Writer"
 msgstr "Cura-profiilin kirjoitin"
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Tukee Cura-profiilien vientiä."
 
 #: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Image Reader"
 msgstr "Kuvanlukija"
@@ -339,37 +324,31 @@ msgid "GIF Image"
 msgstr "GIF-kuva"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "GCode Profile Reader"
 msgstr "GCode-profiilin lukija"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for importing profiles from g-code files."
 msgstr "Tukee profiilien tuontia GCode-tiedostoista."
 
 #: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:21
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "GCode-tiedosto"
 
 #: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Solid View"
 msgstr "Kiinteä näkymä"
 
 #: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides a normal solid mesh view."
 msgstr "Näyttää normaalin kiinteän verkkonäkymän."
 
 #: /home/tamara/2.1/Cura/plugins/SolidView/__init__.py:19
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Solid"
 msgstr "Kiinteä"
@@ -405,13 +384,11 @@ msgid "Per Object Settings Tool"
 msgstr "Kappalekohtaisten asetusten työkalu"
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the Per Object Settings."
 msgstr "Näyttää kappalekohtaiset asetukset."
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:19
-#, fuzzy
 msgctxt "@label"
 msgid "Per Object Settings"
 msgstr "Kappalekohtaiset asetukset"
@@ -427,7 +404,6 @@ msgid "Legacy Cura Profile Reader"
 msgstr "Aikaisempien Cura-profiilien lukija"
 
 #: /home/tamara/2.1/Cura/plugins/LegacyProfileReader/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for importing profiles from legacy Cura versions."
 msgstr "Tukee profiilien tuontia aikaisemmista Cura-versioista."
@@ -443,19 +419,16 @@ msgid "Firmware Update"
 msgstr "Laiteohjelmiston päivitys"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:38
-#, fuzzy
 msgctxt "@label"
 msgid "Starting firmware update, this may take a while."
 msgstr "Käynnistetään laiteohjelmiston päivitystä, mikä voi kestää hetken."
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:43
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update completed."
 msgstr "Laiteohjelmiston päivitys suoritettu."
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:48
-#, fuzzy
 msgctxt "@label"
 msgid "Updating firmware."
 msgstr "Päivitetään laiteohjelmistoa."
@@ -463,7 +436,6 @@ msgstr "Päivitetään laiteohjelmistoa."
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/FirmwareUpdateWindow.qml:80
 #: /home/tamara/2.1/Cura/resources/qml/EngineLog.qml:38
 #: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:74
-#, fuzzy
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Sulje"
@@ -474,19 +446,16 @@ msgid "Print with USB"
 msgstr "Tulostus USB:n kautta"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:28
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder Temperature %1"
 msgstr "Suulakkeen lämpötila %1"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:33
-#, fuzzy
 msgctxt "@label"
 msgid "Bed Temperature %1"
 msgstr "Pöydän lämpötila %1"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/ControlWindow.qml:60
-#, fuzzy
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Tulosta"
@@ -495,7 +464,6 @@ msgstr "Tulosta"
 #: /home/tamara/2.1/Cura/plugins/ImageReader/ConfigUI.qml:200
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:303
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:58
-#, fuzzy
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Peruuta"
@@ -592,7 +560,6 @@ msgid "Object profile"
 msgstr "Kappaleprofiili"
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:126
-#, fuzzy
 msgctxt "@action:button"
 msgid "Add Setting"
 msgstr "Lisää asetus"
@@ -618,19 +585,16 @@ msgid "0.0 m"
 msgstr "0,0 m"
 
 #: /home/tamara/2.1/Cura/resources/qml/JobSpecs.qml:218
-#, fuzzy
 msgctxt "@label"
 msgid "%1 m"
 msgstr "%1 m"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarHeader.qml:29
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Print Job"
 msgstr "Tulostustyö"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarHeader.qml:50
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Printer:"
 msgstr "Tulostin:"
@@ -641,7 +605,6 @@ msgid "Nozzle:"
 msgstr "Suutin:"
 
 #: /home/tamara/2.1/Cura/resources/qml/Sidebar.qml:89
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Setup"
 msgstr "Asetukset"
@@ -657,20 +620,17 @@ msgid "Advanced"
 msgstr "Laajennettu"
 
 #: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:18
-#, fuzzy
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Lisää tulostin"
 
 #: /home/tamara/2.1/Cura/resources/qml/AddMachineWizard.qml:25
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:99
-#, fuzzy
 msgctxt "@title"
 msgid "Add Printer"
 msgstr "Lisää tulostin"
 
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:15
-#, fuzzy
 msgctxt "@title:window"
 msgid "Load profile"
 msgstr "Lataa profiili"
@@ -689,7 +649,6 @@ msgid "Show details."
 msgstr "Näytä tiedot."
 
 #: /home/tamara/2.1/Cura/resources/qml/LoadProfileDialog.qml:50
-#, fuzzy
 msgctxt "@action:button"
 msgid "Merge settings"
 msgstr "Yhdistä asetukset"
@@ -700,13 +659,11 @@ msgid "Reset profile"
 msgstr "Nollaa profiili"
 
 #: /home/tamara/2.1/Cura/resources/qml/ProfileSetup.qml:28
-#, fuzzy
 msgctxt "@label"
 msgid "Profile:"
 msgstr "Profiili:"
 
 #: /home/tamara/2.1/Cura/resources/qml/EngineLog.qml:15
-#, fuzzy
 msgctxt "@title:window"
 msgid "Engine Log"
 msgstr "Moottorin loki"
@@ -717,67 +674,56 @@ msgid "Toggle Fu&ll Screen"
 msgstr "Vaihda &koko näyttöön"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:57
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "&Kumoa"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:65
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "Tee &uudelleen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:73
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "&Lopeta"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:81
-#, fuzzy
 msgctxt "@action:inmenu menubar:settings"
 msgid "&Preferences..."
 msgstr "&Lisäasetukset..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:88
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "L&isää tulostin..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:94
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Tulostinten &hallinta..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:101
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Profiilien hallinta..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:108
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Näytä sähköinen &dokumentaatio"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:115
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "Ilmoita &virheestä"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:122
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "&About..."
 msgstr "Ti&etoja..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:129
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete &Selection"
 msgstr "&Poista valinta"
@@ -793,19 +739,16 @@ msgid "Ce&nter Object on Platform"
 msgstr "K&eskitä kappale alustalle"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:150
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Objects"
 msgstr "&Ryhmitä kappaleet"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:158
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Objects"
 msgstr "Pura kappaleiden ryhmitys"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:166
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Objects"
 msgstr "&Yhdistä kappaleet"
@@ -816,37 +759,31 @@ msgid "&Duplicate Object"
 msgstr "&Monista kappale"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:181
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Clear Build Platform"
 msgstr "&Tyhjennä alusta"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:189
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "Re&load All Objects"
 msgstr "&Lataa kaikki kappaleet uudelleen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:196
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Object Positions"
 msgstr "Nollaa kaikkien kappaleiden sijainnit"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:202
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Object &Transformations"
 msgstr "Nollaa kaikkien kappaleiden m&uunnokset"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:208
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File..."
 msgstr "&Avaa tiedosto..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:216
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
 msgstr "Näytä moottorin l&oki"
@@ -862,7 +799,6 @@ msgid "Hollow"
 msgstr "Ontto"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:239
-#, fuzzy
 msgctxt "@label"
 msgid "No (0%) infill will leave your model hollow at the cost of low strength"
 msgstr "Ei (0 %) täyttöä jättää mallin ontoksi ja lujuudeltaan alhaiseksi"
@@ -873,7 +809,6 @@ msgid "Light"
 msgstr "Harva"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:245
-#, fuzzy
 msgctxt "@label"
 msgid "Light (20%) infill will give your model an average strength"
 msgstr "Harva (20 %) täyttö antaa mallille keskimääräisen lujuuden"
@@ -934,7 +869,6 @@ msgid "General"
 msgstr "Yleiset"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:51
-#, fuzzy
 msgctxt "@label"
 msgid "Language:"
 msgstr "Kieli:"
@@ -982,14 +916,12 @@ msgid "Ensure objects are kept apart"
 msgstr "Pidä kappaleet erillään"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:131
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid ""
 "Should opened files be scaled to the build volume if they are too large?"
 msgstr "Pitäisikö avoimia tiedostoja skaalata rakennustilavuuteen, jos ne ovat liian isoja?"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:136
-#, fuzzy
 msgctxt "@option:check"
 msgid "Scale large files"
 msgstr "Skaalaa isot tiedostot"
@@ -1003,13 +935,11 @@ msgid ""
 msgstr "Pitäisikö anonyymejä tietoja tulosteesta lähettää Ultimakerille? Huomaa, että malleja, IP-osoitteita tai muita henkilökohtaisia tietoja ei lähetetä eikä tallenneta."
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:150
-#, fuzzy
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "Lähetä (anonyymit) tulostustiedot"
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:16
-#, fuzzy
 msgctxt "@title:window"
 msgid "View"
 msgstr "Näytä"
@@ -1022,7 +952,6 @@ msgid ""
 msgstr "Korostaa mallin vailla tukea olevat alueet punaisella. Ilman tukea nämä alueet eivät tulostu kunnolla."
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:42
-#, fuzzy
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "Näytä uloke"
@@ -1156,7 +1085,6 @@ msgid "Extruder driver ugrades"
 msgstr "Suulakekäytön päivitykset"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:63
-#, fuzzy
 msgctxt "@option:check"
 msgid "Heated printer bed"
 msgstr "Lämmitetty tulostinpöytä"
@@ -1176,7 +1104,6 @@ msgid ""
 msgstr "Jos olet hankkinut Ultimakerin lokakuun 2012 jälkeen, sinulla on suulakekäytön päivityspaketti (Extruder drive). Ellei sinulla ole tätä päivitystä, sitä suositellaan luotettavuuden parantamiseksi. Tämä päivityspaketti voidaan ostaa Ultimakerin verkkokaupasta, ja se löytyy thingiverse-sivustolta numerolla 26094"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:108
-#, fuzzy
 msgctxt "@label"
 msgid "Please select the type of printer:"
 msgstr "Valitse tulostimen tyyppi:"
@@ -1189,7 +1116,6 @@ msgid ""
 msgstr "Tämä tulostimen nimi on jo käytössä. Valitse toinen tulostimen nimi."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/AddMachine.qml:245
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Printer Name:"
 msgstr "Tulostimen nimi:"
@@ -1284,7 +1210,6 @@ msgid "Preparing to slice..."
 msgstr "Valmistellaan viipalointia..."
 
 #: /home/tamara/2.1/Cura/resources/qml/SaveButton.qml:28
-#, fuzzy
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "Viipaloidaan..."
@@ -1316,165 +1241,149 @@ msgid ""
 msgstr "Cura-ohjelman on kehittänyt Ultimaker B.V. yhteistyössä käyttäjäyhteisön kanssa."
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:16
-#, fuzzy
 msgctxt "@title:window"
 msgid "Cura"
 msgstr "Cura"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:53
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&Tiedosto"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:62
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "Avaa &viimeisin"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:92
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
 msgstr "&Tallenna valinta tiedostoon"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:100
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Save &All"
 msgstr "Tallenna &kaikki"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:128
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "&Muokkaa"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:145
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Näytä"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:167
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Printer"
 msgstr "&Tulostin"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:213
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&rofile"
 msgstr "&Profiili"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:240
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "Laa&jennukset"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:273
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Asetukset"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:281
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "&Ohje"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:366
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open File"
 msgstr "Avaa tiedosto"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:410
-#, fuzzy
 msgctxt "@action:button"
 msgid "View Mode"
 msgstr "Näyttötapa"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:495
-#, fuzzy
 msgctxt "@title:tab"
 msgid "View"
 msgstr "Näytä"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:644
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open file"
 msgstr "Avaa tiedosto"
 
-#~ msgctxt "@label"
-#~ msgid "Variant:"
-#~ msgstr "Variantti:"
+msgctxt "@label"
+msgid "Variant:"
+msgstr "Variantti:"
 
-#~ msgctxt "@label"
-#~ msgid "Global Profile:"
-#~ msgstr "Yleisprofiili:"
+msgctxt "@label"
+msgid "Global Profile:"
+msgstr "Yleisprofiili:"
 
-#~ msgctxt "@option:check"
-#~ msgid "Heated printer bed (standard kit)"
-#~ msgstr "Lämmitetty tulostinpöytä (normaali sarja)"
+msgctxt "@option:check"
+msgid "Heated printer bed (standard kit)"
+msgstr "Lämmitetty tulostinpöytä (normaali sarja)"
 
-#~ msgctxt "@option:check"
-#~ msgid "Dual extrusion (experimental)"
-#~ msgstr "Kaksoispursotus (kokeellinen)"
+msgctxt "@option:check"
+msgid "Dual extrusion (experimental)"
+msgstr "Kaksoispursotus (kokeellinen)"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Bulgarian"
-#~ msgstr "bulgaria"
+msgctxt "@item:inlistbox"
+msgid "Bulgarian"
+msgstr "Bulgaria"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Czech"
-#~ msgstr "tsekki"
+msgctxt "@item:inlistbox"
+msgid "Czech"
+msgstr "Tsekki"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Italian"
-#~ msgstr "italia"
+msgctxt "@item:inlistbox"
+msgid "Italian"
+msgstr "Italia"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Russian"
-#~ msgstr "venäjä"
+msgctxt "@item:inlistbox"
+msgid "Russian"
+msgstr "Venäjä"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Spanish"
-#~ msgstr "espanja"
+msgctxt "@item:inlistbox"
+msgid "Spanish"
+msgstr "Espanja"
 
-#~ msgctxt "@label:textbox"
-#~ msgid "Printjob Name"
-#~ msgstr "Tulostustyön nimi"
+msgctxt "@label:textbox"
+msgid "Printjob Name"
+msgstr "Tulostustyön nimi"
 
-#~ msgctxt "@label"
-#~ msgid "Sparse"
-#~ msgstr "Harva"
+msgctxt "@label"
+msgid "Sparse"
+msgstr "Harva"
 
-#~ msgctxt "@option:check"
-#~ msgid "Enable Skirt Adhesion"
-#~ msgstr "Ota helman tarttuvuus käyttöön"
+msgctxt "@option:check"
+msgid "Enable Skirt Adhesion"
+msgstr "Ota helman tarttuvuus käyttöön"
 
-#~ msgctxt "@option:check"
-#~ msgid "Enable Support"
-#~ msgstr "Ota tuki käyttöön"
+msgctxt "@option:check"
+msgid "Enable Support"
+msgstr "Ota tuki käyttöön"
 
-#~ msgctxt "@label:listbox"
-#~ msgid "Machine:"
-#~ msgstr "Laite:"
+msgctxt "@label:listbox"
+msgid "Machine:"
+msgstr "Laite:"
 
-#~ msgctxt "@title:menu"
-#~ msgid "&Machine"
-#~ msgstr "&Laite"
+msgctxt "@title:menu"
+msgid "&Machine"
+msgstr "&Laite"
 
-#~ msgctxt "Save button tooltip"
-#~ msgid "Save to Disk"
-#~ msgstr "Tallenna levylle"
+msgctxt "Save button tooltip"
+msgid "Save to Disk"
+msgstr "Tallenna levylle"
 
-#~ msgctxt "Message action tooltip, {0} is sdcard"
-#~ msgid "Eject SD Card {0}"
-#~ msgstr "Poista SD-kortti {0}"
+msgctxt "Message action tooltip, {0} is sdcard"
+msgid "Eject SD Card {0}"
+msgstr "Poista SD-kortti {0}"
