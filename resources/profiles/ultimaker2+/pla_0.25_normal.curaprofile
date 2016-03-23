@@ -20,5 +20,4 @@ speed_wall_0 = 20
 speed_wall_x = 25
 speed_topbottom = 20
 speed_layer_0 = 25
-speed_slowdown_layers = 2
 cool_min_layer_time_fan_speed_max = 15
