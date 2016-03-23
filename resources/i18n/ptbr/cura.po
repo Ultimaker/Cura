@@ -1,7 +1,7 @@
-# SOME DESCRIPTIVE TITLE.
+# Portuguese trans
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# FIRST AUTHOR <jasaneschio@gmail.com>, 2016.
 #
 #, fuzzy
 msgid ""
@@ -10,8 +10,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-12 20:10+0200\n"
 "PO-Revision-Date: 2015-12-01 11:14+0300\n"
-"Last-Translator: Sane Schio <saneschio@gmail.com>\n"
-"Language-Team: Sane Schio <saneschio@gmail.com> | Revison: Carlos Eduardo <email@email.com>\n"
+"Last-Translator: Jasane Schio <jasaneschio@gmail.com>\n"
+"Language-Team: Jasane Schio <jasaneschio@gmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,12 +41,12 @@ msgstr "Abrir Web Page"
 #: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:135
 msgctxt "@info:progress"
 msgid "Setting up scene..."
-msgstr "Configurar Cena"
+msgstr "Configurando Cena..."
 
 #: /home/ahiemstra/dev/15.10/src/cura/cura/CuraApplication.py:169
 msgctxt "@info:progress"
 msgid "Loading interface..."
-msgstr "Carregando Inverface"
+msgstr "Carregando Inverface..."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:12
 msgctxt "@label"
@@ -56,7 +56,7 @@ msgstr "Leitor 3MF"
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:15
 msgctxt "@info:whatsthis"
 msgid "Provides support for reading 3MF files."
-msgstr "Oferece suporte para leitura de arquivos 3MF"
+msgstr "Oferece suporte para leitura de arquivos 3MF."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/3MFReader/__init__.py:20
 msgctxt "@item:inlistbox"
@@ -81,7 +81,7 @@ msgstr "Sistema CuraEngine"
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/__init__.py:15
 msgctxt "@info:whatsthis"
 msgid "Provides the link to the CuraEngine slicing backend"
-msgstr "Oferecer o link para o Sistema de Fatiamento CuraEngine  "
+msgstr "Oferecer o link para o Sistema de Fatiamento CuraEngine "
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:30
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/CuraEngineBackend/ProcessSlicedObjectListJob.py:111
@@ -162,7 +162,7 @@ msgstr "Ejetar unidade removivel {0}"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
-msgstr "Não foi possivel salvar unidade removivel {0}:{1}"
+msgstr "Não foi possivel salvar em unidade removivel {0}: {1}"
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/WindowsRemovableDrivePlugin.py:58
 msgctxt "@item:intext"
@@ -173,7 +173,7 @@ msgstr "Unidade Removivel"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
-msgstr "Ejetar {0}. Você pode remover a unidade de forma segura."
+msgstr "{0} Ejetado. Você pode remover a unidade de forma segura."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/RemovableDriveOutputDevice/RemovableDrivePlugin.py:45
 #, python-brace-format
@@ -236,7 +236,7 @@ msgstr "Impressão USB"
 msgctxt "@info:whatsthis"
 msgid ""
 "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Aceita G-Code e envia para a impressora. A extensão pode tambem atualizar o Firmware,"
+msgstr "Aceitar G-Code e enviar para a impressora. A extensão pode tambem atualizar o Firmware."
 
 #: /home/ahiemstra/dev/15.10/src/cura/plugins/USBPrinting/USBPrinterManager.py:46
 msgctxt "@title:menu"
@@ -474,7 +474,7 @@ msgstr "Incompleto."
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:76
 msgctxt "@label"
 msgid "Min endstop X: "
-msgstr "Fim de curso minimo X:"
+msgstr "Fim de curso minimo X: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:80
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:91
@@ -497,17 +497,17 @@ msgstr "Não verificado"
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:87
 msgctxt "@label"
 msgid "Min endstop Y: "
-msgstr "Fim de curso minimo Y:"
+msgstr "Fim de curso minimo Y: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:99
 msgctxt "@label"
 msgid "Min endstop Z: "
-msgstr "Fim de curso minimo Z:"
+msgstr "Fim de curso minimo Z: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:111
 msgctxt "@label"
 msgid "Nozzle temperature check: "
-msgstr "Verificar temperatura do bico:"
+msgstr "Verificar temperatura do bico: "
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:119
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/WizardPages/UltimakerCheckup.qml:149
@@ -877,12 +877,12 @@ msgstr "Dispersar (20%) de preenchimento dará ao seu modelo uma força média"
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:125
 msgctxt "@label"
 msgid "Dense"
-msgstr "Denso"
+msgstr "Densidade"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:127
 msgctxt "@label"
 msgid "Dense (50%) infill will give your model an above average strength"
-msgstr "Preenchimento Densa (50%) dará ao seu modelo uma força acima da média"
+msgstr "Densidade (50%) dará ao seu modelo uma força acima da média"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/SidebarSimple.qml:131
 msgctxt "@label"
@@ -947,7 +947,7 @@ msgstr "Documentos Recentes"
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:72
 msgctxt "@action:inmenu"
 msgid "&Save Selection to File"
-msgstr "&Salvar Seleção em Arquivo"
+msgstr "Salvar Seleção em Arquivo"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:80
 msgctxt "@title:menu"
@@ -957,27 +957,27 @@ msgstr "Salvar Todos"
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:108
 msgctxt "@title:menu"
 msgid "&Edit"
-msgstr "&Editar"
+msgstr "Editar"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:125
 msgctxt "@title:menu"
 msgid "&View"
-msgstr "&Visualizar"
+msgstr "Visualizar"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:151
 msgctxt "@title:menu"
 msgid "&Machine"
-msgstr "&Máquina"
+msgstr "Máquina"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:197
 msgctxt "@title:menu"
 msgid "&Profile"
-msgstr "&Perfil"
+msgstr "Perfil"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:224
 msgctxt "@title:menu"
 msgid "E&xtensions"
-msgstr "E&xtensões"
+msgstr "Extensões"
 
 #: /home/ahiemstra/dev/15.10/src/cura/resources/qml/Cura.qml:257
 msgctxt "@title:menu"
