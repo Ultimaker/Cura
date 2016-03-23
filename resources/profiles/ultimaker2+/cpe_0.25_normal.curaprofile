@@ -20,6 +20,7 @@ speed_topbottom = 20
 speed_wall_0 = 20
 speed_wall_x = 25
 cool_min_layer_time = 2
+cool_min_speed = 10
 cool_fan_speed_min = 50
 cool_lift_head = True
 infill_overlap = 17
