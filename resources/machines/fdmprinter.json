@@ -1966,9 +1966,10 @@
                     "type": "float",
                     "unit": "1/mm",
                     "default": 1.25,
+                    "min_value": "0",
                     "min_value_warning": "0.1",
                     "max_value_warning": "10",
-                    "max_value": "10000",
+                    "max_value": "2 / magic_fuzzy_skin_thickness",
                     "visible": false,
                     "enabled": "magic_fuzzy_skin_enabled",
                     "children": {
@@ -1978,9 +1979,10 @@
                             "type": "float",
                             "unit": "mm",
                             "default": 0.8,
-                            "min_value_warning": "0.0001",
+                            "min_value": "magic_fuzzy_skin_thickness / 2",
+                            "min_value_warning": "0.1",
                             "max_value_warning": "10",
-                            "inherit_function": "1/parent_value",
+                            "inherit_function": "10000 if parent_value == 0 else 1 / parent_value",
                             "visible": false,
                             "enabled": "magic_fuzzy_skin_enabled"
                         }
