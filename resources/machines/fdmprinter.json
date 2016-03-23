@@ -260,7 +260,7 @@
                                     "visible": false
                                 },
                                 "wall_line_width_x": {
-                                    "label": "Other Walls Line Width",
+                                    "label": "Inner Wall(s) Line Width",
                                     "description": "Width of a single shell line for all shell lines except the outermost one.",
                                     "unit": "mm",
                                     "min_value": "0.0001",
@@ -458,7 +458,7 @@
                             "enabled": "False"
                         },
                         "remove_overlapping_walls_x_enabled": {
-                            "label": "Remove Overlapping Other Wall Parts",
+                            "label": "Remove Overlapping Inner Wall Parts",
                             "description": "Remove parts of an inner wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners.",
                             "type": "boolean",
                             "default": true,
