@@ -162,11 +162,12 @@ class CuraEngineBackend(Backend):
             Logger.log("d", "Killing engine process")
             try:
                 self._process.terminate()
+                Logger.log("d", "Engine process is killed. Recieved return code %s", self._process.wait())
                 self._process = None
                 #self._createSocket() # Re create the socket
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occured while trying to kill the engine %s", str(e))
-            Logger.log("d", "Engine process is killed")
+
 
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
@@ -287,7 +288,7 @@ class CuraEngineBackend(Backend):
         self._terminate()
 
     def _onBackendQuit(self):
-        if not self._restart:
-            Logger.log("d", "Backend quitted. Resetting process and socket.")
+        if not self._restart and self._process:
+            Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
             self._process = None
             self._createSocket()
