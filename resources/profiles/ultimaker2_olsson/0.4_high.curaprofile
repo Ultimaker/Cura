@@ -13,7 +13,6 @@ shell_thickness = 1.05
 top_bottom_thickness = 0.84
 infill_sparse_density = 22
 infill_overlap = 0.035
-infill_wipe_dist = 0.2
 retraction_amount = 5.5
 retraction_extrusion_window = 6
 speed_infill = 50

@@ -12,7 +12,6 @@ layer_height_0 = 0.4
 shell_thickness = 1.59
 top_bottom_thickness = 1.2
 infill_overlap = 0.053
-infill_wipe_dist = 0.3
 retraction_amount = 6
 retraction_extrusion_window = 6
 speed_infill = 55
