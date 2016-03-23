@@ -603,6 +603,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.04,
+                    "inherit_function": "wall_line_width_0 / 4 if wall_line_count == 1 else wall_line_width_x / 4",
                     "min_value_warning": "0",
                     "max_value_warning": "machine_nozzle_size",
                     "visible": false
@@ -779,6 +780,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 1.5,
+                    "inherit_function": "line_width * 2",
                     "min_value": "0",
                     "max_value_warning": "10",
                     "visible": false,
@@ -788,7 +790,7 @@
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
                     "description": "This setting limits the number of retractions occurring within the Minimum Extrusion Distance Window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
-                    "default": 8,
+                    "default": 45,
                     "min_value": "0",
                     "max_value_warning": "100",
                     "type": "int",
@@ -847,7 +849,7 @@
                             "visible": false
                         },
                         "speed_wall": {
-                            "label": "Shell Speed",
+                            "label": "Wall Speed",
                             "description": "The speed at which the shell is printed. Printing the outer shell at a lower speed improves the final skin quality.",
                             "unit": "mm/s",
                             "type": "float",
@@ -858,7 +860,7 @@
                             "inherit_function": "parent_value / 60 * 30",
                             "children": {
                                 "speed_wall_0": {
-                                    "label": "Outer Shell Speed",
+                                    "label": "Outer Wall Speed",
                                     "description": "The speed at which the outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way.",
                                     "unit": "mm/s",
                                     "type": "float",
@@ -868,7 +870,7 @@
                                     "visible": false
                                 },
                                 "speed_wall_x": {
-                                    "label": "Inner Shell Speed",
+                                    "label": "Inner Wall Speed",
                                     "description": "The speed at which all inner shells are printed. Printing the inner shell faster than the outer shell will reduce printing time. It works well to set this in between the outer shell speed and the infill speed.",
                                     "unit": "mm/s",
                                     "type": "float",
@@ -971,7 +973,7 @@
                     "label": "Number of Slower Layers",
                     "description": "The first few layers are printed slower than the rest of the object, this to get better adhesion to the printer bed and improve the overall success rate of prints. The speed is gradually increased over these layers. 4 layers of speed-up is generally right for most materials and printers.",
                     "type": "int",
-                    "default": 4,
+                    "default": 2,
                     "min_value": "0",
                     "max_value_warning": "300",
                     "visible": false,
@@ -1007,6 +1009,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 1.5,
+                    "inherit_function": "machine_nozzle_tip_outer_diameter * 1.25",
                     "min_value": "0",
                     "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
                     "visible": false,
@@ -1119,6 +1122,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 0.5,
+                    "inherit_function": "layer_height_0",
                     "min_value": "0",
                     "max_value_warning": "10.0",
                     "visible": false,
@@ -1128,7 +1132,7 @@
                             "label": "Fan Full on at Layer",
                             "description": "The layer number at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off for the first layer.",
                             "type": "int",
-                            "default": 4,
+                            "default": 1,
                             "min_value": "0",
                             "max_value_warning": "100",
                             "visible": false,
@@ -1966,9 +1970,10 @@
                     "type": "float",
                     "unit": "1/mm",
                     "default": 1.25,
+                    "min_value": "0",
                     "min_value_warning": "0.1",
                     "max_value_warning": "10",
-                    "max_value": "10000",
+                    "max_value": "2 / magic_fuzzy_skin_thickness",
                     "visible": false,
                     "enabled": "magic_fuzzy_skin_enabled",
                     "children": {
@@ -1978,9 +1983,10 @@
                             "type": "float",
                             "unit": "mm",
                             "default": 0.8,
-                            "min_value_warning": "0.0001",
+                            "min_value": "magic_fuzzy_skin_thickness / 2",
+                            "min_value_warning": "0.1",
                             "max_value_warning": "10",
-                            "inherit_function": "1/parent_value",
+                            "inherit_function": "10000 if parent_value == 0 else 1 / parent_value",
                             "visible": false,
                             "enabled": "magic_fuzzy_skin_enabled"
                         }
