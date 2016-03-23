@@ -23,5 +23,4 @@ speed_topbottom = 20
 speed_layer_0 = 25
 speed_slowdown_layers = 2
 travel_avoid_distance = 1.2
-cool_fan_full_layer = 2
 cool_min_layer_time_fan_speed_max = 20
