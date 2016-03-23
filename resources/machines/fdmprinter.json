@@ -847,7 +847,7 @@
                             "visible": false
                         },
                         "speed_wall": {
-                            "label": "Shell Speed",
+                            "label": "Wall Speed",
                             "description": "The speed at which the shell is printed. Printing the outer shell at a lower speed improves the final skin quality.",
                             "unit": "mm/s",
                             "type": "float",
@@ -858,7 +858,7 @@
                             "inherit_function": "parent_value / 60 * 30",
                             "children": {
                                 "speed_wall_0": {
-                                    "label": "Outer Shell Speed",
+                                    "label": "Outer Wall Speed",
                                     "description": "The speed at which the outer shell is printed. Printing the outer shell at a lower speed improves the final skin quality. However, having a large difference between the inner shell speed and the outer shell speed will effect quality in a negative way.",
                                     "unit": "mm/s",
                                     "type": "float",
@@ -868,7 +868,7 @@
                                     "visible": false
                                 },
                                 "speed_wall_x": {
-                                    "label": "Inner Shell Speed",
+                                    "label": "Inner Wall Speed",
                                     "description": "The speed at which all inner shells are printed. Printing the inner shell faster than the outer shell will reduce printing time. It works well to set this in between the outer shell speed and the infill speed.",
                                     "unit": "mm/s",
                                     "type": "float",
