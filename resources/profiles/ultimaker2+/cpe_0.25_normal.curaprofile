@@ -7,19 +7,20 @@ material = CPE
 weight = -2
 
 [settings]
-infill_overlap = 17
 layer_height = 0.06
 wall_thickness = 0.88
-layer_height_0 = 0.15
-speed_wall_x = 25
+line_width = 0.22
 top_bottom_thickness = 0.72
+infill_sparse_density = 22
+speed_print = 20
+layer_height_0 = 0.15
+speed_layer_0 = 20
 speed_infill = 30
 speed_topbottom = 20
-cool_min_layer_time = 2
-speed_print = 20
-line_width = 0.22
-infill_sparse_density = 22
 speed_wall_0 = 20
-cool_lift_head = True
+speed_wall_x = 25
+cool_min_layer_time = 2
 cool_fan_speed_min = 50
+cool_lift_head = True
+infill_overlap = 17
 
