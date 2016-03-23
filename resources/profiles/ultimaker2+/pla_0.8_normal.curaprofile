@@ -15,7 +15,6 @@ top_bottom_thickness = 1.6
 infill_wipe_dist = 0.4
 retraction_amount = 6
 retraction_min_travel = 0.5
-retraction_count_max = 30
 speed_infill = 40
 speed_wall_0 = 20
 speed_wall_x = 30
