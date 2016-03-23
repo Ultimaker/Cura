@@ -14,7 +14,6 @@ top_bottom_thickness = 1.2
 infill_overlap = 0.053
 infill_wipe_dist = 0.3
 retraction_amount = 6
-retraction_min_travel = 0.5
 retraction_extrusion_window = 6
 speed_infill = 55
 speed_wall_0 = 25

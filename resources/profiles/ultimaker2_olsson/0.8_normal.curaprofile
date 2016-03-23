@@ -15,7 +15,6 @@ infill_sparse_density = 20
 infill_overlap = 0.07
 infill_wipe_dist = 0.4
 retraction_amount = 6
-retraction_min_travel = 0.5
 retraction_extrusion_window = 6
 speed_infill = 40
 speed_wall_0 = 20
