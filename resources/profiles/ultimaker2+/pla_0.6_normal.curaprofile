@@ -14,6 +14,7 @@ shell_thickness = 1.59
 top_bottom_thickness = 1.2
 infill_sparse_density = 20
 retraction_amount = 6
+speed_print = 25
 speed_infill = 55
 speed_wall_0 = 25
 speed_wall_x = 40
