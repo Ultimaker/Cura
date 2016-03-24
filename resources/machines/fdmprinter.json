@@ -1008,7 +1008,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default": 1.5,
-                    "inherit_function": "machine_nozzle_tip_outer_diameter * 1.25",
+                    "inherit_function": "machine_nozzle_tip_outer_diameter / 2 * 1.25",
                     "min_value": "0",
                     "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
                     "visible": false,
