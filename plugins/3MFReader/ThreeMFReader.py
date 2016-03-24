@@ -67,6 +67,11 @@ class ThreeMFReader(MeshReader):
                     mesh.addFace(vertex_list[v1][0],vertex_list[v1][1],vertex_list[v1][2],vertex_list[v2][0],vertex_list[v2][1],vertex_list[v2][2],vertex_list[v3][0],vertex_list[v3][1],vertex_list[v3][2])
                     Job.yieldThread()
 
+                # Rotate the model; We use a different coordinate frame.
+                rotation = Matrix()
+                rotation.setByRotationAxis(-0.5 * math.pi, Vector(1,0,0))
+                mesh = mesh.getTransformed(rotation)
+
                 #TODO: We currently do not check for normals and simply recalculate them.
                 mesh.calculateNormals()
                 node.setMeshData(mesh)
@@ -101,22 +106,8 @@ class ThreeMFReader(MeshReader):
                     temp_mat._data[1,3] = splitted_transformation[10]
                     temp_mat._data[2,3] = splitted_transformation[11]
 
-                    node.setPosition(Vector(temp_mat.at(0,3), temp_mat.at(1,3), temp_mat.at(2,3)))
+                    node.setTransformation(temp_mat)
 
-                    temp_quaternion = Quaternion()
-                    temp_quaternion.setByMatrix(temp_mat)
-                    node.setOrientation(temp_quaternion)
-
-                    # Magical scale extraction
-                    scale = temp_mat.getTransposed().multiply(temp_mat)
-                    scale_x = math.sqrt(scale.at(0,0))
-                    scale_y = math.sqrt(scale.at(1,1))
-                    scale_z = math.sqrt(scale.at(2,2))
-                    node.setScale(Vector(scale_x,scale_y,scale_z))
-
-                    # We use a different coordinate frame, so rotate.
-                    #rotation = Quaternion.fromAngleAxis(-0.5 * math.pi, Vector(1,0,0))
-                    #node.rotate(rotation)
                 result.addChild(node)
 
                 Job.yieldThread()
