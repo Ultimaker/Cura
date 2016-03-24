@@ -12,6 +12,8 @@
 
     "overrides": {
         "machine_show_variants": { "default": true },
+        "machine_nozzle_head_distance": { "default": 5 },
+        "machine_nozzle_expansion_angle": { "default": 45 },
         "machine_height": { "default": 203 }
     }
 }

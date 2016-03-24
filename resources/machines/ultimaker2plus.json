@@ -16,6 +16,8 @@
         "machine_height": { "default": 203 },
         "machine_show_variants": { "default": true },
         "gantry_height": { "default": 50 },
+        "machine_nozzle_head_distance": { "default": 5 },
+        "machine_nozzle_expansion_angle": { "default": 45 },
         "machine_head_with_fans_polygon":
         {
             "default": [
