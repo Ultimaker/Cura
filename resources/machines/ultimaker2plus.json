@@ -13,7 +13,7 @@
     "overrides": {
         "machine_width": { "default": 230 },
         "machine_depth": { "default": 225 },
-        "machine_height": { "default": 200 },
+        "machine_height": { "default": 203 },
         "machine_show_variants": { "default": true },
         "gantry_height": { "default": 50 },
         "machine_head_with_fans_polygon":

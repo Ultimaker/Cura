@@ -11,6 +11,7 @@
     "inherits": "ultimaker2.json",
 
     "overrides": {
-        "machine_show_variants": { "default": true }
+        "machine_show_variants": { "default": true },
+        "machine_height": { "default": 203 }
     }
 }
