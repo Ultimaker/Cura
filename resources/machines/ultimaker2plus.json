@@ -18,6 +18,7 @@
         "gantry_height": { "default": 50 },
         "machine_nozzle_head_distance": { "default": 5 },
         "machine_nozzle_expansion_angle": { "default": 45 },
+        "machine_heat_zone_length": { "default": 16 },
         "machine_head_with_fans_polygon":
         {
             "default": [
