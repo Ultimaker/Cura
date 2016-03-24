@@ -36,6 +36,7 @@
                     -34
                 ]
             ]
-        }
+        },
+        "retraction_amount": { "default": 6.0 }
     }
 }

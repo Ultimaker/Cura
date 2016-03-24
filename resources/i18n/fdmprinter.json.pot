@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2016-01-18 11:54+0000\n"
+"POT-Creation-Date: 2016-03-23 16:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -97,7 +97,7 @@ msgstr ""
 
 #: fdmprinter.json
 msgctxt "wall_line_width_x label"
-msgid "Other Walls Line Width"
+msgid "Inner Wall(s) Line Width"
 msgstr ""
 
 #: fdmprinter.json
@@ -204,19 +204,6 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.json
-msgctxt "alternate_extra_perimeter label"
-msgid "Alternate Extra Wall"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "alternate_extra_perimeter description"
-msgid ""
-"Make an extra wall at every second layer, so that infill will be caught "
-"between an extra wall above and one below. This results in a better cohesion "
-"between infill and walls, but might have an impact on the surface quality."
-msgstr ""
-
-#: fdmprinter.json
 msgctxt "top_bottom_thickness label"
 msgid "Bottom/Top Thickness"
 msgstr ""
@@ -279,6 +266,19 @@ msgid "This controls the amount of bottom layers."
 msgstr ""
 
 #: fdmprinter.json
+msgctxt "alternate_extra_perimeter label"
+msgid "Alternate Extra Wall"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "alternate_extra_perimeter description"
+msgid ""
+"Make an extra wall at every second layer, so that infill will be caught "
+"between an extra wall above and one below. This results in a better cohesion "
+"between infill and walls, but might have an impact on the surface quality."
+msgstr ""
+
+#: fdmprinter.json
 msgctxt "remove_overlapping_walls_enabled label"
 msgid "Remove Overlapping Wall Parts"
 msgstr ""
@@ -306,7 +306,7 @@ msgstr ""
 
 #: fdmprinter.json
 msgctxt "remove_overlapping_walls_x_enabled label"
-msgid "Remove Overlapping Other Wall Parts"
+msgid "Remove Overlapping Inner Wall Parts"
 msgstr ""
 
 #: fdmprinter.json
@@ -630,18 +630,6 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.json
-msgctxt "material_standby_temperature label"
-msgid "Standby Temperature"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "material_standby_temperature description"
-msgid ""
-"The temperature of the nozzle when another nozzle is currently used for "
-"printing."
-msgstr ""
-
-#: fdmprinter.json
 msgctxt "material_extrusion_cool_down_speed label"
 msgid "Extrusion Cool Down Speed Modifier"
 msgstr ""
@@ -848,7 +836,7 @@ msgstr ""
 
 #: fdmprinter.json
 msgctxt "speed_wall label"
-msgid "Shell Speed"
+msgid "Wall Speed"
 msgstr ""
 
 #: fdmprinter.json
@@ -860,7 +848,7 @@ msgstr ""
 
 #: fdmprinter.json
 msgctxt "speed_wall_0 label"
-msgid "Outer Shell Speed"
+msgid "Outer Wall Speed"
 msgstr ""
 
 #: fdmprinter.json
@@ -874,7 +862,7 @@ msgstr ""
 
 #: fdmprinter.json
 msgctxt "speed_wall_x label"
-msgid "Inner Shell Speed"
+msgid "Inner Wall Speed"
 msgstr ""
 
 #: fdmprinter.json
@@ -1211,6 +1199,61 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.json
+msgctxt "draft_shield_enabled label"
+msgid "Enable Draft Shield"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_enabled description"
+msgid ""
+"Enable exterior draft shield. This will create a wall around the object "
+"which traps (hot) air and shields against gusts of wind. Especially useful "
+"for materials which warp easily."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_dist label"
+msgid "Draft Shield X/Y Distance"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_dist description"
+msgid "Distance of the draft shield from the print, in the X/Y directions."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation label"
+msgid "Draft Shield Limitation"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation description"
+msgid "Whether or not to limit the height of the draft shield."
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation option full"
+msgid "Full"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height_limitation option limited"
+msgid "Limited"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height label"
+msgid "Draft Shield Height"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "draft_shield_height description"
+msgid ""
+"Height limitation on the draft shield. Above this height no draft shield "
+"will be printed."
+msgstr ""
+
+#: fdmprinter.json
 msgctxt "support label"
 msgid "Support"
 msgstr ""
@@ -1493,6 +1536,16 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.json
+msgctxt "support_tower_diameter label"
+msgid "Tower Diameter"
+msgstr ""
+
+#: fdmprinter.json
+msgctxt "support_tower_diameter description"
+msgid "The diameter of a special tower."
+msgstr ""
+
+#: fdmprinter.json
 msgctxt "support_minimal_diameter label"
 msgid "Minimum Diameter"
 msgstr ""
@@ -1502,16 +1555,6 @@ msgctxt "support_minimal_diameter description"
 msgid ""
 "Minimum diameter in the X/Y directions of a small area which is to be "
 "supported by a specialized support tower."
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "support_tower_diameter label"
-msgid "Tower Diameter"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "support_tower_diameter description"
-msgid "The diameter of a special tower."
 msgstr ""
 
 #: fdmprinter.json
@@ -1932,61 +1975,6 @@ msgstr ""
 #: fdmprinter.json
 msgctxt "raft_base_fan_speed description"
 msgid "The fan speed for the base raft layer."
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_enabled label"
-msgid "Enable Draft Shield"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_enabled description"
-msgid ""
-"Enable exterior draft shield. This will create a wall around the object "
-"which traps (hot) air and shields against gusts of wind. Especially useful "
-"for materials which warp easily."
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_dist label"
-msgid "Draft Shield X/Y Distance"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_dist description"
-msgid "Distance of the draft shield from the print, in the X/Y directions."
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_height_limitation label"
-msgid "Draft Shield Limitation"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_height_limitation description"
-msgid "Whether or not to limit the height of the draft shield."
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_height_limitation option full"
-msgid "Full"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_height_limitation option limited"
-msgid "Limited"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_height label"
-msgid "Draft Shield Height"
-msgstr ""
-
-#: fdmprinter.json
-msgctxt "draft_shield_height description"
-msgid ""
-"Height limitation on the draft shield. Above this height no draft shield "
-"will be printed."
 msgstr ""
 
 #: fdmprinter.json

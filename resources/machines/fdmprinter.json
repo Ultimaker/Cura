@@ -927,7 +927,6 @@
                                     "min_value": "0.1",
                                     "max_value_warning": "150",
                                     "visible": false,
-                                    "inherit": false,
                                     "enabled": "support_roof_enable",
                                     "inherit_function": "parent_value / 60 * 40",
                                     "global_only": true
