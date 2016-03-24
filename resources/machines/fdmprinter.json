@@ -1090,12 +1090,13 @@
                     "global_only": "True",
                     "children": {
                         "cool_fan_speed_min": {
-                            "label": "Minimum Fan Speed",
-                            "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
+                            "label": "Normal Fan Speed",
+                            "description": "Normally the fan runs at the minimum fan speed. If a layer takes less than Shortest Layer Time Normal Fan Speed, the fan speed adjusts from Normal Fan Speed towards Maximum Fan Speed.",
                             "unit": "%",
                             "type": "float",
                             "min_value": "0",
-                            "max_value": "100",
+                            "max_value": "min(100, cool_fan_speed_max)",
+                            "inherit_function": "parent_value",
                             "default": 100,
                             "visible": false,
                             "enabled": "cool_fan_enabled",
@@ -1103,10 +1104,10 @@
                         },
                         "cool_fan_speed_max": {
                             "label": "Maximum Fan Speed",
-                            "description": "Normally the fan runs at the minimum fan speed. If the layer is slowed down due to minimum layer time, the fan speed adjusts between minimum and maximum fan speed.",
+                            "description": "If a layer is slowed down due to minimum layer time, the fan speed will be the Maximum Fan Speed.",
                             "unit": "%",
                             "type": "float",
-                            "min_value": "0",
+                            "min_value": "max(0, cool_fan_speed_min)",
                             "max_value": "100",
                             "default": 100,
                             "visible": false,
@@ -1116,8 +1117,8 @@
                     }
                 },
                 "cool_fan_full_at_height": {
-                    "label": "Fan Full on at Height",
-                    "description": "The height at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off for the first layer.",
+                    "label": "Slow Fan Down Below Height",
+                    "description": "The height at which the fan is set to Normal Fan Speed. For the layers below this the fan speed is scaled linearly with the fan off on the first layer.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.5,
@@ -1128,8 +1129,8 @@
                     "global_only": "True",
                     "children": {
                         "cool_fan_full_layer": {
-                            "label": "Fan Full on at Layer",
-                            "description": "The layer number at which the fan is turned on completely. For the layers below this the fan speed is scaled linearly with the fan off for the first layer.",
+                            "label": "Slow Fan Down Below Layer",
+                            "description": "The layer number at which the fan is set to Normal Fan Speed. For the layers below this the fan speed is scaled linearly with the fan off on the first layer.",
                             "type": "int",
                             "default": 1,
                             "min_value": "0",
@@ -1142,7 +1143,7 @@
                 },
                 "cool_min_layer_time": {
                     "label": "Minimum Layer Time",
-                    "description": "The minimum time spent in a layer: Gives the layer time to cool down before the next one is put on top. If a layer would print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer.",
+                    "description": "The minimum time spent in a layer. Gives fast layers extra time to cool down before printing the next layer. If a layer would print in less time, then the printer will slow down to make sure it has spent at least this many seconds printing the layer.",
                     "unit": "sec",
                     "type": "float",
                     "default": 5,
@@ -1152,8 +1153,8 @@
                     "global_only": "True"
                 },
                 "cool_min_layer_time_fan_speed_max": {
-                    "label": "Minimum Layer Time Full Fan Speed",
-                    "description": "The minimum time spent in a layer which will cause the fan to be at maximum speed. The fan speed increases linearly from minimum fan speed for layers taking the minimum layer time to maximum fan speed for layers taking the time specified here.",
+                    "label": "Shortest Layer Time Normal Fan Speed",
+                    "description": "The minimum time spent in a layer which will cause the fan to be at normal speed. All layers taking shorter than this time will get increased fan speeds, up to Maximum Fan Speed for layers taking Minmal Layer Time. All layers taking longer than this time will have Normal Fan Speed.",
                     "unit": "sec",
                     "type": "float",
                     "default": 10,
@@ -1164,7 +1165,7 @@
                 },
                 "cool_min_speed": {
                     "label": "Minimum Speed",
-                    "description": "The minimum layer time can cause the print to slow down so much it starts to droop. The minimum feedrate protects against this. Even if a print gets slowed down it will never be slower than this minimum speed.",
+                    "description": "The minimum layer time can cause the print to slow down so much it starts to droop. The Minimum Speed protects against this. Even if a print gets slowed down it will never be slower than this minimum speed.",
                     "unit": "mm/s",
                     "type": "float",
                     "default": 10,
@@ -1175,7 +1176,7 @@
                 },
                 "cool_lift_head": {
                     "label": "Lift Head",
-                    "description": "Lift the head away from the print if the minimum speed is hit because of cool slowdown, and wait the extra time away from the print surface until the minimum layer time is used up.",
+                    "description": "When the Minimum Speed is hit because of Minimum Layer Time, lift the head away from the print and wait the extra time until the minimum layer time is reached.",
                     "type": "boolean",
                     "default": false,
                     "visible": false,

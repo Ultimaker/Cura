@@ -8,13 +8,12 @@
     "platform_texture": "Ultimaker2backplate.png",
     "visible": false,
     "file_formats": "text/x-gcode",
-    "inherits": "ultimaker2.json",
+    "inherits": "ultimaker2_olsson.json",
 
     "machine_settings": {
         "machine_width": { "default": 230 },
         "machine_depth": { "default": 225 },
-        "machine_height": { "default": 310 },
-        "machine_show_variants": { "default": true },
-        "gantry_height": { "default": 50 }
+        "machine_height": { "default": 313 },
+        "machine_show_variants": { "default": true }
     }
 }
