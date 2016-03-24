@@ -80,33 +80,35 @@ class ThreeMFReader(MeshReader):
                 transformation = root.findall("./3mf:build/3mf:item[@objectid='{0}']".format(object.get("id")), self._namespaces)
                 if transformation:
                     transformation = transformation[0]
+                try:
+                    if transformation.get("transform"):
+                        splitted_transformation = transformation.get("transform").split()
+                        ## Transformation is saved as:
+                        ## M00 M01 M02 0.0
+                        ## M10 M11 M12 0.0
+                        ## M20 M21 M22 0.0
+                        ## M30 M31 M32 1.0
+                        ## We switch the row & cols as that is how everyone else uses matrices!
+                        temp_mat = Matrix()
+                        # Rotation & Scale
+                        temp_mat._data[0,0] = splitted_transformation[0]
+                        temp_mat._data[1,0] = splitted_transformation[1]
+                        temp_mat._data[2,0] = splitted_transformation[2]
+                        temp_mat._data[0,1] = splitted_transformation[3]
+                        temp_mat._data[1,1] = splitted_transformation[4]
+                        temp_mat._data[2,1] = splitted_transformation[5]
+                        temp_mat._data[0,2] = splitted_transformation[6]
+                        temp_mat._data[1,2] = splitted_transformation[7]
+                        temp_mat._data[2,2] = splitted_transformation[8]
 
-                if transformation.get("transform"):
-                    splitted_transformation = transformation.get("transform").split()
-                    ## Transformation is saved as:
-                    ## M00 M01 M02 0.0
-                    ## M10 M11 M12 0.0
-                    ## M20 M21 M22 0.0
-                    ## M30 M31 M32 1.0
-                    ## We switch the row & cols as that is how everyone else uses matrices!
-                    temp_mat = Matrix()
-                    # Rotation & Scale
-                    temp_mat._data[0,0] = splitted_transformation[0]
-                    temp_mat._data[1,0] = splitted_transformation[1]
-                    temp_mat._data[2,0] = splitted_transformation[2]
-                    temp_mat._data[0,1] = splitted_transformation[3]
-                    temp_mat._data[1,1] = splitted_transformation[4]
-                    temp_mat._data[2,1] = splitted_transformation[5]
-                    temp_mat._data[0,2] = splitted_transformation[6]
-                    temp_mat._data[1,2] = splitted_transformation[7]
-                    temp_mat._data[2,2] = splitted_transformation[8]
+                        # Translation
+                        temp_mat._data[0,3] = splitted_transformation[9]
+                        temp_mat._data[1,3] = splitted_transformation[10]
+                        temp_mat._data[2,3] = splitted_transformation[11]
 
-                    # Translation
-                    temp_mat._data[0,3] = splitted_transformation[9]
-                    temp_mat._data[1,3] = splitted_transformation[10]
-                    temp_mat._data[2,3] = splitted_transformation[11]
-
-                    node.setTransformation(temp_mat)
+                        node.setTransformation(temp_mat)
+                except AttributeError:
+                    pass # Empty list was found. Getting transformation is not possible
 
                 result.addChild(node)
 
