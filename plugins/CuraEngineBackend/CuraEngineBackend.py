@@ -16,7 +16,7 @@ from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
-from . import ProcessSlicedObjectListJob
+from . import ProcessSlicedLayersJob
 from . import ProcessGCodeJob
 from . import StartSliceJob
 
@@ -51,7 +51,7 @@ class CuraEngineBackend(Backend):
         self._layer_view_active = False
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
         self._onActiveViewChanged()
-        self._stored_layer_data = None
+        self._stored_layer_data = []
 
         Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onChanged)
 
@@ -64,7 +64,8 @@ class CuraEngineBackend(Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self.slice)
 
-        self._message_handlers["cura.proto.SlicedObjectList"] = self._onSlicedObjectListMessage
+        #self._message_handlers["cura.proto.SlicedObjectList"] = self._onSlicedObjectListMessage
+        self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
@@ -155,6 +156,7 @@ class CuraEngineBackend(Backend):
     def _terminate(self):
         self._slicing = False
         self._restart = True
+        self._stored_layer_data = []
         self.slicingCancelled.emit()
         Logger.log("d", "Attempting to kill the engine process")
         if self._process is not None:
@@ -209,12 +211,9 @@ class CuraEngineBackend(Backend):
     def _onSettingChanged(self, setting):
         self._onChanged()
 
-    def _onSlicedObjectListMessage(self, message):
-        if self._layer_view_active:
-            self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(message)
-            self._process_layers_job.start()
-        else :
-            self._stored_layer_data = message
+    def _onLayerMessage(self, message):
+        self._stored_layer_data.append(message)
+
 
     def _onProgressMessage(self, message):
         if self._message:
@@ -233,6 +232,11 @@ class CuraEngineBackend(Backend):
             self._message.setProgress(100)
             self._message.hide()
             self._message = None
+
+        if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
+            self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
+            self._process_layers_job.start()
+            self._stored_layer_data = []
 
     def _onGCodeLayerMessage(self, message):
         self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
@@ -275,10 +279,10 @@ class CuraEngineBackend(Backend):
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
-                if self._stored_layer_data and not self._slicing:
-                    self._process_layers_job = ProcessSlicedObjectListJob.ProcessSlicedObjectListJob(self._stored_layer_data)
+                if len(self._stored_layer_data) and not self._slicing:
+                    self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
                     self._process_layers_job.start()
-                    self._stored_layer_data = None
+                    self._stored_layer_data = []
             else:
                 self._layer_view_active = False
 
