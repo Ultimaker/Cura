@@ -857,7 +857,7 @@
                             "max_value_warning": "150",
                             "default": 30,
                             "visible": false,
-                            "inherit_function": "parent_value / 60 * 30",
+                            "inherit_function": "parent_value / 2",
                             "children": {
                                 "speed_wall_0": {
                                     "label": "Outer Wall Speed",
@@ -878,7 +878,7 @@
                                     "max_value_warning": "150",
                                     "default": 60,
                                     "visible": false,
-                                    "inherit_function": "speed_print"
+                                    "inherit_function": "parent_value * 2"
                                 }
                             }
                         },
@@ -891,7 +891,7 @@
                             "max_value_warning": "150",
                             "default": 30,
                             "visible": false,
-                            "inherit_function": "parent_value / 60 * 30"
+                            "inherit_function": "parent_value / 2"
                         },
                         "speed_support": {
                             "label": "Support Speed",
@@ -928,7 +928,7 @@
                                     "max_value_warning": "150",
                                     "visible": false,
                                     "enabled": "support_roof_enable",
-                                    "inherit_function": "parent_value / 60 * 40",
+                                    "inherit_function": "parent_value / 1.5",
                                     "global_only": true
                                 }
                             }
