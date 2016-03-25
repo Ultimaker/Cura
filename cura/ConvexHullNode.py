@@ -90,5 +90,3 @@ class ConvexHullNode(SceneNode):
 
         if not node:
             return
-
-        
