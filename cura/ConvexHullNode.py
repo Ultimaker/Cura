@@ -91,8 +91,4 @@ class ConvexHullNode(SceneNode):
         if not node:
             return
 
-        if node.hasDecoration("getProfile"):
-            self._color.setR(0.75)
-
-        if node.hasDecoration("getSetting"):
-            self._color.setG(0.75)
+        
