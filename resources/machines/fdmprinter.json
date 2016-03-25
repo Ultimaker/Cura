@@ -836,6 +836,7 @@
                     "type": "float",
                     "min_value": "0.1",
                     "max_value_warning": "150",
+                    "max_value": "299792458000",
                     "default": 60,
                     "children": {
                         "speed_infill": {
