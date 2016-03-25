@@ -1095,7 +1095,6 @@
                             "unit": "%",
                             "type": "float",
                             "min_value": "0",
-                            "max_value": "min(100, cool_fan_speed_max)",
                             "inherit_function": "parent_value",
                             "default": 100,
                             "visible": false,
