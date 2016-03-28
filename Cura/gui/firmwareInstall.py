@@ -54,7 +54,7 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_5_FlexyDuallyV2': "TAZ4-5-FlexyDually-LBHexagon-1.0.0.1.hex",
 
 			#TAZ 6
-			'lulzbot_TAZ_6_Single_v2.1': "TAZ6_Single_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_Single_v2.1':     "TAZ6_Single_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_Flexystruder_v2': "TAZ6_Flexystruder_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_Dual_v2':         "TAZ6_Dual_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.19.hex",
