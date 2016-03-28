@@ -56,6 +56,8 @@ def getDefaultFirmware(machineIndex = None):
 			#TAZ 6
 			'lulzbot_TAZ_6_Single_v2.1': "TAZ6_Single_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_Flexystruder_v2': "TAZ6_Flexystruder_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_Dual_v2':         "TAZ6_Dual_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.19.hex",
 	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
