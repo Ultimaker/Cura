@@ -17,6 +17,7 @@ CURA_QUICKPRINT_DIR="resources/quickprint/"
 PROFILES_DIR="lulzbot_profiles"
 
 dir_map = {
+    #Profile location/directory name: machine name in Cura
     "Mini_single_extruder_v2": ("lulzbot_mini",),
     "Mini_flexystruder_v2": ("lulzbot_mini_flexystruder",),
     "TAZ_single_extruder_0.35nozzle": ("lulzbot_TAZ_4_SingleV1",
