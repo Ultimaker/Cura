@@ -1247,8 +1247,8 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 										style=ImageButton.IB_GROUP)
 		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v2'),
 										'Lulzbot_Toolhead_TAZ_Flexystruder_v2.jpg', image_size)
-# 		self.dual = self.AddImageButton(self.panel, 1, 0, _('Dual Label'),
-# 										'Lulzbot_Dual_picture.jpg', image_size)
+		self.dual = self.AddImageButton(self.panel, 1, 0, _('Dual Extruder v2'),
+ 										'Lulzbot_Toolhead_TAZ_Dual_Extruder_v2.jpg', image_size)
 # 		self.flexydual = self.AddImageButton(self.panel, 1, 1, _('FlexyDual Label'),
 # 										'Lulzbot_FlexyDual_picture.jpg', image_size)
 		self.standard.SetValue(True) #Set the default selection
@@ -1262,20 +1262,20 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('toolhead', 'Single Extruder V2.1')
 			profile.putMachineSetting('toolhead_shortname', 'Single v2.1')
 			profile.putMachineSetting('machine_type', machine_type + '_Single_v2.1')
-		else: #elif self.flexy.GetValue():
+		elif self.flexy.GetValue():
 			profile.putProfileSetting('nozzle_size', '0.6')
 			profile.putMachineSetting('extruder_amount', '1')
 			profile.putMachineSetting('toolhead', 'Flexystruder V2')
 			profile.putMachineSetting('toolhead_shortname', 'Flexystruder v2')
 			profile.putMachineSetting('machine_type', machine_type + '_Flexystruder_v2')
-# 		elif self.dual.GetValue():
-# 			profile.putProfileSetting('nozzle_size', '0.5')
-# 			profile.putMachineSetting('extruder_amount', '2')
-# 			profile.putMachineSetting('extruder_offset_x1', '0.0')
-# 			profile.putMachineSetting('extruder_offset_y1', '-52.00')
-# 			profile.putMachineSetting('toolhead', 'Dual Extruder V2')
-# 			profile.putMachineSetting('toolhead_shortname', 'Dual v2')
-# 			profile.putMachineSetting('machine_type', machine_type + '_DualV2')
+		else: #self.dual.GetValue():
+			profile.putProfileSetting('nozzle_size', '0.5')
+			profile.putMachineSetting('extruder_amount', '2')
+			profile.putMachineSetting('extruder_offset_x1', '0.0')
+			profile.putMachineSetting('extruder_offset_y1', '-52.00')
+			profile.putMachineSetting('toolhead', 'Dual Extruder V2')
+			profile.putMachineSetting('toolhead_shortname', 'Dual v2')
+			profile.putMachineSetting('machine_type', machine_type + '_Dual_v2')
 # 		elif self.flexydual.GetValue():
 # 			profile.putProfileSetting('nozzle_size', '0.6')
 # 			profile.putMachineSetting('extruder_amount', '2')
