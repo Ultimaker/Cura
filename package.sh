@@ -63,7 +63,7 @@ function downloadURL
 	echo "Checking for $filename"
 	if [ ! -f "$filename" ]; then
 		echo "Downloading $1"
-		curl -k -L -O "$1"
+		curl -L -O "$1"
 		if [ $? != 0 ]; then
 			echo "Failed to download $1"
 			exit 1
