@@ -1096,6 +1096,7 @@
                             "unit": "%",
                             "type": "float",
                             "min_value": "0",
+                            "max_value": "100",
                             "inherit_function": "parent_value",
                             "default": 100,
                             "visible": false,
