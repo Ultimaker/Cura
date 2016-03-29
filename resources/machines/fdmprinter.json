@@ -1971,7 +1971,7 @@
                     "type": "float",
                     "unit": "1/mm",
                     "default": 1.25,
-                    "min_value": "0",
+                    "min_value": "0.008",
                     "min_value_warning": "0.1",
                     "max_value_warning": "10",
                     "max_value": "2 / magic_fuzzy_skin_thickness",
