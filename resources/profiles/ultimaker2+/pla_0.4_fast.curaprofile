@@ -16,7 +16,6 @@ infill_sparse_density = 18
 retraction_amount = 5.5
 speed_print = 40
 speed_infill = 60
-speed_wall_0 = 40
 speed_wall_x = 50
 speed_travel = 150
 speed_topbottom = 30

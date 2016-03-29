@@ -17,7 +17,6 @@ layer_height_0 = 0.5
 speed_layer_0 = 20
 speed_infill = 40
 speed_topbottom = 20
-speed_wall_0 = 20
 speed_wall_x = 30
 cool_min_layer_time = 3
 cool_fan_speed_min = 50

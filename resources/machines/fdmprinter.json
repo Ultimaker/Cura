@@ -836,6 +836,7 @@
                     "type": "float",
                     "min_value": "0.1",
                     "max_value_warning": "150",
+                    "max_value": "299792458000",
                     "default": 60,
                     "children": {
                         "speed_infill": {
@@ -857,7 +858,7 @@
                             "max_value_warning": "150",
                             "default": 30,
                             "visible": false,
-                            "inherit_function": "parent_value / 60 * 30",
+                            "inherit_function": "parent_value / 2",
                             "children": {
                                 "speed_wall_0": {
                                     "label": "Outer Wall Speed",
@@ -878,7 +879,7 @@
                                     "max_value_warning": "150",
                                     "default": 60,
                                     "visible": false,
-                                    "inherit_function": "speed_print"
+                                    "inherit_function": "parent_value * 2"
                                 }
                             }
                         },
@@ -891,7 +892,7 @@
                             "max_value_warning": "150",
                             "default": 30,
                             "visible": false,
-                            "inherit_function": "parent_value / 60 * 30"
+                            "inherit_function": "parent_value / 2"
                         },
                         "speed_support": {
                             "label": "Support Speed",
@@ -928,7 +929,7 @@
                                     "max_value_warning": "150",
                                     "visible": false,
                                     "enabled": "support_roof_enable",
-                                    "inherit_function": "parent_value / 60 * 40",
+                                    "inherit_function": "parent_value / 1.5",
                                     "global_only": true
                                 }
                             }
@@ -1095,7 +1096,6 @@
                             "unit": "%",
                             "type": "float",
                             "min_value": "0",
-                            "max_value": "min(100, cool_fan_speed_max)",
                             "inherit_function": "parent_value",
                             "default": 100,
                             "visible": false,

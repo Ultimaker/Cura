@@ -17,7 +17,6 @@ retraction_amount = 5.5
 retraction_extrusion_window = 6
 speed_print = 30
 speed_infill = 50
-speed_wall_0 = 30
 speed_wall_x = 40
 speed_topbottom = 20
 speed_layer_0 = 25
