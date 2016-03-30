@@ -286,7 +286,7 @@
                         },
                         "skin_line_width": {
                             "label": "Top/bottom line width",
-                            "description": "Width of a single top/bottom printed line, used to fill up the top/bottom areas of a print.",
+                            "description": "Width of a single top/bottom line.",
                             "unit": "mm",
                             "min_value": "0.0001",
                             "min_value_warning": "0.2",
@@ -297,7 +297,7 @@
                         },
                         "infill_line_width": {
                             "label": "Infill line width",
-                            "description": "Width of the inner infill printed lines.",
+                            "description": "Width of a single infill line.",
                             "unit": "mm",
                             "min_value": "0.0001",
                             "min_value_warning": "0.2",
@@ -431,7 +431,6 @@
                         }
                     }
                 },
-                
                 "alternate_extra_perimeter": {
                     "label": "Alternating Extra Wall",
                     "description": "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints.",
@@ -469,7 +468,7 @@
                 },
                 "travel_compensate_overlapping_walls_enabled": {
                     "label": "Compensate Wall Overlaps",
-                    "description": "Compensate the flow for parts of a wall being laid down where there already is a piece of a wall. These overlaps occur in thin pieces in a model. Gcode generation might be slowed down considerably.",
+                    "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
                     "type": "boolean",
                     "default": true,
                     "visible": false
@@ -488,8 +487,8 @@
                     "enabled": "remove_overlapping_walls_x_enabled"
                 },
                 "top_bottom_pattern": {
-                    "label": "Bottom/Top Pattern",
-                    "description": "Pattern of the top/bottom solid fill. This is normally done with lines to get the best possible finish, but in some cases a concentric fill gives a nicer end result.",
+                    "label": "Top/Bottom Pattern",
+                    "description": "The pattern of the top/bottom layers.",
                     "type": "enum",
                     "options": {
                         "lines": "Lines",
@@ -499,23 +498,16 @@
                     "default": "lines",
                     "visible": false
                 },
-                "skin_no_small_gaps_heuristic": {
-                    "label": "Ignore small Z gaps",
-                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such a case set this setting to false.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": false
-                },
                 "skin_alternate_rotation": {
                     "label": "Alternate Skin Rotation",
-                    "description": "Alternate between diagonal skin fill and horizontal + vertical skin fill. Although the diagonal directions can print quicker, this option can improve the printing quality by reducing the pillowing effect.",
+                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
                     "type": "boolean",
                     "default": false,
                     "visible": false
                 },
                 "skin_outline_count": {
                     "label": "Extra Skin Wall Count",
-                    "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve roofs which would start in the middle of infill cells.",
+                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
                     "default": 0,
                     "min_value": "0",
                     "max_value_warning": "10",
@@ -1154,8 +1146,8 @@
                     "global_only": "True"
                 },
                 "cool_min_layer_time_fan_speed_max": {
-                    "label": "Shortest Layer Time Normal Fan Speed",
-                    "description": "The minimum time spent in a layer which will cause the fan to be at normal speed. All layers taking shorter than this time will get increased fan speeds, up to Maximum Fan Speed for layers taking Minmal Layer Time. All layers taking longer than this time will have Normal Fan Speed.",
+                    "label": "Regular/Maximum Fan Speed threshold",
+                    "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
                     "unit": "sec",
                     "type": "float",
                     "default": 10,
@@ -1332,7 +1324,7 @@
                     "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_conical_min_width": {
-                    "label": "Minimal Width",
+                    "label": "Cone minimal width",
                     "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
                     "unit": "mm",
                     "default": 5.0,
@@ -1491,8 +1483,8 @@
                     "enabled": "support_enable and support_use_towers"
                 },
                 "support_pattern": {
-                    "label": "Pattern",
-                    "description": "Cura can generate 3 distinct types of support structure. First is a grid based support structure which is quite solid and can be removed in one piece. The second is a line based support structure which has to be peeled off line by line. The third is a structure in between the other two; it consists of lines which are connected in an accordion fashion.",
+                    "label": "Support Pattern",
+                    "description": "The pattern of the support structures of the print.",
                     "type": "enum",
                     "options": {
                         "lines": "Lines",
@@ -1516,8 +1508,8 @@
                     "global_only": true
                 },
                 "support_infill_rate": {
-                    "label": "Fill Amount",
-                    "description": "The amount of infill structure in the support; less infill gives weaker support which is easier to remove.",
+                    "label": "Support Density",
+                    "description": "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
                     "unit": "%",
                     "type": "float",
                     "min_value": "0",
@@ -1528,8 +1520,8 @@
                     "global_only": true,
                     "children": {
                         "support_line_distance": {
-                            "label": "Line distance",
-                            "description": "Distance between the printed support lines.",
+                            "label": "Support Line distance",
+                            "description": "Distance between the printed support structure lines. This setting is calculated by the support density.",
                             "unit": "mm",
                             "type": "float",
                             "min_value": "0",
