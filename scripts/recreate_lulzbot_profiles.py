@@ -95,7 +95,10 @@ material_map = {
     "910_PVA": "910-PVA-support",
     "ABS_HIPS": "ABS-HIPS",
     "HIPS_HIPS": "HIPS-HIPS",
-    "PCTPE_PVA": "PCTPE-PVA",
+    "PCTPE_PVA": "PCTPE-PVA-support",
+    "BRIDGE_PVA": "Bridge-PVA-support",
+    "NGEN-NGEN": "nGen-nGen",
+    "INOVA-INOVA": "CS-INOVA-1800-CS-INOVA-1800",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "ABS-ninjaflex",
@@ -160,6 +163,9 @@ material_order = {
     "ABS_HIPS":             4,
     "HIPS_HIPS":            5,
     "PCTPE_PVA":            6,
+    "BRIDGE_PVA":           7,
+    "NGEN-NGEN":            8,
+    "INOVA-INOVA":          9,
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex":       10,
@@ -224,6 +230,9 @@ material_types = {
     "ABS_HIPS": "Expert",
     "HIPS_HIPS": "Expert",
     "PCTPE_PVA": "Expert",
+    "BRIDGE_PVA": "Expert",
+    "NGEN-NGEN": "Expert",
+    "INOVA-INOVA": "Expert",
     
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "Expert",
@@ -287,6 +296,9 @@ material_names = {
     "ABS_HIPS": "ABS & HIPS",
     "HIPS_HIPS": "HIPS & HIPS",
     "PCTPE_PVA": "PCTPE & PVA Support",
+    "BRIDGE_PVA": "Bridge & PVA Support",
+    "NGEN-NGEN": "nGen & nGen",
+    "INOVA-INOVA": "INOVA & INOVA",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "ABS & NinjaFlex",
@@ -350,6 +362,9 @@ material_url = {
     "ABS_HIPS": "lulzbot.com/store/filament/abs",
     "HIPS_HIPS": "lulzbot.com/store/filament/hips",
     "PCTPE_PVA": "lulzbot.com/store/filament/pctpe",
+    "BRIDGE_PVA": "lulzbot.com/store/filament/bridge-nylon",
+#    "NGEN-NGEN": "",
+    "INOVA-INOVA": "lulzbot.com/store/filament/inova-1800",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
