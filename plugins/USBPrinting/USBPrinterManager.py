@@ -228,7 +228,6 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
                         base_list += [values[1]]
                     i += 1
             except Exception as e:
-                Logger.log("d", "USBPrinterManager.getSerialPortList: ", e)
                 pass
         else:
             if only_list_usb:

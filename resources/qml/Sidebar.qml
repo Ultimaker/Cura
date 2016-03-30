@@ -68,9 +68,12 @@ Rectangle
         addProfileAction: base.addProfileAction
         manageProfilesAction: base.manageProfilesAction
         anchors.top: settingsModeSelection.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height 
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width
         height: totalHeightProfileSetup
+
+        onShowTooltip: base.showTooltip(item, location, text)
+        onHideTooltip: base.hideTooltip()
     }
 
     currentModeIndex:

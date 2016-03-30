@@ -92,7 +92,11 @@ Item {
             anchors.margins: UM.Theme.getSize("default_lining").width
 
             target: Qt.point(-UM.Theme.getSize("default_margin").width, UM.Theme.getSize("button").height/2)
-            arrowSize: parent.arrowSize 
+            arrowSize: parent.arrowSize
+            MouseArea //Catch all mouse events (so scene doesnt handle them)
+            {
+                anchors.fill: parent
+            }
         }
 
         Loader {

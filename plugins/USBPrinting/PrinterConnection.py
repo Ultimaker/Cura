@@ -366,14 +366,32 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         Logger.log("d", "Setting bed temperature to %s", temperature)
         self._sendCommand("M140 S%s" % temperature)
 
+    @pyqtSlot()
+    def setMoveToRelative(self):
+        self._sendCommand("G91")
+
+    @pyqtSlot()
+    def setMoveToAbsolute(self):
+        self._sendCommand("G90")
+
     @pyqtSlot("long", "long","long")
     def moveHead(self, x, y, z):
         Logger.log("d","Moving head to %s, %s , %s", x, y, z)
-        self._sendCommand("G0 X%s Y%s Z%s"%(x,y,z))
+        self._sendCommand("G0 X%s Y%s Z%s F3000" % (x, y, z))
+
+    @pyqtSlot("long", "long","long")
+    def moveHeadRelative(self, x, y, z):
+        self.setMoveToRelative()
+        self.moveHead(x,y,z)
+        self.setMoveToAbsolute()
 
     @pyqtSlot()
     def homeHead(self):
         self._sendCommand("G28")
+
+    @pyqtSlot()
+    def homeBed(self):
+        self._sendCommand("G28 Z")
 
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
@@ -466,7 +484,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._bed_temperature = temperature
         self.bedTemperatureChanged.emit()
 
-    def requestWrite(self, node, file_name = None):
+    def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self.showControlInterface()
 
     def _setEndstopState(self, endstop_key, value):

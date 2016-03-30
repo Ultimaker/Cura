@@ -88,9 +88,7 @@ class PlatformPhysics:
                     job = ConvexHullJob.ConvexHullJob(node)
                     job.start()
                     node.callDecoration("setConvexHullJob", job)
-
-            elif Selection.isSelected(node):
-                pass
+                    
             elif Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):

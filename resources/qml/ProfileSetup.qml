@@ -15,6 +15,9 @@ Item{
     property Action manageProfilesAction
     property Action addProfileAction
 
+    signal showTooltip(Item item, point location, string text)
+    signal hideTooltip()
+
     Rectangle{
         id: globalProfileRow
         anchors.top: base.top
@@ -51,23 +54,40 @@ Item{
                 Instantiator
                 {
                     id: profileSelectionInstantiator
-                    model: UM.ProfilesModel { addSeparators: true }
+                    model: UM.ProfilesModel {}
+                    property int separatorIndex: -1
+
                     Loader {
                         property QtObject model_data: model
                         property int model_index: index
-                        sourceComponent: model.separator ? menuSeparatorDelegate : menuItemDelegate
+                        sourceComponent: menuItemDelegate
                     }
-                    onObjectAdded: profileSelectionMenu.insertItem(index, object.item)
-                    onObjectRemoved: profileSelectionMenu.removeItem(object.item)
+                    onObjectAdded:
+                    {
+                        //Insert a separator between readonly and custom profiles
+                        if(separatorIndex < 0 && index > 0) {
+                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
+                                profileSelectionMenu.addSeparator();
+                                separatorIndex = index;
+                            }
+                        }
+                        //Because of the separator, custom profiles move one index lower
+                        profileSelectionMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
+                    }
+                    onObjectRemoved:
+                    {
+                        //When adding a profile, the menu is rebuild by removing all items.
+                        //If a separator was added, we need to remove that too.
+                        if(separatorIndex >= 0)
+                        {
+                            profileSelectionMenu.removeItem(profileSelectionMenu.items[separatorIndex])
+                            separatorIndex = -1;
+                        }
+                        profileSelectionMenu.removeItem(object.item);
+                    }
                 }
                 ExclusiveGroup { id: profileSelectionMenuGroup; }
-                Component
-                {
-                    id: menuSeparatorDelegate
-                    MenuSeparator {
-                        id: item
-                    }
-                }
+
                 Component
                 {
                     id: menuItemDelegate
@@ -91,7 +111,6 @@ Item{
                         }
                     }
                 }
-
 
                 MenuSeparator { }
                 MenuItem {
@@ -117,6 +136,12 @@ Item{
             iconSource: UM.Theme.getIcon("star");
 
             onClicked: base.manageProfilesAction.trigger()
+            onEntered:
+            {
+                var content = catalog.i18nc("@tooltip","Some setting values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                base.showTooltip(globalProfileRow, Qt.point(0, globalProfileRow.height / 2),  content)
+            }
+            onExited: base.hideTooltip()
         }
     }
 }

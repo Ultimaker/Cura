@@ -18,6 +18,7 @@ MACRO(SUBDIRLIST result curdir)
   SET(dirlist "")
   FOREACH(child ${children})
     IF(IS_DIRECTORY ${curdir}/${child})
+        STRING(REPLACE "/" "" child ${child})
         LIST(APPEND dirlist ${child})
     ENDIF()
   ENDFOREACH()
@@ -48,25 +49,41 @@ if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
                 add_custom_command(TARGET translations POST_BUILD COMMAND mkdir ARGS -p ${CMAKE_BINARY_DIR}/resources/i18n/${lang}/LC_MESSAGES/ COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} ARGS ${po_file} -o ${mo_file} -f)
             endforeach()
         endforeach()
-        install(DIRECTORY ${CMAKE_BINARY_DIR}/resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/resources
+                DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
     endif()
 endif()
 
 find_package(PythonInterp 3.4.0 REQUIRED)
 
-install(DIRECTORY resources DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
-install(DIRECTORY plugins DESTINATION lib/cura)
-install(FILES cura_app.py DESTINATION ${CMAKE_INSTALL_BINDIR} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+install(DIRECTORY resources
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
+install(DIRECTORY plugins
+        DESTINATION lib/cura)
 if(NOT APPLE AND NOT WIN32)
-    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
-    install(FILES cura.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+    install(FILES cura_app.py
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
+            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+            RENAME cura)
+    install(DIRECTORY cura
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages
+            FILES_MATCHING PATTERN *.py)
+    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
+    install(FILES cura.desktop
+            DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES cura.sharedmimeinfo
             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/
             RENAME cura.xml )
 else()
-    install(DIRECTORY cura DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages FILES_MATCHING PATTERN *.py)
-    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
+    install(FILES cura_app.py
+            DESTINATION ${CMAKE_INSTALL_BINDIR}
+            PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+    install(DIRECTORY cura
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages
+            FILES_MATCHING PATTERN *.py)
+    install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
+            DESTINATION lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages/cura)
 endif()
 
 include(CPackConfig.cmake)
