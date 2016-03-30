@@ -64,7 +64,6 @@ class CuraEngineBackend(Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self.slice)
 
-        #self._message_handlers["cura.proto.SlicedObjectList"] = self._onSlicedObjectListMessage
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
@@ -279,7 +278,7 @@ class CuraEngineBackend(Backend):
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
-                if len(self._stored_layer_data) and not self._slicing:
+                if self._stored_layer_data and not self._slicing:
                     self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
                     self._process_layers_job.start()
                     self._stored_layer_data = []
