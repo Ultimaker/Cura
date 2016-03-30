@@ -272,18 +272,6 @@
                                 }
                             }
                         },
-                        "skirt_line_width": {
-                            "label": "Skirt line width",
-                            "description": "Width of a single skirt line.",
-                            "unit": "mm",
-                            "min_value": "0.0001",
-                            "min_value_warning": "0.2",
-                            "max_value_warning": "5",
-                            "default": 0.4,
-                            "type": "float",
-                            "visible": false, 
-                            "global_only": true
-                        },
                         "skin_line_width": {
                             "label": "Top/bottom line width",
                             "description": "Width of a single top/bottom line.",
@@ -305,6 +293,18 @@
                             "default": 0.4,
                             "type": "float",
                             "visible": false
+                        },
+                        "skirt_line_width": {
+                            "label": "Skirt line width",
+                            "description": "Width of a single skirt line.",
+                            "unit": "mm",
+                            "min_value": "0.0001",
+                            "min_value_warning": "0.2",
+                            "max_value_warning": "5",
+                            "default": 0.4,
+                            "type": "float",
+                            "visible": false, 
+                            "global_only": true
                         },
                         "support_line_width": {
                             "label": "Support line width",
@@ -431,6 +431,34 @@
                         }
                     }
                 },
+                "top_bottom_pattern": {
+                    "label": "Top/Bottom Pattern",
+                    "description": "The pattern of the top/bottom layers.",
+                    "type": "enum",
+                    "options": {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default": "lines",
+                    "visible": false
+                },
+                "skin_alternate_rotation": {
+                    "label": "Alternate Skin Rotation",
+                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
+                "skin_outline_count": {
+                    "label": "Extra Skin Wall Count",
+                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
+                    "default": 0,
+                    "min_value": "0",
+                    "max_value_warning": "10",
+                    "type": "int",
+                    "visible": false
+                },
                 "alternate_extra_perimeter": {
                     "label": "Alternating Extra Wall",
                     "description": "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints.",
@@ -466,13 +494,6 @@
                         }
                     }
                 },
-                "travel_compensate_overlapping_walls_enabled": {
-                    "label": "Compensate Wall Overlaps",
-                    "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": false
-                },
                 "fill_perimeter_gaps": {
                     "label": "Fill Gaps Between Walls",
                     "description": "Fills the gaps between walls when overlapping inner wall parts are removed.",
@@ -486,39 +507,11 @@
                     "visible": false,
                     "enabled": "remove_overlapping_walls_x_enabled"
                 },
-                "top_bottom_pattern": {
-                    "label": "Top/Bottom Pattern",
-                    "description": "The pattern of the top/bottom layers.",
-                    "type": "enum",
-                    "options": {
-                        "lines": "Lines",
-                        "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default": "lines",
-                    "visible": false
-                },
-                "skin_no_small_gaps_heuristic": {
-                    "label": "Ignore small Z gaps",
-                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such a case set this setting to false.",
+                "travel_compensate_overlapping_walls_enabled": {
+                    "label": "Compensate Wall Overlaps",
+                    "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
                     "type": "boolean",
                     "default": true,
-                    "visible": false
-                },
-                "skin_alternate_rotation": {
-                    "label": "Alternate Skin Rotation",
-                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false
-                },
-                "skin_outline_count": {
-                    "label": "Extra Skin Wall Count",
-                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
-                    "default": 0,
-                    "min_value": "0",
-                    "max_value_warning": "10",
-                    "type": "int",
                     "visible": false
                 },
                 "xy_offset": {
@@ -541,6 +534,13 @@
                         "random": "Random"
                     },
                     "default": "shortest",
+                    "visible": false
+                },
+                "skin_no_small_gaps_heuristic": {
+                    "label": "Ignore small Z gaps",
+                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such a case set this setting to false.",
+                    "type": "boolean",
+                    "default": true,
                     "visible": false
                 }
             }
@@ -990,7 +990,7 @@
                     "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is disabled, the nozzle moves in a straight line to the next start point and will retract.",
                     "type": "boolean",
                     "default": true,
-                    "visible": false, 
+                    "visible": false,
                     "global_only": true
                 },
                 "travel_avoid_other_parts": {
@@ -1116,6 +1116,17 @@
                         }
                     }
                 },
+                "cool_min_layer_time_fan_speed_max": {
+                    "label": "Regular/Maximum Fan Speed threshold",
+                    "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
+                    "unit": "sec",
+                    "type": "float",
+                    "default": 10,
+                    "min_value": "cool_min_layer_time",
+                    "max_value_warning": "600",
+                    "visible": false,
+                    "global_only": "True"
+                },
                 "cool_fan_full_at_height": {
                     "label": "Regular fan speed at height",
                     "description": "The height at which the fan spins on regular fan speed. At the layers below the fan speed gradually increases from zero to regular fan speed.",
@@ -1148,17 +1159,6 @@
                     "type": "float",
                     "default": 5,
                     "min_value": "0",
-                    "max_value_warning": "600",
-                    "visible": false,
-                    "global_only": "True"
-                },
-                "cool_min_layer_time_fan_speed_max": {
-                    "label": "Regular/Maximum Fan Speed threshold",
-                    "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
-                    "unit": "sec",
-                    "type": "float",
-                    "default": 10,
-                    "min_value": "cool_min_layer_time",
                     "max_value_warning": "600",
                     "visible": false,
                     "global_only": "True"
@@ -1262,6 +1262,57 @@
                     "visible": false,
                     "enabled": "support_enable"
                 },
+                "support_pattern": {
+                    "label": "Support Pattern",
+                    "description": "The pattern of the support structures of the print.",
+                    "type": "enum",
+                    "options": {
+                        "lines": "Lines",
+                        "grid": "Grid",
+                        "triangles": "Triangles",
+                        "concentric": "Concentric",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default": "zigzag",
+                    "visible": false,
+                    "enabled": "support_enable",
+                    "global_only": true
+                },
+                "support_connect_zigzags": {
+                    "label": "Connect ZigZags",
+                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false,
+                    "enabled": "support_enable",
+                    "global_only": true
+                },
+                "support_infill_rate": {
+                    "label": "Support Density",
+                    "description": "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
+                    "unit": "%",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value_warning": "100",
+                    "default": 15,
+                    "visible": false,
+                    "enabled": "support_enable",
+                    "global_only": true,
+                    "children": {
+                        "support_line_distance": {
+                            "label": "Support Line distance",
+                            "description": "Distance between the printed support structure lines. This setting is calculated by the support density.",
+                            "unit": "mm",
+                            "type": "float",
+                            "min_value": "0",
+                            "default": 2.66,
+                            "visible": false,
+                            "enabled": "support_enable",
+                            "inherit_function": "(support_line_width * 100) / parent_value",
+                            "global_only": true
+                        }
+                    }
+                },
                 "support_xy_distance": {
                     "label": "X/Y Distance",
                     "description": "Distance of the support structure from the print in the X/Y directions.",
@@ -1308,39 +1359,6 @@
                             "enabled": "support_enable"
                         }
                     }
-                },
-                "support_conical_enabled": {
-                    "label": "Conical Support",
-                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": true,
-                    "enabled": "support_enable"
-                },
-                "support_conical_angle": {
-                    "label": "Cone Angle",
-                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": "-90",
-                    "min_value_warning": "-45",
-                    "max_value_warning": "45",
-                    "max_value": "90",
-                    "default": 30,
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
-                },
-                "support_conical_min_width": {
-                    "label": "Cone minimal width",
-                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
-                    "unit": "mm",
-                    "default": 5.0,
-                    "min_value": "0",
-                    "min_value_warning": "machine_nozzle_size * 3",
-                    "max_value_warning": "100.0",
-                    "type": "float",
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_bottom_stair_step_height": {
                     "label": "Stair Step Height",
@@ -1446,6 +1464,39 @@
                     "enabled": "support_roof_enable",
                     "global_only": true
                 },
+                "support_conical_enabled": {
+                    "label": "Conical Support",
+                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": true,
+                    "enabled": "support_enable"
+                },
+                "support_conical_angle": {
+                    "label": "Cone Angle",
+                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": "-90",
+                    "min_value_warning": "-45",
+                    "max_value_warning": "45",
+                    "max_value": "90",
+                    "default": 30,
+                    "visible": false,
+                    "enabled": "support_conical_enabled and support_enable"
+                },
+                "support_conical_min_width": {
+                    "label": "Cone minimal width",
+                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
+                    "unit": "mm",
+                    "default": 5.0,
+                    "min_value": "0",
+                    "min_value_warning": "machine_nozzle_size * 3",
+                    "max_value_warning": "100.0",
+                    "type": "float",
+                    "visible": false,
+                    "enabled": "support_conical_enabled and support_enable"
+                },
                 "support_use_towers": {
                     "label": "Use towers",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
@@ -1488,57 +1539,6 @@
                     "default": 65,
                     "visible": false,
                     "enabled": "support_enable and support_use_towers"
-                },
-                "support_pattern": {
-                    "label": "Support Pattern",
-                    "description": "The pattern of the support structures of the print.",
-                    "type": "enum",
-                    "options": {
-                        "lines": "Lines",
-                        "grid": "Grid",
-                        "triangles": "Triangles",
-                        "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default": "zigzag",
-                    "visible": false,
-                    "enabled": "support_enable",
-                    "global_only": true
-                },
-                "support_connect_zigzags": {
-                    "label": "Connect ZigZags",
-                    "description": "Connect the ZigZags. Makes them harder to remove, but prevents stringing of disconnected zigzags.",
-                    "type": "boolean",
-                    "default": true,
-                    "visible": false,
-                    "enabled": "support_enable",
-                    "global_only": true
-                },
-                "support_infill_rate": {
-                    "label": "Support Density",
-                    "description": "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
-                    "unit": "%",
-                    "type": "float",
-                    "min_value": "0",
-                    "max_value_warning": "100",
-                    "default": 15,
-                    "visible": false,
-                    "enabled": "support_enable",
-                    "global_only": true,
-                    "children": {
-                        "support_line_distance": {
-                            "label": "Support Line distance",
-                            "description": "Distance between the printed support structure lines. This setting is calculated by the support density.",
-                            "unit": "mm",
-                            "type": "float",
-                            "min_value": "0",
-                            "default": 2.66,
-                            "visible": false,
-                            "enabled": "support_enable",
-                            "inherit_function": "(support_line_width * 100) / parent_value",
-                            "global_only": true
-                        }
-                    }
                 }
             }
         },
