@@ -30,7 +30,6 @@
 
     "overrides": {
         "layer_height": { "default": 0.15},
-        "shell_thickness": { "default": 0.8},
         "wall_thickness": { "default": 0.8},
         "top_bottom_thickness": { "default": 0.3, "visible": true},
         "material_print_temperature": { "default": 215, "visible": true},

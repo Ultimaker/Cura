@@ -9,7 +9,7 @@ weight = -2
 [settings]
 line_width = 0.35
 layer_height_0 = 0.26
-shell_thickness = 1.05
+wall_thickness = 1.05
 top_bottom_thickness = 0.8
 infill_sparse_density = 20
 retraction_amount = 5.5

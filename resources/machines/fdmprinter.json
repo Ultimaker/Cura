@@ -340,92 +340,78 @@
             "visible": true,
             "icon": "category_shell",
             "settings": {
-                "shell_thickness": {
-                    "label": "Shell Thickness",
-                    "description": "The thickness of the outside shell in the horizontal and vertical direction. This is used in combination with the nozzle size to define the number of perimeter lines and the thickness of those perimeter lines. This is also used to define the number of solid top and bottom layers.",
+                "wall_thickness": {
+                    "label": "Wall Thickness",
+                    "description": "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
                     "unit": "mm",
-                    "type": "float",
                     "default": 0.8,
                     "min_value": "0",
-                    "min_value_warning": "0.2",
-                    "max_value_warning": "5",
-                    "visible": false,
-                    "enabled": "False",
+                    "min_value_warning": "line_width",
+                    "max_value_warning": "5 * line_width",
+                    "type": "float",
+                    "visible": true,
                     "children": {
-                        "wall_thickness": {
-                            "label": "Wall Thickness",
-                            "description": "The thickness of the outside walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
+                        "wall_line_count": {
+                            "label": "Wall Line Count",
+                            "description": "The number of walls. When calculated by the wall thickness, this value is rounded to a whole number.",
+                            "default": 2,
+                            "min_value": "0",   
+                            "type": "int",
+                            "visible": false,
+                            "inherit_function": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
+                        }
+                    }
+                },
+                "top_bottom_thickness": {
+                    "label": "Top/Bottom Thickness",
+                    "description": " The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
+                    "unit": "mm",
+                    "default": 0.8,
+                    "min_value": "0",
+                    "max_value": "5",
+                    "min_value_warning": "0.6",
+                    "type": "float",
+                    "visible": true,
+                    "children": {
+                        "top_thickness": {
+                            "label": "Top Thickness",
+                            "description": "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers.",
                             "unit": "mm",
                             "default": 0.8,
                             "min_value": "0",
-                            "min_value_warning": "line_width",
-                            "max_value_warning": "5 * line_width",
+                            "max_value_warning": "100",
                             "type": "float",
-                            "visible": true,
+                            "visible": false,
                             "children": {
-                                "wall_line_count": {
-                                    "label": "Wall Line Count",
-                                    "description": "The number of walls. When calculated by the wall thickness, this value is rounded to a whole number.",
-                                    "default": 2,
-                                    "min_value": "0",   
+                                "top_layers": {
+                                    "label": "Top Layers",
+                                    "description": "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number.",
+                                    "default": 8,
+                                    "min_value": "0",
+                                    "max_value_warning": "100",
                                     "type": "int",
                                     "visible": false,
-                                    "inherit_function": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
+                                    "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
                                 }
                             }
                         },
-                        "top_bottom_thickness": {
-                            "label": "Top/Bottom Thickness",
-                            "description": " The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
+                        "bottom_thickness": {
+                            "label": "Bottom Thickness",
+                            "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
                             "unit": "mm",
-                            "default": 0.8,
+                            "default": 0.6,
                             "min_value": "0",
-                            "max_value": "5",
-                            "min_value_warning": "0.6",
                             "type": "float",
-                            "visible": true,
+                            "visible": false,
                             "children": {
-                                "top_thickness": {
-                                    "label": "Top Thickness",
-                                    "description": "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers.",
-                                    "unit": "mm",
-                                    "default": 0.8,
+                                "bottom_layers": {
+                                    "label": "Bottom Layers",
+                                    "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
                                     "min_value": "0",
-                                    "max_value_warning": "100",
-                                    "type": "float",
+                                    "default": 6,
+                                    "type": "int",
                                     "visible": false,
-                                    "children": {
-                                        "top_layers": {
-                                            "label": "Top Layers",
-                                            "description": "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number.",
-                                            "default": 8,
-                                            "min_value": "0",
-                                            "max_value_warning": "100",
-                                            "type": "int",
-                                            "visible": false,
-                                            "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
-                                        }
-                                    }
-                                },
-                                "bottom_thickness": {
-                                    "label": "Bottom Thickness",
-                                    "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
-                                    "unit": "mm",
-                                    "default": 0.6,
-                                    "min_value": "0",
-                                    "type": "float",
-                                    "visible": false,
-                                    "children": {
-                                        "bottom_layers": {
-                                            "label": "Bottom Layers",
-                                            "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
-                                            "min_value": "0",
-                                            "default": 6,
-                                            "type": "int",
-                                            "visible": false,
-                                            "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
-                                        }
-                                    }
+                                    "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
                                 }
                             }
                         }
