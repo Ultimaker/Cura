@@ -1270,7 +1270,7 @@
                     "type": "boolean",
                     "default": true,
                     "visible": false,
-                    "enabled": "support_enable and support_pattern==zigzag",
+                    "enabled": "support_enable and (support_pattern == 'zigzag')",
                     "global_only": true
                 },
                 "support_infill_rate": {
