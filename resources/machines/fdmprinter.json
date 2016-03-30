@@ -460,7 +460,7 @@
                     "visible": false
                 },
                 "alternate_extra_perimeter": {
-                    "label": "Alternating Extra Wall",
+                    "label": "Alternate Extra Wall",
                     "description": "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints.",
                     "type": "boolean",
                     "default": false,
@@ -1300,7 +1300,7 @@
                     "global_only": true,
                     "children": {
                         "support_line_distance": {
-                            "label": "Support Line distance",
+                            "label": "Support Line Distance",
                             "description": "Distance between the printed support structure lines. This setting is calculated by the support density.",
                             "unit": "mm",
                             "type": "float",
