@@ -498,6 +498,13 @@
                     "default": "lines",
                     "visible": false
                 },
+                "skin_no_small_gaps_heuristic": {
+                    "label": "Ignore small Z gaps",
+                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such a case set this setting to false.",
+                    "type": "boolean",
+                    "default": true,
+                    "visible": false
+                },
                 "skin_alternate_rotation": {
                     "label": "Alternate Skin Rotation",
                     "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
