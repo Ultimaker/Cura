@@ -391,7 +391,7 @@
                                     "max_value_warning": "100",
                                     "type": "int",
                                     "visible": false,
-                                    "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
+                                    "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(round(parent_value / layer_height, 4))"
                                 }
                             }
                         },
@@ -411,7 +411,7 @@
                                     "default": 6,
                                     "type": "int",
                                     "visible": false,
-                                    "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
+                                    "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(round(parent_value / layer_height, 4))"
                                 }
                             }
                         }
