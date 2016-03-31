@@ -438,7 +438,7 @@
                 },
                 "skin_outline_count": {
                     "label": "Extra Skin Wall Count",
-                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
+                    "description": "Number of lines around skin regions. Using one or two skin perimeter lines can greatly improve roofs which would start in the middle of infill cells.",
                     "default": 0,
                     "min_value": "0",
                     "max_value_warning": "10",
