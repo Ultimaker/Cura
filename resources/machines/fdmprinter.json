@@ -1953,7 +1953,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default": 0.3,
-                    "min_value": "0",
+                    "min_value": "0.001",
                     "max_value_warning": "wall_line_width_0",
                     "visible": false,
                     "enabled": "magic_fuzzy_skin_enabled"
