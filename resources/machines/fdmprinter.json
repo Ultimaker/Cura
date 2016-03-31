@@ -1206,7 +1206,7 @@
                     "unit": "mm",
                     "type": "float",
                     "min_value": "0",
-                    "max_value_warning": "30",
+                    "max_value_warning": "9999",
                     "default": 0,
                     "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
                     "visible": false,
