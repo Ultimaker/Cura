@@ -595,7 +595,7 @@
                 },
                 "infill_sparse_thickness": {
                     "label": "Infill layer thickness",
-                    "description": "The thickness per layer of infill material. This value should always be a multiplication of the layer height and is otherwise rounded.",
+                    "description": "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded.",
                     "unit": "mm",
                     "type": "float",
                     "default": 0.1,
@@ -749,7 +749,7 @@
                 },
                 "retraction_extra_prime_amount": {
                     "label": "Retraction Extra Prime Amount",
-                    "description": "Some material can ooze away during a travel move, which can be compensated here.",
+                    "description": "Some material can ooze away during a travel move, which can be compensated for here.",
                     "unit": "mm³",
                     "type": "float",
                     "default": 0,
