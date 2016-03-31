@@ -1931,7 +1931,15 @@
                     "default": false,
                     "visible": false,
                     "global_only": "True"
-                },
+                }
+            }
+        },
+        "experimental":
+        {
+            "label": "Experimental",
+            "visible": true,
+            "icon": "category_blackmagic",
+            "settings": {
                 "magic_fuzzy_skin_enabled": {
                     "label": "Fuzzy Skin",
                     "description": "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look.",
