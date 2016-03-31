@@ -355,7 +355,7 @@
                             "label": "Wall Line Count",
                             "description": "The number of walls. When calculated by the wall thickness, this value is rounded to a whole number.",
                             "default": 2,
-                            "min_value": "0",   
+                            "min_value": "0",
                             "type": "int",
                             "visible": false,
                             "inherit_function": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1)"
@@ -364,7 +364,7 @@
                 },
                 "top_bottom_thickness": {
                     "label": "Top/Bottom Thickness",
-                    "description": " The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
+                    "description": "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
                     "unit": "mm",
                     "default": 0.8,
                     "min_value": "0",
