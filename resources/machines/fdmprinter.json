@@ -273,7 +273,7 @@
                             }
                         },
                         "skin_line_width": {
-                            "label": "Top/bottom line width",
+                            "label": "Top/bottom Line Width",
                             "description": "Width of a single top/bottom line.",
                             "unit": "mm",
                             "min_value": "0.0001",
@@ -284,7 +284,7 @@
                             "visible": false
                         },
                         "infill_line_width": {
-                            "label": "Infill line width",
+                            "label": "Infill Line Width",
                             "description": "Width of a single infill line.",
                             "unit": "mm",
                             "min_value": "0.0001",
@@ -295,7 +295,7 @@
                             "visible": false
                         },
                         "skirt_line_width": {
-                            "label": "Skirt line width",
+                            "label": "Skirt Line Width",
                             "description": "Width of a single skirt line.",
                             "unit": "mm",
                             "min_value": "0.0001",
@@ -307,7 +307,7 @@
                             "global_only": true
                         },
                         "support_line_width": {
-                            "label": "Support line width",
+                            "label": "Support Line Width",
                             "description": "Width of a single support structure line.",
                             "unit": "mm",
                             "min_value": "0.0001",
@@ -320,7 +320,7 @@
                             "global_only": true
                         },
                         "support_roof_line_width": {
-                            "label": "Support Roof line width",
+                            "label": "Support Roof Line Width",
                             "description": "Width of a single support roof line.",
                             "unit": "mm",
                             "default": 0.4,
@@ -501,7 +501,7 @@
                     "visible": false
                 },
                 "xy_offset": {
-                    "label": "Horizontal expansion",
+                    "label": "Horizontal Expansion",
                     "description": "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
                     "unit": "mm",
                     "type": "float",
@@ -523,7 +523,7 @@
                     "visible": false
                 },
                 "skin_no_small_gaps_heuristic": {
-                    "label": "Ignore small Z gaps",
+                    "label": "Ignore Small Z Gaps",
                     "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such a case set this setting to false.",
                     "type": "boolean",
                     "default": true,
@@ -594,7 +594,7 @@
                     "visible": false
                 },
                 "infill_sparse_thickness": {
-                    "label": "Infill layer thickness",
+                    "label": "Infill Layer Thickness",
                     "description": "The thickness per layer of infill material. This value should always be a multiple of the layer height and is otherwise rounded.",
                     "unit": "mm",
                     "type": "float",
@@ -1076,7 +1076,7 @@
                     "global_only": "True",
                     "children": {
                         "cool_fan_speed_min": {
-                            "label": "Regular fan speed",
+                            "label": "Regular Fan Speed",
                             "description": "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed.",
                             "unit": "%",
                             "type": "float",
@@ -1103,7 +1103,7 @@
                     }
                 },
                 "cool_min_layer_time_fan_speed_max": {
-                    "label": "Regular/Maximum Fan Speed threshold",
+                    "label": "Regular/Maximum Fan Speed Threshold",
                     "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
                     "unit": "sec",
                     "type": "float",
@@ -1114,7 +1114,7 @@
                     "global_only": "True"
                 },
                 "cool_fan_full_at_height": {
-                    "label": "Regular fan speed at height",
+                    "label": "Regular Fan Speed at Height",
                     "description": "The height at which the fan spins on regular fan speed. At the layers below the fan speed gradually increases from zero to regular fan speed.",
                     "unit": "mm",
                     "type": "float",
@@ -1126,7 +1126,7 @@
                     "global_only": "True",
                     "children": {
                         "cool_fan_full_layer": {
-                            "label": "Regular fan speed at layer",
+                            "label": "Regular Fan Speed at Layer",
                             "description": "The layer at which the fan spins on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number.",
                             "type": "int",
                             "default": 1,
@@ -1472,7 +1472,7 @@
                     "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_conical_min_width": {
-                    "label": "Cone minimal width",
+                    "label": "Cone Minimal Width",
                     "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
                     "unit": "mm",
                     "default": 5.0,
@@ -1484,7 +1484,7 @@
                     "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_use_towers": {
-                    "label": "Use towers",
+                    "label": "Use Towers",
                     "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
                     "type": "boolean",
                     "default": true,
@@ -1901,7 +1901,7 @@
             "icon": "category_blackmagic",
             "settings": {
                 "print_sequence": {
-                    "label": "Print sequence",
+                    "label": "Print Sequence",
                     "description": "Whether to print all objects one layer at a time or to wait for one object to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
                     "type": "enum",
                     "options": {
