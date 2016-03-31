@@ -38,7 +38,7 @@ GIT_HASH=$(git rev-parse --short=4 HEAD)
 export FULL_VERSION=${BUILD_VERSION}-${GIT_HASH}
 
 ##Which versions of external programs to use
-WIN_PORTABLE_PY_VERSION=2.7.6.1
+WIN_PORTABLE_PY_VERSION=2.7.2.1
 
 ##Which CuraEngine to use
 if [ -z ${CURA_ENGINE_REPO:-} ] ; then
@@ -484,6 +484,7 @@ fi
 if [ $BUILD_TARGET = "win32" ]; then
 	#Get portable python for windows and extract it. (Linux and Mac need to install python themselfs)
 	downloadURL http://ftp.nluug.nl/languages/python/portablepython/v2.7/PortablePython_${WIN_PORTABLE_PY_VERSION}.exe
+	downloadURL http://ftp.nluug.nl/languages/python/portablepython/v2.7/PortablePython_2.7.6.1.exe
 	downloadURL http://sourceforge.net/projects/pyopengl/files/PyOpenGL/3.0.1/PyOpenGL-3.0.1.win32.exe
 	downloadURL http://videocapture.sourceforge.net/VideoCapture-0.9-5.zip
 	#downloadURL http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-20120927-git-13f0cd6-win32-static.7z
@@ -523,14 +524,19 @@ if [ $BUILD_TARGET = "win32" ]; then
 	mkdir -p ${TARGET_DIR}/Cura/
 	mv App/Lib/site-packages/ PURELIB/
 	mv App/* ${TARGET_DIR}/python
+
+	# Replace Python 2.7.2.1 by 2.7.6.1 so we can grab wx 3.0 and serial 2.7
+	rm -rf App
+	extract PortablePython_2.7.6.1.exe App
+
 	mkdir -p ${TARGET_DIR}/python/Lib/site-packages/
 	mv PURELIB/site-packages/setuptools* PURELIB/site-packages/site.py PURELIB/site-packages/easy_install.py ${TARGET_DIR}/python/Lib/site-packages/
 	mv PURELIB/site-packages/numpy* ${TARGET_DIR}/python/Lib/site-packages/
-	mv PURELIB/site-packages/serial* ${TARGET_DIR}/python/Lib/site-packages/
-	mv PURELIB/site-packages/pyserial* ${TARGET_DIR}/python/Lib/site-packages/
-	mv PURELIB/site-packages/wx* ${TARGET_DIR}/python/Lib/site-packages/
 	mv PURELIB/OpenGL ${TARGET_DIR}/python/Lib
 	mv PURELIB/comtypes ${TARGET_DIR}/python/Lib
+	mv App/Lib/site-packages/serial* ${TARGET_DIR}/python/Lib/site-packages/
+	mv App/Lib/site-packages/pyserial* ${TARGET_DIR}/python/Lib/site-packages/
+	mv App/Lib/site-packages/wx* ${TARGET_DIR}/python/Lib/site-packages/
 	mv Power/power ${TARGET_DIR}/python/Lib
 	mv VideoCapture-0.9-5/Python27/DLLs/vidcap.pyd ${TARGET_DIR}/python/DLLs
 	#mv ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe ${TARGET_DIR}/Cura/
