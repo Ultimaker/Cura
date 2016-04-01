@@ -168,7 +168,7 @@ class BuildVolume(SceneNode):
             if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
                 self._height = Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height")
             else:
-                self._height = self._active_instance.getMachineSettingValue("machine_depth")
+                self._height = self._active_instance.getMachineSettingValue("machine_height")
             self._depth = self._active_instance.getMachineSettingValue("machine_depth")
 
             self._updateDisallowedAreas()
