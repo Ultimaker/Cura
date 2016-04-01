@@ -62,11 +62,15 @@ function downloadURL
 	filename=`basename "$1"`
 	echo "Checking for $filename"
 	if [ -f "$filename" ]; then
-		SERVER_SIZE=$(curl -L -I "$1" | grep Content-Length | awk '{print $2}')
-		FILE_SIZE=$(stat -c%s "$filename")
-        echo "File $filename exists with $FILE_SIZE bytes. Server version has $SERVER_SIZE bytes"
-		if [ "$FILE_SIZE" != "$SERVER_SIZE" ]; then
-			rm -f "$filename"
+		SERVER_SIZE=$(curl -L -I "$1" | grep Content-Length | awk '{ sub(/\r$/,""); print $2}')
+		if [ "x$SERVER_SIZE" != "x" ]; then
+			if [ "$SERVER_SIZE" -gt 0 ]; then
+				FILE_SIZE=$(stat -c%s "$filename")
+				echo "File $filename exists with $FILE_SIZE bytes. Server version has $SERVER_SIZE bytes"
+				if [ "$FILE_SIZE" -ne "$SERVER_SIZE" ]; then
+					rm -f "$filename"
+				fi
+			fi
 		fi
 	fi
 	if [ ! -f "$filename" ]; then
