@@ -65,7 +65,7 @@ Item
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width / 2;
                 anchors.verticalCenter: parent.verticalCenter;
 
-                width: UM.Theme.getSize("line").width * maxValue.length;
+                width: Math.max(UM.Theme.getSize("line").width * maxValue.length + 1, 20);
 
                 style: TextFieldStyle
                 {
