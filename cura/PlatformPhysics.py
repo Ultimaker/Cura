@@ -61,11 +61,6 @@ class PlatformPhysics:
             # Mark the node as outside the build volume if the bounding box test fails.
             if build_volume_bounding_box.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
                 node._outside_buildarea = True
-            else:
-                # When printing one at a time too high objects are not printable.
-                if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
-                    if node.getBoundingBox().height > Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height"):
-                        node._outside_buildarea = True
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()

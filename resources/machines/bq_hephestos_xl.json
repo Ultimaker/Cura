@@ -38,7 +38,6 @@
         },
         "layer_height": { "default": 0.2 },
         "layer_height_0": { "default": 0.2, "visible": false },
-        "shell_thickness": { "default": 1.0 },
         "wall_thickness": { "default": 1.0, "visible": false },
         "top_bottom_thickness": { "default": 1.0, "visible": false},
         "bottom_thickness": { "default": 1.0, "visible": false },

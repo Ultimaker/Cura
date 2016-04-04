@@ -163,7 +163,10 @@ class BuildVolume(SceneNode):
 
         if self._active_instance:
             self._width = self._active_instance.getMachineSettingValue("machine_width")
-            self._height = self._active_instance.getMachineSettingValue("machine_height")
+            if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
+                self._height = Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height")
+            else:
+                self._height = self._active_instance.getMachineSettingValue("machine_height")
             self._depth = self._active_instance.getMachineSettingValue("machine_depth")
 
             self._updateDisallowedAreas()
@@ -180,10 +183,18 @@ class BuildVolume(SceneNode):
             self._updateDisallowedAreas()
             self.rebuild()
 
-    def _onSettingValueChanged(self, setting):
-        if setting in self._skirt_settings:
+    def _onSettingValueChanged(self, setting_key):
+        if setting_key == "print_sequence":
+            if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
+                self._height = Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height")
+            else:
+                self._height = self._active_instance.getMachineSettingValue("machine_depth")
+            self.rebuild()
+        if setting_key in self._skirt_settings:
             self._updateDisallowedAreas()
             self.rebuild()
+
+
 
     def _updateDisallowedAreas(self):
         if not self._active_instance or not self._active_profile:
@@ -257,7 +268,7 @@ class BuildVolume(SceneNode):
             skirt_line_count = profile.getSettingValue("skirt_line_count")
             skirt_size = skirt_distance + (skirt_line_count * profile.getSettingValue("skirt_line_width"))
         elif adhesion_type == "brim":
-            skirt_size = profile.getSettingValue("brim_width")
+            skirt_size = profile.getSettingValue("brim_line_count") * profile.getSettingValue("skirt_line_width")
         elif adhesion_type == "raft":
             skirt_size = profile.getSettingValue("raft_margin")
 

@@ -47,7 +47,9 @@ class CuraEngineBackend(Backend):
         self._onActiveViewChanged()
         self._stored_layer_data = None
 
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onChanged)
+        # When there are current settings and machine instance is changed, there is no profile changed event. We should
+        # pretend there is though.
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveProfileChanged)
 
         self._profile = None
         Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
@@ -104,6 +106,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+
         if not self._enabled:
             return
 
@@ -114,7 +117,6 @@ class CuraEngineBackend(Backend):
                 self._message.hide()
                 self._message = None
 
-            self.slicingCancelled.emit()
             return
 
         if self._process_layers_job:
@@ -150,14 +152,18 @@ class CuraEngineBackend(Backend):
         self._slicing = False
         self._restart = True
         self.slicingCancelled.emit()
+        self.processingProgress.emit(0)
+        Logger.log("d", "Attempting to kill the engine process")
         if self._process is not None:
             Logger.log("d", "Killing engine process")
             try:
                 self._process.terminate()
+                Logger.log("d", "Engine process is killed. Recieved return code %s", self._process.wait())
                 self._process = None
-            except: # terminating a process that is already terminating causes an exception, silently ignore this.
-                pass
-            Logger.log("d", "Engine process is killed")
+                #self._createSocket() # Re create the socket
+            except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
+                Logger.log("d", "Exception occured while trying to kill the engine %s", str(e))
+
 
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
@@ -184,8 +190,7 @@ class CuraEngineBackend(Backend):
     def _onSocketError(self, error):
         super()._onSocketError(error)
 
-        self._slicing = False
-        self.processingProgress.emit(0)
+        self._terminate()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("e", "A socket error caused the connection to be reset")
@@ -277,9 +282,9 @@ class CuraEngineBackend(Backend):
 
     def _onInstanceChanged(self):
         self._terminate()
-        self.slicingCancelled.emit()
 
     def _onBackendQuit(self):
         if not self._restart and self._process:
+            Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
             self._process = None
             self._createSocket()

@@ -12,7 +12,7 @@ def getMetaData():
             "name": i18n_catalog.i18nc("@label", "Solid View"),
             "author": "Ultimaker",
             "version": "1.0",
-            "decription": i18n_catalog.i18nc("@info:whatsthis", "Provides a normal solid mesh view."),
+            "description": i18n_catalog.i18nc("@info:whatsthis", "Provides a normal solid mesh view."),
             "api": 2
         },
         "view": {

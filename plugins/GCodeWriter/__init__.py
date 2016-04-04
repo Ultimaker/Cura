@@ -12,7 +12,7 @@ def getMetaData():
             "name": catalog.i18nc("@label", "GCode Writer"),
             "author": "Ultimaker",
             "version": "1.0",
-            "description": catalog.i18nc("@info:whatsthis", "Writes GCode to a file"),
+            "description": catalog.i18nc("@info:whatsthis", "Writes GCode to a file."),
             "api": 2
         },
 

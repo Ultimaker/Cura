@@ -12,8 +12,8 @@ UM.Dialog
 {
     id: base
     minimumWidth: 400
-    minimumHeight: 300;
-    title: "Changelog"
+    minimumHeight: 300
+    title: catalog.i18nc("@label", "Changelog")
 
     ScrollView
     {
@@ -28,8 +28,13 @@ UM.Dialog
     }
     Button
     {
+        UM.I18nCatalog
+        {
+            id: catalog
+            name: "cura"
+        }
         anchors.bottom:parent.bottom
-        text: "close"
+        text: catalog.i18nc("@action:button", "Close")
         onClicked: base.hide()
         anchors.horizontalCenter: parent.horizontalCenter
     }

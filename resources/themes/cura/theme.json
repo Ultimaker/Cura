@@ -163,7 +163,7 @@
         "default_arrow": [0.8, 0.8],
         "logo": [9.5, 2.0],
 
-        "sidebar": [30.0, 10.0],
+        "sidebar": [35.0, 10.0],
         "sidebar_header": [0.0, 4.0],
         "sidebar_header_mode_toggle": [0.0, 2.0],
         "sidebar_lining": [0.5, 0.5],
