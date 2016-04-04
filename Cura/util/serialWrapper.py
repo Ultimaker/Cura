@@ -2,8 +2,8 @@
 # on linux, when pyserial is < 2.7
 
 from serial import *
-import os
-if os.name == 'posix':
+import sys
+if sys.platform.startswith('linux'):
 	import serial.serialposix
 
 	if not hasattr(serial.serialposix, "TCGETS2") and \
