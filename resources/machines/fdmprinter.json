@@ -429,22 +429,6 @@
                     "default": "lines",
                     "visible": false
                 },
-                "skin_alternate_rotation": {
-                    "label": "Alternate Skin Rotation",
-                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false
-                },
-                "skin_outline_count": {
-                    "label": "Extra Skin Wall Count",
-                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
-                    "default": 0,
-                    "min_value": "0",
-                    "max_value_warning": "10",
-                    "type": "int",
-                    "visible": false
-                },
                 "alternate_extra_perimeter": {
                     "label": "Alternate Extra Wall",
                     "description": "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints.",
@@ -1001,52 +985,6 @@
                     "inherit": false,
                     "enabled": "retraction_combing and travel_avoid_other_parts",
                     "global_only": "True"
-                },
-                "coasting_enable": {
-                    "label": "Enable Coasting",
-                    "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to print the last piece of the extrusion path in order to reduce stringing.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false,
-                    "global_only": true
-                },
-                "coasting_volume": {
-                    "label": "Coasting Volume",
-                    "description": "The volume otherwise oozed. This value should generally be close to the nozzle diameter cubed.",
-                    "unit": "mm³",
-                    "type": "float",
-                    "default": 0.064,
-                    "min_value": "0",
-                    "max_value_warning": "2.0",
-                    "visible": false,
-                    "inherit": false,
-                    "enabled": "coasting_enable",
-                    "global_only": true
-                },
-                "coasting_min_volume": {
-                    "label": "Minimum Volume Before Coasting",
-                    "description": "The lowest volume an extrusion path should have before allowing coasting. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
-                    "unit": "mm³",
-                    "type": "float",
-                    "default": 0.8,
-                    "min_value": "0",
-                    "max_value_warning": "10.0",
-                    "visible": false,
-                    "enabled": "coasting_enable",
-                    "global_only": true
-                },
-                "coasting_speed": {
-                    "label": "Coasting Speed",
-                    "description": "The speed by which to move during coasting, relative to the speed of the extrusion path. A value slightly under 100% is advised, since during the coasting move the pressure in the bowden tube drops.",
-                    "unit": "%",
-                    "type": "float",
-                    "default": 90,
-                    "min_value": "0.0001",
-                    "max_value_warning": "100",
-                    "visible": false,
-                    "inherit": false,
-                    "enabled": "coasting_enable",
-                    "global_only": true
                 }
             }
         },
@@ -1167,51 +1105,6 @@
                     "default": false,
                     "visible": false,
                     "global_only": "True"
-                },
-                "draft_shield_enabled": {
-                    "label": "Enable Draft Shield",
-                    "description": "This will create a wall around the object, which traps (hot) air and shields against exterior airflow. Especially useful for materials which warp easily.",
-                    "type": "boolean",
-                    "default": false,
-                    "global_only": true
-                },
-                "draft_shield_dist": {
-                    "label": "Draft Shield X/Y Distance",
-                    "description": "Distance of the draft shield from the print, in the X/Y directions.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": "0",
-                    "max_value_warning": "100",
-                    "default": 10,
-                    "visible": false,
-                    "enabled": "draft_shield_enabled",
-                    "global_only": true
-                },
-                "draft_shield_height_limitation": {
-                    "label": "Draft Shield Limitation",
-                    "description": "Set the height of the draft shield. Choose to print the draft shield at the full height of the object or at a limited height.",
-                    "type": "enum",
-                    "options": {
-                        "full": "Full",
-                        "limited": "Limited"
-                    },
-                    "default": "full",
-                    "visible": false,
-                    "enabled": "draft_shield_enabled",
-                    "global_only": true
-                },
-                "draft_shield_height": {
-                    "label": "Draft Shield Height",
-                    "description": "Height limitation of the draft shield. Above this height no draft shield will be printed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "min_value": "0",
-                    "max_value_warning": "9999",
-                    "default": 0,
-                    "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
-                    "visible": false,
-                    "enabled": "draft_shield_height_limitation == \"limited\"",
-                    "global_only": true
                 }
             }
         },
@@ -1449,39 +1342,6 @@
                     "default": "concentric",
                     "enabled": "support_roof_enable",
                     "global_only": true
-                },
-                "support_conical_enabled": {
-                    "label": "Conical Support",
-                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": true,
-                    "enabled": "support_enable"
-                },
-                "support_conical_angle": {
-                    "label": "Cone Angle",
-                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": "-90",
-                    "min_value_warning": "-45",
-                    "max_value_warning": "45",
-                    "max_value": "90",
-                    "default": 30,
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
-                },
-                "support_conical_min_width": {
-                    "label": "Cone Minimal Width",
-                    "description": "Minimal width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures.",
-                    "unit": "mm",
-                    "default": 5.0,
-                    "min_value": "0",
-                    "min_value_warning": "machine_nozzle_size * 3",
-                    "max_value_warning": "100.0",
-                    "type": "float",
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_use_towers": {
                     "label": "Use Towers",
@@ -1940,6 +1800,146 @@
             "visible": true,
             "icon": "category_blackmagic",
             "settings": {
+                "draft_shield_enabled": {
+                    "label": "Enable Draft Shield",
+                    "description": "This will create a wall around the object, which traps (hot) air and shields against exterior airflow. Especially useful for materials which warp easily.",
+                    "type": "boolean",
+                    "default": false,
+                    "global_only": true
+                },
+                "draft_shield_dist": {
+                    "label": "Draft Shield X/Y Distance",
+                    "description": "Distance of the draft shield from the print, in the X/Y directions.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value_warning": "100",
+                    "default": 10,
+                    "visible": false,
+                    "enabled": "draft_shield_enabled",
+                    "global_only": true
+                },
+                "draft_shield_height_limitation": {
+                    "label": "Draft Shield Limitation",
+                    "description": "Set the height of the draft shield. Choose to print the draft shield at the full height of the object or at a limited height.",
+                    "type": "enum",
+                    "options": {
+                        "full": "Full",
+                        "limited": "Limited"
+                    },
+                    "default": "full",
+                    "visible": false,
+                    "enabled": "draft_shield_enabled",
+                    "global_only": true
+                },
+                "draft_shield_height": {
+                    "label": "Draft Shield Height",
+                    "description": "Height limitation of the draft shield. Above this height no draft shield will be printed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value_warning": "9999",
+                    "default": 0,
+                    "inherit_function": "9999 if draft_shield_height_limitation == 'full' and draft_shield_enabled else 0.0",
+                    "visible": false,
+                    "enabled": "draft_shield_height_limitation == \"limited\"",
+                    "global_only": true
+                },
+                "coasting_enable": {
+                    "label": "Enable Coasting",
+                    "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to print the last piece of the extrusion path in order to reduce stringing.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false,
+                    "global_only": true
+                },
+                "coasting_volume": {
+                    "label": "Coasting Volume",
+                    "description": "The volume otherwise oozed. This value should generally be close to the nozzle diameter cubed.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default": 0.064,
+                    "min_value": "0",
+                    "max_value_warning": "2.0",
+                    "visible": false,
+                    "inherit": false,
+                    "enabled": "coasting_enable",
+                    "global_only": true
+                },
+                "coasting_min_volume": {
+                    "label": "Minimum Volume Before Coasting",
+                    "description": "The lowest volume an extrusion path should have before allowing coasting. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default": 0.8,
+                    "min_value": "0",
+                    "max_value_warning": "10.0",
+                    "visible": false,
+                    "enabled": "coasting_enable",
+                    "global_only": true
+                },
+                "coasting_speed": {
+                    "label": "Coasting Speed",
+                    "description": "The speed by which to move during coasting, relative to the speed of the extrusion path. A value slightly under 100% is advised, since during the coasting move the pressure in the bowden tube drops.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 90,
+                    "min_value": "0.0001",
+                    "max_value_warning": "100",
+                    "visible": false,
+                    "inherit": false,
+                    "enabled": "coasting_enable",
+                    "global_only": true
+                },
+                "skin_outline_count": {
+                    "label": "Extra Skin Wall Count",
+                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
+                    "default": 0,
+                    "min_value": "0",
+                    "max_value_warning": "10",
+                    "type": "int",
+                    "visible": false
+                },
+                "skin_alternate_rotation": {
+                    "label": "Alternate Skin Rotation",
+                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
+                "support_conical_enabled": {
+                    "label": "Conical Support",
+                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": true,
+                    "enabled": "support_enable"
+                },
+                "support_conical_angle": {
+                    "label": "Cone Angle",
+                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": "-90",
+                    "min_value_warning": "-45",
+                    "max_value_warning": "45",
+                    "max_value": "90",
+                    "default": 30,
+                    "visible": false,
+                    "enabled": "support_conical_enabled and support_enable"
+                },
+                "support_conical_min_width": {
+                    "label": "Cone Minimal Width",
+                    "description": "Minimal width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures.",
+                    "unit": "mm",
+                    "default": 5.0,
+                    "min_value": "0",
+                    "min_value_warning": "machine_nozzle_size * 3",
+                    "max_value_warning": "100.0",
+                    "type": "float",
+                    "visible": false,
+                    "enabled": "support_conical_enabled and support_enable"
+                },
                 "magic_fuzzy_skin_enabled": {
                     "label": "Fuzzy Skin",
                     "description": "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look.",
