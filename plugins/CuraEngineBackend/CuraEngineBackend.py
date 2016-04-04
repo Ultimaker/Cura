@@ -53,7 +53,9 @@ class CuraEngineBackend(Backend):
         self._onActiveViewChanged()
         self._stored_layer_data = None
 
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onChanged)
+        # When there are current settings and machine instance is changed, there is no profile changed event. We should
+        # pretend there is though.
+        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveProfileChanged)
 
         self._profile = None
         Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
