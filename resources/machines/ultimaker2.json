@@ -11,10 +11,6 @@
 
     "inherits": "ultimaker.json",
 
-    "pages": [
-        "SelectUpgradedPartsUM2"
-    ],
-
     "machine_extruder_trains": [
         {
             "machine_nozzle_heat_up_speed": {
