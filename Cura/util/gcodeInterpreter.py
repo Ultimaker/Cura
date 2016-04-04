@@ -185,6 +185,8 @@ class gcode(object):
 					scale = 25.4
 				elif G == 21:	#Units are mm
 					scale = 1.0
+				elif G == 26:   #Clear probe fail
+					pass
 				elif G == 28:	#Home
 					x = getCodeFloat(line, 'X')
 					y = getCodeFloat(line, 'Y')
