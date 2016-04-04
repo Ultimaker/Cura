@@ -528,8 +528,8 @@ UM.MainWindow
                 x: base.mouseX + UM.Theme.getSize("default_margin").width
                 y: base.mouseY + UM.Theme.getSize("default_margin").height
 
-                width: childrenRect.width + UM.Theme.getSize("default_margin").width
-                height: childrenRect.height;
+                width: rotationLabel.width + UM.Theme.getSize("default_margin").width
+                height: rotationLabel.height;
                 color: UM.Theme.getColor("tooltip")
                 Label
                 {
