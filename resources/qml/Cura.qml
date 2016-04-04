@@ -525,17 +525,22 @@ UM.MainWindow
 
             Rectangle
             {
-                x: base.mouseX + UM.Theme.getSize("default_margin").width;
-                y: base.mouseY + UM.Theme.getSize("default_margin").height;
+                x: base.mouseX + UM.Theme.getSize("default_margin").width
+                y: base.mouseY + UM.Theme.getSize("default_margin").height
 
-                width: childrenRect.width;
+                width: childrenRect.width + UM.Theme.getSize("default_margin").width
                 height: childrenRect.height;
+                color: UM.Theme.getColor("tooltip")
                 Label
                 {
-                    text: UM.ActiveTool.properties.getValue("Rotation") != undefined ? "%1°".arg(UM.ActiveTool.properties.getValue("Rotation")) : "";
+                    id: rotationLabel
+                    text: UM.ActiveTool.properties.getValue("Rotation") != undefined ? "%1°".arg(UM.ActiveTool.properties.getValue("Rotation")) : ""
+                    color: UM.Theme.getColor("tooltip_text")
+                    font: UM.Theme.getFont("default")
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
-                visible: UM.ActiveTool.valid && UM.ActiveTool.properties.Rotation != undefined;
+                visible: rotationLabel.text != "";
             }
         }
     }
