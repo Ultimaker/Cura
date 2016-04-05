@@ -395,6 +395,26 @@
                                 }
                             }
                         },
+                        "bottom_thickness": {
+                            "label": "Bottom Thickness",
+                            "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
+                            "unit": "mm",
+                            "default": 0.6,
+                            "min_value": "0",
+                            "type": "float",
+                            "visible": false,
+                            "children": {
+                                "bottom_layers": {
+                                    "label": "Bottom Layers",
+                                    "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
+                                    "min_value": "0",
+                                    "default": 6,
+                                    "type": "int",
+                                    "visible": false,
+                                    "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(round(parent_value / layer_height, 4))"
+                                }
+                            }
+                        },
                         "wall_0_inset": {
                             "label": "Outer Wall Inset",
                             "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the object.",
@@ -413,61 +433,6 @@
                             "default": false,
                             "visible": false,
                             "inherit": false
-                        },
-                        "top_bottom_thickness": {
-                            "label": "Bottom/Top Thickness",
-                            "description": "This controls the thickness of the bottom and top layers. The number of solid layers put down is calculated from the layer thickness and this value. Having this value a multiple of the layer thickness makes sense. Keep it near your wall thickness to make an evenly strong part.",
-                            "unit": "mm",
-                            "default": 0.8,
-                            "min_value": "0",
-                            "max_value": "5",
-                            "min_value_warning": "0.6",
-                            "type": "float",
-                            "visible": true,
-                            "children": {
-                                "top_thickness": {
-                                    "label": "Top Thickness",
-                                    "description": "This controls the thickness of the top layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. Keep it near your wall thickness to make an evenly strong part.",
-                                    "unit": "mm",
-                                    "default": 0.8,
-                                    "min_value": "0",
-                                    "max_value_warning": "100",
-                                    "type": "float",
-                                    "visible": false,
-                                    "children": {
-                                        "top_layers": {
-                                            "label": "Top Layers",
-                                            "description": "This controls the number of top layers.",
-                                            "default": 8,
-                                            "min_value": "0",
-                                            "max_value_warning": "100",
-                                            "type": "int",
-                                            "visible": false,
-                                            "inherit_function": "0 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
-                                        }
-                                    }
-                                },
-                                "bottom_thickness": {
-                                    "label": "Bottom Thickness",
-                                    "description": "This controls the thickness of the bottom layers. The number of solid layers printed is calculated from the layer thickness and this value. Having this value be a multiple of the layer thickness makes sense. And keep it near to your wall thickness to make an evenly strong part.",
-                                    "unit": "mm",
-                                    "default": 0.6,
-                                    "min_value": "0",
-                                    "type": "float",
-                                    "visible": false,
-                                    "children": {
-                                        "bottom_layers": {
-                                            "label": "Bottom Layers",
-                                            "description": "This controls the amount of bottom layers.",
-                                            "min_value": "0",
-                                            "default": 6,
-                                            "type": "int",
-                                            "visible": false,
-                                            "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(parent_value / layer_height)"
-                                        }
-                                    }
-                                }
-                            }
                         }
                     }
                 },
