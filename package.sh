@@ -496,12 +496,13 @@ fi
 if [ $BUILD_TARGET = "win32" ]; then
 	#Get portable python for windows and extract it. (Linux and Mac need to install python themselfs)
 	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/PortablePython_${WIN_PORTABLE_PY_VERSION}.exe
-	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/PortablePython_2.7.6.1.exe
 	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/PyOpenGL-3.0.1.win32.exe
 	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/VideoCapture-0.9-5.zip
 	#downloadURL http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-20120927-git-13f0cd6-win32-static.7z
 	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/comtypes-0.6.2.win32.exe
 	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/ejectmedia.zip
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/wxPython3.0-win32-3.0.2.0.zip
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/pyserial-2.7.zip
 	#Get the power module for python
 	gitClone https://github.com/GreatFruitOmsk/Power Power
     if [ $? != 0 ]; then echo "Failed to clone Power"; exit 1; fi
@@ -527,6 +528,8 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf App
 	rm -rf PURELIB
 	rm -rf VideoCapture-0.9-5
+	rm -rf wxPython3.0-win32-3.0.2.0
+	rm -rf pyserial-2.7
 	rm -rf Win32
 	
 	#For windows extract portable python to include it.
@@ -537,24 +540,21 @@ if [ $BUILD_TARGET = "win32" ]; then
 	#extract ffmpeg-20120927-git-13f0cd6-win32-static.7z ffmpeg-20120927-git-13f0cd6-win32-static/licenses
 	extract comtypes-0.6.2.win32.exe
 	extract ejectmedia.zip Win32
+	extract wxPython3.0-win32-3.0.2.0.zip
+	extract pyserial-2.7.zip
 
 	mkdir -p ${TARGET_DIR}/python
 	mkdir -p ${TARGET_DIR}/Cura/
 	mv App/Lib/site-packages/ PURELIB/
 	mv App/* ${TARGET_DIR}/python
 
-	# Replace Python 2.7.2.1 by 2.7.6.1 so we can grab wx 3.0 and serial 2.7
-	rm -rf App
-	extract PortablePython_2.7.6.1.exe App
-
 	mkdir -p ${TARGET_DIR}/python/Lib/site-packages/
 	mv PURELIB/site-packages/setuptools* PURELIB/site-packages/site.py PURELIB/site-packages/easy_install.py ${TARGET_DIR}/python/Lib/site-packages/
 	mv PURELIB/site-packages/numpy* ${TARGET_DIR}/python/Lib/site-packages/
 	mv PURELIB/OpenGL ${TARGET_DIR}/python/Lib
 	mv PURELIB/comtypes ${TARGET_DIR}/python/Lib
-	mv App/Lib/site-packages/serial* ${TARGET_DIR}/python/Lib/site-packages/
-	mv App/Lib/site-packages/pyserial* ${TARGET_DIR}/python/Lib/site-packages/
-	mv App/Lib/site-packages/wx* ${TARGET_DIR}/python/Lib/site-packages/
+	mv pyserial-2.7/* ${TARGET_DIR}/python/Lib/site-packages/
+	mv wxPython3.0-win32-3.0.2.0/* ${TARGET_DIR}/python/Lib/site-packages/
 	mv Power/power ${TARGET_DIR}/python/Lib
 	mv VideoCapture-0.9-5/Python27/DLLs/vidcap.pyd ${TARGET_DIR}/python/DLLs
 	#mv ffmpeg-20120927-git-13f0cd6-win32-static/bin/ffmpeg.exe ${TARGET_DIR}/Cura/
@@ -567,6 +567,8 @@ if [ $BUILD_TARGET = "win32" ]; then
 	rm -rf App
 	rm -rf PURELIB
 	rm -rf VideoCapture-0.9-5
+	rm -rf wxPython3.0-win32-3.0.2.0
+	rm -rf pyserial-2.7
 	#rm -rf ffmpeg-20120927-git-13f0cd6-win32-static
 
 	#Clean up portable python a bit, to keep the package size down.
