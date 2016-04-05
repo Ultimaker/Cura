@@ -522,6 +522,12 @@ if [ $BUILD_TARGET = "win32" ]; then
 	else
 		CXX=i686-w64-mingw32-g++
 	fi
+
+	#In case we have left over files, we don't want the script to fail
+	rm -rf App
+	rm -rf PURELIB
+	rm -rf VideoCapture-0.9-5
+	rm -rf Win32
 	
 	#For windows extract portable python to include it.
 	extract PortablePython_${WIN_PORTABLE_PY_VERSION}.exe App
