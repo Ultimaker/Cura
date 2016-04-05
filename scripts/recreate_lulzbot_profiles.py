@@ -107,9 +107,9 @@ material_map = {
     "HIPS_cheetah": "HIPS-cheetah",
     "HIPS_ninjaflex": "HIPS-ninjaflex",
     "HIPS_semiflex": "HIPS-semiflex",
-    "PLA_PVA": "PLA-PVA",
+    "PLA_PVA": "PLA-PVA-support",
     "INOVA_ninjaflex": "CS-INOVA-1800-Ninjaflex",
-    "NGEN_ninjaflex": "nGen-Ninjaflex",
+    "NGEN_ninjaflex": "nGen-ninjaflex",
     "NGEN_semiflex": "nGen-semiflex",
 }
 
