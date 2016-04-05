@@ -203,13 +203,13 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	cd ..
 
 	# Create sparse image for distribution
-	hdiutil detach /Volumes/Cura\ -\ Lulzbot/ || true
+	hdiutil detach Cura_Volume || true
 	rm -rf Cura.dmg.sparseimage
 	hdiutil convert DmgTemplateCompressed.dmg -format UDSP -o Cura.dmg
 	hdiutil resize -size 500m Cura.dmg.sparseimage
-	hdiutil attach Cura.dmg.sparseimage
-	cp -a dist/Cura.app /Volumes/Cura\ -\ Lulzbot/Cura/
-	hdiutil detach /Volumes/Cura\ -\ Lulzbot
+	hdiutil attach Cura.dmg.sparseimage -mountpoint Cura_Volume
+	cp -a dist/Cura.app Cura_Volume/Cura/
+	hdiutil detach Cura_Volume
 	hdiutil convert Cura.dmg.sparseimage -format UDZO -imagekey zlib-level=9 -ov -o ../../Cura-${FULL_VERSION}-MacOS.dmg
 	exit
 fi
