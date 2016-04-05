@@ -110,6 +110,7 @@ material_map = {
     "PLA_PVA": "PLA-PVA",
     "INOVA_ninjaflex": "CS-INOVA-1800-Ninjaflex",
     "NGEN_ninjaflex": "nGen-Ninjaflex",
+    "NGEN_semiflex": "nGen-semiflex",
 }
 
 material_order = {
@@ -178,6 +179,7 @@ material_order = {
     "PLA_PVA":            106,
     "INOVA_ninjaflex":    107,
     "NGEN_ninjaflex":     108,
+    "NGEN_semiflex":      109,
 }
 
 material_types = {
@@ -245,6 +247,7 @@ material_types = {
     "PLA_PVA": "Expert",
     "INOVA_ninjaflex": "Expert",
     "NGEN_ninjaflex": "Expert",
+    "NGEN_semiflex": "Expert",
 }
 
 material_names = {
@@ -313,6 +316,7 @@ material_names = {
     "PLA_PVA": "PLA & PVA Support",
     "INOVA_ninjaflex": "INOVA & Ninjaflex",
     "NGEN_ninjaflex": "nGen & Ninjaflex",
+    "NGEN_semiflex": "nGen & Semiflex",
 }
 
 material_url = {
@@ -380,6 +384,7 @@ material_url = {
     "PLA_PVA": "lulzbot.com/store/filament/natural-pva",
     "INOVA_ninjaflex": "lulzbot.com/store/filament/inova-1800",
 #    "NGEN_ninjaflex": "",
+#    "NGEN_semiflex": "",
 }
 
 bed_prep_materials = {
