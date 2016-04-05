@@ -3,10 +3,18 @@
 
 from serial import *
 import sys
+
 if sys.platform.startswith('linux'):
 	import serial.serialposix
 
-	if not hasattr(serial.serialposix, "TCGETS2") and \
+	try:
+		import pkg_resources
+
+		old_version = float(pkg_resources.get_distribution("pyserial").version) < 2.7
+	except:
+		old_version = True
+
+	if old_version and not hasattr(serial.serialposix, "TCGETS2") and \
 	   hasattr(serial.serialposix, "set_special_baudrate"):
 		# Detected pyserial < 2.7 which doesn't support custom baudrates
 		# Replacing set_special_baudrate with updated function from pyserial 2.7
