@@ -495,13 +495,13 @@ fi
 
 if [ $BUILD_TARGET = "win32" ]; then
 	#Get portable python for windows and extract it. (Linux and Mac need to install python themselfs)
-	downloadURL http://ftp.nluug.nl/languages/python/portablepython/v2.7/PortablePython_${WIN_PORTABLE_PY_VERSION}.exe
-	downloadURL http://ftp.nluug.nl/languages/python/portablepython/v2.7/PortablePython_2.7.6.1.exe
-	downloadURL http://sourceforge.net/projects/pyopengl/files/PyOpenGL/3.0.1/PyOpenGL-3.0.1.win32.exe
-	downloadURL http://videocapture.sourceforge.net/VideoCapture-0.9-5.zip
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/PortablePython_${WIN_PORTABLE_PY_VERSION}.exe
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/PortablePython_2.7.6.1.exe
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/PyOpenGL-3.0.1.win32.exe
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/VideoCapture-0.9-5.zip
 	#downloadURL http://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-20120927-git-13f0cd6-win32-static.7z
-	downloadURL http://sourceforge.net/projects/comtypes/files/comtypes/0.6.2/comtypes-0.6.2.win32.exe
-	downloadURL http://www.uwe-sieber.de/files/ejectmedia.zip
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/comtypes-0.6.2.win32.exe
+	downloadURL http://devel.lulzbot.com/software/Cura/Build-Resources/ejectmedia.zip
 	#Get the power module for python
 	gitClone https://github.com/GreatFruitOmsk/Power Power
     if [ $? != 0 ]; then echo "Failed to clone Power"; exit 1; fi
