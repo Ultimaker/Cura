@@ -29,7 +29,7 @@ An optimized 64-bit Windows Cura version is now available. This allows you to lo
 Cura allows you to set a number of lines/layers instead of millimeters. The engine automatically calculates the right settings.
 
 *Per-Object Settings
-You can now select different profiles for different objects and when in advanced mode, override individual settings.
+You can now override individual settings for different objects in advanced mode.
 
 *Fuzzy Skin
 Prints the outer walls with a jittering motion to give your object a diffused finish.
