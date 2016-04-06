@@ -23,8 +23,8 @@ def getDefaultFirmware(machineIndex = None):
 			'Witbox':"MarlinWitbox.hex",
 			
 			#Mini
-			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
-			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
+			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
 			
 			#TAZ Budaschnozzle
 			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
