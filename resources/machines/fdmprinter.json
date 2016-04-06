@@ -1545,7 +1545,7 @@
                     "visible": false
                 },
                 "raft_airgap": {
-                    "label": "Raft Air-gap",
+                    "label": "Raft Air Gap",
                     "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
                     "unit": "mm",
                     "type": "float",
@@ -2087,7 +2087,7 @@
                     "global_only": "True"
                 },
                 "wireframe_printspeed": {
-                    "label": "WP speed",
+                    "label": "WP Speed",
                     "description": "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing.",
                     "unit": "mm/s",
                     "type": "float",
@@ -2263,7 +2263,7 @@
                     "global_only": "True"
                 },
                 "wireframe_drag_along": {
-                    "label": "WP Drag along",
+                    "label": "WP Drag Along",
                     "description": "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing.",
                     "type": "float",
                     "unit": "mm",
