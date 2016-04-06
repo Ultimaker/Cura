@@ -363,7 +363,7 @@
                     }
                 },
                 "top_bottom_thickness": {
-                    "label": "Top/Bottom Thickness",
+                    "label": "Shell Top/Bottom Thickness",
                     "description": "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
                     "unit": "mm",
                     "default": 0.8,
@@ -374,7 +374,7 @@
                     "visible": true,
                     "children": {
                         "top_thickness": {
-                            "label": "Top Thickness",
+                            "label": "Shell Top Thickness",
                             "description": "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers.",
                             "unit": "mm",
                             "default": 0.8,
@@ -384,7 +384,7 @@
                             "visible": false,
                             "children": {
                                 "top_layers": {
-                                    "label": "Top Layers",
+                                    "label": "Shell Top Layers",
                                     "description": "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number.",
                                     "default": 8,
                                     "min_value": "0",
@@ -396,7 +396,7 @@
                             }
                         },
                         "bottom_thickness": {
-                            "label": "Bottom Thickness",
+                            "label": "Shell Bottom Thickness",
                             "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
                             "unit": "mm",
                             "default": 0.6,
@@ -405,7 +405,7 @@
                             "visible": false,
                             "children": {
                                 "bottom_layers": {
-                                    "label": "Bottom Layers",
+                                    "label": "Shell Bottom Layers",
                                     "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
                                     "min_value": "0",
                                     "default": 6,
@@ -437,7 +437,7 @@
                     }
                 },
                 "top_bottom_pattern": {
-                    "label": "Top/Bottom Pattern",
+                    "label": "Shell Top/Bottom Pattern",
                     "description": "The pattern of the top/bottom layers.",
                     "type": "enum",
                     "options": {
@@ -504,7 +504,7 @@
                     "visible": false
                 },
                 "xy_offset": {
-                    "label": "Horizontal Expansion",
+                    "label": "Shell Horizontal Expansion",
                     "description": "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
                     "unit": "mm",
                     "type": "float",
@@ -514,7 +514,7 @@
                     "visible": false
                 },
                 "z_seam_type": {
-                    "label": "Z Seam Alignment",
+                    "label": "Shell Z Seam Alignment",
                     "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
                     "type": "enum",
                     "options": {
@@ -549,7 +549,7 @@
                     "max_value_warning": "100",
                     "children": {
                         "infill_line_distance": {
-                            "label": "Line Distance",
+                            "label": "Infill Line Distance",
                             "description": "Distance between the printed infill lines. This setting is calculated by the infill density and the infill line width.",
                             "unit": "mm",
                             "type": "float",
@@ -995,7 +995,7 @@
                     "global_only": true
                 },
                 "travel_avoid_other_parts": {
-                    "label": "Avoid Printed Parts",
+                    "label": "Avoid Printed Parts when Traveling",
                     "description": "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled.",
                     "type": "boolean",
                     "default": true,
@@ -1004,7 +1004,7 @@
                     "global_only": "True"
                 },
                 "travel_avoid_distance": {
-                    "label": "Avoid Distance",
+                    "label": "Travel Avoid Distance",
                     "description": "The distance between the nozzle and already printed parts when avoiding during travel moves.",
                     "unit": "mm",
                     "type": "float",
@@ -1151,7 +1151,7 @@
                     "default": false
                 },
                 "support_type": {
-                    "label": "Placement",
+                    "label": "Support Placement",
                     "description": "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model.",
                     "type": "enum",
                     "options": {
@@ -1162,7 +1162,7 @@
                     "enabled": "support_enable"
                 },
                 "support_angle": {
-                    "label": "Overhang Angle",
+                    "label": "Support Overhang Angle",
                     "description": "The minimum angle of overhangs for which support is added. At a value of 0° all overhangs are supported, 90° will not provide any support.",
                     "unit": "°",
                     "type": "float",
@@ -1189,7 +1189,7 @@
                     "global_only": true
                 },
                 "support_connect_zigzags": {
-                    "label": "Connect ZigZags",
+                    "label": "Connect Support ZigZags",
                     "description": "Connect the ZigZags. This will increase the strength of the zig zag support structure.",
                     "type": "boolean",
                     "default": true,
@@ -1224,7 +1224,7 @@
                     }
                 },
                 "support_xy_distance": {
-                    "label": "X/Y Distance",
+                    "label": "Support X/Y Distance",
                     "description": "Distance of the support structure from the print in the X/Y directions.",
                     "unit": "mm",
                     "type": "float",
@@ -1235,7 +1235,7 @@
                     "enabled": "support_enable"
                 },
                 "support_z_distance": {
-                    "label": "Z Distance",
+                    "label": "Support Z Distance",
                     "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded down to a multiple of the layer height.",
                     "unit": "mm",
                     "type": "float",
@@ -1247,7 +1247,7 @@
 
                     "children": {
                         "support_top_distance": {
-                            "label": "Top Distance",
+                            "label": "Support Top Distance",
                             "description": "Distance from the top of the support to the print.",
                             "unit": "mm",
                             "min_value": "0",
@@ -1258,7 +1258,7 @@
                             "enabled": "support_enable"
                         },
                         "support_bottom_distance": {
-                            "label": "Bottom Distance",
+                            "label": "Support Bottom Distance",
                             "description": "Distance from the print to the bottom of the support.",
                             "unit": "mm",
                             "min_value": "0",
@@ -1272,7 +1272,7 @@
                     }
                 },
                 "support_conical_enabled": {
-                    "label": "Conical Support",
+                    "label": "Enable Conical Support",
                     "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
                     "type": "boolean",
                     "default": false,
@@ -1280,7 +1280,7 @@
                     "enabled": "support_enable"
                 },
                 "support_conical_angle": {
-                    "label": "Cone Angle",
+                    "label": "Conical Support Angle",
                     "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
                     "unit": "°",
                     "type": "float",
@@ -1293,8 +1293,8 @@
                     "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_conical_min_width": {
-                    "label": "Minimal Width",
-                    "description": "Minimal width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
+                    "label": "Conical Support Minimum Width",
+                    "description": "Minimum width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
                     "unit": "mm",
                     "default": 5.0,
                     "min_value": "0",
@@ -1305,7 +1305,7 @@
                     "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_bottom_stair_step_height": {
-                    "label": "Stair Step Height",
+                    "label": "Support Stair Step Height",
                     "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
                     "unit": "mm",
                     "type": "float",
@@ -1316,7 +1316,7 @@
                     "enabled": "support_enable"
                 },
                 "support_join_distance": {
-                    "label": "Join Distance",
+                    "label": "Support Join Distance",
                     "description": "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one.",
                     "unit": "mm",
                     "type": "float",
@@ -1327,7 +1327,7 @@
                     "enabled": "support_enable"
                 },
                 "support_offset": {
-                    "label": "Horizontal Expansion",
+                    "label": "Support Horizontal Expansion",
                     "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
                     "unit": "mm",
                     "type": "float",
@@ -1338,7 +1338,7 @@
                     "enabled": "support_enable"
                 },
                 "support_area_smoothing": {
-                    "label": "Area Smoothing",
+                    "label": "Support Area Smoothing",
                     "description": "Maximum distance in the X/Y directions of a line segment which is to be smoothed out. Ragged lines are introduced by the join distance and support bridge, which cause the machine to resonate. Smoothing the support areas won't cause them to break with the constraints, except it might change the overhang.",
                     "unit": "mm",
                     "type": "float",
@@ -1428,7 +1428,7 @@
                     "enabled": "support_enable and support_use_towers"
                 },
                 "support_minimal_diameter": {
-                    "label": "Minimum Diameter",
+                    "label": "Minimum Tower Diameter",
                     "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
@@ -1459,7 +1459,7 @@
             "icon": "category_adhesion",
             "settings": {
                 "adhesion_type": {
-                    "label": "Type",
+                    "label": "Platform Adhesion Type",
                     "description": "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your object to prevent warping. Raft adds a thick grid with a roof below the object. Skirt is a line printed around the object, but not connected to the model.",
                     "type": "enum",
                     "options": {
@@ -1982,7 +1982,7 @@
                     "enabled": "support_enable"
                 },
                 "support_conical_angle": {
-                    "label": "Cone Angle",
+                    "label": "Conical Support Angle",
                     "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
                     "unit": "°",
                     "type": "float",
@@ -1995,8 +1995,8 @@
                     "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_conical_min_width": {
-                    "label": "Cone Minimal Width",
-                    "description": "Minimal width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures.",
+                    "label": "Conical Support Minimum Width",
+                    "description": "Minimum width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures.",
                     "unit": "mm",
                     "default": 5.0,
                     "min_value": "0",
