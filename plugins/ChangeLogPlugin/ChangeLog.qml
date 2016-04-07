@@ -21,7 +21,7 @@ UM.Dialog
     {
         width: parent.width
         height: parent.height - 25
-        Text
+        Label
         {
             text: manager.getChangeLogString()
             width:base.width - 35

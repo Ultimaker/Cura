@@ -101,7 +101,7 @@ Item
                         height: UM.Theme.getSize("standard_list_lineheight").height
                         width: machineList.width
                     }
-                    label: Text {
+                    label: Label {
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("standard_arrow").width + UM.Theme.getSize("default_margin").width
                         text: control.text
