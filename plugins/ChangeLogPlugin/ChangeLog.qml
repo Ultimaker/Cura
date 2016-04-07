@@ -11,8 +11,10 @@ import UM 1.1 as UM
 UM.Dialog
 {
     id: base
-    minimumWidth: 400
-    minimumHeight: 300
+    minimumWidth: 400 * Screen.devicePixelRatio
+    minimumHeight: 300 * Screen.devicePixelRatio
+    width: minimumWidth
+    height: minimumHeight
     title: catalog.i18nc("@label", "Changelog")
 
     ScrollView
