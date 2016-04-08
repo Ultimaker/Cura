@@ -47,7 +47,7 @@ class ConvexHullJob(Job):
 
         # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
         # This is done because of rounding errors.
-        hull = hull.getMinkowskiHull(Polygon(numpy.array([[-1, -1], [-1, 1], [1, 1], [1, -1]], numpy.float32)))
+        hull = hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
 
         profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if profile:
