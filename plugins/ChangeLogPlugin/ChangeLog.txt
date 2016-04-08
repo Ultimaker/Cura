@@ -13,8 +13,7 @@ You can now group objects together to make it easier to manipulate multiple obje
 You can now undo and redo your actions, like moving an object or scaling.
 
 *Setting Profiles
-The new GUI allows custom profiles to load easily and intuitively, directly from 
-Cura.
+The new GUI allows custom profiles to load easily and intuitively, directly from Cura.
 
 *3MF File Loading Support
 We’re happy to report we now support loading 3MF files. This is a new file format similar to AMF, but freely available.
@@ -38,7 +37,7 @@ Prints the outer walls with a jittering motion to give your object a diffused fi
 The object is printed with a mid-air / net-like structure, following the mesh surface. The build plate will move up and down during diagonal segments. Though not visible in layer view, you can view the result in other software, such as Repetier Host or http://chilipeppr.com/tinyg.
 
 * Conical Support
-An experimental filament cost-reduction feature for support.
+An experimental filament, cost-reduction feature, for support.
 
 *Support Towers
 Specialized support for tiny overhang areas.
@@ -48,6 +47,3 @@ A new, infill type that’s easily breakable, introduced specially for support.
 
 * Avoid Printed Parts
 While combing, the print head moves around printed parts, avoiding collisions with the nozzle and a part that’s already printed.
-
-
-
