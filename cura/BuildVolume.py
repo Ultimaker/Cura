@@ -15,6 +15,8 @@ from UM.View.GL.OpenGL import OpenGL
 
 import numpy
 
+
+##  Build volume is a special kind of node that is responsible for rendering the printable area & disallowed areas.
 class BuildVolume(SceneNode):
     VolumeOutlineColor = Color(12, 169, 227, 255)
 
@@ -72,6 +74,7 @@ class BuildVolume(SceneNode):
             renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
         return True
 
+    ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
         if self._width == 0 or self._height == 0 or self._depth == 0:
             return
@@ -127,9 +130,10 @@ class BuildVolume(SceneNode):
                     new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height, self._clamp(point[1], min_d, max_d))
                     mb.addFace(first, previous_point, new_point, color = color)
                     previous_point = new_point
+
                 # Find the largest disallowed area to exclude it from the maximum scale bounds.
-                # This is a very nasty hack. This pretty much only works for UM machines. This disallowed area_size needs
-                # A -lot- of rework at some point in the future: TODO
+                # This is a very nasty hack. This pretty much only works for UM machines.
+                # This disallowed area_size needs a -lot- of rework at some point in the future: TODO
                 if numpy.min(points[:, 1]) >= 0: # This filters out all areas that have points to the left of the centre. This is done to filter the skirt area.
                     size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
                 else:
@@ -148,7 +152,7 @@ class BuildVolume(SceneNode):
         if profile:
             skirt_size = self._getSkirtSize(profile)
 
-        # As this works better for UM machines, we only add the dissallowed_area_size for the z direction.
+        # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
@@ -194,8 +198,6 @@ class BuildVolume(SceneNode):
             self._updateDisallowedAreas()
             self.rebuild()
 
-
-
     def _updateDisallowedAreas(self):
         if not self._active_instance or not self._active_profile:
             return
@@ -224,7 +226,7 @@ class BuildVolume(SceneNode):
 
                 areas.append(poly)
 
-        # Add the skirt areas arround the borders of the build plate.
+        # Add the skirt areas around the borders of the build plate.
         if skirt_size > 0:
             half_machine_width = self._active_instance.getMachineSettingValue("machine_width") / 2
             half_machine_depth = self._active_instance.getMachineSettingValue("machine_depth") / 2
@@ -259,6 +261,7 @@ class BuildVolume(SceneNode):
 
         self._disallowed_areas = areas
 
+    ##  Convenience function to calculate the size of the bed adhesion.
     def _getSkirtSize(self, profile):
         skirt_size = 0.0
 

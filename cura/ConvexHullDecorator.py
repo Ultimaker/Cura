@@ -1,17 +1,24 @@
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.Application import Application
 
+
+##  The convex hull decorator is a scene node decorator that adds the convex hull functionality to a scene node.
+#   If a scene node has a convex hull decorator, it will have a shadow in which other objects can not be printed.
 class ConvexHullDecorator(SceneNodeDecorator):
     def __init__(self):
         super().__init__()
         self._convex_hull = None
         
-        # In case of printing all at once this is the same as the convex hull. For one at the time this is the area without the head.
+        # In case of printing all at once this is the same as the convex hull.
+        # For one at the time this is the area without the head.
         self._convex_hull_boundary = None 
         
-        # In case of printing all at once this is the same as the convex hull. For one at the time this is area with intersection of mirrored head
+        # In case of printing all at once this is the same as the convex hull.
+        # For one at the time this is area with intersection of mirrored head
         self._convex_hull_head = None
-        # In case of printing all at once this is the same as the convex hull. For one at the time this is area with intersection of full head
+
+        # In case of printing all at once this is the same as the convex hull.
+        # For one at the time this is area with intersection of full head
         self._convex_hull_head_full = None
         
         self._convex_hull_node = None
@@ -27,19 +34,27 @@ class ConvexHullDecorator(SceneNodeDecorator):
         copy = ConvexHullDecorator()
         return copy
 
+    ##  Get the unmodified convex hull of the node
     def getConvexHull(self):
         return self._convex_hull
-    
+
+    ##  Get the convex hull of the node with the full head size
     def getConvexHullHeadFull(self):
         if not self._convex_hull_head_full:
             return self.getConvexHull()
         return self._convex_hull_head_full
 
+    ##  Get convex hull of the object + head size
+    #   In case of printing all at once this is the same as the convex hull.
+    #   For one at the time this is area with intersection of mirrored head
     def getConvexHullHead(self):
         if not self._convex_hull_head:
             return self.getConvexHull()
         return self._convex_hull_head
-    
+
+    ##  Get convex hull of the node
+    #   In case of printing all at once this is the same as the convex hull.
+    #   For one at the time this is the area without the head.
     def getConvexHullBoundary(self):
         if not self._convex_hull_boundary:
             return self.getConvexHull()
