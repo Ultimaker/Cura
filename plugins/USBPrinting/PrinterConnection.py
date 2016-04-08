@@ -23,6 +23,7 @@ from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+
 class PrinterConnection(OutputDevice, QObject, SignalEmitter):
     def __init__(self, serial_port, parent = None):
         QObject.__init__(self, parent)
@@ -262,14 +263,14 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self._is_connecting = True
         programmer = stk500v2.Stk500v2()
         try:
-            programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it"s an arduino based usb device.
+            programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it's an arduino based usb device.
             self._serial = programmer.leaveISP()
         except ispBase.IspError as e:
             Logger.log("i", "Could not establish connection on %s: %s. Device is not arduino based." %(self._serial_port,str(e)))
         except Exception as e:
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
-        # If the programmer connected, we know its an atmega based version. Not all that usefull, but it does give some debugging information.
+        # If the programmer connected, we know its an atmega based version. Not all that useful, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
             Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
             if self._serial is None:
@@ -292,7 +293,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                 if line is None:
                     self.setIsConnected(False) # Something went wrong with reading, could be that close was called.
                     return
-                
+
                 if b"T:" in line:
                     self._serial.timeout = 0.5
                     sucesfull_responses += 1
@@ -468,7 +469,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
     ##  Private function to set the temperature of an extruder
     #   \param index index of the extruder
-    #   \param temperature recieved temperature
+    #   \param temperature received temperature
     def _setExtruderTemperature(self, index, temperature):
         try: 
             self._extruder_temperatures[index] = temperature
@@ -522,7 +523,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
 
             if line.startswith(b"Error:"):
                 # Oh YEAH, consistency.
-                # Marlin reports an MIN/MAX temp error as "Error:x\n: Extruder switched off. MAXTEMP triggered !\n"
+                # Marlin reports a MIN/MAX temp error as "Error:x\n: Extruder switched off. MAXTEMP triggered !\n"
                 #       But a bed temp error is reported as "Error: Temperature heated bed switched off. MAXTEMP triggered !!"
                 #       So we can have an extra newline in the most common case. Awesome work people.
                 if re.match(b"Error:[0-9]\n", line):
@@ -538,7 +539,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
                     self._setExtruderTemperature(self._temperature_requested_extruder_index,float(re.search(b"T: *([0-9\.]*)", line).group(1)))
                 except:
                     pass
-                if b"B:" in line: # Check if it"s a bed temperature
+                if b"B:" in line: # Check if it's a bed temperature
                     try:
                         self._setBedTemperature(float(re.search(b"B: *([0-9\.]*)", line).group(1)))
                     except Exception as e:
@@ -587,7 +588,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         line = line.strip()
         try:
             if line == "M0" or line == "M1":
-                line = "M105"   #Don"t send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
+                line = "M105"   #Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
             if ("G0" in line or "G1" in line) and "Z" in line:
                 z = float(re.search("Z([0-9\.]*)", line).group(1))
                 if self._current_z != z:
@@ -602,7 +603,7 @@ class PrinterConnection(OutputDevice, QObject, SignalEmitter):
         self.setProgress(( self._gcode_position / len(self._gcode)) * 100)
         self.progressChanged.emit()
 
-    ##  Set the progress of the print. 
+    ##  Set the progress of the print.
     #   It will be normalized (based on max_progress) to range 0 - 100
     def setProgress(self, progress, max_progress = 100):
         self._progress  = (progress / max_progress) * 100 #Convert to scale of 0-100

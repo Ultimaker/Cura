@@ -25,6 +25,7 @@ import Arcus
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+
 class CuraEngineBackend(Backend):
     def __init__(self):
         super().__init__()
@@ -84,7 +85,7 @@ class CuraEngineBackend(Backend):
         Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
 
     ##  Get the command that is used to call the engine.
-    #   This is usefull for debugging and used to actually start the engine
+    #   This is useful for debugging and used to actually start the engine
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
         active_machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
@@ -158,7 +159,7 @@ class CuraEngineBackend(Backend):
             Logger.log("d", "Killing engine process")
             try:
                 self._process.terminate()
-                Logger.log("d", "Engine process is killed. Recieved return code %s", self._process.wait())
+                Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait())
                 self._process = None
                 #self._createSocket() # Re create the socket
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
@@ -261,7 +262,7 @@ class CuraEngineBackend(Backend):
 
     def _onToolOperationStarted(self, tool):
         self._terminate() # Do not continue slicing once a tool has started
-        self._enabled = False # Do not reslice when a tool is doing it's 'thing'
+        self._enabled = False # Do not reslice when a tool is doing its 'thing'
 
     def _onToolOperationStopped(self, tool):
         self._enabled = True # Tool stop, start listening for changes again.
