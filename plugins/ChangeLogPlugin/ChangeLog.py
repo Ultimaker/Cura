@@ -28,9 +28,10 @@ class ChangeLog(Extension, QObject,):
             self._version = Version(version_string)
         else:
             self._version = None
+
         self._change_logs = None
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
-        Preferences.getInstance().addPreference("general/latest_version_changelog_shown", "15.05.90") #First version of CURA with uranium
+        Preferences.getInstance().addPreference("general/latest_version_changelog_shown", "2.0.0") #First version of CURA with uranium
         self.addMenuItem(catalog.i18nc("@item:inmenu", "Show Changelog"), self.showChangelog)
         #self.showChangelog()
 
@@ -42,7 +43,6 @@ class ChangeLog(Extension, QObject,):
     @pyqtSlot(result = str)
     def getChangeLogString(self):
         logs = self.getChangeLogs()
-        latest_version = Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown")) #TODO: @UnusedVariable
         result = ""
         for version in logs:
             result += "<h1>" + str(version) + "</h1><br>"
@@ -58,7 +58,7 @@ class ChangeLog(Extension, QObject,):
 
     def loadChangeLogs(self):
         self._change_logs = collections.OrderedDict()
-        with open(os.path.join(PluginRegistry.getInstance().getPluginPath("ChangeLogPlugin"), "ChangeLog.txt"), "r",-1, "utf-8") as f:
+        with open(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.txt"), "r",-1, "utf-8") as f:
             open_version = None
             open_header = None
             for line in f:
@@ -78,12 +78,19 @@ class ChangeLog(Extension, QObject,):
     def _onEngineCreated(self):
         if not self._version:
             return #We're on dev branch.
-        #if self._version > Preferences.getInstance().getValue("general/latest_version_changelog_shown"):
-            #self.showChangelog()
+
+        if Preferences.getInstance().getValue("general/latest_version_changelog_shown") == "master":
+            latest_version_shown = Version("0.0.0")
+        else:
+            latest_version_shown = Version(Preferences.getInstance().getValue("general/latest_version_changelog_shown"))
+
+        if self._version > latest_version_shown:
+            self.showChangelog()
 
     def showChangelog(self):
         if not self._changelog_window:
             self.createChangelogWindow()
+
         self._changelog_window.show()
         Preferences.getInstance().setValue("general/latest_version_changelog_shown", Application.getInstance().getVersion())
 
@@ -92,7 +99,8 @@ class ChangeLog(Extension, QObject,):
             self._changelog_window.hide()
 
     def createChangelogWindow(self):
-        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath("ChangeLogPlugin"), "ChangeLog.qml"))
+        path = QUrl.fromLocalFile(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "ChangeLog.qml"))
+
         component = QQmlComponent(Application.getInstance()._engine, path)
         self._changelog_context = QQmlContext(Application.getInstance()._engine.rootContext())
         self._changelog_context.setContextProperty("manager", self)
