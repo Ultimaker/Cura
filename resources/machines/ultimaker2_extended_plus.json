@@ -11,10 +11,9 @@
     "inherits": "ultimaker2plus.json",
 
     "machine_settings": {
-        "machine_width": { "default": 230 },
-        "machine_depth": { "default": 225 },
-        "machine_height": { "default": 310 },
+        "machine_height": { "default": 313 },
         "machine_show_variants": { "default": true },
-        "gantry_height": { "default": 50 }
+        "machine_nozzle_head_distance": { "default": 5 },
+        "machine_nozzle_expansion_angle": { "default": 45 }
     }
 }

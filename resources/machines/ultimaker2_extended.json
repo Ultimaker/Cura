@@ -10,13 +10,7 @@
     "file_formats": "text/x-gcode",
     "inherits": "ultimaker2.json",
 
-    "pages": [
-        "SelectUpgradedPartsUM2"
-    ],
-
     "machine_settings": {
-        "machine_width": { "default": 230 },
-        "machine_depth": { "default": 225 },
         "machine_height": { "default": 315 }
     }
 }

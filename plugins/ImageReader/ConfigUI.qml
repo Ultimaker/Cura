@@ -20,7 +20,7 @@ UM.Dialog
 
     title: catalog.i18nc("@title:window", "Convert Image...")
 
-    GridLayout 
+    GridLayout
     {
         UM.I18nCatalog{id: catalog; name:"cura"}
         anchors.fill: parent;
@@ -36,7 +36,7 @@ UM.Dialog
             Row {
                 width: parent.width
 
-                Text {
+                Label {
                     text: catalog.i18nc("@action:label","Height (mm)")
                     width: 150
                     anchors.verticalCenter: parent.verticalCenter
@@ -59,7 +59,7 @@ UM.Dialog
             Row {
                 width: parent.width
 
-                Text {
+                Label {
                     text: catalog.i18nc("@action:label","Base (mm)")
                     width: 150
                     anchors.verticalCenter: parent.verticalCenter
@@ -74,7 +74,7 @@ UM.Dialog
                 }
             }
         }
-        
+
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
@@ -82,7 +82,7 @@ UM.Dialog
             Row {
                 width: parent.width
 
-                Text {
+                Label {
                     text: catalog.i18nc("@action:label","Width (mm)")
                     width: 150
                     anchors.verticalCenter: parent.verticalCenter
@@ -98,7 +98,7 @@ UM.Dialog
                 }
             }
         }
-        
+
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
@@ -106,7 +106,7 @@ UM.Dialog
             Row {
                 width: parent.width
 
-                Text {
+                Label {
                     text: catalog.i18nc("@action:label","Depth (mm)")
                     width: 150
                     anchors.verticalCenter: parent.verticalCenter
@@ -121,7 +121,7 @@ UM.Dialog
                 }
             }
         }
-        
+
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
@@ -130,7 +130,7 @@ UM.Dialog
                 width: parent.width
 
                 //Empty label so 2 column layout works.
-                Text {
+                Label {
                     text: ""
                     width: 150
                     anchors.verticalCenter: parent.verticalCenter
@@ -152,7 +152,7 @@ UM.Dialog
             Row {
                 width: parent.width
 
-                Text {
+                Label {
                     text: catalog.i18nc("@action:label","Smoothing")
                     width: 150
                     anchors.verticalCenter: parent.verticalCenter

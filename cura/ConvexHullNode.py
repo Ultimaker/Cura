@@ -5,11 +5,15 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Math.Color import Color
 from UM.Math.Vector import Vector
-from UM.Mesh.MeshBuilder import MeshBuilder #To create a mesh to display the convex hull with.
+from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the convex hull with.
 
 from UM.View.GL.OpenGL import OpenGL
 
+
 class ConvexHullNode(SceneNode):
+    ##  Convex hull node is a special type of scene node that is used to display a 2D area, to indicate the
+    #   location an object uses on the buildplate. This area (or area's in case of one at a time printing) is
+    #   then displayed as a transparent shadow.
     def __init__(self, node, hull, parent = None):
         super().__init__(parent)
 
@@ -22,18 +26,22 @@ class ConvexHullNode(SceneNode):
         self._inherit_orientation = False
         self._inherit_scale = False
 
+        # Color of the drawn convex hull
         self._color = Color(35, 35, 35, 128)
-        self._mesh_height = 0.1 #The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
 
+        # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
+        self._mesh_height = 0.1
+
+        # The node this mesh is "watching"
         self._node = node
         self._node.transformationChanged.connect(self._onNodePositionChanged)
         self._node.parentChanged.connect(self._onNodeParentChanged)
         self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
         self._onNodeDecoratorsChanged(self._node)
+
         self._convex_hull_head_mesh = None
         self._hull = hull
 
-        hull_points = self._hull.getPoints() # TODO: @UnusedVariable
         hull_mesh = self.createHullMesh(self._hull.getPoints())
         if hull_mesh:
             self.setMeshData(hull_mesh)
@@ -41,18 +49,21 @@ class ConvexHullNode(SceneNode):
         if convex_hull_head:
             self._convex_hull_head_mesh = self.createHullMesh(convex_hull_head.getPoints())
 
+    ##  Actually create the mesh from the hullpoints
+    #   /param hull_points list of xy values
+    #   /return meshData
     def createHullMesh(self, hull_points):
-        #Input checking.
+        # Input checking.
         if len(hull_points) < 3:
             return None
 
         mesh_builder = MeshBuilder()
         point_first = Vector(hull_points[0][0], self._mesh_height, hull_points[0][1])
         point_previous = Vector(hull_points[1][0], self._mesh_height, hull_points[1][1])
-        for point in hull_points[2:]: #Add the faces in the order of a triangle fan.
+        for point in hull_points[2:]:  # Add the faces in the order of a triangle fan.
             point_new = Vector(point[0], self._mesh_height, point[1])
             mesh_builder.addFace(point_first, point_previous, point_new, color = self._color)
-            point_previous = point_new #Prepare point_previous for the next triangle.
+            point_previous = point_new  # Prepare point_previous for the next triangle.
 
         return mesh_builder.getData()
 
@@ -75,7 +86,7 @@ class ConvexHullNode(SceneNode):
         if node.callDecoration("getConvexHull"): 
             node.callDecoration("setConvexHull", None)
             node.callDecoration("setConvexHullNode", None)
-            self.setParent(None)
+            self.setParent(None)  # Garbage collection should delete this node after a while.
 
     def _onNodeParentChanged(self, node):
         if node.getParent():
@@ -88,9 +99,3 @@ class ConvexHullNode(SceneNode):
 
         if not node:
             return
-
-        if node.hasDecoration("getProfile"):
-            self._color.setR(0.75)
-
-        if node.hasDecoration("getSetting"):
-            self._color.setG(0.75)

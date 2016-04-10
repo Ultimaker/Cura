@@ -56,7 +56,8 @@ if platform.system() == "Linux": # Needed for platform.linux_distribution, which
 try:
     from cura.CuraVersion import CuraVersion
 except ImportError:
-    CuraVersion = "master" # [CodeStyle: Reflecting imported value]
+    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+
 
 class CuraApplication(QtApplication):
     class ResourceTypes:
@@ -69,7 +70,7 @@ class CuraApplication(QtApplication):
         if not hasattr(sys, "frozen"):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-        self._open_file_queue = [] #Files to open when plug-ins are loaded.
+        self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
         super().__init__(name = "cura", version = CuraVersion)
 
@@ -96,6 +97,8 @@ class CuraApplication(QtApplication):
         self._scene_boundingbox = AxisAlignedBox()
         self._job_name = None
         self._center_after_select = False
+        self._camera_animation = None
+        self._cura_actions = None
 
         self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
         self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
@@ -205,7 +208,7 @@ class CuraApplication(QtApplication):
 
             self.exec_()
 
-    #   Handle Qt events
+    ##   Handle Qt events
     def event(self, event):
         if event.type() == QEvent.FileOpen:
             if self._plugins_loaded:
@@ -215,6 +218,7 @@ class CuraApplication(QtApplication):
 
         return super().event(event)
 
+    ##  Get print information (duration / material used)
     def getPrintInformation(self):
         return self._print_information
 
@@ -585,30 +589,7 @@ class CuraApplication(QtApplication):
         return CuraSplashScreen.CuraSplashScreen()
 
     def _onActiveMachineChanged(self):
-        machine = self.getMachineManager().getActiveMachineInstance()
-        if machine:
-            pass
-            #Preferences.getInstance().setValue("cura/active_machine", machine.getName())
-
-            #self._volume.setWidth(machine.getSettingValueByKey("machine_width"))
-            #self._volume.setHeight(machine.getSettingValueByKey("machine_height"))
-            #self._volume.setDepth(machine.getSettingValueByKey("machine_depth"))
-
-            #disallowed_areas = machine.getSettingValueByKey("machine_disallowed_areas")
-            #areas = []
-            #if disallowed_areas:
-                #for area in disallowed_areas:
-                    #areas.append(Polygon(numpy.array(area, numpy.float32)))
-
-            #self._volume.setDisallowedAreas(areas)
-
-            #self._volume.rebuild()
-
-            #offset = machine.getSettingValueByKey("machine_platform_offset")
-            #if offset:
-                #self._platform.setPosition(Vector(offset[0], offset[1], offset[2]))
-            #else:
-                #self._platform.setPosition(Vector(0.0, 0.0, 0.0))
+        pass
 
     def _onFileLoaded(self, job):
         node = job.getResult()

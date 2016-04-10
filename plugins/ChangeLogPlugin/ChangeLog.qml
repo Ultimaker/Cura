@@ -11,15 +11,17 @@ import UM 1.1 as UM
 UM.Dialog
 {
     id: base
-    minimumWidth: 400
-    minimumHeight: 300;
-    title: "Changelog"
+    minimumWidth: 400 * Screen.devicePixelRatio
+    minimumHeight: 300 * Screen.devicePixelRatio
+    width: minimumWidth
+    height: minimumHeight
+    title: catalog.i18nc("@label", "Changelog")
 
     ScrollView
     {
         width: parent.width
         height: parent.height - 25
-        Text
+        Label
         {
             text: manager.getChangeLogString()
             width:base.width - 35
@@ -28,8 +30,13 @@ UM.Dialog
     }
     Button
     {
+        UM.I18nCatalog
+        {
+            id: catalog
+            name: "cura"
+        }
         anchors.bottom:parent.bottom
-        text: "close"
+        text: catalog.i18nc("@action:button", "Close")
         onClicked: base.hide()
         anchors.horizontalCenter: parent.horizontalCenter
     }

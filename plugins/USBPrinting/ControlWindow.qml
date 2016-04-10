@@ -22,17 +22,17 @@ UM.Dialog
         Row
         {
             spacing: UM.Theme.getSize("default_margin").width;
-            Text
+            Label
             {
                 //: USB Printing dialog label, %1 is head temperature
                 text: catalog.i18nc("@label","Extruder Temperature %1").arg(manager.extruderTemperature)
             }
-            Text
+            Label
             {
                 //: USB Printing dialog label, %1 is bed temperature
                 text: catalog.i18nc("@label","Bed Temperature %1").arg(manager.bedTemperature)
             }
-            Text
+            Label
             {
                 text: "" + manager.error
             }

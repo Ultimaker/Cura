@@ -33,7 +33,6 @@ msgid "Open Web Page"
 msgstr "Webseite öffnen"
 
 #: /home/tamara/2.1/Cura/cura/CuraApplication.py:158
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Die Szene wird eingerichtet..."
@@ -55,14 +54,12 @@ msgid "Cura Profile Reader"
 msgstr "Cura-Profil-Reader"
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for importing Cura profiles."
 msgstr "Ermöglicht das Importieren von Cura-Profilen."
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileReader/__init__.py:21
 #: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:21
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura-Profil"
@@ -196,37 +193,31 @@ msgid "CuraEngine Backend"
 msgstr "CuraEngine Backend"
 
 #: /home/tamara/2.1/Cura/plugins/CuraEngineBackend/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the link to the CuraEngine slicing backend"
 msgstr "Stellt die Verbindung zum Slicing-Backend der CuraEngine her"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "GCode Writer"
 msgstr "G-Code-Writer"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Writes GCode to a file"
 msgstr "Schreibt G-Code in eine Datei"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeWriter/__init__.py:22
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "GCode File"
 msgstr "G-Code-Datei"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/USBPrinterManager.py:49
-#, fuzzy
 msgctxt "@title:menu"
 msgid "Firmware"
 msgstr "Firmware"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/USBPrinterManager.py:50
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Update Firmware"
 msgstr "Firmware aktualisieren"
@@ -257,7 +248,6 @@ msgid "USB printing"
 msgstr "USB-Drucken"
 
 #: /home/tamara/2.1/Cura/plugins/USBPrinting/__init__.py:17
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
 msgstr "Akzeptiert den G-Code und sendet diesen an einen Drucker. Das Plugin kann auch die Firmware aktualisieren."
@@ -283,19 +273,16 @@ msgid "Submits anonymous slice info. Can be disabled through preferences."
 msgstr "Sendet anonymisierte Slice-Informationen. Kann in den Einstellungen deaktiviert werden."
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Cura Profile Writer"
 msgstr "Cura-Profil-Writer"
 
 #: /home/tamara/2.1/Cura/plugins/CuraProfileWriter/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for exporting Cura profiles."
 msgstr "Ermöglicht das Exportieren von Cura-Profilen."
 
 #: /home/tamara/2.1/Cura/plugins/ImageReader/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "Image Reader"
 msgstr "Bild-Reader"
@@ -331,13 +318,11 @@ msgid "GIF Image"
 msgstr "GIF-Bilddatei"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:12
-#, fuzzy
 msgctxt "@label"
 msgid "GCode Profile Reader"
 msgstr "G-Code-Writer"
 
 #: /home/tamara/2.1/Cura/plugins/GCodeProfileReader/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for importing profiles from g-code files."
 msgstr "Ermöglicht das Importieren von Profilen aus G-Code-Dateien."
@@ -368,13 +353,11 @@ msgid "Layer View"
 msgstr "Schichtenansicht"
 
 #: /home/tamara/2.1/Cura/plugins/LayerView/__init__.py:16
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the Layer view."
 msgstr "Bietet eine Schichtenansicht."
 
 #: /home/tamara/2.1/Cura/plugins/LayerView/__init__.py:20
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Layers"
 msgstr "Schichten"
@@ -395,13 +378,11 @@ msgid "Per Object Settings Tool"
 msgstr "Einstellungstool pro Objekt"
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides the Per Object Settings."
-msgstr "Bietet die Einstellungen pro Objekt"
+msgstr "Bietet die Einstellungen pro Objekt."
 
 #: /home/tamara/2.1/Cura/plugins/PerObjectSettingsTool/__init__.py:19
-#, fuzzy
 msgctxt "@label"
 msgid "Per Object Settings"
 msgstr "Einstellungen pro Objekt"
@@ -417,7 +398,6 @@ msgid "Legacy Cura Profile Reader"
 msgstr "Cura-Vorgängerprofil-Reader"
 
 #: /home/tamara/2.1/Cura/plugins/LegacyProfileReader/__init__.py:15
-#, fuzzy
 msgctxt "@info:whatsthis"
 msgid "Provides support for importing profiles from legacy Cura versions."
 msgstr "Bietet Unterstützung für den Import von Profilen der Vorgängerversionen von Cura."
@@ -679,139 +659,116 @@ msgid "Toggle Fu&ll Screen"
 msgstr "Umschalten auf Vo&llbild-Modus"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:57
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "&Rückgängig machen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:65
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Wiederholen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:73
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "&Beenden"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:81
-#, fuzzy
 msgctxt "@action:inmenu menubar:settings"
 msgid "&Preferences..."
 msgstr "&Einstellungen..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:88
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "&Drucker hinzufügen..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:94
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Dr&ucker verwalten..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:101
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Profile verwalten..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:108
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Online-&Dokumentation anzeigen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:115
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "&Fehler melden"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:122
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "&About..."
 msgstr "&Über..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:129
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete &Selection"
 msgstr "&Auswahl löschen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:137
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Delete Object"
 msgstr "Objekt löschen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:144
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Ce&nter Object on Platform"
 msgstr "Objekt auf Druckplatte ze&ntrieren"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:150
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Objects"
 msgstr "Objekte &gruppieren"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:158
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Objects"
 msgstr "Gruppierung für Objekte aufheben"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:166
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Objects"
 msgstr "Objekt &zusammenführen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:174
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "&Duplicate Object"
 msgstr "Objekt &duplizieren"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:181
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Clear Build Platform"
 msgstr "Druckplatte &reinigen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:189
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "Re&load All Objects"
 msgstr "Alle Objekte neu &laden"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:196
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Object Positions"
 msgstr "Alle Objektpositionen zurücksetzen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:202
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Object &Transformations"
 msgstr "Alle Objekt&transformationen zurücksetzen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:208
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File..."
 msgstr "&Datei öffnen..."
 
 #: /home/tamara/2.1/Cura/resources/qml/Actions.qml:216
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Engine &Log..."
 msgstr "Engine-&Protokoll anzeigen..."
@@ -827,7 +784,6 @@ msgid "Hollow"
 msgstr "Hohl"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:239
-#, fuzzy
 msgctxt "@label"
 msgid "No (0%) infill will leave your model hollow at the cost of low strength"
 msgstr "Bei keiner (0 %) Füllung bleibt Ihr Modell hohl, was allerdings eine niedrige Festigkeit zur Folge hat"
@@ -838,7 +794,6 @@ msgid "Light"
 msgstr "Dünn"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:245
-#, fuzzy
 msgctxt "@label"
 msgid "Light (20%) infill will give your model an average strength"
 msgstr "Eine dünne (20 %) Füllung gibt Ihrem Modell eine durchschnittliche Festigkeit"
@@ -864,7 +819,6 @@ msgid "Solid (100%) infill will make your model completely solid"
 msgstr "Eine solide (100 %) Füllung macht Ihr Modell vollständig massiv"
 
 #: /home/tamara/2.1/Cura/resources/qml/SidebarSimple.qml:276
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Helpers:"
 msgstr "Helfer:"
@@ -941,7 +895,6 @@ msgid "Ensure objects are kept apart"
 msgstr "Stellen Sie sicher, dass die Objekte getrennt gehalten werden"
 
 #: /home/tamara/2.1/Cura/resources/qml/GeneralPage.qml:131
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should opened files be scaled to the build volume if they are too large?"
 msgstr "Sollen offene Dateien an das Erstellungsvolumen angepasst werden, wenn Sie zu groß sind?"
@@ -972,7 +925,6 @@ msgid "Highlight unsupported areas of the model in red. Without support these ar
 msgstr "Nicht gestützte Bereiche des Modells in rot hervorheben. Ohne Stützstruktur werden diese Bereiche nicht korrekt gedruckt."
 
 #: /home/tamara/2.1/Cura/resources/qml/ViewPage.qml:42
-#, fuzzy
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "Überhang anzeigen"
@@ -1095,13 +1047,11 @@ msgid "To assist you in having better default settings for your Ultimaker. Cura 
 msgstr "Um Ihnen dabei zu helfen, bessere Standardeinstellungen für Ihren Ultimaker festzulegen, würde Cura gerne erfahren, welche Upgrades auf Ihrem Gerät vorhanden sind:"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:57
-#, fuzzy
 msgctxt "@option:check"
 msgid "Extruder driver ugrades"
 msgstr "Upgrades für Extruder-Driver"
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/SelectUpgradedParts.qml:63
-#, fuzzy
 msgctxt "@option:check"
 msgid "Heated printer bed"
 msgstr "Heizbares Druckbett"
@@ -1188,7 +1138,6 @@ msgid "Cura requires these new features and thus your firmware will most likely 
 msgstr "Cura benötigt diese neuen Funktionen und daher ist es sehr wahrscheinlich, dass Ihre Firmware aktualisiert werden muss. Sie können dies jetzt erledigen."
 
 #: /home/tamara/2.1/Cura/resources/qml/WizardPages/UpgradeFirmware.qml:64
-#, fuzzy
 msgctxt "@action:button"
 msgid "Upgrade to Marlin Firmware"
 msgstr "Auf Marlin-Firmware aktualisieren"
@@ -1224,183 +1173,164 @@ msgid "Select the active output device"
 msgstr "Wählen Sie das aktive Ausgabegerät"
 
 #: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:15
-#, fuzzy
 msgctxt "@title:window"
 msgid "About Cura"
 msgstr "Über Cura"
 
 #: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:54
-#, fuzzy
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Komplettlösung für den 3D-Druck mit geschmolzenem Filament."
 
 #: /home/tamara/2.1/Cura/resources/qml/AboutDialog.qml:66
-#, fuzzy
 msgctxt "@info:credit"
 msgid "Cura has been developed by Ultimaker B.V. in cooperation with the community."
 msgstr "Cura wurde von Ultimaker B.V. in Zusammenarbeit mit der Community entwickelt."
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:16
-#, fuzzy
 msgctxt "@title:window"
 msgid "Cura"
 msgstr "Cura"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:53
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "&Datei"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:62
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "&Zuletzt geöffnet"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:92
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Save Selection to File"
 msgstr "Auswahl als Datei &speichern"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:100
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Save &All"
 msgstr "&Alles speichern"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:128
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:145
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "&Ansicht"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:167
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Printer"
 msgstr "Dr&ucker"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:213
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&rofile"
 msgstr "&Profil"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:240
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "Er&weiterungen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:273
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "&Einstellungen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:281
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "&Hilfe"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:366
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open File"
 msgstr "Datei öffnen"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:410
-#, fuzzy
 msgctxt "@action:button"
 msgid "View Mode"
 msgstr "Ansichtsmodus"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:495
-#, fuzzy
 msgctxt "@title:tab"
 msgid "View"
 msgstr "Ansicht"
 
 #: /home/tamara/2.1/Cura/resources/qml/Cura.qml:644
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open file"
 msgstr "Datei öffnen"
 
-#~ msgctxt "@label"
-#~ msgid "Variant:"
-#~ msgstr "Variante:"
+msgctxt "@label"
+msgid "Variant:"
+msgstr "Variante:"
 
-#~ msgctxt "@label"
-#~ msgid "Global Profile:"
-#~ msgstr "Globales Profil:"
+msgctxt "@label"
+msgid "Global Profile:"
+msgstr "Globales Profil:"
 
-#~ msgctxt "@option:check"
-#~ msgid "Heated printer bed (standard kit)"
-#~ msgstr "Heizbares Druckbett (Standard-Kit)"
+msgctxt "@option:check"
+msgid "Heated printer bed (standard kit)"
+msgstr "Heizbares Druckbett (Standard-Kit)"
 
-#~ msgctxt "@option:check"
-#~ msgid "Dual extrusion (experimental)"
-#~ msgstr "Dual-Extruder (experimental)"
+msgctxt "@option:check"
+msgid "Dual extrusion (experimental)"
+msgstr "Dual-Extruder (experimental)"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Bulgarian"
-#~ msgstr "Bulgarisch"
+msgctxt "@item:inlistbox"
+msgid "Bulgarian"
+msgstr "Bulgarisch"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Czech"
-#~ msgstr "Tschechisch"
+msgctxt "@item:inlistbox"
+msgid "Czech"
+msgstr "Tschechisch"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Italian"
-#~ msgstr "Italienisch"
+msgctxt "@item:inlistbox"
+msgid "Italian"
+msgstr "Italienisch"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Russian"
-#~ msgstr "Russisch"
+msgctxt "@item:inlistbox"
+msgid "Russian"
+msgstr "Russisch"
 
-#~ msgctxt "@item:inlistbox"
-#~ msgid "Spanish"
-#~ msgstr "Spanisch"
+msgctxt "@item:inlistbox"
+msgid "Spanish"
+msgstr "Spanisch"
 
-#~ msgctxt "@label:textbox"
-#~ msgid "Printjob Name"
-#~ msgstr "Name des Druckauftrags"
+msgctxt "@label:textbox"
+msgid "Printjob Name"
+msgstr "Name des Druckauftrags"
 
-#~ msgctxt "@label"
-#~ msgid "Sparse"
-#~ msgstr "Dünn"
+msgctxt "@label"
+msgid "Sparse"
+msgstr "Dünn"
 
-#~ msgctxt "@option:check"
-#~ msgid "Enable Skirt Adhesion"
-#~ msgstr "Adhäsion der Unterlage aktivieren"
+msgctxt "@option:check"
+msgid "Enable Skirt Adhesion"
+msgstr "Adhäsion der Unterlage aktivieren"
 
-#~ msgctxt "@option:check"
-#~ msgid "Enable Support"
-#~ msgstr "Stützstruktur aktivieren"
+msgctxt "@option:check"
+msgid "Enable Support"
+msgstr "Stützstruktur aktivieren"
 
-#~ msgctxt "@label:listbox"
-#~ msgid "Machine:"
-#~ msgstr "Gerät:"
+msgctxt "@label:listbox"
+msgid "Machine:"
+msgstr "Gerät:"
 
-#~ msgctxt "@title:menu"
-#~ msgid "&Machine"
-#~ msgstr "&Gerät"
+msgctxt "@title:menu"
+msgid "&Machine"
+msgstr "&Gerät"
 
-#~ msgctxt "Save button tooltip"
-#~ msgid "Save to Disk"
-#~ msgstr "Auf Datenträger speichern"
+msgctxt "Save button tooltip"
+msgid "Save to Disk"
+msgstr "Auf Datenträger speichern"
 
-#~ msgctxt "Message action tooltip, {0} is sdcard"
-#~ msgid "Eject SD Card {0}"
-#~ msgstr "SD-Karte auswerfen {0}"
+msgctxt "Message action tooltip, {0} is sdcard"
+msgid "Eject SD Card {0}"
+msgstr "SD-Karte auswerfen {0}"

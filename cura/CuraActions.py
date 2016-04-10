@@ -4,6 +4,7 @@ from PyQt5.QtGui import QDesktopServices
 from UM.Event import CallFunctionEvent
 from UM.Application import Application
 
+
 class CuraActions(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)

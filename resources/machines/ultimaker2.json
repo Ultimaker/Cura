@@ -11,10 +11,6 @@
 
     "inherits": "ultimaker.json",
 
-    "pages": [
-        "SelectUpgradedPartsUM2"
-    ],
-
     "machine_extruder_trains": [
         {
             "machine_nozzle_heat_up_speed": {
@@ -67,17 +63,17 @@
             ]
         },
         "machine_center_is_zero": { "default": false },
-        "machine_nozzle_size": { "default": 0.4, "min_value": "0.001", "description": "The inner diameter of the nozzle. If you are using an Olsson Block with a non-standard nozzle diameter, set this field to the diameter you are using." },
+        "machine_nozzle_size": { "default": 0.4, "min_value": "0.001"},
         "machine_nozzle_heat_up_speed": { "default": 2.0 },
         "machine_nozzle_cool_down_speed": { "default": 2.0 },
         "gantry_height": { "default": 55 },
         "machine_use_extruder_offset_to_offset_coords": { "default": true },
         "machine_gcode_flavor": { "default": "UltiGCode" },
         "machine_disallowed_areas": { "default": [
-            [[-115.0,  112.5], [ -82.0,  112.5], [ -84.0,  104.5], [-115.0,  104.5]],
-            [[ 115.0,  112.5], [ 115.0,  104.5], [ 110.0,  104.5], [ 108.0,  112.5]],
-            [[-115.0, -112.5], [-115.0, -104.5], [ -84.0, -104.5], [ -82.0, -112.5]],
-            [[ 115.0, -112.5], [ 108.0, -112.5], [ 110.0, -104.5], [ 115.0, -104.5]]
+              [[-115.0,  112.5], [ -82.0,  112.5], [ -84.0,  102.5], [-115.0,  102.5]],
+              [[ 115.0,  112.5], [ 115.0,  102.5], [ 110.0,  102.5], [ 108.0,  112.5]],
+              [[-115.0, -112.5], [-115.0, -104.5], [ -84.0, -104.5], [ -82.0, -112.5]],
+              [[ 115.0, -112.5], [ 108.0, -112.5], [ 110.0, -104.5], [ 115.0, -104.5]]
         ]},
         "machine_platform_offset": { "default": [9.0, 0.0, 0.0] },
 

@@ -12,7 +12,7 @@ def getMetaData():
             "name": catalog.i18nc("@label", "Changelog"),
             "author": "Ultimaker",
             "version": "1.0",
-            "description":  catalog.i18nc("@info:whatsthis", "Shows changes since latest checked version"),
+            "description": catalog.i18nc("@info:whatsthis", "Shows changes since latest checked version."),
             "api": 2
         }
     }

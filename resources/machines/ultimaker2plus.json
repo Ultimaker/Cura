@@ -11,11 +11,12 @@
     "inherits": "ultimaker2.json",
 
     "overrides": {
-        "machine_width": { "default": 230 },
-        "machine_depth": { "default": 225 },
-        "machine_height": { "default": 200 },
+        "machine_height": { "default": 203 },
         "machine_show_variants": { "default": true },
-        "gantry_height": { "default": 50 },
+        "gantry_height": { "default": 52 },
+        "machine_nozzle_head_distance": { "default": 5 },
+        "machine_nozzle_expansion_angle": { "default": 45 },
+        "machine_heat_zone_length": { "default": 20 },
         "machine_head_with_fans_polygon":
         {
             "default": [
@@ -36,6 +37,13 @@
                     -34
                 ]
             ]
-        }
+        },
+        "retraction_amount": { "default": 6.0 },
+        "machine_disallowed_areas": { "default": [
+              [[-115.0,  112.5], [ -78.0,  112.5], [ -80.0,  102.5], [-115.0,  102.5]],
+              [[ 115.0,  112.5], [ 115.0,  102.5], [ 105.0,  102.5], [ 103.0,  112.5]],
+              [[-115.0, -112.5], [-115.0, -104.5], [ -84.0, -104.5], [ -82.0, -112.5]],
+              [[ 115.0, -112.5], [ 108.0, -112.5], [ 110.0, -104.5], [ 115.0, -104.5]]
+        ]}
     }
 }

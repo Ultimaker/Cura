@@ -27,15 +27,13 @@
         "machine_end_gcode": {"default": "M104 S0\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors"},
         "machine_platform_offset": {"default": [-180, -0.25, 160]}
     },
-    
-    "overrides": { 
-        "layer_height": { "default": 0.15 },
-        "shell_thickness": { "default": 0.8},
-        "wall_thickness": { "default": 0.8 },
-        "top_bottom_thickness": { "default": 0.3, "visible": true },
-        "material_print_temperature": { "default": 215, "visible": true },
-        "material_bed_temperature": { "default": 60, "visible": true },
-        "material_diameter": { "default": 1.75, "visible": true },
+    "overrides": {
+        "layer_height": { "default": 0.15},
+        "wall_thickness": { "default": 0.8},
+        "top_bottom_thickness": { "default": 0.3, "visible": true},
+        "material_print_temperature": { "default": 215, "visible": true},
+        "material_bed_temperature": { "default": 60, "visible": true},
+        "material_diameter": { "default": 1.75, "visible": true},
         "retraction_enable": { "default": true, "always_visible": true},
         "retraction_speed": { "default": 50.0, "visible": false },
         "retraction_amount": { "default": 2.5, "visible": false },
