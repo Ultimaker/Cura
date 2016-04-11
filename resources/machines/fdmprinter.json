@@ -10,6 +10,10 @@
     "add_pages": [],
 
     "machine_settings": {
+        "machine_show_variants": {
+            "description": "Wether to show the different variants of this machine, which are described in separate json files.",
+            "default": false
+        },
         "machine_start_gcode": {
             "description": "Gcode commands to be executed at the very start - separated by \\n.",
             "default": "G28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0",
@@ -95,13 +99,13 @@
             "global_only": true
         },
         "machine_nozzle_heat_up_speed": {
-            "description": "The speed (*C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
+            "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
             "default": 2.0,
             "SEE_machine_extruder_trains": true,
             "global_only": true
         },
         "machine_nozzle_cool_down_speed": { 
-            "description": "The speed (*C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
+            "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
             "default": 2.0,
             "SEE_machine_extruder_trains": true,
             "global_only": true
@@ -127,7 +131,7 @@
             "global_only": true
         },
         "machine_head_polygon": {
-            "description": "A 2D silhouette of the print head.",
+            "description": "A 2D silhouette of the print head (fan caps excluded).",
             "type": "polygon",
             "default": [
                 [
@@ -150,7 +154,7 @@
             "global_only": true
         },
         "machine_head_with_fans_polygon": {
-            "description": "A 2D silhouette of the print head.",
+            "description": "A 2D silhouette of the print head (fan caps included).",
             "type": "polygon",
             "default": [
                 [
@@ -414,25 +418,6 @@
                                     "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(round(parent_value / layer_height, 4))"
                                 }
                             }
-                        },
-                        "wall_0_inset": {
-                            "label": "Outer Wall Inset",
-                            "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the object.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.0,
-                            "inherit_function": "(machine_nozzle_size - wall_line_width_0) / 2 if wall_line_width_0 < machine_nozzle_size else 0",
-                            "min_value_warning": "0",
-                            "max_value_warning": "machine_nozzle_size",
-                            "visible": false
-                        },
-                        "alternate_extra_perimeter": {
-                            "label": "Alternate Extra Wall",
-                            "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
-                            "type": "boolean",
-                            "default": false,
-                            "visible": false,
-                            "inherit": false
                         }
                     }
                 },
@@ -446,6 +431,17 @@
                         "zigzag": "Zig Zag"
                     },
                     "default": "lines",
+                    "visible": false
+                },
+                "wall_0_inset": {
+                    "label": "Outer Wall Inset",
+                    "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the object.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.0,
+                    "inherit_function": "(machine_nozzle_size - wall_line_width_0) / 2 if wall_line_width_0 < machine_nozzle_size else 0",
+                    "min_value_warning": "0",
+                    "max_value_warning": "machine_nozzle_size",
                     "visible": false
                 },
                 "alternate_extra_perimeter": {
@@ -578,12 +574,11 @@
                 "infill_overlap": {
                     "label": "Infill Overlap",
                     "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
-                    "unit": "mm",
+                    "unit": "%",
                     "type": "float",
-                    "default": 0.04,
-                    "min_value_warning": "0",
-                    "max_value_warning": "machine_nozzle_size",
-                    "inherit_function": "0.1 * line_width if infill_sparse_density < 95 else 0.0",
+                    "default": 10,
+                    "min_value": "0",
+                    "max_value_warning": "100",
                     "visible": false
                 },
                 "infill_wipe_dist": {
@@ -648,17 +643,6 @@
                     "unit": "",
                     "type": "string",
                     "default": "[[3.5,200],[7.0,240]]",
-                    "enabled": "material_flow_dependent_temperature",
-                    "global_only": true
-                },
-                "material_standby_temperature": {
-                    "label": "Standby Temperature",
-                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
-                    "unit": "°C",
-                    "type": "float",
-                    "default": 150,
-                    "min_value": "0",
-                    "max_value_warning": "260",
                     "enabled": "False",
                     "enabled_before_removal": "material_flow_dependent_temperature",
                     "global_only": true
@@ -916,9 +900,9 @@
                             "inherit_function": "speed_print",
                             "enabled": "support_enable",
                             "children": {
-                                "speed_support_lines": {
-                                    "label": "Support Wall Speed",
-                                    "description": "The speed at which the walls of support are printed. Printing the walls at lower speeds improves stability.",
+                                "speed_support_infill": {
+                                    "label": "Support Infill Speed",
+                                    "description": "The speed at which the infill of support is printed. Printing the infill at lower speeds improves stability.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default": 60,
@@ -1286,39 +1270,6 @@
                             "enabled": "support_enable and support_type == 'everywhere'"
                         }
                     }
-                },
-                "support_conical_enabled": {
-                    "label": "Enable Conical Support",
-                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false,
-                    "enabled": "support_enable"
-                },
-                "support_conical_angle": {
-                    "label": "Conical Support Angle",
-                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": "-90",
-                    "min_value_warning": "-45",
-                    "max_value_warning": "45",
-                    "max_value": "90",
-                    "default": 30,
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
-                },
-                "support_conical_min_width": {
-                    "label": "Conical Support Minimum Width",
-                    "description": "Minimum width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
-                    "unit": "mm",
-                    "default": 5.0,
-                    "min_value": "0",
-                    "min_value_warning": "machine_nozzle_size * 3",
-                    "max_value_warning": "100.0",
-                    "type": "float",
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
                 },
                 "support_bottom_stair_step_height": {
                     "label": "Support Stair Step Height",
@@ -1953,7 +1904,7 @@
                 },
                 "coasting_min_volume": {
                     "label": "Minimum Volume Before Coasting",
-                    "description": "The lowest volume an extrusion path should have before allowing coasting. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
+                    "description": "The smallest volume an extrusion path should have before allowing coasting. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
                     "unit": "mm³",
                     "type": "float",
                     "default": 0.8,
@@ -1994,7 +1945,7 @@
                     "enabled": "top_bottom_pattern != \"concentric\""
                 },
                 "support_conical_enabled": {
-                    "label": "Conical Support",
+                    "label": "Enable Conical Support",
                     "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
                     "type": "boolean",
                     "default": false,
