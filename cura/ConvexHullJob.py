@@ -40,7 +40,7 @@ class ConvexHullJob(Job):
             vertex_data = mesh.getTransformed(self._node.getWorldTransformation()).getVertices()
             # Don't use data below 0. TODO; We need a better check for this as this gives poor results for meshes with long edges.
             vertex_data = vertex_data[vertex_data[:,1] >= 0]
-            hull = Polygon(numpy.rint(vertex_data[:, [0, 2]]).astype(int))
+            hull = Polygon(vertex_data[:, [0, 2]])
 
         # First, calculate the normal convex hull around the points
         hull = hull.getConvexHull()
