@@ -363,7 +363,7 @@
                     }
                 },
                 "top_bottom_thickness": {
-                    "label": "Shell Top/Bottom Thickness",
+                    "label": "Top/Bottom Thickness",
                     "description": "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
                     "unit": "mm",
                     "default": 0.8,
@@ -374,7 +374,7 @@
                     "visible": true,
                     "children": {
                         "top_thickness": {
-                            "label": "Shell Top Thickness",
+                            "label": "Top Thickness",
                             "description": "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers.",
                             "unit": "mm",
                             "default": 0.8,
@@ -384,7 +384,7 @@
                             "visible": false,
                             "children": {
                                 "top_layers": {
-                                    "label": "Shell Top Layers",
+                                    "label": "Top Layers",
                                     "description": "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number.",
                                     "default": 8,
                                     "min_value": "0",
@@ -396,7 +396,7 @@
                             }
                         },
                         "bottom_thickness": {
-                            "label": "Shell Bottom Thickness",
+                            "label": "Bottom Thickness",
                             "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
                             "unit": "mm",
                             "default": 0.6,
@@ -405,7 +405,7 @@
                             "visible": false,
                             "children": {
                                 "bottom_layers": {
-                                    "label": "Shell Bottom Layers",
+                                    "label": "Bottom Layers",
                                     "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
                                     "min_value": "0",
                                     "default": 6,
@@ -437,7 +437,7 @@
                     }
                 },
                 "top_bottom_pattern": {
-                    "label": "Shell Top/Bottom Pattern",
+                    "label": "Top/Bottom Pattern",
                     "description": "The pattern of the top/bottom layers.",
                     "type": "enum",
                     "options": {
@@ -504,7 +504,7 @@
                     "visible": false
                 },
                 "xy_offset": {
-                    "label": "Shell Horizontal Expansion",
+                    "label": "Horizontal Expansion",
                     "description": "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
                     "unit": "mm",
                     "type": "float",
@@ -514,7 +514,7 @@
                     "visible": false
                 },
                 "z_seam_type": {
-                    "label": "Shell Z Seam Alignment",
+                    "label": "Z Seam Alignment",
                     "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
                     "type": "enum",
                     "options": {
@@ -1444,7 +1444,7 @@
                     "enabled": "support_enable and support_use_towers"
                 },
                 "support_minimal_diameter": {
-                    "label": "Minimum Tower Diameter",
+                    "label": "Minimum Diameter",
                     "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
