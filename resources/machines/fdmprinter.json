@@ -592,7 +592,7 @@
                             "max_value_warning": "machine_nozzle_size",
                             "inherit_function": "infill_line_width * parent_value / 100",
                             "visible": false
-                        },
+                        }
                     }
                 },
                 "infill_wipe_dist": {
