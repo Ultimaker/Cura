@@ -43,6 +43,6 @@
         "speed_topbottom": { "default": 30.0, "visible": true },
         "speed_travel": { "default": 150.0, "visible": true },
         "speed_layer_0": { "min_value": 0.1, "default": 30.0, "visible": true },
-        "infill_overlap": { "default": 0.04, "inherit_function": "0.1 * line_width if infill_sparse_density < 95 else 0" }
+        "infill_overlap": { "default": 10.0 }
     }
 }
