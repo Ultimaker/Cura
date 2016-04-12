@@ -2,7 +2,7 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Signal import Signal, SignalEmitter
-from . import PrinterConnection
+from . import USBPrinterOutputDevice
 from UM.Application import Application
 from UM.Resources import Resources
 from UM.Logger import Logger
@@ -190,7 +190,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addConnection(self, serial_port):
-        connection = PrinterConnection.PrinterConnection(serial_port)
+        connection = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
         connection.connect()
         connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
         connection.progressChanged.connect(self.progressChanged)

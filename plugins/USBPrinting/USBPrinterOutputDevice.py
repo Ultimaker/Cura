@@ -24,7 +24,7 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 
-class PrinterConnection(OutputDevice, QObject, SignalEmitter):
+class USBPrinterOutputDevice(OutputDevice, QObject, SignalEmitter):
     def __init__(self, serial_port, parent = None):
         QObject.__init__(self, parent)
         OutputDevice.__init__(self, serial_port)
