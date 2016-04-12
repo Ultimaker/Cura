@@ -40,6 +40,14 @@ class ConvexHullJob(Job):
             vertex_data = mesh.getTransformed(self._node.getWorldTransformation()).getVertices()
             # Don't use data below 0. TODO; We need a better check for this as this gives poor results for meshes with long edges.
             vertex_data = vertex_data[vertex_data[:,1] >= 0]
+
+            # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
+            # This is done to greatly speed up further convex hull calculations as the convex hull
+            # becomes much less complex when dealing with highly detailed models.
+            vertex_data = numpy.round(vertex_data, 1)
+            duplicates = (vertex_data[:,0] == vertex_data[:,1]) | (vertex_data[:,1] == vertex_data[:,2]) | (vertex_data[:,0] == vertex_data[:,2])
+            vertex_data = numpy.delete(vertex_data, numpy.where(duplicates), axis = 0)
+
             hull = Polygon(vertex_data[:, [0, 2]])
 
         # First, calculate the normal convex hull around the points
