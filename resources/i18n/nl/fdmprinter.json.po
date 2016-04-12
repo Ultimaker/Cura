@@ -278,7 +278,7 @@ msgid ""
 "Alternate the direction in which the top/bottom layers are printed. Normally "
 "they are printed diagonally only. This setting adds the X-only and Y-only "
 "directions."
-msgstr "Met deze optie wisselt u de richting af waarin de boven-/onderlagen worden geprint. Normaal worden deze alleen diagonaal geprint. Met deze instelling worden de alleen-X- en alleen-Y-richtingen toegevoegd."
+msgstr "Wissel de richting af waarin de boven-/onderlagen worden geprint. Normaal worden deze alleen diagonaal geprint. Met deze instelling worden de alleen-X- en alleen-Y-richtingen toegevoegd."
 
 #: fdmprinter.json
 msgctxt "skin_outline_count label"
@@ -291,7 +291,7 @@ msgid ""
 "Replaces the outermost part of the top/bottom pattern with a number of "
 "concentric lines. Using one or two lines improves roofs that start on infill "
 "material."
-msgstr "Met deze optie vervangt u het buitenste gedeelte van het patroon boven-/onderkant door een aantal concentrische lijnen. Het gebruik van 1 of 2 lijnen verbetert daken die op vulmateriaal beginnen."
+msgstr "Vervang het buitenste gedeelte van het patroon boven-/onderkant door een aantal concentrische lijnen. Het gebruik van 1 of 2 lijnen verbetert daken die op vulmateriaal beginnen."
 
 #: fdmprinter.json
 msgctxt "alternate_extra_perimeter label"
@@ -303,7 +303,7 @@ msgctxt "alternate_extra_perimeter description"
 msgid ""
 "Prints an extra wall at every other layer. This way infill gets caught "
 "between these extra walls, resulting in stronger prints."
-msgstr "Met deze optie print u op afwisselende lagen een extra wand. Op deze manier wordt vulling tussen deze extra wanden gevangen, wat leidt tot sterkere prints."
+msgstr "Print op afwisselende lagen een extra wand. Op deze manier wordt vulling tussen deze extra wanden gevangen, wat leidt tot sterkere prints."
 
 #: fdmprinter.json
 msgctxt "remove_overlapping_walls_enabled label"
@@ -316,7 +316,7 @@ msgid ""
 "Remove parts of a wall which share an overlap which would result in "
 "overextrusion in some places. These overlaps occur in thin parts and sharp "
 "corners in models."
-msgstr "Met deze optie verwijdert u de delen van een wand die overlappen met een andere wand waardoor op sommige plaatsen te veel filament zou worden doorgevoerd. Deze overlappingen komen voor in dunne gedeelten en scherpe hoeken van een model."
+msgstr "Verwijder de delen van een wand die overlappen met een andere wand waardoor op sommige plaatsen te veel filament zou worden doorgevoerd. Deze overlappingen komen voor in dunne gedeelten en scherpe hoeken van een model."
 
 #: fdmprinter.json
 msgctxt "remove_overlapping_walls_0_enabled label"
@@ -329,7 +329,7 @@ msgid ""
 "Remove parts of an outer wall which share an overlap which would result in "
 "overextrusion in some places. These overlaps occur in thin pieces in a model "
 "and sharp corners."
-msgstr "Met deze optie verwijdert u de delen van een buitenwand die overlappen met een andere wand waardoor op sommige plaatsen te veel filament zou worden doorgevoerd. Deze overlappingen komen voor in dunne gedeelten en scherpe hoeken van een model."
+msgstr "Verwijder de delen van een buitenwand die overlappen met een andere wand waardoor op sommige plaatsen te veel filament zou worden doorgevoerd. Deze overlappingen komen voor in dunne gedeelten en scherpe hoeken van een model."
 
 #: fdmprinter.json
 msgctxt "remove_overlapping_walls_x_enabled label"
@@ -341,7 +341,7 @@ msgctxt "remove_overlapping_walls_x_enabled description"
 msgid ""
 "Remove parts of an inner wall that would otherwise overlap and cause over-"
 "extrusion. These overlaps occur in thin pieces in a model and sharp corners."
-msgstr "Met deze optie verwijdert u de delen van een binnenwand die anders zouden overlappen en waardoor te veel filament zou worden doorgevoerd. Deze overlappingen komen voor in dunne gedeelten en scherpe hoeken van een model."
+msgstr "Verwijder de delen van een binnenwand die anders zouden overlappen en waardoor te veel filament zou worden doorgevoerd. Deze overlappingen komen voor in dunne gedeelten en scherpe hoeken van een model."
 
 #: fdmprinter.json
 msgctxt "fill_perimeter_gaps label"
@@ -352,7 +352,7 @@ msgstr "Gaten tussen wanden vullen"
 msgctxt "fill_perimeter_gaps description"
 msgid ""
 "Fills the gaps between walls when overlapping inner wall parts are removed."
-msgstr "Met deze optie vult u de gaten tussen wanden wanneer overlappende binnenwanddelen worden verwijderd."
+msgstr "Vul de gaten tussen wanden wanneer overlappende binnenwanddelen worden verwijderd."
 
 #: fdmprinter.json
 msgctxt "fill_perimeter_gaps option nowhere"
@@ -379,7 +379,7 @@ msgctxt "travel_compensate_overlapping_walls_enabled description"
 msgid ""
 "Compensate the flow for parts of a wall being printed where there is already "
 "a wall in place."
-msgstr "Met deze optie compenseert u de doorvoer van wanddelen die worden geprint op een plek waar zich al een wanddeel bevindt."
+msgstr "Compenseer de doorvoer van wanddelen die worden geprint op een plek waar zich al een wanddeel bevindt."
 
 #: fdmprinter.json
 msgctxt "xy_offset label"
@@ -450,7 +450,7 @@ msgstr "Dichtheid vulling"
 #: fdmprinter.json
 msgctxt "infill_sparse_density description"
 msgid "Adjusts the density of infill of the print."
-msgstr "Met deze optie past u de vuldichtheid van de print aan."
+msgstr "Past de vuldichtheid van de print aan."
 
 #: fdmprinter.json
 msgctxt "infill_line_distance label"
@@ -551,7 +551,7 @@ msgid ""
 "lead to more accurate walls, but overhangs print worse. Printing the infill "
 "first leads to sturdier walls, but the infill pattern might sometimes show "
 "through the surface."
-msgstr "Met deze optie print u de vulling voordat u de wanden print. Wanneer u eerst de wanden print, worden deze nauwkeuriger geprint, maar wordt de overhang mogelijk van mindere kwaliteit. Wanneer u eerst de vulling print, worden de wanden steviger, maar schijnt het vulpatroon mogelijk door."
+msgstr "Print de vulling voordat de wanden worden geprint. Wanneer u eerst de wanden print, worden deze nauwkeuriger geprint, maar wordt de overhang mogelijk van mindere kwaliteit. Wanneer u eerst de vulling print, worden de wanden steviger, maar schijnt het vulpatroon mogelijk door."
 
 #: fdmprinter.json
 msgctxt "material label"
@@ -568,7 +568,7 @@ msgctxt "material_flow_dependent_temperature description"
 msgid ""
 "Change the temperature for each layer automatically with the average flow "
 "speed of that layer."
-msgstr "Met deze optie wordt de temperatuur voor elke laag automatisch aangepast aan de gemiddelde doorvoersnelheid van de laag."
+msgstr "Pas de temperatuur voor elke laag automatisch aan aan de gemiddelde doorvoersnelheid van de laag."
 
 #: fdmprinter.json
 msgctxt "material_print_temperature label"
@@ -591,7 +591,7 @@ msgctxt "material_flow_temp_graph description"
 msgid ""
 "Data linking material flow (in mm3 per second) to temperature (degrees "
 "Celsius)."
-msgstr "Deze optie koppelt de materiaaldoorvoer (in mm3 per seconde) aan de temperatuur (graden Celsius)."
+msgstr "Grafiek om de materiaaldoorvoer (in mm3 per seconde) te koppelen aan de temperatuur (graden Celsius)."
 
 #: fdmprinter.json
 msgctxt "material_extrusion_cool_down_speed label"
@@ -627,7 +627,7 @@ msgctxt "material_diameter description"
 msgid ""
 "Adjusts the diameter of the filament used. Match this value with the "
 "diameter of the used filament."
-msgstr "Met deze optie past u de diameter aan van het gebruikte filament. Pas deze waarde aan de diameter van het gebruikte filament aan."
+msgstr "Bepaalt de diameter van het gebruikte filament. Pas deze waarde aan de diameter van het gebruikte filament aan."
 
 #: fdmprinter.json
 msgctxt "material_flow label"
@@ -971,7 +971,7 @@ msgid ""
 "Coasting replaces the last part of an extrusion path with a travel path. The "
 "oozed material is used to print the last piece of the extrusion path in "
 "order to reduce stringing."
-msgstr "Wanneer de optie Coasting ingeschakeld is, wordt het laatste gedeelte van een doorvoerpad vervangen door een beweging. Het doorgevoerde materiaal wordt gebruikt om het laatste gedeelte van het doorvoerpad te printen, om draadvorming te verminderen."
+msgstr "Met coasting wordt het laatste gedeelte van een doorvoerpad vervangen door een beweging. Het doorgevoerde materiaal wordt gebruikt om het laatste gedeelte van het doorvoerpad te printen, om draadvorming te verminderen."
 
 #: fdmprinter.json
 msgctxt "coasting_volume label"
@@ -1027,7 +1027,7 @@ msgctxt "cool_fan_enabled description"
 msgid ""
 "Enables the cooling fans while printing. The fans improve print quality on "
 "layers with short layer times and bridging / overhangs."
-msgstr "Met deze optie schakelt u de koelventilatoren in tijdens het printen. De ventilatoren verbeteren de printkwaliteit van lagen met een korte laagtijd en brugvorming/overhang."
+msgstr "Schakelt de koelventilatoren in tijdens het printen. De ventilatoren verbeteren de printkwaliteit van lagen met een korte laagtijd en brugvorming/overhang."
 
 #: fdmprinter.json
 msgctxt "cool_fan_speed label"
@@ -1140,7 +1140,7 @@ msgid ""
 "When the minimum speed is hit because of minimum layer time, lift the head "
 "away from the print and wait the extra time until the minimum layer time is "
 "reached."
-msgstr "Wanneer de minimale snelheid wordt bereikt vanwege de minimale laagtijd, wordt met deze optie de printkop van de print verwijderd totdat de minimale laagtijd bereikt is."
+msgstr "Wanneer de minimale snelheid wordt bereikt vanwege de minimale laagtijd, wordt de printkop van de print verwijderd totdat de minimale laagtijd bereikt is."
 
 #: fdmprinter.json
 msgctxt "draft_shield_enabled label"
@@ -1152,7 +1152,7 @@ msgctxt "draft_shield_enabled description"
 msgid ""
 "This will create a wall around the object, which traps (hot) air and shields "
 "against exterior airflow. Especially useful for materials which warp easily."
-msgstr "Met deze optie maakt u een wand rond het object. Deze vangt (warme) lucht en biedt bescherming tegen externe luchtbewegingen. De optie is met name geschikt voor materialen die snel kromtrekken."
+msgstr "Maak een wand rond het object. Deze vangt (warme) lucht en biedt bescherming tegen externe luchtbewegingen. De optie is met name geschikt voor materialen die snel kromtrekken."
 
 #: fdmprinter.json
 msgctxt "draft_shield_dist label"
@@ -1174,7 +1174,7 @@ msgctxt "draft_shield_height_limitation description"
 msgid ""
 "Set the height of the draft shield. Choose to print the draft shield at the "
 "full height of the object or at a limited height."
-msgstr "Met deze optie stelt u de hoogte van het tochtscherm in. U kunt ervoor kiezen een tochtscherm met dezelfde hoogte als het object of lager te printen."
+msgstr "Stel de hoogte van het tochtscherm in. U kunt ervoor kiezen een tochtscherm met dezelfde hoogte als het object of lager te printen."
 
 #: fdmprinter.json
 msgctxt "draft_shield_height_limitation option full"
@@ -1196,7 +1196,7 @@ msgctxt "draft_shield_height description"
 msgid ""
 "Height limitation of the draft shield. Above this height no draft shield "
 "will be printed."
-msgstr "Met deze optie stelt u een hoogtebeperking in voor het tochtscherm. Boven deze hoogte wordt er geen tochtscherm geprint."
+msgstr "Stel een hoogtebeperking in voor het tochtscherm. Boven deze hoogte wordt er geen tochtscherm geprint."
 
 #: fdmprinter.json
 msgctxt "support label"
@@ -1213,7 +1213,7 @@ msgctxt "support_enable description"
 msgid ""
 "Enable support structures. These structures support parts of the model with "
 "severe overhangs."
-msgstr "Met deze optie schakelt u het printen van een supportstructuur in. Een supportstructuur ondersteunt delen van het model met een zeer grote overhang."
+msgstr "Schakel het printen van een supportstructuur in. Een supportstructuur ondersteunt delen van het model met een zeer grote overhang."
 
 #: fdmprinter.json
 msgctxt "support_type label"
@@ -1226,7 +1226,7 @@ msgid ""
 "Adjusts the placement of the support structures. The placement can be set to "
 "touching build plate or everywhere. When set to everywhere the support "
 "structures will also be printed on the model."
-msgstr "Met deze optie past u de plaatsing van de supportstructuur aan. De plaatsing kan worden ingesteld op Platform aanraken of Overal. Wanneer deze optie ingesteld is op Overal, worden de supportstructuren ook op het model geprint."
+msgstr "Past de plaatsing van de supportstructuur aan. De plaatsing kan worden ingesteld op Platform aanraken of Overal. Wanneer deze optie ingesteld is op Overal, worden de supportstructuren ook op het model geprint."
 
 #: fdmprinter.json
 msgctxt "support_type option buildplate"
@@ -1297,7 +1297,7 @@ msgctxt "support_connect_zigzags description"
 msgid ""
 "Connect the ZigZags. This will increase the strength of the zig zag support "
 "structure."
-msgstr "Met deze optie verbindt u de zigzaglijnen. Hiermee versterkt u de zigzag-supportstructuur."
+msgstr "Verbind de zigzaglijnen. Hiermee versterkt u de zigzag-supportstructuur."
 
 #: fdmprinter.json
 msgctxt "support_infill_rate label"
@@ -1309,7 +1309,7 @@ msgctxt "support_infill_rate description"
 msgid ""
 "Adjusts the density of the support structure. A higher value results in "
 "better overhangs, but the supports are harder to remove."
-msgstr "Met deze optie past u de dichtheid van de supportstructuur aan. Met een hogere waarde krijgt u een betere overhang, maar is de supportstructuur moeilijker te verwijderen."
+msgstr "Past de dichtheid van de supportstructuur aan. Met een hogere waarde krijgt u een betere overhang, maar is de supportstructuur moeilijker te verwijderen."
 
 #: fdmprinter.json
 msgctxt "support_line_distance label"
@@ -1402,7 +1402,7 @@ msgctxt "support_offset description"
 msgid ""
 "Amount of offset applied to all support polygons in each layer. Positive "
 "values can smooth out the support areas and result in more sturdy support."
-msgstr "Met deze optie stelt u de mate van offset in die wordt toegepast op alle steunpolygonen in elke laag. Met positieve waarden kunt u de draagvlakken effenen en krijgt u een stevigere supportstructuur."
+msgstr "De mate van offset die wordt toegepast op alle steunpolygonen in elke laag. Met positieve waarden kunt u de draagvlakken effenen en krijgt u een stevigere supportstructuur."
 
 #: fdmprinter.json
 msgctxt "support_area_smoothing label"
@@ -1429,7 +1429,7 @@ msgctxt "support_roof_enable description"
 msgid ""
 "Generate a dense top skin at the top of the support on which the model is "
 "printed."
-msgstr "Met deze optie maakt u een dichte skin aan de bovenkant van de supportstructuur waarop het model wordt geprint."
+msgstr "Maak een dichte skin aan de bovenkant van de supportstructuur waarop het model wordt geprint."
 
 #: fdmprinter.json
 msgctxt "support_roof_height label"
@@ -1439,7 +1439,7 @@ msgstr "Dikte supportdak"
 #: fdmprinter.json
 msgctxt "support_roof_height description"
 msgid "The thickness of the support roofs."
-msgstr "Met deze optie stelt u de dikte van de supportdaken in."
+msgstr "De dikte van de supportdaken."
 
 #: fdmprinter.json
 msgctxt "support_roof_density label"
@@ -1451,7 +1451,7 @@ msgctxt "support_roof_density description"
 msgid ""
 "Adjusts the density of the roof of the support structure. A higher value "
 "results in better overhangs, but the supports are harder to remove."
-msgstr "Met deze optie past u de dichtheid van het dak van de supportstructuur aan. Met een hogere waarde krijgt u een betere overhang, maar is de supportstructuur moeilijker te verwijderen."
+msgstr "Past de dichtheid van het dak van de supportstructuur aan. Met een hogere waarde krijgt u een betere overhang, maar is de supportstructuur moeilijker te verwijderen."
 
 #: fdmprinter.json
 msgctxt "support_roof_line_distance label"
@@ -1510,7 +1510,7 @@ msgctxt "support_conical_enabled description"
 msgid ""
 "Experimental feature: Make support areas smaller at the bottom than at the "
 "overhang."
-msgstr "Experimentele functie: met deze optie maakt u draagvlakken aan de onderkant kleiner dan bij de overhang."
+msgstr "Experimentele functie: maak draagvlakken aan de onderkant kleiner dan bij de overhang."
 
 #: fdmprinter.json
 msgctxt "support_conical_angle label"
@@ -1931,7 +1931,7 @@ msgctxt "meshfix_union_all description"
 msgid ""
 "Ignore the internal geometry arising from overlapping volumes and print the "
 "volumes as one. This may cause internal cavities to disappear."
-msgstr "Met deze optie negeert u de interne geometrie die ontstaat uit overlappende volumes en print u de volumes als een geheel. Hiermee kunnen holtes binnenin verdwijnen."
+msgstr "Negeer de interne geometrie die ontstaat uit overlappende volumes en print u de volumes als een geheel. Hiermee kunnen holtes binnenin verdwijnen."
 
 #: fdmprinter.json
 msgctxt "meshfix_union_all_remove_holes label"
@@ -1944,7 +1944,7 @@ msgid ""
 "Remove the holes in each layer and keep only the outside shape. This will "
 "ignore any invisible internal geometry. However, it also ignores layer holes "
 "which can be viewed from above or below."
-msgstr "Met deze optie verwijdert u de gaten in elke laag en behoudt u alleen de buitenvorm. Hiermee negeert u eventuele onzichtbare interne geometrie. U negeert echter ook gaten in lagen die u van boven- of onderaf kunt zien."
+msgstr "Verwijder de gaten in elke laag en behoudt u alleen de buitenvorm. Hiermee negeert u eventuele onzichtbare interne geometrie. U negeert echter ook gaten in lagen die u van boven- of onderaf kunt zien."
 
 #: fdmprinter.json
 msgctxt "meshfix_extensive_stitching label"
@@ -2015,7 +2015,7 @@ msgid ""
 "a single wall of which the middle coincides with the surface of the mesh. "
 "It's also possible to do both: print the insides of a closed volume as "
 "normal, but print all polygons not part of a closed volume as surface."
-msgstr "Met deze optie print u het oppervlak in plaats van het volume. Geen vulling, geen boven-/onderskin, maar een enkele wand waarvan het midden samenvalt met het oppervlak van het raster. U kunt ook beide doen: print de binnenkant van een gesloten volume op de normale manier, maar print alle polygonen die geen onderdeel uitmaken van een gesloten volume als oppervlak."
+msgstr "Print het oppervlak in plaats van het volume. Geen vulling, geen boven-/onderskin, maar een enkele wand waarvan het midden samenvalt met het oppervlak van het raster. U kunt ook beide doen: print de binnenkant van een gesloten volume op de normale manier, maar print alle polygonen die geen onderdeel uitmaken van een gesloten volume als oppervlak."
 
 #: fdmprinter.json
 msgctxt "magic_mesh_surface_mode option normal"
@@ -2114,7 +2114,7 @@ msgid ""
 "thin air'. This is realized by horizontally printing the contours of the "
 "model at given Z intervals which are connected via upward and diagonally "
 "downward lines."
-msgstr "Met deze optie print u alleen de buitenkant van het object in een dunne webstructuur, 'in het luchtledige'. Hiervoor worden de contouren van het model horizontaal geprint op bepaalde Z-intervallen die door middel van opgaande en diagonaal neergaande lijnen zijn verbonden."
+msgstr "Print alleen de buitenkant van het object in een dunne webstructuur, 'in het luchtledige'. Hiervoor worden de contouren van het model horizontaal geprint op bepaalde Z-intervallen die door middel van opgaande en diagonaal neergaande lijnen zijn verbonden."
 
 #: fdmprinter.json
 msgctxt "wireframe_height label"
@@ -2291,7 +2291,7 @@ msgid ""
 "Creates a small knot at the top of an upward line, so that the consecutive "
 "horizontal layer has a better chance to connect to it. Only applies to Wire "
 "Printing."
-msgstr "Met deze optie maakt u een kleine verdikking boven aan een opwaartse lijn, zodat de volgende horizontale laag hier beter op kan aansluiten. Alleen van toepassing op Draadprinten."
+msgstr "Maakt een kleine verdikking boven aan een opwaartse lijn, zodat de volgende horizontale laag hier beter op kan aansluiten. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.json
 msgctxt "wireframe_fall_down label"
