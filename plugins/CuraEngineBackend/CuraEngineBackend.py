@@ -10,6 +10,7 @@ from UM.Logger import Logger
 from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of the slicing job.
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
+from UM.Resources import Resources
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedLayersJob
