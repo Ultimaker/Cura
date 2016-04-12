@@ -1,3 +1,4 @@
-## cura
 #!/bin/sh
-PYTHONPATH=. /usr/bin/python ./scripts/linux/cura.py "$@"
+## cura
+cd "${0%/*}"
+PYTHONPATH=$PYTHONPATH:. exec python ./scripts/linux/cura.py "$@"

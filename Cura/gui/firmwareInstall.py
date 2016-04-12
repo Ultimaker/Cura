@@ -5,7 +5,8 @@ import wx
 import threading
 import sys
 import time
-import serial
+
+from Cura.util import serialWrapper as serial
 
 from Cura.avr_isp import stk500v2
 from Cura.avr_isp import ispBase
@@ -22,8 +23,8 @@ def getDefaultFirmware(machineIndex = None):
 			'Witbox':"MarlinWitbox.hex",
 			
 			#Mini
-			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
-			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-2016Q1.hex",
+			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
 			
 			#TAZ Budaschnozzle
 			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
@@ -50,7 +51,13 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_5_DualV2': "TAZ4-5-Dual-LBHexagon-1.0.0.1.hex",
 			
 			'lulzbot_TAZ_4_FlexyDuallyV2': "TAZ4-5-FlexyDually-LBHexagon-1.0.0.1.hex",
-			'lulzbot_TAZ_5_FlexyDuallyV2': "TAZ4-5-FlexyDually-LBHexagon-1.0.0.1.hex"
+			'lulzbot_TAZ_5_FlexyDuallyV2': "TAZ4-5-FlexyDually-LBHexagon-1.0.0.1.hex",
+
+			#TAZ 6
+			'lulzbot_TAZ_6_Single_v2.1':     "TAZ6_Single_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_Flexystruder_v2': "TAZ6_Flexystruder_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_Dual_v2':         "TAZ6_Dual_v1.0.2.19.hex",
+			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.19.hex",
 	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
@@ -127,7 +134,7 @@ class InstallFirmwareDialog(wx.Dialog):
 		self.Layout()
 		self.Fit()
 		self.success = False
-		self.show_connect_error_dialog = False
+		self.show_connect_dialog = False
 
 	def Run(self):
 		if self.filename is None:

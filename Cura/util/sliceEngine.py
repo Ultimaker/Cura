@@ -43,6 +43,9 @@ def getEngineFilename():
 		full_filename = os.path.abspath(os.path.join(base_search_path, '/'.join(['..'] * n), 'CuraEngine', search_filename))
 		if os.path.isfile(full_filename):
 			return full_filename
+		full_filename = os.path.abspath(os.path.join(base_search_path, '/'.join(['..'] * n), 'CuraEngine', 'build', search_filename))
+		if os.path.isfile(full_filename):
+			return full_filename
 	if os.path.isfile('/usr/bin/CuraEngine'):
 		return '/usr/bin/CuraEngine'
 	if os.path.isfile('/usr/local/bin/CuraEngine'):

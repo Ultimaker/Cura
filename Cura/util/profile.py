@@ -1214,7 +1214,8 @@ def getMachineCenterCoords():
 	if getMachineSetting('machine_center_is_zero') == 'True':
 		return [0, 0]
 	elif getMachineSetting('machine_type') == 'lulzbot_mini':
-		return [(getMachineSettingFloat('machine_width') / 2) + 2.5, (getMachineSettingFloat('machine_width') / 2) + 0.5]
+		return [(getMachineSettingFloat('machine_width') / 2) + 2.5,
+			    (getMachineSettingFloat('machine_depth') / 2) + 0.5]
 	return [getMachineSettingFloat('machine_width') / 2, getMachineSettingFloat('machine_depth') / 2]
 
 #Returns a list of convex polygons, first polygon is the allowed area of the machine,
@@ -1408,16 +1409,26 @@ def performVersionUpgrade():
 				machine_name = getMachineSetting('machine_name', n)
 				if machine_name.endswith(" (0.5 nozzle)"):
 					putMachineSetting('machine_name', machine_name.replace(" (0.5 nozzle)", ""), n)
+		
+		if machine_type == 'lulzbot_TAZ_6_Single_Tilapia':
+			putMachineSetting('toolhead', 'Single Extruder v2.1', n)
+			putMachineSetting('toolhead_shortname', 'Single v2.1', n)
+			putMachineSetting('machine_type', 'lulzbot_TAZ_6_Single_v2.1', n)
 
 		# Change TAZ print bed so prints are centered when scaled to the max
-		if machine_type.startswith('lulzbot_TAZ_') and \
+		if (machine_type.startswith('lulzbot_TAZ_4') or \
+		    machine_type.startswith('lulzbot_TAZ_5')) and \
 			getMachineSetting('machine_width', n) == '298':
 			putMachineSetting('machine_width', '290', n)
-			
-		#Set valid extruder head size numbers for Mini
-		if machine_type == 'lulzbot_mini' and hasEmptyHeadSizeSettings(n):
-			putMachineSetting('extruder_head_size_min_x', '40', n)
-			putMachineSetting('extruder_head_size_max_x', '75', n)
-			putMachineSetting('extruder_head_size_min_y', '25', n)
-			putMachineSetting('extruder_head_size_max_y', '55', n)
-			putMachineSetting('extruder_head_size_height', '17', n)
+
+		if machine_type == 'lulzbot_mini':
+			if getMachineSetting('machine_height', n) == '163':
+				putMachineSetting('machine_height', '158', n)
+
+			#Set valid extruder head size numbers
+			if hasEmptyHeadSizeSettings(n):
+				putMachineSetting('extruder_head_size_min_x', '40', n)
+				putMachineSetting('extruder_head_size_max_x', '75', n)
+				putMachineSetting('extruder_head_size_min_y', '25', n)
+				putMachineSetting('extruder_head_size_max_y', '55', n)
+				putMachineSetting('extruder_head_size_height', '17', n)

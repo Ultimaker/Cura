@@ -102,6 +102,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._pausePosition = None
 
 	def coolDown(self):
+		self.sendCommand("M108") #Cancel heatup
 		cooldown_toolhead = "M104 S0"
 		for i in range(0, int(profile.getMachineSetting('extruder_amount'))):
 			change_toolhead = "T{}".format(i)
@@ -111,6 +112,11 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 
 	def disableSteppers(self):
 		self.sendCommand("M18")
+
+	def setLCDmessage(self):
+		cancel_text = "Print canceled"
+		formatted_command = "M117 {}".format(cancel_text)
+		self.sendCommand(formatted_command)
 
 	#Abort the previously loaded print file
 	def cancelPrint(self):
@@ -123,6 +129,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._pausePosition = None
 		self.coolDown()
 		self.disableSteppers()
+		self.setLCDmessage()
 
 	def isPrinting(self):
 		return self._commState == machineCom.MachineCom.STATE_PRINTING
@@ -308,7 +315,7 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				pass
 			elif line[0] == 'log':
 				self._log.append(line[1])
-				if len(self._log) > 30:
+				if len(self._log) > 200:
 					self._log.pop(0)
 			elif line[0] == 'temp':
 				line = line[1].split(':')

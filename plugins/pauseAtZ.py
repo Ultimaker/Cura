@@ -6,7 +6,10 @@
 #Param: parkX(float:150) Head park X (mm)
 #Param: parkY(float:0) Head park Y (mm)
 #Param: moveZ(float:5) Head move Z (mm)
+#Param: parkMinZ(float:15) Minimum head park Z (mm, abs)
 #Param: retractAmount(float:1) Retraction amount (mm)
+#Param: homeX(bool:false) Re-home X on restart
+#Param: homeY(bool:false) Re-home Y on restart
 
 __copyright__ = "Copyright (C) 2013 David Braam - Released under terms of the AGPLv3 License"
 import re
@@ -87,9 +90,9 @@ with open(filename, "w") as f:
 
 				zChanged = False
 				#Change z before doing the move because the nozzle can hit the glass lock on the UM2
-				if z + moveZ < 15:
+				if z + moveZ < parkMinZ:
 					zChanged = True
-					f.write("G1 Z15 F300\n")
+					f.write("G1 Z%f F300\n" % (parkMinZ))
 
 				elif moveZ > 0:
 					newZ = z + moveZ
@@ -108,6 +111,20 @@ with open(filename, "w") as f:
 				f.write("M84 E0\n")
 				#Wait till the user continues printing
 				f.write("M0\n")
+
+                                #Re-home the axes, in case the operator has perhaps jostled the printer
+                                if homeX or homeY:
+                                        g1 = "G1"
+                                        g28 = "G28"
+                                        if homeX:
+                                                if parkX > 25: g1 += " X25"
+                                                g28 += " X"
+                                        if homeY:
+                                                if parkY > 25: g1 += " Y25"
+                                                g28 += ' Y'
+                                        f.write(g1 + " F9000\n")
+                                        f.write(g28 + "\n")
+
 				#Push the filament back, and retract again, the properly primes the nozzle when changing filament.
 				f.write("G1 E%f F6000\n" % (retractAmount))
 				f.write("G1 E-%f F6000\n" % (retractAmount))

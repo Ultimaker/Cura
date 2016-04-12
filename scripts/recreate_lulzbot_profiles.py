@@ -17,26 +17,31 @@ CURA_QUICKPRINT_DIR="resources/quickprint/"
 PROFILES_DIR="lulzbot_profiles"
 
 dir_map = {
-    'Mini_single_extruder_v2': ('lulzbot_mini',),
-    'Mini_flexystruder_v2': ('lulzbot_mini_flexystruder',),
-    'TAZ_single_extruder_0.35nozzle': ('lulzbot_TAZ_4_SingleV1',
-                                       'lulzbot_TAZ_5_SingleV1',
-                                       'lulzbot_TAZ_4_035nozzle',
-                                       'lulzbot_TAZ_5_035nozzle'),
-    'TAZ_single_extruder_0.5nozzle': ('lulzbot_TAZ_4_05nozzle',
-                                      'lulzbot_TAZ_5_05nozzle'),
-    'TAZ_dual_extruder_v1': ('lulzbot_TAZ_4_DualV1',
-                             'lulzbot_TAZ_5_DualV1'),
-    'TAZ_dual_extruder_v2': ('lulzbot_TAZ_4_DualV2',
-                             'lulzbot_TAZ_5_DualV2'),
-    'TAZ_flexystruder_v1': ('lulzbot_TAZ_4_FlexystruderV1',
-                            'lulzbot_TAZ_5_FlexystruderV1'),
-    'TAZ_flexystruder_v2': ('lulzbot_TAZ_4_FlexystruderV2',
-                            'lulzbot_TAZ_5_FlexystruderV2'),
-    'TAZ_flexy_dually_v1': ('lulzbot_TAZ_4_FlexyDuallyV1',
-                            'lulzbot_TAZ_5_FlexyDuallyV1'),
-    'TAZ_flexy_dually_v2': ('lulzbot_TAZ_4_FlexyDuallyV2',
-                            'lulzbot_TAZ_5_FlexyDuallyV2'),
+    #Profile location/directory name: machine name in Cura
+    "Mini_single_extruder_v2": ("lulzbot_mini",),
+    "Mini_flexystruder_v2": ("lulzbot_mini_flexystruder",),
+    "TAZ_single_extruder_0.35nozzle": ("lulzbot_TAZ_4_SingleV1",
+                                       "lulzbot_TAZ_5_SingleV1",
+                                       "lulzbot_TAZ_4_035nozzle",
+                                       "lulzbot_TAZ_5_035nozzle"),
+    "TAZ_single_extruder_0.5nozzle": ("lulzbot_TAZ_4_05nozzle",
+                                      "lulzbot_TAZ_5_05nozzle"),
+    "TAZ_dual_extruder_v1": ("lulzbot_TAZ_4_DualV1",
+                             "lulzbot_TAZ_5_DualV1"),
+    "TAZ_dual_extruder_v2": ("lulzbot_TAZ_4_DualV2",
+                             "lulzbot_TAZ_5_DualV2"),
+    "TAZ_flexystruder_v1": ("lulzbot_TAZ_4_FlexystruderV1",
+                            "lulzbot_TAZ_5_FlexystruderV1"),
+    "TAZ_flexystruder_v2": ("lulzbot_TAZ_4_FlexystruderV2",
+                            "lulzbot_TAZ_5_FlexystruderV2"),
+    "TAZ_flexy_dually_v1": ("lulzbot_TAZ_4_FlexyDuallyV1",
+                            "lulzbot_TAZ_5_FlexyDuallyV1"),
+    "TAZ_flexy_dually_v2": ("lulzbot_TAZ_4_FlexyDuallyV2",
+                            "lulzbot_TAZ_5_FlexyDuallyV2"),
+    "TAZ6_single_extruder_v2.1": ("lulzbot_TAZ_6_Single_v2.1",),
+    "TAZ6_flexystruder_v2": ("lulzbot_TAZ_6_Flexystruder_v2",),
+    "TAZ6_dual_extruder_v2": ("lulzbot_TAZ_6_Dual_v2",),
+    "TAZ6_flexy_dually_v2": ("lulzbot_TAZ_6_FlexyDually_v2",),
 }
 
 material_map = {
@@ -44,13 +49,20 @@ material_map = {
     "HIPS_eSUN": "HIPS",
     "PLA_eSUN": "PLA",
     "PLA_VP": "PLA",
+    "nGen": "nGen",
+    "PLA_PHA": "PLA-PHA",
+    
     # Intermediate
     "ABS_VP": "ABS",
-    "Laybrick" : "laybrick",
+    "Laybrick": "laybrick",
     "PP-Iron": "protopasta-magnetic-iron",
     "PP-Steel": "protopasta-stainless-steel",
     "Bamboofill": "bamboofill",
     "Woodfill": "woodfill",
+    "Corkfill": "corkfill",
+    "PP-Coffee": "protopasta-aromatic-coffee-PLA",
+    "PP-HT-PLA": "protopasta-high-temp-PLA",
+    
     # Advanced
     "Alloy910": "alloy910",
     "Bridge": "bridge",
@@ -63,69 +75,111 @@ material_map = {
     "T-Glase": "t-glase",
     "Bronzefill": "bronzefill",
     "Copperfill": "copperfill",
+    
     # Expert
     "PP-Conductive": "protopasta-conductive-PLA",
-    "HIPS_VP" : "HIPS",
+    "HIPS_VP": "HIPS",
     "PC_VP": "polycarbonate",
-    "618-Nylon": "618-645-nylon",
-    "645-Nylon": "618-645-nylon",
-    # Dual extruder (Expert)
-    'PLA_PVA': 'PLA-PVA-support',
-    'ABS_ABS': 'ABS-ABS',
-    'PLA_PLA': 'PLA-PLA',
+    "618-Nylon": "618-nylon",
+    "645-Nylon": "645-nylon",
+    
     # Flexystruder (Expert)
-    "ninjaflex" : "ninjaflex",
-    "semiflex" : "semiflex",
-    # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "ABS-ninjaflex",
-    "ABS_semiflex" : "ABS-semiflex",
+    "ninjaflex": "ninjaflex",
+    "cheetah": "cheetah",
+    "semiflex": "semiflex",
 
-    # Others
-    # b-pet
-    # tritan
-    # PLA-protopasta-conductive-PLA
+    # Dual extruder (Expert)
+    "PLA_PVA": "PLA-PVA-support",
+    "ABS_ABS": "ABS-ABS",
+    "PLA_PLA": "PLA-PLA",
+    "910_PVA": "910-PVA-support",
+    "ABS_HIPS": "ABS-HIPS",
+    "HIPS_HIPS": "HIPS-HIPS",
+    "PCTPE_PVA": "PCTPE-PVA-support",
+    "BRIDGE_PVA": "Bridge-PVA-support",
+    "NGEN-NGEN": "nGen-nGen",
+    "INOVA-INOVA": "CS-INOVA-1800-CS-INOVA-1800",
+
+    # Flexy Dually (Expert)
+    "ABS_ninjaflex": "ABS-ninjaflex",
+    "ABS_semiflex": "ABS-semiflex",
+    "ABS_cheetah": "ABS-cheetah",
+    "HIPS_cheetah": "HIPS-cheetah",
+    "HIPS_ninjaflex": "HIPS-ninjaflex",
+    "HIPS_semiflex": "HIPS-semiflex",
+    "PLA_PVA": "PLA-PVA-support",
+    "INOVA_ninjaflex": "CS-INOVA-1800-Ninjaflex",
+    "NGEN_ninjaflex": "nGen-ninjaflex",
+    "NGEN_semiflex": "nGen-semiflex",
 }
 
 material_order = {
     # Beginner
-    "HIPS_eSUN": 0,
-    "PLA_eSUN": 1,
-    "PLA_VP": 2,
+    "nGen":                 0,
+    "PLA_VP":               1,
+    "HIPS_eSUN":            2,
+    "PLA_eSUN":             3,
+    "PLA_PHA":              4,
+    
     # Intermediate
-    "ABS_VP": 10,
-    "Laybrick" : 11,
-    "PP-Iron": 12,
-    "PP-Steel": 13,
-    "Bamboofill":14,
-    "Woodfill":15,
+    "ABS_VP":              10,
+    "Laybrick":            11,
+    "PP-Iron":             12,
+    "PP-Steel":            13,
+    "Bamboofill":          14,
+    "Woodfill":            15,
+    "Corkfill":            16,
+    "PP-Coffee":           17,
+    "PP-HT-PLA":           18,
+    
     # Advanced
-    "Alloy910": 50,
-    "Bridge": 51,
-    "Laywood": 52,
-    "n-vent": 53,
-    "XT": 54,
-    "INOVA-1800": 55,
-    "PCTPE": 56,
-    "PC-ABS": 57,
-    "T-Glase": 58,
-    "Bronzefill":59,
-    "Copperfill":60,
+    "INOVA-1800":          50,
+    "Alloy910":            51,
+    "Bridge":              52,
+    "Laywood":             53,
+    "n-vent":              54,
+    "XT":                  55,
+    "PCTPE":               56,
+    "PC-ABS":              57,
+    "T-Glase":             58,
+    "Bronzefill":          59,
+    "Copperfill":          60,
+    
     # Expert
-    "PP-Conductive": 500,
-    "HIPS_VP" : 501,
-    "PC_VP": 502,
-    "618-Nylon": 503,
-    "645-Nylon": 504,
-    # Dual extruder (Expert)
-    'PLA_PVA': 2,
-    'ABS_ABS': 1,
-    'PLA_PLA': 0,
+    "PP-Conductive":      500,
+    "HIPS_VP":            501,
+    "PC_VP":              502,
+    "618-Nylon":          503,
+    "645-Nylon":          504,
+    
     # Flexystruder (Expert)
-    "ninjaflex" : 0,
-    "semiflex" : 1,
+    "ninjaflex":            0,
+    "cheetah":              1,
+    "semiflex":             2,
+    
+    # Dual extruder (Expert)
+    "PLA_PLA":             20,
+    "ABS_ABS":             21,
+    "PLA_PVA":             22,
+    "910_PVA":             23,
+    "ABS_HIPS":            24,
+    "HIPS_HIPS":           25,
+    "PCTPE_PVA":           26,
+    "BRIDGE_PVA":          27,
+    "NGEN-NGEN":           28,
+    "INOVA-INOVA":         29,
+
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : 0,
-    "ABS_semiflex" : 1,
+    "ABS_ninjaflex":      100,
+    "ABS_semiflex":       101,
+    "ABS_cheetah":        102,
+    "HIPS_cheetah":       103,
+    "HIPS_ninjaflex":     104,
+    "HIPS_semiflex":      105,
+    "PLA_PVA":            106,
+    "INOVA_ninjaflex":    107,
+    "NGEN_ninjaflex":     108,
+    "NGEN_semiflex":      109,
 }
 
 material_types = {
@@ -133,13 +187,20 @@ material_types = {
     "HIPS_eSUN": "Beginner",
     "PLA_eSUN": "Beginner",
     "PLA_VP": "Beginner",
+    "nGen": "Beginner",
+    "PLA_PHA": "Beginner",
+    
     # Intermediate
     "ABS_VP": "Intermediate",
-    "Laybrick" : "Intermediate",
+    "Laybrick": "Intermediate",
     "PP-Iron": "Intermediate",
     "PP-Steel": "Intermediate",
     "Bamboofill": "Intermediate",
     "Woodfill": "Intermediate",
+    "Corkfill": "Intermediate",
+    "PP-Coffee": "Intermediate",
+    "PP-HT-PLA": "Intermediate",
+    
     # Advanced
     "Alloy910": "Advanced",
     "Bridge": "Advanced",
@@ -152,22 +213,41 @@ material_types = {
     "T-Glase": "Advanced",
     "Bronzefill": "Advanced",
     "Copperfill": "Advanced",
+    
     # Expert
     "PP-Conductive": "Expert",
-    "HIPS_VP" : "Expert",
+    "HIPS_VP": "Expert",
     "PC_VP": "Expert",
     "618-Nylon": "Expert",
     "645-Nylon": "Expert",
-    # Dual extruder (Expert)
-    'PLA_PVA': "Expert",
-    'ABS_ABS': "Expert",
-    'PLA_PLA': "Expert",
+    
     # Flexystruder (Expert)
-    "ninjaflex" : "Expert",
-    "semiflex" : "Expert",
+    "ninjaflex": "Expert",
+    "cheetah": "Expert",
+    "semiflex": "Expert",
+        
+    # Dual extruder (Expert)
+    "PLA_PVA": "Expert",
+    "ABS_ABS": "Expert",
+    "PLA_PLA": "Expert",
+    "910_PVA": "Expert",
+    "ABS_HIPS": "Expert",
+    "HIPS_HIPS": "Expert",
+    "PCTPE_PVA": "Expert",
+    "BRIDGE_PVA": "Expert",
+    "NGEN-NGEN": "Expert",
+    "INOVA-INOVA": "Expert",
+    
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "Expert",
-    "ABS_semiflex" : "Expert",
+    "ABS_ninjaflex": "Expert",
+    "ABS_semiflex": "Expert",
+    "ABS_cheetah": "Expert",
+    "HIPS_cheetah": "Expert",
+    "HIPS_semiflex": "Expert",
+    "PLA_PVA": "Expert",
+    "INOVA_ninjaflex": "Expert",
+    "NGEN_ninjaflex": "Expert",
+    "NGEN_semiflex": "Expert",
 }
 
 material_names = {
@@ -175,13 +255,20 @@ material_names = {
     "HIPS_eSUN": "HIPS (eSUN)",
     "PLA_eSUN": "PLA (eSUN)",
     "PLA_VP": "PLA (Village Plastics)",
+    "nGen": "nGen (colorFabb)",
+    "PLA_PHA": "PLA/PHA (colorFabb)",
+    
     # Intermediate
     "ABS_VP": "ABS (Village Plastics)",
-    "Laybrick" : "Laybrick (CC-Products)",
+    "Laybrick": "Laybrick (CC-Products)",
     "PP-Iron": "Magnetic (Proto-pasta)",
     "PP-Steel": "Steel PLA (Proto-pasta)",
-    "Bamboofill": "Bamboofill (colorFabb)",
-    "Woodfill": "Woodfill (colorFabb)",
+    "Bamboofill": "bambooFill (colorFabb)",
+    "Woodfill": "woodFill (colorFabb)",
+    "Corkfill": "corkFill (colorFabb)",
+    "PP-Coffee": "Coffee PLA (Proto-pasta)",
+    "PP-HT-PLA": "High Temp PLA (Proto-pasta)",
+    
     # Advanced
     "Alloy910": "Alloy 910 (Taulman)",
     "Bridge": "Bridge Nylon (Taulman)",
@@ -192,39 +279,44 @@ material_names = {
     "PCTPE": "PCTPE (Taulman)",
     "PC-ABS": "PC-ABS (Proto-pasta)",
     "T-Glase": "t-glase (Taulman)",
-    "Bronzefill": "Bronzefill (colorFabb)",
-    "Copperfill": "Copperfill (colorFabb)",
+    "Bronzefill": "bronzeFill (colorFabb)",
+    "Copperfill": "copperFill (colorFabb)",
+    
     # Expert
     "PP-Conductive": "Conductive (Proto-pasta)",
-    "HIPS_VP" : "HIPS (Village Plastics)",
+    "HIPS_VP": "HIPS (Village Plastics)",
     "PC_VP": "PC (Village Plastics)",
     "618-Nylon": "618 Nylon (Taulman)",
     "645-Nylon": "645 Nylon (Taulman)",
-    # Dual extruder (Expert)
-    'PLA_PVA': "PLA & PVA",
-    'ABS_ABS': "ABS & ABS",
-    'PLA_PLA': "PLA & PLA",
+    
     # Flexystruder (Expert)
-    "ninjaflex" : "NinjaFlex (Fenner Drives)",
-    "semiflex" : "SemiFlex (Fenner Drives)",
-    # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "ABS & NinjaFlex",
-    "ABS_semiflex" : "ABS & SemiFlex",
-}
+    "ninjaflex": "NinjaFlex (NinjaTek)",
+    "cheetah": "Cheetah (NinjaTek)",
+    "semiflex": "SemiFlex (NinjaTek)",
+    
+    # Dual extruder (Expert)
+    "PLA_PVA": "PLA & PVA Support",
+    "ABS_ABS": "ABS & ABS",
+    "PLA_PLA": "PLA & PLA",
+    "910_PVA": "910 & PVA Support",
+    "ABS_HIPS": "ABS & HIPS",
+    "HIPS_HIPS": "HIPS & HIPS",
+    "PCTPE_PVA": "PCTPE & PVA Support",
+    "BRIDGE_PVA": "Bridge & PVA Support",
+    "NGEN-NGEN": "nGen & nGen",
+    "INOVA-INOVA": "INOVA & INOVA",
 
-bed_prep_materials = {
-    "ninjaflex",
-    "semiflex",
-    "Alloy910",
-    "Bridge",
-    "n-vent",
-    "XT",
-    "INOVA-1800",
-	"PCTPE",
-	"T-Glase",
-	"618-Nylon",
-	"645-Nylon",
-	"PC-ABS"
+    # Flexy Dually (Expert)
+    "ABS_ninjaflex": "ABS & NinjaFlex",
+    "ABS_semiflex": "ABS & SemiFlex",
+    "ABS_cheetah": "ABS & Cheetah",
+    "HIPS_cheetah": "HIPS & Cheetah",
+    "HIPS_ninjaflex": "HIPS & Ninjaflex",
+    "HIPS_semiflex": "HIPS & Semiflex",
+    "PLA_PVA": "PLA & PVA Support",
+    "INOVA_ninjaflex": "INOVA & Ninjaflex",
+    "NGEN_ninjaflex": "nGen & Ninjaflex",
+    "NGEN_semiflex": "nGen & Semiflex",
 }
 
 material_url = {
@@ -232,62 +324,105 @@ material_url = {
     "HIPS_eSUN": "lulzbot.com/store/filament/hips-esun",
     "PLA_eSUN": "lulzbot.com/store/filament/pla-esun",
     "PLA_VP": "lulzbot.com/store/filament/pla-village",
+    "nGen": "lulzbot.com/store/filament/ngen",
+#    "PLA_PHA": "",
+
     # Intermediate
     "ABS_VP": "lulzbot.com/store/filament/abs",
-    "Laybrick" : "lulzbot.com/store/filament/laybrick",
+    "Laybrick": "lulzbot.com/store/filament/laybrick",
     "PP-Iron": "lulzbot.com/store/filament/magnetic-iron-pla",
     "PP-Steel": "lulzbot.com/store/filament/stainless-steel-pla",
-#    "Bamboofill": "",
-#    "Woodfill": "",
+    "Bamboofill": "lulzbot.com/store/filament/bamboofill",
+    "Woodfill": "lulzbot.com/store/filament/woodfill",
+#    "Corkfill": "",
+    "PP-Coffee": "lulzbot.com/store/filament/coffee-pla",
+#    "PP-HT-PLA": "",
+
     # Advanced
     "Alloy910": "lulzbot.com/store/filament/alloy-910",
     "Bridge": "lulzbot.com/store/filament/bridge-nylon",
     "Laywood": "lulzbot.com/store/filament/laywoo-d3-laywood",
     "n-vent": "lulzbot.com/store/filament/n-vent",
 #    "XT": "",
+    "INOVA-1800": "lulzbot.com/store/filament/inova-1800",
     "PCTPE": "lulzbot.com/store/filament/pctpe",
     "PC-ABS": "lulzbot.com/store/filament/pc-abs-alloy",
     "T-Glase": "lulzbot.com/store/filament/t-glase",
-#    "Bronzefill": "",
-#    "Copperfill": "",
+    "Bronzefill": "lulzbot.com/store/filament/bronzefill",
+    "Copperfill": "lulzbot.com/store/filament/copperfill",
+
     # Expert
     "PP-Conductive": "lulzbot.com/store/filament/conductive-pla",
-    "HIPS_VP" : "lulzbot.com/store/filament/hips",
+    "HIPS_VP": "lulzbot.com/store/filament/hips",
     "PC_VP": "lulzbot.com/store/filament/polycarbonate",
     "618-Nylon": "lulzbot.com/store/filament/nylon-618",
     "645-Nylon": "lulzbot.com/store/filament/nylon-645",
-    # Dual extruder (Expert)
-    'ABS_ABS': "lulzbot.com/store/filament/abs",
-    'PLA_PLA': "lulzbot.com/store/filament/pla-esun",
-    'PLA_PVA': "lulzbot.com/store/filament/natural-pva",
+
     # Flexystruder (Expert)
-    "ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
-    "semiflex" : "lulzbot.com/store/filament/semiflex",
+    "ninjaflex": "lulzbot.com/store/filament/ninjaflex",
+#    "cheetah": "",
+    "semiflex": "lulzbot.com/store/filament/semiflex",
+    
+    # Dual extruder (Expert)
+    "ABS_ABS": "lulzbot.com/store/filament/abs",
+    "PLA_PLA": "lulzbot.com/store/filament/pla-esun",
+    "PLA_PVA": "lulzbot.com/store/filament/natural-pva",
+    "ABS_HIPS": "lulzbot.com/store/filament/abs",
+    "HIPS_HIPS": "lulzbot.com/store/filament/hips",
+    "PCTPE_PVA": "lulzbot.com/store/filament/pctpe",
+    "BRIDGE_PVA": "lulzbot.com/store/filament/bridge-nylon",
+#    "NGEN-NGEN": "",
+    "INOVA-INOVA": "lulzbot.com/store/filament/inova-1800",
+
     # Flexy Dually (Expert)
-    "ABS_ninjaflex" : "lulzbot.com/store/filament/ninjaflex",
-    "ABS_semiflex" : "lulzbot.com/store/filament/semiflex",
+    "ABS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
+    "ABS_semiflex": "lulzbot.com/store/filament/semiflex",
+#    "ABS_cheetah": "",
+#    "HIPS_cheetah": "",
+    "HIPS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
+    "HIPS_semiflex": "lulzbot.com/store/filament/semiflex",
+    "PLA_PVA": "lulzbot.com/store/filament/natural-pva",
+    "INOVA_ninjaflex": "lulzbot.com/store/filament/inova-1800",
+#    "NGEN_ninjaflex": "",
+#    "NGEN_semiflex": "",
+}
+
+bed_prep_materials = {
+    "ninjaflex",
+    "cheetah",
+    "semiflex",
+    "Alloy910",
+    "Bridge",
+    "n-vent",
+    "XT",
+    "INOVA-1800",
+    "PCTPE",
+    "T-Glase",
+    "618-Nylon",
+    "645-Nylon",
+    "PC-ABS"
 }
 
 profile_map = {
-    'medium-quality': 'Standard',
-    'high-speed': 'High speed',
-    'high-quality': 'High detail',
-    'high-clarity': 'High clarity',
-    'high-strength': 'High strength'
+    "medium-quality": "Standard",
+    "high-speed": "High speed",
+    "high-quality": "High detail",
+    "high-clarity": "High clarity",
+    "high-strength": "High strength"
 }
 
 profile_order = {
-    'medium-quality': 0,
-    'high-speed': 1,
-    'high-quality': 2,
-    'high-clarity': 3,
-    'high-strength': 4
+    "medium-quality": 0,
+    "high-speed": 1,
+    "high-quality": 2,
+    "high-clarity": 3,
+    "high-strength": 4
 }
 
 disable_materials = {
-    'PET': ('High', 'Low', 'Normal', 'Ulti'),
-    'PLA': ('High', 'Low', 'Normal', 'Ulti'),
-    'ABS': ('High', 'Low', 'Normal', 'Ulti')
+    "PET": ("High", "Low", "Normal", "Ulti"),
+    "PLA": ("High", "Low", "Normal", "Ulti"),
+    "ABS": ("High", "Low", "Normal", "Ulti")
 }
 
 def find_files_for_material(files, material):
@@ -314,14 +449,16 @@ def create_machine_type(machine_type, path, dir):
             profile_file = os.path.join("..", "..", "..", PROFILES_DIR, dir, filename)
             if not os.path.exists(os.path.join(path, material, profile)):
                 os.makedirs(os.path.join(path, material, profile))
-            with open(os.path.join(path, material, 'material.ini'), 'w') as f:
+            with open(os.path.join(path, material, "material.ini"), "w") as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % material_names[material])
                 order = material_order[material]
                 if material_types.has_key(material):
                     types = material_types[material]
-                    if (material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
-                       (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ")):
+                    if ((material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
+                        (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_4")) or \
+                        (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_5")) or \
+                        (material == "nGen" and machine_type.startswith("lulzbot_TAZ_6"))):
                         types = types + "|First Run"
                         order = 0
                     f.write("material_types = %s\n" % types)
@@ -334,7 +471,7 @@ def create_machine_type(machine_type, path, dir):
                 if material_url.has_key(material):
                     referer = "?pk_campaign=software-cura"
                     f.write("url = %s%s\n" %(material_url[material], referer) )
-            with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
+            with open(os.path.join(path, material, profile, "profile.ini"), "w") as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % profile_map[profile])
                 f.write("order = %d\n" % profile_order[profile])
@@ -344,12 +481,12 @@ def create_machine_type(machine_type, path, dir):
             for profile in disable_materials[material]:
                 if not os.path.exists(os.path.join(path, material, profile)):
                     os.makedirs(os.path.join(path, material, profile))
-                    with open(os.path.join(path, material, profile, 'profile.ini'), 'w') as f:
+                    with open(os.path.join(path, material, profile, "profile.ini"), "w") as f:
                         f.write("[info]\n")
                         f.write("disabled = true\n")
         else:
             os.makedirs(os.path.join(path, material))
-            with open(os.path.join(path, material, 'material.ini'), 'w') as f:
+            with open(os.path.join(path, material, "material.ini"), "w") as f:
                 f.write("[info]\n")
                 f.write("disabled = true\n")
 
@@ -390,5 +527,5 @@ def main():
     print "Quickprint profiles regenerated"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

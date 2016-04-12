@@ -497,7 +497,11 @@ class mainWindow(wx.Frame):
 
 		#Add a menu item for each machine configuration.
 		for n in xrange(0, profile.getMachineCount()):
-			i = self.machineMenu.Append(n + 0x1000, profile.getMachineName(n).title(), kind=wx.ITEM_RADIO)
+			machine_name = profile.getMachineName(n)
+			machine_title = machine_name.title()                    
+			machine_title = machine_title.replace('Taz', 'TAZ')
+			machine_title = machine_title.replace('Lulzbot', 'LulzBot')
+			i = self.machineMenu.Append(n + 0x1000, machine_title, kind=wx.ITEM_RADIO)
 			if n == int(profile.getPreferenceFloat('active_machine')):
 				i.Check(True)
 			self.Bind(wx.EVT_MENU, lambda e: self.OnSelectMachine(e.GetId() - 0x1000), i)
@@ -537,7 +541,7 @@ class mainWindow(wx.Frame):
 			f = open(gcodeFile, 'r')
 			hasProfile = False
 			for line in f:
-				if line.startswith(';CURA_PROFILE_STRING:'):
+				if 'CURA_PROFILE_STRING:' in line:
 					profile.setProfileFromString(line[line.find(':')+1:].strip())
 					if ';{profile_string}' not in profile.getAlterationFile('end.gcode'):
 						profile.setAlterationFile('end.gcode', profile.getAlterationFile('end.gcode') + '\n;{profile_string}')

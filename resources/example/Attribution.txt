@@ -8,5 +8,5 @@ The below models, unless noted otherwise are shared under the CC BY-SA 3.0 licen
 * OpenHardwareKeychain.stl: Open Hardware Keychain by kevinkline4124
   http://www.thingiverse.com/thing:21596
 
-* Rocktopus.stl: Rocktopus by Kent Johnson is licensed under CC BY-SA 4.0 and derived from work by dietz1 and yeoldebrian.
+* Rocktopus.stl: Rocktopus by Aleph Objects, Inc. is licensed under CC BY-SA 4.0 and derived from work by Kent Johnson, dietz1 and yeoldebrian.
   http://www.lulzbot.com/rocktopus

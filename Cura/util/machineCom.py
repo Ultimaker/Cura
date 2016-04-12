@@ -15,7 +15,7 @@ import threading
 import platform
 import Queue as queue
 
-import serial
+from Cura.util import serialWrapper as serial
 
 from Cura.avr_isp import stk500v2
 from Cura.avr_isp import ispBase
@@ -201,6 +201,7 @@ class MachineCom(object):
 		self._currentZ = -1
 		self._heatupWaitStartTime = 0
 		self._heatupWaitTimeLost = 0.0
+		self._heatupWaiting = False
 		self._printStartTime100 = None
 		self._currentCommands = []
 
@@ -301,6 +302,7 @@ class MachineCom(object):
 
 	def receivedOK(self):
 		if len(self._currentCommands) > 0:
+			popped = False
 			# Marlin will answer 'ok' immediatly to G[0-3] commands
 			for i in xrange(0, len(self._currentCommands)):
 				if "G0 " in self._currentCommands[i] or \
@@ -308,8 +310,13 @@ class MachineCom(object):
 				   "G2 " in self._currentCommands[i] or \
 				   "G3 " in self._currentCommands[i]:
 					self._currentCommands.pop(i)
-					return
-			self._currentCommands.pop(0)
+					popped = True
+					break
+			if not popped:
+				self._currentCommands.pop(0)
+		if self._heatupWaiting:
+			if len(self._currentCommands) == 0:
+				self._heatupWaiting = False
 
 	def _monitor(self):
 		#Open the serial port.
@@ -389,7 +396,7 @@ class MachineCom(object):
 				if re.match('Error:[0-9]\n', line):
 					line = line.rstrip() + self._readline()
 				#Skip the communication errors, as those get corrected.
-				if 'Extruder switched off' in line or 'Temperature heated bed switched off' in line or 'Something is wrong, please turn off the printer.' in line:
+				if 'Extruder switched off' in line or 'Temperature heated bed switched off' in line or 'Something is wrong, please turn off the printer.' in line or 'PROBE FAIL' in line:
 					if not self.isError():
 						self._errorValue = line[6:]
 						self._changeState(self.STATE_ERROR)
@@ -475,18 +482,32 @@ class MachineCom(object):
 				if time.time() > timeout:
 					self.close()
 			elif self._state == self.STATE_OPERATIONAL:
-				#Request the temperature on comm timeout (every 2 seconds) when we are not printing.
-				if line == '':
+				# Request the temperature on comm timeout (every 2 seconds) when we are not printing.
+				# unless we had a temperature feedback (from M109 or M190 for example)
+				if line == '' and time.time() > tempRequestTimeout:
 					if self._extruderCount > 0:
 						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
 						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
 					else:
 						self.sendCommand("M105")
-					tempRequestTimeout = time.time() + 5
-				elif 'ok' in line:
+					# set timeout to less than 2 seconds to make sure it always triggers when comm times out
+					tempRequestTimeout = time.time() + 1.5
+				if line == '' and time.time() > timeout:
+					line = 'ok'
+				if 'ok' in line:
 					self.receivedOK()
+					timeout = time.time() + 30
+					if not self._heatupWaiting and not self._commandQueue.empty():
+						self._sendCommand(self._commandQueue.get())
+					if len(self._currentCommands) > 0 and \
+					   ("G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+						"M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]):
+						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
+						# every 30 seconds while it's not needed
+						timeout = time.time() + 600
 				elif 'start' in line:
 					self._currentCommands = []
+					timeout = time.time() + 30
 			elif self._state == self.STATE_PRINTING:
 				#Even when printing request the temperature every 5 seconds.
 				if time.time() > tempRequestTimeout:
@@ -501,19 +522,39 @@ class MachineCom(object):
 					line = 'ok'
 				if 'ok' in line:
 					self.receivedOK()
-					timeout = time.time() + 5
-					if not self._commandQueue.empty():
-						self._sendCommand(self._commandQueue.get())
-					else:
-						self._sendNext()
-					if "G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
-					   "M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]:
-						# Long command detected. Timeout is now set to 60s to avoid forcing 'ok'
-						# every 5 seconds while it's not needed
-						timeout = time.time() + 60
+					timeout = time.time() + 30
+					# If we are heating up with M109 or M190, then we can't send any new
+					# commands until the command buffer queue in firmware is empty (M109/M190 done)
+					# otherwise, we will fill up the buffer queue (2 more commands will be accepted after M109/M190)
+					# and anything else we send will just end up in the serial ringbuffer and will not be read until
+					# the M109/M190 is done.
+					# So if we want to cancel the heatup, we need to send M108 which needs to be able to be read from
+					# the ringbuffer, which means the command queue needs to be empty.
+					# So we stop sending any commands after M109/M190 unless it's M108 (or until heating done) if we want
+					# M108 to get handled.
+					# the small delay that is caused by the firmware buffer getting empty is not important because
+					# this happens during a heat&wait, not during a move command.
+					# If M108 is received, it gets sent directly from the receiving thread, not from here
+					# because the _commandQueue is not iterable
+					if not self._heatupWaiting:
+						# We iterate in case we just came out of a heat&wait
+						for i in xrange(len(self._currentCommands), 4):
+							# One of the next 4 could enable the heatupWaiting mode
+							if not self._heatupWaiting:
+								if not self._commandQueue.empty():
+									self._sendCommand(self._commandQueue.get())
+								else:
+									self._sendNext()
+					if len(self._currentCommands) > 0 and \
+					   ("G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+						"M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]):
+						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
+						# every 30 seconds while it's not needed
+						timeout = time.time() + 600
 
 				elif 'start' in line:
 					self._currentCommands = []
+					timeout = time.time() + 30
 				elif "resend" in line.lower() or "rs" in line:
 					newPos = self._gcodePos
 					try:
@@ -542,11 +583,18 @@ class MachineCom(object):
 					line = 'ok'
 				if 'ok' in line:
 					self.receivedOK()
-					timeout = time.time() + 5
-					if not self._commandQueue.empty():
+					timeout = time.time() + 30
+					if not self._heatupWaiting and not self._commandQueue.empty():
 						self._sendCommand(self._commandQueue.get())
+					if len(self._currentCommands) > 0 and \
+					   ("G28" in self._currentCommands[0] or "G29" in self._currentCommands[0] or \
+						"M109" in self._currentCommands[0] or "M190" in self._currentCommands[0]):
+						# Long command detected. Timeout is now set to 10 minutes to avoid forcing 'ok'
+						# every 30 seconds while it's not needed
+						timeout = time.time() + 600
 				elif 'start' in line:
 					self._currentCommands = []
+					timeout = time.time() + 30
 
 		self._log("Connection closed, closing down monitor")
 
@@ -604,6 +652,7 @@ class MachineCom(object):
 			return
 		if 'M109' in cmd or 'M190' in cmd:
 			self._heatupWaitStartTime = time.time()
+			self._heatupWaiting = True
 		if 'M104' in cmd or 'M109' in cmd:
 			try:
 				t = 0
@@ -668,12 +717,15 @@ class MachineCom(object):
 
 	def sendCommand(self, cmd):
 		cmd = cmd.encode('ascii', 'replace')
-		if self.isPrinting() or self.isPaused():
-			self._commandQueue.put(cmd)
-			if len(self._currentCommands) == 0:
-				self._sendCommand(self._commandQueue.get())
-		elif self.isOperational():
-			self._sendCommand(cmd)
+		if self.isPrinting() or self.isPaused() or self.isOperational():
+			# If waiting for heating, send M108 immediatly to
+			# interrupt it instead of queueing it
+			if self._heatupWaiting and "M108" in cmd:
+				self._sendCommand(cmd)
+			else:
+				self._commandQueue.put(cmd)
+				if len(self._currentCommands) == 0:
+					self._sendCommand(self._commandQueue.get())
 
 	def printGCode(self, gcodeList):
 		if not self.isOperational() or self.isPrinting() or self.isPaused():
@@ -684,8 +736,10 @@ class MachineCom(object):
 		self._printSection = 'CUSTOM'
 		self._changeState(self.STATE_PRINTING)
 		self._printStartTime = time.time()
-		for i in xrange(0, 4):
-			self._sendNext()
+		for i in xrange(len(self._currentCommands), 4):
+			# One of the next 4 could enable the heatupWaiting mode
+			if not self._heatupWaiting:
+				self._sendNext()
 	
 	def cancelPrint(self):
 		if self.isOperational():
@@ -694,11 +748,13 @@ class MachineCom(object):
 	def setPause(self, pause):
 		if not pause and self.isPaused():
 			self._changeState(self.STATE_PRINTING)
-			for i in xrange(0, 4):
-				if not self._commandQueue.empty():
-					self._sendCommand(self._commandQueue.get())
-				else:
-					self._sendNext()
+			for i in xrange(len(self._currentCommands), 4):
+				# One of the next 4 could enable the heatupWaiting mode
+				if not self._heatupWaiting:
+					if not self._commandQueue.empty():
+						self._sendCommand(self._commandQueue.get())
+					else:
+						self._sendNext()
 		if pause and self.isPrinting():
 			self._changeState(self.STATE_PAUSED)
 	

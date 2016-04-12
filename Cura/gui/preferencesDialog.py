@@ -102,6 +102,7 @@ class machineSettingsDialog(wx.Dialog):
 		self.panel.GetSizer().Add(self.nb, 1, wx.EXPAND)
 
 		for idx in xrange(0, profile.getMachineCount()):
+			printer_type = profile.getMachineSetting('machine_type', idx)
 			extruderCount = int(profile.getMachineSetting('extruder_amount', idx))
 			left, right, main = self.panel.CreateConfigPanel(self.nb)
 			configBase.TitleRow(left, _("Machine settings"))
@@ -109,14 +110,14 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(left, 'machine_width', index=idx)
 			configBase.SettingRow(left, 'machine_depth', index=idx)
 			configBase.SettingRow(left, 'machine_height', index=idx)
-			configBase.SettingRow(left, 'extruder_z_offset', index=idx)
+			if not printer_type.startswith('lulzbot_TAZ_6'): #Disabled for TAZ 6, use LCD controller instead
+				configBase.SettingRow(left, 'extruder_z_offset', index=idx)
 			configBase.SettingRow(left, 'extruder_amount', index=idx)
 			configBase.SettingRow(left, 'has_heated_bed', index=idx)
 			configBase.SettingRow(left, 'machine_center_is_zero', index=idx)
 			configBase.SettingRow(left, 'machine_shape', index=idx)
 			configBase.SettingRow(left, 'gcode_flavor', index=idx)
 
-			printer_type = profile.getMachineSetting('machine_type', idx)
 			if printer_type.startswith('lulzbot_'):
 				configBase.TitleRow(right, _("Tool Head"))
 				row = configBase.ToolHeadRow(right, 'toolhead', index=idx)
@@ -135,10 +136,19 @@ class machineSettingsDialog(wx.Dialog):
 				configBase.SettingRow(left, 'extruder_offset_y%d' % (i), index=idx)
 
 			configBase.TitleRow(right, _("Communication settings"))
-			configBase.SettingRow(right, 'serial_port', ['AUTO'] + machineCom.serialList(), index=idx)
+			serial_list = ['AUTO'] + machineCom.serialList()
+			serial_list_labels = serial_list[:]
+			if profile.getMachineSetting('serial_port') not in serial_list:
+				serial_list.append(profile.getMachineSetting('serial_port'))
+				serial_list_labels.append(profile.getMachineSetting('serial_port') + _(" (Currently unavailable)"))
+			configBase.SettingRow(right, 'serial_port', serial_list, serial_list_labels, index=idx)
 			configBase.SettingRow(right, 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()), index=idx)
 
-			self.nb.AddPage(main, profile.getMachineName(idx).title())
+			machine_name = profile.getMachineName(idx)
+			machine_title = machine_name.title()			
+			machine_title = machine_title.replace('Taz', 'TAZ')
+			machine_title = machine_title.replace('Lulzbot', 'LulzBot')
+			self.nb.AddPage(main, machine_title)
 
 		self.nb.SetSelection(int(profile.getPreferenceFloat('active_machine')))
 

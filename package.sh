@@ -22,8 +22,6 @@ BUILD_TARGET=${1:-none}
 ##Do we need to create the final archive
 ARCHIVE_FOR_DISTRIBUTION=1
 ##Which version name are we appending to the final archive
-export BUILD_NAME=14.09
-TARGET_DIR=Cura-${BUILD_NAME}-${BUILD_TARGET}
 
 
 ##Version
@@ -63,6 +61,18 @@ function downloadURL
 {
 	filename=`basename "$1"`
 	echo "Checking for $filename"
+	if [ -f "$filename" ]; then
+		FILE_SIZE=$(stat -c%s "$filename")
+		SERVER_SIZE=$(curl -L -I "$1" | grep Content-Length | awk '{ sub(/\r$/,""); print $2}' | tail -n 1)
+		echo "File $filename exists with $FILE_SIZE bytes. Server version has $SERVER_SIZE bytes"
+		if [ "x$SERVER_SIZE" != "x" ]; then
+			if [ "$SERVER_SIZE" -gt 0 ]; then
+				if [ "$FILE_SIZE" -ne "$SERVER_SIZE" ]; then
+					rm -f "$filename"
+				fi
+			fi
+		fi
+	fi
 	if [ ! -f "$filename" ]; then
 		echo "Downloading $1"
 		curl -L -O "$1"
@@ -77,7 +87,7 @@ function extract
 {
 	echo "Extracting $*"
 	echo "7z x -y $*" >> log.txt
-	7z x -y $* >> log.txt
+	$EXTRACT x -y $* >> log.txt
 	if [ $? != 0 ]; then
         echo "Failed to extract $*"
         exit 1
@@ -89,6 +99,7 @@ function gitClone
 	echo "Cloning $1 into $2"
 	if [ -d $2 ]; then
 		cd $2
+		git remote set-url origin $1
 		git clean -dfx
 		git reset --hard
 		git pull
@@ -120,6 +131,12 @@ else
 	MAKE=make
 fi
 
+if [ -z `which 7za` ]; then
+	EXTRACT=7z
+else
+	EXTRACT=7za
+fi
+
 # Change working directory to the directory the script is in
 # http://stackoverflow.com/a/246128
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -130,7 +147,7 @@ checkTool curl "curl: http://curl.haxx.se/"
 if [ $BUILD_TARGET = "win32" ]; then
 	checkTool avr-gcc "avr-gcc: http://winavr.sourceforge.net/ "
 	#Check if we have 7zip, needed to extract and packup a bunch of packages for windows.
-	checkTool 7z "7zip: http://www.7-zip.org/"
+	checkTool $EXTRACT "7zip: http://www.7-zip.org/"
 	checkTool $MAKE "mingw: http://www.mingw.org/"
 fi
 #For building under MacOS we need gnutar instead of tar
@@ -144,7 +161,7 @@ fi
 # Build the required firmwares
 #############################
 
-gitClone "https://github.com/Ultimaker/cura-binary-data" _cura_binary_data
+gitClone "https://code.alephobjects.com/diffusion/CBD/cura-binary-data.git" _cura_binary_data
 
 cp -v _cura_binary_data/cura/resources/firmware/* resources/firmware/
 
@@ -186,14 +203,14 @@ if [ "$BUILD_TARGET" = "darwin" ]; then
 	cd ..
 
 	# Create sparse image for distribution
-	hdiutil detach /Volumes/Cura\ -\ Lulzbot/ || true
+	hdiutil detach Cura_Volume || true
 	rm -rf Cura.dmg.sparseimage
 	hdiutil convert DmgTemplateCompressed.dmg -format UDSP -o Cura.dmg
 	hdiutil resize -size 500m Cura.dmg.sparseimage
-	hdiutil attach Cura.dmg.sparseimage
-	cp -a dist/Cura.app /Volumes/Cura\ -\ Lulzbot/Cura/
-	hdiutil detach /Volumes/Cura\ -\ Lulzbot
-	hdiutil convert Cura.dmg.sparseimage -format UDZO -imagekey zlib-level=9 -ov -o ../../${TARGET_DIR}.dmg
+	hdiutil attach Cura.dmg.sparseimage -mountpoint Cura_Volume
+	cp -a dist/Cura.app Cura_Volume/Cura/
+	hdiutil detach Cura_Volume
+	hdiutil convert Cura.dmg.sparseimage -format UDZO -imagekey zlib-level=9 -ov -o ../../Cura-${FULL_VERSION}-MacOS.dmg
 	exit
 fi
 
@@ -333,7 +350,7 @@ if [ "$BUILD_TARGET" = "debian_armhf" ]; then
 	 chmod 755 scripts/linux/${BUILD_TARGET}/usr -R
 	 chmod 755 scripts/linux/${BUILD_TARGET}/DEBIAN -R
 	 cd scripts/linux
-	 dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/cura_${BUILD_VERSION}-${BUILD_TARGET}.deb
+	 dpkg-deb --build ${BUILD_TARGET} $(dirname ${TARGET_DIR})/Cura-${FULL_VERSION}-${BUILD_TARGET}.deb
 	 chown `id -un`:`id -gn` ${BUILD_TARGET} -R
 	"
 	exit
@@ -441,7 +458,9 @@ function buildFedora() {
     fi
 
     mkdir -pv "$_dstRpmDir/$_mockRelease"
-    mock \
+    # Need to use /usr/bin/mock because depending on $PATH, if /usr/sbin/mock is
+    # run instead, it will give an error.
+    /usr/bin/mock \
       $_mockReleaseArg \
       --resultdir="$_dstRpmDir/$_mockRelease" \
       "$_srpmFile"

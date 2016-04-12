@@ -6,6 +6,7 @@
 *.exe
 *.po~
 *.gcode
+*.hex
 darwin-Cura-*
 win32-Cura-*
 linux-Cura-*
