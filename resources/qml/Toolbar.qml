@@ -109,4 +109,24 @@ Item {
             enabled: UM.Controller.toolsEnabled;
         }
     }
+
+    Rectangle
+    {
+        x: -base.x + base.mouseX + UM.Theme.getSize("default_margin").width
+        y: -base.y + base.mouseY + UM.Theme.getSize("default_margin").height
+
+        width: toolHint.width + UM.Theme.getSize("default_margin").width
+        height: toolHint.height;
+        color: UM.Theme.getColor("tooltip")
+        Label
+        {
+            id: toolHint
+            text: UM.ActiveTool.properties.getValue("ToolHint") != undefined ? UM.ActiveTool.properties.getValue("ToolHint") : ""
+            color: UM.Theme.getColor("tooltip_text")
+            font: UM.Theme.getFont("default")
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        visible: toolHint.text != "";
+    }
 }

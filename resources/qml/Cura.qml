@@ -487,6 +487,9 @@ UM.MainWindow
             {
                 id: toolbar;
 
+                property int mouseX: base.mouseX
+                property int mouseY: base.mouseY
+
                 anchors {
                     top: openFileButton.bottom;
                     topMargin: UM.Theme.getSize("window_margin").height;
@@ -521,26 +524,6 @@ UM.MainWindow
                         preferences.getCurrentItem().scrollToSection(source.key);
                     }
                 }
-            }
-
-            Rectangle
-            {
-                x: base.mouseX + UM.Theme.getSize("default_margin").width
-                y: base.mouseY + UM.Theme.getSize("default_margin").height
-
-                width: rotationLabel.width + UM.Theme.getSize("default_margin").width
-                height: rotationLabel.height;
-                color: UM.Theme.getColor("tooltip")
-                Label
-                {
-                    id: rotationLabel
-                    text: UM.ActiveTool.properties.getValue("Rotation") != undefined ? "%1°".arg(UM.ActiveTool.properties.getValue("Rotation")) : ""
-                    color: UM.Theme.getColor("tooltip_text")
-                    font: UM.Theme.getFont("default")
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                visible: rotationLabel.text != "";
             }
         }
     }
