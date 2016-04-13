@@ -4,6 +4,8 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 
 ##  Printer output device adds extra interface options on top of output device.
 #
+#   The assumption is made the printer is a FDM printer.
+#
 #   Note that a number of settings are marked as "final". This is because decorators
 #   are not inherited by children. To fix this we use the private counter part of those
 #   functions to actually have the implementation.
@@ -14,6 +16,9 @@ class PrinterOutputDevice(OutputDevice):
         super().__init__(device_id)
         self._target_bed_temperature = 0
         self._target_hotend_temperatures = {}
+        self._head_x = 0
+        self._head_y = 0
+        self._head_z = 0
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -25,6 +30,8 @@ class PrinterOutputDevice(OutputDevice):
 
     hotendTemperaturesChanged = pyqtSignal()
     targetHotendTemperaturesChanged = pyqtSignal()
+
+    headPositionChanged = pyqtSignal()
 
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
@@ -63,6 +70,13 @@ class PrinterOutputDevice(OutputDevice):
         raise NotImplementedError("_setTargetHotendTemperature needs to be implemented")
 
     @pyqtProperty("QVariantMap", notify = targetHotendTemperaturesChanged)
+    def targetHotendTemperatures(self):
+        return self._getTargetHotendTemperatures()
+
+    def _getTargetHotendTemperatures(self):
+        raise NotImplementedError("_getTargetHotendTemperatures needs to be implemented")
+
+    @pyqtProperty("QVariantMap", notify = hotendTemperaturesChanged)
     def hotendTemperatures(self):
         return self._getHotendTemperatures()
 
@@ -74,6 +88,32 @@ class PrinterOutputDevice(OutputDevice):
         pass
 
     def close(self):
+        pass
+
+    @pyqtProperty(float, notify = headPositionChanged)
+    def headX(self):
+        return self._head_x
+
+    @pyqtProperty(float, notify = headPositionChanged)
+    def headY(self):
+        return self._head_y
+
+    @pyqtProperty(float, notify = headPositionChanged)
+    def headZ(self):
+        return self._head_z
+
+    @pyqtSlot("long", "long", "long")
+    @pyqtSlot("long", "long", "long", "long")
+    def setHeadPosition(self, x, y ,z, speed = 3000):
+        pass
+
+    def _setHeadX(self, x, speed):
+        pass
+
+    def _setHeadY(self, y, speed):
+        pass
+
+    def _setHeadZ(self, z, speed):
         pass
 
     ##  Get the progress of any currently active process.
