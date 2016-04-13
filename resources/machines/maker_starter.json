@@ -9,7 +9,7 @@
     "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
     "inherits": "fdmprinter.json",
 
-    "overrides": { 
+    "overrides": {
         "machine_width": { "default": 210 },
         "machine_depth": { "default": 185 },
         "machine_height": { "default": 200 },
