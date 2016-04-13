@@ -22,6 +22,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._head_y = 0
         self._head_z = 0
         self._connected = False
+        self._connecting = False
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -38,6 +39,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     headPositionChanged = pyqtSignal()
 
     conectedChanged = pyqtSignal()
+    connectingChanged = pyqtSignal()
 
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
@@ -106,6 +108,10 @@ class PrinterOutputDevice(OutputDevice, QObject):
     @pyqtProperty(bool, notify = conectedChanged)
     def connected(self):
         return self._connected
+
+    @pyqtProperty(bool, notify = connectingChanged)
+    def isConnecting(self):
+        return self._connecting
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):
