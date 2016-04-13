@@ -1001,9 +1001,14 @@
             "icon": "category_travel",
             "settings": {
                 "retraction_combing": {
-                    "label": "Enable Combing",
-                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is disabled, the material will retract and the nozzle moves in a straight line to the next point.",
-                    "type": "boolean",
+                    "label": "Combing",
+                    "description": "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only.",
+                    "type": "enum",
+                    "options": {
+                        "off": "Off",
+                        "all": "All",
+                        "noskin": "No Skin"
+                    },
                     "default": true,
                     "visible": false,
                     "global_only": true
@@ -1014,7 +1019,7 @@
                     "type": "boolean",
                     "default": true,
                     "visible": false,
-                    "enabled": "retraction_combing",
+                    "enabled": "retraction_combing != off",
                     "global_only": "True"
                 },
                 "travel_avoid_distance": {
@@ -1028,7 +1033,7 @@
                     "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
                     "visible": false,
                     "inherit": false,
-                    "enabled": "retraction_combing and travel_avoid_other_parts",
+                    "enabled": "retraction_combing != off and travel_avoid_other_parts",
                     "global_only": "True"
                 }
             }
