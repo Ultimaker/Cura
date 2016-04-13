@@ -25,7 +25,8 @@ UM.Dialog
             Label
             {
                 //: USB Printing dialog label, %1 is head temperature
-                text: catalog.i18nc("@label","Extruder Temperature %1").arg(manager.extruderTemperature)
+                Component.onCompleted: console.log(manager.hotendTemperatures)
+                text: catalog.i18nc("@label","Extruder Temperature %1").arg(manager.hotendTemperatures[0])
             }
             Label
             {

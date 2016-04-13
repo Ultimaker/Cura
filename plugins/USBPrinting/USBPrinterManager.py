@@ -197,7 +197,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._printer_connections[serial_port] = connection
 
     def _onPrinterConnectionStateChanged(self, serial_port):
-        if self._printer_connections[serial_port].connectionState == ConnectionState.CLOSED:
+        if self._printer_connections[serial_port].connectionState == ConnectionState.CONNECTED:
             self.getOutputDeviceManager().addOutputDevice(self._printer_connections[serial_port])
         else:
             self.getOutputDeviceManager().removeOutputDevice(serial_port)
@@ -209,7 +209,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._printer_connections_model.addRoleName(Qt.UserRole + 1,"name")
         self._printer_connections_model.addRoleName(Qt.UserRole + 2, "printer")
         for connection in self._printer_connections:
-            if self._printer_connections[connection].isConnected:
+            if self._printer_connections[connection].connectionState == ConnectionState.CONNECTED:
                 self._printer_connections_model.appendItem({"name":connection, "printer": self._printer_connections[connection]})
         return self._printer_connections_model
 

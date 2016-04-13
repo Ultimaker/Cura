@@ -69,21 +69,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # List of gcode lines to be printed
         self._gcode = []
 
-        # Number of extruders
-        self._extruder_count = 1
-
-        # Temperatures of all extruders
-        self._extruder_temperatures = [0] * self._extruder_count
-
-        # Target temperatures of all extruders
-        self._target_extruder_temperatures = [0] * self._extruder_count
-
-        #Target temperature of the bed
-        self._target_bed_temperature = 0 
-
-        # Temperature of the bed
-        self._bed_temperature = 0
-
         # Current Z stage location 
         self._current_z = 0
 
@@ -274,6 +259,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     if sucesfull_responses >= self._required_responses_auto_baud:
                         self._serial.timeout = 2 # Reset serial timeout
                         self.setConnectionState(ConnectionState.CONNECTED)
+                        self._listen_thread.start()  # Start listening
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
                         return 
 
@@ -408,15 +394,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
         temperature_request_timeout = time.time()
         ok_timeout = time.time()
-        while self._connected:
+        while self._connection_state == ConnectionState.CONNECTED:
             line = self._readline()
-
             if line is None: 
                 break # None is only returned when something went wrong. Stop listening
 
             if time.time() > temperature_request_timeout:
-                if self._extruder_count > 0:
-                    self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._extruder_count
+                if self._num_extruders > 0:
+                    self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
                     self.sendCommand("M105 T%d" % (self._temperature_requested_extruder_index))
                 else:
                     self.sendCommand("M105")
@@ -437,7 +422,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             elif b" T:" in line or line.startswith(b"T:"): #Temperature message
                 try: 
-                    self._setExtruderTemperature(self._temperature_requested_extruder_index,float(re.search(b"T: *([0-9\.]*)", line).group(1)))
+                    self._setHotendTemperature(self._temperature_requested_extruder_index, float(re.search(b"T: *([0-9\.]*)", line).group(1)))
                 except:
                     pass
                 if b"B:" in line: # Check if it's a bed temperature
@@ -469,8 +454,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             else: # Request the temperature on comm timeout (every 2 seconds) when we are not printing.)
                 if line == b"":
-                    if self._extruder_count > 0:
-                        self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._extruder_count
+                    if self._num_extruders > 0:
+                        self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
                         self.sendCommand("M105 T%d" % self._temperature_requested_extruder_index)
                     else:
                         self.sendCommand("M105")
