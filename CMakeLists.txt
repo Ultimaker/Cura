@@ -7,7 +7,7 @@ include(GNUInstallDirs)
 set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
 
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
-configure_file(cura.desktop.in cura.desktop @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desktop @ONLY)
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
 # Macro needed to list all sub-directory of a directory.
@@ -70,7 +70,7 @@ if(NOT APPLE AND NOT WIN32)
             FILES_MATCHING PATTERN *.py)
     install(FILES ${CMAKE_BINARY_DIR}/CuraVersion.py
             DESTINATION lib/python${PYTHON_VERSION_MAJOR}/dist-packages/cura)
-    install(FILES cura.desktop
+    install(FILES ${CMAKE_BINARY_DIR}/cura.desktop
             DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
     install(FILES cura.sharedmimeinfo
             DESTINATION ${CMAKE_INSTALL_DATADIR}/mime/packages/
