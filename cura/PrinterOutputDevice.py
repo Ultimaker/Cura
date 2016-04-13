@@ -1,5 +1,5 @@
 from UM.OutputDevice.OutputDevice import OutputDevice
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 
 
 ##  Printer output device adds extra interface options on top of output device.
@@ -11,9 +11,11 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 #   functions to actually have the implementation.
 #
 #   For all other uses it should be used in the same way as a "regular" OutputDevice.
-class PrinterOutputDevice(OutputDevice):
-    def __init__(self, device_id):
-        super().__init__(device_id)
+class PrinterOutputDevice(OutputDevice, QObject):
+    def __init__(self, device_id, parent = None):
+        QObject.__init__(self, parent)
+        OutputDevice.__init__(self, device_id)
+
         self._target_bed_temperature = 0
         self._target_hotend_temperatures = {}
         self._head_x = 0
