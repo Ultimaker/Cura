@@ -1,6 +1,6 @@
 {
     "id": "rigidbot",
-    "version": 1, 
+    "version": 1,
     "name": "RigidBot",
     "manufacturer": "Other",
     "author": "RBC",
@@ -16,8 +16,8 @@
         "machine_heated_bed": { "default": true },
 
         "machine_nozzle_size": { "default": 0.4,
-			"visible": true 
-		},
+            "visible": true
+        },
         "machine_nozzle_heat_up_speed": { "default": 2.0 },
         "machine_nozzle_cool_down_speed": { "default": 2.0 },
         "machine_head_shape_min_x": { "default": 0 },
@@ -26,7 +26,7 @@
         "machine_head_shape_max_y": { "default": 0 },
         "machine_nozzle_gantry_distance": { "default": 0 },
         "machine_gcode_flavor": { "default": "RepRap (Marlin/Sprinter)" },
-		
+
         "machine_start_gcode": {
             "default": ";Sliced at: {day} {date} {time}\n;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\n;Print time: {print_time}\n;Filament used: {filament_amount}m {filament_weight}g\n;Filament cost: {filament_cost}\n;M190 S{print_bed_temperature} ;Uncomment to add your own bed temperature line\n;M109 S{print_temperature} ;Uncomment to add your own temperature line\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nM205 X8 ;X/Y Jerk settings\nG1 Z15.0 F{travel_speed} ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E7 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F{travel_speed}\n;Put printing message on LCD screen\nM117 Rigibot Printing..."
         },
@@ -35,7 +35,7 @@
         }
     },
 
-    "overrides": { 
+    "overrides": {
         "layer_height": { "default": 0.2 },
         "wall_thickness": { "default": 0.8 },
         "top_bottom_thickness": { "default": 0.3, "visible": true },
@@ -46,13 +46,13 @@
         "retraction_speed": { "default": 50.0, "visible": false },
         "retraction_amount": { "default": 0.8, "visible": false },
         "retraction_hop": { "default": 0.075, "visible": false },
-        "speed_print": { "default": 60.0, "visible": true }, 
+        "speed_print": { "default": 60.0, "visible": true },
         "speed_infill": { "default": 100.0, "visible": true },
         "speed_topbottom": { "default": 15.0, "visible": true },
         "speed_travel": { "default": 150.0, "visible": true },
         "speed_layer_0": { "min_value": "0.1", "default": 15.0, "visible": true },
         "infill_overlap": { "default": 10.0 },
-        "cool_fan_enabled": { "default": false, "visible": true }, 
+        "cool_fan_enabled": { "default": false, "visible": true },
         "cool_fan_speed": { "default": 0.0, "visible": true },
         "skirt_line_count": { "default": 3, "active_if": { "setting": "adhesion_type", "value": "None" } },
         "skirt_gap": { "default": 4.0, "active_if": { "setting": "adhesion_type", "value": "None" } },
