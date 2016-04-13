@@ -94,21 +94,34 @@ class PrinterOutputDevice(OutputDevice):
     def __del__(self):
         self.close()
 
+    ##  Get the x position of the head.
+    #   This function is "final" (do not re-implement)
     @pyqtProperty(float, notify = headPositionChanged)
     def headX(self):
         return self._head_x
 
+    ##  Get the y position of the head.
+    #   This function is "final" (do not re-implement)
     @pyqtProperty(float, notify = headPositionChanged)
     def headY(self):
         return self._head_y
 
+    ##  Get the z position of the head.
+    #   In some machines it's actually the bed that moves. For convenience sake we simply see it all as head movements.
+    #   This function is "final" (do not re-implement)
     @pyqtProperty(float, notify = headPositionChanged)
     def headZ(self):
         return self._head_z
 
+    ##  Set the position of the head.
+    #   In some machines it's actually the bed that moves. For convenience sake we simply see it all as head movements.
+    #   This function is "final" (do not re-implement)
     @pyqtSlot("long", "long", "long")
     @pyqtSlot("long", "long", "long", "long")
-    def setHeadPosition(self, x, y ,z, speed = 3000):
+    def setHeadPosition(self, x, y, z, speed = 3000):
+        self._setHeadPosition(x, y , z, speed)
+
+    def _setHeadPosition(self, x, y, z, speed):
         pass
 
     def _setHeadX(self, x, speed):
