@@ -8,6 +8,7 @@ from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from cura.PrinterOutputDevice import ConnectionState
 from UM.Qt.ListModel import ListModel
 from UM.Message import Message
 
@@ -20,7 +21,6 @@ import time
 import os.path
 from UM.Extension import Extension
 
-from PyQt5.QtQuick import QQuickView
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 from UM.i18n import i18nCatalog
@@ -197,7 +197,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._printer_connections[serial_port] = connection
 
     def _onPrinterConnectionStateChanged(self, serial_port):
-        if self._printer_connections[serial_port].isConnected():
+        if self._printer_connections[serial_port].connectionState == ConnectionState.CLOSED:
             self.getOutputDeviceManager().addOutputDevice(self._printer_connections[serial_port])
         else:
             self.getOutputDeviceManager().removeOutputDevice(serial_port)
@@ -209,7 +209,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._printer_connections_model.addRoleName(Qt.UserRole + 1,"name")
         self._printer_connections_model.addRoleName(Qt.UserRole + 2, "printer")
         for connection in self._printer_connections:
-            if self._printer_connections[connection].isConnected():
+            if self._printer_connections[connection].isConnected:
                 self._printer_connections_model.appendItem({"name":connection, "printer": self._printer_connections[connection]})
         return self._printer_connections_model
 
