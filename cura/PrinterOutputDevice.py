@@ -61,13 +61,13 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   /sa _setBedTemperature
     @pyqtSlot(int)
     def setBedTemperature(self, temperature):
-        self._setBedTemperature(temperature)
+        self._setTargetBedTemperature(temperature)
         self._target_bed_temperature = temperature
         self.targetBedTemperatureChanged.emit()
 
     ##  Set the bed temperature of the connected printer (if any).
     #   /parameter temperature Temperature bed needs to go to (in deg celsius)
-    def _setBedTemperature(self, temperature):
+    def _setTargetBedTemperature(self, temperature):
         pass
 
     ##  Set the (target) hotend temperature
