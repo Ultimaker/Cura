@@ -47,10 +47,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   /sa _getBedTemperature
     @pyqtProperty(float, notify = bedTemperatureChanged)
     def bedTemperature(self):
-        return self._getBedTemperature()
-
-    def _getBedTemperature(self):
-        return None
+        return self._bed_temperature
 
     ##  Get the temperature of a hot end as defined by index.
     #   /parameter index Index of the hotend to get a temperature from.
@@ -59,7 +56,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     ##  Set the (target) bed temperature
     #   This function is "final" (do not re-implement)
-    #   /sa _setBedTemperature
+    #   /sa _setTargetBedTemperature
     @pyqtSlot(int)
     def setTargetBedTemperature(self, temperature):
         self._setTargetBedTemperature(temperature)
@@ -70,6 +67,10 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   /parameter temperature Temperature bed needs to go to (in deg celsius)
     def _setTargetBedTemperature(self, temperature):
         pass
+
+    def _setBedTemperature(self, temperature):
+        self._bed_temperature = temperature
+        self.bedTemperatureChanged.emit()
 
     ##  Get the bed temperature if connected printer (if any)
     @pyqtProperty(int, notify = bedTemperatureChanged)
