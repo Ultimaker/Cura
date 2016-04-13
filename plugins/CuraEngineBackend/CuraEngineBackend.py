@@ -10,6 +10,7 @@ from UM.Logger import Logger
 from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of the slicing job.
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
+from UM.Resources import Resources
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedLayersJob
@@ -85,15 +86,23 @@ class CuraEngineBackend(Backend):
 
         Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
 
+    def close(self):
+        # Terminate CuraEngine if it is still running at this point
+        self._terminate()
+        super().close()
+
     ##  Get the command that is used to call the engine.
     #   This is usefull for debugging and used to actually start the engine
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
         active_machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
+        json_path = ""
         if not active_machine:
-            return None
+            json_path = Resources.getPath(Resources.MachineDefinitions, "fdmprinter.json")
+        else:
+            json_path = active_machine.getMachineDefinition().getPath()
 
-        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", active_machine.getMachineDefinition().getPath(), "-vv"]
+        return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.

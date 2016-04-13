@@ -10,6 +10,10 @@
     "add_pages": [],
 
     "machine_settings": {
+        "machine_show_variants": {
+            "description": "Wether to show the different variants of this machine, which are described in separate json files.",
+            "default": false
+        },
         "machine_start_gcode": {
             "description": "Gcode commands to be executed at the very start - separated by \\n.",
             "default": "G28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0",
@@ -95,13 +99,13 @@
             "global_only": true
         },
         "machine_nozzle_heat_up_speed": {
-            "description": "The speed (*C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
+            "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
             "default": 2.0,
             "SEE_machine_extruder_trains": true,
             "global_only": true
         },
         "machine_nozzle_cool_down_speed": { 
-            "description": "The speed (*C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
+            "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
             "default": 2.0,
             "SEE_machine_extruder_trains": true,
             "global_only": true
@@ -127,7 +131,7 @@
             "global_only": true
         },
         "machine_head_polygon": {
-            "description": "A 2D silhouette of the print head.",
+            "description": "A 2D silhouette of the print head (fan caps excluded).",
             "type": "polygon",
             "default": [
                 [
@@ -150,7 +154,7 @@
             "global_only": true
         },
         "machine_head_with_fans_polygon": {
-            "description": "A 2D silhouette of the print head.",
+            "description": "A 2D silhouette of the print head (fan caps included).",
             "type": "polygon",
             "default": [
                 [
@@ -363,7 +367,7 @@
                     }
                 },
                 "top_bottom_thickness": {
-                    "label": "Shell Top/Bottom Thickness",
+                    "label": "Top/Bottom Thickness",
                     "description": "The thickness of the top/bottom layers in the print. This value divided by the layer height defines the number of top/bottom layers.",
                     "unit": "mm",
                     "default": 0.8,
@@ -374,7 +378,7 @@
                     "visible": true,
                     "children": {
                         "top_thickness": {
-                            "label": "Shell Top Thickness",
+                            "label": "Top Thickness",
                             "description": "The thickness of the top layers in the print. This value divided by the layer height defines the number of top layers.",
                             "unit": "mm",
                             "default": 0.8,
@@ -384,7 +388,7 @@
                             "visible": false,
                             "children": {
                                 "top_layers": {
-                                    "label": "Shell Top Layers",
+                                    "label": "Top Layers",
                                     "description": "The number of top layers. When calculated by the top thickness, this value is rounded to a whole number.",
                                     "default": 8,
                                     "min_value": "0",
@@ -396,7 +400,7 @@
                             }
                         },
                         "bottom_thickness": {
-                            "label": "Shell Bottom Thickness",
+                            "label": "Bottom Thickness",
                             "description": "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers.",
                             "unit": "mm",
                             "default": 0.6,
@@ -405,7 +409,7 @@
                             "visible": false,
                             "children": {
                                 "bottom_layers": {
-                                    "label": "Shell Bottom Layers",
+                                    "label": "Bottom Layers",
                                     "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
                                     "min_value": "0",
                                     "default": 6,
@@ -414,30 +418,11 @@
                                     "inherit_function": "999999 if infill_sparse_density == 100 else math.ceil(round(parent_value / layer_height, 4))"
                                 }
                             }
-                        },
-                        "wall_0_inset": {
-                            "label": "Outer Wall Inset",
-                            "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the object.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default": 0.0,
-                            "inherit_function": "(machine_nozzle_size - wall_line_width_0) / 2 if wall_line_width_0 < machine_nozzle_size else 0",
-                            "min_value_warning": "0",
-                            "max_value_warning": "machine_nozzle_size",
-                            "visible": false
-                        },
-                        "alternate_extra_perimeter": {
-                            "label": "Alternate Extra Wall",
-                            "description": "Make an extra wall at every second layer, so that infill will be caught between an extra wall above and one below. This results in a better cohesion between infill and walls, but might have an impact on the surface quality.",
-                            "type": "boolean",
-                            "default": false,
-                            "visible": false,
-                            "inherit": false
                         }
                     }
                 },
                 "top_bottom_pattern": {
-                    "label": "Shell Top/Bottom Pattern",
+                    "label": "Top/Bottom Pattern",
                     "description": "The pattern of the top/bottom layers.",
                     "type": "enum",
                     "options": {
@@ -446,6 +431,17 @@
                         "zigzag": "Zig Zag"
                     },
                     "default": "lines",
+                    "visible": false
+                },
+                "wall_0_inset": {
+                    "label": "Outer Wall Inset",
+                    "description": "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the object.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.0,
+                    "inherit_function": "(machine_nozzle_size - wall_line_width_0) / 2 if wall_line_width_0 < machine_nozzle_size else 0",
+                    "min_value_warning": "0",
+                    "max_value_warning": "machine_nozzle_size",
                     "visible": false
                 },
                 "alternate_extra_perimeter": {
@@ -504,7 +500,7 @@
                     "visible": false
                 },
                 "xy_offset": {
-                    "label": "Shell Horizontal Expansion",
+                    "label": "Horizontal Expansion",
                     "description": "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes.",
                     "unit": "mm",
                     "type": "float",
@@ -514,7 +510,7 @@
                     "visible": false
                 },
                 "z_seam_type": {
-                    "label": "Shell Z Seam Alignment",
+                    "label": "Z Seam Alignment",
                     "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these at the back, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
                     "type": "enum",
                     "options": {
@@ -576,15 +572,28 @@
                     "inherit_function": "'lines' if infill_sparse_density > 25 else 'grid'"
                 },
                 "infill_overlap": {
-                    "label": "Infill Overlap",
+                    "label": "Infill Overlap Percentage",
                     "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
-                    "unit": "mm",
+                    "unit": "%",
                     "type": "float",
-                    "default": 0.04,
-                    "min_value_warning": "0",
-                    "max_value_warning": "machine_nozzle_size",
-                    "inherit_function": "0.1 * line_width if infill_sparse_density < 95 else 0.0",
-                    "visible": false
+                    "default": 10,
+                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
+                    "min_value": "0",
+                    "max_value_warning": "100",
+                    "visible": false,
+                    "children": {
+                        "infill_overlap_mm": {
+                            "label": "Infill Overlap",
+                            "description": "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.04,
+                            "min_value_warning": "0",
+                            "max_value_warning": "machine_nozzle_size",
+                            "inherit_function": "infill_line_width * parent_value / 100",
+                            "visible": false
+                        }
+                    }
                 },
                 "infill_wipe_dist": {
                     "label": "Infill Wipe Distance",
@@ -648,17 +657,6 @@
                     "unit": "",
                     "type": "string",
                     "default": "[[3.5,200],[7.0,240]]",
-                    "enabled": "material_flow_dependent_temperature",
-                    "global_only": true
-                },
-                "material_standby_temperature": {
-                    "label": "Standby Temperature",
-                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
-                    "unit": "°C",
-                    "type": "float",
-                    "default": 150,
-                    "min_value": "0",
-                    "max_value_warning": "260",
                     "enabled": "False",
                     "enabled_before_removal": "material_flow_dependent_temperature",
                     "global_only": true
@@ -916,9 +914,9 @@
                             "inherit_function": "speed_print",
                             "enabled": "support_enable",
                             "children": {
-                                "speed_support_lines": {
-                                    "label": "Support Wall Speed",
-                                    "description": "The speed at which the walls of support are printed. Printing the walls at lower speeds improves stability.",
+                                "speed_support_infill": {
+                                    "label": "Support Infill Speed",
+                                    "description": "The speed at which the infill of support is printed. Printing the infill at lower speeds improves stability.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "default": 60,
@@ -1287,39 +1285,6 @@
                         }
                     }
                 },
-                "support_conical_enabled": {
-                    "label": "Enable Conical Support",
-                    "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false,
-                    "enabled": "support_enable"
-                },
-                "support_conical_angle": {
-                    "label": "Conical Support Angle",
-                    "description": "The angle of the tilt of conical support. With 0 degrees being vertical, and 90 degrees being horizontal. Smaller angles cause the support to be more sturdy, but consist of more material. Negative angles cause the base of the support to be wider than the top.",
-                    "unit": "°",
-                    "type": "float",
-                    "min_value": "-90",
-                    "min_value_warning": "-45",
-                    "max_value_warning": "45",
-                    "max_value": "90",
-                    "default": 30,
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
-                },
-                "support_conical_min_width": {
-                    "label": "Conical Support Minimum Width",
-                    "description": "Minimum width to which conical support reduces the support areas. Small widths can cause the base of the support to not act well as foundation for support above.",
-                    "unit": "mm",
-                    "default": 5.0,
-                    "min_value": "0",
-                    "min_value_warning": "machine_nozzle_size * 3",
-                    "max_value_warning": "100.0",
-                    "type": "float",
-                    "visible": false,
-                    "enabled": "support_conical_enabled and support_enable"
-                },
                 "support_bottom_stair_step_height": {
                     "label": "Support Stair Step Height",
                     "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
@@ -1444,7 +1409,7 @@
                     "enabled": "support_enable and support_use_towers"
                 },
                 "support_minimal_diameter": {
-                    "label": "Minimum Tower Diameter",
+                    "label": "Minimum Diameter",
                     "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
@@ -1953,7 +1918,7 @@
                 },
                 "coasting_min_volume": {
                     "label": "Minimum Volume Before Coasting",
-                    "description": "The lowest volume an extrusion path should have before allowing coasting. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
+                    "description": "The smallest volume an extrusion path should have before allowing coasting. For smaller extrusion paths, less pressure has been built up in the bowden tube and so the coasted volume is scaled linearly. This value should always be larger than the Coasting Volume.",
                     "unit": "mm³",
                     "type": "float",
                     "default": 0.8,
@@ -1994,7 +1959,7 @@
                     "enabled": "top_bottom_pattern != \"concentric\""
                 },
                 "support_conical_enabled": {
-                    "label": "Conical Support",
+                    "label": "Enable Conical Support",
                     "description": "Experimental feature: Make support areas smaller at the bottom than at the overhang.",
                     "type": "boolean",
                     "default": false,
