@@ -90,6 +90,10 @@ class PrinterOutputDevice(OutputDevice):
     def close(self):
         pass
 
+    ##  Ensure that close gets called when object is destroyed
+    def __del__(self):
+        self.close()
+
     @pyqtProperty(float, notify = headPositionChanged)
     def headX(self):
         return self._head_x
