@@ -70,6 +70,11 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def _setTargetBedTemperature(self, temperature):
         pass
 
+    ##  Get the target bed temperature if connected printer (if any)
+    @pyqtProperty(int, notify = targetBedTemperatureChanged)
+    def targetBedTemperature(self):
+        return self._target_bed_temperature
+
     ##  Set the (target) hotend temperature
     #   This function is "final" (do not re-implement)
     #   /param index the index of the hotend that needs to change temperature
