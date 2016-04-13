@@ -18,8 +18,9 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
         self._target_bed_temperature = 0
         self._bed_temperature = 0
-        self._hotend_temperatures = {}
-        self._target_hotend_temperatures = {}
+        self._num_extruders = 1
+        self._hotend_temperatures = [0] * self._num_extruders
+        self._target_hotend_temperatures = [0] * self._num_extruders
         self._progress = 0
         self._head_x = 0
         self._head_y = 0
@@ -48,11 +49,6 @@ class PrinterOutputDevice(OutputDevice, QObject):
     @pyqtProperty(float, notify = bedTemperatureChanged)
     def bedTemperature(self):
         return self._bed_temperature
-
-    ##  Get the temperature of a hot end as defined by index.
-    #   /parameter index Index of the hotend to get a temperature from.
-    def getHotendTemperature(self, index):
-        raise NotImplementedError("getHotendTemperature needs to be implemented")
 
     ##  Set the (target) bed temperature
     #   This function is "final" (do not re-implement)
@@ -96,13 +92,17 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def _setTargetHotendTemperature(self, index, temperature):
         raise NotImplementedError("_setTargetHotendTemperature needs to be implemented")
 
-    @pyqtProperty("QVariantMap", notify = targetHotendTemperaturesChanged)
+    @pyqtProperty("QVariantList", notify = targetHotendTemperaturesChanged)
     def targetHotendTemperatures(self):
         return self._target_hotend_temperatures
 
-    @pyqtProperty("QVariantMap", notify = hotendTemperaturesChanged)
+    @pyqtProperty("QVariantList", notify = hotendTemperaturesChanged)
     def hotendTemperatures(self):
         return self._hotend_temperatures
+
+    def _setHotendTemperature(self, index, temperature):
+        self._hotend_temperatures[index] = temperature
+        self.hotendTemperaturesChanged.emit()
 
     ##  Attempt to establish connection
     def connect(self):
