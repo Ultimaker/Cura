@@ -17,6 +17,8 @@ class PrinterOutputDevice(OutputDevice, QObject):
         OutputDevice.__init__(self, device_id)
 
         self._target_bed_temperature = 0
+        self._bed_temperature = 0
+        self._hotend_temperatures = {}
         self._target_hotend_temperatures = {}
         self._head_x = 0
         self._head_y = 0
@@ -60,7 +62,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   This function is "final" (do not re-implement)
     #   /sa _setBedTemperature
     @pyqtSlot(int)
-    def setBedTemperature(self, temperature):
+    def setTargetBedTemperature(self, temperature):
         self._setTargetBedTemperature(temperature)
         self._target_bed_temperature = temperature
         self.targetBedTemperatureChanged.emit()
@@ -69,6 +71,11 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   /parameter temperature Temperature bed needs to go to (in deg celsius)
     def _setTargetBedTemperature(self, temperature):
         pass
+
+    ##  Get the bed temperature if connected printer (if any)
+    @pyqtProperty(int, notify = bedTemperatureChanged)
+    def bedTemperature(self):
+        return self._bed_temperature
 
     ##  Get the target bed temperature if connected printer (if any)
     @pyqtProperty(int, notify = targetBedTemperatureChanged)
@@ -81,7 +88,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   /param temperature The temperature it needs to change to (in deg celsius).
     #   /sa _setTargetHotendTemperature
     @pyqtSlot(int, int)
-    def setHotendTemperature(self, index, temperature):
+    def setTargetHotendTemperature(self, index, temperature):
         self._setTargetHotendTemperature(index, temperature)
         self._target_hotend_temperatures[index] = temperature
         self.targetHotendTemperaturesChanged.emit()
@@ -91,17 +98,11 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     @pyqtProperty("QVariantMap", notify = targetHotendTemperaturesChanged)
     def targetHotendTemperatures(self):
-        return self._getTargetHotendTemperatures()
-
-    def _getTargetHotendTemperatures(self):
-        raise NotImplementedError("_getTargetHotendTemperatures needs to be implemented")
+        return self._target_hotend_temperatures
 
     @pyqtProperty("QVariantMap", notify = hotendTemperaturesChanged)
     def hotendTemperatures(self):
-        return self._getHotendTemperatures()
-
-    def _getHotendTemperatures(self):
-        raise NotImplementedError("_getHotendTemperatures needs to be implemented")
+        return self._hotend_temperatures
 
     ##  Attempt to establish connection
     def connect(self):
