@@ -20,6 +20,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._bed_temperature = 0
         self._hotend_temperatures = {}
         self._target_hotend_temperatures = {}
+        self._progress = -1
         self._head_x = 0
         self._head_y = 0
         self._head_z = 0
@@ -194,13 +195,12 @@ class PrinterOutputDevice(OutputDevice, QObject):
     ##  Get the progress of any currently active process.
     #   This function is "final" (do not re-implement)
     #   /sa _getProgress
-    #   /returns float progess of the process. -1 indicates that there is no process.
+    #   /returns float progress of the process. -1 indicates that there is no process.
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
-        try:
-            return float(self._getProgress())
-        except ValueError:
-            return -1
+        return self._progress
 
-    def _getProgress(self):
-        raise NotImplementedError("_getProgress needs to be implemented")
+    ##  Set the progress of any currently active process
+    def setProgress(self, progress):
+        self._progress = progress
+        self.progressChanged.emit()
