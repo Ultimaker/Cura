@@ -1,6 +1,6 @@
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
-
+from enum import IntEnum  # For the connection state tracking.
 
 ##  Printer output device adds extra interface options on top of output device.
 #
@@ -20,12 +20,11 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._bed_temperature = 0
         self._hotend_temperatures = {}
         self._target_hotend_temperatures = {}
-        self._progress = -1
+        self._progress = 0
         self._head_x = 0
         self._head_y = 0
         self._head_z = 0
-        self._connected = False
-        self._connecting = False
+        self._connection_state = ConnectionState.CLOSED
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -41,8 +40,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     headPositionChanged = pyqtSignal()
 
-    conectedChanged = pyqtSignal()
-    connectingChanged = pyqtSignal()
+    connectionStateChanged = pyqtSignal(str)
 
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
@@ -112,13 +110,13 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def close(self):
         pass
 
-    @pyqtProperty(bool, notify = conectedChanged)
-    def connected(self):
-        return self._connected
+    @pyqtProperty(bool, notify = connectionStateChanged)
+    def connectionState(self):
+        return self._connection_state
 
-    @pyqtProperty(bool, notify = connectingChanged)
-    def isConnecting(self):
-        return self._connecting
+    def setConnectionState(self, connection_state):
+        self._connection_state = connection_state
+        self.connectionStateChanged.emit(self._id)
 
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):
@@ -204,3 +202,9 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def setProgress(self, progress):
         self._progress = progress
         self.progressChanged.emit()
+
+##  The current processing state of the backend.
+class ConnectionState(IntEnum):
+    CLOSED = 0
+    CONNECTING = 1
+    CONNECTED = 2
