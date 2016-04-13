@@ -347,10 +347,14 @@ class MachineCom(object):
 			try:
 				if self._baudrate == 0:
 					self._log("Connecting to: %s with baudrate: 115200 (fallback)" % (self._port))
-					self._serial = serial.Serial(str(self._port), 115200, timeout=3, writeTimeout=10000)
+					self._serial = serial.Serial(str(self._port), 115200, timeout=3)
+					# Need to set writeTimeout separately in order to be compatible with pyserial 3.0
+					self._serial.writeTimeout=10000
 				else:
 					self._log("Connecting to: %s with baudrate: %s (configured)" % (self._port, self._baudrate))
-					self._serial = serial.Serial(str(self._port), self._baudrate, timeout=5, writeTimeout=10000)
+					self._serial = serial.Serial(str(self._port), self._baudrate, timeout=5)
+					# Need to set writeTimeout separately in order to be compatible with pyserial 3.0
+					self._serial.writeTimeout=10000
 			except:
 				self._log("Unexpected error while connecting to serial port: %s %s" % (self._port, getExceptionString()))
 		if self._serial is None:
@@ -365,7 +369,9 @@ class MachineCom(object):
 			port = self._serialDetectList.pop(0)
 			self._log("Connecting to: %s with baudrate: %s (auto)" % (port, baudrate))
 			try:
-				self._serial = serial.Serial(port, baudrate, timeout=3, writeTimeout=10000)
+				self._serial = serial.Serial(port, baudrate, timeout=3)
+				# Need to set writeTimeout separately in order to be compatible with pyserial 3.0
+				self._serial.writeTimeout=10000
 			except:
 				pass
 		else:
@@ -447,7 +453,9 @@ class MachineCom(object):
 									self._serialDetectList = serialList(True)
 									baudrate = self._baudrateDetectList.pop(0)
 							self._serial.close()
-							self._serial = serial.Serial(self._serialDetectList.pop(0), baudrate, timeout=2.5, writeTimeout=10000)
+							self._serial = serial.Serial(self._serialDetectList.pop(0), baudrate, timeout=2.5)
+							# Need to set writeTimeout separately in order to be compatible with pyserial 3.0
+							self._serial.writeTimeout=10000
 						else:
 							baudrate = self._baudrateDetectList.pop(0)
 						try:
