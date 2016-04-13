@@ -19,10 +19,12 @@ class PrinterOutputDevice(OutputDevice):
         self._head_x = 0
         self._head_y = 0
         self._head_z = 0
+        self._connected = False
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
 
+    # Signals:
     bedTemperatureChanged = pyqtSignal()
     targetBedTemperatureChanged = pyqtSignal()
 
@@ -33,6 +35,8 @@ class PrinterOutputDevice(OutputDevice):
 
     headPositionChanged = pyqtSignal()
 
+    conectedChanged = pyqtSignal()
+
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
     #   /sa _getBedTemperature
@@ -41,7 +45,7 @@ class PrinterOutputDevice(OutputDevice):
         return self._getBedTemperature()
 
     def _getBedTemperature(self):
-        raise NotImplementedError("_getBedTemperature needs to be implemented")
+        return None
 
     ##  Get the temperature of a hot end as defined by index.
     #   /parameter index Index of the hotend to get a temperature from.
@@ -57,10 +61,17 @@ class PrinterOutputDevice(OutputDevice):
         self._target_bed_temperature = temperature
         self.targetBedTemperatureChanged.emit()
 
-    ##  Set the bed temperature of the connected printer.
+    ##  Set the bed temperature of the connected printer (if any).
+    #   /parameter temperature Temperature bed needs to go to (in deg celsius)
     def _setBedTemperature(self, temperature):
-        raise NotImplementedError("_setBedTemperature needs to be implemented")
+        pass
 
+    ##  Set the (target) hotend temperature
+    #   This function is "final" (do not re-implement)
+    #   /param index the index of the hotend that needs to change temperature
+    #   /param temperature The temperature it needs to change to (in deg celsius).
+    #   /sa _setTargetHotendTemperature
+    @pyqtSlot(int, int)
     def setHotendTemperature(self, index, temperature):
         self._setTargetHotendTemperature(index, temperature)
         self._target_hotend_temperatures[index] = temperature
@@ -90,6 +101,10 @@ class PrinterOutputDevice(OutputDevice):
     def close(self):
         pass
 
+    @pyqtProperty(bool, notify = conectedChanged)
+    def connected(self):
+        return self._connected
+
     ##  Ensure that close gets called when object is destroyed
     def __del__(self):
         self.close()
@@ -116,10 +131,39 @@ class PrinterOutputDevice(OutputDevice):
     ##  Set the position of the head.
     #   In some machines it's actually the bed that moves. For convenience sake we simply see it all as head movements.
     #   This function is "final" (do not re-implement)
+    #   /param speed Speed by which it needs to move (in mm/minute)
     @pyqtSlot("long", "long", "long")
     @pyqtSlot("long", "long", "long", "long")
     def setHeadPosition(self, x, y, z, speed = 3000):
         self._setHeadPosition(x, y , z, speed)
+
+    ##  Set the X position of the head.
+    #   This function is "final" (do not re-implement)
+    #   /param x x position head needs to move to.
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    @pyqtSlot("long")
+    @pyqtSlot("long", "long")
+    def setHeadX(self, x, speed = 3000):
+        self._setHeadX(x, speed)
+
+    ##  Set the Y position of the head.
+    #   This function is "final" (do not re-implement)
+    #   /param y y position head needs to move to.
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    @pyqtSlot("long")
+    @pyqtSlot("long", "long")
+    def setHeadY(self, y, speed = 3000):
+        self._setHeadY(y, speed)
+
+    ##  Set the Z position of the head.
+    #   In some machines it's actually the bed that moves. For convenience sake we simply see it all as head movements.
+    #   This function is "final" (do not re-implement)
+    #   /param z z position head needs to move to.
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    @pyqtSlot("long")
+    @pyqtSlot("long", "long")
+    def setHeadZ(self, z, speed = 3000):
+        self._setHeadY(z, speed)
 
     def _setHeadPosition(self, x, y, z, speed):
         pass
