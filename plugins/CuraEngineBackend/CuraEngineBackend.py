@@ -86,6 +86,11 @@ class CuraEngineBackend(Backend):
 
         Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
 
+    def close(self):
+        # Terminate CuraEngine if it is still running at this point
+        self._terminate()
+        super().close()
+
     ##  Get the command that is used to call the engine.
     #   This is usefull for debugging and used to actually start the engine
     #   \return list of commands and args / parameters.
