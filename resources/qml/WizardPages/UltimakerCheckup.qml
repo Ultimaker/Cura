@@ -368,7 +368,7 @@ Item
                 bedTempStatus.text = catalog.i18nc("@info:status","Works")
                 wizardPage.checkupProgress.bedTemp = true
                 checkTotalCheckUp()
-                printer_connection.setBedTemperature(0)
+                printer_connection.setTargetBedTemperature(0)
             }
         }
     }
