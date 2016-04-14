@@ -239,7 +239,7 @@ Item
                     if(printer_connection != null)
                     {
                         nozzleTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.heatupNozzle(190)
+                        printer_connection.setHotendTemperature(0, 190)
                         wizardPage.extruder_target_temp = 190
                     }
                 }
@@ -253,7 +253,7 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             width: wizardPage.rightRow * 0.2
             wrapMode: Text.WordWrap
-            text: printer_connection != null ? printer_connection.extruderTemperature + "°C" : "0°C"
+            text: printer_connection != null ? printer_connection.hotendTemperatures[0] + "°C" : "0°C"
             font.bold: true
         }
         /////////////////////////////////////////////////////////////////////////////
@@ -295,7 +295,7 @@ Item
                     if(printer_connection != null)
                     {
                         bedTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.heatupBed(60)
+                        printer_connection.setBedTemperature(60)
                         wizardPage.bed_target_temp = 60
                     }
                 }
@@ -348,16 +348,16 @@ Item
             }
         }
 
-        onExtruderTemperatureChanged:
+        onHotendTemperaturesChanged:
         {
-            if(printer_connection.extruderTemperature > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperature < wizardPage.extruder_target_temp + 10)
+            if(printer_connection.extruderTemperatures[0] > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperatures[0] < wizardPage.extruder_target_temp + 10)
             {
                 if(printer_connection != null)
                 {
                     nozzleTempStatus.text = catalog.i18nc("@info:status","Works")
                     wizardPage.checkupProgress.nozzleTemp = true
                     checkTotalCheckUp()
-                    printer_connection.heatupNozzle(0)
+                    printer_connection.setTargetHotendTemperature(0, 0)
                 }
             }
         }
@@ -368,7 +368,7 @@ Item
                 bedTempStatus.text = catalog.i18nc("@info:status","Works")
                 wizardPage.checkupProgress.bedTemp = true
                 checkTotalCheckUp()
-                printer_connection.heatupBed(0)
+                printer_connection.setBedTemperature(0)
             }
         }
     }

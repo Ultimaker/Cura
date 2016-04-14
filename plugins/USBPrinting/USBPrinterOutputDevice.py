@@ -121,7 +121,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
-        if not self._progress or self._connection_state != ConnectionState.CONNECTED:
+        if self._progress or self._connection_state != ConnectionState.CONNECTED:
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
             return
@@ -363,7 +363,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def sendCommand(self, cmd):
         if not self._progress:
             self._command_queue.put(cmd)
-        elif self.isConnected():
+        elif self._connection_state == ConnectionState.CONNECTED:
             self._sendCommand(cmd)
 
     ##  Set the error state with a message.
