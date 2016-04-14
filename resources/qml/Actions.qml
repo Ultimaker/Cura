@@ -99,6 +99,7 @@ Item
     Action
     {
         id: addProfileAction;
+        enabled: UM.ActiveProfile.valid
         text: catalog.i18nc("@action:inmenu menubar:profile","&Add Profile...");
     }
 
