@@ -112,6 +112,12 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _setHeadZ(self, z, speed):
         self._sendCommand("G0 Y%s F%s" % (z, speed))
 
+    def _homeHead(self):
+        self._sendCommand("G28")
+
+    def _homeBed(self):
+        self._sendCommand("G28 Z")
+        
     @pyqtSlot()
     def startPrint(self):
         self.writeStarted.emit(self)
