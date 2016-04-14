@@ -72,6 +72,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Current Z stage location 
         self._current_z = 0
 
+        # Check if endstops are ever pressed (used for first run)
         self._x_min_endstop_pressed = False
         self._y_min_endstop_pressed = False
         self._z_min_endstop_pressed = False
@@ -140,14 +141,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         for layer in gcode_list:
             self._gcode.extend(layer.split("\n"))
 
-        #Reset line number. If this is not done, first line is sometimes ignored
+        # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")
         self._gcode_position = 0
         self._print_start_time_100 = None
         self._is_printing = True
         self._print_start_time = time.time()
 
-        for i in range(0, 4): #Push first 4 entries before accepting other inputs
+        for i in range(0, 4):  # Push first 4 entries before accepting other inputs
             self._sendNextGcodeLine()
 
         self.writeFinished.emit(self)
@@ -162,7 +163,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if not self._updating_firmware and not self._connect_thread.isAlive():
             self._connect_thread.start()
 
-    ##  Private fuction (threaded) that actually uploads the firmware.
+    ##  Private function (threaded) that actually uploads the firmware.
     def _updateFirmware(self):
         self.setProgress(0, 100)
 
@@ -182,7 +183,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         except Exception:
             pass
 
-        time.sleep(1) # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
+        # Give programmer some time to connect. Might need more in some cases, but this worked in all tested cases.
+        time.sleep(1)
 
         if not programmer.isConnected():
             Logger.log("e", "Unable to connect with serial. Could not update firmware")
@@ -238,7 +240,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         except Exception as e:
             Logger.log("i", "Could not establish connection on %s, unknown reasons.  Device is not arduino based." % self._serial_port)
 
-        # If the programmer connected, we know its an atmega based version. Not all that useful, but it does give some debugging information.
+        # If the programmer connected, we know its an atmega based version.
+        # Not all that useful, but it does give some debugging information.
         for baud_rate in self._getBaudrateList(): # Cycle all baud rates (auto detect)
             Logger.log("d","Attempting to connect to printer with serial %s on baud rate %s", self._serial_port, baud_rate)
             if self._serial is None:
@@ -259,7 +262,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             while timeout_time > time.time():
                 line = self._readline()
                 if line is None:
-                     # Something went wrong with reading, could be that close was called.
+                    # Something went wrong with reading, could be that close was called.
                     self.setConnectionState(ConnectionState.CLOSED)
                     return
 
@@ -273,10 +276,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
                         return 
 
-                self._sendCommand("M105") # Send M105 as long as we are listening, otherwise we end up in an undefined state
+                self._sendCommand("M105")  # Send M105 as long as we are listening, otherwise we end up in an undefined state
 
         Logger.log("e", "Baud rate detection for %s failed", self._serial_port)
-        self.close() # Unable to connect, wrap up.
+        self.close()  # Unable to connect, wrap up.
         self.setConnectionState(ConnectionState.CLOSED)
 
     ##  Set the baud rate of the serial. This can cause exceptions, but we simply want to ignore those.
@@ -311,7 +314,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._listen_thread = threading.Thread(target = self._listen)
         self._listen_thread.daemon = True
         self._serial = None
-
 
     ##  Directly send the command, withouth checking connection state (eg; printing).
     #   \param cmd string with g-code
@@ -395,7 +397,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         while self._connection_state == ConnectionState.CONNECTED:
             line = self._readline()
             if line is None: 
-                break # None is only returned when something went wrong. Stop listening
+                break  # None is only returned when something went wrong. Stop listening
 
             if time.time() > temperature_request_timeout:
                 if self._num_extruders > 0:
@@ -408,8 +410,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             if line.startswith(b"Error:"):
                 # Oh YEAH, consistency.
                 # Marlin reports a MIN/MAX temp error as "Error:x\n: Extruder switched off. MAXTEMP triggered !\n"
-                #       But a bed temp error is reported as "Error: Temperature heated bed switched off. MAXTEMP triggered !!"
-                #       So we can have an extra newline in the most common case. Awesome work people.
+                # But a bed temp error is reported as "Error: Temperature heated bed switched off. MAXTEMP triggered !!"
+                # So we can have an extra newline in the most common case. Awesome work people.
                 if re.match(b"Error:[0-9]\n", line):
                     line = line.rstrip() + self._readline()
 
@@ -418,12 +420,12 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     if not self.hasError():
                         self._setErrorState(line[6:])
 
-            elif b" T:" in line or line.startswith(b"T:"): #Temperature message
+            elif b" T:" in line or line.startswith(b"T:"):  # Temperature message
                 try: 
                     self._setHotendTemperature(self._temperature_requested_extruder_index, float(re.search(b"T: *([0-9\.]*)", line).group(1)))
                 except:
                     pass
-                if b"B:" in line: # Check if it's a bed temperature
+                if b"B:" in line:  # Check if it's a bed temperature
                     try:
                         self._setBedTemperature(float(re.search(b"B: *([0-9\.]*)", line).group(1)))
                     except Exception as e:
@@ -435,7 +437,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
             if self._is_printing:
                 if line == b"" and time.time() > ok_timeout:
-                    line = b"ok" # Force a timeout (basicly, send next command)
+                    line = b"ok"  # Force a timeout (basically, send next command)
 
                 if b"ok" in line:
                     ok_timeout = time.time() + 5
@@ -443,14 +445,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                         self._sendCommand(self._command_queue.get())
                     else:
                         self._sendNextGcodeLine()
-                elif b"resend" in line.lower() or b"rs" in line: # Because a resend can be asked with "resend" and "rs"
+                elif b"resend" in line.lower() or b"rs" in line:  # Because a resend can be asked with "resend" and "rs"
                     try:
                         self._gcode_position = int(line.replace(b"N:",b" ").replace(b"N",b" ").replace(b":",b" ").split()[-1])
                     except:
                         if b"rs" in line:
                             self._gcode_position = int(line.split()[1])
 
-            else: # Request the temperature on comm timeout (every 2 seconds) when we are not printing.)
+            else:  # Request the temperature on comm timeout (every 2 seconds) when we are not printing.)
                 if line == b"":
                     if self._num_extruders > 0:
                         self._temperature_requested_extruder_index = (self._temperature_requested_extruder_index + 1) % self._num_extruders
@@ -472,7 +474,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         line = line.strip()
         try:
             if line == "M0" or line == "M1":
-                line = "M105"   #Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
+                line = "M105"  # Don't send the M0 or M1 to the machine, as M0 and M1 are handled as an LCD menu pause.
             if ("G0" in line or "G1" in line) and "Z" in line:
                 z = float(re.search("Z([0-9\.]*)", line).group(1))
                 if self._current_z != z:
@@ -484,13 +486,13 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
         self._gcode_position += 1 
-        self.setProgress(( self._gcode_position / len(self._gcode)) * 100)
+        self.setProgress((self._gcode_position / len(self._gcode)) * 100)
         self.progressChanged.emit()
 
     ##  Set the progress of the print.
     #   It will be normalized (based on max_progress) to range 0 - 100
     def setProgress(self, progress, max_progress = 100):
-        self._progress  = (progress / max_progress) * 100 #Convert to scale of 0-100
+        self._progress = (progress / max_progress) * 100  # Convert to scale of 0-100
         self.progressChanged.emit()
 
     ##  Cancel the current print. Printer connection wil continue to listen.
@@ -507,7 +509,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Check if the process did not encounter an error yet.
     def hasError(self):
-        return self._error_state != None
+        return self._error_state is not None
 
     ##  private read line used by printer connection to listen for data on serial port.
     def _readline(self):
@@ -516,7 +518,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         try:
             ret = self._serial.readline()
         except Exception as e:
-            Logger.log("e","Unexpected error while reading serial port. %s" %e)
+            Logger.log("e", "Unexpected error while reading serial port. %s" % e)
             self._setErrorState("Printer has been disconnected") 
             self.close()
             return None
@@ -530,7 +532,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _onFirmwareUpdateComplete(self):
         self._update_firmware_thread.join()
-        self._update_firmware_thread = threading.Thread(target= self._updateFirmware)
+        self._update_firmware_thread = threading.Thread(target = self._updateFirmware)
         self._update_firmware_thread.daemon = True
 
         self.connect()
