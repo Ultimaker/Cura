@@ -74,6 +74,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     ##  Home the bed of the connected printer
     #   This function is "final" (do not re-implement)
+    @pyqtSlot()
     def homeBed(self):
         self._homeBed()
 
