@@ -126,6 +126,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         gcode_list = getattr( Application.getInstance().getController().getScene(), "gcode_list")
         self.printGCode(gcode_list)
 
+    def _moveHead(self, x, y, z, speed):
+        self._sendCommand("G91")
+        self._sendCommand("G0 X%s Y%s Z%s F%s" % (x, y, z, speed))
+        self._sendCommand("G90")
+
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):

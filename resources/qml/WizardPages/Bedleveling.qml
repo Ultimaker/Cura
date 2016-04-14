@@ -22,7 +22,7 @@ Item
     Component.onCompleted:
     {
         printer_connection.homeBed()
-        printer_connection.moveHeadRelative(0, 0, 3)
+        printer_connection.moveHead(0, 0, 3)
         printer_connection.homeHead()
     }
     UM.I18nCatalog { id: catalog; name:"cura"}
@@ -84,23 +84,23 @@ Item
             {
                 if(wizardPage.leveling_state == 0)
                 {
-                    printer_connection.moveHeadRelative(0, 0, 3)
+                    printer_connection.moveHead(0, 0, 3)
                     printer_connection.homeHead()
-                    printer_connection.moveHeadRelative(0, 0, 3)
-                    printer_connection.moveHeadRelative(platform_width - 10, 0, 0)
-                    printer_connection.moveHeadRelative(0, 0, -3)
+                    printer_connection.moveHead(0, 0, 3)
+                    printer_connection.moveHead(platform_width - 10, 0, 0)
+                    printer_connection.moveHead(0, 0, -3)
                 }
                 if(wizardPage.leveling_state == 1)
                 {
-                    printer_connection.moveHeadRelative(0, 0, 3)
-                    printer_connection.moveHeadRelative(-platform_width/2, platform_height - 10, 0)
-                    printer_connection.moveHeadRelative(0, 0, -3)
+                    printer_connection.moveHead(0, 0, 3)
+                    printer_connection.moveHead(-platform_width/2, platform_height - 10, 0)
+                    printer_connection.moveHead(0, 0, -3)
                 }
                 if(wizardPage.leveling_state == 2)
                 {
-                    printer_connection.moveHeadRelative(0, 0, 3)
-                    printer_connection.moveHeadRelative(-platform_width/2 + 10, -(platform_height + 10), 0)
-                    printer_connection.moveHeadRelative(0, 0, -3)
+                    printer_connection.moveHead(0, 0, 3)
+                    printer_connection.moveHead(-platform_width/2 + 10, -(platform_height + 10), 0)
+                    printer_connection.moveHead(0, 0, -3)
                 }
                 wizardPage.leveling_state++
                 if (wizardPage.leveling_state >= 3){
