@@ -47,14 +47,15 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     ##  Get the bed temperature of the bed (if any)
     #   This function is "final" (do not re-implement)
-    #   /sa _getBedTemperature
+    #   /sa _getBedTemperature implementation function
     @pyqtProperty(float, notify = bedTemperatureChanged)
     def bedTemperature(self):
         return self._bed_temperature
 
     ##  Set the (target) bed temperature
     #   This function is "final" (do not re-implement)
-    #   /sa _setTargetBedTemperature
+    #   /param temperature new target temperature of the bed (in deg C)
+    #   /sa _setTargetBedTemperature implementation function
     @pyqtSlot(int)
     def setTargetBedTemperature(self, temperature):
         self._setTargetBedTemperature(temperature)
@@ -63,6 +64,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     ##  Home the head of the connected printer
     #   This function is "final" (do not re-implement)
+    #   /sa _homeHead implementation function
     @pyqtSlot()
     def homeHead(self):
         self._homeHead()
@@ -74,20 +76,26 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     ##  Home the bed of the connected printer
     #   This function is "final" (do not re-implement)
+    #   /sa _homeBed implementation function
     @pyqtSlot()
     def homeBed(self):
         self._homeBed()
 
     ##  Home the bed of the connected printer
-    #   This is an implementation function and should be overriden by children..
+    #   This is an implementation function and should be overriden by children.
+    #   /sa homeBed
     def _homeBed(self):
         Logger.log("w", "_homeBed is not implemented by this output device")
 
-    ##  Set the bed temperature of the connected printer (if any).
+    ##  Protected setter for the bed temperature of the connected printer (if any).
     #   /parameter temperature Temperature bed needs to go to (in deg celsius)
+    #   /sa setTargetBedTemperature
     def _setTargetBedTemperature(self, temperature):
         Logger.log("w", "_setTargetBedTemperature is not implemented by this output device")
 
+    ##  Protected setter for the current bed temperature.
+    #   This simply sets the bed temperature, but ensures that a signal is emitted.
+    #   /param temperature temperature of the bed.
     def _setBedTemperature(self, temperature):
         self._bed_temperature = temperature
         self.bedTemperatureChanged.emit()
@@ -106,13 +114,17 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   This function is "final" (do not re-implement)
     #   /param index the index of the hotend that needs to change temperature
     #   /param temperature The temperature it needs to change to (in deg celsius).
-    #   /sa _setTargetHotendTemperature
+    #   /sa _setTargetHotendTemperature implementation function
     @pyqtSlot(int, int)
     def setTargetHotendTemperature(self, index, temperature):
         self._setTargetHotendTemperature(index, temperature)
         self._target_hotend_temperatures[index] = temperature
         self.targetHotendTemperaturesChanged.emit()
 
+    ##  Implementation function of setTargetHotendTemperature.
+    #   /param index Index of the hotend to set the temperature of
+    #   /param temperature Temperature to set the hotend to (in deg C)
+    #   /sa setTargetHotendTemperature
     def _setTargetHotendTemperature(self, index, temperature):
         Logger.log("w", "_setTargetHotendTemperature is not implemented by this output device")
 
@@ -124,6 +136,10 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def hotendTemperatures(self):
         return self._hotend_temperatures
 
+    ##  Protected setter for the current hotend temperature.
+    #   This simply sets the hotend temperature, but ensures that a signal is emitted.
+    #   /param index Index of the hotend
+    #   /param temperature temperature of the hotend (in deg C)
     def _setHotendTemperature(self, index, temperature):
         self._hotend_temperatures[index] = temperature
         self.hotendTemperaturesChanged.emit()
@@ -132,6 +148,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def connect(self):
         pass
 
+    ##  Attempt to close the connection
     def close(self):
         pass
 
@@ -139,6 +156,8 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def connectionState(self):
         return self._connection_state
 
+    ##  Set the connection state of this output device.
+    #   /param connection_state ConnectionState enum.
     def setConnectionState(self, connection_state):
         self._connection_state = connection_state
         self.connectionStateChanged.emit(self._id)
@@ -169,7 +188,11 @@ class PrinterOutputDevice(OutputDevice, QObject):
     ##  Set the position of the head.
     #   In some machines it's actually the bed that moves. For convenience sake we simply see it all as head movements.
     #   This function is "final" (do not re-implement)
+    #   /param x new x location of the head.
+    #   /param y new y location of the head.
+    #   /param z new z location of the head.
     #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa _setHeadPosition implementation function
     @pyqtSlot("long", "long", "long")
     @pyqtSlot("long", "long", "long", "long")
     def setHeadPosition(self, x, y, z, speed = 3000):
@@ -179,6 +202,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   This function is "final" (do not re-implement)
     #   /param x x position head needs to move to.
     #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa _setHeadx implementation function
     @pyqtSlot("long")
     @pyqtSlot("long", "long")
     def setHeadX(self, x, speed = 3000):
@@ -188,6 +212,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   This function is "final" (do not re-implement)
     #   /param y y position head needs to move to.
     #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa _setHeadY implementation function
     @pyqtSlot("long")
     @pyqtSlot("long", "long")
     def setHeadY(self, y, speed = 3000):
@@ -198,6 +223,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   This function is "final" (do not re-implement)
     #   /param z z position head needs to move to.
     #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa _setHeadZ implementation function
     @pyqtSlot("long")
     @pyqtSlot("long", "long")
     def setHeadZ(self, z, speed = 3000):
@@ -211,23 +237,48 @@ class PrinterOutputDevice(OutputDevice, QObject):
     #   /param y distance in y to move
     #   /param z distance in z to move
     #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa _moveHead implementation function
     @pyqtSlot("long", "long", "long")
     @pyqtSlot("long", "long", "long", "long")
     def moveHead(self, x = 0, y = 0, z = 0, speed = 3000):
         self._moveHead(x, y, z, speed)
 
+    ##  Implementation function of moveHead.
+    #   /param x distance in x to move
+    #   /param y distance in y to move
+    #   /param z distance in z to move
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa moveHead
     def _moveHead(self, x, y, z, speed):
         Logger.log("w", "_moveHead is not implemented by this output device")
 
+    ##  Implementation function of setHeadPosition.
+    #   /param x new x location of the head.
+    #   /param y new y location of the head.
+    #   /param z new z location of the head.
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa setHeadPosition
     def _setHeadPosition(self, x, y, z, speed):
         Logger.log("w", "_setHeadPosition is not implemented by this output device")
 
+    ##  Implementation function of setHeadX.
+    #   /param x new x location of the head.
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa setHeadX
     def _setHeadX(self, x, speed):
         Logger.log("w", "_setHeadX is not implemented by this output device")
 
+    ##  Implementation function of setHeadY.
+    #   /param y new y location of the head.
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa _setHeadY
     def _setHeadY(self, y, speed):
         Logger.log("w", "_setHeadY is not implemented by this output device")
 
+    ##  Implementation function of setHeadZ.
+    #   /param z new z location of the head.
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    #   /sa _setHeadZ
     def _setHeadZ(self, z, speed):
         Logger.log("w", "_setHeadZ is not implemented by this output device")
 
@@ -240,6 +291,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
         return self._progress
 
     ##  Set the progress of any currently active process
+    #   /param progress Progress of the process.
     def setProgress(self, progress):
         self._progress = progress
         self.progressChanged.emit()
