@@ -1019,7 +1019,7 @@
                     "type": "boolean",
                     "default": true,
                     "visible": false,
-                    "enabled": "retraction_combing != off",
+                    "enabled": "retraction_combing != \"off\"",
                     "global_only": "True"
                 },
                 "travel_avoid_distance": {
@@ -1033,7 +1033,7 @@
                     "max_value_warning": "machine_nozzle_tip_outer_diameter * 5",
                     "visible": false,
                     "inherit": false,
-                    "enabled": "retraction_combing != off and travel_avoid_other_parts",
+                    "enabled": "retraction_combing != \"off\" and travel_avoid_other_parts",
                     "global_only": "True"
                 }
             }
