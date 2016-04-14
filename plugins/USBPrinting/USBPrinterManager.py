@@ -197,11 +197,15 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self._printer_connections[serial_port] = connection
 
     def _onPrinterConnectionStateChanged(self, serial_port):
-        if self._printer_connections[serial_port].connectionState == ConnectionState.CONNECTED:
-            self.getOutputDeviceManager().addOutputDevice(self._printer_connections[serial_port])
-        else:
-            self.getOutputDeviceManager().removeOutputDevice(serial_port)
-        self.printerConnectionStateChanged.emit()
+        try:
+            if self._printer_connections[serial_port].connectionState == ConnectionState.CONNECTED:
+                self.getOutputDeviceManager().addOutputDevice(self._printer_connections[serial_port])
+            else:
+                self.getOutputDeviceManager().removeOutputDevice(serial_port)
+            self.printerConnectionStateChanged.emit()
+        except KeyError:
+            pass  # no output device by this device_id found in connection list. 
+
 
     @pyqtProperty(QObject , notify = printerConnectionStateChanged)
     def connectedPrinterList(self):

@@ -117,7 +117,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _homeBed(self):
         self._sendCommand("G28 Z")
-        
+
     @pyqtSlot()
     def startPrint(self):
         self.writeStarted.emit(self)
