@@ -86,7 +86,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
     ##  Set the bed temperature of the connected printer (if any).
     #   /parameter temperature Temperature bed needs to go to (in deg celsius)
     def _setTargetBedTemperature(self, temperature):
-        pass
+        Logger.log("w", "_setTargetBedTemperature is not implemented by this output device")
 
     def _setBedTemperature(self, temperature):
         self._bed_temperature = temperature
@@ -114,7 +114,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self.targetHotendTemperaturesChanged.emit()
 
     def _setTargetHotendTemperature(self, index, temperature):
-        raise NotImplementedError("_setTargetHotendTemperature needs to be implemented")
+        Logger.log("w", "_setTargetHotendTemperature is not implemented by this output device")
 
     @pyqtProperty("QVariantList", notify = targetHotendTemperaturesChanged)
     def targetHotendTemperatures(self):
@@ -217,19 +217,19 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._moveHead(x, y, z, speed)
 
     def _moveHead(self, x, y, z, speed):
-        pass
+        Logger.log("w", "_moveHead is not implemented by this output device")
 
     def _setHeadPosition(self, x, y, z, speed):
-        pass
+        Logger.log("w", "_setHeadPosition is not implemented by this output device")
 
     def _setHeadX(self, x, speed):
-        pass
+        Logger.log("w", "_setHeadX is not implemented by this output device")
 
     def _setHeadY(self, y, speed):
-        pass
+        Logger.log("w", "_setHeadY is not implemented by this output device")
 
     def _setHeadZ(self, z, speed):
-        pass
+        Logger.log("w", "_setHeadZ is not implemented by this output device")
 
     ##  Get the progress of any currently active process.
     #   This function is "final" (do not re-implement)
