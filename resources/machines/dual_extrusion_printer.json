@@ -82,54 +82,54 @@
                     "max_value": "16",
                     "always_visible": true
                 },
-                        "adhesion_extruder_nr": {
-                            "label": "Platform Adhesion Extruder",
-                            "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
+                "adhesion_extruder_nr": {
+                    "label": "Platform Adhesion Extruder",
+                    "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
+                    "type": "int",
+                    "default": 0,
+                    "min_value": "0",
+                    "max_value": "16",
+                    "global_only": true
+                },
+                "support_extruder_nr": {
+                    "label": "Support Extruder",
+                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
+                    "type": "int",
+                    "default": 0,
+                    "min_value": "0",
+                    "max_value": "16",
+                    "global_only": true,
+                    "children": {
+                        "support_infill_extruder_nr": {
+                            "label": "Support Infill Extruder",
+                            "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
                             "type": "int",
                             "default": 0,
                             "min_value": "0",
                             "max_value": "16",
                             "global_only": true
                         },
-                        "support_extruder_nr": {
-                            "label": "Support Extruder",
-                            "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
+                        "support_extruder_nr_layer_0": {
+                            "label": "First Layer Support Extruder",
+                            "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
                             "type": "int",
                             "default": 0,
                             "min_value": "0",
                             "max_value": "16",
-                            "global_only": true,
-                            "children": {
-                                "support_infill_extruder_nr": {
-                                    "label": "Support Infill Extruder",
-                                    "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
-                                    "type": "int",
-                                    "default": 0,
-                                    "min_value": "0",
-                                    "max_value": "16",
-                                    "global_only": true
-                                },
-                                "support_extruder_nr_layer_0": {
-                                    "label": "First Layer Support Extruder",
-                                    "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
-                                    "type": "int",
-                                    "default": 0,
-                                    "min_value": "0",
-                                    "max_value": "16",
-                                    "global_only": true
-                                },
-                                "support_roof_extruder_nr": {
-                                    "label": "Support Roof Extruder",
-                                    "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
-                                    "type": "int",
-                                    "default": 0,
-                                    "min_value": "0",
-                                    "max_value": "16",
-                                    "enabled": "support_roof_enable",
-                                    "global_only": true
-                                }
-                            }
+                            "global_only": true
                         },
+                        "support_roof_extruder_nr": {
+                            "label": "Support Roof Extruder",
+                            "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
+                            "type": "int",
+                            "default": 0,
+                            "min_value": "0",
+                            "max_value": "16",
+                            "enabled": "support_roof_enable",
+                            "global_only": true
+                        }
+                    }
+                },
                 "prime_tower_enable": {
                     "label": "Enable Prime Tower",
                     "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
