@@ -1,6 +1,8 @@
 from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 from enum import IntEnum  # For the connection state tracking.
+from UM.Logger import Logger
+
 
 ##  Printer output device adds extra interface options on top of output device.
 #
@@ -58,6 +60,27 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._setTargetBedTemperature(temperature)
         self._target_bed_temperature = temperature
         self.targetBedTemperatureChanged.emit()
+
+    ##  Home the head of the connected printer
+    #   This function is "final" (do not re-implement)
+    @pyqtSlot()
+    def homeHead(self):
+        self._homeHead()
+
+    ##  Home the head of the connected printer
+    #   This is an implementation function and should be overriden by children.
+    def _homeHead(self):
+        Logger.log("w", "_homeHead is not implemented by this output device")
+
+    ##  Home the bed of the connected printer
+    #   This function is "final" (do not re-implement)
+    def homeBed(self):
+        self._homeBed()
+
+    ##  Home the bed of the connected printer
+    #   This is an implementation function and should be overriden by children..
+    def _homeBed(self):
+        Logger.log("w", "_homeBed is not implemented by this output device")
 
     ##  Set the bed temperature of the connected printer (if any).
     #   /parameter temperature Temperature bed needs to go to (in deg celsius)
