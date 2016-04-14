@@ -239,7 +239,7 @@ Item
                     if(printer_connection != null)
                     {
                         nozzleTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.setHotendTemperature(0, 190)
+                        printer_connection.setTargetHotendTemperature(0, 190)
                         wizardPage.extruder_target_temp = 190
                     }
                 }
@@ -295,7 +295,7 @@ Item
                     if(printer_connection != null)
                     {
                         bedTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.setBedTemperature(60)
+                        printer_connection.setTargetBedTemperature(60)
                         wizardPage.bed_target_temp = 60
                     }
                 }

@@ -204,7 +204,7 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
                 self.getOutputDeviceManager().removeOutputDevice(serial_port)
             self.printerConnectionStateChanged.emit()
         except KeyError:
-            pass  # no output device by this device_id found in connection list. 
+            pass  # no output device by this device_id found in connection list.
 
 
     @pyqtProperty(QObject , notify = printerConnectionStateChanged)
