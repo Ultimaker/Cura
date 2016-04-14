@@ -68,12 +68,22 @@ class ProcessSlicedLayersJob(Job):
         layer_data = LayerData.LayerData()
         layer_count = len(self._layers)
 
+        # Find the minimum layer number
+        # When using a raft, the raft layers are sent as layers < 0. Instead of allowing layers < 0, we
+        # instead simply offset all other layers so the lowest layer is always 0.
+        min_layer_number = 0
+        for layer in self._layers:
+            if(layer.id < min_layer_number):
+                min_layer_number = layer.id
+
         current_layer = 0
 
         for layer in self._layers:
-            layer_data.addLayer(layer.id)
-            layer_data.setLayerHeight(layer.id, layer.height)
-            layer_data.setLayerThickness(layer.id, layer.thickness)
+            abs_layer_number = layer.id + abs(min_layer_number)
+
+            layer_data.addLayer(abs_layer_number)
+            layer_data.setLayerHeight(abs_layer_number, layer.height)
+            layer_data.setLayerThickness(abs_layer_number, layer.thickness)
 
             for p in range(layer.repeatedMessageCount("polygons")):
                 polygon = layer.getRepeatedMessage("polygons", p)
@@ -91,7 +101,7 @@ class ProcessSlicedLayersJob(Job):
 
                 new_points /= 1000
 
-                layer_data.addPolygon(layer.id, polygon.type, new_points, polygon.line_width)
+                layer_data.addPolygon(abs_layer_number, polygon.type, new_points, polygon.line_width)
                 Job.yieldThread()
             Job.yieldThread()
             current_layer += 1
@@ -134,6 +144,9 @@ class ProcessSlicedLayersJob(Job):
 
         if self._progress:
             self._progress.hide()
+
+        # Clear the unparsed layers. This saves us a bunch of memory if the Job does not get destroyed.
+        self._layers = None
 
     def _onActiveViewChanged(self):
         if self.isRunning():
