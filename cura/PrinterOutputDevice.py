@@ -203,6 +203,22 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def setHeadZ(self, z, speed = 3000):
         self._setHeadY(z, speed)
 
+    ##  Move the head of the printer.
+    #   Note that this is a relative move. If you want to move the head to a specific position you can use
+    #   setHeadPosition
+    #   This function is "final" (do not re-implement)
+    #   /param x distance in x to move
+    #   /param y distance in y to move
+    #   /param z distance in z to move
+    #   /param speed Speed by which it needs to move (in mm/minute)
+    @pyqtSlot("long", "long", "long")
+    @pyqtSlot("long", "long", "long", "long")
+    def moveHead(self, x = 0, y = 0, z = 0, speed = 3000):
+        self._moveHead(x, y, z, speed)
+
+    def _moveHead(self, x, y, z, speed):
+        pass
+
     def _setHeadPosition(self, x, y, z, speed):
         pass
 

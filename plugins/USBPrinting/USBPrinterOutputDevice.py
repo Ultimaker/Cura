@@ -69,9 +69,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # List of gcode lines to be printed
         self._gcode = []
 
-        # Current Z stage location 
-        self._current_z = 0
-
         # Check if endstops are ever pressed (used for first run)
         self._x_min_endstop_pressed = False
         self._y_min_endstop_pressed = False
