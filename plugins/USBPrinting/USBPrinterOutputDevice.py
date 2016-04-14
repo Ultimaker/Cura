@@ -320,19 +320,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         if "M109" in cmd or "M190" in cmd:
             self._heatup_wait_start_time = time.time()
-        if "M104" in cmd or "M109" in cmd:
-            try:
-                t = 0
-                if "T" in cmd:
-                    t = int(re.search("T([0-9]+)", cmd).group(1))
-                self._target_extruder_temperatures[t] = float(re.search("S([0-9]+)", cmd).group(1))
-            except:
-                pass
-        if "M140" in cmd or "M190" in cmd:
-            try:
-                self._target_bed_temperature = float(re.search("S([0-9]+)", cmd).group(1))
-            except:
-                pass
+
         try:
             command = (cmd + "\n").encode()
             self._serial.write(b"\n")
@@ -370,7 +358,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Send a command to printer. 
     #   \param cmd string with g-code
     def sendCommand(self, cmd):
-        if not self._progress:
+        if self._progress:
             self._command_queue.put(cmd)
         elif self._connection_state == ConnectionState.CONNECTED:
             self._sendCommand(cmd)
