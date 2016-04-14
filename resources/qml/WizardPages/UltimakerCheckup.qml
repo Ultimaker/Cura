@@ -350,7 +350,7 @@ Item
 
         onHotendTemperaturesChanged:
         {
-            if(printer_connection.extruderTemperatures[0] > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperatures[0] < wizardPage.extruder_target_temp + 10)
+            if(printer_connection.hotendTemperatures[0] > wizardPage.extruder_target_temp - 10 && printer_connection.hotendTemperatures[0] < wizardPage.extruder_target_temp + 10)
             {
                 if(printer_connection != null)
                 {
