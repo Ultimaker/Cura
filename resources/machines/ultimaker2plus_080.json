@@ -12,6 +12,9 @@
     "variant": "0.8 mm",
 
     "overrides": {
+        "speed_wall": { "inherit_function": "round(speed_print / 1.333333, 1)"  },
+        "speed_wall_0": { "inherit_function": "1 if speed_wall < 10 else (speed_wall - 10)"  },
+        "speed_topbottom": { "inherit_function": "round(speed_print / 2, 1)" },
         "machine_nozzle_size": { "default": 0.80 },
         "machine_nozzle_tip_outer_diameter": { "default": 1.35 },
         "coasting_volume": { "default": 3.22 }

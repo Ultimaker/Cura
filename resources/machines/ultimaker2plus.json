@@ -11,6 +11,13 @@
     "inherits": "ultimaker2.json",
 
     "overrides": {
+        "speed_infill": { "inherit_function": "speed_print"  },
+        "speed_wall_x": { "inherit_function": "speed_wall"  },
+        "layer_height_0": { "inherit_function": "round(machine_nozzle_size / 1.5, 2)"  },
+        "retraction_min_travel": { "inherit_function": "machine_nozzle_size * 2"  },
+        "line_width": { "inherit_function": "round(machine_nozzle_size * 0.875, 2)"  },
+        "speed_layer_0": { "default": "20" },
+        "speed_support": { "inherit_function": "speed_wall_0"  },
         "machine_height": { "default": 203 },
         "machine_show_variants": { "default": true },
         "gantry_height": { "default": 52 },
