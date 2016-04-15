@@ -1,6 +1,6 @@
 [general]
 version = 1
-name = Normal Quality
+name = High Quality
 machine_type = ultimaker2plus
 machine_variant = 0.25 mm
 material = CPE
@@ -9,18 +9,11 @@ weight = -2
 [settings]
 layer_height = 0.06
 wall_thickness = 0.88
-line_width = 0.22
 top_bottom_thickness = 0.72
 infill_sparse_density = 22
-speed_print = 20
-layer_height_0 = 0.15
-speed_layer_0 = 20
-speed_infill = 30
-speed_topbottom = 20
-speed_wall_x = 25
+speed_print = 30
 cool_min_layer_time = 2
-cool_min_speed = 10
-cool_fan_speed_min = 50
-cool_lift_head = True
-infill_overlap = 17
+cool_fan_speed_min = 20
+cool_min_speed = 15
+cool_min_layer_time_fan_speed_max = 15
 
