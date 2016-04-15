@@ -9,18 +9,13 @@ weight = -1
 [settings]
 layer_height = 0.15
 wall_thickness = 0.7
-line_width = 0.35
 top_bottom_thickness = 0.75
 infill_sparse_density = 18
-speed_print = 40
-layer_height_0 = 0.26
-speed_layer_0 = 30
+speed_print = 55
 speed_travel = 150
-speed_infill = 55
-speed_topbottom = 30
-speed_wall_0 = 30
+speed_layer_0 = 30
 cool_min_layer_time = 3
-cool_min_speed = 20
-cool_lift_head = True
-cool_fan_speed_min = 50
+cool_fan_speed_min = 20
+cool_min_speed = 10
+cool_min_layer_time_fan_speed_max = 15
 
