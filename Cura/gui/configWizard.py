@@ -1272,7 +1272,7 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
 			profile.putProfileSetting('nozzle_size', '0.5')
 			profile.putMachineSetting('extruder_amount', '2')
 			profile.putMachineSetting('extruder_offset_x1', '0.0')
-			profile.putMachineSetting('extruder_offset_y1', '-52.00')
+			profile.putMachineSetting('extruder_offset_y1', '-50.00')
 			profile.putMachineSetting('toolhead', 'Dual Extruder V2')
 			profile.putMachineSetting('toolhead_shortname', 'Dual v2')
 			profile.putMachineSetting('machine_type', machine_type + '_Dual_v2')
