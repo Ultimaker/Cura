@@ -100,11 +100,6 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._bed_temperature = temperature
         self.bedTemperatureChanged.emit()
 
-    ##  Get the bed temperature if connected printer (if any)
-    @pyqtProperty(int, notify = bedTemperatureChanged)
-    def bedTemperature(self):
-        return self._bed_temperature
-
     ##  Get the target bed temperature if connected printer (if any)
     @pyqtProperty(int, notify = targetBedTemperatureChanged)
     def targetBedTemperature(self):
