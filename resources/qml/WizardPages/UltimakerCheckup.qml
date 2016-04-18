@@ -31,9 +31,9 @@ Item
     }
 
     property variant printer_connection: {
-        if (UM.USBPrinterManager.connectedPrinterList.rowCount() != 0){
+        if (Cura.USBPrinterManager.connectedPrinterList.rowCount() != 0){
             wizardPage.checkupProgress.connection = true
-            return UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+            return Cura.USBPrinterManager.connectedPrinterList.getItem(0).printer
         }
         else {
             return null
@@ -142,7 +142,7 @@ Item
             anchors.left: connectionLabel.right
             anchors.top: parent.top
             wrapMode: Text.WordWrap
-            text: UM.USBPrinterManager.connectedPrinterList.rowCount() > 0 || base.addOriginalProgress.checkUp[0] ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
+            text: Cura.USBPrinterManager.connectedPrinterList.rowCount() > 0 || base.addOriginalProgress.checkUp[0] ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
         }
         //////////////////////////////////////////////////////////
         Label

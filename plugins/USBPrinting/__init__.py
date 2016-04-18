@@ -19,5 +19,5 @@ def getMetaData():
     }
 
 def register(app):
-    qmlRegisterSingletonType(USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager, "UM", 1, 0, "USBPrinterManager", USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager.getInstance)
+    qmlRegisterSingletonType(USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager, "Cura", 1, 0, "USBPrinterManager", USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager.getInstance)
     return {"extension":USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager.getInstance(), "output_device": USBPrinterOutputDeviceManager.USBPrinterOutputDeviceManager.getInstance()}

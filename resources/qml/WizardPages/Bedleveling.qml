@@ -18,7 +18,7 @@ Item
     property int platform_width: UM.MachineManager.getSettingValue("machine_width")
     property int platform_height: UM.MachineManager.getSettingValue("machine_depth")
     anchors.fill: parent;
-    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+    property variant printer_connection: Cura.USBPrinterManager.connectedPrinterList.getItem(0).printer
     Component.onCompleted:
     {
         printer_connection.homeBed()

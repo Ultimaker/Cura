@@ -30,10 +30,7 @@ i18n_catalog = i18nCatalog("cura")
 ##  Manager class that ensures that a usbPrinteroutput device is created for every connected USB printer.
 class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     def __init__(self, parent = None):
-        QObject.__init__(self, parent)
-        SignalEmitter.__init__(self)
-        OutputDevicePlugin.__init__(self)
-        Extension.__init__(self)
+        super().__init__(parent = parent)
         self._serial_port_list = []
         self._usb_output_devices = {}
         self._usb_output_devices_model = None
