@@ -49,11 +49,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             time.sleep(1)  # Poll every second for printer state.
 
     def close(self):
-        self._do_update = False
-        self._is_connected = False
+        self._connection_state == ConnectionState.closed
+        self._thread = None
 
     def requestWrite(self, node, file_name = None):
-        self._file = getattr( Application.getInstance().getController().getScene(), "gcode_list")
+        self._file = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         self.startPrint()
 
     ##  Start the polling thread.
@@ -79,7 +79,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def _httpPost(self, path, file_data):
         with self._http_lock:
             files_dict = {}
-            if isinstance(file_data, list): # in case a list with strings is sent
+            if isinstance(file_data, list):  # in case a list with strings is sent
                 single_string_file_data = ""
                 for line in file_data:
                     single_string_file_data += line
