@@ -1,5 +1,5 @@
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-from . import WifiConnection
+from . import NetworkPrinterOutputDevice
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange
 from UM.Signal import Signal, SignalEmitter
@@ -35,7 +35,7 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addConnection(self, name, address, properties):
-        connection = WifiConnection.WifiConnection(name, address, properties)
+        connection = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
         self._connections[address] = connection
         if connection.getKey() == Application.getInstance().getMachineManager().getActiveMachineInstance().getKey():
             self._connections[address].connect()
@@ -60,4 +60,5 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
 
         elif state_change == ServiceStateChange.Removed:
             info = zeroconf.get_service_info(service_type, name)
-            address = '.'.join(map(lambda n: str(n), info.address))
+            if info:
+                address = '.'.join(map(lambda n: str(n), info.address))

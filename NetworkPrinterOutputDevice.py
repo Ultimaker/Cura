@@ -1,19 +1,18 @@
-from UM.OutputDevice.OutputDevice import OutputDevice
-from UM.OutputDevice import OutputDeviceError
 import threading
-import json
 import time
-import base64
 import requests
 
-from . import HttpUploadDataStream
 from UM.i18n import i18nCatalog
-from UM.Signal import Signal, SignalEmitter
+from UM.Signal import Signal
 from UM.Application import Application
 from UM.Logger import Logger
+
+from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+
 i18n_catalog = i18nCatalog("cura")
 
-class WifiConnection(OutputDevice, SignalEmitter):
+
+class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, key, address, info):
         super().__init__(key)
         self._address = address
@@ -27,8 +26,6 @@ class WifiConnection(OutputDevice, SignalEmitter):
 
         self._json_printer_state = None
 
-        self._is_connected = False
-
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
         self.setName(key)
@@ -36,38 +33,20 @@ class WifiConnection(OutputDevice, SignalEmitter):
         self.setDescription(i18n_catalog.i18nc("@info:tooltip", "Print with WIFI"))
         self.setIconName("print")
 
-    connectionStateChanged = Signal()
-
     def getKey(self):
         return self._key
 
-    def isConnected(self):
-        return self._is_connected
-
-    ##  Set the connection state of this connection.
-    #   Although we use a restfull API, we do poll the api to check if the machine is still responding.
-    def setConnectionState(self, state):
-        if state != self._is_connected:
-            Logger.log("i", "setting connection state of %s to %s " %(self._address, state))
-            self._is_connected = state
-            self.connectionStateChanged.emit(self._address)
-        else:
-            self._is_connected = state
-
     def _update(self):
-        while self._thread:
-            self.setConnectionState(True)
+        while self._connection_state == ConnectionState.connected or self._connection_state == ConnectionState.busy:
             try:
                 reply = self._httpGet("printer")
                 if reply.status_code == 200:
                     self._json_printer_state = reply.json()
-                    if not self._is_connected:
-                        self.setConnectionState(True)
                 else:
-                    self.setConnectionState(False)
+                    self.setConnectionState(ConnectionState.error)
             except:
-                self.setConnectionState(False)
-            time.sleep(1)
+                self.setConnectionState(ConnectionState.error)
+            time.sleep(1)  # Poll every second for printer state.
 
     def close(self):
         self._do_update = False
