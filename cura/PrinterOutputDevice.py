@@ -152,11 +152,11 @@ class PrinterOutputDevice(OutputDevice, QObject):
 
     ##  Attempt to establish connection
     def connect(self):
-        pass
+        raise NotImplementedError("connect needs to be implemented")
 
     ##  Attempt to close the connection
     def close(self):
-        pass
+        raise NotImplementedError("close needs to be implemented")
 
     @pyqtProperty(bool, notify = connectionStateChanged)
     def connectionState(self):
