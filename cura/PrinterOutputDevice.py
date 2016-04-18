@@ -32,17 +32,28 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
 
-    # Signals:
+    ## Signals
+
+    # Signal to be emitted when bed temp is changed
     bedTemperatureChanged = pyqtSignal()
+
+    # Signal to be emitted when target bed temp is changed
     targetBedTemperatureChanged = pyqtSignal()
 
+    # Signal when the progress is changed (usually when this output device is printing / sending lots of data)
     progressChanged = pyqtSignal()
 
+    # Signal to be emitted when hotend temp is changed
     hotendTemperaturesChanged = pyqtSignal()
+
+    # Signal to be emitted when target hotend temp is changed
     targetHotendTemperaturesChanged = pyqtSignal()
 
+    # Signal to be emitted when head position is changed (x,y,z)
     headPositionChanged = pyqtSignal()
 
+    # Signal that is emitted every time connection state is changed.
+    # it also sends it's own device_id (for convenience sake)
     connectionStateChanged = pyqtSignal(str)
 
     ##  Get the bed temperature of the bed (if any)
