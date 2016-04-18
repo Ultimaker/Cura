@@ -26,7 +26,7 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._head_x = 0
         self._head_y = 0
         self._head_z = 0
-        self._connection_state = ConnectionState.CLOSED
+        self._connection_state = ConnectionState.closed
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         raise NotImplementedError("requestWrite needs to be implemented")
@@ -301,8 +301,9 @@ class PrinterOutputDevice(OutputDevice, QObject):
         self._progress = progress
         self.progressChanged.emit()
 
+
 ##  The current processing state of the backend.
 class ConnectionState(IntEnum):
-    CLOSED = 0
-    CONNECTING = 1
-    CONNECTED = 2
+    closed = 0
+    connecting = 1
+    connected = 2

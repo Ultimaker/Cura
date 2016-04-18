@@ -134,7 +134,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Start a print based on a g-code.
     #   \param gcode_list List with gcode (strings).
     def printGCode(self, gcode_list):
-        if self._progress or self._connection_state != ConnectionState.CONNECTED:
+        if self._progress or self._connection_state != ConnectionState.connected:
             Logger.log("d", "Printer is busy or not connected, aborting print")
             self.writeError.emit(self)
             return
@@ -169,7 +169,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def _updateFirmware(self):
         self.setProgress(0, 100)
 
-        if self._connection_state != ConnectionState.CLOSED:
+        if self._connection_state != ConnectionState.closed:
             self.close()
         hex_file = intelHex.readHex(self._firmware_file_name)
 
@@ -225,14 +225,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._poll_endstop = False
 
     def _pollEndStop(self):
-        while self._connection_state == ConnectionState.CONNECTED and self._poll_endstop:
+        while self._connection_state == ConnectionState.connected and self._poll_endstop:
             self.sendCommand("M119")
             time.sleep(0.5)
 
     ##  Private connect function run by thread. Can be started by calling connect.
     def _connect(self):
         Logger.log("d", "Attempting to connect to %s", self._serial_port)
-        self.setConnectionState(ConnectionState.CONNECTING)
+        self.setConnectionState(ConnectionState.connecting)
         programmer = stk500v2.Stk500v2()
         try:
             programmer.connect(self._serial_port) # Connect with the serial, if this succeeds, it's an arduino based usb device.
@@ -265,7 +265,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 line = self._readline()
                 if line is None:
                     # Something went wrong with reading, could be that close was called.
-                    self.setConnectionState(ConnectionState.CLOSED)
+                    self.setConnectionState(ConnectionState.closed)
                     return
 
                 if b"T:" in line:
@@ -273,7 +273,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                     sucesfull_responses += 1
                     if sucesfull_responses >= self._required_responses_auto_baud:
                         self._serial.timeout = 2 # Reset serial timeout
-                        self.setConnectionState(ConnectionState.CONNECTED)
+                        self.setConnectionState(ConnectionState.connected)
                         self._listen_thread.start()  # Start listening
                         Logger.log("i", "Established printer connection on port %s" % self._serial_port)
                         return 
@@ -282,7 +282,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         Logger.log("e", "Baud rate detection for %s failed", self._serial_port)
         self.close()  # Unable to connect, wrap up.
-        self.setConnectionState(ConnectionState.CLOSED)
+        self.setConnectionState(ConnectionState.closed)
 
     ##  Set the baud rate of the serial. This can cause exceptions, but we simply want to ignore those.
     def setBaudRate(self, baud_rate):
@@ -305,7 +305,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._connect_thread = threading.Thread(target = self._connect)
         self._connect_thread.daemon = True
         
-        self.setConnectionState(ConnectionState.CLOSED)
+        self.setConnectionState(ConnectionState.closed)
         if self._serial is not None:
             try:
                 self._listen_thread.join()
@@ -365,7 +365,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def sendCommand(self, cmd):
         if self._progress:
             self._command_queue.put(cmd)
-        elif self._connection_state == ConnectionState.CONNECTED:
+        elif self._connection_state == ConnectionState.connected:
             self._sendCommand(cmd)
 
     ##  Set the error state with a message.
@@ -396,7 +396,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         Logger.log("i", "Printer connection listen thread started for %s" % self._serial_port)
         temperature_request_timeout = time.time()
         ok_timeout = time.time()
-        while self._connection_state == ConnectionState.CONNECTED:
+        while self._connection_state == ConnectionState.connected:
             line = self._readline()
             if line is None: 
                 break  # None is only returned when something went wrong. Stop listening

@@ -201,7 +201,7 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
     ##  If one of the states of the connected devices change, we might need to add / remove them from the global list.
     def _onConnectionStateChanged(self, serial_port):
         try:
-            if self._usb_output_devices[serial_port].connectionState == ConnectionState.CONNECTED:
+            if self._usb_output_devices[serial_port].connectionState == ConnectionState.connected:
                 self.getOutputDeviceManager().addOutputDevice(self._usb_output_devices[serial_port])
             else:
                 self.getOutputDeviceManager().removeOutputDevice(serial_port)
@@ -216,7 +216,7 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         self._usb_output_devices_model.addRoleName(Qt.UserRole + 1, "name")
         self._usb_output_devices_model.addRoleName(Qt.UserRole + 2, "printer")
         for connection in self._usb_output_devices:
-            if self._usb_output_devices[connection].connectionState == ConnectionState.CONNECTED:
+            if self._usb_output_devices[connection].connectionState == ConnectionState.connected:
                 self._usb_output_devices_model.appendItem({"name": connection, "printer": self._usb_output_devices[connection]})
         return self._usb_output_devices_model
 
