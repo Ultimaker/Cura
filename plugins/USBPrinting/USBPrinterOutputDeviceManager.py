@@ -140,6 +140,7 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
         # The *.hex files are stored at a seperate repository:
         # https://github.com/Ultimaker/cura-binary-data/tree/master/cura/resources/firmware
         machine_without_extras  = {"bq_witbox"                : "MarlinWitbox.hex",
+                                   "bq_hephestos_2"           : "MarlinHephestos2.hex",
                                    "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
                                    "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
                                    "ultimaker2"               : "MarlinUltimaker2.hex",
