@@ -190,8 +190,8 @@ class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addOutputDevice(self, serial_port):
         device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
-        device.connect()
         device.connectionStateChanged.connect(self._onConnectionStateChanged)
+        device.connect()
         device.progressChanged.connect(self.progressChanged)
         self._usb_output_devices[serial_port] = device
 
