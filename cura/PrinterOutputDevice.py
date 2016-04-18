@@ -15,8 +15,7 @@ from UM.Logger import Logger
 #   For all other uses it should be used in the same way as a "regular" OutputDevice.
 class PrinterOutputDevice(OutputDevice, QObject):
     def __init__(self, device_id, parent = None):
-        QObject.__init__(self, parent)
-        OutputDevice.__init__(self, device_id)
+        super().__init__(device_id = device_id, parent = parent)
 
         self._target_bed_temperature = 0
         self._bed_temperature = 0
