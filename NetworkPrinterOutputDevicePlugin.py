@@ -5,14 +5,18 @@ from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange
 from UM.Signal import Signal, SignalEmitter
 from UM.Application import Application
 
+
 class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def __init__(self):
         super().__init__()
         self._zero_conf = Zeroconf()
         self._browser = None
         self._connections = {}
-        self.addConnectionSignal.connect(self.addConnection) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+
+        # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+        self.addConnectionSignal.connect(self.addConnection)
         Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineInstanceChanged)
+
     addConnectionSignal = Signal()
 
     ##  Start looking for devices on network.
@@ -31,7 +35,6 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
                 self._connections[address].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
                 self._connections[address].close()
-        print("on active machine instance changed" , active_machine_key)
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addConnection(self, name, address, properties):
