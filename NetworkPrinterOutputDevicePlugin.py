@@ -14,10 +14,10 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
         self._printers = {}
 
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-        self.addConnectionSignal.connect(self.addConnection)
+        self.addPrinterSignal.connect(self.addPrinter)
         Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineInstanceChanged)
 
-    addConnectionSignal = Signal()
+    addPrinterSignal = Signal()
 
     ##  Start looking for devices on network.
     def start(self):
@@ -37,12 +37,12 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
                 self._printers[address].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-    def addConnection(self, name, address, properties):
-        connection = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
-        self._printers[address] = connection
-        if connection.getKey() == Application.getInstance().getMachineManager().getActiveMachineInstance().getKey():
+    def addPrinter(self, name, address, properties):
+        printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
+        self._printers[address] = printer
+        if printer.getKey() == Application.getInstance().getMachineManager().getActiveMachineInstance().getKey():
             self._printers[address].connect()
-        connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+        printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
     def _onPrinterConnectionStateChanged(self, address):
         if self._printers[address].isConnected():
@@ -50,7 +50,7 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
         else:
             self.getOutputDeviceManager().removeOutputDevice(self._printers[address])
 
-    def removeConnection(self):
+    def removePrinter(self):
         pass
 
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
@@ -59,7 +59,7 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
             if info:
                 if info.properties.get(b"type", None):
                     address = '.'.join(map(lambda n: str(n), info.address))
-                    self.addConnectionSignal.emit(str(name), address, info.properties)
+                    self.addPrinterSignal.emit(str(name), address, info.properties)
 
         elif state_change == ServiceStateChange.Removed:
             info = zeroconf.get_service_info(service_type, name)
