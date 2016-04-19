@@ -24,6 +24,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         self._json_printer_state = None
 
+        self._num_extruders = 2
+
         self._api_version = "1"
         self._api_prefix = "/api/v" + self._api_version + "/"
         self.setName(key)
@@ -41,19 +43,26 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 reply = self._httpGet("printer")
                 if reply.status_code == 200:
                     self._json_printer_state = reply.json()
+                    try:
+                        self._spliceJSONData()
+                    except:
+                        # issues with json parsing should not break by definition TODO: Check in what cases it should fail.
+                        pass
                     if self._connection_state == ConnectionState.connecting:
                         # First successful response, so we are now "connected"
                         self.setConnectionState(ConnectionState.connected)
                 else:
+                    Logger.log("w", "Got http status code %s while trying to request data.", reply.status_code)
                     self.setConnectionState(ConnectionState.error)
-            except:
+            except Exception as e:
                 self.setConnectionState(ConnectionState.error)
-            time.sleep(1)  # Poll every second for printer state.
-        Logger.log("d", "Update thread of printer with key %s and ip %s stopped", self._key, self._address)
+                Logger.log("w", "Exception occured while connecting; %s", str(e))
+            time.sleep(2)  # Poll every second for printer state.
+        Logger.log("d", "Update thread of printer with key %s and ip %s stopped with state: %s", self._key, self._address, self._connection_state)
 
     ##  Convenience function that gets information from the recieved json data and converts it to the right internal
     #   values / variables
-    def _spliceJsonData(self):
+    def _spliceJSONData(self):
         pass
 
     def close(self):
