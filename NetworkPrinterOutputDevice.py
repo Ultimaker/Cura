@@ -83,6 +83,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         bed_temperature = self._json_printer_state["bed"]["temperature"]
         self._setBedTemperature(bed_temperature)
 
+        head_x = self._json_printer_state["heads"][0]["position"]["x"]
+        head_y = self._json_printer_state["heads"][0]["position"]["y"]
+        head_z = self._json_printer_state["heads"][0]["position"]["z"]
+        self._updateHeadPosition(head_x, head_y, head_z)
+
     def close(self):
         self._connection_state == ConnectionState.closed
         if self._update_thread != None:
