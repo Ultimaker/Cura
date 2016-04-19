@@ -108,6 +108,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         pass #Do Nothing
 
     def startPrint(self):
+        if self._progress != 0:
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Printer is still printing. Unable to start a new job."))
+            self._error_message.show()
+            return
         try:
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
@@ -118,7 +122,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 pass
         except IOError:
             self._progress_message.hide()
-            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data printer. Is another job still active?"))
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data to printer. Is another job still active?"))
             self._error_message.show()
         except Exception as e:
             self._progress_message.hide()
