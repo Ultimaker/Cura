@@ -96,14 +96,14 @@ class Profile:
             for key, value in self._settings.items():
                 if key == "speed_support_lines": #Setting key was changed for 2.2.
                     key = "speed_support_infill"
-                config.set("settings", key, value)
+                config.set("settings", key, str(value))
 
         if self._changed_settings_defaults:
             config.add_section("defaults")
             for key, value in self._changed_settings_defaults.items():
                 if key == "speed_support_lines": #Setting key was changed for 2.2.
                     key = "speed_support_infill"
-                config.set("defaults", key, value)
+                config.set("defaults", key, str(value))
 
         if self._disabled_settings_defaults:
             config.add_section("disabled_defaults")

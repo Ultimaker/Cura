@@ -63,7 +63,7 @@ class MachineInstance:
         config.add_section("general")
         config.set("general", "name", self._name)
         config.set("general", "type", self._type_name)
-        config.set("general", "version", 2) #Hard-code version 2, since if this number changes the programmer MUST change this entire function.
+        config.set("general", "version", "2") #Hard-code version 2, since if this number changes the programmer MUST change this entire function.
         if self._variant_name:
             config.set("general", "variant", self._variant_name)
         if self._key:
@@ -77,7 +77,7 @@ class MachineInstance:
         for key, value in self._machine_setting_overrides.items():
             if key == "speed_support_lines": #Setting key was changed for 2.2.
                 key = "speed_support_infill"
-            config.set("machine_settings", key, value)
+            config.set("machine_settings", key, str(value))
 
         output = io.StringIO()
         config.write(output)
