@@ -552,7 +552,7 @@
                             "default": 2,
                             "min_value": "0",
                             "visible": false,
-                            "inherit_function": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density"
+                            "inherit_function": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == \"grid\" else (3 if infill_pattern == \"triangles\" else 1))"
                         }
                     }
                 },
@@ -1237,7 +1237,7 @@
                             "default": 2.66,
                             "visible": false,
                             "enabled": "support_enable",
-                            "inherit_function": "(support_line_width * 100) / parent_value",
+                            "inherit_function": "(support_line_width * 100) / parent_value * (2 if support_pattern == \"grid\" else (3 if support_pattern == \"triangles\" else 1))",
                             "global_only": true
                         }
                     }
@@ -1372,7 +1372,7 @@
                             "default": 0.4,
                             "min_value": "0",
                             "visible": false,
-                            "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value",
+                            "inherit_function": "0 if parent_value == 0 else (support_roof_line_width * 100) / parent_value * (2 if support_roof_pattern == \"grid\" else (3 if support_roof_pattern == \"triangles\" else 1))",
                             "enabled": "support_roof_enable",
                             "global_only": true
                         }
