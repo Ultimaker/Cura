@@ -66,9 +66,9 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
-        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
+        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
