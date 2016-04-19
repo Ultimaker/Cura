@@ -50,6 +50,8 @@ class MachineInstance:
 
     ##  Serialises this machine instance as file format version 2.
     #
+    #   This is where the actual translation happens in this case.
+    #
     #   \return A serialised form of this machine instance, serialised in
     #   version 2 of the file format.
     def exportVersion2():
@@ -70,7 +72,8 @@ class MachineInstance:
 
         config.add_section("machine_settings")
         for key, value in self._machine_setting_overrides.items():
-            #TODO: Filter these through a translation dictionary.
+            if key == "speed_support_lines": #Setting key was changed for 2.2.
+                key = "speed_support_infill"
             config.set("machine_settings", key, value)
 
         output = io.StringIO()
