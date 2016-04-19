@@ -4,7 +4,6 @@
 from UM.VersionUpgrade import VersionUpgrade #Superclass of the plugin.
 
 from . import MachineInstance #To upgrade machine instances.
-from . import Preferences #To upgrade preferences.
 from . import Profile #To upgrade profiles.
 
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
