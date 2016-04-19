@@ -1,7 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import UM.SettingsError #To indicate that a file is of incorrect format.
+import UM.Settings.SettingsError #To indicate that a file is of incorrect format.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
