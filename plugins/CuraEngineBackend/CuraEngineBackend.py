@@ -200,8 +200,10 @@ class CuraEngineBackend(Backend):
         self._onChanged()
 
     def _onSocketError(self, error):
-        super()._onSocketError(error)
+        if Application.getInstance().isShuttingDown():
+            return
 
+        super()._onSocketError(error)
         self._terminate()
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
