@@ -29,26 +29,26 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
 
     def _onActiveMachineInstanceChanged(self):
         active_machine_key = Application.getInstance().getMachineManager().getActiveMachineInstance().getKey()
-        for address in self._printers:
-            if self._printers[address].getKey() == active_machine_key:
-                self._printers[address].connect()
-                self._printers[address].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
+        for key in self._printers:
+            if key == active_machine_key:
+                self._printers[key].connect()
+                self._printers[key].connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
             else:
-                self._printers[address].close()
+                self._printers[key].close()
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addPrinter(self, name, address, properties):
         printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
-        self._printers[address] = printer
+        self._printers[printer.getKey()] = printer
         if printer.getKey() == Application.getInstance().getMachineManager().getActiveMachineInstance().getKey():
-            self._printers[address].connect()
+            self._printers[printer.getKey()].connect()
         printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
-    def _onPrinterConnectionStateChanged(self, address):
-        if self._printers[address].isConnected():
-            self.getOutputDeviceManager().addOutputDevice(self._printers[address])
+    def _onPrinterConnectionStateChanged(self, key):
+        if self._printers[key].isConnected():
+            self.getOutputDeviceManager().addOutputDevice(self._printers[key])
         else:
-            self.getOutputDeviceManager().removeOutputDevice(self._printers[address])
+            self.getOutputDeviceManager().removeOutputDevice(self._printers[key])
 
     def removePrinter(self):
         pass

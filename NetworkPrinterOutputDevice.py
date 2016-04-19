@@ -3,7 +3,6 @@ import time
 import requests
 
 from UM.i18n import i18nCatalog
-from UM.Signal import Signal
 from UM.Application import Application
 from UM.Logger import Logger
 
@@ -11,7 +10,7 @@ from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 i18n_catalog = i18nCatalog("cura")
 
-
+##  Network connected (wifi / lan) printer that uses the Ultimaker API
 class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, key, address, info):
         super().__init__(key)
@@ -21,7 +20,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._http_lock = threading.Lock()
         self._http_connection = None
         self._file = None
-        self._do_update = True
         self._thread = None
 
         self._json_printer_state = None
@@ -37,16 +35,26 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         return self._key
 
     def _update(self):
-        while self._connection_state == ConnectionState.connected or self._connection_state == ConnectionState.busy:
+        Logger.log("d", "Update thread of printer with key %s and ip %s started", self._key, self._address)
+        while self.isConnected():
             try:
                 reply = self._httpGet("printer")
                 if reply.status_code == 200:
                     self._json_printer_state = reply.json()
+                    if self._connection_state == ConnectionState.connecting:
+                        # First successful response, so we are now "connected"
+                        self.setConnectionState(ConnectionState.connected)
                 else:
                     self.setConnectionState(ConnectionState.error)
             except:
                 self.setConnectionState(ConnectionState.error)
             time.sleep(1)  # Poll every second for printer state.
+        Logger.log("d", "Update thread of printer with key %s and ip %s stopped", self._key, self._address)
+
+    ##  Convenience function that gets information from the recieved json data and converts it to the right internal
+    #   values / variables
+    def _spliceJsonData(self):
+        pass
 
     def close(self):
         self._connection_state == ConnectionState.closed
@@ -56,10 +64,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._file = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         self.startPrint()
 
+    def isConnected(self):
+        return self._connection_state != ConnectionState.closed and self._connection_state != ConnectionState.error
+
     ##  Start the polling thread.
     def connect(self):
         if self._thread is None:
-            self._do_update = True
+            self.setConnectionState(ConnectionState.connecting)
             self._thread = threading.Thread(target = self._update)
             self._thread.daemon = True
             self._thread.start()
