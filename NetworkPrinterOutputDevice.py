@@ -6,6 +6,8 @@ from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.Logger import Logger
 
+from UM.Message import Message
+
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 i18n_catalog = i18nCatalog("cura")
@@ -32,6 +34,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print with WIFI"))
         self.setDescription(i18n_catalog.i18nc("@info:tooltip", "Print with WIFI"))
         self.setIconName("print")
+
+        self._progress_message = None
+        self._error_message = None
 
     def getKey(self):
         return self._key
@@ -96,8 +101,19 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def startPrint(self):
         try:
+            self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
+            self._progress_message.show()
+            #TODO: Create a job that handles this! (As it currently locks up UI)
             result = self._httpPost("print_job", self._file)
+            self._progress_message.hide()
+            if result.status_code == 200:
+                pass
+        except IOError:
+            self._progress_message.hide()
+            self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data printer. Is another job still active?"))
+            self._error_message.show()
         except Exception as e:
+            self._progress_message.hide()
             Logger.log("e" , "An exception occured in wifi connection: %s" % str(e))
 
     def _httpGet(self, path):
