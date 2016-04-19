@@ -46,6 +46,7 @@ import numpy
 import copy
 numpy.seterr(all="ignore")
 
+#WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
     if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
