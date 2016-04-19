@@ -5,6 +5,15 @@
 
 import sys
 
+# It looks like setuptools creates a .pth file in
+# the default /usr/lib which causes the default site-packages
+# to be inserted into sys.path before PYTHONPATH.
+# This can cause issues such as having libsip loaded from
+# the system instead of the one provided with Cura, which causes
+# incompatibility issues with libArcus
+sys.path.insert(1, os.environ.get('PYTHONPATH', ''))
+
+
 def exceptHook(hook_type, value, traceback):
     import cura.CrashHandler
     cura.CrashHandler.show(hook_type, value, traceback)
