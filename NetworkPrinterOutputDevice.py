@@ -20,7 +20,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._http_lock = threading.Lock()
         self._http_connection = None
         self._file = None
-        self._thread = None
+        self._update_thread = None
 
         self._json_printer_state = None
 
@@ -73,7 +73,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def close(self):
         self._connection_state == ConnectionState.closed
-        self._thread = None
+        self._update_thread.join()
+        self._update_thread = None
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self._file = getattr(Application.getInstance().getController().getScene(), "gcode_list")
@@ -84,11 +85,11 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     ##  Start the polling thread.
     def connect(self):
-        if self._thread is None:
+        if self._update_thread is None:
             self.setConnectionState(ConnectionState.connecting)
-            self._thread = threading.Thread(target = self._update)
-            self._thread.daemon = True
-            self._thread.start()
+            self._update_thread = threading.Thread(target = self._update)
+            self._update_thread.daemon = True
+            self._update_thread.start()
 
     def getCameraImage(self):
         pass #Do Nothing
