@@ -45,9 +45,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         Logger.log("d", "Update thread of printer with key %s and ip %s started", self._key, self._address)
         while self.isConnected():
             try:
-                reply = self._httpGet("printer")
-                if reply.status_code == 200:
-                    self._json_printer_state = reply.json()
+                printer_reply = self._httpGet("printer")
+                if printer_reply.status_code == 200:
+                    self._json_printer_state = printer_reply.json()
                     try:
                         self._spliceJSONData()
                     except:
@@ -57,8 +57,16 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                         # First successful response, so we are now "connected"
                         self.setConnectionState(ConnectionState.connected)
                 else:
-                    Logger.log("w", "Got http status code %s while trying to request data.", reply.status_code)
+                    Logger.log("w", "Got http status code %s while trying to request data.", printer_reply.status_code)
                     self.setConnectionState(ConnectionState.error)
+
+                print_job_reply = self._httpGet("print_job")
+                if print_job_reply.status_code != 404:
+                    self.setProgress(print_job_reply.json()["progress"])
+                else:
+                    self.setProgress(0)
+
+                
             except Exception as e:
                 self.setConnectionState(ConnectionState.error)
                 Logger.log("w", "Exception occured while connecting; %s", str(e))
