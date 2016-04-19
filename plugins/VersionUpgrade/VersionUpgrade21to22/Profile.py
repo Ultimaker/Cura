@@ -12,7 +12,10 @@ import io #To write config files to strings as if they were files.
 #   \param serialised The serialised form of a profile in version 1.
 #   \return A profile instance, or None if the file format is incorrect.
 def importVersion1(serialised):
-    return Profile(serialised)
+    try:
+        return Profile(serialised)
+    except configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError:
+        return None
 
 ##  A representation of a profile used as intermediary form for conversion from
 #   one format to the other.

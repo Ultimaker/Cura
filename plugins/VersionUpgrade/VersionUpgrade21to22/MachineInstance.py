@@ -13,7 +13,10 @@ import io #To write config files to strings as if they were files.
 #   \return A machine instance instance, or None if the file format is
 #   incorrect.
 def importVersion1(serialised):
-    return MachineInstance(serialised)
+    try:
+        return MachineInstance(serialised)
+    except configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError:
+        return None
 
 ##  A representation of a machine instance used as intermediary form for
 #   conversion from one format to the other.
