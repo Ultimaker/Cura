@@ -15,7 +15,7 @@ import io #To write config files to strings as if they were files.
 def importVersion1(serialised):
     try:
         return MachineInstance(serialised)
-    except configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError:
+    except (configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError):
         return None
 
 ##  A representation of a machine instance used as intermediary form for
