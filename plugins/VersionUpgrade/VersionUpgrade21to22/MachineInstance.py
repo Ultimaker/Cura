@@ -57,7 +57,7 @@ class MachineInstance:
     #
     #   \return A serialised form of this machine instance, serialised in
     #   version 2 of the file format.
-    def exportVersion2():
+    def exportVersion2(self):
         config = configparser.ConfigParser(interpolation = None) #Build a config file in the form of version 2.
 
         config.add_section("general")
