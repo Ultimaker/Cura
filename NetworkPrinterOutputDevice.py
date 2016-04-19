@@ -63,7 +63,13 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
     ##  Convenience function that gets information from the recieved json data and converts it to the right internal
     #   values / variables
     def _spliceJSONData(self):
-        pass
+        # Check for hotend temperatures
+        for index in range(0, self._num_extruders - 1):
+            temperature = self._json_printer_state["heads"][0]["extruders"][index]["hotend"]["temperature"]["current"]
+            self._setHotendTemperature(index, temperature)
+
+        bed_temperature = self._json_printer_state["bed"]["temperature"]
+        self._setBedTemperature(bed_temperature)
 
     def close(self):
         self._connection_state == ConnectionState.closed
