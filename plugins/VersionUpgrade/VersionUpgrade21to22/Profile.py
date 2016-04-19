@@ -72,7 +72,7 @@ class Profile:
     #
     #   \return A serialised form of this profile, serialised in version 2 of
     #   the file format.
-    def exportVersion2():
+    def exportVersion2(self):
         config = configparser.ConfigParser(interpolation = None)
 
         config.add_section("general")
