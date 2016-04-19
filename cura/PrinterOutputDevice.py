@@ -190,6 +190,22 @@ class PrinterOutputDevice(OutputDevice, QObject):
     def headZ(self):
         return self._head_z
 
+    ##  Update the saved position of the head
+    #   This function should be called when a new position for the head is recieved. 
+    def _updateHeadPosition(self, x, y ,z):
+        position_changed = False
+        if self._head_x != x:
+            self._head_x = x
+            position_changed = True
+        if self._head_y != y:
+            self._head_y = y
+            position_changed = True
+        if self._head_z != z:
+            self._head_z = z
+            position_changed = True
+        if position_changed:
+            self.headPositionChanged.emit()
+
     ##  Set the position of the head.
     #   In some machines it's actually the bed that moves. For convenience sake we simply see it all as head movements.
     #   This function is "final" (do not re-implement)
