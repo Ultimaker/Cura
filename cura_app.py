@@ -15,7 +15,7 @@ import sys
 # incompatibility issues with libArcus
 if "PYTHONPATH" in os.environ.keys():                # If PYTHONPATH is used
     if sys.path[-1] == os.environ["PYTHONPATH"]:     # .. check whether PYTHONPATH is placed incorrectly at the end of sys.path.
-        sys.path.pop(-1)                             # If so remove that element..
+        sys.path.pop(-1)                             # If so, remove that element..
         sys.path.insert(1, os.environ['PYTHONPATH']) # and add it at the correct place again.
 
 
