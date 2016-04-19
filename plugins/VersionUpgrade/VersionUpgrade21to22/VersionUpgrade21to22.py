@@ -9,7 +9,7 @@ from . import Profile #To upgrade profiles.
 
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
-#   It converts the machine instances, preferences and profiles.
+#   It converts the machine instances and profiles.
 class VersionUpgrade21to22(VersionUpgrade):
     ##  Converts machine instances from format version 1 to version 2.
     #
@@ -21,17 +21,6 @@ class VersionUpgrade21to22(VersionUpgrade):
         if not machine_instance: #Invalid file format.
             return None
         return machine_instance.exportVersion2()
-
-    ##  Converts preferences from format version 2 to version 3.
-    #
-    #   \param serialised The serialised preferences file in version 2.
-    #   \return The serialised preferences file in version 3, or None if the
-    #   input was not of the correct format.
-    def upgradePreferences(self, serialised):
-        preferences = Preferences.importVersion2(serialised)
-        if not preferences: #Invalid file format.
-            return None
-        return preferences.exportVersion3()
 
     ##  Converts profiles from format version 1 to version 2.
     #

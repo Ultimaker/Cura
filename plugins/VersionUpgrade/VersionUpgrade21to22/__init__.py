@@ -20,10 +20,6 @@ def getMetaData():
                 "from": 1,
                 "to": 2
             },
-            "preferences": {
-                "from": 2,
-                "to": 3
-            },
             "machine_instance": {
                 "from": 1,
                 "to": 2
