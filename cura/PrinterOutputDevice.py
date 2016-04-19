@@ -298,8 +298,9 @@ class PrinterOutputDevice(OutputDevice, QObject):
     ##  Set the progress of any currently active process
     #   /param progress Progress of the process.
     def setProgress(self, progress):
-        self._progress = progress
-        self.progressChanged.emit()
+        if self._progress != progress:
+            self._progress = progress
+            self.progressChanged.emit()
 
 
 ##  The current processing state of the backend.
