@@ -6,7 +6,7 @@
 import os
 import sys
 
-# WORKAROUND: GITHUB-704 GITHUB-708
+#WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
 # the default /usr/lib which causes the default site-packages
 # to be inserted into sys.path before PYTHONPATH.
