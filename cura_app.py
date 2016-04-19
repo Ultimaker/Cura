@@ -6,13 +6,17 @@
 import os
 import sys
 
+# WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
 # the default /usr/lib which causes the default site-packages
 # to be inserted into sys.path before PYTHONPATH.
 # This can cause issues such as having libsip loaded from
 # the system instead of the one provided with Cura, which causes
 # incompatibility issues with libArcus
-sys.path.insert(1, os.environ.get('PYTHONPATH', ''))
+if "PYTHONPATH" in os.environ.keys():                # If PYTHONPATH is used
+    if sys.path[-1] == os.environ["PYTHONPATH"]:     # .. check whether PYTHONPATH is placed incorrectly at the end of sys.path.
+        sys.path.pop(-1)                             # If so remove that element..
+        sys.path.insert(1, os.environ['PYTHONPATH']) # and add it at the correct place again.
 
 
 def exceptHook(hook_type, value, traceback):
