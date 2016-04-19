@@ -75,7 +75,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._connection_state == ConnectionState.closed
         self._thread = None
 
-    def requestWrite(self, node, file_name = None):
+    def requestWrite(self, node, file_name = None, filter_by_machine = False):
         self._file = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         self.startPrint()
 
