@@ -21,9 +21,9 @@ class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
 
     ##  Start looking for devices on network.
     def start(self):
-        self._browser = ServiceBrowser(Zeroconf(), u'_ultimaker._tcp.local.', [self._onServiceChanged])
+        self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
 
-    ##  Stop looking for devices on network.
+    ##  Stop looking for devices on network.s
     def stop(self):
         self._zero_conf.close()
 
