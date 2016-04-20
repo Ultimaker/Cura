@@ -46,6 +46,7 @@ import numpy
 import copy
 numpy.seterr(all="ignore")
 
+#WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
 if platform.system() == "Linux": # Needed for platform.linux_distribution, which is not available on Windows and OSX
     # For Ubuntu: https://bugs.launchpad.net/ubuntu/+source/python-qt4/+bug/941826
     if platform.linux_distribution()[0] in ("Ubuntu", ): # TODO: Needs a "if X11_GFX == 'nvidia'" here. The workaround is only needed on Ubuntu+NVidia drivers. Other drivers are not affected, but fine with this fix.
@@ -66,9 +67,9 @@ class CuraApplication(QtApplication):
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
-        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura"))
+        Resources.addSearchPath(os.path.join(QtApplication.getInstallPrefix(), "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
-            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
+            Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
