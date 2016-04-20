@@ -31,3 +31,34 @@ class VersionUpgrade21to22(VersionUpgrade):
         if not profile: #Invalid file format.
             return None
         return profile.exportVersion2()
+
+    ##  Translates settings for the change from Cura 2.1 to 2.2.
+    #
+    #   Each setting is changed in-place in the provided dictionary. This changes
+    #   the input parameter.
+    #
+    #   \param settings A dictionary of settings (as key-value pairs) to update.
+    #   \return The same dictionary.
+    @staticmethod
+    def translateSettings(settings):
+        for key, value in settings.items():
+            if key == "speed_support_lines": #Setting key was changed for 2.2.
+                del settings[key]
+                settings["speed_support_infill"] = value
+            if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+                settings[key] = "off" if (value == "False") else "all"
+        return settings
+
+    ##  Translates setting names for the change from Cura 2.1 to 2.2.
+    #
+    #   The setting names are changed in-place in the provided list. This changes
+    #   the input parameter.
+    #
+    #   \param settings A list of setting names to update.
+    #   \return The same list.
+    @staticmethod
+    def translateSettingNames(settings):
+        for i in range(0, len(settings)):
+            if settings[i] == "speed_support_lines":
+                settings[i] = "speed_support_infill"
+        return settings

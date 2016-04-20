@@ -58,6 +58,7 @@ class MachineInstance:
     #   \return A serialised form of this machine instance, serialised in
     #   version 2 of the file format.
     def exportVersion2(self):
+        import VersionUpgrade21to22 #Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None) #Build a config file in the form of version 2.
 
         config.add_section("general")
@@ -73,12 +74,9 @@ class MachineInstance:
         if self._active_material_name:
             config.set("general", "material", self._active_material_name)
 
+        VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._machine_setting_overrides)
         config.add_section("machine_settings")
         for key, value in self._machine_setting_overrides.items():
-            if key == "speed_support_lines": #Setting key was changed for 2.2.
-                key = "speed_support_infill"
-            if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
-                value = "off" if (value == "False") else "all"
             config.set("machine_settings", key, str(value))
 
         output = io.StringIO()

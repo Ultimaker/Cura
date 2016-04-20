@@ -73,6 +73,7 @@ class Profile:
     #   \return A serialised form of this profile, serialised in version 2 of
     #   the file format.
     def exportVersion2(self):
+        import VersionUpgrade21to22 #Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None)
 
         config.add_section("general")
@@ -92,24 +93,19 @@ class Profile:
             config.set("general", "material", self._material_name)
 
         if self._settings:
+            VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._settings)
             config.add_section("settings")
             for key, value in self._settings.items():
-                if key == "speed_support_lines": #Setting key was changed for 2.2.
-                    key = "speed_support_infill"
-                if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
-                    value = "off" if (value == "False") else "all"
                 config.set("settings", key, str(value))
 
         if self._changed_settings_defaults:
+            VersionUpgrade21to22.VersionUpgrade21to22.translateSettings(self._changed_settings_defaults)
             config.add_section("defaults")
             for key, value in self._changed_settings_defaults.items():
-                if key == "speed_support_lines": #Setting key was changed for 2.2.
-                    key = "speed_support_infill"
-                if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
-                    value = "off" if (value == "False") else "all"
                 config.set("defaults", key, str(value))
 
         if self._disabled_settings_defaults:
+            VersionUpgrade21to22.VersionUpgrade21to22.translateSettingNames(self._disabled_settings_defaults)
             config.add_section("disabled_defaults")
             disabled_defaults_string = str(self._disabled_settings_defaults[0]) #Must be at least 1 item, otherwise we wouldn't enter this if statement.
             for item in self._disabled_settings_defaults[1:]:
