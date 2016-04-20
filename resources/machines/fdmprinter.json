@@ -1009,7 +1009,7 @@
                         "all": "All",
                         "noskin": "No Skin"
                     },
-                    "default": true,
+                    "default": "all",
                     "visible": false,
                     "global_only": true
                 },
