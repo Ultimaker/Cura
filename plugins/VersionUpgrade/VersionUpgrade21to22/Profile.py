@@ -96,6 +96,8 @@ class Profile:
             for key, value in self._settings.items():
                 if key == "speed_support_lines": #Setting key was changed for 2.2.
                     key = "speed_support_infill"
+                if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+                    value = "off" if (value == "False") else "all"
                 config.set("settings", key, str(value))
 
         if self._changed_settings_defaults:
@@ -103,6 +105,8 @@ class Profile:
             for key, value in self._changed_settings_defaults.items():
                 if key == "speed_support_lines": #Setting key was changed for 2.2.
                     key = "speed_support_infill"
+                if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+                    value = "off" if (value == "False") else "all"
                 config.set("defaults", key, str(value))
 
         if self._disabled_settings_defaults:

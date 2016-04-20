@@ -77,6 +77,8 @@ class MachineInstance:
         for key, value in self._machine_setting_overrides.items():
             if key == "speed_support_lines": #Setting key was changed for 2.2.
                 key = "speed_support_infill"
+            if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+                value = "off" if (value == "False") else "all"
             config.set("machine_settings", key, str(value))
 
         output = io.StringIO()
