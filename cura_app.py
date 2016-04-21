@@ -13,18 +13,14 @@ import sys
 # This can cause issues such as having libsip loaded from
 # the system instead of the one provided with Cura, which causes
 # incompatibility issues with libArcus
-if "PYTHONPATH" in os.environ.keys():                # If PYTHONPATH is used
-    PYTHONPATH = os.environ["PYTHONPATH"]
-    PYTHONPATH = PYTHONPATH.split(os.pathsep)
-    PYTHONPATH_real = os.path.realpath(PYTHONPATH[0])
-    PYTHONPATH = PYTHONPATH[1:]
-    while PYTHONPATH:
-        PYTHONPATH_real += ":%s" %(os.path.realpath(PYTHONPATH[0]))
-        PYTHONPATH = PYTHONPATH[1:]
-    if sys.path[1] != PYTHONPATH_real:      # .. check whether PYTHONPATH is placed incorrectly.
-        sys.path.remove(PYTHONPATH_real)    # If so, remove that element..
-        sys.path.insert(1, PYTHONPATH_real) # and add it at the correct place again.
-
+if "PYTHONPATH" in os.environ.keys():                       # If PYTHONPATH is used
+    PYTHONPATH = os.environ["PYTHONPATH"].split(os.pathsep) # Get the value, split it..
+    PYTHONPATH = PYTHONPATH.reverse()                       # and reverse it, because we always insert at 1
+    for PATH in PYTHONPATH:                                 # Now beginning with the last PATH
+        PATH_real = os.path.realpath(PATH)                  # Making the the path "real"
+        if PATH_real in sys.path:                           # This should always work, but keep it to be sure..
+            sys.path.remove(PATH_real)
+        sys.path.insert(1, PATH_real)                       # Insert it at 1 before os.curdir, which is 0.
 
 def exceptHook(hook_type, value, traceback):
     import cura.CrashHandler
