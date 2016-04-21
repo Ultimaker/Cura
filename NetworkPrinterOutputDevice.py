@@ -8,7 +8,12 @@ from UM.Logger import Logger
 
 from UM.Message import Message
 
+from .SendGCodeJob import SendGCodeJob
+
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
+
+from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtCore import QUrl
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -34,6 +39,19 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.setShortDescription(i18n_catalog.i18nc("@action:button", "Print with WIFI"))
         self.setDescription(i18n_catalog.i18nc("@info:tooltip", "Print with WIFI"))
         self.setIconName("print")
+
+        self._manager = QNetworkAccessManager()
+        self._manager.finished.connect(self._onFinished)
+
+        ##  Hack to ensure that the qt networking stuff isn't garbage collected (unless we want it to)
+        self._qt_request = None
+        self._qt_reply = None
+        self._qt_multi_part = None
+        self._qt_part = None
+
+
+        #request_qt_get = QNetworkRequest(QUrl("http://10.180.0.53/api/v1/printer"))
+        #response = self._manager.get(request_qt_get)
 
         self._progress_message = None
         self._error_message = None
@@ -120,11 +138,34 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         try:
             self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), 0, False, -1)
             self._progress_message.show()
-            #TODO: Create a job that handles this! (As it currently locks up UI)
-            result = self._httpPost("print_job", self._file)
-            self._progress_message.hide()
-            if result.status_code == 200:
-                pass
+
+            single_string_file_data = ""
+            for line in self._file:
+                single_string_file_data += line
+
+            ##  TODO: Use correct file name (we use placeholder now)
+            file_name = "test.gcode"
+
+            ##  Create multi_part request
+            self._qt_multi_part = QHttpMultiPart(QHttpMultiPart.FormDataType)
+
+            ##  Create part (to be placed inside multipart)
+            self._qt_part = QHttpPart()
+            self._qt_part.setHeader(QNetworkRequest.ContentDispositionHeader,
+                           "form-data; name=\"file\"; filename=\"%s\"" % file_name)
+            self._qt_part.setBody(single_string_file_data)
+            self._qt_multi_part.append(self._qt_part)
+
+            url =  "http://" + self._address + self._api_prefix + "print_job"
+
+            url_2 = "http://10.180.0.53/api/v1/print_job"
+            ##  Create the QT request
+            self._qt_request = QNetworkRequest(QUrl("http://10.180.0.53/api/v1/print_job"))
+
+            ##  Post request + data
+            self._qt_reply = self._manager.post(self._qt_request, self._qt_multi_part)
+            self._qt_reply.uploadProgress.connect(self._onUploadProgress)
+
         except IOError:
             self._progress_message.hide()
             self._error_message = Message(i18n_catalog.i18nc("@info:status", "Unable to send data to printer. Is another job still active?"))
@@ -132,6 +173,14 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         except Exception as e:
             self._progress_message.hide()
             Logger.log("e" , "An exception occured in wifi connection: %s" % str(e))
+
+    def _onFinished(self, reply):
+        #print(reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
+        reply.uploadProgress.disconnect(self._onUploadProgress)
+        self._progress_message.hide()
+
+    def _onUploadProgress(self, bytes_sent, bytes_total):
+        self._progress_message.setProgress(bytes_sent / bytes_total * 100)
 
     def _httpGet(self, path):
         return requests.get("http://" + self._address + self._api_prefix + path)
