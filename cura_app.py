@@ -20,7 +20,7 @@ if "PYTHONPATH" in os.environ.keys():                       # If PYTHONPATH is u
         PATH_real = os.path.realpath(PATH)                  # Making the the path "real"
         if PATH_real in sys.path:                           # This should always work, but keep it to be sure..
             sys.path.remove(PATH_real)
-        sys.path.insert(1, PATH_real)                       # Insert it at 1 before os.curdir, which is 0.
+        sys.path.insert(1, PATH_real)                       # Insert it at 1 after os.curdir, which is 0.
 
 def exceptHook(hook_type, value, traceback):
     import cura.CrashHandler
