@@ -14,7 +14,13 @@ import sys
 # the system instead of the one provided with Cura, which causes
 # incompatibility issues with libArcus
 if "PYTHONPATH" in os.environ.keys():                # If PYTHONPATH is used
-    PYTHONPATH_real = os.path.realpath(os.environ["PYTHONPATH"])
+    PYTHONPATH = os.environ["PYTHONPATH"]
+    PYTHONPATH = PYTHONPATH.split(os.pathsep)
+    PYTHONPATH_real = os.path.realpath(PYTHONPATH[0])
+    PYTHONPATH = PYTHONPATH[1:]
+    while PYTHONPATH:
+        PYTHONPATH_real += ":%s" %(os.path.realpath(PYTHONPATH[0]))
+        PYTHONPATH = PYTHONPATH[1:]
     if sys.path[1] != PYTHONPATH_real:      # .. check whether PYTHONPATH is placed incorrectly.
         sys.path.remove(PYTHONPATH_real)    # If so, remove that element..
         sys.path.insert(1, PYTHONPATH_real) # and add it at the correct place again.
