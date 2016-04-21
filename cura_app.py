@@ -15,7 +15,7 @@ import sys
 # incompatibility issues with libArcus
 if "PYTHONPATH" in os.environ.keys():                       # If PYTHONPATH is used
     PYTHONPATH = os.environ["PYTHONPATH"].split(os.pathsep) # Get the value, split it..
-    PYTHONPATH = PYTHONPATH.reverse()                       # and reverse it, because we always insert at 1
+    PYTHONPATH.reverse()                                    # and reverse it, because we always insert at 1
     for PATH in PYTHONPATH:                                 # Now beginning with the last PATH
         PATH_real = os.path.realpath(PATH)                  # Making the the path "real"
         if PATH_real in sys.path:                           # This should always work, but keep it to be sure..
