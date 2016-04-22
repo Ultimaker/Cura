@@ -71,11 +71,6 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 		self._printProgress = 0
 		self._ZPosition = 0
 		self._pausePosition = None
-		self._logFile = None
-		try:
-			self._logFile = open(os.path.join(profile.getBasePath(), 'serial.log'), "w")
-		except:
-			pass
 
 	#Load the data into memory for printing, returns True on success
 	def loadGCodeData(self, dataStream):
@@ -320,12 +315,6 @@ class serialConnection(printerConnectionBase.printerConnectionBase):
 				pass
 			elif line[0] == 'log':
 				self._log.append(line[1])
-				try:
-					if self._logFile:
-						self._logFile.write(line[1] + "\n")
-						self._logFile.flush()
-				except:
-					pass
 				if len(self._log) > 200:
 					self._log.pop(0)
 			elif line[0] == 'temp':
