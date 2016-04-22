@@ -28,6 +28,8 @@ try:
 except:
 	pass
 
+CMDBUFFER_SIZE = 3
+
 def serialList(forAutoDetect=False):
 	"""
 		Retrieve a list of serial ports found in the system.
@@ -546,7 +548,7 @@ class MachineCom(object):
 					# because the _commandQueue is not iterable
 					if not self._heatupWaiting:
 						# We iterate in case we just came out of a heat&wait
-						for i in xrange(len(self._currentCommands), 4):
+						for i in xrange(len(self._currentCommands), CMDBUFFER_SIZE):
 							# One of the next 4 could enable the heatupWaiting mode
 							if not self._heatupWaiting:
 								if not self._commandQueue.empty():
@@ -744,7 +746,7 @@ class MachineCom(object):
 		self._printSection = 'CUSTOM'
 		self._changeState(self.STATE_PRINTING)
 		self._printStartTime = time.time()
-		for i in xrange(len(self._currentCommands), 4):
+		for i in xrange(len(self._currentCommands), CMDBUFFER_SIZE):
 			# One of the next 4 could enable the heatupWaiting mode
 			if not self._heatupWaiting:
 				self._sendNext()
@@ -756,7 +758,7 @@ class MachineCom(object):
 	def setPause(self, pause):
 		if not pause and self.isPaused():
 			self._changeState(self.STATE_PRINTING)
-			for i in xrange(len(self._currentCommands), 4):
+			for i in xrange(len(self._currentCommands), CMDBUFFER_SIZE):
 				# One of the next 4 could enable the heatupWaiting mode
 				if not self._heatupWaiting:
 					if not self._commandQueue.empty():
