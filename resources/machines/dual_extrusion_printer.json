@@ -258,7 +258,7 @@
                     "description": "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 16,
+                    "default": 20,
                     "min_value_warning": "0",
                     "max_value_warning": "100",
                     "visible": false,
