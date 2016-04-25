@@ -6,6 +6,9 @@ from UM.Signal import Signal, SignalEmitter
 from UM.Application import Application
 
 
+##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
+#       Zero-Conf is used to detect printers, which are saved in a dict.
+#       If we discover a printer that has the same key as the active machine instance a connection is made.
 class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def __init__(self):
         super().__init__()
@@ -23,7 +26,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def start(self):
         self._browser = ServiceBrowser(self._zero_conf, u'_ultimaker._tcp.local.', [self._onServiceChanged])
 
-    ##  Stop looking for devices on network.s
+    ##  Stop looking for devices on network.
     def stop(self):
         self._zero_conf.close()
 
@@ -48,15 +51,14 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
             self._printers[printer.getKey()].connect()
         printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
+    ##  Handler for when the connection state of one of the detected printers changes
     def _onPrinterConnectionStateChanged(self, key):
         if self._printers[key].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._printers[key])
         else:
             self.getOutputDeviceManager().removeOutputDevice(self._printers[key])
 
-    def removePrinter(self):
-        pass
-
+    ##  Handler for zeroConf detection
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
         if state_change == ServiceStateChange.Added:
             info = zeroconf.get_service_info(service_type, name)
@@ -66,6 +68,6 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
                     self.addPrinterSignal.emit(str(name), address, info.properties)
 
         elif state_change == ServiceStateChange.Removed:
-            info = zeroconf.get_service_info(service_type, name)
-            if info:
-                address = '.'.join(map(lambda n: str(n), info.address))
+            pass
+            # TODO; This isn't testable right now. We need to also decide how to handle
+            #
