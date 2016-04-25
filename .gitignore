@@ -1,13 +1,17 @@
-*.pyc
-*kdev*
-*.kate-swp
-__pycache__
-docs/html
-*.lprof
-*.log
-*~
+# Compiled and generated things.
 build
-*.qm
+*.pyc
+__pycache__
 *.mo
+docs/html
+*.log
 resources/i18n/en
 resources/i18n/x-test
+
+# Editors and IDEs.
+*kdev*
+*.kate-swp
+*.lprof
+*~
+*.qm
+
