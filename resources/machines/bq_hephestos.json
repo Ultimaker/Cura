@@ -50,8 +50,6 @@
         "speed_topbottom": { "default": 35.0, "visible": true },
         "speed_travel": { "default": 120.0 },
         "speed_layer_0": { "default": 20.0, "visible": false },
-        "retraction_speed": { "default": 30.0, "visible": false},
-        "retraction_hop": { "default": 0.075, "visible": false },
         "support_enable": { "default": true }
     }
 }

@@ -41,7 +41,6 @@
         "material_bed_temperature": { "visible": false },
         "material_diameter": { "default": 1.75, "visible": false },
         "material_flow": { "visible": false },
-        "retraction_hop": { "default": 0.2 },
         "speed_print": { "default": 50.0 }, 
         "speed_wall": { "default": 30.0 }, 
         "speed_wall_0": { "default": 30.0 },

@@ -54,7 +54,6 @@
         "speed_infill": { "default": 80.0, "visible": true },
         "speed_topbottom": { "default": 35.0, "visible": false },
         "skirt_speed": { "default": 35.0, "visible": false },
-        "retraction_speed": { "default": 45.0, "visible": false },
         "skirt_line_count": { "default": 4 },
         "skirt_minimal_length": { "default": 30.0, "visible": false },
         "skirt_gap": { "default": 6.0 },
