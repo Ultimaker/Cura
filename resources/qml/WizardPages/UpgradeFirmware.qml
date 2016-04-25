@@ -71,9 +71,7 @@ Item
             anchors.left: parent.width < wizardPage.width ? upgradeButton.right : parent.left
             anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.getSize("default_margin").width : 0
             text: catalog.i18nc("@action:button","Skip Upgrade");
-            onClicked: {
-                base.currentPage += 1
-            }
+            onClicked: base.nextPage()
         }
     }
     ExclusiveGroup { id: printerGroup; }

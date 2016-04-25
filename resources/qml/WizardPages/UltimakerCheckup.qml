@@ -114,9 +114,7 @@ Item
             anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.getSize("default_margin").width : 0
             //enabled: !alreadyTested
             text: catalog.i18nc("@action:button","Skip Printer Check");
-            onClicked: {
-                base.currentPage += 1
-            }
+            onClicked: base.nextPage()
         }
     }
 

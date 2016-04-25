@@ -34,25 +34,10 @@ Item
         target: base.wizard
         onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
         {
-            var name = machineName.text
-
-            var old_page_count = base.wizard.getPageCount()
-            // Delete old pages (if any)
-            for (var i = old_page_count - 1; i > 0; i--)
-            {
-                base.wizard.removePage(i)
-            }
+            base.wizard.resetPages()
             saveMachine()
         }
-        onBackClicked:
-        {
-            var old_page_count = base.wizard.getPageCount()
-            // Delete old pages (if any)
-            for (var i = old_page_count - 1; i > 0; i--)
-            {
-                base.wizard.removePage(i)
-            }
-        }
+        onBackClicked: base.wizard.resetPages()
     }
 
     Label
@@ -248,9 +233,6 @@ Item
                         base.wizard.appendPage(Qt.resolvedUrl("%1.qml".arg(pages[i])), pages[i])
                         break;
                 }
-            }
-            if(base.wizard.lastPage ==  true){
-                base.wizard.visible = false
             }
         }
     }
