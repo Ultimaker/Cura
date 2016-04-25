@@ -8,8 +8,6 @@ from UM.Logger import Logger
 
 from UM.Message import Message
 
-from .SendGCodeJob import SendGCodeJob
-
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 
 from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkRequest, QNetworkAccessManager
