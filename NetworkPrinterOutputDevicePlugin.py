@@ -28,7 +28,11 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
         self._zero_conf.close()
 
     def _onActiveMachineInstanceChanged(self):
-        active_machine_key = Application.getInstance().getMachineManager().getActiveMachineInstance().getKey()
+        try:
+            active_machine_key = Application.getInstance().getMachineManager().getActiveMachineInstance().getKey()
+        except AttributeError:
+            ## Active machine instance changed to None. This can happen upon clean start. Simply ignore.
+            return
         for key in self._printers:
             if key == active_machine_key:
                 self._printers[key].connect()
