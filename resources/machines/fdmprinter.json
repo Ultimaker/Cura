@@ -718,7 +718,7 @@
                     "description": "The length of material retracted during a retraction move.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 4.5,
+                    "default": 6.5,
                     "min_value_warning": "-0.0001",
                     "max_value_warning": "10.0",
                     "visible": false,

@@ -44,7 +44,6 @@
         "material_diameter": { "default": 1.75, "visible": true },
         "retraction_enable": { "default": true, "always_visible": true },
         "retraction_speed": { "default": 50.0, "visible": false },
-        "retraction_amount": { "default": 0.8, "visible": false },
         "retraction_hop": { "default": 0.075, "visible": false },
         "speed_print": { "default": 60.0, "visible": true },
         "speed_infill": { "default": 100.0, "visible": true },
