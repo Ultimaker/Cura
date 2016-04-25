@@ -28,6 +28,8 @@ try:
 except:
 	pass
 
+CMDBUFFER_SIZE = 3
+
 def serialList(forAutoDetect=False):
 	"""
 		Retrieve a list of serial ports found in the system.
@@ -493,6 +495,11 @@ class MachineCom(object):
 				# Request the temperature on comm timeout (every 2 seconds) when we are not printing.
 				# unless we had a temperature feedback (from M109 or M190 for example)
 				if line == '' and time.time() > tempRequestTimeout:
+					if self._heatupWaiting and len(self._currentCommands) == 1:
+						self._log("Canceling heatup due to missing T: line in the past 5 seconds. cmdbuffer desync?")
+						self._heatupWaiting = False
+						# Force a timeout now if necessary
+						timeout = time.time() - 1
 					if self._extruderCount > 0:
 						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
 						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
@@ -519,6 +526,11 @@ class MachineCom(object):
 			elif self._state == self.STATE_PRINTING:
 				#Even when printing request the temperature every 5 seconds.
 				if time.time() > tempRequestTimeout:
+					if self._heatupWaiting and len(self._currentCommands) == 1:
+						self._log("Canceling heatup due to missing T: line in the past 5 seconds. cmdbuffer desync?")
+						self._heatupWaiting = False
+						# Force a timeout now if necessary
+						timeout = time.time() - 1
 					if self._extruderCount > 0:
 						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
 						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
@@ -546,7 +558,7 @@ class MachineCom(object):
 					# because the _commandQueue is not iterable
 					if not self._heatupWaiting:
 						# We iterate in case we just came out of a heat&wait
-						for i in xrange(len(self._currentCommands), 4):
+						for i in xrange(len(self._currentCommands), CMDBUFFER_SIZE):
 							# One of the next 4 could enable the heatupWaiting mode
 							if not self._heatupWaiting:
 								if not self._commandQueue.empty():
@@ -581,6 +593,11 @@ class MachineCom(object):
 			elif self._state == self.STATE_PAUSED:
 				#Even when printing request the temperature every 5 seconds.
 				if time.time() > tempRequestTimeout:
+					if self._heatupWaiting and len(self._currentCommands) == 1:
+						self._log("Canceling heatup due to missing T: line in the past 5 seconds. cmdbuffer desync?")
+						self._heatupWaiting = False
+						# Force a timeout now if necessary
+						timeout = time.time() - 1
 					if self._extruderCount > 0:
 						self._temperatureRequestExtruder = (self._temperatureRequestExtruder + 1) % self._extruderCount
 						self.sendCommand("M105 T%d" % (self._temperatureRequestExtruder))
@@ -744,7 +761,7 @@ class MachineCom(object):
 		self._printSection = 'CUSTOM'
 		self._changeState(self.STATE_PRINTING)
 		self._printStartTime = time.time()
-		for i in xrange(len(self._currentCommands), 4):
+		for i in xrange(len(self._currentCommands), CMDBUFFER_SIZE):
 			# One of the next 4 could enable the heatupWaiting mode
 			if not self._heatupWaiting:
 				self._sendNext()
@@ -756,7 +773,7 @@ class MachineCom(object):
 	def setPause(self, pause):
 		if not pause and self.isPaused():
 			self._changeState(self.STATE_PRINTING)
-			for i in xrange(len(self._currentCommands), 4):
+			for i in xrange(len(self._currentCommands), CMDBUFFER_SIZE):
 				# One of the next 4 could enable the heatupWaiting mode
 				if not self._heatupWaiting:
 					if not self._commandQueue.empty():
