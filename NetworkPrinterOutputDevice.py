@@ -151,11 +151,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._qt_part.setBody(single_string_file_data)
             self._qt_multi_part.append(self._qt_part)
 
-            url =  "http://" + self._address + self._api_prefix + "print_job"
+            url = QUrl("http://" + self._address + self._api_prefix + "print_job")
 
-            url_2 = "http://10.180.0.53/api/v1/print_job"
             ##  Create the QT request
-            self._qt_request = QNetworkRequest(QUrl("http://10.180.0.53/api/v1/print_job"))
+            self._qt_request = QNetworkRequest(url)
 
             ##  Post request + data
             self._qt_reply = self._manager.post(self._qt_request, self._qt_multi_part)
