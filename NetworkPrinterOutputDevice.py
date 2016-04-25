@@ -23,13 +23,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._address = address
         self._key = key
         self._info = info
-        self._http_lock = threading.Lock()
-        self._http_connection = None
-        self._file = None
+
+        self._gcode = None
         self._update_thread = None
 
+        #   This holds the full JSON file that was received from the last request.
         self._json_printer_state = None
 
+        ##  Todo: Hardcoded value now; we should probably read this from the machine file.
+        ##  It's okay to leave this for now, as this plugin is um3 only (and has 2 extruders by definition)
         self._num_extruders = 2
 
         self._api_version = "1"
@@ -39,6 +41,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self.setDescription(i18n_catalog.i18nc("@info:tooltip", "Print with WIFI"))
         self.setIconName("print")
 
+        #   QNetwork manager needs to be created in advance. If we don't it can happen that it doesn't correctly
+        #   hook itself into the event loop, which results in events never being fired / done.
         self._manager = QNetworkAccessManager()
         self._manager.finished.connect(self._onFinished)
 
@@ -51,6 +55,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._progress_message = None
         self._error_message = None
 
+    ##  Get the unique key of this machine
+    #   \return key String containing the key of the machine.
     def getKey(self):
         return self._key
 
@@ -64,7 +70,8 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                     try:
                         self._spliceJSONData()
                     except:
-                        # issues with json parsing should not break by definition TODO: Check in what cases it should fail.
+                        # issues with json parsing should not break by definition
+                        # TODO: Check in what cases it should fail.
                         pass
                     if self._connection_state == ConnectionState.connecting:
                         # First successful response, so we are now "connected"
@@ -82,10 +89,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             except Exception as e:
                 self.setConnectionState(ConnectionState.error)
                 Logger.log("w", "Exception occured while connecting; %s", str(e))
-            time.sleep(2)  # Poll every second for printer state.
+            time.sleep(2)  # Poll every 2 seconds for printer state.
         Logger.log("d", "Update thread of printer with key %s and ip %s stopped with state: %s", self._key, self._address, self._connection_state)
 
-    ##  Convenience function that gets information from the recieved json data and converts it to the right internal
+    ##  Convenience function that gets information from the received json data and converts it to the right internal
     #   values / variables
     def _spliceJSONData(self):
         # Check for hotend temperatures
@@ -103,12 +110,12 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def close(self):
         self._connection_state == ConnectionState.closed
-        if self._update_thread != None:
+        if self._update_thread is not None:
             self._update_thread.join()
             self._update_thread = None
 
     def requestWrite(self, node, file_name = None, filter_by_machine = False):
-        self._file = getattr(Application.getInstance().getController().getScene(), "gcode_list")
+        self._gcode = getattr(Application.getInstance().getController().getScene(), "gcode_list")
         self.startPrint()
 
     def isConnected(self):
@@ -135,7 +142,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._progress_message.show()
 
             single_string_file_data = ""
-            for line in self._file:
+            for line in self._gcode:
                 single_string_file_data += line
 
             ##  TODO: Use correct file name (we use placeholder now)
