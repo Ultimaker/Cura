@@ -14,4 +14,4 @@ resources/i18n/x-test
 *.lprof
 *~
 *.qm
-
+.idea
