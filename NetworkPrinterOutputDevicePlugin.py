@@ -56,7 +56,7 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
         if self._printers[key].isConnected():
             self.getOutputDeviceManager().addOutputDevice(self._printers[key])
         else:
-            self.getOutputDeviceManager().removeOutputDevice(self._printers[key])
+            self.getOutputDeviceManager().removeOutputDevice(key)
 
     ##  Handler for zeroConf detection
     def _onServiceChanged(self, zeroconf, service_type, name, state_change):
