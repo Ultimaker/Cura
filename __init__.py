@@ -16,5 +16,5 @@ def getMetaData():
     }
 
 def register(app):
-    return { "output_device": NetworkPrinterOutputDevicePlugin.WifiOutputDevicePlugin()}
+    return { "output_device": NetworkPrinterOutputDevicePlugin.NetworkPrinterOutputDevicePlugin()}
 

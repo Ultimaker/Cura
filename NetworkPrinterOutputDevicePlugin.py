@@ -6,7 +6,7 @@ from UM.Signal import Signal, SignalEmitter
 from UM.Application import Application
 
 
-class WifiOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
+class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def __init__(self):
         super().__init__()
         self._zero_conf = Zeroconf()
