@@ -15,6 +15,7 @@ from PyQt5.QtCore import QUrl
 
 i18n_catalog = i18nCatalog("cura")
 
+
 ##  Network connected (wifi / lan) printer that uses the Ultimaker API
 class NetworkPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, key, address, info):
@@ -46,10 +47,6 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._qt_reply = None
         self._qt_multi_part = None
         self._qt_part = None
-
-
-        #request_qt_get = QNetworkRequest(QUrl("http://10.180.0.53/api/v1/printer"))
-        #response = self._manager.get(request_qt_get)
 
         self._progress_message = None
         self._error_message = None
@@ -126,7 +123,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._update_thread.start()
 
     def getCameraImage(self):
-        pass #Do Nothing
+        pass  # TODO: This still needs to be implemented (we don't have a place to show it now anyway)
 
     def startPrint(self):
         if self._progress != 0:
@@ -170,10 +167,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._error_message.show()
         except Exception as e:
             self._progress_message.hide()
-            Logger.log("e" , "An exception occured in wifi connection: %s" % str(e))
+            Logger.log("e" , "An exception occured in network connection: %s" % str(e))
 
     def _onFinished(self, reply):
-        #print(reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
         reply.uploadProgress.disconnect(self._onUploadProgress)
         self._progress_message.hide()
 
@@ -182,16 +178,3 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
     def _httpGet(self, path):
         return requests.get("http://" + self._address + self._api_prefix + path)
-
-    def _httpPost(self, path, file_data):
-        with self._http_lock:
-            files_dict = {}
-            if isinstance(file_data, list):  # in case a list with strings is sent
-                single_string_file_data = ""
-                for line in file_data:
-                    single_string_file_data += line
-                files_dict = {"file":("test.gcode", single_string_file_data)}
-            else:
-                files_dict = {"file":("test.gcode", file_data)}
-
-            return requests.post("http://" + self._address + self._api_prefix + path, files = files_dict)
