@@ -173,7 +173,10 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._progress_message.hide()
 
     def _onUploadProgress(self, bytes_sent, bytes_total):
-        self._progress_message.setProgress(bytes_sent / bytes_total * 100)
+        if bytes_total > 0:
+            self._progress_message.setProgress(bytes_sent / bytes_total * 100)
+        else:
+            self._progress_message.setProgress(0)
 
     def _httpGet(self, path):
         return requests.get("http://" + self._address + self._api_prefix + path)
