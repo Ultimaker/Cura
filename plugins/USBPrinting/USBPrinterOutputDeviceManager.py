@@ -2,12 +2,13 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from UM.Signal import Signal, SignalEmitter
-from . import PrinterConnection
+from . import USBPrinterOutputDevice
 from UM.Application import Application
 from UM.Resources import Resources
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from cura.PrinterOutputDevice import ConnectionState
 from UM.Qt.ListModel import ListModel
 from UM.Message import Message
 
@@ -20,21 +21,19 @@ import time
 import os.path
 from UM.Extension import Extension
 
-from PyQt5.QtQuick import QQuickView
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 from PyQt5.QtCore import QUrl, QObject, pyqtSlot, pyqtProperty, pyqtSignal, Qt
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
-class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
+
+##  Manager class that ensures that a usbPrinteroutput device is created for every connected USB printer.
+class USBPrinterOutputDeviceManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     def __init__(self, parent = None):
-        QObject.__init__(self, parent)
-        SignalEmitter.__init__(self)
-        OutputDevicePlugin.__init__(self)
-        Extension.__init__(self)
+        super().__init__(parent = parent)
         self._serial_port_list = []
-        self._printer_connections = {}
-        self._printer_connections_model = None
+        self._usb_output_devices = {}
+        self._usb_output_devices_model = None
         self._update_thread = threading.Thread(target = self._updateThread)
         self._update_thread.setDaemon(True)
 
@@ -46,20 +45,20 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
         self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Update Firmware"), self.updateAllFirmware)
 
         Application.getInstance().applicationShuttingDown.connect(self.stop)
-        self.addConnectionSignal.connect(self.addConnection) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
+        self.addUSBOutputDeviceSignal.connect(self.addOutputDevice) #Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
 
-    addConnectionSignal = Signal()
-    printerConnectionStateChanged = pyqtSignal()
+    addUSBOutputDeviceSignal = Signal()
+    connectionStateChanged = pyqtSignal()
 
     progressChanged = pyqtSignal()
 
     @pyqtProperty(float, notify = progressChanged)
     def progress(self):
         progress = 0
-        for printer_name, connection in self._printer_connections.items(): # TODO: @UnusedVariable "printer_name"
-            progress += connection.progress
+        for printer_name, device in self._usb_output_devices.items(): # TODO: @UnusedVariable "printer_name"
+            progress += device.progress
 
-        return progress / len(self._printer_connections)
+        return progress / len(self._usb_output_devices)
 
     def start(self):
         self._check_updates = True
@@ -93,25 +92,25 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
     @pyqtSlot()
     def updateAllFirmware(self):
-        if not self._printer_connections:
+        if not self._usb_output_devices:
             Message(i18n_catalog.i18nc("@info","Cannot update firmware, there were no connected printers found.")).show()
             return
 
         self.spawnFirmwareInterface("")
-        for printer_connection in self._printer_connections:
+        for printer_connection in self._usb_output_devices:
             try:
-                self._printer_connections[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
+                self._usb_output_devices[printer_connection].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
-                self._printer_connections[printer_connection].setProgress(100, 100)
+                self._usb_output_devices[printer_connection].setProgress(100, 100)
                 Logger.log("w", "No firmware found for printer %s", printer_connection)
                 continue
 
     @pyqtSlot(str, result = bool)
     def updateFirmwareBySerial(self, serial_port):
-        if serial_port in self._printer_connections:
-            self.spawnFirmwareInterface(self._printer_connections[serial_port].getSerialPort())
+        if serial_port in self._usb_output_devices:
+            self.spawnFirmwareInterface(self._usb_output_devices[serial_port].getSerialPort())
             try:
-                self._printer_connections[serial_port].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
+                self._usb_output_devices[serial_port].updateFirmware(Resources.getPath(CuraApplication.ResourceTypes.Firmware, self._getDefaultFirmwareName()))
             except FileNotFoundError:
                 self._firmware_view.close()
                 Logger.log("e", "Could not find firmware required for this machine")
@@ -123,10 +122,10 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
     @classmethod
     def getInstance(cls, engine = None, script_engine = None):
         # Note: Explicit use of class name to prevent issues with inheritance.
-        if USBPrinterManager._instance is None:
-            USBPrinterManager._instance = cls()
+        if USBPrinterOutputDeviceManager._instance is None:
+            USBPrinterOutputDeviceManager._instance = cls()
 
-        return USBPrinterManager._instance
+        return USBPrinterOutputDeviceManager._instance
 
     def _getDefaultFirmwareName(self):
         machine_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
@@ -155,13 +154,13 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
 
         ##TODO: Add check for multiple extruders
         hex_file = None
-        if  machine_type in machine_without_extras.keys(): # The machine needs to be defined here!
-            if  machine_type in machine_with_heated_bed.keys() and machine_instance.getMachineSettingValue("machine_heated_bed"):
+        if machine_type in machine_without_extras.keys():  # The machine needs to be defined here!
+            if machine_type in machine_with_heated_bed.keys() and machine_instance.getMachineSettingValue("machine_heated_bed"):
                 Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_type)
-                hex_file = machine_with_heated_bed[machine_type] # Return firmware with heated bed enabled
+                hex_file = machine_with_heated_bed[machine_type]  # Return firmware with heated bed enabled
             else:
                 Logger.log("d", "Choosing basic firmware for machine %s.", machine_type)
-                hex_file = machine_without_extras[machine_type] # Return "basic" firmware
+                hex_file = machine_without_extras[machine_type]  # Return "basic" firmware
         else:
             Logger.log("e", "There is no firmware for machine %s.", machine_type)
 
@@ -171,48 +170,53 @@ class USBPrinterManager(QObject, SignalEmitter, OutputDevicePlugin, Extension):
             Logger.log("e", "Could not find any firmware for machine %s.", machine_type)
             raise FileNotFoundError()
 
+    ##  Helper to identify serial ports (and scan for them)
     def _addRemovePorts(self, serial_ports):
         # First, find and add all new or changed keys
         for serial_port in list(serial_ports):
             if serial_port not in self._serial_port_list:
-                self.addConnectionSignal.emit(serial_port) #Hack to ensure its created in main thread
+                self.addUSBOutputDeviceSignal.emit(serial_port)  # Hack to ensure its created in main thread
                 continue
         self._serial_port_list = list(serial_ports)
 
-        connections_to_remove = []
-        for port, connection in self._printer_connections.items():
+        devices_to_remove = []
+        for port, device in self._usb_output_devices.items():
             if port not in self._serial_port_list:
-                connection.close()
-                connections_to_remove.append(port)
+                device.close()
+                devices_to_remove.append(port)
 
-        for port in connections_to_remove:
-            del self._printer_connections[port]
-
+        for port in devices_to_remove:
+            del self._usb_output_devices[port]
 
     ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
-    def addConnection(self, serial_port):
-        connection = PrinterConnection.PrinterConnection(serial_port)
-        connection.connect()
-        connection.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
-        connection.progressChanged.connect(self.progressChanged)
-        self._printer_connections[serial_port] = connection
+    def addOutputDevice(self, serial_port):
+        device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
+        device.connectionStateChanged.connect(self._onConnectionStateChanged)
+        device.connect()
+        device.progressChanged.connect(self.progressChanged)
+        self._usb_output_devices[serial_port] = device
 
-    def _onPrinterConnectionStateChanged(self, serial_port):
-        if self._printer_connections[serial_port].isConnected():
-            self.getOutputDeviceManager().addOutputDevice(self._printer_connections[serial_port])
-        else:
-            self.getOutputDeviceManager().removeOutputDevice(serial_port)
-        self.printerConnectionStateChanged.emit()
+    ##  If one of the states of the connected devices change, we might need to add / remove them from the global list.
+    def _onConnectionStateChanged(self, serial_port):
+        try:
+            if self._usb_output_devices[serial_port].connectionState == ConnectionState.connected:
+                self.getOutputDeviceManager().addOutputDevice(self._usb_output_devices[serial_port])
+            else:
+                self.getOutputDeviceManager().removeOutputDevice(serial_port)
+            self.connectionStateChanged.emit()
+        except KeyError:
+            pass  # no output device by this device_id found in connection list.
 
-    @pyqtProperty(QObject , notify = printerConnectionStateChanged)
+
+    @pyqtProperty(QObject , notify = connectionStateChanged)
     def connectedPrinterList(self):
-        self._printer_connections_model  = ListModel()
-        self._printer_connections_model.addRoleName(Qt.UserRole + 1,"name")
-        self._printer_connections_model.addRoleName(Qt.UserRole + 2, "printer")
-        for connection in self._printer_connections:
-            if self._printer_connections[connection].isConnected():
-                self._printer_connections_model.appendItem({"name":connection, "printer": self._printer_connections[connection]})
-        return self._printer_connections_model
+        self._usb_output_devices_model = ListModel()
+        self._usb_output_devices_model.addRoleName(Qt.UserRole + 1, "name")
+        self._usb_output_devices_model.addRoleName(Qt.UserRole + 2, "printer")
+        for connection in self._usb_output_devices:
+            if self._usb_output_devices[connection].connectionState == ConnectionState.connected:
+                self._usb_output_devices_model.appendItem({"name": connection, "printer": self._usb_output_devices[connection]})
+        return self._usb_output_devices_model
 
     ##  Create a list of serial ports on the system.
     #   \param only_list_usb If true, only usb ports are listed
