@@ -189,7 +189,7 @@
         "standard_arrow": [0.8, 0.8],
 
         "button": [4, 4],
-        "button_icon": [3, 3],
+        "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
 
         "button_tooltip": [1.0, 1.3],
