@@ -29,13 +29,13 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    def __init__(self, profile, sliceMessage, settingsMessage):
+    def __init__(self, profile, slice_message, settings_message):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
         self._profile = profile
-        self._slice_message = sliceMessage
-        self._settings_message = settingsMessage
+        self._slice_message = slice_message
+        self._settings_message = settings_message
         self._is_cancelled = False
 
     def getSettingsMessage(self):
