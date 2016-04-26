@@ -79,7 +79,7 @@
                     "type": "int",
                     "default": 0,
                     "min_value": "0",
-                    "max_value": "16",
+                    "max_value": "machine_extruder_count - 1",
                     "always_visible": true
                 },
                 "adhesion_extruder_nr": {
@@ -88,7 +88,7 @@
                     "type": "int",
                     "default": 0,
                     "min_value": "0",
-                    "max_value": "16",
+                    "max_value": "machine_extruder_count - 1",
                     "global_only": true
                 },
                 "support_extruder_nr": {
@@ -97,7 +97,7 @@
                     "type": "int",
                     "default": 0,
                     "min_value": "0",
-                    "max_value": "16",
+                    "max_value": "machine_extruder_count - 1",
                     "global_only": true,
                     "children": {
                         "support_infill_extruder_nr": {
@@ -106,7 +106,7 @@
                             "type": "int",
                             "default": 0,
                             "min_value": "0",
-                            "max_value": "16",
+                            "max_value": "machine_extruder_count - 1",
                             "global_only": true
                         },
                         "support_extruder_nr_layer_0": {
@@ -115,7 +115,7 @@
                             "type": "int",
                             "default": 0,
                             "min_value": "0",
-                            "max_value": "16",
+                            "max_value": "machine_extruder_count - 1",
                             "global_only": true
                         },
                         "support_roof_extruder_nr": {
@@ -124,7 +124,7 @@
                             "type": "int",
                             "default": 0,
                             "min_value": "0",
-                            "max_value": "16",
+                            "max_value": "machine_extruder_count - 1",
                             "enabled": "support_roof_enable",
                             "global_only": true
                         }
