@@ -308,6 +308,10 @@ Item
             anchors.top: parent.top
             anchors.left: supportExtruderLabel.right
             style: UM.Theme.styles.combobox
+            currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("extruder_nr") : 0
+            onActivated: {
+                UM.MachineManager.setSettingValue("extruder_nr", index)
+            }
         }
 
         Label {
@@ -327,6 +331,10 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportExtruderLabel.right
             style: UM.Theme.styles.combobox
+            currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_extruder_nr") : 0
+            onActivated: {
+                UM.MachineManager.setSettingValue("support_extruder_nr", index)
+            }
         }
 
         ListModel {
