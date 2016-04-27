@@ -307,6 +307,7 @@ Item
             model: extruderModel
             anchors.top: parent.top
             anchors.left: supportExtruderLabel.right
+            style: UM.Theme.styles.combobox
         }
 
         Label {
@@ -325,6 +326,7 @@ Item
             anchors.top: mainExtruderCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportExtruderLabel.right
+            style: UM.Theme.styles.combobox
         }
 
         ListModel {
