@@ -269,9 +269,79 @@ Item
         }
     }
 
+    function populateExtruderModel()
+    {
+        extruderModel.clear()
+        var extruder_count = UM.MachineManager.getSettingValue("machine_extruder_count");
+        for(var extruder = 0; extruder < extruder_count ; extruder++) {
+            extruderModel.append({
+                name: catalog.i18nc("@label", "Extruder %1").arg(extruder),
+                text: catalog.i18nc("@label", "Extruder %1").arg(extruder),
+                value: extruder
+            })
+        }
+    }
+
+    Rectangle {
+        id: multiExtrusionCell
+        anchors.top: helpersCellRight.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.left: parent.left
+        width: parent.width
+        height: childrenRect.height
+        // Use both UM.ActiveProfile and UM.MachineManager to force UM.MachineManager.getSettingValue() to be reevaluated
+        visible: UM.ActiveProfile.settingValues.getValue("machine_extruder_count") || (UM.MachineManager.getSettingValue("machine_extruder_count") > 1)
+
+        Label {
+            id: mainExtruderLabel
+            text: catalog.i18nc("@label:listbox","Print object with:")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            width: base.width/100* 35 - 2*UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: mainExtruderCombobox.verticalCenter
+        }
+        ComboBox {
+            id: mainExtruderCombobox
+            model: extruderModel
+            anchors.top: parent.top
+            anchors.left: supportExtruderLabel.right
+        }
+
+        Label {
+            id: supportExtruderLabel
+            text: catalog.i18nc("@label:listbox","Print support with:")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            width: base.width/100* 35 - 2*UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: supportExtruderCombobox.verticalCenter
+        }
+        ComboBox {
+            id: supportExtruderCombobox
+            model: extruderModel
+            anchors.top: mainExtruderCombobox.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.left: supportExtruderLabel.right
+        }
+
+        ListModel {
+            id: extruderModel
+            Component.onCompleted: populateExtruderModel()
+        }
+        Connections
+        {
+            id: machineChange
+            target: UM.MachineManager
+            onActiveMachineInstanceChanged: populateExtruderModel()
+        }
+    }
+
     Rectangle {
         id: tipsCell
-        anchors.top: helpersCellRight.bottom
+        anchors.top: multiExtrusionCell.visible? multiExtrusionCell.bottom : helpersCellRight.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
         width: parent.width
