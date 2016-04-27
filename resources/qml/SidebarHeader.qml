@@ -97,127 +97,117 @@ Item
     Rectangle {
         id: variantRow
         anchors.top: machineSelectionRow.bottom
-        anchors.topMargin: UM.MachineManager.hasVariants ? UM.Theme.getSize("default_margin").height : 0
+        anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
         width: base.width
-        height: UM.MachineManager.hasVariants ? UM.Theme.getSize("sidebar_setup").height : 0
-        visible: UM.MachineManager.hasVariants
+        height: visible ? UM.Theme.getSize("sidebar_setup").height : 0
+        visible: UM.MachineManager.hasVariants || UM.MachineManager.hasMaterials
 
         Label{
             id: variantLabel
-            text: catalog.i18nc("@label","Nozzle:");
+            text: (UM.MachineManager.hasVariants && UM.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
+                    UM.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
             anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width/100*45
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
 
-        ToolButton {
-            id: variantSelection
-            text: UM.MachineManager.activeMachineVariant
-            width: parent.width/100*55
-            height: UM.Theme.getSize("setting_control").height
-            tooltip: UM.MachineManager.activeMachineVariant;
+        Rectangle {
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            style: UM.Theme.styles.sidebar_header_button
 
-            menu: Menu
-            {
-                id: variantsSelectionMenu
-                Instantiator
+            width: parent.width/100*55
+            height: UM.Theme.getSize("setting_control").height
+
+            ToolButton {
+                id: variantSelection
+                text: UM.MachineManager.activeMachineVariant
+                tooltip: UM.MachineManager.activeMachineVariant;
+                visible: UM.MachineManager.hasVariants
+
+                height: UM.Theme.getSize("setting_control").height
+                width: materialSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
+                anchors.left: parent.left
+                style: UM.Theme.styles.sidebar_header_button
+
+                menu: Menu
                 {
-                    id: variantSelectionInstantiator
-                    model: UM.MachineVariantsModel { id: variantsModel }
-                    MenuItem
+                    id: variantsSelectionMenu
+                    Instantiator
                     {
-                        text: model.name;
-                        checkable: true;
-                        checked: model.active;
-                        exclusiveGroup: variantSelectionMenuGroup;
-                        onTriggered:
+                        id: variantSelectionInstantiator
+                        model: UM.MachineVariantsModel { id: variantsModel }
+                        MenuItem
                         {
-                            UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name);
-                            if (typeof(model) !== "undefined" && !model.active) {
-                                //Selecting a variant was canceled; undo menu selection
-                                variantSelectionInstantiator.model.setProperty(index, "active", false);
-                                var activeMachineVariantName = UM.MachineManager.activeMachineVariant;
-                                var activeMachineVariantIndex = variantSelectionInstantiator.model.find("name", activeMachineVariantName);
-                                variantSelectionInstantiator.model.setProperty(activeMachineVariantIndex, "active", true);
+                            text: model.name;
+                            checkable: true;
+                            checked: model.active;
+                            exclusiveGroup: variantSelectionMenuGroup;
+                            onTriggered:
+                            {
+                                UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name);
+                                if (typeof(model) !== "undefined" && !model.active) {
+                                    //Selecting a variant was canceled; undo menu selection
+                                    variantSelectionInstantiator.model.setProperty(index, "active", false);
+                                    var activeMachineVariantName = UM.MachineManager.activeMachineVariant;
+                                    var activeMachineVariantIndex = variantSelectionInstantiator.model.find("name", activeMachineVariantName);
+                                    variantSelectionInstantiator.model.setProperty(activeMachineVariantIndex, "active", true);
+                                }
                             }
                         }
+                        onObjectAdded: variantsSelectionMenu.insertItem(index, object)
+                        onObjectRemoved: variantsSelectionMenu.removeItem(object)
                     }
-                    onObjectAdded: variantsSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: variantsSelectionMenu.removeItem(object)
-                }
 
-                ExclusiveGroup { id: variantSelectionMenuGroup; }
+                    ExclusiveGroup { id: variantSelectionMenuGroup; }
+                }
             }
-        }
-    }
 
-    Rectangle {
-        id: materialSelectionRow
-        anchors.top: variantRow.bottom
-        anchors.topMargin: UM.MachineManager.hasMaterials ? UM.Theme.getSize("default_margin").height : 0
-        width: base.width
-        height: UM.MachineManager.hasMaterials ? UM.Theme.getSize("sidebar_setup").height : 0
-        visible: UM.MachineManager.hasMaterials
+            ToolButton {
+                id: materialSelection
+                text: UM.MachineManager.activeMaterial
+                tooltip: UM.MachineManager.activeMaterial
+                visible: UM.MachineManager.hasMaterials
 
-        Label{
-            id: materialSelectionLabel
-            text: catalog.i18nc("@label","Material:");
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width/100*45
-            font: UM.Theme.getFont("default");
-            color: UM.Theme.getColor("text");
-        }
+                height: UM.Theme.getSize("setting_control").height
+                width: variantSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
+                anchors.right: parent.right
+                style: UM.Theme.styles.sidebar_header_button
 
-        ToolButton {
-            id: materialSelection
-            text: UM.MachineManager.activeMaterial
-            width: parent.width/100*55
-            height: UM.Theme.getSize("setting_control").height
-            tooltip: UM.MachineManager.activeMaterial;
-            anchors.right: parent.right
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            style: UM.Theme.styles.sidebar_header_button
-
-            menu: Menu
-            {
-                id: materialSelectionMenu
-                Instantiator
+                menu: Menu
                 {
-                    id: materialSelectionInstantiator
-                    model: UM.MachineMaterialsModel { id: machineMaterialsModel }
-                    MenuItem
+                    id: materialSelectionMenu
+                    Instantiator
                     {
-                        text: model.name;
-                        checkable: true;
-                        checked: model.active;
-                        exclusiveGroup: materialSelectionMenuGroup;
-                        onTriggered:
+                        id: materialSelectionInstantiator
+                        model: UM.MachineMaterialsModel { id: machineMaterialsModel }
+                        MenuItem
                         {
-                            UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name);
-                            if (typeof(model) !== "undefined" && !model.active) {
-                                //Selecting a material was canceled; undo menu selection
-                                materialSelectionInstantiator.model.setProperty(index, "active", false);
-                                var activeMaterialName = UM.MachineManager.activeMaterial;
-                                var activeMaterialIndex = materialSelectionInstantiator.model.find("name", activeMaterialName);
-                                materialSelectionInstantiator.model.setProperty(activeMaterialIndex, "active", true);
+                            text: model.name;
+                            checkable: true;
+                            checked: model.active;
+                            exclusiveGroup: materialSelectionMenuGroup;
+                            onTriggered:
+                            {
+                                UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name);
+                                if (typeof(model) !== "undefined" && !model.active) {
+                                    //Selecting a material was canceled; undo menu selection
+                                    materialSelectionInstantiator.model.setProperty(index, "active", false);
+                                    var activeMaterialName = UM.MachineManager.activeMaterial;
+                                    var activeMaterialIndex = materialSelectionInstantiator.model.find("name", activeMaterialName);
+                                    materialSelectionInstantiator.model.setProperty(activeMaterialIndex, "active", true);
+                                }
                             }
                         }
+                        onObjectAdded: materialSelectionMenu.insertItem(index, object)
+                        onObjectRemoved: materialSelectionMenu.removeItem(object)
                     }
-                    onObjectAdded: materialSelectionMenu.insertItem(index, object)
-                    onObjectRemoved: materialSelectionMenu.removeItem(object)
-                }
 
-                ExclusiveGroup { id: materialSelectionMenuGroup; }
+                    ExclusiveGroup { id: materialSelectionMenuGroup; }
+                }
             }
         }
     }
