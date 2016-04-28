@@ -30,7 +30,7 @@ class Profile:
         # Check correctness.
         if not parser.has_section("general"):
             raise SettingsError.InvalidFormatError("general")
-        if not parser.has_option("general", "version") or int(parser.get("general", "version")) != 1: #Hard-coded profile version here. If this number changes the entire function needs to change.
+        if not parser.has_option("general", "version") or int(parser.get("general", "version")) != 1: # Hard-coded profile version here. If this number changes the entire function needs to change.
             raise SettingsError.InvalidVersionError("Version upgrade intermediary version 1")
 
         # Parse the general section.
