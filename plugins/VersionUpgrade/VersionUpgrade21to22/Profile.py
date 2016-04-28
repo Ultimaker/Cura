@@ -72,7 +72,7 @@ class Profile:
     #
     #   \return A serialised form of this profile, serialised in version 2 of
     #   the file format.
-    def exportTo(self):
+    def export(self):
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None)
 
