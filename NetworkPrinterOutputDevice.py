@@ -186,4 +186,4 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             self._progress_message.setProgress(0)
 
     def _httpGet(self, path):
-        return requests.get("http://" + self._address + self._api_prefix + path, timeout = 2)
+        return requests.get("http://" + self._address + self._api_prefix + path, timeout = 5)
