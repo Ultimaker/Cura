@@ -27,6 +27,26 @@ class MachineActionManager:
             # Todo: define specific Exception types (instead of general type)
             raise Exception("Action %s, which is required for %s is not known." % (action_key, machine.getKey()))
 
+    ##  Add a supported action to a machine.
+    def addSupportedAction(self, machine, action_key):
+        if action_key in self._machine_actions:
+            if machine in self._supported_actions:
+                self._supported_actions[machine].append(self._machine_actions[action_key])
+            else:
+                self._supported_actions[machine] = set(self._machine_actions[action_key])
+        else:
+            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine.getKey())
+
+    ##  Add an action to the first start list of a machine.
+    def addFirstStartAction(self, machine, action_key, index = None):
+        if action_key in self._machine_actions:
+            if machine in self._supported_actions and index is not None:
+                self._supported_actions[machine].insert(index, self._machine_actions[action_key])
+            else:
+                self._supported_actions[machine] = [self._machine_actions[action_key]]
+        else:
+            Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine.getKey())
+
     ##  Add a (unique) MachineAction
     #   if the Key of the action is not unique, an exception is raised.
     def addMachineAction(self, action):
