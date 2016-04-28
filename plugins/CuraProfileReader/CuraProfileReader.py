@@ -6,13 +6,13 @@ from UM.Logger import Logger
 from UM.Settings.Profile import Profile
 from UM.Settings.ProfileReader import ProfileReader
 
+
 ##  A plugin that reads profile data from Cura profile files.
 #
 #   It reads a profile from a .curaprofile file, and returns it as a profile
 #   instance.
 class CuraProfileReader(ProfileReader):
     ##  Initialises the cura profile reader.
-    #
     #   This does nothing since the only other function is basically stateless.
     def __init__(self):
         super().__init__()
@@ -24,10 +24,11 @@ class CuraProfileReader(ProfileReader):
     #   not be read or didn't contain a valid profile, \code None \endcode is
     #   returned.
     def read(self, file_name):
-        profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False) #Create an empty profile.
+        # Create an empty profile.
+        profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
         serialised = ""
         try:
-            with open(file_name) as f: #Open file for reading.
+            with open(file_name) as f:  # Open file for reading.
                 serialised = f.read()
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
@@ -35,6 +36,7 @@ class CuraProfileReader(ProfileReader):
         
         try:
             profile.unserialise(serialised)
-        except Exception as e: #Parsing error. This is not a (valid) Cura profile then.
+        except Exception as e:  # Parsing error. This is not a (valid) Cura profile then.
+            Logger.log("e", "Error while trying to parse profile: %s", str(e))
             return None
         return profile
