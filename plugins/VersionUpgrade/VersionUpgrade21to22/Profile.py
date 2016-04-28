@@ -64,9 +64,7 @@ class Profile:
         self._disabled_settings_defaults = []
         if parser.has_section("disabled_defaults"):
             disabled_defaults_string = parser.get("disabled_defaults", "values")
-            for item in disabled_defaults_string.split(","):
-                if item != "":
-                    self._disabled_settings_defaults.append(item)
+            self._disabled_settings_defaults = [item for item in disabled_defaults_string.split(",") if item != ""] # Split by comma.
 
     ##  Serialises this profile as file format version 2.
     #
