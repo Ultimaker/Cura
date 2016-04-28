@@ -34,8 +34,8 @@ class VersionUpgrade21to22(VersionUpgrade):
 
     ##  Translates settings for the change from Cura 2.1 to 2.2.
     #
-    #   Each setting is changed in-place in the provided dictionary. This changes
-    #   the input parameter.
+    #   Each setting is changed in-place in the provided dictionary. This
+    #   changes the input parameter.
     #
     #   \param settings A dictionary of settings (as key-value pairs) to update.
     #   \return The same dictionary.
