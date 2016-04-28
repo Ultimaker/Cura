@@ -627,7 +627,14 @@ UM.MainWindow
         reloadAll.onTriggered: Printer.reloadAll()
 
         addMachine.onTriggered: addMachineWizard.visible = true;
-        addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.setPage(4); preferences.visible = true; preferences.show(); preferences.getCurrentItem().showProfileNameDialog() }
+        addProfile.onTriggered: {
+            UM.MachineManager.createProfile();
+            preferences.setPage(4);
+            preferences.show();
+
+            // Show the renameDialog after a very short delay so the preference page has time to initiate
+            showProfileNameDialogTimer.start();
+        }
         updateProfile.onTriggered: { UM.ActiveProfile.updateProfile() }
         resetProfile.onTriggered: { UM.ActiveProfile.discardChanges() }
 
@@ -640,6 +647,14 @@ UM.MainWindow
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
         toggleFullScreen.onTriggered: base.toggleFullscreen()
+    }
+
+    Timer {
+        id: showProfileNameDialogTimer
+        repeat: false
+        interval: 1
+
+        onTriggered: preferences.getCurrentItem().showProfileNameDialog()
     }
 
     Menu
