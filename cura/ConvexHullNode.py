@@ -23,9 +23,6 @@ class ConvexHullNode(SceneNode):
 
         self._original_parent = parent
 
-        self._inherit_orientation = False
-        self._inherit_scale = False
-
         # Color of the drawn convex hull
         self._color = Color(35, 35, 35, 128)
 
