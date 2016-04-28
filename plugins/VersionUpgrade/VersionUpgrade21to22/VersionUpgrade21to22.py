@@ -32,10 +32,11 @@ class VersionUpgrade21to22(VersionUpgrade):
             return None
         return profile.export()
 
-    ##  Translates settings for the change from Cura 2.1 to 2.2.
+    ##  Updates settings for the change from Cura 2.1 to 2.2.
     #
-    #   Each setting is changed in-place in the provided dictionary. This
-    #   changes the input parameter.
+    #   The keys and values of settings are changed to what they should be in
+    #   the new version. Each setting is changed in-place in the provided
+    #   dictionary. This changes the input parameter.
     #
     #   \param settings A dictionary of settings (as key-value pairs) to update.
     #   \return The same dictionary.
