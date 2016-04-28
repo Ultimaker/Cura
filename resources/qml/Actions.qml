@@ -108,7 +108,7 @@ Item
     Action
     {
         id: resetProfileAction;
-        enabled: UM.ActiveProfile.valid && !UM.ActiveProfile.readOnly && UM.ActiveProfile.hasCustomisedValues
+        enabled: UM.ActiveProfile.valid && UM.ActiveProfile.hasCustomisedValues
         text: catalog.i18nc("@action:inmenu menubar:profile","&Reset Current Profile");
     }
 
