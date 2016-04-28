@@ -14,9 +14,10 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 
+
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
-    def get_value(self, key, args, kwargs): # [CodeStyle: get_value is an overridden function from the Formatter class]
+    def get_value(self, key, args, kwargs):  # [CodeStyle: get_value is an overridden function from the Formatter class]
         if isinstance(key, str):
             try:
                 return kwargs[key]
@@ -27,7 +28,8 @@ class GcodeStartEndFormatter(Formatter):
             Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
             return "{" + str(key) + "}"
 
-##  Job class that handles sending the current scene data to CuraEngine
+
+##  Job that handles sending the current scene data to CuraEngine
 class StartSliceJob(Job):
     def __init__(self, profile, socket):
         super().__init__()
@@ -49,6 +51,7 @@ class StartSliceJob(Job):
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
+                ##  Node can't be printed, so don't bother sending it.
                 if getattr(node, "_outside_buildarea", False):
                     continue
 
@@ -118,7 +121,7 @@ class StartSliceJob(Job):
             return str(value).encode("utf-8")
 
     def _sendSettings(self, profile):
-        msg = self._socket.createMessage("cura.proto.SettingList");
+        msg = self._socket.createMessage("cura.proto.SettingList")
         settings = profile.getAllSettingValues(include_machine = True)
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
