@@ -26,9 +26,9 @@ class MachineInstance:
     #   \param serialised A string with the contents of a machine instance file.
     def __init__(self, serialised):
         config = configparser.ConfigParser(interpolation = None)
-        config.read_string(serialised) #Read the input string as config file.
+        config.read_string(serialised) # Read the input string as config file.
 
-        #Checking file correctness.
+        # Checking file correctness.
         if not config.has_section("general"):
             raise SettingsError.InvalidFormatError("general")
         if not config.has_option("general", "version"):
@@ -37,7 +37,7 @@ class MachineInstance:
             raise SettingsError.InvalidFormatError("general/name")
         if not config.has_option("general", "type"):
             raise SettingsError.InvalidFormatError("general/type")
-        if int(config.get("general", "version")) != 1: #Explicitly hard-code version 1, since if this number changes the programmer MUST change this entire function.
+        if int(config.get("general", "version")) != 1: # Explicitly hard-code version 1, since if this number changes the programmer MUST change this entire function.
             raise SettingsError.InvalidVersionError("Version upgrade intermediary version 1")
 
         self._type_name = config.get("general", "type")
@@ -58,13 +58,13 @@ class MachineInstance:
     #   \return A serialised form of this machine instance, serialised in
     #   version 2 of the file format.
     def exportVersion2(self):
-        import VersionUpgrade21to22 #Import here to prevent circular dependencies.
-        config = configparser.ConfigParser(interpolation = None) #Build a config file in the form of version 2.
+        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
+        config = configparser.ConfigParser(interpolation = None) # Build a config file in the form of version 2.
 
         config.add_section("general")
         config.set("general", "name", self._name)
         config.set("general", "type", self._type_name)
-        config.set("general", "version", "2") #Hard-code version 2, since if this number changes the programmer MUST change this entire function.
+        config.set("general", "version", "2") # Hard-code version 2, since if this number changes the programmer MUST change this entire function.
         if self._variant_name:
             config.set("general", "variant", self._variant_name)
         if self._key:

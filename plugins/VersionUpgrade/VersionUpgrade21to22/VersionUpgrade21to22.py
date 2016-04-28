@@ -1,10 +1,10 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.VersionUpgrade import VersionUpgrade #Superclass of the plugin.
+from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
 
-from . import MachineInstance #To upgrade machine instances.
-from . import Profile #To upgrade profiles.
+from . import MachineInstance # To upgrade machine instances.
+from . import Profile # To upgrade profiles.
 
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
@@ -28,7 +28,7 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   not of the correct format.
     def upgradeProfile(self, serialised):
         profile = Profile.importVersion1(serialised)
-        if not profile: #Invalid file format.
+        if not profile: # Invalid file format.
             return None
         return profile.exportVersion2()
 
@@ -42,10 +42,10 @@ class VersionUpgrade21to22(VersionUpgrade):
     @staticmethod
     def translateSettings(settings):
         for key, value in settings.items():
-            if key == "speed_support_lines": #Setting key was changed for 2.2.
+            if key == "speed_support_lines": # Setting key was changed for 2.2.
                 del settings[key]
                 settings["speed_support_infill"] = value
-            if key == "retraction_combing": #Combing was made into an enum instead of a boolean.
+            if key == "retraction_combing": # Combing was made into an enum instead of a boolean.
                 settings[key] = "off" if (value == "False") else "all"
         return settings
 

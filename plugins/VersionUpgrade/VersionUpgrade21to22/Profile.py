@@ -27,13 +27,13 @@ class Profile:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
-        #Check correctness.
+        # Check correctness.
         if not parser.has_section("general"):
             raise SettingsError.InvalidFormatError("general")
         if not parser.has_option("general", "version") or int(parser.get("general", "version")) != 1: #Hard-coded profile version here. If this number changes the entire function needs to change.
             raise SettingsError.InvalidVersionError("Version upgrade intermediary version 1")
 
-        #Parse the general section.
+        # Parse the general section.
         self._name = parser.get("general", "name")
         self._type = parser.get("general", "type", fallback = None)
         if "weight" in parser["general"]:
@@ -50,13 +50,13 @@ class Profile:
         else:
             self._material_name = None
 
-        #Parse the settings.
+        # Parse the settings.
         self._settings = {}
         if parser.has_section("settings"):
             for key, value in parser["settings"].items():
                 self._settings[key] = value
 
-        #Parse the defaults and the disabled defaults.
+        # Parse the defaults and the disabled defaults.
         self._changed_settings_defaults = {}
         if parser.has_section("defaults"):
             for key, value in parser["defaults"].items():
@@ -73,11 +73,11 @@ class Profile:
     #   \return A serialised form of this profile, serialised in version 2 of
     #   the file format.
     def exportVersion2(self):
-        import VersionUpgrade21to22 #Import here to prevent circular dependencies.
+        import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None)
 
         config.add_section("general")
-        config.set("general", "version", "2") #Hard-coded profile version 2
+        config.set("general", "version", "2") # Hard-coded profile version 2
         config.set("general", "name", self._name)
         if self._type:
             config.set("general", "type", self._type)
@@ -107,7 +107,7 @@ class Profile:
         if self._disabled_settings_defaults:
             VersionUpgrade21to22.VersionUpgrade21to22.translateSettingNames(self._disabled_settings_defaults)
             config.add_section("disabled_defaults")
-            disabled_defaults_string = str(self._disabled_settings_defaults[0]) #Must be at least 1 item, otherwise we wouldn't enter this if statement.
+            disabled_defaults_string = str(self._disabled_settings_defaults[0]) # Must be at least 1 item, otherwise we wouldn't enter this if statement.
             for item in self._disabled_settings_defaults[1:]:
                 disabled_defaults_string += "," + str(item)
 
