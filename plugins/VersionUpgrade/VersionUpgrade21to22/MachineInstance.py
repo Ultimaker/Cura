@@ -12,7 +12,7 @@ import io #To write config files to strings as if they were files.
 #   \param serialised The serialised form of a machine instance in version 1.
 #   \return A machine instance instance, or None if the file format is
 #   incorrect.
-def importVersion1(serialised):
+def importFrom(serialised):
     try:
         return MachineInstance(serialised)
     except (configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError):
@@ -57,7 +57,7 @@ class MachineInstance:
     #
     #   \return A serialised form of this machine instance, serialised in
     #   version 2 of the file format.
-    def exportVersion2(self):
+    def exportTo(self):
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None) # Build a config file in the form of version 2.
 

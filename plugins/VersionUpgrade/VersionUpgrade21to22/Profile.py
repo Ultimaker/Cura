@@ -11,7 +11,7 @@ import io #To write config files to strings as if they were files.
 #
 #   \param serialised The serialised form of a profile in version 1.
 #   \return A profile instance, or None if the file format is incorrect.
-def importVersion1(serialised):
+def importFrom(serialised):
     try:
         return Profile(serialised)
     except (configparser.Error, SettingsError.InvalidFormatError, SettingsError.InvalidVersionError):
@@ -72,7 +72,7 @@ class Profile:
     #
     #   \return A serialised form of this profile, serialised in version 2 of
     #   the file format.
-    def exportVersion2(self):
+    def exportTo(self):
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
         config = configparser.ConfigParser(interpolation = None)
 

@@ -16,10 +16,10 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The serialised machine instance in version 2, or None if the
     #   input was not of the correct format.
     def upgradeMachineInstance(self, serialised):
-        machine_instance = MachineInstance.importVersion1(serialised)
+        machine_instance = MachineInstance.importFrom(serialised)
         if not machine_instance: #Invalid file format.
             return None
-        return machine_instance.exportVersion2()
+        return machine_instance.exportTo()
 
     ##  Converts profiles from format version 1 to version 2.
     #
@@ -27,10 +27,10 @@ class VersionUpgrade21to22(VersionUpgrade):
     #   \return The serialised profile in version 2, or None if the input was
     #   not of the correct format.
     def upgradeProfile(self, serialised):
-        profile = Profile.importVersion1(serialised)
+        profile = Profile.importFrom(serialised)
         if not profile: # Invalid file format.
             return None
-        return profile.exportVersion2()
+        return profile.exportTo()
 
     ##  Translates settings for the change from Cura 2.1 to 2.2.
     #
