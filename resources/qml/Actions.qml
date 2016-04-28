@@ -21,7 +21,7 @@ Item
     property alias unGroupObjects:unGroupObjectsAction;
     property alias mergeObjects: mergeObjectsAction;
     //property alias unMergeObjects: unMergeObjectsAction;
-    
+
     property alias multiplyObject: multiplyObjectAction;
 
     property alias deleteAll: deleteAllAction;
@@ -32,6 +32,8 @@ Item
     property alias addMachine: addMachineAction;
     property alias configureMachines: settingsAction;
     property alias addProfile: addProfileAction;
+    property alias updateProfile: updateProfileAction;
+    property alias resetProfile: resetProfileAction;
     property alias manageProfiles: manageProfilesAction;
 
     property alias preferences: preferencesAction;
@@ -98,9 +100,23 @@ Item
 
     Action
     {
+        id: updateProfileAction;
+        enabled: UM.ActiveProfile.valid && !UM.ActiveProfile.readOnly && UM.ActiveProfile.hasCustomisedValues
+        text: catalog.i18nc("@action:inmenu menubar:profile","&Update Current Profile");
+    }
+
+    Action
+    {
+        id: resetProfileAction;
+        enabled: UM.ActiveProfile.valid && !UM.ActiveProfile.readOnly && UM.ActiveProfile.hasCustomisedValues
+        text: catalog.i18nc("@action:inmenu menubar:profile","&Reset Current Profile");
+    }
+
+    Action
+    {
         id: addProfileAction;
         enabled: UM.ActiveProfile.valid
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Add Profile...");
+        text: catalog.i18nc("@action:inmenu menubar:profile","&Create New Profile...");
     }
 
     Action

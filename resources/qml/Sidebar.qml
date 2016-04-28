@@ -15,6 +15,8 @@ Rectangle
     property Action addMachineAction;
     property Action configureMachinesAction;
     property Action addProfileAction;
+    property Action updateProfileAction;
+    property Action resetProfileAction;
     property Action manageProfilesAction;
     property Action configureSettingsAction;
     property int currentModeIndex;
@@ -60,12 +62,14 @@ Rectangle
         height: UM.Theme.getSize("sidebar_lining").height
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height 
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
     }
 
     ProfileSetup {
         id: profileItem
         addProfileAction: base.addProfileAction
+        updateProfileAction: base.updateProfileAction
+        resetProfileAction: base.resetProfileAction
         manageProfilesAction: base.manageProfilesAction
         anchors.top: settingsModeSelection.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height

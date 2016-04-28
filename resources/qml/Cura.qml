@@ -229,7 +229,7 @@ UM.MainWindow
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0) {
                             if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
-                                profileMenu.addSeparator();
+                                profileMenu.insertSeparator(index);
                                 separatorIndex = index;
                             }
                         }
@@ -277,7 +277,10 @@ UM.MainWindow
 
                 MenuSeparator { id: profileMenuSeparator }
 
+                MenuItem { action: actions.updateProfile; }
+                MenuItem { action: actions.resetProfile; }
                 MenuItem { action: actions.addProfile; }
+                MenuSeparator { }
                 MenuItem { action: actions.manageProfiles; }
             }
 
@@ -287,7 +290,7 @@ UM.MainWindow
                 //: Extensions menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","E&xtensions");
 
-                Instantiator 
+                Instantiator
                 {
                     model: UM.Models.extensionModel
 
@@ -513,6 +516,8 @@ UM.MainWindow
                 addMachineAction: actions.addMachine;
                 configureMachinesAction: actions.configureMachines;
                 addProfileAction: actions.addProfile;
+                updateProfileAction: actions.updateProfile;
+                resetProfileAction: actions.resetProfile;
                 manageProfilesAction: actions.manageProfiles;
 
                 configureSettingsAction: Action
@@ -623,6 +628,8 @@ UM.MainWindow
 
         addMachine.onTriggered: addMachineWizard.visible = true;
         addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.visible = true; preferences.setPage(4); }
+        updateProfile.onTriggered: { UM.ActiveProfile.updateProfile() }
+        resetProfile.onTriggered: { UM.ActiveProfile.discardChanges() }
 
         preferences.onTriggered: { preferences.visible = true; }
         configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }

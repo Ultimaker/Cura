@@ -14,6 +14,8 @@ Item{
     property int totalHeightProfileSetup: childrenRect.height
     property Action manageProfilesAction
     property Action addProfileAction
+    property Action updateProfileAction
+    property Action resetProfileAction
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
@@ -67,7 +69,7 @@ Item{
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0) {
                             if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
-                                profileSelectionMenu.addSeparator();
+                                profileSelectionMenu.insertSeparator(index);
                                 separatorIndex = index;
                             }
                         }
@@ -114,8 +116,15 @@ Item{
 
                 MenuSeparator { }
                 MenuItem {
+                    action: base.updateProfileAction;
+                }
+                MenuItem {
+                    action: base.resetProfileAction;
+                }
+                MenuItem {
                     action: base.addProfileAction;
                 }
+                MenuSeparator { }
                 MenuItem {
                     action: base.manageProfilesAction;
                 }
