@@ -627,7 +627,7 @@ UM.MainWindow
         reloadAll.onTriggered: Printer.reloadAll()
 
         addMachine.onTriggered: addMachineWizard.visible = true;
-        addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.visible = true; preferences.setPage(4); }
+        addProfile.onTriggered: { UM.MachineManager.createProfile(); preferences.setPage(4); preferences.visible = true; preferences.show(); preferences.getCurrentItem().showProfileNameDialog() }
         updateProfile.onTriggered: { UM.ActiveProfile.updateProfile() }
         resetProfile.onTriggered: { UM.ActiveProfile.discardChanges() }
 
