@@ -15,13 +15,14 @@ class MachineActionManager:
         ##  Dict of all actions that need to be done when first added by machine reference.
         self._first_start_actions = {}
 
-    ##  Add a required action
+    ##  Add a required action to a machine
+    #   Raises an exception when the action is not recognised.
     def addRequiredAction(self, machine, action_key):
         if action_key in self._machine_actions:
             if machine in self._required_actions:
-                self._required_actions[machine].append(action_key)
+                self._required_actions[machine].append(self._machine_actions[action_key])
             else:
-                self._required_actions[machine] = set(action_key)
+                self._required_actions[machine] = set(self._machine_actions[action_key])
         else:
             # Todo: define specific Exception types (instead of general type)
             raise Exception("Action %s, which is required for %s is not known." % (action_key, machine.getKey()))
