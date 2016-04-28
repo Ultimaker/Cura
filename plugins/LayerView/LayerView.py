@@ -34,8 +34,8 @@ class LayerView(View):
         self._layer_percentage = 0 # what percentage of layers need to be shown (SLider gives value between 0 - 100)
         self._proxy = LayerViewProxy.LayerViewProxy()
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
-        self._max_layers = 10
-        self._current_layer_num = 10
+        self._max_layers = 0
+        self._current_layer_num = 0
         self._current_layer_mesh = None
         self._current_layer_jumps = None
         self._top_layers_job = None
