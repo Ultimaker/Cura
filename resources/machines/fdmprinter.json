@@ -912,7 +912,7 @@
                             "default": 60,
                             "visible": false,
                             "inherit_function": "speed_print",
-                            "enabled": "support_enable",
+                            "enabled": "support_roof_enable",
                             "children": {
                                 "speed_support_infill": {
                                     "label": "Support Infill Speed",
@@ -925,7 +925,7 @@
                                     "max_value_warning": "150",
                                     "visible": false,
                                     "inherit": true,
-                                    "enabled": "support_roof_enable",
+                                    "enabled": "support_enable",
                                     "global_only": true
                                 },
                                 "speed_support_roof": {
