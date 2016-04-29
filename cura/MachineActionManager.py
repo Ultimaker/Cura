@@ -58,6 +58,24 @@ class MachineActionManager:
             # Todo: define specific Exception types (instead of general type)
             raise Exception("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
 
+    ##  Get all actions supported by given machine
+    #   \param machine The machine you want the supported actions of
+    #   \returns set of supported actions.
+    def getSupportedActions(self, machine):
+        if machine in self._supported_actions:
+            return self._supported_actions[machine]
+        else:
+            return set()
+
+    ##  Get all actions required by given machine
+    #   \param machine The machine you want the required actions of
+    #   \returns set of required actions.
+    def getRequiredActions(self, machine):
+        if machine in self._required_actions:
+            return self._required_actions[machine]
+        else:
+            return set()
+
     ##  Remove Machine action from manager
     #   \param action to remove
     def removeMachineAction(self, action):
