@@ -34,7 +34,7 @@ class MachineActionManager:
             if machine in self._required_actions:
                 self._required_actions[machine].append(self._machine_actions[action_key])
             else:
-                self._required_actions[machine] = set(self._machine_actions[action_key])
+                self._required_actions[machine] = {self._machine_actions[action_key]}
         else:
             raise UnknownMachineAction("Action %s, which is required for %s is not known." % (action_key, machine.getKey()))
 
@@ -44,7 +44,7 @@ class MachineActionManager:
             if machine in self._supported_actions:
                 self._supported_actions[machine].append(self._machine_actions[action_key])
             else:
-                self._supported_actions[machine] = set(self._machine_actions[action_key])
+                self._supported_actions[machine] = {self._machine_actions[action_key]}
         else:
             Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine.getKey())
 
