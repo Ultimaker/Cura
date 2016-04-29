@@ -43,9 +43,9 @@ class MachineActionManager:
     def addFirstStartAction(self, machine, action_key, index = None):
         if action_key in self._machine_actions:
             if machine in self._supported_actions and index is not None:
-                self._supported_actions[machine].insert(index, self._machine_actions[action_key])
+                self._first_start_actions[machine].insert(index, self._machine_actions[action_key])
             else:
-                self._supported_actions[machine] = [self._machine_actions[action_key]]
+                self._first_start_actions[machine] = [self._machine_actions[action_key]]
         else:
             Logger.log("W", "Unable to add %s to %s, as the action is not recognised", action_key, machine.getKey())
 
