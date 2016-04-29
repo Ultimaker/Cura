@@ -51,8 +51,11 @@ class MachineActionManager:
     ##  Add an action to the first start list of a machine.
     def addFirstStartAction(self, machine, action_key, index = None):
         if action_key in self._machine_actions:
-            if machine in self._supported_actions and index is not None:
-                self._first_start_actions[machine].insert(index, self._machine_actions[action_key])
+            if machine in self._first_start_actions:
+                if index is not None:
+                    self._first_start_actions[machine].insert(index, self._machine_actions[action_key])
+                else:
+                    self._first_start_actions[machine].append(self._machine_actions[action_key])
             else:
                 self._first_start_actions[machine] = [self._machine_actions[action_key]]
         else:
@@ -83,6 +86,17 @@ class MachineActionManager:
             return self._required_actions[machine]
         else:
             return set()
+
+    ##  Get all actions that need to be perfomed upon first start of a given machine.
+    #   Note that contrary to required / supported actions a list is returned (as it could be required to run the same
+    #   action multiple times).
+    #   \param machine The machine you want the first start actions of
+    #   \returns List of actions.
+    def getFirstStartActions(self, machine):
+        if machine in self._first_start_actions:
+            return self._first_start_actions[machine]
+        else:
+            return []
 
     ##  Remove Machine action from manager
     #   \param action to remove
