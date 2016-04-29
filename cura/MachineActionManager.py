@@ -32,7 +32,7 @@ class MachineActionManager:
     def addRequiredAction(self, machine, action_key):
         if action_key in self._machine_actions:
             if machine in self._required_actions:
-                self._required_actions[machine].append(self._machine_actions[action_key])
+                self._required_actions[machine] |= {self._machine_actions[action_key]}
             else:
                 self._required_actions[machine] = {self._machine_actions[action_key]}
         else:
@@ -42,7 +42,7 @@ class MachineActionManager:
     def addSupportedAction(self, machine, action_key):
         if action_key in self._machine_actions:
             if machine in self._supported_actions:
-                self._supported_actions[machine].append(self._machine_actions[action_key])
+                self._supported_actions[machine] |= {self._machine_actions[action_key]}
             else:
                 self._supported_actions[machine] = {self._machine_actions[action_key]}
         else:
