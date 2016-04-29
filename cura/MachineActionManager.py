@@ -3,6 +3,16 @@
 from UM.Logger import Logger
 
 
+##  Raised when trying to add an unknown machine action as a required action
+class UnknownMachineAction(Exception):
+    pass
+
+
+##  Raised when trying to add a machine action that does not have an unique key.
+class NotUniqueMachineAction(Exception):
+    pass
+
+
 class MachineActionManager:
     def __init__(self):
         ##  Dict of all known machine actions
@@ -26,8 +36,7 @@ class MachineActionManager:
             else:
                 self._required_actions[machine] = set(self._machine_actions[action_key])
         else:
-            # Todo: define specific Exception types (instead of general type)
-            raise Exception("Action %s, which is required for %s is not known." % (action_key, machine.getKey()))
+            raise UnknownMachineAction("Action %s, which is required for %s is not known." % (action_key, machine.getKey()))
 
     ##  Add a supported action to a machine.
     def addSupportedAction(self, machine, action_key):
@@ -55,8 +64,7 @@ class MachineActionManager:
         if action.getKey() not in self._machine_action:
             self._machine_action[action.getKey()] = action
         else:
-            # Todo: define specific Exception types (instead of general type)
-            raise Exception("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
+            raise NotUniqueMachineAction("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
 
     ##  Get all actions supported by given machine
     #   \param machine The machine you want the supported actions of
