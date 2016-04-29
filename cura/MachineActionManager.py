@@ -61,8 +61,8 @@ class MachineActionManager:
     ##  Add a (unique) MachineAction
     #   if the Key of the action is not unique, an exception is raised.
     def addMachineAction(self, action):
-        if action.getKey() not in self._machine_action:
-            self._machine_action[action.getKey()] = action
+        if action.getKey() not in self._machine_actions:
+            self._machine_actions[action.getKey()] = action
         else:
             raise NotUniqueMachineAction("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
 
