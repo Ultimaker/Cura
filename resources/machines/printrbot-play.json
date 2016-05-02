@@ -1,7 +1,6 @@
 {
     "id": "printrbot-play",
     "name": "Printrbot Play",
-    "manufacturer": "Printrbot",
     "version": 1,
     "inherits": "fdmprinter.json",
     "machine_settings": {

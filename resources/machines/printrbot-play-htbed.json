@@ -1,7 +1,6 @@
 {
     "id": "printrbot-play-htbed",
     "name": "Printrbot Play With Heated Bed",
-    "manufacturer": "Printrbot",
     "version": 1,
     "inherits": "fdmprinter.json",
     "machine_settings": {
