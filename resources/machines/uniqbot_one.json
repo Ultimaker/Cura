@@ -2,7 +2,7 @@
     "id": "uniqbot_one",
     "version": 1, 
     "name": "Uniqbot",
-    "manufacturer": "Unimatech",
+    "manufacturer": "Other",
     "author": "Unimatech",
     "icon": "icon_ultimaker2.png",
     "file_formats": "text/x-gcode",
