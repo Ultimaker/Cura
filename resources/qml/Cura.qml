@@ -144,10 +144,10 @@ UM.MainWindow
             {
                 title: catalog.i18nc("@title:menu menubar:toplevel","&View");
                 id: top_view_menu
-                Instantiator 
+                Instantiator
                 {
                     model: UM.ViewModel { }
-                    MenuItem 
+                    MenuItem
                     {
                         text: model.name;
                         checkable: true;
@@ -547,7 +547,7 @@ UM.MainWindow
             insertPage(1, catalog.i18nc("@title:tab","View"), Qt.resolvedUrl("ViewPage.qml"));
 
             //Force refresh
-            setPage(0)
+            setPage(0);
         }
 
         onVisibleChanged:
@@ -576,7 +576,7 @@ UM.MainWindow
 
         deleteSelection.onTriggered:
         {
-            Printer.deleteSelection()
+            Printer.deleteSelection();
         }
 
         deleteObject.onTriggered:
@@ -605,29 +605,30 @@ UM.MainWindow
                 objectContextMenu.objectId = 0;
             }
         }
-        
+
         groupObjects.onTriggered:
         {
-            Printer.groupSelected()
+            Printer.groupSelected();
         }
-        
+
         unGroupObjects.onTriggered:
         {
-            Printer.ungroupSelected()
+            Printer.ungroupSelected();
         }
-        
+
         mergeObjects.onTriggered:
         {
-            Printer.mergeSelected()
+            Printer.mergeSelected();
         }
 
-        deleteAll.onTriggered: Printer.deleteAll()
-        resetAllTranslation.onTriggered: Printer.resetAllTranslation()
-        resetAll.onTriggered: Printer.resetAll()
-        reloadAll.onTriggered: Printer.reloadAll()
+        deleteAll.onTriggered: Printer.deleteAll();
+        resetAllTranslation.onTriggered: Printer.resetAllTranslation();
+        resetAll.onTriggered: Printer.resetAll();
+        reloadAll.onTriggered: Printer.reloadAll();
 
         addMachine.onTriggered: addMachineWizard.visible = true;
-        addProfile.onTriggered: {
+        addProfile.onTriggered:
+        {
             UM.MachineManager.createProfile();
             preferences.setPage(4);
             preferences.show();
@@ -635,21 +636,30 @@ UM.MainWindow
             // Show the renameDialog after a very short delay so the preference page has time to initiate
             showProfileNameDialogTimer.start();
         }
-        updateProfile.onTriggered: { UM.ActiveProfile.updateProfile() }
-        resetProfile.onTriggered: { UM.ActiveProfile.discardChanges() }
+        updateProfile.onTriggered: UM.ActiveProfile.updateProfile();
+        resetProfile.onTriggered: UM.ActiveProfile.discardChanges();
 
-        preferences.onTriggered: { preferences.visible = true; }
-        configureMachines.onTriggered: { preferences.visible = true; preferences.setPage(3); }
-        manageProfiles.onTriggered: { preferences.visible = true; preferences.setPage(4); }
+        preferences.onTriggered: preferences.visible = true;
+        configureMachines.onTriggered:
+        {
+            preferences.visible = true;
+            preferences.setPage(3);
+        }
+        manageProfiles.onTriggered:
+        {
+            preferences.visible = true;
+            preferences.setPage(4);
+        }
 
         documentation.onTriggered: CuraActions.openDocumentation();
         reportBug.onTriggered: CuraActions.openBugReportPage();
         showEngineLog.onTriggered: engineLog.visible = true;
         about.onTriggered: aboutDialog.visible = true;
-        toggleFullScreen.onTriggered: base.toggleFullscreen()
+        toggleFullScreen.onTriggered: base.toggleFullscreen();
     }
 
-    Timer {
+    Timer
+    {
         id: showProfileNameDialogTimer
         repeat: false
         interval: 1
@@ -670,9 +680,9 @@ UM.MainWindow
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
-        MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.mergeObjects;}
-        MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: actions.groupObjects; }
+        MenuItem { action: actions.mergeObjects; }
+        MenuItem { action: actions.unGroupObjects; }
     }
 
     Menu
@@ -682,9 +692,9 @@ UM.MainWindow
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
-        MenuItem { action: actions.groupObjects;}
-        MenuItem { action: actions.mergeObjects;}
-        MenuItem { action: actions.unGroupObjects;}
+        MenuItem { action: actions.groupObjects; }
+        MenuItem { action: actions.mergeObjects; }
+        MenuItem { action: actions.unGroupObjects; }
     }
 
     Connections
