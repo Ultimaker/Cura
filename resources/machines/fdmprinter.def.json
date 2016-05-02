@@ -19,142 +19,163 @@
             "description": "Machine specific settings",
             "children":
             {
-                "machine_show_variants": {
+                "machine_show_variants":
+                {
                     "description": "Whether to show the different variants of this machine, which are described in separate json files.",
                     "default_value": false,
                     "type": "bool",
                     "label": "Show machine variants"
                 },
-                "machine_start_gcode": {
+                "machine_start_gcode":
+                {
                     "description": "Gcode commands to be executed at the very start - separated by \\n.",
                     "default_value": "G28 ;Home\nG1 Z15.0 F6000 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0",
                     "label": "Start GCode",
                     "global_only": true,
                     "type": "str"
                 },
-                "machine_end_gcode": {
+                "machine_end_gcode":
+                {
                     "description": "Gcode commands to be executed at the very end - separated by \\n.",
                     "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84",
                     "label": "End GCode",
                     "global_only": true,
                     "type": "str"
                 },
-                "material_bed_temp_wait": {
+                "material_bed_temp_wait":
+                {
                     "description": "Whether to insert a command to wait until the bed temperature is reached at the start.",
                     "label": "Wait for bed heatup",
                     "default_value": true,
                     "global_only": true,
                     "type": "bool"
                 },
-                "material_print_temp_prepend": {
+                "material_print_temp_prepend":
+                {
                     "description": "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting.",
                     "default_value": true,
                     "global_only": true,
                     "type": "bool",
                     "label": "Wait for material heatup"
                 },
-                "machine_width": {
+                "machine_width":
+                {
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "global_only": true,
                     "type": "float",
                     "label": "Machine width"
                 },
-                "machine_depth": {
+                "machine_depth":
+                {
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "global_only": true,
                     "type": "float",
                     "label": "Machine depth"
                 },
-                "machine_height": {
+                "machine_height":
+                {
                     "description": "The height (Z-direction) of the printable area.",
                     "default_value": 100,
                     "global_only": true,
                     "type": "float",
                     "label": "Machine height"
                 },
-                "machine_heated_bed": {
+                "machine_heated_bed":
+                {
                     "description": "Whether the machine has a heated bed present.",
                     "default_value": false,
                     "global_only": true,
                     "label": "Has heated bed",
                     "type": "bool"
                 },
-                "machine_center_is_zero": {
+                "machine_center_is_zero":
+                {
                     "description": "Whether the X/Y coordinates of the zero position of the printer is at the center of the printable area.",
                     "default_value": false,
                     "global_only": true,
                     "type": "bool",
                     "label": "Is center origin"
                 },
-                "machine_extruder_count": {
+                "machine_extruder_count":
+                {
                     "description": "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle.",
                     "default_value": 1,
                     "global_only": true,
                     "type": "bool",
                     "label": "Number extruders"
                 },
-                "machine_nozzle_tip_outer_diameter": {
+                "machine_nozzle_tip_outer_diameter":
+                {
                     "description": "The outer diameter of the tip of the nozzle.",
                     "label": "Outer nozzle diameter",
                     "default_value": 1,
                     "global_only": true,
                     "type": "float"
                 },
-                "machine_nozzle_head_distance": {
+                "machine_nozzle_head_distance":
+                {
                     "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
                     "default_value": 3,
                     "global_only": true,
                     "type": "float",
                     "label": "Nozzle length"
                 },
-                "machine_nozzle_expansion_angle": {
+                "machine_nozzle_expansion_angle":
+                {
                     "description": "The angle between the horizontal plane and the conical part right above the tip of the nozzle.",
                     "default_value": 45,
                     "global_only": true,
                     "type": "int",
                     "label": "Nozzle angle"
                 },
-                "machine_heat_zone_length": {
+                "machine_heat_zone_length":
+                {
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transfered to the filament.",
                     "default_value": 16,
                     "global_only": true,
                     "type": "float",
                     "label": "Heat zone length"
                 },
-                "machine_nozzle_heat_up_speed": {
+                "machine_nozzle_heat_up_speed":
+                {
                     "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
                     "global_only": true,
                     "type": "float",
                     "label": "Heat up speed"
                 },
-                "machine_nozzle_cool_down_speed": {
+                "machine_nozzle_cool_down_speed":
+                {
                     "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
                     "global_only": true,
                     "type": "float",
                     "label": "Cool down speed"
                 },
-                "machine_gcode_flavor": {
+                "machine_gcode_flavor":
+                {
                     "description": "The type of gcode to be generated.",
                     "default_value": "RepRap",
                     "global_only": true,
                     "type": "str",
                     "label": "Gcode flavour"
                 },
-                "machine_disallowed_areas": {
+                "machine_disallowed_areas":
+                {
                     "description": "A list of polygons with areas the print head is not allowed to enter.",
                     "type": "polygons",
                     "default_value": [],
                     "global_only": true,
                     "label": "Disallowed areas"
                 },
-                "machine_head_polygon": {
+                "machine_head_polygon":
+                {
                     "description": "A 2D silhouette of the print head (fan caps excluded).",
                     "type": "polygon",
-                    "default_value": [
+                    "default_value":
+                    [
                         [
                             -1,
                             1
@@ -175,10 +196,12 @@
                     "global_only": true,
                     "label": "Machine head polygon"
                 },
-                "machine_head_with_fans_polygon": {
+                "machine_head_with_fans_polygon":
+                {
                     "description": "A 2D silhouette of the print head (fan caps included).",
                     "type": "polygon",
-                    "default_value": [
+                    "default_value":
+                    [
                         [
                             -20,
                             10
@@ -199,21 +222,23 @@
                     "global_only": true,
                     "label": "Machine head & Fan polygon"
                 },
-                "gantry_height": {
+                "gantry_height":
+                {
                     "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
                     "default_value": 99999999999,
                     "global_only": true,
                     "label": "Gantry height",
                     "type": "float"
                 },
-                "machine_nozzle_size": {
+                "machine_nozzle_size":
+                {
                     "label": "Nozzle Diameter",
                     "description": "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.4,
                     "minimum_value": "0.001",
-                    "maximum_value_warning": "10",
+                    "maximum_value_warning": "10"
                 }
             }
         },
