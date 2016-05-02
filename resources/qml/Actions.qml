@@ -109,7 +109,7 @@ Item
     {
         id: resetProfileAction;
         enabled: UM.ActiveProfile.valid && UM.ActiveProfile.hasCustomisedValues
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Reset Current Profile");
+        text: catalog.i18nc("@action:inmenu menubar:profile","&Reload Current Profile");
     }
 
     Action
