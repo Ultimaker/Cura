@@ -4,8 +4,7 @@
     "metadata":
     {
         "category": "Ultimaker",
-        "manufacturer": "Ultimaker",
-        "visible": false
+        "manufacturer": "Ultimaker"
     },
     "name": "FDM Printer Base Description",
     "author": "Ultimaker B.V.",
@@ -215,7 +214,6 @@
                     "default_value": 0.4,
                     "minimum_value": "0.001",
                     "maximum_value_warning": "10",
-                    "visible": false
                 }
             }
         },
@@ -366,7 +364,6 @@
         "shell":
         {
             "label": "Shell",
-            "visible": true,
             "icon": "category_shell",
             "description": "Shell",
             "type": "category",
@@ -683,7 +680,6 @@
                     "description": "Change the temperature for each layer automatically with the average flow speed of that layer.",
                     "type": "bool",
                     "default_value": false,
-                    "visible": false,
                     "enabled": "False",
                     "global_only": true
                 },
@@ -717,8 +713,7 @@
                     "maximum_value_warning": "10.0",
                     "global_only": "True",
                     "enabled": "False",
-                    "enabled_before_removal": "material_flow_dependent_temperature or machine_extruder_count > 1",
-                    "visible": false
+                    "enabled_before_removal": "material_flow_dependent_temperature or machine_extruder_count > 1"
                 },
                 "material_bed_temperature": {
                     "label": "Bed Temperature",
@@ -756,8 +751,7 @@
                     "label": "Enable Retraction",
                     "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
                     "type": "bool",
-                    "default_value": true,
-                    "visible": true
+                    "default_value": true
                 },
                 "retraction_amount": {
                     "label": "Retraction Distance",
@@ -767,7 +761,6 @@
                     "default_value": 6.5,
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
-                    "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable"
                 },
@@ -780,7 +773,6 @@
                     "minimum_value": "0",
                     "maximum_value": "299792458000",
                     "maximum_value_warning": "100",
-                    "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable",
                     "children": {
@@ -793,7 +785,6 @@
                             "minimum_value": "0",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "100",
-                            "visible": false,
                             "enabled": "retraction_enable"
                         },
                         "retraction_prime_speed": {
@@ -805,7 +796,6 @@
                             "minimum_value": "0",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "100",
-                            "visible": false,
                             "enabled": "retraction_enable"
                         }
                     }
@@ -818,7 +808,6 @@
                     "default_value": 0,
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "5.0",
-                    "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable"
                 },
@@ -831,7 +820,6 @@
                     "inherit_function": "line_width * 2",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
-                    "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable"
                 },
@@ -842,7 +830,6 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "type": "int",
-                    "visible": false,
                     "inherit": false,
                     "enabled": "retraction_enable"
                 },
@@ -854,7 +841,6 @@
                     "default_value": 4.5,
                     "minimum_value": "0",
                     "maximum_value_warning": "retraction_amount * 2",
-                    "visible": false,
                     "inherit_function": "retraction_amount",
                     "enabled": "retraction_enable"
                 },
@@ -912,7 +898,6 @@
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "150",
                             "default_value": 30,
-                            "visible": false,
                             "inherit_function": "parent_value / 2",
                             "children":
                             {
@@ -1134,7 +1119,6 @@
                             "maximum_value": "100",
                             "inherit_function": "parent_value",
                             "default_value": 100,
-                            "visible": false,
                             "enabled": "cool_fan_enabled",
                             "global_only": "True"
                         },
@@ -1411,7 +1395,6 @@
                     "description": "Generate a dense top skin at the top of the support on which the model is printed.",
                     "type": "bool",
                     "default_value": false,
-                    "visible": true,
                     "enabled": "support_enable"
                 },
                 "support_roof_height":
@@ -2198,7 +2181,6 @@
                             "minimum_value": "0.1",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "50",
-                            "visible": false,
                             "enabled": "wireframe_enabled",
                             "global_only": "True"
                         },
@@ -2212,7 +2194,6 @@
                             "minimum_value": "0.1",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "50",
-                            "visible": false,
                             "enabled": "wireframe_enabled",
                             "global_only": "True"
                         },
@@ -2226,7 +2207,6 @@
                             "minimum_value": "0.1",
                             "maximum_value": "299792458000",
                             "maximum_value_warning": "50",
-                            "visible": false,
                             "enabled": "wireframe_enabled",
                             "global_only": "True"
                         },
@@ -2381,7 +2361,6 @@
                         "retract": "Retract"
                     },
                     "default_value": "compensate",
-                    "visible": false,
                     "enabled": "wireframe_enabled",
                     "global_only": "True"
                 },
@@ -2394,7 +2373,6 @@
                     "default_value": 20,
                     "minimum_value": "0",
                     "maximum_value": "100",
-                    "visible": false,
                     "enabled": "wireframe_enabled",
                     "global_only": "True"
                 },
