@@ -1944,6 +1944,13 @@
                     "enabled": "draft_shield_height_limitation == \"limited\"",
                     "global_only": true
                 },
+                "conical_overhang_enabled": {
+                    "label": "Make Overhang Printable",
+                    "description": "Change the geometry of the printed model such that minimal support is required. Steep overhangs will become shallow overhangs. Overhanging areas will drop down to become more vertical.",
+                    "type": "boolean",
+                    "default": false,
+                    "visible": false
+                },
                 "coasting_enable": {
                     "label": "Enable Coasting",
                     "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to print the last piece of the extrusion path in order to reduce stringing.",
