@@ -1951,6 +1951,17 @@
                     "default": false,
                     "visible": false
                 },
+                "conical_overhang_angle": {
+                    "label": "Maximum Model Angle",
+                    "description": "The maximum angle of overhangs after the they have been made printable. At a value of 0° all overhangs are replaced by a piece of model connected to the build plate, 90° will not change the model in any way.",
+                    "unit": "°",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value": "89",
+                    "default": 50,
+                    "visible": true,
+                    "enabled": "conical_overhang_enabled"
+                },
                 "coasting_enable": {
                     "label": "Enable Coasting",
                     "description": "Coasting replaces the last part of an extrusion path with a travel path. The oozed material is used to print the last piece of the extrusion path in order to reduce stringing.",
