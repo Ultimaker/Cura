@@ -1253,6 +1253,30 @@
                     "visible": false,
                     "enabled": "support_enable"
                 },
+                "support_xy_overrides_z": {
+                    "label": "Support Distance Priority",
+                    "description": "Whether the Support X/Y Distance overrides the Support Z Distance or vice versa. When X/Y overrides Z the X/Y distance can push away the support from the model, influencing the actual Z distance to the overhang. We can disable this by not applying the X/Y distance around overhangs.",
+                    "type": "enum",
+                    "options": {
+                        "xy_overrides_z": "X/Y overrides Z",
+                        "z_overrides_xy": "Z overrides X/Y"
+                    },
+                    "default": "z_overrides_xy",
+                    "visible": false,
+                    "enabled": "support_enable"
+                },
+                "support_xy_distance_overhang": {
+                    "label": "Minimum Support X/Y Distance",
+                    "description": "Distance of the support structure from the overhang in the X/Y directions. ",
+                    "unit": "mm",
+                    "type": "float",
+                    "min_value": "0",
+                    "max_value_warning": "10",
+                    "default": 0.2,
+                    "visible": false,
+                    "inherit_function": "machine_nozzle_size / 2",
+                    "enabled": "support_enable and support_xy_overrides_z==\"z_overrides_xy\""
+                },
                 "support_z_distance": {
                     "label": "Support Z Distance",
                     "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded down to a multiple of the layer height.",
