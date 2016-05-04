@@ -1121,7 +1121,7 @@
                             "min_value": "0",
                             "max_value_warning": "100",
                             "visible": false,
-                            "inherit_function": "int((parent_value - layer_height_0 + 0.001) / layer_height) + 1",
+                            "inherit_function": "max(0, int(round((parent_value - layer_height_0) / layer_height, 0)))",
                             "global_only": "True"
                         }
                     }
