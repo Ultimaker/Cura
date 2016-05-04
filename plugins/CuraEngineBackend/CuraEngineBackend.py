@@ -71,6 +71,7 @@ class CuraEngineBackend(Backend):
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
         self._slicing = False
+        self._start_slice_job = None
         self._restart = False
         self._enabled = True
         self._always_restart = True
@@ -155,14 +156,19 @@ class CuraEngineBackend(Backend):
         self._slicing = True
         self.slicingStarted.emit()
 
-        job = StartSliceJob.StartSliceJob(self._profile, self._socket)
-        job.start()
-        job.finished.connect(self._onStartSliceCompleted)
+        slice_message = self._socket.createMessage("cura.proto.Slice")
+        settings_message = self._socket.createMessage("cura.proto.SettingList");
+        self._start_slice_job = StartSliceJob.StartSliceJob(self._profile, slice_message, settings_message)
+        self._start_slice_job.start()
+        self._start_slice_job.finished.connect(self._onStartSliceCompleted)
 
     def _terminate(self):
         self._slicing = False
         self._restart = True
         self._stored_layer_data = []
+        if self._start_slice_job is not None:
+            self._start_slice_job.cancel()
+
         self.slicingCancelled.emit()
         self.processingProgress.emit(0)
         Logger.log("d", "Attempting to kill the engine process")
@@ -176,13 +182,19 @@ class CuraEngineBackend(Backend):
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occured while trying to kill the engine %s", str(e))
 
-
     def _onStartSliceCompleted(self, job):
-        if job.getError() or job.getResult() != True:
+        # Note that cancelled slice jobs can still call this method.
+        if self._start_slice_job is job:
+            self._start_slice_job = None
+        if job.isCancelled() or job.getError() or job.getResult() != True:
             if self._message:
                 self._message.hide()
                 self._message = None
             return
+        else:
+            # Preparation completed, send it to the backend.
+            self._socket.sendMessage(job.getSettingsMessage())
+            self._socket.sendMessage(job.getSliceMessage())
 
     def _onSceneChanged(self, source):
         if type(source) is not SceneNode:

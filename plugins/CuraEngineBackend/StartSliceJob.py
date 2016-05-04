@@ -28,88 +28,92 @@ class GcodeStartEndFormatter(Formatter):
             Logger.log("w", "Incorrectly formatted placeholder '%s' in start/end gcode", key)
             return "{" + str(key) + "}"
 
-
-##  Job that handles sending the current scene data to CuraEngine
+##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    def __init__(self, profile, socket):
+    def __init__(self, profile, slice_message, settings_message):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
         self._profile = profile
-        self._socket = socket
+        self._slice_message = slice_message
+        self._settings_message = settings_message
+        self._is_cancelled = False
+
+    def getSettingsMessage(self):
+        return self._settings_message
+
+    def getSliceMessage(self):
+        return self._slice_message
 
     def run(self):
-        self._scene.acquireLock()
+        with self._scene.getSceneLock():
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                if node.callDecoration("getLayerData"):
+                    node.getParent().removeChild(node)
+                    break
 
-        for node in DepthFirstIterator(self._scene.getRoot()):
-            if node.callDecoration("getLayerData"):
-                node.getParent().removeChild(node)
-                break
+            object_groups = []
+            if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
+                for node in OneAtATimeIterator(self._scene.getRoot()):
+                    temp_list = []
 
-        object_groups = []
-        if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
-            for node in OneAtATimeIterator(self._scene.getRoot()):
+                    if getattr(node, "_outside_buildarea", False):
+                        continue
+
+                    children = node.getAllChildren()
+                    children.append(node)
+                    for child_node in children:
+                        if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
+                            temp_list.append(child_node)
+
+                    if temp_list:
+                        object_groups.append(temp_list)
+                    Job.yieldThread()
+                if len(object_groups) == 0:
+                    Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
+            else:
                 temp_list = []
-
-                ##  Node can't be printed, so don't bother sending it.
-                if getattr(node, "_outside_buildarea", False):
-                    continue
-
-                children = node.getAllChildren()
-                children.append(node)
-                for child_node in children:
-                    if type(child_node) is SceneNode and child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
-                        temp_list.append(child_node)
+                for node in DepthFirstIterator(self._scene.getRoot()):
+                    if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                        if not getattr(node, "_outside_buildarea", False):
+                            temp_list.append(node)
+                    Job.yieldThread()
 
                 if temp_list:
                     object_groups.append(temp_list)
-                Job.yieldThread()
-            if len(object_groups) == 0:
-                Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
-        else:
-            temp_list = []
-            for node in DepthFirstIterator(self._scene.getRoot()):
-                if type(node) is SceneNode and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                    if not getattr(node, "_outside_buildarea", False):
-                        temp_list.append(node)
-                Job.yieldThread()
 
-            if temp_list:
-                object_groups.append(temp_list)
+            if not object_groups:
+                return
 
-        self._scene.releaseLock()
+            self._buildSettingsMessage(self._profile)
 
-        if not object_groups:
-            return
+            for group in object_groups:
+                group_message = self._slice_message.addRepeatedMessage("object_lists")
+                if group[0].getParent().callDecoration("isGroup"):
+                    self._handlePerObjectSettings(group[0].getParent(), group_message)
+                for object in group:
+                    mesh_data = object.getMeshData().getTransformed(object.getWorldTransformation())
 
-        self._sendSettings(self._profile)
+                    obj = group_message.addRepeatedMessage("objects")
+                    obj.id = id(object)
+                    verts = numpy.array(mesh_data.getVertices())
+                    verts[:,[1,2]] = verts[:,[2,1]]
+                    verts[:,1] *= -1
 
-        slice_message = self._socket.createMessage("cura.proto.Slice")
+                    obj.vertices = verts
 
-        for group in object_groups:
-            group_message = slice_message.addRepeatedMessage("object_lists")
-            if group[0].getParent().callDecoration("isGroup"):
-                self._handlePerObjectSettings(group[0].getParent(), group_message)
-            for current_object in group:
-                mesh_data = current_object.getMeshData().getTransformed(current_object.getWorldTransformation())
+                    self._handlePerObjectSettings(object, obj)
 
-                obj = group_message.addRepeatedMessage("objects")
-                obj.id = id(current_object)
+                    Job.yieldThread()
 
-                verts = numpy.array(mesh_data.getVertices())
-                verts[:,[1,2]] = verts[:,[2,1]]
-                verts[:,1] *= -1
-
-                obj.vertices = verts
-
-                self._handlePerObjectSettings(current_object, obj)
-
-                Job.yieldThread()
-
-        Logger.log("d", "Sending data to engine for slicing.")
-        self._socket.sendMessage(slice_message)
-        Logger.log("d", "Sending data to engine is completed")
         self.setResult(True)
+
+    def cancel(self):
+        super().cancel()
+        self._is_cancelled = True
+
+    def isCancelled(self):
+        return self._is_cancelled
 
     def _expandGcodeTokens(self, key, value, settings):
         try:
@@ -120,21 +124,18 @@ class StartSliceJob(Job):
             Logger.log("w", "Unabled to do token replacement on start/end gcode %s", traceback.format_exc())
             return str(value).encode("utf-8")
 
-    def _sendSettings(self, profile):
-        msg = self._socket.createMessage("cura.proto.SettingList")
+    def _buildSettingsMessage(self, profile):
         settings = profile.getAllSettingValues(include_machine = True)
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
         for key, value in settings.items():
-            s = msg.addRepeatedMessage("settings")
+            s = self._settings_message.addRepeatedMessage("settings")
             s.name = key
             if key == "machine_start_gcode" or key == "machine_end_gcode":
                 s.value = self._expandGcodeTokens(key, value, settings)
             else:
                 s.value = str(value).encode("utf-8")
-
-        self._socket.sendMessage(msg)
 
     def _handlePerObjectSettings(self, node, message):
         profile = node.callDecoration("getProfile")
