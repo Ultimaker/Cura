@@ -497,7 +497,25 @@
                     "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
                     "type": "boolean",
                     "default": true,
-                    "visible": false
+                    "visible": false,
+                    "children": {
+                        "travel_compensate_overlapping_walls_0_enabled": {
+                            "label": "Compensate Outer Wall Overlaps",
+                            "description": "Compensate the flow for parts of an outer wall being printed where there is already a wall in place.",
+                            "type": "boolean",
+                            "default": true,
+                            "visible": false,
+                            "inherit_function": "parent_value"
+                        },
+                        "travel_compensate_overlapping_walls_x_enabled": {
+                            "label": "Compensate Inner Wall Overlaps",
+                            "description": "Compensate the flow for parts of an inner wall being printed where there is already a wall in place.",
+                            "type": "boolean",
+                            "default": true,
+                            "visible": false,
+                            "inherit_function": "parent_value"
+                        }
+                    }
                 },
                 "xy_offset": {
                     "label": "Horizontal Expansion",
