@@ -139,6 +139,20 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","Should opened files be scaled up if they are extremely small?")
+
+            CheckBox
+            {
+                id: scaleTinyCheckbox
+                text: catalog.i18nc("@option:check","Scale extremely small files")
+                checked: boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
+                onCheckedChanged: UM.Preferences.setValue("mesh/scale_tiny_meshes", checked)
+            }
+        }
+
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
             CheckBox
