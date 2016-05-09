@@ -1022,13 +1022,13 @@
                     "global_only": "True"
                 },
                 "acceleration_print": {
-                    "label": "Print Head Acceleration",
+                    "label": "Print Acceleration",
                     "description": "The acceleration with which printing happens.",
                     "unit": "mm/s²",
                     "type": "float",
                     "min_value": "0.1",
-                    "max_value_warning": "10000",
                     "min_value_warning": "100",
+                    "max_value_warning": "10000",
                     "default": 3000,
                     "visible": true,
                     "enabled_WTF": "acceleration_enabled",
@@ -2097,6 +2097,124 @@
                         }
                     }
                 },
+                
+                
+                
+                "raft_acceleration": {
+                    "label": "Raft Print Acceleration",
+                    "description": "The acceleration with which the raft is printed.",
+                    "unit": "mm/s²",
+                    "type": "float",
+                    "default": 3000,
+                    "min_value": "0.1",
+                    "min_value_warning": "100",
+                    "max_value_warning": "10000",
+                    "inherit_function": "acceleration_print",
+                    "global_only": "True",
+                    "visible": false,
+                    "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
+                    "children": {
+                        "raft_surface_acceleration": {
+                            "label": "Raft Surface Print Acceleration",
+                            "description": "The acceleration with which the surface raft layers are printed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "default": 3000,
+                            "min_value": "0.1",
+                            "min_value_warning": "100",
+                            "max_value_warning": "10000",
+                            "global_only": "True",
+                            "visible": false,
+                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
+                        },
+                        "raft_interface_acceleration": {
+                            "label": "Raft Interface Print Acceleration",
+                            "description": "The acceleration with which the interface raft layer is printed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "default": 3000,
+                            "min_value": "0.1",
+                            "min_value_warning": "100",
+                            "max_value_warning": "10000",
+                            "global_only": "True",
+                            "visible": false,
+                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
+                        },
+                        "raft_base_acceleration": {
+                            "label": "Raft Base Print Acceleration",
+                            "description": "The acceleration with which the base raft layer is printed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "default": 3000,
+                            "min_value": "0.1",
+                            "min_value_warning": "100",
+                            "max_value_warning": "10000",
+                            "global_only": "True",
+                            "visible": false,
+                            "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
+                        }
+                    }
+                },
+                
+                
+                
+                "raft_jerk": {
+                    "label": "Raft Print Jerk",
+                    "description": "The jerk with which the raft is printed.",
+                    "unit": "mm/s³",
+                    "type": "float",
+                    "default": 20,
+                    "min_value": "0.1",
+                    "min_value_warning": "5",
+                    "max_value_warning": "50",
+                    "inherit_function": "jerk_print",
+                    "global_only": "True",
+                    "visible": false,
+                    "enabled": "adhesion_type == \"raft\" and jerk_enabled",
+                    "children": {
+                        "raft_surface_jerk": {
+                            "label": "Raft Surface Print Jerk",
+                            "description": "The jerk with which the surface raft layers are printed.",
+                            "unit": "mm/s³",
+                            "type": "float",
+                            "default": 20,
+                            "min_value": "0.1",
+                            "min_value_warning": "5",
+                            "max_value_warning": "100",
+                            "global_only": "True",
+                            "visible": false,
+                            "enabled": "adhesion_type == \"raft\" and jerk_enabled"
+                        },
+                        "raft_interface_jerk": {
+                            "label": "Raft Interface Print Jerk",
+                            "description": "The jerk with which the interface raft layer is printed.",
+                            "unit": "mm/s³",
+                            "type": "float",
+                            "default": 20,
+                            "min_value": "0.1",
+                            "min_value_warning": "5",
+                            "max_value_warning": "50",
+                            "global_only": "True",
+                            "visible": false,
+                            "enabled": "adhesion_type == \"raft\" and jerk_enabled"
+                        },
+                        "raft_base_jerk": {
+                            "label": "Raft Base Print Jerk",
+                            "description": "The jerk with which the base raft layer is printed.",
+                            "unit": "mm/s³",
+                            "type": "float",
+                            "default": 20,
+                            "min_value": "0.1",
+                            "min_value_warning": "5",
+                            "max_value_warning": "50",
+                            "global_only": "True",
+                            "visible": false,
+                            "enabled": "adhesion_type == \"raft\" and jerk_enabled"
+                        }
+                    }
+                },
+                
+                
                 "raft_fan_speed": {
                     "label": "Raft Fan Speed",
                     "description": "The fan speed for the raft.",
