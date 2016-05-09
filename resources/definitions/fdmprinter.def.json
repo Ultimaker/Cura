@@ -457,7 +457,7 @@
                                     "minimum_value": "0",
                                     "maximum_value_warning": "100",
                                     "type": "int",
-                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(parent_value / layer_height, 4))"
+                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / layer_height, 4))"
                                 }
                             }
                         },
@@ -479,7 +479,7 @@
                                     "minimum_value": "0",
                                     "default_value": 6,
                                     "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(parent_value / layer_height, 4))"
+                                    "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / layer_height, 4))"
                                 }
                             }
                         }
@@ -2151,7 +2151,7 @@
                             "minimum_value": "magic_fuzzy_skin_thickness / 2",
                             "minimum_value_warning": "0.1",
                             "maximum_value_warning": "10",
-                            "value": "10000 if parent_value == 0 else 1 / magic_fuzzy_skin_point_density",
+                            "value": "10000 if magic_fuzzy_skin_point_density == 0 else 1 / magic_fuzzy_skin_point_density",
                             "enabled": "magic_fuzzy_skin_enabled"
                         }
                     }
