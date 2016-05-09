@@ -56,7 +56,7 @@ Item{
                 Instantiator
                 {
                     id: profileSelectionInstantiator
-                    model: UM.ProfilesModel {}
+//                     model: UM.ProfilesModel {}
                     property int separatorIndex: -1
 
                     Loader {

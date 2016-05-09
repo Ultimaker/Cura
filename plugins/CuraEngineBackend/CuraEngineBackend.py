@@ -52,11 +52,11 @@ class CuraEngineBackend(Backend):
 
         # When there are current settings and machine instance is changed, there is no profile changed event. We should
         # pretend there is though.
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveProfileChanged)
+        #Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveProfileChanged)
 
-        self._profile = None
-        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
-        self._onActiveProfileChanged()
+        #self._profile = None
+        #Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
+        #self._onActiveProfileChanged()
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(500)
@@ -84,7 +84,7 @@ class CuraEngineBackend(Backend):
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
         Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
+        #Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
 
     def close(self):
         # Terminate CuraEngine if it is still running at this point

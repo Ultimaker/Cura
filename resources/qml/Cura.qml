@@ -168,7 +168,7 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: UM.MachineInstancesModel { }
+//                     model: UM.MachineInstancesModel { }
                     MenuItem
                     {
                         text: model.name;
@@ -187,7 +187,7 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: UM.MachineVariantsModel { }
+//                     model: UM.MachineVariantsModel { }
                     MenuItem {
                         text: model.name;
                         checkable: true;
@@ -215,7 +215,7 @@ UM.MainWindow
                 Instantiator
                 {
                     id: profileMenuInstantiator
-                    model: UM.ProfilesModel {}
+//                     model: UM.ProfilesModel {}
                     property int separatorIndex: -1
 
                     Loader {

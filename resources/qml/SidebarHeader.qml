@@ -71,7 +71,7 @@ Item
                 id: machineSelectionMenu
                 Instantiator
                 {
-                    model: UM.MachineInstancesModel { }
+//                     model: UM.MachineInstancesModel { }
                     MenuItem
                     {
                         text: model.name;
@@ -139,7 +139,7 @@ Item
                     Instantiator
                     {
                         id: variantSelectionInstantiator
-                        model: UM.MachineVariantsModel { id: variantsModel }
+//                         model: UM.MachineVariantsModel { id: variantsModel }
                         MenuItem
                         {
                             text: model.name;
@@ -183,7 +183,7 @@ Item
                     Instantiator
                     {
                         id: materialSelectionInstantiator
-                        model: UM.MachineMaterialsModel { id: machineMaterialsModel }
+//                         model: UM.MachineMaterialsModel { id: machineMaterialsModel }
                         MenuItem
                         {
                             text: model.name;

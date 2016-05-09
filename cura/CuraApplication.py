@@ -101,8 +101,8 @@ class CuraApplication(QtApplication):
         self._camera_animation = None
         self._cura_actions = None
 
-        self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
-        self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
+        #self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
+        #self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
@@ -175,9 +175,9 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        self._platform = Platform(root)
+        #self._platform = Platform(root)
 
-        self._volume = BuildVolume.BuildVolume(root)
+        #self._volume = BuildVolume.BuildVolume(root)
 
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
