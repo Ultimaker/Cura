@@ -316,17 +316,21 @@ Item
 
         Label {
             id: supportExtruderLabel
+            visible: supportCheckBox.checked
             text: catalog.i18nc("@label:listbox","Print support with:")
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text")
             width: base.width/100* 35 - 2*UM.Theme.getSize("default_margin").width
+            height: visible ? mainExtruderLabel.height : 0
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: supportExtruderCombobox.verticalCenter
         }
         ComboBox {
             id: supportExtruderCombobox
+            visible: supportCheckBox.checked
             model: extruderModel
+            height: visible ? mainExtruderCombobox.height : 0
             anchors.top: mainExtruderCombobox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportExtruderLabel.right
