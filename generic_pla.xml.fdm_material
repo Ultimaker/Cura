@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+		WARNING !!!!!
+
+THIS IS TESTING CODE, IT DOES NOT FOLLOW THE SPEC NOR THE REFERENCE IMPLEMENTATION
+
+DO NOT USE, MODIFY OR RELY ON THIS CODE WHATSOEVER!
+
+THERE ARE SERIOUS ISSUES WITH THIS DATA!!
+-->
+<fdm_material xmlns:fdmm="http://www.ultimaker.com/material/v0.5">
+    <metadata>
+        <name>
+            <brand>Ultimaker</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+        <GUID>6976d020-18d1-4d46-9f3e-411189a1e230</GUID>
+        <version>0</version>
+        <color_code>#612978</color_code>
+        <instructions>http://ultimaker.com/we/have/no/instruction/link/yet</instructions>
+        <author>
+            <organization>Ultimaker B.V.</organization>
+            <contact>Ultimaker Support</contact>
+            <email>support@ultimaker.com</email>
+            <phone>+31 345 712001</phone>
+            <address>
+                <street>Watermolenweg 2</street>
+                <city>Geldermalsen</city>
+                <region>Gelderland</region>
+                <zip>4191 PN</zip>
+                <country>The Netherlands</country>
+            </address>
+        </author>
+        <supplier>
+            <organization>Ultimaker B.V.</organization>
+            <contact>Support</contact>
+            <email>support@ultimaker.com</email>
+            <phone>+31 345 712001</phone>
+            <address>
+                <street>Watermolenweg 2</street>
+                <city>Geldermalsen</city>
+                <region>Gelderland</region>
+                <zip>4191 PN</zip>
+                <country>The Netherlands</country>
+            </address>
+        </supplier>
+        <EAN>87 10400 31114 0</EAN>
+        <EAN>87 10400 31115 0</EAN>
+        <MSDS>http://...</MSDS>
+        <TDS>http://...</TDS>
+    </metadata>
+    <settings>
+        <!-- mwa -->
+        <temperatures
+            nominal_print_temperature="210"
+            heated_bed_temperature="30"
+            standby_temperature="100"
+        />
+        <temperatures
+            standby_temperature="150"
+        >
+            <machines>
+                <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2"/>
+                <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2go"/>
+                <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2extended"/>
+            </machines>
+        </temperatures>
+        <temperatures
+            standby_temperature="150"
+        >
+            <machines>
+                <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker Original"/>
+                <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker Original+"/>
+            </machines>
+        </temperatures>
+
+        <!-- okay -->
+        <printing_temperature>210</printing_temperature>
+        <standby_temperature>175</standby_temperature>
+        <maximum_temperature>350</maximum_temperature>
+        <heated_bed_temperature>60</heated_bed_temperature>
+        <material_bed_adhesion_temperature>55</material_bed_adhesion_temperature>
+        <maximum_heated_bed_temperature>90</maximum_heated_bed_temperature>
+        <heated_chamber_temperature>45</heated_chamber_temperature>
+        <minimum_heated_chamber_temperature>10</minimum_heated_chamber_temperature>
+        <maximum_heated_chamber_temperature>20</maximum_heated_chamber_temperature>
+        <cooling>100</cooling>
+        <retraction_speed>4.5</retraction_speed>
+        <processing_window>
+            <point flow="2" temperature="180"/>
+            <point flow="10" temperature="230"/>
+        </processing_window>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2"/>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2go"/>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2extended"/>
+            <standby_temperature>150</standby_temperature>
+            <processing_window>
+                <point flow="2" temperature="190"/>
+                <point flow="10" temperature="220"/>
+            </processing_window>
+            <hotend id="0.8mm">
+                <standby_temperature>80</standby_temperature>
+            </hotend>
+            <hotend id="0.6mm">
+                <standby_temperature>100</standby_temperature>
+            </hotend>
+            <hotend id="0.4mm">
+                <standby_temperature>140</standby_temperature>
+            </hotend>
+        </machine>
+
+        <!-- nop -->
+        <setting key="nominal_print_temperature">210</setting>
+        <setting key="heated_bed_temperature">60</setting>
+        <setting key="standby_temperature">100</setting>
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2"/>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2go"/>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2extended"/>
+            <setting key="standby_temperature">150</setting>
+            <setting key="processing_temperature_graph">
+                <point flow="2" temperature="180"/>
+                <point flow="10" temperature="230"/>
+            </setting>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker Original"/>
+            <setting key="standby_temperature">150</setting>
+            <hotend id="0.8mm">
+                <setting key="standby_temperature">80</setting>
+            </hotend>
+            <hotend id="0.6mm">
+                <setting key="standby_temperature">100</setting>
+            </hotend>
+        </machine>
+    </settings>
+    <properties>
+    </properties>
+</fdm_material>
