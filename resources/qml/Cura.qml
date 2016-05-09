@@ -626,7 +626,7 @@ UM.MainWindow
         resetAll.onTriggered: Printer.resetAll();
         reloadAll.onTriggered: Printer.reloadAll();
 
-        addMachine.onTriggered: addMachineWizard.visible = true;
+        addMachine.onTriggered: addMachineDialog.visible = true;
         addProfile.onTriggered:
         {
             UM.MachineManager.createProfile();
@@ -742,9 +742,9 @@ UM.MainWindow
         id: engineLog;
     }
 
-    AddMachineWizard
+    AddMachineDialog
     {
-        id: addMachineWizard
+        id: addMachineDialog
     }
 
     AboutDialog
@@ -757,8 +757,8 @@ UM.MainWindow
         target: Printer
         onRequestAddPrinter:
         {
-            addMachineWizard.visible = true
-            addMachineWizard.firstRun = false
+            addMachineDialog.visible = true
+            addMachineDialog.firstRun = false
         }
     }
 
@@ -777,8 +777,8 @@ UM.MainWindow
             }
             else if(UM.MachineManager.activeMachineInstance == "")
             {
-                addMachineWizard.firstRun = true;
-                addMachineWizard.open();
+                addMachineDialog.firstRun = true;
+                addMachineDialog.open();
             }
         }
     }
