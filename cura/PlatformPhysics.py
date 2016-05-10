@@ -67,9 +67,9 @@ class PlatformPhysics:
             if not (node.getParent() and node.getParent().callDecoration("isGroup")): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 if bbox.bottom > 0:
-                    move_vector.setY(-bbox.bottom + z_offset)
+                    move_vector = move_vector.set(y=-bbox.bottom + z_offset)
                 elif bbox.bottom < z_offset:
-                    move_vector.setY((-bbox.bottom) - z_offset)
+                    move_vector = move_vector.set(y=(-bbox.bottom) - z_offset)
 
             #if not Float.fuzzyCompare(bbox.bottom, 0.0):
             #   pass#move_vector.setY(-bbox.bottom)
@@ -125,8 +125,7 @@ class PlatformPhysics:
 
                     if overlap is None:
                         continue
-                    move_vector.setX(overlap[0] * 1.1)
-                    move_vector.setZ(overlap[1] * 1.1)
+                    move_vector = move_vector.set(x=overlap[0] * 1.1, z=overlap[1] * 1.1)
             convex_hull = node.callDecoration("getConvexHull")
             if convex_hull:
                 if not convex_hull.isValid():
