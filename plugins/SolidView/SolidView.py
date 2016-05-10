@@ -34,10 +34,10 @@ class SolidView(View):
             self._disabled_shader.setUniformValue("u_diffuseColor", [0.68, 0.68, 0.68, 1.0])
             self._disabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
 
-        if Application.getInstance().getActiveContainerStack():
+        if Application.getInstance().getGlobalContainerStack():
 
             if Preferences.getInstance().getValue("view/show_overhang"):
-                angle = Application.getInstance().getActiveContainerStack().getValue("support_angle")
+                angle = Application.getInstance().getGlobalContainerStack().getValue("support_angle")
                 if angle is not None:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
                 else:

@@ -145,7 +145,7 @@ class BuildVolume(SceneNode):
 
         skirt_size = 0.0
 
-        container_stack = Application.getInstance().getActiveContainerStack()
+        container_stack = Application.getInstance().getGlobalContainerStack()
         if container_stack:
             skirt_size = self._getSkirtSize(container_stack)
 
@@ -160,7 +160,7 @@ class BuildVolume(SceneNode):
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
 
     def _onActiveContainerStackChanged(self):
-        self._active_container_stack = Application.getInstance().getActiveContainerStack()
+        self._active_container_stack = Application.getInstance().getGlobalContainerStack()
 
         if self._active_container_stack:
             self._width = self._active_container_stack.getValue("machine_width")
@@ -176,7 +176,7 @@ class BuildVolume(SceneNode):
 
     def _onSettingValueChanged(self, setting_key):
         if setting_key == "print_sequence":
-            if Application.getInstance().getActiveContainerStack().getValue("print_sequence") == "one_at_a_time":
+            if Application.getInstance().getGlobalContainerStack().getValue("print_sequence") == "one_at_a_time":
                 self._height = self._active_container_stack.getValue("gantry_height")
             else:
                 self._height = self._active_container_stack.getValue("machine_depth")
