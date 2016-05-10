@@ -13,7 +13,10 @@ Use [this](https://github.com/Ultimaker/Uranium/wiki/Bug-Reporting-Template) tem
 For crashes and similar issues, please attach the following information:
 
 * (On Windows) The log as produced by dxdiag (start -> run -> dxdiag -> save output)
-* The Cura GUI log file, located at (Windows) $User/AppData/Local/cura/cura.log, (OSX) $User/.cura/cura.log, (Ubuntu) $USER/.local/share/cura
+* The Cura GUI log file, located at
+  * $User/AppData/Local/cura/cura.log (Windows)
+  * $User/.cura/cura.log (OSX)
+  * $USER/.local/share/cura (Ubuntu/Linux)
 * The Cura Engine log, using Help -> Show Engine Log
 
 Dependencies
