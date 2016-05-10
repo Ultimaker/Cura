@@ -71,7 +71,7 @@ class BuildVolume(SceneNode):
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
-        if self._width == 0 or self._height == 0 or self._depth == 0:
+        if not self._width or not self._height or not self._depth:
             return
 
         min_w = -self._width / 2
