@@ -1031,7 +1031,7 @@
                     "max_value_warning": "10000",
                     "default": 3000,
                     "visible": true,
-                    "enabled_WTF": "acceleration_enabled",
+                    "enabled": "acceleration_enabled",
                     "children": {
                         "acceleration_infill": {
                             "label": "Infill Acceleration",
@@ -1043,7 +1043,7 @@
                             "max_value_warning": "10000",
                             "default": 3000,
                             "visible": false,
-                            "enabled_WTF": "acceleration_enabled"
+                            "enabled": "acceleration_enabled"
                         },
                         "acceleration_wall": {
                             "label": "Wall Acceleration",
@@ -1055,7 +1055,7 @@
                             "max_value_warning": "10000",
                             "default": 3000,
                             "visible": false,
-                            "enabled_WTF": "acceleration_enabled",
+                            "enabled": "acceleration_enabled",
                             "children": {
                                 "acceleration_wall_0": {
                                     "label": "Outer Wall Acceleration",
@@ -1067,7 +1067,7 @@
                                     "max_value_warning": "10000",
                                     "default": 3000,
                                     "visible": false,
-                                    "enabled_WTF": "acceleration_enabled"
+                                    "enabled": "acceleration_enabled"
                                 },
                                 "acceleration_wall_x": {
                                     "label": "Inner Wall Acceleration",
@@ -1079,7 +1079,7 @@
                                     "max_value_warning": "10000",
                                     "default": 3000,
                                     "visible": false,
-                                    "enabled_WTF": "acceleration_enabled"
+                                    "enabled": "acceleration_enabled"
                                 }
                             }
                         },
@@ -1093,7 +1093,7 @@
                             "max_value_warning": "10000",
                             "default": 3000,
                             "visible": false,
-                            "enabled_WTF": "acceleration_enabled"
+                            "enabled": "acceleration_enabled"
                         },
                         "acceleration_support": {
                             "label": "Support Acceleration",
@@ -1105,7 +1105,7 @@
                             "max_value_warning": "10000",
                             "default": 3000,
                             "visible": false,
-                            "enabled_WTF": "acceleration_enabled and support_roof_enable",
+                            "enabled": "acceleration_enabled and support_roof_enable",
                             "children": {
                                 "acceleration_support_infill": {
                                     "label": "Support Infill Acceleration",
@@ -1117,7 +1117,7 @@
                                     "min_value_warning": "100",
                                     "max_value_warning": "10000",
                                     "visible": false,
-                                    "enabled_WTF": "acceleration_enabled and support_enable",
+                                    "enabled": "acceleration_enabled and support_enable",
                                     "global_only": true
                                 },
                                 "acceleration_support_roof": {
@@ -1130,7 +1130,7 @@
                                     "min_value_warning": "100",
                                     "max_value_warning": "10000",
                                     "visible": false,
-                                    "enabled_WTF": "acceleration_enabled and support_roof_enable",
+                                    "enabled": "acceleration_enabled and support_roof_enable",
                                     "global_only": true
                                 }
                             }
@@ -1149,7 +1149,7 @@
                     "inherit_function": "acceleration_print if magic_spiralize else 5000",
                     "global_only": true,
                     "visible": true,
-                    "enabled_WTF": "acceleration_enabled"
+                    "enabled": "acceleration_enabled"
                 },
                 "acceleration_layer_0": {
                     "label": "Initial Layer Acceleration",
@@ -1161,7 +1161,7 @@
                     "min_value_warning": "100",
                     "max_value_warning": "10000",
                     "visible": false,
-                    "enabled_WTF": "acceleration_enabled"
+                    "enabled": "acceleration_enabled"
                 },
                 "acceleration_skirt": {
                     "label": "Skirt Acceleration",
@@ -1175,7 +1175,7 @@
                     "visible": false,
                     "inherit_function": "acceleration_layer_0",
                     "global_only": true,
-                    "enabled_WTF": "acceleration_enabled"
+                    "enabled": "acceleration_enabled"
                 },
 
                 
@@ -1198,7 +1198,7 @@
                     "max_value_warning": "50",
                     "default": 20,
                     "visible": true,
-                    "enabled_WTF": "jerk_enabled",
+                    "enabled": "jerk_enabled",
                     "children": {
                         "jerk_infill": {
                             "label": "Infill Jerk",
@@ -1210,7 +1210,7 @@
                             "max_value_warning": "50",
                             "default": 20,
                             "visible": false,
-                            "enabled_WTF": "jerk_enabled"
+                            "enabled": "jerk_enabled"
                         },
                         "jerk_wall": {
                             "label": "Wall Jerk",
@@ -1222,7 +1222,7 @@
                             "max_value_warning": "50",
                             "default": 20,
                             "visible": false,
-                            "enabled_WTF": "jerk_enabled",
+                            "enabled": "jerk_enabled",
                             "children": {
                                 "jerk_wall_0": {
                                     "label": "Outer Wall Jerk",
@@ -1234,7 +1234,7 @@
                                     "max_value_warning": "50",
                                     "default": 20,
                                     "visible": false,
-                                    "enabled_WTF": "jerk_enabled"
+                                    "enabled": "jerk_enabled"
                                 },
                                 "jerk_wall_x": {
                                     "label": "Inner Wall Jerk",
@@ -1246,7 +1246,7 @@
                                     "max_value_warning": "50",
                                     "default": 20,
                                     "visible": false,
-                                    "enabled_WTF": "jerk_enabled"
+                                    "enabled": "jerk_enabled"
                                 }
                             }
                         },
@@ -1260,7 +1260,7 @@
                             "max_value_warning": "50",
                             "default": 20,
                             "visible": false,
-                            "enabled_WTF": "jerk_enabled"
+                            "enabled": "jerk_enabled"
                         },
                         "jerk_support": {
                             "label": "Support Jerk",
@@ -1272,7 +1272,7 @@
                             "max_value_warning": "50",
                             "default": 20,
                             "visible": false,
-                            "enabled_WTF": "jerk_enabled and support_roof_enable",
+                            "enabled": "jerk_enabled and support_roof_enable",
                             "children": {
                                 "jerk_support_infill": {
                                     "label": "Support Infill Jerk",
@@ -1284,7 +1284,7 @@
                                     "min_value_warning": "5",
                                     "max_value_warning": "50",
                                     "visible": false,
-                                    "enabled_WTF": "jerk_enabled and support_enable",
+                                    "enabled": "jerk_enabled and support_enable",
                                     "global_only": true
                                 },
                                 "jerk_support_roof": {
@@ -1297,7 +1297,7 @@
                                     "min_value_warning": "5",
                                     "max_value_warning": "50",
                                     "visible": false,
-                                    "enabled_WTF": "jerk enabled and support_roof_enable",
+                                    "enabled": "jerk_enabled and support_roof_enable",
                                     "global_only": true
                                 }
                             }
@@ -1316,7 +1316,7 @@
                     "inherit_function": "jerk_print if magic_spiralize else 30",
                     "global_only": true,
                     "visible": true,
-                    "enabled_WTF": "jerk_enabled"
+                    "enabled": "jerk_enabled"
                 },
                 "jerk_layer_0": {
                     "label": "Initial Layer Jerk",
@@ -1328,7 +1328,7 @@
                     "min_value_warning": "5",
                     "max_value_warning": "50",
                     "visible": false,
-                    "enabled_WTF": "jerk_enabled"
+                    "enabled": "jerk_enabled"
                 },
                 "jerk_skirt": {
                     "label": "Skirt Jerk",
@@ -1342,7 +1342,7 @@
                     "visible": false,
                     "inherit_function": "jerk_layer_0",
                     "global_only": true,
-                    "enabled_WTF": "jerk_enabled"
+                    "enabled": "jerk_enabled"
                 }
             }
         },
