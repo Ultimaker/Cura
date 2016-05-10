@@ -173,7 +173,7 @@ class CuraApplication(QtApplication):
         Selection.selectionChanged.connect(self.onSelectionChanged)
 
         root = controller.getScene().getRoot()
-        #self._platform = Platform(root)
+        self._platform = Platform(root)
 
         #self._volume = BuildVolume.BuildVolume(root)
 
