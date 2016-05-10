@@ -175,7 +175,7 @@ class CuraApplication(QtApplication):
         root = controller.getScene().getRoot()
         self._platform = Platform(root)
 
-        #self._volume = BuildVolume.BuildVolume(root)
+        self._volume = BuildVolume.BuildVolume(root)
 
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
 
