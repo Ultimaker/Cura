@@ -1,7 +1,7 @@
 [2.1.0]
 
 *2.1 Beta release
-Cura has been completely reengineered from the ground up for an even more seamless integration between hardware, software and materials. Together with its intuitive new user interface, it’s now also ready for any future developments. For the beginner Cura makes 3D printing incredibly easy, and for more advanced users, there are over 140 new customisable settings.
+Cura has been completely reengineered from the ground up for an even more seamless integration between hardware, software and materials. Together with its intuitive new user interface, it’s now also ready for any future developments. For the beginner, Cura makes 3D printing incredibly easy, and for more advanced users, there are over 140 new customisable settings.
 
 *Select Multiple Objects
 You now have the freedom to select and manipulate multiple objects at the same time.
