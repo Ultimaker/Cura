@@ -37,10 +37,8 @@ class BuildVolume(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
-        self._active_profile = None
-        self._active_instance = None
-        Application.getInstance().activeContainerStackChanged.connect(self._onActiveContainerStackChanged)
-        self._onActiveContainerStackChanged()
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        self._onGlobalContainerStackChanged()
 
     def setWidth(self, width):
         if width: self._width = width
@@ -159,7 +157,7 @@ class BuildVolume(SceneNode):
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
 
-    def _onActiveContainerStackChanged(self):
+    def _onGlobalContainerStackChanged(self):
         self._active_container_stack = Application.getInstance().getGlobalContainerStack()
 
         if self._active_container_stack:

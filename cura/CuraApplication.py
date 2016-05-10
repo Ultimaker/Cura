@@ -101,7 +101,7 @@ class CuraApplication(QtApplication):
         self._camera_animation = None
         self._cura_actions = None
 
-        #self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
+        #self.getMachineManager().activeMachineInstanceChanged.connect(self._onGlobalContainerStackChanged)
         #self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
@@ -508,10 +508,9 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result = "QVariant")
     def getSettingValue(self, key):
-        if not self.getMachineManager().getWorkingProfile():
+        if not self._global_container_stack:
             return None
-        return self.getMachineManager().getWorkingProfile().getSettingValue(key)
-        #return self.getActiveMachine().getSettingValueByKey(key)
+        return self._global_container_stack.getValue(key)
     
     ##  Change setting by key value pair
     @pyqtSlot(str, "QVariant")
