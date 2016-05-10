@@ -101,8 +101,6 @@ class CuraApplication(QtApplication):
         self._camera_animation = None
         self._cura_actions = None
 
-        #self.getMachineManager().activeMachineInstanceChanged.connect(self._onGlobalContainerStackChanged)
-        #self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
