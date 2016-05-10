@@ -24,6 +24,8 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
+from UM.Settings.SettingDefinition import SettingDefinition
+
 from UM.i18n import i18nCatalog
 
 from . import PlatformPhysics
@@ -159,6 +161,8 @@ class CuraApplication(QtApplication):
         })
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
+
+        SettingDefinition.addSupportedProperty("global_only", "bool")
 
         controller = self.getController()
 
