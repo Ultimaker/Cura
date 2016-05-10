@@ -152,6 +152,19 @@ UM.Dialog
         anchors.bottom:parent.bottom
     }
 
+    Button
+    {
+        text:"save"
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        onClicked:
+        {
+            base.visible = false
+            var item = machineList.model.getItem(machineList.currentIndex);
+            machineList.model.setNewGlobalStackFromDefinition(machineName.text, item.id)
+        }
+    }
+
     Item
     {
         UM.I18nCatalog
