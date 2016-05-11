@@ -37,6 +37,7 @@ ScrollView
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
+            property var propertyProvider: provider
 
             asynchronous: true
 
@@ -59,6 +60,18 @@ ScrollView
                     default:
                         return "SettingUnknown.qml"
                 }
+            }
+
+            UM.SettingPropertyProvider
+            {
+                id: provider
+
+                containerStackId: ""
+
+                key: model.key
+
+                watchedProperties: [ "value", "enabled", "state", "validationState" ]
+
             }
 
             Connections
