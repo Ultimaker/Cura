@@ -47,6 +47,8 @@ Item
 
     property alias toggleFullScreen: toggleFullScreenAction;
 
+    property alias configureSettingVisibility: configureSettingVisibilityAction
+
     UM.I18nCatalog{id: catalog; name:"cura"}
 
     Action
@@ -261,5 +263,11 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
         iconName: "view-list-text";
         shortcut: StandardKey.WhatsThis;
+    }
+
+    Action
+    {
+        id: configureSettingVisibilityAction
+        text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
     }
 }
