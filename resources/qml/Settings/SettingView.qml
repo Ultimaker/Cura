@@ -62,7 +62,8 @@ ScrollView
             {
                 target: item
                 onContextMenuRequested: { contextMenu.key = model.key; contextMenu.popup() }
-                onShowTooltip: base.showTooltip(delegate, position, model.description)
+                onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
+                onHideTooltip: base.hideTooltip()
             }
         }
 

@@ -18,7 +18,7 @@ Item {
     property alias contents: controlContainer.children
 
     signal contextMenuRequested()
-    signal showTooltip(var position);
+    signal showTooltip(string text);
     signal hideTooltip();
 
     MouseArea 
@@ -49,7 +49,7 @@ Item {
             interval: 500;
             repeat: false;
 
-            onTriggered: base.showTooltip({ x: mouse.mouseX, y: mouse.mouseY });
+            onTriggered: base.showTooltip(definition.description);
         }
     }
 
