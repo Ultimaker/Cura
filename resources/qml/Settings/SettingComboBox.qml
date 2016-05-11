@@ -11,12 +11,12 @@ SettingItem
 {
     id: base
 
-    ComboBox
+    contents: ComboBox
     {
-//         signal valueChanged(string value);
-//         id: base
         model: definition.options
-        textRole: "name";
+        textRole: "value";
+
+        anchors.fill: parent
 
         MouseArea
         {
