@@ -680,6 +680,7 @@ UM.MainWindow
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
+        MenuSeparator { }
         MenuItem { action: actions.groupObjects; }
         MenuItem { action: actions.mergeObjects; }
         MenuItem { action: actions.unGroupObjects; }
@@ -692,6 +693,7 @@ UM.MainWindow
         MenuItem { action: actions.reloadAll; }
         MenuItem { action: actions.resetAllTranslation; }
         MenuItem { action: actions.resetAll; }
+        MenuSeparator { }
         MenuItem { action: actions.groupObjects; }
         MenuItem { action: actions.mergeObjects; }
         MenuItem { action: actions.unGroupObjects; }

@@ -176,6 +176,7 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","&Group Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "object-group"
+        shortcut: "Ctrl+G";
     }
 
     Action
@@ -184,14 +185,16 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Objects");
         enabled: UM.Scene.isGroupSelected
         iconName: "object-ungroup"
+        shortcut: "Ctrl+Shift+G";
     }
-    
+
     Action
     {
         id: mergeObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "merge";
+        shortcut: "Ctrl+Alt+G";
     }
 
     Action
