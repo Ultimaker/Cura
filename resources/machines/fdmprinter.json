@@ -632,7 +632,7 @@
                     "default": 0.1,
                     "min_value": "0.0001",
                     "max_value_warning": "0.32",
-                    "max_value": "1000",
+                    "max_value": "layer_height * 8",
                     "visible": false,
                     "inherit_function": "layer_height"
                 },
