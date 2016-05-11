@@ -294,7 +294,7 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    model: UM.Models.extensionModel
+                    model: UM.ExtensionModel { }
 
                     Menu
                     {
