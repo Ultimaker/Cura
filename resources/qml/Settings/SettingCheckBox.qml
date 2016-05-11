@@ -12,9 +12,10 @@ SettingItem
 {
     id: base
 
-    MouseArea
+    contents: MouseArea
     {
         id: control
+        anchors.fill: parent
 
         property bool checked:
         {
@@ -48,7 +49,7 @@ SettingItem
                 {
                     return UM.Theme.getColor("setting_control_disabled")
                 }
-                if(base.containsMouse || base.activeFocus)
+                if(control.containsMouse || control.activeFocus)
                 {
                     return UM.Theme.getColor("setting_control_highlight")
                 }
