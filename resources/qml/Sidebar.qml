@@ -247,7 +247,6 @@ Rectangle
         id: sidebarAdvanced;
         visible: false;
 
-        configureSettings: base.configureSettingsAction;
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
     }
