@@ -58,10 +58,10 @@ Item
 
         ToolButton {
             id: machineSelection
-            text: UM.MachineManager.activeMachineInstance;
+            text: Cura.MachineManager.activeMachineName;
             width: parent.width/100*55
             height: UM.Theme.getSize("setting_control").height
-            tooltip: UM.MachineManager.activeMachineInstance;
+            tooltip: Cura.MachineManager.activeMachineName;
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
