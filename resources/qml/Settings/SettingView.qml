@@ -32,10 +32,13 @@ ScrollView
         {
             id: delegate
 
-            width: ListView.view.width
+            width: UM.Theme.getSize("sidebar").width;
+            height: UM.Theme.getSize("section").height;
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
+
+            asynchronous: true
 
             source:
             {
