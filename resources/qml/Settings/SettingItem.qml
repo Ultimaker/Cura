@@ -15,7 +15,8 @@ Item {
 
     height: UM.Theme.getSize("section").height;
 
-    property alias contents: controlContainer.children
+    property alias contents: controlContainer.children;
+    property bool hovered: false
 
     signal contextMenuRequested()
     signal showTooltip(string text);
