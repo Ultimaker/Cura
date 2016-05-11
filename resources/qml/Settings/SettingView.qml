@@ -68,6 +68,28 @@ ScrollView
 
         UM.I18nCatalog { id: catalog; name: "uranium"; }
 
+        add: Transition {
+            SequentialAnimation {
+                NumberAnimation { properties: "height"; from: 0; duration: 100 }
+                NumberAnimation { properties: "opacity"; from: 0; duration: 100 }
+            }
+        }
+        remove: Transition {
+            SequentialAnimation {
+                NumberAnimation { properties: "opacity"; to: 0; duration: 100 }
+                NumberAnimation { properties: "height"; to: 0; duration: 100 }
+            }
+        }
+        addDisplaced: Transition {
+            NumberAnimation { properties: "x,y"; duration: 100 }
+        }
+        removeDisplaced: Transition {
+            SequentialAnimation {
+                PauseAnimation { duration: 100; }
+                NumberAnimation { properties: "x,y"; duration: 100 }
+            }
+        }
+
         Menu
         {
             id: contextMenu;
