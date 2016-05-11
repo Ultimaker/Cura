@@ -27,7 +27,7 @@ Rectangle
     function showTooltip(item, position, text)
     {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y / 2);
+        position = item.mapToItem(base, position.x, position.y);
         tooltip.show(position);
     }
 
