@@ -107,7 +107,7 @@ Item {
                 controlContainer.notifyReset();
             }
 
-            onEntered: base.showResetTooltip({ x: mouse.mouseX, y: mouse.mouseY })
+            onEntered: base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
             onExited:
             {
                 if(controlContainer.item && controlContainer.item.hovered)
@@ -141,7 +141,7 @@ Item {
 
             iconSource: UM.Theme.getIcon("notice");
 
-            onEntered: base.showInheritanceTooltip({ x: mouse.mouseX, y: mouse.mouseY })
+            onEntered: base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
 
             onExited: {
                 if(controlContainer.item && controlContainer.item.hovered) {
@@ -165,4 +165,6 @@ Item {
         width: UM.Theme.getSize("setting_control").width;
         height: UM.Theme.getSize("setting_control").height
     }
+
+    UM.I18nCatalog { id: catalog; name: "cura" }
 }
