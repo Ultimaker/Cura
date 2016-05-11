@@ -8,6 +8,8 @@ import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
 
+import ".."
+
 ScrollView
 {
     id: base;
@@ -108,7 +110,7 @@ ScrollView
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
 
-                onTriggered: if(base.configureSettings) base.configureSettings.trigger(contextMenu);
+                onTriggered: Actions.configureSettingVisibility.trigger(contextMenu);
             }
         }
     }

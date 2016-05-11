@@ -8,6 +8,8 @@ import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
+import ".."
+
 Button {
     id: base;
 
@@ -43,7 +45,7 @@ Button {
         iconSource: UM.Theme.getIcon("settings");
 
         onClicked: {
-            Actions.configureSettingVisibility()
+            Actions.configureSettingVisibility.trigger(definition)
         }
     }
 
