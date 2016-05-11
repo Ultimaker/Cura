@@ -5,7 +5,7 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
 
 Item
 {
@@ -71,7 +71,10 @@ Item
                 id: machineSelectionMenu
                 Instantiator
                 {
-//                     model: UM.MachineInstancesModel { }
+                    model: UM.ContainerStacksModel
+                    {
+                        filter: {"type": "machine"}
+                    }
                     MenuItem
                     {
                         text: model.name;
