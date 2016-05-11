@@ -9,6 +9,8 @@ import QtQuick.Dialogs 1.1
 
 import UM 1.1 as UM
 
+import "."
+
 UM.MainWindow
 {
     id: base
@@ -53,7 +55,7 @@ UM.MainWindow
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
 
                 MenuItem {
-                    action: actions.open;
+                    action: Actions.open;
                 }
 
                 Menu
@@ -115,11 +117,11 @@ UM.MainWindow
                     }
                 }
 
-                MenuItem { action: actions.reloadAll; }
+                MenuItem { action: Actions.reloadAll; }
 
                 MenuSeparator { }
 
-                MenuItem { action: actions.quit; }
+                MenuItem { action: Actions.quit; }
             }
 
             Menu
@@ -127,17 +129,17 @@ UM.MainWindow
                 //: Edit menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Edit");
 
-                MenuItem { action: actions.undo; }
-                MenuItem { action: actions.redo; }
+                MenuItem { action: Actions.undo; }
+                MenuItem { action: Actions.redo; }
                 MenuSeparator { }
-                MenuItem { action: actions.deleteSelection; }
-                MenuItem { action: actions.deleteAll; }
-                MenuItem { action: actions.resetAllTranslation; }
-                MenuItem { action: actions.resetAll; }
+                MenuItem { action: Actions.deleteSelection; }
+                MenuItem { action: Actions.deleteAll; }
+                MenuItem { action: Actions.resetAllTranslation; }
+                MenuItem { action: Actions.resetAll; }
                 MenuSeparator { }
-                MenuItem { action: actions.groupObjects;}
-                MenuItem { action: actions.mergeObjects;}
-                MenuItem { action: actions.unGroupObjects;}
+                MenuItem { action: Actions.groupObjects;}
+                MenuItem { action: Actions.mergeObjects;}
+                MenuItem { action: Actions.unGroupObjects;}
             }
 
             Menu
@@ -201,10 +203,10 @@ UM.MainWindow
 
                 ExclusiveGroup { id: machineVariantsGroup; }
 
-                MenuSeparator { visible: UM.MachineManager.hasVariants; }
+//                 MenuSeparator { visible: UM.MachineManager.hasVariants; }
 
-                MenuItem { action: actions.addMachine; }
-                MenuItem { action: actions.configureMachines; }
+                MenuItem { action: Actions.addMachine; }
+                MenuItem { action: Actions.configureMachines; }
             }
 
             Menu
@@ -277,11 +279,11 @@ UM.MainWindow
 
                 MenuSeparator { id: profileMenuSeparator }
 
-                MenuItem { action: actions.updateProfile; }
-                MenuItem { action: actions.resetProfile; }
-                MenuItem { action: actions.addProfile; }
+                MenuItem { action: Actions.updateProfile; }
+                MenuItem { action: Actions.resetProfile; }
+                MenuItem { action: Actions.addProfile; }
                 MenuSeparator { }
-                MenuItem { action: actions.manageProfiles; }
+                MenuItem { action: Actions.manageProfiles; }
             }
 
             Menu
@@ -323,7 +325,7 @@ UM.MainWindow
                 //: Settings menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Settings");
 
-                MenuItem { action: actions.preferences; }
+                MenuItem { action: Actions.preferences; }
             }
 
             Menu
@@ -331,11 +333,11 @@ UM.MainWindow
                 //: Help menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Help");
 
-                MenuItem { action: actions.showEngineLog; }
-                MenuItem { action: actions.documentation; }
-                MenuItem { action: actions.reportBug; }
+                MenuItem { action: Actions.showEngineLog; }
+                MenuItem { action: Actions.documentation; }
+                MenuItem { action: Actions.reportBug; }
                 MenuSeparator { }
-                MenuItem { action: actions.about; }
+                MenuItem { action: Actions.about; }
             }
         }
 
@@ -425,7 +427,7 @@ UM.MainWindow
                     left: parent.left;
                     //leftMargin: UM.Theme.getSize("loadfile_margin").width
                 }
-                action: actions.open;
+                action: Actions.open;
             }
 
             Image
@@ -513,22 +515,12 @@ UM.MainWindow
 
                 width: UM.Theme.getSize("sidebar").width;
 
-                addMachineAction: actions.addMachine;
-                configureMachinesAction: actions.configureMachines;
-                addProfileAction: actions.addProfile;
-                updateProfileAction: actions.updateProfile;
-                resetProfileAction: actions.resetProfile;
-                manageProfilesAction: actions.manageProfiles;
-
-                configureSettingsAction: Action
-                {
-                    onTriggered:
-                    {
-                        preferences.visible = true;
-                        preferences.setPage(2);
-                        preferences.getCurrentItem().scrollToSection(source.key);
-                    }
-                }
+                addMachineAction: Actions.addMachine;
+                configureMachinesAction: Actions.configureMachines;
+                addProfileAction: Actions.addProfile;
+                updateProfileAction: Actions.updateProfile;
+                resetProfileAction: Actions.resetProfile;
+                manageProfilesAction: Actions.manageProfiles;
             }
         }
     }
@@ -561,73 +553,16 @@ UM.MainWindow
         }
     }
 
-    Actions
+    Connections
     {
-        id: actions;
+        target: Actions.preferences
+        onTriggered: preferences.visible = true
+    }
 
-        open.onTriggered: openDialog.open();
-
-        quit.onTriggered: base.visible = false;
-
-        undo.onTriggered: UM.OperationStack.undo();
-        undo.enabled: UM.OperationStack.canUndo;
-        redo.onTriggered: UM.OperationStack.redo();
-        redo.enabled: UM.OperationStack.canRedo;
-
-        deleteSelection.onTriggered:
-        {
-            Printer.deleteSelection();
-        }
-
-        deleteObject.onTriggered:
-        {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.deleteObject(objectContextMenu.objectId);
-                objectContextMenu.objectId = 0;
-            }
-        }
-
-        multiplyObject.onTriggered:
-        {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.multiplyObject(objectContextMenu.objectId, 1);
-                objectContextMenu.objectId = 0;
-            }
-        }
-
-        centerObject.onTriggered:
-        {
-            if(objectContextMenu.objectId != 0)
-            {
-                Printer.centerObject(objectContextMenu.objectId);
-                objectContextMenu.objectId = 0;
-            }
-        }
-
-        groupObjects.onTriggered:
-        {
-            Printer.groupSelected();
-        }
-
-        unGroupObjects.onTriggered:
-        {
-            Printer.ungroupSelected();
-        }
-
-        mergeObjects.onTriggered:
-        {
-            Printer.mergeSelected();
-        }
-
-        deleteAll.onTriggered: Printer.deleteAll();
-        resetAllTranslation.onTriggered: Printer.resetAllTranslation();
-        resetAll.onTriggered: Printer.resetAll();
-        reloadAll.onTriggered: Printer.reloadAll();
-
-        addMachine.onTriggered: addMachineDialog.visible = true;
-        addProfile.onTriggered:
+    Connections
+    {
+        target: Actions.addProfile
+        onTriggered:
         {
             UM.MachineManager.createProfile();
             preferences.setPage(4);
@@ -636,26 +571,37 @@ UM.MainWindow
             // Show the renameDialog after a very short delay so the preference page has time to initiate
             showProfileNameDialogTimer.start();
         }
-        updateProfile.onTriggered: UM.ActiveProfile.updateProfile();
-        resetProfile.onTriggered: UM.ActiveProfile.discardChanges();
+    }
 
-        preferences.onTriggered: preferences.visible = true;
-        configureMachines.onTriggered:
+    Connections
+    {
+        target: Actions.configureMachines
+        onTriggered:
         {
             preferences.visible = true;
             preferences.setPage(3);
         }
-        manageProfiles.onTriggered:
+    }
+
+    Connections
+    {
+        target: Actions.manageProfiles
+        onTriggered:
         {
             preferences.visible = true;
             preferences.setPage(4);
         }
+    }
 
-        documentation.onTriggered: CuraActions.openDocumentation();
-        reportBug.onTriggered: CuraActions.openBugReportPage();
-        showEngineLog.onTriggered: engineLog.visible = true;
-        about.onTriggered: aboutDialog.visible = true;
-        toggleFullScreen.onTriggered: base.toggleFullscreen();
+    Connections
+    {
+        target: Actions.configureSettingVisibility
+        onTriggered:
+        {
+            preferences.visible = true;
+            preferences.setPage(2);
+            preferences.getCurrentItem().scrollToSection(source.key);
+        }
     }
 
     Timer
@@ -672,29 +618,68 @@ UM.MainWindow
         id: objectContextMenu;
 
         property variant objectId: -1;
-        MenuItem { action: actions.centerObject; }
-        MenuItem { action: actions.deleteObject; }
-        MenuItem { action: actions.multiplyObject; }
+        MenuItem { action: Actions.centerObject; }
+        MenuItem { action: Actions.deleteObject; }
+        MenuItem { action: Actions.multiplyObject; }
         MenuSeparator { }
-        MenuItem { action: actions.deleteAll; }
-        MenuItem { action: actions.reloadAll; }
-        MenuItem { action: actions.resetAllTranslation; }
-        MenuItem { action: actions.resetAll; }
-        MenuItem { action: actions.groupObjects; }
-        MenuItem { action: actions.mergeObjects; }
-        MenuItem { action: actions.unGroupObjects; }
+        MenuItem { action: Actions.deleteAll; }
+        MenuItem { action: Actions.reloadAll; }
+        MenuItem { action: Actions.resetAllTranslation; }
+        MenuItem { action: Actions.resetAll; }
+        MenuItem { action: Actions.groupObjects; }
+        MenuItem { action: Actions.mergeObjects; }
+        MenuItem { action: Actions.unGroupObjects; }
+
+        Connections
+        {
+            target: Actions.deleteObject
+            onTriggered:
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.deleteObject(objectContextMenu.objectId);
+                    objectContextMenu.objectId = 0;
+                }
+            }
+        }
+
+        Connections
+        {
+            target: Actions.multiplyObject
+            onTriggered:
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.multiplyObject(objectContextMenu.objectId, 1);
+                    objectContextMenu.objectId = 0;
+                }
+            }
+        }
+
+        Connections
+        {
+            target: Actions.centerObject
+            onTriggered:
+            {
+                if(objectContextMenu.objectId != 0)
+                {
+                    Printer.centerObject(objectContextMenu.objectId);
+                    objectContextMenu.objectId = 0;
+                }
+            }
+        }
     }
 
     Menu
     {
         id: contextMenu;
-        MenuItem { action: actions.deleteAll; }
-        MenuItem { action: actions.reloadAll; }
-        MenuItem { action: actions.resetAllTranslation; }
-        MenuItem { action: actions.resetAll; }
-        MenuItem { action: actions.groupObjects; }
-        MenuItem { action: actions.mergeObjects; }
-        MenuItem { action: actions.unGroupObjects; }
+        MenuItem { action: Actions.deleteAll; }
+        MenuItem { action: Actions.reloadAll; }
+        MenuItem { action: Actions.resetAllTranslation; }
+        MenuItem { action: Actions.resetAll; }
+        MenuItem { action: Actions.groupObjects; }
+        MenuItem { action: Actions.mergeObjects; }
+        MenuItem { action: Actions.unGroupObjects; }
     }
 
     Connections
@@ -711,6 +696,18 @@ UM.MainWindow
                 objectContextMenu.popup();
             }
         }
+    }
+
+    Connections
+    {
+        target: Actions.quit
+        onTriggered: base.visible = false;
+    }
+
+    Connections
+    {
+        target: Actions.toggleFullScreen
+        onTriggered: base.toggleFullscreen();
     }
 
     FileDialog
@@ -737,9 +734,21 @@ UM.MainWindow
         }
     }
 
+    Connections
+    {
+        target: Actions.open
+        onTriggered: openDialog.open()
+    }
+
     EngineLog
     {
         id: engineLog;
+    }
+
+    Connections
+    {
+        target: Actions.showEngineLog
+        onTriggered: engineLog.visible = true;
     }
 
     AddMachineDialog
@@ -747,9 +756,21 @@ UM.MainWindow
         id: addMachineDialog
     }
 
+    Connections
+    {
+        target: Actions.addMachine
+        onTriggered: addMachineDialog.visible = true;
+    }
+
     AboutDialog
     {
         id: aboutDialog
+    }
+
+    Connections
+    {
+        target: Actions.about
+        onTriggered: aboutDialog.visible = true;
     }
 
     Connections
