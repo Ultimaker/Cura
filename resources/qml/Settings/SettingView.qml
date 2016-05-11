@@ -45,13 +45,11 @@ ScrollView
                         return "SettingTextField.qml"
                     case "float":
                         return "SettingTextField.qml"
-                    case "double":
-                        return "SettingTextField.qml"
                     case "enum":
                         return "SettingComboBox.qml"
-                    case "boolean":
+                    case "bool":
                         return "SettingCheckBox.qml"
-                    case "string":
+                    case "str":
                         return "SettingTextField.qml"
                     case "category":
                         return "SettingCategory.qml"
