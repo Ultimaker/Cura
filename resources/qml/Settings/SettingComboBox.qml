@@ -33,33 +33,33 @@ SettingItem
                 {
                     if (!enabled)
                     {
-                        return base.style.controlDisabledColor
+                        return UM.Theme.getColor("setting_control_disabled")
                     }
                     if(control.hovered || base.activeFocus)
                     {
-                        return base.style.controlHighlightColor
+                        return UM.Theme.getColor("setting_control_highlight")
                     }
                     else
                     {
-                        return base.style.controlColor
+                        return UM.Theme.getColor("setting_control")
                     }
                 }
-                border.width: base.style.controlBorderWidth;
-                border.color: !enabled ? base.style.controlDisabledBorderColor : control.hovered ? base.style.controlBorderHighlightColor : base.style.controlBorderColor;
+                border.width: UM.Theme.getSize("default_lining").width;
+                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border");
             }
             label: Item
             {
                 Label
                 {
                     anchors.left: parent.left;
-                    anchors.leftMargin: base.style.controlBorderWidth
+                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
                     anchors.right: downArrow.left;
-                    anchors.rightMargin: base.style.controlBorderWidth;
+                    anchors.rightMargin: UM.Theme.getSize("default_lining").width;
                     anchors.verticalCenter: parent.verticalCenter;
 
                     text: control.currentText;
-                    font: base.style.controlFont;
-                    color: !enabled ? base.style.controlDisabledTextColor : base.style.controlTextColor;
+                    font: UM.Theme.getFont("default");
+                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
 
                     elide: Text.ElideRight;
                     verticalAlignment: Text.AlignVCenter;
@@ -69,7 +69,7 @@ SettingItem
                 {
                     id: downArrow
                     anchors.right: parent.right;
-                    anchors.rightMargin: base.style.controlBorderWidth * 2;
+                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2;
                     anchors.verticalCenter: parent.verticalCenter;
 
                     source: UM.Theme.getIcon("arrow_bottom")
@@ -78,7 +78,7 @@ SettingItem
                     sourceSize.width: width + 5
                     sourceSize.height: width + 5
 
-                    color: base.style.controlTextColor;
+                    color: UM.Theme.getColor("setting_control_text");
 
                 }
             }

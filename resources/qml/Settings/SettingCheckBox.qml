@@ -46,19 +46,20 @@ SettingItem
             {
                 if (!enabled)
                 {
-                    return base.style.controlDisabledColor
+                    return UM.Theme.getColor("setting_control_disabled")
                 }
                 if(base.containsMouse || base.activeFocus)
                 {
-                    return base.style.controlHighlightColor
+                    return UM.Theme.getColor("setting_control_highlight")
                 }
                 else
                 {
-                    return base.style.controlColor
+                    return UM.Theme.getColor("setting_control")
                 }
             }
-            border.width: base.style.controlBorderWidth;
-            border.color: !enabled ? base.style.controlDisabledBorderColor : control.containsMouse ? base.style.controlBorderHighlightColor : base.style.controlBorderColor;
+
+            border.width: UM.Theme.getSize("default_lining").width
+            border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
 
             UM.RecolorImage {
                 anchors.verticalCenter: parent.verticalCenter
@@ -67,9 +68,9 @@ SettingItem
                 height: parent.height/2.5
                 sourceSize.width: width
                 sourceSize.height: width
-                color: !enabled ? base.style.controlDisabledTextColor : base.style.controlTextColor;
+                color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text");
                 source: UM.Theme.getIcon("check")
-                opacity: control.checked
+                opacity: control.checked ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100; } }
             }
         }
