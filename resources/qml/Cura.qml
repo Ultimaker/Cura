@@ -7,7 +7,8 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 UM.MainWindow
 {
@@ -168,14 +169,17 @@ UM.MainWindow
 
                 Instantiator
                 {
-//                     model: UM.MachineInstancesModel { }
+                    model: UM.ContainerStacksModel
+                    {
+                        filter: {"type": "machine"}
+                    }
                     MenuItem
                     {
                         text: model.name;
                         checkable: true;
-                        checked: model.active;
-                        exclusiveGroup: machineMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name)
+                        checked: Cura.MachineManager.activeMachineId == model.id
+                        exclusiveGroup: machineSelectionMenuGroup;
+                        onTriggered: Cura.MachineManager.setActiveMachine(model.id);
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)
