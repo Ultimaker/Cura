@@ -23,6 +23,7 @@ from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from cura.SetParentOperation import SetParentOperation
 
 from UM.i18n import i18nCatalog
 
@@ -540,9 +541,10 @@ class CuraApplication(QtApplication):
         
         # Use the previously found center of the group bounding box as the new location of the group
         group_node.setPosition(group_node.getBoundingBox().center)
-    
+
     @pyqtSlot()
     def groupSelected(self):
+        # Create a group-node
         group_node = SceneNode()
         group_decorator = GroupDecorator()
         group_node.addDecorator(group_decorator)
@@ -552,40 +554,37 @@ class CuraApplication(QtApplication):
         group_node.setPosition(center)
         group_node.setCenterPosition(center)
 
-        for node in Selection.getAllSelectedObjects():
-            world = node.getWorldPosition()
-            node.setParent(group_node)
-            node.setPosition(world - center)
+        # Move selected nodes into the group-node
+        op = GroupedOperation()
+        nodes = Selection.getAllSelectedObjects()
+        for node in nodes:
+            op.addOperation(SetParentOperation(node, group_node))
+        op.push()
 
+        # Deselect individual nodes and select the groupnode instead
         for node in group_node.getChildren():
             Selection.remove(node)
-
         Selection.add(group_node)
 
     @pyqtSlot()
     def ungroupSelected(self):
-        ungrouped_nodes = []
         selected_objects = Selection.getAllSelectedObjects()[:] #clone the list
         for node in selected_objects:
-            if node.callDecoration("isGroup" ):
-                children_to_move = []
-                for child in node.getChildren():
-                    if type(child) is SceneNode:
-                        children_to_move.append(child)
+            if node.callDecoration("isGroup"):
+                op = GroupedOperation()
 
-                for child in children_to_move:
-                    position = child.getWorldPosition()
-                    child.setParent(node.getParent())
-                    child.setPosition(position - node.getParent().getWorldPosition())
-                    child.scale(node.getScale())
-                    child.rotate(node.getOrientation())
+                group_parent = node.getParent()
+                children = node.getChildren()[:] #clone the list
+                for child in children:
+                    # Set the parent of the children to the parent of the group-node
+                    op.addOperation(SetParentOperation(child, group_parent))
 
+                    # Add all individual nodes to the selection
                     Selection.add(child)
-                    child.callDecoration("setConvexHull",None)
-                node.setParent(None)
-                ungrouped_nodes.append(node)
-        for node in ungrouped_nodes:
-            Selection.remove(node)
+                    child.callDecoration("setConvexHull", None)
+
+                op.push()
+                # Note: The group removes itself from the scene once all its children have left it, see GroupDecorator._onChildrenChanged
 
     def _createSplashScreen(self):
         return CuraSplashScreen.CuraSplashScreen()
