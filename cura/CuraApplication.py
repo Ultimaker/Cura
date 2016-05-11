@@ -199,11 +199,11 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
-        self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
-        self.initializeEngine()
-
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
+
+        self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
+        self.initializeEngine()
 
         if self._engine.rootObjects:
             self.closeSplash()
