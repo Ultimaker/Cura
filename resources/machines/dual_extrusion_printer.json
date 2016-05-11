@@ -304,6 +304,18 @@
                             "global_only": true
                         }
                     }
+                },
+                "switch_extruder_retraction_hop": {
+                    "label": "Nozzle Switch Z Hop",
+                    "description": "Whenever the machine switches to another nozzle, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle which has been unused for a while from oozing material on the outside of the print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 1.0,
+                    "min_value_warning": "-0.0001",
+                    "max_value_warning": "10",
+                    "visible": false,
+                    "inherit": false,
+                    "enabled": "retraction_enable"
                 }
             }
         }
