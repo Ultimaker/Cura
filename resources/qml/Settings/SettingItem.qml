@@ -154,15 +154,14 @@ Item {
 
     }
 
-    Rectangle
+    Item
     {
         id: controlContainer;
 
-        color: "red"
-
         anchors.right: parent.right;
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.verticalCenter: parent.verticalCenter;
         width: UM.Theme.getSize("setting_control").width;
-        height: UM.Theme.getSize("setting_contorl").height
+        height: UM.Theme.getSize("setting_control").height
     }
 }
