@@ -6,6 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -79,9 +80,9 @@ Item
                     {
                         text: model.name;
                         checkable: true;
-                        checked: model.active;
+                        checked: Cura.MachineManager.activeMachineId == model.id
                         exclusiveGroup: machineSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name);
+                        onTriggered: Cura.MachineManager.setActiveMachine(model.id);
                     }
                     onObjectAdded: machineSelectionMenu.insertItem(index, object)
                     onObjectRemoved: machineSelectionMenu.removeItem(object)

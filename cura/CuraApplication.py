@@ -36,10 +36,11 @@ from . import CuraActions
 from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
+from . import MachineManagerModel
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtQml import qmlRegisterUncreatableType
+from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType
 
 import platform
 import sys
@@ -200,6 +201,9 @@ class CuraApplication(QtApplication):
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
+
+        qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
+                                 MachineManagerModel.createMachineManagerModel)
 
         if self._engine.rootObjects:
             self.closeSplash()
