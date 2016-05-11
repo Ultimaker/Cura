@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
+pragma Singleton
+
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import UM 1.1 as UM
