@@ -201,14 +201,14 @@ Item
                             exclusiveGroup: materialSelectionMenuGroup;
                             onTriggered:
                             {
-                                UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name);
-                                if (typeof(model) !== "undefined" && !model.active) {
+                                Cura.MachineManager.setActiveMaterial(model.id);
+                                /*if (typeof(model) !== "undefined" && !model.active) {
                                     //Selecting a material was canceled; undo menu selection
                                     materialSelectionInstantiator.model.setProperty(index, "active", false);
-                                    var activeMaterialName = UM.MachineManager.activeMaterial;
+                                    var activeMaterialName = Cura.MachineManager.activeMaterialName
                                     var activeMaterialIndex = materialSelectionInstantiator.model.find("name", activeMaterialName);
                                     materialSelectionInstantiator.model.setProperty(activeMaterialIndex, "active", true);
-                                }
+                                }*/
                             }
                         }
                         onObjectAdded: materialSelectionMenu.insertItem(index, object)
