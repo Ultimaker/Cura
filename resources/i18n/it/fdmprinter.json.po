@@ -2414,3 +2414,18 @@ msgid ""
 "which in turn results in less upward connections with the next layer. Only "
 "applies to Wire Printing."
 msgstr "Indica la distanza tra l'ugello e le linee diagonali verso il basso. Un maggior gioco risulta in linee diagonali verso il basso con un minor angolo di inclinazione, cosa che a sua volta si traduce in meno collegamenti verso l'alto con lo strato successivo. Applicabile solo alla funzione Wire Printing."
+
+#: fdmprinter.json
+#, fuzzy
+msgctxt "layer_0_z_overlap label"
+msgid "Initial Layer Z Overlap"
+msgstr "Z Sovrapposizione Primo Strato"
+
+#: fdmprinter.json
+#, fuzzy
+msgctxt "layer_0_z_overlap description"
+msgid ""
+"Make the first and second layer of the object overlap in the Z direction to "
+"compensate for the filament lost in the airgap. All models above the first "
+"model layer will be shifted down by this amount."
+msgstr "Effettuare il primo e secondo strato di sovrapposizione oggetto nella direzione Z per compensare il filamento perso nel traferro. Tutti i modelli sopra il primo strato del modello saranno spostate verso il basso di questa quantità."
