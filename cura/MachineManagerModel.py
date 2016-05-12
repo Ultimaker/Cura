@@ -33,6 +33,11 @@ class MachineManagerModel(QObject):
         if containers:
             containers[0].setName(new_name)
 
+    @pyqtSlot(str)
+    def removeMachine(self, machine_id):
+        ContainerRegistry.getInstance().removeContainer(machine_id)
+
+
 
 def createMachineManagerModel(engine, script_engine):
     return MachineManagerModel()

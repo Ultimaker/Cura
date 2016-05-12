@@ -48,7 +48,7 @@ UM.ManagementPage
         {
             id: confirmDialog;
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
-            onYes: base.model.removeMachineInstance(base.currentItem.name);
+            onYes: Cura.MachineManager.removeMachine(base.currentItem.id);
         }
 
         UM.RenameDialog
