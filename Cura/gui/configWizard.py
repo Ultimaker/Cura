@@ -1567,6 +1567,7 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotTaz6ToolheadPage, self.lulzbotFirmwarePage)
 
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
 			self.RunWizard(self.lulzbotMiniToolheadPage)
