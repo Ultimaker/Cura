@@ -134,7 +134,7 @@ class PlatformPhysics:
 
                     node._outside_buildarea = True
 
-            if move_vector != Vector():
+            if not Vector.Null.equals(move_vector, epsilon=1e-5):
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
