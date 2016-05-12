@@ -80,8 +80,8 @@ Rectangle {
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             anchors.top: parent.top
-            anchors.right: deviceSelectionMenu.left;
-            anchors.rightMargin: -3 * UM.Theme.getSize("default_lining").width;
+            anchors.right: deviceSelectionMenu.visible ? deviceSelectionMenu.left : parent.right
+            anchors.rightMargin: deviceSelectionMenu.visible ? -3 * UM.Theme.getSize("default_lining").width : UM.Theme.getSize("default_margin").width
 
             text: UM.OutputDeviceManager.activeDeviceShortDescription
             onClicked:
@@ -128,8 +128,8 @@ Rectangle {
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
             enabled: base.backendState == 2 && base.activity == true
+            visible: devicesModel.deviceCount > 1
 
-            //iconSource: UM.Theme.icons[UM.OutputDeviceManager.activeDeviceIconName];
 
             style: ButtonStyle {
                 background: Rectangle {
