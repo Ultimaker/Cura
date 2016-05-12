@@ -36,6 +36,7 @@ class BuildVolume(SceneNode):
         self._disallowed_area_mesh = None
 
         self.setCalculateBoundingBox(False)
+        self._volume_aabb = None
 
         self._active_profile = None
         self._active_instance = None
@@ -144,7 +145,7 @@ class BuildVolume(SceneNode):
         else:
             self._disallowed_area_mesh = None
 
-        self._aabb = AxisAlignedBox(minimum = Vector(min_w, min_h - 1.0, min_d), maximum = Vector(max_w, max_h, max_d))
+        self._volume_aabb = AxisAlignedBox(minimum = Vector(min_w, min_h - 1.0, min_d), maximum = Vector(max_w, max_h, max_d))
 
         skirt_size = 0.0
 
@@ -161,6 +162,9 @@ class BuildVolume(SceneNode):
         )
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
+
+    def getBoundingBox(self):
+        return self._volume_aabb
 
     def _onActiveInstanceChanged(self):
         self._active_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()

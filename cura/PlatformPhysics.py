@@ -27,7 +27,6 @@ class PlatformPhysics:
         self._controller.toolOperationStarted.connect(self._onToolOperationStarted)
         self._controller.toolOperationStopped.connect(self._onToolOperationStopped)
         self._build_volume = volume
-
         self._enabled = True
 
         self._change_timer = QTimer()
@@ -50,9 +49,6 @@ class PlatformPhysics:
                 continue
 
             bbox = node.getBoundingBox()
-            if not bbox or not bbox.isValid():
-                self._change_timer.start()
-                continue
 
             build_volume_bounding_box = copy.deepcopy(self._build_volume.getBoundingBox())
             build_volume_bounding_box.setBottom(-9001) # Ignore intersections with the bottom
