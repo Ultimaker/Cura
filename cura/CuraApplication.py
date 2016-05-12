@@ -295,7 +295,9 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str)
     def setJobName(self, name):
-        name = os.path.splitext(name)[0] #when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its extension. This cuts the extension off if nescessary.
+        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
+        # extension. This cuts the extension off if necessary.
+        name = os.path.splitext(name)[0]
         if self._job_name != name:
             self._job_name = name
             self.jobNameChanged.emit()
@@ -330,7 +332,7 @@ class CuraApplication(QtApplication):
 
         node = self.getController().getScene().findObject(object_id)
 
-        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
         if node:
@@ -349,7 +351,7 @@ class CuraApplication(QtApplication):
     def multiplyObject(self, object_id, count):
         node = self.getController().getScene().findObject(object_id)
 
-        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
         if node:
@@ -371,7 +373,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot("quint64")
     def centerObject(self, object_id):
         node = self.getController().getScene().findObject(object_id)
-        if not node and object_id != 0: #Workaround for tool handles overlapping the selected object
+        if not node and object_id != 0:  # Workaround for tool handles overlapping the selected object
             node = Selection.getSelectedObject(0)
 
         if not node:
@@ -384,7 +386,7 @@ class CuraApplication(QtApplication):
             op = SetTransformOperation(node, Vector())
             op.push()
     
-    ##  Delete all mesh data on the scene.
+    ##  Delete all nodes containing mesh data in the scene.
     @pyqtSlot()
     def deleteAll(self):
         if not self.getController().getToolsEnabled():
@@ -395,9 +397,9 @@ class CuraApplication(QtApplication):
             if type(node) is not SceneNode:
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue #Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             nodes.append(node)
         if nodes:
             op = GroupedOperation()
@@ -415,9 +417,9 @@ class CuraApplication(QtApplication):
             if type(node) is not SceneNode:
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue #Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
 
             nodes.append(node)
 
@@ -437,9 +439,9 @@ class CuraApplication(QtApplication):
             if type(node) is not SceneNode:
                 continue
             if not node.getMeshData() and not node.callDecoration("isGroup"):
-                continue #Node that doesnt have a mesh and is not a group.
+                continue  # Node that doesnt have a mesh and is not a group.
             if node.getParent() and node.getParent().callDecoration("isGroup"):
-                continue #Grouped nodes don't need resetting as their parent (the group) is resetted)
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             nodes.append(node)
 
         if nodes:
@@ -478,7 +480,7 @@ class CuraApplication(QtApplication):
     
     ##  Get logging data of the backend engine
     #   \returns \type{string} Logging data
-    @pyqtSlot(result=str)
+    @pyqtSlot(result = str)
     def getEngineLog(self):
         log = ""
 
@@ -513,7 +515,6 @@ class CuraApplication(QtApplication):
         if not self.getMachineManager().getWorkingProfile():
             return None
         return self.getMachineManager().getWorkingProfile().getSettingValue(key)
-        #return self.getActiveMachine().getSettingValueByKey(key)
     
     ##  Change setting by key value pair
     @pyqtSlot(str, "QVariant")
@@ -561,20 +562,20 @@ class CuraApplication(QtApplication):
             op.addOperation(SetParentOperation(node, group_node))
         op.push()
 
-        # Deselect individual nodes and select the groupnode instead
+        # Deselect individual nodes and select the group-node instead
         for node in group_node.getChildren():
             Selection.remove(node)
         Selection.add(group_node)
 
     @pyqtSlot()
     def ungroupSelected(self):
-        selected_objects = Selection.getAllSelectedObjects()[:] #clone the list
+        selected_objects = Selection.getAllSelectedObjects()[:]  # clone the list
         for node in selected_objects:
             if node.callDecoration("isGroup"):
                 op = GroupedOperation()
 
                 group_parent = node.getParent()
-                children = node.getChildren()[:] #clone the list
+                children = node.getChildren()[:]  # clone the list
                 for child in children:
                     # Set the parent of the children to the parent of the group-node
                     op.addOperation(SetParentOperation(child, group_parent))
@@ -584,7 +585,8 @@ class CuraApplication(QtApplication):
                     child.callDecoration("setConvexHull", None)
 
                 op.push()
-                # Note: The group removes itself from the scene once all its children have left it, see GroupDecorator._onChildrenChanged
+                # Note: The group removes itself from the scene once all its children have left it,
+                # see GroupDecorator._onChildrenChanged
 
     def _createSplashScreen(self):
         return CuraSplashScreen.CuraSplashScreen()
@@ -601,7 +603,7 @@ class CuraApplication(QtApplication):
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
 
-            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
+            self.getController().getScene().sceneChanged.emit(node) #F orce scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():
@@ -625,9 +627,6 @@ class CuraApplication(QtApplication):
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
         job._node.setMeshData(job.getResult().getMeshData())
-        #job.getResult().setParent(self.getController().getScene().getRoot())
-        #job._node.setParent(self.getController().getScene().getRoot())
-        #job._node.meshDataChanged.emit(job._node)
 
     def _openFile(self, file):
         job = ReadMeshJob(os.path.abspath(file))
