@@ -45,10 +45,19 @@ class ConvexHullJob(Job):
             # This is done to greatly speed up further convex hull calculations as the convex hull
             # becomes much less complex when dealing with highly detailed models.
             vertex_data = numpy.round(vertex_data, 1)
-            duplicates = (vertex_data[:,0] == vertex_data[:,1]) | (vertex_data[:,1] == vertex_data[:,2]) | (vertex_data[:,0] == vertex_data[:,2])
-            vertex_data = numpy.delete(vertex_data, numpy.where(duplicates), axis = 0)
 
-            hull = Polygon(vertex_data[:, [0, 2]])
+            vertex_data = vertex_data[:, [0, 2]]    # Drop the Y components to project to 2D.
+
+            # Grab the set of unique points.
+            #
+            # This basically finds the unique rows in the array by treating them as opaque groups of bytes
+            # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
+            # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
+            tmp = numpy.ascontiguousarray(vertex_data).view(numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
+            _, idx = numpy.unique(tmp, return_index=True)
+            vertex_data = vertex_data[idx]  # Select the unique rows by index.
+
+            hull = Polygon(vertex_data)
 
         # First, calculate the normal convex hull around the points
         hull = hull.getConvexHull()
