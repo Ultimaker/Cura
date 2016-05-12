@@ -638,6 +638,3 @@ class CuraApplication(QtApplication):
         job = ReadMeshJob(os.path.abspath(file))
         job.finished.connect(self._onFileLoaded)
         job.start()
-
-    def _onAddMachineRequested(self):
-        self.requestAddPrinter.emit()
