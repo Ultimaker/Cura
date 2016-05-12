@@ -172,8 +172,8 @@ Item
 
             ToolButton {
                 id: materialSelection
-                text: UM.MachineManager.activeMaterial
-                tooltip: UM.MachineManager.activeMaterial
+                text: Cura.MachineManager.activeMaterialName
+                tooltip: Cura.MachineManager.activeMaterialName
                 visible: UM.MachineManager.hasMaterials
 
                 height: UM.Theme.getSize("setting_control").height
@@ -187,6 +187,11 @@ Item
                     Instantiator
                     {
                         id: materialSelectionInstantiator
+                        model: UM.InstanceContainersModel
+                        {
+                            filter: {"type": "material"}
+                        }
+                        //model: UM.InstancesModel {filter: {"type":"material"}}
 //                         model: UM.MachineMaterialsModel { id: machineMaterialsModel }
                         MenuItem
                         {
