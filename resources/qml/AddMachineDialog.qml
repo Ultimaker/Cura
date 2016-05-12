@@ -161,7 +161,7 @@ UM.Dialog
         {
             base.visible = false
             var item = machineList.model.getItem(machineList.currentIndex);
-            machineList.model.setNewGlobalStackFromDefinition(machineName.text, item.id)
+            Cura.MachineManager.addMachine(machineName.text, item.id)
         }
     }
 

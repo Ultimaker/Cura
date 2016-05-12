@@ -2,6 +2,7 @@
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.ContainerStack import ContainerStack
 
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
@@ -18,6 +19,17 @@ class MachineManagerModel(QObject):
         containers = ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
+
+    @pyqtSlot(str, str)
+    def addMachine(self,name, definition_id):
+        definitions = ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
+        if definitions:
+            new_global_stack = ContainerStack(name)
+            new_global_stack.addMetaDataEntry("type", "machine")
+            ContainerRegistry.getInstance().addContainer(new_global_stack)
+            # If a definition is found, its a list. Should only have one item.
+            new_global_stack.addContainer(definitions[0])
+            Application.getInstance().setGlobalContainerStack(new_global_stack)
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):
