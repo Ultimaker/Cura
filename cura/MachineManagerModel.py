@@ -27,6 +27,11 @@ class MachineManagerModel(QObject):
     def activeMachineId(self):
         return Application.getInstance().getGlobalContainerStack().getId()
 
+    @pyqtSlot(str, str)
+    def renameMachine(self, machine_id, new_name):
+        containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
+        if containers:
+            containers[0].setName(new_name)
 
 
 def createMachineManagerModel(engine, script_engine):

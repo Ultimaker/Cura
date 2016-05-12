@@ -542,6 +542,8 @@ UM.MainWindow
             //: View preferences page title
             insertPage(1, catalog.i18nc("@title:tab","View"), Qt.resolvedUrl("ViewPage.qml"));
 
+            insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("MachinesPage.qml"));
+
             //Force refresh
             setPage(0);
         }
