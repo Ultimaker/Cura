@@ -27,7 +27,7 @@ Rectangle
     function showTooltip(item, position, text)
     {
         tooltip.text = text;
-        position = item.mapToItem(base, position.x, position.y / 2);
+        position = item.mapToItem(base, position.x, position.y);
         tooltip.show(position);
     }
 
@@ -247,7 +247,6 @@ Rectangle
         id: sidebarAdvanced;
         visible: false;
 
-        configureSettings: base.configureSettingsAction;
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
     }

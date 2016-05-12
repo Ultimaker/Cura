@@ -1,6 +1,8 @@
 // Copyright (c) 2015 Ultimaker B.V.
 // Cura is released under the terms of the AGPLv3 or higher.
 
+pragma Singleton
+
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import UM 1.1 as UM
@@ -45,6 +47,8 @@ Item
 
     property alias toggleFullScreen: toggleFullScreenAction;
 
+    property alias configureSettingVisibility: configureSettingVisibilityAction
+
     UM.I18nCatalog{id: catalog; name:"cura"}
 
     Action
@@ -60,6 +64,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
+        onTriggered: UM.OperationStack.undo();
+        enabled: UM.OperationStack.canUndo;
     }
 
     Action
@@ -68,6 +74,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","&Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
+        onTriggered: UM.OperationStack.redo();
+        enabled: UM.OperationStack.canRedo;
     }
 
     Action
@@ -103,6 +111,7 @@ Item
         id: updateProfileAction;
         enabled: UM.ActiveProfile.valid && !UM.ActiveProfile.readOnly && UM.ActiveProfile.hasCustomisedValues
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update Current Profile");
+        onTriggered: UM.ActiveProfile.updateProfile();
     }
 
     Action
@@ -110,6 +119,7 @@ Item
         id: resetProfileAction;
         enabled: UM.ActiveProfile.valid && UM.ActiveProfile.hasCustomisedValues
         text: catalog.i18nc("@action:inmenu menubar:profile","&Reload Current Profile");
+        onTriggered: UM.ActiveProfile.discardChanges();
     }
 
     Action
@@ -132,12 +142,14 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:help","Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
+        onTriggered: CuraActions.openDocumentation();
     }
 
     Action {
         id: reportBugAction;
         text: catalog.i18nc("@action:inmenu menubar:help","Report a &Bug");
         iconName: "tools-report-bug";
+        onTriggered: CuraActions.openBugReportPage();
     }
 
     Action
@@ -154,6 +166,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: StandardKey.Delete;
+        onTriggered: Printer.deleteSelection();
     }
 
     Action
@@ -176,6 +189,7 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","&Group Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "object-group"
+        onTriggered: Printer.groupSelected();
     }
 
     Action
@@ -184,6 +198,7 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Objects");
         enabled: UM.Scene.isGroupSelected
         iconName: "object-ungroup"
+        onTriggered: Printer.ungroupSelected();
     }
     
     Action
@@ -192,6 +207,7 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Objects");
         enabled: UM.Scene.numObjectsSelected > 1 ? true: false
         iconName: "merge";
+        onTriggered: Printer.mergeSelected();
     }
 
     Action
@@ -208,6 +224,7 @@ Item
         enabled: UM.Controller.toolsEnabled;
         iconName: "edit-delete";
         shortcut: "Ctrl+D";
+        onTriggered: Printer.deleteAll();
     }
 
     Action
@@ -215,18 +232,21 @@ Item
         id: reloadAllAction;
         text: catalog.i18nc("@action:inmenu menubar:file","Re&load All Objects");
         iconName: "document-revert";
+        onTriggered: Printer.reloadAll();
     }
 
     Action
     {
         id: resetAllTranslationAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Object Positions");
+        onTriggered: Printer.resetAllTranslation();
     }
 
     Action
     {
         id: resetAllAction;
         text: catalog.i18nc("@action:inmenu menubar:edit","Reset All Object &Transformations");
+        onTriggered: Printer.resetAll();
     }
 
     Action
@@ -243,5 +263,11 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
         iconName: "view-list-text";
         shortcut: StandardKey.WhatsThis;
+    }
+
+    Action
+    {
+        id: configureSettingVisibilityAction
+        text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
     }
 }

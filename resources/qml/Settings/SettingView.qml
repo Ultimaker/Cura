@@ -8,6 +8,8 @@ import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
 
+import ".."
+
 ScrollView
 {
     id: base;
@@ -30,10 +32,13 @@ ScrollView
         {
             id: delegate
 
-            width: ListView.view.width
+            width: UM.Theme.getSize("sidebar").width;
+            height: UM.Theme.getSize("section").height;
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
+
+            asynchronous: true
 
             source:
             {
@@ -43,13 +48,11 @@ ScrollView
                         return "SettingTextField.qml"
                     case "float":
                         return "SettingTextField.qml"
-                    case "double":
-                        return "SettingTextField.qml"
                     case "enum":
                         return "SettingComboBox.qml"
-                    case "boolean":
+                    case "bool":
                         return "SettingCheckBox.qml"
-                    case "string":
+                    case "str":
                         return "SettingTextField.qml"
                     case "category":
                         return "SettingCategory.qml"
@@ -62,11 +65,34 @@ ScrollView
             {
                 target: item
                 onContextMenuRequested: { contextMenu.key = model.key; contextMenu.popup() }
-                onShowTooltip: base.showTooltip(delegate, position, model.description)
+                onShowTooltip: base.showTooltip(delegate, { x: 0, y: delegate.height / 2 }, text)
+                onHideTooltip: base.hideTooltip()
             }
         }
 
         UM.I18nCatalog { id: catalog; name: "uranium"; }
+
+        add: Transition {
+            SequentialAnimation {
+                NumberAnimation { properties: "height"; from: 0; duration: 100 }
+                NumberAnimation { properties: "opacity"; from: 0; duration: 100 }
+            }
+        }
+        remove: Transition {
+            SequentialAnimation {
+                NumberAnimation { properties: "opacity"; to: 0; duration: 100 }
+                NumberAnimation { properties: "height"; to: 0; duration: 100 }
+            }
+        }
+        addDisplaced: Transition {
+            NumberAnimation { properties: "x,y"; duration: 100 }
+        }
+        removeDisplaced: Transition {
+            SequentialAnimation {
+                PauseAnimation { duration: 100; }
+                NumberAnimation { properties: "x,y"; duration: 100 }
+            }
+        }
 
         Menu
         {
@@ -85,7 +111,7 @@ ScrollView
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
 
-                onTriggered: if(base.configureSettings) base.configureSettings.trigger(contextMenu);
+                onTriggered: Actions.configureSettingVisibility.trigger(contextMenu);
             }
         }
     }

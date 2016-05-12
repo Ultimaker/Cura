@@ -15,10 +15,11 @@ Item {
 
     height: UM.Theme.getSize("section").height;
 
-    property alias contents: controlContainer.children
+    property alias contents: controlContainer.children;
+    property bool hovered: false
 
     signal contextMenuRequested()
-    signal showTooltip(var position);
+    signal showTooltip(string text);
     signal hideTooltip();
 
     MouseArea 
@@ -49,7 +50,7 @@ Item {
             interval: 500;
             repeat: false;
 
-            onTriggered: base.showTooltip({ x: mouse.mouseX, y: mouse.mouseY });
+            onTriggered: base.showTooltip(definition.description);
         }
     }
 
@@ -106,7 +107,7 @@ Item {
                 controlContainer.notifyReset();
             }
 
-            onEntered: base.showResetTooltip({ x: mouse.mouseX, y: mouse.mouseY })
+            onEntered: base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
             onExited:
             {
                 if(controlContainer.item && controlContainer.item.hovered)
@@ -140,7 +141,7 @@ Item {
 
             iconSource: UM.Theme.getIcon("notice");
 
-            onEntered: base.showInheritanceTooltip({ x: mouse.mouseX, y: mouse.mouseY })
+            onEntered: base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
 
             onExited: {
                 if(controlContainer.item && controlContainer.item.hovered) {
@@ -154,15 +155,16 @@ Item {
 
     }
 
-    Rectangle
+    Item
     {
         id: controlContainer;
 
-        color: "red"
-
         anchors.right: parent.right;
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.verticalCenter: parent.verticalCenter;
         width: UM.Theme.getSize("setting_control").width;
-        height: UM.Theme.getSize("setting_contorl").height
+        height: UM.Theme.getSize("setting_control").height
     }
+
+    UM.I18nCatalog { id: catalog; name: "cura" }
 }

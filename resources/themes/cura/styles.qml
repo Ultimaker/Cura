@@ -280,35 +280,6 @@ QtObject {
         }
     }
 
-    property variant setting_item: UM.SettingItemStyle {
-        labelFont: Theme.getFont("default");
-        labelColor: Theme.getColor("setting_control_text");
-
-        spacing: Theme.getSize("default_lining").height;
-        fixedHeight: Theme.getSize("setting").height;
-
-        controlWidth: Theme.getSize("setting_control").width;
-        controlRightMargin: Theme.getSize("setting_control_margin").width;
-        controlColor: Theme.getColor("setting_control");
-        controlHighlightColor: Theme.getColor("setting_control_highlight");
-        controlBorderColor: Theme.getColor("setting_control_border");
-        controlBorderHighlightColor: Theme.getColor("setting_control_border_highlight");
-        controlTextColor: Theme.getColor("setting_control_text");
-        controlBorderWidth: Theme.getSize("default_lining").width;
-        controlDisabledColor: Theme.getColor("setting_control_disabled");
-        controlDisabledTextColor: Theme.getColor("setting_control_disabled_text");
-        controlDisabledBorderColor: Theme.getColor("setting_control_disabled_border");
-        controlFont: Theme.getFont("default");
-
-        validationErrorColor: Theme.getColor("setting_validation_error");
-        validationWarningColor: Theme.getColor("setting_validation_warning");
-        validationOkColor: Theme.getColor("setting_validation_ok");
-
-        unitRightMargin: Theme.getSize("setting_unit_margin").width;
-        unitColor: Theme.getColor("setting_unit");
-        unitFont: Theme.getFont("default");
-    }
-
     property Component combobox: Component {
         ComboBoxStyle {
             background: Rectangle {

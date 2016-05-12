@@ -8,12 +8,14 @@ import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
 
+import ".."
+
 Button {
     id: base;
 
     style: UM.Theme.styles.sidebar_category;
 
-    signal showTooltip();
+    signal showTooltip(string text);
     signal hideTooltip();
     signal contextMenuRequested()
 
@@ -43,7 +45,7 @@ Button {
         iconSource: UM.Theme.getIcon("settings");
 
         onClicked: {
-            Actions.configureSettingVisibility()
+            Actions.configureSettingVisibility.trigger(definition)
         }
     }
 
@@ -69,11 +71,13 @@ Button {
         iconSource: UM.Theme.getIcon("notice")
 
         onEntered: {
-            base.showTooltip()
+            base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
         }
 
         onExited: {
             base.hideTooltip();
         }
+
+        UM.I18nCatalog { id: catalog; name: "cura" }
     }
 }

@@ -18,44 +18,44 @@ SettingItem
 
         property alias hovered: mouseArea.containsMouse;
 
-        border.width: base.style.controlBorderWidth;
-        border.color: !enabled ? base.style.controlDisabledBorderColor : hovered ? base.style.controlBorderHighlightColor : base.style.controlBorderColor
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
 
         property variant parentValue: value //From parent loader
         function notifyReset() {
             input.text = format(parentValue)
         }
 
-//         color: {
-//             if (!enabled)
-//             {
-//                 return base.style.controlDisabledColor
-//             }
-//             switch(definition.validationState) //From parent loader
-//             {
-//                 case 0:
-//                     return base.style.validationErrorColor;
-//                 case 1:
-//                     return base.style.validationErrorColor;
-//                 case 2:
-//                     return base.style.validationErrorColor;
-//                 case 3:
-//                     return base.style.validationWarningColor;
-//                 case 4:
-//                     return base.style.validationWarningColor;
-//                 case 5:
-//                     return base.style.validationOkColor;
-//
-//                 default:
-//                     return base.style.controlTextColor;
-//             }
-//         }
+        color: {
+            if (!enabled)
+            {
+                return UM.Theme.getColor("setting_control_disabled")
+            }
+            switch(definition.validationState)
+            {
+                case 0:
+                    return UM.Theme.getColor("setting_validation_error")
+                case 1:
+                    return UM.Theme.getColor("setting_validation_error")
+                case 2:
+                    return UM.Theme.getColor("setting_validation_error")
+                case 3:
+                    return UM.Theme.getColor("setting_validation_warning")
+                case 4:
+                    return UM.Theme.getColor("setting_validation_warning")
+                case 5:
+                    return UM.Theme.getColor("setting_validation_ok")
+
+                default:
+                    return UM.Theme.getColor("setting_control")
+            }
+        }
 
         Rectangle
         {
             anchors.fill: parent;
-            anchors.margins: base.style.controlBorderWidth;
-            color: base.style.controlHighlightColor;
+            anchors.margins: UM.Theme.getSize("default_lining").width;
+            color: UM.Theme.getColor("setting_control_highlight")
             opacity: 0.35
 //             opacity: !control.hovered ? 0 : valid == 5 ? 1.0 : 0.35;
         }
@@ -63,12 +63,12 @@ SettingItem
         Label
         {
             anchors.right: parent.right;
-            anchors.rightMargin: base.style.unitRightMargin;
+            anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
             anchors.verticalCenter: parent.verticalCenter;
 
             text: definition.unit;
-            color: base.style.unitColor
-            font: base.style.unitFont;
+            color: UM.Theme.getColor("setting_unit")
+            font: UM.Theme.getFont("default")
         }
 
         MouseArea
@@ -86,7 +86,7 @@ SettingItem
             anchors
             {
                 left: parent.left
-                leftMargin: base.style.unitRightMargin
+                leftMargin: UM.Theme.unitRightMargin
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
@@ -108,8 +108,8 @@ SettingItem
                 }
             }
 
-            color: !enabled ? base.style.controlDisabledTextColor : base.style.controlTextColor;
-            font: base.style.controlFont;
+            color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+            font: UM.Theme.getFont("default");
 
             selectByMouse: true;
 

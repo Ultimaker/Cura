@@ -120,7 +120,7 @@ Item
                             }
                         }
                         onEntered: {
-                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text);
+                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, 0), model.text);
                         }
                         onExited: {
                             base.hideTooltip();
@@ -224,7 +224,7 @@ Item
                 onEntered:
                 {
                     parent.hovered_ex = true
-                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, 0),
                         catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
                 }
                 onExited:
@@ -257,7 +257,7 @@ Item
                 onEntered:
                 {
                     parent.hovered_ex = true
-                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, 0),
                         catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
                 }
                 onExited:
