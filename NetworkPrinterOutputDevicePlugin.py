@@ -47,7 +47,8 @@ class NetworkPrinterOutputDevicePlugin(OutputDevicePlugin, SignalEmitter):
     def addPrinter(self, name, address, properties):
         printer = NetworkPrinterOutputDevice.NetworkPrinterOutputDevice(name, address, properties)
         self._printers[printer.getKey()] = printer
-        if printer.getKey() == Application.getInstance().getMachineManager().getActiveMachineInstance().getKey():
+        active_machine_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
+        if active_machine_instance and printer.getKey() == active_machine_instance.getKey():
             self._printers[printer.getKey()].connect()
         printer.connectionStateChanged.connect(self._onPrinterConnectionStateChanged)
 
