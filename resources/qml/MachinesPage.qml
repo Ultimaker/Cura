@@ -19,7 +19,7 @@ UM.ManagementPage
         onDataChanged: numInstances = model.rowCount()
     }
 
-    onAddObject: model.requestAddMachine();
+    onAddObject: Printer.requestAddPrinter()
     onRemoveObject: confirmDialog.open();
     onRenameObject: renameDialog.open();
 
