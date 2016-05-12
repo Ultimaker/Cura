@@ -452,19 +452,6 @@
                     "visible": false,
                     "inherit": false
                 },
-                "fill_perimeter_gaps": {
-                    "label": "Fill Gaps Between Walls",
-                    "description": "Fills the gaps between walls when overlapping inner wall parts are removed.",
-                    "type": "enum",
-                    "options": {
-                        "nowhere": "Nowhere",
-                        "everywhere": "Everywhere",
-                        "skin": "Skin"
-                    },
-                    "default": "everywhere",
-                    "visible": false,
-                    "enabled": "remove_overlapping_walls_x_enabled"
-                },
                 "travel_compensate_overlapping_walls_enabled": {
                     "label": "Compensate Wall Overlaps",
                     "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
