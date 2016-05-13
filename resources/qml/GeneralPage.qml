@@ -36,6 +36,11 @@ UM.PreferencesPage
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
+
+        if (UM.Models.pluginsModel.find("id", "UpdateChecker") > -1) {
+            UM.Preferences.resetPreference("info/automatic_update_check")
+            checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
+        }
     }
 
     ColumnLayout
@@ -147,6 +152,21 @@ UM.PreferencesPage
                 text: catalog.i18nc("@option:check","Scale extremely small files")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_tiny_meshes", checked)
+            }
+        }
+
+        UM.TooltipArea {
+            visible: UM.Models.pluginsModel.find("id", "UpdateChecker") > -1
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
+
+            CheckBox
+            {
+                id: checkUpdatesCheckbox
+                text: catalog.i18nc("@option:check","Check for updates on start")
+                checked: boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
+                onCheckedChanged: UM.Preferences.setValue("info/automatic_update_check", checked)
             }
         }
 
