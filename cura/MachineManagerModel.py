@@ -5,6 +5,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 
+from UM.Preferences import Preferences
+
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -14,11 +16,21 @@ class MachineManagerModel(QObject):
         self.globalContainerChanged.connect(self.activeMaterialChanged)
         self.globalContainerChanged.connect(self.activeVariantChanged)
 
+        Preferences.getInstance().addPreference("cura/active_machine", "")
+
+        active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
+        if active_machine_id != "":
+            # An active machine was saved, so restore it.
+            self.setActiveMachine(active_machine_id)
+            pass
+
+
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
 
     def _onGlobalContainerChanged(self):
+        Preferences.getInstance().setValue("cura/active_machine", Application.getInstance().getGlobalContainerStack().getId())
         Application.getInstance().getGlobalContainerStack().containersChanged.connect(self._onInstanceContainersChanged)
         self.globalContainerChanged.emit()
 
