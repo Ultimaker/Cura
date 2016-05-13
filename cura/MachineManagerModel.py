@@ -77,6 +77,12 @@ class MachineManagerModel(QObject):
         if material:
             return material.getName()
 
+    @pyqtProperty(str, notify=activeMaterialChanged)
+    def activeMaterialId(self):
+        material = Application.getInstance().getGlobalContainerStack().findContainer({"type": "material"})
+        if material:
+            return material.getId()
+
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
         containers = ContainerRegistry.getInstance().findInstanceContainers(id=material_id)
@@ -98,6 +104,13 @@ class MachineManagerModel(QObject):
         variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
         if variant:
             return variant.getName()
+
+    @pyqtProperty(str, notify = activeVariantChanged)
+    def activeVariantId(self):
+        variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
+        if variant:
+            return variant.getId()
+
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):

@@ -156,7 +156,7 @@ Item
                         {
                             text: model.name;
                             checkable: true;
-                            checked: model.active;
+                            checked: model.id == Cura.MachineManager.activeVariantId;
                             exclusiveGroup: variantSelectionMenuGroup;
                             onTriggered:
                             {
@@ -199,13 +199,11 @@ Item
                         {
                             filter: {"type": "material"}
                         }
-                        //model: UM.InstancesModel {filter: {"type":"material"}}
-//                         model: UM.MachineMaterialsModel { id: machineMaterialsModel }
                         MenuItem
                         {
                             text: model.name;
                             checkable: true;
-                            checked: model.active;
+                            checked: model.id == Cura.MachineManager.activeMaterialId;
                             exclusiveGroup: materialSelectionMenuGroup;
                             onTriggered:
                             {

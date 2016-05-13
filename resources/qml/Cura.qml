@@ -204,7 +204,7 @@ UM.MainWindow
                     MenuItem {
                         text: model.name;
                         checkable: true;
-                        checked: model.active;
+                        checked: model.id == Cura.MachineManager.activeVariantId;
                         exclusiveGroup: machineVariantsGroup;
                         onTriggered: Cura.MachineManager.setActiveVariant(model.id)
                     }
