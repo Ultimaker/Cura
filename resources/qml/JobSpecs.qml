@@ -31,6 +31,7 @@ Rectangle {
     function createFileName(){
         var splitMachineName = UM.MachineManager.activeMachineInstance.split(" ")
         var abbrMachine = ''
+        if ((UM.Preferences.getValue("cura/jobname_prefix"))) {
             for (var i = 0; i < splitMachineName.length; i++){
                 if (splitMachineName[i].search(/ultimaker/i) != -1){
                     abbrMachine += 'UM'
@@ -48,7 +49,10 @@ Rectangle {
                     }
                 }
             }
-        printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
+            printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
+        } else {
+            printJobTextfield.text = base.fileBaseName
+        }
     }
 
      Connections {

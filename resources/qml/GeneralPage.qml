@@ -31,9 +31,11 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("physics/automatic_push_free")
         UM.Preferences.resetPreference("mesh/scale_to_fit")
         UM.Preferences.resetPreference("info/send_slice_info")
+        UM.Preferences.resetPreference("cura/jobname_prefix")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
+        prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
 
@@ -116,7 +118,7 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should objects on the platform be moved so that they no longer intersect.")
+            text: catalog.i18nc("@info:tooltip", "Should objects on the platform be moved so that they no longer intersect?")
 
             CheckBox
             {
@@ -181,6 +183,20 @@ UM.PreferencesPage
                 text: catalog.i18nc("@option:check","Send (anonymous) print information")
                 checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
+            }
+        }
+
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
+
+            CheckBox
+            {
+                id: prefixJobNameCheckbox
+                text: catalog.i18nc("@option:check", "Add machine prefix to job name")
+                checked: boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
+                onCheckedChanged: UM.Preferences.setValue("cura/jobname_prefix", checked)
             }
         }
     }
