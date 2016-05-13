@@ -573,6 +573,29 @@
                         }
                     }
                 },
+                "skin_overlap": {
+                    "label": "Skin Overlap Percentage",
+                    "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 5,
+                    "min_value_warning": "-50",
+                    "max_value_warning": "100",
+                    "visible": false,
+                    "children": {
+                        "skin_overlap_mm": {
+                            "label": "Skin Overlap",
+                            "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.02,
+                            "min_value_warning": "-0.5 * machine_nozzle_size",
+                            "max_value_warning": "machine_nozzle_size",
+                            "inherit_function": "skin_line_width * parent_value / 100",
+                            "visible": false
+                        }
+                    }
+                },
                 "infill_wipe_dist": {
                     "label": "Infill Wipe Distance",
                     "description": "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line.",
