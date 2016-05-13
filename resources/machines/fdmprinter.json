@@ -1537,9 +1537,22 @@
                     "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 0.35,
+                    "default": 0.3,
                     "min_value": "0",
                     "max_value_warning": "1.0",
+                    "enabled": "adhesion_type == \"raft\"",
+                    "global_only": "True",
+                    "visible": true
+                },
+                "layer_0_z_overlap": {
+                    "label": "Initial Layer Z Overlap",
+                    "description": "Make the first and second layer of the object overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.05,
+                    "inherit_function": "layer_height / 2",
+                    "min_value": "0",
+                    "max_value_warning": "layer_height",
                     "enabled": "adhesion_type == \"raft\"",
                     "global_only": "True",
                     "visible": true
