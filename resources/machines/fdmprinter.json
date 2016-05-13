@@ -452,46 +452,6 @@
                     "visible": false,
                     "inherit": false
                 },
-                "remove_overlapping_walls_enabled": {
-                    "label": "Remove Overlapping Wall Parts",
-                    "description": "Remove parts of a wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin parts and sharp corners in models.",
-                    "type": "boolean",
-                    "default": false,
-                    "visible": false,
-                    "enabled": "False",
-                    "children": {
-                        "remove_overlapping_walls_0_enabled": {
-                            "label": "Remove Overlapping Outer Wall Parts",
-                            "description": "Remove parts of an outer wall which share an overlap which would result in overextrusion in some places. These overlaps occur in thin pieces in a model and sharp corners.",
-                            "type": "boolean",
-                            "default": false,
-                            "visible": false,
-                            "inherit": true,
-                            "enabled": "False"
-                        },
-                        "remove_overlapping_walls_x_enabled": {
-                            "label": "Remove Overlapping Inner Wall Parts",
-                            "description": "Remove parts of an inner wall that would otherwise overlap and cause over-extrusion. These overlaps occur in thin pieces in a model and sharp corners.",
-                            "type": "boolean",
-                            "default": true,
-                            "visible": false,
-                            "inherit": false
-                        }
-                    }
-                },
-                "fill_perimeter_gaps": {
-                    "label": "Fill Gaps Between Walls",
-                    "description": "Fills the gaps between walls when overlapping inner wall parts are removed.",
-                    "type": "enum",
-                    "options": {
-                        "nowhere": "Nowhere",
-                        "everywhere": "Everywhere",
-                        "skin": "Skin"
-                    },
-                    "default": "everywhere",
-                    "visible": false,
-                    "enabled": "remove_overlapping_walls_x_enabled"
-                },
                 "travel_compensate_overlapping_walls_enabled": {
                     "label": "Compensate Wall Overlaps",
                     "description": "Compensate the flow for parts of a wall being printed where there is already a wall in place.",
