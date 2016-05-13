@@ -12,9 +12,11 @@ class MachineManagerModel(QObject):
 
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
+        self.globalContainerChanged.connect(self.activeVariantChanged)
 
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
+    activeVariantChanged = pyqtSignal()
 
     def _onGlobalContainerChanged(self):
         Application.getInstance().getGlobalContainerStack().containersChanged.connect(self._onInstanceContainersChanged)
@@ -24,6 +26,8 @@ class MachineManagerModel(QObject):
         container_type = container.getMetaDataEntry("type")
         if container_type == "material":
             self.activeMaterialChanged.emit()
+        elif container_type == "variant":
+            self.activeVariantChanged.emit()
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id):
@@ -39,18 +43,24 @@ class MachineManagerModel(QObject):
             new_global_stack.addMetaDataEntry("type", "machine")
             ContainerRegistry.getInstance().addContainer(new_global_stack)
 
-            variant_instance_container = InstanceContainer(name + "_variant")
+            ## DEBUG CODE
             material_instance_container = InstanceContainer("test_material")
             material_instance_container.addMetaDataEntry("type", "material")
             material_instance_container.setDefinition(definitions[0])
-            #material_instance_container.setMetaData({"type","material"})
+
+            variant_instance_container = InstanceContainer("test_variant")
+            variant_instance_container.addMetaDataEntry("type", "variant")
+            variant_instance_container.setDefinition(definitions[0])
+
             quality_instance_container = InstanceContainer(name + "_quality")
             current_settings_instance_container = InstanceContainer(name + "_current_settings")
             ContainerRegistry.getInstance().addContainer(material_instance_container)
+            ContainerRegistry.getInstance().addContainer(variant_instance_container)
 
             # If a definition is found, its a list. Should only have one item.
             new_global_stack.addContainer(definitions[0])
             new_global_stack.addContainer(material_instance_container)
+            new_global_stack.addContainer(variant_instance_container)
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
     @pyqtProperty(str, notify = globalContainerChanged)
@@ -71,8 +81,23 @@ class MachineManagerModel(QObject):
     def setActiveMaterial(self, material_id):
         containers = ContainerRegistry.getInstance().findInstanceContainers(id=material_id)
         old_material = Application.getInstance().getGlobalContainerStack().findContainer({"type":"material"})
-        material_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_material)
-        Application.getInstance().getGlobalContainerStack().replaceContainer(material_index, containers[0])
+        if old_material:
+            material_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_material)
+            Application.getInstance().getGlobalContainerStack().replaceContainer(material_index, containers[0])
+
+    @pyqtSlot(str)
+    def setActiveVariant(self, variant_id):
+        containers = ContainerRegistry.getInstance().findInstanceContainers(id=variant_id)
+        old_variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
+        if old_variant:
+            variant_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_variant)
+            Application.getInstance().getGlobalContainerStack().replaceContainer(variant_index, containers[0])
+
+    @pyqtProperty(str, notify = activeVariantChanged)
+    def activeVariantName(self):
+        variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
+        if variant:
+            return variant.getName()
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):

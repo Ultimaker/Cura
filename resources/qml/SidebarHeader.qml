@@ -128,8 +128,8 @@ Item
 
             ToolButton {
                 id: variantSelection
-                text: UM.MachineManager.activeMachineVariant
-                tooltip: UM.MachineManager.activeMachineVariant;
+                text: Cura.MachineManager.activeVariantName
+                tooltip: Cura.MachineManager.activeVariantName;
                 visible: UM.MachineManager.hasVariants
 
                 height: UM.Theme.getSize("setting_control").height
@@ -143,6 +143,10 @@ Item
                     Instantiator
                     {
                         id: variantSelectionInstantiator
+                        model: UM.InstanceContainersModel
+                        {
+                            filter: {"type": "variant"}
+                        }
 //                         model: UM.MachineVariantsModel { id: variantsModel }
                         MenuItem
                         {
@@ -152,14 +156,14 @@ Item
                             exclusiveGroup: variantSelectionMenuGroup;
                             onTriggered:
                             {
-                                UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name);
-                                if (typeof(model) !== "undefined" && !model.active) {
+                                Cura.MachineManager.setActiveVariant(model.id);
+                                /*if (typeof(model) !== "undefined" && !model.active) {
                                     //Selecting a variant was canceled; undo menu selection
                                     variantSelectionInstantiator.model.setProperty(index, "active", false);
                                     var activeMachineVariantName = UM.MachineManager.activeMachineVariant;
                                     var activeMachineVariantIndex = variantSelectionInstantiator.model.find("name", activeMachineVariantName);
                                     variantSelectionInstantiator.model.setProperty(activeMachineVariantIndex, "active", true);
-                                }
+                                }*/
                             }
                         }
                         onObjectAdded: variantsSelectionMenu.insertItem(index, object)
