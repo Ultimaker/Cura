@@ -145,9 +145,12 @@ Item
                         id: variantSelectionInstantiator
                         model: UM.InstanceContainersModel
                         {
-                            filter: {"type": "variant"}
+                            filter:
+                            {
+                                "type": "variant",
+                                "definition": Cura.MachineManager.activeMachineDefinitionId //Only show variants of this machine
+                            }
                         }
-//                         model: UM.MachineVariantsModel { id: variantsModel }
                         MenuItem
                         {
                             text: model.name;

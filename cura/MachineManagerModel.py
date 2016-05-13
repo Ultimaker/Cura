@@ -105,6 +105,10 @@ class MachineManagerModel(QObject):
         if containers:
             containers[0].setName(new_name)
 
+    @pyqtProperty(str, notify=globalContainerChanged)
+    def activeMachineDefinitionId(self):
+        return Application.getInstance().getGlobalContainerStack().getContainers()[-1].getId()
+
     @pyqtSlot(str)
     def removeMachine(self, machine_id):
         ContainerRegistry.getInstance().removeContainer(machine_id)
