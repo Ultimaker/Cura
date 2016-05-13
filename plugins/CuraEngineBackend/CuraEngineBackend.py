@@ -118,6 +118,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        self._stored_layer_data = []
 
         if not self._enabled:
             return
