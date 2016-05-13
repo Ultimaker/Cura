@@ -193,13 +193,20 @@ UM.MainWindow
 
                 Instantiator
                 {
-//                     model: UM.MachineVariantsModel { }
+                    model: UM.InstanceContainersModel
+                    {
+                        filter:
+                        {
+                            "type": "variant",
+                            "definition": Cura.MachineManager.activeMachineDefinitionId //Only show variants of this machine
+                        }
+                    }
                     MenuItem {
                         text: model.name;
                         checkable: true;
                         checked: model.active;
                         exclusiveGroup: machineVariantsGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineVariant(model.name)
+                        onTriggered: Cura.MachineManager.setActiveVariant(model.id)
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
                     onObjectRemoved: machineMenu.removeItem(object)
@@ -207,7 +214,7 @@ UM.MainWindow
 
                 ExclusiveGroup { id: machineVariantsGroup; }
 
-//                 MenuSeparator { visible: UM.MachineManager.hasVariants; }
+                MenuSeparator { visible: Cura.MachineManager.hasVariants; }
 
                 MenuItem { action: Actions.addMachine; }
                 MenuItem { action: Actions.configureMachines; }
