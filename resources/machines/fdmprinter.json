@@ -555,10 +555,11 @@
                     "unit": "%",
                     "type": "float",
                     "default": 10,
-                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
+                    "inherit_function": "10 if infill_sparse_density < 95 and infill_pattern != \"concentric\" else 0",
                     "min_value_warning": "-50",
                     "max_value_warning": "100",
                     "visible": false,
+                    "enabled": "infill_pattern != \"concentric\"",
                     "children": {
                         "infill_overlap_mm": {
                             "label": "Infill Overlap",
@@ -568,8 +569,9 @@
                             "default": 0.04,
                             "min_value_warning": "-0.5 * machine_nozzle_size",
                             "max_value_warning": "machine_nozzle_size",
-                            "inherit_function": "infill_line_width * parent_value / 100 if infill_sparse_density < 95 else 0",
-                            "visible": false
+                            "inherit_function": "infill_line_width * parent_value / 100 if infill_sparse_density < 95 and infill_pattern != \"concentric\" else 0",
+                            "visible": false,
+                            "enabled": "infill_pattern != \"concentric\""
                         }
                     }
                 },
@@ -581,7 +583,9 @@
                     "default": 5,
                     "min_value_warning": "-50",
                     "max_value_warning": "100",
+                    "inherit_function": "5 if top_bottom_pattern != \"concentric\" else 0",
                     "visible": false,
+                    "enabled": "top_bottom_pattern != \"concentric\"",
                     "children": {
                         "skin_overlap_mm": {
                             "label": "Skin Overlap",
@@ -591,8 +595,9 @@
                             "default": 0.02,
                             "min_value_warning": "-0.5 * machine_nozzle_size",
                             "max_value_warning": "machine_nozzle_size",
-                            "inherit_function": "skin_line_width * parent_value / 100",
-                            "visible": false
+                            "inherit_function": "skin_line_width * parent_value / 100 if top_bottom_pattern != \"concentric\" else 0",
+                            "visible": false,
+                            "enabled": "top_bottom_pattern != \"concentric\""
                         }
                     }
                 },
