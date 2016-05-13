@@ -113,6 +113,17 @@ class MachineManagerModel(QObject):
     def removeMachine(self, machine_id):
         ContainerRegistry.getInstance().removeContainer(machine_id)
 
+    @pyqtProperty(bool)
+    def hasMaterials(self):
+        # Todo: Still hardcoded.
+        #  We should implement this properly when it's clear how a machine notifies us if it can handle materials
+        return True
+
+    @pyqtProperty(bool)
+    def hasVariants(self):
+        # Todo: Still hardcoded.
+        #  We should implement this properly when it's clear how a machine notifies us if it can handle variants
+        return True
 
 
 def createMachineManagerModel(engine, script_engine):

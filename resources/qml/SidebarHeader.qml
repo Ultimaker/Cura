@@ -104,12 +104,12 @@ Item
         anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
         width: base.width
         height: visible ? UM.Theme.getSize("sidebar_setup").height : 0
-        visible: UM.MachineManager.hasVariants || UM.MachineManager.hasMaterials
+        visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
 
         Label{
             id: variantLabel
-            text: (UM.MachineManager.hasVariants && UM.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
-                    UM.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
+            text: (Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
+                    Cura.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
@@ -118,7 +118,8 @@ Item
             color: UM.Theme.getColor("text");
         }
 
-        Rectangle {
+        Rectangle
+        {
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
@@ -130,7 +131,7 @@ Item
                 id: variantSelection
                 text: Cura.MachineManager.activeVariantName
                 tooltip: Cura.MachineManager.activeVariantName;
-                visible: UM.MachineManager.hasVariants
+                visible: Cura.MachineManager.hasVariants
 
                 height: UM.Theme.getSize("setting_control").height
                 width: materialSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
@@ -181,7 +182,7 @@ Item
                 id: materialSelection
                 text: Cura.MachineManager.activeMaterialName
                 tooltip: Cura.MachineManager.activeMaterialName
-                visible: UM.MachineManager.hasMaterials
+                visible: Cura.MachineManager.hasMaterials
 
                 height: UM.Theme.getSize("setting_control").height
                 width: variantSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
