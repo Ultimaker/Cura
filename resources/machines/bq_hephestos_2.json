@@ -58,6 +58,5 @@
         "skirt_minimal_length": { "default": 30.0, "visible": false },
         "skirt_gap": { "default": 6.0 },
         "cool_fan_full_at_height": { "default": 0.4, "visible": false },
-        "support_enable": { "default": false }
     }
 }
