@@ -8,6 +8,12 @@
     "file_formats": "text/x-gcode",
     "inherits": "fdmprinter.json",
 
+    "machine_preferences": {
+        "prefered_profile": "Normal Quality",
+        "prefered_variant": "0.4 mm",
+        "prefered_material": "PLA"
+    },
+
     "overrides": {
         "machine_start_gcode": {
             "default": "; -- START GCODE --\nM800        ; Custom GCODE to fire start print procedure\n; -- end of START GCODE --"
