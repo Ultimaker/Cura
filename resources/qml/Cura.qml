@@ -525,7 +525,7 @@ UM.MainWindow
                     onTriggered:
                     {
                         preferences.visible = true;
-                        preferences.setPage(2);
+                        preferences.setPage(1);
                         preferences.getCurrentItem().scrollToSection(source.key);
                     }
                 }
@@ -542,9 +542,6 @@ UM.MainWindow
             //; Remove & re-add the general page as we want to use our own instead of uranium standard.
             removePage(0);
             insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("GeneralPage.qml"));
-
-            //: View preferences page title
-            insertPage(1, catalog.i18nc("@title:tab","View"), Qt.resolvedUrl("ViewPage.qml"));
 
             //Force refresh
             setPage(0);
@@ -630,7 +627,7 @@ UM.MainWindow
         addProfile.onTriggered:
         {
             UM.MachineManager.createProfile();
-            preferences.setPage(4);
+            preferences.setPage(3);
             preferences.show();
 
             // Show the renameDialog after a very short delay so the preference page has time to initiate
@@ -643,12 +640,12 @@ UM.MainWindow
         configureMachines.onTriggered:
         {
             preferences.visible = true;
-            preferences.setPage(3);
+            preferences.setPage(2);
         }
         manageProfiles.onTriggered:
         {
             preferences.visible = true;
-            preferences.setPage(4);
+            preferences.setPage(3);
         }
 
         documentation.onTriggered: CuraActions.openDocumentation();

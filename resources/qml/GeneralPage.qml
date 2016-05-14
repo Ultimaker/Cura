@@ -32,10 +32,15 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("mesh/scale_to_fit")
         UM.Preferences.resetPreference("info/send_slice_info")
         UM.Preferences.resetPreference("cura/jobname_prefix")
+        UM.Preferences.resetPreference("view/show_overhang");
+        UM.Preferences.resetPreference("view/center_on_select");
+
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
         scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
         prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
+        overhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
+        centerCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
 
@@ -45,17 +50,25 @@ UM.PreferencesPage
         }
     }
 
-    ColumnLayout
+    Column
     {
         //: Language selection label
         UM.I18nCatalog{id: catalog; name:"cura"}
 
-        RowLayout
+        Label
         {
+            font.bold: true
+            text: catalog.i18nc("@label","Interface")
+        }
+
+        Row
+        {
+            spacing: UM.Theme.getSize("default_margin").width / 2
             Label
             {
                 id: languageLabel
                 text: catalog.i18nc("@label","Language:")
+                anchors.verticalCenter: languageComboBox.verticalCenter
             }
 
             ComboBox
@@ -115,6 +128,18 @@ UM.PreferencesPage
             font.italic: true
         }
 
+        Item
+        {
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").height
+        }
+
+        Label
+        {
+            font.bold: true
+            text: catalog.i18nc("@label","Viewport behavior")
+        }
+
         UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
@@ -130,6 +155,50 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
+            width: childrenRect.width;
+            height: childrenRect.height;
+            text: catalog.i18nc("@info:tooltip","Moves the camera so the object is in the center of the view when an object is selected")
+
+            CheckBox
+            {
+                id: centerCheckbox
+                text: catalog.i18nc("@action:button","Center camera when item is selected");
+                checked: boolCheck(UM.Preferences.getValue("view/center_on_select"))
+                onClicked: UM.Preferences.setValue("view/center_on_select",  checked)
+            }
+        }
+
+        UM.TooltipArea
+        {
+            width: childrenRect.width;
+            height: childrenRect.height;
+
+            text: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
+
+            CheckBox
+            {
+                id: overhangCheckbox
+
+                checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
+                onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
+
+                text: catalog.i18nc("@option:check","Display overhang");
+            }
+        }
+
+        Item
+        {
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").height
+        }
+
+        Label
+        {
+            font.bold: true
+            text: catalog.i18nc("@label","Opening files")
+        }
+
+        UM.TooltipArea {
             width: childrenRect.width
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","Should opened files be scaled to the build volume if they are too large?")
@@ -137,7 +206,7 @@ UM.PreferencesPage
             CheckBox
             {
                 id: scaleToFitCheckbox
-                text: catalog.i18nc("@option:check","Scale large files")
+                text: catalog.i18nc("@option:check","Scale large objects")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_to_fit", checked)
             }
@@ -151,10 +220,36 @@ UM.PreferencesPage
             CheckBox
             {
                 id: scaleTinyCheckbox
-                text: catalog.i18nc("@option:check","Scale extremely small files")
+                text: catalog.i18nc("@option:check","Scale extremely small objects")
                 checked: boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
                 onCheckedChanged: UM.Preferences.setValue("mesh/scale_tiny_meshes", checked)
             }
+        }
+
+        UM.TooltipArea {
+            width: childrenRect.width
+            height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
+
+            CheckBox
+            {
+                id: prefixJobNameCheckbox
+                text: catalog.i18nc("@option:check", "Add machine prefix to job name")
+                checked: boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
+                onCheckedChanged: UM.Preferences.setValue("cura/jobname_prefix", checked)
+            }
+        }
+
+        Item
+        {
+            height: UM.Theme.getSize("default_margin").height
+            width: UM.Theme.getSize("default_margin").height
+        }
+
+        Label
+        {
+            font.bold: true
+            text: catalog.i18nc("@label","Privacy")
         }
 
         UM.TooltipArea {
@@ -183,20 +278,6 @@ UM.PreferencesPage
                 text: catalog.i18nc("@option:check","Send (anonymous) print information")
                 checked: boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 onCheckedChanged: UM.Preferences.setValue("info/send_slice_info", checked)
-            }
-        }
-
-        UM.TooltipArea {
-            width: childrenRect.width
-            height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip", "Should a prefix based on the printer name be added to the print job name automatically?")
-
-            CheckBox
-            {
-                id: prefixJobNameCheckbox
-                text: catalog.i18nc("@option:check", "Add machine prefix to job name")
-                checked: boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
-                onCheckedChanged: UM.Preferences.setValue("cura/jobname_prefix", checked)
             }
         }
     }
