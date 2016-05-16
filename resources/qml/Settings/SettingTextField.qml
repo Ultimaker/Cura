@@ -31,19 +31,19 @@ SettingItem
             {
                 return UM.Theme.getColor("setting_control_disabled")
             }
-            switch(definition.validationState)
+            switch(propertyProvider.properties.validationState)
             {
-                case 0:
+                case "ValidatorState.Exception":
                     return UM.Theme.getColor("setting_validation_error")
-                case 1:
+                case "ValidatorState.MinimumError":
                     return UM.Theme.getColor("setting_validation_error")
-                case 2:
+                case "ValidatorState.MaximumError":
                     return UM.Theme.getColor("setting_validation_error")
-                case 3:
+                case "ValidatorState.MinimumWarning":
                     return UM.Theme.getColor("setting_validation_warning")
-                case 4:
+                case "ValidatorState.MaximumWarning":
                     return UM.Theme.getColor("setting_validation_warning")
-                case 5:
+                case "ValidatorState.Valid":
                     return UM.Theme.getColor("setting_validation_ok")
 
                 default:
@@ -56,8 +56,7 @@ SettingItem
             anchors.fill: parent;
             anchors.margins: UM.Theme.getSize("default_lining").width;
             color: UM.Theme.getColor("setting_control_highlight")
-            opacity: 0.35
-//             opacity: !control.hovered ? 0 : valid == 5 ? 1.0 : 0.35;
+            opacity: !control.hovered ? 0 : propertyProvider.properties.validationState == "ValidatorState.Valid" ? 1.0 : 0.35;
         }
 
         Label
@@ -93,19 +92,22 @@ SettingItem
 
             Keys.onReleased:
             {
-                text = text.replace(",", ".") // User convenience. We use dots for decimal values
-                if(parseFloat(text) != base.parentValue)
-                {
-                    base.valueChanged(parseFloat(text));
-                }
+//                 text = text.replace(",", ".") // User convenience. We use dots for decimal values
+//                 if(parseFloat(text) != base.parentValue)
+//                 {
+//                     base.valueChanged(parseFloat(text));
+//                 }
+
+                propertyProvider.setPropertyValue("value", text)
             }
 
             onEditingFinished:
             {
-                if(parseFloat(text) != base.parentValue)
-                {
-                    base.valueChanged(parseFloat(text));
-                }
+//                 if(parseFloat(text) != base.parentValue)
+//                 {
+//                     base.valueChanged(parseFloat(text));
+//                 }
+                propertyProvider.setPropertyValue("value", text)
             }
 
             color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
@@ -117,13 +119,13 @@ SettingItem
 
             validator: RegExpValidator { regExp: /[0-9.,-]{0,10}/ }
 
-//             Binding
-//             {
-//                 target: input
-//                 property: "text"
-//                 value: format(base.parentValue)
-//                 when: !input.activeFocus
-//             }
+            Binding
+            {
+                target: input
+                property: "text"
+                value: control.format(propertyProvider.properties.value)
+                when: !input.activeFocus
+            }
         }
 
         //Rounds a floating point number to 4 decimals. This prevents floating
@@ -147,7 +149,7 @@ SettingItem
         //input:  The string value to format.
         //return: The formatted string.
         function format(inputValue) {
-        return parseFloat(inputValue) ? roundFloat(parseFloat(inputValue), 4) : inputValue //If it's a float, round to four decimals.
+            return parseFloat(inputValue) ? roundFloat(parseFloat(inputValue), 4) : inputValue //If it's a float, round to four decimals.
         }
     }
 }
