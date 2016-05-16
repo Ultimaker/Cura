@@ -460,6 +460,20 @@ def get_material_display_name(material):
     material_name += material_names[material]
     return material_name
 
+
+def get_description(material):
+    description_data = ""
+    if is_experimental(material):
+        description_data = \
+            "                    * Experimental profile\n" + \
+            "                    use at your own risk!"
+    elif material in bed_prep_materials:
+        description_data = \
+            "                    Bed preparation required: \n" + \
+            "                    Apply a PVA-based glue stick \n" + \
+            "                    to bed surface before printing."
+    return description_data
+
 def create_machine_type(machine_type, path, dir):
     files = glob.glob(os.path.join(path, "*.ini"))
     path = os.path.join(CURA_QUICKPRINT_DIR, machine_type)
@@ -489,15 +503,9 @@ def create_machine_type(machine_type, path, dir):
                     types = "Experimental"
                 f.write("material_types = %s\n" % types)
                 f.write("order = %d\n" % order)
-                if is_experimental(material):
-                    f.write("description = \
-                    * Experimental profile\n\
-                    use at your own risk!")
-                elif material in bed_prep_materials:
-                    f.write("description = \
-                    Bed preparation required: \n\
-                    Apply a PVA-based glue stick \n\
-                    to bed surface before printing.\n")
+                description_data = get_description(material)
+                if description_data is not "":
+                    f.write("description = %s\n" % description_data)
                 if material_url.has_key(material):
                     referer = "?pk_campaign=software-cura"
                     f.write("url = %s%s\n" %(material_url[material], referer) )
