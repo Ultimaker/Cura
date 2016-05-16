@@ -30,9 +30,6 @@
         "machine_center_is_zero": {
             "default": false
         },
-        "machine_gcode_flavor": {
-            "default": "RepRap"
-        },
         "machine_platform_offset": {
             "default": [6, 1320, 0]
         },
