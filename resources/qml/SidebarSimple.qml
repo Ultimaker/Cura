@@ -6,7 +6,8 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -56,12 +57,7 @@ Item
         Repeater {
             id: infillListView
             property int activeIndex: {
-                if(!UM.ActiveProfile.valid)
-                {
-                    return -1;
-                }
-
-//                 var density = parseInt(UM.ActiveProfile.settingValues.getValue("infill_sparse_density"));
+                var density = parseInt(infillDensity.properties.value)
                 for(var i = 0; i < infillModel.count; ++i)
                 {
                     if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
@@ -116,7 +112,7 @@ Item
                         onClicked: {
                             if (infillListView.activeIndex != index)
                             {
-//                                 UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
+                                infillDensity.setPropertyValue("value", model.percentage)
                             }
                         }
                         onEntered: {
@@ -213,13 +209,14 @@ Item
             text: catalog.i18nc("@option:check","Generate Brim");
             style: UM.Theme.styles.checkbox;
 
-//             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("adhesion_type") == "brim" : false;
+            checked: platformAdhesionType.properties.value == "brim"
+
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
                 {
-//                     UM.MachineManager.setSettingValue("adhesion_type", !parent.checked?"brim":"skirt")
+                    platformAdhesionType.setPropertyValue("value", !parent.checked ? "brim" : "skirt")
                 }
                 onEntered:
                 {
@@ -246,13 +243,13 @@ Item
             text: catalog.i18nc("@option:check","Generate Support Structure");
             style: UM.Theme.styles.checkbox;
 
-//             checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_enable") : false;
+            checked: supportEnabled.properties.value == "True"
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
                 {
-//                     UM.MachineManager.setSettingValue("support_enable", !parent.checked)
+                    supportEnabled.setPropertyValue("value", !parent.checked)
                 }
                 onEntered:
                 {
@@ -370,5 +367,37 @@ Item
             linkColor: UM.Theme.getColor("text_link")
             onLinkActivated: Qt.openUrlExternally(link)
         }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: infillDensity
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "infill_sparse_density"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+
+        onPropertiesChanged: console.log(properties.value)
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: platformAdhesionType
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "adhesion_type"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: supportEnabled
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "support_enable"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
     }
 }
