@@ -465,13 +465,13 @@ def get_description(material):
     description_data = ""
     if is_experimental(material):
         description_data = \
-            "                    * Experimental profile\n" + \
-            "                    use at your own risk!"
+            "* Experimental profile\n" + \
+            " use at your own risk!"
     elif material in bed_prep_materials:
         description_data = \
-            "                    Bed preparation required: \n" + \
-            "                    Apply a PVA-based glue stick \n" + \
-            "                    to bed surface before printing."
+            "Bed preparation required: \n" + \
+            " Apply a PVA-based glue stick \n" + \
+            " to bed surface before printing."
     return description_data
 
 def create_machine_type(machine_type, path, dir):
