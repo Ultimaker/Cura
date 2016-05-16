@@ -19,19 +19,18 @@ SettingItem
 
         property bool checked:
         {
-            if(value == "True")
+            switch(propertyProvider.properties.value)
             {
-                return true;
-            }
-            else if(value == "False")
-            {
-                return false;
-            }
-            else
-            {
-                return value;
+                case "True":
+                    return true
+                case "False":
+                    return false
+                default:
+                    return propertyProvider.properties.value
             }
         }
+
+        onClicked: propertyProvider.setPropertyValue("value", !checked)
 
         Rectangle
         {
