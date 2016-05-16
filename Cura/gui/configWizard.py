@@ -1253,6 +1253,9 @@ class LulzbotTaz6ToolheadSelectPage(InfoPage):
  										'Lulzbot_Toolhead_TAZ_FlexyDually_v2.jpg', image_size)
 		self.standard.SetValue(True) #Set the default selection
 
+	def AllowBack(self):
+		return self.allowBack
+
 	def StoreData(self):
 		profile.putMachineSetting('machine_name', 'LulzBot TAZ 6')
 		machine_type = 'lulzbot_TAZ_6'
