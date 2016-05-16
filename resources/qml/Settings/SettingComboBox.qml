@@ -13,6 +13,8 @@ SettingItem
 
     contents: ComboBox
     {
+        id: control
+
         model: definition.options
         textRole: "value";
 
@@ -83,32 +85,25 @@ SettingItem
                 }
             }
         }
-/*
-        onActivated: {
-            valueChanged(options.getItem(index).value);
-        }
 
-        onModelChanged: {
-            updateCurrentIndex();
-        }
+        onActivated: provider.setPropertyValue("value", definition.options[index].key)
+        onModelChanged: updateCurrentIndex();
 
-        Component.onCompleted: {
-            parent.parent.valueChanged.connect(updateCurrentIndex)
+        Connections
+        {
+            target: provider
+            onPropertiesChanged: control.updateCurrentIndex()
         }
 
         function updateCurrentIndex() {
-            if (!options) {
-                return;
-            }
-
-            for(var i = 0; i < options.rowCount(); ++i) {
-                if(options.getItem(i).value == value) {
+            for(var i = 0; i < definition.options.length; ++i) {
+                if(definition.options[i].key == provider.properties.value) {
                     currentIndex = i;
                     return;
                 }
             }
 
             currentIndex = -1;
-        }*/
+        }
     }
 }
