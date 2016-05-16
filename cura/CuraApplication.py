@@ -511,20 +511,6 @@ class CuraApplication(QtApplication):
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 
-    @pyqtSlot(str, result = "QVariant")
-    def getSettingValue(self, key):
-        if not self._global_container_stack:
-            return None
-        return self._global_container_stack.getValue(key)
-    
-    ##  Change setting by key value pair
-    @pyqtSlot(str, "QVariant")
-    def setSettingValue(self, key, value):
-        if not self.getMachineManager().getWorkingProfile():
-            return
-
-        self.getMachineManager().getWorkingProfile().setSettingValue(key, value)
-        
     @pyqtSlot()
     def mergeSelected(self):
         self.groupSelected()
