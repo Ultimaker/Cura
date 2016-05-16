@@ -117,6 +117,39 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
+        Preferences.getInstance().setDefault("general/visible_settings", """
+                                             resolution
+                                                layer_height
+                                             shell
+                                                wall_thickness
+                                                top_bottom_thickness
+                                             infill
+                                                infill_sparse_density
+                                             material
+                                                material_print_temperature
+                                                material_bed_temperature
+                                                material_diameter
+                                                material_flow
+                                                retraction_enable
+                                             speed
+                                                speed_print
+                                                speed_travel
+                                             cooling
+                                                cool_fan_enabled
+                                             support
+                                                support_enable
+                                                support_type
+                                                support_roof_density
+                                             platform_adhesion
+                                                adhesion_type
+                                                brim_width
+                                                raft_airgap
+                                                layer_0_z_overlap
+                                                raft_surface_layers
+                                             blackmagic
+                                                print_sequence
+                                             """)
+
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
         self._recent_files = []
