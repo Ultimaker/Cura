@@ -7,6 +7,7 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 import ".."
 
@@ -26,14 +27,18 @@ ScrollView
         id: contents
         spacing: UM.Theme.getSize("default_lining").height;
 
-        model: UM.SettingDefinitionsModel { id: definitionsModel; containerId: "fdmprinter" }
+        model: UM.SettingDefinitionsModel { id: definitionsModel; containerId: Cura.MachineManager.activeDefinitionId }
 
         delegate: Loader
         {
             id: delegate
 
             width: UM.Theme.getSize("sidebar").width;
-            height: UM.Theme.getSize("section").height;
+            height: provider.properties.enabled ? UM.Theme.getSize("section").height : 0
+            Behavior on height { NumberAnimation { duration: 100 } }
+            opacity: provider.properties.enabled ? 1 : 0
+            Behavior on opacity { NumberAnimation { duration: 100 } }
+            enabled: provider.properties.enabled
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
@@ -66,12 +71,10 @@ ScrollView
             {
                 id: provider
 
-                containerStackId: ""
-
+                containerStackId: Cura.MachineManager.activeMachineId
                 key: model.key
-
                 watchedProperties: [ "value", "enabled", "state", "validationState" ]
-
+                storeIndex: 0
             }
 
             Connections
