@@ -127,6 +127,9 @@ class MachineManagerModel(QObject):
         if variant:
             return variant.getId()
 
+    @pyqtProperty(str, notify = globalContainerChanged)
+    def activeDefinitionId(self):
+        return Application.getInstance().getGlobalContainerStack().getBottom().id
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):
