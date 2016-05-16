@@ -51,7 +51,6 @@ Button {
 
     UM.SimpleButton
     {
-        // This button shows when the setting has an inherited function, but is overriden by profile.
         id: inheritButton;
 
         anchors.verticalCenter: parent.verticalCenter
@@ -71,7 +70,7 @@ Button {
         iconSource: UM.Theme.getIcon("notice")
 
         onEntered: {
-            base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
+            base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
         }
 
         onExited: {
