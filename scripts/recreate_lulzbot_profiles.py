@@ -114,6 +114,10 @@ material_map = {
     
     #Experimental
     "carbon_fiber": "PP-carbon-fiber-PLA",
+    "XAM3300": "XAM3300",
+    "HT": "HT",
+    "bpet": "b-pet",
+    "PC-MAX": "polymaker-PC-MAX",
 }
 
 material_order = {
@@ -185,7 +189,11 @@ material_order = {
     "NGEN_semiflex":      109,
     
     #Experimental
-    "carbon_fiber":      5000,
+    "XAM3300":           5000,
+    "carbon_fiber":      5001,
+    "HT":                5002,
+    "bpet":              5003,
+    "PC-MAX":            5004,
 }
 
 material_types = {
@@ -328,6 +336,10 @@ material_names = {
     
     # Experimental
     "carbon_fiber": "Carbon Fiber PLA",
+    "XAM3300": "XAM3300",
+    "HT": "HT (colorFabb)",
+    "bpet": "B-Pet",
+    "PC-MAX": "PC-MAX (Polymaker)",
 }
 
 material_url = {
@@ -399,6 +411,10 @@ material_url = {
 
     # Expert
 #    "carbon_fiber": " "",
+#    "XAM3300": "",
+#    "HT": "",
+#    "bpet": "",
+#    "PC-MAX": "",
 }
 
 bed_prep_materials = {
