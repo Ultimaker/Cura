@@ -16,7 +16,7 @@ Item {
     height: UM.Theme.getSize("section").height;
 
     property alias contents: controlContainer.children;
-    property bool hovered: false
+    property alias hovered: mouse.containsMouse
 
     signal contextMenuRequested()
     signal showTooltip(string text);
@@ -52,118 +52,103 @@ Item {
 
             onTriggered: base.showTooltip(definition.description);
         }
-    }
 
-    Label
-    {
-        id: label;
+        Label
+        {
+            id: label;
 
-        anchors.left: parent.left;
-        anchors.leftMargin: (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)
-        anchors.right: settingControls.left;
-        anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left;
+            anchors.leftMargin: (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)
+            anchors.right: settingControls.left;
+            anchors.verticalCenter: parent.verticalCenter
 
-        height: UM.Theme.getSize("section").height;
-        verticalAlignment: Text.AlignVCenter;
+            height: UM.Theme.getSize("section").height;
+            verticalAlignment: Text.AlignVCenter;
 
-        text: definition.label
-        elide: Text.ElideMiddle;
+            text: definition.label
+            elide: Text.ElideMiddle;
 
-        color: UM.Theme.getColor("setting_control_text");
-        font: UM.Theme.getFont("default");
-    }
-
-    Row
-    {
-        id: settingControls
-
-        height: parent.height / 2
-        spacing: UM.Theme.getSize("default_margin").width / 2
-
-        anchors {
-            right: controlContainer.left
-            rightMargin: UM.Theme.getSize("default_margin").width / 2
-            verticalCenter: parent.verticalCenter
+            color: UM.Theme.getColor("setting_control_text");
+            font: UM.Theme.getFont("default");
         }
 
-        UM.SimpleButton
+        Row
         {
-            id: revertButton;
+            id: settingControls
 
-//             visible: base.overridden && base.is_enabled
+            height: parent.height / 2
+            spacing: UM.Theme.getSize("default_margin").width / 2
 
-            height: parent.height;
-            width: height;
-
-            backgroundColor: UM.Theme.getColor("setting_control");
-            hoverBackgroundColor: UM.Theme.getColor("setting_control_highlight")
-            color: UM.Theme.getColor("setting_control_button")
-            hoverColor: UM.Theme.getColor("setting_control_button_hover")
-
-            iconSource: UM.Theme.getIcon("reset")
-
-            onClicked: {
-                base.resetRequested()
-                controlContainer.notifyReset();
+            anchors {
+                right: controlContainer.left
+                rightMargin: UM.Theme.getSize("default_margin").width / 2
+                verticalCenter: parent.verticalCenter
             }
 
-            onEntered: base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
-            onExited:
+            UM.SimpleButton
             {
-                if(controlContainer.item && controlContainer.item.hovered)
-                {
-                    return;
+                id: revertButton;
+
+                visible: propertyProvider.properties.state == "InstanceState.User"
+
+                height: parent.height;
+                width: height;
+
+                backgroundColor: UM.Theme.getColor("setting_control");
+                hoverBackgroundColor: UM.Theme.getColor("setting_control_highlight")
+                color: UM.Theme.getColor("setting_control_button")
+                hoverColor: UM.Theme.getColor("setting_control_button_hover")
+
+                iconSource: UM.Theme.getIcon("reset")
+
+                onClicked: {
+                    base.resetRequested()
+                    controlContainer.notifyReset();
                 }
 
-                base.hovered = false;
-                base.hideTooltip();
+                onEntered: base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
+                onExited: base.showTooltip(definition.description);
             }
+
+            UM.SimpleButton
+            {
+                // This button shows when the setting has an inherited function, but is overriden by profile.
+                id: inheritButton;
+
+                //visible: has_profile_value && base.has_inherit_function && base.is_enabled
+                visible: propertyProvider.properties.state == "InstanceState.User"
+
+                height: parent.height;
+                width: height;
+
+                onClicked: {
+                    base.resetToDefaultRequested();
+                    controlContainer.notifyReset();
+                }
+
+                backgroundColor: UM.Theme.getColor("setting_control");
+                hoverBackgroundColor: UM.Theme.getColor("setting_control_highlight")
+                color: UM.Theme.getColor("setting_control_button")
+                hoverColor: UM.Theme.getColor("setting_control_button_hover")
+
+                iconSource: UM.Theme.getIcon("notice");
+
+                onEntered: base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
+                onExited: base.showTooltip(definition.description);
+            }
+
         }
 
-        UM.SimpleButton
+        Item
         {
-            // This button shows when the setting has an inherited function, but is overriden by profile.
-            id: inheritButton;
+            id: controlContainer;
 
-//             visible: has_profile_value && base.has_inherit_function && base.is_enabled
-            height: parent.height;
-            width: height;
-
-            onClicked: {
-                base.resetToDefaultRequested();
-                controlContainer.notifyReset();
-            }
-
-            backgroundColor: UM.Theme.getColor("setting_control");
-            hoverBackgroundColor: UM.Theme.getColor("setting_control_highlight")
-            color: UM.Theme.getColor("setting_control_button")
-            hoverColor: UM.Theme.getColor("setting_control_button_hover")
-
-            iconSource: UM.Theme.getIcon("notice");
-
-            onEntered: base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
-
-            onExited: {
-                if(controlContainer.item && controlContainer.item.hovered) {
-                    return;
-                }
-
-                base.hovered = false;
-                base.hideTooltip();
-            }
+            anchors.right: parent.right;
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: parent.verticalCenter;
+            width: UM.Theme.getSize("setting_control").width;
+            height: UM.Theme.getSize("setting_control").height
         }
-
-    }
-
-    Item
-    {
-        id: controlContainer;
-
-        anchors.right: parent.right;
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        anchors.verticalCenter: parent.verticalCenter;
-        width: UM.Theme.getSize("setting_control").width;
-        height: UM.Theme.getSize("setting_control").height
     }
 
     UM.I18nCatalog { id: catalog; name: "cura" }
