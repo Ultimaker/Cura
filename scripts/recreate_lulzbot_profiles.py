@@ -111,6 +111,9 @@ material_map = {
     "INOVA_ninjaflex": "CS-INOVA-1800-Ninjaflex",
     "NGEN_ninjaflex": "nGen-ninjaflex",
     "NGEN_semiflex": "nGen-semiflex",
+    
+    #Experimental
+    "carbon_fiber": "PP-carbon-fiber-PLA",
 }
 
 material_order = {
@@ -180,6 +183,9 @@ material_order = {
     "INOVA_ninjaflex":    107,
     "NGEN_ninjaflex":     108,
     "NGEN_semiflex":      109,
+    
+    #Experimental
+    "carbon_fiber":      5000,
 }
 
 material_types = {
@@ -248,6 +254,8 @@ material_types = {
     "INOVA_ninjaflex": "Expert",
     "NGEN_ninjaflex": "Expert",
     "NGEN_semiflex": "Expert",
+    
+    # 'Experimental' is assumed when the material has no other category 
 }
 
 material_names = {
@@ -317,6 +325,9 @@ material_names = {
     "INOVA_ninjaflex": "INOVA & Ninjaflex",
     "NGEN_ninjaflex": "nGen & Ninjaflex",
     "NGEN_semiflex": "nGen & Semiflex",
+    
+    # Experimental
+    "carbon_fiber": "Carbon Fiber PLA",
 }
 
 material_url = {
@@ -385,6 +396,9 @@ material_url = {
     "INOVA_ninjaflex": "lulzbot.com/store/filament/inova-1800",
 #    "NGEN_ninjaflex": "",
 #    "NGEN_semiflex": "",
+
+    # Expert
+#    "carbon_fiber": " "",
 }
 
 bed_prep_materials = {
@@ -435,7 +449,17 @@ def find_files_for_material(files, material):
                     profile = p
                     result.append((file, material, profile))
     return result
-    
+
+def is_experimental(material):
+    return material not in material_types
+
+def get_material_display_name(material):
+    material_name = ""
+    if is_experimental(material):
+        material_name += "* "
+    material_name += material_names[material]
+    return material_name
+
 def create_machine_type(machine_type, path, dir):
     files = glob.glob(os.path.join(path, "*.ini"))
     path = os.path.join(CURA_QUICKPRINT_DIR, machine_type)
@@ -451,19 +475,25 @@ def create_machine_type(machine_type, path, dir):
                 os.makedirs(os.path.join(path, material, profile))
             with open(os.path.join(path, material, "material.ini"), "w") as f:
                 f.write("[info]\n")
-                f.write("name = %s\n" % material_names[material])
+                f.write("name = %s\n" % get_material_display_name(material))
                 order = material_order[material]
                 if material_types.has_key(material):
-                    types = material_types[material]
+                    types = material_types[material]    
                     if ((material == "HIPS_eSUN" and machine_type.startswith("lulzbot_mini")) or \
                         (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_4")) or \
                         (material == "ABS_VP" and machine_type.startswith("lulzbot_TAZ_5")) or \
                         (material == "nGen" and machine_type.startswith("lulzbot_TAZ_6"))):
                         types = types + "|First Run"
                         order = 0
-                    f.write("material_types = %s\n" % types)
+                if is_experimental(material):
+                    types = "Experimental"
+                f.write("material_types = %s\n" % types)
                 f.write("order = %d\n" % order)
-                if material in bed_prep_materials:
+                if is_experimental(material):
+                    f.write("description = \
+                    * Experimental profile\n\
+                    use at your own risk!")
+                elif material in bed_prep_materials:
                     f.write("description = \
                     Bed preparation required: \n\
                     Apply a PVA-based glue stick \n\
