@@ -1,11 +1,9 @@
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 from UM.Application import Application
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.InstanceContainer import InstanceContainer
-
 from UM.Preferences import Preferences
+
+import UM.Settings
 
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
@@ -43,36 +41,42 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id):
-        containers = ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = stack_id)
         if containers:
             Application.getInstance().setGlobalContainerStack(containers[0])
 
     @pyqtSlot(str, str)
     def addMachine(self,name, definition_id):
-        definitions = ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
+        definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
         if definitions:
-            new_global_stack = ContainerStack(name)
+            new_global_stack = UM.Settings.ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
-            ContainerRegistry.getInstance().addContainer(new_global_stack)
+            UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
             ## DEBUG CODE
-            material_instance_container = InstanceContainer("test_material")
+            material_instance_container = UM.Settings.InstanceContainer("test_material")
             material_instance_container.addMetaDataEntry("type", "material")
             material_instance_container.setDefinition(definitions[0])
 
-            variant_instance_container = InstanceContainer("test_variant")
+            variant_instance_container = UM.Settings.InstanceContainer("test_variant")
             variant_instance_container.addMetaDataEntry("type", "variant")
             variant_instance_container.setDefinition(definitions[0])
 
-            quality_instance_container = InstanceContainer(name + "_quality")
-            current_settings_instance_container = InstanceContainer(name + "_current_settings")
-            ContainerRegistry.getInstance().addContainer(material_instance_container)
-            ContainerRegistry.getInstance().addContainer(variant_instance_container)
+            quality_instance_container = UM.Settings.InstanceContainer(name + "_quality")
+            UM.Settings.ContainerRegistry.getInstance().addContainer(material_instance_container)
+            UM.Settings.ContainerRegistry.getInstance().addContainer(variant_instance_container)
+
+            current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
+            current_settings_instance_container.addMetaDataEntry("machine", name)
+            current_settings_instance_container.setDefinition(definitions[0])
+            UM.Settings.ContainerRegistry.getInstance().addContainer(current_settings_instance_container)
 
             # If a definition is found, its a list. Should only have one item.
             new_global_stack.addContainer(definitions[0])
             new_global_stack.addContainer(material_instance_container)
             new_global_stack.addContainer(variant_instance_container)
+            new_global_stack.addContainer(current_settings_instance_container)
+
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
     @pyqtProperty(str, notify = globalContainerChanged)
@@ -97,7 +101,7 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
-        containers = ContainerRegistry.getInstance().findInstanceContainers(id=material_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=material_id)
         old_material = Application.getInstance().getGlobalContainerStack().findContainer({"type":"material"})
         if old_material:
             material_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_material)
@@ -105,7 +109,7 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
-        containers = ContainerRegistry.getInstance().findInstanceContainers(id=variant_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=variant_id)
         old_variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
         if old_variant:
             variant_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_variant)
@@ -126,7 +130,7 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):
-        containers = ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             containers[0].setName(new_name)
 
@@ -136,7 +140,7 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str)
     def removeMachine(self, machine_id):
-        ContainerRegistry.getInstance().removeContainer(machine_id)
+        UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
 
     @pyqtProperty(bool)
     def hasMaterials(self):
@@ -149,7 +153,6 @@ class MachineManagerModel(QObject):
         # Todo: Still hardcoded.
         #  We should implement this properly when it's clear how a machine notifies us if it can handle variants
         return True
-
 
 def createMachineManagerModel(engine, script_engine):
     return MachineManagerModel()
