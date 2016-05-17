@@ -16,107 +16,105 @@
     "file_formats": "text/x-gcode",
 
     "overrides": {
-        "settings": {
-            "machine_start_gcode": {
-                "default_value": "; -- START GCODE --\nM800        ; Custom GCODE to fire start print procedure\n; -- end of START GCODE --"
-            },
-            "machine_end_gcode": {
-                "default_value": "; -- END GCODE --\nM801        ; Custom GCODE to fire end print procedure\n; -- end of END GCODE --"
-            },
-            "machine_width": {
-                "value": 210
-            },
-            "machine_depth": {
-                "value": 297
-            },
-            "machine_height": {
-                "value": 220
-            },
-            "machine_heated_bed": {
-                "value": false
-            },
-            "machine_center_is_zero": {
-                "value": false
-            },
-            "machine_gcode_flavor": {
-                "value": "RepRap"
-            },
-            "machine_platform_offset": {
-                "value": [
-                    6,
-                    1320,
-                    0
-                ]
-            },
-            "material_print_temperature": {
-                "value": 210.0
-            },
-            "material_bed_temperature": {
-                "value": 0
-            },
-            "material_diameter": {
-                "value": 1.75
-            },
-            "layer_height": {
-                "value": 0.2
-            },
-            "layer_height_0": {
-                "value": 0.2
-            },
-            "wall_line_count": {
-                "value": 3
-            },
-            "wall_thickness": {
-                "value": 1.2
-            },
-            "top_bottom_thickness": {
-                "value": 1.2
-            },
-            "infill_sparse_density": {
-                "value": 20.0
-            },
-            "infill_overlap": {
-                "value": 15.0
-            },
-            "speed_print": {
-                "value": 60.0
-            },
-            "speed_travel": {
-                "value": 160.0
-            },
-            "speed_layer_0": {
-                "value": 30.0
-            },
-            "speed_wall_x": {
-                "value": 35.0
-            },
-            "speed_wall_0": {
-                "value": 30.0
-            },
-            "speed_infill": {
-                "value": 80.0
-            },
-            "speed_topbottom": {
-                "value": 35.0
-            },
-            "skirt_speed": {
-                "value": 35.0
-            },
-            "skirt_line_count": {
-                "value": 4
-            },
-            "skirt_minimal_length": {
-                "value": 30.0
-            },
-            "skirt_gap": {
-                "value": 6.0
-            },
-            "cool_fan_full_at_height": {
-                "value": 0.4
-            },
-            "support_enable": {
-                "value": false
-            }
+        "machine_start_gcode": {
+            "default_value": "; -- START GCODE --\nM800        ; Custom GCODE to fire start print procedure\n; -- end of START GCODE --"
+        },
+        "machine_end_gcode": {
+            "default_value": "; -- END GCODE --\nM801        ; Custom GCODE to fire end print procedure\n; -- end of END GCODE --"
+        },
+        "machine_width": {
+            "value": 210
+        },
+        "machine_depth": {
+            "value": 297
+        },
+        "machine_height": {
+            "value": 220
+        },
+        "machine_heated_bed": {
+            "value": false
+        },
+        "machine_center_is_zero": {
+            "value": false
+        },
+        "machine_gcode_flavor": {
+            "value": "RepRap"
+        },
+        "machine_platform_offset": {
+            "value": [
+                6,
+                1320,
+                0
+            ]
+        },
+        "material_print_temperature": {
+            "value": 210.0
+        },
+        "material_bed_temperature": {
+            "value": 0
+        },
+        "material_diameter": {
+            "value": 1.75
+        },
+        "layer_height": {
+            "value": 0.2
+        },
+        "layer_height_0": {
+            "value": 0.2
+        },
+        "wall_line_count": {
+            "value": 3
+        },
+        "wall_thickness": {
+            "value": 1.2
+        },
+        "top_bottom_thickness": {
+            "value": 1.2
+        },
+        "infill_sparse_density": {
+            "value": 20.0
+        },
+        "infill_overlap": {
+            "value": 15.0
+        },
+        "speed_print": {
+            "value": 60.0
+        },
+        "speed_travel": {
+            "value": 160.0
+        },
+        "speed_layer_0": {
+            "value": 30.0
+        },
+        "speed_wall_x": {
+            "value": 35.0
+        },
+        "speed_wall_0": {
+            "value": 30.0
+        },
+        "speed_infill": {
+            "value": 80.0
+        },
+        "speed_topbottom": {
+            "value": 35.0
+        },
+        "skirt_speed": {
+            "value": 35.0
+        },
+        "skirt_line_count": {
+            "value": 4
+        },
+        "skirt_minimal_length": {
+            "value": 30.0
+        },
+        "skirt_gap": {
+            "value": 6.0
+        },
+        "cool_fan_full_at_height": {
+            "value": 0.4
+        },
+        "support_enable": {
+            "value": false
         }
     }
 }
