@@ -53,8 +53,8 @@ class ConvexHullJob(Job):
             # This basically finds the unique rows in the array by treating them as opaque groups of bytes
             # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
             # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
-            tmp = numpy.ascontiguousarray(vertex_data).view(numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-            _, idx = numpy.unique(tmp, return_index=True)
+            vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
+            _, idx = numpy.unique(vertex_byte_view, return_index=True)
             vertex_data = vertex_data[idx]  # Select the unique rows by index.
 
             hull = Polygon(vertex_data)
