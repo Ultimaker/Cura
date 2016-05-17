@@ -3,8 +3,7 @@
     "name": "BQ Prusa i3 Hephestos",
     "version": 2,
     "inherits": "fdmprinter",
-    "metadata":
-    {
+    "metadata": {
         "author": "BQ",
         "manufacturer": "BQ",
         "category": "Other",
@@ -27,67 +26,67 @@
             "default_value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nG91                     ;set to relative positioning\nG1 E-20 F300            ;retract the filament a bit to release some of the pressure\nG1 Z10                  ;move extruder up 10 mm\nG90                     ;set to absolute positioning\nG1 X0 Y180 F1200        ;expose the platform\nM84                     ;turn off steppers\n; -- end of END GCODE --"
         },
         "machine_width": {
-            "value": 215
+            "default_value": 215
         },
         "machine_depth": {
-            "value": 210
+            "default_value": 210
         },
         "machine_height": {
-            "value": 180
+            "default_value": 180
         },
         "machine_heated_bed": {
-            "value": false
+            "default_value": false
         },
         "machine_center_is_zero": {
-            "value": false
+            "default_value": false
         },
         "machine_gcode_flavor": {
-            "value": "RepRap"
+            "default_value": "RepRap"
         },
         "layer_height": {
-            "value": 0.2
+            "default_value": 0.2
         },
         "layer_height_0": {
-            "value": 0.2
+            "default_value": 0.2
         },
         "wall_thickness": {
-            "value": 1.0
+            "default_value": 1.0
         },
         "top_bottom_thickness": {
-            "value": 1.0
+            "default_value": 1.0
         },
         "bottom_thickness": {
-            "value": 1.0
+            "default_value": 1.0
         },
         "material_print_temperature": {
-            "value": 220
+            "default_value": 220
         },
         "material_bed_temperature": {
-            "value": 0
+            "default_value": 0
         },
         "material_diameter": {
-            "value": 1.75
+            "default_value": 1.75
         },
         "speed_print": {
-            "value": 40.0
+            "default_value": 40.0
         },
         "speed_infill": {
-            "value": 40.0
+            "default_value": 40.0
         },
         "speed_wall": {
-            "value": 35.0
+            "default_value": 35.0
         },
         "speed_topbottom": {
-            "value": 35.0
+            "default_value": 35.0
         },
         "speed_travel": {
-            "value": 120.0
+            "default_value": 120.0
         },
         "speed_layer_0": {
-            "value": 20.0
+            "default_value": 20.0
         },
         "support_enable": {
-            "value": true
+            "default_value": true
         }
     }
 }
