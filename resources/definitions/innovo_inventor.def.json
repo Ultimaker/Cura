@@ -10,94 +10,95 @@
         "file_formats": "text/x-gcode",
         "platform": "inventor_platform.stl"
     },
-    "settings": {
+
+    "overrides": {
         "machine_width": {
-            "value": 340
+            "default_value": 340
         },
         "machine_height": {
-            "value": 290
+            "default_value": 290
         },
         "machine_depth": {
-            "value": 300
+            "default_value": 300
         },
         "machine_heated_bed": {
-            "value": true
+            "default_value": true
         },
         "machine_center_is_zero": {
-            "value": false
+            "default_value": false
         },
         "machine_nozzle_size": {
-            "value": 0.4
+            "default_value": 0.4
         },
         "machine_head_shape_min_x": {
-            "value": 43.7
+            "default_value": 43.7
         },
         "machine_head_shape_min_y": {
-            "value": 19.2
+            "default_value": 19.2
         },
         "machine_head_shape_max_x": {
-            "value": 43.7
+            "default_value": 43.7
         },
         "machine_head_shape_max_y": {
-            "value": 55
+            "default_value": 55
         },
         "machine_nozzle_gantry_distance": {
-            "value": 82.3
+            "default_value": 82.3
         },
         "machine_nozzle_offset_x_1": {
-            "value": 0
+            "default_value": 0
         },
         "machine_nozzle_offset_y_1": {
-            "value": 15
+            "default_value": 15
         },
         "machine_gcode_flavor": {
-            "value": "RepRap (Marlin/Sprinter)"
+            "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_start_gcode": {
-            "value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\n{IF_BED}M190 S{BED}\n{IF_EXT0}M104 T0 S{TEMP0}\n{IF_EXT0}M109 T0 S{TEMP0}\n{IF_EXT1}M104 T1 S{TEMP1}\n{IF_EXT1}M109 T1 S{TEMP1}\nG32 S3 ; auto level\nG92 E0 ; Reset extruder position"
+            "default_value": "G28 ; Home extruder\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\n{IF_BED}M190 S{BED}\n{IF_EXT0}M104 T0 S{TEMP0}\n{IF_EXT0}M109 T0 S{TEMP0}\n{IF_EXT1}M104 T1 S{TEMP1}\n{IF_EXT1}M109 T1 S{TEMP1}\nG32 S3 ; auto level\nG92 E0 ; Reset extruder position"
         },
         "machine_end_gcode": {
-            "value": "M104 S0\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors"
+            "default_value": "M104 S0\nG91 ; relative positioning\nG1 E-2 F5000; retract 2mm\nG28 Z; move bed down\nG90 ; absolute positioning\nM84   ; disable motors"
         },
         "machine_platform_offset": {
-            "value": [-180, -0.25, 160]
+            "default_value": [-180, -0.25, 160]
         },
         "layer_height": {
-            "value": 0.15
+            "default_value": 0.15
         },
         "wall_thickness": {
-            "value": 0.8
+            "default_value": 0.8
         },
         "top_bottom_thickness": {
-            "value": 0.3
+            "default_value": 0.3
         },
         "material_print_temperature": {
-            "value": 215
+            "default_value": 215
         },
         "material_bed_temperature": {
-            "value": 60
+            "default_value": 60
         },
         "material_diameter": {
-            "value": 1.75
+            "default_value": 1.75
         },
         "speed_print": {
-            "value": 60
+            "default_value": 60
         },
         "speed_infill": {
-            "value": 100
+            "default_value": 100
         },
         "speed_topbottom": {
-            "value": 30
+            "default_value": 30
         },
         "speed_travel": {
-            "value": 150
+            "default_value": 150
         },
         "speed_layer_0": {
-            "value": 30.0,
+            "default_value": 30.0,
             "min_value": 0.1
         },
         "infill_overlap": {
-            "value": 10.0
+            "default_value": 10.0
         }
     }
 }
