@@ -1,86 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-		WARNING !!!!!
-
-THIS IS TESTING CODE, IT DOES NOT FOLLOW THE SPEC NOR THE REFERENCE IMPLEMENTATION
-
-DO NOT USE, MODIFY OR RELY ON THIS CODE WHATSOEVER!
-
-THERE ARE SERIOUS ISSUES WITH THIS DATA!!
+Generic ABS profile. Serves as an example file, data in this file is not correct.
 -->
-<fdm_material xmlns:fdmm="http://www.ultimaker.com/material/v0.5">
+<fdmmaterial xmlns="http://www.ultimaker.com/material">
     <metadata>
         <name>
-            <brand>Ultimaker</brand>
+            <brand>Generic</brand>
             <material>ABS</material>
             <color>Generic</color>
         </name>
-        <GUID>8520c33e-da56-441b-8d6f-16034a9d19d5</GUID>
+        <GUID>60636bb4-518f-42e7-8237-fe77b194ebe0</GUID>
         <version>0</version>
-        <color_code>#612978</color_code>
-        <instructions>http://ultimaker.com/we/have/no/instruction/link/yet</instructions>
-        <author>
-            <organization>Ultimaker B.V.</organization>
-            <contact>Ultimaker Support</contact>
-            <email>support@ultimaker.com</email>
-            <phone>+31 345 712001</phone>
-            <address>
-                <street>Watermolenweg 2</street>
-                <city>Geldermalsen</city>
-                <region>Gelderland</region>
-                <zip>4191 PN</zip>
-                <country>The Netherlands</country>
-            </address>
-        </author>
-        <supplier>
-            <organization>Ultimaker B.V.</organization>
-            <contact>Support</contact>
-            <email>support@ultimaker.com</email>
-            <phone>+31 345 712001</phone>
-            <address>
-                <street>Watermolenweg 2</street>
-                <city>Geldermalsen</city>
-                <region>Gelderland</region>
-                <zip>4191 PN</zip>
-                <country>The Netherlands</country>
-            </address>
-        </supplier>
-        <EAN>87 10400 31116 0</EAN>
-        <EAN>87 10400 31117 0</EAN>
-        <MSDS>http://...</MSDS>
-        <TDS>http://...</TDS>
+        <color_code>#FFFFFF</color_code>
     </metadata>
-    <settings>
-
-
-        <printing_temperature>250</printing_temperature>
-        <standby_temperature>130</standby_temperature>
-        <maximum_temperature>260</maximum_temperature>
-        <heated_bed_temperature>90</heated_bed_temperature>
-        <maximum_heated_bed_temperature>100</maximum_heated_bed_temperature>
-
-        <machine>
-            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2"/>
-            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2go"/>
-            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker2extended"/>
-            <setting key="standby_temperature">150</setting>
-            <setting key="processing_temperature_graph">
-                <point flow="2" temperature="180"/>
-                <point flow="10" temperature="230"/>
-            </setting>
-        </machine>
-
-        <machine>
-            <machine_identifier manufacturer="Ultimaker B.V." product="Ultimaker Original"/>
-            <setting key="standby_temperature">150</setting>
-            <hotend id="0.8mm">
-                <setting key="standby_temperature">80</setting>
-            </hotend>
-            <hotend id="0.6mm">
-                <setting key="standby_temperature">100</setting>
-            </hotend>
-        </machine>
-    </settings>
     <properties>
     </properties>
-</fdm_material>
+    <settings>
+        <setting key="print temperature">250</setting>
+        <setting key="heated bed temperature">100</setting>
+        <setting key="standby temperature">200</setting>
+    </settings>
+</fdmmaterial>
