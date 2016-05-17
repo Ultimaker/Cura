@@ -9,12 +9,62 @@
 
     "machine_extruder_trains": {
         "0": {
-            "extruder_nr": { "default": 0 },
-            "machine_nozzle_offset_x": { "default": 0.0 },
-            "machine_nozzle_offset_y": { "default": 0.0 }
+            "extruder_nr": {
+                "default": 0
+            },
+            "machine_nozzle_offset_x": {
+                "default": 0
+            },
+            "machine_nozzle_offset_y": {
+                "default": 0
+            },
+            "machine_nozzle_heat_up_speed": {
+                "default": 2
+            },
+            "machine_nozzle_cool_down_speed": {
+                "default": 2
+            },
+            "machine_nozzle_tip_outer_diameter": {
+                "default": 1
+            },
+            "machine_nozzle_head_distance": {
+                "default": 3
+            },
+            "machine_nozzle_expansion_angle": {
+                "default": 45
+            },
+            "machine_heat_zone_length": {
+                "default": 16
+            }
         },
         "1": {
-            "extruder_nr": { "default": 1 }
+            "extruder_nr": {
+                "default": 1
+            },
+            "machine_nozzle_offset_x": {
+                "default": 0
+            },
+            "machine_nozzle_offset_y": {
+                "default": 0
+            },
+            "machine_nozzle_heat_up_speed": {
+                "default": 2
+            },
+            "machine_nozzle_cool_down_speed": {
+                "default": 2
+            },
+            "machine_nozzle_tip_outer_diameter": {
+                "default": 1
+            },
+            "machine_nozzle_head_distance": {
+                "default": 3
+            },
+            "machine_nozzle_expansion_angle": {
+                "default": 45
+            },
+            "machine_heat_zone_length": {
+                "default": 16
+            }
         }
     },
 
