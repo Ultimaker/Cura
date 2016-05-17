@@ -105,6 +105,9 @@ class CuraEngineBackend(Backend):
 
         return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, "-vv"]
 
+    def close(self):
+        self._terminate()   # Forcefully shutdown the backend.
+
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
     #   \param time The amount of time the print will take.
     #   \param material_amount The amount of material the print will use.
@@ -118,6 +121,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
+        self._stored_layer_data = []
 
         if not self._enabled:
             return

@@ -555,10 +555,11 @@
                     "unit": "%",
                     "type": "float",
                     "default": 10,
-                    "inherit_function": "10 if infill_sparse_density < 95 else 0",
+                    "inherit_function": "10 if infill_sparse_density < 95 and infill_pattern != \"concentric\" else 0",
                     "min_value_warning": "-50",
                     "max_value_warning": "100",
                     "visible": false,
+                    "enabled": "infill_pattern != \"concentric\"",
                     "children": {
                         "infill_overlap_mm": {
                             "label": "Infill Overlap",
@@ -568,8 +569,35 @@
                             "default": 0.04,
                             "min_value_warning": "-0.5 * machine_nozzle_size",
                             "max_value_warning": "machine_nozzle_size",
-                            "inherit_function": "infill_line_width * parent_value / 100 if infill_sparse_density < 95 else 0",
-                            "visible": false
+                            "inherit_function": "infill_line_width * parent_value / 100 if infill_sparse_density < 95 and infill_pattern != \"concentric\" else 0",
+                            "visible": false,
+                            "enabled": "infill_pattern != \"concentric\""
+                        }
+                    }
+                },
+                "skin_overlap": {
+                    "label": "Skin Overlap Percentage",
+                    "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
+                    "unit": "%",
+                    "type": "float",
+                    "default": 5,
+                    "min_value_warning": "-50",
+                    "max_value_warning": "100",
+                    "inherit_function": "5 if top_bottom_pattern != \"concentric\" else 0",
+                    "visible": false,
+                    "enabled": "top_bottom_pattern != \"concentric\"",
+                    "children": {
+                        "skin_overlap_mm": {
+                            "label": "Skin Overlap",
+                            "description": "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default": 0.02,
+                            "min_value_warning": "-0.5 * machine_nozzle_size",
+                            "max_value_warning": "machine_nozzle_size",
+                            "inherit_function": "skin_line_width * parent_value / 100 if top_bottom_pattern != \"concentric\" else 0",
+                            "visible": false,
+                            "enabled": "top_bottom_pattern != \"concentric\""
                         }
                     }
                 },
@@ -1537,9 +1565,22 @@
                     "description": "The gap between the final raft layer and the first layer of the object. Only the first layer is raised by this amount to lower the bonding between the raft layer and the object. Makes it easier to peel off the raft.",
                     "unit": "mm",
                     "type": "float",
-                    "default": 0.35,
+                    "default": 0.3,
                     "min_value": "0",
                     "max_value_warning": "1.0",
+                    "enabled": "adhesion_type == \"raft\"",
+                    "global_only": "True",
+                    "visible": true
+                },
+                "layer_0_z_overlap": {
+                    "label": "Initial Layer Z Overlap",
+                    "description": "Make the first and second layer of the object overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default": 0.05,
+                    "inherit_function": "layer_height / 2",
+                    "min_value": "0",
+                    "max_value_warning": "layer_height",
                     "enabled": "adhesion_type == \"raft\"",
                     "global_only": "True",
                     "visible": true

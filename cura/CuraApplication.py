@@ -114,6 +114,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
+        Preferences.getInstance().addPreference("cura/jobname_prefix", True)
         Preferences.getInstance().addPreference("view/center_on_select", True)
         Preferences.getInstance().addPreference("mesh/scale_to_fit", True)
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
