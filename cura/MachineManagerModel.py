@@ -158,17 +158,16 @@ class MachineManagerModel(QObject):
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeDefinitionId(self):
-        return Application.getInstance().getGlobalContainerStack().getBottom().id
+        definition = Application.getInstance().getGlobalContainerStack().getBottom()
+        if definition:
+            return definition.id
+        return None
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
             containers[0].setName(new_name)
-
-    @pyqtProperty(str, notify=globalContainerChanged)
-    def activeMachineDefinitionId(self):
-        return Application.getInstance().getGlobalContainerStack().getContainers()[-1].getId()
 
     @pyqtSlot(str)
     def removeMachine(self, machine_id):

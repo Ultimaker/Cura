@@ -198,7 +198,7 @@ UM.MainWindow
                         filter:
                         {
                             "type": "variant",
-                            "definition": Cura.MachineManager.activeMachineDefinitionId //Only show variants of this machine
+                            "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
                         }
                     }
                     MenuItem {
