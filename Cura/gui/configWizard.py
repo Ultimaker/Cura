@@ -1604,11 +1604,13 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
 		self.lulzbotTazSelectPage = LulzbotTazSelectPage(self)
 
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTaz6ToolheadPage, self.lulzbotFirmwarePage)
+		wx.wizard.WizardPageSimple.Chain(self.lulzbotFirmwarePage, self.lulzbotReadyPage)
+
 
 		if profile.getMachineSetting('machine_type').startswith('lulzbot_mini'):
+			wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 			self.RunWizard(self.lulzbotMiniToolheadPage)
 		elif profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_5') or \
                      profile.getMachineSetting('machine_type').startswith('lulzbot_TAZ_4'):
