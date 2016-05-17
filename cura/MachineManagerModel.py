@@ -70,6 +70,9 @@ class MachineManagerModel(QObject):
             quality_instance_container = UM.Settings.InstanceContainer(name + "_quality")
             UM.Settings.ContainerRegistry.getInstance().addContainer(material_instance_container)
             UM.Settings.ContainerRegistry.getInstance().addContainer(variant_instance_container)
+            UM.Settings.ContainerRegistry.getInstance().addContainer(quality_instance_container)
+            quality_instance_container.addMetaDataEntry("type", "quality")
+            quality_instance_container.setDefinition(definitions[0])
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
@@ -80,6 +83,7 @@ class MachineManagerModel(QObject):
             new_global_stack.addContainer(definitions[0])
             new_global_stack.addContainer(material_instance_container)
             new_global_stack.addContainer(variant_instance_container)
+            new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
@@ -131,6 +135,14 @@ class MachineManagerModel(QObject):
         if old_variant:
             variant_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_variant)
             Application.getInstance().getGlobalContainerStack().replaceContainer(variant_index, containers[0])
+
+    @pyqtSlot(str)
+    def setActiveQuality(self, quality_id):
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
+        old_quality = Application.getInstance().getGlobalContainerStack().findContainer({"type": "quality"})
+        if old_quality:
+            quality_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_quality)
+            Application.getInstance().getGlobalContainerStack().replaceContainer(quality_index, containers[0])
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self):
