@@ -144,11 +144,7 @@ class machineSettingsDialog(wx.Dialog):
 			configBase.SettingRow(right, 'serial_port', serial_list, serial_list_labels, index=idx)
 			configBase.SettingRow(right, 'serial_baud', ['AUTO'] + map(str, machineCom.baudrateList()), index=idx)
 
-			machine_name = profile.getMachineName(idx)
-			machine_title = machine_name.title()			
-			machine_title = machine_title.replace('Taz', 'TAZ')
-			machine_title = machine_title.replace('Lulzbot', 'LulzBot')
-			self.nb.AddPage(main, machine_title)
+			self.nb.AddPage(main, profile.getMachineName(idx))
 
 		self.nb.SetSelection(int(profile.getPreferenceFloat('active_machine')))
 
