@@ -1112,15 +1112,15 @@ class LulzbotMachineSelectPage(InfoPage):
 		self.LulzbotMini = self.AddImageButton(self.panel, 0, 0, _("LulzBot Mini"),
 											   'Lulzbot_mini.jpg', image_size, style=ImageButton.IB_GROUP)
 		self.LulzbotMini.OnSelected(self.OnLulzbotMiniSelected)
-		
+
 		self.LulzbotTaz6 = self.AddImageButton(self.panel, 0, 1, _("LulzBot TAZ 6"),
 											   'Lulzbot_TAZ6.jpg', image_size)
 		self.LulzbotTaz6.OnSelected(self.OnLulzbotTaz6Selected)
-		
+
 		self.LulzbotTaz = self.AddImageButton(self.panel, 1, 0, _("LulzBot TAZ 4 or 5"),
 											   'Lulzbot_TAZ5.jpg', image_size)
 		self.LulzbotTaz.OnSelected(self.OnLulzbotTazSelected)
-		
+
 		self.OtherPrinters = self.AddImageButton(self.panel, 1, 1, _("Other Printers"),
 												 'Generic-3D-Printer.png', image_size)
 		self.OtherPrinters.OnSelected(self.OnOthersSelected)
@@ -1134,8 +1134,6 @@ class LulzbotMachineSelectPage(InfoPage):
 
 	def OnLulzbotMiniSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotMiniToolheadPage)
-		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotMiniToolheadPage,
-										 self.GetParent().lulzbotReadyPage)
 
 	def OnLulzbotTaz6Selected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz6ToolheadPage)
@@ -1236,22 +1234,44 @@ class LulzbotMiniToolheadSelectPage(InfoPage):
 			profile.putMachineSetting('machine_type', 'lulzbot_mini_flexystruder')
 
 class LulzbotTaz6ToolheadSelectPage(InfoPage):
-	def __init__(self, parent, allowBack = True):
+	def __init__(self, parent, allowBack = True, allowNext = False):
 		super(LulzbotTaz6ToolheadSelectPage, self).__init__(parent, _("LulzBot TAZ 6 Tool Head Selection"))
 		self.allowBack = allowBack
+		self.allowNext = allowNext
 
 		self.panel = self.AddPanel()
 		image_size=(LulzbotMachineSelectPage.IMAGE_WIDTH, LulzbotMachineSelectPage.IMAGE_HEIGHT)
 		self.standard = self.AddImageButton(self.panel, 0, 0, _('Single Extruder v2.1'),
 										'Lulzbot_Toolhead_TAZ6_Single-v2.1.jpg', image_size,
 										style=ImageButton.IB_GROUP)
+		self.standard.OnSelected(self.OnStandardSelected)
 		self.flexy = self.AddImageButton(self.panel, 0, 1, _('Flexystruder v2'),
 										'Lulzbot_Toolhead_TAZ_Flexystruder_v2.jpg', image_size)
 		self.dual = self.AddImageButton(self.panel, 1, 0, _('Dual Extruder v2'),
  										'Lulzbot_Toolhead_TAZ_Dual_Extruder_v2.jpg', image_size)
 		self.flexydual = self.AddImageButton(self.panel, 1, 1, _('FlexyDually v2'),
  										'Lulzbot_Toolhead_TAZ_FlexyDually_v2.jpg', image_size)
+		self.flexy.OnSelected(self.OnNonStandardSelected)
+		self.dual.OnSelected(self.OnNonStandardSelected)
+		self.flexydual.OnSelected(self.OnNonStandardSelected)
 		self.standard.SetValue(True) #Set the default selection
+
+	def ReloadCurrentPage(self):
+		if self == self.GetParent().GetCurrentPage():
+			self.GetParent().ShowPage(self)
+
+	def OnStandardSelected(self):
+		if self.allowNext:
+			wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
+		else:
+			self.SetNext(None)
+		# This is needed so the wizard will change its Next button into Finished if needed
+		self.ReloadCurrentPage()
+
+	def OnNonStandardSelected(self):
+		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotFirmwarePage)
+		# This is needed so the wizard will change its Finished button into Next if needed
+		self.ReloadCurrentPage()
 
 	def AllowBack(self):
 		return self.allowBack
@@ -1305,22 +1325,38 @@ class LulzbotTazSelectPage(InfoPage):
 											'Lulzbot_TAZ5.jpg', image_size)
 		self.modified.OnSelected(self.OnModifiedSelected)
 		self.taz5.SetValue(True)
+		self.showing_page = False
 
 	def OnPageShown(self):
-		self.taz5.TriggerGroupCallbacks()
+		# We'll end up with an infinite recursion if we do this while calling ShowPage locally
+		if not self.showing_page:
+			self.taz5.TriggerGroupCallbacks()
+
+	def ReloadCurrentPage(self):
+		# Don't show the page if it's not the current one, otherwise we might
+		# show the page during __init__ which will cause a StoreData to be called
+		# when we run the wizard (possibly for a different machine type)
+		if self == self.GetParent().GetCurrentPage():
+			self.showing_page = True
+			self.GetParent().ShowPage(self)
+			self.showing_page = False
 
 	def OnTaz5Selected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTaz5NozzleSelectPage)
-		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTaz5NozzleSelectPage,
-										 self.GetParent().lulzbotReadyPage)
+		# This is needed so the wizard will change its Finished button into Next if needed
+		self.ReloadCurrentPage()
 
 	def OnTaz4Selected(self):
-		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotReadyPage)
+		self.SetNext(None)
+		# This is needed so the wizard will change its Next button into Finished if needed
+		self.ReloadCurrentPage()
 
 	def OnModifiedSelected(self):
 		wx.wizard.WizardPageSimple.Chain(self, self.GetParent().lulzbotTazBedSelectPage)
 		wx.wizard.WizardPageSimple.Chain(self.GetParent().lulzbotTazBedSelectPage,
 										 self.GetParent().lulzbotTazHotendPage)
+		# This is needed so the wizard will change its Finished button into Next if needed
+		self.ReloadCurrentPage()
 
 	def StoreData(self):
 		if self.taz5.GetValue():
@@ -1562,7 +1598,7 @@ class LulzbotChangeToolheadWizard(wx.wizard.Wizard):
 		self.lulzbotFirmwarePage = LulzbotFirmwareUpdatePage(self)
 		self.lulzbotMiniToolheadPage = LulzbotMiniToolheadSelectPage(self, False)
 		self.lulzbotTazToolheadPage = LulzbotTazToolheadSelectPage(self)
-		self.lulzbotTaz6ToolheadPage = LulzbotTaz6ToolheadSelectPage(self, False)
+		self.lulzbotTaz6ToolheadPage = LulzbotTaz6ToolheadSelectPage(self, False, True)
 		self.lulzbotTazHotendPage = LulzbotHotendSelectPage(self, False)
 		self.lulzbotTaz5NozzleSelectPage = LulzbotTaz5NozzleSelectPage(self)
 		self.lulzbotTazBedSelectPage = LulzbotTazBedSelectPage(self)
@@ -1640,7 +1676,6 @@ class ConfigWizard(wx.wizard.Wizard):
 		self.lulzbotTaz6ToolheadPage = LulzbotTaz6ToolheadSelectPage(self)
 
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotMachineSelectPage, self.lulzbotMiniToolheadPage)
-		wx.wizard.WizardPageSimple.Chain(self.lulzbotMiniToolheadPage, self.lulzbotReadyPage)
 		wx.wizard.WizardPageSimple.Chain(self.lulzbotTazHotendPage, self.lulzbotTazToolheadPage)
 		wx.wizard.WizardPageSimple.Chain(self.machineSelectPage, self.ultimakerSelectParts)
 		wx.wizard.WizardPageSimple.Chain(self.ultimakerSelectParts, self.ultimakerFirmwareUpgradePage)
