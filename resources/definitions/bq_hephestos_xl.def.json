@@ -8,7 +8,14 @@
         "author": "BQ",
         "category": "Other",
         "file_formats": "text/x-code",
-        "platform": "bq_hephestos_platform.stl"
+        "platform": "bq_hephestos_platform.stl",
+        "platform_offset": {
+            "value": [
+                0,
+                -82,
+                0
+            ]
+        }
     },
     "overrides": {
         "machine_start_gcode": {
@@ -34,13 +41,6 @@
         },
         "machine_gcode_flavor": {
             "value": "RepRap"
-        },
-        "machine_platform_offset": {
-            "value": [
-                0,
-                -82,
-                0
-            ]
         },
         "layer_height": {
             "value": 0.2

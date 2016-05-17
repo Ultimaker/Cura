@@ -8,6 +8,13 @@
         "manufacturer": "BQ",
         "category": "Other",
         "platform": "bq_hephestos_2_platform.stl",
+        "platform_offset": {
+            "value": [
+                6,
+                1320,
+                0
+            ]
+        },
         "file_formats": "text/x-gcode"
     },
     "manufacturer": "BQ",
@@ -39,13 +46,6 @@
         },
         "machine_gcode_flavor": {
             "value": "RepRap"
-        },
-        "machine_platform_offset": {
-            "value": [
-                6,
-                1320,
-                0
-            ]
         },
         "material_print_temperature": {
             "value": 210.0
