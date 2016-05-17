@@ -27,15 +27,15 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
 			
 			#TAZ Budaschnozzle
-			'lulzbot_TAZ_4_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_5_SingleV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_4_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_5_FlexystruderV1': "Taz4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_SingleV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_SingleV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_FlexystruderV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_FlexystruderV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			
-			'lulzbot_TAZ_4_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_5_DualV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_4_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_5_FlexyDuallyV1': "Taz4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_DualV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_DualV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_FlexyDuallyV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_FlexyDuallyV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 
 			#TAZ Hexagon
 			'lulzbot_TAZ_4_05nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
