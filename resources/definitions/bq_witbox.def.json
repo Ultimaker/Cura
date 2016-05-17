@@ -1,0 +1,87 @@
+{
+    "id": "bq_witbox",
+    "version": 2,
+    "name": "BQ Witbox",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "BQ",
+        "manufacturer": "BQ",
+        "category": "Other",
+        "file_formats": "text/x-gcode",
+        "platform": "bq_witbox_platform.stl"
+    },
+    "settings": {
+        "machine_start_gcode": {
+            "value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z15.0 F1200          ;move Z to position 15.0 mm\nG92 E0                  ;zero the extruded length\nG1 E20 F200             ;extrude 20mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F7200                ;set feedrate to 120 mm/sec\n; -- end of START GCODE --"
+        },
+        "machine_end_gcode": {
+            "value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nG91                     ;set to relative positioning\nG1 E-20 F300            ;retract the filament a bit to release some of the pressure\nG90                     ;set to absolute positioning\nG1 Z200                 ;move the platform to the bottom\nG28 X0 Y0               ;move to the X/Y origin (Home)\nM84                     ;turn off steppers\n; -- end of END GCODE --"
+        },
+        "machine_width": {
+            "value": 297
+        },
+        "machine_depth": {
+            "value": 210
+        },
+        "machine_height": {
+            "value": 200
+        },
+        "machine_heated_bed": {
+            "value": false
+        },
+        "machine_center_is_zero": {
+            "value": false
+        },
+        "machine_gcode_flavor": {
+            "value": "RepRap"
+        },
+        "machine_platform_offset": {
+            "value": [0, -145, -38]
+        },
+        "layer_height": {
+            "value": 0.2
+        },
+        "layer_height_0": {
+            "value": 0.2
+        },
+        "wall_thickness": {
+            "value": 1
+        },
+        "top_bottom_thickness": {
+            "value": 1
+        },
+        "bottom_thickness": {
+            "value": 1
+        },
+        "material_print_temperature": {
+            "value": 220
+        },
+        "material_bed_temperature": {
+            "value": 0
+        },
+        "material_diameter": {
+            "value": 1.75
+        },
+        "speed_print": {
+            "value": 40
+        },
+        "speed_infill": {
+            "value": 40
+        },
+        "speed_wall": {
+            "value": 35
+        },
+        "speed_topbottom": {
+            "value": 35
+        },
+        "speed_travel": {
+            "value": 120
+        },
+        "speed_layer_0": {
+            "value": 20
+        },
+        "support_enable": {
+            "value": true
+        }
+    }
+}
