@@ -430,7 +430,8 @@ bed_prep_materials = {
     "T-Glase",
     "618-Nylon",
     "645-Nylon",
-    "PC-ABS"
+    "PC-ABS",
+    "carbon_fiber",
 }
 
 profile_map = {
@@ -476,15 +477,16 @@ def get_material_display_name(material):
     material_name += material_names[material]
     return material_name
 
-
 def get_description(material):
     description_data = ""
     if is_experimental(material):
         description_data = \
             "* Experimental profile\n" + \
             " use at your own risk!"
-    elif material in bed_prep_materials:
-        description_data = \
+    if material in bed_prep_materials:
+        if description_data is not "":
+            description_data += "\n"
+        description_data += \
             "Bed preparation required: \n" + \
             " Apply a PVA-based glue stick \n" + \
             " to bed surface before printing."
