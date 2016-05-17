@@ -43,9 +43,6 @@
         "machine_gcode_flavor": {
             "default_value": "RepRap"
         },
-        "machine_platform_offset": {
-            "default_value": [ 0, -82, 0 ]
-        },
         "layer_height": {
             "default_value": 0.2
         },
