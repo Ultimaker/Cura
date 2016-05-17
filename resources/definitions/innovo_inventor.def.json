@@ -4,7 +4,7 @@
     "name": "Innovo INVENTOR",
     "inherits": "fdmprinter",
     "metadata": {
-        "author": "AR",
+        "author": "Adam Rumjahn",
         "manufacturer": "Innovo",
         "category": "Other",
         "file_formats": "text/x-gcode",
