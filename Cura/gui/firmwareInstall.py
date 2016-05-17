@@ -112,6 +112,7 @@ class InstallFirmwareDialog(wx.Dialog):
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
 			filename = getDefaultFirmware(machineIndex)
+		self._machineIndex = machineIndex
 		self._machine_type = profile.getMachineSetting('machine_type', machineIndex)
 		if self._machine_type == 'reprap':
 			wx.MessageBox(_("Cura only supports firmware updates for ATMega2560 based hardware.\nSo updating your RepRap with Cura might or might not work."), _("Firmware update"), wx.OK | wx.ICON_INFORMATION)
@@ -122,10 +123,16 @@ class InstallFirmwareDialog(wx.Dialog):
 		sizer.Add(self.progressLabel, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.progressGauge = wx.Gauge(self, -1)
 		sizer.Add(self.progressGauge, 0, flag=wx.EXPAND)
-		self.okButton = wx.Button(self, -1, _("OK"))
-		self.okButton.Disable()
-		self.okButton.Bind(wx.EVT_BUTTON, self.OnOk)
-		sizer.Add(self.okButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
+		self.buttonPanel = wx.Panel(self)
+
+		self.buttonPanel.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
+		self.okButton = wx.Button(self.buttonPanel, -1, _("Flash Firmware"))
+		self.okButton.Bind(wx.EVT_BUTTON, self.OnFlash)
+		self.buttonPanel.GetSizer().Add(self.okButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
+		self.cancelButton = wx.Button(self.buttonPanel, -1, _("Cancel"))
+		self.cancelButton.Bind(wx.EVT_BUTTON, self.OnCancel)
+		self.buttonPanel.GetSizer().Add(self.cancelButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
+		sizer.Add(self.buttonPanel, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.SetSizer(sizer)
 
 		self.filename = filename
@@ -133,6 +140,7 @@ class InstallFirmwareDialog(wx.Dialog):
 
 		self.Layout()
 		self.Fit()
+		self.thread = None
 		self.success = False
 		self.show_connect_dialog = False
 
@@ -141,9 +149,7 @@ class InstallFirmwareDialog(wx.Dialog):
 			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			return False
 		self.success = False
-		self.thread = threading.Thread(target=self.OnRun)
-		self.thread.daemon = True
-		self.thread.start()
+		self.updateLabel(_("About to update firmware for %s\nPress the Flash Firmware button below to start the firmware flashing process.") % (profile.getMachineName(self._machineIndex)))
 
 		self.ShowModal()
 		# Creating a MessageBox in a separate thread while main thread is locked inside a ShowModal
@@ -152,6 +158,15 @@ class InstallFirmwareDialog(wx.Dialog):
 			wx.MessageBox(_("Failed to find machine for firmware upgrade\nIs your machine connected to the PC?"),
 						  _("Firmware update"), wx.OK | wx.ICON_ERROR)
 		return self.success
+
+	def OnFlash(self, e):
+		if self.thread:
+			self.OnOk(e)
+		else:
+			self.okButton.Disable()
+			self.thread = threading.Thread(target=self.OnRun)
+			self.thread.daemon = True
+			self.thread.start()
 
 	def OnRun(self):
 		wx.CallAfter(self.updateLabel, _("Reading firmware..."))
@@ -181,10 +196,14 @@ class InstallFirmwareDialog(wx.Dialog):
 				#Window destroyed
 				return
 
+		self.cancelButton.Disable()
+		self.okButton.SetLabel(_('Ok'))
+
 		if not programmer.isConnected():
 			self.show_connect_dialog = True
 			wx.CallAfter(self.Close)
 			return
+
 
 		if self._machine_type == 'ultimaker':
 			if programmer.hasChecksumFunction():
@@ -223,6 +242,9 @@ class InstallFirmwareDialog(wx.Dialog):
 	def OnOk(self, e):
 		self.Close()
 		taskbar.setBusy(self.GetParent(), False)
+
+	def OnCancel(self, e):
+		self.Close()
 
 	def OnClose(self, e):
 		self.Destroy()
