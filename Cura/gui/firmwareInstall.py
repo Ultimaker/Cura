@@ -107,7 +107,7 @@ def InstallFirmware(parent = None, filename = None, port = None, machineIndex = 
 
 class InstallFirmwareDialog(wx.Dialog):
 	def __init__(self, parent = None, filename = None, port = None, machineIndex = None):
-		super(InstallFirmwareDialog, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineName(machineIndex).title()), size=(250, 100))
+		super(InstallFirmwareDialog, self).__init__(parent=parent, title=_("Firmware install for %s") % (profile.getMachineName(machineIndex)), size=(250, 100))
 		if port is None:
 			port = profile.getMachineSetting('serial_port')
 		if filename is None:
