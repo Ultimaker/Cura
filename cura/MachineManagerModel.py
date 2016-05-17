@@ -13,10 +13,12 @@ class MachineManagerModel(QObject):
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
         self.globalContainerChanged.connect(self.activeVariantChanged)
+        self.globalContainerChanged.connect(self.activeQualityChanged)
 
         Preferences.getInstance().addPreference("cura/active_machine", "")
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
+
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
@@ -26,6 +28,7 @@ class MachineManagerModel(QObject):
     globalContainerChanged = pyqtSignal()
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
+    activeQualityChanged = pyqtSignal()
 
     def _onGlobalContainerChanged(self):
         Preferences.getInstance().setValue("cura/active_machine", Application.getInstance().getGlobalContainerStack().getId())
@@ -38,6 +41,8 @@ class MachineManagerModel(QObject):
             self.activeMaterialChanged.emit()
         elif container_type == "variant":
             self.activeVariantChanged.emit()
+        elif container_type == "quality":
+            self.activeQualityChanged.emit()
 
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id):
@@ -98,6 +103,18 @@ class MachineManagerModel(QObject):
         material = Application.getInstance().getGlobalContainerStack().findContainer({"type": "material"})
         if material:
             return material.getId()
+
+    @pyqtProperty(str, notify=activeQualityChanged)
+    def activeQualityName(self):
+        quality = Application.getInstance().getGlobalContainerStack().findContainer({"type": "quality"})
+        if quality:
+            return quality.getName()
+
+    @pyqtProperty(str, notify=activeQualityChanged)
+    def activeQualityId(self):
+        quality = Application.getInstance().getGlobalContainerStack().findContainer({"type": "quality"})
+        if quality:
+            return quality.getId()
 
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
