@@ -15,7 +15,7 @@ from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.JobQueue import JobQueue
-
+from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 
@@ -25,6 +25,7 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
 from UM.Settings.SettingDefinition import SettingDefinition
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
@@ -47,6 +48,7 @@ import sys
 import os.path
 import numpy
 import copy
+import urllib
 numpy.seterr(all="ignore")
 
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
@@ -67,6 +69,12 @@ class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
         Firmware = Resources.UserType + 2
+        QualityInstanceContainer = Resources.UserType + 3
+        MaterialInstanceContainer = Resources.UserType + 4
+        VariantInstanceContainer = Resources.UserType + 5
+        UserInstanceContainer = Resources.UserType + 6
+        MachineStack = Resources.UserType + 7
+
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
@@ -110,6 +118,23 @@ class CuraApplication(QtApplication):
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
+        SettingDefinition.addSupportedProperty("global_only", "bool")
+
+        ## Add the 4 types of profiles to storage.
+        Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
+        Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
+        Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
+        Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+
+        ContainerRegistry.getInstance().load()
+
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
@@ -152,6 +177,8 @@ class CuraApplication(QtApplication):
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
+        self.applicationShuttingDown.connect(self._onExit)
+
         self._recent_files = []
         files = Preferences.getInstance().getValue("cura/recent_files").split(";")
         for f in files:
@@ -159,6 +186,34 @@ class CuraApplication(QtApplication):
                 continue
 
             self._recent_files.append(QUrl.fromLocalFile(f))
+
+    ## Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
+    def _onExit(self):
+        for instance in ContainerRegistry.getInstance().findInstanceContainers():
+            data = instance.serialize()
+            file_name = urllib.parse.quote_plus(instance.getId()) + ".inst.cfg"
+            instance_type = instance.getMetaDataEntry("type")
+            path = None
+            if instance_type == "material":
+                path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
+            elif instance_type == "quality":
+                path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
+            elif instance_type == "user":
+                path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
+            elif instance_type == "variant":
+                path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+
+            if path:
+                with SaveFile(path, "wt", -1, "utf-8") as f:
+                    f.write(data)
+
+        for stack in ContainerRegistry.getInstance().findContainerStacks():
+            data = stack.serialize()
+            file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
+            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+            with SaveFile(path, "wt", -1, "utf-8") as f:
+                f.write(data)
+
 
     @pyqtSlot(result = QUrl)
     def getDefaultPath(self):
@@ -194,8 +249,6 @@ class CuraApplication(QtApplication):
         })
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
-
-        SettingDefinition.addSupportedProperty("global_only", "bool")
 
         controller = self.getController()
 
