@@ -557,11 +557,7 @@ class CuraApplication(QtApplication):
         group_node.setCenterPosition(center)
 
         # Move selected nodes into the group-node
-        op = GroupedOperation()
-        nodes = Selection.getAllSelectedObjects()
-        for node in nodes:
-            op.addOperation(SetParentOperation(node, group_node))
-        op.push()
+        Selection.applyOperation(SetParentOperation, group_node)
 
         # Deselect individual nodes and select the group-node instead
         for node in group_node.getChildren():
@@ -570,13 +566,13 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot()
     def ungroupSelected(self):
-        selected_objects = Selection.getAllSelectedObjects()[:]  # clone the list
+        selected_objects = Selection.getAllSelectedObjects().copy()
         for node in selected_objects:
             if node.callDecoration("isGroup"):
                 op = GroupedOperation()
 
                 group_parent = node.getParent()
-                children = node.getChildren()[:]  # clone the list
+                children = node.getChildren().copy()
                 for child in children:
                     # Set the parent of the children to the parent of the group-node
                     op.addOperation(SetParentOperation(child, group_parent))
