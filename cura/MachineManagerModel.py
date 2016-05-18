@@ -58,21 +58,29 @@ class MachineManagerModel(QObject):
             new_global_stack.addMetaDataEntry("type", "machine")
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
-            ## DEBUG CODE
-            material_instance_container = UM.Settings.InstanceContainer("test_material")
-            material_instance_container.addMetaDataEntry("type", "material")
-            material_instance_container.setDefinition(definitions[0])
 
+            preferred_material_id = definitions[0].getMetaDataEntry("preferred_material")
+            material_instance_container = None
+            if preferred_material_id:
+                preferred_material_id = preferred_material_id.lower()
+                container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = preferred_material_id)
+                if container:
+                    material_instance_container = container[0]
+
+            preferred_quality_id = definitions[0].getMetaDataEntry("preferred_quality")
+            quality_instance_container = None
+            if preferred_quality_id:
+                preferred_quality_id = preferred_quality_id.lower()
+                container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = preferred_quality_id)
+                if container:
+                    quality_instance_container = container[0]
+
+            ## DEBUG CODE
             variant_instance_container = UM.Settings.InstanceContainer("test_variant")
             variant_instance_container.addMetaDataEntry("type", "variant")
             variant_instance_container.setDefinition(definitions[0])
 
-            quality_instance_container = UM.Settings.InstanceContainer(name + "_quality")
-            UM.Settings.ContainerRegistry.getInstance().addContainer(material_instance_container)
             UM.Settings.ContainerRegistry.getInstance().addContainer(variant_instance_container)
-            UM.Settings.ContainerRegistry.getInstance().addContainer(quality_instance_container)
-            quality_instance_container.addMetaDataEntry("type", "quality")
-            quality_instance_container.setDefinition(definitions[0])
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
@@ -82,9 +90,11 @@ class MachineManagerModel(QObject):
 
             # If a definition is found, its a list. Should only have one item.
             new_global_stack.addContainer(definitions[0])
-            new_global_stack.addContainer(material_instance_container)
+            if material_instance_container:
+                new_global_stack.addContainer(material_instance_container)
             new_global_stack.addContainer(variant_instance_container)
-            new_global_stack.addContainer(quality_instance_container)
+            if quality_instance_container:
+                new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
