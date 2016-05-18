@@ -4,6 +4,7 @@
     "name": "Prusa i3 xl",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "guigashm",
         "manufacturer": "Prusajr",
         "category": "Other",

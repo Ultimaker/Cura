@@ -4,6 +4,7 @@
     "name": "BQ Witbox",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "BQ",
         "manufacturer": "BQ",
         "category": "Other",

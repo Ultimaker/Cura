@@ -4,6 +4,7 @@
     "name": "Innovo INVENTOR",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "Adam Rumjahn",
         "manufacturer": "Innovo",
         "category": "Other",

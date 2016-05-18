@@ -4,6 +4,7 @@
     "name": "RigidBot",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "RBC",
         "manufacturer": "RigidBot",
         "category": "Other",

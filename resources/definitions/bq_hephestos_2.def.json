@@ -4,6 +4,7 @@
     "name": "BQ Hephestos 2",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "BQ",
         "manufacturer": "BQ",
         "category": "Other",

@@ -4,6 +4,7 @@
     "name": "Malyan M180",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "Ruben Dulek",
         "manufacturer": "Malyan",
         "category": "Other",
