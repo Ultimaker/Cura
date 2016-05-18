@@ -10,7 +10,8 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2.png",
         "platform": "ultimaker2go_platform.obj",
-        "platform_texture": "Ultimaker2Gobackplate.png"
+        "platform_texture": "Ultimaker2Gobackplate.png",
+        "platform_offset": [0, 0, 0]
     },
 
     "overrides": {
@@ -34,8 +35,5 @@
                 [[ 60, -60], [ 33, -60], [ 35, -52], [ 60, -52]]
             ]
         },
-        "machine_platform_offset": {
-            "default_value": [0, 0, 0]
-        }
     }
 }

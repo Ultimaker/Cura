@@ -121,15 +121,6 @@
             "default": [],
             "global_only": true
         },
-        "machine_platform_offset": {
-            "description": "Where to display the platform mesh.",
-            "default": [
-                0,
-                0,
-                0
-            ],
-            "global_only": true
-        },
         "machine_head_polygon": {
             "description": "A 2D silhouette of the print head (fan caps excluded).",
             "type": "polygon",

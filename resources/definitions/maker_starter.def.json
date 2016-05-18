@@ -4,9 +4,9 @@
     "name": "3DMaker Starter",
     "inherits": "fdmprinter",
     "metadata": {
-        "visible": true,
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
+        "category": "Other",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
         "icon": "icon_ultimaker2.png",
         "platform": "makerstarter_platform.stl"
@@ -57,9 +57,6 @@
         },
         "machine_disallowed_areas": {
             "default_value": []
-        },
-        "machine_platform_offset": {
-            "default_value": [0, 0, 0]
         },
         "machine_nozzle_tip_outer_diameter": {
             "default_value": 1
