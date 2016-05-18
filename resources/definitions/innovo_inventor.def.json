@@ -32,17 +32,13 @@
         "machine_nozzle_size": {
             "default_value": 0.4
         },
-        "machine_head_shape_min_x": {
-            "default_value": 43.7
-        },
-        "machine_head_shape_min_y": {
-            "default_value": 19.2
-        },
-        "machine_head_shape_max_x": {
-            "default_value": 43.7
-        },
-        "machine_head_shape_max_y": {
-            "default_value": 55
+        "machine_head_polygon": {
+            "default_value": [
+                [-43.7, -19.2],
+                [-43.7, 55],
+                [43.7, 55],
+                [43.7, -19.2]
+            ]
         },
         "machine_nozzle_gantry_distance": {
             "default_value": 82.3

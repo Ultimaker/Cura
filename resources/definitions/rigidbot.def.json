@@ -31,18 +31,6 @@
         "machine_nozzle_cool_down_speed": {
             "default_value": 2
         },
-        "machine_head_shape_min_x": {
-            "default_value": 0
-        },
-        "machine_head_shape_min_y": {
-            "default_value": 0
-        },
-        "machine_head_shape_max_x": {
-            "default_value": 0
-        },
-        "machine_head_shape_max_y": {
-            "default_value": 0
-        },
         "machine_nozzle_gantry_distance": {
             "default_value": 0
         },
