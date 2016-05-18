@@ -14,7 +14,7 @@
 
     "overrides": {
         "machine_height": {
-            "default": 315
+            "default_value": 315
         }
     }
 }
