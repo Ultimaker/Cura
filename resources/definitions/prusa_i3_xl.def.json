@@ -2,7 +2,7 @@
     "id": "prusa_i3_xl",
     "version": 2,
     "name": "Prusa i3 xl",
-    "inherits": "fdmprinter.json",
+    "inherits": "fdmprinter",
     "metadata": {
         "author": "guigashm",
         "manufacturer": "Prusajr",
