@@ -4,6 +4,7 @@
     "name": "Prusa i3",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "Quillford",
         "manufacturer": "Prusajr",
         "category": "Other",

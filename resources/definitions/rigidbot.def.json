@@ -4,6 +4,7 @@
     "name": "RigidBot",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "RBC",
         "manufacturer": "RigidBot",
         "category": "Other",
@@ -86,7 +87,7 @@
         },
         "speed_layer_0": {
             "default_value": 15,
-            "min_value": "0.1"
+            "minimum_value": "0.1"
         },
         "infill_overlap": {
             "default_value": 10

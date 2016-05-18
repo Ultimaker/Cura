@@ -4,6 +4,7 @@
     "name": "Ultimaker 2",
     "inherits": "ultimaker",
     "metadata": {
+        "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker",
         "file_formats": "text/x-gcode",
@@ -13,26 +14,26 @@
     },
     "overrides": {
         "machine_start_gcode" : {
-            "default": ""
+            "default_value": ""
         },
         "machine_end_gcode" : {
-            "default": ""
+            "default_value": ""
         },
         "machine_width": {
-            "default": 223
+            "default_value": 223
         },
         "machine_depth": {
-            "default": 223
+            "default_value": 223
         },
         "machine_height": {
-            "default": 205
+            "default_value": 205
         },
         "machine_heated_bed": {
-            "default": true
+            "default_value": true
         },
         "machine_head_with_fans_polygon":
         {
-            "default": [
+            "default_value": [
                 [ -42, 12 ],
                 [ -42, -32 ],
                 [ 62, 12 ],
@@ -40,45 +41,45 @@
             ]
         },
         "machine_center_is_zero": {
-            "default": false
+            "default_value": false
         },
         "machine_nozzle_size": {
-            "default": 0.4,
-            "min_value": "0.001"
+            "default_value": 0.4,
+            "minimum_value": "0.001"
         },
         "machine_nozzle_heat_up_speed": {
-            "default": 2
+            "default_value": 2
         },
         "machine_nozzle_cool_down_speed": {
-            "default": 2
+            "default_value": 2
         },
         "gantry_height": {
-            "default": 55
+            "default_value": 55
         },
         "machine_use_extruder_offset_to_offset_coords": {
-            "default": true
+            "default_value": true
         },
         "machine_gcode_flavor": {
-            "default": "UltiGCode"
+            "default_value": "UltiGCode"
         },
         "machine_disallowed_areas": {
-            "default": [
+            "default_value": [
               [[-115,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]],
               [[ 115,  112.5], [ 115,  102.5], [ 110,  102.5], [ 108,  112.5]],
               [[-115, -112.5], [-115, -104.5], [ -84, -104.5], [ -82, -112.5]],
               [[ 115, -112.5], [ 108, -112.5], [ 110, -104.5], [ 115, -104.5]]
         ]},
         "machine_platform_offset": {
-            "default": [9, 0, 0]
+            "default_value": [9, 0, 0]
         },
         "machine_nozzle_tip_outer_diameter": {
-            "default": 1
+            "default_value": 1
         },
         "machine_nozzle_head_distance": {
-            "default": 3
+            "default_value": 3
         },
         "machine_nozzle_expansion_angle": {
-            "default": 45
+            "default_value": 45
         },
         "material_print_temperature": {
             "enabled": "False"

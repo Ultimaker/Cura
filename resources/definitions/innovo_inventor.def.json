@@ -4,6 +4,7 @@
     "name": "Innovo INVENTOR",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "Adam Rumjahn",
         "manufacturer": "Innovo",
         "category": "Other",
@@ -95,7 +96,7 @@
         },
         "speed_layer_0": {
             "default_value": 30.0,
-            "min_value": 0.1
+            "minimum_value": 0.1
         },
         "infill_overlap": {
             "default_value": 10.0

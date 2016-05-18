@@ -4,6 +4,7 @@
     "name": "BQ Prusa i3 Hephestos XL",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "manufacturer": "BQ",
         "author": "BQ",
         "category": "Other",

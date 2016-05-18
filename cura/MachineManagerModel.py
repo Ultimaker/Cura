@@ -76,6 +76,7 @@ class MachineManagerModel(QObject):
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
+            current_settings_instance_container.addMetaDataEntry("type", "user")
             current_settings_instance_container.setDefinition(definitions[0])
             UM.Settings.ContainerRegistry.getInstance().addContainer(current_settings_instance_container)
 

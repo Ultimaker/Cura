@@ -4,6 +4,7 @@
     "name": "German RepRap Neo",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "Simon Cor",
         "manufacturer": "German RepRap",
         "category": "Other",

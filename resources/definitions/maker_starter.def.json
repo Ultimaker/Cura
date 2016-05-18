@@ -4,6 +4,7 @@
     "name": "3DMaker Starter",
     "inherits": "fdmprinter",
     "metadata": {
+        "visible": true,
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
