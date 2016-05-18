@@ -149,7 +149,13 @@ class InstallFirmwareDialog(wx.Dialog):
 			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			return False
 		self.success = False
-		self.updateLabel(_("About to update firmware for %s\nPress the Flash Firmware button below to start the firmware flashing process.") % (profile.getMachineName(self._machineIndex)))
+		printer_name = profile.getMachineName(self._machineIndex)
+		text = "About to update firmware for {}\n".format(printer_name)
+		firmware_file_name = os.path.basename(self.filename)
+		if firmware_file_name is not None:
+			text += "with file '{}'\n".format(firmware_file_name)
+		text += "Press the 'Flash Firmware' button below to start the process."
+		self.updateLabel(_(text))
 
 		self.ShowModal()
 		# Creating a MessageBox in a separate thread while main thread is locked inside a ShowModal
