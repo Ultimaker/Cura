@@ -40,7 +40,7 @@
                 [43.7, -19.2]
             ]
         },
-        "machine_nozzle_gantry_distance": {
+        "gantry_height": {
             "default_value": 82.3
         },
         "machine_nozzle_offset_x_1": {

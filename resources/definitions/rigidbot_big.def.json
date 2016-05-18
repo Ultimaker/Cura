@@ -34,7 +34,7 @@
         "machine_nozzle_cool_down_speed": {
             "default_value": 2
         },
-        "machine_nozzle_gantry_distance": {
+        "gantry_height": {
             "default_value": 0
         },
         "machine_gcode_flavor": {

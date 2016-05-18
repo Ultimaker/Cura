@@ -49,7 +49,7 @@
                 [18, -18]
             ]
         },
-        "machine_nozzle_gantry_distance": {
+        "gantry_height": {
             "default_value": 55
         },
         "machine_gcode_flavor": {
