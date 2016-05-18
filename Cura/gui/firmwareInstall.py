@@ -5,6 +5,7 @@ import wx
 import threading
 import sys
 import time
+import textwrap
 
 from Cura.util import serialWrapper as serial
 
@@ -149,12 +150,12 @@ class InstallFirmwareDialog(wx.Dialog):
 			wx.MessageBox(_("I am sorry, but Cura does not ship with a default firmware for your machine configuration."), _("Firmware update"), wx.OK | wx.ICON_ERROR)
 			return False
 		self.success = False
-		printer_name = profile.getMachineName(self._machineIndex)
-		text = "About to update firmware for {}\n".format(printer_name)
 		firmware_file_name = os.path.basename(self.filename)
-		if firmware_file_name is not None:
-			text += "with file '{}'\n".format(firmware_file_name)
-		self.updateLabel(_(text))
+		text = '''\
+		About to update firmware with file: 
+		{}
+		This process cannot be interrupted once started.'''.format(firmware_file_name)
+		self.updateLabel(_(textwrap.dedent(text)))
 
 		self.ShowModal()
 		# Creating a MessageBox in a separate thread while main thread is locked inside a ShowModal
