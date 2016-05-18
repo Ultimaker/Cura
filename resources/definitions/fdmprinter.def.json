@@ -241,6 +241,92 @@
                     "default_value": 0.4,
                     "minimum_value": "0.001",
                     "maximum_value_warning": "10"
+                },
+                "machine_nozzle_offset_x":
+                {
+                    "label": "Nozzle X Offset",
+                    "description": "The x-coordinate of the offset of the nozzle.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "global_only": "True"
+                },
+                "machine_nozzle_offset_y":
+                {
+                    "label": "Nozzle Y Offset",
+                    "description": "The y-coordinate of the offset of the nozzle.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "global_only": "True"
+                },
+                "machine_extruder_start_code":
+                {
+                    "label": "Extruder Start G-Code",
+                    "description": "Start g-code to execute whenever turning the extruder on.",
+                    "type": "str",
+                    "default_value": "",
+                    "global_only": "True"
+                },
+                "machine_extruder_start_pos_abs":
+                {
+                    "label": "Extruder Start Position Absolute",
+                    "description": "Make the extruder starting position absolute rather than relative to the last-known location of the head.",
+                    "type": "bool",
+                    "default_value": false,
+                    "global_only": "True"
+                },
+                "machine_extruder_start_pos_x":
+                {
+                    "label": "Extruder Start Position X",
+                    "description": "The x-coordinate of the starting position when turning the extruder on.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "global_only": "True"
+                },
+                "machine_extruder_start_pos_y":
+                {
+                    "label": "Extruder Start Position Y",
+                    "description": "The y-coordinate of the starting position when turning the extruder on.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "global_only": "True"
+                },
+                "machine_extruder_end_code":
+                {
+                    "label": "Extruder End G-Code",
+                    "description": "End g-code to execute whenever turning the extruder off.",
+                    "type": "str",
+                    "default_value": "",
+                    "global_only": "True"
+                },
+                "machine_extruder_end_pos_abs":
+                {
+                    "label": "Extruder End Position Absolute",
+                    "description": "Make the extruder ending position absolute rather than relative to the last-known location of the head.",
+                    "type": "bool",
+                    "default_value": false,
+                    "global_only": "True"
+                },
+                "machine_extruder_end_pos_x":
+                {
+                    "label": "Extruder End Position X",
+                    "description": "The x-coordinate of the ending position when turning the extruder off.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "global_only": "True"
+                },
+                "machine_extruder_end_pos_y":
+                {
+                    "label": "Extruder End Position Y",
+                    "description": "The y-coordinate of the ending position when turning the extruder off.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0,
+                    "global_only": "True"
                 }
             }
         },
@@ -391,6 +477,20 @@
                             "enabled": "support_roof_enable",
                             "global_only": true,
                             "value": "line_width"
+                        },
+                        "prime_tower_line_width":
+                        {
+                            "label": "Prime Tower Line Width",
+                            "description": "Width of a single prime tower line.",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "prime_tower_enable",
+                            "default_value": 0.4,
+                            "value": "line_width",
+                            "minimum_value": "0.0001",
+                            "minimum_value_warning": "0.2",
+                            "maximum_value_warning": "5",
+                            "global_only": "True"
                         }
                     }
                 }
@@ -889,6 +989,71 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable"
+                },
+                "material_standby_temperature":
+                {
+                    "label": "Standby Temperature",
+                    "description": "The temperature of the nozzle when another nozzle is currently used for printing.",
+                    "type": "float",
+                    "unit": "°C",
+                    "default_value": 150,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "260",
+                    "global_only": "True"
+                },
+                "switch_extruder_retraction_amount":
+                {
+                    "label": "Nozzle Switch Retraction Distance",
+                    "description": "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "retraction_enable",
+                    "default_value": 20,
+                    "value": "machine_heat_zone_length",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "global_only": "True"
+                },
+                "switch_extruder_retraction_speeds":
+                {
+                    "label": "Nozzle Switch Retraction Speed",
+                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "enabled": "retraction_enable",
+                    "default_value": 20,
+                    "minimum_value": "0.1",
+                    "maximum_value_warning": "300",
+                    "global_only": "True",
+                    "children":
+                    {
+                        "switch_extruder_retraction_speed":
+                        {
+                            "label": "Nozzle Switch Retract Speed",
+                            "description": "The speed at which the filament is retracted during a nozzle switch retract.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "enabled": "retraction_enable",
+                            "default_value": 20,
+                            "value": "switch_extruder_retraction_speeds",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "300",
+                            "global_only": "True"
+                        },
+                        "switch_extruder_prime_speed":
+                        {
+                            "label": "Nozzle Switch Prime Speed",
+                            "description": "The speed at which the filament is pushed back after a nozzle switch retraction.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "enabled": "retraction_enable",
+                            "default_value": 20,
+                            "value": "switch_extruder_retraction_speeds",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "300",
+                            "global_only": "True"
+                        }
+                    }
                 }
             }
         },
@@ -1018,6 +1183,19 @@
                                     "global_only": true
                                 }
                             }
+                        },
+                        "speed_prime_tower":
+                        {
+                            "label": "Prime Tower Speed",
+                            "description": "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "enabled": "prime_tower_enable",
+                            "default_value": 60,
+                            "value": "speed_print",
+                            "minimum_value": "0.1",
+                            "maximum_value_warning": "150",
+                            "global_only": "True"
                         }
                     }
                 },
@@ -1958,6 +2136,190 @@
                     "description": "Spiralize smooths out the Z move of the outer edge. This will create a steady Z increase over the whole print. This feature turns a solid object into a single walled print with a solid bottom. This feature used to be called Joris in older versions.",
                     "type": "bool",
                     "default_value": false,
+                    "global_only": "True"
+                }
+            }
+        },
+        "dual":
+        {
+            "label": "Dual Extrusion",
+            "type": "category",
+            "icon": "category_dual",
+            "description": "Settings used for printing with multiple extruders.",
+            "children":
+            {
+                "extruder_nr":
+                {
+                    "label": "Extruder",
+                    "description": "The extruder train used for printing. This is used in multi-extrusion.",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_extruder_count - 1"
+                },
+                "adhesion_extruder_nr":
+                {
+                    "label": "Platform Adhesion Extruder",
+                    "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_extruder_count - 1",
+                    "global_only": "True"
+                },
+                "support_extruder_nr":
+                {
+                    "label": "Support Extruder",
+                    "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_extruder_count - 1",
+                    "global_only": "True",
+                    "children": {
+                        "support_infill_extruder_nr":
+                        {
+                            "label": "Support Infill Extruder",
+                            "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
+                            "type": "int",
+                            "default_value": 0,
+                            "value": "support_extruder_nr",
+                            "minimum_value": "0",
+                            "maximum_value": "machine_extruder_count - 1",
+                            "global_only": "True"
+                        },
+                        "support_extruder_nr_layer_0":
+                        {
+                            "label": "First Layer Support Extruder",
+                            "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
+                            "type": "int",
+                            "default_value": 0,
+                            "value": "support_extruder_nr",
+                            "minimum_value": "0",
+                            "maximum_value": "machine_extruder_count - 1",
+                            "global_only": "True"
+                        },
+                        "support_roof_extruder_nr":
+                        {
+                            "label": "Support Roof Extruder",
+                            "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
+                            "type": "int",
+                            "default_value": 0,
+                            "value": "support_extruder_nr",
+                            "minimum_value": "0",
+                            "maximum_value": "machine_extruder_count - 1",
+                            "global_only": "True"
+                        }
+                    }
+                },
+                "prime_tower_enable":
+                {
+                    "label": "Enable Prime Tower",
+                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
+                    "type": "bool",
+                    "default_value": false,
+                    "global_only": "True"
+                },
+                "prime_tower_size":
+                {
+                    "label": "Prime Tower Size",
+                    "description": "The width of the prime tower.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "prime_tower_enable",
+                    "default_value": 15,
+                    "value": "15 if prime_tower_enable else 0",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "20",
+                    "global_only": "True"
+                },
+                "prime_tower_position_x":
+                {
+                    "label": "Prime Tower X Position",
+                    "description": "The x coordinate of the position of the prime tower.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "prime_tower_enable",
+                    "default_value": 200,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "global_only": "True"
+                },
+                "prime_tower_position_y":
+                {
+                    "label": "Prime Tower Y Position",
+                    "description": "The y coordinate of the position of the prime tower.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "prime_tower_enable",
+                    "default_value": 200,
+                    "minimum_value_warning": "-1000",
+                    "maximum_value_warning": "1000",
+                    "global_only": "True"
+                },
+                "prime_tower_flow":
+                {
+                    "label": "Prime Tower Flow",
+                    "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
+                    "type": "float",
+                    "unit": "%",
+                    "enabled": "prime_tower_enable",
+                    "default_value": 100,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "global_only": "True"
+                },
+                "prime_tower_wipe_enabled":
+                {
+                    "label": "Wipe Nozzle on Prime Tower",
+                    "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
+                    "type": "bool",
+                    "enabled": "prime_tower_enable",
+                    "default_value": false,
+                    "global_only": "True"
+                },
+                "multiple_mesh_overlap":
+                {
+                    "label": "Dual Extrusion Overlap",
+                    "description": "Make the objects printed with different extruder trains overlap a bit. This makes the different materials bond together better.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.15,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "1.0",
+                    "global_only": "True"
+                },
+                "ooze_shield_enabled":
+                {
+                    "label": "Enable Ooze Shield",
+                    "description": "Enable exterior ooze shield. This will create a shell around the object which is likely to wipe a second nozzle if it's at the same height as the first nozzle.",
+                    "type": "bool",
+                    "default_value": false,
+                    "global_only": "True"
+                },
+                "ooze_shield_angle":
+                {
+                    "label": "Ooze Shield Angle",
+                    "description": "The maximum angle a part in the ooze shield will have. With 0 degrees being vertical, and 90 degrees being horizontal. A smaller angle leads to less failed ooze shields, but more material.",
+                    "type": "float",
+                    "unit": "°",
+                    "enabled": "ooze_shield_enabled",
+                    "default_value": 60,
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "global_only": "True"
+                },
+                "ooze_shield_dist":
+                {
+                    "label": "Ooze Shield Distance",
+                    "description": "Distance of the ooze shield from the print, in the X/Y directions.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "ooze_shield_enabled",
+                    "default_value": 2,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "30",
                     "global_only": "True"
                 }
             }
