@@ -37,7 +37,7 @@ class SolidView(View):
         if Application.getInstance().getGlobalContainerStack():
 
             if Preferences.getInstance().getValue("view/show_overhang"):
-                angle = Application.getInstance().getGlobalContainerStack().getValue("support_angle")
+                angle = Application.getInstance().getGlobalContainerStack().getProperty("support_angle", "value")
                 if angle is not None:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
                 else:
