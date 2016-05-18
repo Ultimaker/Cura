@@ -126,7 +126,7 @@ class InstallFirmwareDialog(wx.Dialog):
 		self.buttonPanel = wx.Panel(self)
 
 		self.buttonPanel.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
-		self.okButton = wx.Button(self.buttonPanel, -1, _("Flash Firmware"))
+		self.okButton = wx.Button(self.buttonPanel, -1, _("Start"))
 		self.okButton.Bind(wx.EVT_BUTTON, self.OnFlash)
 		self.buttonPanel.GetSizer().Add(self.okButton, 0, flag=wx.ALIGN_CENTER|wx.ALL, border=5)
 		self.cancelButton = wx.Button(self.buttonPanel, -1, _("Cancel"))
@@ -154,7 +154,6 @@ class InstallFirmwareDialog(wx.Dialog):
 		firmware_file_name = os.path.basename(self.filename)
 		if firmware_file_name is not None:
 			text += "with file '{}'\n".format(firmware_file_name)
-		text += "Press the 'Flash Firmware' button below to start the process."
 		self.updateLabel(_(text))
 
 		self.ShowModal()
