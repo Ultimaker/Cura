@@ -7,7 +7,7 @@ from PyQt5.QtGui import QImage, qRed, qGreen, qBlue
 from PyQt5.QtCore import Qt
 
 from UM.Mesh.MeshReader import MeshReader
-from UM.Mesh.MeshData import MeshData
+from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Scene.SceneNode import SceneNode
 from UM.Math.Vector import Vector
 from UM.Job import Job
@@ -48,13 +48,9 @@ class ImageReader(MeshReader):
         return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.image_color_invert)
 
     def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, image_color_invert):
-        mesh = None # TODO: @UnusedVariable
-        scene_node = None # TODO: @UnusedVariable
-
         scene_node = SceneNode()
 
-        mesh = MeshData()
-        scene_node.setMeshData(mesh)
+        mesh = MeshBuilder()
 
         img = QImage(file_name)
 
@@ -76,9 +72,9 @@ class ImageReader(MeshReader):
         scale_vector = Vector(xz_size, peak_height, xz_size)
 
         if width > height:
-            scale_vector.setZ(scale_vector.z * aspect)
+            scale_vector = scale_vector.set(z=scale_vector.z * aspect)
         elif height > width:
-            scale_vector.setX(scale_vector.x / aspect)
+            scale_vector = scale_vector.set(x=scale_vector.x / aspect)
 
         if width > max_size or height > max_size:
             scale_factor = max_size / width
@@ -173,8 +169,8 @@ class ImageReader(MeshReader):
         geo_height = height_minus_one * texel_height
 
         # bottom
-        mesh.addFace(0, 0, 0, 0, 0, geo_height, geo_width, 0, geo_height)
-        mesh.addFace(geo_width, 0, geo_height, geo_width, 0, 0, 0, 0, 0)
+        mesh.addFaceByPoints(0, 0, 0, 0, 0, geo_height, geo_width, 0, geo_height)
+        mesh.addFaceByPoints(geo_width, 0, geo_height, geo_width, 0, 0, 0, 0, 0)
 
         # north and south walls
         for n in range(0, width_minus_one):
@@ -187,11 +183,11 @@ class ImageReader(MeshReader):
             hs0 = height_data[height_minus_one, n]
             hs1 = height_data[height_minus_one, n + 1]
 
-            mesh.addFace(x, 0, 0, nx, 0, 0, nx, hn1, 0)
-            mesh.addFace(nx, hn1, 0, x, hn0, 0, x, 0, 0)
+            mesh.addFaceByPoints(x, 0, 0, nx, 0, 0, nx, hn1, 0)
+            mesh.addFaceByPoints(nx, hn1, 0, x, hn0, 0, x, 0, 0)
 
-            mesh.addFace(x, 0, geo_height, nx, 0, geo_height, nx, hs1, geo_height)
-            mesh.addFace(nx, hs1, geo_height, x, hs0, geo_height, x, 0, geo_height)
+            mesh.addFaceByPoints(x, 0, geo_height, nx, 0, geo_height, nx, hs1, geo_height)
+            mesh.addFaceByPoints(nx, hs1, geo_height, x, hs0, geo_height, x, 0, geo_height)
 
         # west and east walls
         for n in range(0, height_minus_one):
@@ -204,12 +200,14 @@ class ImageReader(MeshReader):
             he0 = height_data[n, width_minus_one]
             he1 = height_data[n + 1, width_minus_one]
 
-            mesh.addFace(0, 0, y, 0, 0, ny, 0, hw1, ny)
-            mesh.addFace(0, hw1, ny, 0, hw0, y, 0, 0, y)
+            mesh.addFaceByPoints(0, 0, y, 0, 0, ny, 0, hw1, ny)
+            mesh.addFaceByPoints(0, hw1, ny, 0, hw0, y, 0, 0, y)
 
-            mesh.addFace(geo_width, 0, y, geo_width, 0, ny, geo_width, he1, ny)
-            mesh.addFace(geo_width, he1, ny, geo_width, he0, y, geo_width, 0, y)
+            mesh.addFaceByPoints(geo_width, 0, y, geo_width, 0, ny, geo_width, he1, ny)
+            mesh.addFaceByPoints(geo_width, he1, ny, geo_width, he0, y, geo_width, 0, y)
 
         mesh.calculateNormals(fast=True)
+
+        scene_node.setMeshData(mesh.build())
 
         return scene_node
