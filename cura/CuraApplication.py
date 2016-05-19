@@ -74,6 +74,7 @@ class CuraApplication(QtApplication):
         VariantInstanceContainer = Resources.UserType + 5
         UserInstanceContainer = Resources.UserType + 6
         MachineStack = Resources.UserType + 7
+        ExtruderInstanceContainer = Resources.UserType + 8
 
     Q_ENUMS(ResourceTypes)
 
@@ -124,6 +125,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
         Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
+        Resources.addStorageType(self.ResourceTypes.ExtruderInstanceContainer, "extruders")
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
 

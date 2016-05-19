@@ -37,6 +37,7 @@ class BuildVolume(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
+        self._active_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
 
@@ -158,9 +159,14 @@ class BuildVolume(SceneNode):
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
 
     def _onGlobalContainerStackChanged(self):
+        if self._active_container_stack:
+            self._active_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
+
         self._active_container_stack = Application.getInstance().getGlobalContainerStack()
 
         if self._active_container_stack:
+            self._active_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
+
             self._width = self._active_container_stack.getProperty("machine_width", "value")
             if self._active_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 self._height = self._active_container_stack.getProperty("gantry_height", "value")
@@ -172,12 +178,15 @@ class BuildVolume(SceneNode):
 
             self.rebuild()
 
-    def _onSettingValueChanged(self, setting_key):
+    def _onSettingPropertyChanged(self, setting_key, property_name):
+        if property_name != "value":
+            return
+
         if setting_key == "print_sequence":
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
                 self._height = self._active_container_stack.getProperty("gantry_height", "value")
             else:
-                self._height = self._active_container_stack.getProperty("machine_depth", "value")
+                self._height = self._active_container_stack.getProperty("machine_height", "value")
             self.rebuild()
         if setting_key in self._skirt_settings:
             self._updateDisallowedAreas()
