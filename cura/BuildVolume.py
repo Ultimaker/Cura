@@ -113,10 +113,10 @@ class BuildVolume(SceneNode):
             Vector(max_w, min_h - 0.2, max_d),
             Vector(min_w, min_h - 0.2, max_d)
         )
-        self._grid_mesh = mb.getData()
         for n in range(0, 6):
-            v = self._grid_mesh.getVertex(n)
-            self._grid_mesh.setVertexUVCoordinates(n, v[0], v[2])
+            v = mb.getVertex(n)
+            mb.setVertexUVCoordinates(n, v[0], v[2])
+        self._grid_mesh = mb.getData()
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
