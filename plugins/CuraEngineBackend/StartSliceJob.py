@@ -38,20 +38,23 @@ class StartSliceJob(Job):
         self._profile = profile
         self._socket = socket
 
+    ##  Runs the job that initiates the slicing.
     def run(self):
         self._scene.acquireLock()
 
+        # Remove old layer data.
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 node.getParent().removeChild(node)
                 break
 
+        # Get the objects in their groups to print.
         object_groups = []
         if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
-                ##  Node can't be printed, so don't bother sending it.
+                # Node can't be printed, so don't bother sending it.
                 if getattr(node, "_outside_buildarea", False):
                     continue
 
