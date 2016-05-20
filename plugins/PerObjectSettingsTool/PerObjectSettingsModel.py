@@ -7,8 +7,8 @@ from UM.Application import Application
 from UM.Qt.ListModel import ListModel
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Scene.SceneNode import SceneNode
-from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
-from UM.Settings.ProfileOverrideDecorator import ProfileOverrideDecorator
+#from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+#from UM.Settings.ProfileOverrideDecorator import ProfileOverrideDecorator
 
 from . import SettingOverrideModel
 
@@ -35,7 +35,7 @@ class PerObjectSettingsModel(ListModel):
         self.setProperty(self.find("id", object_id), "profile", profile_name)
 
         profile = None
-        if profile_name != "global":
+        '''if profile_name != "global":
             profile = Application.getInstance().getMachineManager().findProfile(profile_name)
 
         node = self._scene.findObject(object_id)
@@ -45,7 +45,7 @@ class PerObjectSettingsModel(ListModel):
             node.callDecoration("setProfile", profile)
         else:
             if node.getDecorator(ProfileOverrideDecorator):
-                node.removeDecorator(ProfileOverrideDecorator)
+                node.removeDecorator(ProfileOverrideDecorator)'''
 
     @pyqtSlot("quint64", str)
     def addSettingOverride(self, object_id, key):
@@ -54,8 +54,8 @@ class PerObjectSettingsModel(ListModel):
             return
 
         node = self._scene.findObject(object_id)
-        if not node.getDecorator(SettingOverrideDecorator):
-            node.addDecorator(SettingOverrideDecorator())
+        #if not node.getDecorator(SettingOverrideDecorator):
+        #    node.addDecorator(SettingOverrideDecorator())
 
         node.callDecoration("addSetting", key)
 
@@ -64,8 +64,8 @@ class PerObjectSettingsModel(ListModel):
         node = self._scene.findObject(object_id)
         node.callDecoration("removeSetting", key)
 
-        if len(node.callDecoration("getAllSettings")) == 0:
-            node.removeDecorator(SettingOverrideDecorator)
+        #if len(node.callDecoration("getAllSettings")) == 0:
+        #    node.removeDecorator(SettingOverrideDecorator)
 
     def _updateModel(self):
         self.clear()
