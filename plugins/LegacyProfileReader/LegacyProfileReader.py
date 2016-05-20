@@ -9,8 +9,9 @@ import os.path #For concatenating the path to the plugin and the relative path t
 from UM.Application import Application #To get the machine manager to create the new profile in.
 from UM.Logger import Logger #Logging errors.
 from UM.PluginRegistry import PluginRegistry #For getting the path to this plugin's directory.
-from UM.Settings.Profile import Profile
-from UM.Settings.ProfileReader import ProfileReader
+from UM.Settings.DefinitionContainer import DefinitionContainer #For getting the current machine's defaults.
+from UM.Settings.InstanceContainer import InstanceContainer #The new profile to make.
+from cura.ProfileReader import ProfileReader #The plug-in type to implement.
 
 ##  A plugin that reads profile data from legacy Cura versions.
 #
@@ -66,7 +67,7 @@ class LegacyProfileReader(ProfileReader):
         if file_name.split(".")[-1] != "ini":
             return None
         Logger.log("i", "Importing legacy profile from file " + file_name + ".")
-        profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False) #Create an empty profile.
+        profile = InstanceContainer("Imported Legacy Profile") #Create an empty profile.
 
         parser = configparser.ConfigParser(interpolation = None)
         try:
@@ -103,23 +104,24 @@ class LegacyProfileReader(ProfileReader):
         if "target_version" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no target version. Is it the correct JSON file?")
             return None
-        if Profile.ProfileVersion != dict_of_doom["target_version"]:
-            Logger.log("e", "Dictionary of Doom of legacy profile reader (version %s) is not in sync with the profile version (version %s)!", dict_of_doom["target_version"], str(Profile.ProfileVersion))
+        if InstanceContainer.Version != dict_of_doom["target_version"]:
+            Logger.log("e", "Dictionary of Doom of legacy profile reader (version %s) is not in sync with the current instance container version (version %s)!", dict_of_doom["target_version"], str(InstanceContainer.Version))
             return None
 
         if "translation" not in dict_of_doom:
             Logger.log("e", "Dictionary of Doom has no translation. Is it the correct JSON file?")
             return None
+        current_printer = Application.getInstance().getGlobalContainerStack().findContainer({ }, DefinitionContainer)
         for new_setting in dict_of_doom["translation"]: #Evaluate all new settings that would get a value from the translations.
             old_setting_expression = dict_of_doom["translation"][new_setting]
             compiled = compile(old_setting_expression, new_setting, "eval")
             try:
                 new_value = eval(compiled, {"math": math}, legacy_settings) #Pass the legacy settings as local variables to allow access to in the evaluation.
                 value_using_defaults = eval(compiled, {"math": math}, defaults) #Evaluate again using only the default values to try to see if they are default.
-            except Exception as e: #Probably some setting name that was missing or something else that went wrong in the ini file.
+            except Exception: #Probably some setting name that was missing or something else that went wrong in the ini file.
                 Logger.log("w", "Setting " + new_setting + " could not be set because the evaluation failed. Something is probably missing from the imported legacy profile.")
                 continue
-            if new_value != value_using_defaults and profile.getSettingValue(new_setting) != new_value: #Not equal to the default in the new Cura OR the default in the legacy Cura.
+            if new_value != value_using_defaults and current_printer.findDefinitions(key = new_setting).default_value != new_value: #Not equal to the default in the new Cura OR the default in the legacy Cura.
                 profile.setSettingValue(new_setting, new_value) #Store the setting in the profile!
 
         if len(profile.getChangedSettings()) == 0:

@@ -224,6 +224,7 @@ class CuraApplication(QtApplication):
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
+        self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
@@ -711,3 +712,7 @@ class CuraApplication(QtApplication):
         job = ReadMeshJob(os.path.abspath(file))
         job.finished.connect(self._onFileLoaded)
         job.start()
+
+    def _addProfileReader(self, profile_reader):
+        # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
+        pass
