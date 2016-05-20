@@ -149,7 +149,17 @@ Item {
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...");
 
-            onTextChanged: settingPickDialog.labelFilter = text;
+            onTextChanged:
+            {
+                if(text != "")
+                {
+                    listview.model.filter.label =  = {"global_only":"False", "label": text}
+                }
+                else
+                {
+                    listview.model.filter = {"global_only":"False"}
+                }
+            }
         }
 
         ScrollView
@@ -165,6 +175,7 @@ Item {
             }
             ListView
             {
+                id:listview
                 model: UM.SettingDefinitionsModel
                 {
                     id: definitionsModel;
