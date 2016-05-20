@@ -62,7 +62,7 @@ Button {
         width: height;
 
         onClicked: {
-            base.showAllHidenInheritedSettings()
+            base.showAllHiddenInheritedSettings()
         }
 
         color: UM.Theme.getColor("setting_control_button")
