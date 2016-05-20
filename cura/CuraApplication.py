@@ -24,7 +24,7 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
-from UM.Settings.SettingDefinition import SettingDefinition
+from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
@@ -119,7 +119,7 @@ class CuraApplication(QtApplication):
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
-        SettingDefinition.addSupportedProperty("global_only", "bool")
+        SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
