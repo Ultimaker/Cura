@@ -327,6 +327,13 @@
                     "unit": "mm",
                     "default_value": 0,
                     "global_only": "True"
+                },
+                "machine_use_extruder_offset_to_offset_coords":
+                {
+                    "label": "Offset With Extruder",
+                    "description": "Apply the extruder offset to the coordinate system.",
+                    "type": "bool",
+                    "default_value": true
                 }
             }
         },
