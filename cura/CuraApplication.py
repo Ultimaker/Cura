@@ -119,7 +119,7 @@ class CuraApplication(QtApplication):
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
-        SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
+        SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.String, default = "False")
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
