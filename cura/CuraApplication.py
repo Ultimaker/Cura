@@ -714,4 +714,5 @@ class CuraApplication(QtApplication):
         job.start()
 
     def _addProfileReader(self, profile_reader):
+        # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
         pass
