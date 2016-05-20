@@ -134,14 +134,15 @@ class CuraEngineBackend(Backend):
             self._process_layers_job.abort()
             self._process_layers_job = None
 
-        if self._profile.hasErrorValue():
-            Logger.log("w", "Profile has error values. Aborting slicing")
-            if self._message:
-                self._message.hide()
-                self._message = None
-            self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
-            self._message.show()
-            return #No slicing if we have error values since those are by definition illegal values.
+        #TODO: Re-add don't slice with error stuff.
+        #if self._profile.hasErrorValue():
+        #    Logger.log("w", "Profile has error values. Aborting slicing")
+        #    if self._message:
+        #        self._message.hide()
+        #        self._message = None
+        #    self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
+        #    self._message.show()
+        #    return #No slicing if we have error values since those are by definition illegal values.
 
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NOT_STARTED)
@@ -265,9 +266,6 @@ class CuraEngineBackend(Backend):
         self._change_timer.start()
 
     def _onChanged(self):
-        if not self._profile:
-            return
-
         self._change_timer.start()
 
     def _onBackendConnected(self):

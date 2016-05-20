@@ -59,12 +59,12 @@ class ConvexHullJob(Job):
         # This is done because of rounding errors.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
 
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if profile:
-            if profile.getSettingValue("print_sequence") == "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if global_stack:
+            if global_stack.getProperty("print_sequence", "value")== "one_at_a_time" and not self._node.getParent().callDecoration("isGroup"):
                 # Printing one at a time and it's not an object in a group
                 self._node.callDecoration("setConvexHullBoundary", copy.deepcopy(hull))
-                head_and_fans = Polygon(numpy.array(profile.getSettingValue("machine_head_with_fans_polygon"), numpy.float32))
+                head_and_fans = Polygon(numpy.array(global_stack.getProperty("machine_head_with_fans_polygon", "value"), numpy.float32))
 
                 # Full head hull is used to actually check the order.
                 full_head_hull = hull.getMinkowskiHull(head_and_fans)
@@ -77,7 +77,7 @@ class ConvexHullJob(Job):
                 # Min head hull is used for the push free
                 min_head_hull = hull.getMinkowskiHull(head_and_fans)
                 self._node.callDecoration("setConvexHullHead", min_head_hull)
-                hull = hull.getMinkowskiHull(Polygon(numpy.array(profile.getSettingValue("machine_head_polygon"),numpy.float32)))
+                hull = hull.getMinkowskiHull(Polygon(numpy.array(global_stack.getProperty("machine_head_polygon","value"),numpy.float32)))
             else:
                 self._node.callDecoration("setConvexHullHead", None)
         if self._node.getParent() is None:  # Node was already deleted before job is done.
