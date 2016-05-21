@@ -50,8 +50,8 @@ class PlatformPhysics:
 
             bbox = node.getBoundingBox()
 
-            build_volume_bounding_box = copy.deepcopy(self._build_volume.getBoundingBox())
-            build_volume_bounding_box.setBottom(-9001) # Ignore intersections with the bottom
+            # Ignore intersections with the bottom
+            build_volume_bounding_box = self._build_volume.getBoundingBox().set(bottom=-9001)
             node._outside_buildarea = False
 
             # Mark the node as outside the build volume if the bounding box test fails.

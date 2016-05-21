@@ -95,7 +95,7 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
-        self._scene_boundingbox = AxisAlignedBox()
+        self._scene_boundingbox = AxisAlignedBox.Null
         self._job_name = None
         self._center_after_select = False
         self._camera_animation = None
@@ -283,7 +283,7 @@ class CuraApplication(QtApplication):
                 scene_boundingbox += node.getBoundingBox()
 
         if not scene_boundingbox:
-            scene_boundingbox = AxisAlignedBox()
+            scene_boundingbox = AxisAlignedBox.Null
 
         if repr(self._scene_boundingbox) != repr(scene_boundingbox):
             self._scene_boundingbox = scene_boundingbox
