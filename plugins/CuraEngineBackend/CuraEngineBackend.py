@@ -129,12 +129,6 @@ class CuraEngineBackend(Backend):
         if self._slicing:
             self._terminate()
 
-            if self._message:
-                self._message.hide()
-                self._message = None
-
-            return
-
         if self._process_layers_job:
             self._process_layers_job.abort()
             self._process_layers_job = None
@@ -181,6 +175,9 @@ class CuraEngineBackend(Backend):
                 #self._createSocket() # Re create the socket
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occured while trying to kill the engine %s", str(e))
+        if self._message:
+            self._message.hide()
+            self._message = None
 
 
     def _onStartSliceCompleted(self, job):
