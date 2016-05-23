@@ -131,7 +131,6 @@ class StartSliceJob(Job):
     def _sendGlobalSettings(self):
         message = self._socket.createMessage("cura.proto.SettingList")
         settings = self._getAllSettingValues() #Get all the settings to send.
-        print(settings)
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material_bed_temp_prepend and material_print_temp_prepend.
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
