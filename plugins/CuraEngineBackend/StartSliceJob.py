@@ -50,7 +50,7 @@ class StartSliceJob(Job):
 
         # Get the objects in their groups to print.
         object_groups = []
-        if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
+        if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
             for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
 
