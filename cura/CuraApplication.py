@@ -85,6 +85,9 @@ class CuraApplication(QtApplication):
 
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
 
+        # Need to do this before ContainerRegistry tries to load the machines
+        SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
+
         super().__init__(name = "cura", version = CuraVersion)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
@@ -118,8 +121,6 @@ class CuraApplication(QtApplication):
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
-
-        SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.String, default = "False")
 
         ## Add the 4 types of profiles to storage.
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
