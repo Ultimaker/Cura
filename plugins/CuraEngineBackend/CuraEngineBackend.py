@@ -29,6 +29,10 @@ catalog = i18nCatalog("cura")
 
 
 class CuraEngineBackend(Backend):
+    ##  Starts the back-end plug-in.
+    #
+    #   This registers all the signal listeners and prepares for communication
+    #   with the back-end in general.
     def __init__(self):
         super().__init__()
 
@@ -50,19 +54,15 @@ class CuraEngineBackend(Backend):
         self._onActiveViewChanged()
         self._stored_layer_data = []
 
-        # When there are current settings and machine instance is changed, there is no profile changed event. We should
-        # pretend there is though.
-        #Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveProfileChanged)
-
-        #self._profile = None
-        #Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
-        #self._onActiveProfileChanged()
-
+        #When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
+        #This timer will group them up, and only slice for the last setting changed signal.
+        #TODO: Properly group propertyChanged signals by whether they are triggered by the same user interaction.
         self._change_timer = QTimer()
         self._change_timer.setInterval(500)
         self._change_timer.setSingleShot(True)
         self._change_timer.timeout.connect(self.slice)
 
+        #Listeners for receiving messages from the back-end.
         self._message_handlers["cura.proto.Layer"] = self._onLayerMessage
         self._message_handlers["cura.proto.Progress"] = self._onProgressMessage
         self._message_handlers["cura.proto.GCodeLayer"] = self._onGCodeLayerMessage
@@ -70,29 +70,31 @@ class CuraEngineBackend(Backend):
         self._message_handlers["cura.proto.ObjectPrintTime"] = self._onObjectPrintTimeMessage
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
-        self._slicing = False
-        self._restart = False
-        self._enabled = True
-        self._always_restart = True
+        self._slicing = False #Are we currently slicing?
+        self._restart = False #Back-end is currently restarting?
+        self._enabled = True #Should we be slicing? Slicing might be paused when, for instance, the user is dragging the mesh around.
+        self._always_restart = True #Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
-        self._message = None
+        self._message = None #Pop-up message that shows the slicing progress bar (or an error message).
 
         self.backendQuit.connect(self._onBackendQuit)
-
         self.backendConnected.connect(self._onBackendConnected)
+
+        #When a tool operation is in progress, don't slice. So we need to listen for tool operations.
         Application.getInstance().getController().toolOperationStarted.connect(self._onToolOperationStarted)
         Application.getInstance().getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
-        #Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onInstanceChanged)
-
+    ##  Called when closing the application.
+    #
+    #   This function should terminate the engine process.
     def close(self):
         # Terminate CuraEngine if it is still running at this point
         self._terminate()
         super().close()
 
     ##  Get the command that is used to call the engine.
-    #   This is usefull for debugging and used to actually start the engine
+    #   This is useful for debugging and used to actually start the engine.
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
         active_machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
@@ -112,7 +114,7 @@ class CuraEngineBackend(Backend):
     ##  Emitted when the slicing process starts.
     slicingStarted = Signal()
 
-    ##  Emitted whne the slicing process is aborted forcefully.
+    ##  Emitted when the slicing process is aborted forcefully.
     slicingCancelled = Signal()
 
     ##  Perform a slice of the scene.
