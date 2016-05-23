@@ -125,10 +125,10 @@ class CuraEngineBackend(Backend):
         if not self._enabled: #We shouldn't be slicing.
             return
 
-        if self._slicing:
+        if self._slicing: #We were already slicing. Stop the old job.
             self._terminate()
 
-        if self._process_layers_job:
+        if self._process_layers_job: #We were processing layers. Stop that, the layers are going to change soon.
             self._process_layers_job.abort()
             self._process_layers_job = None
 
@@ -146,9 +146,9 @@ class CuraEngineBackend(Backend):
         self.backendStateChange.emit(BackendState.NOT_STARTED)
         if self._message:
             self._message.setProgress(-1)
-        #else:
-        #    self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
-        #    self._message.show()
+        else:
+            self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
+            self._message.show()
 
         self._scene.gcode_list = []
         self._slicing = True
