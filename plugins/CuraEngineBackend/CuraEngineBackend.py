@@ -166,7 +166,6 @@ class CuraEngineBackend(Backend):
                 self._process.terminate()
                 Logger.log("d", "Engine process is killed. Received return code %s", self._process.wait())
                 self._process = None
-                #self._createSocket() # Re create the socket
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
         if self._message:
