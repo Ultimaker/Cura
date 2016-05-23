@@ -45,7 +45,7 @@ class PlatformPhysics:
 
         root = self._controller.getScene().getRoot()
         for node in BreadthFirstIterator(root):
-            if node is root or type(node) is not SceneNode:
+            if node is root or type(node) is not SceneNode or node.getBoundingBox() is None:
                 continue
 
             bbox = node.getBoundingBox()
@@ -73,14 +73,9 @@ class PlatformPhysics:
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator):
                 node.addDecorator(ConvexHullDecorator())
-            
-            if not node.callDecoration("getConvexHull"):
-                if not node.callDecoration("getConvexHullJob"):
-                    job = ConvexHullJob.ConvexHullJob(node)
-                    job.start()
-                    node.callDecoration("setConvexHullJob", job)
-                    
-            elif Preferences.getInstance().getValue("physics/automatic_push_free"):
+            node.callDecoration("recomputeConvexHull")
+
+            if Preferences.getInstance().getValue("physics/automatic_push_free"):
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.

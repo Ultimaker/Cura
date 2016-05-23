@@ -8,7 +8,7 @@ from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the convex hull with.
 
 from UM.View.GL.OpenGL import OpenGL
-
+from UM.Logger import spy
 
 class ConvexHullNode(SceneNode):
     ##  Convex hull node is a special type of scene node that is used to display a 2D area, to indicate the
@@ -46,6 +46,9 @@ class ConvexHullNode(SceneNode):
         if convex_hull_head:
             self._convex_hull_head_mesh = self.createHullMesh(convex_hull_head.getPoints())
 
+    def getHull(self):
+        return self._hull
+
     ##  Actually create the mesh from the hullpoints
     #   /param hull_points list of xy values
     #   /return meshData
@@ -62,7 +65,7 @@ class ConvexHullNode(SceneNode):
             mesh_builder.addFace(point_first, point_previous, point_new, color = self._color)
             point_previous = point_new  # Prepare point_previous for the next triangle.
 
-        return mesh_builder.getData()
+        return mesh_builder.build()
 
     def getWatchedNode(self):
         return self._node
@@ -80,9 +83,7 @@ class ConvexHullNode(SceneNode):
         return True
 
     def _onNodePositionChanged(self, node):
-        if node.callDecoration("getConvexHull"): 
-            node.callDecoration("setConvexHull", None)
-            node.callDecoration("setConvexHullNode", None)
+        if node.callDecoration("getConvexHull"):
             self.setParent(None)  # Garbage collection should delete this node after a while.
 
     def _onNodeParentChanged(self, node):

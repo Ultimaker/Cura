@@ -4,6 +4,7 @@
 from UM.Job import Job
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
+from UM.Logger import Logger
 
 import numpy
 import copy
@@ -19,6 +20,11 @@ class ConvexHullJob(Job):
     def run(self):
         if not self._node:
             return
+
+        #################################################################
+        # Node Convex Hull
+        #################################################################
+
         ## If the scene node is a group, use the hull of the children to calculate its hull.
         if self._node.callDecoration("isGroup"):
             hull = Polygon(numpy.zeros((0, 2), dtype=numpy.int32))
@@ -47,10 +53,20 @@ class ConvexHullJob(Job):
             # This is done to greatly speed up further convex hull calculations as the convex hull
             # becomes much less complex when dealing with highly detailed models.
             vertex_data = numpy.round(vertex_data, 1)
-            duplicates = (vertex_data[:,0] == vertex_data[:,1]) | (vertex_data[:,1] == vertex_data[:,2]) | (vertex_data[:,0] == vertex_data[:,2])
-            vertex_data = numpy.delete(vertex_data, numpy.where(duplicates), axis = 0)
 
-            hull = Polygon(vertex_data[:, [0, 2]])
+            vertex_data = vertex_data[:, [0, 2]]  # Drop the Y components to project to 2D.
+
+            # Grab the set of unique points.
+            #
+            # This basically finds the unique rows in the array by treating them as opaque groups of bytes
+            # which are as long as the 2 float64s in each row, and giving this view to numpy.unique() to munch.
+            # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
+            vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
+                numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
+            _, idx = numpy.unique(vertex_byte_view, return_index=True)
+            vertex_data = vertex_data[idx]  # Select the unique rows by index.
+
+            hull = Polygon(vertex_data)
 
         # First, calculate the normal convex hull around the points
         hull = hull.getConvexHull()
@@ -58,6 +74,16 @@ class ConvexHullJob(Job):
         # Then, do a Minkowski hull with a simple 1x1 quad to outset and round the normal convex hull.
         # This is done because of rounding errors.
         hull = hull.getMinkowskiHull(Polygon(numpy.array([[-0.5, -0.5], [-0.5, 0.5], [0.5, 0.5], [0.5, -0.5]], numpy.float32)))
+
+        #################################################################
+        # Print Head Exclusion Zone
+        #################################################################
+
+
+        #
+        # TODO
+        # ConvexHullDecorator should use a memoization strategy in its getters.
+        # Make MeshData immutable
 
         profile = Application.getInstance().getMachineManager().getWorkingProfile()
         if profile:
@@ -99,3 +125,33 @@ class ConvexHullJob(Job):
             hull_node = self._node.getParent().callDecoration("getConvexHullNode")
             if hull_node:
                 hull_node.setParent(None)
+
+        try:
+            Logger.log('d', 'ConvexHullJob getConvexHull:' + dumpPoly(self._node.callDecoration("getConvexHull")))
+            Logger.log('d', 'ConvexHullJob new getConvexHull:' + dumpPoly(self._node.callDecoration("newGetConvexHull")))
+        except Exception:
+            pass
+
+        try:
+            Logger.log('d', 'ConvexHullJob getConvexHullHeadFull:' + dumpPoly(self._node.callDecoration("getConvexHullHeadFull")))
+            Logger.log('d', 'ConvexHullJob new getConvexHullHeadFull:' + dumpPoly(self._node.callDecoration("newGetConvexHullHeadFull")))
+        except Exception:
+            pass
+
+        try:
+            Logger.log('d', 'ConvexHullJob getConvexHullHead:' + dumpPoly(self._node.callDecoration("getConvexHullHead")))
+            Logger.log('d', 'ConvexHullJob new getConvexHullHead:' + dumpPoly(self._node.callDecoration("newGetConvexHullHead")))
+        except Exception:
+            pass
+
+        try:
+            Logger.log('d', 'ConvexHullJob getConvexHullBoundary:' + dumpPoly(self._node.callDecoration("getConvexHullBoundary")))
+            Logger.log('d', 'ConvexHullJob new getConvexHullBoundary:' + dumpPoly(self._node.callDecoration("newGetConvexHullBoundary")))
+        except Exception:
+            pass
+
+def dumpPoly(poly):
+    if poly is None:
+        return "None"
+    else:
+        return repr(poly.getPoints())

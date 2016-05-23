@@ -278,9 +278,11 @@ class CuraApplication(QtApplication):
 
             count += 1
             if not scene_boundingbox:
-                scene_boundingbox = copy.deepcopy(node.getBoundingBox())
+                scene_boundingbox = node.getBoundingBox()
             else:
-                scene_boundingbox += node.getBoundingBox()
+                other_bb = node.getBoundingBox()
+                if other_bb is not None:
+                    scene_boundingbox = scene_boundingbox + node.getBoundingBox()
 
         if not scene_boundingbox:
             scene_boundingbox = AxisAlignedBox.Null
