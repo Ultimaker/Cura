@@ -153,6 +153,7 @@ class CuraEngineBackend(Backend):
         job.finished.connect(self._onStartSliceCompleted)
         job.start()
 
+    ##  Terminate the engine process.
     def _terminate(self):
         self._slicing = False
         self._restart = True
@@ -172,7 +173,14 @@ class CuraEngineBackend(Backend):
             self._message.hide()
             self._message = None
 
-
+    ##  Event handler to call when the job to initiate the slicing process is
+    #   completed.
+    #
+    #   When the start slice job is successfully completed, it will be happily
+    #   slicing. This function handles any errors that may occur during the
+    #   bootstrapping of a slice job.
+    #
+    #   \param job The start slice job that was just finished.
     def _onStartSliceCompleted(self, job):
         if job.getError() or job.getResult() != True:
             if self._message:
@@ -180,6 +188,11 @@ class CuraEngineBackend(Backend):
                 self._message = None
             return
 
+    ##  Listener for when the scene has changed.
+    #
+    #   This should start a slice if the scene is now ready to slice.
+    #
+    #   \param source The scene node that was changed.
     def _onSceneChanged(self, source):
         if type(source) is not SceneNode:
             return
@@ -195,6 +208,9 @@ class CuraEngineBackend(Backend):
 
         self._onChanged()
 
+    ##  Called when an error occurs in the socket connection towards the engine.
+    #
+    #   \param error The exception that occurred.
     def _onSocketError(self, error):
         if Application.getInstance().isShuttingDown():
             return
