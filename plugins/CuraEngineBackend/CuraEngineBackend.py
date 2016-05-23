@@ -337,9 +337,6 @@ class CuraEngineBackend(Backend):
             else:
                 self._layer_view_active = False
 
-    def _onInstanceChanged(self):
-        self._terminate()
-
     ##  Called when the back-end self-terminates.
     #
     #   We should reset our state and start listening for new connections.
