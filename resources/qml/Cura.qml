@@ -553,6 +553,8 @@ UM.MainWindow
 
             insertPage(4, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/MaterialsPage.qml"));
 
+            insertPage(5, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
+
             //Force refresh
             setPage(0);
         }
