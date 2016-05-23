@@ -35,7 +35,7 @@ UM.ManagementPage
         visible: base.currentItem != null
         anchors.fill: parent
 
-        Label { id: profileName; text: base.currentItem ? base.currentItem.name : ""; font: UM.Theme.getFont("large"); width: parent.width; }
+        Label { id: profileName; text: materialProperties.name; font: UM.Theme.getFont("large"); width: parent.width; }
 
         TabView {
             id: scrollView
@@ -49,106 +49,83 @@ UM.ManagementPage
                 title: "Information"
                 anchors.margins: UM.Theme.getSize("default_margin").height
 
-                Column {
-                    spacing: UM.Theme.getSize("default_margin").height
+                Flow {
+                    id: containerGrid
 
-                    Grid {
-                        id: containerGrid
-                        columns: 2
-                        spacing: UM.Theme.getSize("default_margin").width
+                    width: scrollView.width;
+                    property real columnWidth: width / 2
 
-                        Label { text: catalog.i18nc("@label", "Profile Type") }
-                        Label { text: base.currentItem ? base.currentItem.metadata.status : "Unknown"}
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Profile Type") }
+                    Label { width: parent.columnWidth; text: materialProperties.profile_type }
 
-                        Label { text: catalog.i18nc("@label", "Supplier") }
-                        Label { text: base.currentItem ? base.currentItem.metadata.brand : "Unknown"}
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Supplier") }
+                    Label { width: parent.columnWidth; text: materialProperties.supplier }
 
-                        Label { text: catalog.i18nc("@label", "Material Type") }
-                        Label { text: base.currentItem ? base.currentItem.metadata.material : "Unknown" }
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Material Type") }
+                    Label { width: parent.columnWidth; text: materialProperties.material_type }
 
-                        Label { text: catalog.i18nc("@label", "Color") }
-                        Rectangle { color: base.currentItem ? base.currentItem.metadata.color_code : "yellow" }
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Color") }
 
-                        Label { text: "<b>" + catalog.i18nc("@label", "Properties") + "</b>" }
-                        Label { text: " " }
-
-                        Label { text: catalog.i18nc("@label", "Density") }
-                        Label { text: base.currentItem ? base.currentItem.metadata.properties.density + " " + "g/cm³" : "" }
-
-                        Label { text: catalog.i18nc("@label", "Diameter") }
-                        Label { text: base.currentItem ? base.currentItem.metadata.properties.diameter + " " + "mm" : ""}
-
-                        Label {
-                            text: catalog.i18nc("@label", "Filament cost")
-                            height: spoolCostInput.height
-                            verticalAlignment: Text.AlignVCenter
+                    Row {
+                        width: parent.columnWidth;
+                        spacing: UM.Theme.getSize("default_margin").width/2
+                        Rectangle {
+                            color: materialProperties.color_code
+                            width: colorLabel.height
+                            height: colorLabel.height
+                            border.width: UM.Theme.getSize("default_lining").height
                         }
-
-                        Row {
-                            Label {
-                                text: base.currentItem && base.currentItem.spoolCost ? base.currency + " " : ""
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
-                            TextField {
-                                id: spoolCostInput
-                                text: base.currentItem.spoolCost
-                            }
-                        }
-
-                        Label { text: catalog.i18nc("@label", "Filament weight") }
-                        Label { text: base.currentItem ? base.currentItem.metadata.properies.spool_weight + " " + "kg" : "" }
-
-                        Label { text: catalog.i18nc("@label", "Filament length") }
-                        Label { text: base.currentItem ? catalog.i18nc("@label", "approx.") + " " + base.currentItem.metadata.properties.spool_length + " " + "m" : "" }
-
-                        Label { text: catalog.i18nc("@label", "Cost per meter") }
-                        Label { text: base.currentItem && base.currentItem.lenghtCost ? catalog.i18nc("@label", "approx.") + " " + base.currency + " " + base.currentItem.lenghtCost + "/m" : "" }
-
-//                         Column {
-//
-//
-//
-//
-//                         }
-//                         Column {
-//
-//
-//
-//                             Column {
-//                                 Label { text: base.currentItem && base.currentItem.variant ? base.currentItem.variant : "" }
-//                                 Row {
-//                                     spacing: UM.Theme.getSize("default_margin").width/2
-//                                     Rectangle {
-//                                         color: base.currentItem && base.currentItem.colorDisplay ? base.currentItem.colorDisplay : "yellow"
-//                                         width: colorLabel.height
-//                                         height: colorLabel.height
-//                                         border.width: UM.Theme.getSize("default_lining").height
-//                                     }
-//                                     Label { id: colorLabel; text: base.currentItem && base.currentItem.colorRAL ? base.currentItem.colorRAL : "" }
-//                                 }
-//                             }
-//                         }
-//                         Column {
-//
-//                         }
-//                         Column {
-//
-//
-//
-//
-//
-//
-//
-//                         }
+                        Label { id: colorLabel; text: materialProperties.color_name }
                     }
+
+                    Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
+
+                    Label { width: parent.width; text: "<b>" + catalog.i18nc("@label", "Properties") + "</b>" }
+
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Density") }
+                    Label { width: parent.columnWidth; text: materialProperties.density }
+
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Diameter") }
+                    Label { width: parent.columnWidth; text: materialProperties.diameter }
+
                     Label {
-                        text: base.currentItem && base.currentItem.infoGeneral ? "<b>" + catalog.i18nc("@label", "Information") + "</b><br>" + base.currentItem.infoGeneral : ""
-                        width: scrollView.width - 2 * UM.Theme.getSize("default_margin").width
+                        text: catalog.i18nc("@label", "Filament cost")
+                        width: parent.columnWidth;
+                        height: spoolCostInput.height
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    Row {
+                        width: parent.columnWidth;
+                        Label {
+                            text: base.currency ? base.currency + " " : " "
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                        TextField {
+                            id: spoolCostInput
+                            text: materialProperties.spool_cost
+                        }
+                    }
+
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Filament weight") }
+                    Label { width: parent.columnWidth; text: materialProperties.spool_weight + " " + "g" }
+
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Filament length") }
+                    Label { width: parent.columnWidth; text: materialProperties.spool_length + " " + "m" }
+
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "Cost per meter") }
+                    Label { width: parent.columnWidth; text: catalog.i18nc("@label", "approx. %1 %2/m").arg(materialProperties.cost_per_meter).arg(base.currency); }
+
+                    Item { width: parent.width; height: UM.Theme.getSize("default_margin").height }
+
+                    Label {
+                        text: materialProperties.description ? "<b>" + catalog.i18nc("@label", "Information") + "</b><br>" + materialProperties.description : "";
+                        width: parent.width
                         wrapMode: Text.WordWrap
                     }
                     Label {
-                        text: base.currentItem && base.currentItem.infoAdhesion ? "<b>" + catalog.i18nc("@label", "Adhesion") + "</b><br>" + base.currentItem.infoAdhesion : ""
-                        width: scrollView.width - 2 * UM.Theme.getSize("default_margin").width
+                        text: materialProperties.adhesion_info ? "<b>" + catalog.i18nc("@label", "Adhesion") + "</b><br>" + materialProperties.adhesion_info : "";
+                        width: parent.width
                         wrapMode: Text.WordWrap
                     }
                 }
@@ -177,6 +154,62 @@ UM.ManagementPage
                         }
                     }
                 }
+            }
+        }
+
+        QtObject
+        {
+            id: materialProperties
+
+            property string name: "Unknown";
+            property string profile_type: "Unknown";
+            property string supplier: "Unknown";
+            property string material_type: "Unknown";
+
+            property string color_name: "Yellow";
+            property color color_code: "yellow";
+
+            property string density: "Unknown";
+            property string diameter: "Unknown";
+
+            property string spool_cost: "Unknown";
+            property string spool_weight: "Unknown";
+            property string spool_length: "Unknown";
+            property string cost_per_meter: "Unknown";
+
+            property string description: "";
+            property string adhesion_info: "";
+        }
+    }
+
+    onCurrentItemChanged:
+    {
+        if(!currentItem == null)
+        {
+            return
+        }
+
+        materialProperties.name = currentItem.name;
+
+        if(currentItem.metadata != undefined && currentItem.metadata != null)
+        {
+            materialProperties.supplier = currentItem.metadata.brand ? currentItem.metadata.brand : "Unknown";
+            materialProperties.material_type = currentItem.metadata.material ? currentItem.metadata.material : "Unknown";
+            materialProperties.color_name = currentItem.metadata.color_name ? currentItem.metadata.color_name : "Yellow";
+            materialProperties.color_code = currentItem.metadata.color_code ? currentItem.metadata.color_code : "yellow";
+
+            materialProperties.description = currentItem.metadata.description ? currentItem.metadata.description : "";
+            materialProperties.adhesion_info = currentItem.metadata.adhesion_info ? currentItem.metadata.adhesion_info : "";
+
+            if(currentItem.metadata.properties != undefined && currentItem.metadata.properties != null)
+            {
+                materialProperties.density = currentItem.metadata.properties.density ? currentItem.metadata.properties.density : "Unknown";
+                materialProperties.diameter = currentItem.metadata.properties.diameter ? currentItem.metadata.properties.diameter : "Unknown";
+            }
+            else
+            {
+                materialProperties.density = "Unknown";
+                materialProperties.diameter = "Unknown";
             }
         }
     }
