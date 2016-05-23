@@ -12,7 +12,7 @@ from UM.i18n import i18nCatalog
 
 from UM.Math.Vector import Vector
 
-from cura import LayerData
+from cura import LayerDataBuilder
 from cura import LayerDataDecorator
 
 import numpy
@@ -65,7 +65,7 @@ class ProcessSlicedLayersJob(Job):
         settings = Application.getInstance().getMachineManager().getWorkingProfile()
 
         mesh = MeshData()
-        layer_data = LayerData.LayerData()
+        layer_data = LayerDataBuilder.LayerDataBuilder()
         layer_count = len(self._layers)
 
         # Find the minimum layer number
@@ -117,7 +117,7 @@ class ProcessSlicedLayersJob(Job):
                 self._progress.setProgress(progress)
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
-        layer_data.build()
+        layer_mesh = layer_data.build()
 
         if self._abort_requested:
             if self._progress:
@@ -126,7 +126,7 @@ class ProcessSlicedLayersJob(Job):
 
         # Add LayerDataDecorator to scene node to indicate that the node has layer data
         decorator = LayerDataDecorator.LayerDataDecorator()
-        decorator.setLayerData(layer_data)
+        decorator.setLayerData(layer_mesh)
         new_node.addDecorator(decorator)
 
         new_node.setMeshData(mesh)

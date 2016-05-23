@@ -8,7 +8,7 @@ from UM.Event import Event, KeyEvent
 from UM.Signal import Signal
 from UM.Scene.Selection import Selection
 from UM.Math.Color import Color
-from UM.Mesh.MeshData import MeshData
+from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Job import Job
 
 from UM.View.RenderBatch import RenderBatch
@@ -228,7 +228,7 @@ class _CreateTopLayersJob(Job):
         if self._cancel or not layer_data:
             return
 
-        layer_mesh = MeshData()
+        layer_mesh = MeshBuilder()
         for i in range(self._solid_layers):
             layer_number = self._layer_number - i
             if layer_number < 0:
@@ -263,7 +263,7 @@ class _CreateTopLayersJob(Job):
         if not jump_mesh or jump_mesh.getVertices() is None:
             jump_mesh = None
 
-        self.setResult({ "layers": layer_mesh, "jumps": jump_mesh })
+        self.setResult({ "layers": layer_mesh.build(), "jumps": jump_mesh })
 
     def cancel(self):
         self._cancel = True
