@@ -5,8 +5,9 @@ import numpy
 from string import Formatter
 import traceback
 
-from UM.Job import Job
 from UM.Application import Application
+from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Job import Job
 from UM.Logger import Logger
 
 from UM.Scene.SceneNode import SceneNode
@@ -127,23 +128,20 @@ class StartSliceJob(Job):
     #   The settings are taken from the global stack. This does not include any
     #   per-extruder settings or per-object settings.
     def _sendGlobalSettings(self):
-        pass #TODO: Implement this.
-
-    def _sendSettings(self, profile):
-        msg = self._socket.createMessage("cura.proto.SettingList")
-        settings = profile.getAllSettingValues(include_machine = True)
+        message = self._socket.createMessage("cura.proto.SettingList")
+        settings = self._getAllSettingValues() #Get all the settings to send.
         start_gcode = settings["machine_start_gcode"]
-        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
+        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material_bed_temp_prepend and material_print_temp_prepend.
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
-        for key, value in settings.items():
-            s = msg.addRepeatedMessage("settings")
-            s.name = key
-            if key == "machine_start_gcode" or key == "machine_end_gcode":
-                s.value = self._expandGcodeTokens(key, value, settings)
+        for key, value in settings.items(): #Add all submessages for each individual setting.
+            setting_message = message.addRepeatedMessage("settings")
+            setting_message.name = key
+            if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
+                setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
-                s.value = str(value).encode("utf-8")
+                setting_message.value = str(value).encode("utf-8")
 
-        self._socket.sendMessage(msg)
+        self._socket.sendMessage(message)
 
     def _handlePerObjectSettings(self, node, message):
         profile = node.callDecoration("getProfile")
@@ -164,3 +162,19 @@ class StartSliceJob(Job):
             setting.value = str(value).encode()
 
             Job.yieldThread()
+
+    ##  Gets all setting values as a dictionary.
+    #
+    #   \return A dictionary with the setting keys as keys and the setting
+    #   values as values.
+    def _getAllSettingValues(self):
+        stack = Application.getInstance().getGlobalContainerStack()
+        setting_values = {}
+
+        definition_containers = [container for container in stack.getContainers() if container.__class__ == DefinitionContainer] #To get all keys, get all definitions from all definition containers.
+        for definition_container in definition_containers:
+            for definition in definition_container.definitions:
+                if definition.key not in setting_values: #Prevent looking up the same key twice, for speed.
+                    setting_values[definition.key] = stack.getProperty(definition.key, "value")
+
+        return setting_values
