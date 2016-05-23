@@ -85,7 +85,7 @@ SettingItem
             anchors
             {
                 left: parent.left
-                leftMargin: UM.Theme.unitRightMargin
+                leftMargin: UM.Theme.getSize("setting_unit_margin").width
                 right: parent.right
                 verticalCenter: parent.verticalCenter
             }
