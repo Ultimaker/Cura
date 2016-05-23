@@ -123,8 +123,7 @@ class CuraEngineBackend(Backend):
 
     ##  Perform a slice of the scene.
     def slice(self):
-
-        if not self._enabled:
+        if not self._enabled: #We shouldn't be slicing.
             return
 
         if self._slicing:
@@ -225,8 +224,13 @@ class CuraEngineBackend(Backend):
             self._profile.settingValueChanged.connect(self._onSettingChanged)
             self._onChanged()
 
-    def _onSettingChanged(self, setting):
-        self._onChanged()
+    ##  A setting has changed, so check if we must reslice.
+    #
+    #   \param instance The setting instance that has changed.
+    #   \param property The property of the setting instance that has changed.
+    def _onSettingChanged(self, instance, property):
+        if property == "value": #Only reslice if the value has changed.
+            self._onChanged()
 
     def _onLayerMessage(self, message):
         self._stored_layer_data.append(message)
