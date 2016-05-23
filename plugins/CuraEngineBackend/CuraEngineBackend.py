@@ -102,7 +102,6 @@ class CuraEngineBackend(Backend):
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
         active_machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
-        json_path = ""
         if not active_machine:
             json_path = Resources.getPath(Resources.MachineDefinitions, "fdmprinter.json")
         else:
