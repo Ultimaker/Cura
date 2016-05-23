@@ -234,7 +234,6 @@ class simpleModePanel(wx.Panel):
 					return button.profile
 			return None
 
-
 	def _materialSelected(self, e):
 		material = self._getSelectedMaterial()
 
