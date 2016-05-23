@@ -11,6 +11,7 @@ from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of 
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
+from UM.Settings.Validator import ValidatorState #To find if a setting is in an error state. We can't slice then.
 
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from . import ProcessSlicedLayersJob
@@ -127,15 +128,26 @@ class CuraEngineBackend(Backend):
             self._process_layers_job.abort()
             self._process_layers_job = None
 
-        #TODO: Re-add don't slice with error stuff.
-        #if self._profile.hasErrorValue():
-        #    Logger.log("w", "Profile has error values. Aborting slicing")
-        #    if self._message:
-        #        self._message.hide()
-        #        self._message = None
-        #    self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
-        #    self._message.show()
-        #    return #No slicing if we have error values since those are by definition illegal values.
+        #Don't slice if there is a setting with an error value.
+        stack = Application.getInstance().getGlobalContainerStack()
+        for key in stack.getAllKeys():
+            validation_state = stack.getProperty(key, "validationState")
+            #Only setting instances have a validation state, so settings which
+            #are not overwritten by any instance will have none. The property
+            #then, and only then, evaluates to None. We make the assumption that
+            #the definition defines the setting with a default value that is
+            #valid. Therefore we can allow both ValidatorState.Valid and None as
+            #allowable validation states.
+            #TODO: This assumption is wrong! If the definition defines an inheritance function that through inheritance evaluates to a disallowed value, a setting is still invalid even though it's default!
+            #TODO: Therefore we must also validate setting definitions.
+            if validation_state != None and validation_state != ValidatorState.Valid:
+                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+                if self._message: #Hide any old message before creating a new one.
+                    self._message.hide()
+                    self._message = None
+                self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
+                self._message.show()
+                return
 
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NOT_STARTED)
