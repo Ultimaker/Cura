@@ -229,10 +229,15 @@ class CuraEngineBackend(Backend):
         if property == "value": #Only reslice if the value has changed.
             self._onChanged()
 
+    ##  Called when a sliced layer data message is received from the engine.
+    #
+    #   \param message The protobuf message containing sliced layer data.
     def _onLayerMessage(self, message):
         self._stored_layer_data.append(message)
 
-
+    ##  Called when a progress message is received from the engine.
+    #
+    #   \param message The protobuf message containing the slicing progress.
     def _onProgressMessage(self, message):
         if self._message:
             self._message.setProgress(round(message.amount * 100))
@@ -240,6 +245,9 @@ class CuraEngineBackend(Backend):
         self.processingProgress.emit(message.amount)
         self.backendStateChange.emit(BackendState.PROCESSING)
 
+    ##  Called when the engine sends a message that slicing is finished.
+    #
+    #   \param message The protobuf message signalling that slicing is finished.
     def _onSlicingFinishedMessage(self, message):
         self.backendStateChange.emit(BackendState.DONE)
         self.processingProgress.emit(1.0)
@@ -256,15 +264,27 @@ class CuraEngineBackend(Backend):
             self._process_layers_job.start()
             self._stored_layer_data = []
 
+    ##  Called when a g-code message is received from the engine.
+    #
+    #   \param message The protobuf message containing g-code, encoded as UTF-8.
     def _onGCodeLayerMessage(self, message):
         self._scene.gcode_list.append(message.data.decode("utf-8", "replace"))
 
+    ##  Called when a g-code prefix message is received from the engine.
+    #
+    #   \param message The protobuf message containing the g-code prefix,
+    #   encoded as UTF-8.
     def _onGCodePrefixMessage(self, message):
         self._scene.gcode_list.insert(0, message.data.decode("utf-8", "replace"))
 
+    ##  Called when a print time message is received from the engine.
+    #
+    #   \param message The protobuf message containing the print time and
+    #   material amount.
     def _onObjectPrintTimeMessage(self, message):
         self.printDurationMessage.emit(message.time, message.material_amount)
 
+    ##  Creates a new socket connection.
     def _createSocket(self):
         super()._createSocket(os.path.abspath(os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "Cura.proto")))
 
@@ -272,25 +292,41 @@ class CuraEngineBackend(Backend):
     def forceSlice(self):
         self._change_timer.start()
 
+    ##  Called when anything has changed to the stuff that needs to be sliced.
+    #
+    #   This indicates that we should probably re-slice soon.
     def _onChanged(self):
         self._change_timer.start()
 
+    ##  Called when the back-end connects to the front-end.
     def _onBackendConnected(self):
         if self._restart:
             self._onChanged()
             self._restart = False
 
+    ##  Called when the user starts using some tool.
+    #
+    #   When the user starts using a tool, we should pause slicing to prevent
+    #   continuously slicing while the user is dragging some tool handle.
+    #
+    #   \param tool The tool that the user is using.
     def _onToolOperationStarted(self, tool):
         self._terminate() # Do not continue slicing once a tool has started
         self._enabled = False # Do not reslice when a tool is doing it's 'thing'
 
+    ##  Called when the user stops using some tool.
+    #
+    #   This indicates that we can safely start slicing again.
+    #
+    #   \param tool The tool that the user was using.
     def _onToolOperationStopped(self, tool):
         self._enabled = True # Tool stop, start listening for changes again.
 
+    ##  Called when the user changes the active view mode.
     def _onActiveViewChanged(self):
         if Application.getInstance().getController().getActiveView():
             view = Application.getInstance().getController().getActiveView()
-            if view.getPluginId() == "LayerView":
+            if view.getPluginId() == "LayerView": #If switching to layer view, we should process the layers if that hasn't been done yet.
                 self._layer_view_active = True
                 # There is data and we're not slicing at the moment
                 # if we are slicing, there is no need to re-calculate the data as it will be invalid in a moment.
@@ -304,6 +340,9 @@ class CuraEngineBackend(Backend):
     def _onInstanceChanged(self):
         self._terminate()
 
+    ##  Called when the back-end self-terminates.
+    #
+    #   We should reset our state and start listening for new connections.
     def _onBackendQuit(self):
         if not self._restart and self._process:
             Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
