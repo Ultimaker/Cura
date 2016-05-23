@@ -549,9 +549,9 @@ UM.MainWindow
             //: View preferences page title
             insertPage(1, catalog.i18nc("@title:tab","View"), Qt.resolvedUrl("ViewPage.qml"));
 
-            insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("MachinesPage.qml"));
+            insertPage(3, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("MachinesPage.qml"));
 
-            insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/MaterialsPage.qml"))
+            insertPage(4, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/MaterialsPage.qml"));
 
             //Force refresh
             setPage(0);
