@@ -35,7 +35,6 @@ class StartSliceJob(Job):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
-        self._settings = Application.getInstance().getGlobalContainerStack()
         self._socket = socket
 
     ##  Runs the job that initiates the slicing.
@@ -85,7 +84,7 @@ class StartSliceJob(Job):
         if not object_groups:
             return
 
-        self._sendSettings(self._profile)
+        self._sendGlobalSettings()
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
 
@@ -122,6 +121,13 @@ class StartSliceJob(Job):
         except:
             Logger.log("w", "Unabled to do token replacement on start/end gcode %s", traceback.format_exc())
             return str(value).encode("utf-8")
+
+    ##  Sends all global settings to the engine.
+    #
+    #   The settings are taken from the global stack. This does not include any
+    #   per-extruder settings or per-object settings.
+    def _sendGlobalSettings(self):
+        pass #TODO: Implement this.
 
     def _sendSettings(self, profile):
         msg = self._socket.createMessage("cura.proto.SettingList")
