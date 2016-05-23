@@ -130,10 +130,17 @@ class StartSliceJob(Job):
     #   per-extruder settings or per-object settings.
     def _sendGlobalSettings(self):
         message = self._socket.createMessage("cura.proto.SettingList")
-        settings = self._getAllSettingValues() #Get all the settings to send.
+
+        #Get all the settings to send.
+        stack = Application.getInstance().getGlobalContainerStack()
+        keys = stack.getAllKeys()
+        settings = { }
+        for key in keys:
+            settings[key] = stack.getProperty(key, "value")
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material_bed_temp_prepend and material_print_temp_prepend.
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
+
         for key, value in settings.items(): #Add all submessages for each individual setting.
             setting_message = message.addRepeatedMessage("settings")
             setting_message.name = key
@@ -163,34 +170,3 @@ class StartSliceJob(Job):
             setting.value = str(value).encode()
 
             Job.yieldThread()
-
-    ##  Gets the current values for all child definitions of a definition.
-    #
-    #   To be clear, it looks up all child definitions, and returns the CURRENT
-    #   VALUE of the keys of these definitions according to the global stack. It
-    #   doesn't return the "value" property in the definition.
-    #
-    #   \param definition The setting definition to get the child settings of.
-    def _getAllChildSettingValues(self, definition):
-        setting_values = { }
-        for child in definition.children:
-            setting_values[child.key] = self._stack.getProperty(child.key, "value")
-            for key, value in self._getAllChildSettingValues(child).items():
-                setting_values[key] = value
-        return setting_values
-
-    ##  Gets all setting values as a dictionary.
-    #
-    #   \return A dictionary with the setting keys as keys and the setting
-    #   values as values.
-    def _getAllSettingValues(self):
-        setting_values = {}
-
-        definition_containers = [container for container in self._stack.getContainers() if container.__class__ == DefinitionContainer] #To get all keys, get all definitions from all definition containers.
-        for definition_container in definition_containers:
-            for definition in definition_container.definitions:
-                setting_values[definition.key] = self._stack.getProperty(definition.key, "value")
-                for key, value in self._getAllChildSettingValues(definition).items():
-                    setting_values[key] = value
-
-        return setting_values
