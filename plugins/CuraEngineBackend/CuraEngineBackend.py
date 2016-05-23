@@ -221,15 +221,6 @@ class CuraEngineBackend(Backend):
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("e", "A socket error caused the connection to be reset")
 
-    def _onActiveProfileChanged(self):
-        if self._profile:
-            self._profile.settingValueChanged.disconnect(self._onSettingChanged)
-
-        self._profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if self._profile:
-            self._profile.settingValueChanged.connect(self._onSettingChanged)
-            self._onChanged()
-
     ##  A setting has changed, so check if we must reslice.
     #
     #   \param instance The setting instance that has changed.
