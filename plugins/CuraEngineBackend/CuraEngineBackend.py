@@ -101,12 +101,7 @@ class CuraEngineBackend(Backend):
     #   This is useful for debugging and used to actually start the engine.
     #   \return list of commands and args / parameters.
     def getEngineCommand(self):
-        active_machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
-        if not active_machine:
-            json_path = Resources.getPath(Resources.MachineDefinitions, "fdmprinter.json")
-        else:
-            json_path = active_machine.getMachineDefinition().getPath()
-
+        json_path = Resources.getPath(Resources.DefinitionContainers, "fdmprinter.def.json")
         return [Preferences.getInstance().getValue("backend/location"), "connect", "127.0.0.1:{0}".format(self._port), "-j", json_path, "-vv"]
 
     ##  Emitted when we get a message containing print duration and material amount. This also implies the slicing has finished.
