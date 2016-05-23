@@ -37,6 +37,7 @@ class StartSliceJob(Job):
 
         self._scene = Application.getInstance().getController().getScene()
         self._socket = socket
+        self._stack = Application.getInstance().getGlobalContainerStack()
 
     ##  Runs the job that initiates the slicing.
     def run(self):
@@ -130,6 +131,7 @@ class StartSliceJob(Job):
     def _sendGlobalSettings(self):
         message = self._socket.createMessage("cura.proto.SettingList")
         settings = self._getAllSettingValues() #Get all the settings to send.
+        print(settings)
         start_gcode = settings["machine_start_gcode"]
         settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material_bed_temp_prepend and material_print_temp_prepend.
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
@@ -163,18 +165,33 @@ class StartSliceJob(Job):
 
             Job.yieldThread()
 
+    ##  Gets the current values for all child definitions of a definition.
+    #
+    #   To be clear, it looks up all child definitions, and returns the CURRENT
+    #   VALUE of the keys of these definitions according to the global stack. It
+    #   doesn't return the "value" property in the definition.
+    #
+    #   \param definition The setting definition to get the child settings of.
+    def _getAllChildSettingValues(self, definition):
+        setting_values = { }
+        for child in definition.children:
+            setting_values[child.key] = self._stack.getProperty(child.key, "value")
+            for key, value in self._getAllChildSettingValues(child).items():
+                setting_values[key] = value
+        return setting_values
+
     ##  Gets all setting values as a dictionary.
     #
     #   \return A dictionary with the setting keys as keys and the setting
     #   values as values.
     def _getAllSettingValues(self):
-        stack = Application.getInstance().getGlobalContainerStack()
         setting_values = {}
 
-        definition_containers = [container for container in stack.getContainers() if container.__class__ == DefinitionContainer] #To get all keys, get all definitions from all definition containers.
+        definition_containers = [container for container in self._stack.getContainers() if container.__class__ == DefinitionContainer] #To get all keys, get all definitions from all definition containers.
         for definition_container in definition_containers:
             for definition in definition_container.definitions:
-                if definition.key not in setting_values: #Prevent looking up the same key twice, for speed.
-                    setting_values[definition.key] = stack.getProperty(definition.key, "value")
+                setting_values[definition.key] = self._stack.getProperty(definition.key, "value")
+                for key, value in self._getAllChildSettingValues(definition).items():
+                    setting_values[key] = value
 
         return setting_values
