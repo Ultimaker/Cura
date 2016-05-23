@@ -62,8 +62,6 @@ class ProcessSlicedLayersJob(Job):
                     self._progress.hide()
                 return
 
-        settings = Application.getInstance().getMachineManager().getWorkingProfile()
-
         mesh = MeshData()
         layer_data = LayerData.LayerData()
         layer_count = len(self._layers)
@@ -132,8 +130,9 @@ class ProcessSlicedLayersJob(Job):
         new_node.setMeshData(mesh)
         new_node.setParent(self._scene.getRoot())  # Note: After this we can no longer abort!
 
-        if not settings.getSettingValue("machine_center_is_zero"):
-            new_node.setPosition(Vector(-settings.getSettingValue("machine_width") / 2, 0.0, settings.getSettingValue("machine_depth") / 2))
+        settings = Application.getInstance().getGlobalContainerStack()
+        if not settings.getProperty("machine_center_is_zero", "value"):
+            new_node.setPosition(Vector(-settings.getProperty("machine_width", "value") / 2, 0.0, settings.getProperty("machine_depth", "value") / 2))
 
         if self._progress:
             self._progress.setProgress(100)
