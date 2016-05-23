@@ -18,14 +18,6 @@
         ]
     },
 
-    "settings": {
-        "machine_extruder_drive_upgrade": {
-            "label": "Extruder Drive Upgrade",
-            "description": "This machine has the extruder drive upgrade.",
-            "type": "bool",
-            "default_value": false
-        }
-    },
     "overrides": {
         "machine_width": {
             "default_value": 205
