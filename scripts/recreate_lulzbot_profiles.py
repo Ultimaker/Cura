@@ -113,11 +113,10 @@ material_map = {
     "NGEN_semiflex": "nGen-semiflex",
     
     #Experimental
-    "carbon_fiber": "PP-carbon-fiber-PLA",
-    "XAM3300": "XAM3300",
     "HT": "HT",
-    "bpet": "b-pet",
+    "b-pet": "b-pet",
     "PC-MAX": "polymaker-PC-MAX",
+    "wood-bamboo": "woodFill-bambooFill",
 }
 
 material_order = {
@@ -189,11 +188,10 @@ material_order = {
     "NGEN_semiflex":      109,
     
     #Experimental
-    "XAM3300":           5000,
-    "carbon_fiber":      5001,
-    "HT":                5002,
-    "bpet":              5003,
-    "PC-MAX":            5004,
+    "HT":                5001,
+    "b-pet":             5002,
+    "PC-MAX":            5003,
+    "wood-bamboo":       5004,
 }
 
 material_types = {
@@ -335,11 +333,10 @@ material_names = {
     "NGEN_semiflex": "nGen & Semiflex",
     
     # Experimental
-    "carbon_fiber": "Carbon Fiber PLA",
-    "XAM3300": "XAM3300",
     "HT": "HT (colorFabb)",
-    "bpet": "B-Pet",
+    "b-pet": "B-Pet",
     "PC-MAX": "PC-MAX (Polymaker)",
+    "wood-bamboo": "WoodFill & BambooFill",
 }
 
 material_url = {
@@ -410,11 +407,10 @@ material_url = {
 #    "NGEN_semiflex": "",
 
     # Expert
-#    "carbon_fiber": " "",
-#    "XAM3300": "",
 #    "HT": "",
-#    "bpet": "",
+#    "b-pet": "",
 #    "PC-MAX": "",
+#    "wood-bamboo: " "",
 }
 
 bed_prep_materials = {
@@ -431,7 +427,6 @@ bed_prep_materials = {
     "618-Nylon",
     "645-Nylon",
     "PC-ABS",
-    "carbon_fiber",
 }
 
 profile_map = {
@@ -483,9 +478,7 @@ def get_description(material):
         description_data = \
             "* Experimental profile\n" + \
             " use at your own risk!"
-    if material in bed_prep_materials:
-        if description_data is not "":
-            description_data += "\n"
+    elif material in bed_prep_materials:
         description_data += \
             "Bed preparation required: \n" + \
             " Apply a PVA-based glue stick \n" + \
