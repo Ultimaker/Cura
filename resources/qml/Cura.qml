@@ -551,6 +551,8 @@ UM.MainWindow
 
             insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("MachinesPage.qml"));
 
+            insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/MaterialsPage.qml"))
+
             //Force refresh
             setPage(0);
         }
