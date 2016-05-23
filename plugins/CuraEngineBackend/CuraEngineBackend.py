@@ -154,7 +154,7 @@ class CuraEngineBackend(Backend):
         self._slicing = True
         self.slicingStarted.emit()
 
-        job = StartSliceJob.StartSliceJob(self._profile, self._socket)
+        job = StartSliceJob.StartSliceJob(self._socket)
         job.start()
         job.finished.connect(self._onStartSliceCompleted)
 

@@ -31,11 +31,11 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job that handles sending the current scene data to CuraEngine
 class StartSliceJob(Job):
-    def __init__(self, profile, socket):
+    def __init__(self, socket):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
-        self._profile = profile
+        self._settings = Application.getInstance().getGlobalContainerStack()
         self._socket = socket
 
     ##  Runs the job that initiates the slicing.
