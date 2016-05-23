@@ -193,7 +193,17 @@ class CuraApplication(QtApplication):
     ## Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def _onExit(self):
         for instance in ContainerRegistry.getInstance().findInstanceContainers():
-            data = instance.serialize()
+            if not instance.isDirty():
+                continue
+
+            try:
+                data = instance.serialize()
+            except NotImplementedError:
+                continue
+            except Exception:
+                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                continue
+
             file_name = urllib.parse.quote_plus(instance.getId()) + ".inst.cfg"
             instance_type = instance.getMetaDataEntry("type")
             path = None
@@ -211,7 +221,17 @@ class CuraApplication(QtApplication):
                     f.write(data)
 
         for stack in ContainerRegistry.getInstance().findContainerStacks():
-            data = stack.serialize()
+            if not stack.isDirty():
+                continue
+
+            try:
+                data = stack.serialize()
+            except NotImplementedError:
+                continue
+            except Exception:
+                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                continue
+
             file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
             path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
             with SaveFile(path, "wt", -1, "utf-8") as f:
