@@ -190,9 +190,9 @@ class ProfileIni(object):
 		return profile_dict
 
 	def __cmp__(self, cmp):
-		if self.order < cmp.order:
+		if self.name < cmp.name:
 			return -1
-		elif self.order == cmp.order:
+		elif self.name == cmp.name:
 			return 0
 		else:
 			return 1
@@ -247,6 +247,13 @@ class PrintMaterial(ProfileIni):
 		return "%s%s: %d - Profiles : %s - Options - %s\n" % (self.name, "(disabled)" if self.disabled else "",
 															  self.order, self.profiles, self.options)
 
+def alphaAndExperimental(item):
+	has_special = False
+	experimental_indicator = '*'
+	key = item.name
+	if key.startswith(experimental_indicator):
+		has_special = True
+	return has_special, key.lstrip(experimental_indicator).lower()
 
 def getSimpleModeMaterials():
 	machine_type = profile.getMachineSetting('machine_type')
@@ -278,7 +285,7 @@ def getSimpleModeMaterials():
 								ini.parseDirectory(os.path.split(material_file)[0])
 								break
 
-	materials.sort()
+	materials.sort(key=alphaAndExperimental)
 	for material in materials:
 		material.addGlobalOptions(global_options)
 

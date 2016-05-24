@@ -111,6 +111,12 @@ material_map = {
     "INOVA_ninjaflex": "CS-INOVA-1800-Ninjaflex",
     "NGEN_ninjaflex": "nGen-ninjaflex",
     "NGEN_semiflex": "nGen-semiflex",
+    
+    #Experimental
+    "HT": "HT",
+    "b-pet": "b-pet",
+    "PC-MAX": "polymaker-PC-MAX",
+    "wood-bamboo": "woodFill-bambooFill",
 }
 
 material_order = {
@@ -180,6 +186,12 @@ material_order = {
     "INOVA_ninjaflex":    107,
     "NGEN_ninjaflex":     108,
     "NGEN_semiflex":      109,
+    
+    #Experimental
+    "HT":                5001,
+    "b-pet":             5002,
+    "PC-MAX":            5003,
+    "wood-bamboo":       5004,
 }
 
 material_types = {
@@ -248,6 +260,8 @@ material_types = {
     "INOVA_ninjaflex": "Expert",
     "NGEN_ninjaflex": "Expert",
     "NGEN_semiflex": "Expert",
+    
+    # 'Experimental' is assumed when the material has no other category 
 }
 
 material_names = {
@@ -317,6 +331,12 @@ material_names = {
     "INOVA_ninjaflex": "INOVA & Ninjaflex",
     "NGEN_ninjaflex": "nGen & Ninjaflex",
     "NGEN_semiflex": "nGen & Semiflex",
+    
+    # Experimental
+    "HT": "HT (colorFabb)",
+    "b-pet": "B-Pet",
+    "PC-MAX": "PC-MAX (Polymaker)",
+    "wood-bamboo": "WoodFill & BambooFill",
 }
 
 material_url = {
@@ -385,6 +405,12 @@ material_url = {
     "INOVA_ninjaflex": "lulzbot.com/store/filament/inova-1800",
 #    "NGEN_ninjaflex": "",
 #    "NGEN_semiflex": "",
+
+    # Expert
+#    "HT": "",
+#    "b-pet": "",
+#    "PC-MAX": "",
+#    "wood-bamboo: " "",
 }
 
 bed_prep_materials = {
@@ -400,7 +426,7 @@ bed_prep_materials = {
     "T-Glase",
     "618-Nylon",
     "645-Nylon",
-    "PC-ABS"
+    "PC-ABS",
 }
 
 profile_map = {
@@ -435,7 +461,30 @@ def find_files_for_material(files, material):
                     profile = p
                     result.append((file, material, profile))
     return result
-    
+
+def is_experimental(material):
+    return material not in material_types
+
+def get_material_display_name(material):
+    material_name = ""
+    if is_experimental(material):
+        material_name += "* "
+    material_name += material_names[material]
+    return material_name
+
+def get_description(material):
+    description_data = ""
+    if is_experimental(material):
+        description_data = \
+            "* Experimental profile\n" + \
+            " use at your own risk!"
+    elif material in bed_prep_materials:
+        description_data += \
+            "Bed preparation required: \n" + \
+            " Apply a PVA-based glue stick \n" + \
+            " to bed surface before printing."
+    return description_data
+
 def create_machine_type(machine_type, path, dir):
     files = glob.glob(os.path.join(path, "*.ini"))
     path = os.path.join(CURA_QUICKPRINT_DIR, machine_type)
@@ -451,7 +500,7 @@ def create_machine_type(machine_type, path, dir):
                 os.makedirs(os.path.join(path, material, profile))
             with open(os.path.join(path, material, "material.ini"), "w") as f:
                 f.write("[info]\n")
-                f.write("name = %s\n" % material_names[material])
+                f.write("name = %s\n" % get_material_display_name(material))
                 order = material_order[material]
                 if material_types.has_key(material):
                     types = material_types[material]
@@ -461,13 +510,13 @@ def create_machine_type(machine_type, path, dir):
                         (material == "nGen" and machine_type.startswith("lulzbot_TAZ_6"))):
                         types = types + "|First Run"
                         order = 0
-                    f.write("material_types = %s\n" % types)
+                if is_experimental(material):
+                    types = "Experimental"
+                f.write("material_types = %s\n" % types)
                 f.write("order = %d\n" % order)
-                if material in bed_prep_materials:
-                    f.write("description = \
-                    Bed preparation required: \n\
-                    Apply a PVA-based glue stick \n\
-                    to bed surface before printing.\n")
+                description_data = get_description(material)
+                if description_data is not "":
+                    f.write("description = %s\n" % description_data)
                 if material_url.has_key(material):
                     referer = "?pk_campaign=software-cura"
                     f.write("url = %s%s\n" %(material_url[material], referer) )
