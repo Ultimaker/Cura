@@ -109,9 +109,10 @@ material_map = {
     "HIPS_ninjaflex": "HIPS-ninjaflex",
     "HIPS_semiflex": "HIPS-semiflex",
     "PLA_PVA": "PLA-PVA-support",
-    "INOVA_ninjaflex": "CS-INOVA-1800-Ninjaflex",
+    "INOVA_ninjaflex": "CS-INOVA-1800-ninjaflex",
     "NGEN_ninjaflex": "nGen-ninjaflex",
     "NGEN_semiflex": "nGen-semiflex",
+    "INOVA_semiflex": "CS-INOVA-1800-semiflex",
     
     #Experimental
     "HT": "HT",
@@ -188,6 +189,7 @@ material_order = {
     "INOVA_ninjaflex":    107,
     "NGEN_ninjaflex":     108,
     "NGEN_semiflex":      109,
+    "INOVA_semiflex":     110,
     
     #Experimental
     "HT":                5001,
@@ -263,6 +265,7 @@ material_types = {
     "INOVA_ninjaflex": "Expert",
     "NGEN_ninjaflex": "Expert",
     "NGEN_semiflex": "Expert",
+    "INOVA_semiflex": "Expert",
     
     # 'Experimental' is assumed when the material has no other category 
 }
@@ -335,6 +338,7 @@ material_names = {
     "INOVA_ninjaflex": "INOVA & Ninjaflex",
     "NGEN_ninjaflex": "nGen & Ninjaflex",
     "NGEN_semiflex": "nGen & Semiflex",
+    "INOVA_semiflex": "INOVA & Semiflex",
     
     # Experimental
     "HT": "HT (colorFabb)",
@@ -410,6 +414,7 @@ material_url = {
     "INOVA_ninjaflex": "lulzbot.com/store/filament/inova-1800",
 #    "NGEN_ninjaflex": "",
 #    "NGEN_semiflex": "",
+#    "INOVA_semiflex": "",
 
     # Expert
 #    "HT": "",
