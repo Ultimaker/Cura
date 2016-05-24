@@ -44,6 +44,7 @@ ScrollView
             property var settingDefinitionsModel: definitionsModel
             property var propertyProvider: provider
 
+            //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
             asynchronous: true
 
             source:
