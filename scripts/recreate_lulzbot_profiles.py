@@ -426,7 +426,7 @@ material_url = {
 #    "ABS_scaffold": "",
 #    "HIPS_scaffold": "",
 
-    # Expert
+    # Experimental
 #    "HT": "",
 #    "b-pet": "",
 #    "PC-MAX": "",
