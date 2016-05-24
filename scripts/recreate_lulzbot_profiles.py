@@ -99,6 +99,7 @@ material_map = {
     "BRIDGE_PVA": "Bridge-PVA-support",
     "NGEN-NGEN": "nGen-nGen",
     "INOVA-INOVA": "CS-INOVA-1800-CS-INOVA-1800",
+    "ABS_BRIDGE": "ABS-Bridge",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "ABS-ninjaflex",
@@ -174,6 +175,7 @@ material_order = {
     "BRIDGE_PVA":          27,
     "NGEN-NGEN":           28,
     "INOVA-INOVA":         29,
+    "ABS_BRIDGE":          30,
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex":      100,
@@ -249,6 +251,7 @@ material_types = {
     "BRIDGE_PVA": "Expert",
     "NGEN-NGEN": "Expert",
     "INOVA-INOVA": "Expert",
+    "ABS_BRIDGE": "Expert",
     
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "Expert",
@@ -319,6 +322,7 @@ material_names = {
     "BRIDGE_PVA": "Bridge & PVA Support",
     "NGEN-NGEN": "nGen & nGen",
     "INOVA-INOVA": "INOVA & INOVA",
+    "ABS_BRIDGE": "ABS & Bridge",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "ABS & NinjaFlex",
@@ -393,6 +397,7 @@ material_url = {
     "BRIDGE_PVA": "lulzbot.com/store/filament/bridge-nylon",
 #    "NGEN-NGEN": "",
     "INOVA-INOVA": "lulzbot.com/store/filament/inova-1800",
+#    "ABS_BRIDGE": "",
 
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "lulzbot.com/store/filament/ninjaflex",
