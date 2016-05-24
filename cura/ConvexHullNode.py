@@ -1,6 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
+from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Math.Color import Color
@@ -8,7 +9,6 @@ from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the convex hull with.
 
 from UM.View.GL.OpenGL import OpenGL
-from UM.Logger import spy
 
 class ConvexHullNode(SceneNode):
     ##  Convex hull node is a special type of scene node that is used to display a 2D area, to indicate the
@@ -83,8 +83,9 @@ class ConvexHullNode(SceneNode):
         return True
 
     def _onNodePositionChanged(self, node):
-        if node.callDecoration("getConvexHull"):
-            self.setParent(None)  # Garbage collection should delete this node after a while.
+        if Application.getInstance().getController().isToolOperationActive():
+            if node.callDecoration("getConvexHull"):
+                self.setParent(None)  # Garbage collection should delete this node after a while.
 
     def _onNodeParentChanged(self, node):
         if node.getParent():
