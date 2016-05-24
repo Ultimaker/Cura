@@ -45,7 +45,7 @@ ScrollView
             property var propertyProvider: provider
 
             //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
-            asynchronous: true
+            asynchronous: QT_VERSION_STR.split(".")[1] >= 5
 
             source:
             {
