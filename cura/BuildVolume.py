@@ -104,7 +104,7 @@ class BuildVolume(SceneNode):
         mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self.VolumeOutlineColor)
         mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self.VolumeOutlineColor)
 
-        self.setMeshData(mb.getData())
+        self.setMeshData(mb.build())
 
         mb = MeshBuilder()
         mb.addQuad(
@@ -116,7 +116,7 @@ class BuildVolume(SceneNode):
         for n in range(0, 6):
             v = mb.getVertex(n)
             mb.setVertexUVCoordinates(n, v[0], v[2])
-        self._grid_mesh = mb.getData()
+        self._grid_mesh = mb.build()
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
@@ -141,7 +141,7 @@ class BuildVolume(SceneNode):
                     size = 0
                 disallowed_area_size = max(size, disallowed_area_size)
 
-            self._disallowed_area_mesh = mb.getData()
+            self._disallowed_area_mesh = mb.build()
         else:
             self._disallowed_area_mesh = None
 
