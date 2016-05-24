@@ -13,7 +13,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("@info:whatsthis", "Writes GCode to a file."),
-            "api": 2
+            "api": 3
         },
 
         "mesh_writer": {

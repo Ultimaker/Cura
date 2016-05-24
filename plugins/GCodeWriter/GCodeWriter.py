@@ -32,7 +32,7 @@ class GCodeWriter(MeshWriter):
 
     def write(self, stream, node, mode = MeshWriter.OutputMode.TextMode):
         if mode != MeshWriter.OutputMode.TextMode:
-            Logger.log("e", "GCode Writer does not support non-text mode")
+            Logger.log("e", "GCode Writer does not support non-text mode.")
             return False
 
         scene = Application.getInstance().getController().getScene()
@@ -40,26 +40,27 @@ class GCodeWriter(MeshWriter):
         if gcode_list:
             for gcode in gcode_list:
                 stream.write(gcode)
-            # Serialise the profile and put them at the end of the file.
-            profile = self._serialiseProfile(Application.getInstance().getMachineManager().getWorkingProfile())
-            stream.write(profile)
+            # Serialise the current container stack and put it at the end of the file.
+            settings = self._serialiseSettings(Application.getInstance().getGlobalContainerStack())
+            stream.write(settings)
             return True
 
         return False
 
-    ##  Serialises the profile to prepare it for saving in the g-code.
+    ##  Serialises a container stack to prepare it for writing at the end of the
+    #   g-code.
     #
-    #   The profile are serialised, and special characters (including newline)
+    #   The settings are serialised, and special characters (including newline)
     #   are escaped.
     #
-    #   \param profile The profile to serialise.
-    #   \return A serialised string of the profile.
-    def _serialiseProfile(self, profile):
+    #   \param settings A container stack to serialise.
+    #   \return A serialised string of the settings.
+    def _serialiseSettings(self, settings):
         prefix = ";SETTING_" + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
-        # Serialise a deepcopy to remove the defaults from the profile
-        serialised = copy.deepcopy(profile).serialise()
+        #TODO: This just serialises the container stack, which only indicates the IDs of the containers in that stack, not the settings themselves, making this about 9001x as useless as the fax functionality in Adobe Acrobat.
+        serialised = settings.serialize()
 
         # Escape characters that have a special meaning in g-code comments.
         pattern = re.compile("|".join(GCodeWriter.escape_characters.keys()))
