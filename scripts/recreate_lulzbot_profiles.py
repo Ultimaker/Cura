@@ -113,6 +113,8 @@ material_map = {
     "NGEN_ninjaflex": "nGen-ninjaflex",
     "NGEN_semiflex": "nGen-semiflex",
     "INOVA_semiflex": "CS-INOVA-1800-semiflex",
+    "ABS_scaffold": "ABS-scaffold-support",
+    "HIPS_scaffold": "HIPS-scaffold-support",
     
     #Experimental
     "HT": "HT",
@@ -190,6 +192,8 @@ material_order = {
     "NGEN_ninjaflex":     108,
     "NGEN_semiflex":      109,
     "INOVA_semiflex":     110,
+    "ABS_scaffold":       111,
+    "HIPS_scaffold":      112,
     
     #Experimental
     "HT":                5001,
@@ -266,6 +270,8 @@ material_types = {
     "NGEN_ninjaflex": "Expert",
     "NGEN_semiflex": "Expert",
     "INOVA_semiflex": "Expert",
+    "ABS_scaffold": "Expert",
+    "HIPS_scaffold": "Expert",
     
     # 'Experimental' is assumed when the material has no other category 
 }
@@ -339,6 +345,8 @@ material_names = {
     "NGEN_ninjaflex": "nGen & Ninjaflex",
     "NGEN_semiflex": "nGen & Semiflex",
     "INOVA_semiflex": "INOVA & Semiflex",
+    "ABS_scaffold": "ABS & Scaffold Support",
+    "HIPS_scaffold": "HIPS & Scaffold Support",
     
     # Experimental
     "HT": "HT (colorFabb)",
@@ -415,6 +423,8 @@ material_url = {
 #    "NGEN_ninjaflex": "",
 #    "NGEN_semiflex": "",
 #    "INOVA_semiflex": "",
+#    "ABS_scaffold": "",
+#    "HIPS_scaffold": "",
 
     # Expert
 #    "HT": "",
