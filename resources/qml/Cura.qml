@@ -813,7 +813,7 @@ UM.MainWindow
                 base.visible = true;
                 restart();
             }
-            else if(UM.MachineManager.activeMachineInstance == "")
+            else if(Cura.MachineManager.activeMachineName == "")
             {
                 addMachineDialog.firstRun = true;
                 addMachineDialog.open();
