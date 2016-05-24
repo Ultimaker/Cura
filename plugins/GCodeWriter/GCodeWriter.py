@@ -6,7 +6,16 @@ from UM.Logger import Logger
 from UM.Application import Application
 import re #For escaping characters in the settings.
 
-
+##  Writes g-code to a file.
+#
+#   While this poses as a mesh writer, what this really does is take the g-code
+#   in the entire scene and write it to an output device. Since the g-code of a
+#   single mesh isn't separable from the rest what with rafts and travel moves
+#   and all, it doesn't make sense to write just a single mesh.
+#
+#   So this plug-in takes the g-code that is stored in the root of the scene
+#   node tree, adds a bit of extra information about the profiles and writes
+#   that to the output device.
 class GCodeWriter(MeshWriter):
     ##  The file format version of the serialised g-code.
     #
