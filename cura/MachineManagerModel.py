@@ -63,33 +63,51 @@ class MachineManagerModel(QObject):
     def addMachine(self,name, definition_id):
         definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
         if definitions:
+            definition = definitions[0]
+
             new_global_stack = UM.Settings.ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
+            empty_container = UM.Settings.ContainerRegistry.getInstance().getEmptyInstanceContainer()
+
+            variants = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "variant", definition = definition.id)
+            if variants:
+                new_global_stack.addMetaDataEntry("has_variants", True)
+
+            preferred_variant_id = definitions[0].getMetaDataEntry("preferred_variant")
+            variant_instance_container = empty_container
+            if preferred_variant_id:
+                preferred_variant_id = preferred_variant_id.lower()
+                container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = preferred_variant_id)
+                if container:
+                    variant_instance_container = container[0]
+
+            if variants and variant_instance_container == empty_container:
+                variant_instance_container = variants[0]
+
+            materials = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "material", definition = definition.id)
+            if materials:
+                new_global_stack.addMetaDataEntry("has_materials", True)
 
             preferred_material_id = definitions[0].getMetaDataEntry("preferred_material")
-            material_instance_container = None
+            material_instance_container = empty_container
             if preferred_material_id:
                 preferred_material_id = preferred_material_id.lower()
                 container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = preferred_material_id)
                 if container:
                     material_instance_container = container[0]
 
+            if materials and material_instance_container == empty_container:
+                material_instance_container = materials[0]
+
             preferred_quality_id = definitions[0].getMetaDataEntry("preferred_quality")
-            quality_instance_container = None
+            quality_instance_container = empty_container
             if preferred_quality_id:
                 preferred_quality_id = preferred_quality_id.lower()
                 container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = preferred_quality_id)
                 if container:
                     quality_instance_container = container[0]
-
-            ## DEBUG CODE
-            variant_instance_container = UM.Settings.InstanceContainer("test_variant")
-            variant_instance_container.addMetaDataEntry("type", "variant")
-            variant_instance_container.setDefinition(definitions[0])
-
-            UM.Settings.ContainerRegistry.getInstance().addContainer(variant_instance_container)
 
             current_settings_instance_container = UM.Settings.InstanceContainer(name + "_current_settings")
             current_settings_instance_container.addMetaDataEntry("machine", name)
@@ -99,9 +117,10 @@ class MachineManagerModel(QObject):
 
             # If a definition is found, its a list. Should only have one item.
             new_global_stack.addContainer(definitions[0])
+            if variant_instance_container:
+                new_global_stack.addContainer(variant_instance_container)
             if material_instance_container:
                 new_global_stack.addContainer(material_instance_container)
-            new_global_stack.addContainer(variant_instance_container)
             if quality_instance_container:
                 new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
