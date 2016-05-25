@@ -56,28 +56,28 @@ Rectangle
         configureMachinesAction: base.configureMachinesAction;
     }
 
-    Rectangle {
-        id: headerSeparator
-        width: parent.width
-        height: UM.Theme.getSize("sidebar_lining").height
-        color: UM.Theme.getColor("sidebar_lining")
-        anchors.top: header.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-    }
-
     ProfileSetup {
         id: profileItem
         addProfileAction: base.addProfileAction
         updateProfileAction: base.updateProfileAction
         resetProfileAction: base.resetProfileAction
         manageProfilesAction: base.manageProfilesAction
-        anchors.top: settingsModeSelection.bottom
+        anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width
         height: totalHeightProfileSetup
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
+    }
+
+    Rectangle {
+        id: headerSeparator
+        width: parent.width
+        height: UM.Theme.getSize("sidebar_lining").height
+        color: UM.Theme.getColor("sidebar_lining")
+        anchors.top: profileItem.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
     }
 
     currentModeIndex:
@@ -172,7 +172,7 @@ Rectangle
         id: sidebarContents
 
         anchors.bottom: footerSeparator.top
-        anchors.top: profileItem.bottom
+        anchors.top: settingsModeSelection.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.right: base.right

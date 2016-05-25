@@ -25,23 +25,11 @@ Item
         color: UM.Theme.getColor("sidebar_header_bar")
     }
 
-    Label{
-        id: printjobTabLabel
-        text: catalog.i18nc("@label:listbox","Print Job");
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-        anchors.top: sidebarTabRow.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width/100*45
-        font: UM.Theme.getFont("large");
-        color: UM.Theme.getColor("text")
-    }
-
     Rectangle {
         id: machineSelectionRow
         width: base.width
         height: UM.Theme.getSize("sidebar_setup").height
-        anchors.top: printjobTabLabel.bottom
+        anchors.top: sidebarTabRow.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
 
