@@ -110,78 +110,111 @@ class MachineManagerModel(QObject):
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):
-        return Application.getInstance().getGlobalContainerStack().getName()
+        if self._global_container_stack:
+            return self._global_container_stack.getName()
+
+        return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineId(self):
-        return Application.getInstance().getGlobalContainerStack().getId()
+        if self._global_container_stack:
+            return self._global_container_stack.getId()
+
+        return ""
 
     @pyqtProperty(str, notify = activeMaterialChanged)
     def activeMaterialName(self):
-        material = Application.getInstance().getGlobalContainerStack().findContainer({"type":"material"})
-        if material:
-            return material.getName()
+        if self._global_container_stack:
+            material = self._global_container_stack.findContainer({"type":"material"})
+            if material:
+                return material.getName()
+
+        return ""
 
     @pyqtProperty(str, notify=activeMaterialChanged)
     def activeMaterialId(self):
-        material = Application.getInstance().getGlobalContainerStack().findContainer({"type": "material"})
-        if material:
-            return material.getId()
+        if self._global_container_stack:
+            material = self._global_container_stack.findContainer({"type": "material"})
+            if material:
+                return material.getId()
+
+        return ""
 
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityName(self):
-        quality = Application.getInstance().getGlobalContainerStack().findContainer({"type": "quality"})
-        if quality:
-            return quality.getName()
+        if self._global_container_stack:
+            quality = self._global_container_stack.findContainer({"type": "quality"})
+            if quality:
+                return quality.getName()
+        return ""
 
     @pyqtProperty(str, notify=activeQualityChanged)
     def activeQualityId(self):
-        quality = Application.getInstance().getGlobalContainerStack().findContainer({"type": "quality"})
-        if quality:
-            return quality.getId()
+        if self._global_container_stack:
+            quality = self._global_container_stack.findContainer({"type": "quality"})
+            if quality:
+                return quality.getId()
+        return ""
 
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=material_id)
-        old_material = Application.getInstance().getGlobalContainerStack().findContainer({"type":"material"})
+        if not containers or not self._global_container_stack:
+            return
+
+        old_material = self._global_container_stack.findContainer({"type":"material"})
         if old_material:
-            material_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_material)
-            Application.getInstance().getGlobalContainerStack().replaceContainer(material_index, containers[0])
+            material_index = self._global_container_stack.getContainerIndex(old_material)
+            self._global_container_stack.replaceContainer(material_index, containers[0])
 
     @pyqtSlot(str)
     def setActiveVariant(self, variant_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=variant_id)
-        old_variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
+        if not containers or not self._global_container_stack:
+            return
+
+        old_variant = self._global_container_stack.findContainer({"type": "variant"})
         if old_variant:
-            variant_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_variant)
-            Application.getInstance().getGlobalContainerStack().replaceContainer(variant_index, containers[0])
+            variant_index = self._global_container_stack.getContainerIndex(old_variant)
+            self._global_container_stack.replaceContainer(variant_index, containers[0])
 
     @pyqtSlot(str)
     def setActiveQuality(self, quality_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = quality_id)
-        old_quality = Application.getInstance().getGlobalContainerStack().findContainer({"type": "quality"})
+        if not containers or not self._global_container_stack:
+            return
+
+        old_quality = self._global_container_stack.findContainer({"type": "quality"})
         if old_quality:
-            quality_index = Application.getInstance().getGlobalContainerStack().getContainerIndex(old_quality)
-            Application.getInstance().getGlobalContainerStack().replaceContainer(quality_index, containers[0])
+            quality_index = self._global_container_stack.getContainerIndex(old_quality)
+            self._global_container_stack.replaceContainer(quality_index, containers[0])
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantName(self):
-        variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
-        if variant:
-            return variant.getName()
+        if self._global_container_stack:
+            variant = self._global_container_stack.findContainer({"type": "variant"})
+            if variant:
+                return variant.getName()
+
+        return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def activeVariantId(self):
-        variant = Application.getInstance().getGlobalContainerStack().findContainer({"type": "variant"})
-        if variant:
-            return variant.getId()
+        if self._global_container_stack:
+            variant = self._global_container_stack.findContainer({"type": "variant"})
+            if variant:
+                return variant.getId()
+
+        return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeDefinitionId(self):
-        definition = Application.getInstance().getGlobalContainerStack().getBottom()
-        if definition:
-            return definition.id
-        return None
+        if self._global_container_stack:
+            definition = self._global_container_stack.getBottom()
+            if definition:
+                return definition.id
+
+        return ""
 
     @pyqtSlot(str, str)
     def renameMachine(self, machine_id, new_name):
@@ -193,17 +226,19 @@ class MachineManagerModel(QObject):
     def removeMachine(self, machine_id):
         UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
 
-    @pyqtProperty(bool)
+    @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self):
-        # Todo: Still hardcoded.
-        #  We should implement this properly when it's clear how a machine notifies us if it can handle materials
-        return True
+        if self._global_container_stack:
+            return self._global_container_stack.getMetaDataEntry("has_materials", False)
 
-    @pyqtProperty(bool)
+        return False
+
+    @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariants(self):
-        # Todo: Still hardcoded.
-        #  We should implement this properly when it's clear how a machine notifies us if it can handle variants
-        return True
+        if self._global_container_stack:
+            return self._global_container_stack.getMetaDataEntry("has_variants", False)
+
+        return False
 
 def createMachineManagerModel(engine, script_engine):
     return MachineManagerModel()
