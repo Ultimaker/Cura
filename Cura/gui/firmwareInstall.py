@@ -23,26 +23,22 @@ def getDefaultFirmware(machineIndex = None):
 			'ultimaker2go':"MarlinUltimaker2go.hex",
 			'Witbox':"MarlinWitbox.hex",
 			
-			#Mini
-			'lulzbot_mini': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
-			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
-			
 			#TAZ Budaschnozzle
-			'lulzbot_TAZ_4_SingleV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
-			'lulzbot_TAZ_5_SingleV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_4_SingleV1':       "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
+			'lulzbot_TAZ_5_SingleV1':       "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			'lulzbot_TAZ_4_FlexystruderV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			'lulzbot_TAZ_5_FlexystruderV1': "TAZ4-5-Single-or-Flexystruder-Budaschnozzle-2014Q3.hex",
 			
-			'lulzbot_TAZ_4_DualV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
-			'lulzbot_TAZ_5_DualV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_4_DualV1':        "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
+			'lulzbot_TAZ_5_DualV1':        "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 			'lulzbot_TAZ_4_FlexyDuallyV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 			'lulzbot_TAZ_5_FlexyDuallyV1': "TAZ4-5-Dual-or-FlexyDually-Budaschnozzle-2015Q1.hex",
 
 			#TAZ Hexagon
-			'lulzbot_TAZ_4_05nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
+			'lulzbot_TAZ_4_05nozzle':  "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 			'lulzbot_TAZ_4_035nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 			
-			'lulzbot_TAZ_5_05nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
+			'lulzbot_TAZ_5_05nozzle':  "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 			'lulzbot_TAZ_5_035nozzle': "TAZ4-5-Standard-LBHexagon-1.0.0.1.hex",
 
 			'lulzbot_TAZ_4_FlexystruderV2': "TAZ4-5-Flexystruder-LBHexagon-1.0.0.1.hex",
@@ -59,6 +55,10 @@ def getDefaultFirmware(machineIndex = None):
 			'lulzbot_TAZ_6_Flexystruder_v2': "TAZ6_Flexystruder_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_Dual_v2':         "TAZ6_Dual_v1.0.2.19.hex",
 			'lulzbot_TAZ_6_FlexyDually_v2':  "TAZ6_Dual_v1.0.2.19.hex",
+			
+			#Mini
+			'lulzbot_mini':              "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
+			'lulzbot_mini_flexystruder': "Mini-Single-or-Flexystruder-LBHexagon-1.0.2.2.hex",
 	}
 	machine_type = profile.getMachineSetting('machine_type', machineIndex)
 	extruders = profile.getMachineSettingFloat('extruder_amount', machineIndex)
