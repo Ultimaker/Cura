@@ -8,7 +8,10 @@ import UM.Settings
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
+
+        self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        self._onGlobalContainerChanged()
 
         ##  When the global container is changed, active material probably needs to be updated.
         self.globalContainerChanged.connect(self.activeMaterialChanged)
@@ -31,9 +34,15 @@ class MachineManagerModel(QObject):
     activeQualityChanged = pyqtSignal()
 
     def _onGlobalContainerChanged(self):
-        Preferences.getInstance().setValue("cura/active_machine", Application.getInstance().getGlobalContainerStack().getId())
-        Application.getInstance().getGlobalContainerStack().containersChanged.connect(self._onInstanceContainersChanged)
+        if self._global_container_stack:
+            self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         self.globalContainerChanged.emit()
+
+        if self._global_container_stack:
+            Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
+            self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
