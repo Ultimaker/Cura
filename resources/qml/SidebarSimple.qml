@@ -218,7 +218,7 @@ Item
                 onEntered:
                 {
                     parent.hovered_ex = true
-                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, 0),
+                    base.showTooltip(brimCheckBox, Qt.point(-brimCheckBox.x, 0),
                         catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
                 }
                 onExited:
@@ -266,7 +266,7 @@ Item
                 onEntered:
                 {
                     parent.hovered_ex = true
-                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, 0),
+                    base.showTooltip(supportCheckBox, Qt.point(-supportCheckBox.x, 0),
                         catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
                 }
                 onExited:
@@ -289,6 +289,8 @@ Item
             width: parent.width/100*45
 
             style: UM.Theme.styles.combobox
+            property bool hovered_ex: false
+
             currentIndex: supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) + 1 : 0
             onActivated: {
                 if(index==0) {
@@ -296,6 +298,22 @@ Item
                 } else {
                     supportEnabled.setPropertyValue("value", true);
                     supportExtruderNr.setPropertyValue("value", index - 1);
+                }
+            }
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                acceptedButtons: Qt.NoButton
+                onEntered:
+                {
+                    parent.hovered_ex = true
+                    base.showTooltip(supportExtruderCombobox, Qt.point(-supportExtruderCombobox.x, 0),
+                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                }
+                onExited:
+                {
+                    parent.hovered_ex = false
+                    base.hideTooltip();
                 }
             }
         }
