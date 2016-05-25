@@ -55,10 +55,9 @@ class CuraEngineBackend(Backend):
         self._onActiveViewChanged()
         self._stored_layer_data = []
 
-        #When any setting property changed, call the _onSettingChanged function.
-        #This function will then see if we need to start slicing.
+        #Triggers for when to (re)start slicing:
         if Application.getInstance().getGlobalContainerStack():
-            Application.getInstance().getGlobalContainerStack().propertyChanged.connect(self._onSettingChanged)
+            Application.getInstance().getGlobalContainerStack().propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
 
         #When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
         #This timer will group them up, and only slice for the last setting changed signal.
