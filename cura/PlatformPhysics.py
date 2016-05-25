@@ -14,7 +14,6 @@ from UM.Preferences import Preferences
 from cura.ConvexHullDecorator import ConvexHullDecorator
 
 from . import PlatformPhysicsOperation
-from . import ConvexHullJob
 from . import ZOffsetDecorator
 
 import copy
