@@ -197,7 +197,7 @@ Item
                         id: materialSelectionInstantiator
                         model: UM.InstanceContainersModel
                         {
-                            filter: {"type": "material"}
+                            filter: { "type": "material", "definition": Cura.MachineManager.activeDefinitionId }
                         }
                         MenuItem
                         {

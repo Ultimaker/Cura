@@ -6,6 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 UM.ManagementPage
 {
@@ -13,7 +14,7 @@ UM.ManagementPage
 
     title: catalog.i18nc("@title:tab", "Materials");
 
-    model: UM.InstanceContainersModel { filter: { "type": "material" } }
+    model: UM.InstanceContainersModel { filter: { "type": "material", "definition": Cura.MachineManager.activeDefinitionId } }
 /*
     onAddObject: { var selectedMaterial = UM.MaterialManager.createProfile(); base.selectMaterial(selectedMaterial); }
     onRemoveObject: confirmDialog.open();

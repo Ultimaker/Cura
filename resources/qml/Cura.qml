@@ -813,9 +813,8 @@ UM.MainWindow
                 base.visible = true;
                 restart();
             }
-            else if(Cura.MachineManager.activeMachineName == "")
+            else if(Cura.MachineManager.activeMachineId == null || Cura.MachineManager.activeMachineId == "")
             {
-                addMachineDialog.firstRun = true;
                 addMachineDialog.open();
             }
         }
