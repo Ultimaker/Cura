@@ -13,7 +13,7 @@ UM.ManagementPage
 
     title: catalog.i18nc("@title:tab", "Materials");
 
-    model: UM.InstanceContainersModel { filter: { "type": "material" } }
+    model: UM.InstanceContainersModel { filter: { "type": "material", "definition": Cura.MachineManager.activeDefinitionId } }
 /*
     onAddObject: { var selectedMaterial = UM.MaterialManager.createProfile(); base.selectMaterial(selectedMaterial); }
     onRemoveObject: confirmDialog.open();
