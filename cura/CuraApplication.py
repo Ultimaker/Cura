@@ -15,7 +15,7 @@ from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.JobQueue import JobQueue
-
+from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 
@@ -24,6 +24,9 @@ from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 from cura.SetParentOperation import SetParentOperation
+
+from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
@@ -35,16 +38,18 @@ from . import CuraActions
 from . import MultiMaterialDecorator
 from . import ZOffsetDecorator
 from . import CuraSplashScreen
+from . import MachineManagerModel
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtQml import qmlRegisterUncreatableType
+from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType
 
 import platform
 import sys
 import os.path
 import numpy
 import copy
+import urllib
 numpy.seterr(all="ignore")
 
 #WORKAROUND: GITHUB-88 GITHUB-385 GITHUB-612
@@ -65,6 +70,13 @@ class CuraApplication(QtApplication):
     class ResourceTypes:
         QmlFiles = Resources.UserType + 1
         Firmware = Resources.UserType + 2
+        QualityInstanceContainer = Resources.UserType + 3
+        MaterialInstanceContainer = Resources.UserType + 4
+        VariantInstanceContainer = Resources.UserType + 5
+        UserInstanceContainer = Resources.UserType + 6
+        MachineStack = Resources.UserType + 7
+        ExtruderInstanceContainer = Resources.UserType + 8
+
     Q_ENUMS(ResourceTypes)
 
     def __init__(self):
@@ -73,6 +85,9 @@ class CuraApplication(QtApplication):
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
         self._open_file_queue = []  # Files to open when plug-ins are loaded.
+
+        # Need to do this before ContainerRegistry tries to load the machines
+        SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
 
         super().__init__(name = "cura", version = CuraVersion)
 
@@ -102,15 +117,28 @@ class CuraApplication(QtApplication):
         self._camera_animation = None
         self._cura_actions = None
 
-        self.getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineChanged)
-        self.getMachineManager().addMachineRequested.connect(self._onAddMachineRequested)
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
-        Preferences.getInstance().addPreference("cura/active_machine", "")
+        ## Add the 4 types of profiles to storage.
+        Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
+        Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
+        Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
+        Resources.addStorageType(self.ResourceTypes.ExtruderInstanceContainer, "extruders")
+        Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
+        Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
+
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
+
+        ContainerRegistry.getInstance().load()
+
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
         Preferences.getInstance().addPreference("cura/recent_files", "")
         Preferences.getInstance().addPreference("cura/categories_expanded", "")
@@ -120,7 +148,42 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().addPreference("mesh/scale_tiny_meshes", True)
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
+        Preferences.getInstance().setDefault("general/visible_settings", """
+                                             resolution
+                                                layer_height
+                                             shell
+                                                wall_thickness
+                                                top_bottom_thickness
+                                             infill
+                                                infill_sparse_density
+                                             material
+                                                material_print_temperature
+                                                material_bed_temperature
+                                                material_diameter
+                                                material_flow
+                                                retraction_enable
+                                             speed
+                                                speed_print
+                                                speed_travel
+                                             cooling
+                                                cool_fan_enabled
+                                             support
+                                                support_enable
+                                                support_type
+                                                support_roof_density
+                                             platform_adhesion
+                                                adhesion_type
+                                                brim_width
+                                                raft_airgap
+                                                layer_0_z_overlap
+                                                raft_surface_layers
+                                             blackmagic
+                                                print_sequence
+                                             """)
+
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
+
+        self.applicationShuttingDown.connect(self._onExit)
 
         self._recent_files = []
         files = Preferences.getInstance().getValue("cura/recent_files").split(";")
@@ -130,6 +193,54 @@ class CuraApplication(QtApplication):
 
             self._recent_files.append(QUrl.fromLocalFile(f))
 
+    ## Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
+    def _onExit(self):
+        for instance in ContainerRegistry.getInstance().findInstanceContainers():
+            if not instance.isDirty():
+                continue
+
+            try:
+                data = instance.serialize()
+            except NotImplementedError:
+                continue
+            except Exception:
+                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                continue
+
+            file_name = urllib.parse.quote_plus(instance.getId()) + ".inst.cfg"
+            instance_type = instance.getMetaDataEntry("type")
+            path = None
+            if instance_type == "material":
+                path = Resources.getStoragePath(self.ResourceTypes.MaterialInstanceContainer, file_name)
+            elif instance_type == "quality":
+                path = Resources.getStoragePath(self.ResourceTypes.QualityInstanceContainer, file_name)
+            elif instance_type == "user":
+                path = Resources.getStoragePath(self.ResourceTypes.UserInstanceContainer, file_name)
+            elif instance_type == "variant":
+                path = Resources.getStoragePath(self.ResourceTypes.VariantInstanceContainer, file_name)
+
+            if path:
+                with SaveFile(path, "wt", -1, "utf-8") as f:
+                    f.write(data)
+
+        for stack in ContainerRegistry.getInstance().findContainerStacks():
+            if not stack.isDirty():
+                continue
+
+            try:
+                data = stack.serialize()
+            except NotImplementedError:
+                continue
+            except Exception:
+                Logger.logException("e", "An exception occurred when serializing container %s", instance.getId())
+                continue
+
+            file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
+            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+            with SaveFile(path, "wt", -1, "utf-8") as f:
+                f.write(data)
+
+
     @pyqtSlot(result = QUrl)
     def getDefaultPath(self):
         return QUrl.fromLocalFile(os.path.expanduser("~/"))
@@ -137,6 +248,7 @@ class CuraApplication(QtApplication):
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistery
     def _loadPlugins(self):
+        self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addPluginLocation(os.path.join(QtApplication.getInstallPrefix(), "lib", "cura"))
         if not hasattr(sys, "frozen"):
             self._plugin_registry.addPluginLocation(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "plugins"))
@@ -198,6 +310,9 @@ class CuraApplication(QtApplication):
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
+
+        qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
+                                 MachineManagerModel.createMachineManagerModel)
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self.initializeEngine()
@@ -511,20 +626,6 @@ class CuraApplication(QtApplication):
     def expandedCategories(self):
         return Preferences.getInstance().getValue("cura/categories_expanded").split(";")
 
-    @pyqtSlot(str, result = "QVariant")
-    def getSettingValue(self, key):
-        if not self.getMachineManager().getWorkingProfile():
-            return None
-        return self.getMachineManager().getWorkingProfile().getSettingValue(key)
-    
-    ##  Change setting by key value pair
-    @pyqtSlot(str, "QVariant")
-    def setSettingValue(self, key, value):
-        if not self.getMachineManager().getWorkingProfile():
-            return
-
-        self.getMachineManager().getWorkingProfile().setSettingValue(key, value)
-        
     @pyqtSlot()
     def mergeSelected(self):
         self.groupSelected()
@@ -630,5 +731,6 @@ class CuraApplication(QtApplication):
         job.finished.connect(self._onFileLoaded)
         job.start()
 
-    def _onAddMachineRequested(self):
-        self.requestAddPrinter.emit()
+    def _addProfileReader(self, profile_reader):
+        # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
+        pass

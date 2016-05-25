@@ -5,7 +5,8 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -57,10 +58,10 @@ Item
 
         ToolButton {
             id: machineSelection
-            text: UM.MachineManager.activeMachineInstance;
+            text: Cura.MachineManager.activeMachineName;
             width: parent.width/100*55
             height: UM.Theme.getSize("setting_control").height
-            tooltip: UM.MachineManager.activeMachineInstance;
+            tooltip: Cura.MachineManager.activeMachineName;
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
@@ -71,14 +72,17 @@ Item
                 id: machineSelectionMenu
                 Instantiator
                 {
-                    model: UM.MachineInstancesModel { }
+                    model: UM.ContainerStacksModel
+                    {
+                        filter: {"type": "machine"}
+                    }
                     MenuItem
                     {
                         text: model.name;
                         checkable: true;
-                        checked: model.active;
+                        checked: Cura.MachineManager.activeMachineId == model.id
                         exclusiveGroup: machineSelectionMenuGroup;
-                        onTriggered: UM.MachineManager.setActiveMachineInstance(model.name);
+                        onTriggered: Cura.MachineManager.setActiveMachine(model.id);
                     }
                     onObjectAdded: machineSelectionMenu.insertItem(index, object)
                     onObjectRemoved: machineSelectionMenu.removeItem(object)
@@ -100,12 +104,12 @@ Item
         anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
         width: base.width
         height: visible ? UM.Theme.getSize("sidebar_setup").height : 0
-        visible: UM.MachineManager.hasVariants || UM.MachineManager.hasMaterials
+        visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
 
         Label{
             id: variantLabel
-            text: (UM.MachineManager.hasVariants && UM.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
-                    UM.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
+            text: (Cura.MachineManager.hasVariants && Cura.MachineManager.hasMaterials) ? catalog.i18nc("@label","Nozzle & Material:"):
+                    Cura.MachineManager.hasVariants ? catalog.i18nc("@label","Nozzle:") : catalog.i18nc("@label","Material:");
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
@@ -114,7 +118,8 @@ Item
             color: UM.Theme.getColor("text");
         }
 
-        Rectangle {
+        Rectangle
+        {
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
@@ -124,9 +129,9 @@ Item
 
             ToolButton {
                 id: variantSelection
-                text: UM.MachineManager.activeMachineVariant
-                tooltip: UM.MachineManager.activeMachineVariant;
-                visible: UM.MachineManager.hasVariants
+                text: Cura.MachineManager.activeVariantName
+                tooltip: Cura.MachineManager.activeVariantName;
+                visible: Cura.MachineManager.hasVariants
 
                 height: UM.Theme.getSize("setting_control").height
                 width: materialSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
@@ -139,23 +144,30 @@ Item
                     Instantiator
                     {
                         id: variantSelectionInstantiator
-                        model: UM.MachineVariantsModel { id: variantsModel }
+                        model: UM.InstanceContainersModel
+                        {
+                            filter:
+                            {
+                                "type": "variant",
+                                "definition": Cura.MachineManager.activeDefinitionId //Only show variants of this machine
+                            }
+                        }
                         MenuItem
                         {
                             text: model.name;
                             checkable: true;
-                            checked: model.active;
+                            checked: model.id == Cura.MachineManager.activeVariantId;
                             exclusiveGroup: variantSelectionMenuGroup;
                             onTriggered:
                             {
-                                UM.MachineManager.setActiveMachineVariant(variantsModel.getItem(index).name);
-                                if (typeof(model) !== "undefined" && !model.active) {
+                                Cura.MachineManager.setActiveVariant(model.id);
+                                /*if (typeof(model) !== "undefined" && !model.active) {
                                     //Selecting a variant was canceled; undo menu selection
                                     variantSelectionInstantiator.model.setProperty(index, "active", false);
                                     var activeMachineVariantName = UM.MachineManager.activeMachineVariant;
                                     var activeMachineVariantIndex = variantSelectionInstantiator.model.find("name", activeMachineVariantName);
                                     variantSelectionInstantiator.model.setProperty(activeMachineVariantIndex, "active", true);
-                                }
+                                }*/
                             }
                         }
                         onObjectAdded: variantsSelectionMenu.insertItem(index, object)
@@ -168,9 +180,9 @@ Item
 
             ToolButton {
                 id: materialSelection
-                text: UM.MachineManager.activeMaterial
-                tooltip: UM.MachineManager.activeMaterial
-                visible: UM.MachineManager.hasMaterials
+                text: Cura.MachineManager.activeMaterialName
+                tooltip: Cura.MachineManager.activeMaterialName
+                visible: Cura.MachineManager.hasMaterials
 
                 height: UM.Theme.getSize("setting_control").height
                 width: variantSelection.visible ? (parent.width - UM.Theme.getSize("default_margin").width) / 2 : parent.width
@@ -183,23 +195,26 @@ Item
                     Instantiator
                     {
                         id: materialSelectionInstantiator
-                        model: UM.MachineMaterialsModel { id: machineMaterialsModel }
+                        model: UM.InstanceContainersModel
+                        {
+                            filter: { "type": "material", "definition": Cura.MachineManager.activeDefinitionId }
+                        }
                         MenuItem
                         {
                             text: model.name;
                             checkable: true;
-                            checked: model.active;
+                            checked: model.id == Cura.MachineManager.activeMaterialId;
                             exclusiveGroup: materialSelectionMenuGroup;
                             onTriggered:
                             {
-                                UM.MachineManager.setActiveMaterial(machineMaterialsModel.getItem(index).name);
-                                if (typeof(model) !== "undefined" && !model.active) {
+                                Cura.MachineManager.setActiveMaterial(model.id);
+                                /*if (typeof(model) !== "undefined" && !model.active) {
                                     //Selecting a material was canceled; undo menu selection
                                     materialSelectionInstantiator.model.setProperty(index, "active", false);
-                                    var activeMaterialName = UM.MachineManager.activeMaterial;
+                                    var activeMaterialName = Cura.MachineManager.activeMaterialName
                                     var activeMaterialIndex = materialSelectionInstantiator.model.find("name", activeMaterialName);
                                     materialSelectionInstantiator.model.setProperty(activeMaterialIndex, "active", true);
-                                }
+                                }*/
                             }
                         }
                         onObjectAdded: materialSelectionMenu.insertItem(index, object)

@@ -13,7 +13,7 @@ def getMetaData():
             "name": catalog.i18nc("@label", "CuraEngine Backend"),
             "author": "Ultimaker",
             "description": catalog.i18nc("@info:whatsthis", "Provides the link to the CuraEngine slicing backend."),
-            "api": 2
+            "api": 3
         }
     }
 

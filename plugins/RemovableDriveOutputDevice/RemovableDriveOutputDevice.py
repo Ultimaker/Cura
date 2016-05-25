@@ -29,17 +29,26 @@ class RemovableDriveOutputDevice(OutputDevice):
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
-        file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite() #Formats supported by this application.
+        # Formats supported by this application (File types that we can actually write)
+        file_formats = Application.getInstance().getMeshFileHandler().getSupportedFileTypesWrite()
         if filter_by_machine:
-            machine_file_formats = Application.getInstance().getMachineManager().getActiveMachineInstance().getMachineDefinition().getFileFormats()
-            file_formats = list(filter(lambda file_format: file_format["mime_type"] in machine_file_formats, file_formats)) #Take the intersection between file_formats and machine_file_formats.
+            container = Application.getInstance().getGlobalContainerStack().findContainer({"file_formats": "*"})
+
+            # Create a list from supported file formats string
+            machine_file_formats = [file_type.strip() for file_type in container.getMetaDataEntry("file_formats").split(";")]
+
+            # Take the intersection between file_formats and machine_file_formats.
+            file_formats = list(filter(lambda file_format: file_format["mime_type"] in machine_file_formats, file_formats))
+
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
             raise OutputDeviceError.WriteRequestFailedError()
-        writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"]) #Just take the first file format available.
+
+        # Just take the first file format available.
+        writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"])
         extension = file_formats[0]["extension"]
 
-        if file_name == None:
+        if file_name is None:
             for n in BreadthFirstIterator(node):
                 if n.getMeshData():
                     file_name = n.getName()
@@ -50,7 +59,7 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("e", "Could not determine a proper file name when trying to write to %s, aborting", self.getName())
             raise OutputDeviceError.WriteRequestFailedError()
 
-        if extension: #Not empty string.
+        if extension:  # Not empty string.
             extension = "." + extension
         file_name = os.path.join(self.getId(), os.path.splitext(file_name)[0] + extension)
 

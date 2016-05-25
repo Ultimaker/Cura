@@ -6,7 +6,10 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
+import ".."
+
 
 Item {
     id: base;
@@ -133,6 +136,7 @@ Item {
         id: settingPickDialog
 
         title: catalog.i18nc("@title:window", "Pick a Setting to Customize")
+        property string labelFilter: ""
 
         TextField {
             id: filter;
@@ -145,123 +149,61 @@ Item {
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...");
 
-            onTextChanged: settingCategoriesModel.filter(text);
+            onTextChanged:
+            {
+                if(text != "")
+                {
+                    listview.model.filter = {"global_only": false, "label": "*" + text}
+                }
+                else
+                {
+                    listview.model.filter = {"global_only": false}
+                }
+            }
         }
 
-        ScrollView {
-            id: view;
-            anchors {
+        ScrollView
+        {
+            id: scrollView
+
+            anchors
+            {
                 top: filter.bottom;
                 left: parent.left;
                 right: parent.right;
                 bottom: parent.bottom;
             }
+            ListView
+            {
+                id:listview
+                model: UM.SettingDefinitionsModel
+                {
+                    id: definitionsModel;
+                    containerId: Cura.MachineManager.activeDefinitionId
+                    filter:
+                    {
+                        "global_only": false
+                    }
+                }
+                delegate:Loader
+                {
+                    id: loader
 
-            Column {
-                width: view.width - UM.Theme.getSize("default_margin").width * 2;
-                height: childrenRect.height;
+                    width: parent.width
+                    height: model.type != undefined ? UM.Theme.getSize("section").height : 0;
 
-                Repeater {
-                    id: settingList;
+                    property var definition: model
+                    property var settingDefinitionsModel: definitionsModel
 
-                    model: UM.SettingCategoriesModel { id: settingCategoriesModel; }
-
-                    delegate: Item {
-                        id: delegateItem;
-
-                        width: parent.width;
-                        height: childrenRect.height;
-                        visible: model.visible && settingsColumn.childrenHeight != 0 //If all children are hidden, the height is 0, and then the category header must also be hidden.
-
-                        ToolButton {
-                            id: categoryHeader;
-                            text: model.name;
-                            checkable: true;
-                            width: parent.width;
-                            onCheckedChanged: settingsColumn.state != "" ? settingsColumn.state = "" : settingsColumn.state = "collapsed";
-
-                            style: ButtonStyle {
-                                background: Rectangle
-                                {
-                                    width: control.width;
-                                    height: control.height;
-                                    color: control.hovered ? palette.highlight : "transparent";
-                                }
-                                label: Row
-                                {
-                                    spacing: UM.Theme.getSize("default_margin").width;
-                                    Image
-                                    {
-                                        anchors.verticalCenter: parent.verticalCenter;
-                                        source: control.checked ? UM.Theme.getIcon("arrow_right") : UM.Theme.getIcon("arrow_bottom");
-                                    }
-                                    Label
-                                    {
-                                        text: control.text;
-                                        font.bold: true;
-                                        color: control.hovered ? palette.highlightedText : palette.text;
-                                    }
-                                }
-                            }
-                        }
-
-                        property variant settingsModel: model.settings;
-
-                        Column {
-                            id: settingsColumn;
-
-                            anchors.top: categoryHeader.bottom;
-
-                            property real childrenHeight:
-                            {
-                                var h = 0.0;
-                                for(var i in children)
-                                {
-                                    var item = children[i];
-                                    h += children[i].height;
-                                    if(item.settingVisible)
-                                    {
-                                        if(i > 0)
-                                        {
-                                            h += spacing;
-                                        }
-                                    }
-                                }
-                                return h;
-                            }
-
-                            width: childrenRect.width;
-                            height: childrenHeight;
-                            Repeater {
-                                model: delegateItem.settingsModel;
-
-                                delegate: ToolButton {
-                                    id: button;
-                                    x: model.visible_depth * UM.Theme.getSize("default_margin").width;
-                                    text: model.name;
-                                    tooltip: model.description;
-                                    visible: !model.global_only
-                                    height: model.global_only ? 0 : undefined
-
-                                    onClicked: {
-                                        var object_id = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id;
-                                        UM.ActiveTool.properties.getValue("Model").addSettingOverride(object_id, model.key);
-                                        settingPickDialog.visible = false;
-                                    }
-
-                                    states: State {
-                                        name: "filtered"
-                                        when: model.filtered || !model.visible || !model.enabled
-                                        PropertyChanges { target: button; height: 0; opacity: 0; }
-                                    }
-                                }
-                            }
-
-                            states: State {
-                                name: "collapsed";
-
-                                PropertyChanges { target: settingsColumn; opacity: 0; height: 0; }
-                            }
+                    asynchronous: true
+                    source:
+                    {
+                        switch(model.type)
+                        {
+                            case "category":
+                                return "PerObjectCategory.qml"
+                            default:
+                                return "PerObjectItem.qml"
                         }
                     }
                 }

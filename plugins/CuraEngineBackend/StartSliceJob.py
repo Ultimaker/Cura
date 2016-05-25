@@ -30,11 +30,10 @@ class GcodeStartEndFormatter(Formatter):
 
 ##  Job class that builds up the message of scene data to send to CuraEngine.
 class StartSliceJob(Job):
-    def __init__(self, profile, slice_message, settings_message):
+    def __init__(self, slice_message, settings_message):
         super().__init__()
 
         self._scene = Application.getInstance().getController().getScene()
-        self._profile = profile
         self._slice_message = slice_message
         self._settings_message = settings_message
         self._is_cancelled = False
@@ -45,18 +44,27 @@ class StartSliceJob(Job):
     def getSliceMessage(self):
         return self._slice_message
 
+    ##  Runs the job that initiates the slicing.
     def run(self):
+        stack = Application.getInstance().getGlobalContainerStack()
+        if not stack:
+            self.setResult(False)
+            return
+
         with self._scene.getSceneLock():
+            # Remove old layer data.
             for node in DepthFirstIterator(self._scene.getRoot()):
                 if node.callDecoration("getLayerData"):
                     node.getParent().removeChild(node)
                     break
 
+            # Get the objects in their groups to print.
             object_groups = []
-            if self._profile.getSettingValue("print_sequence") == "one_at_a_time":
+            if stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 for node in OneAtATimeIterator(self._scene.getRoot()):
                     temp_list = []
 
+                    # Node can't be printed, so don't bother sending it.
                     if getattr(node, "_outside_buildarea", False):
                         continue
 
@@ -85,7 +93,7 @@ class StartSliceJob(Job):
             if not object_groups:
                 return
 
-            self._buildSettingsMessage(self._profile)
+            self._buildGlobalSettingsMessage(stack)
 
             for group in object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -97,8 +105,10 @@ class StartSliceJob(Job):
                     obj = group_message.addRepeatedMessage("objects")
                     obj.id = id(object)
                     verts = numpy.array(mesh_data.getVertices())
-                    verts[:,[1,2]] = verts[:,[2,1]]
-                    verts[:,1] *= -1
+
+                    # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
+                    verts[:, [1, 2]] = verts[:, [2, 1]]
+                    verts[:, 1] *= -1
 
                     obj.vertices = verts
 
@@ -124,18 +134,27 @@ class StartSliceJob(Job):
             Logger.log("w", "Unabled to do token replacement on start/end gcode %s", traceback.format_exc())
             return str(value).encode("utf-8")
 
-    def _buildSettingsMessage(self, profile):
-        settings = profile.getAllSettingValues(include_machine = True)
+    ##  Sends all global settings to the engine.
+    #
+    #   The settings are taken from the global stack. This does not include any
+    #   per-extruder settings or per-object settings.
+    def _buildGlobalSettingsMessage(self, stack):
+        keys = stack.getAllKeys()
+        settings = {}
+        for key in keys:
+            settings[key] = stack.getProperty(key, "value")
+
         start_gcode = settings["machine_start_gcode"]
-        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode
+        settings["material_bed_temp_prepend"] = "{material_bed_temperature}" not in start_gcode #Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         settings["material_print_temp_prepend"] = "{material_print_temperature}" not in start_gcode
-        for key, value in settings.items():
-            s = self._settings_message.addRepeatedMessage("settings")
-            s.name = key
-            if key == "machine_start_gcode" or key == "machine_end_gcode":
-                s.value = self._expandGcodeTokens(key, value, settings)
+
+        for key, value in settings.items(): #Add all submessages for each individual setting.
+            setting_message = self._settings_message.addRepeatedMessage("settings")
+            setting_message.name = key
+            if key == "machine_start_gcode" or key == "machine_end_gcode": #If it's a g-code message, use special formatting.
+                setting_message.value = self._expandGcodeTokens(key, value, settings)
             else:
-                s.value = str(value).encode("utf-8")
+                setting_message.value = str(value).encode("utf-8")
 
     def _handlePerObjectSettings(self, node, message):
         profile = node.callDecoration("getProfile")

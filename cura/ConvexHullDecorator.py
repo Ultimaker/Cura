@@ -28,9 +28,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         self._parent_node = None
 
         self._profile = None
-        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineInstanceChanged)
-        self._onActiveProfileChanged()
+        #Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
+        #Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveMachineInstanceChanged)
+        #self._onActiveProfileChanged()
 
     def setNode(self, node):
         super().setNode(node)

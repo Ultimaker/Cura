@@ -6,7 +6,8 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -56,12 +57,7 @@ Item
         Repeater {
             id: infillListView
             property int activeIndex: {
-                if(!UM.ActiveProfile.valid)
-                {
-                    return -1;
-                }
-
-                var density = parseInt(UM.ActiveProfile.settingValues.getValue("infill_sparse_density"));
+                var density = parseInt(infillDensity.properties.value)
                 for(var i = 0; i < infillModel.count; ++i)
                 {
                     if(density > infillModel.get(i).percentageMin && density <= infillModel.get(i).percentageMax )
@@ -116,11 +112,11 @@ Item
                         onClicked: {
                             if (infillListView.activeIndex != index)
                             {
-                                UM.MachineManager.setSettingValue("infill_sparse_density", model.percentage)
+                                infillDensity.setPropertyValue("value", model.percentage)
                             }
                         }
                         onEntered: {
-                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, parent.height), model.text);
+                            base.showTooltip(infillCellRight, Qt.point(-infillCellRight.x, 0), model.text);
                         }
                         onExited: {
                             base.hideTooltip();
@@ -213,18 +209,19 @@ Item
             text: catalog.i18nc("@option:check","Generate Brim");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("adhesion_type") == "brim" : false;
+            checked: platformAdhesionType.properties.value == "brim"
+
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
                 {
-                    UM.MachineManager.setSettingValue("adhesion_type", !parent.checked?"brim":"skirt")
+                    platformAdhesionType.setPropertyValue("value", !parent.checked ? "brim" : "skirt")
                 }
                 onEntered:
                 {
                     parent.hovered_ex = true
-                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                    base.showTooltip(brimCheckBox, Qt.point(-helpersCellRight.x, 0),
                         catalog.i18nc("@label", "Enable printing a brim. This will add a single-layer-thick flat area around your object which is easy to cut off afterwards."));
                 }
                 onExited:
@@ -246,18 +243,18 @@ Item
             text: catalog.i18nc("@option:check","Generate Support Structure");
             style: UM.Theme.styles.checkbox;
 
-            checked: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_enable") : false;
+            checked: supportEnabled.properties.value == "True"
             MouseArea {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked:
                 {
-                    UM.MachineManager.setSettingValue("support_enable", !parent.checked)
+                    supportEnabled.setPropertyValue("value", !parent.checked)
                 }
                 onEntered:
                 {
                     parent.hovered_ex = true
-                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, parent.height),
+                    base.showTooltip(supportCheckBox, Qt.point(-helpersCellRight.x, 0),
                         catalog.i18nc("@label", "Enable printing support structures. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
                 }
                 onExited:
@@ -271,15 +268,15 @@ Item
 
     function populateExtruderModel()
     {
-        extruderModel.clear()
-        var extruder_count = UM.MachineManager.getSettingValue("machine_extruder_count");
-        for(var extruder = 0; extruder < extruder_count ; extruder++) {
-            extruderModel.append({
-                name: catalog.i18nc("@label", "Extruder %1").arg(extruder),
-                text: catalog.i18nc("@label", "Extruder %1").arg(extruder),
-                value: extruder
-            })
-        }
+//         extruderModel.clear()
+//         var extruder_count = UM.MachineManager.getSettingValue("machine_extruder_count");
+//         for(var extruder = 0; extruder < extruder_count ; extruder++) {
+//             extruderModel.append({
+//                 name: catalog.i18nc("@label", "Extruder %1").arg(extruder),
+//                 text: catalog.i18nc("@label", "Extruder %1").arg(extruder),
+//                 value: extruder
+//             })
+//         }
     }
 
     Rectangle {
@@ -290,7 +287,7 @@ Item
         width: parent.width
         height: childrenRect.height
         // Use both UM.ActiveProfile and UM.MachineManager to force UM.MachineManager.getSettingValue() to be reevaluated
-        visible: UM.ActiveProfile.settingValues.getValue("machine_extruder_count") || (UM.MachineManager.getSettingValue("machine_extruder_count") > 1)
+//         visible: UM.ActiveProfile.settingValues.getValue("machine_extruder_count") || (UM.MachineManager.getSettingValue("machine_extruder_count") > 1)
 
         Label {
             id: mainExtruderLabel
@@ -308,9 +305,9 @@ Item
             anchors.top: parent.top
             anchors.left: supportExtruderLabel.right
             style: UM.Theme.styles.combobox
-            currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("extruder_nr") : 0
+//             currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("extruder_nr") : 0
             onActivated: {
-                UM.MachineManager.setSettingValue("extruder_nr", index)
+//                 UM.MachineManager.setSettingValue("extruder_nr", index)
             }
         }
 
@@ -335,7 +332,7 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportExtruderLabel.right
             style: UM.Theme.styles.combobox
-            currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_extruder_nr") : 0
+//             currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_extruder_nr") : 0
             onActivated: {
                 UM.MachineManager.setSettingValue("support_extruder_nr", index)
             }
@@ -345,12 +342,12 @@ Item
             id: extruderModel
             Component.onCompleted: populateExtruderModel()
         }
-        Connections
-        {
-            id: machineChange
-            target: UM.MachineManager
-            onActiveMachineInstanceChanged: populateExtruderModel()
-        }
+//         Connections
+//         {
+//             id: machineChange
+//             target: UM.MachineManager
+//             onActiveMachineInstanceChanged: populateExtruderModel()
+//         }
     }
 
     Rectangle {
@@ -374,5 +371,37 @@ Item
             linkColor: UM.Theme.getColor("text_link")
             onLinkActivated: Qt.openUrlExternally(link)
         }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: infillDensity
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "infill_sparse_density"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+
+        onPropertiesChanged: console.log(properties.value)
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: platformAdhesionType
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "adhesion_type"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: supportEnabled
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "support_enable"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
     }
 }
