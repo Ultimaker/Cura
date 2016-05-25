@@ -243,7 +243,7 @@ material_types = {
     
     # Flexystruder (Expert)
     "ninjaflex": "Expert",
-    "cheetah": "Expert",
+    #"cheetah": "Expert",
     "semiflex": "Expert",
         
     # Dual extruder (Expert)
@@ -262,8 +262,8 @@ material_types = {
     # Flexy Dually (Expert)
     "ABS_ninjaflex": "Expert",
     "ABS_semiflex": "Expert",
-    "ABS_cheetah": "Expert",
-    "HIPS_cheetah": "Expert",
+    #"ABS_cheetah": "Expert",
+    #"HIPS_cheetah": "Expert",
     "HIPS_semiflex": "Expert",
     "PLA_PVA": "Expert",
     "INOVA_ninjaflex": "Expert",
