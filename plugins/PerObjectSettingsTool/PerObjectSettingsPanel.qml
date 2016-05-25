@@ -153,11 +153,11 @@ Item {
             {
                 if(text != "")
                 {
-                    listview.model.filter.label =  {"global_only":"False", "label": text}
+                    listview.model.filter.label =  {"global_only": false, "label": text}
                 }
                 else
                 {
-                    listview.model.filter = {"global_only":"False"}
+                    listview.model.filter = {"global_only": false}
                 }
             }
         }
@@ -182,7 +182,7 @@ Item {
                     containerId: Cura.MachineManager.activeDefinitionId
                     filter:
                     {
-                        "global_only": "False"
+                        "global_only": false
                     }
                 }
                 delegate:Loader
