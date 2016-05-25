@@ -10,7 +10,7 @@ import numpy
 ##  The convex hull decorator is a scene node decorator that adds the convex hull functionality to a scene node.
 #   If a scene node has a convex hull decorator, it will have a shadow in which other objects can not be printed.
 class ConvexHullDecorator(SceneNodeDecorator):
-    def __init__(self,):
+    def __init__(self):
         super().__init__()
 
         self._convex_hull_node = None
@@ -65,10 +65,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
         convex_hull = self.getConvexHull()
         if self._convex_hull_node:
             if self._convex_hull_node.getHull() == convex_hull:
-                Logger.log('d', 'ConvexHullDecorator not creating a new ConvexHullNode')
                 return
             self._convex_hull_node.setParent(None)
-        Logger.log('d', 'ConvexHullDecorator creating ConvexHullNode')
         hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull,
                                                   Application.getInstance().getController().getScene().getRoot())
         self._convex_hull_node = hull_node
