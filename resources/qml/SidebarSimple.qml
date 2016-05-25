@@ -268,15 +268,13 @@ Item
 
     function populateExtruderModel()
     {
-//         extruderModel.clear()
-//         var extruder_count = UM.MachineManager.getSettingValue("machine_extruder_count");
-//         for(var extruder = 0; extruder < extruder_count ; extruder++) {
-//             extruderModel.append({
-//                 name: catalog.i18nc("@label", "Extruder %1").arg(extruder),
-//                 text: catalog.i18nc("@label", "Extruder %1").arg(extruder),
-//                 value: extruder
-//             })
-//         }
+        extruderModel.clear();
+        for(var extruder = 0; extruder < machineExtruderCount.properties.value ; extruder++) {
+            print(catalog.i18nc("@label", "Extruder %1").arg(extruder));
+            extruderModel.append({
+                text: catalog.i18nc("@label", "Extruder %1").arg(extruder)
+            })
+        }
     }
 
     Rectangle {
@@ -286,8 +284,7 @@ Item
         anchors.left: parent.left
         width: parent.width
         height: childrenRect.height
-        // Use both UM.ActiveProfile and UM.MachineManager to force UM.MachineManager.getSettingValue() to be reevaluated
-//         visible: UM.ActiveProfile.settingValues.getValue("machine_extruder_count") || (UM.MachineManager.getSettingValue("machine_extruder_count") > 1)
+        visible: machineExtruderCount.properties.value > 1
 
         Label {
             id: mainExtruderLabel
@@ -305,9 +302,9 @@ Item
             anchors.top: parent.top
             anchors.left: supportExtruderLabel.right
             style: UM.Theme.styles.combobox
-//             currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("extruder_nr") : 0
+            currentIndex: mainExtruderNr.properties.value
             onActivated: {
-//                 UM.MachineManager.setSettingValue("extruder_nr", index)
+                mainExtruderNr.setPropertyValue("value", index)
             }
         }
 
@@ -328,9 +325,9 @@ Item
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.left: supportExtruderLabel.right
             style: UM.Theme.styles.combobox
-//             currentIndex: UM.ActiveProfile.valid ? UM.ActiveProfile.settingValues.getValue("support_extruder_nr") : 0
+            currentIndex: supportExtruderNr.properties.value
             onActivated: {
-                UM.MachineManager.setSettingValue("support_extruder_nr", index)
+                supportExtruderNr.setPropertyValue("value", index)
             }
         }
 
@@ -338,12 +335,12 @@ Item
             id: extruderModel
             Component.onCompleted: populateExtruderModel()
         }
-//         Connections
-//         {
-//             id: machineChange
-//             target: UM.MachineManager
-//             onActiveMachineInstanceChanged: populateExtruderModel()
-//         }
+         Connections
+         {
+             id: machineChange
+             target: Cura.MachineManager
+             onGlobalContainerChanged: populateExtruderModel()
+         }
     }
 
     Rectangle {
@@ -397,6 +394,34 @@ Item
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "support_enable"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+    UM.SettingPropertyProvider
+    {
+        id: supportExtruderNr
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "support_extruder_nr"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+    UM.SettingPropertyProvider
+    {
+        id: mainExtruderNr
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "extruder_nr"
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
