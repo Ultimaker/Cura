@@ -153,7 +153,7 @@ Item {
             {
                 if(text != "")
                 {
-                    listview.model.filter.label =  = {"global_only":"False", "label": text}
+                    listview.model.filter.label =  {"global_only":"False", "label": text}
                 }
                 else
                 {
