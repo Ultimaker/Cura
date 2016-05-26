@@ -39,9 +39,10 @@ class ConvexHullNode(SceneNode):
         self._convex_hull_head_mesh = None
         self._hull = hull
 
-        hull_mesh = self.createHullMesh(self._hull.getPoints())
-        if hull_mesh:
-            self.setMeshData(hull_mesh)
+        if self._hull:
+            hull_mesh = self.createHullMesh(self._hull.getPoints())
+            if hull_mesh:
+                self.setMeshData(hull_mesh)
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
             self._convex_hull_head_mesh = self.createHullMesh(convex_hull_head.getPoints())
@@ -76,9 +77,10 @@ class ConvexHullNode(SceneNode):
             self._shader.setUniformValue("u_color", self._color)
 
         if self.getParent():
-            renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
-            if self._convex_hull_head_mesh:
-                renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
+            if self.getMeshData():
+                renderer.queueNode(self, transparent = True, shader = self._shader, backface_cull = True, sort = -8)
+                if self._convex_hull_head_mesh:
+                    renderer.queueNode(self, shader = self._shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 
