@@ -322,12 +322,12 @@ Item
             id: extruderModel
             Component.onCompleted: populateExtruderModel()
         }
-         Connections
-         {
-             id: machineChange
-             target: Cura.MachineManager
-             onGlobalContainerChanged: populateExtruderModel()
-         }
+        Connections
+        {
+            id: machineChange
+            target: Cura.MachineManager
+            onGlobalContainerChanged: populateExtruderModel()
+        }
     }
 
     function populateExtruderModel()
