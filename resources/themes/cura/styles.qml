@@ -286,11 +286,11 @@ QtObject {
                 implicitHeight: UM.Theme.getSize("setting_control").height;
                 implicitWidth: UM.Theme.getSize("setting_control").width;
 
-                color: control.hovered ? Theme.getColor("setting_control_highlight") : Theme.getColor("setting_control");
+                color: (control.hovered || control.hovered_ex) ? Theme.getColor("setting_control_highlight") : Theme.getColor("setting_control");
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 border.width: Theme.getSize("default_lining").width;
-                border.color: control.hovered ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
+                border.color: (control.hovered || control.hovered_ex) ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
             }
             label: Item {
                 Label {

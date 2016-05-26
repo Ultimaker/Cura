@@ -89,7 +89,7 @@ Item {
             {
                 id: revertButton;
 
-                visible: propertyProvider.properties.state == "InstanceState.User"
+                visible: propertyProvider.stackLevel == 0
 
                 height: parent.height;
                 width: height;
@@ -102,8 +102,8 @@ Item {
                 iconSource: UM.Theme.getIcon("reset")
 
                 onClicked: {
-                    base.resetRequested()
-                    controlContainer.notifyReset();
+                    revertButton.focus = true
+                    propertyProvider.removeFromContainer(0)
                 }
 
                 onEntered: base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
@@ -116,14 +116,14 @@ Item {
                 id: inheritButton;
 
                 //visible: has_profile_value && base.has_inherit_function && base.is_enabled
-                visible: propertyProvider.properties.state == "InstanceState.User"
+                visible: propertyProvider.properties.state == "InstanceState.User" && propertyProvider.stackLevel > 0
 
                 height: parent.height;
                 width: height;
 
                 onClicked: {
-                    base.resetToDefaultRequested();
-                    controlContainer.notifyReset();
+                    focus = true;
+                    propertyProvider.removeFromContainer(propertyProvider.stackLevel)
                 }
 
                 backgroundColor: UM.Theme.getColor("setting_control");

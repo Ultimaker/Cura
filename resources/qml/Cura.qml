@@ -582,7 +582,7 @@ UM.MainWindow
         onTriggered:
         {
             UM.MachineManager.createProfile();
-            preferences.setPage(4);
+            preferences.setPage(5);
             preferences.show();
 
             // Show the renameDialog after a very short delay so the preference page has time to initiate
@@ -606,7 +606,7 @@ UM.MainWindow
         onTriggered:
         {
             preferences.visible = true;
-            preferences.setPage(4);
+            preferences.setPage(5);
         }
     }
 

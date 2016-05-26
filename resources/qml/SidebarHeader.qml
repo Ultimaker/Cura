@@ -16,6 +16,7 @@ Item
     property Action configureMachinesAction;
     UM.I18nCatalog { id: catalog; name:"cura"}
     property int totalHeightHeader: childrenRect.height
+    property int currentExtruderIndex;
 
     Rectangle {
         id: sidebarTabRow
@@ -25,23 +26,11 @@ Item
         color: UM.Theme.getColor("sidebar_header_bar")
     }
 
-    Label{
-        id: printjobTabLabel
-        text: catalog.i18nc("@label:listbox","Print Job");
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width;
-        anchors.top: sidebarTabRow.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        width: parent.width/100*45
-        font: UM.Theme.getFont("large");
-        color: UM.Theme.getColor("text")
-    }
-
     Rectangle {
         id: machineSelectionRow
         width: base.width
         height: UM.Theme.getSize("sidebar_setup").height
-        anchors.top: printjobTabLabel.bottom
+        anchors.top: sidebarTabRow.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -99,8 +88,88 @@ Item
     }
 
     Rectangle {
-        id: variantRow
+        id: extruderSelection
+        width: parent.width/100*55
+        visible: machineExtruderCount.properties.value > 1
+        height: visible ? UM.Theme.getSize("sidebar_header_mode_toggle").height : 0
+        anchors.right: parent.right
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
         anchors.top: machineSelectionRow.bottom
+        anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
+        Component{
+            id: wizardDelegate
+            Button {
+                height: extruderSelection.height
+                anchors.left: parent.left
+                anchors.leftMargin: model.index * (extruderSelection.width / machineExtruderCount.properties.value)
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width / machineExtruderCount.properties.value
+                text: model.text
+                exclusiveGroup: extruderMenuGroup;
+                checkable: true;
+                checked: base.currentExtruderIndex == index
+                onClicked: base.currentExtruderIndex = index
+
+                style: ButtonStyle {
+                    background: Rectangle {
+                        border.width: UM.Theme.getSize("default_lining").width
+                        border.color: control.checked ? UM.Theme.getColor("toggle_checked_border") :
+                                          control.pressed ? UM.Theme.getColor("toggle_active_border") :
+                                          control.hovered ? UM.Theme.getColor("toggle_hovered_border") : UM.Theme.getColor("toggle_unchecked_border")
+                        color: control.checked ? UM.Theme.getColor("toggle_checked") :
+                                   control.pressed ? UM.Theme.getColor("toggle_active") :
+                                   control.hovered ? UM.Theme.getColor("toggle_hovered") : UM.Theme.getColor("toggle_unchecked")
+                        Behavior on color { ColorAnimation { duration: 50; } }
+                        Label {
+                            anchors.centerIn: parent
+                            color: control.checked ? UM.Theme.getColor("toggle_checked_text") :
+                                       control.pressed ? UM.Theme.getColor("toggle_active_text") :
+                                       control.hovered ? UM.Theme.getColor("toggle_hovered_text") : UM.Theme.getColor("toggle_unchecked_text")
+                            font: UM.Theme.getFont("default")
+                            text: control.text;
+                        }
+                    }
+                    label: Item { }
+                }
+            }
+        }
+        ExclusiveGroup { id: extruderMenuGroup; }
+        ListView{
+            id: extrudersList
+            property var index: 0
+            model: extrudersListModel
+            delegate: wizardDelegate
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width
+        }
+    }
+
+    ListModel
+    {
+        id: extrudersListModel
+        Component.onCompleted: populateExtruderModel()
+    }
+    Connections
+    {
+        id: machineChange
+        target: Cura.MachineManager
+        onGlobalContainerChanged: populateExtruderModel()
+    }
+
+    function populateExtruderModel()
+    {
+        extrudersListModel.clear();
+        for(var extruder = 0; extruder < machineExtruderCount.properties.value ; extruder++) {
+            extrudersListModel.append({
+                text: catalog.i18nc("@label", "Extruder %1").arg(extruder + 1)
+            })
+        }
+    }
+
+    Rectangle {
+        id: variantRow
+        anchors.top: extruderSelection.visible ? extruderSelection.bottom : machineSelectionRow.bottom
         anchors.topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
         width: base.width
         height: visible ? UM.Theme.getSize("sidebar_setup").height : 0
@@ -225,5 +294,15 @@ Item
                 }
             }
         }
+    }
+
+    UM.SettingPropertyProvider
+    {
+        id: machineExtruderCount
+
+        containerStackId: Cura.MachineManager.activeMachineId
+        key: "machine_extruder_count"
+        watchedProperties: [ "value" ]
+        storeIndex: 0
     }
 }
