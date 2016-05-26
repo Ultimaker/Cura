@@ -111,7 +111,7 @@ class CuraApplication(QtApplication):
         self._i18n_catalog = None
         self._previous_active_tool = None
         self._platform_activity = False
-        self._scene_boundingbox = AxisAlignedBox()
+        self._scene_bounding_box = AxisAlignedBox()
         self._job_name = None
         self._center_after_select = False
         self._camera_animation = None
@@ -384,26 +384,26 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(str, notify = sceneBoundingBoxChanged)
     def getSceneBoundingBoxString(self):
-        return self._i18n_catalog.i18nc("@info", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_boundingbox.width.item(), 'depth': self._scene_boundingbox.depth.item(), 'height' : self._scene_boundingbox.height.item()}
+        return self._i18n_catalog.i18nc("@info", "%(width).1f x %(depth).1f x %(height).1f mm") % {'width' : self._scene_bounding_box.width.item(), 'depth': self._scene_bounding_box.depth.item(), 'height' : self._scene_bounding_box.height.item()}
 
     def updatePlatformActivity(self, node = None):
         count = 0
-        scene_boundingbox = None
+        scene_bounding_box = None
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if type(node) is not SceneNode or not node.getMeshData():
                 continue
 
             count += 1
-            if not scene_boundingbox:
-                scene_boundingbox = copy.deepcopy(node.getBoundingBox())
+            if not scene_bounding_box:
+                scene_bounding_box = copy.deepcopy(node.getBoundingBox())
             else:
-                scene_boundingbox += node.getBoundingBox()
+                scene_bounding_box += node.getBoundingBox()
 
-        if not scene_boundingbox:
-            scene_boundingbox = AxisAlignedBox()
+        if not scene_bounding_box:
+            scene_bounding_box = AxisAlignedBox()
 
-        if repr(self._scene_boundingbox) != repr(scene_boundingbox):
-            self._scene_boundingbox = scene_boundingbox
+        if repr(self._scene_bounding_box) != repr(scene_bounding_box):
+            self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
         self._platform_activity = True if count > 0 else False
