@@ -175,38 +175,35 @@ Item
     }
 
     Rectangle {
-        id: helpersCellLeft
+        id: helpersCell
         anchors.top: infillCellRight.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
-        width: parent.width/100*35 - UM.Theme.getSize("default_margin").width
+        anchors.right: parent.right
         height: childrenRect.height
 
         Label{
+            id: adhesionHelperLabel
             anchors.left: parent.left
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            //: Helpers selection label
-            text: catalog.i18nc("@label:listbox","Helpers:");
+            anchors.verticalCenter: brimCheckBox.verticalCenter
+            width: parent.width/100*35 - 3 * UM.Theme.getSize("default_margin").width
+            //: Bed adhesion label
+            text: catalog.i18nc("@label:listbox","Bed Adhesion:");
             font: UM.Theme.getFont("default");
             color: UM.Theme.getColor("text");
         }
-    }
-    Rectangle {
-        id: helpersCellRight
-        anchors.top: helpersCellLeft.top
-        anchors.left: helpersCellLeft.right
-        width: parent.width/100*65 - UM.Theme.getSize("default_margin").width
-        height: childrenRect.height
 
         CheckBox{
             id: brimCheckBox
             property bool hovered_ex: false
 
             anchors.top: parent.top
-            anchors.left: parent.left
+            anchors.left: adhesionHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             //: Setting enable skirt adhesion checkbox
-            text: catalog.i18nc("@option:check","Generate Brim");
+            text: catalog.i18nc("@option:check","Print Brim");
             style: UM.Theme.styles.checkbox;
 
             checked: platformAdhesionType.properties.value == "brim"
@@ -231,16 +228,31 @@ Item
                 }
             }
         }
+
+        Label{
+            id: supportHelperLabel
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.verticalCenter: supportCheckBox.verticalCenter
+            width: parent.width/100*35 - 3 * UM.Theme.getSize("default_margin").width
+            //: Support label
+            text: catalog.i18nc("@label:listbox","Support:");
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+        }
+
         CheckBox{
             id: supportCheckBox
+            visible: machineExtruderCount.properties.value <= 1
             property bool hovered_ex: false
 
             anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
+            anchors.left: supportHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
             //: Setting enable support checkbox
-            text: catalog.i18nc("@option:check","Generate Support Structure");
+            text: catalog.i18nc("@option:check","Print Support Structure");
             style: UM.Theme.styles.checkbox;
 
             checked: supportEnabled.properties.value == "True"
@@ -264,74 +276,27 @@ Item
                 }
             }
         }
-    }
 
-    function populateExtruderModel()
-    {
-        extruderModel.clear();
-        for(var extruder = 0; extruder < machineExtruderCount.properties.value ; extruder++) {
-            print(catalog.i18nc("@label", "Extruder %1").arg(extruder));
-            extruderModel.append({
-                text: catalog.i18nc("@label", "Extruder %1").arg(extruder)
-            })
-        }
-    }
-
-    Rectangle {
-        id: multiExtrusionCell
-        anchors.top: helpersCellRight.bottom
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.left: parent.left
-        width: parent.width
-        height: childrenRect.height
-        visible: machineExtruderCount.properties.value > 1
-
-        Label {
-            id: mainExtruderLabel
-            text: catalog.i18nc("@label:listbox","Print object with:")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            width: base.width/100* 35 - 2*UM.Theme.getSize("default_margin").width
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: mainExtruderCombobox.verticalCenter
-        }
-        ComboBox {
-            id: mainExtruderCombobox
-            model: extruderModel
-            anchors.top: parent.top
-            anchors.left: supportExtruderLabel.right
-            style: UM.Theme.styles.combobox
-            currentIndex: mainExtruderNr.properties.value
-            onActivated: {
-                mainExtruderNr.setPropertyValue("value", index)
-            }
-        }
-
-        Label {
-            id: supportExtruderLabel
-            visible: supportCheckBox.checked
-            text: catalog.i18nc("@label:listbox","Print support with:")
-            font: UM.Theme.getFont("default")
-            color: UM.Theme.getColor("text")
-            width: base.width/100* 35 - 2*UM.Theme.getSize("default_margin").width
-            height: visible ? mainExtruderLabel.height : 0
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: supportExtruderCombobox.verticalCenter
-        }
         ComboBox {
             id: supportExtruderCombobox
-            visible: supportCheckBox.checked
+            visible: machineExtruderCount.properties.value > 1
             model: extruderModel
-            height: visible ? mainExtruderCombobox.height : 0
-            anchors.top: mainExtruderCombobox.bottom
+
+            anchors.top: brimCheckBox.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: supportExtruderLabel.right
+            anchors.left: supportHelperLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            width: parent.width/100*45
+
             style: UM.Theme.styles.combobox
-            currentIndex: supportExtruderNr.properties.value
+            currentIndex: supportEnabled.properties.value == "True" ? parseFloat(supportExtruderNr.properties.value) + 1 : 0
             onActivated: {
-                supportExtruderNr.setPropertyValue("value", index)
+                if(index==0) {
+                    supportEnabled.setPropertyValue("value", false);
+                } else {
+                    supportEnabled.setPropertyValue("value", true);
+                    supportExtruderNr.setPropertyValue("value", index - 1);
+                }
             }
         }
 
@@ -347,9 +312,22 @@ Item
          }
     }
 
+    function populateExtruderModel()
+    {
+        extruderModel.clear();
+        extruderModel.append({
+            text: catalog.i18nc("@label", "Don't print support")
+        })
+        for(var extruder = 0; extruder < machineExtruderCount.properties.value ; extruder++) {
+            extruderModel.append({
+                text: catalog.i18nc("@label", "Print using Extruder %1").arg(extruder + 1)
+            })
+        }
+    }
+
     Rectangle {
         id: tipsCell
-        anchors.top: multiExtrusionCell.visible? multiExtrusionCell.bottom : helpersCellRight.bottom
+        anchors.top: helpersCell.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: parent.left
         width: parent.width
@@ -417,15 +395,6 @@ Item
 
         containerStackId: Cura.MachineManager.activeMachineId
         key: "support_extruder_nr"
-        watchedProperties: [ "value" ]
-        storeIndex: 0
-    }
-    UM.SettingPropertyProvider
-    {
-        id: mainExtruderNr
-
-        containerStackId: Cura.MachineManager.activeMachineId
-        key: "extruder_nr"
         watchedProperties: [ "value" ]
         storeIndex: 0
     }
