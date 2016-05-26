@@ -149,6 +149,7 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
         Preferences.getInstance().setDefault("general/visible_settings", """
+                                             machine_settings
                                              resolution
                                                 layer_height
                                              shell
@@ -165,6 +166,7 @@ class CuraApplication(QtApplication):
                                              speed
                                                 speed_print
                                                 speed_travel
+                                             travel
                                              cooling
                                                 cool_fan_enabled
                                              support
@@ -177,8 +179,11 @@ class CuraApplication(QtApplication):
                                                 raft_airgap
                                                 layer_0_z_overlap
                                                 raft_surface_layers
+                                             meshfix
                                              blackmagic
                                                 print_sequence
+                                             dual
+                                             experimental
                                              """)
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
