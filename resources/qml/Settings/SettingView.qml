@@ -34,11 +34,11 @@ ScrollView
             id: delegate
 
             width: UM.Theme.getSize("sidebar").width;
-            height: provider.properties.enabled ? UM.Theme.getSize("section").height : 0
+            height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : 0
             Behavior on height { NumberAnimation { duration: 100 } }
-            opacity: provider.properties.enabled ? 1 : 0
+            opacity: provider.properties.enabled == "True" ? 1 : 0
             Behavior on opacity { NumberAnimation { duration: 100 } }
-            enabled: provider.properties.enabled
+            enabled: provider.properties.enabled == "True"
 
             property var definition: model
             property var settingDefinitionsModel: definitionsModel
