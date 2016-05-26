@@ -69,13 +69,15 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
         self.addMetaDataEntry("properties", property_values)
 
+        self.setDefinition(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
+
         global_setting_values = {}
         settings = data.iterfind("./um:settings/um:setting", self.__namespaces)
         for entry in settings:
             key = entry.get("key")
             if key in self.__material_property_setting_map:
                 self.setProperty(self.__material_property_setting_map[key], "value", entry.text, self._definition)
-                global_setting_values[key] = entry.text
+                global_setting_values[self.__material_property_setting_map[key]] = entry.text
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
