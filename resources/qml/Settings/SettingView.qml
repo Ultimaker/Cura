@@ -27,7 +27,11 @@ ScrollView
         id: contents
         spacing: UM.Theme.getSize("default_lining").height;
 
-        model: UM.SettingDefinitionsModel { id: definitionsModel; containerId: Cura.MachineManager.activeDefinitionId }
+        model: UM.SettingDefinitionsModel {
+            id: definitionsModel;
+            containerId: Cura.MachineManager.activeDefinitionId
+            visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+        }
 
         delegate: Loader
         {
