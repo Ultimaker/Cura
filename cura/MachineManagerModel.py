@@ -142,8 +142,8 @@ class MachineManagerModel(QObject):
         i = 1
 
         #Check both the id and the name, because they may not be the same and it is better if they are both unique
-        while UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = unique_name) or
-            UM.Settings.ContainerRegistry.getInstance().findContainers(None, name = unique_name):
+        while UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = unique_name) or \
+                UM.Settings.ContainerRegistry.getInstance().findContainers(None, name = unique_name):
             i = i + 1
             unique_name = "%s #%d" % (name, i)
 
