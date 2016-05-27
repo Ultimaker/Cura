@@ -112,7 +112,7 @@
                     "unit": "mm",
                     "default_value": 0,
                     "global_only": "True"
-                },
+                }
             }
         }
     }
