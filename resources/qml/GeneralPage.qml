@@ -179,7 +179,7 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: plugins.model.find("id", "SliceInfoPlugin-1") > -1
+            visible: plugins.model.find("id", "SliceInfoPlugin") > -1
             width: childrenRect.width
             height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
