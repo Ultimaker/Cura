@@ -16,13 +16,13 @@ UM.TooltipArea
     width: childrenRect.width;
     height: childrenRect.height;
 
-    Button
+    CheckBox
     {
         id: check
 
         text: definition.label
 
-        //onClicked: delegateItem.settingsModel.setSettingVisible(model.key, checked);
+        onClicked: addedSettingsModel.setVisible(model.key, checked);
     }
 }
 

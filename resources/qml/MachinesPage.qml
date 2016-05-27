@@ -22,9 +22,11 @@ UM.ManagementPage
     onAddObject: Printer.requestAddPrinter()
     onRemoveObject: confirmDialog.open();
     onRenameObject: renameDialog.open();
+    onActivateObject: Cura.MachineManager.setActiveMachine(base.currentItem.id)
 
-    removeEnabled: numInstances > 1
-    renameEnabled: numInstances > 0
+    removeEnabled: base.currentItem != null && numInstances > 1
+    renameEnabled: base.currentItem != null && numInstances > 0
+    activateEnabled: base.currentItem != null
 
     Flow
     {

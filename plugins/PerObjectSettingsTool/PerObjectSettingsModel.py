@@ -13,21 +13,14 @@ from UM.Scene.SceneNode import SceneNode
 from . import SettingOverrideModel
 
 class PerObjectSettingsModel(ListModel):
-    IdRole = Qt.UserRole + 1
-    XRole = Qt.UserRole + 2
-    YRole = Qt.UserRole + 3
-    MaterialRole = Qt.UserRole + 4
-    ProfileRole = Qt.UserRole + 5
-    SettingsRole = Qt.UserRole + 6
+    IdRole = Qt.UserRole + 1  # ID of the node
 
     def __init__(self, parent = None):
         super().__init__(parent)
         self._scene = Application.getInstance().getController().getScene()
         self._root = self._scene.getRoot()
         self.addRoleName(self.IdRole,"id")
-        self.addRoleName(self.MaterialRole, "material")
-        self.addRoleName(self.ProfileRole, "profile")
-        self.addRoleName(self.SettingsRole, "settings")
+
         self._updateModel()
 
     @pyqtSlot("quint64", str)
@@ -48,7 +41,7 @@ class PerObjectSettingsModel(ListModel):
                 node.removeDecorator(ProfileOverrideDecorator)'''
 
     @pyqtSlot("quint64", str)
-    def addSettingOverride(self, object_id, key):
+    def addOverride(self, object_id, key):
         machine = Application.getInstance().getMachineManager().getActiveMachineInstance()
         if not machine:
             return
@@ -60,7 +53,7 @@ class PerObjectSettingsModel(ListModel):
         node.callDecoration("addSetting", key)
 
     @pyqtSlot("quint64", str)
-    def removeSettingOverride(self, object_id, key):
+    def removerOverride(self, object_id, key):
         node = self._scene.findObject(object_id)
         node.callDecoration("removeSetting", key)
 
@@ -69,18 +62,14 @@ class PerObjectSettingsModel(ListModel):
 
     def _updateModel(self):
         self.clear()
+
         for node in BreadthFirstIterator(self._root):
             if type(node) is not SceneNode or not node.isSelectable():
                 continue
-            node_profile = node.callDecoration("getProfile")
-            if not node_profile:
-                node_profile = "global"
-            else:
-                node_profile = node_profile.getName()
 
-            self.appendItem({
-                "id": id(node),
-                "material": "",
-                "profile": node_profile,
-                "settings": SettingOverrideModel.SettingOverrideModel(node)
-            })
+            node_stack = node.callDecoration("getStack")
+
+            if not node_stack:
+                self.appendItem({
+                    "id": id(node)
+                })

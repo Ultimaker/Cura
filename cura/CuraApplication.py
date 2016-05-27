@@ -321,6 +321,7 @@ class CuraApplication(QtApplication):
                                  MachineManagerModel.createMachineManagerModel)
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
+        self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
 
         if self._engine.rootObjects:

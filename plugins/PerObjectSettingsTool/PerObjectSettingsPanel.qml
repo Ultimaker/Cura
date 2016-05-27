@@ -20,73 +20,38 @@ Item {
     width: childrenRect.width;
     height: childrenRect.height;
 
-    Column {
+    Column
+    {
         id: items
         anchors.top: parent.top;
         anchors.left: parent.left;
 
         spacing: UM.Theme.getSize("default_margin").height;
-
-        Column {
-            id: customisedSettings
+        height: childrenRect.height;
+        ListView
+        {
+            id: contents
             spacing: UM.Theme.getSize("default_lining").height;
-            width: UM.Theme.getSize("setting").width + UM.Theme.getSize("setting").height/2;
+            height: childrenRect.height;
 
-            Repeater {
-                id: settings;
-
-                model: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).settings
-
-                UM.SettingItem {
-                    width: UM.Theme.getSize("setting").width;
-                    height: UM.Theme.getSize("setting").height;
-
-                    name: model.label;
-                    type: model.type;
-                    value: model.value;
-                    description: model.description;
-                    unit: model.unit;
-                    valid: model.valid;
-                    visible: !model.global_only
-                    options: model.options
-                    indent: false
-
-                    style: UM.Theme.styles.setting_item;
-
-                    onItemValueChanged: {
-                        settings.model.setSettingValue(model.key, value)
-                    }
-
-                    Button
-                    {
-                        anchors.left: parent.right;
-
-                        width: UM.Theme.getSize("setting").height;
-                        height: UM.Theme.getSize("setting").height;
-
-                        onClicked: UM.ActiveTool.properties.getValue("Model").removeSettingOverride(UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id, model.key)
-
-                        style: ButtonStyle
-                        {
-                            background: Rectangle
-                            {
-                                color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
-                                UM.RecolorImage
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    width: parent.width/2
-                                    height: parent.height/2
-                                    sourceSize.width: width
-                                    sourceSize.height: width
-                                    color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                    source: UM.Theme.getIcon("cross1")
-                                }
-                            }
-                        }
-                    }
+            model: UM.SettingDefinitionsModel {
+                id: addedSettingsModel;
+                containerId: Cura.MachineManager.activeDefinitionId
+                visibilityHandler: Cura.PerObjectSettingVisibilityHandler {
+                selectedObjectId: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id
                 }
             }
+
+            delegate:Button
+            {
+                anchors.left: parent.right;
+
+                width: 150
+                height:50
+
+                text: model.label
+            }
+
         }
 
         Button
@@ -184,6 +149,7 @@ Item {
                     {
                         "global_only": false
                     }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 }
                 delegate:Loader
                 {
