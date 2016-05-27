@@ -10,15 +10,19 @@ import UM 1.2 as UM
 import Cura 1.0 as Cura
 import ".."
 
-
 Item {
     id: base;
-    property int currentIndex: UM.ActiveTool.properties.getValue("SelectedIndex")
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
     width: childrenRect.width;
     height: childrenRect.height;
+
+
+    function updateContainerID()
+    {
+        console.log("containerid",UM.ActiveTool.properties.getValue("ContainerID"))
+    }
 
     Column
     {
@@ -27,33 +31,69 @@ Item {
         anchors.left: parent.left;
 
         spacing: UM.Theme.getSize("default_margin").height;
-        height: childrenRect.height;
-        ListView
+
+        Repeater
         {
             id: contents
-            spacing: UM.Theme.getSize("default_lining").height;
             height: childrenRect.height;
 
-            model: UM.SettingDefinitionsModel {
+            model: UM.SettingDefinitionsModel
+            {
                 id: addedSettingsModel;
                 containerId: Cura.MachineManager.activeDefinitionId
-                visibilityHandler: Cura.PerObjectSettingVisibilityHandler {
-                selectedObjectId: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id
+                visibilityHandler: Cura.PerObjectSettingVisibilityHandler
+                {
+                    selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
                 }
             }
 
-            delegate:Button
+            delegate: Loader
             {
-                anchors.left: parent.right;
+                width: UM.Theme.getSize("setting").width;
+                height: UM.Theme.getSize("setting").height;
 
-                width: 150
-                height:50
+                property var definition: model
+                property var settingDefinitionsModel: addedSettingsModel
+                property var propertyProvider: provider
 
-                text: model.label
+                //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                //causing nasty issues when selecting differnt options. So disable asynchronous loading of enum type completely.
+                asynchronous: model.type != "enum"
+
+                source:
+                {
+                    switch(model.type) // TODO: This needs to be fixed properly. Got frustrated with it not working, so this is the patch job!
+                    {
+                        case "int":
+                            return "../../resources/qml/Settings/SettingTextField.qml"
+                        case "float":
+                            return "../../resources/qml/Settings/SettingTextField.qml"
+                        case "enum":
+                            return "../../resources/qml/Settings/SettingComboBox.qml"
+                        case "bool":
+                            return "../../resources/qml/Settings/SettingCheckBox.qml"
+                        case "str":
+                            return "../../resources/qml/Settings/SettingTextField.qml"
+                        case "category":
+                            return "../../resources/qml/Settings/SettingCategory.qml"
+                        default:
+                            return "../../resources/qml/Settings/SettingUnknown.qml"
+                    }
+                }
+
+                UM.SettingPropertyProvider
+                {
+                    id: provider
+
+                    containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                    key: model.key
+                    watchedProperties: [ "value", "enabled", "state", "validationState" ]
+                    storeIndex: 0
+                }
             }
 
         }
-
         Button
         {
             id: customise_settings_button;

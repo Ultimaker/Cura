@@ -14,9 +14,11 @@ from UM.Application import Application
 class SettingOverrideDecorator(SceneNodeDecorator):
     def __init__(self):
         super().__init__()
-        self._stack = ContainerStack(stack_id = "SettingOverrideStack")
+        self._stack = ContainerStack(stack_id = id(self))
         self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
         self._stack.addContainer(self._instance)
+
+        ContainerRegistry.getInstance().addContainer(self._stack)
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()

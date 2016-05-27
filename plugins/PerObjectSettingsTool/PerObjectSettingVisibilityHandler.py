@@ -53,7 +53,6 @@ class PerObjectSettingVisibilityHandler(QObject):
 
         if visibility_changed:
             self.visibilityChanged.emit()
-        #settings.addInstance(SettingInstance())
 
     def getVisible(self):
         visible_settings = set()

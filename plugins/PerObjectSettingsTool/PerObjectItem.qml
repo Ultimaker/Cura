@@ -16,13 +16,18 @@ UM.TooltipArea
     width: childrenRect.width;
     height: childrenRect.height;
 
-    CheckBox
+    Button
     {
         id: check
 
         text: definition.label
 
-        onClicked: addedSettingsModel.setVisible(model.key, checked);
+        onClicked:
+        {
+            addedSettingsModel.setVisible(model.key, true);
+            settingPickDialog.visible = false
+            UM.ActiveTool.forceUpdate()
+        }
     }
 }
 
