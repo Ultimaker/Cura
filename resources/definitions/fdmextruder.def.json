@@ -24,8 +24,7 @@
                     "description": "The extruder train used for printing. This is used in multi-extrusion.",
                     "type": "int",
                     "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value": "machine_extruder_count - 1"
+                    "minimum_value": "0"
                 },
                 "machine_nozzle_offset_x":
                 {
