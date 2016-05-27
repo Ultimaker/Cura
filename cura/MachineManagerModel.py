@@ -266,6 +266,11 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str)
     def removeMachine(self, machine_id):
+        # If the machine that is being removed is the currently active machine, set another machine as the active machine
+        if self._global_container_stack and self._global_container_stack.getId() == machine_id:
+            containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks()
+            if containers:
+                Application.getInstance().setGlobalContainerStack(containers[0])
         UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
 
     @pyqtProperty(bool, notify = globalContainerChanged)
