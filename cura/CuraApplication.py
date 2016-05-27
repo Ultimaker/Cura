@@ -75,7 +75,7 @@ class CuraApplication(QtApplication):
         VariantInstanceContainer = Resources.UserType + 5
         UserInstanceContainer = Resources.UserType + 6
         MachineStack = Resources.UserType + 7
-        ExtruderInstanceContainer = Resources.UserType + 8
+        ExtruderStack = Resources.UserType + 8
 
     Q_ENUMS(ResourceTypes)
 
@@ -127,13 +127,14 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
         Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
-        Resources.addStorageType(self.ResourceTypes.ExtruderInstanceContainer, "extruders")
+        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
 
@@ -149,42 +150,42 @@ class CuraApplication(QtApplication):
         Preferences.getInstance().setDefault("local_file/last_used_type", "text/x-gcode")
 
         Preferences.getInstance().setDefault("general/visible_settings", """
-                                             machine_settings
-                                             resolution
-                                                layer_height
-                                             shell
-                                                wall_thickness
-                                                top_bottom_thickness
-                                             infill
-                                                infill_sparse_density
-                                             material
-                                                material_print_temperature
-                                                material_bed_temperature
-                                                material_diameter
-                                                material_flow
-                                                retraction_enable
-                                             speed
-                                                speed_print
-                                                speed_travel
-                                             travel
-                                             cooling
-                                                cool_fan_enabled
-                                             support
-                                                support_enable
-                                                support_type
-                                                support_roof_density
-                                             platform_adhesion
-                                                adhesion_type
-                                                brim_width
-                                                raft_airgap
-                                                layer_0_z_overlap
-                                                raft_surface_layers
-                                             meshfix
-                                             blackmagic
-                                                print_sequence
-                                             dual
-                                             experimental
-                                             """)
+            machine_settings
+                resolution
+                layer_height
+            shell
+                wall_thickness
+                top_bottom_thickness
+            infill
+                infill_sparse_density
+            material
+                material_print_temperature
+                material_bed_temperature
+                material_diameter
+                material_flow
+                retraction_enable
+            speed
+                speed_print
+                speed_travel
+            travel
+            cooling
+                cool_fan_enabled
+            support
+                support_enable
+                support_type
+                support_roof_density
+            platform_adhesion
+                adhesion_type
+                brim_width
+                raft_airgap
+                layer_0_z_overlap
+                raft_surface_layers
+            meshfix
+            blackmagic
+                print_sequence
+                dual
+            experimental
+        """.replace("\n", ";").replace(" ", ""))
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
