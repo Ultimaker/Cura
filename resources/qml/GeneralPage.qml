@@ -5,6 +5,7 @@ import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
+import QtQml.Models 2.2
 
 import UM 1.1 as UM
 
@@ -28,18 +29,23 @@ UM.PreferencesPage
     function reset()
     {
         UM.Preferences.resetPreference("general/language")
-        UM.Preferences.resetPreference("physics/automatic_push_free")
-        UM.Preferences.resetPreference("mesh/scale_to_fit")
-        UM.Preferences.resetPreference("info/send_slice_info")
-        UM.Preferences.resetPreference("cura/jobname_prefix")
-        pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
-        sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
-        scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
-        prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
         var defaultLanguage = UM.Preferences.getValue("general/language")
         setDefaultLanguage(defaultLanguage)
 
-        if (UM.Models.pluginsModel.find("id", "UpdateChecker") > -1) {
+        UM.Preferences.resetPreference("physics/automatic_push_free")
+        pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
+        UM.Preferences.resetPreference("mesh/scale_to_fit")
+        scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_to_fit"))
+        UM.Preferences.resetPreference("mesh/scale_tiny_meshes")
+        scaleTinyCheckbox.checked = boolCheck(UM.Preferences.getValue("mesh/scale_tiny_meshes"))
+        UM.Preferences.resetPreference("cura/jobname_prefix")
+        prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
+
+        if (plugins.model.find("id", "SliceInfoPlugin") > -1) {
+            UM.Preferences.resetPreference("info/send_slice_info")
+            sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+        }
+        if (plugins.model.find("id", "UpdateChecker") > -1) {
             UM.Preferences.resetPreference("info/automatic_update_check")
             checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
         }
@@ -158,9 +164,9 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
-            visible: UM.Models.pluginsModel.find("id", "UpdateChecker") > -1
+            visible: plugins.model.find("id", "UpdateChecker") > -1
             width: childrenRect.width
-            height: childrenRect.height
+            height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
 
             CheckBox
@@ -173,8 +179,9 @@ UM.PreferencesPage
         }
 
         UM.TooltipArea {
+            visible: plugins.model.find("id", "SliceInfoPlugin-1") > -1
             width: childrenRect.width
-            height: childrenRect.height
+            height: visible ? childrenRect.height : 0
             text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
             CheckBox
@@ -198,6 +205,12 @@ UM.PreferencesPage
                 checked: boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
                 onCheckedChanged: UM.Preferences.setValue("cura/jobname_prefix", checked)
             }
+        }
+
+        DelegateModel
+        {
+            id: plugins
+            model: UM.PluginsModel { }
         }
     }
 }
