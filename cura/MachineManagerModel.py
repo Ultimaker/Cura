@@ -5,6 +5,8 @@ from UM.Preferences import Preferences
 
 import UM.Settings
 
+import re
+
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -64,6 +66,7 @@ class MachineManagerModel(QObject):
         definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
         if definitions:
             definition = definitions[0]
+            name = self._uniqueMachineName(name, definition.getName())
 
             new_global_stack = UM.Settings.ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
@@ -126,6 +129,25 @@ class MachineManagerModel(QObject):
             new_global_stack.addContainer(current_settings_instance_container)
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
+
+    # Create a name that is not empty and unique
+    def _uniqueMachineName(self, name, fallback_name):
+        name = name.strip()
+        num_check = re.compile("(.*?)\s*#\d$").match(name)
+        if(num_check):
+            name = num_check.group(1)
+        if name == "":
+            name = fallback_name
+        unique_name = name
+        i = 1
+
+        #Check both the id and the name, because they may not be the same and it is better if they are both unique
+        while UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = unique_name) or \
+                UM.Settings.ContainerRegistry.getInstance().findContainers(None, name = unique_name):
+            i = i + 1
+            unique_name = "%s #%d" % (name, i)
+
+        return unique_name
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):
@@ -239,6 +261,7 @@ class MachineManagerModel(QObject):
     def renameMachine(self, machine_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
+            new_name = self._uniqueMachineName(new_name, containers[0].getBottom().getName())
             containers[0].setName(new_name)
 
     @pyqtSlot(str)
