@@ -6,6 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 UM.ManagementPage
 {
@@ -16,6 +17,7 @@ UM.ManagementPage
 
     model: UM.InstanceContainersModel { filter: { "type": "quality" } }
 
+    onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
     onAddObject: {
         var selectedProfile;
         if (objectList.currentIndex == 0) {
@@ -33,6 +35,7 @@ UM.ManagementPage
     onRemoveObject: confirmDialog.open();
     onRenameObject: { renameDialog.removeWhenRejected = false; renameDialog.open(); renameDialog.selectText(); }
 
+    activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeQualityId : false;
     addEnabled: currentItem != null;
     removeEnabled: currentItem != null ? !currentItem.readOnly : false;
     renameEnabled: currentItem != null ? !currentItem.readOnly : false;
@@ -69,7 +72,7 @@ UM.ManagementPage
 
                 Row
                 {
-                    visible: base.currentItem.id == -1 || base.currentItem.active
+                    visible: base.currentItem.id == -1 || currentItem.id == Cura.MachineManager.activeQualityId
                     Button
                     {
                         text: {
