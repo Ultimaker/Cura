@@ -1306,6 +1306,19 @@
                                     "global_only": true
                                 }
                             }
+                        },
+                        "acceleration_prime_tower": {
+                            "label": "Prime Tower Acceleration",
+                            "description": "The acceleration with which the prime tower is printed.",
+                            "unit": "mm/s²",
+                            "type": "float",
+                            "min_value": "0.1",
+                            "min_value_warning": "100",
+                            "max_value_warning": "10000",
+                            "default": 3000,
+                            "visible": false,
+                            "enabled": "prime_tower_enable and acceleration_enabled",
+                            "global_only": true
                         }
                     }
                 },
@@ -1473,6 +1486,19 @@
                                     "global_only": true
                                 }
                             }
+                        },
+                        "jerk_prime_tower": {
+                            "label": "Prime Tower Jerk",
+                            "description": "The jerk with which the prime tower is printed.",
+                            "unit": "mm/s³",
+                            "type": "float",
+                            "min_value": "0.1",
+                            "min_value_warning": "5",
+                            "max_value_warning": "50",
+                            "default": 20,
+                            "visible": false,
+                            "enabled": "prime_tower_enable and jerk_enabled",
+                            "global_only": true
                         }
                     }
                 },
