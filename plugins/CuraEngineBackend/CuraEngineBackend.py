@@ -307,7 +307,7 @@ class CuraEngineBackend(Backend):
     ##  Called when anything has changed to the stuff that needs to be sliced.
     #
     #   This indicates that we should probably re-slice soon.
-    def _onChanged(self):
+    def _onChanged(self, *args, **kwargs):
         self._change_timer.start()
 
     ##  Called when the back-end connects to the front-end.
@@ -362,9 +362,11 @@ class CuraEngineBackend(Backend):
     def _onGlobalStackChanged(self):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
+            self._global_container_stack.containersChanged.disconnect(self._onChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
 
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
+            self._global_container_stack.containersChanged.connect(self._onChanged)
             self._onChanged()
