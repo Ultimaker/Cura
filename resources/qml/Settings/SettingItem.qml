@@ -136,7 +136,7 @@ Item {
                     propertyProvider.removeFromContainer(0)
                 }
 
-                onEntered: base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }
                 onExited: base.showTooltip(definition.description);
             }
 
@@ -163,7 +163,7 @@ Item {
 
                 iconSource: UM.Theme.getIcon("notice");
 
-                onEntered: base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."))
+                onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
                 onExited: base.showTooltip(definition.description);
             }
 
