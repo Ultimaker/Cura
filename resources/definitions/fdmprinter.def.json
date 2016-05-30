@@ -11,11 +11,11 @@
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "preferred_material": "pla",
-        "preferred_quality": "normal"
-    },
-    "machine_extruder_trains":
-    {
-        "0": "fdmextruder"
+        "preferred_quality": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "fdmextruder"
+        }
     },
     "settings":
     {
