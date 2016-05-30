@@ -156,11 +156,6 @@ class CuraEngineBackend(Backend):
         #         return
 
         self.processingProgress.emit(0.0)
-        if self._message:
-            self._message.setProgress(-1)
-        else:
-            self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
-            self._message.show()
         self.backendStateChange.emit(BackendState.NotStarted)
 
         self._scene.gcode_list = []
@@ -193,10 +188,6 @@ class CuraEngineBackend(Backend):
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
 
-        if self._message:
-            self._message.hide()
-            self._message = None
-
     ##  Event handler to call when the job to initiate the slicing process is
     #   completed.
     #
@@ -210,9 +201,6 @@ class CuraEngineBackend(Backend):
         if self._start_slice_job is job:
             self._start_slice_job = None
         if job.isCancelled() or job.getError() or job.getResult() != True:
-            if self._message:
-                self._message.hide()
-                self._message = None
             return
         else:
             # Preparation completed, send it to the backend.
@@ -270,9 +258,6 @@ class CuraEngineBackend(Backend):
     #
     #   \param message The protobuf message containing the slicing progress.
     def _onProgressMessage(self, message):
-        if self._message:
-            self._message.setProgress(round(message.amount * 100))
-
         self.processingProgress.emit(message.amount)
         self.backendStateChange.emit(BackendState.Processing)
 
@@ -284,11 +269,6 @@ class CuraEngineBackend(Backend):
         self.processingProgress.emit(1.0)
 
         self._slicing = False
-
-        if self._message:
-            self._message.setProgress(100)
-            self._message.hide()
-            self._message = None
 
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
             self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
