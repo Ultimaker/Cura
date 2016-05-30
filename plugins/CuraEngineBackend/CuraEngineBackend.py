@@ -1,13 +1,12 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Backend.Backend import Backend
+from UM.Backend.Backend import Backend, BackendState
 from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from UM.Preferences import Preferences
 from UM.Signal import Signal
 from UM.Logger import Logger
-from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of the slicing job.
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
@@ -56,8 +55,9 @@ class CuraEngineBackend(Backend):
         self._stored_layer_data = []
 
         #Triggers for when to (re)start slicing:
-        if Application.getInstance().getGlobalContainerStack():
-            Application.getInstance().getGlobalContainerStack().propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
+        self._global_container_stack = None
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._onGlobalStackChanged()
 
         #When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
         #This timer will group them up, and only slice for the last setting changed signal.
@@ -82,7 +82,7 @@ class CuraEngineBackend(Backend):
         self._always_restart = True #Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
-        self._message = None #Pop-up message that shows the slicing progress bar (or an error message).
+        self._error_message = None #Pop-up message that shows errors.
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
@@ -124,7 +124,7 @@ class CuraEngineBackend(Backend):
     def slice(self):
         self._stored_layer_data = []
 
-        if not self._enabled: #We shouldn't be slicing.
+        if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
             return
 
         if self._slicing: #We were already slicing. Stop the old job.
@@ -134,34 +134,11 @@ class CuraEngineBackend(Backend):
             self._process_layers_job.abort()
             self._process_layers_job = None
 
-        # #Don't slice if there is a setting with an error value.
-        # stack = Application.getInstance().getGlobalContainerStack()
-        # for key in stack.getAllKeys():
-        #     validation_state = stack.getProperty(key, "validationState")
-        #     #Only setting instances have a validation state, so settings which
-        #     #are not overwritten by any instance will have none. The property
-        #     #then, and only then, evaluates to None. We make the assumption that
-        #     #the definition defines the setting with a default value that is
-        #     #valid. Therefore we can allow both ValidatorState.Valid and None as
-        #     #allowable validation states.
-        #     #TODO: This assumption is wrong! If the definition defines an inheritance function that through inheritance evaluates to a disallowed value, a setting is still invalid even though it's default!
-        #     #TODO: Therefore we must also validate setting definitions.
-        #     if validation_state != None and validation_state != ValidatorState.Valid:
-        #         Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
-        #         if self._message: #Hide any old message before creating a new one.
-        #             self._message.hide()
-        #             self._message = None
-        #         self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
-        #         self._message.show()
-        #         return
+        if self._error_message:
+            self._error_message.hide()
 
         self.processingProgress.emit(0.0)
-        self.backendStateChange.emit(BackendState.NOT_STARTED)
-        if self._message:
-            self._message.setProgress(-1)
-        else:
-            self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
-            self._message.show()
+        self.backendStateChange.emit(BackendState.NotStarted)
 
         self._scene.gcode_list = []
         self._slicing = True
@@ -193,10 +170,6 @@ class CuraEngineBackend(Backend):
             except Exception as e: # terminating a process that is already terminating causes an exception, silently ignore this.
                 Logger.log("d", "Exception occurred while trying to kill the engine %s", str(e))
 
-        if self._message:
-            self._message.hide()
-            self._message = None
-
     ##  Event handler to call when the job to initiate the slicing process is
     #   completed.
     #
@@ -209,15 +182,31 @@ class CuraEngineBackend(Backend):
         # Note that cancelled slice jobs can still call this method.
         if self._start_slice_job is job:
             self._start_slice_job = None
-        if job.isCancelled() or job.getError() or job.getResult() != True:
-            if self._message:
-                self._message.hide()
-                self._message = None
+
+        if job.isCancelled() or job.getError() or job.getResult() == StartSliceJob.StartJobResult.Error:
             return
-        else:
-            # Preparation completed, send it to the backend.
-            self._socket.sendMessage(job.getSettingsMessage())
-            self._socket.sendMessage(job.getSliceMessage())
+
+        if job.getResult() == StartSliceJob.StartJobResult.SettingError:
+            if Application.getInstance().getPlatformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."), lifetime = 10)
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
+            return
+
+        if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
+            if Application.getInstance().getPlatformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable objects found."), lifetime = 10)
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
+            return
+
+        # Preparation completed, send it to the backend.
+        self._socket.sendMessage(job.getSettingsMessage())
+        self._socket.sendMessage(job.getSliceMessage())
 
     ##  Listener for when the scene has changed.
     #
@@ -270,25 +259,17 @@ class CuraEngineBackend(Backend):
     #
     #   \param message The protobuf message containing the slicing progress.
     def _onProgressMessage(self, message):
-        if self._message:
-            self._message.setProgress(round(message.amount * 100))
-
         self.processingProgress.emit(message.amount)
-        self.backendStateChange.emit(BackendState.PROCESSING)
+        self.backendStateChange.emit(BackendState.Processing)
 
     ##  Called when the engine sends a message that slicing is finished.
     #
     #   \param message The protobuf message signalling that slicing is finished.
     def _onSlicingFinishedMessage(self, message):
-        self.backendStateChange.emit(BackendState.DONE)
+        self.backendStateChange.emit(BackendState.Done)
         self.processingProgress.emit(1.0)
 
         self._slicing = False
-
-        if self._message:
-            self._message.setProgress(100)
-            self._message.hide()
-            self._message = None
 
         if self._layer_view_active and (self._process_layers_job is None or not self._process_layers_job.isRunning()):
             self._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_layer_data)
@@ -326,7 +307,7 @@ class CuraEngineBackend(Backend):
     ##  Called when anything has changed to the stuff that needs to be sliced.
     #
     #   This indicates that we should probably re-slice soon.
-    def _onChanged(self):
+    def _onChanged(self, *args, **kwargs):
         self._change_timer.start()
 
     ##  Called when the back-end connects to the front-end.
@@ -376,3 +357,16 @@ class CuraEngineBackend(Backend):
             Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
             self._process = None
             self._createSocket()
+
+    ##  Called when the global container stack changes
+    def _onGlobalStackChanged(self):
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
+            self._global_container_stack.containersChanged.disconnect(self._onChanged)
+
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
+            self._global_container_stack.containersChanged.connect(self._onChanged)
+            self._onChanged()

@@ -4,6 +4,7 @@
 import numpy
 from string import Formatter
 import traceback
+from enum import IntEnum
 
 from UM.Job import Job
 from UM.Application import Application
@@ -12,8 +13,15 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
+from UM.Settings.Validator import ValidatorState
+
 from cura.OneAtATimeIterator import OneAtATimeIterator
 
+class StartJobResult(IntEnum):
+    Finished = 1
+    Error = 2
+    SettingError = 3
+    NothingToSlice = 4
 
 ##  Formatter class that handles token expansion in start/end gcod
 class GcodeStartEndFormatter(Formatter):
@@ -48,8 +56,18 @@ class StartSliceJob(Job):
     def run(self):
         stack = Application.getInstance().getGlobalContainerStack()
         if not stack:
-            self.setResult(False)
+            self.setResult(StartJobResult.Error)
             return
+
+        #Don't slice if there is a setting with an error value.
+        for key in stack.getAllKeys():
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+                self.setResult(StartJobResult.SettingError)
+                return
+
+            Job.yieldThread()
 
         with self._scene.getSceneLock():
             # Remove old layer data.
@@ -91,6 +109,7 @@ class StartSliceJob(Job):
                     object_groups.append(temp_list)
 
             if not object_groups:
+                self.setResult(StartJobResult.NothingToSlice)
                 return
 
             self._buildGlobalSettingsMessage(stack)
@@ -116,7 +135,7 @@ class StartSliceJob(Job):
 
                     Job.yieldThread()
 
-        self.setResult(True)
+        self.setResult(StartJobResult.Finished)
 
     def cancel(self):
         super().cancel()
@@ -131,7 +150,7 @@ class StartSliceJob(Job):
             fmt = GcodeStartEndFormatter()
             return str(fmt.format(value, **settings)).encode("utf-8")
         except:
-            Logger.log("w", "Unabled to do token replacement on start/end gcode %s", traceback.format_exc())
+            Logger.logException("w", "Unable to do token replacement on start/end gcode")
             return str(value).encode("utf-8")
 
     ##  Sends all global settings to the engine.
