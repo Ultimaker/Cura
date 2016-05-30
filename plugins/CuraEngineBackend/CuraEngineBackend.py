@@ -1,13 +1,12 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from UM.Backend.Backend import Backend
+from UM.Backend.Backend import Backend, BackendState
 from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from UM.Preferences import Preferences
 from UM.Signal import Signal
 from UM.Logger import Logger
-from UM.Qt.Bindings.BackendProxy import BackendState #To determine the state of the slicing job.
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
@@ -156,12 +155,12 @@ class CuraEngineBackend(Backend):
         #         return
 
         self.processingProgress.emit(0.0)
-        self.backendStateChange.emit(BackendState.NOT_STARTED)
         if self._message:
             self._message.setProgress(-1)
         else:
             self._message = Message(catalog.i18nc("@info:status", "Slicing..."), 0, False, -1)
             self._message.show()
+        self.backendStateChange.emit(BackendState.NotStarted)
 
         self._scene.gcode_list = []
         self._slicing = True
@@ -274,13 +273,13 @@ class CuraEngineBackend(Backend):
             self._message.setProgress(round(message.amount * 100))
 
         self.processingProgress.emit(message.amount)
-        self.backendStateChange.emit(BackendState.PROCESSING)
+        self.backendStateChange.emit(BackendState.Processing)
 
     ##  Called when the engine sends a message that slicing is finished.
     #
     #   \param message The protobuf message signalling that slicing is finished.
     def _onSlicingFinishedMessage(self, message):
-        self.backendStateChange.emit(BackendState.DONE)
+        self.backendStateChange.emit(BackendState.Done)
         self.processingProgress.emit(1.0)
 
         self._slicing = False

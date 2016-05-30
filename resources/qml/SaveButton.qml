@@ -14,21 +14,35 @@ Rectangle {
 
     property real progress: UM.Backend.progress;
     property int backendState: UM.Backend.state;
+
     property bool activity: Printer.getPlatformActivity;
     //Behavior on progress { NumberAnimation { duration: 250; } }
     property int totalHeight: childrenRect.height + UM.Theme.getSize("default_margin").height
     property string fileBaseName
-    property string statusText: {
-        if(base.backendState == 0) {
-            if(!activity) {
-                return catalog.i18nc("@label:PrintjobStatus","Please load a 3d model");
-            } else {
-                return catalog.i18nc("@label:PrintjobStatus","Preparing to slice...");
+    property string statusText:
+    {
+        if(base.backendState == 1)
+        {
+            if(!activity)
+            {
+                return catalog.i18nc("@label:PrintjobStatus", "Please load a 3d model");
             }
-        } else if(base.backendState == 1) {
-            return catalog.i18nc("@label:PrintjobStatus","Slicing...");
-        } else {
-            return catalog.i18nc("@label:PrintjobStatus","Ready to ") + UM.OutputDeviceManager.activeDeviceShortDescription;
+            else
+            {
+                return catalog.i18nc("@label:PrintjobStatus", "Preparing to slice...");
+            }
+        }
+        else if(base.backendState == 2)
+        {
+            return catalog.i18nc("@label:PrintjobStatus", "Slicing...");
+        }
+        else if(base.backendState == 3)
+        {
+            return catalog.i18nc("@label:PrintjobStatus %1 is target operation","Ready to %1").arg(UM.OutputDeviceManager.activeDeviceShortDescription);
+        }
+        else if(base.backendState == 4)
+        {
+            return catalog.i18nc("@label:PrintjobStatus", "Unable to slice due to errors")
         }
     }
 
@@ -60,7 +74,7 @@ Rectangle {
             height: parent.height
             color: UM.Theme.getColor("progressbar_control")
             radius: UM.Theme.getSize("progressbar_radius").width
-            visible: base.backendState == 1 ? true : false
+            visible: base.backendState == 2 ? true : false
         }
     }
 
@@ -76,7 +90,7 @@ Rectangle {
             id: saveToButton
 
             tooltip: UM.OutputDeviceManager.activeDeviceDescription;
-            enabled: base.backendState == 2 && base.activity == true
+            enabled: base.backendState == 3 && base.activity == true
             height: UM.Theme.getSize("save_button_save_to_button").height
 
             anchors.top: parent.top
@@ -127,7 +141,7 @@ Rectangle {
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             width: UM.Theme.getSize("save_button_save_to_button").height
             height: UM.Theme.getSize("save_button_save_to_button").height
-            enabled: base.backendState == 2 && base.activity == true
+            enabled: base.backendState == 3 && base.activity == true
             visible: devicesModel.deviceCount > 1
 
 
