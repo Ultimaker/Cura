@@ -13,7 +13,7 @@ def getMetaData():
             "author": "Ultimaker",
             "version": "1.0",
             "description": catalog.i18nc("@info:whatsthis", "Provides support for reading 3MF files."),
-            "api": 2
+            "api": 3
         },
         "mesh_reader": [
             {
