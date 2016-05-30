@@ -21,16 +21,14 @@ Rectangle {
     property string fileBaseName
     property string statusText:
     {
+        if(!activity)
+        {
+            return catalog.i18nc("@label:PrintjobStatus", "Please load a 3d model");
+        }
+
         if(base.backendState == 1)
         {
-            if(!activity)
-            {
-                return catalog.i18nc("@label:PrintjobStatus", "Please load a 3d model");
-            }
-            else
-            {
-                return catalog.i18nc("@label:PrintjobStatus", "Preparing to slice...");
-            }
+            return catalog.i18nc("@label:PrintjobStatus", "Preparing to slice...");
         }
         else if(base.backendState == 2)
         {
@@ -42,7 +40,7 @@ Rectangle {
         }
         else if(base.backendState == 4)
         {
-            return catalog.i18nc("@label:PrintjobStatus", "Unable to slice due to errors")
+            return catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")
         }
     }
 

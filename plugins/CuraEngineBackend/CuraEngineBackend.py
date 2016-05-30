@@ -82,7 +82,7 @@ class CuraEngineBackend(Backend):
         self._always_restart = True #Always restart the engine when starting a new slice. Don't keep the process running. TODO: Fix engine statelessness.
         self._process_layers_job = None #The currently active job to process layers, or None if it is not processing layers.
 
-        self._message = None #Pop-up message that shows the slicing progress bar (or an error message).
+        self._error_message = None #Pop-up message that shows errors.
 
         self.backendQuit.connect(self._onBackendQuit)
         self.backendConnected.connect(self._onBackendConnected)
@@ -134,26 +134,8 @@ class CuraEngineBackend(Backend):
             self._process_layers_job.abort()
             self._process_layers_job = None
 
-        # #Don't slice if there is a setting with an error value.
-        # stack = Application.getInstance().getGlobalContainerStack()
-        # for key in stack.getAllKeys():
-        #     validation_state = stack.getProperty(key, "validationState")
-        #     #Only setting instances have a validation state, so settings which
-        #     #are not overwritten by any instance will have none. The property
-        #     #then, and only then, evaluates to None. We make the assumption that
-        #     #the definition defines the setting with a default value that is
-        #     #valid. Therefore we can allow both ValidatorState.Valid and None as
-        #     #allowable validation states.
-        #     #TODO: This assumption is wrong! If the definition defines an inheritance function that through inheritance evaluates to a disallowed value, a setting is still invalid even though it's default!
-        #     #TODO: Therefore we must also validate setting definitions.
-        #     if validation_state != None and validation_state != ValidatorState.Valid:
-        #         Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
-        #         if self._message: #Hide any old message before creating a new one.
-        #             self._message.hide()
-        #             self._message = None
-        #         self._message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."))
-        #         self._message.show()
-        #         return
+        if self._error_message:
+            self._error_message.hide()
 
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
@@ -200,12 +182,31 @@ class CuraEngineBackend(Backend):
         # Note that cancelled slice jobs can still call this method.
         if self._start_slice_job is job:
             self._start_slice_job = None
-        if job.isCancelled() or job.getError() or job.getResult() != True:
+
+        if job.isCancelled() or job.getError() or job.getResult() == StartSliceJob.StartJobResult.Error:
             return
-        else:
-            # Preparation completed, send it to the backend.
-            self._socket.sendMessage(job.getSettingsMessage())
-            self._socket.sendMessage(job.getSliceMessage())
+
+        if job.getResult() == StartSliceJob.StartJobResult.SettingError:
+            if Application.getInstance().getPlatformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. Please check your setting values for errors."), lifetime = 10)
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
+            return
+
+        if job.getResult() == StartSliceJob.StartJobResult.NothingToSlice:
+            if Application.getInstance().getPlatformActivity:
+                self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice. No suitable objects found."), lifetime = 10)
+                self._error_message.show()
+                self.backendStateChange.emit(BackendState.Error)
+            else:
+                self.backendStateChange.emit(BackendState.NotStarted)
+            return
+
+        # Preparation completed, send it to the backend.
+        self._socket.sendMessage(job.getSettingsMessage())
+        self._socket.sendMessage(job.getSliceMessage())
 
     ##  Listener for when the scene has changed.
     #
