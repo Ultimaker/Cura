@@ -50,7 +50,37 @@ Item {
             interval: 500;
             repeat: false;
 
-            onTriggered: base.showTooltip(definition.description);
+            onTriggered:
+            {
+                var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
+                var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
+
+                var affected_by_list = ""
+                for(var i in affected_by)
+                {
+                    affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+                }
+
+                var affects_list = ""
+                for(var i in affects)
+                {
+                    affects_list += "<li>%1</li>\n".arg(affects[i].label)
+                }
+
+                var tooltip = "<b>%1</b><br/>\n<p>%2</p>".arg(definition.label).arg(definition.description)
+
+                if(affects_list != "")
+                {
+                    tooltip += "<br/><b>%1</b><br/>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
+                }
+
+                if(affected_by_list != "")
+                {
+                    tooltip += "<br/><b>%1</b><br/>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
+                }
+
+                base.showTooltip(tooltip);
+            }
         }
 
         Label
