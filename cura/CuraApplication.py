@@ -116,6 +116,7 @@ class CuraApplication(QtApplication):
         self._center_after_select = False
         self._camera_animation = None
         self._cura_actions = None
+        self._started = False
 
         self.getController().getScene().sceneChanged.connect(self.updatePlatformActivity)
         self.getController().toolOperationStopped.connect(self._onToolOperationStopped)
@@ -189,7 +190,7 @@ class CuraApplication(QtApplication):
 
         JobQueue.getInstance().jobFinished.connect(self._onJobFinished)
 
-        self.applicationShuttingDown.connect(self._onExit)
+        self.applicationShuttingDown.connect(self.saveSettings)
 
         self._recent_files = []
         files = Preferences.getInstance().getValue("cura/recent_files").split(";")
@@ -199,8 +200,13 @@ class CuraApplication(QtApplication):
 
             self._recent_files.append(QUrl.fromLocalFile(f))
 
-    ## Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
-    def _onExit(self):
+    ##  Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
+    #
+    #   Note that the AutoSave plugin also calls this method.
+    def saveSettings(self):
+        if not self._started: # Do not do saving during application start
+            return
+
         for instance in ContainerRegistry.getInstance().findInstanceContainers():
             if not instance.isDirty():
                 continue
@@ -331,6 +337,8 @@ class CuraApplication(QtApplication):
                 self._openFile(file)
             for file_name in self._open_file_queue: #Open all the files that were queued up while plug-ins were loading.
                 self._openFile(file_name)
+
+            self._started = True
 
             self.exec_()
 
