@@ -55,8 +55,9 @@ class CuraEngineBackend(Backend):
         self._stored_layer_data = []
 
         #Triggers for when to (re)start slicing:
-        if Application.getInstance().getGlobalContainerStack():
-            Application.getInstance().getGlobalContainerStack().propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
+        self._global_container_stack = None
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._onGlobalStackChanged()
 
         #When you update a setting and other settings get changed through inheritance, many propertyChanged signals are fired.
         #This timer will group them up, and only slice for the last setting changed signal.
@@ -123,7 +124,7 @@ class CuraEngineBackend(Backend):
     def slice(self):
         self._stored_layer_data = []
 
-        if not self._enabled: #We shouldn't be slicing.
+        if not self._enabled or not self._global_container_stack: #We shouldn't be slicing.
             return
 
         if self._slicing: #We were already slicing. Stop the old job.
@@ -375,3 +376,14 @@ class CuraEngineBackend(Backend):
             Logger.log("d", "Backend quit with return code %s. Resetting process and socket.", self._process.wait())
             self._process = None
             self._createSocket()
+
+    ##  Called when the global container stack changes
+    def _onGlobalStackChanged(self):
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
+
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onSettingChanged) #Note: Only starts slicing when the value changed.
+            self._onChanged()
