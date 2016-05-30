@@ -1190,7 +1190,6 @@
                     "description": "Enables adjusting the print head acceleration. Increasing the accelerations can reduce printing time at the cost of print quality.",
                     "type": "boolean",
                     "default_value": false,
-                    "visible": false,
                     "global_only": "True"
                 },
                 "acceleration_print": {
@@ -1202,7 +1201,6 @@
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
                     "default_value": 3000,
-                    "visible": true,
                     "enabled": "acceleration_enabled",
                     "children": {
                         "acceleration_infill": {
@@ -1214,7 +1212,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
-                            "visible": false,
                             "enabled": "acceleration_enabled"
                         },
                         "acceleration_wall": {
@@ -1226,7 +1223,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
-                            "visible": false,
                             "enabled": "acceleration_enabled",
                             "children": {
                                 "acceleration_wall_0": {
@@ -1238,7 +1234,6 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
-                                    "visible": false,
                                     "enabled": "acceleration_enabled"
                                 },
                                 "acceleration_wall_x": {
@@ -1250,7 +1245,6 @@
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
-                                    "visible": false,
                                     "enabled": "acceleration_enabled"
                                 }
                             }
@@ -1264,7 +1258,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
-                            "visible": false,
                             "enabled": "acceleration_enabled"
                         },
                         "acceleration_support": {
@@ -1276,7 +1269,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
-                            "visible": false,
                             "enabled": "acceleration_enabled and support_roof_enable",
                             "children": {
                                 "acceleration_support_infill": {
@@ -1288,7 +1280,6 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
-                                    "visible": false,
                                     "enabled": "acceleration_enabled and support_enable",
                                     "global_only": true
                                 },
@@ -1301,7 +1292,6 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "100",
                                     "maximum_value_warning": "10000",
-                                    "visible": false,
                                     "enabled": "acceleration_enabled and support_roof_enable",
                                     "global_only": true
                                 }
@@ -1316,7 +1306,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
-                            "visible": false,
                             "enabled": "prime_tower_enable and acceleration_enabled",
                             "global_only": true
                         }
@@ -1333,7 +1322,6 @@
                     "maximum_value_warning": "10000",
                     "default": "acceleration_print if magic_spiralize else 5000",
                     "global_only": true,
-                    "visible": true,
                     "enabled": "acceleration_enabled"
                 },
                 "acceleration_layer_0": {
@@ -1345,7 +1333,6 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "visible": false,
                     "enabled": "acceleration_enabled"
                 },
                 "acceleration_skirt": {
@@ -1357,7 +1344,6 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "visible": false,
                     "default": "acceleration_layer_0",
                     "global_only": true,
                     "enabled": "acceleration_enabled"
@@ -1370,7 +1356,6 @@
                     "description": "Enables adjusting the jerk of print head when the X ar Y axis halts or starts to move. Increasing the jerk can reduce printing time at the cost of print quality.",
                     "type": "boolean",
                     "default_value": false,
-                    "visible": false,
                     "global_only": "True"
                 },
                 "jerk_print": {
@@ -1382,7 +1367,6 @@
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
                     "default_value": 20,
-                    "visible": true,
                     "enabled": "jerk_enabled",
                     "children": {
                         "jerk_infill": {
@@ -1394,7 +1378,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
-                            "visible": false,
                             "enabled": "jerk_enabled"
                         },
                         "jerk_wall": {
@@ -1406,7 +1389,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
-                            "visible": false,
                             "enabled": "jerk_enabled",
                             "children": {
                                 "jerk_wall_0": {
@@ -1418,7 +1400,6 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
-                                    "visible": false,
                                     "enabled": "jerk_enabled"
                                 },
                                 "jerk_wall_x": {
@@ -1430,7 +1411,6 @@
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
-                                    "visible": false,
                                     "enabled": "jerk_enabled"
                                 }
                             }
@@ -1444,7 +1424,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
-                            "visible": false,
                             "enabled": "jerk_enabled"
                         },
                         "jerk_support": {
@@ -1456,7 +1435,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
-                            "visible": false,
                             "enabled": "jerk_enabled and support_roof_enable",
                             "children": {
                                 "jerk_support_infill": {
@@ -1468,7 +1446,6 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
-                                    "visible": false,
                                     "enabled": "jerk_enabled and support_enable",
                                     "global_only": true
                                 },
@@ -1481,7 +1458,6 @@
                                     "minimum_value": "0.1",
                                     "minimum_value_warning": "5",
                                     "maximum_value_warning": "50",
-                                    "visible": false,
                                     "enabled": "jerk_enabled and support_roof_enable",
                                     "global_only": true
                                 }
@@ -1496,7 +1472,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "default_value": 20,
-                            "visible": false,
                             "enabled": "prime_tower_enable and jerk_enabled",
                             "global_only": true
                         }
@@ -1525,7 +1500,6 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "visible": false,
                     "enabled": "jerk_enabled"
                 },
                 "jerk_skirt": {
@@ -1537,7 +1511,6 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "5",
                     "maximum_value_warning": "50",
-                    "visible": false,
                     "default": "jerk_layer_0",
                     "global_only": true,
                     "enabled": "jerk_enabled"
@@ -2347,7 +2320,6 @@
                     "maximum_value_warning": "10000",
                     "default": "acceleration_print",
                     "global_only": "True",
-                    "visible": false,
                     "enabled": "adhesion_type == \"raft\" and acceleration_enabled",
                     "children": {
                         "raft_surface_acceleration": {
@@ -2360,7 +2332,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "global_only": "True",
-                            "visible": false,
                             "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
                         },
                         "raft_interface_acceleration": {
@@ -2373,7 +2344,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "global_only": "True",
-                            "visible": false,
                             "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
                         },
                         "raft_base_acceleration": {
@@ -2386,7 +2356,6 @@
                             "minimum_value_warning": "100",
                             "maximum_value_warning": "10000",
                             "global_only": "True",
-                            "visible": false,
                             "enabled": "adhesion_type == \"raft\" and acceleration_enabled"
                         }
                     }
@@ -2405,7 +2374,6 @@
                     "maximum_value_warning": "50",
                     "default": "jerk_print",
                     "global_only": "True",
-                    "visible": false,
                     "enabled": "adhesion_type == \"raft\" and jerk_enabled",
                     "children": {
                         "raft_surface_jerk": {
@@ -2418,7 +2386,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "100",
                             "global_only": "True",
-                            "visible": false,
                             "enabled": "adhesion_type == \"raft\" and jerk_enabled"
                         },
                         "raft_interface_jerk": {
@@ -2431,7 +2398,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "global_only": "True",
-                            "visible": false,
                             "enabled": "adhesion_type == \"raft\" and jerk_enabled"
                         },
                         "raft_base_jerk": {
@@ -2444,7 +2410,6 @@
                             "minimum_value_warning": "5",
                             "maximum_value_warning": "50",
                             "global_only": "True",
-                            "visible": false,
                             "enabled": "adhesion_type == \"raft\" and jerk_enabled"
                         }
                     }
