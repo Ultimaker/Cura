@@ -11,7 +11,7 @@ def getMetaData():
             "name": "Wifi connection",
             "author": "Ultimaker",
             "description": catalog.i18nc("Wifi connection", "Wifi connection"),
-            "api": 2
+            "api": 3
         }
     }
 
