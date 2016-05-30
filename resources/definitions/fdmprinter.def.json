@@ -110,7 +110,7 @@
                     "description": "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle.",
                     "default_value": 1,
                     "global_only": true,
-                    "type": "bool",
+                    "type": "int",
                     "label": "Number extruders"
                 },
                 "machine_nozzle_tip_outer_diameter":
