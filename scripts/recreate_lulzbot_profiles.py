@@ -117,7 +117,7 @@ material_map = {
     "HIPS_scaffold": "HIPS-scaffold-support",
     
     #Experimental
-    "HT": "HT",
+    "HT": "HT-5300",
     "b-pet": "b-pet",
     "PC-MAX": "polymaker-PC-MAX",
     "wood-bamboo": "woodFill-bambooFill",
