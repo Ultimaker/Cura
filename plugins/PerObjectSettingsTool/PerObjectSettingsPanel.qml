@@ -75,7 +75,32 @@ Item {
                             return "../../resources/qml/Settings/SettingUnknown.qml"
                     }
                 }
+                Button
+                {
+                    width: UM.Theme.getSize("setting").height;
+                    height: UM.Theme.getSize("setting").height;
 
+                    onClicked: addedSettingsModel.setVisible(model.key, false);
+
+                    style: ButtonStyle
+                    {
+                        background: Rectangle
+                        {
+                            color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
+                            UM.RecolorImage
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width/2
+                                height: parent.height/2
+                                sourceSize.width: width
+                                sourceSize.height: width
+                                color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                source: UM.Theme.getIcon("cross1")
+                            }
+                        }
+                    }
+                }
                 UM.SettingPropertyProvider
                 {
                     id: provider
