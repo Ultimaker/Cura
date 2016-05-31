@@ -1,7 +1,6 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 import re
 
 from UM.Application import Application #To get the global container stack to find the current machine.
@@ -15,13 +14,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers 
 #   This finds the extruders that are available for the currently active machine
 #   and makes sure that whenever the machine is swapped, this list is kept up to
 #   date. It also contains and updates the setting stacks for the extruders.
-class ExtruderManagerModel(QObject):
+class ExtruderManager:
     ##  Registers listeners and such to listen to changes to the extruders.
-    #
-    #   \param parent Parent QObject of this model.
-    def __init__(self, parent = None):
-        super().__init__(parent)
-
+    def __init__(self):
         self._extruderDefinitions = [] #Extruder definitions for the current machine.
         self._nozzles = {} #Nozzle instances for each extruder.
         self._extruderTrains = [] #Container stacks for each of the extruder trains.
