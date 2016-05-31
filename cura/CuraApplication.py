@@ -42,7 +42,7 @@ from . import MachineManagerModel
 
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType
+from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
 import platform
 import sys
@@ -364,6 +364,15 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
+
+        qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
+
+        for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
+            type_name = os.path.splitext(os.path.basename(path))[0]
+            if type_name in ("Cura", "Actions"):
+                continue
+
+            qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
