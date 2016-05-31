@@ -46,7 +46,7 @@ Item {
                 Loader
                 {
                     width: UM.Theme.getSize("setting").width;
-                    height: UM.Theme.getSize("setting").height;
+                    height: UM.Theme.getSize("section").height;
 
                     property var definition: model
                     property var settingDefinitionsModel: addedSettingsModel
