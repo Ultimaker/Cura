@@ -41,40 +41,44 @@ Item {
                 }
             }
 
-            delegate: Loader
+            delegate: Row
             {
-                width: UM.Theme.getSize("setting").width;
-                height: UM.Theme.getSize("setting").height;
-
-                property var definition: model
-                property var settingDefinitionsModel: addedSettingsModel
-                property var propertyProvider: provider
-
-                //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
-                //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
-                //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                asynchronous: model.type != "enum"
-
-                source:
+                Loader
                 {
-                    switch(model.type) // TODO: This needs to be fixed properly. Got frustrated with it not working, so this is the patch job!
+                    width: UM.Theme.getSize("setting").width;
+                    height: UM.Theme.getSize("setting").height;
+
+                    property var definition: model
+                    property var settingDefinitionsModel: addedSettingsModel
+                    property var propertyProvider: provider
+
+                    //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                    //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                    //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+                    asynchronous: model.type != "enum"
+
+                    source:
                     {
-                        case "int":
-                            return "../../resources/qml/Settings/SettingTextField.qml"
-                        case "float":
-                            return "../../resources/qml/Settings/SettingTextField.qml"
-                        case "enum":
-                            return "../../resources/qml/Settings/SettingComboBox.qml"
-                        case "bool":
-                            return "../../resources/qml/Settings/SettingCheckBox.qml"
-                        case "str":
-                            return "../../resources/qml/Settings/SettingTextField.qml"
-                        case "category":
-                            return "../../resources/qml/Settings/SettingCategory.qml"
-                        default:
-                            return "../../resources/qml/Settings/SettingUnknown.qml"
+                        switch(model.type) // TODO: This needs to be fixed properly. Got frustrated with it not working, so this is the patch job!
+                        {
+                            case "int":
+                                return "../../resources/qml/Settings/SettingTextField.qml"
+                            case "float":
+                                return "../../resources/qml/Settings/SettingTextField.qml"
+                            case "enum":
+                                return "../../resources/qml/Settings/SettingComboBox.qml"
+                            case "bool":
+                                return "../../resources/qml/Settings/SettingCheckBox.qml"
+                            case "str":
+                                return "../../resources/qml/Settings/SettingTextField.qml"
+                            case "category":
+                                return "../../resources/qml/Settings/SettingCategory.qml"
+                            default:
+                                return "../../resources/qml/Settings/SettingUnknown.qml"
+                        }
                     }
                 }
+
                 Button
                 {
                     width: UM.Theme.getSize("setting").height;
@@ -111,8 +115,8 @@ Item {
                     storeIndex: 0
                 }
             }
-
         }
+
         Button
         {
             id: customise_settings_button;
