@@ -263,6 +263,7 @@ class MachineManagerModel(QObject):
         if containers:
             new_name = self._uniqueMachineName(new_name, containers[0].getBottom().getName())
             containers[0].setName(new_name)
+            self.globalContainerChanged.emit()
 
     @pyqtSlot(str)
     def removeMachine(self, machine_id):
