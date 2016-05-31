@@ -1116,7 +1116,7 @@
                                     "minimum_value": "0.1",
                                     "maximum_value": "299792458000",
                                     "maximum_value_warning": "150",
-                                    "enabled": "support_roof_enable",
+                                    "enabled": "support_roof_enable and support_enable",
                                     "value": "speed_support / 1.5",
                                     "global_only": true
                                 }
