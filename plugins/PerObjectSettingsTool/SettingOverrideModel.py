@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, pyqtSlot, QUrl
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
-from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+#from UM.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 class SettingOverrideModel(ListModel):
     KeyRole = Qt.UserRole + 1
@@ -29,9 +29,9 @@ class SettingOverrideModel(ListModel):
         self._node.decoratorsChanged.connect(self._onDecoratorsChanged)
         self._onDecoratorsChanged(None)
 
-        self._activeProfile = Application.getInstance().getMachineManager().getWorkingProfile() #To be able to get notified when a setting changes.
-        self._activeProfile.settingValueChanged.connect(self._onProfileSettingValueChanged)
-        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onProfileChanged)
+        #self._activeProfile = Application.getInstance().getMachineManager().getWorkingProfile() #To be able to get notified when a setting changes.
+        #self._activeProfile.settingValueChanged.connect(self._onProfileSettingValueChanged)
+        #Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onProfileChanged)
 
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
@@ -53,7 +53,8 @@ class SettingOverrideModel(ListModel):
         self._decorator.setSettingValue(key, value)
 
     def _onDecoratorsChanged(self, node):
-        if not self._node.getDecorator(SettingOverrideDecorator):
+        return
+        '''if not self._node.getDecorator(SettingOverrideDecorator):
             self.clear()
             return
 
@@ -61,7 +62,7 @@ class SettingOverrideModel(ListModel):
         self._decorator.settingAdded.connect(self._onSettingsChanged)
         self._decorator.settingRemoved.connect(self._onSettingsChanged)
         self._decorator.settingValueChanged.connect(self._onSettingValueChanged)
-        self._onSettingsChanged()
+        self._onSettingsChanged()'''
 
     def _createOptionsModel(self, options):
         if not options:

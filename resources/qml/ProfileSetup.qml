@@ -6,7 +6,8 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
 
 Item{
     id: base;
@@ -14,6 +15,8 @@ Item{
     property int totalHeightProfileSetup: childrenRect.height
     property Action manageProfilesAction
     property Action addProfileAction
+    property Action updateProfileAction
+    property Action resetProfileAction
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
@@ -39,13 +42,13 @@ Item{
             property int rightMargin: customisedSettings.visible ? customisedSettings.width + UM.Theme.getSize("default_margin").width / 2 : 0
 
             id: globalProfileSelection
-            text: UM.MachineManager.activeProfile
+            text: Cura.MachineManager.activeQualityName
             width: parent.width/100*55
             height: UM.Theme.getSize("setting_control").height
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            tooltip: UM.MachineManager.activeProfile
+            tooltip: Cura.MachineManager.activeQualityName
             style: UM.Theme.styles.sidebar_header_button
 
             menu: Menu
@@ -54,7 +57,10 @@ Item{
                 Instantiator
                 {
                     id: profileSelectionInstantiator
-                    model: UM.ProfilesModel {}
+                    model: UM.InstanceContainersModel
+                    {
+                        filter: {"type": "quality"}
+                    }
                     property int separatorIndex: -1
 
                     Loader {
@@ -67,7 +73,7 @@ Item{
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0) {
                             if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
-                                profileSelectionMenu.addSeparator();
+                                profileSelectionMenu.insertSeparator(index);
                                 separatorIndex = index;
                             }
                         }
@@ -96,26 +102,33 @@ Item{
                         id: item
                         text: model_data ? model_data.name : ""
                         checkable: true;
-                        checked: model_data ? model_data.active : false;
+                        checked: Cura.MachineManager.activeQualityId == model_data.id
                         exclusiveGroup: profileSelectionMenuGroup;
                         onTriggered:
                         {
-                            UM.MachineManager.setActiveProfile(model_data.name);
-                            if (!model_data.active) {
+                            Cura.MachineManager.setActiveQuality(model_data.id);
+                            /*if (!model_data.active) {
                                 //Selecting a profile was canceled; undo menu selection
                                 profileSelectionInstantiator.model.setProperty(model_index, "active", false);
                                 var activeProfileName = UM.MachineManager.activeProfile;
                                 var activeProfileIndex = profileSelectionInstantiator.model.find("name", activeProfileName);
                                 profileSelectionInstantiator.model.setProperty(activeProfileIndex, "active", true);
-                            }
+                            }*/
                         }
                     }
                 }
 
                 MenuSeparator { }
                 MenuItem {
+                    action: base.updateProfileAction;
+                }
+                MenuItem {
+                    action: base.resetProfileAction;
+                }
+                MenuItem {
                     action: base.addProfileAction;
                 }
+                MenuSeparator { }
                 MenuItem {
                     action: base.manageProfilesAction;
                 }

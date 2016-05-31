@@ -31,9 +31,9 @@ Item
     }
 
     property variant printer_connection: {
-        if (UM.USBPrinterManager.connectedPrinterList.rowCount() != 0){
+        if (Cura.USBPrinterManager.connectedPrinterList.rowCount() != 0){
             wizardPage.checkupProgress.connection = true
-            return UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+            return Cura.USBPrinterManager.connectedPrinterList.getItem(0).printer
         }
         else {
             return null
@@ -114,9 +114,7 @@ Item
             anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.getSize("default_margin").width : 0
             //enabled: !alreadyTested
             text: catalog.i18nc("@action:button","Skip Printer Check");
-            onClicked: {
-                base.currentPage += 1
-            }
+            onClicked: base.nextPage()
         }
     }
 
@@ -142,7 +140,7 @@ Item
             anchors.left: connectionLabel.right
             anchors.top: parent.top
             wrapMode: Text.WordWrap
-            text: UM.USBPrinterManager.connectedPrinterList.rowCount() > 0 || base.addOriginalProgress.checkUp[0] ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
+            text: Cura.USBPrinterManager.connectedPrinterList.rowCount() > 0 || base.addOriginalProgress.checkUp[0] ? catalog.i18nc("@info:status","Done"):catalog.i18nc("@info:status","Incomplete")
         }
         //////////////////////////////////////////////////////////
         Label
@@ -239,7 +237,7 @@ Item
                     if(printer_connection != null)
                     {
                         nozzleTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.heatupNozzle(190)
+                        printer_connection.setTargetHotendTemperature(0, 190)
                         wizardPage.extruder_target_temp = 190
                     }
                 }
@@ -253,7 +251,7 @@ Item
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             width: wizardPage.rightRow * 0.2
             wrapMode: Text.WordWrap
-            text: printer_connection != null ? printer_connection.extruderTemperature + "°C" : "0°C"
+            text: printer_connection != null ? printer_connection.hotendTemperatures[0] + "°C" : "0°C"
             font.bold: true
         }
         /////////////////////////////////////////////////////////////////////////////
@@ -295,7 +293,7 @@ Item
                     if(printer_connection != null)
                     {
                         bedTempStatus.text = catalog.i18nc("@info:progress","Checking")
-                        printer_connection.heatupBed(60)
+                        printer_connection.setTargetBedTemperature(60)
                         wizardPage.bed_target_temp = 60
                     }
                 }
@@ -348,16 +346,16 @@ Item
             }
         }
 
-        onExtruderTemperatureChanged:
+        onHotendTemperaturesChanged:
         {
-            if(printer_connection.extruderTemperature > wizardPage.extruder_target_temp - 10 && printer_connection.extruderTemperature < wizardPage.extruder_target_temp + 10)
+            if(printer_connection.hotendTemperatures[0] > wizardPage.extruder_target_temp - 10 && printer_connection.hotendTemperatures[0] < wizardPage.extruder_target_temp + 10)
             {
                 if(printer_connection != null)
                 {
                     nozzleTempStatus.text = catalog.i18nc("@info:status","Works")
                     wizardPage.checkupProgress.nozzleTemp = true
                     checkTotalCheckUp()
-                    printer_connection.heatupNozzle(0)
+                    printer_connection.setTargetHotendTemperature(0, 0)
                 }
             }
         }
@@ -368,7 +366,7 @@ Item
                 bedTempStatus.text = catalog.i18nc("@info:status","Works")
                 wizardPage.checkupProgress.bedTemp = true
                 checkTotalCheckUp()
-                printer_connection.heatupBed(0)
+                printer_connection.setTargetBedTemperature(0)
             }
         }
     }

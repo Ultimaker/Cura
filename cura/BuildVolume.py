@@ -37,13 +37,9 @@ class BuildVolume(SceneNode):
 
         self.setCalculateBoundingBox(False)
 
-        self._active_profile = None
-        self._active_instance = None
-        Application.getInstance().getMachineManager().activeMachineInstanceChanged.connect(self._onActiveInstanceChanged)
-        self._onActiveInstanceChanged()
-
-        Application.getInstance().getMachineManager().activeProfileChanged.connect(self._onActiveProfileChanged)
-        self._onActiveProfileChanged()
+        self._active_container_stack = None
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
+        self._onGlobalContainerStackChanged()
 
     def setWidth(self, width):
         if width: self._width = width
@@ -76,7 +72,7 @@ class BuildVolume(SceneNode):
 
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
-        if self._width == 0 or self._height == 0 or self._depth == 0:
+        if not self._width or not self._height or not self._depth:
             return
 
         min_w = -self._width / 2
@@ -148,9 +144,9 @@ class BuildVolume(SceneNode):
 
         skirt_size = 0.0
 
-        profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if profile:
-            skirt_size = self._getSkirtSize(profile)
+        container_stack = Application.getInstance().getGlobalContainerStack()
+        if container_stack:
+            skirt_size = self._getSkirtSize(container_stack)
 
         # As this works better for UM machines, we only add the disallowed_area_size for the z direction.
         # This is probably wrong in all other cases. TODO!
@@ -162,52 +158,49 @@ class BuildVolume(SceneNode):
 
         Application.getInstance().getController().getScene()._maximum_bounds = scale_to_max_bounds
 
-    def _onActiveInstanceChanged(self):
-        self._active_instance = Application.getInstance().getMachineManager().getActiveMachineInstance()
+    def _onGlobalContainerStackChanged(self):
+        if self._active_container_stack:
+            self._active_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
 
-        if self._active_instance:
-            self._width = self._active_instance.getMachineSettingValue("machine_width")
-            if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
-                self._height = Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height")
+        self._active_container_stack = Application.getInstance().getGlobalContainerStack()
+
+        if self._active_container_stack:
+            self._active_container_stack.propertyChanged.connect(self._onSettingPropertyChanged)
+
+            self._width = self._active_container_stack.getProperty("machine_width", "value")
+            if self._active_container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+                self._height = self._active_container_stack.getProperty("gantry_height", "value")
             else:
-                self._height = self._active_instance.getMachineSettingValue("machine_height")
-            self._depth = self._active_instance.getMachineSettingValue("machine_depth")
+                self._height = self._active_container_stack.getProperty("machine_height", "value")
+            self._depth = self._active_container_stack.getProperty("machine_depth", "value")
 
             self._updateDisallowedAreas()
 
             self.rebuild()
 
-    def _onActiveProfileChanged(self):
-        if self._active_profile:
-            self._active_profile.settingValueChanged.disconnect(self._onSettingValueChanged)
+    def _onSettingPropertyChanged(self, setting_key, property_name):
+        if property_name != "value":
+            return
 
-        self._active_profile = Application.getInstance().getMachineManager().getWorkingProfile()
-        if self._active_profile:
-            self._active_profile.settingValueChanged.connect(self._onSettingValueChanged)
-            self._updateDisallowedAreas()
-            self.rebuild()
-
-    def _onSettingValueChanged(self, setting_key):
         if setting_key == "print_sequence":
-            if Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("print_sequence") == "one_at_a_time":
-                self._height = Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("gantry_height")
+            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time":
+                self._height = self._active_container_stack.getProperty("gantry_height", "value")
             else:
-                self._height = self._active_instance.getMachineSettingValue("machine_depth")
+                self._height = self._active_container_stack.getProperty("machine_height", "value")
             self.rebuild()
         if setting_key in self._skirt_settings:
             self._updateDisallowedAreas()
             self.rebuild()
 
     def _updateDisallowedAreas(self):
-        if not self._active_instance or not self._active_profile:
+        if not self._active_container_stack:
             return
 
-        disallowed_areas = self._active_instance.getMachineSettingValue("machine_disallowed_areas")
+        disallowed_areas = self._active_container_stack.getProperty("machine_disallowed_areas", "value")
         areas = []
 
         skirt_size = 0.0
-        if self._active_profile:
-            skirt_size = self._getSkirtSize(self._active_profile)
+        skirt_size = self._getSkirtSize(self._active_container_stack)
 
         if disallowed_areas:
             # Extend every area already in the disallowed_areas with the skirt size.
@@ -228,8 +221,8 @@ class BuildVolume(SceneNode):
 
         # Add the skirt areas around the borders of the build plate.
         if skirt_size > 0:
-            half_machine_width = self._active_instance.getMachineSettingValue("machine_width") / 2
-            half_machine_depth = self._active_instance.getMachineSettingValue("machine_depth") / 2
+            half_machine_width = self._active_container_stack.getProperty("machine_width", "value") / 2
+            half_machine_depth = self._active_container_stack.getProperty("machine_depth", "value") / 2
 
             areas.append(Polygon(numpy.array([
                 [-half_machine_width, -half_machine_depth],
@@ -262,24 +255,24 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = areas
 
     ##  Convenience function to calculate the size of the bed adhesion.
-    def _getSkirtSize(self, profile):
+    def _getSkirtSize(self, container_stack):
         skirt_size = 0.0
 
-        adhesion_type = profile.getSettingValue("adhesion_type")
+        adhesion_type = container_stack.getProperty("adhesion_type", "value")
         if adhesion_type == "skirt":
-            skirt_distance = profile.getSettingValue("skirt_gap")
-            skirt_line_count = profile.getSettingValue("skirt_line_count")
-            skirt_size = skirt_distance + (skirt_line_count * profile.getSettingValue("skirt_line_width"))
+            skirt_distance = container_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = container_stack.getProperty("skirt_line_count", "value")
+            skirt_size = skirt_distance + (skirt_line_count * container_stack.getProperty("skirt_line_width", "value"))
         elif adhesion_type == "brim":
-            skirt_size = profile.getSettingValue("brim_line_count") * profile.getSettingValue("skirt_line_width")
+            skirt_size = container_stack.getProperty("brim_line_count", "value") * container_stack.getProperty("skirt_line_width", "value")
         elif adhesion_type == "raft":
-            skirt_size = profile.getSettingValue("raft_margin")
+            skirt_size = container_stack.getProperty("raft_margin", "value")
 
-        if profile.getSettingValue("draft_shield_enabled"):
-            skirt_size += profile.getSettingValue("draft_shield_dist")
+        if container_stack.getProperty("draft_shield_enabled", "value"):
+            skirt_size += container_stack.getProperty("draft_shield_dist", "value")
 
-        if profile.getSettingValue("xy_offset"):
-            skirt_size += profile.getSettingValue("xy_offset")
+        if container_stack.getProperty("xy_offset", "value"):
+            skirt_size += container_stack.getProperty("xy_offset", "value")
 
         return skirt_size
 

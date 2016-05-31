@@ -7,6 +7,7 @@ from UM.Settings.ProfileReader import ProfileReader
 from UM.Logger import Logger
 import re #Regular expressions for parsing escape characters in the settings.
 
+
 ##  A class that reads profile data from g-code files.
 #
 #   It reads the profile data from g-code files and stores it in a new profile.
@@ -47,29 +48,34 @@ class GCodeProfileReader(ProfileReader):
         prefix = ";SETTING_" + str(GCodeProfileReader.version) + " "
         prefix_length = len(prefix)
 
-        #Loading all settings from the file. They are all at the end, but Python has no reverse seek any more since Python3. TODO: Consider moving settings to the start?
-        serialised = "" #Will be filled with the serialised profile.
+        # Loading all settings from the file.
+        # They are all at the end, but Python has no reverse seek any more since Python3.
+        # TODO: Consider moving settings to the start?
+        serialised = ""  # Will be filled with the serialised profile.
         try:
             with open(file_name) as f:
                 for line in f:
                     if line.startswith(prefix):
-                        serialised += line[prefix_length : -1] #Remove the prefix and the newline from the line, and add it to the rest.
+                        # Remove the prefix and the newline from the line and add it to the rest.
+                        serialised += line[prefix_length : -1]
         except IOError as e:
             Logger.log("e", "Unable to open file %s for reading: %s", file_name, str(e))
             return None
 
-        #Unescape the serialised profile.
+        # Un-escape the serialised profile.
         pattern = re.compile("|".join(GCodeProfileReader.escape_characters.keys()))
-        serialised = pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], serialised) #Perform the replacement with a regular expression.
 
-        #Apply the changes to the current profile.
+        # Perform the replacement with a regular expression.
+        serialised = pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], serialised)
+
+        # Apply the changes to the current profile.
         profile = Profile(machine_manager = Application.getInstance().getMachineManager(), read_only = False)
         try:
             profile.unserialise(serialised)
-            profile.setType(None) #Force type to none so it's correctly added.
+            profile.setType(None)  # Force type to none so it's correctly added.
             profile.setReadOnly(False)
             profile.setDirty(True)
-        except Exception as e: #Not a valid g-code file.
+        except Exception as e:  # Not a valid g-code file.
             Logger.log("e", "Unable to serialise the profile: %s", str(e))
             return None
         return profile

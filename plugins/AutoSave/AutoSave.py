@@ -15,15 +15,9 @@ class AutoSave(Extension):
 
         Preferences.getInstance().preferenceChanged.connect(self._triggerTimer)
 
-        machine_manager = Application.getInstance().getMachineManager()
-
-        self._profile = None
-        machine_manager.activeProfileChanged.connect(self._onActiveProfileChanged)
-        machine_manager.profileNameChanged.connect(self._triggerTimer)
-        machine_manager.profilesChanged.connect(self._triggerTimer)
-        machine_manager.machineInstanceNameChanged.connect(self._triggerTimer)
-        machine_manager.machineInstancesChanged.connect(self._triggerTimer)
-        self._onActiveProfileChanged()
+        self._global_stack = None
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._onGlobalStackChanged()
 
         Preferences.getInstance().addPreference("cura/autosave_delay", 1000 * 10)
 
@@ -38,24 +32,23 @@ class AutoSave(Extension):
         if not self._saving:
             self._change_timer.start()
 
-    def _onActiveProfileChanged(self):
-        if self._profile:
-            self._profile.settingValueChanged.disconnect(self._triggerTimer)
+    def _onGlobalStackChanged(self):
+        if self._global_stack:
+            self._global_stack.propertyChanged.disconnect(self._triggerTimer)
+            self._global_stack.containersChanged.disconnect(self._triggerTimer)
 
-        self._profile = Application.getInstance().getMachineManager().getWorkingProfile()
+        self._global_stack = Application.getInstance().getGlobalContainerStack()
 
-        if self._profile:
-            self._profile.settingValueChanged.connect(self._triggerTimer)
+        if self._global_stack:
+            self._global_stack.propertyChanged.connect(self._triggerTimer)
+            self._global_stack.containersChanged.connect(self._triggerTimer)
 
     def _onTimeout(self):
         self._saving = True # To prevent the save process from triggering another autosave.
         Logger.log("d", "Autosaving preferences, instances and profiles")
 
-        machine_manager = Application.getInstance().getMachineManager()
+        Application.getInstance().saveSettings()
 
-        machine_manager.saveVisibility()
-        machine_manager.saveMachineInstances()
-        machine_manager.saveProfiles()
         Preferences.getInstance().writeToFile(Resources.getStoragePath(Resources.Preferences, Application.getInstance().getApplicationName() + ".cfg"))
 
         self._saving = False

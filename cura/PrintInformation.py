@@ -63,6 +63,6 @@ class PrintInformation(QObject):
         self.currentPrintTimeChanged.emit()
 
         # Material amount is sent as an amount of mm^3, so calculate length from that
-        r =  Application.getInstance().getMachineManager().getWorkingProfile().getSettingValue("material_diameter") / 2
+        r = Application.getInstance().getGlobalContainerStack().getProperty("material_diameter", "value") / 2
         self._material_amount = round((amount / (math.pi * r ** 2)) / 1000, 2)
         self.materialAmountChanged.emit()

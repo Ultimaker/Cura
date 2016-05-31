@@ -18,26 +18,15 @@ Item
     property int platform_width: UM.MachineManager.getSettingValue("machine_width")
     property int platform_height: UM.MachineManager.getSettingValue("machine_depth")
     anchors.fill: parent;
-    property variant printer_connection: UM.USBPrinterManager.connectedPrinterList.getItem(0).printer
+    property variant printer_connection: Cura.USBPrinterManager.connectedPrinterList.getItem(0).printer
     Component.onCompleted:
     {
         printer_connection.homeBed()
-        printer_connection.moveHeadRelative(0, 0, 3)
+        printer_connection.moveHead(0, 0, 3)
         printer_connection.homeHead()
     }
     UM.I18nCatalog { id: catalog; name:"cura"}
     property variant wizard: null;
-
-    Connections
-    {
-        target: wizardPage.wizard
-        onNextClicked: //You can add functions here that get triggered when the final button is clicked in the wizard-element
-        {
-            if(wizardPage.wizard.lastPage ==  true){
-                wizardPage.wizard.visible = false
-            }
-        }
-    }
 
     Label
     {
@@ -84,23 +73,23 @@ Item
             {
                 if(wizardPage.leveling_state == 0)
                 {
-                    printer_connection.moveHeadRelative(0, 0, 3)
+                    printer_connection.moveHead(0, 0, 3)
                     printer_connection.homeHead()
-                    printer_connection.moveHeadRelative(0, 0, 3)
-                    printer_connection.moveHeadRelative(platform_width - 10, 0, 0)
-                    printer_connection.moveHeadRelative(0, 0, -3)
+                    printer_connection.moveHead(0, 0, 3)
+                    printer_connection.moveHead(platform_width - 10, 0, 0)
+                    printer_connection.moveHead(0, 0, -3)
                 }
                 if(wizardPage.leveling_state == 1)
                 {
-                    printer_connection.moveHeadRelative(0, 0, 3)
-                    printer_connection.moveHeadRelative(-platform_width/2, platform_height - 10, 0)
-                    printer_connection.moveHeadRelative(0, 0, -3)
+                    printer_connection.moveHead(0, 0, 3)
+                    printer_connection.moveHead(-platform_width/2, platform_height - 10, 0)
+                    printer_connection.moveHead(0, 0, -3)
                 }
                 if(wizardPage.leveling_state == 2)
                 {
-                    printer_connection.moveHeadRelative(0, 0, 3)
-                    printer_connection.moveHeadRelative(-platform_width/2 + 10, -(platform_height + 10), 0)
-                    printer_connection.moveHeadRelative(0, 0, -3)
+                    printer_connection.moveHead(0, 0, 3)
+                    printer_connection.moveHead(-platform_width/2 + 10, -(platform_height + 10), 0)
+                    printer_connection.moveHead(0, 0, -3)
                 }
                 wizardPage.leveling_state++
                 if (wizardPage.leveling_state >= 3){
@@ -120,18 +109,7 @@ Item
             anchors.left: parent.width < wizardPage.width ? bedlevelingButton.right : parent.left
             anchors.leftMargin: parent.width < wizardPage.width ? UM.Theme.getSize("default_margin").width : 0
             text: catalog.i18nc("@action:button","Skip Bedleveling");
-            onClicked: {
-                if(wizardPage.wizard.lastPage ==  true){
-                    var old_page_count = wizardPage.wizard.getPageCount()
-                    // Delete old pages (if any)
-                    for (var i = old_page_count - 1; i > 0; i--)
-                    {
-                        wizardPage.wizard.removePage(i)
-                    }
-                    wizardPage.wizard.currentPage = 0
-                    wizardPage.wizard.visible = false
-                }
-            }
+            onClicked: base.nextPage()
         }
     }
 

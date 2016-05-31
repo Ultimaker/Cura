@@ -6,82 +6,113 @@ import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Window 2.2
 
-import UM 1.1 as UM
+import UM 1.2 as UM
+import Cura 1.0 as Cura
+import ".."
 
 Item {
     id: base;
-    property int currentIndex: UM.ActiveTool.properties.getValue("SelectedIndex")
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
     width: childrenRect.width;
     height: childrenRect.height;
 
-    Column {
+    Column
+    {
         id: items
         anchors.top: parent.top;
         anchors.left: parent.left;
 
         spacing: UM.Theme.getSize("default_margin").height;
 
-        Column {
-            id: customisedSettings
-            spacing: UM.Theme.getSize("default_lining").height;
-            width: UM.Theme.getSize("setting").width + UM.Theme.getSize("setting").height/2;
+        Repeater
+        {
+            id: contents
+            height: childrenRect.height;
 
-            Repeater {
-                id: settings;
+            model: UM.SettingDefinitionsModel
+            {
+                id: addedSettingsModel;
+                containerId: Cura.MachineManager.activeDefinitionId
+                visibilityHandler: Cura.PerObjectSettingVisibilityHandler
+                {
+                    selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
+                }
+            }
 
-                model: UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).settings
-
-                UM.SettingItem {
+            delegate: Row
+            {
+                Loader
+                {
                     width: UM.Theme.getSize("setting").width;
+                    height: UM.Theme.getSize("section").height;
+
+                    property var definition: model
+                    property var settingDefinitionsModel: addedSettingsModel
+                    property var propertyProvider: provider
+
+                    //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
+                    //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
+                    //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+                    asynchronous: model.type != "enum"
+
+                    source:
+                    {
+                        switch(model.type) // TODO: This needs to be fixed properly. Got frustrated with it not working, so this is the patch job!
+                        {
+                            case "int":
+                                return "../../resources/qml/Settings/SettingTextField.qml"
+                            case "float":
+                                return "../../resources/qml/Settings/SettingTextField.qml"
+                            case "enum":
+                                return "../../resources/qml/Settings/SettingComboBox.qml"
+                            case "bool":
+                                return "../../resources/qml/Settings/SettingCheckBox.qml"
+                            case "str":
+                                return "../../resources/qml/Settings/SettingTextField.qml"
+                            case "category":
+                                return "../../resources/qml/Settings/SettingCategory.qml"
+                            default:
+                                return "../../resources/qml/Settings/SettingUnknown.qml"
+                        }
+                    }
+                }
+
+                Button
+                {
+                    width: UM.Theme.getSize("setting").height;
                     height: UM.Theme.getSize("setting").height;
 
-                    name: model.label;
-                    type: model.type;
-                    value: model.value;
-                    description: model.description;
-                    unit: model.unit;
-                    valid: model.valid;
-                    visible: !model.global_only
-                    options: model.options
-                    indent: false
+                    onClicked: addedSettingsModel.setVisible(model.key, false);
 
-                    style: UM.Theme.styles.setting_item;
-
-                    onItemValueChanged: {
-                        settings.model.setSettingValue(model.key, value)
-                    }
-
-                    Button
+                    style: ButtonStyle
                     {
-                        anchors.left: parent.right;
-
-                        width: UM.Theme.getSize("setting").height;
-                        height: UM.Theme.getSize("setting").height;
-
-                        onClicked: UM.ActiveTool.properties.getValue("Model").removeSettingOverride(UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id, model.key)
-
-                        style: ButtonStyle
+                        background: Rectangle
                         {
-                            background: Rectangle
+                            color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
+                            UM.RecolorImage
                             {
-                                color: control.hovered ? control.parent.style.controlHighlightColor : control.parent.style.controlColor;
-                                UM.RecolorImage
-                                {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    width: parent.width/2
-                                    height: parent.height/2
-                                    sourceSize.width: width
-                                    sourceSize.height: width
-                                    color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-                                    source: UM.Theme.getIcon("cross1")
-                                }
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: parent.width/2
+                                height: parent.height/2
+                                sourceSize.width: width
+                                sourceSize.height: width
+                                color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
+                                source: UM.Theme.getIcon("cross1")
                             }
                         }
                     }
+                }
+                UM.SettingPropertyProvider
+                {
+                    id: provider
+
+                    containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                    key: model.key
+                    watchedProperties: [ "value", "enabled", "state", "validationState" ]
+                    storeIndex: 0
                 }
             }
         }
@@ -133,6 +164,7 @@ Item {
         id: settingPickDialog
 
         title: catalog.i18nc("@title:window", "Pick a Setting to Customize")
+        property string labelFilter: ""
 
         TextField {
             id: filter;
@@ -145,123 +177,62 @@ Item {
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...");
 
-            onTextChanged: settingCategoriesModel.filter(text);
+            onTextChanged:
+            {
+                if(text != "")
+                {
+                    listview.model.filter = {"global_only": false, "label": "*" + text}
+                }
+                else
+                {
+                    listview.model.filter = {"global_only": false}
+                }
+            }
         }
 
-        ScrollView {
-            id: view;
-            anchors {
+        ScrollView
+        {
+            id: scrollView
+
+            anchors
+            {
                 top: filter.bottom;
                 left: parent.left;
                 right: parent.right;
                 bottom: parent.bottom;
             }
+            ListView
+            {
+                id:listview
+                model: UM.SettingDefinitionsModel
+                {
+                    id: definitionsModel;
+                    containerId: Cura.MachineManager.activeDefinitionId
+                    filter:
+                    {
+                        "global_only": false
+                    }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+                }
+                delegate:Loader
+                {
+                    id: loader
 
-            Column {
-                width: view.width - UM.Theme.getSize("default_margin").width * 2;
-                height: childrenRect.height;
+                    width: parent.width
+                    height: model.type != undefined ? UM.Theme.getSize("section").height : 0;
 
-                Repeater {
-                    id: settingList;
+                    property var definition: model
+                    property var settingDefinitionsModel: definitionsModel
 
-                    model: UM.SettingCategoriesModel { id: settingCategoriesModel; }
-
-                    delegate: Item {
-                        id: delegateItem;
-
-                        width: parent.width;
-                        height: childrenRect.height;
-                        visible: model.visible && settingsColumn.childrenHeight != 0 //If all children are hidden, the height is 0, and then the category header must also be hidden.
-
-                        ToolButton {
-                            id: categoryHeader;
-                            text: model.name;
-                            checkable: true;
-                            width: parent.width;
-                            onCheckedChanged: settingsColumn.state != "" ? settingsColumn.state = "" : settingsColumn.state = "collapsed";
-
-                            style: ButtonStyle {
-                                background: Rectangle
-                                {
-                                    width: control.width;
-                                    height: control.height;
-                                    color: control.hovered ? palette.highlight : "transparent";
-                                }
-                                label: Row
-                                {
-                                    spacing: UM.Theme.getSize("default_margin").width;
-                                    Image
-                                    {
-                                        anchors.verticalCenter: parent.verticalCenter;
-                                        source: control.checked ? UM.Theme.getIcon("arrow_right") : UM.Theme.getIcon("arrow_bottom");
-                                    }
-                                    Label
-                                    {
-                                        text: control.text;
-                                        font.bold: true;
-                                        color: control.hovered ? palette.highlightedText : palette.text;
-                                    }
-                                }
-                            }
-                        }
-
-                        property variant settingsModel: model.settings;
-
-                        Column {
-                            id: settingsColumn;
-
-                            anchors.top: categoryHeader.bottom;
-
-                            property real childrenHeight:
-                            {
-                                var h = 0.0;
-                                for(var i in children)
-                                {
-                                    var item = children[i];
-                                    h += children[i].height;
-                                    if(item.settingVisible)
-                                    {
-                                        if(i > 0)
-                                        {
-                                            h += spacing;
-                                        }
-                                    }
-                                }
-                                return h;
-                            }
-
-                            width: childrenRect.width;
-                            height: childrenHeight;
-                            Repeater {
-                                model: delegateItem.settingsModel;
-
-                                delegate: ToolButton {
-                                    id: button;
-                                    x: model.visible_depth * UM.Theme.getSize("default_margin").width;
-                                    text: model.name;
-                                    tooltip: model.description;
-                                    visible: !model.global_only
-                                    height: model.global_only ? 0 : undefined
-
-                                    onClicked: {
-                                        var object_id = UM.ActiveTool.properties.getValue("Model").getItem(base.currentIndex).id;
-                                        UM.ActiveTool.properties.getValue("Model").addSettingOverride(object_id, model.key);
-                                        settingPickDialog.visible = false;
-                                    }
-
-                                    states: State {
-                                        name: "filtered"
-                                        when: model.filtered || !model.visible || !model.enabled
-                                        PropertyChanges { target: button; height: 0; opacity: 0; }
-                                    }
-                                }
-                            }
-
-                            states: State {
-                                name: "collapsed";
-
-                                PropertyChanges { target: settingsColumn; opacity: 0; height: 0; }
-                            }
+                    asynchronous: true
+                    source:
+                    {
+                        switch(model.type)
+                        {
+                            case "category":
+                                return "PerObjectCategory.qml"
+                            default:
+                                return "PerObjectItem.qml"
                         }
                     }
                 }

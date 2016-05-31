@@ -19,6 +19,7 @@ import numpy
 
 catalog = i18nCatalog("cura")
 
+
 class ProcessSlicedLayersJob(Job):
     def __init__(self, layers):
         super().__init__()
@@ -48,7 +49,6 @@ class ProcessSlicedLayersJob(Job):
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
-        object_id_map = {}
         new_node = SceneNode()
 
         ## Remove old layer data (if any)
@@ -61,8 +61,6 @@ class ProcessSlicedLayersJob(Job):
                 if self._progress:
                     self._progress.hide()
                 return
-
-        settings = Application.getInstance().getMachineManager().getWorkingProfile()
 
         mesh = MeshData()
         layer_data = LayerData.LayerData()
@@ -88,8 +86,8 @@ class ProcessSlicedLayersJob(Job):
             for p in range(layer.repeatedMessageCount("polygons")):
                 polygon = layer.getRepeatedMessage("polygons", p)
 
-                points = numpy.fromstring(polygon.points, dtype="i8") # Convert bytearray to numpy array
-                points = points.reshape((-1,2)) # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                points = numpy.fromstring(polygon.points, dtype="i8")  # Convert bytearray to numpy array
+                points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
@@ -124,16 +122,17 @@ class ProcessSlicedLayersJob(Job):
                 self._progress.hide()
             return
 
-        #Add layerdata decorator to scene node to indicate that the node has layerdata
+        # Add LayerDataDecorator to scene node to indicate that the node has layer data
         decorator = LayerDataDecorator.LayerDataDecorator()
         decorator.setLayerData(layer_data)
         new_node.addDecorator(decorator)
 
         new_node.setMeshData(mesh)
-        new_node.setParent(self._scene.getRoot()) #Note: After this we can no longer abort!
+        new_node.setParent(self._scene.getRoot())  # Note: After this we can no longer abort!
 
-        if not settings.getSettingValue("machine_center_is_zero"):
-            new_node.setPosition(Vector(-settings.getSettingValue("machine_width") / 2, 0.0, settings.getSettingValue("machine_depth") / 2))
+        settings = Application.getInstance().getGlobalContainerStack()
+        if not settings.getProperty("machine_center_is_zero", "value"):
+            new_node.setPosition(Vector(-settings.getProperty("machine_width", "value") / 2, 0.0, settings.getProperty("machine_depth", "value") / 2))
 
         if self._progress:
             self._progress.setProgress(100)

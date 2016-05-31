@@ -7,15 +7,16 @@ import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
 
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Rectangle {
     id: base;
 
     property bool activity: Printer.getPlatformActivity;
     property string fileBaseName
-    property variant activeMachineInstance: UM.MachineManager.activeMachineInstance
+    property variant activeMachineName: Cura.MachineManager.activeMachineName
 
-    onActiveMachineInstanceChanged:
+    onActiveMachineNameChanged:
     {
         base.createFileName()
     }
@@ -28,32 +29,48 @@ Rectangle {
     height: childrenRect.height
     color: "transparent"
 
-    function createFileName(){
-        var splitMachineName = UM.MachineManager.activeMachineInstance.split(" ")
-        var abbrMachine = ''
-            for (var i = 0; i < splitMachineName.length; i++){
-                if (splitMachineName[i].search(/ultimaker/i) != -1){
-                    abbrMachine += 'UM'
+    function createFileName()
+    {
+        var splitMachineName = Cura.MachineManager.activeMachineName.split(" ")
+        var abbrMachine = "";
+        if ((UM.Preferences.getValue("cura/jobname_prefix")))
+        {
+            for (var i = 0; i < splitMachineName.length; i++)
+            {
+                if (splitMachineName[i].search(/ultimaker/i) != -1)
+                {
+                    abbrMachine += "UM";
                 }
-                else{
+                else
+                {
                     if (splitMachineName[i].charAt(0).search(/[0-9]/g) == -1)
-                        abbrMachine += splitMachineName[i].charAt(0)
-                }
-                var regExpAdditives = /[0-9\+]/g;
-                var resultAdditives = splitMachineName[i].match(regExpAdditives);
-                if (resultAdditives != null){
-                    for (var j = 0; j < resultAdditives.length; j++){
-                        abbrMachine += resultAdditives[j]
-
+                    {
+                        abbrMachine += splitMachineName[i].charAt(0);
                     }
                 }
             }
-        printJobTextfield.text = abbrMachine + '_' + base.fileBaseName
+            var regExpAdditives = /[0-9\+]/g;
+            var resultAdditives = splitMachineName[i].match(regExpAdditives);
+            if (resultAdditives != null)
+            {
+                for (var j = 0; j < resultAdditives.length; j++)
+                {
+                    abbrMachine += resultAdditives[j];
+                }
+            }
+            printJobTextfield.text = abbrMachine + "_" + base.fileBaseName;
+        }
+        else
+        {
+            printJobTextfield.text = base.fileBaseName;
+        }
     }
 
-     Connections {
+    Connections
+    {
         target: backgroundItem
-        onHasMesh: {
+        onHasMesh:
+        {
             base.fileBaseName = name
         }
     }
