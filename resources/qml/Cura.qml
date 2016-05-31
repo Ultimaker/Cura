@@ -10,8 +10,6 @@ import QtQuick.Dialogs 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-import "."
-
 UM.MainWindow
 {
     id: base
@@ -56,7 +54,7 @@ UM.MainWindow
                 title: catalog.i18nc("@title:menu menubar:toplevel","&File");
 
                 MenuItem {
-                    action: Actions.open;
+                    action: Cura.Actions.open;
                 }
 
                 Menu
@@ -118,11 +116,11 @@ UM.MainWindow
                     }
                 }
 
-                MenuItem { action: Actions.reloadAll; }
+                MenuItem { action: Cura.Actions.reloadAll; }
 
                 MenuSeparator { }
 
-                MenuItem { action: Actions.quit; }
+                MenuItem { action: Cura.Actions.quit; }
             }
 
             Menu
@@ -130,17 +128,17 @@ UM.MainWindow
                 //: Edit menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Edit");
 
-                MenuItem { action: Actions.undo; }
-                MenuItem { action: Actions.redo; }
+                MenuItem { action: Cura.Actions.undo; }
+                MenuItem { action: Cura.Actions.redo; }
                 MenuSeparator { }
-                MenuItem { action: Actions.deleteSelection; }
-                MenuItem { action: Actions.deleteAll; }
-                MenuItem { action: Actions.resetAllTranslation; }
-                MenuItem { action: Actions.resetAll; }
+                MenuItem { action: Cura.Actions.deleteSelection; }
+                MenuItem { action: Cura.Actions.deleteAll; }
+                MenuItem { action: Cura.Actions.resetAllTranslation; }
+                MenuItem { action: Cura.Actions.resetAll; }
                 MenuSeparator { }
-                MenuItem { action: Actions.groupObjects;}
-                MenuItem { action: Actions.mergeObjects;}
-                MenuItem { action: Actions.unGroupObjects;}
+                MenuItem { action: Cura.Actions.groupObjects;}
+                MenuItem { action: Cura.Actions.mergeObjects;}
+                MenuItem { action: Cura.Actions.unGroupObjects;}
             }
 
             Menu
@@ -216,8 +214,8 @@ UM.MainWindow
 
                 MenuSeparator { visible: Cura.MachineManager.hasVariants; }
 
-                MenuItem { action: Actions.addMachine; }
-                MenuItem { action: Actions.configureMachines; }
+                MenuItem { action: Cura.Actions.addMachine; }
+                MenuItem { action: Cura.Actions.configureMachines; }
             }
 
             Menu
@@ -290,11 +288,11 @@ UM.MainWindow
 
                 MenuSeparator { id: profileMenuSeparator }
 
-                MenuItem { action: Actions.updateProfile; }
-                MenuItem { action: Actions.resetProfile; }
-                MenuItem { action: Actions.addProfile; }
+                MenuItem { action: Cura.Actions.updateProfile; }
+                MenuItem { action: Cura.Actions.resetProfile; }
+                MenuItem { action: Cura.Actions.addProfile; }
                 MenuSeparator { }
-                MenuItem { action: Actions.manageProfiles; }
+                MenuItem { action: Cura.Actions.manageProfiles; }
             }
 
             Menu
@@ -337,7 +335,7 @@ UM.MainWindow
                 //: Settings menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Settings");
 
-                MenuItem { action: Actions.preferences; }
+                MenuItem { action: Cura.Actions.preferences; }
             }
 
             Menu
@@ -345,11 +343,11 @@ UM.MainWindow
                 //: Help menu
                 title: catalog.i18nc("@title:menu menubar:toplevel","&Help");
 
-                MenuItem { action: Actions.showEngineLog; }
-                MenuItem { action: Actions.documentation; }
-                MenuItem { action: Actions.reportBug; }
+                MenuItem { action: Cura.Actions.showEngineLog; }
+                MenuItem { action: Cura.Actions.documentation; }
+                MenuItem { action: Cura.Actions.reportBug; }
                 MenuSeparator { }
-                MenuItem { action: Actions.about; }
+                MenuItem { action: Cura.Actions.about; }
             }
         }
 
@@ -439,7 +437,7 @@ UM.MainWindow
                     left: parent.left;
                     //leftMargin: UM.Theme.getSize("loadfile_margin").width
                 }
-                action: Actions.open;
+                action: Cura.Actions.open;
             }
 
             Image
@@ -527,12 +525,12 @@ UM.MainWindow
 
                 width: UM.Theme.getSize("sidebar").width;
 
-                addMachineAction: Actions.addMachine;
-                configureMachinesAction: Actions.configureMachines;
-                addProfileAction: Actions.addProfile;
-                updateProfileAction: Actions.updateProfile;
-                resetProfileAction: Actions.resetProfile;
-                manageProfilesAction: Actions.manageProfiles;
+                addMachineAction: Cura.Actions.addMachine;
+                configureMachinesAction: Cura.Actions.configureMachines;
+                addProfileAction: Cura.Actions.addProfile;
+                updateProfileAction: Cura.Actions.updateProfile;
+                resetProfileAction: Cura.Actions.resetProfile;
+                manageProfilesAction: Cura.Actions.manageProfiles;
             }
         }
     }
@@ -573,13 +571,13 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.preferences
+        target: Cura.Actions.preferences
         onTriggered: preferences.visible = true
     }
 
     Connections
     {
-        target: Actions.addProfile
+        target: Cura.Actions.addProfile
         onTriggered:
         {
             UM.MachineManager.createProfile();
@@ -593,7 +591,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.configureMachines
+        target: Cura.Actions.configureMachines
         onTriggered:
         {
             preferences.visible = true;
@@ -603,7 +601,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.manageProfiles
+        target: Cura.Actions.manageProfiles
         onTriggered:
         {
             preferences.visible = true;
@@ -613,7 +611,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.configureSettingVisibility
+        target: Cura.Actions.configureSettingVisibility
         onTriggered:
         {
             preferences.visible = true;
@@ -636,22 +634,22 @@ UM.MainWindow
         id: objectContextMenu;
 
         property variant objectId: -1;
-        MenuItem { action: Actions.centerObject; }
-        MenuItem { action: Actions.deleteObject; }
-        MenuItem { action: Actions.multiplyObject; }
+        MenuItem { action: Cura.Actions.centerObject; }
+        MenuItem { action: Cura.Actions.deleteObject; }
+        MenuItem { action: Cura.Actions.multiplyObject; }
         MenuSeparator { }
-        MenuItem { action: Actions.deleteAll; }
-        MenuItem { action: Actions.reloadAll; }
-        MenuItem { action: Actions.resetAllTranslation; }
-        MenuItem { action: Actions.resetAll; }
+        MenuItem { action: Cura.Actions.deleteAll; }
+        MenuItem { action: Cura.Actions.reloadAll; }
+        MenuItem { action: Cura.Actions.resetAllTranslation; }
+        MenuItem { action: Cura.Actions.resetAll; }
         MenuSeparator { }
-        MenuItem { action: Actions.groupObjects; }
-        MenuItem { action: Actions.mergeObjects; }
-        MenuItem { action: Actions.unGroupObjects; }
+        MenuItem { action: Cura.Actions.groupObjects; }
+        MenuItem { action: Cura.Actions.mergeObjects; }
+        MenuItem { action: Cura.Actions.unGroupObjects; }
 
         Connections
         {
-            target: Actions.deleteObject
+            target: Cura.Actions.deleteObject
             onTriggered:
             {
                 if(objectContextMenu.objectId != 0)
@@ -664,7 +662,7 @@ UM.MainWindow
 
         Connections
         {
-            target: Actions.multiplyObject
+            target: Cura.Actions.multiplyObject
             onTriggered:
             {
                 if(objectContextMenu.objectId != 0)
@@ -677,7 +675,7 @@ UM.MainWindow
 
         Connections
         {
-            target: Actions.centerObject
+            target: Cura.Actions.centerObject
             onTriggered:
             {
                 if(objectContextMenu.objectId != 0)
@@ -692,14 +690,14 @@ UM.MainWindow
     Menu
     {
         id: contextMenu;
-        MenuItem { action: Actions.deleteAll; }
-        MenuItem { action: Actions.reloadAll; }
-        MenuItem { action: Actions.resetAllTranslation; }
-        MenuItem { action: Actions.resetAll; }
+        MenuItem { action: Cura.Actions.deleteAll; }
+        MenuItem { action: Cura.Actions.reloadAll; }
+        MenuItem { action: Cura.Actions.resetAllTranslation; }
+        MenuItem { action: Cura.Actions.resetAll; }
         MenuSeparator { }
-        MenuItem { action: Actions.groupObjects; }
-        MenuItem { action: Actions.mergeObjects; }
-        MenuItem { action: Actions.unGroupObjects; }
+        MenuItem { action: Cura.Actions.groupObjects; }
+        MenuItem { action: Cura.Actions.mergeObjects; }
+        MenuItem { action: Cura.Actions.unGroupObjects; }
     }
 
     Connections
@@ -720,13 +718,13 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.quit
+        target: Cura.Actions.quit
         onTriggered: base.visible = false;
     }
 
     Connections
     {
-        target: Actions.toggleFullScreen
+        target: Cura.Actions.toggleFullScreen
         onTriggered: base.toggleFullscreen();
     }
 
@@ -756,7 +754,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.open
+        target: Cura.Actions.open
         onTriggered: openDialog.open()
     }
 
@@ -767,7 +765,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.showEngineLog
+        target: Cura.Actions.showEngineLog
         onTriggered: engineLog.visible = true;
     }
 
@@ -778,7 +776,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.addMachine
+        target: Cura.Actions.addMachine
         onTriggered: addMachineDialog.visible = true;
     }
 
@@ -789,7 +787,7 @@ UM.MainWindow
 
     Connections
     {
-        target: Actions.about
+        target: Cura.Actions.about
         onTriggered: aboutDialog.visible = true;
     }
 

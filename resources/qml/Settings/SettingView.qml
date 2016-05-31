@@ -9,8 +9,6 @@ import QtQuick.Layouts 1.1
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-import ".."
-
 ScrollView
 {
     id: base;
@@ -134,7 +132,7 @@ ScrollView
                 //: Settings context menu action
                 text: catalog.i18nc("@action:menu", "Configure setting visiblity...");
 
-                onTriggered: Actions.configureSettingVisibility.trigger(contextMenu);
+                onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu);
             }
         }
     }
