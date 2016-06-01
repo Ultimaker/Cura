@@ -6,7 +6,7 @@ include(GNUInstallDirs)
 
 set(URANIUM_SCRIPTS_DIR "${CMAKE_SOURCE_DIR}/../uranium/scripts" CACHE DIRECTORY "The location of the scripts directory of the Uranium repository")
 
-set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
+set(CURA_VERSION "2.1.2" CACHE STRING "Version name of Cura")
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 
 # Macro needed to list all sub-directory of a directory.
