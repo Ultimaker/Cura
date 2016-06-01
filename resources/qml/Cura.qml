@@ -303,7 +303,7 @@ UM.MainWindow
 
                 Instantiator
                 {
-                    id: extenions
+                    id: extensions
                     model: UM.ExtensionModel { }
 
                     Menu
@@ -318,7 +318,7 @@ UM.MainWindow
                             MenuItem
                             {
                                 text: model.text
-                                onTriggered: extenions.model.subMenuTriggered(name, model.text)
+                                onTriggered: extensions.model.subMenuTriggered(name, model.text)
                             }
                             onObjectAdded: sub_menu.insertItem(index, object)
                             onObjectRemoved: sub_menu.removeItem(object)
