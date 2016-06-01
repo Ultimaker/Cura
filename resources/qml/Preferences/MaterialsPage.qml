@@ -195,7 +195,7 @@ UM.ManagementPage
 
     onCurrentItemChanged:
     {
-        if(!currentItem == null)
+        if(currentItem == null)
         {
             return
         }
