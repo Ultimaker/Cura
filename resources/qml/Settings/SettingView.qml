@@ -50,6 +50,7 @@ ScrollView
             //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
             //causing nasty issues when selecting differnt options. So disable asynchronous loading of enum type completely.
             asynchronous: model.type != "enum"
+            active: model.type != undefined
 
             source:
             {
