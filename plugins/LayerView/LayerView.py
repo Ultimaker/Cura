@@ -44,7 +44,7 @@ class LayerView(View):
         self._top_layers_job = None
         self._activity = False
 
-        self._solid_layers = 5
+        self._solid_layers = 1
 
         self._top_layer_timer = QTimer()
         self._top_layer_timer.setInterval(50)
