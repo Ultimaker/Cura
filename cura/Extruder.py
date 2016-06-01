@@ -23,7 +23,8 @@ class Extruder:
         self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = self._definition.getId())
 
         #Create a container stack for this extruder.
-        self._container_stack = UM.Settings.ContainerStack(self._uniqueName(self._definition.getId()))
+        name = self._uniqueName(self._definition.getId())
+        self._container_stack = UM.Settings.ContainerStack(name)
         self._container_stack.addMetaDataEntry("type", "extruder_train")
         self._container_stack.addContainer(self._definition)
 
@@ -68,6 +69,11 @@ class Extruder:
                 if len(preferred_quality) >= 1:
                     self._quality = preferred_quality[0]
             self._container_stack.addContainer(self._quality)
+
+        #Add an empty user profile.
+        self._user_profile = UM.Settings.InstanceContainer(name + "_current_settings")
+        self._user_profile.addMetaDataEntry("type", "user")
+        self._container_stack.addContainer(self._user_profile)
 
         self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
