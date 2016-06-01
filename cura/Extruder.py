@@ -3,6 +3,7 @@
 
 import re #To parse container registry names to increment the duplicates-resolving number.
 
+import UM.Application #To link the stack to the global container stack.
 import UM.Settings.ContainerRegistry #To search for nozzles, materials, etc.
 import UM.Settings.ContainerStack #To create a container stack for this extruder.
 
@@ -61,6 +62,8 @@ class Extruder:
             if len(preferred_quality) >= 1:
                 self._quality = preferred_quality[0]
         self._container_stack.addContainer(self._quality)
+
+        self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
     ##  Finds a unique name for an extruder stack.
     #
