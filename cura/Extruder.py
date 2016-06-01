@@ -29,39 +29,45 @@ class Extruder:
 
         #Find the nozzle to use for this extruder.
         self._nozzle = container_registry.getEmptyInstanceContainer()
-        if len(self._nozzles) >= 1: #First add any extruder. Later, overwrite with preference if the preference is valid.
-            self._nozzle = self._nozzles[0]
-        preferred_nozzle_id = self._definition.getMetaDataEntry("preferred_nozzle")
-        if preferred_nozzle_id:
-            for nozzle in self._nozzles:
-                if nozzle.getId() == preferred_nozzle_id:
-                    self._nozzle = nozzle
-                    break
-        self._container_stack.addContainer(self._nozzle)
+        if self._definition.getMetaDataEntry("has_nozzles", default = "False") == "True":
+            if len(self._nozzles) >= 1: #First add any extruder. Later, overwrite with preference if the preference is valid.
+                self._nozzle = self._nozzles[0]
+            preferred_nozzle_id = self._definition.getMetaDataEntry("preferred_nozzle")
+            if preferred_nozzle_id:
+                for nozzle in self._nozzles:
+                    if nozzle.getId() == preferred_nozzle_id:
+                        self._nozzle = nozzle
+                        break
+            self._container_stack.addContainer(self._nozzle)
 
         #Find a material to use for this nozzle.
         self._material = container_registry.getEmptyInstanceContainer()
-        all_materials = container_registry.findInstanceContainers(type = "material")
-        if len(all_materials) >= 1:
-            self._material = all_materials[0]
-        preferred_material_id = self._definition.getMetaDataEntry("preferred_material")
-        if preferred_material_id:
-            preferred_material = container_registry.findInstanceContainers(type = "material", id = preferred_material_id.lower())
-            if len(preferred_material) >= 1:
-                self._material = preferred_material[0]
-        self._container_stack.addContainer(self._material)
+        if self._definition.getMetaDataEntry("has_materials", default = "False") == "True":
+            if self._definition.getMetaDataEntry("has_nozzle_materials", default = "False") == "True":
+                all_materials = container_registry.findInstanceContainers(type = "material", nozzle = self._nozzle.getId())
+            else:
+                all_materials = container_registry.findInstanceContainers(type = "material")
+            if len(all_materials) >= 1:
+                self._material = all_materials[0]
+            preferred_material_id = self._definition.getMetaDataEntry("preferred_material")
+            if preferred_material_id:
+                preferred_material = container_registry.findInstanceContainers(type = "material", id = preferred_material_id.lower())
+                if len(preferred_material) >= 1:
+                    self._material = preferred_material[0]
+            self._container_stack.addContainer(self._material)
 
         #Find a quality to use for this extruder.
         self._quality = container_registry.getEmptyInstanceContainer()
-        all_qualities = container_registry.findInstanceContainers(type = "quality")
-        if len(all_qualities) >= 1:
-            self._quality = all_qualities[0]
-        preferred_quality_id = self._definition.getMetaDataEntry("preferred_quality")
-        if preferred_quality_id:
-            preferred_quality = container_registry.findInstanceContainers(type = "quality", id = preferred_quality_id.lower())
-            if len(preferred_quality) >= 1:
-                self._quality = preferred_quality[0]
-        self._container_stack.addContainer(self._quality)
+        if self._definition.getMetaDataEntry("has_machine_quality"):
+            all_qualities = container_registry.findInstanceContainers(type = "quality")
+            if len(all_qualities) >= 1:
+                self._quality = all_qualities[0]
+            preferred_quality_id = self._definition.getMetaDataEntry("preferred_quality")
+            if preferred_quality_id:
+                preferred_quality = container_registry.findInstanceContainers(type = "quality", id = preferred_quality_id.lower())
+                if len(preferred_quality) >= 1:
+                    self._quality = preferred_quality[0]
+            self._container_stack.addContainer(self._quality)
 
         self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
