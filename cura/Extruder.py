@@ -17,7 +17,7 @@ class Extruder:
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
         #Find the nozzles that fit on this extruder.
-        self._nozzles = container_registry.findInstanceContainers(type = "nozzle", definitions = "*," + definition.getId() + ",*")
+        self._nozzles = container_registry.findInstanceContainers(type = "nozzle", definitions = "*," + definition.getId() + ",*") #Extruder needs to be delimited by either a comma or the end of string.
         self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = "*," + definition.getId())
         self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = definition.getId() + ",*")
         self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = definition.getId())
