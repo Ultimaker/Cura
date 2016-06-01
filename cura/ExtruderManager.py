@@ -18,9 +18,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers 
 class ExtruderManager:
     ##  Registers listeners and such to listen to changes to the extruders.
     def __init__(self):
-        self._extruderDefinitions = [] #Extruder definitions for the current machine.
-        self._nozzles = {} #Nozzle instances for each extruder.
-        self._extruderTrains = [] #Container stacks for each of the extruder trains.
+        self._extruders = [] #Extruders for the current machine.
 
         Application.getInstance().getGlobalContainerStack().containersChanged.connect(self._reloadExtruders) #When the current machine changes, we need to reload all extruders belonging to the new machine.
 
