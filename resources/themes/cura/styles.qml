@@ -283,14 +283,14 @@ QtObject {
     property Component combobox: Component {
         ComboBoxStyle {
             background: Rectangle {
-                implicitHeight: UM.Theme.getSize("setting_control").height;
-                implicitWidth: UM.Theme.getSize("setting_control").width;
+                implicitHeight: Theme.getSize("setting_control").height;
+                implicitWidth: Theme.getSize("setting_control").width;
 
-                color: (control.hovered || control.hovered_ex) ? Theme.getColor("setting_control_highlight") : Theme.getColor("setting_control");
+                color: (control.hovered || control._hovered) ? Theme.getColor("setting_control_highlight") : Theme.getColor("setting_control");
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 border.width: Theme.getSize("default_lining").width;
-                border.color: (control.hovered || control.hovered_ex) ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
+                border.color: (control.hovered || control._hovered) ? Theme.getColor("setting_control_border_highlight") : Theme.getColor("setting_control_border");
             }
             label: Item {
                 Label {
@@ -301,7 +301,7 @@ QtObject {
                     anchors.verticalCenter: parent.verticalCenter;
 
                     text: control.currentText;
-                    font: UM.Theme.getFont("default");
+                    font: Theme.getFont("default");
                     color: !enabled ? Theme.getColor("setting_control_disabled_text") : Theme.getColor("setting_control_text");
 
                     elide: Text.ElideRight;
@@ -314,9 +314,9 @@ QtObject {
                     anchors.rightMargin: Theme.getSize("default_lining").width * 2;
                     anchors.verticalCenter: parent.verticalCenter;
 
-                    source: UM.Theme.getIcon("arrow_bottom")
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
+                    source: Theme.getIcon("arrow_bottom")
+                    width: Theme.getSize("standard_arrow").width
+                    height: Theme.getSize("standard_arrow").height
                     sourceSize.width: width + 5
                     sourceSize.height: width + 5
 
@@ -333,13 +333,13 @@ QtObject {
                 implicitWidth:  Theme.getSize("checkbox").width;
                 implicitHeight: Theme.getSize("checkbox").height;
 
-                color: (control.hovered || control.hovered_ex) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
+                color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_hover") : Theme.getColor("checkbox");
                 Behavior on color { ColorAnimation { duration: 50; } }
 
                 radius: control.exclusiveGroup ? Theme.getSize("checkbox").width / 2 : 0
 
                 border.width: Theme.getSize("default_lining").width;
-                border.color: (control.hovered || control.hovered_ex) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
+                border.color: (control.hovered || control._hovered) ? Theme.getColor("checkbox_border_hover") : Theme.getColor("checkbox_border");
 
                 UM.RecolorImage {
                     anchors.verticalCenter: parent.verticalCenter
