@@ -17,10 +17,10 @@ class Extruder:
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
         #Find the nozzles that fit on this extruder.
-        self._nozzles = container_registry.findInstanceContainers(type = "nozzle", definitions = "*," + definition.getId() + ",*") #Extruder needs to be delimited by either a comma or the end of string.
-        self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = "*," + definition.getId())
-        self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = definition.getId() + ",*")
-        self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = definition.getId())
+        self._nozzles = container_registry.findInstanceContainers(type = "nozzle", definitions = "*," + self._definition.getId() + ",*") #Extruder needs to be delimited by either a comma or the end of string.
+        self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = "*," + self._definition.getId())
+        self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = self._definition.getId() + ",*")
+        self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = self._definition.getId())
 
         #Create a container stack for this extruder.
         self._container_stack = UM.Settings.ContainerStack(self._uniqueName(self._definition.getId()))
