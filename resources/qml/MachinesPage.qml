@@ -17,6 +17,16 @@ UM.ManagementPage
         filter: {"type": "machine"}
     }
 
+    activeId: Cura.MachineManager.activeMachineId
+    activeIndex: {
+        for(var i = 0; i < model.rowCount(); i++) {
+            if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     onAddObject: Printer.requestAddPrinter()
     onRemoveObject: confirmDialog.open();
     onRenameObject: renameDialog.open();

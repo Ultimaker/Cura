@@ -17,6 +17,16 @@ UM.ManagementPage
 
     model: UM.InstanceContainersModel { filter: { "type": "quality" } }
 
+    activeId: Cura.MachineManager.activeQualityId
+    activeIndex: {
+        for(var i = 0; i < model.rowCount(); i++) {
+            if (model.getItem(i).id == Cura.MachineManager.activeQualityId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
     onAddObject: {
         var selectedProfile;
