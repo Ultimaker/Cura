@@ -21,6 +21,7 @@ class ExtruderManager:
         self._extruders = [] #Extruders for the current machine.
 
         Application.getInstance().getGlobalContainerStack().containersChanged.connect(self._reloadExtruders) #When the current machine changes, we need to reload all extruders belonging to the new machine.
+        self._reloadExtruders()
 
     ##  (Re)loads all extruders of the currently active machine.
     #
