@@ -16,6 +16,7 @@ SettingItem
     {
         id: control
         anchors.fill: parent
+        hoverEnabled: true
 
         property bool checked:
         {
