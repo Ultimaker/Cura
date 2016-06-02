@@ -1,12 +1,9 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-import re
-
 from cura.Extruder import Extruder #The individual extruders managed by this manager.
 from UM.Application import Application #To get the global container stack to find the current machine.
 from UM.Logger import Logger
-from UM.Settings.ContainerStack import ContainerStack #To create container stacks for each extruder.
 from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers by ID.
 
 
