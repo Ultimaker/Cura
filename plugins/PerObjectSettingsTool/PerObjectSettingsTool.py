@@ -6,7 +6,6 @@ from UM.Scene.Selection import Selection
 from UM.Application import Application
 from UM.Preferences import Preferences
 
-from . import PerObjectSettingsModel
 
 class PerObjectSettingsTool(Tool):
     def __init__(self):
