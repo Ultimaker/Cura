@@ -4,8 +4,10 @@
 import re #To parse container registry names to increment the duplicates-resolving number.
 
 import UM.Application #To link the stack to the global container stack.
+import UM.Logger
 import UM.Settings.ContainerRegistry #To search for nozzles, materials, etc.
 import UM.Settings.ContainerStack #To create a container stack for this extruder.
+import UM.Signal #To notify people of changing extruder stacks.
 
 class Extruder:
     ##  Creates a new extruder from the specified definition container.
@@ -76,6 +78,73 @@ class Extruder:
         self._container_stack.addContainer(self._user_profile)
 
         self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
+
+    nozzle_changed = UM.Signal.Signal()
+    material_changed = UM.Signal.Signal()
+    quality_changed = UM.Signal.Signal()
+
+    ##  Gets the currently active material on this extruder.
+    #
+    #   \return The currently active material on this extruder.
+    @property
+    def material(self):
+        return self._material
+
+    ##  Changes the currently active material in this extruder.
+    #
+    #   \param value The new material to extrude through this extruder.
+    @material.setter
+    def material(self, value):
+        try:
+            position = self._container_stack.index(self._material)
+        except ValueError: #Material is not in the list.
+            UM.Logger.log("e", "I've lost my old material, so I can't find where to insert the new material.")
+            return
+        self._container_stack.replaceContainer(position, value)
+        self._material = value
+        self.material_changed.emit()
+
+    ##  Gets the currently active nozzle on this extruder.
+    #
+    #   \return The currently active nozzle on this extruder.
+    @property
+    def nozzle(self):
+        return self._nozzle
+
+    ##  Changes the currently active nozzle on this extruder.
+    #
+    #   \param value The new nozzle to use with this extruder.
+    @nozzle.setter
+    def nozzle(self, value):
+        try:
+            position = self._container_stack.index(self._nozzle)
+        except ValueError: #Nozzle is not in the list.
+            UM.Logger.log("e", "I've lost my old nozzle, so I can't find where to insert the new nozzle.")
+            return
+        self._container_stack.replaceContainer(position, value)
+        self._nozzle = value
+        self.nozzle_changed.emit()
+
+    ##  Gets the currently active quality on this extruder.
+    #
+    #   \return The currently active quality on this extruder.
+    @property
+    def quality(self):
+        return self._quality
+
+    ##  Changes the currently active quality to use with this extruder.
+    #
+    #   \param value The new quality to use with this extruder.
+    @quality.setter
+    def quality(self, value):
+        try:
+            position = self._container_stack.index(self._quality)
+        except ValueError: #Quality is not in the list.
+            UM.Logger.log("e", "I've lost my old quality, so I can't find where to insert the new quality.")
+            return
+        self._container_stack.replaceContainer(position, value)
+        self._quality = value
+        self.quality_changed.emit()
 
     ##  Finds a unique name for an extruder stack.
     #
