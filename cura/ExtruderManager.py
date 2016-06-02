@@ -5,6 +5,7 @@ from cura.Extruder import Extruder #The individual extruders managed by this man
 from UM.Application import Application #To get the global container stack to find the current machine.
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers by ID.
+import UM.Signal #To notify other components of changes in the extruders.
 
 
 ##  Class that handles the current extruder stack.
@@ -15,6 +16,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers 
 class ExtruderManager:
     ##  The singleton instance of this manager.
     __instance = None
+
+    ##  Signal to notify other components when the list of extruders changes.
+    extrudersChanged = UM.Signal()
 
     ##  Registers listeners and such to listen to changes to the extruders.
     def __init__(self):
@@ -49,6 +53,7 @@ class ExtruderManager:
     def _reloadExtruders(self):
         self._extruders = []
         if not self._global_container_stack: #No machine has been added yet.
+            self.extrudersChanged.emit() #Yes, we just cleared the _extruders list!
             return #Then leave them empty!
 
         #Get the extruder definitions belonging to the current machine.
@@ -61,3 +66,4 @@ class ExtruderManager:
                 continue
             for extruder_definition in extruder_definitions:
                 self._extruders.append(Extruder(extruder_definition))
+        self.extrudersChanged.emit()
