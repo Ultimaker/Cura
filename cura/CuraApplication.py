@@ -436,21 +436,6 @@ class CuraApplication(QtApplication):
         self._platform_activity = True if count > 0 else False
         self.activityChanged.emit()
 
-    @pyqtSlot(str)
-    def setJobName(self, name):
-        # when a file is opened using the terminal; the filename comes from _onFileLoaded and still contains its
-        # extension. This cuts the extension off if necessary.
-        name = os.path.splitext(name)[0]
-        if self._job_name != name:
-            self._job_name = name
-            self.jobNameChanged.emit()
-
-    jobNameChanged = pyqtSignal()
-
-    @pyqtProperty(str, notify = jobNameChanged)
-    def jobName(self):
-        return self._job_name
-
     # Remove all selected objects from the scene.
     @pyqtSlot()
     def deleteSelection(self):

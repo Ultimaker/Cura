@@ -10,61 +10,24 @@ import UM 1.1 as UM
 import Cura 1.0 as Cura
 
 Rectangle {
-    id: base;
+    id: base
 
-    property bool activity: Printer.getPlatformActivity;
+    property bool activity: Printer.getPlatformActivity
     property string fileBaseName
     property variant activeMachineName: Cura.MachineManager.activeMachineName
 
     onActiveMachineNameChanged:
     {
-        base.createFileName()
+        printJobTextfield.text = PrintInformation.createJobName(base.fileBaseName);
     }
 
     UM.I18nCatalog { id: catalog; name:"cura"}
 
-    property variant printDuration: PrintInformation.currentPrintTime;
-    property real printMaterialAmount: PrintInformation.materialAmount;
+    property variant printDuration: PrintInformation.currentPrintTime
+    property real printMaterialAmount: PrintInformation.materialAmount
 
     height: childrenRect.height
     color: "transparent"
-
-    function createFileName()
-    {
-        var splitMachineName = Cura.MachineManager.activeMachineName.split(" ")
-        var abbrMachine = "";
-        if ((UM.Preferences.getValue("cura/jobname_prefix")))
-        {
-            for (var i = 0; i < splitMachineName.length; i++)
-            {
-                if (splitMachineName[i].search(/ultimaker/i) != -1)
-                {
-                    abbrMachine += "UM";
-                }
-                else
-                {
-                    if (splitMachineName[i].charAt(0).search(/[0-9]/g) == -1)
-                    {
-                        abbrMachine += splitMachineName[i].charAt(0);
-                    }
-                }
-            }
-            var regExpAdditives = /[0-9\+]/g;
-            var resultAdditives = splitMachineName[i].match(regExpAdditives);
-            if (resultAdditives != null)
-            {
-                for (var j = 0; j < resultAdditives.length; j++)
-                {
-                    abbrMachine += resultAdditives[j];
-                }
-            }
-            printJobTextfield.text = abbrMachine + "_" + base.fileBaseName;
-        }
-        else
-        {
-            printJobTextfield.text = base.fileBaseName;
-        }
-    }
 
     Connections
     {
@@ -78,20 +41,20 @@ Rectangle {
     onActivityChanged: {
         if (activity == true && base.fileBaseName == ''){
             //this only runs when you open a file from the terminal (or something that works the same way; for example when you drag a file on the icon in MacOS or use 'open with' on Windows)
-            base.fileBaseName = Printer.jobName //it gets the fileBaseName from CuraApplication.py because this saves the filebase when the file is opened using the terminal (or something alike)
-            base.createFileName()
+            base.fileBaseName = PrintInformation.jobName; //get the fileBaseName from PrintInformation.py because this saves the filebase when the file is opened using the terminal (or something alike)
+            printJobTextfield.text = PrintInformation.createJobName(base.fileBaseName);
         }
         if (activity == true && base.fileBaseName != ''){
             //this runs in all other cases where there is a mesh on the buildplate (activity == true). It uses the fileBaseName from the hasMesh signal
-            base.createFileName()
+            printJobTextfield.text = PrintInformation.createJobName(base.fileBaseName);
         }
         if (activity == false){
             //When there is no mesh in the buildplate; the printJobTextField is set to an empty string so it doesn't set an empty string as a jobName (which is later used for saving the file)
-            printJobTextfield.text = ''
+            printJobTextfield.text = '';
         }
     }
 
-    Rectangle 
+    Rectangle
     {
         id: jobNameRow
         anchors.top: parent.top
@@ -112,22 +75,22 @@ Rectangle {
                 width: UM.Theme.getSize("save_button_specs_icons").width
                 height: UM.Theme.getSize("save_button_specs_icons").height
 
-                onClicked: 
+                onClicked:
                 {
-                    printJobTextfield.selectAll()
-                    printJobTextfield.focus = true
+                    printJobTextfield.selectAll();
+                    printJobTextfield.focus = true;
                 }
                 style: ButtonStyle
                 {
                     background: Rectangle
                     {
                         color: "transparent"
-                        UM.RecolorImage 
+                        UM.RecolorImage
                         {
-                            width: UM.Theme.getSize("save_button_specs_icons").width
-                            height: UM.Theme.getSize("save_button_specs_icons").height
-                            sourceSize.width: width
-                            sourceSize.height: width
+                            width: UM.Theme.getSize("save_button_specs_icons").width;
+                            height: UM.Theme.getSize("save_button_specs_icons").height;
+                            sourceSize.width: width;
+                            sourceSize.height: width;
                             color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("text");
                             source: UM.Theme.getIcon("pencil");
                         }
@@ -147,15 +110,15 @@ Rectangle {
                 text: ''
                 horizontalAlignment: TextInput.AlignRight
                 onTextChanged: {
-                    Printer.setJobName(text)
+                    PrintInformation.setJobName(text);
                 }
                 onEditingFinished: {
                     if (printJobTextfield.text != ''){
-                        printJobTextfield.focus = false
+                        printJobTextfield.focus = false;
                     }
                 }
                 validator: RegExpValidator {
-                    regExp: /^[^\\ \/ \.]*$/
+                    regExp: /^[^\\ \/ \*\?\|\[\]]*$/
                 }
                 style: TextFieldStyle{
                     textColor: UM.Theme.getColor("setting_control_text");
@@ -200,7 +163,7 @@ Rectangle {
                 sourceSize.width: width
                 sourceSize.height: width
                 color: UM.Theme.getColor("text_subtext")
-                source: UM.Theme.getIcon("print_time");
+                source: UM.Theme.getIcon("print_time")
             }
             Label{
                 id: timeSpec
@@ -221,7 +184,7 @@ Rectangle {
                 sourceSize.width: width
                 sourceSize.height: width
                 color: UM.Theme.getColor("text_subtext")
-                source: UM.Theme.getIcon("category_material");
+                source: UM.Theme.getIcon("category_material")
             }
             Label{
                 id: lengthSpec
@@ -229,7 +192,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 font: UM.Theme.getFont("small")
                 color: UM.Theme.getColor("text_subtext")
-                text: base.printMaterialAmount <= 0 ? catalog.i18nc("@label", "0.0 m") : catalog.i18nc("@label", "%1 m").arg(base.printMaterialAmount)
+                text: catalog.i18nc("@label", "%1 m").arg(base.printMaterialAmount > 0 ? base.printMaterialAmount : 0)
             }
         }
     }
