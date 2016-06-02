@@ -27,6 +27,7 @@ class ExtruderManager:
         self._next_item = 0 #For when you use this class as iterator.
 
         UM.Application.getInstance().globalContainerStackChanged.connect(self._reconnectExtruderReload) #When the current machine changes, we need to reload all extruders belonging to the new machine.
+        self._reconnectExtruderReload()
 
     ##  Gets an instance of this extruder manager.
     #
@@ -51,6 +52,7 @@ class ExtruderManager:
             self._global_container_stack.containersChanged.disconnect(self._reloadExtruders) #Disconnect from the old global container stack.
         self._global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         self._global_container_stack.containersChanged.connect(self._reloadExtruders) #When the current machine changes, we need to reload all extruders belonging to the new machine.
+        self._reloadExtruders()
 
     ##  (Re)loads all extruders of the currently active machine.
     #
@@ -66,7 +68,7 @@ class ExtruderManager:
         #Get the extruder definitions belonging to the current machine.
         machine = self._global_container_stack.getBottom()
         extruder_train_ids = machine.getMetaDataEntry("machine_extruder_trains")
-        for extruder_train_id in extruder_train_ids:
+        for _,extruder_train_id in extruder_train_ids.items():
             extruder_definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = extruder_train_id) #Should be only 1 definition if IDs are unique, but add the whole list anyway.
             if not extruder_definitions: #Empty list or error.
                 UM.Logger.log("w", "Machine definition %s refers to an extruder train \"%s\", but no such extruder was found.", machine.getId(), extruder_train_id)

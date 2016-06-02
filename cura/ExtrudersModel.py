@@ -53,4 +53,5 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
                 "index": index
             }
             self.appendItem(item)
+            print("Appending extruder " + extruder.name + " to presenter.")
         self.sort(lambda item: item["index"])
