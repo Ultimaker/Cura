@@ -123,6 +123,44 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
 
                 UM.Settings.ContainerRegistry.getInstance().addContainer(new_material)
 
+                hotends = machine.iterfind("./um:hotend", self.__namespaces)
+                for hotend in hotends:
+                    hotend_id = hotend.get("id")
+                    if hotend_id is None:
+                        continue
+
+                    variant_containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = hotend_id)
+                    if not variant_containers:
+                        # It is not really properly defined what "ID" is so also search for variants by name.
+                        variant_containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(definition = definition.id, name = hotend_id)
+
+                    if not variant_containers:
+                        Logger.log("d", "No variants found with ID or name %s for machine %s", hotend_id, definition.id)
+                        continue
+
+                    new_hotend_material = XmlMaterialProfile(self.id + "_" + machine_id + "_" + hotend_id.replace(" ", "_"))
+                    new_hotend_material.setName(self.getName())
+                    new_hotend_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                    new_hotend_material.setDefinition(definition)
+
+                    new_hotend_material.addMetaDataEntry("variant", variant_containers[0].id)
+
+                    for key, value in global_setting_values.items():
+                        new_hotend_material.setProperty(key, "value", value, definition)
+
+                    for key, value in machine_setting_values.items():
+                        new_hotend_material.setProperty(key, "value", value, definition)
+
+                    settings = hotend.iterfind("./um:setting", self.__namespaces)
+                    for entry in settings:
+                        key = entry.get("key")
+                        if key in self.__material_property_setting_map:
+                            new_hotend_material.setProperty(self.__material_property_setting_map[key], "value", entry.text, definition)
+                        else:
+                            Logger.log("d", "Unsupported material setting %s", key)
+
+                    new_hotend_material._dirty = False
+                    UM.Settings.ContainerRegistry.getInstance().addContainer(new_hotend_material)
 
 
     # Map XML file setting names to internal names
