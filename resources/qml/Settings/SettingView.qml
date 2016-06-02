@@ -62,6 +62,8 @@ ScrollView
                         return "SettingTextField.qml"
                     case "enum":
                         return "SettingComboBox.qml"
+                    case "extruder":
+                        return "SettingExtruder.qml"
                     case "bool":
                         return "SettingCheckBox.qml"
                     case "str":
