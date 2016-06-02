@@ -31,6 +31,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
+from . import ExtrudersModel
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -366,6 +367,8 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
+
+        qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
 
