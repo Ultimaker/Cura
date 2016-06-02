@@ -24,6 +24,7 @@ class ExtruderManager:
     def __init__(self):
         self._extruders = [] #Extruders for the current machine.
         self._global_container_stack = None
+        self._next_item = 0 #For when you use this class as iterator.
 
         UM.Application.getInstance().globalContainerStackChanged.connect(self._reconnectExtruderReload) #When the current machine changes, we need to reload all extruders belonging to the new machine.
 
@@ -36,6 +37,12 @@ class ExtruderManager:
         if not cls.__instance:
             cls.__instance = ExtruderManager()
         return cls.__instance
+
+    ##  Creates an iterator over the extruders in this manager.
+    #
+    #   \return An iterator over the extruders in this manager.
+    def __iter__(self):
+        return iter(self._extruders)
 
     ##  When the global container stack changes, this reconnects to the new
     #   signal for containers changing.
