@@ -371,8 +371,6 @@ Item
         key: "infill_sparse_density"
         watchedProperties: [ "value" ]
         storeIndex: 0
-
-        onPropertiesChanged: console.log(properties.value)
     }
 
     UM.SettingPropertyProvider
