@@ -7,12 +7,14 @@ from UM.Application import Application
 from UM.Preferences import Preferences
 
 
+##  This tool allows the user to add & change settings per node in the scene.
+#   The settings per object are kept in a ContainerStack, which is linked to a node by decorator.
 class PerObjectSettingsTool(Tool):
     def __init__(self):
         super().__init__()
         self._model = None
 
-        self.setExposedProperties("SelectedObjectId","ContainerID")
+        self.setExposedProperties("SelectedObjectId", "ContainerID")
 
         Preferences.getInstance().preferenceChanged.connect(self._onPreferenceChanged)
         Selection.selectionChanged.connect(self.propertyChanged)
@@ -39,9 +41,6 @@ class PerObjectSettingsTool(Tool):
             return selected_object.callDecoration("getStack").getId()
         except AttributeError:
             return ""
-
-    def setContainerID(self, value):
-        pass
 
     def _onPreferenceChanged(self, preference):
         if preference == "cura/active_mode":

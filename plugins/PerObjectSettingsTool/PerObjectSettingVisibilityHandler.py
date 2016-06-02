@@ -5,7 +5,8 @@ from UM.Logger import Logger
 
 from cura.SettingOverrideDecorator import SettingOverrideDecorator
 
-
+##  The per object setting visibility handler ensures that only setting defintions that have a matching instance Container
+#   are returned as visible. 
 class PerObjectSettingVisibilityHandler(QObject):
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
