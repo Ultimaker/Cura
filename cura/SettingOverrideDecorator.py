@@ -18,10 +18,16 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
         self._stack.addContainer(self._instance)
 
+        self._stack.propertyChanged.connect(self._onSettingChanged)
+
         ContainerRegistry.getInstance().addContainer(self._stack)
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
+
+    def _onSettingChanged(self, instance, property):
+        if property == "value":  # Only reslice if the value has changed.
+            Application.getInstance().getBackend().forceSlice()
 
     def _onGlobalContainerStackChanged(self):
         ## Ensure that the next stack is always the global stack.
