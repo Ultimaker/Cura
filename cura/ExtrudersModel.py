@@ -37,7 +37,8 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
 
         #Listen to changes.
         manager = cura.ExtruderManager.ExtruderManager.getInstance()
-        manager.extrudersChanged.connect(self._updateExtruders())
+        manager.extrudersChanged.connect(self._updateExtruders)
+        self._updateExtruders()
 
     ##  Update the list of extruders.
     #
