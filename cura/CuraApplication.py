@@ -142,6 +142,23 @@ class CuraApplication(QtApplication):
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
 
+        # Add empty variant, material and quality containers.
+        # Since they are empty, they should never be serialized and instead just programmatically created.
+        # We need them to simplify the switching between materials.
+        empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
+        empty_variant_container = copy.deepcopy(empty_container)
+        empty_variant_container._id = "empty_variant"
+        empty_variant_container.addMetaDataEntry("type", "variant")
+        ContainerRegistry.getInstance().addContainer(empty_variant_container)
+        empty_material_container = copy.deepcopy(empty_container)
+        empty_material_container._id = "empty_material"
+        empty_material_container.addMetaDataEntry("type", "material")
+        ContainerRegistry.getInstance().addContainer(empty_material_container)
+        empty_quality_container = copy.deepcopy(empty_container)
+        empty_quality_container._id = "empty_quality"
+        empty_quality_container.addMetaDataEntry("type", "quality")
+        ContainerRegistry.getInstance().addContainer(empty_quality_container)
+
         ContainerRegistry.getInstance().load()
 
         Preferences.getInstance().addPreference("cura/active_mode", "simple")
