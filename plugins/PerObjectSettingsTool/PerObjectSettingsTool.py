@@ -32,18 +32,14 @@ class PerObjectSettingsTool(Tool):
         return selected_object_id
 
     def getContainerID(self):
+
+        selected_object = Selection.getSelectedObject(0)
+        if selected_object.getParent().callDecoration("isGroup"):
+            selected_object = selected_object.getParent()
         try:
-            selected_object = Selection.getSelectedObject(0)
-            if selected_object.getParent().callDecoration("isGroup"):
-                selected_object = selected_object.getParent()
-            try:
-                return selected_object.callDecoration("getStack").getId()
-            except:
-                print(":(")
-                return
-        except:
-            print(":((")
-            return
+            return selected_object.callDecoration("getStack").getId()
+        except AttributeError:
+            return ""
 
     def setContainerID(self, value):
         pass
