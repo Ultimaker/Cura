@@ -18,6 +18,10 @@ Item {
     property alias contents: controlContainer.children;
     property alias hovered: mouse.containsMouse
 
+    property var showRevertButton: true
+    property var showInheritButton: true
+    property var doDepthIdentation: true
+
     signal contextMenuRequested()
     signal showTooltip(string text);
     signal hideTooltip();
@@ -93,7 +97,7 @@ Item {
             id: label;
 
             anchors.left: parent.left;
-            anchors.leftMargin: (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width)
+            anchors.leftMargin: doDepthIdentation ? (UM.Theme.getSize("section_icon_column").width + 5) + ((definition.depth - 1) * UM.Theme.getSize("setting_control_depth_margin").width) : 0
             anchors.right: settingControls.left;
             anchors.verticalCenter: parent.verticalCenter
 
@@ -124,7 +128,7 @@ Item {
             {
                 id: revertButton;
 
-                visible: propertyProvider.stackLevel == 0
+                visible: propertyProvider.stackLevel == 0 && base.showRevertButton
 
                 height: parent.height;
                 width: height;
@@ -151,7 +155,7 @@ Item {
                 id: inheritButton;
 
                 //visible: has_profile_value && base.has_inherit_function && base.is_enabled
-                visible: propertyProvider.properties.state == "InstanceState.User" && propertyProvider.stackLevel > 0
+                visible: propertyProvider.properties.state == "InstanceState.User" && propertyProvider.stackLevel > 0 && base.showInheritButton
 
                 height: parent.height;
                 width: height;
