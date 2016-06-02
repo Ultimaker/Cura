@@ -25,8 +25,8 @@ class Extruder:
         self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = self._definition.getId())
 
         #Create a container stack for this extruder.
-        name = self._uniqueName(self._definition.getId())
-        self._container_stack = UM.Settings.ContainerStack(name)
+        self._name = self._uniqueName(self._definition.getId())
+        self._container_stack = UM.Settings.ContainerStack(self._name)
         self._container_stack.addMetaDataEntry("type", "extruder_train")
         self._container_stack.addContainer(self._definition)
 
@@ -73,15 +73,38 @@ class Extruder:
             self._container_stack.addContainer(self._quality)
 
         #Add an empty user profile.
-        self._user_profile = UM.Settings.InstanceContainer(name + "_current_settings")
+        self._user_profile = UM.Settings.InstanceContainer(self._name + "_current_settings")
         self._user_profile.addMetaDataEntry("type", "user")
         self._container_stack.addContainer(self._user_profile)
 
         self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
-    nozzle_changed = UM.Signal.Signal()
-    material_changed = UM.Signal.Signal()
-    quality_changed = UM.Signal.Signal()
+    definition_changed = UM.Signal()
+    material_changed = UM.Signal()
+    name_changed = UM.Signal()
+    nozzle_changed = UM.Signal()
+    quality_changed = UM.Signal()
+
+    ##  Gets the definition container of this extruder.
+    #
+    #   \return The definition container of this extruder.
+    @property
+    def definition(self):
+        return self._definition
+
+    ##  Changes the definition container of this extruder.
+    #
+    #   \param value The new definition for this extruder.
+    @definition.setter
+    def definition(self, value):
+        try:
+            position = self._container_stack.index(self._definition)
+        except ValueError: #Definition is not in the list. Big trouble!
+            UM.Logger.log("e", "I've lost my old extruder definition, so I can't find where to insert the new definition.")
+            return
+        self._container_stack.replaceContainer(position, value)
+        self._definition = value
+        self.definition_changed.emit()
 
     ##  Gets the currently active material on this extruder.
     #
@@ -103,6 +126,22 @@ class Extruder:
         self._container_stack.replaceContainer(position, value)
         self._material = value
         self.material_changed.emit()
+
+    ##  Gets the name of this extruder.
+    #
+    #   \return The name of this extruder.
+    @property
+    def name(self):
+        return self._name
+
+    ##  Changes the name of this extruder.
+    #
+    #   \param value The new name for this extruder.
+    @name.setter
+    def name(self, value):
+        self._name = value
+        self._container_stack.setName(value) #Also update in container stack, being defensive.
+        self.name_changed.emit()
 
     ##  Gets the currently active nozzle on this extruder.
     #
