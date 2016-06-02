@@ -59,7 +59,23 @@ Item{
                     id: profileSelectionInstantiator
                     model: UM.InstanceContainersModel
                     {
-                        filter: {"type": "quality"}
+                        filter:
+                        {
+                            var result = { "type": "quality" };
+                            if(Cura.MachineManager.filterQualityByMachine)
+                            {
+                                result.definition = Cura.MachineManager.activeDefinitionId;
+                                if(Cura.MachineManager.hasMaterials)
+                                {
+                                    result.material = Cura.MachineManager.activeMaterialId;
+                                }
+                            }
+                            else
+                            {
+                                result.definition = "fdmprinter"
+                            }
+                            return result
+                        }
                     }
                     property int separatorIndex: -1
 
