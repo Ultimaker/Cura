@@ -61,7 +61,7 @@ UM.PreferencesPage
         UM.TooltipArea {
             width: childrenRect.width;
             height: childrenRect.height;
-            text: catalog.i18nc("@info:tooltip","Displays")
+            text: catalog.i18nc("@info:tooltip","Display 5 top layers in layer view or only the top-most layer. Rendering 5 layers takes longer, but may show more information.")
 
             CheckBox
             {
