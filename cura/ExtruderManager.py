@@ -13,12 +13,25 @@ from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers 
 #   and makes sure that whenever the machine is swapped, this list is kept up to
 #   date. It also contains and updates the setting stacks for the extruders.
 class ExtruderManager:
+    ##  The singleton instance of this manager.
+    __instance = None
+
     ##  Registers listeners and such to listen to changes to the extruders.
     def __init__(self):
         self._extruders = [] #Extruders for the current machine.
         self._global_container_stack = None
 
         Application.getInstance().globalContainerStackChanged.connect(self._reconnectExtruderReload) #When the current machine changes, we need to reload all extruders belonging to the new machine.
+
+    ##  Gets an instance of this extruder manager.
+    #
+    #   If an instance was already created, the old instance is returned. This
+    #   implements the singleton pattern.
+    @classmethod
+    def getInstance(cls):
+        if not cls.__instance:
+            cls.__instance = ExtruderManager()
+        return cls.__instance
 
     ##  When the global container stack changes, this reconnects to the new
     #   signal for containers changing.
