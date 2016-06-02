@@ -312,8 +312,8 @@ class MachineManagerModel(QObject):
     def _getPreferredContainer(self, definition, property_name, default_container):
         preferred_id = definition.getMetaDataEntry(property_name)
         if preferred_id:
-            preferred_variant_id = preferred_variant_id.lower()
-            container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = preferred_variant_id)
+            preferred_id = preferred_id.lower()
+            container = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = preferred_id)
             if container:
                 return container[0]
 
