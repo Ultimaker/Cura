@@ -135,9 +135,12 @@ class Extruder:
         return self._name
 
     ##  Changes the name of this extruder.
+    #
+    #   \param value The new name for this extruder.
     @name.setter
     def name(self, value):
         self._name = value
+        self._container_stack.setName(value) #Also update in container stack, being defensive.
         self.name_changed.emit()
 
     ##  Gets the currently active nozzle on this extruder.
