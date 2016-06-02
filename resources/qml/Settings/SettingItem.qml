@@ -22,6 +22,38 @@ Item {
     signal showTooltip(string text);
     signal hideTooltip();
 
+    property string tooltipText:
+    {
+            var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
+            var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
+
+            var affected_by_list = ""
+            for(var i in affected_by)
+            {
+                affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
+            }
+
+            var affects_list = ""
+            for(var i in affects)
+            {
+                affects_list += "<li>%1</li>\n".arg(affects[i].label)
+            }
+
+            var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
+
+            if(affects_list != "")
+            {
+                tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
+            }
+
+            if(affected_by_list != "")
+            {
+                tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
+            }
+
+            return tooltip
+    }
+
     MouseArea 
     {
         id: mouse;
@@ -52,34 +84,7 @@ Item {
 
             onTriggered:
             {
-                var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
-                var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
-
-                var affected_by_list = ""
-                for(var i in affected_by)
-                {
-                    affected_by_list += "<li>%1</li>\n".arg(affected_by[i].label)
-                }
-
-                var affects_list = ""
-                for(var i in affects)
-                {
-                    affects_list += "<li>%1</li>\n".arg(affects[i].label)
-                }
-
-                var tooltip = "<b>%1</b><br/>\n<p>%2</p>".arg(definition.label).arg(definition.description)
-
-                if(affects_list != "")
-                {
-                    tooltip += "<br/><b>%1</b><br/>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affects")).arg(affects_list)
-                }
-
-                if(affected_by_list != "")
-                {
-                    tooltip += "<br/><b>%1</b><br/>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label", "Affected By")).arg(affected_by_list)
-                }
-
-                base.showTooltip(tooltip);
+                base.showTooltip(base.tooltipText);
             }
         }
 
@@ -137,7 +142,7 @@ Item {
                 }
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile.")) }
-                onExited: base.showTooltip(definition.description);
+                onExited: base.showTooltip(base.tooltipText);
             }
 
             UM.SimpleButton
@@ -164,7 +169,7 @@ Item {
                 iconSource: UM.Theme.getIcon("notice");
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
-                onExited: base.showTooltip(definition.description);
+                onExited: base.showTooltip(base.tooltipText);
             }
 
         }
