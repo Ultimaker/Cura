@@ -79,10 +79,32 @@ class Extruder:
 
         self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
+    definition_changed = UM.Signal()
     material_changed = UM.Signal()
     name_changed = UM.Signal()
     nozzle_changed = UM.Signal()
     quality_changed = UM.Signal()
+
+    ##  Gets the definition container of this extruder.
+    #
+    #   \return The definition container of this extruder.
+    @property
+    def definition(self):
+        return self._definition
+
+    ##  Changes the definition container of this extruder.
+    #
+    #   \param value The new definition for this extruder.
+    @definition.setter
+    def definition(self, value):
+        try:
+            position = self._container_stack.index(self._definition)
+        except ValueError: #Definition is not in the list. Big trouble!
+            UM.Logger.log("e", "I've lost my old extruder definition, so I can't find where to insert the new definition.")
+            return
+        self._container_stack.replaceContainer(position, value)
+        self._definition = value
+        self.definition_changed.emit()
 
     ##  Gets the currently active material on this extruder.
     #
