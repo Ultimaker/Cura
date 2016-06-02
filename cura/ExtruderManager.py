@@ -19,9 +19,17 @@ class ExtruderManager:
     ##  Registers listeners and such to listen to changes to the extruders.
     def __init__(self):
         self._extruders = [] #Extruders for the current machine.
+        self._global_container_stack = None
 
-        Application.getInstance().getGlobalContainerStack().containersChanged.connect(self._reloadExtruders) #When the current machine changes, we need to reload all extruders belonging to the new machine.
-        self._reloadExtruders()
+        Application.getInstance().globalContainerStackChanged.connect(self._reconnectExtruderReload) #When the current machine changes, we need to reload all extruders belonging to the new machine.
+
+    ##  When the global container stack changes, this reconnects to the new
+    #   signal for containers changing.
+    def _reconnectExtruderReload(self):
+        if self._global_container_stack:
+            self._global_container_stack.containersChanged.disconnect(self._reloadExtruders) #Disconnect from the old global container stack.
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        self._global_container_stack.containersChanged.connect(self._reloadExtruders) #When the current machine changes, we need to reload all extruders belonging to the new machine.
 
     ##  (Re)loads all extruders of the currently active machine.
     #
@@ -30,12 +38,11 @@ class ExtruderManager:
     #   list of extruders.
     def _reloadExtruders(self):
         self._extruders = []
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if not global_container_stack: #No machine has been added yet.
+        if not self._global_container_stack: #No machine has been added yet.
             return #Then leave them empty!
 
         #Get the extruder definitions belonging to the current machine.
-        machine = global_container_stack.getBottom()
+        machine = self._global_container_stack.getBottom()
         extruder_train_ids = machine.getMetaData("machine_extruder_trains")
         for extruder_train_id in extruder_train_ids:
             extruder_definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = extruder_train_id) #Should be only 1 definition if IDs are unique, but add the whole list anyway.
