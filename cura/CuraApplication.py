@@ -30,6 +30,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
+from . import ExtruderManager
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -325,6 +326,8 @@ class CuraApplication(QtApplication):
 
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
+
+        self._extruder_manager = ExtruderManager.ExtruderManager()
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
