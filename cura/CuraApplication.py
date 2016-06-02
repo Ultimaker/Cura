@@ -18,6 +18,7 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
+import UM.Settings.Validator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -30,7 +31,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.i18n import i18nCatalog
 
-from . import ExtruderManager
+from . import ExtrudersModel
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
@@ -89,6 +90,7 @@ class CuraApplication(QtApplication):
 
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
+        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
         super().__init__(name = "cura", version = CuraVersion)
 
@@ -327,8 +329,6 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
 
-        self._extruder_manager = ExtruderManager.ExtruderManager()
-
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
         self.initializeEngine()
@@ -367,6 +367,8 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
+
+        qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
 

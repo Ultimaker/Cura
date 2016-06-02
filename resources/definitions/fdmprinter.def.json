@@ -2125,7 +2125,7 @@
                 {
                     "label": "Platform Adhesion Extruder",
                     "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
-                    "type": "int",
+                    "type": "extruder",
                     "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value": "machine_extruder_count - 1",
@@ -2135,7 +2135,7 @@
                 {
                     "label": "Support Extruder",
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
-                    "type": "int",
+                    "type": "extruder",
                     "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value": "machine_extruder_count - 1",
@@ -2145,7 +2145,7 @@
                         {
                             "label": "Support Infill Extruder",
                             "description": "The extruder train to use for printing the infill of the support. This is used in multi-extrusion.",
-                            "type": "int",
+                            "type": "extruder",
                             "default_value": 0,
                             "value": "support_extruder_nr",
                             "minimum_value": "0",
@@ -2156,7 +2156,7 @@
                         {
                             "label": "First Layer Support Extruder",
                             "description": "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion.",
-                            "type": "int",
+                            "type": "extruder",
                             "default_value": 0,
                             "value": "support_extruder_nr",
                             "minimum_value": "0",
@@ -2167,7 +2167,7 @@
                         {
                             "label": "Support Roof Extruder",
                             "description": "The extruder train to use for printing the roof of the support. This is used in multi-extrusion.",
-                            "type": "int",
+                            "type": "extruder",
                             "default_value": 0,
                             "value": "support_extruder_nr",
                             "minimum_value": "0",

@@ -45,6 +45,7 @@ Item {
             {
                 Loader
                 {
+                    id: settingLoader
                     width: UM.Theme.getSize("setting").width;
                     height: UM.Theme.getSize("section").height;
 
@@ -56,6 +57,12 @@ Item {
                     //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                     //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
                     asynchronous: model.type != "enum"
+
+                    onLoaded: {
+                        settingLoader.item.showRevertButton = false
+                        settingLoader.item.showInheritButton = false
+                        settingLoader.item.doDepthIdentation = false
+                    }
 
                     source:
                     {

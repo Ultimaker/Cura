@@ -22,7 +22,7 @@
                 {
                     "label": "Extruder",
                     "description": "The extruder train used for printing. This is used in multi-extrusion.",
-                    "type": "int",
+                    "type": "extruder",
                     "default_value": 0,
                     "minimum_value": "0"
                 },

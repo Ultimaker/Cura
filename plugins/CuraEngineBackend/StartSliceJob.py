@@ -3,7 +3,6 @@
 
 import numpy
 from string import Formatter
-import traceback
 from enum import IntEnum
 
 from UM.Job import Job
@@ -59,7 +58,7 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        #Don't slice if there is a setting with an error value.
+        # Don't slice if there is a setting with an error value.
         for key in stack.getAllKeys():
             validation_state = stack.getProperty(key, "validationState")
             if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
@@ -68,6 +67,22 @@ class StartSliceJob(Job):
                 return
 
             Job.yieldThread()
+
+        # Don't slice if there is a per object setting with an error value.
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if type(node) is not SceneNode or not node.isSelectable():
+                continue
+
+            node_stack = node.callDecoration("getStack")
+            if node_stack:
+                for key in node_stack.getAllKeys():
+                    validation_state = node_stack.getProperty(key, "validationState")
+                    if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                        Logger.log("w", "Per object setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+                        self.setResult(StartJobResult.SettingError)
+                        return
+
+                    Job.yieldThread()
 
         with self._scene.getSceneLock():
             # Remove old layer data.
