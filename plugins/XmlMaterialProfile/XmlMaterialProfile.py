@@ -45,6 +45,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 self.addMetaDataEntry("material", material.text)
                 self.addMetaDataEntry("color_name", color.text)
 
+                continue
+
             self.addMetaDataEntry(tag_name, entry.text)
 
         property_values = {}
@@ -78,6 +80,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
             if key in self.__material_property_setting_map:
                 self.setProperty(self.__material_property_setting_map[key], "value", entry.text, self._definition)
                 global_setting_values[self.__material_property_setting_map[key]] = entry.text
+            else:
+                Logger.log("d", "Unsupported material setting %s", key)
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
@@ -87,6 +91,8 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 key = entry.get("key")
                 if key in self.__material_property_setting_map:
                     machine_setting_values[self.__material_property_setting_map[key]] = entry.text
+                else:
+                    Logger.log("d", "Unsupported material setting %s", key)
 
             identifiers = machine.iterfind("./um:machine_identifier", self.__namespaces)
             for identifier in identifiers:
@@ -116,12 +122,15 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                 UM.Settings.ContainerRegistry.getInstance().addContainer(new_material)
 
 
+
+    # Map XML file setting names to internal names
     __material_property_setting_map = {
         "print temperature": "material_print_temperature",
         "heated bed temperature": "material_bed_temperature",
         "standby temperature": "material_standby_temperature",
     }
 
+    # Map XML file product names to internal ids
     __product_id_map = {
         "Ultimaker2": "ultimaker2",
         "Ultimaker2+": "ultimaker2_plus",
