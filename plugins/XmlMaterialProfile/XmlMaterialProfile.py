@@ -106,16 +106,18 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
                     Logger.log("w", "No definition found for machine ID %s", machine_id)
                     continue
 
+                definition = definitions[0]
+
                 new_material = XmlMaterialProfile(self.id + "_" + machine_id)
                 new_material.setName(self.getName())
-                new_material.setMetaData(self.getMetaData())
-                new_material.setDefinition(definitions[0])
+                new_material.setMetaData(copy.deepcopy(self.getMetaData()))
+                new_material.setDefinition(definition)
 
                 for key, value in global_setting_values.items():
-                    new_material.setProperty(key, "value", value, definitions[0])
+                    new_material.setProperty(key, "value", value, definition)
 
                 for key, value in machine_setting_values.items():
-                    new_material.setProperty(key, "value", value, definitions[0])
+                    new_material.setProperty(key, "value", value, definition)
 
                 new_material._dirty = False
 
