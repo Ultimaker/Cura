@@ -2,9 +2,9 @@
 # Cura is released under the terms of the AGPLv3 or higher.
 
 from cura.Extruder import Extruder #The individual extruders managed by this manager.
-from UM.Application import Application #To get the global container stack to find the current machine.
-from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry #Finding containers by ID.
+import UM.Application #To get the global container stack to find the current machine.
+import UM.Logger
+import UM.Settings.ContainerRegistry #Finding containers by ID.
 import UM.Signal #To notify other components of changes in the extruders.
 
 
@@ -25,7 +25,7 @@ class ExtruderManager:
         self._extruders = [] #Extruders for the current machine.
         self._global_container_stack = None
 
-        Application.getInstance().globalContainerStackChanged.connect(self._reconnectExtruderReload) #When the current machine changes, we need to reload all extruders belonging to the new machine.
+        UM.Application.getInstance().globalContainerStackChanged.connect(self._reconnectExtruderReload) #When the current machine changes, we need to reload all extruders belonging to the new machine.
 
     ##  Gets an instance of this extruder manager.
     #
@@ -42,7 +42,7 @@ class ExtruderManager:
     def _reconnectExtruderReload(self):
         if self._global_container_stack:
             self._global_container_stack.containersChanged.disconnect(self._reloadExtruders) #Disconnect from the old global container stack.
-        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        self._global_container_stack = UM.Application.getInstance().getGlobalContainerStack()
         self._global_container_stack.containersChanged.connect(self._reloadExtruders) #When the current machine changes, we need to reload all extruders belonging to the new machine.
 
     ##  (Re)loads all extruders of the currently active machine.
@@ -60,9 +60,9 @@ class ExtruderManager:
         machine = self._global_container_stack.getBottom()
         extruder_train_ids = machine.getMetaData("machine_extruder_trains")
         for extruder_train_id in extruder_train_ids:
-            extruder_definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = extruder_train_id) #Should be only 1 definition if IDs are unique, but add the whole list anyway.
+            extruder_definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = extruder_train_id) #Should be only 1 definition if IDs are unique, but add the whole list anyway.
             if not extruder_definitions: #Empty list or error.
-                Logger.log("w", "Machine definition %s refers to an extruder train \"%s\", but no such extruder was found.", machine.getId(), extruder_train_id)
+                UM.Logger.log("w", "Machine definition %s refers to an extruder train \"%s\", but no such extruder was found.", machine.getId(), extruder_train_id)
                 continue
             for extruder_definition in extruder_definitions:
                 self._extruders.append(Extruder(extruder_definition))
