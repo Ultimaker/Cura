@@ -18,6 +18,7 @@ from UM.JobQueue import JobQueue
 from UM.SaveFile import SaveFile
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
+import UM.Settings.Validator
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
@@ -89,6 +90,7 @@ class CuraApplication(QtApplication):
 
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
+        SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
         super().__init__(name = "cura", version = CuraVersion)
 
