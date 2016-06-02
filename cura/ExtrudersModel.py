@@ -10,7 +10,7 @@ import UM.Qt.ListModel
 #
 #   This model is designed for use by any list of extruders, but specifically
 #   intended for drop-down lists of extruders in place of settings.
-class ExtrudersModel(UM.Qt.ListModel):
+class ExtrudersModel(UM.Qt.ListModel.ListModel):
     ##  Human-readable name of the extruder.
     NameRole = Qt.UserRole + 1
 
