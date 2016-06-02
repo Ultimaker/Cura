@@ -57,7 +57,7 @@ class ExtruderManager:
     #   This looks at the global container stack to see which machine is active.
     #   Then it loads the extruders for that machine and loads each of them in a
     #   list of extruders.
-    def _reloadExtruders(self):
+    def _reloadExtruders(self, *args):
         self._extruders = []
         if not self._global_container_stack: #No machine has been added yet.
             self.extrudersChanged.emit() #Yes, we just cleared the _extruders list!
@@ -65,7 +65,7 @@ class ExtruderManager:
 
         #Get the extruder definitions belonging to the current machine.
         machine = self._global_container_stack.getBottom()
-        extruder_train_ids = machine.getMetaData("machine_extruder_trains")
+        extruder_train_ids = machine.getMetaDataEntry("machine_extruder_trains")
         for extruder_train_id in extruder_train_ids:
             extruder_definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = extruder_train_id) #Should be only 1 definition if IDs are unique, but add the whole list anyway.
             if not extruder_definitions: #Empty list or error.

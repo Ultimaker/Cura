@@ -101,7 +101,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if key == "print_sequence" and property_name == "value":
             self._onChanged()
 
-    def _onChanged(self):
+    def _onChanged(self, *args):
         if self._convex_hull_job:
             self._convex_hull_job.cancel()
         self.setConvexHull(None)
