@@ -25,7 +25,7 @@ class Extruder:
         self._nozzles += container_registry.findInstanceContainers(type = "nozzle", definitions = self._definition.getId())
 
         #Create a container stack for this extruder.
-        self._name = self._uniqueName(self._definition.getId())
+        self._name = self._uniqueName(self._definition)
         self._container_stack = UM.Settings.ContainerStack(self._name)
         self._container_stack.addMetaDataEntry("type", "extruder_train")
         self._container_stack.addContainer(self._definition)
