@@ -107,7 +107,7 @@ class MachineManagerModel(QObject):
                     if materials:
                         material_instance_container = materials[0]
 
-                if material_instance_container == self._empty_materials_container:
+                if material_instance_container == self._empty_material_container:
                     Logger.log("w", "Machine %s defines it has materials but no matererials found", definition.id)
 
             quality_instance_container = self._getPreferredContainer(definition, "preferred_quality", self._empty_quality_container)
