@@ -168,6 +168,9 @@ class XmlMaterialProfile(UM.Settings.InstanceContainer):
         "print temperature": "material_print_temperature",
         "heated bed temperature": "material_bed_temperature",
         "standby temperature": "material_standby_temperature",
+        "print cooling": "cool_fan_speed",
+        "retraction amount": "retraction_amount",
+        "retraction speed": "retraction_speed",
     }
 
     # Map XML file product names to internal ids
