@@ -6,9 +6,6 @@
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Ultimaker",
-        "manufacturer": "Ultimaker",
-        "preferred_profile": "Normal Quality",
-        "preferred_nozzle": "0.4 mm",
-        "preferred_material": "PLA"
+        "manufacturer": "Ultimaker"
     }
 }
