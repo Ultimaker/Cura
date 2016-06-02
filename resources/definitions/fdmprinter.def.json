@@ -24,6 +24,7 @@
             "label": "Machine",
             "type": "category",
             "description": "Machine specific settings",
+            "icon": "category_machine",
             "children":
             {
                 "machine_show_variants":
