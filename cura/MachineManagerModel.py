@@ -17,6 +17,7 @@ class MachineManagerModel(QObject):
 
         self._global_container_stack = None
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        self._global_stack_valid = None
         self._onGlobalContainerChanged()
 
         ##  When the global container is changed, active material probably needs to be updated.
@@ -31,6 +32,8 @@ class MachineManagerModel(QObject):
         Preferences.getInstance().addPreference("cura/active_machine", "")
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
+
+
 
         if active_machine_id != "":
             # An active machine was saved, so restore it.
@@ -50,7 +53,16 @@ class MachineManagerModel(QObject):
         if property_name == "value":
             self.globalValueChanged.emit()
         if property_name == "validationState":
-            self.globalValidationChanged.emit()
+            if self._global_stack_valid:
+                changed_validation_state = self._global_container_stack.getProperty(key, property_name)
+                if changed_validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                    self._global_stack_valid = False
+                    self.globalValidationChanged.emit()
+            else:
+                new_validation_state = self._checkStackForErrors(self._global_container_stack)
+                if new_validation_state:
+                    self._global_stack_valid = True
+                    self.globalValidationChanged.emit()
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
@@ -64,6 +76,7 @@ class MachineManagerModel(QObject):
             Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
+            self._global_stack_valid = self._checkStackForErrors(self._global_container_stack)
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
@@ -174,7 +187,6 @@ class MachineManagerModel(QObject):
         return unique_name
 
     ##  Convenience function to check if a stack has errors.
-    #   TODO; This is a rather expensive check, which we run way to often.
     def _checkStackForErrors(self, stack):
         if stack is None:
             return False
@@ -203,10 +215,11 @@ class MachineManagerModel(QObject):
         return len(user_settings) != 0
 
     ##  Check if the global profile does not contain error states
-    #   TODO; Way to expensive step. We should probably cache this.
+    #   Note that the _global_stack_valid is cached due to performance issues
+    #   Calling _checkStackForErrors on every change is simply too expensive
     @pyqtProperty(bool, notify = globalValidationChanged)
     def isGlobalStackValid(self):
-        return not self._checkStackForErrors(self._global_container_stack)
+        return self._global_stack_valid
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):
