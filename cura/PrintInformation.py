@@ -52,6 +52,7 @@ class PrintInformation(QObject):
 
         self._job_name = ""
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().fileLoaded.connect(self.setJobName)
 
     currentPrintTimeChanged = pyqtSignal()
 

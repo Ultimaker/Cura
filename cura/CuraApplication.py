@@ -723,16 +723,18 @@ class CuraApplication(QtApplication):
     def _onActiveMachineChanged(self):
         pass
 
+    fileLoaded = pyqtSignal()
+
     def _onFileLoaded(self, job):
         node = job.getResult()
         if node != None:
-            self.setJobName(os.path.basename(job.getFileName()))
+            self.fileLoaded.emit(job.getFileName())
             node.setSelectable(True)
             node.setName(os.path.basename(job.getFileName()))
             op = AddSceneNodeOperation(node, self.getController().getScene().getRoot())
             op.push()
 
-            self.getController().getScene().sceneChanged.emit(node) #F orce scene change.
+            self.getController().getScene().sceneChanged.emit(node) #Force scene change.
 
     def _onJobFinished(self, job):
         if type(job) is not ReadMeshJob or not job.getResult():
