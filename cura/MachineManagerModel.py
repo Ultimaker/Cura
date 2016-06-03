@@ -41,9 +41,15 @@ class MachineManagerModel(QObject):
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
 
+    globalPropertyChanged = pyqtSignal()  # Emitted whenever a property inside global container is changed.
+
+    def _onGlobalPropertyChanged(self, key, property_name):
+        self.globalPropertyChanged.emit()
+
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
             self._global_container_stack.containersChanged.disconnect(self._onInstanceContainersChanged)
+            self._global_container_stack.propertyChanged.disconnect(self._onGlobalPropertyChanged)
 
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         self.globalContainerChanged.emit()
@@ -51,6 +57,7 @@ class MachineManagerModel(QObject):
         if self._global_container_stack:
             Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
+            self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
@@ -159,6 +166,21 @@ class MachineManagerModel(QObject):
             unique_name = "%s #%d" % (name, i)
 
         return unique_name
+
+    @pyqtSlot()
+    def clearUserSettings(self):
+        if not self._global_container_stack:
+            return
+        user_settings = self._global_container_stack.getTop()
+        user_settings.clear()
+
+    @pyqtProperty(bool, notify = globalPropertyChanged)
+    def hasUserSettings(self):
+        if not self._global_container_stack:
+            return
+
+        user_settings = self._global_container_stack.getTop().findInstances(**{})
+        return len(user_settings) != 0
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):

@@ -6,6 +6,7 @@ pragma Singleton
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import UM 1.1 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -117,9 +118,9 @@ Item
     Action
     {
         id: resetProfileAction;
-        enabled: UM.ActiveProfile.valid && UM.ActiveProfile.hasCustomisedValues
+        enabled: Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Reload Current Profile");
-        onTriggered: UM.ActiveProfile.discardChanges();
+        onTriggered: Cura.MachineManager.clearUserSettings();
     }
 
     Action
