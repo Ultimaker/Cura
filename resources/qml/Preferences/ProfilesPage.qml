@@ -34,7 +34,7 @@ UM.ManagementPage
             // Current settings
             selectedContainer = Cura.MachineManager.convertUserContainerToQuality();
         } else {
-            selectedContainer = Cura.MachineManager.duplicateContainer(currentItem.id);
+            selectedContainer = Cura.MachineManager.duplicateContainer(base.currentItem.id);
         }
         base.selectContainer(selectedContainer);
 

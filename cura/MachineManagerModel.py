@@ -279,7 +279,6 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(result = str)
     def convertUserContainerToQuality(self):
-        print("convertUserContainerToQuality")
         if not self._global_container_stack:
             return
 
@@ -302,13 +301,17 @@ class MachineManagerModel(QObject):
 
     @pyqtSlot(str, result=str)
     def duplicateContainer(self, container_id):
-        print("convertUserContainerToQuality")
         if not self._global_container_stack:
             return
-        container_to_duplicate = self._global_container_stack.findContainer({"id": container_id})
-        if container_to_duplicate:
-            new_name = self._createUniqueStackName(container_to_duplicate.getName(), "")
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=container_id)
+        if containers:
+            new_name = self._createUniqueStackName(containers[0].getName(), "")
+
             new_container = InstanceContainer("")
+
+            ## Copy all values
+            new_container.deserialize(containers[0].serialize())
+
             new_container.setName(new_name)
             new_container._id = new_name
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
