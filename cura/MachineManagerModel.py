@@ -276,6 +276,16 @@ class MachineManagerModel(QObject):
         self.clearUserSettings()  # As all users settings are noq a quality, remove them.
         self.setActiveQuality(name)
 
+    @pyqtSlot()
+    def updateUserContainerToQuality(self):
+        if not self._global_container_stack:
+            return
+        user_settings = self._global_container_stack.getTop()
+        quality = self._global_container_stack.findContainer({"type": "quality"})
+        for key in user_settings.getAllKeys():
+            quality.setProperty(key, "value", user_settings.getProperty(key, "value"))
+        self.clearUserSettings()  # As all users settings are noq a quality, remove them.
+
 
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
