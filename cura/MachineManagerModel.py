@@ -43,11 +43,14 @@ class MachineManagerModel(QObject):
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
 
-    globalValueChanged = pyqtSignal()  # Emitted whenever a property inside global container is changed.
+    globalValueChanged = pyqtSignal()  # Emitted whenever a value inside global container is changed.
+    globalValidationChanged = pyqtSignal()  # Emitted whenever a validation inside global container is changed.
 
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
             self.globalValueChanged.emit()
+        if property_name == "validationState":
+            self.globalValidationChanged.emit()
 
     def _onGlobalContainerChanged(self):
         if self._global_container_stack:
@@ -196,7 +199,7 @@ class MachineManagerModel(QObject):
         user_settings = self._global_container_stack.getTop().findInstances(**{})
         return len(user_settings) != 0
 
-    @pyqtProperty(bool, notify = globalValueChanged)
+    @pyqtProperty(bool, notify = globalValidationChanged)
     def isGlobalStackValid(self):
         return not self._checkStackForErrors(self._global_container_stack)
 
