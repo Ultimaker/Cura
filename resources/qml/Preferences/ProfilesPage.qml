@@ -90,15 +90,15 @@ UM.ManagementPage
                             profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
                             return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
                         }
-                        enabled: UM.ActiveProfile.hasCustomisedValues && !UM.ActiveProfile.readOnly
+                        enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
                         onClicked: UM.ActiveProfile.updateProfile()
                     }
 
                     Button
                     {
                         text: catalog.i18nc("@action:button", "Discard changes");
-                        enabled: UM.ActiveProfile.hasCustomisedValues
-                        onClicked: UM.ActiveProfile.discardChanges()
+                        enabled: Cura.MachineManager.hasUserSettings
+                        onClicked: Cura.MachineManager.clearUserSettings();
                     }
                 }
 
@@ -114,7 +114,7 @@ UM.ManagementPage
                     }
                     Label {
                         text: base.currentItem == null ? "" :
-                            base.currentItem.id == -1 ? UM.MachineManager.activeProfile :
+                            base.currentItem.id == -1 ? Cura.MachineManager.activeQualityName:
                             base.currentItem.readOnly ? catalog.i18nc("@label", "Protected profile") : catalog.i18nc("@label", "Custom profile")
                     }
 
