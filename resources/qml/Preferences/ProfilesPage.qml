@@ -170,7 +170,7 @@ UM.ManagementPage
             id: renameDialog;
             object: base.currentItem != null ? base.currentItem.name : "";
             property bool removeWhenRejected: false;
-            onAccepted: base.model.renameProfile(base.currentItem.name, newName.trim());
+            onAccepted: base.model.rename(base.currentItem.id, newName.trim());
             onRejected: {
                 if(removeWhenRejected) {
                     base.model.removeProfile(base.currentItem.name)
