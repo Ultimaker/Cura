@@ -7,6 +7,7 @@ from UM.Preferences import Preferences
 from UM.Logger import Logger
 
 import UM.Settings
+from UM.Settings.Validator import ValidatorState
 
 
 class MachineManagerModel(QObject):
@@ -167,6 +168,17 @@ class MachineManagerModel(QObject):
 
         return unique_name
 
+    ##  Convenience function to check if a stack has errors.
+    def _checkStackForErrors(self, stack):
+        if stack is None:
+            return False
+
+        for key in stack.getAllKeys():
+            validation_state = stack.getProperty(key, "validationState")
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+                return True
+        return False
+
     @pyqtSlot()
     def clearUserSettings(self):
         if not self._global_container_stack:
@@ -181,6 +193,10 @@ class MachineManagerModel(QObject):
 
         user_settings = self._global_container_stack.getTop().findInstances(**{})
         return len(user_settings) != 0
+
+    @pyqtProperty(bool, notify = globalPropertyChanged)
+    def isGlobalStackValid(self):
+        return not self._checkStackForErrors(self._global_container_stack)
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineName(self):

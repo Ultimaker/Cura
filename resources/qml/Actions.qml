@@ -110,7 +110,7 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: UM.ActiveProfile.valid && !UM.ActiveProfile.readOnly && UM.ActiveProfile.hasCustomisedValues
+        enabled: Cura.MachineManager.isGlobalStackValid && !UM.ActiveProfile.readOnly && Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update Current Profile");
         onTriggered: UM.ActiveProfile.updateProfile();
     }
@@ -126,7 +126,7 @@ Item
     Action
     {
         id: addProfileAction;
-        enabled: UM.ActiveProfile.valid
+        enabled: Cura.MachineManager.isGlobalStackValid
         text: catalog.i18nc("@action:inmenu menubar:profile","&Create New Profile...");
     }
 
