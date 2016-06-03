@@ -29,14 +29,14 @@ UM.ManagementPage
 
     onActivateObject: Cura.MachineManager.setActiveQuality(currentItem.id)
     onAddObject: {
-        var selectedProfile;
+        var selectedContainer;
         if (objectList.currentIndex == 0) {
             // Current settings
-            selectedProfile = UM.MachineManager.createProfile();
+            selectedContainer = Cura.MachineManager.convertUserContainerToQuality();
         } else {
-            selectedProfile = UM.MachineManager.duplicateProfile(currentItem.name);
+            selectedContainer = Cura.MachineManager.duplicateContainer(currentItem.id);
         }
-        base.selectProfile(selectedProfile);
+        base.selectContainer(selectedContainer);
 
         renameDialog.removeWhenRejected = true;
         renameDialog.open();
@@ -50,11 +50,11 @@ UM.ManagementPage
     removeEnabled: currentItem != null ? !currentItem.readOnly : false;
     renameEnabled: currentItem != null ? !currentItem.readOnly : false;
 
-    scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(UM.MachineManager.activeMachineInstance)
+    scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
-    signal selectProfile(string name)
-    onSelectProfile: {
-        objectList.currentIndex = objectList.model.find("name", name);
+    signal selectContainer(string id)
+    onSelectContainer: {
+        objectList.currentIndex = objectList.model.find("id", id);
     }
 
     Item {
@@ -86,12 +86,12 @@ UM.ManagementPage
                     Button
                     {
                         text: {
-                            var profileName = UM.MachineManager.activeProfile;
+                            var profileName = Cura.MachineManager.activeQualityName;
                             profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
                             return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
                         }
                         enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
-                        onClicked: UM.ActiveProfile.updateProfile()
+                        onClicked: Cura.MachineManager.updateUserContainerToQuality()
                     }
 
                     Button
