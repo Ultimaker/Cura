@@ -723,7 +723,7 @@ class CuraApplication(QtApplication):
     def _onActiveMachineChanged(self):
         pass
 
-    fileLoaded = pyqtSignal()
+    fileLoaded = pyqtSignal(str)
 
     def _onFileLoaded(self, job):
         node = job.getResult()
