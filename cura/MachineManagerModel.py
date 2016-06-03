@@ -8,6 +8,7 @@ from UM.Logger import Logger
 
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
+from UM.Settings.InstanceContainer import InstanceContainer
 
 
 class MachineManagerModel(QObject):
@@ -80,7 +81,7 @@ class MachineManagerModel(QObject):
         definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
         if definitions:
             definition = definitions[0]
-            name = self._uniqueMachineName(name, definition.getName())
+            name = self._createUniqueStackName(name, definition.getName())
 
             new_global_stack = UM.Settings.ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
@@ -150,7 +151,7 @@ class MachineManagerModel(QObject):
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
     # Create a name that is not empty and unique
-    def _uniqueMachineName(self, name, fallback_name):
+    def _createUniqueStackName(self, name, fallback_name):
         name = name.strip()
         num_check = re.compile("(.*?)\s*#\d$").match(name)
         if(num_check):
@@ -160,10 +161,10 @@ class MachineManagerModel(QObject):
         unique_name = name
         i = 1
 
-        #Check both the id and the name, because they may not be the same and it is better if they are both unique
+        # Check both the id and the name, because they may not be the same and it is better if they are both unique
         while UM.Settings.ContainerRegistry.getInstance().findContainers(None, id = unique_name) or \
                 UM.Settings.ContainerRegistry.getInstance().findContainers(None, name = unique_name):
-            i = i + 1
+            i += 1
             unique_name = "%s #%d" % (name, i)
 
         return unique_name
@@ -254,6 +255,27 @@ class MachineManagerModel(QObject):
             return True
         return containers[0].getMetaDataEntry("read_only", False) == "True"
 
+    @pyqtSlot()
+    def convertUserContainerToQuality(self):
+        if not self._global_container_stack:
+            return
+
+        name = self._createUniqueStackName("Custom profile", "")
+        user_settings = self._global_container_stack.getTop()
+        new_quality_container = InstanceContainer("")
+
+        ## Copy all values
+        new_quality_container.deserialize(user_settings.serialize())
+
+        ## Change type / id / name
+        new_quality_container.setMetaDataEntry("type","quality")
+        new_quality_container.setName(name)
+        new_quality_container._id = name
+
+        UM.Settings.ContainerRegistry.getInstance().addContainer(new_quality_container)
+        self.clearUserSettings()  # As all users settings are noq a quality, remove them.
+        self.setActiveQuality(name)
+
 
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
@@ -319,7 +341,7 @@ class MachineManagerModel(QObject):
     def renameMachine(self, machine_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
-            new_name = self._uniqueMachineName(new_name, containers[0].getBottom().getName())
+            new_name = self._createUniqueStackName(new_name, containers[0].getBottom().getName())
             containers[0].setName(new_name)
             self.globalContainerChanged.emit()
 
