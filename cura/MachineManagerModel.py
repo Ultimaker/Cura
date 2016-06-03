@@ -76,7 +76,7 @@ class MachineManagerModel(QObject):
             Preferences.getInstance().setValue("cura/active_machine", self._global_container_stack.getId())
             self._global_container_stack.containersChanged.connect(self._onInstanceContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onGlobalPropertyChanged)
-            self._global_stack_valid = self._checkStackForErrors(self._global_container_stack)
+            self._global_stack_valid = not self._checkStackForErrors(self._global_container_stack)
 
     def _onInstanceContainersChanged(self, container):
         container_type = container.getMetaDataEntry("type")
