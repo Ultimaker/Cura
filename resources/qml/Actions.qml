@@ -110,7 +110,7 @@ Item
     Action
     {
         id: updateProfileAction;
-        enabled: Cura.MachineManager.isGlobalStackValid && !UM.ActiveProfile.readOnly && Cura.MachineManager.hasUserSettings
+        enabled: Cura.MachineManager.isGlobalStackValid && Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
         text: catalog.i18nc("@action:inmenu menubar:profile","&Update Current Profile");
         onTriggered: UM.ActiveProfile.updateProfile();
     }

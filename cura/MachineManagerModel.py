@@ -246,6 +246,15 @@ class MachineManagerModel(QObject):
                 return quality.getId()
         return ""
 
+    ## Check if a container is read_only
+    @pyqtSlot(str, result = bool)
+    def isReadOnly(self, container_id):
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=container_id)
+        if not containers or not self._global_container_stack:
+            return True
+        return containers[0].getMetaDataEntry("read_only", False) == "True"
+
+
     @pyqtSlot(str)
     def setActiveMaterial(self, material_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=material_id)
