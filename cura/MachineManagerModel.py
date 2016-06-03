@@ -277,8 +277,9 @@ class MachineManagerModel(QObject):
             return True
         return containers[0].getMetaDataEntry("read_only", False) == "True"
 
-    @pyqtSlot()
+    @pyqtSlot(result = str)
     def convertUserContainerToQuality(self):
+        print("convertUserContainerToQuality")
         if not self._global_container_stack:
             return
 
@@ -297,6 +298,23 @@ class MachineManagerModel(QObject):
         UM.Settings.ContainerRegistry.getInstance().addContainer(new_quality_container)
         self.clearUserSettings()  # As all users settings are noq a quality, remove them.
         self.setActiveQuality(name)
+        return name
+
+    @pyqtSlot(str, result=str)
+    def duplicateContainer(self, container_id):
+        print("convertUserContainerToQuality")
+        if not self._global_container_stack:
+            return
+        container_to_duplicate = self._global_container_stack.findContainer({"id": container_id})
+        if container_to_duplicate:
+            new_name = self._createUniqueStackName(container_to_duplicate.getName(), "")
+            new_container = InstanceContainer("")
+            new_container.setName(new_name)
+            new_container._id = new_name
+            UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
+            return new_name
+
+        return ""
 
     @pyqtSlot()
     def updateUserContainerToQuality(self):
