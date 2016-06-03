@@ -174,6 +174,7 @@ class MachineManagerModel(QObject):
         return unique_name
 
     ##  Convenience function to check if a stack has errors.
+    #   TODO; This is a rather expensive check, which we run way to often.
     def _checkStackForErrors(self, stack):
         if stack is None:
             return False
@@ -184,6 +185,7 @@ class MachineManagerModel(QObject):
                 return True
         return False
 
+    ##  Remove all instances from the top instanceContainer (effectively removing all user-changed settings)
     @pyqtSlot()
     def clearUserSettings(self):
         if not self._global_container_stack:
@@ -191,6 +193,7 @@ class MachineManagerModel(QObject):
         user_settings = self._global_container_stack.getTop()
         user_settings.clear()
 
+    ##  Check if the global_container has instances in the user container
     @pyqtProperty(bool, notify = globalValueChanged)
     def hasUserSettings(self):
         if not self._global_container_stack:
@@ -199,6 +202,8 @@ class MachineManagerModel(QObject):
         user_settings = self._global_container_stack.getTop().findInstances(**{})
         return len(user_settings) != 0
 
+    ##  Check if the global profile does not contain error states
+    #   TODO; Way to expensive step. We should probably cache this.
     @pyqtProperty(bool, notify = globalValidationChanged)
     def isGlobalStackValid(self):
         return not self._checkStackForErrors(self._global_container_stack)
