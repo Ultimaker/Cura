@@ -21,6 +21,9 @@ class CuraSplashScreen(QSplashScreen):
         painter.setPen(QColor(0, 0, 0, 255))
 
         version = Application.getInstance().getVersion().split("-")
+        buildtype = Application.getInstance().getBuildType()
+        if buildtype:
+            version += " (%s)" %(buildtype)
 
         painter.setFont(QFont("Proxima Nova Rg", 20 ))
         painter.drawText(0, 0, 330 * self._scale, 230 * self._scale, Qt.AlignHCenter | Qt.AlignBottom, version[0])
