@@ -178,7 +178,7 @@ UM.MainWindow
                         text: model.name;
                         checkable: true;
                         checked: Cura.MachineManager.activeMachineId == model.id
-                        exclusiveGroup: machineSelectionMenuGroup;
+                        exclusiveGroup: machineMenuGroup;
                         onTriggered: Cura.MachineManager.setActiveMachine(model.id);
                     }
                     onObjectAdded: machineMenu.insertItem(index, object)
