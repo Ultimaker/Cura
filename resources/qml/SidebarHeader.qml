@@ -271,7 +271,7 @@ Item
                                 var result = { "type": "material" }
                                 if(Cura.MachineManager.filterMaterialsByMachine)
                                 {
-//                                     result.definition = Cura.MachineManager.activeDefinitionId
+                                    result.definition = Cura.MachineManager.activeDefinitionId
                                     if(Cura.MachineManager.hasVariants)
                                     {
                                         result.variant = Cura.MachineManager.activeVariantId
