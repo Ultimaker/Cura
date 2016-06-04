@@ -15,7 +15,26 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Profiles");
     addText: catalog.i18nc("@label", "Duplicate")
 
-    model: UM.InstanceContainersModel { filter: { "type": "quality" } }
+    model: UM.InstanceContainersModel
+    {
+        filter:
+        {
+            var result = { "type": "quality" };
+            if(Cura.MachineManager.filterQualityByMachine)
+            {
+                result.definition = Cura.MachineManager.activeDefinitionId;
+                if(Cura.MachineManager.hasMaterials)
+                {
+                    result.material = Cura.MachineManager.activeMaterialId;
+                }
+            }
+            else
+            {
+                result.definition = "fdmprinter"
+            }
+            return result
+        }
+    }
 
     activeId: Cura.MachineManager.activeQualityId
     activeIndex: {
