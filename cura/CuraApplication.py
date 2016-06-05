@@ -90,7 +90,7 @@ class CuraApplication(QtApplication):
         # Need to do this before ContainerRegistry tries to load the machines
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
 
-        super().__init__(name = "cura", version = CuraVersion, build_type = CuraBuildType)
+        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
