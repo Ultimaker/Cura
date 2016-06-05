@@ -93,7 +93,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
         SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
-        super().__init__(name = "cura", version = CuraVersion, build_type = CuraBuildType)
+        super().__init__(name = "cura", version = CuraVersion, buildtype = CuraBuildType)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
