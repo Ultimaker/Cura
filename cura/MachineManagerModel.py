@@ -415,7 +415,7 @@ class MachineManagerModel(QObject):
 
         return self._empty_variant_container
 
-    def _updateMaterialContainer(self, definition, variant_container):
+    def _updateMaterialContainer(self, definition, variant_container = None):
         if not definition.getMetaDataEntry("has_materials"):
             return self._empty_material_container
 
@@ -439,7 +439,7 @@ class MachineManagerModel(QObject):
 
         return self._empty_material_container
 
-    def _updateQualityContainer(self, definition, material_container):
+    def _updateQualityContainer(self, definition, material_container = None):
         search_criteria = { "type": "quality" }
 
         if definition.getMetaDataEntry("has_machine_quality"):
