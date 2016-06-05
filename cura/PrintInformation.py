@@ -51,6 +51,8 @@ class PrintInformation(QObject):
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
 
         self._job_name = ""
+        self._abbr_machine = ""
+
         Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
         Application.getInstance().fileLoaded.connect(self.setJobName)
 
