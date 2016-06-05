@@ -33,8 +33,6 @@ class MachineManagerModel(QObject):
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
-
-
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
@@ -46,8 +44,14 @@ class MachineManagerModel(QObject):
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
 
+    activeExtrudersChanged = pyqtSignal()
+
     globalValueChanged = pyqtSignal()  # Emitted whenever a value inside global container is changed.
     globalValidationChanged = pyqtSignal()  # Emitted whenever a validation inside global container is changed.
+
+    @pyqtProperty("QVariantMap", notify = activeExtrudersChanged)
+    def activeExtruders(self):
+        return {}
 
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
@@ -115,7 +119,7 @@ class MachineManagerModel(QObject):
             UM.Settings.ContainerRegistry.getInstance().addContainer(current_settings_instance_container)
 
             # If a definition is found, its a list. Should only have one item.
-            new_global_stack.addContainer(definitions[0])
+            new_global_stack.addContainer(definition)
             if variant_instance_container:
                 new_global_stack.addContainer(variant_instance_container)
             if material_instance_container:
@@ -123,6 +127,23 @@ class MachineManagerModel(QObject):
             if quality_instance_container:
                 new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
+
+            ## Check if the machine has extruder trains
+            extruder_trains = definition.getMetaDataEntry("machine_extruder_trains", {})
+            for extruder in extruder_trains:
+                extruder_train_stack = UM.Settings.ContainerStack(name + "_extruder_" + extruder)
+                extruder_train_stack.addMetaDataEntry("type", "extruder")
+                extruder_definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=extruder_trains[extruder])
+                if extruder_definitions:
+                    extruder_train_stack.addContainer(extruder_definitions[0])
+                    current_settings_container_extruder = UM.Settings.InstanceContainer(extruder_train_stack.getName() + "_current_settings")
+                    current_settings_container_extruder.addMetaDataEntry("machine", name)
+                    current_settings_container_extruder.addMetaDataEntry("type", "user")
+                    extruder_train_stack.addContainer(current_settings_container_extruder)
+                    extruder_train_stack.setNextStack(new_global_stack)
+                    UM.Settings.ContainerRegistry.getInstance().addContainer(extruder_train_stack)
+                else:
+                    Logger.log("W", "Unable to find definition for extruder")
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 

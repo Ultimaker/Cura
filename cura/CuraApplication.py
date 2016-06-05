@@ -269,9 +269,15 @@ class CuraApplication(QtApplication):
                 continue
 
             file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
-            path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
-            with SaveFile(path, "wt", -1, "utf-8") as f:
-                f.write(data)
+            stack_type = stack.getMetaDataEntry("type", None)
+            path = None
+            if not stack_type:
+                path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
+            elif stack_type == "extruder":
+                path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
+            if path:
+                with SaveFile(path, "wt", -1, "utf-8") as f:
+                    f.write(data)
 
 
     @pyqtSlot(result = QUrl)
