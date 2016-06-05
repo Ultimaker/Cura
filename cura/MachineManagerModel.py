@@ -157,6 +157,7 @@ class MachineManagerModel(QObject):
                     current_settings_container_extruder = UM.Settings.InstanceContainer(extruder_train_stack.getName() + "_current_settings")
                     current_settings_container_extruder.addMetaDataEntry("machine", name)
                     current_settings_container_extruder.addMetaDataEntry("type", "user")
+                    current_settings_container_extruder.setDefinition(definition)
                     extruder_train_stack.addContainer(current_settings_container_extruder)
                     extruder_train_stack.setNextStack(new_global_stack)
                     UM.Settings.ContainerRegistry.getInstance().addContainer(extruder_train_stack)
