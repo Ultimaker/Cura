@@ -51,7 +51,7 @@ class PrintInformation(QObject):
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
 
         self._job_name = ""
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        Application.getInstance().globalContainerStackChanged.connect(self._setAbbreviatedMachineName)
         Application.getInstance().fileLoaded.connect(self.setJobName)
 
     currentPrintTimeChanged = pyqtSignal()
@@ -99,12 +99,14 @@ class PrintInformation(QObject):
         else:
             return base_name
 
-    def _onGlobalStackChanged(self):
+    ##  Created an acronymn-like abbreviated machine name from the currently active machine name
+    #   Called each time the global stack is switched
+    def _setAbbreviatedMachineName(self):
         global_stack_name = Application.getInstance().getGlobalContainerStack().getName()
         split_name = global_stack_name.split(" ")
         abbr_machine = ""
         for word in split_name:
-            if(word.lower() == "ultimaker"):
+            if word.lower() == "ultimaker":
                 abbr_machine += "UM"
             elif word.isdigit():
                 abbr_machine += word
@@ -113,5 +115,6 @@ class PrintInformation(QObject):
 
         self._abbr_machine = abbr_machine
 
+    ##  Utility method that strips accents from characters (eg: â -> a)
     def _stripAccents(self, str):
        return ''.join(char for char in unicodedata.normalize('NFD', str) if unicodedata.category(char) != 'Mn')
