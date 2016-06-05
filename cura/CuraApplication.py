@@ -63,9 +63,10 @@ if platform.system() == "Linux": # Needed for platform.linux_distribution, which
         ctypes.CDLL(find_library('GL'), ctypes.RTLD_GLOBAL)
 
 try:
-    from cura.CuraVersion import CuraVersion
+    from cura.CuraVersion import CuraVersion, CuraBuildType
 except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
 
 
 class CuraApplication(QtApplication):
@@ -92,7 +93,7 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("global_only", DefinitionPropertyType.Function, default = False)
         SettingDefinition.addSettingType("extruder", int, str, UM.Settings.Validator)
 
-        super().__init__(name = "cura", version = CuraVersion)
+        super().__init__(name = "cura", version = CuraVersion, build_type = CuraBuildType)
 
         self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
 
