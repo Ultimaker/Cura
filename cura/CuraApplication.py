@@ -271,7 +271,7 @@ class CuraApplication(QtApplication):
             file_name = urllib.parse.quote_plus(stack.getId()) + ".stack.cfg"
             stack_type = stack.getMetaDataEntry("type", None)
             path = None
-            if not stack_type:
+            if stack_type == "machine":
                 path = Resources.getStoragePath(self.ResourceTypes.MachineStack, file_name)
             elif stack_type == "extruder":
                 path = Resources.getStoragePath(self.ResourceTypes.ExtruderStack, file_name)
