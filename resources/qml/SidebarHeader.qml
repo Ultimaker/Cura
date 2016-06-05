@@ -108,7 +108,11 @@ Item
                 exclusiveGroup: extruderMenuGroup;
                 checkable: true;
                 checked: base.currentExtruderIndex == index
-                onClicked: base.currentExtruderIndex = index
+                onClicked:
+                {
+                    base.currentExtruderIndex = index
+                    Cura.MachineManager.setActiveExtruderIndex(index)
+                }
 
                 style: ButtonStyle {
                     background: Rectangle {

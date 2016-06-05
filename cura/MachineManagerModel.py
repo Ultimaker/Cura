@@ -33,6 +33,8 @@ class MachineManagerModel(QObject):
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
+        self._active_extruder_index = 0
+
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
@@ -44,14 +46,28 @@ class MachineManagerModel(QObject):
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
 
-    activeExtrudersChanged = pyqtSignal()
+    activeExtruderChanged = pyqtSignal()
 
     globalValueChanged = pyqtSignal()  # Emitted whenever a value inside global container is changed.
     globalValidationChanged = pyqtSignal()  # Emitted whenever a validation inside global container is changed.
 
-    @pyqtProperty("QVariantMap", notify = activeExtrudersChanged)
-    def activeExtruders(self):
-        return {}
+    @pyqtProperty(str, notify=activeExtruderChanged)
+    def activeExtruderStackId(self):
+        return self.extrudersIds[str(self._active_extruder_index)]
+
+    @pyqtSlot(int)
+    def setActiveExtruderIndex(self, index):
+        self._active_extruder_index = index
+        self.activeExtruderChanged.emit()
+
+    @pyqtProperty("QVariantMap", notify = globalContainerChanged)
+    def extrudersIds(self):
+        ## Find all extruders that reference the new stack
+        extruders = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(**{"machine": self._global_container_stack.getId()})
+        result = {}
+        for extruder in extruders:
+            result[extruder.getMetaDataEntry("position")] = extruder.getId()
+        return result
 
     def _onGlobalPropertyChanged(self, key, property_name):
         if property_name == "value":
@@ -133,6 +149,8 @@ class MachineManagerModel(QObject):
             for extruder in extruder_trains:
                 extruder_train_stack = UM.Settings.ContainerStack(name + "_extruder_" + extruder)
                 extruder_train_stack.addMetaDataEntry("type", "extruder")
+                extruder_train_stack.addMetaDataEntry("machine", name)  # What global stack is this extruder linked with?
+                extruder_train_stack.addMetaDataEntry("position", extruder)  # What is the position of the extruder (as defined by machine definition)
                 extruder_definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=extruder_trains[extruder])
                 if extruder_definitions:
                     extruder_train_stack.addContainer(extruder_definitions[0])
