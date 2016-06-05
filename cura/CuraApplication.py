@@ -132,15 +132,15 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.QualityInstanceContainer, "quality")
         Resources.addStorageType(self.ResourceTypes.VariantInstanceContainer, "variants")
         Resources.addStorageType(self.ResourceTypes.MaterialInstanceContainer, "materials")
-        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.UserInstanceContainer, "user")
+        Resources.addStorageType(self.ResourceTypes.ExtruderStack, "extruders")
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
 
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.QualityInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.VariantInstanceContainer)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MaterialInstanceContainer)
-        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.UserInstanceContainer)
+        ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.ExtruderStack)
         ContainerRegistry.getInstance().addResourceType(self.ResourceTypes.MachineStack)
 
         # Add empty variant, material and quality containers.
