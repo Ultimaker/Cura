@@ -405,11 +405,13 @@ class MachineManagerModel(QObject):
     @pyqtSlot(str)
     def removeMachine(self, machine_id):
         # If the machine that is being removed is the currently active machine, set another machine as the active machine
-        if self._global_container_stack and self._global_container_stack.getId() == machine_id:
-            containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks()
-            if containers:
-                Application.getInstance().setGlobalContainerStack(containers[0])
+        activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
         UM.Settings.ContainerRegistry.getInstance().removeContainer(machine_id)
+        if activate_new_machine:
+            stacks = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(type = "machine")
+            if stacks:
+                Application.getInstance().setGlobalContainerStack(stacks[0])
+
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self):
