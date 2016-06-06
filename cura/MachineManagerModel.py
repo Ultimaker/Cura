@@ -289,6 +289,12 @@ class MachineManagerModel(QObject):
         ## Copy all values
         new_quality_container.deserialize(user_settings.serialize())
 
+        ## If the currently active machine does not have quality profiles of its own,
+        #  make the new quality profile available for all machines that don't have
+        #  unique quality profiles (including the current machine)
+        if not self.filterQualityByMachine:
+            new_quality_container.setDefinition(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
+
         ## Change type / id / name
         new_quality_container.setMetaDataEntry("type","quality")
         new_quality_container.setName(name)
