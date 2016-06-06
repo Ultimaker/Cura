@@ -16,3 +16,6 @@ resources/firmware
 *~
 *.qm
 .idea
+
+# Debian packaging
+debian/
