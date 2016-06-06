@@ -301,7 +301,7 @@ class MachineManagerModel(QObject):
         new_quality_container._id = name
 
         UM.Settings.ContainerRegistry.getInstance().addContainer(new_quality_container)
-        self.clearUserSettings()  # As all users settings are noq a quality, remove them.
+        self.clearUserSettings()  # As all users settings are now transfered to the new quality profile, remove them.
         self.setActiveQuality(name)
         return name
 
@@ -324,6 +324,26 @@ class MachineManagerModel(QObject):
             return new_name
 
         return ""
+
+
+    @pyqtSlot(str)
+    def removeQualityContainer(self, container_id):
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id)
+        if not containers or not self._global_container_stack:
+            return
+
+        # If the container that is being removed is the currently active container, set another machine as the active container
+        activate_new_container = container_id == self.activeQualityId
+
+        UM.Settings.ContainerRegistry.getInstance().removeContainer(container_id)
+
+        if activate_new_container:
+            old_container = self._global_container_stack.findInstanceContainers({"type": "quality"})
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = container_type)
+            if containers and old_container:
+                container_index = self._global_container_stack.getContainerIndex(old_container)
+                self._global_container_stack.replaceContainer(container_index, containers[0])
+
 
     @pyqtSlot()
     def updateUserContainerToQuality(self):
