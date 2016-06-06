@@ -79,14 +79,14 @@ class ExtruderManager(QObject):
             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train.getId()
         self.extrudersChanged.emit()
 
-    def createExtruderTrain(self, definition, extruder_id):
+    def createExtruderTrain(self, extruder_definition, machine_definition, extruder_id):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
         #Create a container stack for this extruder.
         name = self._uniqueName(extruder_id)
         container_stack = UM.Settings.ContainerStack(name)
         container_stack.addMetaDataEntry("type", "extruder_train")
-        container_stack.addContainer(definition)
+        container_stack.addContainer(extruder_definition)
 
         """
         Yes, I'm committing this code which needs to be transformed to work later.
@@ -136,6 +136,7 @@ class ExtruderManager(QObject):
         #Add an empty user profile.
         user_profile = UM.Settings.InstanceContainer(name + "_current_settings")
         user_profile.addMetaDataEntry("type", "user")
+        user_profile.setDefinition(machine_definition)
         container_stack.addContainer(user_profile)
         container_registry.addContainer(user_profile)
 

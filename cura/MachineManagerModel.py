@@ -9,7 +9,7 @@ from UM.Logger import Logger
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.InstanceContainer import InstanceContainer
-
+from . import ExtruderManager
 
 class MachineManagerModel(QObject):
     def __init__(self, parent = None):
@@ -133,7 +133,15 @@ class MachineManagerModel(QObject):
                 new_global_stack.addContainer(quality_instance_container)
             new_global_stack.addContainer(current_settings_instance_container)
 
-            ## Check if the machine has extruder trains
+            for position, extruder_train_id in definitions.getMetaDataEntry("machine_extruder_trains", default = {}).items():
+                extruder_definition = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = extruder_train_id)
+                if extruder_definition:
+                    extruder_definition = extruder_definition[0]
+                else:
+                    Logger.log("w", "Machine %s references an extruder with ID %s, which doesn't exist.", definition.getName(), extruder_train_id)
+                    continue
+                ExtruderManager.getInstance().createExtruderTrain(extruder_definition, definition, extruder_train_id)
+
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
     # Create a name that is not empty and unique
