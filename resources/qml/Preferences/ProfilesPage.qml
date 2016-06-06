@@ -144,7 +144,7 @@ UM.ManagementPage
                         Repeater {
                             model: base.currentItem ? base.currentItem.settings : null
                             Label {
-                                text: modelData.name.toString();
+                                text: modelData.label
                                 elide: Text.ElideMiddle;
                             }
                         }
