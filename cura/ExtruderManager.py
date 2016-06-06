@@ -1,12 +1,11 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject #For communicating data and events to Qt.
 
 import UM.Application #To get the global container stack to find the current machine.
 import UM.Logger
 import UM.Settings.ContainerRegistry #Finding containers by ID.
-import UM.Signal #To notify other components of changes in the extruders.
 
 
 ##  Manages all existing extruder stacks.
@@ -14,7 +13,7 @@ import UM.Signal #To notify other components of changes in the extruders.
 #   This keeps a list of extruder stacks for each machine.
 class ExtruderManager(QObject):
     ##  Signal to notify other components when the list of extruders changes.
-    extrudersChanged = UM.Signal()
+    extrudersChanged = pyqtSignal()
 
     ##  Notify when the user switches the currently active extruder.
     activeExtruderChanged = pyqtSignal()
