@@ -303,7 +303,8 @@ class MachineManagerModel(QObject):
             new_quality_container.setDefinition(UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")[0])
 
         ## Change type / id / name
-        new_quality_container.setMetaDataEntry("type","quality")
+        new_quality_container.setMetaDataEntry("type", "quality")
+        new_quality_container.setMetaDataEntry("read_only", False)
         new_quality_container.setName(name)
         new_quality_container._id = name
 
