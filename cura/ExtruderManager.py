@@ -15,9 +15,6 @@ import UM.Signal #To notify other components of changes in the extruders.
 #   and makes sure that whenever the machine is swapped, this list is kept up to
 #   date. It also contains and updates the setting stacks for the extruders.
 class ExtruderManager(QObject):
-    ##  The singleton instance of this manager.
-    __instance = None
-
     ##  Signal to notify other components when the list of extruders changes.
     extrudersChanged = UM.Signal()
 
@@ -32,16 +29,6 @@ class ExtruderManager(QObject):
         self._active_extruder_index = 0
 
         self._repopulate()
-
-    ##  Gets an instance of this extruder manager.
-    #
-    #   If an instance was already created, the old instance is returned. This
-    #   implements the singleton pattern.
-    @classmethod
-    def getInstance(cls):
-        if not cls.__instance:
-            cls.__instance = ExtruderManager()
-        return cls.__instance
 
     ##  Creates an iterator over the extruders in this manager.
     #
