@@ -67,7 +67,7 @@ class ExtruderManager:
 
         #Get the extruder definitions belonging to the current machine.
         machine = self._global_container_stack.getBottom()
-        extruder_train_ids = machine.getMetaDataEntry("machine_extruder_trains")
+        extruder_train_ids = machine.getMetaDataEntry("machine_extruder_trains", { })
         for _,extruder_train_id in extruder_train_ids.items():
             extruder_definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id = extruder_train_id) #Should be only 1 definition if IDs are unique, but add the whole list anyway.
             if not extruder_definitions: #Empty list or error.
