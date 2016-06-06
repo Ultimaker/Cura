@@ -149,7 +149,7 @@ class MachineManagerModel(QObject):
     # Create a name that is not empty and unique
     def _createUniqueName(self, object_type, name, fallback_name):
         name = name.strip()
-        num_check = re.compile("(.*?)\s*#\d$").match(name)
+        num_check = re.compile("(.*?)\s*#\d+$").match(name)
         if(num_check):
             name = num_check.group(1)
         if name == "":
