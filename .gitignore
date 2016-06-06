@@ -16,3 +16,5 @@ resources/firmware
 *~
 *.qm
 .idea
+.project
+.pydevproject
