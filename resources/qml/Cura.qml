@@ -226,7 +226,26 @@ UM.MainWindow
                 Instantiator
                 {
                     id: profileMenuInstantiator
-//                     model: UM.ProfilesModel {}
+                    model: UM.InstanceContainersModel
+                    {
+                        filter:
+                        {
+                            var result = { "type": "quality" };
+                            if(Cura.MachineManager.filterQualityByMachine)
+                            {
+                                result.definition = Cura.MachineManager.activeDefinitionId;
+                                if(Cura.MachineManager.hasMaterials)
+                                {
+                                    result.material = Cura.MachineManager.activeMaterialId;
+                                }
+                            }
+                            else
+                            {
+                                result.definition = "fdmprinter"
+                            }
+                            return result
+                        }
+                    }
                     property int separatorIndex: -1
 
                     Loader {
@@ -239,13 +258,13 @@ UM.MainWindow
                     {
                         //Insert a separator between readonly and custom profiles
                         if(separatorIndex < 0 && index > 0) {
-                            if(model.getItem(index-1).readOnly != model.getItem(index).readOnly) {
+                            if(model.getItem(index-1).metadata.read_only != model.getItem(index).metadata.read_only) {
                                 profileMenu.insertSeparator(index);
                                 separatorIndex = index;
                             }
                         }
                         //Because of the separator, custom profiles move one index lower
-                        profileMenu.insertItem((model.getItem(index).readOnly) ? index : index + 1, object.item);
+                        profileMenu.insertItem((model.getItem(index).metadata.read_only) ? index : index + 1, object.item);
                     }
                     onObjectRemoved:
                     {
@@ -269,20 +288,10 @@ UM.MainWindow
                     {
                         id: item
                         text: model_data ? model_data.name : ""
-                        checkable: true;
-                        checked: model_data ? model_data.active : false;
-                        exclusiveGroup: profileMenuGroup;
-                        onTriggered:
-                        {
-                            UM.MachineManager.setActiveProfile(model_data.name);
-                            if (!model_data.active) {
-                                //Selecting a profile was canceled; undo menu selection
-                                profileMenuInstantiator.model.setProperty(model_index, "active", false);
-                                var activeProfileName = UM.MachineManager.activeProfile;
-                                var activeProfileIndex = profileMenuInstantiator.model.find("name", activeProfileName);
-                                profileMenuInstantiator.model.setProperty(activeProfileIndex, "active", true);
-                            }
-                        }
+                        checkable: true
+                        checked: Cura.MachineManager.activeQualityId == model_data.id
+                        exclusiveGroup: profileMenuGroup
+                        onTriggered: Cura.MachineManager.setActiveQuality(model_data.id)
                     }
                 }
 
