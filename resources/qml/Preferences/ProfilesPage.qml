@@ -71,6 +71,9 @@ UM.ManagementPage
 
     scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
+    signal showProfileNameDialog()
+    onShowProfileNameDialog: { renameDialog.removeWhenRejected = true; renameDialog.open(); renameDialog.selectText(); }
+
     signal selectContainer(string id)
     onSelectContainer: {
         objectList.currentIndex = objectList.model.find("id", id);
