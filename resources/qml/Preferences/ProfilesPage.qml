@@ -168,9 +168,10 @@ UM.ManagementPage
 
         Button
         {
-            text: catalog.i18nc("@action:button", "Export");
-            iconName: "document-export";
-            onClicked: exportDialog.open();
+            text: catalog.i18nc("@action:button", "Export")
+            iconName: "document-export"
+            onClicked: exportDialog.open()
+            enabled: currentItem != null
         }
     }
 
