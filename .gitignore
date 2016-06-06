@@ -15,3 +15,5 @@ resources/i18n/x-test
 *~
 *.qm
 .idea
+.project
+.pydevproject
