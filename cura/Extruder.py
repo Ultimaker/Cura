@@ -27,7 +27,6 @@ class Extruder:
         #Create a container stack for this extruder.
         self._name = self._uniqueName(self._definition)
         self._container_stack = UM.Settings.ContainerStack(self._name)
-        container_registry.addContainer(self._container_stack)
         self._container_stack.addMetaDataEntry("type", "extruder_train")
         self._container_stack.addContainer(self._definition)
 
@@ -80,6 +79,8 @@ class Extruder:
         container_registry.addContainer(self._user_profile)
 
         self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
+
+        container_registry.addContainer(self._container_stack)
 
     definition_changed = UM.Signal()
     material_changed = UM.Signal()
