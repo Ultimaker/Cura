@@ -713,6 +713,7 @@ class MachineCom(object):
 
 	def _sendNext(self):
 		if self._gcodePos >= len(self._gcodeList):
+		        self._callback.mcProgress(self._gcodePos)
 			self._changeState(self.STATE_OPERATIONAL)
 			return
 		if self._gcodePos == 100:

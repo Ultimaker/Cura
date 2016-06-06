@@ -15,6 +15,8 @@ from Cura.util import resources
 from Cura.util import profile
 from Cura.util import version
 
+TIME_FORMAT = "%H:%M:%S"
+
 #TODO: This does not belong here!
 if sys.platform.startswith('win'):
 	def preventComputerFromSleeping(frame, prevent):
@@ -620,6 +622,8 @@ class printWindowAdvanced(wx.Frame):
 		super(printWindowAdvanced, self).__init__(parent, -1, style=wx.CLOSE_BOX|wx.CLIP_CHILDREN|wx.CAPTION|wx.SYSTEM_MENU|wx.FRAME_FLOAT_ON_PARENT|wx.MINIMIZE_BOX, title=_("Printing on %s") % (printerConnection.getName()))
 		self._printerConnection = printerConnection
 		self._lastUpdateTime = time.time()
+		self._printDuration = 0
+		self._lastDurationTime = None
 		self._isPrinting = False
 
 		self.SetSizer(wx.BoxSizer(wx.VERTICAL))
@@ -807,12 +811,33 @@ class printWindowAdvanced(wx.Frame):
 
 	def OnPrint(self, e):
 		if self._printerConnection.isPrinting() or self._printerConnection.isPaused():
+			if self._printerConnection.isPaused():
+				self._addTermLog(_("Print resumed at %s\n") % (time.strftime(TIME_FORMAT)))
+				self._lastDurationTime = time.time()
+			else:
+				self._addTermLog(_("Print paused at %s\n") % (time.strftime(TIME_FORMAT)))
+				self._printDuration = self._printDuration + (time.time() - self._lastDurationTime)
+				self._lastDurationTime = None
 			self._printerConnection.pause(not self._printerConnection.isPaused())
 			self.pauseTimer.Stop()
 			self.printButton.Enable(False)
 			self.pauseTimer.Start(10000)
 		else:
 			self._printerConnection.startPrint()
+			self._addTermLog(_("Print started at %s\n") % (time.strftime(TIME_FORMAT)))
+			self._printDuration = 0
+			self._lastDurationTime = time.time()
+
+
+	def _printFinished(self):
+		duration = self._printDuration
+		if self._lastDurationTime:
+				duration += (time.time() - self._lastDurationTime)
+		m, s = divmod(duration, 60)
+		h, m = divmod(m, 60)
+		self._printDuration = 0
+		self._lastDurationTime = None
+		self._addTermLog(_("Total print time : %d:%02d:%02d\n") % (h, m, s))
 
 	def OnPauseTimer(self, e):
 		self.printButton.Enable(True)
@@ -821,6 +846,8 @@ class printWindowAdvanced(wx.Frame):
 
 	def OnCancel(self, e):
 		self._printerConnection.cancelPrint()
+		self._addTermLog(_("Print canceled at %s\n") % (time.strftime(TIME_FORMAT)))
+		self._printFinished()
 
 	def OnErrorLog(self, e):
 		LogWindow(self._printerConnection.getErrorLog())
@@ -1027,8 +1054,25 @@ class printWindowAdvanced(wx.Frame):
 			info += (" {:3.1f}% | ".format(progress * 100))
 			info += (("Z: %.3fmm") % (z))
 		else:
+			# Should be 1000 but doesn't always seem to work,so check for 90%+ in the
+			# progress bar (before it gets reset to 0) and check the actual progress for 100%
+			if self.progress.GetValue() >= 900:
+				(current, total, z) = connection.getPrintProgress()
+				if current >= total:
+					self._addTermLog(_("Print finished at %s\n") % (time.strftime(TIME_FORMAT)))
+					self._printFinished()
 			self.progress.SetValue(0)
 
+		if self._printDuration > 0 or self._lastDurationTime != None:
+			duration = self._printDuration
+			if self._lastDurationTime:
+				duration += (time.time() - self._lastDurationTime)
+			m, s = divmod(duration, 60)
+			h, m = divmod(m, 60)
+			if h > 0:
+				info += ' | Printing for : %d:%02d:%02d ' % (h, m, s)
+			else:
+				info += ' | Printing for : %d:%02d ' % (m, s)
 		if self._printerConnection.getTemperature(0) is not None:
 			info += ' | Temperature: %d ' % (self._printerConnection.getTemperature(0))
 		if self._printerConnection.getBedTemperature() > 0:
