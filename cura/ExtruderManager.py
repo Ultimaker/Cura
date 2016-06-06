@@ -51,11 +51,12 @@ class ExtruderManager(QObject):
 
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self):
-        if UM.Application.getInstance().getGlobalContainerStack():
-            try:
-                return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][str(self._active_extruder_index)]
-            except KeyError:
-                pass
+        if not UM.Application.getInstance().getGlobalContainerStack():
+            return None #Whatta ya gonna do?
+        try:
+            return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][str(self._active_extruder_index)]
+        except KeyError:
+            return None
 
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index):
