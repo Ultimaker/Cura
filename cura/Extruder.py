@@ -76,6 +76,7 @@ class Extruder:
         self._user_profile = UM.Settings.InstanceContainer(self._name + "_current_settings")
         self._user_profile.addMetaDataEntry("type", "user")
         self._container_stack.addContainer(self._user_profile)
+        container_registry.addContainer(self._user_profile)
 
         self._container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
