@@ -49,13 +49,19 @@ class ExtruderManager(QObject):
     def __iter__(self):
         return iter(self._extruders)
 
+    ##  Gets the unique identifier of the currently active extruder stack.
+    #
+    #   The currently active extruder stack is the stack that is currently being
+    #   edited.
+    #
+    #   \return The unique ID of the currently active extruder stack.
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self):
         if not UM.Application.getInstance().getGlobalContainerStack():
-            return None #Whatta ya gonna do?
+            return None #No active machine, so no active extruder.
         try:
             return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][str(self._active_extruder_index)]
-        except KeyError:
+        except KeyError: #Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
     @pyqtSlot(int)
