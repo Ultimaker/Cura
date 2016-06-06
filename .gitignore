@@ -16,3 +16,8 @@ resources/firmware
 *~
 *.qm
 .idea
+.project
+.pydevproject
+
+# Debian packaging
+debian/
