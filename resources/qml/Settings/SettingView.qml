@@ -24,6 +24,7 @@ ScrollView
     {
         id: contents
         spacing: UM.Theme.getSize("default_lining").height;
+        cacheBuffer: 1000000;   // A huge to cache to effectively cache everything.
 
         model: UM.SettingDefinitionsModel {
             id: definitionsModel;

@@ -66,8 +66,8 @@ UM.ManagementPage
 
     activateEnabled: currentItem != null ? currentItem.id != Cura.MachineManager.activeQualityId : false;
     addEnabled: currentItem != null;
-    removeEnabled: currentItem != null ? !currentItem.readOnly : false;
-    renameEnabled: currentItem != null ? !currentItem.readOnly : false;
+    removeEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
+    renameEnabled: currentItem != null ? !currentItem.metadata.read_only : false;
 
     scrollviewCaption: catalog.i18nc("@label %1 is printer name","Printer: %1").arg(Cura.MachineManager.activeMachineName)
 
@@ -137,7 +137,7 @@ UM.ManagementPage
                     Label {
                         text: base.currentItem == null ? "" :
                             base.currentItem.id == -1 ? Cura.MachineManager.activeQualityName:
-                            base.currentItem.readOnly ? catalog.i18nc("@label", "Protected profile") : catalog.i18nc("@label", "Custom profile")
+                            base.currentItem.metadata.read_only ? catalog.i18nc("@label", "Protected profile") : catalog.i18nc("@label", "Custom profile")
                     }
 
                     Column {
@@ -186,7 +186,7 @@ UM.ManagementPage
         {
             id: confirmDialog;
             object: base.currentItem != null ? base.currentItem.name : "";
-            onYes: base.model.removeProfile(base.currentItem.name);
+            onYes: Cura.MachineManager.removeQualityContainer(base.currentItem.id);
         }
         UM.RenameDialog
         {
