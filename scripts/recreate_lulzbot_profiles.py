@@ -496,8 +496,9 @@ def get_description(material):
     description_data = ""
     if is_experimental(material):
         description_data = \
-            "* Experimental profile\n" + \
-            " use at your own risk!"
+            "* Experimental profile, use at \n" + \
+            " your own risk! Newer profiles \n" + \
+            " may be available at this URL"
     elif material in bed_prep_materials:
         description_data += \
             "Bed preparation required: \n" + \
@@ -540,6 +541,8 @@ def create_machine_type(machine_type, path, dir):
                 if material_url.has_key(material):
                     referer = "?pk_campaign=software-cura"
                     f.write("url = %s%s\n" %(material_url[material], referer) )
+                elif is_experimental(material):
+                    f.write("url = %s\n" %("code.alephobjects.com/diffusion/P/") )
             with open(os.path.join(path, material, profile, "profile.ini"), "w") as f:
                 f.write("[info]\n")
                 f.write("name = %s\n" % profile_map[profile])
