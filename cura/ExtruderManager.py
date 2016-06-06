@@ -9,11 +9,9 @@ import UM.Settings.ContainerRegistry #Finding containers by ID.
 import UM.Signal #To notify other components of changes in the extruders.
 
 
-##  Class that handles the current extruder stack.
+##  Manages all existing extruder stacks.
 #
-#   This finds the extruders that are available for the currently active machine
-#   and makes sure that whenever the machine is swapped, this list is kept up to
-#   date. It also contains and updates the setting stacks for the extruders.
+#   This keeps a list of extruder stacks for each machine.
 class ExtruderManager(QObject):
     ##  Signal to notify other components when the list of extruders changes.
     extrudersChanged = UM.Signal()
