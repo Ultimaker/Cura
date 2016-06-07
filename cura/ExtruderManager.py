@@ -6,6 +6,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject #For commun
 import UM.Application #To get the global container stack to find the current machine.
 import UM.Logger
 import UM.Settings.ContainerRegistry #Finding containers by ID.
+import re
 
 
 ##  Manages all existing extruder stacks.
@@ -47,6 +48,13 @@ class ExtruderManager(QObject):
             return self._extruder_trains[UM.Application.getInstance().getGlobalContainerStack().getId()][str(self._active_extruder_index)]
         except KeyError: #Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
+
+    __instance = None
+    @classmethod
+    def getInstance(cls):
+        if not cls.__instance:
+            cls.__instance = ExtruderManager()
+        return cls.__instance
 
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index):
@@ -134,6 +142,26 @@ class ExtruderManager(QObject):
         container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
         container_registry.addContainer(container_stack)
+
+
+    def _uniqueName(self, extruder):
+        container_registry = UM.Settings.ContainerRegistry.getInstance()
+
+        name = extruder.strip()
+        num_check = re.compile("(.*?)\s*#\d$").match(name)
+        if num_check:  # There is a number in the name.
+            name = num_check.group(1)  # Filter out the number.
+        if name == "":  # Wait, that deleted everything!
+            name = "Extruder"
+        unique_name = name
+
+        i = 1
+        while container_registry.findContainers(id=unique_name) or container_registry.findContainers(
+                name=unique_name):  # A container already has this name.
+            i += 1  # Try next numbering.
+            unique_name = "%s #%d" % (name, i)  # Fill name like this: "Extruder #2".
+        return unique_name
+
 
 def createExtruderManager(engine, script_engine):
     return ExtruderManager()
