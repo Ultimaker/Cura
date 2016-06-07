@@ -304,6 +304,7 @@ class MachineManagerModel(QObject):
             ## Copy all values
             new_container.deserialize(containers[0].serialize())
 
+            new_container.setMetaDataEntry("read_only", False)
             new_container.setName(new_name)
             new_container._id = new_name
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_container)
