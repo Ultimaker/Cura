@@ -46,7 +46,7 @@ class ExtrudersModel(UM.Qt.ListModel.ListModel):
     def _updateExtruders(self):
         self.clear()
         manager = cura.ExtruderManager.ExtruderManager.getInstance()
-        for index, extruder in enumerate(manager):
+        for index, extruder in enumerate(manager._extruder_trains):
             item = { #Construct an item with only the relevant information.
                 "name": extruder.name,
                 "colour": extruder.material.getMetaDataEntry("color_code", default = "#FFFF00"),
