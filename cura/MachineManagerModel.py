@@ -312,6 +312,15 @@ class MachineManagerModel(QObject):
         return ""
 
 
+    @pyqtSlot(str, str)
+    def renameQualityContainer(self, container_id, new_name):
+        containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
+        if containers:
+            new_name = self._createUniqueName("machine", new_name, catalog.i18nc("@label", "Custom profile"))
+            containers[0].setName(new_name)
+            UM.Settings.ContainerRegistry.getInstance().containerChanged.emit(containers[0])
+
+
     @pyqtSlot(str)
     def removeQualityContainer(self, container_id):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id)

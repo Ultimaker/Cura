@@ -184,19 +184,19 @@ UM.ManagementPage
 
         UM.ConfirmRemoveDialog
         {
-            id: confirmDialog;
-            object: base.currentItem != null ? base.currentItem.name : "";
-            onYes: Cura.MachineManager.removeQualityContainer(base.currentItem.id);
+            id: confirmDialog
+            object: base.currentItem != null ? base.currentItem.name : ""
+            onYes: Cura.MachineManager.removeQualityContainer(base.currentItem.id)
         }
         UM.RenameDialog
         {
             id: renameDialog;
-            object: base.currentItem != null ? base.currentItem.name : "";
-            property bool removeWhenRejected: false;
-            onAccepted: base.model.rename(base.currentItem.id, newName.trim());
+            object: base.currentItem != null ? base.currentItem.name : ""
+            property bool removeWhenRejected: false
+            onAccepted: Cura.MachineManager.renameQualityContainer(base.currentItem.id, newName)
             onRejected: {
                 if(removeWhenRejected) {
-                    base.model.removeProfile(base.currentItem.name)
+                    Cura.MachineManager.removeQualityContainer(base.currentItem.id)
                 }
             }
         }
