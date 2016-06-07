@@ -70,7 +70,7 @@ class ExtruderManager(QObject):
             if extruder_definition:
                 extruder_definition = extruder_definition[0]
             else:
-                Logger.log("w", "Machine %s references an extruder with ID %s, which doesn't exist.", machine_definition.getName(), extruder_definition_id)
+                UM.Logger.log("w", "Machine %s references an extruder with ID %s, which doesn't exist.", machine_definition.getName(), extruder_definition_id)
                 continue
             name = container_registry.uniqueName(extruder_definition_id) #Make a name based on the ID of the definition.
             if not container_registry.findContainerStacks(id = name): #Doesn't exist yet.
