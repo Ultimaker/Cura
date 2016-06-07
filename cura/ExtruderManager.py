@@ -57,7 +57,7 @@ class ExtruderManager(QObject):
     #   \param machine_definition The machine to add the extruders for.
     def addMachineExtruders(self, machine_definition):
         machine_id = machine_definition.getId()
-        if not self._extruder_trains[machine_id]:
+        if machine_id not in self._extruder_trains:
             self._extruder_trains[machine_id] = { }
 
         container_registry = UM.Settings.ContainerRegistry.getInstance()
