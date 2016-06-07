@@ -12,6 +12,7 @@ wall_thickness = 1.05
 top_bottom_thickness = 0.8
 infill_sparse_density = 20
 speed_print = 45
+speed_wall = 30
 cool_min_layer_time = 3
 cool_fan_speed_min = 80
 cool_min_speed = 10
