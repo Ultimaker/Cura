@@ -760,7 +760,7 @@
                 "retraction_count_max": {
                     "label": "Maximum Retraction Count",
                     "description": "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
-                    "default": 45,
+                    "default": 90,
                     "min_value": "0",
                     "max_value_warning": "100",
                     "type": "int",
