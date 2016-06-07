@@ -23,14 +23,7 @@ class ExtruderManager(QObject):
     def __init__(self, parent = None):
         super().__init__(parent)
         self._extruder_trains = { } #Extruders for the current machine.
-        self._next_item = 0 #For when you use this class as iterator.
         self._active_extruder_index = 0
-
-    ##  Creates an iterator over the extruders in this manager.
-    #
-    #   \return An iterator over the extruders in this manager.
-    def __iter__(self):
-        return iter(self._extruders)
 
     ##  Gets the unique identifier of the currently active extruder stack.
     #
