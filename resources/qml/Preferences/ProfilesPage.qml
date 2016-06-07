@@ -91,70 +91,63 @@ UM.ManagementPage
             elide: Text.ElideRight
         }
 
-        ScrollView {
+        Row {
+            id: currentSettingsActions
+            visible: base.currentItem.id == -1 || currentItem.id == Cura.MachineManager.activeQualityId
+
             anchors.left: parent.left
             anchors.top: profileName.bottom
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+
+            Button
+            {
+                text: {
+                    var profileName = Cura.MachineManager.activeQualityName;
+                    profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
+                    return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
+                }
+                enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
+                onClicked: Cura.MachineManager.updateUserContainerToQuality()
+            }
+
+            Button
+            {
+                text: catalog.i18nc("@action:button", "Discard changes");
+                enabled: Cura.MachineManager.hasUserSettings
+                onClicked: Cura.MachineManager.clearUserSettings();
+            }
+        }
+
+        ScrollView {
+            id: scrollView
+
+            anchors.left: parent.left
+            anchors.top: currentSettingsActions.visible ? currentSettingsActions.bottom : profileName.bottom
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.right: parent.right
             anchors.bottom: parent.bottom
 
-            Column
-            {
-                spacing: UM.Theme.getSize("default_margin").height
-
-                Row
-                {
-                    visible: base.currentItem.id == -1 || currentItem.id == Cura.MachineManager.activeQualityId
-                    Button
-                    {
-                        text: {
-                            var profileName = Cura.MachineManager.activeQualityName;
-                            profileName = (profileName.length > 20) ? profileName.substring(0, 20) + '...' : profileName;
-                            return catalog.i18nc("@action:button", "Update \"%1\"".arg(profileName));
-                        }
-                        enabled: Cura.MachineManager.hasUserSettings && !Cura.MachineManager.isReadOnly(Cura.MachineManager.activeQualityId)
-                        onClicked: Cura.MachineManager.updateUserContainerToQuality()
+            ListView {
+                model: base.currentItem ? base.currentItem.settings: null
+                delegate: Row {
+                    spacing: UM.Theme.getSize("default_margin").width
+                    Label {
+                        text: model.label
+                        elide: Text.ElideMiddle
+                        width: scrollView.width / 100 * 40
                     }
-
-                    Button
-                    {
-                        text: catalog.i18nc("@action:button", "Discard changes");
-                        enabled: Cura.MachineManager.hasUserSettings
-                        onClicked: Cura.MachineManager.clearUserSettings();
+                    Label {
+                        text: model.value.toString()
+                    }
+                    Label {
+                        text: model.unit
                     }
                 }
-
-                Grid
-                {
-                    id: containerGrid
-                    columns: 2
-                    spacing: UM.Theme.getSize("default_margin").width
-
-                    Label {
-                        text: base.currentItem == null ? "" :
-                            base.currentItem.id == -1 ? catalog.i18nc("@label", "Based on") : catalog.i18nc("@label", "Profile type")
-                    }
-                    Label {
-                        text: base.currentItem == null ? "" :
-                            base.currentItem.id == -1 ? Cura.MachineManager.activeQualityName:
-                            base.currentItem.metadata.read_only ? catalog.i18nc("@label", "Protected profile") : catalog.i18nc("@label", "Custom profile")
-                    }
-
-                    Column {
-                        Repeater {
-                            model: base.currentItem ? base.currentItem.settings : null
-                            Label {
-                                text: modelData.label
-                                elide: Text.ElideMiddle;
-                            }
-                        }
-                    }
-                    Column {
-                        Repeater {
-                            model: base.currentItem ? base.currentItem.settings : null
-                            Label { text: modelData.value.toString(); }
-                        }
-                    }
+                section.property: "category"
+                section.criteria: ViewSection.FullString
+                section.delegate: Label {
+                    text: section
+                    font.bold: true
                 }
             }
         }
