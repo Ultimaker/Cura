@@ -65,15 +65,12 @@ class ExtruderManager(QObject):
             return
 
         #Add the extruder trains that don't exist yet.
-        for position, extruder_definition_id in machine_definition.getMetaDataEntry("machine_extruder_trains", default = {}).items():
-            extruder_definition = container_registry.findDefinitionContainers(machine = machine_definition.getId())
-            if extruder_definition:
-                extruder_definition = extruder_definition[0]
-            else:
-                UM.Logger.log("w", "Machine %s references an extruder with ID %s, which doesn't exist.", machine_definition.getName(), extruder_definition_id)
-                continue
-            name = container_registry.uniqueName(extruder_definition_id) #Make a name based on the ID of the definition.
-            if not container_registry.findContainerStacks(id = name): #Doesn't exist yet.
+        for extruder_definition in container_registry.findDefinitionContainers(machine = machine_definition.getId()):
+            position = extruder_definition.getMetaDataEntry("position", None)
+            if not position:
+                UM.Logger.Log("w", "Extruder definition %s specifies no position metadata entry.", extruder_definition.getId())
+            if not container_registry.findContainerStacks(machine = machine_id, position = position): #Doesn't exist yet.
+                name = container_registry.uniqueName(extruder_definition.getId()) #Make a name based on the ID of the definition.
                 self.createExtruderTrain(extruder_definition, machine_definition, name, position)
 
         #Gets the extruder trains that we just created as well as any that still existed.
