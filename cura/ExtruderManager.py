@@ -4,7 +4,7 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject #For communicating data and events to Qt.
 
 import UM.Application #To get the global container stack to find the current machine.
-import UM.Logger
+from UM.Logger import Logger
 import UM.Settings.ContainerRegistry #Finding containers by ID.
 
 
@@ -57,7 +57,7 @@ class ExtruderManager(QObject):
     #   \param machine_definition The machine to add the extruders for.
     def addMachineExtruders(self, machine_definition):
         machine_id = machine_definition.getId()
-        if not self._extruder_trains[machine_id]:
+        if machine_id not in self._extruder_trains:
             self._extruder_trains[machine_id] = { }
 
         container_registry = UM.Settings.ContainerRegistry.getInstance()
