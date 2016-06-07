@@ -177,10 +177,10 @@ class ExtruderManager(QObject):
         container_registry.addContainer(container_stack)
 
 
-    def _uniqueName(self, extruder):
+    def _uniqueName(self, original):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
-        name = extruder.strip()
+        name = original.strip()
         num_check = re.compile("(.*?)\s*#\d$").match(name)
         if num_check:  # There is a number in the name.
             name = num_check.group(1)  # Filter out the number.
