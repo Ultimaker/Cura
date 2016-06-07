@@ -120,7 +120,7 @@ Item {
 
                     containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
                     key: model.key
-                    watchedProperties: [ "value", "enabled", "state", "validationState" ]
+                    watchedProperties: [ "value", "enabled", "validationState" ]
                     storeIndex: 0
                 }
             }
