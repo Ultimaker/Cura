@@ -15,6 +15,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def __init__(self):
         super().__init__()
         self._stack = ContainerStack(stack_id = id(self))
+        self._stack.setDirty(False)  # This stack does not need to be saved.
         self._instance = InstanceContainer(container_id = "SettingOverrideInstanceContainer")
         self._stack.addContainer(self._instance)
 
