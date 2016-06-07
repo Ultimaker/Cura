@@ -76,7 +76,7 @@ class ExtruderManager(QObject):
 
         #Add the extruder trains that don't exist yet.
         for position, extruder_definition_id in machine_definition.getMetaDataEntry("machine_extruder_trains", default = {}).items():
-            extruder_definition = container_registry.findDefinitionContainers(id = extruder_definition_id)
+            extruder_definition = container_registry.findDefinitionContainers(machine = machine_definition.getId())
             if extruder_definition:
                 extruder_definition = extruder_definition[0]
             else:
@@ -194,7 +194,3 @@ class ExtruderManager(QObject):
             i += 1  # Try next numbering.
             unique_name = "%s #%d" % (name, i)  # Fill name like this: "Extruder #2".
         return unique_name
-
-
-def createExtruderManager(engine, script_engine):
-    return ExtruderManager()
