@@ -110,9 +110,10 @@ class MachineManagerModel(QObject):
         definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
         if definitions:
             definition = definitions[0]
-            name = self._createUniqueName(containers[0], "machine", name, definition.getName())
-
             new_global_stack = UM.Settings.ContainerStack(name)
+            name = self._createUniqueName(new_global_stack, "machine", name, definition.getName())
+            new_global_stack._id = name
+            new_global_stack.setName(name)
             new_global_stack.addMetaDataEntry("type", "machine")
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
