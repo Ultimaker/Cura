@@ -106,14 +106,12 @@ class MachineManagerModel(QObject):
             Application.getInstance().setGlobalContainerStack(containers[0])
 
     @pyqtSlot(str, str)
-    def addMachine(self,name, definition_id):
+    def addMachine(self, name, definition_id):
         definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
         if definitions:
             definition = definitions[0]
+            name = self._createUniqueName("machine", "", name, definition.getName())
             new_global_stack = UM.Settings.ContainerStack(name)
-            name = self._createUniqueName(new_global_stack, "machine", name, definition.getName())
-            new_global_stack._id = name
-            new_global_stack.setName(name)
             new_global_stack.addMetaDataEntry("type", "machine")
             UM.Settings.ContainerRegistry.getInstance().addContainer(new_global_stack)
 
@@ -142,12 +140,12 @@ class MachineManagerModel(QObject):
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
     ##  Create a name that is not empty and unique
-    #   \param container \type{} container to create a unique name for
     #   \param container_type \type{string} Type of the container (machine, quality, ...)
-    #   \param new_name \type{string} Name base name, which may not be unique
+    #   \param current_name \type{} Current name of the container, which may be an acceptable option
+    #   \param new_name \type{string} Base name, which may not be unique
     #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
     #   \return \type{string} Name that is unique for the specified type and name/id
-    def _createUniqueName(self, container, object_type, new_name, fallback_name):
+    def _createUniqueName(self, container_type, current_name, new_name, fallback_name):
         new_name = new_name.strip()
         num_check = re.compile("(.*?)\s*#\d+$").match(new_name)
         if num_check:
@@ -157,7 +155,8 @@ class MachineManagerModel(QObject):
 
         unique_name = new_name
         i = 1
-        while self._containerWithIdOrNameExists(unique_name, object_type, container):
+        # In case we are renaming, the current name of the container is also a valid end-result
+        while self._containerExists(container_type, unique_name) and unique_name != current_name:
             i += 1
             unique_name = "%s #%d" % (new_name, i)
 
@@ -165,17 +164,13 @@ class MachineManagerModel(QObject):
 
     ##  Check if a container with of a certain type and a certain name or id exists
     #   Both the id and the name are checked, because they may not be the same and it is better if they are both unique
-    def _containerWithIdOrNameExists(self, id_or_name, container_type, exclude_container = None):
+    #   \param container_type \type{string} Type of the container (machine, quality, ...)
+    #   \param container_name \type{string} Name to check
+    def _containerExists(self, container_type, container_name):
         container_class = ContainerStack if container_type == "machine" else InstanceContainer
 
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, id = id_or_name, type = container_type)
-        if containers and containers[0] != exclude_container:
-            return True
-        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, name = id_or_name, type = container_type)
-        if containers and containers[0] != exclude_container:
-            return True
-
-        return False
+        return UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, id = container_name, type = container_type) or \
+                UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, name = container_name, type = container_type)
 
     ##  Convenience function to check if a stack has errors.
     def _checkStackForErrors(self, stack):
@@ -274,7 +269,7 @@ class MachineManagerModel(QObject):
             return
 
         new_quality_container = InstanceContainer("")
-        name = self._createUniqueName(new_quality_container, "quality", self.activeQualityName, catalog.i18nc("@label", "Custom profile"))
+        name = self._createUniqueName("quality", "", self.activeQualityName, catalog.i18nc("@label", "Custom profile"))
         user_settings = self._global_container_stack.getTop()
 
         ## Copy all values
@@ -303,7 +298,7 @@ class MachineManagerModel(QObject):
             return
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=container_id)
         if containers:
-            new_name = self._createUniqueName(containers[0], "quality", containers[0].getName(), catalog.i18nc("@label", "Custom profile"))
+            new_name = self._createUniqueName("quality", "", containers[0].getName(), catalog.i18nc("@label", "Custom profile"))
 
             new_container = InstanceContainer("")
 
@@ -323,7 +318,7 @@ class MachineManagerModel(QObject):
     def renameQualityContainer(self, container_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
         if containers:
-            new_name = self._createUniqueName(containers[0], "quality", new_name, catalog.i18nc("@label", "Custom profile"))
+            new_name = self._createUniqueName("quality", containers[0].getName(), new_name, catalog.i18nc("@label", "Custom profile"))
             containers[0].setName(new_name)
             UM.Settings.ContainerRegistry.getInstance().containerChanged.emit(containers[0])
 
@@ -426,7 +421,7 @@ class MachineManagerModel(QObject):
     def renameMachine(self, machine_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
-            new_name = self._createUniqueName(containers[0], "machine", new_name, containers[0].getBottom().getName())
+            new_name = self._createUniqueName("machine", containers[0].getName(), new_name, containers[0].getBottom().getName())
             containers[0].setName(new_name)
             self.globalContainerChanged.emit()
 
