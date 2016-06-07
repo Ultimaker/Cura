@@ -22,6 +22,10 @@ Item {
     property var showInheritButton: true
     property var doDepthIdentation: true
 
+    // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
+    property var state: propertyProvider.properties.state
+    property var stackLevel: propertyProvider.stackLevel
+
     signal contextMenuRequested()
     signal showTooltip(string text);
     signal hideTooltip();
@@ -128,7 +132,7 @@ Item {
             {
                 id: revertButton;
 
-                visible: propertyProvider.stackLevel == 0 && base.showRevertButton
+                visible: base.stackLevel == 0 && base.showRevertButton
 
                 height: parent.height;
                 width: height;
@@ -155,14 +159,14 @@ Item {
                 id: inheritButton;
 
                 //visible: has_profile_value && base.has_inherit_function && base.is_enabled
-                visible: propertyProvider.properties.state == "InstanceState.User" && propertyProvider.stackLevel > 0 && base.showInheritButton
+                visible: base.state == "InstanceState.User" && base.stackLevel > 0 && base.showInheritButton
 
                 height: parent.height;
                 width: height;
 
                 onClicked: {
                     focus = true;
-                    propertyProvider.removeFromContainer(propertyProvider.stackLevel)
+                    propertyProvider.removeFromContainer(base.stackLevel)
                 }
 
                 backgroundColor: UM.Theme.getColor("setting_control");
