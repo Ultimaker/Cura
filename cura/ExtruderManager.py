@@ -39,7 +39,18 @@ class ExtruderManager(QObject):
         except KeyError: #Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
 
+    ##  The instance of the singleton pattern.
+    #
+    #   It's None if the extruder manager hasn't been created yet.
     __instance = None
+
+    ##  Gets an instance of the extruder manager, or creates one if no instance
+    #   exists yet.
+    #
+    #   This is an implementation of singleton. If an extruder manager already
+    #   exists, it is re-used.
+    #
+    #   \return The extruder manager.
     @classmethod
     def getInstance(cls):
         if not cls.__instance:
