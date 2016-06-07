@@ -26,8 +26,6 @@ class ExtruderManager(QObject):
         self._next_item = 0 #For when you use this class as iterator.
         self._active_extruder_index = 0
 
-        self._repopulate()
-
     ##  Creates an iterator over the extruders in this manager.
     #
     #   \return An iterator over the extruders in this manager.
@@ -82,7 +80,7 @@ class ExtruderManager(QObject):
             else:
                 Logger.log("w", "Machine %s references an extruder with ID %s, which doesn't exist.", machine_definition.getName(), extruder_definition_id)
                 continue
-            name = self._uniqueName(extruder_definition_id) #Make a name based on the ID of the definition.
+            name = container_registry.uniqueName(extruder_definition_id) #Make a name based on the ID of the definition.
             if not container_registry.findContainerStacks(id = name): #Doesn't exist yet.
                 self.createExtruderTrain(extruder_definition, machine_definition, name, position)
 
@@ -175,28 +173,3 @@ class ExtruderManager(QObject):
         container_stack.setNextStack(UM.Application.getInstance().getGlobalContainerStack())
 
         container_registry.addContainer(container_stack)
-
-    ##  Creates a new unique name for a container that doesn't exist yet.
-    #
-    #   It tries if the original name you provide exists, and if it doesn't
-    #   it'll add a " #1" or " #2" after the name to make it unique.
-    #
-    #   \param original The original name that may not be unique.
-    #   \return A unique name that looks a lot like the original but may have
-    #   a number behind it to make it unique.
-    def _uniqueName(self, original):
-        container_registry = UM.Settings.ContainerRegistry.getInstance()
-
-        name = original.strip()
-        num_check = re.compile("(.*?)\s*#\d$").match(name)
-        if num_check:  # There is a number in the name.
-            name = num_check.group(1)  # Filter out the number.
-        if name == "":  # Wait, that deleted everything!
-            name = "Extruder"
-        unique_name = name
-
-        i = 1
-        while container_registry.findContainers(id = unique_name) or container_registry.findContainers(name = unique_name):  # A container already has this name.
-            i += 1  # Try next numbering.
-            unique_name = "%s #%d" % (name, i)  # Fill name like this: "Extruder #2".
-        return unique_name
