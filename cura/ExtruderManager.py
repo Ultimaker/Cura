@@ -176,7 +176,14 @@ class ExtruderManager(QObject):
 
         container_registry.addContainer(container_stack)
 
-
+    ##  Creates a new unique name for a container that doesn't exist yet.
+    #
+    #   It tries if the original name you provide exists, and if it doesn't
+    #   it'll add a " #1" or " #2" after the name to make it unique.
+    #
+    #   \param original The original name that may not be unique.
+    #   \return A unique name that looks a lot like the original but may have
+    #   a number behind it to make it unique.
     def _uniqueName(self, original):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
@@ -189,8 +196,7 @@ class ExtruderManager(QObject):
         unique_name = name
 
         i = 1
-        while container_registry.findContainers(id=unique_name) or container_registry.findContainers(
-                name=unique_name):  # A container already has this name.
+        while container_registry.findContainers(id = unique_name) or container_registry.findContainers(name = unique_name):  # A container already has this name.
             i += 1  # Try next numbering.
             unique_name = "%s #%d" % (name, i)  # Fill name like this: "Extruder #2".
         return unique_name
