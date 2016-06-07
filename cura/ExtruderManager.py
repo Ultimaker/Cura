@@ -61,6 +61,38 @@ class ExtruderManager(QObject):
         self._active_extruder_index = index
         self.activeExtruderChanged.emit()
 
+    ##  Adds all extruders of a specific machine definition to the extruder
+    #   manager.
+    #
+    #   \param machine_definition The machine to add the extruders for.
+    def addMachineExtruders(self, machine_definition):
+        machine_id = machine_definition.getId()
+        if not self._extruder_trains[machine_id]:
+            self._extruder_trains[machine_id] = { }
+
+        container_registry = UM.Settings.ContainerRegistry.getInstance()
+        if not container_registry: #Then we shouldn't have any machine definition either. In any case, there are no extruder trains then so bye bye.
+            return
+
+        #Add the extruder trains that don't exist yet.
+        for position, extruder_definition_id in machine_definition.getMetaDataEntry("machine_extruder_trains", default = {}).items():
+            extruder_definition = container_registry.findDefinitionContainers(machine = machine_definition.getId())
+            if extruder_definition:
+                extruder_definition = extruder_definition[0]
+            else:
+                Logger.log("w", "Machine %s references an extruder with ID %s, which doesn't exist.", machine_definition.getName(), extruder_definition_id)
+                continue
+            name = self._uniqueName(extruder_definition_id) #Make a name based on the ID of the definition.
+            if not container_registry.findContainerStacks(id = name): #Doesn't exist yet.
+                self.createExtruderTrain(extruder_definition, machine_definition, name, position)
+
+        #Gets the extruder trains that we just created as well as any that still existed.
+        extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = machine_definition.getId())
+        for extruder_train in extruder_trains:
+            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train.getId()
+        if extruder_trains:
+            self.extrudersChanged.emit()
+
     ##  (Re)populates the collections of extruders by machine.
     def _repopulate(self):
         self._extruder_trains = { }
@@ -78,13 +110,14 @@ class ExtruderManager(QObject):
             self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train.getId()
         self.extrudersChanged.emit()
 
-    def createExtruderTrain(self, extruder_definition, machine_definition, extruder_id):
+    def createExtruderTrain(self, extruder_definition, machine_definition, extruder_train_id, position):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
         #Create a container stack for this extruder.
-        name = self._uniqueName(extruder_id)
-        container_stack = UM.Settings.ContainerStack(name)
+        container_stack = UM.Settings.ContainerStack(extruder_train_id)
         container_stack.addMetaDataEntry("type", "extruder_train")
+        container_stack.addMetaDataEntry("machine", machine_definition.getId())
+        container_stack.addMetaDataEntry("position", position)
         container_stack.addContainer(extruder_definition)
 
         """
@@ -133,7 +166,7 @@ class ExtruderManager(QObject):
         """
 
         #Add an empty user profile.
-        user_profile = UM.Settings.InstanceContainer(name + "_current_settings")
+        user_profile = UM.Settings.InstanceContainer(extruder_train_id + "_current_settings")
         user_profile.addMetaDataEntry("type", "user")
         user_profile.setDefinition(machine_definition)
         container_stack.addContainer(user_profile)
@@ -143,11 +176,18 @@ class ExtruderManager(QObject):
 
         container_registry.addContainer(container_stack)
 
-
-    def _uniqueName(self, extruder):
+    ##  Creates a new unique name for a container that doesn't exist yet.
+    #
+    #   It tries if the original name you provide exists, and if it doesn't
+    #   it'll add a " #1" or " #2" after the name to make it unique.
+    #
+    #   \param original The original name that may not be unique.
+    #   \return A unique name that looks a lot like the original but may have
+    #   a number behind it to make it unique.
+    def _uniqueName(self, original):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
-        name = extruder.strip()
+        name = original.strip()
         num_check = re.compile("(.*?)\s*#\d$").match(name)
         if num_check:  # There is a number in the name.
             name = num_check.group(1)  # Filter out the number.
@@ -156,12 +196,7 @@ class ExtruderManager(QObject):
         unique_name = name
 
         i = 1
-        while container_registry.findContainers(id=unique_name) or container_registry.findContainers(
-                name=unique_name):  # A container already has this name.
+        while container_registry.findContainers(id = unique_name) or container_registry.findContainers(name = unique_name):  # A container already has this name.
             i += 1  # Try next numbering.
             unique_name = "%s #%d" % (name, i)  # Fill name like this: "Extruder #2".
         return unique_name
-
-
-def createExtruderManager(engine, script_engine):
-    return ExtruderManager()

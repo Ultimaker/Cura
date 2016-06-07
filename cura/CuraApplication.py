@@ -353,8 +353,6 @@ class CuraApplication(QtApplication):
 
         qmlRegisterSingletonType(MachineManagerModel.MachineManagerModel, "Cura", 1, 0, "MachineManager",
                                  MachineManagerModel.createMachineManagerModel)
-        qmlRegisterSingletonType(ExtruderManager.ExtruderManager, "Cura", 1, 0, "ExtruderManager",
-                                 ExtruderManager.createExtruderManager)
 
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
@@ -386,6 +384,9 @@ class CuraApplication(QtApplication):
     def getPrintInformation(self):
         return self._print_information
 
+    ##  Registers objects for the QML engine to use.
+    #
+    #   \param engine The QML engine.
     def registerObjects(self, engine):
         engine.rootContext().setContextProperty("Printer", self)
         self._print_information = PrintInformation.PrintInformation()
@@ -398,6 +399,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(ExtrudersModel.ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
 
         qmlRegisterSingletonType(QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")), "Cura", 1, 0, "Actions")
+
+        engine.rootContext().setContextProperty("ExtruderManager", ExtruderManager.ExtruderManager.getInstance())
 
         for path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.QmlFiles):
             type_name = os.path.splitext(os.path.basename(path))[0]

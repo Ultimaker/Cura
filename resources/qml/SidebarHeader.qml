@@ -111,7 +111,7 @@ Item
                 onClicked:
                 {
                     base.currentExtruderIndex = index
-                    Cura.ExtruderManager.setActiveExtruderIndex(index)
+                    ExtruderManager.setActiveExtruderIndex(index)
                 }
 
                 style: ButtonStyle {
