@@ -237,7 +237,7 @@ UM.ManagementPage
             folder: base.model.getDefaultPath()
             onAccepted:
             {
-                var result =  base.model.exportProfile(base.currentItem.id, base.currentItem.name, fileUrl, selectedNameFilter)
+                var result = base.model.exportProfile(base.currentItem.id, fileUrl)
                 if(result && result.status == "error")
                 {
                     messageDialog.icon = StandardIcon.Critical
