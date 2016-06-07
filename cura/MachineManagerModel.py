@@ -320,7 +320,7 @@ class MachineManagerModel(QObject):
         if containers:
             new_name = self._createUniqueName("quality", containers[0].getName(), new_name, catalog.i18nc("@label", "Custom profile"))
             containers[0].setName(new_name)
-            UM.Settings.ContainerRegistry.getInstance().containerChanged.emit(containers[0])
+            self.activeQualityChanged.emit()
 
 
     @pyqtSlot(str)
