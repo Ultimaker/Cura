@@ -80,23 +80,6 @@ class ExtruderManager(QObject):
         if extruder_trains:
             self.extrudersChanged.emit()
 
-    ##  (Re)populates the collections of extruders by machine.
-    def _repopulate(self):
-        self._extruder_trains = { }
-        if not UM.Application.getInstance().getGlobalContainerStack(): #No machine has been added yet.
-            self.extrudersChanged.emit() #Yes, we just cleared the _extruders list!
-            return #Then leave them empty!
-
-        extruder_trains = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(type = "extruder_train")
-        for extruder_train in extruder_trains:
-            machine_id = extruder_train.getMetaDataEntry("machine")
-            if not machine_id:
-                continue
-            if machine_id not in self._extruder_trains:
-                self._extruder_trains[machine_id] = { }
-            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train.getId()
-        self.extrudersChanged.emit()
-
     def createExtruderTrain(self, extruder_definition, machine_definition, extruder_train_id, position):
         container_registry = UM.Settings.ContainerRegistry.getInstance()
 
