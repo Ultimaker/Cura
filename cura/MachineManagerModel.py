@@ -36,8 +36,6 @@ class MachineManagerModel(QObject):
 
         active_machine_id = Preferences.getInstance().getValue("cura/active_machine")
 
-        self._active_extruder_index = 0
-
         if active_machine_id != "":
             # An active machine was saved, so restore it.
             self.setActiveMachine(active_machine_id)
