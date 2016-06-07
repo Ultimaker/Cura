@@ -335,11 +335,11 @@ class MachineManagerModel(QObject):
         UM.Settings.ContainerRegistry.getInstance().removeContainer(container_id)
 
         if activate_new_container:
-            old_container = self._global_container_stack.findInstanceContainers({"type": "quality"})
-            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = container_type)
-            if containers and old_container:
-                container_index = self._global_container_stack.getContainerIndex(old_container)
-                self._global_container_stack.replaceContainer(container_index, containers[0])
+            definition_id = "fdmprinter" if not self.filterQualityByMachine else self.activeDefinitionId
+            containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(type = "quality", definition = definition_id)
+            if containers:
+                self.setActiveQuality(containers[0].getId())
+                self.activeQualityChanged.emit()
 
 
     @pyqtSlot()
