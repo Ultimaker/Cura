@@ -6,7 +6,6 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject #For commun
 import UM.Application #To get the global container stack to find the current machine.
 import UM.Logger
 import UM.Settings.ContainerRegistry #Finding containers by ID.
-import re
 
 
 ##  Manages all existing extruder stacks.
