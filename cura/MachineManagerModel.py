@@ -9,6 +9,7 @@ from UM.Logger import Logger
 import UM.Settings
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.ContainerStack import ContainerStack
 from . import ExtruderManager
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -109,7 +110,7 @@ class MachineManagerModel(QObject):
         definitions = UM.Settings.ContainerRegistry.getInstance().findDefinitionContainers(id=definition_id)
         if definitions:
             definition = definitions[0]
-            name = self._createUniqueName("machine", name, definition.getName())
+            name = self._createUniqueName(containers[0], "machine", name, definition.getName())
 
             new_global_stack = UM.Settings.ContainerStack(name)
             new_global_stack.addMetaDataEntry("type", "machine")
@@ -139,30 +140,41 @@ class MachineManagerModel(QObject):
 
             Application.getInstance().setGlobalContainerStack(new_global_stack)
 
-    # Create a name that is not empty and unique
-    def _createUniqueName(self, object_type, name, fallback_name):
-        name = name.strip()
-        num_check = re.compile("(.*?)\s*#\d+$").match(name)
-        if(num_check):
-            name = num_check.group(1)
-        if name == "":
-            name = fallback_name
-        unique_name = name
-        i = 1
+    ##  Create a name that is not empty and unique
+    #   \param container \type{} container to create a unique name for
+    #   \param container_type \type{string} Type of the container (machine, quality, ...)
+    #   \param new_name \type{string} Name base name, which may not be unique
+    #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
+    #   \return \type{string} Name that is unique for the specified type and name/id
+    def _createUniqueName(self, container, object_type, new_name, fallback_name):
+        new_name = new_name.strip()
+        num_check = re.compile("(.*?)\s*#\d+$").match(new_name)
+        if num_check:
+            new_name = num_check.group(1)
+        if new_name == "":
+            new_name = fallback_name
 
-        # Check both the id and the name, because they may not be the same and it is better if they are both unique
-        if object_type == "machine":
-            while UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = unique_name, type = "machine") or \
-                    UM.Settings.ContainerRegistry.getInstance().findContainerStacks(name = unique_name, type = "machine"):
-                i += 1
-                unique_name = "%s #%d" % (name, i)
-        else:
-            while UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = unique_name, type = object_type) or \
-                    UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(name = unique_name, type = object_type):
-                i += 1
-                unique_name = "%s #%d" % (name, i)
+        unique_name = new_name
+        i = 1
+        while self._containerWithIdOrNameExists(unique_name, object_type, container):
+            i += 1
+            unique_name = "%s #%d" % (new_name, i)
 
         return unique_name
+
+    ##  Check if a container with of a certain type and a certain name or id exists
+    #   Both the id and the name are checked, because they may not be the same and it is better if they are both unique
+    def _containerWithIdOrNameExists(self, id_or_name, container_type, exclude_container = None):
+        container_class = ContainerStack if container_type == "machine" else InstanceContainer
+
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, id = id_or_name, type = container_type)
+        if containers and containers[0] != exclude_container:
+            return True
+        containers = UM.Settings.ContainerRegistry.getInstance().findContainers(container_class, name = id_or_name, type = container_type)
+        if containers and containers[0] != exclude_container:
+            return True
+
+        return False
 
     ##  Convenience function to check if a stack has errors.
     def _checkStackForErrors(self, stack):
@@ -260,9 +272,9 @@ class MachineManagerModel(QObject):
         if not self._global_container_stack:
             return
 
-        name = self._createUniqueName("quality", self.activeQualityName, catalog.i18nc("@label", "Custom profile"))
-        user_settings = self._global_container_stack.getTop()
         new_quality_container = InstanceContainer("")
+        name = self._createUniqueName(new_quality_container, "quality", self.activeQualityName, catalog.i18nc("@label", "Custom profile"))
+        user_settings = self._global_container_stack.getTop()
 
         ## Copy all values
         new_quality_container.deserialize(user_settings.serialize())
@@ -290,7 +302,7 @@ class MachineManagerModel(QObject):
             return
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id=container_id)
         if containers:
-            new_name = self._createUniqueName("quality", containers[0].getName(), catalog.i18nc("@label", "Custom profile"))
+            new_name = self._createUniqueName(containers[0], "quality", containers[0].getName(), catalog.i18nc("@label", "Custom profile"))
 
             new_container = InstanceContainer("")
 
@@ -310,7 +322,7 @@ class MachineManagerModel(QObject):
     def renameQualityContainer(self, container_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findInstanceContainers(id = container_id, type = "quality")
         if containers:
-            new_name = self._createUniqueName("machine", new_name, catalog.i18nc("@label", "Custom profile"))
+            new_name = self._createUniqueName(containers[0], "quality", new_name, catalog.i18nc("@label", "Custom profile"))
             containers[0].setName(new_name)
             UM.Settings.ContainerRegistry.getInstance().containerChanged.emit(containers[0])
 
@@ -413,7 +425,7 @@ class MachineManagerModel(QObject):
     def renameMachine(self, machine_id, new_name):
         containers = UM.Settings.ContainerRegistry.getInstance().findContainerStacks(id = machine_id)
         if containers:
-            new_name = self._createUniqueName("machine", new_name, containers[0].getBottom().getName())
+            new_name = self._createUniqueName(containers[0], "machine", new_name, containers[0].getBottom().getName())
             containers[0].setName(new_name)
             self.globalContainerChanged.emit()
 
